@@ -555,7 +555,7 @@
         "A": "Source code escrow with defined release conditions",
         "B": "A right-to-audit clause over the vendor's development process",
         "C": "A performance bond payable if the vendor fails to deliver",
-        "D": "Financial backing from the vendor's parent company if it defaults"
+        "D": "Financial backing from the vendor's parent company if the vendor defaults"
       },
       "correct": "A",
       "key_concept": "Source code escrow protects continuity of business-critical custom software when the vendor may fail or stop supporting it.",
@@ -564,7 +564,7 @@
       "wrong_explanations": {
         "B": "Audit rights help assess development quality while the vendor operates. They provide no access to source code if it fails.",
         "C": "A bond pays compensation, but money does not keep critical software supported once the vendor is gone.",
-        "D": "Parent backing pays out if the vendor defaults, but money does not keep critical software supported once the vendor is gone."
+        "D": "Parent backing compensates for a default, but it neither supplies the source code nor keeps the software maintainable."
       },
       "tips": [
         "Eliminate: C and D compensate in money, a bond or parent backing, rather than preserving the software itself.",
@@ -578,7 +578,7 @@
         "Continuity",
         "Custom software"
       ],
-      "_provenance": "Authored from concept: 'Code escrow justification per ISACA Code Escrow and Vendor Management guidance'. Public sources: ISACA guidance. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Difficulty upgrade (Oct 2026, owner's rule: two options eliminable only by CISA knowledge, a hard final two): replaced backups of the organization's own code (the wrong asset) with a performance bond, a continuity-flavored but weaker protection. Round 3 (Oct 2026, concept check, blind tests and wording-cue balance): weak blind test: dead distractor replaced with a plausible practitioner error (D was annual price caps).",
+      "_provenance": "Authored from concept: 'Code escrow justification per ISACA Code Escrow and Vendor Management guidance'. Public sources: ISACA guidance. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Difficulty upgrade (Oct 2026, owner's rule: two options eliminable only by CISA knowledge, a hard final two): replaced backups of the organization's own code (the wrong asset) with a performance bond, a continuity-flavored but weaker protection. Round 3 (Oct 2026, concept check, blind tests and wording-cue balance): weak blind test: dead distractor replaced with a plausible practitioner error (D was annual price caps). Final review (Oct 2026, exam developer and blind test): exam developer note: D says 'if the vendor defaults' and W-D no longer repeats W-C.",
       "style_version": 2
     },
     {
@@ -943,10 +943,10 @@
       "wrong_explanations": {
         "A": "Sensitivity analysis stress-tests the cost and benefit estimates, a dimension already covered; operational, legal and schedule risks stay unexamined.",
         "B": "A vendor's confirmation is not independent, and technical fit is the dimension the study already covers in depth.",
-        "C": "Vendor stability, licensing and support costs are supplier and cost details for vendor selection, not missing feasibility dimensions; operational, legal and schedule risks stay unexamined."
+        "C": "Licensing and support costs belong to the economic dimension the study already covers, and vendor stability is a supplier-selection check; operational, legal and schedule feasibility stay unexamined."
       },
       "tips": [
-        "Eliminate: B relies on the vendor to confirm a dimension already covered, and C adds a supplier-selection check rather than a missing feasibility dimension.",
+        "Eliminate: B relies on the vendor to confirm a dimension already covered, and C adds costs the economic study covers plus a supplier-selection check, not a missing dimension.",
         "Final two: D beats A because the gap is missing dimensions; a sensitivity analysis only stress-tests the economic case already studied.",
         "Exam cue: close feasibility gaps before approval, and remember TELOS: technical, economic, legal, operational, schedule."
       ],
@@ -958,7 +958,7 @@
         "Economic feasibility",
         "Operational feasibility"
       ],
-      "_provenance": "Authored from concept: 'Multi-dimensional feasibility (TELOS) per PMBOK 7E and ISACA Project Management guidance'. Public sources: PMBOK 7E, ISACA guidance. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Round 2 review (Oct 2026): framework_ref updated to the current edition (PMBOK Guide 8th Edition, 2025). Difficulty upgrade (Oct 2026, owner's rule: two options eliminable only by CISA knowledge, a hard final two): the auditor now finds the gap as a fact (no steering-committee framing); replaced the 'economics covers everything' strawman with a sensitivity analysis as the runner-up and the cost-validation option with a vendor confirmation. Round 2 (Oct 2026, quality-gate fixes from the standards audit, pedagogy check and strong and weak blind tests): weak blind test: the stem's 'and no other factor' pointed at the key and C ('approve now') was a throwaway; the stem clause is gone and C is now a vendor-stability check that also says 'feasibility'. Round 3 (Oct 2026, concept check, blind tests and wording-cue balance): cue balance: three-part lists pointed at the key (77% key share); C now carries a list too.",
+      "_provenance": "Authored from concept: 'Multi-dimensional feasibility (TELOS) per PMBOK 7E and ISACA Project Management guidance'. Public sources: PMBOK 7E, ISACA guidance. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Round 2 review (Oct 2026): framework_ref updated to the current edition (PMBOK Guide 8th Edition, 2025). Difficulty upgrade (Oct 2026, owner's rule: two options eliminable only by CISA knowledge, a hard final two): the auditor now finds the gap as a fact (no steering-committee framing); replaced the 'economics covers everything' strawman with a sensitivity analysis as the runner-up and the cost-validation option with a vendor confirmation. Round 2 (Oct 2026, quality-gate fixes from the standards audit, pedagogy check and strong and weak blind tests): weak blind test: the stem's 'and no other factor' pointed at the key and C ('approve now') was a throwaway; the stem clause is gone and C is now a vendor-stability check that also says 'feasibility'. Round 3 (Oct 2026, concept check, blind tests and wording-cue balance): cue balance: three-part lists pointed at the key (77% key share); C now carries a list too. Final review (Oct 2026, exam developer and blind test): exam developer note: W-C and the Eliminate tip place licensing and support costs in the economic dimension.",
       "style_version": 2
     },
     {
@@ -1434,9 +1434,9 @@
       "pre_read": "Separate the symptom (rising errors) from the cause. Ask why the decline went unmanaged for eight months.",
       "correct_explanation": "The rising false-positive rate is a symptom; the root cause is that monitoring was never planned, so drift (accuracy falling as real data changes) went unaddressed for eight months. Lifecycle governance, with an accountable owner, drift thresholds and retraining triggers, keeps the model reliable over time. An independent revalidation is the tempting option, but it checks only today's model; revalidation belongs inside the lifecycle.",
       "wrong_explanations": {
-        "A": "Retraining may correct today's drift, but an unvalidated retrained model is an uncontrolled change, and with no owner the next drift goes unnoticed.",
+        "A": "Retraining may correct today's drift, but an unvalidated retrained model is an uncontrolled change, and with no monitoring in place the next drift goes unnoticed.",
         "B": "A higher threshold cuts false positives but lets more fraud through; watching the rate weekly does not address why the model drifts.",
-        "D": "Revalidation checks today's model, but without an owner, drift thresholds or retraining triggers, the next degradation would again go unmanaged."
+        "D": "Revalidation checks today's model, but without ongoing monitoring, drift thresholds or retraining triggers, the next degradation would again go unmanaged."
       },
       "tips": [
         "Eliminate: A retrains and redeploys without validation, itself an uncontrolled model change, and B trades false positives for missed fraud.",
@@ -1451,7 +1451,7 @@
         "NIST AI RMF",
         "Production ML lifecycle"
       ],
-      "_provenance": "Authored from concept: 'MLOps governance for production ML per NIST AI RMF 1.0 and ISO/IEC 42001'. Public sources: NIST AI RMF, ISO/IEC 42001. Scenario specifics (health-insurance, 4M members, 5 states, fraud-detection model, 4%→11% FPR, 8 months in production, no re-training) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Content review (Oct 2026): stem no longer names the missing owner and retraining that only the key supplied; C reworded and D replaced with a one-time revalidation runner-up; option A no longer mentions claims. Content review round 2 (Oct 2026): stem now states that no one monitors the model, so the governance gap is given rather than inferred; explanation places revalidation inside the lifecycle. Difficulty upgrade (Oct 2026, owner's rule: two options eliminable only by CISA knowledge, a hard final two): reworded the Eliminate tip so the knowledge, not a dismissive word, rules out A. The v12.35 stem, key and revalidation runner-up are kept as they were. Round 2 (Oct 2026, quality-gate fixes from the standards audit, pedagogy check and strong and weak blind tests): weak blind test: A (decommission) was a throwaway and the key was longest; A is now retraining on recent data, B adds weekly monitoring, D shares 'assign' so the stem's gap word is not key-only, and the key is shorter. Round 3 (Oct 2026, concept check, blind tests and wording-cue balance): weak blind test: 'no one has been assigned' was echoed by 'Assign a model owner'; the stem now says monitoring was not planned, and the key names lifecycle governance rather than an owner.",
+      "_provenance": "Authored from concept: 'MLOps governance for production ML per NIST AI RMF 1.0 and ISO/IEC 42001'. Public sources: NIST AI RMF, ISO/IEC 42001. Scenario specifics (health-insurance, 4M members, 5 states, fraud-detection model, 4%→11% FPR, 8 months in production, no re-training) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Content review (Oct 2026): stem no longer names the missing owner and retraining that only the key supplied; C reworded and D replaced with a one-time revalidation runner-up; option A no longer mentions claims. Content review round 2 (Oct 2026): stem now states that no one monitors the model, so the governance gap is given rather than inferred; explanation places revalidation inside the lifecycle. Difficulty upgrade (Oct 2026, owner's rule: two options eliminable only by CISA knowledge, a hard final two): reworded the Eliminate tip so the knowledge, not a dismissive word, rules out A. The v12.35 stem, key and revalidation runner-up are kept as they were. Round 2 (Oct 2026, quality-gate fixes from the standards audit, pedagogy check and strong and weak blind tests): weak blind test: A (decommission) was a throwaway and the key was longest; A is now retraining on recent data, B adds weekly monitoring, D shares 'assign' so the stem's gap word is not key-only, and the key is shorter. Round 3 (Oct 2026, concept check, blind tests and wording-cue balance): weak blind test: 'no one has been assigned' was echoed by 'Assign a model owner'; the stem now says monitoring was not planned, and the key names lifecycle governance rather than an owner. Final review (Oct 2026, exam developer and blind test): exam developer note: W-A and W-D refer to missing monitoring, matching the new stem.",
       "style_version": 2
     },
     {
@@ -1723,7 +1723,7 @@
         "A": "Continue as approved and track costs and benefits monthly",
         "B": "Cancel the program now to stop further cost overruns",
         "C": "Commission an independent estimate of the remaining cost to complete",
-        "D": "Have the investment re-decided on revised costs and benefits"
+        "D": "Resubmit the updated business case for an investment decision"
       },
       "correct": "D",
       "key_concept": "A business case is a living document: when costs or benefits change materially, update it and have sponsors re-approve the investment.",
@@ -1745,7 +1745,7 @@
         "Stage gates",
         "Sunk cost"
       ],
-      "_provenance": "Authored from concept: 'IT investment portfolio governance per ISACA Val IT and COBIT 2019 EDM02'. Public sources: ISACA Val IT, COBIT 2019. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Rebalanced (Oct 2026): re-angled from 2B1 to 3A2. Rebalance review (Oct 2026): exam cue limited to concepts in the stem. Difficulty upgrade (Oct 2026, owner's rule: two options eliminable only by CISA knowledge, a hard final two): reworded the key so 'business case' is no longer a key-only echo; removed the rationale clauses ('since...') from the continue and cancel options. Round 2 (Oct 2026, quality-gate fixes from the standards audit, pedagogy check and strong and weak blind tests): weak blind test: C (vendor absorbs the rise) was a throwaway; C is now an independent cost-to-complete estimate; audit: A now mentions benefits so the key does not echo the stem alone. Round 3 (Oct 2026, concept check, blind tests and wording-cue balance): strong blind test: C (an independent cost estimate) is now the runner-up and B (cancel) is eliminated; cue balance: the key no longer names the sponsors.",
+      "_provenance": "Authored from concept: 'IT investment portfolio governance per ISACA Val IT and COBIT 2019 EDM02'. Public sources: ISACA Val IT, COBIT 2019. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Rebalanced (Oct 2026): re-angled from 2B1 to 3A2. Rebalance review (Oct 2026): exam cue limited to concepts in the stem. Difficulty upgrade (Oct 2026, owner's rule: two options eliminable only by CISA knowledge, a hard final two): reworded the key so 'business case' is no longer a key-only echo; removed the rationale clauses ('since...') from the continue and cancel options. Round 2 (Oct 2026, quality-gate fixes from the standards audit, pedagogy check and strong and weak blind tests): weak blind test: C (vendor absorbs the rise) was a throwaway; C is now an independent cost-to-complete estimate; audit: A now mentions benefits so the key does not echo the stem alone. Round 3 (Oct 2026, concept check, blind tests and wording-cue balance): strong blind test: C (an independent cost estimate) is now the runner-up and B (cancel) is eliminated; cue balance: the key no longer names the sponsors. Final review (Oct 2026, exam developer and blind test): exam developer note: the key now says resubmit the updated business case.",
       "style_version": 2
     },
     {
@@ -1991,13 +1991,13 @@
       "pre_read": "Ask what the real exposure is: the hour of the change, or the lack of review, testing and traceability.",
       "correct_explanation": "The core risk is unreviewed, untested and untraceable change, not its timing. Versioned migration scripts are peer reviewed, tested in lower environments and deployed through the change-management workflow, giving an audit trail and a rollback path. Moving the same direct changes to a maintenance window reduces user impact, but administrators would still alter production without review, testing or version history.",
       "wrong_explanations": {
-        "A": "Approval, scheduling and logging change when and how visibly the work happens, but administrators still alter production directly, without review or testing.",
+        "A": "Approval authorizes the change, and scheduling and logging set when and how visibly it happens, but administrators still alter production by hand, with no reviewed, tested script or rollback path.",
         "B": "Giving developers production schema access worsens segregation of duties and still bypasses review and testing.",
         "C": "An after-the-fact register records changes but does not review or test them before they reach production."
       },
       "tips": [
         "Eliminate: B widens uncontrolled production access, and C records changes only after they reach production.",
-        "Final two: D beats A because review, testing and traceability address the real risk, while a window only changes timing.",
+        "Final two: D beats A because reviewed, tested, versioned scripts address the real risk; approving, scheduling and logging direct changes still leaves them untested and untraceable to code.",
         "Exam cue: when a finding is uncontrolled change, the BEST fix routes it through change management, not just a different time slot."
       ],
       "framework_ref": "NIST SP 800-53 Rev 5 CM-3 (Configuration Change Control); COBIT 2019 BAI06 (Managed IT Changes); ITIL 4 (Change Enablement)",
@@ -2007,7 +2007,7 @@
         "Flyway",
         "Liquibase"
       ],
-      "_provenance": "Authored from concept: 'Database schema migration governance per ISACA Database Audit guidance and COBIT 2019 BAI06'. Public sources: ISACA, COBIT 2019. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. v2: de-cued (options made grammatically parallel; postpone distractor C replaced). Round 3 (Oct 2026, concept check, blind tests and wording-cue balance): cue balance: three-part lists pointed at the key (77% key share); the key is no longer a list and A carries one.",
+      "_provenance": "Authored from concept: 'Database schema migration governance per ISACA Database Audit guidance and COBIT 2019 BAI06'. Public sources: ISACA, COBIT 2019. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. v2: de-cued (options made grammatically parallel; postpone distractor C replaced). Round 3 (Oct 2026, concept check, blind tests and wording-cue balance): cue balance: three-part lists pointed at the key (77% key share); the key is no longer a list and A carries one. Final review (Oct 2026, exam developer and blind test): exam developer (HARD): W-A and the Final two tip now match A's approval, scheduling and logging.",
       "style_version": 2
     },
     {
@@ -2321,7 +2321,7 @@
       "question": "A pre-go-live penetration test of a new customer portal finds two high-risk vulnerabilities, and the sponsor wants to launch on schedule. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Launch on project manager risk approval, fixing them in the next release",
-        "B": "Launch with monitoring the CISO accepts as security risk owner",
+        "B": "Launch with monitoring that the CISO approves as adequate",
         "C": "Fix them first, or have the risk owner formally accept them",
         "D": "Launch with firewall rules blocking the findings' attack patterns"
       },
@@ -2331,7 +2331,7 @@
       "correct_explanation": "High-risk findings from pre-production security testing should be fixed before go-live or, if the business must launch, formally accepted by the accountable risk owner with compensating controls and a fix date. Launching with the project manager's approval is the runner-up: it may match the business choice, but the project manager is not the risk owner, so known high risks would reach customers without accountable acceptance.",
       "wrong_explanations": {
         "A": "A project manager's approval is not formal acceptance by the risk owner. Known high risks would enter production with no accountable owner agreeing to carry them.",
-        "B": "Monitoring detects exploitation rather than preventing it, and the CISO advises on security risk; acceptance belongs to the accountable business risk owner.",
+        "B": "Monitoring detects exploitation rather than preventing it, and the CISO advises on security risk; residual business risk must be accepted by the accountable business risk owner.",
         "D": "Firewall rules may reduce exposure, but they are an unproven compensating control, and no accountable risk owner has accepted the residual risk."
       },
       "tips": [
@@ -2345,7 +2345,7 @@
         "Go-live decision",
         "Risk acceptance"
       ],
-      "_provenance": "Authored from concept: 'Kubernetes admission controllers for image policy enforcement'. Public sources: Kubernetes docs, OPA Gatekeeper, Sigstore. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. v2: retargeted to pod-security admission to avoid duplicating d3_033. Learner-impact review (Oct 2026): why-wrong lines now refer to pods, not images. Rebalanced (Oct 2026): re-angled from 5A8 to 3B1. Rebalance review (Oct 2026): distractor A names a role (owner-cue fix). Difficulty upgrade (Oct 2026, owner's rule: two options eliminable only by CISA knowledge, a hard final two): replaced 'report to the regulator' with launching behind firewall rules (a compensating control with no risk-owner acceptance). Round 2 (Oct 2026, quality-gate fixes from the standards audit, pedagogy check and strong and weak blind tests): weak blind test: B (repeat the test with another firm) was a throwaway; B is now compensating monitoring approved by the security team. Round 3 (Oct 2026, concept check, blind tests and wording-cue balance): cue balance: 'risk' wording pointed at the key (62% key share) and owner wording pointed at the key; A and B now carry risk-acceptance wording with the wrong owner.",
+      "_provenance": "Authored from concept: 'Kubernetes admission controllers for image policy enforcement'. Public sources: Kubernetes docs, OPA Gatekeeper, Sigstore. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. v2: retargeted to pod-security admission to avoid duplicating d3_033. Learner-impact review (Oct 2026): why-wrong lines now refer to pods, not images. Rebalanced (Oct 2026): re-angled from 5A8 to 3B1. Rebalance review (Oct 2026): distractor A names a role (owner-cue fix). Difficulty upgrade (Oct 2026, owner's rule: two options eliminable only by CISA knowledge, a hard final two): replaced 'report to the regulator' with launching behind firewall rules (a compensating control with no risk-owner acceptance). Round 2 (Oct 2026, quality-gate fixes from the standards audit, pedagogy check and strong and weak blind tests): weak blind test: B (repeat the test with another firm) was a throwaway; B is now compensating monitoring approved by the security team. Round 3 (Oct 2026, concept check, blind tests and wording-cue balance): cue balance: 'risk' wording pointed at the key (62% key share) and owner wording pointed at the key; A and B now carry risk-acceptance wording with the wrong owner. Final review (Oct 2026, exam developer and blind test): exam developer (HARD): B no longer calls the CISO the risk owner; it is now CISO approval of monitoring.",
       "style_version": 2
     },
     {
@@ -3144,7 +3144,7 @@
       "bloom_level": "Application",
       "question": "An IS auditor must rely on data lineage for a regulatory report fed by several application pipelines. Which control provides the MOST reliable lineage?",
       "options": {
-        "A": "Owner-maintained lineage register, reviewed and signed off each quarter",
+        "A": "An owner-maintained lineage register, reviewed and signed off each quarter",
         "B": "A data catalog populated by stewards at onboarding",
         "C": "Pipelines emitting lineage metadata automatically to a central store",
         "D": "Lineage diagrams produced by the project at design time"
@@ -3170,7 +3170,7 @@
         "Data governance",
         "DAMA"
       ],
-      "_provenance": "Authored from concept: 'Application data lineage per DAMA-DMBOK and OpenLineage'. Public sources: DAMA, OpenLineage, ISACA. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Difficulty upgrade (Oct 2026, owner's rule: two options eliminable only by CISA knowledge, a hard final two): replaced the off-type developer-access option with design-time lineage diagrams (manual and stale). Round 3 (Oct 2026, concept check, blind tests and wording-cue balance): weak blind test: dead distractor replaced with a plausible practitioner error (B was developer surveys).",
+      "_provenance": "Authored from concept: 'Application data lineage per DAMA-DMBOK and OpenLineage'. Public sources: DAMA, OpenLineage, ISACA. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Difficulty upgrade (Oct 2026, owner's rule: two options eliminable only by CISA knowledge, a hard final two): replaced the off-type developer-access option with design-time lineage diagrams (manual and stale). Round 3 (Oct 2026, concept check, blind tests and wording-cue balance): weak blind test: dead distractor replaced with a plausible practitioner error (B was developer surveys). Final review (Oct 2026, exam developer and blind test): exam developer note: article added to A.",
       "style_version": 2
     },
     {
@@ -3262,15 +3262,15 @@
       "correct": "A",
       "key_concept": "Blue-green deployment moves all users at once; it limits downtime, not exposure, so a defect reaches every customer until switch-back.",
       "pre_read": "Recall what blue-green deployment limits and what it does not. Then picture the next faulty release.",
-      "correct_explanation": "Blue-green deployment keeps two identical environments and switches all traffic to the new one at once. It allows a fast switch back and near-zero downtime, but every customer meets a defect before anyone reverses it, repeating the failed release's harm. Environment drift is the tempting option: it is a real concern, but defining both environments from the same templates controls it. A canary release (a small share of traffic first) would limit exposure.",
+      "correct_explanation": "Blue-green deployment keeps two identical environments and switches all traffic to the new one at once. It allows a fast switch back and near-zero downtime, but every customer meets a defect before anyone reverses it, repeating the failed release's harm. Relaxed approvals are the tempting option: they are a real behavior risk, but change management can control them, while all-at-once exposure is built into blue-green and happens on every release.",
       "wrong_explanations": {
-        "B": "Blue-green changes how a release is deployed, not whether it needs approval; change management still applies to every release.",
+        "B": "Relaxed approvals are a behavior management can control through change management; exposing every customer to a defect at once is built into blue-green and happens on every release.",
         "C": "Both environments are built from one template, which controls drift; all-at-once exposure is built into blue-green and no template removes it.",
         "D": "Blue-green switches traffic almost instantly, so long downtime is the problem it solves, not one it creates."
       },
       "tips": [
-        "Eliminate: B assumes change approval lapses, which blue-green does not cause, and D gets blue-green backwards, since it avoids downtime.",
-        "Final two: A beats C because exposing every customer at once is built into blue-green, while drift is controlled by building both environments from the same templates.",
+        "Eliminate: C is controlled by building both environments from one template, and D gets blue-green backwards, since it avoids downtime.",
+        "Final two: A beats B because all-at-once exposure is built into blue-green and recurs on every release, while relaxed approvals are behavior change management can control.",
         "Exam cue: blue-green limits downtime, canary limits exposure; match the deployment strategy to the risk the stem names."
       ],
       "framework_ref": "Continuous Delivery (Humble & Farley); DORA / Accelerate (DevOps Research and Assessment); COBIT 2019 BAI07 (Managed IT Change Acceptance and Transitioning)",
@@ -3280,7 +3280,7 @@
         "Blast radius",
         "Progressive delivery"
       ],
-      "_provenance": "Authored from concept: 'Canary deployment strategy per Continuous Delivery and DORA research'. Public sources: Humble & Farley, DORA. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Content review (Oct 2026): recast from a canary-definition recall stem into an auditor risk judgment on a blue-green proposal. Content review round 2 (Oct 2026): stem now names the harm of the failed release; hosting-cost distractor replaced with a change-approval risk; drift rebuttal now names version-controlled templates.",
+      "_provenance": "Authored from concept: 'Canary deployment strategy per Continuous Delivery and DORA research'. Public sources: Humble & Farley, DORA. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Content review (Oct 2026): recast from a canary-definition recall stem into an auditor risk judgment on a blue-green proposal. Content review round 2 (Oct 2026): stem now names the harm of the failed release; hosting-cost distractor replaced with a change-approval risk; drift rebuttal now names version-controlled templates. Final review (Oct 2026, exam developer and blind test): blind test: B kept for difficulty and is now the runner-up; W-B, the Final two tip and the correct explanation carry the same reason (inherent and every release against controllable behavior).",
       "style_version": 2
     },
     {
@@ -3559,10 +3559,10 @@
       "wrong_explanations": {
         "B": "Stretching speculative efficiencies into a return misrepresents the case. The real justification is the obligation.",
         "C": "Every investment should align with strategy, but alignment does not state why this one is required or compare ways to comply.",
-        "D": "A compliance risk score suits ranking discretionary investments; here non-compliance is not an option, so the case should state the obligation and compare ways to comply."
+        "D": "A weighted score ranks discretionary investments against each other; a mandatory project is not competing for approval, so the case should state the obligation and compare ways to comply."
       },
       "tips": [
-        "Eliminate: C cites strategic fit, which neither states the obligation nor compares ways to comply, and D scores compliance risk, which ranks optional investments.",
+        "Eliminate: C cites strategic fit, which neither states the obligation nor compares ways to comply, and D ranks the project against others, though it is not competing for approval.",
         "Final two: A beats B because a mandatory project is justified by the obligation and the most cost-effective compliant option, not a manufactured return.",
         "Exam cue: for regulatory projects, the business case becomes how to comply at the lowest cost and risk."
       ],
@@ -3572,7 +3572,7 @@
         "Regulatory projects",
         "Options analysis"
       ],
-      "_provenance": "Authored from concept: 'Multi-tenant data segregation incident response per GDPR Article 33 and ISACA Multi-Tenant Segregation guidance'. Public sources: GDPR, ISACA, CCPA. Scenario specifics (B2B SaaS, 1.4K customers, 23M end users, 7-hour exposure window, 380K rows exposed, US/EU/APAC jurisdictions) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): explanation corrected: a SaaS processor notifies its tenant controllers without undue delay; 72-hour clock is theirs. Rebalanced (Oct 2026): re-angled from 5B5 to 3A2. Difficulty upgrade (Oct 2026, owner's rule: two options eliminable only by CISA knowledge, a hard final two): reworded the key so it no longer echoes 'meet'; replaced the project manager's-judgment option with alignment to the IT strategic plan (no 'penalties avoided' option, to avoid a second key). Round 2 (Oct 2026, quality-gate fixes from the standards audit, pedagogy check and strong and weak blind tests): weak blind test: D (defer a mandatory project) was a throwaway; D now scores intangible benefits; audit: the key says 'legal obligation' so 'regulatory' no longer echoes the stem alone. Round 3 (Oct 2026, concept check, blind tests and wording-cue balance): concept check (precision): the key says 'most cost-effective' rather than 'least-cost'; weak blind test: D now carries compliance wording so the stem's regulation cue is not key-only.",
+      "_provenance": "Authored from concept: 'Multi-tenant data segregation incident response per GDPR Article 33 and ISACA Multi-Tenant Segregation guidance'. Public sources: GDPR, ISACA, CCPA. Scenario specifics (B2B SaaS, 1.4K customers, 23M end users, 7-hour exposure window, 380K rows exposed, US/EU/APAC jurisdictions) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): explanation corrected: a SaaS processor notifies its tenant controllers without undue delay; 72-hour clock is theirs. Rebalanced (Oct 2026): re-angled from 5B5 to 3A2. Difficulty upgrade (Oct 2026, owner's rule: two options eliminable only by CISA knowledge, a hard final two): reworded the key so it no longer echoes 'meet'; replaced the project manager's-judgment option with alignment to the IT strategic plan (no 'penalties avoided' option, to avoid a second key). Round 2 (Oct 2026, quality-gate fixes from the standards audit, pedagogy check and strong and weak blind tests): weak blind test: D (defer a mandatory project) was a throwaway; D now scores intangible benefits; audit: the key says 'legal obligation' so 'regulatory' no longer echoes the stem alone. Round 3 (Oct 2026, concept check, blind tests and wording-cue balance): concept check (precision): the key says 'most cost-effective' rather than 'least-cost'; weak blind test: D now carries compliance wording so the stem's regulation cue is not key-only. Final review (Oct 2026, exam developer and blind test): exam developer note: W-D and the Eliminate tip explain that a mandatory project is not competing for approval.",
       "style_version": 2
     },
     {
@@ -3585,7 +3585,7 @@
       "question": "A business case lists benefits such as improved efficiency and better customer experience, stated only in general terms. What should the IS auditor recommend as BEST before approval?",
       "options": {
         "A": "Convert every benefit into a financial value before approval",
-        "B": "Ask IT to track the benefits once the system is live",
+        "B": "Ask IT to measure the benefits once the system is live",
         "C": "Define measurable targets with a business owner for each benefit",
         "D": "Approve now and have each benefit owner set targets after go-live"
       },
@@ -3595,7 +3595,7 @@
       "correct_explanation": "Benefits stated in general terms cannot be measured or managed, so the case should give each benefit a measurable target, a baseline and a named business owner accountable for realizing it. Converting every benefit into money is the tempting option: it looks rigorous, but non-financial benefits can be measured without a price, and a valuation with no owner leaves no one accountable for delivering it.",
       "wrong_explanations": {
         "A": "Forcing a financial value on every benefit can distort ones that are measurable in their own terms, and it still names no owner.",
-        "B": "IT can supply data, but business owners are accountable for benefits, and undefined benefits give nothing to track.",
+        "B": "IT can supply measurements, but business owners are accountable for benefits, and undefined benefits give nothing to measure.",
         "D": "Setting targets after go-live lets the review measure whatever happened; even with named owners, targets must be set before approval."
       },
       "tips": [
@@ -3609,7 +3609,7 @@
         "Benefits ownership",
         "Measurable benefits"
       ],
-      "_provenance": "Authored from concept: 'GDPR Article 33 72-hour notification with supplemental follow-up per Article 33(4) and EDPB Guidelines'. Public sources: GDPR, EDPB. Scenario specifics (multinational consumer-services, 18M EU + 12M US subjects, internal audit script exfiltration, 14:00 Tuesday awareness, Friday 14:00 deadline) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): CPO acronym removed; options rewritten as full statements. Rebalanced (Oct 2026): re-angled from 2A6 to 3A2. Rebalance review (Oct 2026): distractor D names a role (owner-cue fix). Content review (Oct 2026): stem no longer names the missing measures and owners that only the key supplied; A replaced with a financial-valuation runner-up. Round 3 (Oct 2026, concept check, blind tests and wording-cue balance): cue balance: owner, sponsor and accountable wording pointed at the key (59% key share); D now names benefit owners but sets targets too late.",
+      "_provenance": "Authored from concept: 'GDPR Article 33 72-hour notification with supplemental follow-up per Article 33(4) and EDPB Guidelines'. Public sources: GDPR, EDPB. Scenario specifics (multinational consumer-services, 18M EU + 12M US subjects, internal audit script exfiltration, 14:00 Tuesday awareness, Friday 14:00 deadline) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): CPO acronym removed; options rewritten as full statements. Rebalanced (Oct 2026): re-angled from 2A6 to 3A2. Rebalance review (Oct 2026): distractor D names a role (owner-cue fix). Content review (Oct 2026): stem no longer names the missing measures and owners that only the key supplied; A replaced with a financial-valuation runner-up. Round 3 (Oct 2026, concept check, blind tests and wording-cue balance): cue balance: owner, sponsor and accountable wording pointed at the key (59% key share); D now names benefit owners but sets targets too late. Final review (Oct 2026, exam developer and blind test): blind test: 'measur-' appeared only in the key; B now says measure.",
       "style_version": 2
     },
     {
@@ -3991,7 +3991,7 @@
       "question": "Eight product teams deploy independently to shared production, and six recent incidents came from one team's change breaking another's feature. What should the IS auditor recommend as the BEST control?",
       "options": {
         "A": "Coordinate releases by risk tier, backed by interface contracts",
-        "B": "Joint risk, test and rollback sign-off by the eight teams",
+        "B": "Joint risk, test and rollback sign-off by eight teams on every release",
         "C": "Give each team its own separate production environment",
         "D": "Cut each team's release frequency to once a month"
       },
@@ -4016,7 +4016,7 @@
         "Risk tiering",
         "Feature flags"
       ],
-      "_provenance": "Authored from concept: 'Multi-team release coordination per ISACA Release Train Coordination guidance and DORA research'. Public sources: ISACA, DORA, SAFe. Scenario specifics (B2B SaaS, 8 teams, 142 releases/quarter, 6 cross-team incidents, 2 lasting >4 hours, three coordination options debated) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Round 2 (Oct 2026, quality-gate fixes from the standards audit, pedagogy check and strong and weak blind tests): tip only: the Eliminate tip names the knowledge, not a dismissive word. Round 3 (Oct 2026, concept check, blind tests and wording-cue balance): cue balance: three-part lists pointed at the key (77% key share) and cue balance: 'risk' wording pointed at the key (62% key share); the joint sign-off runner-up now carries both; D drops its absolute.",
+      "_provenance": "Authored from concept: 'Multi-team release coordination per ISACA Release Train Coordination guidance and DORA research'. Public sources: ISACA, DORA, SAFe. Scenario specifics (B2B SaaS, 8 teams, 142 releases/quarter, 6 cross-team incidents, 2 lasting >4 hours, three coordination options debated) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Round 2 (Oct 2026, quality-gate fixes from the standards audit, pedagogy check and strong and weak blind tests): tip only: the Eliminate tip names the knowledge, not a dismissive word. Round 3 (Oct 2026, concept check, blind tests and wording-cue balance): cue balance: three-part lists pointed at the key (77% key share) and cue balance: 'risk' wording pointed at the key (62% key share); the joint sign-off runner-up now carries both; D drops its absolute. Final review (Oct 2026, exam developer and blind test): exam developer note: B now says the joint sign-off applies to every release (shortened to 12 words and without 'all', which the style lint flags).",
       "style_version": 2
     },
     {
@@ -4362,7 +4362,7 @@
       "bloom_level": "Application",
       "question": "A post-implementation review must confirm that a new warehouse system cut order-picking errors by 40%. Which evidence should the IS auditor consider MOST reliable?",
       "options": {
-        "A": "A survey in which supervisors rate the change in error levels",
+        "A": "A survey measuring supervisors' view of the change in error levels",
         "B": "The vendor's case study of results at similar warehouses",
         "C": "Measured error rates compared with the pre-project baseline",
         "D": "The project closure report stating the target was achieved"
@@ -4372,7 +4372,7 @@
       "pre_read": "Rank the options by how independent and objective each source is, then ask which one actually measures the 40%.",
       "correct_explanation": "Measured error rates from operational records, compared with the pre-project baseline, are objective, complete and independent of anyone's view of the project, so they directly test the claimed 40% reduction. The project closure report is the runner-up: it is formal, but it is the project's own assertion of success, and an auditor should verify such claims against underlying data rather than accept them.",
       "wrong_explanations": {
-        "A": "Supervisor ratings are opinions. They may reflect impressions or bias and cannot measure a 40% reduction precisely.",
+        "A": "A survey measures opinion, not errors; supervisors' impressions may reflect bias and cannot confirm a 40% reduction.",
         "B": "Results at other warehouses describe someone else's operation. They are not evidence of what happened here.",
         "D": "A closure report is the project's own claim of success. The auditor should test it against underlying data rather than rely on it."
       },
@@ -4387,7 +4387,7 @@
         "Audit evidence",
         "Benefit measurement"
       ],
-      "_provenance": "Authored from concept: 'Sole-vendor SaaS outage response per ISACA Sole-Vendor Outage guidance and NIST SP 800-34'. Public sources: ISACA, NIST, OCC. Scenario specifics (retail firm, single SaaS payment processor, $14M/day peak, 11:00 onset, 100% error rate by 11:45, no alternate active, three options debated) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Rebalanced (Oct 2026): re-angled from 4B4 to 3B4.",
+      "_provenance": "Authored from concept: 'Sole-vendor SaaS outage response per ISACA Sole-Vendor Outage guidance and NIST SP 800-34'. Public sources: ISACA, NIST, OCC. Scenario specifics (retail firm, single SaaS payment processor, $14M/day peak, 11:00 onset, 100% error rate by 11:45, no alternate active, three options debated) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Rebalanced (Oct 2026): re-angled from 4B4 to 3B4. Final review (Oct 2026, exam developer and blind test): blind test: 'measur-' appeared only in the key; A now says measuring.",
       "style_version": 2
     },
     {
@@ -4438,7 +4438,7 @@
       "options": {
         "A": "Reconstruct the baseline from legacy system transaction logs",
         "B": "Make a measured starting point a condition of business case approval",
-        "C": "Add processing-time tracking to the new system's reports",
+        "C": "Measure processing times in the new system's reports from now on",
         "D": "Estimate the baseline from a sample of the archived claim files"
       },
       "correct": "B",
@@ -4447,7 +4447,7 @@
       "correct_explanation": "The underlying weakness is that the business case was approved without a measured starting point, so no later review can prove the benefit. Making a measured baseline, with an owner and method, a condition of approval fixes this for every future project. Reconstructing the baseline from legacy logs is the tempting option: it may give solid evidence for this review, but it leaves the approval gap in place.",
       "wrong_explanations": {
         "A": "Legacy logs may rebuild this one baseline, but the approval process that skipped it stays unchanged, so the gap recurs.",
-        "C": "Tracking processing time now measures the result, but without a recorded before-figure the 30% cut still cannot be shown, and future projects repeat the gap.",
+        "C": "Measuring processing time from now on shows the result, but without a recorded before-figure the 30% cut still cannot be shown, and future projects repeat the gap.",
         "D": "An estimate from sampled files patches this one review with weaker evidence than full logs, and the approval process that skipped the baseline stays unchanged."
       },
       "tips": [
@@ -4461,7 +4461,7 @@
         "Benefit baseline",
         "Business case"
       ],
-      "_provenance": "Authored from concept: 'Capacity shortfall during product launch per ISACA Launch Capacity Planning guidance'. Public sources: ISACA, ITIL 4. Scenario specifics (consumer services, 4.2x peak traffic, 200-instance quota cap, database pool saturation, 12% rising error rate, $8M marketing investment, 6-week competitive window) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): IS auditor named as actor. Rebalanced (Oct 2026): re-angled from 4A6 to 3B4. Difficulty upgrade (Oct 2026, owner's rule: two options eliminable only by CISA knowledge, a hard final two): stated the gap as a fact (nobody recorded processing times) and removed the 'root cause' cue; reworded the key; the runner-up is now a stronger reconstruction from transaction logs. Round 2 (Oct 2026, quality-gate fixes from the standards audit, pedagogy check and strong and weak blind tests): weak blind test: C (declare achieved on user say-so) and D (drop the benefit) were throwaways; C now adds after-state tracking and D estimates the baseline from samples.",
+      "_provenance": "Authored from concept: 'Capacity shortfall during product launch per ISACA Launch Capacity Planning guidance'. Public sources: ISACA, ITIL 4. Scenario specifics (consumer services, 4.2x peak traffic, 200-instance quota cap, database pool saturation, 12% rising error rate, $8M marketing investment, 6-week competitive window) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): IS auditor named as actor. Rebalanced (Oct 2026): re-angled from 4A6 to 3B4. Difficulty upgrade (Oct 2026, owner's rule: two options eliminable only by CISA knowledge, a hard final two): stated the gap as a fact (nobody recorded processing times) and removed the 'root cause' cue; reworded the key; the runner-up is now a stronger reconstruction from transaction logs. Round 2 (Oct 2026, quality-gate fixes from the standards audit, pedagogy check and strong and weak blind tests): weak blind test: C (declare achieved on user say-so) and D (drop the benefit) were throwaways; C now adds after-state tracking and D estimates the baseline from samples. Final review (Oct 2026, exam developer and blind test): blind test: 'measur-' appeared only in the key; C now says measure.",
       "style_version": 2
     },
     {
@@ -4473,7 +4473,7 @@
       "bloom_level": "Analysis",
       "question": "A post-implementation review finds finance staff approve vendor payments in spreadsheets because the new system lacks its designed approval workflow. How should the IS auditor BEST report this?",
       "options": {
-        "A": "As a control gap for management to rate and remediate",
+        "A": "As a risk-rated control gap for management to remediate",
         "B": "As a training issue to be fixed through refresher sessions",
         "C": "As an enhancement request for the next scheduled release",
         "D": "As a workaround, with spreadsheets locked, versioned and logged"
@@ -4498,7 +4498,7 @@
         "Control gap",
         "Workarounds"
       ],
-      "_provenance": "Authored from concept: 'Cross-system referential integrity loss per ISACA Referential Integrity guidance and DAMA-DMBOK'. Public sources: ISACA, DAMA. Scenario specifics (B2B platform, 3 systems CRM/billing/support, 3% record inconsistency / 720 records, 4-month silent sync failure, 4 billing disputes + 2 support escalations traced) invented for this question. FINAL D3 QUESTION — D3 closes at 120/120. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): removed subset giveaway; runner-up is now a platform rebuild. Rebalanced (Oct 2026): re-angled from 4A4 to 3B4. Round 3 (Oct 2026, concept check, blind tests and wording-cue balance): cue balance: three-part lists pointed at the key (77% key share) and cue balance: 'risk' wording pointed at the key (62% key share); the key is plain and D now carries the list.",
+      "_provenance": "Authored from concept: 'Cross-system referential integrity loss per ISACA Referential Integrity guidance and DAMA-DMBOK'. Public sources: ISACA, DAMA. Scenario specifics (B2B platform, 3 systems CRM/billing/support, 3% record inconsistency / 720 records, 4-month silent sync failure, 4 billing disputes + 2 support escalations traced) invented for this question. FINAL D3 QUESTION — D3 closes at 120/120. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): removed subset giveaway; runner-up is now a platform rebuild. Rebalanced (Oct 2026): re-angled from 4A4 to 3B4. Round 3 (Oct 2026, concept check, blind tests and wording-cue balance): cue balance: three-part lists pointed at the key (77% key share) and cue balance: 'risk' wording pointed at the key (62% key share); the key is plain and D now carries the list. Final review (Oct 2026, exam developer and blind test): exam developer (HARD): the key states the gap is risk-rated.",
       "style_version": 2
     },
     {

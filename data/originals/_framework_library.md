@@ -384,7 +384,7 @@ sub-references like "(Managed Risk) and APO12.03").
 ## D3 batch 1 additions
 - PMBOK Guide 7th Edition
 - PRINCE2 (Projects in Controlled Environments)
-- PMI Standard for Project Risk Management
+- PMI, Practice Standard for Project Risk Management (2009), superseded
 - ISO/IEC 12207 (Software Life Cycle Processes)
 - NIST SP 800-160 Vol 1 (Systems Security Engineering)
 - ISTQB Foundation Level Syllabus
