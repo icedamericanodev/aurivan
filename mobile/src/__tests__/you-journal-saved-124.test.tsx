@@ -117,12 +117,12 @@ afterEach(() => {
 });
 
 describe('You: bands below 30 answers, numbers from 30', () => {
-  it('10 answers in a domain show a word, never a number', () => {
+  it('10 answers in a domain show a word and "10 answered", never a number (mobile 1.43: thin data looks thin)', () => {
     seedDomain('1', 10, 9);
     mount(<You />);
     const t = allText();
-    expect(t).toContain('IS Audit Strong'); // 9 of 10 right: a word in the legend, not 90
-    expect(t).not.toMatch(/IS Audit\s+90/);
+    expect(t).toMatch(/IS Audit\s+Strong\s+10 answered/); // 9 of 10 right: a word, not 90
+    expect(t).not.toMatch(/IS Audit\s+Strong\s+90/);
     expect(t).toMatch(/Building is under 70, Steady 70 to 79, Strong 80 and up/);
   });
 
@@ -137,24 +137,22 @@ describe('You: bands below 30 answers, numbers from 30', () => {
     expect(t).toContain('Strong');
   });
 
-  it('from 30 answers: the number with %, and the "latest tries" label', () => {
+  it('from 30 answers: the word AND the number with %, under the "Right on your latest tries" caption', () => {
     seedDomain('4', 40, 30); // 30/40 -> mastery 75
     mount(<You />);
     const t = allText();
-    expect(t).toMatch(/75/);
-    expect(t).toContain('%');
-    expect(t).toContain('Percentages count your latest try at each question.');
-    // Mobile 1.39: said once on You; the Accuracy line under the stats is not repeated.
-    expect(t.match(/latest try/g)).toHaveLength(1);
+    expect(t).toMatch(/IS Operations\s+Steady\s+75\s+%/);
+    // Mobile 1.43: the caption over the areas says what the percents count, once.
+    expect(t.match(/latest tries/g)).toHaveLength(1);
     expect(t).not.toMatch(/Building is under/);
   });
 
-  it('the rings’ spoken label uses the words too', () => {
+  it('each area is one spoken stop with its word, and its thin data said as thin', () => {
     seedDomain('1', 10, 9);
     mount(<You />);
-    const ring = root().findAll((n) => typeof n.props.accessibilityLabel === 'string' && n.props.accessibilityLabel.startsWith('Estimated readiness'))[0];
-    expect(ring.props.accessibilityLabel).toContain('IS Audit Strong');
-    expect(ring.props.accessibilityLabel).not.toContain('IS Audit 90');
+    const row = root().findAll((n) => typeof n.type === 'string' && typeof n.props.accessibilityLabel === 'string' && n.props.accessibilityLabel.startsWith('IS Audit: '))[0];
+    expect(row.props.accessibilityLabel).toBe('IS Audit: Strong, from 10 answers, at or above the 70 line');
+    expect(row.props.accessibilityLabel).not.toContain('90');
   });
 
   it('Badges and Field notes are one row', () => {

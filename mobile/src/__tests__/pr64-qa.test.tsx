@@ -530,12 +530,13 @@ describe('You: words and numbers', () => {
         .forEach((q, i) => useProgress.getState().recordAnswer(CERT, q.id, i < right, undefined, { at: NOW.getTime() - 3 * 86_400_000 }));
     });
 
-  it('mixed: both the band line and the "latest tries" label', () => {
-    seedDomain('1', 10, 9); // a word
-    seedDomain('4', 40, 30); // a number
+  it('mixed: the band line while an area is thin, and the "latest tries" caption (mobile 1.43)', () => {
+    seedDomain('1', 10, 9); // thin: a word and "10 answered"
+    seedDomain('4', 40, 30); // a word and a number
     mount(<You />);
     expect(allText()).toContain(BANDS_LINE);
-    expect(allText()).toContain(LATEST_TRIES_LABEL);
+    expect(allText()).toContain('Right on your latest tries');
+    expect(allText()).not.toContain(LATEST_TRIES_LABEL);
   });
 
   it('"Since you last looked" leaves out a domain shown as a word', () => {

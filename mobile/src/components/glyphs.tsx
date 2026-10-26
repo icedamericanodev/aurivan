@@ -907,7 +907,7 @@ export function GrowthRings({
   );
 }
 
-function RingArc({
+export function RingArc({
   d,
   length,
   width,

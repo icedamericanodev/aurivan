@@ -34,7 +34,7 @@ import { FocusEmitter, FocusScope, routeParams } from '../../jest/perf/focusRout
 import { setMockReducedMotion } from '../../jest/reanimated-mock';
 import { CERTIFICATIONS, getCertification } from '../content/certifications';
 import { lessonsFor } from '../content/lessons';
-import { domainFigure } from '../engine/domainBand';
+import { areaFigure } from '../engine/domainBand';
 import { daysToExam } from '../engine/examDay';
 import { grewLabel } from '../engine/plant';
 import { computeReadiness } from '../engine/readiness';
@@ -348,7 +348,7 @@ describe('answering, then switching tabs: every tab shows fresh numbers', () => 
     if (range.enough) {
       // Today says it in its clearing ("Readiness grew to 45–61%", a word joiner inside); You in its rings label.
       expect(joined('home').replace(/\u2060/g, '')).toContain(`${range.low}–${range.high}`);
-      expect(joined('you')).toContain(`[Estimated readiness between ${range.low} and ${range.high} percent.`);
+      expect(joined('you')).toContain(`[Estimated readiness ${range.low} to ${range.high} percent.`);
     }
     const answered = Object.keys(cp().answers).length;
     expect(joined('you')).toContain(`[Answered: ${answered}]`);
@@ -356,8 +356,8 @@ describe('answering, then switching tabs: every tab shows fresh numbers', () => 
     const rd = computeReadiness(cert, cp().answers);
     for (const d of rd.domains) {
       const short = cert.domains.find((x) => x.id === d.domainId)!.short;
-      // Mobile 1.24: a word below 30 answers in the domain, the number (with "latest tries") from 30.
-      expect(joined('you')).toContain(`${short} ${domainFigure(d.answered, Math.round(d.mastery * 100)).spoken}`);
+      // Mobile 1.43: each area row says its word, its percent from 30 answers, and its line (engine/domainBand.ts areaFigure).
+      expect(joined('you')).toContain(`[${short}: ${areaFigure(d.answered, Math.round(d.mastery * 100)).spoken}`);
     }
     // Learn's "Up next" follows the focus domain.
     const focus = cert.domains.find((d) => d.id === rd.focusDomainId)!;

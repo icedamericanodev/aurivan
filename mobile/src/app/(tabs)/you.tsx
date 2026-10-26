@@ -35,6 +35,11 @@
  * that has not earned its precision; from 30 answers it is the number with "%" and
  * "latest tries" (engine/domainBand.ts). What went up since the last look is said
  * ONCE under the rings, not on every row. "Badges" and "Field notes" are one row.
+ * Mobile 1.43 (board 3, owner decision "one ring"): the five domain rings and
+ * their legend give way to ONE readiness ring (the range, with a notch at the
+ * 80% study bar) and one row per area with a word, a bar with its 70% line and
+ * the percent from 30 answers (components/youReadiness.tsx). The plant, the
+ * badges and Study tools stay where they were.
  * Uplift Phase 6 (accounts, built OFF): in a cloud build only, the first row
  * of Help and feedback is "Sync across devices" (components/account.tsx).
  * With the flag off (every build today) nothing here changes.
@@ -42,7 +47,8 @@
 import { router } from 'expo-router';
 import { memo, useEffect, useMemo, useState } from 'react';
 import { View } from 'react-native';
-import { boundsLabel, DomainRings, RINGS_NOTE, ringsChangeLine, ringsSpoken } from '../../components/journey';
+import { ringsChangeLine } from '../../components/journey';
+import { AreaRows, ReadinessBlock } from '../../components/youReadiness';
 import { FadeIn, useGrowth, useScreenFocus } from '../../components/motion';
 import { creditSubtitle } from '../../components/help';
 import { AccountSection } from '../../components/account';
@@ -54,12 +60,12 @@ import { ShareProgressSheet } from '../../components/shareCard';
 import { LivePlant } from '../../components/plant/LivePlant';
 import { growthShort, plantCallName } from '../../engine/plant';
 import { usePlantView } from '../../lib/plant';
-import { BigNum, Button, EmptyState, Enter, ICON_SIZE, InviteRow, Lead, ListRow, Row, Screen, ScreenTitle, Section, Stat, StatRow, T, Trail } from '../../components/ui';
+import { Button, EmptyState, Enter, ICON_SIZE, InviteRow, Lead, ListRow, Row, Screen, ScreenTitle, Section, Stat, StatRow, T, Trail } from '../../components/ui';
 import { pacingStats, pacingStatsLine, spokenMin } from '../../engine/pace';
 import { mockSubtitle } from '../../components/readinessReport';
-import { rangeLabel, rangeSpoken, readinessRange } from '../../engine/readinessRange';
+import { readinessRange } from '../../engine/readinessRange';
 import { mockPct } from '../../engine/readinessReport';
-import { BANDS_LINE, domainFigure, LATEST_TRIES_LABEL } from '../../engine/domainBand';
+import { BANDS_LINE, domainFigure, STUDY_BAR_LINE } from '../../engine/domainBand';
 import { REVIEW_UNIT } from '../../engine/srs';
 import { dayKey } from '../../engine/streak';
 import { guardedStart, reviewSubtitle, startReview } from '../../lib/sessions';
@@ -87,11 +93,10 @@ export default function You() {
   const answered = readiness.domains.reduce((s, d) => s + d.answered, 0);
   const mastered = readiness.domains.reduce((s, d) => s + d.mastered, 0);
   const openMistakes = Object.values(progress.mistakes).filter((m) => !m.resolved).length;
-  const values = readiness.domains.map((d) => (d.answered ? d.mastery : null));
   // Mobile 1.24: a word below 30 answers in a domain, the number from 30 (engine/domainBand.ts).
   const figures = readiness.domains.map((d) => domainFigure(d.answered, Math.round(d.mastery * 100)));
-  const anyBand = figures.some((f) => f.banded);
-  const anyNumber = figures.some((f) => !f.banded && f.text !== '–');
+  // Mobile 1.43: an area with some answers but under 30 is "thin" (its bar is lighter, "N answered" shows).
+  const anyThin = figures.some((f) => f.banded);
   const growth = useMindsetGrowth(cert.id, progress);
   // Help and feedback (mobile 1.7): the row says so when a report's update hasn't been seen yet.
   const { dueItems: creditItems } = useReports();
@@ -129,17 +134,9 @@ export default function You() {
   // "+4" only for what went up since a real last look (not the day's count-up
   // from 0; a first rise from all zeros does count).
   const sinceLook = rings.play && rings.since === true;
-  // What went up, per domain. A domain shown as a word ("Building", under 30 answers) shows no number,
+  // What went up, per domain. A domain shown as a word only ("Building", under 30 answers) shows no number,
   // so it gets no "+12" either (mobile 1.24): only the domains that show a number are counted.
   const ups = ringValues.map((v, i) => (figures[i].banded ? 0 : v - rings.from[i]));
-  // The same "+4"s in words: the legend is hidden from screen readers, so the rings' label says them.
-  const grewSpoken = sinceLook
-    ? cert.domains
-        .map((d, i) => ({ d, up: ups[i] }))
-        .filter((x) => x.up > 0)
-        .map((x) => `${x.d.short} up ${x.up}`)
-        .join(', ')
-    : '';
   const changeLine = sinceLook ? ringsChangeLine(cert, ups) : null;
   const statRoll = (k: number, from: string) => ({ play: stats.play, from, run: stats.run, delay: motion.dur.select + k * motion.stagger.stat });
   const plant = usePlantView();
@@ -167,38 +164,23 @@ export default function You() {
             onPress: () => router.push('/readiness'),
           }}
         />
-        <View style={{ marginTop: space.md }} />
-        <DomainRings
-          cert={cert}
-          values={values}
-          grow={{ play: rings.play, from: rings.from.map((v) => v / 100), run: rings.run }}
-          legendValue={(i) => figures[i].text}
-          accessibilityLabel={`Estimated readiness ${rangeSpoken(range)}. ${ringsSpoken(cert, values, (i) => figures[i].spoken)}.${grewSpoken ? ` Since you last looked: ${grewSpoken}.` : ''}`}
-          center={
-            range.enough ? (
-              <View style={{ alignItems: 'center' }}>
-                <BigNum value={rangeLabel(range)} pct size={20} roll={{ play: rangeGrowth.play, from: boundsLabel(rangeGrowth.from), run: rangeGrowth.run }} />
-                {/* "estimate", not "ready": the range is a study estimate, not a prediction.
-                    Capped like the numeral above it: it sits inside the fixed-size rings
-                    (UX review O10); the rings' spoken label says it in full. */}
-                <T v="caption" color={c.ink2} maxFontSizeMultiplier={1.3}>estimate</T>
-              </View>
-            ) : (
-              <T v="caption" color={c.ink2} center style={{ maxWidth: 72 }}>Not enough data yet</T>
-            )
-          }
-        />
-        {/* What went up, said once under the rings (mobile 1.24); the rings' own label says it aloud too. */}
+        {/* Mobile 1.43 (owner decision, one ring): the overall range on ONE ring with a notch at the study bar,
+            the range beside it, the study-bar line, then one row per area (components/youReadiness.tsx). */}
+        <View style={{ marginTop: space.md }}>
+          <ReadinessBlock range={range} growth={rangeGrowth} />
+        </View>
+        <T v="meta" style={{ marginTop: space.md }}>{STUDY_BAR_LINE}</T>
+        <View style={{ marginTop: space.xl }}>
+          <AreaRows cert={cert} readiness={readiness} ups={sinceLook ? ups : undefined} />
+        </View>
+        {/* What went up since the last look, said once under the areas (mobile 1.24); the rows' labels hold the figures. */}
         {changeLine && (
           <FadeIn rise={false} dur="select" delay={motion.dur.select + RINGS_SETTLED_MS}>
             <T v="caption" color={c.accentText} style={{ marginTop: space.md }}>{changeLine}</T>
           </FadeIn>
         )}
-        <T v="meta" style={{ marginTop: space.md }}>{RINGS_NOTE}</T>
-        {/* Say what the word or the number means, once (honest readiness, 1.24). Words and numbers mixed:
-            both lines, so the "%" figures keep their "latest tries" label. */}
-        {anyBand && <T v="meta" style={{ marginTop: space.xs }}>{BANDS_LINE}</T>}
-        {anyNumber && <T v="meta" style={{ marginTop: space.xs }}>{LATEST_TRIES_LABEL}</T>}
+        {/* A number shows from 30 answers in an area: said once while any area is still thin. */}
+        {anyThin && <T v="meta" style={{ marginTop: space.sm }}>{BANDS_LINE}</T>}
       </Enter>
 
       <Enter i={2} style={{ marginTop: space.xl }}>
@@ -228,7 +210,7 @@ export default function You() {
         {/* Two "Accuracy" stats in the app count different things (C8): say what this one counts.
             Mobile 1.39: only when the rings' "Percentages count your latest try…" line is not already
             on screen two blocks up (that one covers this percentage too); never both. */}
-        {!anyNumber && <T v="meta" style={{ marginTop: space.sm }}>Accuracy counts your latest try at each question.</T>}
+        {/* Mobile 1.43: the areas' caption ("Right on your latest tries") already says what the percents count. */}
         {/* Your plant, below the stats (decided 15 Oct 2026): it never leads a study screen. */}
         {(plant.plant || plant.shown) && (
           <View style={{ marginTop: space.lg }}>
