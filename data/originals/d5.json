@@ -9289,11 +9289,11 @@
         "C": "Blanket refusal ignores lawful transfer routes and exposes the company to sanctions in the lawsuit."
       },
       "tips": [
-        "Eliminate: A assumes a foreign court order overrides GDPR, and B sends data with no lawful basis at all.",
+        "Eliminate: A assumes a foreign court order overrides GDPR, and B sends data with no lawful basis, which telling the regulator later does not cure.",
         "Final two: D beats C because a lawful, minimized transfer meets both duties, while blanket refusal fails the court.",
         "Exam cue: when two legal duties conflict, involve counsel and the DPO to find a lawful, minimized path, not refusal or bypass."
       ],
-      "_provenance": "Authored from concept: 'Cross-border data residency conflict during forensic discovery; lawful, minimized transfer'. Public sources only (NIST, ISO, ISACA, OWASP, regulatory frameworks). Echo: No real-world echo. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): BLOCKER: recast as civil discovery where the company is a party, so the GDPR legal-claims exception clearly applies; key reworded without 'derogation'. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. Third pass (ISACA reviewer, Oct 2026): live-incident and legal/forensic stems reframed; options revised. Metadata refresh (Oct 2026): subtopic, framework_ref and related_concepts updated to the rewritten item. Fourth pass (polish, Oct 2026): wording and metadata fixes from the last blind test; key unchanged.",
+      "_provenance": "Authored from concept: 'Cross-border data residency conflict during forensic discovery; lawful, minimized transfer'. Public sources only (NIST, ISO, ISACA, OWASP, regulatory frameworks). Echo: No real-world echo. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): BLOCKER: recast as civil discovery where the company is a party, so the GDPR legal-claims exception clearly applies; key reworded without 'derogation'. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. Third pass (ISACA reviewer, Oct 2026): live-incident and legal/forensic stems reframed; options revised. Metadata refresh (Oct 2026): subtopic, framework_ref and related_concepts updated to the rewritten item. Fourth pass (polish, Oct 2026): wording and metadata fixes from the last blind test; key unchanged. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Eliminate tip no longer says 'at all'.",
       "style_version": 2
     },
     {
@@ -9352,7 +9352,7 @@
       "framework_ref": "ISO/IEC 27002:2022 Control 5.28 (Collection of Evidence); OWASP LLM Top 10 (LLM01: Prompt Injection); HIPAA Breach Notification Rule (45 CFR §§ 164.400-414)",
       "question": "A diagnostic AI's public interface was abused for four weeks to extract patient training records and model weights; it is now offline. Before the team retrains the model, what should the IS auditor recommend FIRST?",
       "options": {
-        "A": "Sue the attacker before any technical remediation starts",
+        "A": "Rotate the interface's API keys and reopen it with rate limits",
         "B": "Reopen the interface to study the attacker's next queries",
         "C": "Preserve the interface logs and model files as evidence",
         "D": "Retrain the model on data with patient details removed"
@@ -9362,16 +9362,16 @@
       "pre_read": "Notice the attack is already stopped and a rebuild is planned. Ask what the rebuild might destroy.",
       "correct_explanation": "The interface is already offline, so containment is done. The next step is to preserve the logs and model files, because they show which patient records were extracted and support the privacy breach assessment. Retraining with de-identified data is a sound later fix, but doing it first can overwrite the evidence needed to scope the breach.",
       "wrong_explanations": {
-        "A": "Litigation needs evidence and does not protect patients. Technical and legal steps should not wait on a lawsuit.",
+        "A": "New keys and rate limits slow the next attack, but reopening before preservation risks overwriting the logs that show what was taken.",
         "B": "Reopening the interface allows further extraction of patient data. Observation is not worth renewed exposure.",
         "D": "Retraining may overwrite the model files and logs needed to show which patient records were extracted. Preservation comes before rebuilding."
       },
       "tips": [
-        "Eliminate: A puts a lawsuit ahead of protecting data, and B reopens the path the attacker used.",
+        "Eliminate: A reopens the interface before evidence is preserved, and B reopens the path the attacker used in order to watch them.",
         "Final two: C beats D because rebuilding first can destroy the evidence that scopes which patient data was taken.",
         "Exam cue: after containment, preserve evidence before you wipe, rebuild or retrain."
       ],
-      "_provenance": "Authored from concept: 'AI/ML model exfiltration + training-data leakage via prompt-injection; IP forensics'. Public sources only (NIST, ISO, ISACA, OWASP, regulatory frameworks). Echo: No real-world echo. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged.",
+      "_provenance": "Authored from concept: 'AI/ML model exfiltration + training-data leakage via prompt-injection; IP forensics'. Public sources only (NIST, ISO, ISACA, OWASP, regulatory frameworks). Echo: No real-world echo. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): A (sue the attacker) was a strawman; it is now a hardened reopening, a real fix-forward step taken before preservation.",
       "style_version": 2
     },
     {
@@ -9506,7 +9506,7 @@
       "framework_ref": "NIST SP 800-82 Rev 3 (Guide to Operational Technology Security); IEC 62443-3-3 (Industrial Communication Networks Security); CISA ICS Recommended Practice — Defense in Depth",
       "question": "An attacker who entered through phishing has reached the zone between a utility's corporate network and its plant control network. What should the IS auditor recommend management do FIRST?",
       "options": {
-        "A": "Notify regulators before taking any containment step",
+        "A": "Disconnect the corporate email system used for the phishing",
         "B": "Shut down power generation at every site as a safety precaution",
         "C": "Isolate the boundary between the corporate and control networks",
         "D": "Image the plant controllers while they continue to operate"
@@ -9516,16 +9516,16 @@
       "pre_read": "Notice where the attacker is now and what lies beyond. Ask what stops the next step without causing harm itself.",
       "correct_explanation": "The attacker sits at the boundary to the control network, so cutting that boundary stops them reaching the controllers while generation continues safely under engineering oversight. A full shutdown looks like the safest move, but an emergency stop of plant equipment carries its own safety and grid risks and is not needed once the path is cut.",
       "wrong_explanations": {
-        "A": "Regulator reporting runs in parallel with containment. Holding containment until notice is made lets the attacker advance.",
+        "A": "The attacker is already past email; cutting it closes the entry point used earlier but leaves the path to the control network open.",
         "B": "An emergency shutdown creates safety and grid-stability risks of its own. Isolating the boundary removes the path without stopping power supply.",
         "D": "Imaging live plant controllers risks disrupting them and does nothing to stop the attacker crossing the boundary."
       },
       "tips": [
-        "Eliminate: D risks the controllers without stopping the attacker, and A delays containment for paperwork.",
+        "Eliminate: A closes the original entry point while the attacker sits at the boundary, and D risks the controllers without stopping the attacker.",
         "Final two: C beats B because cutting the boundary stops the attacker without the safety risks of an emergency shutdown.",
         "Exam cue: in industrial incidents, contain at the network boundary before considering a shutdown, and keep safety in view."
       ],
-      "_provenance": "Authored from concept: 'CONTAIN-FIRST extension to OT/ICS network compromise with safety-engineering integration'. Public sources only (NIST, ISO, ISACA, OWASP, regulatory frameworks). Echo: No real-world echo. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. Role-lens follow-up (Oct 2026): stem names who acts (management); key, options, explanations and tips unchanged.",
+      "_provenance": "Authored from concept: 'CONTAIN-FIRST extension to OT/ICS network compromise with safety-engineering integration'. Public sources only (NIST, ISO, ISACA, OWASP, regulatory frameworks). Echo: No real-world echo. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. Role-lens follow-up (Oct 2026): stem names who acts (management); key, options, explanations and tips unchanged. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): A (notify regulators before containment) was a strawman; it is now containment at the wrong point.",
       "style_version": 2
     },
     {
@@ -9545,9 +9545,9 @@
       "framework_ref": "#StopRansomware Guide (CISA, FBI, NSA, MS-ISAC, 2023); NIST SP 800-209 (Security Guidelines for Storage Infrastructure); NIST SP 800-53 Rev 5 CP-9 (System Backup)",
       "question": "Ransomware has encrypted most of a university's systems, and its network, cloud and tape backups have not been checked for integrity or isolation in eight months. What should the IS auditor recommend FIRST?",
       "options": {
-        "A": "Rebuild every system from scratch without using any backups",
-        "B": "Verify the backups are intact, recent and untouched by attackers",
-        "C": "Open ransom negotiations to shorten the expected recovery time",
+        "A": "Estimate rebuild time to decide whether paying is cheaper",
+        "B": "Verify the backups are intact and untouched by attackers",
+        "C": "Restore from cloud copies, since attackers cannot encrypt cloud backups",
         "D": "Restore from the fastest network backup and validate while restoring"
       },
       "correct": "B",
@@ -9555,16 +9555,16 @@
       "pre_read": "Notice nobody has checked the backups for months. Ask what happens if you restore from a copy the attacker reached.",
       "correct_explanation": "Attackers often reach network-connected backups, and these have not been checked in eight months. Verifying which copies are intact, recent and isolated shows what can be safely restored and whether paying is even a question. Restoring the fastest network backup and validating along the way feels efficient, but if that copy is tainted it reinfects the systems as they come back.",
       "wrong_explanations": {
-        "A": "Rebuilding everything without backups discards usable data and greatly lengthens recovery.",
-        "C": "Negotiating before knowing whether backups work skips the key decision input and funds the attacker.",
+        "A": "A payment decision needs to know whether clean backups exist; estimating rebuild time first skips the input that decides it.",
+        "C": "Cloud backups reachable through stolen credentials or sync can be encrypted or deleted too; they need the same verification as any other copy.",
         "D": "Network-connected backups are the most likely to be encrypted or seeded with malware. Validating during restore lets reinfection happen first."
       },
       "tips": [
-        "Eliminate: C engages the attacker before checking recovery options, and A throws away backups that may be clean.",
+        "Eliminate: A weighs paying before knowing whether clean backups exist, and C assumes cloud copies are out of the attacker's reach.",
         "Final two: B beats D because restoring from an unchecked network copy can reinfect systems; verify before you restore.",
         "Exam cue: after ransomware, confirm backup integrity and isolation before restoring or deciding on payment."
       ],
-      "_provenance": "Authored from concept: 'Ransomware recovery — verify immutable backups before ransom or restore'. Public sources only (NIST, ISO, ISACA, OWASP, regulatory frameworks). Echo: Introduces BACKUP-IMMUTABILITY-FIRST as 15th D5 single-focus principle. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged.",
+      "_provenance": "Authored from concept: 'Ransomware recovery — verify immutable backups before ransom or restore'. Public sources only (NIST, ISO, ISACA, OWASP, regulatory frameworks). Echo: Introduces BACKUP-IMMUTABILITY-FIRST as 15th D5 single-focus principle. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): A (rebuild without backups) and C (ransom talks) were strawmen; they are now a cost comparison that skips the backup question and the cloud-backup misconception. Key drops the three-part list cue.",
       "style_version": 2
     },
     {
@@ -9676,11 +9676,11 @@
         "D": "A generic checklist would cut the link between risks and controls. The Statement of Applicability is a required ISMS document to fix, not replace."
       },
       "tips": [
-        "Eliminate: C confuses control exclusions with ISMS scope, and D discards a document the standard requires.",
+        "Eliminate: C confuses control exclusions with ISMS scope, and D replaces a document the standard requires.",
         "Final two: A beats B because exclusions are allowed when justified; the real gap is that no risk-based reason was recorded.",
         "Exam cue: when a security framework allows tailoring, look for a documented, risk-based justification rather than demanding every control."
       ],
-      "_provenance": "Authored from concept: 'Board-tier cybersecurity incident escalation criteria; CISO + Risk Officer + Audit Committee tier-1 escalation'. Public sources only (NIST, ISO, ISACA, OWASP, regulatory frameworks). Echo: No real-world echo. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Rebalanced (Oct 2026): re-angled from 5B5 Security Incident Response Management to 5A1.",
+      "_provenance": "Authored from concept: 'Board-tier cybersecurity incident escalation criteria; CISO + Risk Officer + Audit Committee tier-1 escalation'. Public sources only (NIST, ISO, ISACA, OWASP, regulatory frameworks). Echo: No real-world echo. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Rebalanced (Oct 2026): re-angled from 5B5 Security Incident Response Management to 5A1. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Eliminate tip no longer says 'discards'.",
       "style_version": 2
     },
     {
@@ -9698,8 +9698,8 @@
       "framework_ref": "MITRE ATT&CK T1071.004 (Application Layer Protocol: DNS); NIST SP 800-53 Rev 5 SI-4 (System Monitoring)",
       "question": "An IS auditor learns an infected server may be smuggling data out by encoding it in DNS requests to one external domain. Which control would BEST detect this activity?",
       "options": {
-        "A": "Block all outbound web browsing traffic from the infected server",
-        "B": "Monitor name lookups for abnormal length, volume and destinations",
+        "A": "Inspect outbound web traffic at the proxy for file uploads",
+        "B": "Analyze name lookups for unusual length and repeated destinations",
         "C": "Run a full antivirus scan on the infected server every week",
         "D": "Review firewall logs for outbound connections that were blocked"
       },
@@ -9708,16 +9708,16 @@
       "pre_read": "Ask whether the hidden traffic would ever be blocked or look like web browsing.",
       "correct_explanation": "DNS tunneling hides data inside name lookups, which most firewalls allow freely, so the traffic never appears as a blocked or web connection. Analyzing lookups for unusual length, high volume or concentration on one domain reveals the encoding pattern; routing all lookups through internal resolvers makes that analysis possible. Reviewing blocked firewall connections is the runner-up, but tunneled lookups are permitted traffic and never get blocked.",
       "wrong_explanations": {
-        "A": "Blocking web browsing leaves DNS untouched, so a tunnel over name lookups keeps working.",
+        "A": "Proxy inspection sees web uploads, but data hidden in DNS lookups never passes through it as web traffic.",
         "C": "Antivirus may miss custom tunneling tools, and a weekly scan does not watch the traffic that carries the data out.",
         "D": "Tunneled DNS requests are allowed traffic, so they never appear among blocked connections in firewall logs."
       },
       "tips": [
-        "Eliminate: A blocks the wrong protocol, and C looks for files rather than watching the traffic.",
+        "Eliminate: A inspects web traffic that the tunnel never uses, and C looks for files rather than watching the traffic.",
         "Final two: B beats D because tunneled lookups are permitted traffic; only analysis of the lookups themselves reveals them.",
         "Exam cue: covert channels hide in allowed protocols, so detection means analyzing the content and pattern of permitted traffic."
       ],
-      "_provenance": "Authored from concept: 'Cyber-insurance ransomware-coverage dispute; claim-defense forensics'. Public sources only (NIST, ISO, ISACA, OWASP, regulatory frameworks). Echo: No real-world echo. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): stem states the forensic data is still held only by the vendor, so preservation is clearly FIRST. Rebalanced (Oct 2026): re-angled from 5B6 Evidence Collection and Forensics to 5B2.",
+      "_provenance": "Authored from concept: 'Cyber-insurance ransomware-coverage dispute; claim-defense forensics'. Public sources only (NIST, ISO, ISACA, OWASP, regulatory frameworks). Echo: No real-world echo. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): stem states the forensic data is still held only by the vendor, so preservation is clearly FIRST. Rebalanced (Oct 2026): re-angled from 5B6 Evidence Collection and Forensics to 5B2. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): A (block all web browsing) was a preventive control in a detection question; it is now proxy inspection of uploads, detection on the wrong channel. Key drops the three-part list cue.",
       "style_version": 2
     },
     {
@@ -9779,7 +9779,7 @@
         "A": "Petition the regulators for a grace period before any fixes",
         "B": "Replace the system with a new privacy-compliant customer platform",
         "C": "Process the overdue deletion requests the regulators identified",
-        "D": "Add a privacy notice to the system's login screen"
+        "D": "Add consent-tracking fields to the system's customer records"
       },
       "correct": "C",
       "key_concept": "Close ongoing violations of individuals' rights first; design retrofits and replacements follow on a risk-ranked plan.",
@@ -9788,14 +9788,14 @@
       "wrong_explanations": {
         "A": "Asking for time without fixing anything leaves the violations in place and signals poor faith to regulators.",
         "B": "A replacement takes years, and the overdue deletion requests would stay unprocessed throughout. Ongoing rights violations need action now.",
-        "D": "A login notice informs staff but does nothing for customers' deletion rights or the missing controls."
+        "D": "Consent tracking closes one design gap for future processing, but the overdue deletion requests keep violating customers' rights meanwhile."
       },
       "tips": [
-        "Eliminate: A asks for time while doing nothing, and D adds a notice that fixes none of the findings.",
+        "Eliminate: A asks for time while violations continue, and D fixes a design gap while overdue deletion requests stay unprocessed.",
         "Final two: C beats B because the overdue requests can be cleared now, while a replacement leaves them waiting for years.",
         "Exam cue: when regulators find ongoing rights violations, stop the harm first, then fix the design on a plan."
       ],
-      "_provenance": "Authored from concept: 'Privacy-by-design retrofit failure on legacy CRM; multi-jurisdiction penalty exposure'. Public sources only (NIST, ISO, ISACA, OWASP, regulatory frameworks). Echo: No real-world echo. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged.",
+      "_provenance": "Authored from concept: 'Privacy-by-design retrofit failure on legacy CRM; multi-jurisdiction penalty exposure'. Public sources only (NIST, ISO, ISACA, OWASP, regulatory frameworks). Echo: No real-world echo. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): D (login-screen notice) was a throwaway; it is now a consent-tracking retrofit that leaves the overdue rights unmet.",
       "style_version": 2
     },
     {
@@ -9830,11 +9830,11 @@
         "D": "Today's frameworks did not exist when the decision was made. They do not show whether the acceptance was reviewed over time."
       },
       "tips": [
-        "Eliminate: B turns the review into blame, and D judges a past decision by today's standards.",
+        "Eliminate: B turns a process review into a question of individual fault, and D judges a past decision by today's standards.",
         "Final two: A beats C because acceptances must be reassessed as conditions change; comparing losses with cost is hindsight.",
         "Exam cue: risk acceptance is time-bound; look for evidence it was reassessed when threats, data or controls changed."
       ],
-      "_provenance": "Authored from concept: 'Post-incident 5-year technology-bet retrospective; bank-capstone FINAL closing An tier at 104 and bank at 1004'. Public sources only (NIST, ISO, ISACA, OWASP, regulatory frameworks). Echo: Bank-capstone FINAL question completing the bank at 1004/1004. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): drift fix: now an IS auditor reviewing a stale risk acceptance after a breach; hindsight lesson kept.",
+      "_provenance": "Authored from concept: 'Post-incident 5-year technology-bet retrospective; bank-capstone FINAL closing An tier at 104 and bank at 1004'. Public sources only (NIST, ISO, ISACA, OWASP, regulatory frameworks). Echo: Bank-capstone FINAL question completing the bank at 1004/1004. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): drift fix: now an IS auditor reviewing a stale risk acceptance after a breach; hindsight lesson kept. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Eliminate tip no longer says 'blame'.",
       "style_version": 2
     },
     {
@@ -9847,26 +9847,26 @@
       "framework_ref": "NIST SP 800-61 Rev 3 (Incident Response Recommendations and Considerations for Cybersecurity Risk Management); #StopRansomware Guide (CISA, FBI, NSA, MS-ISAC, 2023); NIST SP 800-53 Rev 5 CP-10 (System Recovery and Reconstitution)",
       "question": "Ransomware on a file server has been contained by network isolation, and immutable backups from last night exist. What should the IS auditor recommend FIRST before restoring?",
       "options": {
-        "A": "Wipe the server disk and close the incident record",
+        "A": "Scan the immutable backup with antivirus and restore it if clean",
         "B": "Restore last night's backup onto the same file server",
         "C": "Establish when the attacker first entered the network",
-        "D": "Ask staff to save new work files on their own laptops"
+        "D": "Reset user passwords, then restore last night's backup"
       },
       "correct": "C",
       "key_concept": "Before recovery, scope the intrusion so the restored system and backup do not reintroduce the attacker.",
       "pre_read": "Notice the encryption is already contained. Ask what must be known before a restore can be trusted.",
       "correct_explanation": "With the threat contained, the next question is how far back the compromise goes. Ransomware operators often sit in a network for days, so last night's backup may already hold their tools or access. Scoping the intrusion tells the team which backup is clean and what to eradicate. Restoring onto the same server is fast but may reinfect the server and destroys evidence.",
       "wrong_explanations": {
-        "A": "Wiping and closing destroys evidence and skips eradication and recovery, leaving the root cause unknown and the attacker possibly still present.",
+        "A": "Antivirus finds known malware, not an attacker's access or legitimate-looking tools; without knowing the entry point, the restore may reopen it.",
         "B": "Restoring onto the same, unexamined server may reintroduce the attacker and overwrite evidence before anyone knows whether the backup itself is clean.",
-        "D": "Scattering files onto unmanaged laptops spreads sensitive data outside backup and security controls, creating a new exposure."
+        "D": "Resets cut one access route, but without knowing when and how the attacker entered, the backup and server may still carry their foothold."
       },
       "tips": [
-        "Eliminate: A destroys evidence and closes an unresolved incident, and D pushes sensitive files onto unmanaged laptops.",
+        "Eliminate: A trusts an antivirus scan to clear the backup, and D resets passwords without knowing how the attacker got in.",
         "Final two: C beats B because a restore is only safe once the team knows the backup and server are free of the attacker.",
         "Exam cue: in incident questions, sequence matters. Contain, then scope and eradicate, and only then recover."
       ],
-      "_provenance": "Authored from concept: 'Precision-word BEST vs FIRST in ransomware response — BEST requires the full IR sequence (isolate + forensic + threat-hunt + notify + restore + harden) where FIRST requires only isolation'. Paired companion to d5_057. Public sources: NIST SP 800-61 Rev 2, CISA Stop Ransomware Guide, MITRE ATT&CK. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): option D no longer mentions drawings; wrong explanation B no longer calls the server untouched. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged.",
+      "_provenance": "Authored from concept: 'Precision-word BEST vs FIRST in ransomware response — BEST requires the full IR sequence (isolate + forensic + threat-hunt + notify + restore + harden) where FIRST requires only isolation'. Paired companion to d5_057. Public sources: NIST SP 800-61 Rev 2, CISA Stop Ransomware Guide, MITRE ATT&CK. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): option D no longer mentions drawings; wrong explanation B no longer calls the server untouched. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): A (wipe and close) and D (save files on laptops) were strawmen; they are now an antivirus-cleared restore and a password reset before restore, both partial.",
       "style_version": 2
     },
     {
@@ -9916,7 +9916,7 @@
       "framework_ref": "NIST SP 800-61 Rev 3 (Incident Response Recommendations and Considerations for Cybersecurity Risk Management); CERT Common Sense Guide to Mitigating Insider Threats, 7th Edition (CMU SEI, 2022); ISO/IEC 27002:2022 Control 5.28 (Collection of Evidence)",
       "question": "HR tells the security team about resignations only on each leaver's last day. What should the IS auditor recommend as BEST?",
       "options": {
-        "A": "Disable leavers' accounts one week after their last day",
+        "A": "Disable each leaver's accounts automatically on their last day",
         "B": "Ask managers to remind leavers of confidentiality duties",
         "C": "Review leavers' access once a year in the access recertification",
         "D": "Have HR tell security when a resignation is given"
@@ -9924,18 +9924,18 @@
       "correct": "D",
       "key_concept": "Security should learn of resignations when notice is given, so access and monitoring can be adjusted during the notice period.",
       "pre_read": "Notice when security currently hears about leavers. Ask when insider data theft usually happens.",
-      "correct_explanation": "Data theft by leavers often happens during the notice period, so HR notifying security when a resignation is given lets access be reviewed and monitoring heightened before the risky window closes. Reminding leavers of confidentiality duties is good practice, but it relies on the leaver's goodwill and gives security no chance to act.",
+      "correct_explanation": "Data theft by leavers often happens during the notice period, so HR notifying security when a resignation is given lets access be reviewed and monitoring heightened while it matters. Disabling accounts automatically on the last day is sound leaver practice, but it acts only after the notice period, when any copying has already happened.",
       "wrong_explanations": {
-        "A": "Disabling access a week after departure leaves both the notice period and the following week exposed.",
+        "A": "Prompt disabling on the last day is good practice, but data theft usually happens during the notice period, which this still leaves unwatched.",
         "B": "Reminders rely on the leaver's goodwill and give security no visibility.",
         "C": "An annual review is far too infrequent to cover a notice period."
       },
       "tips": [
-        "Eliminate: A extends access after departure, and C reviews access far too rarely.",
-        "Final two: D beats B because early notice lets security act; reminders depend on the leaver.",
+        "Eliminate: B relies on the leaver's goodwill, and C reviews access far too rarely to cover a notice period.",
+        "Final two: D beats A because data theft happens during the notice period; disabling on the last day still gives security no chance to act before it.",
         "Exam cue: leaver controls start when notice is given, not on the last day."
       ],
-      "_provenance": "Authored from concept: 'Precision-word BEST vs FIRST in insider-exfiltration response — BEST = revoke + forensic + legal hold + investigate + client notify + FINRA disclosure; FIRST = revoke only'. Paired companion to d5_060. Public sources: ISACA Insider Threat A/A Program, SEC Regulation S-P, FINRA Rule 4530. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Cross-domain review (Oct 2026): re-angled or clarified to remove duplication/contradiction.",
+      "_provenance": "Authored from concept: 'Precision-word BEST vs FIRST in insider-exfiltration response — BEST = revoke + forensic + legal hold + investigate + client notify + FINRA disclosure; FIRST = revoke only'. Paired companion to d5_060. Public sources: ISACA Insider Threat A/A Program, SEC Regulation S-P, FINRA Rule 4530. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Cross-domain review (Oct 2026): re-angled or clarified to remove duplication/contradiction. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): A (disable a week late) was a strawman and the runner-up (reminders) was weak; A is now automatic last-day disabling, the real best-practice reflex, and becomes the runner-up.",
       "style_version": 2
     },
     {
@@ -9980,7 +9980,7 @@
       "question": "After a root key compromise, 8,400 internal certificates must be reissued under a new root. Which approach should the IS auditor recommend as BEST?",
       "options": {
         "A": "Have each system owner request certificates by email",
-        "B": "Automate certificate enrollment, renewal and deployment",
+        "B": "Automate certificate enrollment and deployment at scale",
         "C": "Extend the old certificates until reissue is finished",
         "D": "Reissue internet-facing certificates and leave internal ones"
       },
@@ -9998,7 +9998,7 @@
         "Final two: B beats A because automation reissues at scale reliably; manual requests leave gaps.",
         "Exam cue: large-scale certificate changes call for automated lifecycle management, not manual requests."
       ],
-      "_provenance": "Authored from concept: 'Precision-word BEST vs FIRST in CA-compromise response — BEST = revoke + CRL/OCSP + relying-party notify + trust-chain rebuild + issuance audit; FIRST = revoke only'. Paired companion to d5_077. Public sources: NIST SP 800-57, CA/Browser Forum Baseline Requirements, RFC 5280. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): key now distrusts the root by removing it from trust stores, since a root cannot meaningfully revoke itself. Cross-domain review (Oct 2026): re-angled or clarified to remove duplication/contradiction. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged.",
+      "_provenance": "Authored from concept: 'Precision-word BEST vs FIRST in CA-compromise response — BEST = revoke + CRL/OCSP + relying-party notify + trust-chain rebuild + issuance audit; FIRST = revoke only'. Paired companion to d5_077. Public sources: NIST SP 800-57, CA/Browser Forum Baseline Requirements, RFC 5280. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): key now distrusts the root by removing it from trust stores, since a root cannot meaningfully revoke itself. Cross-domain review (Oct 2026): re-angled or clarified to remove duplication/contradiction. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Cue balance: the key drops the three-part list.",
       "style_version": 2
     },
     {
@@ -10176,11 +10176,11 @@
         "D": "Pass-the-hash works with properly hashed passwords; it abuses how the protocol accepts hashes, not plain-text storage."
       },
       "tips": [
-        "Eliminate: C and D blame how passwords are stored, but the attack works without reversing or reading any password.",
+        "Eliminate: C and D both assume the password was recovered, but pass-the-hash authenticates with the hash without reversing or reading any password.",
         "Final two: A beats B because the attacker replays the hash itself, so cracking resistance never comes into play.",
         "Exam cue: for pass-the-hash, look for unique local admin passwords, admin-only workstations for privileged sign-ins and monitoring for hash reuse, not stronger passwords."
       ],
-      "_provenance": "Authored from concept: 'Precision-word BEST vs FIRST in zero-day mitigation — BEST = compensating controls + monitoring + vendor patch engagement + patch deployment + SBOM monitoring policy review; FIRST = compensating controls only'. Paired companion to d5_137. Public sources: NIST SP 800-40, CISA KEV catalog, CIS Controls v8. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): re-angled away from d5_195 (block exposure until patch): now hunting for compromise from before the patch. Rebalanced (Oct 2026): re-angled from 5B5 Security Incident Response Management to 5B2. Rebalance review (Oct 2026): made B a plausible runner-up, broke the A/B mirror and named the real controls.",
+      "_provenance": "Authored from concept: 'Precision-word BEST vs FIRST in zero-day mitigation — BEST = compensating controls + monitoring + vendor patch engagement + patch deployment + SBOM monitoring policy review; FIRST = compensating controls only'. Paired companion to d5_137. Public sources: NIST SP 800-40, CISA KEV catalog, CIS Controls v8. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): re-angled away from d5_195 (block exposure until patch): now hunting for compromise from before the patch. Rebalanced (Oct 2026): re-angled from 5B5 Security Incident Response Management to 5B2. Rebalance review (Oct 2026): made B a plausible runner-up, broke the A/B mirror and named the real controls. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Eliminate tip no longer says 'blame'.",
       "style_version": 2
     },
     {
@@ -10262,10 +10262,10 @@
       "framework_ref": "ISO/IEC 27002:2022 Control 8.12 (Data Leakage Prevention); NIST SP 800-53 Rev 5 AC-4 (Information Flow Enforcement); CERT Common Sense Guide to Mitigating Insider Threats, 7th Edition (CMU SEI, 2022)",
       "question": "An IS auditor finds a data loss prevention tool alerted only after a departing research scientist emailed 1,800 confidential formula files to personal webmail. Which control would BEST have prevented the loss?",
       "options": {
-        "A": "Exit interviews reminding leavers of their confidentiality duties",
+        "A": "Exit interviews warning leavers not to email confidential files",
         "B": "Blocking confidential attachments sent to personal email domains",
         "C": "Real-time review of data loss prevention alerts by analysts",
-        "D": "Annual recertification of user access to formula files"
+        "D": "Blocking confidential uploads to personal cloud storage sites"
       },
       "correct": "B",
       "key_concept": "Data loss prevention should block, not just alert on, transfers of classified data to unapproved destinations where the business case allows.",
@@ -10274,14 +10274,14 @@
       "wrong_explanations": {
         "A": "A reminder does not stop a determined employee, and exit interviews happen after resignation, often after the copying.",
         "C": "Faster alert review shortens the response, but it is detective. Emails already sent cannot be pulled back.",
-        "D": "The scientist legitimately needed access to the formula files, so an annual recertification would have confirmed that access."
+        "D": "Blocking cloud uploads is the right kind of control on the wrong channel; the files left by email, which it does not cover."
       },
       "tips": [
-        "Eliminate: A relies on a reminder that comes too late, and D would have confirmed the scientist's legitimate access.",
+        "Eliminate: A relies on a reminder that comes too late, and D blocks a channel the scientist did not use.",
         "Final two: B beats C because blocking prevents the loss, while faster alert review still detects it afterward.",
         "Exam cue: preventive controls come first where feasible; detection is the defense-in-depth layer behind them."
       ],
-      "_provenance": "Authored from concept: 'Precision-word PRIMARY vs FIRST/BEST in insider-exfiltration response — PRIMARY = the dominant audit consideration/principle that drives the recommendation; FIRST = containment action; BEST = full sequence'. Paired companion to d5_060 and d5_263. Public sources: ISACA Insider Threat Audit/Assurance Program, SEC Regulation S-P, FINRA Rule 4530, CERT Insider Threat Center. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): surface details changed from d5_263 (now a scientist emailing files to personal webmail).",
+      "_provenance": "Authored from concept: 'Precision-word PRIMARY vs FIRST/BEST in insider-exfiltration response — PRIMARY = the dominant audit consideration/principle that drives the recommendation; FIRST = containment action; BEST = full sequence'. Paired companion to d5_060 and d5_263. Public sources: ISACA Insider Threat Audit/Assurance Program, SEC Regulation S-P, FINRA Rule 4530, CERT Insider Threat Center. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): surface details changed from d5_263 (now a scientist emailing files to personal webmail). D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): The key alone echoed 'email'; D is now a blocking control on another channel, so the control type no longer gives the key away.",
       "style_version": 2
     },
     {
@@ -10297,7 +10297,7 @@
         "A": "Separating supplier bank-detail changes from payment release duties",
         "B": "Training payables staff to recognize spoofed supplier emails",
         "C": "Adding a fraud loss endorsement to the cyber insurance policy",
-        "D": "Disciplining the clerk who processed the fraudulent change"
+        "D": "Logging each bank-detail change for a monthly supervisor review"
       },
       "correct": "A",
       "key_concept": "No single person should both change supplier bank details and release payments; segregation forces independent verification.",
@@ -10306,14 +10306,14 @@
       "wrong_explanations": {
         "B": "Training helps, but convincing spoofs still succeed, and one deceived clerk could still change details and pay.",
         "C": "Insurance may offset a loss, but it does not stop the next fraudulent payment from leaving.",
-        "D": "Discipline targets one person and leaves the control gap that let one person do both steps."
+        "D": "A monthly review is detective; the $380,000 would leave days or weeks before anyone looked at the change."
       },
       "tips": [
-        "Eliminate: C transfers loss without preventing it, and D punishes a person while the control gap stays open.",
+        "Eliminate: C transfers loss without preventing it, and D reviews changes long after the money has gone.",
         "Final two: A beats B because segregation stops one deceived person from completing the fraud; training relies on spotting every fake.",
         "Exam cue: when one person could complete a fraud alone, the PRIMARY fix is segregation of duties."
       ],
-      "_provenance": "Authored from concept: 'Precision-word PRIMARY vs FIRST/BEST in BEC wire fraud — PRIMARY = the dominant audit consideration/principle that drives the recommendation; FIRST = containment action; BEST = full sequence'. Paired companion to d5_112 and d5_264. Public sources: ISACA Incident Management Audit/Assurance Program, FBI IC3 BEC Annual Report, SWIFT Customer Security Programme, OFAC Sanctions Compliance Guidance, PCAOB AS 2401. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): re-angled away from d5_255 and d5_264 (wire clock, $2.4M): now segregation of supplier bank-detail changes from payment release.",
+      "_provenance": "Authored from concept: 'Precision-word PRIMARY vs FIRST/BEST in BEC wire fraud — PRIMARY = the dominant audit consideration/principle that drives the recommendation; FIRST = containment action; BEST = full sequence'. Paired companion to d5_112 and d5_264. Public sources: ISACA Incident Management Audit/Assurance Program, FBI IC3 BEC Annual Report, SWIFT Customer Security Programme, OFAC Sanctions Compliance Guidance, PCAOB AS 2401. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): re-angled away from d5_255 and d5_264 (wire clock, $2.4M): now segregation of supplier bank-detail changes from payment release. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): D (discipline the clerk) was a strawman; it is now a monthly detective review.",
       "style_version": 2
     },
     {
@@ -10365,7 +10365,7 @@
       "question": "An IS auditor finds newly bought IP cameras shipped with default passwords and no way to update their firmware. Which control would BEST prevent this from recurring?",
       "options": {
         "A": "Change default passwords on each camera during installation",
-        "B": "Place all cameras on an isolated network segment",
+        "B": "Place the cameras on an isolated network segment",
         "C": "Require security criteria from suppliers before purchase",
         "D": "Scan the camera network monthly for known vulnerabilities"
       },
@@ -10383,7 +10383,7 @@
         "Final two: C beats A because purchase requirements stop both weaknesses, while changing passwords cannot fix firmware that never updates.",
         "Exam cue: for IoT, the strongest preventive control is building security requirements into procurement."
       ],
-      "_provenance": "Authored from concept: 'Precision-word PRIMARY in container escape — PRIMARY = dominant audit consideration (node-and-cluster blast radius); FIRST = action (isolate pod + node); BEST = sequence (isolate + hunt + forensics + patch + notify)'. Paired companion to d5_098 and d5_266. Public sources: NIST SP 800-190, MITRE ATT&CK T1611 (Escape to Host), CIS Kubernetes Benchmark, ISACA Incident Management and Response Audit/Assurance Program. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): surface details changed from d5_266 (now a CI build node holding production cloud keys). Rebalanced (Oct 2026): re-angled from 5B5 Security Incident Response Management to 5A9. Rebalance review (Oct 2026): removed the stem echo of the key.",
+      "_provenance": "Authored from concept: 'Precision-word PRIMARY in container escape — PRIMARY = dominant audit consideration (node-and-cluster blast radius); FIRST = action (isolate pod + node); BEST = sequence (isolate + hunt + forensics + patch + notify)'. Paired companion to d5_098 and d5_266. Public sources: NIST SP 800-190, MITRE ATT&CK T1611 (Escape to Host), CIS Kubernetes Benchmark, ISACA Incident Management and Response Audit/Assurance Program. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): surface details changed from d5_266 (now a CI build node holding production cloud keys). Rebalanced (Oct 2026): re-angled from 5B5 Security Incident Response Management to 5A9. Rebalance review (Oct 2026): removed the stem echo of the key. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Lone absolute ('all') removed from B.",
       "style_version": 2
     },
     {
@@ -10644,10 +10644,10 @@
       "difficulty": "foundational",
       "bloom_level": "Foundational",
       "framework_ref": "NIST SP 800-162 (ABAC); NIST SP 800-53 Rev 5 (AC family)",
-      "question": "A defense contractor must stop staff from sharing classified files with colleagues who lack clearance, even when the file's creator wants to share. Which access control model BEST fits?",
+      "question": "A defense contractor must stop staff from sharing classified files with colleagues who lack clearance, even when the file's creator wants to share. Which access control model should the IS auditor recommend as BEST?",
       "options": {
         "A": "Discretionary access control set by each file's owner",
-        "B": "Mandatory access control using labels and clearances",
+        "B": "Mandatory access control using sensitivity labels",
         "C": "Role-based access control assigned by job function",
         "D": "Network-based access control by office location"
       },
@@ -10665,7 +10665,7 @@
         "Final two: B beats C because only mandatory control enforces clearance against labels; roles group jobs, not clearances.",
         "Exam cue: when even the owner must not decide, the answer is mandatory access control."
       ],
-      "_provenance": "Authored from concept: 'Access control models DAC/MAC/RBAC/ABAC'. Foundational recall tier. Public sources: NIST SP 800-53 Rev 5, NIST SP 800-162, NIST RBAC standard. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Access control models DAC/MAC/RBAC/ABAC'. Foundational recall tier. Public sources: NIST SP 800-53 Rev 5, NIST SP 800-162, NIST RBAC standard. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Stem now names the IS auditor; the key no longer repeats the stem's 'clearance'.",
       "style_version": 2
     },
     {
@@ -10715,9 +10715,9 @@
       "question": "A retailer's data loss prevention (DLP) rules use number patterns to find customer data, producing thousands of false alerts on order numbers. Which detection method should the IS auditor recommend as BEST?",
       "options": {
         "A": "Add more keyword patterns describing what customer records contain",
-        "B": "Inspect only outgoing files larger than a set size threshold",
+        "B": "Inspect outgoing files above a set size threshold",
         "C": "Match content against fingerprints of the actual customer database",
-        "D": "Switch off alerts and review the DLP logs once a month"
+        "D": "Raise the number-pattern match threshold to cut alerts"
       },
       "correct": "C",
       "key_concept": "Exact data matching recognizes the real records through fingerprints, cutting false positives that pattern rules produce on look-alike values.",
@@ -10726,14 +10726,14 @@
       "wrong_explanations": {
         "A": "More patterns still guess at what customer data looks like, so look-alike values keep triggering false alerts.",
         "B": "Size limits miss small leaks, such as a single message holding hundreds of customer records.",
-        "D": "Monthly log review delays response to real leaks by weeks and does nothing to reduce false matches."
+        "D": "A higher threshold cuts alerts by also missing smaller real leaks; it still guesses at look-alikes instead of recognizing the data."
       },
       "tips": [
-        "Eliminate: B ignores small leaks, and D delays response without improving detection.",
+        "Eliminate: B misses small leaks, and D trades false alerts for missed real ones.",
         "Final two: C beats A because fingerprints recognize the real records, while more patterns keep guessing at look-alikes.",
         "Exam cue: when DLP floods with false positives on structured data, prefer exact data matching over broader patterns."
       ],
-      "_provenance": "Authored from concept: 'DLP Detection Methods. Exact Data Matching'. Original Aurivan item (Oct 2026), written for CISA topic 5A5. Rebalance review (Oct 2026): smoothed the stem wording and spelled out DLP. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged.",
+      "_provenance": "Authored from concept: 'DLP Detection Methods. Exact Data Matching'. Original Aurivan item (Oct 2026), written for CISA topic 5A5. Rebalance review (Oct 2026): smoothed the stem wording and spelled out DLP. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): D (switch off alerts) was a strawman; it is now a threshold change, a common tuning error. B drops 'only'. Eliminate tip no longer says 'ignores'.",
       "style_version": 2
     },
     {
@@ -10766,11 +10766,11 @@
         "C": "Email rules inspect email only; they have no view of files sent through encrypted web sessions."
       },
       "tips": [
-        "Eliminate: A blocks legitimate work outright, even with approval, and C applies a control to the wrong channel.",
+        "Eliminate: A blocks legitimate business use of web services, and C applies email rules to a channel they cannot see.",
         "Final two: D beats B because DLP must be able to read traffic to inspect it; labeled files still pass encrypted and unseen.",
         "Exam cue: a monitoring control is only as good as its visibility; close encryption blind spots under a governed policy."
       ],
-      "_provenance": "Authored from concept: 'DLP Coverage. Encrypted Web Traffic'. Original Aurivan item (Oct 2026), written for CISA topic 5A5.",
+      "_provenance": "Authored from concept: 'DLP Coverage. Encrypted Web Traffic'. Original Aurivan item (Oct 2026), written for CISA topic 5A5. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Eliminate tip reworded.",
       "style_version": 2
     },
     {
@@ -11016,7 +11016,7 @@
       "question": "A bank has five testing days for its new loan platform and wants the deepest coverage of weaknesses in that time. Which approach should the IS auditor consider MOST effective?",
       "options": {
         "A": "Black-box testing that starts from the platform's name alone",
-        "B": "White-box testing with design documents, source code and accounts",
+        "B": "White-box testing with source code and design documents",
         "C": "An automated vulnerability scan of the platform's public interfaces",
         "D": "A double-blind test that keeps the operations team unaware"
       },
@@ -11034,7 +11034,7 @@
         "Final two: B beats A because, in a short test, inside knowledge buys depth; black box spends the budget rediscovering the design.",
         "Exam cue: black box is not always best. When the goal is coverage for the time spent, give testers more knowledge."
       ],
-      "_provenance": "Authored from concept: 'Penetration Test Types. Knowledge Levels and Coverage'. Original KaiSip item (Oct 2026), written for CISA subtopic 5B3.3 (Wave 1 coverage batch Q1: a subtopic with no practice yet). Public sources: NIST, ISO/IEC, CSA, PTES.",
+      "_provenance": "Authored from concept: 'Penetration Test Types. Knowledge Levels and Coverage'. Original KaiSip item (Oct 2026), written for CISA subtopic 5B3.3 (Wave 1 coverage batch Q1: a subtopic with no practice yet). Public sources: NIST, ISO/IEC, CSA, PTES. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Cue balance: the key drops the three-part list.",
       "style_version": 2
     },
     {
