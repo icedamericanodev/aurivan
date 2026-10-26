@@ -224,8 +224,8 @@ Apple.
   `production`. The channel comes only from the build profiles in
   `mobile/eas.json`. `mobile/app.json` sets none, and CI
   (`mobile/scripts/check-release-config.mjs`) fails if it does, or if a store
-  profile would use `preview`. The two backup APK builders set `preview` in
-  their own throwaway copy (`mobile/scripts/set-update-channel.mjs`).
+  profile would use `preview`. The backup APK builder (`mobile/scripts/build-apk.sh`)
+  sets `preview` in its own throwaway copy (`mobile/scripts/set-update-channel.mjs`).
   Updates are published to `preview` automatically; nothing publishes to
   `production` automatically.
 - **Android code shrinking (R8)** is on for release builds

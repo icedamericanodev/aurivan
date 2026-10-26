@@ -29,27 +29,13 @@ bash scripts/install_hooks.sh
 
 After install, every `git commit` runs `verify_repo.sh` first and aborts the commit if it fails. This is faster feedback than the GitHub Actions CI — issues surface locally before the commit lands. Emergency bypass: `git commit --no-verify` (but expect CI to fail downstream).
 
-### The concept queue
+### Rebuild planning files (retired)
 
-`data/originals/_concept_queue.yaml` is the living planning doc for the question-bank rebuild. It tracks:
-
-- **Covered concepts** — already authored, with question IDs and TOC references
-- **Queued concepts** — planned for upcoming batches, in priority order
-- **Remaining unplanned** — areas that still need attention but aren't yet in a specific batch plan
-
-Update it as part of every batch PR:
-
-1. Move authored concepts from `queued_next` → `covered` (with the new question IDs)
-2. Add new candidate concepts to `queued_next` based on remaining TOC gaps
-3. Bump the `authored_total` and `authored_mix` counters in the relevant domain
-
-This file is read by humans for cross-session continuity and by future contributors (human or AI) to know what's next without re-deriving from the JSON.
+The question-bank rebuild has shipped. Its planning files (the concept queue, the per-domain coverage trackers and the retrospectives) are kept for history in `archive/question-bank-rebuild/` and are no longer updated.
 
 ## Hard rules
 
-1. **Never edit `data/domain{1..5}.json` directly.** They are regenerated. Edit:
-   - `data/tips_overrides/d{1..5}.json` for tips, then re-run the converter
-   - The source spreadsheet (kept off-repo) for new questions
+1. **Never edit `data/domain{1..5}.json` directly.** They are regenerated. Edit the question (tips included) in `data/originals/d{1..5}.json`, then run `python3 scripts/originals_to_domain.py` and `bash scripts/verify_repo.sh`. The schema is in [docs/content/QUESTION_SCHEMA.md](docs/content/QUESTION_SCHEMA.md).
 2. **`DI` in `index.html` is the canonical source of truth for domain weights, names, and colors.** Never hardcode weight strings — read `DI[d].weight`. The Topics renderer overrides `cisa_notes.json` weights with `DI` values at load time so drift is impossible.
 3. **Single source of truth for the version: `APP_VERSION` in `index.html`.** The header pill text, the LATEST badge in What's New, and the static pill HTML all read from this constant. `verify_repo.sh` enforces consistency.
 4. **No new runtime dependencies.** This app loads from `file://` and over plain HTTP. We keep it framework-free, no bundler, no transpile. Dev-only tools (ESLint via `npx`) are fine.
@@ -59,29 +45,25 @@ This file is read by humans for cross-session continuity and by future contribut
 
 ### Add or edit a tip
 
-1. Edit `data/tips_overrides/d{N}.json`. Each entry is keyed by question ID and is an array of 3–4 short tips:
+1. Edit the `tips` list of the question in `data/originals/d{N}.json`. Exam-style v2 questions have exactly 3 short tips, in this order ([docs/content/EXAM_STYLE_V2.md](docs/content/EXAM_STYLE_V2.md)):
 
    ```json
-   "d4_217": [
-     "Trap is B 'X' — Y.",
-     "Trap is C 'X' — Y.",
-     "<mindset/principle tip>",
-     "<exam-day shortcut tip>"
+   "tips": [
+     "Eliminate: B ... and C ...",
+     "Final two: A beats D because ...",
+     "Exam cue: ..."
    ]
    ```
 
-2. Regenerate the domain bank:
+2. Regenerate the domain bank and check it:
 
    ```bash
-   python3 scripts/convert_test_bank.py 4
+   python3 scripts/originals_to_domain.py 4
+   bash scripts/verify_repo.sh
+   python3 scripts/lint_exam_style_v2.py 4
    ```
 
-   Note: the build-time source spreadsheet for the question bank is not
-   redistributed in this repo (gitignored as `*.xlsm`). The converter
-   needs it locally for new questions or wording changes; tip-only edits
-   work without it once `data/domain{N}.json` already exists.
-
-3. Stage **both** the override file and the regenerated `data/domain4.json` in the same commit.
+3. Stage **both** `data/originals/d4.json` and the regenerated `data/domain4.json` in the same commit.
 
 ### Bump the version
 
@@ -203,7 +185,7 @@ Different change classes require different approvers:
 | Change class | Self-merge by AI assistant | Notes |
 |---|---|---|
 | Markdown / docs (README, CONTRIBUTING, CHANGELOG, SECURITY) | ✓ | Pure prose; CI still runs |
-| Tip-override edits (`data/tips_overrides/d{N}.json`) and the regenerated `data/domain{N}.json` they produce | ✓ | Content authoring; CI verifies coverage |
+| Tip edits in `data/originals/d{N}.json` and the regenerated `data/domain{N}.json` they produce | ✓ | Content authoring; CI verifies coverage |
 | Comment-only or whitespace-only changes | ✓ | No behavior change |
 | Version bump (`APP_VERSION`) + matching changelog entry | ✓ | Coordinated single-source-of-truth update |
 | Any change to core question/answer flow (`selectAnswer`, `selectMockAnswer`, `showMockQuestion`, the shuffle helpers, the timer, grading) | **Human merge only** | Highest blast radius — every prior bug here shipped to all users |

@@ -12,7 +12,7 @@ status=0
 # 1. JSON validity + tip coverage --------------------------------------------
 # v9.0+: tips live inline in data/originals/d{N}.json (single source of truth).
 # `scripts/originals_to_domain.py` regenerates data/domain{N}.json from originals.
-# tips_overrides/ is legacy and no longer the authoring layer.
+# The old tips_overrides/ layer and xlsm converter are retired (archive/question-bank-v8/).
 python3 - <<'PY' || status=1
 import json, sys
 counts = {1: 220, 2: 226, 3: 156, 4: 324, 5: 353}
@@ -120,8 +120,8 @@ else
 fi
 
 # 5. Originals (rebuild content) schema validation --------------------------
-# The new bank lives under data/originals/ during the rebuild and is validated
-# against the schema in RELAUNCH_CHECKLIST.md. Empty banks are valid (the
+# The bank lives under data/originals/ and is validated against the schema
+# in docs/content/QUESTION_SCHEMA.md. Empty banks are valid (the
 # scaffolding state); the validator only fails on actual schema violations.
 printf "\n"
 if ! python3 scripts/validate_originals.py; then

@@ -3,7 +3,7 @@
 Status: **locked 2026-10-07** by the maintainer. Supersedes "Forest". This file is the source of truth for `mobile/`; code that disagrees with it is a bug.
 
 Maintainer decisions: first tab is named **Today**; readiness is shown as an honest **range** (e.g. 62–70%), with "not enough data" below ~40 answers.
-Mockups: `docs/mobile/design/grove_v2.html` / `grove_v2.png` (light, dark, edge cases incl. ×1.6 text). Real content: `d4_250`.
+Mockups: `docs/mobile/design/grove_v2.html` (light, dark, edge cases incl. ×1.6 text; the old PNG render is in `archive/design/grove_v2.png`). Real content: `d4_250`.
 Fonts in the mockup are the static TTFs `@expo-google-fonts/*` ships. Contrast: `docs/mobile/design/contrast_v2.py`.
 
 Idea in one line: **warm paper, one deep-forest panel per screen, a soft serif for the moments that

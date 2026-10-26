@@ -162,24 +162,24 @@ the project's hourly email allowance, so real learners can't sign in.
 4. Ask an agent to switch on `[auth.captcha]` in `config.toml` and pass the
    captcha token from the sign-in screens.
 
-## Gate 4. The backup-route test APK's signing key
+## Gate 4. The backup-route test APK's signing key (done: route retired)
 
-**What it protects.** The hand-run "Android test APK" workflow
-(`.github/workflows/android-apk.yml`) signs with Android's public debug key,
-the same key in every React Native project. Anyone could build a fake KaiSip
-APK with that key, and Android would install it as an update over a tester's
-real app, with access to all its saved data.
+**What it protected.** The hand-run "Android test APK" workflow signed with
+Android's public debug key, the same key in every React Native project. Anyone
+could build a fake KaiSip APK with that key, and Android would install it as an
+update over a tester's real app, with access to all its saved data.
 
-**Owner steps (pick one).**
-- **Retire the route** (recommended if EAS Build test APKs cover your
-  testers): ask an agent to delete the workflow.
-- **Or give it its own key:** on your computer run
-  `keytool -genkeypair -v -storetype PKCS12 -keystore kaisip-test.jks -alias kaisip-test -keyalg RSA -keysize 2048 -validity 10000`,
-  back the file and its password up in your password manager, and store them
-  as GitHub secrets. An agent then wires the workflow to sign with it.
-  Testers will need to uninstall and reinstall once (move progress with a
-  backup file first).
-- **Either way:** never build an accounts-on (cloud) APK through this route.
+**Status: retired on 26 Oct 2026** (owner decision). The workflow now lives in
+`archive/github-workflows/android-apk.yml`; GitHub only runs workflows inside
+`.github/workflows/`, so it can no longer run. Test APKs come from the
+"Phone build (EAS Build)" workflow with the **preview** profile (Actions →
+"Phone build (EAS Build)" → Run workflow → profile `preview`), signed with the
+EAS-managed key on expo.dev. The APK from expo.dev installs in the Android emulator too: drag it onto the emulator window, or run `adb -e install -r <file>.apk`.
+
+Testers who still have a GitHub Releases APK must uninstall it before
+installing the expo.dev one (the keys differ), so save a backup file first
+(Settings → Your data). The Mac script `mobile/scripts/build-apk.sh` still
+signs with the debug key: never build an accounts-on (cloud) APK with it.
 
 ## Gate 5. GraphQL off on the hosted project
 

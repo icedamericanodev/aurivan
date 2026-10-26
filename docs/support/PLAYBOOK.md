@@ -199,9 +199,9 @@ content" in the sheet.
 
 In the **same pull request** as the content fix:
 
-1. Fix the source (`data/tips_overrides/d{N}.json` or the question source),
-   regenerate (`python3 scripts/convert_test_bank.py {N}`), and run
-   `npm run check` in `mobile/`.
+1. Fix the question (tips included) in `data/originals/d{N}.json`,
+   regenerate (`python3 scripts/originals_to_domain.py {N}`), and run
+   `bash scripts/verify_repo.sh` and `npm run check` in `mobile/`.
 2. Add one entry to `mobile/src/content/support/fixes.json`:
 
    ```json

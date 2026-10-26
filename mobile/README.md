@@ -22,26 +22,24 @@ and use `bash scripts/dev-sync.sh`.
 
 ## Install a test APK on an Android phone (no computer needed)
 
-There are two ways to get a test APK. **Both receive the small updates
-described below**: both are built from `main`, stamped with the same update
-"runtime" (the fingerprint of the native parts, computed before the Android
-project is generated, exactly as the phone-update workflow computes it) and
-listen on the **preview** update channel. The GitHub and Mac builds check the
-stamp inside the finished APK and fail if it doesn't match.
+Test APKs come from expo.dev (EAS Build). On GitHub: **Actions → Phone build
+(EAS Build) → Run workflow**, pick the **preview** profile, and run it. When
+the build finishes on expo.dev (about 15–25 minutes), open the build's page on
+the phone and tap **Install**, then allow **"Install unknown apps"** when
+Android asks. The APK from expo.dev installs in the Android emulator too: drag
+it onto the emulator window, or run `adb -e install -r <file>.apk`.
 
-1. **GitHub Releases (simplest).** On GitHub: **Actions → Android test APK →
-   Run workflow**. It publishes the APK to the repo's Releases page as
-   `apk-v<version>` (for example `apk-v1.17.1`). On the phone, open that
-   release while signed in to GitHub, tap the `.apk`, then allow **"Install
-   unknown apps"** when Android asks.
-2. **expo.dev.** Start a fresh EAS build (profile **preview**, branch `main`,
-   base directory `/mobile`, platform Android, Submit unchecked). On the
-   phone, open the build's page on expo.dev and tap **Install**.
+It **receives the small updates described below**: it is built from `main`,
+stamped with the update "runtime" (the fingerprint of the native parts) and
+listens on the **preview** update channel.
 
-The two APKs are signed with **different keys**, so a phone can keep only
-one of them. To switch, uninstall the other first, which erases the progress
-on that phone (save a backup file first: Settings → Your data). Installing a
-newer APK of the same kind over an older one keeps your progress.
+**The old GitHub Releases route is retired** (26 Oct 2026): its workflow
+signed with Android's public debug key (`docs/mobile/SECURITY_GATES.md`,
+Gate 4). Its APKs (`apk-v…`) and the expo.dev ones are signed with
+**different keys**, so a phone can keep only one of them. To switch, uninstall
+the old one first, which erases the progress on that phone (save a backup file
+first: Settings → Your data). Installing a newer expo.dev APK over an older one
+keeps your progress.
 
 **Some older APKs get no updates.** An EAS build made before 12 October 2026
 (version 1.15.0) has older native parts, so its fingerprint no longer matches.
@@ -69,7 +67,9 @@ doesn't match its APK.
 
 On a Mac with Android Studio there is also `bash scripts/build-apk.sh` (it
 builds in a separate folder, so the emulator and `dev-sync.sh` keep running).
-Its APK is signed like the GitHub Releases one.
+Its APK is signed with the debug key (like the retired GitHub Releases
+route), not the expo.dev key. It checks the update stamp inside the finished
+APK and fails if it doesn't match.
 
 **KaiSip 1.23 is a new app on the phone (the rename from Aurivan).** The app
 name, icon and package id (`com.kaisip.app`, was `com.aurivan.app`) are native

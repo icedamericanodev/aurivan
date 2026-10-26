@@ -52,7 +52,7 @@ manager) evaluated the options independently. All three picked **React Native
 **Cost at launch:** Apple Developer $99/year · Google Play $25 once ·
 Expo, Supabase, RevenueCat, Sentry, PostHog all start free.
 
-### Why Supabase (and not the custom backend in `design-notes/BACKEND_ARCHITECTURE.md`)?
+### Why Supabase (and not the custom backend in `archive/design-notes/BACKEND_ARCHITECTURE.md`)?
 That proposal was written for the web app. For a solo beginner shipping
 mobile, Supabase gives Sign in with Apple (mandatory if you offer Google
 sign-in on iOS), row-level security, backups and storage pre-built. It is
@@ -769,12 +769,11 @@ What's new (cloud builds only; no names, no counts).
 
 ### The content pipeline
 ```
-data/tips_overrides/d{N}.json ─┐
-xlsm (maintainer only) ────────┼─► scripts/convert_test_bank.py ─► data/domain{N}.json   (web app reads this)
-                               │                                          │
-                               │                     mobile/scripts/build-content.mjs
-                               │                                          ▼
-                               │                     mobile/src/content/generated/cisa/d{N}.json
+data/originals/d{N}.json ─► scripts/originals_to_domain.py ─► data/domain{N}.json   (web app reads this)
+(questions + tips,                                                   │
+ hand-authored)                                 mobile/scripts/build-content.mjs
+                                                                     ▼
+                                                mobile/src/content/generated/cisa/d{N}.json
 ```
 **Study notes.** The same builder reads `data/cisa_notes.json` through
 `mobile/scripts/notes-pack.cjs` (CommonJS so Jest can test it) and writes

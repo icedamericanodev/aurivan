@@ -5,7 +5,7 @@
  *
  * These tests run scripts/check-release-config.mjs as CI does, on the real
  * app.json + eas.json and on small made-up configs that must fail, and check
- * scripts/set-update-channel.mjs (used by the backup APK builders) only
+ * scripts/set-update-channel.mjs (used by the backup APK builder) only
  * accepts "preview".
  */
 import { spawnSync } from 'child_process';
