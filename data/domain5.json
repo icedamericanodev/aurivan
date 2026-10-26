@@ -92,12 +92,12 @@
         "DCIM monitoring",
         "TIA-942"
       ],
-      "framework_ref": "NIST SP 800-53 Rev 5 PE-14 (Environmental Controls); ISO/IEC 27002:2022 Control 7.5 (Protecting Against Physical and Environmental Threats)",
+      "framework_ref": "NIST SP 800-53 Rev 5 PE-15 (Water Damage Protection); ISO/IEC 27002:2022 Control 7.5 (Protecting Against Physical and Environmental Threats)",
       "question": "An IS auditor reviews environmental controls in a data center that sits directly below a building's kitchen and restrooms. Which finding represents the GREATEST risk?",
       "options": {
         "A": "No water sensors are fitted under the floor or in the ceiling",
         "B": "The fire suppression inspection is two months overdue",
-        "C": "Generator load tests run yearly rather than quarterly",
+        "C": "Fire suppression uses a clean-agent gas rather than sprinklers",
         "D": "The room's humidity setpoint sits near the top of the vendor range"
       },
       "correct": "A",
@@ -106,16 +106,17 @@
       "correct_explanation": "Plumbing directly above the room makes water the most likely environmental hazard, and with no sensors under the floor or in the ceiling, a leak could reach power and equipment unnoticed. An overdue fire suppression inspection is the runner-up: it is a real gap to schedule promptly, but the system remains installed and likely to work, while the leak exposure has no control at all.",
       "wrong_explanations": {
         "B": "A short inspection delay is a gap to schedule promptly, but the system remains in place and is likely still functional.",
-        "C": "Yearly load tests are a weaker interval, but the generator exists and is tested; it is not the hazard this site's location creates.",
+        "C": "Clean-agent gas is the preferred suppression for equipment rooms because it puts out fire without water damage; it is a strength, not a gap.",
         "D": "A setpoint inside the vendor's range is acceptable, if tight, and causes no damage while monitoring works."
       },
       "tips": [
-        "Eliminate: C is a test-interval choice for a generator that exists, and D is a setpoint still within the vendor's range.",
+        "Eliminate: C describes clean-agent gas, the preferred suppression for equipment rooms, and D is a setpoint still within the vendor's range.",
         "Final two: A beats B because the site's most likely hazard has no detection at all, while the overdue inspection leaves a working system in place.",
         "Exam cue: match environmental controls to the site's exposures; the gravest gap is a likely hazard with no control at all."
       ],
-      "_provenance": "Authored from concept: 'Environmental controls scope per CISA exam content outline topic 5A2 and NIST SP 800-14'. Public sources: ISACA, NIST, TIA, ASHRAE. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): C and D were off-category (visitor log, tape cipher) and fell without environmental knowledge; both are now lesser environmental findings. Cross-domain review (MAJOR duplicate with d5_019): reviewer's fix applied.",
-      "style_version": 2
+      "_provenance": "Authored from concept: 'Environmental controls scope per CISA exam content outline topic 5A2 and NIST SP 800-14'. Public sources: ISACA, NIST, TIA, ASHRAE. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): C and D were off-category (visitor log, tape cipher) and fell without environmental knowledge; both are now lesser environmental findings. Cross-domain review (MAJOR duplicate with d5_019): reviewer's fix applied. Round-2 standards audit: MINOR framework_ref; MINOR options.C; MINOR wrong_explanations.C; MINOR tips[0]; MINOR principle_id",
+      "style_version": 2,
+      "principle_id": "risk-sets-priority"
     },
     {
       "id": "d5_004",
@@ -1346,7 +1347,7 @@
       "question": "Cloud administrators sign in with FIDO2 hardware security keys, but every account also accepts text-message codes as a fallback. Which risk should the IS auditor consider MOST significant?",
       "options": {
         "A": "Administrators who lose their keys may be locked out",
-        "B": "Hardware keys cost more to issue than authenticator app codes",
+        "B": "A stolen hardware key could let a thief sign in",
         "C": "Attackers can phish the text codes and bypass the keys",
         "D": "Some older browsers may not support the hardware keys"
       },
@@ -1356,15 +1357,15 @@
       "correct_explanation": "An attacker does not need to defeat the hardware key if the account still accepts a weaker method. Text-message codes can be phished through a fake sign-in page or intercepted by SIM swapping, so the fallback is a way around the keys. Lockout when a key is lost is the runner-up: it is a real availability concern, but a second registered key solves it without a phishable fallback.",
       "wrong_explanations": {
         "A": "Lockout is a real concern, but issuing each administrator a second registered key solves it without leaving a phishable fallback.",
-        "B": "Cost affects the budget, not security; it does not weaken the protection the keys give.",
+        "B": "A FIDO2 key also needs its PIN or the account password, so theft alone does not grant access, and the owner can report and revoke it.",
         "D": "Browser support for FIDO2 keys is broad, and a compatibility gap is an operational issue, not a path for attackers."
       },
       "tips": [
-        "Eliminate: B is a budget matter and D a compatibility issue; neither gives an attacker a way in.",
+        "Eliminate: B overlooks the PIN or password a FIDO2 key still requires, and D is a browser-compatibility issue that gives attackers no way in.",
         "Final two: C beats A because a phishable fallback lets attackers bypass the keys, while lockout is solved by a backup key.",
         "Exam cue: check every fallback and recovery path; an account is only as strong as the weakest method it accepts."
       ],
-      "_provenance": "Authored from concept: 'NIST 800-63B AAL levels for privileged-access MFA design'. Public sources: NIST, CISA, FIDO Alliance, ISACA. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. Content review (Oct 2026): glossed FIDO2 and SIM swapping. Content review round 2 (Oct 2026): D is now a phishable MFA factor instead of a single-factor option; C names FIDO2 instead of describing the site binding. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Eliminate tip names relay knowledge instead of saying 'fake page'. Cross-domain review (MAJOR duplicate with d5_278, d3_056): reviewer's fix applied.",
+      "_provenance": "Authored from concept: 'NIST 800-63B AAL levels for privileged-access MFA design'. Public sources: NIST, CISA, FIDO Alliance, ISACA. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. Content review (Oct 2026): glossed FIDO2 and SIM swapping. Content review round 2 (Oct 2026): D is now a phishable MFA factor instead of a single-factor option; C names FIDO2 instead of describing the site binding. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Eliminate tip names relay knowledge instead of saying 'fake page'. Cross-domain review (MAJOR duplicate with d5_278, d3_056): reviewer's fix applied. Round-2 standards audit: MINOR options.B; MINOR wrong_explanations.B; MINOR tips[0]",
       "style_version": 2
     },
     {
@@ -4960,7 +4961,7 @@
       "options": {
         "A": "Analysts could face a surge of alerts while baselines form",
         "B": "An intruder using a hijacked system identity would go unnoticed",
-        "C": "Analysts may not yet be trained on the analytics console",
+        "C": "The vendor hosts the behavior profiles in its own cloud",
         "D": "Privacy notices may need updating before staff activity is profiled"
       },
       "correct": "B",
@@ -4969,15 +4970,15 @@
       "correct_explanation": "Intruders who gain a foothold often move through service accounts and servers, because those accounts hold broad rights and their odd activity rarely draws attention. Excluding them leaves the analytics blind exactly where attackers operate. Updating privacy notices before profiling staff is the runner-up: it is a real legal duty, but it is a manageable compliance step that does not leave attacks undetected.",
       "wrong_explanations": {
         "A": "Early alert volume is a real burden, but it is temporary and visible, and tuning resolves it.",
-        "C": "Training gaps slow analysis and can be closed quickly; they do not change which accounts the analytics watches.",
+        "C": "Vendor hosting is governed through the contract and the provider's assurance reports; it does not change which accounts the analytics watches.",
         "D": "Transparency duties must be met, but updating a notice is a manageable compliance step that creates no detection blind spot."
       },
       "tips": [
-        "Eliminate: A is temporary alert noise and C a training gap; both can be fixed without changing what the analytics watches.",
+        "Eliminate: A is temporary alert noise while baselines form, and C is a hosting arrangement governed by the vendor contract; neither changes which accounts are watched.",
         "Final two: B beats D because unwatched service accounts leave intruders invisible, while a privacy notice is a manageable compliance step.",
         "Exam cue: in behavior analytics, check coverage of non-human entities; attackers favor service accounts nobody profiles."
       ],
-      "_provenance": "Authored from concept: 'UEBA canonical framework'. Public sources: Gartner, NIST, ISACA, GDPR, ISO. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): re-angled from privacy-before-monitoring (duplicate of d5_058/d5_111) to baseline poisoning. Final polish (Oct 2026). Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): C (licence cost) and D (dashboard detail) were throwaways; they are now a training gap and a privacy-notice duty, real but lesser concerns. Cross-domain review (MAJOR duplicate with d5_300): reviewer's fix applied.",
+      "_provenance": "Authored from concept: 'UEBA canonical framework'. Public sources: Gartner, NIST, ISACA, GDPR, ISO. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): re-angled from privacy-before-monitoring (duplicate of d5_058/d5_111) to baseline poisoning. Final polish (Oct 2026). Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): C (licence cost) and D (dashboard detail) were throwaways; they are now a training gap and a privacy-notice duty, real but lesser concerns. Cross-domain review (MAJOR duplicate with d5_300): reviewer's fix applied. Round-2 standards audit: MINOR options.C; MINOR wrong_explanations.C; MINOR tips[0]",
       "style_version": 2
     },
     {
@@ -6601,10 +6602,10 @@
       "difficulty": "analysis",
       "bloom_level": "Analysis",
       "related_concepts": [
-        "IR plan structural rewrite",
-        "Scenario-specific playbooks",
-        "Cyber insurance broker pre-engagement",
-        "Post-rewrite tabletop validation"
+        "Exercise progression",
+        "Tabletop exercise",
+        "Functional exercise",
+        "Scenario-specific playbooks"
       ],
       "framework_ref": "NIST SP 800-53 Rev 5 IR-3 (Incident Response Testing); NIST SP 800-84 (Guide to Test, Training, and Exercise Programs for IT Plans and Capabilities); NIST SP 800-61 Rev 3 (Incident Response Recommendations and Considerations for Cybersecurity Risk Management)",
       "question": "A tabletop exercise exposed unclear escalation and missing playbooks, and the incident response plan has now been revised. Which follow-up test should the IS auditor recommend as BEST?",
@@ -6628,7 +6629,7 @@
         "Final two: C beats B because a functional drill shows the new playbooks can be executed, while another tabletop only discusses them.",
         "Exam cue: exercises build in stages; once a tabletop has fixed the plan, the next test shows responders can carry it out."
       ],
-      "_provenance": "Authored from concept: 'IR plan failure analysis and comprehensive remediation'. Public sources: ISACA, NIST, ISO, SANS. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): D (vendor template) was a throwaway; it is now training before validation. Eliminate tip no longer says 'discards'. Standards audit fixes: MAJOR options.D; MAJOR wrong_explanations.D; MAJOR tips[0] Cross-domain review (MAJOR duplicate with d4_220, d5_181): reviewer's fix applied.",
+      "_provenance": "Authored from concept: 'IR plan failure analysis and comprehensive remediation'. Public sources: ISACA, NIST, ISO, SANS. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): D (vendor template) was a throwaway; it is now training before validation. Eliminate tip no longer says 'discards'. Standards audit fixes: MAJOR options.D; MAJOR wrong_explanations.D; MAJOR tips[0] Cross-domain review (MAJOR duplicate with d4_220, d5_181): reviewer's fix applied. Round-2 standards audit: MINOR related_concepts",
       "style_version": 2
     },
     {
@@ -7167,12 +7168,13 @@
       "difficulty": "analysis",
       "bloom_level": "Analysis",
       "related_concepts": [
-        "State breach law coordination",
-        "CFPB consumer notification",
-        "Consumer credit monitoring offering",
-        "Post-incident patching governance"
+        "Breach notification decision",
+        "Legal counsel",
+        "Regulatory deadlines",
+        "GLBA Safeguards Rule notification",
+        "SEC Item 1.05 materiality"
       ],
-      "framework_ref": "SEC Form 8-K Item 1.05 (Cybersecurity Disclosure Rule, December 2023); GLBA Safeguards Rule (16 CFR §314)",
+      "framework_ref": "GLBA Safeguards Rule, 16 CFR §314.4(j) (Notification of Security Events to the FTC); SEC Form 8-K Item 1.05 (Cybersecurity Disclosure Rule, December 2023)",
       "question": "A credit bureau confirms attackers stole millions of consumer identity records while its CISO's team is still scoping the breach. Who should the IS auditor consider MOST appropriate to decide when regulators are notified?",
       "options": {
         "A": "Senior management on the advice of legal counsel",
@@ -7194,7 +7196,7 @@
         "Final two: A beats B because notification is a legal and business duty; the CISO informs it, while senior management decides with counsel.",
         "Exam cue: the security team supplies breach facts; senior management, advised by counsel, owns the decision to notify."
       ],
-      "_provenance": "Authored from concept: 'Credit-bureau-scale breach forensic investigation, tonal Equifax 2017 echo'. Public sources: ISACA, FTC, CFPB, state laws, public incident lessons. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): removed the inaccurate claim that securities disclosure runs from discovery. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): C (publish attack details) was a strawman; it is now a split notification that delays the regulator. Self-review (stage 4): the earlier C (notify consumers, hold the regulator) was arguably as good as the key; it is now a readiness-driven delay. Standards audit fixes: MAJOR options.C; MAJOR wrong_explanations.C; MAJOR tips[0]; MINOR correct_explanation Cross-domain review (MAJOR duplicate with d5_173, d5_235): reviewer's fix applied.",
+      "_provenance": "Authored from concept: 'Credit-bureau-scale breach forensic investigation, tonal Equifax 2017 echo'. Public sources: ISACA, FTC, CFPB, state laws, public incident lessons. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): removed the inaccurate claim that securities disclosure runs from discovery. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): C (publish attack details) was a strawman; it is now a split notification that delays the regulator. Self-review (stage 4): the earlier C (notify consumers, hold the regulator) was arguably as good as the key; it is now a readiness-driven delay. Standards audit fixes: MAJOR options.C; MAJOR wrong_explanations.C; MAJOR tips[0]; MINOR correct_explanation Cross-domain review (MAJOR duplicate with d5_173, d5_235): reviewer's fix applied. Round-2 standards audit: MINOR related_concepts; MINOR framework_ref",
       "style_version": 2,
       "principle_id": "escalate-to-decision-owner"
     },
@@ -8772,7 +8774,7 @@
       "options": {
         "A": "Require stronger passwords on the administrator accounts",
         "B": "Have admins re-register their multi-factor authentication devices",
-        "C": "Strip session tokens from diagnostic files before sharing them",
+        "C": "Strip session tokens from files before sharing them externally",
         "D": "Shorten the session timeout used for future admin sign-ins"
       },
       "correct": "C",
@@ -8789,7 +8791,7 @@
         "Final two: C beats D because removing tokens stops the leak at its source, while shorter timeouts only limit how long a leaked cookie works.",
         "Exam cue: session tokens are credentials; clean any file sent to a third party of tokens and secrets before it leaves."
       ],
-      "_provenance": "Authored from concept: 'Support-System Session-Cookie Theft Forensic Investigation'. Public sources only (NIST, ISO, ISACA, OWASP, regulatory frameworks). Echo: Okta support-system breach Oct 2023 tonal echo. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): B (wait for indicators) and D (let sessions expire) were throwaways; they are now MFA re-registration and a shorter timeout, both of which leave stolen sessions live. Cross-domain review (MAJOR duplicate with d5_119, d5_060, d5_099): reviewer's fix applied.",
+      "_provenance": "Authored from concept: 'Support-System Session-Cookie Theft Forensic Investigation'. Public sources only (NIST, ISO, ISACA, OWASP, regulatory frameworks). Echo: Okta support-system breach Oct 2023 tonal echo. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): B (wait for indicators) and D (let sessions expire) were throwaways; they are now MFA re-registration and a shorter timeout, both of which leave stolen sessions live. Cross-domain review (MAJOR duplicate with d5_119, d5_060, d5_099): reviewer's fix applied. Round-2 standards audit: MINOR options.C",
       "style_version": 2
     },
     {
@@ -8876,18 +8878,17 @@
       "difficulty": "analysis",
       "bloom_level": "Analysis",
       "related_concepts": [
-        "CA compromise",
-        "REVOCATION-FIRST",
-        "chain-of-custody-first",
-        "21 CFR Part 11",
-        "key exposure"
+        "CA private key compromise",
+        "Issuance log limits",
+        "Evidence sufficiency",
+        "Key compromise response"
       ],
       "framework_ref": "NIST SP 800-57 Part 1 Rev 5 (Recommendation for Key Management); NIST SP 800-53 Rev 5 SC-17 (Public Key Infrastructure Certificates); IETF RFC 5280 (Internet X.509 PKI Certificate and CRL Profile)",
       "question": "A laptop stolen six days ago held a copy of the internal CA's private key, and management cites the CA's clean issuance log as proof of no misuse. What is the IS auditor's GREATEST concern?",
       "options": {
         "A": "The issuance log may not record who approved each certificate",
         "B": "The issuance log could have been altered by CA administrators",
-        "C": "Certificates signed offline with the copy never reach that log",
+        "C": "Attackers can sign certificates without the CA ever recording them",
         "D": "The CA publishes its certificate revocation list once a week"
       },
       "correct": "C",
@@ -8897,14 +8898,14 @@
       "wrong_explanations": {
         "A": "Approval records support accountability for issued certificates, but they say nothing about certificates the attacker signs elsewhere.",
         "B": "Log integrity matters, but even an untouched log records only what the CA itself issued, not what a stolen copy signed.",
-        "D": "Weekly publication slows how fast revocation takes effect, but it does not affect whether the stolen key has been misused."
+        "D": "Revocation lists are commonly weekly, and the CA's own list cannot cover certificates it never issued; distrusting the CA itself must come from its issuer or trust stores."
       },
       "tips": [
         "Eliminate: A concerns approval records and D concerns revocation timing; neither bears on whether the copied key was misused.",
         "Final two: C beats B because certificates signed with a stolen copy never pass through the CA, so even an intact log cannot show them.",
         "Exam cue: evidence must be able to show the event in question; a system's own log cannot record actions taken outside that system."
       ],
-      "_provenance": "Authored from concept: 'Internal CA Key Discovered on Stolen Laptop Forensic Sequencing'. Public sources only (NIST, ISO, ISACA, OWASP, regulatory frameworks). Echo: reinforces REVOCATION-FIRST principle introduced in d5_232. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): B (notify regulators first) was a strawman; it is now a partial revocation that leaves the CA trusted. Cross-domain review (MAJOR duplicate with d5_077, d5_232, d5_039): reviewer proposed retirement; re-angled instead to evidence quality (a CA's own log cannot show offline signing with a stolen copy), key letter kept.",
+      "_provenance": "Authored from concept: 'Internal CA Key Discovered on Stolen Laptop Forensic Sequencing'. Public sources only (NIST, ISO, ISACA, OWASP, regulatory frameworks). Echo: reinforces REVOCATION-FIRST principle introduced in d5_232. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): B (notify regulators first) was a strawman; it is now a partial revocation that leaves the CA trusted. Cross-domain review (MAJOR duplicate with d5_077, d5_232, d5_039): reviewer proposed retirement; re-angled instead to evidence quality (a CA's own log cannot show offline signing with a stolen copy), key letter kept. Round-2 standards audit: MAJOR options.C; MINOR wrong_explanations.D; MINOR related_concepts. Re-angle check (Oct 2026): options A, B and D are now log-approval, log-integrity and CRL-timing concerns; the earlier B note no longer applies.",
       "style_version": 2
     },
     {
@@ -9336,17 +9337,17 @@
       "id": "d5_248",
       "domain": 5,
       "subtopic": "AI/ML Model Exfiltration + Training-Data Leakage via Prompt Injection",
-      "principle_id": "prevent-before-detect",
+      "principle_id": "root-cause-over-symptom",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
       "related_concepts": [
-        "AI/ML model exfiltration",
-        "prompt injection",
-        "forensic-imaging-before-wipe",
-        "MITRE ATLAS",
-        "differential privacy"
+        "Training-data memorization",
+        "Data minimization",
+        "De-identification",
+        "Prompt injection",
+        "Sensitive information disclosure"
       ],
-      "framework_ref": "ISO/IEC 27002:2022 Control 5.28 (Collection of Evidence); OWASP LLM Top 10 (LLM01: Prompt Injection); HIPAA Breach Notification Rule (45 CFR §§ 164.400-414)",
+      "framework_ref": "HIPAA Privacy Rule, 45 CFR §164.514(a)-(b) (De-identification of Protected Health Information); OWASP Top 10 for LLM Applications 2025 (LLM02: Sensitive Information Disclosure); NIST AI 100-2 E2025 (Adversarial Machine Learning)",
       "question": "A public diagnostic AI was tricked for four weeks into revealing patient records it had memorized from its training data. Which control should the IS auditor recommend to BEST prevent a repeat?",
       "options": {
         "A": "Filter user prompts that ask for patient records",
@@ -9368,7 +9369,7 @@
         "Final two: C beats A because a model cannot reveal data it never learned, while prompt filters can be bypassed by rewording.",
         "Exam cue: for AI data leakage, minimize personal data before training rather than only guarding the interface afterward."
       ],
-      "_provenance": "Authored from concept: 'AI/ML model exfiltration + training-data leakage via prompt-injection; IP forensics'. Public sources only (NIST, ISO, ISACA, OWASP, regulatory frameworks). Echo: No real-world echo. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): A (sue the attacker) was a strawman; it is now a hardened reopening, a real fix-forward step taken before preservation. Cross-domain review (MAJOR duplicate with d5_211, d5_190): reviewer's fix applied.",
+      "_provenance": "Authored from concept: 'AI/ML model exfiltration + training-data leakage via prompt-injection; IP forensics'. Public sources only (NIST, ISO, ISACA, OWASP, regulatory frameworks). Echo: No real-world echo. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): A (sue the attacker) was a strawman; it is now a hardened reopening, a real fix-forward step taken before preservation. Cross-domain review (MAJOR duplicate with d5_211, d5_190): reviewer's fix applied. Round-2 standards audit: MAJOR framework_ref; MINOR principle_id; MINOR related_concepts",
       "style_version": 2
     },
     {
@@ -11452,12 +11453,12 @@
       "bloom_level": "Application",
       "related_concepts": [
         "SDN controller",
-        "Single point of failure",
-        "Automatic failover",
-        "Configuration backup"
+        "Management plane isolation",
+        "Administration network",
+        "Defense in depth"
       ],
-      "framework_ref": "ONF TR-511 (Principles and Practices for Securing Software-Defined Networks); ISO/IEC 27002:2022 Control 8.14 (Redundancy of Information Processing Facilities)",
-      "question": "A hospital's new software-defined network lets any device on the staff network reach the controller's management interface. Which recommendation is MOST important for the IS auditor to make?",
+      "framework_ref": "ONF TR-511 (Principles and Practices for Securing Software-Defined Networks); ISO/IEC 27002:2022 Control 8.22 (Segregation of Networks); NIST SP 800-53 Rev 5 SC-7 (Boundary Protection)",
+      "question": "A hospital's software-defined network controller requires administrator sign-in, but its management interface is reachable from every staff device. Which recommendation is MOST important for the IS auditor to make?",
       "options": {
         "A": "Restrict controller access to a separate administration network",
         "B": "Alert the security team to every controller configuration change",
@@ -11465,9 +11466,9 @@
         "D": "Keep daily controller configuration backups on separate storage"
       },
       "correct": "A",
-      "key_concept": "An SDN controller can reprogram the whole network, so its management interface should be reachable only from a restricted administration network.",
-      "pre_read": "Notice who can reach the controller. Ask what someone who took control of it could do to the network.",
-      "correct_explanation": "Whoever controls the SDN controller can reroute, mirror or block traffic across the whole hospital network, so its management interface must not be reachable from general staff devices. Restricting access to a separate administration network removes that exposure. Alerting on configuration changes is the runner-up: it helps spot misuse, but only after an attacker has already changed how the network behaves.",
+      "key_concept": "Sign-in alone is not enough for an SDN controller; its management interface should be reachable only from a restricted administration network.",
+      "pre_read": "Notice that sign-in is required yet every staff device can reach the controller. Ask what limits the exposure if a password or device is compromised.",
+      "correct_explanation": "Whoever controls the SDN controller can reroute or block traffic across the hospital, and sign-in alone fails once a password is phished or a staff device is compromised. Restricting the management interface to a separate administration network removes that exposure as a second layer. Alerting on configuration changes is the runner-up: it helps spot misuse, but only after an attacker has already changed how the network behaves.",
       "wrong_explanations": {
         "B": "Change alerts are detective; by the time one fires, an attacker may already have rerouted or blocked hospital traffic.",
         "C": "A standby improves availability, but it leaves the management interface open to every staff device.",
@@ -11476,9 +11477,9 @@
       "tips": [
         "Eliminate: C improves availability and D speeds recovery; neither limits who can reach the controller.",
         "Final two: A beats B because restricting access prevents misuse of the controller, while change alerts only detect it afterward.",
-        "Exam cue: centralized control planes are high-value targets; isolate their management access before adding detection."
+        "Exam cue: centralized control planes need layered protection; isolate their management access, even behind sign-in, before adding detection."
       ],
-      "_provenance": "Authored from concept: 'Software-Defined Networking. Controller Redundancy'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A8.5 (Wave 1 coverage batch Q2: a subtopic with no practice yet). Public sources: ONF, ISO/IEC. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Eliminate tip no longer says 'abandons'. Cross-domain review (MAJOR duplicate with d4_008): reviewer's fix applied.",
+      "_provenance": "Authored from concept: 'Software-Defined Networking. Controller Redundancy'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A8.5 (Wave 1 coverage batch Q2: a subtopic with no practice yet). Public sources: ONF, ISO/IEC. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Eliminate tip no longer says 'abandons'. Cross-domain review (MAJOR duplicate with d4_008): reviewer's fix applied. Round-2 standards audit: MAJOR question; MAJOR correct_explanation; MAJOR key_concept; MAJOR pre_read; MAJOR tips[2]; MAJOR framework_ref; MINOR related_concepts",
       "style_version": 2,
       "principle_id": "prevent-before-detect"
     },
@@ -12194,14 +12195,14 @@
       "id": "d5_327",
       "domain": 5,
       "subtopic": "Firewall Rule Sets. Rule Base Approach",
-      "principle_id": "management-owns-risk",
+      "principle_id": "risk-sets-priority",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
       "related_concepts": [
-        "Firewall rule set",
-        "Rule recertification",
-        "Rule ownership",
-        "Root cause"
+        "First-match rule processing",
+        "Rule shadowing",
+        "Rule ordering",
+        "Deny rules"
       ],
       "framework_ref": "NIST SP 800-41 Rev 1 (Guidelines on Firewalls and Firewall Policy); COBIT 2019 DSS05 (Managed Security Services)",
       "question": "An IS auditor finds a broad allow rule near the top of a first-match perimeter firewall's rule set, above deny rules for known malicious networks. Which risk is MOST significant?",
@@ -12225,7 +12226,7 @@
         "Final two: D beats B because the misplaced allow rule admits hostile traffic now, while harder maintenance is an administrative weakness.",
         "Exam cue: in first-match rule sets, order is security; specific deny rules must sit above broad allow rules."
       ],
-      "_provenance": "Authored from concept: 'Firewall Rule Sets. Rules With No Owner or Purpose'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A4.1 (Wave 2 coverage batch Q5: a thin high-yield network subtopic). Public sources: NIST and ISACA COBIT 2019. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Cue balance: the key no longer says 'owners' and is no longer the longest option. Cross-domain review (MAJOR duplicate with d5_158, d2_191): reviewer's fix applied.",
+      "_provenance": "Authored from concept: 'Firewall Rule Sets. Rules With No Owner or Purpose'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A4.1 (Wave 2 coverage batch Q5: a thin high-yield network subtopic). Public sources: NIST and ISACA COBIT 2019. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Cue balance: the key no longer says 'owners' and is no longer the longest option. Cross-domain review (MAJOR duplicate with d5_158, d2_191): reviewer's fix applied. Round-2 standards audit: MAJOR principle_id; MINOR related_concepts",
       "style_version": 2
     },
     {

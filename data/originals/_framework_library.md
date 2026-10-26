@@ -2055,4 +2055,11 @@ questions (v10.0/v10.1), and miscellaneous additions from v9.8-v10.2 polish.
 ## D3 round 3 additions (Oct 2026)
 - PMI, The Standard for Risk Management in Portfolios, Programs, and Projects (2019)
 
+## D5 round 2 additions (Oct 2026)
+- NIST SP 800-53 Rev 5 PE-15 (Water Damage Protection)
+- GLBA Safeguards Rule, 16 CFR §314.4(j) (Notification of Security Events to the FTC)
+- HIPAA Privacy Rule, 45 CFR §164.514(a)-(b) (De-identification of Protected Health Information)
+- OWASP Top 10 for LLM Applications 2025 (LLM02: Sensitive Information Disclosure)
+- NIST AI 100-2 E2025 (Adversarial Machine Learning)
+
 Citations to ISACA's commercial CISA study guide were removed from the bank and this library in Oct 2026 (owner decision on legal advice); cite the public ITAF, COBIT, NIST, ISO or IIA source instead.
