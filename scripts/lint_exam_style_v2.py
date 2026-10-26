@@ -13,6 +13,11 @@ Usage:
 A batch file may be a list of questions, a list of {"after": question}
 pairs, or a full originals file ({"questions": [...]}).
 
+Warnings (review by judgement) include two checks for the owner's rule in
+design rule 1 (Oct 2026): gap-echo (the stem names a missing item and only the
+key supplies it) and a dismissive Eliminate tip (strawman words such as
+"ignores" or "abandons" instead of the CISA knowledge that rules an option out).
+
 Exit codes: 0 = clean, 1 = errors (must fix), 2 = warnings only.
 """
 import json
@@ -28,6 +33,14 @@ ACTOR_WORDS = ["auditor", "audit", "management", "board", "organization", "commi
                "director", "ciso", "cio", "cto", "ceo", "cfo", "coo", "cae", "dpo", "team", "lead"]
 LONE_ABSOLUTES = ["always", "never", "all", "in full", "inherently", "per se", "only", "guarantees?"]
 STOP = set("the a an of to and or for in on by with is are be that this which what who its it as at from not".split())
+# Gap-echo (rule 1 + 5): the stem names a missing item ("no owner", "without a baseline")
+# and only the key supplies it, so the item is answerable by word-matching.
+GAP_CUE = re.compile(r"\b(no one|no|without|lacks?|lacking|missing|never|only|not|none|nobody)\b((?:\W+\w+){1,6})", re.I)
+GAP_STOP = STOP | set("each every their they them than then into only been has have before after any".split())
+# Dismissive Eliminate tip (rule 1): an eliminated option should fall to CISA knowledge,
+# not to a strawman ("ignores the risk", "abandons the project", "at all").
+DISMISSIVE = re.compile(r"\b(ignor\w*|abandon\w*|discard\w*|throws? away|hides?|fakes?|overreact\w*|strawman|nonsense|"
+                        r"stalls?|blame|altogether|at all)\b", re.I)
 
 MAX_STEM = 35
 MAX_OPTION = 12
@@ -115,6 +128,17 @@ def check(q):
     echo = {k: bool(content_words(v) & sw) for k, v in opts.items()}
     if echo[c] and not any(echo[k] for k in opts if k != c):
         warns.append(f"only the key echoes the stem: {sorted(content_words(opts[c]) & sw)}")
+    # 5b. Gap-echo: a word right after a negation cue in the stem (5-letter stem match)
+    # appears in the key and in no distractor.
+    def stem5(text):
+        return {w.lower()[:5] for w in re.findall(r"[A-Za-z]+", text or "") if len(w) > 3 and w.lower() not in GAP_STOP}
+    gap = set()
+    for m in GAP_CUE.finditer(stem):
+        gap |= stem5(m.group(2))
+    key_only = (stem5(opts[c]) & gap) - set().union(*(stem5(v) for k, v in opts.items() if k != c))
+    if key_only:
+        warns.append(f"gap-echo: the stem names a missing item that only the key supplies {sorted(key_only)}; "
+                     "state the gap as a fact or give a distractor a partial remedy")
     # 6. Lone absolutes in distractors
     for k, v in opts.items():
         hits = [a for a in LONE_ABSOLUTES if k != c and re.search(rf"\b{a}\b", v.lower())]
@@ -143,6 +167,10 @@ def check(q):
             if words(tip) > MAX_TIP:
                 errs.append(f"tip {i + 1} {words(tip)}w > {MAX_TIP}")
         elim = set(re.findall(r"\b([A-D])\b", t[0].split(":", 1)[1]))
+        dis = DISMISSIVE.findall(t[0])
+        if dis:
+            warns.append(f"Eliminate tip dismisses with '{dis[0]}': an eliminated option should fall to knowledge, not absurdity; "
+                         "name the CISA knowledge that rules it out")
         m = re.search(r"Final two: ([A-D]) beats ([A-D])", t[1])
         if not m or m.group(1) != c:
             errs.append("tip 2 must start 'Final two: <key> beats <runner-up>'")

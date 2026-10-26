@@ -223,6 +223,7 @@
   --t-hero: 500 28px/34px var(--f-serif);      --tr-hero: -0.4px;
   --t-stem: 400 21px/30px var(--f-serif);
   --t-quote: italic 400 18px/26px var(--f-serif);
+  --t-read: 400 18px/26px var(--f-serif);
   --t-stage: italic 400 19px/25px var(--f-serif);
   --t-headline: 600 17px/24px var(--f-sans);
   --t-label: 600 16px/22px var(--f-sans);
@@ -5013,7 +5014,7 @@ body[data-tab]:not([data-tab="about"]):not([data-tab="faq"]) .legal-disclaimer {
   font: inherit; color: var(--accent-text); text-decoration: underline; text-underline-offset: 3px;
 }
 /* A taller tap area that takes no room in the layout. */
-.td-setdate { display: inline-block; padding: 12px 4px; margin: -12px -4px; }
+.td-setdate { display: inline-block; padding: 14px 4px; margin: -14px -4px; }
 .td-setdate:hover { color: var(--text); }
 .td-setdate:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; border-radius: 4px; }
 @media (min-width: 1024px) { .td-count { display: none; } }
@@ -5023,6 +5024,7 @@ body[data-tab]:not([data-tab="about"]):not([data-tab="faq"]) .legal-disclaimer {
 .td-hero-t, .td-hero-m { max-width: min(520px, calc(100% - 110px)); }
 .td-hero-acts { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-sm) var(--sp-lg); margin-top: var(--sp-xl); }
 .td-go { padding: 0 var(--sp-xxl); }
+.td-hero-q { margin: 0; font: var(--t-meta); color: var(--on-forest2); }
 /* Today's plan (v12.33): the items in order, on the forest */
 .td-plan { list-style: none; margin: var(--sp-md) 0 0; padding: 0; max-width: min(520px, calc(100% - 110px)); }
 .td-plan li { display: flex; align-items: baseline; gap: var(--sp-md); padding: var(--sp-xs) 0; }
@@ -5038,9 +5040,90 @@ body[data-tab]:not([data-tab="about"]):not([data-tab="faq"]) .legal-disclaimer {
 .rs-tm-cap { margin: 0; font: var(--t-caption); color: var(--accent-text); }
 .rs-tm-t { margin: var(--sp-sm) 0 0; font: var(--t-body); color: var(--text); }
 .rs-one { margin-top: var(--sp-sm); }
-/* Readiness plate (L1: tonal, never tapped) */
-.td-plate { margin-top: 32px; background: var(--raised2); border-radius: var(--r-lg); padding: var(--sp-xxl); }
+/* The right column: one L1 plate (tonal, never tapped as a whole) with the
+   readiness, the week and the plant; --td-paper is what a leaf's vein cuts to. */
+.td-side { margin-top: var(--sp-section); }
+.td-plate { --td-paper: var(--raised2); background: var(--raised2); border-radius: var(--r-lg); padding: var(--sp-xxl); }
 .td-fig { display: flex; flex-direction: column; align-items: center; gap: var(--sp-md); text-align: center; }
+.td-fig-text .td-est { margin-top: var(--sp-xs); }
+.td-ready-more > :first-child { margin-top: var(--sp-xl); }
+.td-gain { margin: var(--sp-xl) 0 0; font: var(--t-small); color: var(--text2); }
+.td-gain-d { font: var(--t-label); color: var(--text); }
+.td-how { margin-top: var(--sp-sm); }
+.td-how-s {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--sp-sm); min-height: 48px;
+  list-style: none; cursor: pointer; font: var(--t-label); color: var(--text); border-radius: var(--r-sm);
+}
+.td-how-s::-webkit-details-marker { display: none; }
+.td-how-s .ico { flex-shrink: 0; color: var(--muted); }
+.td-how[open] > .td-how-s .ico { transform: rotate(180deg); }
+.td-how > .td-note:nth-child(2) { margin-top: var(--sp-xs); }
+.td-link {
+  display: inline-flex; align-items: center; gap: var(--sp-xs); min-height: 48px;
+  font: var(--t-label); color: var(--accent-text); text-decoration: none; border-radius: var(--r-sm);
+}
+.td-link:hover { text-decoration: underline; text-underline-offset: 3px; }
+.td-link .ico { flex-shrink: 0; }
+.td-how-s:focus-visible, .td-link:focus-visible, .td-mind-opt:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+/* Exam week and exam day: readiness in words only */
+.td-words { margin: 0; font: var(--t-headline); color: var(--text); }
+/* This week: seven leaves, Mon to Sun (filled = studied, an outline otherwise) */
+.td-week { margin-top: var(--sp-xl); padding-top: var(--sp-md); border-top: 1px solid var(--border); }
+.td-week-h { margin: 0; font: var(--t-caption); color: var(--text2); }
+.td-week-row { display: flex; justify-content: space-between; gap: var(--sp-xs); max-width: 400px; margin-top: var(--sp-sm); }
+.td-wd { flex: 1 1 0; max-width: 48px; display: flex; flex-direction: column; align-items: center; gap: var(--sp-xs); padding: var(--sp-xs) 0; border-radius: var(--r-md); }
+.td-wd.today { box-shadow: inset 0 0 0 2px var(--text); }
+.td-wd-n { font: var(--t-caption); color: var(--text2); }
+.td-wd.today .td-wd-n { color: var(--text); }
+.td-leaf { display: block; flex-shrink: 0; }
+.td-leaf-b { fill: none; stroke: var(--control); stroke-width: 1.5; }
+.td-leaf-v { fill: none; stroke: var(--control); stroke-width: 1.3; stroke-linecap: round; }
+.td-leaf.on .td-leaf-b { fill: var(--accent); stroke: var(--accent); }
+.td-leaf.on .td-leaf-v { stroke: var(--td-paper, var(--bg)); }
+.td-wd.today .td-leaf.off .td-leaf-b { stroke: var(--text); stroke-width: 2; }
+.td-wkline .td-leaf { width: 20px; height: 20px; }
+/* Below 1180px, one visual per visit: the rings or the week, by the day */
+@media (max-width: 1179px) {
+  .td-vis-week .td-rings { display: none; }
+  .td-vis-rings .td-week { display: none; }
+}
+/* The Mindset check: one compact row that opens one question in place */
+.td-mind-slot:empty { display: none; }
+.td-mind { margin-top: var(--sp-section); }
+.td-mind-open { margin-top: var(--sp-xs); }
+.td-mind-m { font: var(--t-meta); color: var(--text2); white-space: nowrap; }
+.td-mind-open[aria-expanded="true"] .td-mind-chev .ico { transform: rotate(180deg); }
+.td-mind-body { padding: var(--sp-lg) 0 var(--sp-xs); }
+.td-mind-body[hidden] { display: none; }
+/* A read-in-place stem that stays quieter than the plan */
+.td-mind-q { margin: 0; font: var(--t-read); color: var(--text); max-width: 60ch; }
+.td-mind-fs { min-width: 0; margin: var(--sp-lg) 0 0; padding: 0; border: 0; display: flex; flex-direction: column; gap: var(--sp-md); }
+.td-mind-lg { margin: 0 0 var(--sp-md); padding: 0; font: var(--t-caption); color: var(--text2); }
+.td-mind-opt {
+  display: flex; flex-direction: column; align-items: flex-start; gap: var(--sp-xs); width: 100%; min-height: 56px;
+  padding: var(--sp-md) var(--sp-lg); background: none; border: 1.5px solid var(--control); border-radius: var(--r-md);
+  cursor: pointer; text-align: left; font: var(--t-body); color: var(--text);
+}
+.td-mind-opt:hover { background: var(--raised2); }
+.td-mind-opt[aria-pressed="true"] { border: 2px solid var(--text); padding: calc(var(--sp-md) - .5px) calc(var(--sp-lg) - .5px); }
+.td-mind-opt.is-key, .td-mind-opt.is-key:hover { background: var(--correct-light); border-color: var(--correct); }
+.td-mind-opt.is-key[aria-pressed="true"] { border-color: var(--text); }
+.td-mind-tag { display: inline-flex; align-items: center; gap: var(--sp-xs); font: var(--t-caption); color: var(--text); }
+.td-mind-tag:empty { display: none; }
+.td-mind-hint { margin: var(--sp-md) 0 0; font: var(--t-meta); color: var(--text2); }
+.td-mind-hint:has(+ .td-mind-v.ok), .td-mind-hint:has(+ .td-mind-v.no) { display: none; }
+.td-mind-v.ok, .td-mind-v.no { margin-top: var(--sp-md); padding: var(--sp-lg) var(--sp-lg) var(--sp-xs); border-radius: var(--r-md); }
+.td-mind-v.ok { background: var(--correct-light); }
+.td-mind-v.no { background: var(--surface2); }
+.td-mind-vt { margin: 0; font: var(--t-small); color: var(--text); }
+.td-mind-vt strong { font-weight: 600; }
+/* Read-only principle (exam week's "One idea for exam day"): the coach's voice */
+.td-idea-b { margin-top: var(--sp-md); padding-left: var(--sp-lg); border-left: 3px solid var(--accent); }
+.td-idea-t { margin: 0; font: var(--t-label); color: var(--text); }
+.td-idea-q { margin: var(--sp-xs) 0 0; font: var(--t-quote); color: var(--text); max-width: 60ch; }
+.td-idea .td-link { margin-top: var(--sp-xs); }
+/* Every Today control is at least 48px tall */
+.td .gt-btn-ghost, .td .plnt-ghost { min-height: 48px; }
 .td-rings { display: block; max-width: 100%; height: auto; }
 .td-big { font: var(--t-number); letter-spacing: var(--tr-number); color: var(--text); margin: 0; white-space: nowrap; }
 .td-big sup { font-size: .48em; line-height: 0; vertical-align: .8em; margin-left: 0; letter-spacing: 0; }
@@ -5060,23 +5143,29 @@ body[data-tab]:not([data-tab="about"]):not([data-tab="faq"]) .legal-disclaimer {
 .td-kicker { font: var(--t-caption); color: var(--accent-text); }
 .td-apps { font: var(--t-meta); color: var(--text2); margin: var(--sp-xl) 0 0; }
 .td-legal { font: var(--t-meta); color: var(--text2); margin: var(--sp-section) 0 0; }
-/* Single column with room: the rings beside their legend */
+/* Single column with room: the rings (or the figure) beside their legend */
 @media (min-width: 560px) and (max-width: 1179px) {
-  .td-plate { display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: var(--sp-section); align-items: center; }
-  .td-plate .td-legend { margin-top: 0; }
+  .td-ready:not(.td-ready-quiet):not(.td-ready-words) { display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: var(--sp-section); align-items: center; }
+  .td-ready-more > :first-child { margin-top: 0; }
+  /* A week-strip day hides the rings: the figure sits above the legend instead of floating beside it. */
+  .td-vis-week .td-ready:not(.td-ready-quiet):not(.td-ready-words) { display: block; }
+  .td-vis-week .td-ready-more > :first-child { margin-top: var(--sp-xl); }
 }
+/* Narrow phones: the plan text may run under the decorative frond */
+@media (max-width: 399px) {
+  .td-hero-t, .td-hero-m, .td-plan { max-width: none; }
+}
+/* Two columns: the plan on the left, a glanceable 320px column on the right */
 @media (min-width: 1180px) {
-  .td { max-width: none; display: grid; grid-template-columns: minmax(0, 1fr) 320px; grid-template-rows: auto auto 1fr; column-gap: var(--sp-xxxl); align-items: start; }
-  .td-head, .td-hero, .td-next, .td-apps { grid-column: 1; }
+  .td { max-width: none; display: grid; grid-template-columns: minmax(0, 1fr) 320px; column-gap: var(--sp-xxxl); align-items: start; }
+  .td-main { grid-column: 1; grid-row: 1; min-width: 0; }
+  .td-side { grid-column: 2; grid-row: 1; margin-top: 0; }
+  .td-apps { grid-column: 1; }
   .td-legal { grid-column: 1 / -1; }
-  .td-plate { grid-column: 2; grid-row: 1 / span 3; margin-top: 0; }
-  .td-side { grid-column: 2; grid-row: 1 / span 3; }
-  .td-side > .td-plate { grid-column: auto; grid-row: auto; }
+  .td-side .td-rings { width: 144px; }
 }
 @media (min-width: 1180px) and (min-height: 720px) {
-  .td-plate { position: sticky; top: 40px; }
   .td-side { position: sticky; top: 40px; }
-  .td-side > .td-plate { position: static; }
 }
 /* The rings draw in once a day, outer ring first (DESIGN_SYSTEM §10.1); still under reduced motion. */
 @keyframes tdArc { from { stroke-dashoffset: 1; opacity: 0; } 4% { opacity: 1; } to { stroke-dashoffset: 0; opacity: 1; } }
@@ -6251,11 +6340,9 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 .you-stats .stat-num.stat-word { font: 500 20px/26px var(--f-serif); letter-spacing: 0; }
 
 /* Today: before the first readiness range, one quiet line instead of the empty rings. */
-.td-plate.td-plate-quiet { background: none; padding: 0; }
+.td-plate.td-plate-quiet { --td-paper: var(--bg); background: none; padding: 0; }
 .td-wait { margin: 0; font: var(--t-meta); color: var(--text2); }
-@media (min-width: 560px) and (max-width: 1179px) {
-  .td-plate.td-plate-quiet { display: block; }
-}
+.td-ready-quiet .td-est { margin-top: var(--sp-xs); }
 /* GROVE-LAYER-END */
 </style>
 </head>
@@ -6464,7 +6551,7 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
     <h1 class="vision-title" id="aboutScreenTitle">Think like an IS auditor.</h1>
     <p class="vision-line">CISA exam prep, taught the way the exam thinks.</p>
   </section>
-  <p class="about-version">KaiSip web <span class="bank-pill" id="versionPill">v12.35</span></p>
+  <p class="about-version">KaiSip web <span class="bank-pill" id="versionPill">v12.36</span></p>
   <section class="vision-body" aria-label="What KaiSip stands for">
     <!-- The provenance line (owner, 22 Oct 2026): the same words in the hero, the disclaimer and the FAQ. -->
     <p class="vision-desc">Original questions and notes, written with AI assistance and checked against ISACA’s published exam outline and standards.</p>
@@ -6794,7 +6881,7 @@ const MOCK_TIER_LABEL = { analysis: 'Harder', application: 'Middle', foundationa
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v12.35';
+const APP_VERSION = 'v12.36';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -7284,6 +7371,10 @@ S.current = null;
 // â”€â”€ PROFILE SYSTEM â”€â”€
 var PROFILES_KEY = "cisa_profiles_v1";    // stores {id: profileObj}
 var ACTIVE_KEY   = "cisa_active_profile"; // stores active profile id
+// The record this tab loaded (or switched to itself). If another tab makes a
+// different record active, saveState here stops writing, so this tab's
+// progress never lands in that record. A reload picks up the new record.
+var profileInUse = null;
 
 var PROFILE_COLORS = ['#3F7F96','#4E8A3E','#B0802C','#86689C','#5E7482','#2B6E4A'];
 
@@ -7295,6 +7386,9 @@ function genProfileId() {
 }
 
 function getProfiles() {
+  // A save still waiting (saveStateSoon) is written first, so whoever reads
+  // the stored progress sees the latest.
+  try { flushSaveSoon(); } catch (e) {}
   try {
     var raw = JSON.parse(localStorage.getItem(PROFILES_KEY) || '{}');
     var clean = {};
@@ -7322,6 +7416,7 @@ function getActiveProfileId() {
 }
 
 function setActiveProfileId(id) {
+  profileInUse = id; // this tab switches, so it keeps writing to the new record
   try { localStorage.setItem(ACTIVE_KEY, id); } catch(e) {}
 }
 
@@ -8015,7 +8110,7 @@ function normalizeImportedState(state) {
                 "timerEnabled","timerSeconds","qIdx","mindsetIdx","glossMastered","topicReviewed","topicViewed",
                 "current","qn","activeTab","review","topicTicksSchema",
                 "answerLog","mistakeLog","studyDays","mockHistory","qNotes",
-                "plant","plantSettings","cleanLog","readinessLog","finalWeekDone"];
+                "plant","plantSettings","cleanLog","readinessLog","finalWeekDone","lastOpenedSubtopic"];
   fields.forEach(function(k) {
     if (state[k] !== undefined) clean[k] = state[k];
   });
@@ -8075,7 +8170,7 @@ function normalizeImportedState(state) {
   // Saves from before the Started state have no topicViewed: load as empty.
   clean.topicViewed = sanitizeTickMap(clean.topicViewed);
   clean.topicTicksSchema = Math.min(9, importCount(clean.topicTicksSchema));
-  if (!clean.lastOpenedSubtopic || typeof clean.lastOpenedSubtopic !== 'object') clean.lastOpenedSubtopic = {};
+  clean.lastOpenedSubtopic = sanitizeLastOpened(clean.lastOpenedSubtopic);
   if (["1","2","3","4","5","all"].indexOf(String(clean.selectedDomain)) === -1) clean.selectedDomain = "1";
   clean.selectedDomain = String(clean.selectedDomain);
   if (["any","foundational","application","analysis"].indexOf(clean.diff) === -1) clean.diff = "any";
@@ -8111,6 +8206,19 @@ function sanitizeAnsweredIds(m) {
   return out;
 }
 // Read ticks, "started" notes and mastered terms: id -> true or a time (ms).
+// "Continue reading": domain -> { id, name, ts }. Only known domains and a
+// note id in the usual shape are kept; the name is shown escaped.
+function sanitizeLastOpened(m) {
+  var out = {};
+  if (!m || typeof m !== 'object' || Array.isArray(m)) return out;
+  Object.keys(DI).forEach(function(d) {
+    var e = m[d];
+    if (!e || typeof e !== 'object' || typeof e.id !== 'string' || !PARITY_ID_RE.test(e.id)) return;
+    var ts = Number(e.ts);
+    out[d] = { id: e.id, name: typeof e.name === 'string' ? e.name.substring(0, 200) : e.id, ts: isFinite(ts) && ts > 0 ? ts : 0 };
+  });
+  return out;
+}
 function sanitizeTickMap(m) {
   var out = {};
   if (!isPlainObj(m)) return out;
@@ -8173,10 +8281,53 @@ function shouldResumeCurrent() {
   return !(S.answeredIds && S.answeredIds[d] && S.answeredIds[d][S.current.id]);
 }
 
+// ── SAVE SOON ──
+// saveState rewrites the whole saved record (with full copies of missed and
+// saved questions it grows with every answer), which on a phone can take a
+// few hundred ms. Light changes (the page in use, the note last opened, a
+// note's read state) call saveStateSoon instead: one save when the page is
+// next idle (within about a second), so the click paints first. Any
+// saveState() call writes everything and cancels the wait; hiding or leaving
+// the page writes it at once. The save is dropped only if the record in use
+// changed meanwhile or the page is reloading over new progress.
+var saveSoonHandle = null;
+var saveSoonId = null;
+function saveStateSoon() {
+  if (saveSoonHandle) return;
+  saveSoonId = getActiveProfileId();
+  if (window.requestIdleCallback) saveSoonHandle = { idle: window.requestIdleCallback(flushSaveSoon, { timeout: 1000 }) };
+  else saveSoonHandle = { timer: setTimeout(flushSaveSoon, 250) };
+}
+function cancelSaveSoon() {
+  var h = saveSoonHandle;
+  if (!h) return;
+  saveSoonHandle = null;
+  if (h.idle !== undefined && window.cancelIdleCallback) window.cancelIdleCallback(h.idle);
+  if (h.timer !== undefined) clearTimeout(h.timer);
+}
+function flushSaveSoon() {
+  if (!saveSoonHandle) return;
+  cancelSaveSoon();
+  if (leavingForReload || getActiveProfileId() !== saveSoonId) return;
+  saveState();
+}
+window.addEventListener('pagehide', flushSaveSoon);
+document.addEventListener('visibilitychange', function() {
+  if (document.visibilityState === 'hidden') flushSaveSoon();
+});
+// Another tab saved (or switched record): a light save still waiting here
+// would write this tab's older copy over what that tab just saved.
+window.addEventListener('storage', function(e) {
+  if (e.key === PROFILES_KEY || e.key === ACTIVE_KEY) cancelSaveSoon();
+});
+
 function saveState() {
+  cancelSaveSoon();
   ensureAnsweredBuckets();
   var id = getActiveProfileId();
   if (!id) return; // no profile, no save
+  // Another tab made a different record active: never write into it.
+  if (profileInUse && id !== profileInUse) return;
   var profiles = getProfiles();
   if (!profiles[id]) return;
   // Save mock exam progress as IDs only (avoids bloating localStorage with full
@@ -8207,6 +8358,8 @@ function saveState() {
     qIdx: S.qIdx, mindsetIdx: S.mindsetIdx,
     glossMastered: S.glossMastered, topicReviewed: S.topicReviewed, topicViewed: S.topicViewed,
     topicTicksSchema: S.topicTicksSchema || 0,
+    // New field beside the old ones: "Continue reading" survives a reload.
+    lastOpenedSubtopic: S.lastOpenedSubtopic || {},
     current: shouldResumeCurrent() ? S.current : null,
     qn: S.qn,
     activeTab: S.activeTab || "home",
@@ -8231,6 +8384,7 @@ function saveState() {
 
 function loadState() {
   var id = getActiveProfileId();
+  profileInUse = id;
   // No saved state yet: this profile's ticks are already v2 ids.
   if (!id) { S.topicTicksSchema = 2; return; }
   var profiles = getProfiles();
@@ -8241,7 +8395,7 @@ function loadState() {
                 "timerEnabled","timerSeconds","qIdx","mindsetIdx","glossMastered","topicReviewed","topicViewed","topicTicksSchema",
                 "current","qn","activeTab",
                 "answerLog","mistakeLog","studyDays","mockHistory","qNotes",
-                "plant","plantSettings","cleanLog","readinessLog","finalWeekDone"];
+                "plant","plantSettings","cleanLog","readinessLog","finalWeekDone","lastOpenedSubtopic"];
   fields.forEach(function(k) {
     if (saved[k] !== undefined) S[k] = saved[k];
   });
@@ -8303,9 +8457,10 @@ function createProfile(name) {
 function exportProgress(otherId) {
   // No id: the progress in use. An id: one of the older records kept from profiles.
   var id = otherId || getActiveProfileId();
+  // The progress in use is saved first, then read once.
+  if (!otherId) saveState();
   var profile = id ? getProfiles()[id] : null;
   if (!profile) { showToast('Nothing to export yet.', 'info', 2400); return; }
-  if (!otherId) { saveState(); profile = getProfiles()[id]; }
   // The marker below is the file's original name, kept so older exports still import.
   var out = {cisaMindsetExport: true, version: 1, profile: profile};
   // v12.34.1: the exam date travels too, so the app can use it. It is kept per
@@ -8679,6 +8834,7 @@ function loadConceptsData(callback) {
       CISA_NOTES_RAW = data;
       conceptsLoading = false;
       callback(buildConceptsData());
+      gtWarmReadMinutes();
     })
     .catch(function(err) {
       conceptsLoading = false;
@@ -8791,11 +8947,40 @@ function topicSearchText(val) {
   }
   return '';
 }
+// The notes never change once loaded, so each note's text and each topic's
+// reading time are worked out once, not on every draw or keystroke.
+var gtTextMemo = new WeakMap();
+var gtReadMinMemo = new WeakMap();
+function topicItemText(it) {
+  var raw = it && it.raw;
+  if (!raw || typeof raw !== 'object') return topicSearchText(raw);
+  if (!gtTextMemo.has(raw)) gtTextMemo.set(raw, topicSearchText(raw));
+  return gtTextMemo.get(raw);
+}
+function gtGroupReadMinutes(g) {
+  if (!gtReadMinMemo.has(g)) {
+    gtReadMinMemo.set(g, estimateReadMinutes({ s: g.group_summary, items: g.items.map(function(i){ return topicItemText(i); }) }));
+  }
+  return gtReadMinMemo.get(g);
+}
+// Fills those in while the page is idle, one domain at a time, so the first
+// view of each domain does not pay for it.
+function gtWarmReadMinutes() {
+  var idle = function(fn) { if (window.requestIdleCallback) window.requestIdleCallback(fn, { timeout: 3000 }); else setTimeout(fn, 200); };
+  var doms = buildConceptsData().domains.slice();
+  var next = function() {
+    var dom = doms.shift();
+    if (!dom) return;
+    try { dom.groups.forEach(gtGroupReadMinutes); } catch (e) {}
+    if (doms.length) idle(next);
+  };
+  idle(next);
+}
 // Score one subtopic against the query. 0 = no match (every token must match).
 function scoreTopicItem(it, tokens) {
   if (!tokens.length) return 1;
   var name = it.name || '';
-  var body = topicSearchText(it.raw);
+  var body = topicItemText(it);
   var total = 0;
   for (var i = 0; i < tokens.length; i++) {
     var tok = tokens[i];
@@ -9384,7 +9569,7 @@ function renderTopics() {
       if (!items.length && filterMode !== 'all') return '';
       var gDone = g.items.filter(function(it){ return reviewed[it.id]; }).length;
       var gTotal = g.items.length;
-      var readMin = estimateReadMinutes({ s: g.group_summary, items: g.items.map(function(i){ return topicSearchText(i.raw); }) });
+      var readMin = gtGroupReadMinutes(g);
       var bodyHtml = '';
       var part = partOf[String(g.group_id)] || null, partHtml = '';
       var gh = part ? 'h4' : 'h3';
@@ -9607,7 +9792,7 @@ function toggleNotesItem(itemId) {
     if (!S.lastOpenedSubtopic) S.lastOpenedSubtopic = {};
     var it = findTopicItem(itemId);
     S.lastOpenedSubtopic[dom2] = { id: itemId, name: it ? it.name : itemId, ts: Date.now() };
-    saveState();
+    saveStateSoon();
     gtAutoFired[itemId] = false; // a new opening may auto-read once
   }
   gtAfterRender();
@@ -9705,7 +9890,7 @@ function gtTick() {
     }
     if (gtOpenMs[id] >= GT_AUTOREAD_MS) gtCheckAutoRead(id);
   });
-  if (changed) { saveState(); refreshTopicProgress(parseInt(topicState.domain) || 1); }
+  if (changed) { saveStateSoon(); refreshTopicProgress(parseInt(topicState.domain) || 1); }
 }
 document.addEventListener('visibilitychange', function() { gtLastTick = Date.now(); });
 
@@ -9773,7 +9958,7 @@ function gtSetRead(id, read, how) {
     gtAutoFired[id] = true;
   }
   S.topicReviewed = reviewed;
-  saveState();
+  saveStateSoon();
   gtUpdateRow(id);
   var d = parseInt(topicState.domain) || 1;
   var p = refreshTopicProgress(d);
@@ -10281,7 +10466,7 @@ function switchTab(t, opts) {
   // Leaving the exam guide drops a section still waiting for the file.
   if (t !== 'examguide') egState.pending = null;
   S.activeTab = t;
-  saveState();
+  saveStateSoon(); // the click paints first (see SAVE SOON)
   // Lets CSS drop the shared dashboard above Topics on phones.
   document.body.setAttribute('data-tab', t);
   document.body.removeAttribute('data-mock-results');
@@ -10909,8 +11094,9 @@ function todaySetExamDate() {
 function todayNextHtml(step) {
   if (!step) return '';
   var data = Object.keys(step.go).map(function (k) { return ' data-' + k + '="' + escapeHtml(String(step.go[k])) + '"'; }).join('');
+  // Optional, after the plan (web Today redesign): never a second task.
   return '<section class="td-next" aria-labelledby="tdNextH">'
-    + '<h2 class="ph-h" id="tdNextH">Your next step</h2>'
+    + '<h2 class="ph-h" id="tdNextH">If you have more time</h2>'
     + '<ul class="you-list"><li><button type="button" class="you-row td-row"' + data + ' onclick="todayStepGo(this)">'
     + '<span class="you-ico" aria-hidden="true">' + ico(step.icon, 20) + '</span>'
     + '<span class="you-text"><span class="td-kicker">' + step.kicker + '</span>'
@@ -10925,12 +11111,18 @@ function refreshTodayNext() {
   if (S.activeTab !== 'home') return;
   var td = document.querySelector('#homeArea .td');
   if (!td) return;
+  // Welcome back and exam week leave the next step out.
+  if (td.getAttribute('data-next') === 'off') return;
   var r = computeTodayReadiness();
   var html = todayNextHtml(todayNextStep(r, todayReadinessRange(r)));
   var old = td.querySelector('.td-next');
   var focused = !!(old && old.contains(document.activeElement));
   if (old) old.outerHTML = html;
-  else if (html) (td.querySelector('.td-backup') || td.querySelector('.td-side') || td.querySelector('.td-plate')).insertAdjacentHTML('beforebegin', html);
+  else if (html) {
+    var before = td.querySelector('#tdMindSlot') || td.querySelector('.td-backup');
+    if (before) before.insertAdjacentHTML('beforebegin', html);
+    else { var main = td.querySelector('.td-main'); if (main) main.insertAdjacentHTML('beforeend', html); }
+  }
   if (focused) { var b = td.querySelector('.td-next .you-row'); if (b) { try { b.focus({ preventScroll: true }); } catch (e) {} } }
 }
 function todayOpenNote(domainId, itemId) {
@@ -10974,22 +11166,64 @@ function todayPlanDomain(r, last) {
   return { d: pick.id, why: 'gain' };
 }
 function todayPlanSetLength() { return practiceLen > 0 ? practiceLen : 10; }
-function todayPlan(r, last) {
+// Plan modes (web Today redesign; mobile planner.ts re-entry and taper):
+// - 'back': Welcome back (3+ days away): at most TODAY_BACK_QUESTIONS of
+//   the questions to revisit, oldest first, and nothing else. No backlog
+//   total: the rest wait for the next days' plans. With none due, a short
+//   mixed set instead.
+// - 'examweek' (1 to 7 days out): genuinely shorter, about 11 min: a few
+//   questions to revisit plus one short set.
+// - 'examday': lighter still, an optional warm-up of at most
+//   TODAY_WARM_UP questions to revisit (a short mixed set when none are
+//   due), like mobile's exam-day warm-up.
+// - 'normal': as v12.33.
+var TODAY_BACK_QUESTIONS = 6;
+var TODAY_EXAM_WEEK_REVIEW = 4;
+var TODAY_EXAM_WEEK_QUESTIONS = 9;
+var TODAY_WARM_UP = 5;
+function todayPlanMinutes(n) { return Math.max(1, Math.round(n * MINUTES_PER_PRACTICE_Q)); }
+function todayPlan(r, last, mode) {
   r = r || computeTodayReadiness();
   var due = 0;
   try { due = getDueReview().length; } catch (e) {}
-  var review = Math.min(due, REVIEW_DAILY_PLAN);
-  var set = todayPlanDomain(r, last);
-  var n = todayPlanSetLength();
   var items = [];
-  if (review > 0) {
-    items.push({ title: 'Questions to revisit', meta: due > review ? review + ' of ' + railShowCount(due) + ' due' : review + (review === 1 ? ' question' : ' questions') + ' from before' });
+  if (mode === 'back' || mode === 'examday') {
+    // One item only: questions to revisit, else a short mixed set.
+    var warm = mode === 'examday';
+    var cap = warm ? TODAY_WARM_UP : TODAY_BACK_QUESTIONS;
+    var nb = Math.min(due, cap);
+    if (nb > 0) {
+      items.push(warm
+        ? { title: 'Optional warm-up', meta: nb + (nb === 1 ? ' question' : ' questions') + ' to revisit' }
+        : { title: 'Questions to revisit', meta: nb + ' from before &middot; the ones you missed, oldest first' });
+      return { mode: mode, review: nb, due: due, d: null, n: 0, items: items, minutes: todayPlanMinutes(nb) };
+    }
+    items.push(warm
+      ? { title: 'Optional warm-up', meta: cap + ' mixed questions' }
+      : { title: 'A short mixed set', meta: cap + ' questions &middot; across the domains' });
+    return { mode: mode, review: 0, due: due, d: 'all', n: cap, items: items, minutes: todayPlanMinutes(cap) };
   }
-  items.push({ title: escapeHtml(DI[set.d].short), meta: n + ' questions &middot; ' + (set.why === 'new' ? 'not started' : 'most to gain') });
-  return { review: review, due: due, d: set.d, n: n, items: items, minutes: Math.max(1, Math.round((review + n) * MINUTES_PER_PRACTICE_Q)) };
+  var week = mode === 'examweek';
+  var review = Math.min(due, week ? TODAY_EXAM_WEEK_REVIEW : REVIEW_DAILY_PLAN);
+  var set = todayPlanDomain(r, last);
+  var n = week ? TODAY_EXAM_WEEK_QUESTIONS - review : todayPlanSetLength();
+  if (review > 0) {
+    items.push({ title: 'Questions to revisit', meta: !week && due > review ? review + ' of ' + railShowCount(due) + ' due' : review + (review === 1 ? ' question' : ' questions') + ' from before' });
+  }
+  // One name for the weak area across Today: "where you'll gain most".
+  items.push({ title: escapeHtml(DI[set.d].short), meta: n + ' questions &middot; ' + (set.why === 'new' ? 'not started' : week ? 'one short set' : 'where you&rsquo;ll gain most') });
+  return { mode: mode || 'normal', review: review, due: due, d: set.d, n: n, items: items, minutes: todayPlanMinutes(review + n) };
 }
 function todayPlanStart() {
-  var plan = todayPlan();
+  var r = computeTodayReadiness();
+  var plan = todayPlan(r, undefined, todayState(new Date(), r).plan);
+  if (plan.mode === 'back' || plan.mode === 'examday') {
+    if (plan.review > 0) { startReviewQueue(plan.review); return; }
+    switchTab('practice', { noScroll: true });
+    selectDomain('all');
+    startSession(plan.n, 'all');
+    return;
+  }
   if (plan.review > 0) { startReviewQueue(plan.review, { d: plan.d, n: plan.n }); return; }
   switchTab('practice', { noScroll: true });
   selectDomain(plan.d);
@@ -11069,19 +11303,303 @@ function backupNudgeLater() {
   showToast('We’ll remind you in two weeks. Back up any time from You.', 'info', 3000);
 }
 
-// Today's right-hand column: the readiness plate, and under it the app's QR
-// card when it applies (computers, live mode; see appCtaTodayQrHtml).
-function todaySideHtml(plate) {
+// ── TODAY: STATES, THE WEEK AND THE MINDSET CHECK (web Today redesign) ──
+// Calm two columns: the plan and what to do on the left, a glanceable
+// column on the right. Owner decisions (2026-10-26, today-retention):
+// - from study day 14 the day line says "N days this week" (the streak
+//   number stays on You);
+// - Welcome back after 3+ days away: a short plan, no backlog total, no
+//   count of days away, and no next step, Mindset check or week strip;
+// - exam week: a shorter plan, readiness in words only, no rings, no strip;
+// - one visual per visit below 1180px: the rings or the week, by the day.
+// The readiness link opens this page, and its words follow it. The
+// Readiness report page is next: switch this one constant when it lands.
+var TODAY_REPORT_TAB = 'weakspots';
+var TODAY_REPORT_LABEL = TODAY_REPORT_TAB === 'weakspots' ? 'See your weak spots' : 'See your readiness report';
+var TODAY_WEEK_LINE_FROM = 14;
+var TODAY_BACK_AFTER_DAYS = 3;
+var TODAY_EXAM_WEEK_DAYS = 7;
+var TODAY_EST_LINE = 'A study estimate, not a prediction.';
+var TODAY_WEEKDAYS_MON = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+var TODAY_WEEKDAYS_SHORT = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
+
+// Study days up to today (a clock set ahead never counts), oldest first.
+function todayStudyDayList(todayKey) {
+  return (Array.isArray(S.studyDays) ? S.studyDays : []).filter(function (d) {
+    return typeof d === 'string' && PARITY_DAY_RE.test(d) && d <= todayKey;
+  }).sort();
+}
+// Today's state in one place, so the page and its Start button agree.
+// Exam week wins over Welcome back (its plan is short already), and a set
+// left open ("Where you left off") is never replaced.
+function todayState(now, r) {
+  var days = examDaysLeft();
+  var exam = days === 0 ? 'day' : (days !== null && days > 0 && days <= TODAY_EXAM_WEEK_DAYS) ? 'week' : null;
+  var resume = false;
+  try { resume = !!practicePrimary().resume; } catch (e) {}
+  var today = parityDayKey(now.getTime());
+  var list = todayStudyDayList(today);
+  var before = list.filter(function (d) { return d < today; });
+  var back = !exam && !resume && r.answered > 0 && before.length >= 2
+    && sdDaysBetween(before[before.length - 1], today) >= TODAY_BACK_AFTER_DAYS;
+  return {
+    days: days, exam: exam, resume: resume, back: back, studyDays: list,
+    newLearner: list.length < 2,
+    plan: back ? 'back' : exam === 'week' ? 'examweek' : exam === 'day' ? 'examday' : 'normal'
+  };
+}
+// A whole-day number for daily rotations (the visual, the principle).
+function todayDayNumber(now) {
+  return Math.floor(sdNoon(parityDayKey(now.getTime())) / 86400000);
+}
+function todayListWords(a) {
+  return a.length < 2 ? a.join('') : a.slice(0, -1).join(', ') + ' and ' + a[a.length - 1];
+}
+
+// ── This week: seven leaves, Monday to Sunday, from S.studyDays ──
+// Filled = studied; an outline otherwise (missed and future days look the
+// same, so a gap is never marked). No count here: the day line has it.
+function todayWeek(now, list) {
+  var on = {};
+  list.forEach(function (d) { on[d] = true; });
+  var dow = (now.getDay() + 6) % 7;
+  var out = [];
+  for (var i = 0; i < 7; i++) {
+    var key = parityDayKey(new Date(now.getFullYear(), now.getMonth(), now.getDate() - dow + i, 12).getTime());
+    out.push({ i: i, today: i === dow, on: !!on[key] });
+  }
+  return out;
+}
+function todayLeafSvg(state) {
+  return '<svg class="td-leaf ' + state + '" width="24" height="24" viewBox="0 0 26 26" aria-hidden="true" focusable="false">'
+    + '<path class="td-leaf-b" d="M3.9 22.1C3.9 11.7 11.7 3.9 22.1 3.9C22.1 14.3 14.3 22.1 3.9 22.1Z"/>'
+    + '<path class="td-leaf-v" d="M5.8 20.1L16.3 9.8"/></svg>';
+}
+function todayWeekHtml(week) {
+  var studied = week.filter(function (d) { return d.on; }).map(function (d) { return TODAY_WEEKDAYS_MON[d.i]; });
+  var now = week.filter(function (d) { return d.today; })[0];
+  var said = (studied.length ? 'Studied ' + todayListWords(studied) + '.' : 'No study days yet this week.')
+    + ' Today is ' + TODAY_WEEKDAYS_MON[now ? now.i : 0] + '.';
+  return '<section class="td-week" aria-labelledby="tdWeekH">'
+    + '<h2 class="td-week-h" id="tdWeekH">This week</h2>'
+    + '<p class="sr-only">' + said + '</p>'
+    + '<div class="td-week-row" aria-hidden="true">' + week.map(function (d) {
+      return '<span class="td-wd' + (d.on ? ' on' : '') + (d.today ? ' today' : '') + '">'
+        + todayLeafSvg(d.on ? 'on' : 'off') + '<span class="td-wd-n">' + TODAY_WEEKDAYS_SHORT[d.i] + '</span></span>';
+    }).join('') + '</div></section>';
+}
+
+// ── Readiness, glanceable: the range, one line on what it means, where
+// you'll gain most, and the explainers behind one disclosure. Exam week and
+// exam day say it in words only (no rings, no legend). ──
+function todayReadyHtml(r, range, st, showRings) {
+  var head = '<h2 class="sr-only" id="tdReadyH">Readiness</h2>';
+  if (!range.enough) {
+    // v12.30: no empty rings before the first range, one quiet line. One
+    // count toward one goal, in the same units as You's "Answered".
+    return '<section class="td-ready td-ready-quiet" aria-labelledby="tdReadyH">' + head
+      + '<p class="td-wait">' + (r.answered > 0
+        ? (RD_RANGE_MIN_ANSWERS - range.needed) + ' of ' + RD_RANGE_MIN_ANSWERS + ' questions for your first readiness range. Each question counts once.'
+        : 'Answer ' + RD_RANGE_MIN_ANSWERS + ' questions to see your first readiness range.') + '</p>'
+      + '<p class="td-note td-est">Your range will be a study estimate, not a prediction.</p></section>';
+  }
+  if (st.exam) {
+    return '<section class="td-ready td-ready-words" aria-labelledby="tdReadyH">' + head
+      + '<p class="td-words">Your estimated readiness is ' + range.low + ' to ' + range.high + '%.</p>'
+      + '<p class="td-note td-est">' + TODAY_EST_LINE + '</p>'
+      + '<p class="td-note">Progress charts are hidden ' + (st.exam === 'day' ? 'today' : 'this week') + ' so you can focus.</p></section>';
+  }
+  var spoken = 'Estimated readiness between ' + range.low + ' and ' + range.high + ' percent.';
+  var html = '<section class="td-ready" aria-labelledby="tdReadyH">' + head
+    + '<div class="td-fig">'
+    + (showRings ? growthRingsSvg(r.domains.map(function (x) { return x.answered ? x.mastery : 0; }), r.answered > 0 && todayRingsGrowNow()) : '')
+    + '<div class="td-fig-text">'
+    + '<p class="td-big"><span class="sr-only">' + spoken + '</span><span aria-hidden="true">' + range.low + '&ndash;' + range.high + '<sup>%</sup></span></p>'
+    + '<p class="td-cap">Estimated readiness</p>'
+    + '<p class="td-note td-est">' + TODAY_EST_LINE + '</p>'
+    + '</div></div><div class="td-ready-more">';
+  // One name for the weak area, its full name once (from DI). Not on a
+  // Welcome back day (owner default).
+  if (!st.back && r.focusId && DI[r.focusId]) {
+    html += '<p class="td-gain">Where you&rsquo;ll gain most: <span class="td-gain-d">' + escapeHtml(DI[r.focusId].name) + '</span></p>';
+  }
+  var figures = r.domains.map(function (x) { return domainFigure(x.answered, Math.round(x.mastery * 100)); });
+  if (r.answered > 0) {
+    html += '<ul class="td-legend">' + r.domains.map(function (x, i) {
+      var f = figures[i];
+      var val = f.banded || f.text === '–' ? '<span class="td-word">' + f.text + '</span>' : '<span class="td-num">' + f.text.replace('%', '') + '<sup>%</sup></span>';
+      return '<li><span class="dom-dot" style="background:' + DI[x.id].color + '" aria-hidden="true"></span>'
+        + '<span class="td-dname">' + escapeHtml(DI[x.id].short) + '</span>'
+        + '<span class="sr-only">: ' + f.spoken + '</span><span class="td-dval" aria-hidden="true">' + val + '</span></li>';
+    }).join('') + '</ul>';
+  }
+  var how = '<p class="td-note">The range is about how much of the exam you would get right today, weighted like the exam. It narrows as you answer more.</p>'
+    + '<p class="td-note">' + RINGS_NOTE + '</p>';
+  if (figures.some(function (f) { return f.banded; })) how += '<p class="td-note">' + bandsLine() + '</p>';
+  else if (figures.some(function (f) { return f.text !== '–'; })) how += '<p class="td-note">Percentages count your latest try at each question.</p>';
+  html += '<details class="td-how"><summary class="td-how-s"><span>How this is worked out</span>' + ico('chevron-down', 18) + '</summary>' + how + '</details>';
+  html += '<a class="td-link" href="#' + NAV_HASH[TODAY_REPORT_TAB] + '" onclick="return navTo(event,\'' + TODAY_REPORT_TAB + '\')">' + TODAY_REPORT_LABEL + ico('chevron', 18) + '</a>';
+  return html + '</div></section>';
+}
+
+// ── Mindset check: one principle a day (data/mindset/principles.json) ──
+// A compact row that opens ONE question with two answers, from the
+// principle's hand-written `check` (scenario, right move, trap, why;
+// docs/content/PRINCIPLES_SCHEMA.md). All principles with a complete check
+// rotate, one a day; which answer shows first is mixed by the day, so
+// position is never a cue. Without any check, the principle shows read-only.
+// It is practice for the mindset only: nothing is saved, graded or counted
+// toward readiness or the answer logs. In exam week (and on exam day) it
+// becomes one read-only idea for the exam. Every text is escaped where it
+// is written into the page.
+var TODAY_EXAM_IDEA = 'priority-word-decides';
+var todayMindOpen = false;
+var todayMindNow = null;      // the question on screen: { key, p, pair, opts }
+var todayMindChoice = null;   // this visit's answer: { key, idx }
+function todayMindPair(p) {
+  var c = p && p.check;
+  if (!c || typeof c !== 'object') return null;
+  var scenario = gtStr(c.scenario).trim(), right = gtStr(c.right).trim(), trap = gtStr(c.trap).trim(), why = gtStr(c.why).trim();
+  if (!scenario || !right || !trap || !why) return null;
+  return { scenario: scenario, right: right, trap: trap, rest: why, why: why };
+}
+// A small integer hash of the day number: which side shows first.
+function todayMindRightFirst(n) {
+  var h = Math.imul(n ^ 0x5bd1e995, 0x27d4eb2d);
+  return ((h >>> 15) & 1) === 0;
+}
+function todayMindToday(now) {
+  if (!PRINCIPLES.length) return null;
+  var n = todayDayNumber(now);
+  var ok = PRINCIPLES.filter(function (p) { return !!todayMindPair(p); });
+  if (!ok.length) return { p: PRINCIPLES[n % PRINCIPLES.length], pair: null };
+  var p = ok[n % ok.length];
+  return { p: p, pair: todayMindPair(p), rightFirst: todayMindRightFirst(n), key: parityDayKey(now.getTime()) + '/' + p.id };
+}
+// The page's own path before the hash, so a route address (#principles/id)
+// is not read as an in-page anchor that is missing (WCAG checkers do).
+function todayRouteHref(hash) {
+  var here = '';
+  try { here = location.pathname + location.search; } catch (e) {}
+  return escapeHtml(here + '#' + hash);
+}
+function todayPrincipleLink(p) {
+  return '<a class="td-link" href="' + todayRouteHref('principles/' + p.id) + '" data-pid="' + escapeHtml(p.id) + '" onclick="return todayOpenPrinciple(event,this.dataset.pid)">'
+    + 'Read the principle<span class="sr-only">: ' + escapeHtml(p.title) + '</span>' + ico('chevron', 18) + '</a>';
+}
+function todayOpenPrinciple(e, pid) {
+  if (e && (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || (e.button && e.button !== 0))) return true;
+  if (e && e.preventDefault) e.preventDefault();
+  openPrinciple(pid);
+  return false;
+}
+// The coach's voice (an accent rule and the quote style), read-only.
+function todayPrincipleCard(p, heading) {
+  return '<section class="td-mind td-idea" aria-labelledby="tdMindH">'
+    + '<h2 class="ph-h" id="tdMindH">' + heading + '</h2>'
+    + '<div class="td-idea-b"><p class="td-idea-t">' + escapeHtml(p.title) + '</p>'
+    + '<p class="td-idea-q">' + escapeHtml(p.rule || '') + '</p></div>'
+    + todayPrincipleLink(p) + '</section>';
+}
+function todayMindVerdictHtml(ok) {
+  var m = todayMindNow;
+  if (!m) return '';
+  return '<p class="td-mind-vt"><strong>' + (ok ? 'Yes, that&rsquo;s the auditor&rsquo;s move.' : 'Not quite: that&rsquo;s the trap.') + '</strong> '
+    + escapeHtml(ok ? m.pair.rest : m.pair.why) + '</p>' + todayPrincipleLink(m.p);
+}
+function todayMindHtml(st) {
+  if (st.back) return '';
+  if (!PRINCIPLES_RAW) {
+    if (!principlesLoadFailed) loadPrinciplesData(function (ok) { if (ok) refreshTodayMind(); });
+    return '';
+  }
+  if (st.exam) {
+    var idea = resolvePrinciple(TODAY_EXAM_IDEA);
+    return idea ? todayPrincipleCard(idea, 'One idea for exam day') : '';
+  }
+  var t = todayMindToday(new Date());
+  if (!t) return '';
+  if (!t.pair) return todayPrincipleCard(t.p, 'Mindset check');
+  var opts = [{ ok: true, text: t.pair.right }, { ok: false, text: t.pair.trap }];
+  if (!t.rightFirst) opts.reverse();
+  todayMindNow = { key: t.key, p: t.p, pair: t.pair, opts: opts };
+  var c = todayMindChoice && todayMindChoice.key === t.key ? todayMindChoice.idx : -1;
+  var answered = c >= 0;
+  return '<section class="td-mind" data-key="' + escapeHtml(t.key) + '" aria-labelledby="tdMindH">'
+    + '<h2 class="ph-h" id="tdMindH">Mindset check</h2>'
+    + '<button type="button" class="you-row td-mind-open" id="tdMindBtn" aria-expanded="' + (todayMindOpen ? 'true' : 'false') + '" aria-controls="tdMindBody" onclick="todayMindToggle()">'
+    + '<span class="you-ico" aria-hidden="true">' + ico('principles', 20) + '</span>'
+    + '<span class="you-text"><span class="you-t">One auditor question <span class="td-mind-m">&middot; under a minute</span></span></span>'
+    + '<span class="you-chev td-mind-chev" aria-hidden="true">' + ico('chevron-down', 18) + '</span></button>'
+    + '<div class="td-mind-body" id="tdMindBody"' + (todayMindOpen ? '' : ' hidden') + '>'
+    + '<p class="td-mind-q" id="tdMindQ">' + escapeHtml(t.pair.scenario) + '</p>'
+    + '<fieldset class="td-mind-fs" aria-describedby="tdMindQ"><legend class="td-mind-lg">Which is the better move?</legend>'
+    + opts.map(function (o, i) {
+      return '<button type="button" class="td-mind-opt' + (answered && o.ok ? ' is-key' : '') + '" aria-pressed="' + (c === i ? 'true' : 'false') + '" onclick="todayMindAnswer(this)">'
+        + '<span class="td-mind-ot">' + escapeHtml(o.text) + '</span>'
+        + '<span class="td-mind-tag">' + (answered && o.ok ? ico('check', 16) + 'The auditor&rsquo;s move' : '') + '</span></button>';
+    }).join('')
+    + '</fieldset>'
+    + '<p class="td-mind-hint">Choose an answer to see why.</p>'
+    + '<div class="td-mind-v' + (answered ? (opts[c].ok ? ' ok' : ' no') : '') + '" id="tdMindV" role="status">' + (answered ? todayMindVerdictHtml(opts[c].ok) : '') + '</div>'
+    + '</div></section>';
+}
+function todayMindSlotHtml(st) {
+  return '<div class="td-mind-slot" id="tdMindSlot">' + todayMindHtml(st) + '</div>';
+}
+function refreshTodayMind() {
+  if (S.activeTab !== 'home') return;
+  var slot = document.getElementById('tdMindSlot');
+  if (!slot || slot.contains(document.activeElement)) return;
+  slot.innerHTML = todayMindHtml(todayState(new Date(), computeTodayReadiness()));
+}
+function todayMindToggle() {
+  todayMindOpen = !todayMindOpen;
+  var b = document.getElementById('tdMindBtn'), body = document.getElementById('tdMindBody');
+  if (b) b.setAttribute('aria-expanded', todayMindOpen ? 'true' : 'false');
+  if (body) body.hidden = !todayMindOpen;
+}
+// Painted in place, so focus stays on the answer and the status region
+// (already on the page) is announced.
+function todayMindAnswer(btn) {
+  var sec = btn && btn.closest('.td-mind');
+  var m = todayMindNow;
+  if (!sec || !m || sec.getAttribute('data-key') !== m.key) return;
+  var buttons = sec.querySelectorAll('.td-mind-opt');
+  var idx = Array.prototype.indexOf.call(buttons, btn);
+  if (idx < 0) return;
+  todayMindChoice = { key: m.key, idx: idx };
+  Array.prototype.forEach.call(buttons, function (b, i) {
+    var key = m.opts[i].ok;
+    b.classList.toggle('is-key', key);
+    b.setAttribute('aria-pressed', i === idx ? 'true' : 'false');
+    var tag = b.querySelector('.td-mind-tag');
+    if (tag) tag.innerHTML = key ? ico('check', 16) + 'The auditor&rsquo;s move' : '';
+  });
+  var v = document.getElementById('tdMindV');
+  if (v) {
+    v.className = 'td-mind-v ' + (m.opts[idx].ok ? 'ok' : 'no');
+    v.innerHTML = todayMindVerdictHtml(m.opts[idx].ok);
+  }
+}
+
+// Today's right-hand column (from 1180px): the plate (readiness, the week,
+// the plant), and under it the app's QR card when it applies (computers,
+// live mode; see appCtaTodayQrHtml).
+function todaySideHtml(inner) {
   var qr = '';
   try { qr = appCtaTodayQrHtml(); } catch (e) { qr = ''; }
-  return qr ? '<div class="td-side">' + plate + qr + '</div>' : plate;
+  return '<div class="td-side">' + inner + qr + '</div>';
 }
 function renderHome() {
   var area = document.getElementById('homeArea');
   if (!area) return;
   var now = new Date();
-  // The day, the exam countdown (when a date is set) and the streak.
-  var days = examDaysLeft();
+  var r = computeTodayReadiness();
+  var range = todayReadinessRange(r);
+  var st = todayState(now, r);
+  // The day, the exam countdown (when a date is set) and the week.
+  var days = st.days;
   var when = TODAY_WEEKDAYS[now.getDay()];
   if (days === null) {
     when += ' &middot; <button type="button" class="td-setdate" onclick="todaySetExamDate()">Set exam date</button>';
@@ -11091,18 +11609,25 @@ function renderHome() {
     // The desktop rail's footer shows the same countdown, so it hides here from 1024px.
     when += '<span class="td-count"> &middot; ' + (days === 0 ? 'Exam day' : days + (days === 1 ? ' day' : ' days') + ' to ' + escapeHtml(ACTIVE.name)) + '</span>';
   }
-  var streak = studyDayStreak(now.getTime());
+  // The day line's right side: the streak until study day 14, then "N days
+  // this week". Hidden on a Welcome back day and in exam week.
+  var dayLine = '';
+  if (!st.exam && !st.back) {
+    if (st.studyDays.length >= TODAY_WEEK_LINE_FROM) {
+      var wk = todayWeek(now, st.studyDays).filter(function (d) { return d.on; }).length;
+      if (wk > 0) dayLine = '<p class="td-streak td-wkline">' + todayLeafSvg('on') + '<span>' + wk + (wk === 1 ? ' day' : ' days') + ' this week</span></p>';
+    } else {
+      var streak = studyDayStreak(now.getTime());
+      if (streak > 0) dayLine = '<p class="td-streak">' + ico('sprig', 20) + '<span>' + streak + '-day study streak</span></p>';
+    }
+  }
   var name = getDisplayName();
-  var greeting = greetingForHour(now.getHours()) + (name ? ', ' + name : '');
+  var greeting = (st.back ? 'Welcome back' : greetingForHour(now.getHours())) + (name ? ', ' + name : '');
 
-  // Readiness: the rings, the honest range and each domain.
-  var r = computeTodayReadiness();
-  var range = todayReadinessRange(r);
-
-  // Today's plan (v12.33): one forest panel, one plan with its time. A set
-  // or question left open comes first ("Where you left off"), as before.
+  // Today's plan (v12.33): one forest panel, one plan with its time, one
+  // Start. A set or question left open comes first ("Where you left off").
   var p = practicePrimary();
-  var hero;
+  var hero, plan = null;
   if (p.resume) {
     hero = '<section class="gt-panel td-hero" aria-labelledby="tdHeroT">'
       + gtFrondSvg()
@@ -11112,87 +11637,65 @@ function renderHome() {
       + '<div class="td-hero-acts"><button type="button" class="gt-pill td-go" id="tdGo" aria-describedby="tdHeroT" onclick="todayPractice()">' + p.label + ico('arrow-right', 18) + '</button></div>'
       + '</section>';
   } else {
-    var plan = todayPlan(r);
+    plan = todayPlan(r, undefined, st.plan);
+    var cap = st.plan === 'examday' ? 'Exam day &middot; today&rsquo;s plan' : st.plan === 'examweek' ? 'Exam week &middot; today&rsquo;s plan' : 'Today&rsquo;s plan';
     var steps = plan.items.map(function (it, i) {
       return '<li><span class="td-plan-n" aria-hidden="true">' + (i + 1) + '</span><span class="td-plan-t">' + it.title + '<span class="td-plan-m">' + it.meta + '</span></span></li>';
     }).join('');
     hero = '<section class="gt-panel td-hero" aria-labelledby="tdHeroT">'
       + gtFrondSvg()
-      + '<p class="gt-panel-cap" aria-hidden="true">Today&rsquo;s plan</p>'
-      + '<h2 class="td-hero-t" id="tdHeroT"><span class="sr-only">Today&rsquo;s plan: </span>About ' + plan.minutes + ' min</h2>'
+      + '<p class="gt-panel-cap" aria-hidden="true">' + cap + '</p>'
+      + '<h2 class="td-hero-t" id="tdHeroT"><span class="sr-only">' + cap + ': </span>About ' + plan.minutes + ' min</h2>'
       + '<ol class="td-plan" aria-label="Today&rsquo;s plan, in order">' + steps + '</ol>'
-      + '<div class="td-hero-acts"><button type="button" class="gt-pill td-go" id="tdGo" aria-describedby="tdHeroT" onclick="todayPlanStart()">Start' + ico('arrow-right', 18) + '</button></div>'
+      + '<div class="td-hero-acts"><button type="button" class="gt-pill td-go" id="tdGo" aria-describedby="tdHeroT" onclick="todayPlanStart()">Start' + ico('arrow-right', 18) + '</button>'
+      + '<p class="td-hero-q">Stop any time; your place is saved.</p></div>'
       + '</section>';
   }
-  var figures = r.domains.map(function (x) { return domainFigure(x.answered, Math.round(x.mastery * 100)); });
-  var spoken = range.enough ? 'Estimated readiness between ' + range.low + ' and ' + range.high + ' percent.' : 'Readiness: not enough data yet.';
-  var plate;
-  if (!range.enough) {
-    // v12.30: no empty rings and no plate before the first range, only one
-    // quiet line (mobile hides its readiness until there is data).
-    var needed = range.needed;
-    // One count toward one goal, in the same units as You's "Answered":
-    // different questions, each counted once at its latest try (v12.33).
-    plate = '<section class="td-plate td-plate-quiet" aria-labelledby="tdReadyH">'
-      + '<h2 class="sr-only" id="tdReadyH">Readiness</h2>'
-      + '<p class="td-wait">' + (r.answered > 0
-        ? (RD_RANGE_MIN_ANSWERS - needed) + ' of ' + RD_RANGE_MIN_ANSWERS + ' questions for your first readiness range. Each question counts once.'
-        : 'Answer ' + RD_RANGE_MIN_ANSWERS + ' questions to see your first readiness range') + '</p>';
-  } else {
-  plate = '<section class="td-plate" aria-labelledby="tdReadyH">'
-    + '<h2 class="sr-only" id="tdReadyH">Readiness</h2>'
-    + '<div class="td-fig">'
-    + growthRingsSvg(r.domains.map(function (x) { return x.answered ? x.mastery : 0; }), r.answered > 0 && todayRingsGrowNow())
-    + '<div class="td-fig-text">'
-    + '<p class="td-big"><span class="sr-only">' + spoken + '</span><span aria-hidden="true">' + range.low + '&ndash;' + range.high + '<sup>%</sup></span></p><p class="td-cap">Estimated readiness</p>'
-    + '</div></div>';
-  }
-  if (r.answered > 0 && range.enough) {
-    // What the range means, in one sentence (mobile: "A study estimate, not a prediction").
-    plate += '<div class="td-detail"><p class="td-note td-est">' + READINESS_MEANS + '</p><ul class="td-legend">' + r.domains.map(function (x, i) {
-      var f = figures[i];
-      var val = f.banded || f.text === '–' ? '<span class="td-word">' + f.text + '</span>' : '<span class="td-num">' + f.text.replace('%', '') + '<sup>%</sup></span>';
-      return '<li><span class="dom-dot" style="background:' + DI[x.id].color + '" aria-hidden="true"></span>'
-        + '<span class="td-dname">' + escapeHtml(DI[x.id].short) + '</span>'
-        + '<span class="sr-only">: ' + f.spoken + '</span><span class="td-dval" aria-hidden="true">' + val + '</span></li>';
-    }).join('') + '</ul>';
-    plate += '<p class="td-note">' + RINGS_NOTE + '</p>';
-    if (figures.some(function (f) { return f.banded; })) {
-      plate += '<p class="td-note">' + bandsLine() + '</p>';
-    } else if (figures.some(function (f) { return f.text !== '–'; })) {
-      plate += '<p class="td-note">Percentages count your latest try at each question.</p>';
-    }
-    plate += '</div>';
-  }
+  var intro = '';
+  if (r.answered === 0) intro = '<p class="td-intro">CISA exam practice, free during the beta. Start with a short set below.</p>';
+  else if (st.back) intro = '<p class="td-intro">A short start today.' + (plan && plan.due > plan.review ? ' The rest of your reviews will spread out over the next days.' : '') + '</p>';
+
+  // The right column. Below 1180px it shows ONE visual per visit: the rings
+  // or the week, by the day (td-vis-*); from 1180px both, the week small.
+  var showWeek = !st.exam && !st.back && !st.newLearner;
+  var showRings = !st.exam && range.enough;
+  var vis = showRings && showWeek ? (todayDayNumber(now) % 2 ? 'week' : 'rings') : showRings ? 'rings' : showWeek ? 'week' : 'none';
   // One invitation per visit: when the backup reminder and the plant
   // invitation are both due, the first study day gets the plant and a later
   // visit the backup (todayInvitePick, kept for this visit).
-  var backup = backupNudgeHtml(r.answered);
+  // A Welcome back day keeps one action: no backup nudge.
+  var backup = st.back ? '' : backupNudgeHtml(r.answered);
   if (backup && plantInviteDue()) {
     if (!todayInvitePick) todayInvitePick = (Array.isArray(S.studyDays) && S.studyDays.length > 1) ? 'backup' : 'plant';
     if (todayInvitePick === 'plant') backup = '';
   }
-  // The plant companion, under the readiness (mobile Today's plant slot).
-  plate += '<div class="td-plant" id="tdPlant">' + plantSafe(plantTodayHtml) + '</div>';
-  plate += '</section>';
+  var plate = '<div class="td-plate' + (range.enough ? '' : ' td-plate-quiet') + '">'
+    + todayReadyHtml(r, range, st, showRings)
+    + (showWeek ? todayWeekHtml(todayWeek(now, st.studyDays)) : '')
+    // The plant companion (mobile Today's plant slot).
+    + '<div class="td-plant" id="tdPlant">' + plantSafe(plantTodayHtml) + '</div>'
+    + '</div>';
 
-  // One next step, then (now and then) the backup reminder.
-  var next = todayNextHtml(todayNextStep(r, range)) + backup;
+  // "If you have more time": one optional next step (not on a Welcome back
+  // day or in exam week), then the Mindset check and (now and then) the backup.
+  var hideNext = st.back || !!st.exam;
+  var next = hideNext ? '' : todayNextHtml(todayNextStep(r, range));
   var apps = [];
   if (STORE_LINKS.ios) apps.push('<a href="' + escapeHtml(STORE_LINKS.ios) + '" target="_blank" rel="noopener noreferrer">iPhone</a>');
   if (STORE_LINKS.android) apps.push('<a href="' + escapeHtml(STORE_LINKS.android) + '" target="_blank" rel="noopener noreferrer">Android</a>');
 
-  area.innerHTML = '<div class="td">'
+  area.innerHTML = '<div class="td td-vis-' + vis + '" data-next="' + (hideNext ? 'off' : 'on') + '">'
+    + '<div class="td-main">'
     + '<div class="td-head">'
-    + '<div class="td-top"><p class="td-when">' + when + '</p>'
-    + (streak > 0 ? '<p class="td-streak">' + ico('sprig', 20) + '<span>' + streak + '-day study streak</span></p>' : '')
-    + '</div>'
+    + '<div class="td-top"><p class="td-when">' + when + '</p>' + dayLine + '</div>'
     + '<h1 class="td-title" id="tdTitle" tabindex="-1">' + escapeHtml(greeting) + '</h1>'
-    + (r.answered === 0 ? '<p class="td-intro">CISA exam practice, free during the beta. Start with a short set below.</p>' : '')
+    + intro
     + '</div>'
-    // Phones read it top to bottom as the web mock-up: practice, next step, then readiness.
+    // Phones read it top to bottom: the plan, what else, then the column.
     + appCtaTodayHtml()
-    + hero + todayFinalWeekHtml(days) + next + todaySideHtml(plate)
+    + hero + todayFinalWeekHtml(days) + next + todayMindSlotHtml(st) + backup
+    + '</div>'
+    + todaySideHtml(plate)
     + (apps.length ? '<p class="td-apps">Get the app: ' + apps.join(' &middot; ') + '</p>' : '')
     // The full disclaimer lives on About (and Help); Today keeps one line.
     + '<p class="td-legal">KaiSip is independent and not affiliated with ISACA.</p>'
@@ -11200,7 +11703,7 @@ function renderHome() {
   appCtaTodayWire();
 
   // The notes arrive after the first paint: draw the next step again then.
-  if (!CISA_NOTES_RAW && !conceptsLoadFailed) {
+  if (!hideNext && !CISA_NOTES_RAW && !conceptsLoadFailed) {
     loadConceptsData(refreshTodayNext);
   }
 }
@@ -12939,11 +13442,15 @@ function sanitizeCleanLog(m) {
 // it once, so answering that question again later keeps its first day: the
 // app's two-day rule then sees both days. Idempotent: an entry, once there, wins.
 function plantSeedCleanLog(cl, log) {
+  // Counted once, not per answer: recounting made every load grow with the
+  // square of the answer history (about 150 ms on a phone at 1,200 answers).
+  var n = Object.keys(cl).length;
   Object.keys(log || {}).forEach(function (id) {
     var r = log[id];
     if (cl[id] || !r || !r.lastCorrect || r.lastRetest || r.lastAssisted || r.lastGame) return;
-    if (Object.keys(cl).length >= PARITY_MAX_IDS) return;
+    if (n >= PARITY_MAX_IDS) return;
     cl[id] = { first: r.lastAt, last: r.lastAt };
+    n++;
   });
   return cl;
 }
@@ -13126,9 +13633,19 @@ function plantTodayHtml() {
   return '<button type="button" class="td-plant-btn" onclick="plantOpenYou()" aria-label="' + escapeHtml(v.label + ' Opens your plant on You.') + '">'
     + '<span class="td-plant-art">' + plantDraw(v, 'today', 72, { fit: true, lod: 'small' }) + '</span>'
     + '<span class="you-text"><span class="you-t td-plant-name">' + escapeHtml(K.plant.plantCallName(p)) + '</span>'
-    + '<span class="you-m">' + escapeHtml(K.plant.growthShort(p.growth)) + '</span></span>'
+    + '<span class="you-m">' + escapeHtml(plantGrowsLine(K, p.growth)) + '</span></span>'
     + '<span class="you-chev" aria-hidden="true">' + ico('chevron', 18) + '</span></button>'
     + (plantGrewShown ? '<p class="td-plant-note" role="status">' + escapeHtml(plantGrewShown) + '</p>' : '');
+}
+// Today's plant row says what grows it next, from the plant engine's own
+// gates (GROWTH_RULES): the first answers, then every domain, then (Bough,
+// Crown and Elder all need it) subtopics answered right on two different
+// days. The stage name and number stay on You.
+function plantGrowsLine(K, growth) {
+  if (growth >= K.plant.MAX_GROWTH) return 'Fully grown. It keeps all of its growth.';
+  if (growth + 1 === 2) return 'Grows with your first ' + K.plant.SPROUT_ANSWERS + ' answers';
+  if (growth + 1 === 3) return 'Grows as you practice every domain';
+  return 'Grows when topics stick across days';
 }
 function plantHidePrompt() {
   if (!S.plantSettings || typeof S.plantSettings !== 'object') S.plantSettings = {};
@@ -17300,22 +17817,24 @@ function todayFinalWeekHtml(days) {
   if (!FINAL_WEEK.data && !FINAL_WEEK.failed && !FINAL_WEEK.loading) {
     FINAL_WEEK.load(function (ok) { if (ok) refreshTodayFinalWeek(); });
   }
-  var day = null;
-  if (FINAL_WEEK.data) day = fwDays(FINAL_WEEK.data).filter(function (d) { return Number(d.days_before) === days; })[0] || null;
   var kicker, title, meta;
   // The day line above already counts the days, so the kicker doesn't.
   if (days === 0) { kicker = 'This morning'; title = 'Your exam-morning checklist'; meta = 'A few calm steps before you go.'; }
   else if (days === 8) { kicker = 'Starts tomorrow'; title = 'A calm plan for your last 7 days'; meta = 'One short plan for each day, with a cheat sheet.'; }
   else {
-    kicker = 'Today&rsquo;s plan';
-    title = day ? 'Day ' + days + ': ' + escapeHtml(day.title) : 'Today&rsquo;s review plan';
-    meta = day && gtStr(day.goal) ? escapeHtml(day.goal) : 'Today&rsquo;s goal, tasks and one thing to remember.';
+    // Today's plan panel above is the day's work; this row only opens the
+    // checklist (web Today redesign: no second "Today's plan", and the weak
+    // area keeps the one name the plan gives it). The heading already says
+    // "Final review week", so there is no kicker.
+    kicker = '';
+    title = 'Open your final-week checklist';
+    meta = 'Today&rsquo;s goal, tasks and one thing to remember.';
   }
   return '<section class="td-fw" id="tdFw" aria-labelledby="tdFwH">'
     + '<h2 class="ph-h" id="tdFwH">Final review week</h2>'
     + '<ul class="you-list"><li><a class="you-row td-row" href="#final-week" onclick="return navTo(event,\'finalweek\')">'
     + '<span class="you-ico" aria-hidden="true">' + ico('calendar', 20) + '</span>'
-    + '<span class="you-text"><span class="td-kicker">' + kicker + '</span>'
+    + '<span class="you-text">' + (kicker ? '<span class="td-kicker">' + kicker + '</span>' : '')
     + '<span class="you-t">' + title + '</span>'
     + '<span class="you-m">' + meta + '</span></span>'
     + '<span class="you-chev" aria-hidden="true">' + ico('chevron', 18) + '</span>'
@@ -19242,6 +19761,17 @@ function toggleMockDetail(i) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
+    title: 'A calmer Today and harder practice',
+    items: [
+      { cat: 'new', text: 'Today is calmer: one plan to start, a gentle welcome back after a break, a lighter exam week, and one auditor question a day.' },
+      { cat: 'improved', text: 'More challenging answer choices in system development and implementation practice questions, closer to the real exam.' },
+      { cat: 'improved', text: 'Explanations and tips now show the knowledge that rules out each wrong choice, so you can use it on new questions.' },
+      { cat: 'improved', text: 'Study notes open faster, especially if you have practiced a lot.' },
+      { cat: 'fixed', text: 'Continue reading now remembers your last note after you close the site, and two open tabs no longer overwrite each other\'s progress.' },
+    ],
+  },
+  {
+    version: 'v12.35',
     title: 'Sharper questions and notes',
     items: [
       { cat: 'improved', text: 'Clearer wording and stronger answer choices in a set of practice questions, with plain-language explanations of new terms.' },

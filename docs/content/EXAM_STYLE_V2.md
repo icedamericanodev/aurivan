@@ -33,7 +33,7 @@ ISACA mindset picks one.
 
 ## Design rules (from the pilot review)
 
-1. **Two eliminable, final two hard.** Exactly two distractors fall to topic knowledge. The runner-up must be genuinely plausible.
+1. **Two eliminable, final two hard.** Exactly two distractors fall to topic knowledge, and the runner-up must be genuinely plausible. The two eliminated options must fall to CISA knowledge, not to common sense. Each is the same type as the key, and each is an error that an unprepared candidate or an operations-minded practitioner would really make: a partial fix, the wrong owner, detection where prevention is needed, or the auditor doing management's work. Never use an absurd, off-topic or rationale-loaded option ("since auditors know best"). The final two must both look right on the surface, and the ISACA lens must decide between them (the priority word, auditor vs management role, risk first, governance before technology, root cause, prevention, evidence quality), not a cue in the stem. The `Eliminate:` tip names the knowledge that rules each option out, never a dismissive word ("ignores", "abandons", "at all"). (Owner's rule, Oct 2026, after learners said the choices gave the answer away. The harness warns on gap-echo and dismissive Eliminate tips.)
 2. **No subsets.** The key must not contain another option's idea ("A = B + more" is a giveaway).
 3. **Named actor.** The stem says who acts.
 4. **No lone absolutes.** Words like "all", "only", "per se" or "inherently" must not be the only reason a distractor falls.

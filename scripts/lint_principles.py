@@ -38,6 +38,13 @@ RULE_MAX = 20
 WHY_MAX = 60
 EXAMPLE_MAX = 80
 NUANCE_MAX = 40
+# The optional two-option check (Today's Mindset check).
+CHECK_SCENARIO_MAX = 45
+CHECK_OPTION_MAX = 22
+CHECK_WHY_MAX = 35
+# The shorter option must be at least this share of the longer (in characters),
+# so length never gives the answer away.
+CHECK_LENGTH_RATIO = 0.8
 
 # Every id of the old web PRINCIPLES_LIB. Each must appear in exactly one
 # principle's legacy_ids so existing links keep resolving.
@@ -59,7 +66,7 @@ FAMILY_KEYS = {"id", "order", "title", "question"}
 REQUIRED = ["id", "family", "order", "title", "rule", "why", "triggers", "trap",
             "example", "domains", "subtopics", "practice_ids", "slip_pattern",
             "legacy_ids"]
-OPTIONAL = ["nuance", "aliases"]
+OPTIONAL = ["nuance", "aliases", "check"]
 
 KEBAB = re.compile(r"^[a-z0-9]+(-[a-z0-9]+)*$")
 QID = re.compile(r"^d([1-5])_\d{3}$")
@@ -340,6 +347,27 @@ def check_principle(p, i, ctx):
             err(where, "nuance, when present, must be a non-empty string")
         elif words(p["nuance"]) > NUANCE_MAX:
             err(where, f"nuance is {words(p['nuance'])} words (max {NUANCE_MAX})")
+
+    # check (optional): one two-option question, right move against the trap
+    if "check" in p:
+        ck = p["check"]
+        keys = {"scenario", "right", "trap", "why"}
+        if not (isinstance(ck, dict) and set(ck.keys()) == keys
+                and all(nonempty_str(ck.get(k)) for k in keys)):
+            err(where, "check must be an object with non-empty 'scenario', 'right', 'trap' and 'why'")
+        else:
+            if words(ck["scenario"]) > CHECK_SCENARIO_MAX:
+                err(where, f"check.scenario is {words(ck['scenario'])} words (max {CHECK_SCENARIO_MAX})")
+            for k in ("right", "trap"):
+                if words(ck[k]) > CHECK_OPTION_MAX:
+                    err(where, f"check.{k} is {words(ck[k])} words (max {CHECK_OPTION_MAX})")
+            if words(ck["why"]) > CHECK_WHY_MAX:
+                err(where, f"check.why is {words(ck['why'])} words (max {CHECK_WHY_MAX})")
+            a, b = len(ck["right"].strip()), len(ck["trap"].strip())
+            if ck["right"].strip() == ck["trap"].strip():
+                err(where, "check.right and check.trap are the same")
+            elif min(a, b) < CHECK_LENGTH_RATIO * max(a, b):
+                err(where, f"check options differ too much in length ({a} vs {b} characters)")
 
     # domains
     doms = p.get("domains")

@@ -4,6 +4,19 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v12.36] — A calmer Today and harder practice
+
+### New
+- Today is calmer: one plan to start, a gentle welcome back after a break, a lighter exam week, and one auditor question a day.
+
+### Improved
+- More challenging answer choices in system development and implementation practice questions, closer to the real exam.
+- Explanations and tips now show the knowledge that rules out each wrong choice, so you can use it on new questions.
+- Study notes open faster, especially if you have practiced a lot.
+
+### Fixed
+- Continue reading now remembers your last note after you close the site, and two open tabs no longer overwrite each other's progress.
+
 ## [v12.35] — Sharper questions and notes
 
 ### Improved
