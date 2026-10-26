@@ -36,6 +36,8 @@ jest.mock('react-native-safe-area-context', () => {
 });
 
 let r: ReactTestRenderer | undefined;
+/** The Theme radio group's one spoken name: its title and line (the visible words are hidden from screen readers). */
+const THEME_GROUP = 'Theme. System follows your phone’s light or dark setting.';
 const root = () => r!.root;
 const textOf = (n: ReactTestInstance | string): string => (typeof n === 'string' ? n : n.children.map(textOf).join(' '));
 const hosts = (pred: (n: ReactTestInstance) => boolean) => root().findAll((n) => typeof n.type === 'string' && pred(n));
@@ -76,11 +78,20 @@ describe('Settings, mobile 1.43', () => {
     act(() => {
       r = create(<Settings />);
     });
-    const theme = hosts((n) => n.props.accessibilityRole === 'radiogroup' && n.props.accessibilityLabel === 'Theme');
+    const theme = hosts((n) => n.props.accessibilityRole === 'radiogroup' && n.props.accessibilityLabel === THEME_GROUP);
     expect(theme).toHaveLength(1);
     const t = textOf(root());
     expect(t.indexOf('System follows your phone')).toBeLessThan(t.indexOf('Certification'));
     expect(t.indexOf('Your name')).toBeLessThan(t.indexOf('System follows your phone'));
+  });
+
+  it('the theme is said once: the visible title and line are hidden, the group carries both (UX P9)', () => {
+    act(() => {
+      r = create(<Settings />);
+    });
+    const hidden = hosts((n) => n.props.importantForAccessibility === 'no-hide-descendants' && n.props.accessibilityElementsHidden === true && /^Theme System follows/.test(textOf(n).trim()));
+    expect(hidden).toHaveLength(1);
+    expect(hosts((n) => n.props.accessibilityLabel === THEME_GROUP)).toHaveLength(1);
   });
 
   it('no Settings gear on Settings itself', () => {

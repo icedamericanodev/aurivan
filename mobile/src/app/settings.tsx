@@ -93,6 +93,8 @@ type SheetId = 'name' | 'exam' | 'date' | 'minutes' | 'start' | 'mode' | 'remind
 const START_SHORT: Record<Familiarity, string> = { new: 'New to audit', some: 'Some experience', experienced: 'Experienced' };
 const MOTION_NAME: Record<MotionPref, string> = { system: 'Match my phone', reduced: 'Reduced' };
 const AUTO_MODE = 'auto';
+/** The Theme control's line, shown under its title and said as part of the group's name. */
+const THEME_LINE = 'System follows your phone’s light or dark setting.';
 
 /**
  * iOS: how long to wait for the push transition's end before opening the
@@ -329,12 +331,16 @@ export default function Settings() {
     );
 
   // Mobile 1.43 (owner feedback): the theme in one tap, a System / Light / Dark radio group.
+  // The title and its line are said ONCE, as the radio group's name; the visible words are hidden
+  // from screen readers so they are not read a second time before the group.
   const themeControl = (
     <View style={{ paddingVertical: space.md, borderBottomWidth: 1, borderBottomColor: c.line }}>
-      <T v="label">Theme</T>
-      <T v="meta" style={{ marginBottom: space.sm }}>System follows your phone’s light or dark setting.</T>
+      <View accessible={false} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
+        <T v="label">Theme</T>
+        <T v="meta" style={{ marginBottom: space.sm }}>{THEME_LINE}</T>
+      </View>
       <Segmented<ThemePref>
-        accessibilityLabel="Theme"
+        accessibilityLabel={`Theme. ${THEME_LINE}`}
         options={[
           { value: 'system', label: 'System' },
           { value: 'light', label: 'Light' },
@@ -470,7 +476,6 @@ export default function Settings() {
           <SettingsRow ref={remindRow} title="Time and days" subtitle={reminderSummary(s.reminder)} onPress={open('remind')} last />
         )}
       </SettingsGroup>
-
 
       {/* Mobile 1.10: badges are optional. Mobile 1.13: so is the plant. */}
       <View
@@ -744,7 +749,6 @@ export default function Settings() {
           </T>
         </Sheet>
       )}
-
 
       <ChoiceSheet<MotionPref>
         visible={sheet === 'motion'}

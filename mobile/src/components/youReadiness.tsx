@@ -123,11 +123,14 @@ export function ReadinessBlock({ range, growth }: { range: ReadinessRange; growt
 }
 
 /**
- * The bar beside the name at ×1 (80pt, so "IT Governance" keeps one line at 393 dp); when the row
- * drops to two lines (×1.3 text) it takes the row's width, never under 96pt.
+ * The one-line row (×1 text) uses fixed columns, so every area's 70% tick sits at the same x: the bar
+ * (80pt, so "IT Governance" keeps one line at 393 dp), the word (80pt, a thin area's "N answered"
+ * under it) and the figure (48pt). At ×1.3 text the row stacks: the name, the bar on its own
+ * full-width line, then the word and the figure, which wrap rather than overflow.
  */
 const BAR_W = 80;
-const BAR_W_STACKED = 96;
+const WORD_W = 80;
+const FIGURE_W = 48;
 
 /** One row per area: name, a short bar with the 70% line, the word, and the percent (from 30 answers). */
 export function AreaRows({ cert, readiness, ups }: { cert: Certification; readiness: Readiness; /** Points up since the last real look, blueprint order (said in each row's label). */ ups?: readonly number[] }) {
@@ -138,7 +141,8 @@ export function AreaRows({ cert, readiness, ups }: { cert: Certification; readin
       {/* The two captions: what the figures count, and which line the ticks are (80 is the ring's notch). */}
       <View style={{ flexDirection: stacked ? 'column' : 'row', justifyContent: 'space-between', gap: space.xs }}>
         <T v="caption" color={c.ink2}>{AREAS_CAPTION}</T>
-        <T v="caption" color={c.ink2}>{AREA_LINE_LABEL}</T>
+        {/* Not at large text: the stacked rows' bars span the width, so there is no tick column to label. */}
+        {!stacked && <T v="caption" color={c.ink2}>{AREA_LINE_LABEL}</T>}
       </View>
       {cert.domains.map((d, i) => {
         const dm = readiness.domains.find((x) => x.domainId === d.id);
@@ -147,7 +151,7 @@ export function AreaRows({ cert, readiness, ups }: { cert: Certification; readin
         const f = areaFigure(answered, pct);
         const tone = domainColor(d.tone, isDark);
         const bar = (
-          <View style={{ width: stacked ? undefined : BAR_W, flex: stacked ? 1 : undefined, minWidth: stacked ? BAR_W_STACKED : BAR_W, height: 6, borderRadius: 3, backgroundColor: c.track }}>
+          <View style={{ width: stacked ? '100%' : BAR_W, height: 6, borderRadius: 3, backgroundColor: c.track, marginVertical: stacked ? 4 : 0 }}>
             {answered > 0 && <View style={{ width: `${Math.max(2, pct)}%`, height: 6, borderRadius: 3, backgroundColor: tone, opacity: f.thin ? 0.45 : 1 }} />}
             {/* The area's 70% line: 2pt in ink2 on a 1pt paper gap each side, 4pt above and below the bar. */}
             <View style={{ position: 'absolute', left: `${STEADY_FROM}%`, top: -4, width: 4, height: 14, marginLeft: -2, backgroundColor: c.bg, alignItems: 'center' }}>
@@ -155,16 +159,13 @@ export function AreaRows({ cert, readiness, ups }: { cert: Certification; readin
             </View>
           </View>
         );
+        const count = f.pct === null && answered > 0 ? `${answered} answered` : null;
         const word = (
           <T v={f.below ? 'label' : 'small'} color={f.below ? c.clay : c.ink2} style={{ textAlign: 'right' }}>
             {f.word}
           </T>
         );
-        const figure = (
-          <View style={{ minWidth: 44, alignItems: 'flex-end', flexShrink: 0 }}>
-            {f.pct !== null ? <BigNum value={String(f.pct)} pct size={17} /> : <T v="meta" color={c.ink2}>{answered > 0 ? `${answered} answered` : '–'}</T>}
-          </View>
-        );
+        const number = f.pct !== null ? <BigNum value={String(f.pct)} pct size={17} /> : null;
         const name = (
           <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.sm, flex: stacked ? undefined : 1, minWidth: 0 }}>
             <DomainDot domain={d} />
@@ -188,18 +189,25 @@ export function AreaRows({ cert, readiness, ups }: { cert: Certification; readin
             {stacked ? (
               <View style={{ gap: space.sm }}>
                 {name}
-                <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.sm }}>
-                  {bar}
-                  {word}
-                  {figure}
+                {bar}
+                {/* The word, then the figure (or "N answered"): one line that wraps at very large text. */}
+                <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', columnGap: space.md, rowGap: space.xs }}>
+                  <View style={{ flexShrink: 1 }}>{word}</View>
+                  {number ?? <T v="meta" color={c.ink2} style={{ flexShrink: 1 }}>{count ?? '–'}</T>}
                 </View>
               </View>
             ) : (
               <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.sm }}>
                 {name}
                 {bar}
-                {word}
-                {figure}
+                {/* Fixed columns, so the 70 ticks line up from row to row; a thin area's count sits under its word. */}
+                <View style={{ width: WORD_W, alignItems: 'flex-end' }}>
+                  {word}
+                  {count && <T v="meta" color={c.ink2} style={{ textAlign: 'right' }}>{count}</T>}
+                </View>
+                <View style={{ width: FIGURE_W, alignItems: 'flex-end' }}>
+                  {number ?? (count ? null : <T v="meta" color={c.ink2}>–</T>)}
+                </View>
               </View>
             )}
           </View>

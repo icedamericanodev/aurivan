@@ -175,6 +175,14 @@ describe('Play hero renders its content (Android blank-hero regression)', () => 
     expect(textOf(content)).toContain('A mixed set');
     expect(textOf(content)).toContain('10 questions · ');
   });
+
+  it('beside the seal the title stops short of it by its width and a gap, not a fixed 250 (QA bug 2: 360pt phones)', () => {
+    mount(<Play />);
+    const [content] = byTestId('hero-content');
+    const [title] = content.findAll((n) => n.props.accessibilityRole === 'header' && typeof n.type === 'string');
+    expect(flat(title).marginRight).toBe(56 + 12);
+    expect(flat(title).maxWidth).toBeUndefined();
+  });
 });
 
 describe('Settings gear in the Today and You headers', () => {

@@ -19,6 +19,11 @@ for dn, rate in {1: .82, 2: .74, 3: .61, 4: .70, 5: .66}.items():
             if slip: m["slip"] = slip
             mistakes[q["id"]] = m
             review[q["id"]] = {"box": 1, "dueAt": now - 3600000, "lastSeen": t, "reps": 1}
+# Mobile 1.43 (SHOTS=m143): one THIN area, so You shows a row under 30 answers ("12 answered",
+# the bar drawn lighter), the row that overflowed at 200% text. Info Protection keeps 12 answers.
+if os.environ.get("SHOTS") == "m143":
+    for qid in sorted(k for k in answers if k.startswith("d5_"))[12:]:
+        answers.pop(qid); mistakes.pop(qid, None); review.pop(qid, None)
 days = [dk(now - i * day) for i in (6, 5, 4, 2, 1, 0)]
 progress = {"state": {"byCert": {"cisa": {"answers": answers, "review": review, "bookmarks": [], "mocks": [],
             "lessonsDone": ["cisa-l-d1-charter"], "mistakes": mistakes, "gameBest": {"trap": 7, "sprint": 14, "priority": 7},

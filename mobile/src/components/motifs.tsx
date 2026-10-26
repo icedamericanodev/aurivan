@@ -19,7 +19,7 @@ export type MotifKind = 'seedhead' | 'leafvein' | 'sprig';
 const SEAL_FOCUS: Record<MotifKind, [number, number, number]> = {
   seedhead: [28, 20, 150],
   leafvein: [56, 40, 180],
-  sprig: [10, -4, 160],
+  sprig: [10, 16, 160], // 20 lower than 1.43's first cut: the end leaf's tip (40, 162) clears the seal's rounded corner (UX O6)
 };
 
 /** The motif cropped into a `size` square; the stroke stays 1.5pt at that size. */

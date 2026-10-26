@@ -83,6 +83,8 @@ const openRow = (title: string) => {
   });
 };
 const day = (spoken: string) => hosts((n) => String(n.props.accessibilityLabel).startsWith(spoken))[0];
+/** The Theme radio group's one spoken name: its title and line (the visible words are hidden from screen readers). */
+const THEME_GROUP = 'Theme. System follows your phone’s light or dark setting.';
 const flatStyle = (style: unknown): Record<string, unknown> => Object.assign({}, ...[style].flat(3).filter(Boolean));
 /** The calendar's cells (days and blanks): host views sized like a day cell at this width. */
 const gridCells = () => {
@@ -185,12 +187,12 @@ describe('Settings is grouped, and each row says its value', () => {
 describe('Choice sheets work like a dropdown', () => {
   it('Theme: one tap on the screen itself (mobile 1.43, owner: "if I want to change the theme I cannot see it easily")', () => {
     mount(<Settings />);
-    const group = root().findAll((n) => typeof n.type === 'string' && n.props.accessibilityRole === 'radiogroup' && n.props.accessibilityLabel === 'Theme');
+    const group = root().findAll((n) => typeof n.type === 'string' && n.props.accessibilityRole === 'radiogroup' && n.props.accessibilityLabel === THEME_GROUP);
     expect(group).toHaveLength(1);
     press('Dark');
     expect(useSettings.getState().theme).toBe('dark');
     // No sheet opened: the only radio group is the theme's own.
-    expect(root().findAll((n) => typeof n.type === 'string' && n.props.accessibilityRole === 'radiogroup').map((n) => n.props.accessibilityLabel)).toEqual(['Theme']);
+    expect(root().findAll((n) => typeof n.type === 'string' && n.props.accessibilityRole === 'radiogroup').map((n) => n.props.accessibilityLabel)).toEqual([THEME_GROUP]);
     // It comes before the Exam group, near the top.
     const t = allText();
     expect(t.indexOf('System follows your phone')).toBeLessThan(t.indexOf('Certification'));
@@ -218,7 +220,7 @@ describe('Choice sheets work like a dropdown', () => {
     expect(dim[0].props.accessible).toBe(false);
     press('Close, Daily time');
     // Only the theme's own group is left (it lives on the screen, mobile 1.43).
-    expect(root().findAll((n) => n.props.accessibilityRole === 'radiogroup' && n.props.accessibilityLabel !== 'Theme')).toHaveLength(0);
+    expect(root().findAll((n) => n.props.accessibilityRole === 'radiogroup' && n.props.accessibilityLabel !== THEME_GROUP)).toHaveLength(0);
   });
 
   it('VoiceOver’s escape gesture closes a sheet, like its header button (UX P3)', () => {

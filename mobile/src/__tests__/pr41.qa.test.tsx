@@ -84,6 +84,16 @@ const DAY = 86_400_000;
 const MIN = 60_000;
 const cisa = getCertification('cisa')!;
 const ALL = getAllQuestions('cisa').map((q) => q.id);
+/** Put questions into review, due NOW (queueForReview waits for tomorrow since mobile 1.43; these tests need a review today). */
+const queueDueNow = (ids: string[]) => {
+  useProgress.getState().queueForReview('cisa', ids);
+  useProgress.setState((s) => {
+    const cp = s.byCert.cisa!;
+    const review = { ...cp.review };
+    for (const id of ids) review[id] = { ...review[id], dueAt: Date.now() };
+    return { byCert: { ...s.byCert, cisa: { ...cp, review } } };
+  });
+};
 
 let r: ReactTestRenderer | undefined;
 const root = () => r!.root;
@@ -250,7 +260,7 @@ describe('Journey 1 · Results stats', () => {
 
   it('a review: same stats, same pace sentence', () => {
     act(() => {
-      useProgress.getState().queueForReview('cisa', IDS.slice(0, 5));
+      queueDueNow(IDS.slice(0, 5));
     });
     act(() => {
       startReview('cisa');
@@ -426,7 +436,7 @@ describe('Journey 1 · Today clearing card', () => {
   it('a 5-second review that clears the day: the clearing card says "Under a minute", like Results', () => {
     filled();
     act(() => {
-      useProgress.getState().queueForReview('cisa', ALL.slice(0, 1));
+      queueDueNow(ALL.slice(0, 1));
     });
     act(() => {
       useProgress.getState().startDay(newDayPlan(dayKey(T0), 'cisa', [{ kind: 'review', count: 1 }], readiness));

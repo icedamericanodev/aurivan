@@ -587,6 +587,9 @@ export function HeroPanel({
       <Motif kind={seal} color={c.sap} size={56} />
     </View>
   ) : null;
+  // Beside the corner seal (below large text) the caption row and the title stop short of it: the
+  // seal's width and a gap, measured from the card's edge, so no phone width lets text run under it.
+  const sealClear = seal && !large ? { marginRight: 56 + space.md } : null;
   return (
     <Animated.View style={[style, liftStyle]}>
     <Card variant={seal ? 'raised' : 'forest'} style={seal ? { padding: space.gutter } : undefined}>
@@ -617,17 +620,17 @@ export function HeroPanel({
       {large && sealTile}
       <View testID="hero-content" style={styles.heroContent}>
         {caption && (
-          <Row gap={space.sm} style={{ flexWrap: 'wrap' }}>
+          <Row gap={space.sm} style={[{ flexWrap: 'wrap' }, sealClear]}>
             {captionLead ? (
               // A lead (a domain dot, a game glyph) stays on its caption's line: at large text
               // the caption wraps BESIDE it (never the lead alone on a line). With nothing after
               // it, the pair keeps clear of the art like the title (full width at large text).
-              <Row gap={space.sm} style={{ flexShrink: 1, maxWidth: !captionExtra && !large && !wideTitle ? 250 : '100%' }}>
+              <Row gap={space.sm} style={{ flexShrink: 1, maxWidth: !seal && !captionExtra && !large && !wideTitle ? 250 : '100%' }}>
                 {captionLead}
                 <T v="caption" color={capInk} accessibilityLabel={captionLabel} style={{ flexShrink: 1 }}>{caption}</T>
               </Row>
             ) : (
-              <T v="caption" color={capInk} accessibilityLabel={captionLabel} style={seal && !large ? { maxWidth: 250 } : undefined}>{caption}</T>
+              <T v="caption" color={capInk} accessibilityLabel={captionLabel}>{caption}</T>
             )}
             {captionExtra}
           </Row>
@@ -645,7 +648,7 @@ export function HeroPanel({
           accessibilityRole="header"
           accessibilityLabel={titleLabel}
           // With a seal (1.43) the title always keeps clear of it below large text: the seal is opaque.
-          style={{ marginTop: caption ? space.sm : 0, maxWidth: (seal || title.length <= 34) && !large && !wideTitle ? 250 : undefined }}
+          style={[{ marginTop: caption ? space.sm : 0, maxWidth: !seal && title.length <= 34 && !large && !wideTitle ? 250 : undefined }, sealClear]}
         >
           {title}
         </T>

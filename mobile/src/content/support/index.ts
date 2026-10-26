@@ -45,7 +45,7 @@ export const WHATS_NEW: readonly WhatsNewEntry[] = [
     version: '1.43.0',
     date: '2026-10-26',
     improved: [
-      'After a miss, the answer screen shows your pick beside the best answer and the key idea first. Read more opens the full explanation.',
+      'After a miss, the answer screen shows your pick beside the best answer and the key idea first. Read more opens the full explanation and the Eliminate two and Final two tips.',
       'Results lead with how many you got right, show each question as a leaf, and link straight to the notes for what you missed.',
       'Questions you miss now come back the next day, as Results says they will.',
       'You shows one readiness ring and a plain line for each area, with what has gone up since you last looked.',

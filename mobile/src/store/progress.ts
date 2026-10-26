@@ -31,7 +31,7 @@ import { migrateProgress, PROGRESS_VERSION } from '../engine/saveMigrations';
 import { withNote, type QuestionNotes } from '../engine/questionNotes';
 import type { ThinkingSlip } from '../engine/slipCoach';
 import { addReport, type ReportEntry } from '../engine/support';
-import { isRetestAfterMiss, MAX_BOX, nextCardReview, nextReview, type Confidence, type ReviewEntry } from '../engine/srs';
+import { isRetestAfterMiss, MAX_BOX, nextCardReview, nextReview, startOfNextDay, type Confidence, type ReviewEntry } from '../engine/srs';
 import { bumpStreak, dayKey, type Streak } from '../engine/streak';
 import { watchHydration } from './hydration';
 import { persistStorage } from './storage';
@@ -275,7 +275,7 @@ export interface ProgressState {
   ) => void;
   /** Log today's readiness lower bound from the saved answers (after a batch). */
   logReadinessNow: (certId: string) => void;
-  /** Put questions into review (due now) WITHOUT counting them as answered. */
+  /** Put questions into review (Box 1, due at the start of tomorrow like a miss) WITHOUT counting them as answered. */
   queueForReview: (certId: string, questionIds: string[]) => void;
   toggleBookmark: (certId: string, questionId: string) => void;
   recordMistake: (certId: string, questionId: string, picked?: Letter, confidence?: Confidence) => void;
@@ -474,8 +474,11 @@ export const useProgress = create<ProgressState>()(
           const now = Date.now();
           const cp = normalize(s.byCert[certId]);
           const review = { ...cp.review };
+          // A blank mock answer or a Daylight time-out waits for tomorrow, like a miss (mobile 1.43):
+          // re-asking it the same hour tests memory of the review, not recall.
+          const tomorrow = startOfNextDay(now);
           for (const id of questionIds) {
-            review[id] = { box: 1, dueAt: now, lastSeen: now, reps: review[id]?.reps ?? 0 };
+            review[id] = { box: 1, dueAt: tomorrow, lastSeen: now, reps: review[id]?.reps ?? 0 };
           }
           return { byCert: { ...s.byCert, [certId]: { ...cp, review } } };
         }),

@@ -60,6 +60,15 @@ describe('Leitner spaced repetition', () => {
     expect(e.dueAt).toBe(NOW + 3 * DAY_MS);
   });
 
+  it('a lucky guess or a Coach me answer in box 1 waits for the start of tomorrow, never due at once (web clamp)', () => {
+    const box1 = { box: 1, dueAt: NOW - 1, lastSeen: NOW - 5 * 3_600_000, reps: 1 };
+    const guess = nextReview(box1, true, 'guessing', NOW)!;
+    expect(guess).toEqual({ box: 1, dueAt: startOfNextDay(NOW), lastSeen: NOW, reps: 2 });
+    const coached = nextReview(box1, true, 'sure', NOW, true)!;
+    expect(coached).toEqual({ box: 1, dueAt: startOfNextDay(NOW), lastSeen: NOW, reps: 2 });
+    expect(dueIds({ q: guess }, NOW)).toEqual([]);
+  });
+
   it('graduates out of the final box', () => {
     expect(nextReview({ box: MAX_BOX, dueAt: NOW, lastSeen: NOW, reps: 9 }, true, 'sure', NOW)).toBeNull();
   });

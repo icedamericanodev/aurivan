@@ -6,8 +6,9 @@
  * back at the start of the next local day (mobile 1.43, the web's rule too:
  * seeing it again the same hour is massed practice, not recall). Each time
  * you answer it correctly (and you were not just guessing), it moves up a box
- * and comes back later:
- *   Box 1 → tomorrow, Box 2 → 1 day, Box 3 → 3 days, Box 4 → 7 days, Box 5 → 16 days.
+ * and comes back later. The wait after an answer that lands in each box:
+ *   Box 1 → the start of tomorrow, Box 2 → 1 day, Box 3 → 3 days, Box 4 → 7 days, Box 5 → 16 days.
+ * (INTERVAL_DAYS[1] is 0; every Box 1 entry is clamped to the start of the next local day.)
  * Answer it correctly from Box 5 and it "graduates" out of the queue.
  *
  * A correct first answer marked "guessing" or "unsure" also enters the queue
@@ -15,7 +16,8 @@
  *
  * Coach me (assisted answers): a right answer after a hint is real progress,
  * but it is weaker evidence, so it does NOT move the question up a box. It
- * stays in its box and comes back after that box's (shorter) interval.
+ * stays in its box and comes back after that box's (shorter) interval, never
+ * sooner than the start of tomorrow (a lucky guess re-spaces the same way).
  *
  * Retest rule (mobile 1.24): a RIGHT answer to a question you got WRONG
  * less than RETEST_WINDOW_MS (4 hours) earlier is a "retest". A right
@@ -136,10 +138,13 @@ export function nextReview(
 
   if (confidence === 'guessing' || assisted) {
     // A lucky guess, or a right answer after a hint, does not earn a
-    // promotion — re-space at the same box (a shorter wait than promoting).
+    // promotion — re-space at the same box (a shorter wait than promoting),
+    // and never sooner than the start of tomorrow: Box 1's interval is 0, so
+    // without the clamp it would be due at once, sooner than the miss itself.
+    // The web's updateReviewSchedule clamps the same way.
     return {
       ...current,
-      dueAt: now + INTERVAL_DAYS[current.box] * DAY_MS,
+      dueAt: Math.max(now + INTERVAL_DAYS[current.box] * DAY_MS, startOfNextDay(now)),
       lastSeen: now,
       reps: current.reps + 1,
     };

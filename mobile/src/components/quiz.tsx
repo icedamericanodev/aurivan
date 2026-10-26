@@ -291,7 +291,7 @@ export function useVerdictIndent(): number {
 export function PickNote({ letter, text }: { letter: Letter; text: string }) {
   const { c } = useTheme();
   return (
-    <View accessible accessibilityLabel={`Why not ${letter}: ${text}`} style={{ paddingHorizontal: space.md, marginBottom: space.md }}>
+    <View accessible accessibilityLabel={`Why not ${letter}: ${text}`} style={{ paddingHorizontal: space.lg, marginBottom: space.lg }}>
       <T v="caption" color={c.ink2}>{`Why not ${letter}`}</T>
       <T v="small" color={c.ink} style={{ marginTop: 2 }}>{text}</T>
     </View>
@@ -459,8 +459,8 @@ export function WhyBlock({
     <View>
       <T v="headline" accessibilityRole="header" style={{ marginTop: space.lg }}>{`Why ${letter}`}</T>
       <T v="body" numberOfLines={folded && long ? 2 : undefined} style={{ marginTop: space.xs }}>{text}</T>
-      {/* Folded away until opened (Collapse: no height animation; what opens fades in). No fold: just shown. */}
-      {canFold ? <Collapse open={open}>{children}</Collapse> : children}
+      {/* The toggle comes BEFORE what it opens, so a screen reader moves from "Read more" straight on to the
+          Eliminate two and Final two tips it revealed. */}
       {canFold && (
         <Pressable
           accessibilityRole="button"
@@ -471,11 +471,13 @@ export function WhyBlock({
             setOpen(!open);
           }}
           hitSlop={8}
-          style={{ minHeight: 48, justifyContent: 'center', alignSelf: 'flex-start', marginTop: open && children ? space.sm : 0 }}
+          style={{ minHeight: 48, justifyContent: 'center', alignSelf: 'flex-start' }}
         >
           <T v="label" color={c.accentText}>{open ? 'Show less' : 'Read more'}</T>
         </Pressable>
       )}
+      {/* Folded away until opened (Collapse: no height animation; what opens fades in). No fold: just shown. */}
+      {canFold ? <Collapse open={open}>{children}</Collapse> : children}
     </View>
   );
 }

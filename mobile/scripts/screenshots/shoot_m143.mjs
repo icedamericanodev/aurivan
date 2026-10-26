@@ -135,6 +135,9 @@ if (want('you')) {
   await shot('b3-you');
   await into('Answered', 'center');
   await shot('b3-you-stats');
+  // The area rows from their caption (the seed's thin Info Protection row is the last one).
+  await into('Right on your latest tries');
+  await shot('b3-you-areas');
 }
 
 // ── Board 4: a study note ────────────────────────────────────────────────
@@ -151,6 +154,13 @@ if (want('settings')) {
   await shot('b5-settings');
   await scrollBy(640);
   await shot('b5-settings-more');
+}
+
+// The danger button at the foot of Settings (UX P3: does its pill read in dark?). M143_ONLY=danger.
+if (want('danger')) {
+  await go('/settings', 2200);
+  await into('Reset CISA progress', 'center');
+  await shot('b5-settings-reset');
 }
 
 // The theme in one tap (M143_ONLY=themeTap): Dark, then Light, then back to You.

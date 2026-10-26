@@ -53,6 +53,16 @@ jest.mock('react-native-safe-area-context', () => {
 const T0 = new Date(2026, 9, 5, 9, 0, 0).getTime(); // Mon 5 Oct 2026, 09:00 local
 const DAY = 24 * 3_600_000;
 const S = 1000;
+/** Put questions into review, due NOW (queueForReview waits for tomorrow since mobile 1.43; these tests need a review today). */
+const queueDueNow = (ids: string[]) => {
+  useProgress.getState().queueForReview('cisa', ids);
+  useProgress.setState((s) => {
+    const cp = s.byCert.cisa!;
+    const review = { ...cp.review };
+    for (const id of ids) review[id] = { ...review[id], dueAt: Date.now() };
+    return { byCert: { ...s.byCert, cisa: { ...cp, review } } };
+  });
+};
 
 // AppState: every screen's listener, so the test can send the app to the background.
 const listeners = new Set<(s: AppStateStatus) => void>();
@@ -144,7 +154,7 @@ describe('answer time: practice and review', () => {
 
   it('review: the due question is timed the same way', () => {
     const ids = getAllQuestions('cisa').slice(10, 12).map((q) => q.id);
-    useProgress.getState().queueForReview('cisa', ids);
+    queueDueNow(ids);
     startReview('cisa');
     expect(session().mode).toBe('review');
     mount(<SessionScreen />);
