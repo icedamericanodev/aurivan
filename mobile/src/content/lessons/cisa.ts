@@ -54,6 +54,12 @@ export const CISA_LESSONS: Lesson[] = [
         type: 'idea',
         heading: 'What a charter does',
         body: 'An audit charter is the founding document of the audit function. It sets out the function’s purpose, responsibility, authority to access people and records, and accountability, including where it reports. Without it, an auditor is a guest who can be shown the door.',
+        // Mobile 1.43: the four things a charter sets out, drawn as a small figure (same words, only split).
+        list: {
+          lead: 'An audit charter is the founding document of the audit function. It sets out the function’s',
+          items: ['purpose', 'responsibility', 'authority| to access people and records', 'accountability|, including where it reports'],
+          close: 'Without it, an auditor is a guest who can be shown the door.',
+        },
       },
       {
         type: 'analogy',
@@ -1343,6 +1349,10 @@ export const CISA_LESSONS: Lesson[] = [
         type: 'idea',
         heading: 'The core idea',
         body: 'An audit function asks others to prove their controls work, so it must be able to prove its own work is sound. Its quality assurance and improvement program is that proof: checks built into every engagement, periodic reviews inside the function, an independent outside review, and action on what they find.',
+        list: {
+          lead: 'An audit function asks others to prove their controls work, so it must be able to prove its own work is sound. Its quality assurance and improvement program is that proof:',
+          items: ['checks| built into every engagement', 'periodic reviews| inside the function', 'an independent outside review', 'action| on what they find'],
+        },
       },
       {
         type: 'stack',
@@ -5889,6 +5899,10 @@ export const CISA_LESSONS: Lesson[] = [
         type: 'idea',
         heading: 'The core idea',
         body: 'Digital forensics is collecting and analyzing digital evidence so it can be trusted, including in court. The rules: preserve before you analyze, never change the original, record everyone who handles it from the moment it is collected, and prove the copy matches the original.',
+        list: {
+          lead: 'Digital forensics is collecting and analyzing digital evidence so it can be trusted, including in court. The rules:',
+          items: ['preserve before you analyze', 'never change the original', 'record everyone who handles it| from the moment it is collected', 'prove the copy matches the original'],
+        },
       },
       {
         type: 'analogy',

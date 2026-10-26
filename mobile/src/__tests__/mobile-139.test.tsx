@@ -264,10 +264,11 @@ describe('#15 the one next plan item is a "Then:" line, with no hollow circle', 
   });
 });
 
-describe('#15 short lesson scenes sit in the middle of the page', () => {
-  it('every scene but the cover and a check is centred when short', () => {
-    expect(centreScene({ type: 'idea', heading: 'x', body: 'y' })).toBe(true);
-    expect(centreScene({ type: 'tip', body: 'y' })).toBe(true);
+describe('#15 short lesson scenes (1.39 centred them; 1.43 puts every scene on the anchor line)', () => {
+  it('no scene is centred: every scene starts on the anchor line', () => {
+    // Mobile 1.43: no scene is centred any more; every scene starts on the anchor line.
+    expect(centreScene({ type: 'idea', heading: 'x', body: 'y' })).toBe(false);
+    expect(centreScene({ type: 'tip', body: 'y' })).toBe(false);
     expect(centreScene({ type: 'title', kicker: 'k', title: 't', subtitle: 's' })).toBe(false);
     expect(centreScene({ type: 'check', question: 'q', options: ['a', 'b'], correctIndex: 0, explanation: 'e' })).toBe(false);
   });

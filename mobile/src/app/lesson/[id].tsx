@@ -25,7 +25,7 @@
  *   draws the ✓ without a second buzz).
  *
  * Mobile 1.22 (design spec §4): every scene starts on one anchor line under
- * the header (since 1.39 a short scene is centred below it instead); the header carries a flag ("Report a problem") on every scene;
+ * the header (1.39 centred a short scene below it; 1.43 puts every scene back on the line); the header carries a flag ("Report a problem") on every scene;
  * the footer is the shared sticky footer with its paper fade, and Back is a
  * 56pt round "Previous step" beside Next (a full "Back" pill on checks).
  *
@@ -78,13 +78,12 @@ const HUGE_TEXT = 1.6;
 const ANCHOR = space.xxl + space.md;
 
 /**
- * Whether a scene is centred in the space under the anchor line when it is short (mobile 1.39).
- * Every scene but the cover (a forest panel at the top) and a check (it grows when answered,
- * and the page must not jump). Long scenes are unaffected: they fill the space and scroll.
- * Exported for tests.
+ * Mobile 1.43 (board 6, a regression fix): every scene starts ON the anchor line. 1.39 centred a
+ * short scene in the space below it, so an idea scene floated a third of the way down an empty page
+ * and each page turn landed somewhere else. Exported for tests: always false now.
  */
-export function centreScene(scene: Lesson['scenes'][number]): boolean {
-  return scene.type !== 'title' && scene.type !== 'check';
+export function centreScene(_scene: Lesson['scenes'][number]): boolean {
+  return false;
 }
 
 /**
@@ -240,9 +239,8 @@ export default function LessonPlayer() {
     goTo(index - 1);
   };
 
-  // The anchor line under the header (design spec §4.2): long scenes and checks start on it; since
-  // mobile 1.39 a short scene is centred in the space below it (centreScene). The cover and Lesson
-  // complete keep the closer 24 (a forest panel and a moment, not a page of text).
+  // The anchor line under the header (design spec §4.2): every scene starts on it (mobile 1.43). The
+  // cover and Lesson complete keep the closer 24 (a forest panel and a moment, not a page of text).
   const anchor = showingDone || scene.type === 'title' ? space.xl : ANCHOR;
   const onCheck = scene.type === 'check';
   // Mobile 1.37: a check was answered and its verdict + explanation laid out. The scene starts
@@ -315,11 +313,9 @@ export default function LessonPlayer() {
                 </View>
               </View>
             ) : (
-              // Mobile 1.39: a short scene (one idea, the lens, a takeaway) sits in the middle of the
-              // space between the anchor line and the footer, so the lower half is not left empty.
-              // A long scene fills the space and scrolls from the anchor line as before. The cover and
-              // checks stay at the top (a check grows when it is answered and must not jump up).
-              <View style={{ flexGrow: 1, justifyContent: centreScene(lesson.scenes[index]) ? 'center' : 'flex-start' }}>
+              // Mobile 1.43: every scene starts on the anchor line (design spec §4.2; 1.39's centring of short
+              // scenes is undone: it floated them a third of the way down and broke the shared line).
+              <View style={{ flexGrow: 1, justifyContent: 'flex-start' }}>
                 <SceneView
                   scene={lesson.scenes[index]}
                   lesson={lesson}
