@@ -2058,3 +2058,7 @@ questions (v10.0/v10.1), and miscellaneous additions from v9.8-v10.2 polish.
 - ISO/IEC 27001:2022 Annex A.8.16 (Monitoring activities)
 - PRA Supervisory Statement SS1/21 (Operational Resilience: Impact Tolerances for Important Business Services)
 - NIST SP 800-121 Rev 2 (Guide to Bluetooth Security)
+
+## Added with the six-expert content review (Oct 2026)
+
+- PCI DSS v4.0.1 Requirement 6.4.2 (Automated Technical Solution That Detects and Prevents Web-Based Attacks)

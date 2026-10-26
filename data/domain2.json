@@ -518,9 +518,9 @@
         "D": "Required business capabilities mapped against each platform"
       },
       "correct": "D",
-      "key_concept": "EA rationalizes overlapping systems by mapping required business capabilities to each platform, with cost as one input.",
+      "key_concept": "Enterprise architecture (EA) consolidates overlapping systems by mapping required business capabilities to each platform, with cost as one input.",
       "pre_read": "Ask what the merged business needs the system to do before comparing platforms.",
-      "correct_explanation": "Enterprise architecture rationalizes overlapping systems by starting from the business capabilities the merged firm needs, then assessing how well each platform supports them, along with cost, risk and integration. Lowest running cost is a fair input, but choosing on cost alone can keep a cheap system that cannot support key processes, pushing larger costs into workarounds and later replacement.",
+      "correct_explanation": "Enterprise architecture consolidates overlapping systems by starting from the business capabilities the merged firm needs, then assessing how well each platform supports them, along with cost, risk and integration. Lowest running cost is a fair input, but choosing on cost alone can keep a cheap system that cannot support key processes, pushing larger costs into workarounds and later replacement.",
       "wrong_explanations": {
         "A": "Running cost is one input, not the deciding basis. A cheap platform that misses needed capabilities creates larger costs later.",
         "B": "Team size reflects IT history, not business need. Choosing on internal support numbers lets IT preference override capability fit.",
@@ -538,7 +538,7 @@
         "Post-merger integration",
         "Enterprise architecture"
       ],
-      "_provenance": "Authored from concept: 'cloud governance Shared Responsibility Model - service-model-dependent split with provider and customer responsibilities, distinct from provider-everything / customer-everything / universal-boundary'. Public source: CSA CCM + NIST SP 800-145. All scenario specifics (media-streaming platform, IaaS + SaaS) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Round 2 review (Oct 2026): runner-up B given the same two-part form as the key. Rebalanced (Oct 2026): re-angled from 5A8 to 2A4.",
+      "_provenance": "Authored from concept: 'cloud governance Shared Responsibility Model - service-model-dependent split with provider and customer responsibilities, distinct from provider-everything / customer-everything / universal-boundary'. Public source: CSA CCM + NIST SP 800-145. All scenario specifics (media-streaming platform, IaaS + SaaS) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Round 2 review (Oct 2026): runner-up B given the same two-part form as the key. Rebalanced (Oct 2026): re-angled from 5A8 to 2A4. Content review (Oct 2026): spelled out EA and replaced 'rationalizes' with plain wording.",
       "style_version": 2
     },
     {
@@ -1893,14 +1893,14 @@
         "Final two: C beats B because the auditor must understand requirements before deciding to rely on anyone else's work.",
         "Exam cue: in planning questions, understand and map the environment FIRST; reliance, testing and reporting decisions come after."
       ],
-      "framework_ref": "ISACA IT Audit Standard 1008 (Criteria); IIA Global Internal Audit Standards (2024), Standard 9.4 (Internal Audit Plan); COBIT 2019 MEA03 (Managed Compliance with External Requirements); HIPAA; GLBA Safeguards Rule; CCPA/CPRA; Virginia CDPA; Colorado CPA; GDPR; PCI DSS",
+      "framework_ref": "ISACA IT Audit Standard 1008 (Criteria); IIA Global Internal Audit Standards (2024), Standard 9.4 (Internal Audit Plan); COBIT 2019 MEA03 (Managed Compliance with External Requirements); HIPAA Security Rule; GLBA Safeguards Rule; PCI DSS v4.0.1",
       "related_concepts": [
         "Audit universe",
         "Multi-regulation mapping",
         "Shared vs sector-specific controls",
         "Sector-overlap audit design"
       ],
-      "_provenance": "Authored from concept: 'Impact of Laws and Regulations on IS Audit - sector-overlap mapping, distinct from mega-audit / external-deferral / selective-focus'. Public source: ITAF Standard 1202 + ISACA Audit Universe guidance. All scenario specifics (diversified holding company with 5 regulated lines + corporate IT shared services) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Impact of Laws and Regulations on IS Audit - sector-overlap mapping, distinct from mega-audit / external-deferral / selective-focus'. Public source: ITAF Standard 1202 + ISACA Audit Universe guidance. All scenario specifics (diversified holding company with 5 regulated lines + corporate IT shared services) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Content review (Oct 2026): trimmed consumer-privacy and GDPR cites that the hospital, bank and payments scenario does not engage.",
       "style_version": 2
     },
     {
@@ -1988,20 +1988,20 @@
         "A": "Cancel every waiver and force immediate migration to standards",
         "B": "Keep a waiver register with sunset dates and remediation owners",
         "C": "Let project teams decide when legacy platforms should be retired",
-        "D": "Report the waivers to the board in the annual IT report"
+        "D": "Set a three-year expiry on every waiver and renew any still open"
       },
       "correct": "B",
       "key_concept": "Architecture waivers are technical debt; a register with sunset dates and remediation owners keeps them time-bound and managed.",
       "pre_read": "Ask what turns a temporary deviation into a permanent one, and what prevents that.",
-      "correct_explanation": "Waivers are legitimate when a deviation cannot be fixed immediately, but each one is technical debt that must be paid down. A register with sunset dates and named remediation owners keeps that debt visible, time-bound and managed. Reporting waivers to the board adds visibility, yet without end dates and owners nothing drives remediation, so the legacy exceptions simply become permanent.",
+      "correct_explanation": "Waivers are legitimate when a deviation cannot be fixed immediately, but each one is technical debt (shortcuts that must be fixed later). A register with sunset dates and named remediation owners keeps that debt visible, time-bound and managed. Setting expiry dates alone is the tempting option, but with no owner or plan to remediate, expired waivers are simply renewed and the legacy exceptions become permanent.",
       "wrong_explanations": {
         "A": "Forcing immediate migration ignores cost, risk and business disruption. Waivers exist precisely because some deviations need planned remediation.",
         "C": "Leaving retirement to project teams removes enterprise oversight. Legacy platforms would linger with no one accountable.",
-        "D": "Board visibility helps, but it does not set end dates or owners. The waivers would still become permanent."
+        "D": "An expiry date alone just gets renewed; without a named owner and a remediation plan, the waivers still become permanent."
       },
       "tips": [
         "Eliminate: A forces disruptive migration overnight, and C drops enterprise oversight of legacy risk.",
-        "Final two: B beats D because end dates and owners drive remediation; reporting alone leaves waivers permanent.",
+        "Final two: B beats D because owners and remediation plans retire the deviation; an expiry date alone just gets renewed.",
         "Exam cue: a temporary deviation needs an end date and an owner, or it quietly becomes permanent technical debt."
       ],
       "framework_ref": "COBIT 2019 APO03 (Managed Enterprise Architecture); TOGAF Standard; COBIT 2019 BAI09 (Managed Assets)",
@@ -2011,7 +2011,7 @@
         "Legacy platforms",
         "Remediation tracking"
       ],
-      "_provenance": "Authored from concept: 'Cloud Service Models IaaS/PaaS/SaaS - layer-by-layer NIST distinction, distinct from interchangeable / mis-layered / lifecycle-bound framings'. Public source: NIST SP 800-145. Distinct from d2_014 (shared responsibility model at application tier). Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Rebalanced (Oct 2026): re-angled from 5A8 to 2A4.",
+      "_provenance": "Authored from concept: 'Cloud Service Models IaaS/PaaS/SaaS - layer-by-layer NIST distinction, distinct from interchangeable / mis-layered / lifecycle-bound framings'. Public source: NIST SP 800-145. Distinct from d2_014 (shared responsibility model at application tier). Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Rebalanced (Oct 2026): re-angled from 5A8 to 2A4. Content review (Oct 2026): D now gives waivers end dates without remediation, so the end-date idea no longer singles out the key; glossed technical debt.",
       "style_version": 2
     },
     {
@@ -2091,28 +2091,28 @@
     {
       "id": "d2_056",
       "domain": 2,
-      "subtopic": "Outsourcing Strategies. Onshore vs Near-shore vs Offshore",
+      "subtopic": "Outsourcing Strategies. Offshore Collaboration Risk",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A bank's IT management is choosing between near-shore and offshore development partners. Which factor MOST strongly favors near-shore?",
+      "question": "An IS auditor reviews a bank's plan to move an agile development team offshore; the team needs daily sessions with business product owners. Which risk is GREATEST?",
       "options": {
-        "A": "Closer time-zone overlap for real-time work with business users",
-        "B": "Lower hourly labor rates than typical offshore outsourcing providers",
-        "C": "Lower travel costs for periodic on-site vendor oversight and audit visits",
-        "D": "Freedom from cross-border data-transfer safeguards and reviews"
+        "A": "Limited time-zone overlap weakening how requirements are validated",
+        "B": "Development data crossing borders into a different legal regime",
+        "C": "Hourly labor rates rising above those of an onshore team",
+        "D": "Accountability for the software passing from the bank to the vendor"
       },
       "correct": "A",
-      "key_concept": "Near-shore trades some cost advantage for easier collaboration: closer time zones, smaller cultural gaps and easier travel than offshore.",
-      "pre_read": "Recall what offshore usually wins on. Ask what near-shore offers that offshore cannot.",
-      "correct_explanation": "Near-shore partners sit in nearby countries, so working hours overlap and business users can collaborate in real time, which supports alignment with business needs. Offshore usually wins on cost and scale. Lower travel cost is also a near-shore benefit, but it helps only occasional visits; daily overlap with business users is what keeps delivery aligned.",
+      "key_concept": "Offshoring trades cost for distance: when a team needs daily business collaboration, limited time-zone overlap is the greatest delivery risk.",
+      "pre_read": "Notice what the team needs every day. Ask which risk threatens that need most directly.",
+      "correct_explanation": "The team depends on daily sessions with product owners to confirm requirements, and offshore time zones leave little shared working time, so misunderstood requirements reach the build. Cross-border data transfer is the tempting option: it is a real risk for a bank, but contracts, transfer safeguards and masked test data (real data with identifiers hidden) manage it, while nothing in the plan restores the lost overlap.",
       "wrong_explanations": {
-        "B": "Offshore locations typically offer the lowest labor rates. Near-shore usually costs more than offshore and less than onshore.",
-        "C": "Cheaper travel is a real near-shore benefit, but it eases occasional oversight visits; time-zone overlap enables the daily collaboration that keeps delivery aligned.",
-        "D": "Data still crosses a national border. Transfer safeguards, contracts and regulatory review still apply."
+        "B": "Data transfer matters for a bank, but standard controls such as transfer safeguards and masked test data manage it; the plan has no answer to lost overlap.",
+        "C": "Offshore rates are usually lower than onshore rates; cost savings are the main reason to offshore, not a risk of it.",
+        "D": "Accountability cannot be outsourced; the bank stays answerable for the software whatever the vendor delivers."
       },
       "tips": [
-        "Eliminate: B is an offshore advantage, and D is wrong because near-shore is still cross-border.",
-        "Final two: A beats C because daily real-time collaboration drives alignment, while cheaper travel only eases occasional visits.",
+        "Eliminate: C reverses the usual cost advantage of offshoring, and D forgets that accountability cannot be outsourced.",
+        "Final two: A beats B because the team's daily need for product owners is directly undermined, while data transfer has standard safeguards.",
         "Exam cue: offshore = lowest cost and scale; near-shore = collaboration at moderate cost; onshore = closest control at highest cost."
       ],
       "framework_ref": "ISACA Outsourced IT Environments Audit/Assurance Program; COBIT 2019 APO10 (Managed Vendors)",
@@ -2122,7 +2122,7 @@
         "Offshore outsourcing",
         "Outsourcing geography"
       ],
-      "_provenance": "Authored from concept: 'Outsourcing geography - cost-vs-collaboration trade-off near-shore as middle ground, distinct from d2_017 (multi-factor outsourcing decision) and d2_041 (in-house retention drivers)'. Public source: ISACA IT Outsourcing Strategy guidance. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Outsourcing geography - cost-vs-collaboration trade-off near-shore as middle ground, distinct from d2_017 (multi-factor outsourcing decision) and d2_041 (in-house retention drivers)'. Public source: ISACA IT Outsourcing Strategy guidance. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Content review (Oct 2026): recast from a sourcing-fact recall item with no auditor into an IS auditor risk judgment on an offshoring plan; cross-border data transfer is the runner-up.",
       "style_version": 2
     },
     {
@@ -2630,7 +2630,7 @@
       "correct": "A",
       "key_concept": "Treatment must match the risk: high-likelihood, high-impact exposures with no vendor fix call for mitigation or avoidance, not acceptance or transfer alone.",
       "pre_read": "Notice both ratings are high and no patch is coming. Ask which treatment actually reduces likelihood or impact.",
-      "correct_explanation": "A high-likelihood, high-impact risk almost certainly exceeds appetite, and no patch will reduce it, so the bank should mitigate or avoid it by upgrading or replacing the product. Insurance is tempting because it limits financial loss, but it leaves the vulnerability in place; service outages, customer harm and regulatory consequences remain with the bank.",
+      "correct_explanation": "A high-likelihood, high-impact risk almost certainly exceeds risk appetite (the level of risk the board will accept), and no patch will reduce it, so the bank should mitigate or avoid it by upgrading or replacing the product. Insurance is tempting because it limits financial loss, but it leaves the vulnerability in place; service outages, customer harm and regulatory consequences remain with the bank.",
       "wrong_explanations": {
         "B": "Acceptance suits risks within appetite. A high-likelihood, high-impact unpatched exposure in core banking is unlikely to qualify.",
         "C": "Insurance offsets some financial loss but leaves the vulnerability exploitable and the operational and regulatory impact unchanged.",
@@ -2648,7 +2648,7 @@
         "Per-risk treatment selection",
         "Risk treatment economics"
       ],
-      "_provenance": "Authored from concept: 'Risk Treatment multi-option application scenario - per-risk treatment matching, distinct from d2_022 (foundational treatment options definition) and d2_007 (risk lifecycle gap analysis)'. Public source: ISO 31000:2018 + ISACA Risk IT. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Risk Treatment multi-option application scenario - per-risk treatment matching, distinct from d2_022 (foundational treatment options definition) and d2_007 (risk lifecycle gap analysis)'. Public source: ISO 31000:2018 + ISACA Risk IT. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Content review (Oct 2026): glossed risk appetite.",
       "style_version": 2
     },
     {
@@ -6695,14 +6695,14 @@
         "Final two: A beats B because value delivery means negotiating with evidence and leverage, not trading price for extras.",
         "Exam cue: in vendor decisions, prefer evidence-based negotiation that keeps an exit option over acceptance, ultimatums or abrupt switching."
       ],
-      "framework_ref": "COBIT 2019 APO10 (Managed Vendors); COBIT 2019 APO06 (Managed Budget and Costs); Harvard Negotiation Project (Getting to Yes)",
+      "framework_ref": "COBIT 2019 APO10 (Managed Vendors); COBIT 2019 APO06 (Managed Budget and Costs)",
       "related_concepts": [
         "Strategic vendor renegotiation",
         "BATNA",
         "Multi-year commitment",
         "Vendor lock-in"
       ],
-      "_provenance": "Authored from concept: 'Strategic vendor renegotiation under material change - structured BATNA-driven approach, complements d2_036/d2_042/d2_115/d2_135 (vendor governance application questions)'. Public source: Harvard Negotiation + ISACA IT Vendor Management + FFIEC. All scenario specifics (retailer cloud vendor 35% increase, 15% above peer, year-3-of-5 contract) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Strategic vendor renegotiation under material change - structured BATNA-driven approach, complements d2_036/d2_042/d2_115/d2_135 (vendor governance application questions)'. Public source: Harvard Negotiation + ISACA IT Vendor Management + FFIEC. All scenario specifics (retailer cloud vendor 35% increase, 15% above peer, year-3-of-5 contract) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Content review (Oct 2026): removed a negotiation-book cite that is not an IT governance or audit framework.",
       "style_version": 2
     },
     {

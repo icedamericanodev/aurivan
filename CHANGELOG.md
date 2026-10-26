@@ -4,6 +4,12 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v12.35] — Sharper questions and notes
+
+### Improved
+- Clearer wording and stronger answer choices in a set of practice questions, with plain-language explanations of new terms.
+- Sharper study notes on several topics, including audit standards, quality reviews and cloud monitoring.
+
 ## [v12.34.1] — Your exam date comes along
 
 ### Improved
