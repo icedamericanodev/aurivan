@@ -25,6 +25,9 @@ import { Button, CARD_LIFT, RadioRow, Row, Segmented, T, ToggleRow } from './ui'
 export const FAMILIARITY_QUESTION = 'Where are you starting from?';
 export const EXAM_FOCUSED_TITLE = 'Exam-focused plan';
 export const EXAM_FOCUSED_SUBTITLE = 'Leads with mocks and your weak spots, and leaves lessons out of Today. Lessons stay in Learn.';
+/** Mobile 1.43 (Settings, board 5): the one-line form, and what it says aloud (it keeps "Lessons stay in Learn."). */
+export const EXAM_FOCUSED_SHORT = 'Mocks and weak spots lead Today';
+export const EXAM_FOCUSED_SPOKEN = 'Mocks and weak spots lead Today. Lessons stay in Learn.';
 
 /**
  * Onboarding's raised choice row (selected = 2px ink border + filled ink

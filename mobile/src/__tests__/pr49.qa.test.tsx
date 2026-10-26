@@ -172,7 +172,8 @@ describe('A. Calendar edges', () => {
     expect(useSettings.getState().examDates.cisa).toBe('2026-10-12');
     expect(daysUntil(useSettings.getState().examDates.cisa)).toBe(0);
     expect(examMoment(useSettings.getState().examDates.cisa, Date.now())).toBe('day');
-    expect(row('Exam date').props.accessibilityLabel).toBe('Exam date, Monday 12 October 2026');
+    // Mobile 1.43: the row says how far away it is, too.
+    expect(row('Exam date').props.accessibilityLabel).toBe('Exam date, Monday 12 October 2026, Today');
   });
 
   it('tomorrow reads "Tomorrow" and gives the exam-eve card', () => {
@@ -245,7 +246,7 @@ describe('A. Calendar edges', () => {
     pressDay('Tuesday 29 February 2028');
     press('Save');
     expect(useSettings.getState().examDates.cisa).toBe('2028-02-29');
-    expect(row('Exam date').props.accessibilityLabel).toBe('Exam date, Tuesday 29 February 2028');
+    expect(row('Exam date').props.accessibilityLabel).toMatch(/^Exam date, Tuesday 29 February 2028, In \d+ days$/);
     expect(allText()).toContain('29 Feb 2028');
     expect(daysToExam('2028-02-29', '2028-02-28')).toBe(1);
     // February 2027 has no 29th.
@@ -341,7 +342,7 @@ describe('C. Older saves load and keep their date', () => {
     expect(useSettings.getState().examDates.cisa).toBe('2026-03-01');
     expect(useSettings.getState().theme).toBe('dark');
     mount(<Settings />);
-    expect(row('Exam date').props.accessibilityLabel).toBe('Exam date, Sunday 1 March 2026');
+    expect(row('Exam date').props.accessibilityLabel).toBe('Exam date, Sunday 1 March 2026, Date passed');
     expect(allText()).toContain('1 Mar 2026');
     openRow('Exam date');
     // Opens on today's month (the past month can't be shown); no quick choice lit; no "In N days".
@@ -371,7 +372,7 @@ describe('C. Older saves load and keep their date', () => {
   it('a date beyond two years (from a backup) loads and survives an untouched Save', async () => {
     await loadOldSettings('2031-05-20');
     mount(<Settings />);
-    expect(row('Exam date').props.accessibilityLabel).toBe('Exam date, Tuesday 20 May 2031');
+    expect(row('Exam date').props.accessibilityLabel).toMatch(/^Exam date, Tuesday 20 May 2031, In \d+ days$/);
     openRow('Exam date');
     expect(allText()).toContain('October 2026');
     press('Save');
@@ -381,21 +382,6 @@ describe('C. Older saves load and keep their date', () => {
 
 // ══ D. Choice sheets ══════════════════════════════════════════════════
 describe('D. Options through sheets', () => {
-  it('Theme: Light → System → Dark, each saves and closes, the row follows', () => {
-    mount(<Settings />);
-    expect(row('Theme').props.accessibilityLabel).toBe('Theme, Light');
-    openRow('Theme');
-    expect(radio('Light').props.accessibilityState).toMatchObject({ checked: true });
-    act(() => radio('System').props.onPress());
-    expect(useSettings.getState().theme).toBe('system');
-    expect(sheetOpen()).toBe(false);
-    expect(row('Theme').props.accessibilityLabel).toBe('Theme, System');
-    openRow('Theme');
-    act(() => radio('Dark').props.onPress());
-    expect(useSettings.getState().theme).toBe('dark');
-    expect(row('Theme').props.accessibilityLabel).toBe('Theme, Dark');
-  });
-
   it('Daily time, Starting point and Default mode save through their sheets', () => {
     mount(<Settings />);
     openRow('Daily time');
@@ -403,8 +389,8 @@ describe('D. Options through sheets', () => {
     expect(useSettings.getState().dailyMinutes).toBe(45);
     expect(row('Daily time').props.accessibilityLabel).toBe('Daily time, 45 minutes a day');
     openRow('Starting point');
-    // Nothing chosen yet: no radio checked.
-    expect(hosts((n) => n.props.accessibilityRole === 'radio' && n.props.accessibilityState?.checked === true)).toHaveLength(0);
+    // Nothing chosen yet: no radio checked (the theme's own radios are on the screen behind the sheet).
+    expect(hosts((n) => n.props.accessibilityRole === 'radio' && n.props.accessibilityState?.checked === true && !['System', 'Light', 'Dark'].includes(String(n.props.accessibilityLabel)))).toHaveLength(0);
     act(() => radio('Experienced').props.onPress());
     expect(useSettings.getState().familiarity).toBe('experienced');
     expect(row('Starting point').props.accessibilityLabel).toMatch(/^Starting point, Experienced/);
@@ -414,7 +400,7 @@ describe('D. Options through sheets', () => {
     openRow('Default mode');
     act(() => radio('Let the app choose').props.onPress());
     expect(useSettings.getState().studyMode).toBeUndefined();
-    expect(row('Default mode').props.accessibilityLabel).toBe('Default mode, Let the app choose');
+    expect(row('Default mode').props.accessibilityLabel).toBe('Default mode, Let the app choose, How Practice picks your questions');
   });
 
   it('Motion: Reduced then Match my phone', () => {
@@ -434,9 +420,9 @@ describe('D. Options through sheets', () => {
     pressDay('Friday 29 January 2027');
     press('Cancel, Exam date');
     expect(sheetOpen()).toBe(false);
-    openRow('Theme');
+    openRow('Motion');
     expect(modals()).toHaveLength(1);
-    press('Close, Theme');
+    press('Close, Motion');
     expect(useSettings.getState().examDates.cisa).toBe('2027-01-08');
   });
 });
@@ -461,7 +447,7 @@ describe('E. Reset progress', () => {
     act(() => btns[1].onPress!());
     expect(useSettings.getState().examDates.cisa).toBe('2027-01-08');
     expect(useSettings.getState().theme).toBe('light');
-    expect(row('Exam date').props.accessibilityLabel).toBe('Exam date, Friday 8 January 2027');
+    expect(row('Exam date').props.accessibilityLabel).toBe('Exam date, Friday 8 January 2027, In 88 days');
   });
 });
 
@@ -586,5 +572,21 @@ describe('G. Deep links into Settings', () => {
     mount(<ExamWeek />);
     press('Set exam date');
     expect(router.push).toHaveBeenCalledWith({ pathname: '/settings', params: { open: 'exam-date' } });
+  });
+});
+
+// ══ Z. The theme, one tap on Settings itself (mobile 1.43) ═════════════
+// Runs LAST in this file: in this suite's jest setup (fake timers and the Reanimated mock), a theme
+// change while a Segmented control is mounted leaves later renders in the same file empty. The real
+// app switches fine (SHOTS=m143 M143_ONLY=themeTap taps Dark, Light, then goes back to You).
+describe('Z. Theme on the Settings screen', () => {
+  it('Light → System → Dark, one tap each, no sheet', () => {
+    mount(<Settings />);
+    expect(radio('Light').props.accessibilityState).toMatchObject({ checked: true });
+    act(() => radio('System').props.onPress());
+    expect(useSettings.getState().theme).toBe('system');
+    expect(sheetOpen()).toBe(false);
+    act(() => radio('Dark').props.onPress());
+    expect(useSettings.getState().theme).toBe('dark');
   });
 });

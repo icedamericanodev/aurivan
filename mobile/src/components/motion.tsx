@@ -346,7 +346,21 @@ export function usePressScale({
   }));
   // The tint is its own component, so its animated style only exists when there is a tint.
   const layer = tint ? <PressTint p={p} color={tint} radius={tintRadius} from={reduced ? 1 : tintFrom} /> : null;
-  return { onPressIn: pressIn, onPressOut: pressOut, style, layer };
+  /**
+   * Mobile 1.43: back to rest at once, with nothing left animating. For a control that opens another
+   * screen (the Settings gear): its press-out spring would still be running on the screen underneath
+   * while the new one is pushed, which on Android could leave the round pressed gear drawn over the
+   * new screen (owner report on 1.42.1, a gear floating over Settings' "Your name").
+   */
+  const settle = () => {
+    cancelAnimation(p);
+    p.set(0);
+    if (follow) {
+      cancelAnimation(follow);
+      follow.set(0);
+    }
+  };
+  return { onPressIn: pressIn, onPressOut: pressOut, style, layer, settle };
 }
 
 /** usePressScale's pressed tint: fades in under the content, growing from `from` to 1. */

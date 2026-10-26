@@ -442,17 +442,17 @@ describe('lists: words, labels and the one-time fill', () => {
 
 // ── Settings → Reset reading progress ──────────────────────────────────
 describe('Settings: Reset reading progress', () => {
-  it('is greyed out with nothing read; asks first; clears only the notes', () => {
+  it('is hidden with nothing read (mobile 1.43: a greyed row read like a heading); asks first; clears only the notes', () => {
     mount(<Settings />);
     const row = () => root().findAll((n) => typeof n.props.onPress === 'function' && String(n.props.accessibilityLabel).startsWith('Reset reading progress'))[0];
-    expect(row().props.disabled).toBe(true);
+    expect(row()).toBeUndefined();
     unmount();
     useProgress.getState().recordAnswer('cisa', 'd1_001', true);
     useProgress.getState().setNoteRead('cisa', NOTE, true);
     useProgress.getState().markNoteViewed('cisa', '1A1.1');
     const alert = jest.spyOn(Alert, 'alert').mockImplementation(() => {});
     mount(<Settings />);
-    expect(row().props.disabled).toBe(false);
+    expect(row().props.disabled).toBeFalsy();
     act(() => {
       row().props.onPress();
     });

@@ -436,10 +436,10 @@ describe('Practice: when mocks lead, they come straight after Timed, then the pa
 });
 
 describe('Settings: Your study and Practice together; the kept line is said (UX review P6, P8; code review M7b)', () => {
-  it('section order (mobile 1.17 groups)', () => {
+  it('section order (mobile 1.43: Appearance moved up, right after You)', () => {
     mount(<Settings />);
     const t = allText();
-    const at = ['Your study', 'Practice', 'Reminders', 'Appearance', 'Badges and your plant', 'Your data', 'Help and about'].map((s) => t.indexOf(s));
+    const at = ['Appearance', 'Your study', 'Practice', 'Reminders', 'Badges and your plant', 'Your data', 'Help and about'].map((s) => t.indexOf(s));
     expect(at.every((n) => n > -1)).toBe(true);
     expect([...at].sort((a, b) => a - b)).toEqual(at);
   });

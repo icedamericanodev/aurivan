@@ -676,7 +676,10 @@ export function IconButton({
   disabled,
   outline,
   ref,
+  leaves,
 }: {
+  /** Mobile 1.43: it opens another screen (the Settings gear): its pressed circle settles at once, never fading on behind the new screen. */
+  leaves?: boolean;
   /**
    * Mobile 1.22: a 56pt round SECONDARY button (1.5 `control` ring, the
    * secondary pill's look) for a footer beside a primary pill: the lesson's
@@ -711,7 +714,14 @@ export function IconButton({
       accessibilityLabel={label}
       accessibilityHint={hint}
       accessibilityState={Object.keys(state).length ? state : undefined}
-      onPress={onPress}
+      onPress={
+        leaves
+          ? () => {
+              press.settle();
+              onPress();
+            }
+          : onPress
+      }
       disabled={disabled}
       onPressIn={press.onPressIn}
       onPressOut={press.onPressOut}
@@ -823,6 +833,7 @@ export function ScreenTitle({ title, settings }: { title: string; settings?: () 
         <IconButton
           label="Settings"
           hint="Exam date, reminders and more"
+          leaves
           onPress={settings}
           icon={(col) => <SettingsIcon size={ICON_SIZE.bar} color={col} strokeWidth={ICON_STROKE} />}
         />
@@ -2257,6 +2268,7 @@ export function TextField({
 export function ToggleRow({
   title,
   subtitle,
+  subtitleLabel,
   value,
   onValueChange,
   disabled,
@@ -2265,6 +2277,8 @@ export function ToggleRow({
 }: {
   title: string;
   subtitle?: string;
+  /** Mobile 1.43: what a screen reader says for the subtitle when it says more than the screen ("… Lessons stay in Learn."). */
+  subtitleLabel?: string;
   value: boolean;
   onValueChange: (v: boolean) => void;
   disabled?: boolean;
@@ -2275,7 +2289,7 @@ export function ToggleRow({
   return (
     <ListRow
       title={title}
-      subtitle={subtitle}
+      subtitle={subtitle && subtitleLabel ? <T v="meta" accessibilityLabel={subtitleLabel}>{subtitle}</T> : subtitle}
       last={last}
       trailing={<Toggle ref={ref} accessibilityLabel={title} value={value} disabled={disabled} onValueChange={onValueChange} />}
     />

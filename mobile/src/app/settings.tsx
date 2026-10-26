@@ -6,11 +6,11 @@
  * lives on screen changed.
  *
  *   You                   Your name (mobile 1.23: what Today calls you; optional, only on this phone)
+ *   Appearance            Theme (1.43: a one-tap System / Light / Dark control, moved up from 6th) · Motion · Haptics
  *   Exam                  Certification · Exam date (a calendar, components/calendar.tsx)
  *   Your study            Daily time · Starting point · Exam-focused plan · Reset reading progress (1.25)
  *   Practice              Default mode · Timed practice · Shuffle answer options
  *   Reminders             Study reminder · Time and days
- *   Appearance            Theme · Motion · Haptics
  *   Badges and your plant Show badges · Show my plant · Quiet look
  *   Your data             Save a backup · Restore · (Undo restore), then Reset, set apart
  *   Help and about        Get help or send feedback · About KaiSip · Privacy · Terms · Check for updates
@@ -48,13 +48,14 @@ import { undoAvailable } from '../engine/backup';
 import { CalendarSheet } from '../components/calendar';
 import { DisplayNameField } from '../components/displayName';
 import { cleanDisplayName } from '../engine/displayName';
-import { EXAM_FOCUSED_SUBTITLE, EXAM_FOCUSED_TITLE, FAMILIARITY_QUESTION } from '../components/fit';
+import { EXAM_FOCUSED_SHORT, EXAM_FOCUSED_SPOKEN, EXAM_FOCUSED_TITLE, FAMILIARITY_QUESTION } from '../components/fit';
 import { creditSubtitle } from '../components/help';
 import { useMotion, useSystemReducedMotion } from '../components/motion';
 import { ChoiceSheet, SettingsGroup, SettingsRow, Sheet } from '../components/settings';
 import { YourData } from '../components/yourData';
-import { Button, Chip, Gap, PushedHeader, Screen, Stepper, T, ToggleRow } from '../components/ui';
-import { spokenDate } from '../engine/calendar';
+import { Button, Chip, Gap, PushedHeader, Screen, Segmented, Stepper, T, ToggleRow } from '../components/ui';
+import { spokenDate, untilLabel } from '../engine/calendar';
+import { dayKey } from '../engine/streak';
 import { DAILY_MINUTES, examFocusedOf, FAMILIARITIES, FAMILIARITY_INFO, KEEP_TODAY_LINE, minutesLabel, minutesSpoken, type DailyMinutes, type Familiarity } from '../engine/fit';
 import { MODE_INFO, STUDY_MODES, type StudyMode } from '../engine/studyModes';
 import { CERT_SCOPE_LINE, PROVENANCE_LINE, WELCOME_HEADLINE, WELCOME_LINE } from '../content/brand';
@@ -86,11 +87,10 @@ import { useTheme } from '../theme/useTheme';
 const phoneSetting = () => (Platform.OS === 'android' ? 'Remove animations' : 'Reduce Motion');
 
 /** Which sheet is open (one at a time). */
-type SheetId = 'name' | 'exam' | 'date' | 'minutes' | 'start' | 'mode' | 'remind' | 'theme' | 'motion' | 'about';
+type SheetId = 'name' | 'exam' | 'date' | 'minutes' | 'start' | 'mode' | 'remind' | 'motion' | 'about';
 
 /** "Starting point" values short enough to sit beside the title; the sheet and screen readers use the full titles. */
 const START_SHORT: Record<Familiarity, string> = { new: 'New to audit', some: 'Some experience', experienced: 'Experienced' };
-const THEME_NAME: Record<ThemePref, string> = { system: 'System', light: 'Light', dark: 'Dark' };
 const MOTION_NAME: Record<MotionPref, string> = { system: 'Match my phone', reduced: 'Reduced' };
 const AUTO_MODE = 'auto';
 
@@ -188,7 +188,6 @@ export default function Settings() {
   const startRow = useRef<View>(null);
   const modeRow = useRef<View>(null);
   const remindRow = useRef<View>(null);
-  const themeRow = useRef<View>(null);
   const motionRow = useRef<View>(null);
   const aboutRow = useRef<View>(null);
   // "Your name": the text being edited in its sheet (starts from the saved name each time it opens).
@@ -219,7 +218,7 @@ export default function Settings() {
       return;
     }
     // Looked up here, in the handler (never during render).
-    const back: Record<SheetId, RefObject<View | null>> = { name: nameRow, exam: examRow, date: dateRow, minutes: minutesRow, start: startRow, mode: modeRow, remind: remindRow, theme: themeRow, motion: motionRow, about: aboutRow };
+    const back: Record<SheetId, RefObject<View | null>> = { name: nameRow, exam: examRow, date: dateRow, minutes: minutesRow, start: startRow, mode: modeRow, remind: remindRow, motion: motionRow, about: aboutRow };
     moveFocus(back[id], 450);
   };
 
@@ -329,13 +328,31 @@ export default function Settings() {
       ],
     );
 
+  // Mobile 1.43 (owner feedback): the theme in one tap, a System / Light / Dark radio group.
+  const themeControl = (
+    <View style={{ paddingVertical: space.md, borderBottomWidth: 1, borderBottomColor: c.line }}>
+      <T v="label">Theme</T>
+      <T v="meta" style={{ marginBottom: space.sm }}>System follows your phone’s light or dark setting.</T>
+      <Segmented<ThemePref>
+        accessibilityLabel="Theme"
+        options={[
+          { value: 'system', label: 'System' },
+          { value: 'light', label: 'Light' },
+          { value: 'dark', label: 'Dark' },
+        ]}
+        value={s.theme}
+        onChange={s.setTheme}
+      />
+    </View>
+  );
+
   return (
     <Screen edges={['top', 'bottom']} scrollRef={scrollRef}>
       {/* Same pushed header as Saved and Mistakes: the title lives in the bar. */}
       <PushedHeader title="Settings" onBack={() => router.back()} />
 
       {/* You (mobile 1.23): what Today calls the learner. Optional, and only on this phone. */}
-      <SettingsGroup title="You">
+      <SettingsGroup title="You" first>
         <SettingsRow
           ref={nameRow}
           title="Your name"
@@ -347,6 +364,21 @@ export default function Settings() {
         />
       </SettingsGroup>
 
+      {/* Appearance (mobile 1.43): right after You, so the theme is one tap from the top. Motion and Haptics stay with it. */}
+      <SettingsGroup title="Appearance">
+        {/* Mobile 1.43 (owner feedback: "if I want to change the theme I cannot see it easily"): one tap, near the
+            top. A radio group of three; choosing one switches at once (the theme dissolve, §8). */}
+        {themeControl}
+        {/* Motion (mobile 1.8, WCAG 2.3.3): the phone's own setting, or Reduced for this app only. */}
+        <SettingsRow
+          ref={motionRow}
+          title="Motion"
+          value={MOTION_NAME[s.motion === 'reduced' ? 'reduced' : 'system']}
+          onPress={open('motion')}
+        />
+        <ToggleRow title="Haptics" subtitle="Gentle taps when you answer." value={s.haptics} onValueChange={s.setHaptics} last />
+      </SettingsGroup>
+
       {/* Exam: which certification, and the exam date (the countdown, the
           exam-eve and exam-day plans and exam week all follow it). */}
       <SettingsGroup title="Exam">
@@ -356,6 +388,8 @@ export default function Settings() {
           title="Exam date"
           value={examDate ? examDateLabel(examDate) : 'Not set'}
           spokenValue={examDate ? spokenDate(examDate) : 'not set'}
+          // Mobile 1.43: how far away it is ("In 36 days"; "Date passed" once it has gone), from the screen's "now".
+          subtitle={examDate ? (untilLabel(examDate, dayKey(now)) ?? 'Date passed') : undefined}
           accessibilityHint="Opens a calendar"
           onPress={open('date')}
           last
@@ -368,18 +402,28 @@ export default function Settings() {
         <SettingsRow
           ref={startRow}
           title="Starting point"
+          // Mobile 1.43: a one-line hint (a tester: "Starting point: Not set. I don't know what that is").
+          subtitle="How much audit you know; it shapes your first weeks"
           value={s.familiarity ? START_SHORT[s.familiarity] : 'Not set'}
           spokenValue={s.familiarity ? FAMILIARITY_INFO[s.familiarity].title : 'not set'}
           onPress={open('start')}
         />
-        <ToggleRow title={EXAM_FOCUSED_TITLE} subtitle={EXAM_FOCUSED_SUBTITLE} value={examFocused} onValueChange={(on) => fit({ examFocused: on })} last={!showReading} />
-        {showReading && (
+        <ToggleRow
+          title={EXAM_FOCUSED_TITLE}
+          subtitle={EXAM_FOCUSED_SHORT}
+          subtitleLabel={EXAM_FOCUSED_SPOKEN}
+          value={examFocused}
+          onValueChange={(on) => fit({ examFocused: on })}
+          last={!(showReading && readingTouched)}
+        />
+        {/* Mobile 1.43: shown only when there is reading progress to reset (the real read state, not a flag);
+            a greyed row read like a heading. */}
+        {showReading && readingTouched && (
           // An action row (no chevron): it asks first, then clears only the notes' read marks.
           <SettingsRow
             title="Reset reading progress"
-            subtitle={readingTouched ? 'Every study note goes back to not read' : 'No notes started or read yet'}
+            subtitle="Every study note goes back to not read"
             onPress={confirmResetReading}
-            disabled={!readingTouched}
             accessibilityHint="Asks first. Your answers and scores stay."
             chevron={false}
             last
@@ -398,6 +442,8 @@ export default function Settings() {
         <SettingsRow
           ref={modeRow}
           title="Default mode"
+          // Mobile 1.43: a one-line hint (a tester: "Let the app choose: choose what?").
+          subtitle="How Practice picks your questions"
           value={s.studyMode ? MODE_INFO[s.studyMode].name : 'Let the app choose'}
           onPress={open('mode')}
         />
@@ -425,17 +471,6 @@ export default function Settings() {
         )}
       </SettingsGroup>
 
-      <SettingsGroup title="Appearance">
-        <SettingsRow ref={themeRow} title="Theme" value={THEME_NAME[s.theme]} onPress={open('theme')} />
-        {/* Motion (mobile 1.8, WCAG 2.3.3): the phone's own setting, or Reduced for this app only. */}
-        <SettingsRow
-          ref={motionRow}
-          title="Motion"
-          value={MOTION_NAME[s.motion === 'reduced' ? 'reduced' : 'system']}
-          onPress={open('motion')}
-        />
-        <ToggleRow title="Haptics" subtitle="Gentle taps when you answer." value={s.haptics} onValueChange={s.setHaptics} last />
-      </SettingsGroup>
 
       {/* Mobile 1.10: badges are optional. Mobile 1.13: so is the plant. */}
       <View
@@ -710,18 +745,6 @@ export default function Settings() {
         </Sheet>
       )}
 
-      <ChoiceSheet<ThemePref>
-        visible={sheet === 'theme'}
-        onClose={close}
-        title="Theme"
-        options={[
-          { value: 'system', title: 'System', subtitle: 'Follows your phone’s light or dark setting.' },
-          { value: 'light', title: 'Light' },
-          { value: 'dark', title: 'Dark' },
-        ]}
-        value={s.theme}
-        onChange={s.setTheme}
-      />
 
       <ChoiceSheet<MotionPref>
         visible={sheet === 'motion'}

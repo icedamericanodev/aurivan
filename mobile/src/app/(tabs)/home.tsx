@@ -539,6 +539,7 @@ export default function Today() {
             <IconButton
               label="Settings"
               hint="Exam date, reminders and more"
+              leaves
               onPress={() => router.push('/settings')}
               icon={(col) => <Settings size={ICON_SIZE.bar} color={col} strokeWidth={ICON_STROKE} />}
             />
