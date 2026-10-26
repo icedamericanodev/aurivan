@@ -69,7 +69,7 @@
                 "Standards are mandatory minimum requirements for ISACA members and certification holders on every audit and assurance engagement.",
                 "Standards come in three groups: general, performance and reporting. General standards cover the audit charter, organizational independence, auditor objectivity, reasonable expectation, due professional care, proficiency, assertions and criteria.",
                 "Performance standards cover risk assessment in planning, audit scheduling, engagement planning, performance and supervision, evidence, using other experts' work, irregularities and illegal acts; the reporting group covers reporting and follow-up.",
-                "These are the ITAF 4th edition (2020) standards that the 2024 CISA job practice is built on; ISACA published ITAF 5th edition in February 2026.",
+                "These are the ITAF 4th edition (2020) standards that current CISA study materials use.",
                 "Guidelines explain how to apply the standards. They are not mandatory, but the IS auditor considers them and must be able to justify any departure.",
                 "Tools and techniques are informational aids, such as sample audit programs and white papers, that the IS auditor tailors to each engagement."
               ],
@@ -1941,7 +1941,7 @@
               "why_it_matters": "Small teams and old systems often cannot have the ideal control. Knowing what makes a substitute or a layered design truly work prevents false comfort from controls that only look reassuring.",
               "how_it_works": [
                 "Identify the gap: which preferred control is missing and which risk it leaves open.",
-                "Choose a substitute that targets the same failure mode and acts in time; a periodic access review cannot stand in for a control that stops live misuse.",
+                "Choose a substitute that covers the same risk in time: an independent after-the-fact review often offsets missing segregation of duties, but misuse that harms in minutes needs real-time detection.",
                 "Confirm independence: the reviewer must not be the person whose work is reviewed.",
                 "Test the compensating control as rigorously as the control it replaces.",
                 "For layered defenses, list each way the asset could be exposed and check that at least one layer covers it.",
@@ -5077,7 +5077,7 @@
               "how_it_works": [
                 "Top-down policies start from enterprise objectives and strategy, so they stay aligned with what the business needs.",
                 "Bottom-up policies grow from risk assessments and operating practice; they are practical but may lock in local habits.",
-                "Any function, such as IT security, may draft; those who must apply it, such as human resources, legal and business units, then review it so the rules are workable.",
+                "Any function, such as IT security, may draft; those who must apply the policy, such as human resources, legal and business units, review the draft so the rules are workable.",
                 "Top management or the board approves policies, which gives them authority across the enterprise.",
                 "A corporate group sets one policy baseline, and subsidiaries add approved local addenda where local law differs."
               ],
@@ -17230,7 +17230,7 @@
                 ]
               },
               "example": "A brewing company's legal team fears leaks of a confidential acquisition plan, but its DLP rules look only for card and national ID numbers. The IS auditor notes that pattern rules cannot recognize deal documents and recommends registering the plan's drafts for document fingerprinting, so partial copies are caught, with the general counsel named as the rule's owner.",
-              "isaca_rule": "Combine content with context so legitimate work flows and leaks stop. Block only after measuring false positives in monitor mode. Seniority never creates an exception: when an approved channel was available, keep the block and report the breach; documented exceptions are for business needs no approved channel meets.",
+              "isaca_rule": "Combine content with context so legitimate work flows and leaks stop. Block only after measuring false positives in monitor mode. Seniority never creates an exception: when an approved channel was available, keep the block and report the policy violation; documented exceptions are for business needs no approved channel meets.",
               "exam_traps": [
                 {
                   "trap": "Turn on blocking on day one for the strongest protection.",
@@ -18155,7 +18155,7 @@
                 "In every service model the customer keeps responsibility for its data, its users' access and the settings it controls.",
                 "The provider's System and Organization Controls (SOC) 2 Type 2 report tests its controls over a period; its complementary user entity controls list what the customer must run itself.",
                 "Continuous automated checks, such as cloud security posture management (CSPM), must cover every account, because settings change in minutes.",
-                "Unapproved changes that remove a security control raise an alert and, where management has approved it, are reverted automatically.",
+                "Unapproved changes that remove a security control raise an alert and, where management has approved automatic remediation, are reverted at once.",
                 "Data-access logs, not only administrative logs, show who read sensitive records during an investigation.",
                 "Code running in the cloud uses a workload identity, issued automatically and short-lived, instead of long-lived stored keys."
               ],

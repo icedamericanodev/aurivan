@@ -1422,7 +1422,7 @@
       "principle_id": "root-cause-over-symptom",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A fraud-detection model's false-positive rate has risen from 4% to 11% in eight months, and the model has not changed since deployment. What should the IS auditor recommend as the BEST response?",
+      "question": "A fraud-detection model's false-positive rate has risen from 4% to 11% in eight months; no one has been assigned to monitor it since go-live. What should the IS auditor recommend as the BEST response?",
       "options": {
         "A": "Decommission the model and return to fully manual fraud reviews",
         "B": "Raise the alert threshold to cut false positives now",
@@ -1432,7 +1432,7 @@
       "correct": "C",
       "key_concept": "Production ML needs lifecycle governance: an accountable owner, drift monitoring, retraining triggers and performance gates.",
       "pre_read": "Separate the symptom (rising errors) from the cause. Ask why the decline went unmanaged for eight months.",
-      "correct_explanation": "The rising false-positive rate is a symptom; the root cause is that nothing governs the model after deployment, so drift (accuracy falling as real data changes) went unaddressed for eight months. Lifecycle governance, with an accountable owner, drift thresholds and retraining triggers, keeps it reliable over time. An independent revalidation is the tempting option: it checks today's model but leaves nothing to catch the next drift.",
+      "correct_explanation": "The rising false-positive rate is a symptom; the root cause is that no one monitors the model, so drift (accuracy falling as real data changes) went unaddressed for eight months. Lifecycle governance, with an accountable owner, drift thresholds and retraining triggers, keeps it reliable over time. An independent revalidation is the tempting option, but it checks only today's model; revalidation belongs inside the lifecycle.",
       "wrong_explanations": {
         "A": "Decommissioning discards a fixable model and returns to costly manual review, without addressing why degradation went unnoticed.",
         "B": "A higher threshold cuts false positives but lets more fraud through. Without monitoring or ownership, the model keeps drifting.",
@@ -1451,7 +1451,7 @@
         "NIST AI RMF",
         "Production ML lifecycle"
       ],
-      "_provenance": "Authored from concept: 'MLOps governance for production ML per NIST AI RMF 1.0 and ISO/IEC 42001'. Public sources: NIST AI RMF, ISO/IEC 42001. Scenario specifics (health-insurance, 4M members, 5 states, fraud-detection model, 4%→11% FPR, 8 months in production, no re-training) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Content review (Oct 2026): stem no longer names the missing owner and retraining that only the key supplied; C reworded and D replaced with a one-time revalidation runner-up; option A no longer mentions claims.",
+      "_provenance": "Authored from concept: 'MLOps governance for production ML per NIST AI RMF 1.0 and ISO/IEC 42001'. Public sources: NIST AI RMF, ISO/IEC 42001. Scenario specifics (health-insurance, 4M members, 5 states, fraud-detection model, 4%→11% FPR, 8 months in production, no re-training) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Content review (Oct 2026): stem no longer names the missing owner and retraining that only the key supplied; C reworded and D replaced with a one-time revalidation runner-up; option A no longer mentions claims. Content review round 2 (Oct 2026): stem now states that no one monitors the model, so the governance gap is given rather than inferred; explanation places revalidation inside the lifecycle.",
       "style_version": 2
     },
     {
@@ -3125,14 +3125,14 @@
         "Final two: A beats D because agreed scenarios run as tests prove each requirement; sign-off emails after go-live are informal and untied to tests.",
         "Exam cue: for assurance that requirements are met, look for evidence that links business-agreed criteria to executed tests."
       ],
-      "framework_ref": "Behavior-Driven Development (Dan North); ISTQB Foundation Level Syllabus",
+      "framework_ref": "Behavior-Driven Development (Dan North); ISTQB Foundation Level Syllabus; ISACA IT Audit Standard 1205 (Evidence); COBIT 2019 BAI07 (Managed IT Change Acceptance and Transitioning)",
       "related_concepts": [
         "BDD",
         "Given-When-Then",
         "Acceptance testing evidence",
         "Requirements traceability"
       ],
-      "_provenance": "Authored from concept: 'BDD practice per Dan North and Cucumber/Gherkin framework'. Public sources: BDD literature, Cucumber documentation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Content review (Oct 2026): recast from a methodology-definition recall stem into an auditor evidence judgment on a BDD project.",
+      "_provenance": "Authored from concept: 'BDD practice per Dan North and Cucumber/Gherkin framework'. Public sources: BDD literature, Cucumber documentation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Content review (Oct 2026): recast from a methodology-definition recall stem into an auditor evidence judgment on a BDD project. Content review round 2 (Oct 2026): added evidence and acceptance cites.",
       "style_version": 2
     },
     {
@@ -3252,25 +3252,25 @@
       "subtopic": "Release Management. Deployment Strategy",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "After a failed release, management proposes blue-green deployment for all future releases of a payment app. Which risk should the IS auditor raise as GREATEST?",
+      "question": "After a defective release disrupted payments, management proposes blue-green deployment for all future releases of a payment app. Which risk should the IS auditor raise as GREATEST?",
       "options": {
         "A": "A defect reaches every customer at once before switch-back",
-        "B": "Running two full production environments raises hosting costs",
+        "B": "Change approvals relaxed because switching back looks easy",
         "C": "The idle environment drifting out of step with live settings",
         "D": "Customers facing long downtime while traffic switches between environments"
       },
       "correct": "A",
       "key_concept": "Blue-green deployment moves all users at once; it limits downtime, not exposure, so a defect reaches every customer until switch-back.",
       "pre_read": "Recall what blue-green deployment limits and what it does not. Then picture the next faulty release.",
-      "correct_explanation": "Blue-green deployment keeps two identical environments and switches all traffic to the new one at once. It allows a fast switch back and near-zero downtime, but every customer meets a defect before anyone reverses it, repeating the failed release's harm. Environment drift is the tempting option: it is a real concern, but building both environments from the same code controls it. A canary release (a small share of traffic first) would limit exposure.",
+      "correct_explanation": "Blue-green deployment keeps two identical environments and switches all traffic to the new one at once. It allows a fast switch back and near-zero downtime, but every customer meets a defect before anyone reverses it, repeating the failed release's harm. Environment drift is the tempting option: it is a real concern, but defining both environments from the same templates controls it. A canary release (a small share of traffic first) would limit exposure.",
       "wrong_explanations": {
-        "B": "Extra hosting cost is a budget matter for management, not the greatest risk to customers of a payment app.",
-        "C": "Configuration drift between environments is controlled by building both from the same code; all-at-once exposure is built into blue-green.",
+        "B": "Blue-green changes how a release is deployed, not whether it needs approval; change management still applies to every release.",
+        "C": "Configuration drift is controlled by defining both environments from the same version-controlled templates; all-at-once exposure is built into blue-green.",
         "D": "Blue-green switches traffic almost instantly, so long downtime is the problem it solves, not one it creates."
       },
       "tips": [
-        "Eliminate: B is a budget matter, not a customer risk, and D gets blue-green backwards, since it avoids downtime.",
-        "Final two: A beats C because exposing every customer at once is built into blue-green, while drift is controlled by building from code.",
+        "Eliminate: B assumes change approval lapses, which blue-green does not cause, and D gets blue-green backwards, since it avoids downtime.",
+        "Final two: A beats C because exposing every customer at once is built into blue-green, while drift is controlled by building both environments from the same templates.",
         "Exam cue: blue-green limits downtime, canary limits exposure; match the deployment strategy to the risk the stem names."
       ],
       "framework_ref": "Continuous Delivery (Humble & Farley); DORA / Accelerate (DevOps Research and Assessment); COBIT 2019 BAI07 (Managed IT Change Acceptance and Transitioning)",
@@ -3280,7 +3280,7 @@
         "Blast radius",
         "Progressive delivery"
       ],
-      "_provenance": "Authored from concept: 'Canary deployment strategy per Continuous Delivery and DORA research'. Public sources: Humble & Farley, DORA. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Content review (Oct 2026): recast from a canary-definition recall stem into an auditor risk judgment on a blue-green proposal.",
+      "_provenance": "Authored from concept: 'Canary deployment strategy per Continuous Delivery and DORA research'. Public sources: Humble & Farley, DORA. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Content review (Oct 2026): recast from a canary-definition recall stem into an auditor risk judgment on a blue-green proposal. Content review round 2 (Oct 2026): stem now names the harm of the failed release; hosting-cost distractor replaced with a change-approval risk; drift rebuttal now names version-controlled templates.",
       "style_version": 2
     },
     {
@@ -4679,7 +4679,7 @@
         "Exam cue: anchor on requirements before design and test before deploy; any option breaking either is wrong."
       ],
       "framework_ref": "ISO/IEC 12207 (Software Life Cycle Processes); NIST SP 800-160 Vol 1 (Systems Security Engineering); COBIT 2019 BAI03 (Managed Solutions Identification and Build)",
-      "_provenance": "Authored from concept: 'SDLC phases (waterfall: requirements -> design -> build -> test -> deploy -> maintain)'. Foundational recall tier. Public sources: ISACA CISA Review Manual Domain 3; NIST SP 800-160. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): stem reframed around phase gating.",
+      "_provenance": "Authored from concept: 'SDLC phases (waterfall: requirements -> design -> build -> test -> deploy -> maintain)'. Foundational recall tier. Public sources: NIST SP 800-160. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): stem reframed around phase gating.",
       "style_version": 2
     },
     {
@@ -4772,7 +4772,7 @@
         "Exam cue: UAT sits after system testing and before cutover, in a production-like environment, run by business users."
       ],
       "framework_ref": "ISTQB Foundation Level Syllabus; COBIT 2019 BAI07 (Managed IT Change Acceptance and Transitioning)",
-      "_provenance": "Authored from concept: 'UAT (User Acceptance Testing) purpose and timing'. Foundational recall tier. Public sources: ISACA CISA Review Manual Domain 3; ISTQB Foundation Level syllabus. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. v2: retargeted to UAT timing to avoid overlap with d3_003/d3_029. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged.",
+      "_provenance": "Authored from concept: 'UAT (User Acceptance Testing) purpose and timing'. Foundational recall tier. Public sources: ISTQB Foundation Level syllabus. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. v2: retargeted to UAT timing to avoid overlap with d3_003/d3_029. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged.",
       "style_version": 2
     },
     {
@@ -4841,7 +4841,7 @@
         "Exam cue: for escrow assurance, an independent periodic test build beats any vendor assertion, however often it is made."
       ],
       "framework_ref": "ISO/IEC 27002:2022 Control 8.30 (Outsourced Development); NIST SP 800-161 Rev 1 (Cybersecurity Supply Chain Risk Management); COBIT 2019 APO10 (Managed Vendors)",
-      "_provenance": "Authored from concept: 'Source code escrow purpose'. Foundational recall tier. Public sources: ISACA CISA Review Manual Domain 3; NIST SP 800-161r1 Supply Chain Risk Management. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. v2: retargeted to escrow verification to avoid overlap with d3_015. v2: de-cued (key states an annual agent verification, so interval words also appear in keys).",
+      "_provenance": "Authored from concept: 'Source code escrow purpose'. Foundational recall tier. Public sources: NIST SP 800-161r1 Supply Chain Risk Management. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. v2: retargeted to escrow verification to avoid overlap with d3_015. v2: de-cued (key states an annual agent verification, so interval words also appear in keys).",
       "style_version": 2
     },
     {

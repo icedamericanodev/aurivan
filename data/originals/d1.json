@@ -2216,7 +2216,7 @@
         "Final two: B beats A because CSA plus targeted testing covers every site now while keeping independent assurance where risk is highest.",
         "Exam cue: CSA fits dispersed operations and engaged owners, but the right answer keeps independent audit work alongside it."
       ],
-      "framework_ref": "ISACA IT Audit Standard 1205 (Evidence); ISACA CISA Review Manual, 28th Edition, Chapter 1 (Information System Auditing Process)",
+      "framework_ref": "ISACA IT Audit Standard 1205 (Evidence); IIA Global Internal Audit Standards (2024), Standard 9.5 (Coordination and Reliance)",
       "related_concepts": [
         "Control Self-Assessment",
         "Auditor independence",
@@ -3061,7 +3061,7 @@
         "Change management",
         "Control classification"
       ],
-      "_provenance": "Authored from concept: 'general IT controls vs application controls - environment-wide scope vs application-specific scope'. Public source: COBIT 2019 DSS05, BAI06 and DSS06 (Oct 2026: Review Manual citation replaced with public COBIT objectives). All scenario specifics (copper-mining, ore-grading, truck-dispatch, capital-equipment purchases) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'general IT controls vs application controls - environment-wide scope vs application-specific scope'. Public source: COBIT 2019 DSS05, BAI06 and DSS06 (Oct 2026: earlier study-guide citation replaced with public COBIT objectives). All scenario specifics (copper-mining, ore-grading, truck-dispatch, capital-equipment purchases) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
       "style_version": 2
     },
     {
@@ -3194,7 +3194,7 @@
       "correct": "B",
       "key_concept": "For high-stakes AI models, an independent challenger model gives a comparison point that self-reported metrics cannot, exposing systematic errors and bias.",
       "pre_read": "Notice the evidence is self-reported. Ask which option gives the auditor an independent basis for comparison.",
-      "correct_explanation": "A challenger model (a second, separately built model run on the same inputs) gives the auditor an independent point of comparison, revealing systematic deviations and bias that self-reported metrics hide. Rerunning the data scientists' own scripts confirms the reported arithmetic, but it still measures the model against its own yardstick, so systematic errors stay hidden.",
+      "correct_explanation": "A challenger model (a second, separately built model run on the same inputs) gives the auditor an independent point of comparison, flagging divergences that point to systematic errors or bias that self-reported metrics hide. Rerunning the data scientists' own scripts confirms the reported arithmetic, but it still measures the model against its own yardstick, so systematic errors stay hidden.",
       "wrong_explanations": {
         "A": "Validation before deployment does not prove current performance. Drift (accuracy falling as real-world data changes) appears later, so current metrics need independent challenge.",
         "C": "Rerunning the team's own scripts confirms the arithmetic, not the adequacy of the measure; a model's own yardstick cannot reveal errors it is systematically blind to.",
@@ -3213,7 +3213,7 @@
         "Model drift",
         "Systematic bias detection"
       ],
-      "_provenance": "Authored from concept: 'AI/ML challenger-model testing - independent reference for high-stakes systems where self-reporting cannot detect systematic failures'. Public source: ISACA Auditing AI program + NIST AI RMF. All scenario specifics (autonomous-vehicle company, pedestrian/cyclist classification, data-science team proposal) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Round 2 review (Oct 2026): option C reworded so it matches its explanation (rerunning the team's own scripts, not an independent recalculation). Content review (Oct 2026): stem now asks for assurance over reported performance (a challenger model shows divergence, not drift from reality); D replaced with a management-review distractor; option A no longer cites a validation the stem never mentions; glossed challenger model and drift.",
+      "_provenance": "Authored from concept: 'AI/ML challenger-model testing - independent reference for high-stakes systems where self-reporting cannot detect systematic failures'. Public source: ISACA Auditing AI program + NIST AI RMF. All scenario specifics (autonomous-vehicle company, pedestrian/cyclist classification, data-science team proposal) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Round 2 review (Oct 2026): option C reworded so it matches its explanation (rerunning the team's own scripts, not an independent recalculation). Content review (Oct 2026): stem now asks for assurance over reported performance (a challenger model shows divergence, not drift from reality); D replaced with a management-review distractor; option A no longer cites a validation the stem never mentions; glossed challenger model and drift. Content review round 2 (Oct 2026): explanation now says a challenger flags divergences rather than revealing errors directly.",
       "style_version": 2
     },
     {
@@ -4954,7 +4954,7 @@
       "options": {
         "A": "Presenting the auditor's list of weaknesses for participants to confirm",
         "B": "Using open questions and recording participants' views and dissent",
-        "C": "Letting discussion run freely without structure or documentation",
+        "C": "Inviting senior plant management to attend and show support",
         "D": "Replacing the group session with individual interviews"
       },
       "correct": "B",
@@ -4963,15 +4963,15 @@
       "correct_explanation": "A CSA workshop exists to capture the process owners' own assessment of their controls, so the facilitator uses open questions, records consensus and dissent, and avoids steering. Presenting a prepared list of weaknesses feels efficient and structured, but it anchors participants on the auditor's view, turning self-assessment into confirmation and losing the insight only they can provide.",
       "wrong_explanations": {
         "A": "A pre-built list anchors participants on the auditor's conclusions, so the workshop confirms the auditor's view rather than eliciting theirs.",
-        "C": "Without structure or documentation, the workshop produces no reliable record of findings to support later work.",
+        "C": "Senior managers in the room make participants guarded, so weaknesses go unspoken; support is better shown by sponsoring the workshop.",
         "D": "Individual interviews are a different technique and lose the group discussion that makes CSA useful."
       },
       "tips": [
-        "Eliminate: C lacks structure and documentation, and D abandons the workshop format.",
+        "Eliminate: C puts senior managers in the room, which mutes candid views, and D abandons the workshop format.",
         "Final two: B beats A because CSA must elicit participants' own assessment; a prepared list steers them toward the auditor's answers.",
         "Exam cue: in CSA, the auditor facilitates and records; the process owners assess."
       ],
-      "framework_ref": "ISACA IT Audit Standard 1205 (Evidence); ISACA CISA Review Manual, 28th Edition, Chapter 1 (Information System Auditing Process)",
+      "framework_ref": "ISACA IT Audit Standard 1205 (Evidence)",
       "related_concepts": [
         "CSA workshop facilitation",
         "Open-ended elicitation",
@@ -4979,7 +4979,7 @@
         "Group-dynamic value",
         "Facilitator role"
       ],
-      "_provenance": "Authored from concept: 'CSA workshop facilitation discipline - elicits participants own assessments through open-ended questions, structured capture, no steering'. Public source: ISACA Standards on CSA + IIA Practice Guide. All scenario specifics (Big-Four advisory firm, manufacturing client production-scheduling) invented for this question. Distinct from d1_020 (limitations), d1_059 (deployment decision), d1_073 (definition). Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Content review (Oct 2026): replaced an unverifiable IIA CSA practice-guide cite.",
+      "_provenance": "Authored from concept: 'CSA workshop facilitation discipline - elicits participants own assessments through open-ended questions, structured capture, no steering'. Public source: ISACA Standards on CSA + IIA Practice Guide. All scenario specifics (Big-Four advisory firm, manufacturing client production-scheduling) invented for this question. Distinct from d1_020 (limitations), d1_059 (deployment decision), d1_073 (definition). Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Content review (Oct 2026): replaced an unverifiable IIA CSA practice-guide cite. Content review round 2 (Oct 2026): strawman C replaced with a plausible facilitation mistake (senior managers attending).",
       "style_version": 2
     },
     {
@@ -5010,7 +5010,7 @@
         "Final two: D beats B because the divergence itself is useful evidence; CSA informs the audit while independent testing decides it.",
         "Exam cue: CSA complements audit work; it never replaces the auditor's own testing."
       ],
-      "framework_ref": "ISACA IT Audit Standard 1205 (Evidence); ISACA CISA Review Manual, 28th Edition, Chapter 1 (Information System Auditing Process)",
+      "framework_ref": "ISACA IT Audit Standard 1205 (Evidence); IIA Global Internal Audit Standards (2024), Standard 9.5 (Coordination and Reliance)",
       "related_concepts": [
         "CSA results integration",
         "Complementary audit techniques",
@@ -5257,7 +5257,6 @@
       "id": "d1_139",
       "domain": 1,
       "subtopic": "Audit Committee. Technology Risk Expertise",
-      "principle_id": "independence-throughout",
       "difficulty": "application",
       "bloom_level": "Application",
       "question": "An IS auditor finds that no member of a bank's audit committee has technology risk experience, though cyber risk tops the risk register. What should the auditor recommend as BEST?",
@@ -5281,14 +5280,14 @@
         "Final two: B beats D because a member with real expertise can challenge management all year; an annual briefing only builds awareness.",
         "Exam cue: an oversight body needs both competence and independence; close a skills gap without putting management on it."
       ],
-      "framework_ref": "IIA Global Internal Audit Standards (2024), Standard 8.1 (Board Interaction); ISACA IT Audit Standard 1002 (Organizational Independence); COBIT 2019 EDM01 (Ensured Governance Framework Setting and Maintenance)",
+      "framework_ref": "COSO Internal Control – Integrated Framework (2013), Principle 2 (Board Independence and Oversight); COBIT 2019 EDM01 (Ensured Governance Framework Setting and Maintenance); IIA Global Internal Audit Standards (2024), Standard 8.1 (Board Interaction)",
       "related_concepts": [
         "Audit committee competence",
         "Audit committee independence",
         "Board oversight of technology risk",
         "Non-executive directors"
       ],
-      "_provenance": "Authored from concept: 'audit committee financial-expert composition under SOX 407 + SEC rules - at least one expert OR disclosed absence, criteria functional not credential-based'. Public source: SOX Sections 301 + 407 + SEC Regulation S-K. All scenario specifics (SEC-registered ETF management company) invented for this question. Distinct from d1_016/089/093. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): reworked from a Section 407-versus-301 recall item into a judgement on what the rule requires versus a stronger-sounding mandate. Content review (Oct 2026): recast. The earlier item tested a US securities rule (SOX Section 407 disclose-or-explain), not IS audit judgment. The bank has no retirement mechanism for question ids, so the id was kept and the item now tests audit-committee technology competence and independence (jurisdiction-neutral).",
+      "_provenance": "Authored from concept: 'audit committee financial-expert composition under SOX 407 + SEC rules - at least one expert OR disclosed absence, criteria functional not credential-based'. Public source: SOX Sections 301 + 407 + SEC Regulation S-K. All scenario specifics (SEC-registered ETF management company) invented for this question. Distinct from d1_016/089/093. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): reworked from a Section 407-versus-301 recall item into a judgement on what the rule requires versus a stronger-sounding mandate. Content review (Oct 2026): recast. The earlier item tested a US securities rule (SOX Section 407 disclose-or-explain), not IS audit judgment. The bank has no retirement mechanism for question ids, so the id was kept and the item now tests audit-committee technology competence and independence (jurisdiction-neutral). Content review round 2 (Oct 2026): cites now support board oversight competence and independence; principle tag removed because no principle fits.",
       "style_version": 2
     },
     {
@@ -7001,8 +7000,8 @@
         "Final two: B beats C because the auditor keeps control of the test while protecting production.",
         "Exam cue: with CAATs, protect production and keep the audit procedure under the auditor's control."
       ],
-      "framework_ref": "ISACA IT Audit Standard 1205 (Evidence); ISACA CISA Review Manual, 28th Edition, Chapter 1 (Information System Auditing Process)",
-      "_provenance": "Authored from concept: 'CAATs definition and purpose'. Foundational recall tier addressing the bank's recall-tier shortage (was 10%, target 20%). Public sources: ISACA ITAF section 3630; ISACA CISA Review Manual. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Cross-domain review (Oct 2026): re-angled or clarified to remove duplication/contradiction.",
+      "framework_ref": "ISACA IT Audit Standard 1205 (Evidence)",
+      "_provenance": "Authored from concept: 'CAATs definition and purpose'. Foundational recall tier addressing the bank's recall-tier shortage (was 10%, target 20%). Public sources: ISACA ITAF section 3630. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Cross-domain review (Oct 2026): re-angled or clarified to remove duplication/contradiction.",
       "style_version": 2
     },
     {
@@ -7438,14 +7437,14 @@
         "Final two: B beats A because severity comes from the consequence for the business; a policy breach alone does not show how much is at stake.",
         "Exam cue: match the dispute to the missing element. Facts doubted: condition. Why it happened: cause. Why it matters: effect. Whether it is wrong: criteria."
       ],
-      "framework_ref": "ISACA IT Audit Standard 1401 (Reporting); ISACA CISA Review Manual, 28th Edition, Chapter 1 (Information System Auditing Process)",
+      "framework_ref": "ISACA IT Audit Standard 1401 (Reporting)",
       "related_concepts": [
         "Elements of an audit finding",
         "Effect",
         "Severity rating",
         "Business impact"
       ],
-      "_provenance": "Authored from concept: 'Writing Findings and Recommendations. Disputed High Rating'. Original KaiSip item (Oct 2026), written for CISA subtopic 1B5.1 (Wave 3 coverage batch Q9: thin subtopic). Distinct from d1_079 (tone), d1_129 (reporting a rating management rejects) and d1_088 (integrated report format): tests which element of a finding supports its severity. All scenario specifics invented for this question. Public sources: ISACA ITAF, CISA Review Manual.",
+      "_provenance": "Authored from concept: 'Writing Findings and Recommendations. Disputed High Rating'. Original KaiSip item (Oct 2026), written for CISA subtopic 1B5.1 (Wave 3 coverage batch Q9: thin subtopic). Distinct from d1_079 (tone), d1_129 (reporting a rating management rejects) and d1_088 (integrated report format): tests which element of a finding supports its severity. All scenario specifics invented for this question. Public sources: ISACA ITAF.",
       "style_version": 2
     },
     {
@@ -7853,14 +7852,14 @@
         "Final two: C beats A because embedded modules report breaches of set rules, while snapshots record how each chosen application looked at each step.",
         "Exam cue: a step-by-step picture of how a transaction was handled points to snapshots; screening every transaction points to embedded audit modules."
       ],
-      "framework_ref": "ISACA IT Audit Standard 1205 (Evidence); ISACA CISA Review Manual, 28th Edition, Chapter 1 (Information System Auditing Process)",
+      "framework_ref": "ISACA IT Audit Standard 1205 (Evidence)",
       "related_concepts": [
         "Snapshots",
         "Embedded audit modules (EAM)",
         "Audit trail",
         "Online audit techniques"
       ],
-      "_provenance": "Authored from concept: 'Online Audit Techniques. Tracing Loan Applications Through Approval'. Original KaiSip item (Oct 2026), written for CISA subtopic 1B4.3 (Wave 3 coverage batch Q10: thin subtopic). Distinct from d1_046 (embedded modules for full screening), d1_083 (continuous auditing design) and d1_153 (integrated test facility): tests snapshots as the technique for a step-by-step processing trail. All scenario specifics invented for this question. Public sources: ISACA ITAF, ISACA CISA Review Manual.",
+      "_provenance": "Authored from concept: 'Online Audit Techniques. Tracing Loan Applications Through Approval'. Original KaiSip item (Oct 2026), written for CISA subtopic 1B4.3 (Wave 3 coverage batch Q10: thin subtopic). Distinct from d1_046 (embedded modules for full screening), d1_083 (continuous auditing design) and d1_153 (integrated test facility): tests snapshots as the technique for a step-by-step processing trail. All scenario specifics invented for this question. Public sources: ISACA ITAF.",
       "style_version": 2
     },
     {
@@ -7891,14 +7890,14 @@
         "Final two: A beats B because hooks watch only the risky sequence and are simple to build, while embedded modules screen everything at a cost a small team cannot support.",
         "Exam cue: a few specific red flags needing early warning point to audit hooks; screening every transaction points to embedded audit modules."
       ],
-      "framework_ref": "ISACA IT Audit Standard 1205 (Evidence); ISACA CISA Review Manual, 28th Edition, Chapter 1 (Information System Auditing Process)",
+      "framework_ref": "ISACA IT Audit Standard 1205 (Evidence)",
       "related_concepts": [
         "Audit hooks",
         "Embedded audit modules (EAM)",
         "Continuous and intermittent simulation (CIS)",
         "Supplier master data fraud"
       ],
-      "_provenance": "Authored from concept: 'Online Audit Techniques. Supplier Bank-Detail Changes'. Original KaiSip item (Oct 2026), written for CISA subtopic 1B4.3 (Wave 3 coverage batch Q10: thin subtopic). Distinct from d1_046 (embedded modules for full screening) and d1_173 (continuous auditing cost-benefit): tests audit hooks as the low-cost choice for early warning on one high-risk pattern. All scenario specifics invented for this question. Public sources: ISACA ITAF, ISACA CISA Review Manual.",
+      "_provenance": "Authored from concept: 'Online Audit Techniques. Supplier Bank-Detail Changes'. Original KaiSip item (Oct 2026), written for CISA subtopic 1B4.3 (Wave 3 coverage batch Q10: thin subtopic). Distinct from d1_046 (embedded modules for full screening) and d1_173 (continuous auditing cost-benefit): tests audit hooks as the low-cost choice for early warning on one high-risk pattern. All scenario specifics invented for this question. Public sources: ISACA ITAF.",
       "style_version": 2
     },
     {
@@ -7936,7 +7935,7 @@
         "Evidence integrity",
         "Auditor objectivity"
       ],
-      "_provenance": "Authored from concept: 'Online Audit Techniques. Application Team Maintenance Offer'. Original KaiSip item (Oct 2026), written for CISA subtopic 1B4.3 (Wave 3 coverage batch Q10: thin subtopic). Distinct from d1_046 (choosing embedded modules) and d1_083 (design that avoids degrading production): tests that audit must keep control of the module's rules and exception file. All scenario specifics invented for this question. Public sources: ISACA ITAF, ISACA CISA Review Manual.",
+      "_provenance": "Authored from concept: 'Online Audit Techniques. Application Team Maintenance Offer'. Original KaiSip item (Oct 2026), written for CISA subtopic 1B4.3 (Wave 3 coverage batch Q10: thin subtopic). Distinct from d1_046 (choosing embedded modules) and d1_083 (design that avoids degrading production): tests that audit must keep control of the module's rules and exception file. All scenario specifics invented for this question. Public sources: ISACA ITAF.",
       "style_version": 2
     },
     {
@@ -7966,14 +7965,14 @@
         "Final two: B beats A because the Code allows disclosure required by legal authority; confidentiality never overrides a lawful demand.",
         "Exam cue: confidentiality protects information from inappropriate parties, not from a body with legal authority to demand it."
       ],
-      "framework_ref": "ISACA Code of Professional Ethics; ISACA CISA Review Manual, 28th Edition, Chapter 1 (Information System Auditing Process)",
+      "framework_ref": "ISACA Code of Professional Ethics",
       "related_concepts": [
         "ISACA Code of Professional Ethics",
         "Confidentiality",
         "Disclosure required by legal authority",
         "Work papers"
       ],
-      "_provenance": "Authored from concept: 'Code of Professional Ethics. Regulator Request for Work Papers'. Original KaiSip item (Oct 2026), written for CISA subtopic 1A1.2 (Wave 3 coverage batch Q10: thin subtopic). Distinct from d1_031 (omitting a finding after an inducement): tests the confidentiality principle's exception for disclosure required by legal authority. All scenario specifics invented for this question. Public sources: ISACA Code of Professional Ethics, ISACA CISA Review Manual.",
+      "_provenance": "Authored from concept: 'Code of Professional Ethics. Regulator Request for Work Papers'. Original KaiSip item (Oct 2026), written for CISA subtopic 1A1.2 (Wave 3 coverage batch Q10: thin subtopic). Distinct from d1_031 (omitting a finding after an inducement): tests the confidentiality principle's exception for disclosure required by legal authority. All scenario specifics invented for this question. Public sources: ISACA Code of Professional Ethics.",
       "style_version": 2
     },
     {
@@ -8049,7 +8048,7 @@
         "Audit criteria",
         "Efficiency and effectiveness"
       ],
-      "_provenance": "Authored from concept: 'Engagement Types. Service Desk Speed and Cost'. Original KaiSip item (Oct 2026), written for CISA subtopic 1A2.1 (Wave 3 coverage batch Q10: thin subtopic). Distinct from d1_158 (regulatory criteria call for a compliance audit): tests the reverse case, where management's own performance goals as criteria call for an operational audit. All scenario specifics invented for this question. Public sources: ISACA ITAF, ISACA CISA Review Manual.",
+      "_provenance": "Authored from concept: 'Engagement Types. Service Desk Speed and Cost'. Original KaiSip item (Oct 2026), written for CISA subtopic 1A2.1 (Wave 3 coverage batch Q10: thin subtopic). Distinct from d1_158 (regulatory criteria call for a compliance audit): tests the reverse case, where management's own performance goals as criteria call for an operational audit. All scenario specifics invented for this question. Public sources: ISACA ITAF.",
       "style_version": 2
     },
     {
@@ -8118,14 +8117,14 @@
         "Final two: B beats A because a second observation still covers one day, while records sampled across the year cover the period.",
         "Exam cue: observation and interviews find leads; a conclusion about a whole period needs records or reperformance covering it."
       ],
-      "framework_ref": "ISACA IT Audit Standard 1205 (Evidence); ISACA CISA Review Manual, 28th Edition, Chapter 1 (Information System Auditing Process)",
+      "framework_ref": "ISACA IT Audit Standard 1205 (Evidence)",
       "related_concepts": [
         "Observation",
         "Observer effect",
         "Corroboration",
         "Operating effectiveness"
       ],
-      "_provenance": "Authored from concept: 'Interviews and Observation. Announced Walkthrough of Visitor Checks'. Original KaiSip item (Oct 2026), written for CISA subtopic 1B3.3 (Wave 3 coverage batch Q10: thin subtopic). Distinct from d1_025 (preparing open-ended interviews) and d1_132 (walkthrough versus self-assessment): tests that observation covers one moment and must be corroborated with records across the period. All scenario specifics invented for this question. Public sources: ISACA ITAF, ISACA CISA Review Manual.",
+      "_provenance": "Authored from concept: 'Interviews and Observation. Announced Walkthrough of Visitor Checks'. Original KaiSip item (Oct 2026), written for CISA subtopic 1B3.3 (Wave 3 coverage batch Q10: thin subtopic). Distinct from d1_025 (preparing open-ended interviews) and d1_132 (walkthrough versus self-assessment): tests that observation covers one moment and must be corroborated with records across the period. All scenario specifics invented for this question. Public sources: ISACA ITAF.",
       "style_version": 2
     },
     {
@@ -8308,7 +8307,7 @@
         "Final two: B beats A because MOST LIKELY asks about frequency; override would win only if the stem asked for the GREATEST loss.",
         "Exam cue: MOST LIKELY ranks by how often; GREATEST ranks by how much harm a realistic event would do. Were this stem GREATEST, the override would be the answer."
       ],
-      "framework_ref": "COSO Internal Control – Integrated Framework (2013); ISACA CISA Review Manual, 28th Edition, Chapter 1 (Information System Auditing Process)",
+      "framework_ref": "COSO Internal Control – Integrated Framework (2013)",
       "related_concepts": [
         "Reasonable assurance",
         "Inherent limitations of internal control",

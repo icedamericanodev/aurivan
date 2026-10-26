@@ -518,7 +518,7 @@
         "A": "The platform with the lowest current annual running cost",
         "B": "The platform supported by the largest internal IT team",
         "C": "The platform used by the acquiring company before the merger",
-        "D": "Required business capabilities mapped against each platform"
+        "D": "The platform that best fits the mapped business capabilities"
       },
       "correct": "D",
       "key_concept": "Enterprise architecture (EA) consolidates overlapping systems by mapping required business capabilities to each platform, with cost as one input.",
@@ -541,7 +541,7 @@
         "Post-merger integration",
         "Enterprise architecture"
       ],
-      "_provenance": "Authored from concept: 'cloud governance Shared Responsibility Model - service-model-dependent split with provider and customer responsibilities, distinct from provider-everything / customer-everything / universal-boundary'. Public source: CSA CCM + NIST SP 800-145. All scenario specifics (media-streaming platform, IaaS + SaaS) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Round 2 review (Oct 2026): runner-up B given the same two-part form as the key. Rebalanced (Oct 2026): re-angled from 5A8 to 2A4. Content review (Oct 2026): spelled out EA and replaced 'rationalizes' with plain wording.",
+      "_provenance": "Authored from concept: 'cloud governance Shared Responsibility Model - service-model-dependent split with provider and customer responsibilities, distinct from provider-everything / customer-everything / universal-boundary'. Public source: CSA CCM + NIST SP 800-145. All scenario specifics (media-streaming platform, IaaS + SaaS) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Round 2 review (Oct 2026): runner-up B given the same two-part form as the key. Rebalanced (Oct 2026): re-angled from 5A8 to 2A4. Content review (Oct 2026): spelled out EA and replaced 'rationalizes' with plain wording. Content review round 2 (Oct 2026): key reworded into the same 'The platform…' form as the other options.",
       "style_version": 2
     },
     {
@@ -2097,11 +2097,11 @@
       "subtopic": "Outsourcing Strategies. Offshore Collaboration Risk",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "An IS auditor reviews a bank's plan to move an agile development team offshore; the team needs daily sessions with business product owners. Which risk is GREATEST?",
+      "question": "An IS auditor reviews a bank's plan to move an agile development team offshore, using masked test data; the team needs daily sessions with business product owners. Which risk is GREATEST?",
       "options": {
         "A": "Limited time-zone overlap weakening how requirements are validated",
         "B": "Development data crossing borders into a different legal regime",
-        "C": "Hourly labor rates rising above those of an onshore team",
+        "C": "Weaker vendor oversight because on-site audit visits cost more",
         "D": "Accountability for the software passing from the bank to the vendor"
       },
       "correct": "A",
@@ -2109,12 +2109,12 @@
       "pre_read": "Notice what the team needs every day. Ask which risk threatens that need most directly.",
       "correct_explanation": "The team depends on daily sessions with product owners to confirm requirements, and offshore time zones leave little shared working time, so misunderstood requirements reach the build. Cross-border data transfer is the tempting option: it is a real risk for a bank, but contracts, transfer safeguards and masked test data (real data with identifiers hidden) manage it, while nothing in the plan restores the lost overlap.",
       "wrong_explanations": {
-        "B": "Data transfer matters for a bank, but standard controls such as transfer safeguards and masked test data manage it; the plan has no answer to lost overlap.",
-        "C": "Offshore rates are usually lower than onshore rates; cost savings are the main reason to offshore, not a risk of it.",
+        "B": "Masked test data and standard transfer safeguards manage the data risk; nothing in the plan restores the lost overlap with product owners.",
+        "C": "Right-to-audit clauses, remote reviews and independent assurance reports keep oversight effective at a distance; travel cost is not the main exposure.",
         "D": "Accountability cannot be outsourced; the bank stays answerable for the software whatever the vendor delivers."
       },
       "tips": [
-        "Eliminate: C reverses the usual cost advantage of offshoring, and D forgets that accountability cannot be outsourced.",
+        "Eliminate: C ignores right-to-audit clauses and assurance reports that work at a distance, and D forgets that accountability cannot be outsourced.",
         "Final two: A beats B because the team's daily need for product owners is directly undermined, while data transfer has standard safeguards.",
         "Exam cue: offshore = lowest cost and scale; near-shore = collaboration at moderate cost; onshore = closest control at highest cost."
       ],
@@ -2125,7 +2125,7 @@
         "Offshore outsourcing",
         "Outsourcing geography"
       ],
-      "_provenance": "Authored from concept: 'Outsourcing geography - cost-vs-collaboration trade-off near-shore as middle ground, distinct from d2_017 (multi-factor outsourcing decision) and d2_041 (in-house retention drivers)'. Public source: ISACA IT Outsourcing Strategy guidance. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Content review (Oct 2026): recast from a sourcing-fact recall item with no auditor into an IS auditor risk judgment on an offshoring plan; cross-border data transfer is the runner-up.",
+      "_provenance": "Authored from concept: 'Outsourcing geography - cost-vs-collaboration trade-off near-shore as middle ground, distinct from d2_017 (multi-factor outsourcing decision) and d2_041 (in-house retention drivers)'. Public source: ISACA IT Outsourcing Strategy guidance. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Content review (Oct 2026): recast from a sourcing-fact recall item with no auditor into an IS auditor risk judgment on an offshoring plan; cross-border data transfer is the runner-up. Content review round 2 (Oct 2026): stem now states masked test data so the data-transfer runner-up falls to knowledge of safeguards; C replaced with an oversight risk instead of a cost fact.",
       "style_version": 2
     },
     {
@@ -7016,8 +7016,8 @@
         "Final two: A beats B because the steering committee manages the portfolio, while advising the board is the strategy committee's job.",
         "Exam cue: strategy committee advises the board; steering committee prioritizes, resources and monitors projects for management."
       ],
-      "framework_ref": "ISACA CISA Review Manual, 28th Edition, Chapter 2 (Governance and Management of IT); COBIT 2019 EDM01 (Ensured Governance Framework Setting and Maintenance); COBIT 2019 APO05 (Managed Portfolio)",
-      "_provenance": "Authored from concept: 'IT strategy committee vs IT steering committee role distinctions'. Foundational recall tier addressing the bank's recall-tier shortage. Public sources: ISACA CISA Review Manual Domain 2; COBIT 2019 EDM01. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "framework_ref": "COBIT 2019 EDM01 (Ensured Governance Framework Setting and Maintenance); COBIT 2019 APO05 (Managed Portfolio)",
+      "_provenance": "Authored from concept: 'IT strategy committee vs IT steering committee role distinctions'. Foundational recall tier addressing the bank's recall-tier shortage. Public sources: COBIT 2019 EDM01. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
       "style_version": 2
     },
     {
