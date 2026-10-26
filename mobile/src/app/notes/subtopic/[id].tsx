@@ -37,7 +37,8 @@ import { useRef, useState } from 'react';
 import { View } from 'react-native';
 import { ICON_STROKE, Play } from '../../../components/icons';
 import { CheckDraw, useScreenFocus } from '../../../components/motion';
-import { NoteBody } from '../../../components/notes';
+import { AcronymPlate, NoteBody } from '../../../components/notes';
+import { titleAcronyms } from '../../../engine/noteAcronyms';
 import { ReportRow } from '../../../components/support';
 import { Button, Enter, Gap, ICON_SIZE, ListRow, PushedHeader, Row, Screen, Tag, T, useFontScale } from '../../../components/ui';
 import { EmptyScreen } from '../../../components/emptyScreen';
@@ -169,6 +170,7 @@ export default function NoteSubtopicScreen() {
     }
   };
   const readLine = `${aboutMin(minutes)} read`;
+  const acronyms = titleAcronyms(note);
   const large = fontScale >= LARGE_TEXT;
 
   return (
@@ -184,7 +186,8 @@ export default function NoteSubtopicScreen() {
       <Enter i={0}>
         {/* The tag and the title: the header's title appears once this has scrolled under it. */}
         <View onLayout={(e) => (titleBottom.current = space.lg + e.nativeEvent.layout.y + e.nativeEvent.layout.height)}>
-          <Tag domain={domain} numberOfLines={large ? undefined : 1} label={topic ? `${domain.short} · ${topic.id} ${topic.name}` : `${domain.short} · ${note.topicId}`} />
+          {/* Mobile 1.43: words, not codes ("IS Operations · Business Impact Analysis"); the code stays in the source row. */}
+          <Tag domain={domain} numberOfLines={large ? undefined : 1} label={topic ? `${domain.short} · ${topic.name}` : domain.short} />
           <T v="hero" accessibilityRole="header" style={{ marginTop: space.sm }}>{note.name}</T>
         </View>
         <View accessible accessibilityLabel={`${spokenMin(aboutMin(minutes))} to read${isRead ? '. Marked as read' : ''}`} style={{ marginTop: space.xs }}>
@@ -200,26 +203,36 @@ export default function NoteSubtopicScreen() {
             )}
           </Row>
         </View>
-        {lesson ? (
-          // Mobile 1.20: the lesson for this idea (Play = lessons). 1.22: its status in a kicker over its own title.
-          <View style={{ marginTop: space.lg, borderTopWidth: 1, borderBottomWidth: 1, borderColor: c.line }}>
-            <ListRow
-              icon={<Play size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
-              kicker={`Lesson · ${lesson.minutes} min · ${lessonDone ? 'Done' : 'Not done yet'}`}
-              title={lesson.title}
-              accessibilityLabel={`Lesson: ${lesson.title}, ${lesson.minutes} minutes, ${lessonDone ? 'done' : 'not done yet'}`}
-              accessibilityHint="Opens the short lesson on this topic"
-              onPress={() => router.push(`/lesson/${lesson.id}`)}
-              last
-            />
+        {/* Mobile 1.43: the title's acronyms spelled out, before the reader needs them. */}
+        {acronyms ? (
+          <View style={{ marginTop: space.lg }}>
+            <AcronymPlate items={acronyms} />
           </View>
-        ) : (
-          <Gap h={space.md} />
-        )}
+        ) : null}
+        <Gap h={space.xl} />
       </Enter>
 
       <Enter i={1}>
-        <NoteBody note={note} />
+        {/* Mobile 1.43: "In one line" leads; the lesson for this idea follows it. */}
+        <NoteBody
+          note={note}
+          lead={
+            lesson ? (
+              // Mobile 1.20: the lesson for this idea (Play = lessons). 1.22: its status in a kicker over its own title.
+              <View style={{ marginTop: space.lg, borderTopWidth: 1, borderBottomWidth: 1, borderColor: c.line }}>
+                <ListRow
+                  icon={<Play size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
+                  kicker={`Lesson · ${lesson.minutes} min · ${lessonDone ? 'Done' : 'Not done yet'}`}
+                  title={lesson.title}
+                  accessibilityLabel={`Lesson: ${lesson.title}, ${lesson.minutes} minutes, ${lessonDone ? 'done' : 'not done yet'}`}
+                  accessibilityHint="Opens the short lesson on this topic"
+                  onPress={() => router.push(`/lesson/${lesson.id}`)}
+                  last
+                />
+              </View>
+            ) : null
+          }
+        />
       </Enter>
 
       {/* The ending: one primary, one quiet row, the source row (design spec §3.9). */}

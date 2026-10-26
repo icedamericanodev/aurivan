@@ -706,6 +706,31 @@ export function onThisPageFits(titles: string[], column: number, scale: number):
   return (text + marks + gaps) * 1.05 <= column;
 }
 
+/**
+ * "The letters in the title" (mobile 1.43, design spec §11 "Study notes"): the title's acronyms
+ * spelled out, on an L1 plate under the title (engine/noteAcronyms.ts reads them from the note's
+ * own text). The acronym is `label` in `accentText` in a column at least 56 wide; its meaning is
+ * `small` `ink`. At ×1.3 text each acronym sits over its meaning. Each pair is ONE screen-reader
+ * stop ("RPO, Recovery point objective").
+ */
+export function AcronymPlate({ items }: { items: { term: string; expansion: string }[] }) {
+  const { c } = useTheme();
+  const stacked = useFontScale() >= LARGE_TEXT;
+  return (
+    <Card variant="plate">
+      <T v="caption" color={c.ink2} accessibilityRole="header">The letters in the title</T>
+      <View style={{ marginTop: space.sm, gap: space.sm }}>
+        {items.map((x) => (
+          <View key={x.term} accessible accessibilityLabel={`${x.term}, ${x.expansion}`} style={{ flexDirection: stacked ? 'column' : 'row', gap: stacked ? 0 : space.md, alignItems: stacked ? 'flex-start' : 'baseline' }}>
+            <T v="label" color={c.accentText} style={stacked ? undefined : { minWidth: 56, flexShrink: 0 }}>{x.term}</T>
+            <T v="small" color={c.ink} style={{ flex: stacked ? undefined : 1, minWidth: 0 }}>{x.expansion}</T>
+          </View>
+        ))}
+      </View>
+    </Card>
+  );
+}
+
 /** The first heading in a movement sits 16 under the kicker, not a section's 32. */
 const FIRST = { marginTop: space.lg };
 
@@ -714,7 +739,7 @@ const FIRST = { marginTop: space.lg };
  * movements. Optional sections (compare, types, illustration, auditing it,
  * analogy, memory aid) are simply skipped; a movement with nothing in it is too.
  */
-export function NoteBody({ note }: { note: NoteSubtopic }) {
+export function NoteBody({ note, lead }: { note: NoteSubtopic; /** Mobile 1.43: right after "In one line" (the lesson row), before the movements. */ lead?: ReactNode }) {
   const { c } = useTheme();
   const column = useColumnWidth();
   const native = nativeFigureFor(note.id);
@@ -729,10 +754,15 @@ export function NoteBody({ note }: { note: NoteSubtopic }) {
   ];
   return (
     <View>
-      <OnThisPage items={movements} />
-      {/* In one line: the question-stem serif, the page's lead sentence. */}
+      {/* In one line: the question-stem serif, the page's lead sentence. Mobile 1.43: it comes first, on the
+          first screen, then the lesson row, then "On this page". */}
       <T v="caption" color={c.accentText}>In one line</T>
       <T v="stem" style={{ marginTop: space.xs }}>{note.definition}</T>
+      {lead}
+      {/* Its own 24 below plus the movement's 48 would be 72: take 24 back, so 48 sits between them (the rhythm rule). */}
+      <View style={{ marginTop: space.lg, marginBottom: -space.xl }}>
+        <OnThisPage items={movements} />
+      </View>
 
       {/* 1. Understand */}
       <Movement n={1} title="Understand" ref={understand} />

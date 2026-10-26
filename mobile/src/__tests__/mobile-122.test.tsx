@@ -384,8 +384,10 @@ describe('note page: title collapse and reading to the end', () => {
     const header = () => root().findByType(PushedHeader);
     expect(header().props.title).toBe(findNote('cisa', '4B1.2')!.name);
     expect(header().props.showTitle).toBe(false);
-    // One line of wayfinding above the title: domain · topic.
-    expect(allText()).toContain('IS Operations · 4B1 ');
+  
+    // Mobile 1.43: words, not codes (the code stays in the source row).
+    expect(allText()).toContain('IS Operations · Business Impact Analysis');
+    expect(allText()).not.toContain('IS Operations · 4B1');
     expect(allText()).toContain(`About ${findNote('cisa', '4B1.2')!.minutes} min read`);
     layoutAll({ y: 0, height: 100 });
     scrollTo(50);
@@ -419,7 +421,7 @@ describe('note page: title collapse and reading to the end', () => {
   it('the topic tag is one line, and wraps at large text', () => {
     mockParams = { id: '4B1.2' };
     mount(<NoteSubtopicScreen />);
-    const tagLines = () => root().findAll((n) => typeof n.props.children === 'string' && n.props.children.startsWith('IS Operations · 4B1 ') && n.props.v === 'meta')[0].props.numberOfLines;
+    const tagLines = () => root().findAll((n) => typeof n.props.children === 'string' && n.props.children.startsWith('IS Operations · Business') && n.props.v === 'meta')[0].props.numberOfLines;
     expect(tagLines()).toBe(1);
     act(() => {
       r?.unmount();
