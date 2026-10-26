@@ -100,24 +100,24 @@
       "options": {
         "A": "Temperature and humidity alarms are not monitored by anyone",
         "B": "The fire suppression inspection is two months overdue",
-        "C": "Visitors sign the entry log but not the exit log",
-        "D": "Backup tapes are encrypted with an outdated algorithm"
+        "C": "Water sensors under the raised floor are tested yearly, not quarterly",
+        "D": "The room's humidity setpoint sits near the top of the vendor range"
       },
       "correct": "A",
       "key_concept": "Environmental controls cover heat, humidity, water, fire and power, and each needs monitoring that alerts someone able to respond.",
-      "pre_read": "First sort the options into environmental and non-environmental. Then ask which environmental gap could cause damage nobody notices.",
+      "pre_read": "Every option is an environmental finding. Ask which one means a fault could run with nobody alerted.",
       "correct_explanation": "Environmental controls only protect equipment if someone learns of a problem in time. Alarms that nobody monitors mean an overheating or humidity fault can run unnoticed until hardware fails. An overdue fire suppression inspection is a real gap that needs scheduling, but the system is still installed and likely to work, so the exposure is smaller than conditions that nobody sees.",
       "wrong_explanations": {
         "B": "A short inspection delay is a compliance gap to schedule promptly. The system remains in place and is likely still functional.",
-        "C": "An incomplete visitor log is a physical access weakness, not an environmental control issue such as heat, water, fire or power.",
-        "D": "Weak backup encryption is a logical security issue. It does not affect environmental protection of the data center."
+        "C": "Yearly testing is a weaker interval, but the sensors are installed and alerting; a gap between tests is far smaller than alarms nobody sees.",
+        "D": "A setpoint inside the vendor's range is acceptable, if tight. It causes no damage while monitoring works."
       },
       "tips": [
-        "Eliminate: C is a physical access issue and D is a cryptography issue; neither is an environmental control.",
+        "Eliminate: C is a testing-interval gap on sensors that still alert, and D is a setpoint that stays within the vendor's range.",
         "Final two: A beats B because unmonitored alarms let damage happen unseen, while a slightly late inspection leaves a working system in place.",
         "Exam cue: an environmental control that nobody watches gives no protection; detection must reach someone who can act."
       ],
-      "_provenance": "Authored from concept: 'Environmental controls scope per CISA exam content outline topic 5A2 and NIST SP 800-14'. Public sources: ISACA, NIST, TIA, ASHRAE. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Environmental controls scope per CISA exam content outline topic 5A2 and NIST SP 800-14'. Public sources: ISACA, NIST, TIA, ASHRAE. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): C and D were off-category (visitor log, tape cipher) and fell without environmental knowledge; both are now lesser environmental findings.",
       "style_version": 2
     },
     {
@@ -135,7 +135,7 @@
       "framework_ref": "NIST SP 800-53 Rev 5 PE-3 (Physical Access Control); ISO/IEC 27002:2022 Control 7.2 (Physical Entry)",
       "question": "Entry to a network wiring closet must be restricted so each entry is traceable to a person and access can be withdrawn quickly. Which control should the IS auditor recommend as BEST?",
       "options": {
-        "A": "Warning signs saying the closet is under constant surveillance",
+        "A": "Hourly guard patrols that check the closet door",
         "B": "A camera recording everyone who opens the closet door",
         "C": "A badge-controlled lock limited to named network staff",
         "D": "A keyed lock with keys held by the network team"
@@ -145,16 +145,16 @@
       "pre_read": "Classify each option as deterrent, preventive or detective. Then weigh the two preventive options against traceability and quick withdrawal.",
       "correct_explanation": "Both locks prevent entry, but only a badge-controlled lock ties each opening to a named person and lets access be removed at once by disabling a badge. Physical keys can be copied or lent, leave no record of who used them, and must be recovered, or the lock changed, when someone leaves. The stem's need for traceability and quick withdrawal decides it.",
       "wrong_explanations": {
-        "A": "Signs are a deterrent control. They discourage entry but cannot stop or record anyone who ignores them.",
+        "A": "Patrols deter and may spot an intruder between rounds, but they neither restrict entry nor record who opened the closet.",
         "B": "A camera is a detective control. It records who entered after the fact but does not restrict entry to the closet.",
         "D": "A keyed lock is preventive, but keys can be copied or shared, their use is not logged, and withdrawing access means recovering keys or rekeying."
       },
       "tips": [
-        "Eliminate: A only deters and B only detects; neither restricts entry.",
+        "Eliminate: A deters and detects only between rounds, and B records entries; neither restricts who gets in.",
         "Final two: C beats D because badge access is logged to individuals and can be revoked at once, while keys cannot.",
         "Exam cue: sort physical controls by type first (deter, prevent, detect), then choose the preventive control that also gives accountability."
       ],
-      "_provenance": "Authored from concept: 'Physical access control categorization per CISA exam content outline topic 5A2 and NIST SP 800-53 PE family'. Public sources: ISACA, NIST, COBIT, ISO/IEC. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged.",
+      "_provenance": "Authored from concept: 'Physical access control categorization per CISA exam content outline topic 5A2 and NIST SP 800-53 PE family'. Public sources: ISACA, NIST, COBIT, ISO/IEC. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): A (warning signs) was a throwaway; it is now guard patrols, a deterrent and detective control of the kind a practitioner proposes.",
       "style_version": 2
     },
     {
@@ -175,7 +175,7 @@
         "A": "Ask staff to re-acknowledge the current policy text",
         "B": "Start an out-of-cycle review of the policy for the law",
         "C": "Log the new law for the scheduled November policy review",
-        "D": "Have the legal team amend the policy without management sign-off"
+        "D": "Have the CISO issue an interim memo until the November review"
       },
       "correct": "B",
       "key_concept": "Policies are reviewed on a set cycle and also whenever a significant change, such as a new law, makes them outdated.",
@@ -184,14 +184,14 @@
       "wrong_explanations": {
         "A": "Re-acknowledging the old text spreads awareness of a policy that will soon be out of line with the law. It changes nothing.",
         "C": "Waiting for the annual cycle leaves the policy misaligned with the law for months after it takes effect.",
-        "D": "Policy changes need management approval to carry authority. Legal input is valuable, but it cannot replace management sign-off."
+        "D": "A memo gives interim guidance but is not a reviewed, approved policy; the policy itself stays out of line with the law until November."
       },
       "tips": [
-        "Eliminate: A only re-circulates an outdated policy, and D skips the management approval every policy revision needs.",
+        "Eliminate: A only re-circulates an outdated policy, and D issues guidance that never passes the policy's review and approval.",
         "Final two: B beats C because a significant legal change triggers review now, while the annual cycle would leave a months-long gap.",
         "Exam cue: periodic review is a minimum; a major change in law, business or threat triggers an earlier review."
       ],
-      "_provenance": "Authored from concept: 'Policy lifecycle per ISO 27001 5.2 and NIST SP 800-100'. Public sources: ISO/IEC, ISACA, NIST. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. Second wording pass (Oct 2026): wording fixes from the blind re-test; key and options unchanged.",
+      "_provenance": "Authored from concept: 'Policy lifecycle per ISO 27001 5.2 and NIST SP 800-100'. Public sources: ISO/IEC, ISACA, NIST. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. Second wording pass (Oct 2026): wording fixes from the blind re-test; key and options unchanged. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): D (legal amends without sign-off) was a strawman; it is now an interim CISO memo, a real stopgap that is not a governed policy revision.",
       "style_version": 2
     },
     {
@@ -212,7 +212,7 @@
       "options": {
         "A": "Identify the legal and contractual security requirements that apply",
         "B": "Compare the control coverage of the leading security frameworks",
-        "C": "Adopt the framework the CISO used at a previous employer",
+        "C": "Adopt PCI DSS as the organization-wide security framework",
         "D": "Ask the external auditor to select the most defensible framework"
       },
       "correct": "A",
@@ -221,15 +221,15 @@
       "correct_explanation": "Framework choice should start from what the organization must meet. An EU payment processor is likely to face data protection law and card industry obligations, and these set the minimum any framework must cover. Comparing control coverage is a sound step, but without the requirements first there is nothing to measure coverage against, so the comparison may favor a framework that misses a mandatory obligation.",
       "wrong_explanations": {
         "B": "Comparing coverage is useful, but done first it has no yardstick. Requirements must be known before frameworks can be judged against them.",
-        "C": "A familiar framework may not fit this organization's laws, contracts or risks. Personal preference is not a selection criterion.",
+        "C": "PCI DSS covers cardholder data only. Adopting it organization-wide misses data protection law and other duties, and still chooses before requirements are known.",
         "D": "Selecting the framework is a management decision. An external auditor who chose it would later be auditing their own choice, impairing independence."
       },
       "tips": [
-        "Eliminate: C relies on personal habit, and D hands a management decision to the auditor.",
+        "Eliminate: C adopts a card-data standard that covers only part of the obligations, and D hands a management decision to the auditor.",
         "Final two: A beats B because requirements are the yardstick; comparing frameworks before knowing them puts the analysis before the need.",
         "Exam cue: for selection questions, start with the requirements (legal, regulatory, contractual), then evaluate options against them."
       ],
-      "_provenance": "Authored from concept: 'Information security framework selection criteria'. Public sources: ISACA, ISO/IEC, NIST, CIS. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged.",
+      "_provenance": "Authored from concept: 'Information security framework selection criteria'. Public sources: ISACA, ISO/IEC, NIST, CIS. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): C (the CISO's old framework) fell to common sense; it is now PCI DSS adopted organization-wide, a payment processor's real reflex.",
       "style_version": 2
     },
     {
@@ -288,26 +288,26 @@
       "framework_ref": "NIST SP 800-53 Rev 5 AC-5 (Separation of Duties); ISO/IEC 27002:2022 Control 5.3 (Segregation of Duties)",
       "question": "An IS auditor finds that one accounts payable clerk can create new vendors and approve payments to them. Which recommendation BEST addresses this risk?",
       "options": {
-        "A": "Require multi-factor authentication for the clerk's system login",
+        "A": "Rotate the clerk to another team every six months",
         "B": "Add a monthly management review of new-vendor payments",
         "C": "Assign vendor creation and payment approval to different staff",
-        "D": "Encrypt the vendor master file stored in the database"
+        "D": "Have internal audit sample new-vendor payments each quarter"
       },
       "correct": "C",
       "key_concept": "Segregation of duties prevents one person from completing a sensitive process alone; detective reviews are a fallback, not a substitute.",
       "pre_read": "Name the two duties in the stem. Ask which option stops one person holding both, rather than spotting misuse later.",
       "correct_explanation": "Creating a vendor and approving payments to it are incompatible duties: together they let one person set up a fictitious supplier and pay it. Separating the duties prevents that fraud path at the source. A monthly report of payments to new vendors is a useful detective control, but it finds problems only after money has left and relies on someone acting on the report.",
       "wrong_explanations": {
-        "A": "Stronger authentication confirms who the clerk is. It does not limit what the clerk is authorized to do.",
+        "A": "Job rotation can expose fraud when a successor takes over, but until then one person still holds both incompatible duties.",
         "B": "A monthly management review is still detective. It finds fictitious vendors after payment, while the conflicting access remains in place.",
-        "D": "Encryption protects data confidentiality. It does nothing about one person holding both incompatible duties."
+        "D": "Audit sampling is periodic and detective, and it puts internal audit in the role of operating a control that management should own."
       },
       "tips": [
-        "Eliminate: A strengthens authentication and D protects confidentiality; neither removes the conflicting duties.",
+        "Eliminate: A rotates the person but leaves both duties in one role, and D makes audit sampling stand in for management's control.",
         "Final two: C beats B because separating the duties prevents the fraud, while a manager's monthly review only detects it afterwards.",
         "Exam cue: when one person holds incompatible duties, prefer removing the conflict over adding a later review."
       ],
-      "_provenance": "Authored from concept: 'Access standards canonical principles'. Public sources: ISACA, NIST, ISO/IEC. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Access standards canonical principles'. Public sources: ISACA, NIST, ISO/IEC. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): A (MFA) and D (encrypt vendor file) were off-target; they are now job rotation and an internal audit sample, real fraud controls that leave the conflict in place.",
       "style_version": 2
     },
     {
@@ -442,26 +442,26 @@
       "framework_ref": "NIST SP 800-53 Rev 5 PE-2 (Physical Access Authorizations); ISO/IEC 27002:2022 Control 7.2 (Physical Entry); ISACA IT Audit Standard 1205 (Evidence)",
       "question": "An IS auditor has limited time to test whether data center access is restricted to authorized staff. Which procedure provides the BEST evidence?",
       "options": {
-        "A": "Review the badge system's uptime and vendor reports",
+        "A": "Review the badge system's access-denied log for last month",
         "B": "Observe staff badging in at the entrance for one morning",
-        "C": "Compare the badge access list with current staff and roles",
-        "D": "Inspect the fire marshal's certificate for the building"
+        "C": "Compare the badge access list with current staff records",
+        "D": "Confirm management approved the data center access policy"
       },
       "correct": "C",
       "key_concept": "Strong access evidence comes from comparing the full list of access rights with an authoritative source such as current HR records.",
       "pre_read": "Ask which procedure would catch a former employee whose badge still works but who did not come in that day.",
       "correct_explanation": "Comparing the full badge access list with current staff records and roles tests everyone who can get in, revealing leavers, transfers and unexplained grants. Observation shows how people behave on one morning: it cannot reveal a former employee whose badge still works, or a contractor with access who simply did not visit that day, so it gives weaker evidence.",
       "wrong_explanations": {
-        "A": "Uptime figures and vendor reports show the system is available. They give no evidence about who is allowed in.",
+        "A": "Denied attempts show who was refused, not whether everyone already allowed in should be; excess grants never appear there.",
         "B": "Observation covers a single period and the people who happened to enter. Unauthorized badges that went unused stay hidden.",
-        "D": "A fire certificate relates to life safety and building compliance, not to whether access is limited to authorized staff."
+        "D": "An approved policy shows the intended design. It gives no evidence that actual badge rights match it."
       },
       "tips": [
-        "Eliminate: A measures availability and D concerns fire safety; neither tests who can enter.",
+        "Eliminate: A shows only refused attempts, and D tests the policy's design rather than who actually holds access.",
         "Final two: C beats B because comparing the whole access list with staff records tests every authorized badge, while observation sees one morning.",
         "Exam cue: for who-has-access objectives, testing the access list against an authoritative source beats watching activity."
       ],
-      "_provenance": "Authored from concept: 'Physical access audit scope per ISACA Data Center Audit Program and NIST SP 800-53 PE family'. Public sources: ISACA, NIST, ISO/IEC, ASIS. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Physical access audit scope per ISACA Data Center Audit Program and NIST SP 800-53 PE family'. Public sources: ISACA, NIST, ISO/IEC, ASIS. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): A (uptime) and D (fire certificate) were off-topic; they are now the denied-access log and the approved policy, evidence a hurried auditor might choose.",
       "style_version": 2
     },
     {
@@ -518,7 +518,7 @@
       "framework_ref": "NIST SP 800-53 Rev 5 PE-3 (Physical Access Control); ISO/IEC 27002:2022 Control 7.2 (Physical Entry)",
       "question": "Staff routinely hold the server room door open for colleagues who have not badged in. Which control should the IS auditor recommend as BEST to prevent this tailgating?",
       "options": {
-        "A": "A stricter approval process before issuing new staff badges",
+        "A": "An alarm that sounds if the badge-controlled door is held open",
         "B": "Cameras over the door with recordings kept for ninety days",
         "C": "Annual awareness training telling staff not to hold the door",
         "D": "A mantrap that admits one badged person at a time"
@@ -528,16 +528,16 @@
       "pre_read": "Notice the stem describes a routine habit. Ask which option still works when staff keep being polite.",
       "correct_explanation": "Tailgating here is a habit of courtesy, so the strongest fix removes the opportunity rather than asking people to change. A mantrap physically admits one authenticated person at a time, whatever staff intend. Awareness training is a sensible support, but it depends on busy people remembering to refuse colleagues, and a yearly session fades quickly.",
       "wrong_explanations": {
-        "A": "Badge issuance controls who gets a badge. It does nothing about staff letting unbadged people follow them through.",
+        "A": "A held-door alarm discourages propping the door, but a colleague can still follow someone through within seconds.",
         "B": "Cameras record tailgating after it happens. They do not stop anyone from following staff inside.",
         "C": "Training helps but relies on staff behavior, the very weakness in the stem; it cannot physically stop a follower."
       },
       "tips": [
-        "Eliminate: A tightens badge issuance and B only records events; neither stops someone following staff through.",
+        "Eliminate: A alarms only when the door stays open too long, and B only records events; neither stops a quick follower.",
         "Final two: D beats C because a mantrap enforces one-at-a-time entry, while training depends on the habits that are already failing.",
         "Exam cue: when the problem is routine human behavior, prefer an engineered control that removes the opportunity over asking people to try harder."
       ],
-      "_provenance": "Authored from concept: 'Anti-tailgating per NIST PE-3 and ASIS standards'. Public sources: NIST, ASIS, ISACA, ISO/IEC. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged.",
+      "_provenance": "Authored from concept: 'Anti-tailgating per NIST PE-3 and ASIS standards'. Public sources: NIST, ASIS, ISACA, ISO/IEC. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): A (badge issuance) was unrelated to tailgating; it is now a door-held-open alarm, a common but partial anti-tailgating aid.",
       "style_version": 2
     },
     {
@@ -636,7 +636,7 @@
       "options": {
         "A": "Shut down database and storage servers in an orderly sequence",
         "B": "Begin failing over every workload to the recovery site now",
-        "C": "Send customers a written update on the outage status",
+        "C": "Let the UPS batteries carry the servers once the generator stops",
         "D": "Order a portable generator from an equipment rental firm"
       },
       "correct": "A",
@@ -645,15 +645,15 @@
       "correct_explanation": "When power will drop before any alternative is ready, the priority is protecting the data. An orderly shutdown of database and storage servers completes transactions and writes, so nothing is corrupted when the generator stops. Starting failover is the right recovery step, but it cannot finish in 20 minutes, and a transfer cut off midway risks corrupt or inconsistent data at both sites.",
       "wrong_explanations": {
         "B": "Failover is the recovery plan, but two hours cannot fit into 20 minutes; an interrupted transfer risks inconsistent data at both sites.",
-        "C": "Customer updates matter, but communication does nothing to protect the data before power is lost.",
+        "C": "UPS batteries bridge minutes, not hours; the servers would still lose power abruptly long before a two-hour failover finished.",
         "D": "A rental generator cannot arrive and be connected within 20 minutes, so servers would still lose power abruptly."
       },
       "tips": [
-        "Eliminate: C communicates without protecting anything, and D cannot arrive before the generator stops.",
+        "Eliminate: C relies on batteries designed to bridge minutes, and D cannot arrive before the generator stops.",
         "Final two: A beats B because an orderly shutdown fits the 20-minute window and protects data integrity, while failover cannot finish in time.",
         "Exam cue: when power loss is certain and imminent, protect data integrity first with a controlled shutdown, then recover."
       ],
-      "_provenance": "Authored from concept: 'Sustained outage with multiple compounding stressors'. Public sources: NFPA, TIA, Uptime Institute, ISACA. Scenario specifics invented (regional data center $580M, ice storm, 24-hour fuel reserve, 8-hour delivery, generator warning, HVAC at 85%, tier-3 customers). Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): drift fix: deciding principle is now protecting data integrity, not generator operations. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged.",
+      "_provenance": "Authored from concept: 'Sustained outage with multiple compounding stressors'. Public sources: NFPA, TIA, Uptime Institute, ISACA. Scenario specifics invented (regional data center $580M, ice storm, 24-hour fuel reserve, 8-hour delivery, generator warning, HVAC at 85%, tier-3 customers). Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): drift fix: deciding principle is now protecting data integrity, not generator operations. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): C (customer update) protected nothing; it is now relying on UPS batteries, an operations reflex that fails on UPS knowledge.",
       "style_version": 2
     },
     {
@@ -674,7 +674,7 @@
       "options": {
         "A": "Server room camera footage was reviewed once a month",
         "B": "The employer did not vet the contractor properly",
-        "C": "Visitor logs at reception were kept on paper",
+        "C": "The contractor's badge had no expiry date tied to the contract",
         "D": "Badge rights went beyond the contractor's cleaning role"
       },
       "correct": "D",
@@ -684,14 +684,14 @@
       "wrong_explanations": {
         "A": "Camera review is detective and would only reveal entries after they happened.",
         "B": "Vetting reduces insider risk but does not justify server-room access for a cleaner.",
-        "C": "Paper logs at reception do not control which doors a badge opens."
+        "C": "Expiry limits how long a badge works, not which doors it opens; the contract was active on all four nights."
       },
       "tips": [
-        "Eliminate: B is about the employer's vetting, and C concerns reception logs, not door access.",
+        "Eliminate: B concerns the employer's vetting, and C concerns how long the badge lasts, not which doors it opens.",
         "Final two: D beats A because correct badge rights prevent entry; camera review only detects it later.",
         "Exam cue: physical access follows least privilege too; badges should open only what the role needs."
       ],
-      "_provenance": "Authored from concept: 'Physical security breach by third-party with potential malicious intent'. Public sources: NIST, ISACA, FBI, state AGs. Scenario specifics invented (financial services $1.8B, 7-year cleaning vendor, 3-week worker, 4 nights × 25 minutes, general badge accessing restricted). Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Cross-domain review (Oct 2026): re-angled or clarified to remove duplication/contradiction.",
+      "_provenance": "Authored from concept: 'Physical security breach by third-party with potential malicious intent'. Public sources: NIST, ISACA, FBI, state AGs. Scenario specifics invented (financial services $1.8B, 7-year cleaning vendor, 3-week worker, 4 nights × 25 minutes, general badge accessing restricted). Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Cross-domain review (Oct 2026): re-angled or clarified to remove duplication/contradiction. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): C (paper reception logs) was off-target; it is now a badge-lifecycle gap that does not explain the entries.",
       "style_version": 2
     },
     {
@@ -749,7 +749,7 @@
       "question": "Eight months after an acquisition, the two firms' sites use different badge, visitor and emergency procedures, and no comparison of them exists. What should the IS auditor recommend that management do FIRST?",
       "options": {
         "A": "Apply the acquirer's stricter standards at every site at once",
-        "B": "Assess each site's current controls and risks before setting targets",
+        "B": "Assess each site's current controls before setting a common target",
         "C": "Keep each firm's procedures unchanged to avoid disrupting staff",
         "D": "Let the audit committee choose the target security standard"
       },
@@ -767,7 +767,7 @@
         "Final two: B beats A because a current-state assessment must come first; imposing one standard everywhere skips risk-based prioritization.",
         "Exam cue: before standardizing controls, establish the current state and its risks; sometimes the BEST first step is to assess, not act."
       ],
-      "_provenance": "Authored from concept: 'Post-acquisition physical security harmonization with audit committee timeline pressure'. Public sources: ISACA, NIST, ISO/IEC, ASIS, COBIT. Scenario specifics invented (specialty manufacturer $1.2B, 8 months post-acquisition, mixed badge/biometric/visitor, audit committee in 6 weeks, year-end synergy pressure). Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Post-acquisition physical security harmonization with audit committee timeline pressure'. Public sources: ISACA, NIST, ISO/IEC, ASIS, COBIT. Scenario specifics invented (specialty manufacturer $1.2B, 8 months post-acquisition, mixed badge/biometric/visitor, audit committee in 6 weeks, year-end synergy pressure). Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Cue balance: the key no longer carries the word 'risk'.",
       "style_version": 2
     },
     {
@@ -1087,7 +1087,7 @@
         "A": "Mask the extra fields on screens used by support staff",
         "B": "Collect only the fields needed for a specified, documented purpose",
         "C": "Seek customer consent to keep the extra fields for analytics",
-        "D": "Keep the extra fields for seven years as audit evidence"
+        "D": "Pseudonymize the extra fields before analytics can use them"
       },
       "correct": "B",
       "key_concept": "Data minimization limits collection to what a specified purpose needs; data gathered for an undefined future use should not be collected.",
@@ -1096,14 +1096,14 @@
       "wrong_explanations": {
         "A": "Masking limits who sees the fields on screen, but the firm still collects and stores data it has no defined need for.",
         "C": "Consent must be specific to a defined purpose. A vague future analytics need cannot be meaningfully consented to, and minimization still applies.",
-        "D": "Long retention makes the problem worse. Storage limitation, a sister principle, also requires deleting data once its purpose is served."
+        "D": "Pseudonymized data is still personal data. It lowers exposure, but the firm still collects fields with no defined purpose."
       },
       "tips": [
-        "Eliminate: A only hides the fields on screen, and D keeps unneeded data even longer.",
+        "Eliminate: A masks the fields on screen and D pseudonymizes them, but both still collect data that serves no defined purpose.",
         "Final two: B beats C because minimization asks whether data is needed for a defined purpose; consent cannot cover a purpose that does not yet exist.",
         "Exam cue: 'in case we need it later' is the classic minimization failure; the best answer stops the collection rather than protecting or justifying it."
       ],
-      "_provenance": "Authored from concept: 'Data minimization implementation per GDPR Article 5(1)(c)'. Public sources: GDPR, ISO, NIST, ISACA. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): separated storage limitation from minimization.",
+      "_provenance": "Authored from concept: 'Data minimization implementation per GDPR Article 5(1)(c)'. Public sources: GDPR, ISO, NIST, ISACA. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): separated storage limitation from minimization. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): D (keep seven years as audit evidence) was absurd; it is now pseudonymization, a real privacy technique that still over-collects. Eliminate tip no longer says 'hides'.",
       "style_version": 2
     },
     {
@@ -1123,9 +1123,9 @@
       "question": "An IS auditor finds domain administrators hold permanent standing rights, protected by hardware-token multi-factor authentication. Which recommendation BEST reduces the remaining risk?",
       "options": {
         "A": "Vault administrator passwords and rotate them automatically after each use",
-        "B": "Require administrators to sign the acceptable use policy yearly",
+        "B": "Review weekly logs of how administrators use their rights",
         "C": "Lengthen administrator passwords to at least twenty characters",
-        "D": "Grant administrator rights just in time, with approval and expiry"
+        "D": "Grant administrator rights on approval, for a limited period"
       },
       "correct": "D",
       "key_concept": "Just-in-time elevation removes standing privilege: rights are granted on approval for a limited time, applying least privilege to time as well as scope.",
@@ -1133,15 +1133,15 @@
       "correct_explanation": "Strong authentication already protects the login, so the remaining exposure is that powerful rights exist all the time, even when no administrative work is under way. Just-in-time elevation applies least privilege to time: rights appear only after approval and expire automatically. Vaulting and rotating passwords protects the credential itself, but the accounts still hold permanent rights for anyone who hijacks a session.",
       "wrong_explanations": {
         "A": "Vaulting protects the credential, but the accounts keep permanent domain rights that a hijacked session or an insider can use at any time.",
-        "B": "An annual signature is an administrative reminder. It does not reduce how long powerful rights remain available.",
+        "B": "Weekly log review detects misuse after it happens, and the permanent rights stay available to an attacker or insider between reviews.",
         "C": "Hardware-token authentication already protects the login. Longer passwords add little and leave the rights permanently available."
       },
       "tips": [
-        "Eliminate: B is a paper reminder that changes no rights, and C adds little on top of hardware-token authentication.",
+        "Eliminate: B reviews misuse after the fact while rights stay permanent, and C adds little on top of hardware-token authentication.",
         "Final two: D beats A because removing standing privilege limits misuse at all times, while vaulting only protects the password.",
         "Exam cue: when authentication is already strong, look at how long privilege lasts; least privilege applies to time as well as scope."
       ],
-      "_provenance": "Authored from concept: 'PAM control framework for domain admin and root-equivalent accounts'. Public sources: ISACA, NIST, CIS, ISO. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'PAM control framework for domain admin and root-equivalent accounts'. Public sources: ISACA, NIST, CIS, ISO. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): B (sign the AUP yearly) was a paper reminder nobody picks; it is now weekly log review, a detective control that leaves standing privilege. Key reworded to drop the three-part list cue.",
       "style_version": 2
     },
     {
@@ -1237,7 +1237,7 @@
       "question": "An IS auditor finds 300 service accounts with no named owner, though their passwords are vaulted and rotated every 90 days. What should the auditor recommend FIRST?",
       "options": {
         "A": "Shorten the vault's rotation interval from ninety to thirty days",
-        "B": "Assign an accountable owner who confirms each account is needed",
+        "B": "Name a person who confirms each account is needed",
         "C": "Disable the ownerless accounts now under a CISO-approved emergency change",
         "D": "Convert the service accounts into named interactive user accounts"
       },
@@ -1255,7 +1255,7 @@
         "Final two: B beats C because an owner must confirm purpose before access is removed; approved blind shutdowns still risk outages.",
         "Exam cue: no owner means no one can decide; when assets lack accountability, assigning ownership comes before reviewing or removing them."
       ],
-      "_provenance": "Authored from concept: 'Service-account management framework at scale'. Public sources: NIST, ISACA, CIS, cloud-provider documentation. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Service-account management framework at scale'. Public sources: NIST, ISACA, CIS, cloud-provider documentation. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Cue balance: the key no longer carries 'accountable owner', which echoed the stem's 'no named owner'.",
       "style_version": 2
     },
     {
@@ -1363,11 +1363,11 @@
         "D": "App codes can be typed into a fake page and relayed to the real site at once, so they are not phishing-resistant."
       },
       "tips": [
-        "Eliminate: B relies on interceptable text messages, and D uses app codes that a fake page can capture and relay.",
+        "Eliminate: B relies on text messages that can be intercepted or SIM-swapped, and D uses app codes a phishing proxy can relay in real time.",
         "Final two: C beats A because a hardware key binds to the real site and cannot be relayed, while push approvals can be phished or fatigued.",
         "Exam cue: when the stem names phishing, pick the factor that is cryptographically bound to the site, not just any second step."
       ],
-      "_provenance": "Authored from concept: 'NIST 800-63B AAL levels for privileged-access MFA design'. Public sources: NIST, CISA, FIDO Alliance, ISACA. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. Content review (Oct 2026): glossed FIDO2 and SIM swapping. Content review round 2 (Oct 2026): D is now a phishable MFA factor instead of a single-factor option; C names FIDO2 instead of describing the site binding.",
+      "_provenance": "Authored from concept: 'NIST 800-63B AAL levels for privileged-access MFA design'. Public sources: NIST, CISA, FIDO Alliance, ISACA. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. Content review (Oct 2026): glossed FIDO2 and SIM swapping. Content review round 2 (Oct 2026): D is now a phishable MFA factor instead of a single-factor option; C names FIDO2 instead of describing the site binding. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Eliminate tip names relay knowledge instead of saying 'fake page'.",
       "style_version": 2
     },
     {
@@ -1464,8 +1464,8 @@
       "options": {
         "A": "Rotate the exposed root password through the vault right away",
         "B": "Delete the commit and purge it from the public history",
-        "C": "Notify customers of possible exposure before any technical step",
-        "D": "Start disciplinary action against the engineer who committed it"
+        "C": "Review database logins since the commit to check for misuse",
+        "D": "Limit the database to logins from internal addresses for now"
       },
       "correct": "A",
       "key_concept": "A publicly exposed credential is presumed compromised; immediate rotation is the containment step every later action depends on.",
@@ -1473,15 +1473,15 @@
       "correct_explanation": "A credential published on a public repository must be assumed harvested within minutes, because automated scanners watch for exactly this. Rotating it immediately makes the leaked value useless and contains the exposure; investigation and notification decisions follow. Purging the commit looks like containment, but copies may already exist, and the leaked password still works until it is changed.",
       "wrong_explanations": {
         "B": "Removing the commit hides it from new visitors, but anyone who copied it can still log in until the password changes.",
-        "C": "Notification decisions depend on what the investigation finds. Containing the credential comes first, and customers are notified if data was accessed.",
-        "D": "Disciplinary questions can wait. The live credential is the immediate risk to customer data."
+        "C": "Checking logins matters, but investigating first leaves a working password exposed; rotate, then review what happened since the commit.",
+        "D": "Network limits narrow who can try the password, but it still works from inside; rotation makes every copy useless."
       },
       "tips": [
-        "Eliminate: C notifies before the exposure is contained or scoped, and D addresses blame while the credential still works.",
+        "Eliminate: C investigates while the password still works, and D narrows where the password can be used without invalidating it.",
         "Final two: A beats B because rotation makes the leaked password useless; purging the commit cannot recall copies already taken.",
         "Exam cue: for an exposed secret, invalidate it first; hiding the leak does nothing about copies already harvested."
       ],
-      "_provenance": "Authored from concept: 'Leaked privileged credential immediate containment'. Public sources: NIST, ISACA, CIS, GitGuardian. No legacy bank citation. Note: intentional single-focus surgical-action correct answer breaking the plus-list pattern. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged.",
+      "_provenance": "Authored from concept: 'Leaked privileged credential immediate containment'. Public sources: NIST, ISACA, CIS, GitGuardian. No legacy bank citation. Note: intentional single-focus surgical-action correct answer breaking the plus-list pattern. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): C (notify customers first) and D (discipline the engineer) were strawmen; they are now investigation before containment and a network limit, real partial responses.",
       "style_version": 2
     },
     {
@@ -1500,9 +1500,9 @@
       "question": "After a merger, an IS auditor finds each business unit labels information with its own classification levels, so shared data gets inconsistent protection. Which recommendation is BEST?",
       "options": {
         "A": "Keep each unit's scheme and publish a mapping between them",
-        "B": "Apply the strictest unit's highest label to all shared data",
+        "B": "Apply the strictest unit's highest label to shared data",
         "C": "Adopt one company-wide classification scheme with handling rules",
-        "D": "Have IT decide protection levels for all shared data stores"
+        "D": "Have IT decide protection levels for shared data stores"
       },
       "correct": "C",
       "key_concept": "One approved organization-wide classification scheme, with handling rules per level, gives every unit the same labels and protection.",
@@ -1518,7 +1518,7 @@
         "Final two: C beats A because one scheme gives each label the same meaning everywhere, while a mapping keeps the translation gaps.",
         "Exam cue: classification starts with one approved scheme and handling rules; owners then apply it to their data."
       ],
-      "_provenance": "Authored from concept: 'Post-CJEU EU transfer remediation with material revenue exposure'. Public sources: GDPR, CJEU, EDPB, European Commission. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): attributed the transfer impact assessment duty to Schrems II rather than the GDPR text. Rebalanced (Oct 2026): re-angled from 2A6 Privacy Program and Principles to 5A1.",
+      "_provenance": "Authored from concept: 'Post-CJEU EU transfer remediation with material revenue exposure'. Public sources: GDPR, CJEU, EDPB, European Commission. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): attributed the transfer impact assessment duty to Schrems II rather than the GDPR text. Rebalanced (Oct 2026): re-angled from 2A6 Privacy Program and Principles to 5A1. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Lone absolutes ('all') removed from B and D.",
       "style_version": 2
     },
     {
@@ -1536,26 +1536,26 @@
       "framework_ref": "NIST SP 800-41 Rev 1 (Guidelines on Firewalls and Firewall Policy); NIST SP 800-53 Rev 5 SC-7 (Boundary Protection); ISO/IEC 27002:2022 Control 8.22 (Segregation of Networks)",
       "question": "An IS auditor finds a public-facing web server sits on the same internal network segment as the customer database. Which recommendation BEST reduces the risk?",
       "options": {
-        "A": "Back up the web server more often to speed up recovery",
-        "B": "Move the web server into a screened subnet with filtered access",
+        "A": "Add host-based intrusion detection to the web server",
+        "B": "Place the web server in a filtered screened subnet",
         "C": "Harden the web server's configuration to a secure baseline",
-        "D": "Encrypt the database backups kept on the shared segment"
+        "D": "Require multi-factor login for the web server's administrators"
       },
       "correct": "B",
       "key_concept": "Internet-facing systems belong in a screened subnet, with only filtered connections to internal zones holding sensitive data.",
       "pre_read": "Notice which system faces the internet and what sits beside it. Ask what an attacker could reach after compromising it.",
       "correct_explanation": "A public web server is the system most exposed to attack, so the design must assume it may be breached. Placing it in a screened subnet, often called a DMZ, with only specific filtered connections to the database zone limits what an attacker can reach from it. Hardening the server lowers the chance of compromise, but if it is still breached, nothing stands between the attacker and customer data.",
       "wrong_explanations": {
-        "A": "More frequent backups help recovery after an incident. They do nothing to stop an attacker reaching the database from a breached web server.",
+        "A": "Intrusion detection may spot an attack, but a breached server on the flat segment still has a direct path to the database.",
         "C": "Hardening lowers the likelihood of compromise, but a breached server on a flat segment still has an open path to the customer database.",
-        "D": "Encrypting backups protects copies at rest, not the live database that a compromised web server could reach."
+        "D": "Stronger admin login protects one route in, but the web application itself is the exposed target, and the flat segment remains."
       },
       "tips": [
-        "Eliminate: A aids recovery rather than protection, and D covers backups rather than the live database.",
+        "Eliminate: A detects an attack without limiting where it can go, and D protects administrator logins rather than the exposed application.",
         "Final two: B beats C because zoning limits what a breached server can reach; hardening only lowers the odds of the breach itself.",
         "Exam cue: assume exposed systems will be breached; separate them from sensitive data instead of relying only on making them harder to break into."
       ],
-      "_provenance": "Authored from concept: 'Canonical network security zoning per NIST 800-41 and ISO 27033'. Public sources: NIST, ISO, ISACA. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Canonical network security zoning per NIST 800-41 and ISO 27033'. Public sources: NIST, ISO, ISACA. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): A (more backups) and D (encrypt backups) were off-target; they are now host intrusion detection and admin MFA, real controls that leave the flat segment.",
       "style_version": 2
     },
     {
@@ -1608,7 +1608,7 @@
         "Data classification"
       ],
       "framework_ref": "ISO/IEC 27002:2022 Control 8.12 (Data Leakage Prevention); NIST SP 800-53 Rev 5 MP-7 (Media Use); CIS Controls v8 Control 3 (Data Protection)",
-      "question": "A data owner is concerned that staff copy confidential client files to USB drives on laptops used away from the corporate network. Which control BEST addresses this?",
+      "question": "A data owner is concerned that staff copy confidential client files to USB drives on laptops used away from the corporate network. Which control should the IS auditor recommend as BEST?",
       "options": {
         "A": "Endpoint data loss prevention enforcing policy on each device",
         "B": "Network data loss prevention inspecting traffic at the internet gateway",
@@ -1629,7 +1629,7 @@
         "Final two: A beats B because the copying happens on the device, often off-network, where gateway inspection never sees it.",
         "Exam cue: match the data loss prevention type to the leak channel; endpoint for local devices, network for traffic, discovery for stored data."
       ],
-      "_provenance": "Authored from concept: 'DLP canonical control types taxonomy'. Public sources: ISACA, Gartner, NIST, ISO. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'DLP canonical control types taxonomy'. Public sources: ISACA, Gartner, NIST, ISO. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Stem now names the IS auditor as the actor.",
       "style_version": 2
     },
     {
@@ -1686,26 +1686,26 @@
       "framework_ref": "NIST SP 800-207 (Zero Trust Architecture); CIS Controls v8 Control 12 (Network Infrastructure Management); NIST SP 800-53 Rev 5 CM-3 (Configuration Change Control)",
       "question": "After microsegmentation went live, developers began adding allow-any rules without approval to fix outages. Which recommendation should the IS auditor make to BEST address this?",
       "options": {
-        "A": "Remove microsegmentation from the tiers affected by outages",
-        "B": "Route segmentation rule changes through approved change management",
+        "A": "Let developers add rules and review the changes each month",
+        "B": "Put segmentation rule changes under formal change management",
         "C": "Retrain developers on the purpose of the segmentation policy",
-        "D": "Add more firewall capacity at the perimeter to handle extra traffic"
+        "D": "Alert the security team whenever an allow-any rule is added"
       },
       "correct": "B",
       "key_concept": "Segmentation rules need change control; unapproved allow-any rules quietly undo microsegmentation's protection against lateral movement.",
       "pre_read": "Notice the problem is how rules are changed, not the design. Ask which option stops bad rules before they go in.",
       "correct_explanation": "The design is sound; the weakness is that anyone can loosen it under pressure without review. Routing rule changes through change management, with security approval and an emergency path, stops allow-any rules going in while still letting teams fix genuine outages. Retraining raises awareness, but during an outage developers will still take the quickest fix if nothing requires approval.",
       "wrong_explanations": {
-        "A": "Removing segmentation abandons the control to solve a process problem and reopens movement between workloads.",
+        "A": "Monthly review finds bad rules weeks later; an allow-any rule opens lateral movement from the moment it is added.",
         "C": "Awareness helps, but under outage pressure people take the fastest route. Without an approval gate, nothing stops the next allow-any rule.",
-        "D": "Perimeter capacity concerns traffic volume at the edge. It has nothing to do with unapproved internal rule changes."
+        "D": "An alert fires once the rule is live. Nothing stops it going in, and security must chase each one afterward."
       },
       "tips": [
-        "Eliminate: A abandons the control, and D adds edge capacity unrelated to internal rule changes.",
+        "Eliminate: A and D both find bad rules after they are live, which detects the change rather than preventing it.",
         "Final two: B beats C because an approval gate holds under pressure, while training relies on developers choosing to comply.",
         "Exam cue: when a sound control is weakened by unapproved changes, enforce the change process; awareness alone will not hold under pressure."
       ],
-      "_provenance": "Authored from concept: 'Microsegmentation design framework per NIST 800-207'. Public sources: NIST, CIS, ISACA, ISO. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Microsegmentation design framework per NIST 800-207'. Public sources: NIST, CIS, ISACA, ISO. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): A (remove microsegmentation) and D (perimeter capacity) were strawmen; they are now monthly review and an alert, both detective. Key no longer echoes 'approval'.",
       "style_version": 2
     },
     {
@@ -1723,7 +1723,7 @@
       "framework_ref": "IEEE 802.1X (Port-Based Network Access Control); NIST SP 800-207 (Zero Trust Architecture); NIST SP 800-53 Rev 5 IA-3 (Device Identification and Authentication)",
       "question": "An IS auditor finds network access control admits personal devices to the corporate network as soon as the user's credentials are accepted. Which recommendation BEST reduces the risk?",
       "options": {
-        "A": "Send users monthly reminders to keep their personal devices patched",
+        "A": "Have users confirm on a sign-in page that devices are patched",
         "B": "Increase the password length required for network sign-in",
         "C": "Register each device's hardware address before granting access",
         "D": "Check device health and quarantine devices that fail the check"
@@ -1733,16 +1733,16 @@
       "pre_read": "Notice what the control checks and what it ignores. Ask which option tests the device rather than the user.",
       "correct_explanation": "The control checks who the user is but not the state of the device, so an unpatched or infected personal laptop joins the network freely. Posture assessment checks patch level, protection and encryption before access, and places failing devices in a restricted quarantine network. Registering hardware addresses identifies known devices, but addresses are easy to spoof and say nothing about whether a device is healthy.",
       "wrong_explanations": {
-        "A": "Reminders rely on users acting and give no enforcement. Unhealthy devices would still be admitted.",
+        "A": "Self-attestation records a promise, not a fact; an infected or unpatched device is admitted as soon as the user ticks the box.",
         "B": "Credentials are already being checked. Longer passwords do not reveal whether the device itself is compromised or unpatched.",
         "C": "Address registration identifies known devices, but addresses can be spoofed and registration says nothing about patch level or malware."
       },
       "tips": [
-        "Eliminate: A relies on users acting voluntarily, and B strengthens a credential check that already exists.",
+        "Eliminate: A accepts the user's word instead of testing the device, and B strengthens a credential check that already exists.",
         "Final two: D beats C because posture checks test whether a device is safe, while address registration only identifies it, and weakly.",
         "Exam cue: for personal devices, knowing who the user is is not enough; the answer checks the device's condition before access."
       ],
-      "_provenance": "Authored from concept: 'NAC canonical control capabilities'. Public sources: ISACA, NIST, IEEE. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'NAC canonical control capabilities'. Public sources: ISACA, NIST, IEEE. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): A (monthly reminders) was a throwaway; it is now a self-attestation page, a real shortcut that verifies nothing.",
       "style_version": 2
     },
     {
@@ -1913,7 +1913,7 @@
         "A": "Change the rule so it alerts without blocking any outbound email",
         "B": "Disable the rule until the business owner approves a replacement",
         "C": "Allow approved senders and channels while still blocking others",
-        "D": "Train staff to remove account numbers from customer statements"
+        "D": "Raise the rule's match threshold so fewer emails trigger it"
       },
       "correct": "C",
       "key_concept": "Effective data loss prevention combines content detection with context, such as sender, recipient and channel, so legitimate flows pass and leaks are blocked.",
@@ -1922,14 +1922,14 @@
       "wrong_explanations": {
         "A": "Alert-only mode ends the false blocking but also lets real leaks out, leaving only after-the-fact alerts for every email.",
         "B": "Disabling the rule removes all protection while a replacement awaits approval, so real leaks go unblocked in the meantime.",
-        "D": "Customers need their account numbers on statements. Changing a legitimate business process to suit a poorly tuned rule is backwards."
+        "D": "A higher threshold cuts false blocks by also missing smaller real leaks; it weakens detection everywhere instead of adding context."
       },
       "tips": [
-        "Eliminate: B removes protection entirely while awaiting approval, and D changes legitimate business to suit a poorly tuned rule.",
+        "Eliminate: B removes protection while awaiting approval, and D lowers sensitivity for every email, letting smaller real leaks through.",
         "Final two: C beats A because context keeps blocking genuine leaks while releasing approved mail; alert-only gives up prevention everywhere.",
         "Exam cue: when a preventive control blocks legitimate traffic from a known source, add context such as sender or channel instead of weakening the whole control."
       ],
-      "_provenance": "Authored from concept: 'DLP canonical policy framework with content + context + identity'. Public sources: ISACA, Gartner, ISO, NIST. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): stem now states the precise fix is available; shared monitor-mode exam cue with d5_097 and d5_139. Final polish (Oct 2026). Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged.",
+      "_provenance": "Authored from concept: 'DLP canonical policy framework with content + context + identity'. Public sources: ISACA, Gartner, ISO, NIST. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): stem now states the precise fix is available; shared monitor-mode exam cue with d5_097 and d5_139. Final polish (Oct 2026). Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): D (train staff to remove account numbers) was absurd; it is now a threshold change, a common tuning error.",
       "style_version": 2
     },
     {
@@ -1950,24 +1950,24 @@
       "options": {
         "A": "Enable blocking next month as planned and refine rules afterward",
         "B": "Have data owners classify sensitive data before blocking is enforced",
-        "C": "Buy a second data loss prevention tool to compare detection rates",
+        "C": "Run a discovery scan and block whatever sensitive data it finds",
         "D": "Ask IT to decide which data each department may share externally"
       },
       "correct": "B",
       "key_concept": "Data discovery and owner-led classification are prerequisites for data loss prevention enforcement; rules cannot protect data nobody has identified.",
       "pre_read": "Notice what the firm has never done. Ask what blocking rules need before they can work.",
-      "correct_explanation": "Blocking rules can only protect data the firm can recognize. Without discovery and classification, rules either miss sensitive data or block normal work. Data owners, who understand the business value, should classify the data first so enforcement targets the right content. Going live as planned feels decisive, but enforcing blind rules invites disruption and hasty exceptions that hollow out the control.",
+      "correct_explanation": "Blocking rules can only protect data the firm can recognize. Data owners, who understand its value and legitimate sharing, should classify sensitive data first so enforcement targets the right content. A discovery scan is a useful input, but it only locates candidate data; blocking on its raw results stops normal work and misses context only owners can supply.",
       "wrong_explanations": {
         "A": "Enforcing before the data is known produces missed leaks and false blocks, and the resulting exceptions weaken the control from the start.",
-        "C": "A second tool faces the same problem: neither can protect data the firm has not located or classified.",
+        "C": "Discovery locates candidate data, but a scan cannot judge business value or legitimate sharing; owners must classify before rules block work.",
         "D": "IT can implement handling rules, but the data owner decides classification and sharing because they understand the information's value."
       },
       "tips": [
-        "Eliminate: C adds a tool without solving the unknown data, and D gives the classification decision to IT instead of the data owner.",
-        "Final two: B beats A because enforcement needs classified data to target; switching on blind rules causes missed leaks and false blocks.",
+        "Eliminate: A enforces before the data is known, and D gives the classification decision to IT instead of the data owner.",
+        "Final two: B beats C because a scan only locates data; owners must classify it before blocking can target the right content.",
         "Exam cue: delaying a control is right when its prerequisite is missing; know and classify the data before enforcing protection."
       ],
-      "_provenance": "Authored from concept: 'Discovery and classification framework as DLP prerequisite'. Public sources: ISACA, ISO, NIST, vendor documentation. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged.",
+      "_provenance": "Authored from concept: 'Discovery and classification framework as DLP prerequisite'. Public sources: ISACA, ISO, NIST, vendor documentation. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): C (second DLP tool) was a throwaway and the key alone answered the stem's gap; C is now a discovery scan with blocking, a partial remedy decided by the data-owner role.",
       "style_version": 2
     },
     {
@@ -2020,10 +2020,10 @@
         "Conditional Access"
       ],
       "framework_ref": "NIST SP 800-162 (Guide to Attribute-Based Access Control Definition and Considerations); OASIS XACML 3.0 (eXtensible Access Control Markup Language); ISO/IEC 27002:2022 Control 5.15 (Access Control)",
-      "question": "A data owner wants access to customer records to change automatically when an employee transfers departments or uses an unmanaged device. Which access control design BEST meets this need?",
+      "question": "A data owner wants access to customer records to change automatically when an employee transfers departments or uses an unmanaged device. Which access control design should the IS auditor recommend as BEST?",
       "options": {
         "A": "Assign each employee a fixed role at hiring and review it yearly",
-        "B": "Evaluate user, record and device attributes at every access request",
+        "B": "Evaluate current user and device attributes at each request",
         "C": "Let each record's creator grant access to colleagues as needed",
         "D": "Copy each employee's department and device details at provisioning"
       },
@@ -2041,7 +2041,7 @@
         "Final two: B beats D because attributes must be checked at each request; a provisioning snapshot goes stale.",
         "Exam cue: when access must follow changing conditions, look for evaluation at request time, not a value captured once."
       ],
-      "_provenance": "Authored from concept: 'ABAC canonical framework per NIST SP 800-162'. Public sources: NIST, OASIS, ISACA, ISO. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'ABAC canonical framework per NIST SP 800-162'. Public sources: NIST, OASIS, ISACA, ISO. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Stem now names the IS auditor; key reworded to drop the three-part list cue.",
       "style_version": 2
     },
     {
@@ -2173,9 +2173,9 @@
       "framework_ref": "GDPR Article 88 (Processing in the context of employment); GDPR Article 35 (Data Protection Impact Assessment); China PIPL (Personal Information Protection Law)",
       "question": "Data loss prevention monitoring of employee email is planned in 28 countries, including EU states where employee monitoring is restricted by law and works councils. What should the IS auditor recommend FIRST?",
       "options": {
-        "A": "Apply the head-office monitoring policy everywhere and handle complaints later",
+        "A": "Apply the head-office policy everywhere, citing consent in employment contracts",
         "B": "Agree a global baseline with local legal and privacy overlays",
-        "C": "Switch monitoring off in every country with strict privacy laws",
+        "C": "Monitor email metadata in EU states and full content elsewhere",
         "D": "Pilot the full monitoring policy in the largest EU subsidiary"
       },
       "correct": "B",
@@ -2183,16 +2183,16 @@
       "pre_read": "Notice that monitoring rules differ by country. Ask what must be settled before any employee in the EU is monitored.",
       "correct_explanation": "Employee monitoring in the EU needs a lawful basis, proportionality and, in many states, works council consultation before it starts. A global baseline with local legal and privacy overlays sets that policy first and still protects data everywhere. A pilot sounds cautious, but it monitors real EU employees before the legal review and consultation are done, so it breaches the same rules on a smaller scale.",
       "wrong_explanations": {
-        "A": "One head-office policy ignores local employment and privacy law and invites regulatory action and works council challenges.",
-        "C": "Disabling monitoring in strict countries leaves sensitive data unprotected where controls are still lawful with the right design.",
+        "A": "Employee consent is rarely valid under GDPR because of the power imbalance, so a contract clause gives no lawful basis for monitoring.",
+        "C": "Metadata is still personal data. Choosing a lighter scope without legal assessment or works council consultation still lacks a lawful basis.",
         "D": "A pilot still monitors EU employees before legal review and works council consultation; a small scale does not cure that."
       },
       "tips": [
-        "Eliminate: A ignores local law entirely, and C abandons protection instead of designing it lawfully.",
+        "Eliminate: A relies on employee consent, which GDPR rarely accepts at work, and C picks a monitoring scope before any legal assessment.",
         "Final two: B beats D because policy and legal basis come before any live monitoring, even a pilot.",
         "Exam cue: policy and legal clearance come before technology, and a pilot is still live use of the technology."
       ],
-      "_provenance": "Authored from concept: 'Multi-jurisdiction DLP design balancing consistency with local compliance'. Public sources: ISACA, GDPR, IAPP, jurisdiction-specific laws. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged.",
+      "_provenance": "Authored from concept: 'Multi-jurisdiction DLP design balancing consistency with local compliance'. Public sources: ISACA, GDPR, IAPP, jurisdiction-specific laws. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): A (handle complaints later) and C (switch off everywhere strict) were strawmen; they are now employee consent and metadata-only monitoring, real practitioner shortcuts.",
       "style_version": 2
     },
     {
@@ -2213,7 +2213,7 @@
       "options": {
         "A": "Map both networks and confirm where cardholder data flows",
         "B": "Extend the acquired firm's segmentation design to every store",
-        "C": "Connect both networks fully so integration can start sooner",
+        "C": "Segment the merged network by store region to contain incidents",
         "D": "Flatten the acquired stores to match the acquirer's design"
       },
       "correct": "A",
@@ -2222,15 +2222,15 @@
       "correct_explanation": "Segmentation can only be designed, and PCI DSS scope confirmed, once management knows what is on each network and where cardholder data travels. Mapping both networks comes first. Extending the acquired firm's segmentation is probably the right target, but applying it before the data flows are known risks wrong zone boundaries and missed card systems.",
       "wrong_explanations": {
         "B": "Segmentation is a sound target, but designing zones before mapping data flows risks wrong boundaries and missed cardholder systems.",
-        "C": "Joining the networks fully exposes the segmented stores to the flat network and widens PCI DSS scope across everything.",
+        "C": "Regional segments limit spread between areas, but card systems stay mixed with everything else in each region, so PCI DSS scope stays wide.",
         "D": "Flattening removes the stronger segmentation and puts every system in the card environment's reach."
       },
       "tips": [
-        "Eliminate: C and D both remove segmentation and widen exposure of payment-card traffic.",
+        "Eliminate: C draws zones by geography rather than cardholder data, and D removes the acquired firm's segmentation.",
         "Final two: A beats B because zones can only be drawn once you know where cardholder data flows.",
         "Exam cue: in mergers, understand the combined environment first; a good design applied blind is still a guess."
       ],
-      "_provenance": "Authored from concept: 'Post-merger network segmentation harmonization with PCI scope'. Public sources: ISACA, NIST, PCI Council, ISO. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged.",
+      "_provenance": "Authored from concept: 'Post-merger network segmentation harmonization with PCI scope'. Public sources: ISACA, NIST, PCI Council, ISO. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): C (connect fully to start sooner) was a strawman; it is now regional segmentation, which is not drawn around cardholder data.",
       "style_version": 2
     },
     {
@@ -2250,7 +2250,7 @@
       "question": "A data loss prevention alert shows a resigning manager, still logged in, uploading client files to personal cloud storage right now. Which action would the IS auditor consider MOST appropriate for management to take FIRST?",
       "options": {
         "A": "Convene HR and legal to agree the response before acting",
-        "B": "Confront the manager at their desk to ask for an explanation",
+        "B": "Block the personal cloud domain at the web proxy",
         "C": "Notify the affected clients that their data may be exposed",
         "D": "Disable the manager's accounts and end all active sessions"
       },
@@ -2260,15 +2260,15 @@
       "correct_explanation": "Client files are leaving at this moment, and every minute adds more. Disabling the accounts and ending active sessions stops the transfer within seconds and does not destroy evidence on the device. Involving HR and legal is important for the interview and any dismissal, but waiting for agreement lets the upload continue; they join immediately after access is cut.",
       "wrong_explanations": {
         "A": "HR and legal must be involved, but meeting before acting lets the upload continue. Contain first, then coordinate.",
-        "B": "Confronting the manager before cutting access warns them, may speed up the transfer, and risks evidence being deleted.",
+        "B": "Blocking one domain stops this route, but the manager stays logged in and can switch to email, USB or another cloud service.",
         "C": "Client notification comes after the exposure is stopped and scoped. Notifying first leaves the transfer running."
       },
       "tips": [
-        "Eliminate: B tips off the insider, and C notifies clients before the leak is even stopped.",
+        "Eliminate: B blocks one destination while the account stays active, and C notifies clients before the leak is even stopped.",
         "Final two: D beats A because the transfer is live; HR and legal join right after access is revoked.",
         "Exam cue: when data is leaving right now and the user is known, cutting access is the first step."
       ],
-      "_provenance": "Authored from concept: 'Insider threat active exfiltration immediate containment'. Public sources: ISACA, NIST, SEC, FINRA, CERT. No legacy bank citation. Note: intentional single-focus surgical-action correct answer. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. Second wording pass (Oct 2026): wording fixes from the blind re-test; key and options unchanged. Third pass (ISACA reviewer, Oct 2026): live-incident and legal/forensic stems reframed; key and options unchanged.",
+      "_provenance": "Authored from concept: 'Insider threat active exfiltration immediate containment'. Public sources: ISACA, NIST, SEC, FINRA, CERT. No legacy bank citation. Note: intentional single-focus surgical-action correct answer. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. Second wording pass (Oct 2026): wording fixes from the blind re-test; key and options unchanged. Third pass (ISACA reviewer, Oct 2026): live-incident and legal/forensic stems reframed; key and options unchanged. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): B (confront at desk) was a throwaway; it is now blocking the cloud domain, real but partial containment.",
       "style_version": 2
     },
     {
