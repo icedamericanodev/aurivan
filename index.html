@@ -5013,7 +5013,7 @@ body[data-tab]:not([data-tab="about"]):not([data-tab="faq"]) .legal-disclaimer {
   font: inherit; color: var(--accent-text); text-decoration: underline; text-underline-offset: 3px;
 }
 /* A taller tap area that takes no room in the layout. */
-.td-setdate { display: inline-block; padding: 12px 4px; margin: -12px -4px; }
+.td-setdate { display: inline-block; padding: 14px 4px; margin: -14px -4px; }
 .td-setdate:hover { color: var(--text); }
 .td-setdate:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; border-radius: 4px; }
 @media (min-width: 1024px) { .td-count { display: none; } }
@@ -5023,6 +5023,7 @@ body[data-tab]:not([data-tab="about"]):not([data-tab="faq"]) .legal-disclaimer {
 .td-hero-t, .td-hero-m { max-width: min(520px, calc(100% - 110px)); }
 .td-hero-acts { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-sm) var(--sp-lg); margin-top: var(--sp-xl); }
 .td-go { padding: 0 var(--sp-xxl); }
+.td-hero-q { margin: 0; font: var(--t-meta); color: var(--on-forest2); }
 /* Today's plan (v12.33): the items in order, on the forest */
 .td-plan { list-style: none; margin: var(--sp-md) 0 0; padding: 0; max-width: min(520px, calc(100% - 110px)); }
 .td-plan li { display: flex; align-items: baseline; gap: var(--sp-md); padding: var(--sp-xs) 0; }
@@ -5038,9 +5039,89 @@ body[data-tab]:not([data-tab="about"]):not([data-tab="faq"]) .legal-disclaimer {
 .rs-tm-cap { margin: 0; font: var(--t-caption); color: var(--accent-text); }
 .rs-tm-t { margin: var(--sp-sm) 0 0; font: var(--t-body); color: var(--text); }
 .rs-one { margin-top: var(--sp-sm); }
-/* Readiness plate (L1: tonal, never tapped) */
-.td-plate { margin-top: 32px; background: var(--raised2); border-radius: var(--r-lg); padding: var(--sp-xxl); }
+/* The right column: one L1 plate (tonal, never tapped as a whole) with the
+   readiness, the week and the plant; --td-paper is what a leaf's vein cuts to. */
+.td-side { margin-top: var(--sp-section); }
+.td-plate { --td-paper: var(--raised2); background: var(--raised2); border-radius: var(--r-lg); padding: var(--sp-xxl); }
 .td-fig { display: flex; flex-direction: column; align-items: center; gap: var(--sp-md); text-align: center; }
+.td-fig-text .td-est { margin-top: var(--sp-xs); }
+.td-ready-more > :first-child { margin-top: var(--sp-xl); }
+.td-gain { margin: var(--sp-xl) 0 0; font: var(--t-small); color: var(--text2); }
+.td-gain-d { font: var(--t-label); color: var(--text); }
+.td-how { margin-top: var(--sp-sm); }
+.td-how-s {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--sp-sm); min-height: 48px;
+  list-style: none; cursor: pointer; font: var(--t-label); color: var(--text); border-radius: var(--r-sm);
+}
+.td-how-s::-webkit-details-marker { display: none; }
+.td-how-s .ico { flex-shrink: 0; color: var(--muted); }
+.td-how[open] > .td-how-s .ico { transform: rotate(180deg); }
+.td-how > .td-note:nth-child(2) { margin-top: var(--sp-xs); }
+.td-link {
+  display: inline-flex; align-items: center; gap: var(--sp-xs); min-height: 48px;
+  font: var(--t-label); color: var(--accent-text); text-decoration: none; border-radius: var(--r-sm);
+}
+.td-link:hover { text-decoration: underline; text-underline-offset: 3px; }
+.td-link .ico { flex-shrink: 0; }
+.td-how-s:focus-visible, .td-link:focus-visible, .td-mind-opt:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+/* Exam week and exam day: readiness in words only */
+.td-words { margin: 0; font: var(--t-headline); color: var(--text); }
+/* This week: seven leaves, Mon to Sun (filled = studied, an outline otherwise) */
+.td-week { margin-top: var(--sp-xl); padding-top: var(--sp-md); border-top: 1px solid var(--border); }
+.td-week-h { margin: 0; font: var(--t-caption); color: var(--text2); }
+.td-week-row { display: flex; justify-content: space-between; gap: var(--sp-xs); max-width: 400px; margin-top: var(--sp-sm); }
+.td-wd { flex: 1 1 0; max-width: 48px; display: flex; flex-direction: column; align-items: center; gap: var(--sp-xs); padding: var(--sp-xs) 0; border-radius: var(--r-md); }
+.td-wd.today { box-shadow: inset 0 0 0 2px var(--text); }
+.td-wd-n { font: var(--t-caption); color: var(--text2); }
+.td-wd.today .td-wd-n { color: var(--text); }
+.td-leaf { display: block; flex-shrink: 0; }
+.td-leaf-b { fill: none; stroke: var(--control); stroke-width: 1.5; }
+.td-leaf-v { fill: none; stroke: var(--control); stroke-width: 1.3; stroke-linecap: round; }
+.td-leaf.on .td-leaf-b { fill: var(--accent); stroke: var(--accent); }
+.td-leaf.on .td-leaf-v { stroke: var(--td-paper, var(--bg)); }
+.td-wd.today .td-leaf.off .td-leaf-b { stroke: var(--text); stroke-width: 2; }
+.td-wkline .td-leaf { width: 20px; height: 20px; }
+/* Below 1180px, one visual per visit: the rings or the week, by the day */
+@media (max-width: 1179px) {
+  .td-vis-week .td-rings { display: none; }
+  .td-vis-rings .td-week { display: none; }
+}
+/* The Mindset check: one compact row that opens one question in place */
+.td-mind-slot:empty { display: none; }
+.td-mind { margin-top: var(--sp-section); }
+.td-mind-open { margin-top: var(--sp-xs); }
+.td-mind-m { font: var(--t-meta); color: var(--text2); }
+.td-mind-open[aria-expanded="true"] .td-mind-chev .ico { transform: rotate(180deg); }
+.td-mind-body { padding: var(--sp-lg) 0 var(--sp-xs); }
+.td-mind-body[hidden] { display: none; }
+.td-mind-q { margin: 0; font: var(--t-stem); color: var(--text); max-width: 60ch; }
+.td-mind-fs { min-width: 0; margin: var(--sp-lg) 0 0; padding: 0; border: 0; display: flex; flex-direction: column; gap: var(--sp-md); }
+.td-mind-lg { margin: 0 0 var(--sp-md); padding: 0; font: var(--t-caption); color: var(--text2); }
+.td-mind-opt {
+  display: flex; flex-direction: column; align-items: flex-start; gap: var(--sp-xs); width: 100%; min-height: 56px;
+  padding: var(--sp-md) var(--sp-lg); background: none; border: 1.5px solid var(--control); border-radius: var(--r-md);
+  cursor: pointer; text-align: left; font: var(--t-body); color: var(--text);
+}
+.td-mind-opt:hover { background: var(--surface2); }
+.td-mind-opt[aria-pressed="true"] { border: 2px solid var(--text); padding: calc(var(--sp-md) - .5px) calc(var(--sp-lg) - .5px); }
+.td-mind-opt.is-key, .td-mind-opt.is-key:hover { background: var(--correct-light); border-color: transparent; }
+.td-mind-opt.is-key[aria-pressed="true"] { border-color: var(--text); }
+.td-mind-tag { display: inline-flex; align-items: center; gap: var(--sp-xs); font: var(--t-caption); color: var(--text); }
+.td-mind-tag:empty { display: none; }
+.td-mind-hint { margin: var(--sp-md) 0 0; font: var(--t-meta); color: var(--text2); }
+.td-mind-hint:has(+ .td-mind-v.ok), .td-mind-hint:has(+ .td-mind-v.no) { display: none; }
+.td-mind-v.ok, .td-mind-v.no { margin-top: var(--sp-md); padding: var(--sp-lg) var(--sp-lg) var(--sp-xs); border-radius: var(--r-md); }
+.td-mind-v.ok { background: var(--correct-light); }
+.td-mind-v.no { background: var(--surface2); }
+.td-mind-vt { margin: 0; font: var(--t-small); color: var(--text); }
+.td-mind-vt strong { font-weight: 600; }
+/* Read-only principle (exam week's "One idea for exam day"): the coach's voice */
+.td-idea-b { margin-top: var(--sp-md); padding-left: var(--sp-lg); border-left: 3px solid var(--accent); }
+.td-idea-t { margin: 0; font: var(--t-label); color: var(--text); }
+.td-idea-q { margin: var(--sp-xs) 0 0; font: var(--t-quote); color: var(--text); max-width: 60ch; }
+.td-idea .td-link { margin-top: var(--sp-xs); }
+/* Phones: every Today control is at least 48px tall */
+.td .gt-btn-ghost, .td .plnt-ghost { min-height: 48px; }
 .td-rings { display: block; max-width: 100%; height: auto; }
 .td-big { font: var(--t-number); letter-spacing: var(--tr-number); color: var(--text); margin: 0; white-space: nowrap; }
 .td-big sup { font-size: .48em; line-height: 0; vertical-align: .8em; margin-left: 0; letter-spacing: 0; }
@@ -5060,23 +5141,22 @@ body[data-tab]:not([data-tab="about"]):not([data-tab="faq"]) .legal-disclaimer {
 .td-kicker { font: var(--t-caption); color: var(--accent-text); }
 .td-apps { font: var(--t-meta); color: var(--text2); margin: var(--sp-xl) 0 0; }
 .td-legal { font: var(--t-meta); color: var(--text2); margin: var(--sp-section) 0 0; }
-/* Single column with room: the rings beside their legend */
+/* Single column with room: the rings (or the figure) beside their legend */
 @media (min-width: 560px) and (max-width: 1179px) {
-  .td-plate { display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: var(--sp-section); align-items: center; }
-  .td-plate .td-legend { margin-top: 0; }
+  .td-ready:not(.td-ready-quiet):not(.td-ready-words) { display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: var(--sp-section); align-items: center; }
+  .td-ready-more > :first-child { margin-top: 0; }
 }
+/* Two columns: the plan on the left, a glanceable 320px column on the right */
 @media (min-width: 1180px) {
-  .td { max-width: none; display: grid; grid-template-columns: minmax(0, 1fr) 320px; grid-template-rows: auto auto 1fr; column-gap: var(--sp-xxxl); align-items: start; }
-  .td-head, .td-hero, .td-next, .td-apps { grid-column: 1; }
+  .td { max-width: none; display: grid; grid-template-columns: minmax(0, 1fr) 320px; column-gap: var(--sp-xxxl); align-items: start; }
+  .td-main { grid-column: 1; grid-row: 1; min-width: 0; }
+  .td-side { grid-column: 2; grid-row: 1; margin-top: 0; }
+  .td-apps { grid-column: 1; }
   .td-legal { grid-column: 1 / -1; }
-  .td-plate { grid-column: 2; grid-row: 1 / span 3; margin-top: 0; }
-  .td-side { grid-column: 2; grid-row: 1 / span 3; }
-  .td-side > .td-plate { grid-column: auto; grid-row: auto; }
+  .td-side .td-rings { width: 144px; }
 }
 @media (min-width: 1180px) and (min-height: 720px) {
-  .td-plate { position: sticky; top: 40px; }
   .td-side { position: sticky; top: 40px; }
-  .td-side > .td-plate { position: static; }
 }
 /* The rings draw in once a day, outer ring first (DESIGN_SYSTEM §10.1); still under reduced motion. */
 @keyframes tdArc { from { stroke-dashoffset: 1; opacity: 0; } 4% { opacity: 1; } to { stroke-dashoffset: 0; opacity: 1; } }
@@ -6251,11 +6331,9 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 .you-stats .stat-num.stat-word { font: 500 20px/26px var(--f-serif); letter-spacing: 0; }
 
 /* Today: before the first readiness range, one quiet line instead of the empty rings. */
-.td-plate.td-plate-quiet { background: none; padding: 0; }
+.td-plate.td-plate-quiet { --td-paper: var(--bg); background: none; padding: 0; }
 .td-wait { margin: 0; font: var(--t-meta); color: var(--text2); }
-@media (min-width: 560px) and (max-width: 1179px) {
-  .td-plate.td-plate-quiet { display: block; }
-}
+.td-ready-quiet .td-est { margin-top: var(--sp-xs); }
 /* GROVE-LAYER-END */
 </style>
 </head>
@@ -10909,8 +10987,9 @@ function todaySetExamDate() {
 function todayNextHtml(step) {
   if (!step) return '';
   var data = Object.keys(step.go).map(function (k) { return ' data-' + k + '="' + escapeHtml(String(step.go[k])) + '"'; }).join('');
+  // Optional, after the plan (web Today redesign): never a second task.
   return '<section class="td-next" aria-labelledby="tdNextH">'
-    + '<h2 class="ph-h" id="tdNextH">Your next step</h2>'
+    + '<h2 class="ph-h" id="tdNextH">If you have more time</h2>'
     + '<ul class="you-list"><li><button type="button" class="you-row td-row"' + data + ' onclick="todayStepGo(this)">'
     + '<span class="you-ico" aria-hidden="true">' + ico(step.icon, 20) + '</span>'
     + '<span class="you-text"><span class="td-kicker">' + step.kicker + '</span>'
@@ -10925,12 +11004,18 @@ function refreshTodayNext() {
   if (S.activeTab !== 'home') return;
   var td = document.querySelector('#homeArea .td');
   if (!td) return;
+  // Welcome back and exam week leave the next step out.
+  if (td.getAttribute('data-next') === 'off') return;
   var r = computeTodayReadiness();
   var html = todayNextHtml(todayNextStep(r, todayReadinessRange(r)));
   var old = td.querySelector('.td-next');
   var focused = !!(old && old.contains(document.activeElement));
   if (old) old.outerHTML = html;
-  else if (html) (td.querySelector('.td-backup') || td.querySelector('.td-side') || td.querySelector('.td-plate')).insertAdjacentHTML('beforebegin', html);
+  else if (html) {
+    var before = td.querySelector('#tdMindSlot') || td.querySelector('.td-backup');
+    if (before) before.insertAdjacentHTML('beforebegin', html);
+    else { var main = td.querySelector('.td-main'); if (main) main.insertAdjacentHTML('beforeend', html); }
+  }
   if (focused) { var b = td.querySelector('.td-next .you-row'); if (b) { try { b.focus({ preventScroll: true }); } catch (e) {} } }
 }
 function todayOpenNote(domainId, itemId) {
@@ -10974,22 +11059,52 @@ function todayPlanDomain(r, last) {
   return { d: pick.id, why: 'gain' };
 }
 function todayPlanSetLength() { return practiceLen > 0 ? practiceLen : 10; }
-function todayPlan(r, last) {
+// Plan modes (web Today redesign; mobile planner.ts re-entry and taper):
+// - 'back': Welcome back (3+ days away): at most TODAY_BACK_QUESTIONS of
+//   the questions to revisit, oldest first, and nothing else. No backlog
+//   total: the rest wait for the next days' plans. With none due, a short
+//   mixed set instead.
+// - 'examweek' (1 to 7 days out): genuinely shorter, about 11 min: a few
+//   questions to revisit plus one short top-up set.
+// - 'normal': as v12.33.
+var TODAY_BACK_QUESTIONS = 6;
+var TODAY_EXAM_WEEK_REVIEW = 4;
+var TODAY_EXAM_WEEK_QUESTIONS = 9;
+function todayPlan(r, last, mode) {
   r = r || computeTodayReadiness();
   var due = 0;
   try { due = getDueReview().length; } catch (e) {}
-  var review = Math.min(due, REVIEW_DAILY_PLAN);
-  var set = todayPlanDomain(r, last);
-  var n = todayPlanSetLength();
   var items = [];
-  if (review > 0) {
-    items.push({ title: 'Questions to revisit', meta: due > review ? review + ' of ' + railShowCount(due) + ' due' : review + (review === 1 ? ' question' : ' questions') + ' from before' });
+  if (mode === 'back') {
+    var nb = Math.min(due, TODAY_BACK_QUESTIONS);
+    if (nb > 0) {
+      items.push({ title: 'Questions to revisit', meta: nb + ' from before &middot; the ones you missed, oldest first' });
+      return { mode: mode, review: nb, due: due, d: null, n: 0, items: items, minutes: Math.max(1, Math.ceil(nb * MINUTES_PER_PRACTICE_Q)) };
+    }
+    items.push({ title: 'A short mixed set', meta: TODAY_BACK_QUESTIONS + ' questions &middot; across the domains' });
+    return { mode: mode, review: 0, due: 0, d: 'all', n: TODAY_BACK_QUESTIONS, items: items, minutes: Math.max(1, Math.ceil(TODAY_BACK_QUESTIONS * MINUTES_PER_PRACTICE_Q)) };
   }
-  items.push({ title: escapeHtml(DI[set.d].short), meta: n + ' questions &middot; ' + (set.why === 'new' ? 'not started' : 'most to gain') });
-  return { review: review, due: due, d: set.d, n: n, items: items, minutes: Math.max(1, Math.round((review + n) * MINUTES_PER_PRACTICE_Q)) };
+  var week = mode === 'examweek';
+  var review = Math.min(due, week ? TODAY_EXAM_WEEK_REVIEW : REVIEW_DAILY_PLAN);
+  var set = todayPlanDomain(r, last);
+  var n = week ? TODAY_EXAM_WEEK_QUESTIONS - review : todayPlanSetLength();
+  if (review > 0) {
+    items.push({ title: 'Questions to revisit', meta: !week && due > review ? review + ' of ' + railShowCount(due) + ' due' : review + (review === 1 ? ' question' : ' questions') + ' from before' });
+  }
+  // One name for the weak area across Today: "where you'll gain most".
+  items.push({ title: escapeHtml(DI[set.d].short), meta: n + ' questions &middot; ' + (set.why === 'new' ? 'not started' : week ? 'one short set' :'where you&rsquo;ll gain most') });
+  return { mode: mode || 'normal', review: review, due: due, d: set.d, n: n, items: items, minutes: Math.max(1, Math.round((review + n) * MINUTES_PER_PRACTICE_Q)) };
 }
 function todayPlanStart() {
-  var plan = todayPlan();
+  var r = computeTodayReadiness();
+  var plan = todayPlan(r, undefined, todayState(new Date(), r).plan);
+  if (plan.mode === 'back') {
+    if (plan.review > 0) { startReviewQueue(plan.review); return; }
+    switchTab('practice', { noScroll: true });
+    selectDomain('all');
+    startSession(plan.n, 'all');
+    return;
+  }
   if (plan.review > 0) { startReviewQueue(plan.review, { d: plan.d, n: plan.n }); return; }
   switchTab('practice', { noScroll: true });
   selectDomain(plan.d);
@@ -11069,19 +11184,303 @@ function backupNudgeLater() {
   showToast('We’ll remind you in two weeks. Back up any time from You.', 'info', 3000);
 }
 
-// Today's right-hand column: the readiness plate, and under it the app's QR
-// card when it applies (computers, live mode; see appCtaTodayQrHtml).
-function todaySideHtml(plate) {
+// ── TODAY: STATES, THE WEEK AND THE MINDSET CHECK (web Today redesign) ──
+// Calm two columns: the plan and what to do on the left, a glanceable
+// column on the right. Owner decisions (2026-10-26, today-retention):
+// - from study day 14 the day line says "N days this week" (the streak
+//   number stays on You);
+// - Welcome back after 3+ days away: a short plan, no backlog total, no
+//   count of days away, and no next step, Mindset check or week strip;
+// - exam week: a shorter plan, readiness in words only, no rings, no strip;
+// - one visual per visit below 1180px: the rings or the week, by the day.
+// "See your readiness report" opens this page. The Readiness report page is
+// next: switch this one constant when it lands.
+var TODAY_REPORT_TAB = 'weakspots';
+var TODAY_WEEK_LINE_FROM = 14;
+var TODAY_BACK_AFTER_DAYS = 3;
+var TODAY_EXAM_WEEK_DAYS = 7;
+var TODAY_EST_LINE = 'A study estimate, not a prediction.';
+var TODAY_WEEKDAYS_MON = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+var TODAY_WEEKDAYS_SHORT = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
+
+// Study days up to today (a clock set ahead never counts), oldest first.
+function todayStudyDayList(todayKey) {
+  return (Array.isArray(S.studyDays) ? S.studyDays : []).filter(function (d) {
+    return typeof d === 'string' && PARITY_DAY_RE.test(d) && d <= todayKey;
+  }).sort();
+}
+// Today's state in one place, so the page and its Start button agree.
+// Exam week wins over Welcome back (its plan is short already), and a set
+// left open ("Where you left off") is never replaced.
+function todayState(now, r) {
+  var days = examDaysLeft();
+  var exam = days === 0 ? 'day' : (days !== null && days > 0 && days <= TODAY_EXAM_WEEK_DAYS) ? 'week' : null;
+  var resume = false;
+  try { resume = !!practicePrimary().resume; } catch (e) {}
+  var today = parityDayKey(now.getTime());
+  var list = todayStudyDayList(today);
+  var before = list.filter(function (d) { return d < today; });
+  var back = !exam && !resume && r.answered > 0 && before.length >= 2
+    && sdDaysBetween(before[before.length - 1], today) >= TODAY_BACK_AFTER_DAYS;
+  return {
+    days: days, exam: exam, resume: resume, back: back, studyDays: list,
+    newLearner: list.length < 2,
+    plan: back ? 'back' : exam === 'week' ? 'examweek' : 'normal'
+  };
+}
+// A whole-day number for daily rotations (the visual, the principle).
+function todayDayNumber(now) {
+  return Math.floor(sdNoon(parityDayKey(now.getTime())) / 86400000);
+}
+function todayListWords(a) {
+  return a.length < 2 ? a.join('') : a.slice(0, -1).join(', ') + ' and ' + a[a.length - 1];
+}
+
+// ── This week: seven leaves, Monday to Sunday, from S.studyDays ──
+// Filled = studied; an outline otherwise (missed and future days look the
+// same, so a gap is never marked). No count here: the day line has it.
+function todayWeek(now, list) {
+  var on = {};
+  list.forEach(function (d) { on[d] = true; });
+  var dow = (now.getDay() + 6) % 7;
+  var out = [];
+  for (var i = 0; i < 7; i++) {
+    var key = parityDayKey(new Date(now.getFullYear(), now.getMonth(), now.getDate() - dow + i, 12).getTime());
+    out.push({ i: i, today: i === dow, on: !!on[key] });
+  }
+  return out;
+}
+function todayLeafSvg(state) {
+  return '<svg class="td-leaf ' + state + '" width="24" height="24" viewBox="0 0 26 26" aria-hidden="true" focusable="false">'
+    + '<path class="td-leaf-b" d="M3.9 22.1C3.9 11.7 11.7 3.9 22.1 3.9C22.1 14.3 14.3 22.1 3.9 22.1Z"/>'
+    + '<path class="td-leaf-v" d="M5.8 20.1L16.3 9.8"/></svg>';
+}
+function todayWeekHtml(week) {
+  var studied = week.filter(function (d) { return d.on; }).map(function (d) { return TODAY_WEEKDAYS_MON[d.i]; });
+  var now = week.filter(function (d) { return d.today; })[0];
+  var said = (studied.length ? 'Studied ' + todayListWords(studied) + '.' : 'No study days yet this week.')
+    + ' Today is ' + TODAY_WEEKDAYS_MON[now ? now.i : 0] + '.';
+  return '<section class="td-week" aria-labelledby="tdWeekH">'
+    + '<h2 class="td-week-h" id="tdWeekH">This week</h2>'
+    + '<p class="sr-only">' + said + '</p>'
+    + '<div class="td-week-row" aria-hidden="true">' + week.map(function (d) {
+      return '<span class="td-wd' + (d.on ? ' on' : '') + (d.today ? ' today' : '') + '">'
+        + todayLeafSvg(d.on ? 'on' : 'off') + '<span class="td-wd-n">' + TODAY_WEEKDAYS_SHORT[d.i] + '</span></span>';
+    }).join('') + '</div></section>';
+}
+
+// ── Readiness, glanceable: the range, one line on what it means, where
+// you'll gain most, and the explainers behind one disclosure. Exam week and
+// exam day say it in words only (no rings, no legend). ──
+function todayReadyHtml(r, range, st, showRings) {
+  var head = '<h2 class="sr-only" id="tdReadyH">Readiness</h2>';
+  if (!range.enough) {
+    // v12.30: no empty rings before the first range, one quiet line. One
+    // count toward one goal, in the same units as You's "Answered".
+    return '<section class="td-ready td-ready-quiet" aria-labelledby="tdReadyH">' + head
+      + '<p class="td-wait">' + (r.answered > 0
+        ? (RD_RANGE_MIN_ANSWERS - range.needed) + ' of ' + RD_RANGE_MIN_ANSWERS + ' questions for your first readiness range. Each question counts once.'
+        : 'Answer ' + RD_RANGE_MIN_ANSWERS + ' questions to see your first readiness range') + '</p>'
+      + '<p class="td-note td-est">Your range will be a study estimate, not a prediction.</p></section>';
+  }
+  if (st.exam) {
+    return '<section class="td-ready td-ready-words" aria-labelledby="tdReadyH">' + head
+      + '<p class="td-words">Your estimated readiness is ' + range.low + ' to ' + range.high + '%.</p>'
+      + '<p class="td-note td-est">' + TODAY_EST_LINE + '</p>'
+      + '<p class="td-note">Progress charts are hidden this week so you can focus.</p></section>';
+  }
+  var spoken = 'Estimated readiness between ' + range.low + ' and ' + range.high + ' percent.';
+  var html = '<section class="td-ready" aria-labelledby="tdReadyH">' + head
+    + '<div class="td-fig">'
+    + (showRings ? growthRingsSvg(r.domains.map(function (x) { return x.answered ? x.mastery : 0; }), r.answered > 0 && todayRingsGrowNow()) : '')
+    + '<div class="td-fig-text">'
+    + '<p class="td-big"><span class="sr-only">' + spoken + '</span><span aria-hidden="true">' + range.low + '&ndash;' + range.high + '<sup>%</sup></span></p>'
+    + '<p class="td-cap">Estimated readiness</p>'
+    + '<p class="td-note td-est">' + TODAY_EST_LINE + '</p>'
+    + '</div></div><div class="td-ready-more">';
+  // One name for the weak area, its full name once (from DI). Not on a
+  // Welcome back day (owner default).
+  if (!st.back && r.focusId && DI[r.focusId]) {
+    html += '<p class="td-gain">Where you&rsquo;ll gain most: <span class="td-gain-d">' + escapeHtml(DI[r.focusId].name) + '</span></p>';
+  }
+  var figures = r.domains.map(function (x) { return domainFigure(x.answered, Math.round(x.mastery * 100)); });
+  if (r.answered > 0) {
+    html += '<ul class="td-legend">' + r.domains.map(function (x, i) {
+      var f = figures[i];
+      var val = f.banded || f.text === '–' ? '<span class="td-word">' + f.text + '</span>' : '<span class="td-num">' + f.text.replace('%', '') + '<sup>%</sup></span>';
+      return '<li><span class="dom-dot" style="background:' + DI[x.id].color + '" aria-hidden="true"></span>'
+        + '<span class="td-dname">' + escapeHtml(DI[x.id].short) + '</span>'
+        + '<span class="sr-only">: ' + f.spoken + '</span><span class="td-dval" aria-hidden="true">' + val + '</span></li>';
+    }).join('') + '</ul>';
+  }
+  var how = '<p class="td-note">The range is about how much of the exam you would get right today, weighted like the exam. It narrows as you answer more.</p>'
+    + '<p class="td-note">' + RINGS_NOTE + '</p>';
+  if (figures.some(function (f) { return f.banded; })) how += '<p class="td-note">' + bandsLine() + '</p>';
+  else if (figures.some(function (f) { return f.text !== '–'; })) how += '<p class="td-note">Percentages count your latest try at each question.</p>';
+  html += '<details class="td-how"><summary class="td-how-s"><span>How this is worked out</span>' + ico('chevron-down', 18) + '</summary>' + how + '</details>';
+  html += '<a class="td-link" href="#' + NAV_HASH[TODAY_REPORT_TAB] + '" onclick="return navTo(event,\'' + TODAY_REPORT_TAB + '\')">See your readiness report' + ico('chevron', 18) + '</a>';
+  return html + '</div></section>';
+}
+
+// ── Mindset check: one principle a day (data/mindset/principles.json) ──
+// A compact row that opens ONE question with two answers: the principle's
+// own right move (the first sentence of its worked example) against its
+// trap. Only principles where that pair reads cleanly take part (see
+// todayMindPair); with none, the principle shows read-only. It is practice
+// for the mindset only: nothing is saved, graded or counted toward
+// readiness or the answer logs. In exam week (and on exam day) it becomes
+// one read-only idea for the exam.
+var TODAY_EXAM_IDEA = 'priority-word-decides';
+var todayMindOpen = false;
+var todayMindNow = null;      // the question on screen: { key, p, pair, opts }
+var todayMindChoice = null;   // this visit's answer: { key, idx }
+function todayFirstSentence(s) {
+  var m = /^(.+?[.!?])\s+[A-Z]/.exec(s);
+  return m ? m[1] : s;
+}
+function todayMindPair(p) {
+  if (!p || p.family === 'reading' || !p.example || !p.trap) return null;
+  var scenario = gtStr(p.example.scenario).trim(), answer = gtStr(p.example.answer).trim(), trap = gtStr(p.trap.move).trim();
+  if (!scenario || !answer || !trap) return null;
+  var right = todayFirstSentence(answer);
+  // A clean pair: both short, the trap is one move (not a list after a
+  // colon), and it does not use the right answer's own verb.
+  var verb = (right.split(/\s+/)[0] || '').toLowerCase().replace(/[^a-z]/g, '').slice(0, 5);
+  if (right.length > 150 || trap.length > 130 || trap.indexOf(':') >= 0 || (verb && trap.toLowerCase().indexOf(verb) >= 0)) return null;
+  return { scenario: scenario, right: right, rest: answer.slice(right.length).trim(), trap: trap, why: gtStr(p.trap.why_wrong).trim() };
+}
+function todayMindToday(now) {
+  if (!PRINCIPLES.length) return null;
+  var n = todayDayNumber(now);
+  var ok = PRINCIPLES.filter(function (p) { return !!todayMindPair(p); });
+  if (!ok.length) return { p: PRINCIPLES[n % PRINCIPLES.length], pair: null };
+  var p = ok[n % ok.length];
+  return { p: p, pair: todayMindPair(p), rightFirst: (n + p.id.length) % 2 === 0, key: parityDayKey(now.getTime()) + '/' + p.id };
+}
+// The page's own path before the hash, so a route address (#principles/id)
+// is not read as an in-page anchor that is missing (WCAG checkers do).
+function todayRouteHref(hash) {
+  var here = '';
+  try { here = location.pathname + location.search; } catch (e) {}
+  return escapeHtml(here + '#' + hash);
+}
+function todayPrincipleLink(p) {
+  return '<a class="td-link" href="' + todayRouteHref('principles/' + p.id) + '" data-pid="' + p.id + '" onclick="return todayOpenPrinciple(event,this.dataset.pid)">'
+    + 'Read the principle<span class="sr-only">: ' + escapeHtml(p.title) + '</span>' + ico('chevron', 18) + '</a>';
+}
+function todayOpenPrinciple(e, pid) {
+  if (e && (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || (e.button && e.button !== 0))) return true;
+  if (e && e.preventDefault) e.preventDefault();
+  openPrinciple(pid);
+  return false;
+}
+// The coach's voice (an accent rule and the quote style), read-only.
+function todayPrincipleCard(p, heading) {
+  return '<section class="td-mind td-idea" aria-labelledby="tdMindH">'
+    + '<h2 class="ph-h" id="tdMindH">' + heading + '</h2>'
+    + '<div class="td-idea-b"><p class="td-idea-t">' + escapeHtml(p.title) + '</p>'
+    + '<p class="td-idea-q">' + escapeHtml(p.rule || '') + '</p></div>'
+    + todayPrincipleLink(p) + '</section>';
+}
+function todayMindVerdictHtml(ok) {
+  var m = todayMindNow;
+  if (!m) return '';
+  return '<p class="td-mind-vt"><strong>' + (ok ? 'Yes, that&rsquo;s the auditor&rsquo;s move.' : 'Not quite: that&rsquo;s the trap.') + '</strong> '
+    + escapeHtml(ok ? m.pair.rest : m.pair.why) + '</p>' + todayPrincipleLink(m.p);
+}
+function todayMindHtml(st) {
+  if (st.back) return '';
+  if (!PRINCIPLES_RAW) {
+    if (!principlesLoadFailed) loadPrinciplesData(function (ok) { if (ok) refreshTodayMind(); });
+    return '';
+  }
+  if (st.exam) {
+    var idea = resolvePrinciple(TODAY_EXAM_IDEA);
+    return idea ? todayPrincipleCard(idea, 'One idea for exam day') : '';
+  }
+  var t = todayMindToday(new Date());
+  if (!t) return '';
+  if (!t.pair) return todayPrincipleCard(t.p, 'Mindset check');
+  var opts = [{ ok: true, text: t.pair.right }, { ok: false, text: t.pair.trap }];
+  if (!t.rightFirst) opts.reverse();
+  todayMindNow = { key: t.key, p: t.p, pair: t.pair, opts: opts };
+  var c = todayMindChoice && todayMindChoice.key === t.key ? todayMindChoice.idx : -1;
+  var answered = c >= 0;
+  return '<section class="td-mind" data-key="' + escapeHtml(t.key) + '" aria-labelledby="tdMindH">'
+    + '<h2 class="ph-h" id="tdMindH">Mindset check</h2>'
+    + '<button type="button" class="you-row td-mind-open" id="tdMindBtn" aria-expanded="' + (todayMindOpen ? 'true' : 'false') + '" aria-controls="tdMindBody" onclick="todayMindToggle()">'
+    + '<span class="you-ico" aria-hidden="true">' + ico('principles', 20) + '</span>'
+    + '<span class="you-text"><span class="you-t">One auditor question <span class="td-mind-m">&middot; under a minute</span></span></span>'
+    + '<span class="you-chev td-mind-chev" aria-hidden="true">' + ico('chevron-down', 18) + '</span></button>'
+    + '<div class="td-mind-body" id="tdMindBody"' + (todayMindOpen ? '' : ' hidden') + '>'
+    + '<p class="td-mind-q">' + escapeHtml(t.pair.scenario) + '</p>'
+    + '<fieldset class="td-mind-fs"><legend class="td-mind-lg">Which is the better move?</legend>'
+    + opts.map(function (o, i) {
+      return '<button type="button" class="td-mind-opt' + (answered && o.ok ? ' is-key' : '') + '" aria-pressed="' + (c === i ? 'true' : 'false') + '" onclick="todayMindAnswer(this)">'
+        + '<span class="td-mind-ot">' + escapeHtml(o.text) + '</span>'
+        + '<span class="td-mind-tag">' + (answered && o.ok ? ico('check', 16) + 'The auditor&rsquo;s move' : '') + '</span></button>';
+    }).join('')
+    + '</fieldset>'
+    + '<p class="td-mind-hint">Tap an answer to see why</p>'
+    + '<div class="td-mind-v' + (answered ? (opts[c].ok ? ' ok' : ' no') : '') + '" id="tdMindV" role="status">' + (answered ? todayMindVerdictHtml(opts[c].ok) : '') + '</div>'
+    + '</div></section>';
+}
+function todayMindSlotHtml(st) {
+  return '<div class="td-mind-slot" id="tdMindSlot">' + todayMindHtml(st) + '</div>';
+}
+function refreshTodayMind() {
+  if (S.activeTab !== 'home') return;
+  var slot = document.getElementById('tdMindSlot');
+  if (!slot || slot.contains(document.activeElement)) return;
+  slot.innerHTML = todayMindHtml(todayState(new Date(), computeTodayReadiness()));
+}
+function todayMindToggle() {
+  todayMindOpen = !todayMindOpen;
+  var b = document.getElementById('tdMindBtn'), body = document.getElementById('tdMindBody');
+  if (b) b.setAttribute('aria-expanded', todayMindOpen ? 'true' : 'false');
+  if (body) body.hidden = !todayMindOpen;
+}
+// Painted in place, so focus stays on the answer and the status region
+// (already on the page) is announced.
+function todayMindAnswer(btn) {
+  var sec = btn && btn.closest('.td-mind');
+  var m = todayMindNow;
+  if (!sec || !m || sec.getAttribute('data-key') !== m.key) return;
+  var buttons = sec.querySelectorAll('.td-mind-opt');
+  var idx = Array.prototype.indexOf.call(buttons, btn);
+  if (idx < 0) return;
+  todayMindChoice = { key: m.key, idx: idx };
+  Array.prototype.forEach.call(buttons, function (b, i) {
+    var key = m.opts[i].ok;
+    b.classList.toggle('is-key', key);
+    b.setAttribute('aria-pressed', i === idx ? 'true' : 'false');
+    var tag = b.querySelector('.td-mind-tag');
+    if (tag) tag.innerHTML = key ? ico('check', 16) + 'The auditor&rsquo;s move' : '';
+  });
+  var v = document.getElementById('tdMindV');
+  if (v) {
+    v.className = 'td-mind-v ' + (m.opts[idx].ok ? 'ok' : 'no');
+    v.innerHTML = todayMindVerdictHtml(m.opts[idx].ok);
+  }
+}
+
+// Today's right-hand column (from 1180px): the plate (readiness, the week,
+// the plant), and under it the app's QR card when it applies (computers,
+// live mode; see appCtaTodayQrHtml).
+function todaySideHtml(inner) {
   var qr = '';
   try { qr = appCtaTodayQrHtml(); } catch (e) { qr = ''; }
-  return qr ? '<div class="td-side">' + plate + qr + '</div>' : plate;
+  return '<div class="td-side">' + inner + qr + '</div>';
 }
 function renderHome() {
   var area = document.getElementById('homeArea');
   if (!area) return;
   var now = new Date();
-  // The day, the exam countdown (when a date is set) and the streak.
-  var days = examDaysLeft();
+  var r = computeTodayReadiness();
+  var range = todayReadinessRange(r);
+  var st = todayState(now, r);
+  // The day, the exam countdown (when a date is set) and the week.
+  var days = st.days;
   var when = TODAY_WEEKDAYS[now.getDay()];
   if (days === null) {
     when += ' &middot; <button type="button" class="td-setdate" onclick="todaySetExamDate()">Set exam date</button>';
@@ -11091,18 +11490,25 @@ function renderHome() {
     // The desktop rail's footer shows the same countdown, so it hides here from 1024px.
     when += '<span class="td-count"> &middot; ' + (days === 0 ? 'Exam day' : days + (days === 1 ? ' day' : ' days') + ' to ' + escapeHtml(ACTIVE.name)) + '</span>';
   }
-  var streak = studyDayStreak(now.getTime());
+  // The day line's right side: the streak until study day 14, then "N days
+  // this week". Hidden on a Welcome back day and in exam week.
+  var dayLine = '';
+  if (!st.exam && !st.back) {
+    if (st.studyDays.length >= TODAY_WEEK_LINE_FROM) {
+      var wk = todayWeek(now, st.studyDays).filter(function (d) { return d.on; }).length;
+      if (wk > 0) dayLine = '<p class="td-streak td-wkline">' + todayLeafSvg('on') + '<span>' + wk + (wk === 1 ? ' day' : ' days') + ' this week</span></p>';
+    } else {
+      var streak = studyDayStreak(now.getTime());
+      if (streak > 0) dayLine = '<p class="td-streak">' + ico('sprig', 20) + '<span>' + streak + '-day study streak</span></p>';
+    }
+  }
   var name = getDisplayName();
-  var greeting = greetingForHour(now.getHours()) + (name ? ', ' + name : '');
+  var greeting = (st.back ? 'Welcome back' : greetingForHour(now.getHours())) + (name ? ', ' + name : '');
 
-  // Readiness: the rings, the honest range and each domain.
-  var r = computeTodayReadiness();
-  var range = todayReadinessRange(r);
-
-  // Today's plan (v12.33): one forest panel, one plan with its time. A set
-  // or question left open comes first ("Where you left off"), as before.
+  // Today's plan (v12.33): one forest panel, one plan with its time, one
+  // Start. A set or question left open comes first ("Where you left off").
   var p = practicePrimary();
-  var hero;
+  var hero, plan = null;
   if (p.resume) {
     hero = '<section class="gt-panel td-hero" aria-labelledby="tdHeroT">'
       + gtFrondSvg()
@@ -11112,58 +11518,29 @@ function renderHome() {
       + '<div class="td-hero-acts"><button type="button" class="gt-pill td-go" id="tdGo" aria-describedby="tdHeroT" onclick="todayPractice()">' + p.label + ico('arrow-right', 18) + '</button></div>'
       + '</section>';
   } else {
-    var plan = todayPlan(r);
+    plan = todayPlan(r, undefined, st.plan);
+    var cap = st.plan === 'examweek' ? 'Exam week &middot; today&rsquo;s plan' : 'Today&rsquo;s plan';
     var steps = plan.items.map(function (it, i) {
       return '<li><span class="td-plan-n" aria-hidden="true">' + (i + 1) + '</span><span class="td-plan-t">' + it.title + '<span class="td-plan-m">' + it.meta + '</span></span></li>';
     }).join('');
     hero = '<section class="gt-panel td-hero" aria-labelledby="tdHeroT">'
       + gtFrondSvg()
-      + '<p class="gt-panel-cap" aria-hidden="true">Today&rsquo;s plan</p>'
-      + '<h2 class="td-hero-t" id="tdHeroT"><span class="sr-only">Today&rsquo;s plan: </span>About ' + plan.minutes + ' min</h2>'
+      + '<p class="gt-panel-cap" aria-hidden="true">' + cap + '</p>'
+      + '<h2 class="td-hero-t" id="tdHeroT"><span class="sr-only">' + cap + ': </span>About ' + plan.minutes + ' min</h2>'
       + '<ol class="td-plan" aria-label="Today&rsquo;s plan, in order">' + steps + '</ol>'
-      + '<div class="td-hero-acts"><button type="button" class="gt-pill td-go" id="tdGo" aria-describedby="tdHeroT" onclick="todayPlanStart()">Start' + ico('arrow-right', 18) + '</button></div>'
+      + '<div class="td-hero-acts"><button type="button" class="gt-pill td-go" id="tdGo" aria-describedby="tdHeroT" onclick="todayPlanStart()">Start' + ico('arrow-right', 18) + '</button>'
+      + '<p class="td-hero-q">Stop any time; your place is saved.</p></div>'
       + '</section>';
   }
-  var figures = r.domains.map(function (x) { return domainFigure(x.answered, Math.round(x.mastery * 100)); });
-  var spoken = range.enough ? 'Estimated readiness between ' + range.low + ' and ' + range.high + ' percent.' : 'Readiness: not enough data yet.';
-  var plate;
-  if (!range.enough) {
-    // v12.30: no empty rings and no plate before the first range, only one
-    // quiet line (mobile hides its readiness until there is data).
-    var needed = range.needed;
-    // One count toward one goal, in the same units as You's "Answered":
-    // different questions, each counted once at its latest try (v12.33).
-    plate = '<section class="td-plate td-plate-quiet" aria-labelledby="tdReadyH">'
-      + '<h2 class="sr-only" id="tdReadyH">Readiness</h2>'
-      + '<p class="td-wait">' + (r.answered > 0
-        ? (RD_RANGE_MIN_ANSWERS - needed) + ' of ' + RD_RANGE_MIN_ANSWERS + ' questions for your first readiness range. Each question counts once.'
-        : 'Answer ' + RD_RANGE_MIN_ANSWERS + ' questions to see your first readiness range') + '</p>';
-  } else {
-  plate = '<section class="td-plate" aria-labelledby="tdReadyH">'
-    + '<h2 class="sr-only" id="tdReadyH">Readiness</h2>'
-    + '<div class="td-fig">'
-    + growthRingsSvg(r.domains.map(function (x) { return x.answered ? x.mastery : 0; }), r.answered > 0 && todayRingsGrowNow())
-    + '<div class="td-fig-text">'
-    + '<p class="td-big"><span class="sr-only">' + spoken + '</span><span aria-hidden="true">' + range.low + '&ndash;' + range.high + '<sup>%</sup></span></p><p class="td-cap">Estimated readiness</p>'
-    + '</div></div>';
-  }
-  if (r.answered > 0 && range.enough) {
-    // What the range means, in one sentence (mobile: "A study estimate, not a prediction").
-    plate += '<div class="td-detail"><p class="td-note td-est">' + READINESS_MEANS + '</p><ul class="td-legend">' + r.domains.map(function (x, i) {
-      var f = figures[i];
-      var val = f.banded || f.text === '–' ? '<span class="td-word">' + f.text + '</span>' : '<span class="td-num">' + f.text.replace('%', '') + '<sup>%</sup></span>';
-      return '<li><span class="dom-dot" style="background:' + DI[x.id].color + '" aria-hidden="true"></span>'
-        + '<span class="td-dname">' + escapeHtml(DI[x.id].short) + '</span>'
-        + '<span class="sr-only">: ' + f.spoken + '</span><span class="td-dval" aria-hidden="true">' + val + '</span></li>';
-    }).join('') + '</ul>';
-    plate += '<p class="td-note">' + RINGS_NOTE + '</p>';
-    if (figures.some(function (f) { return f.banded; })) {
-      plate += '<p class="td-note">' + bandsLine() + '</p>';
-    } else if (figures.some(function (f) { return f.text !== '–'; })) {
-      plate += '<p class="td-note">Percentages count your latest try at each question.</p>';
-    }
-    plate += '</div>';
-  }
+  var intro = '';
+  if (r.answered === 0) intro = '<p class="td-intro">CISA exam practice, free during the beta. Start with a short set below.</p>';
+  else if (st.back) intro = '<p class="td-intro">A short start today.' + (plan && plan.due > plan.review ? ' The rest of your reviews will spread out over the next days.' : '') + '</p>';
+
+  // The right column. Below 1180px it shows ONE visual per visit: the rings
+  // or the week, by the day (td-vis-*); from 1180px both, the week small.
+  var showWeek = !st.exam && !st.back && !st.newLearner;
+  var showRings = !st.exam && range.enough;
+  var vis = showRings && showWeek ? (todayDayNumber(now) % 2 ? 'week' : 'rings') : showRings ? 'rings' : showWeek ? 'week' : 'none';
   // One invitation per visit: when the backup reminder and the plant
   // invitation are both due, the first study day gets the plant and a later
   // visit the backup (todayInvitePick, kept for this visit).
@@ -11172,27 +11549,33 @@ function renderHome() {
     if (!todayInvitePick) todayInvitePick = (Array.isArray(S.studyDays) && S.studyDays.length > 1) ? 'backup' : 'plant';
     if (todayInvitePick === 'plant') backup = '';
   }
-  // The plant companion, under the readiness (mobile Today's plant slot).
-  plate += '<div class="td-plant" id="tdPlant">' + plantSafe(plantTodayHtml) + '</div>';
-  plate += '</section>';
+  var plate = '<div class="td-plate' + (range.enough ? '' : ' td-plate-quiet') + '">'
+    + todayReadyHtml(r, range, st, showRings)
+    + (showWeek ? todayWeekHtml(todayWeek(now, st.studyDays)) : '')
+    // The plant companion (mobile Today's plant slot).
+    + '<div class="td-plant" id="tdPlant">' + plantSafe(plantTodayHtml) + '</div>'
+    + '</div>';
 
-  // One next step, then (now and then) the backup reminder.
-  var next = todayNextHtml(todayNextStep(r, range)) + backup;
+  // "If you have more time": one optional next step (not on a Welcome back
+  // day or in exam week), then the Mindset check and (now and then) the backup.
+  var hideNext = st.back || !!st.exam;
+  var next = hideNext ? '' : todayNextHtml(todayNextStep(r, range));
   var apps = [];
   if (STORE_LINKS.ios) apps.push('<a href="' + escapeHtml(STORE_LINKS.ios) + '" target="_blank" rel="noopener noreferrer">iPhone</a>');
   if (STORE_LINKS.android) apps.push('<a href="' + escapeHtml(STORE_LINKS.android) + '" target="_blank" rel="noopener noreferrer">Android</a>');
 
-  area.innerHTML = '<div class="td">'
+  area.innerHTML = '<div class="td td-vis-' + vis + '" data-next="' + (hideNext ? 'off' : 'on') + '">'
+    + '<div class="td-main">'
     + '<div class="td-head">'
-    + '<div class="td-top"><p class="td-when">' + when + '</p>'
-    + (streak > 0 ? '<p class="td-streak">' + ico('sprig', 20) + '<span>' + streak + '-day study streak</span></p>' : '')
-    + '</div>'
+    + '<div class="td-top"><p class="td-when">' + when + '</p>' + dayLine + '</div>'
     + '<h1 class="td-title" id="tdTitle" tabindex="-1">' + escapeHtml(greeting) + '</h1>'
-    + (r.answered === 0 ? '<p class="td-intro">CISA exam practice, free during the beta. Start with a short set below.</p>' : '')
+    + intro
     + '</div>'
-    // Phones read it top to bottom as the web mock-up: practice, next step, then readiness.
+    // Phones read it top to bottom: the plan, what else, then the column.
     + appCtaTodayHtml()
-    + hero + todayFinalWeekHtml(days) + next + todaySideHtml(plate)
+    + hero + todayFinalWeekHtml(days) + next + todayMindSlotHtml(st) + backup
+    + '</div>'
+    + todaySideHtml(plate)
     + (apps.length ? '<p class="td-apps">Get the app: ' + apps.join(' &middot; ') + '</p>' : '')
     // The full disclaimer lives on About (and Help); Today keeps one line.
     + '<p class="td-legal">KaiSip is independent and not affiliated with ISACA.</p>'
@@ -11200,7 +11583,7 @@ function renderHome() {
   appCtaTodayWire();
 
   // The notes arrive after the first paint: draw the next step again then.
-  if (!CISA_NOTES_RAW && !conceptsLoadFailed) {
+  if (!hideNext && !CISA_NOTES_RAW && !conceptsLoadFailed) {
     loadConceptsData(refreshTodayNext);
   }
 }
@@ -13126,9 +13509,19 @@ function plantTodayHtml() {
   return '<button type="button" class="td-plant-btn" onclick="plantOpenYou()" aria-label="' + escapeHtml(v.label + ' Opens your plant on You.') + '">'
     + '<span class="td-plant-art">' + plantDraw(v, 'today', 72, { fit: true, lod: 'small' }) + '</span>'
     + '<span class="you-text"><span class="you-t td-plant-name">' + escapeHtml(K.plant.plantCallName(p)) + '</span>'
-    + '<span class="you-m">' + escapeHtml(K.plant.growthShort(p.growth)) + '</span></span>'
+    + '<span class="you-m">' + escapeHtml(plantGrowsLine(K, p.growth)) + '</span></span>'
     + '<span class="you-chev" aria-hidden="true">' + ico('chevron', 18) + '</span></button>'
     + (plantGrewShown ? '<p class="td-plant-note" role="status">' + escapeHtml(plantGrewShown) + '</p>' : '');
+}
+// Today's plant row says what grows it next, from the plant engine's own
+// gates (GROWTH_RULES): the first answers, then every domain, then (Bough,
+// Crown and Elder all need it) subtopics answered right on two different
+// days. The stage name and number stay on You.
+function plantGrowsLine(K, growth) {
+  if (growth >= K.plant.MAX_GROWTH) return 'Fully grown. It keeps all of its growth.';
+  if (growth + 1 === 2) return 'Grows with your first ' + K.plant.SPROUT_ANSWERS + ' answers';
+  if (growth + 1 === 3) return 'Grows as you practise every domain';
+  return 'Grows when topics stick across days';
 }
 function plantHidePrompt() {
   if (!S.plantSettings || typeof S.plantSettings !== 'object') S.plantSettings = {};
