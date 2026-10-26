@@ -20,6 +20,7 @@ import { WebImportPreview } from '../components/webImport';
 import { getAllQuestions } from '../content/loader';
 import { setMockReducedMotion } from '../../jest/reanimated-mock';
 import { resetCelebrationsForTest, resetOncePerDayForTest, setSystemReducedMotionForTest } from '../components/motion';
+import { undoRestore } from '../lib/backup';
 import { checkAnyText, importWebProgress, type WebReady } from '../lib/webImport';
 import { useBackup } from '../store/backup';
 import { completeCert, selectCert, useProgress } from '../store/progress';
@@ -342,6 +343,59 @@ describe('"Add your website progress?" with a name', () => {
       expect((await importWebProgress(p, { now: fixture.profile.lastActive + 60_000 })).kind).toBe('ok');
     });
     expect(useSettings.getState().displayName).toBe('Maya');
+  });
+
+  describe('Undo after adding website progress', () => {
+    const AT = fixture.profile.lastActive + 60_000;
+    const importNamed = async (text: string) => {
+      const [p] = ready(text).profiles;
+      await act(async () => {
+        expect((await importWebProgress(p, { now: AT })).kind).toBe('ok');
+      });
+    };
+    const undo = async () => {
+      await act(async () => {
+        expect((await undoRestore(AT + 1000)).kind).toBe('ok');
+      });
+    };
+
+    it('takes away the name the import added', async () => {
+      await importNamed(file('Maya'));
+      expect(useSettings.getState().displayName).toBe('Maya');
+      expect(useBackup.getState().undo?.importedName).toBe('Maya');
+      await undo();
+      expect(useSettings.getState().displayName).toBeUndefined();
+    });
+
+    it('keeps a name the learner changed after the import', async () => {
+      await importNamed(file('Maya'));
+      act(() => {
+        useSettings.getState().setDisplayName('Mai');
+      });
+      await undo();
+      expect(useSettings.getState().displayName).toBe('Mai');
+    });
+
+    it('a phone that already had a name: nothing is recorded, and Undo keeps it', async () => {
+      act(() => {
+        useSettings.getState().setDisplayName('Mai');
+      });
+      await importNamed(file('Maya'));
+      expect(useBackup.getState().undo?.importedName).toBeUndefined();
+      await undo();
+      expect(useSettings.getState().displayName).toBe('Mai');
+    });
+
+    it('an earlier undo copy is kept, and it learns the name this import added', async () => {
+      // A first import with no name takes the undo copy; a second one with a name keeps that copy.
+      await importNamed(JSON.stringify(fixture));
+      const first = useBackup.getState().undo;
+      await importNamed(file('Maya'));
+      expect(useBackup.getState().undo?.takenAt).toBe(first?.takenAt);
+      expect(useBackup.getState().undo?.importedName).toBe('Maya');
+      await undo();
+      expect(useSettings.getState().displayName).toBeUndefined();
+    });
   });
 
   it('a hostile name in the file is never offered or set', async () => {

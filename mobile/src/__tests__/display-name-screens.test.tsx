@@ -292,8 +292,10 @@ describe('mobile 1.41: the name is asked later, on Today, once', () => {
     expect(card()).toHaveLength(0);
   });
 
-  it('mobile 1.44: learners who onboarded before 1.41 (no name, never asked) are asked once, with no new onboarding', () => {
+  it('mobile 1.44: learners who onboarded before 1.23 (no name step, so never asked) are asked once, with no new onboarding', () => {
     useSettings.setState({ onboarded: true });
+    // No `newLearner` flag: onboarded before 1.24.
+    useSeen.setState({ reminderAsk: {} });
     studied(5, 1);
     mount(<Today />);
     expect(card()).toHaveLength(1);
@@ -306,8 +308,28 @@ describe('mobile 1.41: the name is asked later, on Today, once', () => {
     expect(card()).toHaveLength(0);
   });
 
-  it('mobile 1.44: a learner from before 1.41 with a name is never asked, and nothing is set up for them', () => {
+  it('mobile 1.44: learners who onboarded on 1.23–1.40 (they saw the name step and skipped it) are not asked again', () => {
+    useSettings.setState({ onboarded: true });
+    // Their onboarding set the `newLearner` flag (1.24+) but never `nameAsk`.
+    useSeen.setState({ reminderAsk: { newLearner: true, first: 'later' } });
+    studied(5, 1);
+    mount(<Today />);
+    expect(card()).toHaveLength(0);
+    expect(useSeen.getState().nameAsk).toBeUndefined();
+  });
+
+  it('mobile 1.44: learners who onboarded on 1.41+ are asked once, as before', () => {
+    useSettings.setState({ onboarded: true });
+    useSeen.setState({ reminderAsk: { newLearner: true }, nameAsk: 'due' });
+    studied(5, 1);
+    mount(<Today />);
+    expect(card()).toHaveLength(1);
+    expect(useSeen.getState().nameAsk).toBe('shown');
+  });
+
+  it('mobile 1.44: a learner from before 1.23 with a name is never asked, and nothing is set up for them', () => {
     useSettings.setState({ onboarded: true, displayName: 'Maya' });
+    useSeen.setState({ reminderAsk: {} });
     studied(5, 1);
     mount(<Today />);
     expect(card()).toHaveLength(0);

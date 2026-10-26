@@ -228,12 +228,20 @@ export function studyDaysAway(days: readonly (string | null | undefined)[], toda
 }
 
 /**
- * Mobile 1.44 (pm.md S3): learners who onboarded BEFORE 1.41 never had the
- * Today ask (their `nameAsk` was never set). Once only: a learner who is
- * onboarded, has no name and has no `nameAsk` at all gets it set to 'due',
- * so the one card shows on a later study day under the usual rules above.
- * Nobody goes through onboarding again. Once set ('due' or 'shown'), never again.
+ * Mobile 1.44 (pm.md S3, narrowed by behavior.md §7.4): learners who never
+ * saw a name step get the one Today ask, once. Who is who:
+ * - onboarded before 1.24: no `newLearner` flag (store/seen.ts reminderAsk,
+ *   set when a 1.24+ onboarding finishes). Mostly never asked: they are
+ *   nudged. (1.23 alone had the name step without the flag; nothing saved
+ *   tells a 1.23 onboarding from an older one, so that one release's
+ *   learners are nudged too.)
+ * - onboarded on 1.24 to 1.40: `newLearner` set and no `nameAsk`. They saw
+ *   the optional name step and skipped it: never asked again (Settings is there).
+ * - onboarded on 1.41+: onboarding already set `nameAsk` to 'due'.
+ * Once only: a learner who is onboarded, has no name, has no `nameAsk` and no
+ * `newLearner` flag gets `nameAsk` set to 'due', so the one card shows on a
+ * later study day under the usual rules above. Nobody re-onboards.
  */
-export function nameNudgeDue(opts: { onboarded: boolean; hasName: boolean; nameAsk?: 'due' | 'shown' }): boolean {
-  return opts.onboarded && !opts.hasName && opts.nameAsk === undefined;
+export function nameNudgeDue(opts: { onboarded: boolean; hasName: boolean; nameAsk?: 'due' | 'shown'; newLearner: boolean }): boolean {
+  return opts.onboarded && !opts.hasName && opts.nameAsk === undefined && !opts.newLearner;
 }

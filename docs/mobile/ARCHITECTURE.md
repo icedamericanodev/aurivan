@@ -431,8 +431,10 @@ server: every email goes through the learner's OWN email app.
   included." Today asks for a name once, from the day after the first study day (`engine/firstRun.ts`
   `nameAskDue`, `store/seen.ts` `nameAsk`, only for learners onboarded on 1.41+). Mobile 1.44 (the
   owner's "Version 3"): the field is inside the card; it never shows beside another Today invitation, on
-  a welcome-back day or in exam week; learners from before 1.41 with no name get `nameAsk` set to 'due'
-  once (`nameNudgeDue`); You opens with "Your study profile" (`engine/studyProfile.ts`); and a website
+  a welcome-back day or in exam week; learners onboarded before 1.24 (no `reminderAsk.newLearner` flag,
+  so no name step) with no name get `nameAsk` set to 'due' once (`nameNudgeDue`; 1.23 can't be told
+  apart, so its learners are included, and 1.24–1.40 learners, who skipped the step, are not asked);
+  Undo after a website import clears a name the import added (`UndoSnapshot.importedName`) unless changed; You opens with "Your study profile" (`engine/studyProfile.ts`); and a website
   file's top-level `displayName` is added only when the phone has no name (`engine/webImport.ts`
   `readWebDisplayName`).
 - *The plant is offered* on the first set's closing screen ("Plant a seed" / "Maybe later", `store/seen.ts`

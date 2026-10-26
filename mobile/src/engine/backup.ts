@@ -1153,6 +1153,13 @@ export interface UndoSnapshot {
    * was added (Settings → Your data says "Undo last import").
    */
   kind?: 'sync' | 'import';
+  /**
+   * Mobile 1.44: the name a website import set (this phone had none). Undo
+   * clears it again, but only while the name is still exactly this value: a
+   * name the learner has changed since is theirs and stays. Kept on this
+   * phone only (the undo slot is never in a backup file, a sync or an email).
+   */
+  importedName?: string;
 }
 
 /** When "Undo restore" stops being offered. */

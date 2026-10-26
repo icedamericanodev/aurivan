@@ -21,7 +21,8 @@
  * - The learner's name (mobile 1.44): the same add-only rule. It is set ONLY
  *   when this phone has no name (checked again at write time), never synced
  *   (it is device-only, engine/syncMerge.ts), and the website's profile label
- *   is never used as a name.
+ *   is never used as a name. The undo copy records the name the import set
+ *   (`importedName`), so Undo clears it again unless the learner changed it.
  */
 import { CERTIFICATIONS, DEFAULT_CERT_ID } from '../content/certifications';
 import { cleanDisplayName } from '../engine/displayName';
@@ -157,11 +158,16 @@ export async function importWebProgress(profile: WebProfile, opts: { now?: numbe
   // is KEPT, so Undo still goes back to before the first change. Otherwise this import takes its own.
   const existing = useBackup.getState().undo;
   const keepEarlier = undoAvailable(existing, now);
+  // Mobile 1.44: the name this import will set (this phone has none now), written down for Undo.
+  const importedName = profile.displayName && !displayNameIn(phoneStores().settings) ? cleanDisplayName(profile.displayName) || undefined : undefined;
   let undo: UndoSnapshot | undefined;
   if (!keepEarlier) {
     const file = currentBackup(now);
     if (checkBackupText(JSON.stringify(file)).kind !== 'ok') return { kind: 'no-snapshot' };
-    undo = { takenAt: now, file, kind: 'import' };
+    undo = { takenAt: now, file, kind: 'import', ...(importedName ? { importedName } : {}) };
+  } else if (importedName && existing) {
+    // The earlier copy stays the one Undo goes back to; it now also knows this import set the name.
+    undo = { ...existing, importedName };
   }
   const merge = (live: ReturnType<typeof phoneStores>) => ({
     // The exam date and (mobile 1.44) the name are add-only: set from the file only when this phone (as it is NOW) has none.

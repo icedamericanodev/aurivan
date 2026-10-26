@@ -497,10 +497,11 @@ export default function Today() {
   // Both wait for the second ask, Fit and the plant line; each is latched for the visit it first shows on.
   const otherSetup = secondVisit || askFit || plantLineNow || plantVisit;
   const nameAsk = useSeen((x) => x.nameAsk);
-  // Mobile 1.44 (pm.md S3): a learner from before 1.41 (onboarded, no name, never asked) gets the one ask
-  // set up once, so it shows on a later study day under the rules below. Nobody re-onboards.
+  // Mobile 1.44 (pm.md S3, behavior.md §7.4): a learner who onboarded before 1.24 (no name step, so never
+  // asked; no `newLearner` flag) gets the one ask set up once, so it shows on a later study day under the
+  // rules below. 1.24–1.40 learners skipped the name step and are not asked again. Nobody re-onboards.
   // It counts on this very render too, so another card never shows for a moment before the name card.
-  const nudge = nameNudgeDue({ onboarded, hasName: Boolean(displayName), nameAsk });
+  const nudge = nameNudgeDue({ onboarded, hasName: Boolean(displayName), nameAsk, newLearner });
   useEffect(() => {
     if (nudge) useSeen.getState().setNameAsk('due');
   }, [nudge]);

@@ -78,16 +78,28 @@ describe('studyDaysAway', () => {
   });
 });
 
-describe('the one-time nudge for learners from before 1.41', () => {
-  it('only for an onboarded learner with no name who was never asked', () => {
-    expect(nameNudgeDue({ onboarded: true, hasName: false })).toBe(true);
-    expect(nameNudgeDue({ onboarded: true, hasName: false, nameAsk: undefined })).toBe(true);
+describe('the one-time nudge: only learners who never saw a name step (behavior.md §7.4)', () => {
+  // What each group's saved data looks like. `newLearner` is set when a 1.24+ onboarding finishes.
+  const PRE_123 = { onboarded: true, hasName: false, newLearner: false }; // no name step, no flag
+  const V123_TO_140 = { onboarded: true, hasName: false, newLearner: true }; // saw the step (1.24–1.40), skipped it
+  const V141_PLUS = { onboarded: true, hasName: false, newLearner: true, nameAsk: 'due' as const }; // onboarding set the ask
+
+  it('before 1.23 (never asked): nudged once', () => {
+    expect(nameNudgeDue(PRE_123)).toBe(true);
+    expect(nameNudgeDue({ ...PRE_123, nameAsk: undefined })).toBe(true);
+  });
+  it('1.23 to 1.40 (saw and skipped the name step): never asked again', () => {
+    expect(nameNudgeDue(V123_TO_140)).toBe(false);
+  });
+  it('1.41 and later: onboarding already set the ask, so no nudge is needed', () => {
+    expect(nameNudgeDue(V141_PLUS)).toBe(false);
+    expect(nameNudgeDue({ ...V141_PLUS, nameAsk: 'shown' })).toBe(false);
   });
   it('never again once set, never with a name, never before onboarding', () => {
-    expect(nameNudgeDue({ onboarded: true, hasName: false, nameAsk: 'due' })).toBe(false);
-    expect(nameNudgeDue({ onboarded: true, hasName: false, nameAsk: 'shown' })).toBe(false);
-    expect(nameNudgeDue({ onboarded: true, hasName: true })).toBe(false);
-    expect(nameNudgeDue({ onboarded: false, hasName: false })).toBe(false);
+    expect(nameNudgeDue({ ...PRE_123, nameAsk: 'due' })).toBe(false);
+    expect(nameNudgeDue({ ...PRE_123, nameAsk: 'shown' })).toBe(false);
+    expect(nameNudgeDue({ ...PRE_123, hasName: true })).toBe(false);
+    expect(nameNudgeDue({ ...PRE_123, onboarded: false })).toBe(false);
   });
 });
 
