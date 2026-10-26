@@ -13642,7 +13642,7 @@ function plantTodayHtml() {
 function plantGrowsLine(K, growth) {
   if (growth >= K.plant.MAX_GROWTH) return 'Fully grown. It keeps all of its growth.';
   if (growth + 1 === 2) return 'Grows with your first ' + K.plant.SPROUT_ANSWERS + ' answers';
-  if (growth + 1 === 3) return 'Grows as you practise every domain';
+  if (growth + 1 === 3) return 'Grows as you practice every domain';
   return 'Grows when topics stick across days';
 }
 function plantHidePrompt() {
@@ -19759,10 +19759,13 @@ function toggleMockDetail(i) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
-    title: 'More challenging answer choices',
+    title: 'A calmer Today and harder practice',
     items: [
+      { cat: 'new', text: 'Today is calmer: one plan to start, a gentle welcome back after a break, a lighter exam week, and one auditor question a day.' },
       { cat: 'improved', text: 'More challenging answer choices in system development and implementation practice questions, closer to the real exam.' },
       { cat: 'improved', text: 'Explanations and tips now show the knowledge that rules out each wrong choice, so you can use it on new questions.' },
+      { cat: 'improved', text: 'Study notes open faster, especially if you have practiced a lot.' },
+      { cat: 'fixed', text: 'Continue reading now remembers your last note after you close the site, and two open tabs no longer overwrite each other\'s progress.' },
     ],
   },
   {
