@@ -62,7 +62,7 @@ Status words are PASS / FAIL / WARN rather than symbols.
 | Play icon 512 | WARN | `/home/user/aurivan/assets/icon-512.png` is 512×512 but RGB (24-bit). The spec is a 32-bit PNG, full square, no shadow, at most 1 MB (https://developer.android.com/distribute/google-play/resources/icon-design-specifications, fetched) | Re-save as RGBA (c9) |
 | Feature graphic | FAIL | Missing | Make it (c9) |
 | Phone screenshots | FAIL | `/home/user/aurivan/mobile/scripts/screenshots/shoot.mjs:15` uses a 393×852 viewport at 2× | Add a 1080×1920 store mode (c6) |
-| Gate 4 debug-key APK | WARN | `/home/user/aurivan/.github/workflows/android-apk.yml`. It cannot overwrite a Play install (Play uses Google's signing key), so it does not block Play | Retire the workflow (c10) |
+| Gate 4 debug-key APK | PASS (retired 26 Oct 2026) | The "Android test APK" workflow is retired (moved to `archive/github-workflows/android-apk.yml`, where GitHub does not run it). Test APKs now come from the "Phone build (EAS Build)" workflow with the **preview** profile. The APK from expo.dev installs in the Android emulator too | Done (c10) |
 | Title character count | WARN | `STORE_LISTING.md:121` says 27/30; the real count is 26 | Doc fix |
 
 ## Verified rules (Q1–Q8)
@@ -224,7 +224,7 @@ What exists in the repo:
    - Notice: "CISA® and ISACA® are registered trademarks of ISACA…".
 8. **`/home/user/aurivan/privacy.html` §6 "App updates" (with Option A).** Say the Google Play version gets updates only through Google Play and does not contact Expo, and that test versions do. Update "Last updated". This is a user-visible web change, so per CLAUDE.md bump `APP_VERSION` and add What's New.
 9. **Graphics, via brand-logo-designer.** `design-notes/brand-kaisip/store/play-icon-512.png` (RGBA, from `png/icon-1024.png`) and `design-notes/brand-kaisip/store/feature-graphic-1024x500.png` (24-bit, no alpha, lockup on the Grove green, no CISA/ISACA text).
-10. **`/home/user/aurivan/.github/workflows/android-apk.yml`.** Retire it (Gate 4). Not a Play blocker.
+10. **Done (26 Oct 2026): the "Android test APK" workflow is retired** (Gate 4; now `archive/github-workflows/android-apk.yml`, which GitHub does not run). Test APKs come from the "Phone build (EAS Build)" workflow with the **preview** profile. The APK from expo.dev installs in the Android emulator too: drag it onto the emulator window, or run `adb -e install -r <file>.apk`.
 11. **`/home/user/aurivan/docs/mobile/SECURITY_GATES.md` and `ARCHITECTURE.md` §11.** Record the B1 decision.
 12. **After production goes live,** not before: set `/home/user/aurivan/mobile/src/content/storeLinks.ts` `STORE_LINK = 'https://play.google.com/store/apps/details?id=com.kaisip.app'`.
 

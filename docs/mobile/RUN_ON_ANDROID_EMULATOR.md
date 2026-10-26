@@ -249,10 +249,12 @@ app seems not to use. If it deletes something a library looks up by name, the
 release app can crash where the dev build is fine. So after any change to
 native libraries, test a release build once:
 
-1. GitHub → **Actions → Android test APK → Run workflow** (or
-   `bash scripts/build-apk.sh` on the Mac). It builds a release APK with R8 on.
-2. Install it: on a phone, open the release page and tap the `.apk`; on an
-   Apple-silicon Mac emulator, `adb -e install -r KaiSip-<version>.apk`. (The
+1. GitHub → **Actions → Phone build (EAS Build) → Run workflow**, profile
+   **preview** (or `bash scripts/build-apk.sh` on the Mac). It builds a
+   release APK with R8 on.
+2. Install it: on a phone, open the build's page on expo.dev and tap
+   **Install**; on an Apple-silicon Mac emulator, download the APK and run
+   `adb -e install -r <file>.apk` (or drag it onto the emulator window). (The
    APK has no Intel emulator code, so an Intel Mac emulator can't run it.)
 3. Try: first launch and onboarding, a practice set, a mock exam, notes and
    diagrams, Play games, Settings → reminders (a notification arrives),

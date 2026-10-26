@@ -114,5 +114,5 @@ Produce a brief confirmation message:
    to verify; expect 0 errors, 0 warnings.
 
 **Estimated drift prevention:** ~30-50 min per batch saved vs current post-hoc
-fix cycle (per the mid-bank retro at `data/originals/_mid_bank_retro.md`).
+fix cycle (per the mid-bank retro at `archive/question-bank-rebuild/_mid_bank_retro.md`).
 ```

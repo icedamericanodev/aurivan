@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Validate every question in data/originals/d{1..5}.json against the
-schema agreed in RELAUNCH_CHECKLIST.md.
+schema in docs/content/QUESTION_SCHEMA.md.
 
 Run from repo root:
     python3 scripts/validate_originals.py

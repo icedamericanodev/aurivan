@@ -55,18 +55,19 @@ kaisip/
 ├── assets/                          # Favicons and app icon (KaiSip)
 ├── _headers                         # Host-neutral security headers and cache rules
 ├── data/
-│   ├── domain{1..5}.json            # Question banks loaded by the app
-│   ├── tips_overrides/d{1..5}.json  # Hand-authored tips (source of truth)
+│   ├── originals/d{1..5}.json       # Hand-authored questions and tips (source of truth)
+│   ├── domain{1..5}.json            # Question banks loaded by the app (generated)
 │   ├── cisa_notes.json              # Topics-tab content
 │   └── glossary.json                # Glossary content
 ├── scripts/
-│   ├── convert_test_bank.py         # Build-time converter (source not redistributed)
+│   ├── originals_to_domain.py       # Builds data/domain{N}.json from data/originals/
 │   ├── verify_repo.sh               # Repo health check (run via SessionStart hook)
 │   └── lint_inline_js.sh            # Lints the inline JS in index.html
 ├── CLAUDE.md                        # Project memory for AI assistants
 ├── CONTRIBUTING.md                  # How to contribute
 ├── CHANGELOG.md                     # Canonical release history
 ├── SECURITY.md                      # Security disclosure policy
+├── archive/                         # Retired files kept for history
 └── README.md
 ```
 

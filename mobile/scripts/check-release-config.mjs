@@ -23,9 +23,9 @@
  *       If it did, a store profile that forgot its `channel` would silently
  *       keep the app.json value (checked in @expo/build-tools 24: it only
  *       overwrites the header when the profile has a channel).
- *     - The two backup builders that don't use EAS (the GitHub "Android test
- *       APK" workflow and scripts/build-apk.sh) set "preview" themselves, in
- *       their throwaway copy, with scripts/set-update-channel.mjs.
+ *     - The backup builder that doesn't use EAS (scripts/build-apk.sh) sets
+ *       "preview" itself, in its throwaway copy, with
+ *       scripts/set-update-channel.mjs.
  *
  * THE RULES:
  *   1. app.json sets no update channel.

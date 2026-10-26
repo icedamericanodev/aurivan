@@ -11,12 +11,11 @@ work without rediscovering the layout.
 |---|---|
 | `index.html` | The entire app — HTML, CSS, and inline JS in one file (~8.7k lines) |
 | `assets/` | Favicons, apple-touch-icon and the 512 px app icon (KaiSip, generated from `design-notes/brand-kaisip/icon.svg`). Masters for the logo live in `design-notes/brand-kaisip/` |
-| `data/domain{1..5}.json` | **Generated.** Per-domain question banks. Don't edit by hand. |
-| `data/tips_overrides/d{1..5}.json` | **Hand-authored.** Per-question tips, keyed by question ID. Source of truth for tips. |
+| `data/originals/d{1..5}.json` | **Hand-authored source of truth** for the question bank, tips included. Schema: `docs/content/QUESTION_SCHEMA.md` (checked by `scripts/validate_originals.py`) |
+| `data/domain{1..5}.json` | **Generated** from `data/originals/` by `scripts/originals_to_domain.py`. Per-domain question banks the apps load. Don't edit by hand. |
 | `data/cisa_notes.json` | Topics notes (web Topics tab + mobile Study notes). Schema v2: `docs/content/NOTES_SCHEMA_V2.md`; lint with `scripts/lint_notes.py` |
-| `data/cisa_concepts.json` | Orphan file kept in sync for hygiene; not loaded by the app |
 | `data/glossary.json` | Glossary tab data |
-| `scripts/convert_test_bank.py` | Idempotent converter: xlsm + tips overrides → `data/domain{N}.json` |
+| `scripts/originals_to_domain.py` | Idempotent converter: `data/originals/d{N}.json` → `data/domain{N}.json` (all domains, or pass a domain number) |
 | `scripts/build_site.sh` | Builds the public website into `_site/` (allowlist only). Deploy steps: `docs/WEBSITE_DEPLOY.md` |
 | `wrangler.jsonc` | Cloudflare settings, used only if the site is connected via the Workers screen: publish `_site/` only |
 | `scripts/verify_repo.sh` | Repo health check (run via the SessionStart hook) |
@@ -30,13 +29,14 @@ work without rediscovering the layout.
 | `mobile/` | **Expo (React Native) iOS + Android app.** Own `package.json`, tests and `mobile/CLAUDE.md`. Reads questions from `data/domain*.json` via `mobile/scripts/build-content.mjs` |
 | `docs/mobile/ARCHITECTURE.md` | Mobile tech-stack decision, architecture, roadmap, store-launch plan |
 | `supabase/migrations/` | Phase 3 database schema (accounts + sync). Written, not yet applied |
+| `archive/` | Retired files kept for history (not used by the apps, CI or scripts). One line per item in `archive/README.md` |
 
 ## Hard rules
 
 1. **Never edit `data/domain{N}.json` directly.** They are generated. Edit
-   `data/tips_overrides/d{N}.json` for tips, then regenerate via
-   `scripts/convert_test_bank.py`. The source spreadsheet is not in this
-   repo (gitignored as `*.xlsm`); contact the maintainer if you need it.
+   the question (tips included) in `data/originals/d{N}.json`, then run
+   `python3 scripts/originals_to_domain.py` and `bash scripts/verify_repo.sh`.
+   Commit the originals file and the regenerated domain file together.
 2. **`DI` in `index.html` is the canonical source of truth for domain
    weights, names, colors.** Everything else (cisa_notes.json, UI copy)
    either reads from it or is overridden from it at load time.
@@ -80,14 +80,16 @@ work without rediscovering the layout.
 
 ### Add or edit a tip for question d4_217
 
-1. Edit `data/tips_overrides/d4.json` — add/update the `"d4_217": [...]` entry
-   following the established voice (trap-naming + mindset/principle +
-   exam-shortcut pattern; 3–4 strings per question).
+1. Edit the `tips` list of question `d4_217` in `data/originals/d4.json`,
+   following the tip voice (see "Tip authoring voice" below and
+   `docs/content/EXAM_STYLE_V2.md`).
 2. Regenerate the domain JSON:
    ```
-   python3 scripts/convert_test_bank.py 4
+   python3 scripts/originals_to_domain.py 4
    ```
-3. Stage both files (`d4.json` + `domain4.json`) in one commit.
+3. Check it: `bash scripts/verify_repo.sh` and
+   `python3 scripts/lint_exam_style_v2.py 4`.
+4. Stage both files (`data/originals/d4.json` + `data/domain4.json`) in one commit.
 
 ### Bump version
 
@@ -113,7 +115,6 @@ for d in 1 2 3 4 5; do python3 scripts/lint_exam_style_v2.py $d; done
 
 The question source of truth is `data/originals/d{N}.json`; rebuild the
 served files with `python3 scripts/originals_to_domain.py`.
-```
 
 ## UI/UX review workflow (added v9.0)
 
@@ -158,16 +159,16 @@ kill %1
 
 ## Conventions
 
-- **Tip authoring voice.** 3–4 short tips per question:
-  1. Trap-naming tip (calls out the seductive wrong option by letter +
-     content)
-  2. Mindset/principle tip (the underlying ISACA principle being tested)
-  3. Exam-day shortcut tip (pattern recognition or mnemonic)
-  4. Optional 4th neutral tip
+- **Tip authoring voice.** Exam-style v2 questions (the whole bank) have
+  exactly 3 short tips, in this order (`docs/content/EXAM_STYLE_V2.md`):
+  1. `Eliminate:` names the two options topic knowledge rules out, and why
+     (the trap-naming tip)
+  2. `Final two:` the key against the runner-up, by the ISACA principle
+  3. `Exam cue:` a pattern the learner can reuse on unseen questions
   Keep each tip ~1–3 short sentences.
-- **Subtopic vocabulary.** Each domain has a tightened controlled vocab
-  in `convert_test_bank.py`. Add a category there before introducing it
-  in tips.
+- **Subtopic labels.** `subtopic` is free text in `data/originals/`. Reuse
+  an existing label (see `data/originals/_bank_index.md`) before inventing
+  a new one.
 - **No new dependencies.** This app loads from `file://` and over plain
   HTTP; we keep it framework-free, no npm install, no bundler.
   (This rule is for the **web app** only. `mobile/` is an npm project —
@@ -265,8 +266,7 @@ Fix-and-push is automatic; only major issues are escalated.
 PRs are merged via **squash-merge**, which collapses N feature-branch commits
 into 1 commit on main. The feature branch retains the original N commits, so
 its next push diverges from main and the next PR will conflict on the same
-files (typically `d{N}.json`, `_concept_queue.yaml`, `_bank_index.md`,
-`_framework_library.md`, `_d{N}_toc_coverage.md`).
+files (typically `d{N}.json`, `_bank_index.md`, `_framework_library.md`).
 
 **After every PR merge to main**, before starting the next batch:
 

@@ -7,10 +7,10 @@
  *
  * WHEN TO USE IT (plain English):
  *   Builds made on expo.dev (EAS Build) get their channel from eas.json, so
- *   they never need this. The two backup builders don't go through EAS:
- *     - the GitHub "Android test APK" workflow (.github/workflows/android-apk.yml)
- *     - scripts/build-apk.sh (a Mac build)
- *   Both run it in a THROWAWAY copy of the code, AFTER computing the update
+ *   they never need this. The backup builder scripts/build-apk.sh (a Mac
+ *   build) doesn't go through EAS. (The GitHub "Android test APK" workflow
+ *   that also used it was retired on 26 Oct 2026.)
+ *   It runs this in a THROWAWAY copy of the code, AFTER computing the update
  *   runtime and BEFORE `expo prebuild`. It writes the channel into that copy's
  *   app.json, and prebuild then puts it in the Android project.
  *
