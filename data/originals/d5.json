@@ -4625,25 +4625,25 @@
       "question": "An IS auditor finds developers can mark static analysis findings as false positives with no one else reviewing them. Which control BEST addresses this?",
       "options": {
         "A": "Run the static analysis tool on every commit instead of nightly",
-        "B": "Switch to another vendor's tool on management's recommendation",
+        "B": "Have another developer on the team approve each suppression",
         "C": "Train developers to recognize genuine false positives",
         "D": "Require security team approval for each suppressed finding"
       },
       "correct": "D",
       "key_concept": "Suppressing a security finding is an exception that needs independent approval; the person whose code is flagged should not close it alone.",
       "pre_read": "Notice who suppresses the findings and who checks them. Ask which control restores independence.",
-      "correct_explanation": "Developers dismissing findings in their own code with no review is a segregation of duties gap: real vulnerabilities can be suppressed unnoticed. Requiring security team approval for each suppression adds an independent check. Training improves judgment, but the same people would still decide alone on findings in their own code, so the independence gap remains.",
+      "correct_explanation": "Developers dismissing findings in their own code with no review is a segregation of duties gap: real vulnerabilities can be suppressed unnoticed. Requiring security team approval for each suppression adds an independent, expert check. Approval by another developer adds a second person, but a teammate shares the same delivery pressure and usually lacks security expertise, so the review is not truly independent.",
       "wrong_explanations": {
         "A": "Scanning more often produces findings sooner, but developers could still dismiss them with no review.",
-        "B": "Any tool produces findings that can be suppressed. Changing vendors leaves the unreviewed suppression process unchanged.",
+        "B": "Peer approval adds a second person, but a teammate shares the same delivery pressure and usually lacks security expertise, so the check is not independent.",
         "C": "Better judgment helps, but developers would still decide alone on their own code's findings, leaving the independence gap open."
       },
       "tips": [
-        "Eliminate: A changes scan timing, and B changes the tool, while the unreviewed suppression stays.",
-        "Final two: D beats C because independent approval removes self-review; training still leaves the developer deciding alone.",
-        "Exam cue: when people can approve exceptions to their own work, the fix is an independent approver."
+        "Eliminate: A changes scan timing while suppressions stay unreviewed, and C improves judgment but leaves the developer deciding alone.",
+        "Final two: D beats B because the security team is independent of the code's delivery; a teammate shares the same pressure and blind spots.",
+        "Exam cue: when people can approve exceptions to their own work, the fix is an independent approver, not just a second pair of hands."
       ],
-      "_provenance": "Authored from concept: 'SAST audit canonical scope'. Public sources: OWASP, ISACA, NIST, Gartner. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'SAST audit canonical scope'. Public sources: OWASP, ISACA, NIST, Gartner. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): B (switch vendor) was a throwaway; it is now peer approval by a teammate, the runner-up, decided by independence. Training (C) is now an eliminated option.",
       "style_version": 2
     },
     {
@@ -4701,8 +4701,8 @@
       "options": {
         "A": "Account and money-transfer pages are never tested by the scans",
         "B": "Scans could slow public pages during business hours",
-        "C": "Results might duplicate findings from static code analysis",
-        "D": "License costs could rise as more web applications are added"
+        "C": "Scan findings might include false positives that need manual triage",
+        "D": "The scans cannot examine the applications' source code"
       },
       "correct": "A",
       "key_concept": "Unauthenticated dynamic scans see only public pages; a bank's sensitive functions sit behind the login and need authenticated scanning.",
@@ -4710,15 +4710,15 @@
       "correct_explanation": "A dynamic scanner that never logs in only sees public pages. In a banking application, the functions that move money and show customer data sit behind the login, so their flaws go untested. Scan load on production is a real operational concern, but it can be managed by scheduling, while the coverage gap leaves the most sensitive functions unprotected.",
       "wrong_explanations": {
         "B": "Performance impact is real but manageable through scheduling and throttling. It does not leave sensitive functions untested.",
-        "C": "Overlap with static analysis is expected and harmless; the two techniques complement each other.",
-        "D": "License cost is a budgeting matter. It does not affect what the scans can detect."
+        "C": "False positives are a normal cost of dynamic scanning and are handled by triage; they do not leave sensitive functions untested.",
+        "D": "No dynamic scan reads source code, logged in or not; static analysis covers that, and it is not caused by this setting."
       },
       "tips": [
-        "Eliminate: C describes expected, harmless overlap, and D is a budgeting matter.",
+        "Eliminate: C and D are normal limits of every dynamic scan, not risks created by skipping the login.",
         "Final two: A beats B because untested sensitive functions are a protection gap; scan load can be managed by scheduling.",
         "Exam cue: when testing skips the area holding the most sensitive data, that coverage gap is the MOST significant risk."
       ],
-      "_provenance": "Authored from concept: 'DAST audit canonical scope'. Public sources: OWASP, ISACA, NIST. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): removed stem echo from the key. Final polish (Oct 2026).",
+      "_provenance": "Authored from concept: 'DAST audit canonical scope'. Public sources: OWASP, ISACA, NIST. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): removed stem echo from the key. Final polish (Oct 2026). D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): C (duplicate SAST findings) and D (licence costs) were off-type; they are now two normal DAST limitations a candidate must recognize as unrelated to the login gap.",
       "style_version": 2
     },
     {
@@ -4775,9 +4775,9 @@
       "framework_ref": "NIST SP 800-115 (Technical Guide to Information Security Testing and Assessment); PCI DSS v4.0.1 Requirement 11.4 (Penetration Testing); NIST SP 800-53 Rev 5 CA-5 (Plan of Action and Milestones)",
       "question": "A bank's annual penetration test has reported the same critical findings three years in a row. Which gap should the IS auditor consider MOST significant?",
       "options": {
-        "A": "The report is written in highly technical language",
+        "A": "Findings are ranked by CVSS score without business context",
         "B": "The same testing firm has performed every annual test",
-        "C": "The test is scheduled during the bank's quiet season",
+        "C": "Each test is limited to a five-day testing window",
         "D": "No retest within 30 days confirms the critical fixes"
       },
       "correct": "D",
@@ -4785,16 +4785,16 @@
       "pre_read": "Notice the findings repeat year after year. Ask which gap explains why they never get closed.",
       "correct_explanation": "The same critical findings reappearing each year shows that fixes are not being verified. A retest shortly after remediation confirms each critical issue is actually closed. Using one testing firm every year can weaken the freshness of the test, but it does not explain why known findings stay open; the missing retest does.",
       "wrong_explanations": {
-        "A": "Technical language can be addressed with an executive summary. It does not explain why critical findings stay open.",
+        "A": "Context-free ranking can misorder fixes, but these findings are already critical; ranking does not explain why they are never closed.",
         "B": "Rotating testers brings fresh eyes, but the same firm keeps finding the issues; the problem is that fixes are never verified.",
-        "C": "Testing in a quiet season reduces business disruption and does not cause findings to recur."
+        "C": "A short window limits depth and may miss issues, but the same findings are found every year; it is the fixes that fail."
       },
       "tips": [
-        "Eliminate: A is a reporting style issue, and C is a sensible scheduling choice.",
+        "Eliminate: A affects how findings are ranked, and C limits how much is tested; neither explains why known findings stay open.",
         "Final two: D beats B because the missing retest explains why known findings stay open; tester rotation does not.",
         "Exam cue: repeated findings point to a broken remediation loop; look for missing verification of fixes."
       ],
-      "_provenance": "Authored from concept: 'Penetration testing program canonical framework'. Public sources: PTES, OWASP, NIST, PCI Council, ISACA. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Penetration testing program canonical framework'. Public sources: PTES, OWASP, NIST, PCI Council, ISACA. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): A (technical language) and C (quiet season) were throwaways; they are now CVSS-only ranking and a short test window, real program weaknesses that do not explain recurrence.",
       "style_version": 2
     },
     {
@@ -4814,7 +4814,7 @@
       "options": {
         "A": "Extend log retention on every system to two full years",
         "B": "Synchronize all system clocks to common authoritative time sources",
-        "C": "Have analysts adjust timestamps by hand during each investigation",
+        "C": "Record each system's clock offset in the incident runbook",
         "D": "Send every system's logs to a central store for correlation"
       },
       "correct": "B",
@@ -4823,15 +4823,15 @@
       "correct_explanation": "Event timelines depend on every log using the same clock. Synchronizing all systems to a common authoritative time source makes timestamps comparable, so investigators can show what happened in what order and the logs hold up as evidence. Sending logs to a central store helps correlation, but it gathers the same mismatched timestamps, so events still cannot be reliably ordered.",
       "wrong_explanations": {
         "A": "Longer retention keeps more logs, but their timestamps would still disagree, so events still could not be ordered.",
-        "C": "Manual adjustment is guesswork, varies between analysts and alters the evidence, weakening it in any later dispute.",
+        "C": "Recorded offsets drift and vary by system and date, so manual correction stays error-prone and the logs remain weak evidence.",
         "D": "Central collection helps correlation, but the store receives the same mismatched timestamps, so the sequence of events stays unreliable."
       },
       "tips": [
-        "Eliminate: A keeps logs longer without fixing their times, and C alters evidence by hand.",
+        "Eliminate: A keeps logs longer without fixing their times, and C corrects times by hand from offsets that drift.",
         "Final two: B beats D because synchronized clocks fix timestamps at the source, while a central store only gathers the mismatched times.",
         "Exam cue: logs are evidence only if they can be trusted and put in order; fix integrity and timing at the source."
       ],
-      "_provenance": "Authored from concept: 'Log management strategic framework'. Public sources: NIST, CIS, ISO, PCI Council. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): re-angled from tamper-resistant log storage (duplicate of d5_088) to clock synchronization. Cross-domain review (Oct 2026): convention fix.",
+      "_provenance": "Authored from concept: 'Log management strategic framework'. Public sources: NIST, CIS, ISO, PCI Council. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): re-angled from tamper-resistant log storage (duplicate of d5_088) to clock synchronization. Cross-domain review (Oct 2026): convention fix. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): C (adjust timestamps by hand) was a strawman; it is now a documented offset table, a real workaround that leaves sources unsynchronized.",
       "style_version": 2
     },
     {
@@ -4963,8 +4963,8 @@
       "options": {
         "A": "Analysts could face a surge of alerts while baselines form",
         "B": "Ongoing attack activity could be absorbed into the baselines",
-        "C": "License costs could rise as more user accounts are profiled",
-        "D": "The vendor's default dashboard could show too little detail"
+        "C": "Analysts may not yet be trained on the analytics console",
+        "D": "Privacy notices may need updating before staff activity is profiled"
       },
       "correct": "B",
       "key_concept": "Behavior analytics learns normal from history; baselines built while an intruder is active can learn the attack as normal.",
@@ -4972,15 +4972,15 @@
       "correct_explanation": "Behavior analytics flags deviations from a learned normal. If an intruder is active while the baseline forms, the model learns that activity as normal and stays silent about it afterward, giving false assurance. A surge of alerts during the learning period is a real operational burden, but it is temporary and visible, and tuning resolves it, while a poisoned baseline hides the attack.",
       "wrong_explanations": {
         "A": "Early alert volume is a real burden, but it is temporary and visible, and tuning resolves it.",
-        "C": "License cost is a budgeting matter. It does not affect what the analytics will detect.",
-        "D": "Dashboard detail is cosmetic and can be configured. It does not change what the analytics learns or detects."
+        "C": "Training gaps slow analysis and can be closed quickly; they do not change what the model learns as normal.",
+        "D": "Transparency duties must be met, but updating a notice is a manageable compliance step that does not blind the detection."
       },
       "tips": [
-        "Eliminate: C is a budgeting matter, and D is a cosmetic dashboard setting.",
+        "Eliminate: C is a training gap and D a transparency step; both can be fixed without changing what the baselines learn.",
         "Final two: B beats A because a poisoned baseline hides the intruder for good, while alert noise is temporary and can be tuned.",
         "Exam cue: for tools that learn normal behavior, ask what they learn from; a compromised learning period gives false assurance."
       ],
-      "_provenance": "Authored from concept: 'UEBA canonical framework'. Public sources: Gartner, NIST, ISACA, GDPR, ISO. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): re-angled from privacy-before-monitoring (duplicate of d5_058/d5_111) to baseline poisoning. Final polish (Oct 2026). Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged.",
+      "_provenance": "Authored from concept: 'UEBA canonical framework'. Public sources: Gartner, NIST, ISACA, GDPR, ISO. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): re-angled from privacy-before-monitoring (duplicate of d5_058/d5_111) to baseline poisoning. Final polish (Oct 2026). Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): C (licence cost) and D (dashboard detail) were throwaways; they are now a training gap and a privacy-notice duty, real but lesser concerns.",
       "style_version": 2
     },
     {
@@ -5152,7 +5152,7 @@
       "options": {
         "A": "Increase monitoring of the affected applications until the patch arrives",
         "B": "Wait for the vendor patch before changing any configuration",
-        "C": "Notify customers that their data may be compromised",
+        "C": "Take the 23 applications offline until the vendor patch arrives",
         "D": "Deploy firewall rules blocking the exploit pattern within the hour"
       },
       "correct": "D",
@@ -5162,14 +5162,14 @@
       "wrong_explanations": {
         "A": "Monitoring only detects exploitation after it happens. With a blocking control available, relying on detection alone accepts avoidable compromise.",
         "B": "Two days without protection, while exploit code circulates, is ample time for attackers to compromise exposed applications.",
-        "C": "There is no evidence of compromise yet. Premature notification causes alarm while doing nothing to stop an attack."
+        "C": "Shutting customer-facing services for two days is disproportionate when a blocking control can protect them while they keep running."
       },
       "tips": [
-        "Eliminate: B leaves systems exposed for two days, and C announces a compromise that has not been shown.",
+        "Eliminate: B leaves systems exposed for two days, and C halts customer services when a blocking control is available.",
         "Final two: D beats A because blocking prevents exploitation now, while monitoring only detects it afterward.",
         "Exam cue: when a preventive compensating control is ready and exploitation is imminent, deploy it now; detection alone is not enough."
       ],
-      "_provenance": "Authored from concept: 'Zero-day vulnerability immediate compensating control deployment'. Public sources: ISACA, NIST, CISA, ISO. No legacy bank citation. Note: NEW single-focus principle EXPOSURE-WINDOW-CLOSE — distinct from prior six principles. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): stem no longer implies the applications are already compromised. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. Role-lens follow-up (Oct 2026): stem names who acts (management); key, options, explanations and tips unchanged.",
+      "_provenance": "Authored from concept: 'Zero-day vulnerability immediate compensating control deployment'. Public sources: ISACA, NIST, CISA, ISO. No legacy bank citation. Note: NEW single-focus principle EXPOSURE-WINDOW-CLOSE — distinct from prior six principles. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): stem no longer implies the applications are already compromised. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. Role-lens follow-up (Oct 2026): stem names who acts (management); key, options, explanations and tips unchanged. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): C (notify customers of an unshown compromise) was a strawman; it is now taking the applications offline, an overreaction when a compensating control exists.",
       "style_version": 2
     },
     {
@@ -5188,7 +5188,7 @@
       "question": "An IS auditor finds electronic health record access logs stopped reaching the SIEM eight weeks ago unnoticed; the source system kept its own logs. After the feed is restored, what should the auditor recommend FIRST?",
       "options": {
         "A": "Report a confirmed data breach to the regulator immediately",
-        "B": "Replace the SIEM with a product from a different vendor",
+        "B": "Record the eight-week gap as an accepted risk in the register",
         "C": "Review the gap-period logs for improper patient record access",
         "D": "Add an alert that fires whenever any log source goes silent"
       },
@@ -5198,15 +5198,15 @@
       "correct_explanation": "For eight weeks nobody reviewed who accessed patient records, so improper access may have occurred unseen. Because the source logs survive, reviewing them now is the only way to find misuse and decide whether a reportable breach happened. An alert for silent log sources is essential to stop a repeat, but it protects the future and leaves the past eight weeks unexamined.",
       "wrong_explanations": {
         "A": "No breach has been established yet. The retrospective review is what determines whether notification is required.",
-        "B": "The failure was an unmonitored feed, not the product. Replacing the SIEM is costly and leaves the gap unreviewed.",
+        "B": "Risk acceptance applies to risks assessed in advance, not to unexamined exposure; recording it leaves possible misuse of patient records unknown.",
         "D": "A silence alert prevents the next gap from going unnoticed but does nothing to find misuse during the eight weeks already missed."
       },
       "tips": [
-        "Eliminate: A declares a breach before any review, and B blames the product for a monitoring failure.",
+        "Eliminate: A declares a breach before any review, and B accepts a risk that nobody has assessed.",
         "Final two: C beats D because the missed period may hide misuse now; the silence alert only protects the future.",
         "Exam cue: when monitoring has failed, look back over the gap before fixing forward."
       ],
-      "_provenance": "Authored from concept: 'SIEM log gap discovery and remediation in healthcare context'. Public sources: ISACA, HIPAA, NIST, HHS OCR. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'SIEM log gap discovery and remediation in healthcare context'. Public sources: ISACA, HIPAA, NIST, HHS OCR. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): B (replace the SIEM) was a throwaway; it is now an after-the-fact risk acceptance. Eliminate tip no longer says 'blames'.",
       "style_version": 2
     },
     {
@@ -5227,7 +5227,7 @@
         "A": "Switch the rule to monitor mode during tuning",
         "B": "Keep blocking merges until developers rewrite the flagged code",
         "C": "Remove the rule until a corrected version is ready",
-        "D": "Let developers bypass the gate without recording the override"
+        "D": "Let merges through whenever a teammate approves the override"
       },
       "correct": "A",
       "key_concept": "When a security control misfires, keep its visibility while removing the disruption, rather than deleting it or allowing unrecorded bypasses.",
@@ -5236,14 +5236,14 @@
       "wrong_explanations": {
         "B": "Forcing rewrites of legitimate code wastes effort and delays delivery because of a known false positive.",
         "C": "Removing the rule ends the disruption but also all visibility of unsafe deserialization until the fix ships.",
-        "D": "Unrecorded bypasses defeat the gate's purpose and leave no audit trail of what code skipped the security check."
+        "D": "Peer overrides restore flow, but each one switches the check off for that merge, so genuine unsafe code passes once a colleague agrees."
       },
       "tips": [
-        "Eliminate: D allows untraceable bypasses, and B makes developers rewrite correct code for a faulty rule.",
+        "Eliminate: B makes developers rewrite correct code for a faulty rule, and D lets a colleague switch the check off merge by merge.",
         "Final two: A beats C because monitor mode still flags real issues, while removing the rule leaves no visibility.",
         "Exam cue: when no precise fix is ready, keep a misfiring control detecting while it is tuned; never remove it or allow untracked bypasses."
       ],
-      "_provenance": "Authored from concept: 'SAST false-positive flood remediation balancing developer productivity + security'. Public sources: OWASP, ISACA, NIST, Gartner. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): stem states no precise fix is ready; explanation says when monitor mode is right; shared exam cue. Final polish (Oct 2026). Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged.",
+      "_provenance": "Authored from concept: 'SAST false-positive flood remediation balancing developer productivity + security'. Public sources: OWASP, ISACA, NIST, Gartner. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): stem states no precise fix is ready; explanation says when monitor mode is right; shared exam cue. Final polish (Oct 2026). Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): D (unrecorded bypass) was a strawman; it is now a peer-approved override, a common workaround that still disables the check per merge.",
       "style_version": 2
     },
     {
@@ -5265,7 +5265,7 @@
         "A": "Include service levels with penalties for missed detections",
         "B": "Retain in-house staff to oversee the provider and own incidents",
         "C": "Let the provider decide which incidents the firm should hear about",
-        "D": "Transfer the existing detection rules to the provider without review"
+        "D": "Have the provider replace existing rules with its standard set"
       },
       "correct": "B",
       "key_concept": "Security monitoring can be outsourced, but accountability cannot; the firm must keep in-house capability to oversee the provider and decide on incidents.",
@@ -5274,14 +5274,14 @@
       "wrong_explanations": {
         "A": "Penalties compensate after a failure and need someone in-house to detect and enforce them; they do not replace oversight.",
         "C": "Letting the provider filter what the firm hears removes the firm's ability to judge risk and decide on incidents.",
-        "D": "Rules tuned to this environment over years may not map to the provider's platform; an unreviewed transfer risks silent coverage gaps."
+        "D": "A provider's standard rules lack detections tuned to this firm's systems, so coverage built over years can silently disappear."
       },
       "tips": [
-        "Eliminate: C hands incident judgment to the provider, and D moves rules across without checking coverage.",
+        "Eliminate: C hands incident judgment to the provider, and D swaps tuned detections for generic ones without checking coverage.",
         "Final two: B beats A because accountability cannot be outsourced; penalties need retained staff to notice and enforce them.",
         "Exam cue: in outsourcing questions, the firm keeps accountability, so look for retained oversight capability."
       ],
-      "_provenance": "Authored from concept: 'MSSP transition from in-house SOC framework'. Public sources: ISACA, NIST, Gartner. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): expanded SOC to avoid confusion with SOC reports.",
+      "_provenance": "Authored from concept: 'MSSP transition from in-house SOC framework'. Public sources: ISACA, NIST, Gartner. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): expanded SOC to avoid confusion with SOC reports. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): D (transfer rules without review) gave itself away; it is now the provider's standard rule set, a common onboarding shortcut.",
       "style_version": 2
     },
     {
@@ -5389,11 +5389,11 @@
         "D": "A summary score hides which accounts and rules are excluded and is weak, easily altered evidence."
       },
       "tips": [
-        "Eliminate: C is vendor marketing, and D is a summary that hides what is excluded.",
+        "Eliminate: C is vendor marketing rather than evidence about this setup, and D is a summary score that does not show which accounts are excluded.",
         "Final two: A beats B because coverage of the population comes before testing rule quality.",
         "Exam cue: in any monitoring audit, confirm completeness of the population before testing the rules applied to it."
       ],
-      "_provenance": "Authored from concept: 'CSPM audit scope for multi-cloud environments'. Public sources: Gartner, ISACA, CIS, NIST. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'CSPM audit scope for multi-cloud environments'. Public sources: Gartner, ISACA, CIS, NIST. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Eliminate tip no longer says 'hides'.",
       "style_version": 2
     },
     {
@@ -5413,9 +5413,9 @@
       "question": "An IS auditor reviews testing of a firm's customer-facing APIs for broken object-level authorization. Which test approach BEST detects this flaw?",
       "options": {
         "A": "Unauthenticated scans for known vulnerability signatures",
-        "B": "Authenticated tests requesting another account's records",
-        "C": "Load tests measuring API response times under peak traffic",
-        "D": "Reviews of API documentation for missing security headers"
+        "B": "Authenticated tests that request another account's records",
+        "C": "Fuzz each endpoint with malformed input to find crashes",
+        "D": "Confirm each endpoint rejects requests that lack a valid token"
       },
       "correct": "B",
       "key_concept": "Object-level authorization flaws are detected by authenticated tests where one user requests objects belonging to another.",
@@ -5423,15 +5423,15 @@
       "correct_explanation": "Broken object-level authorization is found by logging in as one user and requesting objects that belong to another, which shows whether the API checks ownership on every call. Unauthenticated signature scans are useful for known flaws, but they never act as a logged-in user, so they cannot see whether one customer can reach another's data.",
       "wrong_explanations": {
         "A": "Signature scans without credentials cannot test whether ownership is checked for logged-in users.",
-        "C": "Load testing measures performance, not whether authorization is enforced.",
-        "D": "Header reviews address other weaknesses and cannot reveal missing ownership checks."
+        "C": "Fuzzing finds input-handling and crash bugs, but a valid request for another customer's record is well-formed and passes untouched.",
+        "D": "Token checks confirm a caller is authenticated, not that the requested object belongs to them; that ownership check is what is missing."
       },
       "tips": [
-        "Eliminate: C tests performance, and D checks headers rather than authorization.",
+        "Eliminate: C tests input handling, and D tests authentication; neither checks whether one user can reach another's records.",
         "Final two: B beats A because ownership checks only show up when a logged-in user requests others' records.",
         "Exam cue: authorization flaws need authenticated tests using two accounts; generic scanners miss them."
       ],
-      "_provenance": "Authored from concept: 'API security testing canonical approach per OWASP API Top 10 (2023)'. Public sources: OWASP, NIST, API security vendors. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): expanded the OWASP acronym. Cross-domain review (Oct 2026): re-angled or clarified to remove duplication/contradiction.",
+      "_provenance": "Authored from concept: 'API security testing canonical approach per OWASP API Top 10 (2023)'. Public sources: OWASP, NIST, API security vendors. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): expanded the OWASP acronym. Cross-domain review (Oct 2026): re-angled or clarified to remove duplication/contradiction. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): C (load tests) and D (header review) were off-type; they are now fuzzing and a token check, real API tests that miss object-level authorization.",
       "style_version": 2
     },
     {
@@ -5527,23 +5527,23 @@
         "A": "Assign each rule an owner who reviews its accuracy quarterly",
         "B": "Raise every rule's alert threshold under the SOC's tuning policy",
         "C": "Delete rules older than two years and rebuild them from scratch",
-        "D": "Engage the SIEM vendor to review the full rule set annually"
+        "D": "Make one SOC lead the owner of a yearly rule review"
       },
       "correct": "A",
       "key_concept": "Detection content decays as systems and threats change, so each rule needs an accountable owner and a regular review cycle.",
       "pre_read": "Notice two gaps: no owners and no reviews. Ask which option fixes both with internal accountability.",
-      "correct_explanation": "Detection rules decay as log sources, systems and attacker techniques change, so unowned rules silently stop working or flood analysts. Naming an owner for each rule and reviewing its accuracy quarterly creates accountability and a cadence matched to change. An annual vendor review adds expertise, but the vendor does not own the firm's risk, and a yearly cycle lets broken rules persist for months.",
+      "correct_explanation": "Detection rules decay as log sources, systems and attacker techniques change, so unowned rules silently stop working or flood analysts. Naming an owner for each rule and reviewing its accuracy quarterly creates accountability and a cadence matched to change. A single lead owning a yearly review adds accountability on paper, but one person cannot judge 320 rules well, and a yearly cycle lets broken rules persist for months.",
       "wrong_explanations": {
         "B": "A tuning policy does not make a blanket change sound. Raising every threshold hides real attacks along with noise and ignores each rule's accuracy.",
         "C": "Age alone does not show a rule is broken; rebuilding wholesale discards working detections and creates gaps.",
-        "D": "A vendor review is external and yearly. It leaves no internal owner accountable and lets broken rules persist for months."
+        "D": "One owner and a yearly cycle add some accountability, but one person cannot judge 320 rules well, and broken rules persist for months."
       },
       "tips": [
-        "Eliminate: B suppresses alerts blindly across every rule, and C discards rules by age rather than performance.",
-        "Final two: A beats D because accountability for detection stays in-house, and quarterly reviews catch decay sooner.",
+        "Eliminate: B raises thresholds across every rule regardless of accuracy, and C deletes rules by age rather than performance.",
+        "Final two: A beats D because per-rule owners and quarterly reviews catch decay sooner than one person's yearly pass over 320 rules.",
         "Exam cue: for controls that decay, such as detection rules, look for a named owner and a regular review cycle."
       ],
-      "_provenance": "Authored from concept: 'SIEM tuning at scale canonical framework'. Public sources: MaGMA, SANS, ISACA, MITRE. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'SIEM tuning at scale canonical framework'. Public sources: MaGMA, SANS, ISACA, MITRE. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): The key alone supplied an owner; D is now a single owner with a yearly review, so the runner-up shares the remedy and loses on scale and cadence. Eliminate tip no longer says 'discards'.",
       "style_version": 2
     },
     {
@@ -5673,7 +5673,7 @@
       "framework_ref": "NIST SP 800-115 (Technical Guide to Information Security Testing and Assessment); NIST SP 800-53 Rev 5 CA-5 (Plan of Action and Milestones); ISO/IEC 27002:2022 Control 8.8 (Management of Technical Vulnerabilities)",
       "question": "A penetration tester supplied reproducible evidence of a critical remote code execution flaw in the billing platform, a system the contract excluded from testing. Which action would the IS auditor recommend management take FIRST?",
       "options": {
-        "A": "Treat the flaw as valid and start risk-based remediation",
+        "A": "Treat the flaw as valid and start remediation now",
         "B": "Issue a breach-of-contract notice to the testing firm",
         "C": "Investigate how the tester reached the excluded system",
         "D": "Reject the finding because the system was out of scope"
@@ -5688,11 +5688,11 @@
         "D": "Rejecting the finding ignores a known critical vulnerability; attackers are not bound by the contract's scope."
       },
       "tips": [
-        "Eliminate: D ignores a known critical flaw, and B addresses the contract instead of the risk.",
+        "Eliminate: D rejects a critical flaw on a contract term attackers are not bound by, and B addresses the contract instead of the exposure.",
         "Final two: A beats C because the vulnerability is real now; the scope question can be investigated in parallel.",
         "Exam cue: once a critical flaw is known, fix the risk first; how it was discovered is a secondary question."
       ],
-      "_provenance": "Authored from concept: 'Pentest scope dispute resolution with responsible-disclosure obligation'. Public sources: ISO, CISA, PTES, PCI Council, SEC. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. Third pass (ISACA reviewer, Oct 2026): live-incident and legal/forensic stems reframed; options revised. Fourth pass (polish, Oct 2026): wording and metadata fixes from the last blind test; key unchanged. Content review (Oct 2026): tip timing now matches the explanation (scope investigated in parallel).",
+      "_provenance": "Authored from concept: 'Pentest scope dispute resolution with responsible-disclosure obligation'. Public sources: ISO, CISA, PTES, PCI Council, SEC. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. Third pass (ISACA reviewer, Oct 2026): live-incident and legal/forensic stems reframed; options revised. Fourth pass (polish, Oct 2026): wording and metadata fixes from the last blind test; key unchanged. Content review (Oct 2026): tip timing now matches the explanation (scope investigated in parallel). D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Eliminate tip no longer says 'ignores'; the key no longer carries the word 'risk' (cue balance).",
       "style_version": 2
     },
     {
@@ -5839,11 +5839,11 @@
         "D": "Two separate SOCs keep cost and visibility gaps across the merged estate and ignore the board's request."
       },
       "tips": [
-        "Eliminate: B makes a strategic leap without analysis, and D ignores the board's consolidation request.",
+        "Eliminate: B makes a major sourcing decision without analysis, and D leaves the board's consolidation request unmet.",
         "Final two: C beats A because knowing what each SOC detects must come before choosing; size is not coverage.",
         "Exam cue: before a hard-to-reverse platform choice, first establish what each existing setup must keep detecting."
       ],
-      "_provenance": "Authored from concept: 'Multi-cloud SOC consolidation framework'. Public sources: ISACA, Gartner, OCSF. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): reworded key C so it no longer reads as a wait option. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged.",
+      "_provenance": "Authored from concept: 'Multi-cloud SOC consolidation framework'. Public sources: ISACA, Gartner, OCSF. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): reworded key C so it no longer reads as a wait option. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Eliminate tip no longer says 'ignores'.",
       "style_version": 2
     },
     {
@@ -5877,11 +5877,11 @@
         "D": "Blanket monitoring of all staff is disproportionate under EU employment rules and buries real signals in low-value data."
       },
       "tips": [
-        "Eliminate: B cannot detect a determined insider, and C ignores transparency and works council rights.",
+        "Eliminate: B cannot detect a determined insider, and C lacks the transparency and works council consultation EU rules require.",
         "Final two: A beats D because monitoring must be proportionate; focusing on high-access roles protects data lawfully.",
         "Exam cue: in monitoring questions, prefer the option scaled to data sensitivity over blanket surveillance."
       ],
-      "_provenance": "Authored from concept: 'Insider threat detection program multi-jurisdictional design'. Public sources: ISACA, CERT, NIST, EO 13587, GDPR. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged.",
+      "_provenance": "Authored from concept: 'Insider threat detection program multi-jurisdictional design'. Public sources: ISACA, CERT, NIST, EO 13587, GDPR. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Eliminate tip no longer says 'ignores'.",
       "style_version": 2
     },
     {
@@ -5940,7 +5940,7 @@
         "A": "Keep every rule in case the old systems ever return",
         "B": "Delete the 300 oldest rules to cut the volume",
         "C": "Assign rule owners and review rules on a set cycle",
-        "D": "Let the SIEM vendor maintain the whole rule set"
+        "D": "Make the SIEM vendor the owner of the whole rule set"
       },
       "correct": "C",
       "key_concept": "Detection rules need named owners and periodic review so obsolete rules are retired and coverage stays relevant.",
@@ -5949,14 +5949,14 @@
       "wrong_explanations": {
         "A": "Keeping obsolete rules adds noise and maintenance load with no detection value.",
         "B": "Rule age does not show relevance; deleting by age may remove needed coverage.",
-        "D": "A vendor does not know the firm's systems and cannot own its detection logic."
+        "D": "The vendor can maintain content, but it does not know the firm's systems or own its risk, so it cannot judge each rule's relevance."
       },
       "tips": [
-        "Eliminate: A keeps known clutter, and D hands firm-specific logic to an outsider.",
+        "Eliminate: A keeps known clutter, and D makes an outsider the owner of firm-specific detection logic.",
         "Final two: C beats B because owned, periodic review targets relevance; deleting by age is arbitrary.",
         "Exam cue: controls without owners decay; assign ownership and a review cycle before cleaning up."
       ],
-      "_provenance": "Authored from concept: 'Detection engineering technical debt remediation'. Public sources: SANS, MITRE, Sigma, ISACA. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): re-angled away from d5_147 and d5_149 (rule ownership and testing): now measuring detection effectiveness. Cross-domain review (Oct 2026): re-angled or clarified to remove duplication/contradiction.",
+      "_provenance": "Authored from concept: 'Detection engineering technical debt remediation'. Public sources: SANS, MITRE, Sigma, ISACA. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): re-angled away from d5_147 and d5_149 (rule ownership and testing): now measuring detection effectiveness. Cross-domain review (Oct 2026): re-angled or clarified to remove duplication/contradiction. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): The key alone said 'owner'; D now names the wrong owner, so the word no longer points to the key.",
       "style_version": 2
     },
     {
@@ -6050,26 +6050,26 @@
       "framework_ref": "NIST SP 800-61 Rev 3 (Incident Response Recommendations and Considerations for Cybersecurity Risk Management); ISO/IEC 27035-1:2023 (Information Security Incident Management — Principles and Process); ISO/IEC 27002:2022 Control 5.27 (Learning from Information Security Incidents)",
       "question": "An IS auditor reviews an incident response plan that covers preparation, detection, containment and recovery in detail. Which omission should concern the auditor MOST?",
       "options": {
-        "A": "No rule to issue a press release for every incident",
+        "A": "No list of the tools responders are approved to use",
         "B": "No step feeds lessons learned back into controls and the plan",
         "C": "No requirement to file a final report when each incident closes",
-        "D": "No scripted procedure for every possible type of attack"
+        "D": "No current contact details for the outside forensic retainer"
       },
       "correct": "B",
       "key_concept": "Incident response is a cycle: post-incident lessons learned must feed back into controls, playbooks and preparation.",
       "pre_read": "List the phases the stem names, then ask which phase of the incident response lifecycle is missing.",
       "correct_explanation": "The plan covers every phase except post-incident activity, so the organization responds but never improves. A lessons-learned step turns each incident into fixes for controls, playbooks and training, closing the response lifecycle. A closing report documents what happened, but documentation without a feedback loop lets the same weaknesses cause the next incident.",
       "wrong_explanations": {
-        "A": "Public statements depend on severity and legal advice. A blanket press release rule is neither required nor sensible.",
+        "A": "An approved tool list is a preparation detail worth adding, but responders can still act; the plan's missing phase is improvement.",
         "C": "A report records the incident but does not by itself drive changes to controls or the plan. Learning, not paperwork, completes the lifecycle.",
-        "D": "Scripting every possible attack is unworkable. Good plans use a framework with playbooks for the most likely scenarios."
+        "D": "Missing contacts would slow one call and should be fixed, but it is a preparation detail, not a missing lifecycle phase."
       },
       "tips": [
-        "Eliminate: D asks for impossible exhaustive scripts, and A demands publicity regardless of severity or legal advice.",
+        "Eliminate: A and D are preparation details inside a phase the plan already covers, not a missing phase of the lifecycle.",
         "Final two: B beats C because the missing phase is about improving controls, and a report alone records without improving anything.",
         "Exam cue: the incident lifecycle ends with lessons learned feeding back into preparation; a plan that stops at recovery never gets better."
       ],
-      "_provenance": "Authored from concept: 'IR lifecycle canonical framework per NIST SP 800-61 Rev 2'. Public sources: NIST, ISO, SANS, PCI Council, HIPAA. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'IR lifecycle canonical framework per NIST SP 800-61 Rev 2'. Public sources: NIST, ISO, SANS, PCI Council, HIPAA. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): A (press release for every incident) and D (script every attack) were strawmen; they are now two preparation details, which a candidate must tell apart from a missing lifecycle phase.",
       "style_version": 2
     },
     {
@@ -6239,9 +6239,9 @@
       "question": "An IS auditor notes that the annual incident tabletop exercise has reused the same generic ransomware scenario and participants for four years. What should the auditor recommend MOST strongly?",
       "options": {
         "A": "Add more business departments to the existing exercise",
-        "B": "Replace tabletop exercises with unannounced attacks on production",
+        "B": "Have participants score their own performance after each exercise",
         "C": "Keep the script fixed so that yearly scores can be compared",
-        "D": "Base scenarios on current threats and rotate the participants each year"
+        "D": "Draw scenarios from current threats and rotate participants yearly"
       },
       "correct": "D",
       "key_concept": "Exercises must reflect the organization's current threats and change over time; a repeated script tests memory, not readiness.",
@@ -6249,15 +6249,15 @@
       "correct_explanation": "A repeated, generic scenario tests memory rather than readiness and leaves the firm's real threats unexercised. Building scenarios from the current threat profile, with fresh injects and rotating participants, exposes gaps people have not rehearsed. Widening attendance is worthwhile, but more people rehearsing the same familiar script will still not reveal weaknesses against the threats the firm actually faces.",
       "wrong_explanations": {
         "A": "Broader attendance helps, but everyone would still rehearse the same stale scenario, so gaps against current threats stay hidden.",
-        "B": "Unannounced attacks on production risk real outages. Tabletops are a safe, essential step and should be improved, not dropped.",
+        "B": "Self-scoring adds reflection but keeps the same stale scenario, so participants grade themselves on a script they already know.",
         "C": "A fixed script is exactly the weakness found. Comparable scores mean little if the scenario no longer reflects real threats."
       },
       "tips": [
-        "Eliminate: B drops a safe test for risky production attacks, and C keeps the very script that caused the finding.",
+        "Eliminate: B adds self-assessment to the same stale script, and C keeps the very script that caused the finding.",
         "Final two: D beats A because the weakness is a stale scenario, and more attendees rehearsing it will not expose new gaps.",
         "Exam cue: an exercise that never changes tests memory, not readiness; prefer scenarios drawn from current threats."
       ],
-      "_provenance": "Authored from concept: 'Tabletop exercise canonical design per NIST SP 800-84 + HSEEP'. Public sources: NIST, ISACA, FEMA, PCI Council. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Tabletop exercise canonical design per NIST SP 800-84 + HSEEP'. Public sources: NIST, ISACA, FEMA, PCI Council. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): B (unannounced attacks on production) was a strawman; it is now self-scoring, which keeps the stale scenario. Key shortened so it is not the longest option.",
       "style_version": 2
     },
     {
@@ -6423,10 +6423,10 @@
         "Control gaps"
       ],
       "framework_ref": "ISO/IEC 27001:2022 Clause 6.1.3 (Information Security Risk Treatment); ISO/IEC 27001:2022 Clause 8.2 (Information Security Risk Assessment); NIST SP 800-30 Rev 1 (Guide for Conducting Risk Assessments)",
-      "question": "A security manager selected controls for a new payments platform from a vendor's best-practice checklist, without a risk assessment. What should the IS auditor recommend FIRST?",
+      "question": "A security manager selected controls for a new payments platform from a vendor's best-practice checklist; nobody analyzed the platform's threats. What should the IS auditor recommend FIRST?",
       "options": {
-        "A": "Replace the checklist with the full control set of a recognized framework",
-        "B": "Assess the platform's risks and map the selected controls to them",
+        "A": "Replace the checklist with a recognized framework's risk-rated control baseline",
+        "B": "Assess the platform's risks and map the controls to them",
         "C": "Implement every checklist control before the platform goes live",
         "D": "Test whether the checklist controls operate effectively"
       },
@@ -6435,7 +6435,7 @@
       "pre_read": "Ask what tells the organization which controls this platform actually needs.",
       "correct_explanation": "Controls should answer the risks a system actually faces, so the first step is a risk assessment that shows which threats matter and whether the chosen controls address them, exposing gaps and unneeded controls. Swapping in a recognized framework's full control set is tempting, but it is still a generic list; without the risk assessment, the firm cannot tell which controls it needs or how strong they must be.",
       "wrong_explanations": {
-        "A": "A recognized framework is a useful reference, but adopting its full set without assessing risk repeats the same mistake on a larger scale.",
+        "A": "A framework baseline is still generic: it rates risks for a typical organization, not for this payments platform.",
         "C": "Implementing everything wastes money on low risks and may still miss threats specific to this platform that no generic checklist covers.",
         "D": "Testing comes later. Controls can work perfectly and still be the wrong controls if nobody checked them against the platform's risks."
       },
@@ -6444,7 +6444,7 @@
         "Final two: B beats A because a framework is still a generic list; only a risk assessment shows which controls this platform needs.",
         "Exam cue: frameworks and checklists inform control selection, but the risk assessment drives it."
       ],
-      "_provenance": "Authored from concept: 'Multi-region incident coordination framework for global SaaS'. Public sources: ISACA, NIST, GDPR, HIPAA, ENISA. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Rebalanced (Oct 2026): re-angled from 5B5 Security Incident Response Management to 5A1. Rebalance review (Oct 2026): added the risk treatment clause to the citation.",
+      "_provenance": "Authored from concept: 'Multi-region incident coordination framework for global SaaS'. Public sources: ISACA, NIST, GDPR, HIPAA, ENISA. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Rebalanced (Oct 2026): re-angled from 5B5 Security Incident Response Management to 5A1. Rebalance review (Oct 2026): added the risk treatment clause to the citation. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): The stem's 'without a risk assessment' handed over the key; the gap is now stated as a fact, and the runner-up also speaks of risk.",
       "style_version": 2
     },
     {
@@ -6464,9 +6464,9 @@
       "question": "During a confirmed ransomware attack, a manager proposes pausing containment until the cyber insurer approves responders, since the policy covers losses. What should the IS auditor recommend FIRST?",
       "options": {
         "A": "Pause containment until the insurer approves its panel responders",
-        "B": "Pay the ransom quickly and seek reimbursement from the insurer",
+        "B": "Let the insurer's breach coach direct containment decisions",
         "C": "Continue containment now and notify the insurer in parallel",
-        "D": "Claim the full policy limit before any losses are known"
+        "D": "Delay notifying the insurer until losses are fully known"
       },
       "correct": "C",
       "key_concept": "Cyber insurance transfers financial loss, not the duty to protect information; continue containment while notifying the insurer promptly.",
@@ -6474,15 +6474,15 @@
       "correct_explanation": "Insurance transfers part of the financial loss, but it does not transfer the duty to protect the firm's data and systems. Containment must continue while the insurer is notified promptly, so coverage conditions are met without letting the ransomware spread. Waiting for insurer-approved responders sounds like protecting coverage, but every hour of delay lets more data be encrypted or stolen, and policies expect the insured to limit loss.",
       "wrong_explanations": {
         "A": "Policies expect the insured to limit loss. Halting containment for approvals lets the attack spread and damages more data.",
-        "B": "Paying without insurer, legal and sanctions checks can void cover and break the law, and payment does not guarantee recovery.",
-        "D": "Claims must reflect actual losses. Claiming the limit before costs are known misrepresents the loss and damages the relationship with the insurer."
+        "B": "Insurer advisers can help, but management stays accountable for containment decisions; handing them over shifts a duty insurance cannot take.",
+        "D": "Policies usually require prompt notice of an incident; waiting until losses are known can breach that condition and put cover at risk."
       },
       "tips": [
-        "Eliminate: B pays without legal or insurer checks, and D claims the limit before any loss is known.",
+        "Eliminate: B hands management's containment decisions to the insurer's adviser, and D breaches the prompt-notice condition most policies set.",
         "Final two: C beats A because insurance shifts financial loss, not the duty to protect data; containment cannot wait for approvals.",
         "Exam cue: insurance transfers money risk, never the duty to protect; keep protecting the asset while you notify."
       ],
-      "_provenance": "Authored from concept: 'Cyber insurance + IR coordination during ransomware incident'. Public sources: ISACA, OFAC, CISA, Marsh, carrier documentation. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): drift fix: deciding principle is now that insurance transfers financial loss, not the duty to protect information. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged.",
+      "_provenance": "Authored from concept: 'Cyber insurance + IR coordination during ransomware incident'. Public sources: ISACA, OFAC, CISA, Marsh, carrier documentation. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): drift fix: deciding principle is now that insurance transfers financial loss, not the duty to protect information. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): B (pay the ransom quickly) and D (claim the full limit) were strawmen; they are now the insurer's breach coach directing containment and a delayed notice.",
       "style_version": 2
     },
     {
@@ -6501,7 +6501,7 @@
       "question": "A cloud service provider has contained a breach and confirmed which 47 business customers' personal data was exposed; those customers face their own regulatory deadlines. What should the IS auditor recommend management do FIRST?",
       "options": {
         "A": "Notify the affected customers now with the confirmed facts",
-        "B": "Issue a public press release before contacting affected customers",
+        "B": "Post a general breach notice on the public status page",
         "C": "Finish the forensic investigation before contacting any customer",
         "D": "File breach reports with each customer's regulator on their behalf"
       },
@@ -6510,16 +6510,16 @@
       "pre_read": "Notice what is already confirmed and whose deadlines are running. Ask who needs to know first.",
       "correct_explanation": "The 47 customers control the exposed data and face their own regulatory deadlines, which they cannot meet until they are told. Notifying them now with the confirmed facts, and updating them as forensics finishes, lets them act in time. Completing the investigation first sounds careful, but the deciding facts are already confirmed, and waiting could make customers miss their deadlines.",
       "wrong_explanations": {
-        "B": "Customers should not learn of a breach of their data from the press. Direct notice to those affected comes first.",
+        "B": "A general notice does not give the 47 customers the specific facts they need to assess their own exposure and meet their deadlines.",
         "C": "The key facts are already confirmed. Waiting for complete forensics can make customers miss their own regulatory deadlines.",
         "D": "The customers control the data and their regulatory duties. The provider supports them but should not file on their behalf."
       },
       "tips": [
-        "Eliminate: D takes over duties that belong to the customers, and B lets customers learn of the breach from the press.",
+        "Eliminate: D takes over duties that belong to the customers, and B posts a general notice instead of telling the affected customers directly.",
         "Final two: A beats C because the affected customers are known and their deadlines are running; full forensics can follow as updates.",
         "Exam cue: when others' legal deadlines depend on the organization's notice, notify with confirmed facts and update later."
       ],
-      "_provenance": "Authored from concept: 'B2B SaaS material customer data breach — customer notification first action'. Public sources: ISACA, SEC, HIPAA, GDPR, ABA. No legacy bank citation. NEW single-focus principle: NOTIFY-FIRST-FOR-CUSTOMER-PROTECTION. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. Second wording pass (Oct 2026): wording fixes from the blind re-test; key and options unchanged.",
+      "_provenance": "Authored from concept: 'B2B SaaS material customer data breach — customer notification first action'. Public sources: ISACA, SEC, HIPAA, GDPR, ABA. No legacy bank citation. NEW single-focus principle: NOTIFY-FIRST-FOR-CUSTOMER-PROTECTION. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. Second wording pass (Oct 2026): wording fixes from the blind re-test; key and options unchanged. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): B (press release first) was a strawman; it is now a status-page notice in place of direct notice.",
       "style_version": 2
     },
     {
@@ -6576,7 +6576,7 @@
       "question": "A firm has documented NIST Cybersecurity Framework current and target profiles, and the gap between them is large. Which approach to building the security roadmap should the IS auditor recommend as BEST?",
       "options": {
         "A": "Close the cheapest and fastest gaps first to show progress",
-        "B": "Prioritize gaps by business risk and agree the plan with management",
+        "B": "Rank gaps by business impact and agree the plan with management",
         "C": "Mandate Tier 4 (Adaptive) organization-wide through a new security policy",
         "D": "Buy tools that cover the largest number of categories with gaps"
       },
@@ -6590,11 +6590,11 @@
         "D": "Tools bought to tick categories may miss the riskiest gaps; the framework describes outcomes, not a product shopping list."
       },
       "tips": [
-        "Eliminate: C ignores the target profile the organization chose, and D treats the framework as a shopping list for tools.",
+        "Eliminate: C sets a maturity tier instead of the target profile the firm chose, and D treats the framework as a shopping list for tools.",
         "Final two: B beats A because gaps are ranked by business risk; ease of fixing matters only after risk sets the order.",
         "Exam cue: a gap analysis feeds a risk-prioritized roadmap that management approves and funds."
       ],
-      "_provenance": "Authored from concept: 'Crisis communication during major incident canonical framework'. Public sources: Edelman, ISACA, NIST, SEC, Weber Shandwick. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Rebalanced (Oct 2026): re-angled from 5B5 Security Incident Response Management to 5A1. Rebalance review (Oct 2026): corrected option C so Tiers are not presented as maturity levels. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged.",
+      "_provenance": "Authored from concept: 'Crisis communication during major incident canonical framework'. Public sources: Edelman, ISACA, NIST, SEC, Weber Shandwick. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Rebalanced (Oct 2026): re-angled from 5B5 Security Incident Response Management to 5A1. Rebalance review (Oct 2026): corrected option C so Tiers are not presented as maturity levels. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Eliminate tip no longer says 'ignores'; the key no longer carries the word 'risk' (cue balance).",
       "style_version": 2
     },
     {
@@ -6616,7 +6616,7 @@
         "A": "Close the exercise findings because the plan was edited",
         "B": "Present the revised plan to the board for approval",
         "C": "Validate the revised plan in a follow-up exercise",
-        "D": "Replace the plan with an unmodified vendor template"
+        "D": "Train responders on the revised plan before any further testing"
       },
       "correct": "C",
       "key_concept": "After revising a plan, retest it to confirm the gaps are closed before seeking approval or closing the findings.",
@@ -6625,14 +6625,14 @@
       "wrong_explanations": {
         "A": "A finding is closed when the fix is shown to work, not when a document is edited.",
         "B": "Approval is needed, but approving an untested revision gives false assurance. Validation should come first.",
-        "D": "A generic template ignores the organization's own systems, roles and regulators, and was not what the exercise tested."
+        "D": "Training spreads the revised plan, but it teaches procedures nobody has shown to work; validation should confirm the fixes first."
       },
       "tips": [
-        "Eliminate: D discards the firm's own plan for a generic one, and A closes findings without proving the fixes work.",
+        "Eliminate: D trains people on fixes nobody has tested, and A closes findings because a document changed.",
         "Final two: C beats B because the board should approve a plan shown to work, not a revision that is still untested.",
         "Exam cue: after a fix, verify it before you report it closed or seek approval."
       ],
-      "_provenance": "Authored from concept: 'IR plan failure analysis and comprehensive remediation'. Public sources: ISACA, NIST, ISO, SANS. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged.",
+      "_provenance": "Authored from concept: 'IR plan failure analysis and comprehensive remediation'. Public sources: ISACA, NIST, ISO, SANS. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): D (vendor template) was a throwaway; it is now training before validation. Eliminate tip no longer says 'discards'.",
       "style_version": 2
     },
     {
@@ -6691,7 +6691,7 @@
       "options": {
         "A": "Start the migration now so restored systems run on the new platform",
         "B": "Defer the migration until the intrusion is eradicated and reviewed",
-        "C": "Reject the migration because it was proposed once before",
+        "C": "Migrate the systems the ransomware left unencrypted first",
         "D": "Let the executive approve the migration under emergency powers"
       },
       "correct": "B",
@@ -6700,15 +6700,15 @@
       "correct_explanation": "The intrusion is not yet scoped or eradicated, so systems moved now may carry the attacker's tools and access into the new platform, spreading the compromise to a clean environment. Deferring the migration until eradication is complete and the post-incident review shows the root cause keeps responders focused and protects the new platform. Migrating now feels like progress, but it risks rebuilding on infected systems.",
       "wrong_explanations": {
         "A": "Moving unscoped systems can carry the attacker's tools into the new platform and pulls responders away from containment.",
-        "C": "An earlier proposal is no reason to reject. The migration deserves proper review once the intrusion is removed.",
+        "C": "Unencrypted systems may still hold the attacker's tools or access; until the intrusion is scoped, untouched does not mean clean.",
         "D": "Emergency powers exist for urgent response actions, not platform moves. Using them here bypasses both governance and the response plan."
       },
       "tips": [
-        "Eliminate: C rejects for a reason unrelated to merit, and D misuses emergency powers to bypass governance.",
+        "Eliminate: C treats unencrypted systems as clean before the intrusion is scoped, and D misuses emergency powers to bypass governance.",
         "Final two: B beats A because moving systems before eradication can carry the attacker into the new platform.",
         "Exam cue: never rebuild or migrate until the intrusion is scoped and eradicated; otherwise the attacker moves with you."
       ],
-      "_provenance": "Authored from concept: 'Major architectural decision during active incident — defer-first principle'. Public sources: ISACA, behavioral economics, ITIL, Google SRE. No legacy bank citation. NEW single-focus principle: DEFER-MAJOR-DECISIONS-DURING-CRISIS. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): drift fix: the request is now a mid-incident platform migration, and the deciding principle is not moving systems before eradication. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged.",
+      "_provenance": "Authored from concept: 'Major architectural decision during active incident — defer-first principle'. Public sources: ISACA, behavioral economics, ITIL, Google SRE. No legacy bank citation. NEW single-focus principle: DEFER-MAJOR-DECISIONS-DURING-CRISIS. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): drift fix: the request is now a mid-incident platform migration, and the deciding principle is not moving systems before eradication. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): C (proposed once before) was a strawman; it is now a partial migration of unencrypted systems.",
       "style_version": 2
     },
     {
@@ -6765,9 +6765,9 @@
       "framework_ref": "ISACA IT Audit Standard 1402 (Follow-up Activities); NIST SP 800-53 Rev 5 CA-5 (Plan of Action and Milestones)",
       "question": "An external assessment of incident readiness reports three critical, seven high and eight medium findings. Which remediation approach should the IS auditor recommend as BEST?",
       "options": {
-        "A": "Outsource the program and its accountability to a vendor",
-        "B": "Adopt a vendor template in place of current procedures",
-        "C": "Set owners and risk-based deadlines for every finding",
+        "A": "Assign the eighteen findings to the CISO to close this year",
+        "B": "Work through the findings in the order the report lists them",
+        "C": "Give each finding an owner and a deadline set by severity",
         "D": "Fix the critical findings and defer the others to next year"
       },
       "correct": "C",
@@ -6775,16 +6775,16 @@
       "pre_read": "Count the severities in the stem. Ask what happens to the high findings under each option.",
       "correct_explanation": "Risk-based remediation gives every finding an owner and a deadline scaled to its severity, so critical gaps are fixed fastest while high and medium ones are not forgotten. Fixing only the critical items is a reasonable start, but deferring seven high-risk findings for a year leaves known serious exposures open with no plan, which management should not accept by default.",
       "wrong_explanations": {
-        "A": "Services can be outsourced, but accountability for incident readiness stays with management.",
-        "B": "A generic template does not fix the specific gaps found and ignores the firm's own systems and obligations.",
+        "A": "One owner for everything gives accountability on paper, but no ordering by severity, and a single person cannot drive eighteen fixes.",
+        "B": "Report order reflects how the assessor wrote it, not the severity of each gap, so critical items may wait behind medium ones.",
         "D": "Starting with critical findings is right, but deferring seven high findings for a year leaves serious known risks open with no owner or plan."
       },
       "tips": [
-        "Eliminate: A tries to outsource accountability, and B swaps in a generic template that ignores the actual findings.",
+        "Eliminate: A loads every finding onto one person with no ordering, and B follows report order rather than severity.",
         "Final two: C beats D because every finding needs an owner and a deadline, with the tightest deadlines on the most severe.",
         "Exam cue: prioritize by risk, but never leave known high-risk findings with no owner or date."
       ],
-      "_provenance": "Authored from concept: 'IR readiness assessment findings remediation framework'. Public sources: ISACA, NIST, PCI Council. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged.",
+      "_provenance": "Authored from concept: 'IR readiness assessment findings remediation framework'. Public sources: ISACA, NIST, PCI Council. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): A (outsource accountability) and B (vendor template) were strawmen; they are now one owner for everything and report order. Key reworded to drop the owner/risk/absolute cue stack.",
       "style_version": 2
     },
     {
