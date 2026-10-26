@@ -1612,6 +1612,7 @@ questions (v10.0/v10.1), and miscellaneous additions from v9.8-v10.2 polish.
 - OWASP Secrets Management Cheat Sheet
 - OpenGitOps Principles v1.0.0 (CNCF GitOps Working Group)
 - PCI DSS v4.0.1 Requirement 3 (Protect Stored Account Data)
+- PCI DSS v4.0.1 Requirement 4.2.1 (Strong Cryptography Protects PAN During Transmission)
 - PMBOK Guide 6th Edition (Project Management Process Groups)
 - PMBOK Guide 6th Edition, Section 2.4.4 (Organizational Structure Types)
 - PMBOK Guide 6th Edition, Section 4.1 (Develop Project Charter)
