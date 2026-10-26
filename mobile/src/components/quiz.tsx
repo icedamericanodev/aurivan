@@ -6,11 +6,14 @@
  * Plain-English map of the answer screen (top to bottom):
  *   Verdict  – a leaf-shaped mark with ✓/✗, "Correct" / "Not quite", and a
  *              one-line coach note.
- *   Answers  – if wrong: your option (with why it's wrong), then the best
- *              answer. If right: just the best answer.
+ *   Answers  – if wrong: your option, "Why not C" under it, then the best
+ *              answer. If right: just the best answer. Each badge holds
+ *              its DISPLAY letter (mobile 1.43).
  *   Why B    – the explanation.
  *   Vine     – the key idea and the tips as leaves on one stem, drawn in
  *              when it scrolls into view (static under Reduce Motion).
+ *              After a miss, Eliminate two and Final two sit inside Why's
+ *              "Read more" fold (mobile 1.43).
  *   Trust    – "Original · Reviewed Oct 2026 · Report a problem".
  */
 import { useEffect, useState, type ReactNode, type Ref } from 'react';
@@ -28,7 +31,7 @@ import { badgeLetter, LARGE_TEXT, motion, optionText, radius, space } from '../t
 import { useTheme } from '../theme/useTheme';
 import { LeafBig, LeafSmall, VerdictLeaf } from './glyphs';
 import { Check, X } from './icons';
-import { AnimatedPressable, ease, FadeIn, Pop, StateLayer, tween, useMotion, usePressScale } from './motion';
+import { AnimatedPressable, Collapse, ease, FadeIn, Pop, StateLayer, tween, useMotion, usePressScale } from './motion';
 import { ReportRow } from './support';
 import { CARD_LIFT, Chip, Gap, Row, T, useFontScale } from './ui';
 
@@ -66,7 +69,17 @@ export function OptionCard({
   tagTone,
   note,
   spokenSuffix,
+  mark,
+  spoken,
 }: {
+  /**
+   * Mobile 1.43 (answer screen and the Results review): `letter` keeps the DISPLAY letter in the
+   * feedback badge, filled in the row's own colour, instead of a ✓ / ✗. The tag's words ("Your
+   * answer", "Best answer") carry the meaning, so the verdict leaf is the screen's only ✗.
+   */
+  mark?: 'letter';
+  /** The whole spoken label, when the default would lose the letter (a tag without "· B"). */
+  spoken?: string;
   /** Colour the tag in the trap-warning tone (e.g. "Snare"), whatever the row's state. */
   tagTone?: 'tip';
   letter: Letter;
@@ -140,8 +153,10 @@ export function OptionCard({
           justifyContent: 'center',
         }}
       >
-        {/* ✓ / ✗ mark correct/wrong by shape, not colour alone. */}
-        {state === 'correct' ? (
+        {/* ✓ / ✗ mark correct/wrong by shape, not colour alone; with mark="letter" the row's tag words do. */}
+        {mark === 'letter' && tinted ? (
+          <T v="caption" color={look.badgeText} style={badgeLetter}>{letter}</T>
+        ) : state === 'correct' ? (
           <Check size={16} color={look.badgeText} strokeWidth={2.5} />
         ) : state === 'wrong' ? (
           <X size={16} color={look.badgeText} strokeWidth={2.5} />
@@ -165,7 +180,7 @@ export function OptionCard({
       </View>
     </>
   );
-  const label = `${tag && spokenSuffix === undefined ? `${tag}: ` : `Option ${letter}: `}${text}${suffix}${note ? `. ${note}` : ''}`;
+  const label = spoken ?? `${tag && spokenSuffix === undefined ? `${tag}: ` : `Option ${letter}: `}${text}${suffix}${note ? `. ${note}` : ''}`;
   if (!onPress) {
     return (
       <View accessible accessibilityLabel={label} style={rowStyle}>
@@ -231,6 +246,9 @@ export function Verdict({
 }) {
   const { c } = useTheme();
   const color = correct ? c.correct : c.wrong;
+  // Mobile 1.43: at ×1.3 text and up the coach line wraps under the verdict from the gutter
+  // (lined up under "Not quite" it became a narrow column).
+  const indent = useVerdictIndent();
   // What a screen reader says when focus lands here. Mobile 1.24 (UX review B3): the session screen no
   // longer makes a separate announcement (the focus move cut it off on iOS and doubled it on Android),
   // so the verdict says everything once, the best answer's letter included.
@@ -250,7 +268,32 @@ export function Verdict({
         </Pop>
         <T v="hero" color={color} style={{ flexShrink: 1 }}>{correct ? 'Correct' : 'Not quite'}</T>
       </Row>
-      <T v="meta" style={{ marginTop: space.xs, marginLeft: 50 }}>{coach}</T>
+      <T v="meta" style={{ marginTop: space.xs, marginLeft: indent }}>{coach}</T>
+    </View>
+  );
+}
+
+/** The coach line's indent under "Correct" / "Not quite" (the leaf's 38 + the 12 gap). */
+export const VERDICT_INDENT = 50;
+
+/** Lines under the verdict (the coach line, the hint and retest notes) start under the word; at ×1.3 text, at the gutter. */
+export function useVerdictIndent(): number {
+  return useFontScale() >= LARGE_TEXT ? 0 : VERDICT_INDENT;
+}
+
+/**
+ * Mobile 1.43: the learner's own pick, explained, right under its red row: "Why not B" in a
+ * `caption`, then that option's note in `small` `ink`. It sat inside the red block before; on its
+ * own the block is calmer and the note reads as plain text. Never a header (the screen has ONE
+ * "Why" heading, "Why D"): one screen-reader stop, "Why not B: …". `letter` is the DISPLAY letter
+ * and `text` has already been through renderText.
+ */
+export function PickNote({ letter, text }: { letter: Letter; text: string }) {
+  const { c } = useTheme();
+  return (
+    <View accessible accessibilityLabel={`Why not ${letter}: ${text}`} style={{ paddingHorizontal: space.lg, marginBottom: space.lg }}>
+      <T v="caption" color={c.ink2}>{`Why not ${letter}`}</T>
+      <T v="small" color={c.ink} style={{ marginTop: 2 }}>{text}</T>
     </View>
   );
 }
@@ -368,37 +411,73 @@ function VineLeafNode({ node, last, visible, reduce, delay }: { node: VineNode; 
   );
 }
 
-// ── Why: the long explanation, folded after a miss (mobile 1.24) ──────
+// ── Why: the long explanation, folded after a miss (mobile 1.24, 1.43) ──
 /** An explanation this short is shown whole: nothing to fold. */
 export const WHY_FOLD_CHARS = 150;
 
+/** "Eliminate two and Final two": what the fold holds, as one spoken list. */
+function spokenList(items: string[]): string {
+  return items.length < 2 ? items.join('') : `${items.slice(0, -1).join(', ')} and ${items[items.length - 1]}`;
+}
+
 /**
  * "Why D" and its explanation. After a miss the Key idea and the Exam cue come
- * first, so this long paragraph shows its first two lines and a "Read more"
- * (one tap opens it; the screen reader always hears the whole text). A short
- * explanation, or any explanation when `fold` is false, is shown in full.
+ * first, so this long paragraph shows its first two lines and a "Read more".
+ * Mobile 1.43 (owner decision): the fold also holds Eliminate two and Final two
+ * (`children`, named in `more` for the spoken label), so the first screen keeps
+ * the principle and the detail is one tap away. "Read more" opens all of it in
+ * place (no height animation; what opens fades in, and the vine inside arrives
+ * drawn under Reduce Motion); "Show less" closes all of it. The toggle keeps its
+ * place in the tree, so screen-reader focus stays on it. A short explanation
+ * with nothing else to hide, or any explanation when `fold` is false, is whole.
  */
-export function WhyBlock({ letter, text, fold }: { letter: Letter; text: string; fold: boolean }) {
+export function WhyBlock({
+  letter,
+  text,
+  fold,
+  children,
+  more = [],
+  onOpen,
+}: {
+  letter: Letter;
+  text: string;
+  fold: boolean;
+  /** What else the fold holds (after a miss: the second vine, Eliminate two and Final two). */
+  children?: ReactNode;
+  /** The names of what `children` holds, said in the toggle's label ("Eliminate two", "Final two"). */
+  more?: string[];
+  /** The fold opened (the vine inside draws now). */
+  onOpen?: () => void;
+}) {
   const { c } = useTheme();
   const [open, setOpen] = useState(false);
-  const folded = fold && text.length > WHY_FOLD_CHARS && !open;
-  const canFold = fold && text.length > WHY_FOLD_CHARS;
+  const long = text.length > WHY_FOLD_CHARS;
+  const canFold = fold && (long || more.length > 0);
+  const folded = canFold && !open;
+  const what = spokenList([...(long ? ['the full explanation'] : []), ...more]);
   return (
     <View>
       <T v="headline" accessibilityRole="header" style={{ marginTop: space.lg }}>{`Why ${letter}`}</T>
-      <T v="body" numberOfLines={folded ? 2 : undefined} style={{ marginTop: space.xs }}>{text}</T>
+      <T v="body" numberOfLines={folded && long ? 2 : undefined} style={{ marginTop: space.xs }}>{text}</T>
+      {/* The toggle comes BEFORE what it opens, so a screen reader moves from "Read more" straight on to the
+          Eliminate two and Final two tips it revealed. */}
       {canFold && (
         <Pressable
           accessibilityRole="button"
-          accessibilityLabel={open ? 'Show less of the explanation' : 'Read more of the explanation'}
+          accessibilityLabel={open ? `Show less: hides ${what}` : `Read more: ${what}`}
           accessibilityState={{ expanded: open }}
-          onPress={() => setOpen(!open)}
+          onPress={() => {
+            if (!open) onOpen?.();
+            setOpen(!open);
+          }}
           hitSlop={8}
           style={{ minHeight: 48, justifyContent: 'center', alignSelf: 'flex-start' }}
         >
           <T v="label" color={c.accentText}>{open ? 'Show less' : 'Read more'}</T>
         </Pressable>
       )}
+      {/* Folded away until opened (Collapse: no height animation; what opens fades in). No fold: just shown. */}
+      {canFold ? <Collapse open={open}>{children}</Collapse> : children}
     </View>
   );
 }

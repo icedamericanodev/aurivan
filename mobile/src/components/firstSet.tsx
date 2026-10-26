@@ -49,7 +49,7 @@ import type { Readiness } from '../engine/readiness';
 import { RANGE_MIN_ANSWERS } from '../engine/readinessRange';
 import { localHour, localTime, MINUTE_STEP, stepTime } from '../engine/reminders';
 import { ANNOUNCE_DELAY, moveFocus, sayLater } from '../lib/a11y';
-import { deferMissesToTomorrow, firstSetLeftOf } from '../lib/firstSet';
+import { firstSetLeftOf } from '../lib/firstSet';
 import { scoreSession } from '../lib/finishSession';
 import { plantFor } from '../lib/plant';
 import { refreshReminders } from '../lib/reminderSync';
@@ -318,14 +318,6 @@ export function FirstSetDone({ session }: { session: ActiveSession }) {
     if (notes[0]) return findNote(certId, notes[0].id)?.name;
     return undefined;
   }, [missed, certId]);
-
-  // A miss comes back tomorrow, not in a minute (once per set).
-  const deferred = useRef<string | null>(null);
-  useEffect(() => {
-    if (deferred.current === session.id) return;
-    deferred.current = session.id;
-    deferMissesToTomorrow(certId, missed);
-  }, [session.id, certId, missed]);
 
   // Mobile 1.41 (owner decision A): the plant is OFFERED here, never planted for the learner. A learner
   // who turned plants off, or already has one, is not asked; "Not now" is remembered (store/seen.ts).

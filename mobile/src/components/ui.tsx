@@ -67,6 +67,7 @@ import {
 } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { Botany, botanySize, EmptyArt, type BotanyKind, type EmptyArtKind } from './glyphs';
+import { Motif, type MotifKind } from './motifs';
 import { Check, ChevronLeft, ChevronRight, ICON_STROKE, Minus, Plus, Search, Settings as SettingsIcon, X } from './icons';
 import { AnimatedPressable, CrossFade, FadeIn, ProgressFill, RollingText, StateLayer, tween, useMotion, usePressScale } from './motion';
 
@@ -520,7 +521,14 @@ export function HeroPanel({
   wideTitle,
   wideMeta,
   captionLabel,
+  seal,
 }: {
+  /**
+   * Mobile 1.43 (tab header option C, "Forest seal", the owner's choice): Learn, Practice and Play
+   * lead with a white card (L2) instead of a second forest panel, and a small forest square in its
+   * top-right corner shows the tab's own line drawing (`motifs.tsx`). Today keeps the forest panel.
+   */
+  seal?: MotifKind;
   caption?: string;
   /** Before the caption on the same line (e.g. a domain dot). */
   captionLead?: ReactNode;
@@ -564,9 +572,27 @@ export function HeroPanel({
   // the whole task seems to rise toward you. Static under Reduce Motion.
   const lift = useSharedValue(0);
   const liftStyle = useAnimatedStyle(() => ({ transform: [{ scale: reduced ? 1 : 1 - 0.01 * lift.value }] }));
+  // The seal card is paper ink on a white card; the forest panel is on-forest ink.
+  const ink1 = seal ? c.ink : c.onForest;
+  const ink2 = seal ? c.ink2 : c.onForest2;
+  const capInk = seal ? c.accentText : c.onForest2;
+  // The seal: a 56pt forest square with the tab's drawing in sap, top-right (above the words at large text).
+  const sealTile = seal ? (
+    <View
+      testID="hero-seal"
+      accessible={false}
+      importantForAccessibility="no-hide-descendants"
+      style={[styles.seal, { backgroundColor: c.forest }, large ? { marginBottom: space.md } : styles.sealCorner]}
+    >
+      <Motif kind={seal} color={c.sap} size={56} />
+    </View>
+  ) : null;
+  // Beside the corner seal (below large text) the caption row and the title stop short of it: the
+  // seal's width and a gap, measured from the card's edge, so no phone width lets text run under it.
+  const sealClear = seal && !large ? { marginRight: 56 + space.md } : null;
   return (
     <Animated.View style={[style, liftStyle]}>
-    <Card variant="forest">
+    <Card variant={seal ? 'raised' : 'forest'} style={seal ? { padding: space.gutter } : undefined}>
       {/* Two layers, so the text can never disappear behind the art (the
           Android "empty green block" on Play):
           1. ART: its own absolutely-filled layer that does the rounded
@@ -575,6 +601,7 @@ export function HeroPanel({
              clipping parent with a rotating (swaying) SVG.
           2. CONTENT: zIndex 1, always drawn above the art on every platform.
           Decorative art bleeds off the top-right; screen readers skip it. */}
+      {!seal && (
       <View
         testID="hero-art"
         style={[StyleSheet.absoluteFill, styles.heroArtClip, styles.noTouch]}
@@ -589,25 +616,27 @@ export function HeroPanel({
           <Botany kind={art} color={c.forestLine} sway={sway} breathe={breathe} />
         </View>
       </View>
+      )}
+      {large && sealTile}
       <View testID="hero-content" style={styles.heroContent}>
         {caption && (
-          <Row gap={space.sm} style={{ flexWrap: 'wrap' }}>
+          <Row gap={space.sm} style={[{ flexWrap: 'wrap' }, sealClear]}>
             {captionLead ? (
               // A lead (a domain dot, a game glyph) stays on its caption's line: at large text
               // the caption wraps BESIDE it (never the lead alone on a line). With nothing after
               // it, the pair keeps clear of the art like the title (full width at large text).
-              <Row gap={space.sm} style={{ flexShrink: 1, maxWidth: !captionExtra && !large && !wideTitle ? 250 : '100%' }}>
+              <Row gap={space.sm} style={{ flexShrink: 1, maxWidth: !seal && !captionExtra && !large && !wideTitle ? 250 : '100%' }}>
                 {captionLead}
-                <T v="caption" color={c.onForest2} accessibilityLabel={captionLabel} style={{ flexShrink: 1 }}>{caption}</T>
+                <T v="caption" color={capInk} accessibilityLabel={captionLabel} style={{ flexShrink: 1 }}>{caption}</T>
               </Row>
             ) : (
-              <T v="caption" color={c.onForest2} accessibilityLabel={captionLabel}>{caption}</T>
+              <T v="caption" color={capInk} accessibilityLabel={captionLabel}>{caption}</T>
             )}
             {captionExtra}
           </Row>
         )}
         {captionMeta ? (
-          <T v="meta" color={c.onForest2} accessibilityLabel={captionMetaLabel} style={{ marginTop: space.xs }}>
+          <T v="meta" color={ink2} accessibilityLabel={captionMetaLabel} style={{ marginTop: space.xs }}>
             {captionMeta}
           </T>
         ) : null}
@@ -615,24 +644,25 @@ export function HeroPanel({
             longer titles, or large text, run full width over the low-contrast art. */}
         <T
           v="hero"
-          color={c.onForest}
+          color={ink1}
           accessibilityRole="header"
           accessibilityLabel={titleLabel}
-          style={{ marginTop: caption ? space.sm : 0, maxWidth: title.length <= 34 && !large && !wideTitle ? 250 : undefined }}
+          // With a seal (1.43) the title always keeps clear of it below large text: the seal is opaque.
+          style={[{ marginTop: caption ? space.sm : 0, maxWidth: !seal && title.length <= 34 && !large && !wideTitle ? 250 : undefined }, sealClear]}
         >
           {title}
         </T>
         {/* The meta line keeps clear of the art too (it wraps instead), except
             with wideTitle or large text, where it runs full width like the title. */}
         {meta && (
-          <T v="meta" color={c.onForest2} accessibilityLabel={metaLabel} style={{ marginTop: space.xs, maxWidth: !large && !wideTitle && !wideMeta ? 250 : undefined }}>
+          <T v="meta" color={ink2} accessibilityLabel={metaLabel} style={{ marginTop: space.xs, maxWidth: !large && !wideTitle && !wideMeta ? 250 : undefined }}>
             {meta}
           </T>
         )}
         {children}
         {action && (
           <Button
-            kind="forest"
+            kind={seal ? 'primary' : 'forest'}
             label={action.label}
             onPress={action.onPress}
             accessibilityHint={action.hint}
@@ -643,6 +673,7 @@ export function HeroPanel({
           />
         )}
       </View>
+      {!large && sealTile}
     </Card>
     </Animated.View>
   );
@@ -676,7 +707,10 @@ export function IconButton({
   disabled,
   outline,
   ref,
+  leaves,
 }: {
+  /** Mobile 1.43: it opens another screen (the Settings gear): its pressed circle settles at once, never fading on behind the new screen. */
+  leaves?: boolean;
   /**
    * Mobile 1.22: a 56pt round SECONDARY button (1.5 `control` ring, the
    * secondary pill's look) for a footer beside a primary pill: the lesson's
@@ -711,7 +745,14 @@ export function IconButton({
       accessibilityLabel={label}
       accessibilityHint={hint}
       accessibilityState={Object.keys(state).length ? state : undefined}
-      onPress={onPress}
+      onPress={
+        leaves
+          ? () => {
+              press.settle();
+              onPress();
+            }
+          : onPress
+      }
       disabled={disabled}
       onPressIn={press.onPressIn}
       onPressOut={press.onPressOut}
@@ -823,6 +864,7 @@ export function ScreenTitle({ title, settings }: { title: string; settings?: () 
         <IconButton
           label="Settings"
           hint="Exam date, reminders and more"
+          leaves
           onPress={settings}
           icon={(col) => <SettingsIcon size={ICON_SIZE.bar} color={col} strokeWidth={ICON_STROKE} />}
         />
@@ -1396,7 +1438,10 @@ export function Stat({
   unitColor,
   roll,
   spoken,
+  note,
 }: {
+  /** Mobile 1.43: one `meta` line under the value ("Exam pace: about 96 s"); put it in `spoken` too. */
+  note?: string;
   label: string;
   /** The number (rolls with `roll`). Leave it out when the value is `word`. */
   value?: string;
@@ -1418,7 +1463,7 @@ export function Stat({
   const fg = color ?? c.ink;
   const said = spoken ?? (word ? word.toLowerCase() : `${value}${pct ? ' percent' : ''}${unit ? ` ${unit}` : ''}`);
   return (
-    <View accessible accessibilityLabel={`${label}: ${said}`} style={[styles.stat, listed && styles.statListed]}>
+    <View accessible accessibilityLabel={`${label}: ${said}`} style={[styles.stat, listed && styles.statListed, listed && note ? { flexWrap: 'wrap' } : null]}>
       <T v="caption" color={labelColor ?? c.ink2} style={listed ? { flexShrink: 1 } : undefined}>{label}</T>
       {word !== undefined ? (
         <Text maxFontSizeMultiplier={2} style={[statWord, { color: fg }, listed ? { flexShrink: 1, textAlign: 'right' } : { marginTop: space.xs }]}>{word}</Text>
@@ -1430,6 +1475,8 @@ export function Stat({
           )}
         </View>
       )}
+      {/* Listed (large text): the note takes its own line under the label and value. */}
+      {note ? <T v="meta" style={listed ? { flexBasis: '100%' } : { marginTop: 2 }}>{note}</T> : null}
     </View>
   );
 }
@@ -1543,6 +1590,9 @@ const styles = StyleSheet.create({
   heroArtClip: { borderRadius: radius.lg, overflow: 'hidden', zIndex: 0 },
   heroArt: { position: 'absolute', right: -18, top: -14 },
   heroContent: { zIndex: 1 },
+  // Mobile 1.43: the tab seal (option C), a 56pt forest square at the card's top-right corner.
+  seal: { width: 56, height: 56, borderRadius: radius.md, overflow: 'hidden', alignItems: 'center', justifyContent: 'center' },
+  sealCorner: { position: 'absolute', top: space.gutter, right: space.gutter },
   sectionStacked: { flexDirection: 'column', alignItems: 'flex-start', gap: space.xs },
   // With a ghost button: centred on the button's 48pt target (a baseline would float the title).
   sectionAction: { alignItems: 'center', marginBottom: -space.sm },
@@ -2252,6 +2302,7 @@ export function TextField({
 export function ToggleRow({
   title,
   subtitle,
+  subtitleLabel,
   value,
   onValueChange,
   disabled,
@@ -2260,6 +2311,8 @@ export function ToggleRow({
 }: {
   title: string;
   subtitle?: string;
+  /** Mobile 1.43: what a screen reader says for the subtitle when it says more than the screen ("… Lessons stay in Learn."). */
+  subtitleLabel?: string;
   value: boolean;
   onValueChange: (v: boolean) => void;
   disabled?: boolean;
@@ -2270,7 +2323,7 @@ export function ToggleRow({
   return (
     <ListRow
       title={title}
-      subtitle={subtitle}
+      subtitle={subtitle && subtitleLabel ? <T v="meta" accessibilityLabel={subtitleLabel}>{subtitle}</T> : subtitle}
       last={last}
       trailing={<Toggle ref={ref} accessibilityLabel={title} value={value} disabled={disabled} onValueChange={onValueChange} />}
     />

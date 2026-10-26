@@ -6,11 +6,10 @@
  * - `startFirstSet` builds the session: the same five questions, in the same
  *   order, with no timer (after a set ended early: only the ones still unanswered). (Confidence chips are hidden by the session screen
  *   because the session carries the `firstSet` mark.)
- * - `deferMissesToTomorrow` moves the review time of any question missed in
- *   that set to the start of tomorrow. A miss is normally due again at once,
- *   which would let a learner "fix" it from memory a minute later (that is not
- *   spaced review). The closing screen promises, under "Tomorrow", "The N you
- *   missed come back then.", and this is what makes that true.
+ * - A question missed in the set comes back at the start of tomorrow, as the
+ *   closing screen promises ("The N you missed come back then."). Since mobile
+ *   1.43 every miss does (engine/srs.ts nextReview), so the set needs no step
+ *   of its own for it.
  */
 import { FIRST_SET_SIZE, FIRST_SET_TITLE, firstSetIds } from '../content/firstSet';
 import { startOfNextDay } from '../engine/srs';
@@ -52,25 +51,3 @@ export function startFirstSet(certId: string): ActiveSession | null {
 
 /** The start of the next local day, as epoch ms (one rule, kept in the engine: srs.ts). */
 export const startOfTomorrow = startOfNextDay;
-
-/**
- * Questions missed in the first set come back tomorrow, not in a minute.
- * Only an entry that is due right now is moved (never one already pushed
- * further out). Returns how many questions were moved.
- */
-export function deferMissesToTomorrow(certId: string, missedIds: readonly string[], now = Date.now()): number {
-  const cp = useProgress.getState().byCert[certId];
-  if (!cp || missedIds.length === 0) return 0;
-  const due = startOfTomorrow(now);
-  const review = { ...cp.review };
-  let moved = 0;
-  for (const id of missedIds) {
-    const entry = review[id];
-    if (entry && entry.dueAt < due) {
-      review[id] = { ...entry, dueAt: due };
-      moved += 1;
-    }
-  }
-  if (moved > 0) useProgress.setState((s) => ({ byCert: { ...s.byCert, [certId]: { ...s.byCert[certId]!, review } } }));
-  return moved;
-}

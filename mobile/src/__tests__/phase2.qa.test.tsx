@@ -534,7 +534,8 @@ describe('J4 Settings → Motion', () => {
     });
     // Mobile 1.17: each choice closes the Motion sheet, so it is opened before each one.
     const radio = (title: string) => {
-      if (!r2!.root.findAll((n) => n.props.accessibilityRole === 'radio').length) openMotionRow(r2!.root);
+      // (The theme's three radios live on the screen itself since mobile 1.43: they don't count as the sheet.)
+      if (!r2!.root.findAll((n) => n.props.accessibilityRole === 'radio' && !['System', 'Light', 'Dark'].includes(String(n.props.accessibilityLabel))).length) openMotionRow(r2!.root);
       return r2!.root.findAll((n) => n.props.accessibilityRole === 'radio' && typeof n.props.onPress === 'function' && n.props.accessibilityLabel?.startsWith(title))[0];
     };
     const reducedRow = radio('Reduced');

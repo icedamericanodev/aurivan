@@ -264,10 +264,11 @@ describe('#15 the one next plan item is a "Then:" line, with no hollow circle', 
   });
 });
 
-describe('#15 short lesson scenes sit in the middle of the page', () => {
-  it('every scene but the cover and a check is centred when short', () => {
-    expect(centreScene({ type: 'idea', heading: 'x', body: 'y' })).toBe(true);
-    expect(centreScene({ type: 'tip', body: 'y' })).toBe(true);
+describe('#15 short lesson scenes (1.39 centred them; 1.43 puts every scene on the anchor line)', () => {
+  it('no scene is centred: every scene starts on the anchor line', () => {
+    // Mobile 1.43: no scene is centred any more; every scene starts on the anchor line.
+    expect(centreScene({ type: 'idea', heading: 'x', body: 'y' })).toBe(false);
+    expect(centreScene({ type: 'tip', body: 'y' })).toBe(false);
     expect(centreScene({ type: 'title', kicker: 'k', title: 't', subtitle: 's' })).toBe(false);
     expect(centreScene({ type: 'check', question: 'q', options: ['a', 'b'], correctIndex: 0, explanation: 'e' })).toBe(false);
   });
@@ -295,8 +296,9 @@ describe('Results rings: mixed-domain sets and mocks only', () => {
     finish();
     mount(<Results />);
     expect(root().findAllByType(DomainRings)).toHaveLength(0);
-    // Review P5: its one line gives the percent ("Correct 10 of 10" below gives the count).
-    expect(allText()).toContain('All IS Audit · 100%');
+    // Mobile 1.43: its one line names the domain; the headline is the count (no percent, no "Correct" cell).
+    expect(allText()).toContain('All IS Audit');
+    expect(allText()).not.toMatch(/All IS Audit · \d+%/);
     expect(allText()).not.toMatch(/All IS Audit · \d+ of/);
   });
 });

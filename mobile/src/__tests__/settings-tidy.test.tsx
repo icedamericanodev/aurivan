@@ -83,6 +83,8 @@ const openRow = (title: string) => {
   });
 };
 const day = (spoken: string) => hosts((n) => String(n.props.accessibilityLabel).startsWith(spoken))[0];
+/** The Theme radio group's one spoken name: its title and line (the visible words are hidden from screen readers). */
+const THEME_GROUP = 'Theme. System follows your phone’s light or dark setting.';
 const flatStyle = (style: unknown): Record<string, unknown> => Object.assign({}, ...[style].flat(3).filter(Boolean));
 /** The calendar's cells (days and blanks): host views sized like a day cell at this width. */
 const gridCells = () => {
@@ -135,17 +137,22 @@ describe('Settings is grouped, and each row says its value', () => {
     useSettings.setState({ familiarity: 'some', dailyMinutes: 30, studyMode: 'guided', theme: 'dark', motion: 'reduced' });
     mount(<Settings />);
     const t = allText();
-    const at = ['Exam', 'Your study', 'Practice', 'Reminders', 'Appearance', 'Badges and your plant', 'Your data', 'Help and about'].map((g) => t.indexOf(g));
+    // Mobile 1.43 (owner): Appearance comes right after You, so the theme is near the top.
+    const at = ['Appearance', 'Exam', 'Your study', 'Practice', 'Reminders', 'Badges and your plant', 'Your data', 'Help and about'].map((g) => t.indexOf(g));
     expect(at.every((n) => n > -1)).toBe(true);
     expect([...at].sort((a, b) => a - b)).toEqual(at);
     expect(row('Certification').props.accessibilityLabel).toBe('Certification, CISA');
     // The date reads in full for screen readers.
-    expect(row('Exam date').props.accessibilityLabel).toBe('Exam date, Friday 8 January 2027');
+    // Mobile 1.43: and how far away it is ("In N days"), shown and said.
+    expect(row('Exam date').props.accessibilityLabel).toMatch(/^Exam date, Friday 8 January 2027, In \d+ days$/);
     expect(t).toContain('8 Jan 2027');
     expect(row('Daily time').props.accessibilityLabel).toBe('Daily time, 30 minutes a day');
-    expect(row('Starting point').props.accessibilityLabel).toBe('Starting point, Some IT audit experience');
-    expect(row('Default mode').props.accessibilityLabel).toBe('Default mode, Guided');
-    expect(row('Theme').props.accessibilityLabel).toBe('Theme, Dark');
+    // Mobile 1.43: each with its one-line hint.
+    expect(row('Starting point').props.accessibilityLabel).toBe('Starting point, Some IT audit experience, How much audit you know; it shapes your first weeks');
+    expect(row('Default mode').props.accessibilityLabel).toBe('Default mode, Guided, How Practice picks your questions');
+    // Mobile 1.43: the theme is a one-tap radio group (System / Light / Dark), not a row.
+    const dark = hosts((n) => n.props.accessibilityRole === 'radio' && n.props.accessibilityLabel === 'Dark')[0];
+    expect(dark.props.accessibilityState.checked).toBe(true);
     expect(row('Motion').props.accessibilityLabel).toBe('Motion, Reduced');
     // The on/off settings stay switches on the screen.
     for (const name of ['Exam-focused plan', 'Timed practice', 'Shuffle answer options', 'Study reminder', 'Haptics', 'Show badges', 'Show my plant']) {
@@ -178,16 +185,17 @@ describe('Settings is grouped, and each row says its value', () => {
 });
 
 describe('Choice sheets work like a dropdown', () => {
-  it('Theme: choosing Dark saves it and closes the sheet', () => {
+  it('Theme: one tap on the screen itself (mobile 1.43, owner: "if I want to change the theme I cannot see it easily")', () => {
     mount(<Settings />);
-    openRow('Theme');
-    // Spoken as the sheet's own name (UX O2; this test used to expect the group's "Appearance").
-    const group = root().findAll((n) => typeof n.type === 'string' && n.props.accessibilityRole === 'radiogroup' && n.props.accessibilityLabel === 'Theme');
+    const group = root().findAll((n) => typeof n.type === 'string' && n.props.accessibilityRole === 'radiogroup' && n.props.accessibilityLabel === THEME_GROUP);
     expect(group).toHaveLength(1);
     press('Dark');
     expect(useSettings.getState().theme).toBe('dark');
-    expect(root().findAll((n) => n.props.accessibilityRole === 'radiogroup')).toHaveLength(0);
-    expect(row('Theme').props.accessibilityLabel).toBe('Theme, Dark');
+    // No sheet opened: the only radio group is the theme's own.
+    expect(root().findAll((n) => typeof n.type === 'string' && n.props.accessibilityRole === 'radiogroup').map((n) => n.props.accessibilityLabel)).toEqual([THEME_GROUP]);
+    // It comes before the Exam group, near the top.
+    const t = allText();
+    expect(t.indexOf('System follows your phone')).toBeLessThan(t.indexOf('Certification'));
   });
 
   it('Exam: only the exams the app teaches are listed (mobile 1.39: no "coming soon" list)', () => {
@@ -195,7 +203,8 @@ describe('Choice sheets work like a dropdown', () => {
     openRow('Certification');
     const soon = hosts((n) => n.props.accessibilityRole === 'radio' && /Coming soon/.test(String(n.props.accessibilityLabel)));
     expect(soon).toHaveLength(0);
-    const radios = hosts((n) => n.props.accessibilityRole === 'radio');
+    // (The theme's own three radios are on the screen behind the sheet.)
+    const radios = hosts((n) => n.props.accessibilityRole === 'radio' && !['System', 'Light', 'Dark'].includes(String(n.props.accessibilityLabel)));
     expect(radios).toHaveLength(1);
     const cisa = hosts((n) => n.props.accessibilityRole === 'radio' && String(n.props.accessibilityLabel).startsWith('CISA.'))[0];
     expect(cisa.props.accessibilityState.checked).toBe(true);
@@ -210,7 +219,8 @@ describe('Choice sheets work like a dropdown', () => {
     expect(dim.length).toBeGreaterThan(0);
     expect(dim[0].props.accessible).toBe(false);
     press('Close, Daily time');
-    expect(root().findAll((n) => n.props.accessibilityRole === 'radiogroup')).toHaveLength(0);
+    // Only the theme's own group is left (it lives on the screen, mobile 1.43).
+    expect(root().findAll((n) => n.props.accessibilityRole === 'radiogroup' && n.props.accessibilityLabel !== THEME_GROUP)).toHaveLength(0);
   });
 
   it('VoiceOver’s escape gesture closes a sheet, like its header button (UX P3)', () => {
@@ -228,7 +238,7 @@ describe('Choice sheets work like a dropdown', () => {
   it('rows that open a sheet keep their chevron (action rows in Your data have none, your-data.test)', () => {
     mount(<Settings />);
     expect(row('Exam date').findAll((n) => n.type === ChevronRight)).toHaveLength(1);
-    expect(row('Theme').findAll((n) => n.type === ChevronRight)).toHaveLength(1);
+    expect(row('Motion').findAll((n) => n.type === ChevronRight)).toHaveLength(1);
     const save = hosts((n) => n.props.accessibilityRole === 'button' && String(n.props.accessibilityLabel).startsWith('Save a backup, '))[0];
     expect(save.findAll((n) => n.type === ChevronRight)).toHaveLength(0);
   });
@@ -280,7 +290,7 @@ describe('Exam date: the calendar', () => {
     press('Save');
     expect(useSettings.getState().examDates.cisa).toBe('2027-01-22');
     expect(useProgress.getState().days.cisa).toBeDefined();
-    expect(row('Exam date').props.accessibilityLabel).toBe('Exam date, Friday 22 January 2027');
+    expect(row('Exam date').props.accessibilityLabel).toMatch(/^Exam date, Friday 22 January 2027, In \d+ days$/);
   });
 
   it('a quick choice moves the calendar to its month; "Not sure yet" clears the date on Save', () => {
@@ -505,7 +515,7 @@ describe('"Now" is read when the calendar opens (code review 2, QA 4)', () => {
     act(() => flushSayLaterForTest());
     expect(say).not.toHaveBeenCalledWith(expect.stringMatching(/^Exam date (saved|cleared)/));
     expect(focus).toHaveBeenCalledWith({ current: expect.anything() }, 450);
-    expect(row('Exam date').props.accessibilityLabel).toBe('Exam date, Friday 22 January 2027');
+    expect(row('Exam date').props.accessibilityLabel).toMatch(/^Exam date, Friday 22 January 2027, In \d+ days$/);
   });
 });
 
@@ -609,7 +619,7 @@ describe('Settings and its sheets parse on native', () => {
       useSettings.setState({ theme });
       mount(<Settings />);
       expect(checkTree()).toBeGreaterThan(20);
-      for (const title of ['Certification', 'Exam date', 'Daily time', 'Starting point', 'Default mode', 'Theme', 'Motion', 'About KaiSip']) {
+      for (const title of ['Certification', 'Exam date', 'Daily time', 'Starting point', 'Default mode', 'Motion', 'About KaiSip']) {
         openRow(title);
         checkTree();
         press(new RegExp(`^(Close|Cancel|Done), `));

@@ -28,15 +28,29 @@ import { LARGE_TEXT, radius, scrimOp, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { ChevronRight, ICON_STROKE } from './icons';
 import { AnimatedPressable, FadeIn, usePressScale } from './motion';
-import { Button, RadioRow, Section, T, useFontScale } from './ui';
+import { Button, RadioRow, T, useFontScale } from './ui';
 
 // ── SettingsGroup ─────────────────────────────────────────────────────
-export function SettingsGroup({ title, intro, children }: { title: string; intro?: string; children: ReactNode }) {
+/**
+ * Mobile 1.43 (owner feedback, 26 Oct 2026: "it's hard to distinguish the categories"): a group's
+ * title must never look like a row. It is a small letter-spaced `caption` in `accentText` (rows stay
+ * `label` in `ink`), 32 above each group, and the group's rows sit between two full-width hairlines,
+ * so each group has a clear start and end. Still a screen-reader header (heading-by-heading navigation
+ * jumps between groups).
+ * (Grouped plates, icon-led headers and a quick-settings strip were shot for the owner to compare,
+ * 26 Oct 2026; rows on paper ship until she picks.)
+ */
+export function SettingsGroup({ title, intro, children, first }: { title: string; intro?: string; children: ReactNode; /** The first group on the screen: 16 above, not 32. */ first?: boolean }) {
+  const { c } = useTheme();
   return (
-    <View>
-      <Section title={title} />
-      {intro ? <T v="meta" style={{ marginTop: space.xs, marginBottom: space.xs }}>{intro}</T> : null}
-      {children}
+    <View style={{ marginTop: first ? space.lg : space.xxl }}>
+      <T v="caption" color={c.accentText} accessibilityRole="header" style={styles.groupTitle}>
+        {title}
+      </T>
+      {intro ? <T v="meta" style={{ marginTop: space.xs }}>{intro}</T> : null}
+      <View style={[styles.groupRule, { borderColor: c.line }]}>
+        {children}
+      </View>
     </View>
   );
 }
@@ -267,6 +281,9 @@ export function ChoiceSheet<V extends string | number>({
 const styles = StyleSheet.create({
   // 56pt: above the 48pt minimum, a little tighter than a 64pt list row so a group reads as one block.
   row: { flexDirection: 'row', alignItems: 'center', gap: space.md, minHeight: 56, paddingVertical: space.md },
+  // The group title: letter-spaced (sentence case: no uppercase eyebrows, spec §2), 8 above the group's top rule.
+  groupTitle: { letterSpacing: 0.8, marginBottom: space.sm },
+  groupRule: { borderTopWidth: 1, borderBottomWidth: 1, marginTop: space.xs },
   // The value takes what the title leaves, up to half the row, and may wrap to a second line.
   valueRight: { flexShrink: 1, maxWidth: '50%', textAlign: 'right' },
   hairline: { position: 'absolute', left: 0, right: 0, bottom: 0, height: 1 },

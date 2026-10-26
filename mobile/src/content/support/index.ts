@@ -42,6 +42,20 @@ export interface WhatsNewEntry {
 /** Newest first. The first entry must match app.json (a test checks it). */
 export const WHATS_NEW: readonly WhatsNewEntry[] = [
   {
+    version: '1.43.0',
+    date: '2026-10-26',
+    improved: [
+      'After a miss, the answer screen shows your pick beside the best answer and the key idea first. Read more opens the full explanation and the Eliminate two and Final two tips.',
+      'Results lead with how many you got right, show each question as a leaf, and link straight to the notes for what you missed.',
+      'Questions you miss now come back the next day, as Results says they will.',
+      'You shows one readiness ring and a plain line for each area, with what has gone up since you last looked.',
+      'Study notes spell out the acronyms in their title and open with the idea in one line.',
+      'Settings groups are easier to tell apart, and the light or dark theme is one tap near the top.',
+      'Learn, Practice and Play each open with their own card, so Today’s plan stands out.',
+    ],
+    fixed: ['A Settings button could stay drawn on screen after opening Settings.'],
+  },
+  {
     version: '1.42.1',
     date: '2026-10-24',
     improved: [

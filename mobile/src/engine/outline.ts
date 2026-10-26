@@ -100,6 +100,35 @@ export function topicsIn(topics: OutlineTopic[], domainId?: string): OutlineTopi
 }
 
 /**
+ * Results → "What you missed" (mobile 1.43): the notes behind the misses, each
+ * with the question NUMBERS it explains (1-based, in the order shown), most-missed
+ * first (ties keep first-miss order), at most `limit`; `rest` = the misses no shown
+ * row covers (in a note past the limit, or in none). Two misses on one idea are
+ * one row ("questions 3 and 7"), never two.
+ */
+export function missedNoteGroups(
+  order: readonly string[],
+  isMissed: (questionId: string) => boolean,
+  subtopicOf: (questionId: string) => string | undefined,
+  limit = 3,
+): { groups: { id: string; numbers: number[] }[]; rest: number } {
+  const byNote = new Map<string, number[]>(); // a Map keeps first-miss order
+  let missed = 0;
+  order.forEach((q, i) => {
+    if (!isMissed(q)) return;
+    missed += 1;
+    const s = subtopicOf(q);
+    if (s) byNote.set(s, [...(byNote.get(s) ?? []), i + 1]);
+  });
+  const groups = [...byNote.entries()]
+    .map(([id, numbers], k) => ({ id, numbers, k }))
+    .sort((x, y) => y.numbers.length - x.numbers.length || x.k - y.k)
+    .slice(0, limit)
+    .map(({ id, numbers }) => ({ id, numbers }));
+  return { groups, rest: missed - groups.reduce((n, g) => n + g.numbers.length, 0) };
+}
+
+/**
  * Results → "Read the notes for what you missed" (mobile 1.20): the note
  * subtopics behind a session's missed questions, most-missed first (ties keep
  * the order the misses came in), each once, at most `limit`, with how many of

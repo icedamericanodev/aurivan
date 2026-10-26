@@ -36,6 +36,7 @@ import Reports from '../app/reports';
 import Results from '../app/results';
 import Saved from '../app/saved';
 import { EmptyArt, GrowthRings } from '../components/glyphs';
+import { ReadinessRing } from '../components/youReadiness';
 import { ClearingBody } from '../components/journey';
 import { BadgeCell, BadgeListRow } from '../components/badges';
 import { MilestoneMomentView, resetBadgeMomentsForTest } from '../components/milestones';
@@ -586,7 +587,8 @@ describe('J3b the exam-ready moment (T3)', () => {
 
 // ── J4 ───────────────────────────────────────────────────────────────────
 describe('J4 You', () => {
-  const youRings = () => r!.root.findAllByType(GrowthRings).find((n) => n.props.preset === 'you')!.props.grow as { play: boolean; from?: number[] };
+  // Mobile 1.43: one readiness ring; its solid arc grows from the low end last seen.
+  const youRings = () => r!.root.findAllByType(ReadinessRing)[0].props.growth as { play: boolean; from?: number[] };
 
   it('first look of the day grows from 0 with no "+N"; a rise since the last look grows from there with "+N" on that domain only; a revisit is still', () => {
     setMockReducedMotion(false);
@@ -704,7 +706,7 @@ describe('J5 Reduce Motion (system and in-app)', () => {
 
     it(`${way}: Results, You and Today's first view of the day show their end state at once, same words`, () => {
       seed(60);
-      finishPractice(8, 8);
+      finishPractice(8, 8, true); // mixed: the score in the rings rolls (1.43: a one-domain set has nothing that rolls)
       reduce(way);
       mount(<Results />);
       expect(growingArcs()).toBe(0);
@@ -748,7 +750,7 @@ describe('J5 Reduce Motion (system and in-app)', () => {
     mount(<You />);
     check();
     unmount();
-    finishPractice(8, 8);
+    finishPractice(8, 8, true); // mixed: the rings' score rolls
     mount(<Results />);
     check();
     unmount();
@@ -1028,23 +1030,29 @@ describe('J9 Reset and restore vs the seen store', () => {
 
 // ── Review fixes (PR #39) on the real screens ─────────────────────────────
 describe('Review fixes on the real screens', () => {
-  const ringsLabel = () => r!.root.findAll((n) => typeof n.type === 'string' && n.props.accessible && /^Estimated readiness/.test(n.props.accessibilityLabel ?? ''))[0].props.accessibilityLabel as string;
+  // Mobile 1.43: each area row says its own rise ("IT Governance: …. Up 9 since you last looked").
+  const ringsLabel = () =>
+    r!.root
+      .findAll((n) => typeof n.type === 'string' && n.props.accessible && typeof n.props.accessibilityLabel === 'string' && /^(IS Audit|IT Governance|IS Acquisition|IS Operations|Info Protection): /.test(n.props.accessibilityLabel))
+      .map((n) => n.props.accessibilityLabel as string)
+      .join(' | ');
 
-  it('You: the "+N" tags are spoken with the rings ("Since you last looked: IT Governance up 9"), and only after a real rise', () => {
+  it('You: the "+N" tags are spoken with the area rows ("IT Governance: … Up 9 since you last looked"), and only after a real rise', () => {
     setMockReducedMotion(false);
     seed(60);
     mount(<You />);
-    expect(ringsLabel()).not.toContain('Since you last looked');
+    expect(ringsLabel()).not.toContain('since you last looked');
     setFocus(false);
     const seen = useSeen.getState().values['you:rings:cisa'];
     answerIn('2', 40, 20, true);
     setFocus(true);
     const now = useSeen.getState().values['you:rings:cisa'];
-    expect(ringsLabel()).toContain(`Since you last looked: ${CISA.domains[1].short} up ${now[1] - seen[1]}.`);
+    expect(ringsLabel()).toContain(`Up ${now[1] - seen[1]} since you last looked`);
+    expect(ringsLabel()).toMatch(new RegExp(`${CISA.domains[1].short}: [^|]*Up ${now[1] - seen[1]} since you last looked`));
     // A revisit with nothing new: the line is gone with the tags.
     setFocus(false);
     setFocus(true);
-    expect(ringsLabel()).not.toContain('Since you last looked');
+    expect(ringsLabel()).not.toContain('since you last looked');
   });
 
   it('a restore to more progress is not shown as growth earned since the last look (no "+N", nothing spoken)', async () => {

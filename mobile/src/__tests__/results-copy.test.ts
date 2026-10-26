@@ -15,17 +15,18 @@ import type { Confidence } from '../engine/srs';
 describe('Results headline by sample size', () => {
   it('under 8 answered it is the plain count, never a verdict', () => {
     expect(SMALL_SAMPLE).toBe(8);
-    expect(resultsHeadline(3, 4, 75)).toBe('3 of 4 right'); // not "Strong work."
-    expect(resultsHeadline(2, 5, 40)).toBe('2 of 5 right'); // not "Every miss is a lesson."
-    expect(resultsHeadline(5, 5, 100)).toBe('All 5 right');
-    expect(resultsHeadline(7, 7, 100)).toBe('All 7 right');
+    expect(resultsHeadline(3, 4)).toBe('3 of 4 right'); // not "Strong work."
+    expect(resultsHeadline(2, 5)).toBe('2 of 5 right'); // not "Every miss is a lesson."
+    expect(resultsHeadline(5, 5)).toBe('All 5 right');
+    expect(resultsHeadline(7, 7)).toBe('All 7 right');
     expect(countHeadline(1, 1)).toBe('Right');
   });
-  it('from 8 answered the bands come back', () => {
-    expect(resultsHeadline(6, 8, 75)).toBe('Strong work.');
-    expect(resultsHeadline(5, 8, 63)).toBe('Getting there.');
-    expect(resultsHeadline(3, 8, 38)).toBe('Every miss is a lesson.');
-    expect(resultsHeadline(120, 150, 80)).toBe('Strong work.');
+  it('mobile 1.43 (owner decision): from 8 answered it still leads with the count, never a verdict first', () => {
+    expect(resultsHeadline(6, 8)).toBe('6 of 8 right');
+    expect(resultsHeadline(8, 10)).toBe('8 of 10 right'); // was "Strong work."
+    expect(resultsHeadline(3, 8)).toBe('3 of 8 right'); // was "Every miss is a lesson."
+    expect(resultsHeadline(120, 150)).toBe('120 of 150 right');
+    expect(resultsHeadline(10, 10)).toBe('All 10 right');
   });
   it('the one fact under a small count is the topic most missed, or nothing', () => {
     expect(smallSampleFact('Risk planning', 1)).toBe('Missed: Risk planning.'); // one miss: "most" would overstate

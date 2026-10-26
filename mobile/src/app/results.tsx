@@ -40,29 +40,55 @@
  *   re-answered minutes later is a retest and earns no spacing credit).
  * - A mock that ended on the clock says "Time’s up" (seen and spoken).
  * - Android Back leaves Results instead of silently abandoning the review (a mock asks first).
+ *
+ * Mobile 1.43 (board 2, owner decisions; design spec §11 "Results, mobile 1.43"):
+ * - The headline is always the count ("8 of 10 right"), never a verdict first.
+ * - A leaf strip shows which questions went right (practice and review up to 20;
+ *   one line instead on a mock or a longer set). No "Correct" / "Missed" cells:
+ *   Time, and Per question beside the exam pace.
+ * - "The 2 you missed come back tomorrow" on the paper (true: engine/srs.ts now
+ *   schedules a miss for the next local day), never on a mock; a clean set gets
+ *   its own line. "What you missed" shows the note rows open, grouped by note
+ *   with their question numbers, and "See answers" jumps to Review answers.
+ * - "Practice the N you missed" is a quiet ghost link under Done.
  */
 import { router, useFocusEffect } from 'expo-router';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Alert, BackHandler, Pressable, View } from 'react-native';
-import { OptionCard, TrustLine } from '../components/quiz';
+import { LeafStrip } from '../components/leafStrip';
+import { OptionCard, PickNote, TrustLine } from '../components/quiz';
 import { QuestionNote } from '../components/questionNote';
 import { useReportFlow } from '../components/support';
 import { DomainRings } from '../components/journey';
 import { PacingPanel } from '../components/pace';
 import { FirstSetDone } from '../components/firstSet';
 import { MilestoneMomentView } from '../components/milestones';
-import { Turn, useOncePerDay } from '../components/motion';
-import { BookOpen, ChevronDown, ICON_STROKE } from '../components/icons';
-import { BigNum, Button, Enter, Gap, ICON_SIZE, ListRow, Row, Screen, Section, Stat, StatRow, T } from '../components/ui';
+import { useOncePerDay } from '../components/motion';
+import { BookOpen, ICON_STROKE, Sprout } from '../components/icons';
+import { BigNum, Button, Enter, Gap, ICON_SIZE, InviteRow, ListRow, Row, Screen, Section, Stat, StatRow, T, useScreenScroll } from '../components/ui';
 import { getCertification } from '../content/certifications';
 import { findQuestion } from '../content/loader';
 import { findNote, subtopicOfQuestion } from '../content/notes';
-import { missedSubtopics } from '../engine/outline';
+import { missedNoteGroups } from '../engine/outline';
 import { legacyTitle } from '../engine/planner';
-import { calibrationLine, resultsHeadline, SMALL_SAMPLE, smallSampleFact, TIMES_UP_DETAIL, TIMES_UP_LINE } from '../engine/resultsCopy';
-import { sayLater } from '../lib/a11y';
+import {
+  calibrationLine,
+  CLEAN_SET_NOTICE,
+  missedLine,
+  missedNotice,
+  moreMissedLine,
+  noteKicker,
+  resultsHeadline,
+  SMALL_SAMPLE,
+  smallSampleFact,
+  STRIP_MAX,
+  TIMES_UP_DETAIL,
+  TIMES_UP_LINE,
+  type LeafState,
+} from '../engine/resultsCopy';
+import { moveFocus, sayLater } from '../lib/a11y';
 import { displayToOriginal, originalToDisplay, renderText } from '../engine/shuffle';
-import { aboutMin, COACHING, coachingTag, practicePaceLine, spokenMin, timeStat, TIMING_LABEL } from '../engine/pace';
+import { aboutMin, COACHING, coachingTag, practicePace, spokenMin, timeStat, TIMING_LABEL } from '../engine/pace';
 import { msUsed, scoreSession, sessionPacing } from '../lib/finishSession';
 import { trapTip } from '../engine/games/trapSpotter';
 import { badgeNextLine } from '../lib/badges';
@@ -78,8 +104,8 @@ export default function Results() {
   const active = useSession((s) => s.active);
   const clear = useSession((s) => s.clear);
   const [openId, setOpenId] = useState<string | null>(null);
-  // Mobile 1.20: "Read the notes for what you missed" shows its rows once tapped.
-  const [notesOpen, setNotesOpen] = useState(false);
+  // Mobile 1.43: "What you missed" → "See answers" jumps to the Review answers heading.
+  const reviewHead = useRef<View>(null);
   const score = useMemo(() => (active ? scoreSession(active) : null), [active]);
   // Mock pacing: time used, median, checks, unanswered, last 10%, slowest domain.
   const pacing = useMemo(() => (active?.mode === 'mock' && active.deadline ? sessionPacing(active) : null), [active]);
@@ -180,14 +206,17 @@ export default function Results() {
   // counts as not correct in "Correct n of total"), so Correct + Missed = total.
   const missed = active.questionIds.filter((id) => (active.responses[id] ? !active.responses[id].correct : active.mode === 'mock'));
   const blank = active.mode === 'mock' ? active.questionIds.filter((id) => !active.responses[id]).length : 0;
-  // Up to three study notes behind the misses, most-missed first. Only notes that
-  // exist count, so the limit of three applies AFTER an unknown id is dropped.
-  const missedNotes = missedSubtopics(missed, (id) => {
+  // Mobile 1.43: up to three study notes behind the misses, most-missed first, each with the
+  // question numbers it explains ("questions 3 and 7"). Only notes that exist count, so the limit
+  // of three applies AFTER an unknown id is dropped; `rest` = misses no row covers.
+  const missedSet = new Set(missed);
+  const noteGroups = missedNoteGroups(active.questionIds, (id) => missedSet.has(id), (id) => {
     const sub = subtopicOfQuestion(cert.id, id);
     return sub && findNote(cert.id, sub) ? sub : undefined;
-  }).map((m) => {
-    const note = findNote(cert.id, m.id)!;
-    return { ...m, name: note.name, minutes: note.minutes ?? 2 };
+  });
+  const missedNotes = noteGroups.groups.map((g) => {
+    const note = findNote(cert.id, g.id)!;
+    return { ...g, name: note.name, minutes: note.minutes ?? 2 };
   });
   const done = () => {
     clear();
@@ -206,7 +235,7 @@ export default function Results() {
       : done;
   // Mobile 1.24: small samples get the count, not a verdict (engine/resultsCopy.ts).
   const tiny = active.mode !== 'mock' && score.answered < SMALL_SAMPLE;
-  const headline = resultsHeadline(score.correct, active.mode === 'mock' ? score.total : score.answered, pct);
+  const headline = resultsHeadline(score.correct, active.mode === 'mock' ? score.total : score.answered);
   // The one fact beneath a small-sample headline: the note, else the domain, most missed.
   const missedDomain = (() => {
     const tally: Record<string, number> = {};
@@ -249,8 +278,16 @@ export default function Results() {
   const oneDomain = inSession.length === 1 ? cert.domains[inSession[0]] : undefined;
   // Mobile 1.39: the domain rings only where they tell something: a mixed-domain set or a mock.
   const showRings = active.mode === 'mock' || !oneDomain;
-  // One pace line for every practice / review session (Build C answer times).
-  const paceText = practicePaceLine(active.questionIds.map((id) => active.responses[id]?.ms), cert.exam);
+  // Mobile 1.43: "Per question" beside the exam's own pace (Build C answer times). A timed mock's
+  // Pacing panel already gives its typical time per question, so it is not said twice there.
+  const pace = pacing ? null : practicePace(active.questionIds.map((id) => active.responses[id]?.ms), cert.exam);
+  // Mobile 1.43: one leaf per question (practice and review sets up to 20); a mock or a longer set
+  // gets one line instead. Misses scheduled for tomorrow (engine/srs.ts) are said once, on the paper.
+  const isMock = active.mode === 'mock';
+  const strip = !isMock && active.questionIds.length <= STRIP_MAX;
+  const leafStates: LeafState[] = active.questionIds.map((id) => (active.responses[id] ? (active.responses[id].correct ? 'right' : 'missed') : 'blank'));
+  const notice = isMock || score.answered === 0 ? null : missed.length ? missedNotice(missed.length) : CLEAN_SET_NOTICE;
+  const moreLine = moreMissedLine(noteGroups.rest, isMock);
   // The same time the mock history, pacing panel and Today use (a timed mock's
   // clock; otherwise answer time), as a stat that reads plainly ("Under 1 min", "24 min").
   const time = timeStat(msUsed(active, active.finishedAt ?? active.startedAt));
@@ -272,102 +309,85 @@ export default function Results() {
         )}
         <T v="display" accessibilityRole="header" style={{ marginTop: space.xs }}>{headline}</T>
         {fact && <T v="small" color={c.ink2} style={{ marginTop: space.xs }}>{fact}</T>}
+        {/* A one-domain set (no ring) names its domain once (mobile 1.43: no percent, the headline is the count). */}
+        {!fact && !tiny && oneDomain && !showRings && <T v="meta" style={{ marginTop: space.sm }}>{`All ${oneDomain.short}`}</T>}
       </Enter>
 
       {/* Score rings in domain tones (spec §10.1, Results 200): arc = this session's score per domain.
-          Mobile 1.39: only for a mixed-domain set or a mock. A one-domain set's ring said nothing the
-          headline and "Correct" don't already say, so it keeps just its one line ("All IS Audit · 80%"),
-          close under the headline. */}
-      {(showRings || !tiny) && (
-        <Enter i={1} style={{ marginTop: showRings ? space.xl : space.sm }}>
-          {showRings && (
-            <DomainRings
-              cert={cert}
-              values={values}
-              only={inSession}
-              // One domain: the ring alone, centred, with its one line under it (no stranded legend row).
-              legend={!oneDomain}
-              grow={{ play: grow, run: 1, delay: at }}
-              legendValue={(i) => {
-                const b = score.byDomain[cert.domains[i].id];
-                return b ? `${b.correct}/${b.total}` : '–';
-              }}
-              accessibilityLabel={`${tiny ? `${score.correct} of ${score.answered} right` : `Score ${pct} percent`}. ${cert.domains
-                .map((d) => (score.byDomain[d.id] ? `${d.short} ${score.byDomain[d.id].correct} of ${score.byDomain[d.id].total}` : null))
-                .filter(Boolean)
-                .join(', ')}.`}
-              center={
-                tiny ? (
-                  // A handful of questions: no percent (a percent of 4 says little), and no count either: the
-                  // headline already says "2 of 3 right" (UX review S7, the count once). One domain names it here.
-                  oneDomain ? (
-                    <T v="caption" color={c.ink2} center style={{ maxWidth: 96 }}>{oneDomain.short}</T>
-                  ) : null
-                ) : (
-                  <View style={{ alignItems: 'center' }}>
-                    <BigNum value={String(pct)} pct size={30} roll={{ play: grow, from: null, run: 1, delay: at }} />
-                    <T v="caption" color={c.ink2}>score</T>
-                  </View>
-                )
-              }
-            />
-          )}
-          {tiny ? null : oneDomain ? (
-            // Mobile 1.22 (design spec §8.2): one line naming the domain. A handful of questions has none:
-            // the headline holds the count (UX review S7). Mobile 1.39: with no ring it says the percent
-            // ("All IS Audit · 80%"), since "Correct 12 of 15" below already gives the count; a one-domain
-            // mock keeps its ring and the count line.
-            <T v="meta" center={showRings} style={{ marginTop: showRings ? 14 : 0 }}>
-              {showRings
-                ? `All ${oneDomain.short} · ${score.byDomain[oneDomain.id].correct} of ${score.byDomain[oneDomain.id].total}`
-                : `All ${oneDomain.short} · ${pct}%`}
-            </T>
+          Mobile 1.39: only for a mixed-domain set or a mock. A one-domain set has no ring (1.43: and no
+          percent line; the headline is the count). */}
+      {showRings ? (
+        <Enter i={1} style={{ marginTop: space.xl }}>
+          <DomainRings
+            cert={cert}
+            values={values}
+            only={inSession}
+            // One domain: the ring alone, centred, with its one line under it (no stranded legend row).
+            legend={!oneDomain}
+            grow={{ play: grow, run: 1, delay: at }}
+            legendValue={(i) => {
+              const b = score.byDomain[cert.domains[i].id];
+              return b ? `${b.correct}/${b.total}` : '–';
+            }}
+            accessibilityLabel={`${tiny ? `${score.correct} of ${score.answered} right` : `Score ${pct} percent`}. ${cert.domains
+              .map((d) => (score.byDomain[d.id] ? `${d.short} ${score.byDomain[d.id].correct} of ${score.byDomain[d.id].total}` : null))
+              .filter(Boolean)
+              .join(', ')}.`}
+            center={
+              tiny ? (
+                // A handful of questions: no percent (a percent of 4 says little), and no count either: the
+                // headline already says "2 of 3 right" (UX review S7, the count once). One domain names it here.
+                oneDomain ? (
+                  <T v="caption" color={c.ink2} center style={{ maxWidth: 96 }}>{oneDomain.short}</T>
+                ) : null
+              ) : (
+                <View style={{ alignItems: 'center' }}>
+                  <BigNum value={String(pct)} pct size={30} roll={{ play: grow, from: null, run: 1, delay: at }} />
+                  <T v="caption" color={c.ink2}>score</T>
+                </View>
+              )
+            }
+          />
+          {oneDomain ? (
+            <T v="meta" center style={{ marginTop: 14 }}>{`All ${oneDomain.short}`}</T>
           ) : (
             <T v="meta" style={{ marginTop: 14 }}>Each ring is a domain in this session. Thicker rings weigh more on the exam.</T>
           )}
         </Enter>
-      )}
+      ) : null}
+
+      {/* Mobile 1.43: which ones, at a glance (up to 20 practice questions), or one line (a mock, a longer set). */}
+      <Enter i={showRings ? 2 : 1} style={{ marginTop: showRings ? space.xl : space.lg }}>
+        {strip ? <LeafStrip states={leafStates} /> : <T v="meta">{missedLine(missed.length, blank)}</T>}
+      </Enter>
 
       <View style={{ marginTop: space.xl }} onLayout={(e) => setStatsY(e.nativeEvent.layout.y)}>
-      <Enter i={2}>
+      <Enter i={showRings ? 3 : 2}>
+        {/* Mobile 1.43: the count is said once, in the headline, so there is no "Correct" or "Missed" cell:
+            the time, and the time per question beside the exam's own pace. */}
         <StatRow>
           {[
-            // A handful of questions: no "Correct" cell, the headline above is that count (UX review S7).
-            tiny ? null : (
+            time.word ? <Stat key="t" label="Time" word={time.word} spoken={time.spoken} /> : <Stat key="t" label="Time" value={time.value} unit={time.unit} spoken={time.spoken} />,
+            pace ? (
               <Stat
-                key="a"
-                label="Correct"
-                value={String(score.correct)}
-                unit={`of ${denominator}`}
-                // The number right rolls up from 0; "of 20" stays put.
-                roll={{ play: grow, from: '0', run: 1, delay: at + motion.stagger.stat }}
+                key="p"
+                label="Per question"
+                value={String(pace.own)}
+                unit="s"
+                note={`Exam pace: about ${pace.exam} s`}
+                spoken={`${pace.own} seconds. Exam pace about ${pace.exam} seconds`}
               />
-            ),
-            // Answered wrong (and, on a mock, left blank): what "Practice the ones you missed" opens.
-            missed.length ? (
-              <Stat key="b" label="Missed" value={String(missed.length)} spoken={blank ? `${missed.length}, ${blank} of them left blank` : undefined} />
-            ) : (
-              <Stat key="b" label="Missed" word="None" />
-            ),
-            time.word ? <Stat key="c" label="Time" word={time.word} spoken={time.spoken} /> : <Stat key="c" label="Time" value={time.value} unit={time.unit} spoken={time.spoken} />,
+            ) : null,
           ]}
         </StatRow>
-        {blank > 0 && (
+        {isMock && (
           <T v="meta" style={{ marginTop: space.md }}>
-            {`Missed includes ${blank} left blank: a blank counts as not correct.`}
-          </T>
-        )}
-        {active.mode === 'mock' && (
-          <T v="meta" style={{ marginTop: blank > 0 ? space.sm : space.md }}>
             Practice scores are not scaled exam scores. {cert.exam.passingNote}
           </T>
         )}
-        {active.mode !== 'mock' && paceText && (
-          <T v="meta" style={{ marginTop: space.md }}>{paceText}</T>
-        )}
         {/* How well "how sure I felt" matched the result (only when enough answers were rated). */}
-        {calibration && <T v="meta" style={{ marginTop: space.sm }}>{calibration}</T>}
-        {active.mode === 'mock' && !active.deadline && (
+        {calibration && <T v="meta" style={{ marginTop: space.md }}>{calibration}</T>}
+        {isMock && !active.deadline && (
           <T v="meta" style={{ marginTop: space.sm }}>Untimed mock: your answers count toward readiness, and pacing stats leave it out.</T>
         )}
         {pacing && (
@@ -375,26 +395,49 @@ export default function Results() {
             <PacingPanel pacing={pacing} cert={cert} />
           </View>
         )}
-        <Gap h={space.xl} />
-        {/* Mobile 1.24: "Practice the N you missed" is a secondary button now. A miss re-answered
-            minutes later is a retest (it earns no spacing credit, engine/srs.ts), so the one solid
-            button is Done (or the Guided step); the missed ones come back in review. */}
-        {guidedScope ? (
-          <>
-            <Button label="Back to your Guided step" onPress={backToGuided} />
-            <Gap h={space.sm} />
-          </>
-        ) : (
-          <>
-            <Button label="Done" onPress={done} />
-            <Gap h={space.sm} />
-          </>
+        {/* Mobile 1.43: what happens next, on the paper (an InviteRow, not a plate): the misses come back
+            tomorrow (true since engine/srs.ts schedules a miss for the next local day), or a clean set. */}
+        {notice && (
+          <View style={{ marginTop: space.xl }}>
+            <InviteRow icon={<Sprout size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />} title={notice.title} body={notice.body} testID="results-notice" />
+          </View>
         )}
+        {/* What you missed: the notes behind the misses, open (no expander), grouped by note, at most three.
+            "See answers" jumps to Review answers, where each missed question and its answer are. */}
         {missed.length > 0 && (
-          <Button kind="secondary" label={missed.length === 1 ? 'Practice the one you missed' : `Practice the ${missed.length} you missed`} onPress={practiseMissed} />
+          <View>
+            <JumpSection title="What you missed" target={reviewHead} />
+            {missedNotes.map((n, i) => (
+              <ListRow
+                key={n.id}
+                icon={<BookOpen size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
+                kicker={noteKicker(n.numbers)}
+                title={n.name}
+                subtitle={aboutMin(n.minutes)}
+                accessibilityLabel={`${noteKicker(n.numbers)}: ${n.name}, ${spokenMin(aboutMin(n.minutes, true))}`}
+                accessibilityHint="Opens the study note. Go back to return to your results."
+                onPress={() => router.push(`/notes/subtopic/${encodeURIComponent(n.id)}`)}
+                last={i === missedNotes.length - 1}
+              />
+            ))}
+            {moreLine && <T v="meta" style={{ marginTop: space.sm }}>{moreLine}</T>}
+          </View>
+        )}
+        <Gap h={space.xl} />
+        {/* One solid button: Done (or the Guided step). "Practice the N you missed" is a quiet link under it:
+            a miss re-answered minutes later is a retest and earns no spacing credit (engine/srs.ts), and the
+            misses come back tomorrow anyway. */}
+        {guidedScope ? <Button label="Back to your Guided step" onPress={backToGuided} /> : <Button label="Done" onPress={done} />}
+        {missed.length > 0 && (
+          <Button
+            kind="ghost"
+            label={missed.length === 1 ? 'Practice the one you missed' : `Practice the ${missed.length} you missed`}
+            onPress={practiseMissed}
+            style={{ alignSelf: 'center', marginTop: space.sm }}
+          />
         )}
         {guidedScope && (
-          <Button kind="ghost" label="Done" onPress={done} style={{ alignSelf: 'center', minWidth: 120, marginTop: space.sm }} />
+          <Button kind="ghost" label="Done" onPress={done} style={{ alignSelf: 'center', minWidth: 120, marginTop: missed.length > 0 ? 0 : space.sm }} />
         )}
         {moment && (
           <View
@@ -414,43 +457,7 @@ export default function Results() {
       </Enter>
       </View>
 
-      {missedNotes.length > 0 && (
-        <View style={{ marginTop: space.sm }}>
-          {/* Mobile 1.20: the notes behind the misses, folded until asked for (BookOpen = notes).
-              Mobile 1.22 (design spec §8.4): its own place just above the review, after the actions. */}
-          <Button
-            kind="ghost"
-            label="Notes for what you missed"
-            expanded={notesOpen}
-            accessibilityHint={notesOpen ? 'Hides the study notes' : 'Shows the study notes for the ideas you missed'}
-            // Points down when open, right when closed, and turns when tapped (as on Learn).
-            icon={(col) => (
-              <Turn deg={notesOpen ? 0 : -90}>
-                <ChevronDown size={ICON_SIZE.inline} color={col} strokeWidth={ICON_STROKE} />
-              </Turn>
-            )}
-            onPress={() => setNotesOpen(!notesOpen)}
-            style={{ alignSelf: 'flex-start', marginLeft: -space.sm }}
-          />
-          {notesOpen && (
-            <View style={{ marginBottom: space.sm }}>
-              {missedNotes.map((n, i) => (
-                <ListRow
-                  key={n.id}
-                  icon={<BookOpen size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
-                  title={n.name}
-                  subtitle={`${n.missed === 1 ? '1 miss' : `${n.missed} misses`} · ${aboutMin(n.minutes, true)}`}
-                  accessibilityLabel={`Read the note: ${n.name}. ${n.missed === 1 ? '1 question' : `${n.missed} questions`} you missed, ${spokenMin(aboutMin(n.minutes, true))}`}
-                  accessibilityHint="Opens the study note. Go back to return to your results."
-                  onPress={() => router.push(`/notes/subtopic/${encodeURIComponent(n.id)}`)}
-                  last={i === missedNotes.length - 1}
-                />
-              ))}
-            </View>
-          )}
-        </View>
-      )}
-      <Section title="Review answers" />
+      <Section title="Review answers" headRef={reviewHead} />
       {active.questionIds.map((id, i) => {
         const q = findQuestion(active.certId, id);
         const perm = active.perms[id];
@@ -492,16 +499,29 @@ export default function Results() {
             </Pressable>
             {open && (
               <View style={{ paddingBottom: space.lg }}>
+                {/* The same rows as the answer screen (mobile 1.43): the DISPLAY letter in each badge and spoken
+                    label, and the pick's own note under its red row. */}
                 {r && !r.correct && picked && (
-                  <OptionCard
-                    letter={r.display}
-                    text={q.options[picked] ?? ''}
-                    state="wrong"
-                    tag={`Your answer · ${r.display}`}
-                    note={q.wrongExplanations[picked] ? renderText(q.wrongExplanations[picked]!, perm) : undefined}
-                  />
+                  <>
+                    <OptionCard
+                      letter={r.display}
+                      text={q.options[picked] ?? ''}
+                      state="wrong"
+                      mark="letter"
+                      tag="Your answer"
+                      spoken={`Your answer, ${r.display}, not correct: ${q.options[picked] ?? ''}`}
+                    />
+                    {q.wrongExplanations[picked] ? <PickNote letter={r.display} text={renderText(q.wrongExplanations[picked]!, perm)} /> : null}
+                  </>
                 )}
-                <OptionCard letter={correctDisplay} text={q.options[q.correct] ?? ''} state="correct" tag={`Best answer · ${correctDisplay}`} />
+                <OptionCard
+                  letter={correctDisplay}
+                  text={q.options[q.correct] ?? ''}
+                  state="correct"
+                  mark="letter"
+                  tag="Best answer"
+                  spoken={`Best answer, ${correctDisplay}: ${q.options[q.correct] ?? ''}`}
+                />
                 <T v="headline">{`Why ${correctDisplay}`}</T>
                 <T v="body" style={{ marginBottom: space.sm }}>{renderText(q.explanation, perm)}</T>
                 {trapTip(q) !== '' && (
@@ -539,5 +559,28 @@ export default function Results() {
       </View>
       {bug.sheet}
     </Screen>
+  );
+}
+
+/**
+ * "What you missed" with a "See answers" action (mobile 1.43): the learner wants to reopen the
+ * questions they got wrong, not only the notes. The action scrolls to Review answers (instant under
+ * Reduce Motion) and moves screen-reader focus to its heading. A child of Screen, so it can scroll it.
+ */
+function JumpSection({ title, target }: { title: string; target: { current: View | null } }) {
+  const scroll = useScreenScroll();
+  return (
+    <Section
+      title={title}
+      action={{
+        label: 'See answers',
+        accessibilityLabel: 'See answers, each question with your answer',
+        hint: 'Goes to Review answers below',
+        onPress: () => {
+          scroll?.scrollToView(target.current);
+          moveFocus(target, 400);
+        },
+      }}
+    />
   );
 }

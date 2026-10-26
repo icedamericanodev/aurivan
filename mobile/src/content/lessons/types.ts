@@ -8,7 +8,18 @@
  */
 export type Scene =
   | { type: 'title'; kicker: string; title: string; subtitle: string }
-  | { type: 'idea'; heading: string; body: string }
+  | {
+      type: 'idea';
+      heading: string;
+      body: string;
+      /**
+       * Mobile 1.43 (opt-in, only for a body that really lists a few PARALLEL items): the same words,
+       * split so the items can be drawn as a small numbered figure. `ideaListText(list)`
+       * (content/lessons/ideaList.ts) must give back `body` exactly (a content test checks it).
+       * Each item may mark where its label ends with "|": "authority| to access people and records".
+       */
+      list?: IdeaList;
+    }
   | { type: 'analogy'; heading: string; body: string }
   | { type: 'stack'; heading: string; layers: { label: string; note: string }[]; caption?: string }
   | {
@@ -33,6 +44,18 @@ export type Scene =
   | { type: 'trap'; heading: string; trap: string; why: string }
   | { type: 'tip'; body: string }
   | { type: 'check'; question: string; options: string[]; correctIndex: number; explanation: string };
+
+/**
+ * A list inside an idea scene's body (mobile 1.43): `lead` (the words before the list), the items in
+ * order, how the last one joins ("and" after a comma by default, the Oxford comma; `plainAnd` for
+ * "a, b and c"), and an optional `close` sentence after it. Nothing is rewritten: joined, they ARE the body.
+ */
+export interface IdeaList {
+  lead: string;
+  items: string[];
+  plainAnd?: boolean;
+  close?: string;
+}
 
 export interface Lesson {
   id: string; // stable forever, progress is keyed on it

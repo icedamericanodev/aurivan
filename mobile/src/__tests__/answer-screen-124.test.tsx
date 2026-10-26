@@ -79,6 +79,14 @@ const press = (label: string) => {
     b.props.onPress();
   });
 };
+/** Press the first button whose spoken label starts with `prefix` ("Read more: the full explanation, …"). */
+const pressStarting = (prefix: string) => {
+  const b = root().findAll((n) => typeof n.props.accessibilityLabel === 'string' && n.props.accessibilityLabel.startsWith(prefix) && typeof n.props.onPress === 'function')[0];
+  if (!b) throw new Error(`no button starting "${prefix}"`);
+  act(() => {
+    b.props.onPress();
+  });
+};
 const optionCards = () => root().findAll((n) => n.props.letter !== undefined && n.props.state !== undefined && typeof n.props.text === 'string');
 /** Tap the first option whose ORIGINAL letter is right (or wrong). */
 function pickBy(right: boolean) {
@@ -121,9 +129,12 @@ describe('the answer screen after a miss', () => {
 
   it('order: Not quite, your answer, best answer, Key idea, Exam cue, Why, Eliminate two, Final two', () => {
     missRich();
+    // Mobile 1.43: Eliminate two and Final two sit inside the "Read more" fold.
+    pressStarting('Read more');
     const t = allText();
-    const at = (s: string) => t.indexOf(s);
-    const order = ['Not quite', 'Your answer ·', 'Best answer ·', 'Key idea', 'Exam cue', 'Why ', 'Eliminate two', 'Final two'].map(at);
+    // "Why D" (the heading), not the pick's own "Why not B" note under its row (mobile 1.43).
+    const at = (s: string) => (s === 'Why ' ? t.search(/Why [A-D]\b/) : t.indexOf(s));
+    const order = ['Not quite', 'Your answer', 'Best answer', 'Key idea', 'Exam cue', 'Why ', 'Eliminate two', 'Final two'].map(at);
     expect(order.every((i) => i >= 0)).toBe(true);
     expect([...order].sort((a, b) => a - b)).toEqual(order);
   });
@@ -143,8 +154,8 @@ describe('the answer screen after a miss', () => {
     missRich();
     const why = root().findAll((n) => n.props.numberOfLines === 2 && typeof n.props.children === 'string' && n.props.children.length > 150);
     expect(why.length).toBeGreaterThan(0);
-    press('Read more of the explanation');
-    expect(btn('Show less of the explanation')).toBeDefined();
+    pressStarting('Read more');
+    expect(root().findAll((n) => typeof n.props.accessibilityLabel === 'string' && n.props.accessibilityLabel.startsWith('Show less') && typeof n.props.onPress === 'function').length).toBeGreaterThan(0);
     expect(root().findAll((n) => n.props.numberOfLines === 2 && typeof n.props.children === 'string' && n.props.children.length > 150)).toHaveLength(0);
   });
 
@@ -321,10 +332,11 @@ describe('Results', () => {
     expect(t).not.toMatch(/\d+%|percent/);
   });
 
-  it('eight or more: the encouraging bands are back', () => {
+  it('eight or more: still the count first (mobile 1.43, owner decision), never "Strong work." before it', () => {
     finished(8, 7);
     mount(<Results />);
-    expect(allText()).toContain('Strong work.');
+    expect(allText()).toContain('7 of 8 right');
+    expect(allText()).not.toContain('Strong work');
   });
 
   it('the calibration line when enough answers were rated', () => {

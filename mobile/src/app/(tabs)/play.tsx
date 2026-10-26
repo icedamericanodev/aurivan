@@ -156,7 +156,9 @@ export default function Play() {
             {plan.fromPattern && pattern ? `Picked from your mistakes. ${pattern.title}.` : 'A good place to start. Your mistakes will shape this pick.'}
           </T>
           <HeroPanel
-            captionLead={<GameGlyph game={featured.id} size={20} color={c.sap} />}
+            // Mobile 1.43 (tab header C): a white card with the Play seal, so the glyph and level take paper inks.
+            seal="sprig"
+            captionLead={<GameGlyph game={featured.id} size={20} color={c.accentText} />}
             caption={`${featured.skill} · ${featured.minutes} min`}
             captionLabel={spokenMin(`${featured.skill} · ${featured.minutes} min`)}
             title={featured.name}
@@ -169,12 +171,12 @@ export default function Play() {
               onPress: () => router.push(`/game/${featured.id}`),
             }}
           >
-            {/* The level on forest: the leaf in sap, its name in text (under the meta, clear of the art). */}
+            {/* The level (1.43: on the white seal card): the leaf in accent, its name in text, under the meta. */}
             <Row gap={space.sm} style={{ marginTop: space.sm }}>
               <View accessible={false} importantForAccessibility="no-hide-descendants">
-                <TierLeaf tier={level(featured.id)} color={c.sap} rib={c.forest} />
+                <TierLeaf tier={level(featured.id)} color={c.accent} rib={c.raised} />
               </View>
-              <T v="caption" color={c.onForest2} accessibilityLabel={`Your level: ${GAME_TIER_NAME[level(featured.id)]}`}>
+              <T v="caption" color={c.ink2} accessibilityLabel={`Your level: ${GAME_TIER_NAME[level(featured.id)]}`}>
                 {GAME_TIER_NAME[level(featured.id)]}
               </T>
             </Row>

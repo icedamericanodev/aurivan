@@ -34,7 +34,7 @@ import { FocusEmitter, FocusScope, routeParams } from '../../jest/perf/focusRout
 import { setMockReducedMotion } from '../../jest/reanimated-mock';
 import { CERTIFICATIONS, getCertification } from '../content/certifications';
 import { lessonsFor } from '../content/lessons';
-import { domainFigure } from '../engine/domainBand';
+import { areaFigure } from '../engine/domainBand';
 import { daysToExam } from '../engine/examDay';
 import { grewLabel } from '../engine/plant';
 import { computeReadiness } from '../engine/readiness';
@@ -267,6 +267,8 @@ function mockExam(right: number, total = 50) {
 }
 /** Independent of the PR's caches: the engine, computed from scratch. */
 const engineDue = () => dueIds(cp().review, Date.now(), questionExists('cisa')).length;
+/** The review row's spoken start: "N due." or, with nothing due yet (mobile 1.43: fresh misses wait for tomorrow), "all caught up". */
+const revisitLabel = (due: number) => (due > 0 ? `[Questions to revisit, ${due} due.` : '[Questions to revisit, all caught up');
 const engineRange = () => readinessRange(cert, computeReadiness(cert, cp().answers));
 
 // ── Saves (AsyncStorage writes per key) ──────────────────────────────────
@@ -337,15 +339,16 @@ describe('answering, then switching tabs: every tab shows fresh numbers', () => 
     expect(joined('practice')).not.toBe(before.practice);
     // ...and match the engine computed from scratch.
     const due = engineDue();
-    expect(due).toBeGreaterThan(0);
-    expect(joined('practice')).toContain(`[Questions to revisit, ${due} due.`);
-    expect(joined('you')).toContain(`[Questions to revisit, ${due} due.`);
+    // Mobile 1.43: the misses are in review, due from the start of tomorrow (none due this minute).
+    expect(Object.keys(cp().review).length).toBeGreaterThan(0);
+    expect(joined('practice')).toContain(revisitLabel(due));
+    expect(joined('you')).toContain(revisitLabel(due));
     const range = engineRange();
     expect(range.enough).toBe(true);
     if (range.enough) {
       // Today says it in its clearing ("Readiness grew to 45–61%", a word joiner inside); You in its rings label.
       expect(joined('home').replace(/\u2060/g, '')).toContain(`${range.low}–${range.high}`);
-      expect(joined('you')).toContain(`[Estimated readiness between ${range.low} and ${range.high} percent.`);
+      expect(joined('you')).toContain(`[Estimated readiness ${range.low} to ${range.high} percent.`);
     }
     const answered = Object.keys(cp().answers).length;
     expect(joined('you')).toContain(`[Answered: ${answered}]`);
@@ -353,8 +356,8 @@ describe('answering, then switching tabs: every tab shows fresh numbers', () => 
     const rd = computeReadiness(cert, cp().answers);
     for (const d of rd.domains) {
       const short = cert.domains.find((x) => x.id === d.domainId)!.short;
-      // Mobile 1.24: a word below 30 answers in the domain, the number (with "latest tries") from 30.
-      expect(joined('you')).toContain(`${short} ${domainFigure(d.answered, Math.round(d.mastery * 100)).spoken}`);
+      // Mobile 1.43: each area row says its word, its percent from 30 answers, and its line (engine/domainBand.ts areaFigure).
+      expect(joined('you')).toContain(`[${short}: ${areaFigure(d.answered, Math.round(d.mastery * 100)).spoken}`);
     }
     // Learn's "Up next" follows the focus domain.
     const focus = cert.domains.find((d) => d.id === rd.focusDomainId)!;
@@ -377,7 +380,7 @@ describe('answering, then switching tabs: every tab shows fresh numbers', () => 
       }
     });
     expect(textOf('you')).toEqual(freshText('you'));
-    expect(joined('you')).toContain(`[Questions to revisit, ${engineDue()} due.`);
+    expect(joined('you')).toContain(revisitLabel(engineDue()));
     expect(joined('you')).toContain('[Mistake journal, 6 open]');
     // A hidden tab (never switched to) is fresh too, the moment it is opened.
     expectTabsFresh(['practice', 'learn', 'home']);
@@ -413,15 +416,15 @@ describe('answering, then switching tabs: every tab shows fresh numbers', () => 
     });
     mountAll();
     const dueNow = engineDue();
-    expect(joined('practice')).toContain(`[Questions to revisit, ${dueNow} due.`);
+    expect(joined('practice')).toContain(revisitLabel(dueNow));
     const later = Math.min(...Object.values(cp().review).map((e) => e.dueAt).filter((d) => d > Date.now()));
     expect(Number.isFinite(later)).toBe(true);
     // The app comes back just after the next review fell due.
     setClock(later + 1000);
     foreground();
     expect(engineDue()).toBeGreaterThan(dueNow);
-    expect(joined('practice')).toContain(`[Questions to revisit, ${engineDue()} due.`);
-    expect(joined('you')).toContain(`[Questions to revisit, ${engineDue()} due.`);
+    expect(joined('practice')).toContain(revisitLabel(engineDue()));
+    expect(joined('you')).toContain(revisitLabel(engineDue()));
     expectTabsFresh(['practice', 'you', 'home']);
   });
 });
@@ -513,7 +516,7 @@ describe('backup restore', () => {
     expectTabsFresh();
     expect(joined('you')).toContain(`[Answered: ${answeredThen}]`);
     expect(joined('you')).toContain('No mocks yet');
-    expect(joined('practice')).toContain(`[Questions to revisit, ${engineDue()} due.`);
+    expect(joined('practice')).toContain(revisitLabel(engineDue()));
     // The phone's saved progress is the restored data (a later no-op never skips it back).
     const saved = JSON.parse((await AsyncStorage.getItem('aurivan.progress.v1'))!);
     expect(Object.keys(saved.state.byCert.cisa.answers)).toHaveLength(answeredThen);

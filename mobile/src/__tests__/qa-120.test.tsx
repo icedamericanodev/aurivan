@@ -464,8 +464,8 @@ describe('a set started above an old session or Results', () => {
     });
     close(above[0]); // Session replaced by Results
     const results = open('results', <Results />);
-    press(results, 'Notes for what you missed'); // was "Read the notes for what you missed" before the UX pass
-    press(results, /^Read the note: /);
+    // Mobile 1.43: the note rows are open under "What you missed" (no expander), kicker first.
+    press(results, /^Read the note · question/);
     mockParams = { id: noted.sub };
     const note = open('note', <NoteSubtopicScreen />);
     press(note, 'Practice this concept'); // a finished session: no question asked

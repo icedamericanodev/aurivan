@@ -146,7 +146,7 @@ describe('Mistake journal: tags in plain words, with an example each', () => {
 });
 
 describe('You: the legend 1 → 5, and what Accuracy counts', () => {
-  it('lists domains 1 to 5 under the rings, with the inner-ring note and the accuracy note', () => {
+  it('lists domains 1 to 5 under the one ring (mobile 1.43: no ring legend to decode, the caption says what the figures count)', () => {
     act(() => {
       for (const q of getAllQuestions('cisa').slice(0, 3)) useProgress.getState().recordAnswer('cisa', q.id, true);
     });
@@ -155,8 +155,7 @@ describe('You: the legend 1 → 5, and what Accuracy counts', () => {
     const at = ['IS Audit', 'IT Governance', 'IS Acquisition', 'IS Operations', 'Info Protection'].map((n) => t.indexOf(n));
     expect(at.every((i) => i > -1)).toBe(true);
     expect([...at].sort((a, b) => a - b)).toEqual(at);
-    expect(t).toContain(RINGS_NOTE);
-    expect(RINGS_NOTE).toBe('Domain 1 is the inner ring. Thicker rings weigh more on the exam.');
-    expect(t).toContain('Accuracy counts your latest try at each question.');
+    expect(t).not.toContain(RINGS_NOTE);
+    expect(t).toContain('Right on your latest tries');
   });
 });

@@ -40,6 +40,7 @@ import { originalToDisplay } from '../engine/shuffle';
 import { dayKey } from '../engine/streak';
 import { finishSession } from '../lib/finishSession';
 import { startMock, startPractice } from '../lib/sessions';
+import { startOfNextDay } from '../engine/srs';
 import { selectCert, useProgress } from '../store/progress';
 import { useSession } from '../store/session';
 import { useSettings } from '../store/settings';
@@ -411,7 +412,8 @@ describe('journey 5: timed practice', () => {
     expect(active().finishedAt).toBeDefined();
     unmount();
     mount(<Results />);
-    expect(allText()).toContain('About 50 seconds per question. The exam allows about 96 seconds.');
+    // Mobile 1.43: a "Per question" stat beside the exam pace (it was one sentence).
+    expect(allText()).toContain('Per question 50 s Exam pace: about 96 s');
     // Mobile 1.24: the tags are gone (one quiet line each); the line says it.
     expect(allText()).toContain('You knew it; trust the first pass.');
   });
@@ -487,7 +489,8 @@ describe('journey 7: Daylight', () => {
     expect(Object.keys(cp().answers)).toHaveLength(3);
     const timedOut = Object.keys(cp().review).filter((id) => !cp().answers[id]);
     expect(timedOut).toHaveLength(2);
-    for (const id of timedOut) expect(cp().review[id].dueAt).toBeLessThanOrEqual(Date.now());
+    // Mobile 1.43 (QA note 1): like a miss, a time-out waits for the start of tomorrow.
+    for (const id of timedOut) expect(cp().review[id].dueAt).toBe(startOfNextDay(Date.now()));
     expect(useProgress.getState().today.answered).toBe(3);
     // Score: correct answers only, no bonus.
     expect(scoreLabel()).toBe(`Score ${right()} out of 6`);

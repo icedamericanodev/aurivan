@@ -110,7 +110,7 @@ export const dark: Palette = {
   correct: '#8AD6A8',
   correctBg: '#173022',
   wrong: '#FF9CA6',
-  wrongBg: '#3A1A1D',
+  wrongBg: '#2C1A1D',
   tip: '#E9C46A',
   tipBg: '#2B2418', // 1.21: a warmer amber (#2C2715 read muddy olive behind the notes' trap cards)
   scrim: '#000000',

@@ -217,6 +217,8 @@ export default function Practice() {
           meta={heroMeta}
           metaLabel={spokenMin(heroMeta)}
           art="frond2"
+          // Mobile 1.43 (tab header C): a white card with the Practice seal; Today keeps the forest panel.
+          seal="leafvein"
           action={{
             label: mode === 'guided' ? 'Open step' : 'Start',
             // Play is for lessons (the 1.20 icon rule): practice goes forward with an arrow (mobile 1.22).

@@ -32,7 +32,8 @@
  */
 import { useRef, useState, type ReactNode } from 'react';
 import { View, type LayoutChangeEvent } from 'react-native';
-import type { Lesson, Scene } from '../content/lessons/types';
+import type { IdeaList, Lesson, Scene } from '../content/lessons/types';
+import { ideaListSpoken, itemParts, leadText } from '../content/lessons/ideaList';
 import { displayToOriginal, isCheckCorrect, lettersFor, originalToDisplay, renderText, type Permutation } from '../engine/shuffle';
 import { LETTERS, type Letter } from '../content/types';
 import { moveFocus } from '../lib/a11y';
@@ -69,6 +70,8 @@ export function lastPart(scene: Scene): number {
       // The takeaway: the caption, the italic quote, then (when it runs long) the rest in plain text.
       return splitCoachText(scene.body).rest ? 2 : 1;
     case 'idea':
+      // A listed idea (1.43): the lead, each item, then the closing line.
+      if (scene.list && scene.heading !== COACH_HEADING) return scene.list.items.length + (scene.list.close ? 2 : 1);
       // "The IS auditor’s lens" splits like the takeaway; a plain idea is two parts.
       return scene.heading === COACH_HEADING && splitCoachText(scene.body).rest ? 2 : 1;
     default:
@@ -350,6 +353,52 @@ function LessonCover({ scene, lesson, art, tone }: { scene: Extract<Scene, { typ
   );
 }
 
+/**
+ * An idea that lists a few PARALLEL items (mobile 1.43, opt-in per scene through `list`): the lead in
+ * the scene's prose, then the items as a small figure, then the closing line on its own beat. Same
+ * words, only split (a content test checks the join). Not the steps template: the items are parts of
+ * a whole, not a sequence, so there is no path between them and no "Step 1 of 4". Each item is a
+ * row: a 32 disc in `raised2` (a hairline `line` ring keeps it visible on light paper) holding a
+ * `serifNumeral(17)` in `accentText`, the label in `label`, the rest of its words in `meta`; hairlines
+ * between rows. The figure is ONE screen-reader stop, "A list of 4: Purpose; Responsibility; …".
+ * Its rows arrive 120 ms apart in reading order (all at once under Reduce Motion).
+ */
+function IdeaListScene({ heading, list }: { heading: string; list: IdeaList }) {
+  const { c } = useTheme();
+  const n = list.items.length;
+  return (
+    <View>
+      <SceneTop kicker="The idea" heading={heading} />
+      <Part i={1}>
+        <Prose>{leadText(list)}</Prose>
+      </Part>
+      <View accessible accessibilityLabel={ideaListSpoken(list)} style={{ marginTop: space.lg }}>
+        {list.items.map((item, k) => {
+          const p = itemParts(item);
+          return (
+            <FadeIn key={item} build delay={partDelay(k + 2)}>
+              <View style={{ flexDirection: 'row', alignItems: p.note ? 'flex-start' : 'center', gap: space.md, paddingVertical: space.sm, borderTopWidth: k === 0 ? 0 : 1, borderTopColor: c.line }}>
+                <View style={{ width: 32, height: 32, borderRadius: radius.pill, backgroundColor: c.raised2, borderWidth: 1, borderColor: c.line, alignItems: 'center', justifyContent: 'center' }}>
+                  <BigNum value={String(k + 1)} size={17} color={c.accentText} />
+                </View>
+                <View style={{ flex: 1, minWidth: 0, paddingTop: p.note ? 4 : 0 }}>
+                  <T v="label">{p.label}</T>
+                  {p.note ? <T v="meta">{p.note}</T> : null}
+                </View>
+              </View>
+            </FadeIn>
+          );
+        })}
+      </View>
+      {list.close ? (
+        <Part i={n + 2} style={{ marginTop: space.xl }}>
+          <Prose>{list.close}</Prose>
+        </Part>
+      ) : null}
+    </View>
+  );
+}
+
 /** Steps (`flow`): numbered stops on a path that draws down to each next stop as it arrives. */
 function StepsScene({ scene }: { scene: Extract<Scene, { type: 'flow' }> }) {
   const { c } = useTheme();
@@ -565,6 +614,7 @@ export function SceneView({
       if (scene.heading === COACH_HEADING) {
         return <KeyIdea caption={COACH_HEADING} body={scene.body} />;
       }
+      if (scene.list) return <IdeaListScene heading={scene.heading} list={scene.list} />;
       return (
         <View>
           <SceneTop kicker="The idea" heading={scene.heading} />

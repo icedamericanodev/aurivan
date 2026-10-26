@@ -39,7 +39,8 @@ beforeEach(() => {
 });
 
 describe('the practice timer default reaches every non-mock session (owner request)', () => {
-  const missOne = () => useProgress.getState().recordAnswer('cisa', bank[0].id, false);
+  // Missed two days ago (mobile 1.43: a fresh miss waits for the next day), so it is due now.
+  const missOne = () => useProgress.getState().recordAnswer('cisa', bank[0].id, false, undefined, { at: Date.now() - 2 * 86_400_000 });
 
   it('review, "Practice this concept", Today plan items, Saved and the study modes start timed', () => {
     useSettings.setState({ practiceTimer: true });

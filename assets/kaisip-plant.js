@@ -5850,6 +5850,7 @@ exports.outlineFromNotes = outlineFromNotes;
 exports.topicQuestionIds = topicQuestionIds;
 exports.indexOutline = indexOutline;
 exports.topicsIn = topicsIn;
+exports.missedNoteGroups = missedNoteGroups;
 exports.missedSubtopics = missedSubtopics;
 function outlineFromNotes(pack) {
     var _a;
@@ -5906,6 +5907,25 @@ function indexOutline(topics) {
 function topicsIn(topics, domainId) {
     return domainId ? topics.filter((t) => t.domainId === domainId) : topics;
 }
+function missedNoteGroups(order, isMissed, subtopicOf, limit = 3) {
+    const byNote = new Map();
+    let missed = 0;
+    order.forEach((q, i) => {
+        var _a;
+        if (!isMissed(q))
+            return;
+        missed += 1;
+        const s = subtopicOf(q);
+        if (s)
+            byNote.set(s, [...((_a = byNote.get(s)) !== null && _a !== void 0 ? _a : []), i + 1]);
+    });
+    const groups = [...byNote.entries()]
+        .map(([id, numbers], k) => ({ id, numbers, k }))
+        .sort((x, y) => y.numbers.length - x.numbers.length || x.k - y.k)
+        .slice(0, limit)
+        .map(({ id, numbers }) => ({ id, numbers }));
+    return { groups, rest: missed - groups.reduce((n, g) => n + g.numbers.length, 0) };
+}
 function missedSubtopics(missedIds, subtopicOf, limit = 3) {
     var _a;
     const count = new Map();
@@ -5949,6 +5969,7 @@ exports.median = median;
 exports.medianSeconds = medianSeconds;
 exports.aboutSeconds = aboutSeconds;
 exports.practicePaceLine = practicePaceLine;
+exports.practicePace = practicePace;
 exports.durationWords = durationWords;
 exports.timeStat = timeStat;
 exports.softCue = softCue;
@@ -6131,6 +6152,12 @@ function practicePaceLine(ms, exam) {
         return null;
     const own = Math.max(1, Math.round(median(times) / 1000));
     return `About ${own} ${own === 1 ? 'second' : 'seconds'} per question. The exam allows about ${Math.round(examPaceSeconds(exam))} seconds.`;
+}
+function practicePace(ms, exam) {
+    const times = cleanMs(ms);
+    if (times.length < exports.PACE_LINE_MIN)
+        return null;
+    return { own: Math.max(1, Math.round(median(times) / 1000)), exam: Math.round(examPaceSeconds(exam)) };
 }
 const UNDER_A_MINUTE = 'Under 1 min';
 function durationWords(ms) {
@@ -7739,7 +7766,7 @@ exports.dark = {
     correct: '#8AD6A8',
     correctBg: '#173022',
     wrong: '#FF9CA6',
-    wrongBg: '#3A1A1D',
+    wrongBg: '#2C1A1D',
     tip: '#E9C46A',
     tipBg: '#2B2418',
     scrim: '#000000',
@@ -8131,6 +8158,6 @@ exports.plantLine = {
   api["streak"] = load("src/engine/streak.ts");
   api["outline"] = load("src/engine/outline.ts");
   api["notesPack"] = load("scripts/notes-pack.cjs");
-  api.sourceHash = "2ad9a5dab6081727";
+  api.sourceHash = "b092db87e5303cb0";
   root.KaiSipPlant = Object.freeze(api);
 })(typeof window !== 'undefined' ? window : globalThis);

@@ -87,9 +87,9 @@ describe('nextReview: a right retest earns no spacing credit', () => {
     expect(e.dueAt).toBe(startOfNextDay(NOW));
   });
 
-  it('a WRONG retest counts in full: back to box 1, due now', () => {
+  it('a WRONG retest counts in full: back to box 1, due tomorrow like any miss (mobile 1.43)', () => {
     const box3: ReviewEntry = { box: 3, dueAt: NOW + DAY_MS, lastSeen: NOW - HOUR, reps: 3 };
-    expect(nextReview(box3, false, 'sure', NOW, false, false)).toEqual({ box: 1, dueAt: NOW, lastSeen: NOW, reps: 4 });
+    expect(nextReview(box3, false, 'sure', NOW, false, false)).toEqual({ box: 1, dueAt: startOfNextDay(NOW), lastSeen: NOW, reps: 4 });
   });
 
   it('a right retest of a miss that was never queued (a mock saves without scheduling) joins Box 1, due tomorrow', () => {
@@ -156,13 +156,13 @@ describe('the store applies the rule', () => {
     expect(answerCredit(s.answers[q])).toBe(1);
   });
 
-  it('a WRONG retest counts in full: box 1, due now, the mistake stays open, no retest mark', () => {
+  it('a WRONG retest counts in full: box 1, due tomorrow, the mistake stays open, no retest mark', () => {
     const p = useProgress.getState();
     p.recordAnswer('cisa', q, false, 'sure', { at: NOW });
     p.recordMistake('cisa', q, 'A', 'sure');
     p.recordAnswer('cisa', q, false, 'sure', { at: NOW + HOUR });
     const s = state();
-    expect(s.review[q]).toMatchObject({ box: 1, dueAt: NOW + HOUR });
+    expect(s.review[q]).toMatchObject({ box: 1, dueAt: startOfNextDay(NOW + HOUR) });
     expect(s.mistakes[q].resolved).toBe(false);
     expect(s.answers[q].lastRetest).toBeUndefined();
     expect(s.answers[q].lastCorrect).toBe(false);

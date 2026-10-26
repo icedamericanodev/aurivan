@@ -360,6 +360,17 @@ export function practicePaceLine(ms: readonly (number | undefined)[], exam: Exam
   return `About ${own} ${own === 1 ? 'second' : 'seconds'} per question. The exam allows about ${Math.round(examPaceSeconds(exam))} seconds.`;
 }
 
+/**
+ * Results' "Per question" stat (mobile 1.43): the typical (median) answer time in
+ * whole seconds beside the exam's own pace ("42 s", "Exam pace: about 96 s"). Null
+ * below PACE_LINE_MIN timed answers, like the pace line.
+ */
+export function practicePace(ms: readonly (number | undefined)[], exam: ExamFacts): { own: number; exam: number } | null {
+  const times = cleanMs(ms);
+  if (times.length < PACE_LINE_MIN) return null;
+  return { own: Math.max(1, Math.round(median(times)! / 1000)), exam: Math.round(examPaceSeconds(exam)) };
+}
+
 /** Under this, a time reads "Under 1 min" (never "1 min" for 5 seconds, never "0 min"). */
 const UNDER_A_MINUTE = 'Under 1 min';
 

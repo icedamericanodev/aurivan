@@ -400,7 +400,7 @@ describe('session: the note first, the lesson when there is one', () => {
 });
 
 // ── Results ───────────────────────────────────────────────────────────
-describe('results: Notes for what you missed', () => {
+describe('results: What you missed (mobile 1.43: open, grouped by note)', () => {
   const finishWith = (mode: 'practice' | 'mock', ids: string[], wrong: string[]) => {
     startFromIds('cisa', ids, 'T');
     act(() => {
@@ -417,17 +417,13 @@ describe('results: Notes for what you missed', () => {
     });
   };
 
-  it.each(['practice', 'mock'] as const)('%s: folded until tapped, then up to three note rows that open the note', (mode) => {
+  it.each(['practice', 'mock'] as const)('%s: up to three note rows, open (no expander), each with its question numbers, that open the note', (mode) => {
     finishWith(mode, [both.qid, noteOnly.qid], [both.qid, noteOnly.qid]);
     mount(<Results />);
-    const toggle = pressables('Notes for what you missed');
-    expect(toggle).toHaveLength(1);
-    expect(toggle[0].props.accessibilityState).toMatchObject({ expanded: false });
-    expect(pressables(/^Read the note: /)).toHaveLength(0);
-    press('Notes for what you missed');
-    expect(pressables('Notes for what you missed')[0].props.accessibilityState).toMatchObject({ expanded: true });
-    expect(allText()).toMatch(/\d+ miss(es)? · about \d+ min/);
-    const rows = pressables(/^Read the note: /);
+    expect(pressables('Notes for what you missed')).toHaveLength(0);
+    expect(allText()).toContain('What you missed');
+    expect(allText()).toMatch(/Read the note · questions? \d/);
+    const rows = pressables(/^Read the note · /);
     const subs = [...new Set([both.sub, noteOnly.sub])];
     expect(rows).toHaveLength(subs.length);
     expect(rows.length).toBeLessThanOrEqual(3);
@@ -437,10 +433,11 @@ describe('results: Notes for what you missed', () => {
     expect(push).toHaveBeenLastCalledWith(`/notes/subtopic/${encodeURIComponent(subs[0])}`);
   });
 
-  it('no misses (or none a note covers): no notes action', () => {
+  it('no misses: no "What you missed" and no note rows', () => {
     finishWith('practice', [both.qid], []);
     mount(<Results />);
-    expect(pressables('Notes for what you missed')).toHaveLength(0);
+    expect(allText()).not.toContain('What you missed');
+    expect(pressables(/^Read the note · /)).toHaveLength(0);
   });
 });
 

@@ -159,13 +159,16 @@ describe('Results growth', () => {
     });
   };
 
-  it('a good session grows in: the score and "correct" roll (full motion)', () => {
+  it('a good one-domain session: no ring and no roll (mobile 1.43: the count leads, the leaf strip is still)', () => {
     setMockReducedMotion(false);
     finish(6);
     mount(<Results />);
-    expect(columns().length).toBeGreaterThan(0);
-    // Mobile 1.39: one domain, no ring; the line gives the percent ("Correct 6 of 8" gives the count).
-    expect(allText()).toContain('All IS Audit · 75%');
+    // Mobile 1.39: one domain, no ring. 1.43: the headline is the count and the "Correct" cell is gone,
+    // so nothing rolls; one line names the domain, without a percent.
+    expect(columns()).toHaveLength(0);
+    expect(allText()).toContain('6 of 8 right');
+    expect(allText()).toContain('All IS Audit');
+    expect(allText()).not.toContain('All IS Audit ·');
   });
 
   it('never on a session that went badly: below 60% it is simply shown', () => {
@@ -173,7 +176,8 @@ describe('Results growth', () => {
     finish(2);
     mount(<Results />);
     expect(columns()).toHaveLength(0);
-    expect(allText()).toContain('All IS Audit · 25%');
+    expect(allText()).toContain('2 of 8 right');
+    expect(allText()).not.toMatch(/25%/);
   });
 });
 

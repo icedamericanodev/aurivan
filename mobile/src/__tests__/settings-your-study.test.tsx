@@ -135,18 +135,20 @@ describe('Settings → Your study', () => {
     expect(t).toContain('Your study');
     expect(t).toContain('Starting point');
     expect(t).toContain('Exam-focused plan');
-    expect(t).toContain('Leads with mocks and your weak spots, and leaves lessons out of Today. Lessons stay in Learn.');
+    // Mobile 1.43: one line on screen; screen readers still hear "Lessons stay in Learn."
+    expect(t).toContain('Mocks and weak spots lead Today');
+    expect(root().findAll((n) => n.props.accessibilityLabel === 'Mocks and weak spots lead Today. Lessons stay in Learn.').length).toBeGreaterThan(0);
     // Each row shows its current value: an old 40-a-day goal reads as 45 minutes; no start chosen yet.
     expect(rowLabel('Daily time')).toBe('Daily time, 45 minutes a day');
-    expect(rowLabel('Starting point')).toBe('Starting point, not set');
+    expect(rowLabel('Starting point')).toBe('Starting point, not set, How much audit you know; it shapes your first weeks');
     // The choices are in sheets.
     openRow('Daily time');
     expect(allText()).toContain('Most days. Your daily plan fits this.');
     expect(checkedRadio('Daily time')).toEqual(['45 minutes a day']);
     openRow('Starting point');
     expect(checkedRadio('Where are you starting from?')).toEqual([]);
-    // Order (mobile 1.17 groups): Exam, Your study, Practice, Reminders, Appearance.
-    const at = sectionOrder()(['Exam date', 'Your study', 'Practice', 'Reminders', 'Appearance']);
+    // Order (mobile 1.43 groups): Appearance (moved up, owner), Exam, Your study, Practice, Reminders.
+    const at = sectionOrder()(['Appearance', 'Exam date', 'Your study', 'Practice', 'Reminders']);
     expect([...at].sort((a, b) => a - b)).toEqual(at);
   });
 
@@ -191,7 +193,7 @@ describe('Settings → Your study', () => {
 
   it('Default mode: "Let the app choose", in plain words', () => {
     mount(<Settings />);
-    expect(rowLabel('Default mode')).toBe('Default mode, Let the app choose');
+    expect(rowLabel('Default mode')).toBe('Default mode, Let the app choose, How Practice picks your questions');
     openRow('Default mode');
     expect(allText()).toContain('Let the app choose');
     expect(allText()).toContain('It changes as you go and fits where you’re starting from, ending with a smart mix of what you need.');
