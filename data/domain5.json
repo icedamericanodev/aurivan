@@ -12841,7 +12841,7 @@
         "A": "Extend central log retention to at least one year",
         "B": "Accept 90 days and forward host logs in real time",
         "C": "Accept 90 days and tune alerts to detect intrusions sooner",
-        "D": "Keep 14 days and export logs once an incident is declared"
+        "D": "Keep one year of logs on each host instead of centrally"
       },
       "correct": "A",
       "key_concept": "APTs often stay hidden for months, so retention must cover that dwell time, typically about a year; 90 days can still miss the start.",
@@ -12850,10 +12850,10 @@
       "wrong_explanations": {
         "B": "Real-time forwarding protects host logs from deletion, but 90 days of central history can still end before the intrusion began.",
         "C": "Faster alerting may shorten future dwell time, but investigators still lack history for an intrusion that began months ago.",
-        "D": "Exporting at incident time is too late; by the time an APT is detected, logs older than 14 days are already gone."
+        "D": "An intruder with administrator rights can wipe logs kept on the hosts it controls; long history must sit centrally, out of the attacker's reach."
       },
       "tips": [
-        "Eliminate: C improves detection without keeping history, and D exports logs only after the oldest are already gone.",
+        "Eliminate: C improves detection without keeping history, and D keeps a year only on hosts an intruder can wipe.",
         "Final two: A beats B because APTs hide for months; real-time forwarding stops deletion, but 90 days may still miss the start.",
         "Exam cue: when an APT appears in the stem, think months of hidden presence; a control measured in days or weeks will miss it."
       ],

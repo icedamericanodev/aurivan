@@ -3252,7 +3252,7 @@
       "subtopic": "Release Management. Deployment Strategy",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "After a defective release disrupted payments, management proposes blue-green deployment for all future releases of a payment app. Which risk should the IS auditor raise as GREATEST?",
+      "question": "After a defective release disrupted payments, management proposes blue-green deployment, with both environments built from one template, for a payment app. Which risk should the IS auditor raise as GREATEST?",
       "options": {
         "A": "A defect reaches every customer at once before switch-back",
         "B": "Change approvals relaxed because switching back looks easy",
@@ -3265,7 +3265,7 @@
       "correct_explanation": "Blue-green deployment keeps two identical environments and switches all traffic to the new one at once. It allows a fast switch back and near-zero downtime, but every customer meets a defect before anyone reverses it, repeating the failed release's harm. Environment drift is the tempting option: it is a real concern, but defining both environments from the same templates controls it. A canary release (a small share of traffic first) would limit exposure.",
       "wrong_explanations": {
         "B": "Blue-green changes how a release is deployed, not whether it needs approval; change management still applies to every release.",
-        "C": "Configuration drift is controlled by defining both environments from the same version-controlled templates; all-at-once exposure is built into blue-green.",
+        "C": "Both environments are built from one template, which controls drift; all-at-once exposure is built into blue-green and no template removes it.",
         "D": "Blue-green switches traffic almost instantly, so long downtime is the problem it solves, not one it creates."
       },
       "tips": [
