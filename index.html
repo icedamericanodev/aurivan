@@ -5041,8 +5041,8 @@ body[data-tab]:not([data-tab="about"]):not([data-tab="faq"]) .legal-disclaimer {
 .td-name-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-xs) var(--sp-lg); }
 .td-name-input { flex: 1 1 200px; min-width: 0; }
 .td-name-acts { margin-top: 0; }
-.td-name-err { margin: var(--sp-sm) 0 0; font: var(--t-meta); color: var(--wrong); }
-.td-name-err:empty { margin: 0; }
+.td-name-err { flex: 0 0 100%; margin: 0; font: var(--t-meta); color: var(--wrong); }
+.td-name-err:empty { display: none; }
 .td-name-app { margin: var(--sp-sm) 0 0; font: var(--t-meta); color: var(--text2); }
 .td-name-done .plnt-invite { align-items: center; }
 .td-name-ok { margin: 0; border-radius: var(--r-sm); }
@@ -5352,7 +5352,7 @@ header.app-header .brand-lockup { height: 28px; }
 .you-prof-leaf.named .you-prof-lf { fill: var(--forest); }
 .you-prof-vein { fill: none; stroke: var(--sap); stroke-width: 1.6; stroke-linecap: round; }
 .you-prof-i, .you-prof-u { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
-.you-prof-i { padding-top: 2px; font: 500 26px/1 var(--f-serif); color: var(--on-forest); }
+.you-prof-i { padding-top: 2px; font: var(--t-hero); line-height: 1; color: var(--on-forest); }
 .you-prof-u { color: var(--accent-text); }
 .you-prof-t { flex: 1; min-width: 0; padding-top: var(--sp-xs); }
 .you-prof-n { margin: 0; font: var(--t-headline); color: var(--text); overflow-wrap: anywhere; }
@@ -11027,11 +11027,11 @@ function todayNameHtml(show) {
     + '<div class="td-name-row">'
     + '<input type="text" class="you-name-input td-name-input" id="tdNameInput" maxlength="' + MAX_DISPLAY_NAME + '" autocomplete="nickname" autocapitalize="words" spellcheck="false"'
     + ' value="' + escapeHtml(todayNameDraft) + '" aria-describedby="tdNameM tdNameErr"'
-    + ' oninput="todayNameDraft=this.value;this.removeAttribute(\'aria-invalid\')" onkeydown="if(event.key===\'Enter\'){event.preventDefault();todayNameSave();}">'
+    + ' oninput="todayNameDraft=this.value;this.removeAttribute(\'aria-invalid\');document.getElementById(\'tdNameErr\').textContent=\'\'" onkeydown="if(event.key===\'Enter\'){event.preventDefault();todayNameSave();}">'
+    + '<p class="td-name-err" id="tdNameErr" aria-live="polite"></p>'
     + '<div class="plnt-invite-acts td-name-acts">'
     + '<button type="button" class="plnt-ghost" onclick="todayNameSave()">Save</button>'
     + '<button type="button" class="plnt-ghost" onclick="todayNameNotNow()">Not now</button></div></div>'
-    + '<p class="td-name-err" id="tdNameErr" aria-live="polite"></p>'
     + '<p class="td-name-app">Using the app too? Your name travels with your progress file.</p>'
     + '</div></div>'
     + '<p class="sr-only" role="status" id="tdNameSay"></p></section>';
@@ -11054,6 +11054,13 @@ function todayNameSave() {
     localStorage.setItem(DISPLAY_NAME_KEY, clean);
     localStorage.setItem(NAME_ASK_KEY, 'saved');
   } catch (e) {}
+  // Storage full or blocked: say so instead of a "Saved" that a reload undoes.
+  if (getDisplayName() !== clean) {
+    var serr = document.getElementById('tdNameErr');
+    if (serr) serr.textContent = 'We couldn\u2019t save that in this browser. Its storage may be full or blocked.';
+    try { inp.focus(); } catch (e) {}
+    return;
+  }
   todayNameDraft = '';
   todayNameNote = 'saved';
   syncNameRow();
@@ -11073,7 +11080,7 @@ function todayNameSave() {
   var ok = document.getElementById('tdNameOk');
   if (ok) { try { ok.focus({ preventScroll: true }); } catch (e) {} }
   var say = document.getElementById('tdNameSay');
-  if (say) setTimeout(function () { say.textContent = 'Saved. Hello, ' + clean + '.'; }, 60);
+  if (say) setTimeout(function () { say.textContent = 'Hello, ' + clean + '.'; }, 60);
 }
 function todayNameNotNow() {
   try { localStorage.setItem(NAME_ASK_KEY, 'dismissed'); } catch (e) {}
@@ -11124,14 +11131,17 @@ function renderYouProfile() {
   if (!el) return;
   var name = getDisplayName();
   var since = profileDateWords(firstStudyDay());
-  var exam = profileDateWords(savedExamDate());
+  // Same words as the exam date row in Settings, including a passed date.
+  var exam = examDateWords(savedExamDate());
+  var left = exam ? examDaysLeft() : null;
+  if (exam && left !== null && left < 0) exam += ' · Date passed';
   var initial = name ? Array.from(name)[0].toLocaleUpperCase() : '';
   el.innerHTML = profileLeafSvg(initial)
     + '<div class="you-prof-t">'
     + '<h2 class="you-prof-n" id="youProfH">' + (name ? '<span class="sr-only">Your study profile: </span>' + escapeHtml(name) : 'Your study profile') + '</h2>'
     + (since ? '<p class="you-prof-l">Studying for ' + escapeHtml(ACTIVE.name) + ' since ' + escapeHtml(since) + '</p>' : '')
     + (exam ? '<p class="you-prof-m">Exam ' + escapeHtml(exam) + '</p>' : '')
-    + (name ? '' : '<button type="button" class="plnt-ghost you-prof-add" aria-controls="youNameEdit" onclick="youProfileAddName()">Add your name</button>')
+    + (name ? '' : '<button type="button" class="plnt-ghost you-prof-add" onclick="youProfileAddName()">Add your name</button>')
     + '</div>';
 }
 // "Add your name" opens the existing field under Settings → Your name.
@@ -11886,6 +11896,9 @@ function renderHome() {
   var todayKey = parityDayKey(now.getTime());
   var askName = !todayNameNote && nameAskDue(st, todayKey, !!(backup || appCard || finalWeek || plantInviteDue()));
   if (askName && nameAskRead() === '') { try { localStorage.setItem(NAME_ASK_KEY, 'shown:' + todayKey); } catch (e) {} }
+  // Only ask when the "shown" day sticks; otherwise a browser that can't save
+  // would ask on every visit.
+  if (askName && nameAskRead() !== 'shown:' + todayKey) askName = false;
   var nameCard = todayNameHtml(askName);
   var plate = '<div class="td-plate' + (range.enough ? '' : ' td-plate-quiet') + '">'
     + todayReadyHtml(r, range, st, showRings)
