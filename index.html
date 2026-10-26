@@ -7381,6 +7381,9 @@ function genProfileId() {
 }
 
 function getProfiles() {
+  // A save still waiting (saveStateSoon) is written first, so whoever reads
+  // the stored progress sees the latest.
+  flushSaveSoon();
   try {
     var raw = JSON.parse(localStorage.getItem(PROFILES_KEY) || '{}');
     var clean = {};
@@ -8259,7 +8262,43 @@ function shouldResumeCurrent() {
   return !(S.answeredIds && S.answeredIds[d] && S.answeredIds[d][S.current.id]);
 }
 
+// ── SAVE SOON ──
+// saveState rewrites the whole saved record (with full copies of missed and
+// saved questions it grows with every answer), which on a phone can take a
+// few hundred ms. Light changes (the page in use, the note last opened, a
+// note's read state) call saveStateSoon instead: one save when the page is
+// next idle (within about a second), so the click paints first. Any
+// saveState() call writes everything and cancels the wait; hiding or leaving
+// the page writes it at once. The save is dropped only if the record in use
+// changed meanwhile or the page is reloading over new progress.
+var saveSoonHandle = null;
+var saveSoonId = null;
+function saveStateSoon() {
+  if (saveSoonHandle) return;
+  saveSoonId = getActiveProfileId();
+  if (window.requestIdleCallback) saveSoonHandle = { idle: window.requestIdleCallback(flushSaveSoon, { timeout: 1000 }) };
+  else saveSoonHandle = { timer: setTimeout(flushSaveSoon, 250) };
+}
+function cancelSaveSoon() {
+  var h = saveSoonHandle;
+  if (!h) return;
+  saveSoonHandle = null;
+  if (h.idle !== undefined && window.cancelIdleCallback) window.cancelIdleCallback(h.idle);
+  if (h.timer !== undefined) clearTimeout(h.timer);
+}
+function flushSaveSoon() {
+  if (!saveSoonHandle) return;
+  cancelSaveSoon();
+  if (leavingForReload || getActiveProfileId() !== saveSoonId) return;
+  saveState();
+}
+window.addEventListener('pagehide', flushSaveSoon);
+document.addEventListener('visibilitychange', function() {
+  if (document.visibilityState === 'hidden') flushSaveSoon();
+});
+
 function saveState() {
+  cancelSaveSoon();
   ensureAnsweredBuckets();
   var id = getActiveProfileId();
   if (!id) return; // no profile, no save
@@ -8765,6 +8804,7 @@ function loadConceptsData(callback) {
       CISA_NOTES_RAW = data;
       conceptsLoading = false;
       callback(buildConceptsData());
+      gtWarmReadMinutes();
     })
     .catch(function(err) {
       conceptsLoading = false;
@@ -8877,11 +8917,40 @@ function topicSearchText(val) {
   }
   return '';
 }
+// The notes never change once loaded, so each note's text and each topic's
+// reading time are worked out once, not on every draw or keystroke.
+var gtTextMemo = new WeakMap();
+var gtReadMinMemo = new WeakMap();
+function topicItemText(it) {
+  var raw = it && it.raw;
+  if (!raw || typeof raw !== 'object') return topicSearchText(raw);
+  if (!gtTextMemo.has(raw)) gtTextMemo.set(raw, topicSearchText(raw));
+  return gtTextMemo.get(raw);
+}
+function gtGroupReadMinutes(g) {
+  if (!gtReadMinMemo.has(g)) {
+    gtReadMinMemo.set(g, estimateReadMinutes({ s: g.group_summary, items: g.items.map(function(i){ return topicItemText(i); }) }));
+  }
+  return gtReadMinMemo.get(g);
+}
+// Fills those in while the page is idle, one domain at a time, so the first
+// view of each domain does not pay for it.
+function gtWarmReadMinutes() {
+  var idle = function(fn) { if (window.requestIdleCallback) window.requestIdleCallback(fn, { timeout: 3000 }); else setTimeout(fn, 200); };
+  var doms = buildConceptsData().domains.slice();
+  var next = function() {
+    var dom = doms.shift();
+    if (!dom) return;
+    try { dom.groups.forEach(gtGroupReadMinutes); } catch (e) {}
+    if (doms.length) idle(next);
+  };
+  idle(next);
+}
 // Score one subtopic against the query. 0 = no match (every token must match).
 function scoreTopicItem(it, tokens) {
   if (!tokens.length) return 1;
   var name = it.name || '';
-  var body = topicSearchText(it.raw);
+  var body = topicItemText(it);
   var total = 0;
   for (var i = 0; i < tokens.length; i++) {
     var tok = tokens[i];
@@ -9470,7 +9539,7 @@ function renderTopics() {
       if (!items.length && filterMode !== 'all') return '';
       var gDone = g.items.filter(function(it){ return reviewed[it.id]; }).length;
       var gTotal = g.items.length;
-      var readMin = estimateReadMinutes({ s: g.group_summary, items: g.items.map(function(i){ return topicSearchText(i.raw); }) });
+      var readMin = gtGroupReadMinutes(g);
       var bodyHtml = '';
       var part = partOf[String(g.group_id)] || null, partHtml = '';
       var gh = part ? 'h4' : 'h3';
@@ -9693,7 +9762,7 @@ function toggleNotesItem(itemId) {
     if (!S.lastOpenedSubtopic) S.lastOpenedSubtopic = {};
     var it = findTopicItem(itemId);
     S.lastOpenedSubtopic[dom2] = { id: itemId, name: it ? it.name : itemId, ts: Date.now() };
-    saveState();
+    saveStateSoon();
     gtAutoFired[itemId] = false; // a new opening may auto-read once
   }
   gtAfterRender();
@@ -9791,7 +9860,7 @@ function gtTick() {
     }
     if (gtOpenMs[id] >= GT_AUTOREAD_MS) gtCheckAutoRead(id);
   });
-  if (changed) { saveState(); refreshTopicProgress(parseInt(topicState.domain) || 1); }
+  if (changed) { saveStateSoon(); refreshTopicProgress(parseInt(topicState.domain) || 1); }
 }
 document.addEventListener('visibilitychange', function() { gtLastTick = Date.now(); });
 
@@ -9859,7 +9928,7 @@ function gtSetRead(id, read, how) {
     gtAutoFired[id] = true;
   }
   S.topicReviewed = reviewed;
-  saveState();
+  saveStateSoon();
   gtUpdateRow(id);
   var d = parseInt(topicState.domain) || 1;
   var p = refreshTopicProgress(d);
@@ -10367,7 +10436,7 @@ function switchTab(t, opts) {
   // Leaving the exam guide drops a section still waiting for the file.
   if (t !== 'examguide') egState.pending = null;
   S.activeTab = t;
-  saveState();
+  saveStateSoon(); // the click paints first (see SAVE SOON)
   // Lets CSS drop the shared dashboard above Topics on phones.
   document.body.setAttribute('data-tab', t);
   document.body.removeAttribute('data-mock-results');
@@ -13342,11 +13411,15 @@ function sanitizeCleanLog(m) {
 // it once, so answering that question again later keeps its first day: the
 // app's two-day rule then sees both days. Idempotent: an entry, once there, wins.
 function plantSeedCleanLog(cl, log) {
+  // Counted once, not per answer: recounting made every load grow with the
+  // square of the answer history (about 150 ms on a phone at 1,200 answers).
+  var n = Object.keys(cl).length;
   Object.keys(log || {}).forEach(function (id) {
     var r = log[id];
     if (cl[id] || !r || !r.lastCorrect || r.lastRetest || r.lastAssisted || r.lastGame) return;
-    if (Object.keys(cl).length >= PARITY_MAX_IDS) return;
+    if (n >= PARITY_MAX_IDS) return;
     cl[id] = { first: r.lastAt, last: r.lastAt };
+    n++;
   });
   return cl;
 }
