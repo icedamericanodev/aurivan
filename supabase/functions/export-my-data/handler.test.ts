@@ -110,8 +110,15 @@ Deno.test('happy path: the learner’s own account data, as a no-store JSON down
       email: 'a@test.invalid',
       providers: ['email', 'google'],
       createdAt: '2026-10-01T00:00:00.000Z',
+      lastSignInAt: '2026-11-02T11:59:00.000Z',
       termsVersion: '2026-11',
+      ageConfirmed: true,
+      profileCreatedAt: '2026-10-01T00:05:00.000Z',
+      nameFromSignIn: null,
+      pictureFromSignIn: null,
     },
+    sync: {},
+    supportCopy: null,
     board: { member: { handle: 'Quiet Cedar 214' }, posts: [{ title: 'More practice on BCP' }] },
   });
 });
@@ -165,12 +172,12 @@ Deno.test('the export holds no other learner’s data', async () => {
 
 Deno.test('a failed build is a bare 500 and does not use up the hour', async () => {
   const { admin, run } = setup();
-  admin.fail.getTermsVersion = true;
+  admin.fail.getProfile = true;
   const res = await run(post({}, admin.issue(USER_A)));
   assert.equal(res.status, 500);
   assert.deepEqual(await res.json(), { error: 'server' });
   assert.equal(admin.count('claimExport'), 0);
-  admin.fail.getTermsVersion = false;
+  admin.fail.getProfile = false;
   assert.equal((await run(post({}, admin.issue(USER_A)))).status, 200);
 });
 
@@ -255,4 +262,50 @@ Deno.test('CORS: the website (exactly https://kaisip.com) can download; other or
     assert.equal(r.status, 405, other);
     assert.equal(r.headers.get('access-control-allow-origin'), null, other);
   }
+});
+
+Deno.test("everything else we keep is in the file: the sign-in provider's name and picture, each row, the support copy", async () => {
+  const { admin, run } = setup();
+  const a = admin.users.get(USER_A)!;
+  a.nameFromSignIn = 'Ana Reyes';
+  a.pictureFromSignIn = 'https://lh3.googleusercontent.com/a/x';
+  a.syncRows = {
+    progress: {
+      rev: 1761500000000,
+      deviceId: '22222222-2222-4222-8222-222222222222',
+      updatedAt: '2026-11-01T10:00:00Z',
+      appVersion: '1.47.0',
+      storeVersion: 1,
+    },
+  };
+  a.checkpoint = { takenAt: '2026-11-01T00:00:00Z', rev: 1761400000000, appVersion: '1.47.0', state: { byCert: {} } };
+  const doc = await (await run(post({}, admin.issue(USER_A)))).json() as Record<string, Record<string, unknown>>;
+  assert.equal(doc.account.nameFromSignIn, 'Ana Reyes');
+  assert.equal(doc.account.pictureFromSignIn, 'https://lh3.googleusercontent.com/a/x');
+  assert.deepEqual(doc.sync, a.syncRows);
+  assert.deepEqual(doc.supportCopy, a.checkpoint);
+});
+
+Deno.test('an unreadable support copy is named, never half-read, and logged', async () => {
+  const { admin, log, run } = setup();
+  admin.users.get(USER_A)!.checkpoint = { takenAt: null, rev: 1, appVersion: '1.47.0', unreadable: 'too_big' };
+  const res = await run(post({}, admin.issue(USER_A)));
+  assert.equal(res.status, 200);
+  assert.deepEqual((await res.json() as { supportCopy: unknown }).supportCopy, {
+    takenAt: null,
+    rev: 1,
+    appVersion: '1.47.0',
+    unreadable: 'too_big',
+  });
+  assert.ok(log.lines.some((l) => l.includes('"snapshot_unreadable"')));
+});
+
+Deno.test('over the hourly limit: 429 from the cheap check, before any data is read', async () => {
+  const { admin, run } = setup();
+  assert.equal((await run(post({}, admin.issue(USER_A)))).status, 200);
+  admin.calls = [];
+  const res = await run(post({}, admin.issue(USER_A)));
+  assert.equal(res.status, 429);
+  assert.equal(res.headers.get('retry-after'), '3600');
+  assert.deepEqual(admin.calls.map((c) => c.method), ['getUser', 'exportDue']);
 });

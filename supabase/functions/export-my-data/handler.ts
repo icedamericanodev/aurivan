@@ -3,15 +3,20 @@
 // Act's right of access). The app and the website (https://kaisip.com only:
 // serveWeb in _shared/http.ts) call it. Returns the learner's own data only,
 // as one JSON document for the share sheet or a download:
-//   { app: 'kaisip', schema: 1, exportedAt, appVersion, stores, account, board,
-//     unreadableStores? }
+//   { app: 'kaisip', schema: 1, exportedAt, appVersion, stores, account,
+//     sync, supportCopy, board, unreadableStores? }
 // `stores` holds the learner's synced snapshots (Phase 7) as backup-file
 // stores, so the download is also a backup the app can restore (empty when
 // sync was never used); `appVersion` is the newest app that wrote one of
 // them (else the version the app sent); `board` holds the learner's own
 // feedback board rows (Phase 8: member row, posts, comments, votes, follows,
-// reports they made, blocks, appeals, notices). The daily support checkpoint
-// is a copy of the same progress and is not included.
+// reports they made, blocks, appeals, notices). Since the beta's security
+// audit (M4) it holds everything else we keep about the learner too:
+// `account` adds the last sign-in, the 16+ confirmation and when the profile
+// was made, and the name and picture link a sign-in provider (Google)
+// shared; `sync` gives each synced row's rev, device code, time and
+// versions; `supportCopy` is the daily support checkpoint, unzipped through
+// the same capped reader (or its unreadable reason).
 //
 // Snapshots are stored gzipped and the server can't vouch for what is inside
 // one, so each is unzipped through the capped codec (_shared/gz.ts: at most
@@ -28,8 +33,11 @@
 // would add friction and no protection. Revisit if the export ever holds data
 // the token can't read (moderation notes, logs, staff fields).
 //
-// The hourly slot is claimed LAST, after the document is built and turned
-// into text, so a failure before the reply never costs the learner their hour.
+// A read-only "is an export due?" check comes first (security audit L2), so a
+// learner over the limit gets 429 before the document is built. The hourly
+// slot is still claimed atomically LAST, after the document is built and
+// turned into text, so a failure before the reply never costs the learner
+// their hour.
 
 import type { AdminPort } from '../_shared/admin.ts';
 import { requireUser } from '../_shared/auth.ts';
@@ -55,9 +63,14 @@ export function handleExportMyData(req: Request, deps: ExportDeps): Promise<Resp
     const body = await readJsonObject(req, { maxBytes: 1024, optional: true });
     const appVersion = typeof body.appVersion === 'string' && SEMVER.test(body.appVersion) ? body.appVersion : null;
 
-    const [termsVersion, snaps, board] = await Promise.all([
-      deps.admin.getTermsVersion(user.id),
+    if (!(await deps.admin.exportDue(user.id))) {
+      throw new HttpError(429, 'rate_limited', undefined, RETRY_AFTER_SEC);
+    }
+
+    const [profile, snaps, checkpoint, board] = await Promise.all([
+      deps.admin.getProfile(user.id),
       deps.admin.readSnapshots(user.id),
+      deps.admin.readCheckpoint(user.id),
       deps.admin.readBoard(user.id),
     ]);
     const doc = {
@@ -72,14 +85,25 @@ export function handleExportMyData(req: Request, deps: ExportDeps): Promise<Resp
         email: user.email,
         providers: user.providers,
         createdAt: user.createdAt,
-        termsVersion,
+        lastSignInAt: user.lastSignInAt,
+        termsVersion: profile?.termsVersion ?? null,
+        ageConfirmed: profile?.ageConfirmed ?? null,
+        profileCreatedAt: profile?.createdAt ?? null,
+        // Stored by the sign-in system when a provider shares them; KaiSip doesn't use them.
+        nameFromSignIn: user.nameFromSignIn,
+        pictureFromSignIn: user.pictureFromSignIn,
       },
+      // Each synced row's own columns (rev, device code, time, versions), by store.
+      sync: snaps.rows,
+      // The daily support checkpoint (an earlier copy of the progress), or null.
+      supportCopy: checkpoint,
       // Phase 8: the learner's own feedback board rows (empty before they join).
       board,
       // Only when a synced store couldn't be read safely (see the header).
       ...(snaps.unreadable.length > 0 ? { unreadableStores: snaps.unreadable } : {}),
     };
-    if (snaps.unreadable.length > 0) deps.log('snapshot_unreadable', { count: snaps.unreadable.length });
+    const unreadable = snaps.unreadable.length + (checkpoint && 'unreadable' in checkpoint ? 1 : 0);
+    if (unreadable > 0) deps.log('snapshot_unreadable', { count: unreadable });
 
     // Everything that can fail is done: only now is the hour used.
     const res = json(200, doc, { 'content-disposition': 'attachment; filename="kaisip-my-data.json"' });

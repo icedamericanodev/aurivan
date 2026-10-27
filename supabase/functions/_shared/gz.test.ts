@@ -103,3 +103,31 @@ Deno.test('errors carry a code only, never content from the row', async () => {
     assert.equal(e.message.includes('a@test.invalid'), false);
   }
 });
+
+/** ~500 MB of zeros, gzipped by a streaming CompressionStream (never held whole). */
+async function zeroBomb(megabytes: number): Promise<Uint8Array<ArrayBuffer>> {
+  const block = new Uint8Array(1024 * 1024);
+  let left = megabytes;
+  const zeros = new ReadableStream<Uint8Array<ArrayBuffer>>({
+    pull(c) {
+      if (left-- <= 0) c.close();
+      else c.enqueue(block);
+    },
+  });
+  return new Uint8Array(await new Response(zeros.pipeThrough(new CompressionStream('gzip'))).arrayBuffer());
+}
+
+Deno.test('a 500 MB gzip bomb with raw_bytes 2: refused, and memory stays bounded (under 64 MB more)', async () => {
+  const gz = await zeroBomb(500);
+  assert.ok(gz.length < 1_000_000, `the bomb is small: ${gz.length} bytes`);
+  // As a stored row it is refused before any unzipping: its base64 is over the cap.
+  let bin = '';
+  for (let i = 0; i < gz.length; i += 0x8000) bin += String.fromCharCode(...gz.subarray(i, i + 0x8000));
+  await assert.rejects(() => decodeSnapshot('gzip+base64', btoa(bin), 2), fails('too_big'));
+  // The inflater itself, with the row's claim (2 bytes) and with the full cap.
+  const before = Deno.memoryUsage().rss;
+  await assert.rejects(() => gunzipCapped(gz, 3), fails('too_big'));
+  await assert.rejects(() => gunzipCapped(gz, MAX_RAW_BYTES), fails('too_big'));
+  const grownMb = (Deno.memoryUsage().rss - before) / (1024 * 1024);
+  assert.ok(grownMb < 64, `memory grew by ${grownMb.toFixed(1)} MB`);
+});

@@ -2,7 +2,7 @@
 // learners in memory, and unsigned JWTs shaped like Supabase access tokens.
 // Never imported by an index.ts, so never deployed.
 
-import type { AdminPort, AuthUser, BoardCounts, SnapshotsRead } from './admin.ts';
+import type { AdminPort, AuthUser, BoardCounts, Checkpoint, Profile, SnapshotsRead, SyncRowInfo } from './admin.ts';
 import type { Logger } from './http.ts';
 
 export const NOW = Date.UTC(2026, 10, 2, 12, 0, 0); // fixed clock: 2026-11-02 12:00 UTC
@@ -35,7 +35,13 @@ export function makeJwt(
 
 export interface FakeUser extends AuthUser {
   termsVersion: string | null;
+  ageConfirmed?: boolean;
+  profileCreatedAt?: string | null;
   snapshots: Record<string, unknown>;
+  /** Each synced row's own columns, by store. */
+  syncRows?: Record<string, SyncRowInfo>;
+  /** The support checkpoint (null when none). */
+  checkpoint?: Checkpoint | null;
   /** The newest app version that wrote one of the snapshots (null when none). */
   snapshotsApp?: string | null;
   /** Stores whose snapshot the codec refused (a gzip bomb, damage, an unknown encoding). */
@@ -68,6 +74,9 @@ export class FakeAdmin implements AdminPort {
       email: null,
       createdAt: '2026-10-01T00:00:00.000Z',
       providers: ['email'],
+      lastSignInAt: '2026-11-02T11:59:00.000Z',
+      nameFromSignIn: null,
+      pictureFromSignIn: null,
       termsVersion: '2026-11',
       snapshots: {},
       board: { posts: 0, comments: 0 },
@@ -103,7 +112,15 @@ export class FakeAdmin implements AdminPort {
     if (id && this.deleted.has(id)) return Promise.resolve('gone');
     const u = id ? this.users.get(id) : undefined;
     if (!u) return Promise.resolve('invalid');
-    return Promise.resolve({ id: u.id, email: u.email, createdAt: u.createdAt, providers: [...u.providers] });
+    return Promise.resolve({
+      id: u.id,
+      email: u.email,
+      createdAt: u.createdAt,
+      providers: [...u.providers],
+      lastSignInAt: u.lastSignInAt,
+      nameFromSignIn: u.nameFromSignIn,
+      pictureFromSignIn: u.pictureFromSignIn,
+    });
   }
 
   deleteUser(userId: string): Promise<void> {
@@ -130,9 +147,26 @@ export class FakeAdmin implements AdminPort {
     return Promise.resolve();
   }
 
-  getTermsVersion(userId: string): Promise<string | null> {
-    this.check('getTermsVersion', userId);
-    return Promise.resolve(this.users.get(userId)?.termsVersion ?? null);
+  getProfile(userId: string): Promise<Profile | null> {
+    this.check('getProfile', userId);
+    const u = this.users.get(userId);
+    if (!u || u.termsVersion === null) return Promise.resolve(null);
+    return Promise.resolve({
+      termsVersion: u.termsVersion,
+      ageConfirmed: u.ageConfirmed ?? true,
+      createdAt: u.profileCreatedAt ?? '2026-10-01T00:05:00.000Z',
+    });
+  }
+
+  readCheckpoint(userId: string): Promise<Checkpoint | null> {
+    this.check('readCheckpoint', userId);
+    return Promise.resolve(structuredClone(this.users.get(userId)?.checkpoint ?? null));
+  }
+
+  exportDue(userId: string): Promise<boolean> {
+    this.check('exportDue', userId);
+    const last = this.exportLog.get(userId);
+    return Promise.resolve(last === undefined || this.now - last >= 60 * 60 * 1000);
   }
 
   readSnapshots(userId: string): Promise<SnapshotsRead> {
@@ -141,6 +175,7 @@ export class FakeAdmin implements AdminPort {
     return Promise.resolve({
       stores: structuredClone(u?.snapshots ?? {}),
       appVersion: u?.snapshotsApp ?? null,
+      rows: structuredClone(u?.syncRows ?? {}),
       unreadable: structuredClone(u?.unreadable ?? []),
     });
   }

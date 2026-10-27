@@ -6,10 +6,14 @@
 // (20261013000000_sync_snapshots.sql). The database checks only the shape,
 // never what is inside the gzip, so a reader must assume a hostile row:
 // - the base64 text is capped before it is decoded;
-// - unzipping streams through DecompressionStream and STOPS as soon as the
-//   output passes the cap (2,000,000 bytes, or the row's raw_bytes when
-//   smaller), so a gzip bomb (megabytes of zeros in a few KB) never sits in
-//   memory;
+// - unzipping feeds the DecompressionStream 1 KB of gzip at a time, from a
+//   pull-based stream that hands over the next slice only when the reader
+//   asks for more (security audit M1), and STOPS as soon as the output
+//   passes the cap (2,000,000 bytes, or the row's raw_bytes when smaller).
+//   1 KB of gzip inflates to at most about 1 MB, so a gzip bomb (hundreds of
+//   megabytes of zeros in a few hundred KB) never sits in memory. A single
+//   Blob chunk would let the inflater run ahead of the cap. The phone's and
+//   the website's codecs must slice the same way (SECURITY_GATES.md, I9);
 // - the unzipped size must equal raw_bytes, the text must be valid UTF-8, and
 //   the JSON must be a plain object.
 // Every failure is a GzError with a short code and no content from the row.
@@ -17,7 +21,9 @@
 /** Readers never unzip more than this (the database's raw_bytes cap). */
 export const MAX_RAW_BYTES = 2_000_000;
 /** The database's cap on state_gz (progress); settings are smaller. */
-export const MAX_GZ_CHARS = 700_000;
+export const MAX_GZ_CHARS = 200_000;
+/** How much gzip the inflater is given per step. */
+export const GZ_SLICE_BYTES = 1024;
 export const ENCODING = 'gzip+base64';
 
 export type GzErrorCode =
@@ -58,7 +64,22 @@ function fromBase64(text: string): Uint8Array<ArrayBuffer> {
  */
 export async function gunzipCapped(gz: Uint8Array<ArrayBuffer>, cap: number): Promise<Uint8Array> {
   if (gz.length < 18 || gz[0] !== 0x1f || gz[1] !== 0x8b || gz[2] !== 0x08) throw new GzError('not_gzip');
-  const reader = new Blob([gz]).stream().pipeThrough(new DecompressionStream('gzip')).getReader();
+  let offset = 0;
+  const source = new ReadableStream<Uint8Array<ArrayBuffer>>(
+    {
+      pull(controller) {
+        if (offset >= gz.length) {
+          controller.close();
+          return;
+        }
+        const end = Math.min(offset + GZ_SLICE_BYTES, gz.length);
+        controller.enqueue(gz.slice(offset, end));
+        offset = end;
+      },
+    },
+    { highWaterMark: 0 },
+  );
+  const reader = source.pipeThrough(new DecompressionStream('gzip')).getReader();
   const parts: Uint8Array[] = [];
   let total = 0;
   try {

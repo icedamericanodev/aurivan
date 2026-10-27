@@ -19,12 +19,47 @@
 #   UID_A, UID_B        their user ids
 #   WEB_ORIGIN          optional; the only origin the functions answer
 #                       (default https://kaisip.com)
+#   EMAIL_A             optional; learner A's email. With it, the run also
+#                       tries to give A a password with A's own session, then
+#                       signs in with that password, which must fail (S9).
 # Both learners must have accepted the terms (a profiles row each), so the
 # snapshot checks below are refused by the shape checks, not by a missing
 # profile.
 #
 # Usage: bash scripts/cloud_smoke.sh
+#
+# Second mode, by hand (security audit H1, acceptance test S9), with captcha
+# still off and "Confirm email" ON:
+#   PROBE_EMAIL=you+probe@example.com bash scripts/cloud_smoke.sh pre-register
+# It signs up a NEW address WITH a password (what an attacker would do with a
+# victim's address), asks you for the code sent to that inbox (the
+# victim confirming with a code), then signs in with the password, which must
+# fail: confirming wipes any password. Delete the probe account afterwards
+# (Supabase dashboard → Authentication → Users).
 set -euo pipefail
+
+if [ "${1:-}" = pre-register ]; then
+  : "${SUPABASE_URL:?set SUPABASE_URL}" "${SUPABASE_ANON_KEY:?set SUPABASE_ANON_KEY}" "${PROBE_EMAIL:?set PROBE_EMAIL}"
+  AUTH="${SUPABASE_URL%/}/auth/v1"
+  pw="Smoke-$(od -An -N12 -tx1 /dev/urandom | tr -d ' \n')!"
+  hdr=(-H "apikey: $SUPABASE_ANON_KEY" -H 'Content-Type: application/json')
+  echo "1. Sign up $PROBE_EMAIL with a password (the attacker's step):"
+  curl -sS -o /dev/null -w '   HTTP %{http_code}\n' "${hdr[@]}" -X POST "$AUTH/signup" \
+    --data "{\"email\":\"$PROBE_EMAIL\",\"password\":\"$pw\"}"
+  printf '2. Enter the code emailed to %s (the victim confirming): ' "$PROBE_EMAIL"
+  read -r code
+  curl -sS -o /dev/null -w '   verify: HTTP %{http_code} (200 expected)\n' "${hdr[@]}" -X POST "$AUTH/verify" \
+    --data "{\"type\":\"signup\",\"email\":\"$PROBE_EMAIL\",\"token\":\"$code\"}"
+  echo "3. Sign in with the attacker's password:"
+  status=$(curl -sS -o /dev/null -w '%{http_code}' "${hdr[@]}" -X POST "$AUTH/token?grant_type=password" \
+    --data "{\"email\":\"$PROBE_EMAIL\",\"password\":\"$pw\"}" || echo 000)
+  if [[ $status == 2* || $status == 000 ]]; then
+    echo "   ✗ HTTP $status: the pre-registered password still works. STOP: do not open sign-up (H1)."
+    exit 1
+  fi
+  echo "   ✓ HTTP $status: refused. The confirmed account has no password."
+  exit 0
+fi
 
 : "${SUPABASE_URL:?set SUPABASE_URL}" "${SUPABASE_ANON_KEY:?set SUPABASE_ANON_KEY}"
 : "${JWT_A:?set JWT_A}" "${JWT_B:?set JWT_B}" "${UID_A:?set UID_A}" "${UID_B:?set UID_B}"
@@ -164,6 +199,9 @@ done
 expect "A cannot call svc_claim_export" "$(request POST "$REST/rpc/svc_claim_export" "$JWT_A" "{\"p_user\":\"$UID_A\"}")" denied
 expect "A cannot call svc_record_deletion" \
   "$(request POST "$REST/rpc/svc_record_deletion" "$JWT_A" "{\"p_uid_hmac\":\"$(printf 'ab%.0s' $(seq 32))\"}")" denied
+for f in svc_export_due svc_sync_checkpoint; do
+  expect "A cannot call $f" "$(request POST "$REST/rpc/$f" "$JWT_A" "{\"p_user\":\"$UID_A\"}")" denied
+done
 expect "anon cannot call svc_claim_export" \
   "$(request POST "$REST/rpc/svc_claim_export" '' "{\"p_user\":\"$UID_A\"}")" denied
 
@@ -200,6 +238,16 @@ expect "export-my-data refuses an anonymous call" "$(request POST "$FN/export-my
 # A real learner's token passes the gateway, so these denials come from the function itself.
 expect "delete-account needs confirm=DELETE (learner A's token)" "$(request POST "$FN/delete-account" "$JWT_A" '{"confirm":"nope"}')" denied
 expect "delete-account refuses a GET (learner A's token)" "$(request GET "$FN/delete-account" "$JWT_A")" denied
+
+if [ -n "${EMAIL_A:-}" ]; then
+  echo "No passwords (S9): learner A's own session tries to add one; password sign-in must still fail:"
+  probe_pw="Smoke-$(od -An -N12 -tx1 /dev/urandom | tr -d ' \n')!"
+  # Whatever the Auth server answers here (it may accept the write), the database wipes the password.
+  set_pw=$(request PUT "${SUPABASE_URL%/}/auth/v1/user" "$JWT_A" "{\"password\":\"$probe_pw\"}")
+  printf '  · setting a password answered %s\n' "${set_pw%% *}"
+  expect "A cannot sign in with a password set by a session" \
+    "$(request POST "${SUPABASE_URL%/}/auth/v1/token?grant_type=password" '' "{\"email\":\"$EMAIL_A\",\"password\":\"$probe_pw\"}")" denied
+fi
 
 echo "CORS (S6): only $WEB_ORIGIN may call the two account functions from a browser:"
 # Only the allowed-origin header is compared ("any <origin>", "any -" for

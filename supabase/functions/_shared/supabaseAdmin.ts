@@ -7,14 +7,25 @@
 // 20261005000000_init_mobile_sync.sql (security invoker, service_role only),
 // because schema `private` is not exposed by the Data API.
 
-import type { AdminPort, AuthUser, BoardCounts, Provider, SnapshotsRead } from './admin.ts';
+import type {
+  AdminPort,
+  AuthUser,
+  BoardCounts,
+  Checkpoint,
+  Profile,
+  Provider,
+  SnapshotsRead,
+  SyncRowInfo,
+} from './admin.ts';
 import { decodeSnapshot, GzError } from './gz.ts';
 
 interface RawUser {
   id: string;
   email?: string | null;
   created_at?: string | null;
+  last_sign_in_at?: string | null;
   app_metadata?: { provider?: unknown; providers?: unknown } | null;
+  user_metadata?: Record<string, unknown> | null;
   identities?: { provider?: unknown }[] | null;
 }
 
@@ -37,6 +48,42 @@ export interface SupabaseLike {
 }
 
 const KNOWN: readonly Provider[] = ['email', 'apple', 'google'];
+
+/** A short string, or null: metadata from a sign-in provider is not trusted for size or type. */
+function shortText(v: unknown, max: number): string | null {
+  return typeof v === 'string' && v !== '' && v.length <= max ? v : null;
+}
+
+/** The name and picture link a sign-in provider (Google) shared, as the Auth server stored them. */
+export function fromSignIn(meta: unknown): { name: string | null; picture: string | null } {
+  const m = (meta && typeof meta === 'object' ? meta : {}) as Record<string, unknown>;
+  const picture = shortText(m.avatar_url, 500) ?? shortText(m.picture, 500);
+  return {
+    name: shortText(m.full_name, 200) ?? shortText(m.name, 200),
+    picture: picture && /^https:\/\//.test(picture) ? picture : null,
+  };
+}
+
+const int = (v: unknown): number | null => (typeof v === 'number' && Number.isInteger(v) ? v : null);
+const str = (v: unknown, max = 64): string | null => shortText(v, max);
+
+/** Each row's own columns (never the state), keyed by store, for the export. */
+export function syncRowInfo(rows: unknown): Record<string, SyncRowInfo> {
+  const out: Record<string, SyncRowInfo> = {};
+  if (!Array.isArray(rows)) return out;
+  for (const r of rows as Record<string, unknown>[]) {
+    const store = r?.store;
+    if (store !== 'settings' && store !== 'progress') continue;
+    out[store] = {
+      rev: int(r.rev),
+      deviceId: str(r.device_id),
+      updatedAt: str(r.updated_at),
+      appVersion: str(r.app_version),
+      storeVersion: int(r.store_version),
+    };
+  }
+  return out;
+}
 
 /**
  * The fields a backup file needs that a synced snapshot never carries (they
@@ -172,11 +219,15 @@ export function supabaseAdmin(client: SupabaseLike): AdminPort {
       }
       const u = data?.user;
       if (!u || typeof u.id !== 'string') return 'invalid';
+      const shared = fromSignIn(u.user_metadata);
       return {
         id: u.id,
         email: typeof u.email === 'string' && u.email !== '' ? u.email : null,
         createdAt: typeof u.created_at === 'string' ? u.created_at : null,
         providers: providersOf(u),
+        lastSignInAt: typeof u.last_sign_in_at === 'string' ? u.last_sign_in_at : null,
+        nameFromSignIn: shared.name,
+        pictureFromSignIn: shared.picture,
       };
     },
 
@@ -212,18 +263,47 @@ export function supabaseAdmin(client: SupabaseLike): AdminPort {
       if (error) throw new AdminCallFailed('recordDeletion');
     },
 
-    async getTermsVersion(userId: string): Promise<string | null> {
-      const { data, error } = await client.from('profiles').select('terms_version').eq('id', userId).maybeSingle();
-      if (error) throw new AdminCallFailed('getTermsVersion');
-      const v = (data as { terms_version?: unknown } | null)?.terms_version;
-      return typeof v === 'string' ? v : null;
+    async getProfile(userId: string): Promise<Profile | null> {
+      const { data, error } = await client.from('profiles').select('terms_version, age_confirmed, created_at').eq(
+        'id',
+        userId,
+      ).maybeSingle();
+      if (error) throw new AdminCallFailed('getProfile');
+      const d = data as { terms_version?: unknown; age_confirmed?: unknown; created_at?: unknown } | null;
+      if (!d || typeof d.terms_version !== 'string') return null;
+      return {
+        termsVersion: d.terms_version,
+        ageConfirmed: d.age_confirmed === true,
+        createdAt: typeof d.created_at === 'string' ? d.created_at : null,
+      };
+    },
+
+    // The support checkpoint, unzipped through the same capped reader.
+    async readCheckpoint(userId: string): Promise<Checkpoint | null> {
+      const { data, error } = await client.rpc('svc_sync_checkpoint', { p_user: userId });
+      if (error) throw new AdminCallFailed('readCheckpoint');
+      const row = (Array.isArray(data) ? data[0] : null) as Record<string, unknown> | null | undefined;
+      if (!row) return null;
+      const head = { takenAt: str(row.taken_at), rev: int(row.rev), appVersion: str(row.app_version) };
+      try {
+        return { ...head, state: await decodeSnapshot(row.encoding, row.state_gz, row.raw_bytes) };
+      } catch (e) {
+        if (!(e instanceof GzError)) throw e;
+        return { ...head, unreadable: e.code };
+      }
+    },
+
+    async exportDue(userId: string): Promise<boolean> {
+      const { data, error } = await client.rpc('svc_export_due', { p_user: userId });
+      if (error) throw new AdminCallFailed('exportDue');
+      return data === true;
     },
 
     // Phase 7: the learner's own sync_snapshots rows, unzipped through the
     // capped codec, as backup-file stores.
     async readSnapshots(userId: string): Promise<SnapshotsRead> {
       const { data, error } = await client.from('sync_snapshots')
-        .select('store, store_version, app_version, encoding, state_gz, raw_bytes')
+        .select('store, store_version, app_version, device_id, rev, updated_at, encoding, state_gz, raw_bytes')
         .eq('user_id', userId);
       if (error) throw new AdminCallFailed('readSnapshots');
       const decoded = await decodeSnapshotRows(data);
@@ -231,6 +311,7 @@ export function supabaseAdmin(client: SupabaseLike): AdminPort {
         stores: snapshotsToStores(decoded.rows),
         // Only stores that made it into the file count for the version (code review P7 N11).
         appVersion: newestAppVersion(decoded.rows),
+        rows: syncRowInfo(data),
         unreadable: decoded.unreadable,
       };
     },
