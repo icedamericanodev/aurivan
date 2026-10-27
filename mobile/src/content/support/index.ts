@@ -47,7 +47,7 @@ export const WHATS_NEW: readonly WhatsNewEntry[] = [
     new: ['Five more lessons on decisions the exam tests often: security exceptions, hardened servers and networks, personal and unmanaged devices, paying for IT, and user-built tools and batch reruns.'],
     improved: [
       'Settings is now one page with clear groups, so each setting is easy to find.',
-      'Your data and Help and about open on their own pages, and Settings shows your last backup and the app’s version on the way in.',
+      'Your data and Help and about open on their own pages, and Settings shows your last backup on the way in.',
     ],
   },
   {

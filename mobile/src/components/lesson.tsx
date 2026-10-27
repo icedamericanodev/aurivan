@@ -45,7 +45,7 @@ import { LeafBig, PlanLeaf, type BotanyKind } from './glyphs';
 import { DrawLine, FadeIn } from './motion';
 import { Bullets } from './notes';
 import { OptionCard, Verdict, type OptionState } from './quiz';
-import { BigNum, Gap, HeroPanel, Stem, T } from './ui';
+import { BigNum, Gap, HeroPanel, Stem, T, useFontScale } from './ui';
 
 /** When part `i` of a scene arrives: 120 ms apart in reading order, the first 6 (the rest come with the 6th). */
 export const partDelay = (i: number) => Math.min(i, motion.stagger.maxScene - 1) * motion.stagger.scene;
@@ -489,6 +489,8 @@ function TimelineScene({ scene }: { scene: Extract<Scene, { type: 'flow' }> }) {
 /** Layers (`stack`): bands that settle onto the stack from above, top layer first. */
 function LayersScene({ scene }: { scene: Extract<Scene, { type: 'stack' }> }) {
   const { c } = useTheme();
+  // The unordered marker sits centred on the label's first line at any text size (capped like the type).
+  const fontScale = Math.min(useFontScale(), 2);
   const n = scene.layers.length;
   return (
     <View>
@@ -516,7 +518,7 @@ function LayersScene({ scene }: { scene: Extract<Scene, { type: 'stack' }> }) {
             <View style={{ width: 24 }}>
               {scene.unordered ? (
                 // Parallel items: one plain marker each, so no item reads as first or most important.
-                <View style={{ width: 8, height: 8, borderRadius: 4, marginTop: 7, marginLeft: 4, backgroundColor: c.accentText }} />
+                <View accessible={false} importantForAccessibility="no" style={{ width: 6, height: 6, borderRadius: 3, marginLeft: 4, marginTop: (22 * fontScale - 6) / 2, backgroundColor: c.accent }} />
               ) : (
                 <BigNum value={String(i + 1)} size={22} color={i === 0 ? c.accentText : c.ink2} />
               )}

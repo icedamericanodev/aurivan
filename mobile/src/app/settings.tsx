@@ -50,6 +50,7 @@ import { Alert, Linking, Platform, View, type ScrollView } from 'react-native';
 import { aboutLine, AccountSettingsGroup } from '../components/account';
 import { BoardSettingsGroup } from '../components/board';
 import { useSyncing } from '../lib/sync';
+import { cloudReady } from '../lib/account';
 import { KaisipLockup, PillarList } from '../components/brand';
 import { CLOUD } from '../cloud/flag';
 import { copy as cloudCopy } from '../content/cloud/copy';
@@ -170,7 +171,7 @@ export default function Settings() {
   const params = useLocalSearchParams<{ open?: string; section?: string; category?: string }>();
   // A door's own screen (settings-section?category=data|help, and account|board in a cloud build); any
   // other value shows the whole page.
-  const sub: SettingsCat | null = isSettingsCat(params.category) && DOOR_CATS.includes(params.category) && (CLOUD || (params.category !== 'account' && params.category !== 'board')) ? params.category : null;
+  const sub: SettingsCat | null = isSettingsCat(params.category) && DOOR_CATS.includes(params.category) && (cloudReady() || (params.category !== 'account' && params.category !== 'board')) ? params.category : null;
   const navigation = useOwnNavigation();
   // "Now" for the calendar: read again each time it opens, so a Settings
   // screen left open past midnight never offers yesterday (render stays pure:
@@ -641,7 +642,7 @@ export default function Settings() {
     ? creditSubtitle(dueItems)
     : updates.available && updates.canRestart
       ? 'Update ready: restart to install it'
-      : `Report a problem or get help · version ${appVersion}`;
+      : 'Get help, report a problem, privacy and terms';
   const about = (
     <>
       <Gap h={space.xl} />
@@ -690,7 +691,7 @@ export default function Settings() {
     // You (mobile 1.23): what Today calls the learner. Optional, and only on this phone.
     { cat: 'you', title: 'You', draw: group('you', 'You', youRows) },
     // Cloud builds only: Settings → Account (one of the two ways in), and → Feedback board (Your activity, Blocked learners; Phase 8).
-    ...(CLOUD
+    ...(cloudReady()
       ? [
           { cat: 'account' as const, title: cloudCopy('settings.group'), summary: 'Sign in and sync', draw: () => <AccountSettingsGroup key="account" /> },
           { cat: 'board' as const, title: cloudCopy('board.settings.group'), summary: 'Your activity and blocked learners', draw: () => <BoardSettingsGroup key="board" /> },
@@ -707,7 +708,7 @@ export default function Settings() {
           {/* Destructive, so set apart from the rows above, with its own line saying what goes and what stays. */}
           <Gap h={space.xxl} />
           <Button kind="danger" label={`Reset ${cert.name} progress`} accessibilityHint="Asks first" onPress={confirmReset} />
-          <T v="meta" center style={{ marginTop: space.sm }}>{`Erases your ${cert.name} answers, scores and badges on this phone, to start again. Your settings stay. It asks first.`}</T>
+          <T v="meta" center style={{ marginTop: space.sm }}>{`Erases your ${cert.name} answers, scores, saved questions, mock history and badges on this phone. Your settings stay.`}</T>
         </View>
       ),
     },
@@ -762,7 +763,7 @@ export default function Settings() {
           <>
             {categories.filter((x) => !DOOR_CATS.includes(x.cat)).map((x) => x.draw())}
             {/* The doors (Your data, Help and about; Account and Feedback board in a cloud build), in one last card. */}
-            <SettingsCard>{doorCats.map((x, i) => door(x, i === doorCats.length - 1))}</SettingsCard>
+            <SettingsCard title="Data and help">{doorCats.map((x, i) => door(x, i === doorCats.length - 1))}</SettingsCard>
 
             {about}
           </>

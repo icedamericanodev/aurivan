@@ -140,7 +140,7 @@ describe('Settings, mobile 1.46: one page, clear groups', () => {
     const data = doors.find((d) => d.props.title === 'Your data')!;
     expect(data.props.summary).toBe('Last backup 6 Oct · back up or move to a new phone');
     const help = doors.find((d) => d.props.title === 'Help and about')!;
-    expect(help.props.summary).toMatch(/^Report a problem or get help · version \d/);
+    expect(help.props.summary).toBe('Get help, report a problem, privacy and terms');
     const button = root().findAll((n) => typeof n.type === 'string' && n.props.accessibilityLabel === 'Your data, Last backup 6 Oct, back up or move to a new phone')[0];
     expect(button.props.accessibilityHint).toBe('Opens Your data');
     act(() => data.props.onPress());
@@ -201,10 +201,10 @@ describe('Settings, mobile 1.46: one page, clear groups', () => {
     expect(root().findAll((n) => n.props.title === 'Your name' && n.props.visible === true).length).toBeGreaterThan(0);
   });
 
-  it('Reset says what goes and what stays, and that it asks first', () => {
+  it('Reset says what goes and what stays', () => {
     mockParams.current = { category: 'data' };
     render();
-    expect(textOf(root())).toContain('Erases your CISA answers, scores and badges on this phone, to start again. Your settings stay. It asks first.');
+    expect(textOf(root())).toContain('Erases your CISA answers, scores, saved questions, mock history and badges on this phone. Your settings stay.');
   });
 
   it('no Settings gear on Settings itself', () => {
