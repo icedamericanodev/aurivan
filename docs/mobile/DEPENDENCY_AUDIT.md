@@ -75,3 +75,10 @@ After applying:
 - Apply the single scoped `uuid` override, which closes 1 alert.
 - Dismiss the remaining four in Dependabot with the reasons above: 3 × "not used", decode-uri-component × "tolerable risk".
 - Re-audit when node-forge > 1.4.0 or braces > 3.0.3 is published, or when expo-router moves off query-string 7.
+
+## New dependency: react-native-android-widget (mobile 1.47)
+
+| Package | Why | Cost | Risk and guard rails |
+|---|---|---|---|
+| `react-native-android-widget` `^0.24.0` (0.24.0 installed; MIT; one maintainer; releases since Jan 2023) | Android home-screen widgets written in TypeScript, with an Expo config plugin. Expo's own `expo-widgets` is iOS-only on SDK 57; a Kotlin/Glance module would be native code to maintain alone | Native Android code (widget providers, an exported read-only image provider, `androidx.work:work-runtime:2.8.1`, `com.caverock:androidsvg-aar:1.4`, `androidx.concurrent:concurrent-futures:1.1.0`); about 0.5 to 1.5 MB of app size (measure on the first APK); a new runtime fingerprint | Pinned to 0.24.x (0.24.0 is the release with unguessable image names). Imported only from `.android.ts(x)` files and mocked in Jest. Our logic lives in `engine/widgets.ts`, so a switch to `expo-widgets` at SDK 58 would replace only the layouts. `npm audit` lists no advisory for it (27 Oct 2026). |
+

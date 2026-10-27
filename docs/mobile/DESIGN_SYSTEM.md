@@ -1752,3 +1752,165 @@ composer's leak card and buttons stack full width (`board-top-xl`,
 `mod-appeals`, `mod-members`, `mod-log`, `mod-pause`, `board-you`,
 `board-settings`, `board-feedback-public`, `board-whatsnew`, `board-top-xl`,
 `compose-bank-xl`, and the flag-OFF `off-help`, `off-whatsnew`.
+
+---
+
+## 20. Home-screen widgets (mobile 1.47, Android first)
+
+The owner chose all nine candidates (27 Oct 2026). Eight are built for
+Android home screens in mobile 1.47; the ninth, the lock-screen accessory, is
+designed here and built later (iOS, and Android 16 QPR2+). Six reviews
+challenged the first build the same day (a critic, the behavioural scientist,
+a first-time learner, UX, security and store compliance); the owner kept all
+eight and asked for each one's safer, better version. This section is that
+version.
+
+**Where it lives.** `engine/widgets.ts` (the snapshot, every face, the shared
+exam wording, links, the "choose" screen's words: pure and tested),
+`engine/widgetTester.ts` (the beta tester cards and numbers),
+`content/principles/widgetPrompts.ts` (Today's rule's 21 prompts),
+`widgets/art.ts` (colours and SVG drawings), `widgets/layouts.android.tsx`
+(the Android layouts), `widgets/task.android.ts` (the background task),
+`lib/widgetData.ts` (what the app puts in the snapshot),
+`lib/widgets.android.ts` (writes it and redraws), `app/widget.tsx` +
+`lib/widgetOpen.ts` (where a tap lands), `lib/widgetStats.ts` (local beta
+counters), `components/widgetSettings.tsx` (Settings card, the one
+suggestion, the one re-ask, tester card and numbers),
+`components/widgetConfig.android.tsx` (the "choose" screen).
+
+### 20.1 Rules for every widget
+
+1. **Calendar only.** Faces change at midnight, on Monday and at the exam-date
+   edges (and when the app writes new data). No face reads the hour. One
+   exception, from the behavioural review: after 3 or more whole days with no
+   study, Today's plan makes "5 questions · 6 min" its main button (the full
+   plan stays beside it). No word ever mentions the gap.
+2. **No name, anywhere** (source guard). **Details on widgets** (Settings,
+   one switch) hides topics, counts, questions, rules and exam timing on every
+   widget; its description says exactly that.
+3. **Exam timing is its own choice**, off by default: "Exam in 3 weeks", the
+   final week, the eve and exam day appear only when the learner turned on
+   **Exam timing on widgets** (or added the Exam countdown and chose it), and
+   only with Details on. Otherwise no widget says "exam". Tested for every
+   widget × every exam stage × Details × timing.
+4. **One wording table for the exam stages** (`EXAM_COPY`), so two widgets
+   on one screen never disagree:
+
+   | Stage | Caption | Title | Line |
+   |---|---|---|---|
+   | Final week (7–2 days) | Final week | Settle in. Don't cram. | Short, light sessions this week. |
+   | Eve | Exam tomorrow | Light review, then rest. | Sleep helps memory settle. |
+   | Exam day | Exam day | Good luck. | One question at a time. |
+   | After (countdown only) | Your exam | Exam done | Your progress stays on this phone. |
+
+   The eve follows the app's own eve (the final review week's light review).
+   Never "You've done the work". After the exam, the other widgets are normal
+   again.
+5. **Adding Readiness or Exam countdown is the opt-in.** Android opens a short
+   "choose" screen when either is added (`widgetFeatures: reconfigurable`):
+   Readiness offers **Rings only** (first, recommended) or **Rings and your
+   range**; the countdown offers **Show weeks to my exam**. "Not now" cancels
+   the add. If the choice is later turned off, the widget shows a plain face
+   whose one tap opens that exact choice in Settings and then returns.
+6. **A tap earns nothing.** It opens the app at the matching place. Today's
+   rule's "Show the rule", "Had it" and "Not yet" stay on the widget (no app
+   opens) and are never progress.
+7. **One suggestion, ever** (a cleared day, from the 3rd study day, never in
+   exam week, never beside another invitation), and **one re-ask, ever**:
+   30 days after choosing to show the readiness range, "Keep your readiness
+   number on your home screen?" (Keep it / Rings only).
+8. **Plain words.** "Questions to revisit", not "Reviews"; "information
+   systems (IS)" spelled out once; topic names about 12 characters
+   ("Audit process", "Governance", "New systems", "Operations", "Security");
+   friendly plant names; no designer notes; never "pass", "guarantee",
+   "you're ready" or the bank size; no red.
+9. **Every tap deep-links** through `kaisip://widget?kind=…&go=…&from=widget`
+   (+ `&id=`). The link is untrusted: unknown kinds are dropped, unknown goals
+   open Today, ids must be plain ids. A quiz in progress is never closed by a
+   link.
+
+### 20.2 Look
+
+- **Surfaces:** paper (`raised2` light, `raised` dark), or the forest panel
+  (`forestTop` → `forest`) for Today's plan and the exam-stage faces; a soft
+  frond behind the words on 4×2 and up. Radius 22.
+- **Type:** Fraunces 500 titles and figures, Fraunces italic for a rule and
+  the calm exam words, Figtree for everything scanned or tapped. Nothing
+  under 10 sp (day letters 10 sp, captions 11 sp).
+- **Taps:** one main pill (34 dp in a 48 dp tap area) with its minutes
+  ("Start · 12 min"); one quiet second action on 4×2 and up; Today's rule's
+  self-check is a pair. Every spoken label says minutes in full.
+- **Art:** single-colour readiness rings (no domain colours); the week's
+  leaves about 16×22 dp; the plant is the hero (about 112 dp on 2×2, 150 dp
+  on 4×2) with the week's leaves under it on 4×2.
+- **Large text:** extras go first (third line, quiet action, the detail line
+  beside a pill). Titles grow at most 1.3× on 2×2 and 1.5× bigger (as
+  Android 14's non-linear scaling does), get the lines the room allows, and
+  switch to their short form rather than be cut. A small pill drops its
+  minutes at 160%+ ("Start"); a 4×1 drops its picture before its words. A
+  launcher that squeezes a 2×2 into one row makes the whole widget the main
+  tap. Checked at 100, 130, 150, 160 and 200% on every size and the launcher
+  minimums.
+
+### 20.3 The widgets (recommended first)
+
+| # | Widget | Sizes | Shows | Tap | Special states |
+|---|---|---|---|---|---|
+| 1 | Today's plan | 2×2, 4×2 | The topic, "Starts with 6 questions to revisit", "Start · 12 min", "Short on time? 5 questions" (4×2), "Exam in 3 weeks" (timing on) | Start → today's live plan | Done: "Plan done", the week's leaves, "Next: Security · about 18 min". **Next morning before the app opens:** the real next topic and its minutes. 3+ days away: 5 questions first. Final week: plain day words (no "Pace check"). Eve, exam day: the table |
+| 2 | Your plant | 2×2, 4×2, 1×1 | The plant at its stage ("Your narra", "Shoot"), "Grows as answers stick" at most once, the week's leaves (4×2) | Your plant | "New growth today" chip only on a growth day; never the resting look; no plant; plant off |
+| 3 | Today's rule | 4×2, 2×2, 4×1 | One question in an exam question's voice (its short form on small sizes), "Show the rule" | Show the rule (on the widget) → "Had it" / "Not yet" → "Try one" (a question that tests the rule) | "Not yet" brings the rule back within 3 days, "Had it" spaces it out; rules a recent miss tested come first; final week: reading-the-question rules; eve and exam day: one calm line; Details off: "Today's rule is ready" |
+| 4 | This week | 4×1, 2×2, 1×1 | Leaves Mon–Sun, "3 days this week" | Today | No study yet this week: "A new week" / "A short start" + "5 questions · about 6 min" (Start runs the short set); under 2 study days ever: the first set; 6+ days: "Today can be your rest day"; final week: leaves rest; Details off: "A leaf for each day you studied." |
+| 5 | Quick question | 4×2, 4×3 | A short question that keeps its BEST/FIRST word, "Before the options: what would you do?", "Answer" | That question in the app; afterwards the app offers "Today's plan · about N min left" (Continue / Done for now) | Prefers the day's first question to revisit that fits; answered: "Answered", no button; eve/exam day: no new questions |
+| 6 | Questions to revisit | 2×2, 4×1 | Today's plan's own number ("6 questions to revisit", "you missed before"), minutes, Revisit | The revisit set | Before today's plan exists: no number; nothing today; new learner; eve: "Nothing new today" |
+| 7 | Exam countdown | 2×2, 4×2 | "Exam in 3 weeks" (calendar weeks: it changes on a Monday), "Steady pace this week", Start | Today (final week: the exam-week page) | Asks first when added; the table for the final week, eve, day and after; Details off: today's plan only; no date: where to add one |
+| 8 | Readiness | 2×2, 4×2 | Rings only ("You chose to hide the number"), or the range "68–78%" + "A study estimate, not a prediction." | The readiness report | Asks first when added; rests to rings only from 21 days before the exam; before the first estimate: "N more answers"; no weakest-area label |
+
+Before the first visit (or onboarding) every widget says "Open KaiSip to begin".
+
+**After midnight.** Android refreshes a widget about every 3 hours (the
+platform's floor is 30 minutes; WorkManager and the library offer no exact
+midnight alarm from JavaScript, and an exact alarm would need a new
+permission). So the done face is written to stay true after midnight ("Plan
+done", "Next: …"), and the morning face names the real next topic from the
+plan written the day before. At worst the done face shows for up to 3 hours
+into the new day; it never says "today".
+
+### 20.4 Measuring it (beta, on the phone only)
+
+Counted in `aurivan.widgetPrefs.v1`, never sent: opens per widget; sessions
+really started from a widget (a tap that ends on "Caught up" or a missing
+question doesn't count); sessions finished with 3+ answers; days the plan was
+cleared, by the widget that started the day; 60 days of study days and
+widget-open days; Today's rule self-checks; and which widgets are placed (a
+widget counts as removed only after it is missing on 2 app opens in a row).
+Beta testers (Help → I'm a beta tester) see **Widget numbers on this phone**
+in Help, a 14-day card (its own clock from the first day a widget was seen: a
+count line on screen only, and three questions) and a one-time card when a
+widget is removed. Answers go by the tester's own email app with a subject
+tag; the numbers never go into the email.
+
+### 20.5 The lock-screen accessory (designed; iOS spec, built later)
+
+Android lock-screen widgets need Android 16 QPR2+, and iOS isn't in the store
+yet, so it is not in the 1.47 build (adding it later is a native change).
+The face is already in the engine (`lockFace`, tested).
+
+- Families: `accessoryInline` and `accessoryCircular` only (a rectangle is big
+  enough for a topic or a score, which is the problem).
+- Inline: "KaiSip · about 12 min"; "KaiSip · plan done"; "KaiSip" on exam day
+  and after. Never a topic, the exam, a count, readiness or a name.
+- Circular: this week's seven leaves, no number; the Kasama mark before 2
+  study days, in an empty week and from 7 days before the exam.
+- `vibrant` and `accented` modes use the system tint; every text and the leaf
+  ring `privacySensitive()`. Data from the same snapshot in the App Group
+  (`group.com.kaisip.app`), a timeline entry at midnight and on Monday.
+
+### 20.6 Screenshots
+
+The widget layouts can't run in the web screenshot build (they are native).
+`src/__tests__/widgets-layout.test.tsx` builds every real layout tree; with
+`WIDGET_DUMP=<file>` it writes them out, and a small browser harness draws
+them at real dp size on a Pixel-style home screen and fails on any overflow,
+an ellipsis in a title or big number, or a lost key word. The same harness
+made the picker previews (`mobile/assets/widgets/`, each a different face:
+Readiness shows rings only). The real check is a phone.
