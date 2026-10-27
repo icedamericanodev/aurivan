@@ -156,6 +156,7 @@ acceptable when the reference is to the broader topical body of guidance.
 - SSAE 18 AT-C 205 (Examination Engagements)
 - AICPA AT-C 215 (Agreed-Upon Procedures Engagements, as revised by SSAE 19)
 - IAASB ISRS 4400 (Revised)
+- IAASB ISA 230 (Audit Documentation), paras 13 and 16
 
 ## IIA
 
@@ -1508,6 +1509,7 @@ questions (v10.0/v10.1), and miscellaneous additions from v9.8-v10.2 polish.
 
 ### COSO
 - COSO Internal Control - Integrated Framework (2013) Component 5
+- COSO Internal Control - Integrated Framework (2013), Component 5 (Monitoring Activities), Principle 17
 
 ### Other
 - APO, BAI, DSS, MEA domains)
@@ -2071,3 +2073,10 @@ questions (v10.0/v10.1), and miscellaneous additions from v9.8-v10.2 polish.
 - GDPR Article 17(3)(b) (Erasure Exemption for Legal Obligations)
 
 Citations to ISACA's commercial CISA study guide were removed from the bank and this library in Oct 2026 (owner decision on legal advice); cite the public ITAF, COBIT, NIST, ISO or IIA source instead.
+
+## D1 difficulty upgrade additions (Oct 2026)
+- ISACA Artificial Intelligence Audit Toolkit (2024)
+- ISACA Code of Professional Ethics, Item 2 (Objectivity, Due Diligence and Professional Care)
+- ISACA Code of Professional Ethics, Item 6 (Disclosure of All Significant Facts)
+- 32 CFR Part 170 (CMMC Program, effective 16 Dec 2024)
+- FinCEN 31 CFR 1020.320 (Reports by Banks of Suspicious Transactions)

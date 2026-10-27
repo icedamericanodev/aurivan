@@ -4,6 +4,12 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v12.40] — Harder audit process practice
+
+### Improved
+- More challenging answer choices in IS audit process practice questions, so ruling out wrong answers takes real CISA knowledge.
+- All five domains now have the tougher practice questions, closer to how the real exam makes you choose between two good answers.
+
 ## [v12.39] — Harder governance practice
 
 ### Improved
