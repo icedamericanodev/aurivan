@@ -26,6 +26,7 @@ const REVIEWED = '2026-10-07';
 const PHASE2_REVIEWED = '2026-10-08'; // Phase 2 lessons, after concept, teaching and novice reviews
 const D1_GAPS_REVIEWED = '2026-10-20'; // Domain 1 gap lessons (plan items L1 + L2), appended as orders 8–13
 const L3_L5_REVIEWED = '2026-10-21'; // Plan items L3–L5: Domain 5, Domain 4, and Domains 2–3 lessons, appended after each domain’s last lesson
+const FIXES_145_REVIEWED = '2026-10-26'; // Mobile 1.45 B0: concept-expert and curriculum fixes to existing lessons
 
 export const CISA_LESSONS: Lesson[] = [
   // ───────────────────────────── Domain 1 ─────────────────────────────
@@ -782,7 +783,7 @@ export const CISA_LESSONS: Lesson[] = [
       'IIA Global Internal Audit Standards (2024), Standard 2.2 (Safeguarding Objectivity)',
     ],
     outlineVersion: OUTLINE,
-    lastReviewed: D1_GAPS_REVIEWED,
+    lastReviewed: FIXES_145_REVIEWED,
     topics: ['1A1'],
     prepares: ['d1_002', 'd1_087', 'd1_090'],
     notes: ['1A1.5', '1A1.7'],
@@ -800,7 +801,7 @@ export const CISA_LESSONS: Lesson[] = [
       },
       {
         type: 'stack',
-        heading: 'Four threats to objectivity',
+        heading: 'Four common threats to objectivity',
         layers: [
           { label: 'Self-review', note: 'Auditing work you designed, built or ran, such as a system you helped set up' },
           { label: 'Self-interest', note: 'A personal stake in the result, such as a job offer from the area being audited (the auditee)' },
@@ -876,7 +877,7 @@ export const CISA_LESSONS: Lesson[] = [
         ],
         correctIndex: 0,
         explanation:
-          'Credentials show the firm could do the work, not that this report is sound. The IS auditor evaluates the delivered work and holds back reliance until the evidence is there. Repeating the tests is tempting, but a team without encryption skills cannot do it meaningfully; that is why the expert was hired.',
+          'Credentials show the firm could do the work, not that this report is sound. The IS auditor evaluates the delivered work and holds back reliance until the evidence is there. Repeating the tests is tempting, but it duplicates work the expert was engaged to do; the first step is to obtain and evaluate the expert’s evidence, and add your own procedures only if gaps remain.',
       },
     ],
   },
@@ -2239,7 +2240,7 @@ export const CISA_LESSONS: Lesson[] = [
     provenance: PROVENANCE,
     references: ['ISO 31000:2018 (Risk Management)', 'COBIT 2019 APO12 (Managed Risk)', 'COSO ERM (2017)'],
     outlineVersion: OUTLINE,
-    lastReviewed: L3_L5_REVIEWED,
+    lastReviewed: FIXES_145_REVIEWED,
     topics: ['2A5'],
     prepares: ['d2_022', 'd2_089', 'd2_133'],
     notes: ['2A5.4'],
@@ -2268,7 +2269,7 @@ export const CISA_LESSONS: Lesson[] = [
           { label: 'Nothing brings it within?', note: 'Then avoid: stop or redesign the activity' },
         ],
         caption:
-          'Ask in order and stop at the first yes. A short budget does not change the logic: fund legal and regulatory duties first, then the fixes that cut the most loss per dollar, and escalate what is left.',
+          'Use the order as a guide, not a rule: management weighs the cost and benefit of each option and often combines them, such as mitigating and insuring together. A short budget does not change the logic: fund legal and regulatory duties first, then the fixes that cut the most loss per dollar, and escalate any risk still above appetite to senior management for a documented decision.',
       },
       {
         type: 'analogy',
@@ -3157,7 +3158,7 @@ export const CISA_LESSONS: Lesson[] = [
       'COBIT 2019 BAI07 (Managed IT Change Acceptance and Transitioning)',
     ],
     outlineVersion: OUTLINE,
-    lastReviewed: L3_L5_REVIEWED,
+    lastReviewed: FIXES_145_REVIEWED,
     topics: ['3B1'],
     prepares: ['d3_082', 'd3_030', 'd3_020'],
     notes: ['3B1.2', '3B1.5'],
@@ -3171,7 +3172,7 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'idea',
         heading: 'The core idea',
-        body: 'Test time is always limited, so the technique matters as much as the effort. Good testing puts effort where failure would hurt most (risk-based testing) and proves its tests would actually catch a mistake. Under a fixed date, cutting testing a little everywhere hides risk everywhere: ship a smaller, fully tested release, and defer the rest with the business owner formally accepting the risk.',
+        body: 'Test time is always limited, so the technique matters as much as the effort. Good testing puts effort where failure would hurt most (risk-based testing) and proves its tests would actually catch a mistake. Under a fixed date, cutting testing a little everywhere hides risk everywhere: ship a smaller, fully tested release, and defer the rest with the business owner formally accepting the risk. That works only for optional features, while everything that ships has met its criteria; when acceptance testing fails widely, go-live waits.',
       },
       {
         type: 'stack',
@@ -3205,7 +3206,7 @@ export const CISA_LESSONS: Lesson[] = [
       },
       {
         type: 'tip',
-        body: 'Match the cue to the technique. A range such as 18 to 65: boundary values. Asked whether tests catch faults: mutation testing. Any change: regression. Little time: risk-based testing. Under a fixed deadline, cut scope, not testing.',
+        body: 'Match the cue to the technique. A range such as 18 to 65: boundary values. Asked whether tests catch faults: mutation testing. Any change: regression. Little time: risk-based testing. Under a fixed deadline, cut optional scope, not testing; if acceptance testing fails widely, go-live waits.',
       },
       {
         type: 'check',
@@ -3238,7 +3239,7 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'check',
         question:
-          'A tax-filing feature must ship on a fixed legal date in four weeks. Two optional dashboards in the same release are still failing acceptance tests, the business users’ sign-off checks. What should the IS auditor recommend?',
+          'A tax-filing feature that has met its acceptance criteria must ship on a fixed legal date in four weeks. Two optional dashboards in the same release are still failing acceptance tests, the business users’ sign-off checks. What should the IS auditor recommend?',
         options: [
           'Ship everything and fix the dashboards in production',
           'Delay the whole release until the dashboards pass',
@@ -3247,7 +3248,7 @@ export const CISA_LESSONS: Lesson[] = [
         ],
         correctIndex: 3,
         explanation:
-          'Releasing the fully tested, required part meets the legal date, and deferring the optional dashboards with the business owner’s formal risk acceptance keeps the risk visible. Delaying everything is tempting because it avoids shipping any defect, but it misses a legal date for features the law does not need.',
+          'Releasing the fully tested, required part meets the legal date, and deferring the optional dashboards with the business owner’s formal risk acceptance keeps the risk visible. Delaying everything is tempting because it avoids shipping any defect, but it misses a legal date for features the law does not need. This works only because the dashboards are optional and the rest has met its criteria; if acceptance tests were failing widely, go-live would wait.',
       },
     ],
   },
@@ -3375,7 +3376,7 @@ export const CISA_LESSONS: Lesson[] = [
       'ISO 22301:2019 (Business continuity management systems)',
     ],
     outlineVersion: OUTLINE,
-    lastReviewed: REVIEWED,
+    lastReviewed: FIXES_145_REVIEWED,
     topics: ['4B1', '4B5', '4B2'],
     prepares: ['d4_074', 'd4_082', 'd4_068'],
     notes: ['4B1.2', '4B5.1', '4B2.2'],
@@ -3390,7 +3391,7 @@ export const CISA_LESSONS: Lesson[] = [
         // Review fix (MAJOR): a plain core idea replaces the off-topic single-points-of-failure scene.
         type: 'idea',
         heading: 'The core idea',
-        body: 'Recovery runs on two clocks. One looks back: how much recent data the business can afford to lose. The other looks forward: how long the service can be down. The business impact analysis (BIA) sets both, and each is met with different tools.',
+        body: 'Recovery runs on two clocks. One looks back: how much recent data the business can afford to lose. The other looks forward: how long the service can be down. Business owners set both, based on the business impact analysis (BIA), and each is met with different tools.',
       },
       {
         type: 'compare',
@@ -3839,7 +3840,7 @@ export const CISA_LESSONS: Lesson[] = [
       'COBIT 2019 APO09 (Managed service agreements) and BAI04 (Managed availability and capacity)',
     ],
     outlineVersion: OUTLINE,
-    lastReviewed: PHASE2_REVIEWED,
+    lastReviewed: FIXES_145_REVIEWED,
     topics: ['4A6', '4A10'],
     prepares: ['d4_014', 'd4_003', 'd4_019'],
     notes: ['4A6.2', '4A10.1'],
@@ -3886,12 +3887,12 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'trap',
         heading: 'The second trap',
-        trap: '“Average use is 50 percent, so there is plenty of headroom.”',
-        why: 'Averages hide the peaks. Month-end and seasonal spikes are when systems run out. Plan capacity for peak demand and its trend.',
+        trap: '“Response times are slow, so buy more servers.”',
+        why: 'More hardware helps only if capacity is the real limit. Analyze the workload first to find the bottleneck, such as one slow query, a locked table or a report run at peak, then try moving work off-peak before buying more.',
       },
       {
         type: 'tip',
-        body: 'When a stem offers an average, ask what the average hides. An SLA is only as strong as the weakest agreement standing behind it. When every part passes but the whole fails, judge the service the way users meet it, and get facts before choosing a fix.',
+        body: 'When a stem offers an average, ask what the average hides: plan for peaks, such as month-end. An SLA is only as strong as the weakest agreement standing behind it. When every part passes but the whole fails, judge the service the way users meet it, and get facts before choosing a fix.',
       },
       {
         type: 'check',
@@ -4075,10 +4076,10 @@ export const CISA_LESSONS: Lesson[] = [
       'COBIT 2019 DSS05 (Managed security services) and DSS06 (Managed business process controls)',
     ],
     outlineVersion: OUTLINE,
-    lastReviewed: PHASE2_REVIEWED,
+    lastReviewed: FIXES_145_REVIEWED,
     topics: ['4A9', '4A11'],
     prepares: ['d4_035', 'd4_106', 'd4_048'],
-    notes: ['4A9.1', '4A11.5'],
+    notes: ['4A9.1', '4A9.2', '4A11.5'],
     scenes: [
       {
         type: 'title',
@@ -4192,7 +4193,7 @@ export const CISA_LESSONS: Lesson[] = [
       'ISO/IEC 27002:2022 control 8.13 (Information backup)',
     ],
     outlineVersion: OUTLINE,
-    lastReviewed: PHASE2_REVIEWED,
+    lastReviewed: FIXES_145_REVIEWED,
     topics: ['4B3'],
     prepares: ['d4_061', 'd4_063', 'd4_065'],
     notes: ['4B3.1', '4B3.3', '4B3.4'],
@@ -4232,7 +4233,7 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'idea',
         heading: 'Where the copies live',
-        body: 'The 3-2-1 rule: three copies of the data, on two different kinds of storage (such as disk and tape), with one copy offsite, far enough away that one fire or flood cannot reach both. Copies kept nearby give fast restores. A catalog records every copy and where it is.',
+        body: 'The 3-2-1 rule: three copies of the data, on two different kinds of storage (such as disk and tape), with one copy offsite, far enough away that one fire or flood cannot reach both. Against ransomware, keep at least one copy offline or immutable, so it cannot be changed or deleted, even by an administrator, until its retention period ends. Copies kept nearby give fast restores. A catalog records every copy and where it is.',
       },
       {
         type: 'idea',
@@ -4860,7 +4861,7 @@ export const CISA_LESSONS: Lesson[] = [
       'NIST SP 800-53 Rev. 5 AC-2(9) (Restrictions on Use of Shared and Group Accounts)',
     ],
     outlineVersion: OUTLINE,
-    lastReviewed: PHASE2_REVIEWED,
+    lastReviewed: FIXES_145_REVIEWED,
     topics: ['5A3'],
     prepares: ['d5_024', 'd5_036', 'd5_282'],
     notes: ['5A3.1'],
@@ -4894,7 +4895,7 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'idea',
         heading: 'Not all second factors are equal',
-        body: 'A hardware security key (a small device you plug in or tap) is tied to the genuine site’s address, so a fake page gets nothing it can reuse. This is called phishing-resistant authentication. Text or app codes can be typed into a fake page and passed on to the real site. A tricked user can also tap “approve” on a phone pop-up.',
+        body: 'Phishing-resistant methods, such as a hardware security key, a passkey or a smart-card certificate login, are tied to the genuine site’s address, so a fake page gets nothing it can reuse. Text or app codes can be typed into a fake page and passed on to the real site. A tricked user can also tap “approve” on a phone pop-up.',
       },
       {
         type: 'idea',
@@ -5433,7 +5434,7 @@ export const CISA_LESSONS: Lesson[] = [
       'NIST SP 800-57 Part 1 Rev. 5 (Recommendation for Key Management: Part 1 – General)',
     ],
     outlineVersion: OUTLINE,
-    lastReviewed: PHASE2_REVIEWED,
+    lastReviewed: FIXES_145_REVIEWED,
     topics: ['5A7', '5A6'],
     prepares: ['d5_064', 'd5_067', 'd5_070'],
     notes: ['5A7.1', '5A7.2', '5A6.4'],
@@ -5463,7 +5464,7 @@ export const CISA_LESSONS: Lesson[] = [
           { label: 'Verify', note: 'A registration authority checks the requester’s identity' },
           { label: 'Issue', note: 'The CA signs the certificate' },
           { label: 'Use', note: 'Systems check the signature, expiry date and revocation status every time' },
-          { label: 'Renew', note: 'Before expiry; you can only renew certificates you know about' },
+          { label: 'Renew', note: 'Before expiry, ideally automated, as public certificate lifetimes keep getting shorter; you can only renew certificates you know about' },
         ],
         caption: 'Revocation withdraws trust early, at any point, if the key is lost or stolen or the holder leaves. It is published in a certificate revocation list (CRL) or by an online status service (OCSP, Online Certificate Status Protocol), and relying systems must check it. The root CA is the top authority every certificate traces back to. It is usually kept offline, with its key in a hardware security module, a tamper-resistant device for keys.',
       },

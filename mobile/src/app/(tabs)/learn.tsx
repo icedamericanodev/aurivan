@@ -195,7 +195,7 @@ export default function Learn() {
       <Enter i={0}>
         <T v="display" accessibilityRole="header" style={{ marginTop: space.xs }}>Learn</T>
         <T v="meta" style={{ marginTop: space.xs }}>
-          {showNotes ? 'Lessons are the course. Study notes are the reference.' : 'Short lessons, in exam order.'}
+          {showNotes ? 'Lessons start each topic. Study notes go deeper.' : 'Short lessons, in exam order.'}
         </T>
       </Enter>
 
@@ -216,7 +216,16 @@ export default function Learn() {
             action={{ label: 'Start lesson', icon: (col) => play(col), hint: upNext.title, onPress: () => router.push(`/lesson/${upNext.id}`) }}
           />
         ) : (
-          <HeroPanel seal="seedhead" caption="All caught up" title="Every lesson done" meta={showNotes ? 'Revisit any lesson anytime, or look a topic up in the notes.' : 'Revisit any lesson anytime.'} art="branch1" />
+          // Mobile 1.45 (PM story 3): lessons start each topic, so the next step is practice, with the
+          // notes for what it turns up; the hero says so and its one action goes to Practice.
+          <HeroPanel
+            seal="seedhead"
+            caption="All caught up"
+            title="Every lesson done"
+            meta={showNotes ? 'Keep practicing, and open the study notes for any topic that trips you up.' : 'Keep practicing to make it stick.'}
+            art="branch1"
+            action={{ label: 'Go to Practice', hint: 'Opens the Practice tab', onPress: () => router.push('/practice') }}
+          />
         )}
       </Enter>
 

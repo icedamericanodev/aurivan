@@ -46,6 +46,20 @@ export function lessonsForSubtopic(certId: string, subtopicId: string): Lesson[]
 }
 
 /**
+ * The lessons a "Take the lesson" row may offer after a missed question (mobile 1.45), in order:
+ * those that list the question in `prepares`, then those that list its study note (`noteId`) in
+ * `notes`. Unlike lessonsForSubtopic there is NO outline-topic fallback: a lesson that only shares
+ * the question's outline topic may never teach the idea that was missed (the note page keeps the
+ * wider join, where "a lesson on this topic" is the honest claim). The caller offers the first not done.
+ */
+export function missLessons(certId: string, questionId: string, noteId?: string): Lesson[] {
+  const lessons = lessonsFor(certId);
+  const preparing = lessons.filter((l) => l.prepares?.includes(questionId));
+  const teaching = noteId ? lessons.filter((l) => l.notes?.includes(noteId) && !preparing.includes(l)) : [];
+  return [...preparing, ...teaching];
+}
+
+/**
  * The note subtopic ids a lesson leads into, primary first: its own `notes`
  * when it has them, else the first subtopic of each outline topic it teaches
  * (`subtopicsOf` maps a topic code to its subtopic ids, in reading order).
