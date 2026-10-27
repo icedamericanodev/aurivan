@@ -5034,6 +5034,21 @@ body[data-tab]:not([data-tab="about"]):not([data-tab="faq"]) .legal-disclaimer {
 /* Save a backup: an InviteRow on the paper */
 .td-backup { margin-top: var(--sp-section); }
 .td-backup .plnt-invite-h { font: var(--t-label); }
+/* "What should we call you?" (v12.37): an InviteRow with its field inline */
+.td-name { margin-top: var(--sp-section); }
+.td-name-gone { margin: 0; }
+.td-name-l { display: block; margin: var(--sp-md) 0 var(--sp-xs); font: var(--t-caption); color: var(--text2); }
+.td-name-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-xs) var(--sp-lg); }
+.td-name-input { flex: 1 1 200px; min-width: 0; }
+.td-name-acts { margin-top: 0; }
+.td-name-err { flex: 0 0 100%; margin: 0; font: var(--t-meta); color: var(--wrong); }
+.td-name-err:empty { display: none; }
+.td-name-app { margin: var(--sp-sm) 0 0; font: var(--t-meta); color: var(--text2); }
+.td-name-done .plnt-invite { align-items: center; }
+.td-name-ok { margin: 0; border-radius: var(--r-sm); }
+.td-name-ok strong { font-weight: 600; color: var(--text); }
+.td-name-ok:focus { outline: none; }
+.td-name-ok:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
 .td-est { margin-top: 0; }
 /* The first five's close: Tomorrow on an L1 plate */
 .rs-plate.rs-tomorrow { display: block; }
@@ -5328,6 +5343,22 @@ header.app-header .brand-lockup { height: 28px; }
 .you { max-width: 720px; }
 .you-title { font: var(--t-display); letter-spacing: var(--tr-display); color: var(--text); margin: 4px 0 0; }
 .you-group { margin-top: 32px; }
+/* Your study profile (v12.37): on the paper, no card; the leaf mark is decorative */
+.you-prof { display: flex; align-items: flex-start; gap: var(--sp-lg); margin-top: var(--sp-xl); padding-bottom: var(--sp-xl); border-bottom: 1px solid var(--border); }
+.you-prof:empty { display: none; }
+.you-prof-leaf { position: relative; flex: none; width: 56px; height: 56px; }
+.you-prof-leaf > svg { position: absolute; inset: 0; }
+.you-prof-lf { fill: var(--surface2); }
+.you-prof-leaf.named .you-prof-lf { fill: var(--forest); }
+.you-prof-vein { fill: none; stroke: var(--sap); stroke-width: 1.6; stroke-linecap: round; }
+.you-prof-i, .you-prof-u { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+.you-prof-i { padding-top: 2px; font: var(--t-hero); line-height: 1; color: var(--on-forest); }
+.you-prof-u { color: var(--accent-text); }
+.you-prof-t { flex: 1; min-width: 0; padding-top: var(--sp-xs); }
+.you-prof-n { margin: 0; font: var(--t-headline); color: var(--text); overflow-wrap: anywhere; }
+.you-prof-l { margin: 2px 0 0; font: var(--t-body); color: var(--text); }
+.you-prof-m { margin: 2px 0 0; font: var(--t-meta); color: var(--text2); }
+.you-prof .you-prof-add { min-height: 48px; }
 .you-head { font: var(--t-headline); color: var(--text); margin: 0 0 4px; }
 .you-list { list-style: none; margin: 0; padding: 0; }
 .you-row {
@@ -6551,7 +6582,7 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
     <h1 class="vision-title" id="aboutScreenTitle">Think like an IS auditor.</h1>
     <p class="vision-line">CISA exam prep, taught the way the exam thinks.</p>
   </section>
-  <p class="about-version">KaiSip web <span class="bank-pill" id="versionPill">v12.36</span></p>
+  <p class="about-version">KaiSip web <span class="bank-pill" id="versionPill">v12.37</span></p>
   <section class="vision-body" aria-label="What KaiSip stands for">
     <!-- The provenance line (owner, 22 Oct 2026): the same words in the hero, the disclaimer and the FAQ. -->
     <p class="vision-desc">Original questions and notes, written with AI assistance and checked against ISACA’s published exam outline and standards.</p>
@@ -6616,6 +6647,10 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 <div id="screen-you" class="screen" role="region" aria-labelledby="youTitle">
   <div class="you">
     <h1 class="you-title" id="youTitle">You</h1>
+    <!-- Your study profile (v12.37): the name (or "Add your name"), the first
+         study day and the exam date, read back from what the learner chose and
+         did. Filled by renderYouProfile; it asks for nothing. -->
+    <section class="you-prof" id="youProfile" aria-labelledby="youProfH"></section>
     <!-- Your plant, below the desktop breakpoint (plantYouInline); from
          1180px it moves to the study rail beside the page. -->
     <section class="you-plant" id="youPlant" aria-labelledby="plYouH" hidden></section>
@@ -6642,9 +6677,9 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
         <!-- Your name (as on mobile Settings): optional, kept on this device, used only for Today's greeting. -->
         <li><button type="button" class="you-row" id="youNameBtn" aria-expanded="false" aria-controls="youNameEdit" onclick="toggleNameEdit()"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="8" r="4"/><path d="M4.5 20.5a7.5 7.5 0 0 1 15 0"/></svg></span><span class="you-text"><span class="you-t">Your name</span><span class="you-m" id="youNameM">Optional, for the greeting on Today</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m6 9 6 6 6-6"/></svg></span></button>
           <div class="you-name-edit" id="youNameEdit" hidden>
-            <label class="ph-field" for="youNameInput">What should we call you?</label>
-            <input type="text" class="you-name-input" id="youNameInput" maxlength="24" autocomplete="given-name" autocapitalize="words" spellcheck="false" placeholder="Your first name" aria-describedby="youNameHint" onkeydown="if(event.key==='Enter'){event.preventDefault();saveDisplayName();}else if(event.key==='Escape'){event.preventDefault();toggleNameEdit(false);}">
-            <p class="ph-hint" id="youNameHint" aria-live="polite">Only on this device. It just helps us say hello.</p>
+            <label class="ph-field" for="youNameInput">Name or nickname</label>
+            <input type="text" class="you-name-input" id="youNameInput" maxlength="24" autocomplete="nickname" autocapitalize="words" spellcheck="false" aria-describedby="youNameHint" onkeydown="if(event.key==='Enter'){event.preventDefault();saveDisplayName();}else if(event.key==='Escape'){event.preventDefault();toggleNameEdit(false);}">
+            <p class="ph-hint" id="youNameHint" aria-live="polite">Kept in this browser only. It just helps us say hello.</p>
             <div class="you-name-acts"><button type="button" class="ph-done you-name-save" onclick="saveDisplayName()">Save</button><button type="button" class="ph-done" onclick="toggleNameEdit(false)">Cancel</button></div>
           </div></li>
         <!-- Exam date (v12.30): the one place to set or change it, as on mobile Settings. -->
@@ -6881,7 +6916,7 @@ const MOCK_TIER_LABEL = { analysis: 'Harder', application: 'Middle', foundationa
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v12.36';
+const APP_VERSION = 'v12.37';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -8469,6 +8504,11 @@ function exportProgress(otherId) {
   if (!otherId) {
     var examDate = savedExamDate();
     if (/^\d{4}-\d{2}-\d{2}$/.test(examDate)) out.examDate = examDate;
+    // v12.37: the optional name travels too (cleaned, at most 24 characters,
+    // left out when empty), so the app can greet the learner the same way.
+    // Never the old record label: only the name chosen for Today's greeting.
+    var displayName = getDisplayName();
+    if (displayName) out.displayName = displayName;
   }
   var data = JSON.stringify(out, null, 2);
   var blob = new Blob([data], {type: 'application/json'});
@@ -8502,9 +8542,15 @@ function importProgress(file) {
       if (!state) { showToast(IMPORT_MSG_NOT_PROGRESS, 'info', 6000); return; }
       // The plant never grows past what the file's own progress supports.
       try { plantClampImported(state); } catch (e2) {}
+      // v12.37: a name in the file is added only when this browser has none
+      // (add-only: a name already here is kept). Text only, length-checked,
+      // and cleaned by the one name rule. The record label is never a name.
+      var fileName = typeof data.displayName === 'string' && data.displayName.length <= 256 ? cleanDisplayName(data.displayName) : '';
+      var addName = fileName && !getDisplayName() ? fileName : '';
       ksConfirm({
         title: 'Restore this file?',
-        body: 'The progress in this browser is replaced with the progress in the file.',
+        body: 'The progress in this browser is replaced with the progress in the file.'
+          + (addName ? ' Today will also greet you as ' + addName + ', the name in the file. Change or clear it any time in You.' : ''),
         confirmLabel: 'Replace my progress',
         danger: true,
         onConfirm: function () {
@@ -8515,6 +8561,12 @@ function importProgress(file) {
           profiles[id].totalAnswered = state.score ? Number(state.score.t) || 0 : 0;
           profiles[id].lastActive = Date.now();
           saveProfiles(profiles);
+          if (addName && !getDisplayName()) {
+            try {
+              localStorage.setItem(DISPLAY_NAME_KEY, addName);
+              localStorage.setItem(NAME_ASK_KEY, 'saved');
+            } catch (e3) {}
+          }
           leavingForReload = true;
           location.reload();
         }
@@ -10474,6 +10526,8 @@ function switchTab(t, opts) {
     x.classList.toggle('active', x.id === 'screen-' + t);
   });
   syncNav(t);
+  // Today's "Saved in this browser" line is for the visit it was saved on.
+  if (t !== 'home') todayNameNote = '';
   if (t === 'home') renderHome();
   if (t === 'bookmarks') renderBookmarks();
   if (t === 'weakspots') renderWeakSpots();
@@ -10674,10 +10728,11 @@ function syncYouSettings() {
   try { syncThemeSwitch(); syncExamModeBtn(); syncNameRow(); } catch (e) {}
 }
 // You → Your name: the row shows the saved name; it opens a small field.
-var NAME_HELPER = 'Only on this device. It just helps us say hello.';
+var NAME_HELPER = 'Kept in this browser only. It just helps us say hello.';
 function syncNameRow() {
   var m = document.getElementById('youNameM');
   if (m) m.textContent = getDisplayName() || 'Optional, for the greeting on Today';
+  try { renderYouProfile(); } catch (e) {}
 }
 function toggleNameEdit(open) {
   var box = document.getElementById('youNameEdit'), btn = document.getElementById('youNameBtn');
@@ -10707,6 +10762,8 @@ function saveDisplayName() {
   try {
     if (clean) localStorage.setItem(DISPLAY_NAME_KEY, clean);
     else localStorage.removeItem(DISPLAY_NAME_KEY);
+    // A name chosen here means Today never needs to ask (v12.37).
+    if (clean) localStorage.setItem(NAME_ASK_KEY, 'saved');
   } catch (e) {}
   syncNameRow();
   toggleNameEdit(false);
@@ -10930,6 +10987,168 @@ function getDisplayName() {
 }
 function greetingForHour(hour) {
   return hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening';
+}
+
+// ── TODAY ASKS FOR A NAME, ONCE (v12.37; mobile engine/firstRun.ts nameAskDue) ──
+// One quiet card under the plan, from the second study day, when no name is
+// set. A NEW device-only key beside the old ones: 'shown:YYYY-MM-DD' (the day
+// it was first shown: it stays for that day, then never again), 'saved' or
+// 'dismissed' (never again). Never on a Welcome back day, in exam week or on
+// exam day, and never beside another invitation on Today: that one goes
+// first and the name waits.
+var NAME_ASK_KEY = 'aurivan_name_ask';
+var todayNameNote = '';    // 'saved': the saved line replaces the card (this visit only)
+var todayNameDraft = '';   // what was typed, kept if Today is drawn again
+function nameAskRead() {
+  try { return String(localStorage.getItem(NAME_ASK_KEY) || ''); } catch (e) { return 'dismissed'; }
+}
+function nameAskDue(st, today, otherCard) {
+  if (getDisplayName() || otherCard || st.back || st.exam) return false;
+  var k = nameAskRead();
+  if (k && k !== 'shown:' + today) return false;
+  // From the second study day: a study day before today.
+  return st.studyDays.some(function (d) { return d < today; });
+}
+function todayNameSavedHtml() {
+  return '<div class="plnt-invite"><span class="you-ico" aria-hidden="true">' + ico('check', 20) + '</span>'
+    + '<p class="plnt-invite-m td-name-ok" id="tdNameOk" tabindex="-1"><strong>Saved in this browser.</strong> Change or clear it any time in You.</p></div>';
+}
+function todayNameHtml(show) {
+  if (todayNameNote === 'saved') {
+    return '<section class="td-name td-name-done" id="tdName" aria-label="Your name">' + todayNameSavedHtml()
+      + '<p class="sr-only" role="status" id="tdNameSay"></p></section>';
+  }
+  if (!show) return '';
+  return '<section class="td-name" id="tdName" aria-labelledby="tdNameH">'
+    + '<div class="plnt-invite"><span class="you-ico" aria-hidden="true">' + ico('user', 20) + '</span>'
+    + '<div class="plnt-invite-t"><h2 class="plnt-invite-h" id="tdNameH">What should we call you?</h2>'
+    + '<p class="plnt-invite-m" id="tdNameM">Optional. A first name or a nickname, kept in this browser only.</p>'
+    + '<label class="td-name-l" for="tdNameInput">Name or nickname</label>'
+    + '<div class="td-name-row">'
+    + '<input type="text" class="you-name-input td-name-input" id="tdNameInput" maxlength="' + MAX_DISPLAY_NAME + '" autocomplete="nickname" autocapitalize="words" spellcheck="false"'
+    + ' value="' + escapeHtml(todayNameDraft) + '" aria-describedby="tdNameM tdNameErr"'
+    + ' oninput="todayNameDraft=this.value;this.removeAttribute(\'aria-invalid\');document.getElementById(\'tdNameErr\').textContent=\'\'" onkeydown="if(event.key===\'Enter\'){event.preventDefault();todayNameSave();}">'
+    + '<p class="td-name-err" id="tdNameErr" aria-live="polite"></p>'
+    + '<div class="plnt-invite-acts td-name-acts">'
+    + '<button type="button" class="plnt-ghost" onclick="todayNameSave()">Save</button>'
+    + '<button type="button" class="plnt-ghost" onclick="todayNameNotNow()">Not now</button></div></div>'
+    + '<p class="td-name-app">Using the app too? Your name travels with your progress file.</p>'
+    + '</div></div>'
+    + '<p class="sr-only" role="status" id="tdNameSay"></p></section>';
+}
+function todayNameSave() {
+  var inp = document.getElementById('tdNameInput');
+  if (!inp) return;
+  var clean = cleanDisplayName(inp.value);
+  if (!clean) {
+    // Nothing kept: say why, and stay in the field.
+    var err = document.getElementById('tdNameErr');
+    if (err) err.textContent = inp.value.trim()
+      ? 'That looks like a web address or an email, so we leave it out. Try just your first name.'
+      : 'Type a name or a nickname, or choose Not now.';
+    inp.setAttribute('aria-invalid', 'true');
+    try { inp.focus(); } catch (e) {}
+    return;
+  }
+  try {
+    localStorage.setItem(DISPLAY_NAME_KEY, clean);
+    localStorage.setItem(NAME_ASK_KEY, 'saved');
+  } catch (e) {}
+  // Storage full or blocked: say so instead of a "Saved" that a reload undoes.
+  if (getDisplayName() !== clean) {
+    var serr = document.getElementById('tdNameErr');
+    if (serr) serr.textContent = 'We couldn\u2019t save that in this browser. Its storage may be full or blocked.';
+    try { inp.focus(); } catch (e) {}
+    return;
+  }
+  todayNameDraft = '';
+  todayNameNote = 'saved';
+  syncNameRow();
+  var title = document.getElementById('tdTitle');
+  if (title) title.textContent = greetingForHour(new Date().getHours()) + ', ' + clean;
+  // The card's body becomes the saved line; the status region already on the
+  // page stays, so its words are announced. Focus stays where the learner
+  // was (the saved line); the status says hello.
+  var sec = document.getElementById('tdName');
+  var body = sec && sec.querySelector('.plnt-invite');
+  if (body) {
+    sec.className = 'td-name td-name-done';
+    sec.removeAttribute('aria-labelledby');
+    sec.setAttribute('aria-label', 'Your name');
+    body.outerHTML = todayNameSavedHtml();
+  }
+  var ok = document.getElementById('tdNameOk');
+  if (ok) { try { ok.focus({ preventScroll: true }); } catch (e) {} }
+  var say = document.getElementById('tdNameSay');
+  if (say) setTimeout(function () { say.textContent = 'Hello, ' + clean + '.'; }, 60);
+}
+function todayNameNotNow() {
+  try { localStorage.setItem(NAME_ASK_KEY, 'dismissed'); } catch (e) {}
+  todayNameDraft = '';
+  var sec = document.getElementById('tdName');
+  if (!sec) return;
+  // The card goes; its status region stays to say where the name lives.
+  var body = sec.querySelector('.plnt-invite');
+  if (body) body.parentNode.removeChild(body);
+  sec.className = 'td-name-gone';
+  sec.removeAttribute('aria-labelledby');
+  var t = document.getElementById('tdGo') || document.getElementById('tdTitle');
+  if (t) { try { t.focus({ preventScroll: true }); } catch (e) {} }
+  var say = document.getElementById('tdNameSay');
+  if (say) setTimeout(function () { say.textContent = 'No name. You can add one any time in You.'; }, 60);
+}
+
+// ── YOU: YOUR STUDY PROFILE (v12.37) ──
+// What the learner chose and did, read back: the name (in the Grove leaf
+// mark, decorative), the first study day and the exam date. No meter, no
+// "missing" count; a line without data is left out. The name is edited in
+// the one existing field (Settings → Your name).
+var PROFILE_MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+function profileDateWords(iso) {
+  var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(iso || ''));
+  if (!m) return '';
+  var mo = Number(m[2]), d = Number(m[3]);
+  if (mo < 1 || mo > 12 || d < 1 || d > 31) return '';
+  return d + ' ' + PROFILE_MON[mo - 1] + (Number(m[1]) !== new Date().getFullYear() ? ' ' + m[1] : '');
+}
+function firstStudyDay() {
+  var today = parityDayKey(Date.now());
+  var list = (Array.isArray(S.studyDays) ? S.studyDays : []).filter(function (d) {
+    return typeof d === 'string' && PARITY_DAY_RE.test(d) && d <= today;
+  }).sort();
+  return list[0] || '';
+}
+function profileLeafSvg(initial) {
+  var named = !!initial;
+  return '<span class="you-prof-leaf' + (named ? ' named' : '') + '" aria-hidden="true">'
+    + '<svg width="56" height="56" viewBox="0 0 38 38" focusable="false"><path class="you-prof-lf" d="M35.5 2.5V19A16.5 16.5 0 1 1 19 2.5z"/>'
+    + (named ? '<path class="you-prof-vein" d="M33 5 L27.5 10.5"/>' : '') + '</svg>'
+    + (named ? '<span class="you-prof-i">' + escapeHtml(initial) + '</span>' : '<span class="you-prof-u">' + ico('user', 22) + '</span>')
+    + '</span>';
+}
+function renderYouProfile() {
+  var el = document.getElementById('youProfile');
+  if (!el) return;
+  var name = getDisplayName();
+  var since = profileDateWords(firstStudyDay());
+  // Same words as the exam date row in Settings, including a passed date.
+  var exam = examDateWords(savedExamDate());
+  var left = exam ? examDaysLeft() : null;
+  if (exam && left !== null && left < 0) exam += ' · Date passed';
+  var initial = name ? Array.from(name)[0].toLocaleUpperCase() : '';
+  el.innerHTML = profileLeafSvg(initial)
+    + '<div class="you-prof-t">'
+    + '<h2 class="you-prof-n" id="youProfH">' + (name ? '<span class="sr-only">Your study profile: </span>' + escapeHtml(name) : 'Your study profile') + '</h2>'
+    + (since ? '<p class="you-prof-l">Studying for ' + escapeHtml(ACTIVE.name) + ' since ' + escapeHtml(since) + '</p>' : '')
+    + (exam ? '<p class="you-prof-m">Exam ' + escapeHtml(exam) + '</p>' : '')
+    + (name ? '' : '<button type="button" class="plnt-ghost you-prof-add" onclick="youProfileAddName()">Add your name</button>')
+    + '</div>';
+}
+// "Add your name" opens the existing field under Settings → Your name.
+function youProfileAddName() {
+  var inp = document.getElementById('youNameInput');
+  toggleNameEdit(true);
+  if (inp) { try { inp.scrollIntoView({ block: 'center', behavior: 'auto' }); } catch (e) {} }
 }
 
 // Whole days to the saved exam date (local midnight to midnight): null when
@@ -11669,6 +11888,18 @@ function renderHome() {
     if (!todayInvitePick) todayInvitePick = (Array.isArray(S.studyDays) && S.studyDays.length > 1) ? 'backup' : 'plant';
     if (todayInvitePick === 'plant') backup = '';
   }
+  // The name ask (v12.37): once, from the second study day, only when no
+  // other invitation or setup card is on Today this visit (the other goes
+  // first; the name waits). Showing it counts, for today only.
+  var appCard = appCtaTodayHtml();
+  var finalWeek = todayFinalWeekHtml(days);
+  var todayKey = parityDayKey(now.getTime());
+  var askName = !todayNameNote && nameAskDue(st, todayKey, !!(backup || appCard || finalWeek || plantInviteDue()));
+  if (askName && nameAskRead() === '') { try { localStorage.setItem(NAME_ASK_KEY, 'shown:' + todayKey); } catch (e) {} }
+  // Only ask when the "shown" day sticks; otherwise a browser that can't save
+  // would ask on every visit.
+  if (askName && nameAskRead() !== 'shown:' + todayKey) askName = false;
+  var nameCard = todayNameHtml(askName);
   var plate = '<div class="td-plate' + (range.enough ? '' : ' td-plate-quiet') + '">'
     + todayReadyHtml(r, range, st, showRings)
     + (showWeek ? todayWeekHtml(todayWeek(now, st.studyDays)) : '')
@@ -11692,8 +11923,8 @@ function renderHome() {
     + intro
     + '</div>'
     // Phones read it top to bottom: the plan, what else, then the column.
-    + appCtaTodayHtml()
-    + hero + todayFinalWeekHtml(days) + next + todayMindSlotHtml(st) + backup
+    + appCard
+    + hero + nameCard + finalWeek + next + todayMindSlotHtml(st) + backup
     + '</div>'
     + todaySideHtml(plate)
     + (apps.length ? '<p class="td-apps">Get the app: ' + apps.join(' &middot; ') + '</p>' : '')
@@ -16434,6 +16665,7 @@ function maybeAskExamDate(deb) {
 }
 // You → Settings → Exam date: the current value under the row's title.
 function renderYouExamDate() {
+  try { renderYouProfile(); } catch (e) {}
   var m = document.getElementById('youExamDateM');
   if (!m) return;
   var cur = savedExamDate();
@@ -19761,6 +19993,15 @@ function toggleMockDetail(i) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
+    title: 'Today can greet you by name, and harder security practice',
+    items: [
+      { cat: 'new', text: 'Today can greet you by name. Add a first name or nickname if you like; it stays in this browser and comes along when you move your progress to the app.' },
+      { cat: 'new', text: 'You now opens with your study profile: your name, when you started and your exam date.' },
+      { cat: 'improved', text: 'More challenging answer choices in information security practice questions, so you rule out wrong answers with real CISA knowledge, not guesswork.' },
+    ],
+  },
+  {
+    version: 'v12.36',
     title: 'A calmer Today and harder practice',
     items: [
       { cat: 'new', text: 'Today is calmer: one plan to start, a gentle welcome back after a break, a lighter exam week, and one auditor question a day.' },

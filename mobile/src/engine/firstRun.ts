@@ -18,6 +18,7 @@
  */
 import { itemMinutes, type PlanItem } from './planner';
 import { localTime } from './reminders';
+import { daysBetween } from './streak';
 
 // ── Onboarding: what the two choices add up to ───────────────────────────
 /** "6 weeks", "10 days", "3 months": a span of days in the words a learner would use. */
@@ -177,19 +178,70 @@ export function secondAskDue(opts: {
  * on Today, from the day after their first study day, if they still have no
  * name and nothing else is asking on that visit (one setup line at a time).
  * Settings → Your name keeps it any time after.
+ *
+ * Mobile 1.44 (the owner's "Version 3"): two kinds of day never get it,
+ * because "What should we call you?" would feel out of place there:
+ * - a welcome-back day: 3 or more whole days with no study before today
+ *   (`awayDays`, worked out by `studyDaysAway`);
+ * - exam week: 7 days or fewer before the exam, and after it (`daysLeft`).
+ * Both are optional, so a caller that leaves them out gets the 1.41 rule.
  */
 export function nameAskDue(opts: {
-  /** Onboarded on 1.41+ and not asked yet (store/seen.ts nameAsk 'due'). */
+  /** Onboarded on 1.41+ (or nudged, nameNudgeDue) and not asked yet (store/seen.ts nameAsk 'due'). */
   offered: boolean;
   hasName: boolean;
   /** Study days so far (milestones.days) and the last one counted. */
   studyDays: number;
   lastStudyDay?: string;
   today: string;
-  /** Another setup line is on Today this visit (the reminder ask, Fit, the plant line). */
+  /** Another setup line or invitation is on Today this visit (the reminder ask, Fit, the plant line, a moment). */
   otherSetup: boolean;
+  /** Whole days with no study before today (studyDaysAway). */
+  awayDays?: number;
+  /** Days to the exam (null or left out: no date set). */
+  daysLeft?: number | null;
 }): boolean {
   if (!opts.offered || opts.hasName || opts.otherSetup || opts.studyDays < 1) return false;
+  // Mobile 1.44: never on a welcome-back day, never in exam week (or once the exam has passed).
+  if ((opts.awayDays ?? 0) >= NAME_ASK_AWAY_DAYS) return false;
+  if (opts.daysLeft !== undefined && opts.daysLeft !== null && opts.daysLeft <= NAME_ASK_EXAM_DAYS) return false;
   // Not on the first study day itself: that day ends on the first set's closing screen.
   return !(opts.studyDays === 1 && opts.lastStudyDay === opts.today);
+}
+
+/** After this many whole days away, today is a welcome-back day: no name ask on it (mobile 1.44). */
+export const NAME_ASK_AWAY_DAYS = 3;
+/** No name ask from this many days before the exam: exam week (mobile 1.44). */
+export const NAME_ASK_EXAM_DAYS = 7;
+
+/**
+ * Whole days with no study BEFORE today: 0 when the learner studied
+ * yesterday (or has not studied yet). `days`: the study days the phone keeps
+ * ("YYYY-MM-DD", the streak's recent days and last day). Today and later are
+ * ignored, so studying today never turns a welcome-back day into an ordinary
+ * one halfway through the visit.
+ */
+export function studyDaysAway(days: readonly (string | null | undefined)[], today: string): number {
+  let last: string | undefined;
+  for (const d of days) if (d && d < today && (!last || d > last)) last = d;
+  return last ? Math.max(0, daysBetween(last, today) - 1) : 0;
+}
+
+/**
+ * Mobile 1.44 (pm.md S3, narrowed by behavior.md §7.4): learners who never
+ * saw a name step get the one Today ask, once. Who is who:
+ * - onboarded before 1.24: no `newLearner` flag (store/seen.ts reminderAsk,
+ *   set when a 1.24+ onboarding finishes). Mostly never asked: they are
+ *   nudged. (1.23 alone had the name step without the flag; nothing saved
+ *   tells a 1.23 onboarding from an older one, so that one release's
+ *   learners are nudged too.)
+ * - onboarded on 1.24 to 1.40: `newLearner` set and no `nameAsk`. They saw
+ *   the optional name step and skipped it: never asked again (Settings is there).
+ * - onboarded on 1.41+: onboarding already set `nameAsk` to 'due'.
+ * Once only: a learner who is onboarded, has no name, has no `nameAsk` and no
+ * `newLearner` flag gets `nameAsk` set to 'due', so the one card shows on a
+ * later study day under the usual rules above. Nobody re-onboards.
+ */
+export function nameNudgeDue(opts: { onboarded: boolean; hasName: boolean; nameAsk?: 'due' | 'shown'; newLearner: boolean }): boolean {
+  return opts.onboarded && !opts.hasName && opts.nameAsk === undefined && !opts.newLearner;
 }

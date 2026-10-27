@@ -62,6 +62,11 @@
  *     who turned on "I'm a beta tester" in Help, the Tester question (engine/betaTester.ts). The
  *     reminder's second chance, Fit and the plant line go first; the name ask goes before the tester card.
  *
+ * Mobile 1.44 (the owner's "Version 3"): the name card has its field inside ("Name or nickname", Save, Not
+ * now); after Save the greeting says the name and "Saved on this device" stays for the visit. It never
+ * shows beside another Today invitation, on a welcome-back day (3+ days away) or in exam week. Learners
+ * from before 1.41 (onboarded, no name, never asked) get the one ask set up once (engine/firstRun.ts).
+ *
  * Signature moments (Phase 5b, components/moments.tsx):
  *   - the day before the exam / exam day: a calm card above the panel;
  *   - "Your readiness is holding" (lower bound ≥ 80% for 7 days): the forest
@@ -89,7 +94,7 @@ import { PlantButton, PlantNote } from '../../components/plant/PlantUI';
 import { Button, Enter, HeroPanel, IconButton, ICON_SIZE, InviteRow, ListRow, Row, Screen, Section, T } from '../../components/ui';
 import { countedDone, currentIndex, isOptional, itemMinutes, MINUTES_PER_QUESTION, planComplete, SHORT_SET_SIZE, shortSetItem } from '../../engine/dayPlan';
 import { shouldAskFit } from '../../engine/fit';
-import { firstRangePanelDue, nameAskDue, secondAskDue } from '../../engine/firstRun';
+import { firstRangePanelDue, nameAskDue, nameNudgeDue, secondAskDue, studyDaysAway } from '../../engine/firstRun';
 import { STAGE_ORDER } from '../../engine/journey';
 import { aboutMin, spokenMin } from '../../engine/pace';
 import { DAY_MS } from '../../engine/srs';
@@ -492,13 +497,29 @@ export default function Today() {
   // Both wait for the second ask, Fit and the plant line; each is latched for the visit it first shows on.
   const otherSetup = secondVisit || askFit || plantLineNow || plantVisit;
   const nameAsk = useSeen((x) => x.nameAsk);
+  // Mobile 1.44 (pm.md S3, behavior.md §7.4): a learner who onboarded before 1.24 (no name step, so never
+  // asked; no `newLearner` flag) gets the one ask set up once, so it shows on a later study day under the
+  // rules below. 1.24–1.40 learners skipped the name step and are not asked again. Nobody re-onboards.
+  // It counts on this very render too, so another card never shows for a moment before the name card.
+  const nudge = nameNudgeDue({ onboarded, hasName: Boolean(displayName), nameAsk, newLearner });
+  useEffect(() => {
+    if (nudge) useSeen.getState().setNameAsk('due');
+  }, [nudge]);
+  // Mobile 1.44: the name card never sits beside another Today invitation (a moment, the exam-ready panel,
+  // the first range card, the exam-week card, the plant's growth, the report note), on top of the setup lines.
+  const nameOther =
+    otherSetup || Boolean(moments.moment) || showReady || firstRangeDue || examWeekDue || Boolean(grown) || (credit.items > 0 && !credit.hidden);
+  const studyStreak = useProgress((x) => x.streak);
   const nameDue = nameAskDue({
-    offered: nameAsk === 'due',
+    offered: nameAsk === 'due' || nudge,
     hasName: Boolean(displayName),
     studyDays: j.progress.milestones?.days ?? 0,
     lastStudyDay: j.progress.milestones?.lastDay,
     today: plan.day,
-    otherSetup,
+    otherSetup: nameOther,
+    // Never on a welcome-back day (3+ days away) or in exam week.
+    awayDays: studyDaysAway([...(studyStreak.recentDays ?? []), studyStreak.lastDay], plan.day),
+    daysLeft: j.daysLeft,
   });
   const [nameVisit, setNameVisit] = useState(false);
   if (nameDue && !nameVisit) setNameVisit(true);
@@ -528,7 +549,8 @@ export default function Today() {
   const greetingText = greeting(new Date().getHours(), displayName);
 
   return (
-    <Screen>
+    // Mobile 1.44 (UX review H1): the name card has a text field, so the keyboard never covers it or Save.
+    <Screen keyboard={nameVisit}>
       <View onTouchStart={live ? skipAll : undefined}>
       <Enter i={0}>
         {/* The KaiSip lockup at the left; the streak pill and the Settings gear at the right (they wrap under it at large text). */}

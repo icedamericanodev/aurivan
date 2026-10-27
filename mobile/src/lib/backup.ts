@@ -26,6 +26,7 @@ import { CERTIFICATIONS, getCertification } from '../content/certifications';
 import { lessonsFor } from '../content/lessons';
 import { getAllQuestions } from '../content/loader';
 import { noteSubtopics } from '../content/notes';
+import { cleanDisplayName } from '../engine/displayName';
 import {
   BackupError,
   backupFileName,
@@ -657,8 +658,16 @@ export async function undoRestore(now = Date.now()): Promise<UndoOutcome> {
     useBackup.getState().setUndo(null);
     return { kind: 'invalid' };
   }
+  // Mobile 1.44: a name a website import set goes too, but only while it is still exactly that name
+  // (one the learner changed since is theirs). The copy itself had no name ('' is "no name" in writeAll;
+  // left undefined, writeAll would keep the phone's).
+  let data = checked.data;
+  const imported = cleanDisplayName(snap.importedName);
+  if (imported && !cleanDisplayName(data.settings.displayName) && cleanDisplayName(useSettings.getState().displayName) === imported) {
+    data = { ...data, settings: { ...data.settings, displayName: '' } };
+  }
   try {
-    await writeAll(checked.data, { onboarded: useSettings.getState().onboarded, undo: null, restoredSavedAt: null });
+    await writeAll(data, { onboarded: useSettings.getState().onboarded, undo: null, restoredSavedAt: null });
   } catch {
     return { kind: 'failed' };
   }
