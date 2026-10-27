@@ -1,0 +1,198 @@
+name: Database backup
+
+# The Supabase Free plan keeps no backups we can restore from (verify on the
+# Supabase pricing page), so every night this job takes our own:
+#   1. pg_dump of the hosted database through the Supabase CLI (pinned; it
+#      runs the pg_dump that matches the server's Postgres 17): roles,
+#      schema and data, the three files Supabase's restore guide uses;
+#   2. encrypts them with `age` to the owner's PUBLIC key. Only the owner's
+#      private key, kept off GitHub in their password manager, can read a
+#      backup. Nothing unencrypted leaves the runner, and no artifact is
+#      uploaded;
+#   3. uploads the one encrypted file to the Cloudflare R2 bucket
+#      (kaisip-db-backups; an R2 lifecycle rule deletes copies after 30
+#      days, which the privacy policy promises);
+#   4. checks the database size: over 300 MB (60% of the Free plan's 500 MB)
+#      the run turns red after the upload, so GitHub emails the owner.
+# (docs/mobile/ACCOUNTS_BETA_PLAN.md §6; restore drill in docs/mobile/SCALING.md.)
+#
+# The log of a public repository is public, so the job prints only the
+# database size and its largest tables. The account and session counts go
+# into the encrypted file (stats.txt), not the log.
+#
+# Owner setup (all optional until accounts go live; until then the job says
+# what is missing and stops green):
+# - GitHub Environment "db-backup" (Settings → Environments), Deployment
+#   branches: main only, with these environment SECRETS:
+#     SUPABASE_DB_URL       Supabase → Connect → Session pooler string, with
+#                           the database password (the direct connection is
+#                           IPv6-only; GitHub's runners are IPv4)
+#     R2_ACCESS_KEY_ID      an R2 API token limited to the backup bucket,
+#     R2_SECRET_ACCESS_KEY  Object Read & Write
+#     R2_ENDPOINT           https://<account id>.r2.cloudflarestorage.com
+# - Repository VARIABLE BACKUP_AGE_RECIPIENT: the age public key (age1…).
+#   It is public by design. The private key never comes near GitHub.
+# - Optional repository VARIABLE R2_BUCKET (default kaisip-db-backups).
+
+on:
+  schedule:
+    - cron: '30 18 * * *' # 18:30 UTC = 02:30 in Manila
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: db-backup
+  cancel-in-progress: false
+
+jobs:
+  backup:
+    name: Dump, encrypt, upload
+    # Only main may use the environment that holds the database password.
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    environment: db-backup
+    env:
+      AGE_RECIPIENT: ${{ vars.BACKUP_AGE_RECIPIENT }}
+      BUCKET: ${{ vars.R2_BUCKET || 'kaisip-db-backups' }}
+      SIZE_LIMIT_MB: '300'
+    steps:
+      - name: Check the setup
+        id: setup
+        env:
+          # true/false only: the values themselves stay out of this step.
+          HAS_DB_URL: ${{ secrets.SUPABASE_DB_URL != '' }}
+          HAS_R2_ID: ${{ secrets.R2_ACCESS_KEY_ID != '' }}
+          HAS_R2_SECRET: ${{ secrets.R2_SECRET_ACCESS_KEY != '' }}
+          HAS_R2_ENDPOINT: ${{ secrets.R2_ENDPOINT != '' }}
+        run: |
+          set -euo pipefail
+          missing=()
+          [ "$HAS_DB_URL" = true ] || missing+=(SUPABASE_DB_URL)
+          [ "$HAS_R2_ID" = true ] || missing+=(R2_ACCESS_KEY_ID)
+          [ "$HAS_R2_SECRET" = true ] || missing+=(R2_SECRET_ACCESS_KEY)
+          [ "$HAS_R2_ENDPOINT" = true ] || missing+=(R2_ENDPOINT)
+          [ -n "${AGE_RECIPIENT:-}" ] || missing+=('BACKUP_AGE_RECIPIENT (variable)')
+          if [ "${#missing[@]}" -gt 0 ]; then
+            echo "::notice::Backup skipped: not set up yet. Missing: ${missing[*]}."
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          if ! printf '%s' "$AGE_RECIPIENT" | grep -Eq '^age1[0-9a-z]{58}$'; then
+            echo "::error::BACKUP_AGE_RECIPIENT must be an age public key (age1 followed by 58 characters). Never put the private key (AGE-SECRET-KEY-…) anywhere on GitHub."
+            exit 1
+          fi
+          if ! printf '%s' "$BUCKET" | grep -Eq '^[a-z0-9][a-z0-9-]{1,61}[a-z0-9]$'; then
+            echo "::error::R2_BUCKET is not a valid bucket name."
+            exit 1
+          fi
+          echo "ready=true" >> "$GITHUB_OUTPUT"
+
+      # The repository's supabase/config.toml tells the CLI the server's
+      # Postgres major version (17), so it dumps with the matching pg_dump.
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        if: steps.setup.outputs.ready == 'true'
+        with:
+          persist-credentials: false
+
+      - uses: supabase/setup-cli@1dedf2c611547ede7232d26866dd3c56ab903bbb # v1.7.3
+        if: steps.setup.outputs.ready == 'true'
+        with:
+          version: 2.118.0
+
+      - name: Install age (Ubuntu package)
+        if: steps.setup.outputs.ready == 'true'
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq age postgresql-client >/dev/null
+          age --version
+          psql --version
+
+      - name: Dump, measure and encrypt
+        id: dump
+        if: steps.setup.outputs.ready == 'true'
+        env:
+          SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+          PGSSLMODE: require
+        run: |
+          set -euo pipefail
+          umask 077
+          work="$RUNNER_TEMP/kaisip-backup"
+          mkdir -p "$work"
+          supabase db dump --db-url "$SUPABASE_DB_URL" -f "$work/roles.sql" --role-only
+          supabase db dump --db-url "$SUPABASE_DB_URL" -f "$work/schema.sql"
+          supabase db dump --db-url "$SUPABASE_DB_URL" -f "$work/data.sql" --use-copy --data-only
+          for f in roles schema data; do
+            [ -s "$work/$f.sql" ] || { echo "::error::The $f dump is empty."; exit 1; }
+          done
+
+          # Size first (public log): the whole database, and the largest tables.
+          size_bytes=$(psql "$SUPABASE_DB_URL" -XAtq -c 'select pg_database_size(current_database())')
+          size_mb=$(( size_bytes / 1024 / 1024 ))
+          echo "Database size: ${size_mb} MB of the Free plan's 500 MB (limit here: ${SIZE_LIMIT_MB} MB)."
+          echo "Largest tables:"
+          psql "$SUPABASE_DB_URL" -XAtq -F ' ' -c "
+            select n.nspname || '.' || c.relname, pg_size_pretty(pg_total_relation_size(c.oid))
+            from pg_class c join pg_namespace n on n.oid = c.relnamespace
+            where c.relkind in ('r', 'p') and n.nspname in ('public', 'private', 'auth', 'storage')
+            order by pg_total_relation_size(c.oid) desc limit 8" | sed 's/^/  /'
+          echo "size_mb=$size_mb" >> "$GITHUB_OUTPUT"
+
+          # Counts go INSIDE the encrypted file only.
+          {
+            echo "taken_at $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            echo "database_bytes $size_bytes"
+            psql "$SUPABASE_DB_URL" -XAtq -F ' ' -c "
+              select 'auth_users', count(*) from auth.users
+              union all select 'auth_refresh_tokens', count(*) from auth.refresh_tokens
+              union all select 'sync_snapshots', count(*) from public.sync_snapshots"
+          } > "$work/stats.txt"
+
+          out="$RUNNER_TEMP/kaisip-db-$(date -u +%Y-%m-%dT%H%MZ).tar.gz.age"
+          tar -C "$work" -czf - roles.sql schema.sql data.sql stats.txt | age -r "$AGE_RECIPIENT" -o "$out"
+          rm -rf "$work"
+          echo "file=$out" >> "$GITHUB_OUTPUT"
+          echo "Encrypted backup: $(du -h "$out" | cut -f1)."
+
+      - name: Upload to R2
+        if: steps.setup.outputs.ready == 'true'
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          R2_ENDPOINT: ${{ secrets.R2_ENDPOINT }}
+          AWS_DEFAULT_REGION: auto
+          # R2 does not take the newer default checksum headers of the AWS CLI.
+          AWS_REQUEST_CHECKSUM_CALCULATION: WHEN_REQUIRED
+          AWS_RESPONSE_CHECKSUM_VALIDATION: WHEN_REQUIRED
+          FILE: ${{ steps.dump.outputs.file }}
+        run: |
+          set -euo pipefail
+          if ! printf '%s' "$R2_ENDPOINT" | grep -Eq '^https://[0-9a-f]{32}\.([a-z]+\.)?r2\.cloudflarestorage\.com/?$'; then
+            echo "::error::R2_ENDPOINT must look like https://<32-character account id>.r2.cloudflarestorage.com"
+            exit 1
+          fi
+          key="daily/$(basename "$FILE")"
+          aws s3 cp "$FILE" "s3://$BUCKET/$key" --endpoint-url "$R2_ENDPOINT" --only-show-errors
+          remote=$(aws s3api head-object --bucket "$BUCKET" --key "$key" --endpoint-url "$R2_ENDPOINT" \
+            --query ContentLength --output text)
+          local_size=$(stat -c %s "$FILE")
+          if [ "$remote" != "$local_size" ]; then
+            echo "::error::The uploaded backup's size ($remote) differs from the file's ($local_size)."
+            exit 1
+          fi
+          rm -f "$FILE"
+          echo "Uploaded $key ($local_size bytes)."
+
+      - name: Database size check (60% of the Free plan)
+        if: steps.setup.outputs.ready == 'true'
+        env:
+          SIZE_MB: ${{ steps.dump.outputs.size_mb }}
+        run: |
+          if [ "$SIZE_MB" -gt "$SIZE_LIMIT_MB" ]; then
+            echo "::error::The database is ${SIZE_MB} MB, over ${SIZE_LIMIT_MB} MB (60% of the Free plan). Time to act: docs/mobile/SCALING.md §4."
+            exit 1
+          fi
+          echo "Database ${SIZE_MB} MB: under ${SIZE_LIMIT_MB} MB."
