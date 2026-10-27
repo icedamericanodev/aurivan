@@ -66,7 +66,7 @@ How it runs:
 Needs from Sky before it starts (all free; owner decision 27 Oct: no Mobbin paid plan):
 - Done: `dribbble.com`, `m3.material.io`, `www.nngroup.com` and `www.figma.com` are allowed.
 - Optional free galleries to add to Allowed domains: `apps.apple.com`, `godly.website`, `www.lapa.ninja`, `land-book.com`, `www.saasframe.io`, `collectui.com`.
-- 5–10 screenshots from Sky's phone of apps that feel premium to her. This is the most valuable reference.
+- 5–10 screenshots from Sky's phone of apps that feel premium to Sky. This is the most valuable reference.
 - Free sources the researcher uses: Apple HIG, Material 3, Figma Community kits (Apple iOS kit, Material 3 kit), Google Play store screenshots, Dribbble via search, NN/g.
 
 ## Stage 4: more exams
