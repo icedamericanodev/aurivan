@@ -45,6 +45,13 @@ const ENTRIES = {
   streak: 'src/engine/streak.ts',
   outline: 'src/engine/outline.ts',
   notesPack: 'scripts/notes-pack.cjs',
+  // Web v12.41, the Progress page: the readiness report's rules, the domain
+  // bands, pace words and the "Ready to book?" signs, so the web and the app
+  // say the same thing from the same numbers.
+  readinessReport: 'src/engine/readinessReport.ts',
+  domainBand: 'src/engine/domainBand.ts',
+  pace: 'src/engine/pace.ts',
+  readySigns: 'src/engine/readySigns.ts',
 };
 
 function loadTs() {
