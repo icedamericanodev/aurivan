@@ -360,7 +360,7 @@ export default function You() {
           readiness={readiness}
           input={{
             certName: cert.name,
-            issuer: cert.issuer,
+            issuer: cert.issuer.name,
             streak,
             recentDays: recentDays ?? [],
             today: shareDay,

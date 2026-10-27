@@ -57,7 +57,12 @@ export interface DomainInfo {
    * a domain without one shows `short`. The full name is still what a screen reader says.
    */
   tile?: string;
-  weight: number; // % of the real exam (all domains sum to 100)
+  /**
+   * % of the real exam. The domains sum to about 100: an issuer may publish
+   * rounded shares (17.3, 21.3) that sum to 99.9, which is fine, because every
+   * mix (engine allocate) works from the shares, not from exactly 100.
+   */
+  weight: number;
   /** Colour tone 0–4 (see domainColor in certifications.ts). Never a hex value. */
   tone: DomainTone;
   /**
@@ -85,12 +90,23 @@ export interface ExamFormat {
 
 export type CertStatus = 'available' | 'coming_soon';
 
+/**
+ * Who awards the certification (content packs: a downloaded pack carries the
+ * same shape in its manifest, so a new issuer needs no app change).
+ * `id` is a stable lower-case key ("isaca", "isc2"); `name` is how the
+ * issuer writes itself, without ® ("ISACA", "ISC2").
+ */
+export interface CertIssuer {
+  id: string;
+  name: string;
+}
+
 /** Everything the app needs to know about one certification. */
 export interface Certification {
   id: string;
   name: string; // "CISA"
   fullName: string; // "Certified Information Systems Auditor"
-  issuer: 'ISACA' | 'ISC2';
+  issuer: CertIssuer;
   /** The "how the examiner thinks" lens, e.g. ISACA vs ISC2 manager mindset. */
   mindset: string;
   trademarkNotice: string;

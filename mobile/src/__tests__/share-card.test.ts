@@ -39,7 +39,7 @@ function input(perDomain: number, extra: Partial<ShareInput> = {}): ShareInput {
   const readiness = computeReadiness(cisa, answers(perDomain));
   return {
     certName: cisa.name,
-    issuer: cisa.issuer,
+    issuer: cisa.issuer.name,
     streak: 0,
     recentDays: [],
     today: TODAY,
@@ -123,7 +123,7 @@ describe('share card headline: edge cases (QA)', () => {
       };
     }
     const readiness = computeReadiness(cisa, recs);
-    return { certName: cisa.name, issuer: cisa.issuer, streak: 0, recentDays: [], today: TODAY, answered: n, range: readinessRange(cisa, readiness) };
+    return { certName: cisa.name, issuer: cisa.issuer.name, streak: 0, recentDays: [], today: TODAY, answered: n, range: readinessRange(cisa, readiness) };
   }
 
   it('shows the range at exactly the threshold, not one below', () => {

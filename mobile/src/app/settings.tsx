@@ -81,7 +81,8 @@ import { shortDate } from '../lib/format';
 import { DAILY_MINUTES, examFocusedOf, FAMILIARITIES, FAMILIARITY_INFO, KEEP_TODAY_LINE, minutesLabel, minutesSpoken, type DailyMinutes, type Familiarity } from '../engine/fit';
 import { MODE_INFO, STUDY_MODES, type StudyMode } from '../engine/studyModes';
 import { CERT_SCOPE_LINE, PROVENANCE_LINE, WELCOME_HEADLINE, WELCOME_LINE } from '../content/brand';
-import { CERTIFICATIONS, combinedTrademarkNotice } from '../content/certifications';
+import { CERTIFICATIONS, combinedTrademarkNotice, selectableCertifications } from '../content/certifications';
+import { hasContent } from '../content/loader';
 import { hasNotes } from '../content/notes';
 import { examDateLabel } from '../engine/examDay';
 import { changeExamDate, changeFit } from '../lib/activity';
@@ -811,8 +812,9 @@ export default function Settings() {
         title="Certification"
         groupLabel="Which exam are you preparing for?"
         // Mobile 1.39 (owner decision): only the certifications the app teaches; no "coming soon" list.
-        // The catalogue itself (content/certifications.ts) is unchanged.
-        options={CERTIFICATIONS.filter((x) => x.status === 'available').map((x) => ({
+        // The catalogue itself (content/certifications.ts) is unchanged. Content packs: an exam must also
+        // have its content on this phone (today every available exam is bundled, so nothing changes).
+        options={selectableCertifications(hasContent).map((x) => ({
           value: x.id,
           title: x.name,
           subtitle: x.fullName,
