@@ -6988,12 +6988,12 @@
       "pre_read": "Notice where the queries would run. Ask what must be protected, and who should control the test.",
       "correct_explanation": "Running CAATs on a read-only copy protects production processing from the auditor's queries while the auditor keeps control of the procedure and the data. Having the DBA run them avoids production risk too, but the auditor then relies on the auditee to execute the test and pass on the results, which weakens independence and evidence integrity.",
       "wrong_explanations": {
-        "A": "Off-peak timing reduces load but still runs audit queries against live production, risking performance and integrity; a read-only copy removes that risk.",
+        "A": "Off-peak timing reduces load, but heavy ad hoc queries on the live database can still lock or slow payments; a read-only copy avoids that while audit keeps control.",
         "C": "When the auditee runs the test, the auditor loses control over the procedure and its output.",
         "D": "Duplicate detection across a large population is exactly where CAATs outperform manual sampling."
       },
       "tips": [
-        "Eliminate: A still runs audit queries against live production, and D gives up full-population testing.",
+        "Eliminate: A still puts heavy ad hoc queries on the live payments database when a copy avoids that load, and D gives up full-population testing.",
         "Final two: B beats C because the auditor keeps control of the test while protecting production.",
         "Exam cue: with CAATs, protect production and keep the audit procedure under the auditor's control."
       ],
