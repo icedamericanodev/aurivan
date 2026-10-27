@@ -5,7 +5,8 @@
  * downloaded, nothing is saved, and nothing here ever shows how many
  * questions there are. Cloud builds only (the composer is a (cloud) screen).
  */
-import { getAllQuestions } from '../content/loader';
+import { getAllQuestionsIncludingRetired } from '../content/loader';
+import { onClearContentCaches } from '../content/packs';
 import type { PackQuestion } from '../content/types';
 import { buildFingerprint, leakItem, type Fingerprint } from '../engine/leakGuard';
 
@@ -15,7 +16,8 @@ const cache = new Map<string, Fingerprint>();
 export function bankFingerprint(certId: string): Fingerprint {
   let fp = cache.get(certId);
   if (!fp) {
-    fp = buildFingerprint(getAllQuestions(certId).map(leakItem));
+    // Retired questions included: they are still the bank's own wording, so still protected.
+    fp = buildFingerprint(getAllQuestionsIncludingRetired(certId).map(leakItem));
     cache.set(certId, fp);
   }
   return fp;
@@ -29,5 +31,8 @@ export function bankFingerprintReady(certId: string): boolean {
 /** The question a match points at (to offer "Report it privately" on it). Same order as the fingerprint. */
 export function bankQuestionAt(certId: string, index: number | undefined): PackQuestion | undefined {
   if (index === undefined) return undefined;
-  return getAllQuestions(certId)[index];
+  return getAllQuestionsIncludingRetired(certId)[index];
 }
+
+// A new content pack (clearContentCaches) means a new fingerprint.
+onClearContentCaches(() => cache.clear());

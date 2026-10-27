@@ -38,6 +38,13 @@ export interface PackQuestion {
    * Absent when no principle decides it. Mobile 1.31: the answer screen links to it, and the principle page counts and practises it (lib/principleQuestions.ts).
    */
   principleId?: string;
+  /**
+   * Content packs: a retired question stays in the pack so old progress still
+   * makes sense. It is never dealt again (practice, mock, Smart, games, the bank
+   * list: content/loader.ts pools) but still opens from a review, the mistake
+   * journal or a bookmark (findQuestion). Absent = live. Its id is never reused.
+   */
+  retired?: boolean;
 }
 
 /** One exam domain inside a certification. */

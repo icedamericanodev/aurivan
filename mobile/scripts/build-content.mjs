@@ -222,6 +222,9 @@ function toPackQuestion(q, certId) {
     // Optional link to one principle (docs/content/PRINCIPLE_TAGGING.md);
     // checked against the principles pack in main(). Omitted when untagged.
     principleId: q.principle_id || undefined,
+    // Content packs: a retired question stays in the pack (old progress still
+    // resolves) but is never dealt again. Omitted when live (today: every one).
+    retired: q.retired === true ? true : undefined,
   };
 }
 

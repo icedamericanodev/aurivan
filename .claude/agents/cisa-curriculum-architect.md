@@ -16,7 +16,8 @@ that test judgement (not recall), and know the ISACA rule behind it.
   Each subtopic lists `practice_ids` (questions that practise it) and `legacy_ids`.
 - Questions: `data/originals/d{1..5}.json` (source of truth; `subtopic`,
   `topic`, `difficulty`, `framework_ref`, explanations, tips).
-- Lessons (mobile): `mobile/src/content/lessons/cisa.ts`.
+- Lessons (mobile): `data/lessons/cisa.json` (schema and house rules:
+  `docs/content/LESSONS_SCHEMA.md`; rebuild with `npm run content` in `mobile/`).
 - Principles: `PRINCIPLES_LIB` in `index.html` (web) and the mobile mindset
   content under `mobile/src/content/`.
 - Mock allocation: `planMockAllocation` in `index.html`; domain weights in `DI`.

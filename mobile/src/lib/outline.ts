@@ -7,6 +7,7 @@ import { lessonsFor, noteIdsForLesson } from '../content/lessons';
 import type { Lesson } from '../content/lessons/types';
 import { findQuestion } from '../content/loader';
 import { findNote, getNotes } from '../content/notes';
+import { onClearContentCaches } from '../content/packs';
 import type { NoteSubtopic } from '../content/notes/types';
 import { indexOutline, outlineFromNotes, topicsIn, type OutlineIndex, type OutlineTopic } from '../engine/outline';
 import { topicStatus, topicStudied } from '../engine/studyPath';
@@ -76,3 +77,6 @@ export function questionExists(certId: string): (id: string) => boolean {
 export function clearOutlineCache(): void {
   cache.clear();
 }
+
+// clearContentCaches() (content/packs) empties these too.
+onClearContentCaches(clearOutlineCache);

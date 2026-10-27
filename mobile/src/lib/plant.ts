@@ -18,6 +18,7 @@
  */
 import { useEffect, useMemo } from 'react';
 import { CERTIFICATIONS, getCertification } from '../content/certifications';
+import { onClearContentCaches } from '../content/packs';
 import type { Certification } from '../content/types';
 import { examMoment } from '../engine/examDay';
 import {
@@ -54,6 +55,8 @@ import { certOutline, questionExists } from './outline';
 
 // ── Facts ────────────────────────────────────────────────────────────────
 const subtopicCache = new Map<string, string[][]>();
+// A new content pack (clearContentCaches) may change which subtopics have questions.
+onClearContentCaches(() => subtopicCache.clear());
 
 /**
  * The outline subtopics that have at least one practice question, per domain

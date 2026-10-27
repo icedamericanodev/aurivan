@@ -97,6 +97,15 @@ export interface NoteSubtopic {
    * Optional so an older pack still loads; screens fall back to 2.
    */
   minutes?: number;
+  /**
+   * Content packs: a retired note stays in the pack so notes read, mastery
+   * dates and links still resolve (findNote). Absent = live. Its id is never
+   * reused. (Phase A adds the type only: scripts/notes-pack.cjs does not pass the
+   * flag through yet, because that file is also bundled into the website's plant
+   * script. Passing it through, and hiding a retired note from the lists and the
+   * games, come with the first retired note: docs/mobile/ARCHITECTURE.md "Content packs".)
+   */
+  retired?: boolean;
 }
 
 /** One outline topic (e.g. 4B1) and its subtopics, foundation first. */

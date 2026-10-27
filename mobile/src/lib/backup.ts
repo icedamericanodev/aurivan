@@ -23,9 +23,10 @@ import { Directory, File, Paths } from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
 import { Platform } from 'react-native';
 import { CERTIFICATIONS, getCertification } from '../content/certifications';
-import { lessonsFor } from '../content/lessons';
-import { getAllQuestions } from '../content/loader';
+import { lessonsIncludingRetired } from '../content/lessons';
+import { getAllQuestionsIncludingRetired } from '../content/loader';
 import { noteSubtopics } from '../content/notes';
+import { onClearContentCaches } from '../content/packs';
 import { cleanDisplayName } from '../engine/displayName';
 import {
   BackupError,
@@ -98,14 +99,19 @@ const appVersion = () => knownAppVersion() ?? 'unknown';
 /**
  * The ids that exist in this app for a cert: questions, lessons and study
  * notes. Built once per cert (Sets), then reused for every check.
+ *
+ * Retired questions and lessons COUNT as known (content packs): progress on
+ * them is kept.
  */
 const knownCache = new Map<string, KnownIds>();
+// A new content pack (clearContentCaches) changes which ids exist.
+onClearContentCaches(() => knownCache.clear());
 export function knownIds(certId: string): KnownIds {
   let k = knownCache.get(certId);
   if (!k) {
     k = {
-      questions: new Set(getAllQuestions(certId).map((q) => q.id)),
-      lessons: new Set(lessonsFor(certId).map((l) => l.id)),
+      questions: new Set(getAllQuestionsIncludingRetired(certId).map((q) => q.id)),
+      lessons: new Set(lessonsIncludingRetired(certId).map((l) => l.id)),
       notes: new Set(noteSubtopics(certId).map((n) => n.id)),
       domains: new Set((getCertification(certId)?.domains ?? []).map((d) => d.id)),
       // Mobile 1.13: what "know X% of the outline" counts (the restored plant's clamp).
