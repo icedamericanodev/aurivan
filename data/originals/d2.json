@@ -2328,7 +2328,7 @@
         "A": "Semi-quantitative scoring on calibrated scales with defined loss ranges",
         "B": "Qualitative high, medium and low ratings agreed in a risk workshop",
         "C": "Monte Carlo simulation fed with single-point expert guesses",
-        "D": "Business unit intuition without a formal analysis method"
+        "D": "Annualized loss expectancy for every risk, estimating missing losses"
       },
       "correct": "A",
       "key_concept": "Semi-quantitative analysis uses calibrated scales so loss data and expert judgment can be compared consistently across a mixed evidence base.",
@@ -2337,10 +2337,10 @@
       "wrong_explanations": {
         "B": "Pure qualitative ratings ignore the available loss data and rely on subjective labels that different raters read differently.",
         "C": "Simulation without data produces precise-looking numbers built on guesses, giving false confidence.",
-        "D": "Intuition without a method cannot be repeated, compared or defended to management and the board."
+        "D": "ALE needs loss frequency and size for each risk. Estimating the missing values turns judgment into single-point figures that look precise but are not."
       },
       "tips": [
-        "Eliminate: C invents precision where no data exists, and D abandons a repeatable method.",
+        "Eliminate: C and D put single-point guesses into money formulas, which gives false precision where loss data is missing.",
         "Final two: A beats B because calibrated scales keep the loss data's precision; plain ratings throw it away.",
         "Exam cue: with data everywhere, use quantitative; with data nowhere, qualitative; with mixed evidence, semi-quantitative."
       ],
@@ -2351,7 +2351,7 @@
         "Quantitative analysis",
         "Semi-quantitative analysis"
       ],
-      "_provenance": "Authored from concept: 'Risk Analysis semi-quantitative method - mixed-evidence fit, distinct from d2_012 (qualitative vs quantitative selection at higher level)'. Public source: ISO 31010:2019. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): replaced value-bands jargon; tip arrows replaced with words. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged.",
+      "_provenance": "Authored from concept: 'Risk Analysis semi-quantitative method - mixed-evidence fit, distinct from d2_012 (qualitative vs quantitative selection at higher level)'. Public source: ISO 31010:2019. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): replaced value-bands jargon; tip arrows replaced with words. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. D2 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): D (business unit intuition) was a strawman; it is now ALE with estimated losses, the false-precision error.",
       "style_version": 2
     },
     {
@@ -2364,7 +2364,7 @@
       "question": "An IS auditor reviews a health-tech firm's new privacy program after the policy is approved. Which rollout approach BEST supports sustained operation?",
       "options": {
         "A": "Publishing the approved policy on the intranet for staff",
-        "B": "Timing the rollout to the next regulatory examination cycle",
+        "B": "Annual privacy training required for every employee",
         "C": "Embedding privacy tasks into existing processes with unit stewards",
         "D": "Centralizing privacy enforcement and accountability in the data protection officer's team"
       },
@@ -2374,11 +2374,11 @@
       "correct_explanation": "Privacy is sustained when it runs inside normal work: data subject requests in ticketing, breaches in incident response, records of processing in change management, with named stewards in each business unit. Centralizing enforcement with the data protection officer is tempting, but the officer oversees and advises; the business units that process personal data must own day-to-day compliance.",
       "wrong_explanations": {
         "A": "Publishing a policy creates awareness at best. Without process integration or training, behavior rarely changes.",
-        "B": "Pacing work to examinations makes compliance reactive and leaves personal data exposed until the regulator arrives.",
+        "B": "Training builds awareness, but unless privacy tasks are built into processes such as requests and incidents, staff know the rules and no work routes through them.",
         "D": "A central team cannot see every process. Accountability must sit with the units that handle the data, with the officer overseeing."
       },
       "tips": [
-        "Eliminate: A stops at publication, and B paces privacy work to the regulator instead of the risk.",
+        "Eliminate: A stops at publication, and B builds awareness without putting privacy tasks into the processes staff run.",
         "Final two: C beats D because the data protection officer oversees; business units handling the data own daily compliance.",
         "Exam cue: sustainable programs are embedded in existing processes with local accountability, not run by one central function."
       ],
@@ -2389,7 +2389,7 @@
         "DSAR handling",
         "Breach response integration"
       ],
-      "_provenance": "Authored from concept: 'Privacy Program rollout/operationalization - embedded controls + stewards, distinct from d2_013 (privacy program 8-element design) and d2_029 (multi-regulation privacy audit)'. Public source: ISACA Privacy Program guidance + IAPP. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): spelled out DPO.",
+      "_provenance": "Authored from concept: 'Privacy Program rollout/operationalization - embedded controls + stewards, distinct from d2_013 (privacy program 8-element design) and d2_029 (multi-regulation privacy audit)'. Public source: ISACA Privacy Program guidance + IAPP. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): spelled out DPO. D2 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): B (timing to the regulator) was a strawman; it is now company-wide training, awareness without operation.",
       "style_version": 2
     },
     {
@@ -2439,8 +2439,8 @@
       "options": {
         "A": "Adopt Lean as the single operational excellence method for every team",
         "B": "Keep the current frameworks, linked by shared excellence goals and metrics",
-        "C": "Defer the initiative until each framework matures separately",
-        "D": "Replace the frameworks immediately with one CEO-selected model"
+        "C": "Appoint a separate owner to run each of the three frameworks",
+        "D": "Assess each framework's maturity separately and report the scores"
       },
       "correct": "B",
       "key_concept": "Operational excellence in mixed IT environments links fitting frameworks through shared goals and metrics rather than forcing a single method.",
@@ -2448,11 +2448,11 @@
       "correct_explanation": "Each framework fits its domain: ITIL 4 for service management, SAFe for delivery, ISO 9001 for regulated quality. Keeping them, linked by shared cost, quality and speed goals and metrics, preserves that fit, with Lean or Six Sigma applied where they fit. Adopting Lean everywhere is tempting for consistency, but it discards domain fit, including the regulated group's quality discipline.",
       "wrong_explanations": {
         "A": "A single method across every team ignores domain needs and could weaken the regulated group's established quality system.",
-        "C": "Waiting for separate maturity keeps teams pulling in different directions and delays the business goal.",
-        "D": "Abrupt replacement disrupts working practices and regulated processes, with no evidence the new model fits each domain."
+        "C": "Owners keep each framework running, but nothing points them at a shared excellence goal, so the teams still optimize separately.",
+        "D": "Separate maturity scores show how each framework performs on its own terms; they do not link the frameworks to one excellence objective."
       },
       "tips": [
-        "Eliminate: C delays the business goal indefinitely, and D forces disruptive replacement of working practices.",
+        "Eliminate: C and D manage or measure each framework on its own, so nothing ties the three to one excellence goal.",
         "Final two: B beats A because linking the fitting frameworks through shared goals keeps domain strengths; one method everywhere discards them.",
         "Exam cue: when several frameworks each fit their area, choose integration under governance over replacement or uniformity."
       ],
@@ -2464,7 +2464,7 @@
         "SAFe",
         "ISO 9001"
       ],
-      "_provenance": "Authored from concept: 'Operational Excellence framework selection - layered strategy distinct from d2_048 (Quality Mgmt framework selection at smaller scale) and d2_028 (Six Sigma/Agile/BSC method-fit selection)'. Public source: ISACA OpEx + EFQM Model 2020. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Operational Excellence framework selection - layered strategy distinct from d2_048 (Quality Mgmt framework selection at smaller scale) and d2_028 (Six Sigma/Agile/BSC method-fit selection)'. Public source: ISACA OpEx + EFQM Model 2020. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D2 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): C (defer) and D (CEO-selected replacement) were strawmen; they are now per-framework owners and separate maturity scores.",
       "style_version": 2
     },
     {
@@ -2477,7 +2477,7 @@
       "options": {
         "A": "A global baseline with mapped jurisdiction-specific exceptions",
         "B": "Applying GDPR uniformly worldwide as the strictest privacy regime",
-        "C": "Applying the most permissive privacy law uniformly worldwide",
+        "C": "A central team approving each exception request case by case",
         "D": "Building a separate privacy program for each jurisdiction"
       },
       "correct": "A",
@@ -2486,11 +2486,11 @@
       "correct_explanation": "A global baseline covers what most laws share, such as data subject rights, breach notification and retention, while a control library maps local exceptions. Applying GDPR everywhere is tempting because it is demanding, but no single law is strictest on every point; local rules on consent, localization or notification timing would still be missed.",
       "wrong_explanations": {
         "B": "GDPR is not the strictest law on every requirement. Some jurisdictions add rules it lacks, so gaps remain.",
-        "C": "Adopting the weakest standard invites enforcement wherever stricter laws apply.",
+        "C": "More central approval adds capacity to the same exception flow; without a common baseline, every law still generates its own exceptions.",
         "D": "Separate programs are the current problem. They multiply duplicated work and do not scale."
       },
       "tips": [
-        "Eliminate: C invites enforcement, and D repeats the siloed approach that is already failing.",
+        "Eliminate: C adds approvals to the exception flow it should shrink, and D repeats the siloed approach that is already failing.",
         "Final two: A beats B because no single law is strictest everywhere; a baseline plus mapped exceptions covers local rules.",
         "Exam cue: for many overlapping regulations, prefer one common baseline with mapped exceptions over silos or a single law."
       ],
@@ -2501,7 +2501,7 @@
         "Exception layer",
         "Control library mapping"
       ],
-      "_provenance": "Authored from concept: 'Multi-jurisdiction privacy program scaling - baseline + exceptions + control library, distinct from d2_029 (multi-regulation privacy AUDIT) and d2_030 (transborder data flow specific decision)'. Public source: ISACA Privacy Program + IAPP. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): priority word matches end-state options.",
+      "_provenance": "Authored from concept: 'Multi-jurisdiction privacy program scaling - baseline + exceptions + control library, distinct from d2_029 (multi-regulation privacy AUDIT) and d2_030 (transborder data flow specific decision)'. Public source: ISACA Privacy Program + IAPP. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): priority word matches end-state options. D2 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): C (most permissive law) was a strawman; it is now central case-by-case approval, a partial fix.",
       "style_version": 2
     },
     {
@@ -2513,9 +2513,9 @@
       "question": "A manufacturer's 80-application portfolio mixes stable legacy, fast-changing, vendor-managed and retirement-candidate systems. What should the IS auditor recommend as the BEST cloud migration approach?",
       "options": {
         "A": "Rehost every application in one board-approved lift-and-shift wave",
-        "B": "Refactor every application to be cloud-native before moving",
-        "C": "Delay migration until cloud practices mature across the industry",
-        "D": "Choose to retire, rehost, refactor or repurchase per application"
+        "B": "Refactor fast-changing systems and rehost the remaining ones",
+        "C": "Migrate applications in order of age, oldest first",
+        "D": "Choose a migration path per application, including retirement"
       },
       "correct": "D",
       "key_concept": "Heterogeneous portfolios need a per-application migration decision (retire, retain, rehost, replatform, refactor, repurchase) based on value and risk.",
@@ -2523,11 +2523,11 @@
       "correct_explanation": "Different systems carry different value and risk, so each needs its own decision: retire candidates first to shrink scope, rehost stable legacy systems, refactor fast-changing ones and replace vendor products with SaaS. A single board-approved lift-and-shift wave is tempting for its simplicity, but it moves retirement candidates at cost and leaves high-value systems without cloud benefits.",
       "wrong_explanations": {
         "A": "Board approval does not fix uniform rehosting, which migrates systems that should be retired and forgoes value where refactoring would pay off.",
-        "B": "Refactoring everything spends heavily on stable or retiring systems and stretches the timeline for little benefit.",
-        "C": "Indefinite delay avoids the decision and leaves the business case and current risks unaddressed."
+        "B": "This fits two kinds of system but rehosts retirement candidates and vendor products that should be retired or replaced with SaaS.",
+        "C": "Age is not value or risk. Ordering by age can move a system due for retirement ahead of a critical one."
       },
       "tips": [
-        "Eliminate: B overspends on systems that do not need refactoring, and C avoids the decision.",
+        "Eliminate: B fits two system types but moves retirement candidates and vendor products, and C orders the work by age, not value or risk.",
         "Final two: D beats A because each system's value and risk differ; uniform rehosting even migrates retirement candidates.",
         "Exam cue: a mixed portfolio calls for per-item decisions; one-size-fits-all strategies are usually distractors."
       ],
@@ -2538,7 +2538,7 @@
         "Refactor",
         "Cloud portfolio rationalization"
       ],
-      "_provenance": "Authored from concept: 'Cloud Migration Risk - 6 Rs framework for heterogeneous portfolios, distinct from d2_014 (shared responsibility) and d2_017 (outsourcing decision multi-factor)'. Public source: ISACA Cloud Computing + Gartner. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Cloud Migration Risk - 6 Rs framework for heterogeneous portfolios, distinct from d2_014 (shared responsibility) and d2_017 (outsourcing decision multi-factor)'. Public source: ISACA Cloud Computing + Gartner. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D2 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): B (refactor every) fell to a lone absolute and C (delay) was a strawman; they are now a two-way split and age ordering. Key no longer reads as a list.",
       "style_version": 2
     },
     {
@@ -2565,7 +2565,7 @@
         "D": "A material change to a board-approved portfolio needs board reauthorization, not a unilateral management decision."
       },
       "tips": [
-        "Eliminate: A ignores priority, and B endangers the operations that keep the business running.",
+        "Eliminate: A cuts every category alike whatever its priority, and B takes funds from the operations that keep the business running.",
         "Final two: C beats D because the board approved the portfolio; material changes need its reauthorization, not CIO discretion.",
         "Exam cue: when approved plans change materially, the answer returns the decision to the body that approved them."
       ],
@@ -2576,7 +2576,7 @@
         "Portfolio rebalancing",
         "Cost-pressure response"
       ],
-      "_provenance": "Authored from concept: 'IT Investment Portfolio mid-year rebalance under dual pressure - preserve RUN cut TRANSFORM, distinct from d2_026 (run/grow/transform tier discipline at planning level)'. Public source: COBIT 2019 APO05. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'IT Investment Portfolio mid-year rebalance under dual pressure - preserve RUN cut TRANSFORM, distinct from d2_026 (run/grow/transform tier discipline at planning level)'. Public source: COBIT 2019 APO05. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D2 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Tip no longer says 'ignores'.",
       "style_version": 2
     },
     {
@@ -2664,7 +2664,7 @@
       "question": "An IS auditor maps roles to the IIA Three Lines Model. Which line BEST describes a compliance function that monitors IT risk managed by operations?",
       "options": {
         "A": "First line, because it manages risk within daily operations",
-        "B": "Second line, providing risk expertise, monitoring and challenge",
+        "B": "Second line, providing expertise and challenge to operations",
         "C": "Third line, because it reports independently to the board",
         "D": "Outside the model, because it sits apart from operations and audit"
       },
@@ -2689,7 +2689,7 @@
         "First/second/third line",
         "Independent assurance"
       ],
-      "_provenance": "Authored from concept: 'Three Lines Model foundational definition - three distinct accountability roles, distinct from d2_002 (application tier explaining boundaries)'. Public source: IIA Three Lines Model (2020). All scenario specifics invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Three Lines Model foundational definition - three distinct accountability roles, distinct from d2_002 (application tier explaining boundaries)'. Public source: IIA Three Lines Model (2020). All scenario specifics invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D2 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Cue balance: the key no longer reads as a three-part list.",
       "style_version": 2
     },
     {
@@ -2770,38 +2770,38 @@
     {
       "id": "d2_074",
       "domain": 2,
-      "subtopic": "COSO Internal Control 5 Components. Definition",
+      "subtopic": "COSO Internal Control 5 Components. Placing Board Oversight",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "An IS auditor is mapping a client's control documentation to the COSO Internal Control–Integrated Framework (2013). Which set of components is MOST appropriate for the mapping?",
+      "question": "An IS auditor maps a client's controls to the COSO Internal Control–Integrated Framework (2013). Under which component does the board's oversight of internal control MOST appropriately belong?",
       "options": {
-        "A": "Identify, protect, detect, respond, and recover security functions",
-        "B": "Plan, do, check, and act improvement cycles for control",
-        "C": "Control environment, risk assessment, control activities, information and communication, monitoring activities",
-        "D": "Internal environment, objective setting, event identification, risk response, and monitoring activities"
+        "A": "Monitoring activities, as the board reviews how controls perform",
+        "B": "Control activities, as board approval is itself a control",
+        "C": "Control environment, where board oversight sets the tone",
+        "D": "Risk assessment, as the board considers risks to objectives"
       },
       "correct": "C",
-      "key_concept": "COSO 2013 has five integrated internal control components: control environment, risk assessment, control activities, information and communication, and monitoring activities.",
-      "pre_read": "Check which framework each list comes from. Two lists belong to other models, and one borrows terms from COSO's risk work.",
-      "correct_explanation": "The COSO Internal Control–Integrated Framework (2013) defines five integrated components: control environment, risk assessment, control activities, information and communication, and monitoring activities, supported by 17 principles. Mapping to these lets the auditor see gaps by component. The runner-up mixes in objective setting, event identification and risk response, which come from the 2004 COSO enterprise risk management cube, not the internal control framework.",
+      "key_concept": "COSO 2013 places board independence and oversight of internal control in the control environment (Principle 2), not in monitoring activities.",
+      "pre_read": "Separate who oversees the control system from the activities that evaluate whether controls work.",
+      "correct_explanation": "COSO 2013 places board oversight in the control environment: Principle 2 says the board demonstrates independence from management and exercises oversight of the development and performance of internal control. Monitoring activities is tempting because oversight sounds like monitoring, but that component covers the ongoing and separate evaluations that check whether controls are present and functioning, not the governance structure above them.",
       "wrong_explanations": {
-        "A": "These are the five original NIST Cybersecurity Framework functions (version 2.0 adds Govern), a security model rather than COSO internal control.",
-        "B": "Plan-do-check-act is the Deming improvement cycle used in management systems such as ISO standards, not COSO components.",
-        "D": "Objective setting, event identification and risk response belong to the 2004 COSO ERM model, so this list does not match the 2013 framework."
+        "A": "Monitoring covers ongoing and separate evaluations of whether controls work. Board independence and oversight is a control environment principle in COSO 2013.",
+        "B": "Control activities are the policies and procedures that mitigate risks within processes. Board oversight sets the conditions for them rather than being one.",
+        "D": "Risk assessment is management's process for identifying and analyzing risks to objectives; the board's oversight of internal control sits in the control environment."
       },
       "tips": [
-        "Eliminate: A is the NIST Cybersecurity Framework and B is the Deming improvement cycle; neither is COSO.",
-        "Final two: C beats D because D mixes in enterprise risk management components that the internal control framework does not use.",
-        "Exam cue: for COSO internal control, remember the five components start with control environment and end with monitoring activities."
+        "Eliminate: B is process-level policies and procedures, and D is management's analysis of risks to objectives; board oversight is neither.",
+        "Final two: C beats A because COSO Principle 2 puts board independence and oversight in the control environment; monitoring covers evaluations of whether controls work.",
+        "Exam cue: in COSO 2013, tone at the top, board oversight, structure and accountability are control environment; evaluations of controls are monitoring."
       ],
       "framework_ref": "COSO Internal Control – Integrated Framework (2013)",
       "related_concepts": [
         "COSO Internal Control",
         "Five components",
         "Control Environment",
-        "Monitoring Activities"
+        "Board oversight (Principle 2)"
       ],
-      "_provenance": "Authored from concept: 'COSO 5 components foundational definition - five integrated components, distinct from NIST CSF 5 functions / IFAC ethics 5 principles / Deming PDCA'. Public source: COSO Internal Control 2013. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): NIST CSF 2.0 six functions acknowledged.",
+      "_provenance": "Authored from concept: 'COSO 5 components foundational definition - five integrated components, distinct from NIST CSF 5 functions / IFAC ethics 5 principles / Deming PDCA'. Public source: COSO Internal Control 2013. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): NIST CSF 2.0 six functions acknowledged. D2 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Re-angled from recalling the five-component list to placing board oversight in the right component; runner-up is monitoring activities. Subtopic label renamed (only user) from '. Definition'.",
       "style_version": 2
     },
     {
@@ -2888,8 +2888,8 @@
       "options": {
         "A": "A PMO applying standard stage gates and consolidated reporting",
         "B": "A separate steering committee providing oversight for each project",
-        "C": "Informal email updates sent at each project manager's discretion",
-        "D": "Rotating project slots on an existing operational status meeting"
+        "C": "Each project manager reporting status in their own format",
+        "D": "Annual internal audits of a sample of the projects"
       },
       "correct": "A",
       "key_concept": "Portfolio-scale oversight needs a PMO with a common method, stage gates and consolidated reporting so leaders can compare and prioritize projects.",
@@ -2897,11 +2897,11 @@
       "correct_explanation": "With 40 projects, leadership must compare progress, risks, dependencies and resources across the whole portfolio. A PMO applying a standard method, stage gates and consolidated reporting gives that view and consistent escalation. Per-project steering committees give each project clear oversight, but each sees only its own project, so conflicts over resources and priorities across the portfolio go unmanaged.",
       "wrong_explanations": {
         "B": "Per-project committees provide accountability, but no one sees across projects to resolve shared resource conflicts or reprioritize the portfolio.",
-        "C": "Informal, irregular updates give no consistent data and no basis for escalation or comparison across projects.",
-        "D": "Ad hoc slots in an operational meeting give partial, uneven coverage and no structured gate decisions."
+        "C": "Reports in each manager's own format cannot be compared or consolidated, so leaders still have no single view of the portfolio.",
+        "D": "Audit gives independent assurance on a sample, but it is periodic and is not management's ongoing oversight of the portfolio."
       },
       "tips": [
-        "Eliminate: C has no standard cadence and D gives random, partial coverage.",
+        "Eliminate: C produces reports that cannot be compared, and D substitutes periodic audit assurance for management's ongoing oversight.",
         "Final two: A beats B because portfolio oversight needs one consolidated view, while per-project committees each see only their own project.",
         "Exam cue: when the stem stresses many projects, choose the option that gives a portfolio view, not stronger single-project control."
       ],
@@ -2912,7 +2912,7 @@
         "Portfolio governance",
         "BAI11"
       ],
-      "_provenance": "Authored from concept: 'Project Management governance at portfolio scale - PMO structural function, no prior D2 coverage of 2.4 Project Management area'. Public source: COBIT 2019 BAI11. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Project Management governance at portfolio scale - PMO structural function, no prior D2 coverage of 2.4 Project Management area'. Public source: COBIT 2019 BAI11. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D2 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): C (informal emails) and D (rotating meeting slots) were strawmen; they are now non-standard reporting and audit sampling as oversight.",
       "style_version": 2
     },
     {
@@ -2927,7 +2927,7 @@
         "A": "A quality manager personally approving every release",
         "B": "Quarterly business satisfaction surveys used as the quality measure",
         "C": "Defined quality standards with metrics-driven root-cause improvement",
-        "D": "Quality assurance outsourced, with no internal quality standards"
+        "D": "Quality targets set by each development team for its own work"
       },
       "correct": "C",
       "key_concept": "APO11 builds quality into processes through defined standards, integrated assurance, measurement and continuous improvement, rather than relying on final inspection.",
@@ -2936,10 +2936,10 @@
       "wrong_explanations": {
         "A": "One person inspecting every release is a late, single-point check. It does not set standards or fix causes.",
         "B": "Satisfaction surveys are lagging, perception-based signals. They miss process measures and defect prevention.",
-        "D": "Outsourcing assurance without internal standards leaves the bank unable to define or judge the quality it needs."
+        "D": "Team-set targets vary and may be set to be met; APO11 expects enterprise quality standards that every team works to."
       },
       "tips": [
-        "Eliminate: B relies on lagging perception data and D leaves the bank with no quality standards of its own.",
+        "Eliminate: B relies on lagging perception data, and D lets each team define quality for itself instead of working to enterprise standards.",
         "Final two: C beats A because APO11 builds quality into the process, while a personal gatekeeper only inspects at the end.",
         "Exam cue: for quality questions, prefer standards, measurement and root-cause improvement over end-of-line inspection by one person."
       ],
@@ -2950,7 +2950,7 @@
         "Quality assurance",
         "Continuous improvement"
       ],
-      "_provenance": "Authored from concept: 'APO11 Quality Management application - 4 practice areas, complementing d2_020 (QA program effectiveness analysis) and d2_048 (quality framework selection analysis)'. Public source: COBIT 2019 APO11. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): removed plus shorthand.",
+      "_provenance": "Authored from concept: 'APO11 Quality Management application - 4 practice areas, complementing d2_020 (QA program effectiveness analysis) and d2_048 (quality framework selection analysis)'. Public source: COBIT 2019 APO11. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): removed plus shorthand. D2 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): D (outsourced with no standards) was a strawman; it is now team-set quality targets.",
       "style_version": 2
     },
     {
@@ -2961,7 +2961,7 @@
       "bloom_level": "Application",
       "question": "An IS auditor reviews a draft SLA with a new cloud infrastructure provider. Which clause MOST strongly protects the customer's interests?",
       "options": {
-        "A": "Best-effort language preserving flexibility for both parties",
+        "A": "An annual service review meeting with the provider's account team",
         "B": "Targets defined and reported by the provider's standard tooling",
         "C": "A 99.99 percent availability target stated in the contract",
         "D": "Measurable targets backed by service credits and exit rights"
@@ -2971,12 +2971,12 @@
       "pre_read": "A high number in a contract is not leverage by itself. Ask what happens when the provider misses it.",
       "correct_explanation": "An SLA protects the customer when targets are measurable, the measurement method is defined, and misses have consequences: service credits for breaches and exit rights for sustained underperformance. That gives the customer enforceable leverage. A 99.99 percent availability target sounds strong, but without a defined measurement method and remedies the provider faces no cost for missing it.",
       "wrong_explanations": {
-        "A": "Best-effort wording sets no enforceable standard, so the customer has no basis to claim a breach.",
+        "A": "A review meeting is a governance forum, not a contract term; without measurable targets and remedies, there is nothing to enforce.",
         "B": "Provider-defined targets and reporting let the provider mark its own work, removing independent verification.",
         "C": "A high target with no measurement method or remedy gives the customer nothing to enforce when service falls short."
       },
       "tips": [
-        "Eliminate: A sets no enforceable standard and B lets the provider define and grade its own performance.",
+        "Eliminate: A offers a meeting rather than an enforceable term, and B lets the provider define and grade its own performance.",
         "Final two: D beats C because a target only protects the customer when misses carry consequences such as credits or exit.",
         "Exam cue: in contract questions, enforceability beats ambition; look for measurable targets first, then remedies such as credits and exit rights."
       ],
@@ -2987,7 +2987,7 @@
         "APO09",
         "Vendor management"
       ],
-      "_provenance": "Authored from concept: 'Vendor SLA design (2.9.6 depth) - leverage-preserving elements, complements d2_027 (5-mechanism third-party service delivery management)'. Public source: COBIT 2019 APO09. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Vendor SLA design (2.9.6 depth) - leverage-preserving elements, complements d2_027 (5-mechanism third-party service delivery management)'. Public source: COBIT 2019 APO09. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D2 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): A (best-effort language) was a strawman; it is now an annual review meeting.",
       "style_version": 2
     },
     {
@@ -3033,12 +3033,12 @@
       "subtopic": "APO04 Innovation Governance",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A bank's IT steering committee wants to trial generative AI without weakening IT discipline. Which approach BEST meets this goal?",
+      "question": "A bank's IT steering committee wants to trial generative AI without weakening IT discipline. Which approach should the IS auditor recommend as BEST?",
       "options": {
         "A": "Sandboxed pilots with stage gates into standard IT processes",
         "B": "A separate innovation lab kept fully isolated from production IT",
-        "C": "Open experimentation by any team without governance review",
-        "D": "Waiting until peers have used the technology for three years"
+        "C": "Business units trialing tools on their own budgets and contracts",
+        "D": "A ban on generative AI until a full policy framework exists"
       },
       "correct": "A",
       "key_concept": "Managed innovation lets ideas be tested safely and then move through defined gates into normal governance once they prove value.",
@@ -3046,11 +3046,11 @@
       "correct_explanation": "COBIT 2019 APO04 supports innovation that serves business goals under control. Sandboxes contain the risk of experiments, defined criteria and stage gates decide what moves from experiment to pilot to production, and successful ideas then join standard governance. An isolated lab also protects production, but with no path into it, good ideas never reach the business and benefits are not delivered.",
       "wrong_explanations": {
         "B": "Isolation protects production, but without a route into standard governance good experiments stall and deliver no business value.",
-        "C": "Ungoverned experimentation exposes the bank to data, security and compliance risk with no evaluation criteria.",
-        "D": "A blanket wait forfeits competitive value and replaces risk management with avoidance."
+        "C": "Unit-funded trials bypass portfolio and risk review, so data, security and licensing risks go unassessed: shadow IT.",
+        "D": "A ban until every policy is written replaces risk management with avoidance and forgoes value a governed pilot could test safely."
       },
       "tips": [
-        "Eliminate: C drops discipline entirely and D drops innovation entirely.",
+        "Eliminate: C lets units trial tools outside governance, and D bans the technology instead of managing its risk.",
         "Final two: A beats B because stage gates create a governed path to production, while an isolated lab protects production but stalls value.",
         "Exam cue: when a stem asks for innovation and control together, choose the staged, gated path over isolation or a ban."
       ],
@@ -3061,7 +3061,7 @@
         "Innovation portfolio",
         "Sandbox environments"
       ],
-      "_provenance": "Authored from concept: 'APO04 Innovation governance application - portfolio + stage-gates approach, no prior D2 coverage of innovation'. Public source: COBIT 2019 APO04. First D2 question on innovation governance. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'APO04 Innovation governance application - portfolio + stage-gates approach, no prior D2 coverage of innovation'. Public source: COBIT 2019 APO04. First D2 question on innovation governance. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D2 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): C (no governance review) and D (wait three years) were strawmen; they are now unit-funded trials and a ban. Stem now names the IS auditor.",
       "style_version": 2
     },
     {
@@ -3110,7 +3110,7 @@
       "bloom_level": "Application",
       "question": "An IS auditor reviews service agreements between a hospital's IT function and its business units. Which design BEST aligns with COBIT 2019 APO09?",
       "options": {
-        "A": "Verbal agreements between IT directors and business unit heads",
+        "A": "Service levels copied from the vendor contracts behind each service",
         "B": "One standard SLA applied identically to every hospital business unit",
         "C": "Jointly agreed, documented service levels with regular performance reviews",
         "D": "Agreements drafted by IT and issued without business review"
@@ -3120,12 +3120,12 @@
       "pre_read": "Business units differ in criticality. Ask which design lets each unit agree the service levels it needs.",
       "correct_explanation": "COBIT 2019 APO09 expects service agreements that reflect each customer's needs, define service levels and responsibilities, and are monitored and reviewed regularly. Jointly agreed, documented service levels with regular performance reviews keep IT aligned to clinical and business priorities. One standard SLA is simpler and consistent, but it over-serves low-criticality units and under-serves critical ones such as clinical systems.",
       "wrong_explanations": {
-        "A": "Verbal agreements leave no documented targets, so performance cannot be measured or disputes resolved.",
+        "A": "Vendor terms set what suppliers owe IT, not what each business unit needs; they were never agreed with the customer.",
         "B": "A uniform SLA ignores differences in criticality and volume, so services are not aligned with each unit's needs.",
         "D": "IT-only drafting skips the customer, so agreed levels may not reflect what the business actually needs."
       },
       "tips": [
-        "Eliminate: A has nothing documented and D removes the business from the agreement.",
+        "Eliminate: A copies supplier terms the business never agreed, and D removes the business from the agreement.",
         "Final two: C beats B because APO09 service levels are agreed with the customer and reviewed, while a uniform SLA is imposed and ignores criticality.",
         "Exam cue: in service management questions, favor levels agreed with the customer, documented and reviewed regularly, over terms IT sets alone."
       ],
@@ -3136,7 +3136,7 @@
         "Service Level Agreement",
         "Internal service agreements"
       ],
-      "_provenance": "Authored from concept: 'APO09 Service Agreements (internal IT-business) application - multi-element structure, complements d2_027 (third-party service delivery) and d2_079 (vendor SLA design)'. Public source: COBIT 2019 APO09 + ITIL 4. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'APO09 Service Agreements (internal IT-business) application - multi-element structure, complements d2_027 (third-party service delivery) and d2_079 (vendor SLA design)'. Public source: COBIT 2019 APO09 + ITIL 4. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D2 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): A (verbal agreements) was a strawman; it is now levels copied from vendor contracts.",
       "style_version": 2
     },
     {
@@ -3201,7 +3201,7 @@
         "D": "Waiting for the next refresh risks missing the privacy deadline and losing time to plan for vendor exit."
       },
       "tips": [
-        "Eliminate: C overreacts by discarding valid direction and D ignores the deadline already in view.",
+        "Eliminate: C replaces direction that is still valid, and D defers the changes past a deadline already in view.",
         "Final two: A beats B because changes to direction and funding need board endorsement, not workarounds outside the strategy.",
         "Exam cue: when material change hits mid-cycle, choose a proportionate update approved by governance."
       ],
@@ -3212,7 +3212,7 @@
         "Material change",
         "APO02"
       ],
-      "_provenance": "Authored from concept: 'IT Strategy mid-cycle update analysis - focused update response to multiple material changes, distinct from d2_004/d2_024/d2_082 (other IT strategy angles)'. Public source: COBIT 2019 APO02. All scenario specifics (regional retailer, three triggers) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): stem wording clarified.",
+      "_provenance": "Authored from concept: 'IT Strategy mid-cycle update analysis - focused update response to multiple material changes, distinct from d2_004/d2_024/d2_082 (other IT strategy angles)'. Public source: COBIT 2019 APO02. All scenario specifics (regional retailer, three triggers) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): stem wording clarified. D2 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Tip no longer says 'overreacts' or 'ignores'.",
       "style_version": 2
     },
     {
@@ -3225,7 +3225,7 @@
       "options": {
         "A": "Full individual-level metrics, with an admin opt-out for each field",
         "B": "Pseudonymized individual-level metrics, with IP addresses still collected",
-        "C": "Dashboard withheld from EU customers, full data shown elsewhere",
+        "C": "Individual metrics visible to customers' HR administrators by default",
         "D": "Aggregated team metrics, individual views enabled for a stated purpose"
       },
       "correct": "D",
@@ -3235,10 +3235,10 @@
       "wrong_explanations": {
         "A": "An opt-out starts from maximum data collection, which is the opposite of protection by default.",
         "B": "Pseudonymized individual data with IP addresses is still personal data, and collecting it by default exceeds what is necessary.",
-        "C": "Withholding the feature avoids rather than designs for privacy, and leaves employees elsewhere with no protection by default."
+        "C": "Restricting who sees individual data limits access, but the data is still collected and processed by default, beyond what the purpose needs."
       },
       "tips": [
-        "Eliminate: A defaults to maximum collection and C avoids the design question instead of answering it.",
+        "Eliminate: A defaults to maximum collection, and C limits who views individual data while still processing it by default.",
         "Final two: D beats B because by default only necessary data is processed; pseudonymized individual tracking still exceeds that.",
         "Exam cue: privacy by default means the least intrusive setting out of the box; opt-outs and partial masking fall short."
       ],
@@ -3249,7 +3249,7 @@
         "GDPR Article 25",
         "Data minimization"
       ],
-      "_provenance": "Authored from concept: 'Privacy by Design vs Privacy by Default analysis - default-protective principle applied, distinct from d2_039/d2_040/d2_063/d2_066 (other privacy angles)'. Public source: GDPR Article 25 + EDPB 4/2019. All scenario specifics (SaaS platform employee analytics) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Privacy by Design vs Privacy by Default analysis - default-protective principle applied, distinct from d2_039/d2_040/d2_063/d2_066 (other privacy angles)'. Public source: GDPR Article 25 + EDPB 4/2019. All scenario specifics (SaaS platform employee analytics) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D2 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): C (withhold from EU customers) was evasive; it is now access restriction, which is not minimization by default.",
       "style_version": 2
     },
     {
@@ -3261,9 +3261,9 @@
       "bloom_level": "Analysis",
       "question": "A media company runs workloads on three cloud providers, with inconsistent control evidence and surprise bills. Which approach should the IS auditor BEST recommend?",
       "options": {
-        "A": "Migrating every workload to the primary provider regardless of fit",
+        "A": "A cloud cost tool that flags billing anomalies each month",
         "B": "Managing each cloud separately through its own native tools",
-        "C": "Common identity, tagging and policy-as-code across every cloud",
+        "C": "Shared identity and tagging, with policy-as-code across clouds",
         "D": "A managed service provider made accountable for the three clouds"
       },
       "correct": "C",
@@ -3271,12 +3271,12 @@
       "pre_read": "The problems are inconsistency and cost. Ask which option fixes those while the enterprise stays accountable.",
       "correct_explanation": "The problems come from each cloud being governed differently. A common layer of federated identity, consistent tagging for cost management and policy-as-code applies the same controls everywhere and produces comparable evidence. Outsourcing to a managed service provider can bring skills and consistency, but accountability for control and compliance cannot be transferred, so the company still needs its own consistent governance.",
       "wrong_explanations": {
-        "A": "Forced consolidation ignores workload fit and creates lock-in, solving inconsistency by removing choice rather than governing it.",
+        "A": "Anomaly alerts flag surprise bills after they arrive; they do nothing for the inconsistent control evidence across the three clouds.",
         "B": "Separate native tooling is exactly what causes inconsistent evidence, missing cross-cloud context and unexpected costs.",
         "D": "An MSP can operate the clouds, but accountability cannot be contracted away; the company still needs consistent controls and evidence of its own."
       },
       "tips": [
-        "Eliminate: A forces consolidation regardless of fit and B keeps the fragmented approach that causes the problem.",
+        "Eliminate: A detects billing surprises but leaves control evidence inconsistent, and B keeps the fragmented native tooling behind both problems.",
         "Final two: C beats D because accountability cannot be outsourced; the company needs consistent controls it owns.",
         "Exam cue: when an option hands a provider full responsibility, remember that accountability always stays with the enterprise."
       ],
@@ -3287,7 +3287,7 @@
         "Cloud control plane",
         "Policy-as-code"
       ],
-      "_provenance": "Authored from concept: 'Multi-cloud governance synthesis (2.9.3 depth) - unifying layer approach, complements d2_014/d2_053/d2_057/d2_067 (other cloud angles)'. Public source: ISACA Cloud Risk Management + CSA CCM + FFIEC. All scenario specifics (media company AWS/Azure/GCP split) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Multi-cloud governance synthesis (2.9.3 depth) - unifying layer approach, complements d2_014/d2_053/d2_057/d2_067 (other cloud angles)'. Public source: ISACA Cloud Risk Management + CSA CCM + FFIEC. All scenario specifics (media company AWS/Azure/GCP split) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D2 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): A (migrate everything regardless of fit) was a strawman; it is now a billing-anomaly tool. Key no longer reads as a three-part list.",
       "style_version": 2
     },
     {
@@ -3298,7 +3298,7 @@
       "bloom_level": "Analysis",
       "question": "A bank is weighing a $50M AI lending platform whose ROI depends on two pending regulations. Which evaluation approach should the IS auditor BEST recommend?",
       "options": {
-        "A": "Rejecting the investment until both regulations are finalized",
+        "A": "Payback period calculated on the current regulatory position",
         "B": "Scenario-based ROI for each regulatory outcome, valuing modularity",
         "C": "The base-case ROI tested against a higher, risk-adjusted hurdle rate",
         "D": "Vendor indemnities shifting future compliance costs to the vendor"
@@ -3308,12 +3308,12 @@
       "pre_read": "The uncertainty is specific and known: two regulations. Ask which approach shows how each outcome changes the case.",
       "correct_explanation": "The uncertainty is specific: two regulations that may or may not take effect. Scenario-based ROI models costs and benefits for each outcome and values the flexibility of a modular design, so the board can decide in line with its risk appetite. A higher hurdle rate does reflect risk, but it blends both regulations into one number and hides which outcome drives the result.",
       "wrong_explanations": {
-        "A": "Rejecting outright avoids rather than manages the risk and forfeits value that may hold under several outcomes.",
+        "A": "A single payback figure assumes today's rules hold; it hides that either pending regulation could change the case.",
         "C": "A single risk-adjusted rate blurs distinct regulatory outcomes, so decision makers cannot see what drives the risk or plan responses.",
         "D": "Indemnities may recover some costs, but the bank stays accountable for compliant credit decisions."
       },
       "tips": [
-        "Eliminate: A avoids the decision and D tries to transfer an obligation the bank cannot hand off.",
+        "Eliminate: A values the case on today's rules alone, and D tries to transfer an obligation the bank cannot hand off.",
         "Final two: B beats C because explicit scenarios show how each regulation changes value; one higher rate hides it.",
         "Exam cue: when named uncertainties drive an investment, prefer scenario analysis that informs the board's risk appetite decision."
       ],
@@ -3324,7 +3324,7 @@
         "Real options",
         "APO05"
       ],
-      "_provenance": "Authored from concept: 'IT Investment ROI under regulatory uncertainty analysis - multi-scenario + optionality, distinct from d2_026 (R/G/T tier discipline) and d2_068 (mid-year rebalance)'. Public source: COBIT 2019 APO05. All scenario specifics (bank AI lending platform under proposed regulations) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'IT Investment ROI under regulatory uncertainty analysis - multi-scenario + optionality, distinct from d2_026 (R/G/T tier discipline) and d2_068 (mid-year rebalance)'. Public source: COBIT 2019 APO05. All scenario specifics (bank AI lending platform under proposed regulations) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D2 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): A (reject until final) was a strawman; it is now payback on current rules.",
       "style_version": 2
     },
     {
@@ -3337,7 +3337,7 @@
       "question": "Budget covers treatment for 11 of 18 high-priority risks, four of which face regulatory deadlines. Which prioritization should the IS auditor BEST recommend to the CRO?",
       "options": {
         "A": "The 11 highest-impact risks, regardless of category or deadline",
-        "B": "Deferring treatment until next year's budget is approved",
+        "B": "A partial treatment spread evenly across the 18 risks",
         "C": "Cyber insurance bought instead of the treatment program",
         "D": "Regulatory deadlines first, then expected loss, escalating the rest"
       },
@@ -3347,11 +3347,11 @@
       "correct_explanation": "Regulatory deadlines are mandatory, so they come first. The remaining budget goes to risks with the highest expected loss, which weighs likelihood as well as impact, and cheap quick wins can stretch coverage. Untreated risks are escalated so the board formally accepts or funds them. Ranking by impact alone ignores likelihood and could leave a regulatory deadline unmet.",
       "wrong_explanations": {
         "A": "Impact alone ignores likelihood and treatment cost, and could leave a mandatory regulatory deadline unaddressed.",
-        "B": "Deferral leaves all 18 risks untreated, including those with fixed regulatory deadlines.",
+        "B": "Spreading the budget thinly leaves every risk partly treated, may miss the regulatory deadlines, and never escalates the gap for a decision.",
         "C": "Insurance can transfer some financial loss, but not regulatory obligations or most operational and reputational harm."
       },
       "tips": [
-        "Eliminate: B leaves every risk untreated and C cannot transfer regulatory obligations.",
+        "Eliminate: B spreads funds so thinly that no risk is fully treated, and C cannot transfer regulatory obligations.",
         "Final two: D beats A because expected loss weighs likelihood too, mandatory items come first, and leftover risk goes to the board.",
         "Exam cue: when resources are short, look for the option that prioritizes by risk and escalates residual risk for acceptance."
       ],
@@ -3362,7 +3362,7 @@
         "Residual risk acceptance",
         "Expected loss"
       ],
-      "_provenance": "Authored from concept: 'Risk Treatment under budget constraints analysis - tiered prioritization, distinct from d2_022 (foundational treatment options) and d2_070 (multi-option treatment scenario)'. Public source: ISO 31000:2018 + ISACA Risk IT. All scenario specifics (regional health insurer 18-risk register) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Risk Treatment under budget constraints analysis - tiered prioritization, distinct from d2_022 (foundational treatment options) and d2_070 (multi-option treatment scenario)'. Public source: ISO 31000:2018 + ISACA Risk IT. All scenario specifics (regional health insurer 18-risk register) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D2 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): B (defer everything) was a strawman; it is now an even partial treatment.",
       "style_version": 2
     },
     {
@@ -3451,8 +3451,8 @@
       "question": "Developers skip the code-review checklist suggested in the secure-coding guideline, yet still meet every requirement of the mandatory secure-coding standard. How should the IS auditor MOST appropriately treat this?",
       "options": {
         "A": "Report a policy violation because the suggested secure-coding guideline was not followed",
-        "B": "No finding, since guidelines are advisory and the standard is met",
-        "C": "Recommend disciplinary action for the developers who skipped the checklist",
+        "B": "No finding: the guideline is advisory and the standard is met",
+        "C": "Recommend the developers document why they skipped the checklist",
         "D": "Recommend converting the guideline into a mandatory policy statement"
       },
       "correct": "B",
@@ -3461,11 +3461,11 @@
       "correct_explanation": "Guidelines are recommended practices that give flexibility in how a requirement is met; they are not mandatory. Because developers still satisfy the mandatory secure-coding standard, the control objective is achieved and there is no noncompliance. Reporting a violation treats advice as a rule, which misstates the audit criteria; findings must rest on mandatory requirements in policies, standards and procedures.",
       "wrong_explanations": {
         "A": "A guideline is advisory, so not following it is not a violation. Findings must rest on mandatory criteria such as policies and standards.",
-        "C": "Discipline is management's call and needs a real breach. Here no mandatory requirement was broken.",
+        "C": "Documenting reasons for skipping advice treats a guideline as mandatory; no requirement was broken, so there is nothing to justify.",
         "D": "Turning advice into policy puts operational detail at the wrong level and removes the flexibility guidelines are meant to give."
       },
       "tips": [
-        "Eliminate: C seeks discipline without any breach, and D pushes operational advice up to policy level.",
+        "Eliminate: C demands justification for skipping advice, and D pushes operational advice up to policy level; both treat the guideline as mandatory.",
         "Final two: B beats A because guidelines are advisory; with the mandatory standard met, there is no violation to report.",
         "Exam cue: policies, standards and procedures are mandatory; guidelines recommend. Audit findings need mandatory criteria."
       ],
@@ -3476,7 +3476,7 @@
         "Audit criteria",
         "Policy hierarchy"
       ],
-      "_provenance": "Authored from concept: 'GDPR Article 6 lawful-basis enumeration foundational - six categories recall, complements d2_040 (application - matching basis to use case)'. Public source: GDPR Article 6. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Rebalanced (Oct 2026): re-angled from 2A6 to 2A3. Rebalance review (Oct 2026): key now states the auditor's call (no finding) instead of risk acceptance.",
+      "_provenance": "Authored from concept: 'GDPR Article 6 lawful-basis enumeration foundational - six categories recall, complements d2_040 (application - matching basis to use case)'. Public source: GDPR Article 6. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Rebalanced (Oct 2026): re-angled from 2A6 to 2A3. Rebalance review (Oct 2026): key now states the auditor's call (no finding) instead of risk acceptance. D2 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): C (disciplinary action) was a strawman; it is now a demand to justify skipping advice. Key no longer matches the list cue.",
       "style_version": 2
     },
     {
@@ -3564,7 +3564,7 @@
       "question": "An IS auditor reviews a manufacturer's ERP rollout across 12 plants. Which stakeholder practice MOST strongly supports user adoption?",
       "options": {
         "A": "A single company-wide email at launch, cascaded by plant managers",
-        "B": "A fast rollout with minimal notice, handling concerns after go-live",
+        "B": "Super-users at each plant answering questions after go-live",
         "C": "Engagement planned for each stakeholder group, with two-way feedback",
         "D": "Thorough end-user training delivered at each of the plants before go-live"
       },
@@ -3574,11 +3574,11 @@
       "correct_explanation": "COBIT 2019 BAI05 treats adoption as a people problem. Analyzing stakeholder groups, planning engagement around each group's concerns and keeping two-way feedback open throughout builds commitment and surfaces resistance early. End-user training is essential, but it builds skills in a one-way flow and does not address why different plants or roles might resist the change.",
       "wrong_explanations": {
         "A": "One broadcast email is one-way and untailored, and relies on managers cascading the message at their discretion.",
-        "B": "Rushing with little notice increases resistance and leaves concerns to fester until after go-live.",
+        "B": "Super-users help with use after launch, but they come too late to surface and address each group's concerns.",
         "D": "Training builds skills but is one-way. It does not uncover or address each group's concerns or resistance."
       },
       "tips": [
-        "Eliminate: A is a single untailored broadcast and B deliberately limits communication.",
+        "Eliminate: A is a single untailored broadcast, and B supports users after go-live, too late to engage their concerns.",
         "Final two: C beats D because adoption needs commitment as well as skill; training alone does not engage concerns.",
         "Exam cue: for change adoption, pick the option that analyzes and engages stakeholders two ways, not just informs or trains them."
       ],
@@ -3589,7 +3589,7 @@
         "BAI05",
         "Change adoption"
       ],
-      "_provenance": "Authored from concept: 'Enterprise Change Management stakeholder discipline - structured/tailored/two-way, distinct from d2_019 (failed M&A integration analysis)'. Public source: COBIT 2019 BAI05. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Enterprise Change Management stakeholder discipline - structured/tailored/two-way, distinct from d2_019 (failed M&A integration analysis)'. Public source: COBIT 2019 BAI05. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D2 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): B (minimal notice) was a strawman; it is now post-go-live super-user support.",
       "style_version": 2
     },
     {
@@ -3636,7 +3636,7 @@
       "principle_id": "prevent-before-detect",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A SaaS firm's management is embedding privacy by design into its SDLC to meet GDPR Article 25. Which practice is MOST effective?",
+      "question": "A SaaS firm's management is embedding privacy by design into its SDLC to meet GDPR Article 25. Which practice should the IS auditor recommend as MOST effective?",
       "options": {
         "A": "A privacy governance review of each feature shortly before launch",
         "B": "Privacy controls applied to features handling sensitive data",
@@ -3653,7 +3653,7 @@
         "C": "Fixing defects after release is reactive. Personal data may already be exposed before the bug is triaged."
       },
       "tips": [
-        "Eliminate: B ignores ordinary personal data, and C treats privacy as a post-release defect.",
+        "Eliminate: B limits protection to sensitive data though Article 25 covers all personal data, and C treats privacy as a post-release defect.",
         "Final two: D beats A because by design means building privacy in from requirements, while a launch review only inspects a finished design.",
         "Exam cue: for anything by design, prefer the option that starts earliest and repeats through the lifecycle."
       ],
@@ -3664,7 +3664,7 @@
         "SDLC integration",
         "DPIA"
       ],
-      "_provenance": "Authored from concept: 'Privacy by Design SDLC integration - multi-stage embed with gating, complements d2_086 (Privacy by Design vs Default decision) and d2_084 (DPIA for high-risk processing)'. Public source: GDPR Article 25 + EDPB Guidelines 4/2019. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Privacy by Design SDLC integration - multi-stage embed with gating, complements d2_086 (Privacy by Design vs Default decision) and d2_084 (DPIA for high-risk processing)'. Public source: GDPR Article 25 + EDPB Guidelines 4/2019. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D2 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Stem now names the IS auditor; tip no longer says 'ignores'.",
       "style_version": 2
     },
     {
@@ -3678,7 +3678,7 @@
         "A": "Retention periods per data category, each with a documented basis",
         "B": "One period for every data type, set by the longest legal requirement",
         "C": "One period for every data type, set by the shortest legal requirement",
-        "D": "Retention settings left at the storage vendor's general-business defaults"
+        "D": "Retention set by each system owner to suit operational needs"
       },
       "correct": "A",
       "key_concept": "Retention should be set per data category with a documented basis, meeting each law's minimum without over-retaining personal data.",
@@ -3687,10 +3687,10 @@
       "wrong_explanations": {
         "B": "Keeping everything for the longest period breaches GDPR storage limitation and increases the volume of data at risk in a breach.",
         "C": "The shortest period destroys records that HIPAA and SOX require to be kept, creating direct legal violations.",
-        "D": "Vendor defaults reflect no legal analysis. Retention is a business and legal decision, not an infrastructure setting."
+        "D": "Operational convenience is not a legal basis; owners would keep data as long as it is useful, missing both minimums and storage limitation."
       },
       "tips": [
-        "Eliminate: C breaks minimum retention laws, and D hands a legal decision to vendor defaults.",
+        "Eliminate: C breaks minimum retention laws, and D lets operational need, not law, set the periods.",
         "Final two: A beats B because category periods meet every law, while a blanket maximum breaches GDPR storage limitation.",
         "Exam cue: when regulations conflict, look for the option that classifies first and applies the right rule per category."
       ],
@@ -3701,7 +3701,7 @@
         "GDPR storage limitation",
         "HIPAA retention"
       ],
-      "_provenance": "Authored from concept: 'Data retention policy multi-regulation design - category-specific approach, no prior coverage'. Public source: GDPR Article 5(1)(e) + HIPAA + SOX + ISACA Data Governance. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): narrowed HIPAA/SOX retention claim. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged.",
+      "_provenance": "Authored from concept: 'Data retention policy multi-regulation design - category-specific approach, no prior coverage'. Public source: GDPR Article 5(1)(e) + HIPAA + SOX + ISACA Data Governance. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): narrowed HIPAA/SOX retention claim. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. D2 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): D (vendor defaults) was a strawman; it is now owner-set operational retention.",
       "style_version": 2
     },
     {
@@ -3713,22 +3713,22 @@
       "bloom_level": "Application",
       "question": "An IS auditor at a community bank reviews due diligence for a new cloud-hosted core banking provider. Which approach is MOST appropriate?",
       "options": {
-        "A": "A short questionnaire completed by the provider's sales team",
+        "A": "Reference calls with three banks already using the provider",
         "B": "The provider's SOC 2 Type 2 report as the main assurance source",
-        "C": "Criticality-scaled review of finances, resilience and compliance",
-        "D": "Assessment of the provider's risk posture after go-live"
+        "C": "Review of finances and resilience scaled to the provider's criticality",
+        "D": "Exercising the contract's audit right in the first year"
       },
       "correct": "C",
       "key_concept": "Due diligence depth should match vendor criticality. A core banking provider needs financial, resilience, compliance and contractual review, not one artifact.",
       "pre_read": "Notice the vendor runs core banking. Ask whether one report can answer every risk a critical provider brings.",
       "correct_explanation": "A core banking provider is a critical third party, so due diligence must be proportionate: financial viability, security, business continuity, regulatory compliance and audit rights. A SOC 2 Type 2 report is valuable evidence on controls, but it says nothing about financial health or exit, and its scope is set by the vendor. Relying on it alone under-examines a critical dependency.",
       "wrong_explanations": {
-        "A": "A sales-completed questionnaire is unverified self-assertion. It gives almost no assurance for a critical provider.",
+        "A": "References give anecdotes from other customers, not verified evidence about this provider's controls, finances or resilience.",
         "B": "A SOC 2 report covers selected controls in a vendor-defined scope. It does not address financial viability, continuity or contract terms.",
-        "D": "Assessing after go-live removes the chance to decline or negotiate. Due diligence must come before commitment."
+        "D": "An audit after signing comes too late to decline or negotiate; due diligence must come before the bank is committed."
       },
       "tips": [
-        "Eliminate: A relies on unverified sales answers, and D assesses only after the bank is committed.",
+        "Eliminate: A gathers anecdotes rather than evidence, and D checks the provider only after the bank is committed.",
         "Final two: C beats B because a critical vendor needs risk-proportionate review across several areas; one SOC 2 report covers only part of the risk.",
         "Exam cue: vendor oversight scales with criticality; the most critical vendors get the broadest due diligence before signing."
       ],
@@ -3739,7 +3739,7 @@
         "Vendor risk tiering",
         "APO10"
       ],
-      "_provenance": "Authored from concept: 'Vendor onboarding due diligence depth-by-tier - critical tier elements, complements d2_036 (IT-VMO structure) and d2_099 vendor governance forum'. Public source: OCC Bulletin 2013-29 + FFIEC. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Vendor onboarding due diligence depth-by-tier - critical tier elements, complements d2_036 (IT-VMO structure) and d2_099 vendor governance forum'. Public source: OCC Bulletin 2013-29 + FFIEC. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D2 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): A (sales questionnaire) and D (after go-live) were strawmen; they are now reference calls and a first-year audit. Key no longer reads as a three-part list.",
       "style_version": 2
     },
     {
@@ -3750,7 +3750,7 @@
       "bloom_level": "Application",
       "question": "After a 40% rise in cloud spend, an IS auditor reviews cost governance at a media company. Which practice MOST supports lasting cost discipline?",
       "options": {
-        "A": "A hard spend cap at last year's average, regardless of demand",
+        "A": "A monthly report of total cloud spend sent to the CFO",
         "B": "Tagged cost visibility, with each team answerable for its spend",
         "C": "An annual volume discount negotiated with the cloud provider",
         "D": "Cloud provisioning centralized in the CIO's office to curb spending"
@@ -3760,12 +3760,12 @@
       "pre_read": "Notice the word lasting. Ask which option changes behavior over time rather than applying a one-off brake.",
       "correct_explanation": "Lasting discipline needs teams to see what they spend and be accountable for it. Tagging gives allocation and visibility; making each team answerable turns that into decisions such as rightsizing. Centralizing provisioning in the CIO's office can slow spend, but it moves accountability away from the consumers, creates a bottleneck for the business, and still lacks the cost visibility needed to optimize.",
       "wrong_explanations": {
-        "A": "A fixed cap ignores business demand and may block legitimate growth. It limits spend without explaining or reducing waste.",
+        "A": "A total gives the CFO visibility but no allocation; no team sees its own spend or answers for it.",
         "C": "A discount lowers the unit rate but leaves wasteful consumption untouched. Spend keeps rising with usage.",
         "D": "Central provisioning creates a bottleneck and removes accountability from the teams that consume resources, without improving cost visibility."
       },
       "tips": [
-        "Eliminate: A caps spend blindly against demand, and C cuts rates but not wasteful use.",
+        "Eliminate: A reports a total no team can act on, and C cuts rates but not wasteful use.",
         "Final two: B beats D because accountability belongs with the teams that consume; centralizing control slows delivery without creating cost ownership.",
         "Exam cue: for sustained cost control, pick visibility plus team accountability over caps, discounts or central gatekeeping."
       ],
@@ -3776,7 +3776,7 @@
         "Cost allocation",
         "APO06"
       ],
-      "_provenance": "Authored from concept: 'Cloud cost FinOps discipline - three-phase framework, complements d2_043 (chargeback design) and d2_087 (multi-cloud governance)'. Public source: FinOps Foundation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Cloud cost FinOps discipline - three-phase framework, complements d2_043 (chargeback design) and d2_087 (multi-cloud governance)'. Public source: FinOps Foundation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D2 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): A (hard cap regardless of demand) was a strawman; it is now a total-spend report.",
       "style_version": 2
     },
     {
@@ -3789,7 +3789,7 @@
       "question": "After a phishing-led ransomware incident, an IS auditor reviews a law firm's security awareness program. Which design MOST improves staff resilience?",
       "options": {
         "A": "Annual online training for every employee, tracked by completion rate",
-        "B": "Awareness training limited to IT staff and senior partners",
+        "B": "Content refreshed each year from industry phishing reports",
         "C": "Stronger email filtering in place of user awareness training",
         "D": "Role-based training with phishing simulations and behavior metrics"
       },
@@ -3799,11 +3799,11 @@
       "correct_explanation": "Resilience is a behavior, so the program must practice and measure it. Role-based content, simulated phishing with feedback and behavior metrics show whether staff now spot and report attacks, and guide improvement. Annual training with completion tracking is common and covers everyone, but completion proves attendance, not changed behavior, and once a year is too infrequent to sustain vigilance.",
       "wrong_explanations": {
         "A": "Completion rates show attendance, not resistance to phishing. A single yearly session fades quickly and gives no behavior evidence.",
-        "B": "Phishing targets every employee. Leaving most staff untrained leaves the most common entry point open.",
+        "B": "Current content helps, but without practice and behavior measurement there is no evidence staff now resist phishing.",
         "C": "Filters reduce volume but some phishing always gets through. Technical controls complement, not replace, user awareness."
       },
       "tips": [
-        "Eliminate: B leaves most staff untrained, and C drops awareness in favor of filters that phishing still bypasses.",
+        "Eliminate: B refreshes content without testing behavior, and C drops awareness in favor of filters that phishing still bypasses.",
         "Final two: D beats A because simulations and behavior metrics prove resilience, while completion rates only prove attendance.",
         "Exam cue: when asked about effectiveness, choose the option that measures outcomes over the one that counts activity."
       ],
@@ -3814,7 +3814,7 @@
         "Behavior change",
         "Just-in-time training"
       ],
-      "_provenance": "Authored from concept: 'InfoSec Awareness program design - continuous behavior-focused approach, complements d2_064 (InfoSec mgmt operations) and d2_006 (board accountability)'. Public source: NIST SP 800-50. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'InfoSec Awareness program design - continuous behavior-focused approach, complements d2_064 (InfoSec mgmt operations) and d2_006 (board accountability)'. Public source: NIST SP 800-50. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D2 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): B (IT and partners only) fell to common sense; it is now refreshed content without behavior testing.",
       "style_version": 2
     },
     {
@@ -3866,7 +3866,7 @@
       "options": {
         "A": "Members drawn from senior executives with deep system knowledge",
         "B": "At least three members, with a majority being independent directors",
-        "C": "Three or more members, all independent, one with financial expertise",
+        "C": "Three or more members, all independent, one a financial expert",
         "D": "A chair who appoints the other members at their own discretion"
       },
       "correct": "C",
@@ -3890,7 +3890,7 @@
         "Independent directors",
         "Financial expert"
       ],
-      "_provenance": "Authored from concept: 'Audit Committee composition under SEC/SOX/NYSE - regulatory minimums, complements d1_139 (financial-expert specifics)'. Public source: SOX Section 407 + NYSE 303A.07. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): stem now tests the independence principle, not a national threshold; key states all members independent.",
+      "_provenance": "Authored from concept: 'Audit Committee composition under SEC/SOX/NYSE - regulatory minimums, complements d1_139 (financial-expert specifics)'. Public source: SOX Section 407 + NYSE 303A.07. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): stem now tests the independence principle, not a national threshold; key states all members independent. D2 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Key trimmed so it is no longer the longest option.",
       "style_version": 2
     },
     {
@@ -3902,22 +3902,22 @@
       "bloom_level": "Analysis",
       "question": "After a fast, IT-led acquisition integration lost revenue and key staff, the CFO asks an IS auditor for advice. Which recommendation is BEST for future integrations?",
       "options": {
-        "A": "Keep the IT-led approach, since the systems cut over on schedule",
+        "A": "Add more detailed cutover testing before each systems migration",
         "B": "Business-led change governance with phased cutover and go/no-go gates",
         "C": "An external advisory firm engaged to run future integrations end to end",
-        "D": "A pause on acquisitions until integration capability is built"
+        "D": "Offer retention bonuses to key staff during each integration"
       },
       "correct": "B",
       "key_concept": "M&A integration is enterprise change: business leadership, phased cutover and go/no-go gates judged on business outcomes, not IT deadlines.",
       "pre_read": "Notice the failure showed up as lost revenue and staff, not broken systems. Ask who should lead and how progress is judged.",
       "correct_explanation": "The integration succeeded technically but failed the business, because IT alone drove it against a deadline. Cross-functional, business-led change governance with phased cutover and go/no-go gates judged on business outcomes addresses that cause. Hiring an advisory firm adds capacity, but accountability for integration outcomes cannot be outsourced, and the methodology gap would remain.",
       "wrong_explanations": {
-        "A": "On-time cutover is not success when revenue and talent were lost. Repeating the approach repeats the failure.",
+        "A": "Better testing protects the cutover, which already worked; the losses came from business change that IT alone did not manage.",
         "C": "Advisers can support, but management remains accountable. Outsourcing execution does not fix missing business ownership or gates.",
-        "D": "Stopping acquisitions overreacts to a fixable method problem and may abandon the business strategy."
+        "D": "Retention bonuses treat one symptom, staff loss, while the revenue impact and the IT-led approach that caused both remain."
       },
       "tips": [
-        "Eliminate: A repeats the failed approach, and D abandons strategy over a fixable method gap.",
+        "Eliminate: A strengthens the technical cutover that already worked, and D treats staff loss alone; neither changes who leads the integration.",
         "Final two: B beats C because accountability for integration outcomes stays with the business; an adviser cannot own them.",
         "Exam cue: when a change fails the business but not the technology, look for business ownership and outcome-based gates."
       ],
@@ -3928,7 +3928,7 @@
         "Business-outcome validation",
         "BAI05"
       ],
-      "_provenance": "Authored from concept: 'Enterprise Change Management failed M&A integration synthesis - multi-element discipline distinct from d2_019 (failed acquisition integration analysis at lower complexity)'. Public source: COBIT 2019 BAI05. All scenario specifics (regional retailer, 18-month post-acquisition state, four specific outcomes) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Enterprise Change Management failed M&A integration synthesis - multi-element discipline distinct from d2_019 (failed acquisition integration analysis at lower complexity)'. Public source: COBIT 2019 BAI05. All scenario specifics (regional retailer, 18-month post-acquisition state, four specific outcomes) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D2 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): A (keep the failed approach) and D (pause acquisitions) were strawmen; they are now cutover testing and retention bonuses.",
       "style_version": 2
     },
     {
@@ -3977,9 +3977,9 @@
       "question": "A bank is exiting a SaaS provider in nine months after a remediated vendor-staff access incident. Which approach should the IS auditor recommend as BEST?",
       "options": {
         "A": "Terminate the contract now for cause, citing the past incident",
-        "B": "Let the contract lapse without invoking the data return clauses",
-        "C": "Minimal vendor oversight until the contract term expires",
-        "D": "A managed exit plan covering service, data return and deletion"
+        "B": "Rely on the contract's deletion clause, taking the vendor's word",
+        "C": "Limit oversight to the annual SOC 2 review until exit",
+        "D": "A managed exit plan with data return and verified deletion"
       },
       "correct": "D",
       "key_concept": "Vendor offboarding is a governed process: keep the service running, enforce data return and verified deletion, and manage transition risk.",
@@ -3987,11 +3987,11 @@
       "correct_explanation": "The bank depends on the service until migration and holds contractual rights over its data. A managed exit plan keeps service levels enforced, secures data return and verified deletion, and pursues any remedies from the incident. Immediate termination feels decisive, but the incident is remediated and the new provider is not ready, so it trades a contained risk for service disruption.",
       "wrong_explanations": {
         "A": "Terminating early disrupts a service the bank still needs, for an incident already remediated. It creates a larger continuity risk.",
-        "B": "Skipping data return and deletion leaves bank data with a vendor that has already shown access weaknesses.",
-        "C": "Minimal oversight lets service levels slip and leaves exit obligations unmanaged during the riskiest period."
+        "B": "A clause states the duty but proves nothing; after a vendor-staff access incident, the bank needs data returned and deletion verified.",
+        "C": "An annual report covers a past period; during an exit, service levels and data obligations need active monitoring month by month."
       },
       "tips": [
-        "Eliminate: B abandons the bank's data, and C lets the vendor drift during the exit.",
+        "Eliminate: B accepts the vendor's word on deletion after an access incident, and C relies on a yearly report during the riskiest months.",
         "Final two: D beats A because a managed exit protects continuity and data rights, while early termination trades a remediated risk for disruption.",
         "Exam cue: at the end of a vendor relationship, choose the structured exit that keeps service and enforces data obligations."
       ],
@@ -4002,7 +4002,7 @@
         "Deletion verification",
         "APO10"
       ],
-      "_provenance": "Authored from concept: 'Vendor offboarding when relationship ends badly - structured multi-dimensional approach, complements d2_036 (IT-VMO structure) and d2_042 (governance forum)'. Public source: COBIT 2019 APO10. All scenario specifics (regional bank, 9-month wind-down, prior incident) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Vendor offboarding when relationship ends badly - structured multi-dimensional approach, complements d2_036 (IT-VMO structure) and d2_042 (governance forum)'. Public source: COBIT 2019 APO10. All scenario specifics (regional bank, 9-month wind-down, prior incident) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D2 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): B (abandon data return) and C (minimal oversight) were strawmen; they are now unverified deletion and SOC-only oversight. Key no longer reads as a three-part list.",
       "style_version": 2
     },
     {
@@ -4204,7 +4204,7 @@
         "A": "Automated population of risks from incident and threat feeds",
         "B": "Lifecycle workflow with named owners and an audit trail",
         "C": "A simple shared spreadsheet maintained by the risk team",
-        "D": "More than fifty mandatory data fields for each risk record"
+        "D": "Color-coded heat maps generated for every board report"
       },
       "correct": "B",
       "key_concept": "A register stays effective when each risk moves through a tracked lifecycle with a named owner and an audit trail of decisions.",
@@ -4213,10 +4213,10 @@
       "wrong_explanations": {
         "A": "Feeds can suggest risks, but identification and assessment need business judgment. Automation without owners produces an unmanaged list.",
         "C": "A manual spreadsheet lacks workflow, ownership controls and change history, so it decays as the bank changes.",
-        "D": "Excessive mandatory fields discourage updates. Complexity reduces adoption without improving ownership."
+        "D": "Heat maps improve presentation, but they display entries; they do not keep risks owned, updated and tracked through treatment."
       },
       "tips": [
-        "Eliminate: C has no workflow or history, and D buries users in data entry.",
+        "Eliminate: C has no workflow or history, and D improves how risks are shown rather than how they are managed.",
         "Final two: B beats A because accountability keeps a register alive; automated feeds add entries but no owner or judgment.",
         "Exam cue: for risk registers, choose ownership and lifecycle tracking over volume of data or automation."
       ],
@@ -4227,7 +4227,7 @@
         "Workflow tooling",
         "APO12"
       ],
-      "_provenance": "Authored from concept: 'Risk register tooling lifecycle workflow design, complements d2_021 (foundational risk register definition)'. Public source: ISACA Risk IT. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Risk register tooling lifecycle workflow design, complements d2_021 (foundational risk register definition)'. Public source: ISACA Risk IT. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D2 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): D (fifty mandatory fields) was a strawman; it is now heat-map reporting.",
       "style_version": 2
     },
     {
@@ -4236,7 +4236,7 @@
       "subtopic": "Compliance Program. Multi-Regulation Operationalization",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A bank's management is building a compliance program covering FFIEC, GLBA, BSA/AML and CCPA. Which design BEST supports sustained compliance?",
+      "question": "A bank's management is building a compliance program covering FFIEC, GLBA, BSA/AML and CCPA. Which design should the IS auditor recommend as BEST for sustained compliance?",
       "options": {
         "A": "Separate compliance teams and controls for each regulation",
         "B": "One control library mapped to each regulation, with named owners",
@@ -4264,7 +4264,7 @@
         "Control library",
         "MEA03"
       ],
-      "_provenance": "Authored from concept: 'Compliance program multi-regulation operationalization - integrated with mapping, complements d2_050 (multi-sector regulatory mapping audit-design analysis) and d2_005 (GRC integration)'. Public source: FFIEC + COBIT 2019 MEA03. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Compliance program multi-regulation operationalization - integrated with mapping, complements d2_050 (multi-sector regulatory mapping audit-design analysis) and d2_005 (GRC integration)'. Public source: FFIEC + COBIT 2019 MEA03. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D2 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Stem now names the IS auditor.",
       "style_version": 2
     },
     {
@@ -4277,7 +4277,7 @@
       "options": {
         "A": "One weekly committee deciding strategy, risk, architecture and change",
         "B": "Several committees with shared members but no written charters",
-        "C": "The CIO deciding every IT matter directly, without committees",
+        "C": "Committees that report to the CIO instead of the board",
         "D": "Distinct chartered committees with decision rights and escalation"
       },
       "correct": "D",
@@ -4287,10 +4287,10 @@
       "wrong_explanations": {
         "A": "One committee mixes strategic and operational decisions, overloads the agenda, and blurs who is accountable for what.",
         "B": "Without charters, decision rights and scope are unclear, so overlap and gaps grow.",
-        "C": "Concentrating every decision in one executive removes oversight and stakeholder input that governance requires."
+        "C": "Governance bodies answer to the board; committees reporting to the CIO become management forums, and the board loses its oversight route."
       },
       "tips": [
-        "Eliminate: B lacks charters and clear decision rights, and C removes oversight entirely.",
+        "Eliminate: B lacks charters and clear decision rights, and C routes governance to the CIO instead of the board.",
         "Final two: D beats A because distinct, chartered bodies give each decision clear accountability; one committee mixes governance with management.",
         "Exam cue: good governance structures have defined charters, decision rights and escalation paths."
       ],
@@ -4301,7 +4301,7 @@
         "Change Advisory Board",
         "IT Risk Committee"
       ],
-      "_provenance": "Authored from concept: 'IT governance committee structure beyond IT Steering Committee - purpose-distinct multi-committee architecture, complements d2_003/d2_054 (steering committee specifics)'. Public source: COBIT 2019. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Round 2 review (Oct 2026): framework_ref updated to ISO/IEC 38500:2024.",
+      "_provenance": "Authored from concept: 'IT governance committee structure beyond IT Steering Committee - purpose-distinct multi-committee architecture, complements d2_003/d2_054 (steering committee specifics)'. Public source: COBIT 2019. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Round 2 review (Oct 2026): framework_ref updated to ISO/IEC 38500:2024. D2 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): C (CIO decides everything) was a strawman; it is now committees reporting to the CIO.",
       "style_version": 2
     },
     {
@@ -4312,10 +4312,10 @@
       "bloom_level": "Application",
       "question": "An IS auditor at a credit union reviews new outsourcing contracts. Which exit provision MOST protects the credit union's long-term interests?",
       "options": {
-        "A": "Exit terms agreed at signing for data, transition and handover",
+        "A": "Exit terms agreed at signing covering data and service transition",
         "B": "A right to terminate for convenience on 90 days' written notice",
         "C": "Exit planning deferred until termination becomes likely",
-        "D": "No documented exit terms, to avoid signaling expected failure"
+        "D": "Source code escrow for the provider's core application"
       },
       "correct": "A",
       "key_concept": "Exit strategy is negotiated before signing, when leverage is greatest: data return, transition assistance and knowledge transfer.",
@@ -4324,10 +4324,10 @@
       "wrong_explanations": {
         "B": "A right to leave without transition support risks lost data and service gaps. Exit needs cooperation terms, not just termination rights.",
         "C": "Once termination is likely, leverage is gone and the vendor has little reason to cooperate.",
-        "D": "Exit terms are prudent risk management, not a prediction of failure. Their absence leaves the credit union exposed."
+        "D": "Escrow protects access to code if the provider fails, but it gives no data return, transition help or knowledge transfer."
       },
       "tips": [
-        "Eliminate: C waits until leverage is lost, and D leaves exit undefined.",
+        "Eliminate: C waits until leverage is lost, and D protects code alone, with no data return or transition support.",
         "Final two: A beats B because a right to leave is not a plan to leave; transition and data terms protect continuity.",
         "Exam cue: plan the exit at the entrance; negotiate exit support before signing, when leverage is greatest."
       ],
@@ -4338,7 +4338,7 @@
         "Transition assistance",
         "APO10"
       ],
-      "_provenance": "Authored from concept: 'Outsourcing exit strategy proactive planning at contract signing - distinct from d2_106 (vendor offboarding execution at relationship end)'. Public source: OCC Bulletin 2013-29 + ISACA Outsourcing Governance. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Outsourcing exit strategy proactive planning at contract signing - distinct from d2_106 (vendor offboarding execution at relationship end)'. Public source: OCC Bulletin 2013-29 + ISACA Outsourcing Governance. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D2 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): D (no exit terms) was a strawman; it is now source code escrow. Key no longer reads as a three-part list.",
       "style_version": 2
     },
     {
@@ -4365,7 +4365,7 @@
         "D": "Detection without enforcement lets sensitive data leave. It suits a tuning phase, not a mature program."
       },
       "tips": [
-        "Eliminate: B ignores the contractor's own data, and D watches data leave without stopping it.",
+        "Eliminate: B runs vendor defaults that do not know the contractor's own data, and D watches data leave without stopping it.",
         "Final two: C beats A because DLP must know what to protect; blanket blocking without classification disrupts work and invites workarounds.",
         "Exam cue: for data protection controls, classification comes first; enforcement follows what is classified."
       ],
@@ -4376,7 +4376,7 @@
         "Data classification",
         "False-positive tuning"
       ],
-      "_provenance": "Authored from concept: 'DLP program design - risk-based multi-element approach, no prior D2 coverage'. Public source: NIST SP 800-53 + CSA + ISACA Data Governance. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'DLP program design - risk-based multi-element approach, no prior D2 coverage'. Public source: NIST SP 800-53 + CSA + ISACA Data Governance. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D2 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Tip no longer says 'ignores'.",
       "style_version": 2
     },
     {
@@ -4386,11 +4386,11 @@
       "principle_id": "management-owns-risk",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "An insurer's management plans to use a vendor's AI fraud model in claims processing. Which governance approach BEST addresses the third-party AI risk?",
+      "question": "An insurer's management plans to use a vendor's AI fraud model in claims processing. Which governance approach should the IS auditor recommend as BEST?",
       "options": {
         "A": "Reliance on the vendor's SOC 2 Type 2 report and model documentation",
         "B": "Independent testing on the insurer's data, plus output monitoring",
-        "C": "In-house AI development instead, to remove vendor risk entirely",
+        "C": "Contract warranties that the model meets stated accuracy targets",
         "D": "The same oversight applied to any packaged vendor software"
       },
       "correct": "B",
@@ -4399,11 +4399,11 @@
       "correct_explanation": "The insurer remains accountable for decisions the model drives, so it needs its own evidence: independent testing on its claims data for accuracy and bias, then ongoing monitoring for drift. A SOC 2 report and model documentation are useful vendor artifacts, but they cover the vendor's controls and claims, not how the model performs on this insurer's data.",
       "wrong_explanations": {
         "A": "Vendor artifacts cover the vendor's controls, not model accuracy or bias on the insurer's data. Accountability cannot be outsourced.",
-        "C": "In-house models carry the same model risks. Avoiding vendors does not remove the need for testing and monitoring.",
+        "C": "A warranty gives a remedy after harm, but the insurer stays accountable for decisions and still needs its own evidence the model works.",
         "D": "AI models drift and can embed bias, risks that standard software oversight does not test for."
       },
       "tips": [
-        "Eliminate: C assumes in-house AI carries no model risk, and D ignores drift and bias.",
+        "Eliminate: C relies on a contractual promise for outcomes the insurer is accountable for, and D omits the drift and bias testing AI models need.",
         "Final two: B beats A because the insurer is accountable for outcomes; vendor reports cover vendor controls, not performance on its data.",
         "Exam cue: when a vendor supplies a decision model, look for independent validation and monitoring by the accountable business."
       ],
@@ -4414,7 +4414,7 @@
         "Challenger testing",
         "AI RMF"
       ],
-      "_provenance": "Authored from concept: 'Third-party AI/ML governance application - layered approach, complements d2_036 (IT-VMO structure) and d2_099 (vendor onboarding)'. Public source: NIST AI RMF + ISACA Auditing AI. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Third-party AI/ML governance application - layered approach, complements d2_036 (IT-VMO structure) and d2_099 (vendor onboarding)'. Public source: NIST AI RMF + ISACA Auditing AI. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D2 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): C (in-house to remove risk 'entirely') was a strawman; it is now contract warranties. Stem now names the IS auditor; tip no longer says 'ignores'.",
       "style_version": 2
     },
     {
@@ -4428,7 +4428,7 @@
       "options": {
         "A": "Accept the concentration as the price of negotiated discounts",
         "B": "Diversify across three cloud providers at once, whatever the cost",
-        "C": "Defer analysis until a provider failure actually occurs",
+        "C": "Negotiate higher service credits for provider outages",
         "D": "Weigh failure scenarios against appetite, then treat any excess"
       },
       "correct": "D",
@@ -4438,10 +4438,10 @@
       "wrong_explanations": {
         "A": "Accepting without analysis is not informed risk acceptance. Discounts do not offset an unmeasured exposure.",
         "B": "Diversifying before assessment may add cost and complexity that exceed the risk itself. Treatment should follow analysis.",
-        "C": "Waiting for a failure means assessing the risk only after its impact has already occurred."
+        "C": "Credits compensate after an outage but do not reduce the operational impact of losing a provider that runs 60% of IT operations."
       },
       "tips": [
-        "Eliminate: A accepts an unmeasured exposure, and C waits for the failure to happen.",
+        "Eliminate: A accepts an unmeasured exposure, and C compensates for outages without reducing their impact.",
         "Final two: D beats B because treatment should follow assessment against appetite; diversifying first may cost more than the risk.",
         "Exam cue: assess against appetite before treating; the risk-based answer measures first, then acts proportionately."
       ],
@@ -4452,7 +4452,7 @@
         "Multi-cloud",
         "Contract diversification"
       ],
-      "_provenance": "Authored from concept: 'Vendor concentration risk quantify-then-mitigate, no prior D2 coverage'. Public source: OCC Bulletin 2013-29 + FFIEC. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Vendor concentration risk quantify-then-mitigate, no prior D2 coverage'. Public source: OCC Bulletin 2013-29 + FFIEC. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D2 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): C (defer until failure) was a strawman; it is now higher service credits.",
       "style_version": 2
     },
     {
@@ -4536,7 +4536,7 @@
       "principle_id": "management-owns-risk",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "Management at a bank operating in several US states and the EU wants to anticipate regulatory change. Which approach BEST supports this objective?",
+      "question": "Management at a bank operating in several US states and the EU wants to anticipate regulatory change. Which approach should the IS auditor recommend as BEST?",
       "options": {
         "A": "Respond to each regulation once it is finalized and effective",
         "B": "Rely on external counsel to flag changes it judges material",
@@ -4564,7 +4564,7 @@
         "Emerging regulations",
         "MEA03"
       ],
-      "_provenance": "Authored from concept: 'Regulatory horizon scanning proactive compliance, complements d2_113 (compliance program operationalization)'. Public source: FFIEC + ISACA Compliance Management. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Regulatory horizon scanning proactive compliance, complements d2_113 (compliance program operationalization)'. Public source: FFIEC + ISACA Compliance Management. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D2 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Stem now names the IS auditor.",
       "style_version": 2
     },
     {
@@ -4578,7 +4578,7 @@
         "A": "Apply both laws together and document the basis used",
         "B": "Handle the request under GDPR alone as the stricter regime",
         "C": "Apply CCPA alone, because California residence decides the governing law",
-        "D": "Ask the consumer to resubmit after returning to California"
+        "D": "Refer the requests to the EU lead supervisory authority"
       },
       "correct": "A",
       "key_concept": "When two privacy regimes apply to one request, satisfy the union of obligations, meet the shorter deadline and document the dual basis.",
@@ -4587,10 +4587,10 @@
       "wrong_explanations": {
         "B": "GDPR is often stricter, but not on every point. One regime alone can miss CCPA duties, such as its consumer-verification rules, and leaves no record of dual compliance.",
         "C": "Residence does not switch GDPR off. GDPR can apply through the company's EU establishment or processing, so ignoring it creates exposure.",
-        "D": "Refusing or delaying a valid rights request breaches both laws' response obligations. Administrative burden is not a lawful reason to decline."
+        "D": "Responding to a rights request is the controller's decision; supervisory authorities enforce the law, they do not answer requests for a company."
       },
       "tips": [
-        "Eliminate: C wrongly assumes residence alone decides the law, and D refuses a valid rights request.",
+        "Eliminate: C wrongly assumes residence alone decides the law, and D passes the controller's decision to a regulator.",
         "Final two: A beats B because meeting both regimes and documenting the basis leaves no gap, while one 'stricter' regime can still miss duties.",
         "Exam cue: when several regulations apply, the answer usually satisfies all of them, not the one that looks strictest."
       ],
@@ -4601,7 +4601,7 @@
         "Data subject rights",
         "CCPA"
       ],
-      "_provenance": "Authored from concept: 'Multi-jurisdiction GDPR/CCPA data-subject-rights conflict synthesis - both-apply-with-union, complements d2_066 (multi-jurisdiction privacy program scaling) and d2_107 (GDPR vs SOX)'. Public source: GDPR Articles 3/12/15/17 + CCPA. All scenario specifics (CA resident in EU, dual request, prior consent decisions) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Round 2 review (Oct 2026): CCPA example changed from opt-out of sale to request verification, which applies to access and deletion. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged.",
+      "_provenance": "Authored from concept: 'Multi-jurisdiction GDPR/CCPA data-subject-rights conflict synthesis - both-apply-with-union, complements d2_066 (multi-jurisdiction privacy program scaling) and d2_107 (GDPR vs SOX)'. Public source: GDPR Articles 3/12/15/17 + CCPA. All scenario specifics (CA resident in EU, dual request, prior consent decisions) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Round 2 review (Oct 2026): CCPA example changed from opt-out of sale to request verification, which applies to access and deletion. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. D2 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): D (resubmit from California) was a strawman; it is now referral to the authority, a wrong owner.",
       "style_version": 2
     },
     {
@@ -4615,8 +4615,8 @@
       "options": {
         "A": "Let the CIO accept the excess as owner of the provider relationship",
         "B": "Have the IS auditor sign off the acceptance after testing the analysis",
-        "C": "Accept it without record, given the provider's strong reliability",
-        "D": "Escalate for treatment, or for a documented exception at the proper level"
+        "C": "Accept it with a note in the vendor management file",
+        "D": "Escalate for treatment or a documented exception at the right level"
       },
       "correct": "D",
       "key_concept": "Risk above appetite is treated; keeping it needs a documented exception at the level the risk policy names. Operational owners and auditors cannot accept it.",
@@ -4625,10 +4625,10 @@
       "wrong_explanations": {
         "A": "The CIO manages the relationship but cannot accept risk beyond the board-set appetite; it is treated, or kept only under a documented exception at the level the risk policy names.",
         "B": "Auditors assess and report risk. Signing off acceptance makes the auditor part of management's decision and impairs independence.",
-        "C": "Unrecorded acceptance bypasses governance, and past reliability does not reduce the impact of a provider failure."
+        "C": "A file note is not a risk decision; above-appetite exposure needs treatment or an exception approved at the level the risk policy names."
       },
       "tips": [
-        "Eliminate: B puts the auditor in management's decision, and C accepts the risk without any record.",
+        "Eliminate: B puts the auditor in management's decision, and C records the acceptance in a vendor file instead of escalating it.",
         "Final two: D beats A because above-appetite risk goes up for treatment or a documented exception at the proper level, not acceptance by the operational owner protecting discounts.",
         "Exam cue: when exposure exceeds appetite, look for escalation that leads to treatment, not acceptance lower down."
       ],
@@ -4639,7 +4639,7 @@
         "Exit-readiness",
         "Contract diversification"
       ],
-      "_provenance": "Authored from concept: 'IT outsourcing concentration risk integrated analysis - distinct from d2_118 (concentration application tier). Public source: OCC Bulletin 2013-29 + FFIEC. Scenario specifics invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. v2: retargeted to risk-acceptance authority to avoid duplicating d2_118. Oct 2026: option D and explanation aligned with the notes' risk-acceptance position (above appetite = treat, or a documented exception approved at the level the risk policy names). Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; wording-only lint fixes (key_concept, correct_explanation and wrong_explanations.A shortened to the word caps); stem already named the IS auditor.",
+      "_provenance": "Authored from concept: 'IT outsourcing concentration risk integrated analysis - distinct from d2_118 (concentration application tier). Public source: OCC Bulletin 2013-29 + FFIEC. Scenario specifics invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. v2: retargeted to risk-acceptance authority to avoid duplicating d2_118. Oct 2026: option D and explanation aligned with the notes' risk-acceptance position (above appetite = treat, or a documented exception approved at the level the risk policy names). Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; wording-only lint fixes (key_concept, correct_explanation and wrong_explanations.A shortened to the word caps); stem already named the IS auditor. D2 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): C (accept without record) was a strawman; it is now a vendor-file note. Key trimmed.",
       "style_version": 2
     },
     {
@@ -4652,7 +4652,7 @@
       "options": {
         "A": "Keep the details in the policy so staff find everything together",
         "B": "Move the technical settings into standards that the policy references",
-        "C": "Delete the technical settings entirely, since the engineers already know them",
+        "C": "Issue the settings as guidelines engineers may adapt",
         "D": "Have the board approve each technical setting when it changes"
       },
       "correct": "B",
@@ -4661,11 +4661,11 @@
       "correct_explanation": "A policy states management's intent and direction, so it should change rarely and be approved at a senior level. Settings such as password lengths and port numbers change often and belong in standards, which make the policy measurable and can be updated without re-approving it. Keeping them in the policy feels convenient, but every technical change would then force a full policy revision and approval cycle.",
       "wrong_explanations": {
         "A": "Mixing settings into the policy makes it unstable. Every technology change would trigger a full policy revision and senior approval.",
-        "C": "Undocumented settings cannot be enforced or audited consistently. Mandatory technical requirements must be written down, just at the standard level.",
+        "C": "Mandatory settings issued as advice become optional; they belong in standards so compliance can be required and audited.",
         "D": "The board sets direction and approves policy. Approving individual technical settings is management detail that would overload governance and slow change."
       },
       "tips": [
-        "Eliminate: C leaves mandatory settings undocumented, and D drags the board into technical detail.",
+        "Eliminate: C makes mandatory settings optional, and D drags the board into technical detail.",
         "Final two: B beats A because policy stays stable at the intent level while standards carry settings that change often.",
         "Exam cue: policy says what and why; standards set mandatory specifics; procedures say how; guidelines advise."
       ],
@@ -4676,7 +4676,7 @@
         "Policy stability",
         "Document levels"
       ],
-      "_provenance": "Authored from concept: 'Strategic plan execution mid-cycle pivot - distinct from d2_085 (single-trigger update synthesis at lower complexity)'. Public source: COBIT 2019 APO02. All scenario specifics (retailer 3-pillar strategy, three material changes, mixed-progress pillars) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Cross-domain review (Oct 2026): re-angled or clarified to remove duplication/contradiction. Rebalanced (Oct 2026): re-angled from 2A2 to 2A3.",
+      "_provenance": "Authored from concept: 'Strategic plan execution mid-cycle pivot - distinct from d2_085 (single-trigger update synthesis at lower complexity)'. Public source: COBIT 2019 APO02. All scenario specifics (retailer 3-pillar strategy, three material changes, mixed-progress pillars) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Cross-domain review (Oct 2026): re-angled or clarified to remove duplication/contradiction. Rebalanced (Oct 2026): re-angled from 2A2 to 2A3. D2 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): C (delete the settings) was a strawman; it is now issuing them as guidelines, the wrong document level.",
       "style_version": 2
     },
     {
@@ -4778,7 +4778,7 @@
         "C": "Impact alone ignores likelihood and treatment effectiveness. The largest risk may not deliver the greatest loss reduction per dollar."
       },
       "tips": [
-        "Eliminate: A skips independent analysis, and B abandons treatment without checking appetite.",
+        "Eliminate: A skips independent analysis, and B accepts all three risks without checking them against appetite.",
         "Final two: D beats C because risk-based allocation weighs likelihood and treatment effect, not impact alone.",
         "Exam cue: when choosing among risks for limited funds, prefer the option that quantifies risk reduction against appetite."
       ],
@@ -4789,7 +4789,7 @@
         "FAIR analysis",
         "Risk economics"
       ],
-      "_provenance": "Authored from concept: 'Risk treatment trade-offs across multiple risks - per-dollar expected-loss reduction analysis, complements d2_089 (constrained-budget tiered prioritization) and d2_070 (multi-option treatment scenario)'. Public source: ISO 31000:2018 + ISACA Risk IT + FAIR. All scenario specifics (regional retailer, three competing risks, $1M budget, holiday-season urgency) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Risk treatment trade-offs across multiple risks - per-dollar expected-loss reduction analysis, complements d2_089 (constrained-budget tiered prioritization) and d2_070 (multi-option treatment scenario)'. Public source: ISO 31000:2018 + ISACA Risk IT + FAIR. All scenario specifics (regional retailer, three competing risks, $1M budget, holiday-season urgency) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D2 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Tip no longer says 'abandons'.",
       "style_version": 2
     },
     {
@@ -4802,7 +4802,7 @@
       "question": "A bank has six weeks to assess a FinTech acquisition target with sparse documentation and two disclosed security incidents. Which due diligence approach is MOST appropriate for the IS auditor?",
       "options": {
         "A": "Review the system inventory now and defer depth until closing",
-        "B": "Go deep on critical systems, incident root causes and deal-breakers",
+        "B": "Focus depth on critical systems and the incidents' root causes",
         "C": "Treat the two disclosed incidents as automatic deal-breakers",
         "D": "Rely on the transaction adviser's IT due diligence report"
       },
@@ -4827,7 +4827,7 @@
         "Integration risk",
         "Deal-breaker criteria"
       ],
-      "_provenance": "Authored from concept: 'Acquisition target IT due diligence depth-by-criticality, complements d2_104 (failed M&A integration synthesis at post-deal stage)'. Public source: OCC Comptroller's Licensing Manual — Business Combinations + ISACA M&A. All scenario specifics (regional bank, mid-size FinTech, six-week window, prior incidents) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Acquisition target IT due diligence depth-by-criticality, complements d2_104 (failed M&A integration synthesis at post-deal stage)'. Public source: OCC Comptroller's Licensing Manual — Business Combinations + ISACA M&A. All scenario specifics (regional bank, mid-size FinTech, six-week window, prior incidents) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D2 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Cue balance: the key no longer reads as a three-part list.",
       "style_version": 2
     },
     {
@@ -4841,7 +4841,7 @@
       "options": {
         "A": "Run active-active across regions for every customer tier",
         "B": "Match each tier's resilience investment to its SLA and revenue",
-        "C": "Stay single-region and accept 99.95 percent as close enough",
+        "C": "Add a second region after the next enterprise SLA breach",
         "D": "Run active-passive across regions for every tier with fast failover"
       },
       "correct": "B",
@@ -4850,11 +4850,11 @@
       "correct_explanation": "Resilience spending should follow business value. Enterprise clients with 99.99% SLAs justify multi-region active-active, while self-serve users with no SLA can stay single-region with better operations. Uniform active-passive looks like a balanced compromise, but it overspends on the self-serve tier and its failover time may still breach the 99.99% enterprise commitment.",
       "wrong_explanations": {
         "A": "Uniform active-active pays the highest cost for tiers that have no SLA and generate little revenue. Spending is not aligned to value.",
-        "C": "Staying single-region leaves the 99.99% enterprise SLA unmet. Accepting a known contractual shortfall is not a defensible position.",
+        "C": "Waiting for a breach accepts a known shortfall against a 99.99% commitment and pays penalties before acting.",
         "D": "One mode for all tiers overspends where no SLA exists, and active-passive failover time may still break the 99.99% enterprise SLA."
       },
       "tips": [
-        "Eliminate: A overspends on every tier, and C knowingly misses the enterprise SLA.",
+        "Eliminate: A overspends on every tier, and C waits for an SLA breach the single-region design already makes likely.",
         "Final two: B beats D because investment should follow each tier's business value, not one compromise applied everywhere.",
         "Exam cue: when customers or systems differ in value, prefer the option that tiers controls to match, not a uniform design."
       ],
@@ -4865,7 +4865,7 @@
         "Active-active vs active-passive",
         "Cost-per-availability"
       ],
-      "_provenance": "Authored from concept: 'Cloud cost vs availability trade-off tier-based architecture, complements d2_045 (capacity planning) and d2_087 (multi-cloud governance)'. Public source: ISACA Cloud Architecture + SRE discipline. All scenario specifics (SaaS analytics platform, three customer tiers, mixed SLAs) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): removed mid-tier clients absent from the stem.",
+      "_provenance": "Authored from concept: 'Cloud cost vs availability trade-off tier-based architecture, complements d2_045 (capacity planning) and d2_087 (multi-cloud governance)'. Public source: ISACA Cloud Architecture + SRE discipline. All scenario specifics (SaaS analytics platform, three customer tiers, mixed SLAs) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): removed mid-tier clients absent from the stem. D2 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): C ('close enough') was a strawman; it is now a reactive second region.",
       "style_version": 2
     },
     {
@@ -4880,20 +4880,20 @@
         "A": "Revise it to map capabilities to each business goal",
         "B": "Benchmark the plan against peer maturity scores and close the largest gaps",
         "C": "Rebuild the plan around the top threats in the latest threat assessment",
-        "D": "Reject it and commission a complete rewrite from scratch"
+        "D": "Add an appendix listing the acquisition and expansion security needs"
       },
       "correct": "A",
       "key_concept": "A security strategy must support business objectives; fix a generic plan by mapping capabilities to each business goal with measurable criteria.",
       "pre_read": "Notice the strategy is generic, not wrong. Ask which option creates alignment without wasting the sound parts.",
-      "correct_explanation": "Security strategy exists to support business objectives, so each business goal needs matching capabilities, such as privacy and compliance for expansion and an integration playbook for acquisitions, each with measurable criteria. A full rewrite also produces alignment, but it discards sound protect-detect-respond content and delays the strategy, when targeted revision fixes the actual gap.",
+      "correct_explanation": "Security strategy exists to support business objectives, so each business goal needs matching capabilities, such as privacy and compliance for expansion and an integration playbook for acquisitions, each with measurable criteria. An appendix listing those needs looks quicker, but the plan's priorities and capabilities stay generic; alignment requires revising the plan itself.",
       "wrong_explanations": {
         "B": "Peer benchmarks show where others are mature, not what this firm's expansion and acquisitions need, so closing gaps blindly can fund the wrong capabilities.",
         "C": "Threat-driven planning is still generic to the business. It ignores what expansion and acquisitions require, so alignment remains missing.",
-        "D": "A rewrite discards sound content and delays delivery. The flaw is missing linkage, which targeted revision can address."
+        "D": "An appendix lists needs beside a plan whose priorities and capabilities stay unchanged; alignment means the plan itself is built from the goals."
       },
       "tips": [
-        "Eliminate: B measures against peers, not this firm's goals, and C plans around threats while still ignoring business goals.",
-        "Final two: A beats D because the gap is alignment, which revision fixes without discarding sound work.",
+        "Eliminate: B measures against peers, not this firm's goals, and C plans around threats while the business goals stay unaddressed.",
+        "Final two: A beats D because alignment means mapping each capability to a business goal; an appendix lists needs while the plan stays generic.",
         "Exam cue: when a plan is sound but unaligned, choose the option that connects it to business objectives rather than scrapping it."
       ],
       "framework_ref": "COBIT 2019 EDM01 (Ensured Governance Framework Setting and Maintenance); COBIT 2019 APO13 (Managed Security); ISACA Information Security Management Audit/Assurance Program; ISO/IEC 27014 (Governance of Information Security)",
@@ -4903,7 +4903,7 @@
         "DevSecOps",
         "Security strategy"
       ],
-      "_provenance": "Authored from concept: 'Information Security strategy alignment with business strategy synthesis - business-pillar to InfoSec-capability mapping, complements d2_006 (board accountability) and d2_069 (InfoSec governance integration with EGIT)'. Public source: COBIT 2019 EDM01/APO13 + ISACA InfoSec Governance + ISO/IEC 27014. All scenario specifics (healthcare tech company, three business pillars, generic CISO strategy) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Round 2 review (Oct 2026): stem no longer echoes the key; distractors B (peer benchmark) and C (threat-led rebuild) made plausible.",
+      "_provenance": "Authored from concept: 'Information Security strategy alignment with business strategy synthesis - business-pillar to InfoSec-capability mapping, complements d2_006 (board accountability) and d2_069 (InfoSec governance integration with EGIT)'. Public source: COBIT 2019 EDM01/APO13 + ISACA InfoSec Governance + ISO/IEC 27014. All scenario specifics (healthcare tech company, three business pillars, generic CISO strategy) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Round 2 review (Oct 2026): stem no longer echoes the key; distractors B (peer benchmark) and C (threat-led rebuild) made plausible. D2 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Runner-up D (reject and rewrite) was a strawman; it is now a bolt-on appendix, a partial fix. Tip no longer says 'ignoring'.",
       "style_version": 2
     },
     {
