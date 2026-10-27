@@ -129,7 +129,7 @@ export function sceneKicker(scene: Scene): string | null {
     case 'flow':
       return 'How it flows';
     case 'stack':
-      return 'The layers';
+      return scene.unordered ? 'The parts' : 'The layers';
     case 'compare':
       return 'Side by side';
     case 'trap':
@@ -499,7 +499,7 @@ function LayersScene({ scene }: { scene: Extract<Scene, { type: 'stack' }> }) {
             key={layer.label}
             i={i + 1}
             drop
-            spoken={`Layer ${i + 1} of ${n}: ${layer.label}. ${layer.note}`}
+            spoken={`${scene.unordered ? 'Part' : 'Layer'} ${i + 1} of ${n}: ${layer.label}. ${layer.note}`}
             style={{
               flexDirection: 'row',
               gap: 14,
@@ -514,7 +514,12 @@ function LayersScene({ scene }: { scene: Extract<Scene, { type: 'stack' }> }) {
             }}
           >
             <View style={{ width: 24 }}>
-              <BigNum value={String(i + 1)} size={22} color={i === 0 ? c.accentText : c.ink2} />
+              {scene.unordered ? (
+                // Parallel items: one plain marker each, so no item reads as first or most important.
+                <View style={{ width: 8, height: 8, borderRadius: 4, marginTop: 7, marginLeft: 4, backgroundColor: c.accentText }} />
+              ) : (
+                <BigNum value={String(i + 1)} size={22} color={i === 0 ? c.accentText : c.ink2} />
+              )}
             </View>
             <View style={{ flex: 1 }}>
               <T v="label">{layer.label}</T>

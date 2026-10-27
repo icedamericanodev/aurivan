@@ -2484,7 +2484,7 @@ export const CISA_LESSONS: Lesson[] = [
     references: [
       'COBIT 2019 EDM02 (Ensured Benefits Delivery)',
       'COBIT 2019 APO05 (Managed Portfolio) and APO06 (Managed Budget and Costs)',
-      'ISACA Val IT concepts (value governance, portfolio management and investment management)',
+      'ISACA Val IT 2.0 concepts (value governance, portfolio and investment management), now carried in COBIT 2019 EDM02 and APO05',
     ],
     outlineVersion: OUTLINE,
     lastReviewed: DECISION_LESSONS_2_REVIEWED,
@@ -2515,30 +2515,31 @@ export const CISA_LESSONS: Lesson[] = [
           { label: 'Mandatory', note: 'Legal, regulatory and contract duties, such as a new card-security deadline' },
           {
             label: 'Risk beyond appetite',
-            note: 'Fixes for risks above what senior management is willing to accept (its risk appetite), including threats to customer-critical services',
+            note: 'Fixes for risks above what the board and senior management are willing to accept (the risk appetite), including threats to customer-critical services',
           },
-          { label: 'Growth and change', note: 'New capabilities, ranked by the value they are expected to deliver, tested under more than one scenario' },
+          { label: 'Growth and change', note: 'New capabilities, ranked by the value they are expected to deliver' },
         ],
         caption:
-          'When the budget changes during the year, the whole portfolio is ranked again this way, and the result goes back to the body that approved it, such as the board.',
+          'When the budget changes materially during the year, the portfolio is ranked again this way, and the result goes back to the group that approved it, such as the board.',
       },
       {
         type: 'compare',
         heading: 'What shows IT’s value',
         left: {
           title: 'Activity',
-          points: ['Money spent, compared with similar firms', 'Projects finished on time and on budget', 'Help-desk tickets closed within target'],
+          points: ['Money spent, compared with similar firms', 'Projects finished on time and on budget', 'Service desk tickets closed within target'],
         },
         right: {
           title: 'Value',
-          points: ['Benefits the business case promised, measured after go-live', 'Business results, such as faster claims or fewer losses', 'Compared with the targets set when funding was approved'],
+          points: ['Benefits realized against the business case, measured after go-live', 'Business results, such as faster claims or fewer losses', 'Compared with the targets set when funding was approved'],
         },
-        caption: 'Cost needs an owner too: each team should see what the services it uses cost, and answer for its share.',
+        caption:
+          'Cost needs an owner too: each team should see what the services it uses cost and answer for its share (showback or chargeback). In the cloud, that starts with tagging (labeling) every resource with its owner.',
       },
       {
         type: 'idea',
         heading: 'The IS auditor’s lens',
-        body: 'Spending is a governance decision. As the IS (information systems) auditor, you check that business cases state measurable benefits, that benefits are tracked after delivery, that large changes went back to the body that approved the portfolio, and that each cost has an accountable owner. You test decision rights and evidence, not the arithmetic. You recommend; the board or senior management decides the funding.',
+        body: 'Spending is a governance decision. As the IS (information systems) auditor, you check that business cases state measurable benefits, that benefits are tracked after delivery, that large changes went back to the group that approved the portfolio, and that each cost has an accountable owner. You test decision rights and evidence, not the arithmetic. You recommend; the board or senior management decides the funding.',
       },
       {
         type: 'trap',
@@ -2556,13 +2557,13 @@ export const CISA_LESSONS: Lesson[] = [
           'Mid-year, a hospital group’s board orders a 10% cut in IT spending. A new patient-privacy law also requires system changes by spring. What should the IS auditor recommend?',
         options: [
           'Cut each IT project by 10% so every area shares the cut',
-          'Rank IT work afresh, protecting legal duties, for board approval',
+          'Rank IT work again, protecting legal duties, for board approval',
           'Let the IT director move money between projects without the board',
           'Delay the privacy changes until next year’s budget',
         ],
         correctIndex: 1,
         explanation:
-          'The legal deadline is funded first and the rest is ranked by risk and value; the board approved the original plan, so it approves the changed one. Letting the IT director move the money is tempting because it is quick and the director knows the projects, but a large change to an approved portfolio belongs to the body that approved it. An equal cut starves the legal work, and delaying it would miss the legal deadline.',
+          'The legal deadline is funded first and the rest is ranked by risk and value; the board approved the original plan, so it approves the changed one. Letting the IT director move the money is tempting because it is quick and the director knows the projects, but a large change to an approved portfolio belongs to the group that approved it. An equal cut starves the legal work, and delaying it would miss the legal deadline.',
       },
       {
         type: 'check',
@@ -2572,7 +2573,7 @@ export const CISA_LESSONS: Lesson[] = [
           'IT spending per employee compared with similar firms',
           'The share of projects finished on time and on budget',
           'Service desk tickets resolved within the agreed time',
-          'Faster deliveries from the new route-planning system',
+          'Faster deliveries traced to the new route-planning system',
         ],
         correctIndex: 3,
         explanation:
@@ -2581,16 +2582,16 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'check',
         question:
-          'A media company’s cloud bill rose by half in a year, and nobody can say which teams use which resources. Which practice would BEST support lasting cost control?',
+          'A media company’s cloud bill rose by 50% in a year, and nobody can say which teams use which resources. Which practice would BEST support lasting cost control?',
         options: [
-          'Tag each resource to a team accountable for its cost',
+          'Tag each resource with the team accountable for its cost',
           'Send the finance director a monthly total of the bill',
           'Negotiate a larger volume discount with the provider',
           'Make IT approve every new cloud resource centrally',
         ],
         correctIndex: 0,
         explanation:
-          'When each resource is labeled with the team that uses it, every team sees its own spending and answers for it, so waste gets cut where it starts. Central approval by IT is tempting because it looks like firm control, but it slows every team down and still leaves nobody owning the bill. A monthly total shows the problem without assigning it, and a discount lowers the price without changing the habits.',
+          'When each resource is labeled with the team that uses it, every team sees its own spending and answers for it, so waste gets cut where it starts. Central approval by IT is tempting because it looks like firm control, but it slows every team down and takes accountability away from the teams that actually use the resources. A monthly total shows the problem without assigning it, and a discount lowers the price without changing the habits.',
       },
     ],
   },
@@ -5245,13 +5246,14 @@ export const CISA_LESSONS: Lesson[] = [
     provenance: PROVENANCE,
     references: [
       'NIST SP 800-41 Rev. 1 (Guidelines on Firewalls and Firewall Policy)',
-      'NIST SP 800-53 Rev. 5, CM-2, CM-3 and CM-7 (Baseline Configuration; Configuration Change Control; Least Functionality)',
+      'NIST SP 800-53 Rev. 5, CM-2, CM-3, CM-6 and CM-7 (Baseline Configuration; Configuration Change Control; Configuration Settings; Least Functionality)',
+      'ISO/IEC 27002:2022, Control 8.18 (Use of Privileged Utility Programs)',
       'CIS Benchmarks (Center for Internet Security consensus hardening guides)',
     ],
     outlineVersion: OUTLINE,
     lastReviewed: DECISION_LESSONS_2_REVIEWED,
     topics: ['4A1'],
-    prepares: ['d4_141', 'd4_167', 'd4_057', 'd4_030', 'd4_102'],
+    prepares: ['d4_141', 'd4_167', 'd4_057', 'd4_030'],
     notes: ['4A1.1', '4A1.4'],
     scenes: [
       {
@@ -5263,7 +5265,7 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'idea',
         heading: 'The core idea',
-        body: 'Network devices and operating systems are production systems, just like the applications that run on them. Not every device controls traffic. A switch connects devices inside one part of the network, a router forwards traffic between networks, and a firewall allows or refuses each connection against a rule set (the written list of what may go through). So for any piece of infrastructure, ask whether it can stop the risk at all, and whether it stops it before harm or only records it.',
+        body: 'Network devices and operating systems are production systems (the live systems the business runs on every day), just like the applications that run on them. Not every device controls traffic. A switch connects devices inside one part of the network, a router forwards traffic between networks, and a firewall allows or blocks each connection against a rule set (the written list of what may go through). So for any piece of infrastructure, ask whether it can stop the risk at all, and whether it stops it before harm or only records it.',
       },
       {
         type: 'analogy',
@@ -5273,19 +5275,22 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'stack',
         heading: 'What each part can and cannot do',
+        unordered: true,
         layers: [
           { label: 'Switch', note: 'Connects devices inside one network segment (one part of the network); it moves traffic and does not judge it' },
-          { label: 'Router', note: 'Forwards traffic between networks; simple filter lists help, but it is not built to enforce a security policy' },
+          {
+            label: 'Router',
+            note: 'Forwards traffic between networks; basic filter lists can block some traffic, but its main job is forwarding, not enforcing a full security policy',
+          },
           {
             label: 'Firewall',
-            note: 'Allows or refuses each connection by rule between zones of different trust, such as office desks and payment systems; every path needs rules, including IPv6, the newer address format many servers switch on by default',
+            note: 'Allows or blocks each connection by rule between zones of different trust, such as office computers and payment systems',
           },
           {
             label: 'Operating system and utilities',
-            note: 'The base software every application runs on, plus utilities (powerful admin tools) that can change data directly, skipping the application’s own checks',
+            note: 'The base software every application runs on, plus utilities (privileged administrator tools) that can change data directly, skipping the application’s own checks',
           },
         ],
-        caption: 'All four are production: one wrong change to a firewall rule or a server setting can stop every application that depends on it.',
       },
       {
         type: 'compare',
@@ -5298,22 +5303,23 @@ export const CISA_LESSONS: Lesson[] = [
           title: 'Records it afterward',
           points: ['Changes made live, then written up later', 'Every utility session logged for a monthly review', 'Vendor default settings left on, with alerts on misuse'],
         },
-        caption: 'Logs and reviews still matter as a backstop. They show a bad change or a misused tool after the data has already changed.',
+        caption:
+          'The first kind are preventive controls; the second are detective, a backstop that shows harm only after it is done. Prevention still has to fit the business: when strict settings keep breaking one kind of server, they are tailored to that kind, and each remaining gap becomes an owned, time-limited exception.',
       },
       {
         type: 'idea',
         heading: 'The IS auditor’s lens',
-        body: 'Read each control for what it can stop. As the IS (information systems) auditor, you test that a firewall filters every path between zones of different trust, IPv6 included, that device changes are approved before they go live, and that utilities are kept to named administrators. When strict settings break one type of server, you look for settings tailored to that type, with owned, time-limited gaps, not a return to factory defaults. You recommend; IT management decides the design and owns the fix.',
+        body: 'Read each control for what it can stop. As the IS (information systems) auditor, you test that a firewall filters every path between zones of different trust, that device changes are approved before they go live, that running settings are compared with the approved ones, and that utilities are kept to named administrators. You recommend; IT management decides the design and owns the fix.',
       },
       {
         type: 'trap',
         heading: 'The exam trap',
         trap: '“Developers need the disk-editing utility on production servers, so logging every session is control enough.”',
-        why: 'A log shows misuse after the data has changed, and the utility skips the application’s own checks. This is the principle “Prevent first, and build it in early”: keep the utility to named administrators working through approved requests, and keep the log as the backstop.',
+        why: 'A log shows misuse after the data has changed, the utility skips the application’s own checks, and developers changing production data break segregation of duties. This is the principle “Prevent first, and build it in early”: keep the utility to named administrators working through approved requests, and keep the log as the backstop.',
       },
       {
         type: 'tip',
-        body: 'Ask what each device can enforce: moving traffic is not filtering it, and a side path such as IPv6 needs rules too. A change made live and written up later is a control gap, however good the write-up.',
+        body: 'Ask what each device can enforce: moving traffic is not filtering it. Every route between zones needs rules, including ones nobody remembers switching on. A change made live and written up later is a control gap, however good the write-up.',
       },
       {
         type: 'check',
@@ -5327,21 +5333,21 @@ export const CISA_LESSONS: Lesson[] = [
         ],
         correctIndex: 1,
         explanation:
-          'Only a rule-based filter decides which connections may cross, so a firewall is what enforces the policy. Logging is tempting because it adds oversight, but it records guests reaching patient records after it has happened and stops none of it. A faster router still lets everything through, and separate switches still meet at the same router.',
+          'A rule-based filter decides which connections may cross, so a firewall is what enforces the policy. Logging is tempting because it adds oversight, but it records guests reaching patient records after it has happened and stops none of it. A faster router still lets everything through, and separate switches still meet at the same router.',
       },
       {
         type: 'check',
         question:
-          'At a logistics firm, network engineers change firewall rules directly on the live firewall during busy periods and file the paperwork the next day. Which control should the IS auditor recommend as MOST important?',
+          'At a logistics firm, network engineers change firewall rules directly on the live firewall during busy periods and file the paperwork the next day. Which control is MOST important for the IS auditor to recommend?',
         options: [
           'Have a second engineer review the change log each week',
           'Keep a nightly backup copy of the firewall’s settings',
-          'Require each rule to be approved and tested beforehand',
+          'Require sign-off and a trial run before any rule goes live',
           'Update the network diagram after each rule change',
         ],
         correctIndex: 2,
         explanation:
-          'A rule that has not been approved and tested can open a path or cut a service the moment it goes live, so the control belongs before the change. A weekly log review is tempting because it adds a second pair of eyes, but it finds a bad rule days after it took effect. A backup helps recovery, and an up-to-date diagram documents the change without controlling it.',
+          'A rule that has not been approved and tried out can open a path or cut a service the moment it goes live, so the control belongs before the change. A weekly log review is tempting because it adds a second reviewer, but it finds a bad rule days after it took effect. A backup helps recovery, and an up-to-date diagram documents the change without controlling it.',
       },
       {
         type: 'check',
@@ -5355,7 +5361,7 @@ export const CISA_LESSONS: Lesson[] = [
         ],
         correctIndex: 0,
         explanation:
-          'Settings tailored to each type of server keep most protection in place, and the few gaps are owned and time-limited. Keeping the strict settings everywhere is tempting because it sounds like the most secure choice, but repeated outages are a business risk too and will build pressure to drop hardening altogether. Factory settings, on some servers or all, swap a manageable problem for a larger one, and antivirus does not replace secure settings.',
+          'Settings fitted to each type of server keep most protection in place, and the few gaps are owned and time-limited. Keeping the strict settings everywhere is tempting because it sounds like the most secure choice, but repeated outages are a business risk too and will build pressure to drop hardening altogether. Factory settings, on some servers or all, swap a manageable problem for a larger one, and antivirus does not replace secure settings.',
       },
     ],
   },
@@ -5371,9 +5377,9 @@ export const CISA_LESSONS: Lesson[] = [
     minutes: 5,
     provenance: PROVENANCE,
     references: [
-      'Sarbanes-Oxley Act of 2002, Section 404 (internal control over financial reporting, including IT general controls)',
-      'COBIT 2019 DSS01 (Managed Operations)',
-      'COBIT 2019 DSS06 (Managed Business Process Controls)',
+      'Sarbanes-Oxley Act of 2002, Section 404 (management’s assessment of internal control over financial reporting)',
+      'PCAOB AS 2201 (An Audit of Internal Control Over Financial Reporting, including IT general controls)',
+      'COBIT 2019 DSS01 (Managed Operations) and DSS06 (Managed Business Process Controls)',
     ],
     outlineVersion: OUTLINE,
     lastReviewed: DECISION_LESSONS_2_REVIEWED,
@@ -5390,7 +5396,7 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'idea',
         heading: 'The core idea',
-        body: 'End-user computing (EUC) means tools that business staff build and run themselves, such as spreadsheets, desktop databases and macros (small programs inside a spreadsheet). Batch jobs are programs a scheduler runs unattended, often overnight, to process many transactions at once. Both can produce key figures without going through IT’s usual development controls. So control follows risk: find them, rank them by what they feed, control the critical ones hardest, and prove their output is complete and accurate.',
+        body: 'End-user computing (EUC) means tools that business staff build and run themselves, such as spreadsheets and macros (small programs inside a spreadsheet). Batch jobs are programs that a scheduler (software that starts jobs at set times) runs unattended, often overnight. Both can produce key figures with nobody watching each step. So control follows risk: rank each tool by what it feeds and control the critical ones hardest. For batch jobs, proof matters most after a failure: a rerun must not miss or repeat anything.',
       },
       {
         type: 'analogy',
@@ -5424,10 +5430,9 @@ export const CISA_LESSONS: Lesson[] = [
         },
         right: {
           title: 'Rerun',
-          points: ['Starts the whole job again from the beginning', 'First back out the partial updates', 'Needed when the checkpoint cannot be trusted'],
+          points: ['Starts the whole job again from the beginning', 'First reverse (back out) the partial updates', 'Needed when the checkpoint cannot be trusted'],
         },
-        caption:
-          'Either way, compare control totals (record counts and amounts) before and after, so nothing is missed or processed twice. A deadline alert, not a customer complaint, should be the first sign that a batch is running late.',
+        caption: 'Either way, compare control totals (record counts and amounts) before and after, so nothing is missed or processed twice.',
       },
       {
         type: 'idea',
@@ -5437,19 +5442,19 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'trap',
         heading: 'The exam trap',
-        trap: '“Each owner rated their own spreadsheets, all came out low risk, so light controls are enough.”',
-        why: 'Owners tend to rate their own tools low, even ones that feed the financial statements. This is the principle “Risk decides where effort goes”: effort follows the real risk, so tools are rated against set criteria, and someone other than the owner checks the ratings.',
+        trap: '“IT should simply reclassify the spreadsheets that feed the financial statements as high risk.”',
+        why: 'That fixes the ratings someone happened to notice, but owners will keep rating new and changed tools low. This is the principle “Root cause beats symptom”: the cause is owners rating their own tools with no set criteria, so set the criteria and have someone other than the owner check every rating.',
       },
       {
         type: 'tip',
-        body: 'Ask what the tool or job feeds: that sets how much control it needs. Before running a job again from the start, back out its partial updates. A success message is not proof; reconciled totals are.',
+        body: 'Ask what the tool or job feeds: that sets how much control it needs. Before running a job again from the start, reverse its partial updates. A success message is not proof; reconciled totals are.',
       },
       {
         type: 'check',
         question:
           'A finance director asks how changes to the department’s 300 spreadsheets and macros should be controlled. Most are personal working files; a few feed the quarterly report. What should the IS auditor recommend?',
         options: [
-          'Match the change controls to what each file feeds',
+          'Set controls by how much each file affects the report',
           'Put every file through IT’s full development process',
           'Let a teammate glance over changes informally',
           'Ban macros in the finance department',
@@ -5461,25 +5466,25 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'check',
         question:
-          'A payroll batch failed halfway through, after paying part of the run. Its checkpoint file is damaged, so operators plan to run the whole job again from the start. What should the IS auditor confirm FIRST?',
+          'A payroll batch failed halfway through, after posting part of the run. Its checkpoint file is damaged, so operators plan to run the whole job again from the start. What should the IS auditor confirm FIRST?',
         options: [
           'The payroll manager has approved the rerun in writing',
           'The rerun will take place during staffed office hours',
           'The job’s log will be kept for the next audit',
-          'The payments the failed run made have been reversed',
+          'The failed run’s partial postings have been backed out',
         ],
         correctIndex: 3,
         explanation:
-          'Without reversing what the failed run already paid, a full rerun pays those people twice. Written approval is tempting because a rerun should be authorized, but approval does not stop the double payments. Office hours and keeping the log help with oversight, not with getting the run right.',
+          'Unless the postings the failed run already made are backed out, a full rerun posts them again and pays those people twice. Written approval is tempting because a rerun should be authorized, but approval does not stop the double postings. Office hours and keeping the log help with oversight, not with getting the run right.',
       },
       {
         type: 'check',
         question:
-          'Actuaries at an insurer use an AI assistant to write macros in the spreadsheet that calculates claims reserves for the financial statements. Which control should the IS auditor recommend as MOST important?',
+          'Actuaries at an insurer use an AI assistant to write macros in the spreadsheet that calculates claims reserves for the financial statements. Which control is MOST important for the IS auditor to recommend?',
         options: [
           'Limit the AI assistant to staff with advanced training',
           'Keep a record of the prompts each actuary used',
-          'Have a reviewer outside the team test each macro before use',
+          'Have an independent reviewer test each macro before use',
           'Block AI assistants on the finance team’s computers',
         ],
         correctIndex: 2,
@@ -7357,7 +7362,7 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'idea',
         heading: 'The core idea',
-        body: 'A security baseline is the minimum setup every system of one type must meet, such as patches applied, unused services off and logging on. When a system cannot meet it, the gap needs a formal exception: written down, accepted by the risk owner, given an end date and backed by a compensating control (a stand-in safeguard that reduces the same risk). An exception is a temporary risk decision, not a permanent permission.',
+        body: 'A security baseline is the minimum setup every system of one type must meet, such as patches applied, unused services off and logging on. When a system cannot meet it, the gap needs a formal exception (sometimes called a waiver): written down, accepted by the risk owner, given an end date and backed by a compensating control (a stand-in safeguard that reduces the same risk). An exception is a temporary risk decision, not a permanent permission.',
       },
       {
         type: 'analogy',
@@ -7367,6 +7372,7 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'stack',
         heading: 'What makes an exception valid',
+        unordered: true,
         layers: [
           {
             label: 'Written down',
@@ -7374,7 +7380,7 @@ export const CISA_LESSONS: Lesson[] = [
           },
           {
             label: 'Owned',
-            note: 'Accepted by the risk owner at the level the risk policy names, not by IT alone or by the person asking',
+            note: 'Accepted by the risk owner at the level the risk policy names, not by IT alone or by a requester who does not own the risk',
           },
           { label: 'Time-limited', note: 'An end date and a review, because threats, data and systems change' },
           {
@@ -7382,26 +7388,25 @@ export const CISA_LESSONS: Lesson[] = [
             note: 'A compensating control, such as moving the system onto its own restricted network segment, that someone has checked is working',
           },
         ],
-        caption: 'Seniority does not create an exception. Neither does asking after a control has already stopped you.',
       },
       {
         type: 'compare',
         heading: 'Exception, or policy breach?',
         left: {
           title: 'A valid exception',
-          points: ['A business need that no approved route can meet', 'Requested and accepted before the gap opens', 'Ends on a set date unless reassessed'],
+          points: ['A business need that no approved route can meet', 'Requested through the process and accepted by the risk owner', 'Ends on a set date unless reassessed'],
         },
         right: {
           title: 'A policy breach',
-          points: ['An approved route existed but was skipped', 'Asked for once a control has blocked it', 'Granted because of who is asking'],
+          points: ['An approved route existed but was skipped', 'Asked for afterward, to excuse what a control blocked', 'Granted because of who is asking'],
         },
         caption:
-          'A data loss prevention (DLP) tool watches for sensitive data leaving the organization. When it stops a senior manager sending files to a personal account, and an approved route existed, the tool has worked: the block stays, and the breach is reported.',
+          'Example: a USB block stops a manager copying client files to a personal drive, although a secure shared folder was available. The control has worked: the block stays, and the breach is reported.',
       },
       {
         type: 'idea',
         heading: 'The IS auditor’s lens',
-        body: 'An exception is only as safe as its compensating control. As the IS (information systems) auditor, you check that each exception has an owner at the right level, an end date and a review, and you test that the compensating control actually operates, rather than accepting that it is listed on the form. You recommend; senior management or the business owner the risk policy names accepts the residual risk or orders the fix.',
+        body: 'An exception is only as safe as its compensating control. As the IS (information systems) auditor, you check that each exception has an owner at the right level, an end date and a review, and you test that the compensating control actually operates, rather than accepting that it is listed on the form. You recommend; senior management, or the business owner named in the risk policy, accepts the residual risk or orders the fix.',
       },
       {
         type: 'trap',
@@ -7420,75 +7425,75 @@ export const CISA_LESSONS: Lesson[] = [
         options: [
           'Remove the patch requirement from the baseline for all systems',
           'Leave the analyzer unpatched until the vendor supports it',
-          'Have the director sign a dated exception with safeguards',
+          'Have the director sign an exception with an end date and safeguards',
           'Move the analyzer onto its own isolated network segment',
         ],
         correctIndex: 2,
         explanation:
-          'A gap from the baseline needs a business decision with limits: the director, who owns the analyzer’s risk, accepts it for a set period, backed by safeguards. Isolating the analyzer is tempting because it is the right kind of safeguard, but on its own nobody has accepted the risk that remains or set a date to look again. Removing the requirement weakens every other system, and waiting leaves an open gap that nobody owns.',
+          'A gap from the baseline needs a business decision with limits: the director, who owns the analyzer and its risk, accepts it for a set period, backed by safeguards. Isolating the analyzer is tempting because it is the right kind of safeguard, but on its own nobody has accepted the risk that remains or set a date to look again. Removing the requirement weakens every other system, and waiting leaves an open gap that nobody owns.',
       },
       {
         type: 'check',
         question:
           'A data loss prevention (DLP) tool held a finance director’s email sending the draft budget to a personal account. The company’s secure file-sharing service was available to the director. The director asks for the email to be released. What should the IS auditor recommend?',
         options: [
-          'Keep the email held and raise it as a policy violation',
+          'Keep the email held and report it as a policy breach',
           'Release it and record it as an approved policy exception',
           'Release it once the director promises to delete the copy',
           'Set the rule to alert without blocking for senior staff',
         ],
         correctIndex: 0,
         explanation:
-          'The approved service was available, so this is a breach of policy, not a business need the rules failed to meet. Recording an exception is tempting because exceptions are a normal process, but an exception is agreed in advance for a need no approved route can meet, not granted after a control has stopped someone. A promise to delete cannot be checked, and alert-only rules for senior staff switch protection off for the people who hold the most sensitive data.',
+          'The approved service was available, so this is a breach of policy, not a business need the rules failed to meet. Recording an exception is tempting because exceptions are a normal process, but an exception covers a need no approved route can meet; it is not granted afterward to excuse what a control stopped. A promise to delete cannot be checked, and alert-only rules for senior staff switch protection off for the people who hold the most sensitive data.',
       },
       {
         type: 'check',
         question:
           'A payments firm has 30 approved security exceptions. Each names a compensating control and an end date, but nobody has checked whether those controls are running. What is the IS auditor’s GREATEST concern?',
         options: [
-          'The register is kept in a spreadsheet rather than a tool',
+          'The list of exceptions is kept in a spreadsheet, not a tool',
           'The exceptions have not been reported to the board this year',
           'So many exceptions suggest the baseline itself is too strict',
           'The real residual risk may be higher than the owners accepted',
         ],
         correctIndex: 3,
         explanation:
-          'The owners accepted the risk on the belief that the compensating controls work; if they do not, the risk left over is larger than anyone agreed to. Blaming a too-strict baseline is tempting because many exceptions can be a warning sign, but the fact in the question is untested controls, not too many rules. Reporting to the board and the register’s format matter less than whether the safeguards exist.',
+          'The owners accepted the risk on the belief that the compensating controls work; if they do not, the risk left over is larger than anyone agreed to. Blaming a too-strict baseline is tempting because many exceptions can be a warning sign, but the fact in the question is untested controls, not too many rules. Reporting to the board and the list’s format matter less than whether the safeguards actually work.',
       },
     ],
   },
 
-  // Mobile decision lesson 8 (curriculum §4): outline topic 5A9, notes 5A9.1, 5A9.4 and 5A9.3. One decision: when a device
-  // cannot be managed or patched, control what it can reach, and count a control only when it acts.
+  // Mobile decision lesson 8 (curriculum §4): outline topic 5A9, notes 5A9.1 and 5A9.4. One decision: when a device
+  // cannot be managed or patched, control what it can reach, and count a control only when it acts. Rogue access
+  // points (5A9.3) were cut after review, since no check tested them; they stay in their note.
   {
     id: 'cisa-l-d5-unmanaged-devices',
     certId: 'cisa',
     domainId: '5',
     order: 18,
-    title: 'Devices you do not own or cannot patch: BYOD, wireless and IoT',
+    title: 'Devices you do not own or cannot patch: BYOD and IoT',
     minutes: 5,
     provenance: PROVENANCE,
     references: [
       'NIST SP 800-124 Rev. 2 (Guidelines for Managing the Security of Mobile Devices in the Enterprise)',
       'NIST IR 8259A (IoT Device Cybersecurity Capability Core Baseline)',
-      'NIST SP 800-153 (Guidelines for Securing Wireless Local Area Networks (WLANs))',
     ],
     outlineVersion: OUTLINE,
     lastReviewed: DECISION_LESSONS_2_REVIEWED,
     topics: ['5A9'],
-    prepares: ['d5_092', 'd5_093', 'd5_027', 'd5_094', 'd5_095', 'd5_332'],
-    notes: ['5A9.1', '5A9.4', '5A9.3'],
+    prepares: ['d5_092', 'd5_093', 'd5_027', 'd5_094', 'd5_241'],
+    notes: ['5A9.1', '5A9.4'],
     scenes: [
       {
         type: 'title',
-        kicker: 'Domain 5 · Mobile, wireless and IoT',
+        kicker: 'Domain 5 · Mobile and IoT devices',
         title: 'Devices you cannot fully control',
         subtitle: 'When a device is not yours to manage, control what it can reach, and count a control only when it acts.',
       },
       {
         type: 'idea',
         heading: 'The core idea',
-        body: 'Some devices sit outside the usual controls: staff phones under bring your own device (BYOD), wireless access points someone plugs in without permission, and Internet of Things (IoT) devices, such as cameras and sensors, that cannot run security software or be patched easily. You cannot fully secure a device you do not own or cannot change. So the control moves to the edge: decide what each device may reach, block or isolate it when it falls short, and keep proof that the control acted.',
+        body: 'Some devices sit outside the usual controls: staff phones under bring your own device (BYOD), and Internet of Things (IoT) devices, such as cameras and sensors, that cannot run security software or be patched easily. You cannot fully secure a device you do not own or cannot change. So the control moves to the edge: decide what each device may reach, block or isolate it when it falls short, and keep proof that the control acted.',
       },
       {
         type: 'analogy',
@@ -7497,19 +7502,16 @@ export const CISA_LESSONS: Lesson[] = [
       },
       {
         type: 'stack',
-        heading: 'Three kinds of device, one approach',
+        heading: 'Two kinds of device, one approach',
+        unordered: true,
         layers: [
           {
             label: 'Personal phones',
-            note: 'Mobile device management (MDM) software enforces the rules and blocks phones that fail them; company data sits in a separate work area that can be wiped on its own, leaving personal photos alone',
-          },
-          {
-            label: 'Rogue access points',
-            note: 'Unapproved wireless devices plugged into an office network port; stop them at the port by making every device prove its identity, and find the rest with wireless monitoring that someone reviews',
+            note: 'Mobile device management (MDM) software enforces the rules and blocks phones that fail them; company data sits in a separate work area (a container) that can be wiped on its own, leaving personal photos alone',
           },
           {
             label: 'IoT devices',
-            note: 'Listed with an owner, bought only if they meet security requirements such as unique passwords and updates, and kept on their own restricted part of the network',
+            note: 'Found and listed with an owner, bought only if they meet security requirements such as unique passwords and updates, and kept on their own restricted part of the network',
           },
         ],
         caption: 'For phones, loss and theft are the most likely threats, so encryption, a screen lock and remote wipe are the starting point.',
@@ -7519,24 +7521,24 @@ export const CISA_LESSONS: Lesson[] = [
         heading: 'A control that acts, or one that only reports',
         left: {
           title: 'Acts',
-          points: ['Phones that fail the rules lose access to company email', 'The device confirms the wipe has finished', 'Wireless alerts go to a named owner who acts'],
+          points: ['Phones that fail the rules lose access to company email', 'The device confirms the wipe has finished', 'Each IoT device has a named owner who acts on its alerts'],
         },
         right: {
           title: 'Only reports',
-          points: ['A weekly list of phones that fail the rules', 'The console shows the wipe command was sent', 'Alerts are logged, but nobody reviews them'],
+          points: ['A weekly list of phones that fail the rules', 'The management console (the admin screen) shows the wipe was sent', 'IoT alerts are logged, but nobody owns the devices'],
         },
-        caption: 'Until a wipe is confirmed, treat the data as exposed: end the device’s sessions centrally and revoke its access.',
+        caption: 'Until a wipe is confirmed, treat the data as exposed: sign the device out of company services and cut its access.',
       },
       {
         type: 'idea',
         heading: 'The IS auditor’s lens',
-        body: 'Control what the device can reach, and keep the proof. As the IS (information systems) auditor, you test that phones failing the rules are really blocked, that lost-device cases close on confirmed wipes, that IoT devices are listed, owned and kept on a restricted network segment, and that wireless alerts are reviewed and acted on. You recommend; management decides what personal devices may reach and owns the device policy.',
+        body: 'Control what the device can reach, and keep the proof. As the IS (information systems) auditor, you test that phones failing the rules are really blocked, that lost-device cases close on confirmed wipes, and that IoT devices are listed, owned and kept on a restricted network segment. You recommend; management decides what personal devices may reach and owns the device policy.',
       },
       {
         type: 'trap',
         heading: 'The exam trap',
         trap: '“The console shows the remote wipe was sent, so the lost tablet’s data is gone.”',
-        why: 'A wipe runs only when the device receives it, and a lost device may never connect again. This is the principle “Operating, not just configured”: the case closes on proof that the wipe finished; until then, revoke the device’s access and treat the data as exposed.',
+        why: 'A wipe runs only when the device receives it, and a lost device may never connect again. This is the principle “Operating, not just configured”: the case closes on proof that the wipe finished; until then, cut the device’s access and treat the data as exposed.',
       },
       {
         type: 'tip',
@@ -7548,7 +7550,7 @@ export const CISA_LESSONS: Lesson[] = [
           'A firm’s mobile device management (MDM) tool reports each week that about 200 staff phones fail the security rules, such as having no screen lock. Those phones still sync company email. What is the IS auditor’s GREATEST concern?',
         options: [
           'The weekly report goes to IT rather than to security',
-          'Phones that break the rules keep reaching company data',
+          'Phones that fail the rules keep reaching company data',
           'Staff have not been told why their phones fail',
           'The tool may not be covering company tablets too',
         ],
@@ -7573,7 +7575,7 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'check',
         question:
-          'A hotel chain’s door locks, thermostats and cameras cannot run security software, and they share one network with the front-desk computers. Which recommendation should the IS auditor consider BEST?',
+          'A cinema chain’s door locks, thermostats and cameras cannot run security software, and they share one network with the box-office computers. Which recommendation should the IS auditor consider BEST?',
         options: [
           'Separate the devices from staff systems, allowing only needed traffic',
           'Change each device’s factory password and keep the network as is',
@@ -7582,7 +7584,7 @@ export const CISA_LESSONS: Lesson[] = [
         ],
         correctIndex: 0,
         explanation:
-          'Devices that cannot protect themselves are kept apart and allowed only the traffic they need, so one hijacked camera cannot reach the front desk. Changing the factory passwords is tempting because default passwords are a real weakness, but the devices would still sit beside staff systems with nothing between them. Most of these devices cannot run security software, and a three-year replacement plan leaves the risk open now.',
+          'Devices that cannot protect themselves are kept apart and allowed only the traffic they need, so one compromised camera cannot reach the box office. Changing the factory passwords is tempting because default passwords are a real weakness, but the devices would still sit beside staff systems with nothing between them. The question says these devices cannot run security software, and a three-year replacement plan leaves the risk open now.',
       },
     ],
   },

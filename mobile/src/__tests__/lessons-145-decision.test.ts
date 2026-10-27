@@ -68,7 +68,7 @@ const DECISION: { id: string; domainId: string; topics: string[]; notes: string[
     id: 'cisa-l-d5-unmanaged-devices',
     domainId: '5',
     topics: ['5A9'],
-    notes: ['5A9.1', '5A9.4', '5A9.3'],
+    notes: ['5A9.1', '5A9.4'],
     principles: ['proven-not-configured'],
   },
   {
@@ -83,7 +83,7 @@ const DECISION: { id: string; domainId: string; topics: string[]; notes: string[
     domainId: '4',
     topics: ['4A5', '4A3'],
     notes: ['4A5.2', '4A3.2'],
-    principles: ['risk-sets-priority'],
+    principles: ['root-cause-over-symptom'],
   },
 ];
 
