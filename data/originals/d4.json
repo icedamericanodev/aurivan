@@ -7154,7 +7154,7 @@
         "D": "A past event had different systems, staff and conditions, so it cannot reliably predict this recovery."
       },
       "tips": [
-        "Eliminate: A ignores dependencies, and D relies on a different event.",
+        "Eliminate: A overlooks that the slowest system may itself wait on others, and D relies on an event with different systems and staff.",
         "Final two: C beats B because recovery runs in parallel where dependencies allow, so the dependency chain sets the total, not the sum.",
         "Exam cue: total recovery time follows the critical path through dependencies, limited by the staff available."
       ],
@@ -7166,7 +7166,7 @@
         "Verification buffer",
         "Staffing-constrained parallelism"
       ],
-      "_provenance": "Authored from concept: 'Recovery time critical-path arithmetic per NIST SP 800-34 and PMI CPM'. Public sources: NIST, ISO, ISACA, PMI. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Round 2 review (Oct 2026): framework_ref updated to the current edition (PMBOK Guide 8th Edition, 2025). Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged.",
+      "_provenance": "Authored from concept: 'Recovery time critical-path arithmetic per NIST SP 800-34 and PMI CPM'. Public sources: NIST, ISO, ISACA, PMI. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Round 2 review (Oct 2026): framework_ref updated to the current edition (PMBOK Guide 8th Edition, 2025). Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. D4 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Eliminate tip no longer uses dismissive wording.",
       "style_version": 2
     },
     {
@@ -7231,7 +7231,7 @@
         "D": "Re-performing everything defeats the purpose of relying on another auditor's work and is rarely justified."
       },
       "tips": [
-        "Eliminate: C swaps in a less detailed report, and D discards the reliance entirely.",
+        "Eliminate: C swaps in a summary report without test detail, and D re-performs the work that reliance is meant to avoid.",
         "Final two: A beats B because an opinion only means something for the scope it covers; relevance must be confirmed first.",
         "Exam cue: before relying on another auditor's work, confirm it covers what you need, then judge its results."
       ],
@@ -7243,7 +7243,7 @@
         "Trust Services Criteria",
         "Auditor's opinion (qualified/unqualified)"
       ],
-      "_provenance": "Authored from concept: 'SOC report evaluation per AICPA Trust Services and ISACA Vendor Management Audit Program'. Public sources: AICPA, ISACA. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'SOC report evaluation per AICPA Trust Services and ISACA Vendor Management Audit Program'. Public sources: AICPA, ISACA. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D4 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Eliminate tip no longer uses dismissive wording.",
       "style_version": 2
     },
     {
@@ -7269,7 +7269,7 @@
         "D": "Vendor playbooks cover equipment, not the firm's own priorities, staff and dependencies. Accountability for continuity stays with the firm."
       },
       "tips": [
-        "Eliminate: C ignores OT's physical safety constraints, and D hands the plan to suppliers.",
+        "Eliminate: C applies IT targets that do not fit OT's physical safety constraints, and D hands the plan to suppliers.",
         "Final two: A beats B because OT needs its own sequences inside one enterprise plan, so business impact and coordination cover both IT and OT.",
         "Exam cue: specialized systems need tailored procedures, but within one enterprise continuity program, not a silo."
       ],
@@ -7281,7 +7281,7 @@
         "IT-OT convergence",
         "Process safety management"
       ],
-      "_provenance": "Authored from concept: 'OT in BCP per NIST SP 800-82 Rev 3 and IEC 62443'. Public sources: NIST, IEC, CISA, OSHA. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged.",
+      "_provenance": "Authored from concept: 'OT in BCP per NIST SP 800-82 Rev 3 and IEC 62443'. Public sources: NIST, IEC, CISA, OSHA. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. D4 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Eliminate tip no longer uses dismissive wording.",
       "style_version": 2
     },
     {
@@ -7294,9 +7294,9 @@
       "question": "Attackers have phoned a firm's help desk posing as executives to request MFA resets. Which control should the IS auditor recommend as MOST effective?",
       "options": {
         "A": "Training agents to recognize social-engineering pressure tactics",
-        "B": "Shortening reset times to reduce executive complaints",
+        "B": "Calling back the phone number the caller provides",
         "C": "Requiring out-of-band identity verification before any MFA reset",
-        "D": "Outsourcing the help desk to transfer the liability"
+        "D": "Logging each MFA reset for weekly security review"
       },
       "correct": "C",
       "key_concept": "Help-desk resets of privileged credentials need out-of-band identity verification, a process control that does not rely on agent judgment.",
@@ -7304,11 +7304,11 @@
       "correct_explanation": "The attack works because a convincing voice is accepted as proof of identity. Verifying the caller through a separate, pre-registered channel before any reset removes that weakness, however persuasive the caller is. Training raises awareness and helps, but it still depends on each agent spotting a skilled impostor under pressure, which attackers are practiced at defeating.",
       "wrong_explanations": {
         "A": "Training helps, but it relies on each agent judging a skilled impostor under pressure. A verification step does not depend on that judgment.",
-        "B": "Faster resets serve convenience and make the attacker's job easier, not harder.",
-        "D": "Outsourcing moves the work, not the accountability, and does nothing to verify callers."
+        "B": "A callback to a number the attacker supplies verifies nothing; verification must use a channel registered in advance.",
+        "D": "Weekly review detects a fraudulent reset after the attacker has already used the account."
       },
       "tips": [
-        "Eliminate: B helps the attacker, and D moves the work without fixing verification.",
+        "Eliminate: B calls the attacker back on their own number, and D detects a fraudulent reset only after it is used.",
         "Final two: C beats A because a mandatory verification step works regardless of how convincing the caller is, while training relies on judgment.",
         "Exam cue: prefer a control built into the process over one that relies on people noticing an attack."
       ],
@@ -7320,7 +7320,7 @@
         "Authority limits",
         "Phishing exercise"
       ],
-      "_provenance": "Authored from concept: 'Help-desk social engineering mitigation per NIST SP 800-63B and CISA Phishing Guidance'. Public sources: NIST, CISA, ISACA. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged.",
+      "_provenance": "Authored from concept: 'Help-desk social engineering mitigation per NIST SP 800-63B and CISA Phishing Guidance'. Public sources: NIST, CISA, ISACA. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. D4 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): B (faster resets) and D (outsource for liability) were strawmen; they are now a callback to the caller's number and weekly reset-log review.",
       "style_version": 2
     },
     {
@@ -7329,24 +7329,24 @@
       "subtopic": "Capacity Planning for Cloud-Native Workloads",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A firm relies on autoscaling for a cloud-native application but does not track the provider's service quotas. What is the GREATEST capacity risk for the IS auditor to report?",
+      "question": "A firm relies on autoscaling for a cloud-native application but has never checked its cloud account's service quotas. What is the GREATEST capacity risk for the IS auditor to report?",
       "options": {
-        "A": "Developers may lose access to the provider's console",
-        "B": "Autoscaling may stall at quota limits during peak demand",
+        "A": "Autoscaling may react too slowly to a sudden traffic spike",
+        "B": "New instances may be refused when demand peaks",
         "C": "Unchecked scaling may cause unplanned cloud cost overruns each month",
-        "D": "The provider may raise prices for reserved capacity"
+        "D": "Reserved capacity commitments may go partly unused"
       },
       "correct": "B",
       "key_concept": "Cloud capacity planning must track provider service quotas, because autoscaling stops at those hard limits during peak demand.",
       "pre_read": "Notice what the firm does not track. Ask what happens to autoscaling when it reaches that limit.",
       "correct_explanation": "Autoscaling only works up to the account's service quotas. If nobody tracks them, the application can hit a hard limit at the busiest moment and fail to scale, causing an outage when demand is highest. Unexpected cost is a real risk of autoscaling, but it is a financial issue; the stem asks about capacity and availability.",
       "wrong_explanations": {
-        "A": "Console access is an access management issue, unrelated to whether the application can scale under load.",
+        "A": "Scaling lag causes brief slowdowns while instances start, but scaling still completes; a quota stops it entirely.",
         "C": "Cost overruns are a real autoscaling risk, but they are a financial issue. They do not stop the application from serving users at peak.",
-        "D": "Price changes affect budget, not whether capacity is available when demand rises."
+        "D": "Unused reservations waste money but leave capacity available at peak."
       },
       "tips": [
-        "Eliminate: A is an access matter, and D is a pricing matter.",
+        "Eliminate: A is a short start-up lag after which scaling completes, and D is the cost of unused reservations.",
         "Final two: B beats C because a quota limit causes an outage at peak demand, while cost overruns are a financial rather than capacity risk.",
         "Exam cue: elastic does not mean unlimited; cloud capacity planning includes tracking provider quotas."
       ],
@@ -7358,7 +7358,7 @@
         "FinOps",
         "Dependency-aware scaling"
       ],
-      "_provenance": "Authored from concept: 'Cloud-native capacity planning per AWS Well-Architected and FinOps Foundation'. Public sources: AWS, Microsoft, FinOps Foundation, ISACA. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Cloud-native capacity planning per AWS Well-Architected and FinOps Foundation'. Public sources: AWS, Microsoft, FinOps Foundation, ISACA. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D4 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): A (console access) and D (pricing) were off-category; they are now scaling lag and unused reservations. Gap-echo: the key no longer repeats 'quota'.",
       "style_version": 2
     },
     {
@@ -7461,7 +7461,7 @@
         "D": "Error-rate reporting detects problems a month late and does not stop faulty logic reaching production."
       },
       "tips": [
-        "Eliminate: C abandons a useful automation instead of controlling it, and D detects errors a month after payments go wrong.",
+        "Eliminate: C gives up the automation instead of controlling its changes, and D detects errors a month after payments go wrong.",
         "Final two: A beats B because testing and approval come before the change; documentation only records it afterward.",
         "Exam cue: automation logic is code, so any change to it follows normal change management, whoever owns the bot."
       ],
@@ -7472,7 +7472,7 @@
         "Production code control",
         "Testing before promotion"
       ],
-      "_provenance": "Authored from concept: 'Emergency change introduced security issue with potential breach'. Public sources: FTC, state AGs, NIST, ISACA, SEC. Scenario specifics (consumer financial services $2.3B, emergency change disabled authentication, 14 microservices, 72-hour exposure, 2,400 customers' financial metadata accessed) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Rebalanced (Oct 2026): re-angled from 5B5 to 4A3.",
+      "_provenance": "Authored from concept: 'Emergency change introduced security issue with potential breach'. Public sources: FTC, state AGs, NIST, ISACA, SEC. Scenario specifics (consumer financial services $2.3B, emergency change disabled authentication, 14 microservices, 72-hour exposure, 2,400 customers' financial metadata accessed) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Rebalanced (Oct 2026): re-angled from 5B5 to 4A3. D4 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Eliminate tip no longer uses dismissive wording.",
       "style_version": 2
     },
     {
@@ -7499,7 +7499,7 @@
         "D": "Patching test systems leaves production exposed to a flaw already being exploited."
       },
       "tips": [
-        "Eliminate: C ignores the deadline, and D leaves production exposed.",
+        "Eliminate: C misses the three-day deadline, and D leaves production exposed.",
         "Final two: B beats A because management can accept its own risks but cannot waive an external mandate; the formal exception route can.",
         "Exam cue: when an external rule and a business need clash, use the rule's own exception process rather than internal sign-off."
       ],
@@ -7511,7 +7511,7 @@
         "CMMC certification",
         "Patch-window scheduling conflicts"
       ],
-      "_provenance": "Authored from concept: 'Patch deferral with regulatory deadline conflict — formal extension request multi-track'. Public sources: CISA, NIST, DoD CMMC. Scenario specifics (federal contractor $760M, CUI processing, CMMC renewal 5 weeks, CISA KEV catalog 14-day rule, 11 days elapsed, DoD deliverable 8 days, 6-hour outage required) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): stem now states the directive has its own exception process. Blind re-check clarity fix (Oct 2026).",
+      "_provenance": "Authored from concept: 'Patch deferral with regulatory deadline conflict — formal extension request multi-track'. Public sources: CISA, NIST, DoD CMMC. Scenario specifics (federal contractor $760M, CUI processing, CMMC renewal 5 weeks, CISA KEV catalog 14-day rule, 11 days elapsed, DoD deliverable 8 days, 6-hour outage required) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): stem now states the directive has its own exception process. Blind re-check clarity fix (Oct 2026). D4 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Eliminate tip no longer uses dismissive wording.",
       "style_version": 2
     },
     {
@@ -7523,7 +7523,7 @@
       "bloom_level": "Analysis",
       "question": "During suspected ransomware on a chemical plant's SCADA system, operators run reactors manually and one reactor nears its cutoff temperature. Which action would the IS auditor consider MOST appropriate for management to take FIRST?",
       "options": {
-        "A": "Continue manual production to meet customer commitments",
+        "A": "Restore SCADA from backup to regain automatic control",
         "B": "Isolate the SCADA network to preserve forensic evidence",
         "C": "Begin a controlled shutdown of the reactor",
         "D": "Wait for the cyber insurer's team to arrive before deciding"
@@ -7533,12 +7533,12 @@
       "pre_read": "Notice the reactor is nearing its limit. Ask what protects people before anything else.",
       "correct_explanation": "With a reactor near its safety limit and automatic control lost, protecting people and the plant comes before production or investigation. A controlled shutdown of the reactor removes the hazard. Isolating the SCADA network is an important containment and evidence step, but it does not address the reactor that is approaching its limit now.",
       "wrong_explanations": {
-        "A": "Production commitments never outrank human safety when automatic control is lost and a reactor nears its limit.",
+        "A": "Restoring during a suspected live infection risks reinfection and takes time the reactor does not have.",
         "B": "Isolation is important for containment and evidence, but it does nothing about a reactor approaching its safety limit right now.",
         "D": "A physical hazard cannot wait for outside responders. Plant leadership must act on safety now."
       },
       "tips": [
-        "Eliminate: A puts output ahead of safety, and D delays a decision the hazard will not wait for.",
+        "Eliminate: A restores into a live infection while the reactor nears its limit, and D delays a decision the hazard will not wait for.",
         "Final two: C beats B because protecting people from a physical hazard comes before containment and evidence.",
         "Exam cue: when life safety is at stake, the answer that protects people comes first, even before containment."
       ],
@@ -7550,7 +7550,7 @@
         "EPA reportable quantity",
         "Manual vs automated emergency shutdown"
       ],
-      "_provenance": "Authored from concept: 'OT incident at regulated manufacturer — safety-first multi-track response'. Public sources: NIST, OSHA, EPA, FDA, IEC. Scenario specifics (specialty chemicals manufacturer $890M, SCADA outage, 30% production rate, critical reactor approaching cutoff, suspected ransomware on HMI, pharmaceutical clean-room area) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. Second wording pass (Oct 2026): wording fixes from the blind re-test; key and options unchanged. Third pass (ISACA reviewer, Oct 2026): live-incident and legal/forensic stems reframed; options revised. Fourth pass (polish, Oct 2026): wording and metadata fixes from the last blind test; key unchanged.",
+      "_provenance": "Authored from concept: 'OT incident at regulated manufacturer — safety-first multi-track response'. Public sources: NIST, OSHA, EPA, FDA, IEC. Scenario specifics (specialty chemicals manufacturer $890M, SCADA outage, 30% production rate, critical reactor approaching cutoff, suspected ransomware on HMI, pharmaceutical clean-room area) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. Second wording pass (Oct 2026): wording fixes from the blind re-test; key and options unchanged. Third pass (ISACA reviewer, Oct 2026): live-incident and legal/forensic stems reframed; options revised. Fourth pass (polish, Oct 2026): wording and metadata fixes from the last blind test; key unchanged. D4 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): A (keep producing for customers) was a strawman; it is now restoring SCADA from backup mid-infection.",
       "style_version": 2
     },
     {
@@ -7601,8 +7601,8 @@
       "question": "A new configuration management database (CMDB) is being set up. Which governance action should the IS auditor recommend FIRST?",
       "options": {
         "A": "Enable automated discovery to populate records in every environment",
-        "B": "Define the in-scope item classes and their owners",
-        "C": "Transfer data-model accountability to the ITSM tool vendor",
+        "B": "Define the in-scope item classes and who maintains each",
+        "C": "Restrict CMDB write access to the service desk team",
         "D": "Schedule monthly data-quality reviews of the populated records"
       },
       "correct": "B",
@@ -7611,11 +7611,11 @@
       "correct_explanation": "Configuration management under COBIT BAI10 starts by defining which configuration items matter, how they are classified and who owns each class. Without that model, discovery and reviews have nothing to measure against. Automated discovery is valuable, but run first it floods the database with unowned, unclassified records that nobody is accountable for keeping accurate.",
       "wrong_explanations": {
         "A": "Discovery before scope floods the CMDB with unclassified, unowned records. It is a later step that feeds a defined configuration model.",
-        "C": "Accountability for configuration data cannot be handed to a tool vendor. The organization must own its configuration model and data.",
+        "C": "Write access matters once records exist, but restricting it first leaves scope and responsibility undefined.",
         "D": "Quality reviews need a defined model and owners to measure against. Scheduled first, they review records nobody has agreed the standard for."
       },
       "tips": [
-        "Eliminate: C hands accountability to a vendor, and D reviews data quality before any standard for that data exists.",
+        "Eliminate: C restricts access before anyone knows what the CMDB holds, and D reviews data quality before any standard exists.",
         "Final two: B beats A because scope and ownership must exist before discovery, or the tool fills the CMDB with unowned noise.",
         "Exam cue: when setting up any repository FIRST, define scope and owners before automating collection."
       ],
@@ -7627,7 +7627,7 @@
         "Change-impact analysis",
         "Role-based CMDB views"
       ],
-      "_provenance": "Authored from concept: 'CMDB governance per ITIL 4 SCM and COBIT BAI10'. Public sources: AXELOS, ISACA, NIST. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged.",
+      "_provenance": "Authored from concept: 'CMDB governance per ITIL 4 SCM and COBIT BAI10'. Public sources: AXELOS, ISACA, NIST. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. D4 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): C (vendor accountability) was a strawman; it is now restricting write access first. Cue balance: the key no longer carries 'owners'.",
       "style_version": 2
     },
     {
@@ -7640,8 +7640,8 @@
       "options": {
         "A": "Quarterly spreadsheet updates kept by each platform's own team",
         "B": "Monthly billing reports reconciled to cost-center codes",
-        "C": "A single account per business unit to simplify scope",
-        "D": "Continuous API discovery checked against mandatory ownership tags"
+        "C": "Asset records kept in each provider's native console",
+        "D": "Continuous API discovery checked against mandatory tagging rules"
       },
       "correct": "D",
       "key_concept": "Cloud resources appear and vanish in minutes, so a reliable inventory needs continuous provider-API discovery tied to enforced ownership tags.",
@@ -7650,10 +7650,10 @@
       "wrong_explanations": {
         "A": "A quarterly spreadsheet is out of date within days in the cloud. Manual updates also miss resources teams forget to record.",
         "B": "Billing lags usage, omits configuration detail and cannot identify owners of untagged resources. It supports reconciliation but is not the authoritative inventory.",
-        "C": "Account structure can simplify management, but it does not discover or record the resources inside each account."
+        "C": "Native consoles list resources per provider but give no single inventory or ownership view across the three clouds."
       },
       "tips": [
-        "Eliminate: A is a stale manual snapshot, and C changes account structure without inventorying anything.",
+        "Eliminate: A is a stale manual snapshot, and C leaves three separate views with no consolidated, owned inventory.",
         "Final two: D beats B because continuous discovery with ownership tags is timely and accountable, while billing lags and cannot name owners.",
         "Exam cue: for fast-changing environments, prefer continuous automated sources over periodic or financial proxies."
       ],
@@ -7665,7 +7665,7 @@
         "CSPM",
         "Multi-account strategy"
       ],
-      "_provenance": "Authored from concept: 'Cloud asset inventory per CSA CCM and CIS Foundations'. Public sources: CSA, AWS, Microsoft, GCP, ISACA, CIS. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Cloud asset inventory per CSA CCM and CIS Foundations'. Public sources: CSA, AWS, Microsoft, GCP, ISACA, CIS. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D4 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): C (one account per unit) was weak; it is now each provider's native console. Cue balance: the key no longer says 'ownership'.",
       "style_version": 2
     },
     {
@@ -7755,8 +7755,8 @@
       "question": "Both cloud providers in a firm's failover design are degraded at once, and a third provider holds no production deployment. What should the IS auditor recommend management do FIRST?",
       "options": {
         "A": "Fail over to the third provider using improvised runbooks",
-        "B": "Post hourly status updates while monitoring provider dashboards",
-        "C": "Escalate to the CEO to lead the provider negotiations",
+        "B": "Shift traffic to whichever provider recovers first",
+        "C": "Claim service credits from both providers under their SLAs",
         "D": "Run in degraded mode with non-critical features disabled"
       },
       "correct": "D",
@@ -7765,11 +7765,11 @@
       "correct_explanation": "With both planned recovery paths degraded, the safest way to keep critical service running is controlled degraded-mode operation that sheds non-critical features. Failing over to a provider with no production deployment means building and cutting over under pressure with improvised runbooks, an untested change that can corrupt data or cause a second outage. The broken independence assumption should be reviewed after service is stable.",
       "wrong_explanations": {
         "A": "An improvised cutover to an environment with no production deployment is an untested plan executed in a crisis, risking a worse outage.",
-        "B": "Status updates matter, but communication alone does nothing to keep critical services running for customers.",
-        "C": "Executive escalation does not restore service, and provider negotiations cannot fix their outages faster."
+        "B": "Waiting to see which provider recovers leaves customers without a controlled service in the meantime.",
+        "C": "Credits compensate later but keep no service running now."
       },
       "tips": [
-        "Eliminate: B only communicates, and C escalates without restoring any service.",
+        "Eliminate: B waits on the providers' recovery, and C pursues compensation instead of service.",
         "Final two: D beats A because a controlled degraded mode is predictable, while an improvised failover to an empty environment is untested.",
         "Exam cue: in an outage, prefer a known, controlled state over an untested recovery path built on the fly."
       ],
@@ -7781,7 +7781,7 @@
         "BGP route diversity",
         "Architectural review"
       ],
-      "_provenance": "Authored from concept: 'Multi-cloud cascade outage assumption failure'. Public sources: AWS, Microsoft, CSA, ISACA. Scenario specifics (SaaS provider $560M ARR, AWS-primary + Azure-ML, both degraded simultaneously, GCP accounts no production, customer pressure) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): stem names the decision-maker directly. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged.",
+      "_provenance": "Authored from concept: 'Multi-cloud cascade outage assumption failure'. Public sources: AWS, Microsoft, CSA, ISACA. Scenario specifics (SaaS provider $560M ARR, AWS-primary + Azure-ML, both degraded simultaneously, GCP accounts no production, customer pressure) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): stem names the decision-maker directly. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. D4 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): B (status updates only) and C (CEO negotiates) were strawmen; they are now waiting for the first provider to recover and claiming credits.",
       "style_version": 2
     },
     {
@@ -7794,7 +7794,7 @@
       "options": {
         "A": "Raise an urgent quota-increase request with the cloud provider",
         "B": "Deploy the full site to a secondary region immediately",
-        "C": "Take the discounted product offline to cut demand",
+        "C": "Lower the autoscaling trigger so instances launch sooner",
         "D": "Build request queueing so the site degrades gracefully"
       },
       "correct": "A",
@@ -7803,11 +7803,11 @@
       "correct_explanation": "The binding constraint is a soft quota, an administrative limit the provider can lift quickly, so an urgent increase request is the fastest way to restore capacity. Building request queueing is sound resilience engineering, but with none in place, designing and deploying it during a live spike is a risky change that will not land sooner than the provider's response.",
       "wrong_explanations": {
         "B": "A full secondary-region deployment under load is a major, untested change. It takes hours and risks data inconsistency.",
-        "C": "Pulling the promotion is a business decision that sacrifices revenue and reputation instead of managing the technical capacity problem.",
+        "C": "Launching sooner hits the same quota sooner; it adds no capacity beyond the limit.",
         "D": "Queueing helps future spikes, but building it mid-incident is an untested change that takes longer than lifting a soft quota."
       },
       "tips": [
-        "Eliminate: B attempts a risky regional rebuild under load, and C sacrifices the business to fix a technical constraint.",
+        "Eliminate: B attempts a risky regional rebuild under load, and C changes when scaling starts, not the limit it hits.",
         "Final two: A beats D because the provider can lift a soft quota quickly, while building queueing mid-incident is slow and risky.",
         "Exam cue: when the limit is administrative, remove it at the source before engineering around it mid-incident."
       ],
@@ -7819,7 +7819,7 @@
         "Circuit breakers",
         "Viral demand spikes"
       ],
-      "_provenance": "Authored from concept: 'Capacity exhaustion peak event multi-track response'. Public sources: AWS, Microsoft, AXELOS, ISACA. Scenario specifics (online retailer $890M, 4× volume spike, viral social media, 28% timeouts, AWS quota hit, 1-4 hour SLA) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Capacity exhaustion peak event multi-track response'. Public sources: AWS, Microsoft, AXELOS, ISACA. Scenario specifics (online retailer $890M, 4× volume spike, viral social media, 28% timeouts, AWS quota hit, 1-4 hour SLA) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D4 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): C (take the product offline) was a strawman; it is now a lower autoscaling trigger, useless against the quota.",
       "style_version": 2
     },
     {
@@ -8097,9 +8097,9 @@
       "bloom_level": "Analysis",
       "question": "At hour 18 of a 24-hour DR exercise, only 30% of recovery objectives are met, and the FDIC will receive the report. What is the IS auditor's BEST recommendation to the business continuity head?",
       "options": {
-        "A": "Extend the window past 24 hours to raise the score",
+        "A": "Stop the test now to limit staff overtime costs",
         "B": "Restart from hour zero and report the rerun results instead",
-        "C": "Finish the test, rank failures and brief the examiner early",
+        "C": "Finish the test and brief the examiner on ranked failures",
         "D": "Close the exercise record with an internal lessons-learned memo"
       },
       "correct": "C",
@@ -8107,12 +8107,12 @@
       "pre_read": "Ask what the exercise is for. Does a failure need hiding or improving, or does it need analyzing and reporting honestly?",
       "correct_explanation": "An exercise exists to find weaknesses, and this one has found several. Finishing it within the planned window gathers evidence on the remaining steps, ranking failures by cause drives remediation, and briefing the examiner early preserves regulatory trust. An internal lessons-learned memo records the failures, but it neither drives prioritized remediation nor prepares the regulator, who will read the report anyway.",
       "wrong_explanations": {
-        "A": "Stretching the window distorts the test conditions to improve the score, so the report no longer reflects real recovery capability.",
+        "A": "Stopping early saves hours but loses evidence on the remaining recovery steps the regulator expects.",
         "B": "Reporting a clean rerun instead of the actual result misleads the regulator and hides the failures the exercise exposed.",
         "D": "A memo documents the failures but lacks prioritized remediation and leaves the examiner to discover the problems unprepared."
       },
       "tips": [
-        "Eliminate: A and B both manipulate the results the regulator will see, rather than learning from them.",
+        "Eliminate: A gives up the remaining evidence to save cost, and B replaces the actual result with a rerun.",
         "Final two: C beats D because analyzed failures and proactive regulator contact drive remediation, while a memo only records.",
         "Exam cue: a failed test is a finding to analyze and disclose, never a score to improve."
       ],
@@ -8124,7 +8124,7 @@
         "Targeted re-exercise",
         "Exercise data quality vs completion"
       ],
-      "_provenance": "Authored from concept: 'DR test cascade failure structured response'. Public sources: FFIEC, ISO, NIST, ISACA. Scenario specifics (federally-chartered bank $23B, 24-hour DR exercise, multiple distinct failures, 30% objective achievement, FDIC examiner report) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): key now finishes the exercise, consistent with d4_095.",
+      "_provenance": "Authored from concept: 'DR test cascade failure structured response'. Public sources: FFIEC, ISO, NIST, ISACA. Scenario specifics (federally-chartered bank $23B, 24-hour DR exercise, multiple distinct failures, 30% objective achievement, FDIC examiner report) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): key now finishes the exercise, consistent with d4_095. D4 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): A (extend to raise the score) duplicated B; it is now stopping to save overtime. Cue balance: the key is no longer a three-part list.",
       "style_version": 2
     },
     {
@@ -8188,7 +8188,7 @@
         "D": "The institution keeps ownership of its users' incidents. Sending them to a vendor line abandons them and confuses the response."
       },
       "tips": [
-        "Eliminate: C is slow to onboard and lacks context, and D abandons ownership of the incident to a vendor.",
+        "Eliminate: C is slow to onboard and lacks context, and D sends the institution's own users to a vendor that does not own the incident.",
         "Final two: B beats A because clear communication removes avoidable contacts, while extra staff only absorbs them.",
         "Exam cue: when volume comes from duplicate reports, reduce demand with communication before adding capacity."
       ],
@@ -8200,7 +8200,7 @@
         "Cadence updates",
         "Pre-positioned surge agreements"
       ],
-      "_provenance": "Authored from concept: 'Help desk surge during major event'. Public sources: AXELOS, ISACA, FEMA. Scenario specifics (regional university 32K students 4.2K staff, email outage hour 4, 1,400+ tickets in 4 hours, 90+ minute waits) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): stem names the decision-maker directly. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged.",
+      "_provenance": "Authored from concept: 'Help desk surge during major event'. Public sources: AXELOS, ISACA, FEMA. Scenario specifics (regional university 32K students 4.2K staff, email outage hour 4, 1,400+ tickets in 4 hours, 90+ minute waits) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): stem names the decision-maker directly. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. D4 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Eliminate tip no longer uses dismissive wording.",
       "style_version": 2
     },
     {
@@ -8291,7 +8291,7 @@
       "options": {
         "A": "Shorten the recovery time objectives to add a safety margin",
         "B": "Let each department estimate its resources during an actual disruption",
-        "C": "Extend the BIA to record minimum resources needed for recovery",
+        "C": "Extend the BIA to capture minimum resources for recovery",
         "D": "Buy spare equipment for each department in advance"
       },
       "correct": "C",
@@ -8315,7 +8315,7 @@
         "Business impact analysis",
         "Recovery strategy"
       ],
-      "_provenance": "Authored from concept: 'Critical staff sudden unavailability during major incident'. Public sources: ISACA, NIST, BCI, FEMA. Scenario specifics (pharmaceutical research $1.6B, 20-year DB architect Dr. K. medical emergency, 30 minutes ago, backup architect vacation, two junior engineers, FDA filing 3 weeks) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): stem names the decision-maker; options no longer refer to people absent from the stem. Rebalanced (Oct 2026): re-angled from 4B4 to 4B1.",
+      "_provenance": "Authored from concept: 'Critical staff sudden unavailability during major incident'. Public sources: ISACA, NIST, BCI, FEMA. Scenario specifics (pharmaceutical research $1.6B, 20-year DB architect Dr. K. medical emergency, 30 minutes ago, backup architect vacation, two junior engineers, FDA filing 3 weeks) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): stem names the decision-maker; options no longer refer to people absent from the stem. Rebalanced (Oct 2026): re-angled from 4B4 to 4B1. D4 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Gap-echo: the key no longer repeats 'record'.",
       "style_version": 2
     },
     {
@@ -8400,9 +8400,9 @@
       "principle_id": "recover-by-business-priority",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A firm's disaster recovery tests restore every application server, but its Active Directory domain controllers have never been restored from backup. What should the IS auditor recommend FIRST?",
+      "question": "A firm's disaster recovery tests restore every application server, but its Active Directory domain controllers are left out of every test. What should the IS auditor recommend FIRST?",
       "options": {
-        "A": "Include an isolated directory restore in the next recovery test",
+        "A": "Rebuild a domain controller from backup in an isolated environment",
         "B": "Rely on the domain controllers replicating to the recovery site",
         "C": "Back up the domain controllers more often than at present",
         "D": "Have the backup vendor certify its software supports directories"
@@ -8428,7 +8428,7 @@
         "Replication versus backup",
         "Recovery order"
       ],
-      "_provenance": "Authored from concept: 'AD Golden Ticket attack response per Microsoft + MITRE ATT&CK'. Public sources: Microsoft, MITRE, CISA, NIST. Scenario specifics (manufacturing $2.1B, krbtgt 7-year-old password, ~140 workstations compromised, 11-day attack chain) invented. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): stem names the decision-maker directly. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. Wave 0-A re-scope (Oct 2026): rewritten in place to test D4 restoration and restore testing (4B3.4) through the IS auditor's lens instead of D5 attack response; id kept so learner history is preserved.",
+      "_provenance": "Authored from concept: 'AD Golden Ticket attack response per Microsoft + MITRE ATT&CK'. Public sources: Microsoft, MITRE, CISA, NIST. Scenario specifics (manufacturing $2.1B, krbtgt 7-year-old password, ~140 workstations compromised, 11-day attack chain) invented. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): stem names the decision-maker directly. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. Wave 0-A re-scope (Oct 2026): rewritten in place to test D4 restoration and restore testing (4B3.4) through the IS auditor's lens instead of D5 attack response; id kept so learner history is preserved. D4 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Gap-echo: the stem no longer says the controllers were 'never restored', which only the key answered.",
       "style_version": 2
     },
     {
@@ -8706,7 +8706,7 @@
       "principle_id": "management-owns-risk",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A completed BIA was never reviewed or approved by senior management, and IT is now selecting recovery strategies from it. What should the IS auditor recommend FIRST?",
+      "question": "A completed BIA has gone no further than the continuity team, and IT is now selecting recovery strategies from it. What should the IS auditor recommend FIRST?",
       "options": {
         "A": "Let IT finalize strategies and seek budget approval later",
         "B": "Obtain senior management approval of the BIA results and priorities",
@@ -8734,7 +8734,7 @@
         "Risk appetite",
         "Continuity funding"
       ],
-      "_provenance": "Authored from concept: 'IT workforce reduction continuity advocacy'. Public sources: ISO, BCI, ISACA. Scenario specifics (SaaS $380M ARR, 60→30 IT operations, 1-in-3 on-call, 4 months to regulatory exam, in-flight acquisition integration) invented. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Rebalanced (Oct 2026): re-angled from 4B4 to 4B1.",
+      "_provenance": "Authored from concept: 'IT workforce reduction continuity advocacy'. Public sources: ISO, BCI, ISACA. Scenario specifics (SaaS $380M ARR, 60→30 IT operations, 1-in-3 on-call, 4 months to regulatory exam, in-flight acquisition integration) invented. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Rebalanced (Oct 2026): re-angled from 4B4 to 4B1. D4 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Gap-echo: the stem no longer names senior management as the missing reviewer.",
       "style_version": 2
     },
     {
@@ -8783,22 +8783,22 @@
       "bloom_level": "Analysis",
       "question": "A weekend database upgrade carries a patch for an actively exploited flaw, but tax auditors request uninterrupted system access starting during that window. What should the IS auditor recommend to the CFO FIRST?",
       "options": {
-        "A": "Proceed with the upgrade without informing the tax authority",
+        "A": "Run the upgrade and give the tax auditors data extracts afterward",
         "B": "Defer the upgrade and accept the exploit risk until the audit ends",
         "C": "Ask the tax authority to start its fieldwork after the upgrade",
-        "D": "Cancel the upgrade and keep the current version indefinitely"
+        "D": "Isolate the database from the network until the audit ends"
       },
       "correct": "C",
       "key_concept": "When a security patch and a regulator's request clash on timing, negotiate the sequence before accepting risk on either side.",
       "pre_read": "Notice that the conflict is about timing, not substance. Ask whether one short delay could satisfy both parties.",
       "correct_explanation": "Both obligations can usually be met by sequencing them. Asking the tax authority to start once the short upgrade window closes keeps the exploited flaw on track to be patched and gives the auditors full access soon after. Deferring the upgrade also avoids conflict, but it leaves an actively exploited vulnerability open for days to solve a timing issue a conversation may fix.",
       "wrong_explanations": {
-        "A": "Silently proceeding denies access the authority requested and damages the relationship, when a simple timing request could avoid the clash.",
+        "A": "Extracts after the fact do not give the uninterrupted live access the authority requested.",
         "B": "Deferral leaves an actively exploited flaw open for the whole audit, accepting serious risk before trying to agree on timing.",
-        "D": "Abandoning the patch leaves a known exploited vulnerability in place with no end date, which no compensating control fully justifies."
+        "D": "Isolation blocks the auditors' access too, and leaves the exploited flaw unpatched."
       },
       "tips": [
-        "Eliminate: A ignores the authority's request, and D leaves an exploited flaw open indefinitely.",
+        "Eliminate: A replaces the requested live access with later extracts, and D cuts off the auditors while leaving the flaw unpatched.",
         "Final two: C beats B because agreeing on sequence protects both the patch and the audit, while deferral accepts exploit risk first.",
         "Exam cue: when two legitimate obligations clash on timing, try sequencing by agreement before sacrificing either one."
       ],
@@ -8810,7 +8810,7 @@
         "Stakeholder coordination",
         "Audit access planning"
       ],
-      "_provenance": "Authored from concept: 'Planned IT upgrade vs unplanned tax audit conflict'. Public sources: CISA, IRS, ISACA. Scenario specifics (manufacturer $740M, 14-hour DB upgrade, tax audit Monday 09:00, CISA KEV CVSS 8.5 patch, BOD 22-01 next-week deadline) invented. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Planned IT upgrade vs unplanned tax audit conflict'. Public sources: CISA, IRS, ISACA. Scenario specifics (manufacturer $740M, 14-hour DB upgrade, tax audit Monday 09:00, CISA KEV CVSS 8.5 patch, BOD 22-01 next-week deadline) invented. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D4 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): A (proceed without telling) and D (cancel indefinitely) were strawmen; they are now later extracts and network isolation.",
       "style_version": 2
     },
     {
@@ -8939,7 +8939,7 @@
       "options": {
         "A": "Remind administrators of the logging policy in annual training",
         "B": "Review the logging settings of each server once a year",
-        "C": "Control logging changes through approval and alert on any change",
+        "C": "Put logging changes under change control and alert on them",
         "D": "Remove administrators' access to the servers they support"
       },
       "correct": "C",
@@ -8963,7 +8963,7 @@
         "Tamper detection",
         "Privileged users"
       ],
-      "_provenance": "Authored from concept: 'Kubernetes admission controller misconfiguration discovery'. Public sources: CIS, NIST, NSA, CISA, OPA, MITRE. Scenario specifics (SaaS $410M ARR, K8s production, 340 microservices ~2800 pods, OPA Gatekeeper dryrun 11 months, 40% violating, crypto-mining via ServiceAccount) invented. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Rebalanced (Oct 2026): re-angled from 5B5 to 4A9. Rebalance review (Oct 2026): re-angled to unapproved logging-level drift, away from d4_156.",
+      "_provenance": "Authored from concept: 'Kubernetes admission controller misconfiguration discovery'. Public sources: CIS, NIST, NSA, CISA, OPA, MITRE. Scenario specifics (SaaS $410M ARR, K8s production, 340 microservices ~2800 pods, OPA Gatekeeper dryrun 11 months, 40% violating, crypto-mining via ServiceAccount) invented. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Rebalanced (Oct 2026): re-angled from 5B5 to 4A9. Rebalance review (Oct 2026): re-angled to unapproved logging-level drift, away from d4_156. D4 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Gap-echo: the key no longer repeats 'approval'.",
       "style_version": 2
     },
     {
@@ -9064,7 +9064,7 @@
         "D": "Deferring payment creates credit and collection risk and ignores the documented continuity procedure already in place."
       },
       "tips": [
-        "Eliminate: A abandons card revenue unnecessarily, and D creates credit risk while ignoring the continuity plan.",
+        "Eliminate: A gives up card revenue when a planned workaround exists, and D creates credit risk outside the continuity plan.",
         "Final two: B beats C because the planned workaround covers the expected outage, while a weeks-long switch cannot arrive in time.",
         "Exam cue: compare the fix's lead time with the outage's expected duration before choosing a drastic recovery option."
       ],
@@ -9076,7 +9076,7 @@
         "PCI DSS Requirement 12",
         "Hospitality downstream impact"
       ],
-      "_provenance": "Authored from concept: 'Payment processor outage downstream impact response'. Public sources: PCI SSC, VISA, ISACA, FFIEC. Scenario specifics (hotel chain $1.4B 280 properties, hour 12 of processor outage, ETA 'within 24h', $2.4M/day, BCP-documented manual workarounds) invented. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): stem now states staff are already using the manual card process; BCP acronym removed. Blind re-check clarity fix (Oct 2026).",
+      "_provenance": "Authored from concept: 'Payment processor outage downstream impact response'. Public sources: PCI SSC, VISA, ISACA, FFIEC. Scenario specifics (hotel chain $1.4B 280 properties, hour 12 of processor outage, ETA 'within 24h', $2.4M/day, BCP-documented manual workarounds) invented. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): stem now states staff are already using the manual card process; BCP acronym removed. Blind re-check clarity fix (Oct 2026). D4 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Eliminate tip no longer uses dismissive wording.",
       "style_version": 2
     },
     {
