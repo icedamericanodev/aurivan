@@ -20,6 +20,7 @@ import { useId } from 'react';
 import { View } from 'react-native';
 import Svg, { Circle, Defs, G, Mask, Path, Rect } from 'react-native-svg';
 import { PILLARS, type PillarGlyphKind } from '../content/brand';
+import { KAI_LEAF, KAI_PAIR_DOWN, KAI_PAIR_UP, KAI_VEIN } from '../theme/kasama';
 import { kaisip, pillarGlyph, space, type KaisipTone } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { Card, IconCircle, Row, T } from './ui';
@@ -40,10 +41,7 @@ function useSvgId(): string {
  * background; its id is unique per instance (the web draws every SVG into
  * one DOM).
  */
-const KAI_LEAF = 'M72 168 C90 129.92 90 78.24 72 32 C54 78.24 54 129.92 72 168Z';
-const KAI_PAIR_UP = 'M94 100 C120.2 93.85 140.92 69.43 150 34 C113.47 46.14 92.75 70.56 94 100Z';
-const KAI_PAIR_DOWN = 'M94 100 C93.48 129.7 114.94 154.12 152 166 C141.98 130.36 120.52 105.94 94 100Z';
-const KAI_VEIN = 'M72 146 V66';
+// The leaf paths live in theme/kasama.ts (the home-screen widgets draw the same mark).
 /** The dot of the i: the wordmark's own small leaf (accent / sap). */
 const KAI_WORD_LEAF = 'M2434.38 -1156.95 C2687.94 -1066.66 2872.54 -1185.23 2895.88 -1453.38 C2600.11 -1609.38 2415.51 -1490.81 2434.38 -1156.95Z';
 /** "kaisip" in Fraunces 600, outlined (font units, 1000 per em, y up is negative). */
