@@ -49,6 +49,8 @@ A calm, trustworthy study companion that helps people **pass** professional secu
 | 2.7 | **Pack delivery** (content packs Phases B–D) | CC downloads in the app in one tap; the website gets an exam switcher | Security + QA review |
 | 2.8 | **CC joins the beta** | Testers download CC from inside the app | Your approval with sample screenshots |
 
+**Owner decision (27 Oct):** finish the CISA build (Stage 1) before any CC work starts.
+
 **Recommendation:** start the beta with CISA as soon as Stage 1 is done, and add CC *into* the running beta when 2.6 passes. Don't hold the beta back for CC.
 
 ## Stage 3: after the beta
@@ -61,8 +63,8 @@ A calm, trustworthy study companion that helps people **pass** professional secu
 ---
 
 ## Your checklist (only you can do these)
-- [ ] **Cloud environment → Allowed domains:** isc2.org, www.isc2.org, csrc.nist.gov, nvlpubs.nist.gov, www.nist.gov, www.cisa.gov, owasp.org, www.first.org
-- [ ] **Security basics:** turn on 2-step login (2FA) for Cloudflare, Supabase and GitHub
+- [x] **Cloud environment → Allowed domains** (done 27 Oct): isc2.org, www.isc2.org, csrc.nist.gov, nvlpubs.nist.gov, www.nist.gov, www.cisa.gov, owasp.org, www.first.org
+- [x] **Security basics:** 2-step login (2FA) on Cloudflare, Supabase and GitHub (done 27 Oct)
 - [ ] **Supabase:** turn on usage alerts
 - [ ] **Sign-in setup** (step 1.4): Google Cloud, an email service and Cloudflare DNS, following the list I'll send
 - [ ] **Widgets test** (step 1.2): install the new test app and try the widgets
