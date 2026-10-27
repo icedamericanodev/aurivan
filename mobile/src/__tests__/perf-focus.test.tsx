@@ -174,7 +174,7 @@ describe('what a hidden tab re-renders', () => {
   });
 });
 
-describe('an unknown active certification (the screens fall back to the first exam’s content)', () => {
+describe('an unknown active certification (the screens study the default exam: lib/activeCert.ts)', () => {
   /** Every text and screen-reader label on screen, in order. */
   function texts(): string[] {
     const out: string[] = [];
@@ -197,13 +197,15 @@ describe('an unknown active certification (the screens fall back to the first ex
     r = undefined;
     return t;
   }
-  // As on main, and as the other tabs (lib/useActiveCert.ts): progress is read
-  // under the active id itself, so nothing saved for CISA shows under an unknown id.
+  // Security review MEDIUM-1 (content packs): an exam whose content is not on this phone is
+  // never studied. The stored choice is kept, but every tab (lib/useActiveCert.ts and the
+  // others) studies the default exam, CISA, with CISA's own progress: never a mix of CISA's
+  // content and another id's (empty) progress, as before.
   for (const [name, load] of [
     ['Learn', () => require('../app/(tabs)/learn').default],
     ['Play', () => require('../app/(tabs)/play').default],
   ] as const) {
-    it(`${name}: shows the progress saved under the active id (none), never CISA’s`, () => {
+    it(`${name}: studies CISA, with CISA’s own progress`, () => {
       act(() => {
         const lesson = require('../content/lessons').lessonsFor('cisa')[0].id;
         useProgress.getState().completeLesson('cisa', lesson);
@@ -212,13 +214,14 @@ describe('an unknown active certification (the screens fall back to the first ex
       const withCisa = seen(load());
       useSettings.setState({ activeCertId: 'retired-cert' });
       const unknown = seen(load());
-      // CISA's own progress shows under CISA (the test can tell the two apart)...
-      expect(unknown).not.toEqual(withCisa);
-      // ...and under an unknown id the screen is exactly the one with nothing saved.
+      // Exactly the CISA screen, progress and all.
+      expect(unknown).toEqual(withCisa);
+      expect(useSettings.getState().activeCertId).toBe('retired-cert'); // the stored choice is kept
+      // And it really is CISA's progress: without it, the screen changes.
       act(() => {
         useProgress.getState().resetCert('cisa');
       });
-      expect(unknown).toEqual(seen(load()));
+      expect(seen(load())).not.toEqual(withCisa);
     });
   }
 });

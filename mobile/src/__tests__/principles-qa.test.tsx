@@ -12,6 +12,7 @@ import { useSession } from '../store/session';
 import { useSettings } from '../store/settings';
 import PrincipleScreen from '../app/principles/[id]';
 import Learn from '../app/(tabs)/learn';
+import { installFakePack } from '../../jest/fakePack';
 
 jest.mock('@react-native-async-storage/async-storage', () =>
   jest.requireActual('@react-native-async-storage/async-storage/jest/async-storage-mock'),
@@ -90,10 +91,18 @@ it('a malformed link id (a lone "%") shows "not found" instead of crashing', () 
 });
 
 it('Learn shows no Principles row for a cert without principles', () => {
-  useSettings.setState({ activeCertId: 'cism' });
-  mount(<Learn />);
-  expect(allText()).not.toContain('The thinking the exam rewards');
-  expect(r!.root.findAll((x) => x.props.accessibilityLabel === 'Principles, the thinking the exam rewards')).toEqual([]);
+  // CISM's content must be on the phone for the app to study it (lib/activeCert.ts): a stand-in pack, no principles.
+  const undo = installFakePack('cism');
+  try {
+    useSettings.setState({ activeCertId: 'cism' });
+    mount(<Learn />);
+    expect(allText()).not.toContain('The thinking the exam rewards');
+    expect(r!.root.findAll((x) => x.props.accessibilityLabel === 'Principles, the thinking the exam rewards')).toEqual([]);
+  } finally {
+    act(() => r?.unmount());
+    r = undefined;
+    undo();
+  }
 });
 
 it('a principle practice set is restored after an app kill', async () => {

@@ -40,9 +40,9 @@ import { copy } from '../../../content/cloud/copy';
 import { moveFocus, sayLater } from '../../../lib/a11y';
 import { checkDraft, loadDraft, loadFeed, loadPost, needsGate, newClientId, postProblem, submitPost, useBoard, useBoardSession, warmLeakGuard, type DraftCheck } from '../../../lib/board';
 import { useAccount } from '../../../store/account';
-import { useSettings } from '../../../store/settings';
 import { space } from '../../../theme/tokens';
 import { useTheme } from '../../../theme/useTheme';
+import { useActiveCertId } from '../../../lib/activeCert';
 
 const ITEM_REF = /^(q|note|lesson|card|app):[A-Za-z0-9_.:#-]{1,80}$/;
 const NO_CHECK: DraftCheck = { bank: false, field: null, questionId: null, recall: false, reject: null };
@@ -60,7 +60,7 @@ export default function Compose() {
   const { c } = useTheme();
   const params = useLocalSearchParams<{ edit?: string; kind?: string; body?: string }>();
   const editId = typeof params.edit === 'string' ? params.edit : undefined;
-  const certId = useSettings((s) => s.activeCertId);
+  const certId = useActiveCertId();
   const cert = getCertification(certId) ?? getCertification('cisa')!;
   const signedIn = useAccount((s) => s.signedIn);
   const known = useAccount((s) => s.known);

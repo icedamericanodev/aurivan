@@ -84,7 +84,7 @@ import { useActiveCert } from '../../lib/useActiveCert';
 import { moveFocus } from '../../lib/a11y';
 import { useProgress, type MockResult } from '../../store/progress';
 import type { Certification } from '../../content/types';
-import { dailyMinutesOf, useSettings } from '../../store/settings';
+import { dailyMinutesOf, examDateOf, useSettings } from '../../store/settings';
 import { StudyProfile } from '../../components/studyProfile';
 import { firstStudyDay, nameInitial, profileLines } from '../../engine/studyProfile';
 import { FAMILIARITY_INFO } from '../../engine/fit';
@@ -180,7 +180,7 @@ export default function You() {
     }, []),
   );
   const displayName = useSettings((s) => s.displayName);
-  const examDate = useSettings((s) => s.examDates[cert.id]);
+  const examDate = useSettings((s) => examDateOf(s.examDates, cert.id));
   const minutes = useSettings((s) => dailyMinutesOf(s));
   const familiarity = useSettings((s) => s.familiarity);
   // The first study day: worked out again only when this exam's records change.

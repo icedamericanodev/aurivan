@@ -36,6 +36,15 @@ import { bumpStreak, dayKey, type Streak } from '../engine/streak';
 import { watchHydration } from './hydration';
 import { persistStorage } from './storage';
 
+/**
+ * `map[id]` only when the map itself holds that id (security review HIGH-1):
+ * a cert id is a key in `byCert` and `days`, and `{}.constructor` would
+ * otherwise read the built-in Object function as an exam's data.
+ */
+export function ownOf<T>(map: Record<string, T> | undefined, id: string): T | undefined {
+  return map && Object.prototype.hasOwnProperty.call(map, id) ? map[id] : undefined;
+}
+
 export interface MockResult {
   id: string;
   finishedAt: number;
@@ -354,7 +363,7 @@ export const useProgress = create<ProgressState>()(
       logActivity: (certId, a) => {
         // A plan from an earlier day is never ticked (lib/activity.ts starts
         // today's plan first, so activity after midnight still counts).
-        const cur = get().days[certId];
+        const cur = ownOf(get().days, certId);
         if (!cur || cur.day !== dayKey(Date.now())) return false;
         const { plan, ticked } = logDayActivity(cur, a);
         if (plan !== cur) set((s) => ({ days: { ...s.days, [certId]: plan } }));
@@ -362,14 +371,14 @@ export const useProgress = create<ProgressState>()(
       },
       markCelebrated: (certId) =>
         set((s) => {
-          const cur = s.days[certId];
+          const cur = ownOf(s.days, certId);
           return cur ? { days: { ...s.days, [certId]: { ...cur, celebrated: true } } } : s;
         }),
 
       recordAnswer: (certId, questionId, correct, confidence, opts) =>
         set((s) => {
           const now = opts?.at ?? Date.now();
-          const cp = normalize(s.byCert[certId]);
+          const cp = normalize(ownOf(s.byCert, certId));
           const prev = cp.answers[questionId];
           // Retest rule (mobile 1.24, engine/srs.ts): a right answer less than 4
           // hours after a WRONG answer to the same question is recall from
@@ -443,7 +452,7 @@ export const useProgress = create<ProgressState>()(
               ? cp.mastery
               : recordMastery(cp.mastery, subtopicOfQuestion(certId, questionId), day, { correct, assisted: weak }, now);
           // Today's clearing card counts answers for this cert's plan, today only.
-          const cur = s.days[certId];
+          const cur = ownOf(s.days, certId);
           const days = cur && cur.day === day ? { ...s.days, [certId]: logAnswer(cur, correct) } : s.days;
           // Exam-ready hold: log the new readiness lower bound for today, so a
           // dip during the day resets the 7-day hold (engine/examReady.ts).
@@ -463,7 +472,7 @@ export const useProgress = create<ProgressState>()(
 
       logReadinessNow: (certId) =>
         set((s) => {
-          const cp = normalize(s.byCert[certId]);
+          const cp = normalize(ownOf(s.byCert, certId));
           const moments = withReadiness(cp.moments, certId, cp.answers, dayKey(Date.now()));
           if (moments === cp.moments) return s; // nothing changed: no save
           return { byCert: { ...s.byCert, [certId]: { ...cp, ...(moments ? { moments } : {}) } } };
@@ -472,7 +481,7 @@ export const useProgress = create<ProgressState>()(
       queueForReview: (certId, questionIds) =>
         set((s) => {
           const now = Date.now();
-          const cp = normalize(s.byCert[certId]);
+          const cp = normalize(ownOf(s.byCert, certId));
           const review = { ...cp.review };
           // A blank mock answer or a Daylight time-out waits for tomorrow, like a miss (mobile 1.43):
           // re-asking it the same hour tests memory of the review, not recall.
@@ -485,7 +494,7 @@ export const useProgress = create<ProgressState>()(
 
       toggleBookmark: (certId, questionId) =>
         set((s) => {
-          const cp = normalize(s.byCert[certId]);
+          const cp = normalize(ownOf(s.byCert, certId));
           const has = cp.bookmarks.includes(questionId);
           const bookmarks = has
             ? cp.bookmarks.filter((id) => id !== questionId)
@@ -495,7 +504,7 @@ export const useProgress = create<ProgressState>()(
 
       recordMistake: (certId, questionId, picked, confidence) =>
         set((s) => {
-          const cp = normalize(s.byCert[certId]);
+          const cp = normalize(ownOf(s.byCert, certId));
           const prev = cp.mistakes[questionId];
           const entry: MistakeEntry = { picked, at: Date.now(), slip: prev?.slip, resolved: false, ...(confidence ? { confidence } : {}) };
           return { byCert: { ...s.byCert, [certId]: { ...cp, mistakes: { ...cp.mistakes, [questionId]: entry } } } };
@@ -503,7 +512,7 @@ export const useProgress = create<ProgressState>()(
 
       tagMistake: (certId, questionId, slip) =>
         set((s) => {
-          const cp = normalize(s.byCert[certId]);
+          const cp = normalize(ownOf(s.byCert, certId));
           const prev = cp.mistakes[questionId];
           if (!prev) return s;
           return {
@@ -513,14 +522,14 @@ export const useProgress = create<ProgressState>()(
 
       completeLesson: (certId, lessonId) =>
         set((s) => {
-          const cp = normalize(s.byCert[certId]);
+          const cp = normalize(ownOf(s.byCert, certId));
           if (cp.lessonsDone.includes(lessonId)) return s;
           return { byCert: { ...s.byCert, [certId]: { ...cp, lessonsDone: [...cp.lessonsDone, lessonId] } } };
         }),
 
       setNoteRead: (certId, subtopicId, read) =>
         set((s) => {
-          const cp = normalize(s.byCert[certId]);
+          const cp = normalize(ownOf(s.byCert, certId));
           // Mobile 1.25: unmarking keeps the note as started (engine/noteReadState.ts).
           const viewedBefore = cp.notesViewed ?? [];
           const next = withNoteRead(cp.notesRead, viewedBefore, subtopicId, read);
@@ -532,7 +541,7 @@ export const useProgress = create<ProgressState>()(
 
       markNoteViewed: (certId, subtopicId) =>
         set((s) => {
-          const cp = normalize(s.byCert[certId]);
+          const cp = normalize(ownOf(s.byCert, certId));
           const before = cp.notesViewed ?? [];
           const notesViewed = withNoteViewed(before, subtopicId);
           if (notesViewed === before) return s; // already started: no save
@@ -541,7 +550,7 @@ export const useProgress = create<ProgressState>()(
 
       resetNotesReading: (certId) =>
         set((s) => {
-          const cp = s.byCert[certId];
+          const cp = ownOf(s.byCert, certId);
           // Nothing saved for this exam, or nothing read or started: no save.
           if (!cp || ((cp.notesRead ?? []).length === 0 && (cp.notesViewed ?? []).length === 0)) return s;
           // The notes go back to not read, but the count of notes ever read stays (badges keep their evidence).
@@ -552,7 +561,7 @@ export const useProgress = create<ProgressState>()(
 
       setQuestionNote: (certId, questionId, text) =>
         set((s) => {
-          const cp = normalize(s.byCert[certId]);
+          const cp = normalize(ownOf(s.byCert, certId));
           const qNotes = withNote(cp.qNotes, questionId, text, Date.now());
           if (qNotes === cp.qNotes) return s; // the same text: no save
           return { byCert: { ...s.byCert, [certId]: { ...cp, qNotes } } };
@@ -560,7 +569,7 @@ export const useProgress = create<ProgressState>()(
 
       recordGame: (certId, game, score) =>
         set((s) => {
-          const cp = normalize(s.byCert[certId]);
+          const cp = normalize(ownOf(s.byCert, certId));
           const best = Math.max(cp.gameBest[game] ?? -Infinity, score);
           const gameRecent = { ...cp.gameRecent, [game]: pushScore(cp.gameRecent[game], score) };
           return { byCert: { ...s.byCert, [certId]: { ...cp, gameBest: { ...cp.gameBest, [game]: best }, gameRecent } } };
@@ -568,7 +577,7 @@ export const useProgress = create<ProgressState>()(
 
       recordMock: (certId, result) =>
         set((s) => {
-          const cp = normalize(s.byCert[certId]);
+          const cp = normalize(ownOf(s.byCert, certId));
           return {
             byCert: { ...s.byCert, [certId]: { ...cp, mocks: [result, ...cp.mocks].slice(0, MAX_MOCKS) } },
           };
@@ -576,7 +585,7 @@ export const useProgress = create<ProgressState>()(
 
       noteReadiness: (certId, day, low) =>
         set((s) => {
-          const cp = normalize(s.byCert[certId]);
+          const cp = normalize(ownOf(s.byCert, certId));
           const log = cp.moments?.readiness ?? [];
           const next = logReadinessDay(log, day, low);
           if (next === log) return s; // nothing changed: no save, no re-render
@@ -585,35 +594,35 @@ export const useProgress = create<ProgressState>()(
 
       dismissReady: (certId) =>
         set((s) => {
-          const cp = normalize(s.byCert[certId]);
+          const cp = normalize(ownOf(s.byCert, certId));
           if (cp.moments?.readySeenAt) return s;
           return { byCert: { ...s.byCert, [certId]: { ...cp, moments: { ...cp.moments, readySeenAt: Date.now() } } } };
         }),
 
       tickExamWeek: (certId, examDate, id) =>
         set((s) => {
-          const cp = normalize(s.byCert[certId]);
+          const cp = normalize(ownOf(s.byCert, certId));
           const examWeek = toggleExamWeek(cp.moments?.examWeek, examDate, id);
           return { byCert: { ...s.byCert, [certId]: { ...cp, moments: { ...cp.moments, examWeek } } } };
         }),
 
       hideExamWeek: (certId, examDate) =>
         set((s) => {
-          const cp = normalize(s.byCert[certId]);
+          const cp = normalize(ownOf(s.byCert, certId));
           const examWeek = hideExamWeek(cp.moments?.examWeek, examDate);
           return { byCert: { ...s.byCert, [certId]: { ...cp, moments: { ...cp.moments, examWeek } } } };
         }),
 
       toggleWeekDay: (certId, examDate, dayId) =>
         set((s) => {
-          const cp = normalize(s.byCert[certId]);
+          const cp = normalize(ownOf(s.byCert, certId));
           const examWeek = toggleWeekDay(cp.moments?.examWeek, examDate, dayId);
           return { byCert: { ...s.byCert, [certId]: { ...cp, moments: { ...cp.moments, examWeek } } } };
         }),
 
       setPathCursor: (certId, mode, scope, value) =>
         set((s) => {
-          const cp = normalize(s.byCert[certId]);
+          const cp = normalize(ownOf(s.byCert, certId));
           if (cp.studyPath?.[mode]?.[scope] === value) return s; // no change: no save
           const studyPath: StudyPathState = { ...cp.studyPath, [mode]: { ...cp.studyPath?.[mode], [scope]: value } };
           return { byCert: { ...s.byCert, [certId]: { ...cp, studyPath } } };
@@ -622,7 +631,7 @@ export const useProgress = create<ProgressState>()(
       recordCard: (certId, cardId, correct) =>
         set((s) => {
           const now = Date.now();
-          const cp = normalize(s.byCert[certId]);
+          const cp = normalize(ownOf(s.byCert, certId));
           const cards = { ...cp.cards };
           const prevCard = cards[cardId];
           // A missed card comes back in the next round (nextCardReview); a missed question waits for tomorrow.
@@ -643,10 +652,10 @@ export const useProgress = create<ProgressState>()(
         }),
 
       noteGameRound: (certId, game, outcome) => {
-        const cp = normalize(get().byCert[certId]);
+        const cp = normalize(ownOf(get().byCert, certId));
         const { growth, change } = noteRound(cp.gameGrowth?.[game], outcome);
         set((s) => {
-          const cur = normalize(s.byCert[certId]);
+          const cur = normalize(ownOf(s.byCert, certId));
           return { byCert: { ...s.byCert, [certId]: { ...cur, gameGrowth: { ...cur.gameGrowth, [game]: growth } } } };
         });
         return change;
@@ -654,7 +663,7 @@ export const useProgress = create<ProgressState>()(
 
       updateMilestones: (certId, update) =>
         set((s) => {
-          const cp = normalize(s.byCert[certId]);
+          const cp = normalize(ownOf(s.byCert, certId));
           const r = update(cp.milestones, cp);
           if (!r || (r.milestones === cp.milestones && !r.fixedLater?.length)) return s;
           let mistakes = cp.mistakes;
@@ -675,7 +684,7 @@ export const useProgress = create<ProgressState>()(
 
       updatePlant: (certId, update) =>
         set((s) => {
-          const cp = normalize(s.byCert[certId]);
+          const cp = normalize(ownOf(s.byCert, certId));
           const next = update(cp.plant, cp);
           if (next === cp.plant) return s; // nothing changed: no save
           const out: CertProgress = { ...cp };
@@ -701,10 +710,10 @@ export const useProgress = create<ProgressState>()(
           const days = { ...s.days };
           delete days[certId];
           // "Shows once per certification": a reset keeps the dismissed flag.
-          const seen = s.byCert[certId]?.moments?.readySeenAt;
+          const seen = ownOf(s.byCert, certId)?.moments?.readySeenAt;
           // Mobile 1.16: the exam-week checklist is about the exam itself (the
           // booking, the route, sleep), not study progress: a reset keeps it.
-          const examWeek = s.byCert[certId]?.moments?.examWeek;
+          const examWeek = ownOf(s.byCert, certId)?.moments?.examWeek;
           // Build F: a reset is a fresh start for milestones too. The launch
           // back-fill is marked as already done (nothing found, summary seen),
           // so it never runs again and re-awards from older data.
@@ -720,13 +729,13 @@ export const useProgress = create<ProgressState>()(
           // the learner earned survives the seed.
           // The keepsakes on show are written down first (freezeKeepsakes), so a
           // default "first three earned" never reshuffles when badges go.
-          const plant = s.byCert[certId]?.plant;
+          const plant = ownOf(s.byCert, certId)?.plant;
           const marks = Object.values(s.byCert).map((c) => ({ earned: c?.milestones?.earned, planters: c?.milestones?.planters }));
           if (plant) fresh.plant = resetPlant(freezeKeepsakes(plant, marks), Date.now(), keepOnReset(plant, marks));
           // Code review M6: another exam's plant never loses a keepsake or a
           // planter because THIS exam's badges were cleared.
           const byCert = { ...s.byCert, [certId]: fresh };
-          const resetMarks = { earned: s.byCert[certId]?.milestones?.earned, planters: s.byCert[certId]?.milestones?.planters };
+          const resetMarks = { earned: ownOf(s.byCert, certId)?.milestones?.earned, planters: ownOf(s.byCert, certId)?.milestones?.planters };
           for (const [id, c] of Object.entries(s.byCert)) {
             if (id === certId || !c?.plant) continue;
             const kept = keepThroughOtherReset(c.plant, marks, resetMarks);
@@ -799,7 +808,7 @@ export function completeCert(cp: Partial<CertProgress>): CertProgress {
 
 /** Read one certification's progress (never undefined). */
 export function selectCert(s: ProgressState, certId: string): CertProgress {
-  const cp = s.byCert[certId];
+  const cp = ownOf(s.byCert, certId);
   return cp ? normalize(cp) : EMPTY;
 }
 const EMPTY = emptyCert();

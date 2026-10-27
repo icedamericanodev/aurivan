@@ -634,7 +634,12 @@ export function deviceLocalOf(store: SyncStoreName, state: object): Record<strin
 
 export interface MergeContext {
   now: number;
-  /** The certifications this app knows (a merge never adds one it doesn't). */
+  /**
+   * The certifications this app knows. Since content packs (fix 2), a merge
+   * also KEEPS an exam with a well-formed id this app has no descriptor for
+   * (a pack on another phone), its data as it is; a malformed or reserved id
+   * ("constructor") is still refused (engine/backup.ts isCertId).
+   */
   knownCertIds: readonly string[];
   /** The first sync's Combine (preview and confirm): two different plants keep the more grown one (mergePlant). */
   firstSync?: boolean;

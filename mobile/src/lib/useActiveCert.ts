@@ -11,8 +11,9 @@ import { readinessFor } from '../engine/readiness';
 import { dueCountFor } from '../engine/srs';
 import { dayKey, visibleStreak } from '../engine/streak';
 import { selectCert, useProgress } from '../store/progress';
-import { useSettings } from '../store/settings';
+import { examDateOf, useSettings } from '../store/settings';
 import { questionExists } from './outline';
+import { useActiveCertId } from './activeCert';
 
 /**
  * Calendar days from today to the exam date (local days, DST-safe; the same
@@ -23,8 +24,8 @@ export function daysUntil(dateStr?: string): number | null {
 }
 
 export function useActiveCert() {
-  const certId = useSettings((s) => s.activeCertId);
-  const examDate = useSettings((s) => s.examDates[certId]);
+  const certId = useActiveCertId();
+  const examDate = useSettings((s) => examDateOf(s.examDates, certId));
   const progress = useProgress((s) => selectCert(s, certId));
   const streak = useProgress((s) => s.streak);
   const today = useProgress((s) => s.today);

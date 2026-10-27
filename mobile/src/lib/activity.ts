@@ -11,12 +11,13 @@ import { computeReadiness } from '../engine/readiness';
 import { dueIds } from '../engine/srs';
 import { dayKey } from '../engine/streak';
 import { selectCert, useProgress } from '../store/progress';
-import { dailyMinutesOf, useSettings } from '../store/settings';
+import { dailyMinutesOf, examDateOf, useSettings } from '../store/settings';
 import { haptic } from './haptics';
 import { questionExists } from './outline';
 import { refreshReminders } from './reminderSync';
 import { daysUntil } from './useActiveCert';
 import { buildJourney } from './useJourney';
+import { activeCertIdNow } from './activeCert';
 
 /**
  * Make sure this cert has a plan for TODAY. Normally the Today screen stores
@@ -49,7 +50,7 @@ export function buildTodayPlan(certId: string, keepToday: boolean) {
     progress,
     readiness,
     dueCount: dueIds(progress.review, now, questionExists(certId)).length,
-    daysLeft: daysUntil(settings.examDates[certId]),
+    daysLeft: daysUntil(examDateOf(settings.examDates, certId)),
     dailyMinutes: dailyMinutesOf(settings),
     familiarity: settings.familiarity,
     examFocused: settings.examFocused,
@@ -103,7 +104,7 @@ export function logActivity(certId: string, a: Activity) {
   // reminder names the reviews waiting, and a session changes them. Nothing happens when reminders are off.
   const plan = useProgress.getState().days[certId];
   const cleared = ticked && plan && planComplete(plan);
-  if (certId === useSettings.getState().activeCertId && (cleared || a.kind === 'session')) refreshReminders().catch(() => {});
+  if (certId === activeCertIdNow() && (cleared || a.kind === 'session')) refreshReminders().catch(() => {});
 }
 
 // The lesson's own length (mobile 1.15: the same minutes the plan and Learn show).

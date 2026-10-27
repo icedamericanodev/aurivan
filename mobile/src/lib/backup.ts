@@ -111,9 +111,12 @@ onClearContentCaches(() => knownCache.clear());
 export function knownIds(certId: string): KnownIds {
   let k = knownCache.get(certId);
   if (!k) {
+    const questions = new Set(getAllQuestionsIncludingRetired(certId).map((q) => q.id));
     k = {
-      installed: hasContent(certId),
-      questions: new Set(getAllQuestionsIncludingRetired(certId).map((q) => q.id)),
+      // Installed = this phone has the exam's content AND its question ids (MEDIUM-2): an empty
+      // pack never counts, so it can never trim a restored exam's progress to nothing.
+      installed: hasContent(certId) && questions.size > 0,
+      questions,
       lessons: new Set(lessonsIncludingRetired(certId).map((l) => l.id)),
       notes: new Set(noteSubtopics(certId).map((n) => n.id)),
       domains: new Set((getCertification(certId)?.domains ?? []).map((d) => d.id)),
@@ -416,7 +419,9 @@ async function writeAll(
   // A backup from 1.9 already ran its back-fill, so the launch effect never
   // revisits it: a set it holds complete gets its planter here. A backup from
   // 1.10 has the older badge catalogue: its new tiers fill in quietly first.
+  // Only exams whose content is on this phone (MEDIUM-1): another exam's data is kept, never recomputed here.
   for (const id of Object.keys(useProgress.getState().byCert)) {
+    if (!hasContent(id)) continue;
     ensureCatalog(id);
     syncPlanters(id);
   }
@@ -502,7 +507,9 @@ export async function writeSynced(
     useSettings.setState(final.settings);
     useProgress.setState(final.progress);
     if (opts.undo !== undefined) useBackup.setState({ undo: opts.undo });
+    // Only exams whose content is on this phone (MEDIUM-1): another exam's data is kept, never recomputed here.
     for (const id of Object.keys(useProgress.getState().byCert)) {
+      if (!hasContent(id)) continue;
       ensureCatalog(id);
       syncPlanters(id);
     }

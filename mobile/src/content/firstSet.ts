@@ -32,7 +32,8 @@ export const FIRST_SET_SIZE = 5;
 
 /** The ids of a certification's first set (empty when it has none). */
 export function firstSetIds(certId: string): readonly string[] {
-  return FIRST_SET[certId] ?? [];
+  // An own key only: "constructor" is not a certification (security review HIGH-1).
+  return Object.prototype.hasOwnProperty.call(FIRST_SET, certId) ? FIRST_SET[certId] : [];
 }
 
 /** What the set is called on screen. No "check" and no "diagnose": it is just the first five. */

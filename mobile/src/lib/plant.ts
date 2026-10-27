@@ -50,8 +50,9 @@ import { readinessFor } from '../engine/readiness';
 import { dayKey } from '../engine/streak';
 import { selectCert, useProgress, type CertProgress, type MockResult, type ProgressState } from '../store/progress';
 import { useSeen } from '../store/seen';
-import { useSettings } from '../store/settings';
+import { examDateOf, useSettings } from '../store/settings';
 import { certOutline, questionExists } from './outline';
+import { useActiveCertId } from './activeCert';
 
 // ── Facts ────────────────────────────────────────────────────────────────
 const subtopicCache = new Map<string, string[][]>();
@@ -339,8 +340,8 @@ export function plantLookView(plant: CertPlant, i: LookInput): PlantLookView {
 
 /** The plant view for the active cert (Today, You, Your plant). */
 export function usePlantView(): PlantView & { cert: Certification; certId: string; exam: 'eve' | 'day' | null; look: PlantLookView | null; reactionId: string | null } {
-  const certId = useSettings((s) => s.activeCertId);
-  const examDate = useSettings((s) => s.examDates[certId]);
+  const certId = useActiveCertId();
+  const examDate = useSettings((s) => examDateOf(s.examDates, certId));
   // Only what the view reads (code review M6c): a review, a bookmark or a
   // session save elsewhere in the cert never rebuilds the plant on a mounted tab.
   const answers = useProgress((s) => selectCert(s, certId).answers);

@@ -38,9 +38,9 @@ import { openSessionFromStack, safeDecode } from '../../lib/actions';
 import { PRINCIPLE_SET_SIZE } from '../../engine/principleQuestions';
 import { questionsForPrinciple, startPrinciplePractice } from '../../lib/principleQuestions';
 import { guardedStart } from '../../lib/sessions';
-import { useSettings } from '../../store/settings';
 import { space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
+import { useActiveCertId } from '../../lib/activeCert';
 
 /** The header title's hysteresis (pt): it shows past the line, and hides only 8pt back above it. */
 const HYSTERESIS = 8;
@@ -51,7 +51,7 @@ export default function PrincipleScreen() {
   const { id: rawId } = useLocalSearchParams<{ id: string }>();
   const id = safeDecode(rawId ?? '');
   const { c } = useTheme();
-  const certId = useSettings((s) => s.activeCertId);
+  const certId = useActiveCertId();
   const cert = getCertification(certId) ?? CERTIFICATIONS[0];
   // Title collapse: the page title has scrolled under the header.
   const [titleUnder, setTitleUnder] = useState(false);

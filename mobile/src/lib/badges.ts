@@ -24,11 +24,12 @@ import { computeReadiness, type Readiness } from '../engine/readiness';
 import { sessionSize } from '../engine/studyModes';
 import { selectCert, useProgress, type CertProgress } from '../store/progress';
 import { useSeen } from '../store/seen';
-import { dailyMinutesOf, useSettings } from '../store/settings';
+import { dailyMinutesOf, examDateOf, useSettings } from '../store/settings';
 import { badgeCase } from './milestones';
 import { openTab } from './actions';
 import { guardedStart, startPractice, startReview, startStudy } from './sessions';
 import { daysUntil } from './useActiveCert';
+import { activeCertIdNow } from './activeCert';
 
 /** The journey stage the badge case reads (the same rule Today uses). */
 export function caseStage(certId: string, cp: CertProgress, readiness: Readiness, daysLeft: number | null): Stage {
@@ -58,7 +59,7 @@ export function badgeNextLine(certId: string): string | undefined {
   if (!cert) return undefined;
   const cp = selectCert(useProgress.getState(), certId);
   const readiness = computeReadiness(cert, cp.answers);
-  const daysLeft = daysUntil(useSettings.getState().examDates[certId]);
+  const daysLeft = daysUntil(examDateOf(useSettings.getState().examDates, certId));
   const { marks, mastery } = badgeCase(certId, cp);
   const next = nextForExam({ marks, stage: caseStage(certId, cp, readiness, daysLeft), daysLeft, mastery });
   const m: CaseMark | undefined = next.best ?? next.nearest[0];
@@ -135,7 +136,7 @@ const subscribeAll = (cb: () => void) => {
 
 /** The "new" dot for the active cert, live (You tab and its Badges row). */
 export function useNewBadge(): boolean {
-  return useSyncExternalStore(subscribeAll, () => hasNewBadge(useSettings.getState().activeCertId));
+  return useSyncExternalStore(subscribeAll, () => hasNewBadge(activeCertIdNow()));
 }
 
 /**
@@ -149,7 +150,7 @@ export function useNewBadge(): boolean {
  */
 export function showBadgesAgain(): number {
   let n = 0;
-  const active = useSettings.getState().activeCertId;
+  const active = activeCertIdNow();
   const state = useProgress.getState();
   for (const [certId, cp] of Object.entries(state.byCert)) {
     const earned = cp.milestones?.earned ?? {};

@@ -15,6 +15,7 @@
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
 import { Dimensions } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
+import { installFakePack } from '../../jest/fakePack';
 import { setMockReducedMotion } from '../../jest/reanimated-mock';
 import Today from '../app/(tabs)/home';
 import You from '../app/(tabs)/you';
@@ -92,6 +93,8 @@ const setCert = (cp: Record<string, unknown>) =>
   });
 
 let r: ReactTestRenderer | undefined;
+/** A stand-in pack a test installed (removed after it). */
+let undoPack: (() => void) | undefined;
 const mount = (el: React.ReactElement) => {
   act(() => {
     r = create(el);
@@ -141,6 +144,8 @@ afterEach(() => {
     r?.unmount();
   });
   r = undefined;
+  undoPack?.();
+  undoPack = undefined;
   jest.restoreAllMocks();
 });
 
@@ -217,6 +222,8 @@ describe('the readiness report: every section, every state', () => {
   });
 
   it('a certification with 4 domains: four rows, each one stop', () => {
+    // CISM's content must be on the phone for the app to study it (lib/activeCert.ts): a stand-in pack.
+    undoPack = installFakePack('cism');
     useSettings.setState({ activeCertId: 'cism', examDates: {} });
     mount(<ReadinessReport />);
     const cism = getCertification('cism')!;

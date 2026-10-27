@@ -102,7 +102,7 @@ import { useBackup } from '../store/backup';
 import { selectCert, useProgress } from '../store/progress';
 import { useSeen } from '../store/seen';
 import { useSession } from '../store/session';
-import { dailyMinutesOf, useSettings, type MotionPref, type ThemePref } from '../store/settings';
+import { dailyMinutesOf, examDateOf, type MotionPref, type ThemePref, useSettings } from '../store/settings';
 import { space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 
@@ -288,7 +288,7 @@ export default function Settings() {
     if (kept && !keptToday) sayLater(KEEP_TODAY_LINE);
     setKeptToday(kept);
   };
-  const examDate = s.examDates[cert.id];
+  const examDate = examDateOf(s.examDates, cert.id);
   const minutes = dailyMinutesOf(s);
   const examFocused = examFocusedOf(s);
 

@@ -9,7 +9,11 @@
  * The generated module is also the TEST SEAM: a test can jest.mock
  * '../content/generated' to stand in its own packs. Such a mock may leave
  * exports out (an older test has only questions and notes), so every read
- * here uses `?.` and treats a missing export as "nothing of that kind".
+ * here treats a missing export as "nothing of that kind".
+ *
+ * Every lookup by cert id, domain id or deck kind is an OWN-key lookup
+ * (security review HIGH-1): `generatedLessons['constructor']` would otherwise
+ * be the built-in Object function, not "no lessons".
  */
 import * as generated from '../generated';
 import type { ExamPack } from '../exam/types';
@@ -32,21 +36,26 @@ type Gen = {
 // Read through a function, never copied at import: jest.mock swaps the module's exports.
 const gen = (): Gen => generated as unknown as Gen;
 
+/** `map[key]` only when the map itself has that key (never a prototype member). */
+export function own<T>(map: Record<string, T> | Partial<Record<string, T>> | undefined, key: string): T | undefined {
+  return map && Object.prototype.hasOwnProperty.call(map, key) ? map[key] : undefined;
+}
+
 export const BundledSource: PackSource = {
   name: 'bundled',
   certIds: () => Object.keys(gen().generatedPacks ?? {}),
   info(certId) {
     const g = gen();
     // A cert "has a pack" when it has questions (the same rule hasContent always used).
-    if (!g.generatedPacks?.[certId]) return null;
+    if (!own(g.generatedPacks, certId)) return null;
     // A test's stand-in module may have no info: rev 0 is the lowest, so any other source wins.
-    return g.generatedInfo?.[certId] ?? { certId, rev: 0, schemaVersion: 1 };
+    return own(g.generatedInfo, certId) ?? { certId, rev: 0, schemaVersion: 1 };
   },
-  domainIds: (certId) => Object.keys(gen().generatedPacks?.[certId] ?? {}),
-  questions: (certId, domainId) => gen().generatedPacks?.[certId]?.[domainId]?.() ?? null,
-  notes: (certId) => gen().generatedNotes?.[certId]?.() ?? null,
-  principles: (certId) => gen().generatedPrinciples?.[certId]?.() ?? null,
-  exam: (certId) => gen().generatedExam?.[certId]?.() ?? null,
-  lessons: (certId) => gen().generatedLessons?.[certId]?.() ?? null,
-  gameDeck: (certId, kind: GameDeckKind) => gen().generatedGames?.[certId]?.[kind]?.() ?? null,
+  domainIds: (certId) => Object.keys(own(gen().generatedPacks, certId) ?? {}),
+  questions: (certId, domainId) => own(own(gen().generatedPacks, certId), domainId)?.() ?? null,
+  notes: (certId) => own(gen().generatedNotes, certId)?.() ?? null,
+  principles: (certId) => own(gen().generatedPrinciples, certId)?.() ?? null,
+  exam: (certId) => own(gen().generatedExam, certId)?.() ?? null,
+  lessons: (certId) => own(gen().generatedLessons, certId)?.() ?? null,
+  gameDeck: (certId, kind: GameDeckKind) => own(own(gen().generatedGames, certId), kind)?.() ?? null,
 };

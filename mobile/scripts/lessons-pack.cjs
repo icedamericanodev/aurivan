@@ -68,14 +68,24 @@ const SCENES = {
     isStr(s.explanation),
 };
 
-/** A copy without author-only fields ("_comment"), at any depth. */
+/** Keys that could reach an object's prototype (security review LOW-2): never copied. */
+const PROTO_KEYS = new Set(['__proto__', 'constructor', 'prototype']);
+
+/**
+ * A copy without author-only fields ("_comment"), at any depth. Prototype
+ * keys are never copied either ("__proto__" already starts with "_";
+ * "constructor" and "prototype" are dropped too).
+ */
 function stripAuthorFields(value) {
   if (Array.isArray(value)) return value.map(stripAuthorFields);
   if (!isObj(value)) return value;
   const out = {};
-  for (const [k, v] of Object.entries(value)) if (!k.startsWith('_')) out[k] = stripAuthorFields(v);
+  for (const [k, v] of Object.entries(value)) if (!k.startsWith('_') && !PROTO_KEYS.has(k)) out[k] = stripAuthorFields(v);
   return out;
 }
+
+/** The scene's check, only for a type listed in SCENES itself (never "constructor" or "toString"). */
+const sceneCheck = (type) => (typeof type === 'string' && Object.prototype.hasOwnProperty.call(SCENES, type) ? SCENES[type] : undefined);
 
 /**
  * Build the pack. `opts` (all optional): `domains` (this cert's domain ids),
@@ -136,7 +146,7 @@ function buildLessonsPack(raw, certId = 'cisa', opts = {}) {
     }
     l.scenes.forEach((s, j) => {
       const at = `${where} scene ${j + 1}`;
-      const check = isObj(s) ? SCENES[s.type] : undefined;
+      const check = isObj(s) ? sceneCheck(s.type) : undefined;
       if (!check) problems.push(`${at} has an unknown type "${isObj(s) ? s.type : typeof s}"`);
       else if (!check(s)) problems.push(`${at} (${s.type}) is missing a field its template needs`);
     });

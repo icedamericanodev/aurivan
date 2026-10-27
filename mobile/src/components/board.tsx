@@ -21,12 +21,12 @@ import { copy, type AccountCopyKey } from '../content/cloud/copy';
 import type { PostCard, PostKind, PostStatus, ReportReason } from '../cloud/types';
 import { boardReady, loadFeed, statusLabel, useBoard } from '../lib/board';
 import { config } from '../lib/config';
-import { useSettings } from '../store/settings';
 import { radius, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { ICON_STROKE, MessagesSquare } from './icons';
 import { SettingsGroup, SettingsRow, Sheet } from './settings';
 import { Button, ICON_SIZE, ListRow, NoteField, RadioRow, T } from './ui';
+import { useActiveCertId } from '../lib/activeCert';
 
 export const STATUS_GLYPH: Record<PostStatus, string> = {
   open: '○',
@@ -299,7 +299,7 @@ export function BoardFooter({ trademarkNotice }: { trademarkNotice: string }) {
  * off: boardReady() is false there, so nothing is asked).
  */
 export function BoardCreditLine() {
-  const certId = useSettings((s) => s.activeCertId);
+  const certId = useActiveCertId();
   const [shipped, setShipped] = useState(false);
   useEffect(() => {
     if (!boardReady()) return;

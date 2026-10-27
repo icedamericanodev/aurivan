@@ -85,13 +85,56 @@ const DAY_MS = 24 * 3_600_000;
 // small enough that a hostile file can't make the phone churn.
 const MAX_IDS = 5_000; // answers, reviews, mistakes, bookmarks (per cert)
 /**
+ * Exams in one file or snapshot (byCert, examDates). The app names 6 today;
+ * 16 leaves room for every planned pack while keeping a hostile file small
+ * (security review LOW-1: was 50, sized before any exam id was accepted unknown).
+ */
+export const MAX_CERTS = 16;
+/**
  * Content packs, fix 2: the shape of a certification id ("cisa", "cc",
  * "cissp"). The database's own rule for a cert id. An exam this app has no
  * descriptor for (a content pack downloaded on another phone) is accepted
  * when its id has this shape, and its data is kept as it is; anything else
- * ("__proto__", "CISA", a 200-character key) is refused.
+ * ("__proto__", "CISA", a 200-character key) is refused. Use isCertId: the
+ * shape alone also lets through "constructor" (security review HIGH-1).
  */
 export const CERT_ID_RE = /^[a-z0-9-]{2,20}$/;
+
+/** Keys that could reach an object's prototype if a careless reader copied them. */
+const PROTO_KEYS = new Set(['__proto__', 'constructor', 'prototype']);
+
+/**
+ * Security review HIGH-1: names that a plain object already answers to
+ * through its prototype (`{}.constructor` is the Object function), lower-cased
+ * so they match the id shape. A cert id is used as an object key all over the
+ * app (`byCert[id]`, `examDates[id]`, the generated packs), so none of these
+ * may ever be one: "constructor" as the active exam crashed Learn and made
+ * every later backup unrestorable.
+ */
+// A fixed list (the same on every JavaScript engine); backup-packs.test.ts checks it
+// still covers every Object.prototype and Function.prototype name of the shape.
+export const RESERVED_CERT_IDS: ReadonlySet<string> = new Set([
+  ...PROTO_KEYS,
+  'hasownproperty',
+  'isprototypeof',
+  'propertyisenumerable',
+  'tostring',
+  'tolocalestring',
+  'valueof',
+  // Function.prototype too, in case a cert id ever keys a function's properties.
+  'name',
+  'length',
+  'arguments',
+  'caller',
+  'apply',
+  'bind',
+  'call',
+]);
+
+/** True for a usable certification id: the database's shape, and never a prototype member's name. */
+export function isCertId(x: unknown): x is string {
+  return typeof x === 'string' && CERT_ID_RE.test(x) && !RESERVED_CERT_IDS.has(x);
+}
 const MAX_SMALL = 5_000; // lessons done, notes read and started, mastery
 const MAX_LIST = 200; // mocks, recent days, readiness log
 const MAX_KEY = 120; // any id or map key
@@ -524,7 +567,7 @@ function settingsCheck(certKey: Check<string>) {
     {
       // A cert with no exam date is simply left out of the map (JSON drops
       // undefined), so the type allows undefined like the store's does.
-      examDates: map<string | undefined>(date, 50, certKey),
+      examDates: map<string | undefined>(date, MAX_CERTS, certKey),
       theme: oneOf('system', 'dark', 'light'),
       // Mobile 1.8 (optional: older files have none).
       motion: oneOf('system', 'reduced'),
@@ -566,7 +609,7 @@ function settingsCheck(certKey: Check<string>) {
 function progressCheck(certKey: Check<string>) {
   return obj(
     {
-      byCert: map(certProgress, 50, certKey),
+      byCert: map(certProgress, MAX_CERTS, certKey),
       streak,
       // "" before the first answer ever, otherwise a calendar day.
       today: obj({ day: (x, at) => (x === '' ? '' : date(x, at)), answered: count }),
@@ -735,8 +778,10 @@ export interface KnownIds {
   /**
    * Content packs, fix 1: false when this exam has NO content on this phone
    * (a pack downloaded on another phone, not here). Its progress is then kept
-   * exactly as it is, never trimmed to nothing. Optional: when absent, an exam
-   * with no ids at all (no questions, lessons or notes) counts as not installed.
+   * exactly as it is, never trimmed to nothing. lib/backup sets it to "has
+   * content AND has question ids" (security review MEDIUM-2). Optional: when
+   * absent, an exam with no ids at all (no questions, lessons or notes) counts
+   * as not installed.
    */
   installed?: boolean;
   questions: ReadonlySet<string>;
@@ -771,6 +816,18 @@ export function cardSubtopic(cardId: string): string {
 }
 
 /**
+ * True when a card's owner can be checked on this phone, i.e. this phone has
+ * ids of the owner's kind (security review MEDIUM-2). When it can't, the card
+ * is kept as it is, never dropped for want of something to check it against.
+ */
+function cardCheckable(cardId: string, k: KnownIds): boolean {
+  const [kind, owner = ''] = cardId.split(':');
+  if (kind === 'flow') return k.lessons.size > 0;
+  if (/^D\d+$/.test(owner)) return (k.domains?.size ?? 0) > 0;
+  return k.notes.size > 0;
+}
+
+/**
  * True when a note card still has something in the app to belong to:
  * - "flow:<lessonId>" (Stepping Stones, a lesson's flow) → the lesson;
  * - "kt:D4:<hash>" (Field Guide, a domain key term) → the domain;
@@ -797,6 +854,15 @@ export const contentInstalled = (k: KnownIds): boolean => k.installed ?? k.quest
  * another phone, not this one) is kept exactly as it is. Its ids can't be
  * checked here, and trimming them would wipe that exam's progress. The size
  * caps still hold: every list was capped by the checker before this runs.
+ *
+ * Security review MEDIUM-2: and per KIND of id. A pack that has questions but
+ * no lessons (or no notes) here says nothing about lesson (or note) ids, so
+ * each kind is trimmed only when this phone has ids of that kind:
+ * - questions → answers, reviews, mistakes, bookmarks, question notes, In
+ *   order's place, game misses;
+ * - lessons → lessons done;
+ * - notes → notes read and started, and mastery dates (keyed by note id);
+ * - cards → by their owner's kind (a lesson flow, a domain, or a note).
  */
 export function keepKnownIds(progress: BackupProgress, known: (certId: string) => KnownIds): BackupProgress {
   const byCert: BackupProgress['byCert'] = {};
@@ -807,22 +873,27 @@ export function keepKnownIds(progress: BackupProgress, known: (certId: string) =
       continue;
     }
     const next = { ...cp };
-    if (cp.answers) next.answers = keepKeys(cp.answers, k.questions);
-    if (cp.review) next.review = keepKeys(cp.review, k.questions);
-    if (cp.mistakes) next.mistakes = keepKeys(cp.mistakes, k.questions);
-    if (cp.bookmarks) next.bookmarks = keepIds(cp.bookmarks, k.questions);
-    // A note on a question this app doesn't have can never be shown: dropped.
-    if (cp.qNotes) next.qNotes = keepKeys(cp.qNotes, k.questions);
-    if (cp.lessonsDone) next.lessonsDone = keepIds(cp.lessonsDone, k.lessons);
-    if (cp.notesRead) next.notesRead = keepIds(cp.notesRead, k.notes);
-    if (cp.notesViewed) next.notesViewed = keepIds(cp.notesViewed, k.notes);
-    if (cp.mastery) next.mastery = keepKeys(cp.mastery, k.notes);
-    // In order's place is a question id: a removed question just starts that scope over.
-    if (cp.studyPath?.inOrder) next.studyPath = { ...cp.studyPath, inOrder: keepValues(cp.studyPath.inOrder, k.questions) };
-    // Note cards ("rumor:4B1.2:…") keep only cards whose note, lesson or domain still exists.
-    if (cp.cards) next.cards = Object.fromEntries(Object.entries(cp.cards).filter(([key]) => cardKnown(key, k)));
-    // Game misses waiting to be fixed are question ids.
-    if (cp.milestones?.gameMisses) next.milestones = { ...cp.milestones, gameMisses: keepKeys(cp.milestones.gameMisses, k.questions) };
+    if (k.questions.size > 0) {
+      if (cp.answers) next.answers = keepKeys(cp.answers, k.questions);
+      if (cp.review) next.review = keepKeys(cp.review, k.questions);
+      if (cp.mistakes) next.mistakes = keepKeys(cp.mistakes, k.questions);
+      if (cp.bookmarks) next.bookmarks = keepIds(cp.bookmarks, k.questions);
+      // A note on a question this app doesn't have can never be shown: dropped.
+      if (cp.qNotes) next.qNotes = keepKeys(cp.qNotes, k.questions);
+      // In order's place is a question id: a removed question just starts that scope over.
+      if (cp.studyPath?.inOrder) next.studyPath = { ...cp.studyPath, inOrder: keepValues(cp.studyPath.inOrder, k.questions) };
+      // Game misses waiting to be fixed are question ids.
+      if (cp.milestones?.gameMisses) next.milestones = { ...cp.milestones, gameMisses: keepKeys(cp.milestones.gameMisses, k.questions) };
+    }
+    if (k.lessons.size > 0 && cp.lessonsDone) next.lessonsDone = keepIds(cp.lessonsDone, k.lessons);
+    if (k.notes.size > 0) {
+      if (cp.notesRead) next.notesRead = keepIds(cp.notesRead, k.notes);
+      if (cp.notesViewed) next.notesViewed = keepIds(cp.notesViewed, k.notes);
+      if (cp.mastery) next.mastery = keepKeys(cp.mastery, k.notes);
+    }
+    // Note cards ("rumor:4B1.2:…") keep only cards whose note, lesson or domain still exists,
+    // checked only where this phone has ids of that owner's kind.
+    if (cp.cards) next.cards = Object.fromEntries(Object.entries(cp.cards).filter(([key]) => !cardCheckable(key, k) || cardKnown(key, k)));
     byCert[certId] = next;
   }
   return { ...progress, byCert };
@@ -888,7 +959,7 @@ export function keepSupportedPlants(progress: BackupProgress, known?: (certId: s
  * or throws a BackupError. Never changes anything.
  *
  * `knownCertIds`: the certifications this app knows. Another WELL-FORMED
- * id (CERT_ID_RE: an exam from a content pack this phone doesn't have) is
+ * id (isCertId: an exam from a content pack this phone doesn't have) is
  * kept as it is (content packs, fix 2); a malformed one (a cert key, the
  * active cert, an exam date) rejects the whole file.
  * `known`: when given, ids that don't exist in the content are dropped
@@ -967,9 +1038,6 @@ function readChecked(
   const exportedAt = typeof file.exportedAt === 'string' && file.exportedAt.length <= 40 ? file.exportedAt : '';
   return { settings, progress, exportedAt };
 }
-
-/** Keys that could reach an object's prototype if a careless reader copied them. */
-const PROTO_KEYS = new Set(['__proto__', 'constructor', 'prototype']);
 
 /** True when any object at any depth has a prototype key (a sync pull refuses the whole state). */
 export function hasProtoKey(x: unknown, depth = 0): boolean {
@@ -1055,9 +1123,10 @@ function readStoresChecked(
   opts: ReadStoresOptions,
 ): { settings: BackupSettings; progress: BackupProgress } {
   // Fix 2: a known id, or any well-formed one (an exam from a content pack not on this phone).
+  // Never a prototype member's name, known or not (security review HIGH-1).
   const certKey: Check<string> = (x, at) => {
     if (typeof x !== 'string') return bad(at);
-    if (!knownCertIds.includes(x) && !CERT_ID_RE.test(x)) throw new BackupError('unknown-cert', at);
+    if (RESERVED_CERT_IDS.has(x) || !(knownCertIds.includes(x) || isCertId(x))) throw new BackupError('unknown-cert', at);
     return x;
   };
   const strictRaw = (blob: unknown, at: string) => {

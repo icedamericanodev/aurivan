@@ -116,6 +116,7 @@ describe('fix 1: an exam with no content on this phone keeps its progress', () =
 describe('fix 2: a well-formed unknown exam id is kept, a malformed one refused', () => {
   it('the id rule is the database’s', () => {
     for (const ok of ['cc', 'cisa', 'cissp', 'sec-plus', 'a1', 'x'.repeat(20)]) expect(CERT_ID_RE.test(ok)).toBe(true);
+    // The shape alone also passes "constructor": engine/backup.ts isCertId adds the denylist (content-packs-review.test.tsx).
     for (const bad of ['c', 'CC', 'cc_1', 'cc 1', '__proto__', 'x'.repeat(21), '', 'cc!']) expect(CERT_ID_RE.test(bad)).toBe(false);
   });
 
@@ -152,8 +153,8 @@ describe('fix 2: a well-formed unknown exam id is kept, a malformed one refused'
     expect(codeOf(() => readBackup(file({ zz9: tooMany }), CERTS))).toBe('bad-data');
     // Wrong types are refused as for any exam.
     expect(codeOf(() => readBackup(file({ zz9: { answers: { zz9_001: { attempts: 'many' } } } }), CERTS))).toBe('bad-data');
-    // At most 50 exams in one file.
-    const many = Object.fromEntries(Array.from({ length: 51 }, (_, i) => [`ex-${i}`, {}]));
+    // At most 16 exams in one file (MAX_CERTS; security review LOW-1).
+    const many = Object.fromEntries(Array.from({ length: 17 }, (_, i) => [`ex-${i}`, {}]));
     expect(codeOf(() => readBackup(file(many), CERTS))).toBe('bad-data');
   });
 });
