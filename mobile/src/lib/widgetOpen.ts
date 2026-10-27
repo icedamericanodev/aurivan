@@ -23,7 +23,8 @@ import { GOAL_ROUTES, type WidgetTap } from '../engine/widgets';
 import { dayKey } from '../engine/streak';
 import { useProgress } from '../store/progress';
 import { useSession } from '../store/session';
-import { useSettings } from '../store/settings';
+import { examDateOf, useSettings } from '../store/settings';
+import { effectiveCertId } from './activeCert';
 import { useWidgetStore } from '../store/widgets';
 import { runPlanItem, runShortSet } from './actions';
 import { ensureTodayPlan } from './activity';
@@ -47,7 +48,7 @@ export function openFromWidget(tap: WidgetTap): boolean {
     return false;
   }
   if (tap.fromWidget) useWidgetStore.getState().noteOpen(tap.kind, dayKey(Date.now()));
-  const certId = settings.activeCertId;
+  const certId = effectiveCertId(settings.activeCertId);
   const active = useSession.getState().active;
   const busy = Boolean(active && !active.finishedAt);
   const study = tap.go === 'start' || tap.go === 'short' || tap.go === 'review' || tap.go === 'question';
@@ -66,7 +67,7 @@ export function openFromWidget(tap: WidgetTap): boolean {
       const plan = useProgress.getState().days[certId];
       home();
       if (!plan || plan.items.length === 0 || planComplete(plan)) return false;
-      const left = daysUntil(settings.examDates[certId]);
+      const left = daysUntil(examDateOf(settings.examDates, certId));
       const i = tap.go === 'short' ? shortSetItem(plan, { examWeek: left !== null && left >= 0 && left <= 7 }) : -1;
       if (i >= 0) runShortSet(plan.items[i], certId);
       else runPlanItem(plan.items[currentIndex(plan)], certId);

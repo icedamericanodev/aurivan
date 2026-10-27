@@ -28,7 +28,8 @@ import { dueIds } from '../engine/srs';
 import { dayKey, daysBetween } from '../engine/streak';
 import { buildSnapshot, DAYS_AHEAD, FINAL_DAY_PLAIN, readReveal, ruleDueFrom, type PlanSnap, type PlantSnap, type QuizSnap, type ReadySnap, type RevealState, type ThinkSnap, type WidgetSnapshot } from '../engine/widgets';
 import { selectCert, useProgress } from '../store/progress';
-import { dailyMinutesOf, useSettings } from '../store/settings';
+import { dailyMinutesOf, examDateOf, useSettings } from '../store/settings';
+import { effectiveCertId } from './activeCert';
 import { useWidgetStore } from '../store/widgets';
 import { questionExists } from './outline';
 import { allCertMarks, plantLookView } from './plant';
@@ -107,7 +108,7 @@ function planFor(certId: string, now: number): { plan: DayPlan; live: ReturnType
     progress,
     readiness,
     dueCount: dueIds(progress.review, now, questionExists(certId)).length,
-    daysLeft: daysUntil(settings.examDates[certId]),
+    daysLeft: daysUntil(examDateOf(settings.examDates, certId)),
     dailyMinutes: dailyMinutesOf(settings),
     familiarity: settings.familiarity,
     examFocused: settings.examFocused,
@@ -137,7 +138,7 @@ function planSnap(certId: string, now: number): PlanSnap | null {
   const reviewItem = ri >= 0 && !plan.done[ri] ? plan.items[ri] : null;
   const back = reviewItem && reviewItem.kind === 'review' ? Math.min(reviewItem.count, due.length) : 0;
   const backMissed = back > 0 && due.slice(0, back).every((id) => progress.answers[id]?.lastCorrect === false);
-  const daysLeft = daysToExam(useSettings.getState().examDates[certId], plan.day);
+  const daysLeft = daysToExam(examDateOf(useSettings.getState().examDates, certId), plan.day);
   const examWeek = daysLeft !== null && daysLeft >= 0 && daysLeft <= 7;
   // What comes next: the live plan (as Today's own "Tomorrow" preview does), and about how long.
   const nextItems = live.plan;
@@ -327,12 +328,12 @@ export function collectSnapshot(now = Date.now(), reveal: RevealState = readReve
   const settings = useSettings.getState();
   const state = useProgress.getState();
   const ws = useWidgetStore.getState();
-  const cert = getCertification(settings.activeCertId) ?? CERTIFICATIONS[0];
+  const cert = getCertification(effectiveCertId(settings.activeCertId)) ?? CERTIFICATIONS[0];
   const progress = selectCert(state, cert.id);
   const today = dayKey(now);
   if (!ws.anchorDay) ws.setAnchor(today);
   const anchor = useWidgetStore.getState().anchorDay ?? today;
-  const examDay = settings.examDates[cert.id];
+  const examDay = examDateOf(settings.examDates, cert.id);
   const exists = questionExists(cert.id);
   // Each day's questions to revisit (as of that day's noon), so a day's Quick question can be one of them.
   const dueFor = (day: string) => {
