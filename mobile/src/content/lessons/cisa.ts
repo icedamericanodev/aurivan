@@ -878,7 +878,7 @@ export const CISA_LESSONS: Lesson[] = [
         ],
         correctIndex: 0,
         explanation:
-          'Credentials show the firm could do the work, not that this report is sound. The IS auditor evaluates the delivered work and holds back reliance until the evidence is there. Repeating the tests is tempting, but it duplicates work the expert was engaged to do; the first step is to obtain and evaluate the expert’s evidence, and add your own procedures only if gaps remain.',
+          'Credentials show the firm could do the work, not that this report is sound. The IS auditor evaluates the delivered work and holds back reliance until the evidence is there. Repeating the tests is tempting, but it duplicates work the expert was engaged to do; the first step is to obtain and evaluate the expert’s evidence, and the IS auditor adds further procedures only if gaps remain.',
       },
     ],
   },
@@ -2270,7 +2270,7 @@ export const CISA_LESSONS: Lesson[] = [
           { label: 'Nothing brings it within?', note: 'Then avoid: stop or redesign the activity' },
         ],
         caption:
-          'Use the order as a guide, not a rule: management weighs the cost and benefit of each option and often combines them, such as mitigating and insuring together. A short budget does not change the logic: fund legal and regulatory duties first, then the fixes that cut the most loss per dollar, and escalate any risk still above appetite to senior management for a documented decision.',
+          'Use the order as a guide, not a rule: management weighs the cost and benefit of each option and often combines them, such as mitigating a risk and transferring part of it through insurance. A short budget does not change the logic: fund legal and regulatory duties first, then the fixes that cut the most loss per dollar, and escalate any residual risk still above risk appetite to senior management for a documented decision.',
       },
       {
         type: 'analogy',
@@ -2365,20 +2365,28 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'idea',
         heading: 'The core idea',
-        body: 'Governance works only when each decision has one home: a body with a written charter, real decision rights and a path to escalate what it cannot settle. The board sets direction and stays accountable. Committees advise or decide within their charter, and managers run the work. A committee that reviews but cannot act is governance in form only.',
+        body: 'Governance works only when each decision has one home: a body with a written charter (the document saying what the body may decide), real decision rights and a path to escalate what it cannot settle. The board sets direction and stays accountable. Committees advise or decide within their charter, and managers run the work. A committee that reviews but cannot act is governance in form only.',
+      },
+      {
+        type: 'analogy',
+        heading: 'A city and its roads',
+        body: 'A city council decides what kind of city it wants and answers to the voters. An expert panel (the IT strategy committee) advises the council on where transport is heading, but does not pick which road is paved first; the works committee (the IT steering committee) does that, balancing budgets and crews. The council can hire a chief engineer (the CISO) to run road safety, yet if a bridge fails, the council still answers for it.',
       },
       {
         type: 'stack',
         heading: 'Who does what',
         layers: [
-          { label: 'Board', note: 'Sets direction and risk appetite, approves the security strategy and policy, and stays accountable' },
+          {
+            label: 'Board',
+            note: 'Sets direction and risk appetite (how much risk it is willing to accept), approves the security strategy and top-level policy, and stays accountable',
+          },
           {
             label: 'IT strategy committee',
             note: 'Board level: advises the board on IT direction, emerging technology and strategic risk. It does not rank projects',
           },
           {
             label: 'IT steering committee',
-            note: 'Management level: senior business and IT leaders rank projects, allocate resources and track delivery',
+            note: 'Management level: senior business and IT leaders, such as the chief information officer (CIO), rank projects, allocate resources and track delivery',
           },
           {
             label: 'Chief information security officer (CISO)',
@@ -2387,11 +2395,6 @@ export const CISA_LESSONS: Lesson[] = [
         ],
         caption:
           'The audit committee also sits at board level. It oversees internal and external audit and approves the audit charter; it oversees risk and control but does not own them.',
-      },
-      {
-        type: 'analogy',
-        heading: 'A city and its roads',
-        body: 'A city council decides what kind of city it wants and answers to the voters. An expert panel advises the council on where transport is heading, but does not pick which road is paved first; the works committee does that, balancing budgets and crews. The council can hire a chief engineer to run road safety, yet if a bridge fails, the council still answers for it.',
       },
       {
         type: 'compare',
@@ -2405,50 +2408,50 @@ export const CISA_LESSONS: Lesson[] = [
           points: ['Accountability for information security', 'Approving the security strategy and policy', 'Setting how much risk is acceptable'],
         },
         caption:
-          'Senior management commitment is the strongest single success factor for security governance. Without it, even a capable CISO runs a technical silo whose tools may not match the business’s risks.',
+          'Senior management commitment is the strongest single success factor for security governance. Without it, even a capable CISO ends up working apart from the business, buying tools that may not match its risks.',
       },
       {
         type: 'idea',
         heading: 'The IS auditor’s lens',
-        body: 'Decisions belong at the right level, with evidence that they were made there. As the IS (information systems) auditor, you read each charter for decision rights and an escalation path, then test the minutes: did the body that owns a decision actually take it, and was it acted on? You also check that the security strategy maps to business goals. You recommend; the board or the chief executive amends the charters.',
+        body: 'Decisions belong at the right level, with evidence that they were made there. As the IS (information systems) auditor, you read each charter for decision rights and an escalation path, then test the minutes: did the body that owns a decision actually take it, and was it acted on? You also check that the security strategy maps to business goals. You recommend; the board or senior management approves changes to the charters.',
       },
       {
         type: 'trap',
         heading: 'The exam trap',
         trap: '“The IT strategy committee should rank this year’s projects, since it knows the strategy best.”',
-        why: 'Ranking projects and allocating resources is the IT steering committee’s job, at management level. The strategy committee advises the board on long-term direction. This is the principle “Escalate to whoever owns the decision”: send each decision to the body whose charter gives it that right.',
+        why: 'Ranking projects and allocating resources is the IT steering committee’s job, at management level. The strategy committee advises the board on long-term direction. This is the principle “Escalate to whoever owns the decision”: each decision goes to the body whose charter gives it that right.',
       },
       {
         type: 'tip',
-        body: 'Read the verb in the stem. Advise on direction: IT strategy committee. Rank projects or settle resource conflicts: IT steering committee. Run the program: the CISO. Answer for it: the board. A forum that meets the same problem every month usually lacks the authority to act or a path to escalate. This is the principle “Management owns the risk”: running security can be delegated, accountability cannot.',
+        body: 'Read the verb in the stem. Advise on direction: the IT strategy committee. Rank projects or settle resource conflicts: the IT steering committee (strategy is the map, steering is the wheel). Run the program: the CISO; answer for it: the board.',
       },
       {
         type: 'check',
         question:
-          'A board member proposes that the IT strategy committee take over ranking next year’s IT projects, because its members know the strategy best. What should the IS auditor advise?',
+          'A board member proposes that the IT strategy committee take over ranking next year’s IT projects, because its members know the strategy best. What should the IS auditor recommend?',
         options: [
           'Agree, since strategy knowledge will improve the ranking',
-          'Keep ranking with the management-level steering committee',
-          'Let the chief information officer rank projects alone',
+          'Keep ranking with the IT steering committee',
+          'Let the CIO rank the projects alone, to save time',
           'Give the ranking to the audit committee for independence',
         ],
         correctIndex: 1,
         explanation:
-          'Ranking projects is a management decision, so it stays with the steering committee of senior business and IT leaders; the strategy committee advises the board on direction. Agreeing is tempting because the reason sounds sensible, but it pulls a board-level body into management work and blurs who answers for delivery. The audit committee would lose its independence if it ranked the projects it oversees.',
+          'Ranking projects is a management decision, so it stays with the steering committee of senior business and IT leaders; the strategy committee advises the board on direction. Agreeing is tempting because the reason sounds sensible, but it pulls a board-level body into management work and blurs who answers for delivery. The CIO ranking alone would leave out the business’s voice, and the audit committee would lose its independence if it ranked the projects it oversees.',
       },
       {
         type: 'check',
         question:
-          'A manufacturer’s board hires an experienced CISO and records in its minutes that information security is now “entirely the CISO’s responsibility”. What should the IS auditor point out?',
+          'A manufacturer’s board hires an experienced CISO and records in its minutes that information security is now “entirely the CISO’s responsibility”. What should the IS auditor report to the board?',
         options: [
           'Accountability stays with the board; the CISO runs the program',
           'The CISO now carries the accountability, with the authority',
           'The CISO should report to the head of IT operations',
-          'The board should approve each security tool the CISO buys',
+          'Have the CISO report security metrics to the board each quarter',
         ],
         correctIndex: 0,
         explanation:
-          'The board can delegate running security, but not its accountability for it. Approving each tool purchase is tempting because it keeps the board involved, but that is management detail; the board’s part is the strategy, the policy and how much risk is acceptable. Reporting into IT operations would let the people who run IT filter security concerns.',
+          'The board can delegate running security, but not its accountability for it, so the CISO cannot take that on. Quarterly reporting to the board is tempting because it is good practice, but it leaves the minutes saying the board has handed over an accountability it cannot hand over. Reporting into IT operations would let the people who run IT filter security concerns.',
       },
       {
         type: 'check',
@@ -2458,11 +2461,11 @@ export const CISA_LESSONS: Lesson[] = [
           'Meet weekly so the reports are seen sooner',
           'Replace the committee with an automated patching tool',
           'Add more senior managers to the committee',
-          'Give the committee decision rights and a path to escalate',
+          'Let it set deadlines and refer overdue fixes upward',
         ],
         correctIndex: 3,
         explanation:
-          'The problem recurs because nobody in the room can act on it; decision rights and escalation turn review into governance. More senior members is tempting because seniority sounds like authority, but without a charter that lets the committee decide or escalate, they can still only note the reports. A tool may help patching, but it does not fix who decides.',
+          'The problem recurs because nobody in the room can act on it; the power to set deadlines and escalate turns review into governance. Adding more senior managers is tempting because seniority sounds like authority, but without a charter that lets the committee decide or escalate, they can still only note the reports. Meeting weekly only notes them more often, and a tool may help patching, but it does not fix who decides.',
       },
     ],
   },
@@ -3303,7 +3306,7 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'idea',
         heading: 'The core idea',
-        body: 'Test time is always limited, so the technique matters as much as the effort. Good testing puts effort where failure would hurt most (risk-based testing) and proves its tests would actually catch a mistake. Under a fixed date, cutting testing a little everywhere hides risk everywhere: ship a smaller, fully tested release, and defer the rest with the business owner formally accepting the risk. That works only for optional features, while everything that ships has met its criteria; when acceptance testing fails widely, go-live waits.',
+        body: 'Test time is always limited, so the technique matters as much as the effort. Good testing puts effort where failure would hurt most (risk-based testing) and proves its tests would actually catch a mistake. Under a fixed date, cutting testing a little everywhere hides risk everywhere: ship a smaller, fully tested release, and defer the rest with the business owner formally accepting the risk. That works only when the deferred features are optional and everything that ships has met its acceptance criteria. When acceptance testing fails widely, go-live waits.',
       },
       {
         type: 'stack',
@@ -4019,7 +4022,7 @@ export const CISA_LESSONS: Lesson[] = [
         type: 'trap',
         heading: 'The second trap',
         trap: '“Response times are slow, so buy more servers.”',
-        why: 'More hardware helps only if capacity is the real limit. Analyze the workload first to find the bottleneck, such as one slow query, a locked table or a report run at peak, then try moving work off-peak before buying more.',
+        why: 'More hardware helps only if capacity is the real limit. Analyze the workload first to find the bottleneck, such as one slow query, a locked table or a report run at peak, then tune or reschedule that work before buying more.',
       },
       {
         type: 'tip',
@@ -4907,11 +4910,14 @@ export const CISA_LESSONS: Lesson[] = [
             label: 'Technology',
             note: 'Redundant parts that share nothing, such as power, cable routes or a provider, proven by deliberately failing one',
           },
-          { label: 'People', note: 'A second person cross-trained and rehearsed on each critical task; a runbook alone is not capability' },
+          {
+            label: 'People',
+            note: 'A second person cross-trained and rehearsed on each critical task, so no task rests on one key person; a runbook (written step-by-step instructions) alone is not capability',
+          },
           { label: 'Suppliers', note: 'Tested recovery evidence from each critical supplier, or a qualified alternate arranged in advance' },
           {
             label: 'Plant control systems',
-            note: 'Operational technology (OT), such as production-line controls, inside the enterprise plan with its own safety steps',
+            note: 'Operational technology (OT), such as production-line controls, inside the enterprise plan with its own safety steps: in an incident, make people and plant safe before anything else',
           },
         ],
         caption:
@@ -4933,7 +4939,7 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'idea',
         heading: 'The IS auditor’s lens',
-        body: 'Every resource needs a fallback that has been shown to work. As the IS (information systems) auditor, you trace each critical service end to end, through people, suppliers and shared infrastructure, and ask for evidence that each fallback works: a rehearsal, a supplier’s test report, a failover test. You quantify the gap, such as a day’s lost revenue against the largest credit the contract allows, and report it. Management decides the investment.',
+        body: 'Every resource needs a fallback that has been shown to work. As the IS (information systems) auditor, you trace each critical service end to end, through people, suppliers and shared infrastructure, and ask for evidence that each fallback works: a rehearsal, a supplier’s test report, a failover test (switching to the backup on purpose to prove it works). You quantify the gap, such as a day’s lost revenue against the largest service credit the contract allows, and report it. Management decides the investment.',
       },
       {
         type: 'trap',
@@ -4943,12 +4949,12 @@ export const CISA_LESSONS: Lesson[] = [
       },
       {
         type: 'tip',
-        body: 'Count the shared links: two sites on one cable route, one power room or one provider can fail as one. Service credits compensate; they never restore. In a plant control incident, the safety of people and plant comes before production and evidence. This is the principle “Management owns the risk”: you quantify and report the gap, and management decides what to fund.',
+        body: 'Count the shared links: two sites on one cable route, one power room or one provider can fail as one. Service credits compensate; they never restore. In a plant control incident, the safety of people and plant comes first.',
       },
       {
         type: 'check',
         question:
-          'A bank’s two data centers sit in different towns, but the IS auditor finds both reach the network through one carrier’s single local exchange. Management says the design has no single point of failure. What is the GREATEST concern?',
+          'A bank’s two data centers sit in different towns, but the IS auditor finds both reach the network through one carrier’s single local exchange (the telecom company’s switching hub). Management says the design has no single point of failure. What is the IS auditor’s GREATEST concern?',
         options: [
           'Data copied between the towns may arrive with a delay',
           'Switching between the centers may take longer than planned',
@@ -4962,21 +4968,21 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'check',
         question:
-          'A shipping firm’s tracking service runs on one cloud provider, which has missed its uptime promise all quarter. A day’s outage would cost far more than the largest refund the contract allows. What should the IS auditor recommend to the operations director?',
+          'A shipping firm’s tracking service runs on one cloud provider, which has missed its availability target all quarter despite an agreed improvement plan. A day’s outage would cost far more than the largest service credit the contract allows. What should the IS auditor recommend to management?',
         options: [
-          'Claim every refund the contract allows for the misses',
-          'Design a fallback for the tracking service and plan an exit',
-          'Ask the provider for a written plan to meet its promise',
+          'Claim every service credit the contract allows',
+          'Build a backup route for tracking and a plan to switch providers',
+          'Track the provider against its improvement plan for another quarter',
           'Move the service to the cheapest other provider at once',
         ],
         correctIndex: 1,
         explanation:
-          'Refunds compensate but do not keep parcels moving, and the firm stays accountable for its service, so it needs resilience and a way out. A written plan from the provider is tempting because it is a normal contract step, but the firm would still depend on one supplier that keeps failing. A rushed move to the cheapest provider swaps one untested dependency for another.',
+          'Service credits compensate but do not keep parcels moving, and the firm stays accountable for its service, so it needs resilience and a way out. Tracking the improvement plan for another quarter is tempting because it is a normal contract step, but the plan has already failed and the firm would still depend on one supplier that keeps failing. Claiming credits recovers a little money, and a rushed move to the cheapest provider swaps one untested dependency for another.',
       },
       {
         type: 'check',
         question:
-          'Malware has stopped the control system at a water treatment plant. Operators run the pumps by hand, and one tank is close to overflowing. Which action should the IS auditor expect management to take FIRST?',
+          'Malware has stopped the control system at a water treatment plant. Operators run the pumps by hand, and a chemical dosing tank is close to overflowing. Which action should the IS auditor expect management to take FIRST?',
         options: [
           'Restore the control system from last night’s backup',
           'Wait for the insurer’s response team before acting',
@@ -4990,7 +4996,8 @@ export const CISA_LESSONS: Lesson[] = [
     ],
   },
 
-  // Mobile 1.45 decision lesson 4 (curriculum §4): outline topic 4B5, notes 4B5.3 and 4B5.2.
+  // Mobile 1.45 decision lesson 4 (curriculum §4): outline topic 4B5, note 4B5.3. Kept to one decision after the
+  // learner read: invoke on the trigger, then recover by business priority (recovery-site deals stay in note 4B5.2).
   {
     id: 'cisa-l-d4-invocation',
     certId: 'cisa',
@@ -5007,19 +5014,19 @@ export const CISA_LESSONS: Lesson[] = [
     outlineVersion: OUTLINE,
     lastReviewed: DECISION_LESSONS_REVIEWED,
     topics: ['4B5'],
-    prepares: ['d4_200', 'd4_188', 'd4_189', 'd4_241', 'd4_300'],
-    notes: ['4B5.3', '4B5.2'],
+    prepares: ['d4_200', 'd4_188', 'd4_096', 'd4_077', 'd4_241'],
+    notes: ['4B5.3'],
     scenes: [
       {
         type: 'title',
         kicker: 'Domain 4 · Disaster recovery',
-        title: 'Declaring a disaster',
-        subtitle: 'Every minute spent debating comes out of the recovery time. After that, the order of the restore decides the rest.',
+        title: 'Declaring a disaster and recovering in order',
+        subtitle: 'Every minute spent debating comes out of the recovery time. After that, the business’s priorities set the order of the restore.',
       },
       {
         type: 'idea',
         heading: 'The core idea',
-        body: 'Invoking the disaster recovery plan (DRP) is the formal decision to switch to recovery. It should be fast and hard to argue with: measurable triggers, such as an outage forecast to run past the recovery time objective (RTO, how long the service may be down), and one named person, with a named alternate, who decides. Then systems come back in the order the business needs them, adjusted for what they depend on.',
+        body: 'Invoking the disaster recovery plan (DRP) is the formal decision to switch to recovery. It should be fast and clear: measurable triggers, such as an outage forecast to run past the recovery time objective (RTO, how long the service may be down), and one named person, with a named alternate, who decides. Then systems come back in the order the business needs them, adjusted for what they depend on.',
       },
       {
         type: 'analogy',
@@ -5032,38 +5039,18 @@ export const CISA_LESSONS: Lesson[] = [
         steps: [
           { label: 'Trigger met', note: 'A measurable threshold, such as an outage forecast to exceed the RTO' },
           { label: 'Invoke', note: 'The named authority, or the delegated alternate, declares at once; anyone else escalates to them' },
-          { label: 'Restore shared services', note: 'Identity, directory and network first, because the applications need them' },
+          {
+            label: 'Restore shared services',
+            note: 'Identity and directory services (the systems that check who you are at sign-in) and the network first, because the applications need them',
+          },
           { label: 'Restore by business priority', note: 'Then applications, in the order the business impact analysis (BIA) ranks them' },
-          { label: 'Check and return', note: 'Verify the data, then plan the move back, with its own owner' },
         ],
-        caption:
-          'Total recovery time follows the longest chain of steps that must happen one after another, given the staff available, not the sum of every restore. Work that runs in parallel needs its own trained lead for each stream.',
-      },
-      {
-        type: 'compare',
-        heading: 'Judging a recovery site deal',
-        left: {
-          title: 'Looks reassuring',
-          points: [
-            'A shared hot site (a ready-to-run standby facility) with many subscribers',
-            'A reciprocal deal to use a friendly peer’s spare systems',
-            'A cloud recovery provider with a strong uptime record',
-          ],
-        },
-        right: {
-          title: 'What decides it',
-          points: [
-            'Capacity and priority promised in writing when many invoke at once',
-            'Real spare capacity, compatible systems and a right to test',
-            'Contract rights to test every critical application',
-          ],
-        },
-        caption: 'Outsourcing the site or platform never outsources the duty to prove, by testing, that the RTO can be met.',
+        caption: 'Recovery tests time the whole sequence, not each system alone.',
       },
       {
         type: 'idea',
         heading: 'The IS auditor’s lens',
-        body: 'A fast, clear decision to invoke is a control, and it can be tested. As the IS (information systems) auditor, you test whether two people reading a trigger would reach the same decision, confirm the named authority and alternate can invoke without a group vote, and check that recovery tests time the whole sequence against the RTO. You recommend; the executive the plan names, or the delegate, declares the disaster.',
+        body: 'A fast, clear decision to invoke is a control, and it can be tested. As the IS (information systems) auditor, you test whether two people reading a trigger would reach the same decision, confirm the named authority and alternate can invoke without a group vote, and check that recovery tests time the whole sequence against the RTO. You recommend; the executive the plan names, or the named alternate, declares the disaster.',
       },
       {
         type: 'trap',
@@ -5073,7 +5060,7 @@ export const CISA_LESSONS: Lesson[] = [
       },
       {
         type: 'tip',
-        body: 'Read the cue. A vague trigger such as “significant impact” calls for measurable thresholds; a committee that must agree means delay past the RTO; one lead for two parallel restores calls for a second lead. Judge a recovery site by its capacity when everyone invokes, then by test rights. This is the principle “Escalate to whoever owns the decision”: when the trigger is met and you are not the named authority, escalate to them at once.',
+        body: 'Read the cue. A vague trigger such as “significant impact” calls for measurable thresholds. A committee that must agree risks delay past the RTO. When the trigger is met, anyone who is not the named authority escalates to that person at once.',
       },
       {
         type: 'check',
@@ -5081,18 +5068,18 @@ export const CISA_LESSONS: Lesson[] = [
           'A university’s recovery plan is invoked when an outage causes “major disruption”, as agreed by the full leadership team. In a test, the team took an hour to agree. What should the IS auditor recommend?',
         options: [
           'Rehearse invocation until the team reaches agreement faster',
-          'Set measurable triggers and one named decision-maker',
+          'Set a clear outage threshold and give one executive the call',
           'Add more leaders to the team so views are balanced',
           'Accept the hour as normal judgment under pressure',
         ],
         correctIndex: 1,
         explanation:
-          'The delay comes from a vague trigger and a group decision, so the fix is a measurable threshold and one named authority with an alternate. More rehearsal is tempting because practice usually helps, but the team would still be debating vague words by committee, and that hour still comes out of the recovery time.',
+          'The delay comes from a vague trigger and a group decision, so the fix is a measurable threshold and one named authority with an alternate. More rehearsal is tempting because practice usually helps, but the team would still be debating vague words by committee. More leaders mean a longer debate, not a faster one, and an hour is not normal when every minute counts against the RTO.',
       },
       {
         type: 'check',
         question:
-          'After ransomware, a hospital’s IT team plans to restore the patient-records application first, because the business impact analysis ranks it highest. The directory service that handles sign-ins is also down. What should the IS auditor recommend?',
+          'After a ransomware attack, a hospital’s IT team plans to restore the patient-records application first, because the business impact analysis ranks it highest. The directory service that handles sign-ins is also down. What should the IS auditor recommend?',
         options: [
           'Restore patient records first, as the ranking says',
           'Restore whichever system is quickest to bring back',
@@ -5101,21 +5088,21 @@ export const CISA_LESSONS: Lesson[] = [
         ],
         correctIndex: 2,
         explanation:
-          'Patient records cannot be used until staff can sign in, so the shared service comes first and the business ranking applies after it. Following the ranking alone is tempting because the BIA is the right guide, but it ranks business services, not the technical services they depend on.',
+          'Patient records cannot be used until staff can sign in, so the shared service comes first and the business ranking applies after it. Following the ranking alone is tempting because the BIA is the right guide, but it ranks business services, not the technical services they depend on. Quickest-first ignores what the business needs, and waiting for every system delays the most critical service.',
       },
       {
         type: 'check',
         question:
-          'A retailer’s cloud recovery provider copies its systems and runs them after a disaster. The contract allows one failover test a year, for a single application. What should the IS auditor recommend FIRST?',
+          'A payment firm’s main data center loses cooling, and the outage is forecast to run well past the RTO, which meets the plan’s trigger. The plan names the chief information officer (CIO), who cannot be reached, and a delegated alternate who is on site. What should the IS auditor expect to happen FIRST?',
         options: [
-          'Negotiate rights to test each critical application',
-          'Obtain the provider’s independent assurance report',
-          'Ask for larger service credits if a recovery fails',
-          'Rely on the provider’s record of past recoveries',
+          'The alternate invokes the plan now, as delegated',
+          'Staff keep calling the CIO until someone gets through',
+          'The full executive team meets to agree on invoking',
+          'Staff wait to see whether the cooling comes back soon',
         ],
         correctIndex: 0,
         explanation:
-          'The retailer still has to prove it can meet its own recovery targets, and one application a year cannot show that. The provider’s assurance report is tempting because it is independent evidence, but it covers the provider’s controls, not whether this retailer’s applications come back in time. Credits and a good track record prove nothing about the retailer’s own recovery.',
+          'The trigger is met and the alternate holds delegated authority, so invoking now is valid; the CIO is briefed afterward. Waiting for the CIO is tempting because the plan names them first, but the delegation exists for exactly this, and every minute comes out of the RTO. A full-team meeting is the delay the plan was written to avoid, and waiting for the cooling ignores a trigger that is already met.',
       },
     ],
   },
@@ -5282,7 +5269,7 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'idea',
         heading: 'Not all second factors are equal',
-        body: 'Phishing-resistant methods, such as a hardware security key, a passkey or a smart-card certificate login, are tied to the genuine site’s address, so a fake page gets nothing it can reuse. Text or app codes can be typed into a fake page and passed on to the real site. A tricked user can also tap “approve” on a phone pop-up.',
+        body: 'Phishing-resistant methods, such as a hardware security key (a small device you plug in or tap) or a passkey (a sign-in key stored on your phone or computer), are tied to the genuine site’s address, so a fake page gets nothing it can reuse. A smart-card certificate login resists phishing in a similar way, because it is bound to the genuine connection. Text or app codes can be typed into a fake page and passed on to the real site. A tricked user can also tap “approve” on a phone pop-up.',
       },
       {
         type: 'idea',
@@ -5851,7 +5838,7 @@ export const CISA_LESSONS: Lesson[] = [
           { label: 'Verify', note: 'A registration authority checks the requester’s identity' },
           { label: 'Issue', note: 'The CA signs the certificate' },
           { label: 'Use', note: 'Systems check the signature, expiry date and revocation status every time' },
-          { label: 'Renew', note: 'Before expiry, ideally automated, as public certificate lifetimes keep getting shorter; you can only renew certificates you know about' },
+          { label: 'Renew', note: 'Before expiry, ideally automatically, because public certificate lifetimes keep getting shorter; you can only renew certificates you know about' },
         ],
         caption: 'Revocation withdraws trust early, at any point, if the key is lost or stolen or the holder leaves. It is published in a certificate revocation list (CRL) or by an online status service (OCSP, Online Certificate Status Protocol), and relying systems must check it. The root CA is the top authority every certificate traces back to. It is usually kept offline, with its key in a hardware security module, a tamper-resistant device for keys.',
       },
@@ -6701,7 +6688,7 @@ export const CISA_LESSONS: Lesson[] = [
     ],
   },
 
-  // Mobile 1.45 decision lesson 1 (curriculum §4): outline topic 5B2, notes 5B2.6, 5B2.5 and 5B2.1.
+  // Mobile 1.45 decision lesson 1 (curriculum §4): outline topic 5B2, notes 5B2.6 and 5B2.5.
   {
     id: 'cisa-l-d5-no-patch',
     certId: 'cisa',
@@ -6713,13 +6700,13 @@ export const CISA_LESSONS: Lesson[] = [
     references: [
       'MITRE ATT&CK (public knowledge base of adversary tactics and techniques)',
       'NIST SP 800-40 Rev. 4 (Guide to Enterprise Patch Management Planning)',
-      'NIST SP 800-61 Rev 3 (Incident Response Recommendations and Considerations for Cybersecurity Risk Management)',
+      'NIST SP 800-61 Rev. 3 (Incident Response Recommendations and Considerations for Cybersecurity Risk Management)',
     ],
     outlineVersion: OUTLINE,
     lastReviewed: DECISION_LESSONS_REVIEWED,
     topics: ['5B2'],
     prepares: ['d5_137', 'd5_195', 'd5_118', 'd5_242', 'd5_344'],
-    notes: ['5B2.6', '5B2.5', '5B2.1'],
+    notes: ['5B2.6', '5B2.5'],
     scenes: [
       {
         type: 'title',
@@ -6743,18 +6730,19 @@ export const CISA_LESSONS: Lesson[] = [
         layers: [
           {
             label: 'Zero-day',
-            note: 'No patch or signature yet: cut exposure now with a compensating control, such as a blocking rule, isolation or allowlisting (only approved programs run)',
+            note: 'No patch or signature yet: cut exposure now with a compensating control (a stand-in safeguard until the real fix exists), such as a blocking rule, isolation or allowlisting (only approved programs run)',
           },
           {
             label: 'Advanced persistent threat',
-            note: 'Hidden and patient: map the whole intrusion quietly, then remove every foothold at once, unless data is leaving now',
+            note: 'Hidden and patient: scope the intrusion first (find how far it has spread), then remove every foothold (each way back in the attacker has set up) at once, unless data is leaving now',
           },
           {
             label: 'Stolen credentials',
-            note: 'The password is already correct: require multi-factor authentication (MFA), limit where powerful accounts sign in, end live sessions',
+            note: 'The password is already correct: require multi-factor authentication (MFA), limit where privileged (high-power) accounts can sign in, and end live sessions',
           },
         ],
-        caption: 'Antivirus signatures recognize only code someone has seen before, so none of the three is solved by updating them.',
+        caption:
+          'Antivirus signatures (patterns of known malicious code) recognize only code someone has seen before, so updating them solves none of the three.',
       },
       {
         type: 'compare',
@@ -6767,12 +6755,13 @@ export const CISA_LESSONS: Lesson[] = [
           title: 'Scope first',
           points: ['No data is leaving yet', 'Map every foothold quietly, then evict them together', 'A visible move early lets the attacker shift elsewhere'],
         },
-        caption: 'Keep central logs long enough to cover how long such attackers stay hidden, often many months, or the investigation cannot find where they came in.',
+        caption:
+          'Keep central logs long enough to cover how long such attackers stay hidden, often many months, or the investigation cannot find where they came in.',
       },
       {
         type: 'idea',
         heading: 'The IS auditor’s lens',
-        body: 'Fit the control to the threat. As the IS (information systems) auditor, you check that a zero-day procedure cuts exposure within hours, that detection rules map to real attacker techniques, and that logs are kept long enough to cover an intruder’s stay. You recommend; management decides when to act against a hidden intruder and accepts the risk that remains.',
+        body: 'Fit the control to the threat. As the IS (information systems) auditor, you check that a zero-day procedure cuts exposure within hours, that detection rules map to real attacker techniques, and that logs are kept long enough to cover an intruder’s stay. You recommend; management decides when to act against a hidden intruder and accepts the residual risk, the risk that remains.',
       },
       {
         type: 'trap',
@@ -6782,12 +6771,12 @@ export const CISA_LESSONS: Lesson[] = [
       },
       {
         type: 'tip',
-        body: 'Ask how the attack works, then pick what breaks it. No patch: cut exposure now. Hidden intruder and no data leaving: scope first, evict together; data leaving: stop it now. A correct password in the wrong hands: a second factor, not a lower lockout limit or longer passwords. This is the principle “Prevent first, and build it in early”: prefer the control that stops the attack over one that reports it.',
+        body: 'Ask how the attack works, then pick what breaks it. No patch: cut exposure now, do not just watch. Hidden intruder: scope first, unless data is leaving now. A correct password in the wrong hands: add a second factor.',
       },
       {
         type: 'check',
         question:
-          'A flaw in a hospital’s remote-access gateway is being exploited worldwide, and the vendor’s fix is a week away. The gateway is reachable from the internet. What should the IS auditor recommend FIRST?',
+          'A flaw in a hospital’s remote-access gateway is being exploited worldwide. The vendor’s fix is a week away, but it has published a rule that blocks the exploit. The gateway is reachable from the internet. What should the IS auditor recommend FIRST?',
         options: [
           'Monitor gateway logs closely until the vendor’s fix arrives',
           'Update antivirus signatures on the hospital’s computers',
@@ -6796,15 +6785,15 @@ export const CISA_LESSONS: Lesson[] = [
         ],
         correctIndex: 3,
         explanation:
-          'With no patch, exposure has to be cut another way, and now: restricting access and blocking the exploit close the path. Closer monitoring is tempting because it feels active, but it only shows the break-in after it happens. Signatures and the maintenance window both wait for a fix or knowledge that does not exist yet.',
+          'With no patch, exposure has to be cut another way, and now: restricting access and applying the blocking rule close the path. Closer monitoring is tempting because it feels active, but it only shows the break-in after it happens. Signatures and the maintenance window both wait for a fix or knowledge that does not exist yet.',
       },
       {
         type: 'check',
         question:
-          'Analysts find a skilled intruder who has been inside an engineering network for months, but no data is leaving right now. The network team wants to block the intruder’s control server today. What should the IS auditor recommend?',
+          'Analysts find a skilled intruder who has been inside an engineering network for months, but no data is leaving right now. The network team wants to block the server the intruder uses to send commands, today. What should the IS auditor recommend?',
         options: [
           'Map the footholds quietly, then remove them together',
-          'Block the control server today, as the team proposes',
+          'Block the command server today, as the team proposes',
           'Reinstall antivirus on the servers the intruder used',
           'Warn all staff about the intrusion so they stay alert',
         ],
@@ -6819,12 +6808,12 @@ export const CISA_LESSONS: Lesson[] = [
         options: [
           'Lower the lockout limit from five tries to three',
           'Reset the passwords of accounts with odd sign-ins',
-          'Require a second factor and screen against leaked lists',
+          'Ask for a one-time code from the customer’s phone',
           'Add a security question to the sign-in page',
         ],
         correctIndex: 2,
         explanation:
-          'The stolen passwords are already correct, so complexity rules, lockout limits and a security question, one more thing that can be guessed or stolen, do not stop them. A second factor does. Resetting the odd-looking accounts is tempting because it helps the victims now, but it treats the accounts already hit, not the way in.',
+          'The stolen passwords are already correct, so complexity rules and lockout limits do not stop them, and a security question is one more secret that can be guessed or stolen. A second factor, such as a code from the customer’s phone, does stop them. Resetting the odd-looking accounts is tempting because it helps the victims now, but it treats the accounts already hit, not the way in.',
       },
     ],
   },
@@ -6841,7 +6830,7 @@ export const CISA_LESSONS: Lesson[] = [
     references: [
       'GDPR (Regulation (EU) 2016/679), Articles 33 and 34 (notifying the supervisory authority and the people affected)',
       'US SEC Form 8-K, Item 1.05 (Material Cybersecurity Incidents)',
-      'NIST SP 800-61 Rev 3 (Incident Response Recommendations and Considerations for Cybersecurity Risk Management)',
+      'NIST SP 800-61 Rev. 3 (Incident Response Recommendations and Considerations for Cybersecurity Risk Management)',
     ],
     outlineVersion: OUTLINE,
     lastReviewed: DECISION_LESSONS_REVIEWED,
@@ -6853,7 +6842,7 @@ export const CISA_LESSONS: Lesson[] = [
         type: 'title',
         kicker: 'Domain 5 · Incident response',
         title: 'Breach notification',
-        subtitle: 'The deadlines run from discovery, and handing data to a vendor never hands over the duty to tell people.',
+        subtitle: 'Most deadlines run from discovery, and handing data to a vendor never hands over the duty to tell people.',
       },
       {
         type: 'idea',
@@ -6861,21 +6850,26 @@ export const CISA_LESSONS: Lesson[] = [
         body: 'A data breach can trigger legal and contractual duties to tell regulators, customers or the people affected, each with its own deadline. Most clocks start when the organization becomes aware of the breach, not when the investigation ends. So notices go out on confirmed facts and are updated as more is learned.',
       },
       {
+        type: 'analogy',
+        heading: 'A product recall',
+        body: 'A carmaker that learns a part is faulty tells owners and regulators what it knows now, and sends updates as testing goes on. Waiting months for the full engineering report would leave drivers at risk. And the duty does not move to the supplier just because the supplier made the part.',
+      },
+      {
         type: 'stack',
         heading: 'Clocks you may meet',
         layers: [
           {
             label: 'EU General Data Protection Regulation (GDPR)',
-            note: 'The organization in charge of the data tells the regulator without undue delay, within 72 hours where feasible, and the people affected when their risk is high',
+            note: 'The data controller, the organization in charge of the data, tells the regulator (the supervisory authority) without undue delay, within 72 hours where feasible, unless the breach is unlikely to put anyone at risk; it tells the people affected when their risk is high',
           },
           {
             label: 'US public companies',
-            note: 'A cybersecurity incident judged material is disclosed to the Securities and Exchange Commission within four business days of that judgment',
+            note: 'A cybersecurity incident judged material (important enough to matter to investors) is disclosed in a public filing with the Securities and Exchange Commission (SEC) within four business days of that judgment, which must itself be made without unreasonable delay',
           },
           { label: 'Contracts and other laws', note: 'Customer contracts, sector rules and other countries set their own clocks; legal counsel maps each one' },
         ],
         caption:
-          'Each regulator gets its own notice, sent in parallel, not one after another. Strong encryption whose key was not exposed may remove a duty to tell people, but only through an assessment that is documented.',
+          'Each regulator gets its own notice, sent in parallel, not one after another. Strong encryption whose key was not exposed may remove the duty to tell people, but only after a documented assessment.',
       },
       {
         type: 'compare',
@@ -6886,30 +6880,25 @@ export const CISA_LESSONS: Lesson[] = [
         },
         right: {
           title: 'Data processor',
-          points: ['Handles the data for the controller, such as a payroll vendor', 'Tells the controller without undue delay', 'Is the controller for its own data, such as staff records'],
+          points: ['Handles the data for the controller, such as a payroll vendor', 'Tells the controller without undue delay', 'Is the controller for data it uses for itself, such as its own payroll'],
         },
         caption:
           'Outsourcing the processing does not outsource accountability. After a vendor breach, the controller works out its exposure from its own logs and the vendor’s cooperation, without waiting for the vendor’s final word.',
       },
       {
-        type: 'analogy',
-        heading: 'A product recall',
-        body: 'A carmaker that learns a part is faulty tells owners and regulators what it knows now, and sends updates as testing goes on. Waiting months for the full engineering report would leave drivers at risk. And the duty does not move to the supplier just because the supplier made the part.',
-      },
-      {
         type: 'idea',
         heading: 'The IS auditor’s lens',
-        body: 'Accountability stays with the organization. As the IS (information systems) auditor, you check that the plan names who decides on each notice, normally senior management advised by legal counsel, that a register maps every deadline, and that processor contracts require prompt breach reports and cooperation. You do not notify regulators yourself; you test whether the process would meet its clocks.',
+        body: 'Accountability stays with the organization. As the IS (information systems) auditor, you check that the plan names who decides on each notice, normally senior management advised by legal counsel, that a notification register lists every deadline, and that processor contracts require prompt breach reports and cooperation. You do not notify regulators yourself; you test whether the process would meet its clocks.',
       },
       {
         type: 'trap',
         heading: 'The exam trap',
         trap: '“Wait for the full forensic report, so the notice is complete.”',
-        why: 'Deadlines usually run from awareness, and forensics can take weeks. Notify on confirmed facts and update later. This is the principle “Management owns the risk”: an insurer’s approval or a vendor’s promise never pauses containment or the organization’s own duties.',
+        why: 'Deadlines usually run from awareness, and forensics can take weeks. Notify on confirmed facts and update later. This is the principle “Management owns the risk”: the organization keeps its own duty to notify on time, and waiting for a fuller report or for a vendor does not stop that clock.',
       },
       {
         type: 'tip',
-        body: 'Find the controller first: it notifies, even when a vendor held the data. With several regulators, map each deadline and notify in parallel. Encrypted, with the key safe: assess and document whether notice is needed. This is the principle “Escalate to whoever owns the decision”: the decision to notify goes to senior management and counsel, not to the security team or the IS auditor.',
+        body: 'Find the controller first: it notifies, even when a vendor held the data. With several regulators, map each deadline and notify in parallel. Encrypted, with the key kept safe: assess and document whether notice is needed.',
       },
       {
         type: 'check',
@@ -6931,27 +6920,27 @@ export const CISA_LESSONS: Lesson[] = [
           'A bank confirms that attackers copied customer account data while its security team is still working out how. Who should the IS auditor expect to decide when regulators are told?',
         options: [
           'Senior management, advised by legal counsel',
-          'The chief information security officer, who leads the response',
+          'The chief information security officer (CISO), who leads the response',
           'The IS auditor, as the most independent party',
           'The external auditor, who reviews the bank’s disclosures',
         ],
         correctIndex: 0,
         explanation:
-          'Notifying regulators is a legal and business decision, so it sits with senior management on counsel’s advice. The security chief is tempting because they know the facts best, and they feed the decision, but leading the response does not make it their call. The IS auditor and the external auditor must stay independent of the decision.',
+          'Notifying regulators is a legal and business decision, so it sits with senior management on counsel’s advice. The CISO is tempting because they know the facts best, and they feed the decision, but leading the response does not make it their call. The IS auditor and the external auditor must stay independent of the decision.',
       },
       {
         type: 'check',
         question:
-          'A courier’s tablet holding customer delivery addresses was stolen. It was fully encrypted, and the key was not stored on it. What should the IS auditor recommend FIRST?',
+          'A delivery firm’s tablet holding customer addresses was stolen. It was fully encrypted, and the key was not stored on it. What should the IS auditor recommend FIRST?',
         options: [
           'Notify the customers whose addresses were on the tablet',
           'Close the case, since encryption removes any duty',
-          'Ask the courier’s insurer how the firm should respond',
+          'Ask the firm’s insurer how it should respond',
           'Document an assessment of whether notice is needed',
         ],
         correctIndex: 3,
         explanation:
-          'Encryption with a safe key may remove the duty to notify, but that conclusion has to be assessed and recorded. Notifying everyone is tempting because it feels cautious, but it can alarm people with no real risk and skips the judgment the law expects. Closing the case assumes the answer, and the insurer does not own the decision.',
+          'Encryption, with the key kept safe, may remove the duty to notify, but that conclusion has to be assessed and recorded. Notifying everyone is tempting because it feels cautious, but it can alarm people with no real risk and skips the judgment the law expects. Closing the case assumes the answer, and the insurer does not own the decision.',
       },
     ],
   },

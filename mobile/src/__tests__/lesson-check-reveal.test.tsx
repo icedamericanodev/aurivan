@@ -156,6 +156,13 @@ describe('revealScrollY: how far to scroll after a check is answered', () => {
   it('an unmeasured scroll view (height 0): leads with the verdict', () => {
     expect(revealScrollY({ top: 600, bottom: 900 }, 0, FOOTER, 0)).toBe(600 - REVEAL_GAP);
   });
+
+  it('mobile 1.45: never past the top of the learner’s own pick', () => {
+    // The pick sits above the verdict: the scroll stops at the pick, the explanation is a scroll away.
+    expect(revealScrollY({ top: 600, bottom: 2000, pick: 300 }, VIEWPORT, FOOTER, 0)).toBe(300 - REVEAL_GAP);
+    // A pick lower than where the scroll would stop changes nothing.
+    expect(revealScrollY({ top: 600, bottom: 900, pick: 450 }, VIEWPORT, FOOTER, 0)).toBe(900 + REVEAL_GAP - 600);
+  });
 });
 
 describe('the lesson player after a check is answered', () => {
@@ -181,6 +188,37 @@ describe('the lesson player after a check is answered', () => {
     press(new RegExp(`^Option [A-D]: ${wrongText.slice(0, 20).replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`));
     layoutAnswer(500, 1200);
     expect(scrollSpy).toHaveBeenCalledWith({ y: ANCHOR + 500 - REVEAL_GAP, animated: true });
+  });
+
+  it('mobile 1.45: the scroll keeps the learner’s own pick on screen', () => {
+    openCheck();
+    scrollSpy.mockClear();
+    press(new RegExp(`^Option [A-D]: ${wrongText.slice(0, 20).replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`));
+    // The picked row's wrapper reports where it sits (same parent as the answer block).
+    const row = root().find(
+      (n) => n.type === View && typeof n.props.onLayout === 'function' && n.findAll((m) => m.props.text === wrongText && m.props.letter !== undefined).length > 0 && n.findAllByType(Verdict).length === 0,
+    );
+    act(() => {
+      row.props.onLayout({ nativeEvent: { layout: { x: 0, y: 260, width: 353, height: 80 } } });
+    });
+    layoutAnswer(500, 1200);
+    expect(scrollSpy).toHaveBeenCalledWith({ y: ANCHOR + 260 - REVEAL_GAP, animated: true });
+  });
+
+  it('mobile 1.45: after a miss, the tinted rows keep their letters in a tag, matching the coach line', () => {
+    openCheck();
+    press(new RegExp(`^Option [A-D]: ${wrongText.slice(0, 20).replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`));
+    layoutAnswer(500, 300);
+    const tags = root()
+      .findAll((n) => typeof n.props.tag === 'string' && typeof n.props.letter === 'string' && n.props.text !== undefined)
+      .map((n) => ({ tag: n.props.tag as string, letter: n.props.letter as string, text: n.props.text as string }));
+    const best = tags.find((t) => t.tag.startsWith('Best answer'))!;
+    const mine = tags.find((t) => t.tag.startsWith('Your answer'))!;
+    expect(best.tag).toBe(`Best answer · ${best.letter}`);
+    expect(best.text).toBe(check.options[check.correctIndex]);
+    expect(mine).toEqual({ tag: `Your answer · ${mine.letter}`, letter: mine.letter, text: wrongText });
+    const label = root().find((n) => n.type === View && n.props.accessibilityRole === 'header' && /^Not quite\./.test(n.props.accessibilityLabel ?? '')).props.accessibilityLabel;
+    expect(label).toBe(`Not quite. The best answer is ${best.letter}.`);
   });
 
   it('Reduce Motion (the in-app setting): the scroll jumps instead of gliding', () => {

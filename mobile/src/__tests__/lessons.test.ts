@@ -75,8 +75,8 @@ const ACRONYMS = new Set([
   // detection system, intrusion prevention system.
   'AES', 'IDS', 'IPS',
   // Added with the mobile 1.45 decision lessons: advanced persistent threat, operational
-  // technology, disaster recovery plan, and the EU's General Data Protection Regulation (US for the SEC rule).
-  'APT', 'OT', 'DRP', 'EU', 'GDPR', 'US',
+  // technology, disaster recovery plan, the EU's General Data Protection Regulation, and the US SEC (Securities and Exchange Commission).
+  'APT', 'OT', 'DRP', 'EU', 'GDPR', 'US', 'SEC',
 ]);
 const EXAM_KEYWORDS = new Set(['FIRST', 'BEST', 'MOST', 'GREATEST', 'PRIMARY', 'LEAST', 'NOT', 'MAIN']);
 const capsWords = (text: string) => (text.match(/\b[A-Z]{2,}\b/g) ?? []).filter((w) => !ACRONYMS.has(w));

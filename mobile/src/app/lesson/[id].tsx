@@ -247,7 +247,12 @@ export default function LessonPlayer() {
   // `anchor` below the top of the scroll content (the page turn adds no offset), so add it to
   // get scroll positions, then scroll just enough to show the explanation above the bar.
   const revealAnswer = (box: RevealBox) => {
-    const y = revealScrollY({ top: anchor + box.top, bottom: anchor + box.bottom }, viewportH.current, footerH, scrollY.current);
+    const y = revealScrollY(
+      { top: anchor + box.top, bottom: anchor + box.bottom, ...(box.pick === undefined ? {} : { pick: anchor + box.pick }) },
+      viewportH.current,
+      footerH,
+      scrollY.current,
+    );
     if (y !== null) scrollRef.current?.scrollTo({ y, animated: !reduceMotion });
   };
 

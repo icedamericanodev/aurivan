@@ -20,15 +20,14 @@ const W = 393;
 const H = 852;
 const here = path.dirname(fileURLToPath(import.meta.url));
 
-// The decision scene to shoot (its index in `scenes`) and the first check's key, by lesson.
+// The decision scene to shoot and the first check, by their index in `scenes`.
 const LESSONS = [
-  { id: 'cisa-l-d5-no-patch', decision: 4 },
-  { id: 'cisa-l-d4-resilience', decision: 3 },
-  { id: 'cisa-l-d5-breach-notification', decision: 2 },
-  { id: 'cisa-l-d4-invocation', decision: 3 },
-  { id: 'cisa-l-d2-who-decides', decision: 2 },
+  { id: 'cisa-l-d5-no-patch', decision: 4, check: 8 },
+  { id: 'cisa-l-d4-resilience', decision: 3, check: 8 },
+  { id: 'cisa-l-d5-breach-notification', decision: 3, check: 8 },
+  { id: 'cisa-l-d4-invocation', decision: 3, check: 7 },
+  { id: 'cisa-l-d2-who-decides', decision: 3, check: 8 },
 ];
-const FIRST_CHECK = 8; // title + 7 teaching scenes, in each of the five
 // The miss: a question the no-patch lesson prepares (its note 5B2.6), answered wrong.
 const MISS_QID = 'd5_137';
 
@@ -65,7 +64,7 @@ const edit = (key, fn) =>
     [key, fn],
   );
 
-for (const { id, decision } of LESSONS) {
+for (const { id, decision, check: FIRST_CHECK } of LESSONS) {
   if (!want(id)) continue;
   const short = id.replace('cisa-l-', '');
   await go(`/lesson/${id}`, 1600);
@@ -74,14 +73,12 @@ for (const { id, decision } of LESSONS) {
   await shot(`${short}-2-decision`);
   for (let i = decision + 1; i <= FIRST_CHECK; i++) await next(i === FIRST_CHECK ? 1400 : 700);
   await shot(`${short}-3-check`);
-  // Answer it with any option: the verdict and explanation show either way; the key is read from the radios' order.
+  // Answer it with the first option (a miss in most runs): the shot shows the player's own reveal scroll,
+  // which keeps the pick in view, and the "Your answer · B" / "Best answer · D" tags (mobile 1.45).
   const radios = page.getByRole('radio');
   if (await radios.count()) {
     await radios.first().click();
-    await wait(1400);
-    await page.mouse.move(W / 2, H / 2);
-    await page.mouse.wheel(0, 500);
-    await wait(700);
+    await wait(1600);
     await shot(`${short}-4-check-answered`);
   }
 }

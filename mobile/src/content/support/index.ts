@@ -48,6 +48,7 @@ export const WHATS_NEW: readonly WhatsNewEntry[] = [
     improved: [
       'A few existing lessons are clearer and more current, including when part of a release can wait and which second factors resist phishing.',
       'After a miss, Take the lesson now appears only when a lesson teaches that question’s idea.',
+      'Lesson quick checks keep the letters of your answer and the best answer on screen, and keep your pick in view.',
     ],
   },
   {
