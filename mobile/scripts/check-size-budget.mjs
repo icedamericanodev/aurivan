@@ -14,11 +14,14 @@
  *      <export-dir>/metadata.json). Every phone carries it, and every
  *      over-the-air update downloads and stores a full copy of it.
  *      Measured 15 Oct 2026 (mobile 1.23): 9.83 MB. Budget: 14 MB.
- *   2. The study content of EACH certification: its generated question and
- *      notes files (src/content/generated/<cert>/) plus its lessons file
- *      (src/content/lessons/<cert>.ts). The text size tracks the compiled
- *      size closely (CISA: 3.75 MB of text, 3.74 MB once compiled).
- *      Measured: CISA 3.75 MB. Budget: 6 MB per certification.
+ *   2. The study content of EACH certification: every file of its generated
+ *      pack (src/content/generated/<cert>/: questions, notes, principles,
+ *      exam, lessons.json, game decks, pack.json). Since content packs
+ *      Phase A (27 Oct 2026) the lessons are data in that folder too; an older
+ *      layout with lessons in src/content/lessons/<cert>.ts is still counted
+ *      (--lessons) when the pack has no lessons.json. The text size tracks the
+ *      compiled size closely (CISA: 3.75 MB of text, 3.74 MB once compiled).
+ *      Measured: CISA 4.6 MB (27 Oct 2026). Budget: 6 MB per certification.
  *   MB here means 1,000,000 bytes, as in the architecture report.
  *
  * WHY: the store's 100 MB comfort line is mostly native code, but the bundle
@@ -99,8 +102,11 @@ function main(argv) {
     return 1;
   }
   for (const cert of certs.sort()) {
+    // lessons.json is inside the pack folder; the old TypeScript lessons file only counts when it isn't.
+    const packDir = path.join(generatedDir, cert);
     const lessons = path.join(lessonsDir, `${cert}.ts`);
-    const size = folderBytes(path.join(generatedDir, cert)) + (fs.existsSync(lessons) ? fs.statSync(lessons).size : 0);
+    const lessonsInPack = fs.existsSync(path.join(packDir, 'lessons.json'));
+    const size = folderBytes(packDir) + (!lessonsInPack && fs.existsSync(lessons) ? fs.statSync(lessons).size : 0);
     const line = `${cert} content ${mb(size)} of ${mb(CONTENT_BUDGET_PER_CERT)} (${Math.round((size / CONTENT_BUDGET_PER_CERT) * 100)}%)`;
     if (size > CONTENT_BUDGET_PER_CERT) {
       console.error(`Size budget: OVER: ${line}. Trim author-only fields in build-content.mjs or plan a downloadable pack.`);

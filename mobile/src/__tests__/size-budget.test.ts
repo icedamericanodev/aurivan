@@ -41,15 +41,13 @@ function fakeExport(bundleBytes: number) {
   return out;
 }
 
-/** A fake generated/ + lessons/ pair with one certification of this size. */
+/** A fake generated/ pack with one certification of this size: questions plus lessons.json (content packs). */
 function fakeContent(cert: string, jsonBytes: number, lessonBytes: number) {
   const generated = join(dir, 'generated');
-  const lessons = join(dir, 'lessons');
   mkdirSync(join(generated, cert), { recursive: true });
-  mkdirSync(lessons, { recursive: true });
   fakeFile(join(generated, cert, 'd1.json'), jsonBytes);
-  fakeFile(join(lessons, `${cert}.ts`), lessonBytes);
-  return ['--generated', generated, '--lessons', lessons];
+  fakeFile(join(generated, cert, 'lessons.json'), lessonBytes);
+  return ['--generated', generated, '--lessons', join(dir, 'lessons')];
 }
 
 function run(args: string[]) {
@@ -70,6 +68,24 @@ describe('check-size-budget', () => {
     const over = run([fakeExport(14 * MB + 1), ...content]);
     expect(over.code).toBe(1);
     expect(over.out).toMatch(/OVER: Android bundle 14\.00 MB of 14\.00 MB/);
+  });
+
+  it('the real CISA pack carries its lessons as data (lessons.json is counted)', () => {
+    const r = run([]);
+    const withLessons = Number(/cisa content ([\d.]+) MB/.exec(r.out)![1]);
+    expect(withLessons).toBeGreaterThan(4); // questions + notes ≈ 4.2 MB, plus about 0.4 MB of lessons
+  });
+
+  it('an older layout (lessons in a .ts file, no lessons.json) still counts them, never twice', () => {
+    const generated = join(dir, 'generated');
+    const lessons = join(dir, 'lessons');
+    mkdirSync(join(generated, 'cisa'), { recursive: true });
+    mkdirSync(lessons, { recursive: true });
+    fakeFile(join(generated, 'cisa', 'd1.json'), 5 * MB);
+    fakeFile(join(lessons, 'cisa.ts'), 1 * MB + 1);
+    expect(run(['--generated', generated, '--lessons', lessons]).code).toBe(1);
+    fakeFile(join(generated, 'cisa', 'lessons.json'), 0); // the pack has its own lessons now: the .ts is not added
+    expect(run(['--generated', generated, '--lessons', lessons]).code).toBe(0);
   });
 
   it('counts lessons with the generated files and fails over 6 MB', () => {
