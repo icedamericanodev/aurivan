@@ -63,9 +63,11 @@ How it runs:
 4. **Sky picks.**
 5. **Build, screen by screen.** Each one is reviewed and released on its own.
 
-Needs from Sky before it starts:
-- A Mobbin paid plan, optional but recommended. Without it, Mobbin search is off.
-- Add `dribbble.com`, `cdn.dribbble.com`, `www.behance.net`, `m3.material.io`, `www.nngroup.com` and `www.figma.com` to Allowed domains.
+Needs from Sky before it starts (all free; owner decision 27 Oct: no Mobbin paid plan):
+- Done: `dribbble.com`, `m3.material.io`, `www.nngroup.com` and `www.figma.com` are allowed.
+- Optional free galleries to add to Allowed domains: `apps.apple.com`, `godly.website`, `www.lapa.ninja`, `land-book.com`, `www.saasframe.io`, `collectui.com`.
+- 5–10 screenshots from Sky's phone of apps that feel premium to her. This is the most valuable reference.
+- Free sources the researcher uses: Apple HIG, Material 3, Figma Community kits (Apple iOS kit, Material 3 kit), Google Play store screenshots, Dribbble via search, NN/g.
 
 ## Stage 4: more exams
 - **CISM.** Its new outline starts 3 Nov 2026; build to the new one.
