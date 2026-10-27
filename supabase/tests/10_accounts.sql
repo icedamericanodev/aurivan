@@ -7,7 +7,7 @@
 --
 -- Run: supabase test db   (CI: .github/workflows/supabase.yml)
 begin;
-select plan(35);
+select plan(41);
 
 insert into auth.users (id, email) values
   ('00000000-0000-0000-0000-00000000000a', 'a@test.invalid'),
@@ -59,6 +59,10 @@ select throws_ok($$ select * from private.deletions $$, '42501', null, 'private.
 -- server-only functions
 select throws_ok($$ select public.svc_claim_export(auth.uid()) $$, '42501', null,
   'learners cannot call svc_claim_export');
+select throws_ok($$ select public.svc_export_due(auth.uid()) $$, '42501', null,
+  'learners cannot call svc_export_due');
+select throws_ok($$ select private.purge_expired_deletions() $$, '42501', null,
+  'learners cannot call the deletion purge');
 select throws_ok($$ select public.svc_record_deletion(repeat('ab', 32)) $$, '42501', null,
   'learners cannot call svc_record_deletion');
 
@@ -83,10 +87,18 @@ select throws_ok($$ select public.svc_claim_export('00000000-0000-0000-0000-0000
 -- ── As the service role (Edge Functions) ───────────────────────────
 reset role;
 set local role service_role;
+select is(public.svc_export_due('00000000-0000-0000-0000-00000000000a'), true, 'an export is due before the first one');
 select is(public.svc_claim_export('00000000-0000-0000-0000-00000000000a'), true, 'the first export in an hour is allowed');
+select is(public.svc_export_due('00000000-0000-0000-0000-00000000000a'), false, 'the cheap check sees the hour is used');
 select is(public.svc_claim_export('00000000-0000-0000-0000-00000000000a'), false, 'a second export within the hour is refused');
 -- The Edge Function sends HMAC-SHA-256(DELETION_PEPPER, id) as hex; the
--- database never sees the id or the pepper.
+-- database never sees the id or the pepper. Records older than 3 years go
+-- at the next deletion (fixtures written as the owner).
+reset role;
+insert into private.deletions (deleted_on, uid_hmac) values
+  ((now() at time zone 'utc')::date - interval '3 years 1 day', repeat('0', 64)),
+  ((now() at time zone 'utc')::date - interval '2 years', repeat('1', 64));
+set local role service_role;
 select lives_ok($$ select public.svc_record_deletion(repeat('ab', 32), 2, 3) $$,
   'the service role records a deletion with the keyed hash');
 select throws_ok($$ select public.svc_record_deletion('00000000-0000-0000-0000-00000000000a', 0, 0) $$,
@@ -95,9 +107,14 @@ select throws_ok($$ select public.svc_record_deletion(upper(repeat('ab', 32)), 0
   '23514', null, 'the audit hash must be lowercase hex');
 reset role;
 select results_eq(
-  $$ select uid_hmac, board_posts, board_comments from private.deletions $$,
-  $$ values (repeat('ab', 32), 2, 3) $$,
-  'the audit row keeps only the keyed hash it was given and the counts');
+  $$ select uid_hmac, deleted_on, board_posts, board_comments from private.deletions where uid_hmac = repeat('ab', 32) $$,
+  $$ values (repeat('ab', 32), (now() at time zone 'utc')::date, 2, 3) $$,
+  'the audit row keeps only the keyed hash it was given, the day (not the time) and the counts');
+select results_eq(
+  $$ select uid_hmac from private.deletions where uid_hmac <> repeat('ab', 32) $$,
+  $$ values (repeat('1', 64)) $$,
+  'a record older than 3 years is purged at the next deletion; a 2-year-old one stays');
+select hasnt_column('private', 'deletions', 'at', 'no exact time of deletion is kept');
 select hasnt_column('private', 'deletions', 'uid_sha256', 'no plain SHA-256 column (it could be joined with the phone''s hash)');
 
 -- ── Deleting the auth user cascades every account row ───────────────

@@ -32,16 +32,23 @@
 --    can't choose them, nor move a row to another learner or store.
 --  * Writing needs a profile row (the Terms and the "16 or older" box were
 --    accepted: Phase 6 review N10), not only a session.
---  * At most 60 writes per store per hour (the app needs about 6 a day),
+--  * At most 20 writes per store per hour (the app needs about 6 a day; the
+--    beta's security audit lowered it from 60 to keep one account from
+--    eating the Free plan's egress and CPU),
 --    counted OUTSIDE the row (private.sync_writes), so deleting and
 --    re-inserting can't reset the count: deletes count too. A delete is
 --    never refused ("Delete synced progress" must always work); only inserts
 --    and updates over the limit are.
 --  * Sizes: the unzipped progress is at most 2,000,000 bytes (the app caps
---    it at 1.5 MB), its base64 gzip at most 700,000 characters (a heavy
---    learner is about 23 KB); settings at most 98,304 bytes unzipped (the
---    app caps them at 64 KB; real settings are a few hundred bytes) and
---    32,768 characters zipped. `state_gz` is stored uncompressed (storage
+--    it at 1.5 MB), its base64 gzip at most 200,000 characters (security
+--    audit M2: one account can't park 700 KB). The math: 200,000 base64
+--    characters are 150,000 bytes of gzip, so the app's 1.5 MB cap fits as
+--    long as the JSON zips at least 10 to 1; measured progress zips about
+--    15 to 1 (263 KB → 17 KB, sync-budget.test.ts), and a heavy learner is
+--    about 23 KB of base64. A client must check the zipped size too and
+--    treat a bigger one as too big, before pushing. Settings at most
+--    98,304 bytes unzipped (the app caps them at 64 KB; real settings are
+--    a few hundred bytes) and 32,768 characters zipped. `state_gz` is stored uncompressed (storage
 --    external): gzip doesn't shrink further, so Postgres shouldn't try.
 --  * A daily checkpoint of the progress row is kept for support (the newest
 --    one only), in schema private, for as long as the synced copy exists.
@@ -58,9 +65,9 @@ create table public.sync_snapshots (
   rev bigint not null default 1,                 -- server-owned (the trigger), never reused
   encoding text not null default 'gzip+base64' check (encoding = 'gzip+base64'),
   -- base64 gzip: the gzip magic number ("H4sI"), the base64 alphabet only,
-  -- whole 4-character groups, at most 700,000 characters (the length is
+  -- whole 4-character groups, at most 200,000 characters (the length is
   -- checked first, so the pattern never scans an oversized value).
-  state_gz text not null check (octet_length(state_gz) <= 700000
+  state_gz text not null check (octet_length(state_gz) <= 200000
                                 and octet_length(state_gz) % 4 = 0
                                 and state_gz ~ '^H4sI[A-Za-z0-9+/]+={0,2}$'),
   raw_bytes int not null check (raw_bytes between 2 and 2000000),   -- the app caps at 1.5 MB
@@ -107,7 +114,7 @@ alter table private.sync_writes enable row level security;   -- no policies: den
 
 -- Counts one write (or delete) and returns the next rev: the write time in
 -- ms, or one more than the store's last rev (or than `p_old_rev`), whichever
--- is larger. Over 60 in the hour and `p_refuse`: rate_limited (the whole
+-- is larger. Over 20 in the hour and `p_refuse`: rate_limited (the whole
 -- statement rolls back, the count included).
 create function private.sync_next_rev(p_user uuid, p_store text, p_old_rev bigint, p_refuse boolean) returns bigint
 language plpgsql set search_path = '' as $$
@@ -122,13 +129,13 @@ begin
         window_start = case when now() - w.window_start > interval '1 hour' then now() else w.window_start end,
         last_rev = greatest(w.last_rev + 1, excluded.last_rev)
   returning w.n, w.last_rev into v_n, v_rev;
-  if p_refuse and v_n > 60 then
+  if p_refuse and v_n > 20 then
     raise exception 'rate_limited' using errcode = 'P0001';
   end if;
   return v_rev;
 end $$;
 
--- Server-set rev and time, immutable keys, 60 writes per store per hour.
+-- Server-set rev and time, immutable keys, 20 writes per store per hour.
 -- SECURITY DEFINER (schema private, search_path '') only because it writes
 -- private.sync_writes, which the app's role can't reach.
 create function private.sync_snapshots_touch() returns trigger
@@ -200,6 +207,21 @@ begin
 end $$;
 create trigger sync_history_clear after delete on public.sync_snapshots
   for each row execute function private.sync_history_clear();
+
+-- export-my-data: the learner's support checkpoint, as stored (still
+-- gzipped; the Edge Function unzips it through its capped reader). Only the
+-- service role may call it, for the id it got from a verified token.
+create function public.svc_sync_checkpoint(p_user uuid)
+returns table (rev bigint, app_version text, encoding text, state_gz text, raw_bytes int, taken_at timestamptz)
+language sql stable security invoker set search_path = '' as $$
+  select h.rev, h.app_version, h.encoding, h.state_gz, h.raw_bytes, h.taken_at
+  from private.sync_history h
+  where h.user_id = p_user
+  order by h.taken_at desc, h.id desc
+  limit 1;
+$$;
+revoke all on function public.svc_sync_checkpoint(uuid) from public, anon, authenticated;
+grant execute on function public.svc_sync_checkpoint(uuid) to service_role;
 
 revoke all on function private.sync_snapshots_touch(), private.sync_history_keep(),
                        private.sync_history_clear(), private.sync_next_rev(uuid, text, bigint, boolean)

@@ -2,7 +2,7 @@
 
 Each mutant below breaks ONE promise of
 supabase/migrations/20261013000000_sync_snapshots.sql (own rows only, the
-server owns rev, the keys and the encoding, revs never reused, 60 writes an
+server owns rev, the keys and the encoding, revs never reused, 20 writes an
 hour that a delete can't reset, deletes always allowed, base64 gzip only,
 the size caps, uncompressed storage, the one checkpoint).
 For every mutant the pgTAP suite (supabase/tests) must FAIL: a mutant that
@@ -40,19 +40,20 @@ MUTANTS = {
     ),
     "rev not raised on update": (r"new\.rev := private\.sync_next_rev\(old\.user_id, old\.store, old\.rev, true\);", ""),
     "keys not reverted": (r"new\.user_id := old\.user_id; new\.store := old\.store;", ""),
-    "no rate limit": (r"if p_refuse and v_n > 60 then", "if p_refuse and v_n > 6000 then"),
+    "no rate limit": (r"if p_refuse and v_n > 20 then", "if p_refuse and v_n > 6000 then"),
+    "the old, looser rate limit": (r"if p_refuse and v_n > 20 then", "if p_refuse and v_n > 60 then"),
     "deletes not counted": (r"perform private\.sync_next_rev\(old\.user_id, old\.store, old\.rev, false\);", "null;"),
-    "deletes refused over the limit": (r"if p_refuse and v_n > 60 then", "if v_n > 60 then"),
+    "deletes refused over the limit": (r"if p_refuse and v_n > 20 then", "if v_n > 20 then"),
     "rev reused after delete": (
         r"v_rev bigint := greatest\(\(extract\(epoch from clock_timestamp\(\)\) \* 1000\)::bigint, coalesce\(p_old_rev, 0\) \+ 1\);",
         "v_rev bigint := coalesce(p_old_rev, 0) + 1;",
     ),
-    "bigger zipped progress cap": (r"octet_length\(state_gz\) <= 700000\n", "octet_length(state_gz) <= 7000000\n"),
+    "bigger zipped progress cap": (r"octet_length\(state_gz\) <= 200000\n", "octet_length(state_gz) <= 700000\n"),
     "bigger unzipped progress cap": (r"raw_bytes between 2 and 2000000\)", "raw_bytes between 2 and 3000000)"),
     "no minimum raw size": (r"raw_bytes between 2 and", "raw_bytes between 0 and"),
     "no settings cap": (
         r"octet_length\(state_gz\) <= 32768 and raw_bytes <= 98304\)",
-        "octet_length(state_gz) <= 700000 and raw_bytes <= 2000000)",
+        "octet_length(state_gz) <= 200000 and raw_bytes <= 2000000)",
     ),
     "no gzip prefix check": (r"state_gz ~ '\^H4sI\[A-Za-z0-9\+/\]\+=\{0,2\}\$'", "state_gz ~ '^[A-Za-z0-9+/]+={0,2}$'"),
     "any characters": (r"state_gz ~ '\^H4sI\[A-Za-z0-9\+/\]\+=\{0,2\}\$'", "state_gz ~ '^H4sI'"),
@@ -64,6 +65,10 @@ MUTANTS = {
     ),
     "state compressed again": (r"alter table public\.sync_snapshots alter column state_gz set storage external;", ""),
     "history unbounded": (r"limit 1\)", "limit 20)"),
+    "checkpoint reader open to learners": (
+        r"grant execute on function public\.svc_sync_checkpoint\(uuid\) to service_role;",
+        "grant execute on function public.svc_sync_checkpoint(uuid) to service_role, authenticated;",
+    ),
     "history not cleared": (r"create trigger sync_history_clear after delete", "create trigger sync_history_clear after update"),
     "select all rows": (
         r"using \(user_id = \(select auth\.uid\(\)\)\);\ncreate policy snap_insert",

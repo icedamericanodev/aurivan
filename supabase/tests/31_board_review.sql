@@ -12,9 +12,13 @@
 -- Run: supabase test db   (CI: .github/workflows/supabase.yml)
 begin;
 select plan(83);
--- 20261027000000_beta_hardening.sql pauses posting for the accounts beta;
--- these tests exercise the open board (rolled back at the end).
+-- 20261027000000_beta_board_paused.sql pauses posting and takes the board's
+-- write entry points from the service role for the accounts beta; these
+-- tests exercise the open board (all rolled back at the end).
 update public.board_settings set posting_open = true;
+grant execute on function public.svc_board_join(uuid, text, text, text), public.svc_board_attempt(uuid),
+  public.svc_board_write(uuid, text, uuid, text, text, text, text, uuid, text, text, uuid, boolean),
+  public.svc_staff_act(uuid, text, text, uuid, text, jsonb) to service_role;
 
 -- ── Fixtures (as the owner) ─────────────────────────────────────────
 insert into auth.users (id, email, created_at) values

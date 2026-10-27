@@ -5,10 +5,10 @@
 -- accepted the Terms (no profile). Own rows only (B's row is unchanged after
 -- A's attempts, not just still there); anon denied; rev, time and keys are
 -- the server's, and a rev is never reused, even after delete + re-insert;
--- 60 writes per store per hour, counted outside the row so delete + insert
+-- 20 writes per store per hour, counted outside the row so delete + insert
 -- can't reset it (deletes are counted, never refused); the snapshot format
 -- (base64 gzip only: the "H4sI" prefix, the alphabet, whole groups; the
--- encoding is the server's) and the size caps (progress 700,000 characters
+-- encoding is the server's) and the size caps (progress 200,000 characters
 -- zipped and 2,000,000 bytes unzipped; settings 32,768 and 98,304); state_gz
 -- stored uncompressed; the support checkpoint (the newest one only, cleared
 -- on delete); cascade on account delete; nothing in the realtime publication.
@@ -24,7 +24,7 @@
 --
 -- Run: supabase test db   (CI: .github/workflows/supabase.yml)
 begin;
-select plan(58);
+select plan(61);
 
 insert into auth.users (id, email) values
   ('00000000-0000-0000-0000-00000000000a', 'a@test.invalid'),
@@ -82,6 +82,8 @@ select throws_ok($$ update public.sync_snapshots set user_id = '00000000-0000-00
 select throws_ok($$ select * from private.sync_writes $$, '42501', null, 'A cannot read the server''s write counter');
 select throws_ok($$ select private.sync_next_rev('00000000-0000-0000-0000-00000000000a', 'progress', 0, false) $$,
   '42501', null, 'A cannot call the counter function');
+select throws_ok($$ select * from public.svc_sync_checkpoint('00000000-0000-0000-0000-00000000000a') $$,
+  '42501', null, 'A cannot call the checkpoint reader (service role only)');
 
 -- Optimistic concurrency: an update at the right rev raises it; a stale rev updates nothing.
 with b as (select rev from public.sync_snapshots where store = 'progress'),
@@ -129,15 +131,15 @@ set local role authenticated;
 set local request.jwt.claims to '{"sub":"00000000-0000-0000-0000-00000000000d","role":"authenticated"}';
 select throws_ok($$ insert into public.sync_snapshots (store, store_version, app_version, device_id, state_gz, raw_bytes)
                     values ('progress', 1, '1.18.0', '44444444-4444-4444-8444-444444444444',
-                            'H4sI' || repeat('A', 700000), 2000000) $$,
-  '23514', null, 'a 700,004-character state_gz fails the progress cap');
+                            'H4sI' || repeat('A', 200000), 2000000) $$,
+  '23514', null, 'a 200,004-character state_gz fails the progress cap');
 select throws_ok($$ insert into public.sync_snapshots (store, store_version, app_version, device_id, state_gz, raw_bytes)
                     values ('progress', 1, '1.18.0', '44444444-4444-4444-8444-444444444444', 'H4sIAAAAAAACA6uuBQBDv6ajAgAAAA==', 2000001) $$,
   '23514', null, 'raw_bytes over 2,000,000 fails the progress cap');
 select lives_ok($$ insert into public.sync_snapshots (store, store_version, app_version, device_id, state_gz, raw_bytes)
                    values ('progress', 1, '1.18.0', '44444444-4444-4444-8444-444444444444',
-                           'H4sI' || repeat('A', 699996), 2000000) $$,
-  'a 700,000-character progress state_gz of 2,000,000 bytes unzipped is accepted');
+                           'H4sI' || repeat('A', 199996), 2000000) $$,
+  'a 200,000-character progress state_gz of 2,000,000 bytes unzipped is accepted');
 delete from public.sync_snapshots where store = 'progress';
 set local request.jwt.claims to '{"sub":"00000000-0000-0000-0000-00000000000a","role":"authenticated"}';
 -- Settings are tiny: 32,768 characters zipped, 98,304 bytes unzipped (the app: 64 KB).
@@ -165,7 +167,7 @@ set local request.jwt.claims to '{"sub":"00000000-0000-0000-0000-00000000000c","
 select throws_ok($$ update public.sync_snapshots set raw_bytes = 8 $$,
   '42501', null, 'no profile (Terms not accepted): no updates either');
 
--- ── The rate limit: the 61st update in an hour ──────────────────────
+-- ── The rate limit: the 21st update in an hour ──────────────────────
 reset role;
 -- A's window started over an hour ago: the next write opens a new one.
 update private.sync_writes set window_start = now() - interval '2 hours'
@@ -173,12 +175,12 @@ update private.sync_writes set window_start = now() - interval '2 hours'
 set local role authenticated;
 set local request.jwt.claims to '{"sub":"00000000-0000-0000-0000-00000000000a","role":"authenticated"}';
 select lives_ok($$ do $b$ begin
-  for i in 1..60 loop
+  for i in 1..20 loop
     update public.sync_snapshots set raw_bytes = 100 + i where store = 'progress';
   end loop;
-end $b$ $$, '60 updates in an hour go through');
+end $b$ $$, '20 updates in an hour go through');
 select throws_ok($$ update public.sync_snapshots set raw_bytes = 161 where store = 'progress' $$,
-  'P0001', 'rate_limited', 'the 61st update in an hour raises rate_limited');
+  'P0001', 'rate_limited', 'the 21st update in an hour raises rate_limited');
 
 -- ── Delete + insert can't reset the count, and never reuses a rev ───
 reset role;
@@ -195,17 +197,17 @@ insert into public.sync_snapshots (store, store_version, app_version, device_id,
 select ok((select rev from public.sync_snapshots where store = 'progress') > (select rev from rev_before),
   'after delete + re-insert the rev is higher than before the delete (never reused)');
 select lives_ok($$ do $b$ begin
-  for i in 1..29 loop
+  for i in 1..9 loop
     delete from public.sync_snapshots where store = 'progress';
     insert into public.sync_snapshots (store, store_version, app_version, device_id, state_gz, raw_bytes)
       values ('progress', 1, '1.18.0', '22222222-2222-4222-8222-222222222222', 'H4sIAAAAAAACA6uuBQBDv6ajAgAAAA==', 2 + i);
   end loop;
-end $b$ $$, '30 delete + insert pairs (60 writes) go through');
+end $b$ $$, '10 delete + insert pairs (20 writes) go through');
 select lives_ok($$ delete from public.sync_snapshots where store = 'progress' $$,
   'a delete over the limit still goes through (Delete synced progress always works)');
 select throws_ok($$ insert into public.sync_snapshots (store, store_version, app_version, device_id, state_gz, raw_bytes)
                     values ('progress', 1, '1.18.0', '22222222-2222-4222-8222-222222222222', 'H4sIAAAAAAACA6uuBQBDv6ajAgAAAA==', 99) $$,
-  'P0001', 'rate_limited', 'the insert after 60 counted writes raises rate_limited: delete + insert can''t reset the window');
+  'P0001', 'rate_limited', 'the insert after 20 counted writes raises rate_limited: delete + insert can''t reset the window');
 
 -- ── The owner's view: keys reverted, checkpoints kept ───────────────
 reset role;
@@ -234,6 +236,14 @@ select results_eq(
   $$ select encoding, state_gz, raw_bytes from private.sync_history where user_id = '00000000-0000-0000-0000-00000000000a' $$,
   $$ values ('gzip+base64'::text, 'H4sIAAAAAAACA6uuBQBDv6ajAgAAAA=='::text, 3) $$,
   'the checkpoint is the row as it was before the write, still gzipped');
+set local role service_role;
+select results_eq(
+  $$ select encoding, state_gz, raw_bytes from public.svc_sync_checkpoint('00000000-0000-0000-0000-00000000000a') $$,
+  $$ values ('gzip+base64'::text, 'H4sIAAAAAAACA6uuBQBDv6ajAgAAAA=='::text, 3) $$,
+  'the service role reads the learner''s checkpoint for Download my data');
+select is((select count(*)::int from public.svc_sync_checkpoint('00000000-0000-0000-0000-00000000000b')), 0,
+  'and only the learner it names (B has none)');
+reset role;
 update public.sync_snapshots set state_gz = 'H4sIAAAAAAACA6tWKi5JzElVsiopKk2tBQA71DvyDgAAAA==', raw_bytes = 14 where user_id = '00000000-0000-0000-0000-00000000000a';
 select is((select count(*) from private.sync_history where user_id = '00000000-0000-0000-0000-00000000000a')::int, 1,
   'at most one checkpoint a day, and still only one');
