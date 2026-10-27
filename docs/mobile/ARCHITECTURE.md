@@ -935,12 +935,52 @@ retired note.)
 **Backups and sync across phones with different packs.** Two fixes:
 (1) `keepKnownIds` leaves an exam with **no content on this phone** exactly as
 it is (it used to trim every id, which would have wiped progress for a pack
-downloaded on another phone); (2) a **well-formed** cert id the app has no
-descriptor for (`/^[a-z0-9-]{2,20}$/`, the database's rule) is kept as it is in
-backups, restores and sync pulls instead of refusing the file as `unknown-cert`;
-a malformed id still refuses, and every size cap still applies. The cert
-descriptor carries `issuer: { id, name }` so a pack's manifest can name a new
-issuer. Saved keys are unchanged (`aurivan.*.v1`).
+downloaded on another phone), and for an installed exam it trims each kind of
+id only when this phone has ids of that kind (questions, lessons, notes, and
+cards by their owner's kind); `installed` means content AND question ids;
+(2) a **well-formed** cert id the app has no descriptor for (`isCertId`:
+`/^[a-z0-9-]{2,20}$/`, the database's rule, minus a fixed denylist of the
+names a plain object answers to through its prototype, `constructor`,
+`prototype`, `tostring`…) is kept as it is in backups, restores and sync pulls
+instead of refusing the file as `unknown-cert`; a malformed or reserved id
+still refuses, and every size cap still applies (at most 16 exams,
+`MAX_CERTS`). The cert descriptor carries `issuer: { id, name }` so a pack's
+manifest can name a new issuer. Saved keys are unchanged (`aurivan.*.v1`).
+
+**The exam being studied (`lib/activeCert.ts`).** A restore or sync can carry
+a chosen exam whose content is not on this phone. The stored `activeCertId` is
+kept as it is, but every screen and helper studies `effectiveCertId(id)`: the
+chosen exam when the app knows it and has its content, else the default exam
+(CISA). The launch effects (badge back-fill, catalogue, planters) and the
+restore and sync write paths run only for exams whose content is here, so they
+never write data for an exam this phone can't measure. Every lookup keyed by a
+cert id (the generated packs, `byCert`, `days`, `examDates`, the first set) is
+an own-key lookup, so `"constructor"` reads as "no such exam".
+
+**Rules Phase C must enforce** (security review of Phase A, 27 Oct 2026). Tick
+each one in the Phase C pull request:
+- [ ] **Own keys and checked ids before any path.** Every lookup by cert id,
+  domain id or file kind is an own-key lookup; a cert id passes `isCertId` and
+  a `rev` is checked BEFORE either is used to build a file path
+  (`Documents/packs/<cert>/<rev>/`), so no id or rev can walk out of the folder.
+- [ ] **A bounded `rev`.** A safe integer in a sane range (after the first
+  bundled rev, not far in the future), so a hostile catalog can't pin a pack
+  forever with an enormous rev or roll one back with a tiny one.
+- [ ] **Full validation on the device.** Every downloaded file goes through the
+  same checks the build runs (unique ids, the answer letter exists, notes and
+  lessons links, size caps, https links only), after its MD5 matches the
+  manifest and the manifest's SHA-256 matches the catalog. A pack that fails is
+  never activated.
+- [ ] **The retired-id rule on the device.** A new pack may never drop an id the
+  installed pack has (it must keep it, `retired: true`) or reuse a retired id
+  for different content; such a pack is refused.
+- [ ] **https and a host allowlist for sources.** Packs come only from the one
+  fixed `https://kaisip.com` base; any other scheme or host in the catalog,
+  manifest or a redirect is refused.
+- [ ] **Never backed up, never synced, caches cleared.** The packs folder is
+  excluded from Android Auto Backup (config plugin) and iCloud backup; the
+  device store `aurivan.packs.v1` is never synced and never in a backup file;
+  `clearContentCaches()` runs after every swap or rollback.
 
 ## 4. Roadmap
 
