@@ -143,7 +143,8 @@
   delete within 30 days.</p>
 
   <h2>What we delete</h2>
-  <p>Your email address, account ID, sign-in records and sessions, the name
+  <p>Your email address, account ID, sign-in records and sessions (with the
+  IP addresses and browsers they came from), the name
   and profile picture link Google shared (if you used Google), the terms you
   accepted, and your synced progress and settings, including the support
   copy.</p>
@@ -152,8 +153,13 @@
   <ul>
     <li>Our encrypted backups are kept for 30 days, so your data is gone from
     them within 30 days.</li>
-    <li>A record that an account was deleted, made with a one-way keyed code
-    from the account ID. It holds no email address.</li>
+    <li>A record that an account was deleted: a one-way keyed code made from
+    the account ID, the day (not the time) of the deletion, and how many
+    feedback board posts and comments the account had (none during the beta).
+    It holds no email address, and is deleted after 3 years.</li>
+    <li>Our database provider’s request and sign-in event logs (your IP
+    address, browser or app, and the times you signed in) for [Supabase’s log
+    retention period on our plan].</li>
     <li>Support emails you sent us are kept for up to 12 months after they are
     resolved.</li>
   </ul>

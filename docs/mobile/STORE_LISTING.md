@@ -300,7 +300,7 @@ Success metric: store listing conversion rate (visitors to installs), read at 90
 
 ## 7. Accounts beta on Google Play (DRAFT, not in effect until the accounts build)
 
-Owner decision (27 Oct 2026): optional sign-in with Google or a 6-digit
+Owner decision (27 Oct 2026): optional sign-in with Google or an 8-digit
 email code, progress synced between the app and kaisip.com, the feedback
 board OFF. These answers replace the "No data collected" answers in
 section 2 **in the same release as** the first build with accounts on, and
@@ -333,7 +333,7 @@ collected": only with an account, which is optional).
 | App activity › App interactions | App functionality | Synced progress: answers (right or wrong, how sure, how long), reviews, mocks, study days and streak, game levels |
 | App activity › Other user-generated content | App functionality | The notes a learner writes on questions, and "Your reports" (which questions they reported, why and when), synced with progress |
 | App activity › Other actions | App functionality | Saved questions, notes read, lessons done, badges, the plant, the exam date |
-| Device or other IDs | App functionality | The random install id sent with each sync (not a hardware or advertising id; renewed when a different account signs in, and on account deletion) |
+| Device or other IDs | App functionality | The random install id sent with each sync (not a hardware or advertising id; a new one is made before a different account syncs from the device, when the learner removes their progress from it, and when they delete their account) |
 
 **Not collected** (answer No): location, financial info, health and
 fitness, messages, photos and videos, audio, files and docs, calendar,
@@ -364,7 +364,7 @@ instruction set:
 > below). The app returns to Settings showing the account and "Sync this
 > phone". To delete the account afterwards: Settings → Account → Delete
 > account (you will be asked to sign in again first). The email option
-> sends a 6-digit code to an inbox you can read, so please use Google.
+> sends an 8-digit code to an inbox you can read, so please use Google.
 
 - **Username / Password:** recommended: leave the "any Google account"
   instruction alone *(verify that Play accepts it)*. If Play asks for

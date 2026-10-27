@@ -42,13 +42,13 @@ small number, not the big one.
 
 | Item | Size | Notes |
 |---|---|---|
-| Progress snapshot, **heavy learner** (every CISA question answered, reviews, mistakes, 50 mocks, readiness log, badges, plant) | about 263 KB of JSON → **about 17 KB gzipped, about 23 KB as base64** | The app's cap is 1.5 MB of JSON; the database's 2,000,000 bytes unzipped and 700,000 characters zipped |
+| Progress snapshot, **heavy learner** (every CISA question answered, reviews, mistakes, 50 mocks, readiness log, badges, plant) | about 263 KB of JSON → **about 17 KB gzipped, about 23 KB as base64** | The app's cap is 1.5 MB of JSON; the database's 2,000,000 bytes unzipped and 200,000 characters zipped (the 1.5 MB fits at 10 to 1; progress zips about 15 to 1) |
 | Progress snapshot, typical learner (a few hundred answers) | about 60–80 KB of JSON → **about 6 KB stored** | about 220 bytes of JSON per answered question, plus a few KB fixed |
 | Settings snapshot | about 350 bytes of JSON → **about 0.5 KB stored** | capped at 64 KB in the app; 98,304 bytes unzipped and 32,768 zipped in the database |
 | Support checkpoint (`private.sync_history`) | **one** earlier copy of the progress row, as stored | at most one new one a day; kept while the synced copy exists |
 | Write counter (`private.sync_writes`) | one small row per learner and store | outlives the snapshot rows (so delete + insert can't reset it), goes with the account |
 | Auth rows (user, identities, sessions, refresh tokens) | about 6–8 KB | grows with sessions; refresh-token rotation replaces old ones |
-| Writes | about 6 a day per store per device | launch, background, session end, at most every 10 minutes after a change; the server allows 60 an hour per store |
+| Writes | about 6 a day per store per device | launch, background, session end, at most every 10 minutes after a change; the server allows 20 an hour per store (security audit M2) |
 | Egress, one device | heads only, about 1 KB per sync | the snapshot is downloaded **only when `rev` changed** (another device wrote) |
 | Egress, web + phone | about one snapshot download per sync after the other side changed | about 6–23 KB each, a few a day |
 
@@ -104,7 +104,7 @@ Act when any of these holds:
 - Database over 60% (300 MB): the backup job goes red.
 - Emails: over 60 a day for several days (Resend Free allows 100 a day).
 - `rate_limited` answers from `sync_snapshots` at all (the app needs about
-  6 writes a day; 60 an hour means a bug or abuse). The count lives outside
+  6 writes a day; 20 an hour means a bug or abuse). The count lives outside
   the row, so a delete + insert loop raises it too.
 - Sync conflicts over 2% of pushes (two devices writing at the same moment
   more often than expected: check the sync triggers).
@@ -133,12 +133,27 @@ Act when any of these holds:
   (GitHub disables scheduled workflows in a public repo after 60 days with
   no commits: `gh workflow enable keep-awake.yml`).
 - **Restore a backup** (a quarterly drill, on Sky's computer, with Claude
-  guiding): download the newest `.tar.gz.age` from R2, then
-  `age -d -i <your key file> <backup> | tar -xzf -` gives `roles.sql`,
-  `schema.sql`, `data.sql` and `stats.txt`. Restore them into a local
-  Supabase (`supabase start`) with `psql` in that order, as Supabase's
-  "Backup and restore using the CLI" guide describes. Never upload a
-  decrypted backup anywhere.
+  guiding):
+  1. Download the newest `.tar.gz.age` from R2, then
+     `age -d -i <your key file> <backup> | tar -xzf -` gives `schema.sql`,
+     `data.sql` and `stats.txt`. Never upload a decrypted backup anywhere.
+  2. Start a local Supabase (`supabase start`) and apply the migrations
+     (`supabase db reset`); `schema.sql` is for comparing, the migrations
+     build the schema.
+  3. Load the data with triggers and foreign keys paused, as Supabase's
+     restore guide does, in one session:
+     `{ echo "set session_replication_role = replica;"; cat data.sql; } | psql -v ON_ERROR_STOP=1 <local url>`.
+     The board tables refer to each other, so pg_dump warns about
+     circular keys; this is why.
+  4. **Re-delete deleted accounts** (security audit L6): a backup is up to
+     30 days old, so it can hold accounts deleted since. With the pepper
+     from the password manager:
+     `echo "delete from auth.users u where encode(extensions.hmac(lower(u.id::text), :'pepper', 'sha256'), 'hex') in (select uid_hmac from private.deletions);" | psql -v ON_ERROR_STOP=1 -v pepper="$DELETION_PEPPER" <local url>`
+     (pgcrypto's `hmac`, in schema `extensions` on Supabase; psql fills
+     in `:'pepper'` only from stdin or a file, never with `-c`. The
+     deletion cascades every row, as in the app).
+     On a real restore, do this before anyone can sign in.
+  5. Sessions were never in the backup: everyone signs in again.
 - **One learner's progress:** the support checkpoint in
   `private.sync_history` (service role only; by hand, with the learner's
   request in writing). It is stored gzipped, like the row.
@@ -147,9 +162,13 @@ Act when any of these holds:
   Phones and the web say "We'll try again soon". Grant it back to undo.
 - **Stop new sign-ups:** Supabase → Authentication → turn off "Allow new
   users to sign up".
-- **The no-password trigger blocks a real sign-in flow:**
-  `drop trigger kaisip_refuse_new_password on auth.users;` then fix it in a
-  new migration.
+- **The no-password trigger disturbs a real sign-in flow:**
+  `drop trigger kaisip_clear_password on auth.users;` then fix it in a new
+  migration. (It never raises, so this should not happen.)
+- **A workflow changed without the owner's review** (`.github/CODEOWNERS`,
+  security audit M3): reset the database password at once (Database →
+  Settings), update `SUPABASE_DB_URL` in the `db-backup` environment, and
+  read the change before the next nightly run.
 - **Rotate keys:** create a new publishable key, ship it in a build (and
   the web constant and the keep-awake variable), then revoke the old one
   after phones have updated. Secret keys, `DELETION_PEPPER` and Apple keys

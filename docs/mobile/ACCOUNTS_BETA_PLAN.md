@@ -7,7 +7,8 @@ accounts. Figures not confirmed on the vendor's own page are marked
 *(verify)*.
 
 **Owner decisions (Sky, 27 Oct 2026).** Sign-in is optional on the web and
-Android. Methods: Google and a 6-digit email code; Apple later. Progress
+Android. Methods: Google and an emailed code (Sky chose 6 digits; the
+security audit of 27 Oct, L7, moved it to 8: confirm with Sky); Apple later. Progress
 syncs between the web and the phone. Backend: the Supabase **Free** project
 in ap-southeast-1 (Singapore). Priorities: learners' security and database
 performance. CISA only for now.
@@ -20,10 +21,70 @@ read them from repository variables, apps from their build settings.
 
 | Ticket | What | State |
 |---|---|---|
-| 1 | Database fixes before the first apply (§3.1), Edge Function changes (§3.3), workflows (§6), docs, legal drafts, email templates, Data safety answers | **Done in the repo, not applied.** Nothing is on the hosted project yet |
+| 1 | Database fixes before the first apply (§3.1), Edge Function changes (§3.3), workflows (§6), docs, legal drafts, email templates, Data safety answers; then the security audit's fixes (below) | **Done in the repo, not applied.** Nothing is on the hosted project yet |
 | 2 | MCP apply, SQL checks, advisors, function deploy (§3.3) | Next, after review of ticket 1 |
 | 3 | Web client (§1, web engineer) and mobile go-live (§2, mobile engineer) | Not started |
 | 4 | Sky's checklist (§9) | Groups A–E can start now |
+
+## Security audit (27 Oct 2026) and the go-live gates
+
+A security audit of ticket 1 found 0 critical, 2 high, 4 medium and 9 low
+issues. All were fixed in the repo before anything was applied (see the
+git log for the commits). What changed, in short:
+
+| Finding | Fix |
+|---|---|
+| H1 pre-registration takeover (an attacker signs up with the victim's email and a password; the victim later confirms with a code) | The trigger now **wipes** any password on a confirmed account (insert, confirmation, or a new password) instead of raising: `20261027000100_beta_no_passwords.sql`. Smoke: `cloud_smoke.sh pre-register` and the `EMAIL_A` probe (S9) |
+| H2 Auth audit logs keep email, user id and IP after deletion | Go-live gate 2 below; the privacy and deletion drafts name the sign-in event logs and say exactly what the deletion record holds |
+| L8 deletion record time | The record keeps the DAY (UTC), the keyed hash and the board counts; purged after 3 years (at each deletion and nightly) |
+| M1 the gzip cap might not bound memory | The reader feeds the inflater 1 KB slices from a pull-based stream. Measured on a 500 MB zero bomb: the old single-chunk feed grew memory by about 506 MB, the sliced one by under 2 MB; a test asserts under 64 MB. **The phone's and the website's codecs must slice too** (SECURITY_GATES.md I9) |
+| M2 Free-plan exhaustion | Progress `state_gz` capped at 200,000 characters (the app's 1.5 MB fits at 10 to 1; progress measures about 15 to 1); 20 writes per store per hour; captcha before any public link (gate 3) |
+| M3 the backup job holds the full `postgres` password | `.github/CODEOWNERS` (the owner reviews `.github/`), gate 4, and the runbook "rotate the password if a workflow changed without review". A read-only dump role is a *(verify)* item: on Supabase, `postgres` may not be able to grant `pg_read_all_data` or read every `auth` table through another role; if it can, the nightly purge moves to pg_cron |
+| M4 privacy accuracy | Backups "encrypted on a temporary GitHub build machine before storage"; GitHub listed as a processor; session IP and browser named; "Download my data" now includes the provider's name and picture link, the last sign-in, the 16+ confirmation, each row's rev, device code and time, and the support copy |
+| L1 | The board's four write entry points are revoked from `service_role` until the board opens (the board's go-live migration must grant them back) |
+| L2 | A cheap read-only export check answers 429 before the document is built |
+| L3, L4, L5 | The backup log lists only our own tables; the password is masked on its own and TLS checks Supabase's CA (`sslmode=verify-full`); sessions, tokens, one-time codes, flow state, MFA challenges and the Auth audit log are left out of the dump |
+| L6 | Restore runbook: re-delete restored accounts listed in `private.deletions` (SCALING.md §7) |
+| L7 | 8-digit codes. **This reverses Sky's "6-digit" decision: Sky must confirm** (one setting and the template wording to revert) |
+| L9 | One install-id wording in the privacy draft and STORE_LISTING §7 |
+
+### Go-live gates (all must be ticked before any public sign-in link)
+
+Compiled from the audit's findings; reconcile with the auditor's own list
+if it words them differently.
+
+- [ ] 1. **Confirm email = ON** (Authentication → Sign In / Providers →
+  Email). HARD gate: with it off, sign-up makes an already-confirmed account.
+  Then run `PROBE_EMAIL=… bash scripts/cloud_smoke.sh pre-register`: the
+  pre-registered password must be refused (S9).
+- [ ] 2. **Auth audit logs not written to the database** (Authentication →
+  settings: turn off writing Auth audit logs to the database) *(verify the
+  switch's name)*. If it can't be turned off: a nightly pg_cron job
+  `delete from auth.audit_log_entries where created_at < now() - interval '30 days'`,
+  after checking that `postgres` may delete from that table *(verify)*, and
+  the privacy policy says 30 days.
+- [ ] 3. **Captcha (Turnstile) ON** before any public sign-in link, and the
+  Android email-code flow sends a Turnstile token (through the
+  `kaisip.com/human-check` page, §2.1).
+- [ ] 4. **"Require review from Code Owners"** on `main` (Settings →
+  Branches → main), so `.github/CODEOWNERS` takes effect.
+- [ ] 5. `list_edge_functions` shows only `delete-account` and
+  `export-my-data` (no board function deployed).
+- [ ] 6. `DELETION_PEPPER` set (40 random characters, Function secret)
+  before the first real deletion.
+- [ ] 7. Auth settings as §4: anonymous sign-ins, manual linking and phone
+  OFF; redirect URLs exactly `https://kaisip.com/` and
+  `kaisip://auth-callback`; Email OTP length 8, expiry 600.
+- [ ] 8. `pg_graphql` off and the Data API exposes `public` only (Gate 5).
+- [ ] 9. Enforce SSL ON; the database password reset after setup and kept
+  only in the password manager and the `db-backup` environment; the backup
+  job green with `sslmode=verify-full`.
+- [ ] 10. Advisors: 0 ERROR; the §3.3 SQL checks clean; no sync table in
+  realtime (S2, S4).
+- [ ] 11. `bash scripts/cloud_smoke.sh` all pass, with `EMAIL_A` set (S3,
+  S6, S9).
+- [ ] 12. One backup decrypted by Sky and a restore drill done, including
+  the re-deletion of deleted accounts (S8, SCALING.md §7).
 
 ### What ticket 1 found when it read the real files (corrections to this plan)
 
@@ -34,13 +95,14 @@ read them from repository variables, apps from their build settings.
    the deletion. Ticket 1 deletes the account FIRST, then writes the audit
    row, clears files (retried once) and revokes Apple, each best-effort and
    logged; a failed board count now counts 0.
-2. **The password trigger (§3.1, 4th migration).** "Refuse a newly set
-   `encrypted_password`" as written would break first sign-up: the Auth
+2. **The password trigger (§3.1, the beta migrations).** "Refuse a newly
+   set `encrypted_password`" as written would break first sign-up: the Auth
    server gives every new email-code account a random throwaway password,
-   and may set a new one while the first code is pending. The trigger only
-   refuses a new non-empty password on an account whose email is already
-   confirmed. *(verify on the hosted project, acceptance test S9 below)*
-3. **The board tests.** Pausing posting in the 4th migration made the four
+   and may set a new one while the first code is pending. After the
+   security audit (H1) the trigger WIPES any password once the account is
+   confirmed, and never raises. *(verify on the hosted project, acceptance
+   test S9 below)*
+3. **The board tests.** Pausing posting in the beta migration made the four
    board pgTAP suites fail (they assume posting is open). Each now opens
    posting at its start, inside its own rolled-back transaction.
 4. **The smoke test had no sync checks at all** (§3.4 listed only the
@@ -312,7 +374,7 @@ Also add Expo Router routes `auth-callback` and `human-check` that redirect to T
 
 **`20261013000000_sync_snapshots.sql`, gzip:**
 - Replace `state jsonb` with:
-  - `state_gz text not null check (state_gz ~ '^H4sI[A-Za-z0-9+/]+={0,2}$' and octet_length(state_gz) <= 700000)` (base64 gzip; `H4sI` is the gzip magic number);
+  - `state_gz text not null check (state_gz ~ '^H4sI[A-Za-z0-9+/]+={0,2}$' and octet_length(state_gz) <= 700000)` (built at 200,000 after the security audit, M2; base64 gzip; `H4sI` is the gzip magic number);
   - `raw_bytes int not null check (raw_bytes between 2 and 2000000)`;
   - `encoding text not null default 'gzip+base64' check (encoding = 'gzip+base64')`, which leaves room to change later.
 - Change the settings constraint to `store <> 'settings' or (octet_length(state_gz) <= 32768 and raw_bytes <= 98304)`.
@@ -340,7 +402,7 @@ Also add Expo Router routes `auth-callback` and `human-check` that redirect to T
 - Without app-level gzip, a learner on web and phone pulling about 4 times a day at about 100 KB means **3,000 learners could pass the 5 GB monthly egress**.
 - With it, egress is about 1–3 GB a month at 3,000 (below).
 
-**New, optional 4th migration `20261027000000_beta_hardening.sql`:**
+**New beta migrations** (built as two files after the security audit: `20261027000000_beta_board_paused.sql` and `20261027000100_beta_no_passwords.sql`, the trigger wiping passwords rather than refusing them):
 1. `update public.board_settings set posting_open = false` (the board stays paused).
 2. A free-plan stand-in for the "reject passwords" Auth hook, which is a Teams/Enterprise feature: a `before update` trigger on `auth.users`, with its function in `private`, that refuses a newly set `encrypted_password`. It stops a stolen fresh session from adding a password. Ship it only if Supabase still allows triggers on `auth.users` (verify); otherwise record the residual risk. pgTAP-test it.
 
@@ -382,7 +444,8 @@ The real figure is lower, because not every monthly user is active every day. At
    1. `init_mobile_sync`
    2. `sync_snapshots`
    3. `feedback_board` (required even with the board off: `delete-account` and `export-my-data` call `svc_board_counts` / `svc_board_export`)
-   4. `beta_hardening`
+   4. `beta_board_paused`
+   5. `beta_no_passwords` (its own migration: if the hosted project refuses a trigger on `auth.users`, only this one fails and the board pause stays)
 
    Record the version mapping. Afterwards, never `supabase db push` to the hosted project without `migration repair` (MCP-applied versions are timestamps; verify). Future migrations go through MCP too.
 3. **`execute_sql` read-only checks:**
@@ -424,7 +487,7 @@ The real figure is lower, because not every monthly user is active every day. At
 - Site URL `https://kaisip.com`.
 - Redirect URLs exactly `https://kaisip.com/` and `kaisip://auth-callback`. No wildcards, no `pages.dev`, no `workers.dev`.
 - JWT 3600 s. Refresh rotation on, reuse interval 10 s.
-- Email: confirmations on, secure email change on, OTP 6 digits, expiry 600 s, resend 60 s.
+- Email: confirmations on, secure email change on, OTP 8 digits (security audit L7), expiry 600 s, resend 60 s.
 - Anonymous sign-ins off; manual linking off; phone off.
 - TOTP MFA on (for staff later).
 - Rate limits:
@@ -436,7 +499,7 @@ The real figure is lower, because not every monthly user is active every day. At
 - Data API: expose `public` only. Turn off `pg_graphql` (Gate 5).
 - Enforce SSL.
 
-**Residual risk:** GoTrue has no per-code try counter, and 6 digits is the owner's choice. Captcha guards sending, not `/verify` (verify). Keep `token_verifications` low and look at Auth logs for verify-failure spikes.
+**Residual risk:** GoTrue has no per-code try counter; codes are 8 digits since the security audit (L7), which makes a guess 100 times less likely than 6. Captcha guards sending, not `/verify` (verify). Keep `token_verifications` low and look at Auth logs for verify-failure spikes.
 
 **Google Cloud:**
 - One **Web application** client, with redirect URI `https://ziadnvepttlgcowvqvom.supabase.co/auth/v1/callback`.
@@ -526,10 +589,10 @@ All of these are collected, not shared, **optional** (only with an account), enc
 - A paused project can be restored from the dashboard (the restore window is 90 days or a year; verify).
 
 **Backups** (`.github/workflows/db-backup.yml`, Claude; nightly at 18:30 UTC, which is 02:30 in Manila):
-1. Supabase CLI (pinned 2.118.0) `db dump` for roles, schema and data. Use the **session pooler** connection string: the direct connection is IPv6-only and GitHub runners are IPv4 (verify).
+1. `pg_dump` 17 from the signed PostgreSQL apt repository (built this way after the audit, instead of the Supabase CLI): the schema of `public` and `private`, and the data of `public`, `private` and `auth` without sessions, tokens, one-time codes, flow state, MFA challenges or the Auth audit log. TLS checks Supabase's CA (`sslmode=verify-full`, repo variable `SUPABASE_DB_CA_CERT`). Use the **session pooler** connection string: the direct connection is IPv6-only and GitHub runners are IPv4 (verify).
 2. Encrypt with `age -r $AGE_RECIPIENT`; the private key stays only with Sky.
 3. Upload to R2 `kaisip-db-backups` with a token that can only touch that bucket. An R2 lifecycle rule deletes copies after 30 days; add a bucket lock if R2 offers it (verify).
-4. Print the database size and the largest tables. The account and `auth.refresh_tokens` counts go inside the encrypted file (the Actions log is public). **Fail the job if the database is over 300 MB** (60%), so GitHub emails Sky.
+4. Print the database size and our largest tables (`public`, `private`). The account and `auth.refresh_tokens` counts go inside the encrypted file (the Actions log is public). Purge deletion records older than 3 years. **Fail the job if the database is over 300 MB** (60%), so GitHub emails Sky.
 
 The job runs in GitHub Environment `db-backup`, limited to `main`. No artefacts are uploaded. Restore drill: quarterly, on Sky's computer, with Claude guiding, into a local Supabase.
 
@@ -559,7 +622,7 @@ The job runs in GitHub Environment `db-backup`, limited to `main`. No artefacts 
 - S6. `OPTIONS` from `https://kaisip.com` → 204 with the exact origin; from another origin → no CORS header.
 - S7. With captcha on: `/otp` without a token is refused, with one it works; `/verify`, PKCE exchange and refresh work without one.
 - S8. Keep-awake and backup runs are green; one backup decrypted by Sky.
-- S9. On the hosted project: a new address signs in with an email code (including a second code before the first is used), Google sign-in works, and `PUT /auth/v1/user {"password": …}` with a fresh session is refused (the beta-hardening trigger).
+- S9. On the hosted project: a new address signs in with an email code (including a second code before the first is used), Google sign-in works; `cloud_smoke.sh` with `EMAIL_A` shows a password set by a session can't be used, and `cloud_smoke.sh pre-register` shows a password set by signUp before the owner confirmed with a code can't be used either (H1).
 
 *Web (Chrome, Firefox, Safari on iPhone)*
 - W1. Google sign-in works, and `?code=` is gone before analytics fire.
@@ -595,7 +658,7 @@ The job runs in GitHub Environment `db-backup`, limited to `main`. No artefacts 
 ### Claude through MCP and repo (no owner secrets needed)
 
 1. PR "Accounts beta: database fixes before first apply":
-   - migrations §3.1 and the optional 4th;
+   - migrations §3.1 and the beta migrations;
    - tests, mutants, `check_rls.sh`, `cloud_smoke.sh`;
    - `_shared/gz.ts`, CORS, pepper HMAC, delete order;
    - docs: ARCHITECTURE §2/§10/§11, SCALING.md rewritten for Free, SECURITY_GATES status, privacy and delete-account drafts.
@@ -653,6 +716,7 @@ The job runs in GitHub Environment `db-backup`, limited to `main`. No artefacts 
    - Expo (Account settings → Security);
    - your Google account.
 2. Supabase → your organisation → Billing: check it says **Free**. Don't add a card; that way Supabase can never charge you by surprise.
+2a. GitHub repo → Settings → Branches → `main` → "Require a pull request before merging" → tick **"Require review from Code Owners"** (go-live gate 4: `.github/CODEOWNERS` makes you review every workflow change, because the backup job holds the database password).
 
 **B. One web address (10 min)**
 
@@ -701,8 +765,8 @@ The job runs in GitHub Environment `db-backup`, limited to `main`. No artefacts 
     - Redirect URLs: add `https://kaisip.com/` and `kaisip://auth-callback`;
     - remove anything else.
 20. **Authentication → Sign In / Providers → Email:**
-    - Enabled; Confirm email ON; Secure email change ON;
-    - Email OTP length **6**, expiry **600**.
+    - Enabled; **Confirm email ON** (a HARD go-live gate: never turn it off, see gate 1); Secure email change ON;
+    - Email OTP length **8**, expiry **600**.
 
     Also: Anonymous sign-ins OFF, Manual linking OFF, Phone OFF, Allow new users to sign up ON. Save.
 21. **Providers → Google:** Enable, paste the Client ID and Client secret, Save.
@@ -717,7 +781,7 @@ The job runs in GitHub Environment `db-backup`, limited to `main`. No artefacts 
     - refresh-token rotation ON, reuse interval **10** seconds;
     - access-token (JWT) expiry **3600**.
 26. **Authentication → Multi-Factor:** TOTP on (for staff later; harmless now).
-27. **Database → Extensions:** turn off `pg_graphql`. **Project Settings → Data API:** exposed schemas = `public` only.
+27. **Database → Extensions:** turn off `pg_graphql`. **Project Settings → Data API:** exposed schemas = `public` only. **Authentication → settings:** turn off writing Auth audit logs to the database (go-live gate 2; tell Claude if you can't find the switch).
 28. **Database → Settings:** Enforce SSL ON. **Reset database password**: save the new one in your password manager, nowhere else.
 29. **Edge Functions → Secrets → Add:** name `DELETION_PEPPER`, value = a 40-character random password from your password manager.
 30. **Go-live day only, last:** **Authentication → Attack Protection → Enable CAPTCHA → Turnstile** → paste the Turnstile Secret key → Save.
@@ -737,6 +801,8 @@ The job runs in GitHub Environment `db-backup`, limited to `main`. No artefacts 
 35. GitHub repo → Settings → Environments → New `db-backup` → Deployment branches: **main** only → Add secrets:
     - `SUPABASE_DB_URL`: Supabase → **Connect → Session pooler** string, with your new DB password;
     - `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`, `R2_ENDPOINT`.
+
+    Then Settings → Secrets and variables → Actions → **Variables**: `BACKUP_AGE_RECIPIENT` (the `age1…` line) and `SUPABASE_DB_CA_CERT` (Supabase → Database → Settings → SSL Configuration → Download certificate; paste the whole text, it is public). For keep-awake also `SUPABASE_URL` and `SUPABASE_PUBLISHABLE_KEY`.
 
 **H. App and Play (go-live day, 40 min)**
 

@@ -247,7 +247,11 @@ No owner action. Whoever writes the real Supabase client code must follow these:
   (`staff-action` and `private.staff_act`) is the real gate. Keep it that way.
 - **I9 Snapshots are untrusted input (accounts beta).** Every client (the
   phone and the website) reads a synced snapshot through a capped inflate:
-  stop at 2,000,000 bytes, refuse a size that doesn't equal `raw_bytes` or
+  feed the inflater small slices (1 KB) from a pull-based stream, never the
+  whole gzip in one chunk (security audit M1: one chunk let the inflater
+  run 500 MB past the cap on Deno), stop at 2,000,000 bytes, check the
+  zipped size against the 200,000-character cap before a push, refuse a
+  size that doesn't equal `raw_bytes` or
   an `encoding` other than `gzip+base64`, then the strict snapshot checker.
   A snapshot that fails pauses sync as unreadable; it never crashes the app
   or replaces local progress. The server's reader is
@@ -271,11 +275,16 @@ can restore from *(verify)*, and sends no usage alerts.
 **Owner steps** (`ACCOUNTS_BETA_PLAN.md` §9 G31–G35): the R2 bucket with a
 30-day lifecycle rule and a bucket-only token; an `age` key made on your own
 computer (only the `age1…` public line goes to GitHub, as the repository
-variable `BACKUP_AGE_RECIPIENT`); the `db-backup` environment (main only)
+variable `BACKUP_AGE_RECIPIENT`); Supabase's CA certificate as the variable
+`SUPABASE_DB_CA_CERT` (the job checks the server's certificate); the
+`db-backup` environment (main only)
 with `SUPABASE_DB_URL`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY` and
 `R2_ENDPOINT`; and the repository variables `SUPABASE_URL` and
-`SUPABASE_PUBLISHABLE_KEY` for keep-awake. Then decrypt one backup to prove
-the key works (acceptance test S8).
+`SUPABASE_PUBLISHABLE_KEY` for keep-awake; and "Require review from Code
+Owners" on `main`, so `.github/CODEOWNERS` makes you review any workflow
+change (security audit M3: the backup job holds the database password).
+Then decrypt one backup and do a restore drill (acceptance test S8). The
+full list of go-live gates is in `ACCOUNTS_BETA_PLAN.md`.
 
 ## How to re-check
 

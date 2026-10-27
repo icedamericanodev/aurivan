@@ -262,6 +262,7 @@
     <tr><td>Resend</td><td>Sends your sign-in codes by email (United States)</td><td>Only when you ask for a code</td></tr>
     <tr><td>Cloudflare Turnstile</td><td>Checks that the email sign-in form isn’t being used by a script</td><td>Only when you ask for a code on the website</td></tr>
     <tr><td>Cloudflare R2</td><td>Keeps encrypted nightly backups of the account database for 30 days</td><td>Only if you have an account</td></tr>
+    <tr><td>GitHub (Actions)</td><td>Runs the nightly backup: the database copy passes through a temporary GitHub build machine (United States), where it is encrypted before it is stored</td><td>Only if you have an account</td></tr>
     <tr><td>Google (Sign in with Google)</td><td>Signs you in, if you choose it</td><td>Only when you choose Google</td></tr>
     <tr><td>Expo (EAS Update)</td><td>Delivering updates to test versions of the mobile app</td><td>Each time a test version of the mobile app opens (never the Google Play version)</td></tr>
     <tr><td>Ko-fi</td><td>Optional donations</td><td>Only if you follow a "Support on Ko-fi" link (website only; never in the mobile app)</td></tr>
@@ -347,7 +348,7 @@
   <h2 id="s6a">6A. Optional KaiSip account</h2>
   <p>You don’t need an account to use any study feature, in the app or on the
   website. An account lets you keep the same progress on your phone and on
-  kaisip.com. You sign in with Google or with a 6-digit code we email you.
+  kaisip.com. You sign in with Google or with an 8-digit code we email you.
   KaiSip has no passwords.</p>
 
   <h3>What we keep</h3>
@@ -355,8 +356,10 @@
     <li>Your email address, to sign you in and to send your codes.</li>
     <li>An account ID.</li>
     <li>Which sign-in methods you use (email code or Google), when the account
-    was created and when you last signed in, and your active sign-in sessions,
-    so you stay signed in and can sign out everywhere.</li>
+    was created and when you last signed in, and your active sign-in sessions
+    (for each: when it started and was last used, and the IP address and the
+    browser or app it came from), so you stay signed in and can sign out
+    everywhere.</li>
     <li>Which version of the terms you accepted, and that you confirmed you are
     16 or older.</li>
     <li>If you sign in with Google, Google tells our sign-in system your name
@@ -384,7 +387,8 @@
   keep the app or website version that sent it, when it was sent, and a
   random code for the phone or browser that sent it (not a hardware or
   advertising ID; a new one is made before a different account syncs from the
-  same device, and when you remove your progress from it).</p>
+  device, when you remove your progress from it, and when you delete your
+  account).</p>
   <p>We also keep one earlier daily copy of your progress, so support can help
   if something goes wrong. It is deleted when you delete the synced copy or
   your account.</p>
@@ -411,36 +415,48 @@
     server checks the size and shape of everything it stores.</li>
     <li>Sign-in codes work for 10 minutes, and deleting your account needs a
     fresh sign-in.</li>
-    <li>Backups are encrypted before they leave the database server, with a
-    key only the maintainer holds.</li>
+    <li>Backups are encrypted on a temporary GitHub build machine before they
+    are stored, with a key only the maintainer holds. Sign-in sessions and
+    one-time codes are never part of a backup.</li>
   </ul>
 
   <h3>Who processes it, and where</h3>
   <ul>
     <li><strong>Supabase</strong> stores your account and synced progress in
     Singapore, under a data-processing agreement. Like any internet service,
-    it keeps request logs (for example your IP address and the app’s version)
-    for [Supabase’s log retention period], to keep the service secure.</li>
+    it keeps request logs and sign-in event logs (for example your IP address,
+    your browser or app version, and when you signed in or asked for a code)
+    for [Supabase’s log retention period on our plan], to keep the service
+    secure. We don’t keep our own copy of sign-in events.</li>
+    <!-- "We don't keep our own copy" holds only with go-live gate 2
+         (ACCOUNTS_BETA_PLAN.md: Auth audit logs not written to the database).
+         If the nightly purge is used instead, say "we keep our own copy for
+         30 days" here and in delete-account.html. -->
     <li><strong>Resend</strong> (United States) sends your sign-in codes.</li>
     <li><strong>Cloudflare</strong> runs the human check on the website’s
     email form and keeps our encrypted backups (Cloudflare R2).</li>
+    <li><strong>GitHub</strong> (United States) runs the nightly backup job,
+    which encrypts the copy on a temporary build machine before storing it.</li>
     <li><strong>Google</strong> signs you in, if you choose Google.</li>
   </ul>
 
   <h3>How long we keep it</h3>
   <p>We keep it while your account exists. When you delete your account, we
   remove it from our live systems at once; our encrypted backups are kept
-  for 30 days, so it is gone from them within 30 days. We keep only a record
-  that an account was deleted, made with a one-way keyed code from the
-  account ID, with no email address, so we can show the deletion happened.</p>
+  for 30 days, so it is gone from them within 30 days. We keep only a record that an account was deleted: a one-way keyed code made
+  from the account ID, the day (not the time) of the deletion, and how many
+  feedback board posts and comments the account had (none during the beta).
+  It holds no email address. We keep it for 3 years, so we can show the
+  deletion happened, then delete it.</p>
 
   <h3>Your choices</h3>
   <ul>
     <li>Sign out at any time, on one device or on every device.</li>
     <li>Get a copy of your account data: <strong>Download my data</strong>
     (Settings → Account in the app, Your data → Account on the website). It
-    includes your synced progress and settings; the daily support copy is an
-    earlier version of the same progress and is not included.</li>
+    includes your account details (with what Google shared and when you last
+    signed in), your synced progress and settings with their device codes
+    and times, and the daily support copy.</li>
     <li>Delete everything: <strong>Delete account</strong> (Settings → Account
     in the app, Your data → Account on the website), the
     <a href="delete-account.html">account deletion page</a>, or email
@@ -489,12 +505,13 @@
     account and sync you asked for, and with your consent, which you give when
     you create the account and can withdraw at any time by deleting it.</li>
     <li><strong>Who processes it for us, and where:</strong> Supabase
-    (Singapore), Resend (United States), Cloudflare and Google, as section 6A
-    lists. Your data is therefore transferred outside the Philippines. We stay
+    (Singapore), Resend (United States), Cloudflare, GitHub (United States)
+    and Google, as section 6A lists. Your data is therefore transferred outside the Philippines. We stay
     responsible for it wherever it is processed, and choose only providers
     bound to protect it.</li>
     <li><strong>How long:</strong> while your account exists, then as section
-    6A describes (gone from backups within 30 days).</li>
+    6A describes (gone from backups within 30 days; the deletion record kept
+    3 years).</li>
     <li><strong>Your rights as a data subject:</strong> to be informed, to
     access your data, to object, to have it corrected, erased or blocked, to
     data portability, to be indemnified for damages, and to file a complaint.

@@ -1220,12 +1220,13 @@ screens) is described in its own section.
 
 | Piece | Path | Job |
 |---|---|---|
-| Schema | `supabase/migrations/20261005000000_init_mobile_sync.sql` | `profiles`, `entitlements` in `public`; the deletion audit (a keyed hash, `uid_hmac`) and export rate limit in `private`. No content tables: content is never in Postgres |
-| Sync schema (Phase 7; gzip in the accounts beta) | `supabase/migrations/20261013000000_sync_snapshots.sql` | `public.sync_snapshots` (one row per store per learner; the state is `state_gz`, base64 gzip starting `H4sI`, at most 700,000 characters, with `raw_bytes` (2 to 2,000,000) and a server-owned `encoding` = `gzip+base64`; settings at most 32,768 zipped and 98,304 unzipped; `state_gz` stored uncompressed; column grants; a trigger sets `rev` (the write time in ms or one more than the store's last rev, never reused even after a delete) and the time, and reverts owner or store changes; writes need a `profiles` row); `private.sync_writes` (the 60-writes-per-store-per-hour count and last rev, outside the row, so delete + insert can't reset it: deletes count but are never refused); `private.sync_history` (a daily support checkpoint of the progress row, the newest one only, kept while the synced copy exists, cleared by "Delete synced progress") |
+| Schema | `supabase/migrations/20261005000000_init_mobile_sync.sql` | `profiles`, `entitlements` in `public`; the deletion audit (a keyed hash `uid_hmac`, the day and the board counts; purged after 3 years) and export rate limit in `private`; `svc_export_due`, `svc_claim_export`, `svc_record_deletion` for the Edge Functions. No content tables: content is never in Postgres |
+| Sync schema (Phase 7; gzip in the accounts beta) | `supabase/migrations/20261013000000_sync_snapshots.sql` | `public.sync_snapshots` (one row per store per learner; the state is `state_gz`, base64 gzip starting `H4sI`, at most 200,000 characters (security audit M2), with `raw_bytes` (2 to 2,000,000) and a server-owned `encoding` = `gzip+base64`; settings at most 32,768 zipped and 98,304 unzipped; `state_gz` stored uncompressed; column grants; a trigger sets `rev` (the write time in ms or one more than the store's last rev, never reused even after a delete) and the time, and reverts owner or store changes; writes need a `profiles` row); `private.sync_writes` (the 20-writes-per-store-per-hour count and last rev, outside the row, so delete + insert can't reset it: deletes count but are never refused); `private.sync_history` (a daily support checkpoint of the progress row, the newest one only, kept while the synced copy exists, cleared by "Delete synced progress"; `svc_sync_checkpoint` lets export-my-data read it) |
 | Board schema (Phase 8) | `supabase/migrations/20261014000000_feedback_board.sql` | Applied even with the board off: delete-account and export-my-data call its `svc_board_counts` / `svc_board_export` |
-| Beta hardening | `supabase/migrations/20261027000000_beta_hardening.sql` | Board posting paused; a trigger on `auth.users` refuses a new password on a confirmed account (the Free-plan stand-in for the password-verification hook; unconfirmed accounts and removing a password are allowed). Emergency brake: `drop trigger kaisip_refuse_new_password on auth.users;` |
-| Local config | `supabase/config.toml`, `supabase/templates/` | Auth as it will be set on the dashboard at Phase 9: 6-digit codes valid 10 min, code-only emails, empty redirect list, no anonymous sign-in, confirmed emails only, refresh rotation (10 s reuse), JWT 1 h |
-| SQL tests | `supabase/tests/01_hardening.sql`, `10_accounts.sql`, `20_sync.sql`, `40_beta_hardening.sql` | pgTAP: schema-wide rules every later table inherits, plus own-rows-only, anon denied and cascade-on-delete, the keyed audit hash, no content tables; sync: cross-learner access (the other learner's state unchanged, not just present), server-owned rev/time/keys/encoding, revs never reused after delete + re-insert, stale-rev updates, the rate limit (delete + insert can't reset it; a delete over it still works), base64 gzip only and every size cap, uncompressed storage, Terms before inserts and updates, the one checkpoint, the counter's cascade, no sync table in any publication; the paused board and the no-password trigger |
+| Beta: board paused | `supabase/migrations/20261027000000_beta_board_paused.sql` | Board posting paused, and the board's four write entry points revoked from `service_role` until the board opens (its go-live migration grants them back) |
+| Beta: no passwords | `supabase/migrations/20261027000100_beta_no_passwords.sql` | A trigger on `auth.users` WIPES any password on a confirmed account: inserted confirmed, at confirmation (an attacker's pre-registered password, security audit H1) or set later; it never raises. Requires "Confirm email" ON (a go-live gate). Emergency brake: `drop trigger kaisip_clear_password on auth.users;` |
+| Local config | `supabase/config.toml`, `supabase/templates/` | Auth as it will be set on the dashboard: 8-digit codes (security audit L7) valid 10 min, code-only emails, empty redirect list, no anonymous sign-in, confirmed emails only, refresh rotation (10 s reuse), JWT 1 h |
+| SQL tests | `supabase/tests/01_hardening.sql`, `10_accounts.sql`, `20_sync.sql`, `40_beta.sql` | pgTAP: schema-wide rules every later table inherits, plus own-rows-only, anon denied and cascade-on-delete, the keyed audit hash, no content tables; sync: cross-learner access (the other learner's state unchanged, not just present), server-owned rev/time/keys/encoding, revs never reused after delete + re-insert, stale-rev updates, the rate limit (delete + insert can't reset it; a delete over it still works), base64 gzip only and every size cap, uncompressed storage, Terms before inserts and updates, the one checkpoint, the counter's cascade, no sync table in any publication; the paused board and the no-password trigger |
 | SQL mutants | `scripts/sync_sql_mutants.py` | 23 one-line breaks of the sync migration; the pgTAP suite must fail on each (`PGTAP_RUN` runs it on a plain Postgres with the shim; the default uses the Supabase CLI) |
 | Edge Functions | `supabase/functions/{delete-account,export-my-data}` | Pure `handler.ts` with an injected `AdminPort`; `index.ts` only wires env. `deno test` uses a fake admin client, no network. `_shared/gz.ts` (the capped snapshot reader), `_shared/pepper.ts` (the audit HMAC), CORS for `https://kaisip.com` in `_shared/http.ts` |
 | Smoke (go-live evidence) | `scripts/cloud_smoke.sh` | curl with two learners' JWTs and the publishable key: every cross-user, anon, private and server-only call must fail, the snapshot shape checks hold, posting is paused, and only `https://kaisip.com` gets CORS headers |
@@ -1240,10 +1241,10 @@ automatic grants to `anon`/`authenticated` on new public objects are revoked
 by default privileges, so each table grants only the columns it needs.
 `anon` gets nothing. Schema `private` is not exposed by the Data API.
 
-**How the Edge Functions reach `private`.** Through two `security invoker`
-functions in `public` (`svc_claim_export`, `svc_record_deletion`, which
-takes the keyed hash, never the user id) that only `service_role` may
-execute. That keeps G7 (no definer in `public`) and
+**How the Edge Functions reach `private`.** Through `security invoker`
+functions in `public` (`svc_export_due`, `svc_claim_export`,
+`svc_record_deletion`, which takes the keyed hash, never the user id, and
+`svc_sync_checkpoint`) that only `service_role` may execute. That keeps G7 (no definer in `public`) and
 needs no direct database connection. New server-only writes follow the same
 pattern; elevated helpers that policies call go in `private` as
 `security definer set search_path = ''`.
@@ -1276,17 +1277,22 @@ a byte counter that stops at the cap.
   hour, with NO recent sign-in needed: everything in it is already readable
   with the same token (the account, and own rows through RLS), so a re-auth
   would add friction and no protection. Revisit if an export ever holds data
-  the token can't read (moderation notes, logs, staff fields). The hourly
-  slot is claimed last, after the reply is built. `stores` holds the
+  the token can't read (moderation notes, logs, staff fields). A read-only
+  "is an export due?" check answers 429 first, before any data is read
+  (security audit L2); the hourly slot is still claimed atomically last,
+  after the reply is built. `stores` holds the
   learner's synced snapshots (Phase 7) as backup-file stores, with the two
   device-only fields a backup needs (`onboarded`, today's count), so the
   download is also a backup the app can restore; the envelope's
   `appVersion` is the newest app that wrote one of them (else the asking
   app's), so a store from a newer app restores as "update the app", not as
-  damaged. The support checkpoint is a copy of the same progress and is not
-  included (the privacy notice says so). Each stored snapshot is unzipped
-  through `_shared/gz.ts` (at most 2,000,000 bytes, the size must equal
-  `raw_bytes`, a JSON object); a store that fails (a gzip bomb, damage, an
+  damaged. Since the security audit (M4) the file holds everything else we
+  keep too: the last sign-in, the 16+ confirmation, when the profile was
+  made, the name and picture link a sign-in provider shared, each synced
+  row's rev, device code, time and versions (`sync`), and the support
+  checkpoint (`supportCopy`). Each stored snapshot is unzipped
+  through `_shared/gz.ts` (1 KB slices into the inflater, at most 2,000,000
+  bytes, the size must equal `raw_bytes`, a JSON object); a store that fails (a gzip bomb, damage, an
   unknown encoding) is left out and named in `unreadableStores`, and the
   rest still downloads. Phase 8 added `board` (below).
 
@@ -1453,14 +1459,15 @@ Phase 6 on purpose).**
   app's 5 tries are UX only). Turn on captcha (`CaptchaPort`) or 8-digit
   codes, keep `token_verifications` low, and alert on verify-failure spikes.
   Captcha also guards the email-send quota against sign-in spam.
-  (Accounts beta: Turnstile on `/otp`, 6 digits by owner decision,
+  (Accounts beta: Turnstile on `/otp`, 8 digits (security audit L7),
   `token_verifications` 30 an hour; the residual risk is recorded in
   `ACCOUNTS_BETA_PLAN.md` §4.)
 - Password sign-in off at the provider, so a stolen fresh session can't add
   a password as a second credential. **Accounts beta:** the hook is not on
-  the Free plan, so `20261027000000_beta_hardening.sql` adds a trigger on
-  `auth.users` that refuses a new password on a confirmed account (verify
-  on the hosted project: acceptance test S9).
+  the Free plan, so `20261027000100_beta_no_passwords.sql` adds a trigger on
+  `auth.users` that wipes any password on a confirmed account, including
+  one pre-registered before the owner confirmed (verify on the hosted
+  project: acceptance test S9).
 - The deletion audit hash as an HMAC with a server pepper (a Function
   secret), so it can't be joined with the phone's `syncedAccountHash`.
   **Done (accounts beta):** `DELETION_PEPPER`, `_shared/pepper.ts`.
