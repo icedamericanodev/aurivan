@@ -1,4 +1,5 @@
 import { strict as assert } from 'node:assert';
+import { WEB_ORIGIN } from '../_shared/http.ts';
 import { FakeAdmin, NOW, post, recordingLogger, USER_A, USER_B } from '../_shared/testing.ts';
 import { handleExportMyData } from './handler.ts';
 
@@ -189,4 +190,69 @@ Deno.test('appVersion: the newest app that wrote a synced store wins over the as
   const res = await run(post({ appVersion: '1.18.0' }, admin.issue(USER_A)));
   assert.equal(res.status, 200);
   assert.equal((await res.json() as { appVersion: unknown }).appVersion, '1.19.0');
+});
+
+Deno.test('an unreadable synced store (a gzip bomb, damage) is left out and named; the rest still downloads', async () => {
+  const { admin, log, run } = setup();
+  const a = admin.users.get(USER_A)!;
+  a.snapshots = { settings: { version: 1, state: { activeCertId: 'cisa' } } };
+  a.unreadable = [{ store: 'progress', reason: 'too_big' }];
+  const res = await run(post({}, admin.issue(USER_A)));
+  assert.equal(res.status, 200);
+  const doc = await res.json() as Record<string, unknown>;
+  assert.deepEqual(doc.stores, { settings: { version: 1, state: { activeCertId: 'cisa' } } });
+  assert.deepEqual(doc.unreadableStores, [{ store: 'progress', reason: 'too_big' }]);
+  assert.ok(log.lines.some((l) => l.includes('"snapshot_unreadable"') && l.includes('"count":1')));
+  // Every store fine: no unreadableStores key at all.
+  const { admin: clean, run: runClean } = setup();
+  const ok = await (await runClean(post({}, clean.issue(USER_A)))).json() as Record<string, unknown>;
+  assert.equal('unreadableStores' in ok, false);
+});
+
+Deno.test('CORS: the website (exactly https://kaisip.com) can download; other origins get no CORS header', async () => {
+  const { admin, run } = setup();
+  const pre = await run(
+    new Request('http://localhost/fn', {
+      method: 'OPTIONS',
+      headers: { origin: WEB_ORIGIN, 'access-control-request-method': 'POST' },
+    }),
+  );
+  assert.equal(pre.status, 204);
+  assert.equal(pre.headers.get('access-control-allow-origin'), WEB_ORIGIN);
+  const res = await run(
+    new Request('http://localhost/fn', {
+      method: 'POST',
+      headers: {
+        origin: WEB_ORIGIN,
+        'content-type': 'application/json',
+        authorization: `Bearer ${admin.issue(USER_A)}`,
+      },
+      body: '{}',
+    }),
+  );
+  assert.equal(res.status, 200);
+  assert.equal(res.headers.get('access-control-allow-origin'), WEB_ORIGIN);
+  // The website may read the file name and, on a 429, Retry-After.
+  assert.match(res.headers.get('access-control-expose-headers') ?? '', /retry-after/);
+  assert.match(res.headers.get('access-control-expose-headers') ?? '', /content-disposition/);
+  const limited = await run(
+    new Request('http://localhost/fn', {
+      method: 'POST',
+      headers: {
+        origin: WEB_ORIGIN,
+        'content-type': 'application/json',
+        authorization: `Bearer ${admin.issue(USER_A)}`,
+      },
+      body: '{}',
+    }),
+  );
+  assert.equal(limited.status, 429);
+  assert.equal(limited.headers.get('access-control-allow-origin'), WEB_ORIGIN);
+  for (const other of ['https://www.kaisip.com', 'https://evil.example', 'null']) {
+    const r = await run(
+      new Request('http://localhost/fn', { method: 'OPTIONS', headers: { origin: other } }),
+    );
+    assert.equal(r.status, 405, other);
+    assert.equal(r.headers.get('access-control-allow-origin'), null, other);
+  }
 });

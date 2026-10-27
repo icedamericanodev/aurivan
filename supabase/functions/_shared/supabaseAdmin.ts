@@ -8,6 +8,7 @@
 // because schema `private` is not exposed by the Data API.
 
 import type { AdminPort, AuthUser, BoardCounts, Provider, SnapshotsRead } from './admin.ts';
+import { decodeSnapshot, GzError } from './gz.ts';
 
 interface RawUser {
   id: string;
@@ -48,8 +49,43 @@ const BACKUP_ONLY: Record<'settings' | 'progress', Record<string, unknown>> = {
   progress: { today: { day: '', answered: 0 } },
 };
 
+/** A sync_snapshots row once its state is unzipped and checked. */
+export interface DecodedRow {
+  store: 'settings' | 'progress';
+  store_version: unknown;
+  app_version: unknown;
+  state: Record<string, unknown>;
+}
+
 /**
- * sync_snapshots rows → the export's `stores`: `{ settings, progress }`, each
+ * Unzips each stored snapshot through the capped codec (_shared/gz.ts), one
+ * at a time so at most one is held unzipped while the next is read. A row that
+ * can't be read safely (unknown encoding, damaged or oversized gzip, a size
+ * that doesn't match raw_bytes, not a JSON object) is listed in `unreadable`
+ * with its reason and left out: never half-read, never a crash.
+ */
+export async function decodeSnapshotRows(
+  rows: unknown,
+): Promise<{ rows: DecodedRow[]; unreadable: { store: string; reason: string }[] }> {
+  const out: DecodedRow[] = [];
+  const unreadable: { store: string; reason: string }[] = [];
+  if (!Array.isArray(rows)) return { rows: out, unreadable };
+  for (const r of rows as Record<string, unknown>[]) {
+    const store = r?.store;
+    if (store !== 'settings' && store !== 'progress') continue;
+    try {
+      const state = await decodeSnapshot(r.encoding, r.state_gz, r.raw_bytes);
+      out.push({ store, store_version: r.store_version, app_version: r.app_version, state });
+    } catch (e) {
+      if (!(e instanceof GzError)) throw e;
+      unreadable.push({ store, reason: e.code });
+    }
+  }
+  return { rows: out, unreadable };
+}
+
+/**
+ * Decoded sync_snapshots rows → the export's `stores`: `{ settings, progress }`, each
  * `{ version, state }` like a backup file. Unknown stores and malformed rows
  * are skipped; the state is otherwise passed through as stored (the server
  * never interprets progress).
@@ -158,15 +194,18 @@ export function supabaseAdmin(client: SupabaseLike): AdminPort {
       return { posts: n(d.posts), comments: n(d.comments) };
     },
 
-    // No storage bucket holds learner files yet. When one is added, list and
-    // remove `user/<uid>/` here, before deleteUser.
+    // No storage bucket holds learner files yet (Storage is off), so this
+    // does nothing and can't fail. When a bucket is added, list and remove
+    // `user/<uid>/` here; delete-account calls it AFTER deleteUser, retries
+    // once and logs a failure, so files can never block a deletion.
     deleteUserFiles(_userId: string): Promise<void> {
       return Promise.resolve();
     },
 
-    async recordDeletion(userId: string, counts: BoardCounts): Promise<void> {
+    async recordDeletion(uidHmac: string, counts: BoardCounts): Promise<void> {
+      if (!/^[0-9a-f]{64}$/.test(uidHmac)) throw new AdminCallFailed('recordDeletion');
       const { error } = await client.rpc('svc_record_deletion', {
-        p_user: userId,
+        p_uid_hmac: uidHmac,
         p_board_posts: counts.posts,
         p_board_comments: counts.comments,
       });
@@ -180,14 +219,20 @@ export function supabaseAdmin(client: SupabaseLike): AdminPort {
       return typeof v === 'string' ? v : null;
     },
 
-    // Phase 7: the learner's own sync_snapshots rows, as backup-file stores.
+    // Phase 7: the learner's own sync_snapshots rows, unzipped through the
+    // capped codec, as backup-file stores.
     async readSnapshots(userId: string): Promise<SnapshotsRead> {
-      const { data, error } = await client.from('sync_snapshots').select('store, store_version, app_version, state').eq(
-        'user_id',
-        userId,
-      );
+      const { data, error } = await client.from('sync_snapshots')
+        .select('store, store_version, app_version, encoding, state_gz, raw_bytes')
+        .eq('user_id', userId);
       if (error) throw new AdminCallFailed('readSnapshots');
-      return { stores: snapshotsToStores(data), appVersion: newestAppVersion(data) };
+      const decoded = await decodeSnapshotRows(data);
+      return {
+        stores: snapshotsToStores(decoded.rows),
+        // Only stores that made it into the file count for the version (code review P7 N11).
+        appVersion: newestAppVersion(decoded.rows),
+        unreadable: decoded.unreadable,
+      };
     },
 
     // Phase 8: the export's `board` section (own rows only; see svc_board_export).

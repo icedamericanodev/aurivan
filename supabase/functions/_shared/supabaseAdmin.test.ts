@@ -1,6 +1,26 @@
 import { strict as assert } from 'node:assert';
-import { newestAppVersion, providersOf, snapshotsToStores, supabaseAdmin, type SupabaseLike } from './supabaseAdmin.ts';
+import {
+  decodeSnapshotRows,
+  newestAppVersion,
+  providersOf,
+  snapshotsToStores,
+  supabaseAdmin,
+  type SupabaseLike,
+} from './supabaseAdmin.ts';
 import { USER_A } from './testing.ts';
+
+const HMAC = 'ab'.repeat(32);
+
+/** A stored snapshot's columns, as a client's codec writes them. */
+async function stored(value: unknown): Promise<{ encoding: string; state_gz: string; raw_bytes: number }> {
+  const raw = new TextEncoder().encode(JSON.stringify(value));
+  const gz = new Uint8Array(
+    await new Response(new Blob([raw]).stream().pipeThrough(new CompressionStream('gzip'))).arrayBuffer(),
+  );
+  let bin = '';
+  for (let i = 0; i < gz.length; i += 0x8000) bin += String.fromCharCode(...gz.subarray(i, i + 0x8000));
+  return { encoding: 'gzip+base64', state_gz: btoa(bin), raw_bytes: raw.byteLength };
+}
 
 type Rpc = { fn: string; args: Record<string, unknown> };
 
@@ -108,11 +128,17 @@ Deno.test('server-only calls go through the svc_ functions with the verified id'
   const f = fakeClient({ rpcResult: { data: true, error: null } });
   const admin = supabaseAdmin(f.client);
   assert.equal(await admin.claimExport(USER_A), true);
-  await admin.recordDeletion(USER_A, { posts: 1, comments: 2 });
+  await admin.recordDeletion(HMAC, { posts: 1, comments: 2 });
   assert.deepEqual(f.rpcs, [
     { fn: 'svc_claim_export', args: { p_user: USER_A } },
-    { fn: 'svc_record_deletion', args: { p_user: USER_A, p_board_posts: 1, p_board_comments: 2 } },
+    // The audit gets the keyed hash only: the user id never reaches this call.
+    { fn: 'svc_record_deletion', args: { p_uid_hmac: HMAC, p_board_posts: 1, p_board_comments: 2 } },
   ]);
+  // Anything but 64 lowercase hex characters (a raw id, say) is refused before the call.
+  for (const bad of [USER_A, HMAC.toUpperCase(), 'ab', '']) {
+    await assert.rejects(() => admin.recordDeletion(bad, { posts: 0, comments: 0 }));
+  }
+  assert.equal(f.rpcs.length, 2);
   const refused = fakeClient({ rpcResult: { data: false, error: null } });
   assert.equal(await supabaseAdmin(refused.client).claimExport(USER_A), false);
 });
@@ -135,7 +161,7 @@ Deno.test('a failed call throws without the database message', async () => {
   for (
     const call of [
       () => admin.claimExport(USER_A),
-      () => admin.recordDeletion(USER_A, { posts: 0, comments: 0 }),
+      () => admin.recordDeletion(HMAC, { posts: 0, comments: 0 }),
       () => admin.deleteUser(USER_A),
       () => admin.getTermsVersion(USER_A),
     ]
@@ -186,14 +212,13 @@ Deno.test('no storage bucket yet: deleting files is a no-op', async () => {
   await supabaseAdmin(fakeClient().client).deleteUserFiles(USER_A);
 });
 
-Deno.test('readSnapshots (Phase 7): the caller’s own rows, as backup-file stores', async () => {
+Deno.test('readSnapshots (Phase 7): the caller’s own rows, unzipped, as backup-file stores', async () => {
   const { client, queries } = fakeClient({
     snapshots: {
       data: [
-        { store: 'progress', store_version: 1, app_version: '1.18.0', state: { byCert: {}, changedAt: {} } },
-        { store: 'settings', store_version: 1, app_version: '1.9.2', state: { activeCertId: 'cisa' } },
-        { store: 'notes', store_version: 1, app_version: 'x', state: {} },
-        { store: 'settings', store_version: 'x', state: {} },
+        { store: 'progress', store_version: 1, app_version: '1.18.0', ...await stored({ byCert: {}, changedAt: {} }) },
+        { store: 'settings', store_version: 1, app_version: '1.9.2', ...await stored({ activeCertId: 'cisa' }) },
+        { store: 'notes', store_version: 1, app_version: 'x', ...await stored({}) },
       ],
       error: null,
     },
@@ -207,10 +232,17 @@ Deno.test('readSnapshots (Phase 7): the caller’s own rows, as backup-file stor
     },
     // The newest app that wrote a row (1.18.0 is newer than 1.9.2: compared as numbers, not text).
     appVersion: '1.18.0',
+    unreadable: [],
   });
-  assert.deepEqual(queries, [`sync_snapshots:store, store_version, app_version, state:user_id=${USER_A}`]);
+  assert.deepEqual(queries, [
+    `sync_snapshots:store, store_version, app_version, encoding, state_gz, raw_bytes:user_id=${USER_A}`,
+  ]);
   // No rows: an empty `stores` and no version, never an error.
-  assert.deepEqual(await supabaseAdmin(fakeClient().client).readSnapshots(USER_A), { stores: {}, appVersion: null });
+  assert.deepEqual(await supabaseAdmin(fakeClient().client).readSnapshots(USER_A), {
+    stores: {},
+    appVersion: null,
+    unreadable: [],
+  });
   // A database error throws without its message.
   const failing = supabaseAdmin(
     fakeClient({ snapshots: { data: null, error: { message: `relation for ${USER_A}` } } }).client,
@@ -219,6 +251,39 @@ Deno.test('readSnapshots (Phase 7): the caller’s own rows, as backup-file stor
     () => failing.readSnapshots(USER_A),
     (e: unknown) => e instanceof Error && !e.message.includes(USER_A),
   );
+});
+
+Deno.test('readSnapshots: an unsafe snapshot (bomb, damage, unknown encoding) is named and left out', async () => {
+  const bomb = await stored({ x: 'a'.repeat(3_000_000) });
+  const fine = await stored({ activeCertId: 'cisa' });
+  const { client } = fakeClient({
+    snapshots: {
+      data: [
+        { store: 'progress', store_version: 1, app_version: '9.0.0', ...bomb, raw_bytes: 13 },
+        { store: 'settings', store_version: 1, app_version: '1.9.2', ...fine },
+      ],
+      error: null,
+    },
+  });
+  assert.deepEqual(await supabaseAdmin(client).readSnapshots(USER_A), {
+    stores: { settings: { version: 1, state: { onboarded: true, activeCertId: 'cisa' } } },
+    // The unreadable store's version doesn't count: it is not in the file.
+    appVersion: '1.9.2',
+    unreadable: [{ store: 'progress', reason: 'too_big' }],
+  });
+  const odd = await decodeSnapshotRows([
+    { store: 'progress', store_version: 1, app_version: '1.0.0', ...fine, encoding: 'zstd' },
+    { store: 'settings', store_version: 1, app_version: '1.0.0', ...fine, raw_bytes: fine.raw_bytes + 1 },
+    { store: 'progress', store_version: 1, app_version: '1.0.0', ...await stored([1, 2]) },
+  ]);
+  assert.deepEqual(odd, {
+    rows: [],
+    unreadable: [
+      { store: 'progress', reason: 'unknown_encoding' },
+      { store: 'settings', reason: 'size_mismatch' },
+      { store: 'progress', reason: 'bad_json' },
+    ],
+  });
 });
 
 Deno.test('snapshotsToStores skips anything malformed', () => {

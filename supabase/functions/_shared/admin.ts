@@ -22,6 +22,13 @@ export interface BoardCounts {
 export interface SnapshotsRead {
   stores: Record<string, unknown>;
   appVersion: string | null;
+  /**
+   * Stores whose snapshot couldn't be read safely (an unknown encoding, damaged
+   * gzip, a gzip bomb, a size that doesn't match raw_bytes, or not a JSON
+   * object), with the reason code from _shared/gz.ts. They are left out of
+   * `stores`, never half-read.
+   */
+  unreadable: { store: string; reason: string }[];
 }
 
 export interface AdminPort {
@@ -38,10 +45,14 @@ export interface AdminPort {
   deleteUser(userId: string): Promise<void>;
   /** For the deletion audit row: the learner's board posts and comments (public.svc_board_counts). */
   countBoardRows(userId: string): Promise<BoardCounts>;
-  /** Removes storage objects under user/<uid>/. No buckets exist yet. */
+  /** Removes storage objects under user/<uid>/. No buckets exist yet, so today it does nothing. */
   deleteUserFiles(userId: string): Promise<void>;
-  /** Writes private.deletions (a SHA-256 of the id and the counts only). */
-  recordDeletion(userId: string, counts: BoardCounts): Promise<void>;
+  /**
+   * Writes private.deletions: the keyed hash (_shared/pepper.ts
+   * deletionHash, 64 lowercase hex characters) and the counts only. The user
+   * id itself never reaches the database call.
+   */
+  recordDeletion(uidHmac: string, counts: BoardCounts): Promise<void>;
   /** profiles.terms_version, or null when no profile exists yet. */
   getTermsVersion(userId: string): Promise<string | null>;
   /**

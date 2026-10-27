@@ -38,6 +38,8 @@ export interface FakeUser extends AuthUser {
   snapshots: Record<string, unknown>;
   /** The newest app version that wrote one of the snapshots (null when none). */
   snapshotsApp?: string | null;
+  /** Stores whose snapshot the codec refused (a gzip bomb, damage, an unknown encoding). */
+  unreadable?: { store: string; reason: string }[];
   board: BoardCounts;
   /** The learner's own board rows (export-my-data's `board` section). */
   boardRows?: Record<string, unknown>;
@@ -53,9 +55,12 @@ export class FakeAdmin implements AdminPort {
   users = new Map<string, FakeUser>();
   tokens = new Map<string, string>();
   exportLog = new Map<string, number>();
-  deletions: { userId: string; counts: BoardCounts }[] = [];
+  /** Audit rows as written: the keyed hash, never the id. */
+  deletions: { uidHmac: string; counts: BoardCounts }[] = [];
   calls: Call[] = [];
   fail: Partial<Record<keyof AdminPort, boolean>> = {};
+  /** Fail the next N calls of a method, then succeed (retries). */
+  failTimes: Partial<Record<keyof AdminPort, number>> = {};
   now = NOW;
 
   addUser(u: Partial<FakeUser> & { id: string }): FakeUser {
@@ -82,6 +87,11 @@ export class FakeAdmin implements AdminPort {
   private check(method: keyof AdminPort, userId?: string): void {
     this.calls.push({ method, userId });
     if (this.fail[method]) throw new Error(`db error: relation "x" for ${userId} a@test.invalid`);
+    const left = this.failTimes[method] ?? 0;
+    if (left > 0) {
+      this.failTimes[method] = left - 1;
+      throw new Error(`db error: flaky for ${userId} a@test.invalid`);
+    }
   }
 
   /** Ids of deleted accounts: their genuine tokens get 'gone', like GoTrue's user_not_found. */
@@ -114,9 +124,9 @@ export class FakeAdmin implements AdminPort {
     return Promise.resolve();
   }
 
-  recordDeletion(userId: string, counts: BoardCounts): Promise<void> {
-    this.check('recordDeletion', userId);
-    this.deletions.push({ userId, counts });
+  recordDeletion(uidHmac: string, counts: BoardCounts): Promise<void> {
+    this.check('recordDeletion');
+    this.deletions.push({ uidHmac, counts });
     return Promise.resolve();
   }
 
@@ -128,7 +138,11 @@ export class FakeAdmin implements AdminPort {
   readSnapshots(userId: string): Promise<SnapshotsRead> {
     this.check('readSnapshots', userId);
     const u = this.users.get(userId);
-    return Promise.resolve({ stores: structuredClone(u?.snapshots ?? {}), appVersion: u?.snapshotsApp ?? null });
+    return Promise.resolve({
+      stores: structuredClone(u?.snapshots ?? {}),
+      appVersion: u?.snapshotsApp ?? null,
+      unreadable: structuredClone(u?.unreadable ?? []),
+    });
   }
 
   readBoard(userId: string): Promise<Record<string, unknown>> {
@@ -171,4 +185,6 @@ export function post(body: unknown, jwt?: string, init: { method?: string; conte
 }
 
 export const USER_A = '00000000-0000-4000-8000-00000000000a';
+/** A test pepper (never a real one): 40 characters. */
+export const PEPPER = 'test-pepper-not-a-secret-0123456789abcdef';
 export const USER_B = '00000000-0000-4000-8000-00000000000b';
