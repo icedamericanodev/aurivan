@@ -1,5 +1,5 @@
 /**
- * Mobile 1.45: the first five decision lessons (curriculum §4–§5).
+ * Mobile 1.45: the first five decision lessons (curriculum §4–§5), and decision lessons 6–10 after them.
  * - Each covers a cluster of notes, hands off to them (its `notes`, primary first) and lists real
  *   `prepares` items, so "Take the lesson" can follow a miss on them.
  * - Its trap scene names the one principle it applies, word for word, so the lesson leads into the
@@ -49,6 +49,41 @@ const DECISION: { id: string; domainId: string; topics: string[]; notes: string[
     topics: ['2A2'],
     notes: ['2A2.2', '2A2.5'],
     principles: ['escalate-to-decision-owner'],
+  },  // Decision lessons 6–10: built to the 1.45 review rules from the start (one decision and one principle each).
+  {
+    id: 'cisa-l-d5-exceptions',
+    domainId: '5',
+    topics: ['5A1', '5A5'],
+    notes: ['5A1.3', '5A5.2'],
+    principles: ['management-owns-risk'],
+  },
+  {
+    id: 'cisa-l-d4-infrastructure',
+    domainId: '4',
+    topics: ['4A1'],
+    notes: ['4A1.1', '4A1.4'],
+    principles: ['prevent-before-detect'],
+  },
+  {
+    id: 'cisa-l-d5-unmanaged-devices',
+    domainId: '5',
+    topics: ['5A9'],
+    notes: ['5A9.1', '5A9.4', '5A9.3'],
+    principles: ['proven-not-configured'],
+  },
+  {
+    id: 'cisa-l-d2-it-investment',
+    domainId: '2',
+    topics: ['2B1'],
+    notes: ['2B1.3'],
+    principles: ['risk-sets-priority'],
+  },
+  {
+    id: 'cisa-l-d4-euc-batch',
+    domainId: '4',
+    topics: ['4A5', '4A3'],
+    notes: ['4A5.2', '4A3.2'],
+    principles: ['risk-sets-priority'],
   },
 ];
 
@@ -83,6 +118,14 @@ describe.each(DECISION.map((d) => [d.id, d] as const))('%s', (id, d) => {
       expect(title).toBeTruthy();
       expect(text.includes(`“${title}”`) ? p : `${p} (“${title}” not named)`).toBe(p);
     }
+    // One principle sentence per lesson, in the trap only (no second principle elsewhere in the lesson).
+    expect(JSON.stringify(lesson.scenes).match(/This is the principle/g) ?? []).toHaveLength(d.principles.length);
+  });
+
+  it('keeps the tip to a few short cues', () => {
+    const tip = lesson.scenes.find((s) => s.type === 'tip');
+    const body = tip && tip.type === 'tip' ? tip.body : '';
+    expect(body.split(/\s+/).length).toBeLessThanOrEqual(50);
   });
 
   it('keeps the house shape: 10–11 scenes, a lens where management decides, 3 checks that name the runner-up', () => {

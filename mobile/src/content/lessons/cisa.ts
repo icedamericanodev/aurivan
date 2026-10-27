@@ -28,6 +28,7 @@ const D1_GAPS_REVIEWED = '2026-10-20'; // Domain 1 gap lessons (plan items L1 + 
 const L3_L5_REVIEWED = '2026-10-21'; // Plan items L3–L5: Domain 5, Domain 4, and Domains 2–3 lessons, appended after each domain’s last lesson
 const FIXES_145_REVIEWED = '2026-10-26'; // Mobile 1.45 B0: concept-expert and curriculum fixes to existing lessons
 const DECISION_LESSONS_REVIEWED = '2026-10-27'; // Mobile 1.45: decision lessons 1–5 (curriculum §4), appended after each domain’s last lesson
+const DECISION_LESSONS_2_REVIEWED = '2026-10-27'; // Decision lessons 6–10 (curriculum §4), appended after each domain’s last lesson
 
 export const CISA_LESSONS: Lesson[] = [
   // ───────────────────────────── Domain 1 ─────────────────────────────
@@ -2466,6 +2467,130 @@ export const CISA_LESSONS: Lesson[] = [
         correctIndex: 3,
         explanation:
           'The problem recurs because nobody in the room can act on it; the power to set deadlines and escalate turns review into governance. Adding more senior managers is tempting because seniority sounds like authority, but without a charter that lets the committee decide or escalate, they can still only note the reports. Meeting weekly only notes them more often, and a tool may help patching, but it does not fix who decides.',
+      },
+    ],
+  },
+
+  // Mobile decision lesson 9 (curriculum §4): outline topic 2B1, note 2B1.3. One decision: IT money follows risk and value,
+  // and value is counted in business results. Capacity planning (2B1.4) stays in its note.
+  {
+    id: 'cisa-l-d2-it-investment',
+    certId: 'cisa',
+    domainId: '2',
+    order: 10,
+    title: 'Paying for IT: investment, value and who owns the cost',
+    minutes: 5,
+    provenance: PROVENANCE,
+    references: [
+      'COBIT 2019 EDM02 (Ensured Benefits Delivery)',
+      'COBIT 2019 APO05 (Managed Portfolio) and APO06 (Managed Budget and Costs)',
+      'ISACA Val IT concepts (value governance, portfolio management and investment management)',
+    ],
+    outlineVersion: OUTLINE,
+    lastReviewed: DECISION_LESSONS_2_REVIEWED,
+    topics: ['2B1'],
+    prepares: ['d2_068', 'd2_167', 'd2_147', 'd2_075', 'd2_100'],
+    notes: ['2B1.3'],
+    scenes: [
+      {
+        type: 'title',
+        kicker: 'Domain 2 · IT resource management',
+        title: 'Paying for IT',
+        subtitle: 'IT money should follow risk and value, and value is counted in business results, not in money spent.',
+      },
+      {
+        type: 'idea',
+        heading: 'The core idea',
+        body: 'IT spending competes for a limited budget, so it is managed as a portfolio (all IT investments ranked as one set), not project by project. Each investment has a business case: the costs, benefits, risks and measures that justify it. Spending is ranked by risk and value, with legal and regulatory duties funded first. Value is the business benefit actually delivered, such as faster claims or fewer losses, not the money spent or the projects finished.',
+      },
+      {
+        type: 'analogy',
+        heading: 'A household budget',
+        body: 'When income drops, a sensible household does not cut rent, food and a leaking roof by the same amount as holidays. It pays what it must first, then what protects it, then what is nice to have. And it judges a new kitchen by whether cooking got easier, not by what the builders were paid.',
+      },
+      {
+        type: 'stack',
+        heading: 'Where IT money goes first',
+        layers: [
+          { label: 'Mandatory', note: 'Legal, regulatory and contract duties, such as a new card-security deadline' },
+          {
+            label: 'Risk beyond appetite',
+            note: 'Fixes for risks above what senior management is willing to accept (its risk appetite), including threats to customer-critical services',
+          },
+          { label: 'Growth and change', note: 'New capabilities, ranked by the value they are expected to deliver, tested under more than one scenario' },
+        ],
+        caption:
+          'When the budget changes during the year, the whole portfolio is ranked again this way, and the result goes back to the body that approved it, such as the board.',
+      },
+      {
+        type: 'compare',
+        heading: 'What shows IT’s value',
+        left: {
+          title: 'Activity',
+          points: ['Money spent, compared with similar firms', 'Projects finished on time and on budget', 'Help-desk tickets closed within target'],
+        },
+        right: {
+          title: 'Value',
+          points: ['Benefits the business case promised, measured after go-live', 'Business results, such as faster claims or fewer losses', 'Compared with the targets set when funding was approved'],
+        },
+        caption: 'Cost needs an owner too: each team should see what the services it uses cost, and answer for its share.',
+      },
+      {
+        type: 'idea',
+        heading: 'The IS auditor’s lens',
+        body: 'Spending is a governance decision. As the IS (information systems) auditor, you check that business cases state measurable benefits, that benefits are tracked after delivery, that large changes went back to the body that approved the portfolio, and that each cost has an accountable owner. You test decision rights and evidence, not the arithmetic. You recommend; the board or senior management decides the funding.',
+      },
+      {
+        type: 'trap',
+        heading: 'The exam trap',
+        trap: '“Cut every IT budget by the same share, so the pain is fair.”',
+        why: 'An equal cut starves legal duties and critical services while sparing low-value work. This is the principle “Risk decides where effort goes”: rank spending by risk and value, protect what is mandatory and critical, and record the risks the cut leaves.',
+      },
+      {
+        type: 'tip',
+        body: 'Mandatory first, then risk beyond appetite, then growth. Value means benefits realized, not money spent or projects delivered. A big change to an approved portfolio goes back to whoever approved it.',
+      },
+      {
+        type: 'check',
+        question:
+          'Mid-year, a hospital group’s board orders a 10% cut in IT spending. A new patient-privacy law also requires system changes by spring. What should the IS auditor recommend?',
+        options: [
+          'Cut each IT project by 10% so every area shares the cut',
+          'Rank IT work afresh, protecting legal duties, for board approval',
+          'Let the IT director move money between projects without the board',
+          'Delay the privacy changes until next year’s budget',
+        ],
+        correctIndex: 1,
+        explanation:
+          'The legal deadline is funded first and the rest is ranked by risk and value; the board approved the original plan, so it approves the changed one. Letting the IT director move the money is tempting because it is quick and the director knows the projects, but a large change to an approved portfolio belongs to the body that approved it. An equal cut starves the legal work, and delaying it would miss the legal deadline.',
+      },
+      {
+        type: 'check',
+        question:
+          'A logistics company’s chief information officer (CIO) reports to the board each quarter on what IT delivers. Which measure would BEST show the value of IT?',
+        options: [
+          'IT spending per employee compared with similar firms',
+          'The share of projects finished on time and on budget',
+          'Service desk tickets resolved within the agreed time',
+          'Faster deliveries from the new route-planning system',
+        ],
+        correctIndex: 3,
+        explanation:
+          'Value is a business result traced to an IT investment, such as faster deliveries from the new system. On-time, on-budget projects are tempting because they show IT is well run, but a project can finish on time and still deliver no benefit. Spending comparisons and ticket counts measure cost and activity, not what the business gained.',
+      },
+      {
+        type: 'check',
+        question:
+          'A media company’s cloud bill rose by half in a year, and nobody can say which teams use which resources. Which practice would BEST support lasting cost control?',
+        options: [
+          'Tag each resource to a team accountable for its cost',
+          'Send the finance director a monthly total of the bill',
+          'Negotiate a larger volume discount with the provider',
+          'Make IT approve every new cloud resource centrally',
+        ],
+        correctIndex: 0,
+        explanation:
+          'When each resource is labeled with the team that uses it, every team sees its own spending and answers for it, so waste gets cut where it starts. Central approval by IT is tempting because it looks like firm control, but it slows every team down and still leaves nobody owning the bill. A monthly total shows the problem without assigning it, and a discount lowers the price without changing the habits.',
       },
     ],
   },
@@ -5106,6 +5231,263 @@ export const CISA_LESSONS: Lesson[] = [
       },
     ],
   },
+
+  // Mobile decision lesson 7 (curriculum §4): outline topic 4A1, notes 4A1.1 and 4A1.4. One decision: which part of the
+  // infrastructure can actually stop a risk, and does it stop it before the harm or only record it afterward. The
+  // reference models (4A1.2) stay in their note.
+  {
+    id: 'cisa-l-d4-infrastructure',
+    certId: 'cisa',
+    domainId: '4',
+    order: 16,
+    title: 'The infrastructure an IS auditor must be able to read',
+    minutes: 5,
+    provenance: PROVENANCE,
+    references: [
+      'NIST SP 800-41 Rev. 1 (Guidelines on Firewalls and Firewall Policy)',
+      'NIST SP 800-53 Rev. 5, CM-2, CM-3 and CM-7 (Baseline Configuration; Configuration Change Control; Least Functionality)',
+      'CIS Benchmarks (Center for Internet Security consensus hardening guides)',
+    ],
+    outlineVersion: OUTLINE,
+    lastReviewed: DECISION_LESSONS_2_REVIEWED,
+    topics: ['4A1'],
+    prepares: ['d4_141', 'd4_167', 'd4_057', 'd4_030', 'd4_102'],
+    notes: ['4A1.1', '4A1.4'],
+    scenes: [
+      {
+        type: 'title',
+        kicker: 'Domain 4 · IT components',
+        title: 'Reading the infrastructure',
+        subtitle: 'For each device and setting, ask one thing: can it stop the risk before the harm, or only record it afterward?',
+      },
+      {
+        type: 'idea',
+        heading: 'The core idea',
+        body: 'Network devices and operating systems are production systems, just like the applications that run on them. Not every device controls traffic. A switch connects devices inside one part of the network, a router forwards traffic between networks, and a firewall allows or refuses each connection against a rule set (the written list of what may go through). So for any piece of infrastructure, ask whether it can stop the risk at all, and whether it stops it before harm or only records it.',
+      },
+      {
+        type: 'analogy',
+        heading: 'Roads and a border checkpoint',
+        body: 'Roads and junctions carry cars wherever drivers steer them; only a checkpoint with a list decides who may cross the border. A camera at a junction records who drove past, but it stops nobody. And a quiet side road that skips the checkpoint is still a way across.',
+      },
+      {
+        type: 'stack',
+        heading: 'What each part can and cannot do',
+        layers: [
+          { label: 'Switch', note: 'Connects devices inside one network segment (one part of the network); it moves traffic and does not judge it' },
+          { label: 'Router', note: 'Forwards traffic between networks; simple filter lists help, but it is not built to enforce a security policy' },
+          {
+            label: 'Firewall',
+            note: 'Allows or refuses each connection by rule between zones of different trust, such as office desks and payment systems; every path needs rules, including IPv6, the newer address format many servers switch on by default',
+          },
+          {
+            label: 'Operating system and utilities',
+            note: 'The base software every application runs on, plus utilities (powerful admin tools) that can change data directly, skipping the application’s own checks',
+          },
+        ],
+        caption: 'All four are production: one wrong change to a firewall rule or a server setting can stop every application that depends on it.',
+      },
+      {
+        type: 'compare',
+        heading: 'Before the harm, or after it?',
+        left: {
+          title: 'Stops it first',
+          points: ['Firewall rule changes approved and tested before they go live', 'Utilities kept to named administrators, used through approved requests', 'Servers built from hardened settings (an approved secure setup)'],
+        },
+        right: {
+          title: 'Records it afterward',
+          points: ['Changes made live, then written up later', 'Every utility session logged for a monthly review', 'Vendor default settings left on, with alerts on misuse'],
+        },
+        caption: 'Logs and reviews still matter as a backstop. They show a bad change or a misused tool after the data has already changed.',
+      },
+      {
+        type: 'idea',
+        heading: 'The IS auditor’s lens',
+        body: 'Read each control for what it can stop. As the IS (information systems) auditor, you test that a firewall filters every path between zones of different trust, IPv6 included, that device changes are approved before they go live, and that utilities are kept to named administrators. When strict settings break one type of server, you look for settings tailored to that type, with owned, time-limited gaps, not a return to factory defaults. You recommend; IT management decides the design and owns the fix.',
+      },
+      {
+        type: 'trap',
+        heading: 'The exam trap',
+        trap: '“Developers need the disk-editing utility on production servers, so logging every session is control enough.”',
+        why: 'A log shows misuse after the data has changed, and the utility skips the application’s own checks. This is the principle “Prevent first, and build it in early”: keep the utility to named administrators working through approved requests, and keep the log as the backstop.',
+      },
+      {
+        type: 'tip',
+        body: 'Ask what each device can enforce: moving traffic is not filtering it, and a side path such as IPv6 needs rules too. A change made live and written up later is a control gap, however good the write-up.',
+      },
+      {
+        type: 'check',
+        question:
+          'A hospital’s patient-records network and its guest Wi-Fi meet at a router that lets all traffic through between them. Which change would BEST enforce a security policy between the two networks?',
+        options: [
+          'Replace the router with a faster model that has more ports',
+          'Place a firewall with a rule set between the two networks',
+          'Log every connection through the router, for weekly review',
+          'Connect each network to its own separate switch',
+        ],
+        correctIndex: 1,
+        explanation:
+          'Only a rule-based filter decides which connections may cross, so a firewall is what enforces the policy. Logging is tempting because it adds oversight, but it records guests reaching patient records after it has happened and stops none of it. A faster router still lets everything through, and separate switches still meet at the same router.',
+      },
+      {
+        type: 'check',
+        question:
+          'At a logistics firm, network engineers change firewall rules directly on the live firewall during busy periods and file the paperwork the next day. Which control should the IS auditor recommend as MOST important?',
+        options: [
+          'Have a second engineer review the change log each week',
+          'Keep a nightly backup copy of the firewall’s settings',
+          'Require each rule to be approved and tested beforehand',
+          'Update the network diagram after each rule change',
+        ],
+        correctIndex: 2,
+        explanation:
+          'A rule that has not been approved and tested can open a path or cut a service the moment it goes live, so the control belongs before the change. A weekly log review is tempting because it adds a second pair of eyes, but it finds a bad rule days after it took effect. A backup helps recovery, and an up-to-date diagram documents the change without controlling it.',
+      },
+      {
+        type: 'check',
+        question:
+          'After strict hardened settings caused outages on some servers, a bank’s operations team wants to return every server to the vendor’s factory settings. What should the IS auditor recommend?',
+        options: [
+          'Fit the hardened settings to each server type, with exceptions',
+          'Keep the strict settings everywhere and fix outages as they occur',
+          'Return only the servers that had outages to factory settings',
+          'Return to factory settings and add antivirus to each server',
+        ],
+        correctIndex: 0,
+        explanation:
+          'Settings tailored to each type of server keep most protection in place, and the few gaps are owned and time-limited. Keeping the strict settings everywhere is tempting because it sounds like the most secure choice, but repeated outages are a business risk too and will build pressure to drop hardening altogether. Factory settings, on some servers or all, swap a manageable problem for a larger one, and antivirus does not replace secure settings.',
+      },
+    ],
+  },
+
+  // Mobile decision lesson 10 (curriculum §4): outline topics 4A5 and 4A3, notes 4A5.2 and 4A3.2. One decision: user-built
+  // tools and scheduled jobs that feed key figures get control in proportion to their risk, and proof that the output is right.
+  {
+    id: 'cisa-l-d4-euc-batch',
+    certId: 'cisa',
+    domainId: '4',
+    order: 17,
+    title: 'When users and schedulers run production: EUC and batch reruns',
+    minutes: 5,
+    provenance: PROVENANCE,
+    references: [
+      'Sarbanes-Oxley Act of 2002, Section 404 (internal control over financial reporting, including IT general controls)',
+      'COBIT 2019 DSS01 (Managed Operations)',
+      'COBIT 2019 DSS06 (Managed Business Process Controls)',
+    ],
+    outlineVersion: OUTLINE,
+    lastReviewed: DECISION_LESSONS_2_REVIEWED,
+    topics: ['4A5', '4A3'],
+    prepares: ['d4_150', 'd4_109', 'd4_107', 'd4_011', 'd4_289', 'd4_290'],
+    notes: ['4A5.2', '4A3.2'],
+    scenes: [
+      {
+        type: 'title',
+        kicker: 'Domain 4 · User-built tools and batch jobs',
+        title: 'When users and schedulers run production',
+        subtitle: 'A spreadsheet or a nightly job can feed the financial statements. Its control should match what it can get wrong.',
+      },
+      {
+        type: 'idea',
+        heading: 'The core idea',
+        body: 'End-user computing (EUC) means tools that business staff build and run themselves, such as spreadsheets, desktop databases and macros (small programs inside a spreadsheet). Batch jobs are programs a scheduler runs unattended, often overnight, to process many transactions at once. Both can produce key figures without going through IT’s usual development controls. So control follows risk: find them, rank them by what they feed, control the critical ones hardest, and prove their output is complete and accurate.',
+      },
+      {
+        type: 'analogy',
+        heading: 'A family recipe',
+        body: 'A family recipe is fine for a dinner at home. Once it feeds two hundred paying guests a night, it needs a written method, a second cook who can make it and someone who tastes each batch before it goes out. The recipe has not changed; what depends on it has.',
+      },
+      {
+        type: 'stack',
+        heading: 'Control follows the rating',
+        layers: [
+          { label: 'Find', note: 'An inventory (a register) of user-built tools, each with a named owner' },
+          {
+            label: 'Rate',
+            note: 'Each tool rated against set criteria, such as financial or regulatory impact, with the ratings checked by someone other than the owner',
+          },
+          {
+            label: 'Control',
+            note: 'Light controls for low-risk tools; for critical ones, version control (each saved version kept), limited editing and an independent review of every logic change, including logic an AI (artificial intelligence) assistant wrote',
+          },
+          { label: 'Move', note: 'A tool that becomes the official record, or outgrows its controls, moves to an IT-managed system' },
+        ],
+        caption:
+          'In US public companies, a spreadsheet that feeds the financial statements can fall within the scope of Sarbanes-Oxley (SOX) testing of internal control over financial reporting.',
+      },
+      {
+        type: 'compare',
+        heading: 'A failed batch: restart or rerun?',
+        left: {
+          title: 'Restart',
+          points: ['Resumes from the last checkpoint (a saved marker of the last record processed)', 'First confirm the checkpoint is valid', 'Suits long jobs with reliable checkpoints'],
+        },
+        right: {
+          title: 'Rerun',
+          points: ['Starts the whole job again from the beginning', 'First back out the partial updates', 'Needed when the checkpoint cannot be trusted'],
+        },
+        caption:
+          'Either way, compare control totals (record counts and amounts) before and after, so nothing is missed or processed twice. A deadline alert, not a customer complaint, should be the first sign that a batch is running late.',
+      },
+      {
+        type: 'idea',
+        heading: 'The IS auditor’s lens',
+        body: 'Control follows risk, and output needs proof. As the IS (information systems) auditor, you test that the inventory is complete and the ratings were checked independently, that critical tools have the controls their rating requires, and that each batch recovery is logged and shown correct by reconciled control totals, not by a “completed” message from the scheduler. You recommend; each tool’s business owner and operations management decide the fixes.',
+      },
+      {
+        type: 'trap',
+        heading: 'The exam trap',
+        trap: '“Each owner rated their own spreadsheets, all came out low risk, so light controls are enough.”',
+        why: 'Owners tend to rate their own tools low, even ones that feed the financial statements. This is the principle “Risk decides where effort goes”: effort follows the real risk, so tools are rated against set criteria, and someone other than the owner checks the ratings.',
+      },
+      {
+        type: 'tip',
+        body: 'Ask what the tool or job feeds: that sets how much control it needs. Before running a job again from the start, back out its partial updates. A success message is not proof; reconciled totals are.',
+      },
+      {
+        type: 'check',
+        question:
+          'A finance director asks how changes to the department’s 300 spreadsheets and macros should be controlled. Most are personal working files; a few feed the quarterly report. What should the IS auditor recommend?',
+        options: [
+          'Match the change controls to what each file feeds',
+          'Put every file through IT’s full development process',
+          'Let a teammate glance over changes informally',
+          'Ban macros in the finance department',
+        ],
+        correctIndex: 0,
+        explanation:
+          'A few files feed the quarterly report and need strong change control; personal working files need little. Full IT development for every file is tempting because it sounds thorough, but it spends the same effort on low-risk files, and rules that heavy push staff to work around them. An informal glance is not a control, and a ban stops useful work without fixing the critical files.',
+      },
+      {
+        type: 'check',
+        question:
+          'A payroll batch failed halfway through, after paying part of the run. Its checkpoint file is damaged, so operators plan to run the whole job again from the start. What should the IS auditor confirm FIRST?',
+        options: [
+          'The payroll manager has approved the rerun in writing',
+          'The rerun will take place during staffed office hours',
+          'The job’s log will be kept for the next audit',
+          'The payments the failed run made have been reversed',
+        ],
+        correctIndex: 3,
+        explanation:
+          'Without reversing what the failed run already paid, a full rerun pays those people twice. Written approval is tempting because a rerun should be authorized, but approval does not stop the double payments. Office hours and keeping the log help with oversight, not with getting the run right.',
+      },
+      {
+        type: 'check',
+        question:
+          'Actuaries at an insurer use an AI assistant to write macros in the spreadsheet that calculates claims reserves for the financial statements. Which control should the IS auditor recommend as MOST important?',
+        options: [
+          'Limit the AI assistant to staff with advanced training',
+          'Keep a record of the prompts each actuary used',
+          'Have a reviewer outside the team test each macro before use',
+          'Block AI assistants on the finance team’s computers',
+        ],
+        correctIndex: 2,
+        explanation:
+          'A macro that feeds the financial statements needs an independent check before it is used, whoever or whatever wrote it. Limiting the assistant to trained staff is tempting because skill reduces mistakes, but skilled people still make them, and nobody would check the result. A prompt record does not show the logic is right, and a block stops useful work without fixing the review gap.',
+      },
+    ],
+  },
   // ───────────────────────────── Domain 5 ─────────────────────────────
   {
     id: 'cisa-l-d5-access',
@@ -6941,6 +7323,266 @@ export const CISA_LESSONS: Lesson[] = [
         correctIndex: 3,
         explanation:
           'Encryption, with the key kept safe, may remove the duty to notify, but that conclusion has to be assessed and recorded. Notifying everyone is tempting because it feels cautious, but it can alarm people with no real risk and skips the judgment the law expects. Closing the case assumes the answer, and the insurer does not own the decision.',
+      },
+    ],
+  },
+
+  // Mobile decision lesson 6 (curriculum §4): outline topics 5A1 and 5A5, notes 5A1.3 and 5A5.2. One decision: a gap
+  // from a baseline or policy is a time-limited risk decision by its owner. Framework choice (5A1.2) stays in the note.
+  {
+    id: 'cisa-l-d5-exceptions',
+    certId: 'cisa',
+    domainId: '5',
+    order: 17,
+    title: 'Exceptions that expire: baselines, waivers and risk acceptance',
+    minutes: 5,
+    provenance: PROVENANCE,
+    references: [
+      'NIST SP 800-53 Rev. 5, CM-2 and CM-6 (Baseline Configuration; Configuration Settings)',
+      'ISO/IEC 27001:2022 (Information security management systems — Requirements)',
+      'PCI DSS v4.0.1, Appendix B (Compensating Controls)',
+    ],
+    outlineVersion: OUTLINE,
+    lastReviewed: DECISION_LESSONS_2_REVIEWED,
+    topics: ['5A1', '5A5'],
+    prepares: ['d5_007', 'd5_219', 'd5_260', 'd5_237'],
+    notes: ['5A1.3', '5A5.2'],
+    scenes: [
+      {
+        type: 'title',
+        kicker: 'Domain 5 · Security baselines',
+        title: 'Exceptions that expire',
+        subtitle: 'A baseline is the floor. Going below it takes an owner, an end date and a safeguard that really works.',
+      },
+      {
+        type: 'idea',
+        heading: 'The core idea',
+        body: 'A security baseline is the minimum setup every system of one type must meet, such as patches applied, unused services off and logging on. When a system cannot meet it, the gap needs a formal exception: written down, accepted by the risk owner, given an end date and backed by a compensating control (a stand-in safeguard that reduces the same risk). An exception is a temporary risk decision, not a permanent permission.',
+      },
+      {
+        type: 'analogy',
+        heading: 'A visitor badge',
+        body: 'A visitor badge lets someone in without a staff card, but it carries a name, a host who answers for the visitor and an end date. A badge that never expires, or one visitors print for themselves, lets anyone in. It is a hole in the door.',
+      },
+      {
+        type: 'stack',
+        heading: 'What makes an exception valid',
+        layers: [
+          {
+            label: 'Written down',
+            note: 'The system, the gap, the reason and the residual risk (the risk left after controls) are recorded',
+          },
+          {
+            label: 'Owned',
+            note: 'Accepted by the risk owner at the level the risk policy names, not by IT alone or by the person asking',
+          },
+          { label: 'Time-limited', note: 'An end date and a review, because threats, data and systems change' },
+          {
+            label: 'Compensated',
+            note: 'A compensating control, such as moving the system onto its own restricted network segment, that someone has checked is working',
+          },
+        ],
+        caption: 'Seniority does not create an exception. Neither does asking after a control has already stopped you.',
+      },
+      {
+        type: 'compare',
+        heading: 'Exception, or policy breach?',
+        left: {
+          title: 'A valid exception',
+          points: ['A business need that no approved route can meet', 'Requested and accepted before the gap opens', 'Ends on a set date unless reassessed'],
+        },
+        right: {
+          title: 'A policy breach',
+          points: ['An approved route existed but was skipped', 'Asked for once a control has blocked it', 'Granted because of who is asking'],
+        },
+        caption:
+          'A data loss prevention (DLP) tool watches for sensitive data leaving the organization. When it stops a senior manager sending files to a personal account, and an approved route existed, the tool has worked: the block stays, and the breach is reported.',
+      },
+      {
+        type: 'idea',
+        heading: 'The IS auditor’s lens',
+        body: 'An exception is only as safe as its compensating control. As the IS (information systems) auditor, you check that each exception has an owner at the right level, an end date and a review, and you test that the compensating control actually operates, rather than accepting that it is listed on the form. You recommend; senior management or the business owner the risk policy names accepts the residual risk or orders the fix.',
+      },
+      {
+        type: 'trap',
+        heading: 'The exam trap',
+        trap: '“The exception was approved three years ago, so the server can stay unpatched until it is retired.”',
+        why: 'The risk was accepted for the threats, data and systems of that time, and all of them change. This is the principle “Management owns the risk”: the accountable owner accepts a known residual risk for a set period, then decides again on current facts when it ends.',
+      },
+      {
+        type: 'tip',
+        body: 'Look for four things: an owner at the right level, an end date, a safeguard someone has tested, and a review. Whichever is missing is the finding. If an approved route was available, the block stays.',
+      },
+      {
+        type: 'check',
+        question:
+          'A laboratory analyzer runs an old operating system that, its vendor says, cannot take the patches the baseline requires. The laboratory director owns the analyzer. What should the IS auditor recommend?',
+        options: [
+          'Remove the patch requirement from the baseline for all systems',
+          'Leave the analyzer unpatched until the vendor supports it',
+          'Have the director sign a dated exception with safeguards',
+          'Move the analyzer onto its own isolated network segment',
+        ],
+        correctIndex: 2,
+        explanation:
+          'A gap from the baseline needs a business decision with limits: the director, who owns the analyzer’s risk, accepts it for a set period, backed by safeguards. Isolating the analyzer is tempting because it is the right kind of safeguard, but on its own nobody has accepted the risk that remains or set a date to look again. Removing the requirement weakens every other system, and waiting leaves an open gap that nobody owns.',
+      },
+      {
+        type: 'check',
+        question:
+          'A data loss prevention (DLP) tool held a finance director’s email sending the draft budget to a personal account. The company’s secure file-sharing service was available to the director. The director asks for the email to be released. What should the IS auditor recommend?',
+        options: [
+          'Keep the email held and raise it as a policy violation',
+          'Release it and record it as an approved policy exception',
+          'Release it once the director promises to delete the copy',
+          'Set the rule to alert without blocking for senior staff',
+        ],
+        correctIndex: 0,
+        explanation:
+          'The approved service was available, so this is a breach of policy, not a business need the rules failed to meet. Recording an exception is tempting because exceptions are a normal process, but an exception is agreed in advance for a need no approved route can meet, not granted after a control has stopped someone. A promise to delete cannot be checked, and alert-only rules for senior staff switch protection off for the people who hold the most sensitive data.',
+      },
+      {
+        type: 'check',
+        question:
+          'A payments firm has 30 approved security exceptions. Each names a compensating control and an end date, but nobody has checked whether those controls are running. What is the IS auditor’s GREATEST concern?',
+        options: [
+          'The register is kept in a spreadsheet rather than a tool',
+          'The exceptions have not been reported to the board this year',
+          'So many exceptions suggest the baseline itself is too strict',
+          'The real residual risk may be higher than the owners accepted',
+        ],
+        correctIndex: 3,
+        explanation:
+          'The owners accepted the risk on the belief that the compensating controls work; if they do not, the risk left over is larger than anyone agreed to. Blaming a too-strict baseline is tempting because many exceptions can be a warning sign, but the fact in the question is untested controls, not too many rules. Reporting to the board and the register’s format matter less than whether the safeguards exist.',
+      },
+    ],
+  },
+
+  // Mobile decision lesson 8 (curriculum §4): outline topic 5A9, notes 5A9.1, 5A9.4 and 5A9.3. One decision: when a device
+  // cannot be managed or patched, control what it can reach, and count a control only when it acts.
+  {
+    id: 'cisa-l-d5-unmanaged-devices',
+    certId: 'cisa',
+    domainId: '5',
+    order: 18,
+    title: 'Devices you do not own or cannot patch: BYOD, wireless and IoT',
+    minutes: 5,
+    provenance: PROVENANCE,
+    references: [
+      'NIST SP 800-124 Rev. 2 (Guidelines for Managing the Security of Mobile Devices in the Enterprise)',
+      'NIST IR 8259A (IoT Device Cybersecurity Capability Core Baseline)',
+      'NIST SP 800-153 (Guidelines for Securing Wireless Local Area Networks (WLANs))',
+    ],
+    outlineVersion: OUTLINE,
+    lastReviewed: DECISION_LESSONS_2_REVIEWED,
+    topics: ['5A9'],
+    prepares: ['d5_092', 'd5_093', 'd5_027', 'd5_094', 'd5_095', 'd5_332'],
+    notes: ['5A9.1', '5A9.4', '5A9.3'],
+    scenes: [
+      {
+        type: 'title',
+        kicker: 'Domain 5 · Mobile, wireless and IoT',
+        title: 'Devices you cannot fully control',
+        subtitle: 'When a device is not yours to manage, control what it can reach, and count a control only when it acts.',
+      },
+      {
+        type: 'idea',
+        heading: 'The core idea',
+        body: 'Some devices sit outside the usual controls: staff phones under bring your own device (BYOD), wireless access points someone plugs in without permission, and Internet of Things (IoT) devices, such as cameras and sensors, that cannot run security software or be patched easily. You cannot fully secure a device you do not own or cannot change. So the control moves to the edge: decide what each device may reach, block or isolate it when it falls short, and keep proof that the control acted.',
+      },
+      {
+        type: 'analogy',
+        heading: 'A hotel key card',
+        body: 'A hotel cannot check what guests carry in their suitcases, so it controls the doors: a key card opens only the guest’s own floor, and the desk confirms the card stopped working at checkout. A list of guests who broke the rules, with their cards still working, protects nobody.',
+      },
+      {
+        type: 'stack',
+        heading: 'Three kinds of device, one approach',
+        layers: [
+          {
+            label: 'Personal phones',
+            note: 'Mobile device management (MDM) software enforces the rules and blocks phones that fail them; company data sits in a separate work area that can be wiped on its own, leaving personal photos alone',
+          },
+          {
+            label: 'Rogue access points',
+            note: 'Unapproved wireless devices plugged into an office network port; stop them at the port by making every device prove its identity, and find the rest with wireless monitoring that someone reviews',
+          },
+          {
+            label: 'IoT devices',
+            note: 'Listed with an owner, bought only if they meet security requirements such as unique passwords and updates, and kept on their own restricted part of the network',
+          },
+        ],
+        caption: 'For phones, loss and theft are the most likely threats, so encryption, a screen lock and remote wipe are the starting point.',
+      },
+      {
+        type: 'compare',
+        heading: 'A control that acts, or one that only reports',
+        left: {
+          title: 'Acts',
+          points: ['Phones that fail the rules lose access to company email', 'The device confirms the wipe has finished', 'Wireless alerts go to a named owner who acts'],
+        },
+        right: {
+          title: 'Only reports',
+          points: ['A weekly list of phones that fail the rules', 'The console shows the wipe command was sent', 'Alerts are logged, but nobody reviews them'],
+        },
+        caption: 'Until a wipe is confirmed, treat the data as exposed: end the device’s sessions centrally and revoke its access.',
+      },
+      {
+        type: 'idea',
+        heading: 'The IS auditor’s lens',
+        body: 'Control what the device can reach, and keep the proof. As the IS (information systems) auditor, you test that phones failing the rules are really blocked, that lost-device cases close on confirmed wipes, that IoT devices are listed, owned and kept on a restricted network segment, and that wireless alerts are reviewed and acted on. You recommend; management decides what personal devices may reach and owns the device policy.',
+      },
+      {
+        type: 'trap',
+        heading: 'The exam trap',
+        trap: '“The console shows the remote wipe was sent, so the lost tablet’s data is gone.”',
+        why: 'A wipe runs only when the device receives it, and a lost device may never connect again. This is the principle “Operating, not just configured”: the case closes on proof that the wipe finished; until then, revoke the device’s access and treat the data as exposed.',
+      },
+      {
+        type: 'tip',
+        body: 'Ask whether the control acts or only reports: a list of failing devices is not a block. On a personal phone, wipe the work area, not the whole phone. For IoT, you cannot protect what you have not found.',
+      },
+      {
+        type: 'check',
+        question:
+          'A firm’s mobile device management (MDM) tool reports each week that about 200 staff phones fail the security rules, such as having no screen lock. Those phones still sync company email. What is the IS auditor’s GREATEST concern?',
+        options: [
+          'The weekly report goes to IT rather than to security',
+          'Phones that break the rules keep reaching company data',
+          'Staff have not been told why their phones fail',
+          'The tool may not be covering company tablets too',
+        ],
+        correctIndex: 1,
+        explanation:
+          'The tool sees the problem but does not act on it, so company data keeps reaching phones that fail the rules. Telling staff is tempting because users can fix their own phones, but it still leaves those phones connected until each person acts. Who receives the report matters less, and the question gives no reason to doubt the tool’s coverage.',
+      },
+      {
+        type: 'check',
+        question:
+          'A clinic will let nurses read patient messages on their own phones. Several nurses refuse, worried that a lost phone would mean losing their family photos. Which approach should the IS auditor recommend?',
+        options: [
+          'Ask nurses to sign an agreement to protect the messages',
+          'Rely on each phone’s own passcode and encryption',
+          'Require full management, with the right to wipe the phone',
+          'Keep clinic data in a managed section that can be erased alone',
+        ],
+        correctIndex: 3,
+        explanation:
+          'A separate managed work area protects the clinic’s data and can be wiped without touching personal content, so nurses can take part. Full management is tempting because it gives the clinic the most control, but wiping a personal phone is out of proportion and drives staff away from the safe option. A signed agreement is not a control, and a passcode alone gives no way to remove the data from a lost phone.',
+      },
+      {
+        type: 'check',
+        question:
+          'A hotel chain’s door locks, thermostats and cameras cannot run security software, and they share one network with the front-desk computers. Which recommendation should the IS auditor consider BEST?',
+        options: [
+          'Separate the devices from staff systems, allowing only needed traffic',
+          'Change each device’s factory password and keep the network as is',
+          'Install security software on the devices that can take it',
+          'Replace the devices with newer models over three years',
+        ],
+        correctIndex: 0,
+        explanation:
+          'Devices that cannot protect themselves are kept apart and allowed only the traffic they need, so one hijacked camera cannot reach the front desk. Changing the factory passwords is tempting because default passwords are a real weakness, but the devices would still sit beside staff systems with nothing between them. Most of these devices cannot run security software, and a three-year replacement plan leaves the risk open now.',
       },
     ],
   },
