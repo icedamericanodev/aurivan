@@ -5,7 +5,7 @@
  * - sign 3 needs 2 mocks with one full-length timed mock, and can be switched off;
  * - the copy never promises a result;
  * - the website reads the same engine (its bundle) and the readiness report's
- *   yardstick line word for word.
+ *   framing, yardstick and "how it's worked out" lines word for word.
  */
 import fs from 'fs';
 import path from 'path';
@@ -81,6 +81,7 @@ describe('readySigns', () => {
 
 describe('the website reads the same engine and words', () => {
   const ROOT = path.join(__dirname, '..', '..', '..');
+  const html = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
   const sandbox: Record<string, unknown> = {};
   sandbox.window = sandbox;
   vm.runInNewContext(fs.readFileSync(path.join(ROOT, 'assets', 'kaisip-plant.js'), 'utf8'), sandbox);
@@ -94,4 +95,13 @@ describe('the website reads the same engine and words', () => {
     expect(K.domainBand.YARDSTICK_LINE).toBe(YARDSTICK_LINE);
   });
 
+  it("index.html shows the report's framing and how-it's-worked-out lines word for word", () => {
+    // Read from the component's source (importing it would load the stores).
+    const src = fs.readFileSync(path.join(__dirname, '..', 'components', 'readinessReport.tsx'), 'utf8');
+    for (const name of ['FRAMING_LINE', 'HOW_LINE']) {
+      const m = new RegExp(`export const ${name} =\\s*'([^']+)';`).exec(src);
+      expect(m).toBeTruthy();
+      expect(html).toContain(m![1]);
+    }
+  });
 });

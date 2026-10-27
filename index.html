@@ -5201,6 +5201,159 @@ body[data-tab]:not([data-tab="about"]):not([data-tab="faq"]) .legal-disclaimer {
 .you-name-acts .ph-done { margin-top: 0; }
 .you-name-acts .you-name-save { background: var(--btn); border-color: var(--btn); color: var(--on-btn); }
 
+/* ── YOUR PROGRESS (web v12.41, You → Your progress) ─────────────────────────
+   Today's grid: one column to 1179px (max 720), then the main column and a
+   320px side column (the Mindset check). One forest panel (Where you stand),
+   one L1 plate (the signs), the rest on the paper. Grove tokens only; charts
+   are static inline SVG (nothing animates). */
+.pg { max-width: 720px; margin-bottom: var(--sp-section); }
+.pg-head { margin: 0 0 var(--sp-xxl); }
+.pg-sec { margin-top: var(--sp-xxxl); }
+.pg-h2 { font: var(--t-headline); color: var(--text); margin: 0 0 var(--sp-md); }
+.pg-h2:focus { outline: none; }
+.pg-h2:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; border-radius: var(--r-sm); }
+.pg-h-tag { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-sm); }
+.pg-tag { font: var(--t-caption); color: var(--text2); background: var(--surface2); border-radius: var(--r-pill); padding: 2px 10px; }
+.pg-t { display: block; font: var(--t-label); color: var(--text); overflow-wrap: anywhere; }
+.pg-m { display: block; font: var(--t-meta); color: var(--text2); margin: 0; }
+.pg-body { font: var(--t-body); color: var(--text); margin: var(--sp-md) 0 0; }
+.pg-cap { font: var(--t-meta); color: var(--text2); margin: calc(-1 * var(--sp-sm)) 0 var(--sp-md); }
+.pg-note { font: var(--t-meta); color: var(--text2); margin: var(--sp-md) 0 0; }
+.pg-mt { margin-top: var(--sp-md); }
+.pg-sent-s { font: 500 20px/26px var(--f-serif); color: var(--text); margin: 0 0 var(--sp-xs); text-wrap: pretty; }
+.pg-empty { font: var(--t-hero); letter-spacing: var(--tr-hero); color: var(--text); margin: 0 0 var(--sp-xs); }
+.pg-act { margin-left: auto; padding: 0 var(--sp-lg); }
+.pg-act .ico, .pg-sact .ico { flex-shrink: 0; }
+.pg-sact { min-height: 48px; }
+.pg-act:focus-visible, .pg-sact:focus-visible, .pg-tbtn:focus-visible, .pg-iconbtn:focus-visible, .pg-cd:focus-visible {
+  outline: 2px solid var(--focus-ring); outline-offset: 2px;
+}
+
+/* 1. Where you stand: the forest panel (the page's one) */
+.pg-stand { display: flex; flex-direction: column; gap: var(--sp-xl); margin: 0; padding: var(--sp-xxl); }
+.pg-stand-r { order: -1; }
+.pg-stand-r .td-rings { width: 112px; height: auto; }
+/* The rings on the forest: sap arcs on the forest track (CSS beats the SVG's own colours). */
+.pg-stand .td-rings path { stroke: var(--forest-track); }
+.pg-stand .td-rings .td-arc { stroke: var(--sap); }
+.pg-fcap { font: var(--t-caption); color: var(--on-forest2); margin: 0; }
+.pg-big { font: var(--t-number); letter-spacing: var(--tr-number); color: var(--on-forest); margin: var(--sp-sm) 0 0; white-space: nowrap; }
+.pg-big sup { font-size: .48em; line-height: 0; vertical-align: .8em; letter-spacing: 0; }
+.pg-none { font: var(--t-hero); letter-spacing: var(--tr-hero); color: var(--on-forest); margin: var(--sp-sm) 0 0; }
+.pg-fmeta { font: var(--t-meta); color: var(--on-forest2); margin: var(--sp-xs) 0 0; }
+.pg-band { position: relative; height: 10px; margin-top: var(--sp-lg); max-width: 320px; border-radius: var(--r-pill); background: var(--forest-track); }
+.pg-band span { position: absolute; top: 0; bottom: 0; border-radius: var(--r-pill); background: var(--sap); }
+.pg-low { font: var(--t-meta); color: var(--on-forest); margin: var(--sp-sm) 0 0; }
+.pg-quote { font: var(--t-quote); color: var(--on-forest); margin: var(--sp-lg) 0 0; padding-left: var(--sp-md); border-left: 3px solid var(--sap); }
+.pg-count { margin-top: var(--sp-md); height: 6px; max-width: 260px; border-radius: 3px; background: var(--forest-track); overflow: hidden; }
+.pg-count span { display: block; height: 100%; border-radius: 3px; background: var(--sap); }
+.pg-how { margin-top: var(--sp-sm); border-bottom: 1px solid var(--border); padding-bottom: var(--sp-xs); }
+
+/* 2. The signs: an L1 plate; a filled leaf = in place, an outline = not yet */
+.pg-signs { --td-paper: var(--raised2); background: var(--raised2); border-radius: var(--r-lg); padding: var(--sp-xl); }
+.pg-sign-list { list-style: none; margin: 0; padding: 0; }
+.pg-sign { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-sm) var(--sp-md); min-height: 64px; padding: var(--sp-md) 0; border-bottom: 1px solid var(--border); }
+.pg-sign:last-child { border-bottom: 0; }
+.pg-sign .td-leaf { flex: none; }
+.pg-rt { flex: 1 1 200px; min-width: 0; }
+.pg-signs-all { font: var(--t-body); color: var(--text); margin: var(--sp-md) 0 0; }
+
+/* Domain by domain: exam order, the bar in ink-green, a dashed track while it is a word */
+.pg-doms, .pg-rows, .pg-accs { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--border); }
+.pg-dom { display: grid; grid-template-columns: 8px minmax(0, 1fr) auto; column-gap: var(--sp-md); row-gap: var(--sp-sm); align-items: center; padding: var(--sp-md) 0; border-bottom: 1px solid var(--border); }
+.pg-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.pg-dom > .pg-dot { align-self: start; margin-top: 8px; }
+.pg-dn { min-width: 0; }
+.pg-dval { text-align: right; }
+.pg-num { font: 500 22px/26px var(--f-serif); color: var(--text); white-space: nowrap; }
+.pg-num sup { font-size: .5em; line-height: 0; vertical-align: .9em; }
+.pg-word { font: var(--t-label); color: var(--text); }
+.pg-bar { grid-column: 2 / 4; display: block; height: 6px; border-radius: 3px; background: var(--track); overflow: hidden; }
+.pg-bar span { display: block; height: 100%; border-radius: 3px; background: var(--accent); }
+.pg-bar-early { background: repeating-linear-gradient(90deg, var(--track) 0 6px, transparent 6px 10px); }
+.pg-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-sm) var(--sp-md); min-height: 64px; padding: var(--sp-md) 0; border-bottom: 1px solid var(--border); }
+
+/* 3. Charts */
+.pg-chart { display: block; width: 100%; max-width: 560px; height: auto; margin-top: var(--sp-md); }
+.pg-grid { stroke: var(--border); stroke-width: 1; }
+.pg-axt { font: 500 13px/1 var(--f-sans); fill: var(--muted); }
+.pg-line { fill: none; stroke: var(--accent); stroke-width: 1.75; stroke-linejoin: round; stroke-linecap: round; }
+.pg-leafmark { fill: var(--accent); }
+.pg-band-zone { fill: var(--surface2); }
+.pg-band-t { fill: var(--text2); }
+.pg-dot-full { fill: var(--accent); stroke: var(--accent); stroke-width: 2; }
+.pg-dot-mini, .pg-dot-other { fill: var(--bg); stroke: var(--accent); stroke-width: 2; }
+.pg-dot-untimed { stroke-dasharray: 2.5 2; }
+.pg-legend { display: flex; flex-wrap: wrap; gap: var(--sp-xs) var(--sp-lg); margin: var(--sp-sm) 0 0; font: var(--t-meta); color: var(--text2); }
+.pg-legend span { display: inline-flex; align-items: center; gap: var(--sp-xs); }
+.pg-tbtn { margin-top: var(--sp-xs); min-height: 48px; }
+.pg-tbtn[aria-expanded="true"] .ico { transform: rotate(180deg); }
+.pg-tw[hidden] { display: none; }
+.pg-tw { max-width: 100%; overflow-x: auto; }
+.pg-table { border-collapse: collapse; margin: var(--sp-xs) 0 var(--sp-sm); font: var(--t-meta); color: var(--text); font-variant-numeric: tabular-nums; }
+.pg-table th, .pg-table td { text-align: left; padding: var(--sp-xs) var(--sp-lg) var(--sp-xs) 0; border-bottom: 1px solid var(--border); }
+.pg-table thead th { color: var(--text2); font-weight: 600; }
+.pg-table tbody th { font-weight: 500; }
+.pg-acc { padding: var(--sp-md) 0; border-bottom: 1px solid var(--border); }
+.pg-acc > .pg-t { display: flex; align-items: center; gap: var(--sp-sm); margin-bottom: var(--sp-xs); }
+.pg-acc-r { display: grid; grid-template-columns: 76px minmax(0, 1fr) 84px; column-gap: var(--sp-md); align-items: center; min-height: 28px; }
+.pg-acc-l { font: var(--t-meta); color: var(--text2); }
+.pg-acc-v { font: var(--t-meta); color: var(--text); font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap; }
+.pg-abar { display: block; }
+.pg-abar-track { fill: var(--track); }
+.pg-abar-now .pg-abar-fill { fill: var(--accent); }
+.pg-abar-before .pg-abar-fill { fill: var(--control); }
+
+/* 4. Your study days: Monday weeks of leaves; only study days are buttons */
+.pg-days { --td-paper: var(--bg); }
+.pg-calhead { display: flex; align-items: center; justify-content: space-between; max-width: 420px; margin-top: var(--sp-md); }
+.pg-calm { margin: 0; font: var(--t-label); color: var(--text); }
+.pg-iconbtn { display: grid; place-items: center; width: 48px; height: 48px; padding: 0; border: 0; border-radius: 50%; background: none; color: var(--text); cursor: pointer; }
+.pg-iconbtn:hover:not(:disabled) { background: var(--surface2); }
+.pg-iconbtn:disabled { color: var(--border2); cursor: default; }
+.pg-cal { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 2px; max-width: 420px; }
+.pg-cw { text-align: center; font: var(--t-caption); color: var(--muted); padding-bottom: var(--sp-xs); }
+.pg-cd { display: flex; flex-direction: column; align-items: center; gap: 2px; min-height: 48px; padding: var(--sp-xs) 0; border: 0; border-radius: var(--r-sm); background: none; font: inherit; color: inherit; }
+.pg-cd .td-leaf { width: 20px; height: 20px; }
+button.pg-cd { cursor: pointer; }
+button.pg-cd:hover { background: var(--surface2); }
+.pg-cd[aria-pressed="true"] { background: var(--surface2); box-shadow: inset 0 0 0 2px var(--text); }
+.pg-cn { font: 500 12px/16px var(--f-sans); color: var(--text2); }
+.pg-today { box-shadow: inset 0 0 0 1.5px var(--accent); }
+.pg-today .pg-cn { color: var(--text); font-weight: 600; }
+.pg-dayd:empty { display: none; }
+.pg-dayd { margin-top: var(--sp-md); padding: var(--sp-md) var(--sp-lg); border-radius: var(--r-md); background: var(--raised2); max-width: 420px; }
+.pg-dayd .pg-m { margin-top: var(--sp-xs); }
+
+/* 5. Mindset check (td-mind's parts); 6. the way back */
+.pg-side { margin-top: var(--sp-xxxl); }
+.pg-side:empty { display: none; }
+.pg-mind { margin-top: 0; }
+.pg-mind .td-mind-q { margin-top: var(--sp-md); }
+.pg-back { margin: var(--sp-xxxl) 0 0; padding-top: var(--sp-sm); border-top: 1px solid var(--border); }
+
+@media (max-width: 399px) {
+  .pg-stand { padding: var(--sp-xl); }
+  .pg-big { font-size: 44px; line-height: 46px; }
+  .pg-act { white-space: normal; text-align: left; }
+}
+/* Room for the rings beside the range */
+@media (min-width: 560px) {
+  .pg-stand:not(.pg-stand-wait) { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: var(--sp-section); align-items: center; }
+  .pg-stand-r { order: 0; }
+  .pg-stand-r .td-rings { width: 140px; }
+}
+/* Two columns: the page on the left, the Mindset check in a 320px column on the right */
+@media (min-width: 1180px) {
+  .pg { max-width: none; display: grid; grid-template-columns: minmax(0, 1fr) 320px; column-gap: var(--sp-xxxl); align-items: start; }
+  .pg-main { grid-column: 1; grid-row: 1; min-width: 0; }
+  .pg-side { grid-column: 2; grid-row: 1; margin-top: 0; padding-top: 74px; }
+  .pg-foot { grid-column: 1; }
+}
+@media (min-width: 1180px) and (min-height: 720px) {
+  .pg-side { position: sticky; top: 40px; }
+}
+
 /* Weak spots + mock results: neutral, with the answered count */
 .ws-label { width: 128px; display: flex; flex-direction: column; gap: 2px; }
 .ws-count { font: 400 13px/18px var(--f-sans); color: var(--text2); }
@@ -6398,7 +6551,7 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 <!-- Address markers for the section links (#today, #notes ...). The router
      reads the address; these empty markers sit at the very top of the page so
      every in-page link has a real target and opening one never scrolls. -->
-<div class="route-marks" aria-hidden="true"><span id="today"></span><span id="learn"></span><span id="notes"></span><span id="glossary"></span><span id="principles"></span><span id="exam-guide"></span><span id="final-week"></span><span id="practice"></span><span id="mock"></span><span id="saved"></span><span id="you"></span><span id="weak-spots"></span><span id="help"></span><span id="about"></span></div>
+<div class="route-marks" aria-hidden="true"><span id="today"></span><span id="learn"></span><span id="notes"></span><span id="glossary"></span><span id="principles"></span><span id="exam-guide"></span><span id="final-week"></span><span id="practice"></span><span id="mock"></span><span id="saved"></span><span id="you"></span><span id="weak-spots"></span><span id="progress"></span><span id="help"></span><span id="about"></span></div>
 <a class="skip-link" href="#main">Skip to content</a>
 <div class="app-rail" id="appRail">
 <header class="app-header">
@@ -6546,6 +6699,11 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
   <div id="wsArea"></div>
 </div>
 
+<!-- YOUR PROGRESS (v12.41): You → Your progress, and Today's "See your progress". Filled by renderProgress(). -->
+<div id="screen-progress" class="screen">
+  <div id="pgArea"></div>
+</div>
+
 <!-- TOPICS -->
 <div id="screen-topics" class="screen">
   <div id="topicsArea"></div>
@@ -6655,7 +6813,7 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
          1180px it moves to the study rail beside the page. -->
     <section class="you-plant" id="youPlant" aria-labelledby="plYouH" hidden></section>
     <section class="you-group" aria-labelledby="youProgressH">
-      <h2 class="you-head" id="youProgressH">Your progress</h2>
+      <h2 class="you-head" id="youProgressH">Progress</h2>
       <!-- Practice totals (moved from the Practice page, web step 3). "In a
            row" = right answers in a row, in ink: clay is for study days. -->
       <p class="you-stats-wait" id="youStatsWait">Your stats appear after 10 questions</p>
@@ -6667,6 +6825,8 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
       </div>
       <p class="you-stats-wait" id="youStatsNote" hidden>Each question counts once, at your latest try. In a row counts right answers.</p>
       <ul class="you-list">
+        <!-- Your progress (v12.41): where you stand, the signs for your exam date, charts and study days. -->
+        <li><a class="you-row" href="#progress" onclick="return navTo(event,'progress')"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg></span><span class="you-text"><span class="you-t">Your progress</span><span class="you-m">Where you stand, charts and study days</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></a></li>
         <li><a class="you-row" href="#weak-spots" onclick="return navTo(event,'weakspots')"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3.5 20.5h17"/><path d="M7 17v-5M12 17V6M17 17v-8"/></svg></span><span class="you-text"><span class="you-t">Weak spots</span><span class="you-m">Where to focus next</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></a></li>
         <li><button type="button" class="you-row" onclick="showSessionSummary()"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 12h4l3-7.5 4 15 3-7.5h4"/></svg></span><span class="you-text"><span class="you-t">Session summary</span><span class="you-m">What you did this session</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></button></li>
       </ul>
@@ -7395,6 +7555,10 @@ var S_DEFAULTS = {
   // Final review week (web): "Mark day done" per day, dayId -> 'YYYY-MM-DD'
   // (the local day it was marked). A new field beside the old ones.
   finalWeekDone: {},
+  // The Progress page's history (v12.41; see "PROGRESS HISTORY").
+  dayTally: {},
+  lowEndLog: [],
+  stuckAt: {},
   activeTab: "home",
 };
 
@@ -7988,6 +8152,8 @@ function recordAnswerParity(qId, ok, opts) {
     S.mistakeLog[qId].resolved = true;
   }
   noteStudyDay(now);
+  // The Progress page's day tally (accuracy by domain, what a study day held).
+  try { progTallyNote(qId, ok, now); } catch (e) {}
   // The plant's evidence (mobile engine/mastery.ts and examReady.ts): a right
   // answer that is not a retest counts toward "know the outline", and the
   // day's readiness low end is logged for Elder's week-long hold.
@@ -8044,6 +8210,140 @@ function recordMockParity(answers, queue) {
   }
   S.mockHistory.unshift(result);
   if (S.mockHistory.length > PARITY_MAX_MOCKS) S.mockHistory = S.mockHistory.slice(0, PARITY_MAX_MOCKS);
+}
+
+// ── PROGRESS HISTORY (web v12.41, for the Progress page's charts) ──
+// Three new fields beside the old ones (nothing is renamed), each the least
+// the charts need that the older fields cannot give:
+// - S.dayTally["YYYY-MM-DD"] = { "<domain>": [answered, right], b?: 1 }:
+//   every graded answer (practice and mock) per local day, for "Accuracy by
+//   domain" and what a study day held. answerLog keeps only the latest try,
+//   so a save from before this field is back-filled ONCE from those latest
+//   tries; such days carry b: 1 (they undercount, and the page says so).
+// - S.lowEndLog = mobile ReadinessDay[] ({ day, min, last }), the low end per
+//   day like readinessLog, but kept PROG_LOW_DAYS days: readinessLog keeps 30
+//   (the app's rule) and the chart shows 8 weeks. Seeded from readinessLog.
+// - S.stuckAt[subtopicId] = "YYYY-MM-DD": the day a subtopic first stuck (the
+//   app's two-day rule, engine/mastery.ts). Written once, never unset, so
+//   "What's stuck" can only rise: cleanLog keeps the first and latest right
+//   answer only, and a replay of it could move a day later. Back-filled from
+//   the replayed mastery the first time the outline is at hand.
+var PROG_TALLY_DAYS = 400;
+var PROG_LOW_DAYS = 60;          // 8 weeks, plus the day the chart carries forward from
+var PROG_STUCK_MAX = 5000;
+
+function progTallyAdd(out, day, d, ok) {
+  var e = out[day] || (out[day] = {});
+  var x = e[d] || (e[d] = [0, 0]);
+  x[0] += 1;
+  if (ok) x[1] += 1;
+}
+function progTallyNote(qId, ok, now) {
+  var d = rdDomainOf(qId);
+  if (!DI[d]) return;
+  if (!isPlainObj(S.dayTally)) S.dayTally = {};
+  progTallyAdd(S.dayTally, parityDayKey(now), d, ok);
+  var days = Object.keys(S.dayTally);
+  if (days.length > PROG_TALLY_DAYS) days.sort().slice(0, days.length - PROG_TALLY_DAYS).forEach(function (k) { delete S.dayTally[k]; });
+}
+// Once, for a save from before dayTally: each question's latest try, on its day.
+function progTallyBackfill(log) {
+  var out = {};
+  Object.keys(log || {}).forEach(function (id) {
+    var r = log[id], d = rdDomainOf(id);
+    if (!r || !DI[d] || !(Number(r.lastAt) > 0)) return;
+    progTallyAdd(out, parityDayKey(r.lastAt), d, !!r.lastCorrect);
+  });
+  Object.keys(out).forEach(function (day) { out[day].b = 1; });
+  return sanitizeDayTally(out);
+}
+function sanitizeDayTally(m) {
+  var out = {};
+  if (!isPlainObj(m)) return out;
+  Object.keys(m).filter(function (k) { return PARITY_DAY_RE.test(k) && isPlainObj(m[k]); }).sort().slice(-PROG_TALLY_DAYS).forEach(function (day) {
+    var e = m[day], o = {}, any = false;
+    Object.keys(DI).forEach(function (d) {
+      var x = e[d];
+      if (!Array.isArray(x)) return;
+      var t = importCount(x[0]);
+      if (!t) return;
+      o[d] = [t, Math.min(t, importCount(x[1]))];
+      any = true;
+    });
+    if (!any) return;
+    if (e.b === 1) o.b = 1;
+    out[day] = o;
+  });
+  return out;
+}
+// The low end at the end of a day (and its lowest that day), like logReadinessDay, kept longer.
+function progLowNote(day, low) {
+  var log = Array.isArray(S.lowEndLog) ? S.lowEndLog : [];
+  var e = null;
+  for (var i = 0; i < log.length; i++) if (log[i].day === day) { e = log[i]; break; }
+  if (e) {
+    e.min = (e.min === null || low === null) ? null : Math.min(e.min, low);
+    e.last = low;
+  } else {
+    log.push({ day: day, min: low, last: low });
+    log.sort(function (a, b) { return a.day < b.day ? -1 : a.day > b.day ? 1 : 0; });
+  }
+  S.lowEndLog = progLowKeep(log);
+}
+function progLowKeep(log) {
+  if (!log.length) return log;
+  var newest = log[log.length - 1].day;
+  return log.filter(function (x) { return sdDaysBetween(x.day, newest) < PROG_LOW_DAYS; });
+}
+// Load / import: well-formed days only; readinessLog's days fill any gaps (the seed).
+function sanitizeLowEndLog(list, readinessLog) {
+  var own = sanitizeReadinessLog(Array.isArray(list) ? list.slice(-PROG_LOW_DAYS * 2) : []);
+  var have = {};
+  own.forEach(function (x) { have[x.day] = true; });
+  (Array.isArray(readinessLog) ? readinessLog : []).forEach(function (x) { if (!have[x.day]) own.push({ day: x.day, min: x.min, last: x.last }); });
+  own.sort(function (a, b) { return a.day < b.day ? -1 : a.day > b.day ? 1 : 0; });
+  return progLowKeep(own);
+}
+function sanitizeStuckAt(m) {
+  var out = {};
+  if (!isPlainObj(m)) return out;
+  Object.keys(m).slice(0, PROG_STUCK_MAX).forEach(function (k) {
+    if (PARITY_ID_RE.test(k) && typeof m[k] === 'string' && PARITY_DAY_RE.test(m[k])) out[k] = m[k];
+  });
+  return out;
+}
+// Every subtopic the replayed mastery says has stuck, on the day it says (the back-fill,
+// and anything stuck since). Never moves or removes a day already written. True when it added any.
+function progStuckSync() {
+  var o = plantOutline();
+  if (!o) return false;
+  var map = plantMastery(o), added = false;
+  if (!isPlainObj(S.stuckAt)) S.stuckAt = {};
+  Object.keys(map).forEach(function (sub) {
+    var m = map[sub];
+    if (m && m.masteredAt && !S.stuckAt[sub] && PARITY_DAY_RE.test(m.masteredAt)) { S.stuckAt[sub] = m.masteredAt; added = true; }
+  });
+  return added;
+}
+// After one clean right answer: replays only that answer's subtopic (cheap), so the day is exact.
+function progStuckNote(qId) {
+  var K = plantApi(), o = CISA_NOTES_RAW ? plantOutline() : null;
+  if (!K || !o) return;
+  var sub = o.subtopicOf(qId);
+  if (!sub) return;
+  if (!isPlainObj(S.stuckAt)) S.stuckAt = {};
+  if (S.stuckAt[sub]) return;
+  var cl = isPlainObj(S.cleanLog) ? S.cleanLog : {}, ev = [];
+  Object.keys(cl).forEach(function (id) {
+    var e = cl[id];
+    if (!e || o.subtopicOf(id) !== sub) return;
+    ev.push(e.first);
+    if (e.last !== e.first) ev.push(e.last);
+  });
+  ev.sort(function (a, b) { return a - b; });
+  var entry;
+  ev.forEach(function (at) { entry = K.mastery.noteCleanCorrect(entry, parityDayKey(at), at); });
+  if (entry && entry.masteredAt) S.stuckAt[sub] = entry.masteredAt;
 }
 
 // Load / import checks: keep only well-formed entries, within the caps.
@@ -8145,7 +8445,8 @@ function normalizeImportedState(state) {
                 "timerEnabled","timerSeconds","qIdx","mindsetIdx","glossMastered","topicReviewed","topicViewed",
                 "current","qn","activeTab","review","topicTicksSchema",
                 "answerLog","mistakeLog","studyDays","mockHistory","qNotes",
-                "plant","plantSettings","cleanLog","readinessLog","finalWeekDone","lastOpenedSubtopic"];
+                "plant","plantSettings","cleanLog","readinessLog","finalWeekDone","lastOpenedSubtopic",
+                "dayTally","lowEndLog","stuckAt"];
   fields.forEach(function(k) {
     if (state[k] !== undefined) clean[k] = state[k];
   });
@@ -8170,6 +8471,12 @@ function normalizeImportedState(state) {
   clean.plantSettings = sanitizePlantSettings(clean.plantSettings);
   clean.cleanLog = plantSeedCleanLog(sanitizeCleanLog(clean.cleanLog), clean.answerLog);
   clean.readinessLog = sanitizeReadinessLog(clean.readinessLog);
+  // The Progress page's history (v12.41): a save from before it is back-filled
+  // once from the latest tries (dayTally) and readinessLog (lowEndLog); stuckAt
+  // is back-filled from the outline when the page first needs it.
+  clean.dayTally = clean.dayTally === undefined ? progTallyBackfill(clean.answerLog) : sanitizeDayTally(clean.dayTally);
+  clean.lowEndLog = sanitizeLowEndLog(clean.lowEndLog, clean.readinessLog);
+  clean.stuckAt = sanitizeStuckAt(clean.stuckAt);
   // Final review week: saves from before it have none and load as empty.
   clean.finalWeekDone = sanitizeFinalWeekDone(clean.finalWeekDone);
   clean.bookmarks = rehydrateSavedQuestions(clean.bookmarks);
@@ -8211,7 +8518,7 @@ function normalizeImportedState(state) {
   if (["any","foundational","application","analysis"].indexOf(clean.diff) === -1) clean.diff = "any";
   clean.timerEnabled = !!clean.timerEnabled;
   clean.timerSeconds = Math.min(600, importCount(clean.timerSeconds));
-  clean.activeTab = ["home","practice","mock","topics","bookmarks","weakspots","glossary","faq","principles","examguide","finalweek"].indexOf(clean.activeTab) >= 0 ? clean.activeTab : "home";
+  clean.activeTab = ["home","practice","mock","topics","bookmarks","weakspots","progress","glossary","faq","principles","examguide","finalweek"].indexOf(clean.activeTab) >= 0 ? clean.activeTab : "home";
   return clean;
 }
 
@@ -8388,6 +8695,8 @@ function saveState() {
     plant: S.plant || null, plantSettings: S.plantSettings || {},
     cleanLog: S.cleanLog || {}, readinessLog: S.readinessLog || [],
     finalWeekDone: S.finalWeekDone || {},
+    // The Progress page's history (v12.41): new fields beside the old ones.
+    dayTally: S.dayTally || {}, lowEndLog: S.lowEndLog || [], stuckAt: S.stuckAt || {},
     selectedDomain: S.selectedDomain, diff: S.diff,
     timerEnabled: S.timerEnabled, timerSeconds: S.timerSeconds,
     qIdx: S.qIdx, mindsetIdx: S.mindsetIdx,
@@ -8430,7 +8739,8 @@ function loadState() {
                 "timerEnabled","timerSeconds","qIdx","mindsetIdx","glossMastered","topicReviewed","topicViewed","topicTicksSchema",
                 "current","qn","activeTab",
                 "answerLog","mistakeLog","studyDays","mockHistory","qNotes",
-                "plant","plantSettings","cleanLog","readinessLog","finalWeekDone","lastOpenedSubtopic"];
+                "plant","plantSettings","cleanLog","readinessLog","finalWeekDone","lastOpenedSubtopic",
+                "dayTally","lowEndLog","stuckAt"];
   fields.forEach(function(k) {
     if (saved[k] !== undefined) S[k] = saved[k];
   });
@@ -10531,6 +10841,7 @@ function switchTab(t, opts) {
   if (t === 'home') renderHome();
   if (t === 'bookmarks') renderBookmarks();
   if (t === 'weakspots') renderWeakSpots();
+  if (t === 'progress') renderProgress();
   if (t === 'mock') renderMockSetup();
   if (t === 'topics') renderTopics();
   if (t === 'glossary') renderGlossary();
@@ -10574,7 +10885,7 @@ var NAV_SECTION = {
   home: 'today',
   topics: 'learn', glossary: 'learn', principles: 'learn', examguide: 'learn', finalweek: 'learn',
   practice: 'practice', mock: 'practice', bookmarks: 'practice',
-  you: 'you', weakspots: 'you', faq: 'you', about: 'you'
+  you: 'you', weakspots: 'you', progress: 'you', faq: 'you', about: 'you'
 };
 // The page a section opens on (its first page) and its listed sub-pages.
 var NAV_HOME = { today: 'home', learn: 'topics', practice: 'practice', you: 'you' };
@@ -10589,7 +10900,7 @@ var NAV_HASH = {
   home: 'today', topics: 'notes', glossary: 'glossary', principles: 'principles',
   examguide: 'exam-guide', finalweek: 'final-week',
   practice: 'practice', mock: 'mock', bookmarks: 'saved',
-  you: 'you', weakspots: 'weak-spots', faq: 'help', about: 'about'
+  you: 'you', weakspots: 'weak-spots', progress: 'progress', faq: 'help', about: 'about'
 };
 var NAV_ALIAS = {
   today: 'home', home: 'home',
@@ -10600,6 +10911,7 @@ var NAV_ALIAS = {
   saved: 'bookmarks', bookmarks: 'bookmarks',
   you: 'you', settings: 'you', more: 'you',
   weak: 'weakspots', weakspots: 'weakspots', 'weak-spots': 'weakspots',
+  progress: 'progress', 'your-progress': 'progress', 'readiness-report': 'progress', readiness: 'progress',
   faq: 'faq', help: 'faq', about: 'about',
   'whats-new': 'you!changelog', changelog: 'you!changelog',
   data: 'you!data', 'your-data': 'you!data'
@@ -10659,7 +10971,7 @@ var NAV_TITLE = {
   topics: 'Study notes', glossary: 'Glossary', principles: 'Principles',
   examguide: 'About the CISA exam', finalweek: 'Final review week',
   practice: 'Practice', mock: 'Mock exam', bookmarks: 'Saved',
-  you: 'You', weakspots: 'Weak spots', faq: 'Help', about: 'About'
+  you: 'You', weakspots: 'Weak spots', progress: 'Your progress', faq: 'Help', about: 'About'
 };
 function syncNav(t) {
   var sec = NAV_SECTION[t] || 'today';
@@ -11531,10 +11843,10 @@ function backupNudgeLater() {
 //   count of days away, and no next step, Mindset check or week strip;
 // - exam week: a shorter plan, readiness in words only, no rings, no strip;
 // - one visual per visit below 1180px: the rings or the week, by the day.
-// The readiness link opens this page, and its words follow it. The
-// Readiness report page is next: switch this one constant when it lands.
-var TODAY_REPORT_TAB = 'weakspots';
-var TODAY_REPORT_LABEL = TODAY_REPORT_TAB === 'weakspots' ? 'See your weak spots' : 'See your readiness report';
+// The readiness link opens this page, and its words follow it (v12.41:
+// the Progress page, You → Your progress).
+var TODAY_REPORT_TAB = 'progress';
+var TODAY_REPORT_LABEL = TODAY_REPORT_TAB === 'weakspots' ? 'See your weak spots' : 'See your progress';
 var TODAY_WEEK_LINE_FROM = 14;
 var TODAY_BACK_AFTER_DAYS = 3;
 var TODAY_EXAM_WEEK_DAYS = 7;
@@ -11620,7 +11932,9 @@ function todayReadyHtml(r, range, st, showRings) {
       + '<p class="td-wait">' + (r.answered > 0
         ? (RD_RANGE_MIN_ANSWERS - range.needed) + ' of ' + RD_RANGE_MIN_ANSWERS + ' questions for your first readiness range. Each question counts once.'
         : 'Answer ' + RD_RANGE_MIN_ANSWERS + ' questions to see your first readiness range.') + '</p>'
-      + '<p class="td-note td-est">Your range will be a study estimate, not a prediction.</p></section>';
+      + '<p class="td-note td-est">Your range will be a study estimate, not a prediction.</p>'
+      + (r.answered > 0 ? '<a class="td-link" href="#' + NAV_HASH[TODAY_REPORT_TAB] + '" onclick="return navTo(event,\'' + TODAY_REPORT_TAB + '\')">' + TODAY_REPORT_LABEL + ico('chevron', 18) + '</a>' : '')
+      + '</section>';
   }
   if (st.exam) {
     return '<section class="td-ready td-ready-words" aria-labelledby="tdReadyH">' + head
@@ -11937,6 +12251,646 @@ function renderHome() {
   if (!hideNext && !CISA_NOTES_RAW && !conceptsLoadFailed) {
     loadConceptsData(refreshTodayNext);
   }
+}
+
+// ── YOUR PROGRESS (web v12.41, You → Your progress) ──
+// The page a learner opens on purpose to see where they stand; Today stays
+// the landing page. Design: scratchpad web-dashboard v2 (owner, 26 Oct) and
+// its behavioural rules (behavior-critique.md, binding). In order:
+//   1. Where you stand: the range (Today's numbers), the phone report's
+//      framing, yardstick and "how it's worked out" lines word for word, the
+//      five domains in exam order as bars (a word under 30 answers), and up to
+//      3 "What would raise your low end" rows (the app's raiseLowerBound).
+//   2. Signs for your exam date ("Ready to book?" without a date): the app's
+//      readySigns. Sign 3 (two mocks, one a full timed mock) is the owner's
+//      call: PROGRESS_MOCK_SIGN switches it off.
+//   3. Charts, inline SVG only (no library): the low end over 8 weeks, mock
+//      scores as dots (the shaded zone is "this app's study bar", never a pass
+//      mark), what's stuck (a line that only rises) and accuracy by domain this
+//      week and last. Each has one plain sentence and a "Show the numbers" table.
+//   4. Your study days: a month of leaves, Monday weeks. A filled leaf is a
+//      study day; no other day is marked and there is no streak.
+//   5. Mindset check (the right column from 1180px): one question from a
+//      principle, answered from memory. Nothing is saved or counted.
+//   6. A quiet "Back to today's plan" link.
+// Exam week: the Final review week link replaces the signs and the charts
+// rest behind "Show my charts"; no study days. After the exam: a record, with
+// nothing new suggested. No hours studied, no "% complete", no lifetime
+// average, no streak, no deltas since the last visit, nothing animates.
+// The engine parts come from the app (assets/kaisip-plant.js); every text
+// written into the page is escaped.
+var PROGRESS_MOCK_SIGN = true;  // owner's call: false leaves only signs 1 and 2
+var PG_WEEKS = 8;               // the low-end chart looks back 8 weeks
+var PG_STUCK_FROM_WEEKS = 3;    // the "What's stuck" line starts after 3 weeks of study
+var PG_STUCK_MAX_WEEKS = 12;    // and shows at most the last 12
+var PG_ACC_MIN = 10;            // a domain's week shows a percent from 10 answers
+var PG_MIND_LOOKBACK_DAYS = 14;
+// The phone's readiness report (mobile components/readinessReport.tsx), word for word.
+var PG_FRAMING_LINE = 'It comes from your answers in this app, weighted like the exam. It can’t see the real questions, exam-day nerves or how the exam is scored. The range narrows as you answer more.';
+var PG_HOW_LINE = 'Each domain’s number is how much of it you’ve got right on your latest tries, with a hint counting half. Domains count by their weight on the exam. The low end is the cautious end: we’re fairly sure you’re at or above it.';
+var PG_PRACTICE_NOTE = 'Practice scores are not scaled exam scores.';
+var pgState = { month: null, day: null, charts: false, daysOpen: false, tables: {}, mind: null, mindChoice: null };
+var pgMql = null;
+
+function pgFmt(day, opts) {
+  try { return new Intl.DateTimeFormat('en-GB', opts).format(new Date(sdNoon(day))); } catch (e) { return day; }
+}
+function pgShort(day) { return pgFmt(day, { day: 'numeric', month: 'short' }); }
+function pgWide() {
+  try {
+    if (!pgMql) {
+      pgMql = window.matchMedia('(min-width: 560px)');
+      var on = function () { if (S.activeTab === 'progress') renderProgress(); };
+      if (pgMql.addEventListener) pgMql.addEventListener('change', on); else if (pgMql.addListener) pgMql.addListener(on);
+    }
+    return pgMql.matches;
+  } catch (e) { return true; }
+}
+// The Monday of the week holding `day` ("YYYY-MM-DD").
+function pgMonday(day) {
+  var d = new Date(sdNoon(day));
+  return parityDayKey(new Date(d.getFullYear(), d.getMonth(), d.getDate() - (d.getDay() + 6) % 7, 12).getTime());
+}
+function pgAddDays(day, n) {
+  var d = new Date(sdNoon(day));
+  return parityDayKey(new Date(d.getFullYear(), d.getMonth(), d.getDate() + n, 12).getTime());
+}
+function pgPhase(days) {
+  if (days === null) return 'none';
+  if (days < 0) return 'done';
+  return days <= TODAY_EXAM_WEEK_DAYS ? 'week' : 'dated';
+}
+// Today's readiness in the app's own shape (engine/readiness.ts Readiness).
+function pgReadiness(r) {
+  return {
+    score: r.score,
+    reliable: r.domains.every(function (x) { return x.answered >= RD_MIN_SAMPLE; }),
+    focusDomainId: r.focusId,
+    domains: r.domains.map(function (x) {
+      return { domainId: x.id, answered: x.answered, mastered: x.mastered, credit: x.credit, assisted: x.assisted, halved: x.halved,
+        unlockAnswers: x.unlock, accuracy: x.answered ? x.mastered / x.answered : null, mastery: x.mastery };
+    })
+  };
+}
+function pgPct(x) { return Math.round(x.mastery * 100); }
+function pgSup(n) { return n + '<sup>%</sup>'; }
+// A small "Show the numbers" switch and the table it opens (the chart's data for everyone, screen readers first).
+function pgTable(id, caption, head, rows) {
+  var open = !!pgState.tables[id];
+  return '<button type="button" class="gt-btn-ghost pg-tbtn" aria-expanded="' + open + '" aria-controls="pgT-' + id + '" onclick="pgToggleTable(\'' + id + '\')">'
+    + (open ? 'Hide the numbers' : 'Show the numbers') + ico('chevron-down', 18) + '</button>'
+    + '<div class="pg-tw" id="pgT-' + id + '"' + (open ? '' : ' hidden') + '><table class="pg-table"><caption class="sr-only">' + escapeHtml(caption) + '</caption>'
+    + '<thead><tr>' + head.map(function (h) { return '<th scope="col">' + escapeHtml(h) + '</th>'; }).join('') + '</tr></thead><tbody>'
+    + rows.map(function (r) { return '<tr>' + r.map(function (c, i) { return i ? '<td>' + escapeHtml(c) + '</td>' : '<th scope="row">' + escapeHtml(c) + '</th>'; }).join('') + '</tr>'; }).join('')
+    + '</tbody></table></div>';
+}
+function pgToggleTable(id) {
+  pgState.tables[id] = !pgState.tables[id];
+  var btn = document.querySelector('[aria-controls="pgT-' + id + '"]'), box = document.getElementById('pgT-' + id);
+  if (!btn || !box) return;
+  btn.setAttribute('aria-expanded', pgState.tables[id] ? 'true' : 'false');
+  btn.innerHTML = (pgState.tables[id] ? 'Hide the numbers' : 'Show the numbers') + ico('chevron-down', 18);
+  box.hidden = !pgState.tables[id];
+}
+
+// ── Charts: static inline SVG in Grove tokens (decorative to screen readers:
+// the sentence above and the table below carry the numbers) ──
+function pgChartBox(w, h) { return { w: w, h: h, l: 40, r: 16, t: 14, b: 26 }; }
+function pgLeafAt(x, y) {
+  // The app's leaf (todayLeafSvg's shape), 18px, its stem end on the point.
+  var k = 18 / 26, ox = x - 3.9 * k, oy = y - 22.1 * k;
+  var p = function (a, b) { return (ox + a * k).toFixed(1) + ' ' + (oy + b * k).toFixed(1); };
+  return '<path class="pg-leafmark" d="M' + p(3.9, 22.1) + 'C' + p(3.9, 11.7) + ' ' + p(11.7, 3.9) + ' ' + p(22.1, 3.9) + 'C' + p(22.1, 14.3) + ' ' + p(14.3, 22.1) + ' ' + p(3.9, 22.1) + 'Z"/>';
+}
+function pgAxes(b, lo, hi, ticks, xl, n) {
+  var iw = b.w - b.l - b.r, ih = b.h - b.t - b.b, g = '';
+  var y = function (v) { return b.t + ih * (1 - (v - lo) / ((hi - lo) || 1)); };
+  var x = function (i) { return b.l + (n > 1 ? iw * i / (n - 1) : iw / 2); };
+  ticks.forEach(function (v) {
+    g += '<line class="pg-grid" x1="' + b.l + '" x2="' + (b.w - b.r) + '" y1="' + y(v).toFixed(1) + '" y2="' + y(v).toFixed(1) + '"/>'
+      + '<text class="pg-axt" x="' + (b.l - 8) + '" y="' + (y(v) + 4).toFixed(1) + '" text-anchor="end">' + Math.round(v) + '%</text>';
+  });
+  xl.forEach(function (p) {
+    var anchor = p[0] === 0 && n > 1 ? 'start' : p[0] === n - 1 && n > 1 ? 'end' : 'middle';
+    g += '<text class="pg-axt" x="' + x(p[0]).toFixed(1) + '" y="' + (b.h - 6) + '" text-anchor="' + anchor + '">' + escapeHtml(p[1]) + '</text>';
+  });
+  return { g: g, x: x, y: y };
+}
+function pgSvg(b, inner) {
+  return '<svg class="pg-chart" viewBox="0 0 ' + b.w + ' ' + b.h + '" width="' + b.w + '" height="' + b.h + '" aria-hidden="true" focusable="false">' + inner + '</svg>';
+}
+// A plain line through real points (straight segments, no smoothing), a leaf on the newest.
+function pgLineSvg(values, lo, hi, ticks, xl) {
+  var b = pgChartBox(pgWide() ? 520 : 330, 160);
+  var a = pgAxes(b, lo, hi, ticks, xl, values.length);
+  var d = values.map(function (v, i) { return (i ? 'L' : 'M') + a.x(i).toFixed(1) + ' ' + a.y(v).toFixed(1); }).join('');
+  var last = values.length - 1;
+  return pgSvg(b, a.g + '<path class="pg-line" d="' + d + '"/>' + pgLeafAt(a.x(last), a.y(values[last])));
+}
+// Mock scores as dots, oldest first: filled = full mock, outline = mini, dashed = untimed.
+// The shaded band is this app's study bar (80% and up); the label says so.
+function pgMockSvg(points) {
+  var b = pgChartBox(pgWide() ? 520 : 330, 170);
+  var xl = points.length > 1 ? [[0, pgShort(parityDayKey(points[0].at))], [points.length - 1, pgShort(parityDayKey(points[points.length - 1].at))]] : [[0, pgShort(parityDayKey(points[0].at))]];
+  var a = pgAxes(b, 0, 100, [0, 50, 100], xl, points.length);
+  var bar = K_READY_LOW();
+  var band = '<rect class="pg-band-zone" x="' + b.l + '" y="' + a.y(100).toFixed(1) + '" width="' + (b.w - b.l - b.r) + '" height="' + (a.y(bar) - a.y(100)).toFixed(1) + '"/>'
+    + '<text class="pg-axt pg-band-t" x="' + (b.l + 6) + '" y="' + (a.y(100) + 14).toFixed(1) + '">This app’s study bar, ' + bar + '% and up</text>';
+  var dots = points.map(function (p, i) {
+    var cls = 'pg-dot-' + (p.kind === 'full' ? 'full' : p.kind === 'mini' ? 'mini' : 'other') + (p.timed ? '' : ' pg-dot-untimed');
+    return '<circle class="' + cls + '" cx="' + a.x(i).toFixed(1) + '" cy="' + a.y(p.pct).toFixed(1) + '" r="6"/>';
+  }).join('');
+  return pgSvg(b, band + a.g + dots);
+}
+function K_READY_LOW() { var K = plantApi(); return K && K.examReady ? K.examReady.READY_LOW : 80; }
+
+// ── 1. Where you stand ──
+function pgStandHtml(r, range) {
+  var head = '<h2 class="pg-fcap" id="pgStandH">Where you stand</h2>';
+  if (!range.enough) {
+    var have = RD_RANGE_MIN_ANSWERS - range.needed;
+    return '<section class="gt-panel pg-stand pg-stand-wait" aria-labelledby="pgStandH"><div class="pg-stand-t">' + head
+      + '<p class="pg-none">Not enough data yet</p>'
+      + '<p class="pg-fmeta">' + (r.answered > 0 ? have + ' of ' + RD_RANGE_MIN_ANSWERS + ' questions for your first readiness range.' : 'Answer ' + RD_RANGE_MIN_ANSWERS + ' questions to see your readiness range.') + '</p>'
+      + (r.answered > 0 ? '<div class="pg-count" aria-hidden="true"><span style="width:' + Math.round(have / RD_RANGE_MIN_ANSWERS * 100) + '%"></span></div>' : '')
+      + '<p class="pg-quote">A study estimate, not a prediction.</p></div></section>';
+  }
+  return '<section class="gt-panel pg-stand" aria-labelledby="pgStandH"><div class="pg-stand-t">' + head
+    + '<p class="pg-big"><span class="sr-only">Estimated readiness between ' + range.low + ' and ' + range.high + ' percent.</span><span aria-hidden="true">' + range.low + '&ndash;' + pgSup(range.high) + '</span></p>'
+    + '<p class="pg-fmeta">Estimated readiness</p>'
+    + '<div class="pg-band" aria-hidden="true"><span style="left:' + range.low + '%;width:' + Math.max(2, range.high - range.low) + '%"></span></div>'
+    + '<p class="pg-low">Low end ' + range.low + '% &middot; the cautious read</p>'
+    + '<p class="pg-quote">A study estimate, not a prediction.</p></div>'
+    + '<div class="pg-stand-r">' + growthRingsSvg(r.domains.map(function (x) { return x.answered ? x.mastery : 0; }), false) + '</div></section>';
+}
+function pgHowHtml() {
+  var K = plantApi();
+  return '<details class="td-how pg-how"><summary class="td-how-s"><span>How it’s worked out</span>' + ico('chevron-down', 18) + '</summary>'
+    + '<p class="td-note">' + escapeHtml(PG_FRAMING_LINE) + '</p>'
+    + (K && K.domainBand ? '<p class="td-note">' + escapeHtml(K.domainBand.YARDSTICK_LINE) + '</p>' : '')
+    + '<p class="td-note">' + escapeHtml(PG_HOW_LINE) + '</p></details>';
+}
+function pgDomainsHtml(r) {
+  var keys = Object.keys(DI), total = keys.reduce(function (s, d) { return s + DI[d].weight; }, 0) || 1;
+  var banded = false, numbered = false;
+  var rows = r.domains.map(function (x) {
+    var pct = pgPct(x), f = domainFigure(x.answered, pct);
+    if (f.banded) banded = true; else if (x.answered > 0) numbered = true;
+    var w = Math.round(DI[x.id].weight / total * 100);
+    var val = x.answered === 0 ? '<span class="pg-dval pg-word">Not started yet</span>'
+      : f.banded ? '<span class="pg-dval pg-word">' + escapeHtml(f.text) + '</span>'
+        : '<span class="pg-dval pg-num"><span class="sr-only">' + escapeHtml(f.spoken) + '</span><span aria-hidden="true">' + pgSup(pct) + '</span></span>';
+    var bar = (x.answered === 0 || f.banded) ? '<span class="pg-bar pg-bar-early" aria-hidden="true"></span>'
+      : '<span class="pg-bar" aria-hidden="true"><span style="width:' + Math.max(1, pct) + '%"></span></span>';
+    var ev = x.answered === 0 ? 'No answers here yet' : x.answered + (x.answered === 1 ? ' answer' : ' answers');
+    return '<li class="pg-dom"><span class="pg-dot" style="background:' + DI[x.id].color + '" aria-hidden="true"></span>'
+      + '<span class="pg-dn"><span class="pg-t">' + escapeHtml(DI[x.id].name) + '</span><span class="pg-m">' + w + '% of the exam &middot; ' + ev + '</span></span>'
+      + val + bar + '</li>';
+  }).join('');
+  var note = banded ? bandsLine() : numbered ? 'Percentages count your latest try at each question.' : '';
+  return '<section class="pg-sec" aria-labelledby="pgDomH"><h2 class="pg-h2" id="pgDomH">Domain by domain</h2>'
+    + '<ul class="pg-doms">' + rows + '</ul>' + (note ? '<p class="pg-note">' + escapeHtml(note) + '</p>' : '') + '</section>';
+}
+var pgRaiseActs = [];
+function pgRaiseHtml(r, range) {
+  var K = plantApi();
+  var acts = K.readinessReport.raiseLowerBound(plantCert(), pgReadiness(r), range, getDueReview().length);
+  pgRaiseActs = acts;
+  return '<section class="pg-sec" aria-labelledby="pgRaiseH"><h2 class="pg-h2" id="pgRaiseH" tabindex="-1">' + (range.enough ? 'What would raise your low end' : 'What gets you a range') + '</h2>'
+    + '<ul class="pg-rows">' + acts.map(function (a, i) {
+      return '<li class="pg-row"><span class="pg-rt"><span class="pg-t">' + escapeHtml(a.text) + '</span></span>'
+        + (a.kind === 'mix' ? '' : '<button type="button" class="gt-btn-secondary pg-act" onclick="pgRaise(' + i + ')">' + escapeHtml(a.button) + ico('arrow-right', 18) + '</button>') + '</li>';
+    }).join('') + '</ul></section>';
+}
+function pgStartSet(d, n) {
+  var dom = d && DI[d] ? String(d) : 'all';
+  switchTab('practice', { noScroll: true });
+  selectDomain(dom);
+  startSession(n || practiceLenGoal(), dom);
+}
+function pgRaise(i) {
+  var a = pgRaiseActs[i];
+  if (!a) return;
+  if (a.kind === 'review') { startReviewQueue(); return; }
+  if (a.kind === 'answer') { pgStartSet(a.domainId, Math.max(a.more, practiceLenGoal() || 0) || null); return; }
+  if (a.kind === 'focus') { pgStartSet(a.domainId); return; }
+  if (a.kind === 'unlock') pgStartSet('all');
+}
+
+// ── 2. Signs for your exam date ──
+var pgSignDomain = null;
+function pgSignsHtml(r, phase, today) {
+  if (phase === 'week') {
+    return '<section class="pg-sec" aria-labelledby="pgFwH"><h2 class="pg-h2" id="pgFwH">Exam week</h2><ul class="you-list">'
+      + '<li><a class="you-row" href="#final-week" onclick="return navTo(event,\'finalweek\')"><span class="you-ico" aria-hidden="true">' + ico('calendar', 20) + '</span>'
+      + '<span class="you-text"><span class="you-t">Final review week</span><span class="you-m">One short plan for each day before the exam</span></span>'
+      + '<span class="you-chev" aria-hidden="true">' + ico('chevron', 18) + '</span></a></li></ul></section>';
+  }
+  var K = plantApi();
+  var res = K.readySigns.readySigns({
+    readinessLog: Array.isArray(S.readinessLog) ? S.readinessLog : [],
+    today: today,
+    domains: r.domains.map(function (x) { return { id: x.id, answered: x.answered, pct: pgPct(x) }; }),
+    mocks: Array.isArray(S.mockHistory) ? S.mockHistory : [],
+    examQuestions: MOCK_TOTAL,
+    mockSign: PROGRESS_MOCK_SIGN
+  });
+  // Sign 2's one step: the domain furthest from its line (thin first, then the lowest).
+  pgSignDomain = null;
+  var thin = r.domains.filter(function (x) { return x.answered < DOMAIN_READ_MIN; }).sort(function (a, b) { return a.answered - b.answered; })[0];
+  var low = r.domains.filter(function (x) { return pgPct(x) < DOMAIN_TARGET_PCT; }).sort(function (a, b) { return pgPct(a) - pgPct(b); })[0];
+  pgSignDomain = (thin || low || {}).id || null;
+  var act = {
+    low: '<button type="button" class="gt-btn-ghost pg-sact" onclick="pgGoRaise()">What would raise it' + ico('chevron', 18) + '</button>',
+    domains: pgSignDomain ? '<button type="button" class="gt-btn-secondary pg-act" onclick="pgStartSet(pgSignDomain)">Practice ' + escapeHtml(DI[pgSignDomain].short) + ico('arrow-right', 18) + '</button>' : '',
+    mocks: '<a class="gt-btn-ghost pg-sact" href="#mock" onclick="return navTo(event,\'mock\')">Go to mock exams' + ico('chevron', 18) + '</a>'
+  };
+  return '<section class="pg-sec pg-signs" aria-labelledby="pgSignsH"><h2 class="pg-h2" id="pgSignsH">'
+    + escapeHtml(phase === 'dated' ? K.readySigns.SIGNS_HEADING_DATED : K.readySigns.SIGNS_HEADING) + '</h2>'
+    + '<ul class="pg-sign-list">' + res.signs.map(function (s) {
+      return '<li class="pg-sign">' + todayLeafSvg(s.met ? 'on' : 'off')
+        + '<span class="pg-rt"><span class="pg-t">' + escapeHtml(s.title) + '</span><span class="pg-m">' + escapeHtml(s.met ? K.readySigns.SIGN_MET : K.readySigns.SIGN_NOT_YET) + '</span></span>'
+        + (s.met ? '' : act[s.id]) + '</li>';
+    }).join('') + '</ul>'
+    + '<p class="' + (res.allMet ? 'pg-signs-all' : 'pg-note') + '">' + escapeHtml(res.line) + (res.isacaLine ? ' ' + escapeHtml(res.isacaLine) : '') + '</p></section>';
+}
+function pgGoRaise() {
+  var h = document.getElementById('pgRaiseH');
+  if (!h) return;
+  try { h.scrollIntoView({ block: 'start' }); h.focus({ preventScroll: true }); } catch (e) {}
+}
+
+// ── 3. Charts ──
+function pgLowHtml(range, today) {
+  var K = plantApi(), R = K.readinessReport;
+  var log = Array.isArray(S.lowEndLog) && S.lowEndLog.length ? S.lowEndLog : (Array.isArray(S.readinessLog) ? S.readinessLog : []);
+  var series = R.lowSeries(log, today, PG_WEEKS * 7);
+  var sum = R.lowSummary(series);
+  var body;
+  if (!sum.enough || sum.values.length < 2) {
+    body = '<p class="pg-m">' + (range.enough ? 'This fills in as you study on more days.' : 'This fills in once you have a range.') + '</p>';
+  } else {
+    // The app's scale (at least 20 points tall), widened to whole fives for the labels.
+    var sc = R.chartScale(sum.values);
+    var lo = Math.max(0, Math.floor(sc.lo / 5) * 5), hi = Math.min(100, Math.ceil(sc.hi / 5) * 5);
+    var drawn = series.filter(function (d) { return d.low !== null; });
+    var mid = Math.floor((drawn.length - 1) / 2);
+    var xl = [[0, pgShort(drawn[0].day)], [drawn.length - 1, 'Today']];
+    if (drawn.length > 14) xl.splice(1, 0, [mid, pgShort(drawn[mid].day)]);
+    body = '<p class="pg-sent-s">' + escapeHtml(R.lowWords(sum)) + '</p>'
+      + pgLineSvg(sum.values, lo, hi, [lo, Math.round((lo + hi) / 10) * 5, hi], xl)
+      // The table: the low end at the end of each week (and today), oldest first.
+      + pgTable('low', 'Your low end at the end of each week, oldest first', ['Week ending', 'Low end'], drawn.filter(function (d, i) {
+        return i === drawn.length - 1 || new Date(sdNoon(d.day)).getDay() === 0;
+      }).map(function (d) { return [d.day === today ? 'Today' : pgShort(d.day), d.low + '%']; }));
+  }
+  return '<section class="pg-sec pg-chart-sec" aria-labelledby="pgLowH"><h2 class="pg-h2" id="pgLowH">Your low end over time</h2>'
+    + '<p class="pg-cap">The cautious end of your range, last ' + PG_WEEKS + ' weeks</p>' + body + '</section>';
+}
+function pgMocksHtml(phase) {
+  var K = plantApi(), R = K.readinessReport;
+  var mocks = (Array.isArray(S.mockHistory) ? S.mockHistory : []).slice().sort(function (a, b) { return b.finishedAt - a.finishedAt; });
+  var points = R.mockTrend(mocks, MOCK_TOTAL);
+  var kindName = function (p, total) { return p.kind === 'full' ? 'Full mock' : p.kind === 'mini' ? 'Mini mock' : total + ' questions'; };
+  var head = '<h2 class="pg-h2" id="pgMockH">Mock exams</h2>';
+  var body;
+  if (!points.length) {
+    body = '<p class="pg-empty">No mocks yet</p><p class="pg-m">A mini mock is ' + MOCK_MINI_TOTAL + ' questions at exam pace.</p>'
+      + (phase === 'done' ? '' : '<a class="gt-btn-ghost pg-sact" href="#mock" onclick="return navTo(event,\'mock\')">Go to mock exams' + ico('chevron', 18) + '</a>');
+  } else {
+    var byId = {};
+    mocks.forEach(function (m) { byId[m.id] = m; });
+    var words = R.trendWords(points);
+    var first = points.length === 1 ? points[0] : null;
+    var sentence = first
+      ? first.pct + '% &middot; ' + kindName(first, byId[first.id].total) + ' &middot; ' + escapeHtml(pgShort(parityDayKey(first.at))) + '. A trend shows from your second mock.'
+      : escapeHtml(words || '');
+    var pace = K.pace.pacingStatsLine(K.pace.pacingStats(mocks));
+    body = '<p class="pg-sent-s">' + sentence + '</p>'
+      + pgMockSvg(points)
+      + '<p class="pg-legend" aria-hidden="true"><span><svg width="14" height="14" viewBox="0 0 14 14"><circle class="pg-dot-full" cx="7" cy="7" r="5"/></svg>Full mock</span>'
+      + '<span><svg width="14" height="14" viewBox="0 0 14 14"><circle class="pg-dot-mini" cx="7" cy="7" r="5"/></svg>Mini mock</span></p>'
+      + (pace ? '<p class="pg-body">' + escapeHtml(pace) + ' Exam pace is about 96 seconds a question.</p>' : '')
+      + pgTable('mocks', 'Your mock scores, oldest first', ['Mock', 'Kind', 'Score'], points.map(function (p) {
+        return [pgShort(parityDayKey(p.at)), kindName(p, byId[p.id].total) + (p.timed ? '' : ', untimed'), p.pct + '%'];
+      }));
+  }
+  return '<section class="pg-sec pg-chart-sec" aria-labelledby="pgMockH">' + head + body
+    + '<p class="pg-note">' + PG_PRACTICE_NOTE + '</p></section>';
+}
+// "Over a third of the outline has stuck": a share said in words, never inflated.
+function pgShareWords(p, n) {
+  if (p >= 0.9) return 'Nearly all of the outline has stuck';
+  var steps = [[0.75, 'three quarters'], [2 / 3, 'two thirds'], [0.5, 'half'], [1 / 3, 'a third'], [0.25, 'a quarter'], [0.1, 'a tenth']];
+  for (var i = 0; i < steps.length; i++) {
+    var t = steps[i][0], w = steps[i][1];
+    if (p >= t) return (p > t + 0.005 ? 'Over ' + w : w.charAt(0).toUpperCase() + w.slice(1)) + ' of the outline has stuck';
+  }
+  return n + (n === 1 ? ' part has' : ' parts have') + ' stuck so far';
+}
+function pgStuckHtml(today) {
+  var head = '<h2 class="pg-h2 pg-h-tag" id="pgStuckH">What’s stuck <span class="pg-tag">not a readiness measure</span></h2>';
+  var o = plantOutline();
+  if (!o) {
+    plantAskNotes();
+    return '<section class="pg-sec pg-chart-sec" aria-labelledby="pgStuckH">' + head + '<p class="pg-m">' + (conceptsLoadFailed ? 'This shows once the study notes can load.' : 'Loading…') + '</p></section>';
+  }
+  var keys = Object.keys(DI), totalW = keys.reduce(function (s, d) { return s + DI[d].weight; }, 0) || 1;
+  var domOf = {};
+  o.byDomain.forEach(function (list, i) { list.forEach(function (s) { domOf[s] = i; }); });
+  var stuck = isPlainObj(S.stuckAt) ? Object.keys(S.stuckAt).filter(function (s) { return domOf[s] !== undefined && S.stuckAt[s] <= today; }) : [];
+  var share = function (end) {
+    var c = keys.map(function () { return 0; });
+    stuck.forEach(function (s) { if (S.stuckAt[s] <= end) c[domOf[s]] += 1; });
+    return keys.reduce(function (sum, d, i) { var n = o.byDomain[i].length; return sum + (n ? DI[d].weight * c[i] / n : 0); }, 0) / totalW;
+  };
+  var body;
+  if (!stuck.length) {
+    body = '<p class="pg-m">This starts once a topic has been answered right on two different days.</p>';
+  } else {
+    var monday = pgMonday(today);
+    var tookRoot = stuck.filter(function (s) { return S.stuckAt[s] >= monday; }).length;
+    var rootLine = tookRoot ? '<p class="pg-m">' + tookRoot + (tookRoot === 1 ? ' part' : ' parts') + ' took root this week.</p>' : '';
+    var days = todayStudyDayList(today);
+    var startWeek = pgMonday(days.length ? days[0] : today);
+    var weeks = [];
+    for (var wk = startWeek; wk <= monday; wk = pgAddDays(wk, 7)) weeks.push(wk);
+    if (weeks.length < PG_STUCK_FROM_WEEKS) {
+      body = '<p class="pg-sent-s">' + stuck.length + (stuck.length === 1 ? ' part has' : ' parts have') + ' stuck so far</p>' + rootLine
+        + '<p class="pg-m">The line starts after ' + PG_STUCK_FROM_WEEKS + ' weeks of study.</p>';
+    } else {
+      weeks = weeks.slice(-PG_STUCK_MAX_WEEKS);
+      var vals = weeks.map(function (w, i) { var end = i === weeks.length - 1 ? today : pgAddDays(w, 6); return Math.round(share(end) * 1000) / 10; });
+      var xl = [[0, pgShort(weeks[0])], [weeks.length - 1, 'This week']];
+      body = '<p class="pg-sent-s">' + escapeHtml(pgShareWords(share(today), stuck.length)) + '</p>' + rootLine
+        + pgLineSvg(vals, 0, 100, [0, 50, 100], xl)
+        + pgTable('stuck', 'Share of the exam outline that has stuck, by week', ['Week of', 'Stuck'], weeks.map(function (w, i) { return [pgShort(w), vals[i] + '%']; }));
+    }
+  }
+  return '<section class="pg-sec pg-chart-sec" aria-labelledby="pgStuckH">' + head
+    + '<p class="pg-cap">A part sticks when you get it right, without help, on two different days. This line never goes down.</p>' + body + '</section>';
+}
+function pgAccHtml(today) {
+  var tally = isPlainObj(S.dayTally) ? S.dayTally : {};
+  var monday = pgMonday(today), lastMon = pgAddDays(monday, -7);
+  var sum = function (from, to) {
+    var out = {}, any = false, partial = false;
+    Object.keys(DI).forEach(function (d) { out[d] = [0, 0]; });
+    Object.keys(tally).forEach(function (day) {
+      if (day < from || day > to) return;
+      var e = tally[day];
+      if (e.b) partial = true;
+      Object.keys(DI).forEach(function (d) { if (e[d]) { out[d][0] += e[d][0]; out[d][1] += e[d][1]; any = true; } });
+    });
+    return { by: out, any: any, partial: partial, n: Object.keys(out).reduce(function (s, d) { return s + out[d][0]; }, 0) };
+  };
+  var now = sum(monday, today), before = sum(lastMon, pgAddDays(monday, -1));
+  var head = '<h2 class="pg-h2" id="pgAccH">Accuracy by domain</h2><p class="pg-cap">This week and last week, every answer</p>';
+  if (!now.any && !before.any) {
+    return '<section class="pg-sec pg-chart-sec" aria-labelledby="pgAccH">' + head + '<p class="pg-m">This shows once you answer questions this week.</p></section>';
+  }
+  var cell = function (t) {
+    if (!t[0]) return { text: 'No answers', pct: null };
+    var p = Math.round(t[1] / t[0] * 100);
+    return t[0] < PG_ACC_MIN ? { text: t[0] + (t[0] === 1 ? ' answer' : ' answers'), pct: null } : { text: p + '% of ' + t[0], pct: p };
+  };
+  var bar = function (c, cls) {
+    return '<svg class="pg-abar ' + cls + '" width="100%" height="10" aria-hidden="true" focusable="false"><rect class="pg-abar-track" x="0" y="0" width="100%" height="10" rx="5"/>'
+      + (c.pct !== null && c.pct > 0 ? '<rect class="pg-abar-fill" x="0" y="0" width="' + c.pct + '%" height="10" rx="5"/>' : '') + '</svg>';
+  };
+  var rows = Object.keys(DI).map(function (d) {
+    var a = cell(now.by[d]), b = cell(before.by[d]);
+    return '<li class="pg-acc"><span class="pg-t"><span class="pg-dot" style="background:' + DI[d].color + '" aria-hidden="true"></span>' + escapeHtml(DI[d].short) + '</span>'
+      + '<span class="pg-acc-r"><span class="pg-acc-l">This week</span>' + bar(a, 'pg-abar-now') + '<span class="pg-acc-v">' + escapeHtml(a.text) + '</span></span>'
+      + '<span class="pg-acc-r"><span class="pg-acc-l">Last week</span>' + bar(b, 'pg-abar-before') + '<span class="pg-acc-v">' + escapeHtml(b.text) + '</span></span></li>';
+  }).join('');
+  var said = now.n + (now.n === 1 ? ' answer' : ' answers') + ' this week, ' + before.n + ' last week.';
+  return '<section class="pg-sec pg-chart-sec" aria-labelledby="pgAccH">' + head
+    + '<p class="pg-sent-s">' + escapeHtml(said) + '</p>'
+    + '<ul class="pg-accs">' + rows + '</ul>'
+    + '<p class="pg-note">A percent shows from ' + PG_ACC_MIN + ' answers in a week. Hard practice and weak-spot sets lower it; that’s normal, not a score.'
+    + (now.partial || before.partial ? ' Days before this page arrived count only your latest try at each question.' : '') + '</p>'
+    + pgTable('acc', 'Accuracy by domain, this week and last week', ['Domain', 'This week', 'Last week'], Object.keys(DI).map(function (d) {
+      return [DI[d].short, cell(now.by[d]).text, cell(before.by[d]).text];
+    })) + '</section>';
+}
+
+// ── 4. Your study days ──
+function pgMonthKey(day) { return day.slice(0, 7); }
+function pgMonthShift(key, n) {
+  var y = Number(key.slice(0, 4)), m = Number(key.slice(5, 7)) - 1 + n;
+  var d = new Date(y, m, 1, 12);
+  return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0');
+}
+function pgDaysHtml(today, st) {
+  var list = todayStudyDayList(today);
+  var head = '<h2 class="pg-h2" id="pgDaysH">Your study days</h2>';
+  if (list.length < 2) return '<section class="pg-sec pg-days" aria-labelledby="pgDaysH">' + head + '<p class="pg-m">Days you study will show here.</p></section>';
+  // A day back after 3 or more away: the month waits behind one button.
+  if (st.back && !pgState.daysOpen) {
+    return '<section class="pg-sec pg-days" aria-labelledby="pgDaysH">' + head
+      + '<button type="button" class="gt-btn-secondary" aria-expanded="false" onclick="pgOpenDays()">Show your study days' + ico('chevron-down', 18) + '</button></section>';
+  }
+  var on = {};
+  list.forEach(function (d) { on[d] = true; });
+  var cur = pgMonthKey(today), first = pgMonthKey(list[0]);
+  var month = pgState.month && pgState.month >= first && pgState.month <= cur ? pgState.month : cur;
+  pgState.month = month;
+  var monthName = pgFmt(month + '-15', { month: 'long', year: 'numeric' });
+  var inMonth = list.filter(function (d) { return pgMonthKey(d) === month; });
+  var monday = pgMonday(today);
+  var week = list.filter(function (d) { return d >= monday; }).length;
+  var y = Number(month.slice(0, 4)), m = Number(month.slice(5, 7)) - 1;
+  var count = new Date(y, m + 1, 0).getDate(), lead = (new Date(y, m, 1).getDay() + 6) % 7;
+  var cells = '';
+  for (var i = 0; i < lead; i++) cells += '<span class="pg-cd pg-cd-pad" aria-hidden="true"></span>';
+  for (var d = 1; d <= count; d++) {
+    var key = month + '-' + String(d).padStart(2, '0');
+    var isToday = key === today, studied = !!on[key];
+    var inner = todayLeafSvg(studied ? 'on' : 'off') + '<span class="pg-cn">' + d + '</span>';
+    if (studied) {
+      cells += '<button type="button" class="pg-cd on' + (isToday ? ' pg-today' : '') + '" id="pgCd-' + key + '" aria-pressed="' + (pgState.day === key) + '" aria-label="'
+        + escapeHtml(pgFmt(key, { weekday: 'long', day: 'numeric', month: 'long' })) + ', a study day' + (isToday ? ', today' : '') + '" onclick="pgPickDay(\'' + key + '\')">' + inner + '</button>';
+    } else {
+      cells += '<span class="pg-cd' + (isToday ? ' pg-today' : '') + '" aria-hidden="true">' + inner + '</span>';
+    }
+  }
+  var prev = month > first, next = month < cur;
+  var detail = pgState.day && pgMonthKey(pgState.day) === month ? pgDayDetail(pgState.day) : '';
+  return '<section class="pg-sec pg-days" aria-labelledby="pgDaysH">' + head
+    + '<p class="pg-sent-s">' + inMonth.length + (inMonth.length === 1 ? ' study day' : ' study days') + ' in ' + escapeHtml(pgFmt(month + '-15', { month: 'long' })) + '</p>'
+    + (month === cur ? '<p class="pg-m">' + (week ? 'This week: ' + week + (week === 1 ? ' day' : ' days') : 'No study days yet this week') + '</p>' : '')
+    + '<div class="pg-calhead"><button type="button" class="pg-iconbtn" id="pgPrevM" aria-label="Previous month"' + (prev ? '' : ' disabled') + ' onclick="pgMonth(-1)">' + ico('chevron', 22, 'ico ico-back') + '</button>'
+    + '<p class="pg-calm" aria-live="polite">' + escapeHtml(monthName) + '</p>'
+    + '<button type="button" class="pg-iconbtn" id="pgNextM" aria-label="Next month"' + (next ? '' : ' disabled') + ' onclick="pgMonth(1)">' + ico('chevron', 22) + '</button></div>'
+    + '<div class="pg-cal">' + ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'].map(function (w) { return '<span class="pg-cw" aria-hidden="true">' + w + '</span>'; }).join('') + cells + '</div>'
+    + '<p class="pg-m pg-mt">A filled leaf is a study day. Nothing else is marked. Choose one to see what you studied.</p>'
+    + '<div class="pg-dayd" id="pgDayD" role="status">' + detail + '</div></section>';
+}
+// What a study day held: questions by domain, mocks and study notes first opened that day.
+function pgDayDetail(day) {
+  var e = isPlainObj(S.dayTally) ? S.dayTally[day] : null;
+  var lines = [];
+  if (e) {
+    var parts = [], n = 0;
+    Object.keys(DI).forEach(function (d) { if (e[d]) { n += e[d][0]; parts.push(escapeHtml(DI[d].short) + ' ' + e[d][0]); } });
+    if (n) lines.push(n + (n === 1 ? ' question' : ' questions') + ': ' + parts.join(', ') + '.');
+  }
+  (Array.isArray(S.mockHistory) ? S.mockHistory : []).forEach(function (m) {
+    if (parityDayKey(m.finishedAt) !== day) return;
+    lines.push((mockTypeOf(m.type) === 'mini' || m.total === MOCK_MINI_TOTAL ? 'A mini mock' : m.total === MOCK_TOTAL ? 'A full mock' : 'A ' + parityCount(m.total) + '-question mock') + '.');
+  });
+  var notes = 0;
+  if (isPlainObj(S.topicViewed)) Object.keys(S.topicViewed).forEach(function (k) { var t = Number(S.topicViewed[k]); if (t > 0 && parityDayKey(t) === day) notes++; });
+  if (notes) lines.push(notes + (notes === 1 ? ' study note' : ' study notes') + ' opened for the first time.');
+  if (!lines.length) lines.push('A study day. The details of this day were not kept.');
+  if (e && e.b) lines.push('Counted from your latest try at each question, so this day may show fewer.');
+  return '<p class="pg-t">' + escapeHtml(pgFmt(day, { weekday: 'long', day: 'numeric', month: 'long' })) + '</p>'
+    + lines.map(function (l) { return '<p class="pg-m">' + l + '</p>'; }).join('');
+}
+function pgPickDay(day) {
+  pgState.day = pgState.day === day ? null : day;
+  document.querySelectorAll('.pg-cd[aria-pressed]').forEach(function (b) { b.setAttribute('aria-pressed', b.id === 'pgCd-' + pgState.day ? 'true' : 'false'); });
+  var box = document.getElementById('pgDayD');
+  if (box) box.innerHTML = pgState.day ? pgDayDetail(pgState.day) : '';
+}
+function pgMonth(n) {
+  if (!pgState.month) return;
+  pgState.month = pgMonthShift(pgState.month, n);
+  pgState.day = null;
+  renderProgress();
+  var want = document.getElementById(n < 0 ? 'pgPrevM' : 'pgNextM');
+  if (want && want.disabled) want = document.getElementById(n < 0 ? 'pgNextM' : 'pgPrevM');
+  try { if (want) want.focus(); } catch (e) {}
+}
+function pgOpenDays() {
+  pgState.daysOpen = true;
+  renderProgress();
+  try { document.getElementById('pgDaysH').setAttribute('tabindex', '-1'); document.getElementById('pgDaysH').focus(); } catch (e) {}
+}
+
+// ── 5. Mindset check: one question from a principle, from memory ──
+// First choice: a principle linked to a question you got wrong in the last
+// 14 days (its practice_ids); otherwise a principle Today isn't showing. The
+// side the right answer sits on is mixed by the day. Nothing is saved.
+function pgMindPick(now) {
+  var ok = PRINCIPLES.filter(function (p) { return !!todayMindPair(p); });
+  if (!ok.length) return null;
+  var n = todayDayNumber(now), log = isPlainObj(S.answerLog) ? S.answerLog : {}, since = now.getTime() - PG_MIND_LOOKBACK_DAYS * 86400000;
+  var wrong = Object.keys(log).filter(function (id) { return log[id] && log[id].lastCorrect === false && log[id].lastAt >= since; })
+    .sort(function (a, b) { return log[b].lastAt - log[a].lastAt; });
+  var p = null;
+  for (var i = 0; i < wrong.length && !p; i++) {
+    for (var j = 0; j < ok.length; j++) if (Array.isArray(ok[j].practice_ids) && ok[j].practice_ids.indexOf(wrong[i]) >= 0) { p = ok[j]; break; }
+  }
+  if (!p) {
+    p = ok[(n + Math.floor(ok.length / 2)) % ok.length];
+    if (p === ok[n % ok.length] && ok.length > 1) p = ok[(n + 1) % ok.length];
+  }
+  return { p: p, pair: todayMindPair(p), rightFirst: todayMindRightFirst(n + 3), key: parityDayKey(now.getTime()) + '/' + p.id };
+}
+function pgMindHtml(phase) {
+  if (phase === 'done') return '';
+  if (!PRINCIPLES_RAW) {
+    if (!principlesLoadFailed) loadPrinciplesData(function (ok) { if (ok && S.activeTab === 'progress') pgRefreshMind(); });
+    return '';
+  }
+  var link = function (p) {
+    return '<a class="td-link" href="' + todayRouteHref('principles/' + p.id) + '" data-pid="' + escapeHtml(p.id) + '" onclick="return todayOpenPrinciple(event,this.dataset.pid)">'
+      + 'Read the principle<span class="sr-only">: ' + escapeHtml(p.title) + '</span>' + ico('chevron', 18) + '</a>';
+  };
+  if (phase === 'week') {
+    var idea = resolvePrinciple(TODAY_EXAM_IDEA);
+    return idea ? '<section class="td-mind td-idea pg-mind" aria-labelledby="pgMindH"><h2 class="pg-h2" id="pgMindH">One idea for exam day</h2>'
+      + '<div class="td-idea-b"><p class="td-idea-t">' + escapeHtml(idea.title) + '</p><p class="td-idea-q">' + escapeHtml(idea.rule || '') + '</p></div>' + link(idea) + '</section>' : '';
+  }
+  var t = pgMindPick(new Date());
+  if (!t) return '';
+  var opts = [{ ok: true, text: t.pair.right }, { ok: false, text: t.pair.trap }];
+  if (!t.rightFirst) opts.reverse();
+  pgState.mind = { key: t.key, p: t.p, pair: t.pair, opts: opts, link: link(t.p) };
+  var c = pgState.mindChoice && pgState.mindChoice.key === t.key ? pgState.mindChoice.idx : -1;
+  return '<section class="td-mind pg-mind" data-key="' + escapeHtml(t.key) + '" aria-labelledby="pgMindH">'
+    + '<h2 class="pg-h2" id="pgMindH">Mindset check</h2>'
+    + '<p class="pg-m">One question from memory. Think as the auditor.</p>'
+    + '<p class="td-mind-q" id="pgMindQ">' + escapeHtml(t.pair.scenario) + '</p>'
+    + '<fieldset class="td-mind-fs" aria-describedby="pgMindQ"><legend class="td-mind-lg">Which is the better move?</legend>'
+    + opts.map(function (o, i) {
+      var shown = c >= 0 && o.ok;
+      return '<button type="button" class="td-mind-opt' + (shown ? ' is-key' : '') + '" aria-pressed="' + (c === i) + '" onclick="pgMindAnswer(' + i + ')">'
+        + '<span class="td-mind-ot">' + escapeHtml(o.text) + '</span><span class="td-mind-tag">' + (shown ? ico('check', 16) + 'The auditor&rsquo;s move' : '') + '</span></button>';
+    }).join('') + '</fieldset>'
+    + '<p class="td-mind-hint">Choose an answer to see why.</p>'
+    + '<div class="td-mind-v' + (c >= 0 ? (opts[c].ok ? ' ok' : ' no') : '') + '" id="pgMindV" role="status">' + (c >= 0 ? pgMindVerdict(opts[c].ok) : '') + '</div></section>';
+}
+function pgMindVerdict(ok) {
+  var m = pgState.mind;
+  return '<p class="td-mind-vt"><strong>' + (ok ? 'Yes, that&rsquo;s the auditor&rsquo;s move.' : 'Not quite: that&rsquo;s the trap.') + '</strong> '
+    + escapeHtml(ok ? m.pair.rest : m.pair.why) + '</p>' + m.link;
+}
+// Painted in place, so focus stays on the answer and the status line is read out.
+function pgMindAnswer(idx) {
+  var m = pgState.mind, sec = document.querySelector('.pg-mind[data-key]');
+  if (!m || !sec || sec.getAttribute('data-key') !== m.key || !m.opts[idx]) return;
+  pgState.mindChoice = { key: m.key, idx: idx };
+  Array.prototype.forEach.call(sec.querySelectorAll('.td-mind-opt'), function (b, i) {
+    b.classList.toggle('is-key', m.opts[i].ok);
+    b.setAttribute('aria-pressed', i === idx ? 'true' : 'false');
+    var tag = b.querySelector('.td-mind-tag');
+    if (tag) tag.innerHTML = m.opts[i].ok ? ico('check', 16) + 'The auditor&rsquo;s move' : '';
+  });
+  var v = document.getElementById('pgMindV');
+  if (v) { v.className = 'td-mind-v ' + (m.opts[idx].ok ? 'ok' : 'no'); v.innerHTML = pgMindVerdict(m.opts[idx].ok); }
+}
+function pgRefreshMind() {
+  var slot = document.getElementById('pgSide');
+  if (!slot || slot.contains(document.activeElement)) return;
+  slot.innerHTML = pgMindHtml(pgPhase(examDaysLeft()));
+}
+function pgShowCharts() {
+  pgState.charts = true;
+  renderProgress();
+  try { var h = document.getElementById('pgLowH'); h.setAttribute('tabindex', '-1'); h.focus(); } catch (e) {}
+}
+
+function renderProgress() {
+  var area = document.getElementById('pgArea');
+  if (!area) return;
+  var now = new Date(), today = parityDayKey(now.getTime());
+  var days = examDaysLeft(), phase = pgPhase(days);
+  var when = TODAY_WEEKDAYS[now.getDay()] + ' &middot; ' + (phase === 'none' ? 'No exam date set'
+    : phase === 'done' ? 'After your exam date' : days === 0 ? 'Exam day' : 'Exam in ' + days + (days === 1 ? ' day' : ' days'));
+  var head = '<div class="pg-head"><p class="td-when">' + when + '</p><h1 class="td-title" id="pgTitle" tabindex="-1">Your progress</h1>'
+    + (phase === 'done' ? '<p class="td-intro">Your exam day has come and gone. Everything here stays as a record; nothing new is suggested.</p>' : '') + '</div>';
+  var K = plantApi();
+  if (!K || !K.readySigns) {
+    area.innerHTML = '<div class="pg">' + head + '<p class="gt-loading" role="status">Loading your progress…</p></div>';
+    return;
+  }
+  var r = computeTodayReadiness(), range = todayReadinessRange(r);
+  var st = todayState(now, r);
+  try { if (progStuckSync()) saveStateSoon(); } catch (e) {}
+  var focusId = document.activeElement && area.contains(document.activeElement) ? document.activeElement.id : '';
+  var showSigns = phase === 'week' || (range.enough && phase !== 'done');
+  var charts = pgLowHtml(range, today) + pgMocksHtml(phase) + pgStuckHtml(today) + pgAccHtml(today);
+  if (phase === 'week' && !pgState.charts) {
+    charts = '<section class="pg-sec" aria-labelledby="pgRestH"><h2 class="pg-h2" id="pgRestH">Your charts are resting</h2>'
+      + '<p class="pg-body">Exam week: the range and domains above are all you need. The charts are here if you want them.</p>'
+      + '<button type="button" class="gt-btn-secondary pg-mt" aria-expanded="false" onclick="pgShowCharts()">Show my charts' + ico('chevron-down', 18) + '</button></section>';
+  }
+  var main = '<div class="pg-main">' + head
+    + pgStandHtml(r, range) + (range.enough ? pgHowHtml() : '')
+    + (showSigns ? pgSignsHtml(r, phase, today) : '')
+    + pgDomainsHtml(r)
+    + (phase === 'done' ? '' : pgRaiseHtml(r, range))
+    + '<div class="pg-charts">' + charts + '</div>'
+    + (phase === 'week' ? '' : pgDaysHtml(today, st))
+    + '</div>';
+  var side = '<div class="pg-side" id="pgSide">' + pgMindHtml(phase) + '</div>';
+  var foot = '<div class="pg-foot"><p class="pg-back"><a class="td-link" href="#today" onclick="return navTo(event,\'home\')">Back to today&rsquo;s plan' + ico('arrow-right', 18) + '</a></p>'
+    + '<p class="td-legal">KaiSip is independent and not affiliated with ISACA.</p></div>';
+  area.innerHTML = '<div class="pg">' + main + side + foot + '</div>';
+  if (focusId) { var f = document.getElementById(focusId); if (f && !f.disabled) { try { f.focus({ preventScroll: true }); } catch (e) {} } }
 }
 
 // â”€â”€ FAQ / HELP (v10.40) â”€â”€
@@ -13622,6 +14576,9 @@ function plantNoteAnswer(qId, clean, now) {
   var cert = plantCert();
   var range = K.readinessRange.readinessRange(cert, K.readiness.computeReadiness(cert, plantAnswers()));
   S.readinessLog = K.examReady.logReadinessDay(Array.isArray(S.readinessLog) ? S.readinessLog : [], parityDayKey(now), range.enough ? range.low : null);
+  // The Progress page keeps the same low end for 8 weeks, and the day a subtopic first stuck.
+  progLowNote(parityDayKey(now), range.enough ? range.low : null);
+  if (clean) progStuckNote(qId);
 }
 
 // ── Saved shapes (load / import) ──
@@ -13989,6 +14946,8 @@ function plantRefresh() {
   if (typeof S === 'undefined' || !S) return;
   var slot = document.getElementById('tdPlant');
   if (slot && S.activeTab === 'home') slot.innerHTML = plantSafe(plantTodayHtml);
+  // The Progress page reads the same script and notes: draw it again once they are here.
+  if (S.activeTab === 'progress') { try { renderProgress(); } catch (e) {} }
   try { railSync(); } catch (e) {}
 }
 
@@ -16745,6 +17704,9 @@ function doResetProgress() {
   S.cleanLog = {};
   S.readinessLog = [];
   S.finalWeekDone = {};
+  S.dayTally = {};
+  S.lowEndLog = [];
+  S.stuckAt = {};
   plantGrewShown = null;
   plantBackfillShown = null;
   S.mockId = null;
