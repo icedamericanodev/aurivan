@@ -898,14 +898,14 @@
         "Final two: B beats A because script success shows the code was deployed, not that it works; configuration records note what changed without proving it.",
         "Exam cue: a deployment that ran is not a release that works; look for verification of the outcome in production before closure."
       ],
-      "framework_ref": "ITIL 4 Release Management practice; ITIL 4 Deployment Management practice; COBIT 2019 BAI07 (Managed IT Change Acceptance and Transitioning)",
+      "framework_ref": "ITIL 4 Release Management practice; ITIL 4 Service Validation and Testing practice; COBIT 2019 BAI07 (Managed IT Change Acceptance and Transitioning)",
       "related_concepts": [
         "Release management",
-        "ITIL 4",
-        "Coordinated changes",
-        "Deployment"
+        "Post-release verification",
+        "Smoke testing",
+        "Release closure"
       ],
-      "_provenance": "Authored from concept: 'Release management PRIMARY purpose per ITIL 4 Release Management practice'. Public sources: ITIL 4, ISACA. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. D4 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): A (performance appraisals) was a throwaway; it is now updating configuration records, a neighboring practice's duty. Round-3 re-angle: this item duplicated d4_034, d4_040, so it now tests a different judgment.",
+      "_provenance": "Authored from concept: 'Release management PRIMARY purpose per ITIL 4 Release Management practice'. Public sources: ITIL 4, ISACA. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. D4 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): A (performance appraisals) was a throwaway; it is now updating configuration records, a neighboring practice's duty. Round-3 re-angle: this item duplicated d4_034, d4_040, so it now tests a different judgment. Round-4 auditor fix.",
       "style_version": 2,
       "principle_id": "proven-not-configured"
     },
@@ -2728,7 +2728,7 @@
       "options": {
         "A": "Let each department manager run a separate local response",
         "B": "Designate an alternate command center outside the region",
-        "C": "Add more members to the crisis management team",
+        "C": "Name a deputy for each crisis team role",
         "D": "Equip the head-office command center with flood defenses"
       },
       "correct": "B",
@@ -2737,21 +2737,22 @@
       "correct_explanation": "A command center inside the area a disaster strikes can fail exactly when it is needed, through flooding, lost power or blocked access. Designating an alternate outside the region, equipped and known to the team, lets the crisis team assemble whatever hits head office. Flood defenses are the runner-up: they harden one building against one hazard, but roads, power and telecoms in the region can still fail together.",
       "wrong_explanations": {
         "A": "Separate local responses fragment decisions and resources; a crisis needs one coordinated command, wherever it meets.",
-        "C": "More team members cannot help while the only place they can meet is flooded.",
+        "C": "Deputies cover absent members, but the whole team, deputies included, still has nowhere to meet.",
         "D": "Flood defenses protect one building against one hazard, but a regional event can still cut power, roads and telecoms around it."
       },
       "tips": [
-        "Eliminate: A and C, because separate local responses break unified command, and more members still have nowhere to meet.",
+        "Eliminate: A and C, because separate local responses break unified command, and deputies cover absent people, not a lost meeting place.",
         "Final two: B beats D because flood defenses protect one building, while an alternate outside the region removes the shared hazard, including blocked roads and lost power.",
         "Exam cue: crisis facilities must not share the hazard they respond to; place alternates far enough away that one event cannot disable both."
       ],
       "framework_ref": "ISO 22301:2019 Clause 8.4.2 (Incident Response Structure); COBIT 2019 DSS04 (Managed Continuity); DRII Professional Practice 5 (Incident Response)",
       "related_concepts": [
-        "BCP activation",
-        "Incident command",
-        "Activation criteria"
+        "Crisis command center",
+        "Alternate facilities",
+        "Incident response structure",
+        "Shared hazards"
       ],
-      "_provenance": "Authored from concept: 'BCP activation governance per ISO 22301 and BCI Good Practice Guidelines'. Public sources: ISO, BCI. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. Second wording pass (Oct 2026): wording fixes from the blind re-test; key and options unchanged. D4 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): A (activate for every incident) and C (regulator first) were strawmen; they are now undefined authority and a shorter checklist. Round-3 re-angle: this item duplicated d4_188, d4_091, d4_096, so it now tests a different judgment.",
+      "_provenance": "Authored from concept: 'BCP activation governance per ISO 22301 and BCI Good Practice Guidelines'. Public sources: ISO, BCI. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. Second wording pass (Oct 2026): wording fixes from the blind re-test; key and options unchanged. D4 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): A (activate for every incident) and C (regulator first) were strawmen; they are now undefined authority and a shorter checklist. Round-3 re-angle: this item duplicated d4_188, d4_091, d4_096, so it now tests a different judgment. Round-4 auditor fix.",
       "style_version": 2
     },
     {
@@ -3689,7 +3690,7 @@
       "bloom_level": "Analysis",
       "question": "An insurer's only hot-site vendor serves 47 other clients from one facility and promises best-effort capacity. What is the IS auditor's BEST recommendation?",
       "options": {
-        "A": "Assess single-facility concentration against costed diversification options",
+        "A": "Assess the recovery concentration against costed diversification options",
         "B": "Negotiate priority-queueing and penalty clauses with the current vendor",
         "C": "Rely on the vendor's strong historical availability record",
         "D": "Retain the arrangement until the next strategic planning cycle"
@@ -3708,13 +3709,13 @@
         "Final two: A beats B because contract terms cannot remove single-facility concentration; only diversification analysis addresses it.",
         "Exam cue: when one supplier or site holds all recovery capability, look past contract fixes to concentration risk."
       ],
-      "framework_ref": "Interagency Guidance on Third-Party Relationships: Risk Management (OCC/FRB/FDIC, 2023, superseding OCC Bulletin 2013-29); FFIEC Business Continuity Management Booklet",
+      "framework_ref": "ISO 22301:2019 Clause 8.3 (Business Continuity Strategies and Solutions); Regulation (EU) 2022/2554 (DORA) Article 29 (ICT Concentration Risk); COBIT 2019 APO10 (Managed Vendors)",
       "related_concepts": [
         "Recovery vendor concentration",
         "Multi-vendor strategy",
         "Best-effort capacity"
       ],
-      "_provenance": "Authored from concept: 'Alternative processing concentration risk per OCC Bulletin 2013-29 and ISACA Vendor Management guidance'. Public sources: OCC, ISACA. Scenario specifics (multi-state insurance, $3.4B revenue, 23 state licenses, single recovery vendor serving 47 other customers, $4.1M diversification cost, CISO/CFO/regulator-relations positions) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D4 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Round-3 cue balance: the key no longer carries 'risk'.",
+      "_provenance": "Authored from concept: 'Alternative processing concentration risk per OCC Bulletin 2013-29 and ISACA Vendor Management guidance'. Public sources: OCC, ISACA. Scenario specifics (multi-state insurance, $3.4B revenue, 23 state licenses, single recovery vendor serving 47 other customers, $4.1M diversification cost, CISO/CFO/regulator-relations positions) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D4 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Round-3 cue balance: the key no longer carries 'risk'. Round-4 auditor fix.",
       "style_version": 2
     },
     {
@@ -3760,36 +3761,36 @@
       "subtopic": "Converged Networks. VoIP Dependencies",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A firm replaced its analog phone lines with VoIP handsets powered by the office network switches, which have no battery backup. Which risk should the IS auditor consider MOST important?",
+      "question": "A firm replaced its analog phone lines with VoIP handsets powered over Ethernet by its office network switches. Which risk should the IS auditor consider MOST important?",
       "options": {
         "A": "Call quality may drop when the data network is busy",
         "B": "Call records may be lost when the phone system restarts",
-        "C": "Staff cannot make emergency calls during a power cut",
-        "D": "Licensing costs may rise as more handsets are added"
+        "C": "Desk phones, including emergency calling, fail in a blackout",
+        "D": "Voice calls may be intercepted on the shared data network"
       },
       "correct": "C",
       "key_concept": "VoIP phones inherit the network's power and availability dependencies, so emergency calling needs backup power or an alternate line.",
       "pre_read": "Ask what the handsets now depend on that analog lines did not.",
-      "correct_explanation": "VoIP handsets draw power from the network switches, so a power cut that takes down the switches also silences every phone, and staff lose the ability to call emergency services exactly when an incident may need them. Battery backup for the switches, or an alternate line, closes that gap. Call quality under load is the runner-up: it degrades service, but quality-of-service settings can manage it, and it never cuts off emergency calls.",
+      "correct_explanation": "Analog lines draw power from the telephone exchange, but these handsets draw it from the office switches, so a blackout that stops the switches silences every desk phone, including emergency calls, when an incident may need them. Backup power for the switches, or an alternate line, closes that gap. Interception is the runner-up: it is a confidentiality risk, but voice encryption and a separate voice network segment manage it, and people's safety comes first.",
       "wrong_explanations": {
         "A": "Busy-network quality loss is real, but quality-of-service settings manage it, and it never stops emergency calls.",
         "B": "Lost call records are an administrative inconvenience, minor beside staff being unable to call for help.",
-        "D": "Licensing cost is a budget matter and creates no operational or safety exposure."
+        "D": "Interception is a real VoIP risk, but voice encryption and network segmentation manage it; silenced emergency calls endanger people."
       },
       "tips": [
-        "Eliminate: B and D, because call records and licensing costs are administrative matters that affect neither service nor safety.",
-        "Final two: C beats A because a power cut silences every handset, including emergency calls, while quality-of-service settings manage busy-network quality loss.",
+        "Eliminate: A and B, because quality-of-service settings manage busy-network quality loss, and lost call records are an administrative matter.",
+        "Final two: C beats D because voice encryption and segmentation manage interception, while a blackout silences every handset, including emergency calls, and people's safety comes first.",
         "Exam cue: converged services inherit the network's dependencies, including power; check that life-safety functions such as emergency calling survive an outage."
       ],
-      "framework_ref": "RFC 7143 (iSCSI Protocol, Consolidated); RFC 3261 (SIP for VoIP); NIST SP 800-58 (Security Considerations for Voice Over IP Systems)",
+      "framework_ref": "NIST SP 800-58 (Security Considerations for Voice Over IP Systems); ISO/IEC 27002:2022 Control 7.11 (Supporting Utilities)",
       "related_concepts": [
-        "iSCSI",
-        "FCoE",
-        "MPLS",
         "VoIP",
-        "QoS"
+        "Power over Ethernet",
+        "Emergency calling",
+        "Backup power",
+        "Converged networks"
       ],
-      "_provenance": "Authored from concept: 'Converged protocols definition per NIST and IETF standards'. Public sources: NIST, IETF RFCs, INCITS T11. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D4 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Round-2 auditor fix. Round-3 re-angle: this item duplicated d4_286, d4_008, d5_325, so it now tests a different judgment.",
+      "_provenance": "Authored from concept: 'Converged protocols definition per NIST and IETF standards'. Public sources: NIST, IETF RFCs, INCITS T11. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D4 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Round-2 auditor fix. Round-3 re-angle: this item duplicated d4_286, d4_008, d5_325, so it now tests a different judgment. Round-4 auditor fix.",
       "style_version": 2
     },
     {
@@ -3910,7 +3911,7 @@
       "subtopic": "Log Management. Unreviewed Logs",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "An IS auditor finds operational logs from critical systems are collected centrally, but there is no evidence anyone examines them. What should the auditor recommend as BEST?",
+      "question": "An IS auditor finds operational logs from production systems are collected centrally, but there is no evidence anyone examines them. What should the auditor recommend as BEST?",
       "options": {
         "A": "Name log reviewers with review frequencies set by criticality",
         "B": "Schedule a quarterly internal audit review of log samples",
@@ -3938,7 +3939,7 @@
         "Risk-based monitoring",
         "Alert ownership"
       ],
-      "_provenance": "Authored from concept: 'SIEM alert governance per NIST SP 800-92 and MITRE ATT&CK detection engineering'. Public sources: NIST, MITRE, CIS. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): SOAR acronym replaced with plain wording. Rebalanced (Oct 2026): re-angled from 5B4 to 4A9. Content review (Oct 2026): stem states the gap as an observed fact instead of naming the missing owner; B replaced with an auditor-versus-management trap. D4 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Round-3 cue balance: the key no longer carries 'risk' or 'accountable'.",
+      "_provenance": "Authored from concept: 'SIEM alert governance per NIST SP 800-92 and MITRE ATT&CK detection engineering'. Public sources: NIST, MITRE, CIS. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): SOAR acronym replaced with plain wording. Rebalanced (Oct 2026): re-angled from 5B4 to 4A9. Content review (Oct 2026): stem states the gap as an observed fact instead of naming the missing owner; B replaced with an auditor-versus-management trap. D4 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Round-3 cue balance: the key no longer carries 'risk' or 'accountable'. Round-4 auditor fix.",
       "style_version": 2
     },
     {
@@ -4586,12 +4587,11 @@
       "framework_ref": "ISO 22301:2019 Clause 8.4.3 (Warning and Communication); BCI Good Practice Guidelines 2023 PP4 (Design)",
       "related_concepts": [
         "Crisis communications",
-        "Trust recovery",
-        "NPS impact",
-        "Brand equity",
-        "Spokesperson training"
+        "Channel independence",
+        "Mass notification",
+        "External status page"
       ],
-      "_provenance": "Authored from concept: 'Image/reputation damage as BCP disruption category per ISO 22301 and BCI GPG'. Public sources: ISO, BCI. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D4 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): A (reputation only matters to financial firms) was a strawman; it is now moving reputation to the risk register, the wrong document. Round-3 re-angle: this item duplicated d1_176, d4_253, so it now tests a different judgment.",
+      "_provenance": "Authored from concept: 'Image/reputation damage as BCP disruption category per ISO 22301 and BCI GPG'. Public sources: ISO, BCI. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D4 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): A (reputation only matters to financial firms) was a strawman; it is now moving reputation to the risk register, the wrong document. Round-3 re-angle: this item duplicated d1_176, d4_253, so it now tests a different judgment. Round-4 auditor fix.",
       "style_version": 2
     },
     {
@@ -4661,15 +4661,14 @@
         "Final two: B beats D because knowing IT's targets does not prove the business can resume on restored systems; only a joint exercise tests the handoff.",
         "Exam cue: recovery succeeds only end to end; when IT and business plans are tested apart, look for the untested handoff between them."
       ],
-      "framework_ref": "ISO 22301:2019 Clause 8.2.2 (Business Impact Analysis); ISO/IEC 27031 (ICT Readiness for Business Continuity); NIST SP 800-34 Rev 1 Contingency Planning Guide for Federal Information Systems",
+      "framework_ref": "ISO 22301:2019 Clause 8.5 (Exercise Programme); ISO/IEC 27031 (ICT Readiness for Business Continuity); NIST SP 800-34 Rev 1 Contingency Planning Guide for Federal Information Systems",
       "related_concepts": [
-        "BIA",
-        "Joint governance",
         "Integrated exercises",
-        "RTO/RPO linkage",
-        "BCP/DRP integration"
+        "BCP/DRP integration",
+        "Recovery handoffs",
+        "End-to-end recovery testing"
       ],
-      "_provenance": "Authored from concept: 'IT BCP vs business BCP linked-but-distinct per ISO 22301 and BCI GPG'. Public sources: ISO, NIST, BCI, ISACA. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D4 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): A contradicted the stem and C (document length) was trivial; they are now a capability concern and IT committee approval. Gap-echo: the key no longer repeats 'business'. Round-3 re-angle: this item duplicated d4_083, d4_070, d4_041, d4_133, so it now tests a different judgment.",
+      "_provenance": "Authored from concept: 'IT BCP vs business BCP linked-but-distinct per ISO 22301 and BCI GPG'. Public sources: ISO, NIST, BCI, ISACA. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D4 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): A contradicted the stem and C (document length) was trivial; they are now a capability concern and IT committee approval. Gap-echo: the key no longer repeats 'business'. Round-3 re-angle: this item duplicated d4_083, d4_070, d4_041, d4_133, so it now tests a different judgment. Round-4 auditor fix.",
       "style_version": 2
     },
     {
@@ -5440,40 +5439,40 @@
     {
       "id": "d4_145",
       "domain": 4,
-      "subtopic": "Hardware Reviews. Refresh Cycle Governance",
+      "subtopic": "Hardware Reviews. End-of-Support Risk",
       "principle_id": "risk-sets-priority",
       "difficulty": "application",
       "bloom_level": "Application",
       "question": "An IS auditor finds several critical servers past vendor end-of-support, kept in service to save capital. Which risk should the auditor rate as GREATEST?",
       "options": {
         "A": "Asset records may list the servers past their planned retirement",
-        "B": "Hardware repairs may slow as spare parts become scarce",
-        "C": "New firmware security flaws on the servers will stay unfixed",
+        "B": "Newer application releases may stop running on the old servers",
+        "C": "Security flaws found later may stay permanently unpatched",
         "D": "Energy use may rise as the older servers age"
       },
       "correct": "C",
-      "key_concept": "End-of-support ends vendor security fixes; for critical hardware that unpatchable exposure outweighs repair and parts concerns.",
-      "pre_read": "Ask what the vendor stops providing at end-of-support, and which of those losses third parties cannot replace.",
-      "correct_explanation": "After end-of-support the vendor stops issuing firmware and security fixes, so any flaw found later stays open on servers running critical services, and no third party can supply the vendor's patches. Slower repairs are the runner-up: they are a real availability concern, but spares and third-party maintenance can cover parts, while nothing closes the growing set of unfixable security flaws.",
+      "key_concept": "End-of-support ends vendor security fixes; for critical servers that unfixable exposure outweighs compatibility, record and cost concerns.",
+      "pre_read": "Ask what the vendor stops providing at end-of-support, and which loss leaves critical services exposed with no fix.",
+      "correct_explanation": "After end-of-support the vendor stops issuing firmware and security fixes, so any flaw found later stays open on servers running critical services, and the exposure grows over time. Application compatibility is the runner-up: newer releases may stop supporting the old servers, but that limit appears at upgrade time and can be planned around, while the unpatched flaws expose critical services now.",
       "wrong_explanations": {
         "A": "Outdated asset records are a record-keeping issue; they do not expose the critical services to attack or failure.",
-        "B": "Slower repairs are real, but spares and third-party maintenance can cover parts; nothing replaces the vendor's security fixes.",
+        "B": "Compatibility limits surface at upgrade time and can be planned around; unpatched flaws expose the critical services now.",
         "D": "Rising energy use is an efficiency cost, minor beside unfixable flaws on servers running critical services."
       },
       "tips": [
         "Eliminate: A and D, because stale asset records and higher energy use are record-keeping and efficiency costs, not threats to critical services.",
-        "Final two: C beats B because spares and third-party maintenance can cover repairs, while no one can supply the vendor's security fixes after end-of-support.",
-        "Exam cue: end-of-support means no more vendor security fixes; third-party maintenance can cover parts, never patches."
+        "Final two: C beats B because compatibility limits can be planned around at upgrade time, while flaws found after end-of-support stay open on critical services.",
+        "Exam cue: end-of-support means no more vendor security fixes; rank that growing, unfixable exposure above planning, record and cost effects."
       ],
       "framework_ref": "COBIT 2019 BAI09 (Managed Assets); NIST SP 800-53 Rev 5 SA-22 (Unsupported System Components); COBIT 2019 APO12 (Managed Risk)",
       "related_concepts": [
         "End-of-support",
-        "TCO analysis",
+        "Unsupported system components",
+        "Firmware patching",
         "Hardware criticality tiering",
-        "Vendor capture",
-        "Capacity trending"
+        "Lifecycle management"
       ],
-      "_provenance": "Authored from concept: 'Hardware refresh governance per COBIT BAI09 and ITIL 4'. Public sources: ISACA, ISO/AXELOS, NIST. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D4 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Cue balance: the key no longer carries 'risk', and B now names an owner too. Eliminate tip no longer uses dismissive wording. Round-3 re-angle: this item duplicated d4_255, d4_060, d3_077, so it now tests a different judgment.",
+      "_provenance": "Authored from concept: 'Hardware refresh governance per COBIT BAI09 and ITIL 4'. Public sources: ISACA, ISO/AXELOS, NIST. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D4 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Cue balance: the key no longer carries 'risk', and B now names an owner too. Eliminate tip no longer uses dismissive wording. Round-3 re-angle: this item duplicated d4_255, d4_060, d3_077, so it now tests a different judgment. Round-4 auditor fix.",
       "style_version": 2
     },
     {
@@ -6042,15 +6041,14 @@
         "Final two: A beats B because testing connections shows what can actually reach the zone, while reviewing one rule set shows only what it intends.",
         "Exam cue: to prove isolation, test the paths into the zone from outside it; rule reviews and tickets show intent, not the result."
       ],
-      "framework_ref": "ISO/IEC 27002:2022 Control 8.32 (Change Management); COBIT 2019 BAI06 (Managed IT Changes); ISO/IEC 27002:2022 Control 8.22 (Segregation of Networks)",
+      "framework_ref": "ISO/IEC 27002:2022 Control 8.22 (Segregation of Networks); PCI DSS v4.0.1 Requirement 11.4.5 (Segmentation Testing); COBIT 2019 BAI06 (Managed IT Changes)",
       "related_concepts": [
-        "PCI DSS Req 12.10",
-        "Lateral movement detection",
-        "QSA engagement",
-        "Marketplace seller communications",
-        "Forensics-informed risk decision"
+        "Segmentation testing",
+        "Cardholder data environment",
+        "Evidence hierarchy",
+        "PCI DSS Req 11.4.5"
       ],
-      "_provenance": "Authored from concept: 'Network segmentation breach with PCI exposure — multi-track CISO response'. Public sources: PCI SSC, NIST, state AGs. Scenario specifics (e-commerce platform $820M, admin VLAN compromise via phishing 8 days ago, 1.4M customers PCI exposed, $3M/day revenue, marketplace seller dependency) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Cross-domain review (Oct 2026): re-angled or clarified to remove duplication/contradiction. Final cross-domain polish (Oct 2026). D4 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): C (vendor attestation) was a strawman; it is now flow alerts, detection where prevention is needed. Round-3 re-angle: this item duplicated d4_167, d5_045, so it now tests a different judgment.",
+      "_provenance": "Authored from concept: 'Network segmentation breach with PCI exposure — multi-track CISO response'. Public sources: PCI SSC, NIST, state AGs. Scenario specifics (e-commerce platform $820M, admin VLAN compromise via phishing 8 days ago, 1.4M customers PCI exposed, $3M/day revenue, marketplace seller dependency) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Cross-domain review (Oct 2026): re-angled or clarified to remove duplication/contradiction. Final cross-domain polish (Oct 2026). D4 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): C (vendor attestation) was a strawman; it is now flow alerts, detection where prevention is needed. Round-3 re-angle: this item duplicated d4_167, d5_045, so it now tests a different judgment. Round-4 auditor fix.",
       "style_version": 2
     },
     {
@@ -6480,7 +6478,7 @@
       "id": "d4_172",
       "domain": 4,
       "subtopic": "Recovery Strategies. Site Consolidation",
-      "principle_id": "recover-by-business-priority",
+      "principle_id": "risk-sets-priority",
       "difficulty": "application",
       "bloom_level": "Application",
       "question": "To cut costs, management plans to close one of its two data centers, though each hosts the other's disaster recovery systems. Which risk should the IS auditor consider MOST significant?",
@@ -6506,13 +6504,12 @@
       ],
       "framework_ref": "NIST SP 800-34 Rev 1 Section 3.4.2 Alternate Sites; ISO 22301:2019 Clause 8.3 (Business Continuity Strategies and Solutions)",
       "related_concepts": [
-        "Bidirectional alignment",
-        "Architecture review board",
-        "TOGAF",
-        "Criticality-tiered SLA",
-        "Consolidation-driven SLA degradation"
+        "Site consolidation",
+        "Reciprocal recovery",
+        "Alternate sites",
+        "Recovery capability gap"
       ],
-      "_provenance": "Authored from concept: 'SLA-architecture bidirectional alignment per COBIT APO09 and TOGAF'. Public sources: ISACA, The Open Group. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D4 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Cue balance: the key no longer carries 'owners'. Eliminate tip no longer uses dismissive wording. Round-3 re-angle: this item duplicated d4_053, so it now tests a different judgment.",
+      "_provenance": "Authored from concept: 'SLA-architecture bidirectional alignment per COBIT APO09 and TOGAF'. Public sources: ISACA, The Open Group. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D4 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Cue balance: the key no longer carries 'owners'. Eliminate tip no longer uses dismissive wording. Round-3 re-angle: this item duplicated d4_053, so it now tests a different judgment. Round-4 auditor fix.",
       "style_version": 2
     },
     {
@@ -7315,13 +7312,12 @@
       ],
       "framework_ref": "ITIL 4 Service Desk practice; ITIL 4 Incident Management practice; ITIL 4 Problem Management practice",
       "related_concepts": [
-        "Social engineering",
-        "MGM Resorts 2023 incident",
-        "Multi-factor identity verification",
-        "Authority limits",
-        "Phishing exercise"
+        "Incident logging",
+        "Problem management",
+        "Trend analysis",
+        "Service desk"
       ],
-      "_provenance": "Authored from concept: 'Help-desk social engineering mitigation per NIST SP 800-63B and CISA Phishing Guidance'. Public sources: NIST, CISA, ISACA. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. D4 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): B (faster resets) and D (outsource for liability) were strawmen; they are now a callback to the caller's number and weekly reset-log review. Round-3 re-angle: this item duplicated d5_076, d5_234, d5_349, so it now tests a different judgment.",
+      "_provenance": "Authored from concept: 'Help-desk social engineering mitigation per NIST SP 800-63B and CISA Phishing Guidance'. Public sources: NIST, CISA, ISACA. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. D4 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): B (faster resets) and D (outsource for liability) were strawmen; they are now a callback to the caller's number and weekly reset-log review. Round-3 re-angle: this item duplicated d5_076, d5_234, d5_349, so it now tests a different judgment. Round-4 auditor fix.",
       "style_version": 2
     },
     {
@@ -8201,8 +8197,9 @@
         "Cadence updates",
         "Pre-positioned surge agreements"
       ],
-      "_provenance": "Authored from concept: 'Help desk surge during major event'. Public sources: AXELOS, ISACA, FEMA. Scenario specifics (regional university 32K students 4.2K staff, email outage hour 4, 1,400+ tickets in 4 hours, 90+ minute waits) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): stem names the decision-maker directly. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. D4 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Eliminate tip no longer uses dismissive wording. Round-3 cross-domain fix (convention): d4_157, d4_080, d5_057",
-      "style_version": 2
+      "_provenance": "Authored from concept: 'Help desk surge during major event'. Public sources: AXELOS, ISACA, FEMA. Scenario specifics (regional university 32K students 4.2K staff, email outage hour 4, 1,400+ tickets in 4 hours, 90+ minute waits) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): stem names the decision-maker directly. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. D4 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Eliminate tip no longer uses dismissive wording. Round-3 cross-domain fix (convention): d4_157, d4_080, d5_057 Round-4 auditor fix.",
+      "style_version": 2,
+      "principle_id": "root-cause-over-symptom"
     },
     {
       "id": "d4_217",
@@ -12141,7 +12138,7 @@
         "A": "Senior management approves and funds a dated plan to close the gap",
         "B": "The claims service owner postpones the fix until next year's budget",
         "C": "The IT team raises the tolerance to five days to match recovery",
-        "D": "The IT team starts the cheapest recovery fixes within its current budget"
+        "D": "Senior management funds the cheapest recovery fixes this year"
       },
       "correct": "A",
       "key_concept": "Senior management sets impact tolerances and decides each breach: it approves and funds a dated plan that brings the service back within tolerance.",
@@ -12150,10 +12147,10 @@
       "wrong_explanations": {
         "B": "The service owner tracks the fix but cannot alone defer a breach of a tolerance that senior management set and must fund.",
         "C": "Tolerances reflect the harm customers can bear, not what recovery can achieve; raising one to match results hides the gap instead of closing it.",
-        "D": "Partial fixes inside IT's budget leave the service outside tolerance with no approved plan, and bypass the senior management that set the tolerance."
+        "D": "Funding just the cheapest fixes leaves the service outside tolerance with no dated plan to close the gap; the fix must match the tolerance, not the lowest cost."
       },
       "tips": [
-        "Eliminate: C and D, because raising the tolerance to match recovery defeats its purpose, and cheap fixes within IT's budget bypass the senior management that set it.",
+        "Eliminate: C and D, because raising the tolerance to match recovery defeats its purpose, and funding the cheapest fixes leaves the service outside tolerance with no plan to close the gap.",
         "Final two: A beats B because only senior management, which set the tolerance, can fund the fix; the service owner cannot defer a breach alone.",
         "Exam cue: when a gap needs money or exceeds an approved limit, the decision goes to whoever set the limit: fund a dated fix or formally accept the gap."
       ],
@@ -12164,7 +12161,7 @@
         "Escalation to senior management",
         "Resilience remediation"
       ],
-      "_provenance": "Authored from concept: 'Impact Tolerances. Handling a Tolerance Breach'. Original KaiSip item (Oct 2026), written for CISA subtopic 4B2.4 (batch Q16: practice for the web v12.24 study notes). Distinct from the D4 recovery-test and BIA items: tests who decides when a resilience exercise breaches an impact tolerance. Public sources: Bank of England PRA and ISACA COBIT 2019. D4 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Eliminate tip no longer uses dismissive wording. Round-3 cross-domain fix (contradiction): d4_098, d2_123, d1_193",
+      "_provenance": "Authored from concept: 'Impact Tolerances. Handling a Tolerance Breach'. Original KaiSip item (Oct 2026), written for CISA subtopic 4B2.4 (batch Q16: practice for the web v12.24 study notes). Distinct from the D4 recovery-test and BIA items: tests who decides when a resilience exercise breaches an impact tolerance. Public sources: Bank of England PRA and ISACA COBIT 2019. D4 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Eliminate tip no longer uses dismissive wording. Round-3 cross-domain fix (contradiction): d4_098, d2_123, d1_193 Round-4 blind fix: A was the only option naming senior management, a role cue; D now shares that actor.",
       "style_version": 2
     },
     {

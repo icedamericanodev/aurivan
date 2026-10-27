@@ -2062,4 +2062,9 @@ questions (v10.0/v10.1), and miscellaneous additions from v9.8-v10.2 polish.
 - OWASP Top 10 for LLM Applications 2025 (LLM02: Sensitive Information Disclosure)
 - NIST AI 100-2 E2025 (Adversarial Machine Learning)
 
+## D4 difficulty upgrade additions (Oct 2026)
+- ITIL 4 Service Validation and Testing practice
+- Regulation (EU) 2022/2554 (DORA) Article 29 (ICT Concentration Risk)
+- PCI DSS v4.0.1 Requirement 11.4.5 (Segmentation Testing)
+
 Citations to ISACA's commercial CISA study guide were removed from the bank and this library in Oct 2026 (owner decision on legal advice); cite the public ITAF, COBIT, NIST, ISO or IIA source instead.
