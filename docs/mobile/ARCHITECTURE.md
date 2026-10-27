@@ -46,7 +46,7 @@ manager) evaluated the options independently. All three picked **React Native
 | Analytics | **PostHog** (anonymous events first) | 2 | Which features help people study |
 | Payments | **RevenueCat** (`react-native-purchases`) | 2 | Apple/Google subscriptions + restore, one SDK |
 | Accounts + sync | **Supabase** (Postgres + Auth + RLS) | Uplift 6–9 (built OFF; see §3 "Cloud (built OFF)") | Sign in with Apple/Google or an email code, progress on every device. Client ports and screens exist behind a build flag; `@supabase/supabase-js`, `expo-secure-store`, `expo-apple-authentication` and `@react-native-google-signin/google-signin` are added only at go-live (Phase 9), cloud build only |
-| Content delivery | **Supabase Storage / CDN** content packs | 3 | Add CISM etc. without an app update |
+| Content delivery | **Cloudflare static packs** (versioned, hash-checked JSON on kaisip.com `/packs/v1/`; see §3 "Content packs") | A ✅ registry · B–C download | Add an exam (ISC2 CC first) or fix content without an app update. CISA stays bundled. Supabase holds only per-person data, never content |
 | E2E tests | **Maestro** | 3 | Robot taps through the app before release |
 
 **Cost at launch:** Apple Developer $99/year · Google Play $25 once ·
@@ -875,12 +875,72 @@ time you answer this question.", and in builds that can sync, "Kept on this
 phone, in backups you save, and in your account if sync is on. …". The shared bottom sheet fits above the keyboard on both
 platforms (`padding`, and its tallest size minus the keyboard's height).
 
+**Lessons and game decks (content packs, Phase A, 27 Oct 2026).** The motion
+lessons are data: `data/lessons/cisa.json` (schema and house rules
+`docs/content/LESSONS_SCHEMA.md`), checked by `mobile/scripts/lessons-pack.cjs`
+and written to `src/content/generated/cisa/lessons.json`; author notes
+(`_comment`) are dropped. `src/content/lessons/cisa.ts` is a thin name kept for
+old imports. The reviewed game decks (`src/content/games/cisa/*.json`) are
+copied into the same folder byte for byte, and `pack.json` records the pack's
+`rev` and `schemaVersion`. So `generated/cisa/` holds one whole pack.
+
 The mobile builder renames fields, drops author-only fields (`_provenance`),
 validates every answer key, and marks real option-letter references as
 `{{B}}` tokens so tips stay correct after shuffling — while words like
 "A sample of 25" or "Annex A" are left alone. (The web app replaces every
 standalone A–D, which can turn "A high-risk system" into "C high-risk
 system" after a shuffle; tracked as a separate fix.)
+
+### Content packs
+
+Decision (backend-architect with the owner, 27 Oct 2026): study content ships
+as **static, versioned, hash-checked JSON packs** served from the kaisip.com
+Cloudflare site (`/packs/v1/`). Supabase holds only per-person data (accounts,
+sync, later entitlements): **content never goes in Postgres**. CISA stays
+bundled, so it works offline from the first launch; ISC2 CC is the first
+downloadable pack, then CISM, CRISC, AAIA and CISSP. Rejected: Supabase
+Storage (shares the free egress, stops when the project pauses), bundling
+every exam through EAS Update (about 45 MB at 8 exams), GitHub Pages (terms
+forbid commercial SaaS). Free-plan sizing: [SCALING.md §3](SCALING.md).
+
+Phases: **A** (done) the registry below, no behaviour change; **B** a
+deterministic pack builder (`build-packs.mjs`, `docs/content/PACK_FORMAT.md`);
+**C** hosting and download behind `EXPO_PUBLIC_KAISIP_PACKS` (off when unset),
+Settings → Downloaded exams, packs excluded from Android Auto Backup; **D** the
+web reads the same catalog; **E** signing and paid packs.
+
+**The registry (`src/content/packs/`, Phase A).** Every content loader
+(`loader.ts`, `notes/`, `principles/`, `exam/`, `lessons/`, `games/`) asks
+`sourceFor(certId)` which `PackSource` to read. Today the only source is
+`BundledSource` (the generated module, which stays the Jest test seam). A
+second source (downloaded packs) registers with `registerPackSource`; it wins
+only with a **newer `rev`** (the bundle is the floor) and a `schemaVersion` this
+app reads. Every exported loader keeps its name, signature and synchronous
+API, so no screen changed. `clearContentCaches()` empties every content cache,
+including the derived ones in `lib/` (backup known ids, outline, plant
+subtopics, leak fingerprint, principle indexes); each module registers its own
+clearer, so the registry imports no loader (no import cycles).
+
+**Retired items.** A question, lesson, note, role card or step sequence can be
+marked `retired: true`. It stays in the pack so old progress makes sense: it is
+left out of every pool and queue (practice, mock, Smart, the games, the bank
+list, lesson lists and "next lesson") but still resolves by id
+(`findQuestion`, `findLesson`, `findNote`), so reviews, the Mistake journal,
+bookmarks and done lists keep working, and a restore keeps its progress. A
+retired id is never reused. None is retired yet. (Notes have the flag in their
+type only: the notes builder, which the website's plant script also bundles,
+passes it through, and the note lists and note games hide it, with the first
+retired note.)
+
+**Backups and sync across phones with different packs.** Two fixes:
+(1) `keepKnownIds` leaves an exam with **no content on this phone** exactly as
+it is (it used to trim every id, which would have wiped progress for a pack
+downloaded on another phone); (2) a **well-formed** cert id the app has no
+descriptor for (`/^[a-z0-9-]{2,20}$/`, the database's rule) is kept as it is in
+backups, restores and sync pulls instead of refusing the file as `unknown-cert`;
+a malformed id still refuses, and every size cap still applies. The cert
+descriptor carries `issuer: { id, name }` so a pack's manifest can name a new
+issuer. Saved keys are unchanged (`aurivan.*.v1`).
 
 ## 4. Roadmap
 
@@ -1019,7 +1079,7 @@ Run the `app-store-compliance-reviewer` agent before every submission.
 | Risk | Mitigation |
 |---|---|
 | AI assistants write code for an older Expo | `mobile/AGENTS.md` + `mobile-app-engineer` agent force version-matched docs; CI typechecks |
-| ~5 MB of question JSON inside the app grows with each certification | Phase 3: on-device SQLite + downloadable, versioned content packs |
+| ~5 MB of question JSON inside the app grows with each certification | Downloadable, versioned content packs from Cloudflare (§3 "Content packs"); CISA stays bundled |
 | A wrong answer key reaches learners | `content-pack.test.ts` blocks broken keys in CI; `qa-question-tester` agent blind-tests content |
 | Google's 14-day closed-test rule delays launch | Start the closed test as soon as the first Android build exists |
 
