@@ -375,13 +375,16 @@ describe('a bad file is refused and changes nothing', () => {
     expect(codeOf(text)).toBe('bad-data');
   });
 
-  it('an exam this app does not know', () => {
-    const f = good();
-    (f.stores.progress.state.byCert as Record<string, unknown>).cmmc = {};
-    expect(codeOf(JSON.stringify(f))).toBe('unknown-cert');
-    const g = good();
-    g.stores.settings.state.activeCertId = 'cmmc';
-    expect(codeOf(JSON.stringify(g))).toBe('unknown-cert');
+  it('an exam id that is not well-formed', () => {
+    // Content packs, fix 2: a well-formed unknown id is kept (backup-packs.test.ts); a malformed one still refuses the file.
+    for (const bad of ['CMMC', 'c', 'cmmc_2', 'x'.repeat(21), 'cism 9']) {
+      const f = good();
+      (f.stores.progress.state.byCert as Record<string, unknown>)[bad] = {};
+      expect(codeOf(JSON.stringify(f))).toBe('unknown-cert');
+      const g = good();
+      g.stores.settings.state.activeCertId = bad;
+      expect(codeOf(JSON.stringify(g))).toBe('unknown-cert');
+    }
   });
 
   it('caps every list, and refuses prototype keys', () => {

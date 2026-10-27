@@ -503,8 +503,8 @@ describe('review fixes beyond the repros', () => {
     await setUp();
     const stop = await sync.initSync();
     await flush();
-    // Another device wrote a copy this app refuses (an exam it doesn't know).
-    memory.control.writeSnapshot(MAYA.userId, 'progress', { state: { byCert: { zz9: {} }, streak: { current: 0, best: 0, lastDay: null } } });
+    // Another device wrote a copy this app refuses (a malformed exam id; a well-formed unknown one is kept: content packs, fix 2).
+    memory.control.writeSnapshot(MAYA.userId, 'progress', { state: { byCert: { 'ZZ 9!': {} }, streak: { current: 0, best: 0, lastDay: null } } });
     const pulls = () => memory.control.calls.filter((c) => c === 'sync.pull').length;
     const before = pulls();
     await act(async () => {

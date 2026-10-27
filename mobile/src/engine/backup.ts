@@ -84,6 +84,14 @@ const DAY_MS = 24 * 3_600_000;
 // Generous next to real use (the store itself keeps at most 50 mocks), but
 // small enough that a hostile file can't make the phone churn.
 const MAX_IDS = 5_000; // answers, reviews, mistakes, bookmarks (per cert)
+/**
+ * Content packs, fix 2: the shape of a certification id ("cisa", "cc",
+ * "cissp"). The database's own rule for a cert id. An exam this app has no
+ * descriptor for (a content pack downloaded on another phone) is accepted
+ * when its id has this shape, and its data is kept as it is; anything else
+ * ("__proto__", "CISA", a 200-character key) is refused.
+ */
+export const CERT_ID_RE = /^[a-z0-9-]{2,20}$/;
 const MAX_SMALL = 5_000; // lessons done, notes read and started, mastery
 const MAX_LIST = 200; // mocks, recent days, readiness log
 const MAX_KEY = 120; // any id or map key
@@ -724,6 +732,13 @@ function readStore(blob: unknown, current: number, upgrade: ((state: unknown) =>
 
 /** The ids that exist in this app's content for one cert (built once by the caller). */
 export interface KnownIds {
+  /**
+   * Content packs, fix 1: false when this exam has NO content on this phone
+   * (a pack downloaded on another phone, not here). Its progress is then kept
+   * exactly as it is, never trimmed to nothing. Optional: when absent, an exam
+   * with no ids at all (no questions, lessons or notes) counts as not installed.
+   */
+  installed?: boolean;
   questions: ReadonlySet<string>;
   lessons: ReadonlySet<string>;
   /** Study-notes subtopic ids ("4B1.2"): notes read and mastery dates. */
@@ -769,16 +784,28 @@ export function cardKnown(cardId: string, k: KnownIds): boolean {
   return k.notes.has(owner);
 }
 
+/** True when this exam's content is on this phone, so its ids can be checked (fix 1). */
+export const contentInstalled = (k: KnownIds): boolean => k.installed ?? k.questions.size + k.lessons.size + k.notes.size > 0;
+
 /**
  * Keep only ids that exist in the app's content: answers, reviews, mistakes
  * and bookmarks by question id; lessons done by lesson id; notes read and
  * mastery dates by note id. Anything else in a file (a removed question, or
  * made-up ids) is dropped, so it can never pile up on the phone.
+ *
+ * Content packs, fix 1: an exam with NO content on this phone (its pack is on
+ * another phone, not this one) is kept exactly as it is. Its ids can't be
+ * checked here, and trimming them would wipe that exam's progress. The size
+ * caps still hold: every list was capped by the checker before this runs.
  */
 export function keepKnownIds(progress: BackupProgress, known: (certId: string) => KnownIds): BackupProgress {
   const byCert: BackupProgress['byCert'] = {};
   for (const [certId, cp] of Object.entries(progress.byCert)) {
     const k = known(certId);
+    if (!contentInstalled(k)) {
+      byCert[certId] = cp;
+      continue;
+    }
     const next = { ...cp };
     if (cp.answers) next.answers = keepKeys(cp.answers, k.questions);
     if (cp.review) next.review = keepKeys(cp.review, k.questions);
@@ -833,7 +860,9 @@ export function keepSupportedPlants(progress: BackupProgress, known?: (certId: s
   const byCert: BackupProgress['byCert'] = {};
   for (const [certId, cp] of Object.entries(progress.byCert)) {
     const cert = getCertification(certId);
-    if (!cp.plant || !cert) {
+    // Fix 1: an exam with no content on this phone can't be measured here, so its plant is kept as it is.
+    const notHere = known ? !contentInstalled(known(certId)) : false;
+    if (!cp.plant || !cert || notHere) {
       byCert[certId] = cp;
       continue;
     }
@@ -858,8 +887,10 @@ export function keepSupportedPlants(progress: BackupProgress, known?: (certId: s
  * Read a backup file's text. Returns the two stores, checked and upgraded,
  * or throws a BackupError. Never changes anything.
  *
- * `knownCertIds`: the certifications this app knows; any other id in the
- * file (a cert key, the active cert, an exam date) rejects the whole file.
+ * `knownCertIds`: the certifications this app knows. Another WELL-FORMED
+ * id (CERT_ID_RE: an exam from a content pack this phone doesn't have) is
+ * kept as it is (content packs, fix 2); a malformed one (a cert key, the
+ * active cert, an exam date) rejects the whole file.
  * `known`: when given, ids that don't exist in the content are dropped
  * (keepKnownIds).
  */
@@ -987,7 +1018,9 @@ export interface ReadStoresOptions {
  *   this app would silently drop). A store this app can't read from a newer
  *   PATCH app: also `newer` (most likely new data, not damage).
  * - Every field is type- and range-checked; unknown keys are dropped; a
- *   cert this app doesn't know is `unknown-cert`.
+ *   cert id that isn't well-formed is `unknown-cert`. A well-formed id this
+ *   app has no descriptor for (an exam from a content pack) is kept, data
+ *   and all (content packs, fix 2): the same caps apply to it.
  * - Badges and the plant keep only what the data supports, checked on the
  *   data AS GIVEN (before ids are trimmed), then ids the content doesn't
  *   have are dropped when `known` is given.
@@ -1021,9 +1054,10 @@ function readStoresChecked(
   known: ((certId: string) => KnownIds) | undefined,
   opts: ReadStoresOptions,
 ): { settings: BackupSettings; progress: BackupProgress } {
+  // Fix 2: a known id, or any well-formed one (an exam from a content pack not on this phone).
   const certKey: Check<string> = (x, at) => {
     if (typeof x !== 'string') return bad(at);
-    if (!knownCertIds.includes(x)) throw new BackupError('unknown-cert', at);
+    if (!knownCertIds.includes(x) && !CERT_ID_RE.test(x)) throw new BackupError('unknown-cert', at);
     return x;
   };
   const strictRaw = (blob: unknown, at: string) => {

@@ -24,7 +24,7 @@ import * as Sharing from 'expo-sharing';
 import { Platform } from 'react-native';
 import { CERTIFICATIONS, getCertification } from '../content/certifications';
 import { lessonsIncludingRetired } from '../content/lessons';
-import { getAllQuestionsIncludingRetired } from '../content/loader';
+import { getAllQuestionsIncludingRetired, hasContent } from '../content/loader';
 import { noteSubtopics } from '../content/notes';
 import { onClearContentCaches } from '../content/packs';
 import { cleanDisplayName } from '../engine/displayName';
@@ -101,7 +101,9 @@ const appVersion = () => knownAppVersion() ?? 'unknown';
  * notes. Built once per cert (Sets), then reused for every check.
  *
  * Retired questions and lessons COUNT as known (content packs): progress on
- * them is kept.
+ * them is kept. `installed` is false for an exam with no content on this
+ * phone (a pack not downloaded here): its progress is then kept untouched,
+ * never trimmed to nothing (engine/backup.ts keepKnownIds).
  */
 const knownCache = new Map<string, KnownIds>();
 // A new content pack (clearContentCaches) changes which ids exist.
@@ -110,6 +112,7 @@ export function knownIds(certId: string): KnownIds {
   let k = knownCache.get(certId);
   if (!k) {
     k = {
+      installed: hasContent(certId),
       questions: new Set(getAllQuestionsIncludingRetired(certId).map((q) => q.id)),
       lessons: new Set(lessonsIncludingRetired(certId).map((l) => l.id)),
       notes: new Set(noteSubtopics(certId).map((n) => n.id)),
