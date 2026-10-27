@@ -400,6 +400,8 @@ describe('Settings', () => {
   it('the Reset alert says the plant goes back to a seed and keeps its name and look', () => {
     setPlant(plantNew('oak', 'Kai', Date.now()));
     const alert = jest.spyOn(Alert, 'alert').mockImplementation(() => {});
+    // Mobile 1.46: Reset is on Your data's own screen.
+    mockParams = { category: 'data' };
     mount(<Settings />);
     press(/^Reset CISA progress$/);
     expect(alert.mock.calls[0][1]).toMatch(/Your plant goes back to a seed\. It keeps its name and look\./);
@@ -562,6 +564,8 @@ describe('PR #43 review fixes', () => {
       useProgress.getState().setPlantSettings({ showPlant: false });
     });
     const alert = jest.spyOn(Alert, 'alert').mockImplementation(() => {});
+    // Mobile 1.46: Reset is on Your data's own screen.
+    mockParams = { category: 'data' };
     mount(<Settings />);
     press(/^Reset CISA progress/);
     expect(alert).toHaveBeenCalled();

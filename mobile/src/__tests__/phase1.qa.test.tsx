@@ -643,6 +643,8 @@ describe('Journey 5: Your reports', () => {
     const alert = jest.spyOn(Alert, 'alert').mockImplementation(() => {});
     useProgress.setState({ reports: [{ ...entry(2), at: NOW - DAY }] });
     act(() => { useProgress.getState().recordMistake('cisa', getAllQuestions('cisa')[0].id, 'A'); });
+    // Mobile 1.46: Reset is on Your data's own screen.
+    mockParams = { category: 'data' };
     mount(<Settings />);
     press('Reset CISA progress');
     const buttons = alert.mock.calls.at(-1)![2]!;
@@ -725,6 +727,8 @@ describe('Journey 6: a fix shipped after a report', () => {
 // ─────────────────────────────────────────────────────────────────────────
 describe('Journey 7: Help and feedback from Settings and You, and the deep link', () => {
   it('Settings → Help: Contact support writes a tagged email, from Help, nothing personal', async () => {
+    // Mobile 1.46: the Help row is on Help and about's own screen.
+    mockParams = { category: 'help' };
     mount(<Settings />);
     press('Get help or send feedback, Common questions, reports and what’s new');
     expect(mockPush).toHaveBeenCalledWith('/help');
@@ -897,6 +901,8 @@ describe('Journey 8: What’s new and Common questions; no bank size anywhere', 
   });
 
   it('Help, Settings’ Help row, Your reports and every email carry no bank size', async () => {
+    // Mobile 1.46: the Help row is on Help and about's own screen.
+    mockParams = { category: 'help' };
     mount(<Settings />);
     // Whole numbers only: a domain size such as 202 must not match inside a year such as 2026.
     for (const f of sizeForms.filter((x) => x.length >= 3)) {

@@ -147,8 +147,8 @@ describe('Settings → Your study', () => {
     expect(checkedRadio('Daily time')).toEqual(['45 minutes a day']);
     openRow('Starting point');
     expect(checkedRadio('Where are you starting from?')).toEqual([]);
-    // Order (mobile 1.43 groups): Appearance (moved up, owner), Exam, Your study, Practice, Reminders.
-    const at = sectionOrder()(['Appearance', 'Exam date', 'Your study', 'Practice', 'Reminders']);
+    // Order (mobile 1.46, one page): Appearance, Exam, Your study, Reminders, Practice.
+    const at = sectionOrder()(['Appearance', 'Exam date', 'Your study', 'Reminders', 'Practice']);
     expect([...at].sort((a, b) => a - b)).toEqual(at);
   });
 

@@ -197,6 +197,7 @@ A plate is tonal, not boxed (about 1.05:1 against the paper in light): it gather
 5. **Tinted block** (`correctBg`, `wrongBg`, `tipBg`): feedback only.
 6. **Key idea** is never a card: a 3px `accent` rule on the left + `quote` text (and that rule means only the coach's voice, above).
 7. **Never nest** a surface inside a surface. Never outline a card with 1px border in light mode (the notes compare table was the last one; it is an L1 plate since 1.21).
+8. *(Mobile 1.46, the owner's Settings choice, 27 Oct 2026.)* A settings group may sit on a flat card: `raised`, radius 24, no shadow, 1.5 `line` in dark; the card is never itself a button. Settings only.
 
 ## 6. Component recipes
 
@@ -223,7 +224,7 @@ A plate is tonal, not boxed (about 1.05:1 against the paper in light): it gather
 
 **Stepper** (`ui.tsx`): `caption` label above `−  value  +`: two 48pt IconButtons around a `label` numeral (tabular, min width 48). Screen readers get ONE adjustable control (`spokenLabel`, e.g. "Reminder hour", value spoken in full, e.g. "7:00 PM"); the inner buttons are hidden from them, and only increment / decrement are handled. Used in pairs for a time (hour, then minutes in 15-minute steps), in the phone's own time format ("7 PM" / "19"). No date-picker dependency.
 
-**Settings group and row** (`components/settings.tsx`, mobile 1.17; §16): `SettingsGroup` = (mobile 1.43) a letter-spaced `caption` title in `accentText` (a header; never row-like), an optional `meta` intro, then rows on the paper with hairlines (no card) between a full-width hairline above and below, 32 between groups. `SettingsRow` = `label` title (optional `meta` subtitle under it) · the CURRENT value in `body` `ink2`, right-aligned, up to half the row and allowed to wrap · chevron 18 `muted` (none on an action row such as Save a backup or Restore from a backup: a chevron promises somewhere to go); min height 56, full-width hairline. At ×1.3+ text the value drops under the title. Spoken as one button, "Exam date, Friday 8 January 2027" (`spokenValue` gives the full form of a short value), with a hint that says what opens. A status belongs in the spoken name, not only the hint ("Save a backup, Last backup file made: 6 Oct 2026"; "Undo restore, available until …"), because hints can be turned off. On/off settings are never rows: they stay `ToggleRow`s in the group.
+**Settings group and row** (`components/settings.tsx`, mobile 1.17; §16): `SettingsGroup` = (mobile 1.46) one flat card (`SettingsCard`: `raised`, radius 24, padding 16 across, no shadow, a 1.5 `line` edge in dark; §5 rule 8), 16 between cards. Inside its top: the category's mark (`SettingsMark` 28, below) and a `headline` title over a hairline, the pair ONE screen-reader header named by the title, at least 48 tall; then an optional `meta` intro and the rows. On a door's own screen (`SettingsSubScreen`) the bar names the group, so it is bare rows between a hairline above and below. **Mark** (`SettingsMark`): an `accentText` Lucide glyph at stroke 1.75 in a `soft` circle, one colour for every category, hidden from screen readers; only on card titles and doors, never on rows. **Door** (`SettingsCategoryRow`): 72 tall at least, the 40 mark, a `headline` name and a `meta` live summary, a chevron; spoken "Your data, Last backup 6 Oct, back up or move to a new phone", hint "Opens Your data"; pressed tint settles at once (it leaves). `SettingsRow` = `label` title (optional `meta` subtitle under it) · the CURRENT value in `body` `ink2`, right-aligned, up to half the row and allowed to wrap · chevron 18 `muted` (none on an action row such as Save a backup or Restore from a backup: a chevron promises somewhere to go); min height 56, full-width hairline. At ×1.3+ text the value drops under the title. Spoken as one button, "Exam date, Friday 8 January 2027" (`spokenValue` gives the full form of a short value), with a hint that says what opens. A status belongs in the spoken name, not only the hint ("Save a backup, Last backup file made: 6 Oct 2026"; "Undo restore, available until …"), because hints can be turned off. On/off settings are never rows: they stay `ToggleRow`s in the group.
 
 **Bottom sheet** (`Sheet`, `components/settings.tsx`, mobile 1.17): for a short choice or a small tool opened from a row. The screen behind stays and dims (`scrim` at `scrimOp`); the sheet is `raised2` with 28 top corners (dark: a 1.5 `line` edge, no shadow), at most the screen's height under the status bar. Header: `hero` title (one screen-reader header stop that takes focus on open) + a ghost "Close" (choices that save as you tap), "Cancel" (when there is a Save) or "Done" (a tool). Content scrolls; an optional footer (Save) stays in reach. Closes with its button, a tap on the dim (hidden from screen readers), Android Back or VoiceOver's escape gesture; focus returns to the row that opened it. Motion: the Modal fades and the panel rises 8pt (`FadeIn`); under Reduce Motion it only fades. No spring, no drag handle (nothing to drag). **`ChoiceSheet`**: a Sheet holding one `radiogroup` of `RadioRow`s; a choice saves at once and closes the sheet, like a dropdown. Full-screen page sheets stay for longer flows (Restore preview, Report a problem, Share progress).
 
@@ -1267,27 +1268,37 @@ minutes, radio lists, steppers, day chips) with every choice open at once.
 - **The floating gear** (owner report): nothing on Settings draws a gear; it was the pressed gear of the screen underneath, whose press-out fade was still running while Settings was pushed (Android can leave that layer drawn over the new screen). The gears that open Settings (Today's and `ScreenTitle`'s) are `IconButton leaves`: on press their pressed circle is cancelled and set to rest at once, before navigating. Not reproducible on the web build; to confirm on a phone.
 - The owner is choosing between four layouts (shot 26 Oct 2026: (a) rows on paper with these headers, shipped; (b) grouped plates; (c) icon-led headers; (d) a quick-settings strip). The other three were screenshot-only and are not in the code.
 
-**The pattern.** Titled groups of rows (`SettingsGroup`, `SettingsRow`, §6).
+**Mobile 1.46, "one page, clear groups" (the owner's pick, 27 Oct 2026).** After 1.43 the owner said: "Still confusing... I can't distinguish clearly the categories to its sub categories." A coloured header is not enough; the grouping itself must be drawn. Four layouts (grouped cards with a tile on every row, two levels, section bands, quick settings first) and then two finalists (a finished two-level list, and one page of flat cards with two doors) were built in the app, shot and challenged by a critic, a first-time learner and a UX and accessibility review. She chose one page:
+- **Each category is its own flat card** (§5 rule 8) with its mark and title INSIDE the top of the card, so a title can never seem to belong to the card before it. Rows have no marks (§0); values stay on the right and stack under the title only at ×1.3+ text.
+- **The order is how often learners change things:** Appearance (Theme first, one tap), Exam, Your study, Reminders, Practice, Badges and your plant, You.
+- **Two doors** in one last card: Your data and Help and about (plus Account and Feedback board in a cloud build), rarely visited and many-rowed. Each shows a live summary: "Last backup 6 Oct" / "No backup yet" / "Restored a backup from 3 Oct" / "Undo restore until 3 Nov", then "· back up or move to a new phone"; Help shows a reply to a report, "Update ready: restart to install it", or "Report a problem or get help · version 1.46.0". Each opens `settings-section?category=…`: the same screen with only that category, its name in the bar; screen-reader focus starts on that name and returns to the door after Back. Any other category value shows the whole page.
+- **Reset** sits on Your data's screen, set apart by 32: the danger "Reset CISA progress" (hint "Asks first") and the line "Erases your CISA answers, scores and badges on this phone, to start again. Your settings stay. It asks first."
+- The version line ("KaiSip v1.46.0 · how the content is made · where progress is stored"), the update stamp and the trademark notice close both the page and Help and about's screen.
+- Deep links are unchanged: `?open=exam-date` and `?open=name` open their sheets over the page; `?section=plant` scrolls to the plant's card.
+- Contrast: in dark the card (`raised` #1A211C) on the night (`bg` #111613) is a quiet 1.11:1 step, so the 1.5 `line` (#29322B, 1.38:1 against `bg`) edge draws its outline; in light, white on paper is 1.13:1 with no edge (§5 rule 7). The cards gather rows and are never buttons, so WCAG 1.4.11's 3:1 does not apply to them; the grouping also shows through the title inside each card and the 16 of paper between cards. The marks' glyphs are 5.96:1 (light) and 8.29:1 (dark) on their `soft` circles.
+
+**The pattern.** Titled cards of rows (`SettingsGroup`, `SettingsRow`, §6), in this order.
 Each row shows its current value and opens a bottom sheet with the choices
 (`ChoiceSheet`; the calendar for the date). On/off settings stay switches in
-place. Rarely needed things move behind one row (About KaiSip). Nothing a
-learner set before was lost, and no saved setting changed shape.
+place. Rarely needed things move behind one row (About KaiSip) or one door
+(Your data, Help and about). Nothing a learner set before was lost, and no
+saved setting changed shape.
 
 | Group | Rows (value shown) | Switches |
 |---|---|---|
-| You (mobile 1.23) | Your name · Maya / Not set (a sheet with the text field, Save, Cancel and "Clear my name") | — |
-| Appearance (1.43: moved up from 6th) | Theme (a one-tap System / Light / Dark control on the screen); Motion · Match my phone | Haptics |
+| Appearance (first since 1.46) | Theme (a one-tap System / Light / Dark control on the screen); Motion · Match my phone | Haptics |
 | Exam | Certification · CISA; Exam date · 8 Jan 2027 (calendar) | — |
 | Your study | Daily time · 20 min; Starting point · Some experience | Exam-focused plan (+ the "Today's plan stays…" line) |
-| Practice | Default mode · Let the app choose | Timed practice; Shuffle answer options |
 | Reminders | Time and days (summary as subtitle; Steppers and day chips in a sheet) | Study reminder |
+| Practice | Default mode · Let the app choose | Timed practice; Shuffle answer options |
 | Badges and your plant | Change its look (opens the Look screen; 1.40, it replaced Quiet look) | Show badges (+ its "on again" line); Show my plant |
-| Your data | Save a backup; Restore from a backup; Undo restore (while it applies) | — |
-| (set apart) | danger "Reset CISA progress" + `meta` line | — |
-| Help and about | Get help or send feedback; About KaiSip (vision and pillars in a sheet); Privacy policy and Terms of use when configured; Check for updates (mobile 1.19, installed apps only) | — |
+| You (mobile 1.23) | Your name · Maya / Not set (a sheet with the text field, Save, Cancel and "Clear my name") | — |
+| Door: Your data | Save a backup; Restore from a backup; Undo restore (while it applies); then, set apart, danger "Reset CISA progress" + `meta` line | — |
+| Door: Help and about | Get help or send feedback; About KaiSip (vision and pillars in a sheet); Privacy policy and Terms of use when configured; Check for updates (mobile 1.19, installed apps only) | — |
 
 Then the version line, the "Update … · …" stamp (mobile 1.19, installed apps
-only) and the combined trademark notice, always visible.
+only) and the combined trademark notice, at the foot of the page and of Help
+and about's screen.
 
 **Check for updates (mobile 1.19).** Small updates reach an installed APK
 over the air, but only when the app starts cold (`checkAutomatically:

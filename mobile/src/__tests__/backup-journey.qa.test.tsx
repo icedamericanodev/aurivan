@@ -52,10 +52,13 @@ jest.mock('../components/icons', () => {
     get: (t, k: string) => (k in t ? t[k] : Icon),
   });
 });
+// Mobile 1.46: backup and restore live on Your data's own screen (Settings' door); the screen
+// comparison below reads Settings' page itself.
+const mockParams: { current: Record<string, string> } = { current: { category: 'data' } };
 jest.mock('expo-router', () => ({
   router: { push: jest.fn(), replace: jest.fn(), back: jest.fn(), setParams: jest.fn(), canGoBack: () => true },
   useFocusEffect: jest.fn(),
-  useLocalSearchParams: () => ({}),
+  useLocalSearchParams: () => mockParams.current,
 }));
 jest.mock('react-native-safe-area-context', () => {
   const { View } = jest.requireActual('react-native');
@@ -167,7 +170,7 @@ const settle = async () => {
 };
 
 /** Lines that are about THIS phone's backups, not the learner's progress. */
-const BACKUP_LINE = /Last backup|Undo restore|Available until|Restored|Your progress from the backup|undo this for/;
+const BACKUP_LINE = /Last backup|No backup yet|Undo restore|Available until|Restored|Your progress from the backup|undo this for/;
 
 const SCREENS: [string, () => React.ReactElement][] = [
   ['Today', () => <Today />],
@@ -181,9 +184,11 @@ const SCREENS: [string, () => React.ReactElement][] = [
 function screenTexts(): Record<string, string[]> {
   const out: Record<string, string[]> = {};
   for (const [name, el] of SCREENS) {
+    if (name === 'Settings') mockParams.current = {};
     mount(el());
     out[name] = texts().filter((t) => !BACKUP_LINE.test(t));
     unmount();
+    mockParams.current = { category: 'data' };
   }
   return out;
 }

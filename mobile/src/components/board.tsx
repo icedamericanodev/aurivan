@@ -347,7 +347,7 @@ export { PostPubliclyLine } from './boardLink';
 export function BoardSettingsGroup() {
   if (!boardReady()) return null;
   return (
-    <SettingsGroup title={copy('board.settings.group')}>
+    <SettingsGroup cat="board" title={copy('board.settings.group')}>
       <SettingsRow title={copy('board.settings.activity')} onPress={() => router.push('/board/activity')} />
       <SettingsRow title={copy('board.settings.blocked')} onPress={() => router.push('/board/blocked')} last />
     </SettingsGroup>

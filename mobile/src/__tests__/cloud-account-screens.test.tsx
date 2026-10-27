@@ -208,9 +208,15 @@ describe('A1: optional, never pushy', () => {
   it('Settings: an Account group, and About says progress is stored on this device', () => {
     const Settings = require('../app/settings').default as ComponentType;
     mount(<Settings />);
-    expect(allText()).toContain('Not signed in');
+    // Mobile 1.46: Account is a door on Settings' page; its rows are on its own screen.
+    expect(allText()).toContain('Sign in and sync');
     expect(allText()).toContain('Progress is stored on this device.');
     expect(allText()).not.toContain('Progress is stored only on this device.');
+    unmount();
+    (require('../../jest/perf/focusRouter').routeParams as Record<string, string | undefined>).category = 'account';
+    mount(<Settings />);
+    expect(allText()).toContain('Not signed in');
+    delete (require('../../jest/perf/focusRouter').routeParams as Record<string, string | undefined>).category;
   });
 
   it('no sign-in UI at onboarding, on Today or in the first session', () => {

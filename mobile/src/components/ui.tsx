@@ -1848,8 +1848,11 @@ export function PushedHeader({
   icon = 'back',
   right,
   center,
+  titleRef,
 }: {
   title?: string;
+  /** For moving screen-reader focus to the bar's title as the screen opens (a screen whose only heading is in the bar). */
+  titleRef?: Ref<View>;
   /** Collapse mode: true once the page's own title is under the bar (leave out = always shown). */
   showTitle?: boolean;
   onBack: () => void;
@@ -1885,6 +1888,10 @@ export function PushedHeader({
                 </View>
               }
             />
+          ) : title && titleRef ? (
+            <View ref={titleRef} accessible accessibilityRole="header" accessibilityLabel={title}>
+              <T v="label" numberOfLines={1}>{title}</T>
+            </View>
           ) : title ? (
             <T v="label" accessibilityRole="header" numberOfLines={1}>{title}</T>
           ) : null)}

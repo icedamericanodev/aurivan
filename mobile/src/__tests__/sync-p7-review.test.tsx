@@ -181,6 +181,7 @@ beforeEach(async () => {
 });
 afterEach(() => {
   unmount();
+  delete (require('../../jest/perf/focusRouter').routeParams as Record<string, string | undefined>).category;
   act(() => {
     jest.runOnlyPendingTimers();
   });
@@ -769,6 +770,8 @@ describe('review fixes beyond the repros', () => {
     const alert = jest.spyOn(Alert, 'alert').mockImplementation(() => {});
     try {
       const Settings = require('../app/settings').default as ComponentType;
+      // Mobile 1.46: Reset is on Your data's own screen.
+      (require('../../jest/perf/focusRouter').routeParams as Record<string, string | undefined>).category = 'data';
       mount(<Settings />);
       await press('Reset CISA progress');
       const body = alert.mock.calls[0][1] as string;

@@ -181,6 +181,7 @@ beforeEach(async () => {
 });
 afterEach(() => {
   unmount();
+  delete (require('../../jest/perf/focusRouter').routeParams as Record<string, string | undefined>).category;
   act(() => {
     jest.runOnlyPendingTimers();
   });
@@ -421,17 +422,27 @@ describe('account switch', () => {
 describe('Settings → Your data, About; You → Account', () => {
   it('O2: the intro never says "kept only on this phone" with the cloud on; it says it syncs while it does', async () => {
     const Settings = require('../app/settings').default as ComponentType;
+    const params = (require('../../jest/perf/focusRouter').routeParams as Record<string, string | undefined>);
+    // Mobile 1.46: Your data's intro is on its own screen; the About line is at the foot of the page.
+    const intro = () => {
+      params.category = 'data';
+      mount(<Settings />);
+      const t = allText();
+      unmount();
+      delete params.category;
+      return t;
+    };
+    expect(intro()).not.toContain('Your progress is kept only on this phone.');
+    expect(intro()).toContain('Your progress is kept on this phone. A backup file keeps it safe');
     mount(<Settings />);
-    expect(allText()).not.toContain('Your progress is kept only on this phone.');
-    expect(allText()).toContain('Your progress is kept on this phone. A backup file keeps it safe');
     expect(allText()).toContain('Progress is stored on this device.');
     unmount();
     backendWith(MAYA);
     act(() => {
       useSyncMeta.setState({ enabled: true });
     });
+    expect(intro()).toContain('Your progress is kept on this phone and syncs to your KaiSip account.');
     mount(<Settings />);
-    expect(allText()).toContain('Your progress is kept on this phone and syncs to your KaiSip account.');
     expect(allText()).toContain('Progress is stored on this device and syncs to your KaiSip account.');
   });
 
@@ -447,6 +458,8 @@ describe('Settings → Your data, About; You → Account', () => {
     });
     try {
       const Settings = require('../app/settings').default as ComponentType;
+      // Mobile 1.46: on Your data's own screen.
+      (require('../../jest/perf/focusRouter').routeParams as Record<string, string | undefined>).category = 'data';
       mount(<Settings />);
       expect(allText()).toContain('Undo sync');
       expect(allText()).toContain('Put back this phone’s progress from before it first synced (until 19 Oct).');

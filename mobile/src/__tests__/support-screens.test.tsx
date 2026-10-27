@@ -130,6 +130,8 @@ afterEach(() => {
 
 describe('Settings → Help and feedback', () => {
   it('Settings has ONE row, and it opens the Help screen', () => {
+    // Mobile 1.46: on Help and about's own screen (Settings' door).
+    mockParams = { category: 'help' };
     mount(<Settings />);
     expect(pressables('Get help or send feedback, Common questions, reports and what’s new')).toHaveLength(1);
     for (const t of ['Common questions', 'Contact support', 'Suggest an idea', 'Your reports', 'What’s next']) expect(pressables(t)).toHaveLength(0);

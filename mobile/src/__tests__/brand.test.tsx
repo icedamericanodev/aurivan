@@ -24,10 +24,11 @@ jest.mock('../components/icons', () => {
     get: (t, k: string) => (k in t ? t[k] : Icon),
   });
 });
+const mockParams: { current: Record<string, string> } = { current: {} };
 jest.mock('expo-router', () => ({
   router: { replace: jest.fn(), back: jest.fn(), push: jest.fn() },
   useFocusEffect: jest.fn(),
-  useLocalSearchParams: () => ({}),
+  useLocalSearchParams: () => mockParams.current,
 }));
 jest.mock('react-native-safe-area-context', () => {
   const { View } = jest.requireActual('react-native');
@@ -164,7 +165,12 @@ describe('welcome screen', () => {
 });
 
 describe('Settings → About', () => {
+  afterEach(() => {
+    mockParams.current = {};
+  });
   it('leads with the welcome’s CISA line, then the pillars, the scope line and the provenance line (mobile 1.39)', () => {
+    // Mobile 1.46: About KaiSip is on Help and about's own screen (Settings' door).
+    mockParams.current = { category: 'help' };
     mount(<Settings />);
     // Mobile 1.17: behind the "About KaiSip" row (a sheet), so Settings stays short.
     expect(allText()).not.toContain(CERT_SCOPE_LINE);

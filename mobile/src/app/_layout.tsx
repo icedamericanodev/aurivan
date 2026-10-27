@@ -209,6 +209,8 @@ export default function RootLayout() {
         <Stack.Screen name="field-notes" />
         <Stack.Screen name="mistakes" />
         <Stack.Screen name="settings" />
+        {/* Mobile 1.46: a Settings door's own screen (Your data, Help and about). */}
+        <Stack.Screen name="settings-section" />
         <Stack.Screen name="saved" />
         <Stack.Screen name="caught-up" />
         <Stack.Screen name="bank/index" />

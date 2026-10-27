@@ -137,8 +137,9 @@ describe('Settings is grouped, and each row says its value', () => {
     useSettings.setState({ familiarity: 'some', dailyMinutes: 30, studyMode: 'guided', theme: 'dark', motion: 'reduced' });
     mount(<Settings />);
     const t = allText();
-    // Mobile 1.43 (owner): Appearance comes right after You, so the theme is near the top.
-    const at = ['Appearance', 'Exam', 'Your study', 'Practice', 'Reminders', 'Badges and your plant', 'Your data', 'Help and about'].map((g) => t.indexOf(g));
+    // Mobile 1.46 (owner): one page in the order learners change things, Appearance (the theme) first;
+    // Your data and Help and about are doors at the end. ("You" is last of the cards; its word is inside "Your".)
+    const at = ['Appearance', 'Exam', 'Your study', 'Reminders', 'Practice', 'Badges and your plant', 'Your data', 'Help and about'].map((g) => t.indexOf(g));
     expect(at.every((n) => n > -1)).toBe(true);
     expect([...at].sort((a, b) => a - b)).toEqual(at);
     expect(row('Certification').props.accessibilityLabel).toBe('Certification, CISA');
@@ -239,6 +240,12 @@ describe('Choice sheets work like a dropdown', () => {
     mount(<Settings />);
     expect(row('Exam date').findAll((n) => n.type === ChevronRight)).toHaveLength(1);
     expect(row('Motion').findAll((n) => n.type === ChevronRight)).toHaveLength(1);
+    act(() => {
+      r?.unmount();
+    });
+    // Mobile 1.46: Your data's rows are on its own screen.
+    mockParams = { category: 'data' };
+    mount(<Settings />);
     const save = hosts((n) => n.props.accessibilityRole === 'button' && String(n.props.accessibilityLabel).startsWith('Save a backup, '))[0];
     expect(save.findAll((n) => n.type === ChevronRight)).toHaveLength(0);
   });
@@ -619,7 +626,7 @@ describe('Settings and its sheets parse on native', () => {
       useSettings.setState({ theme });
       mount(<Settings />);
       expect(checkTree()).toBeGreaterThan(20);
-      for (const title of ['Certification', 'Exam date', 'Daily time', 'Starting point', 'Default mode', 'Motion', 'About KaiSip']) {
+      for (const title of ['Certification', 'Exam date', 'Daily time', 'Starting point', 'Default mode', 'Motion']) {
         openRow(title);
         checkTree();
         press(new RegExp(`^(Close|Cancel|Done), `));
@@ -627,6 +634,16 @@ describe('Settings and its sheets parse on native', () => {
       act(() => {
         r?.unmount();
       });
+      // Mobile 1.46: About KaiSip is on Help and about's own screen.
+      mockParams = { category: 'help' };
+      mount(<Settings />);
+      openRow('About KaiSip');
+      checkTree();
+      press(new RegExp(`^(Close|Cancel|Done), `));
+      act(() => {
+        r?.unmount();
+      });
+      mockParams = {};
       r = undefined;
     }
   });

@@ -155,6 +155,7 @@ export function YourData() {
     <>
       <SettingsGroup
         title="Your data"
+        cat="data"
         intro={
           CLOUD
             ? copy(syncing ? 'data.intro.sync' : 'data.intro.on')
