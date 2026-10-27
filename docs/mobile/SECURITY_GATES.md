@@ -11,16 +11,45 @@
 > already done in code, and the exact steps only you (the owner) can take,
 > because they need your accounts, keys or a decision.
 
+## Status, accounts beta (27 Oct 2026)
+
+The owner chose a smaller first step than Phase 9: optional accounts on the
+web and Android (Google or an email code), progress sync between them, on
+the Supabase Free plan, with the **feedback board OFF** (its own build flag,
+and posting paused on the server). Moment **(B)** below now means "the
+accounts beta goes live". What that changes:
+
+- **Gate 1:** Play testers get the production profile through closed
+  testing, where over-the-air updates are off, so signed-in phones never run
+  unsigned updates. Preview APKs (unsigned updates) stay on Sky's own phone.
+- **Gate 2:** not needed for the beta (no board, so no staff tools in use).
+  Still required before the board opens.
+- **Gate 3:** decided: Cloudflare Turnstile and Resend's free plan; the
+  email templates are written (`docs/mobile/AUTH_EMAIL_TEMPLATES.md`).
+  Open: the owner's accounts and settings (`ACCOUNTS_BETA_PLAN.md` §9 C, D,
+  F22–F24, F30). Captcha is switched on last.
+- **Gate 5:** open, one switch (§9 F27).
+- **Gate 6:** still binding, plus the snapshot codec rule below.
+- **New, done in the repo (ticket 1):** the schema fixes before the first
+  apply (gzip snapshots, one checkpoint, no content tables, the keyed
+  deletion audit, a trigger refusing new passwords on confirmed accounts,
+  the board paused), CORS for exactly `https://kaisip.com` on the two
+  account functions, a capped gzip reader against gzip bombs, the delete
+  order (the account first), the keep-awake and encrypted-backup workflows.
+  Open: Sky's `DELETION_PEPPER` Function secret, R2 bucket, `age` key and
+  the `db-backup` environment secrets.
+
 ## At a glance
 
 | # | Gate | Needed before | Code status | Owner action |
 |---|---|---|---|---|
 | 1 | Signed phone updates (audit M1) | (A) and (B) | (A) met another way: store builds ship with updates off (mobile 1.40.1). Signing still open for test builds and Phase 9 | Not for (A). For (B): keys, one native build, a paid plan |
-| 2 | Staff MFA + admin/moderator split (M2) | (B) | **Done** | Yes: turn on MFA, enrol staff, add staff rows |
-| 3 | Captcha + your own email sender (L3) | (B) | Interface ready | Yes: Turnstile + SMTP accounts |
+| 2 | Staff MFA + admin/moderator split (M2) | Before the board opens (not the accounts beta) | **Done** | Yes: turn on MFA, enrol staff, add staff rows |
+| 3 | Captcha + your own email sender (L3) | (B) | Chosen: Turnstile + Resend; templates written | Yes: Turnstile widget, Resend + DNS, SMTP and captcha settings |
 | 4 | Backup-route APK signing key (L4) | Next run of that workflow | Not started | Yes: a decision |
 | 5 | GraphQL off on the hosted project (I7) | (B) | Local config done | Yes: one dashboard switch |
-| 6 | Adapter guardrails (I1, I2, I3) | (B) | Rules written here | No: engineer checklist |
+| 6 | Adapter guardrails (I1, I2, I3, I9) | (B) | Rules written here | No: engineer checklist |
+| 7 | Free-plan safeguards (keep-awake, encrypted backups, size alarm) | (B) | **Workflows in the repo** | Yes: repo variables, R2 bucket, `age` key, `db-backup` secrets |
 
 Already fixed in code by the same audit (nothing for you to do):
 - **L1** a link from outside the app (`kaisip://board/new?body=…`) can no longer
@@ -152,15 +181,21 @@ the project's hourly email allowance, so real learners can't sign in.
 **Done in code.** The app has a captcha interface (`CaptchaPort`), and
 `supabase/config.toml` has the captcha block ready (commented out until Phase 9).
 
-**Owner steps (Phase 9).**
-1. Create a free Cloudflare **Turnstile** widget. Put its secret key in the
-   hosted project's Auth captcha settings (provider: Turnstile). The site key
-   is public and goes in the app's build settings.
-2. Choose an email provider (for example Resend, Postmark or Amazon SES; some
-   cost money: your decision), and set it as the project's custom SMTP sender.
-3. Set the hourly email limit to match that provider's quota.
-4. Ask an agent to switch on `[auth.captcha]` in `config.toml` and pass the
-   captcha token from the sign-in screens.
+**Decided (accounts beta, 27 Oct 2026):** Turnstile (Managed, hostname
+`kaisip.com`) and Resend's free plan (3,000 emails a month, 100 a day),
+sending from `KaiSip <codes@kaisip.com>`. The templates are code-only
+(`docs/mobile/AUTH_EMAIL_TEMPLATES.md`).
+
+**Owner steps (accounts beta; exact clicks in `ACCOUNTS_BETA_PLAN.md` §9).**
+1. Create the Turnstile widget (§9 D11–D12). The site key is public; send it
+   to Claude. Keep the secret key for the last step.
+2. Set up Resend with the `kaisip.com` DNS records (§9 C6–C10), then the
+   custom SMTP sender in Supabase (§9 F22).
+3. Paste the email templates (§9 F23) and set the rate limits: emails 20 an
+   hour, token verifications 30, sign-ins 30, refreshes 150 (§9 F24).
+4. Last, on go-live day, after both clients send captcha tokens and the
+   smoke test has run: Authentication → Attack Protection → CAPTCHA →
+   Turnstile, with the secret key (§9 F30).
 
 ## Gate 4. The backup-route test APK's signing key (done: route retired)
 
@@ -210,6 +245,37 @@ No owner action. Whoever writes the real Supabase client code must follow these:
   board name. Say so in `privacy.html`.
 - **I8** The staff screen's own check is only cosmetic. The server
   (`staff-action` and `private.staff_act`) is the real gate. Keep it that way.
+- **I9 Snapshots are untrusted input (accounts beta).** Every client (the
+  phone and the website) reads a synced snapshot through a capped inflate:
+  stop at 2,000,000 bytes, refuse a size that doesn't equal `raw_bytes` or
+  an `encoding` other than `gzip+base64`, then the strict snapshot checker.
+  A snapshot that fails pauses sync as unreadable; it never crashes the app
+  or replaces local progress. The server's reader is
+  `supabase/functions/_shared/gz.ts`.
+
+## Gate 7. Free-plan safeguards (accounts beta)
+
+**What it protects.** On the Free plan Supabase pauses a project after 7 days
+without activity (sign-in and sync stop for everyone), keeps no backups we
+can restore from *(verify)*, and sends no usage alerts.
+
+**Done in the repo.**
+- `.github/workflows/keep-awake.yml`: every 2 days, one read with the
+  publishable key; a red run means the project is paused or down.
+- `.github/workflows/db-backup.yml`: nightly `pg_dump`, encrypted with
+  `age` to Sky's public key, uploaded to R2 and kept 30 days; red over
+  300 MB. It runs only from `main`, in the `db-backup` environment, prints
+  no counts (the log is public), and uploads no artifact.
+- Both stop green with a notice until they are set up.
+
+**Owner steps** (`ACCOUNTS_BETA_PLAN.md` §9 G31–G35): the R2 bucket with a
+30-day lifecycle rule and a bucket-only token; an `age` key made on your own
+computer (only the `age1…` public line goes to GitHub, as the repository
+variable `BACKUP_AGE_RECIPIENT`); the `db-backup` environment (main only)
+with `SUPABASE_DB_URL`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY` and
+`R2_ENDPOINT`; and the repository variables `SUPABASE_URL` and
+`SUPABASE_PUBLISHABLE_KEY` for keep-awake. Then decrypt one backup to prove
+the key works (acceptance test S8).
 
 ## How to re-check
 
@@ -218,7 +284,9 @@ From the repo root:
 bash scripts/check_rls.sh                       # static RLS rules
 (cd mobile && npm run check)                    # app tests, lint, types
 # SQL tests: CI (.github/workflows/supabase.yml) runs `supabase test db`;
-# the mutation checks: python3 scripts/board_sql_mutants.py
+# the mutation checks: python3 scripts/sync_sql_mutants.py and
+# python3 scripts/board_sql_mutants.py
+# On the hosted project, after the apply: bash scripts/cloud_smoke.sh
 ```
 Re-run the `mobile-security-auditor` agent before the first store build and
 again before Phase 9.

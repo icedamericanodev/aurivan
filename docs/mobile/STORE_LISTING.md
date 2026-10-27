@@ -234,7 +234,7 @@ From `docs/mobile/PLAY_LAUNCH.md` section (d). These assume the owner's decision
 - Answer **No** to every question: violence, blood or gore; fear or horror; sexual content or nudity; profanity or crude humour; drugs, alcohol or tobacco; real or simulated gambling; hate or discrimination.
 - Miscellaneous, all **No**: users can interact or exchange content; shares the user's location with other users; allows purchases of digital goods; unrestricted internet access (web browser or search engine); NFTs or digital assets (if asked).
 - Expected result: ESRB Everyone, PEGI 3, USK 0, ClassInd L, Play "Everyone".
-- Redo the questionnaire when the feedback board (user-generated content) ships at Phase 9 (section 7).
+- Redo the questionnaire when the feedback board (user-generated content) ships (section 7.5). The accounts beta alone does not change it (section 7.3).
 
 ---
 
@@ -298,63 +298,145 @@ Success metric: store listing conversion rate (visitors to installs), read at 90
 
 **Retired (22 Oct 2026): Play short description variant B** ("CISA® exam practice that teaches the why. Daily plan, spaced review, offline."). It starts with "CISA®", which reads like a product name (trademark review, PLAY_LAUNCH.md section 6 (ii)). Keep variant A. Do not test a short description that starts with CISA or ISACA.
 
-## 7. Cloud release (DRAFT, not in effect until Phase 9)
+## 7. Accounts beta on Google Play (DRAFT, not in effect until the accounts build)
 
-Accounts (Phase 6), sync (Phase 7) and the feedback board (Phase 8) are
-built and switched OFF. Nothing above changes until the owner's go-live
-(Phase 9, proposed mobile 2.0.0).
-Then swap these in, in the same release as the published privacy, terms and
-delete-account pages. Section 5's "No account, no data collected" line and
-the "Data Not Collected" label stay true for the OFF build only.
+Owner decision (27 Oct 2026): optional sign-in with Google or a 6-digit
+email code, progress synced between the app and kaisip.com, the feedback
+board OFF. These answers replace the "No data collected" answers in
+section 2 **in the same release as** the first build with accounts on, and
+the published privacy, terms and delete-account pages (web v13). Until
+then section 2 stays true. Plan: `ACCOUNTS_BETA_PLAN.md` §5. Re-read every
+answer against the shipped build before submitting.
 
-**Apple privacy label (App Privacy).**
+### 7.1 Data safety (Play Console → App content → Data safety)
+
+**Data collection and security**
+
+| Question | Answer |
+|---|---|
+| Does your app collect or share any of the required user data types? | **Yes** |
+| Is all of the user data collected by your app encrypted in transit? | **Yes** (HTTPS only) |
+| Which methods of account creation does your app support? | **OAuth** (Google) and **Username and other authentication** (email and a one-time code). Not "Username and password": there are no passwords |
+| Delete account URL | `https://kaisip.com/delete-account` |
+| Do you provide a way for users to request that some or all of their data is deleted, without deleting their account? | **Yes**: Settings → Account → Delete synced progress (also on the delete-account page) |
+| Independent security review | No |
+
+**Data types.** Every row: **collected**, **not shared**, **not processed
+ephemerally**, **optional** ("Users can choose whether this data is
+collected": only with an account, which is optional).
+
+| Category › Data type | Purposes | What it is in KaiSip |
+|---|---|---|
+| Personal info › Email address | App functionality, Account management | The sign-in address |
+| Personal info › User IDs | App functionality, Account management | The account id |
+| Personal info › Name | Account management | Google sign-in passes the learner's Google name (and a profile-picture link) to our sign-in system, which stores it with the account. KaiSip doesn't show or use it. Declared to be safe; ask `app-store-compliance-reviewer` if you'd rather not *(verify)* |
+| App activity › App interactions | App functionality | Synced progress: answers (right or wrong, how sure, how long), reviews, mocks, study days and streak, game levels |
+| App activity › Other user-generated content | App functionality | The notes a learner writes on questions, and "Your reports" (which questions they reported, why and when), synced with progress |
+| App activity › Other actions | App functionality | Saved questions, notes read, lessons done, badges, the plant, the exam date |
+| Device or other IDs | App functionality | The random install id sent with each sync (not a hardware or advertising id; renewed when a different account signs in, and on account deletion) |
+
+**Not collected** (answer No): location, financial info, health and
+fitness, messages, photos and videos, audio, files and docs, calendar,
+contacts, web browsing, app info and performance (no crash reporting, no
+analytics). The IP address seen in ordinary request logs is not declared
+as a data type *(verify against Play's current guidance)*. The email-code
+human check (Cloudflare Turnstile) runs on kaisip.com in the browser, not
+in the app.
+
+**Why "not shared":** Supabase (database and sign-in), Resend (sends the
+codes) and Cloudflare (website, backups) process data for us as service
+providers, which Play does not count as sharing. Google is the sign-in
+provider the learner chose.
+
+### 7.2 App access (Play Console → App content → App access)
+
+Choose **"All or some functionality in my app is restricted"** and add one
+instruction set:
+
+- **Name:** Optional account (sync)
+- **Instructions** (paste):
+
+> Every study feature works without an account: tap "Continue without an
+> account" on the first screen, or skip the sign-in step. Signing in is
+> optional and only adds syncing progress between the app and the KaiSip
+> website. To review it: open You → Settings → Account and tap "Continue
+> with Google", then sign in with any Google account (or the test account
+> below). The app returns to Settings showing the account and "Sync this
+> phone". To delete the account afterwards: Settings → Account → Delete
+> account (you will be asked to sign in again first). The email option
+> sends a 6-digit code to an inbox you can read, so please use Google.
+
+- **Username / Password:** recommended: leave the "any Google account"
+  instruction alone *(verify that Play accepts it)*. If Play asks for
+  credentials, Sky makes a dedicated Google account for reviewers (not a
+  personal one), adds its address and password here, and deletes its
+  KaiSip account after each review.
+
+Check the menu path against the shipped build before pasting: the account
+screens and the onboarding step are built in the mobile ticket.
+
+### 7.3 Other App content answers that change
+
+| Declaration | Answer for the accounts build |
+|---|---|
+| Privacy policy | `https://kaisip.com/privacy` (the v13 page with the account section) |
+| Data deletion | In the app (Settings → Account → Delete account) and `https://kaisip.com/delete-account` |
+| Target audience | Unchanged: **18 and over**. Accounts are for 16 and over (privacy policy and terms) |
+| Content rating (IARC) | Unchanged while the board is off: learners can't see each other's content. Redo it when the board ships (7.5) |
+| Ads, Advertising ID, financial, health, news, government | Unchanged (section 2) |
+
+### 7.4 What stays true from section 2
+
+- Section 5's "No account, no data collected" line becomes "An account is
+  optional; without one, nothing leaves your phone."
+- The store description doesn't need to mention accounts. If it does, say
+  "optional", and never "pass guaranteed".
+
+### 7.5 Later (not for the beta): Apple, and the feedback board
+
+Kept from the Phase 6–8 drafts for when they ship.
+
+**Apple privacy label (App Privacy), when the iPhone app has accounts
+(with Sign in with Apple, guideline 4.8).**
 - Contact Info › Email Address: linked to the user, App Functionality, not tracking.
+- Contact Info › Name: only if a sign-in provider's name is stored *(verify)*.
 - Identifiers › User ID: linked, App Functionality, not tracking.
 - Identifiers › Device ID (the random install id sent with each sync): linked, App Functionality, not tracking.
 - Usage Data › Product Interaction (synced study progress: answers and how long each took, study days, game levels): linked, App Functionality, not tracking.
-- User Content › Other User Content ("Your reports": which questions the learner reported, why and when, synced with progress; and the feedback board: posts, comments, the board name, reports and appeals): linked, App Functionality, not tracking.
-- Usage Data › Product Interaction also covers the board's votes and follows: linked, App Functionality, not tracking.
+- User Content › Other User Content ("Your reports" and the notes on questions, synced with progress; and the feedback board when it ships: posts, comments, the board name, reports and appeals): linked, App Functionality, not tracking.
 - Data is encrypted in transit; users can request deletion (in the app, and at the delete-account URL). Settings → Account → Delete synced progress deletes the synced copy without deleting the account.
 
-**Google Play Data safety.**
-- Personal info › Email address; App activity › App interactions (answer timings, study days and streak, game levels) and Other actions (synced progress; the board's votes and follows); App activity › Other user-generated content ("Your reports"; the board's posts, comments, board name, reports and appeals); Device or other IDs (the install id). All collected, not shared, App functionality, optional (only with an account), encrypted in transit, deletable in the app and at the delete-account URL. The synced copy can also be deleted on its own (Delete synced progress) without deleting the account.
-- Re-read both forms against the shipped build before submitting (security review P7 S8): the shared-device "remove from this phone" path and the install id renewal changed in the Phase 7 review.
-
-**App Review note, added paragraph.**
+**App Review note, accounts paragraph (Apple).**
 "Accounts are optional: every study feature works signed out. Sync is
 optional too and off until the learner turns it on in Settings → Account →
 Sync this phone, after a preview of what will change. Settings → Account →
 Delete synced progress removes the synced copy without deleting the account;
 Settings → Account → Delete account deletes the account in the app. No push
-notifications. Demo access:
-[owner decision, PHASE6_8 §9 #8]."
+notifications. Demo access: [owner decision]."
 
-**App Review note, feedback board paragraph (Apple 1.2, 2.3.1(a)).**
-"You → Help and feedback → Feedback board (also Settings → Feedback board)
-is a board where learners post ideas, app problems, content concerns and
-questions about the app, vote and comment. Before the first post, comment
-or vote, a learner must sign in and agree to the community guidelines
-(version-stamped, zero tolerance for abuse and for real exam questions:
-[community guidelines URL]). Filters: word lists, a check against the app's
-own practice questions, and new members' posts wait for a person. Every
-post and comment has a ⋯ menu with Report post or comment, Report {name}
-(the member) and Block {name}; blocked learners' content disappears at once
-and they can't comment on the blocker's posts. We review reports within 24
-hours; contact: certprep.support@gmail.com (shown at the foot of the
-board). Staff moderate in the app (Moderation, staff accounts only:
-[demo staff access, or "staff-only, not part of review"]). Demo learner
-account with board access: [owner decision]."
-
-**Age rating (Phase 9, with the read-scope decision).**
-- The board is user-generated content with reporting, blocking and
-  moderation. If the read scope is `signed_in` or `everyone` (other learners
-  read posts), it is a feed shared with many users: Apple's questionnaire
-  answers "Social Media" yes, which rates the app **13+ (16+ in
-  Australia)**. With `author_staff` (only the author and the team read a
-  post) it is closer to private feedback: re-ask
-  `app-store-compliance-reviewer` before answering.
-- Google Play: file a **new IARC questionnaire** when the board ships
-  (features changed): "users can interact or exchange content: yes",
-  "shares user-generated content: yes", with the moderation answers above.
-- Check the Australian under-16 social media rules with counsel before
-  enabling the board there (compliance review P8, go-live checklist).
+**The feedback board** (adds to both stores' answers when it ships):
+- Data safety / privacy label: the board's posts, comments, board name,
+  reports and appeals (Other user-generated content), votes and follows
+  (Other actions / Product Interaction).
+- App Review note (Apple 1.2, 2.3.1(a)): "You → Help and feedback →
+  Feedback board (also Settings → Feedback board) is a board where learners
+  post ideas, app problems, content concerns and questions about the app,
+  vote and comment. Before the first post, comment or vote, a learner must
+  sign in and agree to the community guidelines (version-stamped, zero
+  tolerance for abuse and for real exam questions: [community guidelines
+  URL]). Filters: word lists, a check against the app's own practice
+  questions, and new members' posts wait for a person. Every post and
+  comment has a ⋯ menu with Report post or comment, Report {name} (the
+  member) and Block {name}; blocked learners' content disappears at once and
+  they can't comment on the blocker's posts. We review reports within 24
+  hours; contact: certprep.support@gmail.com (shown at the foot of the
+  board). Staff moderate in the app (Moderation, staff accounts only: [demo
+  staff access, or "staff-only, not part of review"]). Demo learner account
+  with board access: [owner decision]."
+- Age rating: if other learners can read posts (read scope `signed_in` or
+  `everyone`), Apple's questionnaire answers "Social Media" yes, which rates
+  the app **13+ (16+ in Australia)**; with `author_staff` re-ask
+  `app-store-compliance-reviewer`. Google Play: a **new IARC questionnaire**
+  ("users can interact or exchange content: yes", "shares user-generated
+  content: yes", with the moderation answers above). Check the Australian
+  under-16 social media rules with counsel before enabling the board there.
