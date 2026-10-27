@@ -4,6 +4,12 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v12.38] — Harder operations and resilience practice
+
+### Improved
+- More challenging answer choices in IT operations and business resilience practice questions, so ruling out wrong answers takes real CISA knowledge.
+- Fewer look-alike questions: each one now teaches its own lesson.
+
 ## [v12.37] — Today can greet you by name, and harder security practice
 
 ### New
