@@ -62,6 +62,7 @@ import { useSession } from '../store/session';
 import { useSettings } from '../store/settings';
 // Mobile 1.40: these tests check the storybook plant, so they plant as an app from before 1.40 did (no style).
 import { legacyPlantNew as plantNew } from '../../jest/legacyPlant';
+import { installFakePack } from '../../jest/fakePack';
 
 jest.mock('@react-native-async-storage/async-storage', () =>
   jest.requireActual('@react-native-async-storage/async-storage/jest/async-storage-mock'),
@@ -98,6 +99,8 @@ jest.mock('expo-notifications', () => ({
 // ── Helpers ──────────────────────────────────────────────────────────────
 const DAY = 86_400_000;
 let r: ReactTestRenderer | undefined;
+/** A stand-in pack a test installed (removed after it). */
+let undoPack: (() => void) | undefined;
 const mount = (el: React.ReactElement) => {
   act(() => {
     r = create(el);
@@ -201,6 +204,8 @@ beforeEach(() => {
 });
 afterEach(() => {
   unmount();
+  undoPack?.();
+  undoPack = undefined;
   jest.restoreAllMocks();
 });
 
@@ -1017,6 +1022,8 @@ describe('J10 a separate plant per certification', () => {
   });
 
   it('You follows the active exam: its plant, or "Plant yours" for an exam without one', () => {
+    // CISM's content must be on the phone for the app to study it (lib/activeCert.ts): a stand-in pack.
+    undoPack = installFakePack('cism');
     setPlant(plantNew('oak', 'Kai', Date.now()));
     mount(<You />);
     expect(allText()).toMatch(/Kai/);
@@ -1036,6 +1043,7 @@ describe('J10 a separate plant per certification', () => {
   });
 
   it('planting from the picker plants for the ACTIVE exam only', () => {
+    undoPack = installFakePack('cism');
     useSettings.setState({ activeCertId: 'cism' });
     mount(<PlantPick />);
     layoutGrid();

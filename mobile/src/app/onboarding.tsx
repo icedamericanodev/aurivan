@@ -63,7 +63,7 @@ import { DEFAULT_MINUTES, type DailyMinutes, type Familiarity } from '../engine/
 import { dayKey } from '../engine/streak';
 import { selectCert, useProgress } from '../store/progress';
 import { useSeen } from '../store/seen';
-import { useSettings } from '../store/settings';
+import { examDateOf, useSettings } from '../store/settings';
 import { radius, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 
@@ -112,7 +112,7 @@ export default function Onboarding() {
     onboard: true,
     onRestored: () => router.replace('/home'),
     onWebAdded: () => {
-      const added = useSettings.getState().examDates[certId];
+      const added = examDateOf(useSettings.getState().examDates, certId);
       if (added) setExamDate(added);
       setStep(1);
     },

@@ -138,6 +138,14 @@ interface SettingsState {
   setBadgesHidden: (v: boolean) => void;
 }
 
+/**
+ * One exam's date, or undefined. An own key only (security review HIGH-1):
+ * `examDates['constructor']` would otherwise be the built-in Object function.
+ */
+export function examDateOf(examDates: SettingsState['examDates'] | undefined, certId: string): string | undefined {
+  return examDates && Object.prototype.hasOwnProperty.call(examDates, certId) ? examDates[certId] : undefined;
+}
+
 export const useSettings = create<SettingsState>()(
   persist(
     (set) => ({

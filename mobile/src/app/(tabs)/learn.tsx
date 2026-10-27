@@ -75,9 +75,9 @@ import { readCount, searchNotes } from '../../engine/notesSearch';
 import { clearFinishedLessons, wasJustFinished } from '../../lib/lessonNews';
 import { readinessFor } from '../../engine/readiness';
 import { selectCert, useProgress } from '../../store/progress';
-import { useSettings } from '../../store/settings';
 import { motion, radius, space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
+import { useActiveCertId } from '../../lib/activeCert';
 
 /**
  * Why the cover offers this lesson (ui.md L3), as a code. Exported for tests.
@@ -111,7 +111,7 @@ export default function Learn() {
   // and from readiness only the focus domain and whether there are answers.
   // Learn stays mounted (hidden) during study; an answer that doesn't move
   // its focus domain no longer re-renders it.
-  const certId = useSettings((s) => s.activeCertId);
+  const certId = useActiveCertId();
   const cert = getCertification(certId) ?? CERTIFICATIONS[0];
   // Progress by the active id itself, as useActiveCert reads it, so every tab shows the same exam's progress.
   const lessonsDone = useProgress((s) => selectCert(s, certId).lessonsDone);

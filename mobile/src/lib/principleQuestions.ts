@@ -7,6 +7,7 @@
  * up, so opening or re-rendering it never walks all ~1,250 questions again.
  */
 import { findQuestion, getAllQuestions } from '../content/loader';
+import { onClearContentCaches } from '../content/packs';
 import type { Principle } from '../content/principles/types';
 import {
   indexByPrinciple,
@@ -63,3 +64,6 @@ export function clearPrincipleQuestionsCache(): void {
   indexes.clear();
   unions.clear();
 }
+
+// clearContentCaches() (content/packs) empties these too.
+onClearContentCaches(clearPrincipleQuestionsCache);

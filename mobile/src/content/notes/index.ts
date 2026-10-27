@@ -1,9 +1,10 @@
 /**
  * Study notes loader — the only code that knows where notes come from.
- * Like the question loader, the pack is bundled in the app (offline) and
- * parsed the first time a screen asks for it.
+ * Like the question loader, the notes come from the cert's content pack
+ * (content/packs/: bundled in the app today, offline) and are parsed the
+ * first time a screen asks for them.
  */
-import { generatedNotes } from '../generated';
+import { onClearContentCaches, sourceFor } from '../packs';
 import type { NoteDomain, NoteSubtopic, NotesPack } from './types';
 
 const cache = new Map<string, NotesPack | null>();
@@ -11,8 +12,7 @@ const cache = new Map<string, NotesPack | null>();
 /** The cert's notes pack, or null when it has none. */
 export function getNotes(certId: string): NotesPack | null {
   if (cache.has(certId)) return cache.get(certId) ?? null;
-  const load = generatedNotes[certId];
-  const pack = load ? load() : null;
+  const pack = sourceFor(certId).notes(certId);
   cache.set(certId, pack);
   return pack;
 }
@@ -76,3 +76,6 @@ export function clearNotesCache(): void {
   subtopicIndex.clear();
   noteIndex.clear();
 }
+
+// clearContentCaches() (content/packs) empties these too.
+onClearContentCaches(clearNotesCache);

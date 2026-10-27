@@ -317,7 +317,8 @@ describe('hostile or unreadable snapshots pause sync and leave the phone byte-id
   const cases: [string, unknown, string?][] = [
     ['__proto__', JSON.parse('{"__proto__":{"x":1},"byCert":{},"streak":{"current":0,"best":0,"lastDay":null}}')],
     ['1.6 M characters', { byCert: {}, streak: { current: 0, best: 0, lastDay: null }, junk: 'x'.repeat(1_600_000) }],
-    ['an unknown cert', { byCert: { zz9: {} }, streak: { current: 0, best: 0, lastDay: null } }],
+    // Content packs, fix 2: a WELL-FORMED unknown id is kept (next test); a malformed one still pauses sync.
+    ['a malformed cert id', { byCert: { 'ZZ 9!': {} }, streak: { current: 0, best: 0, lastDay: null } }],
     ['correct > total', { byCert: { cisa: { answers: { [ids[0]]: { attempts: 1, correctCount: 4, lastCorrect: true, lastAt: T0 } } } }, streak: { current: 0, best: 0, lastDay: null } }],
     ['a timestamp past 2100', { byCert: { cisa: { answers: { [ids[0]]: { attempts: 1, correctCount: 1, lastCorrect: true, lastAt: Date.UTC(2150, 0, 1) } } } }, streak: { current: 0, best: 0, lastDay: null } }],
     ['no streak', { byCert: {} }],
@@ -335,6 +336,21 @@ describe('hostile or unreadable snapshots pause sync and leave the phone byte-id
     // Never "repaired" by pushing over it.
     expect(memory.control.calls).not.toContain('sync.push');
     expect(memory.control.snapshots(USER).progress!.rev).toBe(snap.rev);
+  });
+
+  it('an exam this phone has no content for (a pack from the other phone) is pulled and kept as it is (content packs, fix 2)', async () => {
+    const A = makePhone('A');
+    answer(A, ids[3]);
+    await firstSync(A);
+    const other = { lessonsDone: ['zz9-l-1'], bookmarks: ['zz9_001'] };
+    memory.control.writeSnapshot(USER, 'progress', { state: { byCert: { zz9: other }, streak: { current: 0, best: 0, lastDay: null } } });
+    const r = await syncCycle(A.ctx);
+    expect(r.kind).toBe('synced');
+    const byCert = (A.data.progress as { byCert: Record<string, { lessonsDone?: string[]; bookmarks?: string[] }> }).byCert;
+    expect(byCert.zz9?.lessonsDone).toEqual(['zz9-l-1']);
+    expect(byCert.zz9?.bookmarks).toEqual(['zz9_001']);
+    // This phone's own CISA answer is still there too.
+    expect(Object.keys((byCert.cisa as { answers?: object }).answers ?? {})).toContain(ids[3]);
   });
 
   it('a snapshot from a newer minor app pauses ("newer") and is never pushed over; a newer patch with new data too', async () => {

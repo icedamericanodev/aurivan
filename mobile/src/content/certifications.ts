@@ -14,13 +14,20 @@
  * is the canonical source (see CLAUDE.md hard rule 2).
  */
 import { domainPalette } from '../theme/tokens';
-import type { Certification, DomainTone } from './types';
+import type { CertIssuer, Certification, DomainTone } from './types';
+
+/** The issuers the app names today. A downloaded pack's manifest carries its own (content packs). */
+export const ISACA: CertIssuer = { id: 'isaca', name: 'ISACA' };
+export const ISC2: CertIssuer = { id: 'isc2', name: 'ISC2' };
 
 // Use registered: false for marks we can't confirm are registered yet (plain "trademark", no ®).
 const ISACA_TM = (name: string, registered = true) =>
   registered
     ? `Not affiliated with or endorsed by ISACA®. ${name}® is a registered trademark of ISACA.`
     : `Not affiliated with or endorsed by ISACA®. ${name} is a trademark of ISACA.`;
+
+// ISC2 asks for ® on its marks wherever size allows, the issuer's own name included (owner decision, 27 Oct 2026).
+const ISC2_TM = (name: string) => `Not affiliated with or endorsed by ISC2®. ${name}® is a registered trademark of ISC2, Inc.`;
 
 const ISACA_MINDSET =
   'Think like a risk-focused advisor: protect the business, follow governance, ' +
@@ -33,7 +40,7 @@ export const CERTIFICATIONS: Certification[] = [
     id: 'cisa',
     name: 'CISA',
     fullName: 'Certified Information Systems Auditor',
-    issuer: 'ISACA',
+    issuer: ISACA,
     mindset:
       'The auditor assesses, recommends, and reports — never fixes. ' + ISACA_MINDSET,
     trademarkNotice: ISACA_TM('CISA'),
@@ -56,7 +63,7 @@ export const CERTIFICATIONS: Certification[] = [
     id: 'cism',
     name: 'CISM',
     fullName: 'Certified Information Security Manager',
-    issuer: 'ISACA',
+    issuer: ISACA,
     mindset:
       'Think like a security manager who serves the business: governance and ' +
       'business alignment come before technical fixes. ' + ISACA_MINDSET,
@@ -69,17 +76,19 @@ export const CERTIFICATIONS: Certification[] = [
       passingNote: 'ISACA reports scaled scores from 200–800; 450 is the passing mark.',
     },
     domains: [
-      { id: '1', name: 'Information Security Governance', short: 'Governance', weight: 17, tone: 0 },
+      // TO VERIFY before launch: ISACA's new CISM outline takes effect 3 Nov 2026 (enterprise and
+      // information security architecture added): 18/20/33/29, was 17/20/33/30 (cert-blueprint-researcher, 27 Oct 2026).
+      { id: '1', name: 'Information Security Governance', short: 'Governance', weight: 18, tone: 0 },
       { id: '2', name: 'Information Security Risk Management', short: 'Risk Mgmt', weight: 20, tone: 1 },
       { id: '3', name: 'Information Security Program', short: 'Program', weight: 33, tone: 2 },
-      { id: '4', name: 'Incident Management', short: 'Incidents', weight: 30, tone: 3 },
+      { id: '4', name: 'Incident Management', short: 'Incidents', weight: 29, tone: 3 },
     ],
   },
   {
     id: 'crisc',
     name: 'CRISC',
     fullName: 'Certified in Risk and Information Systems Control',
-    issuer: 'ISACA',
+    issuer: ISACA,
     mindset:
       'Think like a risk practitioner: identify, assess, respond, and monitor — ' +
       'risk ownership sits with the business. ' + ISACA_MINDSET,
@@ -92,17 +101,20 @@ export const CERTIFICATIONS: Certification[] = [
       passingNote: 'ISACA reports scaled scores from 200–800; 450 is the passing mark.',
     },
     domains: [
+      // TO VERIFY before launch: the CRISC outline in force since 3 Nov 2025 is 26/22/32/20 (was 26/20/32/22),
+      // with Domain 2 "Risk Assessment" and Domain 4 "Technology and Security". Check the exact domain
+      // titles against ISACA's published outline (cert-blueprint-researcher, 27 Oct 2026).
       { id: '1', name: 'Governance', short: 'Governance', weight: 26, tone: 0 },
-      { id: '2', name: 'IT Risk Assessment', short: 'Assessment', weight: 20, tone: 1 },
+      { id: '2', name: 'Risk Assessment', short: 'Assessment', weight: 22, tone: 1 },
       { id: '3', name: 'Risk Response and Reporting', short: 'Response', weight: 32, tone: 2 },
-      { id: '4', name: 'Information Technology and Security', short: 'IT & Security', weight: 22, tone: 3 },
+      { id: '4', name: 'Technology and Security', short: 'Tech & Security', weight: 20, tone: 3 },
     ],
   },
   {
     id: 'aaia',
     name: 'AAIA',
     fullName: 'Advanced in AI Audit',
-    issuer: 'ISACA',
+    issuer: ISACA,
     mindset:
       'Think like a senior auditor applied to AI: governance, accountability, ' +
       'and evidence over hype. ' + ISACA_MINDSET,
@@ -125,12 +137,12 @@ export const CERTIFICATIONS: Certification[] = [
     id: 'cissp',
     name: 'CISSP',
     fullName: 'Certified Information Systems Security Professional',
-    issuer: 'ISC2',
+    issuer: ISC2,
     mindset:
       'Think like a manager and advisor, not a technician: protect people first, ' +
       'then align security with business goals and due care.',
-    trademarkNotice:
-      'Not affiliated with or endorsed by ISC2. CISSP® is a registered trademark of ISC2, Inc.',
+    // Owner decision (27 Oct 2026): follow ISC2's rule on its marks, so the issuer is "ISC2®" too.
+    trademarkNotice: ISC2_TM('CISSP'),
     status: 'coming_soon',
     exam: {
       questions: 125, // CAT exam: 100–150 items; mock uses the midpoint
@@ -150,6 +162,17 @@ export const CERTIFICATIONS: Certification[] = [
     ],
   },
 ];
+
+/**
+ * The certifications a learner may pick (the Settings exam picker): only
+ * `available` ones whose content is on this phone (`installed`, from the
+ * content loader's hasContent). A `coming_soon` exam is never offered, so its
+ * facts (question count included) never show. Pure: the caller passes
+ * `installed`, so this file never imports the content loader.
+ */
+export function selectableCertifications(installed: (certId: string) => boolean, certs: readonly Certification[] = CERTIFICATIONS): Certification[] {
+  return certs.filter((c) => c.status === 'available' && installed(c.id));
+}
 
 export function getCertification(id: string): Certification | undefined {
   return CERTIFICATIONS.find((c) => c.id === id);
@@ -179,8 +202,12 @@ export function domainColor(tone: DomainTone, isDark: boolean): string {
   return (isDark ? domainPalette.dark : domainPalette.light)[tone];
 }
 
-const ISSUER_MARK: Record<Certification['issuer'], string> = { ISACA: 'ISACA®', ISC2: 'ISC2' };
-const ISSUER_OWNER: Record<Certification['issuer'], string> = { ISACA: 'ISACA', ISC2: 'ISC2, Inc.' };
+/** How each issuer is written in a notice (keyed by issuer id). An issuer not listed uses its plain name. */
+const ISSUER_MARK: Record<string, string> = { isaca: 'ISACA®', isc2: 'ISC2®' };
+/** Who owns the marks, as the notice says it ("of ISC2, Inc."). */
+const ISSUER_OWNER: Record<string, string> = { isaca: 'ISACA', isc2: 'ISC2, Inc.' };
+const issuerMark = (i: CertIssuer) => ISSUER_MARK[i.id] ?? i.name;
+const issuerOwner = (i: CertIssuer) => ISSUER_OWNER[i.id] ?? i.name;
 
 /** Ends a sentence without doubling a period ("ISC2, Inc." stays as is). */
 const sentence = (s: string) => (s.endsWith('.') ? s : `${s}.`);
@@ -198,17 +225,18 @@ function joinList(items: string[], word: 'and' | 'or' = 'and'): string {
  * Same legal content as each cert's own notice, without repeating it per cert.
  */
 export function combinedTrademarkNotice(certs: Certification[] = CERTIFICATIONS): string {
-  const issuers = [...new Set(certs.map((c) => c.issuer))];
-  const parts = [`KaiSip is not affiliated with or endorsed by ${joinList(issuers.map((i) => ISSUER_MARK[i]), 'or')}.`];
+  // One entry per issuer id, in the order the certs list them.
+  const issuers = [...new Map(certs.map((c) => [c.issuer.id, c.issuer])).values()];
+  const parts = [`KaiSip is not affiliated with or endorsed by ${joinList(issuers.map(issuerMark), 'or')}.`];
   for (const issuer of issuers) {
-    const own = certs.filter((c) => c.issuer === issuer);
+    const own = certs.filter((c) => c.issuer.id === issuer.id);
     const registered = own.filter((c) => c.trademarkRegistered !== false).map((c) => `${c.name}®`);
     const plain = own.filter((c) => c.trademarkRegistered === false).map((c) => c.name);
     if (registered.length) {
-      parts.push(sentence(`${joinList(registered)} ${registered.length > 1 ? 'are registered trademarks' : 'is a registered trademark'} of ${ISSUER_OWNER[issuer]}`));
+      parts.push(sentence(`${joinList(registered)} ${registered.length > 1 ? 'are registered trademarks' : 'is a registered trademark'} of ${issuerOwner(issuer)}`));
     }
     if (plain.length) {
-      parts.push(sentence(`${joinList(plain)} ${plain.length > 1 ? 'are trademarks' : 'is a trademark'} of ${ISSUER_OWNER[issuer]}`));
+      parts.push(sentence(`${joinList(plain)} ${plain.length > 1 ? 'are trademarks' : 'is a trademark'} of ${issuerOwner(issuer)}`));
     }
   }
   return parts.join(' ');

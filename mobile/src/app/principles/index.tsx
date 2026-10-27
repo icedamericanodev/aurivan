@@ -29,15 +29,15 @@ import { EmptyScreen } from '../../components/emptyScreen';
 import { Button, Enter, ListRow, PushedHeader, Screen, Section, T, useFontScale } from '../../components/ui';
 import { CERTIFICATIONS, getCertification } from '../../content/certifications';
 import { principleFamilies } from '../../content/principles';
-import { useSettings } from '../../store/settings';
 import { LARGE_TEXT, space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
+import { useActiveCertId } from '../../lib/activeCert';
 
 const goBack = () => (router.canGoBack() ? router.back() : router.replace('/learn'));
 
 export default function PrinciplesHome() {
   const { c } = useTheme();
-  const certId = useSettings((s) => s.activeCertId);
+  const certId = useActiveCertId();
   const cert = getCertification(certId) ?? CERTIFICATIONS[0];
   const all = principleFamilies(cert.id);
   const large = useFontScale() >= LARGE_TEXT;

@@ -5,7 +5,9 @@ name: Mobile
 # and when the shared mindset principles change (data/mindset/: the build
 # checks every principle's practice ids against the bank), and when the exam
 # guide or final review week change (data/exam/: the build checks every note,
-# principle and action they link).
+# principle and action they link), and when the study notes or the lessons
+# change (data/cisa_notes.json, data/lessons/: content packs, Phase A, the
+# build checks every link and the lessons are bundled from data/lessons/).
 # Plus the cloud guards (Uplift Phase 6, accounts built OFF; docs/mobile/
 # ARCHITECTURE.md "Cloud (built OFF)"): the suite again with the cloud flag ON
 # (signed out), and G2 an OFF bundle with no cloud runtime code. (G1, no
@@ -18,10 +20,10 @@ name: Mobile
 on:
   pull_request:
     branches: [main]
-    paths: ['mobile/**', 'data/domain*.json', 'data/mindset/**', 'data/exam/**', 'assets/kaisip-plant.js', 'supabase/functions/_shared/**', '.github/workflows/mobile.yml']
+    paths: ['mobile/**', 'data/domain*.json', 'data/cisa_notes.json', 'data/mindset/**', 'data/exam/**', 'data/lessons/**', 'assets/kaisip-plant.js', 'supabase/functions/_shared/**', '.github/workflows/mobile.yml']
   push:
     branches: [main]
-    paths: ['mobile/**', 'data/domain*.json', 'data/mindset/**', 'data/exam/**', 'assets/kaisip-plant.js', 'supabase/functions/_shared/**', '.github/workflows/mobile.yml']
+    paths: ['mobile/**', 'data/domain*.json', 'data/cisa_notes.json', 'data/mindset/**', 'data/exam/**', 'data/lessons/**', 'assets/kaisip-plant.js', 'supabase/functions/_shared/**', '.github/workflows/mobile.yml']
 
 # Read-only token: `npm ci` runs third-party install scripts, which must not
 # be able to push to the repo.

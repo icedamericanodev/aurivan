@@ -49,9 +49,27 @@ A calm, trustworthy study companion that helps people **pass** professional secu
 | 2.7 | **Pack delivery** (content packs Phases B–D) | CC downloads in the app in one tap; the website gets an exam switcher | Security + QA review |
 | 2.8 | **CC joins the beta** | Testers download CC from inside the app | Your approval with sample screenshots |
 
+**Owner decision (27 Oct):** finish the CISA build (Stage 1) before any CC work starts.
+
 **Recommendation:** start the beta with CISA as soon as Stage 1 is done, and add CC *into* the running beta when 2.6 passes. Don't hold the beta back for CC.
 
-## Stage 3: after the beta
+## Stage 3: premium UI pass, web and mobile (owner decision 27 Oct: after the CC pack)
+Every expert agent reviews the whole app, plus a new `ui-reference-researcher`. It gathers references from Mobbin, Figma, Dribbble, Behance, Apple HIG and Material 3, and turns them into Grove-compatible changes.
+
+How it runs:
+1. **Reference boards.** One per key screen: Today, lesson player, question and answer, results, progress, notes, settings, onboarding, widgets.
+2. **Expert critique.** Design manager, super-lens critic, the UX reviewers, motion and a learner read.
+3. **Mockups.** Before and after, in light and dark.
+4. **Sky picks.**
+5. **Build, screen by screen.** Each one is reviewed and released on its own.
+
+Needs from Sky before it starts (all free; owner decision 27 Oct: no Mobbin paid plan):
+- Done: `dribbble.com`, `m3.material.io`, `www.nngroup.com` and `www.figma.com` are allowed.
+- Optional free galleries to add to Allowed domains: `apps.apple.com`, `godly.website`, `www.lapa.ninja`, `land-book.com`, `www.saasframe.io`, `collectui.com`.
+- 5–10 screenshots from Sky's phone of apps that feel premium to Sky. This is the most valuable reference.
+- Free sources the researcher uses: Apple HIG, Material 3, Figma Community kits (Apple iOS kit, Material 3 kit), Google Play store screenshots, Dribbble via search, NN/g.
+
+## Stage 4: more exams
 - **CISM.** Its new outline starts 3 Nov 2026; build to the new one.
 - **CRISC, AAIA.**
 - **CISSP.** Wait for its new outline (15 Apr 2027) so nothing is built twice.
@@ -61,8 +79,8 @@ A calm, trustworthy study companion that helps people **pass** professional secu
 ---
 
 ## Your checklist (only you can do these)
-- [ ] **Cloud environment → Allowed domains:** isc2.org, www.isc2.org, csrc.nist.gov, nvlpubs.nist.gov, www.nist.gov, www.cisa.gov, owasp.org, www.first.org
-- [ ] **Security basics:** turn on 2-step login (2FA) for Cloudflare, Supabase and GitHub
+- [x] **Cloud environment → Allowed domains** (done 27 Oct): isc2.org, www.isc2.org, csrc.nist.gov, nvlpubs.nist.gov, www.nist.gov, www.cisa.gov, owasp.org, www.first.org
+- [x] **Security basics:** 2-step login (2FA) on Cloudflare, Supabase and GitHub (done 27 Oct)
 - [ ] **Supabase:** turn on usage alerts
 - [ ] **Sign-in setup** (step 1.4): Google Cloud, an email service and Cloudflare DNS, following the list I'll send
 - [ ] **Widgets test** (step 1.2): install the new test app and try the widgets

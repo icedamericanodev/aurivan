@@ -1,21 +1,21 @@
 /**
  * Exam pack loader: the only code that knows where the exam guide and the
- * final review week come from. Bundled in the app (works offline) and
- * parsed the first time a screen asks for it, like the notes.
+ * final review week come from: the cert's content pack (content/packs/:
+ * bundled in the app today, works offline), parsed the first time a screen
+ * asks for it, like the notes.
  *
  * Plain English: a certification with no exam files gets nulls, and every
  * row that leads to them (Learn, Help, Today) hides itself.
  */
-import { generatedExam } from '../generated';
+import { onClearContentCaches, sourceFor } from '../packs';
 import type { ExamGuide, ExamPack, FinalWeek } from './types';
 
 const cache = new Map<string, ExamPack | null>();
 
 function getExamPack(certId: string): ExamPack | null {
   if (cache.has(certId)) return cache.get(certId) ?? null;
-  // `?.`: a test that stands in its own generated module may leave the exam pack out.
-  const load = generatedExam?.[certId];
-  const pack = load ? load() : null;
+  // A test that stands in its own generated module may leave the exam pack out: null.
+  const pack = sourceFor(certId).exam(certId);
   cache.set(certId, pack);
   return pack;
 }
@@ -39,3 +39,6 @@ export const hasFinalWeek = (certId: string) => getFinalWeek(certId) !== null;
 export function clearExamCache(): void {
   cache.clear();
 }
+
+// clearContentCaches() (content/packs) empties this too.
+onClearContentCaches(clearExamCache);

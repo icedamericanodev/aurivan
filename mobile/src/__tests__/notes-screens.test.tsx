@@ -54,8 +54,13 @@ jest.mock('../content/generated', () => {
   const actual = jest.requireActual('../content/generated');
   const { buildNotesPack, emptyPack } = jest.requireActual('../../scripts/notes-pack.cjs');
   const pack = buildNotesPack(jest.requireActual('./fixtures/notes-v2.json')).pack;
+  // Questions, lessons and games as built; the notes swapped; no principles or exam pack (so
+  // the Look it up section depends on the notes alone, as this test has always assumed).
   return {
     generatedPacks: actual.generatedPacks,
+    generatedLessons: actual.generatedLessons,
+    generatedGames: actual.generatedGames,
+    generatedInfo: actual.generatedInfo,
     generatedNotes: { cisa: () => (mockNotesOn ? pack : emptyPack('cisa')) },
   };
 });

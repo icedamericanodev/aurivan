@@ -33,9 +33,9 @@ import { checkHandle } from '../../../engine/moderation';
 import { moveFocus } from '../../../lib/a11y';
 import { handleProblem, joinBoard, needsGate, suggestPseudonym, useBoard, useBoardSession } from '../../../lib/board';
 import { useAccount } from '../../../store/account';
-import { useSettings } from '../../../store/settings';
 import { space } from '../../../theme/tokens';
 import { useTheme } from '../../../theme/useTheme';
+import { useActiveCertId } from '../../../lib/activeCert';
 
 const RULES: AccountCopyKey[] = [
   'board.gate.rule.kind',
@@ -51,7 +51,7 @@ export default function Guidelines() {
   const { c } = useTheme();
   const params = useLocalSearchParams<{ then?: string; name?: string }>();
   const then = params.then === 'compose' ? 'compose' : params.then === 'back' ? 'back' : null;
-  const certId = useSettings((s) => s.activeCertId);
+  const certId = useActiveCertId();
   const cert = getCertification(certId) ?? getCertification('cisa')!;
   const signedIn = useAccount((s) => s.signedIn);
   const me = useBoard((s) => s.me);

@@ -99,5 +99,11 @@ export interface Lesson {
    * Links a lesson to the reference page that goes deeper.
    */
   notes?: string[];
+  /**
+   * Content packs: a retired lesson stays in the pack so a done list and old
+   * links still resolve (findLesson), but it is never offered again (lessonsFor,
+   * nextLesson, the miss and note links). Absent = live. Its id is never reused.
+   */
+  retired?: boolean;
   scenes: Scene[];
 }

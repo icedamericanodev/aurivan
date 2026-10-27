@@ -32,11 +32,10 @@ const P = 'aurivan.progress.v1';
 // Stepping Stones: each process's steps in order (to place a perfect path).
 // Plus the lessons' step flows, which the game also plays (content/games getStepSequences).
 const SEQUENCES = JSON.parse(fs.readFileSync('src/content/games/cisa/sequences.json')).sequences;
-{
-  const src = fs.readFileSync('src/content/lessons/cisa.ts', 'utf8');
-  for (const m of src.matchAll(/type: 'flow',[\s\S]*?heading: '([^']+)',[\s\S]*?steps: \[([\s\S]*?)\n {8}\],/g)) {
-    SEQUENCES.push({ title: m[1], steps: [...m[2].matchAll(/label: '([^']+)'/g)].map((x) => ({ label: x[1] })) });
-  }
+// The lessons are data (content packs, Phase A): read the built pack, not source text.
+const LESSONS = JSON.parse(fs.readFileSync('src/content/generated/cisa/lessons.json', 'utf8'));
+for (const l of LESSONS) {
+  for (const s of l.scenes) if (s.type === 'flow') SEQUENCES.push({ title: s.heading, steps: s.steps.map((x) => ({ label: x.label })) });
 }
 // Field Guide: each term's definition, as the game builds them (whitespace squeezed).
 const squeeze = (t) => t.trim().replace(/\s+/g, ' ');
@@ -272,14 +271,7 @@ await shot('p05b-scene-10');
 // went stale when the lesson was renamed, and the run stopped here). Opened
 // from its Learn row when the row is on screen, else straight from its link.
 const RISK_ID = 'cisa-l-d1-risk-planning';
-const RISK_TITLE = (() => {
-  const src = fs.readFileSync('src/content/lessons/cisa.ts', 'utf8');
-  const at = src.search(new RegExp(`id:\\s*['"\`]${RISK_ID}['"\`]`));
-  if (at < 0) return '';
-  // The lesson's own title: any quote style, escaped quotes allowed ('The auditor\'s plan').
-  const m = /title:\s*(['"`])((?:\\.|(?!\1)[^\\])*)\1/.exec(src.slice(at));
-  return m ? m[2].replace(/\\(.)/g, '$1') : '';
-})();
+const RISK_TITLE = LESSONS.find((l) => l.id === RISK_ID)?.title ?? '';
 await go('/learn?domain=1');
 const fromLearn = RISK_TITLE !== '' && (await visible(RISK_TITLE));
 if (fromLearn) {

@@ -10,7 +10,7 @@ You are a senior instructional designer who has built certification study guides
 - Official outline and codes: `docs/content/CISA_ECO.md` (2024 CISA exam content outline, codes like 4B1).
 - The notes: `data/cisa_notes.json` (schema: domains → topics → subtopics). The web renderer is in `index.html` (search "TOPICS SECTION" and "renderItemBody"); only use fields it reads, or name the renderer change needed.
 - The reviewed question bank: `data/originals/d{1..5}.json`. Notes must agree with the rules the bank teaches.
-- Shipped mobile lessons (voice reference): `mobile/src/content/lessons/cisa.ts`.
+- Shipped mobile lessons (voice reference): `data/lessons/cisa.json` (schema: `docs/content/LESSONS_SCHEMA.md`).
 
 ## What good looks like (the template you enforce)
 Every subtopic, in this order, each part short:

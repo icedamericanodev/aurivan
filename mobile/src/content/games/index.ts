@@ -18,10 +18,15 @@
  * - Each step list gets a tier from its length (4 steps Seedling, 5 Sapling,
  *   6 Heartwood) unless the deck gives one.
  *
- * Content only: no React, no storage. Like the question loader, the JSON is
- * bundled (offline) and parsed the first time a screen asks for it.
+ * Content only: no React, no storage. Like the question loader, the decks
+ * come from the cert's content pack (content/packs/; the build copies them
+ * into generated/<cert>/ byte for byte), parsed the first time a game asks.
+ *
+ * Retired cards and sequences (content packs): a deck entry with
+ * `retired: true` is never dealt; a flow whose lesson is retired is skipped.
  */
 import { lessonsFor } from '../lessons';
+import { onClearContentCaches, sourceFor } from '../packs';
 
 export type GameTier = 'seedling' | 'sapling' | 'heartwood';
 
@@ -46,6 +51,8 @@ export interface RoleCard {
   tier: GameTier;
   /** Roles never offered as chips on this card (the notes make them partly defensible). */
   excludeChips: string[];
+  /** Content packs: a retired card is never dealt (getRoleDeck leaves it out). */
+  retired?: boolean;
 }
 
 export interface RoleDeck {
@@ -86,11 +93,12 @@ interface RawRoles {
     subtopicId: string;
     tier: GameTier;
     exclude_chips?: string[];
+    retired?: boolean;
   }[];
 }
 interface RawSequences {
   version: number;
-  sequences: { id: string; title: string; steps: StepItem[]; caption: string; subtopicId: string; tier: GameTier }[];
+  sequences: { id: string; title: string; steps: StepItem[]; caption: string; subtopicId: string; tier: GameTier; retired?: boolean }[];
 }
 export interface FlowAudit {
   lessonId: string;
@@ -115,14 +123,11 @@ interface RawFlows {
   flows: FlowAudit[];
 }
 
-// Lazy, like the question packs: parsed only when a game first asks.
-const RAW: Record<string, { roles: () => RawRoles; sequences: () => RawSequences; flows: () => RawFlows }> = {
-  cisa: {
-    roles: () => require('./cisa/roles.json') as RawRoles,
-    sequences: () => require('./cisa/sequences.json') as RawSequences,
-    flows: () => require('./cisa/flows.json') as RawFlows,
-  },
-};
+// Lazy, like the question packs: a deck is parsed only when a game first asks
+// (the pack source's require() runs then). Null when the cert's pack has no such deck.
+const rawRoles = (certId: string) => (sourceFor(certId).gameDeck(certId, 'roles') as RawRoles | null) ?? null;
+const rawSequences = (certId: string) => (sourceFor(certId).gameDeck(certId, 'sequences') as RawSequences | null) ?? null;
+const rawFlows = (certId: string) => (sourceFor(certId).gameDeck(certId, 'flows') as RawFlows | null) ?? null;
 
 /** "Custodian (IT, …)" → "Custodian". */
 export function shortRole(label: string): string {
@@ -139,11 +144,11 @@ const roleCache = new Map<string, RoleDeck | null>();
 /** The cert's Canopy Call deck, or null when it has none. */
 export function getRoleDeck(certId: string): RoleDeck | null {
   if (roleCache.has(certId)) return roleCache.get(certId) ?? null;
-  const raw = RAW[certId]?.roles();
+  const raw = rawRoles(certId);
   const deck: RoleDeck | null = raw
     ? {
         roles: raw.roles.map((r) => ({ id: r.id, label: r.label, short: shortRole(r.label) })),
-        cards: raw.cards.map((c) => ({
+        cards: raw.cards.filter((c) => !c.retired).map((c) => ({
           id: c.id,
           decision: c.decision,
           role: c.role,
@@ -161,7 +166,7 @@ export function getRoleDeck(certId: string): RoleDeck | null {
 
 /** The audited flow list (all of them, for tests and docs). */
 export function flowAudit(certId: string): FlowAudit[] {
-  return RAW[certId]?.flows().flows ?? [];
+  return rawFlows(certId)?.flows ?? [];
 }
 
 const seqCache = new Map<string, StepSequence[]>();
@@ -173,14 +178,16 @@ const seqCache = new Map<string, StepSequence[]>();
 export function getStepSequences(certId: string): StepSequence[] {
   const hit = seqCache.get(certId);
   if (hit) return hit;
-  const raw = RAW[certId];
+  const sequences = rawSequences(certId);
+  const flows = rawFlows(certId);
   const out: StepSequence[] = [];
-  if (raw) {
-    for (const s of raw.sequences().sequences) {
+  if (sequences || flows) {
+    for (const s of sequences?.sequences ?? []) {
+      if (s.retired) continue;
       out.push({ id: s.id, title: s.title, steps: s.steps, caption: s.caption, tier: s.tier, domainId: s.subtopicId.charAt(0), subtopicId: s.subtopicId });
     }
     const lessons = lessonsFor(certId);
-    for (const f of raw.flows().flows) {
+    for (const f of flows?.flows ?? []) {
       if (!flowPlays(f)) continue;
       const lesson = lessons.find((l) => l.id === f.lessonId);
       const scene = lesson?.scenes.find((sc) => sc.type === 'flow' && sc.heading === f.heading);
@@ -199,3 +206,9 @@ export function getStepSequences(certId: string): StepSequence[] {
   seqCache.set(certId, out);
   return out;
 }
+
+// clearContentCaches() (content/packs) empties these too.
+onClearContentCaches(() => {
+  roleCache.clear();
+  seqCache.clear();
+});

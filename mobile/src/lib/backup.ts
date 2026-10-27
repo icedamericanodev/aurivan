@@ -23,9 +23,10 @@ import { Directory, File, Paths } from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
 import { Platform } from 'react-native';
 import { CERTIFICATIONS, getCertification } from '../content/certifications';
-import { lessonsFor } from '../content/lessons';
-import { getAllQuestions } from '../content/loader';
+import { lessonsIncludingRetired } from '../content/lessons';
+import { getAllQuestionsIncludingRetired, hasContent } from '../content/loader';
 import { noteSubtopics } from '../content/notes';
+import { onClearContentCaches } from '../content/packs';
 import { cleanDisplayName } from '../engine/displayName';
 import {
   BackupError,
@@ -98,14 +99,25 @@ const appVersion = () => knownAppVersion() ?? 'unknown';
 /**
  * The ids that exist in this app for a cert: questions, lessons and study
  * notes. Built once per cert (Sets), then reused for every check.
+ *
+ * Retired questions and lessons COUNT as known (content packs): progress on
+ * them is kept. `installed` is false for an exam with no content on this
+ * phone (a pack not downloaded here): its progress is then kept untouched,
+ * never trimmed to nothing (engine/backup.ts keepKnownIds).
  */
 const knownCache = new Map<string, KnownIds>();
+// A new content pack (clearContentCaches) changes which ids exist.
+onClearContentCaches(() => knownCache.clear());
 export function knownIds(certId: string): KnownIds {
   let k = knownCache.get(certId);
   if (!k) {
+    const questions = new Set(getAllQuestionsIncludingRetired(certId).map((q) => q.id));
     k = {
-      questions: new Set(getAllQuestions(certId).map((q) => q.id)),
-      lessons: new Set(lessonsFor(certId).map((l) => l.id)),
+      // Installed = this phone has the exam's content AND its question ids (MEDIUM-2): an empty
+      // pack never counts, so it can never trim a restored exam's progress to nothing.
+      installed: hasContent(certId) && questions.size > 0,
+      questions,
+      lessons: new Set(lessonsIncludingRetired(certId).map((l) => l.id)),
       notes: new Set(noteSubtopics(certId).map((n) => n.id)),
       domains: new Set((getCertification(certId)?.domains ?? []).map((d) => d.id)),
       // Mobile 1.13: what "know X% of the outline" counts (the restored plant's clamp).
@@ -407,7 +419,9 @@ async function writeAll(
   // A backup from 1.9 already ran its back-fill, so the launch effect never
   // revisits it: a set it holds complete gets its planter here. A backup from
   // 1.10 has the older badge catalogue: its new tiers fill in quietly first.
+  // Only exams whose content is on this phone (MEDIUM-1): another exam's data is kept, never recomputed here.
   for (const id of Object.keys(useProgress.getState().byCert)) {
+    if (!hasContent(id)) continue;
     ensureCatalog(id);
     syncPlanters(id);
   }
@@ -493,7 +507,9 @@ export async function writeSynced(
     useSettings.setState(final.settings);
     useProgress.setState(final.progress);
     if (opts.undo !== undefined) useBackup.setState({ undo: opts.undo });
+    // Only exams whose content is on this phone (MEDIUM-1): another exam's data is kept, never recomputed here.
     for (const id of Object.keys(useProgress.getState().byCert)) {
+      if (!hasContent(id)) continue;
       ensureCatalog(id);
       syncPlanters(id);
     }

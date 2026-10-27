@@ -35,7 +35,7 @@
 import { CODE_TTL_MS, EXPORT_EVERY_MS, maskEmail, MAX_CODE_TRIES, normalizeEmail, recentAuth, RESEND_WAIT_MS, validCode, validEmail, type Provider } from '../../engine/account';
 import { utf8 } from '../../engine/sha256';
 import { MAX_SETTINGS_BYTES } from '../../engine/syncMerge';
-import { getAllQuestions } from '../../content/loader';
+import { getAllQuestionsIncludingRetired } from '../../content/loader';
 import { buildFingerprint, leakItem, type Fingerprint } from '../../engine/leakGuard';
 import { getDeviceId, isDeviceId, renewDeviceId } from '../deviceId';
 import { createChunkedSession } from '../secureSession';
@@ -141,7 +141,7 @@ const serverPrints = new Map<string, Fingerprint>();
 function serverFingerprint(cert: string): Fingerprint {
   let fp = serverPrints.get(cert);
   if (!fp) {
-    fp = buildFingerprint(getAllQuestions(cert).map(leakItem), { squash: true });
+    fp = buildFingerprint(getAllQuestionsIncludingRetired(cert).map(leakItem), { squash: true });
     serverPrints.set(cert, fp);
   }
   return fp;

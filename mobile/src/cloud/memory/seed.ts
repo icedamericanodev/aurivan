@@ -231,8 +231,8 @@ export function shotsSeed(now = Date.now()): MemoryOptions {
                 storeVersion: 1,
                 updatedAt: now - 3 * day,
                 deviceId: OTHER_PHONE,
-                // "unreadable": an exam this app doesn't know, which the checker refuses.
-                state: state.remote === 'unreadable' ? { byCert: { zz9: {} }, streak: { current: 0, best: 0, lastDay: null } } : otherPhoneProgress(now),
+                // "unreadable": a damaged exam id (not a well-formed cert id), which the checker refuses.
+                state: state.remote === 'unreadable' ? { byCert: { 'ZZ 9!': {} }, streak: { current: 0, best: 0, lastDay: null } } : otherPhoneProgress(now),
               },
             }
           : {}),

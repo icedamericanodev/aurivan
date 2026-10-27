@@ -53,7 +53,9 @@ name: Phone update (EAS Update)
 on:
   push:
     branches: [main]
-    paths: ['mobile/**', 'data/domain*.json', '.github/workflows/eas-update.yml']
+    # Every data file the app's content pack is built from (content packs, Phase A): a change
+    # to the notes, principles, exam guide or lessons reaches test phones like a question fix does.
+    paths: ['mobile/**', 'data/domain*.json', 'data/cisa_notes.json', 'data/mindset/**', 'data/exam/**', 'data/lessons/**', '.github/workflows/eas-update.yml']
   workflow_dispatch:
     inputs:
       platform:

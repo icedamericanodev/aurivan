@@ -49,9 +49,9 @@ import { topSlipPattern } from '../../lib/slipPattern';
 import { PATTERN_COPY } from '../../engine/slipCoach';
 import { CERTIFICATIONS, getCertification } from '../../content/certifications';
 import { selectCert, useProgress, type ProgressState } from '../../store/progress';
-import { useSettings } from '../../store/settings';
 import { space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
+import { useActiveCertId } from '../../lib/activeCert';
 
 /**
  * Every game this learner has played, on any exam (a best score, a recent
@@ -73,7 +73,7 @@ export default function Play() {
   // Only what Play shows (performance, 1.15.x): its exam, best scores and
   // levels. An answer, a review or a badge elsewhere never re-renders Play,
   // which stays mounted (hidden) while the learner studies.
-  const certId = useSettings((s) => s.activeCertId);
+  const certId = useActiveCertId();
   const cert = getCertification(certId) ?? CERTIFICATIONS[0];
   // Progress by the active id itself, as useActiveCert reads it, so every tab shows the same exam's progress.
   const gameBest = useProgress((s) => selectCert(s, certId).gameBest);

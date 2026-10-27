@@ -31,8 +31,8 @@ import { getCertification } from '../../../content/certifications';
 import { copy, type AccountCopyKey } from '../../../content/cloud/copy';
 import { loadFeed, needsGate, openBoard, setVote, useBoard, visibleCards } from '../../../lib/board';
 import { useAccount } from '../../../store/account';
-import { useSettings } from '../../../store/settings';
 import { space } from '../../../theme/tokens';
+import { useActiveCertId } from '../../../lib/activeCert';
 
 const TABS: { value: BoardTab; label: string }[] = [
   { value: 'top', label: copy('board.tab.top') },
@@ -41,7 +41,7 @@ const TABS: { value: BoardTab; label: string }[] = [
 ];
 
 export default function BoardHome() {
-  const certId = useSettings((s) => s.activeCertId);
+  const certId = useActiveCertId();
   const cert = getCertification(certId) ?? getCertification('cisa')!;
   const signedIn = useAccount((s) => s.signedIn);
   const settings = useBoard((s) => s.settings);

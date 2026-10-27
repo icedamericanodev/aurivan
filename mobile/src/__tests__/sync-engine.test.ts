@@ -176,10 +176,14 @@ describe('readStores: one checker for a backup file and a synced snapshot', () =
     expect(code(() => readStores(blobs(huge), { appVersion: '1.17.0' }, CERT_IDS, undefined, undefined, strict))).toBe('too-big');
   });
 
-  it('an unknown cert is refused', () => {
+  it('a malformed cert id is refused; a well-formed unknown one is kept as it is (content packs, fix 2)', () => {
     const p = progressState();
-    (p.byCert as Record<string, unknown>).cism9 = {};
+    (p.byCert as Record<string, unknown>)['CISM 9'] = {};
     expect(code(() => readStores(blobs(p), { appVersion: '1.17.0' }, CERT_IDS, undefined, undefined, strict))).toBe('unknown-cert');
+    const q = progressState();
+    (q.byCert as Record<string, unknown>).cism9 = { lessonsDone: ['cism9-l-1'] };
+    const read = readStores(blobs(q), { appVersion: '1.17.0' }, CERT_IDS, undefined, undefined, strict);
+    expect(read.progress.byCert.cism9?.lessonsDone).toEqual(['cism9-l-1']);
   });
 
   it('a newer app_version gives "newer" (minor); damage from a newer patch reads as "newer" too', () => {

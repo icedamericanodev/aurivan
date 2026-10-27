@@ -38,31 +38,68 @@ release grows them past its bounds, so this table can't silently go stale.
 | Egress, two devices | about one progress download per sync that follows the other phone's change: a few downloads a day of 60–260 KB | about 10–50 MB a month for an active two-phone learner |
 | Board (Phase 8) | under 5 KB per active poster | posts, comments, votes |
 
-## 3. Today's plan, up to 5,000 accounts
+## 3. Today's plan, up to 5,000 accounts: the Free plan
 
-**Supabase Pro** *(verify)*: $25 a month, Micro compute (credit covers it),
-8 GB database, 250 GB egress, 100,000 MAU, daily backups.
+**Owner decision (18 Oct 2026, confirmed 27 Oct): free first.** Fewer than
+5,000 users are expected, so KaiSip starts on **Supabase Free** *(verify)*:
+500 MB database, 5 GB egress a month, 50,000 MAU, 500,000 Edge Function
+calls a month, no backups, and a project that **pauses after 7 days with no
+activity**. Each of those limits has an answer below; Pro ($25 a month) is the
+next step, not the starting point (§5).
 
-Expected use at 5,000 accounts, every one syncing:
-- **Database:** under 1 GB. Worst case (every learner heavy, three copies
-  of progress each): 5,000 × about 3 × the compressed row ≈ under 1 GB;
-  typical is a few hundred MB.
-- **Egress:** typically under 15 GB a month. Single-device learners cost
-  almost nothing (heads only, about 1 GB a month for everyone). If 30% use
-  two phones and pull about 4 times a day at about 100 KB, that adds about
-  18 GB a month at the very top end: still under 10% of the quota.
-- **Edge Function calls:** under 200,000 a month (account deletion and
-  "Download my data" are rare; the board's submit function arrives in
+**What keeps Supabase small.** Study content never goes in Supabase: CISA is
+bundled in the app and other exams download as static packs from the
+kaisip.com Cloudflare site (ARCHITECTURE.md §3 "Content packs"), so content
+uses none of the database or the 5 GB of egress. Supabase holds only
+per-person data: accounts, the two sync rows, the board, and later
+entitlements.
+
+**Two changes before public accounts on Free** (both are client and server
+changes, done before Phase 9 switches accounts on):
+1. **Keep 1 support checkpoint, not 2** (`private.sync_history`).
+2. **Gzip snapshots before upload** (an `encoding` column; the measured 15×
+   saving in §2: a heavy learner's 263 KB becomes about 17 KB).
+
+Expected use at 5,000 accounts, every one syncing, after those two changes:
+- **Database:** worst case under about **150 MB of the 500 MB**: 5,000
+  learners × 2 copies of progress (the row and one checkpoint) × a heavy,
+  gzipped row, plus settings, the board and indexes. Typical is far less.
+- **Egress:** about **2–3.5 GB of the 5 GB** a month at the very top end.
+  Heads (about 1 KB per sync, both stores, every device) are about 1–2 GB.
+  If 30% use two phones and pull about 4 times a day, a gzipped pull of a
+  typical row (about 7 KB) adds about 1.3 GB. Without gzip the same pulls
+  would be about 18 GB: that is why gzip comes first.
+- **Edge Function calls:** under 200,000 of the 500,000 (account deletion
+  and "Download my data" are rare; the board's submit function arrives in
   Phase 8).
 - **Auth emails:** the sign-in codes. An email provider's free tier covers
   this size (owner decision #2).
 
-**Why not the Free plan** *(verify)*: Free projects pause after 7 days with
-no activity (sync would silently stop for everyone), have no backups, and
-their 5 GB of egress would be passed at about 1,700 two-phone learners.
+**Pausing.** Study never needs Supabase: the app is offline-first, so a
+paused project only pauses sync and the board, never studying. A small
+GitHub Action calls the project every 2 days with the publishable key (never
+the service key), so it does not pause in quiet weeks. Accounts stay **off**
+at the public launch until the owner turns them on.
 
-**Total:** about $25–27 a month (Pro, plus the email provider's free tier
-or a few dollars). Turn on the **spend cap**.
+**Backups (Free has none).** A nightly `pg_dump`, encrypted with an `age`
+public key, goes to the Cloudflare R2 bucket `kaisip-db-backups` with a token
+scoped to that bucket only; 30 days are kept. Only the public key is in the
+repo or CI; the private key stays with the owner. A restore drill runs every
+quarter (§6). Owner setup: the R2 bucket and scoped token with a billing
+notification, the `age` key pair, and the GitHub Environment `db-backup`
+secrets, typed by the owner, never in chat.
+
+**Security and database performance stay as they are:** RLS on every table
+(`check_rls.sh`, pgTAP), column grants, `(select auth.uid())` in policies, no
+security-definer functions in `public`, the rate limits (sync 60 writes per
+store per hour, auth, board, export once an hour), the publishable key only in
+the app and the service key only in Edge Function secrets, the sync primary
+key `(user_id, store)`, a head read of about 1 KB, a conditional update on
+`rev`, and no sync table in Realtime.
+
+**Total:** $0 a month (Supabase Free, Cloudflare free tier for the site, packs
+and R2 at this size, and the email provider's free tier). Turn on Supabase
+usage alerts and a Cloudflare billing notification.
 
 ## 4. Triggers to watch
 
@@ -88,8 +125,9 @@ snapshots, writes per hour). Act when any of these holds:
 
 | Stage | What changes | Cost *(verify)* |
 |---|---|---|
-| 5k → 10k | Nothing structural. Raise the spend cap; review the alerts. | About $25–47 a month |
-| 10k → 50k | Small compute (about +$5 after the credit). Gzip snapshots before upload (a client and server change, and a schema bump: an `encoding` column; the measured 15× saving above). Per-cert snapshot rows, so one exam's change doesn't re-send all. Keep 1 support checkpoint instead of 2. A CDN or HTTP cache for anonymous board reads. Moderation: a backup moderator, or a paid help desk (owner). | About $50–70 a month |
+| Any trigger in §4 on Free | Move to **Supabase Pro** *(verify)*: $25 a month, 8 GB database, 250 GB egress, daily backups, no pausing. Turn on the spend cap. Keep the R2 backups until Pro's own backups are checked. | About $25–27 a month |
+| 5k → 10k | Nothing structural on Pro. Raise the spend cap; review the alerts. | About $25–47 a month |
+| 10k → 50k | Small compute (about +$5 after the credit). Per-cert snapshot rows, so one exam's change doesn't re-send all. (Gzip and a single checkpoint are already in place: §3.) A CDN or HTTP cache for anonymous board reads. Moderation: a backup moderator, or a paid help desk (owner). | About $50–70 a month |
 | 50k+ | Delta sync (a `rev` per section). A three-way merge against a stored base (it would also count attempts made offline on two phones exactly, instead of the max). A read replica only if reads dominate. Supavisor pooling for Edge Functions. A hosted moderation API only with owner approval (App Store 5.1.2(i) disclosure). Board partitioning not before millions of rows. | Re-plan |
 
 ## 6. Runbooks
@@ -97,7 +135,10 @@ snapshots, writes per hour). Act when any of these holds:
 - **Raise compute:** Dashboard → Project Settings → Compute. A short
   restart; phones see `offline` for a minute and retry (30 s, 2 min, …).
 - **Change the spend cap:** Dashboard → Organization → Billing.
-- **Restore** from a daily backup or PITR (if bought): restores the whole
+- **Restore** on Free: download the night's encrypted dump from the R2
+  bucket `kaisip-db-backups`, decrypt it with the owner's `age` private key,
+  and `pg_restore` it (practised every quarter on a scratch project). On Pro:
+  from a daily backup or PITR (if bought). Either restores the whole
   database to a point in time. One learner's progress: the support
   checkpoints in `private.sync_history` (service role only; by hand, with
   the learner's request in writing).

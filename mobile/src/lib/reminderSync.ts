@@ -19,21 +19,24 @@ import { getCertification } from '../content/certifications';
 import { planComplete } from '../engine/dayPlan';
 import { waitingAt } from '../engine/reminders';
 import { dayKey } from '../engine/streak';
-import { useProgress } from '../store/progress';
+import { ownOf, useProgress } from '../store/progress';
 import { dailyMinutesOf, useSettings } from '../store/settings';
+import { effectiveCertId } from './activeCert';
 import { questionExists } from './outline';
 import { scheduleReminders } from './reminders';
 
 export function refreshReminders(now = Date.now()): Promise<void> {
   const settings = useSettings.getState();
-  const { reminder, activeCertId } = settings;
+  const { reminder } = settings;
+  // The exam being studied: a stored choice whose content isn't on this phone reads as the default exam (MEDIUM-1).
+  const activeCertId = effectiveCertId(settings.activeCertId);
   // Off stays off: turning reminders off in Settings already cancelled them, and the app's start-up
   // pass clears any leftovers. Nothing to refresh here.
   if (!reminder.enabled) return Promise.resolve();
   const progress = useProgress.getState();
-  const plan = progress.days[activeCertId];
+  const plan = ownOf(progress.days, activeCertId);
   // Mobile 1.41: the next reminder names what is waiting then (reviews due by its time).
-  const cp = progress.byCert[activeCertId];
+  const cp = ownOf(progress.byCert, activeCertId);
   const waitingFor = cp ? (at: number) => waitingAt(cp.review, cp.answers, at, questionExists(activeCertId)) : undefined;
   const cleared = Boolean(plan && plan.day === dayKey(now) && planComplete(plan));
   const certName = getCertification(activeCertId)?.name ?? 'your exam';

@@ -30,6 +30,7 @@ import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'rea
 import { Dimensions } from 'react-native';
 import * as Reanimated from 'react-native-reanimated';
 import { router } from 'expo-router';
+import { installFakePack } from '../../jest/fakePack';
 import { setMockReducedMotion } from '../../jest/reanimated-mock';
 import Today from '../app/(tabs)/home';
 import You from '../app/(tabs)/you';
@@ -93,6 +94,8 @@ jest.mock('expo-notifications', () => ({
 // ── Helpers ──────────────────────────────────────────────────────────────
 const DAY = 86_400_000;
 let r: ReactTestRenderer | undefined;
+/** A stand-in pack a test installed (removed after it). */
+let undoPack: (() => void) | undefined;
 const mount = (el: React.ReactElement) => {
   act(() => {
     r = create(el);
@@ -225,6 +228,8 @@ beforeEach(() => {
 });
 afterEach(() => {
   unmount();
+  undoPack?.();
+  undoPack = undefined;
   jest.restoreAllMocks();
 });
 
@@ -582,6 +587,8 @@ describe('J6 an unlock that vanishes after a restore', () => {
 // ── J7 Cert switch ───────────────────────────────────────────────────────
 describe('J7 switching certification', () => {
   it('each exam’s plant keeps its own look; badges open keepsakes for every plant', () => {
+    // CISM's content must be on the phone for the app to study it (lib/activeCert.ts): a stand-in pack.
+    undoPack = installFakePack('cism');
     setPlant({ ...grownAgo('oak', 'Kai', 3), look: { colourway: 'oak-spring', visitor: 'robin' } }, 'cisa');
     setPlant({ ...grownAgo('lotus', 'Nila', 2), look: { colourway: 'lotus-white', planter: 'terracotta' } }, 'cism');
     earn('dress-rehearsal', 'cism', Date.now() - DAY);

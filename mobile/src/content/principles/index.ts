@@ -1,12 +1,13 @@
 /**
  * Exam-mindset principles loader: the only code that knows where they come
- * from. Like the notes, the pack is bundled in the app (works offline) and
- * parsed the first time a screen asks for it.
+ * from. Like the notes, they come from the cert's content pack (content/packs/:
+ * bundled in the app today, works offline) and are parsed the first time a
+ * screen asks for them.
  *
  * Plain English: a certification with no principles file gets an empty pack,
  * and every helper here then says "nothing" (the Learn row hides).
  */
-import { generatedPrinciples } from '../generated';
+import { onClearContentCaches, sourceFor } from '../packs';
 import type { Principle, PrincipleFamily, PrinciplesPack } from './types';
 
 const cache = new Map<string, PrinciplesPack | null>();
@@ -14,9 +15,8 @@ const cache = new Map<string, PrinciplesPack | null>();
 /** The cert's principles pack, or null when it has none. */
 export function getPrinciples(certId: string): PrinciplesPack | null {
   if (cache.has(certId)) return cache.get(certId) ?? null;
-  // `?.`: a test that stands in its own generated module may leave principles out.
-  const load = generatedPrinciples?.[certId];
-  const pack = load ? load() : null;
+  // A test that stands in its own generated module may leave principles out: null.
+  const pack = sourceFor(certId).principles(certId);
   cache.set(certId, pack);
   return pack;
 }
@@ -69,3 +69,6 @@ export function principleForSlip(certId: string, pattern: string): Principle | u
 export function clearPrinciplesCache(): void {
   cache.clear();
 }
+
+// clearContentCaches() (content/packs) empties this too.
+onClearContentCaches(clearPrinciplesCache);

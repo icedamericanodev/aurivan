@@ -54,6 +54,7 @@ import { useSeen } from '../store/seen';
 import { useSession } from '../store/session';
 import { useSettings } from '../store/settings';
 import { persistStorage, resetSavedForTest } from '../store/storage';
+import { installFakePack } from '../../jest/fakePack';
 
 jest.mock('expo-router', () => require('../../jest/perf/focusRouter').routerMock());
 jest.mock('@react-native-async-storage/async-storage', () =>
@@ -112,6 +113,8 @@ const SCREENS: Record<Tab, () => ComponentType> = {
 };
 const emitters = Object.fromEntries(TABS.map((t) => [t, new FocusEmitter(false)])) as Record<Tab, FocusEmitter>;
 let r: ReactTestRenderer | undefined;
+/** A stand-in pack a test installed (removed after it). */
+let undoPack: (() => void) | undefined;
 let current: Tab | null = null;
 
 function mountAll() {
@@ -320,6 +323,8 @@ beforeEach(() => {
 afterEach(() => {
   act(() => r?.unmount());
   r = undefined;
+  undoPack?.();
+  undoPack = undefined;
   for (const t of TABS) emitters[t].set(false);
   current = null;
 });
@@ -482,6 +487,8 @@ describe('switching certification', () => {
     mountAll();
     const cisaText = Object.fromEntries(TABS.map((t) => [t, joined(t)]));
     const other = CERTIFICATIONS.find((c) => c.id !== 'cisa')!;
+    // Its content must be on the phone for the app to study it (lib/activeCert.ts): a stand-in pack.
+    undoPack = installFakePack(other.id);
     act(() => {
       useSettings.setState({ activeCertId: other.id });
     });

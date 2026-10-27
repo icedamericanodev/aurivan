@@ -63,7 +63,16 @@ export function userWords(file: string, src: string): Words[] {
   return out;
 }
 
-const SOURCES = files(SRC).map((p) => ({ file: relative(SRC, p), words: userWords(p, readFileSync(p, 'utf8')) }));
+/** Every string value in a JSON value (keys are field names, not words). */
+const jsonWords = (v: unknown): Words[] =>
+  typeof v === 'string' ? [{ text: v, spoken: false }] : Array.isArray(v) ? v.flatMap(jsonWords) : v && typeof v === 'object' ? Object.values(v).flatMap(jsonWords) : [];
+
+// Content packs, Phase A: the lessons are data now (../data/lessons/cisa.json, built into
+// generated/cisa/lessons.json), so their words are scanned from the built pack, under the
+// name they had as a source file, exactly as when they were TypeScript.
+const LESSON_WORDS = { file: join('content', 'lessons', 'cisa.json'), words: jsonWords(JSON.parse(readFileSync(join(SRC, 'content', 'generated', 'cisa', 'lessons.json'), 'utf8'))) };
+
+const SOURCES = [...files(SRC).map((p) => ({ file: relative(SRC, p), words: userWords(p, readFileSync(p, 'utf8')) })), LESSON_WORDS];
 
 const hits = (re: RegExp, opts: { shownOnly?: boolean; in?: (file: string) => boolean } = {}) =>
   SOURCES.filter(({ file }) => !opts.in || opts.in(file)).flatMap(({ file, words }) =>
@@ -73,6 +82,8 @@ const hits = (re: RegExp, opts: { shownOnly?: boolean; in?: (file: string) => bo
 describe('the scanner itself (code review M3 probes)', () => {
   it('scans a real tree', () => {
     expect(SOURCES.length).toBeGreaterThan(100);
+    // The lessons' words are scanned too (data since content packs, Phase A).
+    expect(LESSON_WORDS.words.some((w) => w.text === 'Who should approve the IS audit charter?')).toBe(true);
     expect(SOURCES.some((s) => s.file === join('app', 'settings.tsx'))).toBe(true);
   });
 

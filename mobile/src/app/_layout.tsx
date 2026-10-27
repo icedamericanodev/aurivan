@@ -37,10 +37,12 @@ import { initSync, setRoute } from '../lib/sync';
 import { pruneUndo } from '../lib/backup';
 import { initCaseSeen } from '../lib/badges';
 import { ensureBackfill, ensureCatalog, syncPlanters } from '../lib/milestones';
-import { useProgress } from '../store/progress';
+import { selectCert, useProgress } from '../store/progress';
 import { cancelReminders, initNotifications } from '../lib/reminders';
 import { refreshReminders } from '../lib/reminderSync';
 import { useSettings } from '../store/settings';
+import { hasContent } from '../content/loader';
+import { useActiveCertId } from '../lib/activeCert';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { MotionRoot, ThemeFade, useMotion } from '../components/motion';
 import { Grain } from '../components/ui';
@@ -130,22 +132,25 @@ export default function RootLayout() {
   // Build F: once per certification (an older save, a new cert, or a restore
   // from an older backup), find the milestones the saved data already shows.
   // They are saved quietly with ONE summary line, never a burst of moments.
-  const activeCertId = useSettings((s) => s.activeCertId);
-  const needsBackfill = useProgress((s) => !s.byCert[activeCertId]?.milestones?.backfill);
+  // The exam being studied (lib/activeCert.ts): never one whose content isn't on this phone, so
+  // these launch effects never write milestones for an exam this phone can't measure (MEDIUM-1).
+  const activeCertId = useActiveCertId();
+  const installed = hasContent(activeCertId);
+  const needsBackfill = useProgress((s) => !selectCert(s, activeCertId).milestones?.backfill);
   useEffect(() => {
-    if (hydrated && needsBackfill) ensureBackfill(activeCertId);
-  }, [hydrated, needsBackfill, activeCertId]);
+    if (hydrated && installed && needsBackfill) ensureBackfill(activeCertId);
+  }, [hydrated, installed, needsBackfill, activeCertId]);
   // Mobile 1.10, after the back-fill: badges already held never show the
   // "new" dot; only ones earned from now on can. And a set completed before
   // planters existed saves its planter now (idempotent: nothing new, no write).
   // Mobile 1.11 first: badges filled in under the older catalogue earn what
   // their study already shows under this one (new tiers, Took Root), quietly, once.
   useEffect(() => {
-    if (!hydrated) return;
+    if (!hydrated || !installed) return;
     ensureCatalog(activeCertId);
     initCaseSeen(activeCertId);
     syncPlanters(activeCertId);
-  }, [hydrated, activeCertId]);
+  }, [hydrated, installed, activeCertId]);
 
   // "Try again" puts the status back to 'loading' (the splash is already hidden): keep the recovery screen
   // up in a "Trying again…" state until it loads or fails again, never a blank page (UX review S9).
