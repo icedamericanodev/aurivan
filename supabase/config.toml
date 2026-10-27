@@ -61,7 +61,7 @@ site_url = "http://127.0.0.1:3000"
 # (accounts beta), so it needs exact redirect URLs. Hosted: Site URL
 # https://kaisip.com, Redirect URLs exactly "https://kaisip.com/" and
 # "kaisip://auth-callback". No wildcards, no pages.dev or workers.dev.
-# Email sign-in uses 6-digit codes and needs no redirect.
+# Email sign-in uses 8-digit codes and needs no redirect.
 additional_redirect_urls = ["kaisip://auth-callback"]
 jwt_expiry = 3600
 enable_refresh_token_rotation = true
@@ -101,8 +101,10 @@ double_confirm_changes = true
 enable_confirmations = true
 secure_password_change = true
 max_frequency = "60s"
-# 6-digit code, valid for 10 minutes.
-otp_length = 6
+# 8-digit code, valid for 10 minutes (security audit L7, 27 Oct 2026: the
+# Auth server has no per-code try counter, so 8 digits make guessing a
+# code 100 times harder than 6; the owner's first choice was 6).
+otp_length = 8
 otp_expiry = 600
 
 # Code-only emails: the templates carry {{ .Token }} and no link. The

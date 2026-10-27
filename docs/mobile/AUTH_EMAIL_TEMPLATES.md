@@ -10,12 +10,12 @@ in the same pull request.
 
 ## Rules these emails follow
 
-- **A code only, never a link.** Every template shows the 6-digit code,
+- **A code only, never a link.** Every template shows the 8-digit code,
   `{{ .Token }}`, and no button or link. A link in a sign-in email can be
   opened by email scanners and copied by phishing pages; a code has to be
   typed into KaiSip by the learner.
 - The code works for **10 minutes** (Email OTP expiry 600 seconds) and is
-  **6 digits** (Email OTP length 6). If either setting changes, change the
+  **8 digits** (Email OTP length 8; security audit L7). If either setting changes, change the
   text.
 - Plain words, no marketing, no images. They say what to do, how long the
   code works, and what to do if you didn't ask for it.
@@ -44,7 +44,7 @@ Your KaiSip sign-in code
 **Body:**
 ```html
 <h2 style="font-family:Arial,Helvetica,sans-serif;color:#17231B">Your KaiSip code</h2>
-<p style="font-family:Arial,Helvetica,sans-serif;font-size:16px;color:#17231B">Enter this 6-digit code in the KaiSip app or on the KaiSip website to continue:</p>
+<p style="font-family:Arial,Helvetica,sans-serif;font-size:16px;color:#17231B">Enter this 8-digit code in the KaiSip app or on the KaiSip website to continue:</p>
 <p style="font-family:'Courier New',Courier,monospace;font-size:32px;font-weight:700;letter-spacing:8px;color:#17231B">{{ .Token }}</p>
 <p style="font-family:Arial,Helvetica,sans-serif;font-size:16px;color:#17231B">It works for 10 minutes. If you didn’t ask for it, you can ignore this email: nobody can sign in without the code.</p>
 <p style="font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#465349">KaiSip never asks for this code by email, chat or phone. Don’t share it with anyone.</p>
@@ -90,7 +90,7 @@ Confirm your new email for KaiSip
 **Body:**
 ```html
 <h2 style="font-family:Arial,Helvetica,sans-serif;color:#17231B">Confirm your new email</h2>
-<p style="font-family:Arial,Helvetica,sans-serif;font-size:16px;color:#17231B">Someone asked to change the email of a KaiSip account from {{ .Email }} to {{ .NewEmail }}. If it was you, enter this 6-digit code in the KaiSip app or on the KaiSip website:</p>
+<p style="font-family:Arial,Helvetica,sans-serif;font-size:16px;color:#17231B">Someone asked to change the email of a KaiSip account from {{ .Email }} to {{ .NewEmail }}. If it was you, enter this 8-digit code in the KaiSip app or on the KaiSip website:</p>
 <p style="font-family:'Courier New',Courier,monospace;font-size:32px;font-weight:700;letter-spacing:8px;color:#17231B">{{ .Token }}</p>
 <p style="font-family:Arial,Helvetica,sans-serif;font-size:16px;color:#17231B">It works for 10 minutes. We send a code to both addresses, and the change happens only when both codes are entered.</p>
 <p style="font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#465349">If you didn’t ask for this, don’t enter the code and nothing changes. KaiSip never asks for this code by email, chat or phone.</p>
@@ -101,8 +101,8 @@ Confirm your new email for KaiSip
 KaiSip has no passwords, but anyone can ask Supabase's API for a "reset
 password" email, and Supabase's default one carries a **sign-in link**. Make
 it a plain code like the others, so no KaiSip email ever carries a link.
-(The database refuses any new password on a confirmed account anyway:
-`supabase/migrations/20261027000000_beta_hardening.sql`.)
+(The database wipes any password on a confirmed account anyway:
+`supabase/migrations/20261027000100_beta_no_passwords.sql`.)
 
 **Subject:**
 ```
