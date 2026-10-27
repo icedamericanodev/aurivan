@@ -53,7 +53,21 @@ A calm, trustworthy study companion that helps people **pass** professional secu
 
 **Recommendation:** start the beta with CISA as soon as Stage 1 is done, and add CC *into* the running beta when 2.6 passes. Don't hold the beta back for CC.
 
-## Stage 3: after the beta
+## Stage 3: premium UI pass, web and mobile (owner decision 27 Oct: after the CC pack)
+Every expert agent reviews the whole app, plus a new `ui-reference-researcher`. It gathers references from Mobbin, Figma, Dribbble, Behance, Apple HIG and Material 3, and turns them into Grove-compatible changes.
+
+How it runs:
+1. **Reference boards.** One per key screen: Today, lesson player, question and answer, results, progress, notes, settings, onboarding, widgets.
+2. **Expert critique.** Design manager, super-lens critic, the UX reviewers, motion and a learner read.
+3. **Mockups.** Before and after, in light and dark.
+4. **Sky picks.**
+5. **Build, screen by screen.** Each one is reviewed and released on its own.
+
+Needs from Sky before it starts:
+- A Mobbin paid plan, optional but recommended. Without it, Mobbin search is off.
+- Add `dribbble.com`, `cdn.dribbble.com`, `www.behance.net`, `m3.material.io`, `www.nngroup.com` and `www.figma.com` to Allowed domains.
+
+## Stage 4: more exams
 - **CISM.** Its new outline starts 3 Nov 2026; build to the new one.
 - **CRISC, AAIA.**
 - **CISSP.** Wait for its new outline (15 Apr 2027) so nothing is built twice.
