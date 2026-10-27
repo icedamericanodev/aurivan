@@ -33,6 +33,8 @@ import { CircleQuestionMark, Flag, ICON_STROKE, Inbox, Info, Lightbulb, Mail, Me
 import { useContactFlow, useReportFlow } from './support';
 import { ICON_SIZE, ListRow, Section, T, ToggleRow } from './ui';
 import { switchTester } from '../engine/betaTester';
+import { widgetsSupported } from '../lib/widgets';
+import { WidgetNumbersRow } from './widgetSettings';
 import { dayKey } from '../engine/streak';
 import { sayLater } from '../lib/a11y';
 import { useSeen } from '../store/seen';
@@ -130,8 +132,10 @@ export function HelpRows({ certId }: { certId: string }) {
           useSeen.getState().setTester(switchTester(on, dayKey(Date.now())));
           sayLater(on ? 'Tester questions on. One may show on Today.' : 'Tester questions off.');
         }}
-        last
+        last={!testerOn || !widgetsSupported}
       />
+      {/* Mobile 1.47: beta testers only. Read-only widget counts kept on this phone, never sent. */}
+      {testerOn && widgetsSupported ? <WidgetNumbersRow /> : null}
 
       <T v="small" color={c.ink2} style={{ marginTop: space.lg }}>{HELP_FOOTER_LEAD}</T>
       <T v="label" selectable color={c.accentText}>{config.feedbackEmail}</T>

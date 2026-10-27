@@ -30,7 +30,7 @@ import { moveFocus } from '../lib/a11y';
 import { useKeyboardHeight } from '../lib/useKeyboardShown';
 import { LARGE_TEXT, radius, scrimOp, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
-import { Bell, BookOpen, ChevronRight, CircleQuestionMark, Flag, ICON_STROKE, ListChecks, MessagesSquare, Palette as PaletteIcon, RefreshCw, ShieldCheck, SproutIcon, UserRound } from './icons';
+import { Bell, BookOpen, ChevronRight, CircleQuestionMark, Flag, ICON_STROKE, LayoutGrid, ListChecks, MessagesSquare, Palette as PaletteIcon, RefreshCw, ShieldCheck, SproutIcon, UserRound } from './icons';
 import { AnimatedPressable, FadeIn, usePressScale } from './motion';
 import { Button, ICON_SIZE, RadioRow, T, useFontScale } from './ui';
 
@@ -42,7 +42,7 @@ import { Button, ICON_SIZE, RadioRow, T, useFontScale } from './ui';
  * the page, each category drawn as its own card; only Your data and Help and about, rarely visited
  * and many-rowed, are doors to their own screens (with the cloud build's Account and Feedback board).
  */
-export const SETTINGS_CATS = ['you', 'appearance', 'exam', 'study', 'practice', 'reminders', 'plant', 'account', 'board', 'data', 'help'] as const;
+export const SETTINGS_CATS = ['you', 'appearance', 'exam', 'study', 'practice', 'reminders', 'plant', 'widgets', 'account', 'board', 'data', 'help'] as const;
 export type SettingsCat = (typeof SETTINGS_CATS)[number];
 export const isSettingsCat = (v: unknown): v is SettingsCat => typeof v === 'string' && (SETTINGS_CATS as readonly string[]).includes(v);
 /** The categories that are doors to their own screen (settings-section?category=…). */
@@ -57,6 +57,8 @@ export const CAT_ICON: Record<SettingsCat, SettingsIcon> = {
   practice: ListChecks,
   reminders: Bell,
   plant: SproutIcon,
+  // Mobile 1.47: Home-screen widgets (Android builds only).
+  widgets: LayoutGrid,
   account: RefreshCw,
   board: MessagesSquare,
   data: ShieldCheck,
@@ -162,12 +164,15 @@ export function SettingsGroup({
   intro,
   children,
   cat,
+  headRef,
 }: {
   title: string;
   intro?: string;
   children: ReactNode;
   /** Which category it is (its mark). */
   cat?: SettingsCat;
+  /** Mobile 1.47: a link that opens Settings at this group moves screen-reader focus to its title. */
+  headRef?: Ref<View>;
 }) {
   const { c } = useTheme();
   const sub = useContext(SettingsSubScreen);
@@ -181,7 +186,7 @@ export function SettingsGroup({
     );
   return (
     <SettingsCard>
-      <View accessible accessibilityRole="header" accessibilityLabel={title} style={[styles.cardHead, { borderBottomColor: c.line }]}>
+      <View ref={headRef} accessible accessibilityRole="header" accessibilityLabel={title} style={[styles.cardHead, { borderBottomColor: c.line }]}>
         {cat ? <SettingsMark cat={cat} size={28} /> : null}
         <T v="headline" style={{ flexShrink: 1 }}>{title}</T>
       </View>

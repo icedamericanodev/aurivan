@@ -13,7 +13,10 @@
  *    (store/useHydrated.ts, components/recovery.tsx); and exports an
  *    ErrorBoundary so a screen that crashes while drawing shows the same
  *    calm screen, not a blank one.
- * 6. Cloud builds only (Uplift Phases 6–7, built OFF): once saved data has
+ * 6. Home-screen widgets (mobile 1.47, Android): once saved data has loaded,
+ *    lib/widgets startWidgetSync() keeps the widget snapshot current; a
+ *    widget tap lands on app/widget.tsx. Nothing runs elsewhere.
+ * 7. Cloud builds only (Uplift Phases 6–7, built OFF): once saved data has
  *    loaded, lib/account.ts initAccount() checks the sign-in and follows it,
  *    then lib/sync.ts initSync() starts sync, and SyncRouteWatch tells sync
  *    when a quiz, lesson or game opens and ends. With the flag off (every
@@ -40,6 +43,7 @@ import { ensureBackfill, ensureCatalog, syncPlanters } from '../lib/milestones';
 import { selectCert, useProgress } from '../store/progress';
 import { cancelReminders, initNotifications } from '../lib/reminders';
 import { refreshReminders } from '../lib/reminderSync';
+import { startWidgetSync } from '../lib/widgets';
 import { useSettings } from '../store/settings';
 import { hasContent } from '../content/loader';
 import { useActiveCertId } from '../lib/activeCert';
@@ -103,6 +107,11 @@ export default function RootLayout() {
     // An "Undo restore" snapshot older than 7 days is dropped once, at launch.
     pruneUndo();
   }, [hydrated]);
+
+  // Mobile 1.47, home-screen widgets (Android): once saved data has loaded, keep the widget snapshot
+  // up to date (after sessions, restores, settings changes and each return to the app). Does nothing
+  // where widgets aren't supported (iOS, web, Expo Go).
+  useEffect(() => (hydrated ? startWidgetSync() : undefined), [hydrated]);
 
   // Cloud builds only: the account's sign-in state, and the session refresh
   // only while the app is in front. Nothing runs with the flag off.
@@ -245,6 +254,8 @@ export default function RootLayout() {
         <Stack.Screen name="plant" />
         <Stack.Screen name="plant-pick" options={{ animation: rise }} />
         <Stack.Screen name="plant-look" />
+        {/* Mobile 1.47: where a home-screen widget tap lands; it opens the named place at once. */}
+        <Stack.Screen name="widget" options={{ animation: 'none' }} />
       </Stack>
       <MotionRoot />
       {/* Light ⇄ Dark dissolves (mobile 1.9): a veil in the old paper fades out over the new theme. */}

@@ -67,6 +67,11 @@
  * shows beside another Today invitation, on a welcome-back day (3+ days away) or in exam week. Learners
  * from before 1.41 (onboarded, no name, never asked) get the one ask set up once (engine/firstRun.ts).
  *
+ * Mobile 1.47: on Android, ONE suggestion to add the Today's plan widget, once ever (a cleared day from the
+ * 3rd study day, never in exam week, never beside another invitation; components/widgetSettings.tsx).
+ * In the same slot, one per visit: the readiness widget's one re-ask (30 days after choosing to show the
+ * range) and, for beta testers only, the widget check-in cards (engine/widgetTester.ts).
+ *
  * Signature moments (Phase 5b, components/moments.tsx):
  *   - the day before the exam / exam day: a calm card above the panel;
  *   - "Your readiness is holding" (lower bound ≥ 80% for 7 days): the forest
@@ -82,6 +87,11 @@ import { StreakPill } from '../../components/today';
 import { FirstRangePanel, SecondAskCard } from '../../components/firstSet';
 import { FitCard } from '../../components/fit';
 import { NameAskCard, TesterQuestionCard } from '../../components/beta';
+import { ReadinessAskCard, WidgetOfferCard, WidgetTesterCard } from '../../components/widgetSettings';
+import { readinessReaskDue, widgetOfferDue } from '../../engine/widgets';
+import { widgetTesterCard, type WidgetTesterCard as WidgetTesterCardData } from '../../engine/widgetTester';
+import { widgetsSupported } from '../../lib/widgets';
+import { useWidgetStore } from '../../store/widgets';
 import { testerCard, type TesterCard } from '../../engine/betaTester';
 import { ExamWeekCard, type ExamWeekCardCopy } from '../../components/readinessReport';
 import { getFinalWeek } from '../../content/exam';
@@ -537,6 +547,50 @@ export default function Today() {
   // The switch turned off (Help, or the card's own action) takes the card away.
   const testerShown = testerVisit && tester?.since ? testerVisit : null;
 
+  // Mobile 1.47: the one "add a widget" suggestion (Android), on a cleared day from the 3rd study day, never in
+  // exam week, never beside another invitation, once EVER (engine/widgets.ts widgetOfferDue). Latched for the visit.
+  const offerShown = useWidgetStore((x) => Boolean(x.offer));
+  const offerAnswered = useWidgetStore((x) => Boolean(x.offer?.answer));
+  const widgetPlaced = useWidgetStore((x) => Object.values(x.stats.seen).some((k) => k && !k.gone));
+  const offerDue = widgetOfferDue({
+    supported: widgetsSupported,
+    shown: offerShown,
+    studyDays: j.progress.milestones?.days ?? 0,
+    cleared: allDone,
+    daysLeft: j.daysLeft,
+    placed: widgetPlaced,
+    otherSetup: otherSetup || nameVisit || Boolean(testerShown) || Boolean(moments.moment) || Boolean(grown) || (credit.items > 0 && !credit.hidden),
+  });
+  const [offerVisit, setOfferVisit] = useState(false);
+  if (offerDue && !offerVisit) setOfferVisit(true);
+  useFocusEffect(useCallback(() => () => setOfferVisit(false), []));
+  // Shown once counts (it never comes back, whatever the answer).
+  useEffect(() => {
+    if (offerVisit) useWidgetStore.getState().showOffer(plan.day);
+  }, [offerVisit, plan.day]);
+  // Mobile 1.47 (security/behavior reviews): the readiness widget's ONE re-ask, 30 days after choosing to show
+  // the range, and a beta tester's widget card. Same slot, one card per visit, never beside another invitation.
+  const widgetPrefs = useWidgetStore((x) => x.prefs);
+  const readinessSince = useWidgetStore((x) => x.readinessShownSince);
+  const readinessAsked = useWidgetStore((x) => Boolean(x.readinessAsked));
+  const readinessPlaced = useWidgetStore((x) => Boolean(x.stats.seen.readiness && !x.stats.seen.readiness.gone));
+  const widgetStats = useWidgetStore((x) => x.stats);
+  const widgetTester = useWidgetStore((x) => x.tester);
+  const slotBusy = otherSetup || nameVisit || Boolean(testerShown) || offerVisit || Boolean(moments.moment) || Boolean(grown) || (credit.items > 0 && !credit.hidden);
+  const reaskDue =
+    widgetsSupported && !slotBusy && readinessReaskDue({ pref: widgetPrefs.readiness, shownSince: readinessSince, asked: readinessAsked, today: plan.day, placed: readinessPlaced });
+  const [reaskVisit, setReaskVisit] = useState(false);
+  if (reaskDue && !reaskVisit) setReaskVisit(true);
+  useFocusEffect(useCallback(() => () => setReaskVisit(false), []));
+  const wTesterNow =
+    widgetsSupported && !slotBusy && !reaskVisit
+      ? widgetTesterCard({ testerOn: Boolean(tester?.since), counters: widgetStats, answered: widgetTester.answered, skipped: widgetTester.skipped, today: plan.day })
+      : null;
+  const [wTesterVisit, setWTesterVisit] = useState<WidgetTesterCardData | null>(null);
+  if (wTesterNow && !wTesterVisit) setWTesterVisit(wTesterNow);
+  useFocusEffect(useCallback(() => () => setWTesterVisit(null), []));
+  const wTesterShown = wTesterVisit && tester?.since && !widgetTester.answered.includes(wTesterVisit.id) && widgetTester.skipped !== plan.day ? wTesterVisit : null;
+
   // "Short on time? 5 questions" (mobile 1.41): only before the plan has started, never in exam week,
   // never beside a paused session (Also today already offers to resume it).
   const examWeekNow = j.daysLeft !== null && j.daysLeft >= 0 && j.daysLeft <= 7;
@@ -853,6 +907,21 @@ export default function Today() {
         {testerShown && !nameVisit && (
           <View style={{ marginTop: space.xl }}>
             <TesterQuestionCard card={testerShown} today={plan.day} onGone={() => moveFocus(nextHeadRef, ANNOUNCE_DELAY + 50)} />
+          </View>
+        )}
+        {offerVisit && !offerAnswered && !nameVisit && !testerShown && (
+          <View style={{ marginTop: space.xl }}>
+            <WidgetOfferCard onGone={() => moveFocus(nextHeadRef, ANNOUNCE_DELAY + 50)} />
+          </View>
+        )}
+        {reaskVisit && !readinessAsked && (
+          <View style={{ marginTop: space.xl }}>
+            <ReadinessAskCard onGone={() => moveFocus(nextHeadRef, ANNOUNCE_DELAY + 50)} />
+          </View>
+        )}
+        {wTesterShown && (
+          <View style={{ marginTop: space.xl }}>
+            <WidgetTesterCard card={wTesterShown} today={plan.day} onGone={() => moveFocus(nextHeadRef, ANNOUNCE_DELAY + 50)} />
           </View>
         )}
         {credit.items > 0 && !credit.hidden && (

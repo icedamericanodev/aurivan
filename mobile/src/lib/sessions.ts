@@ -23,6 +23,7 @@ import { useSession, type ActiveSession, type SessionMode } from '../store/sessi
 import { dailyMinutesOf, useSettings } from '../store/settings';
 import { questionsFor } from '../engine/fit';
 import { finishSession } from './finishSession';
+import { claimWidgetStart } from './widgetStats';
 
 /**
  * Every non-mock session starts timed when Settings → Study defaults →
@@ -50,6 +51,8 @@ function newSession(
   // Drop ids whose question no longer exists (e.g. removed in a content update).
   const questionIds = ids.filter((id) => perms[id]);
   if (questionIds.length === 0) return null;
+  // Mobile 1.47: a home-screen widget tap that asked for this session (counted as started only now).
+  const widget = claimWidgetStart(now);
   const session: ActiveSession = {
     id: `${mode}-${now}`,
     mode,
@@ -63,6 +66,7 @@ function newSession(
     startedAt: now,
     ...extra,
     ...(timed ? { timed: true } : {}),
+    ...(widget ? { widget } : {}),
   };
   useSession.getState().start(session);
   return session;

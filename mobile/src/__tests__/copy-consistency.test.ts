@@ -142,7 +142,8 @@ describe('copy consistency: the old words stay gone', () => {
     // The type style named "stem" is code, not words. The lessons teach the
     // term on purpose ("a short scenario, called the stem"), and a plant has a stem.
     const taught = (t: string) => t.startsWith(join('content', 'lessons')) || t.startsWith(join('engine', 'plant'));
-    expect(hits(/\bstems?\b/i).filter((t) => !/: stem$/.test(t) && !taught(t))).toEqual([]);
+    // A kebab-case id (a principle id such as answer-from-the-stem) is data, never shown.
+    expect(hits(/\bstems?\b/i).filter((t) => !/: stem$/.test(t) && !/: [a-z]+(-[a-z]+)+$/.test(t) && !taught(t))).toEqual([]);
   });
 
   it('one minutes style on screen: never "About … minutes" (spoken labels may say "minutes")', () => {

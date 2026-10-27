@@ -13,6 +13,7 @@ import { useSession, type ActiveSession } from '../store/session';
 import { logActivity } from './activity';
 import { celebrateNext, checkMilestones } from './milestones';
 import { checkPlant } from './plant';
+import { noteWidgetSessionEnd } from './widgetStats';
 
 export interface SessionScore {
   total: number;
@@ -193,6 +194,8 @@ export function finishSession(opts: { celebrate?: boolean } = {}) {
   // Mobile 1.13: the plant grows from real learning only. A grow-up waits as
   // `pending` for its one calm line on Today (never on Results).
   checkPlant(s.certId);
+  // Mobile 1.47: a session a home-screen widget started counts as completed (beta counters, this phone only).
+  noteWidgetSessionEnd(s.widget, score.answered, s.questionIds.length);
   if (opts.celebrate === false) return;
   const moment = celebrateNext(s.certId);
   if (moment) useSession.getState().setMilestone(moment.key);

@@ -1100,6 +1100,69 @@ Freemium with in-app subscriptions (product panel recommendation):
    guard listing the only files that may read it. Mobile 1.44 adds one more
    place it shows (You's "Your study profile" block) and one way in (the
    website file's `displayName`, add-only, cleaned by the same rule).
+12. **Home-screen widgets (mobile 1.47, Android).** Eight widget kinds
+   (Today's plan, Your plant, Today's rule, This week, Quick question,
+   Questions to revisit, Exam countdown, Readiness) through
+   `react-native-android-widget` 0.24 (`docs/mobile/DESIGN_SYSTEM.md` §20;
+   the lock-screen accessory is designed there and built later).
+   **Consequences.** (a) **Native build.** The library has native Android
+   code; its config plugin adds 8 widget receivers, their provider XML,
+   picker previews, 5 font files and (for Readiness and Exam countdown) a
+   configuration activity; our own plugin (`plugins/withWidgetBackupRules.js`)
+   adds backup rules. So the Android **runtime fingerprint changes**: an OTA
+   update cannot deliver 1.47, and test APKs built before it stop receiving
+   updates. **Testers need one new APK** (the EAS build workflow, `preview`
+   profile). Play users get widgets with a Play release (OTA is off there).
+   The sandbox computes the 1.47 Android fingerprint as
+   `a770943ea791bf7991200d34f1370b39c8ea5b90` (machine-dependent: trust what
+   EAS prints). (b) **What is native and what is not.** Every widget kind,
+   its picker name and description, size, resize rule, preview image, fonts,
+   the 3-hour refresh and which widgets ask first (`widgetFeatures`) are in
+   the native build: changing any of them is a native change again. Faces,
+   words and layouts are JavaScript and can go over the air to test APKs.
+   (c) **Data.** The app writes one small key, `aurivan.widget.v1` (under
+   4 KB: the day's plan words and minutes, the next plan's first item, study
+   days, the plant's growth and look, the next few Today's rule and Quick
+   question items, readiness rings only if the learner added that widget),
+   after sessions, on app open, after a restore and after settings changes
+   (`lib/widgets.android.ts`, merged and never mid-quiz). It never holds the
+   learner's name, the exam or certification name, answers or mistakes. The
+   exact exam date stays in it because the faces need it at draw time for the
+   final week and the eve (words about it show only with exam timing on). The
+   background task reads only that key and Today's rule's marks
+   (`aurivan.widget.reveal.v1`), never the stores (import guard). Choices and
+   the local beta counters live in `aurivan.widgetPrefs.v1`: on this phone
+   only, not in the backup file, never synced. **"Remove my progress from
+   this phone"** resets that store in the same storage write as the study
+   stores, removes both widget keys and redraws every widget before it
+   finishes (tested; the security review's M2). (d) **Privacy.** Nothing
+   leaves the phone: no widget code makes a network call (tested), so the
+   Play Data safety answers do not change. One nuance (security review L2):
+   a background widget refresh starts the app's JavaScript, and on test
+   builds expo-updates then checks for an update as it does on any start; no
+   widget data is in that request, and store builds have updates off. Android
+   Auto Backup and phone-to-phone transfer leave out the library's widget
+   pictures (`files/widget_images/`) and size list
+   (`shared_prefs/com.kaisip.app.WIDGET_SIZES.xml`); everything else is
+   backed up as before (`allowBackup`, point 7). (e) **Entry file.**
+   `index.ts` (package.json `main`) is Expo Router's entry plus the widget
+   task and the "choose" screen registration; keep it in step with
+   `expo-router/entry` at each SDK upgrade. (f) **Permissions and exported
+   parts.** The app's own manifest gains no permission (prebuild checked: 8
+   receivers `exported=false`, the library's collection service guarded by
+   `BIND_REMOTEVIEWS`). Exported: the library's read-only image provider
+   (random 64-hex file names since 0.24.0) and the configuration activity
+   (Android requires it for `APPWIDGET_CONFIGURE`; it only offers the
+   Readiness or exam-timing choice and closes for any other widget).
+   WorkManager 2.8.1 (the library's background runner) merges `WAKE_LOCK`
+   and an untyped `FOREGROUND_SERVICE`, plus `RECEIVE_BOOT_COMPLETED` and
+   `ACCESS_NETWORK_STATE`, which are already present. Check the merged
+   manifest of the first EAS build (`aapt dump permissions`); no typed
+   `FOREGROUND_SERVICE_*` permission is expected (that would need a Play
+   declaration). (g) **Phone checks** (can't be done in this sandbox): the
+   "choose" screen opening on add with the launcher, the 3-hour refresh,
+   TalkBack on each widget, Material You and dark mode, and the merged
+   manifest.
 
 Run the `app-store-compliance-reviewer` agent before every submission.
 

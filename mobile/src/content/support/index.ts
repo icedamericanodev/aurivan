@@ -42,6 +42,11 @@ export interface WhatsNewEntry {
 /** Newest first. The first entry must match app.json (a test checks it). */
 export const WHATS_NEW: readonly WhatsNewEntry[] = [
   {
+    version: '1.47.0',
+    date: '2026-10-27',
+    new: ['Home-screen widgets on Android: today’s plan, your plant, a daily exam rule, your week, a quick question and more. They never show your name, and you choose how much they show.'],
+  },
+  {
     version: '1.46.0',
     date: '2026-10-27',
     new: ['Five more lessons on decisions the exam tests often: security exceptions, hardened servers and networks, personal and unmanaged devices, paying for IT, and user-built tools and batch reruns.'],

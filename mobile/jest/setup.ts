@@ -13,3 +13,19 @@ jest.mock('react-native-reanimated', () => require('./reanimated-mock'));
 // above. components/motion.tsx re-checks it whenever the app comes back to
 // the foreground; React Native's own jest mock would always answer "off".
 AccessibilityInfo.isReduceMotionEnabled = () => Promise.resolve(isMockReducedMotion());
+
+// Mobile 1.46: the home-screen widget library has a native part Jest doesn't have. Its layout
+// primitives and tree builder are plain JavaScript (kept real, so layout tests build the true tree);
+// everything that would talk to Android is a mock.
+jest.mock('react-native-android-widget', () => {
+  const actual = jest.requireActual('react-native-android-widget');
+  return {
+    ...actual,
+    requestWidgetUpdate: jest.fn(async () => {}),
+    requestWidgetUpdateById: jest.fn(async () => {}),
+    getWidgetInfo: jest.fn(async () => []),
+    requestPinWidget: jest.fn(async () => false),
+    registerWidgetTaskHandler: jest.fn(),
+    registerWidgetConfigurationScreen: jest.fn(),
+  };
+});
