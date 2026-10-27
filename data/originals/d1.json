@@ -522,7 +522,7 @@
         "Final two: D beats A because changes after sign-off must be visible; editing the signed-off paper hides when the evidence was added.",
         "Exam cue: work papers are never quietly changed after sign-off; late additions are dated, signed and explained."
       ],
-      "framework_ref": "IIA Global Internal Audit Standards (2024), Standard 14.6 (Engagement Documentation)",
+      "framework_ref": "IIA Global Internal Audit Standards (2024), Standard 14.6 (Engagement Documentation); IAASB ISA 230 (Audit Documentation), paras 13 and 16",
       "related_concepts": [
         "Audit documentation",
         "Documentation after issuance",
@@ -1666,7 +1666,7 @@
       "subtopic": "ISACA Audit Standards vs Guidelines (ITAF)",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "An IS audit team is deciding how to treat ITAF guidelines on its engagements. Which approach is MOST appropriate?",
+      "question": "A bank's IS audit function is writing its methodology manual and must state how its auditors treat ITAF guidelines. Which approach is MOST appropriate?",
       "options": {
         "A": "Apply them as mandatory, equal to the standards",
         "B": "Apply them where no standard addresses the topic",
@@ -1685,7 +1685,7 @@
       "tips": [
         "Eliminate: A makes guidelines mandatory like standards, and B treats them as a gap-filler, though they explain how to apply the standards.",
         "Final two: C beats D because non-mandatory guidelines must still be considered on each engagement, with departures justified, not just consulted when questions arise.",
-        "Exam cue: ISACA's ITAF guidelines bind the auditor to consider them and justify departures; an organization's own guidelines only recommend, so skipping one is no finding."
+        "Exam cue: ISACA's ITAF guidelines are not mandatory, but auditors consider them and justify departures; an organization's own guidelines only recommend, so skipping one is no finding."
       ],
       "framework_ref": "ITAF (IT Audit Framework), 4th ed. — Standards and Guidelines",
       "related_concepts": [
@@ -4448,40 +4448,41 @@
     {
       "id": "d1_118",
       "domain": 1,
-      "subtopic": "Control Environment. Management Monitoring Sub-Area",
+      "subtopic": "COSO Component 5. Evaluating and Communicating Deficiencies",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "An IS auditor is evaluating the monitoring component of internal control. Which activity BEST evidences that management itself monitors whether its controls operate?",
+      "question": "An IS auditor finds that supervisors at an insurer sign off each daily claims-system exception report. Which further evidence BEST shows that this management monitoring is effective?",
       "options": {
-        "A": "An annual CEO review of controls recorded in the board minutes",
-        "B": "Quarterly internal audit testing reported to the audit committee",
-        "C": "Automated security alerts routed to the IT operations queue",
-        "D": "Supervisors reviewing exception reports and tracking remediation"
+        "A": "Each sign-off is dated on the day its report is produced",
+        "B": "A signed procedure sets out how supervisors review the reports",
+        "C": "An alert flags each exception to the claims team in real time",
+        "D": "Exceptions are tracked to resolution, with repeat failures escalated"
       },
       "correct": "D",
-      "key_concept": "Management monitoring is ongoing review by management of its own controls, with documented results and tracked remediation, separate from independent audit evaluation.",
-      "pre_read": "Notice the word itself. Separate monitoring done by management from evaluations done by parties independent of management.",
-      "correct_explanation": "Ongoing management monitoring means line management reviews control performance as part of normal operations, such as supervisors examining exception reports, and documents issues and remediation. Internal audit testing is also a monitoring activity, but it is a separate, independent evaluation; it cannot substitute for management watching its own controls day to day.",
+      "key_concept": "Management monitoring is effective when the deficiencies it finds are tracked to resolution and escalated; proof a review happened does not prove it works.",
+      "pre_read": "Notice the review already happens and is signed. Ask what shows the review actually changes anything.",
+      "correct_explanation": "Under COSO, monitoring works when the deficiencies it finds are evaluated and communicated to those who must correct them, with significant ones reported to senior management. Exceptions tracked to resolution, with repeat failures escalated, show that the supervisors' review leads to action. A dated sign-off on each report shows the review was timely, but a signature alone does not show that any exception was investigated or fixed.",
       "wrong_explanations": {
-        "A": "An annual top-level review is a periodic separate evaluation at best; ongoing monitoring is routine review by line management within operations.",
-        "B": "Internal audit testing is an independent evaluation, not management's own monitoring, and it is periodic rather than ongoing.",
-        "C": "Alerts on security events are a detective control within operations; monitoring means management checking that its controls operate and acting on failures."
+        "A": "A same-day sign-off shows the review was timely, but not that the exceptions it found were investigated, corrected or escalated.",
+        "B": "A signed procedure shows how the review is designed to work, not that it operates or that its findings are acted on.",
+        "C": "Real-time alerts make exceptions visible, but alerting is a detective mechanism; it does not show that anyone evaluates the exceptions or corrects their causes."
       },
       "tips": [
-        "Eliminate: A is an infrequent top-level review rather than routine monitoring, and C is a detective control on security events, not a check that controls operate.",
-        "Final two: D beats B because management monitoring is done by management in the ordinary course; internal audit testing is a separate evaluation.",
-        "Exam cue: to test whose monitoring it is, ask who acts; to test ongoing versus separate, ask when it runs. Management can run separate evaluations too, such as an annual self-assessment."
+        "Eliminate: B is a written procedure, which shows design rather than operation, and C is a detective alert that surfaces exceptions without anyone evaluating them.",
+        "Final two: D beats A because a dated sign-off proves the review was timely; monitoring is effective only when the deficiencies it finds are corrected and escalated.",
+        "Exam cue: proof that a review happened is weaker than proof that its findings were acted on; look for tracking to closure and escalation."
       ],
-      "framework_ref": "COSO Internal Control - Integrated Framework (2013)",
+      "framework_ref": "COSO Internal Control - Integrated Framework (2013), Component 5 (Monitoring Activities), Principle 17",
       "related_concepts": [
         "Management monitoring",
-        "Control environment",
-        "COSO Component 5",
-        "Supervisory review",
-        "Self-assessment"
+        "COSO Principle 17",
+        "Deficiency tracking",
+        "Escalation",
+        "Supervisory review"
       ],
       "_provenance": "Authored from concept: 'management monitoring sub-area - ongoing supervisory review by management with documentation and remediation tracking, distinct from sparse executive review / audit-committee inspection / audit-director attestation'. Public source: COSO 2013 Component 5. All scenario specifics (meal-delivery service, control-environment audit) invented for this question. Distinct from d1_028 (parent) and d1_098 (independent vs management framing). Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D1 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): C (committee chair approves each transaction) was a strawman; it is now unreviewed automated alerts, tooling mistaken for monitoring. Blind round: A and C no longer defeat themselves ('no documented follow-up', 'no reviewer assigned'). Cross-domain round: Exam cue no longer says separate evaluations belong to independent parties (d1_151 keys a management self-assessment as a separate evaluation).",
-      "style_version": 2
+      "style_version": 2,
+      "principle_id": "proven-not-configured"
     },
     {
       "id": "d1_119",
@@ -5412,7 +5413,7 @@
       "principle_id": "fit-method-to-objective",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "An IS auditor plans to test a freight-billing approval control by selecting every seventh day's invoices across the year, and billing runs on a weekly cycle. What is the GREATEST concern with this selection?",
+      "question": "An IS auditor plans to test a freight-billing approval control by selecting every seventh day's invoices across the year, and staffing and volumes follow a weekly pattern. What is the GREATEST concern with this selection?",
       "options": {
         "A": "All chosen days fall on one weekday, which may bias results",
         "B": "The selection is not weighted toward the highest-value invoices",
@@ -6649,7 +6650,7 @@
       "principle_id": "independence-throughout",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "An IS audit manager has tailored a generic ITAF audit program for a fintech's account-opening workflow, and the fintech's operations head asks to approve it before fieldwork. What is the BEST response?",
+      "question": "An IS audit manager has drafted the audit program for a fintech's account-opening review, and the fintech's operations head asks to approve it before fieldwork. What is the BEST response?",
       "options": {
         "A": "Let the operations head approve it as owner of the workflow",
         "B": "Adjust the procedures until operations agrees each one is workable",
@@ -6713,8 +6714,8 @@
         "Intangible risk quantification",
         "Indirect indicators",
         "Brand reputation",
-        "Talent attrition",
-        "IP-rights risk"
+        "Stated assumptions",
+        "Risk ranking"
       ],
       "_provenance": "Authored from concept: 'intangible risk quantification - indirect indicators + documented assumptions + qualitative layering, distinct from decline / $0-default / arbitrary-uniform'. Public source: FAIR + ISO 31000 + ISACA Risk IT. All scenario specifics (motion-picture studio, three intangible risks) invented for this question. Distinct from d1_037/097/106/147 prior risk-assessment questions. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D1 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Cross-domain round: the stem states that usable proxy data exists and makes the ranking the audit plan's own, so the item no longer clashes with d1_027 and d2_012 (sparse data favors qualitative ratings).",
       "style_version": 2

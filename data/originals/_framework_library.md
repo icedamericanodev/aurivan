@@ -156,6 +156,7 @@ acceptable when the reference is to the broader topical body of guidance.
 - SSAE 18 AT-C 205 (Examination Engagements)
 - AICPA AT-C 215 (Agreed-Upon Procedures Engagements, as revised by SSAE 19)
 - IAASB ISRS 4400 (Revised)
+- IAASB ISA 230 (Audit Documentation), paras 13 and 16
 
 ## IIA
 
@@ -1508,6 +1509,7 @@ questions (v10.0/v10.1), and miscellaneous additions from v9.8-v10.2 polish.
 
 ### COSO
 - COSO Internal Control - Integrated Framework (2013) Component 5
+- COSO Internal Control - Integrated Framework (2013), Component 5 (Monitoring Activities), Principle 17
 
 ### Other
 - APO, BAI, DSS, MEA domains)
