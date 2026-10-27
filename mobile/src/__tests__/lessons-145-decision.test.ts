@@ -1,0 +1,101 @@
+/**
+ * Mobile 1.45: the first five decision lessons (curriculum §4–§5).
+ * - Each covers a cluster of notes, hands off to them (its `notes`, primary first) and lists real
+ *   `prepares` items, so "Take the lesson" can follow a miss on them.
+ * - Its trap and tip scenes name the principles they apply, word for word, so the lesson leads into
+ *   the principle cards.
+ * - Both lenses: a technical figure and "The IS auditor's lens", where management decides.
+ * - The house shape: 10–11 scenes, 3 checks, and each check's explanation says why the runner-up tempts.
+ */
+import { findLesson, missLessons } from '../content/lessons';
+import { findQuestion } from '../content/loader';
+import { findNote, subtopicOfQuestion } from '../content/notes';
+import { findPrinciple } from '../content/principles';
+
+const DECISION: { id: string; domainId: string; topics: string[]; notes: string[]; principles: string[] }[] = [
+  {
+    id: 'cisa-l-d5-no-patch',
+    domainId: '5',
+    topics: ['5B2'],
+    notes: ['5B2.6', '5B2.5', '5B2.1'],
+    principles: ['compensating-controls-fallback', 'prevent-before-detect'],
+  },
+  {
+    id: 'cisa-l-d4-resilience',
+    domainId: '4',
+    topics: ['4B2', '4A10'],
+    notes: ['4B2.3', '4B2.1', '4A10.2'],
+    principles: ['proven-not-configured', 'management-owns-risk'],
+  },
+  {
+    id: 'cisa-l-d5-breach-notification',
+    domainId: '5',
+    topics: ['5B5'],
+    notes: ['5B5.3', '5B5.2'],
+    principles: ['management-owns-risk', 'escalate-to-decision-owner'],
+  },
+  {
+    id: 'cisa-l-d4-invocation',
+    domainId: '4',
+    topics: ['4B5'],
+    notes: ['4B5.3', '4B5.2'],
+    principles: ['recover-by-business-priority', 'escalate-to-decision-owner'],
+  },
+  {
+    id: 'cisa-l-d2-who-decides',
+    domainId: '2',
+    topics: ['2A2'],
+    notes: ['2A2.2', '2A2.5'],
+    principles: ['escalate-to-decision-owner', 'management-owns-risk'],
+  },
+];
+
+describe.each(DECISION.map((d) => [d.id, d] as const))('%s', (id, d) => {
+  const lesson = findLesson(id)!;
+
+  it('exists in its domain, with its topics and notes, primary note first', () => {
+    expect(lesson).toBeDefined();
+    expect(lesson.domainId).toBe(d.domainId);
+    expect(lesson.topics).toEqual(d.topics);
+    expect(lesson.notes).toEqual(d.notes);
+    for (const n of d.notes) expect(findNote('cisa', n)?.id).toBe(n);
+  });
+
+  it('prepares real bank items from its own notes, and a miss on each offers this lesson', () => {
+    expect(lesson.prepares!.length).toBeGreaterThanOrEqual(3);
+    for (const q of lesson.prepares!) {
+      expect(findQuestion('cisa', q)?.id).toBe(q);
+      const sub = subtopicOfQuestion('cisa', q);
+      expect(sub && d.notes.includes(sub) ? q : `${q} (note ${sub})`).toBe(q);
+      expect(missLessons('cisa', q, sub).map((l) => l.id)).toContain(id);
+    }
+  });
+
+  it('names its principles in the trap and tip scenes', () => {
+    const text = lesson.scenes
+      .flatMap((s) => (s.type === 'trap' ? [s.why, s.trap] : s.type === 'tip' ? [s.body] : []))
+      .join(' ');
+    for (const p of d.principles) {
+      const title = findPrinciple('cisa', p)?.title;
+      expect(title).toBeTruthy();
+      expect(text.includes(`“${title}”`) ? p : `${p} (“${title}” not named)`).toBe(p);
+    }
+  });
+
+  it('keeps the house shape: 10–11 scenes, a lens where management decides, 3 checks that name the runner-up', () => {
+    expect(lesson.scenes.length).toBeGreaterThanOrEqual(10);
+    expect(lesson.scenes.length).toBeLessThanOrEqual(11);
+    const lens = lesson.scenes.find((s) => s.type === 'idea' && s.heading === 'The IS auditor’s lens');
+    expect(lens && lens.type === 'idea' && /management|executive|board/i.test(lens.body)).toBe(true);
+    const checks = lesson.scenes.filter((s) => s.type === 'check');
+    expect(checks).toHaveLength(3);
+    for (const c of checks) if (c.type === 'check') expect(c.explanation).toMatch(/tempting/);
+  });
+
+  it('keeps copy learner-safe: no promises, no counts of the bank, no review-manual citations', () => {
+    const copy = JSON.stringify(lesson);
+    expect(copy).not.toMatch(/\bpass(es|ed|ing)?\b|guarantee|you’re ready|you're ready/i);
+    expect(copy).not.toMatch(/review manual|\bCRM\b/i);
+    expect(copy).not.toMatch(/\b\d[\d,]* questions\b/i);
+  });
+});

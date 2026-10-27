@@ -42,6 +42,15 @@ export interface WhatsNewEntry {
 /** Newest first. The first entry must match app.json (a test checks it). */
 export const WHATS_NEW: readonly WhatsNewEntry[] = [
   {
+    version: '1.45.0',
+    date: '2026-10-27',
+    new: ['Five new lessons on decisions the exam tests often: attacks with no patch, resilience, breach notification, declaring a disaster, and who decides in IT governance.'],
+    improved: [
+      'A few existing lessons are clearer and more current, including when part of a release can wait and which second factors resist phishing.',
+      'After a miss, Take the lesson now appears only when a lesson teaches that question’s idea.',
+    ],
+  },
+  {
     version: '1.44.0',
     date: '2026-10-26',
     new: ['You now opens with your study profile, and Today can greet you by a name or nickname you choose. It stays on this phone, and can come from your website progress.'],
