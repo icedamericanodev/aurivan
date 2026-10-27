@@ -2,8 +2,9 @@
 
 Each mutant below breaks ONE promise of
 supabase/migrations/20261013000000_sync_snapshots.sql (own rows only, the
-server owns rev and the keys, revs never reused, 60 writes an hour that a
-delete can't reset, deletes always allowed, the size caps, the checkpoints).
+server owns rev, the keys and the encoding, revs never reused, 60 writes an
+hour that a delete can't reset, deletes always allowed, base64 gzip only,
+the size caps, uncompressed storage, the one checkpoint).
 For every mutant the pgTAP suite (supabase/tests) must FAIL: a mutant that
 still passes means a test is missing.
 
@@ -46,9 +47,23 @@ MUTANTS = {
         r"v_rev bigint := greatest\(\(extract\(epoch from clock_timestamp\(\)\) \* 1000\)::bigint, coalesce\(p_old_rev, 0\) \+ 1\);",
         "v_rev bigint := coalesce(p_old_rev, 0) + 1;",
     ),
-    "bigger progress cap": (r"<= 2000000\)", "<= 3000000)"),
-    "no settings cap": (r"octet_length\(state::text\) <= 98304\)", "octet_length(state::text) <= 2000000)"),
-    "history unbounded": (r"limit 2\)", "limit 20)"),
+    "bigger zipped progress cap": (r"octet_length\(state_gz\) <= 700000\n", "octet_length(state_gz) <= 7000000\n"),
+    "bigger unzipped progress cap": (r"raw_bytes between 2 and 2000000\)", "raw_bytes between 2 and 3000000)"),
+    "no minimum raw size": (r"raw_bytes between 2 and", "raw_bytes between 0 and"),
+    "no settings cap": (
+        r"octet_length\(state_gz\) <= 32768 and raw_bytes <= 98304\)",
+        "octet_length(state_gz) <= 700000 and raw_bytes <= 2000000)",
+    ),
+    "no gzip prefix check": (r"state_gz ~ '\^H4sI\[A-Za-z0-9\+/\]\+=\{0,2\}\$'", "state_gz ~ '^[A-Za-z0-9+/]+={0,2}$'"),
+    "any characters": (r"state_gz ~ '\^H4sI\[A-Za-z0-9\+/\]\+=\{0,2\}\$'", "state_gz ~ '^H4sI'"),
+    "partial base64 groups": (r"\n\s+and octet_length\(state_gz\) % 4 = 0", ""),
+    "any encoding": (r"check \(encoding = 'gzip\+base64'\)", "check (encoding <> '')"),
+    "client may set the encoding": (
+        r"grant insert \(store, store_version, app_version, device_id, state_gz, raw_bytes\)",
+        "grant insert (store, store_version, app_version, device_id, state_gz, raw_bytes, encoding)",
+    ),
+    "state compressed again": (r"alter table public\.sync_snapshots alter column state_gz set storage external;", ""),
+    "history unbounded": (r"limit 1\)", "limit 20)"),
     "history not cleared": (r"create trigger sync_history_clear after delete", "create trigger sync_history_clear after update"),
     "select all rows": (
         r"using \(user_id = \(select auth\.uid\(\)\)\);\ncreate policy snap_insert",
@@ -59,8 +74,8 @@ MUTANTS = {
         "create policy snap_update on public.sync_snapshots for update to authenticated\n  using (true)",
     ),
     "client may set rev": (
-        r"grant update \(store_version, app_version, device_id, state\)",
-        "grant update (store_version, app_version, device_id, state, rev)",
+        r"grant update \(store_version, app_version, device_id, state_gz, raw_bytes\)",
+        "grant update (store_version, app_version, device_id, state_gz, raw_bytes, rev)",
     ),
     "anon may read": (
         r"grant select on public\.sync_snapshots to service_role;",

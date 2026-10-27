@@ -1,12 +1,26 @@
 -- KaiSip: progress sync (Uplift Phase 7). NOT APPLIED ANYWHERE.
 -- One validated snapshot per store per learner (security.md §4.1; spec
--- PHASE6_8.md §3.7). Append-only from the first `supabase db push` (Phase 9).
+-- PHASE6_8.md §3.7). Edited in place before the first apply (accounts beta,
+-- 27 Oct 2026: gzip snapshots, one support checkpoint); append-only from the
+-- first apply to the hosted project.
 --
 -- Plain English:
 --  * Each learner has at most two rows here: their progress and their study
---    settings, each one JSON snapshot. The app checks every pull with the
---    same checker as a backup file, so the server only bounds size and shape;
---    it never reads or "repairs" progress.
+--    settings, each one JSON snapshot, gzipped and base64-encoded by the app
+--    or the website before upload (`state_gz`). The phone and the web check
+--    every pull with the same checker as a backup file, so the server only
+--    bounds size and shape; it never reads, unzips or "repairs" progress.
+--  * The snapshot format (one codec on every client, and in export-my-data):
+--      state_gz  = base64( gzip( UTF-8 JSON text of the store ) ), standard
+--                  alphabet with padding; gzip with mtime 0 and no file name,
+--                  so it always starts with "H4sI" (1f 8b 08).
+--      raw_bytes = the byte length of that UTF-8 JSON text before gzip.
+--                  Readers refuse a row whose unzipped size differs, and
+--                  never unzip more than 2,000,000 bytes (a gzip-bomb guard:
+--                  the server can't check what is inside the gzip).
+--      encoding  = 'gzip+base64', the only value today. A new format later
+--                  is a new value plus a new migration; clients refuse any
+--                  value they don't know.
 --  * `rev` is a number the server raises on every write and NEVER reuses,
 --    not even after the row is deleted and made again (security review P7
 --    S1, code review N7): it is the write time in milliseconds, or one more
@@ -23,13 +37,15 @@
 --    re-inserting can't reset the count: deletes count too. A delete is
 --    never refused ("Delete synced progress" must always work); only inserts
 --    and updates over the limit are.
---  * The progress state is at most 2,000,000 bytes (the app caps it at
---    1.5 MB); the settings state at most 96 KB (the app caps it at 64 KB;
---    real settings are a few hundred bytes). jsonb text adds spaces, hence
---    the margins.
---  * A daily checkpoint of the progress row is kept for support (newest 2),
---    in schema private, for as long as the synced copy exists. "Delete
---    synced progress" (the row's own delete) clears the checkpoints too;
+--  * Sizes: the unzipped progress is at most 2,000,000 bytes (the app caps
+--    it at 1.5 MB), its base64 gzip at most 700,000 characters (a heavy
+--    learner is about 23 KB); settings at most 98,304 bytes unzipped (the
+--    app caps them at 64 KB; real settings are a few hundred bytes) and
+--    32,768 characters zipped. `state_gz` is stored uncompressed (storage
+--    external): gzip doesn't shrink further, so Postgres shouldn't try.
+--  * A daily checkpoint of the progress row is kept for support (the newest
+--    one only), in schema private, for as long as the synced copy exists.
+--    "Delete synced progress" (the row's own delete) clears it too;
 --    deleting the account cascades everything. Turning sync off on a phone
 --    deletes nothing here.
 
@@ -40,21 +56,28 @@ create table public.sync_snapshots (
   app_version text not null check (app_version ~ '^\d{1,3}\.\d{1,3}\.\d{1,3}$'),
   device_id uuid not null,                       -- random per install (secure store), not a hardware id
   rev bigint not null default 1,                 -- server-owned (the trigger), never reused
-  state jsonb not null check (jsonb_typeof(state) = 'object'
-                              and octet_length(state::text) <= 2000000),  -- jsonb text adds spaces; the app caps at 1.5 MB
+  encoding text not null default 'gzip+base64' check (encoding = 'gzip+base64'),
+  -- base64 gzip: the gzip magic number ("H4sI"), the base64 alphabet only,
+  -- whole 4-character groups, at most 700,000 characters (the length is
+  -- checked first, so the pattern never scans an oversized value).
+  state_gz text not null check (octet_length(state_gz) <= 700000
+                                and octet_length(state_gz) % 4 = 0
+                                and state_gz ~ '^H4sI[A-Za-z0-9+/]+={0,2}$'),
+  raw_bytes int not null check (raw_bytes between 2 and 2000000),   -- the app caps at 1.5 MB
   updated_at timestamptz not null default now(),
   primary key (user_id, store),
-  -- Settings are tiny: 96 KB here, 64 KB in the app (security review P7 S2).
-  constraint sync_settings_size check (store <> 'settings' or octet_length(state::text) <= 98304)
+  -- Settings are tiny: 96 KB unzipped here, 64 KB in the app (security review P7 S2).
+  constraint sync_settings_size check (store <> 'settings' or (octet_length(state_gz) <= 32768 and raw_bytes <= 98304))
 );
+alter table public.sync_snapshots alter column state_gz set storage external;
 alter table public.sync_snapshots enable row level security;
 revoke all on public.sync_snapshots from anon, authenticated;
--- Column grants: the app never reads or writes user_id, and never writes
--- rev or updated_at (the trigger does).
-grant select (store, store_version, app_version, device_id, rev, state, updated_at)
+-- Column grants: the app never reads or writes user_id, never writes rev or
+-- updated_at (the trigger does), and never chooses the encoding (the default).
+grant select (store, store_version, app_version, device_id, rev, encoding, state_gz, raw_bytes, updated_at)
   on public.sync_snapshots to authenticated;
-grant insert (store, store_version, app_version, device_id, state) on public.sync_snapshots to authenticated;
-grant update (store_version, app_version, device_id, state)        on public.sync_snapshots to authenticated;
+grant insert (store, store_version, app_version, device_id, state_gz, raw_bytes) on public.sync_snapshots to authenticated;
+grant update (store_version, app_version, device_id, state_gz, raw_bytes)        on public.sync_snapshots to authenticated;
 grant delete on public.sync_snapshots to authenticated;   -- "Delete synced progress" (compliance 4.7)
 grant select on public.sync_snapshots to service_role;    -- export-my-data
 
@@ -132,16 +155,20 @@ end $$;
 create trigger sync_snapshots_touch before insert or update or delete on public.sync_snapshots
   for each row execute function private.sync_snapshots_touch();
 
--- Support safety net: one daily checkpoint of the PROGRESS row, newest 2 kept
--- while the synced copy exists (the privacy notice says so).
+-- Support safety net: one daily checkpoint of the PROGRESS row, only the
+-- newest kept, while the synced copy exists (the privacy notice says so).
+-- Stored exactly as the row held it (still gzipped).
 create table private.sync_history (
   id bigint generated always as identity primary key,
   user_id uuid not null references auth.users (id) on delete cascade,
   rev bigint not null,
   app_version text not null,
-  state jsonb not null,
+  encoding text not null,
+  state_gz text not null,
+  raw_bytes int not null,
   taken_at timestamptz not null default now()
 );
+alter table private.sync_history alter column state_gz set storage external;
 create index sync_history_user_idx on private.sync_history (user_id, taken_at desc);
 alter table private.sync_history enable row level security;   -- no policies: deny all but the owner
 grant select on private.sync_history to service_role;          -- a support restore, by hand
@@ -152,19 +179,19 @@ begin
   if old.store = 'progress' and not exists (
        select 1 from private.sync_history h
        where h.user_id = old.user_id and h.taken_at > now() - interval '24 hours') then
-    insert into private.sync_history (user_id, rev, app_version, state)
-      values (old.user_id, old.rev, old.app_version, old.state);
+    insert into private.sync_history (user_id, rev, app_version, encoding, state_gz, raw_bytes)
+      values (old.user_id, old.rev, old.app_version, old.encoding, old.state_gz, old.raw_bytes);
     delete from private.sync_history h
       where h.user_id = old.user_id
         and h.id not in (select id from private.sync_history
-                         where user_id = old.user_id order by taken_at desc, id desc limit 2);
+                         where user_id = old.user_id order by taken_at desc, id desc limit 1);
   end if;
   return null;
 end $$;
 create trigger sync_history_keep after update on public.sync_snapshots
   for each row execute function private.sync_history_keep();
 
--- "Delete synced progress" also clears the checkpoints.
+-- "Delete synced progress" also clears the checkpoint.
 create function private.sync_history_clear() returns trigger
 language plpgsql security definer set search_path = '' as $$
 begin
@@ -179,9 +206,10 @@ revoke all on function private.sync_snapshots_touch(), private.sync_history_keep
   from public, anon, authenticated;
 
 -- The head query (SyncPort.head) selects only store, rev, app_version,
--- store_version, device_id and updated_at. The state is downloaded only when
--- `rev` changed, which keeps egress near zero for a learner on one device
--- (docs/mobile/SCALING.md).
+-- store_version, device_id and updated_at. The state (state_gz, raw_bytes,
+-- encoding) is downloaded only when `rev` changed, which keeps egress near
+-- zero for a learner on one device (docs/mobile/SCALING.md: egress is the
+-- first Free-plan limit to run out).
 --
 -- Never add public.sync_snapshots or any private table to the
 -- `supabase_realtime` publication (supabase/tests/20_sync.sql checks it).

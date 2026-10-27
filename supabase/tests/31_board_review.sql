@@ -12,6 +12,9 @@
 -- Run: supabase test db   (CI: .github/workflows/supabase.yml)
 begin;
 select plan(83);
+-- 20261027000000_beta_hardening.sql pauses posting for the accounts beta;
+-- these tests exercise the open board (rolled back at the end).
+update public.board_settings set posting_open = true;
 
 -- ── Fixtures (as the owner) ─────────────────────────────────────────
 insert into auth.users (id, email, created_at) values
