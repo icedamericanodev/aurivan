@@ -87,9 +87,9 @@
       "bloom_level": "Application",
       "question": "An audit function has always covered systems on a fixed three-year rotation. What is the BEST basis for the IS audit lead to select next year's audit subjects?",
       "options": {
-        "A": "Continue the rotation so each system gets even coverage",
+        "A": "Systems next in line under the existing three-year rotation",
         "B": "Systems with the most findings in last year's audits",
-        "C": "Systems that can be audited within the smallest budget",
+        "C": "Systems rated highest in management's own risk register",
         "D": "Systems ranked highest by a refreshed risk assessment"
       },
       "correct": "D",
@@ -97,12 +97,12 @@
       "pre_read": "Notice the word BEST and the fixed rotation. Ask which basis reflects how risk has changed since the last cycle.",
       "correct_explanation": "IS audit standards call for risk-based planning: audit resources go where current residual risk (risk left after existing controls) is highest, and the risk assessment is refreshed each cycle to capture new systems, regulations and incidents. Prior-year findings are a useful input to that assessment, but on their own they look backward and ignore emerging risks in areas that were never audited or have changed since.",
       "wrong_explanations": {
-        "A": "Rotation gives even coverage but ignores how risk has shifted; a high-risk system could wait three years.",
+        "A": "A fixed rotation gives even coverage, not risk-based coverage; a high-risk system could wait up to three years.",
         "B": "Prior findings are one risk indicator. Used alone they look backward and miss new or changed high-risk systems.",
-        "C": "Cost is a resourcing constraint, not a selection basis. Cheap audits of low-risk systems give the committee little assurance."
+        "C": "Management's register is a useful input, but adopting its ranking lets the auditee decide what audit covers; audit forms its own risk view."
       },
       "tips": [
-        "Eliminate: A keeps a rotation that ignores changing risk, and C selects by cost rather than risk.",
+        "Eliminate: A follows a fixed cycle that risk-based planning replaces, and C adopts management's ranking, which lets the auditee set audit coverage.",
         "Final two: D beats B because prior findings are only one input; a refreshed risk assessment also captures new and changed risks.",
         "Exam cue: for audit planning questions, the answer that ties selection to a current risk assessment is usually BEST."
       ],
@@ -112,7 +112,7 @@
         "Residual risk",
         "Audit frequency"
       ],
-      "_provenance": "Authored from concept: 'risk-based audit planning vs rotation'. Public source: ISACA IT Audit Standard 1201. All scenario specifics (government agency, three-year rotation history, CAE) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Content review (Oct 2026): glossed residual risk.",
+      "_provenance": "Authored from concept: 'risk-based audit planning vs rotation'. Public source: ISACA IT Audit Standard 1201. All scenario specifics (government agency, three-year rotation history, CAE) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Content review (Oct 2026): glossed residual risk. D1 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): C (smallest budget) fell to common sense; it is now management's own risk register, an input audit must not adopt as its ranking. A reworded to parallel the other options; dismissive tip wording removed.",
       "style_version": 2
     },
     {
@@ -275,7 +275,7 @@
       "question": "An IS auditor tests a compensating control requiring an independent peer review of every privileged session. Which finding represents the GREATEST risk?",
       "options": {
         "A": "Some sessions were reviewed by the session holder",
-        "B": "Many reviews contain only generic, boilerplate approval text",
+        "B": "Many reviews contain generic, boilerplate approval text",
         "C": "A small percentage of review tickets remain open",
         "D": "The review closure target was set below 100 percent"
       },
@@ -300,7 +300,7 @@
         "False assurance",
         "Control effectiveness"
       ],
-      "_provenance": "Authored from concept: 'SoD violation inside a peer-review compensating control — false assurance'. Public source: ISACA IT Audit Standard 1203 + NIST SP 800-53. All scenario specifics (utility, SCADA, SOAR workflow, percentages) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'SoD violation inside a peer-review compensating control — false assurance'. Public source: ISACA IT Audit Standard 1203 + NIST SP 800-53. All scenario specifics (utility, SCADA, SOAR workflow, percentages) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D1 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Runner-up B lost the word 'only' (lone-absolute warning).",
       "style_version": 2
     },
     {
@@ -351,7 +351,7 @@
       "question": "During fieldwork, an IS auditor finds repeated high-value payments processed through an emergency override, all initiated and approved by the same two employees. What should the auditor do FIRST?",
       "options": {
         "A": "Interview both employees to obtain their explanations",
-        "B": "Expand testing to all override transactions for the year",
+        "B": "Expand testing to the year's override transactions",
         "C": "Disable the emergency override until the matter is resolved",
         "D": "Document the facts and escalate per fraud procedures"
       },
@@ -376,7 +376,7 @@
         "Evidence preservation",
         "Escalation chain"
       ],
-      "_provenance": "Authored from concept: 'auditor's first response to suspected fraud — document and escalate, not investigate'. Public source: ISACA IT Audit Standard 1207. All scenario specifics (insurance, claims-adjuster collusion pattern, $200K threshold, 14 claims) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'auditor's first response to suspected fraud — document and escalate, not investigate'. Public source: ISACA IT Audit Standard 1207. All scenario specifics (insurance, claims-adjuster collusion pattern, $200K threshold, 14 claims) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D1 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Runner-up B lost the word 'all' (lone-absolute warning).",
       "style_version": 2
     },
     {
@@ -500,8 +500,8 @@
       "bloom_level": "Application",
       "question": "A supervisor is reviewing an IS auditor's work papers for an access-control review before sign-off. What is the MOST important quality for the supervisor to verify?",
       "options": {
-        "A": "They follow the department's standard formatting template",
-        "B": "They cite each applicable ISACA standard by number",
+        "A": "They retain the full set of reports the auditee supplied",
+        "B": "They record management's agreement with each finding",
         "C": "They show every audit program step marked as completed",
         "D": "They hold sufficient evidence to support each conclusion"
       },
@@ -510,12 +510,12 @@
       "pre_read": "Notice the supervisor is reviewing before sign-off. Ask what would make the audit opinion indefensible if it were missing.",
       "correct_explanation": "Work papers exist so an independent reviewer can trace each conclusion back to sufficient, appropriate evidence. Without that, the opinion cannot be defended to the committee or a regulator. Completed program steps show the planned work was performed, which a supervisor does check, but a step can be ticked off while the evidence gathered still fails to support the conclusion drawn from it.",
       "wrong_explanations": {
-        "A": "Consistent formatting helps readability but says nothing about whether the conclusions are supported.",
-        "B": "Citing standards by number is not required and does not show the work met them.",
+        "A": "Volume is not sufficiency. Reports the auditee supplied must still be relevant, reliable and linked to the conclusion they are meant to support.",
+        "B": "Management's agreement is a representation; work papers must show the evidence behind each conclusion, whether or not management agrees.",
         "C": "Completed steps show work was done, not that the evidence obtained actually supports each conclusion."
       },
       "tips": [
-        "Eliminate: A is presentation, and B is citation housekeeping; neither shows the conclusions are supported.",
+        "Eliminate: A equates a volume of auditee reports with sufficient evidence, and B treats management's agreement, a representation, as support for conclusions.",
         "Final two: D beats C because a ticked step proves activity, while sufficient evidence proves the conclusion.",
         "Exam cue: for work paper review, the winning answer links each conclusion to sufficient, appropriate evidence."
       ],
@@ -525,7 +525,7 @@
         "Sufficiency of evidence",
         "Supervisory review"
       ],
-      "_provenance": "Authored from concept: 'audit work papers — sufficiency to support conclusions'. Public source: ITAF performance standards + IIA International Standards 2330. All scenario specifics (government contractor, access-control review, supervisor sign-off) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'audit work papers — sufficiency to support conclusions'. Public source: ITAF performance standards + IIA International Standards 2330. All scenario specifics (government contractor, access-control review, supervisor sign-off) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D1 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): A (formatting template) and B (cite standards by number) fell to common sense; they are now a file full of auditee reports (volume is not sufficiency) and management's agreement with each finding (a representation, not evidence).",
       "style_version": 2
     },
     {
@@ -537,7 +537,7 @@
       "bloom_level": "Application",
       "question": "Management reports that all findings from a prior IS audit have been remediated. What is the PRIMARY purpose of the auditor's follow-up?",
       "options": {
-        "A": "Re-perform the original audit program in full",
+        "A": "Repeat each procedure in the original audit program",
         "B": "Verify the agreed corrective actions were implemented",
         "C": "Help management design any remaining corrective actions",
         "D": "Issue a revised audit opinion on the audited area"
@@ -562,7 +562,7 @@
         "Remediation verification",
         "Audit cycle"
       ],
-      "_provenance": "Authored from concept: 'audit follow-up — verifying remediation, not re-auditing'. Public source: ISACA IT Audit Standard 1402 + IIA International Standards 2500. All scenario specifics (hospital, vendor-access, 6-month gap, 8 findings) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'audit follow-up — verifying remediation, not re-auditing'. Public source: ISACA IT Audit Standard 1402 + IIA International Standards 2500. All scenario specifics (hospital, vendor-access, 6-month gap, 8 findings) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D1 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Runner-up A lost 'in full' (lone-absolute warning).",
       "style_version": 2
     },
     {
@@ -575,8 +575,8 @@
       "question": "A regional CFO repeatedly pressures the chief audit executive to drop a critical IS audit finding before the report reaches the audit committee. What is the CAE's BEST action?",
       "options": {
         "A": "Escalate the pressure to the audit committee chair",
-        "B": "Remove the finding to preserve the working relationship",
-        "C": "Soften the finding's wording to avoid alarming readers",
+        "B": "Raise the pressure with the CEO as the CFO's superior",
+        "C": "Hold the report until the CFO accepts the wording",
         "D": "Record the CFO's objection in the management response"
       },
       "correct": "A",
@@ -584,12 +584,12 @@
       "pre_read": "Notice the CFO wants the finding gone, not corrected. Ask who has authority to protect the audit function from that pressure.",
       "correct_explanation": "Management has no authority to remove audit findings, and pressure to suppress one is itself an independence threat. The audit committee chair is the right escalation point because the committee oversees the audit function and protects its independence. Recording the CFO's objection is normal when management disputes facts, but here it leaves the suppression attempt unaddressed and unknown to the body that must know.",
       "wrong_explanations": {
-        "B": "Dropping a critical finding under pressure abandons independence and leaves the audit committee unaware of a significant risk.",
-        "C": "Softening a critical finding to avoid alarm distorts its significance; the committee needs an accurate picture of risk.",
+        "B": "The CEO is management and may share the CFO's interest; the audit committee, not the executive line, protects audit independence.",
+        "C": "Management does not approve findings or their wording; waiting for the CFO's acceptance gives the auditee a veto over the report.",
         "D": "Management responses capture factual disagreement, but they do not address an attempt to suppress the finding."
       },
       "tips": [
-        "Eliminate: B suppresses the finding, and C dilutes it; both give in to the pressure.",
+        "Eliminate: B takes an independence threat to management rather than to the committee that protects independence, and C gives the auditee a veto over the report.",
         "Final two: A beats D because a suppression attempt is an independence threat that must reach the committee; noting disagreement leaves it hidden.",
         "Exam cue: staff auditors escalate through audit leadership; the CAE takes pressure to suppress findings to the audit committee chair."
       ],
@@ -599,7 +599,7 @@
         "Audit committee oversight",
         "Escalation chain"
       ],
-      "_provenance": "Authored from concept: 'management pressure on audit findings — escalation to audit committee'. Public source: ISACA IT Audit Standard 1003 + IIA International Standards 1110. All scenario specifics (multinational, regional CFO, 'alarm the committee' framing) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Cross-domain review (Oct 2026): re-angled or clarified to remove duplication/contradiction.",
+      "_provenance": "Authored from concept: 'management pressure on audit findings — escalation to audit committee'. Public source: ISACA IT Audit Standard 1003 + IIA International Standards 1110. All scenario specifics (multinational, regional CFO, 'alarm the committee' framing) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Cross-domain review (Oct 2026): re-angled or clarified to remove duplication/contradiction. D1 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): B (remove the finding to keep the relationship) and C (soften to avoid alarm) were rationale-loaded strawmen; they are now escalating to the CEO (the wrong owner) and holding the report for the CFO's acceptance (an auditee veto).",
       "style_version": 2
     },
     {
@@ -613,7 +613,7 @@
       "options": {
         "A": "Lower cost and disruption from running a single engagement",
         "B": "Dependence of financial reporting on the IT controls",
-        "C": "The audit committee's preference from prior years",
+        "C": "The financial statement auditor's plan to rely on the IT work",
         "D": "Each team's familiarity with the other's methods"
       },
       "correct": "B",
@@ -622,11 +622,11 @@
       "correct_explanation": "When IT controls directly produce financial reporting outputs, separate audits risk a gap at the boundary: the IT audit tests the algorithm, the financial audit tests the filings, and neither tests how one feeds the other. That interdependency is what justifies an integrated approach. Lower cost and disruption are real benefits of a combined engagement, but they are by-products, not the basis for the decision.",
       "wrong_explanations": {
         "A": "Efficiency is a welcome benefit, but choosing an approach for cost rather than risk coverage puts convenience ahead of assurance.",
-        "C": "Past preference does not reflect the current platform's risk profile, which should drive the engagement design.",
+        "C": "External reliance is a coordination benefit that follows from good work; it does not decide whether IT and financial risks must be tested together.",
         "D": "Team familiarity is a delivery challenge that training and planning can solve; it does not decide whether integration is needed."
       },
       "tips": [
-        "Eliminate: C relies on habit, and D is a team-readiness issue rather than a scoping driver.",
+        "Eliminate: C is a coordination benefit for the external auditor, and D is a team-readiness issue that planning solves; neither drives integration.",
         "Final two: B beats A because control interdependency drives coverage; lower cost is a by-product, not the reason.",
         "Exam cue: integrated audit questions turn on interdependency; when IT outputs feed financial reporting, test them together."
       ],
@@ -637,7 +637,7 @@
         "Audit coordination",
         "ITGCs feeding financial reporting"
       ],
-      "_provenance": "Authored from concept: 'integrated audit decision driven by control interdependency, not cost or preference'. Public source: ISACA IT Audit Standard 1201 + IIA International Standards 2050. All scenario specifics (financial services, wealth-management platform, algorithm + portfolio-manager + SEC reporting structure) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'integrated audit decision driven by control interdependency, not cost or preference'. Public source: ISACA IT Audit Standard 1201 + IIA International Standards 2050. All scenario specifics (financial services, wealth-management platform, algorithm + portfolio-manager + SEC reporting structure) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D1 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): C (the committee's past preference) was habit; it is now the external auditor's planned reliance, a real but secondary consideration.",
       "style_version": 2
     },
     {
@@ -649,7 +649,7 @@
       "bloom_level": "Analysis",
       "question": "An IS audit team uses a vendor AI tool to flag suspicious access events, but the vendor cannot explain how its model classifies them. What is the GREATEST risk in relying on it?",
       "options": {
-        "A": "Flagged events are a small share of total access events",
+        "A": "Audit staff need training before using the tool's interface",
         "B": "Investigating false positives consumes audit staff time",
         "C": "Auditors cannot explain or defend conclusions drawn from it",
         "D": "Auditors may defer to the tool over their own judgment"
@@ -659,12 +659,12 @@
       "pre_read": "Notice the vendor cannot explain the model. Ask what that does to the quality of evidence the auditor can rely on.",
       "correct_explanation": "Audit evidence must be sufficient and reliable, and the auditor must be able to explain how each conclusion was reached. If the tool's logic cannot be explained, the auditor cannot assess its reliability or defend conclusions built on it. Over-reliance on the tool is a real behavioral risk, but it is a symptom; the core problem is that the evidence itself cannot be validated.",
       "wrong_explanations": {
-        "A": "A small flagged share is expected of an anomaly tool and does not by itself indicate a problem.",
+        "A": "A training need is a proficiency gap the team can close; it does not stop auditors from validating how the tool reaches its flags.",
         "B": "Some false positives are normal. Wasted effort is an efficiency cost, not a threat to the validity of conclusions.",
         "D": "Over-reliance is a concern, but even careful auditors cannot validate evidence from a model whose logic is opaque."
       },
       "tips": [
-        "Eliminate: A describes normal anomaly-tool behavior, and B is an efficiency cost rather than an evidence problem.",
+        "Eliminate: A is a proficiency gap that training closes, and B is an efficiency cost; neither undermines the validity of the evidence.",
         "Final two: C beats D because opaque logic undermines the evidence itself; over-reliance is a behavior that follows from it.",
         "Exam cue: with any audit tool, the auditor must understand and be able to defend how its output was produced."
       ],
@@ -675,7 +675,7 @@
         "Audit evidence sufficiency",
         "Black-box risk"
       ],
-      "_provenance": "Authored from concept: 'AI tool in audit — explainability requirement for evidence quality'. Public source: NIST AI RMF + ITAF performance standards. All scenario specifics (telecom, network-access classification, 1,200/80/60 numbers, vendor proprietary stance) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'AI tool in audit — explainability requirement for evidence quality'. Public source: NIST AI RMF + ITAF performance standards. All scenario specifics (telecom, network-access classification, 1,200/80/60 numbers, vendor proprietary stance) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D1 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): A (flags are a small share of events) described normal tool behavior; it is now a staff-training need, a proficiency gap that is fixable, unlike opaque logic.",
       "style_version": 2
     },
     {
@@ -727,7 +727,7 @@
         "A": "Self-assessment is replacing, not supplementing, audit testing",
         "B": "Self-assessors lack sufficient technical expertise in IS controls",
         "C": "The incidents indicate widespread fraud across the business units",
-        "D": "Self-assessment programs are inherently unsuitable for assessing IS controls"
+        "D": "Self-assessments should be run by the audit function instead"
       },
       "correct": "A",
       "key_concept": "Control self-assessment complements but never replaces independent audit assurance, especially when self-reports conflict with actual outcomes.",
@@ -736,10 +736,10 @@
       "wrong_explanations": {
         "B": "Limited expertise contributes to unreliable results, but it is a cause, not the core problem of reduced independent assurance.",
         "C": "Incidents may stem from errors, misconfiguration or training gaps. Nothing in the stem establishes fraud.",
-        "D": "Control self-assessment remains a useful complementary tool. Abandoning it overcorrects; the fix is restoring independent testing alongside it."
+        "D": "In CSA, process owners assess their own controls and audit facilitates or reviews; moving the assessment to audit misreads CSA and leaves testing reduced."
       },
       "tips": [
-        "Eliminate: C jumps to fraud without evidence, and D overcorrects by discarding a useful tool.",
+        "Eliminate: C asserts fraud the facts do not show, and D moves CSA to audit, though in CSA process owners assess their own controls.",
         "Final two: A beats B because over-reliance on self-assessment is the root cause; assessor skill is only one contributing factor.",
         "Exam cue: control self-assessment supplements independent assurance and never replaces it; look for the option naming that over-reliance."
       ],
@@ -750,7 +750,7 @@
         "Three lines of defense",
         "Reliance and coordination"
       ],
-      "_provenance": "Authored from concept: 'CSA over-reliance — audit function substituting CSA for independent testing'. Public source: IIA International Standards 2050 + IIA CSA Practice Guide. All scenario specifics (university, quarterly cadence, 90%/12-incident divergence, department administrators, 18-month run) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): removed the unexplained CSA acronym from options and tips.",
+      "_provenance": "Authored from concept: 'CSA over-reliance — audit function substituting CSA for independent testing'. Public source: IIA International Standards 2050 + IIA CSA Practice Guide. All scenario specifics (university, quarterly cadence, 90%/12-incident divergence, department administrators, 18-month run) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): removed the unexplained CSA acronym from options and tips. D1 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): D ('inherently unsuitable') fell on a lone absolute; it is now the misconception that audit should run CSA. Dismissive tip wording removed.",
       "style_version": 2
     },
     {
@@ -761,10 +761,10 @@
       "bloom_level": "Application",
       "question": "A new IS audit team member asks how ITAF relates to ISACA's audit Standards and Guidelines. Which explanation from the senior auditor is BEST?",
       "options": {
-        "A": "ITAF contains the Standards, Guidelines, and Tools and Techniques",
+        "A": "ITAF is the framework that holds the Standards and their guidance",
         "B": "ITAF is guidance explaining how to apply the separate ISACA Standards",
-        "C": "ITAF is a checklist auditors complete before fieldwork begins",
-        "D": "ITAF is technical guidance for operating audit software tools"
+        "C": "ITAF is the assurance component within the COBIT 2019 framework",
+        "D": "ITAF is the body of knowledge tested by the CISA exam"
       },
       "correct": "A",
       "key_concept": "ITAF is ISACA's umbrella framework containing mandatory Standards, supporting Guidelines and informational Tools and Techniques.",
@@ -772,11 +772,11 @@
       "correct_explanation": "ITAF is ISACA's umbrella professional-practices framework for IT audit and assurance. It contains the mandatory Standards, the Guidelines that support applying them, and Tools and Techniques that give practical examples. Describing ITAF as guidance on applying separate Standards confuses the whole with one of its parts: that is the role of the Guidelines, and the Standards sit inside ITAF rather than outside it.",
       "wrong_explanations": {
         "B": "Explaining how to apply Standards is the Guidelines' role. ITAF is the framework that contains both, not a separate guidance layer.",
-        "C": "ITAF is a professional-practices framework covering the whole engagement, not a pre-fieldwork checklist.",
-        "D": "ITAF addresses audit practice broadly; it is not a manual for operating audit software."
+        "C": "COBIT 2019 is ISACA's governance and management framework for enterprise IT; ITAF is a separate professional-practices framework for IT audit and assurance.",
+        "D": "The CISA job practice defines what the exam tests; ITAF sets the professional standards and guidance that IS audit work must follow."
       },
       "tips": [
-        "Eliminate: C shrinks ITAF to a checklist, and D confuses it with software operating guidance.",
+        "Eliminate: C places ITAF inside COBIT, a separate governance framework, and D confuses ITAF with the CISA job practice.",
         "Final two: A beats B because the Standards sit inside ITAF; guidance on applying them describes the Guidelines layer.",
         "Exam cue: in ITAF, Standards are mandatory, Guidelines support them, and Tools and Techniques illustrate them, all in one framework."
       ],
@@ -787,7 +787,7 @@
         "Tools and Techniques",
         "Professional practice framework"
       ],
-      "_provenance": "Authored from concept: 'ITAF as umbrella framework with Standards/Guidelines/Tools-and-Techniques layers'. Public source: ITAF as published by ISACA. All scenario specifics (pharmaceutical company, onboarding new audit team member) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'ITAF as umbrella framework with Standards/Guidelines/Tools-and-Techniques layers'. Public source: ITAF as published by ISACA. All scenario specifics (pharmaceutical company, onboarding new audit team member) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D1 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): C (a pre-fieldwork checklist) and D (audit software manual) were strawmen; they are now ITAF as part of COBIT and ITAF as the CISA body of knowledge, real confusions. Key reworded so it no longer reads as a three-part list.",
       "style_version": 2
     },
     {
@@ -813,7 +813,7 @@
         "D": "Compliance remains management's responsibility. The auditor's task here is to adjust the audit plan, not to assign ownership."
       },
       "tips": [
-        "Eliminate: A ignores a known upcoming risk, and D shifts the question away from the audit plan.",
+        "Eliminate: A waits until noncompliance can occur instead of planning for a known change, and D reassigns compliance ownership rather than adjusting the audit plan.",
         "Final two: C beats B because legal and compliance own interpretation; the auditor translates their view into audit scope.",
         "Exam cue: for new regulations, the auditor coordinates with legal and compliance, then reflects the impact in the risk-based plan."
       ],
@@ -824,7 +824,7 @@
         "Legal coordination",
         "Impact assessment"
       ],
-      "_provenance": "Authored from concept: 'IS auditor's response to new regulation — coordinate with legal/compliance, don't interpret alone'. Public source: ISACA IT Audit Standard 1201. All scenario specifics (international logistics, cross-border data transfer, 6-month lead) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'IS auditor's response to new regulation — coordinate with legal/compliance, don't interpret alone'. Public source: ISACA IT Audit Standard 1201. All scenario specifics (international logistics, cross-border data transfer, 6-month lead) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D1 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Dismissive tip wording removed.",
       "style_version": 2
     },
     {
@@ -836,7 +836,7 @@
       "bloom_level": "Application",
       "question": "The COO asks an IS auditor whether strong internal controls over content distribution will guarantee no operational incidents. What is the auditor's MOST appropriate response?",
       "options": {
-        "A": "Yes, well-designed controls prevent every operational incident",
+        "A": "Yes, once testing has confirmed the controls are effective",
         "B": "No, they give reasonable assurance, not absolute prevention",
         "C": "No, internal controls cover financial reporting, not operations",
         "D": "No, because management override can defeat the controls"
@@ -846,12 +846,12 @@
       "pre_read": "Notice the COO asks about a guarantee. Look for the answer that states the general principle, not one example.",
       "correct_explanation": "Internal controls provide reasonable assurance that objectives in operations, reporting and compliance will be met; they reduce risk to an acceptable level but cannot eliminate it. Management override is a real inherent limitation and part of the reason, but it is only one of several, alongside human error, collusion and cost-benefit trade-offs. The principle of reasonable assurance answers the COO completely.",
       "wrong_explanations": {
-        "A": "No set of controls eliminates risk entirely; inherent limitations such as human error and collusion always remain.",
+        "A": "Testing shows controls operated, but inherent limits such as human error and collusion remain, so even tested controls give reasonable, not absolute, assurance.",
         "C": "Internal control frameworks cover operations and compliance objectives as well as financial reporting.",
         "D": "Override is one inherent limitation, but the full answer is the broader principle of reasonable assurance."
       },
       "tips": [
-        "Eliminate: A promises absolute prevention, and C wrongly limits internal control to financial reporting.",
+        "Eliminate: A treats tested controls as a guarantee, though tested controls still give only reasonable assurance, and C limits internal control to financial reporting.",
         "Final two: B beats D because reasonable assurance is the governing principle; management override is just one limitation behind it.",
         "Exam cue: when a question asks if controls guarantee an outcome, look for reasonable assurance rather than one specific limitation."
       ],
@@ -862,7 +862,7 @@
         "Inherent limitations of controls",
         "Three objective categories"
       ],
-      "_provenance": "Authored from concept: 'internal controls provide reasonable assurance, not guarantees'. Public source: COSO Internal Control – Integrated Framework + COBIT 2019. All scenario specifics (broadcasting company, COO conversation, digital content distribution) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'internal controls provide reasonable assurance, not guarantees'. Public source: COSO Internal Control – Integrated Framework + COBIT 2019. All scenario specifics (broadcasting company, COO conversation, digital content distribution) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D1 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): A (controls prevent every incident) fell on an absolute; it is now the tested-means-guaranteed misconception.",
       "style_version": 2
     },
     {
@@ -874,9 +874,9 @@
       "bloom_level": "Application",
       "question": "Before fieldwork on a pipeline-monitoring system, the CAE asks an IS auditor to define engagement objectives. What is the PRIMARY purpose of well-defined audit objectives?",
       "options": {
-        "A": "Document the auditor's credentials and independence for the committee",
+        "A": "Set which systems, sites and periods the audit covers",
         "B": "Estimate the budget and staff hours for management's approval",
-        "C": "State what the audit must determine, anchoring procedures and conclusions",
+        "C": "State what the audit must conclude so procedures trace to it",
         "D": "List the specific test steps fieldwork will perform on each control"
       },
       "correct": "C",
@@ -884,12 +884,12 @@
       "pre_read": "Notice objectives come before fieldwork. Ask what everything later in the engagement needs to trace back to.",
       "correct_explanation": "Audit objectives state what the engagement must determine, such as whether access to the system enforces segregation of duties. Every procedure should trace back to an objective and every conclusion should answer one. Listing specific test steps is the job of the audit program, which is built from the objectives; without clear objectives first, the steps have nothing to anchor them.",
       "wrong_explanations": {
-        "A": "Credentials and independence are addressed elsewhere in quality and engagement records, not by the objectives.",
+        "A": "Systems, sites and periods are the engagement scope, which is set from the objectives rather than being their purpose.",
         "B": "Budget and staffing follow from objectives and scope but are a resourcing output, not the objectives' purpose.",
         "D": "Detailed test steps belong in the audit program, which is derived from the objectives rather than replacing them."
       },
       "tips": [
-        "Eliminate: A concerns auditor credentials, and B is a resourcing estimate that follows from planning.",
+        "Eliminate: A describes the scope, which follows from the objectives, and B is a resourcing estimate that follows from planning.",
         "Final two: C beats D because objectives define what must be concluded; test steps belong to the audit program built from them.",
         "Exam cue: objectives state what the audit must determine; the program states how. Pick the answer at the right level."
       ],
@@ -899,7 +899,7 @@
         "Audit scope",
         "Risk-aligned objectives"
       ],
-      "_provenance": "Authored from concept: 'audit objectives state what the engagement aims to determine — anchoring scope and conclusions'. Public source: ISACA IT Audit Standard 1201. All scenario specifics (oil and gas, pipeline pressure monitoring, SCADA-adjacent) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'audit objectives state what the engagement aims to determine — anchoring scope and conclusions'. Public source: ISACA IT Audit Standard 1201. All scenario specifics (oil and gas, pipeline pressure monitoring, SCADA-adjacent) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D1 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): A (credentials and independence) was off-category; it is now scope boundaries, the objectives-versus-scope confusion. Key reworded (no three-part list, no longer the longest option).",
       "style_version": 2
     },
     {
@@ -950,8 +950,8 @@
       "question": "An IS auditor is testing the integrity of a gaming platform that processes 3 million microtransactions daily. Which reason BEST justifies using CAATs for this engagement?",
       "options": {
         "A": "The volume makes manual testing of transactions impractical",
-        "B": "Tools can replace the auditor's professional judgment",
-        "C": "Standards require CAATs on every engagement",
+        "B": "CAAT results need no further evaluation by the auditor",
+        "C": "The auditee's IT team can run the queries for the auditor",
         "D": "Automated tools reduce the engagement's cost and hours"
       },
       "correct": "A",
@@ -959,12 +959,12 @@
       "pre_read": "Notice the transaction volume. Ask what the audit objective requires that manual methods cannot deliver.",
       "correct_explanation": "CAATs are justified when the audit objective needs analysis that manual testing cannot achieve, such as full-population tests or pattern detection across very large volumes. Three million transactions a day is squarely that case. Lower cost and effort often follow, but efficiency is a by-product; the decision is driven by what the objective requires, and CAATs can sometimes cost more than manual sampling.",
       "wrong_explanations": {
-        "B": "CAATs support professional judgment; the auditor still designs the tests, interprets results and draws conclusions.",
-        "C": "No standard mandates CAATs on every engagement. Their use depends on the objective and the data available.",
+        "B": "CAATs produce exceptions the auditor must still investigate and evaluate; the auditor designs the tests and draws the conclusions.",
+        "C": "When the auditee runs the queries, the auditor loses control of the procedure and its output, so the evidence is no longer independent.",
         "D": "Efficiency is a welcome side effect, but CAATs are chosen because the objective requires them, not to save money."
       },
       "tips": [
-        "Eliminate: B hands judgment to a tool, and C invents a universal requirement that standards do not impose.",
+        "Eliminate: B treats CAAT output as needing no auditor evaluation, and C hands the queries to the auditee, which takes the procedure out of audit's control.",
         "Final two: A beats D because the objective's need for volume analysis justifies CAATs; savings are a by-product.",
         "Exam cue: high volumes or full-population and pattern testing point to CAATs; judgment always stays with the auditor."
       ],
@@ -975,7 +975,7 @@
         "Full-population testing",
         "Audit efficiency"
       ],
-      "_provenance": "Authored from concept: 'when CAATs add value — large data volumes, full-population testing, pattern detection'. Public source: ISACA IT Audit Standard 1205 + ITAF guidance. All scenario specifics (online gaming platform, microtransaction processing, 3M/day volume) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'when CAATs add value — large data volumes, full-population testing, pattern detection'. Public source: ISACA IT Audit Standard 1205 + ITAF guidance. All scenario specifics (online gaming platform, microtransaction processing, 3M/day volume) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D1 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): B (tools replace judgment) and C (standards require CAATs on every engagement) fell to common sense and a lone absolute; they are now unevaluated CAAT output and auditee-run queries.",
       "style_version": 2
     },
     {
@@ -1027,8 +1027,8 @@
       "options": {
         "A": "A culture that discourages staff from speaking up",
         "B": "Monitoring tools that fail to detect incidents internally",
-        "C": "Policies too detailed for IT staff to follow in practice",
-        "D": "The cost of maintaining such comprehensive policy documents"
+        "C": "Security awareness training that many staff have not completed",
+        "D": "Policies that name no owner for each requirement"
       },
       "correct": "A",
       "key_concept": "The control environment underpins all other controls; a culture where staff fear reporting undermines controls however well documented.",
@@ -1036,11 +1036,11 @@
       "correct_explanation": "The control environment is the foundation of every other control. When most staff fear retaliation, incidents go unreported, which explains why outsiders discover them first. Weak monitoring tools could also explain late detection, but the survey points to people who see problems and stay silent; better tools would not fix a culture where findings are suppressed, and comprehensive policies cannot compensate.",
       "wrong_explanations": {
         "B": "Tool gaps may exist, but the survey shows staff who see problems stay silent; better tools would not change that.",
-        "C": "Nothing indicates the policies are unusable. Their comprehensiveness is a strength, though it cannot offset a weak culture.",
-        "D": "Documentation cost is an efficiency matter and does not explain why incidents go unreported."
+        "C": "The survey shows staff do notice problems but fear raising them; more awareness training would not remove the fear of retaliation.",
+        "D": "Unowned requirements weaken policy upkeep, but they do not explain why staff who see problems stay silent while outsiders find incidents first."
       },
       "tips": [
-        "Eliminate: C invents a usability problem the stem does not show, and D is a cost issue unrelated to the risk.",
+        "Eliminate: C would leave staff unaware of problems, yet the survey shows they see them, and D is a policy-ownership gap that does not explain the silence.",
         "Final two: A beats B because fear of reporting is the root cause of external discovery; tools address only a symptom.",
         "Exam cue: in control environment questions, culture and tone outweigh documentation; strong policies cannot fix fear of speaking up."
       ],
@@ -1051,7 +1051,7 @@
         "Ethical culture",
         "Three lines of defense"
       ],
-      "_provenance": "Authored from concept: 'control-environment evaluation — cultural failure undermining individual controls'. Public source: COSO Internal Control – Integrated Framework. All scenario specifics (aerospace defense contractor, 60% retaliation-fear, 70% external discovery, CIO turnover) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'control-environment evaluation — cultural failure undermining individual controls'. Public source: COSO Internal Control – Integrated Framework. All scenario specifics (aerospace defense contractor, 60% retaliation-fear, 70% external discovery, CIO turnover) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D1 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): C (invented usability problem) and D (document cost) fell without knowledge; they are now incomplete awareness training and unowned policy requirements, real but lesser control-environment gaps.",
       "style_version": 2
     },
     {
@@ -1254,7 +1254,7 @@
       "options": {
         "A": "A detective control identifying unapproved changes after merge",
         "B": "A control objective stated in technical terms",
-        "C": "A governance policy requiring board approval",
+        "C": "A compensating control for the missing peer review",
         "D": "A control measure implementing the stated objective"
       },
       "correct": "D",
@@ -1264,10 +1264,10 @@
       "wrong_explanations": {
         "A": "The rule stops unapproved code before it merges, so it is preventive. A detective control would find unapproved changes after they occur.",
         "B": "The objective is the desired outcome stated in the policy. The merge rule is one way to achieve it, so it is the measure.",
-        "C": "Nothing in the rule involves the board. It is an operational mechanism inside the development workflow."
+        "C": "A compensating control stands in for a primary control that is missing or impractical. This rule is the primary mechanism delivering the policy objective."
       },
       "tips": [
-        "Eliminate: A misreads a pre-merge gate as detective, and C invents a board role the rule does not have.",
+        "Eliminate: A misreads a pre-merge gate as detective, and C calls it compensating, though it is the primary control that delivers the objective.",
         "Final two: D beats B because the objective is the goal in the policy, while the merge rule is one way to meet it.",
         "Exam cue: an objective says what must be achieved; a measure says how it is achieved here."
       ],
@@ -1278,7 +1278,7 @@
         "Control activities",
         "Implementation specificity"
       ],
-      "_provenance": "Authored from concept: 'control objective vs control measure — goal vs implementation'. Public source: COBIT 2019 + COSO Internal Control – Integrated Framework. All scenario specifics (edtech company, pull request approval workflow) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'control objective vs control measure — goal vs implementation'. Public source: COBIT 2019 + COSO Internal Control – Integrated Framework. All scenario specifics (edtech company, pull request approval workflow) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D1 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): C (a board-approval policy) was off-category; it is now a compensating control, a real classification error.",
       "style_version": 2
     },
     {
@@ -1289,10 +1289,10 @@
       "bloom_level": "Application",
       "question": "The audit committee asks an IS auditor for a report that executives, committee members and operational managers can each use. Which report structure is BEST?",
       "options": {
-        "A": "Executive summary first, then detailed findings and responses",
+        "A": "A summary up front, with detailed findings behind it",
         "B": "Separate reports with tailored content for each audience",
-        "C": "A findings spreadsheet without narrative or summary",
-        "D": "One continuous narrative without section breaks"
+        "C": "Findings in audit program order, with a closing summary",
+        "D": "A full report with the work-paper evidence appended"
       },
       "correct": "A",
       "key_concept": "A layered report, with an executive summary followed by detail, serves several audiences while keeping one consistent set of conclusions.",
@@ -1300,11 +1300,11 @@
       "correct_explanation": "A layered report lets each reader find the depth they need: leaders read the executive summary, while operational managers use the detailed findings, ratings, recommendations and management responses. Everyone works from one consistent set of conclusions. Separate tailored reports also reach each audience, but they risk inconsistent messages and duplicate effort, and they fragment the record the committee oversees.",
       "wrong_explanations": {
         "B": "Tailored versions can drift apart in wording and emphasis, so readers may act on different conclusions. One layered report avoids that.",
-        "C": "A spreadsheet gives operational detail but no context, conclusions or summary, so executives and the committee cannot quickly judge significance.",
-        "D": "A continuous narrative forces every reader through all the detail and hides the key messages leaders need."
+        "C": "Program order reflects how the work was done, not what matters most; readers need a summary first and findings ranked by significance.",
+        "D": "Work-paper evidence supports conclusions in the audit file; appending it to the report buries key messages under detail no reader needs."
       },
       "tips": [
-        "Eliminate: C lacks the summary leaders need, and D buries key messages in one unbroken narrative.",
+        "Eliminate: C orders findings by procedure rather than significance, and D appends work-paper evidence, which belongs in the audit file, not the report.",
         "Final two: A beats B because one layered report gives every audience the same conclusions at different depths.",
         "Exam cue: for several audiences, choose one report with a summary up front and detail behind it."
       ],
@@ -1315,7 +1315,7 @@
         "Layered communication",
         "Multi-audience reporting"
       ],
-      "_provenance": "Authored from concept: 'audit report structure — layered for multi-audience access'. Public source: ISACA IT Audit Standard 1401. All scenario specifics (proptech, tenant-payment-processing system) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'audit report structure — layered for multi-audience access'. Public source: ISACA IT Audit Standard 1401. All scenario specifics (proptech, tenant-payment-processing system) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D1 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): C (spreadsheet with no summary) and D (one unbroken narrative) were strawmen; they are now findings in program order and a report with the evidence appended. Key reworded (no three-part list).",
       "style_version": 2
     },
     {
@@ -1342,7 +1342,7 @@
         "D": "A disclaimer is used when the auditor cannot obtain enough evidence, such as under a scope limitation. None occurred here."
       },
       "tips": [
-        "Eliminate: A ignores two significant weaknesses, and D requires a scope limitation the stem rules out.",
+        "Eliminate: A gives a clean opinion despite two significant weaknesses, and D requires a scope limitation the stem rules out.",
         "Final two: B beats C because the weaknesses are significant but contained, not pervasive across the control environment.",
         "Exam cue: significant but contained points to qualified; pervasive points to adverse; missing evidence points to disclaimer."
       ],
@@ -1354,7 +1354,7 @@
         "Adverse opinion",
         "Disclaimer of opinion"
       ],
-      "_provenance": "Authored from concept: 'audit opinion types — qualified for limited but significant findings'. Public source: ISACA IT Audit Standard 1401 + ISA 705. All scenario specifics (regional stock exchange, trading platform, two specific control weaknesses) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'audit opinion types — qualified for limited but significant findings'. Public source: ISACA IT Audit Standard 1401 + ISA 705. All scenario specifics (regional stock exchange, trading platform, two specific control weaknesses) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D1 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Dismissive tip wording removed.",
       "style_version": 2
     },
     {
@@ -1441,7 +1441,7 @@
       "bloom_level": "Analysis",
       "question": "An audit head's team lacks cloud skills, most planned audits are cloud-based, and regulators visit in nine months; new hires need a year to become productive. Which approach is BEST?",
       "options": {
-        "A": "Co-source with cloud specialists, transferring skills to staff",
+        "A": "Co-source cloud specialists to work alongside current staff",
         "B": "Hire experienced cloud auditors to lead this cycle's cloud engagements",
         "C": "Defer cloud audits until staff complete training",
         "D": "Have current staff learn cloud auditing on the job"
@@ -1467,7 +1467,7 @@
         "Use of specialists",
         "Capability gap"
       ],
-      "_provenance": "Authored from concept: 'audit resource management with capability gap and regulatory deadline'. Public source: ISACA IT Audit Standard 1006 + IIA International Standards 1210. All scenario specifics (investment management firm, 6-auditor team, AWS/Snowflake platform, 12-month onboarding, 9-month regulatory window) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'audit resource management with capability gap and regulatory deadline'. Public source: ISACA IT Audit Standard 1006 + IIA International Standards 1210. All scenario specifics (investment management firm, 6-auditor team, AWS/Snowflake platform, 12-month onboarding, 9-month regulatory window) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D1 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Gap echo removed: the key no longer repeats the stem's 'skills'.",
       "style_version": 2
     },
     {
@@ -1479,24 +1479,24 @@
       "bloom_level": "Analysis",
       "question": "An IS auditor has eight weeks to audit a new ticketing system with several integrations and three recent high-severity incidents. Which planning approach is MOST appropriate?",
       "options": {
-        "A": "Brief planning, saving most of the time for fieldwork",
-        "B": "Thorough risk-based planning, including incident root causes",
-        "C": "Skip planning and start substantive testing at once",
-        "D": "Plan from last year's work papers for the system"
+        "A": "Apply the standard ticketing-system audit program to save planning time",
+        "B": "Risk-based planning that covers the integrations and incident causes",
+        "C": "Base the scope on the implementation team's own risk log",
+        "D": "Defer the integrations to a later audit to meet the deadline"
       },
       "correct": "B",
-      "key_concept": "Planning depth should match risk and complexity; thorough planning makes fieldwork efficient, especially under tight deadlines.",
+      "key_concept": "Planning should follow the system's own risks; tailored, risk-based planning makes fieldwork efficient, especially under tight deadlines.",
       "pre_read": "Weigh the deadline against the complexity. Which approach avoids discovering key risks too late?",
-      "correct_explanation": "Under a tight deadline, planning depth decides whether fieldwork targets the right risks the first time. A complex new system with several integrations and recent serious incidents needs a risk assessment covering the interfaces and the incident causes. Brief planning appears to save time, but undiscovered risks surface midway through fieldwork, forcing rework the eight-week window cannot absorb.",
+      "correct_explanation": "Planning should follow risk: a new system with several integrations and recent serious incidents needs its own risk assessment, covering the interfaces and the incident causes, so fieldwork targets the right risks first time. A standard program saves planning time, but its generic steps miss this system's integration and incident risks, and gaps found midway force rework the eight-week window cannot absorb.",
       "wrong_explanations": {
-        "A": "Light planning under-scopes a complex system, so key integration risks are found late, causing rework that costs more time than it saved.",
-        "C": "Testing without planning is unfocused, cannot be linked to risk, and breaches the engagement planning standard.",
-        "D": "The system is new, so prior work papers do not exist for it and would miss its specific integration risks."
+        "A": "A standard program is a useful start, but untailored steps miss this system's integration and incident risks, which then surface late and force rework.",
+        "C": "The implementation team's log is useful input, but audit forms its own risk view; adopting the auditee's log lets it shape the audit's scope.",
+        "D": "The integrations are where much of this system's risk sits. Scope follows risk, so cutting them to fit the deadline leaves the riskiest areas untested."
       },
       "tips": [
-        "Eliminate: C abandons the required planning step, and D relies on prior work papers that cannot exist for a new system.",
-        "Final two: B beats A because thorough planning focuses fieldwork on real risks, while light planning causes costly rework later.",
-        "Exam cue: complexity plus recent incidents calls for deeper risk-based planning, even when time is short."
+        "Eliminate: C adopts the auditee's risk log in place of audit's own assessment, and D cuts high-risk integrations to fit the deadline, though scope follows risk.",
+        "Final two: B beats A because planning tailored to this system's risks targets fieldwork, while a standard program misses its integration and incident risks.",
+        "Exam cue: complexity plus recent incidents calls for risk-based planning tailored to the system, even when time is short."
       ],
       "framework_ref": "ISACA IT Audit Standard 1203 (Engagement Planning); IIA Global Internal Audit Standards (2024), Standard 13.2 (Engagement Risk Assessment); IIA Global Internal Audit Standards (2024), Standard 13.3 (Engagement Objectives and Scope)",
       "related_concepts": [
@@ -1505,7 +1505,7 @@
         "Engagement planning",
         "Audit timeline management"
       ],
-      "_provenance": "Authored from concept: 'planning depth determines fieldwork efficiency under tight deadlines'. Public source: ISACA IT Audit Standard 1201 + IIA International Standards 2200. All scenario specifics (theme park, 6-park rollout, 3M weekend transactions, 3 recent incidents, 8-week CFO window) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'planning depth determines fieldwork efficiency under tight deadlines'. Public source: ISACA IT Audit Standard 1201 + IIA International Standards 2200. All scenario specifics (theme park, 6-park rollout, 3M weekend transactions, 3 recent incidents, 8-week CFO window) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D1 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Final two differed only in more versus less planning, C (skip planning) was a strawman and D (last year's papers for a new system) fell on a stated fact. Options rebuilt: a standard program reused (runner-up), the implementation team's risk log, and deferring the integrations.",
       "style_version": 2
     },
     {
@@ -1516,7 +1516,7 @@
       "bloom_level": "Application",
       "question": "An audit senior leads three staff auditors who are executing fieldwork procedures in parallel. What is the senior's MOST important responsibility during this phase?",
       "options": {
-        "A": "Balance procedure counts evenly across the staff",
+        "A": "Perform the highest-risk procedures personally to protect quality",
         "B": "Keep planned procedures on track for the end date",
         "C": "Supervise staff and review evidence as gathered",
         "D": "Begin drafting the report to avoid later delays"
@@ -1526,12 +1526,12 @@
       "pre_read": "Focus on the senior's role. Which task protects the quality of evidence while fieldwork is still under way?",
       "correct_explanation": "Supervision is the senior's defining fieldwork duty: directing staff, reviewing evidence as it arrives, and adjusting and documenting procedures when results warrant. This keeps the evidence sufficient and appropriate while there is still time to fix gaps. Keeping to schedule matters, but finishing planned steps on time does not ensure the evidence supports the conclusions.",
       "wrong_explanations": {
-        "A": "Equal procedure counts serve workload fairness, not audit quality. Staff skills and procedure risk should drive allocation.",
+        "A": "Taking on fieldwork leaves the three staff auditors' work unsupervised; the senior's duty during fieldwork is to direct staff and review evidence.",
         "B": "Schedule discipline matters, but completing procedures on time without reviewing the work gives no assurance the evidence is adequate.",
         "D": "Drafting before evidence is reviewed risks conclusions the work papers do not support."
       },
       "tips": [
-        "Eliminate: A pursues workload fairness, and D drafts conclusions before evidence has been reviewed.",
+        "Eliminate: A has the senior doing fieldwork instead of supervising it, and D drafts conclusions before evidence has been reviewed.",
         "Final two: C beats B because reviewing evidence protects audit quality, while meeting the date does not.",
         "Exam cue: for a supervisor during fieldwork, choose ongoing supervision and review over schedule or admin tasks."
       ],
@@ -1542,7 +1542,7 @@
         "Real-time evidence review",
         "Adjusting audit procedures"
       ],
-      "_provenance": "Authored from concept: 'fieldwork-phase discipline — supervision over schedule, drafting, or workload equalization'. Public source: ISACA IT Audit Standard 1203. All scenario specifics (regional bank, loan-origination audit, three staff auditors) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'fieldwork-phase discipline — supervision over schedule, drafting, or workload equalization'. Public source: ISACA IT Audit Standard 1203. All scenario specifics (regional bank, loan-origination audit, three staff auditors) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D1 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): A (even procedure counts) was common sense; it is now the senior performing the riskiest procedures personally, doing rather than supervising.",
       "style_version": 2
     },
     {
@@ -1554,7 +1554,7 @@
       "bloom_level": "Application",
       "question": "An IS auditor is preparing a report for an agency director and a legislative oversight committee. What is the PRIMARY objective of this report?",
       "options": {
-        "A": "Apply the standard section sequence used in every report",
+        "A": "Certify that the agency complies with the laws that apply to it",
         "B": "Record management's responses for follow-up tracking",
         "C": "Document audit work for later quality-assurance review",
         "D": "Communicate results so readers can make informed decisions"
@@ -1564,12 +1564,12 @@
       "pre_read": "Separate the report's purpose from the features that support it, such as structure and responses.",
       "correct_explanation": "The report exists to communicate findings, conclusions and recommendations so its readers, here the director and an oversight committee, can make informed decisions and exercise oversight. Format, follow-up and documentation serve that purpose. Capturing management's responses is a valuable part of the report and supports follow-up, but it is one component rather than the report's main purpose.",
       "wrong_explanations": {
-        "A": "A standard structure is a means of presenting results clearly, not the reason the report exists.",
+        "A": "An audit report gives conclusions on a defined scope with reasonable assurance; it does not certify the agency's compliance with law.",
         "B": "Management responses support follow-up and form part of the report, but recording them is a component, not the primary objective.",
         "C": "Supporting future quality review is the role of work papers, not of the report issued to stakeholders."
       },
       "tips": [
-        "Eliminate: A confuses format with purpose, and C describes the role of work papers, not the report.",
+        "Eliminate: A overstates audit assurance as certification, and C describes the role of work papers, not the report.",
         "Final two: D beats B because responses are one part of the report, while informing decisions is its purpose.",
         "Exam cue: when asked for a report's PRIMARY objective, pick the communication that lets readers act."
       ],
@@ -1580,7 +1580,7 @@
         "Audit report structure",
         "Decision-useful information"
       ],
-      "_provenance": "Authored from concept: 'audit-report objectives are about purpose (informing stakeholders), not structure (sections)'. Public source: ISACA IT Audit Standard 1401. All scenario specifics (state DMV, identity-verification audit, agency director + legislative committee audience) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'audit-report objectives are about purpose (informing stakeholders), not structure (sections)'. Public source: ISACA IT Audit Standard 1401. All scenario specifics (state DMV, identity-verification audit, agency director + legislative committee audience) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D1 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): A (standard section sequence) was weak; it is now certifying compliance, an overstatement of what an audit report gives.",
       "style_version": 2
     },
     {
@@ -1593,8 +1593,8 @@
       "options": {
         "A": "Mandated retention periods and protection from alteration",
         "B": "Restricting access strictly to the audit team",
-        "C": "Minimizing storage cost for large evidence volumes",
-        "D": "Keeping paper originals to preserve authenticity"
+        "C": "Keeping the work papers with no set disposal date",
+        "D": "Keeping paper originals to preserve their authenticity"
       },
       "correct": "A",
       "key_concept": "Audit documentation is retained per regulatory and professional requirements and protected from unauthorized modification, deletion or access.",
@@ -1602,11 +1602,11 @@
       "correct_explanation": "Audit documentation must be kept for the periods set by regulation and professional standards, and protected from unauthorized change or deletion. With an FDA inspection likely, integrity and retention are externally mandated. Limiting access protects confidentiality, but it does not satisfy retention requirements, and an audit-team-only rule could block legitimate regulator access.",
       "wrong_explanations": {
         "B": "Confidentiality matters, but access limits do not meet retention duties and could block authorized regulators who must inspect the documentation.",
-        "C": "Cost is a valid secondary concern, but not a reason to shorten mandated retention or weaken integrity controls.",
+        "C": "Retention follows the period set by regulation and policy; keeping files with no disposal date adds legal and privacy exposure without meeting integrity needs.",
         "D": "Controlled electronic records are acceptable to regulators; paper is not required and is harder to protect and retrieve."
       },
       "tips": [
-        "Eliminate: C puts cost ahead of mandated retention, and D assumes paper is required when controlled electronic records are accepted.",
+        "Eliminate: C keeps files with no disposal date, which breaches retention schedules, and D assumes paper is required when controlled electronic records are accepted.",
         "Final two: A beats B because integrity and mandated retention come first, and access must still allow authorized regulators.",
         "Exam cue: for regulated audit files, retention rules plus integrity protection outrank convenience and cost."
       ],
@@ -1617,7 +1617,7 @@
         "Document integrity",
         "Regulated-industry audit"
       ],
-      "_provenance": "Authored from concept: 'audit-documentation lifecycle — retention duration plus integrity protection, not convenience or cost'. Public source: ISACA IT Audit Standard 1205 (Evidence) + general FDA records-retention regimes. All scenario specifics (pharmaceutical company, clinical-trial data audit, FDA-inspection exposure) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'audit-documentation lifecycle — retention duration plus integrity protection, not convenience or cost'. Public source: ISACA IT Audit Standard 1205 (Evidence) + general FDA records-retention regimes. All scenario specifics (pharmaceutical company, clinical-trial data audit, FDA-inspection exposure) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D1 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): C (minimize storage cost) was common sense; it is now indefinite retention, a real retention error.",
       "style_version": 2
     },
     {
@@ -1628,9 +1628,9 @@
       "bloom_level": "Application",
       "question": "An IS audit manager is designing next year's training; the approved plan covers a cloud migration, AI underwriting models and a legacy mainframe. What is the MOST important consideration?",
       "options": {
-        "A": "Equal training hours for every team member",
+        "A": "Certifications each auditor wants to earn next year",
         "B": "Competency gaps against the approved audit plan",
-        "C": "Lowest available cost per training hour",
+        "C": "Repeating last year's curriculum for consistency",
         "D": "Emerging technologies such as cloud and AI"
       },
       "correct": "B",
@@ -1638,12 +1638,12 @@
       "pre_read": "List every area in the plan. Which option covers all of them, including the unfashionable one?",
       "correct_explanation": "The team must collectively hold the skills its planned engagements require, so training should close the gaps between current competencies and what the approved plan demands. Here that includes cloud, AI and mainframe skills. Focusing on emerging technology covers two of the areas, but it neglects the legacy mainframe work in the same plan and is not driven by actual gaps.",
       "wrong_explanations": {
-        "A": "Equal hours address fairness, not competence. Some staff need much more training than others to meet the plan.",
-        "C": "Cost matters, but cheap training that misses needed skills wastes the budget and leaves proficiency gaps.",
+        "A": "Personal goals matter for retention, but training must first close the gaps the approved plan exposes, which individual choices may not cover.",
+        "C": "Last year's curriculum fit last year's plan; it may miss the cloud, AI and mainframe skills this year's plan requires.",
         "D": "Cloud and AI skills are needed, but this focus leaves the planned mainframe audit without trained staff."
       },
       "tips": [
-        "Eliminate: A aims at fairness in hours, and C chooses on price rather than the skills needed.",
+        "Eliminate: A follows individual preference rather than the plan's needs, and C repeats a curriculum built for last year's plan.",
         "Final two: B beats D because training must cover every planned area, including the legacy mainframe, not just new technology.",
         "Exam cue: tie resource and training decisions back to the approved, risk-based audit plan."
       ],
@@ -1654,7 +1654,7 @@
         "Audit function management",
         "Proficiency standards"
       ],
-      "_provenance": "Authored from concept: 'audit-team training tied to upcoming audit-plan demands, not to fairness/recruitment/cost'. Public source: ITAF General Standard 1006. All scenario specifics (P&C insurance, cloud migration, AI underwriting, claims-mainframe environment) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'audit-team training tied to upcoming audit-plan demands, not to fairness/recruitment/cost'. Public source: ITAF General Standard 1006. All scenario specifics (P&C insurance, cloud migration, AI underwriting, claims-mainframe environment) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D1 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): A (equal hours) and C (lowest cost) were common sense; they are now individual certification goals and last year's curriculum.",
       "style_version": 2
     },
     {
@@ -1666,7 +1666,7 @@
       "question": "An IS audit team is deciding how to treat ITAF guidelines on its engagements. Which approach is MOST appropriate?",
       "options": {
         "A": "Apply them as mandatory, equal to the standards",
-        "B": "Apply them to engagements led by certified auditors",
+        "B": "Apply them where no standard addresses the topic",
         "C": "Consider them, and justify any departures from them",
         "D": "Treat them as optional reading needing no consideration"
       },
@@ -1676,11 +1676,11 @@
       "correct_explanation": "ITAF standards are mandatory, while guidelines are not. However, guidelines explain how to apply the standards, so the auditor should consider them, use judgment in applying them and be prepared to justify any departure. Treating guidelines as optional reading correctly sees that they are not mandatory, but it ignores the expectation to consider them and explain departures.",
       "wrong_explanations": {
         "A": "Only the standards are mandatory. Guidelines support applying them, so treating guidelines as binding overstates their authority.",
-        "B": "ITAF's layers apply by type of pronouncement, not by whether the auditor leading the engagement holds a certification.",
+        "B": "Guidelines explain how to apply the standards themselves; they are not a fallback reserved for topics the standards leave out.",
         "D": "Guidelines are not mandatory, but the auditor is still expected to consider them and justify departures, not disregard them."
       },
       "tips": [
-        "Eliminate: A makes guidelines mandatory like standards, and B ties ITAF to certification status.",
+        "Eliminate: A makes guidelines mandatory like standards, and B treats them as a gap-filler, though they explain how to apply the standards.",
         "Final two: C beats D because non-mandatory guidelines must still be considered, with departures justified.",
         "Exam cue: standards are must follow; guidelines are should consider; tools and techniques are may use."
       ],
@@ -1691,7 +1691,7 @@
         "ISACA Guidelines",
         "Mandatory vs advisory authority"
       ],
-      "_provenance": "Authored from concept: 'ITAF Standards vs Guidelines — mandatory vs advisory authority'. Public source: publicly published ITAF framework structure. All scenario specifics (SaaS HR-tech company) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'ITAF Standards vs Guidelines — mandatory vs advisory authority'. Public source: publicly published ITAF framework structure. All scenario specifics (SaaS HR-tech company) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D1 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): B (only for certified auditors) was a strawman; it is now guidelines as a gap-filler for topics the standards omit.",
       "style_version": 2
     },
     {
@@ -1741,7 +1741,7 @@
       "bloom_level": "Analysis",
       "question": "An IS auditor reviews a daily control that reconciles new clinical-system accounts to the credentialing database and reports accounts lacking a verified credential. Which risk does it MOST directly address?",
       "options": {
-        "A": "Accounts created for staff without verified credentials",
+        "A": "Accounts provisioned for staff who are not credentialed",
         "B": "Departed clinicians keeping access beyond 24 hours",
         "C": "Shared logins hiding individual accountability",
         "D": "Outdated or inaccurate records in the central credentialing database"
@@ -1767,7 +1767,7 @@
         "Risk-control mapping",
         "Detective controls"
       ],
-      "_provenance": "Authored from concept: 'control-to-risk mapping — design intent vs. data dependency'. Public source: ISACA Risk IT + COBIT 2019. All scenario specifics (hospital network, credentialing database, EHR, four candidate risks) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'control-to-risk mapping — design intent vs. data dependency'. Public source: ISACA Risk IT + COBIT 2019. All scenario specifics (hospital network, credentialing database, EHR, four candidate risks) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D1 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Gap echo removed: the key no longer repeats the stem's 'verified credential'.",
       "style_version": 2
     },
     {
@@ -1781,7 +1781,7 @@
       "options": {
         "A": "Reviews documented as sign-offs without comments",
         "B": "A report conclusion contradicting its work paper",
-        "C": "Work paper file names deviating from standard",
+        "C": "Supervisors reviewing a risk-based sample of work papers",
         "D": "Engagement budgets exceeded by a small margin"
       },
       "correct": "B",
@@ -1790,11 +1790,11 @@
       "correct_explanation": "Ongoing monitoring exists to catch quality defects before reports are issued. A conclusion that contradicts its own supporting evidence is a substantive defect that escaped both supervision and monitoring, showing the monitoring failing at its core purpose. Sign-off-only reviews are a real weakness in evidence of supervision, but they show a process gap, not a defect that reached a report.",
       "wrong_explanations": {
         "A": "Thin review documentation is a process weakness worth fixing, but it does not show a substantive error slipped through.",
-        "C": "File-naming deviations are administrative and do not affect the reliability of conclusions.",
+        "C": "Reviewing a risk-based sample is accepted supervisory practice when documented; it does not show that a defect escaped monitoring.",
         "D": "Small budget overruns concern efficiency, not the quality of the conclusions reported."
       },
       "tips": [
-        "Eliminate: C is administrative, and D concerns efficiency; neither affects whether conclusions are sound.",
+        "Eliminate: C is accepted risk-based supervision, and D concerns efficiency; neither shows a defect escaped monitoring.",
         "Final two: B beats A because an unsupported conclusion is a defect that escaped detection, while thin sign-offs are a process weakness.",
         "Exam cue: in quality reviews, a substantive error that reached a report outranks weak documentation of review."
       ],
@@ -1805,7 +1805,7 @@
         "Engagement supervision",
         "Audit-quality defects"
       ],
-      "_provenance": "Authored from concept: 'ongoing QA monitoring failure — outcome defects vs process indicators'. Public source: IIA International Standards 1300 series (QAIP) + ITAF General Standards. All scenario specifics (federal civilian agency, four specific observations across one fiscal year) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'ongoing QA monitoring failure — outcome defects vs process indicators'. Public source: IIA International Standards 1300 series (QAIP) + ITAF General Standards. All scenario specifics (federal civilian agency, four specific observations across one fiscal year) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D1 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): C (file-naming deviations) was trivial; it is now risk-based sampling by supervisors, an accepted practice mistaken for a failure.",
       "style_version": 2
     },
     {
@@ -1870,7 +1870,7 @@
         "C": "A single request is not yet interference. Skipping the exit meeting loses the chance to validate facts and record management's response."
       },
       "tips": [
-        "Eliminate: A lets the auditee set ratings, and B hides critical findings from those charged with oversight.",
+        "Eliminate: A lets the auditee set ratings, and B moves critical findings into a private memo, keeping them from those charged with oversight.",
         "Final two: D beats C because ratings change on facts, and the exit meeting is where facts are tested before any escalation.",
         "Exam cue: hold ratings unless facts change them, and stay open to discussing the evidence."
       ],
@@ -1882,7 +1882,7 @@
         "Communicating audit results",
         "Management interference"
       ],
-      "_provenance": "Authored from concept: 'exit-conference dynamics — holding the line on severity ratings without over-escalating'. Public source: ISACA IT Audit Standard 1401 + Code of Professional Ethics. All scenario specifics (global manufacturing, plant-floor SCADA audit, 12 findings split by severity, GM chief of staff request) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'exit-conference dynamics — holding the line on severity ratings without over-escalating'. Public source: ISACA IT Audit Standard 1401 + Code of Professional Ethics. All scenario specifics (global manufacturing, plant-floor SCADA audit, 12 findings split by severity, GM chief of staff request) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D1 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Dismissive tip wording removed.",
       "style_version": 2
     },
     {
@@ -1933,8 +1933,8 @@
       "options": {
         "A": "The approved annual audit plan",
         "B": "The board-approved IS audit charter",
-        "C": "Previously issued audit reports",
-        "D": "Staff certification and training records"
+        "C": "The engagement letter for the current audit",
+        "D": "The CIO's memo approving this year's audit schedule"
       },
       "correct": "B",
       "key_concept": "The audit charter, approved by the board or audit committee, establishes the IS audit function's authority, responsibility and scope.",
@@ -1942,11 +1942,11 @@
       "correct_explanation": "The audit charter, approved by the board or audit committee, formally establishes the audit function's purpose, authority, responsibility and scope, including access to records, systems and people. It is the document that settles disputes about the function's right to act. The annual plan is also approved, but it lists what will be audited, not the authority to demand access.",
       "wrong_explanations": {
         "A": "The plan schedules engagements and may be approved by the committee, but it does not grant the function authority to access systems.",
-        "C": "Past reports show what was audited before; they do not establish any right of access.",
-        "D": "Certifications show auditor proficiency, not the function's organizational authority."
+        "C": "An engagement letter confirms one engagement's terms; an internal function draws its authority from the charter rather than from engagement letters.",
+        "D": "Authority to audit cannot come from the management being audited; a CIO memo can be withdrawn and gives no board-level mandate."
       },
       "tips": [
-        "Eliminate: C records past work, and D shows auditor skills; neither grants authority.",
+        "Eliminate: C sets terms for one engagement under the charter's authority, and D comes from management, which cannot grant audit its authority.",
         "Final two: B beats A because the charter grants authority and access, while the plan schedules engagements.",
         "Exam cue: questions about the audit function's authority, scope or access point to the charter."
       ],
@@ -1957,7 +1957,7 @@
         "Audit function authority",
         "Audit committee oversight"
       ],
-      "_provenance": "Authored from concept: 'audit charter foundational definition — governance document approved at board level'. Public source: ISACA IT Audit Standard 1001 (Audit Charter). No legacy bank consulted. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'audit charter foundational definition — governance document approved at board level'. Public source: ISACA IT Audit Standard 1001 (Audit Charter). No legacy bank consulted. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D1 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): C (past reports) and D (certification records) fell to common sense; they are now the engagement letter and a CIO memo, documents that look like authority but do not grant it.",
       "style_version": 2
     },
     {
@@ -2007,7 +2007,7 @@
       "question": "Fieldwork on an airline operations audit is complete, and the IS audit team has entered the reporting phase. What is the team's MOST important task now?",
       "options": {
         "A": "Keep gathering evidence in case findings are challenged",
-        "B": "Begin scoping next year's engagements while context is fresh",
+        "B": "Rate each finding by how strongly the auditee agrees with it",
         "C": "Validate findings with management and finalize conclusions",
         "D": "Obtain auditee pre-approval of the draft report content"
       },
@@ -2017,11 +2017,11 @@
       "correct_explanation": "In the reporting phase, the team turns evidence into a communication: it finalizes conclusions, confirms the facts behind findings with management, and shapes the report for its audience. Gathering more evidence may feel prudent, but sufficient evidence should already support each finding; reopening fieldwork delays the report and signals the original work may not hold.",
       "wrong_explanations": {
         "A": "Evidence should already be sufficient when fieldwork closes. New gaps found here signal a fieldwork problem, not a reporting task.",
-        "B": "Planning next year matters, but it diverts the team before the current engagement's results are delivered.",
+        "B": "Severity rests on the auditor's judgment of evidence and risk; the auditee's agreement shapes the response, not the rating.",
         "D": "Auditees validate facts; they do not approve content. Pre-approval would compromise the auditor's independence."
       },
       "tips": [
-        "Eliminate: B shifts focus before this report is done, and D hands auditees control of content.",
+        "Eliminate: B lets the auditee's agreement set ratings, and D gives the auditee approval over content; both cede the auditor's judgment.",
         "Final two: C beats A because evidence should already be sufficient; reporting validates facts and finalizes conclusions.",
         "Exam cue: once fieldwork closes, validate facts with management but keep ownership of the conclusions."
       ],
@@ -2032,7 +2032,7 @@
         "Factual validation with management",
         "Audit independence"
       ],
-      "_provenance": "Authored from concept: 'reporting-phase discipline — closing conclusions and tailoring the report, not re-opening fieldwork or surrendering independence'. Public source: ISACA IT Audit Standard 1401. All scenario specifics (passenger airline carrier, operations-control center, flight-tracking + weather-routing) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'reporting-phase discipline — closing conclusions and tailoring the report, not re-opening fieldwork or surrendering independence'. Public source: ISACA IT Audit Standard 1401. All scenario specifics (passenger airline carrier, operations-control center, flight-tracking + weather-routing) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D1 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): B (scope next year's work now) was common sense; it is now rating findings by auditee agreement.",
       "style_version": 2
     },
     {
@@ -2046,7 +2046,7 @@
         "A": "Delegate function management to the most senior auditor",
         "B": "Outsource the audit plan to a larger external firm",
         "C": "Focus on plan delivery, deferring quality monitoring until growth",
-        "D": "Formal planning, supervision and quality processes scaled to size"
+        "D": "Formal management processes scaled to the function's size"
       },
       "correct": "D",
       "key_concept": "An IS audit function needs planning, supervision, development and quality monitoring at any size, scaled to its size and risk.",
@@ -2069,7 +2069,7 @@
         "Quality monitoring",
         "Professional development"
       ],
-      "_provenance": "Authored from concept: 'management of the IS audit function — full set of management processes scaled to function size, not selectively dropped'. Public source: ITAF General Standards. All scenario specifics (regional credit union, 3-auditor function, audit-committee reporting line) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'management of the IS audit function — full set of management processes scaled to function size, not selectively dropped'. Public source: ITAF General Standards. All scenario specifics (regional credit union, 3-auditor function, audit-committee reporting line) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D1 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Key reworded so it no longer reads as a three-part list or the longest option.",
       "style_version": 2
     },
     {
@@ -2084,7 +2084,7 @@
         "A": "Objectives and boundaries set by identified risks",
         "B": "Covering every system linked to content licensing",
         "C": "Matching last year's scope for comparability",
-        "D": "Areas management asks the auditors to examine"
+        "D": "Areas that management's risk register ranks highest"
       },
       "correct": "A",
       "key_concept": "Engagement scope comes from defined objectives tied to the risks identified in the risk-based plan, not from maximum coverage.",
@@ -2093,7 +2093,7 @@
       "wrong_explanations": {
         "B": "Priority calls for depth on key risks, not maximum breadth. Covering every connected system spreads effort thinly and may miss what matters.",
         "C": "Last year's scope reflects last year's risks. Copying it ignores changes since then.",
-        "D": "Management input is useful, but letting auditees set scope compromises independence and may steer the audit away from risk."
+        "D": "Management's register is useful input, but letting the auditee's ranking set scope compromises independence and may steer the audit away from its risks."
       },
       "tips": [
         "Eliminate: C anchors on last year's risks, and D lets auditees decide what is examined.",
@@ -2107,7 +2107,7 @@
         "Scope definition",
         "Risk-based audit planning"
       ],
-      "_provenance": "Authored from concept: 'scoping an individual audit assignment — risk-driven, bounded, auditor-decided'. Public source: ISACA IT Audit Standard 1201. All scenario specifics (global streaming-media company, content-licensing workflow) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'scoping an individual audit assignment — risk-driven, bounded, auditor-decided'. Public source: ISACA IT Audit Standard 1201. All scenario specifics (global streaming-media company, content-licensing workflow) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D1 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): D now carries the risk word too (management's risk register), so 'risk' no longer marks the key alone.",
       "style_version": 2
     },
     {
@@ -2119,9 +2119,9 @@
       "question": "An IS auditor is planning an audit of an AI tool that triages security alerts. Which risk is MOST distinctive to AI and warrants special attention?",
       "options": {
         "A": "Unapproved changes to the tool's runtime code",
-        "B": "Model drift, bias and unexplainable decisions",
-        "C": "Training datasets exceeding storage budgets",
-        "D": "Inference workloads saturating network bandwidth"
+        "B": "Biased or drifting model decisions that resist explanation",
+        "C": "Excess privileged access to the tool's admin console",
+        "D": "Alert records kept longer than the retention policy allows"
       },
       "correct": "B",
       "key_concept": "AI-specific audit risk centers on model behavior: drift, training-data bias and opaque decisions that are hard to evidence.",
@@ -2129,11 +2129,11 @@
       "correct_explanation": "AI and machine learning systems add risks that conventional applications lack: behavior that drifts as data changes, bias carried from training data into decisions, and outputs that are hard to explain or evidence. These need audit approaches beyond standard IT controls. Unauthorized code change is a genuine risk for the tool, but it applies to every application and existing change-management testing covers it.",
       "wrong_explanations": {
         "A": "Change management matters for any application, including this one, but it is not distinctive to AI and existing testing already covers it.",
-        "C": "Storage capacity is an ordinary infrastructure planning issue, not a risk unique to AI.",
-        "D": "Network capacity is a general performance concern that any heavy workload raises, not an AI-specific audit risk."
+        "C": "Privileged access to an admin console is a general access-control risk that applies to every application, not one distinctive to AI.",
+        "D": "Over-retention is a data-governance risk any system holding records can raise; it is not distinctive to AI."
       },
       "tips": [
-        "Eliminate: C and D are generic capacity concerns that any large workload raises.",
+        "Eliminate: C is a general privileged-access risk and D a data-retention risk; any application holding alert data raises both.",
         "Final two: B beats A because model behavior risks are unique to AI, while change control applies to every application.",
         "Exam cue: when asked what is distinctive to AI, choose model risk: drift, bias and explainability."
       ],
@@ -2145,7 +2145,7 @@
         "Model explainability",
         "Algorithmic auditability"
       ],
-      "_provenance": "Authored from concept: 'AI/ML audit risk distinctiveness — model itself vs surrounding infrastructure'. Public source: ITAF AI guidance + NIST AI RMF. All scenario specifics (defense contractor, AI alert-triage tool) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'AI/ML audit risk distinctiveness — model itself vs surrounding infrastructure'. Public source: ITAF AI guidance + NIST AI RMF. All scenario specifics (defense contractor, AI alert-triage tool) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D1 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): C (storage budgets) and D (bandwidth) were capacity strawmen; they are now privileged access and over-retention, real but generic risks like the runner-up. Key reworded (no three-part list).",
       "style_version": 2
     },
     {
@@ -2156,22 +2156,22 @@
       "bloom_level": "Application",
       "question": "An IS auditor is evaluating the adequacy of order-validation, address-check and fraud-screening controls in an order-management application. What is the MOST important consideration?",
       "options": {
-        "A": "Processing speed at peak shopping volumes",
+        "A": "Sign-off of each control by the process risk owner",
         "B": "Match with the vendor's recommended baseline configuration",
         "C": "Coverage of process risks and consistent operation",
-        "D": "Ease of understanding for operations staff"
+        "D": "Documentation of each control in the process narrative"
       },
       "correct": "C",
       "key_concept": "Application controls are adequate when mapped to specific business-process risks and shown to operate consistently across transactions.",
       "pre_read": "Ask what makes any control adequate: what risk does it address, and does it work every time?",
       "correct_explanation": "Application controls are adequate when each one is mapped to the business-process risk it should mitigate and operates consistently across the transaction population. Testing both design and operation answers whether the controls do their job. Vendor-recommended settings are a sensible starting point, but they are generic and may not address this organization's specific fraud or validation risks.",
       "wrong_explanations": {
-        "A": "Performance matters operationally, but a fast control that misses its risk is still inadequate.",
+        "A": "Owner sign-off shows acceptance of the design, not that each control covers its risk or operates consistently across transactions.",
         "B": "Vendor baselines are generic. Matching them does not show the controls address this business's specific risks or operate consistently.",
-        "D": "Usability helps operations, but simple controls can still fail to mitigate the risks they exist for."
+        "D": "A documented control may still miss its risk or fail in practice; documentation describes design, not adequacy in operation."
       },
       "tips": [
-        "Eliminate: A judges speed, and D judges usability; neither shows the controls reduce risk.",
+        "Eliminate: A shows the owner approved the controls, and D shows they are documented; neither shows they cover the risks or operate.",
         "Final two: C beats B because adequacy is measured against this business's risks, while vendor defaults are generic.",
         "Exam cue: control adequacy means mapped to a risk and operating consistently, not matching an external template."
       ],
@@ -2182,7 +2182,7 @@
         "Risk-control alignment",
         "Control adequacy"
       ],
-      "_provenance": "Authored from concept: 'business-process application-control adequacy — risk alignment + consistent operation, not performance/vendor/simplicity'. Public source: ISACA Risk IT + ITAF. All scenario specifics (DTC e-commerce, order-management application, four illustrative controls) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'business-process application-control adequacy — risk alignment + consistent operation, not performance/vendor/simplicity'. Public source: ISACA Risk IT + ITAF. All scenario specifics (DTC e-commerce, order-management application, four illustrative controls) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D1 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): A (processing speed) and D (ease of understanding) were off-category; they are now owner sign-off and narrative documentation, which show neither coverage nor operation.",
       "style_version": 2
     },
     {
@@ -2209,7 +2209,7 @@
         "D": "Management assertions are representations, the weakest form of evidence, and do not show whether controls actually operate."
       },
       "tips": [
-        "Eliminate: C drops independent assurance altogether, and D relies on management representations as evidence.",
+        "Eliminate: C substitutes self-assessment for independent assurance, and D relies on management representations as evidence.",
         "Final two: B beats A because CSA plus targeted testing covers every site now while keeping independent assurance where risk is highest.",
         "Exam cue: CSA fits dispersed operations and engaged owners, but the right answer keeps independent audit work alongside it."
       ],
@@ -2220,7 +2220,7 @@
         "Distributed operations audit",
         "Complementary audit techniques"
       ],
-      "_provenance": "Authored from concept: 'CSA deployment decision — fit + limitation; complementary not replacement'. Public source: ISACA Standards on CSA + IIA CSA Practice Guide. All scenario specifics (oil-and-gas upstream operations, 14 sites, 2-auditor bandwidth, annual regulatory review) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Content review (Oct 2026): replaced an unverifiable IIA CSA practice-guide cite; spelled out CSA in the stem.",
+      "_provenance": "Authored from concept: 'CSA deployment decision — fit + limitation; complementary not replacement'. Public source: ISACA Standards on CSA + IIA CSA Practice Guide. All scenario specifics (oil-and-gas upstream operations, 14 sites, 2-auditor bandwidth, annual regulatory review) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Content review (Oct 2026): replaced an unverifiable IIA CSA practice-guide cite; spelled out CSA in the stem. D1 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Dismissive tip wording removed.",
       "style_version": 2
     },
     {
@@ -2234,7 +2234,7 @@
         "A": "The audit charter, setting the function's authority and scope",
         "B": "ITAF guidelines, explaining how to apply the standards in practice",
         "C": "ITAF standards, setting mandatory requirements for every audit engagement",
-        "D": "ITAF tools and techniques, offering practical examples and templates"
+        "D": "ITAF tools and techniques, offering practical sample programs"
       },
       "correct": "D",
       "key_concept": "ITAF has three layers: mandatory standards, advisory guidelines, and practical tools and techniques such as example programs and checklists.",
@@ -2258,7 +2258,7 @@
         "ISACA Guidelines",
         "Audit program templates"
       ],
-      "_provenance": "Authored from concept: 'ITAF layer selection — match the auditor's stated need (workflow + checklist) to Tools and Techniques'. Public source: publicly published ITAF framework structure. All scenario specifics (public research university, research-data-management environment, IRB + HPC scope) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'ITAF layer selection — match the auditor's stated need (workflow + checklist) to Tools and Techniques'. Public source: publicly published ITAF framework structure. All scenario specifics (public research university, research-data-management environment, IRB + HPC scope) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D1 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Key reworded so it no longer reads as a three-part list.",
       "style_version": 2
     },
     {
