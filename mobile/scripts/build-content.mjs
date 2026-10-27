@@ -30,6 +30,16 @@
  *      (schema: docs/content/EXAM_GUIDE_SCHEMA.md). Every note code and
  *      principle id they link is checked against the packs built in steps 6
  *      and 7. A missing file gives a null half (its rows hide).
+ *   9. Builds the lessons pack (<cert>/lessons.json) from ../data/lessons/
+ *      <cert>.json via lessons-pack.cjs (schema: docs/content/LESSONS_SCHEMA.md).
+ *      Author notes (`_comment`) are dropped; every `prepares` id and `notes`
+ *      id is checked against the packs built above.
+ *  10. Copies the reviewed game decks (src/content/games/<cert>/*.json) into
+ *      <cert>/, byte for byte, so one folder holds the whole pack.
+ *  11. Writes <cert>/pack.json: the pack's `rev` and `schemaVersion`. The
+ *      rev is the build commit's time in seconds (always increasing), so a
+ *      downloaded pack (content packs, Phase C) replaces the bundled one only
+ *      when its rev is newer: the bundle is the floor.
  *
  * WHEN IT RUNS: automatically after `npm install` (postinstall), and any
  * time you run `npm run content`. The output folder is gitignored because
@@ -37,6 +47,7 @@
  *
  * No third-party packages: only Node's built-in fs/path modules.
  */
+import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 import { createRequire } from 'node:module';
 import path from 'node:path';
@@ -47,6 +58,14 @@ const require = createRequire(import.meta.url);
 const { buildNotesPack } = require('./notes-pack.cjs');
 const { buildPrinciplesPack } = require('./principles-pack.cjs');
 const { buildExamPack } = require('./exam-guide-pack.cjs');
+const { buildLessonsPack } = require('./lessons-pack.cjs');
+
+/**
+ * The pack format's version (docs/mobile/ARCHITECTURE.md "Content packs").
+ * Bump it only when a pack file changes shape in a way an older app can't
+ * read; the app ignores a pack with a newer schemaVersion than it knows.
+ */
+const PACK_SCHEMA_VERSION = 1;
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const MOBILE_ROOT = path.resolve(HERE, '..');
@@ -72,6 +91,10 @@ const PACKS = [
     // EXAM_GUIDE_SRC / FINAL_WEEK_SRC preview drafts locally (never in CI).
     examGuide: process.env.EXAM_GUIDE_SRC || path.join(REPO_ROOT, 'data', 'exam', 'cisa_exam_guide.json'),
     finalWeek: process.env.FINAL_WEEK_SRC || path.join(REPO_ROOT, 'data', 'exam', 'final_review_week.json'),
+    // Motion lessons (docs/content/LESSONS_SCHEMA.md). LESSONS_SRC previews a draft locally.
+    lessons: process.env.LESSONS_SRC || path.join(REPO_ROOT, 'data', 'lessons', 'cisa.json'),
+    // The reviewed game decks, copied byte for byte (src/content/games/index.ts explains each).
+    games: path.join(MOBILE_ROOT, 'src', 'content', 'games', 'cisa'),
   },
 ];
 
@@ -321,14 +344,85 @@ function buildExam(pack, certDir, notes, principles) {
   return `  ${pack.certId}: () => require('./${pack.certId}/exam.json') as ExamPack,`;
 }
 
+/**
+ * Write <cert>/lessons.json. A missing file gives an EMPTY pack (no lessons),
+ * never a failed build; a broken lesson, or a link to a question or note that
+ * doesn't exist, DOES fail it. Returns the index.ts line for this cert.
+ */
+function buildLessons(pack, certDir, questions, notes) {
+  const noteIds = new Set(notes.domains.flatMap((d) => d.topics.flatMap((t) => t.subtopics.map((s) => s.id))));
+  const { pack: out, problems, warnings, skipped } = buildLessonsPack(readOptional(pack.lessons), pack.certId, {
+    domains: pack.domains,
+    questions,
+    noteIds,
+  });
+  for (const w of warnings) console.warn(`! lessons ${w}`);
+  for (const p of problems) console.error(`✗ lessons ${p}`);
+  if (problems.length) process.exitCode = 1;
+  fs.writeFileSync(path.join(certDir, 'lessons.json'), JSON.stringify(out));
+  console.log(skipped
+    ? `• ${pack.certId} lessons: ${skipped} source, wrote an empty lessons pack`
+    : `✓ ${pack.certId} lessons: ${out.length} lessons → lessons.json`);
+  return `  ${pack.certId}: () => require('./${pack.certId}/lessons.json') as Lesson[],`;
+}
+
+/** The three game decks each cert may have (src/content/games/index.ts). */
+const GAME_DECKS = ['roles', 'sequences', 'flows'];
+
+/**
+ * Copy the reviewed game decks into <cert>/, byte for byte (two experts
+ * reviewed each file, so it is never reshaped here). A cert without decks
+ * gets no line, and its games simply don't offer those rounds.
+ * Returns the index.ts line for this cert, or null.
+ */
+function copyGames(pack, certDir) {
+  const decks = GAME_DECKS.filter((d) => pack.games && fs.existsSync(path.join(pack.games, `${d}.json`)));
+  for (const d of decks) {
+    const src = path.join(pack.games, `${d}.json`);
+    try {
+      JSON.parse(fs.readFileSync(src, 'utf8'));
+    } catch (e) {
+      console.error(`✗ ${src} is not valid JSON: ${e.message}`);
+      process.exitCode = 1;
+    }
+    fs.copyFileSync(src, path.join(certDir, `${d}.json`));
+  }
+  if (!decks.length) return null;
+  console.log(`✓ ${pack.certId} games: ${decks.join(', ')} → copied`);
+  const loaders = decks.map((d) => `${d}: () => require('./${pack.certId}/${d}.json') as unknown`).join(', ');
+  return `  ${pack.certId}: { ${loaders} },`;
+}
+
+/**
+ * The pack's rev: the build commit's time in seconds (always increasing, so
+ * a rollback is a revert commit with a newer rev). CONTENT_REV overrides it;
+ * with no git (a source archive) it is 0, so any downloaded pack is newer.
+ */
+function packRev() {
+  if (process.env.CONTENT_REV && /^\d+$/.test(process.env.CONTENT_REV)) return Number(process.env.CONTENT_REV);
+  try {
+    const out = execFileSync('git', ['log', '-1', '--format=%ct', 'HEAD'], { cwd: REPO_ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
+    if (/^\d+$/.test(out)) return Number(out);
+  } catch {
+    // No git here: fall through.
+  }
+  console.warn('! no git commit time for the pack rev: using 0 (set CONTENT_REV to choose one)');
+  return 0;
+}
+
 function main() {
   fs.mkdirSync(OUT_ROOT, { recursive: true });
   const notesLines = [];
   const principlesLines = [];
   const examLines = [];
+  const lessonsLines = [];
+  const gamesLines = [];
+  const infoLines = [];
+  const rev = packRev();
   const indexLines = [
     '// AUTO-GENERATED by scripts/build-content.mjs — do not edit by hand.',
     "import type { ExamPack } from '../exam/types';",
+    "import type { Lesson } from '../lessons/types';",
     "import type { NotesPack } from '../notes/types';",
     "import type { PrinciplesPack } from '../principles/types';",
     "import type { PackQuestion } from '../types';",
@@ -377,6 +471,13 @@ function main() {
     notesLines.push(notes.line);
     principlesLines.push(principles.line);
     examLines.push(buildExam(pack, certDir, notes.pack, principles.pack));
+    lessonsLines.push(buildLessons(pack, certDir, certQuestions, notes.pack));
+    const games = copyGames(pack, certDir);
+    if (games) gamesLines.push(games);
+    // The bundled pack's version: a downloaded pack replaces it only with a newer rev.
+    const info = { certId: pack.certId, rev, schemaVersion: PACK_SCHEMA_VERSION };
+    fs.writeFileSync(path.join(certDir, 'pack.json'), JSON.stringify(info));
+    infoLines.push(`  ${pack.certId}: ${JSON.stringify(info)},`);
   }
   indexLines.push('};', '');
   // Study notes: one lazily parsed pack per certification.
@@ -385,6 +486,12 @@ function main() {
   indexLines.push('export const generatedPrinciples: Record<string, () => PrinciplesPack> = {', ...principlesLines, '};', '');
   // The exam guide and final review week: one lazily parsed pack per certification.
   indexLines.push('export const generatedExam: Record<string, () => ExamPack> = {', ...examLines, '};', '');
+  // Motion lessons: one lazily parsed pack per certification.
+  indexLines.push('export const generatedLessons: Record<string, () => Lesson[]> = {', ...lessonsLines, '};', '');
+  // The reviewed game decks, as copied (content/games/index.ts reshapes them).
+  indexLines.push('export const generatedGames: Record<string, Partial<Record<string, () => unknown>>> = {', ...gamesLines, '};', '');
+  // Each bundled pack's rev and schemaVersion (small, so not lazy).
+  indexLines.push('export const generatedInfo: Record<string, { certId: string; rev: number; schemaVersion: number }> = {', ...infoLines, '};', '');
   fs.writeFileSync(path.join(OUT_ROOT, 'index.ts'), indexLines.join('\n'));
 
   if (errors) {
