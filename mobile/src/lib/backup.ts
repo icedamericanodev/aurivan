@@ -57,6 +57,9 @@ import { ensureCatalog, syncPlanters } from './milestones';
 import { carryPlantIdentity, plantSubtopics } from './plant';
 import { cancelReminders, ensurePermission, remindersSupported } from './reminders';
 import { refreshReminders } from './reminderSync';
+import { refreshWidgets } from './widgets';
+import { REVEAL_KEY, WIDGET_KEY } from '../engine/widgets';
+import { useWidgetStore } from '../store/widgets';
 
 // ── The data in each store (no actions) ──────────────────────────────────
 const SETTINGS_KEYS = ['onboarded', 'activeCertId', 'examDates', 'theme', 'motion', 'shuffleOptions', 'dailyGoal', 'reminder', 'haptics', 'gameRulesSeen', 'practiceTimer', 'paceOffer', 'studyMode', 'studyDomain', 'studySize', 'badgesHidden', 'familiarity', 'dailyMinutes', 'examFocused', 'fitPrompt', 'fitChanges', 'fitAskDays', 'displayName'] as const;
@@ -548,8 +551,16 @@ export async function wipeLocalStudy(also: WipeAlso[] = []): Promise<void> {
   const progress = pick(useProgress.getInitialState(), PROGRESS_KEYS) as ProgressData;
   const backup = { lastBackupAt: null, undo: null, restoredSavedAt: null };
   const seen = dataOf(useSeen.getInitialState());
+  // Mobile 1.47 (security review M2): the widget choices and counters go back to their start in the
+  // same write, so the next learner never inherits a readiness opt-in, exam timing or counts.
+  const widgets = dataOf(useWidgetStore.getInitialState());
   // What the phone holds now, to put back if the write fails.
-  const before = [...currentRows(), row(useSeen, dataOf(useSeen.getState())), ...also.map((a) => row(a.store, dataOf(a.store.getState())))];
+  const before = [
+    ...currentRows(),
+    row(useSeen, dataOf(useSeen.getState())),
+    row(useWidgetStore, dataOf(useWidgetStore.getState())),
+    ...also.map((a) => row(a.store, dataOf(a.store.getState()))),
+  ];
   try {
     await AsyncStorage.multiSet([
       row(useSettings, settings),
@@ -557,12 +568,17 @@ export async function wipeLocalStudy(also: WipeAlso[] = []): Promise<void> {
       row(useSession, { active: null }),
       row(useBackup, backup),
       row(useSeen, seen),
+      row(useWidgetStore, widgets),
       ...also.map((a) => row(a.store, a.state)),
     ]);
   } catch (e) {
     await AsyncStorage.multiSet(before).catch(() => {});
     throw e;
   }
+  // The widget snapshot and Today's rule marks hold the previous learner's words: gone at once.
+  await AsyncStorage.multiRemove([WIDGET_KEY, REVEAL_KEY]).catch(() => {});
+  // Replace, not merge: a field the start state doesn't have (the readiness date, the one suggestion) must go too.
+  useWidgetStore.setState(useWidgetStore.getInitialState(), true);
   useSeen.setState(seen);
   useSettings.setState(settings);
   useProgress.setState(progress);
@@ -570,6 +586,9 @@ export async function wipeLocalStudy(also: WipeAlso[] = []): Promise<void> {
   useBackup.setState(backup);
   for (const a of also) a.store.setState(a.state);
   sweepBackupFiles();
+  // Redraw the widgets now (not after the usual short delay): a phone put down right after
+  // "Remove my progress" must not keep showing the previous learner's widgets.
+  await refreshWidgets({ force: true });
 }
 
 /** The undo copy for a first sync ("Undo sync"), or null when this phone's own data couldn't be checked. */

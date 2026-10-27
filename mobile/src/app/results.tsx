@@ -59,7 +59,7 @@ import { LeafStrip } from '../components/leafStrip';
 import { OptionCard, PickNote, TrustLine } from '../components/quiz';
 import { QuestionNote } from '../components/questionNote';
 import { useReportFlow } from '../components/support';
-import { DomainRings } from '../components/journey';
+import { DomainRings, todayMinutes } from '../components/journey';
 import { PacingPanel } from '../components/pace';
 import { FirstSetDone } from '../components/firstSet';
 import { MilestoneMomentView } from '../components/milestones';
@@ -94,6 +94,10 @@ import { trapTip } from '../engine/games/trapSpotter';
 import { badgeNextLine } from '../lib/badges';
 import { momentFor } from '../lib/milestones';
 import { startFromIds } from '../lib/sessions';
+import { runPlanItem } from '../lib/actions';
+import { currentIndex, planComplete } from '../engine/dayPlan';
+import { dayKey } from '../engine/streak';
+import { useProgress } from '../store/progress';
 import { questionTarget, sessionWhere } from '../lib/support';
 import { useSession } from '../store/session';
 import { motion, space } from '../theme/tokens';
@@ -262,6 +266,17 @@ export default function Results() {
     else router.replace({ pathname: '/guided', params });
   };
 
+  // Mobile 1.47: a Quick question (from the widget or the app) hands back to today's plan, if it has
+  // time left: "Today's plan · about N min left", Continue or Done for now. Read once (not a live value).
+  const todayPlan = active.title === 'Quick question' && active.mode !== 'mock' && !guidedScope ? useProgress.getState().days[active.certId] : undefined;
+  const planLeft = todayPlan && todayPlan.day === dayKey(active.finishedAt ?? active.startedAt) && !planComplete(todayPlan) ? todayMinutes(todayPlan.items, todayPlan.done) : 0;
+  const continuePlan = () => {
+    const plan = todayPlan;
+    clear();
+    router.replace('/home');
+    if (plan) runPlanItem(plan.items[currentIndex(plan)], cert.id);
+  };
+
   const practiseMissed = () => {
     const ids = [...missed];
     clear();
@@ -427,8 +442,20 @@ export default function Results() {
         {/* One solid button: Done (or the Guided step). "Practice the N you missed" is a quiet link under it:
             a miss re-answered minutes later is a retest and earns no spacing credit (engine/srs.ts), and the
             misses come back tomorrow anyway. */}
-        {guidedScope ? <Button label="Back to your Guided step" onPress={backToGuided} /> : <Button label="Done" onPress={done} />}
-        {missed.length > 0 && (
+        {planLeft > 0 && (
+          <T v="meta" accessibilityLabel={`Today’s plan, ${spokenMin(aboutMin(planLeft, true))} left`} style={{ marginBottom: space.sm }}>
+            {`Today’s plan · ${aboutMin(planLeft, true)} left`}
+          </T>
+        )}
+        {guidedScope ? (
+          <Button label="Back to your Guided step" onPress={backToGuided} />
+        ) : planLeft > 0 ? (
+          <Button label="Continue" accessibilityHint="Goes on with today’s plan." onPress={continuePlan} />
+        ) : (
+          <Button label="Done" onPress={done} />
+        )}
+        {planLeft > 0 && <Button kind="ghost" label="Done for now" onPress={done} style={{ alignSelf: 'center', marginTop: space.sm }} />}
+        {missed.length > 0 && planLeft === 0 && (
           <Button
             kind="ghost"
             label={missed.length === 1 ? 'Practice the one you missed' : `Practice the ${missed.length} you missed`}

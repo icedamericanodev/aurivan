@@ -15,6 +15,7 @@ import { dailyMinutesOf, examDateOf, useSettings } from '../store/settings';
 import { haptic } from './haptics';
 import { questionExists } from './outline';
 import { refreshReminders } from './reminderSync';
+import { noteWidgetStudy } from './widgetStats';
 import { daysUntil } from './useActiveCert';
 import { buildJourney } from './useJourney';
 import { activeCertIdNow } from './activeCert';
@@ -104,6 +105,8 @@ export function logActivity(certId: string, a: Activity) {
   // reminder names the reviews waiting, and a session changes them. Nothing happens when reminders are off.
   const plan = useProgress.getState().days[certId];
   const cleared = ticked && plan && planComplete(plan);
+  // Mobile 1.47: the 60-day study history and "which widget started a cleared day" (beta counters, this phone only).
+  noteWidgetStudy(Boolean(plan && planComplete(plan)));
   if (certId === activeCertIdNow() && (cleared || a.kind === 'session')) refreshReminders().catch(() => {});
 }
 

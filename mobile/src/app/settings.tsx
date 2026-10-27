@@ -73,6 +73,8 @@ import {
   Sheet,
   type SettingsCat,
 } from '../components/settings';
+import { WidgetSettingsGroup } from '../components/widgetSettings';
+import { widgetsSupported } from '../lib/widgets';
 import { YourData } from '../components/yourData';
 import { Button, Chip, Gap, PushedHeader, Screen, Segmented, Stepper, T, ToggleRow } from '../components/ui';
 import { spokenDate, untilLabel } from '../engine/calendar';
@@ -216,6 +218,11 @@ export default function Settings() {
   }, []);
   const scrollRef = useRef<ScrollView>(null);
   const scrolled = useRef(false);
+  // Mobile 1.47: a widget's "Tap to choose" opens its exact choice here (?open=widget-readiness / widget-timing),
+  // then goes back to where the learner came from; ?section=widgets starts at the widgets card.
+  const widgetLink = params.open === 'widget-readiness' ? 'readiness' : params.open === 'widget-timing' ? 'timing' : undefined;
+  const widgetsHeadRef = useRef<View>(null);
+  const plantHeadRef = useRef<View>(null);
   // Each row that opens a sheet gets screen-reader focus back when its sheet closes.
   const nameRow = useRef<View>(null);
   const examRow = useRef<View>(null);
@@ -683,12 +690,39 @@ export default function Settings() {
             if (params.section !== 'plant' || scrolled.current) return;
             scrolled.current = true;
             scrollRef.current?.scrollTo({ y: Math.max(0, e.nativeEvent.layout.y - space.md), animated: !reduced });
+            // Screen-reader focus follows the scroll (mobile 1.47, UX review P6).
+            moveFocus(plantHeadRef, 400);
           }}
         >
-          {group('plant', 'Badges and your plant', plantRows)()}
+          <SettingsGroup title="Badges and your plant" cat="plant" headRef={plantHeadRef}>
+            {plantRows}
+          </SettingsGroup>
         </View>
       ),
     },
+    // Mobile 1.47: Home-screen widgets, its own card (Android builds only; WidgetSettingsGroup draws nothing elsewhere).
+    ...(widgetsSupported
+      ? [
+          {
+            cat: 'widgets' as const,
+            title: 'Home-screen widgets',
+            draw: () => (
+              <View
+                key="widgets"
+                onLayout={(e) => {
+                  const linked = params.section === 'widgets' || widgetLink !== undefined;
+                  if (!linked || scrolled.current) return;
+                  scrolled.current = true;
+                  scrollRef.current?.scrollTo({ y: Math.max(0, e.nativeEvent.layout.y - space.md), animated: !reduced });
+                  moveFocus(widgetsHeadRef, 400);
+                }}
+              >
+                <WidgetSettingsGroup headRef={widgetsHeadRef} openOnMount={widgetLink} onLinkDone={() => (router.canGoBack() ? router.back() : router.replace('/home'))} />
+              </View>
+            ),
+          },
+        ]
+      : []),
     // You (mobile 1.23): what Today calls the learner. Optional, and only on this phone.
     { cat: 'you', title: 'You', draw: group('you', 'You', youRows) },
     // Cloud builds only: Settings → Account (one of the two ways in), and → Feedback board (Your activity, Blocked learners; Phase 8).

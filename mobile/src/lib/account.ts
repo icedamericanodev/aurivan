@@ -10,6 +10,7 @@
  * With the flag off none of this runs: `cloudReady()` is false, the entry
  * points are hidden, and the (cloud) screens redirect to Today.
  */
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Constants from 'expo-constants';
 import { File, Directory, Paths } from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
@@ -24,6 +25,9 @@ import { useProgress } from '../store/progress';
 import { useSession } from '../store/session';
 import { SYNC_OFF, useSyncMeta } from '../store/sync';
 import { sweepBackupFiles, wipeLocalStudy, type WipeAlso } from './backup';
+import { refreshWidgets } from './widgets';
+import { REVEAL_KEY, WIDGET_KEY } from '../engine/widgets';
+import { useWidgetStore } from '../store/widgets';
 
 export type Result<T = object> = ({ ok: true } & T) | { ok: false; code: CloudErrorCode; detail?: string; retryAfterSec?: number };
 
@@ -351,6 +355,10 @@ export async function removeAllLocal(): Promise<void> {
   } catch {
     removeLocalProgress();
     for (const a of also) a.store.setState(a.state);
+    // Mobile 1.47: the widget choices, counters, snapshot and Today's rule marks too (security review M2).
+    useWidgetStore.setState(useWidgetStore.getInitialState(), true);
+    await AsyncStorage.multiRemove([WIDGET_KEY, REVEAL_KEY]).catch(() => {});
+    await refreshWidgets({ force: true });
   }
   if (cloudReady()) await backend().device.renew().catch(() => {});
 }

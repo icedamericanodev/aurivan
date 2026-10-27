@@ -4,7 +4,7 @@
     "slug": "aurivan",
     "owner": "icedamericanodev",
     "scheme": "kaisip",
-    "version": "1.46.0",
+    "version": "1.47.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
@@ -68,7 +68,136 @@
             "extraProguardRules": "# KaiSip: Bouncy Castle (used by expo-updates) has desktop-only LDAP code that\n# refers to javax.naming, which Android does not have. That code never runs on\n# a phone, so R8 must not stop the build over the missing classes.\n-dontwarn javax.naming.**\n"
           }
         }
-      ]
+      ],
+      [
+        "react-native-android-widget",
+        {
+          "fonts": [
+            "./node_modules/@expo-google-fonts/fraunces/500Medium/Fraunces_500Medium.ttf",
+            "./node_modules/@expo-google-fonts/fraunces/400Regular_Italic/Fraunces_400Regular_Italic.ttf",
+            "./node_modules/@expo-google-fonts/figtree/400Regular/Figtree_400Regular.ttf",
+            "./node_modules/@expo-google-fonts/figtree/500Medium/Figtree_500Medium.ttf",
+            "./node_modules/@expo-google-fonts/figtree/600SemiBold/Figtree_600SemiBold.ttf"
+          ],
+          "widgets": [
+            {
+              "name": "TodayPlan",
+              "label": "Today’s plan",
+              "description": "What to study today, and one tap to start.",
+              "minWidth": "130dp",
+              "minHeight": "110dp",
+              "targetCellWidth": 2,
+              "targetCellHeight": 2,
+              "maxResizeWidth": "420dp",
+              "maxResizeHeight": "300dp",
+              "resizeMode": "horizontal|vertical",
+              "previewImage": "./assets/widgets/plan.png",
+              "updatePeriodMillis": 10800000
+            },
+            {
+              "name": "YourPlant",
+              "label": "Your plant",
+              "description": "Your plant, growing as your answers stick.",
+              "minWidth": "40dp",
+              "minHeight": "40dp",
+              "targetCellWidth": 2,
+              "targetCellHeight": 2,
+              "maxResizeWidth": "420dp",
+              "maxResizeHeight": "300dp",
+              "resizeMode": "horizontal|vertical",
+              "previewImage": "./assets/widgets/plant.png",
+              "updatePeriodMillis": 10800000
+            },
+            {
+              "name": "TodaysRule",
+              "label": "Today’s rule",
+              "description": "One exam rule a day. Think of your answer, then check it.",
+              "minWidth": "130dp",
+              "minHeight": "40dp",
+              "targetCellWidth": 4,
+              "targetCellHeight": 2,
+              "maxResizeWidth": "420dp",
+              "maxResizeHeight": "300dp",
+              "resizeMode": "horizontal|vertical",
+              "previewImage": "./assets/widgets/think.png",
+              "updatePeriodMillis": 10800000
+            },
+            {
+              "name": "ThisWeek",
+              "label": "This week",
+              "description": "The days you studied this week, shown as leaves.",
+              "minWidth": "40dp",
+              "minHeight": "40dp",
+              "targetCellWidth": 4,
+              "targetCellHeight": 1,
+              "maxResizeWidth": "420dp",
+              "maxResizeHeight": "220dp",
+              "resizeMode": "horizontal|vertical",
+              "previewImage": "./assets/widgets/week.png",
+              "updatePeriodMillis": 10800000
+            },
+            {
+              "name": "QuickQuestion",
+              "label": "Quick question",
+              "description": "One practice question a day. Answer it in the app.",
+              "minWidth": "250dp",
+              "minHeight": "110dp",
+              "targetCellWidth": 4,
+              "targetCellHeight": 2,
+              "maxResizeWidth": "420dp",
+              "maxResizeHeight": "340dp",
+              "resizeMode": "horizontal|vertical",
+              "previewImage": "./assets/widgets/question.png",
+              "updatePeriodMillis": 10800000
+            },
+            {
+              "name": "Revisit",
+              "label": "Questions to revisit",
+              "description": "How many questions to revisit are in today’s plan.",
+              "minWidth": "130dp",
+              "minHeight": "40dp",
+              "targetCellWidth": 2,
+              "targetCellHeight": 2,
+              "maxResizeWidth": "420dp",
+              "maxResizeHeight": "300dp",
+              "resizeMode": "horizontal|vertical",
+              "previewImage": "./assets/widgets/revisit.png",
+              "updatePeriodMillis": 10800000
+            },
+            {
+              "name": "ExamCountdown",
+              "label": "Exam countdown",
+              "description": "Weeks to your exam. Asks you first when you add it.",
+              "minWidth": "130dp",
+              "minHeight": "110dp",
+              "targetCellWidth": 2,
+              "targetCellHeight": 2,
+              "maxResizeWidth": "420dp",
+              "maxResizeHeight": "300dp",
+              "resizeMode": "horizontal|vertical",
+              "previewImage": "./assets/widgets/countdown.png",
+              "updatePeriodMillis": 10800000,
+              "widgetFeatures": "reconfigurable"
+            },
+            {
+              "name": "Readiness",
+              "label": "Readiness",
+              "description": "Your study estimate as rings. Asks you first when you add it.",
+              "minWidth": "130dp",
+              "minHeight": "110dp",
+              "targetCellWidth": 2,
+              "targetCellHeight": 2,
+              "maxResizeWidth": "420dp",
+              "maxResizeHeight": "300dp",
+              "resizeMode": "horizontal|vertical",
+              "previewImage": "./assets/widgets/readiness.png",
+              "updatePeriodMillis": 10800000,
+              "widgetFeatures": "reconfigurable"
+            }
+          ]
+        }
+      ],
+      "./plugins/withWidgetBackupRules"
     ],
     "runtimeVersion": {
       "policy": "fingerprint"

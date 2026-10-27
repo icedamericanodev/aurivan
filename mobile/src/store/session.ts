@@ -5,6 +5,7 @@
  * losing 90 minutes of a mock exam would be awful. Re-open the app and
  * the session is still there.
  */
+import type { WidgetKind } from '../engine/widgets';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import type { Letter } from '../content/types';
@@ -102,6 +103,11 @@ export interface ActiveSession {
    * Optional: older sessions have none.
    */
   firstSet?: boolean;
+  /**
+   * Mobile 1.47: the home-screen widget whose tap started this session (local beta
+   * counters only; lib/widgetStats.ts). Optional: every other session has none.
+   */
+  widget?: WidgetKind;
   finishedAt?: number; // set when the learner finishes / submits
 }
 
