@@ -2,23 +2,39 @@ name: Database backup
 
 # The Supabase Free plan keeps no backups we can restore from (verify on the
 # Supabase pricing page), so every night this job takes our own:
-#   1. pg_dump of the hosted database through the Supabase CLI (pinned; it
-#      runs the pg_dump that matches the server's Postgres 17): roles,
-#      schema and data, the three files Supabase's restore guide uses;
-#   2. encrypts them with `age` to the owner's PUBLIC key. Only the owner's
+#   1. pg_dump 17 (the server's major version, from the signed PostgreSQL
+#      apt repository) over TLS that checks the server's certificate against
+#      Supabase's CA (sslmode=verify-full): the schema of public and private,
+#      and the data of public, private and auth. Sign-in sessions, refresh
+#      tokens, one-time codes, OAuth flow state, MFA challenges and the Auth
+#      audit log are LEFT OUT of the data (security audit L5): a restore
+#      signs everyone out, and a backup never holds a live credential. No
+#      roles dump: the migrations create no roles of their own;
+#   2. encrypts them with `age` to the owner's PUBLIC key on this temporary
+#      GitHub build machine, before anything is stored. Only the owner's
 #      private key, kept off GitHub in their password manager, can read a
 #      backup. Nothing unencrypted leaves the runner, and no artifact is
 #      uploaded;
 #   3. uploads the one encrypted file to the Cloudflare R2 bucket
 #      (kaisip-db-backups; an R2 lifecycle rule deletes copies after 30
 #      days, which the privacy policy promises);
-#   4. checks the database size: over 300 MB (60% of the Free plan's 500 MB)
+#   4. purges deletion records older than 3 years
+#      (private.purge_expired_deletions; the privacy policy promises it);
+#   5. checks the database size: over 300 MB (60% of the Free plan's 500 MB)
 #      the run turns red after the upload, so GitHub emails the owner.
-# (docs/mobile/ACCOUNTS_BETA_PLAN.md §6; restore drill in docs/mobile/SCALING.md.)
+# (docs/mobile/ACCOUNTS_BETA_PLAN.md §6; restore runbook in docs/mobile/SCALING.md.)
 #
 # The log of a public repository is public, so the job prints only the
-# database size and its largest tables. The account and session counts go
-# into the encrypted file (stats.txt), not the log.
+# database size and the sizes of our own tables (schemas public and private;
+# security audit L3). The account and session counts go into the encrypted
+# file (stats.txt), not the log. The password inside SUPABASE_DB_URL is
+# masked on its own as well (L4): GitHub masks a secret's whole value, not a
+# piece cut out of it.
+#
+# This job holds the full database password. Changes to this file must be
+# reviewed (.github/CODEOWNERS, with "Require review from Code Owners" on
+# main); if it ever changes without review, rotate the database password
+# (docs/mobile/SCALING.md, runbooks).
 #
 # Owner setup (all optional until accounts go live; until then the job says
 # what is missing and stops green):
@@ -30,9 +46,13 @@ name: Database backup
 #     R2_ACCESS_KEY_ID      an R2 API token limited to the backup bucket,
 #     R2_SECRET_ACCESS_KEY  Object Read & Write
 #     R2_ENDPOINT           https://<account id>.r2.cloudflarestorage.com
-# - Repository VARIABLE BACKUP_AGE_RECIPIENT: the age public key (age1…).
-#   It is public by design. The private key never comes near GitHub.
-# - Optional repository VARIABLE R2_BUCKET (default kaisip-db-backups).
+# - Repository VARIABLES (public by design):
+#     BACKUP_AGE_RECIPIENT  the age public key (age1…). The private key never
+#                           comes near GitHub.
+#     SUPABASE_DB_CA_CERT   Supabase's server CA certificate, the whole PEM
+#                           text (Database → Settings → SSL Configuration →
+#                           Download certificate). A certificate is public.
+#     R2_BUCKET             optional (default kaisip-db-backups).
 
 on:
   schedule:
@@ -56,6 +76,7 @@ jobs:
     environment: db-backup
     env:
       AGE_RECIPIENT: ${{ vars.BACKUP_AGE_RECIPIENT }}
+      DB_CA_CERT: ${{ vars.SUPABASE_DB_CA_CERT }}
       BUCKET: ${{ vars.R2_BUCKET || 'kaisip-db-backups' }}
       SIZE_LIMIT_MB: '300'
     steps:
@@ -75,6 +96,7 @@ jobs:
           [ "$HAS_R2_SECRET" = true ] || missing+=(R2_SECRET_ACCESS_KEY)
           [ "$HAS_R2_ENDPOINT" = true ] || missing+=(R2_ENDPOINT)
           [ -n "${AGE_RECIPIENT:-}" ] || missing+=('BACKUP_AGE_RECIPIENT (variable)')
+          [ -n "${DB_CA_CERT:-}" ] || missing+=('SUPABASE_DB_CA_CERT (variable)')
           if [ "${#missing[@]}" -gt 0 ]; then
             echo "::notice::Backup skipped: not set up yet. Missing: ${missing[*]}."
             echo "ready=false" >> "$GITHUB_OUTPUT"
@@ -84,60 +106,86 @@ jobs:
             echo "::error::BACKUP_AGE_RECIPIENT must be an age public key (age1 followed by 58 characters). Never put the private key (AGE-SECRET-KEY-…) anywhere on GitHub."
             exit 1
           fi
+          if ! printf '%s' "$DB_CA_CERT" | grep -q -- '-----BEGIN CERTIFICATE-----'; then
+            echo "::error::SUPABASE_DB_CA_CERT must be the PEM text of Supabase's CA certificate (it starts with -----BEGIN CERTIFICATE-----)."
+            exit 1
+          fi
           if ! printf '%s' "$BUCKET" | grep -Eq '^[a-z0-9][a-z0-9-]{1,61}[a-z0-9]$'; then
             echo "::error::R2_BUCKET is not a valid bucket name."
             exit 1
           fi
           echo "ready=true" >> "$GITHUB_OUTPUT"
 
-      # The repository's supabase/config.toml tells the CLI the server's
-      # Postgres major version (17), so it dumps with the matching pg_dump.
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      # Before anything else touches the URL: mask the password on its own
+      # (raw and percent-decoded), so no tool's error message can show it.
+      - name: Mask the database password
         if: steps.setup.outputs.ready == 'true'
-        with:
-          persist-credentials: false
+        env:
+          SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+        run: |
+          python3 - <<'PY'
+          import os
+          import urllib.parse as u
+          raw = u.urlsplit(os.environ["SUPABASE_DB_URL"]).password or ""
+          for value in {raw, u.unquote(raw)}:
+              if value:
+                  print(f"::add-mask::{value}")
+          PY
 
-      - uses: supabase/setup-cli@1dedf2c611547ede7232d26866dd3c56ab903bbb # v1.7.3
-        if: steps.setup.outputs.ready == 'true'
-        with:
-          version: 2.118.0
-
-      - name: Install age (Ubuntu package)
+      - name: Install pg_dump 17 and age (signed Ubuntu and PostgreSQL apt repositories)
         if: steps.setup.outputs.ready == 'true'
         run: |
           set -euo pipefail
+          # Ubuntu's own (signed) postgresql-common package ships the key; fetch
+          # it only if it is missing. Either way, its fingerprint must match.
+          key=/usr/share/postgresql-common/pgdg/apt.postgresql.org.asc
+          if [ ! -s "$key" ]; then
+            sudo install -d /usr/share/postgresql-common/pgdg
+            sudo curl -fsSL -o "$key" https://www.postgresql.org/media/keys/ACCC4CF8.asc
+          fi
+          # The PostgreSQL apt signing key's published fingerprint.
+          gpg --show-keys --with-colons "$key" | grep -q '^fpr:::::::::B97B0AFCAA1A47F044F244A07FCC7D46ACCC4CF8:' \
+            || { echo "::error::The PostgreSQL apt key does not match its known fingerprint."; exit 1; }
+          echo "deb [signed-by=$key] https://apt.postgresql.org/pub/repos/apt $(. /etc/os-release && echo "$VERSION_CODENAME")-pgdg main" \
+            | sudo tee /etc/apt/sources.list.d/pgdg.list >/dev/null
           sudo apt-get update -qq
-          sudo apt-get install -y -qq age postgresql-client >/dev/null
+          sudo apt-get install -y -qq postgresql-client-17 age >/dev/null
+          echo "PG17=/usr/lib/postgresql/17/bin" >> "$GITHUB_ENV"
+          /usr/lib/postgresql/17/bin/pg_dump --version
           age --version
-          psql --version
 
-      - name: Dump, measure and encrypt
+      - name: Dump, measure, purge and encrypt
         id: dump
         if: steps.setup.outputs.ready == 'true'
         env:
           SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
-          PGSSLMODE: require
         run: |
           set -euo pipefail
           umask 077
+          ca="$RUNNER_TEMP/supabase-ca.crt"
+          printf '%s\n' "$DB_CA_CERT" > "$ca"
+          export PGSSLMODE=verify-full PGSSLROOTCERT="$ca"
           work="$RUNNER_TEMP/kaisip-backup"
           mkdir -p "$work"
-          supabase db dump --db-url "$SUPABASE_DB_URL" -f "$work/roles.sql" --role-only
-          supabase db dump --db-url "$SUPABASE_DB_URL" -f "$work/schema.sql"
-          supabase db dump --db-url "$SUPABASE_DB_URL" -f "$work/data.sql" --use-copy --data-only
-          for f in roles schema data; do
+          "$PG17/pg_dump" "$SUPABASE_DB_URL" --schema-only --schema=public --schema=private -f "$work/schema.sql"
+          "$PG17/pg_dump" "$SUPABASE_DB_URL" --data-only --schema=public --schema=private --schema=auth \
+            --exclude-table-data=auth.refresh_tokens --exclude-table-data=auth.sessions \
+            --exclude-table-data=auth.one_time_tokens --exclude-table-data=auth.flow_state \
+            --exclude-table-data=auth.audit_log_entries --exclude-table-data=auth.mfa_challenges \
+            -f "$work/data.sql"
+          for f in schema data; do
             [ -s "$work/$f.sql" ] || { echo "::error::The $f dump is empty."; exit 1; }
           done
 
-          # Size first (public log): the whole database, and the largest tables.
-          size_bytes=$(psql "$SUPABASE_DB_URL" -XAtq -c 'select pg_database_size(current_database())')
+          # Size first (public log): the whole database, and our own tables only.
+          size_bytes=$("$PG17/psql" "$SUPABASE_DB_URL" -XAtq -c 'select pg_database_size(current_database())')
           size_mb=$(( size_bytes / 1024 / 1024 ))
           echo "Database size: ${size_mb} MB of the Free plan's 500 MB (limit here: ${SIZE_LIMIT_MB} MB)."
-          echo "Largest tables:"
-          psql "$SUPABASE_DB_URL" -XAtq -F ' ' -c "
+          echo "Largest of our tables:"
+          "$PG17/psql" "$SUPABASE_DB_URL" -XAtq -F ' ' -c "
             select n.nspname || '.' || c.relname, pg_size_pretty(pg_total_relation_size(c.oid))
             from pg_class c join pg_namespace n on n.oid = c.relnamespace
-            where c.relkind in ('r', 'p') and n.nspname in ('public', 'private', 'auth', 'storage')
+            where c.relkind in ('r', 'p') and n.nspname in ('public', 'private')
             order by pg_total_relation_size(c.oid) desc limit 8" | sed 's/^/  /'
           echo "size_mb=$size_mb" >> "$GITHUB_OUTPUT"
 
@@ -145,14 +193,20 @@ jobs:
           {
             echo "taken_at $(date -u +%Y-%m-%dT%H:%M:%SZ)"
             echo "database_bytes $size_bytes"
-            psql "$SUPABASE_DB_URL" -XAtq -F ' ' -c "
+            "$PG17/psql" "$SUPABASE_DB_URL" -XAtq -F ' ' -c "
               select 'auth_users', count(*) from auth.users
               union all select 'auth_refresh_tokens', count(*) from auth.refresh_tokens
-              union all select 'sync_snapshots', count(*) from public.sync_snapshots"
+              union all select 'sync_snapshots', count(*) from public.sync_snapshots
+              union all select 'deletions', count(*) from private.deletions"
           } > "$work/stats.txt"
 
+          # Deletion records are kept 3 years (after the dump, so the backup
+          # matches the database it came from).
+          purged=$("$PG17/psql" "$SUPABASE_DB_URL" -XAtq -c 'select private.purge_expired_deletions()')
+          echo "Deletion records older than 3 years removed: $purged."
+
           out="$RUNNER_TEMP/kaisip-db-$(date -u +%Y-%m-%dT%H%MZ).tar.gz.age"
-          tar -C "$work" -czf - roles.sql schema.sql data.sql stats.txt | age -r "$AGE_RECIPIENT" -o "$out"
+          tar -C "$work" -czf - schema.sql data.sql stats.txt | age -r "$AGE_RECIPIENT" -o "$out"
           rm -rf "$work"
           echo "file=$out" >> "$GITHUB_OUTPUT"
           echo "Encrypted backup: $(du -h "$out" | cut -f1)."
@@ -192,7 +246,7 @@ jobs:
           SIZE_MB: ${{ steps.dump.outputs.size_mb }}
         run: |
           if [ "$SIZE_MB" -gt "$SIZE_LIMIT_MB" ]; then
-            echo "::error::The database is ${SIZE_MB} MB, over ${SIZE_LIMIT_MB} MB (60% of the Free plan). Time to act: docs/mobile/SCALING.md §4."
+            echo "::error::The database is ${SIZE_MB} MB, over ${SIZE_LIMIT_MB} MB (60% of the Free plan). Time to act: docs/mobile/SCALING.md §5."
             exit 1
           fi
           echo "Database ${SIZE_MB} MB: under ${SIZE_LIMIT_MB} MB."
