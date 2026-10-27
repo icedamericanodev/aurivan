@@ -2573,11 +2573,11 @@ export const CISA_LESSONS: Lesson[] = [
           'IT spending per employee compared with similar firms',
           'The share of projects finished on time and on budget',
           'Service desk tickets resolved within the agreed time',
-          'Faster deliveries traced to the new route-planning system',
+          'Faster deliveries traced to the new routing system',
         ],
         correctIndex: 3,
         explanation:
-          'Value is a business result traced to an IT investment, such as faster deliveries from the new system. On-time, on-budget projects are tempting because they show IT is well run, but a project can finish on time and still deliver no benefit. Spending comparisons and ticket counts measure cost and activity, not what the business gained.',
+          'Value is a business result traced to an IT investment, such as faster deliveries from the new routing system. On-time, on-budget projects are tempting because they show IT is well run, but a project can finish on time and still deliver no benefit. Spending comparisons and ticket counts measure cost and activity, not what the business gained.',
       },
       {
         type: 'check',
@@ -5329,11 +5329,11 @@ export const CISA_LESSONS: Lesson[] = [
           'Replace the router with a faster model that has more ports',
           'Place a firewall with a rule set between the two networks',
           'Log every connection through the router, for weekly review',
-          'Connect each network to its own separate switch',
+          'Give each network its own switch, both behind the same router',
         ],
         correctIndex: 1,
         explanation:
-          'A rule-based filter decides which connections may cross, so a firewall is what enforces the policy. Logging is tempting because it adds oversight, but it records guests reaching patient records after it has happened and stops none of it. A faster router still lets everything through, and separate switches still meet at the same router.',
+          'A rule-based filter decides which connections may cross, so a firewall is what enforces the policy. Logging is tempting because it adds oversight, but it records guests reaching patient records after it has happened and stops none of it. A faster router still lets everything through, and separate switches behind the same router still let traffic cross.',
       },
       {
         type: 'check',
@@ -5354,7 +5354,7 @@ export const CISA_LESSONS: Lesson[] = [
         question:
           'After strict hardened settings caused outages on some servers, a bank’s operations team wants to return every server to the vendor’s factory settings. What should the IS auditor recommend?',
         options: [
-          'Fit the hardened settings to each server type, with exceptions',
+          'Fit the hardened settings to each server type, with owned exceptions',
           'Keep the strict settings everywhere and fix outages as they occur',
           'Return only the servers that had outages to factory settings',
           'Return to factory settings and add antivirus to each server',
@@ -5466,7 +5466,7 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'check',
         question:
-          'A payroll batch failed halfway through, after posting part of the run. Its checkpoint file is damaged, so operators plan to run the whole job again from the start. What should the IS auditor confirm FIRST?',
+          'A payroll batch failed halfway through, after posting part of the run. Its checkpoint file is damaged, so operators plan to run the whole job again from the start. Before the rerun starts, what is MOST important for the IS auditor to confirm?',
         options: [
           'The payroll manager has approved the rerun in writing',
           'The rerun will take place during staffed office hours',
@@ -7421,16 +7421,16 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'check',
         question:
-          'A laboratory analyzer runs an old operating system that, its vendor says, cannot take the patches the baseline requires. The laboratory director owns the analyzer. What should the IS auditor recommend?',
+          'A laboratory analyzer runs an old operating system that, its vendor says, cannot take the patches the baseline requires. The laboratory director owns the analyzer and its risk. What should the IS auditor recommend?',
         options: [
           'Remove the patch requirement from the baseline for all systems',
           'Leave the analyzer unpatched until the vendor supports it',
           'Have the director sign an exception with an end date and safeguards',
-          'Move the analyzer onto its own isolated network segment',
+          'Isolate the analyzer on its own network segment and keep monitoring it',
         ],
         correctIndex: 2,
         explanation:
-          'A gap from the baseline needs a business decision with limits: the director, who owns the analyzer and its risk, accepts it for a set period, backed by safeguards. Isolating the analyzer is tempting because it is the right kind of safeguard, but on its own nobody has accepted the risk that remains or set a date to look again. Removing the requirement weakens every other system, and waiting leaves an open gap that nobody owns.',
+          'A gap from the baseline needs a business decision with limits: the director, who owns the analyzer and its risk, accepts it for a set period, backed by safeguards. Isolating and monitoring the analyzer is tempting because they are the right kind of safeguard, but on their own nobody has accepted the risk that remains or set a date to look again. Removing the requirement weakens every other system, and waiting leaves an open gap that nobody owns.',
       },
       {
         type: 'check',
@@ -7565,7 +7565,7 @@ export const CISA_LESSONS: Lesson[] = [
         options: [
           'Ask nurses to sign an agreement to protect the messages',
           'Rely on each phone’s own passcode and encryption',
-          'Require full management, with the right to wipe the phone',
+          'Require full management of each phone, with the right to wipe it',
           'Keep clinic data in a managed section that can be erased alone',
         ],
         correctIndex: 3,
@@ -7577,14 +7577,14 @@ export const CISA_LESSONS: Lesson[] = [
         question:
           'A cinema chain’s door locks, thermostats and cameras cannot run security software, and they share one network with the box-office computers. Which recommendation should the IS auditor consider BEST?',
         options: [
-          'Separate the devices from staff systems, allowing only needed traffic',
+          'Put the devices on their own segment, allowing only needed traffic',
           'Change each device’s factory password and keep the network as is',
-          'Install security software on the devices that can take it',
+          'Monitor the devices’ traffic and alert on unusual connections',
           'Replace the devices with newer models over three years',
         ],
         correctIndex: 0,
         explanation:
-          'Devices that cannot protect themselves are kept apart and allowed only the traffic they need, so one compromised camera cannot reach the box office. Changing the factory passwords is tempting because default passwords are a real weakness, but the devices would still sit beside staff systems with nothing between them. The question says these devices cannot run security software, and a three-year replacement plan leaves the risk open now.',
+          'Devices that cannot protect themselves are kept apart and allowed only the traffic they need, so one compromised camera cannot reach the box office. Changing the factory passwords is tempting because default passwords are a real weakness, but the devices would still sit beside staff systems with nothing between them. Monitoring would show a compromised device only after it has reached other systems, and a three-year replacement plan leaves the risk open now.',
       },
     ],
   },
