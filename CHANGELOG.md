@@ -4,6 +4,15 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v12.41] — Your progress, in one place
+
+### New
+- A new page, Your progress, from You or Today: where you stand in each domain and what would raise your low end.
+- Simple signs for booking your exam, so you can see what is in place and what to work on next.
+- Charts of your low end, your mock scores, what has stuck and this week’s accuracy, with the numbers one tap away.
+- A calendar of your study days. Choose a day to see what you studied.
+- A one-question Mindset check on the same page, answered from memory.
+
 ## [v12.40] — Harder audit process practice
 
 ### Improved

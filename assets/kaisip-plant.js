@@ -3,7 +3,7 @@
  * from the mobile app's own plant sources (growth engine, looks, SVG art),
  * so the website and the app grow the same plant. Rebuild after changing
  * any of them: cd mobile && npm run web-plant
- * TypeScript 6.0.3. Modules: 28.
+ * TypeScript 6.0.3. Modules: 32.
  */
 (function (root) {
   "use strict";
@@ -3728,6 +3728,53 @@ function elapsedMs(clock, now) {
 function addMs(earlier, more) {
     return Math.min(exports.MAX_ANSWER_MS, Math.max(0, (earlier !== null && earlier !== void 0 ? earlier : 0) + more));
 }
+  };
+  links["src/engine/domainBand.ts"] = {"./examReady":"src/engine/examReady.ts","./journey":"src/engine/journey.ts"};
+  defs["src/engine/domainBand.ts"] = function (module, exports, require) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.YARDSTICK_LINE = exports.AREA_LINE_LABEL = exports.AREAS_CAPTION = exports.STUDY_BAR_LINE = exports.BANDS_LINE = exports.LATEST_TRIES_LABEL = exports.STRONG_FROM = exports.STEADY_FROM = exports.BAND_MIN_ANSWERS = void 0;
+exports.bandOf = bandOf;
+exports.domainFigure = domainFigure;
+exports.areaFigure = areaFigure;
+const examReady_1 = require("./examReady");
+const journey_1 = require("./journey");
+exports.BAND_MIN_ANSWERS = 30;
+exports.STEADY_FROM = Math.round(journey_1.DOMAIN_TARGET * 100);
+exports.STRONG_FROM = examReady_1.READY_LOW;
+function bandOf(pct) {
+    if (pct >= exports.STRONG_FROM)
+        return 'Strong';
+    if (pct >= exports.STEADY_FROM)
+        return 'Steady';
+    return 'Building';
+}
+function domainFigure(answered, pct) {
+    if (answered <= 0)
+        return { text: '–', spoken: 'not started', banded: false };
+    if (answered < exports.BAND_MIN_ANSWERS) {
+        const band = bandOf(pct);
+        return { text: band, spoken: band, banded: true };
+    }
+    return { text: `${pct}%`, spoken: `${pct} percent, latest tries`, banded: false };
+}
+exports.LATEST_TRIES_LABEL = 'Percentages count your latest try at each question.';
+exports.BANDS_LINE = `Building is under ${exports.STEADY_FROM}, Steady ${exports.STEADY_FROM} to ${exports.STRONG_FROM - 1}, Strong ${exports.STRONG_FROM} and up. A number shows from ${exports.BAND_MIN_ANSWERS} answers in a domain.`;
+exports.STUDY_BAR_LINE = `The notch marks ${examReady_1.READY_LOW}%, this app’s study bar for your low end. Each area has its own ${exports.STEADY_FROM}% line. A study bar, not an exam score.`;
+exports.AREAS_CAPTION = 'Right on your latest tries';
+exports.AREA_LINE_LABEL = `Area line ${exports.STEADY_FROM}%`;
+function areaFigure(answered, pct) {
+    if (answered <= 0)
+        return { word: 'Not started', pct: null, thin: false, below: false, spoken: 'not started' };
+    const word = bandOf(pct);
+    const below = pct < exports.STEADY_FROM;
+    const line = below ? `below the ${exports.STEADY_FROM} line` : `at or above the ${exports.STEADY_FROM} line`;
+    if (answered < exports.BAND_MIN_ANSWERS) {
+        return { word, pct: null, thin: true, below, spoken: `${word}, from ${answered} ${answered === 1 ? 'answer' : 'answers'}, ${line}` };
+    }
+    return { word, pct, thin: false, below, spoken: `${word}, ${pct} percent on latest tries, ${line}` };
+}
+exports.YARDSTICK_LINE = `This app’s own yardstick: a low end of ${examReady_1.READY_LOW}% or more, with every domain at ${exports.STEADY_FROM}% or more. It is a study bar for this app, not a promise or a prediction of your exam result.`;
   };
   links["src/engine/examReady.ts"] = {"./streak":"src/engine/streak.ts"};
   defs["src/engine/examReady.ts"] = function (module, exports, require) {
@@ -7477,6 +7524,414 @@ function rangeSpoken(r) {
     return r.enough ? `between ${r.low} and ${r.high} percent` : 'not enough data yet';
 }
   };
+  links["src/engine/readinessReport.ts"] = {"./examReady":"src/engine/examReady.ts","./journey":"src/engine/journey.ts","./pace":"src/engine/pace.ts","./readiness":"src/engine/readiness.ts","./srs":"src/engine/srs.ts"};
+  defs["src/engine/readinessReport.ts"] = function (module, exports, require) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.PATH_NOTE = exports.PATH_REASON = exports.PATH_STEPS = exports.LOW_MIN_DAYS = exports.LOW_DAYS = exports.RAISE_MAX = exports.mockCovers = exports.mockTally = exports.tallySpoken = exports.tallyText = exports.MIXED_NOTE = exports.TREND_WINDOW = exports.LEVEL_POINTS = exports.TREND_MAX = void 0;
+exports.mockKind = mockKind;
+exports.mockPct = mockPct;
+exports.mockTrend = mockTrend;
+exports.trendWords = trendWords;
+exports.trendSpoken = trendSpoken;
+exports.domainBreakdown = domainBreakdown;
+exports.readinessLine = readinessLine;
+exports.evidenceLine = evidenceLine;
+exports.mockLine = mockLine;
+exports.domainSpoken = domainSpoken;
+exports.raiseLowerBound = raiseLowerBound;
+exports.lowSeries = lowSeries;
+exports.lowSummary = lowSummary;
+exports.lowWords = lowWords;
+exports.lowSpoken = lowSpoken;
+exports.chartScale = chartScale;
+exports.stepLabel = stepLabel;
+const examReady_1 = require("./examReady");
+const journey_1 = require("./journey");
+const pace_1 = require("./pace");
+const readiness_1 = require("./readiness");
+const srs_1 = require("./srs");
+exports.TREND_MAX = 10;
+exports.LEVEL_POINTS = 2;
+exports.TREND_WINDOW = 3;
+function mockKind(total, examQuestions) {
+    if (total === examQuestions)
+        return 'full';
+    if (total === Math.round(examQuestions / 3))
+        return 'mini';
+    return 'other';
+}
+function mockPct(m) {
+    return m.total > 0 ? Math.round((Math.min(m.correct, m.total) / m.total) * 100) : 0;
+}
+const newestFirst = (mocks) => [...mocks].sort((a, b) => b.finishedAt - a.finishedAt);
+function mockTrend(mocks, examQuestions) {
+    return newestFirst(mocks)
+        .slice(0, exports.TREND_MAX)
+        .reverse()
+        .map((m) => ({ id: m.id, at: m.finishedAt, pct: mockPct(m), kind: mockKind(m.total, examQuestions), timed: (0, pace_1.timingOf)(m.timing) !== 'untimed' }));
+}
+const FALL_NOTE = 'One mock can swing; look at the domains below.';
+exports.MIXED_NOTE = 'Mini and full mocks are mixed here; a mini mock swings more.';
+function trendWords(points) {
+    if (points.length < 2)
+        return null;
+    const mixed = (window) => window.some((p) => p.kind === 'mini') && window.some((p) => p.kind === 'full') ? ` ${exports.MIXED_NOTE}` : '';
+    const last = points[points.length - 1].pct;
+    const fall = points[points.length - 2].pct - last;
+    if (fall > exports.LEVEL_POINTS)
+        return `Down ${fall} points since your last mock. ${FALL_NOTE}${mixed(points.slice(-2))}`;
+    const n = Math.min(exports.TREND_WINDOW, points.length);
+    const delta = last - points[points.length - n].pct;
+    const span = n === 2 ? 'since your last mock' : `over your last ${n} mocks`;
+    const note = mixed(points.slice(-n));
+    if (delta > exports.LEVEL_POINTS)
+        return `Up ${delta} points ${span}.${note}`;
+    if (delta < -exports.LEVEL_POINTS)
+        return `Down ${-delta} points ${span}. ${FALL_NOTE}${note}`;
+    return `About level ${span}.${note}`;
+}
+function trendSpoken(points) {
+    const said = points.map((p) => `${p.pct}${p.kind === 'full' ? ' full' : p.kind === 'mini' ? ' mini' : ''}${p.timed ? '' : ' untimed'}`);
+    return `Your last ${points.length} mocks, oldest first, in percent: ${said.join(', ')}.`;
+}
+const tallyIn = (m, domainId) => (m ? (0, exports.mockTally)(m, domainId) : undefined);
+function domainBreakdown(cert, readiness, mocks) {
+    const total = cert.domains.reduce((s, d) => s + d.weight, 0) || 1;
+    const [last, prev] = newestFirst(mocks);
+    return cert.domains.map((domain) => {
+        var _a, _b;
+        const dm = readiness.domains.find((x) => x.domainId === domain.id);
+        const answered = (_a = dm === null || dm === void 0 ? void 0 : dm.answered) !== null && _a !== void 0 ? _a : 0;
+        const lastMock = tallyIn(last, domain.id);
+        const prevMock = tallyIn(prev, domain.id);
+        return {
+            domain,
+            weightPct: Math.round((domain.weight / total) * 100),
+            readinessPct: Math.round(((_b = dm === null || dm === void 0 ? void 0 : dm.mastery) !== null && _b !== void 0 ? _b : 0) * 100),
+            answered,
+            firm: answered >= readiness_1.MIN_SAMPLE,
+            ...(lastMock !== undefined ? { lastMock } : {}),
+            ...(prevMock !== undefined ? { prevMock } : {}),
+        };
+    });
+}
+const tallyPct = (t) => Math.round((Math.min(t.correct, t.total) / t.total) * 100);
+const tallyText = (t) => (t ? `${t.correct} of ${t.total} (${tallyPct(t)}%)` : '–');
+exports.tallyText = tallyText;
+const tallySpoken = (t) => (t ? `${t.correct} of ${t.total}, ${tallyPct(t)} percent` : 'not recorded');
+exports.tallySpoken = tallySpoken;
+const mockTally = (m, domainId) => {
+    var _a;
+    const t = (_a = m.byDomain) === null || _a === void 0 ? void 0 : _a[domainId];
+    return t && t.total > 0 ? { total: t.total, correct: Math.min(t.correct, t.total) } : null;
+};
+exports.mockTally = mockTally;
+const mockCovers = (r) => Boolean(r.lastMock || r.prevMock);
+exports.mockCovers = mockCovers;
+function readinessLine(r) {
+    return `${r.weightPct}% of the exam · ${r.answered === 0 ? 'not started yet' : `domain readiness ${r.readinessPct}%`}`;
+}
+function evidenceLine(r) {
+    if (r.answered === 0)
+        return 'No answers here yet';
+    const n = `${r.answered} ${r.answered === 1 ? 'answer' : 'answers'}`;
+    return r.firm ? `Based on ${n}` : `Based on ${n}: still firming up`;
+}
+function mockLine(r) {
+    var _a;
+    if (!(0, exports.mockCovers)(r))
+        return null;
+    const last = `Last mock ${(0, exports.tallyText)((_a = r.lastMock) !== null && _a !== void 0 ? _a : null)}`;
+    return r.prevMock !== undefined ? `${last} · the one before ${(0, exports.tallyText)(r.prevMock)}` : last;
+}
+function domainSpoken(r) {
+    const mocks = (0, exports.mockCovers)(r) ? ` Last mock ${(0, exports.tallySpoken)(r.lastMock)}.${r.prevMock !== undefined ? ` The one before ${(0, exports.tallySpoken)(r.prevMock)}.` : ''}` : '';
+    const n = `${r.answered} ${r.answered === 1 ? 'answer' : 'answers'}`;
+    const readiness = r.answered === 0 ? 'Not started yet.' : `Domain readiness ${r.readinessPct} percent, based on ${n}${r.firm ? '' : ', still firming up'}.`;
+    return `Domain ${r.domain.id}, ${r.domain.short}, ${r.weightPct} percent of the exam. ${readiness}${mocks}`;
+}
+exports.RAISE_MAX = 3;
+function raiseLowerBound(cert, readiness, range, dueCount) {
+    var _a, _b;
+    if (!range.enough) {
+        const more = range.needed;
+        return [{ kind: 'unlock', more, text: `Answer ${more} more ${more === 1 ? 'question' : 'questions'} to see your range`, button: 'Practice a mixed set' }];
+    }
+    const out = [];
+    const short = (id) => { var _a, _b; return (_b = (_a = cert.domains.find((d) => d.id === id)) === null || _a === void 0 ? void 0 : _a.short) !== null && _b !== void 0 ? _b : id; };
+    const thin = cert.domains
+        .map((d) => { var _a, _b; return ({ id: d.id, answered: (_b = (_a = readiness.domains.find((x) => x.domainId === d.id)) === null || _a === void 0 ? void 0 : _a.answered) !== null && _b !== void 0 ? _b : 0 }); })
+        .filter((d) => d.answered < readiness_1.MIN_SAMPLE)
+        .reduce((best, d) => (!best || d.answered < best.answered ? d : best), null);
+    if (thin) {
+        const more = readiness_1.MIN_SAMPLE - thin.answered;
+        out.push({ kind: 'answer', domainId: thin.id, more, text: `Answer ${more} more in ${short(thin.id)} to firm up your range`, button: `Practice ${short(thin.id)}` });
+    }
+    const focusId = readiness.focusDomainId;
+    const focus = focusId ? cert.domains.find((d) => d.id === focusId) : undefined;
+    const focusMastery = (_b = (_a = readiness.domains.find((x) => x.domainId === focusId)) === null || _a === void 0 ? void 0 : _a.mastery) !== null && _b !== void 0 ? _b : 0;
+    if (focus && focus.id !== (thin === null || thin === void 0 ? void 0 : thin.id) && focusMastery < 1) {
+        const total = cert.domains.reduce((s, d) => s + d.weight, 0) || 1;
+        out.push({ kind: 'focus', domainId: focus.id, text: `${focus.short} has the most to gain: ${Math.round((focus.weight / total) * 100)}% of the exam`, button: 'Practice weak spots' });
+    }
+    if (dueCount > 0) {
+        const count = Math.min(dueCount, srs_1.REVIEW_SESSION_CAP);
+        out.push({ kind: 'review', count, text: `Clear ${count} ${count === 1 ? 'review' : 'reviews'}: revisiting steadies your range`, button: 'Start review' });
+    }
+    if (out.length === 0)
+        out.push({ kind: 'mix', text: 'Keep a steady mix: reviews first, then your weakest domain.' });
+    return out.slice(0, exports.RAISE_MAX);
+}
+exports.LOW_DAYS = 30;
+exports.LOW_MIN_DAYS = 3;
+function lowSeries(log, today, days = exports.LOW_DAYS) {
+    const sorted = [...(log !== null && log !== void 0 ? log : [])].sort((a, b) => (a.day < b.day ? -1 : a.day > b.day ? 1 : 0));
+    const out = [];
+    for (let k = days - 1; k >= 0; k--) {
+        const day = (0, examReady_1.shiftDay)(today, k);
+        const own = sorted.find((e) => e.day === day);
+        if (own) {
+            out.push({ day, low: own.last, logged: true });
+            continue;
+        }
+        const before = sorted.filter((e) => e.day < day);
+        if (before.length === 0)
+            continue;
+        out.push({ day, low: before[before.length - 1].last, logged: false });
+    }
+    return out;
+}
+function lowSummary(series) {
+    var _a, _b, _c, _d;
+    const withValue = series.filter((d) => d.low !== null);
+    const daysWithData = series.filter((d) => d.logged && d.low !== null).length;
+    return {
+        values: withValue.map((d) => d.low),
+        daysWithData,
+        enough: daysWithData >= exports.LOW_MIN_DAYS,
+        first: (_b = (_a = withValue[0]) === null || _a === void 0 ? void 0 : _a.low) !== null && _b !== void 0 ? _b : null,
+        last: (_d = (_c = withValue[withValue.length - 1]) === null || _c === void 0 ? void 0 : _c.low) !== null && _d !== void 0 ? _d : null,
+        span: withValue.length,
+    };
+}
+function lowWords(s) {
+    if (!s.enough || s.first === null || s.last === null)
+        return null;
+    const days = `${s.span} ${s.span === 1 ? 'day' : 'days'}`;
+    return s.first === s.last ? `Held at ${s.last}% over ${days}.` : `From ${s.first}% to ${s.last}% over ${days}.`;
+}
+function lowSpoken(s) {
+    if (!s.enough || s.first === null || s.last === null)
+        return null;
+    const days = `${s.span} ${s.span === 1 ? 'day' : 'days'}`;
+    return s.first === s.last
+        ? `Your low end held at ${s.last} percent over ${days}.`
+        : `Your low end went from ${s.first} to ${s.last} percent over ${days}.`;
+}
+function chartScale(values, minSpan = 20) {
+    if (values.length === 0)
+        return { lo: 0, hi: 100 };
+    const min = Math.min(...values);
+    const max = Math.max(...values);
+    const span = Math.min(100, Math.max(minSpan, max - min + 10));
+    const lo = Math.max(0, Math.min(100 - span, (min + max) / 2 - span / 2));
+    return { lo, hi: lo + span };
+}
+exports.PATH_STEPS = [
+    { stage: 'diagnose', line: 'Your first questions: a short look at where you are.' },
+    { stage: 'learn', line: 'Lessons for the domains you need.' },
+    { stage: 'practice', line: 'Practice, then revisit what you missed.' },
+    { stage: 'mock', line: 'Mocks at exam pace.' },
+    { stage: 'ready', line: 'Light review, one mock a week.' },
+    { stage: 'examDay', line: 'Rest, a checklist, light review.' },
+];
+exports.PATH_REASON = {
+    diagnose: 'A first look comes before anything else, so the plan knows where to start.',
+    learn: 'While the basics are new, lessons come first.',
+    practice: 'Until every domain is steady, practice leads.',
+    mock: 'Every domain is steady, so mocks build your exam pace.',
+    ready: 'Your numbers are steady, so light review keeps them there.',
+    examDay: 'The exam is close: rest and light review help more than cramming.',
+};
+exports.PATH_NOTE = 'The plan moves between these as you go. If a domain slips, practice leads again for a while; mocks and lessons are always one tap away.';
+function stepLabel(stage) {
+    const i = exports.PATH_STEPS.findIndex((s) => s.stage === stage);
+    return i < 0 ? journey_1.STAGE_LABEL[stage] : `Now: ${journey_1.STAGE_LABEL[stage]}`;
+}
+  };
+  links["src/engine/readySigns.ts"] = {"./domainBand":"src/engine/domainBand.ts","./examReady":"src/engine/examReady.ts","./pace":"src/engine/pace.ts"};
+  defs["src/engine/readySigns.ts"] = function (module, exports, require) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ISACA_LINE = exports.STUDY_BAR_NOTE = exports.SIGNS_HEADING_DATED = exports.SIGNS_HEADING = exports.SIGN_NOT_YET = exports.SIGN_MET = exports.SIGN_TITLE = exports.MOCKS_NEEDED = void 0;
+exports.allMetLine = allMetLine;
+exports.domainsMet = domainsMet;
+exports.mocksMet = mocksMet;
+exports.readySigns = readySigns;
+const domainBand_1 = require("./domainBand");
+const examReady_1 = require("./examReady");
+const pace_1 = require("./pace");
+exports.MOCKS_NEEDED = 2;
+exports.SIGN_TITLE = {
+    low: `Your low end has stayed at ${examReady_1.READY_LOW}% or more for a week`,
+    domains: `Every domain at ${domainBand_1.STEADY_FROM}% or more, from ${domainBand_1.BAND_MIN_ANSWERS}+ answers each`,
+    mocks: `${exports.MOCKS_NEEDED} mocks, one a full timed mock`,
+};
+exports.SIGN_MET = 'In place';
+exports.SIGN_NOT_YET = 'Not yet';
+exports.SIGNS_HEADING = 'Ready to book?';
+exports.SIGNS_HEADING_DATED = 'Signs for your exam date';
+exports.STUDY_BAR_NOTE = 'This app’s own study bar, not a prediction of your result.';
+exports.ISACA_LINE = 'Check isaca.org before you book.';
+const COUNT_WORD = { 2: 'Both signs are', 3: 'All three signs are' };
+function allMetLine(n) {
+    var _a;
+    return `${(_a = COUNT_WORD[n]) !== null && _a !== void 0 ? _a : `All ${n} signs are`} in place. This is this app’s own study bar, not a prediction of your result.`;
+}
+function domainsMet(domains) {
+    return domains.length > 0 && domains.every((d) => d.answered >= domainBand_1.BAND_MIN_ANSWERS && d.pct >= domainBand_1.STEADY_FROM);
+}
+function mocksMet(mocks, examQuestions) {
+    return mocks.length >= exports.MOCKS_NEEDED && mocks.some((m) => m.total === examQuestions && (0, pace_1.timingOf)(m.timing) !== 'untimed');
+}
+function readySigns(input) {
+    var _a;
+    const signs = [
+        { id: 'low', title: exports.SIGN_TITLE.low, met: (0, examReady_1.readyHoldDays)([...((_a = input.readinessLog) !== null && _a !== void 0 ? _a : [])], input.today) >= examReady_1.READY_DAYS },
+        { id: 'domains', title: exports.SIGN_TITLE.domains, met: domainsMet(input.domains) },
+    ];
+    if (input.mockSign !== false)
+        signs.push({ id: 'mocks', title: exports.SIGN_TITLE.mocks, met: mocksMet(input.mocks, input.examQuestions) });
+    const allMet = signs.every((s) => s.met);
+    return { signs, allMet, line: allMet ? allMetLine(signs.length) : exports.STUDY_BAR_NOTE, isacaLine: allMet ? exports.ISACA_LINE : null };
+}
+  };
+  links["src/engine/srs.ts"] = {};
+  defs["src/engine/srs.ts"] = function (module, exports, require) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.DAY_MS = exports.MAX_BOX = exports.RETEST_LINE = exports.RETEST_WINDOW_MS = exports.INTERVAL_DAYS = exports.REVIEW_UNIT = exports.REVIEW_CAP_LINE = exports.REVIEW_SESSION_CAP = void 0;
+exports.isRetest = isRetest;
+exports.isRetestAfterMiss = isRetestAfterMiss;
+exports.startOfNextDay = startOfNextDay;
+exports.nextReview = nextReview;
+exports.nextCardReview = nextCardReview;
+exports.upcomingReview = upcomingReview;
+exports.upcomingReviewLine = upcomingReviewLine;
+exports.dueIds = dueIds;
+exports.dueCountFor = dueCountFor;
+exports.REVIEW_SESSION_CAP = 20;
+exports.REVIEW_CAP_LINE = `${exports.REVIEW_SESSION_CAP} at a time, most overdue first`;
+exports.REVIEW_UNIT = 'due';
+exports.INTERVAL_DAYS = { 1: 0, 2: 1, 3: 3, 4: 7, 5: 16 };
+exports.RETEST_WINDOW_MS = 4 * 3600000;
+exports.RETEST_LINE = 'Back in your review tomorrow.';
+function isRetest(prevAt, now) {
+    if (prevAt === undefined)
+        return false;
+    const gap = now - prevAt;
+    return gap >= 0 && gap < exports.RETEST_WINDOW_MS;
+}
+function isRetestAfterMiss(prev, now) {
+    return prev !== undefined && prev.lastCorrect === false && isRetest(prev.lastAt, now);
+}
+function startOfNextDay(now) {
+    const d = new Date(now);
+    d.setHours(24, 0, 0, 0);
+    return d.getTime();
+}
+exports.MAX_BOX = 5;
+exports.DAY_MS = 86400000;
+function nextReview(current, correct, confidence, now, assisted = false, retest = false) {
+    var _a;
+    if (!correct) {
+        return { box: 1, dueAt: startOfNextDay(now), lastSeen: now, reps: ((_a = current === null || current === void 0 ? void 0 : current.reps) !== null && _a !== void 0 ? _a : 0) + 1 };
+    }
+    if (retest) {
+        const tomorrow = startOfNextDay(now);
+        if (current)
+            return { ...current, dueAt: Math.max(current.dueAt, tomorrow), lastSeen: now, reps: current.reps + 1 };
+        return { box: 1, dueAt: tomorrow, lastSeen: now, reps: 1 };
+    }
+    if (!current) {
+        if (confidence === 'guessing')
+            return { box: 1, dueAt: now + exports.DAY_MS, lastSeen: now, reps: 1 };
+        if (confidence === 'unsure')
+            return { box: 2, dueAt: now + exports.INTERVAL_DAYS[2] * exports.DAY_MS, lastSeen: now, reps: 1 };
+        return null;
+    }
+    if (confidence === 'guessing' || assisted) {
+        return {
+            ...current,
+            dueAt: Math.max(now + exports.INTERVAL_DAYS[current.box] * exports.DAY_MS, startOfNextDay(now)),
+            lastSeen: now,
+            reps: current.reps + 1,
+        };
+    }
+    if (current.box >= exports.MAX_BOX)
+        return null;
+    const box = current.box + 1;
+    return { box, dueAt: now + exports.INTERVAL_DAYS[box] * exports.DAY_MS, lastSeen: now, reps: current.reps + 1 };
+}
+function nextCardReview(current, correct, now) {
+    var _a;
+    if (!correct)
+        return { box: 1, dueAt: now, lastSeen: now, reps: ((_a = current === null || current === void 0 ? void 0 : current.reps) !== null && _a !== void 0 ? _a : 0) + 1 };
+    return nextReview(current, true, undefined, now);
+}
+function upcomingReview(review, now, exists = () => true) {
+    const future = Object.entries(review)
+        .filter(([id]) => exists(id))
+        .map(([, r]) => r.dueAt)
+        .filter((t) => t > now);
+    if (future.length === 0)
+        return null;
+    const at = Math.min(...future);
+    const end = new Date(at);
+    end.setHours(23, 59, 59, 999);
+    return { at, count: future.filter((t) => t <= end.getTime()).length };
+}
+function upcomingReviewLine(next, now, dateOf) {
+    const day = (ms) => {
+        const d = new Date(ms);
+        return Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) / exports.DAY_MS;
+    };
+    const gap = day(next.at) - day(now);
+    const when = gap <= 0 ? 'later today' : gap === 1 ? 'tomorrow' : dateOf(next.at);
+    return `Next review: ${when} · ${next.count} ${next.count === 1 ? 'question' : 'questions'}`;
+}
+function dueIds(review, now, exists = () => true) {
+    return Object.keys(review)
+        .filter((id) => review[id].dueAt <= now && exists(id))
+        .sort((a, b) => review[a].dueAt - review[b].dueAt || review[a].box - review[b].box);
+}
+const dueCounts = new WeakMap();
+const everyQuestion = () => true;
+function dueCountFor(review, now, exists = everyQuestion) {
+    let byRule = dueCounts.get(review);
+    if (!byRule) {
+        byRule = new WeakMap();
+        dueCounts.set(review, byRule);
+    }
+    const hit = byRule.get(exists);
+    if (hit && now >= hit.at && now < hit.next)
+        return hit.count;
+    let count = 0;
+    let next = Infinity;
+    for (const id of Object.keys(review)) {
+        const due = review[id].dueAt;
+        if (due <= now) {
+            if (exists(id))
+                count++;
+        }
+        else if (due < next)
+            next = due;
+    }
+    byRule.set(exists, { at: now, next, count });
+    return count;
+}
+  };
   links["src/engine/streak.ts"] = {};
   defs["src/engine/streak.ts"] = function (module, exports, require) {
 "use strict";
@@ -8158,6 +8613,10 @@ exports.plantLine = {
   api["streak"] = load("src/engine/streak.ts");
   api["outline"] = load("src/engine/outline.ts");
   api["notesPack"] = load("scripts/notes-pack.cjs");
-  api.sourceHash = "b092db87e5303cb0";
+  api["readinessReport"] = load("src/engine/readinessReport.ts");
+  api["domainBand"] = load("src/engine/domainBand.ts");
+  api["pace"] = load("src/engine/pace.ts");
+  api["readySigns"] = load("src/engine/readySigns.ts");
+  api.sourceHash = "5c4b0b7bfc229ab5";
   root.KaiSipPlant = Object.freeze(api);
 })(typeof window !== 'undefined' ? window : globalThis);
