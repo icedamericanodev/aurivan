@@ -9161,7 +9161,7 @@
       "options": {
         "A": "Deploy an emergency mitigation and fast-track the permanent fix",
         "B": "Notify customers and regulators that a data breach has occurred",
-        "C": "Seek legal action against the researcher over the disclosure",
+        "C": "Ask the researcher to take the public post down",
         "D": "Keep the 90-day schedule because the policy window is still open"
       },
       "correct": "A",
@@ -9170,11 +9170,11 @@
       "correct_explanation": "Public technical details make exploitation likely within hours, so the risk has changed from latent to imminent. An emergency mitigation reduces exposure now, and fast-tracking the fix closes it. Notifying customers and regulators is transparent, but no breach has been confirmed yet; notice comes after assessing whether data was actually accessed.",
       "wrong_explanations": {
         "B": "Declaring a breach before evidence of access misstates the facts; the immediate need is to cut exposure, then assess and notify as required.",
-        "C": "Legal action does not reduce exposure, and acting against a good-faith researcher damages the firm's disclosure program and reputation.",
+        "C": "Even if the post comes down, copies spread quickly and the flaw stays open, so the exposure is unchanged.",
         "D": "The internal window assumed the flaw was secret. Public disclosure changes the risk, so the original timeline no longer applies."
       },
       "tips": [
-        "Eliminate: C pursues the researcher instead of the risk, and D ignores that public disclosure makes exploitation imminent.",
+        "Eliminate: C tries to withdraw details already public instead of reducing exposure, and D keeps a timeline that assumed the flaw was secret.",
         "Final two: A beats B because the first priority is to reduce exposure; notification follows once access is actually assessed.",
         "Exam cue: when a vulnerability becomes public, re-rate the risk and mitigate at once rather than holding to the old timeline."
       ],
@@ -9186,7 +9186,7 @@
         "Researcher relationships",
         "ISO/IEC 29147"
       ],
-      "_provenance": "Authored from concept: 'Bug-bounty public disclosure dispute'. Public sources: ISACA, OWASP, DoJ, ISO/IEC. Scenario specifics (SaaS $420M ARR, 47-day delay, $8K bounty, high-severity API gateway misconfiguration, researcher public disclosure with technical details) invented. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged.",
+      "_provenance": "Authored from concept: 'Bug-bounty public disclosure dispute'. Public sources: ISACA, OWASP, DoJ, ISO/IEC. Scenario specifics (SaaS $420M ARR, 47-day delay, $8K bounty, high-severity API gateway misconfiguration, researcher public disclosure with technical details) invented. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. D4 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): C (sue the researcher) was a strawman; it is now asking for the post to be removed, which leaves the exposure in place.",
       "style_version": 2
     },
     {
@@ -9427,7 +9427,7 @@
       "options": {
         "A": "Preserve the failed HSM and engage its vendor on recovery",
         "B": "Declare the archives permanently unrecoverable to the regulator",
-        "C": "Destroy the unreadable tapes since the data is now erased",
+        "C": "Rebuild the archive from the data held in the live systems",
         "D": "Procure a replacement HSM and generate new backup keys"
       },
       "correct": "A",
@@ -9436,11 +9436,11 @@
       "correct_explanation": "Recovery may still be possible, because HSM vendors and specialists can sometimes extract key material from failed hardware. Preserving the device and every related artifact keeps that option open before any irreversible step. Procuring a new HSM is needed for future backups, but it does nothing for the archive and may lead to the failed unit being returned or wiped.",
       "wrong_explanations": {
         "B": "Declaring permanent loss before recovery has been attempted is premature and may misstate the position to the regulator.",
-        "C": "Destroying tapes removes any chance of recovery and may breach record-retention duties for patient and financial data.",
+        "C": "Live systems hold current data, not seven years of history, so most archived records cannot be rebuilt this way.",
         "D": "New keys protect future backups, but this abandons the archive and risks the failed device being swapped out and wiped."
       },
       "tips": [
-        "Eliminate: B gives up before trying recovery, and C makes the loss irreversible and breaches retention duties.",
+        "Eliminate: B gives up before recovery has been tried, and C rebuilds from live systems that do not hold the archived years.",
         "Final two: A beats D because recovery of the archive must be attempted first; the forward fix can follow without destroying options.",
         "Exam cue: when data may be lost, preserve every artifact and attempt recovery before any irreversible action."
       ],
@@ -9452,7 +9452,7 @@
         "HIPAA retention 6 years",
         "FIPS 140-3"
       ],
-      "_provenance": "Authored from concept: 'Backup encryption key loss recovery and governance'. Public sources: NIST, HHS, ISO/IEC, FIPS. Scenario specifics (regional hospital $1.4B, HSM failure 5 days ago, 4.8 PB across 7 years, theoretical-only escrow) invented. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged.",
+      "_provenance": "Authored from concept: 'Backup encryption key loss recovery and governance'. Public sources: NIST, HHS, ISO/IEC, FIPS. Scenario specifics (regional hospital $1.4B, HSM failure 5 days ago, 4.8 PB across 7 years, theoretical-only escrow) invented. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. D4 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): C (destroy the tapes) was a strawman; it is now rebuilding from live systems, which lack the history.",
       "style_version": 2
     },
     {
@@ -9655,9 +9655,9 @@
       "question": "A production system runs on an unsupported OS behind network isolation and compensating controls; replacing it costs $8M and 18 months. What is the BEST recommendation the IS auditor should give the CTO?",
       "options": {
         "A": "Mandate full replacement within six months using compressed validation testing",
-        "B": "Obtain formal management risk acceptance with a funded exit plan",
+        "B": "Obtain formal management acceptance with a funded exit plan",
         "C": "Continue operating the system under its existing compensating controls",
-        "D": "Leave the system off the insurer's renewal risk questionnaire"
+        "D": "Move the system onto a cloud host running the same OS"
       },
       "correct": "B",
       "key_concept": "Residual risk from an end-of-support system must be formally accepted by the accountable risk owner and tied to a dated replacement plan.",
@@ -9666,10 +9666,10 @@
       "wrong_explanations": {
         "A": "A mandate does not make skipped testing safe; compressed validation risks errors and compliance failures in production.",
         "C": "The controls help, but without formal acceptance and an exit plan the risk has no accountable owner and no end date.",
-        "D": "Omitting a known risk from an insurance application is misrepresentation and could void cover when it is needed."
+        "D": "Rehosting keeps the same unsupported OS, so the vulnerability and the unowned risk both remain."
       },
       "tips": [
-        "Eliminate: A sacrifices required validation for speed, and D misrepresents the risk to the insurer.",
+        "Eliminate: A sacrifices required validation for speed, and D moves the unsupported OS without replacing it.",
         "Final two: B beats C because compensating controls need an accountable owner and an end date, not just continuation.",
         "Exam cue: for unsupported systems, look for formal risk acceptance by management plus a replacement plan."
       ],
@@ -9681,7 +9681,7 @@
         "FDA QSR validation",
         "Risk acceptance governance"
       ],
-      "_provenance": "Authored from concept: 'EOS system managed continuation with regulator concerns'. Public sources: NIST, FDA, ISACA. Scenario specifics (manufacturer $430M, Windows Server 2008 5+ years past EOS, $8M CAPEX + 18-month replacement, FDA regulator concerns) invented. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'EOS system managed continuation with regulator concerns'. Public sources: NIST, FDA, ISACA. Scenario specifics (manufacturer $430M, Windows Server 2008 5+ years past EOS, $8M CAPEX + 18-month replacement, FDA regulator concerns) invented. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D4 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): D (hide the risk from the insurer) was a strawman; it is now rehosting on the same OS. Cue balance: the key no longer carries 'risk'.",
       "style_version": 2
     },
     {
@@ -9692,10 +9692,10 @@
       "bloom_level": "Application",
       "question": "An IS auditor finds the sales team adopted an unsanctioned project-tracking SaaS tool that now holds customer data and supports daily work. What should the auditor recommend as BEST?",
       "options": {
-        "A": "Risk-assess the tool and bring it under IT governance",
+        "A": "Assess the tool and bring it under IT governance",
         "B": "Order the team to stop using the tool and delete its data",
         "C": "Accept the tool as is with the sales director's approval",
-        "D": "Discipline the managers who bought it without IT review"
+        "D": "Buy an enterprise license for the tool across the firm"
       },
       "correct": "A",
       "key_concept": "Discovered shadow IT that meets a real need should be risk-assessed, then sanctioned and secured or replaced, rather than banned outright.",
@@ -9704,10 +9704,10 @@
       "wrong_explanations": {
         "B": "An abrupt ban disrupts work, risks losing customer records and pushes future tools further out of sight.",
         "C": "Approval without assessment leaves customer data under unknown security and contract terms.",
-        "D": "Discipline assigns blame but does not manage the risk to customer data, and it discourages disclosure of other tools."
+        "D": "A firm-wide license expands use before anyone checks the tool's security, contract or data handling."
       },
       "tips": [
-        "Eliminate: C approves the tool without assessing its risk, and D punishes people without managing the data.",
+        "Eliminate: C approves the tool without assessing it, and D expands its use before anyone checks its security.",
         "Final two: A beats B because assessment lets the business keep a needed tool safely; a ban disrupts work and drives tools into hiding.",
         "Exam cue: when shadow IT meets a real need, assess it, then sanction or replace it; blocking is a last resort."
       ],
@@ -9718,7 +9718,7 @@
         "Risk assessment",
         "Sanction or replace"
       ],
-      "_provenance": "Authored from concept: 'Public S3 bucket researcher disclosure'. Public sources: AWS, CSA, ISO/IEC, DOJ, ISACA. Scenario specifics (SaaS $380M ARR, 14-month-old bucket, 28K customer emails + internal Slack + source code, researcher web-scan discovery) invented. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): stem names the decision-maker directly. Rebalanced (Oct 2026): re-angled from 5B5 to 4A5.",
+      "_provenance": "Authored from concept: 'Public S3 bucket researcher disclosure'. Public sources: AWS, CSA, ISO/IEC, DOJ, ISACA. Scenario specifics (SaaS $380M ARR, 14-month-old bucket, 28K customer emails + internal Slack + source code, researcher web-scan discovery) invented. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): stem names the decision-maker directly. Rebalanced (Oct 2026): re-angled from 5B5 to 4A5. D4 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): D (discipline the managers) was a strawman; it is now a firm-wide license bought before assessment. Cue balance: the key no longer carries 'risk'.",
       "style_version": 2
     },
     {
@@ -9847,7 +9847,7 @@
         "A": "Keep separate team trackers and consolidate them before the exam",
         "B": "Close each item once its owner confirms the fix is done",
         "C": "Remediate items in the examination's scope before the others",
-        "D": "Use one risk-ranked register with owners, dates and retesting"
+        "D": "Track the findings in one risk-ranked register with retesting"
       },
       "correct": "D",
       "key_concept": "Remediation is tracked in one risk-ranked register with owners, target dates and retesting before closure, not by examination scope.",
@@ -9859,7 +9859,7 @@
         "C": "Ordering work by the examiner's scope rather than by risk leaves higher-risk items outside that scope unremediated."
       },
       "tips": [
-        "Eliminate: A hides progress until just before the exam, and B closes items on the owner's word without retesting.",
+        "Eliminate: A keeps progress out of view until just before the exam, and B closes items on the owner's word without retesting.",
         "Final two: D beats C because remediation is ordered by risk, not by what examiners plan to look at.",
         "Exam cue: sound remediation tracking means one register, risk ranking, owners, due dates and retesting before closure."
       ],
@@ -9870,7 +9870,7 @@
         "Follow-up activities",
         "Findings prioritization"
       ],
-      "_provenance": "Authored from concept: 'D4 capstone — year-long Operations & Resilience audit conclusion'. Public sources: ISACA, IIA, COBIT, ISO. Scenario specifics (financial services $3.2B, year-long Operations & Resilience audit, multi-domain findings, 6-month examination horizon) invented. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Re-angled to D4 operations/resilience after domain audit.",
+      "_provenance": "Authored from concept: 'D4 capstone — year-long Operations & Resilience audit conclusion'. Public sources: ISACA, IIA, COBIT, ISO. Scenario specifics (financial services $3.2B, year-long Operations & Resilience audit, multi-domain findings, 6-month examination horizon) invented. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Re-angled to D4 operations/resilience after domain audit. D4 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Cue balance: the key is no longer a three-part list naming owners. Eliminate tip no longer uses dismissive wording.",
       "style_version": 2
     },
     {
@@ -9959,12 +9959,12 @@
         "D": "Usage statistics measure activity, not business impact over time."
       },
       "tips": [
-        "Eliminate: C ignores cost and real impact differences, and D swaps business impact for usage.",
+        "Eliminate: C funds every process at the top tier whatever its impact, and D swaps business impact for usage.",
         "Final two: A beats B because shared criteria create real priorities; self-ratings make everything critical.",
         "Exam cue: BIA priorities come from defined impact criteria applied consistently, agreed by senior management."
       ],
       "framework_ref": "ISO 22301:2019 clause 8.2.2; NIST SP 800-34 Rev 1 Section 3.2",
-      "_provenance": "Authored from concept: 'BIA primary purpose per ISO 22301:2019 and NIST SP 800-34 Rev 1'. Foundational recall tier. Public sources: ISO 22301:2019 clause 8.2.2, NIST SP 800-34 Rev 1 Section 3.2. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Cross-domain review (Oct 2026): re-angled or clarified to remove duplication/contradiction. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged.",
+      "_provenance": "Authored from concept: 'BIA primary purpose per ISO 22301:2019 and NIST SP 800-34 Rev 1'. Foundational recall tier. Public sources: ISO 22301:2019 clause 8.2.2, NIST SP 800-34 Rev 1 Section 3.2. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Cross-domain review (Oct 2026): re-angled or clarified to remove duplication/contradiction. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. D4 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Eliminate tip no longer uses dismissive wording.",
       "style_version": 2
     },
     {
@@ -10797,7 +10797,7 @@
         "C": "A rebuild degrades performance for a while, but the databases stay available; the single switch can stop them all."
       },
       "tips": [
-        "Eliminate: A ignores that RAID 6 survives two disk failures, and B ignores that the second controller takes over.",
+        "Eliminate: A is a double disk failure that RAID 6 survives, and B is a controller failure the second controller covers.",
         "Final two: D beats C because a switch fault stops all 30 databases, while a rebuild only slows them.",
         "Exam cue: redundant parts do not make a redundant path; find the one component every system passes through."
       ],
@@ -10808,7 +10808,7 @@
         "RAID 6",
         "Redundant paths"
       ],
-      "_provenance": "Authored from concept: 'Storage Architecture. Resilience of a Shared SAN'. Original KaiSip item (Oct 2026), written for CISA subtopic 4A1.3 (Wave 2 coverage batch Q7: thin subtopic). Distinct from d4_101 (converged storage and voice sharing one core): tests spotting a single path behind otherwise redundant storage components. Public sources: ISO/IEC 27002, NIST SP 800-209, ISO/IEC 27040.",
+      "_provenance": "Authored from concept: 'Storage Architecture. Resilience of a Shared SAN'. Original KaiSip item (Oct 2026), written for CISA subtopic 4A1.3 (Wave 2 coverage batch Q7: thin subtopic). Distinct from d4_101 (converged storage and voice sharing one core): tests spotting a single path behind otherwise redundant storage components. Public sources: ISO/IEC 27002, NIST SP 800-209, ISO/IEC 27040. D4 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Eliminate tip no longer uses dismissive wording.",
       "style_version": 2
     },
     {
@@ -10872,7 +10872,7 @@
         "D": "A reminder is a weak directive control; staff who can still install freely will keep creating unlicensed copies."
       },
       "tips": [
-        "Eliminate: B buys its way around the problem at high cost, and D relies on a reminder staff can ignore.",
+        "Eliminate: B buys its way around the problem at high cost, and D relies on a reminder while staff can still install freely.",
         "Final two: C beats A because stopping unapproved installs prevents new gaps; monthly reconciliation only finds them afterward.",
         "Exam cue: once a compliance gap is closed, fix the process that let it grow; prefer a preventive follow-up over a detective one."
       ],
@@ -10883,7 +10883,7 @@
         "Preventive versus detective controls",
         "Root cause"
       ],
-      "_provenance": "Authored from concept: 'Software Licensing. Follow-Up After a Shortfall'. Original KaiSip item (Oct 2026), written for CISA subtopic 4A2.2 (Wave 2 coverage batch Q7: thin subtopic). Distinct from d4_029 (reconcile before a vendor audit) and d4_142 (copyleft risk): tests fixing the installation process that created the gap after the shortfall is bought. Public sources: ISO/IEC 27002, ISO/IEC 19770-1, CIS Controls v8",
+      "_provenance": "Authored from concept: 'Software Licensing. Follow-Up After a Shortfall'. Original KaiSip item (Oct 2026), written for CISA subtopic 4A2.2 (Wave 2 coverage batch Q7: thin subtopic). Distinct from d4_029 (reconcile before a vendor audit) and d4_142 (copyleft risk): tests fixing the installation process that created the gap after the shortfall is bought. Public sources: ISO/IEC 27002, ISO/IEC 19770-1, CIS Controls v8 D4 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Eliminate tip no longer uses dismissive wording.",
       "style_version": 2
     },
     {
@@ -11049,7 +11049,7 @@
         "A": "Tighter user access and journal approval controls in the ledger",
         "B": "Written attestations from each source owner that its feed is accurate",
         "C": "A full reconciliation of every feed's transactions for the year",
-        "D": "A register recording each feed's data flow, owner and risk"
+        "D": "A register describing each feed's data flow and risk rating"
       },
       "correct": "D",
       "key_concept": "Interface risk sits at every hop into a system; an inventory of each feed, its owner and its risk comes before other controls.",
@@ -11072,7 +11072,7 @@
         "Interface ownership",
         "Feeder systems"
       ],
-      "_provenance": "Authored from concept: 'Interface Risk. Unlisted Feeds Into a Ledger'. Original KaiSip item (Oct 2026), written for CISA subtopic 4A4.1 (Wave 2 coverage batch Q7: thin subtopic). Distinct from d4_111 (trace one interface through every hop) and d4_044 (delivery acknowledgments): tests inventorying unlisted feeds, with owners and risk, before other interface controls. Public sources: COBIT 2019.",
+      "_provenance": "Authored from concept: 'Interface Risk. Unlisted Feeds Into a Ledger'. Original KaiSip item (Oct 2026), written for CISA subtopic 4A4.1 (Wave 2 coverage batch Q7: thin subtopic). Distinct from d4_111 (trace one interface through every hop) and d4_044 (delivery acknowledgments): tests inventorying unlisted feeds, with owners and risk, before other interface controls. Public sources: COBIT 2019. D4 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Cue balance: the key is no longer a three-part list naming an owner.",
       "style_version": 2
     },
     {
@@ -11343,7 +11343,7 @@
       "bloom_level": "Application",
       "question": "A service level agreement (SLA) restore target is missed only when the in-house database team must act, and that team handles requests in arrival order. What is the GREATEST weakness the IS auditor should report?",
       "options": {
-        "A": "No agreement commits the database team to response times",
+        "A": "No internal agreement backs the SLA with set response times",
         "B": "The restore target is stricter than recent results support",
         "C": "Missed targets are not reported to the business each month",
         "D": "The agreement sets no service credits for missed targets"
@@ -11369,7 +11369,7 @@
         "Service level management",
         "End-to-end targets"
       ],
-      "_provenance": "Authored from concept: 'Service Levels. Missed Restore Targets'. Original KaiSip item (Oct 2026), written for CISA subtopic 4A10.1 (Wave 2 coverage batch Q8: thin subtopic). Distinct from d4_003 (measurable targets), d4_165 (balanced metrics), d4_171 and d4_180 (measuring and reconciling performance) and d4_246 (incident notification): tests that internal teams behind an SLA need OLAs that support its targets. Public sources: ITIL 4, COBIT 2019.",
+      "_provenance": "Authored from concept: 'Service Levels. Missed Restore Targets'. Original KaiSip item (Oct 2026), written for CISA subtopic 4A10.1 (Wave 2 coverage batch Q8: thin subtopic). Distinct from d4_003 (measurable targets), d4_165 (balanced metrics), d4_171 and d4_180 (measuring and reconciling performance) and d4_246 (incident notification): tests that internal teams behind an SLA need OLAs that support its targets. Public sources: ITIL 4, COBIT 2019. D4 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Gap-echo: the key no longer repeats 'database team'.",
       "style_version": 2
     },
     {
@@ -11621,7 +11621,7 @@
         "D": "Leaving parts delays out of the figure hides downtime instead of reducing it; the business would still face two-day outages."
       },
       "tips": [
-        "Eliminate: C and D, because preventive maintenance targets failures that are already rare, and changing the report hides downtime rather than cutting it.",
+        "Eliminate: C and D, because preventive maintenance targets failures that are already rare, and changing the report removes downtime from the figure, not from the business.",
         "Final two: A beats B because faster repair alone meets the four-hour tolerance; a failover site buys resilience the business does not need.",
         "Exam cue: split downtime into how often and how long; recommend the cheapest fix for the factor that breaks the business tolerance."
       ],
@@ -11632,7 +11632,7 @@
         "Availability",
         "Cost-effective resilience"
       ],
-      "_provenance": "Authored from concept: 'Availability Improvement. Long Repair Times'. Original KaiSip item (Oct 2026), written for CISA subtopic 4A6.1 (Wave 3 coverage batch Q15: thin subtopic). Distinct from d4_154 (interpreting MTTR and MTBF trends) and d4_041 (setting targets from business impact): tests choosing the improvement by the factor that drives downtime, at a cost matched to tolerance. Public sources: COBIT 2019.",
+      "_provenance": "Authored from concept: 'Availability Improvement. Long Repair Times'. Original KaiSip item (Oct 2026), written for CISA subtopic 4A6.1 (Wave 3 coverage batch Q15: thin subtopic). Distinct from d4_154 (interpreting MTTR and MTBF trends) and d4_041 (setting targets from business impact): tests choosing the improvement by the factor that drives downtime, at a cost matched to tolerance. Public sources: COBIT 2019. D4 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Eliminate tip no longer uses dismissive wording.",
       "style_version": 2
     },
     {
@@ -12148,7 +12148,7 @@
         "D": "Partial fixes inside IT's budget leave the service outside tolerance with no approved plan, and bypass the senior management that set the tolerance."
       },
       "tips": [
-        "Eliminate: C and D, because raising the tolerance hides the gap, and cheap fixes within IT's budget bypass the senior management that set it.",
+        "Eliminate: C and D, because raising the tolerance to match recovery defeats its purpose, and cheap fixes within IT's budget bypass the senior management that set it.",
         "Final two: A beats B because only senior management, which set the tolerance, can fund the fix; the service owner cannot defer a breach alone.",
         "Exam cue: when a gap needs money or exceeds an approved limit, the decision goes to whoever set the limit."
       ],
@@ -12159,7 +12159,7 @@
         "Escalation to senior management",
         "Resilience remediation"
       ],
-      "_provenance": "Authored from concept: 'Impact Tolerances. Handling a Tolerance Breach'. Original KaiSip item (Oct 2026), written for CISA subtopic 4B2.4 (batch Q16: practice for the web v12.24 study notes). Distinct from the D4 recovery-test and BIA items: tests who decides when a resilience exercise breaches an impact tolerance. Public sources: Bank of England PRA and ISACA COBIT 2019.",
+      "_provenance": "Authored from concept: 'Impact Tolerances. Handling a Tolerance Breach'. Original KaiSip item (Oct 2026), written for CISA subtopic 4B2.4 (batch Q16: practice for the web v12.24 study notes). Distinct from the D4 recovery-test and BIA items: tests who decides when a resilience exercise breaches an impact tolerance. Public sources: Bank of England PRA and ISACA COBIT 2019. D4 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Eliminate tip no longer uses dismissive wording.",
       "style_version": 2
     },
     {
