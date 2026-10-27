@@ -3,14 +3,25 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- DRAFT, NOT IN EFFECT. Uplift Phase 6 (accounts, built OFF). Published at the
-     site root, replacing privacy.html, only at Phase 9 with the owner's go-ahead,
-     after the [placeholders] are filled in. Phase 7 added the Sync paragraphs;
-     Phase 8 adds the feedback board paragraph (see the HTML comments below).
-     Links assume the page sits at the site root, where it will be published. -->
+<!-- DRAFT, NOT IN EFFECT. Accounts beta (27 Oct 2026). Rebuilt from the live
+     privacy.html (last updated 26 Oct 2026) so nothing published since is lost,
+     plus the optional account (section 6A, the app and the website) and the
+     Philippine Data Privacy Act (section 7A). Web v13 publishes it at the site
+     root, replacing privacy.html, together with the account screens; until then
+     it is neither linked nor published (scripts/build_site.sh copies only its
+     allowlist, and docs/ is not on it). Before publishing: fill in every
+     [placeholder], remove the draft banner and the noindex line, set "Last
+     updated", and ask the NPC or a lawyer the two open questions in section 7A.
+     The feedback board paragraphs are left out on purpose: the board is off in
+     the beta (the Phase 8 wording is in git history, for when it ships). -->
 <meta name="robots" content="noindex, nofollow">
 <title>Privacy Policy (draft) — KaiSip</title>
-<meta name="description" content="Draft, not in effect: how KaiSip would handle your data if you choose to create an optional account.">
+<meta name="description" content="Draft, not in effect: how KaiSip handles your data, including the optional account on the app and the website.">
+<link rel="icon" href="assets/favicon.ico" sizes="48x48">
+<link rel="icon" type="image/svg+xml" href="assets/icon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
 <script>
   /* Follow the theme the learner chose in the app, otherwise the system. */
   try { var t = localStorage.getItem('cisa_theme'); if (t === 'dark' || t === 'light') document.documentElement.setAttribute('data-theme', t); } catch (e) {}
@@ -20,7 +31,7 @@
      follows the system, or the choice saved by the app (see the script in <head>). */
   :root {
     color-scheme: light;
-    --bg: #F3F1EA; --card: #FFFFFF; --soft: #E6EBE2; --line: #DFDCD1;
+    --bg: #F3F1EA; --card: #FFFFFF; --soft: #E9E6DC; --line: #DFDCD1;
     --ink: #17231B; --ink2: #465349;
     --accent: #2B6E4A; --accent-text: #24603F;
     --tip: #7A5100; --tip-bg: #F3EAD3;
@@ -34,7 +45,7 @@
       --bg: #111613; --card: #1A211C; --soft: #202A23; --line: #29322B;
       --ink: #ECEFE8; --ink2: #B4BFB6;
       --accent: #7FC39C; --accent-text: #93CFAA;
-      --tip: #E9C46A; --tip-bg: #2C2715;
+      --tip: #E9C46A; --tip-bg: #2B2418;
       --tn-needle: #F3F1EA; --tn-ring: #A9D9BA; --tn-word: #F3F1EA;
     }
   }
@@ -43,7 +54,7 @@
     --bg: #111613; --card: #1A211C; --soft: #202A23; --line: #29322B;
     --ink: #ECEFE8; --ink2: #B4BFB6;
     --accent: #7FC39C; --accent-text: #93CFAA;
-    --tip: #E9C46A; --tip-bg: #2C2715;
+    --tip: #E9C46A; --tip-bg: #2B2418;
     --tn-needle: #F3F1EA; --tn-ring: #A9D9BA; --tn-word: #F3F1EA;
   }
   /* Fraunces + Figtree, served from this site (no request to a font service). */
@@ -58,13 +69,9 @@
     line-height: 1.65; font-size: 16px;
   }
   .wrap { max-width: 760px; margin: 0 auto; padding: 32px 22px 64px; }
-  .draft {
-    background: var(--tip-bg); border: 2px solid var(--tip); color: var(--tip);
-    border-radius: 16px; padding: 12px 16px; margin: 0 0 22px; font-size: 15px;
-  }
-  .draft strong { display: block; font-size: 17px; }
   header.doc { border-bottom: 1px solid var(--line); padding-bottom: 20px; margin-bottom: 28px; }
   .brand { display: inline-block; color: var(--ink); text-decoration: none; }
+  .brand .brand-logo { height: 40px; width: auto; display: block; }
   h1 { font: 500 32px/1.2 var(--f-serif); margin: 18px 0 6px; color: var(--ink); }
   .updated { font-size: 13px; color: var(--ink2); margin: 0; }
   h2 { font: 500 22px/1.3 var(--f-serif); margin: 34px 0 10px; color: var(--ink); }
@@ -79,17 +86,26 @@
   }
   .lead p:first-child { margin-top: 0; }
   .lead p:last-child { margin-bottom: 0; }
+  .toc { margin: 0 0 8px; }
+  .toc-title { font: 600 14px/20px var(--f-sans); color: var(--ink2); margin: 0 0 6px; }
+  .toc ol { margin: 0; padding-left: 0; list-style: none; columns: 2; column-gap: 24px; }
+  .toc li { margin: 0; break-inside: avoid; }
+  .toc a { display: inline-block; padding: 6px 0; }
+  @media (max-width: 600px) { .toc ol { columns: 1; } .toc a { min-height: 44px; display: inline-flex; align-items: center; } }
   table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 14.5px; }
   th, td { text-align: left; padding: 9px 10px; border: 1px solid var(--line); vertical-align: top; }
   th { background: var(--soft); color: var(--ink); }
   footer.doc { margin-top: 48px; border-top: 1px solid var(--line); padding-top: 20px; font-size: 14px; color: var(--ink2);
     display: flex; flex-wrap: wrap; gap: 4px 16px; }
+  /* A link never breaks across lines ("Terms of / Use"), and is a 44px tap target on phones. */
   footer.doc a { margin-right: 0; white-space: nowrap; }
-  @media (max-width: 600px) {
-    .wrap { padding: 24px 16px 56px; }
-    table { display: block; overflow-x: auto; }
-    footer.doc a { display: inline-flex; align-items: center; min-height: 44px; }
+  @media (max-width: 600px) { footer.doc a { display: inline-flex; align-items: center; min-height: 44px; } }
+  .draft {
+    background: var(--tip-bg); border: 2px solid var(--tip); color: var(--tip);
+    border-radius: 16px; padding: 12px 16px; margin: 0 0 22px; font-size: 15px;
   }
+  .draft strong { display: block; font-size: 17px; }
+  .draft a { color: var(--tip); }
 </style>
 </head>
 <body>
@@ -104,46 +120,72 @@
   <header class="doc">
     <a class="brand" href="index.html" aria-label="KaiSip home"><svg class="brand-logo" viewBox="0 0 460.33 140" role="img" aria-label="KaiSip"><title>KaiSip</title><g transform="translate(70 70) scale(0.90228) translate(-102.999 -100.123)"><defs><mask id="d2llr" maskUnits="userSpaceOnUse" x="-100" y="-100" width="400" height="400"><rect x="-100" y="-100" width="400" height="400" fill="white"/><path d="M72 146 V66" stroke="black" stroke-width="4" stroke-linecap="round"/></mask></defs><path d="M72 168 C90 129.92 90 78.24 72 32 C54 78.24 54 129.92 72 168Z" style="fill:var(--tn-needle)" mask="url(#d2llr)"/><path d="M94 100 C120.2 93.85 140.92 69.43 150 34 C113.47 46.14 92.75 70.56 94 100Z" style="fill:var(--tn-ring)"/><path d="M94 100 C93.48 129.7 114.94 154.12 152 166 C141.98 130.36 120.52 105.94 94 100Z" style="fill:var(--tn-ring)"/></g><g transform="translate(149.21 96.94) scale(0.05272)"><path d="M130 0Q101 0 90.0 -11.0Q79 -22 79 -41Q79 -56 87.5 -66.5Q96 -77 116 -84L155 -94Q173 -101 181.5 -115.0Q190 -129 190 -160V-1255Q190 -1280 182.5 -1291.0Q175 -1302 158 -1305L105 -1309Q87 -1314 79.0 -1323.0Q71 -1332 71 -1346Q71 -1362 80.5 -1372.0Q90 -1382 117 -1392L303 -1460Q341 -1474 364.0 -1480.5Q387 -1487 408 -1487Q439 -1487 455.0 -1469.5Q471 -1452 471 -1423V-160Q471 -129 480.0 -115.0Q489 -101 507 -94L543 -84Q575 -71 575 -44Q575 0 519 0ZM387 -434 797 -768Q832 -796 828.5 -820.5Q825 -845 786 -857L751 -866Q732 -872 725.0 -881.0Q718 -890 718 -905Q718 -925 732.0 -936.0Q746 -947 771 -947H1121Q1145 -947 1159.5 -936.0Q1174 -925 1174 -907Q1174 -888 1162.0 -876.0Q1150 -864 1112 -855Q1061 -844 1021.5 -822.0Q982 -800 922 -752L418 -349ZM734 -673 1090 -159Q1114 -126 1132.0 -112.5Q1150 -99 1183 -88Q1204 -78 1214.5 -66.0Q1225 -54 1225 -39Q1225 -21 1210.5 -10.5Q1196 0 1172 0H764Q742 0 729.0 -11.0Q716 -22 716 -41Q716 -54 723.0 -63.0Q730 -72 746 -78L778 -87Q806 -95 808.0 -111.5Q810 -128 782 -167L546 -508Z M1905 -127V-148L1886 -152V-749Q1886 -819 1850.5 -857.5Q1815 -896 1750 -896Q1691 -896 1659.0 -871.0Q1627 -846 1627 -809V-721Q1627 -661 1587.0 -628.5Q1547 -596 1474 -596Q1412 -596 1380.0 -625.5Q1348 -655 1348 -706Q1348 -769 1400.0 -829.5Q1452 -890 1553.0 -929.5Q1654 -969 1802 -969Q1986 -969 2075.5 -894.5Q2165 -820 2165 -693V-173Q2165 -145 2176.5 -131.0Q2188 -117 2209 -117Q2231 -117 2242.0 -127.5Q2253 -138 2261 -149Q2266 -156 2272.0 -160.5Q2278 -165 2287 -165Q2299 -165 2305.0 -156.0Q2311 -147 2311 -132Q2311 -98 2287.5 -62.0Q2264 -26 2217.5 -0.5Q2171 25 2101 25Q2012 25 1958.5 -15.5Q1905 -56 1905 -127ZM1306 -209Q1306 -334 1417.5 -411.0Q1529 -488 1729 -488Q1794 -488 1846.5 -477.0Q1899 -466 1937 -447L1915 -383Q1881 -399 1845.5 -408.0Q1810 -417 1769 -417Q1686 -417 1639.5 -374.5Q1593 -332 1593 -257Q1593 -182 1632.5 -142.0Q1672 -102 1735 -102Q1789 -102 1838.5 -126.5Q1888 -151 1922 -195L1944 -138Q1889 -60 1796.5 -17.5Q1704 25 1600 25Q1469 25 1387.5 -40.0Q1306 -105 1306 -209Z M2797.0 -916V-160Q2797.0 -130 2806.5 -115.5Q2816.0 -101 2833.0 -94L2870.0 -84Q2887.0 -78 2896.5 -67.5Q2906.0 -57 2906.0 -41Q2906.0 -22 2892.0 -11.0Q2878.0 0 2853.0 0H2462.0Q2438.0 0 2424.0 -11.0Q2410.0 -22 2410.0 -41Q2410.0 -56 2419.0 -66.5Q2428.0 -77 2445.0 -84L2484.0 -94Q2501.0 -102 2510.0 -115.5Q2519.0 -129 2519.0 -160V-737Q2519.0 -763 2511.0 -773.5Q2503.0 -784 2487.0 -788L2434.0 -791Q2417.0 -796 2408.5 -804.5Q2400.0 -813 2400.0 -827Q2400.0 -843 2411.0 -853.5Q2422.0 -864 2446.0 -873L2657.0 -944Q2690.0 -955 2709.5 -959.5Q2729.0 -964 2749.0 -964Q2771.0 -964 2784.0 -951.0Q2797.0 -938 2797.0 -916Z M3460.0 -66Q3529.0 -66 3566.5 -100.5Q3604.0 -135 3604.0 -187Q3604.0 -220 3589.5 -247.0Q3575.0 -274 3533.5 -296.0Q3492.0 -318 3413.0 -337Q3259.0 -368 3174.5 -416.0Q3090.0 -464 3057.5 -527.5Q3025.0 -591 3025.0 -667Q3025.0 -806 3123.5 -888.0Q3222.0 -970 3408.0 -970Q3475.0 -970 3517.5 -959.0Q3560.0 -948 3587.0 -936.5Q3614.0 -925 3635.0 -925Q3657.0 -925 3668.5 -936.5Q3680.0 -948 3691.5 -959.0Q3703.0 -970 3724.0 -970Q3739.0 -970 3751.0 -960.5Q3763.0 -951 3771.0 -924L3837.0 -723Q3849.0 -688 3844.5 -666.0Q3840.0 -644 3817.0 -635Q3794.0 -626 3777.5 -634.5Q3761.0 -643 3745.0 -666Q3701.0 -745 3649.5 -791.5Q3598.0 -838 3541.5 -858.5Q3485.0 -879 3424.0 -879Q3339.0 -879 3296.0 -844.5Q3253.0 -810 3253.0 -751Q3253.0 -716 3271.0 -688.0Q3289.0 -660 3338.5 -636.5Q3388.0 -613 3480.0 -591Q3611.0 -563 3687.0 -518.5Q3763.0 -474 3796.5 -411.5Q3830.0 -349 3830.0 -265Q3830.0 -179 3785.5 -113.5Q3741.0 -48 3661.5 -11.5Q3582.0 25 3478.0 25Q3412.0 25 3372.5 12.0Q3333.0 -1 3307.5 -13.5Q3282.0 -26 3258.0 -26Q3236.0 -26 3221.5 -13.5Q3207.0 -1 3194.0 12.0Q3181.0 25 3162.0 25Q3147.0 25 3136.5 14.0Q3126.0 3 3121.0 -23L3082.0 -214Q3075.0 -254 3079.5 -273.5Q3084.0 -293 3105.0 -301Q3127.0 -310 3144.0 -299.5Q3161.0 -289 3178.0 -261Q3240.0 -156 3312.5 -111.0Q3385.0 -66 3460.0 -66Z M4387.0 -902V-160Q4387.0 -129 4395.5 -114.5Q4404.0 -100 4422.0 -94L4460.0 -84Q4479.0 -78 4488.0 -67.5Q4497.0 -57 4497.0 -41Q4497.0 -22 4484.0 -11.0Q4471.0 0 4442.0 0H4048.0Q4020.0 0 4007.0 -11.0Q3994.0 -22 3994.0 -41Q3994.0 -56 4003.0 -66.5Q4012.0 -77 4031.0 -84L4070.0 -94Q4088.0 -101 4096.5 -115.0Q4105.0 -129 4105.0 -160V-733Q4105.0 -759 4097.5 -770.0Q4090.0 -781 4073.0 -784L4020.0 -788Q4002.0 -792 3994.0 -801.0Q3986.0 -810 3986.0 -824Q3986.0 -841 3995.5 -851.0Q4005.0 -861 4032.0 -871L4218.0 -939Q4257.0 -953 4280.5 -959.0Q4304.0 -965 4320.0 -965Q4354.0 -965 4370.5 -947.5Q4387.0 -930 4387.0 -902ZM4224.0 -1118Q4144.0 -1118 4095.5 -1159.5Q4047.0 -1201 4047.0 -1268Q4047.0 -1335 4095.5 -1375.5Q4144.0 -1416 4224.0 -1416Q4305.0 -1416 4353.5 -1375.5Q4402.0 -1335 4402.0 -1268Q4402.0 -1201 4353.5 -1159.5Q4305.0 -1118 4224.0 -1118Z M4985.0 -902V-790L4997.0 -766V306Q4997.0 337 5005.5 351.5Q5014.0 366 5032.0 371L5085.0 382Q5105.0 388 5114.0 398.5Q5123.0 409 5123.0 425Q5123.0 444 5109.5 455.0Q5096.0 466 5067.0 466H4658.0Q4630.0 466 4617.0 455.0Q4604.0 444 4604.0 425Q4604.0 410 4613.0 399.5Q4622.0 389 4641.0 382L4680.0 372Q4698.0 366 4706.5 351.5Q4715.0 337 4715.0 306V-734Q4715.0 -759 4707.5 -770.0Q4700.0 -781 4683.0 -784L4630.0 -788Q4612.0 -792 4604.0 -801.0Q4596.0 -810 4596.0 -824Q4596.0 -841 4605.5 -850.0Q4615.0 -859 4642.0 -870L4817.0 -939Q4853.0 -954 4876.5 -959.5Q4900.0 -965 4918.0 -965Q4952.0 -965 4968.5 -947.5Q4985.0 -930 4985.0 -902ZM4939.0 -651 4895.0 -708Q4974.0 -832 5077.0 -901.0Q5180.0 -970 5306.0 -970Q5424.0 -970 5517.0 -910.0Q5610.0 -850 5663.5 -743.5Q5717.0 -637 5717.0 -498Q5717.0 -339 5653.5 -221.5Q5590.0 -104 5481.0 -39.5Q5372.0 25 5237.0 25Q5118.0 25 5026.0 -31.0Q4934.0 -87 4874.0 -193L4943.0 -251Q4992.0 -169 5053.5 -129.0Q5115.0 -89 5186.0 -89Q5255.0 -89 5308.5 -129.0Q5362.0 -169 5393.0 -253.5Q5424.0 -338 5424.0 -468Q5424.0 -590 5394.0 -670.0Q5364.0 -750 5311.5 -789.5Q5259.0 -829 5192.0 -829Q5120.0 -829 5056.5 -785.5Q4993.0 -742 4939.0 -651Z" style="fill:var(--tn-word)"/><path d="M2434.38 -1156.95 C2687.94 -1066.66 2872.54 -1185.23 2895.88 -1453.38 C2600.11 -1609.38 2415.51 -1490.81 2434.38 -1156.95Z" style="fill:var(--tn-ring)"/></g></svg></a>
     <h1>Privacy Policy</h1>
-    <p class="updated">Draft prepared: 12 October 2026. Not in effect.</p>
+    <p class="updated">Draft prepared: 27 October 2026. Not in effect.</p>
   </header>
 
   <main>
   <div class="lead">
-    <p>KaiSip is a free CISA exam-preparation app built privacy-first. You
-    don’t need an account. Without one, your study progress
-    <strong>never leaves your device</strong>. If you choose to create an
-    account, we store only what is needed to sign you in and, if you turn
-    on sync, to sync your progress. On the website we
+    <p>KaiSip is a CISA exam-preparation app, free during the beta and built
+    privacy-first. <strong>You don’t need an account.</strong> Without one,
+    your study progress <strong>never leaves your device</strong>. If you choose
+    to create one, we keep only what is needed to sign you in and to sync your
+    progress between the app and the website (section 6A). On the website we
     use anonymous analytics only if you accept it; the mobile app has no
     analytics at all. This policy explains exactly what happens to your
     data.</p>
-    <!-- Phase 8 adds "run the feedback board" to the sentence above (compliance §9.1 lead). -->
   </div>
 
-  <h2>1. Who this policy covers</h2>
+  <nav class="toc" aria-label="Contents">
+    <p class="toc-title">On this page</p>
+    <ol>
+      <li><a href="#s1">Who this policy covers</a></li>
+      <li><a href="#s2">Our privacy approach</a></li>
+      <li><a href="#s3">Information involved</a></li>
+      <li><a href="#s4">Cookies and consent</a></li>
+      <li><a href="#s5">Third-party services</a></li>
+      <li><a href="#s6">KaiSip mobile app</a></li>
+      <li><a href="#s6a">Optional KaiSip account</a></li>
+      <li><a href="#s7">Your rights</a></li>
+      <li><a href="#s7a">Philippine Data Privacy Act</a></li>
+      <li><a href="#s8">International visitors</a></li>
+      <li><a href="#s9">Children's privacy</a></li>
+      <li><a href="#s10">Changes to this policy</a></li>
+      <li><a href="#s11">Contact</a></li>
+    </ol>
+  </nav>
+
+  <h2 id="s1">1. Who this policy covers</h2>
   <p>This policy applies to the KaiSip web application, the KaiSip mobile
   app for iPhone and Android, and their related pages ("the App").
   Sections 2 to 5 describe the website; section 6 describes the mobile app,
-  and section 6A the optional KaiSip account. KaiSip is operated as an
-  independent project by its maintainer ("we", "us"). It is not a company
-  offering, and it is not affiliated with, endorsed by, or sponsored by
-  ISACA.</p>
+  and section 6A the optional KaiSip account, which works on both. KaiSip is
+  operated as an independent project by its maintainer, [Developer name,
+  exactly as shown on Google Play], in the Philippines ("we", "us"). It is not
+  a company offering, and it is not affiliated with, endorsed by, or sponsored
+  by ISACA.</p>
 
-  <h2>2. Our privacy approach</h2>
-  <p>The website runs entirely in your browser. It has no backend server and no
-  database that we control. Because of this, the large majority of your
-  activity — every question you answer, your scores, bookmarks, settings, and
-  local profile — is stored only on your own device and is never transmitted
-  to us or anyone else.</p>
+  <h2 id="s2">2. Our privacy approach</h2>
+  <p>The website runs entirely in your browser. Unless you sign in, it talks to
+  no server of ours: every question you answer, your scores, bookmarks and
+  settings are stored only on your own device and are never transmitted to us
+  or anyone else. Signing in is optional. If you do, your progress is synced
+  with your KaiSip account, as section 6A describes.</p>
 
-  <h2>3. Information involved</h2>
+  <h2 id="s3">3. Information involved</h2>
 
   <h3>3a. On-device data (never transmitted)</h3>
-  <p>Your study progress, scores, bookmarks, review queue, exam-date setting,
-  theme choice, and local profile name are saved in your browser’s
+  <p>Your study progress, scores, bookmarks, review queue, exam-date setting
+  and theme choice are saved in your browser's
   <code>localStorage</code>. This data stays on your device. We cannot see it,
   and it is not sent anywhere. Clearing your browser data for this site
   removes it.</p>
+  <p>If you add a first name or nickname for the greeting on Today, it is
+  optional and kept in this browser too. It goes into your progress file only
+  when you export that file yourself, and it is never synced.</p>
+  <p>If you sign in, this browser also keeps your sign-in session in its
+  storage, so you stay signed in (or only until you close the tab, if you tick
+  "This is a shared computer"). Your progress is then synced with your
+  account (section 6A).</p>
 
   <h3>3b. Analytics (only with your consent)</h3>
   <p>The App uses Google Analytics, configured with Google Consent Mode.
@@ -160,7 +202,7 @@
   <h3>3c. Feedback you choose to send</h3>
   <p>The App includes optional Feedback and Flag features. If you use one,
   the message you write is submitted through a Google Form to the
-  maintainer’s email inbox. This happens only when you choose to send it.
+  maintainer's email inbox. This happens only when you choose to send it.
   Please do not include sensitive personal information in these messages.</p>
   <p>We keep these messages for up to 12 months after your issue is resolved,
   then delete them, or sooner if you ask.</p>
@@ -171,45 +213,84 @@
   address and browser type) to deliver the site and protect against abuse.
   This is handled by the hosting provider under its own terms.</p>
 
-  <h2>4. Cookies and consent</h2>
-  <p>The App itself sets no cookies. The only cookie scenario is Google
+  <h3>3e. Beta tester sign-up (optional)</h3>
+  <p>If you sign up to test KaiSip before launch, you fill in a Google Form
+  run by the maintainer, outside the App. It collects your email address,
+  your phone type, your country, your exam timing (optional), which other
+  certifications interest you (optional), how you found us, and the name or
+  handle you would like credited (or none). We use it to add you to the Google
+  Play test, to email you about the beta, to credit you if you asked, to give
+  you the tester reward, and to learn which certifications to add next.</p>
+  <p>It is stored in KaiSip's Google account (Google Forms and Sheets), and
+  Android testers' email addresses are also added to Google Play Console's
+  tester list. If you ask to be credited, the name you chose is shown to
+  everyone in the mobile app's "Thank you, beta testers" screen; ask us at any
+  time and it is removed in the next app update.</p>
+  <p>We keep sign-up data until your reward has been given and has ended, or
+  until we confirm there will be no paid features, then delete it within 3
+  months. To leave or ask anything, email certprep.support@gmail.com.</p>
+
+  <h3>3f. Signing in on the website (optional)</h3>
+  <p>The sign-in form appears only on kaisip.com. If you sign in with Google,
+  Google’s own page asks you to confirm, and Google tells our sign-in system
+  your email address, name and profile picture link (section 6A). If you ask
+  for an email code, a Cloudflare Turnstile check runs on the form first, to
+  stop automated abuse of our email sending; Cloudflare processes technical
+  information about your browser for that check under its own terms and does
+  not use it for advertising.</p>
+
+  <h2 id="s4">4. Cookies and consent</h2>
+  <p>The App itself sets no cookies, signed in or not (a sign-in session is
+  kept in browser storage, not in a cookie). The only cookie scenario is Google
   Analytics, described in section 3b, and it is used <strong>only after you
   accept</strong> on the cookie banner. Until you make a choice, analytics
   storage is disabled by default.</p>
   <p>You can change your mind at any time using the <strong>"Cookie
-  preferences"</strong> link in the App’s footer, or by clearing this site’s
+  preferences"</strong> link in the App's footer, or by clearing this site's
   data in your browser.</p>
 
-  <h2>5. Third-party services</h2>
+  <h2 id="s5">5. Third-party services</h2>
   <table>
     <tr><th>Service</th><th>Purpose</th><th>When</th></tr>
     <tr><td>Google Analytics</td><td>Anonymous, aggregated usage metrics</td><td>Only after you accept the cookie banner</td></tr>
     <tr><td>Google Forms</td><td>Delivering feedback you choose to send</td><td>Only when you submit feedback</td></tr>
     <tr><td>Gmail (Google)</td><td>Our support inbox, for emails you choose to send us</td><td>Only when you email us</td></tr>
+    <tr><td>Google Forms and Sheets</td><td>Beta tester sign-up and short surveys</td><td>Only if you sign up to test</td></tr>
+    <tr><td>Google Play Console</td><td>The Android test tester list</td><td>Only if you join the Android test</td></tr>
     <tr><td>Cloudflare</td><td>Website hosting</td><td>Every visit (technical logs)</td></tr>
-    <tr><td>Expo (EAS Update)</td><td>Delivering updates to the mobile app</td><td>Each time the mobile app opens</td></tr>
-    <tr><td>Supabase</td><td>Stores your KaiSip account, in [region], under a data-processing agreement</td><td>Only if you create an account</td></tr>
-    <tr><td>[Email provider]</td><td>Sends your sign-in codes</td><td>Only when you ask for a sign-in code</td></tr>
-    <tr><td>Apple or Google</td><td>Signs you in, if you choose Sign in with Apple or Google</td><td>Only when you choose that sign-in</td></tr>
+    <tr><td>Supabase</td><td>Stores your KaiSip account and synced progress, in Singapore (Amazon Web Services, ap-southeast-1), under a data-processing agreement</td><td>Only if you create an account</td></tr>
+    <tr><td>Resend</td><td>Sends your sign-in codes by email (United States)</td><td>Only when you ask for a code</td></tr>
+    <tr><td>Cloudflare Turnstile</td><td>Checks that the email sign-in form isn’t being used by a script</td><td>Only when you ask for a code on the website</td></tr>
+    <tr><td>Cloudflare R2</td><td>Keeps encrypted nightly backups of the account database for 30 days</td><td>Only if you have an account</td></tr>
+    <tr><td>Google (Sign in with Google)</td><td>Signs you in, if you choose it</td><td>Only when you choose Google</td></tr>
+    <tr><td>Expo (EAS Update)</td><td>Delivering updates to test versions of the mobile app</td><td>Each time a test version of the mobile app opens (never the Google Play version)</td></tr>
     <tr><td>Ko-fi</td><td>Optional donations</td><td>Only if you follow a "Support on Ko-fi" link (website only; never in the mobile app)</td></tr>
   </table>
-  <p>Each of these providers processes data under its own privacy policy and
-  must protect it at least as well as this policy does. We do not sell or
-  rent personal information to anyone.</p>
+  <p>Each of these providers processes data under its own privacy policy, and
+  the ones that hold account data (Supabase, Resend and Cloudflare) under
+  data-processing terms that require them to protect it at least as well as
+  this policy does. We do not sell or rent personal information to anyone.</p>
+  <p>The website's fonts (Fraunces and Figtree) are served from the site
+  itself, so your browser does not contact a font service to show them.</p>
 
-  <h2>6. KaiSip mobile app</h2>
+  <h2 id="s6">6. KaiSip mobile app</h2>
   <p>The KaiSip mobile app keeps your study data on your phone. In plain
   terms:</p>
   <ul>
     <li><strong>Your progress stays on your phone.</strong> Your answers,
     scores, how long you took to answer, how sure you said you were, when you
-    first mastered each topic, saved questions, mistake journal and settings
-    are stored only on your device, unless you turn on sync with a KaiSip
-    account (section 6A).</li>
-    <li><strong>App updates.</strong> Each time the app opens, it asks Expo’s
+    first mastered each topic, saved questions, mistake journal, the notes you
+    write on questions and settings are stored only on your device, unless you
+    sign in and turn on sync (section 6A). Without an account they are never
+    uploaded to us or anyone else.</li>
+    <li><strong>App updates.</strong> The version of the app you install
+    from Google Play gets its updates only through Google Play, like any other
+    app. It does not contact Expo or any other update service. Test versions of
+    the app (for example, builds shared with beta testers outside Google Play)
+    work differently: each time a test version opens, it asks Expo's
     update service (EAS Update, run by Expo) whether a newer version of the
-    app is available, and downloads it if so. That request carries the app’s
-    version, its update channel, your phone’s platform (Android or iOS) and a
+    app is available, and downloads it if so. That request carries the app's
+    version, its update channel, your phone's platform (Android or iOS) and a
     random install code that Expo uses to roll updates out. Like any internet
     request, it also shows your IP address to Expo. It carries no study data,
     name, email address or account. Expo handles it under its own privacy
@@ -228,175 +309,156 @@
     account, nothing about your study leaves your phone.</li>
     <li><strong>Share cards are made on your phone.</strong> If you tap
     "Share progress", the app draws an image of the card you chose and hands it
-    to your phone’s share sheet. Nothing is sent to us; you decide where it
+    to your phone's share sheet. Nothing is sent to us; you decide where it
     goes. If you choose "Save Image", the app asks to add it to your Photos and
     never reads your photo library.</li>
     <li><strong>"Report a problem", "Suggest an idea" and "Contact support"
     use your own email app.</strong> Tapping one opens a draft in your email
-    app with the item’s code, the app version and your phone’s system version
+    app with the item's code, the app version and your phone's system version
     filled in. Your theme, text size and Reduce Motion setting are added only
     if "Include display details" is ticked. Nothing is sent unless you send
     that email, and you can read and edit it first. If you send it, it reaches
     our support inbox (Gmail, run by Google) with your email address and
     message. We use them only to reply and to fix the problem, never for
     marketing. We keep support emails for up to 12 months after your issue is
-    resolved, then delete them, or sooner if you ask. Please don’t include
+    resolved, then delete them, or sooner if you ask. Please don't include
     questions from the real exam.</li>
     <li><strong>Backup files are made on your phone.</strong> If you tap
-    "Save a backup" in Settings, the app puts your progress and settings, and
-    the list of problems you reported, into one file and hands it to your
-    phone’s share sheet. Nothing is sent to us. You decide where the file goes
-    (for example Files, Google Drive or email), and that service keeps it
-    under its own terms. The file contains no email address, account or
-    device ID. The only name it can hold is the optional first name you
-    entered in the app. "Restore from a backup" only reads the file you pick, and shows
-    you what will change before anything is replaced.</li>
-    <li><strong>Phone backups.</strong> If you have turned on your phone’s own
+    "Save a backup" in Settings, the app puts your progress and settings, the
+    notes you write on questions, and the list of problems you reported, into one file and hands it to your phone's share sheet. Nothing is sent to us.
+    You decide where the file goes (for example Files, Google Drive or email),
+    and that service keeps it under its own terms. Apart from anything you
+    type into a note, the file contains no email address or device ID. The
+    only name it can hold is the optional first name you entered in the app. "Restore from a backup" only reads the file you
+    pick, and shows you what will change before anything is replaced.</li>
+    <li><strong>Phone backups.</strong> If you have turned on your phone's own
     backup (for example iCloud or Google backup), that backup may include
     your KaiSip progress, so it can be restored on a new phone. That backup
     is handled by Apple or Google under their terms, not by us. If you are
-    signed in to a KaiSip account, your sign-in is kept in your phone’s
-    secure storage and is not part of that backup, so a restored phone starts
-    signed out.</li>
+    signed in to a KaiSip account, your sign-in is kept in your phone’s secure
+    storage and is not part of that backup, so a restored phone starts signed
+    out.</li>
   </ul>
   <p>Deleting the app removes all of its data from your phone. It does not
-  remove backup files you saved elsewhere, or your KaiSip account if you
-  have one; delete those where you keep them, or as described in section 6A.
-  You can also reset your progress at any time in the app’s Settings.</p>
+  remove backup files you saved elsewhere, or your KaiSip account if you have
+  one; delete those where you keep them, or as section 6A describes. You can
+  also reset your progress at any time in the app's Settings.</p>
 
-  <h2>6A. Optional KaiSip account</h2>
-  <p>You don’t need an account to use any study feature. If you choose to
-  create one:</p>
+  <h2 id="s6a">6A. Optional KaiSip account</h2>
+  <p>You don’t need an account to use any study feature, in the app or on the
+  website. An account lets you keep the same progress on your phone and on
+  kaisip.com. You sign in with Google or with a 6-digit code we email you.
+  KaiSip has no passwords.</p>
 
   <h3>What we keep</h3>
   <ul>
-    <li>Your email address, to sign you in.</li>
+    <li>Your email address, to sign you in and to send your codes.</li>
     <li>An account ID.</li>
-    <li>Which sign-in methods you use (email code, Apple or Google), and when
-    the account was created.</li>
-    <li>Which version of the terms you accepted, and that you confirmed you
-    are 16 or older.</li>
+    <li>Which sign-in methods you use (email code or Google), when the account
+    was created and when you last signed in, and your active sign-in sessions,
+    so you stay signed in and can sign out everywhere.</li>
+    <li>Which version of the terms you accepted, and that you confirmed you are
+    16 or older.</li>
+    <li>If you sign in with Google, Google tells our sign-in system your name
+    and the link to your Google profile picture, and it stores them with your
+    account. KaiSip doesn’t show or use them.</li>
   </ul>
-  <p>If you sign in with Apple, Apple may give us a private relay address
-  instead of your email. We do not keep the name Apple shares.</p>
 
   <h3>Sync</h3>
-  <p>Sync is off until you turn it on (Settings → Account → Sync this phone),
-  and the app shows you what will change before it first syncs. While it is
-  on, we keep one copy of your study progress and study settings in your
-  account: your answers (whether right, how sure you were and how long you
-  took), reviews, your mistake journal, saved questions, the notes you write
-  on questions, mocks, lessons and notes done, your study days and streak, badges, game levels, your
-  readiness log and exam-week checklist, your plant, the questions you
-  reported to us, your exam date and your study settings. With each copy we
-  keep the app version that sent it, when it was sent, and a random install
-  code for the phone that sent it (it is not a hardware or advertising ID; a
-  new one is made before a different account syncs from that phone, and
-  when you remove your progress from the phone or delete your account). We
-  also keep the two most recent daily copies of your progress, so support
-  can help if something goes wrong; they are deleted when you delete the
-  synced copy or your account.</p>
-  <p>These stay on your phone and are never synced: study reminders, theme,
-  motion and haptics settings, plant display choices, and a quiz in
-  progress.</p>
+  <p>Sync starts only after you sign in, accept the terms and confirm you are
+  16 or older. The first time both your device and your account have
+  progress, we show you what will change and you choose: combine them (the
+  default, which loses nothing), use the account’s progress (your device’s
+  is kept in an undo copy), or not now. In the app, sync is off until you
+  turn it on (Settings → Account → Sync this phone).</p>
+  <p>While it is on, we keep one copy of your study progress and one of your
+  study settings in your account: your answers (whether right, how sure you
+  were and how long you took), reviews, your mistake journal, saved
+  questions, the notes you write on questions, mocks, lessons and notes done,
+  your study days and streak, badges, game levels, your readiness log and
+  exam-week checklist, your plant, the questions you reported to us, your
+  exam date and your study settings. The website takes part with the parts it
+  has (answers, reviews, mistakes, saved questions, mocks, notes read, your
+  notes on questions, study days and the exam date) and keeps everything else
+  in the account as it was. The copy is stored compressed. With each copy we
+  keep the app or website version that sent it, when it was sent, and a
+  random code for the phone or browser that sent it (not a hardware or
+  advertising ID; a new one is made before a different account syncs from the
+  same device, and when you remove your progress from it).</p>
+  <p>We also keep one earlier daily copy of your progress, so support can help
+  if something goes wrong. It is deleted when you delete the synced copy or
+  your account.</p>
+  <p>These are never synced: study reminders, theme, motion and haptics
+  settings, plant display choices, a quiz or mock in progress, your first
+  name, the website’s cookie choice, and your sign-in session.</p>
   <p>You can turn sync off at any time: that stops syncing, and the copy in
   your account stays until you delete it. You can delete the synced copy
-  (Settings → Account → Delete synced progress: your account and the
-  progress on your phone stay), or delete your account. Deleted copies are
-  removed from our live systems at once and from backups within 30 days.</p>
-  <!-- Before publishing (security review P7 N8): confirm "within 30 days"
-       against the chosen Supabase plan's backup and PITR retention
-       (SCALING.md §3). -->
-  <p>When you sign out, you can also remove your progress from that phone
-  (for shared devices): your study progress, plant and study settings are
-  removed from the phone, and your account’s copy stays.</p>
-
-  <h3>Feedback board</h3>
-  <p>If you use the feedback board with your account:</p>
-  <ul>
-    <li><strong>What others can see:</strong> the name you appear under (a
-    pseudonym or a name you choose), your posts and comments, and when you
-    made them. Who can read the board is set by us; the app tells you which
-    applies (for example, only signed-in learners). <strong>Your email
-    address and your account ID are never shown:</strong> other learners
-    see only your board name and a separate random member number the app
-    uses to tell members apart.</li>
-    <li><strong>What only you and our moderators see:</strong> your votes,
-    who you follow and block, the reports you make, your appeals and your
-    in-app notices.</li>
-    <li><strong>What we keep to run and protect the board:</strong> the
-    version of the community guidelines you agreed to and when; your
-    standing (for example, a suspension and its end date); how many of your
-    posts were approved; a count of your recent posts, votes and reports for
-    rate limits (kept for 2 days); and a moderation record of every action
-    we take (who acted, what and why, never the text of your post), kept for
-    12 months.</li>
-    <li><strong>Reports:</strong> when someone reports a post, comment or
-    member, our moderators see a copy of the reported words as they were at
-    that moment (so an edit can’t hide them), with the reason and any note.
-    The copy is deleted with the post or comment, and otherwise after the
-    report is handled.</li>
-    <li><strong>Filters:</strong> before a post appears we check it with
-    word lists and by comparing it with our own practice questions; these
-    checks run on our server and on your phone, and use no third-party or
-    AI service. Some posts wait for a person to review them first.</li>
-    <li><strong>Removed posts:</strong> we keep the text of a removed post or
-    comment for 30 days so you can ask us to look again, then delete it.
-    Real exam content is deleted at once.</li>
-    <li><strong>Notices:</strong> replies, status changes and moderation
-    notices appear in the app only (no push notifications, no emails).</li>
-    <li>You can withdraw a post or comment at any time. Deleting your account
-    deletes your posts, comments, votes and blocks; reports you made about
-    others stay with our moderators without your name; reports about your
-    posts or comments are closed, and their copy of your words deleted.</li>
-    <li>“Download my data” includes your board name, posts, comments, votes,
-    follows, blocks, reports, appeals and notices.</li>
-  </ul>
+  (Settings → Account → Delete synced progress in the app, or Your data →
+  Account on the website: your account and the progress on your device stay),
+  or delete your account. When you sign out you can also remove your progress
+  from that device (for shared phones and computers); your account’s copy
+  stays.</p>
 
   <h3>How we use it</h3>
-  <p>Only to sign you in, keep your account safe and answer you. We do not
-  sell it, show ads, track you, build profiles or use it to train AI
-  models.</p>
+  <p>Only to sign you in, keep your account safe, sync your progress and
+  answer you. We do not sell it, show ads, track you, build profiles or use it
+  to train AI models.</p>
 
-  <h3>Who processes it</h3>
+  <h3>How we protect it</h3>
   <ul>
-    <li>Supabase stores the data in [region], under a data-processing
-    agreement. Like any internet service, it keeps request logs (your IP
-    address and your app's version, for example) for [Supabase's log
-    retention period], to keep the service secure.</li>
-    <li>[Email provider] sends sign-in codes.</li>
-    <li>Apple or Google handles sign-in if you choose them.</li>
+    <li>Everything travels encrypted (HTTPS).</li>
+    <li>The database only lets each account read and change its own rows; the
+    server checks the size and shape of everything it stores.</li>
+    <li>Sign-in codes work for 10 minutes, and deleting your account needs a
+    fresh sign-in.</li>
+    <li>Backups are encrypted before they leave the database server, with a
+    key only the maintainer holds.</li>
   </ul>
-  <p>Each must protect your data at least as well as this policy does.</p>
+
+  <h3>Who processes it, and where</h3>
+  <ul>
+    <li><strong>Supabase</strong> stores your account and synced progress in
+    Singapore, under a data-processing agreement. Like any internet service,
+    it keeps request logs (for example your IP address and the app’s version)
+    for [Supabase’s log retention period], to keep the service secure.</li>
+    <li><strong>Resend</strong> (United States) sends your sign-in codes.</li>
+    <li><strong>Cloudflare</strong> runs the human check on the website’s
+    email form and keeps our encrypted backups (Cloudflare R2).</li>
+    <li><strong>Google</strong> signs you in, if you choose Google.</li>
+  </ul>
 
   <h3>How long we keep it</h3>
   <p>We keep it while your account exists. When you delete your account, we
-  remove it from our live systems at once and from backups within 30 days.
-  We keep only a record that an account was deleted, made with a one-way
-  code from the account ID, with no email address, so we can show the
-  deletion happened.</p>
+  remove it from our live systems at once; our encrypted backups are kept
+  for 30 days, so it is gone from them within 30 days. We keep only a record
+  that an account was deleted, made with a one-way keyed code from the
+  account ID, with no email address, so we can show the deletion happened.</p>
 
   <h3>Your choices</h3>
   <ul>
-    <li>You can sign out at any time, on this phone or on every device.</li>
-    <li>To get a copy of your account data, use <strong>Settings → Account →
-    Download my data</strong>. It includes your synced progress and study
-    settings; the two daily support copies are earlier versions of the same
-    progress and are not included.</li>
-    <li>To delete everything, use <strong>Settings → Account → Delete
-    account</strong>, visit <a href="delete-account.html">[URL]/delete-account.html</a>,
-    or email <a href="mailto:certprep.support@gmail.com">certprep.support@gmail.com</a>.</li>
+    <li>Sign out at any time, on one device or on every device.</li>
+    <li>Get a copy of your account data: <strong>Download my data</strong>
+    (Settings → Account in the app, Your data → Account on the website). It
+    includes your synced progress and settings; the daily support copy is an
+    earlier version of the same progress and is not included.</li>
+    <li>Delete everything: <strong>Delete account</strong> (Settings → Account
+    in the app, Your data → Account on the website), the
+    <a href="delete-account.html">account deletion page</a>, or email
+    <a href="mailto:certprep.support@gmail.com">certprep.support@gmail.com</a>
+    from the address you sign in with. You will be asked to sign in again
+    first, so we know it’s you.</li>
   </ul>
 
   <h3>Age</h3>
-  <p>Accounts are for people aged 16 and over.</p>
+  <p>Accounts are for people aged 16 and over. If we learn that an account
+  belongs to someone younger, we delete it.</p>
 
   <h3>Legal basis (EU/UK)</h3>
   <p>We run your account to provide the service you asked for (contract).
-  Anything else happens only with your consent, which you can withdraw in
-  Settings.</p>
+  Anything else happens only with your consent, which you can withdraw by
+  deleting your account.</p>
 
-  <h2>7. Your rights</h2>
+  <h2 id="s7">7. Your rights</h2>
   <p>Depending on where you live, you may have rights over your personal data
   under laws such as the EU/UK General Data Protection Regulation (GDPR), the
   California Consumer Privacy Act (CCPA/CPRA), and the Philippine Data Privacy
@@ -404,32 +466,76 @@
   data, to object to or restrict processing, and to withdraw consent.</p>
   <p>Without an account, your progress is stored only on your own device, so
   you can exercise most of these rights yourself at any time by declining
-  analytics, using "Cookie preferences", or clearing this site’s data in your
+  analytics, using "Cookie preferences", or clearing this site's data in your
   browser. In the mobile app, reset your progress in Settings or delete the
-  app. With an account, use Download my data and Delete account in the app
-  (section 6A). For anything else — including requests relating to feedback
-  messages — contact us using section 11.</p>
+  app. With an account, use Download my data and Delete account (section 6A).
+  For anything else — including requests relating to feedback messages —
+  contact us using section 11. We answer within 30 days.</p>
   <p>We do not sell personal information, and we do not use your data for
   targeted advertising.</p>
 
-  <h2>8. International visitors</h2>
-  <p>KaiSip is used by candidates worldwide. The third-party services above
-  may process data in countries other than yours. If you create an account,
-  it is stored in [region] as described in section 6A.</p>
+  <h2 id="s7a">7A. Philippine Data Privacy Act</h2>
+  <p>KaiSip is run from the Philippines, so the Data Privacy Act of 2012
+  (Republic Act No. 10173) applies to the personal information in a KaiSip
+  account, wherever you live.</p>
+  <ul>
+    <li><strong>Who is responsible:</strong> the personal information
+    controller is [Developer name, exactly as shown on Google Play], the
+    maintainer of KaiSip, [city], Philippines. Contact:
+    <a href="mailto:certprep.support@gmail.com">certprep.support@gmail.com</a>.</li>
+    <li><strong>Data Protection Officer:</strong> [Data Protection Officer’s
+    name], at the same address. Write "Privacy" in the subject.</li>
+    <li><strong>Why we process it, and on what basis:</strong> to provide the
+    account and sync you asked for, and with your consent, which you give when
+    you create the account and can withdraw at any time by deleting it.</li>
+    <li><strong>Who processes it for us, and where:</strong> Supabase
+    (Singapore), Resend (United States), Cloudflare and Google, as section 6A
+    lists. Your data is therefore transferred outside the Philippines. We stay
+    responsible for it wherever it is processed, and choose only providers
+    bound to protect it.</li>
+    <li><strong>How long:</strong> while your account exists, then as section
+    6A describes (gone from backups within 30 days).</li>
+    <li><strong>Your rights as a data subject:</strong> to be informed, to
+    access your data, to object, to have it corrected, erased or blocked, to
+    data portability, to be indemnified for damages, and to file a complaint.
+    In practice: Download my data (access and portability), Delete account
+    (erasure, and withdrawing consent), and email us for anything else,
+    including a correction.</li>
+    <li><strong>Complaints:</strong> you can complain to the National Privacy
+    Commission (privacy.gov.ph). We would be glad to hear from you first, but
+    you don’t have to.</li>
+    <li><strong>If something goes wrong:</strong> if a security breach puts
+    your account data at real risk, we will tell you and the National Privacy
+    Commission within 72 hours of knowing, where the law requires it.</li>
+  </ul>
+  <!-- Before publishing, check with the NPC or a lawyer: (1) whether learners
+       under 18 need a parent's consent for an account, and (2) whether to
+       file the optional sworn declaration (registration looks not mandatory:
+       under 250 staff, no sensitive personal information of 1,000 or more
+       people, no automated decisions). -->
 
-  <h2>9. Children’s privacy</h2>
+  <h2 id="s8">8. International visitors</h2>
+  <p>KaiSip is used by candidates worldwide. The third-party services above
+  may process data in countries other than yours. By using the App with
+  analytics accepted, you understand that anonymous usage data may be
+  processed by Google in that manner. If you create an account, it is stored
+  in Singapore and your sign-in codes are sent through the United States, as
+  section 6A describes.</p>
+
+  <h2 id="s9">9. Children's privacy</h2>
   <p>KaiSip is a professional certification study tool intended for adults
   preparing for the CISA exam. It is not directed at children, and we do not
-  knowingly collect personal information from children. Accounts are only for
-  people aged 16 and over.</p>
+  knowingly collect personal information from children. Accounts are only
+  for people aged 16 and over.</p>
 
-  <h2>10. Changes to this policy</h2>
+  <h2 id="s10">10. Changes to this policy</h2>
   <p>We may update this policy as the App evolves or as laws change. The
   "Last updated" date at the top reflects the latest version. Material changes
   will be noted in the App.</p>
 
-  <h2>11. Contact</h2>
-  <p>For any privacy question or request, email
+  <h2 id="s11">11. Contact</h2>
+  <p>For any privacy question or request, including one for our Data
+  Protection Officer, email
   <a href="mailto:certprep.support@gmail.com">certprep.support@gmail.com</a>.</p>
 
   </main>
