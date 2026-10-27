@@ -42,6 +42,15 @@ export interface WhatsNewEntry {
 /** Newest first. The first entry must match app.json (a test checks it). */
 export const WHATS_NEW: readonly WhatsNewEntry[] = [
   {
+    version: '1.46.0',
+    date: '2026-10-27',
+    new: ['Five more lessons on decisions the exam tests often: security exceptions, hardened servers and networks, personal and unmanaged devices, paying for IT, and user-built tools and batch reruns.'],
+    improved: [
+      'Settings is now one page with clear groups, so each setting is easy to find.',
+      'Your data and Help and about open on their own pages, and Settings shows your last backup on the way in.',
+    ],
+  },
+  {
     version: '1.45.0',
     date: '2026-10-27',
     new: ['Five new lessons on decisions the exam tests often: attacks with no patch, resilience, breach notification, declaring a disaster, and who decides in IT governance.'],
@@ -621,7 +630,7 @@ export const FAQ: readonly FaqEntry[] = [
     id: 'reminders',
     question: 'Why don’t I get study reminders?',
     answer: [
-      'Reminders stay off until you turn them on in Settings, under Study. Your phone must also allow notifications for KaiSip.',
+      'Reminders stay off until you turn them on in Settings, under Reminders. Your phone must also allow notifications for KaiSip.',
       'You get at most one reminder a day, on the days you choose.',
     ],
     topic: 'reminders',

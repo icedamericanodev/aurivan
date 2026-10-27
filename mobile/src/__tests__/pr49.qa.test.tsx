@@ -434,6 +434,8 @@ describe('E. Reset progress', () => {
       useProgress.getState().tickExamWeek('cisa', '2027-01-08', 'guide');
     });
     const alert = jest.spyOn(Alert, 'alert').mockImplementation(() => {});
+    // Mobile 1.46: Reset is on Your data's own screen.
+    mockParams = { category: 'data' };
     mount(<Settings />);
     press('Reset CISA progress');
     expect(alert).toHaveBeenCalledTimes(1);
@@ -447,6 +449,10 @@ describe('E. Reset progress', () => {
     act(() => btns[1].onPress!());
     expect(useSettings.getState().examDates.cisa).toBe('2027-01-08');
     expect(useSettings.getState().theme).toBe('light');
+    // Back on Settings' page, the exam date is still there.
+    unmount();
+    mockParams = {};
+    mount(<Settings />);
     expect(row('Exam date').props.accessibilityLabel).toBe('Exam date, Friday 8 January 2027, In 88 days');
   });
 });

@@ -1,8 +1,12 @@
 /**
- * Settings building blocks (mobile 1.17, "a tidy Settings"):
+ * Settings building blocks (mobile 1.17, "a tidy Settings"; mobile 1.46, "one page, clear groups"):
  *
- * - SettingsGroup: a titled group of rows (a `Section` headline, an optional
- *   one-line intro, then hairline rows; no card, spec §5).
+ * - SettingsGroup: one category as a flat card on the paper (`raised`, radius 24, no shadow; a 1.5
+ *   `line` edge in dark), its mark and `headline` title INSIDE the top of the card over a hairline,
+ *   then its rows. The card is never a button. On a category's own screen (Your data, Help and
+ *   about) the bar names the group, so the group is bare rows between two hairlines.
+ * - SettingsCategoryRow: a "door" to a category's own screen: its mark, its name and a live summary
+ *   ("Last backup 6 Oct · back up or move to a new phone"), with a chevron.
  * - SettingsRow: one setting. Its CURRENT value sits on the right with a
  *   chevron ("Exam date   8 Jan 2027 ›"); tapping it opens a sheet with the
  *   choices. Rows that DO something at once (Save a backup) have no chevron:
@@ -19,39 +23,171 @@
  *
  * Simple on/off settings are NOT rows here: they stay `ToggleRow`s in the group.
  */
-import { useEffect, useRef, type ReactNode, type Ref } from 'react';
+import { createContext, useContext, useEffect, useRef, type ReactNode, type Ref } from 'react';
 import { KeyboardAvoidingView, Modal, ScrollView, StyleSheet, Pressable, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { moveFocus } from '../lib/a11y';
 import { useKeyboardHeight } from '../lib/useKeyboardShown';
 import { LARGE_TEXT, radius, scrimOp, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
-import { ChevronRight, ICON_STROKE } from './icons';
+import { Bell, BookOpen, ChevronRight, CircleQuestionMark, Flag, ICON_STROKE, ListChecks, MessagesSquare, Palette as PaletteIcon, RefreshCw, ShieldCheck, SproutIcon, UserRound } from './icons';
 import { AnimatedPressable, FadeIn, usePressScale } from './motion';
-import { Button, RadioRow, T, useFontScale } from './ui';
+import { Button, ICON_SIZE, RadioRow, T, useFontScale } from './ui';
+
+// ── Categories ────────────────────────────────────────────────────────
+/**
+ * Mobile 1.46 (the owner, after 1.43: "I can't distinguish clearly the categories to its sub
+ * categories"): four layouts and two finalists were shot and reviewed (a critic, a first-time learner,
+ * a UX and accessibility review); she chose "one page, flat cards". Every frequent setting stays on
+ * the page, each category drawn as its own card; only Your data and Help and about, rarely visited
+ * and many-rowed, are doors to their own screens (with the cloud build's Account and Feedback board).
+ */
+export const SETTINGS_CATS = ['you', 'appearance', 'exam', 'study', 'practice', 'reminders', 'plant', 'account', 'board', 'data', 'help'] as const;
+export type SettingsCat = (typeof SETTINGS_CATS)[number];
+export const isSettingsCat = (v: unknown): v is SettingsCat => typeof v === 'string' && (SETTINGS_CATS as readonly string[]).includes(v);
+/** The categories that are doors to their own screen (settings-section?category=…). */
+export const DOOR_CATS: readonly SettingsCat[] = ['account', 'board', 'data', 'help'];
+type SettingsIcon = typeof UserRound;
+/** Each category's mark (decorative). */
+export const CAT_ICON: Record<SettingsCat, SettingsIcon> = {
+  you: UserRound,
+  appearance: PaletteIcon,
+  exam: Flag,
+  study: BookOpen,
+  practice: ListChecks,
+  reminders: Bell,
+  plant: SproutIcon,
+  account: RefreshCw,
+  board: MessagesSquare,
+  data: ShieldCheck,
+  help: CircleQuestionMark,
+};
+
+/** True on a category's own screen (Your data, Help and about): its groups are bare rows, the bar names them. */
+export const SettingsSubScreen = createContext(false);
+
+/**
+ * A category's mark, in Grove's icon recipe (§7): an `accentText` glyph at stroke 1.75 in a `soft`
+ * circle, the same for every category (one colour: the owner's choice). Decorative: hidden from
+ * screen readers.
+ */
+export function SettingsMark({ cat, size }: { cat: SettingsCat; size: number }) {
+  const { c } = useTheme();
+  const Icon = CAT_ICON[cat];
+  return (
+    <View
+      accessible={false}
+      accessibilityElementsHidden
+      importantForAccessibility="no-hide-descendants"
+      style={[styles.mark, { width: size, height: size, backgroundColor: c.soft }]}
+    >
+      <Icon size={size >= 40 ? ICON_SIZE.row : Math.round(size * 0.55)} color={c.accentText} strokeWidth={ICON_STROKE} />
+    </View>
+  );
+}
+
+/**
+ * A door to a category's own screen: its mark, its name and what it holds now, in plain words, with
+ * any live state (a reply to a report, an update ready, an Undo restore waiting). Spoken as one
+ * button, "Your data, Last backup 6 Oct, back up or move to a new phone", hint "Opens Your data".
+ */
+export function SettingsCategoryRow({
+  cat,
+  title,
+  summary,
+  onPress,
+  last,
+  ref,
+}: {
+  cat: SettingsCat;
+  title: string;
+  summary: string;
+  onPress: () => void;
+  last?: boolean;
+  /** For handing screen-reader focus back here after Back. */
+  ref?: Ref<View>;
+}) {
+  const { c } = useTheme();
+  const press = usePressScale({ scale: 1, tint: c.soft });
+  return (
+    <AnimatedPressable
+      ref={ref}
+      accessibilityRole="button"
+      accessibilityLabel={`${title}, ${summary.replace(/ · /g, ', ')}`}
+      accessibilityHint={`Opens ${title}`}
+      onPress={() => {
+        // It leaves for another screen: the pressed tint rests at once (the 1.43 floating-gear fix).
+        press.settle();
+        onPress();
+      }}
+      onPressIn={press.onPressIn}
+      onPressOut={press.onPressOut}
+      style={[styles.catRow, press.style]}
+    >
+      {press.layer}
+      <SettingsMark cat={cat} size={40} />
+      <View style={{ flex: 1, minWidth: 0 }}>
+        <T v="headline">{title}</T>
+        <T v="meta">{summary}</T>
+      </View>
+      <ChevronRight size={18} color={c.muted} strokeWidth={ICON_STROKE} />
+      {!last && <View style={[styles.hairline, { left: 40 + space.md, backgroundColor: c.line }]} />}
+    </AnimatedPressable>
+  );
+}
+
+/** The flat card the categories sit on (also the doors' card): never a button, no shadow (Grove §5 rule 8). */
+export function SettingsCard({ children, title }: { children: ReactNode; /** A plain header (no mark), for the doors card. */ title?: string }) {
+  const { c, isDark } = useTheme();
+  return (
+    <View style={[styles.card, { backgroundColor: c.raised, borderColor: isDark ? c.line : 'transparent' }]}>
+      {title ? (
+        <View accessible accessibilityRole="header" accessibilityLabel={title} style={[styles.cardHead, { borderBottomColor: c.line }]}>
+          <T v="headline">{title}</T>
+        </View>
+      ) : null}
+      {children}
+    </View>
+  );
+}
 
 // ── SettingsGroup ─────────────────────────────────────────────────────
 /**
- * Mobile 1.43 (owner feedback, 26 Oct 2026: "it's hard to distinguish the categories"): a group's
- * title must never look like a row. It is a small letter-spaced `caption` in `accentText` (rows stay
- * `label` in `ink`), 32 above each group, and the group's rows sit between two full-width hairlines,
- * so each group has a clear start and end. Still a screen-reader header (heading-by-heading navigation
- * jumps between groups).
- * (Grouped plates, icon-led headers and a quick-settings strip were shot for the owner to compare,
- * 26 Oct 2026; rows on paper ship until she picks.)
+ * Mobile 1.46: each category is one flat card; its mark and title sit inside the top of the card over
+ * a hairline (a title above a card could belong to the card before it; inside, it can't). The title
+ * is a screen-reader header, so heading-by-heading navigation jumps between categories.
  */
-export function SettingsGroup({ title, intro, children, first }: { title: string; intro?: string; children: ReactNode; /** The first group on the screen: 16 above, not 32. */ first?: boolean }) {
+export function SettingsGroup({
+  title,
+  intro,
+  children,
+  cat,
+}: {
+  title: string;
+  intro?: string;
+  children: ReactNode;
+  /** Which category it is (its mark). */
+  cat?: SettingsCat;
+}) {
   const { c } = useTheme();
-  return (
-    <View style={{ marginTop: first ? space.lg : space.xxl }}>
-      <T v="caption" color={c.accentText} accessibilityRole="header" style={styles.groupTitle}>
-        {title}
-      </T>
-      {intro ? <T v="meta" style={{ marginTop: space.xs }}>{intro}</T> : null}
-      <View style={[styles.groupRule, { borderColor: c.line }]}>
-        {children}
+  const sub = useContext(SettingsSubScreen);
+  // A category's own screen: the bar above already names the group.
+  if (sub)
+    return (
+      <View style={{ marginTop: space.lg }}>
+        {intro ? <T v="meta" style={{ marginBottom: space.md }}>{intro}</T> : null}
+        <View style={[styles.groupRule, { borderColor: c.line }]}>{children}</View>
       </View>
-    </View>
+    );
+  return (
+    <SettingsCard>
+      <View accessible accessibilityRole="header" accessibilityLabel={title} style={[styles.cardHead, { borderBottomColor: c.line }]}>
+        {cat ? <SettingsMark cat={cat} size={28} /> : null}
+        <T v="headline" style={{ flexShrink: 1 }}>{title}</T>
+      </View>
+      {intro ? <T v="meta" style={{ marginTop: space.sm }}>{intro}</T> : null}
+      {children}
+    </SettingsCard>
   );
 }
 
@@ -281,12 +417,17 @@ export function ChoiceSheet<V extends string | number>({
 const styles = StyleSheet.create({
   // 56pt: above the 48pt minimum, a little tighter than a 64pt list row so a group reads as one block.
   row: { flexDirection: 'row', alignItems: 'center', gap: space.md, minHeight: 56, paddingVertical: space.md },
-  // The group title: letter-spaced (sentence case: no uppercase eyebrows, spec §2), 8 above the group's top rule.
-  groupTitle: { letterSpacing: 0.8, marginBottom: space.sm },
   groupRule: { borderTopWidth: 1, borderBottomWidth: 1, marginTop: space.xs },
   // The value takes what the title leaves, up to half the row, and may wrap to a second line.
   valueRight: { flexShrink: 1, maxWidth: '50%', textAlign: 'right' },
   hairline: { position: 'absolute', left: 0, right: 0, bottom: 0, height: 1 },
+  // A category's mark: a soft circle.
+  mark: { alignItems: 'center', justifyContent: 'center', borderRadius: radius.pill },
+  // A door to a category's own screen (72: mark, name and summary).
+  catRow: { flexDirection: 'row', alignItems: 'center', gap: space.md, minHeight: 72, paddingVertical: space.md },
+  // The flat category card, 16 apart, and its title inside over a hairline (48pt tall at least).
+  card: { marginTop: space.xl, borderRadius: radius.lg, borderWidth: 1.5, paddingHorizontal: space.lg, paddingTop: space.xs },
+  cardHead: { flexDirection: 'row', alignItems: 'center', gap: space.sm, minHeight: 48, paddingVertical: space.sm, borderBottomWidth: 1 },
   sheetHost: { flex: 1, justifyContent: 'flex-end' },
   sheet: { borderTopLeftRadius: radius.sheet, borderTopRightRadius: radius.sheet, overflow: 'hidden' },
   sheetHead: { flexDirection: 'row', alignItems: 'center', gap: space.md, paddingHorizontal: space.gutter, paddingTop: space.lg, paddingBottom: space.xs },

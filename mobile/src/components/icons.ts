@@ -76,6 +76,9 @@ export { default as LifeBuoy } from 'lucide-react-native/icons/life-buoy';
 export { default as Inbox } from 'lucide-react-native/icons/inbox';
 // Uplift Phase 8 (built OFF): the feedback board's row in You (cloud builds only).
 export { default as MessagesSquare } from 'lucide-react-native/icons/messages-square';
+// Mobile 1.46: Settings' category marks (Reminders, Appearance).
+export { default as Bell } from 'lucide-react-native/icons/bell';
+export { default as Palette } from 'lucide-react-native/icons/palette';
 // Mobile 1.22: Pinwheel replaces Lucide's gamepad as the Play glyph (tab bar, plan items).
 export { Pinwheel, Rings, Sprig, Sprout } from './glyphs';
 

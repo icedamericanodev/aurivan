@@ -77,6 +77,9 @@ const ACRONYMS = new Set([
   // Added with the mobile 1.45 decision lessons: advanced persistent threat, operational
   // technology, disaster recovery plan, the EU's General Data Protection Regulation, and the US SEC (Securities and Exchange Commission).
   'APT', 'OT', 'DRP', 'EU', 'GDPR', 'US', 'SEC',
+  // Added with decision lessons 6–10: bring your own device, end-user computing, artificial intelligence and the
+  // Sarbanes-Oxley Act, and USB (a plug-in drive, in the exceptions lesson).
+  'BYOD', 'EUC', 'AI', 'SOX', 'USB',
 ]);
 const EXAM_KEYWORDS = new Set(['FIRST', 'BEST', 'MOST', 'GREATEST', 'PRIMARY', 'LEAST', 'NOT', 'MAIN']);
 const capsWords = (text: string) => (text.match(/\b[A-Z]{2,}\b/g) ?? []).filter((w) => !ACRONYMS.has(w));

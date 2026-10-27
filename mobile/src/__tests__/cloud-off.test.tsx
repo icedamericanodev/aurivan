@@ -124,6 +124,11 @@ describeOff('the cloud flag is off', () => {
     play: () => require('../app/(tabs)/play').default,
     you: () => require('../app/(tabs)/you').default,
     settings: () => require('../app/settings').default,
+    // Mobile 1.46: Your data's own screen (Settings' door).
+    'settings-data': () => {
+      (require('../../jest/perf/focusRouter').routeParams as Record<string, string | undefined>).category = 'data';
+      return require('../app/settings').default;
+    },
     help: () => require('../app/help').default,
     'whats-new': () => require('../app/whats-new').default,
   };
@@ -152,8 +157,9 @@ describeOff('the cloud flag is off', () => {
       expect(getItem.mock.calls.map((c) => c[0])).not.toContain(key);
       expect(setItem.mock.calls.map((c) => c[0])).not.toContain(key);
     }
-    if (name === 'settings') {
-      expect(text).toContain('Progress is stored only on this device.');
+    if (name === 'settings') expect(text).toContain('Progress is stored only on this device.');
+    if (name === 'settings-data') {
+      delete (require('../../jest/perf/focusRouter').routeParams as Record<string, string | undefined>).category;
       // Settings → Your data keeps its words with the flag off (UX O2 changes only cloud builds).
       expect(text).toContain('Your progress is kept only on this phone. A backup file keeps it safe and moves it to a new phone. You choose where the file goes.');
     }

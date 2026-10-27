@@ -84,7 +84,7 @@ export function AccountSettingsGroup() {
   if (!cloudReady()) return null;
   const value = signedIn ? (emailMasked ?? copy('you.row.in.sub.relay')) : copy('settings.row.out');
   return (
-    <SettingsGroup title={copy('settings.group')}>
+    <SettingsGroup cat="account" title={copy('settings.group')}>
       <SettingsRow
         title={copy('settings.row')}
         value={value}

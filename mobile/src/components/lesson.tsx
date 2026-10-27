@@ -45,7 +45,7 @@ import { LeafBig, PlanLeaf, type BotanyKind } from './glyphs';
 import { DrawLine, FadeIn } from './motion';
 import { Bullets } from './notes';
 import { OptionCard, Verdict, type OptionState } from './quiz';
-import { BigNum, Gap, HeroPanel, Stem, T } from './ui';
+import { BigNum, Gap, HeroPanel, Stem, T, useFontScale } from './ui';
 
 /** When part `i` of a scene arrives: 120 ms apart in reading order, the first 6 (the rest come with the 6th). */
 export const partDelay = (i: number) => Math.min(i, motion.stagger.maxScene - 1) * motion.stagger.scene;
@@ -129,7 +129,7 @@ export function sceneKicker(scene: Scene): string | null {
     case 'flow':
       return 'How it flows';
     case 'stack':
-      return 'The layers';
+      return scene.unordered ? 'The parts' : 'The layers';
     case 'compare':
       return 'Side by side';
     case 'trap':
@@ -489,6 +489,8 @@ function TimelineScene({ scene }: { scene: Extract<Scene, { type: 'flow' }> }) {
 /** Layers (`stack`): bands that settle onto the stack from above, top layer first. */
 function LayersScene({ scene }: { scene: Extract<Scene, { type: 'stack' }> }) {
   const { c } = useTheme();
+  // The unordered marker sits centred on the label's first line at any text size (capped like the type).
+  const fontScale = Math.min(useFontScale(), 2);
   const n = scene.layers.length;
   return (
     <View>
@@ -499,7 +501,7 @@ function LayersScene({ scene }: { scene: Extract<Scene, { type: 'stack' }> }) {
             key={layer.label}
             i={i + 1}
             drop
-            spoken={`Layer ${i + 1} of ${n}: ${layer.label}. ${layer.note}`}
+            spoken={`${scene.unordered ? 'Part' : 'Layer'} ${i + 1} of ${n}: ${layer.label}. ${layer.note}`}
             style={{
               flexDirection: 'row',
               gap: 14,
@@ -514,7 +516,12 @@ function LayersScene({ scene }: { scene: Extract<Scene, { type: 'stack' }> }) {
             }}
           >
             <View style={{ width: 24 }}>
-              <BigNum value={String(i + 1)} size={22} color={i === 0 ? c.accentText : c.ink2} />
+              {scene.unordered ? (
+                // Parallel items: one plain marker each, so no item reads as first or most important.
+                <View accessible={false} importantForAccessibility="no" style={{ width: 6, height: 6, borderRadius: 3, marginLeft: 4, marginTop: (22 * fontScale - 6) / 2, backgroundColor: c.accent }} />
+              ) : (
+                <BigNum value={String(i + 1)} size={22} color={i === 0 ? c.accentText : c.ink2} />
+              )}
             </View>
             <View style={{ flex: 1 }}>
               <T v="label">{layer.label}</T>

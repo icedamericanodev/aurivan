@@ -31,7 +31,8 @@ jest.mock('expo-router', () => ({
   router: { push: jest.fn(), replace: jest.fn(), back: jest.fn(), navigate: jest.fn(), canGoBack: () => true, canDismiss: () => false },
   useNavigation: () => ({ addListener: () => () => {} }),
   useFocusEffect: (cb: () => void | (() => void)) => jest.requireActual('react').useEffect(() => cb(), [cb]),
-  useLocalSearchParams: () => ({}),
+  // Mobile 1.46: Check for updates lives on Help and about's own screen.
+  useLocalSearchParams: () => ({ category: 'help' }),
 }));
 jest.mock('react-native-safe-area-context', () => {
   const { View } = jest.requireActual('react-native');

@@ -21,7 +21,18 @@ export type Scene =
       list?: IdeaList;
     }
   | { type: 'analogy'; heading: string; body: string }
-  | { type: 'stack'; heading: string; layers: { label: string; note: string }[]; caption?: string }
+  | {
+      type: 'stack';
+      heading: string;
+      layers: { label: string; note: string }[];
+      caption?: string;
+      /**
+       * Opt-in: the items are parallel, not a ranking or a sequence (such as four conditions that must all hold).
+       * Drawn with plain markers instead of 1, 2, 3… and kicked as "The parts", not "The layers", so the
+       * order never reads as importance. Leave it off for stacks that really are ordered.
+       */
+      unordered?: boolean;
+    }
   | {
       type: 'flow';
       heading: string;

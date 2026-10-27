@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Screenshot harness: web-export the app, seed demo data, capture key screens.
-# Usage (from mobile/): [SHOTS=m145|m144|m143|m142|m141|guides|principles|qnote|today|firstdays|notes|data|pace|practice|milestones|support|paths|motion|growth|badges|badgesC|stats|learnplay|plant|fit|proof|settings|cloud|store] bash scripts/screenshots/run.sh [out_dir] [dark|light]
+# Usage (from mobile/): [SHOTS=m146|m145|m144|m143|m142|m141|guides|principles|qnote|today|firstdays|notes|data|pace|practice|milestones|support|paths|motion|growth|badges|badgesC|stats|learnplay|plant|fit|proof|settings|cloud|store] bash scripts/screenshots/run.sh [out_dir] [dark|light]
 # Needs Playwright (preinstalled in Claude cloud sessions; locally: npx playwright install chromium).
 set -euo pipefail
 cd "$(dirname "$0")/../.."
@@ -213,6 +213,10 @@ elif [ "${SHOTS:-}" = settings ]; then
   # straight into the calendar, onboarding's date step with the calendar, and
   # You without the theme switch (shoot_settings.mjs; NARROW=1; FONT_SCALE=2).
   node scripts/screenshots/shoot_settings.mjs "$TMP/seed.json" "$OUT" "$THEME"
+elif [ "${SHOTS:-}" = m146 ]; then
+  # Mobile 1.46 "one page, clear groups" Settings: the top, the middle, the end (the two doors), Your
+  # data's and Help and about's screens, in light and dark and at about 200% text (shoot_m146.mjs).
+  node scripts/screenshots/shoot_m146.mjs "$TMP/seed.json" "$OUT"
 elif [ "${SHOTS:-}" = cloud ]; then
   # Uplift Phase 6 accounts (built OFF): You and Settings entry points, the
   # sign-in sheet, email and code, Account, delete (3 steps and done), About,

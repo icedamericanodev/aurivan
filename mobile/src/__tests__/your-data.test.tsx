@@ -242,9 +242,9 @@ describe('Settings → Your data', () => {
     expect(rows).toHaveLength(6);
     const pairs = root().findAll((n) => (n.type as unknown) === 'View' && n.props.style?.flexDirection === 'column' && n.props.style?.gap !== undefined);
     expect(pairs.length).toBeGreaterThanOrEqual(6);
-    // The "Your data" group title is one short caption header since mobile 1.43 (nothing beside it
-    // to squeeze), so it only has to be there and be a header.
-    const header = root().findAll((n) => typeof n.type === 'string' && n.props.accessibilityRole === 'header' && n.props.children === 'Your data');
+    // The "Your data" group title (mobile 1.46: inside the top of its card, one header stop with the
+    // name as its label) only has to be there and be a header.
+    const header = root().findAll((n) => typeof n.type === 'string' && n.props.accessibilityRole === 'header' && n.props.accessibilityLabel === 'Your data');
     expect(header.length).toBeGreaterThan(0);
     // Each row is ONE screen-reader stop that says both values.
     expect(rows[0].props.accessibilityLabel).toMatch(/^Exam\. On this phone: CISA\. In the backup: CISA\. No change\.$/);

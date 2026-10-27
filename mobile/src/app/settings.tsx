@@ -1,19 +1,24 @@
 /**
- * Settings (mobile 1.17, "a tidy Settings"): one calm list in titled groups.
- * Each row shows its CURRENT value with a chevron and opens a bottom sheet
- * with the choices (components/settings.tsx); simple on/off settings stay
- * switches in place. Nothing a learner set before is lost; only where it
- * lives on screen changed.
+ * Settings (mobile 1.17, "a tidy Settings"; mobile 1.46, "one page, clear groups"). Each category is
+ * its own flat card with its mark and title inside (components/settings.tsx), in the order learners
+ * change them; each row shows its CURRENT value with a chevron and opens a bottom sheet with the
+ * choices; simple on/off settings stay switches in place. Your data and Help and about, visited
+ * rarely and many-rowed, are doors to their own screens (settings-section?category=…), each door
+ * showing a live summary. Nothing a learner set before is lost; only where it lives on screen changed.
  *
- *   You                   Your name (mobile 1.23: what Today calls you; optional, only on this phone)
- *   Appearance            Theme (1.43: a one-tap System / Light / Dark control, moved up from 6th) · Motion · Haptics
+ *   Appearance            Theme (a one-tap System / Light / Dark control) · Motion · Haptics
  *   Exam                  Certification · Exam date (a calendar, components/calendar.tsx)
  *   Your study            Daily time · Starting point · Exam-focused plan · Reset reading progress (1.25)
- *   Practice              Default mode · Timed practice · Shuffle answer options
  *   Reminders             Study reminder · Time and days
- *   Badges and your plant Show badges · Show my plant · Quiet look
- *   Your data             Save a backup · Restore · (Undo restore), then Reset, set apart
- *   Help and about        Get help or send feedback · About KaiSip · Privacy · Terms · Check for updates
+ *   Practice              Default mode · Timed practice · Shuffle answer options
+ *   Badges and your plant Show badges · Show my plant · Change its look
+ *   You                   Your name (mobile 1.23: what Today calls you; optional, only on this phone)
+ *   (doors)               Your data: Save a backup · Restore · (Undo restore), then Reset, set apart
+ *                         Help and about: Get help or send feedback · About KaiSip · Privacy · Terms ·
+ *                         Check for updates, and the app's version
+ *
+ * Mobile 1.46 (the owner, after 1.43: "I can't distinguish clearly the categories to its sub
+ * categories"): four layouts, then two finalists, were built and reviewed; she chose this one.
  *
  * Mobile 1.19: "Check for updates" (lib/updates.ts) sits last in Help and
  * about, only where over-the-air updates work (an installed APK or store
@@ -27,37 +32,52 @@
  * (mobile 1.44, You's study profile) opens Your name the same way: one name
  * editor in the app, never a second one. `?section=plant`
  * opens at Badges and your plant (the plant screens' "Open Settings").
+ * `settings-section?category=data|help` (and account|board in a cloud build) is a door's screen: the
+ * same screen showing only that category, its name in the bar.
  *
  * Theme lives only here since 1.17 (the owner found the switch on You
  * redundant once Settings was tidy).
  *
- * Uplift Phase 6 (accounts, built OFF): in a cloud build only, an Account
- * group sits above Your data, and About's last sentence follows the account
+ * Uplift Phase 6 (accounts, built OFF): in a cloud build only, Account and
+ * Feedback board are doors above Your data, and About's last sentence follows the account
  * (components/account.tsx). With the flag off nothing here changes.
  */
 import Constants from 'expo-constants';
-import { useEffect, useRef, useState, type RefObject } from 'react';
+import { useCallback, useEffect, useRef, useState, type ReactNode, type RefObject } from 'react';
 import * as ExpoRouter from 'expo-router';
 import { router, useLocalSearchParams } from 'expo-router';
 import { Alert, Linking, Platform, View, type ScrollView } from 'react-native';
 import { aboutLine, AccountSettingsGroup } from '../components/account';
 import { BoardSettingsGroup } from '../components/board';
 import { useSyncing } from '../lib/sync';
+import { cloudReady } from '../lib/account';
 import { KaisipLockup, PillarList } from '../components/brand';
 import { CLOUD } from '../cloud/flag';
 import { copy as cloudCopy } from '../content/cloud/copy';
-import { undoAvailable } from '../engine/backup';
+import { undoAvailable, undoExpiresAt } from '../engine/backup';
 import { CalendarSheet } from '../components/calendar';
 import { DisplayNameField } from '../components/displayName';
 import { cleanDisplayName } from '../engine/displayName';
 import { EXAM_FOCUSED_SHORT, EXAM_FOCUSED_SPOKEN, EXAM_FOCUSED_TITLE, FAMILIARITY_QUESTION } from '../components/fit';
 import { creditSubtitle } from '../components/help';
 import { useMotion, useSystemReducedMotion } from '../components/motion';
-import { ChoiceSheet, SettingsGroup, SettingsRow, Sheet } from '../components/settings';
+import {
+  ChoiceSheet,
+  DOOR_CATS,
+  isSettingsCat,
+  SettingsCard,
+  SettingsCategoryRow,
+  SettingsGroup,
+  SettingsRow,
+  SettingsSubScreen,
+  Sheet,
+  type SettingsCat,
+} from '../components/settings';
 import { YourData } from '../components/yourData';
 import { Button, Chip, Gap, PushedHeader, Screen, Segmented, Stepper, T, ToggleRow } from '../components/ui';
 import { spokenDate, untilLabel } from '../engine/calendar';
 import { dayKey } from '../engine/streak';
+import { shortDate } from '../lib/format';
 import { DAILY_MINUTES, examFocusedOf, FAMILIARITIES, FAMILIARITY_INFO, KEEP_TODAY_LINE, minutesLabel, minutesSpoken, type DailyMinutes, type Familiarity } from '../engine/fit';
 import { MODE_INFO, STUDY_MODES, type StudyMode } from '../engine/studyModes';
 import { CERT_SCOPE_LINE, PROVENANCE_LINE, WELCOME_HEADLINE, WELCOME_LINE } from '../content/brand';
@@ -110,6 +130,8 @@ type TransitionEvents = { addListener?: (type: 'transitionEnd', cb: (e: { data?:
 /** This screen's own navigation (absent where a test's expo-router stand-in has none). */
 const useOwnNavigation: () => TransitionEvents | undefined =
   (ExpoRouter as { useNavigation?: () => TransitionEvents }).useNavigation ?? (() => undefined);
+/** Runs each time this screen comes back into focus (absent where a test's expo-router stand-in has none). */
+const useScreenFocus: (effect: () => void) => void = (ExpoRouter as { useFocusEffect?: (effect: () => void) => void }).useFocusEffect ?? (() => {});
 
 export default function Settings() {
   // Cloud builds only: true while this phone syncs (About says so). Always false with the flag off.
@@ -146,7 +168,10 @@ export default function Settings() {
   const [badgesLine, setBadgesLine] = useState<string | null>(null);
 
   // Deep links: open the calendar, or start at the plant's group.
-  const params = useLocalSearchParams<{ open?: string; section?: string }>();
+  const params = useLocalSearchParams<{ open?: string; section?: string; category?: string }>();
+  // A door's own screen (settings-section?category=data|help, and account|board in a cloud build); any
+  // other value shows the whole page.
+  const sub: SettingsCat | null = isSettingsCat(params.category) && DOOR_CATS.includes(params.category) && (cloudReady() || (params.category !== 'account' && params.category !== 'board')) ? params.category : null;
   const navigation = useOwnNavigation();
   // "Now" for the calendar: read again each time it opens, so a Settings
   // screen left open past midnight never offers yesterday (render stays pure:
@@ -200,6 +225,27 @@ export default function Settings() {
   const remindRow = useRef<View>(null);
   const motionRow = useRef<View>(null);
   const aboutRow = useRef<View>(null);
+  // Category screens (variants 2, 5, 6): the rows that open them, and the one last opened, so Back hands
+  // screen-reader focus to it (UX review P1); a category screen's title takes focus as it opens (HARD 1).
+  const catRefs = useRef<Partial<Record<SettingsCat, View | null>>>({});
+  const lastCat = useRef<SettingsCat | null>(null);
+  const subHeadRef = useRef<View>(null);
+  useEffect(() => {
+    if (sub) moveFocus(subHeadRef, 350);
+  }, [sub]);
+  useScreenFocus(
+    useCallback(() => {
+      const k = lastCat.current;
+      if (!k || sub) return;
+      lastCat.current = null;
+      moveFocus({ current: catRefs.current[k] ?? null }, 450);
+    }, [sub]),
+  );
+  // Live states for the summaries: an Undo restore waiting, and the last backup.
+  const backupUndo = useBackup((b) => b.undo);
+  const lastBackupAt = useBackup((b) => b.lastBackupAt);
+  const restoredSavedAt = useBackup((b) => b.restoredSavedAt ?? null);
+  const appVersion = Constants.expoConfig?.version ?? '1.0.0';
   // Save keeps the sheet open (and the old name) when the text is a link or an email; the field explains why.
   const saveName = () => {
     const clean = cleanDisplayName(nameDraft);
@@ -227,7 +273,9 @@ export default function Settings() {
     }
     // Looked up here, in the handler (never during render).
     const back: Record<SheetId, RefObject<View | null>> = { name: nameRow, exam: examRow, date: dateRow, minutes: minutesRow, start: startRow, mode: modeRow, remind: remindRow, motion: motionRow, about: aboutRow };
-    moveFocus(back[id], 450);
+    // On a category list the row itself isn't drawn (a deep-linked sheet over the list): its category's row instead (UX P5).
+    const home: Record<SheetId, SettingsCat> = { name: 'you', exam: 'exam', date: 'exam', minutes: 'study', start: 'study', mode: 'practice', remind: 'reminders', motion: 'appearance', about: 'help' };
+    moveFocus(back[id].current ? back[id] : { current: catRefs.current[home[id]] ?? null }, 450);
   };
 
   // Mobile 1.15: a change to Your study rebuilds today's plan only if nothing
@@ -358,236 +406,250 @@ export default function Settings() {
     </View>
   );
 
-  return (
-    <Screen edges={['top', 'bottom']} scrollRef={scrollRef}>
-      {/* Same pushed header as Saved and Mistakes: the title lives in the bar. */}
-      <PushedHeader title="Settings" onBack={() => router.back()} />
+  // ── The categories' rows ──
+  const keptLine = keptToday ? (
+    // Android announces it when it appears (iOS: sayLater above; UX review P6).
+    <View accessibilityLiveRegion="polite">
+      <T v="meta" color={c.accentText} style={{ marginTop: space.xs }}>{KEEP_TODAY_LINE}</T>
+    </View>
+  ) : null;
 
-      {/* You (mobile 1.23): what Today calls the learner. Optional, and only on this phone. */}
-      <SettingsGroup title="You" first>
+  const youRows = (
+    <SettingsRow
+      ref={nameRow}
+      title="Your name"
+      value={s.displayName ? s.displayName : 'Not set'}
+      spokenValue={s.displayName ? s.displayName : 'not set'}
+      accessibilityHint="Opens a box to change or clear the name Today uses"
+      onPress={open('name')}
+      last
+    />
+  );
+
+  const appearanceRows = (
+    <>
+      {/* Mobile 1.43 (owner feedback: "if I want to change the theme I cannot see it easily"): one tap, near the
+          top. A radio group of three; choosing one switches at once (the theme dissolve, §8). */}
+      {themeControl}
+      {/* Motion (mobile 1.8, WCAG 2.3.3): the phone's own setting, or Reduced for this app only. */}
+      <SettingsRow
+        ref={motionRow}
+        title="Motion"
+        value={MOTION_NAME[s.motion === 'reduced' ? 'reduced' : 'system']}
+        onPress={open('motion')}
+      />
+      <ToggleRow title="Haptics" subtitle="Gentle taps when you answer." value={s.haptics} onValueChange={s.setHaptics} last />
+    </>
+  );
+
+  // Exam: which certification, and the exam date (the countdown, the exam-eve and exam-day plans and exam week all follow it).
+  const examRows = (
+    <>
+      <SettingsRow ref={examRow} title="Certification" value={cert.name} accessibilityHint="Opens the exams you can choose" onPress={open('exam')} />
+      <SettingsRow
+        ref={dateRow}
+        title="Exam date"
+        value={examDate ? examDateLabel(examDate) : 'Not set'}
+        spokenValue={examDate ? spokenDate(examDate) : 'not set'}
+        // Mobile 1.43: how far away it is ("In 36 days"; "Date passed" once it has gone), from the screen's "now".
+        subtitle={examDate ? (untilLabel(examDate, dayKey(now)) ?? 'Date passed') : undefined}
+        accessibilityHint="Opens a calendar"
+        onPress={open('date')}
+        last
+      />
+    </>
+  );
+
+  // Mobile 1.15 (PHASE5.md §2.8): Your study sizes and shapes Today's plan.
+  const studyRows = (
+    <>
+      <SettingsRow ref={minutesRow} title="Daily time" value={minutesLabel(minutes)} spokenValue={minutesSpoken(minutes)} onPress={open('minutes')} />
+      <SettingsRow
+        ref={startRow}
+        title="Starting point"
+        // Mobile 1.43: a one-line hint (a tester: "Starting point: Not set. I don't know what that is").
+        subtitle="How much audit you know; it shapes your first weeks"
+        value={s.familiarity ? START_SHORT[s.familiarity] : 'Not set'}
+        spokenValue={s.familiarity ? FAMILIARITY_INFO[s.familiarity].title : 'not set'}
+        onPress={open('start')}
+      />
+      <ToggleRow
+        title={EXAM_FOCUSED_TITLE}
+        subtitle={EXAM_FOCUSED_SHORT}
+        subtitleLabel={EXAM_FOCUSED_SPOKEN}
+        value={examFocused}
+        onValueChange={(on) => fit({ examFocused: on })}
+        last={!(showReading && readingTouched)}
+      />
+      {/* Mobile 1.43: shown only when there is reading progress to reset (the real read state, not a flag);
+          a greyed row read like a heading. */}
+      {showReading && readingTouched && (
+        // An action row (no chevron): it asks first, then clears only the notes' read marks.
         <SettingsRow
-          ref={nameRow}
-          title="Your name"
-          value={s.displayName ? s.displayName : 'Not set'}
-          spokenValue={s.displayName ? s.displayName : 'not set'}
-          accessibilityHint="Opens a box to change or clear the name Today uses"
-          onPress={open('name')}
+          title="Reset reading progress"
+          subtitle="Every study note goes back to not read"
+          onPress={confirmResetReading}
+          accessibilityHint="Asks first. Your answers and scores stay."
+          chevron={false}
           last
         />
-      </SettingsGroup>
-
-      {/* Appearance (mobile 1.43): right after You, so the theme is one tap from the top. Motion and Haptics stay with it. */}
-      <SettingsGroup title="Appearance">
-        {/* Mobile 1.43 (owner feedback: "if I want to change the theme I cannot see it easily"): one tap, near the
-            top. A radio group of three; choosing one switches at once (the theme dissolve, §8). */}
-        {themeControl}
-        {/* Motion (mobile 1.8, WCAG 2.3.3): the phone's own setting, or Reduced for this app only. */}
-        <SettingsRow
-          ref={motionRow}
-          title="Motion"
-          value={MOTION_NAME[s.motion === 'reduced' ? 'reduced' : 'system']}
-          onPress={open('motion')}
-        />
-        <ToggleRow title="Haptics" subtitle="Gentle taps when you answer." value={s.haptics} onValueChange={s.setHaptics} last />
-      </SettingsGroup>
-
-      {/* Exam: which certification, and the exam date (the countdown, the
-          exam-eve and exam-day plans and exam week all follow it). */}
-      <SettingsGroup title="Exam">
-        <SettingsRow ref={examRow} title="Certification" value={cert.name} accessibilityHint="Opens the exams you can choose" onPress={open('exam')} />
-        <SettingsRow
-          ref={dateRow}
-          title="Exam date"
-          value={examDate ? examDateLabel(examDate) : 'Not set'}
-          spokenValue={examDate ? spokenDate(examDate) : 'not set'}
-          // Mobile 1.43: how far away it is ("In 36 days"; "Date passed" once it has gone), from the screen's "now".
-          subtitle={examDate ? (untilLabel(examDate, dayKey(now)) ?? 'Date passed') : undefined}
-          accessibilityHint="Opens a calendar"
-          onPress={open('date')}
-          last
-        />
-      </SettingsGroup>
-
-      {/* Mobile 1.15 (PHASE5.md §2.8): Your study sizes and shapes Today's plan. */}
-      <SettingsGroup title="Your study">
-        <SettingsRow ref={minutesRow} title="Daily time" value={minutesLabel(minutes)} spokenValue={minutesSpoken(minutes)} onPress={open('minutes')} />
-        <SettingsRow
-          ref={startRow}
-          title="Starting point"
-          // Mobile 1.43: a one-line hint (a tester: "Starting point: Not set. I don't know what that is").
-          subtitle="How much audit you know; it shapes your first weeks"
-          value={s.familiarity ? START_SHORT[s.familiarity] : 'Not set'}
-          spokenValue={s.familiarity ? FAMILIARITY_INFO[s.familiarity].title : 'not set'}
-          onPress={open('start')}
-        />
-        <ToggleRow
-          title={EXAM_FOCUSED_TITLE}
-          subtitle={EXAM_FOCUSED_SHORT}
-          subtitleLabel={EXAM_FOCUSED_SPOKEN}
-          value={examFocused}
-          onValueChange={(on) => fit({ examFocused: on })}
-          last={!(showReading && readingTouched)}
-        />
-        {/* Mobile 1.43: shown only when there is reading progress to reset (the real read state, not a flag);
-            a greyed row read like a heading. */}
-        {showReading && readingTouched && (
-          // An action row (no chevron): it asks first, then clears only the notes' read marks.
-          <SettingsRow
-            title="Reset reading progress"
-            subtitle="Every study note goes back to not read"
-            onPress={confirmResetReading}
-            accessibilityHint="Asks first. Your answers and scores stay."
-            chevron={false}
-            last
-          />
-        )}
-        {keptToday ? (
-          // Android announces it when it appears (iOS: sayLater above; UX review P6).
-          <View accessibilityLiveRegion="polite">
-            <T v="meta" color={c.accentText} style={{ marginTop: space.xs }}>{KEEP_TODAY_LINE}</T>
-          </View>
-        ) : null}
-      </SettingsGroup>
-
-      {/* Practice: what a practice session starts with (Build D timer, Build E mode). */}
-      <SettingsGroup title="Practice">
-        <SettingsRow
-          ref={modeRow}
-          title="Default mode"
-          // Mobile 1.43: a one-line hint (a tester: "Let the app choose: choose what?").
-          subtitle="How Practice picks your questions"
-          value={s.studyMode ? MODE_INFO[s.studyMode].name : 'Let the app choose'}
-          onPress={open('mode')}
-        />
-        <ToggleRow
-          title="Timed practice"
-          subtitle="A timer that counts up while you answer, never a countdown. Practice’s own switch can change it for one set."
-          value={s.practiceTimer}
-          onValueChange={s.setPracticeTimer}
-        />
-        <ToggleRow title="Shuffle answer options" subtitle="Stops you memorizing letters." value={s.shuffleOptions} onValueChange={s.setShuffle} last />
-      </SettingsGroup>
-
-      <SettingsGroup title="Reminders">
-        <ToggleRow
-          title="Study reminder"
-          subtitle={remindersSupported ? 'At most one a day. Turn it off any time.' : 'Available in the installed app, not Expo Go on Android.'}
-          value={remindersSupported && s.reminder.enabled}
-          disabled={busy || !remindersSupported}
-          onValueChange={toggleReminder}
-          last={!remindersSupported}
-        />
-        {remindersSupported && (
-          // You can set these before turning reminders on; nothing is asked until then.
-          <SettingsRow ref={remindRow} title="Time and days" subtitle={reminderSummary(s.reminder)} onPress={open('remind')} last />
-        )}
-      </SettingsGroup>
-
-      {/* Mobile 1.10: badges are optional. Mobile 1.13: so is the plant. */}
-      <View
-        onLayout={(e) => {
-          if (params.section !== 'plant' || scrolled.current) return;
-          scrolled.current = true;
-          scrollRef.current?.scrollTo({ y: Math.max(0, e.nativeEvent.layout.y - space.md), animated: !reduced });
-        }}
-      >
-        <SettingsGroup title="Badges and your plant">
-          <ToggleRow
-            title="Show badges"
-            subtitle="A short moment when you earn one, and Badges on You. Off: you still earn them, quietly."
-            value={!s.badgesHidden}
-            onValueChange={(on) => {
-              if (on) {
-                const line = shownAgainLine(showBadgesAgain());
-                setBadgesLine(line);
-                sayLater(line);
-              } else {
-                setBadgesLine(null);
-                hideBadges();
-              }
-            }}
-          />
-          {badgesLine && (
-            <T v="meta" color={c.accentText} style={{ marginTop: space.xs, marginBottom: space.sm }}>
-              {badgesLine}
-            </T>
-          )}
-          <ToggleRow
-            title="Show my plant"
-            subtitle="A plant on Today and You that grows only from real progress. Off: no plant and no prompts. Its growth is kept."
-            value={plantOn}
-            onValueChange={(on) => setPlantSettings({ showPlant: on })}
-            last={!plantOn}
-          />
-          {/* Mobile 1.40: the Quiet look switch moved into the Look screen's Style choice (botanical,
-              storybook, or storybook with a face). Old saves keep their quietLook; it still decides
-              how a plant planted before 1.40 looks until a style is picked there. */}
-          {plantOn && <SettingsRow title="Change its look" subtitle="Its style, colours and keepsakes" onPress={() => router.push('/plant-look')} last />}
-        </SettingsGroup>
-      </View>
-
-      {/* Cloud builds only: Settings → Account (one of the two ways in). */}
-      {CLOUD && <AccountSettingsGroup />}
-      {/* Cloud builds only: Settings → Feedback board (Your activity, Blocked learners; Phase 8). */}
-      {CLOUD && <BoardSettingsGroup />}
-
-      {/* Backup and restore (Build C): save a file, restore one, undo for 7 days. Offline, no account. */}
-      <YourData />
-
-      {/* Destructive, so set apart from the rows above, with its own line. */}
-      <Gap h={space.xxl} />
-      <Button kind="danger" label={`Reset ${cert.name} progress`} onPress={confirmReset} />
-      <T v="meta" center style={{ marginTop: space.sm }}>{`Deletes this exam’s progress on this phone. It asks first.`}</T>
-
-      {/* Help and feedback (mobile 1.7): ONE row to the Help screen (UX review O2). */}
-      <SettingsGroup title="Help and about">
-        <SettingsRow
-          // The same words as You's row, so the way to Help reads the same everywhere.
-          title="Get help or send feedback"
-          subtitle={dueItems ? creditSubtitle(dueItems) : 'Common questions, reports and what’s new'}
-          onPress={() => router.push('/help')}
-        />
-        <SettingsRow
-          ref={aboutRow}
-          title="About KaiSip"
-          subtitle="The KaiSip way and what the app stands for"
-          onPress={open('about')}
-          last={lastHelpRow === 'about'}
-        />
-        {config.privacyUrl !== '' && (
-          <SettingsRow title="Privacy policy" onPress={() => Linking.openURL(config.privacyUrl)} accessibilityHint="Opens in your browser" last={lastHelpRow === 'privacy'} />
-        )}
-        {config.termsUrl !== '' && (
-          <SettingsRow title="Terms of use" onPress={() => Linking.openURL(config.termsUrl)} accessibilityHint="Opens in your browser" last={lastHelpRow === 'terms'} />
-        )}
-        {updates.available && (
-          // Mobile 1.19: an action row (no chevron: it acts at once). The state is the row's value
-          // ("Checking…", "Up to date") so it is read with the row even with hints off; the note
-          // under the title says why or what to do. Disabled while busy, and once an update is
-          // downloaded (then only "Restart to update" helps). Each new state is announced once (lib/updates.ts).
-          <SettingsRow
-            title="Check for updates"
-            value={updateWords.state}
-            subtitle={updateWords.note}
-            // No hint while the row is disabled: a hint says what a tap does, and then a tap does nothing.
-            accessibilityHint={updates.rowDisabled ? undefined : 'Looks for a newer version of the app and downloads it if there is one.'}
-            disabled={updates.rowDisabled}
-            onPress={updates.check}
-            chevron={false}
-            last
-          />
-        )}
-      </SettingsGroup>
-      {updates.available && updates.canRestart && (
-        // The update is on the phone: restarting applies it now (progress is saved as you go, so nothing is lost).
-        <Button label="Restart to update" onPress={updates.restart} accessibilityHint="Closes and reopens the app with the update." style={{ marginTop: space.md }} />
       )}
+      {keptLine}
+    </>
+  );
 
+  // Practice: what a practice session starts with (Build D timer, Build E mode).
+  const practiceRows = (
+    <>
+      <SettingsRow
+        ref={modeRow}
+        title="Default mode"
+        // Mobile 1.43: a one-line hint (a tester: "Let the app choose: choose what?").
+        subtitle="How Practice picks your questions"
+        value={s.studyMode ? MODE_INFO[s.studyMode].name : 'Let the app choose'}
+        onPress={open('mode')}
+      />
+      <ToggleRow
+        title="Timed practice"
+        subtitle="A timer that counts up while you answer, never a countdown. Practice’s own switch can change it for one set."
+        value={s.practiceTimer}
+        onValueChange={s.setPracticeTimer}
+      />
+      <ToggleRow title="Shuffle answer options" subtitle="Stops you memorizing letters." value={s.shuffleOptions} onValueChange={s.setShuffle} last />
+    </>
+  );
+
+  const reminderRows = (
+    <>
+      <ToggleRow
+        title="Study reminder"
+        subtitle={remindersSupported ? 'At most one a day. Turn it off any time.' : 'Available in the installed app, not Expo Go on Android.'}
+        value={remindersSupported && s.reminder.enabled}
+        disabled={busy || !remindersSupported}
+        onValueChange={toggleReminder}
+        last={!remindersSupported}
+      />
+      {remindersSupported && (
+        // You can set these before turning reminders on; nothing is asked until then.
+        <SettingsRow ref={remindRow} title="Time and days" subtitle={reminderSummary(s.reminder)} onPress={open('remind')} last />
+      )}
+    </>
+  );
+
+  // Mobile 1.10: badges are optional. Mobile 1.13: so is the plant.
+  const plantRows = (
+    <>
+      <ToggleRow
+        title="Show badges"
+        subtitle="A short moment when you earn one, and Badges on You. Off: you still earn them, quietly."
+        value={!s.badgesHidden}
+        onValueChange={(on) => {
+          if (on) {
+            const line = shownAgainLine(showBadgesAgain());
+            setBadgesLine(line);
+            sayLater(line);
+          } else {
+            setBadgesLine(null);
+            hideBadges();
+          }
+        }}
+      />
+      {badgesLine && (
+        <T v="meta" color={c.accentText} style={{ marginTop: space.xs, marginBottom: space.sm }}>
+          {badgesLine}
+        </T>
+      )}
+      <ToggleRow
+        title="Show my plant"
+        subtitle="A plant on Today and You that grows only from real progress. Off: no plant and no prompts. Its growth is kept."
+        value={plantOn}
+        onValueChange={(on) => setPlantSettings({ showPlant: on })}
+        last={!plantOn}
+      />
+      {/* Mobile 1.40: the Quiet look switch moved into the Look screen's Style choice (botanical,
+          storybook, or storybook with a face). Old saves keep their quietLook; it still decides
+          how a plant planted before 1.40 looks until a style is picked there. */}
+      {plantOn && <SettingsRow title="Change its look" subtitle="Its style, colours and keepsakes" onPress={() => router.push('/plant-look')} last />}
+    </>
+  );
+
+  // Help and feedback (mobile 1.7): ONE row to the Help screen (UX review O2).
+  const helpRows = (
+    <>
+      <SettingsRow
+        // The same words as You's row, so the way to Help reads the same everywhere.
+        title="Get help or send feedback"
+        subtitle={dueItems ? creditSubtitle(dueItems) : 'Common questions, reports and what’s new'}
+        onPress={() => router.push('/help')}
+      />
+      <SettingsRow
+        ref={aboutRow}
+        title="About KaiSip"
+        subtitle="The KaiSip way and what the app stands for"
+        onPress={open('about')}
+        last={lastHelpRow === 'about'}
+      />
+      {config.privacyUrl !== '' && (
+        <SettingsRow title="Privacy policy" onPress={() => Linking.openURL(config.privacyUrl)} accessibilityHint="Opens in your browser" last={lastHelpRow === 'privacy'} />
+      )}
+      {config.termsUrl !== '' && (
+        <SettingsRow title="Terms of use" onPress={() => Linking.openURL(config.termsUrl)} accessibilityHint="Opens in your browser" last={lastHelpRow === 'terms'} />
+      )}
+      {updates.available && (
+        // Mobile 1.19: an action row (no chevron: it acts at once). The state is the row's value
+        // ("Checking…", "Up to date") so it is read with the row even with hints off; the note
+        // under the title says why or what to do. Disabled while busy, and once an update is
+        // downloaded (then only "Restart to update" helps). Each new state is announced once (lib/updates.ts).
+        <SettingsRow
+          title="Check for updates"
+          value={updateWords.state}
+          subtitle={updateWords.note}
+          // No hint while the row is disabled: a hint says what a tap does, and then a tap does nothing.
+          accessibilityHint={updates.rowDisabled ? undefined : 'Looks for a newer version of the app and downloads it if there is one.'}
+          disabled={updates.rowDisabled}
+          onPress={updates.check}
+          chevron={false}
+          last
+        />
+      )}
+    </>
+  );
+
+  /** One category: its title, and how it draws; a door also has what it holds now, in plain words. */
+  type Category = { cat: SettingsCat; title: string; summary?: string; draw: () => ReactNode };
+  const group = (cat: SettingsCat, title: string, rows: ReactNode) =>
+    function drawGroup() {
+      return (
+        <SettingsGroup key={cat} title={title} cat={cat}>
+          {rows}
+        </SettingsGroup>
+      );
+    };
+  // The doors' summaries keep the live state the rows inside would show: an Undo restore waiting or the
+  // last backup; a reply to a report, or an update ready to restart; else the version.
+  const undoWaiting = undoAvailable(backupUndo, now);
+  // The same status as Your data's first row (components/yourData.tsx): a restore newer than the last file made counts.
+  const restoredLast = restoredSavedAt !== null && (!lastBackupAt || restoredSavedAt > lastBackupAt);
+  const backupStatus = undoWaiting
+    ? `Undo restore until ${shortDate(undoExpiresAt(backupUndo))}`
+    : restoredLast
+      ? `Restored a backup from ${shortDate(restoredSavedAt)}`
+      : lastBackupAt
+        ? `Last backup ${shortDate(lastBackupAt)}`
+        : 'No backup yet';
+  const dataSummary = `${backupStatus} · back up or move to a new phone`;
+  const helpSummary = dueItems
+    ? creditSubtitle(dueItems)
+    : updates.available && updates.canRestart
+      ? 'Update ready: restart to install it'
+      : 'Get help, report a problem, privacy and terms';
+  const about = (
+    <>
       <Gap h={space.xl} />
       <T v="meta">
         {/* The last sentence is "Progress is stored only on this device." with the flag off (content/cloud/copy.ts about.off). */}
         {/* Mobile 1.39: how the content is made, in the one provenance line used everywhere (content/brand.ts). */}
-        KaiSip v{Constants.expoConfig?.version ?? '1.0.0'} · {PROVENANCE_LINE} {aboutLine(syncing)}
+        KaiSip v{appVersion} · {PROVENANCE_LINE} {aboutLine(syncing)}
       </T>
       {updates.available && (
         // Mobile 1.19: which update this phone runs ("Update 1a2b3c4d · 5e26d4b", or "built-in"), so support
@@ -601,6 +663,112 @@ export default function Settings() {
       {/* Every certification named anywhere in the app needs its trademark notice. Mobile 1.39: the
           app names only the certifications it teaches (no "coming soon" list), so only those. */}
       <T v="meta">{combinedTrademarkNotice(CERTIFICATIONS.filter((x) => x.status === 'available'))}</T>
+    </>
+  );
+  const categories: Category[] = [
+    // Appearance first (mobile 1.43, owner feedback: the theme in one tap, at the top). Motion and Haptics stay with it.
+    { cat: 'appearance', title: 'Appearance', draw: group('appearance', 'Appearance', appearanceRows) },
+    { cat: 'exam', title: 'Exam', draw: group('exam', 'Exam', examRows) },
+    { cat: 'study', title: 'Your study', draw: group('study', 'Your study', studyRows) },
+    { cat: 'reminders', title: 'Reminders', draw: group('reminders', 'Reminders', reminderRows) },
+    { cat: 'practice', title: 'Practice', draw: group('practice', 'Practice', practiceRows) },
+    {
+      cat: 'plant',
+      title: 'Badges and your plant',
+      draw: () => (
+        <View
+          key="plant"
+          onLayout={(e) => {
+            if (params.section !== 'plant' || scrolled.current) return;
+            scrolled.current = true;
+            scrollRef.current?.scrollTo({ y: Math.max(0, e.nativeEvent.layout.y - space.md), animated: !reduced });
+          }}
+        >
+          {group('plant', 'Badges and your plant', plantRows)()}
+        </View>
+      ),
+    },
+    // You (mobile 1.23): what Today calls the learner. Optional, and only on this phone.
+    { cat: 'you', title: 'You', draw: group('you', 'You', youRows) },
+    // Cloud builds only: Settings → Account (one of the two ways in), and → Feedback board (Your activity, Blocked learners; Phase 8).
+    ...(cloudReady()
+      ? [
+          { cat: 'account' as const, title: cloudCopy('settings.group'), summary: 'Sign in and sync', draw: () => <AccountSettingsGroup key="account" /> },
+          { cat: 'board' as const, title: cloudCopy('board.settings.group'), summary: 'Your activity and blocked learners', draw: () => <BoardSettingsGroup key="board" /> },
+        ]
+      : []),
+    {
+      cat: 'data',
+      title: 'Your data',
+      summary: dataSummary,
+      draw: () => (
+        <View key="data">
+          {/* Backup and restore (Build C): save a file, restore one, undo for 7 days. Offline, no account. */}
+          <YourData />
+          {/* Destructive, so set apart from the rows above, with its own line saying what goes and what stays. */}
+          <Gap h={space.xxl} />
+          <Button kind="danger" label={`Reset ${cert.name} progress`} accessibilityHint="Asks first" onPress={confirmReset} />
+          <T v="meta" center style={{ marginTop: space.sm }}>{`Erases your ${cert.name} answers, scores, saved questions, mock history and badges on this phone. Your settings stay.`}</T>
+        </View>
+      ),
+    },
+    {
+      cat: 'help',
+      title: 'Help and about',
+      summary: helpSummary,
+      draw: () => (
+        <View key="help">
+          {group('help', 'Help and about', helpRows)()}
+          {updates.available && updates.canRestart && (
+            // The update is on the phone: restarting applies it now (progress is saved as you go, so nothing is lost).
+            <Button label="Restart to update" onPress={updates.restart} accessibilityHint="Closes and reopens the app with the update." style={{ marginTop: space.md }} />
+          )}
+          {/* The version, where learners look for it (the learner review), and on the page's foot too. */}
+          {about}
+        </View>
+      ),
+    },
+  ];
+  const subCategory = sub ? categories.find((x) => x.cat === sub) : undefined;
+  const doorCats = categories.filter((x) => DOOR_CATS.includes(x.cat));
+
+  /** A door to a category's own screen; Back hands screen-reader focus back to it. */
+  const door = (x: Category, last: boolean) => (
+    <SettingsCategoryRow
+      key={x.cat}
+      ref={(v) => {
+        catRefs.current[x.cat] = v;
+      }}
+      cat={x.cat}
+      title={x.title}
+      summary={x.summary ?? ''}
+      onPress={() => {
+        lastCat.current = x.cat;
+        router.push({ pathname: '/settings-section', params: { category: x.cat } });
+      }}
+      last={last}
+    />
+  );
+
+  return (
+    <Screen edges={['top', 'bottom']} scrollRef={scrollRef}>
+      <SettingsSubScreen.Provider value={subCategory !== undefined}>
+        {/* Same pushed header as Saved and Mistakes: the title lives in the bar. A door's screen: its name
+            is the bar's title, and screen-reader focus starts there. */}
+        <PushedHeader title={subCategory ? subCategory.title : 'Settings'} titleRef={subCategory ? subHeadRef : undefined} onBack={() => router.back()} />
+
+        {subCategory ? (
+          subCategory.draw()
+        ) : (
+          <>
+            {categories.filter((x) => !DOOR_CATS.includes(x.cat)).map((x) => x.draw())}
+            {/* The doors (Your data, Help and about; Account and Feedback board in a cloud build), in one last card. */}
+            <SettingsCard title="Data and help">{doorCats.map((x, i) => door(x, i === doorCats.length - 1))}</SettingsCard>
+
+            {about}
+          </>
+        )}
+      </SettingsSubScreen.Provider>
 
       {/* ── The sheets ─────────────────────────────────────────────── */}
       {/* Your name: edit, save or clear. Saving tidies the text (engine/displayName.ts), so what the row shows is what Today uses. */}

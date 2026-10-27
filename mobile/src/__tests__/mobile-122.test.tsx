@@ -166,6 +166,8 @@ describe('lesson scenes: kicker + hero heading', () => {
     expect(sceneKicker({ type: 'analogy', heading: 'Think of a referee', body: 'x' })).toBe('An analogy');
     expect(sceneKicker({ type: 'flow', heading: 'h', steps: [] })).toBe('How it flows');
     expect(sceneKicker({ type: 'stack', heading: 'h', layers: [] })).toBe('The layers');
+    // Parallel items (an opt-in flag) are not called layers.
+    expect(sceneKicker({ type: 'stack', heading: 'h', layers: [], unordered: true })).toBe('The parts');
     expect(sceneKicker({ type: 'compare', heading: 'h', left: { title: 'a', points: [] }, right: { title: 'b', points: [] } })).toBe('Side by side');
     expect(sceneKicker({ type: 'trap', heading: 'h', trap: 't', why: 'w' })).toBe('The trap');
     expect(sceneKicker({ type: 'tip', body: 'x' })).toBe('Exam-day shortcut');
