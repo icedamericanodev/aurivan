@@ -22,10 +22,10 @@
  */
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
 import { router } from 'expo-router';
-import { findLesson, lessonPreparing, lessonsFor, lessonsForSubtopic, noteIdsForLesson } from '../content/lessons';
+import { findLesson, lessonPreparing, lessonsFor, lessonsForSubtopic, missLessons, noteIdsForLesson } from '../content/lessons';
 import { CISA_LESSONS } from '../content/lessons/cisa';
 import type { Lesson } from '../content/lessons/types';
-import { findQuestion } from '../content/loader';
+import { findQuestion, getAllQuestions } from '../content/loader';
 import { findNote, noteDomain, subtopicOfQuestion } from '../content/notes';
 import { LETTERS } from '../content/types';
 import { missedSubtopics } from '../engine/outline';
@@ -307,8 +307,9 @@ describe('session: the note first, the lesson when there is one', () => {
     answerOnScreen(false);
     mount(<SessionScreen />);
     expect(noteRows()).toHaveLength(1);
-    // No lesson prepares this one; mobile 1.22: a lesson that teaches its note is offered instead, if any.
-    const teaches = lessonsForSubtopic('cisa', noteOnly.sub);
+    // No lesson prepares this one; mobile 1.22: a lesson that lists its note is offered instead, if any
+    // (mobile 1.45: never one that only shares the outline topic).
+    const teaches = missLessons('cisa', noteOnly.qid, noteOnly.sub);
     expect(lessonRows()).toHaveLength(teaches.length ? 1 : 0);
   });
 
@@ -327,7 +328,7 @@ describe('session: the note first, the lesson when there is one', () => {
   });
 
   it('mobile 1.22: the first lesson NOT done is offered (the preparing one, then the note’s)', () => {
-    const teaching = lessonsForSubtopic('cisa', both.sub).filter((l) => l.id !== both.lesson.id);
+    const teaching = missLessons('cisa', both.qid, both.sub).filter((l) => l.id !== both.lesson.id);
     if (!teaching.length) return; // the note has no other lesson: nothing more to offer
     act(() => {
       useProgress.getState().completeLesson('cisa', both.lesson.id);
@@ -341,7 +342,7 @@ describe('session: the note first, the lesson when there is one', () => {
 
   it('the lesson row hides once every lesson it could offer is done; the note stays', () => {
     act(() => {
-      for (const l of lessonsForSubtopic('cisa', both.sub)) useProgress.getState().completeLesson('cisa', l.id);
+      for (const l of missLessons('cisa', both.qid, both.sub)) useProgress.getState().completeLesson('cisa', l.id);
     });
     act(() => {
       useProgress.getState().completeLesson('cisa', both.lesson.id);
@@ -368,6 +369,47 @@ describe('session: the note first, the lesson when there is one', () => {
     answerOnScreen(true);
     mount(<SessionScreen />);
     expect(noteRows()).toHaveLength(0);
+    expect(lessonRows()).toHaveLength(0);
+  });
+
+  // Mobile 1.45 (PM story 2): "Take the lesson" only for a lesson that names the question in `prepares`
+  // or its note in `notes`; the outline-topic fallback is gone from this row (the note page keeps it).
+  it('mobile 1.45: a sweep of the whole bank offers only lessons that list the question or its note', () => {
+    const bank = getAllQuestions('cisa');
+    expect(bank.length).toBeGreaterThan(100);
+    const wrong: string[] = [];
+    let offered = 0;
+    let topicOnly = 0;
+    for (const q of bank) {
+      const sub = subtopicOfQuestion('cisa', q.id);
+      const offer = missLessons('cisa', q.id, sub);
+      for (const l of offer) {
+        if (!l.prepares?.includes(q.id) && !(sub && l.notes?.includes(sub))) wrong.push(`${q.id} → ${l.id}`);
+        if (!findLesson(l.id)) wrong.push(`${q.id} → ${l.id} (no such lesson)`);
+      }
+      // The preparing lessons come first, then the note's.
+      const firstNoteOnly = offer.findIndex((l) => !l.prepares?.includes(q.id));
+      if (firstNoteOnly >= 0 && offer.slice(firstNoteOnly).some((l) => l.prepares?.includes(q.id))) wrong.push(`${q.id} (order)`);
+      if (offer.length) offered++;
+      // What the old topic fallback would have added: lessons that only share the outline topic.
+      else if (sub && lessonsForSubtopic('cisa', sub).length) topicOnly++;
+    }
+    expect(wrong).toEqual([]);
+    expect(offered).toBeGreaterThan(0);
+    // The fallback really is gone: some questions share a topic with a lesson but get no lesson row.
+    expect(topicOnly).toBeGreaterThan(0);
+  });
+
+  it('mobile 1.45: a miss whose note no lesson lists shows the note row and no lesson row', () => {
+    const hit = getAllQuestions('cisa').find((q) => {
+      const sub = subtopicOfQuestion('cisa', q.id);
+      return sub && !missLessons('cisa', q.id, sub).length && lessonsForSubtopic('cisa', sub).length;
+    })!;
+    expect(hit).toBeDefined();
+    startFromIds('cisa', [hit.id], 'T');
+    answerOnScreen(false);
+    mount(<SessionScreen />);
+    expect(noteRows()).toHaveLength(1);
     expect(lessonRows()).toHaveLength(0);
   });
 

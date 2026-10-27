@@ -2067,4 +2067,7 @@ questions (v10.0/v10.1), and miscellaneous additions from v9.8-v10.2 polish.
 - Regulation (EU) 2022/2554 (DORA) Article 29 (ICT Concentration Risk)
 - PCI DSS v4.0.1 Requirement 11.4.5 (Segmentation Testing)
 
+## D2 difficulty upgrade additions (Oct 2026)
+- GDPR Article 17(3)(b) (Erasure Exemption for Legal Obligations)
+
 Citations to ISACA's commercial CISA study guide were removed from the bank and this library in Oct 2026 (owner decision on legal advice); cite the public ITAF, COBIT, NIST, ISO or IIA source instead.

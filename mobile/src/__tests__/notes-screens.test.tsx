@@ -26,6 +26,7 @@ import NotesHome from '../app/notes';
 import NotesDomain from '../app/notes/[domain]';
 import NoteSubtopicScreen from '../app/notes/subtopic/[id]';
 import Learn from '../app/(tabs)/learn';
+import { lessonsFor } from '../content/lessons';
 
 jest.mock('@react-native-async-storage/async-storage', () =>
   jest.requireActual('@react-native-async-storage/async-storage/jest/async-storage-mock'),
@@ -468,7 +469,7 @@ describe('screens', () => {
 describe('Learn: the course and the reference (mobile 1.21)', () => {
   it('says what each is for, and opens the notes', () => {
     mount(<Learn />);
-    expect(allText()).toContain('Lessons are the course. Study notes are the reference.');
+    expect(allText()).toContain('Lessons start each topic. Study notes go deeper.'); // mobile 1.45 (PM story 3)
     expect(allText()).toContain('Look it up');
     expect(allText()).toContain('Lessons');
     expect(allText()).toContain('Study notes');
@@ -480,6 +481,18 @@ describe('Learn: the course and the reference (mobile 1.21)', () => {
     expect(allText()).not.toMatch(/lesson for every topic/i);
     expect(allText()).toContain('In exam order. Each ends with a quick check.');
     expect(allText()).toContain('Short lessons across every domain of the exam outline. IS means information systems.');
+  });
+
+  it('mobile 1.45: with every lesson done, the hero points to practice and the notes', () => {
+    act(() => {
+      for (const l of lessonsFor('cisa')) useProgress.getState().completeLesson('cisa', l.id);
+    });
+    mount(<Learn />);
+    expect(allText()).toContain('Every lesson done');
+    expect(allText()).toContain('Keep practicing, and open the study notes for any topic that trips you up.');
+    expect(allText()).not.toContain('Revisit any lesson anytime');
+    press('Go to Practice');
+    expect(mockPush).toHaveBeenCalledWith('/practice');
   });
 
   it('counts notes read on the notes row once any are read', () => {

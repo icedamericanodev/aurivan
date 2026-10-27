@@ -83,7 +83,7 @@ import { haptic } from '../lib/haptics';
 import { questionTarget, sessionWhere } from '../lib/support';
 import { Button, Gap, ICON_SIZE, ListRow, Row, SegmentBar, Stem, T, Tag } from '../components/ui';
 import { getCertification, getDomain } from '../content/certifications';
-import { lessonPreparing, lessonsForSubtopic } from '../content/lessons';
+import { missLessons } from '../content/lessons';
 import { findQuestion } from '../content/loader';
 import { findNote, subtopicOfQuestion } from '../content/notes';
 import { findPrinciple } from '../content/principles';
@@ -181,12 +181,11 @@ export default function SessionScreen() {
     if (!missed || !missCert || !qid) return null;
     const noteId = subtopicOfQuestion(missCert, qid);
     const note = noteId ? findNote(missCert, noteId) : undefined;
-    // The lesson candidates, in order: the one that prepares for this question, then (mobile 1.22,
-    // design spec §6.3) the lessons that teach its note, as the note page offers them
-    // (d4_062 → 4B1.2 → RPO and RTO). The first one not done yet is offered (below).
-    const prepares = lessonPreparing(missCert, qid);
-    const teaching = noteId ? lessonsForSubtopic(missCert, noteId) : [];
-    const lessons = [...(prepares ? [prepares] : []), ...teaching.filter((l) => l.id !== prepares?.id)];
+    // The lesson candidates, in order: the ones that prepare for this question, then (mobile 1.22,
+    // design spec §6.3) the ones that list its note in `notes` (d4_062 → 4B1.2 → RPO and RTO).
+    // Mobile 1.45: no outline-topic fallback here, so the row never offers a lesson that only shares
+    // the topic. The first one not done yet is offered (below).
+    const lessons = missLessons(missCert, qid, noteId);
     return { noteId, noteName: note?.name, noteMinutes: note?.minutes ?? 2, lessons };
   }, [missed, missCert, qid]);
   // Mobile 1.31: the principle this question tests (its `principleId`), for a
@@ -537,9 +536,10 @@ export default function SessionScreen() {
   const reason = active.reasons?.[qid];
   // After a miss (missLinks, above), at most two rows:
   //  1. "Read the note" whenever a study note lists this question;
-  //  2. "Take the lesson": the first lesson not done yet among the one that prepares for it and
-  //     (mobile 1.22) the ones that teach its note (a done lesson is one tap away in Learn; the note is the
-  //     quicker re-read). Each row says what it does in a kicker above the name.
+  //  2. "Take the lesson": the first lesson not done yet among the ones that prepare for it and
+  //     (mobile 1.22) the ones that list its note (mobile 1.45: never one that only shares the outline topic;
+  //     a done lesson is one tap away in Learn; the note is the quicker re-read). Each row says what it
+  //     does in a kicker above the name.
   const missNote = missLinks?.noteId;
   const missNoteName = missLinks?.noteName;
   const missNoteMin = missLinks?.noteMinutes ?? 2;

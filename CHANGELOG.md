@@ -4,6 +4,12 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v12.39] — Harder governance practice
+
+### Improved
+- More challenging answer choices in IT governance and management practice questions, so ruling out wrong answers takes real CISA knowledge.
+- Questions across all domains now agree on who decides, who advises and which rules apply when laws differ.
+
 ## [v12.38] — Harder operations and resilience practice
 
 ### Improved

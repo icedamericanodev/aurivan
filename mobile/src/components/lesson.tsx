@@ -540,6 +540,8 @@ function LayersScene({ scene }: { scene: Extract<Scene, { type: 'stack' }> }) {
 export interface RevealBox {
   top: number;
   bottom: number;
+  /** Mobile 1.45: the top edge of the option the learner picked, so the scroll never hides it. */
+  pick?: number;
 }
 
 /** Breathing room kept above the verdict and below the explanation when the page scrolls to them. */
@@ -567,7 +569,10 @@ export function revealScrollY(box: RevealBox, viewport: number, footer: number, 
   const visible = viewport - footer;
   const fitBottom = visible > 0 ? box.bottom + REVEAL_GAP - visible : Infinity;
   const verdictTop = box.top - REVEAL_GAP;
-  const target = Math.max(0, Math.min(fitBottom, verdictTop));
+  // Mobile 1.45: never past the learner's own pick either (its top, less the gap), so the ✗ row and
+  // its words stay on screen; the explanation then continues below, a scroll away.
+  const pickTop = box.pick === undefined ? Infinity : box.pick - REVEAL_GAP;
+  const target = Math.max(0, Math.min(fitBottom, verdictTop, pickTop));
   // 1pt of slack, so a rounding difference never causes a pointless nudge.
   return target > scrollY + 1 ? target : null;
 }
@@ -711,11 +716,14 @@ function CheckScene({
   const verdictRef = useRef<View>(null);
   // The answer block is reported to the player ONCE per pick (a later re-layout must not scroll again).
   const reported = useRef(false);
+  // Mobile 1.45: each option row's top (same parent as the answer block), so the scroll keeps the pick in view.
+  const rowTops = useRef<Partial<Record<Letter, number>>>({});
   const onAnswerLayout = (e: LayoutChangeEvent) => {
     if (reported.current) return;
     reported.current = true;
     const { y, height } = e.nativeEvent.layout;
-    onReveal?.({ top: y, bottom: y + height });
+    const pick = picked ? rowTops.current[picked] : undefined;
+    onReveal?.({ top: y, bottom: y + height, ...(pick === undefined ? {} : { pick }) });
     // Focus moves only AFTER the scroll is issued, so the glide (~250–300 ms) has settled
     // before it lands and VoiceOver / TalkBack never scroll to the verdict mid-glide.
     moveFocus(verdictRef, 400);
@@ -736,25 +744,31 @@ function CheckScene({
         // Grade on the ORIGINAL letter, never on the display position.
         const isRight = isCheckCorrect(scene.correctIndex, letter, perm);
         const state: OptionState = !done ? 'idle' : isRight ? 'correct' : letter === picked ? 'wrong' : 'dimmed';
+        // Mobile 1.45: once answered, the ✓ / ✗ badge replaces the letter, so the tinted rows name it in a
+        // tag ("Best answer · D", "Your answer · B"): the coach line's "The best answer is D" can be found.
+        const tag = state === 'correct' ? `Best answer · ${letter}` : state === 'wrong' ? `Your answer · ${letter}` : undefined;
         return (
-          <Part key={opt} i={i + 1}>
-            <OptionCard
-              letter={letter}
-              text={opt}
-              state={state}
-              disabled={done}
-              onPress={() => {
-                setPicked(letter);
-                if (isRight) haptic.success();
-                else haptic.error();
-                // Mobile 1.37: screen-reader focus then moves to the verdict (onAnswerLayout, after
-                // the scroll), the same pattern as the practice answer screen (session.tsx). Its
-                // label says it all once ("Not quite. The best answer is B."), so there is no
-                // separate announcement (that was cut off on iOS and doubled on Android).
-                onCheck?.(isRight, letter);
-              }}
-            />
-          </Part>
+          <View key={opt} onLayout={(e) => (rowTops.current[letter] = e.nativeEvent.layout.y)}>
+            <Part i={i + 1}>
+              <OptionCard
+                letter={letter}
+                text={opt}
+                tag={tag}
+                state={state}
+                disabled={done}
+                onPress={() => {
+                  setPicked(letter);
+                  if (isRight) haptic.success();
+                  else haptic.error();
+                  // Mobile 1.37: screen-reader focus then moves to the verdict (onAnswerLayout, after
+                  // the scroll), the same pattern as the practice answer screen (session.tsx). Its
+                  // label says it all once ("Not quite. The best answer is B."), so there is no
+                  // separate announcement (that was cut off on iOS and doubled on Android).
+                  onCheck?.(isRight, letter);
+                }}
+              />
+            </Part>
+          </View>
         );
       })}
       {done && (
