@@ -1,9 +1,11 @@
 # KaiSip: LOCAL Supabase only (`supabase start`, CI's supabase.yml job).
-# No hosted project exists. There is no project ref, URL or key in this repo,
-# and nothing here is ever pushed to a hosted project automatically.
-# At Phase 9 (owner go-ahead) the [auth] values below are mirrored by hand on
-# the hosted dashboard; see docs/mobile/ARCHITECTURE.md, "Cloud (built OFF):
-# server side". Secrets only ever come from env(...) or Function secrets.
+# There is no project ref, URL or key in this repo, and nothing here is ever
+# pushed to the hosted project automatically: migrations are applied through
+# the Supabase MCP after review (docs/mobile/ACCOUNTS_BETA_PLAN.md §3.3), and
+# the [auth] values below are mirrored BY HAND on the hosted dashboard (the
+# owner's checklist, ACCOUNTS_BETA_PLAN.md §9 F). Where the hosted value
+# differs from the local one, the comment says so. Secrets only ever come
+# from env(...) or Function secrets.
 
 project_id = "aurivan"
 
@@ -55,9 +57,12 @@ enabled = false
 [auth]
 enabled = true
 site_url = "http://127.0.0.1:3000"
-# Empty on purpose: sign-in uses 6-digit codes and native ID tokens, so no
-# redirect (and no token-bearing deep link) is ever needed.
-additional_redirect_urls = []
+# Google sign-in goes through the browser with PKCE on the web and Android
+# (accounts beta), so it needs exact redirect URLs. Hosted: Site URL
+# https://kaisip.com, Redirect URLs exactly "https://kaisip.com/" and
+# "kaisip://auth-callback". No wildcards, no pages.dev or workers.dev.
+# Email sign-in uses 6-digit codes and needs no redirect.
+additional_redirect_urls = ["kaisip://auth-callback"]
 jwt_expiry = 3600
 enable_refresh_token_rotation = true
 refresh_token_reuse_interval = 10
@@ -69,7 +74,9 @@ minimum_password_length = 12
 password_requirements = "lower_upper_letters_digits_symbols"
 
 [auth.rate_limit]
-# Per hour. Local Mailpit only; at Phase 9 email_sent is set to the SMTP quota.
+# Per hour. Local Mailpit only. Hosted (custom SMTP through Resend's free
+# plan, 100 emails a day): email_sent 20, token_verifications 30,
+# sign_in_sign_ups 30, token_refresh 150.
 email_sent = 2
 sms_sent = 0
 anonymous_users = 0
@@ -78,7 +85,9 @@ sign_in_sign_ups = 30
 token_verifications = 30
 web3 = 0
 
-# Captcha is an interface only until Phase 9 (owner decision, spec §9 #7).
+# Captcha: Cloudflare Turnstile (Managed, hostname kaisip.com). Hosted:
+# switched on LAST, after both clients send tokens and the smoke test has
+# run (ACCOUNTS_BETA_PLAN.md §4). It guards sending codes (/otp).
 # [auth.captcha]
 # enabled = true
 # provider = "turnstile"
@@ -96,7 +105,10 @@ max_frequency = "60s"
 otp_length = 6
 otp_expiry = 600
 
-# Code-only emails: the templates carry {{ .Token }} and no link.
+# Code-only emails: the templates carry {{ .Token }} and no link. The
+# hosted copies are pasted from docs/mobile/AUTH_EMAIL_TEMPLATES.md, which
+# matches these files. Password reset is not offered, but its template is
+# code-only too, so no KaiSip email ever carries a sign-in link.
 [auth.email.template.confirmation]
 subject = "Your KaiSip sign-in code"
 content_path = "./supabase/templates/otp_code.html"
@@ -108,6 +120,10 @@ content_path = "./supabase/templates/otp_code.html"
 [auth.email.template.email_change]
 subject = "Confirm your new email for KaiSip"
 content_path = "./supabase/templates/email_change_code.html"
+
+[auth.email.template.recovery]
+subject = "Your KaiSip sign-in code"
+content_path = "./supabase/templates/otp_code.html"
 
 [auth.email.template.reauthentication]
 subject = "Your KaiSip confirmation code"
@@ -134,7 +150,9 @@ verify_enabled = true
 enroll_enabled = false
 verify_enabled = false
 
-# Sign in with Apple and Google take native ID tokens (signInWithIdToken).
+# Accounts beta: Google through the browser with PKCE (one Google Cloud
+# "Web application" client; no Android client, no ID-token flow); Apple
+# later, before any iPhone release with accounts.
 # Off locally because they need owner accounts (Apple Services ID, Google
 # client IDs) that only exist at Phase 9; the client IDs and secrets then come
 # from env, never from this file. Turn on locally with real test credentials:
