@@ -10,12 +10,13 @@
  *   the space they just typed between two words). It tidies it when they
  *   finish editing, and the screens save the tidied value.
  */
-import { useState } from 'react';
-import { TextInput, View } from 'react-native';
+import { useEffect, useState } from 'react';
+import { Platform, TextInput, View } from 'react-native';
+import { sayLater } from '../lib/a11y';
 import { cleanDisplayName, MAX_DISPLAY_NAME } from '../engine/displayName';
 import { radius, space, type as typeScale, maxScale } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
-import { T } from './ui';
+import { NO_WEB_OUTLINE, T } from './ui';
 
 /** The helper line under the field, the same words wherever the field shows. */
 export const NAME_HELPER = 'Only on this phone. It just helps us say hello.';
@@ -47,6 +48,10 @@ export function DisplayNameField({
   const [focused, setFocused] = useState(false);
   const rejected = value.trim() !== '' && cleanDisplayName(value) === '';
   const under = rejected ? NAME_REJECTED : helper;
+  // UX review P2: iOS has no live regions, so it says the link-or-email line itself, once each time it appears.
+  useEffect(() => {
+    if (rejected && Platform.OS === 'ios') sayLater(NAME_REJECTED);
+  }, [rejected]);
   return (
     <View>
       <TextInput
@@ -76,6 +81,8 @@ export function DisplayNameField({
         style={[
           typeScale.body,
           { minHeight: 48, borderRadius: radius.md, borderWidth: 1.5, paddingHorizontal: space.lg, paddingVertical: space.md, color: c.ink, backgroundColor: c.raised, borderColor: focused ? c.ink : c.control },
+          // Web: no browser focus ring (the ink border shows focus).
+          NO_WEB_OUTLINE,
         ]}
       />
       {/* A name that looks like a web address or email is left out; say so instead of silently showing "Not set". */}

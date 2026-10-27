@@ -169,7 +169,7 @@ describe('"Your study profile" lines', () => {
 
   it('is spoken as ONE sentence', () => {
     const l = profileLines(full);
-    expect(l.spoken).toBe('Your study profile: Maya, studying for CISA since 26 October, exam on 14 February, about 20 minutes most days, started with some IT audit experience.');
+    expect(l.spoken).toBe('Maya, your study profile, studying for CISA since 26 October, exam on 14 February, about 20 minutes most days, started with some IT audit experience.');
     expect(l.spoken.match(/\./g)).toHaveLength(1);
     expect(l.spoken.endsWith('.')).toBe(true);
   });
@@ -178,7 +178,8 @@ describe('"Your study profile" lines', () => {
     const l = profileLines({ ...full, name: undefined });
     expect(l.name).toBe('');
     expect(l.title).toBe(PROFILE_TITLE);
-    expect(l.spoken).toMatch(/^Your study profile: no name yet, studying for CISA/);
+    // It starts with the visible title and ends with the row's visible action (WCAG 2.5.3).
+    expect(l.spoken).toBe('Your study profile, studying for CISA since 26 October, exam on 14 February, about 20 minutes most days, started with some IT audit experience, add your name.');
   });
 
   it('a choice not made does not show; a passed exam date is left out', () => {
@@ -293,7 +294,7 @@ describe('the name in the website file: add-only, never the profile label', () =
     expect(s.displayName).toBe('Maya');
     expect(s.displayNameKept).toBeUndefined();
     expect(webAddLines(s)).toContain('Your name: Maya');
-    expect(WEB_NAME_NOTE).toBe('Your name stays on this phone only. If you already set one here, that one is kept.');
+    expect(WEB_NAME_NOTE).toBe('Your name stays on this device only.');
   });
 
   it('the phone’s own name wins: nothing is added, and the sheet says it stays', () => {
@@ -301,7 +302,7 @@ describe('the name in the website file: add-only, never the profile label', () =
     expect(s.displayName).toBeUndefined();
     expect(s.displayNameKept).toBe(true);
     expect(webAddLines(s).join(' ')).not.toContain('Your name');
-    expect(webSkipLines(s)).toContain('This phone already has a name, so it stays as it is.');
+    expect(webSkipLines(s)).toContain('This device already has a name, so it stays as it is.');
     // The same name on both: nothing to say.
     const same = summary(named('Maya'), 'Maya');
     expect(same.displayName).toBeUndefined();

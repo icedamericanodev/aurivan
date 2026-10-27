@@ -144,13 +144,16 @@ export function profileLines(i: ProfileInput): ProfileLines {
     // "about 20 min most days" alone starts the line, so it starts with a capital.
     plan: plan ? plan.charAt(0).toUpperCase() + plan.slice(1) : null,
     started,
-    // One sentence, commas between the parts (a screen reader pauses at each).
+    // One sentence, commas between the parts (a screen reader pauses at each). It starts with the
+    // visible title (WCAG 2.5.3, UX review P3): "Maya, your study profile, …" or "Your study profile, …",
+    // and without a name it ends with the row's visible action, "add your name".
     spoken: `${[
-      `${PROFILE_TITLE}: ${name || 'no name yet'}`,
+      name ? `${name}, your study profile` : PROFILE_TITLE,
       since ? `studying for ${i.certName} since ${since.spoken}` : `studying for ${i.certName}`,
       exam ? `exam on ${exam.spoken}` : null,
       minutes ? `about ${minutes} minutes most days` : null,
       i.startedWith ? `started with ${lowerFirst(i.startedWith)}` : null,
+      name ? null : PROFILE_ADD_NAME.toLowerCase(),
     ]
       .filter(Boolean)
       .join(', ')}.`,

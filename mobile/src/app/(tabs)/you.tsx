@@ -51,7 +51,7 @@
  * With the flag off (every build today) nothing here changes.
  */
 import { router, useFocusEffect } from 'expo-router';
-import { memo, useCallback, useEffect, useMemo, useState } from 'react';
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { View } from 'react-native';
 import { ringsChangeLine } from '../../components/journey';
 import { AreaRows, ReadinessBlock } from '../../components/youReadiness';
@@ -81,6 +81,7 @@ import { backfillLine, seeBackfill } from '../../lib/milestones';
 import { useMindsetGrowth } from '../../lib/moments';
 import { useReports } from '../../lib/useReports';
 import { useActiveCert } from '../../lib/useActiveCert';
+import { moveFocus } from '../../lib/a11y';
 import { useProgress, type MockResult } from '../../store/progress';
 import type { Certification } from '../../content/types';
 import { dailyMinutesOf, useSettings } from '../../store/settings';
@@ -90,8 +91,15 @@ import { FAMILIARITY_INFO } from '../../engine/fit';
 import { motion, space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
 
-/** The study profile opens the one name editor: Settings → Your name, which goes back to You on Save or Cancel. */
-const openNameEditor = () => router.push({ pathname: '/settings', params: { open: 'name' } });
+/**
+ * The study profile opens the one name editor: Settings → Your name, which goes back to You on Save or
+ * Cancel. `backFromName` remembers the trip, so focus returns to the profile row (UX review O6).
+ */
+let backFromName = false;
+const openNameEditor = () => {
+  backFromName = true;
+  router.push({ pathname: '/settings', params: { open: 'name' } });
+};
 
 /** When You's rings have finished growing (five arcs, outer first 60 ms apart, each over `grow`): the plant breathes after. */
 const RINGS_SETTLED_MS = motion.dur.grow + 4 * motion.stagger.stat;
@@ -160,9 +168,15 @@ export default function You() {
   // Mobile 1.44: "Your study profile", from the learner's own choices and study only.
   // Today's day, read again whenever You comes into view (render stays pure), so "Exam 14 Feb" drops off after the day.
   const [today, setToday] = useState(() => dayKey(Date.now()));
+  const profileRef = useRef<View>(null);
   useFocusEffect(
     useCallback(() => {
       setToday(dayKey(Date.now()));
+      // Back from Settings → Your name: screen-reader focus lands on the profile row again, not the top.
+      if (backFromName) {
+        backFromName = false;
+        moveFocus(profileRef, 450);
+      }
     }, []),
   );
   const displayName = useSettings((s) => s.displayName);
@@ -204,7 +218,7 @@ export default function You() {
         <ScreenTitle title="You" settings={() => router.push('/settings')} />
         {/* Mobile 1.44: the first block, on the paper, with a hairline under it. It opens the one name editor. */}
         <View style={{ marginTop: space.lg, paddingBottom: space.md, borderBottomWidth: 1, borderColor: c.line }}>
-          <StudyProfile lines={profile} initial={nameInitial(displayName)} onPress={openNameEditor} />
+          <StudyProfile ref={profileRef} lines={profile} initial={nameInitial(displayName)} onPress={openNameEditor} />
         </View>
       </Enter>
 

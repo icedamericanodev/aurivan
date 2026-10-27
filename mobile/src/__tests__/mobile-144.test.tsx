@@ -213,7 +213,7 @@ describe('You: "Your study profile"', () => {
     mount(<You />);
     const b = block();
     expect(b.props.accessibilityLabel).toBe(
-      'Your study profile: Maya, studying for CISA since 12 October, exam on 14 February, about 20 minutes most days, started with some IT audit experience.',
+      'Maya, your study profile, studying for CISA since 12 October, exam on 14 February, about 20 minutes most days, started with some IT audit experience.',
     );
     expect(b.props.accessibilityHint).toBe('Opens Settings to change or clear your name');
     const hidden = b.findAll((n) => n.props.importantForAccessibility === 'no-hide-descendants' && n.props.accessibilityElementsHidden === true);
@@ -242,7 +242,7 @@ describe('You: "Your study profile"', () => {
       useSettings.getState().setDisplayName('Maya');
     });
     expect(allText()).not.toContain('Add your name');
-    expect(block().props.accessibilityLabel).toMatch(/^Your study profile: Maya,/);
+    expect(block().props.accessibilityLabel).toMatch(/^Maya, your study profile, /);
   });
 
   it('at 200% text every line wraps (nothing is cut to a line count)', () => {
@@ -254,6 +254,64 @@ describe('You: "Your study profile"', () => {
     expect(texts.length).toBeGreaterThan(3);
     for (const t of texts) expect(t.props.numberOfLines).toBeUndefined();
     setScale(1);
+  });
+
+  it('UX P5: from ×1.3 text it stacks (the leaf above the words) and the chevron goes', () => {
+    seed();
+    mount(<You />);
+    const flat = (s: unknown): Record<string, unknown> => Object.assign({}, ...[s].flat(Infinity).filter(Boolean));
+    expect(flat(block().props.style).flexDirection).toBe('row');
+    unmount();
+    setScale(1.3);
+    mount(<You />);
+    expect(flat(block().props.style).flexDirection).toBe('column');
+    // The words still say it all, and the row is still one button.
+    expect(block().props.accessibilityLabel).toMatch(/^Your study profile, studying for CISA/);
+    setScale(1);
+  });
+
+  it('UX P3: with no name the spoken label ends with the visible "Add your name"', () => {
+    seed();
+    mount(<You />);
+    expect(block().props.accessibilityLabel).toMatch(/, add your name\.$/);
+  });
+});
+
+describe('UX review fixes on Today’s card', () => {
+  it('H1: Today keeps the name field and Save above the keyboard while the card shows', () => {
+    studied(1, 1);
+    mount(<Today />);
+    const scroll = root().findAll((n) => n.props.automaticallyAdjustKeyboardInsets === true);
+    expect(scroll.length).toBeGreaterThan(0);
+    expect(scroll[0].props.keyboardShouldPersistTaps).toBe('handled');
+    // The keyboard wrapper is on (iOS moves the insets itself; Android shrinks the view).
+    const kav = root().findAll((n) => n.props.enabled === true && 'behavior' in n.props);
+    expect(kav.length).toBeGreaterThan(0);
+  });
+
+  it('H1: with no card, Today is as before (no keyboard insets)', () => {
+    useSeen.setState({ nameAsk: 'shown' });
+    studied(1, 1);
+    mount(<Today />);
+    expect(root().findAll((n) => n.props.automaticallyAdjustKeyboardInsets === true)).toHaveLength(0);
+  });
+
+  it('P1: after Save, the saved line is ONE stop that says the whole thing (focus moves there)', () => {
+    studied(1, 1);
+    mount(<Today />);
+    const field = root().findAll((n) => n.props.accessibilityLabel === 'Name or nickname' && typeof n.props.onChangeText === 'function')[0];
+    act(() => {
+      field.props.onChangeText('Maya');
+    });
+    const save = root().findAll((n) => n.props.accessibilityLabel === 'Save my name' && typeof n.props.onPress === 'function')[0];
+    act(() => {
+      save.props.onPress();
+    });
+    const saved = byTestID('name-saved')[0];
+    expect(saved.props.accessible).toBe(true);
+    expect(saved.props.accessibilityLabel).toBe('Saved. Hello, Maya. Saved on this device. Change or clear it any time in Settings.');
+    // Said once, by focus landing on it: no live region as well.
+    expect(saved.props.accessibilityLiveRegion).toBeUndefined();
   });
 });
 
@@ -312,7 +370,7 @@ describe('"Add your website progress?" with a name', () => {
     mount(<WebImportPreview web={web} busy={false} onConfirm={() => {}} onCancel={() => {}} />);
     expect(allText()).toContain('Your name:');
     expect(allText()).toContain('Maya');
-    expect(allText()).toContain('Your name stays on this phone only. If you already set one here, that one is kept.');
+    expect(allText()).toContain('Your name stays on this device only.');
     expect(byTestID('web-import-name')).toHaveLength(1);
   });
 
@@ -321,7 +379,7 @@ describe('"Add your website progress?" with a name', () => {
     const web = ready(file('Maya'));
     mount(<WebImportPreview web={web} busy={false} onConfirm={() => {}} onCancel={() => {}} />);
     expect(allText()).not.toContain('Your name:');
-    expect(allText()).toContain('This phone already has a name, so it stays as it is.');
+    expect(allText()).toContain('This device already has a name, so it stays as it is.');
     expect(byTestID('web-import-name')).toHaveLength(0);
   });
 

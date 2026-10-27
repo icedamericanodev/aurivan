@@ -15,15 +15,15 @@
  * - It sits on the paper, no card (an L1 summary, nothing to choose between),
  *   with a hairline under it, and it wraps at 200% text.
  */
-import { memo } from 'react';
+import { memo, type Ref } from 'react';
 import { View } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 import { PROFILE_ADD_NAME, type ProfileLines } from '../engine/studyProfile';
-import { radius, space } from '../theme/tokens';
+import { LARGE_TEXT, radius, serifNumeral, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { ChevronRight, ICON_STROKE, UserRound } from './icons';
 import { AnimatedPressable, usePressScale } from './motion';
-import { T } from './ui';
+import { T, useFontScale } from './ui';
 
 /** The leaf mark with an initial (or the person glyph). Decorative: hidden from screen readers. */
 export function LeafAvatar({ initial, size = 56 }: { initial: string; size?: number }) {
@@ -42,7 +42,8 @@ export function LeafAvatar({ initial, size = 56 }: { initial: string; size?: num
       </Svg>
       {named ? (
         // Text inside a fixed-size picture does not grow with the phone's text size (the block's label says it all).
-        <T v={size >= 48 ? 'hero' : 'label'} color={c.onForest} maxFontSizeMultiplier={1} style={{ marginTop: size * 0.04 }}>
+        // Fraunces 500 at every size (UX review P4: the small leaf on the import sheet fell back to Figtree).
+        <T v="body" color={c.onForest} maxFontSizeMultiplier={1} style={[serifNumeral(size >= 48 ? 30 : 17), { marginTop: size * 0.04 }]}>
           {initial}
         </T>
       ) : (
@@ -56,12 +57,26 @@ export function LeafAvatar({ initial, size = 56 }: { initial: string; size?: num
 }
 
 /** Memoised: You re-renders on every answer, but these words rarely change (the perf-tabs render budget). */
-export const StudyProfile = memo(function StudyProfile({ lines, initial, onPress }: { lines: ProfileLines; initial: string; onPress: () => void }) {
+export const StudyProfile = memo(function StudyProfile({
+  lines,
+  initial,
+  onPress,
+  ref,
+}: {
+  lines: ProfileLines;
+  initial: string;
+  onPress: () => void;
+  /** The row, so screen-reader focus can come back to it after Settings (UX review O6). */
+  ref?: Ref<View>;
+}) {
   const { c } = useTheme();
   const press = usePressScale({ scale: 1, tint: c.soft, tintRadius: radius.md });
   const named = lines.name !== '';
+  // UX review P5: from ×1.3 text the leaf sits above the words and the chevron goes, as other You rows do.
+  const large = useFontScale() >= LARGE_TEXT;
   return (
     <AnimatedPressable
+      ref={ref}
       testID="study-profile"
       accessibilityRole="button"
       accessibilityLabel={lines.spoken}
@@ -73,11 +88,14 @@ export const StudyProfile = memo(function StudyProfile({ lines, initial, onPress
       }}
       onPressIn={press.onPressIn}
       onPressOut={press.onPressOut}
-      style={[{ flexDirection: 'row', alignItems: 'flex-start', gap: space.lg, paddingVertical: space.md, borderRadius: radius.md }, press.style]}
+      style={[
+        { flexDirection: large ? 'column' : 'row', alignItems: 'flex-start', gap: large ? space.md : space.lg, paddingVertical: space.md, borderRadius: radius.md },
+        press.style,
+      ]}
     >
       {press.layer}
       <LeafAvatar initial={initial} />
-      <View style={{ flex: 1, minWidth: 0 }}>
+      <View style={large ? { alignSelf: 'stretch' } : { flex: 1, minWidth: 0 }}>
         <T v="headline">{lines.title}</T>
         <T v="body" style={{ marginTop: 2 }}>{lines.since}</T>
         {lines.plan && <T v="meta" style={{ marginTop: 2 }}>{lines.plan}</T>}
@@ -85,9 +103,11 @@ export const StudyProfile = memo(function StudyProfile({ lines, initial, onPress
         {/* No name: the row's action, in link colour (the whole row is the button). */}
         {!named && <T v="label" color={c.accentText} style={{ marginTop: space.md }}>{PROFILE_ADD_NAME}</T>}
       </View>
-      <View style={{ alignSelf: 'center' }}>
-        <ChevronRight size={18} color={c.muted} strokeWidth={ICON_STROKE} />
-      </View>
+      {!large && (
+        <View style={{ alignSelf: 'center' }}>
+          <ChevronRight size={18} color={c.muted} strokeWidth={ICON_STROKE} />
+        </View>
+      )}
     </AnimatedPressable>
   );
 });

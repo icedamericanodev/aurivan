@@ -676,7 +676,7 @@ export function webAddLines(s: WebAddSummary): string[] {
 /** Mobile 1.44: the start of the name's line ("Your name: Maya"); the sheet shows the name itself in bold. */
 export const WEB_NAME_PREFIX = 'Your name: ';
 /** Mobile 1.44: the small note under the lines when the file's name will be used. */
-export const WEB_NAME_NOTE = 'Your name stays on this phone only. If you already set one here, that one is kept.';
+export const WEB_NAME_NOTE = 'Your name stays on this device only.';
 
 /** What is left out, in plain words (empty when nothing is). */
 export function webSkipLines(s: WebAddSummary): string[] {
@@ -704,7 +704,7 @@ export function webSkipLines(s: WebAddSummary): string[] {
     );
   }
   if (s.examDateKept) out.push('This phone already has an exam date, so it stays as it is.');
-  if (s.displayNameKept) out.push('This phone already has a name, so it stays as it is.');
+  if (s.displayNameKept) out.push('This device already has a name, so it stays as it is.');
   if (s.future) {
     out.push(
       s.future === 1

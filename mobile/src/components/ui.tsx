@@ -23,6 +23,7 @@
 import { createContext, useContext, useEffect, useMemo, useRef, useState, type ComponentProps, type ReactNode, type Ref } from 'react';
 import {
   Image,
+  KeyboardAvoidingView,
   Platform,
   Pressable,
   ScrollView,
@@ -150,8 +151,16 @@ export function Screen({
   onJump,
   scrollRef,
   header,
+  keyboard,
 }: {
   children: ReactNode;
+  /**
+   * Mobile 1.44 (UX review H1): this page has a text field, so the keyboard must never cover it.
+   * true: iOS moves the scroll insets itself, Android shrinks the view (the onboarding, plant-pick
+   * and support pattern). Passing it at all (even false) keeps the keyboard wrapper in place, so the
+   * page is never rebuilt (and its scroll lost) when the field comes or goes. Left out: as before.
+   */
+  keyboard?: boolean;
   /**
    * Mobile 1.22: a bar that stays put above the scrolling page (a pushed
    * header whose title collapses in once the page's own title is under it).
@@ -221,6 +230,7 @@ export function Screen({
       ref={scrollRef && typeof scrollRef !== 'object' ? scrollRef : ref}
       contentContainerStyle={styles.screenPad}
       keyboardShouldPersistTaps="handled"
+      automaticallyAdjustKeyboardInsets={keyboard === true}
       onLayout={
         onScroll
           ? (e) => {
@@ -251,7 +261,13 @@ export function Screen({
   return (
     <SafeAreaView edges={edges} style={{ flex: 1, backgroundColor: c.bg }}>
       {header ? <View style={{ paddingHorizontal: space.gutter }}>{header}</View> : null}
-      {inner}
+      {keyboard === undefined ? (
+        inner
+      ) : (
+        <KeyboardAvoidingView style={{ flex: 1 }} enabled={keyboard} behavior={Platform.OS === 'ios' ? undefined : 'height'}>
+          {inner}
+        </KeyboardAvoidingView>
+      )}
     </SafeAreaView>
   );
 }
@@ -2092,7 +2108,7 @@ export function ChipRow({ children }: { children: ReactNode }) {
  * web the browser's own focus ring is turned off, so it never draws a square
  * box inside the rounded field.
  */
-const NO_WEB_OUTLINE: TextStyle | null = Platform.OS === 'web' ? { outlineWidth: 0 } : null;
+export const NO_WEB_OUTLINE: TextStyle | null = Platform.OS === 'web' ? { outlineWidth: 0 } : null;
 
 // ── SearchField: a rounded text box for searching (Learn, Study notes) ─
 // A leading search glyph (20, muted) says what the box is for. Body type, so

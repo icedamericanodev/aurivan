@@ -549,7 +549,8 @@ export default function Today() {
   const greetingText = greeting(new Date().getHours(), displayName);
 
   return (
-    <Screen>
+    // Mobile 1.44 (UX review H1): the name card has a text field, so the keyboard never covers it or Save.
+    <Screen keyboard={nameVisit}>
       <View onTouchStart={live ? skipAll : undefined}>
       <Enter i={0}>
         {/* The KaiSip lockup at the left; the streak pill and the Settings gear at the right (they wrap under it at large text). */}

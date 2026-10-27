@@ -15,12 +15,12 @@
  *   Save and Not now; after Save, "Saved on this device" stays for the visit.
  *   "Not now" puts it away for good.
  */
-import { useState } from 'react';
-import { View } from 'react-native';
+import { useRef, useState } from 'react';
+import { Platform, View } from 'react-native';
 import { markAnswered, skipToday, switchTester, testerEmail, weekLine, type TesterCard } from '../engine/betaTester';
 import { cleanDisplayName } from '../engine/displayName';
 import { mailtoUrl } from '../engine/support';
-import { sayLater } from '../lib/a11y';
+import { ANNOUNCE_DELAY, moveFocus, sayLater } from '../lib/a11y';
 import { config } from '../lib/config';
 import { appInfo, emailAsText, openEmail, shareEmail } from '../lib/support';
 import { useSeen } from '../store/seen';
@@ -29,7 +29,7 @@ import { space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { DisplayNameField } from './displayName';
 import { Check, ICON_STROKE, UserRound } from './icons';
-import { Button, Card, ICON_SIZE, IconCircle, InviteRow, Row, T } from './ui';
+import { Button, Card, ICON_SIZE, IconCircle, Row, T } from './ui';
 
 /** What the card shows after "Answer by email" (for this visit). */
 type Sent = 'idle' | 'opened' | 'failed';
@@ -146,15 +146,27 @@ export function NameAskCard({ onGone }: { onGone?: () => void }) {
   const [state, setState] = useState<'ask' | 'saved' | 'gone'>('ask');
   // Save with nothing typed: one plain line under the field (the field's live region says it), nothing saved.
   const [empty, setEmpty] = useState(false);
+  // UX review P1: the field unmounts on Save, so screen-reader focus moves to the saved line, which says it all.
+  const savedRef = useRef<View>(null);
+  const [savedName, setSavedName] = useState('');
   if (state === 'gone') return null;
   if (state === 'saved') {
     return (
-      <View testID="name-saved" accessibilityLiveRegion="polite">
-        <InviteRow
-          icon={<Check size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
-          title={NAME_SAVED_TITLE}
-          body={NAME_SAVED_BODY}
-        />
+      // The InviteRow's shape; ONE stop that is spoken when focus lands on it (no live region: said once).
+      <View
+        ref={savedRef}
+        testID="name-saved"
+        accessible
+        accessibilityLabel={`Saved. Hello, ${savedName}. ${NAME_SAVED_TITLE}. ${NAME_SAVED_BODY}`}
+        style={{ flexDirection: 'row', alignItems: 'flex-start', gap: space.md, paddingVertical: space.md }}
+      >
+        <IconCircle>
+          <Check size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />
+        </IconCircle>
+        <View style={{ flex: 1, minWidth: 0 }}>
+          <T v="label">{NAME_SAVED_TITLE}</T>
+          <T v="small" color={c.ink2} style={{ marginTop: space.xs }}>{NAME_SAVED_BODY}</T>
+        </View>
       </View>
     );
   }
@@ -162,12 +174,17 @@ export function NameAskCard({ onGone }: { onGone?: () => void }) {
   const save = () => {
     // Nothing typed: say what to do. A link or an email is left out: the field already says why.
     if (clean === '') {
-      if (draft.trim() === '') setEmpty(true);
+      if (draft.trim() === '') {
+        setEmpty(true);
+        // UX review P2: iOS has no live regions, so it is said here.
+        if (Platform.OS === 'ios') sayLater(NAME_ASK_EMPTY);
+      }
       return;
     }
     useSettings.getState().setDisplayName(clean);
+    setSavedName(clean);
     setState('saved');
-    sayLater(`Saved. Hello, ${clean}.`);
+    moveFocus(savedRef, ANNOUNCE_DELAY);
   };
   const notNow = () => {
     setState('gone');

@@ -1,6 +1,7 @@
 // Mobile 1.44 "Version 3": the name and "Your study profile" (SHOTS=m144, see run.sh).
 //
-// Shots: Today on the second study day with the one name card (field inside, Save, Not now), the
+// Shots: Today on the second study day with the one name card (field inside, Save, Not now), Save with
+// nothing typed, the field focused and filled, the
 // saved state ("Saved on this device", and the greeting with the name), the "Add your website
 // progress?" sheet with "Your name: Maya" and its note, and You with and without a name.
 // NARROW=1 uses a 360-wide phone; FONT_SCALE=2 approximates 200% text.
@@ -61,10 +62,16 @@ const go = async (route, ms = 2600) => {
   await page.goto(BASE + route, { waitUntil: 'networkidle' });
   await wait(ms);
 };
-const shot = async (name) => {
+/** `again`: a line to bring back into view after the 200% zoom (zooming moves everything down). */
+const shot = async (name, again) => {
   if (FONT_SCALE) {
     await zoomText();
     await wait(400);
+    if (again) {
+      const n = page.getByText(again).first();
+      if (await n.count()) await n.evaluate((x) => x.scrollIntoView({ block: 'center' }));
+      await wait(500);
+    }
   }
   await page.screenshot({ path: `${out}/${name}-${tag}.png` });
   console.log('shot', name);
@@ -113,16 +120,22 @@ const day2 = async () => {
 await day2();
 await go('/home', 3000);
 await into('What should we call you?', 'n01');
-await shot('n01-today-name-card');
+await shot('n01-today-name-card', 'What should we call you?');
+// Save with nothing typed: one plain line under the field.
+await page.getByRole('button', { name: 'Save my name' }).first().click();
+await wait(700);
+await shot('n01c-today-name-empty-save', 'Type a name or nickname first');
 
 // ── 2. Saved: the line for this visit, and the greeting with the name ───
+// (The browser shows no on-screen keyboard; the focused field shows its ink border.)
+await page.getByRole('textbox', { name: 'Name or nickname' }).first().click();
 await page.getByRole('textbox', { name: 'Name or nickname' }).first().fill('Maya');
 await wait(400);
-await shot('n01b-today-name-typed');
+await shot('n01b-today-name-typed', 'What should we call you?');
 await page.getByRole('button', { name: 'Save my name' }).first().click();
 await wait(900);
 await into('Saved on this device', 'n02');
-await shot('n02-today-name-saved');
+await shot('n02-today-name-saved', 'Saved on this device');
 await page.evaluate(() => window.scrollTo(0, 0));
 await page.mouse.move(W / 2, H / 2);
 await page.mouse.wheel(0, -5000);
@@ -137,8 +150,8 @@ const chooser = page.waitForEvent('filechooser');
 await page.getByRole('button', { name: 'Restore from a backup' }).first().click();
 await (await chooser).setFiles({ name: 'kaisip-web-progress.json', mimeType: 'application/json', buffer: Buffer.from(WEB_NAMED) });
 await wait(1500);
-await into('Your name stays on this phone only', 'n03', 'end');
-await shot('n03-web-sheet-name');
+await into('Your name stays on this device only', 'n03', 'end');
+await shot('n03-web-sheet-name', 'Your name stays on this device only');
 await page.getByRole('button', { name: 'Cancel' }).first().click().catch(() => {});
 await wait(600);
 
