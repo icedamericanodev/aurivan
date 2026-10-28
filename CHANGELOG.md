@@ -4,6 +4,11 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v12.43] — A calmer answer screen
+
+### Improved
+- In dark mode, cards and answer rows stand out more clearly from the page, and a missed answer reads more calmly.
+
 ## [v12.42] — Calmer loading and first-day prompts
 
 ### Fixed

@@ -161,6 +161,15 @@ if ! python3 scripts/lint_exam_guide.py; then
   status=1
 fi
 
+# 6d. Web <-> mobile design-token parity (premium pass §0) -------------------
+# The web dark tokens that the premium pass moved (raised, wrongBg, the
+# section gap) must match mobile/src/theme/tokens.ts. A pair the web has moved
+# ahead of mobile is reported as pending (see PENDING in the script).
+printf "\n"
+if ! python3 scripts/check_token_parity.py; then
+  status=1
+fi
+
 # 7. Accessibility (pa11y, WCAG AA) -----------------------------------------
 # pa11y runs WCAG AA against a served URL. We skip silently if node/npx is
 # absent or no local server is running on port 8000 — the maintainer can run

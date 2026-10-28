@@ -215,7 +215,10 @@
   --grain-op: .035;
   --focus-ring: var(--text);   /* 2px ink ring, offset 2: green never means "focused" or "selected" */
   --r-pill: 999px;
-  --sp-xs: 4px; --sp-sm: 8px; --sp-md: 12px; --sp-lg: 16px; --sp-xl: 20px; --sp-xxl: 24px; --sp-section: 28px; --sp-xxxl: 48px;
+  /* Web names run one step behind Grove's: web --sp-xxl is Grove xl (24) and
+     --sp-2xl is Grove xxl (32), the gap between sections. The old 28px
+     --sp-section is retired (premium pass T4; mobile space.section too). */
+  --sp-xs: 4px; --sp-sm: 8px; --sp-md: 12px; --sp-lg: 16px; --sp-xl: 20px; --sp-xxl: 24px; --sp-2xl: 32px; --sp-xxxl: 48px;
   --r-sm: 8px; --r-md: 16px; --r-lg: 24px;
   /* Type scale (DESIGN_SYSTEM §2). Use as `font: var(--t-body)`. Body 16, floor 14. */
   --t-number: 500 52px/52px var(--f-serif);    --tr-number: -1.4px;
@@ -237,7 +240,7 @@
 /* ── DARK MODE (Grove night) ── */
 [data-theme="dark"] {
   --bg: #111613;
-  --surface: #1A211C;
+  --surface: #1D2621;   /* Grove "raised" (premium T1: a visible step off --bg, 1.18:1) */
   --surface2: #202A23;
   --border: #29322B;
   --border2: #39443C;
@@ -264,9 +267,10 @@
   --dom1: #72B4CB; --dom2: #8CC474; --dom3: #DDB066; --dom4: #B99DCD; --dom5: #9AAFBB;
 
   --correct: #8AD6A8; --correct-light: #173022; --correct-strong: #8AD6A8;
-  --wrong: #FF9CA6; --wrong-light: #3A1A1D; --wrong-strong: #FF9CA6;
+  --wrong: #FF9CA6; --wrong-light: #2C1A1D; --wrong-strong: #FF9CA6;
 
-  --shadow: none;
+  /* L2 lift in dark: the 1.5px line edge plus the forest panel's 5% top light (premium T2). */
+  --shadow: inset 0 1px 0 rgba(255,255,255,.05);
   --card-edge: 0 0 0 1.5px var(--border);
   --shadow-lg: 0 8px 32px rgba(0,0,0,0.45);
   --glow: 0 0 0 3px rgba(127,195,156,0.28);
@@ -2426,7 +2430,7 @@ header {
 /* ═══ PRINCIPLES (exam mindset, data/mindset/principles.json) ═══
    One column like Study notes (.gt): the list grouped by family, then one
    principle at a time with Previous / Next. Grove tokens only. */
-.pl-fam { margin-top: var(--sp-section); }
+.pl-fam { margin-top: var(--sp-2xl); }
 .pl-fam:first-child { margin-top: var(--sp-sm); }
 .pl-fam-title { font: var(--t-headline); color: var(--text); margin: 0; }
 .pl-fam-q { font: var(--t-meta); color: var(--text2); margin: 2px 0 var(--sp-sm); }
@@ -2466,7 +2470,7 @@ header {
 .pl-doms .pl-dom-n { color: var(--text2); margin-right: 4px; }
 
 /* Previous / Next across the whole ordered list */
-.pl-pn { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-md); margin-top: var(--sp-section); padding-top: var(--sp-lg); border-top: 1px solid var(--border); }
+.pl-pn { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-md); margin-top: var(--sp-2xl); padding-top: var(--sp-lg); border-top: 1px solid var(--border); }
 .pl-pn-btn {
   display: flex; flex-direction: column; gap: 2px; min-height: 64px; padding: var(--sp-md) var(--sp-lg); border-radius: var(--r-md);
   background: var(--surface); border: 1.5px solid var(--raised-outline); box-shadow: var(--shadow); color: var(--text); cursor: pointer; text-align: left;
@@ -2503,7 +2507,7 @@ header {
   font: var(--t-label); color: var(--accent-text); text-decoration: none;
 }
 .eg-toc-list a:hover, .eg-toc-btn:hover { text-decoration: underline; text-underline-offset: 3px; }
-.eg-sec { margin-top: var(--sp-section); max-width: 68ch; }
+.eg-sec { margin-top: var(--sp-2xl); max-width: 68ch; }
 .eg-h { font: var(--t-hero); letter-spacing: var(--tr-hero); color: var(--text); margin: 0 0 var(--sp-sm); scroll-margin-top: var(--sp-lg); }
 .eg-sum { font: var(--t-body); color: var(--text2); margin: 0 0 var(--sp-md); }
 .eg-sub { margin-top: var(--sp-lg); }
@@ -2584,7 +2588,7 @@ header {
 }
 
 /* Today: the final review week card (last 8 days before a set exam date) */
-.td-fw { margin-top: var(--sp-section); }
+.td-fw { margin-top: var(--sp-2xl); }
 .td-fw .you-list { margin-top: var(--sp-xs); }
 .td-fw-hide { margin-top: var(--sp-xs); }
 
@@ -5000,7 +5004,7 @@ body[data-tab]:not([data-tab="about"]):not([data-tab="faq"]) .legal-disclaimer {
    study-day streak right), the greeting, ONE forest panel (today's practice),
    the readiness plate (growth rings, the range, each domain) and one next
    step. Desktop >=1180px: the plate is a 320px column beside the rest. */
-.td { max-width: 720px; margin-bottom: var(--sp-section); }
+.td { max-width: 720px; margin-bottom: var(--sp-2xl); }
 .td-head { margin: 0 0 var(--sp-xxl); }
 .td-top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--sp-xs) var(--sp-lg); }
 .td-when { font: var(--t-meta); color: var(--text2); margin: 0; }
@@ -5032,10 +5036,10 @@ body[data-tab]:not([data-tab="about"]):not([data-tab="faq"]) .legal-disclaimer {
 .td-plan-t { min-width: 0; font: var(--t-label); color: var(--on-forest); overflow-wrap: anywhere; }
 .td-plan-m { display: block; font: var(--t-meta); color: var(--on-forest2); }
 /* Save a backup: an InviteRow on the paper */
-.td-backup { margin-top: var(--sp-section); }
+.td-backup { margin-top: var(--sp-2xl); }
 .td-backup .plnt-invite-h { font: var(--t-label); }
 /* "What should we call you?" (v12.37): an InviteRow with its field inline */
-.td-name { margin-top: var(--sp-section); }
+.td-name { margin-top: var(--sp-2xl); }
 .td-name-gone { margin: 0; }
 .td-name-l { display: block; margin: var(--sp-md) 0 var(--sp-xs); font: var(--t-caption); color: var(--text2); }
 .td-name-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-xs) var(--sp-lg); }
@@ -5057,7 +5061,7 @@ body[data-tab]:not([data-tab="about"]):not([data-tab="faq"]) .legal-disclaimer {
 .rs-one { margin-top: var(--sp-sm); }
 /* The right column: one L1 plate (tonal, never tapped as a whole) with the
    readiness, the week and the plant; --td-paper is what a leaf's vein cuts to. */
-.td-side { margin-top: var(--sp-section); }
+.td-side { margin-top: var(--sp-2xl); }
 .td-plate { --td-paper: var(--raised2); background: var(--raised2); border-radius: var(--r-lg); padding: var(--sp-xxl); }
 .td-fig { display: flex; flex-direction: column; align-items: center; gap: var(--sp-md); text-align: center; }
 .td-fig-text .td-est { margin-top: var(--sp-xs); }
@@ -5104,7 +5108,7 @@ body[data-tab]:not([data-tab="about"]):not([data-tab="faq"]) .legal-disclaimer {
 }
 /* The Mindset check: one compact row that opens one question in place */
 .td-mind-slot:empty { display: none; }
-.td-mind { margin-top: var(--sp-section); }
+.td-mind { margin-top: var(--sp-2xl); }
 .td-mind-open { margin-top: var(--sp-xs); }
 .td-mind-m { font: var(--t-meta); color: var(--text2); white-space: nowrap; }
 .td-mind-open[aria-expanded="true"] .td-mind-chev .ico { transform: rotate(180deg); }
@@ -5153,14 +5157,14 @@ body[data-tab]:not([data-tab="about"]):not([data-tab="faq"]) .legal-disclaimer {
 .td-word { font: var(--t-label); color: var(--text); }
 .td-note { font: var(--t-meta); color: var(--text2); margin: var(--sp-md) 0 0; }
 /* The next step: one row on the paper */
-.td-next { margin-top: var(--sp-section); }
+.td-next { margin-top: var(--sp-2xl); }
 .td-next .you-list { margin-top: var(--sp-xs); }
 .td-kicker { font: var(--t-caption); color: var(--accent-text); }
 .td-apps { font: var(--t-meta); color: var(--text2); margin: var(--sp-xl) 0 0; }
-.td-legal { font: var(--t-meta); color: var(--text2); margin: var(--sp-section) 0 0; }
+.td-legal { font: var(--t-meta); color: var(--text2); margin: var(--sp-2xl) 0 0; }
 /* Single column with room: the rings (or the figure) beside their legend */
 @media (min-width: 560px) and (max-width: 1179px) {
-  .td-ready:not(.td-ready-quiet):not(.td-ready-words) { display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: var(--sp-section); align-items: center; }
+  .td-ready:not(.td-ready-quiet):not(.td-ready-words) { display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: var(--sp-2xl); align-items: center; }
   .td-ready-more > :first-child { margin-top: 0; }
   /* A week-strip day hides the rings: the figure sits above the legend instead of floating beside it. */
   .td-vis-week .td-ready:not(.td-ready-quiet):not(.td-ready-words) { display: block; }
@@ -5206,7 +5210,7 @@ body[data-tab]:not([data-tab="about"]):not([data-tab="faq"]) .legal-disclaimer {
    320px side column (the Mindset check). One forest panel (Where you stand),
    one L1 plate (the signs), the rest on the paper. Grove tokens only; charts
    are static inline SVG (nothing animates). */
-.pg { max-width: 720px; margin-bottom: var(--sp-section); display: flex; flex-direction: column; }
+.pg { max-width: 720px; margin-bottom: var(--sp-2xl); display: flex; flex-direction: column; }
 .pg > * { min-width: 0; }
 /* Reading order is the page, study days, then the Mindset check; below 1180px the check shows before the study days. */
 .pg-head { order: 0; margin: 0 0 var(--sp-xxl); }
@@ -5354,7 +5358,7 @@ button.pg-cd:hover { background: var(--surface2); }
 }
 /* Room for the rings beside the range */
 @media (min-width: 560px) {
-  .pg-stand:not(.pg-stand-wait) { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: var(--sp-section); align-items: center; }
+  .pg-stand:not(.pg-stand-wait) { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: var(--sp-2xl); align-items: center; }
   .pg-stand-r { order: 0; }
   .pg-stand-r .td-rings { width: 140px; }
 }
@@ -5573,7 +5577,7 @@ header.app-header .brand-lockup { height: 28px; }
 .app-cta-qr[hidden] { display: none; }
 .app-cta-qr img { flex: none; width: 148px; height: 148px; background: #fff; border-radius: var(--r-sm); border: 1px solid var(--border); }
 .app-cta-qr figcaption { font: var(--t-meta); color: var(--text2); max-width: 32ch; }
-.app-cta-line { display: none; margin: var(--sp-section) 0 var(--sp-sm); font: var(--t-meta); }
+.app-cta-line { display: none; margin: var(--sp-2xl) 0 var(--sp-sm); font: var(--t-meta); }
 body[data-app-cta="android"][data-section="today"] .app-cta-line,
 body[data-app-cta="android"][data-section="learn"] .app-cta-line { display: block; }
 .app-cta-line a { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; color: var(--accent-text); text-decoration: underline; text-underline-offset: 3px; }
@@ -5767,7 +5771,7 @@ body[data-app-cta-card="shown"][data-section="today"] .app-cta-line { display: n
 
 .vr-src {
   display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0 var(--sp-lg);
-  margin-top: var(--sp-section); padding-top: var(--sp-md); border-top: 1px solid var(--border);
+  margin-top: var(--sp-2xl); padding-top: var(--sp-md); border-top: 1px solid var(--border);
 }
 .vr-src-ref { flex: 1 1 auto; min-width: 0; font: var(--t-meta); color: var(--text2); overflow-wrap: anywhere; }
 .vr-report {
@@ -5892,7 +5896,7 @@ body[data-app-cta-card="shown"][data-section="today"] .app-cta-line { display: n
 .ph-panel .subtopic-drawer { margin-top: var(--sp-md); }
 
 /* Sections */
-.ph-sec { margin-top: var(--sp-section); }
+.ph-sec { margin-top: var(--sp-2xl); }
 .ph-h { font: var(--t-headline); color: var(--text); margin: 0; }
 .ph-h-meta { font: var(--t-meta); color: var(--text2); margin: var(--sp-xs) 0 var(--sp-xs); }
 .you-stats { margin: var(--sp-md) 0 var(--sp-lg); }
@@ -5980,7 +5984,7 @@ body[data-tab="practice"][data-pview="focus"] #subNav { display: none; }
    page's one forest panel. A mock question reuses the practice strip. */
 .rs { max-width: 720px; }
 .session-debrief.rs { background: none; border: 0; border-radius: 0; box-shadow: none; padding: 0; margin: 0; }
-.ph #sessionBoundaryArea .session-debrief.rs { margin-bottom: var(--sp-section); padding-bottom: var(--sp-section); border-bottom: 1px solid var(--border); }
+.ph #sessionBoundaryArea .session-debrief.rs { margin-bottom: var(--sp-2xl); padding-bottom: var(--sp-2xl); border-bottom: 1px solid var(--border); }
 .rs-kicker { font: var(--t-meta); color: var(--text2); margin: 0; }
 .rs-title { font: var(--t-display); letter-spacing: var(--tr-display); color: var(--text); margin: var(--sp-xs) 0 0; overflow-wrap: anywhere; }
 .rs-set .rs-title { font: var(--t-hero); letter-spacing: var(--tr-hero); }
@@ -5992,7 +5996,7 @@ body[data-tab="practice"][data-pview="focus"] #subNav { display: none; }
 .rs-dcount { flex-shrink: 0; font: var(--t-meta); color: var(--text2); font-variant-numeric: tabular-nums; }
 .rs-plate .td-dval { min-width: 72px; }
 @media (min-width: 560px) {
-  .rs-plate { display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: var(--sp-section); align-items: center; }
+  .rs-plate { display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: var(--sp-2xl); align-items: center; }
   .rs-plate .td-legend { margin-top: 0; }
 }
 .rs-stats { list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--sp-md); margin: var(--sp-xxl) 0 0; padding: 0; }
@@ -6012,13 +6016,13 @@ body[data-tab="practice"][data-pview="focus"] #subNav { display: none; }
 .rs-btn.primary:hover { opacity: .92; }
 .rs-btn.ghost { border-color: transparent; padding: 0 var(--sp-md); }
 .rs-btn:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
-.rs-mock .mock-advisory { margin-top: var(--sp-section); padding: 0; background: none; border: 0; border-radius: 0; }
+.rs-mock .mock-advisory { margin-top: var(--sp-2xl); padding: 0; background: none; border: 0; border-radius: 0; }
 .rs-mock .mock-advisory-title { font: var(--t-headline); color: var(--text); margin: 0 0 var(--sp-xs); }
 .rs-mock .mock-advisory-item { font: var(--t-small); color: var(--text2); padding: var(--sp-md) 0; border-bottom: 1px solid var(--border); }
 .rs-mock .mock-advisory-item:last-child { border-bottom: 1px solid var(--border); }
-.rs-mock .support-inline-card { margin-top: var(--sp-section); }
+.rs-mock .support-inline-card { margin-top: var(--sp-2xl); }
 /* Review answers: list rows on the paper, opening in place. */
-.rs-review { margin-top: var(--sp-section); }
+.rs-review { margin-top: var(--sp-2xl); }
 .rs-review .ph-h:focus { outline: none; }
 .rs-filter { margin: var(--sp-md) 0 var(--sp-xs); }
 .mr-list { border-top: 1px solid var(--border); margin-top: var(--sp-md); }
@@ -6076,7 +6080,7 @@ body[data-tab="practice"][data-pview="focus"] #subNav { display: none; }
 .mk-type-m { font: var(--t-small); color: var(--text2); margin: var(--sp-xs) 0 var(--sp-xl); flex: 1; }
 .mk-type .rs-btn { width: 100%; }
 .mk-weights, .mk-past { margin-top: var(--sp-md); }
-.mk-foot { font: var(--t-meta); color: var(--text2); margin: var(--sp-section) 0 0; max-width: 62ch; }
+.mk-foot { font: var(--t-meta); color: var(--text2); margin: var(--sp-2xl) 0 0; max-width: 62ch; }
 
 /* Mock question: the practice strip, with the exam clock and Flag. */
 .mk-q { margin: 0 auto; }
@@ -6232,7 +6236,7 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 }
 /* Fallbacks in the page: Focus next under the forest panel; on the answer
    screen, the note link and "Add a note" after the Key idea. */
-.ph-focus { margin-top: var(--sp-section); }
+.ph-focus { margin-top: var(--sp-2xl); }
 .ph-focus .you-list { margin-top: var(--sp-xs); }
 .ph-focus .sr-kick { display: block; }
 .vr-study:empty { display: none; }
@@ -6766,7 +6770,7 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
     <h1 class="vision-title" id="aboutScreenTitle">Think like an IS auditor.</h1>
     <p class="vision-line">CISA exam prep, taught the way the exam thinks.</p>
   </section>
-  <p class="about-version">KaiSip web <span class="bank-pill" id="versionPill">v12.42</span></p>
+  <p class="about-version">KaiSip web <span class="bank-pill" id="versionPill">v12.43</span></p>
   <section class="vision-body" aria-label="What KaiSip stands for">
     <!-- The provenance line (owner, 22 Oct 2026): the same words in the hero, the disclaimer and the FAQ. -->
     <p class="vision-desc">Original questions and notes, written with AI assistance and checked against ISACA’s published exam outline and standards.</p>
@@ -7102,7 +7106,7 @@ const MOCK_TIER_LABEL = { analysis: 'Harder', application: 'Middle', foundationa
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v12.42';
+const APP_VERSION = 'v12.43';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -21195,6 +21199,13 @@ function toggleMockDetail(i) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
+    title: 'A calmer answer screen',
+    items: [
+      { cat: 'improved', text: 'In dark mode, cards and answer rows stand out more clearly from the page, and a missed answer reads more calmly.' },
+    ],
+  },
+  {
+    version: 'v12.42',
     title: 'Calmer loading and first-day prompts',
     items: [
       { cat: 'fixed', text: 'While questions load, you now see a short, plain message.' },
