@@ -31,9 +31,23 @@ const NOW = new Date(2026, 9, 29, 9, 0).getTime();
 const TODAY = dayKey(NOW);
 const info = { widgetName: 'TodaysRule', widgetId: 7, width: 376, height: 184, screenInfo: { fontScale: 1 } };
 
-function click(clickAction: string) {
-  return widgetTask({ widgetInfo: info, widgetAction: 'WIDGET_CLICK', clickAction, renderWidget: jest.fn() } as never);
+function click(clickAction: string, widgetInfo: Record<string, unknown> = info, renderWidget = jest.fn()) {
+  return widgetTask({ widgetInfo, widgetAction: 'WIDGET_CLICK', clickAction, renderWidget } as never);
 }
+/** The words a render call drew (light tree). */
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const { buildWidgetTree } = require('react-native-android-widget/lib/commonjs/api/build-widget-tree') as { buildWidgetTree: (el: unknown) => Tree };
+interface Tree {
+  type: string;
+  props: { text?: string };
+  children?: Tree[];
+}
+const words = (t: Tree, out: string[] = []): string[] => {
+  if (t.type === 'TextWidget' && t.props.text) out.push(t.props.text);
+  (t.children ?? []).forEach((c) => words(c, out));
+  return out;
+};
+const drawn = (render: jest.Mock) => words(buildWidgetTree(render.mock.calls[render.mock.calls.length - 1][0].light)).join(' | ');
 
 beforeEach(async () => {
   jest.useFakeTimers({ now: NOW });
@@ -47,7 +61,7 @@ beforeEach(async () => {
 });
 afterEach(() => jest.useRealTimers());
 
-it('the reveal pill and the "Had it" pill are the same first pill of the action row', async () => {
+it('the face: "Show the rule", then "Had it" (since 1.48 the layouts draw them in different places: widgets-layout.test.tsx)', async () => {
   const snap = parseSnapshot(await AsyncStorage.getItem(WIDGET_KEY));
   expect(widgetFace('think', snap, { now: NOW, revealed: false }).action?.widgetAction).toBe('REVEAL');
   expect(widgetFace('think', snap, { now: NOW, revealed: true }).action?.widgetAction).toBe('HAD');
@@ -60,4 +74,48 @@ it('a quick second tap after "Show the rule" is not recorded as "Had it"', async
   const reveal = readReveal(await AsyncStorage.getItem(REVEAL_KEY), TODAY);
   // Was a bug: the self-check was saved (had: 1), and the rule spaced out by 7 days.
   expect(Object.keys(reveal.self)).toHaveLength(0);
+});
+
+describe('1.48: the Recall card and the Key term reveal on the widget too', () => {
+  const recallInfo = { widgetName: 'QuickQuestion', widgetId: 11, width: 376, height: 184, screenInfo: { fontScale: 1 } };
+  const termInfo = { widgetName: 'Revisit', widgetId: 12, width: 182, height: 184, screenInfo: { fontScale: 1 } };
+  /** A snapshot with one Recall card for today (the real bank question d1_001). */
+  async function withRecall() {
+    const snap = parseSnapshot(await AsyncStorage.getItem(WIDGET_KEY))!;
+    snap.recall = [{ day: TODAY, id: 'd1_001', stem: 'Which basis is BEST?', answer: 'The business impact analysis', cue: 'impact first.', weeks: 3, topic: 'Audit process' }];
+    await AsyncStorage.setItem(WIDGET_KEY, JSON.stringify(snap));
+  }
+
+  it('Show the answer, then Had it: the check is kept by question, beside the rule’s, and nothing is written to progress', async () => {
+    await withRecall();
+    const before = JSON.stringify(useProgress.getState());
+    const r1 = jest.fn();
+    await click('REVEAL', recallInfo, r1);
+    expect(drawn(r1)).toContain('The business impact analysis');
+    expect(drawn(r1)).toContain('Exam cue: impact first.');
+    jest.setSystemTime(NOW + 600); // a quick second tap is not an answer
+    await click('HAD', recallInfo);
+    expect(readReveal(await AsyncStorage.getItem(REVEAL_KEY), TODAY).recall).toEqual({});
+    jest.setSystemTime(NOW + 5000);
+    const r2 = jest.fn();
+    await click('HAD', recallInfo, r2);
+    const reveal = readReveal(await AsyncStorage.getItem(REVEAL_KEY), TODAY);
+    expect(reveal.recall).toEqual({ d1_001: { had: 1, notYet: 0, last: 'had', on: TODAY } });
+    expect(reveal.self).toEqual({});
+    expect(drawn(r2)).toContain('A new card tomorrow.');
+    expect(JSON.stringify(useProgress.getState())).toBe(before);
+  });
+
+  it('the Key term reveals its meaning; it has no self-check', async () => {
+    const snap = parseSnapshot(await AsyncStorage.getItem(WIDGET_KEY))!;
+    const t = snap.terms.find((x) => x.day === TODAY)!;
+    const r = jest.fn();
+    await click('REVEAL', termInfo, r);
+    expect(drawn(r)).toContain(t.meaning);
+    await click('HAD', termInfo);
+    const reveal = readReveal(await AsyncStorage.getItem(REVEAL_KEY), TODAY);
+    expect(reveal.ids).toContain(12);
+    expect(reveal.self).toEqual({});
+    expect(reveal.recall).toEqual({});
+  });
 });

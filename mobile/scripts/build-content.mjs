@@ -36,6 +36,9 @@
  *      id is checked against the packs built above.
  *  10. Copies the reviewed game decks (src/content/games/<cert>/*.json) into
  *      <cert>/, byte for byte, so one folder holds the whole pack.
+ *  10b. Writes <cert>/terms.json (mobile 1.48): the notes' domain glossaries,
+ *      small, for the Key term widget, via terms-pack.cjs (each term with its
+ *      abbreviation, one-line meaning and the study note that teaches it).
  *  11. Writes <cert>/pack.json: the pack's `rev` and `schemaVersion`. The
  *      rev is the build commit's time in seconds (always increasing), so a
  *      downloaded pack (content packs, Phase C) replaces the bundled one only
@@ -58,6 +61,7 @@ const require = createRequire(import.meta.url);
 const { buildNotesPack } = require('./notes-pack.cjs');
 const { buildPrinciplesPack } = require('./principles-pack.cjs');
 const { buildExamPack } = require('./exam-guide-pack.cjs');
+const { buildTermsPack } = require('./terms-pack.cjs');
 const { buildLessonsPack } = require('./lessons-pack.cjs');
 
 /**
@@ -285,6 +289,21 @@ function buildNotes(pack, certDir, questions) {
 }
 
 /**
+ * Write <cert>/terms.json (mobile 1.48): the notes' key terms, a few
+ * kilobytes, for the Key term widget. No notes gives an empty pack (the
+ * widget then shows its calm "a new term each morning" face).
+ * Returns the index.ts line for this cert's terms loader.
+ */
+function buildTerms(pack, certDir, notes) {
+  const terms = buildTermsPack(notes, pack.certId);
+  const json = JSON.stringify(terms);
+  fs.writeFileSync(path.join(certDir, 'terms.json'), json);
+  const n = Object.values(terms.domains).reduce((k, list) => k + list.length, 0);
+  console.log(`✓ ${pack.certId} key terms: ${n} terms, ${(json.length / 1024).toFixed(1)} KB → terms.json`);
+  return `  ${pack.certId}: () => require('./${pack.certId}/terms.json') as TermsPack,`;
+}
+
+/**
  * Write <cert>/principles.json. A missing file or another schema version
  * gives an EMPTY pack (the Learn → Principles row hides), never a failed
  * build; a practice id that is not in this cert's bank DOES fail it.
@@ -419,6 +438,7 @@ function main() {
   const principlesLines = [];
   const examLines = [];
   const lessonsLines = [];
+  const termsLines = [];
   const gamesLines = [];
   const infoLines = [];
   const rev = packRev();
@@ -428,6 +448,7 @@ function main() {
     "import type { Lesson } from '../lessons/types';",
     "import type { NotesPack } from '../notes/types';",
     "import type { PrinciplesPack } from '../principles/types';",
+    "import type { TermsPack } from '../terms';",
     "import type { PackQuestion } from '../types';",
     '',
     'type Loader = () => PackQuestion[];',
@@ -475,6 +496,7 @@ function main() {
     principlesLines.push(principles.line);
     examLines.push(buildExam(pack, certDir, notes.pack, principles.pack));
     lessonsLines.push(buildLessons(pack, certDir, certQuestions, notes.pack));
+    termsLines.push(buildTerms(pack, certDir, notes.pack));
     const games = copyGames(pack, certDir);
     if (games) gamesLines.push(games);
     // The bundled pack's version: a downloaded pack replaces it only with a newer rev.
@@ -491,6 +513,8 @@ function main() {
   indexLines.push('export const generatedExam: Record<string, () => ExamPack> = {', ...examLines, '};', '');
   // Motion lessons: one lazily parsed pack per certification.
   indexLines.push('export const generatedLessons: Record<string, () => Lesson[]> = {', ...lessonsLines, '};', '');
+  // Key terms for the Key term widget: one small, lazily parsed file per certification.
+  indexLines.push('export const generatedTerms: Record<string, () => TermsPack> = {', ...termsLines, '};', '');
   // The reviewed game decks, as copied (content/games/index.ts reshapes them).
   indexLines.push('export const generatedGames: Record<string, Partial<Record<string, () => unknown>>> = {', ...gamesLines, '};', '');
   // Each bundled pack's rev and schemaVersion (small, so not lazy).

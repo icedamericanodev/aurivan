@@ -2,7 +2,7 @@
  * Mobile 1.47, home-screen widgets: the pure engine (engine/widgets.ts).
  *
  * Covers the snapshot (shape, privacy, size cap, safe reading), every
- * widget's faces, the shared exam wording, the privacy switches (every
+ * widget's faces (1.48: the Recall card, Key term and Road to exam jobs), the shared exam wording, the privacy switches (every
  * widget × every exam stage × Details on/off × exam timing on/off), plain
  * words, links, Today's rule's reveal and self-check, the one-time
  * suggestion and re-ask, and the "choose" screen's words.
@@ -26,8 +26,12 @@ import {
   msToNextMidnight,
   parseSnapshot,
   parseWidgetTap,
+  PICKER_LABELS,
   PLANT_LINE,
   readinessConfigCopy,
+  recallDueFrom,
+  recallIdFor,
+  ROAD_FOCUS,
   readinessReaskDue,
   readReveal,
   RECOMMENDED_KINDS,
@@ -81,6 +85,9 @@ const PLAN = {
   next: 'Security',
   nextMin: 18,
   finalDay: null,
+  count: 10,
+  steps: 3,
+  stepsDone: 1,
 };
 
 function input(over: Partial<SnapshotInput> = {}): SnapshotInput {
@@ -104,7 +111,17 @@ function input(over: Partial<SnapshotInput> = {}): SnapshotInput {
       rule: 'The auditor assesses, reports and recommends; management designs, implements and owns the fix.',
       try: 'd1_010',
     })),
-    quiz: [0, 1, 2, 3].map((d) => ({ day: addDays(TODAY, d), id: `d4_07${d}`, stem: 'Which basis is BEST for setting recovery tiers in a business impact analysis?', topic: 'Operations', done: false })),
+    recall: [0, 1, 2, 3].map((d) => ({
+      day: addDays(TODAY, d),
+      id: `d4_07${d}`,
+      stem: 'Which basis is BEST for setting recovery tiers for business processes?',
+      answer: 'The results of the business impact analysis',
+      cue: 'recovery priorities follow business impact.',
+      weeks: 3,
+      topic: 'Operations',
+    })),
+    terms: [0, 1, 2, 3].map((d) => ({ day: addDays(TODAY, d), id: `t4_1${d}`, term: 'Recovery point objective', short: 'RPO', meaning: 'The most data, measured in time, the business can accept losing.', topic: 'Operations', note: '4B3.2' })),
+    road: { from: '2026-10-05', stage: 'practice' },
     ready: null,
     ...over,
   };
@@ -137,8 +154,16 @@ describe('names and kinds', () => {
     expect(new Set(Object.values(WIDGET_NAMES)).size).toBe(8);
     for (const k of WIDGET_KINDS) expect(kindOfName(WIDGET_NAMES[k])).toBe(k);
     expect(kindOfName('Nope')).toBeNull();
-    expect(WIDGET_TITLES.revisit).toBe('Questions to revisit');
     expect(WIDGET_TITLES.think).toBe('Today’s rule');
+    // 1.48: three new jobs; the Android names stay, and the picker keeps its names until the next store build.
+    expect(WIDGET_TITLES.question).toBe('Recall card');
+    expect(WIDGET_TITLES.revisit).toBe('Key term');
+    expect(WIDGET_TITLES.countdown).toBe('Road to exam');
+    expect(WIDGET_NAMES.question).toBe('QuickQuestion');
+    expect(WIDGET_NAMES.revisit).toBe('Revisit');
+    expect(WIDGET_NAMES.countdown).toBe('ExamCountdown');
+    expect(PICKER_LABELS.question).toBe('Quick question');
+    expect(PICKER_LABELS.plan).toBe(WIDGET_TITLES.plan);
   });
 });
 
@@ -152,12 +177,13 @@ describe('the snapshot', () => {
     expect(snap({ ready: READY, prefs: prefs({ readiness: 'private' }) }).ready).toEqual(READY);
   });
 
-  it('stays under 4 KB with long real-world text, and fitSnapshot trims if ever needed', () => {
+  it('stays under 8 KB with long real-world text, and fitSnapshot trims if ever needed', () => {
     const long = 'word '.repeat(200);
     const s = snap({
       plan: { ...PLAN, title: long, meta: long, next: long, finalDay: long, short: long },
       think: input().think.map((t) => ({ ...t, ask: long, short: long, title: long, rule: long })),
-      quiz: input().quiz.map((q) => ({ ...q, stem: long, topic: long })),
+      recall: input().recall!.map((q) => ({ ...q, stem: long, answer: long, cue: long, topic: long })),
+      terms: input().terms!.map((t) => ({ ...t, term: long, meaning: long, topic: long })),
       studyDays: Array.from({ length: 40 }, (_, i) => addDays(TODAY, -i)),
       prefs: prefs({ readiness: 'show' }),
       ready: READY,
@@ -197,6 +223,29 @@ describe('the snapshot', () => {
     expect(p.week).toEqual({ days: [TODAY], total: 99 });
     expect(p.plant).toEqual({ species: 'narra', name: 'narra', growth: 6, grew: null });
     expect(p.think).toEqual([]);
+  });
+
+  it('1.48: reads the Recall card, Key term and road safely; a 1.47 snapshot (with `quiz`) still reads', () => {
+    const s = JSON.parse(JSON.stringify(snap())) as Record<string, unknown>;
+    s.recall = [{ day: TODAY, id: '../x', stem: 's', answer: 'a' }, { day: TODAY, id: 'd1_001', stem: '', answer: 'a' }];
+    s.terms = [{ day: TODAY, id: 't1_1', term: 'x', meaning: 'm', note: '../../etc' }];
+    s.road = { from: 'soon', stage: 'practice' };
+    const p = parseSnapshot(s)!;
+    expect(p.recall).toEqual([]);
+    expect(p.terms).toEqual([]);
+    expect(p.road).toBeNull();
+    const old = JSON.parse(JSON.stringify(snap())) as Record<string, unknown>;
+    delete old.recall;
+    delete old.terms;
+    delete old.road;
+    old.quiz = [{ day: TODAY, id: 'd4_070', stem: 'x', topic: 'y', done: false }];
+    (old.plan as Record<string, unknown>).count = undefined;
+    const q = parseSnapshot(old)!;
+    expect(q.recall).toEqual([]);
+    expect(q.plan?.steps).toBe(3);
+    expect(q.plan?.count).toBe(0);
+    expect(face('question', q).title).toBe('Questions you get right come back here');
+    expect(snap({ road: { from: '2026-10-05', stage: 'nope' as never } }).road?.stage).toBe('practice');
   });
 });
 
@@ -270,7 +319,8 @@ describe('privacy switches: every widget × every exam stage × Details × exam 
             const s = snap({ prefs: { details, timing, readiness: kind === 'readiness' ? 'show' : 'off' }, examDay: d === null ? null : addDays(TODAY, d), ready: READY });
             for (const ctx of [{}, { revealed: true }, { revealed: true, judged: 'had' as const }]) {
               const f = face(kind, s, NOW, ctx);
-              const all = words(f);
+              // The Recall card's "Exam cue:" label names a kind of tip (the app's own), not the learner's exam.
+              const all = words(f).replace(/Exam cue:/g, 'Cue:');
               if (!(timing && details === 'show')) expect(all).not.toMatch(EXAM_WORDS);
               if (details === 'hide') {
                 expect(all).not.toMatch(TOPICS);
@@ -291,8 +341,8 @@ describe('privacy switches: every widget × every exam stage × Details × exam 
     expect(r({ readiness: 'show', details: 'hide' }).title).not.toMatch(/\d/);
     expect(r({ readiness: 'show' }, 21).title).not.toMatch(/\d/);
     expect(r({ readiness: 'show' }, null).title).toBe('68–78');
-    // Rings only says it was the learner's choice.
-    expect(r({ readiness: 'private' }).line).toMatch(/You chose/);
+    // Rings only: TalkBack says it was the learner's choice (the face no longer repeats it at every glance).
+    expect(r({ readiness: 'private' }).label).toMatch(/You chose/);
   });
 });
 
@@ -320,25 +370,39 @@ describe('plain words on every face', () => {
 });
 
 describe('Today’s plan', () => {
-  it('a normal day: the topic, the plan’s own revisit line, minutes on the pill, and the short set', () => {
+  it('a normal day: the real task ("10 questions"), the topic, the steps, minutes on the pill, and the short set', () => {
     const f = face('plan');
     expect(f.tone).toBe('forest');
-    expect(f.caption).toBe('Today');
-    expect(f.title).toBe('Operations');
-    expect(f.line).toBe('Starts with 7 questions to revisit');
+    expect(f.caption).toBe('Today · Operations');
+    expect(f.title).toBe('10');
+    expect(f.titleStyle).toBe('number');
+    expect(f.unit).toBe('questions');
+    expect(f.short).toBe('10 questions');
+    expect(f.steps).toEqual({ total: 3, done: 1 });
+    expect(f.aside).toBe('step 2 of 3');
+    expect(f.line).toBe('About 12 min left. Starts with 7 questions to revisit.');
     expect(f.line2).toBeUndefined();
     expect(f.action?.label).toBe('Start · 12 min');
     expect(f.action2?.label).toBe('Short on time? 5 questions');
-    expect(f.label).toMatch(/12 minutes/);
+    // One TalkBack sentence with the state.
+    expect(f.label).toBe('Today’s plan, step 2 of 3: 10 questions in Operations, about 12 minutes. Starts with 7 questions to revisit.');
+  });
+
+  it('a lesson: its title in words, no number', () => {
+    const f = face('plan', snap({ plan: { ...PLAN, count: 0, title: 'When a release can wait', short: 'New systems' } }));
+    expect(f.title).toBe('When a release can wait');
+    expect(f.titleStyle).toBe('serif');
+    expect(f.caption).toBe('Today · New systems');
   });
 
   it('exam timing on: weeks to the exam as a quiet third line', () => {
     expect(face('plan', snap({ prefs: prefs({ timing: true }) })).line2).toBe('Exam in 4 weeks');
   });
 
-  it('misses only: "Starts with N you missed before"', () => {
-    expect(face('plan', snap({ plan: { ...PLAN, back: 2, backMissed: true } })).line).toBe('Starts with 2 you missed before');
-    expect(face('plan', snap({ plan: { ...PLAN, back: 1, backMissed: true } })).line).toBe('Starts with one you missed before');
+  it('1.48, shared screens: never says what was missed, only what comes back to revisit', () => {
+    expect(face('plan', snap({ plan: { ...PLAN, back: 2, backMissed: true } })).line).toBe('About 12 min left. Starts with 2 questions to revisit.');
+    expect(face('plan', snap({ plan: { ...PLAN, back: 1, backMissed: true } })).line).toBe('About 12 min left. Starts with 1 question to revisit.');
+    for (const k of WIDGET_KINDS) expect(words(face(k, snap({ plan: { ...PLAN, back: 2, backMissed: true } })))).not.toMatch(/\bmissed\b|wrong|incorrect/i);
   });
 
   it('a new learner: the first five questions', () => {
@@ -347,11 +411,12 @@ describe('Today’s plan', () => {
     expect(f.action?.label).toBe('Start · 6 min');
   });
 
-  it('done: "Plan done", the week’s leaves and what comes next, no Start', () => {
-    const f = face('plan', snap({ plan: { ...PLAN, done: true, left: 0 } }));
-    expect(f.title).toBe('Plan done');
-    expect(f.line).toBe('Next: Security · about 18 min');
-    expect(f.art?.type).toBe('leaves');
+  it('done: "Plan done." and what comes next, no Start (the leaves live on This week only)', () => {
+    const f = face('plan', snap({ plan: { ...PLAN, done: true, left: 0, stepsDone: 3 } }));
+    expect(f.title).toBe('Plan done.');
+    expect(f.line).toBe('Next: Security, about 18 min.');
+    expect(f.art).toBeUndefined();
+    expect(f.steps).toEqual({ total: 3, done: 3 });
     expect(f.action).toBeUndefined();
     expect(words(f)).not.toMatch(/more|again|keep going/i);
   });
@@ -408,14 +473,14 @@ describe('Today’s plan', () => {
   it('details off: no topic, no counts, no exam', () => {
     const f = face('plan', snap({ prefs: prefs({ details: 'hide', timing: true }) }));
     expect(f.title).toBe('Your study plan');
-    expect(words(f)).not.toMatch(/Operations|revisit|Exam|\b7\b/);
+    expect(words(f)).not.toMatch(/Operations|revisit|Exam|\b7\b|\b10\b/);
   });
 
   it('final week (with timing): the plain day words and no short set; the eve is calm; exam day has no Start', () => {
     const on = prefs({ timing: true });
     const wk = face('plan', snap({ prefs: on, examDay: addDays(TODAY, 4), plan: { ...PLAN, finalDay: FINAL_DAY_PLAIN[4] } }));
     expect(wk.caption).toBe('Final week');
-    expect(wk.line).toBe(FINAL_DAY_PLAIN[4]);
+    expect(wk.line).toBe(`About 12 min left. ${FINAL_DAY_PLAIN[4]}`);
     expect(wk.action2).toBeUndefined();
     const eve = face('plan', snap({ prefs: on, examDay: addDays(TODAY, 1) }));
     expect(eve.title).toBe(EXAM_COPY.eve.title);
@@ -424,7 +489,7 @@ describe('Today’s plan', () => {
     expect(day.title).toBe('Good luck.');
     expect(day.action).toBeUndefined();
     // After the exam, the plan is a plan again.
-    expect(face('plan', snap({ prefs: on, examDay: addDays(TODAY, -2) })).title).toBe('Operations');
+    expect(face('plan', snap({ prefs: on, examDay: addDays(TODAY, -2) })).caption).toBe('Today · Operations');
   });
 });
 
@@ -436,19 +501,25 @@ describe('This week', () => {
     expect(l.count).toBe(2);
   });
 
-  it('normal: "3 days this week", no denominator and no constant rest line', () => {
+  it('normal: "3 study days", no denominator; a kind line that changes as the week fills; no Start', () => {
     const f = face('week');
     expect(f.title).toBe('3');
-    expect(f.unit).toBe('days this week');
-    expect(f.line).toBeUndefined();
+    expect(f.unit).toBe('study days');
+    expect(f.line).toBe('Short days count too.');
+    expect(f.action).toBeUndefined();
+    expect(f.link).toBe(widgetLink('week', 'today'));
+    expect(f.label).toBe('This week: 3 study days. You studied Monday, Tuesday and Wednesday. Short days count too.');
     expect(words(f)).not.toMatch(/ of |\/|streak/i);
+    expect(face('week', snap({ studyDays: ['2026-10-26'] })).line).toBe('A first leaf this week.');
+    expect(face('week', snap({ studyDays: ['2026-10-26', '2026-10-27', '2026-10-28', '2026-10-29'] })).line).toBe('A steady week.');
   });
 
-  it('no study yet this week: words and 5 questions to start, never an empty row', () => {
+  it('no study yet this week: words, never an empty row; a tap opens Today (no Start)', () => {
     const monday = face('week', snap({ studyDays: ['2026-10-20'] }), at('2026-10-26'));
     expect(monday.title).toBe('A new week');
     expect(monday.line).toBe('5 questions · about 6 min');
-    expect(monday.action?.link).toContain('go=short');
+    expect(monday.action).toBeUndefined();
+    expect(monday.link).toContain('go=today');
     const later = face('week', snap({ studyDays: ['2026-10-20'] }));
     expect(later.title).toBe('A short start');
     expect(later.art?.type).not.toBe('leaves');
@@ -457,12 +528,12 @@ describe('This week', () => {
   it('fewer than 2 study days ever: the first-set line, no leaves', () => {
     const f = face('week', snap({ studyDaysTotal: 1, studyDays: [TODAY] }));
     expect(f.art?.type).toBe('mark');
-    expect(f.action?.label).toBe('Start');
+    expect(f.action).toBeUndefined();
   });
 
   it('a strong week (6 days) suggests rest', () => {
     const days = ['2026-10-26', '2026-10-27', '2026-10-28', '2026-10-29', '2026-10-30', '2026-10-31'];
-    expect(face('week', snap({ studyDays: days }), at('2026-11-01')).line).toBe('Today can be your rest day');
+    expect(face('week', snap({ studyDays: days }), at('2026-11-01')).line).toBe('Today can be your rest day.');
   });
 
   it('the leaves rest from 7 days before the exam to exam day; after it, a normal week', () => {
@@ -492,21 +563,27 @@ describe('Readiness (added = opt-in; rings only first)', () => {
     const f = face('readiness', snap({ prefs: prefs({ readiness: 'show' }), ready: READY }));
     expect(f.title).toBe('68–78');
     expect(f.unit).toBe('%');
-    expect(f.caption).toBe('Readiness estimate');
+    expect(f.caption).toBe('Readiness');
     expect(f.line).toBe('A study estimate, not a prediction.');
     expect(f.art).toEqual({ type: 'rings', rings: READY.rings, weights: READY.weights, faint: false });
     expect(words(f)).not.toMatch(/weakest|area to work on/i);
   });
 
-  it('rings only: the learner’s choice is named', () => {
+  it('rings only: the face doesn’t repeat the learner’s choice (TalkBack still says it); what grew this week, never what shrank', () => {
     const f = face('readiness', snap({ prefs: prefs({ readiness: 'private' }), ready: READY }));
-    expect(f.title).toBe('Your rings are growing');
-    expect(f.line).toBe('You chose to hide the number. Tap to see it.');
+    expect(f.title).toBe('Rings growing');
+    expect(f.line).toBe('Each ring is one area.');
+    expect(shown(f)).not.toMatch(/You chose/);
+    expect(f.label).toMatch(/You chose to hide the number/);
+    const grew = face('readiness', snap({ prefs: prefs({ readiness: 'private' }), ready: { ...READY, grew: 'Security' } }));
+    expect(grew.line).toBe('Security grew this week.');
+    // Details off: the topic stays off the screen.
+    expect(face('readiness', snap({ prefs: prefs({ readiness: 'private', details: 'hide' }), ready: { ...READY, grew: 'Security' } })).line).toBe('Your rings grew this week.');
   });
 
   it('rests from 21 days before the exam (rings only), whatever was chosen', () => {
     const f = face('readiness', snap({ prefs: prefs({ readiness: 'show' }), ready: READY, examDay: addDays(TODAY, 21) }));
-    expect(f.title).toBe('Your rings are growing');
+    expect(f.title).toBe('Rings growing');
     expect(f.line).toMatch(/rests for now/);
     const timed = face('readiness', snap({ prefs: prefs({ readiness: 'show', timing: true }), ready: READY, examDay: addDays(TODAY, 10) }));
     expect(timed.line).toMatch(/rests until your exam/);
@@ -522,6 +599,9 @@ describe('Today’s rule', () => {
   const s = snap();
   it('asks one question in an exam question’s voice, then "Show the rule" (no app opens)', () => {
     const f = face('think', s);
+    expect(f.tone).toBe('card');
+    expect(f.reveal).toBe('hidden');
+    expect(f.label).toMatch(/^Today’s rule, hidden\./);
     expect(f.title).toMatch(/What should the auditor do\?$/);
     expect(f.short).toBe('Asked to build the control. Your move?');
     expect(f.action).toEqual({ label: 'Show the rule', link: '', widgetAction: 'REVEAL' });
@@ -620,70 +700,123 @@ describe('Today’s rule: reveal marks and the self-check', () => {
   });
 });
 
-describe('Quick question (stem only, answered in the app)', () => {
-  it('the stem with its BEST word, "Before the options: what would you do?", and "Answer"', () => {
+describe('Recall card (1.48; was Quick question): a question answered right 2+ weeks ago', () => {
+  it('the stem on a ruled card; "Show the answer" reveals on the widget; the card opens that question', () => {
     const f = face('question');
+    expect(f.tone).toBe('card');
+    expect(f.caption).toBe('Recall card');
     expect(f.title).toMatch(/BEST/);
-    expect(f.caption).toBe('Quick question · Operations');
-    expect(f.line).toBe('Before the options: what would you do?');
-    expect(f.action?.label).toBe('Answer');
-    expect(f.action?.link).toBe(widgetLink('question', 'question', 'd4_070'));
+    expect(f.reveal).toBe('hidden');
+    expect(f.action).toEqual({ label: 'Show the answer', link: '', widgetAction: 'REVEAL' });
+    expect(f.link).toBe(widgetLink('question', 'question', 'd4_070'));
+    expect(f.aside).toBe('3 weeks ago');
+    expect(f.label).toMatch(/^Recall card, hidden, from 3 weeks ago\./);
+    // Never an option list, and never the answer before the reveal.
+    expect(words(f)).not.toMatch(/\(A\)|\bA\)|business impact analysis/);
   });
 
-  it('answered: a calm close with no button; a tap opens Today', () => {
-    const f = face('question', snap({ quiz: input().quiz.map((q) => ({ ...q, done: true })) }));
-    expect(f.title).toBe('Answered');
-    expect(f.action).toBeUndefined();
-    expect(f.link).toBe(widgetLink('question', 'today'));
+  it('shown: ONLY the correct answer and its Exam cue, then Had it / Not yet (kept on the phone)', () => {
+    const f = face('question', snap(), NOW, { revealed: true });
+    expect(f.title).toBe('The results of the business impact analysis');
+    expect(f.titleStyle).toBe('italic');
+    expect(f.line).toBe('Exam cue: recovery priorities follow business impact.');
+    expect(f.action?.widgetAction).toBe('HAD');
+    expect(f.action2?.widgetAction).toBe('NOTYET');
+    expect(f.reveal).toBe('shown');
+    expect(f.link).toBe(widgetLink('question', 'question', 'd4_070'));
+    const checked = face('question', snap(), NOW, { revealed: true, judged: 'notyet' });
+    expect(checked.line2).toBe('It comes back in a few days.');
+    expect(checked.action).toEqual({ label: 'See why', link: widgetLink('question', 'question', 'd4_070') });
+    expect(face('question', snap(), NOW, { revealed: true, judged: 'had' }).line2).toBe('A new card tomorrow.');
   });
 
-  it('details off: no topic, no stem', () => {
+  it('nothing eligible yet: a calm empty state; days not loaded: open KaiSip; eve and exam day: rest', () => {
+    const empty = face('question', snap({ recall: [] }));
+    expect(empty.title).toBe('Questions you get right come back here');
+    expect(empty.action).toBeUndefined();
+    expect(words(empty)).not.toMatch(/miss|wrong|behind|none yet/i);
+    expect(face('question', snap(), at('2026-11-10')).title).toBe('A new card each morning');
+    for (const d of [1, 0]) expect(face('question', snap({ examDay: addDays(TODAY, d) })).title).toBe('Nothing to recall today');
+  });
+
+  it('details off: no stem, no answer, no topic', () => {
     const f = face('question', snap({ prefs: prefs({ details: 'hide' }) }));
-    expect(f.title).toBe('A question is ready');
-    expect(words(f)).not.toMatch(/Operations|BEST/);
+    expect(f.title).toBe('A recall card is ready');
+    expect(words(f)).not.toMatch(/Operations|BEST|business impact/);
+  });
+
+  it('its self-check is kept beside the rule’s, by question, and spaces the card out', () => {
+    let r = readReveal(null, TODAY);
+    r = withSelfCheck(r, 'd4_070', 'notyet', 'recall');
+    expect(judgedToday(r, 'd4_070', 'recall')).toBe('notyet');
+    expect(judgedToday(r, 'd4_070')).toBeUndefined();
+    expect(r.self).toEqual({});
+    expect(recallIdFor(snap(), NOW)).toBe('d4_070');
+    expect(recallDueFrom(r.recall!.d4_070)).toEqual({ from: addDays(TODAY, 3), priority: true });
+    expect(recallDueFrom({ had: 1, notYet: 0, last: 'had', on: TODAY })).toEqual({ from: addDays(TODAY, 30), priority: false });
+    // Saved and read back; 1.47 marks (no recall field) still read.
+    expect(readReveal(JSON.stringify(r), TODAY).recall).toEqual(r.recall);
+    expect(readReveal(JSON.stringify({ day: TODAY, ids: [], counts: {}, self: {} }), TODAY).recall).toEqual({});
   });
 });
 
-describe('Questions to revisit (the plan’s own number only)', () => {
-  it('the plan’s number, in plain words, with minutes', () => {
+describe('Key term (1.48; was Questions to revisit): one term a day, its meaning on a tap', () => {
+  it('the abbreviation as the hero, the words under it; "Show the meaning" reveals on the widget; the card opens the note', () => {
     const f = face('revisit');
-    expect(f.title).toBe('7');
-    expect(f.unit).toBe('questions to revisit');
-    expect(f.action?.label).toBe('Revisit');
-    expect(words(f)).not.toMatch(/wait|turn|forecast|tomorrow|backlog/i);
+    expect(f.caption).toBe('Key term');
+    expect(f.title).toBe('RPO');
+    expect(f.sub).toBe('Recovery point objective');
+    expect(f.aside).toBe('Operations');
+    expect(f.action).toEqual({ label: 'Show the meaning', link: '', widgetAction: 'REVEAL' });
+    expect(f.link).toBe('kaisip://widget?kind=revisit&go=note&id=4B3.2&from=widget');
+    expect(words(f)).not.toMatch(/most data/);
+    expect(f.label).toBe('Key term, meaning hidden: Recovery point objective (RPO). Double-tap Show the meaning.');
   });
 
-  it('before today’s plan exists: no number', () => {
-    const f = face('revisit', snap(), at('2026-10-30'));
-    expect(f.title).toBe('Ready when you are');
-    expect(words(f)).not.toMatch(/\d/);
+  it('shown: the term and its one-line meaning; no self-check (it is vocabulary, not a test)', () => {
+    const f = face('revisit', snap(), NOW, { revealed: true });
+    expect(f.title).toBe('Recovery point objective');
+    expect(f.line).toBe('The most data, measured in time, the business can accept losing.');
+    expect(f.action).toBeUndefined();
+    expect(f.line2).toBe('A new term each morning.');
   });
 
-  it('nothing in the plan, a new learner, and the calm eve', () => {
-    expect(face('revisit', snap({ plan: { ...PLAN, back: 0 } })).title).toBe('Nothing to revisit today');
-    expect(face('revisit', snap({ answeredAny: false })).title).toBe('Missed questions come back here');
+  it('a term with no abbreviation is its own hero', () => {
+    const f = face('revisit', snap({ terms: [{ day: TODAY, id: 't4_3', term: 'Single point of failure', meaning: 'One part whose failure stops a service.', topic: 'Operations', note: '4' }] }));
+    expect(f.title).toBe('Single point of failure');
+    expect(f.sub).toBeUndefined();
+    expect(f.link).toContain('go=note&id=4&');
+  });
+
+  it('details off, no terms loaded, and the calm eve', () => {
+    const off = face('revisit', snap({ prefs: prefs({ details: 'hide' }) }));
+    expect(off.title).toBe('Today’s key term is ready');
+    expect(words(off)).not.toMatch(/RPO|Recovery|Operations/);
+    expect(face('revisit', snap({ terms: [] })).title).toBe('A new term each morning');
     expect(face('revisit', snap({ examDay: addDays(TODAY, 1) })).title).toBe('Nothing new today');
-    expect(face('revisit', snap({ examDay: addDays(TODAY, 1), prefs: prefs({ timing: true }) })).title).toBe('Nothing new before the exam');
   });
 });
 
 describe('Your plant', () => {
   it('the friendly name and stage word; the plant line at most once; a chip only on a growth day', () => {
     const f = face('plant');
+    expect(f.tone).toBe('plate');
     expect(f.caption).toBe('Your narra');
     expect(f.title).toBe('Shoot');
+    expect(f.sub).toBe('Fig. 3');
+    expect(f.line).toBe('Bough is next.');
+    expect(face('plant', snap({ plant: { species: 'narra', name: 'narra', growth: 6, grew: null } })).line).toBe('Fully grown.');
     expect(shown(f).split(PLANT_LINE).length - 1).toBeLessThanOrEqual(1);
     expect(words(f)).not.toMatch(/of 6|rest|sleep|away/i);
     const grew = face('plant', snap({ plant: { species: 'narra', name: 'narra', growth: 3, grew: TODAY } }));
     expect(grew.badge).toBe('New growth today');
     expect(shown(grew)).not.toContain(PLANT_LINE);
+    expect(grew.label).toMatch(/New growth today/);
   });
 
-  it('the week’s leaves ride along (not with details off)', () => {
-    const f = face('plant');
-    expect(f.art?.type === 'plant' && f.art.leaves?.filled.filter(Boolean).length).toBe(3);
-    const off = face('plant', snap({ prefs: prefs({ details: 'hide' }) }));
-    expect(off.art?.type === 'plant' && off.art.leaves).toBeUndefined();
+  it('1.48: the week’s leaves no longer ride along (This week is the one place with leaves)', () => {
+    for (const k of WIDGET_KINDS) if (k !== 'week') expect(face(k).art?.type).not.toBe('leaves');
+    expect(face('plant').art).toEqual({ type: 'plant', plant: expect.objectContaining({ species: 'narra' }) });
   });
 
   it('no plant yet, or the plant switched off', () => {
@@ -692,7 +825,7 @@ describe('Your plant', () => {
   });
 });
 
-describe('Exam countdown (added = opt-in; calendar weeks)', () => {
+describe('Road to exam (1.48; was Exam countdown; added = opt-in; calendar weeks)', () => {
   const on = prefs({ timing: true });
   it('timing off: no exam word, one tap opens the exact choice', () => {
     const f = face('countdown');
@@ -700,11 +833,21 @@ describe('Exam countdown (added = opt-in; calendar weeks)', () => {
     expect(f.link).toBe(widgetLink('countdown', 'timing-setting'));
   });
 
-  it('weeks, never the date or days', () => {
+  it('weeks as a road (behind, this week, ahead) and this week’s focus in words; never the date or days; no Start', () => {
     const f = face('countdown', snap({ prefs: on, examDay: '2026-11-19' }));
-    expect(f.title).toBe('Exam in 3 weeks');
-    expect(words(f)).not.toMatch(/November|Nov|19|days/);
-    expect(f.action?.label).toBe('Start · 12 min');
+    expect(f.tone).toBe('ink');
+    expect(f.caption).toBe('Road to exam');
+    expect(f.title).toBe(ROAD_FOCUS.practice.title);
+    expect(f.line).toBe(ROAD_FOCUS.practice.line);
+    expect(f.aside).toBe('3 weeks to go');
+    // The road started the week of 5 October: 3 weeks behind this week.
+    expect(f.road).toEqual({ behind: 3, ahead: 3 });
+    expect(f.action).toBeUndefined();
+    expect(words(f)).not.toMatch(/November|Nov|19|days|behind|late/i);
+    expect(f.label).toBe('Road to exam: 3 weeks to go, 3 weeks on the road so far. This week: make it stick. Mixed practice across every area.');
+    // The focus follows the plan engine’s stage.
+    expect(face('countdown', snap({ prefs: on, examDay: '2026-11-19', road: { from: TODAY, stage: 'mock' } })).title).toBe('Rehearse the exam');
+    for (const t of Object.values(ROAD_FOCUS)) expect(`${t.title} ${t.line}`).not.toMatch(/behind|catch up|weak|gap|pass/i);
   });
 
   it('final week, eve, day and after: the shared words', () => {
@@ -712,6 +855,13 @@ describe('Exam countdown (added = opt-in; calendar weeks)', () => {
     expect(face('countdown', snap({ prefs: on, examDay: addDays(TODAY, 1) })).title).toBe('Light review, then rest.');
     expect(face('countdown', snap({ prefs: on, examDay: TODAY })).title).toBe('Good luck.');
     expect(face('countdown', snap({ prefs: on, examDay: addDays(TODAY, -1) })).title).toBe('Exam done');
+    // Forest is Today's plan's alone: the calm exam faces sit on the ink card, with no Start.
+    for (const d of [5, 1, 0]) {
+      const f = face('countdown', snap({ prefs: on, examDay: addDays(TODAY, d) }));
+      expect(f.tone).toBe('ink');
+      expect(f.action).toBeUndefined();
+    }
+    for (const k of WIDGET_KINDS) if (k !== 'plan') for (const d of [30, 5, 1, 0]) expect(face(k, snap({ prefs: on, examDay: addDays(TODAY, d) })).tone).not.toBe('forest');
   });
 
   it('details off: today’s plan only; no date: where to add one', () => {

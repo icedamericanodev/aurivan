@@ -6,9 +6,10 @@
  * - Start / 5 questions: today's plan as it is NOW (the app's live plan,
  *   never the widget's possibly older copy), the same as Today's Start;
  * - Revisit: today's plan's own review item, so the count matches the
- *   widget's (the whole due queue only when the plan has none left); a Quick
- *   question or "Try one": that one question, answered in the app with every
- *   option explained;
+ *   widget's (the whole due queue only when the plan has none left; kept for
+ *   links drawn before 1.48); a Recall card or "Try one": that one question,
+ *   answered in the app with every option explained;
+ * - a Key term (1.48): the study note that teaches it (or its domain's notes);
  * - everything else opens its screen, with Today underneath so Back works.
  * - A quiz still open is never closed by a link (any app can send one): a
  *   study tap resumes it, and a screen opens on top of it. Either way the
@@ -20,6 +21,7 @@
  */
 import { router, type Href } from 'expo-router';
 import { findQuestion } from '../content/loader';
+import { findNote, noteDomain } from '../content/notes';
 import { findPrinciple } from '../content/principles';
 import { currentIndex, planComplete, shortSetItem } from '../engine/dayPlan';
 import { GOAL_ROUTES, type WidgetTap } from '../engine/widgets';
@@ -36,6 +38,10 @@ import { guardedStart, startFromIds, startReview } from './sessions';
 import { armWidgetStart } from './widgetStats';
 
 const openSession = () => router.push('/session');
+
+/** The one-question session's title: from the Recall card, or from Today's rule's "Try one" (app/results.tsx hands both back to today's plan). */
+export const RECALL_TITLE = 'Recall card';
+export const QUICK_TITLE = 'Quick question';
 
 /** Back to Today first (a widget link can arrive on a cold start, with nothing underneath). */
 function home() {
@@ -63,6 +69,7 @@ export function openFromWidget(tap: WidgetTap): boolean {
     openSession();
     if (study || tap.go === 'today') return false;
     if (tap.go === 'principle') router.push(tap.id && findPrinciple(certId, tap.id) ? { pathname: '/principles/[id]', params: { id: tap.id } } : '/principles');
+    else if (tap.go === 'note') router.push(tap.id && findNote(certId, tap.id) ? { pathname: '/notes/subtopic/[id]', params: { id: tap.id } } : '/notes');
     else router.push(GOAL_ROUTES[tap.go as keyof typeof GOAL_ROUTES] as Href);
     return false;
   }
@@ -93,10 +100,20 @@ export function openFromWidget(tap: WidgetTap): boolean {
     case 'question':
       home();
       if (tap.id && findQuestion(certId, tap.id)) {
-        guardedStart(() => startFromIds(certId, [tap.id as string], 'Quick question'), openSession);
+        // The Recall card's question (or Today's rule's "Try one"), answered in the app with every option explained.
+        guardedStart(() => startFromIds(certId, [tap.id as string], tap.kind === 'question' ? RECALL_TITLE : QUICK_TITLE), openSession);
         return true;
       }
       return false;
+    case 'note': {
+      // The Key term's study note: the note that teaches it, or its domain's notes.
+      home();
+      const id = tap.id ?? '';
+      if (findNote(certId, id)) router.push({ pathname: '/notes/subtopic/[id]', params: { id } });
+      else if (noteDomain(certId, id)) router.push({ pathname: '/notes/[domain]', params: { domain: id } });
+      else router.push('/notes');
+      return false;
+    }
     case 'principle':
       home();
       if (tap.id && findPrinciple(certId, tap.id)) router.push({ pathname: '/principles/[id]', params: { id: tap.id } });

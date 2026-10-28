@@ -1755,7 +1755,15 @@ composer's leak card and buttons stack full width (`board-top-xl`,
 
 ---
 
-## 20. Home-screen widgets (mobile 1.47, Android first)
+## 20. Home-screen widgets (mobile 1.47, Android first; "Study card" redesign and three new jobs in 1.48)
+
+**Mobile 1.48 (owner choice, 28 Oct 2026): Option C "Study card", with three job
+changes.** Quick question became the **Recall card**, Questions to revisit became
+the **Key term**, and Exam countdown became **Road to exam**. Their Android names
+stay (`QuickQuestion`, `Revisit`, `ExamCountdown`), so widgets already on a home
+screen keep working. The phone's widget picker keeps the 1.47 labels, previews
+and sizes until the next store build (they are native; `PICKER_LABELS` in
+`engine/widgets.ts`), and Settings → Add a widget says what to look for.
 
 The owner chose all nine candidates (27 Oct 2026). Eight are built for
 Android home screens in mobile 1.47; the ninth, the lock-screen accessory, is
@@ -1793,7 +1801,8 @@ the screen opens, so background widget runs stay light).
 3. **Exam timing is its own choice**, off by default: "Exam in 3 weeks", the
    final week, the eve and exam day appear only when the learner turned on
    **Exam timing on widgets** (or added the Exam countdown and chose it), and
-   only with Details on. Otherwise no widget says "exam". Tested for every
+   only with Details on. Otherwise no widget says "exam" (the Recall card's
+   "Exam cue:" label names a kind of tip, not your exam). Tested for every
    widget × every exam stage × Details × timing.
 4. **One wording table for the exam stages** (`EXAM_COPY`), so two widgets
    on one screen never disagree:
@@ -1831,40 +1840,52 @@ the screen opens, so background widget runs stay light).
    open Today, ids must be plain ids. A quiz in progress is never closed by a
    link.
 
-### 20.2 Look
+### 20.2 Look ("Study card", 1.48)
 
-- **Surfaces:** paper (`raised2` light, `raised` dark), or the forest panel
-  (`forestTop` → `forest`) for Today's plan and the exam-stage faces; a soft
-  frond behind the words on 4×2 and up. Radius 22.
-- **Type:** Fraunces 500 titles and figures, Fraunces italic for a rule and
-  the calm exam words, Figtree for everything scanned or tapped. Nothing
-  under 10 sp (day letters 10 sp, captions 11 sp).
-- **Taps:** one main pill (34 dp in a 48 dp tap area) with its minutes
-  ("Start · 12 min"); one quiet second action on 4×2 and up; Today's rule's
-  self-check is a pair. Every spoken label says minutes in full.
-- **Art:** single-colour readiness rings (no domain colours); the week's
-  leaves about 16×22 dp; the plant is the hero (about 112 dp on 2×2, 150 dp
-  on 4×2) with the week's leaves under it on 4×2.
-- **Large text:** extras go first (third line, quiet action, the detail line
-  beside a pill). Titles grow at most 1.3× on 2×2 and 1.5× bigger (as
-  Android 14's non-linear scaling does), get the lines the room allows, and
-  switch to their short form rather than be cut. A small pill drops its
-  minutes at 160%+ ("Start"); a 4×1 drops its picture before its words. A
-  launcher that squeezes a 2×2 into one row makes the whole widget the main
-  tap. Checked at 100, 130, 150, 160 and 200% on every size and the launcher
-  minimums.
+- **One card, one hero per widget**, each a different surface so they are
+  easy to tell apart: **forest** (`forestTop` → `forest`) for Today's plan
+  only (the "do this now" signal, and the only Start button); **paper**
+  (`raised2` / `raised`) for This week, Key term and Readiness; a **ruled index
+  card** (paper, `line` rules, a `clay` margin line and a clay "Rule" / "Q.")
+  for Today's rule and the Recall card; the **plate** (`tipBg` / `soft`) for
+  Your plant ("Fig. 3 · Shoot"); the **ink card** (`ink` / dark `bg`) for Road
+  to exam. Dark cards carry a 1 dp `line` outline. Radius 22.
+- **Type:** Fraunces 500 for the hero (big figures, the question, the term),
+  Fraunces italic for units, answers, rules and the calm exam words; small
+  letter-spaced Figtree capitals for labels; Figtree for detail and buttons.
+  Fraunces never under 13 sp for a hero; nothing under 10 sp.
+- **Heroes:** Plan "12 *questions*" with step pips (1 of 3 done); Week a big
+  "3 *study days*" and the leaves (the ONLY widget with leaves); Plant the
+  plant on its plate; Rule and Recall the question, then the answer in
+  italic; Key term the abbreviation ("RPO") with its words under it;
+  Readiness the rings; Road the week segments (behind in sap, this week in
+  paper, ahead as outlines) and this week's focus.
+- **Lines that change, only neutral or kind:** "Short days count too." →
+  "A steady week."; "Bough is next."; "Security grew this week." (a ring that
+  grew 3+ points since Monday, kept on the phone; never one that shrank);
+  "Make it stick" from the plan engine's stage.
+- **Taps:** the one Start (36 dp pill in a 48 dp tap area) is Today's plan's;
+  the other widgets open their place with a whole-card tap. The reveal cards
+  put **Show …** in the card's top row and **Had it / Not yet** at the bottom
+  (on a 4×1: Show on the left, the pair on the right), so a quick second tap
+  never answers (the 2-second guard stays too).
+- **Large text and 360 dp:** sizes are worked out from the real room: labels,
+  detail lines, day letters and asides go first; figures grow at most 1.1×,
+  words 1.3× (1.5× on bigger widgets) and then shrink to fit; a hero never
+  becomes a generic line. A caption drops "Today · " (then words) rather than
+  end in "…". Checked at 100, 130, 150, 160 and 200% on a 412 and a 360 dp grid.
 
 ### 20.3 The widgets (recommended first)
 
 | # | Widget | Sizes | Shows | Tap | Special states |
 |---|---|---|---|---|---|
-| 1 | Today's plan | 2×2, 4×2 | The topic, "Starts with 6 questions to revisit", "Start · 12 min", "Short on time? 5 questions" (4×2), "Exam in 3 weeks" (timing on) | Start → today's live plan | Done: "Plan done", the week's leaves, "Next: Security · about 18 min". **Next morning before the app opens:** the real next topic and its minutes. 3+ days away: 5 questions first. Final week: plain day words (no "Pace check"). Eve, exam day: the table |
-| 2 | Your plant | 2×2, 4×2, 1×1 | The plant at its stage ("Your narra", "Shoot"), "Grows as answers stick" at most once, the week's leaves (4×2) | Your plant | "New growth today" chip only on a growth day; never the resting look; no plant; plant off |
+| 1 | Today's plan | 2×2, 4×2 | The topic, "Starts with 6 questions to revisit", "Start · 12 min", "Short on time? 5 questions" (4×2), "Exam in 3 weeks" (timing on) | Start → today's live plan | Done: "Plan done.", "Next: Security, about 18 min." (no leaves since 1.48). **Next morning before the app opens:** the real next topic and its minutes. 3+ days away: 5 questions first. Final week: plain day words (no "Pace check"). Eve, exam day: the table |
+| 2 | Your plant | 2×2, 4×2, 1×1 | The plant at its stage ("Your narra", "Shoot"), "Fig. 3 · Shoot", the next stage ("Bough is next."); no leaves since 1.48 | Your plant | "New growth today" chip only on a growth day; never the resting look; no plant; plant off |
 | 3 | Today's rule | 4×2, 2×2, 4×1 | One question in an exam question's voice (its short form on small sizes), "Show the rule" | Show the rule (on the widget) → "Had it" / "Not yet" → "Try one" (a question that tests the rule) | "Not yet" brings the rule back within 3 days, "Had it" spaces it out; rules a recent miss tested come first; final week: reading-the-question rules; eve and exam day: one calm line; Details off: "Today's rule is ready" |
-| 4 | This week | 4×1, 2×2, 1×1 | Leaves Mon–Sun, "3 days this week" | Today | No study yet this week: "A new week" / "A short start" + "5 questions · about 6 min" (Start runs the short set); under 2 study days ever: the first set; 6+ days: "Today can be your rest day"; final week: leaves rest; Details off: "A leaf for each day you studied." |
-| 5 | Quick question | 4×2, 4×3 | A short question that keeps its BEST/FIRST word, "Before the options: what would you do?", "Answer" | That question in the app; afterwards the app offers "Today's plan · about N min left" (Continue / Done for now) | Prefers the day's first question to revisit that fits; answered: "Answered", no button; eve/exam day: no new questions |
-| 6 | Questions to revisit | 2×2, 4×1 | Today's plan's own number ("6 questions to revisit", "you missed before"), minutes, Revisit | The revisit set | Before today's plan exists: no number; nothing today; new learner; eve: "Nothing new today" |
-| 7 | Exam countdown | 2×2, 4×2 | "Exam in 3 weeks" (calendar weeks: it changes on a Monday), "Steady pace this week", Start | Today (final week: the exam-week page) | Asks first when added; the table for the final week, eve, day and after; Details off: today's plan only; no date: where to add one |
+| 4 | This week | 4×1, 2×2, 1×1 | Leaves Mon–Sun, "3 days this week" | Today | No study yet this week: "A new week" / "A short start" + "5 questions · about 6 min" (a tap opens Today; no Start since 1.48); under 2 study days ever: the first set; 6+ days: "Today can be your rest day"; final week: leaves rest; Details off: "A leaf for each day you studied." |
+| 5 | Recall card (was Quick question; Android name `QuickQuestion`) | 4×2, 4×3 | A question the learner answered RIGHT at least 14 days ago (from saved progress; never a question not yet met), "Show the answer" → ONLY the correct answer and its Exam cue → Had it / Not yet | Card: that question in the app; Show / Had it / Not yet stay on the widget | Not yet: back from 3 days later; Had it: rests 30 days (60 after two); none eligible: "Questions you get right come back here"; eve/exam day: nothing to recall; Details off: "A recall card is ready". Never a wrong option, never a write to progress |
+| 6 | Key term (was Questions to revisit; `Revisit`) | 2×2, 4×2, 4×1 | One glossary term a day for today's plan topic (`terms.json`, built from the notes' `key_terminologies`), the abbreviation as the hero, "Show the meaning" → its one-line meaning | The study note that teaches it (or its domain's notes) | Same term all day (a hash of the day), never two days running; Details off: "Today's key term is ready"; eve/exam day: nothing new |
+| 7 | Road to exam (was Exam countdown; `ExamCountdown`) | 2×2, 4×2 | Week segments (behind, this week, ahead to the exam's week), "6 weeks to go", this week's focus from the plan engine ("Make it stick · Mixed practice across every area.") | Today (final week: the exam-week page) | Asks first when added; no Start; the table for the final week, eve, day and after (ink card, calm words); Details off: today's plan only; no date: where to add one |
 | 8 | Readiness | 2×2, 4×2 | Rings only ("You chose to hide the number"), or the range "68–78%" + "A study estimate, not a prediction." | The readiness report | Asks first when added; rests to rings only from 21 days before the exam; before the first estimate: "N more answers"; no weakest-area label |
 
 Before the first visit (or onboarding) every widget says "Open KaiSip to begin".

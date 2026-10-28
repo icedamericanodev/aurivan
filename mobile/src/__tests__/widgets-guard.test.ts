@@ -122,11 +122,12 @@ describe('widget source guards', () => {
     const app = JSON.parse(readFileSync(join(mobile, 'app.json'), 'utf8'));
     const { widgets } = app.expo.plugins.find((p: unknown) => Array.isArray(p) && p[0] === 'react-native-android-widget')[1];
     // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const { WIDGET_KINDS, WIDGET_NAMES, WIDGET_TITLES } = require('../engine/widgets');
+    const { WIDGET_KINDS, WIDGET_NAMES, PICKER_LABELS } = require('../engine/widgets');
     expect(widgets.map((w: { name: string }) => w.name)).toEqual(WIDGET_KINDS.map((k: string) => WIDGET_NAMES[k]));
     for (const k of WIDGET_KINDS) {
       const w = widgets.find((x: { name: string }) => x.name === WIDGET_NAMES[k]);
-      expect(w.label).toBe(WIDGET_TITLES[k]);
+      // The picker's labels are native (a new store build): 1.48 keeps 1.47's until then (PICKER_LABELS).
+      expect(w.label).toBe(PICKER_LABELS[k]);
       expect(w.previewImage).toBe(`./assets/widgets/${k}.png`);
       expect(w.description.length).toBeLessThanOrEqual(70);
       expect(`${w.label} ${w.description}`).not.toMatch(/never the date|no streak to lose|Reviews|came back|Think first|\bpass\b|guarantee|you're ready/i);

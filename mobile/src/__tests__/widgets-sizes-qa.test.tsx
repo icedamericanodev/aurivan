@@ -1,7 +1,11 @@
 /**
  * QA (widgets, sizes): the layout tests use a 412 dp phone's grid (4x2 = 376 x 184).
- * On a 360 dp-wide phone the same 4x2 is about 330 x 165 dp. Written as the
- * behaviour we want (it.failing until fixed).
+ * On a 360 dp-wide phone the same 4x2 is about 330 x 165 dp.
+ *
+ * Was an it.failing in 1.47: the Quick question fell back to "A quick question
+ * for you" there, so it never showed its question. Mobile 1.48 replaced it with
+ * the Recall card, which fits its words to the room (never a generic line): the
+ * same check now passes, at the normal text size and at 130% and 200%.
  */
 import type { JSX } from 'react';
 import { addDays } from '../engine/examDay';
@@ -23,8 +27,8 @@ const texts = (t: Tree, out: string[] = []): string[] => {
 
 const TODAY = '2026-10-29';
 const NOW = new Date(2026, 9, 29, 9).getTime();
-// A typical bank stem that passes quizFit (under QUIZ_STEM_MAX = 150 characters).
-const STEM = 'An information systems (IS) auditor is reviewing how recovery tiers are set for business processes. Which basis is BEST?';
+// A recall stem as long as the Recall card allows (lib/widgetData.ts RECALL_FIT.stem: 170 characters).
+const STEM = 'An IS auditor reviews how a retailer sets recovery priorities for its payment, ordering and reporting systems after a merger. Which basis should the auditor expect FIRST?';
 const snap = buildSnapshot({
   now: NOW,
   onboarded: true,
@@ -37,16 +41,22 @@ const snap = buildSnapshot({
   answeredAny: true,
   plant: null,
   think: [],
-  quiz: [0, 1, 2, 3].map((d) => ({ day: addDays(TODAY, d), id: 'd4_070', stem: STEM, topic: 'Operations', done: false })),
+  recall: [0, 1, 2, 3].map((d) => ({ day: addDays(TODAY, d), id: 'd4_070', stem: STEM, answer: 'The results of the business impact analysis', cue: 'recovery priorities follow business impact.', weeks: 3, topic: 'Operations' })),
   ready: null,
 });
-const draw = (w: number, h: number) =>
-  texts(buildWidgetTree(<WidgetLayout face={widgetFace('question', snap, { now: NOW })} theme="light" width={w} height={h} fontScale={1} />));
+const draw = (w: number, h: number, fontScale = 1) =>
+  texts(buildWidgetTree(<WidgetLayout face={widgetFace('question', snap, { now: NOW })} theme="light" width={w} height={h} fontScale={fontScale} />));
+
+it('the stem is as long as the Recall card allows', () => {
+  expect(STEM.length).toBe(170);
+});
 
 it('control: on a 412 dp phone (4x2 = 376 x 184) the question itself shows', () => {
   expect(draw(376, 184)).toContain(STEM);
 });
 
-it.failing('on a 360 dp phone (4x2 = about 330 x 165) the Quick question shows the question, not only "A quick question for you"', () => {
-  expect(draw(330, 165)).toContain(STEM);
+it.each([1, 1.3, 2])('on a 360 dp phone (4x2 = about 330 x 165, and a 5-column 270 x 150) the Recall card shows its whole question at %sx text', (fs) => {
+  expect(draw(330, 165, fs)).toContain(STEM);
+  expect(draw(270, 150, fs)).toContain(STEM);
+  expect(draw(330, 165, fs).join(' ')).not.toMatch(/A quick question for you/);
 });

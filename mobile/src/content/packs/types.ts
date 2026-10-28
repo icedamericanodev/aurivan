@@ -19,6 +19,7 @@ import type { ExamPack } from '../exam/types';
 import type { Lesson } from '../lessons/types';
 import type { NotesPack } from '../notes/types';
 import type { PrinciplesPack } from '../principles/types';
+import type { TermsPack } from '../terms';
 import type { PackQuestion } from '../types';
 
 /** A pack's version facts (generated/<cert>/pack.json for the bundled one). */
@@ -58,4 +59,9 @@ export interface PackSource {
   lessons(certId: string): Lesson[] | null;
   /** A game deck exactly as the reviewed file has it (games/index.ts reshapes it). */
   gameDeck(certId: string, kind: GameDeckKind): unknown;
+  /**
+   * Mobile 1.48: the small key-terms file for the Key term widget (content/terms.ts).
+   * Optional: a source without it (an older downloaded pack) gives the widget no terms.
+   */
+  terms?(certId: string): TermsPack | null;
 }

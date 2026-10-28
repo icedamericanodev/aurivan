@@ -8,14 +8,15 @@
  * import guard test (src/__tests__/widgets-guard.test.ts) keeps it that way.
  *
  * A tap that opens the app is handled by Android itself (OPEN_URI). The only
- * clicks this task handles are Today's rule's: "Show the rule" marks the
- * widget revealed for today; "Had it" / "Not yet" note the learner's own
- * check for that rule (it changes when the rule comes back, never a score).
- * Nothing here writes study progress, so a widget tap earns nothing.
+ * clicks this task handles are the reveal cards' (Today's rule, and since 1.48
+ * the Recall card and the Key term): "Show …" marks the widget revealed for
+ * today; "Had it" / "Not yet" note the learner's own check for that rule or
+ * recall question (it changes when it comes back, never a score). Nothing
+ * here writes study progress, so a widget tap earns nothing.
  */
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import type { WidgetTaskHandlerProps } from 'react-native-android-widget';
-import { kindOfName, parseSnapshot, readReveal, REVEAL_KEY, thinkIdFor, tooSoonAfterReveal, WIDGET_KEY, withoutWidget, withReveal, withSelfCheck } from '../engine/widgets';
+import { kindOfName, parseSnapshot, readReveal, recallIdFor, REVEAL_KEY, REVEAL_KINDS, thinkIdFor, tooSoonAfterReveal, WIDGET_KEY, withoutWidget, withReveal, withSelfCheck } from '../engine/widgets';
 import { dayKey } from '../engine/streak';
 import { HAD_ACTION, NOTYET_ACTION, REVEAL_ACTION } from './layouts.android';
 import { renderKind, renderPlaced } from './render.android';
@@ -34,18 +35,21 @@ export async function widgetTask(props: WidgetTaskHandlerProps): Promise<void> {
       return;
     }
     const snap = parseSnapshot(rawSnap);
-    if (props.widgetAction === 'WIDGET_CLICK' && kind === 'think') {
-      const rule = thinkIdFor(snap, now);
-      // "Had it" sits where "Show the rule" was: a quick second tap on the reveal is not an answer (1.47.1).
+    if (props.widgetAction === 'WIDGET_CLICK' && REVEAL_KINDS.includes(kind)) {
+      // Today's rule checks by rule; the Recall card by question; the Key term only reveals.
+      const rule = kind === 'think' ? thinkIdFor(snap, now) : null;
+      const checkId = kind === 'think' ? rule : kind === 'question' ? recallIdFor(snap, now) : null;
+      const field = kind === 'question' ? 'recall' : 'self';
+      // Since 1.48 the pair never sits where the reveal button was; a quick second tap is still not an answer (1.47.1).
       const doubleTap = (props.clickAction === HAD_ACTION || props.clickAction === NOTYET_ACTION) && tooSoonAfterReveal(reveal, id, now);
       const next = doubleTap
         ? reveal
         : props.clickAction === REVEAL_ACTION
           ? withReveal(reveal, id, rule, Date.now()) // stamped after the reads, so the slow first draw doesn't eat the guard
-          : props.clickAction === HAD_ACTION
-            ? withSelfCheck(reveal, rule, 'had')
-            : props.clickAction === NOTYET_ACTION
-              ? withSelfCheck(reveal, rule, 'notyet')
+          : props.clickAction === HAD_ACTION && checkId
+            ? withSelfCheck(reveal, checkId, 'had', field)
+            : props.clickAction === NOTYET_ACTION && checkId
+              ? withSelfCheck(reveal, checkId, 'notyet', field)
               : reveal;
       if (next !== reveal) await AsyncStorage.setItem(REVEAL_KEY, JSON.stringify(next));
       reveal = next;

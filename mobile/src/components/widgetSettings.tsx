@@ -19,7 +19,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect, useRef, useState, type Ref } from 'react';
 import { View } from 'react-native';
-import { readReveal, REVEAL_KEY, WIDGET_KINDS, WIDGET_TITLES, type ReadinessPref, type WidgetKind } from '../engine/widgets';
+import { PICKER_LABELS, readReveal, REVEAL_KEY, WIDGET_KINDS, WIDGET_TITLES, type ReadinessPref, type WidgetKind } from '../engine/widgets';
 import { widgetNumbers, widgetTesterEmail, type WidgetTesterCard as TesterCardData } from '../engine/widgetTester';
 import { mailtoUrl } from '../engine/support';
 import { dayKey } from '../engine/streak';
@@ -46,11 +46,20 @@ const ADD_LINES: Record<WidgetKind, string> = {
   plant: 'Your plant, growing as answers stick',
   think: 'One exam rule a day: think, then check',
   week: 'The days you studied this week, as leaves',
-  question: 'One question a day, answered in the app',
-  revisit: 'The questions to revisit in today’s plan',
-  countdown: 'Weeks to your exam (asks first)',
+  question: 'A question you got right before: recall it, then check',
+  revisit: 'One key term a day, and its meaning',
+  countdown: 'Your weeks to the exam as a road (asks first)',
   readiness: 'Your study estimate, rings only to start (asks first)',
 };
+
+/**
+ * The line under a widget in the list. Mobile 1.48 renamed three widgets; the
+ * phone's own widget list keeps the old names until the next store build, so
+ * the line says what to look for (it goes once the names match).
+ */
+export function addWidgetLine(k: WidgetKind): string {
+  return PICKER_LABELS[k] === WIDGET_TITLES[k] ? ADD_LINES[k] : `${ADD_LINES[k]}. In your phone’s widget list: ${PICKER_LABELS[k]}`;
+}
 
 export function WidgetSettingsGroup({ openOnMount, onLinkDone, headRef }: { openOnMount?: 'readiness' | 'timing'; onLinkDone?: () => void; headRef?: Ref<View> }) {
   const { c } = useTheme();
@@ -123,8 +132,8 @@ export function WidgetSettingsGroup({ openOnMount, onLinkDone, headRef }: { open
           <SettingsRow
             key={k}
             title={WIDGET_TITLES[k]}
-            subtitle={ADD_LINES[k]}
-            accessibilityLabel={`Add ${WIDGET_TITLES[k]}. ${ADD_LINES[k]}`}
+            subtitle={addWidgetLine(k)}
+            accessibilityLabel={`Add ${WIDGET_TITLES[k]}. ${addWidgetLine(k)}`}
             chevron={false}
             last={i === WIDGET_KINDS.length - 1}
             onPress={() => {

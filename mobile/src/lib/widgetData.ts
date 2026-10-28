@@ -8,16 +8,19 @@
  * (src/__tests__/widgets-guard.test.ts checks that).
  *
  * Never read here: the learner's own name, answers or mistakes beyond
- * "was the last answer to this question a miss" and "which rule did a recent
- * miss test", email or account data. Readiness only when its widget is on.
+ * "was the last answer to this question a miss", "which rule did a recent
+ * miss test" and (1.48) "which questions were last answered RIGHT, and when"
+ * (the Recall card shows only those), email or account data. Readiness only
+ * when its widget is on. Nothing here writes study progress.
  */
 import { getCertification, getDomain, CERTIFICATIONS } from '../content/certifications';
-import { getAllQuestions, findQuestion } from '../content/loader';
+import { findQuestion } from '../content/loader';
+import { termsFor } from '../content/terms';
 import { findLesson } from '../content/lessons';
 import { getPrinciples } from '../content/principles';
 import { RULE_PROMPTS } from '../content/principles/widgetPrompts';
 import { planHero, todayMinutes } from '../components/journey';
-import { currentIndex, itemMinutes, newDayPlan, planComplete, shortSetItem, type DayPlan } from '../engine/dayPlan';
+import { currentIndex, isOptional, itemMinutes, newDayPlan, planComplete, shortSetItem, type DayPlan } from '../engine/dayPlan';
 import { addDays, daysToExam } from '../engine/examDay';
 import { growthBefore, plantShown, SPECIES_INFO, isPlantSpecies } from '../engine/plant';
 import type { PlanItem } from '../engine/planner';
@@ -26,7 +29,27 @@ import { readinessRange } from '../engine/readinessRange';
 import { resolveStyle } from '../engine/plantLooks';
 import { dueIds } from '../engine/srs';
 import { dayKey, daysBetween } from '../engine/streak';
-import { buildSnapshot, DAYS_AHEAD, FINAL_DAY_PLAIN, readReveal, ruleDueFrom, type PlanSnap, type PlantSnap, type QuizSnap, type ReadySnap, type RevealState, type ThinkSnap, type WidgetSnapshot } from '../engine/widgets';
+import {
+  buildSnapshot,
+  DAYS_AHEAD,
+  FINAL_DAY_PLAIN,
+  mondayOf,
+  readReveal,
+  recallDueFrom,
+  ROAD_STAGES,
+  ruleDueFrom,
+  type PlanSnap,
+  type PlantSnap,
+  type ReadySnap,
+  type RecallSnap,
+  type RevealState,
+  type RoadSnap,
+  type RoadStage,
+  type TermSnap,
+  type ThinkSnap,
+  type WidgetSnapshot,
+} from '../engine/widgets';
+import type { AnswerRecord } from '../engine/readiness';
 import { selectCert, useProgress } from '../store/progress';
 import { dailyMinutesOf, examDateOf, useSettings } from '../store/settings';
 import { effectiveCertId } from './activeCert';
@@ -37,12 +60,13 @@ import { questionsForPrinciple } from './principleQuestions';
 import { daysUntil } from './useActiveCert';
 import { buildJourney } from './useJourney';
 
-/** Quick question: a stem this short fits a 4×2 at normal text with its question sentence. */
-export const QUIZ_STEM_MAX = 150;
-/** A priority word: a stem without one can be answered without the options, which is the point here. */
-const PRIORITY = /\b(BEST|FIRST|MOST|LEAST|PRIMARY|GREATEST|MAIN|NOT|PRIMARILY|MOST LIKELY)\b/;
-/** Capital-letter acronyms a glance can't decode (the priority words and "IS"/"IT" aside). */
-const ACRONYM = /\b[A-Z][A-Z0-9]{1,6}s?\b/g;
+/**
+ * The Recall card: a stem, answer and cue this short fit a 4×2 widget on a
+ * 360 dp phone at every text size (measured in widgets-layout.test.tsx).
+ */
+export const RECALL_FIT = { stem: 170, answer: 80, cue: 130 } as const;
+/** A question comes back as a Recall card this many days after it was answered right. */
+export const RECALL_AFTER_DAYS = 14;
 
 /**
  * Short plain topic names per domain (about 12 characters), for small widgets
@@ -86,7 +110,8 @@ export function itemName(certId: string, item: PlanItem): { title: string; short
     }
     case 'lesson': {
       const topic = topicName(certId, findLesson(item.lessonId)?.domainId);
-      return { title: item.title, short: topic ? `${topic} lesson`.slice(0, 16) : 'A lesson' };
+      // "Security lesson", or just the topic when that would be too long (never cut mid-word: "New systems less").
+      return { title: item.title, short: topic ? (`${topic} lesson`.length <= 16 ? `${topic} lesson` : topic) : 'A lesson' };
     }
     case 'game':
       return { title: planHero(item).title, short: 'A game' };
@@ -158,7 +183,16 @@ function planSnap(certId: string, now: number): PlanSnap | null {
     next: nextItem ? itemName(certId, nextItem).title : null,
     nextMin,
     finalDay: daysLeft !== null ? (FINAL_DAY_PLAIN[daysLeft] ?? null) : null,
+    // The real task ("12 questions") and the day's steps (an optional practice exam isn't a step).
+    count: !done && item && (item.kind === 'practice' || item.kind === 'review') ? item.count : 0,
+    ...planSteps(plan),
   };
+}
+
+/** The day's steps for the pips: the plan's items, without an optional one, and how many are done. */
+export function planSteps(plan: DayPlan): { steps: number; stepsDone: number } {
+  const idx = plan.items.map((_, i) => i).filter((i) => !isOptional(plan.items, i));
+  return { steps: idx.length, stepsDone: idx.filter((i) => plan.done[i]).length };
 }
 
 function plantSnap(certId: string, today: string): PlantSnap | { off: true } | null {
@@ -262,65 +296,170 @@ export function thinkDays(
   return { think, picks: chosen };
 }
 
-/** A stem that works on a home screen: short, no case study, its priority word kept, no acronym a glance can't decode. */
-export function quizFit(q: { stem: string; scenario?: string }): boolean {
-  // Measured as drawn: with "IS" spelled out.
-  if (q.scenario || spellOutIs(q.stem).length > QUIZ_STEM_MAX || !PRIORITY.test(q.stem)) return false;
-  const acronyms = (q.stem.match(ACRONYM) ?? []).filter((a) => !PRIORITY.test(a) && a !== 'IS' && a !== 'IT');
-  return acronyms.length === 0;
+/** The "Exam cue:" tip of a question, without its label ('' when it has none). */
+export function examCue(tips: readonly string[] | undefined): string {
+  const t = (tips ?? []).find((x) => /^\s*Exam cue:/i.test(x));
+  return t ? t.replace(/^\s*Exam cue:\s*/i, '').trim() : '';
 }
 
 /**
- * The Quick question for today and the next few days, kept once picked.
- * Today: the plan's first question to revisit when it fits a widget (spaced
- * practice of something met before); otherwise a fitting question not yet answered.
+ * A question that works as a Recall card: no case study, short enough to fit,
+ * an Exam cue to show, and an answer that stands on its own (never "All of the
+ * above", never a letter, never a shuffled-letter token).
  */
-export function quizDays(
+export function recallFit(q: { stem: string; scenario?: string; options: Partial<Record<string, string>>; correct: string; tips?: string[]; retired?: boolean }): boolean {
+  const answer = q.options[q.correct] ?? '';
+  const cue = examCue(q.tips);
+  if (q.retired || q.scenario || !answer || !cue) return false;
+  if (q.stem.length > RECALL_FIT.stem || answer.length > RECALL_FIT.answer || cue.length > RECALL_FIT.cue) return false;
+  if (/{{|\b(all|none|both) of the\b|\b[A-D] and [A-D]\b/i.test(`${answer} ${cue}`)) return false;
+  return !/\b(option|answer|choice) [A-D]\b|\([A-D]\)/.test(cue);
+}
+
+/**
+ * The Recall card for today and the next few days, kept once picked. Only a
+ * question the learner answered RIGHT (its last answer) at least 14 days
+ * before that day, and never one they haven't met. Each day picks, in order:
+ *   1. one the learner said "Not yet" to, from 3 days later;
+ *   2. otherwise the day's pick among the ones answered right longest ago;
+ * skipping one picked in the last 7 days and one still resting after "Had it".
+ * Reads answers only; writes nothing to progress.
+ */
+export function recallDays(
   certId: string,
   today: string,
   picks: Record<string, string>,
-  answers: Record<string, { lastAt: number }>,
-  due: readonly string[] | ((day: string) => readonly string[]) = [],
-): { quiz: QuizSnap[]; picks: Record<string, string> } {
-  const cert = getCertification(certId);
-  const bank = getAllQuestions(certId).filter(quizFit);
-  if (!cert || bank.length === 0) return { quiz: [], picks: {} };
-  const fresh = bank.filter((q) => !answers[q.id]);
-  const pool = fresh.length ? fresh : bank;
-  const dueOn = typeof due === 'function' ? due : (day: string) => (day === today ? due : []);
+  answers: Record<string, Pick<AnswerRecord, 'lastCorrect' | 'lastAt'>>,
+  self: RevealState['recall'] = {},
+): { recall: RecallSnap[]; picks: Record<string, string> } {
+  if (!getCertification(certId)) return { recall: [], picks: {} };
+  // Right answers only, oldest first (the longest since it was last answered right).
+  const right = Object.entries(answers)
+    .filter(([, a]) => a && a.lastCorrect === true && typeof a.lastAt === 'number')
+    .sort((x, y) => x[1].lastAt - y[1].lastAt);
+  const fits = new Map<string, NonNullable<ReturnType<typeof findQuestion>>>();
+  for (const [id] of right) {
+    const q = findQuestion(certId, id);
+    if (q && recallFit(q)) fits.set(id, q);
+  }
   const chosen: Record<string, string> = {};
-  const quiz: QuizSnap[] = [];
+  const recall: RecallSnap[] = [];
+  const shown: Record<string, string> = { ...picks };
   for (let d = 0; d < DAYS_AHEAD; d++) {
     const day = addDays(today, d);
-    const kept = picks[day];
-    // The day's first question to revisit that fits a widget (not one already picked this window).
-    const taken = new Set(Object.values(chosen));
-    const fromPlan = dueOn(day)
-      .map((id) => bank.find((q) => q.id === id))
-      .find((q) => q !== undefined && !taken.has(q.id));
-    const q = (kept && bank.find((x) => x.id === kept)) || fromPlan || pool[hash(`${certId}:${day}`) % pool.length];
-    chosen[day] = q.id;
-    const at = answers[q.id]?.lastAt;
-    quiz.push({ day, id: q.id, stem: spellOutIs(q.stem), topic: topicName(certId, q.domainId), done: typeof at === 'number' && dayKey(at) === day });
+    const ok = (id: string) => {
+      const a = answers[id];
+      if (!a || !a.lastCorrect || !fits.has(id)) return false;
+      // Answered right at least 14 calendar days before this day.
+      if (daysBetween(dayKey(a.lastAt), day) < RECALL_AFTER_DAYS) return false;
+      const due = recallDueFrom(self?.[id]);
+      return !due || due.from <= day;
+    };
+    const recent = (id: string) => Object.entries(shown).some(([k, v]) => v === id && k < day && daysBetween(k, day) < 7);
+    let id = shown[day] && ok(shown[day]) ? shown[day] : undefined;
+    if (!id) {
+      const pool = [...fits.keys()].filter((x) => ok(x) && !recent(x) && !Object.values(chosen).includes(x));
+      const notYet = pool.find((x) => recallDueFrom(self?.[x])?.priority);
+      // The day's pick among the 12 answered right longest ago, so a fresh right answer waits its turn.
+      const oldest = pool.slice(0, 12);
+      id = notYet ?? (oldest.length ? oldest[hash(`${certId}:recall:${day}`) % oldest.length] : undefined);
+    }
+    if (!id) continue;
+    shown[day] = id;
+    chosen[day] = id;
+    const q = fits.get(id)!;
+    const weeks = Math.max(2, Math.floor(daysBetween(dayKey(answers[id].lastAt), day) / 7));
+    recall.push({ day, id, stem: q.stem, answer: q.options[q.correct] as string, cue: examCue(q.tips), weeks, topic: topicName(certId, q.domainId) });
   }
-  return { quiz, picks: chosen };
+  return { recall, picks: chosen };
 }
 
-function readySnap(certId: string): ReadySnap | null {
+/**
+ * The Key term for today and the next few days: one term a day from the
+ * notes' glossary for today's plan topic (`domainId`: its first item with a
+ * domain), or, with none, a domain chosen by the day. The same term all day,
+ * the same on every phone (a hash of the day), and never the day before's again.
+ */
+export function termDays(certId: string, today: string, domainId?: string): TermSnap[] {
+  const cert = getCertification(certId);
+  if (!cert) return [];
+  const out: TermSnap[] = [];
+  let prev = '';
+  for (let d = 0; d < DAYS_AHEAD; d++) {
+    const day = addDays(today, d);
+    const dom = domainId && termsFor(certId, domainId).length ? domainId : cert.domains[hash(`${certId}:domain:${day}`) % cert.domains.length]?.id;
+    const list = dom ? termsFor(certId, dom) : [];
+    if (!list.length) continue;
+    let i = hash(`${certId}:term:${day}`) % list.length;
+    if (list[i].id === prev && list.length > 1) i = (i + 1) % list.length;
+    const t = list[i];
+    prev = t.id;
+    out.push({ day, id: t.id, term: t.term, ...(t.short ? { short: t.short } : {}), meaning: t.meaning, topic: topicName(certId, dom), note: t.note });
+  }
+  return out;
+}
+
+/** The day plan's topic: its first item that names a domain (stable all day, whatever is done). */
+export function planDomain(plan: DayPlan | null | undefined): string | undefined {
+  for (const it of plan?.items ?? []) {
+    if (it.kind === 'practice' && it.domainId) return it.domainId;
+    if (it.kind === 'lesson') {
+      const dom = findLesson(it.lessonId)?.domainId;
+      if (dom) return dom;
+    }
+  }
+  return undefined;
+}
+
+/** A ring must grow this many points in a week before the widget says so. */
+export const RING_GREW = 3;
+
+/** The topic whose ring grew most since this week's start (at least RING_GREW points), if any. Never one that shrank. */
+export function grewTopic(certId: string, domainIds: readonly string[], start: readonly number[] | undefined, now: readonly number[]): string | undefined {
+  if (!start || start.length !== now.length) return undefined;
+  let best = -1;
+  let gain = RING_GREW - 1;
+  now.forEach((v, i) => {
+    if (v - start[i] > gain) {
+      gain = v - start[i];
+      best = i;
+    }
+  });
+  return best >= 0 ? topicName(certId, domainIds[best]) || undefined : undefined;
+}
+
+function readySnap(certId: string, today: string): ReadySnap | null {
   const cert = getCertification(certId);
   if (!cert) return null;
   const readiness = readinessFor(cert, selectCert(useProgress.getState(), certId).answers);
   const range = readinessRange(cert, readiness);
   const rings = cert.domains.map((d) => Math.round((readiness.domains.find((x) => x.domainId === d.id)?.mastery ?? 0) * 100));
   const weights = cert.domains.map((d) => d.weight);
-  if (!range.enough) return { enough: false, needed: range.needed, rings, weights };
-  return { enough: true, low: range.low, high: range.high, rings, weights };
+  // This week's starting rings (kept on this phone), so the widget can say what grew.
+  const monday = mondayOf(today);
+  useWidgetStore.getState().noteRings(monday, rings);
+  const base = useWidgetStore.getState().ringWeek;
+  const grew = base?.monday === monday ? grewTopic(certId, cert.domains.map((d) => d.id), base.rings, rings) : undefined;
+  const extra = grew ? { grew } : {};
+  if (!range.enough) return { enough: false, needed: range.needed, rings, weights, ...extra };
+  return { enough: true, low: range.low, high: range.high, rings, weights, ...extra };
+}
+
+/** Road to exam: where the road starts (the first study week this phone knows of) and this week's focus (the plan engine's stage). */
+function roadSnap(certId: string, now: number, studyDays: readonly string[]): RoadSnap {
+  const today = dayKey(now);
+  const ws = useWidgetStore.getState();
+  const known = [...studyDays, ...ws.stats.studyDays].filter((d) => d <= today).sort();
+  ws.noteRoadFrom(mondayOf(known[0] ?? today));
+  const from = useWidgetStore.getState().roadFrom ?? mondayOf(today);
+  const stage = planFor(certId, now)?.live.stage;
+  return { from, stage: stage && (ROAD_STAGES as readonly string[]).includes(stage) ? (stage as RoadStage) : 'practice' };
 }
 
 /**
- * The snapshot for right now. Remembers the day's Quick question and rule
- * picks and the rotation's first day (on this phone only). `reveal`: Today's
- * rule self-checks (the widget writes them; lib/widgets reads them first).
+ * The snapshot for right now. Remembers the day's Recall card and rule picks
+ * and the rotation's first day (on this phone only). `reveal`: the reveal
+ * cards' self-checks (the widget writes them; lib/widgets reads them first).
  * Never throws for missing data: an empty or new install gives the "Open
  * KaiSip to begin" faces.
  */
@@ -334,19 +473,17 @@ export function collectSnapshot(now = Date.now(), reveal: RevealState = readReve
   if (!ws.anchorDay) ws.setAnchor(today);
   const anchor = useWidgetStore.getState().anchorDay ?? today;
   const examDay = examDateOf(settings.examDates, cert.id);
-  const exists = questionExists(cert.id);
-  // Each day's questions to revisit (as of that day's noon), so a day's Quick question can be one of them.
-  const dueFor = (day: string) => {
-    const [y, m, d] = day.split('-').map(Number);
-    return dueIds(progress.review, day === today ? now : new Date(y, m - 1, d, 12).getTime(), exists);
-  };
-  const { quiz, picks } = quizDays(cert.id, today, ws.quizPicks, progress.answers, dueFor);
+  // The Recall card: questions answered right 2+ weeks ago (its picks keep the Quick question's key).
+  const { recall, picks } = recallDays(cert.id, today, ws.quizPicks, progress.answers, reveal.recall);
   ws.rememberPicks(picks);
   const rules = thinkDays(cert.id, today, { anchor, examDay, picks: ws.thinkPicks, self: reveal.self, slips: slipRules(cert.id, progress.answers, now) });
   ws.rememberRules(rules.picks);
   const studyDays = state.streak.recentDays ?? (state.streak.lastDay ? [state.streak.lastDay] : []);
   // The beta tester numbers count study days from before the first widget too (kept on this phone).
   ws.seedStudyDays(studyDays, today);
+  // Today's plan as Today has it (or would make it), for the Key term's topic.
+  const stored = state.days[cert.id];
+  const dayPlan = stored && stored.day === today ? stored : settings.onboarded ? planFor(cert.id, now)?.plan : null;
   return buildSnapshot({
     now,
     onboarded: settings.onboarded,
@@ -359,7 +496,10 @@ export function collectSnapshot(now = Date.now(), reveal: RevealState = readReve
     answeredAny: Object.keys(progress.answers).length > 0,
     plant: plantSnap(cert.id, today),
     think: rules.think,
-    quiz,
-    ready: ws.prefs.readiness === 'off' ? null : readySnap(cert.id),
+    recall,
+    terms: termDays(cert.id, today, planDomain(dayPlan)),
+    // Road to exam reads the plan engine's stage only when exam timing is on (it shows nothing otherwise).
+    road: settings.onboarded && ws.prefs.timing ? roadSnap(cert.id, now, studyDays) : null,
+    ready: ws.prefs.readiness === 'off' ? null : readySnap(cert.id, today),
   });
 }

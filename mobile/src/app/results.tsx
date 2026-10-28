@@ -266,9 +266,11 @@ export default function Results() {
     else router.replace({ pathname: '/guided', params });
   };
 
-  // Mobile 1.47: a Quick question (from the widget or the app) hands back to today's plan, if it has
-  // time left: "Today's plan · about N min left", Continue or Done for now. Read once (not a live value).
-  const todayPlan = active.title === 'Quick question' && active.mode !== 'mock' && !guidedScope ? useProgress.getState().days[active.certId] : undefined;
+  // Mobile 1.47: a Quick question (from the widget or the app; since 1.48 also the Recall card's
+  // question) hands back to today's plan, if it has time left: "Today's plan · about N min left",
+  // Continue or Done for now. Read once (not a live value).
+  const oneQuestion = active.title === 'Quick question' || active.title === 'Recall card';
+  const todayPlan = oneQuestion && active.mode !== 'mock' && !guidedScope ? useProgress.getState().days[active.certId] : undefined;
   const planLeft = todayPlan && todayPlan.day === dayKey(active.finishedAt ?? active.startedAt) && !planComplete(todayPlan) ? todayMinutes(todayPlan.items, todayPlan.done) : 0;
   const continuePlan = () => {
     const plan = todayPlan;

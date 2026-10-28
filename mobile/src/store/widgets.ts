@@ -65,7 +65,7 @@ export interface WidgetState {
   prefs: WidgetPrefs;
   /** The day widget rotations count from (Today's rule starts at the first rule for a new learner). */
   anchorDay?: string;
-  /** Quick question picks by day, so today's question never changes once chosen (last 7 days). */
+  /** Recall card picks by day (was the Quick question's; the same key), so today's card never changes once chosen (last 7 days). */
   quizPicks: Record<string, string>;
   /** Today's rule picks by day (last 14 days: the rotation avoids repeats within 5). */
   thinkPicks: Record<string, string>;
@@ -74,6 +74,14 @@ export interface WidgetState {
   /** The day readiness was set to show its number (the one re-ask comes 30 days later). */
   readinessShownSince?: string;
   readinessAsked?: boolean;
+  /**
+   * Mobile 1.48: the readiness rings as they were at this week's first widget
+   * write (by the week's Monday), so the widget can say which ring grew this
+   * week. Kept on this phone only; a ring that shrank is never mentioned.
+   */
+  ringWeek?: { monday: string; rings: number[] };
+  /** Mobile 1.48: the Monday Road to exam starts from (the first study week this phone knows of). */
+  roadFrom?: string;
   stats: WidgetStats;
   tester: WidgetTesterState;
 
@@ -83,6 +91,10 @@ export interface WidgetState {
   setAnchor: (day: string) => void;
   rememberPicks: (picks: Record<string, string>) => void;
   rememberRules: (picks: Record<string, string>) => void;
+  /** Keep this week's starting rings (only the first call of a week counts). */
+  noteRings: (monday: string, rings: readonly number[]) => void;
+  /** Move the road's start earlier (never later). */
+  noteRoadFrom: (monday: string) => void;
   showOffer: (day: string) => void;
   answerOffer: (answer: 'added' | 'not-now') => void;
   answerReadinessAsk: (keep: boolean) => void;
@@ -147,6 +159,8 @@ export const useWidgetStore = create<WidgetState>()(
           const next = keepLast(s.thinkPicks, picks, 14);
           return JSON.stringify(next) === JSON.stringify(s.thinkPicks) ? s : { thinkPicks: next };
         }),
+      noteRings: (monday, rings) => set((s) => (s.ringWeek?.monday === monday ? s : { ringWeek: { monday, rings: [...rings] } })),
+      noteRoadFrom: (monday) => set((s) => (s.roadFrom && s.roadFrom <= monday ? s : { roadFrom: monday })),
       showOffer: (day) => set((s) => (s.offer ? s : { offer: { shownOn: day } })),
       answerOffer: (answer) => set((s) => ({ offer: { shownOn: s.offer?.shownOn ?? '', answer } })),
       answerReadinessAsk: (keep) => set((s) => ({ readinessAsked: true, prefs: keep ? s.prefs : { ...s.prefs, readiness: 'private' } })),
@@ -212,6 +226,11 @@ export const useWidgetStore = create<WidgetState>()(
           },
           quizPicks: obj(p.quizPicks),
           thinkPicks: obj(p.thinkPicks),
+          ringWeek:
+            p.ringWeek && typeof p.ringWeek.monday === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(p.ringWeek.monday) && Array.isArray(p.ringWeek.rings)
+              ? { monday: p.ringWeek.monday, rings: p.ringWeek.rings.slice(0, 8).map((n) => (typeof n === 'number' && Number.isFinite(n) ? n : 0)) }
+              : undefined,
+          roadFrom: typeof p.roadFrom === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(p.roadFrom) ? p.roadFrom : undefined,
           stats: { ...stats, studyDays: days(stats.studyDays), widgetDays: days(stats.widgetDays) },
           tester: { answered: Array.isArray(p.tester?.answered) ? p.tester.answered.filter((x): x is string => typeof x === 'string').slice(-20) : [], ...(typeof p.tester?.skipped === 'string' ? { skipped: p.tester.skipped } : {}) },
         };

@@ -7,7 +7,7 @@
  * all three always draw the same thing.
  */
 import type { WidgetInfo, WidgetRepresentation } from 'react-native-android-widget';
-import { judgedToday, thinkIdFor, widgetFace, type RevealState, type WidgetKind, type WidgetSnapshot } from '../engine/widgets';
+import { judgedToday, recallIdFor, REVEAL_KINDS, thinkIdFor, widgetFace, type RevealState, type WidgetKind, type WidgetSnapshot } from '../engine/widgets';
 import { WidgetLayout } from './layouts.android';
 
 export function renderKind(
@@ -24,8 +24,16 @@ export function renderKind(
   };
 }
 
-/** The same, with Today's rule's reveal mark and self-check for this placed copy. */
+/** Today's self-check for a reveal card (Today's rule by rule, the Recall card by question); none for the Key term. */
+export function judgedFor(kind: WidgetKind, snap: WidgetSnapshot | null, now: number, reveal: RevealState): 'had' | 'notyet' | undefined {
+  if (kind === 'think') return judgedToday(reveal, thinkIdFor(snap, now));
+  if (kind === 'question') return judgedToday(reveal, recallIdFor(snap, now), 'recall');
+  return undefined;
+}
+
+/** The same, with the reveal cards' marks and self-check for this placed copy. */
 export function renderPlaced(kind: WidgetKind, snap: WidgetSnapshot | null, info: Pick<WidgetInfo, 'widgetId' | 'width' | 'height' | 'screenInfo'>, now: number, reveal: RevealState): WidgetRepresentation {
-  const judged = kind === 'think' ? judgedToday(reveal, thinkIdFor(snap, now)) : undefined;
-  return renderKind(kind, snap, info, { now, revealed: reveal.ids.includes(info.widgetId) || Boolean(judged), judged });
+  const judged = judgedFor(kind, snap, now, reveal);
+  const revealed = REVEAL_KINDS.includes(kind) && (reveal.ids.includes(info.widgetId) || Boolean(judged));
+  return renderKind(kind, snap, info, { now, revealed, judged });
 }
