@@ -6958,7 +6958,7 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 {"cat":"Using the app","q":"How do I start practicing?","a":"Open Practice from the bottom navigation, choose a domain (or 'All domains'), and answer questions one at a time. Your first question loads automatically — read the explanation after every answer, right or wrong."},
 {"cat":"Using the app","q":"What does Exam-day rehearsal change?","a":"Turn on Exam-day rehearsal under You to practice the way exam day feels: the scenario sits inside the question, and the tips and coaching after you answer are hidden. The questions are the same exam-style questions either way. Turn it off to see the full scenario, tips and coaching again."},
 {"cat":"Using the app","q":"How does the Mock Exam work?","a":"Choose a full mock (150 questions, 4 hours) or a mini mock (50 questions, 80 minutes). Both follow the real CISA blueprint: the same domain mix and a realistic spread of difficulty. Like the real exam, you see no right or wrong while you answer. Your score, a breakdown by domain and every explanation come at the end."},
-{"cat":"Using the app","q":"What are Questions to revisit?","a":"Questions you miss come back the next day, then at widening intervals as you get them right, until they retire. A right answer you marked Unsure or Guessing comes back too. Today's plan starts with them, a few at a time, most overdue first."},
+{"cat":"Using the app","q":"What are Questions to revisit?","a":"Questions you miss come back the next day, then at widening intervals as you get them right, until they retire. A right answer you marked Unsure or Guessing comes back too. Today's plan starts with them, a few at a time, oldest first."},
 {"cat":"Using the app","q":"How do I save a question for later?","a":"Use the bookmark control on a question to save it. Saved questions live under Practice, then Saved, where you can revisit them any time."},
 {"cat":"Using the app","q":"What does the Weak Spots tab show?","a":"Weak Spots shows how each of the five domains is going and lets you start a drill on the ones that need work. Until a domain has 30 answers it shows Building, Steady or Strong instead of a number, so a few answers never read as a verdict."},
 {"cat":"Using the app","q":"Some tabs are missing on my phone — where are they?","a":"On phones the bottom bar shows Today, Learn, Practice and You. Learn holds Study notes, Glossary, Principles, About the CISA exam and Final review week; Practice holds Mock exam and Saved; You holds Weak spots, settings and help."},
@@ -11613,7 +11613,8 @@ function todayNextStep(r, range) {
   var inPlan = false;
   try { inPlan = !practicePrimary().resume; } catch (e) {}
   if (due > 0 && !inPlan) {
-    return { icon: 'review', kicker: 'Due today', title: 'Questions to revisit', meta: railShowCount(due) + ' due &middot; most overdue first', go: { step: 'review' } };
+    // The set's own size, never the queue total (premium pass 1.4).
+    return { icon: 'review', kicker: 'Ready today', title: 'Questions to revisit', meta: Math.min(due, REVIEW_SESSION_CAP) + ' ready to revisit &middot; oldest first', go: { step: 'review' } };
   }
   var note = function (hit, kicker) {
     var mins = 0;
@@ -11787,7 +11788,8 @@ function todayPlan(r, last, mode) {
   var set = todayPlanDomain(r, last);
   var n = week ? TODAY_EXAM_WEEK_QUESTIONS - review : todayPlanSetLength();
   if (review > 0) {
-    items.push({ title: 'Questions to revisit', meta: !week && due > review ? review + ' of ' + railShowCount(due) + ' due' : review + (review === 1 ? ' question' : ' questions') + ' from before' });
+    // What today's plan holds, never "8 of 53 due": the rest wait for later plans.
+    items.push({ title: 'Questions to revisit', meta: review + ' ready to revisit &middot; oldest first' });
   }
   // One name for the weak area across Today: "where you'll gain most".
   items.push({ title: escapeHtml(DI[set.d].short), meta: n + ' questions &middot; ' + (set.why === 'new' ? 'not started' : week ? 'one short set' : 'where you&rsquo;ll gain most') });
@@ -13682,7 +13684,7 @@ function renderPracticeHub() {
   if (more) {
     var missed = (S.missedQuestions || []).length;
     var saved = (S.bookmarks || []).length;
-    more.innerHTML = hubRow('missed', 'All missed questions', missed ? missed + ' to try again' : 'None yet', 'practiceMissed()')
+    more.innerHTML = hubRow('missed', 'All missed questions', missed ? 'Each one you missed, to try again' : 'None yet', 'practiceMissed()')
       + hubRow('weak', 'Weak spots drill (by domain)', 'Questions from the domains you miss most', 'startWeakSpotsDrill()')
       + hubRow('saved', 'All saved questions', saved ? saved + ' saved' : 'Save a question to find it here', "switchTab('bookmarks')")
       + hubRow('mock', 'Mock exam', isMockInProgress() ? 'In progress &middot; resume where you left off' : 'Full or mini, timed like the real exam', "switchTab('mock')");
@@ -13757,7 +13759,7 @@ function showSessionStart() { renderPracticeHub(); }
 // end of each note; the topic list and the lookup drop.
 // No streaks, counters, tip of the day or second countdown live here.
 var RAIL_BP = { hub: 1180, notes: 1180, mock: 1180, q: 1320, you: 1180 };
-var RAIL_SHOW_MAX = 20;          // a backlog shows as "20+", never an alarming number
+var RAIL_SHOW_MAX = 20;          // the most a retry set holds; a backlog total is never shown
 var RAIL_WEAK_MIN = 8;           // answers in a topic before it can be called weak
 var RAIL_MIX_SIZE = 10;          // the weak spot's mixed set
 var RAIL_RECENT_MS = 7 * DAY_MS; // "recent" mistakes: this week
@@ -13821,7 +13823,6 @@ function railQuestionIndex() {
   railQIdx = idx;
   return idx;
 }
-function railShowCount(n) { return n > RAIL_SHOW_MAX ? RAIL_SHOW_MAX + '+' : String(n); }
 
 // ── Focus next ──
 // Due spaced review: only questions that still exist (a gone id never counts).
@@ -13884,11 +13885,12 @@ function railFocusRows() {
   var dueIds = railDueIds();
   var dueMap = {};
   dueIds.forEach(function (id) { dueMap[id] = true; });
-  if (dueIds.length) rows.push({ kind: 'review', icon: 'review', cap: 'Due today', title: 'Questions to revisit', meta: railShowCount(dueIds.length) + ' due &middot; ' + REVIEW_SESSION_CAP + ' at a time' });
+  // The set it starts (at most REVIEW_SESSION_CAP), never the queue total.
+  if (dueIds.length) rows.push({ kind: 'review', icon: 'review', cap: 'Ready today', title: 'Questions to revisit', meta: Math.min(dueIds.length, REVIEW_SESSION_CAP) + ' ready to revisit &middot; oldest first' });
   var w = railWeakSpot();
   if (w) rows.push({ kind: 'weak', icon: 'target', cap: 'Weak spot &middot; mixed set', title: escapeHtml(w.name), meta: escapeHtml(DI[w.d].short) + ' &middot; ' + w.right + ' of ' + w.n + ' right' });
   var m = railRecentMistakes(dueMap).length;
-  if (m) rows.push({ kind: 'mistakes', icon: 'retry', cap: 'Recent mistakes', title: 'Try this week&rsquo;s mistakes', meta: railShowCount(m) + ' to retry' });
+  if (m) rows.push({ kind: 'mistakes', icon: 'retry', cap: 'Recent mistakes', title: 'Try this week&rsquo;s mistakes', meta: Math.min(m, RAIL_SHOW_MAX) + ' ready to retry' });
   return rows.slice(0, 3);
 }
 function railRowHtml(r) {
@@ -20840,7 +20842,7 @@ function reviewEndHtml() {
   var t = reviewTally.t, c = reviewTally.c, missed = Math.max(0, t - c);
   var stillDue = getDueReview().length;
   var line = stillDue > 0
-    ? railShowCount(stillDue) + ' more ' + (stillDue === 1 ? 'is' : 'are') + ' due. Revisit ' + (stillDue === 1 ? 'it' : 'them') + ' now, or ' + (stillDue === 1 ? 'it waits' : 'they wait') + ' for your next plan.'
+    ? (stillDue === 1 ? 'One more is ready to revisit. Revisit it now, or it waits' : 'More are ready to revisit. Revisit them now, or they wait') + ' for your next plan.'
     : missed > 0
       ? 'That’s all for today. ' + (missed === 1 ? 'The one you missed comes' : 'The ' + missed + ' you missed come') + ' back tomorrow.'
       : 'That’s all for today. Each one comes back later, further apart.';
@@ -20848,7 +20850,7 @@ function reviewEndHtml() {
   var acts = then
     ? '<button type="button" class="rs-btn primary" onclick="reviewThenGo()">Next: ' + then.n + ' in ' + escapeHtml(DI[then.d].short) + ico('arrow-right', 18) + '</button>'
     : '<button type="button" class="rs-btn primary" onclick="switchTab(\'home\')">Back to Today' + ico('arrow-right', 18) + '</button>';
-  if (stillDue > 0) acts += '<button type="button" class="rs-btn" onclick="startReviewQueue()">Revisit ' + railShowCount(Math.min(stillDue, REVIEW_SESSION_CAP)) + ' more</button>';
+  if (stillDue > 0) acts += '<button type="button" class="rs-btn" onclick="startReviewQueue()">Revisit ' + Math.min(stillDue, REVIEW_SESSION_CAP) + ' more</button>';
   if (then) acts += '<button type="button" class="rs-btn ghost" onclick="switchTab(\'home\')">Back to Today</button>';
   return '<section class="session-debrief rs rs-set" role="region" aria-labelledby="rvKick rvTitle">'
     + '<p class="rs-kicker" id="rvKick">Questions to revisit</p>'
@@ -21202,6 +21204,7 @@ const CHANGELOG = [
     title: 'A calmer answer screen',
     items: [
       { cat: 'improved', text: 'In dark mode, cards and answer rows stand out more clearly from the page, and a missed answer reads more calmly.' },
+      { cat: 'improved', text: 'Questions to revisit now say how many are ready today, oldest first, instead of a growing total.' },
     ],
   },
   {

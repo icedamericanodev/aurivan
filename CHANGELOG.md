@@ -8,6 +8,7 @@ For internal/technical history, see git log and PR descriptions.
 
 ### Improved
 - In dark mode, cards and answer rows stand out more clearly from the page, and a missed answer reads more calmly.
+- Questions to revisit now say how many are ready today, oldest first, instead of a growing total.
 
 ## [v12.42] — Calmer loading and first-day prompts
 
