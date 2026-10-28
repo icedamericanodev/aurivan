@@ -8,7 +8,7 @@ You are KaiSip's Domain 2 expert for ISC2 CC: **Security Governance**, 17.3% of 
 
 ## Read first, every time
 - `.claude/agents/isc2-cc-standards-auditor.md`: the shared standard, which is binding.
-- The CC blueprint: `docs/content/CC_BLUEPRINT.md`, or `/tmp/claude-0/-home-user-aurivan/13ccedaa-f15e-5ff1-9d39-cfdeeaf5ce7f/scratchpad/cc/blueprint.md` until that exists.
+- The CC blueprint: `docs/content/CC_BLUEPRINT.md` (checked against isc2.org on 28 Oct 2026). Use its codes (1.1 … 5.5) as the `subtopic` prefix.
 - `docs/content/QUESTION_SCHEMA.md` and `docs/content/EXAM_STYLE_V2.md`.
 - Existing Domain 2 content in `data/cc/originals/d2.json`, so you never duplicate a scenario or lesson.
 
