@@ -15,7 +15,7 @@
  */
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import type { WidgetTaskHandlerProps } from 'react-native-android-widget';
-import { kindOfName, parseSnapshot, readReveal, REVEAL_KEY, thinkIdFor, WIDGET_KEY, withoutWidget, withReveal, withSelfCheck } from '../engine/widgets';
+import { kindOfName, parseSnapshot, readReveal, REVEAL_KEY, thinkIdFor, tooSoonAfterReveal, WIDGET_KEY, withoutWidget, withReveal, withSelfCheck } from '../engine/widgets';
 import { dayKey } from '../engine/streak';
 import { HAD_ACTION, NOTYET_ACTION, REVEAL_ACTION } from './layouts.android';
 import { renderKind, renderPlaced } from './render.android';
@@ -36,9 +36,12 @@ export async function widgetTask(props: WidgetTaskHandlerProps): Promise<void> {
     const snap = parseSnapshot(rawSnap);
     if (props.widgetAction === 'WIDGET_CLICK' && kind === 'think') {
       const rule = thinkIdFor(snap, now);
-      const next =
-        props.clickAction === REVEAL_ACTION
-          ? withReveal(reveal, id, rule)
+      // "Had it" sits where "Show the rule" was: a quick second tap on the reveal is not an answer (1.47.1).
+      const doubleTap = (props.clickAction === HAD_ACTION || props.clickAction === NOTYET_ACTION) && tooSoonAfterReveal(reveal, id, now);
+      const next = doubleTap
+        ? reveal
+        : props.clickAction === REVEAL_ACTION
+          ? withReveal(reveal, id, rule, Date.now()) // stamped after the reads, so the slow first draw doesn't eat the guard
           : props.clickAction === HAD_ACTION
             ? withSelfCheck(reveal, rule, 'had')
             : props.clickAction === NOTYET_ACTION

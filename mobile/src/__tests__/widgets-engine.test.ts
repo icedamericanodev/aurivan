@@ -23,6 +23,7 @@ import {
   LAPSE_DAYS,
   lockFace,
   mondayOf,
+  msToNextMidnight,
   parseSnapshot,
   parseWidgetTap,
   PLANT_LINE,
@@ -30,12 +31,14 @@ import {
   readinessReaskDue,
   readReveal,
   RECOMMENDED_KINDS,
+  REVEAL_TAP_GUARD_MS,
   ruleDueFrom,
   showsTiming,
   sizeClass,
   snapshotBytes,
   SNAPSHOT_MAX_BYTES,
   thinkIdFor,
+  tooSoonAfterReveal,
   weekdayIndex,
   weekLeaves,
   weeksToExam,
@@ -379,6 +382,29 @@ describe('Today’s plan', () => {
     expect(face('plan', snap({ studyDays: ['2026-10-26'] })).action?.label).toBe('Start · 12 min');
   });
 
+  it('1.47.1: after time away, "5 questions" leads only when the plan can run it (never in exam week)', () => {
+    const away = ['2026-10-20', '2026-10-25'];
+    // The plan has no short set (exam week, or no review or practice item): Start, and no "5 questions" anywhere.
+    for (const examDay of [addDays(TODAY, 30), addDays(TODAY, 5)]) {
+      const f = face('plan', snap({ studyDays: away, examDay, plan: { ...PLAN, shortSet: false } }));
+      expect(f.action?.label).toBe('Start · 12 min');
+      expect(f.action?.link).toContain('go=start');
+      expect(shown(f)).not.toMatch(/5 questions/);
+      const hiddenFace = face('plan', snap({ studyDays: away, examDay, plan: { ...PLAN, shortSet: false }, prefs: prefs({ details: 'hide' }) }));
+      expect(hiddenFace.action?.link).toContain('go=start');
+    }
+    // Before the app opens on an exam-week morning: the tap can't run the short set, so it isn't offered.
+    for (const d of [5, 1]) {
+      const f = face('plan', snap({ studyDays: away, examDay: addDays('2026-11-02', d), plan: { ...PLAN, done: true, left: 0 } }), at('2026-11-02'));
+      expect(f.action?.link).toContain('go=start');
+      expect(f.action2).toBeUndefined();
+      expect(words(f)).not.toMatch(/5 questions/);
+    }
+    // Far from the exam, the same morning still leads with 5 questions.
+    const far = face('plan', snap({ studyDays: away, plan: { ...PLAN, done: true, left: 0 } }), at('2026-11-02'));
+    expect(far.action?.link).toContain('go=short');
+  });
+
   it('details off: no topic, no counts, no exam', () => {
     const f = face('plan', snap({ prefs: prefs({ details: 'hide', timing: true }) }));
     expect(f.title).toBe('Your study plan');
@@ -563,6 +589,27 @@ describe('Today’s rule: reveal marks and the self-check', () => {
     expect(ruleDueFrom({ had: 1, notYet: 0, last: 'had', on: TODAY })).toEqual({ from: addDays(TODAY, 7), priority: false });
     expect(ruleDueFrom({ had: 2, notYet: 0, last: 'had', on: TODAY })).toEqual({ from: addDays(TODAY, 16), priority: false });
     expect(withSelfCheck(r, '../bad', 'had')).toBe(r);
+  });
+
+  it('1.47.1: keeps each widget’s reveal time today, so a quick second tap is not read as "Had it"', () => {
+    let r = withReveal(readReveal(null, TODAY), 7, 'recommend-dont-implement', NOW);
+    expect(r.at).toEqual({ '7': NOW });
+    expect(tooSoonAfterReveal(r, 7, NOW + 600)).toBe(true);
+    expect(tooSoonAfterReveal(r, 7, NOW + REVEAL_TAP_GUARD_MS)).toBe(false);
+    // Another widget, or a clock that went back, is never blocked.
+    expect(tooSoonAfterReveal(r, 9, NOW + 600)).toBe(false);
+    expect(tooSoonAfterReveal(r, 7, NOW - 10)).toBe(false);
+    // A second reveal of the same widget keeps the first time.
+    expect(withReveal(r, 7, 'recommend-dont-implement', NOW + 900)).toBe(r);
+    // Saved and read back today; dropped the next day; forgotten with its widget.
+    expect(readReveal(JSON.stringify(r), TODAY).at).toEqual({ '7': NOW });
+    expect(readReveal(JSON.stringify(r), '2026-10-30').at).toEqual({});
+    expect(withoutWidget(r, 7).at).toEqual({});
+    // 1.47.0 marks (no times) still read, and are never blocked.
+    r = readReveal(JSON.stringify({ day: TODAY, ids: [7], counts: {}, self: {} }), TODAY);
+    expect(r.ids).toEqual([7]);
+    expect(tooSoonAfterReveal(r, 7, NOW)).toBe(false);
+    expect(readReveal(JSON.stringify({ day: TODAY, ids: [], at: { x: 1, '3': 'soon', '4': 5 } }), TODAY).at).toEqual({ '4': 5 });
   });
 
   it('reads tampered marks safely', () => {
@@ -786,5 +833,18 @@ describe('the "choose" screen when Readiness or Exam countdown is added', () => 
     expect(countdownConfigCopy(prefs({ details: 'hide' }), null).note).toMatch(/Details on widgets is off/);
     expect(countdownConfigCopy(DEFAULT_WIDGET_PREFS, null).note).toMatch(/No exam date yet/);
     expect(JSON.stringify(c)).not.toMatch(/never the date, and|\bpass\b|guarantee/i);
+  });
+});
+
+describe('1.47.1: the redraw just after local midnight', () => {
+  it('waits until a few seconds past the next local midnight', () => {
+    expect(msToNextMidnight(at(TODAY, 9))).toBe(15 * 3600_000 + 5000);
+    expect(new Date(NOW + msToNextMidnight(NOW)).getDate()).toBe(30);
+    // Just before midnight, and in the first seconds after it (the next one is a day away).
+    expect(msToNextMidnight(at(TODAY, 23, 59))).toBe(65_000);
+    const justAfter = at('2026-10-30', 0) + 2000;
+    expect(msToNextMidnight(justAfter)).toBeGreaterThan(23 * 3600_000);
+    // Never zero or negative.
+    for (const t of [NOW, at(TODAY, 0), at(TODAY, 23, 59) + 59_999]) expect(msToNextMidnight(t)).toBeGreaterThanOrEqual(1000);
   });
 });

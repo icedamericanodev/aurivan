@@ -1128,7 +1128,10 @@ Freemium with in-app subscriptions (product panel recommendation):
    days, the plant's growth and look, the next few Today's rule and Quick
    question items, readiness rings only if the learner added that widget),
    after sessions, on app open, after a restore and after settings changes
-   (`lib/widgets.android.ts`, merged and never mid-quiz). It never holds the
+   (`lib/widgets.android.ts`, merged; answers during a quiz wait for it to
+   end). Since 1.47.1 it also redraws at once when the app goes to the
+   background (Android pauses JS timers then, even mid-quiz), and just after
+   local midnight while the app is open. It never holds the
    learner's name, the exam or certification name, answers or mistakes. The
    exact exam date stays in it because the faces need it at draw time for the
    final week and the eve (words about it show only with exam timing on). The
