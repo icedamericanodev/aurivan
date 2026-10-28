@@ -53,7 +53,21 @@ A calm, trustworthy study companion that helps people **pass** professional secu
 
 **Recommendation:** start the beta with CISA as soon as Stage 1 is done, and add CC *into* the running beta when 2.6 passes. Don't hold the beta back for CC.
 
-## Stage 3: premium UI pass, web and mobile (owner decision 27 Oct: after the CC pack)
+## Stage 3: premium UI pass, web and mobile (started early: owner decision 28 Oct, in parallel with CC)
+
+**Owner decisions, 28 Oct 2026:**
+- **Timing:** start now, in parallel with the CC content work, instead of after the CC pack.
+- **Look: "A + B touches".** Keep Grove (forest green, Fraunces + Figtree, the Kasama mark, the plant, icon and widgets) and refine it. Borrow three moves from the Editorial Ivory direction:
+  - hairline rules instead of shadows on anything that isn't a choice;
+  - real display optical sizes for titles;
+  - on wide screens, a margin column on the answer and note pages (the Exam cue sits in the margin).
+
+The five directions explored (A Grove Refined, B Editorial Ivory, C Midnight Focus, D Clear Modern, and the wild cards E1/E2) are recorded in the scratchpad boards and the two new agents, `premium-web-designer` and `premium-mobile-designer`.
+
+**Built so far:**
+- web v12.43 and mobile 1.49: tokens T1–T4, backlog-free counts, and the shorter answer screen with the ⋯ menu and question recap;
+- mobile 1.48: the widget Study cards.
+
 Every expert agent reviews the whole app, plus a new `ui-reference-researcher`. It gathers references from Mobbin, Figma, Dribbble, Behance, Apple HIG and Material 3, and turns them into Grove-compatible changes.
 
 How it runs:
