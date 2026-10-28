@@ -1,0 +1,731 @@
+{
+  "_meta": {
+    "comment": "Original KaiSip practice questions for CC Domain 3, Identity and Access Management (IAM) Concepts, organized by the CC exam outline effective 1 Sep 2026. Each item is authored from the reviewed notes (data/cc/notes/d3.json) and public sources (NIST, ISO/IEC, CIS, OWASP), with no reference to any prior question bank or ISC2 training text. Not affiliated with or endorsed by ISC2®. Schema: docs/content/QUESTION_SCHEMA.md; style: docs/content/EXAM_STYLE_V2.md with the CC lens in .claude/agents/isc2-cc-standards-auditor.md.",
+    "schema_version": 1
+  },
+  "domain": 3,
+  "domain_name": "Identity and Access Management (IAM) Concepts",
+  "weight": 20,
+  "questions": [
+    {
+      "id": "cc_d3_001",
+      "domain": 3,
+      "subtopic": "3.1 Identity life cycle. Authentication factors",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A city council's IT team wants staff sign-in to count as true multifactor authentication (MFA). Which combination BEST meets that goal?",
+      "options": {
+        "A": "A password followed by the answer to a security question",
+        "B": "A smart card followed by a code from a phone app",
+        "C": "A password followed by a fingerprint scan",
+        "D": "A PIN followed by a long memorized passphrase"
+      },
+      "correct": "C",
+      "key_concept": "MFA needs proof from at least two different categories: something you know, something you have and something you are.",
+      "pre_read": "Sort each sign-in step into know, have or are before deciding. Count categories, not steps.",
+      "correct_explanation": "A password is something you know and a fingerprint is something you are, so the pair spans two categories and counts as MFA. The smart card and phone app look stronger because there are two devices, but both are things you have. Two items from one category add a step, not a second factor, however many devices the user carries.",
+      "wrong_explanations": {
+        "A": "A security answer is another memorized secret, so this is two knowledge checks. It adds a step, not a second category, and the answers are often guessable.",
+        "B": "Both the card and the phone are things you have. Two items from the same category do not make MFA, however many devices are involved.",
+        "D": "A PIN and a passphrase are both things you know. A longer second secret is stronger, but the sign-in still uses one category."
+      },
+      "tips": [
+        "Eliminate: A and D pair two memorized secrets; a security answer or a passphrase is still something you know.",
+        "Final two: C beats B because a password and a fingerprint come from two categories, while a card and a phone app are both things you have.",
+        "Exam cue: label every step know, have or are. MFA needs two different labels, not two steps."
+      ],
+      "framework_ref": "NIST SP 800-63B-4 (Authentication and Authenticator Management: multi-factor authentication); NIST SP 800-53 Rev. 5 IA-2 (Identification and Authentication (Organizational Users))",
+      "related_concepts": [
+        "Authentication factors",
+        "Two-step verification",
+        "Biometrics"
+      ],
+      "_provenance": "Authored from concept: 'MFA counts factor categories, not steps' (notes 3.1.4 Authentication Factors and MFA). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 pilot batch, 28 Oct 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d3_002",
+      "domain": 3,
+      "subtopic": "3.1 Identity life cycle. Authenticator strength",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A hospital's IT team wants administrators to use a sign-in method that a fake login page cannot capture and replay. Which method BEST fits?",
+      "options": {
+        "A": "A one-time code sent to the administrator's phone by text",
+        "B": "A long passphrase checked against a list of breached passwords",
+        "C": "A push approval in an app that uses number matching",
+        "D": "A passkey stored on a hardware security key"
+      },
+      "correct": "D",
+      "key_concept": "Phishing-resistant methods such as passkeys bind each sign-in to the genuine site, so a fake page gets nothing it can reuse.",
+      "pre_read": "Ask what an attacker's fake page could collect from each method, and whether it could reuse it on the real site.",
+      "correct_explanation": "A passkey signs a challenge from the real site, and the browser checks the site's address, so a look-alike page gets nothing it can replay. Number matching is the runner-up: it stops blind approvals by tired users, but a fake page can show the user the real site's number and pass the approval straight through.",
+      "wrong_explanations": {
+        "A": "A texted code can be typed into a fake page and relayed to the real site, and a subscriber identity module (SIM) swap can redirect the code to an attacker.",
+        "B": "A breach-screened passphrase is a strong secret, but it is still one factor, and the user can type it straight into a fake page.",
+        "C": "Number matching defeats careless approvals, but a fake page can display the real site's number, so the relayed sign-in still succeeds."
+      },
+      "tips": [
+        "Eliminate: A sends a code that a look-alike page can collect and relay, and B is a single typed secret that phishing captures.",
+        "Final two: D beats C because a passkey works only on the genuine site; number matching stops blind approvals, not a relayed sign-in.",
+        "Exam cue: when the threat is a fake login page, choose a site-bound method such as a passkey or FIDO2 security key."
+      ],
+      "framework_ref": "NIST SP 800-63B-4 (Authentication and Authenticator Management: phishing resistance); CIS Controls v8.1 Safeguard 6.5 (Require MFA for Administrative Access)",
+      "related_concepts": [
+        "FIDO2",
+        "MFA fatigue",
+        "Number matching"
+      ],
+      "_provenance": "Authored from concept: 'only site-bound authenticators resist a relayed fake login page' (notes 3.1.5 Phishing-Resistant MFA and Passkeys). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 pilot batch, 28 Oct 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d3_003",
+      "domain": 3,
+      "subtopic": "3.1 Identity life cycle. Password standards",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A help desk technician notices the password standard still forces a change every 60 days, against current National Institute of Standards and Technology (NIST) guidance. What is the BEST action for the technician?",
+      "options": {
+        "A": "Turn off password expiry in the live directory settings",
+        "B": "Shorten the change interval to 30 days to compensate",
+        "C": "Send the standard's owner a note on the current guidance",
+        "D": "Add a symbol rule so each new password is stronger"
+      },
+      "correct": "C",
+      "key_concept": "Exact password settings live in a standard that security management approves; practitioners propose changes to its owner.",
+      "pre_read": "Notice who owns the password standard and who is acting. Ask what this person may change on their own.",
+      "correct_explanation": "Current NIST guidance drops scheduled password changes, so the standard is out of date, but the technician does not own it. A note to the owner puts the change in front of the people who approve the standard. Turning off expiry directly has the right goal, but it changes live settings without approval and leaves the written standard and the systems out of step.",
+      "wrong_explanations": {
+        "A": "The goal matches current guidance, but changing live settings is outside a technician's role and bypasses the owner who approves the standard.",
+        "B": "More frequent forced changes push users toward predictable patterns. NIST advises a change on evidence of compromise, not on a calendar.",
+        "D": "Composition rules such as a required symbol lead to predictable patterns. NIST favors length and breach screening over character mixes."
+      },
+      "tips": [
+        "Eliminate: B makes forced changes more frequent and D adds a character rule; current NIST guidance drops both in favor of length and breach screening.",
+        "Final two: C beats A because the technician does not own the standard; its owner approves the change before live settings move.",
+        "Exam cue: when you spot an outdated rule you do not own, take it to the owner rather than changing production yourself."
+      ],
+      "framework_ref": "NIST SP 800-63B-4 (Authentication and Authenticator Management: password requirements); ISO/IEC 27002:2022 Control 5.17 (Authentication information)",
+      "related_concepts": [
+        "Policy versus standard",
+        "Breached-password screening",
+        "Change management"
+      ],
+      "_provenance": "Authored from concept: 'practitioners route changes to a standard through its owner' (notes 3.1.6 Passwords and Modern Password Standards). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 pilot batch, 28 Oct 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d3_004",
+      "domain": 3,
+      "subtopic": "3.1 Identity life cycle. Provisioning",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A senior manager phones the help desk to request an account for a consultant starting today, but no human resources (HR) start record exists. What should the technician do FIRST?",
+      "options": {
+        "A": "Create the account now and ask HR to add the record later",
+        "B": "Copy the access of another consultant on the same project",
+        "C": "Create the account with broad access and trim it later",
+        "D": "Hold the request and refer it to the access team"
+      },
+      "correct": "D",
+      "key_concept": "Accounts are created from a trusted record, such as an HR start record; urgency or seniority never replaces that trigger.",
+      "pre_read": "Find the trusted trigger for a new account in the scenario. Notice the pressure and ask whether it changes the process.",
+      "correct_explanation": "Provisioning starts from a trusted record, and here there is none, so the technician holds the request and refers it to the access team. Creating the account first and fixing the record later is the runner-up: it feels helpful, but it hands working credentials to an identity nobody has checked, and urgency from a senior caller is a classic social engineering pressure.",
+      "wrong_explanations": {
+        "A": "This reverses the order. Without a record, nobody has confirmed the consultant exists or what they need, and the caller could be impersonating the manager.",
+        "B": "Copying a coworker's access can carry leftover rights from past work. Access should come from an approved role, once a record exists.",
+        "C": "Broad access is live from day one, and the trimming rarely happens. Start with the smallest fitting role, after the record exists."
+      },
+      "tips": [
+        "Eliminate: B copies a coworker's rights, which may include leftovers, and C grants broad access first; both break least privilege at provisioning.",
+        "Final two: D beats A because no trusted record means no account yet; the access team, not the caller's urgency, decides how to proceed.",
+        "Exam cue: no record, no account. Pressure from rank or a deadline is a reason to follow the process, not to skip it."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 AC-2 (Account Management); ISO/IEC 27002:2022 Control 5.16 (Identity management)",
+      "related_concepts": [
+        "Joiner process",
+        "Identity proofing",
+        "Social engineering"
+      ],
+      "_provenance": "Authored from concept: 'no trusted record, no account' (notes 3.1.3 Provisioning and Identity Proofing). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 pilot batch, 28 Oct 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d3_005",
+      "domain": 3,
+      "subtopic": "3.1 Identity life cycle. Single sign-on",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A charity is moving its email, files and donor database behind single sign-on (SSO) with one identity provider. Which protection is MOST important for the IT team to add?",
+      "options": {
+        "A": "Strong multifactor authentication and monitoring at the identity provider",
+        "B": "A separate local password on each app as a backup",
+        "C": "Strong multifactor authentication on the donor database, the most sensitive app",
+        "D": "Longer sessions so staff sign in less often each day"
+      },
+      "correct": "A",
+      "key_concept": "SSO concentrates risk at the identity provider, so it needs the strongest authentication and monitoring.",
+      "pre_read": "Ask where one stolen login would do the most damage once every app trusts a single sign-in.",
+      "correct_explanation": "With SSO, every app trusts the identity provider, so it is the one front door to everything. Strong multifactor authentication (MFA) and monitoring there protects email, files and the donor database at once. Guarding only the donor database is the runner-up: it shields one app, but a stolen identity provider login would still open the rest.",
+      "wrong_explanations": {
+        "B": "Local passwords bypass SSO, giving attackers a second way in and leaving logins that disabling the user at the identity provider will not close.",
+        "C": "This protects one app, but with SSO an attacker who takes over the identity provider login still reaches email and files.",
+        "D": "Longer sessions widen the window in which a stolen session can be used. They reduce prompts, not risk."
+      },
+      "tips": [
+        "Eliminate: B adds local logins that bypass SSO, and D lengthens sessions, which widens the window for a stolen session.",
+        "Final two: A beats C because every app trusts the identity provider; protecting one app leaves the shared front door weaker.",
+        "Exam cue: with SSO, protect the identity provider hardest. A control on one app cannot cover the rest."
+      ],
+      "framework_ref": "NIST SP 800-63C-4 (Federation and Assertions); CIS Controls v8.1 Safeguard 6.7 (Centralize Access Control)",
+      "related_concepts": [
+        "Identity provider (IdP)",
+        "Federation",
+        "Session management"
+      ],
+      "_provenance": "Authored from concept: 'SSO concentrates risk at the identity provider' (notes 3.1.7 Single Sign-On and Federation). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 pilot batch, 28 Oct 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d3_006",
+      "domain": 3,
+      "subtopic": "3.1 Identity life cycle. Access review",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A sales manager asks the junior analyst running the quarterly access review to let each salesperson confirm their own access, to save time. What is the analyst's BEST response?",
+      "options": {
+        "A": "Agree, since each salesperson knows what access they use",
+        "B": "Keep the review with the manager, who must confirm each line",
+        "C": "Approve any lines nobody confirms so the review closes on time",
+        "D": "Ask IT to confirm the access from recent usage logs"
+      },
+      "correct": "B",
+      "key_concept": "Access reviews are done by the accountable manager or data owner, never by the person whose access is reviewed.",
+      "pre_read": "Ask who is accountable for each person's access, and whether the proposed reviewer has a stake in the result.",
+      "correct_explanation": "A review works only when someone accountable for the work, with no stake in the result, decides each line; here that is the manager. Usage logs are the runner-up: they show what people use, not what their job needs, and IT does not own that business decision, so access that is used but unneeded would pass.",
+      "wrong_explanations": {
+        "A": "People reviewing their own access have a conflict of interest and tend to keep everything. The accountable manager or data owner must confirm it.",
+        "C": "Access nobody confirms should be removed, not approved. Closing the review by approving unanswered lines defeats its purpose.",
+        "D": "Logs show what is used, not what is needed, and IT is not accountable for the team's access. Used but unneeded rights would still pass."
+      },
+      "tips": [
+        "Eliminate: A has people certify their own access, a conflict of interest, and C approves unanswered lines, when unconfirmed access should be removed.",
+        "Final two: B beats D because the accountable manager decides what the job needs; usage logs and IT cannot make that business call.",
+        "Exam cue: in an access review, look for the accountable owner with no stake in the result. Unconfirmed access is removed."
+      ],
+      "framework_ref": "ISO/IEC 27002:2022 Control 5.18 (Access rights); NIST SP 800-53 Rev. 5 AC-2 (Account Management)",
+      "related_concepts": [
+        "Recertification",
+        "Rubber-stamping",
+        "Conflict of interest"
+      ],
+      "_provenance": "Authored from concept: 'the accountable owner, not the user, certifies access' (notes 3.1.10 Access Reviews and Recertification). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 pilot batch, 28 Oct 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d3_007",
+      "domain": 3,
+      "subtopic": "3.1 Identity life cycle. Deprovisioning",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Human resources (HR) has scheduled a contractor's exit meeting for 3 p.m., and the manager fears the contractor may cause harm. What should the IT technician do FIRST?",
+      "options": {
+        "A": "Reset the contractor's password and leave the account active",
+        "B": "Delete the account and mailbox as the meeting starts",
+        "C": "Disable the account and end its sessions as the meeting starts",
+        "D": "Disable the account and end its sessions after the meeting ends"
+      },
+      "correct": "C",
+      "key_concept": "For a hostile exit, access is cut as the person is told; disable first and delete later so logs stay traceable.",
+      "pre_read": "Notice the risk signal in the scenario and the timing of each option. Ask when the contractor could still do harm.",
+      "correct_explanation": "When a leaver may cause harm, access is cut as they are told, leaving no window to retaliate. Disabling keeps the account for logs and data, and ending sessions stops sign-ins already open. Acting after the meeting is the runner-up: the steps are right, but the contractor keeps working access while they hear the news.",
+      "wrong_explanations": {
+        "A": "A reset stops new sign-ins with the old password, but open sessions and tokens can survive, and the account stays live.",
+        "B": "Deleting can lose data the firm needs and breaks the link between logs and the person. Disable now and delete later under the retention policy.",
+        "D": "These are the right steps at the wrong time. During and after the meeting the contractor still has working access and a reason to misuse it."
+      },
+      "tips": [
+        "Eliminate: A only resets the password, so open sessions survive, and B deletes the account, losing data and the trail that ties logs to the person.",
+        "Final two: C beats D because a hostile exit needs access cut as the news is given; after the meeting is too late.",
+        "Exam cue: for leavers, disable rather than delete, revoke sessions too, and match the timing to the risk."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 PS-4 (Personnel Termination); CIS Controls v8.1 Safeguard 6.2 (Establish an Access Revoking Process)",
+      "related_concepts": [
+        "Hostile termination",
+        "Session revocation",
+        "Disable versus delete"
+      ],
+      "_provenance": "Authored from concept: 'hostile exits: disable and revoke sessions as the person is told' (notes 3.1.11 Deprovisioning Leavers). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 pilot batch, 28 Oct 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d3_008",
+      "domain": 3,
+      "subtopic": "3.1 Identity life cycle. Access requests",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An email that seems to be from a department head asks a help desk analyst to add an intern to the team drive today, without a ticket. What should the analyst do FIRST?",
+      "options": {
+        "A": "Add the intern now, since a department head can approve access",
+        "B": "Reply to the email and ask the sender to confirm it",
+        "C": "Call the department head on the number in the staff directory",
+        "D": "Give the intern read-only access until a ticket arrives"
+      },
+      "correct": "C",
+      "key_concept": "Unusual or urgent access requests are verified through a channel already on file, never the channel the request came in on.",
+      "pre_read": "Notice how the request arrived and what is missing. Ask how to confirm it without trusting the message itself.",
+      "correct_explanation": "Email is easy to fake, so the analyst first confirms the request through a channel already on file, here the directory number. Replying to the email is the runner-up: it looks like verification, but the reply goes to whoever sent the message, so an impostor simply confirms their own request.",
+      "wrong_explanations": {
+        "A": "Seniority is no substitute for a recorded approval, and the email may be forged. Urgency plus authority is a classic social engineering pressure.",
+        "B": "A reply goes back to the sender. If the email is forged, the impostor will happily confirm it.",
+        "D": "Read-only access to a team drive can still expose sensitive files. Any grant needs an approved request first, not a partial one."
+      },
+      "tips": [
+        "Eliminate: A treats the sender's rank as an approval, and D grants partial access before any approved request exists.",
+        "Final two: C beats B because a callback uses a channel already on file; a reply goes straight back to a possible impostor.",
+        "Exam cue: verify an unusual request through a known channel, never the one the request arrived on."
+      ],
+      "framework_ref": "CIS Controls v8.1 Safeguard 6.1 (Establish an Access Granting Process); ISO/IEC 27002:2022 Control 5.18 (Access rights)",
+      "related_concepts": [
+        "Callback verification",
+        "Business email compromise",
+        "Fulfillment"
+      ],
+      "_provenance": "Authored from concept: 'verify unusual requests through a channel already on file' (notes 3.1.14 Access Requests and Approvals). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 pilot batch, 28 Oct 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d3_009",
+      "domain": 3,
+      "subtopic": "3.1 Identity life cycle. Job changes",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A buyer who raises purchase orders moves to accounts payable, which releases supplier payments, and keeps their purchasing rights. What is the access analyst's BEST action?",
+      "options": {
+        "A": "Leave the old purchasing rights in place until the next access review",
+        "B": "Set up a monthly report of the buyer's payments for review",
+        "C": "Keep the old rights so the buyer can help their former team",
+        "D": "Request removal of the old rights and alert the data owner"
+      },
+      "correct": "D",
+      "key_concept": "A transfer is a leaver plus a joiner: remove old access at the move, especially where old and new rights conflict.",
+      "pre_read": "Combine the old and new rights in your head. Ask what one person could now do alone.",
+      "correct_explanation": "Purchasing rights in a payments job let one person raise an order and pay it, a separation of duties conflict. The mover process removes old access at the move, and the data owner decides on any handover need. A monthly payments report is the runner-up: it is a compensating control for when duties cannot be split, but here they can.",
+      "wrong_explanations": {
+        "A": "Access reviews are a backstop, often months apart. The conflict is live today, so old access goes at the move.",
+        "B": "A report only detects misuse after payment. Compensating controls suit teams too small to split duties; here removing the old rights prevents the conflict.",
+        "C": "Helping a former team is a handover need, approved separately with an end date. Keeping full rights builds privilege creep and leaves the conflict."
+      },
+      "tips": [
+        "Eliminate: A waits for a review that may be months away, and C keeps old rights for convenience, which is privilege creep.",
+        "Final two: D beats B because removing the old rights prevents the conflict; a report only detects misuse and suits duties that cannot be split.",
+        "Exam cue: when a mover's old and new rights let one person start and finish a payment, remove the old access before reaching for monitoring."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 PS-5 (Personnel Transfer); NIST SP 800-53 Rev. 5 AC-5 (Separation of Duties)",
+      "related_concepts": [
+        "Privilege creep",
+        "Separation of duties",
+        "Handover access"
+      ],
+      "_provenance": "Authored from concept: 'a transfer is a leaver plus a joiner; remove conflicting old access at the move' (notes 3.1.9 Movers and Privilege Creep). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 pilot batch, 28 Oct 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d3_010",
+      "domain": 3,
+      "subtopic": "3.1 Identity life cycle. Non-human identities",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A junior engineer finds the application programming interface (API) key used by the company's AI chatbot pasted in a busy team chat channel. What should the engineer do FIRST?",
+      "options": {
+        "A": "Report the exposed key to the security team",
+        "B": "Post a reminder in the channel not to share keys",
+        "C": "Delete the chat message so nobody else can copy it",
+        "D": "Revoke the key at once in the cloud console"
+      },
+      "correct": "A",
+      "key_concept": "An exposed secret is a security event: report it so the security team and the key's owner can rotate it and check for misuse.",
+      "pre_read": "Ask who owns the key and what depends on it before anyone changes it. Notice the engineer's role.",
+      "correct_explanation": "An exposed key may already be copied, so the security team needs to know at once: it can find the key's owner, rotate it without breaking the chatbot and check logs for misuse. Revoking it alone is the runner-up: speed matters, but the engineer does not own the key, and pulling it unannounced can break a live service and skip the check for misuse.",
+      "wrong_explanations": {
+        "B": "A reminder may prevent the next leak, but this key is already exposed and still works.",
+        "C": "Deleting the message hides it, but anyone who copied the key can still use it. The key stays valid until it is rotated.",
+        "D": "Revocation is likely needed, but the key's owner and the security team decide when, so the chatbot keeps working and misuse is investigated."
+      },
+      "tips": [
+        "Eliminate: B addresses future habits, not a secret already exposed, and C removes the message but leaves a copied key valid.",
+        "Final two: A beats D because the engineer does not own the key; the security team coordinates rotation with its owner and checks for misuse.",
+        "Exam cue: when you find a leaked password, key or token you do not own, report it at once rather than fixing it alone."
+      ],
+      "framework_ref": "OWASP Non-Human Identities Top 10 (2025) NHI2 (Secret Leakage); NIST SP 800-53 Rev. 5 IA-5 (Authenticator Management)",
+      "related_concepts": [
+        "Secret leakage",
+        "Service accounts",
+        "AI agents"
+      ],
+      "_provenance": "Authored from concept: 'a leaked machine secret is reported so its owner and security can rotate it' (notes 3.1.12 Non-Human Identities Through the Life Cycle). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 pilot batch, 28 Oct 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d3_011",
+      "domain": 3,
+      "subtopic": "3.2 Logical access. Access decisions",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A temporary worker signs in with multifactor authentication (MFA) and can then open every client folder on the file server. Which part of access control has MOST clearly failed?",
+      "options": {
+        "A": "Identification, because the worker's username is not unique",
+        "B": "Authorization, because the worker's access exceeds their job",
+        "C": "Authentication, because the sign-in should be stronger",
+        "D": "Accounting, because the folder opens were not logged"
+      },
+      "correct": "B",
+      "key_concept": "Authentication proves who someone is; authorization limits what they may do. Strong sign-in cannot fix overly broad permissions.",
+      "pre_read": "Separate proving identity from deciding access. Ask which step decides what a signed-in person can open.",
+      "correct_explanation": "The worker proved who they were with MFA, so authentication worked. The failure is authorization: the file server let a correctly identified person open folders their job does not need. Stronger sign-in is the runner-up only because MFA feels like the fix; it would let the same person in with the same broad rights.",
+      "wrong_explanations": {
+        "A": "Nothing in the scenario points to a shared or duplicate username. The worker was identified and verified; the problem is what they could open.",
+        "C": "MFA already proved the worker's identity. Stronger sign-in checks who someone is, not which folders they may open.",
+        "D": "Logging records what happened but does not decide access. Even full logs would leave the worker able to open every folder."
+      },
+      "tips": [
+        "Eliminate: A blames identification with no sign of a shared username, and D names logging, which records access but does not grant or block it.",
+        "Final two: B beats C because the worker's identity was proved; the failure is in what that identity was allowed to open.",
+        "Exam cue: if the right person reaches the wrong data, the fault is authorization, not authentication."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 AC-3 (Access Enforcement); ISO/IEC 27002:2022 Control 5.15 (Access control)",
+      "related_concepts": [
+        "Authorization",
+        "Default deny",
+        "AAA"
+      ],
+      "_provenance": "Authored from concept: 'authentication proves identity; authorization limits access' (notes 3.2.1 Logical Access Controls and Access Decisions). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 pilot batch, 28 Oct 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d3_012",
+      "domain": 3,
+      "subtopic": "3.2 Logical access. Service account access",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A new reporting tool's service account must read last month's sales tables each night to build a dashboard. Which access is BEST for the database owner to approve?",
+      "options": {
+        "A": "Read access to the sales tables the dashboard uses",
+        "B": "Full administrator rights, as the tool's vendor recommends",
+        "C": "Read and write access, in case the reports need fixes",
+        "D": "Read access to the whole database for future reports"
+      },
+      "correct": "A",
+      "key_concept": "Least privilege limits both the kind of access and its scope: only the actions and data the task needs.",
+      "pre_read": "List exactly what the task does and which data it touches. Then pick the access that covers that and nothing more.",
+      "correct_explanation": "The job only reads the sales tables the dashboard uses, so read access to those tables is enough. Read access to the whole database is the runner-up: it is read-only, but least privilege limits scope as well as action, and wider reach means a stolen service account exposes far more data.",
+      "wrong_explanations": {
+        "B": "A vendor's recommendation is not a task need. Administrator rights would let a stolen service account change or delete everything.",
+        "C": "The task never writes, so write access only adds risk. Fixing reports is a separate task with its own request.",
+        "D": "Read-only is right, but the scope is too wide. Access for possible future reports is requested when those reports exist."
+      },
+      "tips": [
+        "Eliminate: B grants administrator rights because a vendor asked, and C adds write access the nightly job never uses.",
+        "Final two: A beats D because least privilege limits scope as well as action; the whole database is more than the dashboard needs.",
+        "Exam cue: match access to the exact task, both what it does and which data it touches. 'Just in case' is not a need."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 AC-6 (Least Privilege); ISO/IEC 27002:2022 Control 5.15 (Access control)",
+      "related_concepts": [
+        "Service account",
+        "Need to know",
+        "Standing privilege"
+      ],
+      "_provenance": "Authored from concept: 'least privilege limits scope as well as action, for automated accounts too' (notes 3.2.2 Least Privilege and Need to Know). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 pilot batch, 28 Oct 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d3_013",
+      "domain": 3,
+      "subtopic": "3.2 Logical access. Small-team controls",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "At a small software firm, one developer writes code and also releases it to production, and hiring a second developer is not possible. Which control BEST reduces the risk?",
+      "options": {
+        "A": "Rely on the developer's long record of reliable work",
+        "B": "Have someone without release rights approve each release",
+        "C": "Cut the developer's rights to the minimum they need",
+        "D": "Give the developer a separate account for releases"
+      },
+      "correct": "B",
+      "key_concept": "Where one person must hold conflicting duties, an independent check by someone else is the compensating control.",
+      "pre_read": "Ask what one person can do from start to finish here. Then ask which option puts a second person in the path.",
+      "correct_explanation": "Writing and releasing code are conflicting duties, and the firm cannot split them by hiring. Approval by someone with no release rights adds the independent check that separation of duties needs. Cutting rights to the minimum is the runner-up: least privilege is good practice, but the developer's minimum still includes writing and releasing, so the conflict remains.",
+      "wrong_explanations": {
+        "A": "Separation of duties is not about distrust; it protects the firm and the developer alike. A good record prevents nothing.",
+        "C": "Least privilege limits how much one person can do; separation of duties splits a process. Minimal rights here still include both conflicting duties.",
+        "D": "A second account still belongs to the same person, so one individual can still write and release a change alone."
+      },
+      "tips": [
+        "Eliminate: A relies on trust, which separation of duties is designed not to need, and D gives the same person a second account, so nothing is split.",
+        "Final two: B beats C because the conflict is between duties, not the amount of access; only a second person breaks it.",
+        "Exam cue: when one person can start and finish a sensitive task, look for an independent second person, even as a compensating check."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 AC-5 (Separation of Duties); ISO/IEC 27002:2022 Control 5.3 (Segregation of duties)",
+      "related_concepts": [
+        "Compensating control",
+        "Least privilege",
+        "Collusion"
+      ],
+      "_provenance": "Authored from concept: 'small teams use an independent second person as a compensating control' (notes 3.2.3 Separation of Duties and Two-Person Control). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 pilot batch, 28 Oct 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d3_014",
+      "domain": 3,
+      "subtopic": "3.2 Logical access. Privileged accounts",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "At a regional clinic, the IT team shares one administrator login for its servers for convenience. Which step would BEST let the clinic tell who made each server change?",
+      "options": {
+        "A": "Add multifactor authentication to the shared administrator login",
+        "B": "Give each administrator a named admin account through a vault",
+        "C": "Change the shared password monthly and limit who knows it",
+        "D": "Log every sign-in to the shared administrator login"
+      },
+      "correct": "B",
+      "key_concept": "Privileged access needs named, individual admin accounts so every action traces to one person; shared admin logins hide who acted.",
+      "pre_read": "Ask what each option would show investigators after a bad change. Can it point to one person?",
+      "correct_explanation": "Accountability needs every action tied to one person, so each administrator gets a named admin account, with credentials checked out through a vault that logs each use. Adding multifactor authentication (MFA) to the shared login is the runner-up: it makes the login harder to steal, but every sign-in still shows the same shared name, so the clinic still cannot tell who acted.",
+      "wrong_explanations": {
+        "A": "MFA strengthens the sign-in, but the account is still shared. The logs would still show one name for several people.",
+        "C": "Rotation limits how long a leaked password works, but everyone who knows it still signs in as the same account.",
+        "D": "The log records the shared account's name, not the person behind it, so it cannot show who made a change."
+      },
+      "tips": [
+        "Eliminate: C rotates a password that is still shared, and D logs a name that several people use; neither ties an action to one person.",
+        "Final two: B beats A because MFA protects the shared login, but only named accounts show who acted.",
+        "Exam cue: a shared admin account 'for convenience' is a red flag; the fix is one named admin account per person."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 AC-2(9) (Restrictions on Use of Shared and Group Accounts); ISO/IEC 27002:2022 Control 8.2 (Privileged access rights)",
+      "related_concepts": [
+        "Privileged access management (PAM)",
+        "Accountability",
+        "Credential vault"
+      ],
+      "_provenance": "Authored from concept: 'named admin accounts make privileged actions traceable to one person' (notes 3.2.4 Privileged Access Management). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 pilot batch, 28 Oct 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d3_015",
+      "domain": 3,
+      "subtopic": "3.2 Logical access. Access control models",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A project lead creates a budget folder and chooses to share it with the Finance group, giving that group edit rights. Which access control model does this BEST describe?",
+      "options": {
+        "A": "Discretionary access control, because the folder's owner decides",
+        "B": "Role-based access control, because access goes to a group",
+        "C": "Mandatory access control, because labels set by the system decide",
+        "D": "Rule-based access control, because one fixed rule covers everyone"
+      },
+      "correct": "A",
+      "key_concept": "Name the model by who decides: when the resource owner chooses who gets access, it is discretionary, even if they choose a group.",
+      "pre_read": "Find the decider in the scenario. Set aside the word 'group' until you know who picked it.",
+      "correct_explanation": "The project lead created the folder and personally chose who could edit it, so the owner decides: discretionary access control. Role-based control is the runner-up because a group is involved, but in role-based access control (RBAC) the organization assigns permissions to job roles through an approved process; here the owner simply picked a group to share with.",
+      "wrong_explanations": {
+        "B": "A group alone does not make it role-based. In RBAC the organization sets role permissions centrally; here the folder's owner chose the group.",
+        "C": "Mandatory control relies on labels and clearances set centrally. Nothing here involves labels, and an owner cannot share at will under it.",
+        "D": "Rule-based control applies the same administrator rule to every request, such as a time limit. Here one person chose whom to share with."
+      },
+      "tips": [
+        "Eliminate: C needs labels and clearances, and D needs one administrator rule for everyone; the scenario shows neither.",
+        "Final two: A beats B because the folder's owner picked the group; role-based access is set centrally by job role.",
+        "Exam cue: name the model by its decider. An owner choosing, even choosing a group, means discretionary."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 AC-3(4) (Discretionary Access Control); NIST SP 800-53 Rev. 5 AC-3(7) (Role-based Access Control)",
+      "related_concepts": [
+        "Resource owner",
+        "Role-based access control",
+        "Non-discretionary access control"
+      ],
+      "_provenance": "Authored from concept: 'the owner deciding, even by choosing a group, is discretionary' (notes 3.2.5 Discretionary Access Control (DAC)). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 pilot batch, 28 Oct 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d3_016",
+      "domain": 3,
+      "subtopic": "3.2 Logical access. Classified data",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A government analyst cleared to Secret tries to send a paragraph from a Secret report to a partner agency, and the system blocks it. What is the analyst's BEST next step?",
+      "options": {
+        "A": "Ask their manager to approve an exception to the block",
+        "B": "Ask the security officer to review the paragraph for release",
+        "C": "Change the paragraph's label, since the analyst wrote it",
+        "D": "Retype the paragraph into a new document without a label"
+      },
+      "correct": "B",
+      "key_concept": "Under mandatory access control, central labels and clearances decide; only the central security authority approves releasing data to a lower level.",
+      "pre_read": "Notice which model the system uses and who sets its labels. Ask who has the authority to release data.",
+      "correct_explanation": "Under mandatory access control (MAC), labels and releases are set by a central security authority, not by users or line managers, so the analyst asks the security officer to review the paragraph for an authorized release. Asking a manager is the runner-up: escalating is the right instinct, but a manager has no authority to override labels the system enforces.",
+      "wrong_explanations": {
+        "A": "Escalating is right, but to the wrong person. Under MAC a line manager cannot override labels; the central security authority approves releases.",
+        "C": "Writing a report gives no control over its label under MAC. Only the central security authority changes classifications.",
+        "D": "Copying data into an unlabeled document is a workaround that bypasses the control. It is a security violation, whatever the intent."
+      },
+      "tips": [
+        "Eliminate: C assumes the author controls the label, and D copies the data around the label; MAC permits neither.",
+        "Final two: B beats A because only the central security authority can approve a release; a manager cannot override the system's labels.",
+        "Exam cue: under mandatory access control, route any change to labels, clearances or releases to the central security authority."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 AC-3(3) (Mandatory Access Control); NIST SP 800-53 Rev. 5 AC-16 (Security and Privacy Attributes)",
+      "related_concepts": [
+        "Security label",
+        "Clearance",
+        "Need to know"
+      ],
+      "_provenance": "Authored from concept: 'under MAC only the central security authority approves releases' (notes 3.2.6 Mandatory Access Control (MAC)). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 pilot batch, 28 Oct 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d3_017",
+      "domain": 3,
+      "subtopic": "3.2 Logical access. Access control models",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A hospital's IT team must let nurses open charts only for patients on their own ward, from hospital devices, during their shift. Which access control model BEST fits?",
+      "options": {
+        "A": "Role-based access control, with a role for each combination",
+        "B": "Mandatory access control, with a clearance for each nurse",
+        "C": "Discretionary access control, with each ward manager setting rights",
+        "D": "Attribute-based access control, with a policy checking each request"
+      },
+      "correct": "D",
+      "key_concept": "When access depends on several conditions at once, such as who, where and when, attribute-based access control fits best.",
+      "pre_read": "Count the conditions each decision depends on. Ask which model can check them all without a role per combination.",
+      "correct_explanation": "Each decision depends on several attributes at once: the nurse's ward, the device and the time. Attribute-based access control (ABAC) checks a policy against those attributes on every request, so one policy covers every combination. Role-based control is the runner-up: a Nurse role fits the job, but ward, device and shift would need a role per combination, and plain roles cannot check time or device.",
+      "wrong_explanations": {
+        "A": "Roles capture job function, not changing conditions. A role for every ward, device and shift would multiply roles beyond anything manageable.",
+        "B": "Clearances and classification labels protect classified data; they cannot express ward, device or shift conditions.",
+        "C": "Under discretionary control, owners share at will, so nothing would enforce the ward, device and shift limits consistently."
+      },
+      "tips": [
+        "Eliminate: B uses clearances and labels meant for classified data, and C leaves managers to set rights, so nothing enforces the conditions.",
+        "Final two: D beats A because one attribute policy covers every ward, device and shift; roles would need one per combination.",
+        "Exam cue: several conditions at once, such as who, where, when and on what device, point to attribute-based access control."
+      ],
+      "framework_ref": "NIST SP 800-162 (Guide to Attribute Based Access Control (ABAC) Definition and Considerations); NIST SP 800-53 Rev. 5 AC-3(13) (Attribute-based Access Control)",
+      "related_concepts": [
+        "Attributes",
+        "Policy engine",
+        "Role explosion"
+      ],
+      "_provenance": "Authored from concept: 'several conditions at once point to ABAC' (notes 3.2.8 Attribute-Based Access Control (ABAC)). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 pilot batch, 28 Oct 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d3_018",
+      "domain": 3,
+      "subtopic": "3.2 Logical access. Access control models",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "At a university, staff reach the student records system according to their job, and nobody can sign in to it from outside the country. Which description should the security team record as MOST accurate?",
+      "options": {
+        "A": "Role-based for the job access and rule-based for the country block",
+        "B": "Role-based for both the job access and the country block",
+        "C": "Discretionary for the job access and rule-based for the country block",
+        "D": "Role-based for the job access and mandatory for the country block"
+      },
+      "correct": "A",
+      "key_concept": "Real systems often mix models; split the scenario and name the model for each part by its decider.",
+      "pre_read": "Split the scenario into its two controls. For each, ask whether access depends on the person's job or applies to everyone.",
+      "correct_explanation": "Access that follows each person's job is role-based. The country block applies to everyone, whatever their job, so it is a rule-based control layered on top. Calling both role-based is the runner-up, a common slip because the names sound alike: the block does not depend on anyone's role, so the two parts need different labels.",
+      "wrong_explanations": {
+        "B": "The country block applies to everyone regardless of role, so it is rule-based. Role-based and rule-based sound alike but decide differently.",
+        "C": "The country block is rule-based, but job-based access is set by the organization through roles, not chosen by each owner.",
+        "D": "Job-based access is role-based, but the country block uses no labels or clearances, so it is not mandatory access control."
+      },
+      "tips": [
+        "Eliminate: C treats job-based access as owner-chosen, and D treats a location block as label-based; each gets one part wrong.",
+        "Final two: A beats B because the country block applies to everyone, whatever their job; that makes it rule-based, not role-based.",
+        "Exam cue: when two models seem to fit, split the scenario and name the model for each part by who or what decides."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 AC-3 (Access Enforcement); CIS Controls v8.1 Safeguard 6.8 (Define and Maintain Role-Based Access Control)",
+      "related_concepts": [
+        "Hybrid model",
+        "Rule-based access control",
+        "Role-based access control"
+      ],
+      "_provenance": "Authored from concept: 'split a mixed scenario and name the model for each part' (notes 3.2.13 Access Model Scenarios: Worked Examples). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 pilot batch, 28 Oct 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d3_019",
+      "domain": 3,
+      "subtopic": "3.2 Logical access. Automated systems and AI agents",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "An online retailer's AI agent reads complaints and drafts refunds, and its vendor wants it to pay refunds of any size directly. Which setup is BEST for the security analyst to propose?",
+      "options": {
+        "A": "Let the agent pay refunds under the support manager's login",
+        "B": "Give the agent full finance access, since the vendor is reputable",
+        "C": "Let the agent draft refunds for a person to approve",
+        "D": "Let the agent pay refunds and review its logs each month"
+      },
+      "correct": "C",
+      "key_concept": "AI agents get least privilege and cannot finish high-impact actions alone; a person approves payments, deletions and similar steps.",
+      "pre_read": "Ask what the agent could do if a crafted complaint misled it. Then prefer controls that act before money moves.",
+      "correct_explanation": "An agent that reads customer complaints can be misled by crafted text, and a paid refund is hard to undo, so the agent drafts and a person approves before money moves. Monthly log review is the runner-up: logging the agent's actions is good practice, but it finds a bad refund weeks after it is paid, not before.",
+      "wrong_explanations": {
+        "A": "A borrowed login gives the agent all the manager's rights and makes its actions look like the manager's. Each agent needs its own identity.",
+        "B": "A reputable vendor does not stop a manipulated or faulty agent from misusing broad access. Grant only what each task needs.",
+        "D": "Logs are useful, but monthly review detects bad refunds long after the money has gone. High-impact actions need approval before they happen."
+      },
+      "tips": [
+        "Eliminate: A lends the agent a person's login, and B grants broad access because the vendor is trusted; both break least privilege for agents.",
+        "Final two: C beats D because human approval stops a bad payment before it happens; a monthly log review only finds it afterward.",
+        "Exam cue: for AI agents and bots, high-impact actions such as payments get a human approval step, not just an after-the-fact review."
+      ],
+      "framework_ref": "OWASP Top 10 for LLM Applications 2025, LLM06 (Excessive Agency); NIST SP 800-53 Rev. 5 AC-6 (Least Privilege)",
+      "related_concepts": [
+        "Excessive agency",
+        "Prompt injection",
+        "Human in the loop"
+      ],
+      "_provenance": "Authored from concept: 'AI agents cannot finish high-impact actions alone; a human approves before money moves' (notes 3.2.11 Least Privilege and SoD for Automated Systems and AI Agents). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 pilot batch, 28 Oct 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d3_020",
+      "domain": 3,
+      "subtopic": "3.2 Logical access. Privileged access",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A hospital's server team wants permanent domain administrator rights so they can respond quickly to overnight outages. Which approach BEST balances speed and risk?",
+      "options": {
+        "A": "Give every admin permanent rights protected by a long password",
+        "B": "Share one admin login among the night team for emergencies",
+        "C": "Give on-call admins standing rights for the length of their shift",
+        "D": "Grant rights just in time for each approved task, with logging"
+      },
+      "correct": "D",
+      "key_concept": "Privileged rights should be borrowed for an approved task and then expire; standing rights help attackers around the clock.",
+      "pre_read": "Ask how long each option leaves powerful rights switched on when nobody needs them.",
+      "correct_explanation": "Just-in-time access switches admin rights on for an approved task, logs the session and lets the rights expire, so they exist only while needed. Shift-long rights are the runner-up: they cut exposure compared with permanent rights, but they stay live for hours with no task, which is still standing privilege an attacker can use.",
+      "wrong_explanations": {
+        "A": "Permanent rights are available to attackers around the clock, and a long password alone does not protect powerful accounts well enough.",
+        "B": "A shared login hides who acted, and its password spreads to everyone on the team. Privileged access needs named accounts.",
+        "C": "Limiting rights to a shift helps, but they stay live for hours whether or not there is work. Rights tied to an approved task expire sooner."
+      },
+      "tips": [
+        "Eliminate: A keeps permanent rights behind a password, the standing exposure to avoid, and B shares one admin login, so no action traces to one person.",
+        "Final two: D beats C because rights tied to an approved task expire when the work ends; shift-long rights sit idle for hours.",
+        "Exam cue: for admin access, prefer rights that are requested, approved, logged and expire over rights that are always on."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 AC-6 (Least Privilege); ISO/IEC 27002:2022 Control 8.2 (Privileged access rights)",
+      "related_concepts": [
+        "Just-in-time (JIT) access",
+        "Break-glass account",
+        "Standing privilege"
+      ],
+      "_provenance": "Authored from concept: 'privilege is borrowed for an approved task, then expires' (notes 3.2.12 Just-in-Time and Break-Glass Access). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 pilot batch, 28 Oct 2026.",
+      "style_version": 2
+    }
+  ]
+}
