@@ -1,0 +1,2303 @@
+{
+  "domain_number": 2,
+  "domain_name": "Security Governance",
+  "exam_weight": "17.3%",
+  "source": "Original KaiSip study notes, organized by the CC exam outline effective 1 Sep 2026. Not affiliated with or endorsed by ISC2®. CC® is a registered trademark of ISC2, Inc.",
+  "overview": "Security governance is how an organization directs and checks its security work: who decides, which rules apply, how risk is handled and how anyone knows it is working. This domain covers four connected ideas: planning governance, risk and compliance (GRC); keeping the business running through redundancy, business continuity and disaster recovery; building security awareness; and measuring whether security is effective. Each idea now includes how artificial intelligence (AI) changes the picture.",
+  "analogy": "Think of running a community hospital. The board sets direction and answers for results, department heads own their areas, and staff follow written procedures and the law. Backup generators and a second supply route keep care going when the power fails or a road floods, and regular drills prove the plans work. Every new hire learns to question a stranger asking for patient records. Each month, leaders read a short report on infection rates, wait times and early warnings. Security governance works the same way for information.",
+  "parts": [
+    {
+      "part": "A",
+      "name": "Plan Governance, Risk, and Compliance (GRC)",
+      "topic_ids": [
+        "2.1"
+      ]
+    },
+    {
+      "part": "B",
+      "name": "Understand redundancy",
+      "topic_ids": [
+        "2.2"
+      ]
+    },
+    {
+      "part": "C",
+      "name": "Understand security awareness",
+      "topic_ids": [
+        "2.3"
+      ]
+    },
+    {
+      "part": "D",
+      "name": "Measure cybersecurity effectiveness",
+      "topic_ids": [
+        "2.4"
+      ]
+    }
+  ],
+  "topics": [
+    {
+      "topic_id": "2.1",
+      "topic_name": "Plan Governance, Risk, and Compliance (GRC)",
+      "overview": "Governance, risk and compliance (GRC) joins three jobs that often sit apart: setting direction, managing risk and meeting obligations. Planning GRC well means everyone knows who is accountable, which rules apply and how the organization proves it follows them. This topic covers why GRC matters, how to plan it, accountability, frameworks, tools and the risk register, and how to govern the use of AI.",
+      "can_do": [
+        "Explain what each part of GRC does and why joining them closes gaps and cuts duplicated work",
+        "Use a RACI chart so every GRC task has exactly one accountable person",
+        "Tell a legal or contract obligation from a voluntary framework, and map one set of controls to several frameworks",
+        "Use risk tolerances, the risk register and an AI acceptable use policy in everyday GRC work"
+      ],
+      "subtopics": [
+        {
+          "id": "2.1.1",
+          "name": "GRC Purpose and Importance",
+          "legacy_ids": [],
+          "definition": "Governance, risk and compliance (GRC) is a coordinated way to direct an organization, manage its risks and meet its obligations, using shared owners and records.",
+          "why_it_matters": "Run as separate silos, the three duplicate work, miss gaps and give leaders conflicting pictures. GRC gives one shared view of risk that serves business goals.",
+          "how_it_works": [
+            "Governance sets direction: leaders set goals, assign accountability and oversee results.",
+            "Risk management finds, rates and treats risks to those goals, within limits leaders set.",
+            "Compliance confirms obligations are met and keeps the evidence to prove it.",
+            "All three share one set of records, so one control can meet several needs."
+          ],
+          "compare": {
+            "columns": [
+              "Governance",
+              "Risk management",
+              "Compliance"
+            ],
+            "rows": [
+              {
+                "label": "Main question",
+                "cells": [
+                  "Who decides, and where are we going?",
+                  "What could stop us, and what do we do about it?",
+                  "Are we meeting our obligations, and can we prove it?"
+                ]
+              },
+              {
+                "label": "Typical output",
+                "cells": [
+                  "Strategy, approved policies, assigned roles",
+                  "Risk register and treatment plans",
+                  "Control evidence and compliance reports"
+                ]
+              },
+              {
+                "label": "Led by",
+                "cells": [
+                  "The board and senior management",
+                  "Risk owners, supported by security and risk teams",
+                  "The compliance function, with control owners"
+                ]
+              }
+            ]
+          },
+          "example": "A logistics firm keeps its privacy checklist in legal, its risk list in IT and its policies in human resources. One backup control is tested three times, while a contract's breach-notice clause has no owner. Leadership creates one GRC program, and Omar, a junior analyst, maps each obligation to a control, exposing the unowned clause as a gap.",
+          "audit_focus": {
+            "review": [
+              "Confirm each policy, risk and obligation record names an owner",
+              "Compare the risk records with the obligations list"
+            ],
+            "evidence": [
+              "Shared control library mapped to risks and obligations",
+              "Compliance calendar of reporting deadlines"
+            ],
+            "recommend": "Raise mismatches between risk records and obligations with the GRC program owner.",
+            "decides": "Senior management sets GRC direction and approves the program"
+          },
+          "isaca_rule": "GRC exists so security serves business goals. Its value is alignment, clear accountability and one shared view of risk, not any single tool. Practitioners keep records accurate and flag gaps.",
+          "exam_traps": [
+            {
+              "trap": "GRC is a software product the security team buys and runs.",
+              "why": "Tools support GRC, but GRC is a management approach. A platform without owners and decisions changes nothing."
+            },
+            {
+              "trap": "Being compliant means the organization is secure.",
+              "why": "Compliance shows certain obligations were met at a point in time. Risks outside those rules, and new threats, remain."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Control library",
+              "definition": "One list of the organization's controls, each with an owner, mapped to the risks and obligations it covers."
+            },
+            {
+              "term": "Alignment",
+              "definition": "Making sure security work supports business goals instead of competing with them."
+            }
+          ]
+        },
+        {
+          "id": "2.1.2",
+          "name": "Planning a GRC Program",
+          "legacy_ids": [],
+          "definition": "Planning a governance, risk and compliance (GRC) program means setting its scope, owners and obligations first, so effort goes where risk is greatest.",
+          "why_it_matters": "Without a plan, a program copies someone else's checklist and protects the wrong things. A plan gives leaders something to approve, fund and measure.",
+          "how_it_works": [
+            "Understand the mission, the critical services and how much risk leaders will take.",
+            "List the obligations that apply, from laws and contracts to internal policies.",
+            "Set the scope, meaning which units, systems and data are covered, and choose a framework.",
+            "Give each policy, risk and control an owner, and have senior management approve a charter and budget."
+          ],
+          "example": "A small online bookseller starts taking card payments and selling abroad. Before buying tools, the owner has the IT lead list what now applies: card industry rules, privacy law and the payment provider's contract. Ines, a new support technician, inventories the in-scope staff laptops so the plan starts from an accurate list.",
+          "audit_focus": {
+            "review": [
+              "Compare the asset inventory with the scope for missing items",
+              "Note sensitive data handled outside the scope"
+            ],
+            "evidence": [
+              "Signed program charter with budget and scope",
+              "Obligations list with an owner for each duty"
+            ],
+            "recommend": "Send any system or data set missing from the scope to the program owner.",
+            "decides": "Senior management signs off the program before work begins"
+          },
+          "isaca_rule": "Plan before you buy. Understand the business and its obligations first, then set scope, owners and a framework, and only then choose tools.",
+          "exam_traps": [
+            {
+              "trap": "Start a GRC program by buying a platform or running a vulnerability scan.",
+              "why": "Without known obligations, scope and owners, a tool has nothing to measure against and scan results have no priority."
+            },
+            {
+              "trap": "Copy a large company's policy set to save time.",
+              "why": "Obligations and risks differ by organization. Borrowed policies can miss required duties or demand controls nobody can run."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Charter",
+              "definition": "A short approved document stating a program's purpose, authority, scope and sponsor."
+            },
+            {
+              "term": "Obligation",
+              "definition": "A duty set by law, regulation, contract or the organization's own policy."
+            }
+          ]
+        },
+        {
+          "id": "2.1.3",
+          "name": "GRC Accountability: RACI and Reporting Lines",
+          "legacy_ids": [],
+          "definition": "Accountability in governance, risk and compliance (GRC) means every task, risk and control has one named person who answers for it.",
+          "why_it_matters": "When everyone is involved but no one is accountable, decisions stall and gaps go unowned.",
+          "how_it_works": [
+            "The governance roles themselves are taught in 1.3.1; here they are assigned to GRC work.",
+            "A RACI chart (Responsible, Accountable, Consulted, Informed) maps each task to people; the table below explains each letter.",
+            "Each task has exactly one Accountable person; several can be Responsible.",
+            "Senior management approves policy, funds the program and decides on risk above tolerance; risk owners accept risk within it.",
+            "Reporting lines carry risk and compliance results upward, often through a risk committee to the board."
+          ],
+          "compare": {
+            "columns": [
+              "Responsible",
+              "Accountable",
+              "Consulted",
+              "Informed"
+            ],
+            "rows": [
+              {
+                "label": "Meaning",
+                "cells": [
+                  "Does the work",
+                  "Answers for the result and signs it off",
+                  "Gives input before the work is done",
+                  "Is told the outcome"
+                ]
+              },
+              {
+                "label": "How many per task",
+                "cells": [
+                  "One or more",
+                  "Exactly one",
+                  "Any number",
+                  "Any number"
+                ]
+              },
+              {
+                "label": "Example: quarterly access review",
+                "cells": [
+                  "The IT administrator who pulls the access lists",
+                  "The system owner",
+                  "Department managers, who confirm who needs access",
+                  "The security team and the risk committee"
+                ]
+              }
+            ]
+          },
+          "example": "A furniture maker's yearly supplier security review was skipped: procurement thought IT did it, and IT thought procurement did. The GRC lead drafts a RACI chart for the review. Ana, a junior GRC analyst checking the draft, sees two managers marked Accountable and returns it to the GRC lead to settle which one answers for it.",
+          "audit_focus": {
+            "review": [
+              "Look for tasks with no Accountable name, or several",
+              "Compare the names in the chart with current staff"
+            ],
+            "evidence": [
+              "Approved RACI chart with a version date",
+              "Organization chart showing the security leader's reporting line"
+            ],
+            "recommend": "Raise any task with no Accountable person, or several, with the GRC lead before approval.",
+            "decides": "Senior management assigns accountability and approves reporting lines"
+          },
+          "isaca_rule": "One task, one accountable person. Work can be delegated; accountability cannot. When ownership is unclear, raise it so leadership assigns an owner, rather than quietly deciding yourself.",
+          "exam_traps": [
+            {
+              "trap": "Making two managers jointly accountable doubles the oversight.",
+              "why": "Each assumes the other is acting. One person answers for each task; others can be Responsible or Consulted."
+            },
+            {
+              "trap": "Delegating a task to IT also hands IT the accountability.",
+              "why": "IT becomes Responsible for the work, but the owner who delegated it still answers for the result."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Accountability",
+              "definition": "Being answerable for an outcome; it stays with the owner even when tasks are delegated."
+            },
+            {
+              "term": "Reporting line",
+              "definition": "The path by which a role reports results and issues to the person or body above it."
+            }
+          ]
+        },
+        {
+          "id": "2.1.4",
+          "name": "Compliance Obligations and Evidence",
+          "legacy_ids": [],
+          "definition": "Compliance means meeting the requirements that apply to the organization, from laws and contracts to its own policies, and being able to prove it.",
+          "why_it_matters": "Missing an obligation can bring fines, lost contracts and lost trust. Regulators and customers want records, not promises, so evidence matters as much as the control.",
+          "how_it_works": [
+            "Identify each obligation, its source and what it requires, then assign an owner.",
+            "Map each obligation to the controls that meet it; one control can cover several.",
+            "Collect evidence as work happens, such as logs, tickets and test results.",
+            "Check on a schedule, and track each gap as a finding with an owner and due date."
+          ],
+          "compare": {
+            "columns": [
+              "Law or regulation",
+              "Contract",
+              "Internal policy"
+            ],
+            "rows": [
+              {
+                "label": "Who sets it",
+                "cells": [
+                  "A government or regulator",
+                  "The parties to an agreement",
+                  "The organization's own leadership"
+                ]
+              },
+              {
+                "label": "Example",
+                "cells": [
+                  "A privacy law such as the EU General Data Protection Regulation (GDPR)",
+                  "Payment Card Industry Data Security Standard (PCI DSS) rules required by a payment provider",
+                  "A rule that every laptop uses full-disk encryption"
+                ]
+              },
+              {
+                "label": "If ignored",
+                "cells": [
+                  "Fines, sanctions or legal action",
+                  "Penalties or a lost contract",
+                  "Discipline and higher risk"
+                ]
+              },
+              {
+                "label": "Optional?",
+                "cells": [
+                  "No",
+                  "No, once signed",
+                  "No, for the staff it covers"
+                ]
+              }
+            ]
+          },
+          "example": "A dental practice's booking contract requires suspected data breaches to be reported within 48 hours, and health privacy law adds its own deadlines; both go on the obligations list. When Kai, the IT assistant, later sees an unusual login to the booking system, Kai starts the incident procedure at once, knowing the reporting clock may be running.",
+          "audit_focus": {
+            "review": [
+              "Confirm each obligation has an owner and a mapped control",
+              "Report missing or late evidence to the control owner"
+            ],
+            "evidence": [
+              "Dated sign-offs for approved changes",
+              "Open findings list with owners and due dates"
+            ],
+            "recommend": "Tell the control owner as soon as evidence is missing or a deadline is at risk.",
+            "decides": "Senior management decides how and when a compliance gap is closed"
+          },
+          "isaca_rule": "Compliance is proven, not claimed. Know where each obligation comes from, map it to a control and keep the evidence. A voluntary framework never replaces a legal or contract duty.",
+          "exam_traps": [
+            {
+              "trap": "Passing last year's audit means the organization is still compliant.",
+              "why": "Compliance is ongoing. Systems, laws and controls change, so an old audit shows only the state at that time."
+            },
+            {
+              "trap": "Following a respected framework satisfies every legal requirement.",
+              "why": "Frameworks are voluntary guidance. Laws and contracts can demand specific things, such as breach-notice deadlines, that a framework never mentions."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Evidence",
+              "definition": "Records that show a control operated, such as logs, tickets, approvals or test results."
+            },
+            {
+              "term": "Finding",
+              "definition": "A documented gap between a requirement and what actually happens, with an owner and a fix date."
+            }
+          ]
+        },
+        {
+          "id": "2.1.5",
+          "name": "Choosing and Mapping Frameworks in GRC",
+          "legacy_ids": [],
+          "definition": "Mapping frameworks means linking a governance, risk and compliance (GRC) program's own controls to each framework it must show progress against.",
+          "why_it_matters": "Customers, regulators and leaders often ask about different frameworks. Mapping one control set to all of them avoids a second program and shows the real gaps.",
+          "how_it_works": [
+            "Start from what leaders, customers or contracts ask to see; 1.3.3 covers what each framework contains.",
+            "Load the framework into the GRC tool, then link each control to the items it meets.",
+            "A crosswalk maps one framework to another, so one control shows progress against both.",
+            "Tailor it: mark items that do not apply and record why."
+          ],
+          "types": [
+            {
+              "term": "Outcome framework",
+              "meaning": "Describes results to reach, not how. Suits progress reports to leaders."
+            },
+            {
+              "term": "Control set",
+              "meaning": "Lists specific safeguards in priority order. Suits choosing first steps."
+            },
+            {
+              "term": "Certifiable standard",
+              "meaning": "Sets requirements an accredited body can audit and certify. Suits customers who want formal proof."
+            }
+          ],
+          "example": "A credit union follows ISO/IEC 27001, an international security management standard, and a major customer asks for progress against the NIST (National Institute of Standards and Technology) Cybersecurity Framework (CSF). Instead of a second program, the GRC lead builds a crosswalk in the GRC tool. Kofi, a junior analyst, maps each control to a CSF outcome and flags three outcomes with no control for review.",
+          "audit_focus": {
+            "review": [
+              "Check each mapping still points to a current framework item",
+              "Flag items marked not applicable with no reason"
+            ],
+            "evidence": [
+              "Mapping export showing each control's linked framework items",
+              "Statement of applicability with reasons for exclusions"
+            ],
+            "recommend": "Send unexplained exclusions or stale mappings to the GRC lead for a recorded decision.",
+            "decides": "Senior management chooses the frameworks and approves tailoring"
+          },
+          "isaca_rule": "Choose frameworks by need, map controls once and reuse the evidence. Tailoring is expected, but every exclusion needs a recorded reason.",
+          "exam_traps": [
+            {
+              "trap": "A framework must be adopted in full, or it is not really being followed.",
+              "why": "Frameworks expect tailoring to an organization's risks and size, with a documented reason for each choice."
+            },
+            {
+              "trap": "Adopting a second framework means building a second set of controls.",
+              "why": "A crosswalk maps one control set to several frameworks, so one control can show progress against both. Only real gaps need new controls."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Crosswalk",
+              "definition": "A mapping that shows how items in one framework or standard match items in another."
+            },
+            {
+              "term": "Statement of applicability",
+              "definition": "A document listing which controls of a standard apply, whether each is in place, and why any are excluded."
+            }
+          ]
+        },
+        {
+          "id": "2.1.6",
+          "name": "GRC Tools and Automation",
+          "legacy_ids": [],
+          "definition": "Governance, risk and compliance (GRC) tools are platforms that keep risks, controls, policies and evidence in one place and automate routine tasks.",
+          "why_it_matters": "Spreadsheets and email chains break as programs grow. A tool gives one current record, but only if owners keep it accurate and act on it.",
+          "how_it_works": [
+            "Risk and control modules link each risk to its owner and the controls that treat it.",
+            "Policy management tracks versions, approvals and staff acknowledgments.",
+            "Automated collection pulls settings from systems on a schedule and flags any control that drifts.",
+            "Dashboards turn the stored data into views for each audience."
+          ],
+          "example": "A health clinic moves its policies and risk list into a GRC platform that checks laptop settings each night. One morning it flags a laptop with disk encryption off. Rosa, a junior IT technician, confirms it on the device, raises a change request to turn encryption back on and records the fix in the platform.",
+          "audit_focus": {
+            "review": [
+              "Compare the tool's record with the live system setting",
+              "Link the corrected setting to its change record"
+            ],
+            "evidence": [
+              "Alert history showing when the control drifted",
+              "Configuration export taken after the fix"
+            ],
+            "recommend": "Pass alerts outside your permissions to the control owner; never edit the monitoring rule yourself.",
+            "decides": "The control owner decides how a monitored control is set"
+          },
+          "isaca_rule": "A tool supports governance but never replaces it. When it flags a gap, confirm it, act within the procedure and leave a record; never silence the alert.",
+          "exam_traps": [
+            {
+              "trap": "Once the GRC platform is installed, compliance is automatic.",
+              "why": "Tools collect and display data. People still decide risk treatment, approve policies and fix gaps."
+            },
+            {
+              "trap": "Turn off a noisy alert so the dashboard shows green.",
+              "why": "Hiding an alert hides the risk. Confirm whether it is real, then fix it or ask the control owner to tune the rule."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Continuous control monitoring (CCM)",
+              "definition": "Automated, frequent checks that a control is still in its expected state, with alerts when it drifts."
+            },
+            {
+              "term": "Single source of truth",
+              "definition": "One agreed, current record that everyone uses instead of separate copies."
+            }
+          ]
+        },
+        {
+          "id": "2.1.7",
+          "name": "Tolerances and the Risk Register in GRC",
+          "legacy_ids": [],
+          "definition": "In a governance, risk and compliance (GRC) program, the risk register links each risk to a tolerance, an owner, its controls and an indicator.",
+          "why_it_matters": "Statements such as \"little risk with customer data\" do not say when to act. GRC turns them into numbers, so a risk that leaves its limit is noticed.",
+          "how_it_works": [
+            "Appetite, tolerance and acceptance are introduced in 1.2.6; here a GRC program puts them to work.",
+            "Tolerances become the thresholds on key risk indicators (KRIs), so a dashboard shows when a risk leaves its limit.",
+            "Each entry links to the controls that treat the risk, so a failed control changes its status.",
+            "Risks above tolerance go to senior management; accepted risks carry a reason and a review date."
+          ],
+          "compare": {
+            "columns": [
+              "Stand-alone risk list",
+              "Risk register in a GRC program"
+            ],
+            "rows": [
+              {
+                "label": "Tolerance",
+                "cells": [
+                  "Rarely stated",
+                  "A measurable limit for each risk"
+                ]
+              },
+              {
+                "label": "Links to controls",
+                "cells": [
+                  "None",
+                  "Each risk linked to the controls that treat it"
+                ]
+              },
+              {
+                "label": "Warning",
+                "cells": [
+                  "Someone has to notice",
+                  "A KRI threshold alerts the risk owner"
+                ]
+              },
+              {
+                "label": "Review",
+                "cells": [
+                  "When someone remembers",
+                  "On a set cycle and after major changes"
+                ]
+              }
+            ]
+          },
+          "example": "A ticketing company's GRC platform links the risk \"card data stored where it should not be\" to a KRI: card files found outside the payment system, with a tolerance of zero. A weekly scan finds two on a shared drive. Lena, a junior analyst, confirms they hold real card numbers and logs the finding against the register entry, moving the risk above tolerance.",
+          "audit_focus": {
+            "review": [
+              "Confirm each entry names a tolerance, an owner and a review date",
+              "Compare current indicator values with each tolerance"
+            ],
+            "evidence": [
+              "Register history showing who changed a rating, and when",
+              "Signed risk acceptance with a reason and expiry date"
+            ],
+            "recommend": "Log new facts against the register entry, and alert the risk owner when a risk leaves tolerance.",
+            "decides": "The risk owner accepts risk within tolerance; senior management decides above it"
+          },
+          "isaca_rule": "A risk is managed only when it has a measurable tolerance, an owner, linked controls and an indicator. Practitioners keep the register accurate and never accept risk themselves.",
+          "exam_traps": [
+            {
+              "trap": "A risk appetite statement is enough; teams can judge each risk against it by feel.",
+              "why": "Broad statements need measurable tolerances and thresholds, or two teams will judge the same risk differently. GRC turns appetite into numbers people can check."
+            },
+            {
+              "trap": "An accepted risk is closed for good.",
+              "why": "Acceptance holds only while conditions hold, so every accepted risk carries a review date."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Residual risk",
+              "definition": "The risk left after controls are applied; the risk owner accepts it within tolerance, and only senior management can accept it above tolerance."
+            },
+            {
+              "term": "Treatment plan",
+              "definition": "The agreed actions, owner and dates for bringing a risk back within tolerance."
+            }
+          ]
+        },
+        {
+          "id": "2.1.8",
+          "name": "Governing AI Use",
+          "legacy_ids": [],
+          "definition": "Governing artificial intelligence (AI) use means setting rules for which AI tools staff may use, for which tasks and with which data, and tracking every use.",
+          "why_it_matters": "Staff adopt AI assistants faster than policies appear, so nobody knows which tools hold company data or who owns each use.",
+          "how_it_works": [
+            "An AI acceptable use policy (AUP), approved by senior management, sets the rules, including checking AI output before relying on it.",
+            "An approved tools list, kept as a standard under the policy, names vetted services and the data each may handle.",
+            "An AI inventory records each use and its owner; a new use is reviewed before it starts.",
+            "Pasting confidential data into public AI tools can leak it; 5.1.8 covers that risk.",
+            "The NIST (National Institute of Standards and Technology) AI Risk Management Framework can structure this work."
+          ],
+          "example": "Staff at a housing association start using a free AI note-taker that records video calls with tenants. It is not on the approved list or in the AI inventory. Priya, an IT support analyst, explains the approval route and submits a tool request so the security team and data owner can review it.",
+          "audit_focus": {
+            "review": [
+              "Confirm a tool is approved before using it for work",
+              "Look for AI uses in your area missing from the inventory"
+            ],
+            "evidence": [
+              "Signed staff acknowledgments of the AI policy",
+              "Vendor terms on how each service keeps prompts"
+            ],
+            "recommend": "Report unapproved AI tools to the security team; do not block or approve them yourself.",
+            "decides": "Senior management approves the AI policy and tools; data owners decide what data may be used"
+          },
+          "isaca_rule": "Use only approved AI tools, for approved purposes, with data the policy allows. Unapproved tools are a policy issue to report, not a shortcut to take.",
+          "exam_traps": [
+            {
+              "trap": "Once a tool is on the approved list, any work data may go into it.",
+              "why": "Approval comes with limits: check the data's classification against what the list allows for that tool."
+            },
+            {
+              "trap": "Ban every AI tool so the risk disappears.",
+              "why": "Blanket bans push staff toward hidden tools. Approved options, clear data rules and monitoring work better."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "AI inventory",
+              "definition": "A list of where AI is used, who owns each use and what data it touches."
+            },
+            {
+              "term": "Approved tools list",
+              "definition": "A list of vetted AI services, each with the data classification levels it may handle."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "topic_id": "2.2",
+      "topic_name": "Understand redundancy",
+      "overview": "Redundancy keeps services running when a part fails, and continuity and recovery plans cover the failures redundancy cannot absorb. This topic covers business continuity (BC) and disaster recovery (DR), the business impact analysis (BIA) and recovery targets behind them, backups, recovery sites, plan testing, and what changes when services depend on AI.",
+      "can_do": [
+        "Tell business continuity from disaster recovery, and redundancy from backup",
+        "Use the recovery time objective (RTO), recovery point objective (RPO) and maximum tolerable downtime (MTD) to judge a backup schedule or recovery site",
+        "Put the five plan test types in order from least to most disruptive",
+        "Explain why AI models, settings and datasets need backups, and why model drift is a continuity risk"
+      ],
+      "subtopics": [
+        {
+          "id": "2.2.1",
+          "name": "Redundancy and High Availability",
+          "legacy_ids": [],
+          "definition": "Redundancy means having spare components, paths or copies ready to take over when one fails, so one failure does not stop a service.",
+          "why_it_matters": "Hardware breaks, power drops and cables get cut. Removing single points of failure protects availability, the \"A\" in the confidentiality, integrity and availability (CIA) triad.",
+          "how_it_works": [
+            "Find single points of failure, such as one server, one internet link or one key person.",
+            "Add a spare for each; failover moves work to it, automatically or by procedure.",
+            "High availability (HA) combines redundancy and failover so users notice little or no outage.",
+            "Put spares in another building or region when a whole site could be lost."
+          ],
+          "types": [
+            {
+              "term": "RAID 1 (mirroring)",
+              "meaning": "A redundant array of independent disks (RAID) that writes the same data to two disks; either disk can fail without data loss."
+            },
+            {
+              "term": "RAID 5 (striping with parity)",
+              "meaning": "Spreads data and recovery information across three or more disks; survives the loss of any one disk."
+            },
+            {
+              "term": "Clustering",
+              "meaning": "Several servers work as one; if one fails, another takes over its work."
+            },
+            {
+              "term": "Load balancing",
+              "meaning": "Spreads requests across several servers, so losing one reduces capacity instead of stopping service."
+            },
+            {
+              "term": "Backup power",
+              "meaning": "An uninterruptible power supply (UPS) bridges short outages with batteries; a generator covers longer ones."
+            },
+            {
+              "term": "Redundant network links",
+              "meaning": "Two internet providers or paths, so one cut cable does not cut the service."
+            }
+          ],
+          "example": "A warehouse runs its order system on one server and one internet line. After a storm cuts the line for a day, the operations manager approves a second line from another provider and a standby server that takes over automatically. Ben, a junior technician, tests the switch-over monthly as the runbook sets out and logs each result.",
+          "audit_focus": {
+            "review": [
+              "Confirm the spare takes over during a scheduled test",
+              "Compare network diagrams with known single points of failure"
+            ],
+            "evidence": [
+              "Failover test log with dates and outcome",
+              "Current diagram of power and network paths"
+            ],
+            "recommend": "Log any untested or missing spare and pass it to the system owner.",
+            "decides": "The system owner decides which redundancy to fund"
+          },
+          "isaca_rule": "Redundancy protects availability against component failure; backups protect against loss and corruption. When data is deleted, corrupted or encrypted, redundancy is not the fix.",
+          "exam_traps": [
+            {
+              "trap": "RAID or a mirrored server means we do not need backups.",
+              "why": "Mirroring copies every change, including deletions and ransomware, the malicious software (malware) that encrypts files for a ransom. Only an earlier, separate copy helps."
+            },
+            {
+              "trap": "Two servers in the same rack give full protection.",
+              "why": "A fire, flood or power cut takes out both. Distance between copies matters for site-wide events."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Single point of failure (SPOF)",
+              "definition": "One component whose failure stops a whole service because nothing can take its place."
+            },
+            {
+              "term": "Failover",
+              "definition": "Switching work from a failed component to its standby."
+            }
+          ]
+        },
+        {
+          "id": "2.2.2",
+          "name": "Business Continuity vs Disaster Recovery",
+          "legacy_ids": [],
+          "definition": "Business continuity (BC) keeps critical business functions running during a disruption; disaster recovery (DR) restores the technology and data those functions depend on.",
+          "why_it_matters": "Restored servers are useless if staff have nowhere to work. Treating DR as the whole of BC leaves people, places and processes unplanned.",
+          "how_it_works": [
+            "The BC plan covers the whole business, including people, workplaces and suppliers.",
+            "The DR plan is the technical part: restoring systems and data, often at an alternate site.",
+            "Both start from the business impact analysis (BIA) and name who may declare a disaster.",
+            "Human safety comes first: account for people before saving equipment or data."
+          ],
+          "compare": {
+            "columns": [
+              "Business continuity (BC)",
+              "Disaster recovery (DR)",
+              "Incident response (IR)"
+            ],
+            "rows": [
+              {
+                "label": "Main goal",
+                "cells": [
+                  "Keep critical functions going",
+                  "Restore IT systems and data",
+                  "Detect, contain and recover from a security incident"
+                ]
+              },
+              {
+                "label": "Scope",
+                "cells": [
+                  "The whole organization",
+                  "Technology and data",
+                  "The incident and affected systems"
+                ]
+              },
+              {
+                "label": "Typical trigger",
+                "cells": [
+                  "Any major disruption: fire, pandemic, supplier failure",
+                  "Loss of a data center, system or data",
+                  "A security event that harms or threatens assets"
+                ]
+              },
+              {
+                "label": "Example action",
+                "cells": [
+                  "Staff work from a second office",
+                  "Restore servers at a recovery site",
+                  "Isolate an infected laptop"
+                ]
+              }
+            ]
+          },
+          "example": "A flood closes a call center overnight. IT restores the phone and ticket systems in the cloud within hours, which is disaster recovery, but no one planned where agents would sit. Maya, a support analyst, follows the call tree, checks in with her team lead and waits for instructions instead of driving to the closed site.",
+          "audit_focus": {
+            "review": [
+              "Confirm your contact details in the call tree are current",
+              "Note plan sections that cover systems but not people"
+            ],
+            "evidence": [
+              "Approved plan naming who may activate it",
+              "Actions from the last plan review"
+            ],
+            "recommend": "Send outdated contacts or missing roles to the business continuity manager before the next test.",
+            "decides": "Senior management or a named crisis lead declares a disaster"
+          },
+          "isaca_rule": "Disaster recovery is one part of business continuity, not all of it. Plan for people, places, suppliers and communication as well as systems, and put people's safety before any asset.",
+          "exam_traps": [
+            {
+              "trap": "Our disaster recovery plan is our business continuity plan.",
+              "why": "DR restores technology. BC also covers staff, workspace, suppliers and communication."
+            },
+            {
+              "trap": "During a fire, grab the backup drives on the way out.",
+              "why": "Life safety comes first. Backups are kept offsite so no one has to risk injury to save data."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Call tree",
+              "definition": "A set list of who contacts whom, in order, to alert staff during a disruption."
+            },
+            {
+              "term": "Disaster declaration",
+              "definition": "The formal decision by an authorized person to activate the recovery plan."
+            }
+          ]
+        },
+        {
+          "id": "2.2.3",
+          "name": "Business Impact Analysis (BIA)",
+          "legacy_ids": [],
+          "definition": "A business impact analysis (BIA) identifies an organization's critical functions, what each depends on and how harm grows over time if each one stops.",
+          "why_it_matters": "The BIA decides what is recovered first and how fast. Every later choice, from backup schedule to recovery site, rests on it.",
+          "how_it_works": [
+            "List business functions, such as taking orders or paying staff, before listing systems.",
+            "Function owners rate how harm grows at several outage lengths.",
+            "Record what each function depends on, such as systems, people and suppliers.",
+            "Set each function's maximum tolerable downtime (MTD) and recovery targets, then rank functions; senior management approves the results."
+          ],
+          "compare": {
+            "columns": [
+              "BIA",
+              "Risk assessment"
+            ],
+            "rows": [
+              {
+                "label": "Main question",
+                "cells": [
+                  "If this function stops, how bad is it over time?",
+                  "What could go wrong, and how likely is it?"
+                ]
+              },
+              {
+                "label": "Starts from",
+                "cells": [
+                  "Business functions",
+                  "Threats and weaknesses"
+                ]
+              },
+              {
+                "label": "Weighs likelihood",
+                "cells": [
+                  "No",
+                  "Yes"
+                ]
+              },
+              {
+                "label": "Main output",
+                "cells": [
+                  "Priorities, dependencies and recovery targets",
+                  "Ranked risks to treat"
+                ]
+              }
+            ]
+          },
+          "example": "A university's BIA team asks the registrar how long course enrollment can stop in the first week of term: a few hours, while the alumni newsletter can wait a month. Leo, a help desk analyst helping with the survey, adds an outside payment provider to enrollment's dependency list when a staff member mentions it.",
+          "audit_focus": {
+            "review": [
+              "Confirm each critical function lists its suppliers",
+              "Compare BIA priorities with the recovery plan's order"
+            ],
+            "evidence": [
+              "Owner-confirmed impact ratings at several outage lengths",
+              "Signed approval page for the current BIA"
+            ],
+            "recommend": "Pass missing functions or dependencies to the business continuity manager for the next update.",
+            "decides": "Senior management signs off which functions recover first"
+          },
+          "isaca_rule": "The BIA starts from business functions and their owners, not from IT's server list, and it comes before choosing recovery sites or backup schedules.",
+          "exam_traps": [
+            {
+              "trap": "Begin the BIA by rating how important each server is.",
+              "why": "Servers matter only because functions depend on them. Starting from servers misses people, suppliers and manual steps."
+            },
+            {
+              "trap": "The BIA is mainly about how likely each disaster is.",
+              "why": "The BIA measures impact over time. Likelihood belongs to the risk assessment."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Critical function",
+              "definition": "A business activity whose loss would quickly cause serious harm, so it is restored first."
+            },
+            {
+              "term": "Dependency",
+              "definition": "Anything a function needs to run, such as a system, data set, person, site or supplier."
+            }
+          ]
+        },
+        {
+          "id": "2.2.4",
+          "name": "Recovery Objectives: MTD, RTO and RPO",
+          "legacy_ids": [],
+          "definition": "Recovery objectives are limits set by the business: how long a function can be down and how much recent data it can afford to lose.",
+          "why_it_matters": "These numbers drive cost: a shorter downtime target needs a readier site, and a smaller data-loss target needs more frequent copies.",
+          "how_it_works": [
+            "Maximum tolerable downtime (MTD), also called maximum tolerable period of disruption, is the longest a function can be out before harm is unacceptable.",
+            "Recovery time objective (RTO) is the target time to restore the function; it must fit within the MTD.",
+            "Recovery point objective (RPO) is the most data, measured in time, the business can lose; it looks back from the disruption.",
+            "Business owners set these in the business impact analysis (BIA); IT designs solutions to meet them."
+          ],
+          "compare": {
+            "columns": [
+              "MTD",
+              "RTO",
+              "RPO"
+            ],
+            "rows": [
+              {
+                "label": "Question it answers",
+                "cells": [
+                  "How long before the outage is intolerable?",
+                  "How fast must we be running again?",
+                  "How much recent data can we lose?"
+                ]
+              },
+              {
+                "label": "Direction",
+                "cells": [
+                  "Forward from the disruption",
+                  "Forward from the disruption",
+                  "Backward to the last good copy"
+                ]
+              },
+              {
+                "label": "What meets it",
+                "cells": [
+                  "Not met directly; the RTO must fit inside it",
+                  "Recovery site, staff and tested procedures",
+                  "Backup frequency and replication"
+                ]
+              },
+              {
+                "label": "Example: pharmacy orders",
+                "cells": [
+                  "8 hours",
+                  "4 hours",
+                  "15 minutes"
+                ]
+              }
+            ]
+          },
+          "illustration": {
+            "svg": "<svg viewBox='0 0 520 176' xmlns='http://www.w3.org/2000/svg' role='img' aria-label='Timeline: data written between the last good backup and the disruption is lost and must not exceed the RPO; downtime from the disruption until service is restored must not exceed the RTO; the RTO must end before the MTD limit'><line x1='20' y1='78' x2='500' y2='78' stroke='var(--text2)' stroke-width='1.5'/><rect x='30' y='58' width='112' height='40' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='86' y='76' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--text)'>Last good</text><text x='86' y='89' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--text)'>backup</text><line x1='230' y1='30' x2='230' y2='118' stroke='var(--text2)' stroke-width='1.5' stroke-dasharray='3 3'/><text x='230' y='22' text-anchor='middle' font-family='JetBrains Mono, monospace' font-size='7.5' font-weight='700' fill='var(--accent-fill)' letter-spacing='0.08em'>DISRUPTION</text><rect x='318' y='58' width='112' height='40' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='374' y='76' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--text)'>Service</text><text x='374' y='89' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--text)'>restored</text><line x1='486' y1='30' x2='486' y2='160' stroke='var(--accent-fill)' stroke-width='1.5' stroke-dasharray='3 3'/><text x='486' y='22' text-anchor='middle' font-family='JetBrains Mono, monospace' font-size='7.5' font-weight='700' fill='var(--accent-fill)' letter-spacing='0.08em'>MTD LIMIT</text><line x1='142' y1='118' x2='228' y2='118' stroke='var(--text2)' stroke-width='1.5'/><line x1='232' y1='118' x2='318' y2='118' stroke='var(--text2)' stroke-width='1.5'/><text x='185' y='134' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='8.5' font-weight='600' fill='var(--text2)'>Data lost: within RPO</text><text x='275' y='134' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='8.5' font-weight='600' fill='var(--text2)'>Downtime: within RTO</text><line x1='232' y1='152' x2='484' y2='152' stroke='var(--accent-fill)' stroke-width='1.5'/><text x='358' y='168' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='8.5' font-weight='600' fill='var(--text2)'>Whole outage must end before the MTD</text></svg>",
+            "caption": "The three targets on one timeline. Work done since the last good backup is lost, and that gap must stay within the RPO. The time from the disruption until service is back must stay within the RTO, and the whole outage must end before the MTD."
+          },
+          "example": "A veterinary clinic backs up its booking system nightly, but the practice manager says losing more than an hour of appointments would be serious. Noor, a junior technician, sees that the backup can lose up to 24 hours of bookings, far beyond the one-hour RPO, and raises the gap with the IT lead.",
+          "audit_focus": {
+            "review": [
+              "Line up actual copy times against each data-loss target",
+              "Time a test restore against the downtime target"
+            ],
+            "evidence": [
+              "Backup job logs showing when copies ran",
+              "BIA record with owner-approved MTD, RTO and RPO"
+            ],
+            "recommend": "Report missed targets to the system owner with the numbers, without changing the schedule or target.",
+            "decides": "Business owners set the targets; senior management funds any gap"
+          },
+          "isaca_rule": "RPO is about data, looking back; RTO is about time, looking forward; the RTO must fit inside the MTD. A hot site shortens downtime but does nothing for data loss.",
+          "exam_traps": [
+            {
+              "trap": "A faster recovery site will reduce how much data we lose.",
+              "why": "Site readiness affects the RTO. Only more frequent backups or replication improve the RPO."
+            },
+            {
+              "trap": "IT should set the RTO to whatever current systems can achieve.",
+              "why": "Targets come from business impact. If IT cannot meet one, that is a gap to report and fund."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Work recovery time (WRT)",
+              "definition": "Time after systems return to check data and clear backlog; RTO plus WRT must fit inside the MTD."
+            },
+            {
+              "term": "Replication",
+              "definition": "Copying data to another site continuously or nearly so, supporting a very small RPO."
+            }
+          ],
+          "memory_aid": "RPO: the Point you roll back to. RTO: the Time until you are running. MTD: the hard limit."
+        },
+        {
+          "id": "2.2.5",
+          "name": "Backups: Types, the 3-2-1 Rule and Restore Testing",
+          "legacy_ids": [],
+          "definition": "A backup is a separate copy of data, and often of settings, kept so the original can be restored after loss, corruption or attack.",
+          "why_it_matters": "Backups are the last defense against ransomware and mistakes. A backup never restored is a hope, not a control, and one attackers can reach may be encrypted too.",
+          "how_it_works": [
+            "Choose the backup type and frequency to meet the recovery point objective (RPO).",
+            "Follow the 3-2-1 rule: three copies, on two types of storage, with one offsite.",
+            "Keep at least one copy offline or immutable, so ransomware or a stolen admin account cannot change it.",
+            "Test restores on a schedule and time them against the recovery time objective (RTO)."
+          ],
+          "types": [
+            {
+              "term": "Full",
+              "meaning": "Copies all selected data every time. Slowest to make and simplest to restore: one set."
+            },
+            {
+              "term": "Incremental",
+              "meaning": "Copies only what changed since the last backup of any kind. Fast to make; a restore needs the last full plus every incremental since, in order."
+            },
+            {
+              "term": "Differential",
+              "meaning": "Copies everything changed since the last full backup. Grows each day; a restore needs the last full plus only the latest differential."
+            },
+            {
+              "term": "Snapshot",
+              "meaning": "A quick point-in-time image of a system or volume. Useful, but often stored on the same system, so not a backup on its own."
+            }
+          ],
+          "illustration": {
+            "svg": "<svg viewBox='0 0 520 168' xmlns='http://www.w3.org/2000/svg' role='img' aria-label='Restoring to Wednesday: with incremental backups you need the Sunday full and every incremental; with differential backups you need the Sunday full and only the Wednesday differential'><text x='488' y='14' text-anchor='end' font-family='JetBrains Mono, monospace' font-size='7.5' font-weight='700' fill='var(--accent-fill)' letter-spacing='0.08em'>RESTORE TO WEDNESDAY</text><text x='20' y='46' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--text)'>Incremental</text><rect x='118' y='26' width='74' height='32' rx='4' fill='var(--surface)' stroke='var(--accent-fill)' stroke-width='2'/><text x='155' y='46' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9.5' font-weight='700' fill='var(--text)'>Sun full</text><rect x='210' y='26' width='74' height='32' rx='4' fill='var(--surface)' stroke='var(--accent-fill)' stroke-width='2'/><text x='247' y='46' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9.5' font-weight='700' fill='var(--text)'>Mon inc</text><rect x='302' y='26' width='74' height='32' rx='4' fill='var(--surface)' stroke='var(--accent-fill)' stroke-width='2'/><text x='339' y='46' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9.5' font-weight='700' fill='var(--text)'>Tue inc</text><rect x='394' y='26' width='74' height='32' rx='4' fill='var(--surface)' stroke='var(--accent-fill)' stroke-width='2'/><text x='431' y='46' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9.5' font-weight='700' fill='var(--text)'>Wed inc</text><text x='118' y='76' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='8.5' font-weight='600' fill='var(--text2)'>Needed: the full plus every incremental, in order</text><text x='20' y='120' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--text)'>Differential</text><rect x='118' y='100' width='74' height='32' rx='4' fill='var(--surface)' stroke='var(--accent-fill)' stroke-width='2'/><text x='155' y='120' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9.5' font-weight='700' fill='var(--text)'>Sun full</text><rect x='210' y='100' width='74' height='32' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='247' y='120' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9.5' font-weight='600' fill='var(--text2)'>Mon diff</text><rect x='302' y='100' width='74' height='32' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='339' y='120' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9.5' font-weight='600' fill='var(--text2)'>Tue diff</text><rect x='394' y='100' width='74' height='32' rx='4' fill='var(--surface)' stroke='var(--accent-fill)' stroke-width='2'/><text x='431' y='120' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9.5' font-weight='700' fill='var(--text)'>Wed diff</text><text x='118' y='150' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='8.5' font-weight='600' fill='var(--text2)'>Needed: the full plus only the latest differential</text></svg>",
+            "caption": "Restoring to Wednesday. Each incremental holds only the changes since the backup before it, so every one is needed. Each differential holds all changes since the full, so only the newest is needed."
+          },
+          "example": "A law office backs up its file server nightly to a disk in the same closet and has never tested a restore. Ransomware encrypts the server and the backup disk. The office then adds an immutable cloud copy, and Tess, a new IT assistant, restores a sample folder monthly and records how long it takes.",
+          "audit_focus": {
+            "review": [
+              "Restore a sample of files and time the result",
+              "Compare backed-up systems with the asset inventory"
+            ],
+            "evidence": [
+              "Restore test record with date and time taken",
+              "Storage settings showing a retention lock"
+            ],
+            "recommend": "Report failed restores or unprotected backup copies to the system owner the same day.",
+            "decides": "The system owner decides backup scope and retention, within policy"
+          },
+          "isaca_rule": "A backup counts only if it can be restored in time and attackers cannot reach it. Look for separation (offsite, offline or immutable) and proven restores.",
+          "exam_traps": [
+            {
+              "trap": "Backups run every night with no errors, so recovery is assured.",
+              "why": "A successful job shows data was copied. Corrupt files or a slow restore show up only when you restore and time it."
+            },
+            {
+              "trap": "An incremental restore needs only the full and the latest incremental.",
+              "why": "That is the differential rule. A restore from incrementals needs the full plus every incremental since, in order."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Immutable backup",
+              "definition": "A backup that cannot be changed or deleted, even by an administrator, until its retention period ends."
+            },
+            {
+              "term": "Offline backup",
+              "definition": "A copy disconnected from networks, sometimes called air-gapped, so remote attackers cannot reach it."
+            }
+          ]
+        },
+        {
+          "id": "2.2.6",
+          "name": "Recovery Sites",
+          "legacy_ids": [],
+          "definition": "A recovery site is an alternate place to run critical systems or work when the main site is unusable, from an empty room to a running copy.",
+          "why_it_matters": "The site must match the recovery time objective (RTO). Too slow misses the target; too ready wastes money on standby equipment.",
+          "how_it_works": [
+            "Readier sites recover faster and cost more to keep ready.",
+            "Match the site to the RTO from the business impact analysis (BIA), not to habit or budget.",
+            "Keep it far enough away that one regional event, such as a flood, cannot hit both sites.",
+            "Cloud recovery means paying mainly for stored copies until a failover, and it still needs testing."
+          ],
+          "compare": {
+            "columns": [
+              "Hot site",
+              "Warm site",
+              "Cold site",
+              "Cloud recovery"
+            ],
+            "rows": [
+              {
+                "label": "What is ready",
+                "cells": [
+                  "Equipment, connections and current data",
+                  "Equipment and connections; data must be restored",
+                  "Space, power and cooling only",
+                  "Stored copies; computing started on demand"
+                ]
+              },
+              {
+                "label": "Typical recovery time",
+                "cells": [
+                  "Minutes to hours",
+                  "Hours to days",
+                  "Days to weeks",
+                  "Minutes to hours, if built and tested"
+                ]
+              },
+              {
+                "label": "Cost to keep",
+                "cells": [
+                  "Highest",
+                  "Medium",
+                  "Lowest",
+                  "Varies; low while idle"
+                ]
+              },
+              {
+                "label": "Fits an RTO of",
+                "cells": [
+                  "Hours or less",
+                  "About a day to a few days",
+                  "Weeks",
+                  "Depends on the design"
+                ]
+              }
+            ]
+          },
+          "example": "An online pharmacy's BIA sets a four-hour RTO for orders. To save money, finance proposes a cold site across town. Sana, a junior analyst preparing the options, notes that a cold site takes days to equip and sits in the same flood zone. She puts both facts in the comparison before the decision.",
+          "audit_focus": {
+            "review": [
+              "Compare each site option's recovery time with the RTO",
+              "Confirm the site sits outside the main site's regional hazards"
+            ],
+            "evidence": [
+              "Latest failover test record with time to full operation",
+              "Site contract stating capacity and readiness"
+            ],
+            "recommend": "Present site options against the RTO to the business continuity manager, flagging any that fall short.",
+            "decides": "Senior management chooses and funds the recovery site"
+          },
+          "isaca_rule": "Let the RTO pick the site: hours means hot or a tested cloud setup, days means warm, weeks means cold. A cheaper site that misses the RTO is not a saving.",
+          "exam_traps": [
+            {
+              "trap": "A cold site is fine for a four-hour RTO, because it is cheaper.",
+              "why": "A cold site has no equipment or data, so it takes days or weeks to bring up. It cannot meet an RTO in hours."
+            },
+            {
+              "trap": "Moving to the cloud means recovery is automatic.",
+              "why": "Cloud recovery still needs copies in another region and tested procedures; the customer still owns its data and settings."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Reciprocal agreement",
+              "definition": "A deal where two organizations host each other's work in a disaster; cheap but hard to rely on."
+            },
+            {
+              "term": "Disaster recovery as a service (DRaaS)",
+              "definition": "A provider service that copies systems to its cloud and runs them there during a disaster."
+            }
+          ]
+        },
+        {
+          "id": "2.2.7",
+          "name": "Testing and Maintaining BC and DR Plans",
+          "legacy_ids": [],
+          "definition": "Plan testing checks that business continuity (BC) and disaster recovery (DR) plans work and that people know their roles.",
+          "why_it_matters": "An untested plan fails at the worst moment, with wrong numbers, missing steps and slow restores. Testing finds this while it is cheap to fix.",
+          "how_it_works": [
+            "Start with low-risk tests and move to more realistic ones as the plan matures.",
+            "Set goals for each test, such as meeting the recovery time objective (RTO), and record the results.",
+            "Update the plan after every test, real event and major change; senior management approves disruptive tests.",
+            "Incident response exercises (5.3.7) use a similar ladder, from tabletop to full-scale; a tabletop is the same discussion-based test in both."
+          ],
+          "types": [
+            {
+              "term": "Checklist (read-through)",
+              "meaning": "Each team reviews the plan on its own for errors and outdated details. No disruption."
+            },
+            {
+              "term": "Tabletop (walkthrough)",
+              "meaning": "Team members meet and talk through a scenario step by step. No systems are touched."
+            },
+            {
+              "term": "Simulation",
+              "meaning": "Teams act out their roles in a realistic scenario, sometimes on test systems, without stopping production."
+            },
+            {
+              "term": "Parallel",
+              "meaning": "Systems are brought up at the recovery site and run alongside production, which keeps running."
+            },
+            {
+              "term": "Full interruption",
+              "meaning": "Production is shut down and the business runs from the recovery site. Most realistic and highest risk."
+            }
+          ],
+          "example": "A city water department runs a parallel test of its billing system, bringing it up at the recovery site while production keeps running. The restore takes nine hours against a six-hour RTO. Dee, a junior systems administrator, records each step's timing in the test report, and the gap becomes a tracked action.",
+          "audit_focus": {
+            "review": [
+              "Confirm your role and contact details before each test",
+              "Compare results with the targets the test aimed to meet"
+            ],
+            "evidence": [
+              "Lessons-learned actions with owners and due dates",
+              "Plan version history showing post-test updates"
+            ],
+            "recommend": "Send test gaps to the plan owner and track them until the plan is updated.",
+            "decides": "Senior management decides whether production may be shut down"
+          },
+          "isaca_rule": "Test in order of risk: checklist, tabletop, simulation, parallel, full interruption. Choose the least disruptive test that meets the goal; a full interruption needs senior management approval.",
+          "exam_traps": [
+            {
+              "trap": "Start testing a new plan with a full interruption, the most realistic test.",
+              "why": "It can cause the very outage the plan is meant to handle. Find basic errors first with checklists and tabletops."
+            },
+            {
+              "trap": "A parallel test shuts down production to prove the recovery site works.",
+              "why": "In a parallel test production keeps running. Shutting it down is a full interruption test."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Lessons learned",
+              "definition": "A review after a test or event that records what worked, what did not and who will fix each gap."
+            },
+            {
+              "term": "Plan maintenance",
+              "definition": "Regular updates that keep a plan in step with changes in staff, systems, suppliers and sites."
+            }
+          ]
+        },
+        {
+          "id": "2.2.8",
+          "name": "Backing Up AI Systems and Model Drift",
+          "legacy_ids": [],
+          "definition": "Resilience for artificial intelligence (AI) services means being able to restore the models, settings and data behind them, and noticing when performance declines.",
+          "why_it_matters": "An AI service can fail while its servers are up: the model may be lost, misconfigured or slowly getting worse. If a process depends on it, that is a continuity risk.",
+          "how_it_works": [
+            "Back up what rebuilds the service: model versions, settings and prompts, and the training data.",
+            "Version these backups, so a known-good model and its settings restore together.",
+            "Model drift is a gradual drop in accuracy as real-world data moves away from what the model learned.",
+            "Plan a fallback, such as an earlier model version or a manual process."
+          ],
+          "example": "A delivery firm's AI model predicts late parcels, and dispatchers plan routes around it. After the firm adds a new region, accuracy slips week by week. Kim, a junior operations analyst, sees the weekly figure fall below the agreed threshold and reports it to the model owner, who switches dispatch back to the previous model version.",
+          "audit_focus": {
+            "review": [
+              "Confirm the AI backup set includes model, settings and data",
+              "Note outside AI providers the service depends on"
+            ],
+            "evidence": [
+              "Versioned backup records for model files",
+              "Documented fallback procedure for the AI service"
+            ],
+            "recommend": "Report drift alerts to the model owner with the figures and dates, rather than retraining the model yourself.",
+            "decides": "The model owner decides whether to roll back, retrain or pause"
+          },
+          "isaca_rule": "Treat an AI service like any critical system: back up everything needed to rebuild it and plan a fallback. A model can fail slowly while every server looks healthy.",
+          "exam_traps": [
+            {
+              "trap": "Backing up the training data is enough to recover an AI service.",
+              "why": "Without the exact model version, settings and prompts, you may not rebuild the same behavior, and retraining can take days."
+            },
+            {
+              "trap": "If the AI servers are up, the AI service is available.",
+              "why": "A drifting model that gives wrong answers is effectively down for the process that relies on it."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Rollback",
+              "definition": "Returning a system to an earlier, known-good version after a problem."
+            },
+            {
+              "term": "Model owner",
+              "definition": "The person accountable for an AI model's purpose, performance and approved changes."
+            }
+          ]
+        },
+        {
+          "id": "2.2.9",
+          "name": "AI-Assisted Detection and Resilience",
+          "legacy_ids": [],
+          "definition": "Artificial intelligence (AI) assisted detection spots trouble early; for resilience, it must catch events before they disrupt the business and keep working through an outage.",
+          "why_it_matters": "An attack caught early may never need the recovery plan. But monitoring that sits on the failed systems leaves the organization blind when most exposed.",
+          "how_it_works": [
+            "AI monitoring flags early warning signs, such as files renamed at high speed just before ransomware encrypts them.",
+            "Activation triggers, such as confirmed ransomware spread, move a response from incident handling into continuity or recovery.",
+            "Run monitoring where a main-site failure cannot take it down, and restore it early.",
+            "Back up detection rules, settings and logs away from the monitored systems. Alert triage itself is taught in 5.2.3."
+          ],
+          "example": "A logistics firm's AI monitoring tool flags files on the shipping server being renamed at high speed, an early sign of ransomware. The playbook tells Jo, the night-shift analyst, to confirm it in the logs and call the on-call incident response lead, who has the server isolated before the encryption spreads. Because it was caught early, the firm never has to declare a disaster or fail over to its recovery site.",
+          "audit_focus": {
+            "review": [
+              "Confirm monitoring appears in the recovery plan's restore order",
+              "Ask the system owner where the monitoring tool is hosted"
+            ],
+            "evidence": [
+              "Recovery plan section covering monitoring at the recovery site",
+              "Last good copy of the monitoring tool's configuration"
+            ],
+            "recommend": "Raise monitoring gaps at the recovery site with the business continuity manager before the next test.",
+            "decides": "The incident response lead decides containment; senior management declares a disaster"
+          },
+          "isaca_rule": "Early detection is a resilience control: the sooner an event is caught, the less there is to recover. Detection must survive the outage it warns about.",
+          "exam_traps": [
+            {
+              "trap": "During a disaster, security monitoring can wait until normal systems are back.",
+              "why": "Attackers exploit confusion, and restored systems are exposed too. Monitoring belongs early in the restore order."
+            },
+            {
+              "trap": "Restoring the servers also restores everything the detection tool knew.",
+              "why": "Only if its rules, settings and logs were backed up separately. Logs left on encrypted servers are lost."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Early warning",
+              "definition": "Detection soon enough to contain an event before it disrupts a critical business function."
+            },
+            {
+              "term": "Activation trigger",
+              "definition": "A defined condition, such as confirmed ransomware spread, that starts the continuity or recovery plan."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "topic_id": "2.3",
+      "topic_name": "Understand security awareness",
+      "overview": "Most attacks reach people before they reach systems. This topic covers building a culture where security matters and leaders model it, and the core ideas every staff member needs: social engineering, phishing, including AI-generated lures, and protecting passwords. A safe, fast reporting habit ties it all together.",
+      "can_do": [
+        "Explain how leadership and a no-blame reporting culture make awareness work",
+        "Tell awareness, training and education apart and match each to an audience",
+        "Spot the pressure tactics in a social engineering or phishing scenario, including AI-generated lures",
+        "Build safe password habits: long, unique passphrases, a password manager, no sharing and fast reporting"
+      ],
+      "subtopics": [
+        {
+          "id": "2.3.1",
+          "name": "Security Culture and Leadership",
+          "legacy_ids": [],
+          "definition": "Security culture is the shared attitudes and habits that shape how people treat security day to day, especially when no one is watching.",
+          "why_it_matters": "Controls fail when people work around them. A culture where staff value security and feel safe reporting mistakes catches problems early.",
+          "how_it_works": [
+            "Leaders set the tone: they follow the same rules, talk about security and fund it.",
+            "Security is part of everyone's job, not only the security team's.",
+            "Reporting is easy and safe, with thanks instead of blame for honest mistakes.",
+            "Culture is judged by behavior, such as reporting rates, not course completion."
+          ],
+          "example": "A finance director at a manufacturer refuses the multifactor authentication (MFA) the access policy requires, saying it slows them down. Soon others ask for the same exception. Jamal, a new security analyst, neither argues nor quietly grants exceptions. He logs each request in the exception process for the policy owner, who sees the pattern and raises it with senior management.",
+          "audit_focus": {
+            "review": [
+              "Follow the same rules you ask others to follow",
+              "Record exception requests instead of granting them informally"
+            ],
+            "evidence": [
+              "Exception register with approver, reason and expiry date",
+              "Staff survey results on willingness to report"
+            ],
+            "recommend": "Route every exception request, including those from senior leaders, through the documented exception process to the policy owner.",
+            "decides": "The policy owner approves exceptions; senior management decides any risk above tolerance"
+          },
+          "isaca_rule": "Culture starts at the top and grows through safe reporting. Leadership support and no-blame reporting do more than extra technology or punishment. Exceptions go through the formal process, whoever asks.",
+          "exam_traps": [
+            {
+              "trap": "Punishing staff who click phishing links will improve security.",
+              "why": "Fear makes people hide mistakes, and hidden incidents grow. Fast reports matter more than any single click."
+            },
+            {
+              "trap": "Security culture is the security team's job.",
+              "why": "Culture comes from leaders and everyday behavior. Without leadership backing, awareness efforts fade."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Tone at the top",
+              "definition": "The example leaders set through their own behavior and priorities, which staff tend to follow."
+            },
+            {
+              "term": "Policy exception",
+              "definition": "A recorded, time-limited permission to depart from a policy, approved by the policy owner and reviewed before it expires."
+            }
+          ]
+        },
+        {
+          "id": "2.3.2",
+          "name": "Awareness, Training and Education",
+          "legacy_ids": [],
+          "definition": "Awareness keeps security in mind for everyone, training builds job-specific skills for particular roles, and education builds deeper understanding for those whose careers need it.",
+          "why_it_matters": "One course for everyone wastes time and misses real risks. A developer, a payroll clerk and a help desk agent face different attacks.",
+          "how_it_works": [
+            "Awareness reaches everyone through short, frequent messages, such as reminders and brief campaigns.",
+            "Basic training happens at onboarding and then on a regular cycle, such as yearly.",
+            "Role-based training adds what a job needs: secure coding for developers, caller checks for the help desk.",
+            "Content is refreshed as threats change, for example to cover scams written with artificial intelligence (AI)."
+          ],
+          "compare": {
+            "columns": [
+              "Awareness",
+              "Training",
+              "Education"
+            ],
+            "rows": [
+              {
+                "label": "Goal",
+                "cells": [
+                  "Notice and remember",
+                  "Do a task correctly",
+                  "Understand why, in depth"
+                ]
+              },
+              {
+                "label": "Audience",
+                "cells": [
+                  "Everyone",
+                  "People in specific roles",
+                  "People building security careers"
+                ]
+              },
+              {
+                "label": "Format",
+                "cells": [
+                  "Posters, emails, short videos",
+                  "Courses, labs, practice",
+                  "Degrees, certifications, long programs"
+                ]
+              },
+              {
+                "label": "Time frame",
+                "cells": [
+                  "Short and frequent",
+                  "Hours to days",
+                  "Months to years"
+                ]
+              },
+              {
+                "label": "Example",
+                "cells": [
+                  "A reminder to lock screens",
+                  "Help desk staff practice verifying callers",
+                  "A university security course"
+                ]
+              }
+            ]
+          },
+          "example": "A hospital gives all staff the same yearly video. After an attacker talks a help desk agent into resetting a surgeon's password by phone, the training lead adds a caller-verification module for the help desk and monthly reminders for everyone. Femi, a help desk technician, now calls back on the directory number before any reset.",
+          "audit_focus": {
+            "review": [
+              "Confirm you completed the training your role requires",
+              "Compare the mistakes you see with what training covers"
+            ],
+            "evidence": [
+              "Training records by role, with dates",
+              "Role-to-course mapping showing who needs which module"
+            ],
+            "recommend": "Pass patterns of repeated mistakes to the training lead so role-based content can be added.",
+            "decides": "Management sets the training each role requires"
+          },
+          "isaca_rule": "Match the learning to the role and the risk. Everyone gets awareness; higher-risk roles get role-based training on top. When one group repeats one mistake, train that group.",
+          "exam_traps": [
+            {
+              "trap": "Give everyone the same annual course so training is fair.",
+              "why": "Roles that handle money, access or code face specific attacks and need training on them, on top of the basics."
+            },
+            {
+              "trap": "A completed course means staff will behave securely.",
+              "why": "Completion shows attendance, not behavior. Measure behavior, such as phishing report rates."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Role-based training",
+              "definition": "Training built for the duties and risks of a specific job, given on top of general awareness."
+            },
+            {
+              "term": "Onboarding",
+              "definition": "Preparing new staff, including security training before or soon after they get access."
+            }
+          ]
+        },
+        {
+          "id": "2.3.3",
+          "name": "Social Engineering Tactics",
+          "legacy_ids": [],
+          "definition": "Social engineering is manipulating people into giving up information, access or money by exploiting trust, fear, helpfulness or urgency instead of technical flaws.",
+          "why_it_matters": "It is often easier to trick a person than to break a system. One convinced employee can hand over what firewalls and access controls protect.",
+          "how_it_works": [
+            "Attackers research targets through social media, company websites and earlier data leaks.",
+            "They build a believable story, such as a new IT contractor or a supplier.",
+            "They apply pressure, such as authority, urgency or the wish to help, and ask for one small step.",
+            "The defense: slow down, verify through a separate known channel and follow procedure."
+          ],
+          "types": [
+            {
+              "term": "Pretexting",
+              "meaning": "Using an invented story and role to win trust and draw out information."
+            },
+            {
+              "term": "Impersonation",
+              "meaning": "Posing as a real or plausible person, such as a manager, supplier or IT staff member."
+            },
+            {
+              "term": "Tailgating and piggybacking",
+              "meaning": "Tailgating is following someone through a controlled door without their knowledge or consent; piggybacking is the same with their knowledge or consent, such as when they hold it open."
+            },
+            {
+              "term": "Baiting",
+              "meaning": "Leaving a tempting item, such as a memory stick labeled \"salaries\", for someone to pick up and use."
+            },
+            {
+              "term": "Quid pro quo",
+              "meaning": "Offering a favor, such as free tech help, in exchange for access or information."
+            },
+            {
+              "term": "Shoulder surfing",
+              "meaning": "Watching someone type a password or read sensitive data on screen."
+            }
+          ],
+          "example": "A caller claiming to be from the district's IT supplier tells a school receptionist that email will shut down within the hour unless they get the principal's login. The receptionist takes the caller's name, hangs up and rings the IT desk on the staff directory number to check the story.",
+          "audit_focus": {
+            "review": [
+              "Verify unusual requests through a known number or in person",
+              "Log the time, caller details and request made"
+            ],
+            "evidence": [
+              "Official contact list used for call-backs",
+              "Visitor and badge logs for in-person attempts"
+            ],
+            "recommend": "Report every suspected social engineering attempt to the security team, including the ones you stopped.",
+            "decides": "The security team decides whether to warn other staff"
+          },
+          "isaca_rule": "Pressure is the signal. When a request is urgent, unusual or backed by authority, verify it through a channel you already trust, not one the requester supplies, and report every attempt.",
+          "exam_traps": [
+            {
+              "trap": "The caller knew the manager's name and the project, so the request is genuine.",
+              "why": "Those details come from public sources and earlier contacts. Knowing internal facts proves research, not identity."
+            },
+            {
+              "trap": "Verify a caller by calling back the number they give you.",
+              "why": "The attacker controls that number. Use the staff directory or the official website instead."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Out-of-band verification",
+              "definition": "Confirming a request through a separate, trusted channel, such as a known phone number, instead of replying to it."
+            },
+            {
+              "term": "Open-source intelligence (OSINT)",
+              "definition": "Information gathered from public sources, such as social media, often used to make a story convincing."
+            }
+          ]
+        },
+        {
+          "id": "2.3.4",
+          "name": "Phishing and Its Variants",
+          "legacy_ids": [],
+          "definition": "Phishing is a message, usually an email, text or call, that pretends to come from a trusted source to trick the reader into clicking, sharing data or paying.",
+          "why_it_matters": "Phishing is one of the most common ways attackers steal passwords and trigger fraudulent payments. Fast reporting protects the whole organization.",
+          "how_it_works": [
+            "Lures copy trusted senders, such as a bank, a delivery firm or the IT team.",
+            "Warning signs include urgency, requests for passwords or payment, and addresses that do not match.",
+            "Hover over links to see where they go, and type known addresses yourself.",
+            "Report it with the approved button; do not forward it. If you clicked, report at once."
+          ],
+          "types": [
+            {
+              "term": "Spear phishing",
+              "meaning": "Targets a specific person or team, using personal details to look genuine."
+            },
+            {
+              "term": "Whaling",
+              "meaning": "Spear phishing aimed at senior executives or other high-value people."
+            },
+            {
+              "term": "Business email compromise (BEC)",
+              "meaning": "Uses a real or faked business email account to request payments or changes to bank details."
+            },
+            {
+              "term": "Smishing",
+              "meaning": "Phishing by text message (SMS, short message service)."
+            },
+            {
+              "term": "Vishing",
+              "meaning": "Phishing by voice call, including recorded or artificially generated voices."
+            },
+            {
+              "term": "Quishing",
+              "meaning": "Phishing through a QR (quick response) code that leads to a fake website."
+            }
+          ],
+          "example": "A logistics clerk gets an email, seemingly from the company's delivery software, warning that their account locks today unless they sign in through a link. The sender's address is slightly misspelled. The clerk does not click or forward it to coworkers. They use the report button, then open the real software from their bookmarks to check the account.",
+          "audit_focus": {
+            "review": [
+              "Inspect the sender address and link destination before acting",
+              "Tell the security team at once if you clicked or signed in"
+            ],
+            "evidence": [
+              "Message headers showing the real sending address",
+              "Sign-in history for the targeted account"
+            ],
+            "recommend": "Report suspected phishing to the security team and leave blocking or removal decisions to them.",
+            "decides": "The security team decides whether to remove the message company-wide"
+          },
+          "isaca_rule": "Do not click, do not reply, report. A suspicious message goes to the approved reporting channel, not the trash or a colleague's inbox, and anyone who clicked reports it immediately.",
+          "exam_traps": [
+            {
+              "trap": "Delete a suspicious email so no one else clicks it.",
+              "why": "Deleting hides the attack from the security team, who may need to remove the same message from other inboxes."
+            },
+            {
+              "trap": "The email has the company logo and the right name, so it is safe.",
+              "why": "Logos and names are easy to copy. Check the sender, the link and whether the request makes sense."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Spoofing",
+              "definition": "Faking the sender details of a message so it appears to come from someone else."
+            },
+            {
+              "term": "Credential harvesting",
+              "definition": "Collecting usernames and passwords through a fake sign-in page."
+            }
+          ]
+        },
+        {
+          "id": "2.3.5",
+          "name": "AI-Boosted Phishing and Deepfakes",
+          "legacy_ids": [],
+          "definition": "Artificial intelligence (AI) boosted social engineering uses AI tools to write convincing messages, clone voices or fake video, making scams more personal and more plentiful.",
+          "why_it_matters": "Old warning signs such as poor grammar are fading. Attackers can copy an executive's writing or voice, so people must rely on verification, not on how genuine something seems.",
+          "how_it_works": [
+            "Generative AI writes fluent, personalized lures in many languages, at scale.",
+            "Voice cloning copies a voice from a short recording; deepfake video puts a familiar face on a live call.",
+            "Defenses rely on process: call-backs to known numbers, code phrases and dual approval for payments.",
+            "Awareness content uses real AI examples and teaches verifying requests, not judging polish."
+          ],
+          "example": "A charity's finance officer joins a video call where the chief executive, looking and sounding normal, urgently asks for a transfer to a new supplier. Policy requires a call-back for new payees, so the officer rings the chief executive's known mobile number, learns they are on leave and reports the call to the security team.",
+          "audit_focus": {
+            "review": [
+              "Verify payment requests by calling a known number",
+              "Confirm a second approver signed off any new payee"
+            ],
+            "evidence": [
+              "Call-back record with the number used and the outcome",
+              "Recording or screenshot of the suspicious call"
+            ],
+            "recommend": "Report suspected AI-generated scams to the security team so training and warnings can be updated.",
+            "decides": "Finance management sets payment approval and call-back rules"
+          },
+          "isaca_rule": "If sight and sound can be faked, procedure is the safeguard. Verify requests for money, passwords or access through a separate known channel, whoever seems to be asking.",
+          "exam_traps": [
+            {
+              "trap": "The message has perfect grammar and the right tone, so it is not phishing.",
+              "why": "AI removes the errors people were taught to spot. Judge and verify the request, not the writing."
+            },
+            {
+              "trap": "You saw the executive on video, so the payment request is genuine.",
+              "why": "Deepfakes can imitate real people on live calls. The call-back and normal approvals still apply."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Voice cloning",
+              "definition": "Using AI to copy a person's voice from recordings so it can say new things."
+            },
+            {
+              "term": "Dual approval",
+              "definition": "A control where two authorized people must approve an action, such as a payment, before it happens."
+            }
+          ]
+        },
+        {
+          "id": "2.3.6",
+          "name": "Password and Passphrase Habits",
+          "legacy_ids": [],
+          "definition": "Password protection, for users, means choosing long, unique passphrases, keeping them in a password manager, never sharing them and reporting any exposure.",
+          "why_it_matters": "Reused passwords are a leading cause of account takeover. After one site is breached, attackers try the stolen passwords on many others.",
+          "how_it_works": [
+            "Length beats complexity: a long passphrase is harder to guess than a short password with symbols. System-side rules are in 3.1.6.",
+            "Use a different password for every account, so one breach does not unlock the rest.",
+            "A password manager stores unique passwords; protect it with a strong passphrase and multifactor authentication (MFA).",
+            "Never share a password, even with IT or a manager, and report any exposure at once."
+          ],
+          "compare": {
+            "columns": [
+              "Risky habit",
+              "Safer habit"
+            ],
+            "rows": [
+              {
+                "label": "Choosing",
+                "cells": [
+                  "A short word with a number and a symbol added",
+                  "Several random words joined into a long passphrase"
+                ]
+              },
+              {
+                "label": "Reuse",
+                "cells": [
+                  "One password for work and personal sites",
+                  "A unique password for every account, kept in a password manager"
+                ]
+              },
+              {
+                "label": "Sharing",
+                "cells": [
+                  "Telling IT or a manager who asks for it",
+                  "Never sharing; IT can reset an account without knowing the password"
+                ]
+              },
+              {
+                "label": "After a breach alert",
+                "cells": [
+                  "Waiting to see if anything happens",
+                  "Reporting it and changing the password as the security team directs"
+                ]
+              }
+            ]
+          },
+          "example": "Dana, a youth sports league's volunteer coordinator, uses one password for the league email and a shopping site. After the shopping site is breached, attackers sign in to the league email and message parents. The league's IT volunteer reports it to the board and helps Dana set up a password manager, unique passphrases and app-based MFA.",
+          "audit_focus": {
+            "review": [
+              "Fix any work account the password manager flags as reused",
+              "Check breach alerts for your work email address"
+            ],
+            "evidence": [
+              "Password manager report of reused or weak passwords",
+              "Breach alert notices for your work accounts"
+            ],
+            "recommend": "Report suspected password exposure to the security team at once and change the password as they direct.",
+            "decides": "Security management sets the password and MFA standard, within approved policy"
+          },
+          "isaca_rule": "Long, unique, kept in a password manager and never shared. IT never needs your password, and any sign of exposure is reported at once.",
+          "exam_traps": [
+            {
+              "trap": "Reusing one strong password on several sites is safe because it is hard to guess.",
+              "why": "Strength does not help once a site leaks it. Attackers try leaked passwords everywhere."
+            },
+            {
+              "trap": "A password manager is risky because it keeps every password in one place.",
+              "why": "It encrypts the vault and makes unique passwords practical. With a strong passphrase and MFA on it, it is the safer choice."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Passphrase",
+              "definition": "A password made of several words, long enough to resist guessing yet easy to remember."
+            },
+            {
+              "term": "Password manager",
+              "definition": "An app that creates, stores and fills strong, unique passwords, protected by one main secret."
+            },
+            {
+              "term": "Credential stuffing",
+              "definition": "Trying usernames and passwords stolen in one breach on many other sites."
+            }
+          ]
+        },
+        {
+          "id": "2.3.7",
+          "name": "Reporting Culture and Phishing Simulations",
+          "legacy_ids": [],
+          "definition": "A reporting culture makes it quick and safe to report suspicious messages, mistakes or incidents; phishing simulations let staff practice spotting lures.",
+          "why_it_matters": "Security teams can act only on what they know. A fast report, even of one's own mistake, can stop an attack before it spreads.",
+          "how_it_works": [
+            "Give people one simple way to report, then thank them and share the outcome.",
+            "Report your own mistakes at once; delay does more harm than the mistake.",
+            "Simulations are approved in advance, avoid lures that cause real distress and treat a click as a teaching moment, not grounds for punishment.",
+            "Track how many people report and how fast, not just how many click."
+          ],
+          "example": "A library assistant clicks a link about overdue fines and then notices the odd web address. Embarrassed, they consider saying nothing. Remembering the no-blame policy, they use the report button within minutes and call the help desk, so the security team can reset the password and block the site.",
+          "audit_focus": {
+            "review": [
+              "Confirm a simulation has written approval before it is sent",
+              "Share results by team, never by named individual"
+            ],
+            "evidence": [
+              "Report records showing time to first report",
+              "Simulation results by team: report rate and click rate"
+            ],
+            "recommend": "Send simulation results to the awareness lead by team, without naming or shaming individuals.",
+            "decides": "Management approves simulation campaigns and how results are used"
+          },
+          "isaca_rule": "Report early, report always, including your own mistakes. A growing report rate is a sign of a healthy culture.",
+          "exam_traps": [
+            {
+              "trap": "After clicking a phishing link, close the browser and wait to see what happens.",
+              "why": "Attackers act fast. An immediate report lets the team reset accounts and block the threat."
+            },
+            {
+              "trap": "A falling click rate is the only sign of a successful phishing program.",
+              "why": "Click rates move with how hard the lure is. Report rate and time to report show whether people act."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Phishing simulation",
+              "definition": "An authorized fake phishing message sent to staff to practice spotting and reporting it."
+            },
+            {
+              "term": "Report rate",
+              "definition": "The share of people who report a simulated or real phishing message."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "topic_id": "2.4",
+      "topic_name": "Measure cybersecurity effectiveness",
+      "overview": "Leaders cannot steer security they cannot see. This topic covers turning raw measurements into useful metrics, telling performance indicators from key risk indicators (KRIs), setting thresholds that trigger action, and presenting results through dashboards, scorecards and reports, including indicators for AI systems.",
+      "can_do": [
+        "Tell a measure from a metric, and a key performance indicator (KPI) from a key risk indicator (KRI)",
+        "Classify a measure as implementation, effectiveness, efficiency or impact",
+        "Choose a dashboard, scorecard or report for a given audience and purpose",
+        "Name useful AI risk indicators, such as model accuracy, override rates and unapproved AI tool use"
+      ],
+      "subtopics": [
+        {
+          "id": "2.4.1",
+          "name": "Measures and Metrics: The Basics",
+          "legacy_ids": [],
+          "definition": "A measure is a raw, quantified result, such as 940 of 1,000 laptops patched; a metric compares measures against a goal to show progress or risk.",
+          "why_it_matters": "Without measurement, leaders fund security on instinct. Good metrics show what is improving, what is slipping and where to act.",
+          "how_it_works": [
+            "Start from a goal, such as patching critical flaws quickly, then pick measures that show progress.",
+            "Collect data the same way every period, so trends mean something.",
+            "Compare each result with a baseline and a target.",
+            "If a metric drives no decision, drop it; a few meaningful metrics beat many."
+          ],
+          "example": "A city council's IT team reports \"12,000 threats blocked this month\", and councilors cannot tell whether that is good. The security lead switches to \"critical patches applied within 14 days: 78%, target 95%\". Yusuf, the junior analyst who pulls the data, uses the same query and cutoff date every month, so the trend stays comparable.",
+          "audit_focus": {
+            "review": [
+              "Confirm each metric you report has a goal and a target",
+              "Note any change in collection method, with the date"
+            ],
+            "evidence": [
+              "Saved query used to pull the data",
+              "Metric definition sheet with goal, target and owner"
+            ],
+            "recommend": "Ask the metric owner before changing a definition, and flag numbers that drive no decision.",
+            "decides": "Management chooses which metrics to track and sets their targets"
+          },
+          "isaca_rule": "A useful metric ties to a goal, has a target and changes a decision. Raw counts such as \"attacks blocked\" rarely do.",
+          "exam_traps": [
+            {
+              "trap": "More blocked attacks this month means security is improving.",
+              "why": "Blocked counts mostly reflect how many attackers tried, not whether controls work or risk is falling."
+            },
+            {
+              "trap": "Switch to a better data source whenever one appears, without noting it.",
+              "why": "A quiet method change breaks the trend. Record the change and restate the baseline."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Baseline (for a metric)",
+              "definition": "The starting value of a measure, used to judge later change."
+            },
+            {
+              "term": "Vanity metric",
+              "definition": "A number that looks impressive but does not inform a decision or show real progress."
+            }
+          ]
+        },
+        {
+          "id": "2.4.2",
+          "name": "Types of Security Measures",
+          "legacy_ids": [],
+          "definition": "Security measures fall into types by what they show: whether controls exist, whether they work, how fast they work and what they mean for the business.",
+          "why_it_matters": "Knowing the type stops a common mistake: reporting that a control exists as proof that it works.",
+          "how_it_works": [
+            "Measurement guidance from NIST (the National Institute of Standards and Technology) sorts measures into the four types below.",
+            "Programs usually start with implementation measures and add the others as data matures.",
+            "Mean time to detect (MTTD) and mean time to recover (MTTR, sometimes mean time to repair) are common efficiency measures.",
+            "Executives need impact measures; operators need implementation and efficiency measures."
+          ],
+          "types": [
+            {
+              "term": "Implementation",
+              "meaning": "Shows whether a control is in place, often as a percentage. Example: share of laptops with disk encryption."
+            },
+            {
+              "term": "Effectiveness",
+              "meaning": "Shows whether a control achieves its intended result. Example: share of simulated phishing emails that staff report."
+            },
+            {
+              "term": "Efficiency",
+              "meaning": "Shows how quickly controls give feedback or problems are fixed. Example: average days to patch critical flaws."
+            },
+            {
+              "term": "Impact",
+              "meaning": "Shows the effect on the mission or finances. Example: cost of security incidents this year."
+            }
+          ],
+          "example": "A clinic's report says \"100% of staff completed phishing training\". The practice manager asks whether phishing is actually being stopped. Ravi, a junior analyst, explains that completion is an implementation measure and adds two to the next report: the share of test phishing emails staff report, and the average time to report.",
+          "audit_focus": {
+            "review": [
+              "Label each reported measure by its type",
+              "Confirm effectiveness claims rest on outcome data"
+            ],
+            "evidence": [
+              "Ticket timestamps behind detection and recovery times",
+              "Simulation data behind effectiveness figures"
+            ],
+            "recommend": "Point out to the report owner any claim of effectiveness backed only by implementation data.",
+            "decides": "Management decides which measures appear in executive reports"
+          },
+          "isaca_rule": "Existence is not effectiveness. To show a control works, use an effectiveness measure; for executives, translate results into impact on the mission and finances.",
+          "exam_traps": [
+            {
+              "trap": "100% training completion shows the awareness program is effective.",
+              "why": "Completion is an implementation measure. Effectiveness asks whether behavior changed, such as more phishing reports."
+            },
+            {
+              "trap": "MTTR measures how often systems fail.",
+              "why": "Mean time to recover is how long recovery takes on average. Failure frequency is mean time between failures (MTBF)."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Leading indicator",
+              "definition": "A metric that signals growing risk before an incident, such as a growing backlog of unpatched systems."
+            },
+            {
+              "term": "Lagging indicator",
+              "definition": "A metric that records outcomes after the fact, such as the number of incidents last quarter."
+            }
+          ]
+        },
+        {
+          "id": "2.4.3",
+          "name": "Key Performance and Key Risk Indicators",
+          "legacy_ids": [],
+          "definition": "A key performance indicator (KPI) shows how well a process meets its goal; a key risk indicator (KRI) gives early warning that a risk is growing toward its limit.",
+          "why_it_matters": "KPIs show whether security work is on track; KRIs show whether exposure is growing before it becomes an incident. Mixing them up hides warnings.",
+          "how_it_works": [
+            "KPIs look at performance, such as the share of patches applied on time.",
+            "KRIs look at exposure, such as internet-facing systems with critical flaws.",
+            "Good KRIs are leading, measurable and tied to a named risk, with thresholds set from its tolerance.",
+            "The same number can be either; what matters is whether it judges performance or warns of risk."
+          ],
+          "compare": {
+            "columns": [
+              "KPI",
+              "KRI"
+            ],
+            "rows": [
+              {
+                "label": "Question it answers",
+                "cells": [
+                  "Are we performing as planned?",
+                  "Is a risk getting worse?"
+                ]
+              },
+              {
+                "label": "Looks",
+                "cells": [
+                  "Mostly back at results",
+                  "Mostly ahead, as a warning"
+                ]
+              },
+              {
+                "label": "Tied to",
+                "cells": [
+                  "A goal or service target",
+                  "A risk and its tolerance"
+                ]
+              },
+              {
+                "label": "Example",
+                "cells": [
+                  "95% of critical patches applied within 14 days",
+                  "Critical flaws open more than 30 days on internet-facing servers"
+                ]
+              },
+              {
+                "label": "If it turns red",
+                "cells": [
+                  "Improve the process",
+                  "Treat or escalate the risk"
+                ]
+              }
+            ]
+          },
+          "example": "A logistics company's quarterly supplier account review, a KPI, has been green all year. Chen, a junior analyst, notices another number climbing: supplier accounts with administrator rights and no sign-in for 90 days. He proposes it as a KRI for misused supplier access and sends the trend to the risk owner.",
+          "audit_focus": {
+            "review": [
+              "Confirm each KRI links to a named risk in the register",
+              "Compare this period's KRI values with the last"
+            ],
+            "evidence": [
+              "KRI history with dates, values and thresholds",
+              "Source system report behind each KRI value"
+            ],
+            "recommend": "Send worsening KRI trends to the risk owner with the source data, even before any threshold is crossed.",
+            "decides": "The risk owner decides how to respond to a worsening KRI"
+          },
+          "isaca_rule": "KPIs show performance; KRIs warn of risk. For early warning, track a leading KRI tied to a named risk, not a count of past incidents. A green KPI does not mean the risk is controlled.",
+          "exam_traps": [
+            {
+              "trap": "Last quarter's incident count is a good early-warning KRI.",
+              "why": "Incident counts are lagging: they record harm already done. Early-warning KRIs track conditions that come before incidents."
+            },
+            {
+              "trap": "If every KPI is green, risk is under control.",
+              "why": "A process can perform well while exposure grows elsewhere, which is why KRIs are tracked separately."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Exposure",
+              "definition": "How open an asset or process is to a threat, such as an unpatched system facing the internet."
+            },
+            {
+              "term": "Privileged account",
+              "definition": "An account with administrator-level rights that could do serious harm if misused."
+            }
+          ]
+        },
+        {
+          "id": "2.4.4",
+          "name": "Thresholds, Targets and Escalation",
+          "legacy_ids": [],
+          "definition": "Thresholds are preset values on a metric that trigger set actions, such as review or escalation, when crossed; targets are the values the organization aims for.",
+          "why_it_matters": "A metric without a threshold relies on someone noticing a problem. Agreed thresholds make escalation automatic, so bad news reaches the right person on time.",
+          "how_it_works": [
+            "Thresholds come from the risk appetite and tolerance leaders agreed.",
+            "Color bands show how close a metric is to its limit; each band names an action and an owner.",
+            "Escalation rules say how fast to report and to whom, even when the news is awkward.",
+            "Thresholds are reviewed when the appetite, the business or the threats change."
+          ],
+          "types": [
+            {
+              "term": "Green",
+              "meaning": "Within tolerance; keep monitoring as usual."
+            },
+            {
+              "term": "Amber",
+              "meaning": "Approaching the limit; the risk owner reviews it and plans action."
+            },
+            {
+              "term": "Red",
+              "meaning": "Beyond tolerance; escalate to senior management to treat or formally accept the risk."
+            }
+          ],
+          "example": "A school district's key risk indicator (KRI) for laptops missing security updates is green under 3%, amber from 3 to 8% and red above 8%. After an update tool fails, it hits 11% the week before exams. Raj, the IT technician who runs the weekly report, follows the red-band rule and alerts the IT director that afternoon.",
+          "audit_focus": {
+            "review": [
+              "Compare each new value with its threshold bands",
+              "Confirm any threshold change has a recorded approver"
+            ],
+            "evidence": [
+              "Threshold table with bands, owners and actions",
+              "Escalation tickets showing when they were sent"
+            ],
+            "recommend": "Escalate breaches to the named owner as the rule requires, and never change a threshold yourself.",
+            "decides": "Senior management approves each threshold band and any change to it"
+          },
+          "isaca_rule": "Thresholds turn numbers into action. When a metric crosses one, escalate at once; never sit on bad news, move the threshold or adjust the number.",
+          "exam_traps": [
+            {
+              "trap": "Raise the threshold after a breach so the KRI goes back to green.",
+              "why": "Moving the line hides the risk without reducing it. Only those who own risk appetite change thresholds, with a recorded reason."
+            },
+            {
+              "trap": "Wait for the next scheduled report before escalating a red KRI.",
+              "why": "Escalation rules exist so serious changes reach decision makers quickly, not at the next routine meeting."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Threshold",
+              "definition": "A preset value on a metric that, once crossed, triggers a defined action."
+            },
+            {
+              "term": "Escalation",
+              "definition": "Passing an issue to a higher authority or the right owner, using a set path and timing."
+            }
+          ]
+        },
+        {
+          "id": "2.4.5",
+          "name": "Dashboards, Scorecards and Reports",
+          "legacy_ids": [],
+          "definition": "Dashboards, scorecards and reports are ways to present metrics: a live visual view, a periodic grade against targets and a written account with context and recommendations.",
+          "why_it_matters": "The right numbers in the wrong format still fail. A board needs a short view of risk and trends; an operations team needs live detail.",
+          "how_it_works": [
+            "Know the audience first: the board, senior management, risk owners or technical teams.",
+            "Dashboards suit people who act daily; they refresh often and allow drill-down.",
+            "Scorecards suit periodic reviews against targets; reports explain trends, causes and the decisions needed.",
+            "Show trends, not single snapshots, and use the same definitions in every view."
+          ],
+          "compare": {
+            "columns": [
+              "Dashboard",
+              "Scorecard",
+              "Report"
+            ],
+            "rows": [
+              {
+                "label": "Format",
+                "cells": [
+                  "Live charts and gauges",
+                  "Table of results against targets",
+                  "Written document or briefing"
+                ]
+              },
+              {
+                "label": "Updated",
+                "cells": [
+                  "Continuously or daily",
+                  "Monthly or quarterly",
+                  "Monthly, quarterly or as needed"
+                ]
+              },
+              {
+                "label": "Best for",
+                "cells": [
+                  "Operations teams watching day to day",
+                  "Managers tracking progress on goals",
+                  "Leaders making decisions or providing oversight"
+                ]
+              },
+              {
+                "label": "Strength",
+                "cells": [
+                  "Speed and detail",
+                  "Status at a glance",
+                  "Context, causes and recommendations"
+                ]
+              }
+            ]
+          },
+          "example": "A hospital's security team shows the board a 40-chart operations dashboard every quarter, and board members lose interest. The security manager replaces it with a one-page scorecard of six metrics and a short report on two risks needing a decision. Ivo, a junior analyst, writes one plain sentence under each red item on what it means for patient care.",
+          "audit_focus": {
+            "review": [
+              "Confirm the same metric shows the same value in every view",
+              "Compare the level of detail with what the audience needs"
+            ],
+            "evidence": [
+              "Metric definition sheet used for all three formats",
+              "Board feedback on past reports"
+            ],
+            "recommend": "Flag numbers that differ between the dashboard and the report to the reporting owner before release.",
+            "decides": "The security leader decides what is reported to the board"
+          },
+          "isaca_rule": "Fit the format to the audience and the decision. Boards get short, business-focused scorecards and reports; operations teams get live dashboards.",
+          "exam_traps": [
+            {
+              "trap": "Give the board the full technical dashboard so nothing is hidden.",
+              "why": "Too much detail buries what needs board attention. Boards need summarized risk, trends and clear decisions."
+            },
+            {
+              "trap": "A dashboard that is all green means there is nothing to report.",
+              "why": "Green covers only what is measured. Reports still need new risks, unmeasured areas and trends heading toward a limit."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Balanced scorecard",
+              "definition": "A scorecard that tracks goals from several viewpoints, such as financial, customer and process, not just one."
+            },
+            {
+              "term": "Drill-down",
+              "definition": "Opening a dashboard figure to see the detailed data behind it."
+            }
+          ]
+        },
+        {
+          "id": "2.4.6",
+          "name": "Using Measurement to Improve",
+          "legacy_ids": [],
+          "definition": "Using measurement to improve means acting on what metrics show: finding causes, fixing them, checking the result and refining the metrics themselves over time.",
+          "why_it_matters": "Measuring without acting just documents decline. Metrics earn their cost only when they drive fixes and prove the fixes worked.",
+          "how_it_works": [
+            "Look at trends, not one month alone, and ask why a number moved before acting.",
+            "Give each fix an owner and a due date, then measure again to confirm it worked.",
+            "Watch for gaming: once a number is a target, people may improve the number, not the outcome.",
+            "Retire metrics no one uses, and add ones for new risks such as artificial intelligence (AI) use."
+          ],
+          "example": "A software company's rate for closing vulnerability tickets within 30 days jumps from 60% to 98% in a month. Mei, a junior analyst, samples ten closed tickets and finds six marked accepted risk without the risk owner's approval. She sends the sample to the security manager, who limits that kind of closure to risk owners.",
+          "audit_focus": {
+            "review": [
+              "Sample a few records behind any sudden jump or drop",
+              "Compare the next period's figure with the pre-fix value"
+            ],
+            "evidence": [
+              "Sampled records set against the reported figure",
+              "Action log with owners, due dates and status"
+            ],
+            "recommend": "Report suspected metric gaming or poor data quality to the security manager with the sampled evidence.",
+            "decides": "Management decides improvement priorities and funds the actions"
+          },
+          "isaca_rule": "Treat a sudden improvement with the same curiosity as a sudden drop. Check the data behind a metric before trusting it; gaming a metric is a governance problem to report.",
+          "exam_traps": [
+            {
+              "trap": "A metric that hits its target proves the risk is handled.",
+              "why": "Targets can be met by gaming or by measuring the wrong thing. Check that the outcome behind the number improved."
+            },
+            {
+              "trap": "Keep every metric forever so the history is complete.",
+              "why": "Unused metrics waste effort and clutter reports. Retire them on purpose, keeping their history."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Gaming a metric",
+              "definition": "Changing behavior to improve a number without improving the result it is meant to show."
+            },
+            {
+              "term": "Root cause",
+              "definition": "The underlying reason a problem happened, which a fix must address to stop it recurring."
+            }
+          ]
+        },
+        {
+          "id": "2.4.7",
+          "name": "AI Risk Indicators",
+          "legacy_ids": [],
+          "definition": "Artificial intelligence (AI) risk indicators are metrics that warn when an AI system's accuracy, data, use or availability is moving toward unacceptable risk.",
+          "why_it_matters": "AI systems can fail quietly: accuracy slips or staff turn to unapproved tools. AI key risk indicators (KRIs) give owners time to act before a service is disrupted.",
+          "how_it_works": [
+            "Accuracy against a held-back test set, tracked over time, signals model drift.",
+            "A growing human override rate, meaning staff reject the AI's output more often, suggests declining quality.",
+            "Use of unapproved AI tools shows policy risk; AI service outages, including at providers, show continuity risk.",
+            "Each AI KRI has an owner, thresholds and an escalation path, like any other KRI."
+          ],
+          "example": "An insurer's AI tool flags suspicious claims. Claim handlers override its low-risk rating on 4% of claims in spring and 15% by autumn. Zoe, a junior analyst, sees the override rate cross the amber threshold and reports it to the model owner, who finds the model missed a new fraud pattern.",
+          "audit_focus": {
+            "review": [
+              "Confirm each AI KRI maps to an entry in the AI inventory",
+              "Report threshold crossings to the model owner with the trend"
+            ],
+            "evidence": [
+              "Dashboard history of accuracy and override rates",
+              "Web proxy blocks for unapproved AI sites"
+            ],
+            "recommend": "Report AI KRI breaches to the model owner and the risk owner as the escalation path requires.",
+            "decides": "The model owner decides whether to retrain, roll back or pause"
+          },
+          "isaca_rule": "Measure AI like any critical risk: leading indicators, an owner, thresholds and escalation. A model can look healthy on uptime while drifting on accuracy, so track both.",
+          "exam_traps": [
+            {
+              "trap": "AI service uptime of 99.9% shows the AI risk is low.",
+              "why": "Uptime shows the service answers, not that its answers are right."
+            },
+            {
+              "trap": "AI risk indicators are only for data scientists.",
+              "why": "AI KRIs belong in the same dashboards and reports as other risks, where leaders can see them."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Data drift",
+              "definition": "A change in the input data an AI system receives compared with the data it learned from."
+            },
+            {
+              "term": "Override rate",
+              "definition": "How often people reject or change an AI system's output; a growing rate can signal declining quality."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "key_terminologies": {
+    "Governance, risk and compliance (GRC)": "A joined-up way of directing an organization, managing its risks and meeting its obligations.",
+    "Risk appetite": "The amount and type of risk leaders are willing to take to pursue their goals.",
+    "Data owner": "The business leader accountable for a data set, who decides its classification and who may access it.",
+    "Custodian": "The person or team, often IT, that looks after data or systems as the owner directs.",
+    "RACI chart": "A table showing, for each task, who is Responsible, Accountable, Consulted and Informed.",
+    "Framework": "A published structure of practices or controls that organizes security work, such as the NIST (National Institute of Standards and Technology) Cybersecurity Framework.",
+    "Compliance": "Meeting the laws, regulations, contracts and internal policies that apply, and being able to prove it.",
+    "Redundancy": "Spare components or paths that take over when one fails.",
+    "High availability (HA)": "Keeping a service running with very little downtime, using redundancy and failover.",
+    "Business continuity (BC)": "Keeping critical business functions running during and after a disruption.",
+    "Disaster recovery (DR)": "Restoring the technology and data that business functions depend on.",
+    "Business impact analysis (BIA)": "A study of critical functions, their dependencies and how harm grows over time when they stop.",
+    "Maximum tolerable downtime (MTD)": "The longest a function can be down before harm becomes unacceptable.",
+    "Recovery time objective (RTO)": "The target time to restore a function; it must fit within the MTD.",
+    "Recovery point objective (RPO)": "The most data, measured in time, the business can afford to lose.",
+    "Hot site": "A recovery site with equipment, connections and current data, ready within minutes to hours.",
+    "Cold site": "A recovery site with space, power and cooling only; equipping it takes days to weeks.",
+    "Immutable backup": "A backup that cannot be changed or deleted until its retention period ends.",
+    "Model drift": "A gradual decline in an AI model's accuracy as real-world conditions change.",
+    "Security culture": "The shared attitudes and habits that shape how people treat security every day.",
+    "Social engineering": "Manipulating people, instead of systems, to gain information, access or money.",
+    "Phishing": "A fake message that pretends to come from a trusted source to trick the reader.",
+    "Deepfake": "AI-generated or AI-altered audio or video that imitates a real person.",
+    "Passphrase": "A long password made of several words, easier to remember and hard to guess.",
+    "Multifactor authentication (MFA)": "Signing in with two or more different kinds of proof.",
+    "Metric": "A measure compared with a goal or target to show progress or risk.",
+    "Key performance indicator (KPI)": "A metric showing how well a process meets its goal.",
+    "Key risk indicator (KRI)": "A metric giving early warning that a risk is growing toward its limit.",
+    "Dashboard": "A visual, frequently updated view of metrics for people who act on them daily.",
+    "Scorecard": "A periodic summary of results against targets, often color-coded."
+  },
+  "references": [
+    {
+      "title": "ISC2® CC® Certification Exam Outline (effective 1 Sep 2026)",
+      "url": "https://www.isc2.org/certifications/cc/cc-certification-exam-outline",
+      "checked": "2026-10-28"
+    },
+    {
+      "title": "NIST CSWP 29, The NIST Cybersecurity Framework (CSF) 2.0 (Feb 2024)",
+      "url": "https://doi.org/10.6028/NIST.CSWP.29",
+      "checked": "2026-10-28"
+    },
+    {
+      "title": "NIST SP 800-37 Rev. 2, Risk Management Framework for Information Systems and Organizations (Dec 2018)",
+      "url": "https://doi.org/10.6028/NIST.SP.800-37r2",
+      "checked": "2026-10-28"
+    },
+    {
+      "title": "NIST SP 800-34 Rev. 1, Contingency Planning Guide for Federal Information Systems (2010)",
+      "url": "https://doi.org/10.6028/NIST.SP.800-34r1",
+      "checked": "2026-10-28"
+    },
+    {
+      "title": "NIST SP 800-50 Rev. 1, Building a Cybersecurity and Privacy Learning Program (Sep 2024)",
+      "url": "https://doi.org/10.6028/NIST.SP.800-50r1",
+      "checked": "2026-10-28"
+    },
+    {
+      "title": "NIST SP 800-55 Vol. 1, Measurement Guide for Information Security: Identifying and Selecting Measures (Dec 2024)",
+      "url": "https://doi.org/10.6028/NIST.SP.800-55v1",
+      "checked": "2026-10-28"
+    },
+    {
+      "title": "NIST SP 800-63B-4, Digital Identity Guidelines: Authentication and Authenticator Management (Jul 2025)",
+      "url": "https://doi.org/10.6028/NIST.SP.800-63B-4",
+      "checked": "2026-10-28"
+    },
+    {
+      "title": "NIST AI 100-1, Artificial Intelligence Risk Management Framework (AI RMF 1.0) (Jan 2023)",
+      "url": "https://doi.org/10.6028/NIST.AI.100-1",
+      "checked": "2026-10-28"
+    },
+    {
+      "title": "NIST AI 600-1, AI RMF Generative Artificial Intelligence Profile (Jul 2024)",
+      "url": "https://doi.org/10.6028/NIST.AI.600-1",
+      "checked": "2026-10-28"
+    },
+    {
+      "title": "ISO/IEC 27001:2022 (with Amd 1:2024), Information security management systems: Requirements",
+      "checked": "2026-10-28: edition confirmed from standards-catalog listings only; iso.org was unreachable from this session, so no URL is given"
+    },
+    {
+      "title": "ISO 22301:2019 (with Amd 1:2024), Business continuity management systems: Requirements",
+      "checked": "2026-10-28: edition confirmed from standards-catalog listings only; iso.org was unreachable from this session, so no URL is given"
+    },
+    {
+      "title": "ISO/IEC 42001:2023, Artificial intelligence: Management system",
+      "checked": "2026-10-28: edition confirmed from standards-catalog listings only; iso.org was unreachable from this session, so no URL is given"
+    },
+    {
+      "title": "CIS Critical Security Controls v8.1 (Jun 2024)",
+      "checked": "2026-10-28: edition confirmed from standards-catalog listings only; cisecurity.org was unreachable from this session, so no URL is given"
+    }
+  ]
+}
