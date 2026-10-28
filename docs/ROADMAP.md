@@ -22,11 +22,11 @@ A calm, trustworthy study companion that helps people **pass** professional secu
 | # | Step | What learners get | Your part | Status |
 |---|---|---|---|---|
 | 1.1 | **Settings V6 + lessons 6–10** (mobile 1.46) | Clear grouped Settings, 5 more decision lessons | Check for updates on your phone | ✅ Done |
-| 1.2 | **Home-screen widgets** (mobile 1.47) | 8 calm widgets: plan, week, plant, think first, quick question, revisit, readiness, countdown | Install one new test app, add widgets, tell me what you think | 🔨 Fixing the experts' findings |
-| 1.3 | **Content-pack groundwork, Phase A** (invisible) | Nothing visible. Fixes two backup bugs and prepares the app for downloadable exams | None | 🔨 Building |
-| 1.4 | **Optional sign-in, web + phone** (Google + email code) | Save progress, move it between kaisip.com and the phone | Google Cloud sign-in setup, an email-sending service, Cloudflare DNS (click-by-click list coming) | 📝 Plan being written |
+| 1.2 | **Home-screen widgets** (mobile 1.47) | 8 calm widgets: plan, week, plant, think first, quick question, revisit, readiness, countdown | Install one new test app, add widgets, tell me what you think | 🧪 Built (1.47); waiting for your phone test |
+| 1.3 | **Content-pack groundwork, Phase A** (invisible) | Nothing visible. Fixes two backup bugs and prepares the app for downloadable exams | None | ✅ Done |
+| 1.4 | **Optional sign-in, web + phone** (Google + email code) | Save progress, move it between kaisip.com and the phone | Google Cloud sign-in setup, an email-sending service, Cloudflare DNS (`docs/mobile/ACCOUNTS_BETA_PLAN.md` §9) | 🔨 Database installed 28 Oct; your setup sessions next, then the sign-in screens |
 | 1.5 | **Topics named like the official outline + progress per topic** | See exactly which CISA topics are strong and weak | Pick from screenshots | ⏳ Next |
-| 1.6 | **Web Progress dashboard** | A clear progress page on kaisip.com | Pick from 3 mockups | ⏳ |
+| 1.6 | **Web Progress dashboard** | A clear progress page on kaisip.com | Pick from 3 mockups | ✅ Done (web v12.41) |
 | 1.7 | **Today screen, step 2** | A calmer, more personal daily start | Pick from mockups | ⏳ |
 | 1.8 | **Play Store closed beta** | Testers install from Google Play; the version resets to 1.0 | Play Console steps, tester email list, store listing approval | ⏳ After 1.2 and 1.4 |
 
