@@ -22,9 +22,20 @@ read them from repository variables, apps from their build settings.
 | Ticket | What | State |
 |---|---|---|
 | 1 | Database fixes before the first apply (§3.1), Edge Function changes (§3.3), workflows (§6), docs, legal drafts, email templates, Data safety answers; then the security audit's fixes (below) | **Done** (PR #141) |
-| 2 | MCP apply, SQL checks, advisors, function deploy (§3.3) | **Database applied 28 Oct 2026** (all five migrations, byte-for-byte, checks and advisors clean: see "Hosted apply record" below). Function deploy waits for the `DELETION_PEPPER` secret (§9 step 29) |
+| 2 | MCP apply, SQL checks, advisors, function deploy (§3.3) | **Done 28 Oct 2026.** All five migrations are applied byte-for-byte, with checks and advisors clean (see "Hosted apply record" below). Both functions are deployed and smoke-tested; `DELETION_PEPPER` is set and read |
 | 3 | Web client (§1, web engineer) and mobile go-live (§2, mobile engineer) | Not started |
-| 4 | Sky's checklist (§9) | Groups A–E can start now |
+| 4 | Sky's checklist (§9) | **28 Oct 2026:** C, D, E and F are done (F30, CAPTCHA, waits for go-live day); B3 is done. Still open: A2a (CODEOWNERS review), B4–B5 (disable workers.dev, retire Pages), G (backups), H (go-live day) |
+
+### Public config values (safe to commit; no secrets here)
+
+| Value | Where it is used |
+|---|---|
+| Supabase URL `https://ziadnvepttlgcowvqvom.supabase.co` | web and mobile clients |
+| Publishable key `sb_publishable_s9eKQUQ0w3MTnCUBF05EkA_5e_kGEw2` | web and mobile clients |
+| Google OAuth client ID `849696377968-fm4s9mm9f3poe5q9f2k3537sio3d1v7c.apps.googleusercontent.com` (Google Cloud project "KaiSip", web client "KaiSip (Supabase)") | set in Supabase → Providers → Google; the clients never need it |
+| Turnstile site key `0x4AAAAAAFptlSqMhAvLUI8w` (widget "KaiSip sign-in", hostname kaisip.com, Managed) | the web sign-in form and the mobile sign-in screen |
+
+Checked from the cloud session on 28 Oct 2026: `/auth/v1/settings` lists Google and email as enabled, and `/auth/v1/authorize?provider=google` redirects to Google with the client ID above and the Supabase callback.
 
 ### Hosted apply record (28 Oct 2026, Supabase MCP, project `ziadnvepttlgcowvqvom`)
 
