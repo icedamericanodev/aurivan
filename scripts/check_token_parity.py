@@ -36,9 +36,7 @@ PAIRS = [
 ]
 
 # mobile key -> the old value it may still hold while mobile catches up.
-PENDING = {
-    ('dark', 'raised'): '#1A211C',
-}
+PENDING = {}
 
 
 def first_block(css, selector):

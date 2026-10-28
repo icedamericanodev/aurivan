@@ -4,9 +4,14 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
-## [v12.43] — A calmer answer screen
+## [v12.43] — A shorter answer screen
+
+### New
+- Every answer now starts with a short reminder of the question, and Show question opens all of it.
 
 ### Improved
+- After a miss, your answer, why it falls short, the best answer and the key idea come first; the extra tips open with Read more.
+- One Go deeper link points to the study note behind the question. The note, the principle, your own note and Report a problem are in the More button at the top, beside Save.
 - In dark mode, cards and answer rows stand out more clearly from the page, and a missed answer reads more calmly.
 - Questions to revisit now say how many are ready today, oldest first, instead of a growing total.
 

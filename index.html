@@ -5686,10 +5686,21 @@ body[data-app-cta-card="shown"][data-section="today"] .app-cta-line { display: n
 .conf-seg .conf-btn.picked, .conf-seg .conf-btn.picked:hover { background: var(--text); color: var(--bg); }
 .conf-stage .submit-btn { margin-top: var(--sp-lg); letter-spacing: 0; }
 
-/* After checking: the option list steps aside ("Show all options" brings
-   the others back inside the answer screen). */
-.q-card.is-answered .opts { display: none; }
-.q-card.is-answered #bkBtn { display: none; } /* the footer Save takes over */
+/* After checking: the meta line, the stem and the option list step aside;
+   the answer opens on a two-line recap of the stem (premium pass 2.1). */
+.q-card.is-answered .opts, .q-card.is-answered > .q-line, .q-card.is-answered > .q-body { display: none; }
+.vr-recap { margin: 0 0 var(--sp-md); }
+.vr-recap-cap { margin: 0; font: var(--t-caption); letter-spacing: 0.1px; color: var(--text2); }
+.vr-recap-t { margin: 2px 0 0; font: var(--t-small); color: var(--text2); overflow-wrap: anywhere; }
+.vr-recap-t:not(.open) { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden; }
+.vr-recap-btn {
+  display: inline-flex; align-items: center; gap: var(--sp-xs); min-height: 48px; padding: 0;
+  background: none; border: 0; cursor: pointer; font: 600 15px/22px var(--f-sans); color: var(--accent-text);
+}
+.vr-recap-btn[hidden] { display: none; }
+.vr-recap-btn:hover .vr-recap-bt { text-decoration: underline; }
+.vr-recap-btn[aria-expanded="true"] .ico { transform: rotate(180deg); }
+.vr-recap-btn:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; border-radius: var(--r-sm); }
 
 .result-panel.vr-panel { display: block; border-top: 0; padding: var(--sp-sm) 0 0; animation: none; }
 .vr-verdict { display: flex; align-items: center; gap: var(--sp-md); }
@@ -5704,50 +5715,42 @@ body[data-app-cta-card="shown"][data-section="today"] .app-cta-line { display: n
 .vr-hero:focus { outline: none; }
 .vr-coach { margin: var(--sp-xs) 0 0 50px; font: var(--t-meta); color: var(--text2); }
 
-.vr-rows { display: flex; flex-direction: column; gap: var(--sp-md); margin-top: var(--sp-xl); }
+.vr-rows { display: flex; flex-direction: column; gap: var(--sp-lg); margin-top: var(--sp-lg); }
 .vr-row { display: flex; align-items: flex-start; gap: var(--sp-md); padding: var(--sp-lg); border-radius: var(--r-md); }
 .vr-row-wrong { background: var(--wrong-light); }
 .vr-row-right { background: var(--correct-light); }
 .vr-badge {
   width: 30px; height: 30px; flex-shrink: 0; border-radius: 50%;
-  display: inline-flex; align-items: center; justify-content: center; color: var(--on-fill);
+  display: inline-flex; align-items: center; justify-content: center; color: var(--bg);
+  font: 600 14px/18px var(--f-sans);
 }
-.vr-badge .ico { stroke-width: 2.5; }
 .vr-row-wrong .vr-badge { background: var(--wrong-fill); }
 .vr-row-right .vr-badge { background: var(--correct-fill); }
-.vr-row-body { display: flex; flex-direction: column; gap: var(--sp-xs); min-width: 0; padding-top: 1px; }
+.vr-row-body { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
 .vr-tag { font: var(--t-caption); letter-spacing: 0.1px; }
 .vr-row-wrong .vr-tag { color: var(--wrong); }
 .vr-row-right .vr-tag { color: var(--correct); }
 .vr-opt { font: var(--t-body); color: var(--text); overflow-wrap: anywhere; }
-.vr-note { font: var(--t-small); color: var(--text); margin-top: var(--sp-xs); }
+/* "Why not B" (mobile PickNote): plain text under the red row, not inside it. */
+.vr-pick { margin-top: calc(var(--sp-md) - var(--sp-lg)); padding: 0 var(--sp-lg); }
+.vr-pick-cap { margin: 0; font: var(--t-caption); letter-spacing: 0.1px; color: var(--text2); }
+.vr-pick-t { margin: 2px 0 0; font: var(--t-small); color: var(--text); overflow-wrap: anywhere; }
 
-.vr-toggle {
-  display: inline-flex; align-items: center; gap: var(--sp-xs); min-height: 44px; margin-top: var(--sp-sm); padding: 0;
-  background: none; border: 0; cursor: pointer; font: var(--t-label); color: var(--accent-text);
-}
-.vr-toggle:hover .vr-toggle-t { text-decoration: underline; }
-.vr-toggle[aria-expanded="true"] .ico { transform: rotate(180deg); }
-.vr-others[hidden] { display: none; }
-.vr-row-other { padding: var(--sp-md) 0; border-radius: 0; border-top: 1px solid var(--border); }
-.vr-row-other .vr-badge { background: transparent; border: 1.5px solid var(--border); color: var(--text2); font: 600 14px/18px var(--f-sans); }
-.vr-row-other .vr-tag { color: var(--text2); }
-
-.vr-why { margin: var(--sp-xxl) 0 var(--sp-sm); font: var(--t-headline); color: var(--text); }
+.vr-why { margin: var(--sp-2xl) 0 var(--sp-xs); font: var(--t-headline); color: var(--text); }
 .vr-exp { margin: 0; font: var(--t-body); color: var(--text); }
 .vr-exp.vr-fold:not(.open) { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden; }
-.vr-readmore, .vr-more-btn {
-  display: inline-flex; align-items: center; gap: var(--sp-xs); min-height: 44px; padding: 0;
+.vr-readmore {
+  display: inline-flex; align-items: center; gap: var(--sp-xs); min-height: 48px; padding: 0;
   background: none; border: 0; cursor: pointer; font: var(--t-label); color: var(--accent-text); text-align: left;
 }
-.vr-readmore:hover, .vr-more-btn:hover .vr-toggle-t { text-decoration: underline; }
-.vr-readmore:focus-visible, .vr-more-btn:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; border-radius: var(--r-sm); }
-.vr-more-btn { margin-top: var(--sp-xl); }
-.vr-more-btn[aria-expanded="true"] .ico { transform: rotate(180deg); }
-@media (prefers-reduced-motion: no-preference) { .vr-more-btn .ico { transition: transform .12s ease; } }
-/* Phones: the study note link and your note wait behind "More". */
-@media (max-width: 600px) { .vr-more:not(.open) { display: none; } }
-@media (min-width: 601px) { .vr-more-btn { display: none; } }
+.vr-readmore:hover .vr-rm-t { text-decoration: underline; }
+.vr-readmore:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; border-radius: var(--r-sm); }
+/* Eliminate two and Final two, folded with the Why after a miss (mobile 1.43). */
+.vr-why-more[hidden] { display: none; }
+.vr-why-more > .vine { margin-top: var(--sp-lg); }
+@media (prefers-reduced-motion: no-preference) {
+  .vr-why-more:not([hidden]), .vr-recap-t.open { animation: flagFadeIn .12s ease-out both; }
+}
 .vr-src-sub { flex: 1 1 100%; margin: 0 0 var(--sp-sm); font: var(--t-meta); color: var(--text2); overflow-wrap: anywhere; }
 
 /* The vine: one stem with a leaf per node. The stem is drawn in pieces from
@@ -5770,15 +5773,29 @@ body[data-app-cta-card="shown"][data-section="today"] .app-cta-line { display: n
 .vine-elim .vine-leaf, .vine-elim .vine-cap { color: var(--tip); }
 
 .vr-src {
-  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0 var(--sp-lg);
-  margin-top: var(--sp-2xl); padding-top: var(--sp-md); border-top: 1px solid var(--border);
+  display: flex; flex-wrap: wrap; align-items: center; gap: 0 var(--sp-lg);
+  margin-top: var(--sp-lg); padding-top: var(--sp-md); border-top: 1px solid var(--border);
 }
 .vr-src-ref { flex: 1 1 auto; min-width: 0; font: var(--t-meta); color: var(--text2); overflow-wrap: anywhere; }
-.vr-report {
-  min-height: 44px; padding: 0; background: none; border: 0; cursor: pointer;
-  font: var(--t-label); color: var(--accent-text);
+/* The one "Go deeper" row, between two hairlines; the source line follows. */
+.vr-study:empty { display: none; }
+.vr-study { margin-top: var(--sp-lg); border-top: 1px solid var(--border); }
+.vr-study:not(:empty) + .vr-src { border-top: 1px solid var(--border); margin-top: 0; }
+.vr-deeper {
+  display: flex; align-items: center; gap: var(--sp-md); min-height: 64px; padding: var(--sp-md) 0;
+  color: var(--text); text-decoration: none;
 }
-.vr-report:hover { text-decoration: underline; }
+.vr-deeper-ico {
+  width: 40px; height: 40px; flex-shrink: 0; border-radius: 50%; background: var(--surface2);
+  display: inline-flex; align-items: center; justify-content: center; color: var(--accent-text);
+}
+.vr-deeper-text { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.vr-deeper-k { font: var(--t-caption); letter-spacing: 0.1px; color: var(--accent-text); }
+.vr-deeper-t { font: var(--t-label); color: var(--text); overflow-wrap: anywhere; }
+.vr-deeper-m { margin-top: 2px; font: var(--t-meta); color: var(--text2); }
+.vr-deeper-chev { flex-shrink: 0; color: var(--muted); display: inline-flex; }
+.vr-deeper:hover .vr-deeper-t { text-decoration: underline; text-underline-offset: 3px; }
+.vr-deeper:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; border-radius: var(--r-sm); }
 
 /* Footer: Save + Next question, held at the bottom of the screen while the
    answer is in view (above the phone tab bar); sits in its own slot at the
@@ -5805,18 +5822,7 @@ body[data-app-cta-card="shown"][data-section="today"] .app-cta-line { display: n
   background: var(--btn); color: var(--on-btn); font: 600 17px/22px var(--f-sans);
 }
 .vr-next:hover { opacity: .92; }
-.vr-save {
-  flex-shrink: 0; width: 56px; height: 56px; border-radius: 50%; cursor: pointer;
-  display: inline-flex; align-items: center; justify-content: center;
-  background: var(--bg); border: 1.5px solid var(--control); color: var(--text);
-}
-.vr-save:hover { background: var(--surface2); }
-.vr-save.saved { background: var(--tip-bg); border-color: var(--tip); color: var(--tip); }
-.vr-save.saved svg { fill: currentColor; }
-.vr-next:focus-visible, .vr-save:focus-visible, .vr-toggle:focus-visible, .vr-report:focus-visible {
-  outline: 2px solid var(--focus-ring); outline-offset: 2px; border-radius: var(--r-pill);
-}
-.vr-toggle:focus-visible, .vr-report:focus-visible { border-radius: var(--r-sm); }
+.vr-next:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; border-radius: var(--r-pill); }
 
 @media (prefers-reduced-motion: no-preference) {
   .conf-seg .conf-btn { transition: background-color .12s ease, color .12s ease; }
@@ -5830,7 +5836,7 @@ body[data-app-cta-card="shown"][data-section="today"] .app-cta-line { display: n
     animation-delay: calc(var(--i, 0) * 520ms / var(--vine-n, 1));
   }
   .vine.vine-in .vine-leaf { animation: vineLeaf .16s ease-out forwards; animation-delay: calc(var(--i, 0) * 520ms / var(--vine-n, 1)); }
-  .vr-toggle .ico { transition: transform .15s ease; }
+  .vr-recap-btn .ico { transition: transform .15s ease; }
 }
 @keyframes vrLeafIn { from { transform: scale(.6); } to { transform: scale(1); } }
 @keyframes vrRise { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
@@ -5920,7 +5926,7 @@ body[data-app-cta-card="shown"][data-section="today"] .app-cta-line { display: n
 /* Focused session */
 .pf { max-width: 640px; margin: 0 auto; }
 .pf #qArea { max-width: none; margin: 0; }
-.pf-strip { display: flex; align-items: center; gap: var(--sp-md); min-height: 56px; margin: 0 0 var(--sp-md); }
+.pf-strip { display: flex; align-items: center; gap: var(--sp-sm); min-height: 56px; margin: 0 0 var(--sp-md); }
 .pf-btn {
   display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; width: 48px; height: 48px;
   padding: 0; border: 0; border-radius: 50%; background: transparent; color: var(--text); cursor: pointer;
@@ -5931,9 +5937,11 @@ body[data-app-cta-card="shown"][data-section="today"] .app-cta-line { display: n
 .pf-strip .bk-btn { min-width: 48px; min-height: 48px; margin-right: -12px; border: 0; }
 /* Saved = ink (Grove: ink means selected; tip colours belong to traps). */
 .pf-strip .bk-btn.saved, .pf-strip .bk-btn.saved:hover { background: transparent; border-color: transparent; color: var(--text); }
-.vr-save.saved, .vr-save.saved:hover { background: transparent; border-color: var(--text); color: var(--text); }
-/* After checking, the footer's Save takes over (the slot stays, so nothing shifts). */
-.pf.pf-answered .pf-strip .bk-btn { visibility: hidden; }
+/* After checking: ✕ · bar · "4 of 10" · Save · More (premium pass 2.6). */
+.pf-count { flex-shrink: 0; font: var(--t-meta); color: var(--text2); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.pf-count[hidden] { display: none; }
+.pf-strip .pf-more { margin-right: -12px; }
+.pf-strip .bk-btn:has(+ .pf-more:not([hidden])) { margin-right: 0; }
 .pf-mid { flex: 1; min-width: 0; display: flex; align-items: center; }
 .pf-segs { display: flex; gap: 3px; width: 100%; }
 .pf-seg { flex: 1; height: 4px; border-radius: 2px; background: var(--track); }
@@ -6460,6 +6468,32 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
   .mock-confirm-overlay.ks-sheet-overlay.ks-sheet-low { align-items: flex-end; padding-bottom: var(--sp-xxl); }
 }
 .ks-sheet .mock-confirm-btns { margin-top: var(--sp-xl); }
+/* More on this question (premium pass 2.3): a title with a ghost Close,
+   then hairline rows (icon circle, kicker, title, meta, chevron). It rises
+   8px as it fades in; under reduced motion it simply appears. */
+.am-sheet { animation: amRise .2s ease-out both; }
+@keyframes amRise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+.am-head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--sp-md); }
+.am-head .mock-confirm-head { flex: 1; min-width: 0; padding-right: 0; }
+.am-close { flex-shrink: 0; min-height: 48px; margin: var(--sp-lg) var(--sp-xxl) 0 0; }
+.am-list { list-style: none; margin: 0; padding: 0; }
+.am-list li + li { border-top: 1px solid var(--border); }
+.am-row {
+  width: 100%; display: flex; align-items: center; gap: var(--sp-md); min-height: 64px; padding: var(--sp-md) 0;
+  background: none; border: 0; cursor: pointer; text-align: left; color: var(--text);
+}
+.am-row:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; border-radius: var(--r-sm); }
+.am-row:hover .am-t { text-decoration: underline; text-underline-offset: 3px; }
+.am-ico {
+  width: 40px; height: 40px; flex-shrink: 0; border-radius: 50%; background: var(--surface2);
+  display: inline-flex; align-items: center; justify-content: center; color: var(--accent-text);
+}
+.am-text { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.am-k { font: var(--t-caption); letter-spacing: 0.1px; color: var(--accent-text); }
+.am-t { font: var(--t-label); color: var(--text); overflow-wrap: anywhere; }
+.am-m { margin-top: 2px; font: var(--t-meta); color: var(--text2); overflow-wrap: anywhere; }
+.am-chev { flex-shrink: 0; color: var(--muted); display: inline-flex; }
+.am-note .sr-area { width: 100%; }
 /* A label never breaks inside its button; the pair stacks instead. */
 .ks-sheet .mock-confirm-btn { flex: 1 1 auto; white-space: nowrap; }
 .mock-confirm-btn.danger { background: var(--wrong-light); border-color: var(--wrong-light); color: var(--wrong); }
@@ -6704,8 +6738,10 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
     <div class="pf-strip" id="pfStrip">
       <button type="button" class="pf-btn pf-exit" id="pfExit" onclick="exitPracticeFocus()" aria-label="End practice" title="End practice"><svg class="ico" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
       <div class="pf-mid" id="pfMid"></div>
+      <span class="pf-count" id="pfCount" aria-hidden="true" hidden></span>
       <div class="pf-timer" id="timerArea" style="display:none"></div>
       <button type="button" class="pf-btn bk-btn" id="bkBtn" aria-label="Save question" aria-pressed="false" onclick="toggleBookmark()"><svg class="ico" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M6.5 3.5h11v17l-5.5-3.8-5.5 3.8z"/></svg></button>
+      <button type="button" class="pf-btn pf-more" id="pfMore" aria-label="More on this question" aria-haspopup="dialog" hidden onclick="openAnswerMore()"><svg class="ico" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="5" cy="12" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="19" cy="12" r="1.2"/></svg></button>
     </div>
     <div id="qArea"></div>
   </div>
@@ -13516,6 +13552,12 @@ function updateFocusStrip() {
       + (pr.done ? '<span class="pf-label-n"> &middot; ' + pr.done + ' answered</span>' : '') + '</span>';
   }
   mid.innerHTML = html;
+  // "4 of 10" beside the bar (the bar itself says it to assistive tech).
+  var cnt = document.getElementById('pfCount');
+  if (cnt) {
+    cnt.hidden = !(pr.total > 0);
+    cnt.textContent = pr.total > 0 ? Math.max(1, Math.min(pr.pos, pr.total)) + ' of ' + pr.total : '';
+  }
   var ex = document.getElementById('pfExit');
   if (ex) {
     var lbl = (conceptPracticeMode || conceptPracticeDone) && conceptPracticeCtx && conceptPracticeCtx.principleId ? 'Back to principle'
@@ -13533,6 +13575,14 @@ function updateFocusStrip() {
     bk.classList.toggle('saved', on);
     bk.setAttribute('aria-pressed', on ? 'true' : 'false');
     bk.hidden = !card;
+  }
+  // More on this question: after the answer only (its note and principle
+  // would give the answer away before it). Practice only, never a mock.
+  var more = document.getElementById('pfMore');
+  if (more) {
+    var answered = !!(card && card.classList.contains('is-answered') && document.getElementById('rPanel'));
+    more.hidden = !answered;
+    if (!answered && document.activeElement === more) { try { (bk || document.getElementById('pfExit')).focus(); } catch (e) {} }
   }
   // Just opened from the hub: focus lands on the question's meta line (or
   // the card shown instead), without scrolling.
@@ -14002,13 +14052,18 @@ function railBuildNoteIndex() {
       g.items.forEach(function (it) {
         conceptPracticeIds(it.raw).forEach(function (qid) {
           if (!idx[qid]) idx[qid] = { id: it.id, name: it.name, domain: String(dom.domain_id), rule: (it.raw && typeof it.raw.isaca_rule === 'string') ? it.raw.isaca_rule : '',
-            topic: dom.domain_id + '-g-' + g.group_id, topicName: g.group_title };
+            topic: dom.domain_id + '-g-' + g.group_id, topicName: g.group_title, mins: noteMinutes(it.raw) };
         });
       });
     });
   });
   railNoteIdx = idx;
   return idx;
+}
+function noteMinutes(raw) {
+  var m = 0;
+  try { m = estimateReadMinutes(raw); } catch (e) {}
+  return Math.max(1, Number(m) || 1);
 }
 // True once the study notes are here; otherwise starts their fetch (once)
 // and redraws the rail when they arrive.
@@ -14386,8 +14441,17 @@ function railHubInline(show) {
     + '<ul class="you-list">' + rows.map(railRowHtml).join('') + '</ul></section>' : '';
   if (slot.innerHTML !== html) slot.innerHTML = html;
 }
-// The answer screen's fallback: the note link, then the learner's note (both
-// patched in place like the rail, so an open field never loses focus).
+// The answer screen's one "Go deeper" row (premium pass 2.2): the study note
+// this question practises, else its principle; never more than one. The
+// rest (both, your note, Report a problem) is in the header's More sheet.
+// Patched in place like the rail, so a row in focus survives a redraw.
+function vrDeeperRowHtml(o) {
+  return '<a class="vr-deeper" href="' + o.href + '"' + o.data + ' onclick="' + o.onclick + '">'
+    + '<span class="vr-deeper-ico" aria-hidden="true">' + ico(o.icon, 20) + '</span>'
+    + '<span class="vr-deeper-text"><span class="vr-deeper-k">' + o.kicker + '</span>'
+    + '<span class="vr-deeper-t">' + o.title + '</span><span class="vr-deeper-m">' + o.meta + '</span></span>'
+    + '<span class="vr-deeper-chev" aria-hidden="true">' + ico('chevron', 18) + '</span></a>';
+}
 function railQInline(show) {
   var slot = document.getElementById('vrStudy');
   if (!slot) return;
@@ -14395,15 +14459,25 @@ function railQInline(show) {
   if (show && railQAnswered()) {
     var q = S.current;
     var res = railNoteFor(q.id);
-    if (res.state === 'found') parts.push({ id: 'nl', key: 'nl:' + q.id + ':' + (S.examMode ? 1 : 0), html: railNoteCardHtml(res, !!S.examMode, true) });
-    var pl = railPrincipleFor(q);
-    if (pl) parts.push({ id: 'pl', key: 'pl:' + pl.id, html: railPrincipleLinkHtml(pl) });
-    // Not in the first five (mobile: one less thing in the first minute).
-    if (!(firstFiveRun && sessionLabel === FIRST_FIVE_LABEL)) parts.push({ id: 'mine', key: railMineKey(q.id), html: '<p class="vine-cap" id="vrMineL">Your note on this question</p>' + railMineHtml(q.id, 'vr', 'vrMineL') });
+    var pl = res.state === 'found' ? null : railPrincipleFor(q);
+    if (res.state === 'found') {
+      var n = res.note;
+      parts.push({ id: 'deeper', key: 'note:' + q.id + ':' + n.id, html: vrDeeperRowHtml({
+        href: '#notes', data: ' data-id="' + escapeHtml(n.id) + '" data-d="' + escapeHtml(n.domain) + '"',
+        onclick: 'return railOpenNote(event,this.dataset.id,this.dataset.d)', icon: 'topics',
+        kicker: 'Go deeper &middot; read the note', title: escapeHtml(n.name),
+        meta: 'About ' + n.mins + ' min &middot; the idea this question tests' }) });
+    } else if (pl && res.state === 'none') {
+      parts.push({ id: 'deeper', key: 'pl:' + q.id + ':' + pl.id, html: vrDeeperRowHtml({
+        href: '#principles/' + escapeHtml(pl.id), data: ' data-pid="' + escapeHtml(pl.id) + '"',
+        onclick: 'return railOpenPrinciples(event,this.dataset.pid)', icon: 'principles',
+        kicker: 'Go deeper &middot; read the principle', title: escapeHtml(pl.title),
+        meta: 'How to think it through' }) });
+    }
   }
   railPatch(slot, parts, function (s) {
     var el = document.createElement('div');
-    el.className = s.id === 'mine' ? 'vr-mine' : s.id === 'pl' ? 'vr-pl' : 'vr-nl-wrap';
+    el.className = 'vr-deeper-wrap';
     el.innerHTML = s.html;
     return el;
   });
@@ -14435,7 +14509,7 @@ function railSync() {
   var secs = [];
   if (page === 'hub') { railHubInline(!wide); if (wide) secs = railHubSections(); }
   else railHubInline(false);
-  if (page === 'q') { railQInline(!wide); if (wide) secs = railQSections(); }
+  if (page === 'q') { railQInline(true); if (wide) secs = railQSections(); }
   else railQInline(false);
   if (page === 'notes' && wide) secs = railNotesSections();
   if (page === 'mock' && wide) secs = railMockSections();
@@ -16188,7 +16262,8 @@ function renderQuestion(q) {
   else metaParts.push(escapeHtml(info.short));
   if (missedReviewMode) metaParts.push('Missed question');
   else if (bookmarkReviewMode) metaParts.push('Saved question');
-  if (pr.total > 0) metaParts.push(pr.pos + ' of ' + pr.total);
+  // The header shows "3 of 10" beside its bar; screen readers still hear it here.
+  var metaSr = pr.total > 0 ? '<span class="sr-only"> &middot; ' + pr.pos + ' of ' + pr.total + '</span>' : '';
 
   // v12.34 (mobile parity): no confidence question during the first five,
   // so the first answer is one tap and one check.
@@ -16205,7 +16280,7 @@ function renderQuestion(q) {
 
   document.getElementById('qArea').innerHTML =
     '<div class="q-card">'
-    + '<p class="q-line" id="qMeta" tabindex="-1"><span class="dom-dot" style="background:' + info.color + '"></span>' + metaParts.join(' &middot; ') + '</p>'
+    + '<p class="q-line" id="qMeta" tabindex="-1"><span class="dom-dot" style="background:' + info.color + '"></span>' + metaParts.join(' &middot; ') + metaSr + '</p>'
     + '<div class="q-body">'
     + (q.scenario_context && !(window.S && S.examMode) ? '<div class="scenario-block"><div class="sc-label">Scenario</div><p class="sc-text" id="sc-text-' + escapeHtml(q.id) + '">' + escapeHtml(smartQuotes(q.scenario_context)) + '</p><button class="sc-expand-btn" id="sc-btn-' + escapeHtml(q.id) + '" data-qid="' + escapeHtml(q.id) + '" onclick="expandScenario(this.dataset.qid)">Read scenario ▾</button></div>' : '')
     + '<p class="q-text" id="qStem" tabindex="-1">' + (q.scenario_context && window.S && S.examMode ? escapeHtml(smartQuotes(q.scenario_context)) + ' ' : '') + escapeHtml(smartQuotes(q.question)) + '</p>'
@@ -16431,14 +16506,33 @@ function vineLeafSvg(key) {
     : '<svg class="vine-leaf" viewBox="0 0 22 22" aria-hidden="true" focusable="false"><path d="M11 3.5C15.5 7.2 15.5 14.8 11 18.5C6.5 14.8 6.5 7.2 11 3.5Z" fill="currentColor" fill-opacity=".18" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M11 6.5V16" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>';
 }
 
-function vrOptionRow(kind, tag, displayL, text, note) {
+// Mobile 1.43 rows (premium pass 2.5): the DISPLAY letter sits in a filled
+// badge (no tick or cross disc: the verdict leaf is the screen's one mark),
+// the tag is words alone and screen readers hear the letter after it.
+function vrOptionRow(kind, tag, displayL, text, spoken) {
   return '<div class="vr-row vr-row-' + kind + '">'
-    + '<span class="vr-badge" aria-hidden="true">' + (kind === 'other' ? displayL : ico(kind === 'wrong' ? 'x' : 'check', 16)) + '</span>'
+    + '<span class="vr-badge" aria-hidden="true">' + displayL + '</span>'
     + '<span class="vr-row-body">'
-      + '<span class="vr-tag">' + tag + '</span>'
+      + '<span class="vr-tag">' + tag + '<span class="sr-only">' + spoken + '</span></span>'
       + '<span class="vr-opt">' + text + '</span>'
-      + (note ? '<span class="vr-note">' + note + '</span>' : '')
     + '</span>'
+    + '</div>';
+}
+// "Why not B": the learner's own pick, explained, under its red row (mobile
+// PickNote). A caption, never a heading: the screen has one "Why" heading.
+function vrPickNoteHtml(displayL, note) {
+  return note ? '<div class="vr-pick"><p class="vr-pick-cap">Why not ' + displayL + '<span class="sr-only">:</span></p><p class="vr-pick-t">' + note + '</p></div>' : '';
+}
+// The stem recap at the top of the answer (premium pass 2.1): "Question",
+// the stem clamped to two lines, and "Show question" to open it in place.
+// Screen readers always get the whole stem (the clamp is visual only).
+function vrRecapHtml(q) {
+  var full = (q.scenario_context ? smartQuotes(q.scenario_context) + ' ' : '') + smartQuotes(q.question || '');
+  return '<div class="vr-recap">'
+    + '<p class="vr-recap-cap" id="vrRecapCap">Question<span class="sr-only">:</span></p>'
+    + '<p class="vr-recap-t" id="vrRecapT">' + escapeHtml(full) + '</p>'
+    + '<button type="button" class="vr-recap-btn" id="vrRecapBtn" aria-expanded="false" aria-controls="vrRecapT" hidden onclick="toggleStemRecap(this)">'
+      + '<span class="vr-recap-bt">Show question</span>' + ico('chevron-down', 18) + '</button>'
     + '</div>';
 }
 
@@ -16489,42 +16583,31 @@ function showResult(chosen, correct, timeout, info) {
     + '</div>'
     + (coach ? '<p class="vr-coach">' + escapeHtml(coach) + '</p>' : '');
 
-  // 2. Answer rows: your answer (with its note), then the best answer only
-  //    after a miss. A timeout has no "your answer".
+  // 2. Answer rows: your answer, then "Why not B" under it, then the best
+  //    answer only after a miss. A timeout has no "your answer". The other
+  //    two options are not shown here (Review shows all four).
   var rows = '';
   if (chosen && ok) {
-    rows += vrOptionRow('right', 'Your answer &middot; ' + chosen, chosen, optText(correctOrig), '');
+    rows += vrOptionRow('right', 'Your answer', chosen, optText(correctOrig), ', ' + chosen + ', correct');
   } else if (chosen) {
-    rows += vrOptionRow('wrong', 'Your answer &middot; ' + chosen, chosen, optText(chosenOrig), wrongNote(chosenOrig));
+    rows += vrOptionRow('wrong', 'Your answer', chosen, optText(chosenOrig), ', ' + chosen + ', not correct');
+    rows += vrPickNoteHtml(chosen, wrongNote(chosenOrig));
   }
-  if (!ok) rows += vrOptionRow('right', 'Best answer &middot; ' + correct, correct, optText(correctOrig), '');
-
-  // The other options, in display order, each with its note: hidden until
-  // "Show all options" (this replaces the option-by-option breakdown).
-  var others = DISPLAY_LETTERS.map(function(displayL, idx){
-    var origL = shuffle[idx];
-    if (displayL === correct || displayL === chosen) return '';
-    return vrOptionRow('other', 'Option ' + displayL, displayL, optText(origL), wrongNote(origL));
-  }).join('');
-  var othersHtml = others
-    ? '<button type="button" class="vr-toggle" id="vrToggle" aria-expanded="false" aria-controls="vrOthers" onclick="toggleOtherOptions()">'
-        + '<span class="vr-toggle-t">Show other options</span>' + ico('chevron-down', 18) + '</button>'
-      + '<div class="vr-others" id="vrOthers" hidden>' + others + '</div>'
-    : '';
+  if (!ok) rows += vrOptionRow('right', 'Best answer', correct, optText(correctOrig), ', ' + correct);
 
   // 3. Why X + the explanation. After a miss it comes after the Key idea and
   //    the Exam cue, folded to two lines with "Read more" (mobile WhyBlock);
-  //    screen readers hear all of it either way.
+  //    screen readers hear all of it either way. The fold also holds
+  //    Eliminate two and Final two (mobile 1.43), drawn in after the vine.
   var expRaw = String(q.correct_explanation || '');
-  var foldWhy = !ok && !inExamMode && expRaw.length > WHY_FOLD_CHARS;
+  var longWhy = expRaw.length > WHY_FOLD_CHARS;
   var whyHtml = '<h3 class="vr-why">Why ' + correct + '</h3>'
-    + '<p class="vr-exp' + (foldWhy ? ' vr-fold' : '') + '" id="vrExp">' + escapeHtml(smartQuotes(mapLettersInText(expRaw, shuffle))) + '</p>'
-    + (foldWhy ? '<button type="button" class="vr-readmore" aria-expanded="false" aria-controls="vrExp" onclick="toggleWhyFold(this)"><span class="vr-rm-t">Read more</span><span class="sr-only"> of the explanation</span></button>' : '');
+    + '<p class="vr-exp' + (!ok && !inExamMode && longWhy ? ' vr-fold' : '') + '" id="vrExp">' + escapeHtml(smartQuotes(mapLettersInText(expRaw, shuffle))) + '</p>';
 
   // 4. The vine: Key idea, then the tips as leaves on one stem. After a miss
   //    (mobile splitMissTips) the Key idea and the Exam cue lead, before the
   //    Why; Eliminate two and Final two follow it on a second stem.
-  var vineFirst = [], vineRest = [];
+  var vineFirst = [], vineRest = [], vineRestLabels = [];
   if (!inExamMode) {
     var nodes = [];
     if (q.key_concept) {
@@ -16547,6 +16630,7 @@ function showResult(chosen, correct, timeout, info) {
           return '<button type="button" class="principle-link" data-pid="' + pid + '" onclick="openPrinciple(this.dataset.pid)">' + pid + '</button>';
         });
       }
+      if (!ok && tone !== 'cue') vineRestLabels.push(parts.label);
       nodes.push({ first: tone === 'cue', html: '<div class="vine-node vine-' + tone + '" style="--i:@I@">' + vineLeafSvg(false)
         + '<p class="vine-cap">' + escapeHtml(parts.label) + '</p>'
         + '<p class="vine-tip">' + body + '</p></div>' });
@@ -16559,41 +16643,48 @@ function showResult(chosen, correct, timeout, info) {
       + list.map(function (h, i) { return h.replace('@I@', String(i)); }).join('') + '</div>';
   };
   var vineA = vineOf(vineFirst, 'vrVine'), vineB = vineOf(vineRest, 'vrVine2');
+  // After a miss: "Read more" opens the long Why and the tips folded with it.
+  if (!ok && !inExamMode && (longWhy || vineB)) {
+    var foldNames = (longWhy ? ['the full explanation'] : []).concat(vineRest.length ? vineRestLabels : []);
+    var what = foldNames.length > 1 ? foldNames.slice(0, -1).join(', ') + ' and ' + foldNames[foldNames.length - 1] : foldNames[0];
+    whyHtml += '<button type="button" class="vr-readmore" id="vrReadMore" aria-expanded="false" aria-controls="vrExp' + (vineB ? ' vrWhyMore' : '') + '"'
+      + ' data-what="' + escapeHtml(what) + '" onclick="toggleWhyFold(this)"><span class="vr-rm-t">Read more</span><span class="sr-only vr-rm-sr">: ' + escapeHtml(what) + '</span></button>'
+      + (vineB ? '<div class="vr-why-more" id="vrWhyMore" hidden>' + vineB + '</div>' : '');
+    vineB = '';
+  }
 
-  // 5. Source row (mobile TrustLine): "Original · Reviewed Oct 2026" with
-  //    Report a problem, then the main source (the first one listed, its
-  //    bracketed parts dropped, as mobile shortReference).
+  // 5. Source row (mobile TrustLine): "Original · Reviewed Oct 2026", then
+  //    the main source (the first one listed, its bracketed parts dropped, as
+  //    mobile shortReference). Report a problem lives in the header's More.
   var ref = q.framework_ref ? String(q.framework_ref).split(';')[0].replace(/\s*\([^)]*\)/g, '').trim() : '';
   var srcHtml = '<div class="vr-src">'
     + '<span class="vr-src-ref">Original &middot; Reviewed ' + CONTENT_REVIEWED + '</span>'
-    + '<button type="button" class="vr-report" onclick="showFlagModal()">Report a problem</button>'
     + (ref ? '<p class="vr-src-sub">' + escapeHtml(ref) + '</p>' : '')
     + '</div>';
 
-  // 6. Footer: Save (outline icon button) + Next question (sticky on phones).
-  var isBk = S.bookmarks.some(function(b){ return b.id === q.id; });
+  // 6. Footer: one full-width Next question (sticky on phones). Save sits in
+  //    the header, beside More (premium pass 2.6).
   var footHtml = '<div class="vr-foot">'
-    + '<button type="button" class="vr-save' + (isBk ? ' saved' : '') + '" id="bkBtnFoot" aria-label="Save question" aria-pressed="' + (isBk ? 'true' : 'false') + '" onclick="toggleBookmark()">' + ico('saved', 22) + '</button>'
     + '<button type="button" class="vr-next" id="vrNext" onclick="nextQ()">Next question' + ico('arrow-right', 18) + '</button>'
     + '</div>';
 
-  p.innerHTML = verdictHtml
+  p.innerHTML = vrRecapHtml(q)
+    + verdictHtml
     + (rows ? '<div class="vr-rows">' + rows + '</div>' : '')
-    + othersHtml
     + (ok || inExamMode ? whyHtml + vineA : vineA + whyHtml + vineB)
-    // Below the rail's breakpoint: the note link and "Add a note" (railSync).
-    // On phones they wait behind one "More" (CSS), so the verdict, the why
-    // and the tips fit in about two screens.
-    + '<button type="button" class="vr-more-btn" id="vrMoreBtn" aria-expanded="false" aria-controls="vrMore" onclick="toggleAnswerMore(this)"><span class="vr-toggle-t">More: study note, principle and your note</span>' + ico('chevron-down', 18) + '</button>'
-    + '<div class="vr-more" id="vrMore"><div class="vr-study" id="vrStudy"></div></div>'
+    // One "Go deeper" row (the note, else the principle), filled by railSync
+    // once the notes are in. Everything else is in the header's More.
+    + '<div class="vr-study" id="vrStudy"></div>'
     + srcHtml
     + footHtml;
   p.classList.add('show', 'vr-panel');
   p.classList.toggle('vr-exam', inExamMode);
 
-  // The vine draws itself as it scrolls into view (motion allowed only).
+  // The vine draws itself as it scrolls into view (motion allowed only); the
+  // folded one draws when "Read more" shows it.
   armVine(document.getElementById('vrVine'));
   armVine(document.getElementById('vrVine2'));
+  vrRecapFit();
   // The study rail starts teaching now: the note, your note, the lookup.
   try { railSync(); } catch (e) {}
   // The strip: progress moves on, and its Save hands over to the footer's.
@@ -16603,42 +16694,47 @@ function showResult(chosen, correct, timeout, info) {
   // Check button they were on is gone), then bring the verdict into view.
   var heroEl = document.getElementById('vrHero');
   if (heroEl) { try { heroEl.focus({ preventScroll: true }); } catch (e) { heroEl.focus(); } }
+  // The recap, the verdict and both rows start right under the header.
   setTimeout(function(){
-    var rect = p.getBoundingClientRect();
+    var top = document.getElementById('pfStrip') || p;
+    var rect = top.getBoundingClientRect();
     var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    window.scrollTo({ top: scrollTop + rect.top - 20, behavior: cpScrollBehavior() });
+    window.scrollTo({ top: Math.max(0, scrollTop + rect.top - 8), behavior: cpScrollBehavior() });
   }, 60);
 }
 
+// "Show question" shows only when the stem is longer than its two lines.
+function vrRecapFit() {
+  var t = document.getElementById('vrRecapT'), b = document.getElementById('vrRecapBtn');
+  if (!t || !b || b.getAttribute('aria-expanded') === 'true') return;
+  b.hidden = !(t.scrollHeight > t.clientHeight + 1);
+}
+function toggleStemRecap(btn) {
+  var t = document.getElementById('vrRecapT');
+  if (!t || !btn) return;
+  var open = btn.getAttribute('aria-expanded') !== 'true';
+  btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  t.classList.toggle('open', open);
+  var l = btn.querySelector('.vr-recap-bt');
+  if (l) l.textContent = open ? 'Show less' : 'Show question';
+}
+
 // "Read more" under a folded Why (after a miss).
+// "Read more" opens the folded Why and Eliminate two / Final two with it;
+// "Show less" folds all of it again. The toggle keeps its place, so focus
+// stays on it and the tips it opened come next in reading order.
 function toggleWhyFold(btn) {
   var exp = document.getElementById('vrExp');
   if (!exp || !btn) return;
   var open = btn.getAttribute('aria-expanded') !== 'true';
   btn.setAttribute('aria-expanded', open ? 'true' : 'false');
   exp.classList.toggle('open', open);
+  var more = document.getElementById('vrWhyMore');
+  if (more) more.hidden = !open;
   var t = btn.querySelector('.vr-rm-t');
   if (t) t.textContent = open ? 'Show less' : 'Read more';
-}
-// Phones: "More" opens the study note link and your note.
-function toggleAnswerMore(btn) {
-  var box = document.getElementById('vrMore');
-  if (!box || !btn) return;
-  var open = btn.getAttribute('aria-expanded') !== 'true';
-  btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-  box.classList.toggle('open', open);
-}
-// "Show all options" on the answer screen: the options that are not your
-// answer or the best answer, each with why it is not the best.
-function toggleOtherOptions() {
-  var btn = document.getElementById('vrToggle');
-  var box = document.getElementById('vrOthers');
-  if (!btn || !box) return;
-  var open = btn.getAttribute('aria-expanded') !== 'true';
-  btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-  box.hidden = !open;
-  var t = btn.querySelector('.vr-toggle-t');
-  if (t) t.textContent = open ? 'Hide other options' : 'Show other options';
+  var sr = btn.querySelector('.vr-rm-sr');
+  if (sr) sr.textContent = (open ? ': hides ' : ': ') + (btn.getAttribute('data-what') || '');
 }
 
 // Vine motion (DESIGN_SYSTEM §10.2): the stem draws down and each leaf pops
@@ -21044,7 +21140,88 @@ function showFlagModal() {
 
 function closeFlagModal(e) {
   if (e && e.target !== e.currentTarget) return;
-  document.getElementById("flagModal").innerHTML = "";
+  var modal = document.getElementById("flagModal");
+  // A note typed in the More sheet is saved before the sheet goes.
+  var ta = modal.querySelector('textarea.sr-area');
+  if (ta) { try { railNoteCommit(ta); } catch (ex) {} }
+  modal.innerHTML = "";
+  if (ta) { try { railSync(); } catch (ex) {} }
+}
+
+// ── More on this question (premium pass 2.3) ──
+// The header's ⋯ after an answer, in practice only (never a mock): the note,
+// the principle, your own note and Report a problem, in one sheet. The
+// dialog manager moves focus in, keeps Tab inside, closes on Escape and
+// hands focus back to ⋯.
+function answerMoreRow(o) {
+  return '<li><button type="button" class="am-row" onclick="' + o.onclick + '">'
+    + '<span class="am-ico" aria-hidden="true">' + ico(o.icon, 20) + '</span>'
+    + '<span class="am-text">' + (o.kicker ? '<span class="am-k">' + o.kicker + '</span>' : '')
+    + '<span class="am-t">' + o.title + '</span>' + (o.meta ? '<span class="am-m">' + o.meta + '</span>' : '') + '</span>'
+    + (o.chev === false ? '' : '<span class="am-chev" aria-hidden="true">' + ico('chevron', 18) + '</span>')
+    + '</button></li>';
+}
+function openAnswerMore() {
+  var q = S.current;
+  var modal = document.getElementById('flagModal');
+  if (!q || !modal || !railQAnswered()) return;
+  var rows = [];
+  var res = railNoteFor(q.id);
+  if (res.state === 'found') {
+    rows.push(answerMoreRow({ onclick: 'answerMoreGo(\'note\')', icon: 'topics', kicker: 'Read the note',
+      title: escapeHtml(res.note.name), meta: 'About ' + res.note.mins + ' min &middot; the idea this question tests' }));
+  }
+  var pl = railPrincipleFor(q);
+  if (pl) {
+    rows.push(answerMoreRow({ onclick: 'answerMoreGo(\'principle\')', icon: 'principles', kicker: 'Read the principle',
+      title: escapeHtml(pl.title), meta: 'How to think it through' }));
+  }
+  // Not in the first five (mobile: one less thing in the first minute).
+  if (!(firstFiveRun && sessionLabel === FIRST_FIVE_LABEL)) {
+    var mine = qNoteText(q.id);
+    rows.push(answerMoreRow({ onclick: 'answerMoreNote()', icon: 'practice', title: mine ? 'Edit your note' : 'Add a note',
+      meta: mine ? escapeHtml(mine.length > 80 ? mine.slice(0, 78) + '\u2026' : mine) : '', chev: false }));
+  }
+  rows.push(answerMoreRow({ onclick: 'answerMoreGo(\'report\')', icon: 'flag', title: 'Report a problem with this question',
+    meta: 'Opens a short form' }));
+  modal.innerHTML = '<div class="mock-confirm-overlay ks-sheet-overlay am-overlay" onclick="closeFlagModal(event)">'
+    + '<div class="mock-confirm-modal ks-sheet am-sheet" role="dialog" aria-modal="true" aria-labelledby="amH">'
+    + '<div class="am-head"><h2 class="mock-confirm-head" id="amH">More on this question</h2>'
+    + '<button type="button" class="ks-link am-close" onclick="closeFlagModal()">Close</button></div>'
+    + '<div class="mock-confirm-body"><ul class="am-list">' + rows.join('') + '</ul></div>'
+    + '</div></div>';
+}
+// A row that leaves the answer: close the sheet without handing focus back
+// to ⋯ (the page it opens places focus itself).
+function answerMoreGo(kind) {
+  var q = S.current;
+  var modal = document.getElementById('flagModal');
+  if (!q || !modal) return;
+  if (kind === 'report') { showFlagModal(); return; }   // same holder: focus still returns to ⋯
+  modal.setAttribute('data-return', 'none');
+  closeFlagModal();
+  if (kind === 'note') {
+    var res = railNoteFor(q.id);
+    if (res.state === 'found') railOpenNote(null, res.note.id, res.note.domain);
+  } else if (kind === 'principle') {
+    var pl = railPrincipleFor(q);
+    railOpenPrinciples(null, pl ? pl.id : '');
+  }
+}
+// "Add a note" / "Edit your note": the sheet becomes the note field. Saved
+// as you type (and on Done, Close or Escape); focus returns to ⋯ after.
+function answerMoreNote() {
+  var q = S.current;
+  var modal = document.getElementById('flagModal');
+  if (!q || !modal) return;
+  modal.innerHTML = '<div class="mock-confirm-overlay ks-sheet-overlay am-overlay" onclick="closeFlagModal(event)">'
+    + '<div class="mock-confirm-modal ks-sheet am-sheet" role="dialog" aria-modal="true" aria-labelledby="amNoteH">'
+    + '<div class="am-head"><h2 class="mock-confirm-head" id="amNoteH">Your note on this question</h2></div>'
+    + '<div class="mock-confirm-body am-note">' + railNoteAreaHtml(q.id, 'amNote', 'amNoteH', 'amNoteHint')
+    + '<div class="mock-confirm-btns"><button type="button" class="mock-confirm-btn gostart" onclick="closeFlagModal()">Done</button></div>'
+    + '</div></div></div>';
+  var t = document.getElementById('amNote');
+  if (t) { try { t.focus(); var L = t.value.length; t.setSelectionRange(L, L); } catch (e) {} }
 }
 
 function submitFlag() {
@@ -21201,8 +21378,11 @@ function toggleMockDetail(i) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
-    title: 'A calmer answer screen',
+    title: 'A shorter answer screen',
     items: [
+      { cat: 'new', text: 'Every answer now starts with a short reminder of the question, and Show question opens all of it.' },
+      { cat: 'improved', text: 'After a miss, your answer, why it falls short, the best answer and the key idea come first; the extra tips open with Read more.' },
+      { cat: 'improved', text: 'One Go deeper link points to the study note behind the question. The note, the principle, your own note and Report a problem are in the More button at the top, beside Save.' },
       { cat: 'improved', text: 'In dark mode, cards and answer rows stand out more clearly from the page, and a missed answer reads more calmly.' },
       { cat: 'improved', text: 'Questions to revisit now say how many are ready today, oldest first, instead of a growing total.' },
     ],
