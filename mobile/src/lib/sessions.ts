@@ -17,7 +17,7 @@ import { guidedStep, inOrderSession, nextTopic, walkOrder } from '../engine/stud
 import type { OutlineTopic } from '../engine/outline';
 import { certOutline, guidedStatus, questionExists, scopeTopics } from './outline';
 import { identityPermutation, makePermutation, type Permutation } from '../engine/shuffle';
-import { dueIds, REVIEW_CAP_LINE, REVIEW_SESSION_CAP } from '../engine/srs';
+import { dueIds, readyLine, readyToday, REVIEW_SESSION_CAP } from '../engine/srs';
 import { selectCert, useProgress } from '../store/progress';
 import { useSession, type ActiveSession, type SessionMode } from '../store/session';
 import { dailyMinutesOf, useSettings } from '../store/settings';
@@ -196,8 +196,8 @@ export function startGuidedStep(certId: string, topicId: string, domainId?: stri
 /** The Questions to revisit row's subtitle, the same on Practice and You. */
 export function reviewSubtitle(dueCount: number): string {
   if (!dueCount) return 'All caught up';
-  // Not just "misses": the queue also holds lucky guesses and shaky right answers.
-  return dueCount > REVIEW_SESSION_CAP ? REVIEW_CAP_LINE : 'Misses and unsure answers come back here';
+  // Premium pass 4.6: the set a tap starts ("16 ready today · oldest first"), never the queue total.
+  return readyLine(readyToday(dueCount), 'today');
 }
 
 /** Due reviews, most overdue first: at most one session's worth (REVIEW_SESSION_CAP, 20). */

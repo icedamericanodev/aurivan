@@ -8,7 +8,7 @@
  * Readiness is always a range ("62–70%") or "Not enough data yet". The copy
  * never promises a pass: it describes mastery, weighted like the exam.
  */
-import { REVIEW_UNIT } from '../engine/srs';
+import { readyLine, REVIEW_ORDER } from '../engine/srs';
 import { gameTitle } from '../engine/games/registry';
 import { useEffect, useState, type ReactNode } from 'react';
 import { Text, useWindowDimensions, View, type ViewStyle } from 'react-native';
@@ -56,14 +56,14 @@ export function planIcon(item: PlanItem, color: string): ReactNode {
  * Mobile 1.15 (PHASE5.md §2.3, C1, C7): one minutes style everywhere
  * ("About 10 min" first in a line, "about 6 min" mid-line), and a review
  * that takes part of the queue says how much of it TODAY takes ("8 today,
- * most overdue first"), not the session cap. `when`: the Tomorrow preview
- * says "8 tomorrow".
+ * oldest first"), not the session cap. `when`: the Tomorrow preview
+ * says "8 tomorrow". Premium pass 1.4 (mobile 1.49): never the queue total,
+ * so the title is "Questions to revisit", not "Review 55 due".
  */
 export function planText(item: PlanItem, due?: number, when: 'today' | 'tomorrow' = 'today'): { title: string; meta: string; short: string } {
   const mins = itemMinutes(item);
   switch (item.kind) {
     case 'review': {
-      // Same word as Practice and You ("due").
       const queue = due ?? item.due ?? item.count;
       const more = queue > item.count;
       // Tomorrow's queue isn't known yet (today's reviews change it), so the
@@ -76,10 +76,9 @@ export function planText(item: PlanItem, due?: number, when: 'today' | 'tomorrow
         };
       }
       return {
-        // The whole queue ("Review 55 due"), the same number You and Practice show;
-        // the meta says how much of it today takes.
-        title: item.label ?? (queue > 0 ? `Review ${queue} ${REVIEW_UNIT}` : 'Review · all caught up'),
-        meta: `${aboutMin(mins)} · ${more ? `${item.count} ${when}, most overdue first` : 'questions to revisit'}`,
+        // Premium pass 1.4: no queue total in the title. An old save's "Review 20 due" label is a count, so it reads as the plain title.
+        title: item.label && !/^Review \d/.test(item.label) ? item.label : queue > 0 ? 'Questions to revisit' : 'Review · all caught up',
+        meta: `${aboutMin(mins)} · ${more ? `${item.count} ${when}, ${REVIEW_ORDER}` : 'questions to revisit'}`,
         short: more ? `Revisit · ${item.count} ${when}` : `Revisit · ${mins} min`,
       };
     }
@@ -148,11 +147,12 @@ export function planHero(item: PlanItem, due?: number, opts: { minutesSaid?: boo
       const queue = due ?? item.due ?? item.count;
       const more = queue > item.count;
       // A labelled review is exam week's ("Light review · 8 questions"). An old save's "Review 20 due" label is a count, so it reads as the plain review.
-      if (item.label && !/^Review \d/.test(item.label)) return { title: item.label.split(' · ')[0], meta: join(`${qs(item.count)}, most overdue first`) };
+      if (item.label && !/^Review \d/.test(item.label)) return { title: item.label.split(' · ')[0], meta: join(`${qs(item.count)}, ${REVIEW_ORDER}`) };
       return {
         title: 'Questions to revisit',
-        // "16 of 55 due": today's share of the live queue (the same "55 due" as You and Practice).
-        meta: join(queue === 0 ? 'all caught up' : more ? `${item.count} of ${queue} ${REVIEW_UNIT} · most overdue first` : `${qs(queue)} from before`),
+        // Premium pass 1.4: today's set only ("16 ready to revisit · oldest first"), never "16 of 55 due".
+        // When fewer are due than the plan made room for, the live count is the set.
+        meta: join(queue === 0 ? 'all caught up' : readyLine(more ? item.count : queue)),
       };
     }
     case 'lesson':
@@ -238,7 +238,7 @@ export function PlanLeaves({ done, focused = true, seenKey }: { done: boolean[];
 
 /**
  * One plan item as a checklist line (mobile 1.23, Today): what it is, with its
- * real size. "Warm-up · 5 questions", "Questions to revisit · 20 due", "Lesson ·
+ * real size. "Warm-up · 5 questions", "Questions to revisit · 20 ready", "Lesson ·
  * Business impact analysis". The title never changes the plan's own words;
  * it only puts the count or the length after them.
  */
@@ -249,10 +249,9 @@ export function planCheckLabel(item: PlanItem, due?: number): string {
       const queue = due ?? item.due ?? item.count;
       // A labelled review is exam week's ("Light review · 8 questions"); an old save's "Review 20 due" is a count.
       if (item.label && !/^Review \d/.test(item.label)) return item.label;
-      // A review that takes part of the queue says how much of it TODAY takes ("8 of 56 due", the same
-      // queue You and Practice count), not the session's size.
+      // Premium pass 1.4: today's set ("Questions to revisit · 8 ready"), never the queue behind it.
       if (queue === 0) return 'Questions to revisit · all caught up';
-      return queue > item.count ? `Questions to revisit · ${item.count} of ${queue} ${REVIEW_UNIT}` : `Questions to revisit · ${queue} ${REVIEW_UNIT}`;
+      return `Questions to revisit · ${Math.min(queue, item.count)} ready`;
     }
     case 'lesson':
       return `Lesson · ${item.title}`;

@@ -72,7 +72,6 @@ import { mockSubtitle } from '../../components/readinessReport';
 import { readinessRange } from '../../engine/readinessRange';
 import { mockPct } from '../../engine/readinessReport';
 import { BANDS_LINE, domainFigure, STUDY_BAR_LINE } from '../../engine/domainBand';
-import { REVIEW_UNIT } from '../../engine/srs';
 import { dayKey } from '../../engine/streak';
 import { guardedStart, reviewSubtitle, startReview } from '../../lib/sessions';
 import { caseEarnedCount } from '../../engine/badgeCatalog';
@@ -112,7 +111,6 @@ export default function You() {
   const range = readinessRange(cert, readiness);
   const answered = readiness.domains.reduce((s, d) => s + d.answered, 0);
   const mastered = readiness.domains.reduce((s, d) => s + d.mastered, 0);
-  const openMistakes = Object.values(progress.mistakes).filter((m) => !m.resolved).length;
   // Mobile 1.24: a word below 30 answers in a domain, the number from 30 (engine/domainBand.ts).
   const figures = readiness.domains.map((d) => domainFigure(d.answered, Math.round(d.mastery * 100)));
   // Mobile 1.43: an area with some answers but under 30 is "thin" (its bar is lighter, "N answered" shows).
@@ -338,7 +336,6 @@ export default function You() {
           cert={cert}
           summary={badgesHidden ? null : summary}
           dueCount={dueCount}
-          openMistakes={openMistakes}
           saved={progress.bookmarks.length}
           badgesHidden={badgesHidden}
           newBadge={newBadge}
@@ -382,7 +379,6 @@ const YouLists = memo(function YouLists({
   cert,
   summary,
   dueCount,
-  openMistakes,
   saved,
   badgesHidden,
   newBadge,
@@ -397,7 +393,6 @@ const YouLists = memo(function YouLists({
   cert: Certification;
   summary: string | null;
   dueCount: number;
-  openMistakes: number;
   saved: number;
   badgesHidden: boolean;
   newBadge: boolean;
@@ -426,22 +421,21 @@ const YouLists = memo(function YouLists({
           </View>
         )}
         <Section title="Study tools" style={{ marginTop: space.xl }} />
-        {/* The review queue: same word ("due") and same cap line as Today and Practice. */}
+        {/* The review set: the same line as Practice ("16 ready today · oldest first"). */}
         <ListRow
           icon={icon(RotateCcw)}
           title="Questions to revisit"
+          // Premium pass 4.6: the subtitle names the set a tap starts; no trailing queue total.
           subtitle={reviewSubtitle(dueCount)}
-          trailing={dueCount ? <Trail value={String(dueCount)} unit={REVIEW_UNIT} /> : undefined}
-          accessibilityLabel={`Questions to revisit, ${dueCount ? `${dueCount} ${REVIEW_UNIT}. ${reviewSubtitle(dueCount)}` : 'all caught up'}`}
+          accessibilityLabel={`Questions to revisit, ${dueCount ? reviewSubtitle(dueCount).replace(' · ', ', ') : 'all caught up'}`}
           onPress={() => guardedStart(() => startReview(cert.id), () => router.push('/session'), () => router.push('/caught-up'))}
         />
         <ListRow
           icon={icon(NotebookPen)}
           title="Mistake journal"
-          // "open" = logged misses not yet fixed: a different list from the review queue.
-          subtitle="Misses not yet fixed, tagged"
-          trailing={openMistakes ? <Trail value={String(openMistakes)} unit="open" /> : undefined}
-          accessibilityLabel={`Mistake journal, ${openMistakes} open`}
+          // Premium pass 4.6: what the journal shows, not a count of open misses (a total that only grows).
+          subtitle="Your pattern first, then each miss"
+          accessibilityLabel="Mistake journal, your pattern first, then each miss"
           onPress={() => router.push('/mistakes')}
         />
         <ListRow

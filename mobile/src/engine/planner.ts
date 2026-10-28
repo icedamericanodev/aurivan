@@ -57,11 +57,11 @@ const gameItem = (gameId: GameId): PlanItem => ({ kind: 'game', gameId, label: `
 export type PracticeWhy = 'check' | 'learn' | 'weak' | 'topup' | 'first';
 
 export type PlanItem =
-  /** `label` is optional: older saved plans have none, and Today then says "Review N due". */
+  /** `label` is optional: older saved plans have none, and Today says "Questions to revisit". */
   /**
    * `due`: the whole queue when more were due than today's count (mobile
    * 1.15: also when the day's budget, not the session cap, cut it), so Today
-   * says "Review 55 due · 8 today". `capped`: the older shape (more than one
+   * can tell the set apart from the queue (it shows the set, never the total). `capped`: the older shape (more than one
    * session's 20 were due); kept so saved plans read the same.
    */
   | { kind: 'review'; count: number; label?: string; capped?: boolean; due?: number }
@@ -189,7 +189,7 @@ function reviewItem(count: number, due: number, label?: string): PlanItem {
     kind: 'review',
     count,
     ...(label ? { label } : {}),
-    // The whole queue when today's count is less, so Today can say "Review 55 due · 8 today".
+    // The whole queue when today's count is less, so Today knows the set is part of it.
     ...(due > count ? { due } : {}),
     ...(due > REVIEW_SESSION_CAP ? { capped: true } : {}),
   };

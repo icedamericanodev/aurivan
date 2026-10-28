@@ -233,17 +233,17 @@ describe('Play when no game is playable for this exam', () => {
 });
 
 describe("Today's review card: the 'N today' line only when more are due than today takes", () => {
-  it('all of them today says "questions to revisit"; part of the queue says "N today, most overdue first" (mobile 1.15 C7)', () => {
+  it('all of them today says "questions to revisit"; part of the queue says "N today, oldest first" (mobile 1.15 C7; 1.49 wording)', () => {
     expect(planText({ kind: 'review', count: 20 }).meta).toBe('About 24 min · questions to revisit');
-    expect(planText({ kind: 'review', count: 20, capped: true, due: 55 }).meta).toBe('About 24 min · 20 today, most overdue first');
-    expect(planText({ kind: 'review', count: 8 }, 55).meta).toBe('About 10 min · 8 today, most overdue first');
-    expect(planText({ kind: 'review', count: 20 }).title).toBe('Review 20 due');
+    expect(planText({ kind: 'review', count: 20, capped: true, due: 55 }).meta).toBe('About 24 min · 20 today, oldest first');
+    expect(planText({ kind: 'review', count: 8 }, 55).meta).toBe('About 10 min · 8 today, oldest first');
+    expect(planText({ kind: 'review', count: 20 }).title).toBe('Questions to revisit');
   });
 
-  it('capped: the title shows the whole queue, the same number as You and Practice (one phrasing, 1.8)', () => {
-    expect(planText({ kind: 'review', count: 20, capped: true, due: 55 }).title).toBe('Review 55 due');
-    // A plan saved before 1.8 has no `due`: it keeps the session's count.
-    expect(planText({ kind: 'review', count: 20, capped: true }).title).toBe('Review 20 due');
+  it('capped: the title never shows the queue total (premium pass 1.4, mobile 1.49)', () => {
+    expect(planText({ kind: 'review', count: 20, capped: true, due: 55 }).title).toBe('Questions to revisit'); // 1.49: never the queue total
+    // A plan saved before 1.8 has no `due`: the same plain title.
+    expect(planText({ kind: 'review', count: 20, capped: true }).title).toBe('Questions to revisit');
   });
 });
 

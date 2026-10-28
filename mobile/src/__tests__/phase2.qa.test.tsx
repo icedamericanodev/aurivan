@@ -650,18 +650,19 @@ describe('J5 quick fixes', () => {
       useProgress.setState((s) => ({ days: {}, byCert: { ...s.byCert, cisa: { ...s.byCert.cisa, review } } }));
     });
   };
-  /** The review count each screen shows. */
+  /** The review set Today's panel names ("8 ready to revisit · oldest first"). */
   const todayReview = () => {
     mount(<Today />);
-    // Mobile 1.21: the panel says "Questions to revisit" / "16 of 55 due · most overdue first" (no count in the title).
-    const m = allText().match(/Review (\d+) due|\d+ of (\d+) due|(\d+) questions? to revisit/);
+    const text = allText();
+    const m = text.match(/(\d+) ready to revisit · oldest first/);
     unmount();
-    return m ? Number(m[1] ?? m[2] ?? m[3]) : null;
+    return { set: m ? Number(m[1]) : null, text };
   };
+  /** The set a study-tools row names ("20 ready today · oldest first"). */
   const trailDue = (Screen: () => React.ReactElement | null) => {
     mount(<Screen />);
     const row = root().find((n) => typeof n.props.accessibilityLabel === 'string' && n.props.accessibilityLabel.startsWith('Questions to revisit, ') && typeof n.props.onPress === 'function');
-    const m = (row.props.accessibilityLabel as string).match(/Questions to revisit, (\d+) due/);
+    const m = (row.props.accessibilityLabel as string).match(/Questions to revisit, (\d+) ready today, oldest first/);
     unmount();
     return m ? Number(m[1]) : null;
   };
@@ -674,19 +675,22 @@ describe('J5 quick fixes', () => {
     expect(rings[0].props.colors).toBe('#A9D9BA'); // the panel's own rings (sap), not the readiness row's
   });
 
-  it('Review counts agree on Today, Practice and You when the day starts (55 due)', () => {
+  // Premium pass 1.4 / 4.6 (mobile 1.49): no surface shows the queue total. Each names the set
+  // it starts: Today the plan's share, Practice and You one session's worth (at most 20).
+  it('Review sets agree on Practice and You, and no screen shows the 55 total, when the day starts', () => {
     seedReviews(55);
     act(() => {
       ensureTodayPlan('cisa');
     });
-    expect(todayReview()).toBe(55);
-    expect(trailDue(Practice)).toBe(55);
-    expect(trailDue(You)).toBe(55);
+    const today = todayReview();
+    expect(today.set).toBeGreaterThan(0);
+    expect(today.set!).toBeLessThanOrEqual(20);
+    expect(today.text).not.toMatch(/\b55\b/);
+    expect(trailDue(Practice)).toBe(20);
+    expect(trailDue(You)).toBe(20);
   });
 
-  // Was a bug (fixed): Today's review title was frozen with the morning's plan
-  // while Practice and You count live. Today now names the live queue.
-  it('Review counts still agree after some reviews are done mid-day', () => {
+  it('Review sets still agree after some reviews are done mid-day', () => {
     seedReviews(55, 5);
     act(() => {
       ensureTodayPlan('cisa');
@@ -707,9 +711,9 @@ describe('J5 quick fixes', () => {
     jest.setSystemTime(Date.now() + 5 * 3_600_000); // 14:00: 5 more fell due at 13:00
     const live = dueIds(selectCert(useProgress.getState(), 'cisa').review, Date.now()).length;
     expect(live).toBe(50);
-    expect(trailDue(You)).toBe(live);
-    expect(trailDue(Practice)).toBe(live);
-    expect(todayReview()).toBe(live); // Today still says 55
+    expect(trailDue(You)).toBe(20);
+    expect(trailDue(Practice)).toBe(20);
+    expect(todayReview().text).not.toMatch(/\b50\b/);
   });
 
   it('"Also today" shows minutes (a paused 10-question practice: about 12 min)', () => {

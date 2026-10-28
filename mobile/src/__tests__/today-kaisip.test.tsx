@@ -190,8 +190,8 @@ describe('the KaiSip mark and lockup', () => {
 describe('planCheckLabel: the plan as checklist lines, in the plan’s own words', () => {
   it('names each item with its real size', () => {
     expect(planCheckLabel(WARM)).toBe('Warm-up · 5 questions');
-    expect(planCheckLabel(REVIEW, 20)).toBe('Questions to revisit · 20 due');
-    expect(planCheckLabel({ kind: 'review', count: 8, due: 56 }, 56)).toBe('Questions to revisit · 8 of 56 due');
+    expect(planCheckLabel(REVIEW, 20)).toBe('Questions to revisit · 20 ready');
+    expect(planCheckLabel({ kind: 'review', count: 8, due: 56 }, 56)).toBe('Questions to revisit · 8 ready'); // never the 56 behind them
     expect(planCheckLabel(REVIEW, 0)).toBe('Questions to revisit · all caught up');
     expect(planCheckLabel(LESSON)).toBe('Lesson · Business impact analysis');
     expect(planCheckLabel({ kind: 'practice', count: 20, label: '20 questions · IS Audit' })).toBe('Practice: IS Audit · 20 questions');
@@ -263,7 +263,7 @@ describe('Today, top to bottom', () => {
     const list = byTestID('plan-checklist')[0];
     const lines = list.findAll((n) => typeof n.type === 'string' && n.props.accessible === true).map((n) => n.props.accessibilityLabel as string);
     // Mobile 1.24: the item you are on is the title (with its detail under it), not also the first row.
-    expect(lines).toEqual(['Questions to revisit · 20 due, later', 'Lesson · Business impact analysis, later']);
+    expect(lines).toEqual(['Questions to revisit · 20 ready, later', 'Lesson · Business impact analysis, later']);
     expect(allText()).toContain('5 questions');
     // The title is the current item's own, with no count in it.
     expect(root().findAll((n) => n.props.accessibilityRole === 'header' && textOf(n) === 'Warm-up').length + root().findAll((n) => n.props.accessibilityRole === 'header' && /^(Warm-up|Optional warm-up)/.test(textOf(n))).length).toBeGreaterThan(0);

@@ -400,7 +400,7 @@ export default function Today() {
   const todayCaption = dayMinutes > 0 ? `Today’s plan · ${aboutMin(dayMinutes, true)}` : 'Today’s plan';
   const curItem = plan.items[cur];
   // The hero's words: the title names the activity (no count) and the meta line under it carries the detail
-  // ("16 of 55 due · most overdue first", "8 questions", a mock's length). Mobile 1.24: the meta always shows,
+  // ("16 ready to revisit · oldest first", "8 questions", a mock's length). Mobile 1.24: the meta always shows,
   // because the item you are on is no longer ALSO the first checklist row (it was said twice). Its minutes are
   // said once: when this item is the day's only timed one, the caption's total is its own, so the meta leaves them out.
   const openTimed = plan.items.filter((it, i) => !plan.done[i] && it.kind !== 'mock');

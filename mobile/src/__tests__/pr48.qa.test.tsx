@@ -270,8 +270,12 @@ function mockExam(right: number, total = 50) {
 }
 /** Independent of the PR's caches: the engine, computed from scratch. */
 const engineDue = () => dueIds(cp().review, Date.now(), questionExists('cisa')).length;
-/** The review row's spoken start: "N due." or, with nothing due yet (mobile 1.43: fresh misses wait for tomorrow), "all caught up". */
-const revisitLabel = (due: number) => (due > 0 ? `[Questions to revisit, ${due} due.` : '[Questions to revisit, all caught up');
+/**
+ * The review row's spoken start: the set a tap starts ("N ready today, oldest first", at most 20;
+ * mobile 1.49 never says the queue total) or, with nothing due yet (mobile 1.43: fresh misses wait
+ * for tomorrow), "all caught up".
+ */
+const revisitLabel = (due: number) => (due > 0 ? `[Questions to revisit, ${Math.min(due, 20)} ready today, oldest first` : '[Questions to revisit, all caught up');
 const engineRange = () => readinessRange(cert, computeReadiness(cert, cp().answers));
 
 // ── Saves (AsyncStorage writes per key) ──────────────────────────────────
@@ -386,7 +390,9 @@ describe('answering, then switching tabs: every tab shows fresh numbers', () => 
     });
     expect(textOf('you')).toEqual(freshText('you'));
     expect(joined('you')).toContain(revisitLabel(engineDue()));
-    expect(joined('you')).toContain('[Mistake journal, 6 open]');
+    // Mobile 1.49 (premium pass 4.6): the journal row says what it shows, never a count of open misses.
+    expect(joined('you')).toContain('[Mistake journal, your pattern first, then each miss]');
+    expect(joined('you')).not.toContain('6 open');
     // A hidden tab (never switched to) is fresh too, the moment it is opened.
     expectTabsFresh(['practice', 'learn', 'home']);
   });

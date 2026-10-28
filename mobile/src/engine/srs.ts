@@ -42,17 +42,27 @@ export interface ReviewEntry {
 /**
  * The most due reviews one session asks (Today's plan item and the Spaced
  * review row both start a session of at most this many). The rest wait for
- * the next session; the screens say so in one line (REVIEW_CAP_LINE).
+ * the next session. Screens name this set (readyToday), never the queue total.
  */
 export const REVIEW_SESSION_CAP = 20;
 /**
- * One plain line explaining the cap, used on Today, Practice and You, always
- * beside the full due count ("55 due"): one phrasing for one thing (1.8).
+ * Premium pass 1.4 / 4.6 (mobile 1.49): the review queue's TOTAL is never
+ * shown. A total only grows after a few days away, so it reads as a debt, and
+ * it says nothing about what to do now. Each surface names the set it starts
+ * instead: "16 ready to revisit · oldest first". The queue and its order
+ * (most overdue first, which is the oldest first) are unchanged.
  */
-export const REVIEW_CAP_LINE = `${REVIEW_SESSION_CAP} at a time, most overdue first`;
+export const REVIEW_ORDER = 'oldest first';
 
-/** The trailing unit for the review queue count: one word everywhere ("55 due"). */
-export const REVIEW_UNIT = 'due';
+/** How many a review started now asks: the due ones, at most one session's worth (20). */
+export function readyToday(dueCount: number): number {
+  return Math.max(0, Math.min(dueCount, REVIEW_SESSION_CAP));
+}
+
+/** The plain line for a set of `n` questions to revisit: "16 ready to revisit · oldest first". */
+export function readyLine(n: number, where: 'today' | 'revisit' = 'revisit'): string {
+  return `${n} ready ${where === 'today' ? 'today' : 'to revisit'} · ${REVIEW_ORDER}`;
+}
 
 export const INTERVAL_DAYS: Record<number, number> = { 1: 0, 2: 1, 3: 3, 4: 7, 5: 16 };
 

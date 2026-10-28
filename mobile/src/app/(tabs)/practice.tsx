@@ -42,11 +42,10 @@ import { AccessibilityInfo, View, type Switch } from 'react-native';
 import { ArrowRight, Crosshair, ICON_STROKE, Library, ListChecks, RotateCcw } from '../../components/icons';
 import { Collapse } from '../../components/motion';
 import { DisclosureRow, FieldLabel, PathChooser, pathSummary } from '../../components/pathChooser';
-import { Button, Card, Chip, ChipRow, Enter, Gap, HeroPanel, ICON_SIZE, Lead, ListRow, Screen, Section, Segmented, T, ToggleRow, Trail } from '../../components/ui';
+import { Button, Card, Chip, ChipRow, Enter, Gap, HeroPanel, ICON_SIZE, Lead, ListRow, Screen, Section, Segmented, T, ToggleRow } from '../../components/ui';
 import type { Difficulty } from '../../content/types';
 import { topicQuestionIds } from '../../engine/outline';
 import { aboutMin, examPaceWords, MINUTES_PER_QUESTION, shouldOfferTimer, spokenMin } from '../../engine/pace';
-import { REVIEW_UNIT } from '../../engine/srs';
 import { activeMode, MODE_INFO, scopeKey, SESSION_SIZES, sessionSize, suggestedMode } from '../../engine/studyModes';
 import { currentGuidedTopic } from '../../engine/studyPath';
 import { guidedStatus, scopeTopics } from '../../lib/outline';
@@ -287,9 +286,9 @@ export default function Practice() {
         <ListRow
           icon={icon(RotateCcw)}
           title="Questions to revisit"
+          // Premium pass 4.6: the subtitle names the set a tap starts; no trailing queue total.
           subtitle={reviewSubtitle(dueCount)}
-          trailing={dueCount ? <Trail value={String(dueCount)} unit={REVIEW_UNIT} /> : undefined}
-          accessibilityLabel={`Questions to revisit, ${dueCount ? `${dueCount} ${REVIEW_UNIT}. ${reviewSubtitle(dueCount)}` : 'all caught up'}`}
+          accessibilityLabel={`Questions to revisit, ${dueCount ? reviewSubtitle(dueCount).replace(' · ', ', ') : 'all caught up'}`}
           onPress={() => guardedStart(() => startReview(cert.id), open, () => router.push('/caught-up'))}
         />
         {focus && (

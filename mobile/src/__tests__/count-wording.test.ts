@@ -1,12 +1,13 @@
 /**
- * One word for the review queue ("due") and one line for the 20-per-session
- * cap, wherever the count shows; and US "Practice" in every visible string.
+ * The review queue never shows its total (premium pass 1.4 / 4.6, mobile
+ * 1.49): each surface names the set it starts, "16 ready today · oldest
+ * first", at most one session's 20. And US "Practice" in every visible string.
  */
 import { readdirSync, readFileSync, statSync } from 'fs';
 import { join } from 'path';
 import { getAllQuestions } from '../content/loader';
 import { todaysPlan } from '../engine/planner';
-import { DAY_MS, REVIEW_CAP_LINE, REVIEW_SESSION_CAP, REVIEW_UNIT, type ReviewEntry } from '../engine/srs';
+import { DAY_MS, readyLine, readyToday, REVIEW_ORDER, REVIEW_SESSION_CAP, type ReviewEntry } from '../engine/srs';
 import { reviewSubtitle, startReview } from '../lib/sessions';
 import { useProgress } from '../store/progress';
 import { useSession } from '../store/session';
@@ -16,19 +17,25 @@ jest.mock('@react-native-async-storage/async-storage', () =>
 );
 
 describe('review queue wording', () => {
-  it('uses one word and explains the cap in one line', () => {
-    expect(REVIEW_UNIT).toBe('due');
+  it('names the set a tap starts, never the queue total', () => {
     expect(REVIEW_SESSION_CAP).toBe(20);
-    expect(REVIEW_CAP_LINE).toBe('20 at a time, most overdue first');
-    expect(reviewSubtitle(55)).toBe('20 at a time, most overdue first');
-    expect(reviewSubtitle(12)).toBe('Misses and unsure answers come back here');
-    expect(reviewSubtitle(20)).toBe('Misses and unsure answers come back here'); // exactly 20 fits one session
+    expect(REVIEW_ORDER).toBe('oldest first');
+    // readyToday: the due ones, at most one session's worth, never below 0.
+    expect(readyToday(55)).toBe(20);
+    expect(readyToday(12)).toBe(12);
+    expect(readyToday(0)).toBe(0);
+    expect(readyToday(-3)).toBe(0);
+    expect(readyLine(16)).toBe('16 ready to revisit · oldest first');
+    expect(readyLine(16, 'today')).toBe('16 ready today · oldest first');
+    expect(reviewSubtitle(55)).toBe('20 ready today · oldest first'); // not "55"
+    expect(reviewSubtitle(12)).toBe('12 ready today · oldest first');
     expect(reviewSubtitle(0)).toBe('All caught up');
+    expect(reviewSubtitle(300)).not.toMatch(/300/);
   });
 
   it("Today's review item and the review session share the same cap", () => {
     const plan = todaysPlan({ stage: 'practice', dueReviews: 55, dailyMinutes: 20, daysLeft: 40, examQuestions: 150 });
-    // The item keeps the whole queue, so Today says "Review 55 due" like You and Practice;
+    // The item keeps the whole queue (so Today knows the set is part of it; it shows only the set);
     // mobile 1.15: a 20-minute day takes 8 of them (about half the day).
     expect(plan[0]).toEqual({ kind: 'review', count: 8, capped: true, due: 55 });
     // Never more than one session's cap, whatever the day.

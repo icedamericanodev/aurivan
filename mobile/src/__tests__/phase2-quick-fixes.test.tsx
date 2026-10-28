@@ -158,7 +158,7 @@ describe('Y3: one phrasing for the review queue', () => {
     const plan = todaysPlan({ stage: 'practice', dueReviews: 55, dailyMinutes: 20, daysLeft: 40, examQuestions: 150 });
     // Mobile 1.15: a 20-minute day takes 8 of the 55, and keeps the whole queue for its title.
     expect(plan[0]).toMatchObject({ kind: 'review', count: 8, due: 55 });
-    expect(reviewSubtitle(55)).toBe('20 at a time, most overdue first');
+    expect(reviewSubtitle(55)).toBe('20 ready today · oldest first');
   });
 });
 

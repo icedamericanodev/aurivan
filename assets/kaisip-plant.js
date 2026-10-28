@@ -7811,7 +7811,9 @@ function readySigns(input) {
   defs["src/engine/srs.ts"] = function (module, exports, require) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.DAY_MS = exports.MAX_BOX = exports.RETEST_LINE = exports.RETEST_WINDOW_MS = exports.INTERVAL_DAYS = exports.REVIEW_UNIT = exports.REVIEW_CAP_LINE = exports.REVIEW_SESSION_CAP = void 0;
+exports.DAY_MS = exports.MAX_BOX = exports.RETEST_LINE = exports.RETEST_WINDOW_MS = exports.INTERVAL_DAYS = exports.REVIEW_ORDER = exports.REVIEW_SESSION_CAP = void 0;
+exports.readyToday = readyToday;
+exports.readyLine = readyLine;
 exports.isRetest = isRetest;
 exports.isRetestAfterMiss = isRetestAfterMiss;
 exports.startOfNextDay = startOfNextDay;
@@ -7822,8 +7824,13 @@ exports.upcomingReviewLine = upcomingReviewLine;
 exports.dueIds = dueIds;
 exports.dueCountFor = dueCountFor;
 exports.REVIEW_SESSION_CAP = 20;
-exports.REVIEW_CAP_LINE = `${exports.REVIEW_SESSION_CAP} at a time, most overdue first`;
-exports.REVIEW_UNIT = 'due';
+exports.REVIEW_ORDER = 'oldest first';
+function readyToday(dueCount) {
+    return Math.max(0, Math.min(dueCount, exports.REVIEW_SESSION_CAP));
+}
+function readyLine(n, where = 'revisit') {
+    return `${n} ready ${where === 'today' ? 'today' : 'to revisit'} · ${exports.REVIEW_ORDER}`;
+}
 exports.INTERVAL_DAYS = { 1: 0, 2: 1, 3: 3, 4: 7, 5: 16 };
 exports.RETEST_WINDOW_MS = 4 * 3600000;
 exports.RETEST_LINE = 'Back in your review tomorrow.';
@@ -8618,6 +8625,6 @@ exports.plantLine = {
   api["domainBand"] = load("src/engine/domainBand.ts");
   api["pace"] = load("src/engine/pace.ts");
   api["readySigns"] = load("src/engine/readySigns.ts");
-  api.sourceHash = "358440986331a4ab";
+  api.sourceHash = "92148b257ca7f17a";
   root.KaiSipPlant = Object.freeze(api);
 })(typeof window !== 'undefined' ? window : globalThis);
