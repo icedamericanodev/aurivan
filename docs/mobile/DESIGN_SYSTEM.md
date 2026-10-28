@@ -1776,7 +1776,9 @@ exam wording, links, the "choose" screen's words: pure and tested),
 `lib/widgetOpen.ts` (where a tap lands), `lib/widgetStats.ts` (local beta
 counters), `components/widgetSettings.tsx` (Settings card, the one
 suggestion, the one re-ask, tester card and numbers),
-`components/widgetConfig.android.tsx` (the "choose" screen).
+`components/widgetConfig.android.tsx` (registers the "choose" screen;
+since 1.47.1 it loads `components/widgetConfigScreen.android.tsx` only when
+the screen opens, so background widget runs stay light).
 
 ### 20.1 Rules for every widget
 
@@ -1873,7 +1875,9 @@ midnight alarm from JavaScript, and an exact alarm would need a new
 permission). So the done face is written to stay true after midnight ("Plan
 done", "Next: …"), and the morning face names the real next topic from the
 plan written the day before. At worst the done face shows for up to 3 hours
-into the new day; it never says "today".
+into the new day; it never says "today". Since 1.47.1, while KaiSip is open
+a timer redraws the widgets just after local midnight (JavaScript only; a
+native midnight alarm would need a new build).
 
 ### 20.4 Measuring it (beta, on the phone only)
 

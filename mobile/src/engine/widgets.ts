@@ -684,7 +684,10 @@ function planFace(s: WidgetSnapshot, today: string): WidgetFace {
     const prev = yesterdaysPlan(s, today);
     const mins = prev?.nextMin || s.minutes;
     const title = !hidden(s) && prev?.next ? prev.next : 'Your plan is ready';
-    const main = lapsed ? shortAction : { label: startLabel(mins), link: widgetLink(kind, 'start') };
+    // The tap never runs the short set in the exam's final days (lib/widgetOpen.ts), so don't offer it then.
+    const canShort = phase !== 'week' && phase !== 'eve' && phase !== 'day';
+    const shortFirst = lapsed && canShort;
+    const main = shortFirst ? shortAction : { label: startLabel(mins), link: widgetLink(kind, 'start') };
     return {
       ...base,
       caption: 'Today',
@@ -692,9 +695,13 @@ function planFace(s: WidgetSnapshot, today: string): WidgetFace {
       short: !hidden(s) && prev?.next ? undefined : 'Plan ready',
       line: aboutMin(mins),
       action: main,
-      action2: lapsed ? { label: `Full plan · ${mins} min`, link: widgetLink(kind, 'start') } : { label: `Short on time? ${SHORT_SET.questions} questions`, link: widgetLink(kind, 'short') },
+      action2: shortFirst
+        ? { label: `Full plan · ${mins} min`, link: widgetLink(kind, 'start') }
+        : canShort
+          ? { label: `Short on time? ${SHORT_SET.questions} questions`, link: widgetLink(kind, 'short') }
+          : undefined,
       key: title === 'Your plan is ready' ? 'Plan' : title.split(' ')[0],
-      label: spokenMin(`Today. ${title}, about ${mins} min.${lapsed ? ` Or start with ${SHORT_SET.questions} questions.` : ''}`),
+      label: spokenMin(`Today. ${title}, about ${mins} min.${shortFirst ? ` Or start with ${SHORT_SET.questions} questions.` : ''}`),
     };
   }
   if (plan.done) {
@@ -725,8 +732,10 @@ function planFace(s: WidgetSnapshot, today: string): WidgetFace {
     };
   }
   const start = { label: startLabel(mins), link: widgetLink(kind, 'start') };
+  // "5 questions" leads only when the tap can really run it (the plan's own shortSet: never in exam week).
+  const shortFirst = lapsed && plan.shortSet;
   if (hidden(s)) {
-    return { ...base, caption: 'Today', title: 'Your study plan', short: 'Study plan', line: aboutMin(mins), action: lapsed ? shortAction : start, key: 'plan', label: spokenMin(`Today. Your study plan, about ${mins} min.`) };
+    return { ...base, caption: 'Today', title: 'Your study plan', short: 'Study plan', line: aboutMin(mins), action: shortFirst ? shortAction : start, key: 'plan', label: spokenMin(`Today. Your study plan, about ${mins} min.`) };
   }
   // The eve (with exam timing): the shared words; Start is the plan's own light review.
   if (timing && phase === 'eve') {
@@ -752,8 +761,8 @@ function planFace(s: WidgetSnapshot, today: string): WidgetFace {
     short: plan.short || undefined,
     line,
     line2: examLine,
-    action: lapsed ? shortAction : start,
-    action2: lapsed
+    action: shortFirst ? shortAction : start,
+    action2: shortFirst
       ? { label: `Full plan · ${mins} min`, link: widgetLink(kind, 'start') }
       : plan.shortSet && phase !== 'week'
         ? { label: `Short on time? ${SHORT_SET.questions} questions`, link: widgetLink(kind, 'short') }
@@ -1146,7 +1155,16 @@ export interface RevealState {
   ids: number[];
   counts: Record<string, number>;
   self: Record<string, SelfCheck>;
+  /**
+   * When each widget (by id) was revealed today, in ms (mobile 1.47.1). Lets
+   * the widget ignore a quick second tap on "Show the rule", which lands on
+   * "Had it" in the same spot. Optional: marks saved by 1.47.0 have none.
+   */
+  at?: Record<string, number>;
 }
+
+/** "Had it" / "Not yet" this soon after the same widget's reveal is the reveal's double tap, not an answer. */
+export const REVEAL_TAP_GUARD_MS = 1500;
 
 /** The saved marks, read safely; reveal marks from another day are dropped (counts and self-checks stay). */
 export function readReveal(raw: unknown, today: string): RevealState {
@@ -1174,14 +1192,31 @@ export function readReveal(raw: unknown, today: string): RevealState {
     }
   }
   const ids = o.day === today ? arr<unknown>(o.ids).filter((n): n is number => Number.isInteger(n)).slice(0, 32) : [];
-  return { day: today, ids, counts, self };
+  // Reveal times are today's only, like the marks; anything odd is dropped.
+  const at: Record<string, number> = {};
+  if (o.day === today && o.at && typeof o.at === 'object') {
+    for (const [k, v] of Object.entries(o.at as Record<string, unknown>).slice(0, 32)) {
+      if (/^-?\d{1,10}$/.test(k) && typeof v === 'number' && Number.isFinite(v)) at[k] = v;
+    }
+  }
+  return { day: today, ids, counts, self, at };
 }
 
-/** Mark one widget revealed today, and count the reveal for its rule (once per widget per day). */
-export function withReveal(s: RevealState, widgetId: number, principleId: string | null): RevealState {
+/**
+ * Mark one widget revealed today, and count the reveal for its rule (once per
+ * widget per day). `now`: the reveal's time, kept so a quick second tap is ignored.
+ */
+export function withReveal(s: RevealState, widgetId: number, principleId: string | null, now?: number): RevealState {
   if (s.ids.includes(widgetId)) return s;
   const counts = principleId && LINK_ID.test(principleId) ? { ...s.counts, [principleId]: (s.counts[principleId] ?? 0) + 1 } : s.counts;
-  return { ...s, ids: [...s.ids, widgetId], counts };
+  const at = now === undefined ? s.at : { ...s.at, [String(widgetId)]: now };
+  return { ...s, ids: [...s.ids, widgetId], counts, at };
+}
+
+/** True within REVEAL_TAP_GUARD_MS of this widget's reveal: a "Had it" / "Not yet" tap then is ignored. */
+export function tooSoonAfterReveal(s: RevealState, widgetId: number, now: number): boolean {
+  const t = s.at?.[String(widgetId)];
+  return typeof t === 'number' && now >= t && now - t < REVEAL_TAP_GUARD_MS;
 }
 
 /** The learner's self-check for a rule today (once a day; a second tap the same day changes nothing). */
@@ -1201,7 +1236,21 @@ export function judgedToday(s: RevealState, principleId: string | null): 'had' |
 
 /** A widget was removed: forget its mark. */
 export function withoutWidget(s: RevealState, widgetId: number): RevealState {
-  return s.ids.includes(widgetId) ? { ...s, ids: s.ids.filter((i) => i !== widgetId) } : s;
+  if (!s.ids.includes(widgetId)) return s;
+  const at = { ...s.at };
+  delete at[String(widgetId)];
+  return { ...s, ids: s.ids.filter((i) => i !== widgetId), at };
+}
+
+/**
+ * How long until just after the next local midnight (5 s past it, so "today"
+ * has surely turned). The app redraws the widgets then while it is open
+ * (lib/widgets.android.ts), so a new day never waits for Android's 3-hourly update.
+ */
+export function msToNextMidnight(now: number): number {
+  const d = new Date(now);
+  const next = new Date(d.getFullYear(), d.getMonth(), d.getDate() + 1, 0, 0, 5).getTime();
+  return Math.max(1000, next - now);
 }
 
 /** Today's rule id, if the snapshot has one. */
@@ -1224,7 +1273,7 @@ export function ruleDueFrom(e: SelfCheck | undefined): { from: string; priority:
 // ── Adding Readiness or Exam countdown: the launcher opens a short "choose" screen first ──
 /**
  * Adding one of these two widgets IS the opt-in: Android opens KaiSip's
- * choose screen (components/widgetConfig.android.tsx) before the widget lands.
+ * choose screen (components/widgetConfigScreen.android.tsx) before the widget lands.
  * Choosing sets the same switch as Settings; "Not now" cancels the add.
  */
 export interface ConfigChoice<V extends string> {

@@ -139,7 +139,7 @@ describe('beta tester widget card and numbers', () => {
 
 describe('the "choose" screen when Readiness or Exam countdown is added', () => {
   // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const { WidgetConfigScreen } = require('../components/widgetConfig.android') as typeof import('../components/widgetConfig.android');
+  const { WidgetConfigScreen, READY_TIMEOUT_MS } = require('../components/widgetConfigScreen.android') as typeof import('../components/widgetConfigScreen.android');
   const info = (widgetName: string) => ({ widgetId: 7, widgetName, width: 182, height: 184, screenInfo: { fontScale: 1, density: 2, densityDpi: 320, screenHeightDp: 800, screenWidthDp: 412 } });
 
   it('Readiness: "Rings only" sets the switch, draws the widget and finishes the add', async () => {
@@ -169,6 +169,33 @@ describe('the "choose" screen when Readiness or Exam countdown is added', () => 
     await act(async () => byLabel(r2.root, 'Not now').props.onPress());
     expect(cancel).toHaveBeenCalledWith('cancel');
     expect(useWidgetStore.getState().prefs.timing).toBe(false);
+  });
+
+  it('1.47.1: if saved data never loads, the add still finishes after a few seconds (buttons never stuck), writing nothing', async () => {
+    jest.useFakeTimers();
+    const hydrated = jest.spyOn(useWidgetStore.persist, 'hasHydrated').mockReturnValue(false);
+    const onFinish = jest.spyOn(useWidgetStore.persist, 'onFinishHydration').mockReturnValue(() => {});
+    try {
+      const setResult = jest.fn();
+      const renderWidget = jest.fn();
+      const r = await render(<WidgetConfigScreen widgetInfo={info('Readiness')} setResult={setResult} renderWidget={renderWidget} />);
+      await act(async () => byLabel(r.root, 'Rings only (recommended)').props.onPress());
+      await act(async () => {
+        await jest.advanceTimersByTimeAsync(READY_TIMEOUT_MS - 100);
+      });
+      expect(setResult).not.toHaveBeenCalled();
+      await act(async () => {
+        await jest.advanceTimersByTimeAsync(200);
+      });
+      expect(setResult).toHaveBeenCalledWith('ok');
+      expect(useWidgetStore.getState().prefs.readiness).toBe('off');
+      expect(mockRefresh).not.toHaveBeenCalled();
+      expect(renderWidget).not.toHaveBeenCalled();
+    } finally {
+      hydrated.mockRestore();
+      onFinish.mockRestore();
+      jest.useRealTimers();
+    }
   });
 
   it('any other widget closes at once', async () => {

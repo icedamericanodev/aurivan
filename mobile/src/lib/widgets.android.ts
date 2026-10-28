@@ -5,8 +5,13 @@
  * When: once saved data has loaded, whenever the app comes back to the
  * front, and after anything a widget shows changes (a finished session, a
  * restore or an undo, the website import, a sync, a settings change). Changes
- * are merged and written about a second later, never mid-session: answers
- * during a quiz wait until it ends.
+ * are merged and written about a second later. Answers during a quiz wait
+ * until it ends; a settings change never waits (1.47.1).
+ * - Leaving the app (Home, another app) redraws AT ONCE, even mid-quiz:
+ *   Android stops the app's timers in the background, so a waiting refresh
+ *   would otherwise not run until the app opens again (1.47.1).
+ * - While the app is open, a timer redraws just after local midnight, so a
+ *   new day shows without waiting for Android's 3-hourly update (1.47.1).
  *
  * What: one small key, `aurivan.widget.v1` (engine/widgets.ts), written only
  * when its contents changed, then `requestWidgetUpdate` for each widget kind
@@ -22,7 +27,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { isRunningInExpoGo } from 'expo';
 import { AppState } from 'react-native';
 import { getWidgetInfo, requestPinWidget, requestWidgetUpdate } from 'react-native-android-widget';
-import { readReveal, REVEAL_KEY, WIDGET_KEY, WIDGET_KINDS, WIDGET_NAMES, type WidgetKind } from '../engine/widgets';
+import { msToNextMidnight, readReveal, REVEAL_KEY, WIDGET_KEY, WIDGET_KINDS, WIDGET_NAMES, type WidgetKind } from '../engine/widgets';
 import { dayKey } from '../engine/streak';
 import { useProgress } from '../store/progress';
 import { useSession } from '../store/session';
@@ -40,6 +45,10 @@ export const REFRESH_DELAY_MS = 1200;
 /** The last snapshot written (its time left out), so an unchanged one is never written again. */
 let lastWritten = '';
 let timer: ReturnType<typeof setTimeout> | null = null;
+/** Progress changed during a quiz: redraw when it ends or the app leaves the front. */
+let pending = false;
+/** The redraw just after local midnight (only while the app is open). */
+let midnight: ReturnType<typeof setTimeout> | null = null;
 
 /**
  * Write the snapshot (if it changed) and redraw every placed widget. Never
@@ -48,6 +57,8 @@ let timer: ReturnType<typeof setTimeout> | null = null;
  */
 export async function refreshWidgets(opts: { force?: boolean } = {}): Promise<void> {
   if (!widgetsSupported) return;
+  // This write includes any answers that were waiting for a quiz to end.
+  pending = false;
   try {
     const now = Date.now();
     // Today's rule's self-checks (written by the widget) steer which rule comes next.
@@ -79,6 +90,28 @@ export function scheduleRefresh(ms = REFRESH_DELAY_MS): void {
     timer = null;
     void refreshWidgets();
   }, ms);
+}
+
+/** Redraw now, instead of the waiting refresh (the app is leaving the front: its timers are about to stop). */
+function flushNow(): void {
+  if (timer) clearTimeout(timer);
+  timer = null;
+  void refreshWidgets();
+}
+
+/** Redraw just after the next local midnight, then again each night while the app stays open. */
+function armMidnight(): void {
+  if (midnight) clearTimeout(midnight);
+  midnight = setTimeout(() => {
+    midnight = null;
+    void refreshWidgets();
+    armMidnight();
+  }, msToNextMidnight(Date.now()));
+}
+
+function stopMidnight(): void {
+  if (midnight) clearTimeout(midnight);
+  midnight = null;
 }
 
 /** A quiz is open and not finished: its answers wait until it ends. */
@@ -125,12 +158,15 @@ export async function pinWidget(kind: WidgetKind): Promise<boolean> {
  */
 export function startWidgetSync(): () => void {
   if (!widgetsSupported) return () => {};
-  const changed = () => {
-    if (!inSession()) scheduleRefresh();
+  // Answers during a quiz are only noted; the redraw comes when it ends (or the app is left).
+  const progressChanged = () => {
+    if (inSession()) pending = true;
+    else scheduleRefresh();
   };
   const offs = [
-    useSettings.subscribe(changed),
-    useProgress.subscribe(changed),
+    // Settings (exam date, minutes, certification) never wait for a quiz: a paused mock can stay open for days.
+    useSettings.subscribe(() => scheduleRefresh()),
+    useProgress.subscribe(progressChanged),
     // Only the learner's widget choices (the day's pick and counters change during a refresh itself).
     useWidgetStore.subscribe((s, prev) => {
       if (s.prefs !== prev.prefs) scheduleRefresh(0);
@@ -139,18 +175,30 @@ export function startWidgetSync(): () => void {
     useSession.subscribe((s, prev) => {
       const was = prev.active && !prev.active.finishedAt;
       const now = s.active && !s.active.finishedAt;
-      if (was && !now) scheduleRefresh();
+      if (was && !now) {
+        pending = false;
+        scheduleRefresh();
+      }
     }),
   ];
   const app = AppState.addEventListener('change', (state) => {
+    // Leaving the app: anything waiting (a refresh, or answers from an open quiz) is drawn now,
+    // even mid-quiz (the answers are already saved). Timers stop from here.
+    if (state === 'background' || state === 'inactive') {
+      stopMidnight();
+      if (timer || pending) flushNow();
+      return;
+    }
     if (state !== 'active') return;
     scheduleRefresh(0);
     void noteSeen();
+    armMidnight();
   });
   // The first write waits for this phone's widget choices to load (readiness stays off until then).
   const begin = () => {
     scheduleRefresh(0);
     void noteSeen();
+    armMidnight();
   };
   if (useWidgetStore.persist.hasHydrated()) begin();
   else offs.push(useWidgetStore.persist.onFinishHydration(begin));
@@ -159,6 +207,8 @@ export function startWidgetSync(): () => void {
     app.remove();
     if (timer) clearTimeout(timer);
     timer = null;
+    pending = false;
+    stopMidnight();
   };
 }
 
@@ -167,4 +217,6 @@ export function resetWidgetsForTest(): void {
   lastWritten = '';
   if (timer) clearTimeout(timer);
   timer = null;
+  pending = false;
+  stopMidnight();
 }

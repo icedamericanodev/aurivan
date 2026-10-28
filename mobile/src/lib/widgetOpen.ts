@@ -5,11 +5,14 @@
  * turns the (untrusted) link into one place in the app:
  * - Start / 5 questions: today's plan as it is NOW (the app's live plan,
  *   never the widget's possibly older copy), the same as Today's Start;
- * - Revisit: the due questions; a Quick question or "Try one": that one
- *   question, answered in the app with every option explained;
+ * - Revisit: today's plan's own review item, so the count matches the
+ *   widget's (the whole due queue only when the plan has none left); a Quick
+ *   question or "Try one": that one question, answered in the app with every
+ *   option explained;
  * - everything else opens its screen, with Today underneath so Back works.
  * - A quiz still open is never closed by a link (any app can send one): a
- *   study tap resumes it, and a screen opens on top of it.
+ *   study tap resumes it, and a screen opens on top of it. Either way the
+ *   blank /widget screen is cleared first (1.47.1), so Back never lands on it.
  *
  * A tap earns nothing: it only opens. Local counts (store/widgets.ts): an
  * open per widget kind, and "started" only when a session really starts
@@ -53,9 +56,13 @@ export function openFromWidget(tap: WidgetTap): boolean {
   const busy = Boolean(active && !active.finishedAt);
   const study = tap.go === 'start' || tap.go === 'short' || tap.go === 'review' || tap.go === 'question';
   // A quiz is open: never close it from a link. A study tap resumes it; a screen opens on top of it.
+  // Today goes underneath first (home() also removes /widget), then the quiz (it restores from the
+  // store), so Back goes screen → quiz → Today, never to a blank screen or a second quiz.
   if (busy) {
-    if (study || tap.go === 'today') router.push('/session');
-    else if (tap.go === 'principle') router.push(tap.id && findPrinciple(certId, tap.id) ? { pathname: '/principles/[id]', params: { id: tap.id } } : '/principles');
+    home();
+    openSession();
+    if (study || tap.go === 'today') return false;
+    if (tap.go === 'principle') router.push(tap.id && findPrinciple(certId, tap.id) ? { pathname: '/principles/[id]', params: { id: tap.id } } : '/principles');
     else router.push(GOAL_ROUTES[tap.go as keyof typeof GOAL_ROUTES] as Href);
     return false;
   }
@@ -73,10 +80,16 @@ export function openFromWidget(tap: WidgetTap): boolean {
       else runPlanItem(plan.items[currentIndex(plan)], certId);
       return true;
     }
-    case 'review':
+    case 'review': {
+      // The widget shows today's plan's review count: run that item (it asks exactly its count).
+      ensureTodayPlan(certId);
+      const plan = useProgress.getState().days[certId];
+      const ri = plan ? plan.items.findIndex((it, i) => it.kind === 'review' && !plan.done[i]) : -1;
       home();
-      guardedStart(() => startReview(certId), openSession, () => router.push('/caught-up'));
+      if (plan && ri >= 0) runPlanItem(plan.items[ri], certId);
+      else guardedStart(() => startReview(certId), openSession, () => router.push('/caught-up'));
       return true;
+    }
     case 'question':
       home();
       if (tap.id && findQuestion(certId, tap.id)) {

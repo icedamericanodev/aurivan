@@ -49,7 +49,7 @@ describe('widget source guards', () => {
   });
 
   it('no widget file mentions the learner’s own name, the network or analytics', () => {
-    const paths = [...files(join(root, 'widgets')), join(root, 'engine/widgets.ts'), join(root, 'lib/widgetData.ts'), join(root, 'lib/widgets.android.ts'), join(root, 'lib/widgetOpen.ts'), join(root, 'store/widgets.ts'), join(root, 'lib/widgetStats.ts'), join(root, 'engine/widgetTester.ts'), join(root, 'components/widgetConfig.android.tsx'), join(root, 'components/widgetSettings.tsx')];
+    const paths = [...files(join(root, 'widgets')), join(root, 'engine/widgets.ts'), join(root, 'lib/widgetData.ts'), join(root, 'lib/widgets.android.ts'), join(root, 'lib/widgetOpen.ts'), join(root, 'store/widgets.ts'), join(root, 'lib/widgetStats.ts'), join(root, 'engine/widgetTester.ts'), join(root, 'components/widgetConfig.android.tsx'), join(root, 'components/widgetConfigScreen.android.tsx'), join(root, 'components/widgetSettings.tsx')];
     for (const p of paths) {
       const src = readFileSync(p, 'utf8');
       expect([rel(p), /displayName|DisplayName|greetingWithName/.test(src)]).toEqual([rel(p), false]);
@@ -64,6 +64,37 @@ describe('widget source guards', () => {
     expect(entry).toMatch(/import '\.\/src\/components\/widgetConfig';/);
     const pkg = JSON.parse(readFileSync(join(mobile, 'package.json'), 'utf8'));
     expect(pkg.main).toBe('index.ts');
+  });
+
+  it('1.47.1: index.ts loads no store, saved data, content or UI kit at start (background widget runs stay light)', () => {
+    // Follows every static import (never `import type`, never a require() inside a function) from index.ts, Android files first.
+    const resolve = (from: string, spec: string): string | null => {
+      const base = join(from, '..', spec);
+      for (const ext of ['.android.tsx', '.android.ts', '.tsx', '.ts', '.json', '/index.android.ts', '/index.ts', '/index.tsx', '']) {
+        try {
+          if (statSync(base + ext).isFile()) return base + ext;
+        } catch {
+          // not this one
+        }
+      }
+      return null;
+    };
+    const seen = new Set<string>();
+    const walk = (p: string) => {
+      if (seen.has(p) || p.endsWith('.json')) return;
+      seen.add(p);
+      const src = readFileSync(p, 'utf8');
+      for (const m of src.matchAll(/^(?:import|export)\s+(?!type\b)(?:[^'";]*?\bfrom\s+)?'(\.[^']+)'/gm)) {
+        const next = resolve(p, m[1]);
+        expect([rel(p), m[1], next !== null]).toEqual([rel(p), m[1], true]);
+        if (next) walk(next);
+      }
+    };
+    walk(join(mobile, 'index.ts'));
+    const eager = [...seen].map(rel);
+    expect(eager).toContain('src/widgets/task.android.ts');
+    expect(eager).toContain('src/components/widgetConfig.android.tsx');
+    expect(eager.filter((f) => /^src\/(store|content|cloud|app)\/|^src\/lib\/|^src\/components\/(ui|widgetConfigScreen)/.test(f))).toEqual([]);
   });
 
   it('app.json declares every widget kind once, with the 3-hour refresh, and the fonts the layouts use', () => {
