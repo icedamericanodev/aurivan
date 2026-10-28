@@ -247,7 +247,7 @@
           "exam_traps": [
             {
               "trap": "Integrity and authenticity are the same thing.",
-              "why": "Integrity asks whether data changed; authenticity asks who it came from. A forged message can arrive perfectly intact."
+              "why": "In the narrow sense, integrity asks whether data changed and authenticity asks who it came from; a forged message can arrive perfectly intact. NIST's broad definition of integrity includes authenticity, so treat them as two separate questions to ask."
             },
             {
               "trap": "If data is encrypted, nobody could have changed it.",
@@ -1281,6 +1281,7 @@
             "The Cybersecurity Framework (CSF) 2.0, from the US National Institute of Standards and Technology (NIST), groups outcomes into six functions.",
             "ISO/IEC 27001, from the International Organization for Standardization (ISO) and International Electrotechnical Commission (IEC), sets certifiable requirements for an information security management system (ISMS).",
             "The Center for Internet Security (CIS) Controls are 18 prioritized safeguards; Implementation Group 1 is the basic set.",
+            "A penetration test checks technical weaknesses; it is not certification (see 5.5).",
             "One control set can map to several frameworks; 2.1.5 shows how."
           ],
           "compare": {
@@ -1950,6 +1951,7 @@
             "Employers publish codes of conduct that staff accept, often with the acceptable use policy.",
             "Professional bodies, such as ISC2, have codes members must follow to keep their certification.",
             "Common themes are honesty, avoiding conflicts of interest and protecting confidential information.",
+            "When a personal link could sway your judgment, disclose it to your manager before you start, and let them decide whether to reassign the work.",
             "Use access only for assigned work, and raise concerns through proper channels."
           ],
           "example": "Coworkers at a hospital ask Nia, a database administrator, to look up the diagnosis of a well-known local figure who has just been admitted. Nia refuses, because her access exists only for assigned work, and reports the request to the privacy officer, as the hospital's code of conduct requires.",
@@ -2112,6 +2114,7 @@
             "Reject any illegal or deceptive option, even if an employer asks for it.",
             "Where people's safety is at stake, protecting them comes first.",
             "The best option usually satisfies several canons, such as reporting a safety issue through official channels.",
+            "Report flaws to the owner first; publishing before a fix hands attackers a way in.",
             "Stay within your authority; never hack back."
           ],
           "example": "A security engineer at a medical device maker finds that an infusion pump's wireless link lets anyone change doses. Her manager says to stay quiet until the next release. She documents the flaw and escalates it to the product security lead and the compliance team, pressing for patient warnings, because silence would leave patients at risk.",
