@@ -34,7 +34,7 @@
         "Final two: C beats A because the restriction protects confidentiality but blocks authorized doctors, and blocked access is an availability failure that can endanger patients.",
         "Exam cue: name the goal by the harm. Disclosure hurts confidentiality, alteration hurts integrity, and authorized users being blocked hurts availability."
       ],
-      "framework_ref": "NIST SP 800-12 Rev. 1, Section 1.4 (Important Terminology: confidentiality, integrity, availability)",
+      "framework_ref": "NIST SP 800-12 Rev. 1 Section 1.4 (Important Terminology: confidentiality, integrity, availability)",
       "related_concepts": [
         "Confidentiality, integrity and availability (CIA)",
         "Disclosure, alteration and destruction (DAD)",
@@ -70,7 +70,7 @@
         "Final two: A beats D because a shared key leaves two possible authors; only a private key held by one person gives non-repudiation.",
         "Exam cue: for 'cannot deny' questions, look for something only one person controls, such as a private signing key; anything shared weakens the proof."
       ],
-      "framework_ref": "NIST SP 800-53 Rev. 5, AU-10 (Non-repudiation); NIST SP 800-12 Rev. 1, Section 9.1.3 (Electronic Signatures)",
+      "framework_ref": "NIST SP 800-53 Rev. 5 AU-10 (Non-repudiation); NIST SP 800-12 Rev. 1 Section 9.1.3 (Electronic Signatures)",
       "related_concepts": [
         "Digital signature",
         "Hash-based message authentication code (HMAC)",
@@ -106,7 +106,7 @@
         "Final two: D beats C because logging only gives accountability when each identity belongs to one person; detailed logs of a shared login still name nobody.",
         "Exam cue: when logs cannot name who acted, look for unique accounts first. Accounting records actions; accountability also needs one person per identity."
       ],
-      "framework_ref": "NIST SP 800-53 Rev. 5, IA-2 (Identification and Authentication (Organizational Users)) and AU-2 (Event Logging)",
+      "framework_ref": "NIST SP 800-53 Rev. 5 IA-2 (Identification and Authentication (Organizational Users)) and AU-2 (Event Logging)",
       "related_concepts": [
         "Authentication, authorization and accounting (AAA)",
         "Shared accounts",
@@ -142,7 +142,7 @@
         "Final two: B beats A because privacy first asks whether data should be collected and kept; encryption only protects data that perhaps should not exist.",
         "Exam cue: when a design keeps personal data 'just in case', think data minimization and retention limits before any technical safeguard."
       ],
-      "framework_ref": "NIST SP 800-53 Rev. 5, SA-8(33) (Minimization) and SI-12(1) (Limit Personally Identifiable Information Elements)",
+      "framework_ref": "NIST SP 800-53 Rev. 5 SA-8(33) (Minimization) and SI-12(1) (Limit Personally Identifiable Information Elements)",
       "related_concepts": [
         "Privacy by design",
         "Data minimization",
@@ -178,7 +178,7 @@
         "Final two: B beats A because a patch fixes the weakness; the attackers, the threat, still exist and may try another route.",
         "Exam cue: you rarely control threats. Controls such as patching shrink vulnerabilities or impact, and that is how risk goes down."
       ],
-      "framework_ref": "NIST SP 800-30 Rev. 1, Section 2.3.1 (Risk Models: threats, vulnerabilities, likelihood and impact); NIST CSF 2.0 ID.RA-01 and ID.RA-03",
+      "framework_ref": "NIST SP 800-30 Rev. 1 Section 2.3.1 (Risk Models: threats, vulnerabilities, likelihood and impact); NIST CSF 2.0 ID.RA-01 and ID.RA-03",
       "related_concepts": [
         "Threat",
         "Vulnerability",
@@ -214,7 +214,7 @@
         "Final two: C beats A because only the risk owner may accept the risk; copying the owner after signing still leaves the analyst making the decision.",
         "Exam cue: when asked to accept or sign off a risk, document it and route it to the risk owner; tolerance decides whether that owner or senior leadership signs."
       ],
-      "framework_ref": "ISO/IEC 27001:2022, Clause 6.1.3 f) (risk owners approve the risk treatment plan and accept residual risk); NIST CSF 2.0 GV.RM-02",
+      "framework_ref": "ISO/IEC 27001:2022 Clause 6.1.3 f) (risk owners approve the risk treatment plan and accept residual risk); NIST CSF 2.0 GV.RM-02",
       "related_concepts": [
         "Residual risk",
         "Risk owner",
@@ -250,7 +250,7 @@
         "Final two: A beats D because both read the numbers correctly, but only the risk owner may accept a risk; the analyst reports the finding.",
         "Exam cue: ALE = asset value × exposure factor × annualized rate of occurrence (ARO). Compare ALE with the control's yearly cost, then hand the decision to the risk owner."
       ],
-      "framework_ref": "NIST SP 800-30 Rev. 1, Section 2.3.2 (Assessment Approaches: quantitative assessments support cost-benefit analysis of risk responses)",
+      "framework_ref": "NIST SP 800-30 Rev. 1 Section 2.3.2 (Assessment Approaches: quantitative assessments support cost-benefit analysis of risk responses)",
       "related_concepts": [
         "Single loss expectancy",
         "Annualized rate of occurrence",
@@ -286,7 +286,7 @@
         "Final two: D beats A because transfer moves some financial impact to the insurer; accountability for patient data stays with the group.",
         "Exam cue: insurance and outsourcing can move costs or work, but not accountability. The organization still answers to customers and regulators."
       ],
-      "framework_ref": "NIST SP 800-53 Rev. 5, RA-7 (Risk Response); NIST CSF 2.0 ID.RA-06",
+      "framework_ref": "NIST SP 800-53 Rev. 5 RA-7 (Risk Response); NIST CSF 2.0 ID.RA-06",
       "related_concepts": [
         "Risk treatment options",
         "Cyber insurance",
@@ -322,7 +322,7 @@
         "Final two: D beats A because policies state intent at a high level, while exact mandatory settings such as timeouts belong in standards.",
         "Exam cue: policy says what and why, a standard says which exact setting, a procedure says how, and a guideline only suggests."
       ],
-      "framework_ref": "NIST SP 800-12 Rev. 1, Section 5.1 (Standards, Guidelines, and Procedures); ISO/IEC 27002:2022, Control 5.1 (Policies for information security)",
+      "framework_ref": "NIST SP 800-12 Rev. 1 Section 5.1 (Standards, Guidelines, and Procedures); ISO/IEC 27002:2022 Control 5.1 (Policies for information security)",
       "related_concepts": [
         "Policy",
         "Standard",
@@ -431,7 +431,7 @@
         "Final two: A beats B because the vendor is the source of the doubtful claim; legal interpretation belongs to counsel and the privacy officer.",
         "Exam cue: when a question turns on what the law requires, the practitioner gathers the facts and refers it to legal counsel or compliance."
       ],
-      "framework_ref": "NIST CSF 2.0 GV.OC-03 (legal, regulatory and contractual requirements, including privacy obligations, are understood and managed); ISO/IEC 27002:2022, Control 5.34 (Privacy and protection of PII)",
+      "framework_ref": "NIST CSF 2.0 GV.OC-03 (legal, regulatory and contractual requirements, including privacy obligations, are understood and managed); ISO/IEC 27002:2022 Control 5.34 (Privacy and protection of PII)",
       "related_concepts": [
         "AI governance",
         "Privacy law",
@@ -467,7 +467,7 @@
         "Final two: A beats B because a written rule directs people, which makes it administrative; the firewall's running rule set is the technical control.",
         "Exam cue: classify by how a control works, not by its subject. Documents, training and approvals are administrative, even when they concern technology."
       ],
-      "framework_ref": "NIST SP 800-53 Rev. 5, CM-3 (Configuration Change Control); ISO/IEC 27002:2022, Control 8.32 (Change management)",
+      "framework_ref": "NIST SP 800-53 Rev. 5 CM-3 (Configuration Change Control); ISO/IEC 27002:2022 Control 8.32 (Change management)",
       "related_concepts": [
         "Control types",
         "Control functions",
@@ -503,7 +503,7 @@
         "Final two: D beats A because a lock prevents entry, while a camera deters and records but cannot physically stop an intruder.",
         "Exam cue: first name the function that is missing (prevent, detect, correct or deter), then pick the control that performs that function."
       ],
-      "framework_ref": "NIST SP 800-53 Rev. 5, PE-3 (Physical Access Control) and PE-6 (Monitoring Physical Access)",
+      "framework_ref": "NIST SP 800-53 Rev. 5 PE-3 (Physical Access Control) and PE-6 (Monitoring Physical Access)",
       "related_concepts": [
         "Control functions",
         "Preventive vs detective",
@@ -539,7 +539,7 @@
         "Final two: B beats D because compensating controls come first to lower the risk; the risk owner then accepts only what remains.",
         "Exam cue: when a required control cannot be used, look for a compensating control through the exception process before anyone accepts the risk."
       ],
-      "framework_ref": "NIST SP 800-53 Rev. 5, Appendix A Glossary (compensating controls) and PE-3 (Physical Access Control); NIST CSF 2.0 ID.RA-07",
+      "framework_ref": "NIST SP 800-53 Rev. 5 Appendix A Glossary (compensating controls) and PE-3 (Physical Access Control); NIST CSF 2.0 ID.RA-07",
       "related_concepts": [
         "Compensating control",
         "Policy exception",
@@ -575,7 +575,7 @@
         "Final two: C beats B because only the escape-route door needs to release; the storeroom can stay fail-secure because nobody escapes through it.",
         "Exam cue: protect people first, then property. Fail-safe locks go on escape routes; fail-secure locks go where nobody needs to get out."
       ],
-      "framework_ref": "ISO/IEC 27002:2022, Control 7.1 (Physical security perimeters); NIST SP 800-53 Rev. 5, PE-3 (Physical Access Control)",
+      "framework_ref": "ISO/IEC 27002:2022 Control 7.1 (Physical security perimeters); NIST SP 800-53 Rev. 5 PE-3 (Physical Access Control)",
       "related_concepts": [
         "Fail-safe",
         "Fail-secure",
@@ -611,7 +611,7 @@
         "Final two: B beats D because due care is acting on known risks; a register entry records the flaw but leaves it unfixed.",
         "Exam cue: diligence discovers, care carries it out. Research, assess or verify points to diligence; patch, enforce or fix points to care."
       ],
-      "framework_ref": "NIST SP 800-53 Rev. 5, SI-2 (Flaw Remediation); ISO/IEC 27002:2022, Control 8.8 (Management of technical vulnerabilities)",
+      "framework_ref": "NIST SP 800-53 Rev. 5 SI-2 (Flaw Remediation); ISO/IEC 27002:2022 Control 8.8 (Management of technical vulnerabilities)",
       "related_concepts": [
         "Due care",
         "Due diligence",
@@ -683,7 +683,7 @@
         "Final two: C beats A because removing a name does not remove what the rules reveal; client data belongs only in tools approved for it.",
         "Exam cue: with AI tools, protect the principal's data first. Use tools approved for that data, verify the output, and stay honest about how work was produced."
       ],
-      "framework_ref": "ISC2 Code of Ethics, Canons (service to principals); ISO/IEC 27002:2022, Control 5.10 (Acceptable use of information and other associated assets)",
+      "framework_ref": "ISC2 Code of Ethics, Canons (service to principals); ISO/IEC 27002:2022 Control 5.10 (Acceptable use of information and other associated assets)",
       "related_concepts": [
         "Ethical AI use",
         "Confidentiality of client data",
