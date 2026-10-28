@@ -7811,7 +7811,9 @@ function readySigns(input) {
   defs["src/engine/srs.ts"] = function (module, exports, require) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.DAY_MS = exports.MAX_BOX = exports.RETEST_LINE = exports.RETEST_WINDOW_MS = exports.INTERVAL_DAYS = exports.REVIEW_UNIT = exports.REVIEW_CAP_LINE = exports.REVIEW_SESSION_CAP = void 0;
+exports.DAY_MS = exports.MAX_BOX = exports.RETEST_LINE = exports.RETEST_WINDOW_MS = exports.INTERVAL_DAYS = exports.REVIEW_ORDER = exports.REVIEW_SESSION_CAP = void 0;
+exports.readyToday = readyToday;
+exports.readyLine = readyLine;
 exports.isRetest = isRetest;
 exports.isRetestAfterMiss = isRetestAfterMiss;
 exports.startOfNextDay = startOfNextDay;
@@ -7822,8 +7824,13 @@ exports.upcomingReviewLine = upcomingReviewLine;
 exports.dueIds = dueIds;
 exports.dueCountFor = dueCountFor;
 exports.REVIEW_SESSION_CAP = 20;
-exports.REVIEW_CAP_LINE = `${exports.REVIEW_SESSION_CAP} at a time, most overdue first`;
-exports.REVIEW_UNIT = 'due';
+exports.REVIEW_ORDER = 'oldest first';
+function readyToday(dueCount) {
+    return Math.max(0, Math.min(dueCount, exports.REVIEW_SESSION_CAP));
+}
+function readyLine(n, where = 'revisit') {
+    return `${n} ready ${where === 'today' ? 'today' : 'to revisit'} · ${exports.REVIEW_ORDER}`;
+}
 exports.INTERVAL_DAYS = { 1: 0, 2: 1, 3: 3, 4: 7, 5: 16 };
 exports.RETEST_WINDOW_MS = 4 * 3600000;
 exports.RETEST_LINE = 'Back in your review tomorrow.';
@@ -8157,7 +8164,7 @@ function inOrderSession(topics, walk, cursor, count, answers, rng) {
   defs["src/theme/tokens.ts"] = function (module, exports, require) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.plantLine = exports.plantTheme = exports.plantArt = exports.plantLeaf = exports.badgeGlaze = exports.badgeLeafPip = exports.badgeStruck = exports.badgeMetal = exports.cardInk = exports.badgeEnamel = exports.motion = exports.LARGE_TEXT = exports.grewLine = exports.statWord = exports.cardType = exports.statUnit = exports.numeralUnit = exports.badgeLetter = exports.optionText = exports.maxScale = exports.stemLong = exports.STEM_LONG_CHARS = exports.type = exports.font = exports.radius = exports.space = exports.domainPalette = exports.raisedShadow = exports.cardShadow = exports.forestHighlight = exports.grainOp = exports.scrimOp = exports.pillarGlyph = exports.kaisip = exports.dark = exports.light = void 0;
+exports.plantLine = exports.plantTheme = exports.plantArt = exports.plantLeaf = exports.badgeGlaze = exports.badgeLeafPip = exports.badgeStruck = exports.badgeMetal = exports.cardInk = exports.badgeEnamel = exports.motion = exports.LARGE_TEXT = exports.grewLine = exports.statWord = exports.cardType = exports.statUnit = exports.numeralUnit = exports.badgeLetter = exports.optionText = exports.maxScale = exports.stemLong = exports.STEM_LONG_CHARS = exports.type = exports.font = exports.radius = exports.space = exports.domainPalette = exports.raisedShadow = exports.cardShadow = exports.darkCardTopLight = exports.forestHighlight = exports.grainOp = exports.scrimOp = exports.pillarGlyph = exports.kaisip = exports.dark = exports.light = void 0;
 exports.serifNumeral = serifNumeral;
 exports.percentSup = percentSup;
 exports.light = {
@@ -8195,7 +8202,7 @@ exports.light = {
 };
 exports.dark = {
     bg: '#111613',
-    raised: '#1A211C',
+    raised: '#1D2621',
     raised2: '#1B231E',
     soft: '#202A23',
     line: '#29322B',
@@ -8237,6 +8244,7 @@ exports.pillarGlyph = {
 exports.scrimOp = { light: 0.4, dark: 0.6 };
 exports.grainOp = { light: 0.035, dark: 0.045 };
 exports.forestHighlight = { light: 'rgba(255,255,255,0.08)', dark: 'rgba(255,255,255,0.06)' };
+exports.darkCardTopLight = 'inset 0 1px 0 rgba(255,255,255,0.05)';
 exports.cardShadow = '0 0 0 1px rgba(23,35,27,0.05), 0 1px 2px rgba(23,35,27,0.06), 0 8px 20px -6px rgba(23,35,27,0.10)';
 exports.raisedShadow = {
     shadowColor: '#17231B',
@@ -8249,7 +8257,7 @@ exports.domainPalette = {
     light: ['#3F7F96', '#4E8A3E', '#B0802C', '#86689C', '#5E7482'],
     dark: ['#72B4CB', '#8CC474', '#DDB066', '#B99DCD', '#9AAFBB'],
 };
-exports.space = { xs: 4, sm: 8, md: 12, lg: 16, gutter: 20, xl: 24, section: 28, xxl: 32, xxxl: 48 };
+exports.space = { xs: 4, sm: 8, md: 12, lg: 16, gutter: 20, xl: 24, xxl: 32, xxxl: 48 };
 exports.radius = { sm: 8, md: 16, lg: 24, sheet: 28, pill: 999 };
 exports.font = {
     serif400: 'Fraunces_400Regular',
@@ -8617,6 +8625,6 @@ exports.plantLine = {
   api["domainBand"] = load("src/engine/domainBand.ts");
   api["pace"] = load("src/engine/pace.ts");
   api["readySigns"] = load("src/engine/readySigns.ts");
-  api.sourceHash = "5c4b0b7bfc229ab5";
+  api.sourceHash = "92148b257ca7f17a";
   root.KaiSipPlant = Object.freeze(api);
 })(typeof window !== 'undefined' ? window : globalThis);
