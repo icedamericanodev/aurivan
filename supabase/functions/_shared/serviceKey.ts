@@ -1,7 +1,7 @@
 // Which server key the Edge Functions use (pure: no imports).
 //
 // Supabase now gives Edge Functions SUPABASE_SECRET_KEYS, a JSON object of
-// named secret keys (`{"default":"sb_secret_..."}`), beside the legacy
+// named secret keys (`{"default":"<the secret key>"}`), beside the legacy
 // SUPABASE_SERVICE_ROLE_KEY, which stops working at the end of 2026. The
 // `default` secret key is preferred; the legacy key is the fallback, so the
 // functions keep working on either side of that switch. Neither is ever in

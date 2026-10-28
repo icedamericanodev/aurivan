@@ -6,9 +6,9 @@ const env = (vars: Record<string, string>) => (k: string) => vars[k];
 Deno.test('the default secret key is preferred over the legacy service role key', () => {
   assert.equal(
     serviceKeyFromEnv(
-      env({ SUPABASE_SECRET_KEYS: '{"default":"sb_secret_new"}', SUPABASE_SERVICE_ROLE_KEY: 'legacy' }),
+      env({ SUPABASE_SECRET_KEYS: '{"default":"new-secret-key"}', SUPABASE_SERVICE_ROLE_KEY: 'legacy' }),
     ),
-    'sb_secret_new',
+    'new-secret-key',
   );
 });
 
