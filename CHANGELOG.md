@@ -4,6 +4,13 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v12.42] — Calmer loading and first-day prompts
+
+### Fixed
+- While questions load, you now see a short, plain message.
+- If questions or notes can’t load, you get a clear message and a Try again button.
+- After your first five questions, your results stay clear: the exam date question waits for Today, and the cookie question comes after it, never both at once.
+
 ## [v12.41] — Your progress, in one place
 
 ### New
