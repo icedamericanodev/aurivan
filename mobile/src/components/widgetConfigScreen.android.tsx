@@ -123,4 +123,3 @@ export function WidgetConfigScreen(props: WidgetConfigurationScreenProps) {
     </SafeAreaProvider>
   );
 }
-

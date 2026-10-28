@@ -41,7 +41,7 @@ export async function widgetTask(props: WidgetTaskHandlerProps): Promise<void> {
       const next = doubleTap
         ? reveal
         : props.clickAction === REVEAL_ACTION
-          ? withReveal(reveal, id, rule, now)
+          ? withReveal(reveal, id, rule, Date.now()) // stamped after the reads, so the slow first draw doesn't eat the guard
           : props.clickAction === HAD_ACTION
             ? withSelfCheck(reveal, rule, 'had')
             : props.clickAction === NOTYET_ACTION

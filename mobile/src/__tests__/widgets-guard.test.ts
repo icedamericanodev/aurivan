@@ -69,7 +69,8 @@ describe('widget source guards', () => {
   it('1.47.1: index.ts loads no store, saved data, content or UI kit at start (background widget runs stay light)', () => {
     // Follows every static import (never `import type`, never a require() inside a function) from index.ts, Android files first.
     const resolve = (from: string, spec: string): string | null => {
-      const base = join(from, '..', spec);
+      // tsconfig's `@/*` alias points at src/.
+      const base = spec.startsWith('@/') ? join(mobile, 'src', spec.slice(2)) : join(from, '..', spec);
       for (const ext of ['.android.tsx', '.android.ts', '.tsx', '.ts', '.json', '/index.android.ts', '/index.ts', '/index.tsx', '']) {
         try {
           if (statSync(base + ext).isFile()) return base + ext;
@@ -84,7 +85,7 @@ describe('widget source guards', () => {
       if (seen.has(p) || p.endsWith('.json')) return;
       seen.add(p);
       const src = readFileSync(p, 'utf8');
-      for (const m of src.matchAll(/^(?:import|export)\s+(?!type\b)(?:[^'";]*?\bfrom\s+)?'(\.[^']+)'/gm)) {
+      for (const m of src.matchAll(/^(?:import|export)\s+(?!type\b)(?:[^'";]*?\bfrom\s+)?['"]((?:\.|@\/)[^'"]+)['"]/gm)) {
         const next = resolve(p, m[1]);
         expect([rel(p), m[1], next !== null]).toEqual([rel(p), m[1], true]);
         if (next) walk(next);

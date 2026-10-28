@@ -1164,7 +1164,7 @@ export interface RevealState {
 }
 
 /** "Had it" / "Not yet" this soon after the same widget's reveal is the reveal's double tap, not an answer. */
-export const REVEAL_TAP_GUARD_MS = 1500;
+export const REVEAL_TAP_GUARD_MS = 2000;
 
 /** The saved marks, read safely; reveal marks from another day are dropped (counts and self-checks stay). */
 export function readReveal(raw: unknown, today: string): RevealState {
