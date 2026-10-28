@@ -1,0 +1,12 @@
+# Who must review a change before it can merge to main (security audit M3,
+# 27 Oct 2026). The workflows hold real credentials: db-backup.yml has the
+# full database password, eas-update.yml the Expo token. A change to them
+# needs the owner's review, so a bad merge can't quietly send a credential
+# somewhere else.
+#
+# This file only takes effect with branch protection on main:
+# Settings → Branches → main → "Require a pull request before merging" →
+# "Require review from Code Owners" (ACCOUNTS_BETA_PLAN.md §9 and its go-live
+# gates). If a workflow ever changes without that review, rotate the
+# database password (docs/mobile/SCALING.md, runbooks).
+/.github/ @icedamericanodev

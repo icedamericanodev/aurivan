@@ -1,165 +1,193 @@
-# Scaling the cloud (accounts, sync, board)
+# Scaling the cloud (accounts and sync) on the Supabase Free plan
 
-Written in Uplift Phase 7 (sync, built OFF). Nothing here is live: no
-hosted project exists until the owner's go-live (Phase 9). This page sizes
-the backend for **up to 5,000 accounts**, says what to watch, and what to
-change, in order, if KaiSip grows past that. The plan and region are the
-**owner's decision** (PHASE6_8 §9 #4); the numbers below are what that
-decision rests on.
+Rewritten for the accounts beta (27 Oct 2026). **Owner decision:** the beta
+runs on the existing Supabase **Free** project in ap-southeast-1
+(Singapore), the region nearest the Philippines. This page sizes it, says
+what to watch, and what to change, in order, when KaiSip outgrows it. The
+plan behind it is `ACCOUNTS_BETA_PLAN.md` (§3.2 sizing, §6 safeguards).
 
-> **Prices and quotas are from the build spec (11 Oct 2026), not checked
-> live:** supabase.com was unreachable from the build environment. Check
-> every figure marked *(verify)* against supabase.com/pricing at Phase 9.
+> **Prices and quotas** below were read from the vendors' pages through
+> search on 27 Oct 2026 (supabase.com itself could not be opened from the
+> build environment). Anything marked *(verify)* must be checked on the
+> vendor's own page before it is relied on.
 
 ## 1. What "users" means
 
-- **Monthly active learners (MAU)** is what Supabase Auth bills: an account
-  that signs in or refreshes its session in a month.
-- **Accounts** are what storage grows with.
+- **Monthly active learners (MAU)** is what Supabase Auth counts: an account
+  that signs in or refreshes its session in a month. Free allows 50,000.
+- **Accounts** are what the database grows with.
 - Sizing assumes the worst case: **every** learner has an account and syncs.
-  Today accounts are optional and most learners never make one, so real use
-  will be lower.
+  Accounts are optional and most learners never make one, so real use will
+  be lower.
 
-## 2. Unit budget per account
+## 2. The Free plan's limits, and which one runs out first
+
+| Limit | Free plan | Our use at 3,000 accounts | Runs out first? |
+|---|---|---|---|
+| Database size | 500 MB | about 65 MB typical, 160 MB if every learner is heavy | No |
+| **Egress** (data sent out) | **5 GB a month** | **about 3.3 GB at the top end** (§4) | **Yes: the first limit to watch** |
+| Monthly active users | 50,000 | 3,000 | No |
+| Edge Function calls | 500,000 a month | a few hundred (delete and export are rare) | No |
+| Pausing | after 7 days with no activity | prevented by the keep-awake job | Handled |
+| Backups | none we can restore from *(verify)* | our own nightly encrypted dump to R2 | Handled |
+| Emails (custom SMTP, Resend Free) | 3,000 a month, 100 a day | sign-in codes only; rate limit 20 an hour | Watch on launch days |
+
+## 3. Unit budget per account
 
 Measured in `mobile/src/__tests__/sync-budget.test.ts` on real fitted
-payloads (the exact JSON a phone pushes), not guessed. The test fails if a
-release grows them past its bounds, so this table can't silently go stale.
+payloads (the exact JSON a phone pushes), not guessed. Since the accounts
+beta every snapshot is gzipped by the app or the website before upload and
+stored as base64 (`state_gz`), so the database and the network carry the
+small number, not the big one.
 
 | Item | Size | Notes |
 |---|---|---|
-| Progress snapshot, **heavy learner** (every CISA question answered, reviews, mistakes, 50 mocks, readiness log, badges, plant) | **about 263 KB** of JSON; **about 17 KB** gzipped | The app's cap is 1.5 MB (`MAX_PUSH_BYTES`); the database's is 2,000,000 bytes. Postgres stores it TOAST-compressed: expect a few tens of KB on disk |
-| Progress snapshot, typical learner (a few hundred answers) | about 60–80 KB | about 220 bytes per answered question, plus a few KB fixed |
-| Settings snapshot | **about 350 bytes** | capped at 64 KB in the app and 96 KB in the database (security review P7 S2), so a scripted account can't park 2 MB there |
-| Support checkpoints (`private.sync_history`) | 2 earlier copies of the progress row | at most one new one a day; kept while the synced copy exists |
-| Write counter (`private.sync_writes`) | one small row per learner and store | the rate window and last rev; outlives the snapshot rows (so delete + insert can't reset it), goes with the account |
-| Writes | about 6 a day per store per device | launch, background, session end, at most every 10 minutes after a change; the server allows 60 an hour per store, deletes included |
-| Egress, one device | near zero: heads only (about 1 KB per sync) | the state is downloaded **only when `rev` changed** (another device wrote) |
-| Egress, two devices | about one progress download per sync that follows the other phone's change: a few downloads a day of 60–260 KB | about 10–50 MB a month for an active two-phone learner |
-| Board (Phase 8) | under 5 KB per active poster | posts, comments, votes |
+| Progress snapshot, **heavy learner** (every CISA question answered, reviews, mistakes, 50 mocks, readiness log, badges, plant) | about 263 KB of JSON → **about 17 KB gzipped, about 23 KB as base64** | The app's cap is 1.5 MB of JSON; the database's 2,000,000 bytes unzipped and 200,000 characters zipped (the 1.5 MB fits at 10 to 1; progress zips about 15 to 1) |
+| Progress snapshot, typical learner (a few hundred answers) | about 60–80 KB of JSON → **about 6 KB stored** | about 220 bytes of JSON per answered question, plus a few KB fixed |
+| Settings snapshot | about 350 bytes of JSON → **about 0.5 KB stored** | capped at 64 KB in the app; 98,304 bytes unzipped and 32,768 zipped in the database |
+| Support checkpoint (`private.sync_history`) | **one** earlier copy of the progress row, as stored | at most one new one a day; kept while the synced copy exists |
+| Write counter (`private.sync_writes`) | one small row per learner and store | outlives the snapshot rows (so delete + insert can't reset it), goes with the account |
+| Auth rows (user, identities, sessions, refresh tokens) | about 6–8 KB | grows with sessions; refresh-token rotation replaces old ones |
+| Writes | about 6 a day per store per device | launch, background, session end, at most every 10 minutes after a change; the server allows 20 an hour per store (security audit M2) |
+| Egress, one device | heads only, about 1 KB per sync | the snapshot is downloaded **only when `rev` changed** (another device wrote) |
+| Egress, web + phone | about one snapshot download per sync after the other side changed | about 6–23 KB each, a few a day |
 
-## 3. Today's plan, up to 5,000 accounts: the Free plan
+`state_gz` is stored with `storage external`: gzip doesn't compress
+further, so Postgres doesn't spend CPU trying, and the size on disk is the
+size above.
 
-**Owner decision (18 Oct 2026, confirmed 27 Oct): free first.** Fewer than
-5,000 users are expected, so KaiSip starts on **Supabase Free** *(verify)*:
-500 MB database, 5 GB egress a month, 50,000 MAU, 500,000 Edge Function
-calls a month, no backups, and a project that **pauses after 7 days with no
-activity**. Each of those limits has an answer below; Pro ($25 a month) is the
-next step, not the starting point (§5).
+## 4. Sizing at 500, 3,000 and 5,000 accounts
 
-**What keeps Supabase small.** Study content never goes in Supabase: CISA is
-bundled in the app and other exams download as static packs from the
-kaisip.com Cloudflare site (ARCHITECTURE.md §3 "Content packs"), so content
-uses none of the database or the 5 GB of egress. Supabase holds only
-per-person data: accounts, the two sync rows, the board, and later
-entitlements.
+**Database** (gzip; each account: progress, one checkpoint, settings, auth
+rows):
 
-**Two changes before public accounts on Free** (both are client and server
-changes, done before Phase 9 switches accounts on):
-1. **Keep 1 support checkpoint, not 2** (`private.sync_history`).
-2. **Gzip snapshots before upload** (an `encoding` column; the measured 15×
-   saving in §2: a heavy learner's 263 KB becomes about 17 KB).
+| Accounts | Typical | Every learner heavy |
+|---|---|---|
+| 500 | about 11 MB | about 27 MB |
+| 3,000 | about 65 MB | about 160 MB |
+| 5,000 | about 110 MB | about 270 MB |
 
-Expected use at 5,000 accounts, every one syncing, after those two changes:
-- **Database:** worst case under about **150 MB of the 500 MB**: 5,000
-  learners × 2 copies of progress (the row and one checkpoint) × a heavy,
-  gzipped row, plus settings, the board and indexes. Typical is far less.
-- **Egress:** about **2–3.5 GB of the 5 GB** a month at the very top end.
-  Heads (about 1 KB per sync, both stores, every device) are about 1–2 GB.
-  If 30% use two phones and pull about 4 times a day, a gzipped pull of a
-  typical row (about 7 KB) adds about 1.3 GB. Without gzip the same pulls
-  would be about 18 GB: that is why gzip comes first.
-- **Edge Function calls:** under 200,000 of the 500,000 (account deletion
-  and "Download my data" are rare; the board's submit function arrives in
-  Phase 8).
-- **Auth emails:** the sign-in codes. An email provider's free tier covers
-  this size (owner decision #2).
+All under 500 MB. Without gzip (Postgres's own compression, roughly 3–4×),
+5,000 heavy learners would reach about 775 MB: gzip is what keeps the
+beta on the Free plan.
 
-**Pausing.** Study never needs Supabase: the app is offline-first, so a
-paused project only pauses sync and the board, never studying. A small
-GitHub Action calls the project every 2 days with the publishable key (never
-the service key), so it does not pause in quiet weeks. Accounts stay **off**
-at the public launch until the owner turns them on.
+**Egress at 3,000 accounts**, 40% of them on both the web and a phone, at
+the top end (every learner active every day):
 
-**Backups (Free has none).** A nightly `pg_dump`, encrypted with an `age`
-public key, goes to the Cloudflare R2 bucket `kaisip-db-backups` with a token
-scoped to that bucket only; 30 days are kept. Only the public key is in the
-repo or CI; the private key stays with the owner. A restore drill runs every
-quarter (§6). Owner setup: the R2 bucket and scoped token with a billing
-notification, the `age` key pair, and the GitHub Environment `db-backup`
-secrets, typed by the owner, never in chat.
+| Item | Per month |
+|---|---|
+| Heads (about 1 KB each, about 10 a day per surface) | about 1.4 GB |
+| Snapshot pulls | about 1.4 GB |
+| Token refreshes | about 0.5 GB |
+| **Total** | **about 3.3 GB (about 66% of 5 GB)** |
 
-**Security and database performance stay as they are:** RLS on every table
-(`check_rls.sh`, pgTAP), column grants, `(select auth.uid())` in policies, no
-security-definer functions in `public`, the rate limits (sync 60 writes per
-store per hour, auth, board, export once an hour), the publishable key only in
-the app and the service key only in Edge Function secrets, the sync primary
-key `(user_id, store)`, a head read of about 1 KB, a conditional update on
-`rev`, and no sync table in Realtime.
+Real use is lower, because not every monthly learner studies every day. At
+500 accounts it is about 0.5 GB. Without gzip, a learner on two surfaces
+pulling about 4 times a day at about 100 KB would take 3,000 learners past
+5 GB.
 
-**Total:** $0 a month (Supabase Free, Cloudflare free tier for the site, packs
-and R2 at this size, and the email provider's free tier). Turn on Supabase
-usage alerts and a Cloudflare billing notification.
+## 5. What we watch, and how
 
-## 4. Triggers to watch
+The Free plan has no spend to cap and no automatic egress alert. So:
 
-Supabase usage alerts plus a weekly SQL report (row counts, the largest
-snapshots, writes per hour). Act when any of these holds:
+- **Every night** the backup job (`.github/workflows/db-backup.yml`) prints
+  the database size and its largest tables, and **turns red over 300 MB**
+  (60%); GitHub emails Sky.
+- **Every 2 days** the keep-awake job (`.github/workflows/keep-awake.yml`)
+  reads one row; a red run means the project is paused or down.
+- **Every week (5 minutes)** Sky opens Supabase → Usage (egress, database,
+  MAU), Resend's usage page and Turnstile's analytics.
 
-- Database size over 60% of the plan.
-- Egress over 60% of the plan.
-- CPU p95 over 70% for an hour.
-- Sync p95 latency over 1.5 s.
-- Sync conflicts over 2% of pushes (two phones writing at the same moment
-  more often than expected: check the triggers in `lib/sync.ts`).
+Act when any of these holds:
+
+- Egress over 60% of the month's 5 GB (3 GB), or on course to pass it.
+- Database over 60% (300 MB): the backup job goes red.
+- Emails: over 60 a day for several days (Resend Free allows 100 a day).
 - `rate_limited` answers from `sync_snapshots` at all (the app needs about
-  6 writes a day; 60 an hour means a bug or abuse). Since the Phase 7
-  review the count lives outside the row, so a delete + insert loop raises
-  it too instead of slipping past.
-- Auth emails per hour over 60% of the SMTP quota.
-- Edge Function invocations over 60% of the plan.
-- Moderation (Phase 8): more than 30 items a day, or any 24-hour miss.
+  6 writes a day; 20 an hour means a bug or abuse). The count lives outside
+  the row, so a delete + insert loop raises it too.
+- Sync conflicts over 2% of pushes (two devices writing at the same moment
+  more often than expected: check the sync triggers).
+- Snapshots refused as unreadable (a gzip bomb or a broken client): any at
+  all is worth a look in the Edge Function and app logs.
+- Auth: a spike of failed code checks in the Auth logs (someone guessing
+  codes; captcha guards sending, not checking).
+- A paused project, or a red keep-awake run.
 - Support: more than 15 emails a day for 2 weeks.
 
-## 5. Steps, with what changes and the cost
+## 6. Steps, with what changes and the cost
 
 | Stage | What changes | Cost *(verify)* |
 |---|---|---|
-| Any trigger in §4 on Free | Move to **Supabase Pro** *(verify)*: $25 a month, 8 GB database, 250 GB egress, daily backups, no pausing. Turn on the spend cap. Keep the R2 backups until Pro's own backups are checked. | About $25–27 a month |
-| 5k → 10k | Nothing structural on Pro. Raise the spend cap; review the alerts. | About $25–47 a month |
-| 10k → 50k | Small compute (about +$5 after the credit). Per-cert snapshot rows, so one exam's change doesn't re-send all. (Gzip and a single checkpoint are already in place: §3.) A CDN or HTTP cache for anonymous board reads. Moderation: a backup moderator, or a paid help desk (owner). | About $50–70 a month |
-| 50k+ | Delta sync (a `rev` per section). A three-way merge against a stored base (it would also count attempts made offline on two phones exactly, instead of the max). A read replica only if reads dominate. Supavisor pooling for Edge Functions. A hosted moderation API only with owner approval (App Store 5.1.2(i) disclosure). Board partitioning not before millions of rows. | Re-plan |
+| Today, up to about 3,000 accounts | Free plan, gzip snapshots, one checkpoint, keep-awake, nightly encrypted backups to R2 | $0 a month |
+| Egress or the database passes 60%, the project pauses, or the beta becomes the launch | **Supabase Pro**: a bigger egress and database allowance, daily backups, no pausing, a spend cap. Change the plan in the dashboard; nothing in the apps changes | about $25 a month |
+| Resend's 100 a day is reached | Brevo's free plan (300 a day) or Resend's paid plan | $0–20 a month |
+| 10k → 50k | Per-cert snapshot rows, so one exam's change doesn't re-send all. Small compute on Pro. A CDN or HTTP cache for anything public | about $50–70 a month |
+| 50k+ | Delta sync (a `rev` per section). A three-way merge against a stored base. A read replica only if reads dominate. Connection pooling for Edge Functions | Re-plan |
 
-## 6. Runbooks
+## 7. Runbooks
 
-- **Raise compute:** Dashboard → Project Settings → Compute. A short
-  restart; phones see `offline` for a minute and retry (30 s, 2 min, …).
-- **Change the spend cap:** Dashboard → Organization → Billing.
-- **Restore** on Free: download the night's encrypted dump from the R2
-  bucket `kaisip-db-backups`, decrypt it with the owner's `age` private key,
-  and `pg_restore` it (practised every quarter on a scratch project). On Pro:
-  from a daily backup or PITR (if bought). Either restores the whole
-  database to a point in time. One learner's progress: the support
-  checkpoints in `private.sync_history` (service role only; by hand, with
-  the learner's request in writing).
-- **Rotate keys:** create a new publishable key, ship it in a build, then
-  revoke the old one after phones have updated. Service-role and Apple keys
-  are Function secrets: rotate and redeploy the functions.
-- **Pause posting under load** (Phase 8): `board_settings.posting_open =
-  false`. It can only pause; it never adds a feature.
-- **Sync under strain:** sync never blocks study. Phones keep working
-  offline-first, and a failed sync only changes the status line, so a
-  struggling backend degrades to "Will sync when you're online".
+- **The project paused** (the keep-awake run is red): Supabase dashboard →
+  the project → Restore. Learners see "Will sync when you're online" until
+  it is back; study never stops. Then check why keep-awake didn't run
+  (GitHub disables scheduled workflows in a public repo after 60 days with
+  no commits: `gh workflow enable keep-awake.yml`).
+- **Restore a backup** (a quarterly drill, on Sky's computer, with Claude
+  guiding):
+  1. Download the newest `.tar.gz.age` from R2, then
+     `age -d -i <your key file> <backup> | tar -xzf -` gives `schema.sql`,
+     `data.sql` and `stats.txt`. Never upload a decrypted backup anywhere.
+  2. Start a local Supabase (`supabase start`) and apply the migrations
+     (`supabase db reset`); `schema.sql` is for comparing, the migrations
+     build the schema.
+  3. Load the data with triggers and foreign keys paused, as Supabase's
+     restore guide does, in one session:
+     `{ echo "set session_replication_role = replica;"; cat data.sql; } | psql -v ON_ERROR_STOP=1 <local url>`.
+     The board tables refer to each other, so pg_dump warns about
+     circular keys; this is why.
+  4. **Re-delete deleted accounts** (security audit L6): a backup is up to
+     30 days old, so it can hold accounts deleted since. With the pepper
+     from the password manager:
+     `echo "delete from auth.users u where encode(extensions.hmac(lower(u.id::text), :'pepper', 'sha256'), 'hex') in (select uid_hmac from private.deletions);" | psql -v ON_ERROR_STOP=1 -v pepper="$DELETION_PEPPER" <local url>`
+     (pgcrypto's `hmac`, in schema `extensions` on Supabase; psql fills
+     in `:'pepper'` only from stdin or a file, never with `-c`. The
+     deletion cascades every row, as in the app).
+     On a real restore, do this before anyone can sign in.
+  5. Sessions were never in the backup: everyone signs in again.
+- **One learner's progress:** the support checkpoint in
+  `private.sync_history` (service role only; by hand, with the learner's
+  request in writing). It is stored gzipped, like the row.
+- **Stop sync writes in an emergency** (no app release needed):
+  `revoke insert, update on public.sync_snapshots from authenticated;`
+  Phones and the web say "We'll try again soon". Grant it back to undo.
+- **Stop new sign-ups:** Supabase → Authentication → turn off "Allow new
+  users to sign up".
+- **The no-password trigger disturbs a real sign-in flow:**
+  `drop trigger kaisip_clear_password on auth.users;` then fix it in a new
+  migration. (It never raises, so this should not happen.)
+- **A workflow changed without the owner's review** (`.github/CODEOWNERS`,
+  security audit M3): reset the database password at once (Database →
+  Settings), update `SUPABASE_DB_URL` in the `db-backup` environment, and
+  read the change before the next nightly run.
+- **Rotate keys:** create a new publishable key, ship it in a build (and
+  the web constant and the keep-awake variable), then revoke the old one
+  after phones have updated. Secret keys, `DELETION_PEPPER` and Apple keys
+  are Function secrets: rotate and redeploy the functions. A rotated
+  pepper only affects audit rows written after it.
+- **Sync under strain:** sync never blocks study. Phones and the web keep
+  working offline-first, and a failed sync only changes the status line.
 
-## 7. What never changes with scale
+## 8. What never changes with scale
 
 - RLS on every table (`scripts/check_rls.sh`, pgTAP `01_hardening.sql`).
 - The build-time flag: nothing on a server can turn a feature on.
-- No analytics, no ads, no tracking.
-- The privacy promises in the published policy.
-- The 24-hour moderation duty (Phase 8).
+- No analytics in the app, no ads, no tracking.
+- Content is never stored in Postgres.
+- The privacy promises in the published policy, including "deleted data
+  leaves our backups within 30 days" (the R2 lifecycle rule).
 
-## 8. Review cadence
+## 9. Review cadence
 
-Monthly while under 10,000 accounts, then fortnightly. Re-measure the unit
-budget (`sync-budget.test.ts`) whenever the saved data changes shape.
+Weekly 5-minute check during the beta (§5). Re-measure the unit budget
+(`sync-budget.test.ts`) whenever the saved data changes shape, and this page
+whenever a plan or price changes.

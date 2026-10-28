@@ -10,7 +10,7 @@
 #   G6b  Table names are schema-qualified (public.x / private.x), so G6a and
 #        reviewers can't misread which schema a table lands in.
 #   G6c  No policy is `using (true)` / `with check (true)` unless its name is
-#        on TRUE_POLICY_ALLOWLIST (catalogue and public-read policies only).
+#        on TRUE_POLICY_ALLOWLIST (public-read settings only).
 #        `create policy` and `alter policy` alike.
 #   G6d  A view in public is `security_invoker`: a plain view runs as its
 #        owner and silently skips the RLS of the tables it reads.
@@ -27,11 +27,11 @@
 # The pgTAP suite (supabase/tests/01_hardening.sql) checks the same rules on
 # the APPLIED database; this script catches them before anything runs.
 #
-# Migrations are APPEND-ONLY from the first `supabase db push` (Phase 9,
-# owner go-ahead). Until then nothing is applied anywhere, which is why
-# 20261005000000_init_mobile_sync.sql could be rewritten in place in Phase 6.
-# After it, change a live table with a new migration file, never by editing
-# an old one.
+# Migrations are APPEND-ONLY from the first apply to the hosted project
+# (accounts beta, through the Supabase MCP). Until then nothing is applied
+# anywhere, which is why the first two migrations could be edited in place
+# (Phase 6, and the accounts beta fixes of 27 Oct 2026). After it, change a
+# live table with a new migration file, never by editing an old one.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
@@ -42,7 +42,6 @@ import sys
 
 # Policies allowed to be always-true.
 TRUE_POLICY_ALLOWLIST = {
-    "content_packs_read",   # catalogue of downloadable packs, not user data
     "board_settings_read",  # Phase 8: pause valve, guidelines version, read scope (needed before sign-in)
 }
 
@@ -186,7 +185,7 @@ def check(name, sql):
 def self_test():
     cases = {
         "ok": ("create table public.a (id int); alter table public.a enable row level security;"
-               "create policy content_packs_read on public.a for select to authenticated using (true);"
+               "create policy board_settings_read on public.a for select to authenticated using (true);"
                "create function private.f() returns int language sql security definer set search_path = '' as $$ select 1 $$;"
                "create view public.v with (security_invoker = true) as select 1;"
                "-- create table public.commented (id int);\n"
@@ -198,6 +197,7 @@ def self_test():
         "true_policy": ("create table public.e (id int); alter table public.e enable row level security;"
                         "create policy anyone on public.e for update to authenticated using (true) with check (true);", ["G6c"]),
         "true_check": ("create policy p on public.e for insert to authenticated with check ( true );", ["G6c"]),
+        "retired_catalogue_policy": ("create policy content_packs_read on public.a for select to authenticated using (true);", ["G6c"]),
         "definer_public": ("create or replace function public.h() returns int language sql\n security definer as $$ select 1 $$;", ["G7"]),
         "alter_definer": ("alter function public.h() security definer;", ["G7"]),
         "definer_unqualified": ("create function f() returns int language sql security definer as $$ select 1 $$;", ["G7"]),

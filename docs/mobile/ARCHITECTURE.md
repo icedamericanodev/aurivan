@@ -45,12 +45,15 @@ manager) evaluated the options independently. All three picked **React Native
 | Crash reporting | **Sentry** (`@sentry/react-native`) | 2 | Tells you when the app crashes, and where |
 | Analytics | **PostHog** (anonymous events first) | 2 | Which features help people study |
 | Payments | **RevenueCat** (`react-native-purchases`) | 2 | Apple/Google subscriptions + restore, one SDK |
-| Accounts + sync | **Supabase** (Postgres + Auth + RLS) | Uplift 6–9 (built OFF; see §3 "Cloud (built OFF)") | Sign in with Apple/Google or an email code, progress on every device. Client ports and screens exist behind a build flag; `@supabase/supabase-js`, `expo-secure-store`, `expo-apple-authentication` and `@react-native-google-signin/google-signin` are added only at go-live (Phase 9), cloud build only |
+| Accounts + sync | **Supabase Free** (Postgres 17 + Auth + RLS, Singapore) | Accounts beta (owner decision 27 Oct 2026; built OFF until go-live; see §3 "Cloud (built OFF)", §10 and `ACCOUNTS_BETA_PLAN.md`) | Optional sign-in on the web and Android with Google or a 8-digit email code (Apple later), progress synced between the web and the phone as gzipped snapshots. Client ports and screens exist behind a build flag; at go-live the phone adds `@supabase/supabase-js`, `expo-secure-store`, `expo-web-browser` (Google through the browser with PKCE, no native Google module) and `expo-crypto`, cloud build only; the web gets its own small client compiled from the same TypeScript |
 | Content delivery | **Cloudflare static packs** (versioned, hash-checked JSON on kaisip.com `/packs/v1/`; see §3 "Content packs") | A ✅ registry · B–C download | Add an exam (ISC2 CC first) or fix content without an app update. CISA stays bundled. Supabase holds only per-person data, never content |
 | E2E tests | **Maestro** | 3 | Robot taps through the app before release |
 
 **Cost at launch:** Apple Developer $99/year · Google Play $25 once ·
-Expo, Supabase, RevenueCat, Sentry, PostHog all start free.
+Expo, Supabase, RevenueCat, Sentry, PostHog all start free. The accounts
+beta runs on Supabase's Free plan, Resend's free email plan and Cloudflare
+R2's free tier: $0 a month up to about 3,000 learners if the free limits
+hold (`SCALING.md`).
 
 ### Why Supabase (and not the custom backend in `archive/design-notes/BACKEND_ARCHITECTURE.md`)?
 That proposal was written for the web app. For a solo beginner shipping
@@ -649,7 +652,7 @@ is touched with it off: `cloud-off.test.tsx`). Spec: PHASE6_8 §3.
   reminders and haptics stay; `lib/backup.ts wipeLocalStudy`), with the
   sync record and link, and renews the install id; account deletion's "also
   remove from this phone" does the same. Delete synced progress removes the
-  account's copy (and the server's checkpoints) and turns sync off; the
+  account's copy (and the server's checkpoint) and turns sync off; the
   other devices stop when they next connect.
 - **Two different plants** (each phone planted its own, or one was reset):
   the earlier planting is kept, at the higher growth of the two, so nobody
@@ -1206,20 +1209,29 @@ Run the `app-store-compliance-reviewer` agent before every submission.
 
 ## 10. Cloud (built OFF): server side
 
-Uplift Phase 6 adds the server half of optional accounts. **Nothing is
-deployed and no hosted project exists**: no project ref, URL or key is in
-the repo. The client half (flag, backend port, screens) is described in
-its own section.
+Uplift Phase 6 adds the server half of optional accounts. **Accounts beta
+(27 Oct 2026):** the hosted project exists (Supabase Free, ap-southeast-1)
+but is EMPTY: nothing is applied or deployed until the migrations below
+pass review and CI, then they are applied through the Supabase MCP in file
+order (`ACCOUNTS_BETA_PLAN.md` §3.3). No key or password is in the repo;
+the publishable key and the project URL are public and live in build
+settings and repository variables. The client half (flag, backend port,
+screens) is described in its own section.
 
 | Piece | Path | Job |
 |---|---|---|
-| Schema | `supabase/migrations/20261005000000_init_mobile_sync.sql` | `profiles`, `entitlements`, `content_packs` in `public`; the bank size, deletion audit and export rate limit in `private` |
-| Sync schema (Phase 7) | `supabase/migrations/20261013000000_sync_snapshots.sql` | `public.sync_snapshots` (one row per store per learner; column grants; a trigger sets `rev` (the write time in ms or one more than the store's last rev, never reused even after a delete) and the time, and reverts owner or store changes; writes need a `profiles` row; settings capped at 96 KB of jsonb text, progress at 2,000,000 bytes); `private.sync_writes` (the 60-writes-per-store-per-hour count and last rev, outside the row, so delete + insert can't reset it: deletes count but are never refused); `private.sync_history` (a daily support checkpoint of the progress row, newest 2, kept while the synced copy exists, cleared by "Delete synced progress") |
-| Local config | `supabase/config.toml`, `supabase/templates/` | Auth as it will be set on the dashboard at Phase 9: 6-digit codes valid 10 min, code-only emails, empty redirect list, no anonymous sign-in, confirmed emails only, refresh rotation (10 s reuse), JWT 1 h |
-| SQL tests | `supabase/tests/01_hardening.sql`, `10_accounts.sql`, `20_sync.sql` | pgTAP: schema-wide rules every later table inherits, plus own-rows-only, anon denied and cascade-on-delete; sync: cross-learner access (the other learner's state unchanged, not just present), server-owned rev/time/keys, revs never reused after delete + re-insert, stale-rev updates, the rate limit (delete + insert can't reset it; a delete over it still works), both size caps, Terms before inserts and updates, checkpoints, the counter's cascade, no sync table in any publication |
-| SQL mutants | `scripts/sync_sql_mutants.py` | 15 one-line breaks of the sync migration; the pgTAP suite must fail on each (`PGTAP_RUN` runs it on a plain Postgres with the shim; the default uses the Supabase CLI) |
-| Edge Functions | `supabase/functions/{delete-account,export-my-data}` | Pure `handler.ts` with an injected `AdminPort`; `index.ts` only wires env. `deno test` uses a fake admin client, no network |
-| Smoke (Phase 9) | `scripts/cloud_smoke.sh` | curl with two learners' JWTs and the publishable key: every cross-user, anon, private and server-only call must fail |
+| Schema | `supabase/migrations/20261005000000_init_mobile_sync.sql` | `profiles`, `entitlements` in `public`; the deletion audit (a keyed hash `uid_hmac`, the day and the board counts; purged after 3 years) and export rate limit in `private`; `svc_export_due`, `svc_claim_export`, `svc_record_deletion` for the Edge Functions. No content tables: content is never in Postgres |
+| Sync schema (Phase 7; gzip in the accounts beta) | `supabase/migrations/20261013000000_sync_snapshots.sql` | `public.sync_snapshots` (one row per store per learner; the state is `state_gz`, base64 gzip starting `H4sI`, at most 200,000 characters (security audit M2), with `raw_bytes` (2 to 2,000,000) and a server-owned `encoding` = `gzip+base64`; settings at most 32,768 zipped and 98,304 unzipped; `state_gz` stored uncompressed; column grants; a trigger sets `rev` (the write time in ms or one more than the store's last rev, never reused even after a delete) and the time, and reverts owner or store changes; writes need a `profiles` row); `private.sync_writes` (the 20-writes-per-store-per-hour count and last rev, outside the row, so delete + insert can't reset it: deletes count but are never refused); `private.sync_history` (a daily support checkpoint of the progress row, the newest one only, kept while the synced copy exists, cleared by "Delete synced progress"; `svc_sync_checkpoint` lets export-my-data read it) |
+| Board schema (Phase 8) | `supabase/migrations/20261014000000_feedback_board.sql` | Applied even with the board off: delete-account and export-my-data call its `svc_board_counts` / `svc_board_export` |
+| Beta: board paused | `supabase/migrations/20261027000000_beta_board_paused.sql` | Board posting paused, and the board's four write entry points revoked from `service_role` until the board opens (its go-live migration grants them back) |
+| Beta: no passwords | `supabase/migrations/20261027000100_beta_no_passwords.sql` | A trigger on `auth.users` WIPES any password on a confirmed account: inserted confirmed, at confirmation (an attacker's pre-registered password, security audit H1) or set later; it never raises. Requires "Confirm email" ON (a go-live gate). Emergency brake: `drop trigger kaisip_clear_password on auth.users;` |
+| Local config | `supabase/config.toml`, `supabase/templates/` | Auth as it will be set on the dashboard: 8-digit codes (security audit L7) valid 10 min, code-only emails, empty redirect list, no anonymous sign-in, confirmed emails only, refresh rotation (10 s reuse), JWT 1 h |
+| SQL tests | `supabase/tests/01_hardening.sql`, `10_accounts.sql`, `20_sync.sql`, `40_beta.sql` | pgTAP: schema-wide rules every later table inherits, plus own-rows-only, anon denied and cascade-on-delete, the keyed audit hash, no content tables; sync: cross-learner access (the other learner's state unchanged, not just present), server-owned rev/time/keys/encoding, revs never reused after delete + re-insert, stale-rev updates, the rate limit (delete + insert can't reset it; a delete over it still works), base64 gzip only and every size cap, uncompressed storage, Terms before inserts and updates, the one checkpoint, the counter's cascade, no sync table in any publication; the paused board and the no-password trigger |
+| SQL mutants | `scripts/sync_sql_mutants.py` | 23 one-line breaks of the sync migration; the pgTAP suite must fail on each (`PGTAP_RUN` runs it on a plain Postgres with the shim; the default uses the Supabase CLI) |
+| Edge Functions | `supabase/functions/{delete-account,export-my-data}` | Pure `handler.ts` with an injected `AdminPort`; `index.ts` only wires env. `deno test` uses a fake admin client, no network. `_shared/gz.ts` (the capped snapshot reader), `_shared/pepper.ts` (the audit HMAC), CORS for `https://kaisip.com` in `_shared/http.ts` |
+| Smoke (go-live evidence) | `scripts/cloud_smoke.sh` | curl with two learners' JWTs and the publishable key: every cross-user, anon, private and server-only call must fail, the snapshot shape checks hold, posting is paused, and only `https://kaisip.com` gets CORS headers |
+| Keep-awake | `.github/workflows/keep-awake.yml` | Every 2 days, one anon read with the publishable key (repository variables), so the Free project never pauses; red if it is down |
+| Backups | `.github/workflows/db-backup.yml` | Nightly `pg_dump` (Supabase CLI), `age`-encrypted to the owner's public key, uploaded to R2 (kept 30 days); red over 300 MB. Environment `db-backup` (main only) |
 | Static guard | `scripts/check_rls.sh` | G6–G8: RLS in the same file as every `create table` and never turned off, no always-true policy (create or alter) off the allowlist, `security_invoker` views, no `security definer` outside `private` (an unqualified name counts as `public`), nothing granted to `anon` or `public` off the allowlist |
 | CI | `.github/workflows/supabase.yml` | On `supabase/**`: the guard, deno fmt/lint/check/test, then a local Supabase (CLI 2.118.0) with `db reset`, `test db`, `db lint` and the advisors |
 
@@ -1229,9 +1241,10 @@ automatic grants to `anon`/`authenticated` on new public objects are revoked
 by default privileges, so each table grants only the columns it needs.
 `anon` gets nothing. Schema `private` is not exposed by the Data API.
 
-**How the Edge Functions reach `private`.** Through two `security invoker`
-functions in `public` (`svc_claim_export`, `svc_record_deletion`) that only
-`service_role` may execute. That keeps G7 (no definer in `public`) and
+**How the Edge Functions reach `private`.** Through `security invoker`
+functions in `public` (`svc_export_due`, `svc_claim_export`,
+`svc_record_deletion`, which takes the keyed hash, never the user id, and
+`svc_sync_checkpoint`) that only `service_role` may execute. That keeps G7 (no definer in `public`) and
 needs no direct database connection. New server-only writes follow the same
 pattern; elevated helpers that policies call go in `private` as
 `security definer set search_path = ''`.
@@ -1240,9 +1253,11 @@ pattern; elevated helpers that policies call go in `private` as
 `401 unauthorized` for a bad, expired or revoked token; `410 gone` for a
 genuine token whose account no longer exists (GoTrue's `user_not_found`);
 `500 server` when the Auth server can't be asked (never read as signed out
-or deleted). No CORS, no database text in responses, logs carry event names
-and counts only, and bodies are read with a byte counter that stops at the
-cap.
+or deleted). CORS for exactly `https://kaisip.com` (a preflight is 204, and
+every answer to that origin, refusals included, carries it; any other
+origin gets no CORS header; no credentials mode). No database text in
+responses, logs carry event names and counts only, and bodies are read with
+a byte counter that stops at the cap.
 - `delete-account` also reads `amr` and requires a sign-in in the last 10
   minutes (`401 reauth_required` otherwise; `amr` timestamps checked
   against the Supabase Auth source), then `{ confirm: 'DELETE' }`. Revoking
@@ -1250,23 +1265,36 @@ cap.
   Apple and sends a fresh `appleAuthorizationCode`, which is revoked at
   Apple; without one (Android, the web) the account is still deleted and
   `apple_revoke_skipped` is logged as a count, and a failed revoke is
-  logged too, never blocking. Then `auth.admin.deleteUser`, which cascades
-  every row, and an audit row holding a SHA-256 of the id. The app treats
-  only `410 gone` as "already deleted" (a retry after a lost reply).
+  logged too, never blocking. Order (accounts beta): the board counts
+  (best-effort), then `auth.admin.deleteUser` FIRST, which cascades every
+  row; then, each best-effort and logged, the audit row
+  (HMAC-SHA-256 of the id with the `DELETION_PEPPER` Function secret, so it
+  can't be joined with the phone's plain hash; skipped and logged if the
+  pepper is missing, never a plain hash), storage (none yet; retried once)
+  and the Apple revoke. The app treats only `410 gone` as "already deleted"
+  (a retry after a lost reply).
 - `export-my-data` returns the caller's own account data, at most once an
   hour, with NO recent sign-in needed: everything in it is already readable
   with the same token (the account, and own rows through RLS), so a re-auth
   would add friction and no protection. Revisit if an export ever holds data
-  the token can't read (moderation notes, logs, staff fields). The hourly
-  slot is claimed last, after the reply is built. `stores` holds the
+  the token can't read (moderation notes, logs, staff fields). A read-only
+  "is an export due?" check answers 429 first, before any data is read
+  (security audit L2); the hourly slot is still claimed atomically last,
+  after the reply is built. `stores` holds the
   learner's synced snapshots (Phase 7) as backup-file stores, with the two
   device-only fields a backup needs (`onboarded`, today's count), so the
   download is also a backup the app can restore; the envelope's
   `appVersion` is the newest app that wrote one of them (else the asking
   app's), so a store from a newer app restores as "update the app", not as
-  damaged. The two support checkpoints are copies of the same progress and
-  are not included (the privacy notice says so). Phase 8 added `board`
-  (below).
+  damaged. Since the security audit (M4) the file holds everything else we
+  keep too: the last sign-in, the 16+ confirmation, when the profile was
+  made, the name and picture link a sign-in provider shared, each synced
+  row's rev, device code, time and versions (`sync`), and the support
+  checkpoint (`supportCopy`). Each stored snapshot is unzipped
+  through `_shared/gz.ts` (1 KB slices into the inflater, at most 2,000,000
+  bytes, the size must equal `raw_bytes`, a JSON object); a store that fails (a gzip bomb, damage, an
+  unknown encoding) is left out and named in `unreadableStores`, and the
+  rest still downloads. Phase 8 added `board` (below).
 
 ### The feedback board, server side (Phase 8)
 
@@ -1426,16 +1454,23 @@ Phase 6 on purpose).**
   equal the user's Apple identity before revoking.
 - Delete order: `deleteUser` first, then the audit row, then storage files
   (retried, logged), then the Apple revoke (best-effort), so a failed
-  `deleteUser` never follows a partial clean-up.
+  `deleteUser` never follows a partial clean-up. **Done (accounts beta).**
 - Wrong-code limits on the server: GoTrue has no per-code try counter (the
   app's 5 tries are UX only). Turn on captcha (`CaptchaPort`) or 8-digit
   codes, keep `token_verifications` low, and alert on verify-failure spikes.
   Captcha also guards the email-send quota against sign-in spam.
-- Password sign-in off at the provider (a "password verification" Auth hook
-  that rejects every attempt), so a stolen fresh session can't add a
-  password as a second credential.
+  (Accounts beta: Turnstile on `/otp`, 8 digits (security audit L7),
+  `token_verifications` 30 an hour; the residual risk is recorded in
+  `ACCOUNTS_BETA_PLAN.md` §4.)
+- Password sign-in off at the provider, so a stolen fresh session can't add
+  a password as a second credential. **Accounts beta:** the hook is not on
+  the Free plan, so `20261027000100_beta_no_passwords.sql` adds a trigger on
+  `auth.users` that wipes any password on a confirmed account, including
+  one pre-registered before the owner confirmed (verify on the hosted
+  project: acceptance test S9).
 - The deletion audit hash as an HMAC with a server pepper (a Function
   secret), so it can't be joined with the phone's `syncedAccountHash`.
+  **Done (accounts beta):** `DELETION_PEPPER`, `_shared/pepper.ts`.
 - Declare the install id in the store privacy answers (Apple "Device ID",
   Play "Device or other IDs"; drafted in STORE_LISTING.md §7). Done in
   Phase 7: a new id when a different account signs in, and on account
@@ -1455,7 +1490,10 @@ Phase 6 on purpose).**
 - Ask `app-store-compliance-reviewer` whether the bundled but unreachable
   `(cloud)` screens in an OFF build raise Apple 2.3.1 ("hidden features").
 - Privacy policy: the install id and the backend's request logs are in the
-  draft (Phase 7); fill in Supabase's log retention period.
+  draft (Phase 7); fill in Supabase's log retention period. (Accounts beta:
+  the drafts in `docs/legal/cloud/` were rebuilt from the live pages, with
+  the account, Philippine Data Privacy Act and deletion sections; web v13
+  publishes them.)
 - Sync (Phase 7, security review N1): the Supabase `SyncPort` adapter
   - selects only store, rev, app_version, store_version, device_id and
     updated_at for a head, and returns `updatedAt` as epoch ms (the app
@@ -1480,7 +1518,13 @@ Phase 6 on purpose).**
   the Delete synced progress row stays reachable while paused, so a bad
   write can always be cleared. Re-measure SCALING.md's figures against live
   pricing, and add a DB-size alert at 60% next to the egress alert (with
-  captcha on sign-up, the main guard against parked data).
+  captcha on sign-up, the main guard against parked data). (Accounts beta:
+  SCALING.md is rewritten for the Free plan; the backup job fails at
+  300 MB; the Free plan has no egress alert, so Sky checks Usage weekly.)
+- Sync (accounts beta): every client reads a snapshot through a capped
+  inflate (2,000,000 bytes, size equal to `raw_bytes`, `encoding` known),
+  and a snapshot that fails pauses sync as unreadable, like a too-new one
+  (acceptance test S5).
 - The feedback board (Phase 8):
   - **owner decisions:** the read scope (above; default signed-in
     learners), signed-out reading (#6, the same switch), the moderator
@@ -1564,10 +1608,11 @@ close first, with plain owner steps, are in
 |---|---|---|
 | 1. Signed phone updates (EAS Update code signing; private key off CI; one native build) | first store / `production` build, and Phase 9 | store builds: met by switching updates off (owner decision 22 Oct 2026, done in mobile 1.40.1). Signing itself: open for test builds and Phase 9 (interim: no install scripts in the publishing job) |
 | 2. Staff MFA (`aal2`) and the admin / moderator split | Phase 9 | done in code; owner enables TOTP and enrols staff |
-| 3. Turnstile captcha + custom SMTP | Phase 9 | open (owner accounts) |
+| 3. Turnstile captcha + custom SMTP | accounts go-live | chosen: Turnstile (Managed) and Resend's free plan; email templates written (`AUTH_EMAIL_TEMPLATES.md`); open: owner accounts, captcha switched on last |
 | 4. Own key for the backup-route test APK, or retire it | its next run | open (owner decision) |
-| 5. GraphQL off on the hosted project | Phase 9 | open (one switch) |
-| 6. Supabase adapter guardrails (no string-built filters, webhook, secure-store backup) | Phase 9 | engineer checklist |
+| 5. GraphQL off on the hosted project | accounts go-live | open (one switch, Sky's checklist F27) |
+| 6. Supabase adapter guardrails (no string-built filters, webhook, secure-store backup) | accounts go-live | engineer checklist |
+| Free-plan safeguards (keep-awake, encrypted backups, size alarm) | accounts go-live | workflows in the repo; open: Sky's R2 bucket, `age` key and `db-backup` secrets |
 
 Fixed in code by the audit: outside links can't pre-fill a board post (L1),
 the board search is bounded (L2), and no comment edits on a locked or hidden

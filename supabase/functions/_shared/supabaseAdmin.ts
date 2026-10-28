@@ -7,13 +7,25 @@
 // 20261005000000_init_mobile_sync.sql (security invoker, service_role only),
 // because schema `private` is not exposed by the Data API.
 
-import type { AdminPort, AuthUser, BoardCounts, Provider, SnapshotsRead } from './admin.ts';
+import type {
+  AdminPort,
+  AuthUser,
+  BoardCounts,
+  Checkpoint,
+  Profile,
+  Provider,
+  SnapshotsRead,
+  SyncRowInfo,
+} from './admin.ts';
+import { decodeSnapshot, GzError } from './gz.ts';
 
 interface RawUser {
   id: string;
   email?: string | null;
   created_at?: string | null;
+  last_sign_in_at?: string | null;
   app_metadata?: { provider?: unknown; providers?: unknown } | null;
+  user_metadata?: Record<string, unknown> | null;
   identities?: { provider?: unknown }[] | null;
 }
 
@@ -37,6 +49,42 @@ export interface SupabaseLike {
 
 const KNOWN: readonly Provider[] = ['email', 'apple', 'google'];
 
+/** A short string, or null: metadata from a sign-in provider is not trusted for size or type. */
+function shortText(v: unknown, max: number): string | null {
+  return typeof v === 'string' && v !== '' && v.length <= max ? v : null;
+}
+
+/** The name and picture link a sign-in provider (Google) shared, as the Auth server stored them. */
+export function fromSignIn(meta: unknown): { name: string | null; picture: string | null } {
+  const m = (meta && typeof meta === 'object' ? meta : {}) as Record<string, unknown>;
+  const picture = shortText(m.avatar_url, 500) ?? shortText(m.picture, 500);
+  return {
+    name: shortText(m.full_name, 200) ?? shortText(m.name, 200),
+    picture: picture && /^https:\/\//.test(picture) ? picture : null,
+  };
+}
+
+const int = (v: unknown): number | null => (typeof v === 'number' && Number.isInteger(v) ? v : null);
+const str = (v: unknown, max = 64): string | null => shortText(v, max);
+
+/** Each row's own columns (never the state), keyed by store, for the export. */
+export function syncRowInfo(rows: unknown): Record<string, SyncRowInfo> {
+  const out: Record<string, SyncRowInfo> = {};
+  if (!Array.isArray(rows)) return out;
+  for (const r of rows as Record<string, unknown>[]) {
+    const store = r?.store;
+    if (store !== 'settings' && store !== 'progress') continue;
+    out[store] = {
+      rev: int(r.rev),
+      deviceId: str(r.device_id),
+      updatedAt: str(r.updated_at),
+      appVersion: str(r.app_version),
+      storeVersion: int(r.store_version),
+    };
+  }
+  return out;
+}
+
 /**
  * The fields a backup file needs that a synced snapshot never carries (they
  * stay on each phone): with them, "Download my data" is also a backup file
@@ -48,8 +96,43 @@ const BACKUP_ONLY: Record<'settings' | 'progress', Record<string, unknown>> = {
   progress: { today: { day: '', answered: 0 } },
 };
 
+/** A sync_snapshots row once its state is unzipped and checked. */
+export interface DecodedRow {
+  store: 'settings' | 'progress';
+  store_version: unknown;
+  app_version: unknown;
+  state: Record<string, unknown>;
+}
+
 /**
- * sync_snapshots rows → the export's `stores`: `{ settings, progress }`, each
+ * Unzips each stored snapshot through the capped codec (_shared/gz.ts), one
+ * at a time so at most one is held unzipped while the next is read. A row that
+ * can't be read safely (unknown encoding, damaged or oversized gzip, a size
+ * that doesn't match raw_bytes, not a JSON object) is listed in `unreadable`
+ * with its reason and left out: never half-read, never a crash.
+ */
+export async function decodeSnapshotRows(
+  rows: unknown,
+): Promise<{ rows: DecodedRow[]; unreadable: { store: string; reason: string }[] }> {
+  const out: DecodedRow[] = [];
+  const unreadable: { store: string; reason: string }[] = [];
+  if (!Array.isArray(rows)) return { rows: out, unreadable };
+  for (const r of rows as Record<string, unknown>[]) {
+    const store = r?.store;
+    if (store !== 'settings' && store !== 'progress') continue;
+    try {
+      const state = await decodeSnapshot(r.encoding, r.state_gz, r.raw_bytes);
+      out.push({ store, store_version: r.store_version, app_version: r.app_version, state });
+    } catch (e) {
+      if (!(e instanceof GzError)) throw e;
+      unreadable.push({ store, reason: e.code });
+    }
+  }
+  return { rows: out, unreadable };
+}
+
+/**
+ * Decoded sync_snapshots rows → the export's `stores`: `{ settings, progress }`, each
  * `{ version, state }` like a backup file. Unknown stores and malformed rows
  * are skipped; the state is otherwise passed through as stored (the server
  * never interprets progress).
@@ -136,11 +219,15 @@ export function supabaseAdmin(client: SupabaseLike): AdminPort {
       }
       const u = data?.user;
       if (!u || typeof u.id !== 'string') return 'invalid';
+      const shared = fromSignIn(u.user_metadata);
       return {
         id: u.id,
         email: typeof u.email === 'string' && u.email !== '' ? u.email : null,
         createdAt: typeof u.created_at === 'string' ? u.created_at : null,
         providers: providersOf(u),
+        lastSignInAt: typeof u.last_sign_in_at === 'string' ? u.last_sign_in_at : null,
+        nameFromSignIn: shared.name,
+        pictureFromSignIn: shared.picture,
       };
     },
 
@@ -158,36 +245,75 @@ export function supabaseAdmin(client: SupabaseLike): AdminPort {
       return { posts: n(d.posts), comments: n(d.comments) };
     },
 
-    // No storage bucket holds learner files yet. When one is added, list and
-    // remove `user/<uid>/` here, before deleteUser.
+    // No storage bucket holds learner files yet (Storage is off), so this
+    // does nothing and can't fail. When a bucket is added, list and remove
+    // `user/<uid>/` here; delete-account calls it AFTER deleteUser, retries
+    // once and logs a failure, so files can never block a deletion.
     deleteUserFiles(_userId: string): Promise<void> {
       return Promise.resolve();
     },
 
-    async recordDeletion(userId: string, counts: BoardCounts): Promise<void> {
+    async recordDeletion(uidHmac: string, counts: BoardCounts): Promise<void> {
+      if (!/^[0-9a-f]{64}$/.test(uidHmac)) throw new AdminCallFailed('recordDeletion');
       const { error } = await client.rpc('svc_record_deletion', {
-        p_user: userId,
+        p_uid_hmac: uidHmac,
         p_board_posts: counts.posts,
         p_board_comments: counts.comments,
       });
       if (error) throw new AdminCallFailed('recordDeletion');
     },
 
-    async getTermsVersion(userId: string): Promise<string | null> {
-      const { data, error } = await client.from('profiles').select('terms_version').eq('id', userId).maybeSingle();
-      if (error) throw new AdminCallFailed('getTermsVersion');
-      const v = (data as { terms_version?: unknown } | null)?.terms_version;
-      return typeof v === 'string' ? v : null;
+    async getProfile(userId: string): Promise<Profile | null> {
+      const { data, error } = await client.from('profiles').select('terms_version, age_confirmed, created_at').eq(
+        'id',
+        userId,
+      ).maybeSingle();
+      if (error) throw new AdminCallFailed('getProfile');
+      const d = data as { terms_version?: unknown; age_confirmed?: unknown; created_at?: unknown } | null;
+      if (!d || typeof d.terms_version !== 'string') return null;
+      return {
+        termsVersion: d.terms_version,
+        ageConfirmed: d.age_confirmed === true,
+        createdAt: typeof d.created_at === 'string' ? d.created_at : null,
+      };
     },
 
-    // Phase 7: the learner's own sync_snapshots rows, as backup-file stores.
+    // The support checkpoint, unzipped through the same capped reader.
+    async readCheckpoint(userId: string): Promise<Checkpoint | null> {
+      const { data, error } = await client.rpc('svc_sync_checkpoint', { p_user: userId });
+      if (error) throw new AdminCallFailed('readCheckpoint');
+      const row = (Array.isArray(data) ? data[0] : null) as Record<string, unknown> | null | undefined;
+      if (!row) return null;
+      const head = { takenAt: str(row.taken_at), rev: int(row.rev), appVersion: str(row.app_version) };
+      try {
+        return { ...head, state: await decodeSnapshot(row.encoding, row.state_gz, row.raw_bytes) };
+      } catch (e) {
+        if (!(e instanceof GzError)) throw e;
+        return { ...head, unreadable: e.code };
+      }
+    },
+
+    async exportDue(userId: string): Promise<boolean> {
+      const { data, error } = await client.rpc('svc_export_due', { p_user: userId });
+      if (error) throw new AdminCallFailed('exportDue');
+      return data === true;
+    },
+
+    // Phase 7: the learner's own sync_snapshots rows, unzipped through the
+    // capped codec, as backup-file stores.
     async readSnapshots(userId: string): Promise<SnapshotsRead> {
-      const { data, error } = await client.from('sync_snapshots').select('store, store_version, app_version, state').eq(
-        'user_id',
-        userId,
-      );
+      const { data, error } = await client.from('sync_snapshots')
+        .select('store, store_version, app_version, device_id, rev, updated_at, encoding, state_gz, raw_bytes')
+        .eq('user_id', userId);
       if (error) throw new AdminCallFailed('readSnapshots');
-      return { stores: snapshotsToStores(data), appVersion: newestAppVersion(data) };
+      const decoded = await decodeSnapshotRows(data);
+      return {
+        stores: snapshotsToStores(decoded.rows),
+        // Only stores that made it into the file count for the version (code review P7 N11).
+        appVersion: newestAppVersion(decoded.rows),
+        rows: syncRowInfo(data),
+        unreadable: decoded.unreadable,
+      };
     },
 
     // Phase 8: the export's `board` section (own rows only; see svc_board_export).

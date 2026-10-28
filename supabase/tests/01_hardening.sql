@@ -23,7 +23,8 @@ create temporary view our_tables as
   where n.nspname in ('public', 'private') and c.relkind in ('r', 'p');
 
 -- ALLOWLISTS. Each entry is a deliberate exception; add one with a comment, never
--- by weakening a query below. (Phase 6 had only content_packs_read.)
+-- by weakening a query below. (Phase 6's content_packs_read went with the
+-- content-pack catalogue before the first apply: content is never in Postgres.)
 --  anon may execute:          the board's two read functions (Phase 8). They run as
 --                             the caller (security invoker), so RLS decides what anon
 --                             sees: nothing at all unless board_settings.read_scope
@@ -38,12 +39,11 @@ create temporary view our_tables as
 --  anon may read (tables):    the board's public-read tables (Phase 8), column by
 --                             column; their anon policies return rows only when
 --                             read_scope is 'everyone'.
---  `using (true)` policies:   content_packs_read (Phase 6); board_settings_read
---                             (Phase 8: the pause valve, the guidelines version and
---                             the read scope, which the app needs before sign-in).
+--  `using (true)` policies:   board_settings_read (Phase 8: the pause valve, the
+--                             guidelines version and the read scope, which the app
+--                             needs before sign-in, and the keep-awake job reads).
 create temporary table allow (kind text, name text);
 insert into allow values
-  ('true_policy', 'content_packs_read'),
   ('true_policy', 'board_settings_read'),
   ('anon_exec', 'public.board_feed'),
   ('anon_exec', 'public.board_post'),

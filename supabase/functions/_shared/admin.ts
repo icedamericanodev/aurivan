@@ -11,6 +11,15 @@ export interface AuthUser {
   createdAt: string | null;
   /** Sign-in methods linked to the account (Supabase app_metadata.providers). */
   providers: Provider[];
+  /** When the account last signed in (auth.users.last_sign_in_at). */
+  lastSignInAt: string | null;
+  /**
+   * What a sign-in provider (Google) shared and the Auth server stored in the
+   * account's user_metadata: a name and a profile-picture link. KaiSip never
+   * shows or uses them; they are here only so "Download my data" is complete.
+   */
+  nameFromSignIn: string | null;
+  pictureFromSignIn: string | null;
 }
 
 export interface BoardCounts {
@@ -18,11 +27,41 @@ export interface BoardCounts {
   comments: number;
 }
 
+/** The learner's profiles row (the terms they accepted and the 16+ box). */
+export interface Profile {
+  termsVersion: string;
+  ageConfirmed: boolean;
+  createdAt: string | null;
+}
+
+/** About one synced store, for "Download my data" (the row's own columns, never the state). */
+export interface SyncRowInfo {
+  rev: number | null;
+  deviceId: string | null;
+  updatedAt: string | null;
+  appVersion: string | null;
+  storeVersion: number | null;
+}
+
 /** What readSnapshots returns: the stores, and the newest app version among them (code review P7 N11). */
 export interface SnapshotsRead {
   stores: Record<string, unknown>;
   appVersion: string | null;
+  /** Each synced row's rev, device id, time and versions, keyed by store (readable or not). */
+  rows: Record<string, SyncRowInfo>;
+  /**
+   * Stores whose snapshot couldn't be read safely (an unknown encoding, damaged
+   * gzip, a gzip bomb, a size that doesn't match raw_bytes, or not a JSON
+   * object), with the reason code from _shared/gz.ts. They are left out of
+   * `stores`, never half-read.
+   */
+  unreadable: { store: string; reason: string }[];
 }
+
+/** The support checkpoint (private.sync_history), unzipped through the capped reader. */
+export type Checkpoint =
+  | { takenAt: string | null; rev: number | null; appVersion: string | null; state: Record<string, unknown> }
+  | { takenAt: string | null; rev: number | null; appVersion: string | null; unreadable: string };
 
 export interface AdminPort {
   /**
@@ -38,17 +77,25 @@ export interface AdminPort {
   deleteUser(userId: string): Promise<void>;
   /** For the deletion audit row: the learner's board posts and comments (public.svc_board_counts). */
   countBoardRows(userId: string): Promise<BoardCounts>;
-  /** Removes storage objects under user/<uid>/. No buckets exist yet. */
+  /** Removes storage objects under user/<uid>/. No buckets exist yet, so today it does nothing. */
   deleteUserFiles(userId: string): Promise<void>;
-  /** Writes private.deletions (a SHA-256 of the id and the counts only). */
-  recordDeletion(userId: string, counts: BoardCounts): Promise<void>;
-  /** profiles.terms_version, or null when no profile exists yet. */
-  getTermsVersion(userId: string): Promise<string | null>;
+  /**
+   * Writes private.deletions: the keyed hash (_shared/pepper.ts
+   * deletionHash, 64 lowercase hex characters) and the counts only. The user
+   * id itself never reaches the database call.
+   */
+  recordDeletion(uidHmac: string, counts: BoardCounts): Promise<void>;
+  /** The profiles row, or null when no profile exists yet. */
+  getProfile(userId: string): Promise<Profile | null>;
   /**
    * The learner's synced stores (`{ settings?, progress? }`, each `{ version, state }` like a backup file;
    * empty when sync was never used), and the newest app version that wrote one of them (null when none).
    */
   readSnapshots(userId: string): Promise<SnapshotsRead>;
+  /** The support checkpoint (public.svc_sync_checkpoint), or null when there is none. */
+  readCheckpoint(userId: string): Promise<Checkpoint | null>;
+  /** Read-only: may this learner export now? (public.svc_export_due; the claim below still decides.) */
+  exportDue(userId: string): Promise<boolean>;
   /** Atomically claims the hourly export slot. false = already exported this hour. */
   claimExport(userId: string): Promise<boolean>;
   /**

@@ -1,9 +1,16 @@
 // HTTP helpers shared by KaiSip's Edge Functions (pure: no Deno or network APIs).
 //
-// The functions serve the native app only, so there are NO CORS headers: a
-// browser page on another origin cannot read any response. Error bodies carry
-// a short code that the app maps to its CloudErrorCode; never a database
-// message, a token, an email or a user id.
+// CORS: the two account functions (delete-account, export-my-data) also serve
+// the website, so `serveWeb` answers a preflight from EXACTLY
+// https://kaisip.com (no www, no other host, no wildcard) and adds
+// `Access-Control-Allow-Origin: https://kaisip.com` to every answer for that
+// origin. Any other origin gets no CORS header at all, so a page elsewhere
+// can't read a response. The board's functions serve the app only and use
+// `serveSafely` (no CORS). No credentials mode: the website sends a Bearer
+// token, never a cookie.
+//
+// Error bodies carry a short code that the app maps to its CloudErrorCode;
+// never a database message, a token, an email or a user id.
 
 export type ErrorCode =
   | 'unauthorized'
@@ -55,7 +62,10 @@ export function errorResponse(e: HttpError): Response {
   return json(e.status, body, extra);
 }
 
-/** Only POST is served. Anything else (including a CORS preflight) is 405. */
+/**
+ * Only POST is served. Anything else is 405, including a preflight from any
+ * origin but the website's (serveWeb answers that one first).
+ */
 export function requirePost(req: Request): void {
   if (req.method !== 'POST') throw new HttpError(405, 'method_not_allowed');
 }
@@ -124,6 +134,57 @@ export type Logger = (event: string, counts?: Record<string, number>) => void;
 
 export function makeLogger(fn: string): Logger {
   return (event, counts) => console.log(JSON.stringify({ fn, event, ...(counts ?? {}) }));
+}
+
+/** The one browser origin the account functions answer: the website, exactly. */
+export const WEB_ORIGIN = 'https://kaisip.com';
+const CORS_ALLOW_HEADERS = 'authorization, apikey, content-type, x-client-info';
+// What the website may read besides the body: Retry-After (the export's hour)
+// and the download's file name.
+const CORS_EXPOSE_HEADERS = 'retry-after, content-disposition';
+
+/** True only for the website's exact origin (a byte-for-byte match). */
+export function isWebOrigin(origin: string | null): boolean {
+  return origin === WEB_ORIGIN;
+}
+
+/**
+ * The response with CORS headers for the website's origin, and none for any
+ * other. `Vary: Origin` always, so no cache can hand one origin's answer to
+ * another.
+ */
+export function withCors(req: Request, res: Response): Response {
+  const headers = new Headers(res.headers);
+  headers.append('vary', 'Origin');
+  if (isWebOrigin(req.headers.get('origin'))) {
+    headers.set('access-control-allow-origin', WEB_ORIGIN);
+    headers.set('access-control-expose-headers', CORS_EXPOSE_HEADERS);
+  }
+  return new Response(res.body, { status: res.status, statusText: res.statusText, headers });
+}
+
+/**
+ * serveSafely for a function the website calls too: a preflight (OPTIONS)
+ * from the website is 204 with the allowed method and headers; every other
+ * request runs the handler, and its answer, errors included, carries CORS
+ * headers for the website only (so it can show why a call was refused).
+ */
+export async function serveWeb(req: Request, log: Logger, run: () => Promise<Response>): Promise<Response> {
+  if (req.method === 'OPTIONS' && isWebOrigin(req.headers.get('origin'))) {
+    return new Response(null, {
+      status: 204,
+      headers: {
+        'access-control-allow-origin': WEB_ORIGIN,
+        'access-control-allow-methods': 'POST, OPTIONS',
+        'access-control-allow-headers': CORS_ALLOW_HEADERS,
+        'access-control-max-age': '600',
+        'cache-control': 'no-store',
+        'x-content-type-options': 'nosniff',
+        vary: 'Origin',
+      },
+    });
+  }
+  return withCors(req, await serveSafely(log, run));
 }
 
 /**

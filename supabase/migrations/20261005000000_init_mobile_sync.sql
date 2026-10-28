@@ -1,7 +1,13 @@
 -- KaiSip: accounts core (Uplift Phase 6). NOT APPLIED ANYWHERE.
 -- Replaces the 2026-10-05 draft (never applied), which is why this file was
--- rewritten in place. From the first `supabase db push` (Phase 9, owner
--- go-ahead) migrations are APPEND-ONLY: change a live table with a new file.
+-- rewritten in place, and edited in place once more before the first apply
+-- (accounts beta, 27 Oct 2026: the content-pack catalogue removed, the
+-- deletion audit keyed with a server pepper). From the first apply to the
+-- hosted project, migrations are APPEND-ONLY: change a live table with a new
+-- file.
+--
+-- Content (question banks, notes) is never stored in Postgres: it ships in
+-- the app and as static files on the website (docs/mobile/ACCOUNTS_BETA_PLAN.md).
 --
 -- Security model in plain English:
 --  * RLS is ON for every table, public AND private, in the file that creates it.
@@ -12,7 +18,7 @@
 --    `public` is ever `security definer` (scripts/check_rls.sh, guard G7).
 --  * Only the service role (Edge Functions, never the app) writes entitlements,
 --    deletes accounts or touches private tables. It reaches private tables only
---    through the two `svc_*` functions below: `security invoker`, executable by
+--    through the `svc_*` functions below: `security invoker`, executable by
 --    service_role alone, so RLS and grants still apply to everyone else.
 --  * The normalised progress tables of the first draft (answers,
 --    review_entries, bookmarks, mock_results) are gone: progress sync is one
@@ -74,42 +80,38 @@ create policy entitlements_select on public.entitlements for select to authentic
   using (user_id = (select auth.uid()));
 -- No write grant or policy: only the service role (a future webhook) writes.
 
--- ── Content packs catalogue (hardened; the bank size is never client-readable) ──
-create table public.content_packs (
-  cert_id text not null check (cert_id ~ '^[a-z0-9-]{2,20}$'),
-  version int not null check (version > 0),
-  storage_path text not null check (char_length(storage_path) between 1 and 200),
-  sha256 text not null check (sha256 ~ '^[0-9a-f]{64}$'),
-  min_app_version text not null default '1.0.0' check (min_app_version ~ '^\d{1,3}\.\d{1,3}\.\d{1,3}$'),
-  published_at timestamptz not null default now(),
-  primary key (cert_id, version)
-);
-alter table public.content_packs enable row level security;
-revoke all on public.content_packs from anon, authenticated;
-grant select on public.content_packs to authenticated;
-grant select, insert, update, delete on public.content_packs to service_role;
-create policy content_packs_read on public.content_packs for select to authenticated using (true); -- catalogue, not user data
-
-create table private.content_pack_stats (                 -- staff/server only
-  cert_id text not null,
-  version int not null,
-  question_count int not null check (question_count >= 0),
-  primary key (cert_id, version),
-  foreign key (cert_id, version) references public.content_packs on delete cascade
-);
-alter table private.content_pack_stats enable row level security;   -- no policies: deny all but service role
-grant select, insert, update, delete on private.content_pack_stats to service_role;
-
--- ── Audit of deletions (no email, no uid in clear) ──────────────────
+-- ── Audit of deletions (no email, no uid, not even a plain hash of it) ──
+-- What the record holds, exactly (the privacy policy says the same):
+--  * `uid_hmac`: HMAC-SHA-256(DELETION_PEPPER, user id), computed in the
+--    delete-account Edge Function with a Function secret the database never
+--    sees. A plain SHA-256 of the id could be joined with the hash the phone
+--    keeps (syncedAccountHash); the keyed hash can't, without the pepper.
+--  * `deleted_on`: the DAY of the deletion (UTC), not the time (security
+--    audit L8): enough to show it happened, too coarse to line up with logs.
+--  * the learner's board post and comment counts at deletion.
+-- Kept 3 years, then purged (private.purge_expired_deletions: at every
+-- deletion, and nightly by the backup job).
 create table private.deletions (
   id bigint generated always as identity primary key,
-  at timestamptz not null default now(),
-  uid_sha256 text not null check (uid_sha256 ~ '^[0-9a-f]{64}$'),
+  deleted_on date not null default (now() at time zone 'utc')::date,
+  uid_hmac text not null check (uid_hmac ~ '^[0-9a-f]{64}$'),
   board_posts int not null default 0 check (board_posts >= 0),
   board_comments int not null default 0 check (board_comments >= 0)
 );
+create index deletions_day_idx on private.deletions (deleted_on);
 alter table private.deletions enable row level security;
-grant select, insert on private.deletions to service_role;
+grant select, insert, delete on private.deletions to service_role;
+
+-- Deletion records older than 3 years are removed. Returns how many.
+create function private.purge_expired_deletions() returns int
+language plpgsql volatile security invoker set search_path = '' as $$
+declare
+  n int;
+begin
+  delete from private.deletions where deleted_on < (now() at time zone 'utc')::date - interval '3 years';
+  get diagnostics n = row_count;
+  return n;
+end $$;
 
 -- ── Export rate limit (once an hour) ────────────────────────────────
 create table private.export_log (
@@ -123,6 +125,15 @@ grant select, insert, update on private.export_log to service_role;
 -- `security invoker`: they run with the caller's rights, and only
 -- service_role may call them. PostgREST lists them, but anon and
 -- authenticated get "permission denied".
+
+-- export-my-data, first: a read-only "is an export due?" check, so a learner
+-- over the hourly limit gets 429 before the document is built (security
+-- audit L2). The atomic claim below still decides, at the end.
+create function public.svc_export_due(p_user uuid) returns boolean
+language sql stable security invoker set search_path = '' as $$
+  select not exists (select 1 from private.export_log l
+                     where l.user_id = p_user and l.last_at > now() - interval '1 hour');
+$$;
 
 -- export-my-data: atomically claims the hourly export slot.
 -- true = go ahead; false = an export already ran in the last hour.
@@ -140,25 +151,33 @@ begin
   return coalesce(claimed, false);
 end $$;
 
--- delete-account: writes the audit row after auth.admin.deleteUser. Only a
--- SHA-256 of the user id is kept (the same hash the app keeps on the phone).
+-- delete-account: writes the audit row after auth.admin.deleteUser. It is
+-- given the keyed hash (64 lowercase hex characters), never the user id, so
+-- the id doesn't reach this function, its logs or the table.
 create function public.svc_record_deletion(
-  p_user uuid, p_board_posts int default 0, p_board_comments int default 0
+  p_uid_hmac text, p_board_posts int default 0, p_board_comments int default 0
 ) returns void
 language sql volatile security invoker set search_path = '' as $$
-  insert into private.deletions (uid_sha256, board_posts, board_comments)
-  values (encode(sha256(convert_to(p_user::text, 'UTF8')), 'hex'),
+  select private.purge_expired_deletions();
+  insert into private.deletions (uid_hmac, board_posts, board_comments)
+  values (p_uid_hmac,
           greatest(coalesce(p_board_posts, 0), 0),
           greatest(coalesce(p_board_comments, 0), 0));
 $$;
 
 revoke all on function public.svc_claim_export(uuid) from public, anon, authenticated;
-revoke all on function public.svc_record_deletion(uuid, int, int) from public, anon, authenticated;
+revoke all on function public.svc_export_due(uuid) from public, anon, authenticated;
+revoke all on function private.purge_expired_deletions() from public, anon, authenticated;
+revoke all on function public.svc_record_deletion(text, int, int) from public, anon, authenticated;
 grant execute on function public.svc_claim_export(uuid) to service_role;
-grant execute on function public.svc_record_deletion(uuid, int, int) to service_role;
+grant execute on function public.svc_export_due(uuid) to service_role;
+grant execute on function private.purge_expired_deletions() to service_role;
+grant execute on function public.svc_record_deletion(text, int, int) to service_role;
 
--- In-app account deletion (Apple 5.1.1(v)): the `delete-account` Edge
--- Function verifies the JWT and a recent sign-in, revokes the Apple token
--- when it has a fresh Apple code (best-effort: never blocking), then calls
--- auth.admin.deleteUser(uid). Every user table above cascades from
--- auth.users; Phase 7 and 8 tables must do the same.
+-- In-app account deletion (Apple 5.1.1(v), Google Play): the
+-- `delete-account` Edge Function verifies the JWT and a recent sign-in,
+-- reads the board counts, calls auth.admin.deleteUser(uid) FIRST, then
+-- writes the audit row, clears storage (none yet) and revokes an Apple token
+-- when it has a fresh Apple code (each best-effort, logged, never undoing
+-- the deletion). Every user table above cascades from auth.users; Phase 7
+-- and 8 tables must do the same.
