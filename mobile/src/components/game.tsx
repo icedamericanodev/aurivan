@@ -33,7 +33,7 @@ import { sayLater } from '../lib/a11y';
 import { GAME_TIERS, tierChangeLine, type GameTier } from '../engine/games/growth';
 import type { RoundNews } from '../lib/gameRounds';
 import { BadgeIcon, Check, Info, ICON_STROKE, Play as PlayIcon, X } from './icons';
-import { BigNum, Button, CARD_LIFT, Enter, Gap, ICON_SIZE, IconButton, InviteRow, PushedHeader, Row, Section, SegmentBar, Segmented, Stem, T, useFontScale } from './ui';
+import { BigNum, Button, cardLift, Enter, Gap, ICON_SIZE, IconButton, InviteRow, PushedHeader, Row, Section, SegmentBar, Segmented, Stem, T, useFontScale } from './ui';
 
 /**
  * How long the `leaf` spring takes to come to rest (its 280 ms is perceptual;
@@ -691,7 +691,7 @@ export function MatchTile({
     paddingVertical: 12,
     paddingHorizontal: 14,
     marginBottom: space.sm,
-    ...(!isDark && !tinted && !flat ? CARD_LIFT : null),
+    ...(!tinted && !flat ? cardLift(isDark) : null),
   };
   const off = Boolean(locked) || !onPress;
   return (

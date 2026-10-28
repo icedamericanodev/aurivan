@@ -47,7 +47,7 @@ export default function BankDomains() {
           <T v="meta" num style={{ marginTop: space.sm }}>{overall}</T>
         </Enter>
         <Enter i={1}>
-          <Section title="Domains" style={{ marginTop: space.section }} />
+          <Section title="Domains" style={{ marginTop: space.xxl }} />
           {rows.map(({ domain, summary }, i) => (
             <ListRow
               key={domain.id}

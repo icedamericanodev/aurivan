@@ -84,7 +84,7 @@ export const light: Palette = {
 
 export const dark: Palette = {
   bg: '#111613',
-  raised: '#1A211C',
+  raised: '#1D2621', // premium pass T1: was #1A211C (1.11:1 on bg); now a visible 1.18:1 step. raised2 sits between bg and raised
   raised2: '#1B231E',
   soft: '#202A23',
   line: '#29322B',
@@ -163,6 +163,14 @@ export const grainOp = { light: 0.035, dark: 0.045 } as const;
 export const forestHighlight = { light: 'rgba(255,255,255,0.08)', dark: 'rgba(255,255,255,0.06)' } as const;
 
 /**
+ * Premium pass T2: the dark L2 card's top light. Besides its 1.5 `line`
+ * outline, a dark card gets a 1px inner highlight along its top edge (the
+ * forest panel's trick, a touch fainter at 5%), so it reads as a surface
+ * lit from above, not an outline. Decorative only: it carries no meaning.
+ */
+export const darkCardTopLight = 'inset 0 1px 0 rgba(255,255,255,0.05)';
+
+/**
  * The one real shadow (mobile 1.21, DESIGN_SYSTEM.md §5 "Surface model"), for
  * L2 cards (things you choose between) only, in light mode only (dark uses a
  * 1.5px `line` outline; a sheet sits on its scrim and needs none). A crisp
@@ -196,8 +204,12 @@ export const domainPalette = {
   dark: ['#72B4CB', '#8CC474', '#DDB066', '#B99DCD', '#9AAFBB'],
 } as const;
 
-/** Spacing scale 4…48. `gutter` is the screen side padding (20). */
-export const space = { xs: 4, sm: 8, md: 12, lg: 16, gutter: 20, xl: 24, section: 28, xxl: 32, xxxl: 48 } as const;
+/**
+ * Spacing scale 4…48. `gutter` is the screen side padding (20).
+ * Premium pass T4: the old `section` (28) is retired. A gap between sections
+ * is `xxl` (32), the same as the web's --sp-2xl (scripts/check_token_parity.py).
+ */
+export const space = { xs: 4, sm: 8, md: 12, lg: 16, gutter: 20, xl: 24, xxl: 32, xxxl: 48 } as const;
 /** sm = tags/progress, md = option rows/inputs, lg = hero panel, sheet = sheet top corners. */
 export const radius = { sm: 8, md: 16, lg: 24, sheet: 28, pill: 999 } as const;
 

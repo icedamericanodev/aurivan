@@ -248,7 +248,7 @@ export default function PlantLook() {
         )}
 
         {morePlanters.length + moreKeepsakes.length > 0 && (
-          <View style={{ marginTop: space.section }}>
+          <View style={{ marginTop: space.xxl }}>
             {/* Closed by default: what is still to earn never crowds what is open. No count. */}
             <Pressable
               accessibilityRole="button"

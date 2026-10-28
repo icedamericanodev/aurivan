@@ -19,7 +19,7 @@ import { DAILY_MINUTES, FAMILIARITIES, FAMILIARITY_INFO, minutesSpoken, type Dai
 import { radius, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { Check } from './icons';
-import { Button, CARD_LIFT, RadioRow, Row, Segmented, T, ToggleRow } from './ui';
+import { Button, cardLift, RadioRow, Row, Segmented, T, ToggleRow } from './ui';
 
 /** The question, also the radiogroup's spoken name. */
 export const FAMILIARITY_QUESTION = 'Where are you starting from?';
@@ -72,7 +72,7 @@ export function ChoiceRow({
           paddingHorizontal: selected ? 15.5 : 16,
           marginBottom: 10,
         },
-        !isDark && CARD_LIFT,
+        cardLift(isDark),
         pressed && { transform: [{ scale: 0.98 }] },
       ]}
     >

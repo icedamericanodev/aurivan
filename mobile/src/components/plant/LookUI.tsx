@@ -15,7 +15,7 @@ import { radius, space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
 import { Check, ICON_STROKE } from '../icons';
 import { AnimatedPressable, StateLayer, usePressScale } from '../motion';
-import { CARD_LIFT, ICON_SIZE, T } from '../ui';
+import { cardLift, ICON_SIZE, T } from '../ui';
 export { KeepsakeIcon, PlanterIcon } from './Keepsake';
 
 /** A small colour swatch (a colourway's three tones), decorative. */
@@ -87,7 +87,7 @@ export function LookOption({ name, line, art, selected, locked, multi = false, f
           paddingVertical: space.sm,
           paddingHorizontal: space.md,
         },
-        !isDark && !locked && CARD_LIFT,
+        !locked && cardLift(isDark),
         press.style,
       ]}
     >

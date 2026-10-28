@@ -33,7 +33,7 @@ import { LeafBig, LeafSmall, VerdictLeaf } from './glyphs';
 import { Check, X } from './icons';
 import { AnimatedPressable, Collapse, ease, FadeIn, Pop, StateLayer, tween, useMotion, usePressScale } from './motion';
 import { ReportRow } from './support';
-import { CARD_LIFT, Chip, Gap, Row, T, useFontScale } from './ui';
+import { cardLift, Chip, Gap, Row, T, useFontScale } from './ui';
 
 
 // ── Scenario block: a longer case study above the stem, collapsible ───
@@ -135,7 +135,7 @@ export function OptionCard({
     borderColor: look.border,
     backgroundColor: look.bg,
     marginBottom: 10, // the gap between option rows (spec §6)
-    ...(!isDark && !tinted ? CARD_LIFT : null),
+    ...(!tinted ? cardLift(isDark) : null),
   };
   const content = (
     <>

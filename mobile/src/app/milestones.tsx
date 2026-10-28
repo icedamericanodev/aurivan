@@ -298,7 +298,7 @@ export default function Badges() {
     const id: SetId = s.info.id;
     return (
       <View key={id} testID={`shelf-${id}`} onLayout={id === jumpTo ? (e) => setJumpY(e.nativeEvent.layout.y) : undefined}>
-        {id === 'fieldNotes' && <View style={{ height: 1, backgroundColor: c.line, marginTop: space.section }} />}
+        {id === 'fieldNotes' && <View style={{ height: 1, backgroundColor: c.line, marginTop: space.xxl }} />}
         <ShelfHeader set={s} line={setCountLine(s)} quiet={quiet} grown={after ? undefined : grownFor(s)} />
         {id === 'fieldNotes' && (
           <Button kind="ghost" label="See game levels ›" onPress={() => router.push('/field-notes')} style={{ alignSelf: 'flex-start', marginLeft: -space.sm }} />

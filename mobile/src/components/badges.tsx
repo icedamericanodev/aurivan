@@ -253,7 +253,7 @@ export function ShelfHeader({ set, line, quiet = NO_QUIET, grown }: { set: SetVi
   const when = complete ? `${quiet.includes(set.completeAt!) ? 'by ' : ''}${shortDate(set.completeAt!)}` : '';
   const spoken = complete ? `${setSpoken(set)}, ${when}` : setSpoken(set);
   return (
-    <View style={{ marginTop: space.section }}>
+    <View style={{ marginTop: space.xxl }}>
       <View accessible accessibilityRole="header" accessibilityLabel={spoken} style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'baseline', columnGap: space.md }}>
         <T v="headline" style={{ flexShrink: 1 }}>{set.info.name}</T>
         {line && (

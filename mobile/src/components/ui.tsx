@@ -16,7 +16,8 @@
  *   L1 plate   figures, compare grids, quiet offers: `raised2`, radius 24, no
  *              shadow, no border (Card variant="plate");
  *   L2 card    things you choose between: `raised` + `cardShadow` in light,
- *              a 1.5 `line` outline in dark (Card, the default);
+ *              a 1.5 `line` outline plus a 1px inner top light in dark
+ *              (Card, the default; premium pass T2);
  *   L3 sheet   bottom sheets (`raised2`, 28 corners, over the scrim);
  *   brand      the forest panel, one per screen, lit from the top.
  */
@@ -47,6 +48,7 @@ import { lastWholeWordIndex } from '../engine/games/priorityLens';
 import {
   cardShadow,
   font,
+  darkCardTopLight,
   forestHighlight,
   grainOp,
   LARGE_TEXT,
@@ -112,6 +114,14 @@ export function cardLiftFor(os: string, version: string | number): ViewStyle {
   return { boxShadow: cardShadow };
 }
 export const CARD_LIFT: ViewStyle = cardLiftFor(Platform.OS, Platform.Version);
+/**
+ * Premium pass T2: the dark L2 card's top light (`darkCardTopLight`), drawn
+ * inside the 1.5 `line` outline. Android below 10 skips inset shadows, which
+ * is fine: the outline still draws the card there.
+ */
+export const DARK_CARD_LIFT: ViewStyle = { boxShadow: darkCardTopLight };
+/** The L2 lift for the current theme: the shadow in light, the top light in dark. */
+export const cardLift = (isDark: boolean): ViewStyle => (isDark ? DARK_CARD_LIFT : CARD_LIFT);
 
 // ── Screen: safe-area aware page with optional scrolling ──────────────
 /**
@@ -489,7 +499,7 @@ export function Card({
           : [
               styles.card,
               { backgroundColor: c.raised, borderColor: emphasis ? c.accent : isDark ? c.line : 'transparent' },
-              !isDark && styles.cardLift,
+              isDark ? DARK_CARD_LIFT : styles.cardLift,
             ];
   const base = [look, style];
   // A static card has no press feedback, so it builds no animated styles (long lists on low-end Android).
