@@ -5949,6 +5949,9 @@ body[data-app-cta-card="shown"][data-section="today"] .app-cta-line { display: n
 .q-line .dom-dot { margin-right: var(--sp-sm); }
 .q-line:focus { outline: none; }
 .q-line:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; border-radius: 4px; }
+/* v12.42: focus targets after Try again (the card's heading, then the stem). */
+.q-text:focus, .empty-state .es-heading:focus { outline: none; }
+.q-text:focus-visible, .empty-state .es-heading:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; border-radius: 4px; }
 .pf .q-body { padding-top: var(--sp-md); }
 /* Only the session on screen: the section's page links and, on phones and
    tablets, the logo bar step aside (the bottom bar stays). */
@@ -9239,7 +9242,12 @@ function loadConceptsData(callback) {
 function renderTopicsError() {
   var area = document.getElementById('topicsArea');
   if (!area) return;
-  area.innerHTML = loadErrorHtml("Couldn't load the study notes.", 'conceptsLoadFailed=false;renderTopics()');
+  area.innerHTML = loadErrorHtml("Couldn't load the study notes.", 'retryTopics()');
+}
+function retryTopics() {
+  conceptsLoadFailed = false;
+  renderTopics();
+  esRetryFocus('topicsArea');
 }
 
 // Quinn #3 helper: recursively flatten any nested raw object into searchable text
@@ -10724,6 +10732,8 @@ function qbLoadFailed(d) {
 function retryQuestionLoad(d) {
   loadRemoteDomains(Object.keys(window.QB_LOAD_ERROR || {}));
   showRemoteBankLoading(d);
+  // The button that had focus is gone: focus goes to the loading card.
+  esFocus(document.getElementById('qArea'));
 }
 function showRemoteBankLoading(d) {
   var area = document.getElementById('qArea');
@@ -10756,8 +10766,9 @@ function showRemoteBankLoading(d) {
       if (stillWaiting()) {
         var hadFocus = loadingCard.contains(document.activeElement);
         nextQ();
-        var m = document.getElementById('qMeta');
-        if (hadFocus && m) { try { m.focus({ preventScroll: true }); } catch (e) {} }
+        // Focus was on the loading card (opened, or Try again): it moves to
+        // the question itself.
+        if (hadFocus) exFocusHeading(document.getElementById('qStem') || document.getElementById('qMeta'));
       }
     }
   };
@@ -10766,7 +10777,11 @@ function showRemoteBankLoading(d) {
     if (String(ev.detail.domain) === String(d)) {
       document.removeEventListener('qb:domain-loaded', onLoaded);
       document.removeEventListener('qb:domain-error', onError);
-      if (stillWaiting()) showRemoteBankLoading(d);
+      if (stillWaiting()) {
+        var hadFocus = loadingCard.contains(document.activeElement);
+        showRemoteBankLoading(d);
+        if (hadFocus) esFocus(document.getElementById('qArea'));
+      }
     }
   };
   document.addEventListener('qb:domain-loaded', onLoaded);
@@ -13517,7 +13532,9 @@ function updateFocusStrip() {
   // the card shown instead), without scrolling.
   if (pfMoveFocus) {
     var area = document.getElementById('qArea');
-    var target = document.getElementById('qMeta')
+    // A loading or error card (v12.42) takes focus its own way (esFocus).
+    if (!document.getElementById('qMeta') && esFocus(area)) pfMoveFocus = false;
+    var target = !pfMoveFocus ? null : document.getElementById('qMeta')
       || (area && area.querySelector('[tabindex="-1"], h2, h3, .es-heading, .empty-title'))
       || null;
     if (target) {
@@ -15725,13 +15742,57 @@ function emptyState(state) {
         return '<button class="es-btn ' + style + '" onclick="' + a.onclick + '">' + escapeHtml(a.label) + '</button>';
       }).join('') + '</div>'
     : '';
-  return '<div class="empty-state es-' + state.kind + '">'
+  // v12.42: an error is an alert and loading is a status, so screen readers
+  // hear them. esFocus keeps either from being read twice.
+  var role = state.kind === 'network' ? ' role="alert"' : (state.kind === 'loading' ? ' role="status"' : '');
+  return '<div class="empty-state es-' + state.kind + '"' + role + '>'
     + icon
-    + '<div class="es-heading">' + escapeHtml(state.heading) + '</div>'
+    + '<div class="es-heading" tabindex="-1">' + escapeHtml(state.heading) + '</div>'
     + '<div class="es-body">' + escapeHtml(state.body) + '</div>'
     + chipsHtml
     + actionsHtml
     + '</div>';
+}
+
+// Focus for a loading or error card (v12.42), each read once: an alert is
+// already announced, so focus goes to its Try again button; a status card
+// gives up its role and is read once, by focus on its heading. Topics' own
+// loading line (.gt-loading) is treated as a status card. True when focused.
+function esFocus(area) {
+  var card = area && area.querySelector('.empty-state, .gt-loading');
+  if (!card) return false;
+  var target;
+  if (card.getAttribute('role') === 'alert') target = card.querySelector('.es-btn') || card.querySelector('.es-heading');
+  else {
+    card.removeAttribute('role');
+    target = card.querySelector('.es-heading') || card;
+  }
+  if (!target) return false;
+  if (!target.hasAttribute('tabindex') && target.tagName !== 'BUTTON') target.setAttribute('tabindex', '-1');
+  try { target.focus({ preventScroll: true }); } catch (e) { return false; }
+  return true;
+}
+// After Try again on a page area: focus stays on the card that replaces the
+// button, then moves to the area's heading once the content is drawn. It
+// only ever picks up focus that was lost (left on the page body).
+function esRetryFocus(areaId) {
+  var area = document.getElementById(areaId);
+  if (!area) return;
+  esFocus(area);
+  if (!window.MutationObserver) return;
+  var obs = new MutationObserver(function () {
+    var lost = !document.activeElement || document.activeElement === document.body;
+    if (area.querySelector('.empty-state, .gt-loading')) { if (lost) esFocus(area); return; }
+    obs.disconnect();
+    if (!lost) return;
+    var h = area.querySelector('h1, h2, [tabindex="-1"]');
+    if (!h) return;
+    if (!h.hasAttribute('tabindex')) h.setAttribute('tabindex', '-1');
+    exFocusHeading(h);
+  });
+  obs.observe(area, { childList: true, subtree: true });
+  // Never left watching: a page that has not loaded in a minute stays put.
+  setTimeout(function () { obs.disconnect(); }, 60000);
 }
 
 // A file that could not load (v12.42): what happened, in learner words, and
@@ -16141,7 +16202,7 @@ function renderQuestion(q) {
     + '<p class="q-line" id="qMeta" tabindex="-1"><span class="dom-dot" style="background:' + info.color + '"></span>' + metaParts.join(' &middot; ') + '</p>'
     + '<div class="q-body">'
     + (q.scenario_context && !(window.S && S.examMode) ? '<div class="scenario-block"><div class="sc-label">Scenario</div><p class="sc-text" id="sc-text-' + escapeHtml(q.id) + '">' + escapeHtml(smartQuotes(q.scenario_context)) + '</p><button class="sc-expand-btn" id="sc-btn-' + escapeHtml(q.id) + '" data-qid="' + escapeHtml(q.id) + '" onclick="expandScenario(this.dataset.qid)">Read scenario ▾</button></div>' : '')
-    + '<p class="q-text">' + (q.scenario_context && window.S && S.examMode ? escapeHtml(smartQuotes(q.scenario_context)) + ' ' : '') + escapeHtml(smartQuotes(q.question)) + '</p>'
+    + '<p class="q-text" id="qStem" tabindex="-1">' + (q.scenario_context && window.S && S.examMode ? escapeHtml(smartQuotes(q.scenario_context)) + ' ' : '') + escapeHtml(smartQuotes(q.question)) + '</p>'
     + '<div class="opts">' + optsHtml + '</div>'
     // "How confident are you?" (optional; mobile's words: Sure / Unsure /
     // Guessing — Unsure keeps its saved value, 'educated'). Shown once an
@@ -17769,20 +17830,32 @@ function saveExactExamDate() {
 // After the first five: once, and only when no date is set. v12.42: never
 // over the results. It waits for Today (maybeShowExamDateAsk), and the
 // cookie bar waits for it.
-var examDateAsk = '';   // '' | 'pending' (waiting for Today) | 'opening'
+// The waiting ask is saved (a new key beside the old ones), so a reload
+// before Today still asks.
+var DATE_ASK_PENDING_KEY = 'aurivan_exam_date_ask_pending';
+function setDateAskPending(on) {
+  try {
+    if (on) localStorage.setItem(DATE_ASK_PENDING_KEY, '1');
+    else localStorage.removeItem(DATE_ASK_PENDING_KEY);
+  } catch (e) {}
+}
+var examDateAsk = (function () {   // '' | 'pending' (waiting for Today) | 'opening'
+  try { return localStorage.getItem(DATE_ASK_PENDING_KEY) === '1' ? 'pending' : ''; } catch (e) { return ''; }
+})();
 function maybeAskExamDate(deb) {
   if (!deb || !deb.firstFive) return;
   var asked = false;
   try { asked = !!localStorage.getItem(DATE_ASKED_KEY); } catch (e) {}
   if (asked || savedExamDate()) return;
   examDateAsk = 'pending';
+  setDateAskPending(true);
 }
 // Opens the waiting date ask on Today when nothing else is showing. True
 // when it is opening (the cookie bar then waits its turn).
 function maybeShowExamDateAsk() {
   if (examDateAsk === 'opening') return true;
   if (examDateAsk !== 'pending') return false;
-  if (savedExamDate()) { examDateAsk = ''; return false; }
+  if (savedExamDate()) { examDateAsk = ''; setDateAskPending(false); return false; }
   if (!(window.S && S.activeTab === 'home') || askHolderBusy()) return false;
   var bar = document.getElementById('consent-banner');
   if (bar && !bar.hidden) return false;
@@ -17792,6 +17865,7 @@ function maybeShowExamDateAsk() {
     examDateAsk = 'pending';
     if (S.activeTab !== 'home' || askHolderBusy() || savedExamDate()) { try { maybeShowNextAsk(); } catch (e) {} return; }
     examDateAsk = '';
+    setDateAskPending(false);
     try { localStorage.setItem(DATE_ASKED_KEY, '1'); } catch (e) {}
     openExamDateSheet(true);
   }, 450);
@@ -18196,6 +18270,7 @@ function principlesLoadDone(ok) {
 function retryPrinciples() {
   principlesLoadFailed = false;
   renderPrinciplesLibrary();
+  esRetryFocus('principlesArea');
 }
 
 function renderPrinciplesLibrary() {
@@ -18597,6 +18672,7 @@ var egState = { pending: null, waiting: false };
 function retryExamGuide() {
   EXAM_GUIDE.failed = false;
   renderExamGuide();
+  esRetryFocus('examGuideArea');
 }
 function renderExamGuide() {
   var area = document.getElementById('examGuideArea');
@@ -18717,6 +18793,7 @@ function egOpenSection(sid) {
 function retryFinalWeek() {
   FINAL_WEEK.failed = false;
   renderFinalWeek();
+  esRetryFocus('finalWeekArea');
 }
 var fwNotesAsked = false;
 var fwWaiting = false;   // a load callback for this page is queued (only one)
