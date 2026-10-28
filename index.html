@@ -5695,7 +5695,7 @@ body[data-app-cta-card="shown"][data-section="today"] .app-cta-line { display: n
 .vr-recap-t:not(.open) { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden; }
 .vr-recap-btn {
   display: inline-flex; align-items: center; gap: var(--sp-xs); min-height: 48px; padding: 0;
-  background: none; border: 0; cursor: pointer; font: 600 15px/22px var(--f-sans); color: var(--accent-text);
+  background: none; border: 0; cursor: pointer; font: var(--t-label); color: var(--accent-text);
 }
 .vr-recap-btn[hidden] { display: none; }
 .vr-recap-btn:hover .vr-recap-bt { text-decoration: underline; }
@@ -6494,6 +6494,20 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 .am-m { margin-top: 2px; font: var(--t-meta); color: var(--text2); overflow-wrap: anywhere; }
 .am-chev { flex-shrink: 0; color: var(--muted); display: inline-flex; }
 .am-note .sr-area { width: 100%; }
+.ks-sheet .am-close { min-height: 48px; }
+/* "Why the other options are wrong": opens in place under its row. */
+.am-row[aria-expanded="true"] .am-chev { transform: rotate(180deg); }
+@media (prefers-reduced-motion: no-preference) { .am-row .am-chev { transition: transform .15s ease; } }
+.am-others[hidden] { display: none; }
+.am-others { padding: 0 0 var(--sp-md) 52px; }
+@media (max-width: 399px) { .am-others { padding-left: 0; } }
+.am-other + .am-other { margin-top: var(--sp-md); }
+.am-other-h { display: flex; gap: var(--sp-sm); margin: 0; font: var(--t-label); color: var(--text); overflow-wrap: anywhere; }
+.am-other-l {
+  width: 24px; height: 24px; flex-shrink: 0; border-radius: 50%; border: 1.5px solid var(--control);
+  display: inline-flex; align-items: center; justify-content: center; font: var(--t-caption); color: var(--text2);
+}
+.am-other-t { margin: var(--sp-xs) 0 0 32px; font: var(--t-small); color: var(--text); overflow-wrap: anywhere; }
 /* A label never breaks inside its button; the pair stacks instead. */
 .ks-sheet .mock-confirm-btn { flex: 1 1 auto; white-space: nowrap; }
 .mock-confirm-btn.danger { background: var(--wrong-light); border-color: var(--wrong-light); color: var(--wrong); }
@@ -14581,6 +14595,7 @@ window.addEventListener('resize', function () {
   var aside = document.getElementById('studyRail');
   var page = document.body.getAttribute('data-rail');
   if (aside && page) { try { railAlign(aside, page); } catch (e) {} }
+  try { vrRecapFit(); } catch (e) {}
 });
 
 // ── PLANT COMPANION (web v12.11; owner-approved 19 Oct 2026) ──
@@ -16579,7 +16594,7 @@ function showResult(chosen, correct, timeout, info) {
         + '<path d="' + (ok ? VR_TICK : VR_CROSS) + '" class="vr-leaf-mark"/>'
       + '</svg>'
       + '<h2 class="vr-hero" id="vrHero" tabindex="-1">' + hero
-        + '<span class="sr-only">. Best answer ' + correct + '.</span></h2>'
+        + '<span class="sr-only">. Best answer ' + correct + '. The question recap is above.</span></h2>'
     + '</div>'
     + (coach ? '<p class="vr-coach">' + escapeHtml(coach) + '</p>' : '');
 
@@ -16668,6 +16683,8 @@ function showResult(chosen, correct, timeout, info) {
     + '<button type="button" class="vr-next" id="vrNext" onclick="nextQ()">Next question' + ico('arrow-right', 18) + '</button>'
     + '</div>';
 
+  // The More sheet's "other options" needs the pick (DISPLAY letters).
+  vrPick = { id: q.id, chosen: chosen || null, correct: correct };
   p.innerHTML = vrRecapHtml(q)
     + verdictHtml
     + (rows ? '<div class="vr-rows">' + rows + '</div>' : '')
@@ -16684,7 +16701,7 @@ function showResult(chosen, correct, timeout, info) {
   // folded one draws when "Read more" shows it.
   armVine(document.getElementById('vrVine'));
   armVine(document.getElementById('vrVine2'));
-  vrRecapFit();
+  vrRecapWatch();
   // The study rail starts teaching now: the note, your note, the lookup.
   try { railSync(); } catch (e) {}
   // The strip: progress moves on, and its Save hands over to the footer's.
@@ -16703,6 +16720,20 @@ function showResult(chosen, correct, timeout, info) {
   }, 60);
 }
 
+var vrPick = null;          // { id, chosen, correct } on the answer screen (display letters)
+var vrRecapRO = null;
+// Re-fit "Show question" whenever the recap's box can change: a narrower
+// window, text zoom (200-400%), the web fonts arriving.
+function vrRecapWatch() {
+  vrRecapFit();
+  var t = document.getElementById('vrRecapT');
+  if (vrRecapRO) { vrRecapRO.disconnect(); vrRecapRO = null; }
+  if (t && typeof ResizeObserver !== 'undefined') {
+    vrRecapRO = new ResizeObserver(function () { vrRecapFit(); });
+    vrRecapRO.observe(t);
+  }
+  try { if (document.fonts && document.fonts.ready) document.fonts.ready.then(vrRecapFit); } catch (e) {}
+}
 // "Show question" shows only when the stem is longer than its two lines.
 function vrRecapFit() {
   var t = document.getElementById('vrRecapT'), b = document.getElementById('vrRecapBtn');
@@ -21176,6 +21207,14 @@ function openAnswerMore() {
     rows.push(answerMoreRow({ onclick: 'answerMoreGo(\'principle\')', icon: 'principles', kicker: 'Read the principle',
       title: escapeHtml(pl.title), meta: 'How to think it through' }));
   }
+  var others = answerOthersHtml(q);
+  if (others) {
+    rows.push('<li><button type="button" class="am-row" id="amOthersBtn" aria-expanded="false" aria-controls="amOthers" onclick="toggleAnswerOthers(this)">'
+      + '<span class="am-ico" aria-hidden="true">' + ico('missed', 20) + '</span>'
+      + '<span class="am-text"><span class="am-t">Why the other options are wrong</span></span>'
+      + '<span class="am-chev" aria-hidden="true">' + ico('chevron-down', 18) + '</span></button>'
+      + '<div class="am-others" id="amOthers" hidden>' + others + '</div></li>');
+  }
   // Not in the first five (mobile: one less thing in the first minute).
   if (!(firstFiveRun && sessionLabel === FIRST_FIVE_LABEL)) {
     var mine = qNoteText(q.id);
@@ -21190,6 +21229,30 @@ function openAnswerMore() {
     + '<button type="button" class="ks-link am-close" onclick="closeFlagModal()">Close</button></div>'
     + '<div class="mock-confirm-body"><ul class="am-list">' + rows.join('') + '</ul></div>'
     + '</div></div>';
+}
+// The options that are neither the pick nor the best answer, in DISPLAY
+// order, each with why it is wrong. Read through the shuffle the answer was
+// shown with (S.currentShuffle): display letter -> original letter, and any
+// letters inside the note mapped the same way.
+function answerOthersHtml(q) {
+  if (!vrPick || vrPick.id !== q.id) return '';
+  var shuffle = S.currentShuffle || DISPLAY_LETTERS;
+  return DISPLAY_LETTERS.map(function (displayL, idx) {
+    if (displayL === vrPick.correct || displayL === vrPick.chosen) return '';
+    var origL = shuffle[idx];
+    var w = q.wrong_explanations && q.wrong_explanations[origL];
+    return '<div class="am-other"><p class="am-other-h"><span class="am-other-l" aria-hidden="true">' + displayL + '</span>'
+      + '<span><span class="sr-only">Option ' + displayL + ': </span>' + escapeHtml(smartQuotes((q.options || {})[origL] || '')) + '</span></p>'
+      + (w ? '<p class="am-other-t">' + escapeHtml(smartQuotes(mapLettersInText(w, shuffle, origL))) + '</p>' : '')
+      + '</div>';
+  }).join('');
+}
+function toggleAnswerOthers(btn) {
+  var box = document.getElementById('amOthers');
+  if (!box || !btn) return;
+  var open = btn.getAttribute('aria-expanded') !== 'true';
+  btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  box.hidden = !open;
 }
 // A row that leaves the answer: close the sheet without handing focus back
 // to ⋯ (the page it opens places focus itself).
@@ -21382,7 +21445,8 @@ const CHANGELOG = [
     items: [
       { cat: 'new', text: 'Every answer now starts with a short reminder of the question, and Show question opens all of it.' },
       { cat: 'improved', text: 'After a miss, your answer, why it falls short, the best answer and the key idea come first; the extra tips open with Read more.' },
-      { cat: 'improved', text: 'One Go deeper link points to the study note behind the question. The note, the principle, your own note and Report a problem are in the More button at the top, beside Save.' },
+      { cat: 'improved', text: 'One Go deeper link opens the note or principle behind the question; the rest is under More, beside Save.' },
+      { cat: 'improved', text: 'Under More, Why the other options are wrong explains each choice you didn’t pick.' },
       { cat: 'improved', text: 'In dark mode, cards and answer rows stand out more clearly from the page, and a missed answer reads more calmly.' },
       { cat: 'improved', text: 'Questions to revisit now say how many are ready today, oldest first, instead of a growing total.' },
     ],

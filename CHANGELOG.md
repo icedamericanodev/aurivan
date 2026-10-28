@@ -11,7 +11,8 @@ For internal/technical history, see git log and PR descriptions.
 
 ### Improved
 - After a miss, your answer, why it falls short, the best answer and the key idea come first; the extra tips open with Read more.
-- One Go deeper link points to the study note behind the question. The note, the principle, your own note and Report a problem are in the More button at the top, beside Save.
+- One Go deeper link opens the note or principle behind the question; the rest is under More, beside Save.
+- Under More, Why the other options are wrong explains each choice you didn’t pick.
 - In dark mode, cards and answer rows stand out more clearly from the page, and a missed answer reads more calmly.
 - Questions to revisit now say how many are ready today, oldest first, instead of a growing total.
 
