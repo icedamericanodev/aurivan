@@ -6444,8 +6444,14 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 /* A small sheet (the reset confirms and the exam-date choice): Grove raised2,
    rising from the bottom edge on phones, centred on wide screens. */
 .ks-sheet-sub { margin: 0 0 var(--sp-lg); font: var(--t-body); color: var(--text2); }
-/* A sheet is modal: it sits over the cookie bar too (the bar waits under the dim). */
+/* A sheet is modal. The cookie bar is put away while one is open (v12.42),
+   so the two never stack; the z-index keeps the sheet on top regardless. */
 .mock-confirm-overlay.ks-sheet-overlay { z-index: 300; }
+/* The first-run date ask (v12.42) sits low on wide screens too, so Today's
+   plan and its Start stay in view above it. */
+@media (min-width: 601px) {
+  .mock-confirm-overlay.ks-sheet-overlay.ks-sheet-low { align-items: flex-end; padding-bottom: var(--sp-xxl); }
+}
 .ks-sheet .mock-confirm-btns { margin-top: var(--sp-xl); }
 /* A label never breaks inside its button; the pair stacks instead. */
 .ks-sheet .mock-confirm-btn { flex: 1 1 auto; white-space: nowrap; }
@@ -6757,7 +6763,7 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
     <h1 class="vision-title" id="aboutScreenTitle">Think like an IS auditor.</h1>
     <p class="vision-line">CISA exam prep, taught the way the exam thinks.</p>
   </section>
-  <p class="about-version">KaiSip web <span class="bank-pill" id="versionPill">v12.41</span></p>
+  <p class="about-version">KaiSip web <span class="bank-pill" id="versionPill">v12.42</span></p>
   <section class="vision-body" aria-label="What KaiSip stands for">
     <!-- The provenance line (owner, 22 Oct 2026): the same words in the hero, the disclaimer and the FAQ. -->
     <p class="vision-desc">Original questions and notes, written with AI assistance and checked against ISACA’s published exam outline and standards.</p>
@@ -7093,7 +7099,7 @@ const MOCK_TIER_LABEL = { analysis: 'Harder', application: 'Middle', foundationa
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v12.41';
+const APP_VERSION = 'v12.42';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -7123,9 +7129,14 @@ function isQBLoading(d) {
   return !!window.QB_LOADING[String(d)];
 }
 
-function loadRemoteDomains() {
-  Object.keys(REMOTE_DOMAINS).forEach(function(d){
+// only: an optional list of domains to (re)fetch, used by "Try again" so the
+// banks that did arrive keep their queues. Default: every domain.
+function loadRemoteDomains(only) {
+  (Array.isArray(only) ? only : Object.keys(REMOTE_DOMAINS)).forEach(function(d){
     var url = REMOTE_DOMAINS[d];
+    if (!url) return;
+    delete window.QB_LOAD_ERROR[d];
+    window.QB_LOADING[d] = url;
     fetch(url, { cache: 'no-cache' })
       .then(function(r){ if (!r.ok) throw new Error('HTTP '+r.status); return r.json(); })
       .then(function(json){
@@ -9219,23 +9230,16 @@ function loadConceptsData(callback) {
       conceptsLoading = false;
       conceptsLoadFailed = true;
       console.warn('Could not load data/cisa_notes.json:', err);
-      renderTopicsError(err);
+      renderTopicsError();
     });
 }
 
 // Show a clear error state when the JSON cannot be fetched
-function renderTopicsError(err) {
+// (v12.42: learner words only; the reason is logged by loadConceptsData.)
+function renderTopicsError() {
   var area = document.getElementById('topicsArea');
   if (!area) return;
-  var msg = (err && err.message) ? escapeHtml(err.message) : 'Network error';
-  area.innerHTML = '<div style="text-align:center;padding:60px 24px;color:var(--muted)">'
-    + '<div style="font-family:Fraunces,Georgia,serif;font-size:20px;font-weight:500;color:var(--text);margin-bottom:8px">Topics content not loaded</div>'
-    + '<div style="font-size:13px;line-height:1.7;margin-bottom:20px">'
-    + 'Make sure <code>data/cisa_notes.json</code> is deployed with the site.<br>'
-    + 'Error: <code>' + msg + '</code>'
-    + '</div>'
-    + '<button onclick="conceptsLoadFailed=false;renderTopics()" style="padding:10px 24px;border-radius:10px;background:var(--btn);color:var(--on-btn);border:none;font-family:Figtree,system-ui,sans-serif;font-size:13px;font-weight:600;cursor:pointer">&#8635; Retry</button>'
-    + '</div>';
+  area.innerHTML = loadErrorHtml("Couldn't load the study notes.", 'conceptsLoadFailed=false;renderTopics()');
 }
 
 // Quinn #3 helper: recursively flatten any nested raw object into searchable text
@@ -10707,26 +10711,34 @@ function renderTopicTerms(items) {
 }
 
 // ── REMOTE BANK LOADING SCREEN ──
+// True when the questions for d cannot come: its bank failed (or, for "all",
+// nothing is still loading and every bank that failed left the set empty).
+function qbLoadFailed(d) {
+  var errs = window.QB_LOAD_ERROR || {};
+  if (d !== 'all') return !!errs[d] && !(QB[d] && QB[d].length);
+  return Object.keys(errs).length > 0 && Object.keys(window.QB_LOADING || {}).length === 0
+    && Object.keys(DI).every(function (k) { return !(QB[k] && QB[k].length); });
+}
+// "Try again": fetch the banks that failed, and show the loading card (it
+// draws the question once the bank is in, or the error again).
+function retryQuestionLoad(d) {
+  loadRemoteDomains(Object.keys(window.QB_LOAD_ERROR || {}));
+  showRemoteBankLoading(d);
+}
 function showRemoteBankLoading(d) {
   var area = document.getElementById('qArea');
   if (!area) return;
-  var err = (d !== 'all' && window.QB_LOAD_ERROR && window.QB_LOAD_ERROR[d]) ? window.QB_LOAD_ERROR[d] : null;
-  if (err) {
-    // Decision 7 (b) — Network error state
-    area.innerHTML = emptyState({
-      kind: 'network',
-      heading: "Couldn't load the question bank.",
-      body: "This usually means the file was opened directly in a browser rather than served over HTTP. Run one of these commands in the project folder and reload.",
-      chips: ['python3 -m http.server', 'npx serve .'],
-      actions: [{ label: 'Retry', style: 'primary', onclick: "loadRemoteDomains();showRemoteBankLoading('" + String(d).replace(/'/g, "\\'") + "')" }]
-    });
+  if (qbLoadFailed(d)) {
+    // Decision 7 (b) — Network error state. Plain words and one way forward;
+    // the technical reason is already in the console (loadRemoteDomains).
+    area.innerHTML = loadErrorHtml("Couldn't load your questions.", "retryQuestionLoad('" + String(d).replace(/[^a-z0-9]/gi, '') + "')");
     return;
   }
   // Decision 7 (a) — Loading state
   area.innerHTML = emptyState({
     kind: 'loading',
-    heading: 'Fetching questions…',
-    body: 'The question bank is loading from data/domain' + d + '.json. This usually takes less than a second.'
+    heading: 'Loading your questions…',
+    body: 'This usually takes less than a second.'
   });
   // Once the bank arrives, draw the question in place, but only while this
   // card is still what the learner is looking at (they may have left for the
@@ -10874,8 +10886,8 @@ function switchTab(t, opts) {
     pendingDebrief = null;
   }
   try { railNoteFlush(); railSync(); } catch (e) {}
-  // The cookie question, once its moment has come (maybeShowConsentBanner).
-  try { maybeShowConsentBanner(); } catch (e) {}
+  // The first-run asks (exam date, then cookies), once their moment has come.
+  try { maybeShowNextAsk(); } catch (e) {}
   // Land on the newly opened section's own content — scroll the active
   // screen element into view rather than the page origin, so the section
   // heading sits at the top of the viewport instead of the page header.
@@ -13257,8 +13269,8 @@ function updateStats() {
   bd.textContent = n;
   bd.style.display = n > 0 ? 'inline' : 'none';
   updateMissedBtn();
-  // The cookie question (maybeShowConsentBanner) has its own rule.
-  try { maybeShowConsentBanner(); } catch (e) {}
+  // The first-run asks (maybeShowNextAsk) have their own rules.
+  try { maybeShowNextAsk(); } catch (e) {}
 }
 var YOU_STATS_MIN = 10;
 
@@ -13375,7 +13387,7 @@ function setPracticeView(v) {
   if (hub) hub.hidden = v !== 'hub';
   if (foc) foc.hidden = v !== 'focus';
   try { railSync(); } catch (e) {}
-  if (v === 'hub') { try { maybeShowConsentBanner(); } catch (e) {} }
+  if (v === 'hub') { try { maybeShowNextAsk(); } catch (e) {} }
 }
 
 // Is something left open that the hub's Continue would pick up?
@@ -15378,7 +15390,7 @@ function nextQ() {
   var bankEmpty = (sel === 'all')
     ? Object.keys(DI).every(function(k){ return !(QB[k] && QB[k].length); })
     : !(QB[sel] && QB[sel].length);
-  if (anyLoading && queueEmpty && bankEmpty) {
+  if ((anyLoading || qbLoadFailed(sel)) && queueEmpty && bankEmpty) {
     showRemoteBankLoading(sel);
     return;
   }
@@ -15608,6 +15620,18 @@ function hideConsentBanner() {
   }
   consentReturnFocus = null;
 }
+// The two first-run asks (v12.42): at most one shows at a time, and neither
+// covers a question, an answer, a mock or a set's results. The exam date goes
+// first, as a sheet on Today; the cookie bar follows once that is answered.
+// Called on every page change (switchTab, the Practice hub, updateStats).
+function maybeShowNextAsk() {
+  if (maybeShowExamDateAsk()) return;
+  maybeShowConsentBanner();
+}
+// A popup (a sheet, What's New, feedback) is open in one of the holders.
+function askHolderBusy() {
+  return !!document.querySelector('#flagModal > *, #changelogModal > *, #feedbackModal > *');
+}
 // The cookie question (v12.34) waits until the first set is finished, and
 // never covers a question, an answer or a mock: it shows on the next page
 // (Today, after "Done for today"). Analytics stays off until then, as before.
@@ -15616,11 +15640,30 @@ function maybeShowConsentBanner() {
   if (!(window.S && firstSetDone())) return;
   if (S.activeTab === 'practice' && practiceView === 'focus') return;
   if (S.activeTab === 'mock' && (isMockInProgress() || document.body.getAttribute('data-mock-results') === '1')) return;
+  // Never with a popup, nor while the exam-date sheet is about to open.
+  if (examDateAsk === 'opening' || askHolderBusy()) return;
   // Never on top of a toast ("Exam date saved"): look again once it has gone.
-  if (document.querySelector('#globalToast.show')) { setTimeout(function () { try { maybeShowConsentBanner(); } catch (e) {} }, 600); return; }
+  if (document.querySelector('#globalToast.show')) { setTimeout(function () { try { maybeShowNextAsk(); } catch (e) {} }, 600); return; }
   var el = document.getElementById('consent-banner');
   if (el && el.hidden) showConsentBanner(false);
 }
+// A popup opening puts the unanswered cookie bar away (it would sit on the
+// sheet's buttons); it comes back once every popup has closed.
+(function consentYieldsToPopups() {
+  if (!window.MutationObserver) return;
+  var watch = function () {
+    var el = document.getElementById('consent-banner');
+    if (askHolderBusy()) {
+      if (el && !el.hidden && !consentChoiceMade()) { el.hidden = true; consentSyncHeight(); }
+    } else {
+      setTimeout(function () { try { maybeShowNextAsk(); } catch (e) {} }, 0);
+    }
+  };
+  ['flagModal', 'changelogModal', 'feedbackModal'].forEach(function (id) {
+    var h = document.getElementById(id);
+    if (h) new MutationObserver(watch).observe(h, { childList: true });
+  });
+})();
 function initConsentBanner() {
   // Escape closes the banner only once a choice already exists.
   document.addEventListener('keydown', function (e) {
@@ -15629,7 +15672,7 @@ function initConsentBanner() {
     if (el && !el.hidden && consentChoiceMade()) hideConsentBanner();
   });
   // A returning learner who has answered before and never chose sees it now.
-  maybeShowConsentBanner();
+  maybeShowNextAsk();
 }
 function setConsent(granted) {
   try { localStorage.setItem('aurivan_consent', granted ? 'granted' : 'denied'); } catch (e) {}
@@ -15641,6 +15684,8 @@ function setConsent(granted) {
     if (granted && window.loadGA) window.loadGA();
   } catch (e) {}
   hideConsentBanner();
+  // A date ask waiting for Today's next look can show now.
+  setTimeout(function () { try { maybeShowNextAsk(); } catch (e) {} }, 0);
 }
 function openConsentBanner() {
   consentReturnFocus = document.activeElement;
@@ -15687,6 +15732,18 @@ function emptyState(state) {
     + chipsHtml
     + actionsHtml
     + '</div>';
+}
+
+// A file that could not load (v12.42): what happened, in learner words, and
+// Try again. No file names or commands; the reason goes to the console only.
+// retry: a fixed JS call written by the app (never learner or file text).
+function loadErrorHtml(heading, retry) {
+  return emptyState({
+    kind: 'network',
+    heading: heading,
+    body: 'Check your connection and try again.',
+    actions: [{ label: 'Try again', style: 'primary', onclick: retry }]
+  });
 }
 
 // ── SCENARIO EXPAND/COLLAPSE (mobile only) — Decision 10 ──
@@ -17666,7 +17723,7 @@ function openExamDateSheet(firstRun) {
   var sub = firstRun
     ? 'Five done. When is your exam? A rough date is fine: it sets your countdown on Today.'
     : 'A rough date is fine. It sets your countdown on Today.';
-  modal.innerHTML = '<div class="mock-confirm-overlay ks-sheet-overlay" onclick="closeFlagModal(event)">'
+  modal.innerHTML = '<div class="mock-confirm-overlay ks-sheet-overlay' + (firstRun ? ' ks-sheet-low' : '') + '" onclick="closeFlagModal(event)">'
     + '<div class="mock-confirm-modal ks-sheet" role="dialog" aria-modal="true" aria-labelledby="edH">'
     + '<h2 class="mock-confirm-head" id="edH">' + (firstRun ? 'One last thing' : 'When is your exam?') + '</h2>'
     + '<div class="mock-confirm-body">'
@@ -17709,14 +17766,36 @@ function saveExactExamDate() {
   if (!inp || !inp.value) { if (inp) { try { inp.focus(); } catch (e) {} } return; }
   storeExamDate(inp.value);
 }
-// After the first five: once, and only when no date is set.
+// After the first five: once, and only when no date is set. v12.42: never
+// over the results. It waits for Today (maybeShowExamDateAsk), and the
+// cookie bar waits for it.
+var examDateAsk = '';   // '' | 'pending' (waiting for Today) | 'opening'
 function maybeAskExamDate(deb) {
   if (!deb || !deb.firstFive) return;
   var asked = false;
   try { asked = !!localStorage.getItem(DATE_ASKED_KEY); } catch (e) {}
   if (asked || savedExamDate()) return;
-  try { localStorage.setItem(DATE_ASKED_KEY, '1'); } catch (e) {}
-  setTimeout(function () { openExamDateSheet(true); }, 450);
+  examDateAsk = 'pending';
+}
+// Opens the waiting date ask on Today when nothing else is showing. True
+// when it is opening (the cookie bar then waits its turn).
+function maybeShowExamDateAsk() {
+  if (examDateAsk === 'opening') return true;
+  if (examDateAsk !== 'pending') return false;
+  if (savedExamDate()) { examDateAsk = ''; return false; }
+  if (!(window.S && S.activeTab === 'home') || askHolderBusy()) return false;
+  var bar = document.getElementById('consent-banner');
+  if (bar && !bar.hidden) return false;
+  examDateAsk = 'opening';
+  // A beat for Today to settle (and the learner to see it) first.
+  setTimeout(function () {
+    examDateAsk = 'pending';
+    if (S.activeTab !== 'home' || askHolderBusy() || savedExamDate()) { try { maybeShowNextAsk(); } catch (e) {} return; }
+    examDateAsk = '';
+    try { localStorage.setItem(DATE_ASKED_KEY, '1'); } catch (e) {}
+    openExamDateSheet(true);
+  }, 450);
+  return true;
 }
 // You → Settings → Exam date: the current value under the row's title.
 function renderYouExamDate() {
@@ -18124,13 +18203,7 @@ function renderPrinciplesLibrary() {
   if (!area) return;
   if (!PRINCIPLES_RAW) {
     if (principlesLoadFailed) {
-      area.innerHTML = '<div class="gt">' + emptyState({
-        kind: 'network',
-        heading: "Couldn't load the principles.",
-        body: 'This usually means the file was opened directly in a browser rather than served over HTTP. Run one of these commands in the project folder and reload.',
-        chips: ['python3 -m http.server', 'npx serve .'],
-        actions: [{ label: 'Retry', style: 'primary', onclick: 'retryPrinciples()' }]
-      }) + '</div>';
+      area.innerHTML = '<div class="gt">' + loadErrorHtml("Couldn't load the principles.", 'retryPrinciples()') + '</div>';
       return;
     }
     area.innerHTML = '<div class="gt">' + emptyState({
@@ -18507,13 +18580,7 @@ function exLoadingHtml(heading) {
   return '<div class="gt">' + emptyState({ kind: 'loading', heading: heading, body: 'This usually takes less than a second.' }) + '</div>';
 }
 function exErrorHtml(heading, retry) {
-  return '<div class="gt">' + emptyState({
-    kind: 'network',
-    heading: heading,
-    body: 'This usually means the file was opened directly in a browser rather than served over HTTP. Run one of these commands in the project folder and reload.',
-    chips: ['python3 -m http.server', 'npx serve .'],
-    actions: [{ label: 'Retry', style: 'primary', onclick: retry }]
-  }) + '</div>';
+  return '<div class="gt">' + loadErrorHtml(heading, retry) + '</div>';
 }
 // Scrolls a heading (tabindex=-1) to the top and moves focus to it.
 function exFocusHeading(el) {
@@ -21051,6 +21118,15 @@ function toggleMockDetail(i) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
+    title: 'Calmer loading and first-day prompts',
+    items: [
+      { cat: 'fixed', text: 'While questions load, you now see a short, plain message.' },
+      { cat: 'fixed', text: 'If questions or notes can’t load, you get a clear message and a Try again button.' },
+      { cat: 'fixed', text: 'After your first five questions, your results stay clear: the exam date question waits for Today, and the cookie question comes after it, never both at once.' },
+    ],
+  },
+  {
+    version: 'v12.41',
     title: 'Your progress, in one place',
     items: [
       { cat: 'new', text: 'A new page, Your progress, from You or Today: where you stand in each domain and what would raise your low end.' },
