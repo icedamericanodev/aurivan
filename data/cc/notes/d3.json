@@ -3,19 +3,19 @@
   "domain_name": "Identity and Access Management (IAM) Concepts",
   "exam_weight": "20%",
   "source": "Original KaiSip study notes, organized by the CC exam outline effective 1 Sep 2026. Not affiliated with or endorsed by ISC2®. CC® is a registered trademark of ISC2, Inc.",
-  "overview": "This domain is about making sure every person and every system that touches an organization's data is known, proven and limited to what it needs. Topic 3.1 follows an identity from the day it is created, through job changes and reviews, to the day it is removed, and covers how people and systems prove who they are. Topic 3.2 covers the rules that limit what an identity can do once it is in: least privilege, separation of duties and the main access control models. As an entry-level practitioner, you will often run these processes, notice when they break and report gaps to the right owner.",
+  "overview": "This domain is about making sure every person and system that touches an organization's data is known, proven and limited to what it needs. Topic 3.1 follows an identity from creation, through job changes and reviews, to removal, and covers how people, systems and outside users prove who they are. Topic 3.2 covers the rules that limit what an identity can do: least privilege, separation of duties and the access control models. As an entry-level practitioner, you run these processes, notice when they break and raise gaps with the right owner.",
   "analogy": "Think of a hotel. The front desk checks a guest's ID before handing over a key card, and the card opens only that guest's room and the gym. Staff cards open more doors, but the master card is kept in the safe and signed out. When a guest changes rooms, the old card stops working; at checkout it is canceled. The delivery robot gets its own card that opens only the service lift, and each night someone checks which cards are still active.",
   "parts": [
     {
       "part": "A",
-      "name": "Identity Life Cycle Management",
+      "name": "Understand identity life cycle management",
       "topic_ids": [
         "3.1"
       ]
     },
     {
       "part": "B",
-      "name": "Logical Access Controls",
+      "name": "Understand logical access controls",
       "topic_ids": [
         "3.2"
       ]
@@ -24,13 +24,13 @@
   "topics": [
     {
       "topic_id": "3.1",
-      "topic_name": "Identity Life Cycle Management",
-      "overview": "The identity life cycle is the path every account follows: a role is defined, the account is created with approved access, access is adjusted and checked as duties change, and the account is removed when no longer needed. This topic also covers how people and systems prove who they are, and the frameworks and tools that run the cycle at scale.",
+      "topic_name": "Understand identity life cycle management",
+      "overview": "The identity life cycle is the path every account follows: a role is defined, the account is created with approved access, access changes and is checked as duties change, and the account is removed when no longer needed. This topic also covers how people and systems prove who they are, sessions, outside users, and the frameworks and tools that run the cycle.",
       "can_do": [
         "Put joiner, mover and leaver tasks in the right order, including removing old access when someone changes jobs",
-        "Tell true multi-factor authentication from two checks of the same factor, and name phishing-resistant options",
-        "Explain what an access review checks, who should sign it off and what happens to access nobody confirms",
-        "Manage service accounts, bots and AI agents through the same life cycle as people"
+        "Tell true multifactor authentication from two checks of the same factor, and name phishing-resistant options",
+        "Explain what an access review checks, who signs it off and what happens to access nobody confirms",
+        "Manage service accounts, bots, AI agents and outside users through the same life cycle as staff"
       ],
       "subtopics": [
         {
@@ -38,13 +38,12 @@
           "name": "Identities, Accounts and the Life Cycle",
           "legacy_ids": [],
           "definition": "An identity represents one person or system; accounts are its logins on specific systems. The identity life cycle manages both, from creation to removal.",
-          "why_it_matters": "Access can only be controlled and traced when every account belongs to a known identity with an owner. Orphaned, shared and forgotten accounts are easy doors for attackers and leave nobody accountable.",
+          "why_it_matters": "Access can only be controlled and traced when every account belongs to a known identity with an owner. Orphaned and shared accounts give attackers easy doors.",
           "how_it_works": [
-            "Identification is the claim, such as a username; authentication proves the claim; authorization then decides what the identity may do.",
+            "Identification is the claim, such as a username; authentication proves it; authorization sets what it may do.",
             "Each person gets one unique identity, so every logged action traces back to someone.",
-            "The joiner, mover and leaver stages create access, adjust it when duties change and remove it at exit.",
-            "Access reviews run alongside the whole cycle, confirming each account and right is still needed.",
-            "A trusted source, usually the human resources (HR) system, triggers each stage so changes are not missed."
+            "Joiner, mover and leaver stages create, adjust and remove access, while reviews run alongside.",
+            "A trusted record, usually from human resources (HR), triggers each stage."
           ],
           "types": [
             {
@@ -53,26 +52,26 @@
             },
             {
               "term": "Privileged account",
-              "meaning": "Administrator or root rights that can change systems, security settings or other users' access"
+              "meaning": "Administrator rights that can change systems, security settings or other users' access"
             },
             {
               "term": "Service account",
-              "meaning": "Used by an application or process rather than a person"
+              "meaning": "Used by an application or process, not a person (see 3.1.12)"
             },
             {
               "term": "Shared or generic account",
-              "meaning": "One login used by several people; it hides who acted, so avoid it"
+              "meaning": "One login for several people; it hides who acted, so avoid it"
             },
             {
               "term": "Guest or temporary account",
-              "meaning": "Short-term access for a visitor, contractor or project, with an end date"
+              "meaning": "Short-term access for an outsider or a project, with an end date (see 3.1.15)"
             }
           ],
           "illustration": {
             "svg": "<svg viewBox='0 0 470 132' xmlns='http://www.w3.org/2000/svg' role='img' aria-label='The identity life cycle: joiner creates access, mover adjusts it, leaver removes it, and an access review runs under all three stages'><text x='85' y='12' text-anchor='middle' font-family='JetBrains Mono, monospace' font-size='7.5' font-weight='700' fill='var(--accent-fill)' letter-spacing='0.08em'>CREATE</text><rect x='20' y='20' width='130' height='44' rx='4' fill='var(--accent-fill)'/><text x='85' y='46' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='700' fill='#ffffff'>Joiner</text><text x='85' y='80' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='600' fill='var(--text2)'>Approved role only</text><text x='235' y='12' text-anchor='middle' font-family='JetBrains Mono, monospace' font-size='7.5' font-weight='700' fill='var(--accent-fill)' letter-spacing='0.08em'>ADJUST</text><rect x='170' y='20' width='130' height='44' rx='4' fill='var(--accent-fill)'/><text x='235' y='46' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='700' fill='#ffffff'>Mover</text><text x='235' y='80' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='600' fill='var(--text2)'>Add new, remove old</text><text x='385' y='12' text-anchor='middle' font-family='JetBrains Mono, monospace' font-size='7.5' font-weight='700' fill='var(--accent-fill)' letter-spacing='0.08em'>REMOVE</text><rect x='320' y='20' width='130' height='44' rx='4' fill='var(--accent-fill)'/><text x='385' y='46' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='700' fill='#ffffff'>Leaver</text><text x='385' y='80' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='600' fill='var(--text2)'>Disable, revoke, collect</text><line x1='150' y1='42' x2='163' y2='42' stroke='var(--text2)' stroke-width='1.5'/><path d='M163,38 L170,42 L163,46 Z' fill='var(--text2)'/><line x1='300' y1='42' x2='313' y2='42' stroke='var(--text2)' stroke-width='1.5'/><path d='M313,38 L320,42 L313,46 Z' fill='var(--text2)'/><rect x='20' y='96' width='430' height='28' rx='4' fill='none' stroke='var(--accent-fill)' stroke-width='1.5'/><text x='235' y='114' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--accent-fill)'>Access review: is every account and right still needed?</text></svg>",
             "caption": "Each stage is triggered by a trusted record, such as an HR start, transfer or exit. Reviews run under the whole cycle to catch anything a stage missed."
           },
-          "example": "At a regional bus company, a new dispatcher, Sam, starts on Monday. The HR start record creates Sam's account with the dispatcher role. A year later Sam moves to payroll and the dispatch rights are removed; when Sam leaves, the exit record disables the account that day. Each month Lee, a junior analyst, matches the account list to HR records and reports accounts with no current owner to the IAM team.",
+          "example": "At a bus company, an HR start record creates an account for Sam, a new dispatcher. When Sam moves to payroll, the dispatch rights go; when Sam leaves, the account is disabled that day. Each month Lee, a junior analyst, matches accounts to HR records and logs any ownerless account in the access team's queue.",
           "audit_focus": {
             "review": [
               "Match the active account list against current HR records",
@@ -82,25 +81,21 @@
               "Directory export showing each account's owner and last sign-in",
               "HR joiner, mover and leaver reports for the same period"
             ],
-            "recommend": "Report orphaned or ownerless accounts to the IAM team and the system owner instead of deleting them yourself.",
-            "decides": "The system owner decides whether an unowned account is kept or removed"
+            "recommend": "Report ownerless accounts to the access management team and system owner; do not delete them yourself.",
+            "decides": "The system owner keeps or removes an unowned account"
           },
-          "isaca_rule": "Every account needs one identity and one accountable owner. When a trusted record, not someone's memory, triggers each stage, access stays accurate. Treat any account nobody can explain as a risk to report.",
+          "isaca_rule": "Every account needs one identity, one accountable owner and a trusted trigger for each stage. Report any account nobody can explain.",
           "exam_traps": [
             {
               "trap": "Typing a username proves who someone is.",
-              "why": "A username is only identification, a claim. Proof comes from authentication, such as a password plus a second factor."
+              "why": "A username is only a claim. Proof comes from authentication, such as a password plus a second factor."
             },
             {
-              "trap": "A shared team login is fine when everyone on the team needs the same access.",
-              "why": "Shared logins hide who did what. Give each person their own account with the same role instead."
+              "trap": "A shared team login is fine when everyone needs the same access.",
+              "why": "Shared logins hide who did what. Give each person their own account with the same role."
             }
           ],
           "key_terms": [
-            {
-              "term": "Identification",
-              "definition": "Claiming an identity, for example by typing a username, before any proof is checked."
-            },
             {
               "term": "Orphaned account",
               "definition": "An active account whose owner has left or cannot be found."
@@ -117,50 +112,45 @@
           "name": "Defining Roles and Entitlements",
           "legacy_ids": [],
           "definition": "Defining roles means grouping the access a job needs into a named role, so people get a standard, approved set of entitlements instead of one-off grants.",
-          "why_it_matters": "Clear roles make provisioning fast and consistent and make reviews possible. Without them, access gets copied from a coworker and people quietly collect rights they never needed.",
+          "why_it_matters": "Clear roles make provisioning consistent and reviews possible. Without them, access is copied from coworkers and people collect rights they never needed.",
           "how_it_works": [
-            "Start from job duties: list the tasks a role performs, then the systems and permissions each task needs.",
-            "The business or data owner approves what each role contains; IT builds the role in the systems.",
-            "Keep roles broad enough to manage but narrow enough for least privilege.",
-            "Check each role for separation of duties conflicts before it is approved.",
-            "Handle one person's extra need through a time-limited request, not by widening the role for everyone."
+            "List the job's tasks, then the systems and permissions each task needs.",
+            "The business or data owner approves the role's contents; IT builds it.",
+            "Check each role for separation of duties conflicts before approval (see 3.2.3).",
+            "Meet one person's extra need with a time-limited request, not a wider role."
           ],
-          "example": "A city library defines a circulation clerk role: check items in and out and view borrower contact details, but not waive fines. The branch manager approves it. When a supervisor asks to give one clerk fine-waiving rights for a week, Priya, a junior IAM analyst, opens a temporary access request with an end date and routes it to the branch manager instead of editing the role.",
+          "example": "A city library defines a circulation clerk role: check items in and out and view borrower details, but not waive fines. When a supervisor asks to let one clerk waive fines for a week, Priya, a junior access administrator, opens a temporary request with an end date for the branch manager to approve.",
           "audit_focus": {
             "review": [
-              "Trace each permission in a role back to a task it supports",
-              "Use time-limited requests with end dates for one-off needs"
+              "Trace each permission in a role to a task",
+              "Confirm one-off grants have approval and an end date"
             ],
             "evidence": [
               "Role catalog listing each role, its permissions and its owner",
               "Approval records showing who signed off each role change"
             ],
-            "recommend": "Raise any role that mixes conflicting duties with the role owner and the security team before anyone is assigned it.",
-            "decides": "The role's business owner signs off its contents"
+            "recommend": "Raise roles that mix conflicting duties with the role owner before anyone is assigned them.",
+            "decides": "The accountable manager for that job function signs it off"
           },
-          "isaca_rule": "Roles come from duties, not from copying a coworker. The owner of the data approves the role, and IT carries it out. One person's unusual need is a time-limited exception, not a reason to widen the role.",
+          "isaca_rule": "Roles come from duties, not a coworker's access. The data owner approves; IT builds. An unusual need gets a time-limited exception.",
           "exam_traps": [
             {
               "trap": "Copy a coworker's access for a new hire on the same team.",
-              "why": "The coworker may hold leftover rights from past jobs. Starting from the approved role gives only what the job needs."
+              "why": "The coworker may hold leftover rights from past jobs. The approved role gives only what the job needs."
             },
             {
-              "trap": "IT should decide what each role can access, because IT manages the systems.",
-              "why": "IT builds and runs roles, but the business or data owner knows what the work needs and is accountable for approving it."
+              "trap": "IT should decide what each role contains, because IT runs the systems.",
+              "why": "IT builds roles, but the business or data owner knows the work and is accountable for approving it."
             }
           ],
           "key_terms": [
             {
               "term": "Entitlement",
-              "definition": "A single permission or access right, such as read access to a folder or the right to approve payments."
+              "definition": "A single permission, such as reading a folder or approving payments."
             },
             {
               "term": "Role explosion",
-              "definition": "Having so many narrow or custom roles that nobody can manage or review them."
-            },
-            {
-              "term": "Birthright access",
-              "definition": "Basic access every staff member gets on day one, such as email and the staff intranet."
+              "definition": "So many narrow or custom roles that nobody can manage or review them."
             }
           ]
         },
@@ -168,51 +158,46 @@
           "id": "3.1.3",
           "name": "Provisioning and Identity Proofing",
           "legacy_ids": [],
-          "definition": "Provisioning creates an account and grants its approved access. Identity proofing first checks that the person is who they claim to be before any credentials are issued.",
-          "why_it_matters": "Getting access right on day one is far easier than fixing it later. Weak proofing lets an impostor be enrolled as a real employee, holding legitimate credentials from the start.",
+          "definition": "Provisioning creates an account and grants its approved access. Identity proofing first checks that the person is who they claim to be, before credentials are issued.",
+          "why_it_matters": "Getting access right on day one is easier than fixing it later. Weak proofing lets an impostor be enrolled with legitimate credentials.",
           "how_it_works": [
-            "A request comes from a trusted source, such as an HR start record, not an informal email or chat message.",
-            "The manager or data owner approves the access, and the approver should not be the person who builds it.",
-            "Identity proofing checks evidence, such as photo ID matched to the person, with stronger checks for riskier access.",
-            "First credentials go through a channel already on file, work only once and must be replaced at first sign-in.",
-            "Automated provisioning from the HR system to the directory reduces errors and leaves a clear record."
+            "Requests come from a trusted source, such as a human resources (HR) start record, not a chat message.",
+            "The manager or data owner approves; the approver should not also build the account.",
+            "Proofing checks evidence, such as photo ID, more strictly for riskier access.",
+            "First credentials go to a channel on file and are changed at first sign-in."
           ],
-          "example": "A logistics firm hires a remote driver coordinator, Jordan. Before activating the account, Mei, the help desk technician, holds a video call in which Jordan shows a photo ID that Mei compares with the HR file. The account is created from the HR record with the coordinator role only. When Jordan asks for the setup link at a personal email address, Mei sends it to the work phone on file instead.",
+          "example": "A logistics firm hires a remote coordinator, Jordan. On a video call, Mei, the help desk technician, compares Jordan's photo ID with the HR file. When Jordan asks for the setup link at a personal email address, Mei pauses, checks the onboarding procedure and sends it to the work phone on file.",
           "audit_focus": {
             "review": [
-              "Confirm the request matches an HR record before creating anything",
-              "Grant only the approved role, then confirm with the requester"
+              "Match each new account to an HR record",
+              "Compare granted access with the approved role"
             ],
             "evidence": [
               "The access request ticket with the owner's approval",
               "Provisioning log showing who created the account and when"
             ],
-            "recommend": "Send unusual requests, such as urgent access with no HR record, to your supervisor or the IAM team before acting.",
+            "recommend": "Send urgent requests with no HR record to your supervisor or the access management team.",
             "decides": "The hiring manager signs off a newcomer's starting access"
           },
-          "isaca_rule": "No record, no account. Access starts from an approved request and the smallest role that fits. Prove the person before handing over credentials, and send those credentials through a channel already on file.",
+          "isaca_rule": "No record, no account. Prove the person, start with the smallest fitting role and send credentials only to a channel on file.",
           "exam_traps": [
             {
-              "trap": "An urgent request from a senior manager is a good reason to skip approval.",
-              "why": "Urgency and authority are classic social engineering pressure. Follow the process and escalate; a real manager can approve properly."
+              "trap": "An urgent request from a senior manager justifies skipping approval.",
+              "why": "Urgency and authority are classic social engineering pressure. Follow the process; a real manager can approve properly."
             },
             {
               "trap": "Give new staff broad access first and trim it later.",
-              "why": "Later rarely comes, and the extra access is live from day one. Start small and add access through requests."
+              "why": "Later rarely comes, and the extra access is live from day one."
             }
           ],
           "key_terms": [
             {
               "term": "Identity assurance level (IAL)",
-              "definition": "How strongly a claimed identity was checked at enrollment; NIST SP 800-63A-4 defines three levels."
+              "definition": "How strongly an identity was checked at enrollment; the National Institute of Standards and Technology (NIST) defines three levels."
             },
             {
               "term": "Enrollment",
-              "definition": "Linking a verified person to their first authenticators, such as a password and a security key."
-            },
-            {
-              "term": "Provisioning workflow",
-              "definition": "The automated steps that turn an approved request into accounts and rights across systems."
+              "definition": "Linking a verified person to their first authenticators."
             }
           ]
         },
@@ -220,14 +205,13 @@
           "id": "3.1.4",
           "name": "Authentication Factors and MFA",
           "legacy_ids": [],
-          "definition": "Authentication factors are categories of proof: something you know, something you have and something you are. Multi-factor authentication (MFA) combines at least two different categories.",
-          "why_it_matters": "One factor can fail on its own, and stolen passwords are common. Requiring a second, different category means an attacker must steal two unlike things, which is much harder.",
+          "definition": "Authentication factors are categories of proof: something you know, something you have and something you are. Multifactor authentication (MFA) combines at least two different categories.",
+          "why_it_matters": "Stolen passwords are common. A second factor from a different category means an attacker must steal two unlike things.",
           "how_it_works": [
-            "MFA needs factors from different categories; a password plus a security question is still single-factor.",
-            "Two-step checks are only MFA when the steps come from different categories.",
-            "Some texts add location or behavior as factors; NIST treats them as supporting signals, not separate factors.",
-            "Biometric readers can wrongly accept an impostor or wrongly reject a real user, so both error rates matter.",
-            "A device factor is often unlocked by a PIN or fingerprint, which adds a second category on the device."
+            "Count categories, not steps: a password plus a PIN or security question is still one factor.",
+            "Two-step verification is MFA only when the steps use different categories.",
+            "Biometric readers can accept an impostor or reject a real user, and a copied trait cannot be changed.",
+            "Authenticators have a life cycle: enroll after proofing, revoke lost ones, enroll replacements."
           ],
           "types": [
             {
@@ -243,42 +227,38 @@
               "meaning": "A body trait: fingerprint, face, iris or voice"
             }
           ],
-          "example": "A dental clinic's new staff portal asks for a password and then the name of each user's first pet. The practice manager calls this MFA. Alex, the clinic's IT assistant, points out that both are things you know, so it is one factor used twice. Alex writes up a code from an authenticator app or a security key as the second step and sends it to the practice manager.",
+          "example": "Alex, a dental hygienist, loses the phone holding their authenticator app and asks for password-only sign-in 'just for today'. Following the lost-device procedure, Sam, the IT assistant, verifies Alex with the practice manager by a known number, removes the lost phone from the account and enrolls a new authenticator.",
           "audit_focus": {
             "review": [
-              "Name the category of each sign-in step before calling it MFA",
-              "Test that the second factor is required, not just offered"
+              "Name each sign-in step's category before calling it MFA",
+              "Confirm lost or replaced authenticators are removed from accounts"
             ],
             "evidence": [
-              "Sign-in policy settings showing which methods each group must use",
+              "Authentication standard listing the methods each group must use",
               "Sign-in logs showing which method each user actually used"
             ],
             "recommend": "Report systems that accept a password alone for remote or administrator access to the security team.",
-            "decides": "The system owner sets the required methods, within security policy"
+            "decides": "The system owner applies the methods the authentication standard requires"
           },
-          "isaca_rule": "Count categories, not steps. MFA means at least two of know, have and are. Two checks of the same kind, however many prompts, are still one factor.",
+          "isaca_rule": "MFA means two different categories of know, have and are. When an authenticator is lost, verify and replace it; never drop to one factor.",
           "exam_traps": [
             {
               "trap": "A password and a PIN together count as MFA.",
-              "why": "Both are things you know. MFA needs a different category, such as a phone app (have) or a fingerprint (are)."
+              "why": "Both are things you know. MFA needs another category, such as a phone app (have) or a fingerprint (are)."
             },
             {
-              "trap": "Biometrics are a perfect factor because no two fingerprints match.",
-              "why": "Readers make errors both ways, and a copied biometric cannot be changed like a password. It works best combined with another factor."
+              "trap": "A user who loses their phone can sign in with a password alone until a new one arrives.",
+              "why": "That switches MFA off just when an attacker may hold the device. Verify, revoke and re-enroll instead."
             }
           ],
           "key_terms": [
             {
-              "term": "Two-step verification",
-              "definition": "Any sign-in with two checks in sequence; it is MFA only when the checks use different factor categories."
-            },
-            {
               "term": "False acceptance rate (FAR)",
-              "definition": "How often a biometric reader wrongly lets in an impostor; the security failure."
+              "definition": "How often a biometric reader lets in an impostor; the security failure."
             },
             {
               "term": "False rejection rate (FRR)",
-              "definition": "How often a biometric reader wrongly turns away the genuine user; the convenience failure."
+              "definition": "How often a biometric reader turns away the real user; the convenience failure."
             }
           ],
           "memory_aid": "Know, have, are: pick two different ones."
@@ -287,15 +267,13 @@
           "id": "3.1.5",
           "name": "Phishing-Resistant MFA and Passkeys",
           "legacy_ids": [],
-          "definition": "Phishing-resistant authentication ties each login to the genuine website or app, so a fake site cannot capture and reuse it. FIDO2 security keys and passkeys are common examples.",
-          "why_it_matters": "Attackers relay one-time codes through fake login pages in real time and flood users with push prompts. MFA that a person can be tricked into handing over only slows attackers down.",
+          "definition": "Phishing-resistant authentication ties each sign-in to the genuine site, so a fake site cannot capture and reuse it. Passkeys and Fast Identity Online 2 (FIDO2) security keys are examples.",
+          "why_it_matters": "Codes from multifactor authentication (MFA) can be relayed through fake login pages, and push prompts repeated until a tired user approves.",
           "how_it_works": [
-            "Passkeys and FIDO2 keys use a key pair; the private key stays with the user and signs a challenge from the real site.",
-            "The browser and authenticator check the site's address, so a look-alike domain gets nothing it can reuse.",
-            "Codes sent by text or shown in an app can be typed into a fake page and replayed by the attacker.",
-            "Repeated push prompts can wear a user down until they approve; number matching reduces this.",
-            "NIST SP 800-63B-4 lists text and voice codes as restricted and requires phishing-resistant options at higher assurance levels.",
-            "Synced passkeys copy across a user's devices; device-bound keys never leave one device."
+            "A passkey's private key stays on the device and signs a challenge from the real site.",
+            "The browser checks the site's address, so a look-alike domain gets nothing it can reuse.",
+            "Text and app codes can be typed into a fake page and replayed.",
+            "Synced passkeys copy across a user's devices; device-bound security keys never leave one."
           ],
           "compare": {
             "columns": [
@@ -323,102 +301,100 @@
               {
                 "label": "Main weakness",
                 "cells": [
-                  "SIM swap and interception",
+                  "Subscriber identity module (SIM) swap: the number is moved to an attacker's phone",
                   "Repeated prompts until someone taps approve",
                   "A lost device needs a tested recovery method"
                 ]
               }
             ]
           },
-          "example": "At a credit union, a teller, Ravi, gets five sign-in prompts on their phone at 2 a.m. without trying to log in. Half asleep, Ravi almost taps approve. Instead, Ravi denies each prompt and reports it to the security team straight away, so the team can reset the password that someone has clearly stolen.",
+          "example": "Ravi, a credit union teller, gets five sign-in prompts at 2 a.m. without trying to log in. Half asleep, Ravi almost taps approve, but denies each one and reports it to the security team at once, so the team can reset the stolen password.",
           "audit_focus": {
             "review": [
-              "Deny any sign-in prompt you did not start, then report it",
-              "Register a backup authenticator so a lost key does not block work"
+              "Look for bursts of prompts users did not start",
+              "Confirm administrators use passkeys or security keys, not text codes"
             ],
             "evidence": [
-              "Sign-in logs showing bursts of denied or unexpected push prompts",
-              "List of administrator accounts still using text-message codes"
+              "Alerts for repeated denied or unexpected push prompts",
+              "Authenticator report showing each user's methods and backups"
             ],
-            "recommend": "Report unexpected MFA prompts to the security team at once, because they mean the password is probably known.",
-            "decides": "Security leaders set which MFA methods each group of users must use"
+            "recommend": "Report unexpected MFA prompts to the security team at once; the password is probably known.",
+            "decides": "Security management sets, in the authentication standard, which MFA methods each group uses"
           },
-          "isaca_rule": "Not all MFA is equal: any code or approval a person can be tricked into giving away can be phished. For administrators and other high-risk users, prefer site-bound methods such as passkeys.",
+          "isaca_rule": "Not all MFA is equal. For administrators and other high-risk users, prefer site-bound methods such as passkeys, which a fake page cannot reuse.",
           "exam_traps": [
             {
               "trap": "Any MFA stops phishing.",
-              "why": "Codes and push approvals can be relayed through a fake page or approved by a tired user. Only site-bound methods such as passkeys resist that relay."
+              "why": "Codes and push approvals can be relayed or approved by a tired user. Only site-bound methods resist that relay."
             },
             {
-              "trap": "An unexpected MFA prompt is just a system glitch.",
-              "why": "A prompt you did not trigger usually means someone has your password. Deny it and report it so the password can be reset."
+              "trap": "An unexpected MFA prompt is just a glitch.",
+              "why": "A prompt you did not start usually means someone has your password. Deny it and report it."
             }
           ],
           "key_terms": [
             {
               "term": "FIDO2",
-              "definition": "An open standard (WebAuthn plus CTAP) for signing in with public-key cryptography instead of a shared secret."
+              "definition": "An open standard for signing in with a key pair instead of a shared secret; passkeys use it."
             },
             {
               "term": "MFA fatigue",
-              "definition": "An attack that sends push prompts again and again until the user approves one to make them stop."
+              "definition": "Sending push prompts again and again until the user approves one to make them stop."
             },
             {
               "term": "Number matching",
-              "definition": "A push setting where the user types the number shown on the login screen, so a blind approval fails."
+              "definition": "The user types a number shown on the login screen, so a blind approval fails."
             }
           ]
         },
         {
           "id": "3.1.6",
-          "name": "Passwords and Modern Password Policy",
+          "name": "Passwords and Modern Password Standards",
           "legacy_ids": [],
-          "definition": "A password policy sets how passwords are created, checked and stored. Current NIST guidance favors length and breach screening over character-mix rules and forced scheduled changes.",
-          "why_it_matters": "Old rules pushed people toward predictable patterns like Summer2026! and sticky notes. Modern rules make passwords harder to guess and easier to live with, and the password is often still the first factor.",
+          "definition": "A password standard sets the rules for creating, checking and storing passwords. The National Institute of Standards and Technology (NIST) favors length and breach screening over character mixes.",
+          "why_it_matters": "Old rules pushed people toward patterns like Summer2026! and sticky notes. The policy says passwords must be strong; the standard sets the exact numbers.",
           "how_it_works": [
-            "NIST SP 800-63B-4 sets at least 15 characters when a password is the only factor, and at least 8 when it is part of MFA.",
-            "Allow long passphrases of at least 64 characters, with spaces and pasting, so password managers work.",
-            "Check new passwords against lists of breached and common passwords, and reject any match.",
-            "Do not demand character mixes or calendar-based changes; require a change when there is evidence of compromise.",
-            "Limit failed attempts, and do not use password hints or security questions.",
-            "Store passwords only as salted, deliberately slow hashes, never as plain text."
+            "At least 15 characters when a password is the only factor, and 8 alongside another factor.",
+            "Allow at least 64 characters and pasting, so password managers work (habits: see 2.3.6).",
+            "Screen new passwords against a blocklist; do not demand character mixes or scheduled changes.",
+            "Force a change on evidence of compromise, limit failed attempts and store only salted hashes."
           ],
-          "example": "A school district's policy still demands eight characters, a symbol and a change every 60 days. Help desk calls spike after each change, and many new passwords just bump a number at the end. Tomas, a junior analyst, compares the policy with NIST SP 800-63B-4 and writes a summary for the IT manager: longer passphrases, breach screening, no scheduled changes and MFA for staff.",
+          "example": "A school district's password standard still demands eight characters, a symbol and a change every 60 days. Tomas, a junior analyst, compares it with NIST's current guidance and sends the standard's owner a summary: longer passphrases, breach screening and no scheduled changes.",
           "audit_focus": {
             "review": [
-              "Compare the written policy with current NIST password guidance",
-              "Force a reset at once when there is evidence of a breach"
+              "Compare live directory settings with each rule in the standard",
+              "Check breach-screening alerts for passwords the security team must reset"
             ],
             "evidence": [
               "Directory password settings for length, lockout and expiry",
               "Breached-password screening results for newly set passwords"
             ],
-            "recommend": "Send suggested policy changes to the policy owner; do not change live password settings on your own.",
-            "decides": "The policy owner, such as the security manager, approves password rule changes"
+            "recommend": "Send suggested changes to the owner of the password standard; do not change live password settings yourself.",
+            "decides": "Security management approves the password standard, within policy senior management approved"
           },
-          "isaca_rule": "Length beats complexity, and screening beats expiry. Change a password when there is a reason, such as a breach, not because the calendar says so. A strong password is still one factor, so pair it with MFA.",
+          "isaca_rule": "Length beats complexity, and screening beats expiry: change a password because of a breach, not the calendar.",
           "exam_traps": [
             {
-              "trap": "Requiring a password change every 90 days keeps accounts safe.",
-              "why": "Scheduled changes lead to small, predictable edits. Current NIST guidance calls for a change on evidence of compromise, plus screening against breached lists."
+              "trap": "Store passwords encrypted so the help desk can recover forgotten ones.",
+              "why": "Anything that can be decrypted can be stolen and read. Store salted, slow hashes; reset through verified recovery."
             },
             {
-              "trap": "More character rules always make stronger passwords.",
-              "why": "Composition rules produce patterns like Password1!. Length and blocking known-breached passwords add far more real strength."
+              "trap": "Security questions are a safe way to let users reset their own passwords.",
+              "why": "Answers are often public or guessable, and NIST's guidelines say not to use them. Use another authenticator."
             }
           ],
           "key_terms": [
             {
-              "term": "Passphrase",
-              "definition": "A long password made of several words, easier to remember and harder to guess than a short complex one."
+              "term": "Salted hash",
+              "definition": "A one-way hash mixed with a random value, so identical passwords are stored differently."
             },
             {
-              "term": "Password manager",
-              "definition": "An app that creates, stores and fills a unique strong password for every site."
+              "term": "Throttling",
+              "definition": "Slowing or locking sign-in after failed attempts, so guessing takes too long."
             },
             {
-              "term": "Credential stuffing",
-              "definition": "Trying username and password pairs leaked from one site on other sites; it works when people reuse passwords."
+              "term": "Blocklist",
+              "definition": "Common, expected and breached passwords that new passwords are checked against."
             }
           ]
         },
@@ -426,18 +402,17 @@
           "id": "3.1.7",
           "name": "Single Sign-On and Federation",
           "legacy_ids": [],
-          "definition": "Single sign-on (SSO) lets a user sign in once to an identity provider and reach many applications; federation extends that trust to applications run by other organizations.",
-          "why_it_matters": "SSO means fewer passwords to reuse and one place to turn access off. It also concentrates risk: one stolen SSO login, or one identity provider outage, affects every connected application.",
+          "definition": "Single sign-on (SSO) lets a user sign in once at an identity provider and reach many applications; federation extends that trust to applications run by other organizations.",
+          "why_it_matters": "SSO means fewer passwords and one off switch, but it concentrates risk: one stolen login or outage affects every app.",
           "how_it_works": [
-            "The identity provider authenticates the user, then sends the application a signed statement that the application trusts.",
-            "The application never sees the user's password; it relies on the identity provider's statement.",
-            "Strong MFA at the identity provider protects every connected application at once.",
-            "Federation lets a partner's or cloud provider's application accept sign-ins from your identity provider.",
-            "Disabling a user at the identity provider stops new sign-ins, but open application sessions may last until revoked or expired."
+            "The identity provider checks the user and vouches to the app, which never sees the password.",
+            "Strong multifactor authentication (MFA) at the identity provider protects every connected app.",
+            "Federation lets a partner's or cloud provider's app accept your sign-ins (see 3.1.15).",
+            "Disabling a user stops new sign-ins, but open sessions may last until revoked."
           ],
           "compare": {
             "columns": [
-              "SAML",
+              "Security Assertion Markup Language (SAML)",
               "OpenID Connect (OIDC)",
               "OAuth 2.0"
             ],
@@ -454,56 +429,52 @@
                 "label": "Proves who the user is?",
                 "cells": [
                   "Yes",
-                  "Yes, by adding an identity layer to OAuth 2.0",
+                  "Yes; it adds identity to OAuth 2.0",
                   "No; it grants limited access, not identity"
                 ]
               },
               {
                 "label": "What it sends",
                 "cells": [
-                  "Signed assertions",
-                  "ID tokens plus access tokens",
-                  "Scoped access tokens"
+                  "A signed note saying who you are",
+                  "A signed ID card plus a pass to reach data",
+                  "Only a limited pass to reach data, no proof of who you are"
                 ]
               }
             ]
           },
-          "example": "A charity uses SSO for email, file sharing and its donor database. A volunteer coordinator, Nia, leaves on Friday. Chris, the IT volunteer, disables Nia's account at the identity provider, then checks the donor database and finds Nia still signed in from a home laptop. Chris ends that session from the database's admin console and notes it on the leaver ticket.",
+          "example": "A charity uses SSO for email, files and its donor database. When Nia, a volunteer coordinator, leaves, Chris, the IT volunteer, disables Nia's account at the identity provider as the leaver checklist directs, then finds Nia still signed in to the donor database from home, ends that session and notes it on the ticket.",
           "audit_focus": {
             "review": [
-              "Confirm MFA is enforced at the identity provider for every user",
-              "End open application sessions when an account is disabled"
+              "Confirm the identity provider enforces MFA for every user",
+              "Confirm application sessions end when an account is disabled"
             ],
             "evidence": [
               "Identity provider sign-in logs for failed and unusual sign-ins",
               "Applications that still allow a local password beside SSO"
             ],
-            "recommend": "Report applications that bypass SSO with local logins to the application owner and the IAM team.",
-            "decides": "Application owners decide, with the security team, which applications must use SSO"
+            "recommend": "Report applications with local logins that bypass SSO to the application owner.",
+            "decides": "Application owners and the security team decide which apps use SSO"
           },
-          "isaca_rule": "SSO moves the front door to one place, so guard that door hardest: strong MFA, monitoring and a plan for outages. Turning off the SSO account starts removal; ending sessions and tokens finishes it.",
+          "isaca_rule": "Guard the identity provider hardest, with strong MFA and monitoring. Disabling the account starts removal; ending sessions finishes it.",
           "exam_traps": [
             {
-              "trap": "SSO is less secure than separate logins because one password opens everything.",
-              "why": "SSO concentrates risk, but with strong MFA at the identity provider it usually beats many reused passwords. The answer is protecting the identity provider, not avoiding SSO."
+              "trap": "SSO is less secure because one password opens everything.",
+              "why": "SSO concentrates risk, but with strong MFA it usually beats many reused passwords. Protect the identity provider."
             },
             {
-              "trap": "OAuth 2.0 is a login protocol that proves who the user is.",
-              "why": "OAuth 2.0 grants an app limited access to resources. Proof of identity comes from OpenID Connect, built on top of it."
+              "trap": "OAuth 2.0 proves who the user is.",
+              "why": "OAuth 2.0 grants an app limited access. Proof of identity comes from OpenID Connect, built on top of it."
             }
           ],
           "key_terms": [
             {
               "term": "Identity provider (IdP)",
-              "definition": "The trusted service that authenticates users and vouches for them to applications."
+              "definition": "The trusted service that authenticates users and vouches for them to apps."
             },
             {
               "term": "Relying party",
-              "definition": "The application that accepts the identity provider's statement instead of checking the password itself; also called a service provider."
-            },
-            {
-              "term": "Federation",
-              "definition": "An agreement letting separate organizations or systems trust each other's sign-ins."
+              "definition": "The app that accepts the identity provider's statement; also called a service provider."
             }
           ]
         },
@@ -512,50 +483,45 @@
           "name": "Adaptive Authentication and AI Behavior Analysis",
           "legacy_ids": [],
           "definition": "Adaptive, or risk-based, authentication adjusts sign-in checks to the risk of each attempt, often using AI models that learn each user's normal behavior and flag unusual activity.",
-          "why_it_matters": "Fixed rules miss stolen credentials used in a normal-looking way. Behavior analysis can catch an attacker who has the right password, and spares low-risk users extra prompts.",
+          "why_it_matters": "Fixed rules miss stolen credentials used normally. Behavior analysis can catch an attacker who has the right password.",
           "how_it_works": [
-            "The system scores each sign-in using signals such as device, location, time, network and usage patterns.",
-            "Low risk passes quietly, medium risk asks for a stronger factor, and high risk is blocked and sent for review.",
-            "Behavior analytics builds a baseline of normal activity for people, devices and service accounts, then flags departures from it.",
-            "Models make mistakes both ways and drift as habits change, so people must review alerts and tune thresholds.",
-            "Behavior data is personal data: collect only what is needed and tell users how it is used."
+            "Each sign-in is scored on signals such as device, location, time and usage patterns.",
+            "Low risk passes, medium risk asks for a stronger factor, and high risk is blocked for review.",
+            "Models err both ways and drift, so people review alerts and tune thresholds.",
+            "Behavior data is personal data: collect only what is needed and tell users."
           ],
-          "example": "A hospital's sign-in system flags a nurse, Dana, signing in from another country ten minutes after Dana badged into the ward. The AI model blocks the attempt and asks for a security key, which the attacker lacks. Kim, a security operations analyst, sees the alert, confirms with the ward that Dana is on shift and follows the playbook: force a password reset and open an incident ticket.",
+          "example": "A hospital's sign-in system flags Dana, a nurse, signing in from abroad minutes after badging into the ward, and demands a security key. Kim, a security operations analyst, confirms Dana is on shift, opens an incident ticket as the playbook directs and calls the incident response lead, who has the password reset.",
           "audit_focus": {
             "review": [
-              "Triage risk alerts with the playbook, highest scores first",
-              "Record false positives so the model and thresholds can be tuned"
+              "Compare each high-risk alert with facts, such as shift rotas",
+              "Confirm alerts that proved false are recorded for tuning"
             ],
             "evidence": [
               "Risk-scored sign-in events with the signals behind each score",
               "History of alerts marked true or false positive"
             ],
-            "recommend": "Escalate a confirmed account takeover to the incident response team rather than only resetting the password.",
-            "decides": "The security manager approves risk thresholds and what each level triggers"
+            "recommend": "Escalate a confirmed account takeover to the incident response lead, not just a password reset.",
+            "decides": "Security management approves risk thresholds and what each level triggers"
           },
-          "isaca_rule": "AI scoring is a smart extra layer, not a replacement for strong factors or human judgment. Use it to step up checks when risk rises, keep people reviewing its alerts and treat behavior data as personal data.",
+          "isaca_rule": "AI scoring adds a layer; it never replaces strong factors or human judgment.",
           "exam_traps": [
             {
-              "trap": "Once AI behavior analysis is running, MFA is no longer needed.",
-              "why": "Risk scoring decides when to ask for more proof; it still needs strong factors to ask for. Models also miss attacks and raise false alarms."
+              "trap": "With AI behavior analysis running, a second factor is no longer needed.",
+              "why": "Scoring decides when to ask for more proof; it still needs strong factors to ask for."
             },
             {
               "trap": "Every AI risk alert means the account is compromised.",
-              "why": "Travel, new devices and VPNs cause false positives. Check each alert against facts, such as the person's schedule, before acting."
+              "why": "Travel and new devices cause false alarms. Check each alert against facts, such as the person's schedule."
             }
           ],
           "key_terms": [
             {
               "term": "User and entity behavior analytics (UEBA)",
-              "definition": "Tools that learn normal behavior for users, devices and accounts and alert on unusual activity."
+              "definition": "Tools that learn normal behavior for users, devices and accounts and flag unusual activity."
             },
             {
               "term": "Step-up authentication",
               "definition": "Asking for a stronger or extra factor only when a sign-in or action looks risky."
-            },
-            {
-              "term": "Impossible travel",
-              "definition": "Sign-ins from two places too far apart for one person to travel between in the time shown."
             }
           ]
         },
@@ -564,46 +530,45 @@
           "name": "Movers and Privilege Creep",
           "legacy_ids": [],
           "definition": "A mover is a person whose job or duties change. Handling a mover adds the new role's access and removes old access the new role does not need.",
-          "why_it_matters": "Movers are the stage most often missed. People who keep old rights at each move build up privilege creep, which breaks least privilege and can create separation of duties conflicts.",
+          "why_it_matters": "Movers are the stage most often missed. Keeping old rights at each move builds privilege creep and can create separation of duties conflicts.",
           "how_it_works": [
-            "An HR transfer record triggers the mover process, just as a start date triggers provisioning.",
-            "Remove old access at the move, not at the next review; keep it only with approval and an end date.",
-            "Check the combined old and new rights for conflicts, such as raising and approving the same payment.",
-            "The new manager approves new access; the old manager confirms what can be removed.",
-            "Acting and temporary assignments get access that expires automatically."
+            "A human resources (HR) transfer record triggers the mover process.",
+            "Remove old access at the move, not at the next review.",
+            "Check combined old and new rights for conflicts, such as raising and approving one payment.",
+            "The new manager approves new access; the old manager confirms what can go."
           ],
-          "example": "Ana moves from accounts payable to purchasing at a hotel group. Purchasing access is added, but nobody removes Ana's payment approval rights, so Ana can now raise a purchase order and pay it. Jun, an IAM analyst, spots the conflict in the weekly mover report, opens a ticket to remove the old rights and flags the conflict to the finance owner the same day.",
+          "example": "Ana moves from accounts payable to purchasing at a hotel group. Purchasing access is added, but the payment approval rights stay, so Ana can now raise a purchase order and pay it. Jun, an access analyst, spots this in the weekly mover report, opens a removal ticket and asks the finance owner whether any handover access should stay.",
           "audit_focus": {
             "review": [
-              "Compare a mover's old and new rights after each job change",
-              "Set end dates on any old access kept for handover"
+              "Review each mover's rights after the job change",
+              "Look for handover access still active past its end date"
             ],
             "evidence": [
               "HR transfer records matched to access changes in the directory",
               "Users holding rights from more than one role"
             ],
-            "recommend": "Raise conflicting old and new rights with the data owner and the IAM team before the move completes.",
-            "decides": "The data owner decides whether any old access may stay, and for how long"
+            "recommend": "Raise conflicting old and new rights with the data owner before the move completes.",
+            "decides": "The data owner decides whether old access may stay, and how long"
           },
-          "isaca_rule": "A transfer is a leaver and a joiner at once: remove the old, then add the new. Access that is not removed at the move tends to stay forever.",
+          "isaca_rule": "A transfer is a leaver plus a joiner: remove the old access, then add the new.",
           "exam_traps": [
             {
-              "trap": "Movers keep their old access in case their old team needs help.",
-              "why": "That builds privilege creep and can create conflicts. Handover access, if truly needed, is approved separately and expires on a set date."
+              "trap": "Movers keep old access in case their old team needs help.",
+              "why": "That builds privilege creep. Handover access, if truly needed, is approved separately and expires."
             },
             {
-              "trap": "The next access review will catch leftover mover access, so it can wait.",
-              "why": "Reviews are a backstop, often months apart. Removing old access at the move closes the gap the day it opens."
+              "trap": "The next access review will catch leftover mover access.",
+              "why": "Reviews are a backstop, often months apart. Removing access at the move closes the gap the day it opens."
             }
           ],
           "key_terms": [
             {
               "term": "Privilege creep",
-              "definition": "The slow buildup of access as people change jobs and keep rights they no longer need."
+              "definition": "The buildup of access as people change jobs and keep rights they no longer need."
             },
             {
               "term": "Handover access",
-              "definition": "Old-role access kept briefly, with approval and an end date, to finish passing work on."
+              "definition": "Old-role access kept briefly, with approval and an end date, to pass work on."
             }
           ]
         },
@@ -612,13 +577,12 @@
           "name": "Access Reviews and Recertification",
           "legacy_ids": [],
           "definition": "An access review is a regular check, by someone who knows the work, that each account and right is still needed. Recertification is the formal sign-off of that check.",
-          "why_it_matters": "Process gaps happen: a missed mover, an emergency grant never removed, a forgotten test account. Reviews catch what slipped through and give evidence that access is under control.",
+          "why_it_matters": "Gaps happen: a missed mover, an emergency grant never removed, a forgotten test account. Reviews catch what slipped through.",
           "how_it_works": [
-            "The reviewer is the manager or data owner who knows what the work needs, not the person whose access is reviewed.",
-            "Reviews follow a set schedule, and run more often for privileged and sensitive access.",
-            "Each right is confirmed, changed or removed; access nobody confirms is removed, not left in place.",
-            "Service accounts and bot identities are reviewed too, each through its named owner.",
-            "The review ends when every removal is done in the systems, not when the form is signed."
+            "The reviewer is the manager or data owner, never the person whose access is reviewed.",
+            "Reviews run on a schedule, more often for privileged and sensitive access.",
+            "Each right is confirmed or removed; access nobody confirms is removed.",
+            "The review ends when removals are done in the systems, not when the form is signed."
           ],
           "types": [
             {
@@ -634,28 +598,28 @@
               "meaning": "A review triggered by a job change, incident or reorganization rather than the calendar"
             }
           ],
-          "example": "A university's research database owner, Dr. Okafor, receives the quarterly review list and approves all 300 accounts in four minutes. Riley, the junior security analyst running the review, notices the speed and finds 20 accounts belonging to students who have graduated. Riley sends those 20 names back to the owner, asks for a decision on each and tracks the removals until the system shows them gone.",
+          "example": "Dr. Okafor, owner of a university research database, approves all 300 accounts on the quarterly review in four minutes. Riley, the junior analyst running it, notices and finds 20 accounts of graduated students. Riley sends those back for a decision on each, then tracks the removals until the system shows them gone.",
           "audit_focus": {
             "review": [
-              "Route each review line to the manager or owner accountable for it",
-              "Follow every removal decision until the system shows it done"
+              "Confirm each review line reached the accountable owner",
+              "Confirm each removal decision shows as done in the system"
             ],
             "evidence": [
               "Review sign-offs with the time each reviewer spent",
               "Before-and-after account lists proving removals happened"
             ],
-            "recommend": "Report overdue reviews, or reviews approved without reading, to the review owner's manager or the security team.",
+            "recommend": "Report overdue or rubber-stamped reviews to the review owner's manager or the security team.",
             "decides": "The data or system owner certifies who keeps access"
           },
-          "isaca_rule": "A review counts only when the right person reviews, decides on every line and the removals actually happen. If nobody confirms an access right, remove it.",
+          "isaca_rule": "A review counts only when the right person decides every line and the removals happen. Unconfirmed access is removed.",
           "exam_traps": [
             {
               "trap": "Users should review their own access, since they know what they use.",
-              "why": "Self-review is a conflict of interest. The manager or data owner confirms access, because they are accountable for it."
+              "why": "That is a conflict of interest. The accountable manager or data owner confirms access."
             },
             {
               "trap": "The review is complete once the owner signs it.",
-              "why": "Signing is only the decision. The review is complete when every removal is carried out and visible in the system."
+              "why": "Signing is only the decision. It is complete when every removal is done and visible."
             }
           ],
           "key_terms": [
@@ -665,11 +629,7 @@
             },
             {
               "term": "Dormant account",
-              "definition": "An account unused for a set period; CIS Controls v8.1 advises disabling or deleting accounts inactive for 45 days."
-            },
-            {
-              "term": "Recertification campaign",
-              "definition": "One scheduled round of access reviews, sent to many reviewers with a deadline."
+              "definition": "An account unused for a set period; Center for Internet Security (CIS) guidance suggests disabling it after 45 days."
             }
           ]
         },
@@ -678,51 +638,45 @@
           "name": "Deprovisioning Leavers",
           "legacy_ids": [],
           "definition": "Deprovisioning removes an identity's access when it is no longer needed: disabling accounts, revoking credentials and sessions, and collecting devices and badges.",
-          "why_it_matters": "Leftover accounts of former staff, contractors and vendors are a common route for misuse. Prompt removal also protects the former employee from being blamed for actions they did not take.",
+          "why_it_matters": "Accounts left behind by former staff, contractors and vendors are a common route for misuse. Prompt removal also protects former staff from blame.",
           "how_it_works": [
-            "The HR exit record triggers removal; for a hostile exit, access is disabled before or as the person is told.",
-            "Disable the account first and delete it later under the retention policy, so logs and data stay traceable.",
-            "Revoke open sessions, tokens, remote access, certificates and MFA devices, not just the main password.",
-            "Change shared secrets the person knew, such as a shared social media or Wi-Fi password.",
-            "Collect laptops, badges and keys, and hand the person's data and owned service accounts to a new owner.",
-            "Contractors and vendors go through the same steps on their contract end date."
+            "The human resources (HR) exit record triggers removal; for a hostile exit, access is cut as the person is told.",
+            "Disable first and delete later under the retention policy, so logs stay traceable.",
+            "Revoke more than the password: sessions, tokens and remote access.",
+            "Have shared secrets changed, collect devices and badges, and reassign the person's data."
           ],
-          "example": "A marketing agency ends a designer's contract on a Tuesday afternoon. Just before the meeting, Morgan, the IT technician, disables Kai's account and ends active sessions, as the exit checklist requires. After the meeting, Morgan collects Kai's laptop and badge, changes the shared social media password Kai used and records each step on the leaver ticket.",
+          "example": "A marketing agency ends Kai's design contract on a Tuesday afternoon. Just before the meeting, Morgan, the IT technician, disables Kai's account and ends active sessions, as the exit checklist requires. Afterward Morgan collects the laptop and badge, changes the shared social media password as the checklist directs and records each step on the ticket.",
           "audit_focus": {
             "review": [
-              "Work through the exit checklist in order and record each step",
-              "Change shared passwords the leaver knew, even after a friendly exit"
+              "Confirm every exit checklist step is done and recorded",
+              "Confirm shared passwords the leaver knew were changed"
             ],
             "evidence": [
               "Leaver report matched to disabled accounts and the time disabled",
               "Accounts still active after their HR end date"
             ],
-            "recommend": "Report any leaver account found active after the end date to the IAM team and the system owner at once.",
-            "decides": "HR confirms the end date; the data owner decides what happens to the data"
+            "recommend": "Report any leaver account still active after the end date to the system owner at once.",
+            "decides": "HR sets the end date; the data owner decides on the data"
           },
-          "isaca_rule": "Remove access as fast as the risk demands: the same day as a rule, before the conversation for a hostile exit. Disable first and delete later, and cover everything the person could reach, not just one password.",
+          "isaca_rule": "Remove access as fast as the risk demands: the same day as a rule, before the conversation for a hostile exit.",
           "exam_traps": [
             {
               "trap": "Delete the leaver's account immediately to be safe.",
-              "why": "Deleting can lose data and the link between logs and the person. Disable at once, then delete under the retention policy."
+              "why": "Deleting can lose data and break the link between logs and the person. Disable now, delete later."
             },
             {
-              "trap": "Disabling the main account removes all of a leaver's access.",
-              "why": "Open sessions, API keys, remote access certificates and shared passwords can survive. Revoke each one and change shared secrets."
+              "trap": "Disabling the main account removes all access.",
+              "why": "Sessions, access keys, remote access and shared passwords can survive. Revoke each one."
             }
           ],
           "key_terms": [
             {
               "term": "Hostile termination",
-              "definition": "An exit where the person may be upset or likely to cause harm, so access is cut before or as they are told."
-            },
-            {
-              "term": "Retention policy",
-              "definition": "Rules for how long records and accounts are kept before secure deletion."
+              "definition": "An exit where the person may cause harm, so access is cut first."
             },
             {
               "term": "Session revocation",
-              "definition": "Ending a user's active sign-ins so open sessions stop working before they would expire."
+              "definition": "Ending a user's active sign-ins so open sessions stop working at once."
             }
           ]
         },
@@ -730,52 +684,46 @@
           "id": "3.1.12",
           "name": "Non-Human Identities Through the Life Cycle",
           "legacy_ids": [],
-          "definition": "Non-human identities are accounts used by software rather than people, such as service accounts, bots, scripts, API keys and AI agents. They need the same life cycle as people.",
-          "why_it_matters": "Non-human identities often outnumber staff, hold broad rights and never resign on their own. The OWASP Top 10 for non-human identities ranks improper offboarding and leaked secrets as its top two risks.",
+          "definition": "Non-human identities are accounts used by software, such as service accounts, bots, application programming interface (API) keys and AI agents. They need the same life cycle as people.",
+          "why_it_matters": "They often outnumber staff and never resign. The Open Worldwide Application Security Project (OWASP) ranks improper offboarding and leaked secrets as their top risks.",
           "how_it_works": [
-            "Give every non-human identity a named human owner, a stated purpose and an entry in the inventory.",
-            "Give each workload or agent its own identity, never a shared or borrowed staff login.",
-            "Keep secrets in a vault, not in code or chat, and rotate them regularly and after any exposure.",
-            "Prefer short-lived, platform-issued tokens over long-lived keys where possible.",
-            "Review non-human access with its owner, and retire it when the owner leaves or the project ends.",
-            "Give each AI agent its own identity, scoped rights and logs of what it did."
+            "Give each one a named human owner, a purpose and an inventory entry.",
+            "Give each workload or agent its own identity, never a borrowed staff login.",
+            "Keep secrets in a vault, not in code or chat; owners rotate them on schedule and after exposure.",
+            "Retire the identity when its owner leaves or the project ends, unless a new owner takes it on."
           ],
-          "example": "Months after a developer leaves a food delivery startup, its cloud bill spikes. An API key in the developer's old test script, still in a public code repository, is running someone else's workloads. Elif, a junior cloud engineer, revokes the key, reports the exposure to the security team and then starts an inventory of every key, its owner and its expiry date.",
+          "example": "Months after a developer leaves a food delivery startup, an API key in an old test script, still in a public code repository, is running someone else's workloads. Elif, a junior cloud engineer, reports it to the security team, revokes the key when the incident response lead directs, then starts an inventory of keys and owners.",
           "audit_focus": {
             "review": [
-              "Inventory each service account, key and agent with its owner",
-              "Rotate any secret found in code, tickets or chat at once"
+              "Confirm each service account, key and agent has an owner",
+              "Check code, tickets and chat for exposed secrets"
             ],
             "evidence": [
               "Secret-scanning results for code repositories",
-              "Service accounts and keys with no recent use or no owner"
+              "Keys and service accounts with no owner or recent use"
             ],
-            "recommend": "Report exposed keys and ownerless service accounts to the security team and the system owner.",
-            "decides": "The named owner decides whether a non-human identity is still needed"
+            "recommend": "Report exposed keys and ownerless service accounts to the security team for rotation or removal.",
+            "decides": "The named owner decides whether the identity is still needed"
           },
-          "isaca_rule": "Treat every bot, key and agent like a worker with a badge: an owner, a purpose, only the access it needs and an end date. When the owner or the project leaves, the identity leaves too.",
+          "isaca_rule": "Treat every bot, key and agent like a badged worker: an owner, a purpose, least access and an end date.",
           "exam_traps": [
             {
-              "trap": "Service accounts need no review because no person signs in with them.",
-              "why": "They often hold broad, long-lived access that attackers target. Review them with their owner like any account."
+              "trap": "Service accounts need no review because nobody signs in with them.",
+              "why": "They often hold broad, long-lived access that attackers target. Review them with their owner."
             },
             {
-              "trap": "Letting an AI agent use a staff member's own login is simpler and just as safe.",
-              "why": "The agent then gets all the person's rights and its actions look like theirs. Give it its own identity, scoped access and logs."
+              "trap": "An AI agent can safely use a staff member's own login.",
+              "why": "It then gets all the person's rights and its actions look like theirs. Give it its own identity."
             }
           ],
           "key_terms": [
             {
               "term": "API key",
-              "definition": "A secret string a program presents to prove which application is calling; anyone who copies it can use it."
-            },
-            {
-              "term": "Secrets vault",
-              "definition": "A protected store that issues, rotates and logs use of system passwords, keys and tokens."
+              "definition": "A secret string a program presents to prove which application is calling."
             },
             {
               "term": "AI agent",
-              "definition": "Software that uses an AI model to plan and take actions, such as calling tools or APIs, on someone's behalf."
+              "definition": "Software that uses an AI model to plan and take actions, such as calling tools, for someone."
             }
           ]
         },
@@ -783,14 +731,13 @@
           "id": "3.1.13",
           "name": "IAM Frameworks and Tools",
           "legacy_ids": [],
-          "definition": "IAM frameworks are published guides that describe good identity practice; IAM tools are the systems that carry it out, such as directories and identity governance platforms.",
-          "why_it_matters": "Frameworks give a shared, defensible standard, so practice does not rest on one person's opinion. Tools make the life cycle repeatable at scale and keep the records that reviews need.",
+          "definition": "Identity and access management (IAM) frameworks are published guides to good identity practice; IAM tools are the systems that carry it out, such as directories and governance platforms.",
+          "why_it_matters": "Frameworks give a shared, defensible standard instead of one person's opinion. Tools make the life cycle repeatable and keep the records reviews need.",
           "how_it_works": [
-            "NIST SP 800-63-4 covers digital identity: assurance levels for identity proofing, authentication and federation.",
-            "ISO/IEC 27002:2022 gives controls for identity management, authentication information, access rights and privileged access.",
-            "CIS Controls v8.1 Controls 5 and 6 give practical steps for account management and access control management.",
-            "NIST SP 800-207 describes Zero Trust, which checks identity and context on every request.",
-            "Tools connect: HR feeds identity governance, which creates directory accounts; the identity provider signs users in."
+            "Frameworks set out good practice, such as the National Institute of Standards and Technology (NIST) identity guidelines.",
+            "Other control catalogs, listed in the references, add practical steps for accounts and access.",
+            "Zero Trust checks identity and context on every request, not network location (see 4.2.6).",
+            "Tools connect: human resources feeds identity governance, which creates directory accounts."
           ],
           "types": [
             {
@@ -806,38 +753,179 @@
               "meaning": "Guards administrator accounts with a vault, time-limited access and session logs"
             }
           ],
-          "example": "A 40-person accounting firm tracks access in a spreadsheet, and two leavers kept email access for weeks. The office manager asks the new IT associate, Noor, for options. Noor maps the firm's steps against CIS Controls v8.1 Controls 5 and 6, lists the gaps and suggests linking the HR system to the cloud directory so starts and exits drive accounts. Noor presents the gap list to the office manager.",
+          "example": "A 40-person accounting firm tracks access in a spreadsheet, and two leavers kept email for weeks. Noor, the new IT associate, maps the firm's steps against a recognized framework's account controls, lists the gaps and suggests linking the human resources system to the cloud directory. Noor presents the list for the office manager to decide.",
           "audit_focus": {
             "review": [
-              "Map current IAM steps against one named framework to find gaps",
-              "Use the tool's records, not memory, as evidence of each change"
+              "Map current IAM steps against one framework to find gaps",
+              "Confirm each access change has a record in the tool"
             ],
             "evidence": [
               "Sample of recent starts and exits traced to directory changes",
-              "Connector logs showing HR changes reaching the directory"
+              "Connector logs showing human resources changes reaching the directory"
             ],
-            "recommend": "Present gaps and tool options to your manager, and leave the choice of framework and spending to leadership.",
-            "decides": "Management chooses the framework, the tools and the budget for IAM"
+            "recommend": "Present gaps and tool options to your manager; leadership chooses frameworks and spending.",
+            "decides": "Management chooses the framework, tools and IAM budget"
           },
-          "isaca_rule": "Frameworks say what good looks like; tools make it repeatable. Follow a recognized framework, drive the life cycle from a trusted source and keep the records that prove it works.",
+          "isaca_rule": "Frameworks say what good looks like; tools make it repeatable, driven by a trusted source and kept on record.",
           "exam_traps": [
             {
               "trap": "Buying an IAM tool solves access problems by itself.",
-              "why": "A tool automates whatever process it is given. Without defined roles, owners and reviews, it just automates the mess faster."
+              "why": "A tool automates whatever process it is given. Without roles, owners and reviews, it automates the mess."
             },
             {
               "trap": "A request from inside the office network can be trusted.",
-              "why": "Zero Trust, described in NIST SP 800-207, checks identity and context on every request. Network location alone proves nothing."
+              "why": "Zero Trust checks identity and context on every request; location alone proves nothing."
             }
           ],
           "key_terms": [
             {
-              "term": "Zero Trust",
-              "definition": "A security approach that grants no trust for network location and checks every access request by identity and context."
+              "term": "Authenticator assurance level (AAL)",
+              "definition": "How confident a system can be in a sign-in; NIST defines levels 1 to 3, with 3 the strongest."
             },
             {
-              "term": "Authenticator assurance level (AAL)",
-              "definition": "How confident a system can be in a sign-in; NIST SP 800-63B-4 defines AAL1 to AAL3, with AAL3 the strongest."
+              "term": "Framework",
+              "definition": "A published, structured set of practices an organization can follow and measure itself against."
+            }
+          ]
+        },
+        {
+          "id": "3.1.14",
+          "name": "Access Requests and Approvals",
+          "legacy_ids": [],
+          "definition": "An access request is a recorded ask for a specific right. The owner of the resource approves it, and a different person fulfills and records it.",
+          "why_it_matters": "Most access changes happen after day one. A request path stops rights being granted on a hallway word or a convincing message, and leaves a record.",
+          "how_it_works": [
+            "The requester names the exact access, the reason and how long it is needed.",
+            "The resource or data owner approves; nobody approves their own request.",
+            "The person who grants the access is not the person who approved it.",
+            "Urgent or unusual requests are verified through a known channel first."
+          ],
+          "example": "A chat message that seems to come from a hospital's finance director asks Leo, a service desk analyst, to add a new contractor to payroll before noon. There is no ticket. Leo pauses, calls the director back on the number in the staff directory and learns the director sent nothing. Leo reports the attempt through the security incident form.",
+          "audit_focus": {
+            "review": [
+              "Match each grant to an approved request",
+              "Look for self-approved requests or approvers who also fulfilled"
+            ],
+            "evidence": [
+              "Request tickets showing requester, approver, fulfiller and end date",
+              "Directory changes made with no matching ticket"
+            ],
+            "recommend": "Send requests lacking approval, or pushing to skip it, back to the resource owner.",
+            "decides": "Resource owners decide; the help desk only fulfills approved requests"
+          },
+          "isaca_rule": "No ticket, no access. The owner approves, someone else fulfills, and the record shows both. Urgency changes how fast a request moves, never whether it is checked.",
+          "exam_traps": [
+            {
+              "trap": "An approval forwarded by email from a senior manager is enough.",
+              "why": "Email is easy to fake. Use the request system, and confirm unusual requests through a known channel."
+            },
+            {
+              "trap": "The help desk can approve the access it grants, since it knows the systems.",
+              "why": "Knowing a system is not owning its data. The owner approves; the help desk fulfills."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Fulfillment",
+              "definition": "Carrying out an approved request in the systems, done by someone other than the approver."
+            },
+            {
+              "term": "Callback verification",
+              "definition": "Confirming a request through a number or channel already on file, not one in the request."
+            }
+          ]
+        },
+        {
+          "id": "3.1.15",
+          "name": "Third-Party, Guest and Federated Access",
+          "legacy_ids": [],
+          "definition": "Third-party access lets contractors, vendors and partners use your systems, through guest accounts you create or by trusting their own organization's sign-in through federation.",
+          "why_it_matters": "Outside users are often forgotten when their work ends, and their employer may never tell you they left.",
+          "how_it_works": [
+            "Each outside user has an internal sponsor who requests the access and answers for it.",
+            "Access is time-limited, matched to the contract and included in access reviews.",
+            "With federation, the partner proves who the user is; your owner still decides what they may do.",
+            "Contracts should require partners to report staff who leave or change roles."
+          ],
+          "example": "A city water utility gives an engineering firm's staff guest accounts on its project site. Nadia, an access analyst, runs the quarterly guest review and finds two engineers who left the firm months ago; their accounts still work. Nadia asks the sponsor, the utility's project manager, to confirm who still needs access, and logs the missed leaver notices for the vendor manager.",
+          "audit_focus": {
+            "review": [
+              "Confirm every guest or vendor account has a sponsor and end date",
+              "Compare the guest list with the partner's current staff list"
+            ],
+            "evidence": [
+              "Guest account report with sponsor, last sign-in and expiry",
+              "Contract clauses on leaver notice and permitted access"
+            ],
+            "recommend": "Report outside accounts with no sponsor, or past their end date, to the vendor manager.",
+            "decides": "The sponsor and resource owner decide what outsiders may reach"
+          },
+          "isaca_rule": "Federation shares proof of identity, not permission. The partner vouches for who someone is; your owner decides what they may reach and for how long.",
+          "exam_traps": [
+            {
+              "trap": "Once we trust a partner's sign-in, the partner decides what its staff can reach.",
+              "why": "Federation only passes on who the user is. Your resource owner still authorizes, limits and removes access."
+            },
+            {
+              "trap": "Guest accounts need no review because the people work elsewhere.",
+              "why": "The risk sits on your systems. Give guests sponsors and end dates, and review them."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Sponsor",
+              "definition": "The internal person who requests an outside user's access and confirms it is still needed."
+            },
+            {
+              "term": "Federation trust",
+              "definition": "An agreement, backed by exchanged keys, letting one organization accept sign-ins proved by another."
+            }
+          ]
+        },
+        {
+          "id": "3.1.16",
+          "name": "Sessions, Timeouts and Reauthentication",
+          "legacy_ids": [],
+          "definition": "A session is the period after sign-in when a user can act without proving their identity again. Session controls decide how long it lasts and when to check again.",
+          "why_it_matters": "A stolen session token or an unlocked screen gives someone the user's access without any password. Session limits shrink that window.",
+          "how_it_works": [
+            "An inactivity timeout ends or locks a session after a period with no activity.",
+            "An overall timeout ends a session after a set time, however active the user is.",
+            "At its highest assurance level, the National Institute of Standards and Technology (NIST) caps sessions at 12 hours and recommends a 15-minute idle limit.",
+            "Ask users to sign in again before sensitive actions, such as changing bank details."
+          ],
+          "example": "At an insurance call center, staff often leave customer records open on unattended screens, and a visitor is seen photographing one. Bea, a junior security analyst, finds the claims system has no idle timeout. Bea writes up the gap, suggests a 15-minute screen lock and raises a change request for the system owner to approve.",
+          "audit_focus": {
+            "review": [
+              "Compare each system's idle and overall timeouts with the standard",
+              "Confirm signing out ends the session on every device"
+            ],
+            "evidence": [
+              "Session timeout settings for each key application",
+              "Logs of sessions that stayed open far beyond the limit"
+            ],
+            "recommend": "Ask the system owner to fix any timeout weaker than the standard, through change control.",
+            "decides": "Security management sets timeout values; system owners apply them"
+          },
+          "isaca_rule": "Proving identity once is not enough forever: match session limits to the risk and check again before risky actions.",
+          "exam_traps": [
+            {
+              "trap": "After a strong sign-in, a session can safely stay open all day.",
+              "why": "Strong sign-in protects the start, not the hours after. A stolen token or unlocked screen skips it."
+            },
+            {
+              "trap": "Closing the browser tab always signs the user out.",
+              "why": "Many sessions stay valid until they time out or are revoked. Sign out properly."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Session token",
+              "definition": "A value issued after sign-in that proves the session; anyone who steals it can act as the user."
+            },
+            {
+              "term": "Reauthentication",
+              "definition": "Asking a signed-in user to prove their identity again, after a timeout or before a sensitive action."
             }
           ]
         }
@@ -845,13 +933,13 @@
     },
     {
       "topic_id": "3.2",
-      "topic_name": "Logical Access Controls",
-      "overview": "Logical access controls are the software rules that decide what a signed-in identity may read, change or run. This topic covers the principles that set the limits (least privilege, need to know and separation of duties), the extra care privileged and automated accounts need, and the access control models that differ in who sets the rules: the owner, the system, roles, attributes or fixed rules.",
+      "topic_name": "Understand logical access controls",
+      "overview": "Logical access controls are the software rules that decide what a signed-in identity may read, change or run. This topic covers the principles that set the limits (least privilege, need to know and separation of duties), the extra care privileged and automated accounts need, and the access control models, which differ in who sets the rules: the owner, the system, roles, attributes or fixed rules.",
       "can_do": [
         "Apply least privilege and need to know to choose the smallest access that still lets the work get done",
         "Spot a separation of duties conflict and name a fitting fix or compensating control",
-        "Identify DAC, MAC, RBAC, ABAC and rule-based access control from a short scenario",
-        "Limit privileged, service and AI agent access with time limits, approval and logging"
+        "Name the access control model (DAC, MAC, RBAC, ABAC or rule-based) from who decides in a short scenario",
+        "Limit privileged, service and AI agent access with just-in-time grants, approval and logging"
       ],
       "subtopics": [
         {
@@ -859,19 +947,17 @@
           "name": "Logical Access Controls and Access Decisions",
           "legacy_ids": [],
           "definition": "Logical access controls are software rules that decide whether a subject, such as a user or process, may perform an action on an object, such as a file.",
-          "why_it_matters": "Once someone is signed in, these rules are what stop them reading payroll or deleting records they should not touch. Without them, strong authentication protects very little.",
+          "why_it_matters": "Once someone is signed in, these rules stop them reading payroll or deleting records they should not touch.",
           "how_it_works": [
-            "A subject (a user, process or AI agent) asks to perform an action (read, write, run or delete) on an object.",
-            "The system checks the permissions attached to the object, then allows or denies the request.",
-            "Anything not explicitly allowed is refused.",
-            "Grant permissions to groups or roles rather than individuals, so changes and reviews stay manageable.",
-            "Log access decisions, especially denials and permission changes, so misuse can be traced.",
-            "Logical controls are technical controls; they work beside physical controls, such as locks, and administrative ones, such as policy."
+            "A subject (a user, process or AI agent) asks to read, write, run or delete an object.",
+            "The system checks the object's permissions; anything not explicitly allowed is refused.",
+            "Grant permissions to groups or roles, not individuals, so changes and reviews stay manageable.",
+            "Log decisions, especially denials and permission changes, so misuse can be traced."
           ],
-          "example": "At a small law firm, a paralegal, Jess, can open every client folder on the file server because the folders were shared with Everyone years ago. Sol, the IT assistant, notices this while setting up a new folder. Sol lists the open folders, suggests permissions by client team and sends the list to the managing partner, who owns the client files.",
+          "example": "At a small law firm, a paralegal can open every client folder because the folders were shared with Everyone years ago. Sol, the IT assistant, notices while setting up a new folder, lists the open folders and asks the managing partner, who owns the client files, which teams should keep access to each.",
           "audit_focus": {
             "review": [
-              "Remove direct grants to individuals and move them into groups",
+              "Look for permissions granted to individuals instead of groups",
               "Look for Everyone or all-users permissions on sensitive data"
             ],
             "evidence": [
@@ -881,25 +967,25 @@
             "recommend": "Report over-broad permissions on sensitive data to the data owner and the security team.",
             "decides": "The data owner sets which teams may open their files"
           },
-          "isaca_rule": "Authentication says who you are; logical access controls say what you can touch. Start from default deny, grant through groups and let the data owner decide who gets in.",
+          "isaca_rule": "Authentication says who you are; logical access controls say what you can touch. Start from default deny and grant through groups.",
           "exam_traps": [
             {
-              "trap": "Once users are authenticated, they can be trusted to open anything on the network.",
-              "why": "Authentication only proves identity. Authorization rules still limit each identity to what its job needs."
+              "trap": "Once users are authenticated, they can open anything on the network.",
+              "why": "Authentication only proves identity. Authorization still limits each identity to what its job needs."
             }
           ],
           "key_terms": [
             {
               "term": "Subject",
-              "definition": "The active party asking for access, such as a user, process, device or AI agent."
+              "definition": "The active party asking for access, such as a user, process or AI agent."
             },
             {
               "term": "Object",
-              "definition": "The resource being accessed, such as a file, database, printer or application."
+              "definition": "The resource being accessed, such as a file, database or application."
             },
             {
               "term": "Access control list (ACL)",
-              "definition": "A list attached to an object naming which subjects may access it and what each may do."
+              "definition": "A list on an object naming who may access it and how; network access lists (see 4.1.7) filter traffic instead."
             },
             {
               "term": "Default deny",
@@ -912,13 +998,12 @@
           "name": "Least Privilege and Need to Know",
           "legacy_ids": [],
           "definition": "Least privilege gives each user or process the minimum access its task needs, for as long as needed. Need to know limits information to people whose duties require it.",
-          "why_it_matters": "If an account is stolen or misused, least privilege limits the damage to what that account could reach. It also limits mistakes: nobody can delete what they cannot touch.",
+          "why_it_matters": "If an account is stolen or misused, least privilege limits the damage to what it could reach. Nobody can delete what they cannot touch.",
           "how_it_works": [
             "Start with no access and add only what the task requires.",
-            "Keep everyday and administrator accounts separate, so email and web browsing never run with admin rights.",
-            "Add time limits: temporary access ends automatically when the task is done.",
-            "Need to know is a second test: even someone cleared for sensitive data sees only the cases they work on.",
-            "Apply both to programs and AI agents: each gets only the data, tools and permissions its job needs."
+            "Keep everyday and admin accounts separate, so email never runs with admin rights.",
+            "Add time limits, so temporary access ends when the task does.",
+            "Need to know is a second test: someone cleared for sensitive data sees only their own cases."
           ],
           "compare": {
             "columns": [
@@ -949,11 +1034,11 @@
               }
             ]
           },
-          "example": "A city council's parking app team asks for full administrator rights on the payments database to avoid delays. Taylor, a junior security analyst, asks what the app actually does: it reads fines and updates payment status. Taylor drafts a request for read access to the fines table and write access to the status field, and sends it to the database owner for approval.",
+          "example": "A city council's permit app team asks for full administrator rights on its database to avoid delays. Taylor, a junior security analyst, finds the app only reads applications and updates their status, and drafts a request for exactly that, read access plus write access to the status field, for the database owner to approve.",
           "audit_focus": {
             "review": [
-              "Ask what the task actually does before granting any right",
-              "Use a separate administrator account for admin work only"
+              "Compare requested rights with what the task actually does",
+              "Confirm administrators use a separate account for admin work"
             ],
             "evidence": [
               "Accounts with admin rights compared with their job needs",
@@ -962,25 +1047,25 @@
             "recommend": "Raise requests for broad or permanent rights with the data owner instead of approving them yourself.",
             "decides": "The data owner approves access beyond the standard role"
           },
-          "isaca_rule": "When asked how much access to give, choose the smallest set that lets the work happen, and add an end date. Convenience and seniority are not reasons for more access.",
+          "isaca_rule": "Give the smallest access that lets the work happen, with an end date. Convenience and seniority are not reasons for more.",
           "exam_traps": [
             {
               "trap": "Senior managers should get broad access because of their position.",
-              "why": "Rank is not a task. Senior accounts are prime targets, so they need least privilege as much as anyone."
+              "why": "Rank is not a task. Senior accounts are prime targets and need least privilege too."
             },
             {
-              "trap": "Being cleared for a classification level means seeing all data at that level.",
-              "why": "Clearance is only the first test. Need to know limits a cleared person to the data their current work requires."
+              "trap": "A clearance for a level means seeing all data at that level.",
+              "why": "Clearance is only the first test. Need to know limits a cleared person to the data their work requires."
             }
           ],
           "key_terms": [
             {
               "term": "Privilege escalation",
-              "definition": "Gaining more rights than were granted, through a flaw or misconfiguration; least privilege limits what an attacker starts with."
+              "definition": "Gaining more rights than granted through a flaw; least privilege limits what an attacker starts with."
             },
             {
               "term": "Standing privilege",
-              "definition": "Rights held all the time, whether or not they are in use; the opposite of time-limited access."
+              "definition": "Rights held all the time, whether or not in use; the opposite of time-limited access."
             }
           ],
           "memory_aid": "Least privilege limits what you can do; need to know limits what you can see."
@@ -990,13 +1075,12 @@
           "name": "Separation of Duties and Two-Person Control",
           "legacy_ids": [],
           "definition": "Separation of duties (SoD) splits a sensitive task so no single person can complete it alone; two-person control requires two people to act together.",
-          "why_it_matters": "One person with end-to-end control can commit and hide fraud or a damaging mistake. Splitting duties means abuse needs collusion, two or more people agreeing to break the rules.",
+          "why_it_matters": "One person with end-to-end control can commit and hide fraud or a costly mistake. Splitting duties means abuse needs collusion.",
           "how_it_works": [
-            "Separate who requests, who approves, who carries out and who checks, such as setting up a supplier and paying it.",
-            "Common conflicts: writing code and releasing it to production, granting access and reviewing it, raising and approving payments.",
-            "Check new roles and access requests for SoD conflicts before granting them.",
-            "Small teams that cannot split duties use compensating controls, such as logging and independent review.",
-            "Job rotation and required vacations help expose fraud one person might otherwise hide."
+            "Separate who requests, approves, carries out and checks a sensitive task.",
+            "Classic conflicts: adding a supplier and paying it, or writing code and releasing it.",
+            "Check new roles and access requests for conflicts before granting them.",
+            "Teams too small to split duties use compensating controls, such as independent review."
           ],
           "types": [
             {
@@ -1012,11 +1096,11 @@
               "meaning": "Each person holds only part of a secret, so nobody knows all of it"
             }
           ],
-          "example": "At a nonprofit with three finance staff, the bookkeeper, Pat, can add new suppliers and also release payments. Hiring another person is not possible. Quinn, the part-time IT and security assistant, notes the conflict and proposes a compensating control to the finance director: a weekly report of new suppliers and payments, reviewed and signed by someone with no payment rights.",
+          "example": "At a nonprofit with three finance staff, the bookkeeper, Pat, can add new suppliers and also release payments, and hiring is not possible. Quinn, the part-time IT and security assistant, proposes a compensating control to the finance director: a weekly report of new suppliers and payments, signed off by someone with no payment rights.",
           "audit_focus": {
             "review": [
               "Compare each person's rights against a list of conflicting duties",
-              "Flag duties a small team cannot split, for the process owner"
+              "Look for small-team conflicts with no compensating control"
             ],
             "evidence": [
               "SoD conflict report from the access or finance system",
@@ -1025,29 +1109,25 @@
             "recommend": "Report SoD conflicts to the process owner; never quietly give one person both duties.",
             "decides": "The process owner splits the duties or accepts a compensating control"
           },
-          "isaca_rule": "No single person should be able to start, approve and hide a sensitive action. Split the duties; where the team is too small, add independent review. Controls should not depend on trusting one good employee.",
+          "isaca_rule": "No one person should be able to start, approve and hide a sensitive action. Split duties, or add independent review.",
           "exam_traps": [
             {
               "trap": "Separation of duties and least privilege are the same thing.",
-              "why": "Least privilege limits how much one person can do. SoD splits a process so it needs more than one person. Someone can hold minimal rights and still have a conflict."
+              "why": "Least privilege limits how much one person can do; SoD splits a process across people. Minimal rights can still conflict."
             },
             {
-              "trap": "A trusted, long-serving employee can safely hold conflicting duties.",
-              "why": "SoD is not about distrust of one person. It protects the organization, and the employee, from fraud and from suspicion."
+              "trap": "A trusted, long-serving employee can hold conflicting duties.",
+              "why": "SoD is not about distrust. It protects the organization, and the employee, from fraud and suspicion."
             }
           ],
           "key_terms": [
             {
               "term": "Collusion",
-              "definition": "Two or more people secretly working together to get around a control such as separation of duties."
+              "definition": "People secretly working together to get around a control such as separation of duties."
             },
             {
               "term": "Compensating control",
               "definition": "An alternative control that reduces the risk when the preferred control is not possible."
-            },
-            {
-              "term": "Job rotation",
-              "definition": "Moving people between duties on a schedule, so hidden misuse is more likely to come to light."
             }
           ]
         },
@@ -1055,52 +1135,46 @@
           "id": "3.2.4",
           "name": "Privileged Access Management",
           "legacy_ids": [],
-          "definition": "Privileged access management controls accounts that can change systems, security settings or other users' access, such as administrator, root and database owner accounts.",
-          "why_it_matters": "Privileged accounts are the keys attackers want most, because one compromise can switch off defenses or reach everything. Mistakes made with admin rights also have the widest impact.",
+          "definition": "Privileged access management (PAM) controls accounts that can change systems, security settings or other users' access, such as administrator, root and database owner accounts.",
+          "why_it_matters": "Privileged accounts are the keys attackers want most: one compromise can switch off defenses or reach everything.",
           "how_it_works": [
-            "Keep a full inventory of privileged accounts, including built-in admin, service and cloud console accounts.",
-            "Each administrator uses a separate, named admin account for admin work only, never a shared one.",
-            "Grant admin rights just in time, for a set task and period, with approval.",
-            "Store admin credentials in a vault that checks them out, rotates them and logs each use.",
-            "Require phishing-resistant MFA, and record or log privileged sessions for review.",
-            "Keep sealed emergency accounts for when normal sign-in fails, and alert on every use."
+            "Inventory every privileged account, including built-in, service and cloud console accounts.",
+            "Each administrator uses a named admin account for admin work only, never a shared one.",
+            "A vault checks admin credentials out, rotates them and logs each use.",
+            "Require phishing-resistant sign-in, record privileged sessions and grant rights just in time (see 3.2.12)."
           ],
-          "example": "At a manufacturing plant, five engineers share one password for the production servers' admin account, unchanged for three years. When an overnight change stops the line, nobody can tell who made it. Fatima, a junior security analyst, documents the gap and drafts a proposal for named admin accounts, a vault with check-out and session logs, and sends it to the plant's systems owner.",
+          "example": "At a manufacturing plant, five engineers have shared one admin password for three years. When an overnight change stops the line, nobody can tell who made it. Fatima, a junior security analyst, records the gap in the risk log and drafts a proposal for named admin accounts and a vault for the system owner.",
           "audit_focus": {
             "review": [
-              "Inventory every account with admin or root rights, including built-in ones",
-              "Use your own admin account only for admin tasks"
+              "Confirm every admin or root account is inventoried, built-in ones too",
+              "Look for admin accounts used for email or web browsing"
             ],
             "evidence": [
               "Change tickets matched to each privileged sign-in",
-              "Privileged accounts without MFA or outside the vault"
+              "Privileged accounts without strong sign-in or outside the vault"
             ],
-            "recommend": "Report shared or unvaulted admin accounts to the system owner and the security team.",
-            "decides": "The system owner approves who holds privileged access and for how long"
+            "recommend": "Raise shared or unvaulted privileged credentials with the security team for tracking.",
+            "decides": "The system owner approves who holds privileged access, and how long"
           },
-          "isaca_rule": "The more power an account has, the tighter its controls: named accounts, phishing-resistant MFA, time-limited grants, a vault and recorded sessions. Sharing an admin password for convenience is not acceptable.",
+          "isaca_rule": "The more power an account has, the tighter its controls: named accounts, strong sign-in, a vault, time limits and recorded sessions.",
           "exam_traps": [
             {
-              "trap": "Give each administrator permanent admin rights so they can respond quickly.",
-              "why": "Standing rights are available to an attacker too. Just-in-time grants and emergency accounts give speed without permanent exposure."
+              "trap": "Administrators can read email with their admin account to save time.",
+              "why": "Email and browsing are where phishing and malicious software arrive. With admin rights, one click gives an attacker full control."
             },
             {
               "trap": "Sharing one admin password is fine if only trusted engineers know it.",
-              "why": "A shared account cannot show who acted and must be changed whenever anyone leaves. Use named admin accounts through a vault."
+              "why": "A shared account cannot show who acted. Use named admin accounts through a vault."
             }
           ],
           "key_terms": [
             {
-              "term": "Just-in-time (JIT) access",
-              "definition": "Privileges granted only when needed, for a set task and time, then removed automatically."
-            },
-            {
-              "term": "Break-glass account",
-              "definition": "A sealed emergency account used only when normal admin access fails, with every use alerted and reviewed."
-            },
-            {
               "term": "Session recording",
-              "definition": "Capturing what an administrator does during a privileged session, so actions can be reviewed later."
+              "definition": "Capturing what an administrator does in a privileged session, so it can be reviewed later."
+            },
+            {
+              "term": "Built-in admin account",
+              "definition": "A default administrator account that ships with a system or device, often with a known name."
             }
           ]
         },
@@ -1109,19 +1183,18 @@
           "name": "Discretionary Access Control (DAC)",
           "legacy_ids": [],
           "definition": "Discretionary access control (DAC) lets the owner of a resource, usually its creator, decide who else may access it and what they may do.",
-          "why_it_matters": "DAC is how most file shares, cloud documents and personal folders work. It is flexible, but it rests on each owner's judgment, so sensitive data can be overshared with one click.",
+          "why_it_matters": "DAC is how most file shares and cloud documents work: flexible, but data can be overshared with one click.",
           "how_it_works": [
             "The owner sets permissions on their own files, often through an access control list.",
-            "Depending on the rights given, people the owner shares with may be able to share again.",
-            "Everyday examples: sharing a cloud document by link, or setting permissions on a personal folder.",
-            "Weaknesses: inconsistent decisions, oversharing, and malware that runs with the user's rights and so gets their access.",
-            "Organizations limit DAC with policy, sharing restrictions, data labels and access reviews."
+            "People the owner shares with may be able to share again.",
+            "Weaknesses: oversharing, and malware (malicious software) running with the user's rights.",
+            "Organizations limit DAC with sharing restrictions, labels and access reviews."
           ],
-          "example": "A project lead at a design studio, Robin, shares a client contract folder with a freelance illustrator using an anyone-with-the-link setting. The link later appears on a public forum. Ezra, the studio's IT assistant, gets the sharing alert, switches the folder to named people only and reports the exposure to the studio manager, following the incident procedure.",
+          "example": "Robin, a design studio's project lead, shares a contract folder with a freelancer through an anyone-with-the-link setting, and the link turns up on a public forum. Ezra, the IT assistant, gets the alert and follows the incident procedure: switch the folder to named people, then report the exposure to the studio manager.",
           "audit_focus": {
             "review": [
-              "Review sharing settings on folders that hold sensitive data",
-              "Replace open link sharing with access for named people"
+              "Confirm each shared sensitive folder has a recorded owner",
+              "Look for open link sharing on folders that hold sensitive data"
             ],
             "evidence": [
               "Sharing reports listing files shared externally or by link",
@@ -1130,47 +1203,46 @@
             "recommend": "Report sensitive data shared outside the organization to the data owner, following the incident procedure.",
             "decides": "The data owner decides who may see the data, within policy"
           },
-          "isaca_rule": "In DAC the owner decides. That flexibility is both its strength and its weakness, so pair DAC with sharing limits, labels and reviews when the data is sensitive.",
+          "isaca_rule": "In DAC the owner decides: flexible, but add sharing limits and reviews when the data is sensitive.",
           "exam_traps": [
             {
               "trap": "Under DAC, a central administrator decides who gets access.",
-              "why": "Central decisions describe non-discretionary models such as RBAC or MAC. In DAC the resource owner decides."
+              "why": "Central decisions describe non-discretionary models such as role-based control. In DAC the owner decides."
             },
             {
-              "trap": "DAC is the most secure model because owners know their data best.",
-              "why": "Owners can overshare by mistake, and malware inherits their rights. DAC is the most flexible model, not the strictest."
+              "trap": "DAC is the most secure model because owners know their data.",
+              "why": "Owners overshare by mistake, and malware inherits their rights. DAC is the most flexible model, not the strictest."
             }
           ],
           "key_terms": [
             {
               "term": "Resource owner",
-              "definition": "The person or account that owns a file or other object and, under DAC, controls who can use it."
+              "definition": "The person who owns a file or object and, under DAC, controls who can use it."
             },
             {
               "term": "Link sharing",
-              "definition": "Giving access to anyone who holds a web link to a file; convenient but easy to forward."
+              "definition": "Access for anyone holding a file's web link; convenient but easy to forward."
             }
           ],
-          "memory_aid": "DAC: the owner's Discretion. MAC: the system's Mandate."
+          "memory_aid": "DAC: the owner's Discretion. Mandatory control (MAC): the system's Mandate."
         },
         {
           "id": "3.2.6",
           "name": "Mandatory Access Control (MAC)",
           "legacy_ids": [],
           "definition": "Mandatory access control (MAC) lets the system, not the owner, decide access by comparing a subject's clearance with the object's classification label under central policy.",
-          "why_it_matters": "MAC protects highly sensitive data where one user's choice must never be able to leak it, such as in military, government and intelligence systems.",
+          "why_it_matters": "MAC protects data that one user's choice must never leak, as in military systems. It is not the network MAC address (Domain 4).",
           "how_it_works": [
-            "Every object carries a security label, such as Confidential, Secret or Top Secret.",
+            "Every object carries a security label, such as Confidential or Secret.",
             "Every subject has a clearance, set by a central security authority.",
-            "Access is allowed only when the clearance is high enough and the person also has a need to know.",
-            "Users cannot change labels or pass data to a lower level, even for files they created.",
-            "MAC is strong but rigid and costly to run, so it suits high-security settings more than everyday business."
+            "Access needs enough clearance plus a need to know; users cannot change labels, even on their own files.",
+            "MAC is strong but rigid and costly, so it suits high-security settings."
           ],
-          "example": "At a defense contractor, an engineer, Lin, cleared to Secret, works on a design file labeled Secret. Lin tries to paste part of it into an unclassified email to a supplier, and the system blocks it; Lin cannot change the label. Instead of looking for a workaround, Lin asks the security officer to review the extract for an authorized release.",
+          "example": "Lin, an engineer at a defense contractor cleared to Secret, tries to paste part of a Secret design into an unclassified email to a supplier. The system blocks it, and Lin cannot change the label. Instead of looking for a workaround, Lin asks the security officer to review the extract for an authorized release.",
           "audit_focus": {
             "review": [
-              "Follow the labeling procedure when creating or handling data",
-              "Request a formal review before any data moves to a lower level"
+              "Confirm new data carries the correct classification label",
+              "Confirm data moved to a lower level has an approved release"
             ],
             "evidence": [
               "Denied access events showing label and clearance mismatches",
@@ -1179,11 +1251,11 @@
             "recommend": "Report attempts to bypass labels or clearances to the security officer straight away.",
             "decides": "The central security officer sets labels, clearances and releases"
           },
-          "isaca_rule": "In MAC the system enforces central policy, and nobody, not even the creator, can override it. When a scenario says users cannot change permissions and access follows labels and clearances, think MAC.",
+          "isaca_rule": "In MAC the system enforces labels and clearances, and nobody, not even the creator, can override them.",
           "exam_traps": [
             {
               "trap": "The creator of a file can share it under MAC because they own it.",
-              "why": "Ownership gives no control in MAC. Labels and clearances, set centrally, decide access."
+              "why": "Ownership gives no control in MAC. Centrally set labels and clearances decide."
             },
             {
               "trap": "A Top Secret clearance opens every Top Secret file.",
@@ -1193,7 +1265,7 @@
           "key_terms": [
             {
               "term": "Security label",
-              "definition": "A classification marking attached to an object, such as Secret, that the system reads to decide access."
+              "definition": "A classification marking, such as Secret, that the system reads to decide access."
             },
             {
               "term": "Clearance",
@@ -1201,7 +1273,7 @@
             },
             {
               "term": "Compartment",
-              "definition": "A named category within a classification, such as a project, that adds a need-to-know check on top of clearance."
+              "definition": "A named category within a level, such as a project, that adds a need-to-know check."
             }
           ]
         },
@@ -1210,18 +1282,17 @@
           "name": "Role-Based Access Control (RBAC)",
           "legacy_ids": [],
           "definition": "Role-based access control (RBAC) attaches permissions to roles that match job functions, then assigns people to roles, so access follows the job rather than the person.",
-          "why_it_matters": "RBAC is the most common model in business systems because it scales. Changing someone's job means changing their role, and reviewing a role reviews everyone in it at once.",
+          "why_it_matters": "RBAC is the most common model in business systems because it scales. Changing someone's job means changing their role.",
           "how_it_works": [
-            "Permissions attach to roles, such as Nurse, Pharmacist or Billing clerk; people are assigned roles.",
-            "A person can hold several roles, and their permissions add together, which can create conflicts.",
-            "Policy can stop one person holding conflicting roles, such as Requester and Approver.",
-            "Movers change roles and leavers lose all roles, so life cycle events map neatly onto RBAC.",
-            "RBAC weakens when custom roles multiply or permissions are granted outside any role."
+            "Permissions attach to roles, such as Nurse or Billing clerk, and people are assigned roles.",
+            "A person's roles add together, which can create conflicts.",
+            "Movers change roles and leavers lose all roles, so the life cycle maps neatly onto RBAC.",
+            "RBAC weakens when custom roles multiply or rights are granted outside any role."
           ],
-          "example": "A clinic's records system grants access by role. When a receptionist, Elena, finishes training as a medical assistant, the practice manager approves the change. Hana, the IT coordinator, removes Elena's Receptionist role and assigns the Medical Assistant role. Elena's access changes in minutes, and Hana confirms no one-off permissions are left over from the old job.",
+          "example": "A clinic's records system grants access by role. When Elena, a receptionist, qualifies as a medical assistant, the practice manager approves the change. Hana, the IT coordinator, swaps Elena's Receptionist role for Medical Assistant, so access changes in minutes, then confirms no one-off permissions remain from the old job.",
           "audit_focus": {
             "review": [
-              "Assign access by role, not by copying another user",
+              "Look for access copied from another user instead of a role",
               "Compare each person's combined roles with the conflict list"
             ],
             "evidence": [
@@ -1231,15 +1302,15 @@
             "recommend": "Report one-off permissions or conflicting roles to the role owner for a decision.",
             "decides": "The role owner approves what a role contains and who holds it"
           },
-          "isaca_rule": "When access follows the job and changes when the job changes, think RBAC. It is non-discretionary: the organization defines the roles, and users cannot hand out rights themselves.",
+          "isaca_rule": "When access follows the job, think RBAC. It is non-discretionary: the organization defines roles, and users cannot hand out rights.",
           "exam_traps": [
             {
               "trap": "RBAC lets each user decide who joins their role.",
-              "why": "Role membership is set by the organization through an approved process. That central control is what makes RBAC non-discretionary."
+              "why": "The organization sets role membership through an approved process. That is what makes RBAC non-discretionary."
             },
             {
-              "trap": "RBAC on its own can allow or block access by time of day or location.",
-              "why": "Plain RBAC checks only the role. Decisions on time, location or data sensitivity need rules or attributes, as in rule-based access control or ABAC."
+              "trap": "RBAC alone can block access by time of day or location.",
+              "why": "Plain RBAC checks only the role. Time or location needs rules or attributes."
             }
           ],
           "key_terms": [
@@ -1249,7 +1320,7 @@
             },
             {
               "term": "Mutually exclusive roles",
-              "definition": "Roles that policy forbids one person to hold together, such as Requester and Approver."
+              "definition": "Roles policy forbids one person to hold together, such as Requester and Approver."
             }
           ]
         },
@@ -1258,37 +1329,35 @@
           "name": "Attribute-Based Access Control (ABAC)",
           "legacy_ids": [],
           "definition": "Attribute-based access control (ABAC) decides each request by checking a policy against attributes of the user, the resource, the action and the environment, such as time or location.",
-          "why_it_matters": "ABAC handles fine-grained, changing conditions that roles alone cannot, such as letting managers approve expenses only for their own region, in business hours, from a managed device.",
+          "why_it_matters": "ABAC handles fine-grained, changing conditions that roles cannot, such as approving expenses only for one's own region, in business hours, from a managed device.",
           "how_it_works": [
-            "Subject attributes describe the user: department, clearance, job title or training completed.",
-            "Object attributes describe the resource: data classification, owner, project or region.",
-            "Environment attributes describe the moment: time, location, device health or current threat level.",
-            "A policy engine checks each request against the policy, so access changes as attributes change, without new roles.",
-            "ABAC needs accurate, trusted attributes and careful testing; one wrong attribute changes the answer.",
-            "NIST SP 800-162 describes ABAC, and Zero Trust designs often use it for per-request decisions."
+            "Subject attributes describe the user, such as department or training completed.",
+            "Object attributes describe the resource; environment attributes describe the moment, such as time or device health.",
+            "A policy engine checks each request, so access changes as attributes change, without new roles.",
+            "Decisions are only as good as the attributes: one wrong value changes the answer."
           ],
-          "example": "An international charity's grant files must be readable only by staff in the same country office, on managed laptops. A role for every country and device type would mean hundreds of roles. Omar, a junior cloud administrator, helps the IAM lead build an ABAC policy using the user's country, the file's country tag and device status, and tests it with sample accounts before release.",
+          "example": "An international charity's grant files must be readable only by staff in the same country office, on managed laptops; a role for every country and device would mean hundreds. Omar, a junior cloud administrator, helps build an ABAC policy on the user's country, the file's country tag and device status, and tests it before release.",
           "audit_focus": {
             "review": [
               "Test each policy with sample users before it goes live",
-              "Report wrong or missing attributes at their source"
+              "Compare key attributes with their source, such as human resources records"
             ],
             "evidence": [
               "Policy test results for both allowed and denied cases",
-              "Attribute source records, such as the HR department field"
+              "Attribute source records, such as the department field"
             ],
             "recommend": "Report a policy that grants unexpected access to the policy owner before it is used.",
             "decides": "The data owner and the security team approve the access policies"
           },
-          "isaca_rule": "When a scenario combines several conditions, such as who, what, where and when, think ABAC. Its decisions are only as good as its attributes, so the HR and asset data behind it must be correct.",
+          "isaca_rule": "Several conditions at once, such as who, where and when: think ABAC. Wrong attributes mean wrong decisions.",
           "exam_traps": [
             {
-              "trap": "ABAC is just RBAC with more roles.",
-              "why": "ABAC does not need a role for each case. It checks attributes on every request, so one policy can cover many combinations."
+              "trap": "ABAC is just role-based control with more roles.",
+              "why": "ABAC needs no role per case. It checks attributes on every request, so one policy covers many combinations."
             },
             {
-              "trap": "Once the policy is written correctly, ABAC cannot grant the wrong access.",
-              "why": "ABAC trusts its attributes. A stale department field in the HR system can grant or block access wrongly."
+              "trap": "A correctly written ABAC policy cannot grant the wrong access.",
+              "why": "ABAC trusts its attributes. A stale department field in the human resources system can grant or block wrongly."
             }
           ],
           "key_terms": [
@@ -1307,18 +1376,17 @@
           "name": "Rule-Based Access Control",
           "legacy_ids": [],
           "definition": "Rule-based access control applies fixed rules, set by an administrator, to every subject alike, such as firewall rules or a ban on sign-ins outside business hours.",
-          "why_it_matters": "Rules enforce broad limits regardless of who the user is, which suits network traffic and time or location limits. Confusing rule-based with role-based control is a common exam slip.",
+          "why_it_matters": "Rules set limits whoever the user is, which suits network traffic, hours and locations. Do not confuse it with role-based access control (RBAC).",
           "how_it_works": [
-            "An administrator writes the rules, and the system applies them to every request that matches.",
-            "Rules are usually checked in order, the first match decides, and a final rule denies everything else.",
-            "Typical uses: firewall and router access lists, time-of-day limits and blocking sign-ins from certain countries.",
-            "Users cannot change the rules, so it is a non-discretionary model.",
-            "Rules often sit on top of another model: RBAC sets what a nurse can do, and a rule limits it to clinic devices."
+            "An administrator writes the rules; the system applies them to every matching request.",
+            "Rules are checked in order, the first match decides, and a final rule denies the rest.",
+            "Typical uses: firewall rules, time-of-day limits and blocked countries.",
+            "Rules often sit on top of roles: the role sets what a nurse can do; a rule limits where."
           ],
-          "example": "A payroll system is used only during office hours, yet its logs show sign-in attempts at 3 a.m. Avery, a junior network administrator, submits a change through change management and, once approved, adds a rule blocking payroll sign-ins from 8 p.m. to 6 a.m., except for the on-call payroll group. Avery then checks the logs to confirm the rule works.",
+          "example": "A payroll system is used only in office hours, yet its logs show 3 a.m. sign-in attempts. Avery, a junior network administrator, raises a change request and, once it is approved, adds a rule blocking payroll sign-ins from 8 p.m. to 6 a.m., except for the on-call group, then checks the logs to confirm it works.",
           "audit_focus": {
             "review": [
-              "Submit rule changes through change management with a rollback plan",
+              "Match recent rule changes to approved change tickets",
               "Confirm the last rule denies anything not already allowed"
             ],
             "evidence": [
@@ -1328,29 +1396,25 @@
             "recommend": "Report rules nobody can explain to the rule owner instead of deleting them yourself.",
             "decides": "The network or system owner approves each rule and its removal"
           },
-          "isaca_rule": "The same administrator-written rule for everyone: think rule-based. Access that depends on the person's job: think role-based. When options mix them up, ask whether access depends on the job or on a condition.",
+          "isaca_rule": "The same administrator rule for everyone: think rule-based. Access that depends on the person's job: think role-based.",
           "exam_traps": [
             {
               "trap": "Rule-based and role-based access control are the same model.",
-              "why": "Role-based ties permissions to job roles. Rule-based applies the same administrator-written conditions, such as time or address, to everyone."
+              "why": "Role-based ties rights to jobs. Rule-based applies the same conditions, such as time or address, to everyone."
             },
             {
-              "trap": "Rules can be added freely, since each one only allows a little.",
-              "why": "Rules pile up and interact. Unreviewed rules leave gaps, so each needs an owner, a purpose and periodic review."
+              "trap": "Rules can be added freely, since each allows only a little.",
+              "why": "Rules pile up and interact. Each needs an owner, a purpose and periodic review."
             }
           ],
           "key_terms": [
-            {
-              "term": "Firewall rule",
-              "definition": "An ordered instruction that allows or blocks traffic by address, port or protocol."
-            },
             {
               "term": "Deny-all rule",
               "definition": "A final rule that blocks anything earlier rules did not allow, putting default deny into practice."
             },
             {
               "term": "Non-discretionary access control",
-              "definition": "Any model where central policy, not the resource owner, decides access; MAC, RBAC and rule-based models are usually grouped here."
+              "definition": "Any model where central policy, not the owner, decides: mandatory, role-based, attribute-based or rule-based."
             }
           ]
         },
@@ -1358,13 +1422,13 @@
           "id": "3.2.10",
           "name": "Choosing an Access Control Model",
           "legacy_ids": [],
-          "definition": "Choosing an access control model starts with one question: who or what decides access, the owner, labels, job roles, attributes or fixed rules, and does it fit the risk?",
-          "why_it_matters": "Exam scenarios rarely name the model; they describe who decides and what the decision depends on. Real organizations also mix models, so knowing where each fits avoids a poor choice.",
+          "definition": "Choosing an access control model starts with one question: who or what decides access (the owner, labels, job roles, attributes or fixed rules), and does that fit the risk?",
+          "why_it_matters": "Scenarios describe who decides rather than naming the model, and real organizations mix models, so knowing where each fits avoids a poor choice.",
           "how_it_works": [
-            "Ask first who decides: the owner points to DAC, central labels to MAC and job roles to RBAC.",
-            "Ask next what it depends on: several conditions at once point to ABAC, one fixed condition for everyone to rule-based.",
-            "Match the model to the data: personal and team files suit DAC, classified data suits MAC, most businesses use RBAC.",
-            "Combine models where it helps, such as RBAC for applications, DAC for personal folders and rules on the firewall."
+            "Ask who decides: the owner means discretionary (DAC); central labels, mandatory (MAC); job roles, role-based (RBAC).",
+            "Ask what it depends on: many conditions mean attribute-based (ABAC); one fixed rule for all, rule-based.",
+            "Most businesses use RBAC; classified data suits MAC; personal folders suit DAC.",
+            "Combine models where it helps, such as RBAC for applications and rules on the firewall."
           ],
           "compare": {
             "columns": [
@@ -1415,34 +1479,38 @@
               }
             ]
           },
-          "example": "A veterinary chain of 12 clinics gives each new hire whatever their predecessor had. Avi, the junior IT analyst, notices that staff fall into five job types and suggests RBAC, plus a rule blocking sign-ins to the drug inventory system outside clinic hours. Avi writes up both options, with the risks each one reduces, and presents them to the operations director.",
+          "illustration": {
+            "svg": "<svg viewBox='0 0 470 176' xmlns='http://www.w3.org/2000/svg' role='img' aria-label='The five access control models grouped by who decides. Under DAC the resource owner decides. Under the non-discretionary models central policy decides: MAC by labels and clearances, RBAC by job role, ABAC by many attributes, and rule-based by one administrator rule for everyone. A note says MAC here means mandatory access control, not a network MAC address'><text x='59' y='12' text-anchor='middle' font-family='JetBrains Mono, monospace' font-size='7.5' font-weight='700' fill='var(--accent-fill)' letter-spacing='0.08em'>OWNER DECIDES</text><text x='276.5' y='12' text-anchor='middle' font-family='JetBrains Mono, monospace' font-size='7.5' font-weight='700' fill='var(--accent-fill)' letter-spacing='0.08em'>CENTRAL POLICY DECIDES (NON-DISCRETIONARY)</text><path d='M20,22 L20,17 L98,17 L98,22' fill='none' stroke='var(--accent-fill)' stroke-width='1.2'/><path d='M107,22 L107,17 L446,17 L446,22' fill='none' stroke='var(--accent-fill)' stroke-width='1.2'/><rect x='18' y='26' width='82' height='34' rx='4' fill='var(--accent-fill)'/><text x='59' y='47' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='700' fill='#ffffff'>DAC</text><text x='59' y='76' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='700' fill='var(--text)'>The owner</text><text x='59' y='104' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='8' font-weight='400' fill='var(--text2)'>Owner shares</text><text x='59' y='114' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='8' font-weight='400' fill='var(--text2)'>a project folder</text><rect x='105' y='26' width='82' height='34' rx='4' fill='var(--accent-fill)'/><text x='146' y='47' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='700' fill='#ffffff'>MAC</text><text x='146' y='76' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='700' fill='var(--text)'>Labels and</text><text x='146' y='87' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='700' fill='var(--text)'>clearances</text><text x='146' y='104' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='8' font-weight='400' fill='var(--text2)'>Secret file,</text><text x='146' y='114' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='8' font-weight='400' fill='var(--text2)'>Secret clearance</text><rect x='192' y='26' width='82' height='34' rx='4' fill='var(--accent-fill)'/><text x='233' y='47' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='700' fill='#ffffff'>RBAC</text><text x='233' y='76' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='700' fill='var(--text)'>The job role</text><text x='233' y='104' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='8' font-weight='400' fill='var(--text2)'>Nurse role</text><text x='233' y='114' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='8' font-weight='400' fill='var(--text2)'>opens charts</text><rect x='279' y='26' width='82' height='34' rx='4' fill='var(--accent-fill)'/><text x='320' y='47' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='700' fill='#ffffff'>ABAC</text><text x='320' y='76' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='700' fill='var(--text)'>Many</text><text x='320' y='87' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='700' fill='var(--text)'>attributes</text><text x='320' y='104' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='8' font-weight='400' fill='var(--text2)'>Region, device</text><text x='320' y='114' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='8' font-weight='400' fill='var(--text2)'>and office hours</text><rect x='366' y='26' width='82' height='34' rx='4' fill='var(--accent-fill)'/><text x='407' y='47' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='700' fill='#ffffff'>Rule-based</text><text x='407' y='76' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='700' fill='var(--text)'>One rule</text><text x='407' y='87' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='700' fill='var(--text)'>for everyone</text><text x='407' y='104' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='8' font-weight='400' fill='var(--text2)'>No sign-ins</text><text x='407' y='114' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='8' font-weight='400' fill='var(--text2)'>after 8 p.m.</text><line x1='18' y1='93' x2='448' y2='93' stroke='var(--border2)' stroke-width='1' stroke-dasharray='3 3'/><rect x='18' y='128' width='430' height='38' rx='4' fill='none' stroke='var(--accent-fill)' stroke-width='1.5'/><text x='233' y='144' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--accent-fill)'>Ask who decides, then what the decision depends on.</text><text x='233' y='158' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='600' fill='var(--text2)'>MAC here is mandatory access control, not a network MAC address.</text></svg>",
+            "caption": "Ask who decides. Only DAC leaves it to the resource owner; in the other four, central policy decides and users cannot change it. Then ask what the decision depends on."
+          },
+          "example": "A veterinary chain of 12 clinics gives each new hire whatever their predecessor had. Avi, a junior IT analyst, notices that staff fall into five job types and suggests RBAC, plus a rule blocking sign-ins to the drug inventory outside clinic hours. Avi presents both options, with the risks each reduces, to the operations director.",
           "audit_focus": {
             "review": [
               "Identify who decides, and on what, before naming a model",
-              "Record which model each major system uses"
+              "Confirm each major system's access follows its chosen model"
             ],
             "evidence": [
               "Each system's access settings showing owner, role or rule decisions",
               "Exceptions where users hold access outside the chosen model"
             ],
-            "recommend": "Bring proposals to change a system's model to the system owner and the security team for a decision.",
+            "recommend": "Bring proposals to change a system's model to the system owner and the security team.",
             "decides": "Management and system owners choose the model, based on risk"
           },
-          "isaca_rule": "Read the scenario for the decider. The owner chooses: DAC. Labels and clearances: MAC. The job: RBAC. Many conditions: ABAC. One rule for all: rule-based. Then choose the model that fits the risk, not the strictest one.",
+          "isaca_rule": "Read the scenario for the decider, then choose the model that fits the risk, not simply the strictest one.",
           "exam_traps": [
             {
               "trap": "Pick MAC every time, because the strictest model is the most secure.",
-              "why": "MAC is rigid and costly. The best model fits the data's sensitivity and the organization's needs; most businesses use RBAC."
+              "why": "MAC is rigid and costly. The best model fits the data and the organization; most businesses use RBAC."
             },
             {
               "trap": "An organization must use one model for everything.",
-              "why": "Mixing is normal: roles for applications, owner sharing for personal folders and rules on network devices."
+              "why": "Mixing is normal: roles for applications, owner sharing for personal folders, rules on network devices."
             }
           ],
           "key_terms": [
             {
               "term": "Access control model",
-              "definition": "A formal approach that sets who or what decides access, such as DAC, MAC, RBAC or ABAC."
+              "definition": "A formal approach setting who or what decides access."
             },
             {
               "term": "Hybrid model",
@@ -1455,51 +1523,188 @@
           "name": "Least Privilege and SoD for Automated Systems and AI Agents",
           "legacy_ids": [],
           "definition": "Applying least privilege and separation of duties to automation means scripts, bots and AI agents get only the access their task needs and cannot finish high-risk actions alone.",
-          "why_it_matters": "Automation acts fast and at scale, so an over-privileged bot or a manipulated AI agent can do damage in seconds. The OWASP Top 10 for large language model (LLM) applications calls this risk excessive agency.",
+          "why_it_matters": "An over-privileged bot or a manipulated AI agent can do damage in seconds. The Open Worldwide Application Security Project (OWASP) calls this risk excessive agency.",
           "how_it_works": [
-            "Scope each bot or agent to the data, tools and actions its task needs.",
-            "An agent acting for a person never gets more than that person's rights.",
-            "Keep a human approval step for high-impact actions, such as payments, deletions or access changes.",
+            "Scope each bot or agent to the data, tools and actions its task needs, never beyond its user's rights.",
+            "Keep a human approval step for high-impact actions, such as payments or deletions.",
             "One automation should not both make a change and approve it.",
-            "Log every action under the agent's own identity, and keep a quick way to stop it.",
-            "Treat instructions inside emails, files or web pages as untrusted input."
+            "Log actions under the agent's own identity, keep a stop switch and treat instructions in content as untrusted."
           ],
-          "example": "A property management firm pilots an AI agent that reads tenant emails and books repairs. The vendor's setup asks for full access to the finance system for future features. Wren, a junior security analyst, maps what the agent actually does and sends the system owner a proposal: read access to the repair calendar, write access to work orders only and a manager's approval for any payment the agent drafts.",
+          "example": "A property firm pilots an AI agent that reads tenant emails and books repairs; the vendor wants full finance access for future features. Wren, a junior security analyst, maps what the agent does and proposes to the system owner: read the repair calendar, write work orders, and a manager approves any payment.",
           "audit_focus": {
             "review": [
-              "List each action an agent or bot takes, then grant only those",
+              "Look for agent permissions that no documented task uses",
               "Test that the agent stops and waits at each approval step"
             ],
             "evidence": [
               "The agent's permission list compared with its documented tasks",
-              "Logs of actions taken under the agent's own identity"
+              "Activity logs that tie each action to a specific agent"
             ],
             "recommend": "Report an agent or bot with broad or unexplained rights to its owner and the security team.",
-            "decides": "The system owner decides what an automated system may do without a person"
+            "decides": "The system owner decides what automation may do unattended"
           },
-          "isaca_rule": "Automation follows the same rules as people, applied more strictly because it acts faster: its own identity, least privilege, no end-to-end control of risky actions, full logs and a way to stop it.",
+          "isaca_rule": "Automation follows people's rules, more strictly: its own identity, least privilege, human approval for risky actions, logs and a stop switch.",
           "exam_traps": [
             {
-              "trap": "An AI agent is just software, so access control principles do not apply to it.",
-              "why": "An agent acts like a user: it reads data and takes actions. It needs its own identity, scoped rights and oversight."
+              "trap": "An AI agent is just software, so access principles do not apply to it.",
+              "why": "An agent reads data and takes actions like a user. It needs its own identity, scoped rights and oversight."
             },
             {
               "trap": "Broad access for an AI agent is safe when the vendor is reputable.",
-              "why": "Broad access lets a manipulated or faulty agent cause wide harm. Grant per task; a good vendor does not shrink what the access allows."
+              "why": "A manipulated or faulty agent can misuse broad access whoever made it. Grant per task."
             }
           ],
           "key_terms": [
             {
               "term": "Excessive agency",
-              "definition": "An AI system given more functions, permissions or independence than its task needs, so a bad output can cause harm."
-            },
-            {
-              "term": "Human in the loop",
-              "definition": "A design where a person must review or approve an automated action before it takes effect."
+              "definition": "An AI system given more permissions or independence than its task needs."
             },
             {
               "term": "Prompt injection",
               "definition": "Crafted or hidden instructions in input that make an AI model ignore its original instructions."
+            }
+          ]
+        },
+        {
+          "id": "3.2.12",
+          "name": "Just-in-Time and Break-Glass Access",
+          "legacy_ids": [],
+          "definition": "Just-in-time access grants privileged rights only for an approved task and period, then removes them. Break-glass access is a sealed emergency account for when normal access fails.",
+          "why_it_matters": "Standing admin rights are available to attackers around the clock. Granting them only when needed shrinks that window.",
+          "how_it_works": [
+            "An administrator requests elevation for a named task, and an approver agrees.",
+            "The rights switch on for a set time, the session is logged, and the rights expire.",
+            "Break-glass credentials are sealed in a vault or safe, held by few people and tested regularly.",
+            "Every break-glass use raises an alert and a review, and the credential is changed afterward."
+          ],
+          "example": "During a storm, a regional airport's sign-in service fails and no administrator can reach the baggage system. Following the emergency runbook, the on-call lead, Tariq, checks out the break-glass credentials, restores service and logs each step. Next morning Rosa, a junior security analyst, matches the session log to Tariq's notes and confirms the emergency password was changed.",
+          "audit_focus": {
+            "review": [
+              "Confirm each elevation had an approved task and expired on time",
+              "Match every emergency sign-in to an incident record"
+            ],
+            "evidence": [
+              "Elevation logs with requester, approver, start and end times",
+              "Alerts and session records for each emergency account use"
+            ],
+            "recommend": "Report break-glass use with no incident record, or elevation that never expired, to the system owner.",
+            "decides": "The system owner approves who may elevate or hold emergency access"
+          },
+          "isaca_rule": "Privilege should be borrowed, not owned: request it for a task, use it, let it expire. Emergency access must exist, but every use is alerted and reviewed.",
+          "exam_traps": [
+            {
+              "trap": "Give administrators permanent admin rights so they can respond quickly.",
+              "why": "Standing rights help attackers too. Just-in-time grants and a tested break-glass account give speed without permanent exposure."
+            },
+            {
+              "trap": "A break-glass account can go unmonitored, since it is only for emergencies.",
+              "why": "Its power and rare use make every sign-in worth checking."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Just-in-time (JIT) access",
+              "definition": "Privileges granted only when needed, for a set task and time, then removed automatically."
+            },
+            {
+              "term": "Break-glass account",
+              "definition": "A sealed emergency account for when normal admin access fails; every use raises an alert."
+            }
+          ]
+        },
+        {
+          "id": "3.2.13",
+          "name": "Access Model Scenarios: Worked Examples",
+          "legacy_ids": [],
+          "definition": "Worked scenarios practice naming the access control model from clues: who sets the permission, what the decision depends on, and whether users can change it.",
+          "why_it_matters": "Short scenarios describe the decision instead of naming the model. Reading for the decider, not for words like secure or flexible, settles most choices.",
+          "how_it_works": [
+            "Find the decider: an owner, a central label, a job role, attributes or one rule for all.",
+            "If users cannot change access themselves, the model is non-discretionary.",
+            "Groups do not always mean role-based: if a file owner picks the group, it is discretionary.",
+            "A time limit applied to everyone is rule-based, even where roles also exist."
+          ],
+          "compare": {
+            "columns": [
+              "What the scenario says",
+              "Who sets access",
+              "Model"
+            ],
+            "rows": [
+              {
+                "label": "Case 1",
+                "cells": [
+                  "A manager shares a budget sheet with two colleagues",
+                  "The file's owner",
+                  "Discretionary (DAC)"
+                ]
+              },
+              {
+                "label": "Case 2",
+                "cells": [
+                  "Only staff cleared to Secret, on that project, can open a design",
+                  "The system, by label and clearance",
+                  "Mandatory (MAC)"
+                ]
+              },
+              {
+                "label": "Case 3",
+                "cells": [
+                  "New pharmacists get the Pharmacist permissions on day one",
+                  "The organization, by job role",
+                  "Role-based (RBAC)"
+                ]
+              },
+              {
+                "label": "Case 4",
+                "cells": [
+                  "Managers approve expenses for their own region, on work laptops, in office hours",
+                  "A policy over several attributes",
+                  "Attribute-based (ABAC)"
+                ]
+              },
+              {
+                "label": "Case 5",
+                "cells": [
+                  "Nobody can sign in to payroll between 8 p.m. and 6 a.m.",
+                  "One administrator rule for all",
+                  "Rule-based"
+                ]
+              }
+            ]
+          },
+          "example": "Imani, a new access analyst at a hospital, is documenting the records system for the security team. Staff see records according to their job, and nobody can open records from outside the hospital after 10 p.m. Imani first writes role-based for both, then splits them: the job part is role-based, the night block for everyone is rule-based. Imani records both.",
+          "audit_focus": {
+            "review": [
+              "Test the recorded model against a sample of real permission grants",
+              "Look for systems with no access model recorded"
+            ],
+            "evidence": [
+              "Permission settings showing whether owners, roles or rules grant access",
+              "Model inventory listing each application and its access model"
+            ],
+            "recommend": "Flag systems whose recorded model differs from their real settings to the system owner.",
+            "decides": "System owners confirm which model their system uses"
+          },
+          "isaca_rule": "When two models seem to fit, split the scenario into parts and name the model for each part.",
+          "exam_traps": [
+            {
+              "trap": "If permissions go to groups, the model must be role-based.",
+              "why": "Owners share with groups too. If the file owner chose the group, it is discretionary."
+            },
+            {
+              "trap": "Any scenario with classified data uses mandatory access control.",
+              "why": "Check who decides. If the owner can grant access at will, it is discretionary, whatever the label says."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Decider",
+              "definition": "The person, system or policy that actually sets whether a subject may access an object."
+            },
+            {
+              "term": "Non-discretionary clue",
+              "definition": "A sign that users cannot change access themselves, such as access set centrally or sharing blocked."
             }
           ]
         }
@@ -1516,21 +1721,76 @@
     "Deprovisioning": "Removing an identity's access, credentials and sessions when they are no longer needed.",
     "Access review": "A regular check by a manager or owner that each account and right is still needed.",
     "Privilege creep": "The buildup of unneeded access as people change jobs and keep old rights.",
-    "Multi-factor authentication (MFA)": "Sign-in that combines at least two different factor categories: know, have or are.",
+    "Access request": "A recorded ask for specific access, approved by the resource owner and fulfilled by someone else.",
+    "Multifactor authentication (MFA)": "Sign-in that combines at least two different factor categories: know, have or are.",
     "Phishing-resistant authentication": "Sign-in tied to the genuine site, such as passkeys and FIDO2 keys, that a fake page cannot reuse.",
     "Single sign-on (SSO)": "One sign-in at an identity provider that gives access to many applications.",
     "Federation": "Trust between organizations or systems that lets one accept the other's sign-ins.",
     "Adaptive authentication": "Sign-in checks that rise or fall with the risk score of each attempt.",
+    "Session": "The period after sign-in when a user can act without proving identity again; timeouts limit it.",
     "Least privilege": "Giving each identity only the access its task needs, for only as long as needed.",
     "Need to know": "Limiting information to people whose current duties require it.",
     "Separation of duties (SoD)": "Splitting a sensitive process so no single person can complete it alone.",
     "Privileged account": "An account that can change systems, security settings or other users' access.",
+    "Just-in-time (JIT) access": "Privileged rights granted only for an approved task and period, then removed automatically.",
     "Service account": "An account used by an application or process rather than a person.",
     "Non-human identity": "Any identity used by software, such as a service account, bot, API key or AI agent.",
     "Discretionary access control (DAC)": "The resource owner decides who may access it.",
-    "Mandatory access control (MAC)": "The system decides access by comparing clearances with classification labels.",
+    "Mandatory access control (MAC)": "The system decides access by comparing clearances with classification labels; not the same as a network MAC address.",
     "Role-based access control (RBAC)": "Permissions attach to job roles, and people are assigned roles.",
     "Attribute-based access control (ABAC)": "A policy decides each request using attributes of the user, resource, action and environment.",
     "Rule-based access control": "Administrator-written rules apply the same way to every subject."
-  }
+  },
+  "references": [
+    {
+      "title": "ISC2® CC® Certification Exam Outline (effective 1 Sep 2026)",
+      "url": "https://www.isc2.org/certifications/cc/cc-certification-exam-outline",
+      "checked": "2026-10-28: via docs/content/CC_BLUEPRINT.md (headings 3.1 and 3.2)"
+    },
+    {
+      "title": "NIST SP 800-63-4, Digital Identity Guidelines (2025)",
+      "url": "https://doi.org/10.6028/NIST.SP.800-63-4",
+      "checked": "2026-10-28: final, per NIST's release notice (July/August 2025); suite page not opened"
+    },
+    {
+      "title": "NIST SP 800-63A-4, Digital Identity Guidelines: Identity Proofing and Enrollment (2025)",
+      "url": "https://doi.org/10.6028/NIST.SP.800-63A-4",
+      "checked": "2026-10-28: part of the final 800-63-4 suite; volume not opened, so the notes give only the idea of assurance levels"
+    },
+    {
+      "title": "NIST SP 800-63B-4, Digital Identity Guidelines: Authentication and Authenticator Management (Jul 2025)",
+      "url": "https://doi.org/10.6028/NIST.SP.800-63B-4",
+      "checked": "2026-10-28: full text read (password length 15/8 and 64 maximum, no composition rules or periodic changes, no security questions, salted hashes, throttling, reauthentication 24 h/1 h at AAL2 and 12 h/15 min at AAL3)"
+    },
+    {
+      "title": "NIST SP 800-162, Guide to Attribute Based Access Control (ABAC) Definition and Considerations (Jan 2014, updated Aug 2019)",
+      "url": "https://doi.org/10.6028/NIST.SP.800-162",
+      "checked": "2026-10-28: via search; PDF not opened"
+    },
+    {
+      "title": "NIST SP 800-207, Zero Trust Architecture (Aug 2020)",
+      "url": "https://csrc.nist.gov/pubs/sp/800/207/final",
+      "checked": "2026-10-28: same citation as the D4 notes"
+    },
+    {
+      "title": "ISO/IEC 27002:2022, Information security controls (5.15 Access control, 5.16 Identity management, 5.18 Access rights, 8.2 Privileged access rights)",
+      "url": "https://www.iso.org/standard/75652.html",
+      "checked": "2026-10-28: control titles confirmed via search; the standard is paid and was not read"
+    },
+    {
+      "title": "CIS Critical Security Controls v8.1, Control 5 Account Management and Control 6 Access Control Management",
+      "url": "https://www.cisecurity.org/controls/v8-1",
+      "checked": "2026-10-28: via search (Safeguard 5.3, disable dormant accounts after 45 days)"
+    },
+    {
+      "title": "OWASP Non-Human Identities Top 10 (2025)",
+      "url": "https://owasp.org/www-project-non-human-identities-top-10/2025/top-10-2025/",
+      "checked": "2026-10-28: via search (NHI1 Improper Offboarding, NHI2 Secret Leakage)"
+    },
+    {
+      "title": "OWASP Top 10 for LLM Applications 2025, LLM06 Excessive Agency",
+      "url": "https://genai.owasp.org/llmrisk/llm062025/",
+      "checked": "2026-10-28: via search; a 2026 edition is reported with excessive agency ranked higher, not read on owasp.org, so the notes give no rank"
+    }
+  ]
 }
