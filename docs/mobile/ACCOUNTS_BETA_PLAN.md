@@ -21,10 +21,36 @@ read them from repository variables, apps from their build settings.
 
 | Ticket | What | State |
 |---|---|---|
-| 1 | Database fixes before the first apply (§3.1), Edge Function changes (§3.3), workflows (§6), docs, legal drafts, email templates, Data safety answers; then the security audit's fixes (below) | **Done in the repo, not applied.** Nothing is on the hosted project yet |
-| 2 | MCP apply, SQL checks, advisors, function deploy (§3.3) | Next, after review of ticket 1 |
+| 1 | Database fixes before the first apply (§3.1), Edge Function changes (§3.3), workflows (§6), docs, legal drafts, email templates, Data safety answers; then the security audit's fixes (below) | **Done** (PR #141) |
+| 2 | MCP apply, SQL checks, advisors, function deploy (§3.3) | **Database applied 28 Oct 2026** (all five migrations, byte-for-byte, checks and advisors clean: see "Hosted apply record" below). Function deploy waits for the `DELETION_PEPPER` secret (§9 step 29) |
 | 3 | Web client (§1, web engineer) and mobile go-live (§2, mobile engineer) | Not started |
 | 4 | Sky's checklist (§9) | Groups A–E can start now |
+
+### Hosted apply record (28 Oct 2026, Supabase MCP, project `ziadnvepttlgcowvqvom`)
+
+MCP stores its own apply-time version, not the file's. Before any `supabase db push` to the hosted project, run `supabase migration repair` with this mapping (or keep applying through MCP).
+
+| Repo file | Hosted version | md5 of the stored statements (= `md5sum` of the file) |
+|---|---|---|
+| `20261005000000_init_mobile_sync.sql` | `20261028042845` | `7fa077506232ec575bafea08d299da32` |
+| `20261013000000_sync_snapshots.sql` | `20261028044435` | `6ca40d6caa0d443154ec7696dfd69f14` |
+| `20261014000000_feedback_board.sql` | `20261028045309` | `b45c8e2a6d36d260a0d66d4127a9d045` |
+| `20261027000000_beta_board_paused.sql` | `20261028045341` | `af1be1f0a0904ba010f7a4039f1bea68` |
+| `20261027000100_beta_no_passwords.sql` | `20261028045402` | `3a676a49c8ea05a88f0a0678f1dee3a0` |
+
+Checks after the apply:
+- 22 tables in `public` and `private`, every one with RLS on.
+- No `content_packs`, no SECURITY DEFINER function in `public`, and nothing in `supabase_realtime`.
+- `kaisip_clear_password` is enabled on `auth.users`.
+- `board_settings` is one row with `posting_open = false`. The four board write entry points are revoked from `service_role`; `svc_board_counts` and `svc_board_export` are still granted.
+- anon can execute only `board_feed` and `board_post`. The only `using (true)` is `board_settings_read`.
+
+Advisors (no ERROR, no WARN):
+- Security: INFO "RLS enabled, no policy" on 8 `private` tables. This is by design: deny all except the owner and `service_role`.
+- Performance: INFO "unused index", because the database is empty.
+- Performance: INFO "unindexed foreign keys" on 7 board columns (author_member, parent_id, duplicate_of, official_comment_id, and the notification post and comment ids). Add those indexes in the migration that opens the board; the board is off for the beta.
+
+The Supabase MCP asks the owner to confirm any SQL containing DROP, DELETE, TRUNCATE or an UPDATE without WHERE. Its check is keyword-based, so comments and function bodies set it off. Future applies must run with Sky present.
 
 ## Security audit (27 Oct 2026) and the go-live gates
 
