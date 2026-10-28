@@ -38,7 +38,7 @@ function splitTerm(raw) {
 
 const escapeRe = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
-/** The subtopic that teaches a term: one that lists it, one named for it, or one that defines it. */
+/** The subtopic that teaches a term: one that lists it, one named for it (or for its abbreviation), or one that defines it. */
 function noteFor(domain, term, short) {
   const subs = domain.topics.flatMap((t) => t.subtopics);
   const name = term.toLowerCase();
@@ -55,6 +55,12 @@ function noteFor(domain, term, short) {
     return n && (n.includes(name) || name.includes(n));
   });
   if (named) return named.id;
+  // A note named for the abbreviation, as a whole word ("Recovery Objectives: RPO, RTO, MTD and MBCO" for RPO).
+  if (short) {
+    const abWord = new RegExp(`\\b${escapeRe(short)}\\b`);
+    const byShort = subs.find((s) => abWord.test(String(s.name || '')));
+    if (byShort) return byShort.id;
+  }
   const word = new RegExp(`\\b${escapeRe(name)}\\b`, 'i');
   const defined = subs.find((s) => word.test(String(s.definition || '')));
   return defined ? defined.id : domain.id;

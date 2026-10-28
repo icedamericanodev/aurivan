@@ -15,7 +15,7 @@
  */
 import { getCertification, getDomain, CERTIFICATIONS } from '../content/certifications';
 import { findQuestion } from '../content/loader';
-import { termsFor } from '../content/terms';
+import { termsFor, type KeyTerm } from '../content/terms';
 import { findLesson } from '../content/lessons';
 import { getPrinciples } from '../content/principles';
 import { RULE_PROMPTS } from '../content/principles/widgetPrompts';
@@ -320,9 +320,13 @@ export function recallFit(q: { stem: string; scenario?: string; options: Partial
  * The Recall card for today and the next few days, kept once picked. Only a
  * question the learner answered RIGHT (its last answer) at least 14 days
  * before that day, and never one they haven't met. Each day picks, in order:
- *   1. one the learner said "Not yet" to, from 3 days later;
+ *   1. one the learner said "Not yet" to, from 3 days later (even if it was
+ *      picked in the last 7 days: that is the card it was);
  *   2. otherwise the day's pick among the ones answered right longest ago;
  * skipping one picked in the last 7 days and one still resting after "Had it".
+ * Today's card stays today's card once picked, even after the learner checks it
+ * today ("Had it" / "Not yet" rest it from tomorrow). A later day's pick, not
+ * shown yet, gives way to a "Not yet" card that is due that day (1.48 QA).
  * Reads answers only; writes nothing to progress.
  */
 export function recallDays(
@@ -347,19 +351,36 @@ export function recallDays(
   const shown: Record<string, string> = { ...picks };
   for (let d = 0; d < DAYS_AHEAD; d++) {
     const day = addDays(today, d);
-    const ok = (id: string) => {
+    // Still a fair card: answered right (its last answer) at least 14 calendar days before this day.
+    const fair = (id: string) => {
       const a = answers[id];
-      if (!a || !a.lastCorrect || !fits.has(id)) return false;
-      // Answered right at least 14 calendar days before this day.
-      if (daysBetween(dayKey(a.lastAt), day) < RECALL_AFTER_DAYS) return false;
+      return Boolean(a && a.lastCorrect && fits.has(id) && daysBetween(dayKey(a.lastAt), day) >= RECALL_AFTER_DAYS);
+    };
+    // Fair, and not resting after a self-check.
+    const ok = (id: string) => {
+      if (!fair(id)) return false;
       const due = recallDueFrom(self?.[id]);
       return !due || due.from <= day;
     };
     const recent = (id: string) => Object.entries(shown).some(([k, v]) => v === id && k < day && daysBetween(k, day) < 7);
-    let id = shown[day] && ok(shown[day]) ? shown[day] : undefined;
+    const used = (id: string) => Object.values(chosen).includes(id);
+    // A "Not yet" card due this day comes first, whenever it was last picked (BUG 2: the 7-day rule must not hold it back),
+    // once: not if it already came back on an earlier day of this run.
+    const notYet = [...fits.keys()].find((x) => {
+      const due = recallDueFrom(self?.[x]);
+      return due?.priority && ok(x) && !Object.entries(chosen).some(([k, v]) => v === x && k >= due.from);
+    });
+    const was = shown[day];
+    let id: string | undefined;
+    if (was && d === 0 && fair(was) && self?.[was]?.on === day) {
+      // Checked today: it stays today's card ("A new card tomorrow"), never swapped for another (BUG 1).
+      id = was;
+    } else if (was && ok(was) && !(d > 0 && notYet && notYet !== was)) {
+      // A day's pick is kept; a later day's (not shown yet) gives way to a due "Not yet" card.
+      id = was;
+    }
     if (!id) {
-      const pool = [...fits.keys()].filter((x) => ok(x) && !recent(x) && !Object.values(chosen).includes(x));
-      const notYet = pool.find((x) => recallDueFrom(self?.[x])?.priority);
+      const pool = [...fits.keys()].filter((x) => ok(x) && !recent(x) && !used(x));
       // The day's pick among the 12 answered right longest ago, so a fresh right answer waits its turn.
       const oldest = pool.slice(0, 12);
       id = notYet ?? (oldest.length ? oldest[hash(`${certId}:recall:${day}`) % oldest.length] : undefined);
@@ -374,26 +395,57 @@ export function recallDays(
   return { recall, picks: chosen };
 }
 
+/** Day 0 of the Key term rotation (any fixed day works; it only has to be the same on every phone). */
+const TERM_EPOCH = '2026-01-01';
+
+/** A domain's terms in a fixed shuffled order (the same on every phone, every run). */
+function termOrder(certId: string, list: readonly KeyTerm[]): KeyTerm[] {
+  return [...list].sort((a, b) => hash(`${certId}:term:${a.id}`) - hash(`${certId}:term:${b.id}`) || (a.id < b.id ? -1 : 1));
+}
+
+/** A term by id, in any domain of the certification. */
+function termById(certId: string, id: string | undefined): { term: KeyTerm; domainId: string } | null {
+  if (!id) return null;
+  for (const d of getCertification(certId)?.domains ?? []) {
+    const term = termsFor(certId, d.id).find((t) => t.id === id);
+    if (term) return { term, domainId: d.id };
+  }
+  return null;
+}
+
 /**
  * The Key term for today and the next few days: one term a day from the
  * notes' glossary for today's plan topic (`domainId`: its first item with a
- * domain), or, with none, a domain chosen by the day. The same term all day,
- * the same on every phone (a hash of the day), and never the day before's again.
+ * domain), or, with none, a domain chosen by the day. Within a domain the
+ * terms take turns, one step a day through a fixed shuffled order, so the
+ * term for a day is the same on every write and every phone, and never the
+ * day before's again (1.48 QA: it used to be a fresh hash each run, so the
+ * term written ahead for today could differ from today's own pick).
+ * `picks` (the terms kept by day, lib/widgetData collectSnapshot): a day's
+ * kept term stays (the same term all day), and yesterday's is never repeated.
  */
-export function termDays(certId: string, today: string, domainId?: string): TermSnap[] {
+export function termDays(certId: string, today: string, domainId?: string, picks: Record<string, string> = {}): TermSnap[] {
   const cert = getCertification(certId);
   if (!cert) return [];
   const out: TermSnap[] = [];
-  let prev = '';
+  // The term the day before showed (kept), for "never the same two days running".
+  let prev = termById(certId, picks[addDays(today, -1)])?.term;
   for (let d = 0; d < DAYS_AHEAD; d++) {
     const day = addDays(today, d);
-    const dom = domainId && termsFor(certId, domainId).length ? domainId : cert.domains[hash(`${certId}:domain:${day}`) % cert.domains.length]?.id;
-    const list = dom ? termsFor(certId, dom) : [];
-    if (!list.length) continue;
-    let i = hash(`${certId}:term:${day}`) % list.length;
-    if (list[i].id === prev && list.length > 1) i = (i + 1) % list.length;
-    const t = list[i];
-    prev = t.id;
+    const kept = termById(certId, picks[day]);
+    let t: KeyTerm | undefined = kept?.term;
+    let dom = kept?.domainId;
+    if (!t) {
+      dom = domainId && termsFor(certId, domainId).length ? domainId : cert.domains[hash(`${certId}:domain:${day}`) % cert.domains.length]?.id;
+      const order = dom ? termOrder(certId, termsFor(certId, dom)) : [];
+      if (!order.length) continue;
+      const n = daysBetween(TERM_EPOCH, day);
+      let i = ((n % order.length) + order.length) % order.length;
+      // Never yesterday's term again (by id or by the same words in another topic's glossary).
+      if (prev && order.length > 1 && (order[i].id === prev.id || order[i].term === prev.term)) i = (i + 1) % order.length;
+      t = order[i];
+    }
+    prev = t;
     out.push({ day, id: t.id, term: t.term, ...(t.short ? { short: t.short } : {}), meaning: t.meaning, topic: topicName(certId, dom), note: t.note });
   }
   return out;
@@ -484,6 +536,15 @@ export function collectSnapshot(now = Date.now(), reveal: RevealState = readReve
   // Today's plan as Today has it (or would make it), for the Key term's topic.
   const stored = state.days[cert.id];
   const dayPlan = stored && stored.day === today ? stored : settings.onboarded ? planFor(cert.id, now)?.plan : null;
+  // The Key term: today's is kept from the day's first write (1.48 QA). One written AHEAD
+  // (yesterday) is kept too if the learner already revealed it on the widget today.
+  const termPicks: Record<string, string> = { ...(ws.termPicks ?? {}) };
+  if (!termPicks[today]) {
+    const seen = Object.values(reveal.cards ?? {}).find((id) => termById(cert.id, id));
+    if (seen) termPicks[today] = seen;
+  }
+  const terms = termDays(cert.id, today, planDomain(dayPlan), termPicks);
+  if (terms[0]?.day === today) ws.rememberTerms({ [today]: terms[0].id });
   return buildSnapshot({
     now,
     onboarded: settings.onboarded,
@@ -497,7 +558,7 @@ export function collectSnapshot(now = Date.now(), reveal: RevealState = readReve
     plant: plantSnap(cert.id, today),
     think: rules.think,
     recall,
-    terms: termDays(cert.id, today, planDomain(dayPlan)),
+    terms,
     // Road to exam reads the plan engine's stage only when exam timing is on (it shows nothing otherwise).
     road: settings.onboarded && ws.prefs.timing ? roadSnap(cert.id, now, studyDays) : null,
     ready: ws.prefs.readiness === 'off' ? null : readySnap(cert.id, today),

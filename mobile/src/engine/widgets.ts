@@ -1010,7 +1010,8 @@ function readinessFace(s: WidgetSnapshot, today: string): WidgetFace {
         ? 'You chose to hide details.'
         : 'You chose to hide the number.';
     // The face doesn't repeat the learner's own choice back at every glance; TalkBack still says it.
-    return { ...base, title: 'Rings growing', line: resting ? why : grew, line2: resting ? grew : undefined, art: rings, key: 'Rings', label: `Readiness, a study estimate, rings only. ${why} ${grew} Tap to see it.` };
+    // "Rings growing" only when one really grew this week; otherwise a calm, neutral title (never a false claim).
+    return { ...base, title: r.grew ? 'Rings growing' : 'Your rings', line: resting ? why : grew, line2: resting ? grew : undefined, art: rings, key: 'Rings', label: `Readiness, a study estimate, rings only. ${why} ${grew} Tap to see it.` };
   }
   return {
     ...base,
@@ -1018,7 +1019,8 @@ function readinessFace(s: WidgetSnapshot, today: string): WidgetFace {
     titleStyle: 'number',
     unit: '%',
     line: 'A study estimate, not a prediction.',
-    shortLine: 'a study estimate',
+    // The qualifier the range always keeps, at every size and text scale (DESIGN_SYSTEM §20.3).
+    shortLine: 'A study estimate',
     line2: grew,
     art: rings,
     key: `${r.low}–${r.high}`,
@@ -1032,6 +1034,9 @@ export function sharedWord(ask: string, short: string): string {
   const words = short.match(/[A-Za-z’']{4,}/g) ?? [];
   return words.find((w) => ask.toLowerCase().includes(w.toLowerCase())) ?? '';
 }
+/** TalkBack: the reveal is its own button on the Recall card and the Key term (the card itself opens the app). */
+export const NEXT_BUTTON = (label: string) => `${label} is the next button.`;
+
 /** The calm line on the exam eve and exam day (no new material then). */
 export const EXAM_CUE_TITLE = 'One question at a time.';
 export const EXAM_CUE_LINE = 'Read the last sentence first: it says what is being asked.';
@@ -1132,7 +1137,8 @@ function recallFace(s: WidgetSnapshot, today: string, ctx: DrawContext): WidgetF
       action: { label: 'Show the answer', link: '', widgetAction: 'REVEAL' },
       link: open,
       key: r.stem.split(' ')[0],
-      label: `Recall card, hidden, from ${ago}. ${r.stem} Think of the answer, then double-tap Show the answer.`,
+      // TalkBack: double-tapping the card opens the app; "Show the answer" is its own button (forNarrowStrip rewrites this where the whole card reveals).
+      label: `Recall card, answer hidden, from ${ago}. ${r.stem} Think of the answer. ${NEXT_BUTTON('Show the answer')} Double-tap the card to open it in KaiSip.`,
     };
   }
   const cue = r.cue ? `Exam cue: ${r.cue}` : undefined;
@@ -1193,7 +1199,7 @@ function termFace(s: WidgetSnapshot, today: string, ctx: DrawContext): WidgetFac
       action: { label: 'Show the meaning', link: '', widgetAction: 'REVEAL' },
       link: note,
       key: t.short ?? t.term.split(' ')[0],
-      label: `Key term, meaning hidden: ${full}. Double-tap Show the meaning.`,
+      label: `Key term, meaning hidden: ${full}. ${NEXT_BUTTON('Show the meaning')} Double-tap the card to open its note in KaiSip.`,
     };
   }
   return {
@@ -1384,7 +1390,22 @@ export interface RevealState {
    * Optional and added beside `self`: marks saved by 1.47 have none.
    */
   recall?: Record<string, SelfCheck>;
+  /**
+   * Which card each revealed widget (by id) showed when it was revealed today
+   * (mobile 1.48): a rule id, a recall question id or a term id. A reveal
+   * belongs to its card, so a widget whose card changes starts hidden again.
+   * Optional: marks saved by 1.47 have none (they stay revealed, as before).
+   */
+  cards?: Record<string, string>;
 }
+
+/** Self-checks kept per field (the newest ones); older ones drop off. */
+export const SELF_CHECKS_KEPT = 64;
+/**
+ * A self-check older than this many days is forgotten: well past the longest
+ * rest (60 days for a recall card checked twice), so it no longer changes anything.
+ */
+export const SELF_CHECK_DAYS = 120;
 
 /** "Had it" / "Not yet" this soon after the same widget's reveal is the reveal's double tap, not an answer. */
 export const REVEAL_TAP_GUARD_MS = 2000;
@@ -1406,15 +1427,25 @@ export function readReveal(raw: unknown, today: string): RevealState {
       if (LINK_ID.test(k) && typeof v === 'number' && Number.isFinite(v)) counts[k] = Math.max(0, Math.min(9999, Math.round(v)));
     }
   }
+  // The self-checks: only well-formed ones, none older than SELF_CHECK_DAYS, and the
+  // NEWEST SELF_CHECKS_KEPT (by day). Keeping the oldest instead would lose every new
+  // check once the list was full (fixed in 1.48 QA).
   const checks = (field: unknown): Record<string, SelfCheck> => {
-    const out: Record<string, SelfCheck> = {};
-    if (!field || typeof field !== 'object') return out;
-    for (const [k, v] of Object.entries(field as Record<string, unknown>).slice(0, 64)) {
+    const valid: [string, SelfCheck][] = [];
+    if (!field || typeof field !== 'object' || Array.isArray(field)) return {};
+    for (const [k, v] of Object.entries(field as Record<string, unknown>)) {
       const e = v as Record<string, unknown>;
       if (!LINK_ID.test(k) || !e || typeof e !== 'object' || !isDay(e.on) || (e.last !== 'had' && e.last !== 'notyet')) continue;
-      out[k] = { had: num(e.had, 0, 9999), notYet: num(e.notYet, 0, 9999), last: e.last, on: e.on };
+      if (e.on <= today && daysBetween(e.on, today) > SELF_CHECK_DAYS) continue;
+      valid.push([k, { had: num(e.had, 0, 9999), notYet: num(e.notYet, 0, 9999), last: e.last, on: e.on }]);
     }
-    return out;
+    // Newest day first; on the same day, the later-saved one first. Then back to oldest-first order.
+    const kept = valid
+      .map((x, i) => ({ x, i }))
+      .sort((a, b) => (a.x[1].on === b.x[1].on ? b.i - a.i : a.x[1].on < b.x[1].on ? 1 : -1))
+      .slice(0, SELF_CHECKS_KEPT)
+      .sort((a, b) => a.i - b.i);
+    return Object.fromEntries(kept.map(({ x }) => x));
   };
   const self = checks(o.self);
   const recall = checks(o.recall);
@@ -1426,18 +1457,48 @@ export function readReveal(raw: unknown, today: string): RevealState {
       if (/^-?\d{1,10}$/.test(k) && typeof v === 'number' && Number.isFinite(v)) at[k] = v;
     }
   }
-  return { day: today, ids, counts, self, at, recall };
+  // Which card each widget revealed: today's only, like the marks (1.48 QA).
+  const cards: Record<string, string> = {};
+  if (o.day === today && o.cards && typeof o.cards === 'object') {
+    for (const [k, v] of Object.entries(o.cards as Record<string, unknown>).slice(0, 32)) {
+      if (/^-?\d{1,10}$/.test(k) && typeof v === 'string' && LINK_ID.test(v)) cards[k] = v;
+    }
+  }
+  return { day: today, ids, counts, self, at, recall, cards };
 }
+
+/** The reveal counts with one more for this rule (unchanged without a valid rule id). */
+const counted = (counts: Record<string, number>, principleId: string | null) =>
+  principleId && LINK_ID.test(principleId) ? { ...counts, [principleId]: (counts[principleId] ?? 0) + 1 } : counts;
 
 /**
  * Mark one widget revealed today, and count the reveal for its rule (once per
  * widget per day). `now`: the reveal's time, kept so a quick second tap is ignored.
+ * `cardId` (1.48 QA): the card it showed, so the reveal belongs to that card only.
  */
-export function withReveal(s: RevealState, widgetId: number, principleId: string | null, now?: number): RevealState {
-  if (s.ids.includes(widgetId)) return s;
-  const counts = principleId && LINK_ID.test(principleId) ? { ...s.counts, [principleId]: (s.counts[principleId] ?? 0) + 1 } : s.counts;
-  const at = now === undefined ? s.at : { ...s.at, [String(widgetId)]: now };
-  return { ...s, ids: [...s.ids, widgetId], counts, at };
+export function withReveal(s: RevealState, widgetId: number, principleId: string | null, now?: number, cardId?: string | null): RevealState {
+  const key = String(widgetId);
+  const card = cardId && LINK_ID.test(cardId) ? cardId : undefined;
+  if (s.ids.includes(widgetId)) {
+    // Already revealed today. Only a NEW card on the same widget is a new reveal (it gets its own card and time).
+    if (!card || s.cards?.[key] === undefined || s.cards[key] === card) return s;
+    return { ...s, counts: counted(s.counts, principleId), cards: { ...s.cards, [key]: card }, at: now === undefined ? s.at : { ...s.at, [key]: now } };
+  }
+  const counts = counted(s.counts, principleId);
+  const at = now === undefined ? s.at : { ...s.at, [key]: now };
+  const cards = card ? { ...s.cards, [key]: card } : s.cards;
+  return { ...s, ids: [...s.ids, widgetId], counts, at, ...(cards ? { cards } : {}) };
+}
+
+/**
+ * Is this widget's CURRENT card revealed? A reveal belongs to the card it
+ * showed (1.48 QA): if the widget's card has changed since, it starts hidden.
+ * Marks saved by 1.47 name no card, and stay revealed as they always did.
+ */
+export function cardRevealed(s: RevealState, widgetId: number, cardId: string | null): boolean {
+  if (!s.ids.includes(widgetId)) return false;
+  const was = s.cards?.[String(widgetId)];
+  return was === undefined || was === cardId;
 }
 
 /** True within REVEAL_TAP_GUARD_MS of this widget's reveal: a "Had it" / "Not yet" tap then is ignored. */
@@ -1470,7 +1531,9 @@ export function withoutWidget(s: RevealState, widgetId: number): RevealState {
   if (!s.ids.includes(widgetId)) return s;
   const at = { ...s.at };
   delete at[String(widgetId)];
-  return { ...s, ids: s.ids.filter((i) => i !== widgetId), at };
+  const cards = s.cards ? { ...s.cards } : undefined;
+  if (cards) delete cards[String(widgetId)];
+  return { ...s, ids: s.ids.filter((i) => i !== widgetId), at, ...(cards ? { cards } : {}) };
 }
 
 /**
@@ -1493,6 +1556,20 @@ export function thinkIdFor(s: WidgetSnapshot | null, now: number): string | null
 /** Today's Recall card question id, if the snapshot has one. */
 export function recallIdFor(s: WidgetSnapshot | null, now: number): string | null {
   return recallFor(s, now)?.id ?? null;
+}
+
+/** Today's Key term id, if the snapshot has one. */
+export function termIdFor(s: WidgetSnapshot | null, now: number): string | null {
+  const today = dayKey(now);
+  return s?.terms.find((t) => t.day === today)?.id ?? null;
+}
+
+/** The card a reveal widget shows right now (its rule, recall question or term id), if any. */
+export function revealCardFor(kind: WidgetKind, s: WidgetSnapshot | null, now: number): string | null {
+  if (kind === 'think') return thinkIdFor(s, now);
+  if (kind === 'question') return recallIdFor(s, now);
+  if (kind === 'revisit') return termIdFor(s, now);
+  return null;
 }
 
 /** The widget kinds whose card reveals on the widget itself. */

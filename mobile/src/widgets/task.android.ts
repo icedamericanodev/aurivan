@@ -16,7 +16,7 @@
  */
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import type { WidgetTaskHandlerProps } from 'react-native-android-widget';
-import { kindOfName, parseSnapshot, readReveal, recallIdFor, REVEAL_KEY, REVEAL_KINDS, thinkIdFor, tooSoonAfterReveal, WIDGET_KEY, withoutWidget, withReveal, withSelfCheck } from '../engine/widgets';
+import { kindOfName, parseSnapshot, readReveal, recallIdFor, revealCardFor, REVEAL_KEY, REVEAL_KINDS, thinkIdFor, tooSoonAfterReveal, WIDGET_KEY, withoutWidget, withReveal, withSelfCheck } from '../engine/widgets';
 import { dayKey } from '../engine/streak';
 import { HAD_ACTION, NOTYET_ACTION, REVEAL_ACTION } from './layouts.android';
 import { renderKind, renderPlaced } from './render.android';
@@ -45,7 +45,7 @@ export async function widgetTask(props: WidgetTaskHandlerProps): Promise<void> {
       const next = doubleTap
         ? reveal
         : props.clickAction === REVEAL_ACTION
-          ? withReveal(reveal, id, rule, Date.now()) // stamped after the reads, so the slow first draw doesn't eat the guard
+          ? withReveal(reveal, id, rule, Date.now(), revealCardFor(kind, snap, now)) // stamped after the reads, so the slow first draw doesn't eat the guard; the reveal belongs to this card
           : props.clickAction === HAD_ACTION && checkId
             ? withSelfCheck(reveal, checkId, 'had', field)
             : props.clickAction === NOTYET_ACTION && checkId

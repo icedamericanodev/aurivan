@@ -98,7 +98,8 @@ export function widgetColors(tone: FaceTone, theme: WidgetTheme): WidgetColors {
       markPair: h(kaisip.dark.pair),
       rule: h(dark.line),
       margin: h(dark.clay),
-      ...darkBorder,
+      // Dark: the night-coloured card gets a visible 1 dp edge (the control outline, ≥ 3:1), or it melts into a dark wallpaper.
+      ...(theme === 'dark' ? { border: h(dark.control) } : {}),
     };
   }
   return {

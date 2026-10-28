@@ -24,7 +24,7 @@ import { addDays } from '../engine/examDay';
 import { buildSnapshot, DEFAULT_WIDGET_PREFS, FINAL_DAY_PLAIN, sizeClass, widgetFace, WIDGET_KINDS, type DrawContext, type SnapshotInput, type WidgetFace, type WidgetKind, type WidgetPrefs, type WidgetSnapshot } from '../engine/widgets';
 import { dark, light } from '../theme/tokens';
 import { markSvg, plantSvg, ringsSvg, ruledSvg, widgetColors } from '../widgets/art';
-import { captionFit, fitText, forLargeText, forNarrowStrip, TAP_MIN, WIDGET_ACTIONS, WidgetLayout } from '../widgets/layouts.android';
+import { CAPTION_SHORT, captionFit, fitText, forLargeText, forNarrowStrip, TAP_MIN, WIDGET_ACTIONS, WidgetLayout } from '../widgets/layouts.android';
 import { renderKind } from '../widgets/render.android';
 
 /** The library's own tree builder (plain JavaScript; the package keeps it out of its index). */
@@ -227,11 +227,16 @@ describe('the words and taps a learner sees', () => {
     const all = texts(tree);
     expect(all).toEqual(expect.arrayContaining(['12', 'questions', 'Start · 12 min']));
     expect(all.join(' ')).not.toContain('Short on time');
-    let pips = 0;
+    const pips: Record<string, unknown>[] = [];
     walk(tree, (n) => {
-      if (props(n).height === 4 && props(n).borderRadius) pips += 1;
+      if (props(n).height === 6 && props(n).borderRadius) pips.push(props(n));
     });
-    expect(pips).toBe(3);
+    expect(pips).toHaveLength(3);
+    // Not by colour alone (1.48 QA): done is filled, the current one filled and longer, the one to do an outline.
+    expect(pips[0].backgroundColor).toBeTruthy();
+    expect(pips[1].width as number).toBeGreaterThan(pips[0].width as number);
+    expect(pips[2]).toMatchObject({ borderWidth: { top: 1 } });
+    expect(pips[2].backgroundColor).toBeUndefined();
   });
 
   it('only Today’s plan has a Start: no other widget offers one, at any size', () => {
@@ -365,7 +370,10 @@ describe('the words and taps a learner sees', () => {
     for (const [, w, h] of SIZES.question) {
       for (const fs of SCALES) {
         const all = texts(build('question', snap(), w, h, 'light', fs));
-        expect({ w, h, fs, stem: all.includes(STEM) }).toEqual({ w, h, fs, stem: true });
+        // 1.48 QA: at the launcher minimum (250 × 110) a 170-character stem can't fit; it ends cleanly at a
+        // whole word (it used to be handed over whole and cut mid-word by Android), and the card opens the question.
+        const clean = all.some((t) => t.endsWith('…') && STEM.startsWith(t.slice(0, -1)) && /[\s,;:.]/.test(STEM.charAt(t.length - 1)));
+        expect({ w, h, fs, stem: all.includes(STEM) || (w === 250 && clean) }).toEqual({ w, h, fs, stem: true });
         expect(all.join(' ')).not.toMatch(/\(A\)|\bA\)|business impact analysis agreed/);
       }
     }
@@ -394,8 +402,17 @@ describe('the words and taps a learner sees', () => {
     }
   });
 
-  it('Readiness: rings only shows no number; the range shows "a study estimate"; what grew this week', () => {
-    expect(texts(build('readiness', snap({ prefs: ON, examDay: addDays(TODAY, 40) }), 376, 184))).toEqual(expect.arrayContaining(['68–78', '%', 'Not a prediction.', 'Security grew this week.']));
+  it('Readiness: rings only shows no number; the range shows "A study estimate" at every size and text scale; what grew this week', () => {
+    const range = snap({ prefs: ON, examDay: addDays(TODAY, 40) });
+    expect(texts(build('readiness', range, 376, 184))).toEqual(expect.arrayContaining(['68–78', '%', 'A study estimate, not a prediction.', 'Security grew this week.']));
+    // DESIGN_SYSTEM §20.3: the range never shows bare. Every size (412 and 360 dp), every scale.
+    for (const [w, h] of [GRID['2x1'], GRID['2x2'], GRID['4x1'], GRID['4x2'], GRID.s2x1, GRID.s2x2, GRID.s4x1, GRID.s4x2]) {
+      for (const scale of [1, 1.3, 2]) {
+        const all = texts(build('readiness', range, w, h, 'light', scale)).join(' | ');
+        expect({ w, h, scale, ok: /(^| \| )A study estimate/.test(all) }).toEqual({ w, h, scale, ok: true });
+        expect(all).not.toMatch(/Not a prediction\.|a study estimate$/);
+      }
+    }
     const priv = texts(build('readiness', snap({ prefs: { ...ON, readiness: 'private' } }), 182, 184)).join(' ');
     expect(priv).not.toMatch(/\d+–\d+|%|You chose/);
     expect(priv).toContain('Rings growing');
@@ -413,12 +430,15 @@ describe('the words and taps a learner sees', () => {
     const tree = build('countdown', snap({ prefs: ON }), 376, 184);
     expect(texts(tree)).toEqual(expect.arrayContaining(['ROAD TO EXAM', '3 weeks to go', 'This week: make it stick', 'Mixed practice across every area.']));
     let segs = 0;
+    let now = 0;
     walk(tree, (n) => {
       const p = props(n);
       if (p.borderRadius && p.height === 20) segs += 1;
+      if (p.borderRadius && p.height === 26) now += 1;
     });
-    // 3 weeks behind (from 5 October), this week, 3 ahead.
-    expect(segs).toBe(7);
+    // 3 weeks behind (from 5 October), this week (taller: by shape, not colour alone), 3 ahead.
+    expect(segs).toBe(6);
+    expect(now).toBe(1);
     expect(texts(build('countdown', snap({ prefs: ON }), 182, 184, 'light', 2)).join(' ')).toContain('3 weeks');
   });
 
@@ -427,6 +447,76 @@ describe('the words and taps a learner sees', () => {
     expect(captionFit('Today · Operations', 1, 120)).toBe('OPERATIONS');
     expect(captionFit('New growth today', 1, 120)).toBe('NEW GROWTH');
     expect(captionFit('Recall card', 1, 10)).toBe('');
+    // 1.48 (design review P5): never a one-word fragment ("KEY", "TODAY'S") or one ending on a joining word ("ROAD TO").
+    expect(captionFit('Key term', 1, 50, CAPTION_SHORT.revisit)).toBe('TERM');
+    expect(captionFit('Today’s rule', 1, 70, CAPTION_SHORT.think)).toBe('');
+    expect(captionFit('Road to exam', 1, 80)).toBe('');
+    for (const kind of WIDGET_KINDS) {
+      for (const [, w, h] of SIZES[kind]) {
+        for (const scale of [1, 1.3, 2]) {
+          for (const ctx of [{}, { revealed: true }]) {
+            const all = texts(build(kind, snap({ prefs: ON }), w, h, 'light', scale, ctx));
+            expect(all.filter((t) => ['KEY', 'TODAY’S', 'ROAD TO', 'ROAD', 'YOUR', 'THIS'].includes(t))).toEqual([]);
+          }
+        }
+      }
+    }
+  });
+
+  it('TalkBack on a 2×1 (design review P1–P3): one true instruction, never a question it can’t answer', () => {
+    // The card's own label (the outer node, or the card inside an index card's ruling).
+    const labelOf = (t: WidgetTree) => {
+      let out = '';
+      walk(t, (n) => {
+        if (!out && typeof props(n).accessibilityLabel === 'string') out = String(props(n).accessibilityLabel);
+      });
+      return out;
+    };
+    const spoken = (kind: WidgetKind, ctx: Partial<DrawContext> = {}) => labelOf(build(kind, snap({ prefs: ON }), 158, 78, 'light', 1, ctx));
+    // Today's rule: the whole card reveals, said once.
+    const rule = spoken('think');
+    expect(rule.match(/Double-tap/g)).toHaveLength(1);
+    expect(rule).toMatch(/Double-tap to show the rule\.$/);
+    expect(rule).not.toMatch(/Tap:/);
+    // The Key term on a 2×1: the whole card reveals (not "the next button").
+    const term = spoken('revisit');
+    expect(term).toMatch(/Double-tap to show the meaning\.$/);
+    expect(term).not.toMatch(/next button|open its note/);
+    // A revealed rule on a 2×1 has no Had it / Not yet: no "Did you have it?"; the card opens it.
+    const shownRule = spoken('think', { revealed: true });
+    expect(shownRule).not.toMatch(/Did you have it/);
+    expect(shownRule).toMatch(/Double-tap to open it in KaiSip\.$/);
+    // A full-size Recall card: Show the answer is its own button; the card opens the app.
+    const recall = labelOf(build('question', snap({ prefs: ON }), 376, 184));
+    expect(recall).toMatch(/Show the answer is the next button\. Double-tap the card to open it in KaiSip\.$/);
+    // Spoken "Start, 9 minutes", never "middle dot".
+    expect(labelOf(build('plan', snap({ prefs: ON }), 158, 78))).not.toContain(' · ');
+  });
+
+  it('Today’s rule on a strip: Fraunces never under 13 sp (the short form takes over first) (design review P4)', () => {
+    for (const [w, h] of [GRID['4x1'], GRID.s4x1, GRID['2x1'], GRID.s2x1]) {
+      for (const scale of [1, 1.3, 2]) {
+        walk(build('think', snap({ prefs: ON }), w, h, 'light', scale), (n) => {
+          const p = props(n);
+          const st = (p.style ?? p) as { fontFamily?: string; fontSize?: number };
+          if (n.type === 'TextWidget' && /Fraunces/.test(String(st.fontFamily))) expect({ w, h, scale, px: st.fontSize! >= 13 }).toEqual({ w, h, scale, px: true });
+        });
+      }
+    }
+  });
+
+  it('This week 2×1 (design review P8): "3 days", the unit kept before the day letters', () => {
+    for (const [w, h] of [GRID['2x1'], GRID.s2x1]) expect(texts(build('week', snap(), w, h))).toEqual(expect.arrayContaining(['3', 'days']));
+  });
+
+  it('a hidden plain key term is the big hero too (design review P7); the dark Road card has a visible edge (O1)', () => {
+    const plain = snap({ terms: [0, 1, 2, 3].map((d) => ({ day: addDays(TODAY, d), id: 't1_3', term: 'Single point of failure', meaning: 'One component whose failure stops a whole service.', topic: 'Operations', note: '4' })) });
+    let px = 0;
+    walk(build('revisit', plain, 376, 184), (n) => {
+      if (n.type === 'TextWidget' && texts(n)[0] === 'Single point of failure') px = ((props(n).style ?? props(n)) as { fontSize: number }).fontSize;
+    });
+    expect(px).toBeGreaterThanOrEqual(24);
+    expect(widgetColors('ink', 'dark').border).toBe(dark.control);
   });
 
   it('text fits the room it is given, or says so', () => {

@@ -69,6 +69,12 @@ export interface WidgetState {
   quizPicks: Record<string, string>;
   /** Today's rule picks by day (last 14 days: the rotation avoids repeats within 5). */
   thinkPicks: Record<string, string>;
+  /**
+   * Mobile 1.48: the Key term by day, kept from the day's first write (last 7
+   * days), so today's term never changes mid-day and never repeats yesterday's.
+   * Optional: saves from 1.47 have none.
+   */
+  termPicks?: Record<string, string>;
   /** The one "add a widget" suggestion: once shown it never comes back, whatever the answer. */
   offer?: { shownOn: string; answer?: 'added' | 'not-now' };
   /** The day readiness was set to show its number (the one re-ask comes 30 days later). */
@@ -91,6 +97,8 @@ export interface WidgetState {
   setAnchor: (day: string) => void;
   rememberPicks: (picks: Record<string, string>) => void;
   rememberRules: (picks: Record<string, string>) => void;
+  /** Keep today's Key term (only today's: later days are only written ahead, see lib/widgetData termDays). */
+  rememberTerms: (picks: Record<string, string>) => void;
   /** Keep this week's starting rings (only the first call of a week counts). */
   noteRings: (monday: string, rings: readonly number[]) => void;
   /** Move the road's start earlier (never later). */
@@ -159,6 +167,12 @@ export const useWidgetStore = create<WidgetState>()(
           const next = keepLast(s.thinkPicks, picks, 14);
           return JSON.stringify(next) === JSON.stringify(s.thinkPicks) ? s : { thinkPicks: next };
         }),
+      rememberTerms: (picks) =>
+        set((s) => {
+          const was = s.termPicks ?? {};
+          const next = keepLast(was, picks, 7);
+          return JSON.stringify(next) === JSON.stringify(was) ? s : { termPicks: next };
+        }),
       noteRings: (monday, rings) => set((s) => (s.ringWeek?.monday === monday ? s : { ringWeek: { monday, rings: [...rings] } })),
       noteRoadFrom: (monday) => set((s) => (s.roadFrom && s.roadFrom <= monday ? s : { roadFrom: monday })),
       showOffer: (day) => set((s) => (s.offer ? s : { offer: { shownOn: day } })),
@@ -226,6 +240,7 @@ export const useWidgetStore = create<WidgetState>()(
           },
           quizPicks: obj(p.quizPicks),
           thinkPicks: obj(p.thinkPicks),
+          termPicks: obj(p.termPicks),
           ringWeek:
             p.ringWeek && typeof p.ringWeek.monday === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(p.ringWeek.monday) && Array.isArray(p.ringWeek.rings)
               ? { monday: p.ringWeek.monday, rings: p.ringWeek.rings.slice(0, 8).map((n) => (typeof n === 'number' && Number.isFinite(n) ? n : 0)) }

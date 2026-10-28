@@ -7,7 +7,7 @@
  * all three always draw the same thing.
  */
 import type { WidgetInfo, WidgetRepresentation } from 'react-native-android-widget';
-import { judgedToday, recallIdFor, REVEAL_KINDS, thinkIdFor, widgetFace, type RevealState, type WidgetKind, type WidgetSnapshot } from '../engine/widgets';
+import { cardRevealed, judgedToday, recallIdFor, revealCardFor, REVEAL_KINDS, thinkIdFor, widgetFace, type RevealState, type WidgetKind, type WidgetSnapshot } from '../engine/widgets';
 import { WidgetLayout } from './layouts.android';
 
 export function renderKind(
@@ -34,6 +34,7 @@ export function judgedFor(kind: WidgetKind, snap: WidgetSnapshot | null, now: nu
 /** The same, with the reveal cards' marks and self-check for this placed copy. */
 export function renderPlaced(kind: WidgetKind, snap: WidgetSnapshot | null, info: Pick<WidgetInfo, 'widgetId' | 'width' | 'height' | 'screenInfo'>, now: number, reveal: RevealState): WidgetRepresentation {
   const judged = judgedFor(kind, snap, now, reveal);
-  const revealed = REVEAL_KINDS.includes(kind) && (reveal.ids.includes(info.widgetId) || Boolean(judged));
+  // Revealed only if THIS card was revealed (1.48 QA): a widget whose card changed starts hidden again.
+  const revealed = REVEAL_KINDS.includes(kind) && (cardRevealed(reveal, info.widgetId, revealCardFor(kind, snap, now)) || Boolean(judged));
   return renderKind(kind, snap, info, { now, revealed, judged });
 }

@@ -54,7 +54,7 @@ export const SMALL_TITLE_CAP = 1.3;
 /** A bigger widget's words grow at most this much. */
 export const MEDIUM_TITLE_CAP = 1.5;
 /** Widget spacing (dp): named once so DESIGN_SYSTEM §20.2 can list them. */
-export const W = { pad: 16, padStrip: 12, padTiny: 6, radius: 22, pill: 36, pillRadius: 18 } as const;
+export const W = { pad: 16, padStrip: 12, padTiny: 6, padPill: 6, radius: 22, pill: 36, pillRadius: 18 } as const;
 /** Under this many dp a 1×1 shows one thing only (some launchers make a cell this small). */
 export const MICRO = 70;
 /** Under this many dp tall a strip has room for one line only. */
@@ -169,14 +169,52 @@ function heroText(full: string, short: string | undefined, font: Font, max: numb
   const fitShort = short ? fitText(short, max, min, width, room) : null;
   if (short && fitShort) return txt(short, font, fitShort.px, color, { lines: fitShort.lines, align });
   // Nothing fits even at the smallest size: the words at that size, as many lines as the room has.
+  // Ended cleanly at a whole word ("…"), never mid-word; the card's tap opens the rest.
   const text = short && short.length < full.length ? short : full;
-  return txt(text, font, min, color, { lines: Math.max(1, Math.floor(room / (min * LH))), align });
+  const lines = Math.max(1, Math.floor(room / (min * LH)));
+  return txt(clipWords(text, min, width, lines), font, min, color, { lines, align });
+}
+
+/** Revealed words (a rule, an Exam cue, a term's meaning) are never drawn smaller than this. */
+export const BODY_MIN = 12;
+
+/**
+ * `text` ended cleanly at a whole word with "…", to fit `lines` lines of
+ * `width` dp at `px` (only when it truly can't fit whole; the card's tap opens the rest).
+ */
+export function clipWords(text: string, px: number, width: number, lines: number): string {
+  if (fitsLines(text, px, width, lines)) return text;
+  const words = text.split(' ');
+  while (words.length > 1) {
+    words.pop();
+    const t = `${words.join(' ').replace(/[,;:.\u2013\u2014-]+$/, '')}…`;
+    if (fitsLines(t, px, width, lines)) return t;
+  }
+  return `${words[0]}…`;
+}
+
+/**
+ * Revealed words: the biggest size (from `max` down to BODY_MIN) at which they
+ * fit `room` dp WHOLE, so they never shrink below their normal size because the
+ * phone's text is bigger. If they can't fit whole even at `min` (BODY_MIN or
+ * more), they end cleanly at a word ("…") at that size. `whole` says which.
+ */
+export function fitBody(text: string, max: number, width: number, room: number, maxLines = 12, min = BODY_MIN): { text: string; px: number; lines: number; whole: boolean } {
+  const floor = Math.max(BODY_MIN, min);
+  for (let px = Math.max(max, floor); px >= floor; px -= 0.5) {
+    const lines = linesFor(text, px, width);
+    if (lines <= maxLines && tall(px, lines) <= room) return { text, px, lines, whole: true };
+  }
+  const lines = Math.max(1, Math.min(maxLines, Math.floor(room / (floor * LH))));
+  const cut = clipWords(text, floor, width, lines);
+  return { text: cut, px: floor, lines: Math.min(lines, linesFor(cut, floor, width)), whole: cut === text };
 }
 
 // ── Taps ──────────────────────────────────────────────────────────────────
 /** The click props: OPEN_URI into the app, or an on-widget action (the reveal cards). Labels speak minutes in full. */
 function clickFor(link: string, widgetAction: FaceAction['widgetAction'] | undefined, label: string) {
-  const a11y = spokenMin(label);
+  // Minutes in full, and a comma for " · " (some TalkBack voices read "middle dot").
+  const a11y = spokenMin(label).replace(/ · /g, ', ');
   if (widgetAction) return { clickAction: widgetAction, accessibilityLabel: a11y };
   if (!link) return { accessibilityLabel: a11y };
   return { clickAction: 'OPEN_URI', clickActionData: { uri: link }, accessibilityLabel: a11y };
@@ -221,25 +259,36 @@ const CAPTION = 11;
 /** Would a caption fit `width` dp? (Letter-spaced capitals run wider than body text.) */
 const captionFits = (t: string, px: number, width: number) => t.length * px * 0.8 <= width;
 /**
- * The small spaced label (in capitals). Rather than end in "…" it drops a
- * leading "Today · ", then words from the end ("New growth today" → "New growth"), then itself.
+ * A shorter whole label per kind, for when the full one won't fit ("KEY TERM" → "TERM").
+ * Today's rule has none: its clay "Rule" already names the card.
  */
-export function captionFit(text: string, scale: number, width: number): string {
+export const CAPTION_SHORT: Partial<Record<WidgetFace['kind'], string>> = { revisit: 'Term', question: 'Recall', think: '' };
+/**
+ * The small spaced label (in capitals). Rather than end in "…" it drops a
+ * leading "Today · ", then uses the kind's short label, then drops itself.
+ * Never a fragment cut to one word ("KEY", "TODAY'S").
+ */
+export function captionFit(text: string, scale: number, width: number, short?: string): string {
   const up = text.toUpperCase();
   const px = sz(CAPTION, scale, SMALL_TITLE_CAP);
   if (captionFits(up, px, width)) return up;
   const parts = up.split(' · ');
   if (parts.length > 1 && captionFits(parts[parts.length - 1], px, width)) return parts[parts.length - 1];
   if (parts.length > 1 && captionFits(parts[0], px, width)) return parts[0];
+  // Words from the end ("New growth today" → "New growth"), but never down to one word,
+  // and never ending on a joining word ("Road to"): a fragment says nothing.
   const words = parts[parts.length - 1].split(' ');
-  while (words.length > 1) {
+  while (words.length > 2) {
     words.pop();
-    if (captionFits(words.join(' '), px, width)) return words.join(' ');
+    const t = words.join(' ');
+    if (!JOINING.has(words[words.length - 1]) && captionFits(t, px, width)) return t;
   }
-  return '';
+  const s = (short ?? '').toUpperCase();
+  return s && captionFits(s, px, width) ? s : '';
 }
+const JOINING = new Set(['TO', 'OF', 'A', 'AN', 'THE', 'AND', 'FOR', 'IN', 'ON', 'AT', 'YOUR', 'MY']);
 function caption(text: string, x: X, width: number, color = x.c.ink2): El {
-  const t = captionFit(text, x.scale, width);
+  const t = captionFit(text, x.scale, width, CAPTION_SHORT[x.face.kind]);
   return t ? txt(t, F.sansBold, sz(CAPTION, x.scale, SMALL_TITLE_CAP), color, { ls: 1.1 }) : null;
 }
 /** The first of `options` that fits one line of `width` dp at `px` (or none). */
@@ -283,17 +332,29 @@ function figure(x: X, value: string, unit: string | undefined, px: number, unitP
 /** The biggest figure that fits `room` dp tall (never more than `base` grown 1.1×). */
 const figPx = (base: number, x: X, room: number, min = 24) => Math.max(min, Math.min(Math.round(base * Math.min(x.scale, 1.1)), Math.floor(room / LH)));
 
-/** Today's plan's step pips: done in sap, the current one in paper, the rest as track. */
+/**
+ * Today's plan's step pips. Not by colour alone (WCAG 1.4.1): done ones are
+ * filled sap, the current one is filled and longer, the ones to do are outlines.
+ */
 function pips(total: number, done: number, c: WidgetColors, w: number): JSX.Element {
   return (
     <FlexWidget style={{ flexDirection: 'row', alignItems: 'center' }}>
       {Array.from({ length: Math.min(total, 6) }, (_, i) => (
-        <FlexWidget key={i} style={{ width: w, height: 4, borderRadius: 2, marginLeft: 3, backgroundColor: i < done ? c.accent : i === done ? c.ink : c.track }} />
+        <FlexWidget
+          key={i}
+          style={{
+            width: i === done ? Math.round(w * 1.6) : w,
+            height: 6,
+            borderRadius: 3,
+            marginLeft: 3,
+            ...(i < done ? { backgroundColor: c.accent } : i === done ? { backgroundColor: c.ink } : { borderWidth: 1, borderColor: c.ink2 }),
+          }}
+        />
       ))}
     </FlexWidget>
   );
 }
-const pipsW = (total: number, w: number) => Math.min(total, 6) * (w + 3);
+const pipsW = (total: number, w: number) => Math.min(total, 6) * (w + 3) + Math.round(w * 0.6);
 
 /** The week's seven leaves (height `d` dp) with their day letters (dropped at large text, never the leaves). */
 function leaves(filled: boolean[], today: number, c: WidgetColors, d: number, letters: boolean, scale: number): JSX.Element {
@@ -312,19 +373,24 @@ function leaves(filled: boolean[], today: number, c: WidgetColors, d: number, le
 const leavesW = (d: number) => 7 * Math.round(d * 0.75) + 6 * Math.max(3, Math.round(d * 0.32));
 const lettersH = (scale: number) => tall(sz(11, scale, 1.15)) + 2;
 
-/** Road to exam's weeks: behind in sap, this week in paper, ahead as outlines (the exam's week is the last). */
+/**
+ * Road to exam's weeks: behind in sap, this week in paper, ahead as outlines
+ * (the exam's week is the last). This week is also TALLER than the others, so
+ * it stands out by shape, not by colour alone (WCAG 1.4.1).
+ */
+const NOW_TALLER = 6;
 function roadRow(behind: number, ahead: number, c: WidgetColors, h: number, max: number): JSX.Element {
   const a = Math.min(ahead, max - 1);
   const b = Math.min(behind, Math.max(0, max - 1 - a));
   const segs = [...Array.from({ length: b }, () => 'behind'), 'now', ...Array.from({ length: a }, () => 'ahead')];
   return (
-    <FlexWidget style={{ flexDirection: 'row', width: 'match_parent', height: h }}>
+    <FlexWidget style={{ flexDirection: 'row', alignItems: 'center', width: 'match_parent', height: h + NOW_TALLER }}>
       {segs.map((s, i) => (
         <FlexWidget
           key={i}
           style={{
             flex: 1,
-            height: h,
+            height: s === 'now' ? h + NOW_TALLER : h,
             borderRadius: 3,
             marginRight: i < segs.length - 1 ? 3 : 0,
             ...(s === 'behind' ? { backgroundColor: c.accent } : s === 'now' ? { backgroundColor: c.ink } : { borderWidth: 1, borderColor: c.ink2 }),
@@ -525,10 +591,14 @@ function week(x: X): El {
   const letters = !x.big;
   if (size === 'strip') {
     const narrow = isNarrow(x);
-    const d = Math.max(11, Math.min(narrow ? 14 : iw < 320 ? 22 : 26, ih - (letters ? lettersH(scale) : 0)));
+    // A 2×1 (Option C): "3 days" and the seven leaves, small; the day letters go before the unit does.
+    const d = narrow ? 12 : Math.max(11, Math.min(iw < 320 ? 22 : 26, ih - (letters ? lettersH(scale) : 0)));
     const room = iw - leavesW(d) - 10;
-    const unit = number && !narrow ? (one ? 'day' : 'days') : undefined;
-    const left = number ? figure(x, count, unit, figPx(narrow ? 34 : 44, x, ih, 20), sz(15, scale, SMALL_TITLE_CAP), c.ink2, 1, room) : heroText(face.title, face.short, F.serif, sz(17, scale, 1.3), SERIF_MIN, room, ih, c.ink);
+    const unit = number ? (one ? 'day' : 'days') : undefined;
+    // On a 2×1 the figure steps down (not under 22) until its unit fits beside it at 12 sp or more.
+    let fpx = figPx(narrow ? 34 : 44, x, ih, 20);
+    while (narrow && unit && fpx > 22 && room - Math.ceil(count.length * fpx * 0.62) - 6 < unit.length * 12 * 0.55) fpx -= 1;
+    const left = number ? figure(x, count, unit, fpx, sz(narrow ? 13 : 15, scale, SMALL_TITLE_CAP), c.ink2, 1, room) : heroText(face.title, face.short, F.serif, sz(17, scale, 1.3), SERIF_MIN, room, ih, c.ink);
     return (
       <FlexWidget style={{ width: 'match_parent', height: 'match_parent', flexDirection: 'row', alignItems: 'center' }}>
         <FlexWidget style={{ flex: 1 }}>{left}</FlexWidget>
@@ -643,6 +713,39 @@ export function cardTop(face: WidgetFace, size: SizeClass, scale: number): numbe
   return scale >= HUGE_TEXT ? 0 : tall(sz(CAPTION, scale, SMALL_TITLE_CAP)) + 6;
 }
 
+/**
+ * A shown key term's layout at `x.scale`, with its meaning never under `minPx`
+ * (the size it has at 100% text, so bigger text never makes it smaller). Tries,
+ * in order, until the meaning fits whole: label + term + meaning; no label;
+ * the term at its 100% size; then "RPO: meaning" as one block (ended cleanly if
+ * it still can't fit).
+ */
+function shownTermLayout(x: X, minPx: number, iw: number, ih: number, bottom: number) {
+  const { face, size, scale } = x;
+  const small = size === 'small';
+  const narrowW = Math.floor(iw * 0.96);
+  const bodyMax = Math.max(minPx, sz(small ? 13 : 13.5, scale, 1.3));
+  const meaning = face.line ?? '';
+  const both = face.sub ? `${face.sub} · ${face.title}` : face.title;
+  const top = cardTop(face, size, scale);
+  const stage = (label: boolean, termPx: number) => {
+    // "RPO · Recovery point objective", or the abbreviation alone when that won't fit one line (or at large text).
+    const termText = !face.sub ? both : x.big || !fitsLines(both, termPx, iw, 1) ? face.sub : both;
+    const termLines = fitsLines(termText, termPx, iw, 1) ? 1 : 2;
+    const room = ih - (label ? top : 0) - bottom - (label && !small ? HAIR : 0) - 4 - tall(termPx, termLines) - 4;
+    const m = fitBody(meaning, bodyMax, narrowW, room, 12, minPx);
+    return { label, termPx, termText, termLines, m, block: false, left: room - tall(m.px, m.lines) };
+  };
+  const px = sz(small ? 15 : 17, scale, 1.1);
+  const px1 = small ? 15 : 17;
+  const tries = [...(top > 0 ? [stage(true, px)] : []), stage(false, px), ...(px1 < px ? [stage(false, px1)] : [])];
+  const whole = tries.find((t) => t.m.whole);
+  if (whole) return whole;
+  const room = ih - bottom - 4;
+  const m = fitBody(`${face.sub ?? face.title}: ${meaning}`, bodyMax, narrowW, room, 12, minPx);
+  return { ...tries[tries.length - 1], label: false, m, block: true, left: room - tall(m.px, m.lines) };
+}
+
 function card(x: X): El {
   const { face, c, size, iw, ih, scale } = x;
   const hidden = face.reveal === 'hidden' && face.action?.widgetAction === 'REVEAL';
@@ -661,11 +764,13 @@ function card(x: X): El {
     const subOk = !x.big && Boolean(face.sub) && !shownTerm;
     const room = ih - head - (subOk ? tall(12) : 0);
     // A 2×1 shows the short prompt; a shown key term its meaning under the term.
-    const main = shownTerm ? (
-      // One block, so the meaning gets the strip's whole height: "RPO: The most data, …".
-      heroText(`${face.sub ?? face.title}: ${face.line ?? ''}`, undefined, F.sans, sz(12.5, scale, 1.3), 10.5, Math.floor(words * 0.92), ih, c.ink)
+    // One block, so the meaning gets the strip's whole height: "RPO: The most data, …" (never under BODY_MIN; ended cleanly if it must be).
+    const termBody = shownTerm ? fitBody(`${face.sub ?? face.title}: ${face.line ?? ''}`, sz(12.5, scale, 1.3), Math.floor(words * 0.92), ih) : null;
+    const main = termBody ? (
+      txt(termBody.text, F.sans, termBody.px, c.ink, { lines: termBody.lines })
     ) : (
-      heroText(narrow && face.short ? face.short : face.title, face.short, font, sz(narrow ? 14 : 16, scale, SMALL_TITLE_CAP), narrow ? 11 : 12, words, room, c.ink)
+      // Fraunces never under SERIF_MIN: the short form takes over first.
+      heroText(narrow && face.short ? face.short : face.title, face.short, font, sz(narrow ? 14 : 16, scale, SMALL_TITLE_CAP), SERIF_MIN, words, room, c.ink)
     );
     return (
       <FlexWidget style={{ width: 'match_parent', height: 'match_parent', flexDirection: 'row', alignItems: 'center' }}>
@@ -690,66 +795,84 @@ function card(x: X): El {
   // A shown rule or answer on a 4×2 moves its label down beside its buttons, so the rule or cue gets the room.
   const labelBelow = top === 0 && !x.huge && face.reveal === 'shown';
   const bottom = pair || (face.action && !hidden) ? TAP_MIN : 0;
-  const linePx = sz(12.5, scale, MEDIUM_TITLE_CAP);
   const showLabel = top > 0;
   const right = hidden ? pill(face.action as FaceAction, c, scale, { label: small ? 'Show' : face.action?.label, cap: 1.15 }) : !small && face.aside && !x.big ? asideEl(x, face.aside) : null;
   const rightW = hidden ? (small ? 70 : Math.ceil((face.action?.label.length ?? 4) * sz(13.5, scale, 1.15) * 0.58) + 34) : !small && face.aside && !x.big ? asideW(x, face.aside) : 0;
-  const termHair = term && showLabel && !hidden && !(small && shownTerm);
-  const room = ih - top - bottom - (termHair ? HAIR : 0) - 4;
-  const narrowW = Math.floor(iw * 0.92);
+  // The revealed words' measure: a little inside the card's width (text estimates stay on the safe side).
+  const narrowW = Math.floor(iw * 0.96);
+  const bodyMax = sz(small ? 13 : 13.5, scale, 1.3);
+  let labelShown = showLabel;
   let middle: JSX.Element;
   if (shownTerm) {
-    // A shown key term: the term on one line (its abbreviation if the words don't fit), then the meaning gets the room.
-    const termPx = sz(small ? 15 : 18, scale, 1.2);
-    // "RPO · Recovery point objective" (two lines at most), or the abbreviation alone when that won't fit.
-    const both = face.sub ? `${face.sub} · ${face.title}` : face.title;
-    // A 2×2 keeps the meaning whole first: the abbreviation alone when both won't fit one line.
-    const termText = !face.sub ? both : small ? (fitsLines(both, termPx, iw, 1) ? both : face.sub) : fitsLines(both, termPx, iw, 2) ? both : face.sub;
-    const termLines = fitsLines(termText, termPx, iw, 1) ? 1 : 2;
-    const meaningRoom = room - tall(termPx, termLines) - 4;
-    const meaning = face.line ?? '';
-    const mFit = fitText(meaning, sz(13.5, scale, 1.3), 10.5, narrowW, meaningRoom) ?? { px: 10.5, lines: Math.max(1, Math.floor(meaningRoom / tall(10.5))) };
-    const used = tall(mFit.px, Math.min(mFit.lines, linesFor(meaning, mFit.px, narrowW)));
-    const line2Ok = face.line2 && !x.big && meaningRoom - used >= tall(12) + 4;
+    // A shown key term: the term, then the meaning, sized FIRST (it is the content). At a bigger
+    // text size the meaning never gets smaller than it is at 100%: the label goes first, then the
+    // term stops growing, then the term and meaning become one block ("RPO: The most data, …").
+    const t = shownTermLayout(x, Math.max(BODY_MIN, shownTermLayout({ ...x, scale: 1, big: false }, BODY_MIN, iw, ih, bottom).m.px), iw, ih, bottom);
+    const { m, block, termPx, termText, termLines } = t;
+    labelShown = t.label;
+    // "A new term each morning." only under a meaning shown whole, with room to spare.
+    const line2Ok = face.line2 && !x.big && m.whole && t.left >= tall(12) + 4;
     middle = (
       <FlexWidget style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', width: 'match_parent' }}>
-        {txt(termText, F.serif, termPx, c.ink, { lines: termLines })}
-        {txt(meaning, F.sans, mFit.px, c.ink, { lines: mFit.lines, mt: 4 })}
+        {block ? null : txt(termText, F.serif, termPx, c.ink, { lines: termLines })}
+        {txt(m.text, F.sans, m.px, c.ink, { lines: m.lines, mt: block ? 0 : 4 })}
         {line2Ok ? txt(face.line2 as string, F.serifItalic, sz(12, scale, 1.3), c.ink2, { mt: 4 }) : null}
       </FlexWidget>
     );
   } else {
+    const room = ih - top - bottom - 4;
     // The hero: the question (its short form on a 2×2 rule), the answer, the term.
     const heroFull = small && face.kind === 'think' && hidden && face.short ? face.short : face.title;
-    const heroMax = term && hidden && face.sub ? sz(small ? 40 : 52, scale, 1.1) : sz(small ? 18 : 17.5, scale, SMALL_TITLE_CAP);
     // On a 2×2, a shown rule or answer stands alone (Option C): its explanation opens in the app.
     const cardLine = small && face.reveal === 'shown' ? undefined : face.line;
+    // A hidden term is the big hero ("RPO"; a plain term like "Single point of failure" big too);
+    // a shown rule or answer leaves the room to the words under it.
+    const heroMax = term && hidden ? sz(face.sub ? (small ? 40 : 52) : small ? 22 : 28, scale, 1.15) : face.reveal === 'shown' && cardLine ? sz(small ? 17 : 17.5, scale, 1.15) : sz(small ? 18 : 17.5, scale, SMALL_TITLE_CAP);
     const subPx = sz(small ? 12.5 : 13.5, scale, 1.3);
     const subH = face.sub && hidden ? tall(subPx, 2) : 0;
-    const lineMin = cardLine && face.reveal === 'shown' ? tall(11, 2) : 0;
-    const heroRoom = Math.max(tall(SERIF_MIN), room - subH - lineMin);
-    const fit = fitText(heroFull, heroMax, face.reveal === 'shown' ? 12 : SERIF_MIN, iw, heroRoom) ?? fitText(heroFull, heroMax, 11, iw, room);
-    const heroUsed = fit ? tall(fit.px, linesFor(heroFull, fit.px, iw)) : heroRoom;
-    const lineRoom = room - heroUsed - subH - 4;
-    // The words under the hero (the rule, the cue) shrink a little to fit whole before they are cut.
-    const lineFit = cardLine ? (fitText(cardLine, linePx, 11, narrowW, lineRoom) ?? { px: 11, lines: Math.max(0, Math.floor(lineRoom / tall(11))) }) : { px: linePx, lines: 0 };
-    const lineUsed = cardLine && lineFit.lines ? tall(lineFit.px, Math.min(lineFit.lines, linesFor(cardLine, lineFit.px, narrowW))) : 0;
-    const line2Ok = face.line2 && !x.big && lineRoom - lineUsed >= tall(12) + 4;
+    // The revealed words (the rule, the Exam cue) are sized first; the hero gets what is left (never under SERIF_MIN).
+    let body: ReturnType<typeof fitBody> | null = null;
+    let fit: { px: number; lines: number } | null = null;
+    if (cardLine && face.reveal === 'shown') {
+      for (let px = bodyMax; px >= BODY_MIN && !fit; px -= 0.5) {
+        const lines = linesFor(cardLine, px, narrowW);
+        const heroRoom = room - tall(px, lines) - 4;
+        const f = heroRoom >= tall(SERIF_MIN) ? fitText(heroFull, heroMax, SERIF_MIN, iw, heroRoom) : null;
+        if (f) {
+          fit = f;
+          body = { text: cardLine, px, lines, whole: true };
+        }
+      }
+      if (!fit) {
+        // Even at the smallest sizes both can't fit whole: the hero at SERIF_MIN, the words ended cleanly under it.
+        const heroLines = Math.max(1, Math.min(linesFor(heroFull, SERIF_MIN, iw), Math.floor((room - tall(BODY_MIN) - 4) / (SERIF_MIN * LH))));
+        fit = { px: SERIF_MIN, lines: heroLines };
+        body = fitBody(cardLine, BODY_MIN, narrowW, room - tall(SERIF_MIN, heroLines) - 4);
+      }
+    } else {
+      // A hidden card's question is its content: the whole question at SERIF_MIN or more, else (a long stem on a
+      // 360 dp phone) a little smaller rather than cut, as in 1.48.
+      fit = fitText(heroFull, heroMax, SERIF_MIN, iw, Math.max(tall(SERIF_MIN), room - subH)) ?? fitText(heroFull, heroMax, 11, iw, room - subH);
+    }
+    const heroUsed = fit ? tall(fit.px, Math.min(fit.lines, linesFor(heroFull, fit.px, iw))) : room;
+    const bodyUsed = body ? tall(body.px, body.lines) + 4 : 0;
+    const line2Ok = face.line2 && !x.big && room - heroUsed - subH - bodyUsed >= tall(12) + 4;
     middle = (
       <FlexWidget style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', width: 'match_parent' }}>
-        {fit ? txt(heroFull, font, fit.px, c.ink, { lines: fit.lines }) : heroText(heroFull, face.short, font, heroMax, 11, iw, room, c.ink)}
+        {fit ? txt(heroFull, font, fit.px, c.ink, { lines: fit.lines }) : heroText(heroFull, face.short, font, heroMax, SERIF_MIN, iw, room - subH, c.ink)}
         {face.sub && hidden ? txt(face.sub, F.serifItalic, subPx, c.ink2, { lines: 2 }) : null}
-        {cardLine && lineFit.lines > 0 ? txt(cardLine, F.sans, lineFit.px, c.ink2, { lines: lineFit.lines, mt: 4 }) : null}
+        {body ? txt(body.text, F.sans, body.px, c.ink2, { lines: body.lines, mt: 4 }) : null}
         {line2Ok ? txt(face.line2 as string, F.serifItalic, sz(12, scale, 1.3), c.ink2, { mt: 4 }) : null}
       </FlexWidget>
     );
   }
+  const termHair = term && labelShown && !hidden && !small;
   // Beside the buttons, on a 4×2: the card's label, quietly (only if it fits whole).
   const usedByButtons = pair ? 2 * 92 + 8 : face.action && !hidden ? 120 : 0;
   const below = labelBelow ? captionFit(face.caption, scale, iw - usedByButtons - 12) : '';
   return (
     <FlexWidget style={{ width: 'match_parent', height: 'match_parent', flexDirection: 'column' }}>
-      {showLabel ? (
+      {labelShown ? (
         <FlexWidget style={{ flexDirection: 'row', alignItems: 'center', width: 'match_parent', height: top }}>
           {cardLabel(x, iw - rightW)}
           {right}
@@ -787,23 +910,29 @@ function readiness(x: X): El {
   const rings = (d: number) => <SvgWidget svg={ringsSvg(a.rings, a.weights, c, a.faint)} style={{ width: d, height: d }} />;
   const range = face.titleStyle === 'number';
   const head = range ? `${face.title}${face.unit ?? ''}` : face.title;
-  const note = (range ? (face.line2 ?? face.shortLine) : face.line) ?? '';
+  // A range ALWAYS says what it is, at every size and text scale (DESIGN_SYSTEM §20.3):
+  // "A study estimate, not a prediction." or, short, "A study estimate". What grew gets only the room left.
+  const qualifier = range ? (face.shortLine ?? 'A study estimate') : '';
+  const note = (range ? (face.line ?? qualifier) : face.line) ?? '';
   // A small card says the shorter detail ("14 more answers to a first estimate").
-  const smallNote = (range ? note : (face.shortLine ?? face.line)) ?? '';
+  const smallNote = (range ? qualifier : (face.shortLine ?? face.line)) ?? '';
+  const extra = range ? face.line2 : undefined;
   if (size === 'strip') {
-    const d = Math.min(ih, 60);
+    // The rings give way (down to 36 dp) so a range's "A study estimate" fits one line beside them.
+    const d = Math.min(ih, 60, range ? Math.max(36, iw - 12 - Math.ceil(qualifier.length * 11.5 * CHAR_W) - 2) : 60);
     const words = iw - d - 12;
     const headPx = sz(iw < 230 ? 15 : 18, scale, 1.2);
     const headFit = fitText(head, headPx, SERIF_MIN, words, ih) ? head : (face.short ?? head);
     const headLines = linesFor(headFit, headPx, words) > 1 && ih >= tall(headPx, 2) ? 2 : 1;
     const noteRoom = ih - tall(headPx, headLines);
-    const noteText = !x.big && noteRoom >= tall(11) ? firstFit([note, smallNote], 11.5, words) : undefined;
+    const noteText = range ? (firstFit([note, smallNote], 11.5, words) ?? smallNote) : !x.big && noteRoom >= tall(11) ? firstFit([note, smallNote], 11.5, words) : undefined;
+    const noteLines = noteText && !fitsLines(noteText, 11.5, words, 1) ? 2 : 1;
     return (
       <FlexWidget style={{ width: 'match_parent', height: 'match_parent', flexDirection: 'row', alignItems: 'center' }}>
         {rings(d)}
         <FlexWidget style={{ flex: 1, flexDirection: 'column', marginLeft: 12 }}>
-          {heroText(headFit, face.short, F.serif, headPx, SERIF_MIN, words, ih - (noteText ? tall(11.5) : 0), c.ink)}
-          {noteText ? txt(noteText, F.serifItalic, 11.5, c.ink2) : null}
+          {heroText(headFit, face.short, F.serif, headPx, SERIF_MIN, words, ih - (noteText ? tall(11.5, noteLines) : 0), c.ink)}
+          {noteText ? txt(noteText, F.serifItalic, 11.5, c.ink2, { lines: noteLines }) : null}
         </FlexWidget>
       </FlexWidget>
     );
@@ -813,8 +942,12 @@ function readiness(x: X): El {
     const headPx = sz(range ? 20 : 15, scale, 1.2);
     const headText = fitsLines(head, headPx, iw, 1) ? head : (face.short ?? head);
     const notePx = sz(12.5, scale, 1.3);
-    const noteLines = x.big || !smallNote ? 0 : fitsLines(smallNote, notePx, iw, 1) ? 1 : 2;
-    const d = Math.max(48, Math.min(96, iw, ih - top - tall(headPx) - tall(notePx, noteLines) - 6));
+    // The qualifier stays at every scale for a range; other notes go at large text.
+    const noteLines = !smallNote || (x.big && !range) ? 0 : fitsLines(smallNote, notePx, iw, 1) ? 1 : 2;
+    const ringsRoom = ih - top - tall(headPx) - tall(notePx, noteLines) - 6;
+    // What grew, only if the rings keep a good size with it.
+    const extraOk = Boolean(extra) && !x.big && fitsLines(extra as string, notePx, iw, 1) && ringsRoom - tall(notePx) >= 72;
+    const d = Math.max(48, Math.min(96, iw, ringsRoom - (extraOk ? tall(notePx) : 0)));
     return (
       <FlexWidget style={{ width: 'match_parent', height: 'match_parent', flexDirection: 'column', alignItems: 'center' }}>
         {x.huge ? null : topRow(x, face.caption, null, 0)}
@@ -822,15 +955,24 @@ function readiness(x: X): El {
         <FlexWidget style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>{rings(d)}</FlexWidget>
         {heroText(headText, face.short, F.serif, headPx, SERIF_MIN, iw, tall(headPx), c.ink, 'center')}
         {noteLines ? txt(smallNote, F.serifItalic, notePx, c.ink2, { lines: noteLines, align: 'center' }) : null}
+        {extraOk ? txt(extra as string, F.serifItalic, notePx, c.accentText, { align: 'center' }) : null}
       </FlexWidget>
     );
   }
-  // 4×2 and up: the rings at the card's full height on the left.
-  const d = Math.min(ih, Math.round(iw * 0.42));
+  // 4×2 and up: the rings at the card's full height on the left (a little narrower for a range, so its words fit).
+  const d = Math.min(ih, Math.round(iw * (range ? 0.36 : 0.42)));
   const words = iw - d - 14;
   const top = x.huge ? 0 : capH(x) + HAIR;
   const notePx = sz(13.5, scale, 1.4);
-  const room = ih - top - tall(notePx, 2) - (range ? tall(12) : 0);
+  const noteW = Math.floor(words * 0.92);
+  // A range: the qualifier (whole, or its short form) under the figure; then what grew, if there is room.
+  const qPx = sz(12.5, scale, 1.5);
+  const qText = range ? (fitsLines(note, qPx, noteW, 2) ? note : qualifier) : '';
+  const qLines = range ? (fitsLines(qText, qPx, noteW, 1) ? 1 : 2) : 0;
+  const qH = range ? tall(qPx, qLines) + 2 : 0;
+  const extraH = tall(qPx) + 6;
+  const extraOk = range && Boolean(extra) && !x.big && fitsLines(extra as string, qPx, noteW, 1) && ih - top - qH - extraH >= 50;
+  const room = range ? ih - top - qH - (extraOk ? extraH : 0) : ih - top - tall(notePx, 2);
   return (
     <FlexWidget style={{ width: 'match_parent', height: 'match_parent', flexDirection: 'row', alignItems: 'center' }}>
       {rings(d)}
@@ -839,8 +981,9 @@ function readiness(x: X): El {
         {x.huge ? null : hair(c)}
         <FlexWidget style={{ flex: 1, flexDirection: 'column', justifyContent: 'center' }}>
           {range ? figure(x, face.title, face.unit, figPx(44, x, Math.max(28, room), 22), sz(20, scale, 1.15), c.ink2, 1, words) : heroText(face.title, face.short, F.serif, sz(26, scale, 1.2), SERIF_MIN, words, room, c.ink)}
-          {range && face.line ? txt('Not a prediction.', F.sans, sz(12, scale, 1.5), c.ink2, { mt: 2 }) : null}
-          {note ? txt(fitsLines(note, notePx, Math.floor(words * 0.92), 2) ? note : smallNote, F.serifItalic, notePx, c.accentText, { lines: 2, mt: 6 }) : null}
+          {range ? txt(qText, F.sans, qPx, c.ink2, { lines: qLines, mt: 2 }) : null}
+          {extraOk ? txt(extra as string, F.serifItalic, qPx, c.accentText, { mt: 6 }) : null}
+          {!range && note ? txt(fitsLines(note, notePx, noteW, 2) ? note : smallNote, F.serifItalic, notePx, c.accentText, { lines: 2, mt: 6 }) : null}
         </FlexWidget>
       </FlexWidget>
     </FlexWidget>
@@ -873,7 +1016,7 @@ function road(x: X): El {
   const notePx = sz(13, scale, 1.3);
   const togoH = small ? tall(notePx) + 2 : 0;
   const lineH = !small && face.line && !x.big ? tall(notePx) + 4 : 0;
-  const room = ih - top - segH - 8 - togoH - lineH;
+  const room = ih - top - segH - NOW_TALLER - 8 - togoH - lineH;
   const title = small ? face.title : `This week: ${face.title.charAt(0).toLowerCase()}${face.title.slice(1)}`;
   return (
     <FlexWidget style={{ width: 'match_parent', height: 'match_parent', flexDirection: 'column' }}>
@@ -917,9 +1060,18 @@ export function forLargeText(face: WidgetFace, size: SizeClass, fontScale: numbe
  */
 export function forNarrowStrip(face: WidgetFace): WidgetFace {
   if (!face.action) return face;
-  if (face.action2?.widgetAction) return { ...face, action: undefined, action2: undefined };
+  // The pair is gone: don't ask "Did you have it?" where it can't be answered. The card opens it in the app.
+  if (face.action2?.widgetAction) return { ...face, action: undefined, action2: undefined, label: face.label.replace(/ Did you have it\?$/, ' Double-tap to open it in KaiSip.') };
   const a = face.action;
-  return { ...face, link: a.link || face.link, widgetAction: a.widgetAction ?? (a.link ? undefined : face.widgetAction), action: undefined, action2: undefined, label: `${face.label} Tap: ${a.label}.` };
+  const widgetAction = a.widgetAction ?? (a.link ? undefined : face.widgetAction);
+  // TalkBack hears what a double-tap really does here, once: the full-size hints
+  // ("Show the answer is the next button. Double-tap the card to open it…") don't apply to a strip.
+  const base = face.label
+    .replace(/ [^.]* is the next button\./, '')
+    .replace(/ Double-tap[^.]*\./g, '')
+    .trim();
+  const hint = widgetAction === 'REVEAL' ? `Double-tap to ${a.label.charAt(0).toLowerCase()}${a.label.slice(1)}.` : `Double-tap: ${a.label}.`;
+  return { ...face, link: a.link || face.link, widgetAction, action: undefined, action2: undefined, label: `${base} ${hint}` };
 }
 
 /** The whole widget, for one face at one size in one theme. */
@@ -929,7 +1081,11 @@ export function WidgetLayout({ face: given, theme, width, height, fontScale }: L
   const face = forLargeText(narrow ? forNarrowStrip(given) : given, size, fontScale);
   const c = widgetColors(face.tone, theme);
   const padding = size === 'tiny' ? (width < MICRO || height < MICRO ? 2 : W.padTiny) : size === 'strip' ? W.padStrip : W.pad;
-  const x: X = { face, c, theme, size, iw: width - 2 * padding, ih: height - 2 * padding, scale: fontScale, big: fontScale >= BIG_TEXT, huge: fontScale >= HUGE_TEXT };
+  // A revealed card's buttons sit in their own 48 dp tap row, which already has white space under the pill:
+  // the bottom padding steps down to W.padPill, so the revealed words get that room (1.48 QA).
+  const pillRow = Boolean(face.reveal) && face.reveal === 'shown' && Boolean(face.action) && size !== 'tiny' && size !== 'strip';
+  const padBottom = pillRow ? W.padPill : padding;
+  const x: X = { face, c, theme, size, iw: width - 2 * padding, ih: height - padding - padBottom, scale: fontScale, big: fontScale >= BIG_TEXT, huge: fontScale >= HUGE_TEXT };
   const body =
     size === 'tiny'
       ? tiny(x, width < MICRO || height < MICRO)
@@ -951,7 +1107,7 @@ export function WidgetLayout({ face: given, theme, width, height, fontScale }: L
   // The index card's ruling sits behind the words (decorative), from just under the top row.
   const ruled = face.tone === 'card' && Boolean(face.reveal) && size !== 'tiny' && size !== 'strip';
   const content = (
-    <FlexWidget {...click} style={{ width: 'match_parent', height: 'match_parent', flexDirection: 'column', padding, ...(ruled ? {} : { borderRadius: W.radius, ...background, ...border }) }}>
+    <FlexWidget {...click} style={{ width: 'match_parent', height: 'match_parent', flexDirection: 'column', padding, paddingBottom: padBottom, ...(ruled ? {} : { borderRadius: W.radius, ...background, ...border }) }}>
       {body}
     </FlexWidget>
   );

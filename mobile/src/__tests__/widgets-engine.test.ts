@@ -565,25 +565,29 @@ describe('Readiness (added = opt-in; rings only first)', () => {
     expect(f.unit).toBe('%');
     expect(f.caption).toBe('Readiness');
     expect(f.line).toBe('A study estimate, not a prediction.');
+    // The short qualifier every size keeps (1.48 QA: capitalised, it starts the line).
+    expect(f.shortLine).toBe('A study estimate');
     expect(f.art).toEqual({ type: 'rings', rings: READY.rings, weights: READY.weights, faint: false });
     expect(words(f)).not.toMatch(/weakest|area to work on/i);
   });
 
   it('rings only: the face doesn’t repeat the learner’s choice (TalkBack still says it); what grew this week, never what shrank', () => {
     const f = face('readiness', snap({ prefs: prefs({ readiness: 'private' }), ready: READY }));
-    expect(f.title).toBe('Rings growing');
+    // Nothing grew this week: a calm title, never "Rings growing" (1.48 QA).
+    expect(f.title).toBe('Your rings');
     expect(f.line).toBe('Each ring is one area.');
     expect(shown(f)).not.toMatch(/You chose/);
     expect(f.label).toMatch(/You chose to hide the number/);
     const grew = face('readiness', snap({ prefs: prefs({ readiness: 'private' }), ready: { ...READY, grew: 'Security' } }));
     expect(grew.line).toBe('Security grew this week.');
+    expect(grew.title).toBe('Rings growing');
     // Details off: the topic stays off the screen.
     expect(face('readiness', snap({ prefs: prefs({ readiness: 'private', details: 'hide' }), ready: { ...READY, grew: 'Security' } })).line).toBe('Your rings grew this week.');
   });
 
   it('rests from 21 days before the exam (rings only), whatever was chosen', () => {
     const f = face('readiness', snap({ prefs: prefs({ readiness: 'show' }), ready: READY, examDay: addDays(TODAY, 21) }));
-    expect(f.title).toBe('Rings growing');
+    expect(f.title).toBe('Your rings');
     expect(f.line).toMatch(/rests for now/);
     const timed = face('readiness', snap({ prefs: prefs({ readiness: 'show', timing: true }), ready: READY, examDay: addDays(TODAY, 10) }));
     expect(timed.line).toMatch(/rests until your exam/);
@@ -710,7 +714,9 @@ describe('Recall card (1.48; was Quick question): a question answered right 2+ w
     expect(f.action).toEqual({ label: 'Show the answer', link: '', widgetAction: 'REVEAL' });
     expect(f.link).toBe(widgetLink('question', 'question', 'd4_070'));
     expect(f.aside).toBe('3 weeks ago');
-    expect(f.label).toMatch(/^Recall card, hidden, from 3 weeks ago\./);
+    expect(f.label).toMatch(/^Recall card, answer hidden, from 3 weeks ago\./);
+    // TalkBack is told what a double-tap really does: the card opens the app; Show the answer is its own button.
+    expect(f.label).toMatch(/Show the answer is the next button\. Double-tap the card to open it in KaiSip\.$/);
     // Never an option list, and never the answer before the reveal.
     expect(words(f)).not.toMatch(/\(A\)|\bA\)|business impact analysis/);
   });
@@ -770,7 +776,7 @@ describe('Key term (1.48; was Questions to revisit): one term a day, its meaning
     expect(f.action).toEqual({ label: 'Show the meaning', link: '', widgetAction: 'REVEAL' });
     expect(f.link).toBe('kaisip://widget?kind=revisit&go=note&id=4B3.2&from=widget');
     expect(words(f)).not.toMatch(/most data/);
-    expect(f.label).toBe('Key term, meaning hidden: Recovery point objective (RPO). Double-tap Show the meaning.');
+    expect(f.label).toBe('Key term, meaning hidden: Recovery point objective (RPO). Show the meaning is the next button. Double-tap the card to open its note in KaiSip.');
   });
 
   it('shown: the term and its one-line meaning; no self-check (it is vocabulary, not a test)', () => {
