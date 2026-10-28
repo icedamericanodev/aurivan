@@ -1,0 +1,2293 @@
+{
+  "domain_number": 1,
+  "domain_name": "Security Principles",
+  "exam_weight": "24%",
+  "overview": "Security Principles is the vocabulary and judgment the rest of the exam builds on. It covers what security protects (confidentiality, integrity, availability and privacy), how people prove who they are and answer for what they do, how organizations manage risk and set rules, which kinds of controls exist, and how a security professional is expected to behave. Foundational AI runs through it: poisoned training data, personal data inside models, and tracing what an AI system did.",
+  "analogy": "Think of a hospital pharmacy. Only authorized staff may see a patient's prescriptions (confidentiality), doses must never be quietly altered (integrity), and medicine must be on the shelf when a patient needs it (availability). Staff badge in, are allowed only certain drugs and sign for each one (authentication, authorization, accounting), so nobody can later deny a withdrawal (non-repudiation). The hospital weighs which shortages or thefts are most likely and harmful (risk), follows drug laws and its own written rules (governance), combines locked cabinets, stock software and training (controls), and expects pharmacists to put patient safety first (ethics).",
+  "parts": [
+    {
+      "part": "1.1",
+      "name": "Cybersecurity Concepts",
+      "topic_ids": [
+        "1.1"
+      ]
+    },
+    {
+      "part": "1.2",
+      "name": "Risk Management Concepts",
+      "topic_ids": [
+        "1.2"
+      ]
+    },
+    {
+      "part": "1.3",
+      "name": "Governance Concepts",
+      "topic_ids": [
+        "1.3"
+      ]
+    },
+    {
+      "part": "1.4",
+      "name": "Cybersecurity Controls",
+      "topic_ids": [
+        "1.4"
+      ]
+    },
+    {
+      "part": "1.5",
+      "name": "Professional and Ethical Conduct",
+      "topic_ids": [
+        "1.5"
+      ]
+    }
+  ],
+  "topics": [
+    {
+      "topic_id": "1.1",
+      "topic_name": "Understand Cybersecurity Concepts",
+      "overview": "This topic covers the ideas every security decision rests on: the three goals of confidentiality, integrity and availability; how systems prove identity, grant access and record actions; how to make actions undeniable; and how privacy differs from secrecy. It ends with how AI systems touch each of these ideas.",
+      "can_do": [
+        "Name the CIA goal an incident harms, from a short scenario",
+        "Put authentication, authorization and accounting in order and tell them apart",
+        "Pick the control that gives non-repudiation, and explain why a shared account cannot",
+        "Tell privacy from confidentiality, and apply privacy by design to a new project"
+      ],
+      "subtopics": [
+        {
+          "id": "1.1.1",
+          "name": "The CIA Triad",
+          "legacy_ids": [],
+          "definition": "The CIA triad is the three core goals of security: confidentiality (only the right people see data), integrity (data stays correct) and availability (it works when needed).",
+          "why_it_matters": "Most security scenarios describe a harm, and the first step is spotting which goal it hurts. The triad also explains trade-offs: locking data down tightly can make it harder for the right people to reach.",
+          "how_it_works": [
+            "Confidentiality fails through disclosure: data seen by someone who should not see it.",
+            "Integrity fails through alteration: data or a system changed without authorization, by accident or on purpose.",
+            "Availability fails through destruction or denial: authorized users cannot reach the data or service when they need it.",
+            "One incident can hit several goals; ransomware that steals files and then encrypts them harms confidentiality and availability.",
+            "Each asset weighs the goals differently; a public website cares more about integrity and availability than confidentiality."
+          ],
+          "compare": {
+            "columns": [
+              "Confidentiality",
+              "Integrity",
+              "Availability"
+            ],
+            "rows": [
+              {
+                "label": "Question it asks",
+                "cells": [
+                  "Who can see it?",
+                  "Is it still correct?",
+                  "Can we use it when needed?"
+                ]
+              },
+              {
+                "label": "Harm when it fails",
+                "cells": [
+                  "Disclosure",
+                  "Alteration",
+                  "Destruction or denial"
+                ]
+              },
+              {
+                "label": "Typical controls",
+                "cells": [
+                  "Encryption, access control, classification",
+                  "Hashing, digital signatures, change control",
+                  "Backups, redundancy, patching, spare capacity"
+                ]
+              }
+            ]
+          },
+          "example": "A school's grading system goes offline during exam week after a power failure, and a teacher notices that a student's grade changed overnight. A junior analyst records two separate problems: an availability failure from the outage and an integrity failure from the grade change. They report both to the system owner and the incident team instead of correcting the grade themselves.",
+          "audit_focus": {
+            "review": [
+              "Identify which goal an alert or report actually threatens",
+              "Compare the asset's stated priorities with the control in use"
+            ],
+            "evidence": [
+              "Asset inventory showing each system's owner and priority",
+              "Incident ticket recording which goal was harmed"
+            ],
+            "recommend": "Report the harmed goal to the asset owner and follow the incident procedure for any fix.",
+            "decides": "The asset owner sets how much each goal matters for that asset"
+          },
+          "isaca_rule": "Name the goal first. Ask what was harmed: secrecy, correctness or access. Then choose the control built for that goal; a control aimed at the wrong goal looks busy but leaves the real harm untouched.",
+          "exam_traps": [
+            {
+              "trap": "Encrypting a file protects all three goals at once.",
+              "why": "Encryption mainly protects confidentiality. It does not stop someone deleting the file, and on its own it does not prove the file was unchanged."
+            },
+            {
+              "trap": "Security should always maximize confidentiality.",
+              "why": "The right balance depends on the asset. Over-restricting patient records could block clinicians in an emergency, an availability harm that can endanger people."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "DAD triad",
+              "definition": "Disclosure, alteration and destruction or denial: the harms that are the opposites of confidentiality, integrity and availability."
+            },
+            {
+              "term": "Asset",
+              "definition": "Anything of value the organization must protect, such as data, systems, people, buildings or reputation."
+            }
+          ],
+          "memory_aid": "C keeps it secret, I keeps it correct, A keeps it ready."
+        },
+        {
+          "id": "1.1.2",
+          "name": "Confidentiality",
+          "legacy_ids": [],
+          "definition": "Confidentiality means keeping information away from people, processes and devices that are not authorized to see it, whether it is stored, sent or in use.",
+          "why_it_matters": "Disclosure can break laws, harm customers and hand attackers an advantage. Once data leaks, it cannot be pulled back, so confidentiality depends heavily on preventing exposure in the first place.",
+          "how_it_works": [
+            "Classification labels data by sensitivity, such as public, internal, confidential or restricted, so handling rules match the harm disclosure would cause.",
+            "Access control limits who can open data; need to know and least privilege keep that list short.",
+            "Encryption makes stored and transmitted data unreadable to anyone without the key.",
+            "People controls matter too: privacy screens, clean desks and care in conversations stop shoulder surfing and eavesdropping.",
+            "Sensitivity is about harm from disclosure; criticality is about harm from losing access. One dataset can score differently on each."
+          ],
+          "example": "A logistics firm's dispatcher prints a route list with customer home addresses and leaves it on a shared printer. A colleague on the security team finds it. They return it to the dispatcher privately, remind them of the clean-desk rule, and log it through the incident reporting channel, as the firm's policy requires for exposed personal data.",
+          "audit_focus": {
+            "review": [
+              "Confirm a document's label matches the data it actually contains",
+              "Inspect shared folders for open access to restricted files"
+            ],
+            "evidence": [
+              "Permission report for the shared folder, listing each user's rights",
+              "Classification policy listing handling rules for each level"
+            ],
+            "recommend": "Report mislabeled or over-shared data to the data owner, who corrects the label and access.",
+            "decides": "The data owner sets the classification and approves access"
+          },
+          "isaca_rule": "Protect by sensitivity. The more harm disclosure would cause, the shorter the access list and the stricter the handling rules. Report exposure through the official channel, even when it looks small.",
+          "exam_traps": [
+            {
+              "trap": "Data inside the company network does not need confidentiality controls.",
+              "why": "Insiders, compromised accounts and misdirected emails expose internal data too. Need to know applies to employees as well as outsiders."
+            },
+            {
+              "trap": "Sensitive data and critical data mean the same thing.",
+              "why": "Sensitivity measures harm if data is disclosed; criticality measures harm if it is unavailable. A public price list can be critical yet not sensitive."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Need to know",
+              "definition": "Access granted only when a person's current task requires that specific information, even if their clearance level would allow more."
+            },
+            {
+              "term": "Data classification",
+              "definition": "Sorting data into sensitivity levels, set by the data owner, that decide how it is labeled, stored, shared and destroyed."
+            },
+            {
+              "term": "Shoulder surfing",
+              "definition": "Watching someone's screen or keyboard to steal information such as passwords or customer details."
+            }
+          ]
+        },
+        {
+          "id": "1.1.3",
+          "name": "Integrity and Authenticity",
+          "legacy_ids": [],
+          "definition": "Integrity means data and systems stay accurate, complete and unchanged except through authorized, approved changes; authenticity means data truly comes from its claimed source.",
+          "why_it_matters": "Decisions run on data. A silently changed payment amount, medicine dose or system setting can do more damage than a leak, because people keep trusting the wrong value.",
+          "how_it_works": [
+            "A hash is a fixed-length fingerprint of data; changing even one character produces a different hash.",
+            "A plain hash catches accidental change, but an attacker who alters data can recompute it; keyed hashes or digital signatures resist deliberate tampering.",
+            "A digital signature also shows authenticity, because only the holder of the private key could have produced it.",
+            "Encryption hides content; unless it includes an integrity check, it does not prove the data arrived unchanged.",
+            "Change control, input validation and limited write access protect integrity before damage happens."
+          ],
+          "compare": {
+            "columns": [
+              "Plain hash",
+              "Digital signature",
+              "Encryption"
+            ],
+            "rows": [
+              {
+                "label": "Main job",
+                "cells": [
+                  "Shows that data changed",
+                  "Shows who signed and that nothing changed since",
+                  "Keeps content secret"
+                ]
+              },
+              {
+                "label": "Stops a deliberate tamperer?",
+                "cells": [
+                  "No; they can recompute it",
+                  "Yes; without the private key they cannot re-sign",
+                  "Not alone, unless it includes an integrity check"
+                ]
+              },
+              {
+                "label": "Goals served",
+                "cells": [
+                  "Integrity",
+                  "Integrity, authenticity, non-repudiation",
+                  "Confidentiality"
+                ]
+              }
+            ]
+          },
+          "example": "A city council publishes an update for its parking app, with its hash. A support technician downloads the file from a mirror site, computes its hash and finds it differs from the published value. They do not install it, and they report the mismatch to the security team, because the file may have been altered or may come from a fake source.",
+          "audit_focus": {
+            "review": [
+              "Compare a download's computed hash with the value from a trusted source",
+              "Confirm edits to critical records went through an approved change request"
+            ],
+            "evidence": [
+              "Hash or signature check output for the installed file",
+              "Change log linking each edit to an approved request"
+            ],
+            "recommend": "Stop using data that fails an integrity check and report it to the system owner and security team.",
+            "decides": "The system owner decides whether to restore, rebuild or keep using it"
+          },
+          "isaca_rule": "Ask two questions: has it changed, and who really sent it? A hash answers the first; a digital signature answers both. Secrecy is a different goal, so encryption alone proves neither.",
+          "exam_traps": [
+            {
+              "trap": "Integrity and authenticity are the same thing.",
+              "why": "Integrity asks whether data changed; authenticity asks whether it came from who it claims. A forged message can arrive perfectly intact yet not be authentic."
+            },
+            {
+              "trap": "If data is encrypted, nobody could have changed it.",
+              "why": "An attacker can flip or swap encrypted bits without reading them. Without an integrity check, the receiver may decrypt altered data and never notice."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "System integrity",
+              "definition": "A system works as designed, free of unauthorized changes such as malware or an unapproved configuration edit."
+            },
+            {
+              "term": "Hash-based message authentication code (HMAC)",
+              "definition": "A hash computed with a secret key, so only key holders can produce a valid value for the data."
+            }
+          ]
+        },
+        {
+          "id": "1.1.4",
+          "name": "Availability",
+          "legacy_ids": [],
+          "definition": "Availability means authorized users can reach the systems, data and services they need, in a usable state, at the time they need them.",
+          "why_it_matters": "A hospital that cannot open patient records, or a store that cannot take payments, is harmed even if no data leaks. Some outages endanger people, not just revenue.",
+          "how_it_works": [
+            "Redundancy removes single points of failure with spare power, extra network links, clustered servers and backup sites.",
+            "Backups let data be restored after deletion, corruption or ransomware, but only if restores are tested.",
+            "Denial of service attacks flood a service so real users cannot reach it; filtering and spare capacity absorb them.",
+            "Patching, capacity planning and planned maintenance prevent outages caused by faults or overload.",
+            "Each asset's criticality decides how much availability protection it deserves; detailed continuity planning is covered in Domain 2."
+          ],
+          "example": "A small accounting firm keeps all client files on one office server. A practitioner reviewing the setup notices there is no second copy anywhere and the last backup job failed weeks ago. They log the issue as a single point of failure and raise it with the office manager, who owns the server, rather than buying new equipment on their own.",
+          "audit_focus": {
+            "review": [
+              "Trace one critical service for parts with no spare or fallback",
+              "Confirm the latest backup succeeded and a restore was tested"
+            ],
+            "evidence": [
+              "Backup job report showing successes, failures and dates",
+              "Restore test record with time taken and result"
+            ],
+            "recommend": "Report single points of failure and failed backups to the system owner, with the business impact.",
+            "decides": "The system owner decides how much downtime is acceptable"
+          },
+          "isaca_rule": "Ask what happens if it stops. Protect the most critical services first with redundancy and tested backups, and treat a backup that has never been restored as unproven.",
+          "exam_traps": [
+            {
+              "trap": "Availability is an IT uptime issue, not a security issue.",
+              "why": "Availability is one of the three security goals. Attacks such as denial of service and ransomware target it directly, and outages can harm safety."
+            },
+            {
+              "trap": "Having backup files means the data can be recovered.",
+              "why": "Backups that were never test-restored, or that sit on the same infected network, may fail when needed. Only a successful restore test proves recovery."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Single point of failure",
+              "definition": "One component whose failure stops the whole service, such as a lone server, power feed or network link."
+            },
+            {
+              "term": "Redundancy",
+              "definition": "Duplicate components or paths that keep a service running when one part fails."
+            },
+            {
+              "term": "Denial of service (DoS)",
+              "definition": "An attack that overwhelms or disrupts a service so legitimate users cannot use it; a distributed attack (DDoS) uses many machines."
+            }
+          ]
+        },
+        {
+          "id": "1.1.5",
+          "name": "Authentication",
+          "legacy_ids": [],
+          "definition": "Authentication is proving that you are the identity you claim, by presenting something you know, something you have or something you are.",
+          "why_it_matters": "Every later access decision trusts the identity. If an attacker passes authentication with a stolen password, authorization and logging then work in the attacker's favor.",
+          "how_it_works": [
+            "Identification comes first: the user claims an identity, such as a username or badge number.",
+            "Authentication then verifies that claim with one or more factors.",
+            "Multi-factor authentication (MFA) combines different factor types; two passwords are still only one type.",
+            "Phishing-resistant methods, such as passkeys and hardware security keys, are harder to trick than codes sent by text message.",
+            "Current NIST guidance favors long passwords checked against lists of breached passwords over forced complexity rules and routine expiry."
+          ],
+          "types": [
+            {
+              "term": "Something you know",
+              "meaning": "A secret held in memory, such as a password, passphrase or PIN."
+            },
+            {
+              "term": "Something you have",
+              "meaning": "A physical or digital item, such as an authenticator app, smart card or security key."
+            },
+            {
+              "term": "Something you are",
+              "meaning": "A biometric trait, such as a fingerprint, face or iris."
+            },
+            {
+              "term": "Somewhere you are or something you do",
+              "meaning": "Location or behavior signals, usually added as extra risk checks rather than used as a factor alone."
+            }
+          ],
+          "example": "At a regional clinic, a nurse logs in with a password and then approves a push prompt on their phone. One evening they receive a prompt they did not start. Instead of approving it to make it stop, they deny it and report it to the help desk, since it suggests someone else has their password.",
+          "audit_focus": {
+            "review": [
+              "Confirm MFA is required for remote and administrator access",
+              "Compare enrolled factors with the factor types the policy requires"
+            ],
+            "evidence": [
+              "Identity system report of accounts without MFA enrolled",
+              "Sign-in logs showing denied or unusual prompts"
+            ],
+            "recommend": "Report accounts missing required MFA to the identity team and the account holder's manager.",
+            "decides": "Management sets which systems require MFA through policy"
+          },
+          "isaca_rule": "Identity is the foundation for every other control. Strengthen it with factors of different types, and treat an unexpected login prompt as a possible attack to report, not a nuisance to approve.",
+          "exam_traps": [
+            {
+              "trap": "A password plus a security question is multi-factor authentication.",
+              "why": "Both are something you know, so it is still single-factor. MFA needs at least two different factor types, such as a password and a hardware key."
+            },
+            {
+              "trap": "Entering a username authenticates the user.",
+              "why": "A username only identifies; it makes a claim. Authentication is the separate step that proves the claim with a factor."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Identification",
+              "definition": "Claiming an identity, such as typing a username or showing a badge, before it is verified."
+            },
+            {
+              "term": "Passkey",
+              "definition": "A login credential based on public key cryptography, stored on a device and tied to one site, so it resists phishing."
+            },
+            {
+              "term": "MFA fatigue",
+              "definition": "An attack that floods a user with login prompts, hoping they approve one just to stop the noise."
+            }
+          ]
+        },
+        {
+          "id": "1.1.6",
+          "name": "Authorization and Accounting",
+          "legacy_ids": [],
+          "definition": "Authorization decides what an authenticated identity may do; accounting records what it actually did, so actions can be traced back to a person or process.",
+          "why_it_matters": "Authentication alone would let a verified user do anything. Authorization limits the damage any one account can cause, and accounting provides the evidence needed to spot misuse and hold people accountable.",
+          "how_it_works": [
+            "The AAA steps run in order: authenticate the identity, authorize its actions, then account for what it did.",
+            "Authorization follows rules set by the data or system owner, ideally granting least privilege.",
+            "Accounting writes logs of logins, file access and changes, showing who, what, when and from where.",
+            "Accountability needs unique accounts; shared logins make it impossible to tell which person acted.",
+            "Logs must be protected from editing and kept for the required period, or they lose their value as evidence."
+          ],
+          "compare": {
+            "columns": [
+              "Authentication",
+              "Authorization",
+              "Accounting"
+            ],
+            "rows": [
+              {
+                "label": "Question",
+                "cells": [
+                  "Who are you?",
+                  "What may you do?",
+                  "What did you do?"
+                ]
+              },
+              {
+                "label": "Example",
+                "cells": [
+                  "Password plus security key",
+                  "Read-only access to the payroll folder",
+                  "Log entry: user opened the payroll file at 09:14"
+                ]
+              },
+              {
+                "label": "If missing",
+                "cells": [
+                  "Anyone can pose as a user",
+                  "Every user can do everything",
+                  "Misuse goes unseen and unprovable"
+                ]
+              }
+            ]
+          },
+          "example": "At a city water utility, three operators share one login for the control room dashboard. After a pump setting changes at night, the logs show only the shared account. A security analyst notes that accounting worked but accountability failed, and asks their supervisor to raise unique accounts for each operator with the system owner.",
+          "audit_focus": {
+            "review": [
+              "Inspect access lists for shared or generic accounts",
+              "Trace a sensitive action in the logs back to one named person"
+            ],
+            "evidence": [
+              "Log extract showing user, action, time and source",
+              "User access list compared with current job roles"
+            ],
+            "recommend": "Report shared accounts and excess access to the system owner for correction through the access request process.",
+            "decides": "The system owner approves who gets which access"
+          },
+          "isaca_rule": "Each person needs their own identity, only the access their job needs, and a protected record of what they did. If you cannot tell who acted, accountability has failed even when logs exist.",
+          "exam_traps": [
+            {
+              "trap": "Once users are authenticated, they should be able to reach any system.",
+              "why": "Authentication proves identity only. Authorization is a separate decision for each resource, based on the person's role and need."
+            },
+            {
+              "trap": "Logs alone create accountability.",
+              "why": "Logs tie actions to accounts, not people. Shared or generic accounts break that link, so accountability also needs unique identities."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "AAA",
+              "definition": "Authentication, authorization and accounting: proving identity, granting permissions and recording activity."
+            },
+            {
+              "term": "Least privilege",
+              "definition": "Giving each identity only the access its current task needs, and nothing more."
+            },
+            {
+              "term": "Accountability",
+              "definition": "Being able to trace each action to one responsible person or process, who can be held to answer for it."
+            }
+          ]
+        },
+        {
+          "id": "1.1.7",
+          "name": "Non-Repudiation",
+          "legacy_ids": [],
+          "definition": "Non-repudiation is evidence strong enough that a person cannot credibly deny having sent a message, signed a document or performed an action.",
+          "why_it_matters": "Contracts, payments, approvals and investigations depend on proof of who did what. Without it, a person can simply claim someone else acted in their name.",
+          "how_it_works": [
+            "A digital signature is made with the signer's private key, which only they hold, and anyone can check it with the matching public key.",
+            "Shared secrets cannot give non-repudiation: when two parties hold the same key, either could have created the message.",
+            "Strong authentication, unique accounts and tamper-resistant, time-stamped logs support non-repudiation for actions inside systems.",
+            "The proof is only as strong as key protection; a private key copied to several people no longer points to one signer."
+          ],
+          "example": "A purchasing officer at a hospital approves a large supplier order in an e-signature system, then later denies it. The security team finds the signature was made with a certificate issued only to that officer, protected by their security key, and the time-stamped record is intact. A practitioner hands these records to the investigation lead, who draws the conclusions.",
+          "audit_focus": {
+            "review": [
+              "Confirm signing keys are issued to one person and never shared",
+              "Inspect the log store for protection against edits and deletion"
+            ],
+            "evidence": [
+              "Certificate record naming the single holder of the signing key",
+              "Time-stamped log entries with integrity protection"
+            ],
+            "recommend": "Report shared signing keys or editable logs to the system owner as a gap in proof.",
+            "decides": "Investigators and management decide what the evidence shows"
+          },
+          "isaca_rule": "Non-repudiation needs something only one person controls, plus a record that cannot be quietly changed. Look for private keys, unique identities and protected logs; anything shared weakens the proof.",
+          "exam_traps": [
+            {
+              "trap": "Encrypting an email with a shared secret key proves who sent it.",
+              "why": "Both parties hold that key, so either could have written the message. Only a signature made with one person's private key gives non-repudiation."
+            },
+            {
+              "trap": "Non-repudiation means the same as integrity.",
+              "why": "A signature gives both, but they differ. Integrity shows data is unchanged; non-repudiation shows a specific person cannot deny creating or approving it."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Private key",
+              "definition": "The secret half of an asymmetric key pair, kept by one owner and used to sign or decrypt."
+            },
+            {
+              "term": "Public key",
+              "definition": "The shareable half of a key pair, used to check signatures or encrypt data for the key's owner."
+            },
+            {
+              "term": "Digital certificate",
+              "definition": "An electronic credential from a trusted issuer that binds a public key to a named person, device or organization."
+            }
+          ]
+        },
+        {
+          "id": "1.1.8",
+          "name": "Privacy and Personal Data",
+          "legacy_ids": [],
+          "definition": "Privacy is a person's right to control how information about them is collected, used, shared and kept; organizations respect it by handling personal data lawfully and fairly.",
+          "why_it_matters": "Privacy laws bring fines, notification duties and lawsuits, and misuse of personal data destroys trust. Privacy can be breached without any leak, simply by using data for a purpose people never agreed to.",
+          "how_it_works": [
+            "Personally identifiable information (PII) is data that identifies a person alone or combined with other data, such as a name, address or ID number.",
+            "Sensitive categories, such as health, biometric and financial data, carry stricter rules.",
+            "Core principles include collecting only what is needed, using it only for the stated purpose and keeping it only as long as needed.",
+            "Privacy by design builds these protections into a system from the first design step, with privacy-protective default settings.",
+            "Depending on the law, people may have rights to see, correct or delete data about them."
+          ],
+          "compare": {
+            "columns": [
+              "Privacy",
+              "Secrecy (confidentiality)"
+            ],
+            "rows": [
+              {
+                "label": "Focus",
+                "cells": [
+                  "The person the data describes",
+                  "The data itself"
+                ]
+              },
+              {
+                "label": "Main question",
+                "cells": [
+                  "Is this use of personal data fair, lawful and agreed?",
+                  "Can only authorized parties see it?"
+                ]
+              },
+              {
+                "label": "Can fail without a leak?",
+                "cells": [
+                  "Yes, by using data for a new purpose without a lawful basis",
+                  "No; it fails when data is disclosed"
+                ]
+              }
+            ]
+          },
+          "example": "A fitness app team plans a feature that shares users' running routes with partner brands. At the design review, a security analyst asks whether users agreed to this use, whether exact home locations are needed, and how long routes are kept. They log these questions for the product owner and the privacy officer, who decide how to proceed.",
+          "audit_focus": {
+            "review": [
+              "Compare the personal fields collected with what the feature needs",
+              "Confirm a retention period exists and old records are deleted"
+            ],
+            "evidence": [
+              "Data inventory listing personal data, purpose and retention",
+              "Privacy impact assessment for the new system"
+            ],
+            "recommend": "Raise unneeded collection or missing retention rules with the data owner and the privacy officer.",
+            "decides": "New uses of personal data need sign-off from the accountable data owner"
+          },
+          "isaca_rule": "Collect the least personal data needed, use it only for the purpose people were told, keep it no longer than needed, and build these limits in from the start. Route privacy questions to the people accountable for the data.",
+          "exam_traps": [
+            {
+              "trap": "If personal data is encrypted, privacy is taken care of.",
+              "why": "Encryption protects secrecy, but privacy also asks whether the data should be collected at all, what it is used for and how long it is kept."
+            },
+            {
+              "trap": "Privacy reviews can wait until the system is built.",
+              "why": "Privacy by design means building protections in from the start. Retrofitting costs more and often means unneeded data is already collected."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Data minimization",
+              "definition": "Collecting and keeping only the personal data needed for a stated purpose."
+            },
+            {
+              "term": "Purpose limitation",
+              "definition": "Using personal data only for the reasons people were told when it was collected."
+            },
+            {
+              "term": "Data subject",
+              "definition": "The person whom personal data describes."
+            }
+          ]
+        },
+        {
+          "id": "1.1.9",
+          "name": "AI and the Core Security Concepts",
+          "legacy_ids": [],
+          "definition": "AI systems share the same security goals as other software, plus new risks: poisoned training data, personal data exposed through models, and automated actions that are hard to trace.",
+          "why_it_matters": "Organizations let AI answer customers, write code and take actions. If its data is corrupted, it reveals secrets or nobody can tell what it did, the CIA triad and AAA fail in new ways.",
+          "how_it_works": [
+            "Poisoning attacks corrupt the training data or the model itself so it learns wrong or hidden behavior, which is an integrity attack.",
+            "Training data and prompts can hold personal or confidential data that the model may later reveal, a confidentiality and privacy risk.",
+            "Overloading or disabling an AI service harms availability, as with any other system.",
+            "Giving each AI agent its own identity, limited permissions and logs keeps its actions authorized, traceable and tied to an accountable human owner."
+          ],
+          "compare": {
+            "columns": [
+              "Goal harmed",
+              "Basic safeguard"
+            ],
+            "rows": [
+              {
+                "label": "Poisoned training data",
+                "cells": [
+                  "Integrity",
+                  "Vet data sources and limit who can change the training set"
+                ]
+              },
+              {
+                "label": "Personal data in training or prompts",
+                "cells": [
+                  "Confidentiality and privacy",
+                  "Minimize or mask data; use approved tools only"
+                ]
+              },
+              {
+                "label": "AI service flooded with requests",
+                "cells": [
+                  "Availability",
+                  "Rate limits and spare capacity"
+                ]
+              },
+              {
+                "label": "AI agent actions nobody can trace",
+                "cells": [
+                  "Accountability and non-repudiation",
+                  "A unique identity and activity log for each agent"
+                ]
+              }
+            ]
+          },
+          "example": "A customer service team at an energy company wants to retrain its support chatbot on last year's chat transcripts. A junior analyst notices the transcripts contain account numbers and home addresses, and that anyone on the team can add files to the training folder. They raise both points with the product owner: mask the personal data first, and limit who can change the training set.",
+          "audit_focus": {
+            "review": [
+              "Trace where each training dataset came from and who changed it",
+              "Confirm each AI agent has its own account and activity log"
+            ],
+            "evidence": [
+              "Training data source list with approvals and change history",
+              "AI agent activity log tied to a named owner"
+            ],
+            "recommend": "Report unvetted training data or untraceable AI actions to the AI system owner before release.",
+            "decides": "The AI system owner accepts or rejects the remaining risk"
+          },
+          "isaca_rule": "Treat an AI system as an asset with data, identity and logs. Protect training data from tampering, keep personal data out unless the owner approves a lawful need, and make every AI action traceable to a responsible human.",
+          "exam_traps": [
+            {
+              "trap": "AI output is trustworthy because the model learned from a huge amount of data.",
+              "why": "Volume does not guarantee integrity. A small amount of poisoned data can plant wrong or hidden behavior, so data sources must be controlled and checked."
+            },
+            {
+              "trap": "When an AI agent acts on its own, no person is accountable.",
+              "why": "Accountability stays with people. Each AI agent needs a named owner, its own limited identity and logs, so its actions can be traced and answered for."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Data poisoning",
+              "definition": "Planting misleading or malicious records in training data so a model learns wrong or hidden behavior."
+            },
+            {
+              "term": "Training data",
+              "definition": "The examples a model learns from; their quality and source decide how far the model can be trusted."
+            },
+            {
+              "term": "Prompt injection",
+              "definition": "Crafted or hidden instructions in input that trick an AI system into ignoring its rules or revealing data."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "topic_id": "1.2",
+      "topic_name": "Understand Risk Management Concepts",
+      "overview": "This topic covers how organizations find, measure and respond to risk: the vocabulary of threats and vulnerabilities, the lifecycle that keeps risk under review, ways to rank risks, the four treatment options, and who has the authority to accept the risk that remains.",
+      "can_do": [
+        "Tell a threat from a vulnerability and a risk in a short scenario",
+        "Calculate single and annualized loss expectancy, and tell qualitative from quantitative methods",
+        "Choose avoid, mitigate, transfer or accept for a described risk",
+        "Identify who may accept a risk, and what the practitioner does instead"
+      ],
+      "subtopics": [
+        {
+          "id": "1.2.1",
+          "name": "Threats, Vulnerabilities and Risk",
+          "legacy_ids": [],
+          "definition": "Risk is the chance that a threat will exploit a vulnerability and harm an asset, judged by how likely that is and how bad the impact would be.",
+          "why_it_matters": "Security time and money are limited. Clear terms let teams compare very different problems, such as a phishing campaign and a flood, and spend effort where it removes the most harm.",
+          "how_it_works": [
+            "A threat is anything that could harm an asset, such as an attacker, a human error or a storm.",
+            "A vulnerability is a weakness a threat can use, such as unpatched software or an unlocked door.",
+            "An exploit is the technique or code that takes advantage of a weakness.",
+            "Risk needs both a threat and a vulnerability; organizations rarely control threats, so they mostly reduce vulnerabilities and impact.",
+            "Likelihood is how probable the harm is; impact is how severe it would be."
+          ],
+          "compare": {
+            "columns": [
+              "Threat",
+              "Vulnerability",
+              "Risk"
+            ],
+            "rows": [
+              {
+                "label": "What it is",
+                "cells": [
+                  "A possible cause of harm",
+                  "A weakness",
+                  "The likelihood and impact of harm"
+                ]
+              },
+              {
+                "label": "Example",
+                "cells": [
+                  "A ransomware gang",
+                  "An unpatched remote access server",
+                  "The gang encrypts files through that server and halts operations"
+                ]
+              },
+              {
+                "label": "Who can change it",
+                "cells": [
+                  "Usually nobody inside the organization",
+                  "The system owner, by fixing it",
+                  "Management, by treating it"
+                ]
+              }
+            ]
+          },
+          "example": "A bakery chain's ordering website runs an outdated plugin with a published flaw, and attackers are scanning the internet for it. A new security analyst records the plugin flaw as the vulnerability, the attackers as the threat and exposure of customer card data as the impact. They add it to the risk register and notify the site owner, who decides the response.",
+          "audit_focus": {
+            "review": [
+              "Confirm each risk entry names its asset, threat and vulnerability",
+              "Compare vulnerability scan results with entries in the risk register"
+            ],
+            "evidence": [
+              "Vendor advisory or scanner record confirming the flaw and affected versions",
+              "Threat reports showing the flaw is being actively exploited"
+            ],
+            "recommend": "Log newly found weaknesses in the risk register and notify the asset owner promptly.",
+            "decides": "The asset owner decides how the risk is treated"
+          },
+          "isaca_rule": "Name the parts before choosing a fix: asset, threat, vulnerability, likelihood and impact. Practitioners usually lower risk by removing weaknesses, because they cannot remove the attackers.",
+          "exam_traps": [
+            {
+              "trap": "Every vulnerability is a high risk.",
+              "why": "Risk also needs a threat able to exploit the weakness and an impact that matters. A flaw on an isolated, low-value test machine may be a low risk."
+            },
+            {
+              "trap": "Patching a server removes the threat.",
+              "why": "Patching removes a vulnerability. The attacker, the threat, still exists and may look for another weakness."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Threat actor",
+              "definition": "The person or group behind a threat, such as a criminal gang, a careless insider or a nation-state."
+            },
+            {
+              "term": "Threat vector",
+              "definition": "The path a threat uses to reach its target, such as email, a website or a USB drive."
+            }
+          ]
+        },
+        {
+          "id": "1.2.2",
+          "name": "The Risk Management Lifecycle",
+          "legacy_ids": [],
+          "definition": "The risk management lifecycle is the repeating cycle of identifying, assessing, treating and monitoring risks, with communication throughout, because risks keep changing.",
+          "why_it_matters": "A one-time assessment goes stale as systems, threats and business plans change. The cycle keeps decisions current and shows leaders where risk stands today.",
+          "how_it_works": [
+            "Frame the context first: what the organization values, its legal duties and its risk appetite.",
+            "Identify risks from asset lists, threat information, scans, audits and past incidents.",
+            "Assess each risk's likelihood and impact, then rank them.",
+            "Treat each risk by avoiding, mitigating, transferring or accepting it.",
+            "Monitor controls and risk levels, and repeat the cycle on a schedule and after major changes or incidents."
+          ],
+          "example": "A school district finished a risk assessment last spring. Over the summer it moved student records to a cloud service. A security technician notices the risk register still describes the old on-site server. They flag the outdated entries to the risk manager so the new setup can be assessed, instead of assuming last year's results still apply.",
+          "audit_focus": {
+            "review": [
+              "Compare the risk register with the systems actually in use today",
+              "Confirm a reassessment followed the last major change or incident"
+            ],
+            "evidence": [
+              "Dated risk assessment reports showing the review cycle",
+              "Change records for new systems with linked risk reviews"
+            ],
+            "recommend": "Flag stale or missing risk entries to the risk manager so the affected systems are reassessed.",
+            "decides": "Senior management sets the risk appetite the cycle works within"
+          },
+          "isaca_rule": "Risk management never finishes. After any big change, incident or new threat, return to identifying and assessing; a register that no longer matches the real systems gives false comfort.",
+          "exam_traps": [
+            {
+              "trap": "Once risks are assessed and treated, the work is done.",
+              "why": "Threats, systems and business needs change. Monitoring and regular reassessment are part of the lifecycle, not optional extras."
+            },
+            {
+              "trap": "Buy controls first, then work out the risks.",
+              "why": "Controls should answer assessed risks. Spending before assessing often protects the wrong things and misses the biggest risks."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Risk framing",
+              "definition": "Setting the context for risk decisions: scope, assumptions, constraints, priorities and appetite."
+            },
+            {
+              "term": "NIST Risk Management Framework (RMF)",
+              "definition": "The seven-step system process in NIST SP 800-37 Rev. 2: prepare, categorize, select, implement, assess, authorize, monitor."
+            }
+          ],
+          "memory_aid": "Find it, size it, treat it, watch it, then repeat."
+        },
+        {
+          "id": "1.2.3",
+          "name": "Assessing Likelihood and Impact",
+          "legacy_ids": [],
+          "definition": "Risk assessment is the step that rates each identified risk by how likely it is and how much harm it would cause, so the worst risks get attention first.",
+          "why_it_matters": "Without a consistent rating, the loudest concern wins instead of the most serious one. Ranking lets the organization fix the risks that matter most within its budget.",
+          "how_it_works": [
+            "Likelihood weighs threat activity, how easy the weakness is to exploit and the controls already in place.",
+            "Impact weighs harm to safety, finances, operations, legal standing and reputation.",
+            "A risk matrix plots likelihood against impact so the high-and-high risks stand out.",
+            "Ratings can be taken before controls (inherent risk) and after them (residual risk).",
+            "NIST SP 800-30 Rev. 1 describes a common way to prepare, conduct and maintain risk assessments."
+          ],
+          "example": "A regional transit agency rates two risks. A ticket kiosk screen fault is likely but causes only short delays. Tampering with the signaling system is unlikely but could cause a collision. A security analyst helping with the matrix makes sure the signaling risk gets the highest impact rating because people could be hurt, and presents both ratings to the risk owner.",
+          "audit_focus": {
+            "review": [
+              "Confirm every risk uses the organization's approved rating scale",
+              "Compare ratings for safety-related risks with their stated impact"
+            ],
+            "evidence": [
+              "Scored register showing each risk's rating and the reason for it",
+              "Rating scale definitions approved by management"
+            ],
+            "recommend": "Raise ratings that understate safety or business impact with the risk owner for review.",
+            "decides": "The accountable owner signs off the final score"
+          },
+          "isaca_rule": "Rate both likelihood and impact, and let possible harm to people weigh heaviest. A rare event with severe impact can outrank a frequent nuisance.",
+          "exam_traps": [
+            {
+              "trap": "The most frequent incident is always the highest risk.",
+              "why": "Risk combines likelihood and impact. A rare event that could injure people or stop operations can rank above a common, minor one."
+            },
+            {
+              "trap": "Residual risk should be zero once controls are in place.",
+              "why": "Controls reduce risk but never remove all of it. What remains must be judged acceptable by an authorized owner."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Risk matrix (heat map)",
+              "definition": "A grid of likelihood against impact, often colored, that shows which risks rank highest."
+            },
+            {
+              "term": "Inherent risk",
+              "definition": "The level of risk before any controls are applied."
+            }
+          ]
+        },
+        {
+          "id": "1.2.4",
+          "name": "Qualitative and Quantitative Analysis",
+          "legacy_ids": [],
+          "definition": "Qualitative analysis rates risks with descriptive levels such as low, medium and high; quantitative analysis estimates them in numbers, usually money lost per year.",
+          "why_it_matters": "Leaders need risks in terms they can act on. Quick descriptive ratings suit most decisions; numbers help justify spending on a costly control.",
+          "how_it_works": [
+            "Start with the asset value (AV) and the exposure factor (EF), the share of that value one incident destroys.",
+            "Single loss expectancy: SLE = AV × EF.",
+            "Annualized loss expectancy: ALE = SLE × ARO.",
+            "A control is worth buying when its yearly cost is lower than the drop in ALE it delivers.",
+            "Semi-quantitative methods give number scores, such as 1 to 5, to descriptive levels."
+          ],
+          "compare": {
+            "columns": [
+              "Qualitative",
+              "Quantitative"
+            ],
+            "rows": [
+              {
+                "label": "Output",
+                "cells": [
+                  "Levels such as low, medium and high",
+                  "Money amounts such as ALE"
+                ]
+              },
+              {
+                "label": "Speed and cost",
+                "cells": [
+                  "Fast and cheap; uses expert judgment",
+                  "Slower; needs reliable data"
+                ]
+              },
+              {
+                "label": "Weakness",
+                "cells": [
+                  "Subjective; ratings can differ between people",
+                  "Numbers look precise but rest on estimates"
+                ]
+              },
+              {
+                "label": "Best for",
+                "cells": [
+                  "Ranking many risks quickly",
+                  "Justifying a specific security investment"
+                ]
+              }
+            ]
+          },
+          "example": "A delivery company values its route-planning server at $80,000. A fire would destroy half its value, and such fires are expected once every 10 years. An analyst works out an SLE of $40,000 and an ALE of $4,000 a year, and shows the operations manager that a $15,000-a-year protection service costs more than the yearly loss it would prevent.",
+          "audit_focus": {
+            "review": [
+              "Reperform the SLE and ALE math from the stated inputs",
+              "Confirm where the asset values and frequency estimates came from"
+            ],
+            "evidence": [
+              "Worksheet showing asset value, exposure factor and frequency",
+              "Loss or incident history supporting the frequency estimate"
+            ],
+            "recommend": "Present the analysis to the risk owner with every assumption stated plainly.",
+            "decides": "The risk owner decides whether the control is worth funding"
+          },
+          "isaca_rule": "Use numbers when a spending decision needs them and descriptive levels when speed matters. Either way, the analyst presents the result and its assumptions; the owner makes the decision.",
+          "exam_traps": [
+            {
+              "trap": "ALE is the cost of one incident.",
+              "why": "That is the SLE. ALE spreads the loss over a year by multiplying the SLE by how often the incident is expected (ARO)."
+            },
+            {
+              "trap": "Quantitative analysis is always more accurate than qualitative.",
+              "why": "Its numbers rest on estimates of value, damage and frequency. Poor inputs give precise-looking but wrong results."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Single loss expectancy (SLE)",
+              "definition": "The expected cost of one occurrence of an incident."
+            },
+            {
+              "term": "Annualized rate of occurrence (ARO)",
+              "definition": "How many times a year an incident is expected; once every ten years is 0.1."
+            },
+            {
+              "term": "Annualized loss expectancy (ALE)",
+              "definition": "The expected yearly loss from one risk, used to compare against what a control costs."
+            }
+          ],
+          "memory_aid": "One loss is SLE; times how often a year gives ALE."
+        },
+        {
+          "id": "1.2.5",
+          "name": "Risk Treatment Options",
+          "legacy_ids": [],
+          "definition": "Risk treatment is choosing how to respond to an assessed risk: avoid it, mitigate it, transfer or share it, or accept it, based on cost and risk appetite.",
+          "why_it_matters": "Every risk gets some response, even if that is a documented decision to live with it. The right option avoids wasted money and stops serious risks being left unmanaged.",
+          "how_it_works": [
+            "Treatment follows assessment; the rating and the cost of each option guide the choice.",
+            "Options can be combined, such as mitigating a risk and then insuring what remains.",
+            "Transfer moves financial impact, not accountability; the organization still answers for a breach of its customers' data.",
+            "Ignoring a risk is not acceptance; acceptance is a documented decision by someone with authority."
+          ],
+          "types": [
+            {
+              "term": "Avoid",
+              "meaning": "Stop, or never start, the activity that creates the risk."
+            },
+            {
+              "term": "Mitigate (reduce)",
+              "meaning": "Add controls that lower likelihood or impact, such as patching, MFA or backups."
+            },
+            {
+              "term": "Transfer (share)",
+              "meaning": "Shift the financial impact to another party, such as through insurance or a contract."
+            },
+            {
+              "term": "Accept",
+              "meaning": "Knowingly keep the risk without further action, because it is within appetite or too costly to treat."
+            }
+          ],
+          "example": "A small online shop plans to store customers' card numbers so repeat checkout is faster. A security analyst explains the risk and the options to the shop's owner, who decides not to store card numbers at all and asks customers to enter them each time. That choice avoids the storage risk, and the analyst records the decision in the risk register.",
+          "audit_focus": {
+            "review": [
+              "Confirm each high risk has a chosen treatment and target date",
+              "Inspect accepted risks for a named approver and review date"
+            ],
+            "evidence": [
+              "Risk treatment plan listing option, owner and deadline",
+              "Signed risk acceptance form with a review or expiry date"
+            ],
+            "recommend": "Escalate high risks with no treatment decision to the risk owner and their manager.",
+            "decides": "The risk owner chooses the treatment within management's appetite"
+          },
+          "isaca_rule": "Match the option to the risk and the appetite, and record the decision. Insurance and contracts can move costs to someone else, but responsibility for protecting the data stays with the organization.",
+          "exam_traps": [
+            {
+              "trap": "Buying cyber insurance transfers all responsibility for a breach.",
+              "why": "Insurance pays some costs. The organization stays accountable to customers and regulators and still suffers the damage to its reputation."
+            },
+            {
+              "trap": "Doing nothing about a risk counts as accepting it.",
+              "why": "Acceptance is a deliberate, documented decision by an authorized owner who understands the risk. An ignored risk is simply unmanaged."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Cyber insurance",
+              "definition": "A policy that pays some costs of a security incident, such as recovery or legal fees; it shares financial impact only."
+            },
+            {
+              "term": "Cost-benefit analysis",
+              "definition": "Comparing what a control costs with the reduction in expected loss it delivers."
+            }
+          ],
+          "memory_aid": "Four ways out: avoid, mitigate, transfer, accept."
+        },
+        {
+          "id": "1.2.6",
+          "name": "Risk Appetite, Tolerance and Acceptance",
+          "legacy_ids": [],
+          "definition": "Risk appetite is the broad amount and type of risk leaders will take on; risk tolerance is the narrower, measurable limit they will bear for a specific objective.",
+          "why_it_matters": "Appetite and tolerance turn leaders' attitudes into limits staff can apply. They tell a team when a remaining risk is acceptable and when it must be escalated.",
+          "how_it_works": [
+            "The board or senior management sets the appetite; it differs between organizations and even between activities.",
+            "Tolerances turn the appetite into measurable limits, such as no more than four hours of downtime a month.",
+            "Residual risk within tolerance can be accepted by the authorized risk owner; anything above it is treated further or escalated.",
+            "Accepted risks are documented, time-limited and reviewed, because conditions change.",
+            "Analysts and engineers identify, assess and report risk; they do not accept it on the organization's behalf."
+          ],
+          "example": "During a project at a city library, a contractor's tablet app cannot support MFA, and the launch date is near. The project's security analyst is asked to sign a risk acceptance so it can go live. They explain that acceptance belongs to the system owner, document the residual risk, and route the form to the library's IT director, who owns the system.",
+          "audit_focus": {
+            "review": [
+              "Confirm the person who signed an acceptance owns the system",
+              "Compare each accepted risk's level with the written limit for that objective"
+            ],
+            "evidence": [
+              "Risk acceptance record naming approver, reason and review date",
+              "Risk appetite statement approved by senior management"
+            ],
+            "recommend": "Route any risk above tolerance to the risk owner and senior management for a decision.",
+            "decides": "Owners accept within limits; senior leaders decide anything beyond them"
+          },
+          "isaca_rule": "Only someone with authority over the asset and its budget, usually the risk or system owner or senior management, accepts risk. The practitioner makes the risk clear, documents it and routes it to that person.",
+          "exam_traps": [
+            {
+              "trap": "The analyst who found a small risk can accept it to save time.",
+              "why": "Acceptance commits the organization, so it belongs to an owner with authority over the asset and budget. The analyst documents and escalates."
+            },
+            {
+              "trap": "Risk appetite and risk tolerance mean exactly the same thing.",
+              "why": "Appetite is the broad stance leaders set; tolerance is a narrower, measurable limit for one objective. Tolerance puts the appetite into practice."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Residual risk",
+              "definition": "The risk left after controls are applied; it must sit within tolerance and be accepted by an authorized owner."
+            },
+            {
+              "term": "Risk owner",
+              "definition": "The person accountable for a risk, with authority to decide its treatment and accept what remains."
+            },
+            {
+              "term": "Risk acceptance",
+              "definition": "A documented, time-limited decision by an authorized owner to keep a known risk."
+            }
+          ]
+        },
+        {
+          "id": "1.2.7",
+          "name": "Risk Register, Ownership and Reporting",
+          "legacy_ids": [],
+          "definition": "A risk register is the shared record of known risks, each with a rating, an owner, a treatment and a status, used to track and report risk over time.",
+          "why_it_matters": "A risk nobody owns usually goes untreated. The register makes ownership visible, shows trends to leaders and proves the organization knew about its risks and acted on them.",
+          "how_it_works": [
+            "Each entry describes the risk, its rating, the named owner, the chosen treatment, a due date and the current status.",
+            "Anyone can raise a risk; the owner decides what happens to it.",
+            "Practitioners report new risks promptly through the agreed channel, such as a ticket or the register itself.",
+            "Leaders get summaries of top risks and overdue actions; Domain 2 covers key risk indicators and dashboards.",
+            "Entries are updated when risks change, controls are added or an incident shows a rating was wrong."
+          ],
+          "example": "While patching laptops at an engineering firm, an IT technician finds that the design team's file server has no backup. They do not set up backups on their own, since that would change a system they do not own. They log the risk through the risk reporting form, name the design manager as owner and tell their supervisor.",
+          "audit_focus": {
+            "review": [
+              "Sample open entries for blank owner or deadline fields",
+              "Inspect overdue treatments and whether anyone escalated them"
+            ],
+            "evidence": [
+              "Risk register export with owners, statuses and due dates",
+              "Escalation emails or tickets for overdue risks"
+            ],
+            "recommend": "Escalate risks with no owner or overdue actions to the risk manager or your supervisor.",
+            "decides": "Closing an entry needs the accountable owner's sign-off"
+          },
+          "isaca_rule": "When you find a risk, record it and route it to its owner through the agreed channel. Visibility comes first; quietly changing a system you do not own, or ignoring the risk, both bypass the owner's decision.",
+          "exam_traps": [
+            {
+              "trap": "Quietly fix the problem yourself so nobody is embarrassed.",
+              "why": "Unrecorded fixes hide risk from owners and leaders and may break systems you do not own. Report through the agreed channel so the owner can decide."
+            },
+            {
+              "trap": "A risk register is a one-time document for auditors.",
+              "why": "The register is a working tool. It must change as risks change, or leaders decide from an outdated picture."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Escalation",
+              "definition": "Passing an issue to someone with more authority when it is beyond your role or crosses a set threshold."
+            },
+            {
+              "term": "Risk report",
+              "definition": "A regular summary for leaders of the top risks, their trends and overdue treatments."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "topic_id": "1.3",
+      "topic_name": "Understand Governance Concepts",
+      "overview": "This topic covers how organizations steer security: the laws and regulations they must obey, the frameworks they choose to follow, and the internal documents that turn direction into daily practice. It also covers who approves each document, which ones are mandatory, and how the same rules reach AI tools.",
+      "can_do": [
+        "Tell a law or regulation from a framework, standard or guideline",
+        "Place a requirement in the right document: policy, standard, procedure or guideline",
+        "Name who approves a policy and who decides access to data",
+        "Apply existing laws and policies to a new AI tool"
+      ],
+      "subtopics": [
+        {
+          "id": "1.3.1",
+          "name": "Security Governance and Its Roles",
+          "legacy_ids": [],
+          "definition": "Security governance is how leaders set direction, assign responsibility and oversee security so that it supports business goals and meets legal duties.",
+          "why_it_matters": "Without governance, security becomes a pile of disconnected tools. Governance gives every control a reason, an owner and the authority of senior leadership.",
+          "how_it_works": [
+            "Outside requirements come first: the laws, regulations and contracts the organization must meet.",
+            "Leaders choose frameworks to structure the program and approve policies that state their intent.",
+            "Standards, procedures and guidelines sit under policy, each more detailed than the one above.",
+            "Governance sets direction and checks results; management and staff run the daily work.",
+            "Roles are explicit: senior management is accountable, owners decide for their assets, custodians and users follow the rules."
+          ],
+          "example": "A new hospital network sets up its security program. The board approves an information security policy and names a chief information security officer (CISO) to run it. Department heads own their patient and billing data, and IT staff act as custodians. When a nurse manager asks a new analyst for access to billing data, the analyst routes the request to the billing data owner.",
+          "audit_focus": {
+            "review": [
+              "Confirm the security policy carries senior management's approval",
+              "Sample recent access grants for a recorded approval from the owner"
+            ],
+            "evidence": [
+              "Signed policy approval with date and approver",
+              "Role list naming owners and custodians for key data"
+            ],
+            "recommend": "Send ownership or approval questions to the named owner, and report missing owners to the CISO.",
+            "decides": "Senior management is accountable and approves top-level policy"
+          },
+          "isaca_rule": "Follow the chain of authority. Leaders set direction and hold accountability, owners decide for their assets, and practitioners carry out the rules and raise issues with the right owner.",
+          "exam_traps": [
+            {
+              "trap": "Security governance is the IT department's job alone.",
+              "why": "Governance starts with senior leaders, who are accountable and approve policy. IT carries out much of the work but does not own the business's risk."
+            },
+            {
+              "trap": "The data custodian decides who may access the data.",
+              "why": "The custodian applies access settings, but the data owner decides who gets access. Custodians act on the owner's decisions."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Data owner",
+              "definition": "The business leader accountable for a data set, who classifies it and approves who may access it."
+            },
+            {
+              "term": "Data custodian",
+              "definition": "The person or team that handles data day to day for the owner, such as running backups and applying access settings."
+            },
+            {
+              "term": "Senior management",
+              "definition": "The top leaders, such as executives, who are ultimately accountable for security and approve policy."
+            }
+          ],
+          "memory_aid": "Laws bind, policies direct, standards specify, procedures instruct, guidelines suggest."
+        },
+        {
+          "id": "1.3.2",
+          "name": "Laws and Regulations",
+          "legacy_ids": [],
+          "definition": "Laws are rules passed by governments, and regulations are detailed rules issued by agencies under those laws; both are mandatory and carry penalties for breaking them.",
+          "why_it_matters": "Breaking a law can bring fines, lawsuits, lost licenses and even criminal charges. Legal duties also set minimums, such as breach reporting deadlines, that no internal policy can lower.",
+          "how_it_works": [
+            "Laws apply by location, industry and type of data, so one organization may face several at once.",
+            "Privacy laws, such as the EU General Data Protection Regulation (GDPR), protect personal data and can reach organizations outside the EU that serve people there.",
+            "Sector laws cover specific data, such as the US Health Insurance Portability and Accountability Act (HIPAA) for health information.",
+            "Many laws require reporting certain breaches within set deadlines; GDPR generally gives 72 hours to notify the regulator.",
+            "Contract and industry rules, such as the Payment Card Industry Data Security Standard (PCI DSS), bind through agreements rather than legislation."
+          ],
+          "compare": {
+            "columns": [
+              "Law or regulation",
+              "Contract or industry standard"
+            ],
+            "rows": [
+              {
+                "label": "Who sets it",
+                "cells": [
+                  "A government or regulator",
+                  "Business partners or an industry body"
+                ]
+              },
+              {
+                "label": "Who must follow it",
+                "cells": [
+                  "Everyone it covers",
+                  "Those who sign the agreement"
+                ]
+              },
+              {
+                "label": "Penalty",
+                "cells": [
+                  "Fines, legal action, criminal charges",
+                  "Contract penalties, fees, loss of service"
+                ]
+              },
+              {
+                "label": "Example",
+                "cells": [
+                  "GDPR, HIPAA",
+                  "PCI DSS for card payments"
+                ]
+              }
+            ]
+          },
+          "example": "An online tutoring company starts enrolling students who live in the EU. A security analyst notices that these student records now likely fall under GDPR, with breach notification and data rights duties. They raise this with the privacy officer and legal counsel, who decide what the company must change, rather than interpreting the law themselves.",
+          "audit_focus": {
+            "review": [
+              "Identify which laws apply from the data types and locations involved",
+              "Compare breach reporting steps in the plan with legal deadlines"
+            ],
+            "evidence": [
+              "Register of applicable laws and contracts, with owners",
+              "Incident plan section on regulator and customer notification"
+            ],
+            "recommend": "Refer legal questions to legal counsel or the compliance officer, with the facts you found.",
+            "decides": "Legal counsel and management decide how the organization complies"
+          },
+          "isaca_rule": "Laws and regulations are not optional and outrank internal preference. When a legal question comes up, note which data and locations are involved and bring in legal counsel or the compliance owner; practitioners do not interpret the law alone.",
+          "exam_traps": [
+            {
+              "trap": "PCI DSS is a government law.",
+              "why": "PCI DSS is an industry standard enforced through contracts with card brands and banks. Merchants who agree to it must follow it, but it is not legislation."
+            },
+            {
+              "trap": "A company only follows the laws of the country where it is based.",
+              "why": "Laws can follow the data and the people it describes. Serving customers in another region can bring that region's privacy laws into play."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Jurisdiction",
+              "definition": "The area, such as a country or state, whose laws apply to a situation."
+            },
+            {
+              "term": "Breach notification",
+              "definition": "A legal duty to tell regulators or affected people within a set time when certain data is exposed."
+            },
+            {
+              "term": "Compliance",
+              "definition": "Meeting the requirements of applicable laws, regulations, contracts and internal policies."
+            }
+          ]
+        },
+        {
+          "id": "1.3.3",
+          "name": "Security Frameworks and Guidelines",
+          "legacy_ids": [],
+          "definition": "A security framework is a published structure of practices or outcomes that helps an organization build and measure its security program; guidelines give recommended, not required, practice.",
+          "why_it_matters": "Frameworks save organizations from inventing security from scratch and give leaders, auditors and customers a shared language. They are voluntary unless a law, regulator or contract requires one.",
+          "how_it_works": [
+            "The NIST Cybersecurity Framework (CSF) 2.0 groups outcomes into six functions: Govern, Identify, Protect, Detect, Respond and Recover.",
+            "ISO/IEC 27001:2022 sets requirements for an information security management system (ISMS) that an accredited body can certify.",
+            "ISO/IEC 27002:2022 gives guidance on carrying out the controls listed in ISO/IEC 27001's Annex A.",
+            "CIS Controls v8.1 offers 18 prioritized controls, with Implementation Group 1 as the basic starting set.",
+            "Organizations often map one set of internal controls to several frameworks at once."
+          ],
+          "compare": {
+            "columns": [
+              "NIST CSF 2.0",
+              "ISO/IEC 27001:2022",
+              "CIS Controls v8.1"
+            ],
+            "rows": [
+              {
+                "label": "What it is",
+                "cells": [
+                  "Voluntary outcomes in six functions",
+                  "Certifiable requirements for a management system",
+                  "Prioritized, practical safeguards"
+                ]
+              },
+              {
+                "label": "Certification?",
+                "cells": [
+                  "No",
+                  "Yes, by an accredited body",
+                  "No formal certification"
+                ]
+              },
+              {
+                "label": "Best fit",
+                "cells": [
+                  "Describing and improving overall cyber risk posture",
+                  "Proving security management to customers",
+                  "A ranked starting list for defenders"
+                ]
+              }
+            ]
+          },
+          "example": "A growing group of dental practices has a tiny IT team and wants a sensible security baseline. A new security coordinator suggests starting with CIS Controls Implementation Group 1, then using NIST CSF 2.0 to report progress to leadership. They present both options, with costs, to the practice director, who chooses the approach.",
+          "audit_focus": {
+            "review": [
+              "Compare current practices with the chosen framework's outcomes or controls",
+              "Confirm an ISO certificate's scope covers the service in question"
+            ],
+            "evidence": [
+              "Gap list mapping framework items to existing controls",
+              "ISO/IEC 27001 certificate showing scope and expiry date"
+            ],
+            "recommend": "Share framework gaps with the security manager, ranked by the risks they leave open.",
+            "decides": "Senior management chooses which frameworks the organization follows"
+          },
+          "isaca_rule": "Frameworks are tools, not laws. Choose one that fits the organization's size, risks and obligations: ISO/IEC 27001 when certified proof is needed, CIS Controls for a practical starting list, NIST CSF 2.0 for describing posture.",
+          "exam_traps": [
+            {
+              "trap": "Following NIST CSF 2.0 earns an official certification.",
+              "why": "CSF is a voluntary framework with no certification. Organizations that need certification usually turn to ISO/IEC 27001."
+            },
+            {
+              "trap": "Organizations get certified against ISO/IEC 27002.",
+              "why": "Certification is against the requirements in ISO/IEC 27001. ISO/IEC 27002 is guidance on how to carry out the controls."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Information security management system (ISMS)",
+              "definition": "An organization's managed cycle of risk assessment, controls, review and improvement for security."
+            },
+            {
+              "term": "Annex A",
+              "definition": "The list of 93 controls in ISO/IEC 27001:2022, grouped into organizational, people, physical and technological themes."
+            },
+            {
+              "term": "Implementation Group (IG)",
+              "definition": "One of three CIS tiers; IG1 is basic cyber hygiene, and IG2 and IG3 add safeguards for larger or higher-risk organizations."
+            }
+          ],
+          "memory_aid": "CSF's six: Govern, Identify, Protect, Detect, Respond, Recover."
+        },
+        {
+          "id": "1.3.4",
+          "name": "Security Policies",
+          "legacy_ids": [],
+          "definition": "A security policy is a high-level, mandatory statement approved by senior management that says what the organization requires and why, without the technical detail of how.",
+          "why_it_matters": "Policy gives every rule its authority. When staff push back on a control, the policy shows leadership required it; without one, controls rest on personal opinion.",
+          "how_it_works": [
+            "A top-level information security policy sets objectives, scope and responsibilities for everyone.",
+            "Topic policies cover single areas, such as acceptable use, passwords, remote work, data handling or AI use.",
+            "Senior management approves policies; the security team usually drafts and maintains them.",
+            "Policies change slowly and are reviewed on a schedule, or sooner after a major change.",
+            "Staff acknowledge key policies, such as the acceptable use policy, and breaking them has consequences."
+          ],
+          "example": "At a regional bank, an engineer argues that the new automatic screen lock is unnecessary and asks a service desk analyst to switch it off for their team. The analyst checks the endpoint security policy, which requires automatic screen locks, and declines. They explain that any exception must go through the policy's exception process and be approved by the policy owner.",
+          "audit_focus": {
+            "review": [
+              "Confirm the policy has a current approval date and a named owner",
+              "Inspect exceptions for approval, an end date and added safeguards"
+            ],
+            "evidence": [
+              "Policy document with version, approver and review date",
+              "Exception log with approver, reason and expiry"
+            ],
+            "recommend": "Decline informal workarounds and log the request so the owner can review it formally.",
+            "decides": "The policy owner, under senior management, approves exceptions"
+          },
+          "isaca_rule": "Policy is mandatory and comes from leadership. Follow it, point to it, and send any request to bypass it through the formal exception process to the policy owner.",
+          "exam_traps": [
+            {
+              "trap": "The security team can approve its own policies.",
+              "why": "The security team drafts and maintains policies, but senior management approves them, which gives them organization-wide authority."
+            },
+            {
+              "trap": "A policy should list exact settings, such as a 14-character password.",
+              "why": "Policies state requirements at a high level and change slowly. Specific settings belong in standards, which can change without rewriting the policy."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Acceptable use policy (AUP)",
+              "definition": "The rules users agree to for how they may use the organization's systems, data and networks."
+            },
+            {
+              "term": "Policy exception",
+              "definition": "A documented, approved and time-limited permission to depart from a policy, usually with extra safeguards."
+            }
+          ]
+        },
+        {
+          "id": "1.3.5",
+          "name": "Standards, Procedures and Guidelines",
+          "legacy_ids": [],
+          "definition": "Standards set mandatory, specific requirements; procedures give mandatory step-by-step instructions; guidelines offer optional advice. All three sit under policy and support it.",
+          "why_it_matters": "Mixing them up causes real errors: treating a guideline as mandatory wastes effort and blocks people, while treating a standard as optional leaves gaps. Each type carries different authority.",
+          "how_it_works": [
+            "Internal standards turn policy into specifics, such as minimum password length or approved encryption.",
+            "External standards from bodies such as ISO or CIS bind an organization only once it adopts them, or a law or contract requires them.",
+            "Procedures list the exact steps to do a task the approved way, such as setting up a new user.",
+            "Guidelines suggest good practice and leave room for judgment.",
+            "Each document must agree with the one above it; a procedure cannot contradict a policy."
+          ],
+          "compare": {
+            "columns": [
+              "Policy",
+              "Standard",
+              "Procedure",
+              "Guideline"
+            ],
+            "rows": [
+              {
+                "label": "Mandatory?",
+                "cells": [
+                  "Yes",
+                  "Yes",
+                  "Yes",
+                  "No, advisory"
+                ]
+              },
+              {
+                "label": "Level of detail",
+                "cells": [
+                  "High level: what and why",
+                  "Specific: which settings or tools",
+                  "Step by step: how",
+                  "Advice: a recommended way"
+                ]
+              },
+              {
+                "label": "Example",
+                "cells": [
+                  "Laptops must protect stored data",
+                  "Laptops use full-disk encryption",
+                  "Steps to turn on encryption for a new laptop",
+                  "Tips for choosing a memorable passphrase"
+                ]
+              },
+              {
+                "label": "Typical approver",
+                "cells": [
+                  "Senior management",
+                  "Security management",
+                  "The process or department owner",
+                  "The team that publishes it"
+                ]
+              }
+            ]
+          },
+          "example": "A new help desk technician at a university reads a document titled Suggested tips for strong passphrases and starts rejecting staff passwords that skip any tip. Their supervisor explains that the document is a guideline; the mandatory rules are in the password standard. The technician enforces the standard and shares the tips only as advice.",
+          "audit_focus": {
+            "review": [
+              "Identify the document type before treating a rule as mandatory",
+              "Compare a procedure's steps with the standard it supports"
+            ],
+            "evidence": [
+              "Document header showing type, owner and approval",
+              "Current password or configuration standard"
+            ],
+            "recommend": "Report conflicts between documents to their owners so the lower-level document is corrected.",
+            "decides": "Each document's owner approves changes to it"
+          },
+          "isaca_rule": "Ask whether the document is mandatory and how detailed it is. Policies, standards and procedures must be followed; guidelines are advice. Settings go in standards, steps go in procedures.",
+          "exam_traps": [
+            {
+              "trap": "Guidelines must be followed exactly, like policies.",
+              "why": "Guidelines are recommendations that leave room for judgment. Mandatory requirements belong in policies, standards and procedures."
+            },
+            {
+              "trap": "An ISO or CIS standard is mandatory for every organization.",
+              "why": "External standards are voluntary until an organization adopts them, or a law or contract requires them. Once adopted, they bind internally."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Baseline",
+              "definition": "A mandatory minimum security configuration for one type of system, such as all staff laptops."
+            },
+            {
+              "term": "Document hierarchy",
+              "definition": "The order of authority from policy down through standards and procedures to guidelines, each consistent with the one above."
+            }
+          ]
+        },
+        {
+          "id": "1.3.6",
+          "name": "Governing the Use of AI",
+          "legacy_ids": [],
+          "definition": "Governing AI means applying the organization's laws, policies and approval processes to AI tools and models, just as it does to other software and data use.",
+          "why_it_matters": "Staff can start using public AI tools in minutes, often pasting in sensitive data. Without rules, the organization may break privacy laws or contracts without knowing it.",
+          "how_it_works": [
+            "AI tools follow the same laws as other software, including privacy laws for personal data in prompts or training data.",
+            "Some laws now target AI directly, such as the EU AI Act, which sets duties according to an AI system's risk level.",
+            "An AI use policy says which tools are approved and which data must never be entered.",
+            "New AI tools go through the normal risk assessment and approval process before anyone uses them.",
+            "Each AI system has a named owner who is accountable for how it is used and what it produces."
+          ],
+          "example": "A marketing assistant at a charity asks whether they can paste the donor list into a free online AI tool to draft thank-you letters. A security coordinator checks the AI use policy, which bans entering personal data into unapproved tools. They explain this, point the assistant to the approved internal tool, and log the request so the policy owner sees the demand.",
+          "audit_focus": {
+            "review": [
+              "Confirm an AI tool is on the approved list before anyone uses it",
+              "Compare data entered into AI tools with the policy's banned types"
+            ],
+            "evidence": [
+              "Approved AI tools list with owners and review dates",
+              "Web or data loss prevention logs showing uploads to AI sites"
+            ],
+            "recommend": "Report unapproved AI tool use to the security manager and route the request for review.",
+            "decides": "Each new AI tool needs sign-off from its business owner and the security lead"
+          },
+          "isaca_rule": "New technology gets no automatic exemption. Check the AI use policy and the law before data goes into an AI tool, and send unapproved tools through the normal approval process.",
+          "exam_traps": [
+            {
+              "trap": "AI tools are too new for existing security policies to apply.",
+              "why": "Existing policies on data handling, acceptable use and software approval already apply. An AI-specific policy adds detail; it does not fill a gap that left AI unregulated."
+            },
+            {
+              "trap": "A popular public AI tool is safe for internal data.",
+              "why": "Popularity says nothing about how the provider stores or reuses what is entered. Only tools approved through the organization's process may receive internal or personal data."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Shadow AI",
+              "definition": "AI tools staff use without the organization's knowledge or approval."
+            },
+            {
+              "term": "AI use policy",
+              "definition": "A topic policy listing approved AI tools, banned data types and staff duties when using AI."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "topic_id": "1.4",
+      "topic_name": "Understand Cybersecurity Controls",
+      "overview": "This topic covers the safeguards that reduce risk. Controls are sorted by how they are carried out (technical, administrative or physical) and by what they do (prevent, detect, correct, deter, recover or compensate). Knowing both labels lets you classify any control and choose one that fits the risk.",
+      "can_do": [
+        "Classify a control as technical, administrative or physical",
+        "Name a control's function, such as preventive or detective",
+        "Choose a compensating control when the usual one is not possible",
+        "Apply all three control types to an AI tool"
+      ],
+      "subtopics": [
+        {
+          "id": "1.4.1",
+          "name": "What a Security Control Is",
+          "legacy_ids": [],
+          "definition": "A security control, or safeguard, is any measure that lowers risk by reducing the likelihood of a harmful event or the damage it causes.",
+          "why_it_matters": "Controls are how risk decisions become real. Choosing the wrong one, or one that costs more than the harm it prevents, wastes money while the real risk stays.",
+          "how_it_works": [
+            "Controls are chosen after risk assessment, to treat a specific risk.",
+            "Each control has two labels: its type, meaning how it is carried out, and its function, meaning what it does.",
+            "A control's yearly cost should not exceed the loss it is expected to prevent.",
+            "Controls need owners, testing and monitoring, or they quietly stop working.",
+            "Catalogs such as NIST SP 800-53 Rev. 5 and CIS Controls v8.1 offer tested control choices."
+          ],
+          "example": "A chain of veterinary clinics worries that stolen laptops could expose client records. A security technician compares options: guards at every clinic would cost far more than the risk, while full-disk encryption is cheap and protects the data directly. They present encryption, plus cable locks for front-desk machines, to the operations manager, who approves the plan.",
+          "audit_focus": {
+            "review": [
+              "Trace each control back to the risk it is meant to treat",
+              "Confirm the control was tested recently and still works"
+            ],
+            "evidence": [
+              "Control list mapped to risks and owners",
+              "Latest test or review result for the control"
+            ],
+            "recommend": "Report controls with no owner or no recent test to the security manager.",
+            "decides": "Management approves which controls are funded"
+          },
+          "isaca_rule": "Pick the control that directly addresses the assessed risk at a sensible cost. A strong control aimed at the wrong risk does nothing; a modest control that fits can do a lot.",
+          "exam_traps": [
+            {
+              "trap": "The most expensive control is the most secure choice.",
+              "why": "Fit matters more than price. A control should address the specific risk, and the loss it prevents should justify its cost."
+            },
+            {
+              "trap": "Once installed, a control keeps working until it is replaced.",
+              "why": "Settings drift, people bypass rules and threats change. Controls need owners, regular testing and monitoring to stay effective."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Countermeasure",
+              "definition": "Another word for a control, often used for one put in place against a specific threat."
+            },
+            {
+              "term": "Control owner",
+              "definition": "The person responsible for making sure a control is in place, working and reviewed."
+            }
+          ]
+        },
+        {
+          "id": "1.4.2",
+          "name": "Technical Controls",
+          "legacy_ids": [],
+          "definition": "Technical controls, also called logical controls, are safeguards built into hardware, software or firmware, such as firewalls, encryption, MFA and access control lists.",
+          "why_it_matters": "Technical controls enforce rules automatically and consistently, at machine speed, so protection does not depend on each person remembering a policy.",
+          "how_it_works": [
+            "Some block actions, such as a firewall dropping unauthorized traffic or an account locking after repeated failed logins.",
+            "Some detect activity, such as intrusion detection systems and log monitoring that raise alerts.",
+            "Some protect data directly, such as encryption of stored data and data in transit.",
+            "Some enforce policy settings, such as forced screen locks or blocked USB storage.",
+            "All depend on correct configuration; a misconfigured firewall rule can open the very path it should close."
+          ],
+          "example": "A shipping company's policy forbids copying customer files to USB drives, yet staff keep doing it. A security analyst proposes a technical control: an endpoint setting that blocks USB storage, with a logged exception process. After the IT manager approves it, the analyst tests it on a pilot group and then submits the wider rollout through change management.",
+          "audit_focus": {
+            "review": [
+              "Compare running settings with the approved configuration standard",
+              "Confirm a blocked action really is blocked by testing it"
+            ],
+            "evidence": [
+              "Configuration export from the device or management console",
+              "Test result showing the block or alert worked"
+            ],
+            "recommend": "Report settings that differ from the standard to the system owner for a controlled fix.",
+            "decides": "The system owner approves configuration changes through change management"
+          },
+          "isaca_rule": "Use technical controls to enforce what policy requires, especially where people forget or bypass rules. They are only as good as their configuration, so changes go through the change process.",
+          "exam_traps": [
+            {
+              "trap": "A written firewall policy is a technical control.",
+              "why": "The written document is an administrative control. The rules running on the firewall are the technical control that enforces it."
+            },
+            {
+              "trap": "Technical controls remove the need for training and policy.",
+              "why": "Technical controls need a policy that says what to enforce, and people can still be tricked into bypassing them. The control types work together."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Access control list (ACL)",
+              "definition": "A list attached to a resource that names which users or systems may use it, and how."
+            },
+            {
+              "term": "Intrusion detection system (IDS)",
+              "definition": "A tool that watches network or host activity and alerts on signs of attack, without blocking it."
+            }
+          ]
+        },
+        {
+          "id": "1.4.3",
+          "name": "Administrative Controls",
+          "legacy_ids": [],
+          "definition": "Administrative controls, also called managerial controls, are the policies, procedures, training and people practices that direct how staff and the organization handle security.",
+          "why_it_matters": "Most technical controls exist because a policy requires them, and many attacks target people rather than machines. Administrative controls shape behavior and set the rules everything else enforces.",
+          "how_it_works": [
+            "Policies, standards and procedures set the rules and explain how to follow them.",
+            "Security awareness training helps staff spot phishing and report incidents.",
+            "Hiring practices include background checks before access is granted and prompt removal of access when people leave.",
+            "Separation of duties splits sensitive tasks so no single person can complete a fraud alone.",
+            "Job rotation and mandatory vacations can expose hidden fraud, because someone else does the work for a while."
+          ],
+          "example": "At a city finance office, one clerk can both add new suppliers and approve payments to them. A security analyst reviewing access spots the conflict. They report it to the finance manager and suggest an administrative fix: split the two duties between different staff, backed by a written procedure, so no one person can pay a fake supplier unnoticed.",
+          "audit_focus": {
+            "review": [
+              "Confirm new staff finished training before receiving system access",
+              "Inspect roles where one person holds two conflicting duties"
+            ],
+            "evidence": [
+              "Training completion records by person and date",
+              "Access report showing users with conflicting permissions"
+            ],
+            "recommend": "Report conflicting duties or missing training to the relevant manager and human resources.",
+            "decides": "Department managers decide how duties are divided"
+          },
+          "isaca_rule": "Administrative controls are the rules and people practices behind every other control. When a scenario centers on people, process or authority, look first at training, policy, procedures or separation of duties.",
+          "exam_traps": [
+            {
+              "trap": "Security awareness training is a technical control because its subject is technology.",
+              "why": "Training shapes people's behavior, which makes it administrative, whatever topic it covers."
+            },
+            {
+              "trap": "A background check is a physical control because it protects the building.",
+              "why": "Background checks are a hiring practice set by policy, so they are administrative. Physical controls are tangible barriers such as locks and fences."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Separation of duties",
+              "definition": "Dividing a sensitive task among two or more people so no one person can misuse it alone."
+            },
+            {
+              "term": "Job rotation",
+              "definition": "Moving staff between roles on a schedule, which spreads knowledge and can expose hidden misuse."
+            },
+            {
+              "term": "Mandatory vacation",
+              "definition": "Requiring staff in sensitive roles to take time off, so others handle their work and may spot fraud."
+            }
+          ]
+        },
+        {
+          "id": "1.4.4",
+          "name": "Physical Controls",
+          "legacy_ids": [],
+          "definition": "Physical controls are tangible measures that protect people, buildings and equipment, such as fences, locks, badges, guards, cameras, lighting and fire suppression.",
+          "why_it_matters": "If an attacker can walk up to a server or carry off a laptop, many technical controls can be bypassed. Physical controls also protect the most important asset: people's lives.",
+          "how_it_works": [
+            "Perimeter controls, such as fences, bollards, lighting and gates, keep people and vehicles at a distance.",
+            "Entry controls, such as badge readers, locks and access control vestibules, admit only authorized people, one at a time.",
+            "Monitoring, such as cameras, guards and alarms, deters and detects intrusions.",
+            "Environmental controls, such as fire suppression, climate control and backup power, protect equipment.",
+            "Life safety comes first: emergency exits must let people out, even when that weakens security."
+          ],
+          "compare": {
+            "columns": [
+              "Fail-safe (fail-open)",
+              "Fail-secure (fail-closed)"
+            ],
+            "rows": [
+              {
+                "label": "On power loss",
+                "cells": [
+                  "The lock releases",
+                  "The lock stays locked"
+                ]
+              },
+              {
+                "label": "What it puts first",
+                "cells": [
+                  "People can get out",
+                  "Assets stay protected"
+                ]
+              },
+              {
+                "label": "Typical use",
+                "cells": [
+                  "Doors on escape routes",
+                  "Server cages, safes and storerooms that are not escape routes"
+                ]
+              }
+            ]
+          },
+          "example": "A data center technician sees a delivery driver follow an employee through a badge-controlled door without badging in. The technician politely stops the driver, asks them to sign in at reception and wait for an escort, and reports the tailgating to building security, as the visitor procedure requires.",
+          "audit_focus": {
+            "review": [
+              "Observe a busy entrance for tailgating and propped-open doors",
+              "Confirm emergency exits open freely and their alarms work"
+            ],
+            "evidence": [
+              "Badge reader logs for the secured area",
+              "Camera footage or guard log for the reported entry"
+            ],
+            "recommend": "Report tailgating, propped doors or blocked exits to facilities or building security staff.",
+            "decides": "Facilities management decides physical security changes"
+          },
+          "isaca_rule": "Protect people first, then property. Each entry should admit one authorized person at a time; challenge or report tailgating through the proper channel, and never block an escape route for the sake of security.",
+          "exam_traps": [
+            {
+              "trap": "Lock emergency exits from the inside to stop thieves leaving with equipment.",
+              "why": "Human safety comes first. Exits must let people escape in an emergency; use exit alarms or cameras instead of locking them."
+            },
+            {
+              "trap": "A security camera prevents intrusions.",
+              "why": "A visible camera can deter, and its footage helps detect and investigate, but it does not physically stop anyone. Locks and barriers prevent."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Tailgating",
+              "definition": "Following an authorized person through a secured entry without using your own credential."
+            },
+            {
+              "term": "Access control vestibule",
+              "definition": "A small space with two doors where only one opens at a time, admitting one person; formerly called a mantrap."
+            },
+            {
+              "term": "Bollard",
+              "definition": "A short, sturdy post that stops vehicles from reaching a building or entrance."
+            }
+          ]
+        },
+        {
+          "id": "1.4.5",
+          "name": "Control Functions",
+          "legacy_ids": [],
+          "definition": "A control's function describes what it does against a threat: prevent it, detect it, correct its damage, deter it, recover from it or compensate for a missing control.",
+          "why_it_matters": "Scenarios often ask what a control does, not what it is. Knowing functions also shows gaps, such as alarms that detect a break-in with nothing in place to prevent it.",
+          "how_it_works": [
+            "Type and function are separate labels: a door lock is physical and preventive; an automated log alert is technical and detective.",
+            "One control can serve several functions; a visible camera deters and also detects.",
+            "Corrective controls fix the cause of an incident; recovery controls restore normal service. Some sources group them together.",
+            "A strong program layers functions: prevent what you can, detect what gets through, then correct and recover."
+          ],
+          "types": [
+            {
+              "term": "Preventive",
+              "meaning": "Stops an incident before it happens, such as a lock, a firewall rule or MFA."
+            },
+            {
+              "term": "Detective",
+              "meaning": "Finds an incident during or after it happens, such as an alarm, a log review or intrusion detection."
+            },
+            {
+              "term": "Corrective",
+              "meaning": "Limits damage and fixes the problem after an incident, such as removing malware or patching the flaw."
+            },
+            {
+              "term": "Deterrent",
+              "meaning": "Discourages an attacker from trying, such as warning signs, visible cameras or known penalties."
+            },
+            {
+              "term": "Recovery",
+              "meaning": "Restores normal operations after an incident, such as restoring from backup or switching to a backup site."
+            },
+            {
+              "term": "Compensating",
+              "meaning": "An alternative that lowers the same risk to an acceptable level when the usual control is not possible."
+            }
+          ],
+          "example": "A school finds that a former teacher's account was still active and was used to view grades. A technician sorts the fixes by function: disabling the account is corrective, an automatic access-removal step when staff leave is preventive, and a monthly report of inactive accounts is detective. They share this list with the IT manager to plan the work.",
+          "audit_focus": {
+            "review": [
+              "Label each existing control by both its type and function",
+              "Identify risks covered only by detection, with nothing to prevent them"
+            ],
+            "evidence": [
+              "Control inventory listing type and function for each",
+              "Incident records showing which controls caught or missed events"
+            ],
+            "recommend": "Share function gaps with the security manager, starting with the highest risks.",
+            "decides": "Management decides which gaps to close first"
+          },
+          "isaca_rule": "Ask what the control does at the moment of the threat: stop it, notice it, fix it, discourage it, restore after it, or stand in for something missing. Then work out its type separately.",
+          "exam_traps": [
+            {
+              "trap": "Warning signs are preventive controls.",
+              "why": "A sign only discourages; it cannot stop a determined person, so it is a deterrent. Preventive controls actually block the action, like a lock."
+            },
+            {
+              "trap": "Detective controls matter less than preventive ones.",
+              "why": "No prevention is perfect, so detection is essential to find what gets through. A sound program needs both."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Directive control",
+              "definition": "A control that tells people what to do, such as a policy or a sign; some sources list it as a separate function."
+            },
+            {
+              "term": "Failover",
+              "definition": "Automatically switching to a backup system when the main one fails."
+            }
+          ]
+        },
+        {
+          "id": "1.4.6",
+          "name": "Layering and Compensating Controls",
+          "legacy_ids": [],
+          "definition": "Layering means protecting an asset with several controls of different types and functions, so that when one fails, others still protect it and gaps can be covered.",
+          "why_it_matters": "Every control can fail or be bypassed. Mixing technical, administrative and physical controls means one mistake, such as a stolen password, does not lead straight to a breach.",
+          "how_it_works": [
+            "Cover each important risk with more than one type, such as a policy, a technical block and a physical lock.",
+            "Mix functions, so a failure of prevention is still detected and corrected.",
+            "When the required control is not possible, a compensating control reduces the same risk another way, with documented approval.",
+            "A compensating control should reduce the risk about as well as the control it replaces, and be reviewed regularly.",
+            "Domain 4 covers defense in depth further as a network design idea."
+          ],
+          "example": "A factory's old machine controller cannot run antivirus or MFA, and replacing it would halt production. A security analyst helps plan compensating controls: an isolated network segment, one approved maintenance laptop, a locked cabinet and a weekly review of its access logs. The plant manager, who owns the system, approves them as a documented exception.",
+          "audit_focus": {
+            "review": [
+              "Test whether each substitute actually blocks or detects the original threat",
+              "Inspect the exception record for owner approval and a review date"
+            ],
+            "evidence": [
+              "Exception record listing the missing control and its substitutes",
+              "Logs or tests showing the compensating controls work"
+            ],
+            "recommend": "Document missing controls and proposed substitutes for the system owner's approval.",
+            "decides": "The system owner approves compensating controls and accepts what remains"
+          },
+          "isaca_rule": "Never rely on one control. When the standard control cannot be used, document why and add compensating controls that reduce the same risk, approved by the system owner.",
+          "exam_traps": [
+            {
+              "trap": "If the required control cannot be installed, accept the risk and move on.",
+              "why": "First look for compensating controls that reduce the same risk another way. Any acceptance still belongs to the owner, not the practitioner."
+            },
+            {
+              "trap": "Adding more controls of the same kind gives layered protection.",
+              "why": "Two firewalls with the same rules can fail the same way. Real layering mixes types and functions so one weakness does not defeat them all."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Defense in depth",
+              "definition": "Layering independent controls so that one failure does not expose the asset."
+            },
+            {
+              "term": "Legacy system",
+              "definition": "Older technology still in use that may not support modern security features or updates."
+            }
+          ]
+        },
+        {
+          "id": "1.4.7",
+          "name": "Controls for AI Tools",
+          "legacy_ids": [],
+          "definition": "AI tools need the same three control types as any other system: technical, administrative and physical safeguards that protect their data, models and actions.",
+          "why_it_matters": "AI systems handle sensitive data and can act automatically, so a control gap can leak data or let a poisoned or tricked model cause harm at scale.",
+          "how_it_works": [
+            "Technical: restrict who can change models and training data, filter inputs and outputs, and log prompts and actions.",
+            "Administrative: an AI use policy, a risk review before deployment, human review of high-impact outputs and staff training.",
+            "Physical: secure the data centers, servers and hardware where models and training data are kept.",
+            "AI agents get least-privilege accounts, so a manipulated agent can do only limited harm.",
+            "Monitoring watches for unusual model behavior, which can signal poisoning or misuse."
+          ],
+          "example": "An insurance company uses an AI assistant that drafts claim decisions. A security analyst lists its controls by type: a technical permission so the assistant can only read claim files, an administrative rule that a claims officer approves every decision, and physical protection of the servers in the locked data center. Noticing that prompts are not logged, they raise it with the system owner.",
+          "audit_focus": {
+            "review": [
+              "Confirm the AI agent's permissions cover only its task",
+              "Inspect whether prompts and AI actions are logged and kept"
+            ],
+            "evidence": [
+              "Permission list for the AI service account",
+              "Sample of AI decision records with human approvals"
+            ],
+            "recommend": "Report AI tools lacking logging or human review to the AI system owner.",
+            "decides": "The AI system owner decides deployment and accepts remaining risk"
+          },
+          "isaca_rule": "Classify AI controls the same way as any others: technical, administrative, physical. Keep a person accountable for high-impact AI decisions, and limit and log what AI agents can do.",
+          "exam_traps": [
+            {
+              "trap": "AI tools need only technical controls because they are software.",
+              "why": "They also need administrative controls, such as policy, approval and human review, and physical protection of the hardware and data they run on."
+            },
+            {
+              "trap": "Human review is unnecessary once a model tests as accurate.",
+              "why": "Models can drift, be poisoned or be tricked by crafted input. Human oversight of high-impact decisions catches errors that testing missed."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Human in the loop",
+              "definition": "A design where a person reviews or approves an AI system's output before it takes effect."
+            },
+            {
+              "term": "Model drift",
+              "definition": "A decline in a model's accuracy over time as real-world data changes."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "topic_id": "1.5",
+      "topic_name": "Maintain Professional and Ethical Conduct",
+      "overview": "This topic covers how a security professional is expected to behave: following a code of conduct, showing due care and due diligence, and living by the ISC2 Code of Ethics. It also covers reasoning through ethical dilemmas, how the code is enforced, and ethical use of AI at work.",
+      "can_do": [
+        "Tell due care from due diligence in a scenario",
+        "State the four ISC2 canons in order and apply all of them to a dilemma",
+        "Choose the action that protects the public while staying honest and legal",
+        "Identify who may file an ethics complaint under each canon"
+      ],
+      "subtopics": [
+        {
+          "id": "1.5.1",
+          "name": "Professional Code of Conduct",
+          "legacy_ids": [],
+          "definition": "A professional code of conduct is a written set of expected behaviors, from an employer or professional body, covering honesty, conflicts of interest, confidentiality and lawful conduct.",
+          "why_it_matters": "Security staff hold powerful access and sensitive knowledge. A code makes expectations clear, protects the people the organization serves and gives a basis for action when someone crosses the line.",
+          "how_it_works": [
+            "Employers publish codes of conduct that staff accept, often alongside the acceptable use policy.",
+            "Professional bodies, such as ISC2, have their own codes that members must follow to keep their certification.",
+            "Common themes are honesty, avoiding conflicts of interest, protecting confidential information and obeying the law.",
+            "Security staff use their access only for assigned work, never out of curiosity.",
+            "Concerns go through proper channels, such as a manager, an ethics hotline or the legal team."
+          ],
+          "example": "A database administrator at a hospital hears that a well-known local figure has been admitted. Coworkers ask them to look up the diagnosis, since they have access. They refuse, because their access exists only for assigned work, and they report the request to the privacy officer as the hospital's code of conduct requires.",
+          "isaca_rule": "Access is a trust, not a perk. Use it only for assigned work, avoid conflicts of interest, keep confidences and raise concerns through proper channels rather than handling them privately.",
+          "exam_traps": [
+            {
+              "trap": "Looking at records out of curiosity is harmless if you have access and change nothing.",
+              "why": "Having access is not the same as having a reason. Viewing records without a work need breaches confidentiality, privacy rules and the code of conduct."
+            },
+            {
+              "trap": "A professional body's code replaces the employer's code of conduct.",
+              "why": "Both apply. Professionals follow their employer's code and their professional code, and raise any conflict between them instead of silently picking one."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Conflict of interest",
+              "definition": "A situation where personal interests could improperly sway professional decisions, such as assessing a vendor you own shares in."
+            },
+            {
+              "term": "Ethics hotline",
+              "definition": "A channel, often anonymous, for reporting suspected misconduct without going through a direct manager."
+            }
+          ]
+        },
+        {
+          "id": "1.5.2",
+          "name": "Due Care and Due Diligence",
+          "legacy_ids": [],
+          "definition": "Due diligence is doing the homework to understand risks and check that safeguards work; due care is acting on that knowledge by taking the reasonable steps a prudent person would.",
+          "why_it_matters": "Courts, regulators and customers judge organizations by whether they acted reasonably. Falling short on either can count as negligence, even where no law named the specific control.",
+          "how_it_works": [
+            "Due diligence investigates: researching a vendor, assessing risks, testing controls and keeping up with threats.",
+            "Due care acts: patching known flaws, enforcing policy, training staff and fixing what diligence uncovered.",
+            "Both are ongoing; diligence keeps checking, and care keeps acting on what the checks find.",
+            "The test is what a reasonable, informed professional would have done in the same situation.",
+            "Failing to take reasonable care when harm was foreseeable can be judged negligence."
+          ],
+          "compare": {
+            "columns": [
+              "Due diligence",
+              "Due care"
+            ],
+            "rows": [
+              {
+                "label": "Core idea",
+                "cells": [
+                  "Know: investigate and verify",
+                  "Do: act responsibly on what you know"
+                ]
+              },
+              {
+                "label": "Example",
+                "cells": [
+                  "Reviewing a cloud vendor's security reports before signing",
+                  "Requiring MFA after learning staff accounts are being phished"
+                ]
+              },
+              {
+                "label": "Question it answers",
+                "cells": [
+                  "Did we find out what we should have known?",
+                  "Did we do what a reasonable person would do?"
+                ]
+              }
+            ]
+          },
+          "example": "Before a city council signs with a payroll provider, a security analyst reviews the provider's independent security report and finds weak backup practices: due diligence. The council then makes tested backups a contract requirement before signing: due care. The analyst also schedules yearly re-checks, which continue the diligence, and records each step for the contract owner.",
+          "audit_focus": {
+            "review": [
+              "Confirm vendor reviews happen before contracts and on a schedule",
+              "Trace earlier findings to the actions taken to fix them"
+            ],
+            "evidence": [
+              "Vendor security review records with dates",
+              "Remediation tickets closed for previously found issues"
+            ],
+            "recommend": "Report findings with no follow-up action to the owner as a gap in due care.",
+            "decides": "Management decides the reasonable level of protection"
+          },
+          "isaca_rule": "Diligence is finding out; care is acting on what you found. A scenario that researches, assesses or verifies points to due diligence; one that implements, enforces or fixes points to due care.",
+          "exam_traps": [
+            {
+              "trap": "Due diligence is done once, before signing a contract.",
+              "why": "Diligence continues. Risks and vendors change, so monitoring and re-checking are part of it."
+            },
+            {
+              "trap": "Knowing about a risk is enough to show due care.",
+              "why": "Knowledge without action is exactly the gap negligence claims target. Due care means taking reasonable steps on what diligence found."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Prudent person rule",
+              "definition": "The standard that asks what a reasonable, careful person with similar knowledge would have done in the situation."
+            },
+            {
+              "term": "Negligence",
+              "definition": "Failing to take the care a reasonable person would take, leading to foreseeable harm."
+            }
+          ],
+          "memory_aid": "Diligence discovers; care carries it out."
+        },
+        {
+          "id": "1.5.3",
+          "name": "The ISC2 Code of Ethics",
+          "legacy_ids": [],
+          "definition": "The ISC2 Code of Ethics is the set of mandatory principles every ISC2-certified member agrees to follow, made up of a preamble and four canons.",
+          "why_it_matters": "Following the code is a condition of certification. A breach can lead to a complaint, a review and loss of the credential, and ethics scenarios are a recurring exam theme.",
+          "how_it_works": [
+            "The preamble says members must hold high ethical standards so they protect public safety, serve their principals well and treat each other with respect.",
+            "Canon 1: Protect society, the common good, public trust and confidence, and the infrastructure.",
+            "Canon 2: Act honorably, honestly, justly, responsibly and legally.",
+            "Canon 3: Provide diligent and competent service to principals.",
+            "Canon 4: Advance and protect the profession."
+          ],
+          "example": "A newly certified analyst at a payments company is asked by a friend at a rival firm for a copy of their employer's internal incident response playbook, just as a starting point. Handing it over without permission would breach their duty to their employer (canon 3) and be dishonest toward it (canon 2). They decline and point the friend to public NIST incident response guidance instead.",
+          "isaca_rule": "Know the four canons in order and what each protects: the public, honest and legal conduct, principals, and the profession. Treat the code as binding, not aspirational; certification depends on it.",
+          "exam_traps": [
+            {
+              "trap": "The code is voluntary guidance for good behavior.",
+              "why": "Agreeing to the code is a condition of ISC2 certification. A proven breach can lead to sanctions, including losing the credential."
+            },
+            {
+              "trap": "Principals means only the company's leadership.",
+              "why": "Principals are those you serve professionally, such as employers and clients. Canon 3 asks for diligent, competent service to them."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Principal",
+              "definition": "Anyone a professional serves under an agreement, such as an employer or client."
+            },
+            {
+              "term": "Canon",
+              "definition": "One of the four core rules of the ISC2 Code of Ethics."
+            },
+            {
+              "term": "Preamble",
+              "definition": "The opening statement of the code, explaining its purpose before the canons."
+            }
+          ],
+          "memory_aid": "In order: society, honor, principals, profession."
+        },
+        {
+          "id": "1.5.4",
+          "name": "Applying the Canons to Dilemmas",
+          "legacy_ids": [],
+          "definition": "Applying the canons means testing each possible action against all four of them and choosing one that protects the public while staying honest, legal and responsible to principals.",
+          "why_it_matters": "Real dilemmas pit loyalty to an employer against public safety or honesty. The code gives a structured way to think, but ISC2 gives no rule for ranking the canons, so judgment is needed.",
+          "how_it_works": [
+            "List the options, then ask of each: does it harm the public, break the law or require dishonesty?",
+            "Reject any option that is illegal or deceptive, even if an employer asks for it.",
+            "The best option usually satisfies several canons at once, such as reporting a safety issue through official channels.",
+            "Use proper channels and stay within your authority; never take vigilante action such as hacking back.",
+            "The code supports your own ethical judgment; it does not replace it."
+          ],
+          "example": "A security engineer at a medical device maker finds that an infusion pump's wireless link lets anyone change doses. Their manager says to stay quiet until the next product release. The engineer documents the flaw and escalates it to the product security lead and the compliance team, pressing for patient warnings, because silence would leave patients at risk and mislead customers.",
+          "isaca_rule": "Choose the action you could defend to the public, a regulator and your employer at once: honest, legal, protective of people and done through proper channels. Never pick an answer just because its canon is listed first; check all four.",
+          "exam_traps": [
+            {
+              "trap": "Loyalty to the employer means keeping a flaw quiet when told to.",
+              "why": "Canon 3 asks for diligent service to principals, not concealment that leaves the public at risk or requires dishonesty. Escalate through proper channels."
+            },
+            {
+              "trap": "Canon 1 is listed first, so it settles every conflict on its own.",
+              "why": "ISC2 lists the canons in order but gives no ranking rule. Weigh the whole situation; the best answer usually honors several canons together."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Whistleblowing",
+              "definition": "Reporting serious wrongdoing to authorities or regulators, often after internal channels fail; many laws protect people who do."
+            },
+            {
+              "term": "Hacking back",
+              "definition": "Attacking an attacker's systems in return; usually illegal and contrary to professional ethics."
+            }
+          ]
+        },
+        {
+          "id": "1.5.5",
+          "name": "Ethics Complaints and Enforcement",
+          "legacy_ids": [],
+          "definition": "ISC2 enforces its code through a formal complaint process, in which a written, sworn complaint is reviewed by an ethics committee and may lead to sanctions.",
+          "why_it_matters": "The process shows the code has real consequences, and it sets out who may raise which concerns, a detail that can appear in exam scenarios.",
+          "how_it_works": [
+            "Complaints are written and sworn, and should name the canon the complainant believes was broken.",
+            "Anyone may complain under canons 1 and 2; only principals, such as employers or clients, under canon 3.",
+            "Under canon 4, only other certified or licensed professionals who follow an ethics code may complain.",
+            "The committee does not investigate on its own; it weighs the evidence submitted and acts only when there is a solid initial case.",
+            "The ISC2 board decides any sanction, which can include revoking certification."
+          ],
+          "example": "A project manager believes a certified contractor falsely reported finishing a security test. As the client who hired the contractor, the manager can complain under canon 3 as well as canon 2. They write and swear the complaint, name both canons and attach the test records as evidence.",
+          "isaca_rule": "The code is enforced, not just admired. Match the concern to the canon and to who has standing: anyone for canons 1 and 2, principals for canon 3, fellow professionals for canon 4.",
+          "exam_traps": [
+            {
+              "trap": "Any member of the public can file a complaint under any canon.",
+              "why": "Standing depends on the canon. Anyone may cite canons 1 and 2, but canon 3 complaints come from principals and canon 4 complaints from fellow professionals."
+            },
+            {
+              "trap": "The ethics committee investigates every rumor about a member.",
+              "why": "The committee does not investigate on its own. It reviews sworn complaints and the evidence submitted, and closes those without a solid initial case."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Standing",
+              "definition": "The right to bring a complaint, based on your relationship to the matter."
+            },
+            {
+              "term": "Sworn affidavit",
+              "definition": "A written statement the writer formally swears is true."
+            }
+          ]
+        },
+        {
+          "id": "1.5.6",
+          "name": "Ethical Use of AI at Work",
+          "legacy_ids": [],
+          "definition": "Ethical AI use means applying the same honesty, care and respect for people's data to AI tools as to any other work, with a person answerable for the results.",
+          "why_it_matters": "AI makes it easy to share confidential data, pass off unchecked output as expert work or act on wrong answers. The canons still apply, and accountability stays with the professional.",
+          "how_it_works": [
+            "Keep principals' confidential data out of AI tools not approved for it, as the canons and privacy law expect.",
+            "Check AI output before relying on it; competent service means verifying, not just pasting.",
+            "Be honest about AI's role where it matters, such as in reports, and never present guesses as verified findings.",
+            "Never use AI to deceive, impersonate or harm, such as writing phishing emails outside an authorized test.",
+            "Report AI behavior that could harm the public, such as a model leaking personal data, through proper channels."
+          ],
+          "example": "A junior analyst at a consulting firm uses an approved AI assistant to summarize a client's scan results. The summary says a server is fully patched, but the raw data shows a critical patch is missing. The analyst corrects the report before sending it and tells their lead, since passing on unchecked AI output would fail the client.",
+          "isaca_rule": "AI is a tool; the professional stays accountable. Protect principals' data, verify output before relying on it, be honest about how work was produced, and use AI only within your authorization.",
+          "exam_traps": [
+            {
+              "trap": "If the AI made the mistake, the analyst is not responsible.",
+              "why": "The professional who relies on the output owns the result. Diligent, competent service means checking AI work before it reaches a client or a decision."
+            },
+            {
+              "trap": "Using AI to write a convincing phishing email is fine if it is only practice.",
+              "why": "Creating attack content is acceptable only inside an authorized, scoped test, such as a sanctioned phishing exercise. Otherwise it risks real harm and breaks the law and the code."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Hallucination",
+              "definition": "AI output that sounds confident but is false or made up."
+            },
+            {
+              "term": "Deepfake",
+              "definition": "AI-generated audio, image or video that imitates a real person, often used to deceive."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "key_terminologies": {
+    "CIA triad": "Confidentiality, integrity and availability: the three core goals of security.",
+    "AAA": "Authentication, authorization and accounting: prove identity, grant permissions, record activity.",
+    "Non-repudiation": "Proof strong enough that a person cannot credibly deny an action, usually from a digital signature.",
+    "Personally identifiable information (PII)": "Data that identifies a person, alone or combined with other data.",
+    "Privacy by design": "Building privacy protections into a system from the first design step, with protective defaults.",
+    "Threat": "Anything that could harm an asset, such as an attacker, an error or a storm.",
+    "Vulnerability": "A weakness a threat can exploit, such as unpatched software.",
+    "Risk": "The likelihood that a threat exploits a vulnerability, combined with the impact if it does.",
+    "Risk treatment": "Responding to a risk by avoiding, mitigating, transferring or accepting it.",
+    "Residual risk": "The risk left after controls are applied.",
+    "Risk appetite": "The broad amount and type of risk leaders will take on to meet goals.",
+    "Risk tolerance": "The narrower, measurable limit of risk accepted for a specific objective.",
+    "Risk owner": "The person with authority to decide a risk's treatment and accept what remains.",
+    "Annualized loss expectancy (ALE)": "Expected yearly loss from a risk: single loss expectancy times annual rate of occurrence.",
+    "Regulation": "A mandatory rule issued by a government agency under the authority of a law.",
+    "Framework": "A published, usually voluntary structure for building a security program, such as NIST CSF 2.0.",
+    "Policy": "A mandatory, high-level statement of what is required and why, approved by senior management.",
+    "Standard": "A mandatory, specific requirement that supports a policy, such as approved encryption settings.",
+    "Procedure": "Mandatory step-by-step instructions for carrying out a task.",
+    "Guideline": "Optional, recommended practice that leaves room for judgment.",
+    "Technical control": "A safeguard built into hardware or software, such as a firewall or encryption.",
+    "Administrative control": "A policy, procedure, training or people practice that directs behavior.",
+    "Physical control": "A tangible safeguard for people and facilities, such as a lock, fence or guard.",
+    "Compensating control": "An alternative control that lowers the same risk when the usual control is not possible.",
+    "Due diligence": "Investigating and verifying: finding out what risks exist and whether safeguards work.",
+    "Due care": "Acting responsibly on what you know, as a reasonable person would.",
+    "ISC2 Code of Ethics": "The preamble and four canons every ISC2-certified member must follow.",
+    "Model or data poisoning": "Corrupting an AI model or its training data so it learns wrong or hidden behavior; an integrity attack."
+  }
+}
