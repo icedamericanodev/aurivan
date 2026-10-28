@@ -37,6 +37,7 @@ import { finishSession } from '../lib/finishSession';
 import { startFromIds } from '../lib/sessions';
 import { selectCert, useProgress } from '../store/progress';
 import { useSession } from '../store/session';
+import { moreRowLabels, viaMore } from '../../jest/answerMore';
 import SessionScreen from '../app/session';
 import NoteSubtopicScreen from '../app/notes/subtopic/[id]';
 import ReadinessReport from '../app/readiness';
@@ -181,7 +182,9 @@ describe('journey: practice miss → Read the note → Back', () => {
 
     // Read the note (pushed): the note page mounts ABOVE the session, which stays mounted.
     // Copy renamed in the UX pass (mobile 1.20): the spoken label names the reading time and "the idea".
-    press(session, new RegExp(`^Read the note: ${noted.name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}, about \\d+ minutes?, the idea this question tests$`));
+    // Mobile 1.49: the row is in the header's ⋯ "More on this question" sheet.
+    expect(moreRowLabels(session.root).some((l) => new RegExp(`^Read the note: ${noted.name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}, about \\d+ minutes?, the idea this question tests$`).test(l))).toBe(true);
+    viaMore(session.root, 'Read the note: ');
     expect(push).toHaveBeenLastCalledWith(`/notes/subtopic/${encodeURIComponent(noted.sub)}`);
     mockParams = { id: noted.sub };
     const note = mount(<NoteSubtopicScreen />);
@@ -208,7 +211,7 @@ describe('journey: kill the app on the note page, then resume', () => {
     startFromIds('cisa', [noted.qid, noted2.qid], 'Quick 10');
     const session = mount(<SessionScreen />);
     answerByUi(session, false);
-    press(session, /^Read the note: /);
+    viaMore(session.root, 'Read the note: ');
     mockParams = { id: noted.sub };
     mount(<NoteSubtopicScreen />);
     const saved = useSession.getState().active!;
@@ -228,7 +231,7 @@ describe('journey: kill the app on the note page, then resume', () => {
     expect(s.id).toBe(saved.id);
     expect(s.index).toBe(0);
     expect(s.responses[noted.qid]).toMatchObject({ correct: false });
-    expect(pressables(again, /^Read the note: /)).toHaveLength(1);
+    expect(pressables(again, /^Go deeper, /)).toHaveLength(1); // mobile 1.49: the one way on after a miss
     expect(pressables(again, 'Next question')).toHaveLength(1);
     expect(cp().answers[noted.qid].attempts).toBe(1);
   });
@@ -255,7 +258,7 @@ describe('saves: a session saved by 1.19 (Smart, with `support`) still loads', (
     await useSession.persist.rehydrate();
     expect(useSession.getState().active!.support).toBe(true);
     const session = mount(<SessionScreen />);
-    expect(pressables(session, /^Read the note: /)).toHaveLength(1);
+    expect(pressables(session, /^Go deeper, /)).toHaveLength(1); // mobile 1.49: the one way on after a miss
     expect(textOf(session)).not.toContain('A short read, then try more like this');
     // And it carries on.
     press(session, 'Next question');
@@ -410,7 +413,7 @@ describe('a set started above an old session or Results', () => {
     startFromIds('cisa', [noted.qid, noted2.qid], 'Quick 10');
     const first = open('session', <SessionScreen />);
     answerByUi(first, false);
-    press(first, /^Read the note: /);
+    viaMore(first.root, 'Read the note: ');
     mockParams = { id: noted.sub };
     const note = open('note', <NoteSubtopicScreen />);
     press(note, 'Practice this concept');
@@ -429,7 +432,7 @@ describe('a set started above an old session or Results', () => {
     startFromIds('cisa', [prepped.qid], 'Quick 10');
     const first = open('session', <SessionScreen />);
     answerByUi(first, false);
-    press(first, /^Take the lesson: /); // was "Review the lesson:", then "Lesson:" (1.20), now "Take the lesson:" (1.22)
+    press(first, /^Go deeper, take the lesson: /); // was "Review the lesson:", "Lesson:" (1.20), "Take the lesson:" (1.22), now "Go deeper, take the lesson:" (1.49)
     mockParams = { id: prepped.lesson.id };
     const player = open('lesson', <LessonPlayer />);
     const scenes = prepped.lesson.scenes;

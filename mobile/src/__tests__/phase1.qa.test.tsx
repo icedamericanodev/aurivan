@@ -56,6 +56,7 @@ import { useBackup } from '../store/backup';
 import { useProgress } from '../store/progress';
 import { useSession } from '../store/session';
 import { useSettings } from '../store/settings';
+import { moreRowLabels, viaMore } from '../../jest/answerMore';
 import SessionScreen from '../app/session';
 import Results from '../app/results';
 import NoteSubtopicScreen from '../app/notes/subtopic/[id]';
@@ -67,6 +68,8 @@ import WhatsNew from '../app/whats-new';
 import Reports from '../app/reports';
 import Today from '../app/(tabs)/home';
 import You from '../app/(tabs)/you';
+/** Mobile 1.49: the answer screen's ⋯ row that opens the report form. */
+const REPORT_ROW = 'Report a problem with this question';
 
 jest.mock('@react-native-async-storage/async-storage', () =>
   jest.requireActual('@react-native-async-storage/async-storage/jest/async-storage-mock'),
@@ -238,7 +241,8 @@ describe('Journey 1: report a shuffled practice question', () => {
     expect(useSession.getState().active!.responses[q.id].correct).toBe(false);
     expect(useProgress.getState().byCert.cisa.mistakes[q.id].picked).toBe(wrongOriginal);
 
-    press(`Report a problem with question ${q.id}`);
+    // Mobile 1.49: the answer screen's report opens from the header's ⋯ sheet.
+    viaMore(root(), REPORT_ROW);
     expect(sheetOpen()).toBe(true);
     press('The marked answer looks wrong');
     // The suggestion list shows options in the order on screen.
@@ -285,7 +289,7 @@ describe('Journey 1: report a shuffled practice question', () => {
     mount(<SessionScreen />);
     act(() => { root().findAllByType(OptionCard)[0].props.onPress(); });
     press('Check answer');
-    press(`Report a problem with question ${q.id}`);
+    viaMore(root(), REPORT_ROW);
     const note = 'The explanation says one thing and the key says another. '.repeat(30).slice(0, 1000);
     act(() => { root().findAll((n) => n.props.accessibilityLabel === 'Add a note' && typeof n.props.onChangeText === 'function')[0].props.onChangeText(note); });
     press('The wording is unclear');
@@ -297,18 +301,19 @@ describe('Journey 1: report a shuffled practice question', () => {
 
   it('the “Report started” state belongs to that question only: the next question starts fresh', async () => {
     startPractice('cisa', { count: 10, title: 'Quick 10' });
-    const ids = useSession.getState().active!.questionIds;
+    expect(useSession.getState().active!.questionIds.length).toBeGreaterThan(1);
     mount(<SessionScreen />);
     act(() => { root().findAllByType(OptionCard)[0].props.onPress(); });
     press('Check answer');
-    press(`Report a problem with question ${ids[0]}`);
+    viaMore(root(), REPORT_ROW);
     press('Typo or grammar');
     await pressAsync('Write the email');
-    expect(allText()).toContain('Report started 11 Oct');
+    expect(moreRowLabels(root())).toContain(`${REPORT_ROW}. Report started 11 Oct`);
     press('Next question');
     act(() => { root().findAllByType(OptionCard)[0].props.onPress(); });
     press('Check answer');
-    expect(pressables(`Report a problem with question ${ids[1]}`)).toHaveLength(1);
+    expect(moreRowLabels(root())).toContain(REPORT_ROW);
+    expect(moreRowLabels(root()).join(' ')).not.toContain('Report started 11 Oct');
     expect(allText()).not.toContain('Report started 11 Oct');
     expect(allText()).not.toContain('Finished in your email app?');
   });
@@ -317,11 +322,11 @@ describe('Journey 1: report a shuffled practice question', () => {
   // handler's closure, so two taps before the next render both passed it.
   // Fixed with a ref guard (components/support.tsx useOneAtATime).
   it('a quick double tap on “Write the email” opens one email and logs one report', async () => {
-    const { q } = openShuffledQuestion();
+    openShuffledQuestion();
     mount(<SessionScreen />);
     act(() => { root().findAllByType(OptionCard)[0].props.onPress(); });
     press('Check answer');
-    press(`Report a problem with question ${q.id}`);
+    viaMore(root(), REPORT_ROW);
     press('Typo or grammar');
     await act(async () => {
       const tap = pressables('Write the email')[0].props.onPress as () => Promise<void>;
@@ -491,7 +496,7 @@ describe('Journey 4: no email app', () => {
     mount(<SessionScreen />);
     act(() => { root().findAllByType(OptionCard)[2].props.onPress(); });
     press('Check answer');
-    press(`Report a problem with question ${id}`);
+    viaMore(root(), REPORT_ROW);
     press('The wording is unclear');
     await pressAsync('Write the email');
     return id;
@@ -551,8 +556,10 @@ describe('Journey 4: no email app', () => {
   it('after the fallback is closed, “Report started” reopens the form so another report can be started', async () => {
     const id = await failReport();
     press('Close');
-    expect(allText()).toContain('Report started 11 Oct');
-    press(new RegExp(`^Report started 11 Oct\\. Report a problem with question ${id}$`));
+    // Mobile 1.49: the ⋯ row says so, and opens the form again.
+    expect(moreRowLabels(root())).toContain(`${REPORT_ROW}. Report started 11 Oct`);
+    expect(id).toBeTruthy();
+    viaMore(root(), REPORT_ROW);
     expect(allText()).toContain('You started a report about this on 11 Oct.');
     expect(sheetOpen()).toBe(true);
   });

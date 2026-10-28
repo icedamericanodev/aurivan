@@ -23,6 +23,7 @@ import { startFromIds } from '../lib/sessions';
 import { selectCert, useProgress } from '../store/progress';
 import { useSession } from '../store/session';
 import { useSettings } from '../store/settings';
+import { viaMore } from '../../jest/answerMore';
 import SessionScreen from '../app/session';
 
 jest.mock('@react-native-async-storage/async-storage', () =>
@@ -95,7 +96,7 @@ it('the report email from the answer screen (with the note on screen) never carr
   act(() => option.props.onPress());
   press('Check answer');
   expect(allText()).toContain(SENTINEL); // the learner sees their note here
-  press(`Report a problem with question ${q.id}`);
+  viaMore(root(), 'Report a problem with this question'); // mobile 1.49: from the header's ⋯ sheet
   press('Typo or grammar');
   await act(async () => {
     await pressables('Write the email')[0].props.onPress();

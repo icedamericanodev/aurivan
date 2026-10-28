@@ -4,9 +4,9 @@
  * - lessonsForSubtopic: by a lesson's `notes` first, else by its outline
  *   topic; noteIdsForLesson / lessonNotes: the notes a lesson leads into;
  *   missedSubtopics: Results' "most-missed first, each once, at most 3".
- * - Session, after a miss (practice, review, Guided; never a mock): "Read
- *   the note" whenever a note lists the question, then the lesson row
- *   only while that lesson is not done. Nothing after a right answer.
+ * - Session, after a miss (practice, review, Guided; never a mock): ONE
+ *   "Go deeper" row (mobile 1.49): the lesson while it is not done, else the
+ *   note. "Read the note" is also in the ⋯ sheet, after any checked answer.
  * - Results: "Notes for what you missed" reveals the note rows,
  *   for a mock too.
  * - Note subtopic page: the "Lesson: …" row (Done / Not done yet);
@@ -20,6 +20,7 @@
  * Gotcha (see session-screen.regression.test.tsx): never write
  * `act(() => store.action())`, use braces.
  */
+import { moreButton, moreRowLabels, viaMore } from '../../jest/answerMore';
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
 import { router } from 'expo-router';
 import { findLesson, lessonPreparing, lessonsFor, lessonsForSubtopic, missLessons, noteIdsForLesson } from '../content/lessons';
@@ -266,51 +267,48 @@ const answerOnScreen = (right: boolean) => {
     useSession.getState().answer(qid, { display, correct: right });
   });
 };
-const noteRows = () => pressables(/^Read the note: /);
-// Mobile 1.22: the session's lesson row says "Take the lesson" (it only shows for a lesson not done yet).
-const lessonRows = () => pressables(/^Take the lesson: /);
+// Mobile 1.49 (premium pass §2.2): ONE "Go deeper" row after a miss: the lesson not done yet, else the note.
+const goDeeper = () => pressables(/^Go deeper, /);
+const lessonRows = () => pressables(/^Go deeper, take the lesson: /);
+const noteRows = () => pressables(/^Go deeper, read the note: /);
+/** The ⋯ sheet's "Read the note" row (any checked answer), or undefined. */
+const moreNote = () => moreRowLabels(r!.root).find((l) => l.startsWith('Read the note: '));
 
-describe('session: the note first, the lesson when there is one', () => {
-  it('a practice miss offers the note, then the lesson; Back returns to the same answer', () => {
+describe('session: one "Go deeper" row after a miss (the lesson not done yet, else the note); the note is in ⋯', () => {
+  it('a practice miss offers the lesson as the one row, the note in ⋯; Back returns to the same answer', () => {
     startFromIds('cisa', [both.qid], 'T');
     answerOnScreen(false);
     mount(<SessionScreen />);
     const name = findNote('cisa', both.sub)!.name;
-    expect(noteRows()).toHaveLength(1);
     const min = findNote('cisa', both.sub)!.minutes!;
     expect(min).toBeGreaterThanOrEqual(1); // the build sets each note's reading time
-    expect(noteRows()[0].props.accessibilityLabel).toBe(`Read the note: ${name}, about ${min} minute${min === 1 ? '' : 's'}, the idea this question tests`);
-    // On screen (mobile 1.22): the verb as a kicker, the note's own name, then "About N min · the idea
-    // this question tests" (no double colon).
-    expect(allText()).toContain(`Read the note ${name} About ${min} min · the idea this question tests`);
-    expect(allText()).not.toContain('Read the note:');
-    expect(lessonRows()).toHaveLength(1);
-    expect(lessonRows()[0].props.accessibilityLabel).toBe(`Take the lesson: ${both.lesson.title}, ${both.lesson.minutes} minutes, not done yet`);
-    expect(allText()).toContain(`Take the lesson ${both.lesson.title} ${both.lesson.minutes} min · Not done yet`);
+    expect(goDeeper()).toHaveLength(1);
+    expect(lessonRows()[0].props.accessibilityLabel).toBe(`Go deeper, take the lesson: ${both.lesson.title}, ${both.lesson.minutes} minutes, not done yet`);
+    expect(allText()).toContain(`Go deeper · take the lesson ${both.lesson.title} ${both.lesson.minutes} min · Not done yet`);
     expect(allText()).not.toContain('Review the lesson');
-    // Note first, then the lesson.
-    const text = allText();
-    expect(text.indexOf('Read the note')).toBeLessThan(text.indexOf('Take the lesson'));
-    expect(text).not.toContain('Replay the lesson');
+    expect(allText()).not.toContain('Replay the lesson');
+    // The note is one tap into ⋯, with its own name and reading time.
+    expect(moreNote()).toBe(`Read the note: ${name}, about ${min} minute${min === 1 ? '' : 's'}, the idea this question tests`);
     // Both are pushed, so Back lands on this same answer screen.
-    press(/^Read the note: /);
-    expect(push).toHaveBeenLastCalledWith(`/notes/subtopic/${encodeURIComponent(both.sub)}`);
-    press(/^Take the lesson: /);
+    press(/^Go deeper, take the lesson: /);
     expect(push).toHaveBeenLastCalledWith(`/lesson/${both.lesson.id}`);
+    viaMore(r!.root, 'Read the note: ');
+    expect(push).toHaveBeenLastCalledWith(`/notes/subtopic/${encodeURIComponent(both.sub)}`);
     expect(router.replace).not.toHaveBeenCalled();
     expect(allText()).toContain('Why '); // the explanation is still on screen
   });
 
-  it('no Smart gate any more: a plain practice miss with no "weak" reason still offers the note', () => {
+  it('no Smart gate any more: a plain practice miss with no "weak" reason still offers a way on', () => {
     startFromIds('cisa', [noteOnly.qid], 'T');
     expect(useSession.getState().active!.support).toBeUndefined();
     answerOnScreen(false);
     mount(<SessionScreen />);
-    expect(noteRows()).toHaveLength(1);
+    expect(goDeeper()).toHaveLength(1);
     // No lesson prepares this one; mobile 1.22: a lesson that lists its note is offered instead, if any
-    // (mobile 1.45: never one that only shares the outline topic).
+    // (mobile 1.45: never one that only shares the outline topic). Otherwise the note.
     const teaches = missLessons('cisa', noteOnly.qid, noteOnly.sub);
     expect(lessonRows()).toHaveLength(teaches.length ? 1 : 0);
+    expect(noteRows()).toHaveLength(teaches.length ? 0 : 1);
   });
 
   it('mobile 1.22: with no lesson preparing the question, the lesson that teaches its note (d4_062 → 4B1.2)', () => {
@@ -322,8 +320,8 @@ describe('session: the note first, the lesson when there is one', () => {
     answerOnScreen(false);
     mount(<SessionScreen />);
     expect(lessonRows()).toHaveLength(1);
-    expect(lessonRows()[0].props.accessibilityLabel).toBe(`Take the lesson: ${teaches.title}, ${teaches.minutes} minutes, not done yet`);
-    press(/^Take the lesson: /);
+    expect(lessonRows()[0].props.accessibilityLabel).toBe(`Go deeper, take the lesson: ${teaches.title}, ${teaches.minutes} minutes, not done yet`);
+    press(/^Go deeper, take the lesson: /);
     expect(push).toHaveBeenLastCalledWith('/lesson/cisa-l-d4-rpo-rto');
   });
 
@@ -337,10 +335,10 @@ describe('session: the note first, the lesson when there is one', () => {
     answerOnScreen(false);
     mount(<SessionScreen />);
     expect(lessonRows()).toHaveLength(1);
-    expect(lessonRows()[0].props.accessibilityLabel).toMatch(new RegExp(`^Take the lesson: ${teaching[0].title.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')},`));
+    expect(lessonRows()[0].props.accessibilityLabel).toMatch(new RegExp(`^Go deeper, take the lesson: ${teaching[0].title.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')},`));
   });
 
-  it('the lesson row hides once every lesson it could offer is done; the note stays', () => {
+  it('once every lesson it could offer is done, the one row is the note', () => {
     act(() => {
       for (const l of missLessons('cisa', both.qid, both.sub)) useProgress.getState().completeLesson('cisa', l.id);
     });
@@ -350,8 +348,13 @@ describe('session: the note first, the lesson when there is one', () => {
     startFromIds('cisa', [both.qid], 'T');
     answerOnScreen(false);
     mount(<SessionScreen />);
-    expect(noteRows()).toHaveLength(1);
+    const name = findNote('cisa', both.sub)!.name;
+    expect(goDeeper()).toHaveLength(1);
     expect(lessonRows()).toHaveLength(0);
+    expect(noteRows()[0].props.accessibilityLabel).toMatch(new RegExp(`^Go deeper, read the note: ${name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}, about \\d+ minutes?, the idea this question tests$`));
+    expect(allText()).toContain(`Go deeper · read the note ${name}`);
+    press(/^Go deeper, read the note: /);
+    expect(push).toHaveBeenLastCalledWith(`/notes/subtopic/${encodeURIComponent(both.sub)}`);
   });
 
   it('review sessions offer it too', () => {
@@ -361,15 +364,15 @@ describe('session: the note first, the lesson when there is one', () => {
     });
     answerOnScreen(false);
     mount(<SessionScreen />);
-    expect(noteRows()).toHaveLength(1);
+    expect(goDeeper()).toHaveLength(1);
   });
 
-  it('nothing after a right answer', () => {
+  it('no Go deeper row after a right answer; the note is still one tap into ⋯', () => {
     startFromIds('cisa', [both.qid], 'T');
     answerOnScreen(true);
     mount(<SessionScreen />);
-    expect(noteRows()).toHaveLength(0);
-    expect(lessonRows()).toHaveLength(0);
+    expect(goDeeper()).toHaveLength(0);
+    expect(moreNote()).toMatch(/^Read the note: /);
   });
 
   // Mobile 1.45 (PM story 2): "Take the lesson" only for a lesson that names the question in `prepares`
@@ -400,7 +403,7 @@ describe('session: the note first, the lesson when there is one', () => {
     expect(topicOnly).toBeGreaterThan(0);
   });
 
-  it('mobile 1.45: a miss whose note no lesson lists shows the note row and no lesson row', () => {
+  it('mobile 1.45: a miss whose note no lesson lists shows the note as the one row', () => {
     const hit = getAllQuestions('cisa').find((q) => {
       const sub = subtopicOfQuestion('cisa', q.id);
       return sub && !missLessons('cisa', q.id, sub).length && lessonsForSubtopic('cisa', sub).length;
@@ -436,8 +439,8 @@ describe('session: the note first, the lesson when there is one', () => {
     });
     answerOnScreen(false);
     mount(<SessionScreen />);
-    expect(noteRows()).toHaveLength(0);
-    expect(lessonRows()).toHaveLength(0);
+    expect(goDeeper()).toHaveLength(0);
+    expect(moreButton(r!.root)).toBeUndefined(); // no ⋯ in a mock
   });
 });
 

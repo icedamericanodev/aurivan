@@ -21,6 +21,7 @@ import { startFromIds, startMock, startReview } from '../lib/sessions';
 import { useProgress } from '../store/progress';
 import { useSession } from '../store/session';
 import { useSettings } from '../store/settings';
+import { moreRowLabels } from '../../jest/answerMore';
 import SessionScreen from '../app/session';
 import { OptionCard } from '../components/quiz';
 import { Tag } from '../components/ui';
@@ -118,11 +119,11 @@ describe('#5 the label above a question', () => {
     expect(metaTag()).not.toContain(sub);
     pickWrong();
     press('Check answer');
-    // After the reveal: the note row names the idea the question tests.
-    expect(allText()).toContain('Read the note');
+    // After the reveal: the note row names the idea the question tests (mobile 1.49: in the ⋯ sheet,
+    // and on the page too when the one "Go deeper" row is the note).
     const s = useSession.getState().active!;
     const note = findNote('cisa', subtopicOfQuestion('cisa', s.questionIds[0])!)!;
-    expect(allText()).toContain(note.name);
+    expect(moreRowLabels(r!.root).some((l) => l.startsWith(`Read the note: ${note.name},`))).toBe(true);
   });
 
   it('review: the same, domain and count only before the answer', () => {

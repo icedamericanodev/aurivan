@@ -513,11 +513,19 @@ export interface ReportFlow {
   sheet: ReactNode;
   /** Opens the sheet (for a button that isn't the link). */
   open: () => void;
+  /** When this phone last started a report about this item (for a row that says so), or undefined. */
+  reportedAt?: number;
 }
 
-export function useReportFlow(certId: string, target: ReportTarget): ReportFlow {
-  const item = itemRef(target);
-  const reported = useProgress((s) => lastReportFor(s.reports, certId, item));
+/**
+ * `onClosed` (mobile 1.49): runs each time the sheet goes away (closed, or the
+ * email app opened), so a screen that opened it from somewhere other than the
+ * link (the answer screen's ⋯ sheet) can put screen-reader focus back there.
+ */
+export function useReportFlow(certId: string, target: ReportTarget | null, opts: { onClosed?: () => void } = {}): ReportFlow {
+  // `null` (mobile 1.49): nothing to report yet (a screen that calls this before it has its item). Opens nothing.
+  const item = target ? itemRef(target) : '';
+  const reported = useProgress((s) => (item ? lastReportFor(s.reports, certId, item) : undefined));
   const [visible, setVisible] = useState(false);
   // The sheet mounts on the first open and then stays (hidden), so a closed
   // sheet keeps the note; a list of 20 cards doesn't mount 20 sheets up front.
@@ -528,15 +536,17 @@ export function useReportFlow(certId: string, target: ReportTarget): ReportFlow 
   // A new key after each report, so the next one starts with a fresh form and reference.
   const [round, setRound] = useState(0);
   const open = () => {
+    if (!target) return;
     setDoneFor(null);
     setMounted(true);
     setVisible(true);
   };
   return {
-    link: <ReportLinkButton target={target} reportedAt={reported?.at} onPress={open} />,
+    link: target ? <ReportLinkButton target={target} reportedAt={reported?.at} onPress={open} /> : null,
     block: doneFor === item ? <SentNote {...REPORT_DONE} /> : null,
     open,
-    sheet: mounted && (
+    reportedAt: reported?.at,
+    sheet: mounted && target && (
       <ReportSheet
         key={`${item}:${round}`}
         visible={visible}
@@ -548,11 +558,13 @@ export function useReportFlow(certId: string, target: ReportTarget): ReportFlow 
           // After the message panel, the next tap starts a fresh form (with
           // "You started a report about this…"), never the old panel.
           if (restart) setRound((r) => r + 1);
+          opts.onClosed?.();
         }}
         onOpened={() => {
           setVisible(false);
           setDoneFor(item);
           setRound((r) => r + 1);
+          opts.onClosed?.();
         }}
       />
     ),

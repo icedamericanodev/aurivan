@@ -24,6 +24,7 @@ import { NEUTRAL_MISS_LINE, RUNNER_UP_LINE } from '../engine/slipCoach';
 import { TIMES_UP_DETAIL, TIMES_UP_LINE } from '../engine/resultsCopy';
 import { selectCert, useProgress } from '../store/progress';
 import { useSession } from '../store/session';
+import { moreRowLabels } from '../../jest/answerMore';
 import SessionScreen from '../app/session';
 import Results from '../app/results';
 import { StickyFooter, Verdict } from '../components/quiz';
@@ -163,7 +164,8 @@ describe('the answer screen after a miss', () => {
     missRich();
     expect(allText()).not.toMatch(/Code d\d_\d+/);
     expect(allText()).not.toContain(rich.id);
-    expect(btn('Report a problem') ?? root().findAll((n) => typeof n.props.accessibilityLabel === 'string' && /report/i.test(n.props.accessibilityLabel))[0]).toBeDefined();
+    // Mobile 1.49: reporting is one tap into the header's ⋯ "More on this question" sheet.
+    expect(moreRowLabels(root())).toContain('Report a problem with this question');
   });
 
   it('the coach line is neutral for an untagged miss', () => {

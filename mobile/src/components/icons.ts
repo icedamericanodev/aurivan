@@ -19,6 +19,8 @@ export { default as Compass } from 'lucide-react-native/icons/compass';
 export { default as Crosshair } from 'lucide-react-native/icons/crosshair';
 export { default as Flame } from 'lucide-react-native/icons/flame';
 export { default as Flag } from 'lucide-react-native/icons/flag';
+// Mobile 1.49: the answer screen's ⋯ "More on this question" (Lucide renamed more-horizontal to ellipsis).
+export { default as Ellipsis } from 'lucide-react-native/icons/ellipsis';
 export { default as Gauge } from 'lucide-react-native/icons/gauge';
 export { default as Info } from 'lucide-react-native/icons/info';
 export { default as Library } from 'lucide-react-native/icons/library';

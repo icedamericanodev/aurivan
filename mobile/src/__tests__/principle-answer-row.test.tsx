@@ -2,9 +2,10 @@
  * Mobile 1.31: the answer screen's "Read the principle" row.
  *
  * - After a checked answer (right or wrong) on a question tagged with a
- *   principle: a row in the next-steps area that reads "Read the principle"
- *   over the principle's title, says "Read the principle: <title>" to a
- *   screen reader (role button), and opens /principles/<id>.
+ *   principle: a row that reads "Read the principle" over the principle's
+ *   title, says "Read the principle: <title>" to a screen reader (role
+ *   button), and opens /principles/<id>. Mobile 1.49: the row lives in the
+ *   header's ⋯ "More on this question" sheet, not in the page body.
  * - An untagged question shows no such row, nor does the first set or a set
  *   started from that same principle.
  * - A mock exam never shows it: no answer screen while the exam runs, and
@@ -22,6 +23,7 @@ import { finishSession } from '../lib/finishSession';
 import { startFromIds, startMock } from '../lib/sessions';
 import { useProgress } from '../store/progress';
 import { useSession } from '../store/session';
+import { SHEET_GONE_MS } from '../components/quiz';
 import SessionScreen from '../app/session';
 import Results from '../app/results';
 import PrinciplesHome from '../app/principles';
@@ -116,6 +118,9 @@ describe('the answer screen Principle row', () => {
     ['a right answer', true],
   ])('shows for a tagged question after %s, and opens its principle', (_label, right) => {
     answerFirst([tagged.id, ...filler], right);
+    // Mobile 1.49: not in the page body; one tap into ⋯.
+    expect(principleRows()).toEqual([]);
+    press('More on this question');
     const rows = principleRows();
     expect(rows).toHaveLength(1);
     expect(rows[0].props.accessibilityLabel).toBe(`Read the principle: ${principle.title}, how to think it through`);
@@ -131,6 +136,11 @@ describe('the answer screen Principle row', () => {
     act(() => {
       rows[0].props.onPress();
     });
+    // It opens once the sheet has gone (iOS can't push under a fading sheet).
+    expect(router.push).not.toHaveBeenCalled();
+    act(() => {
+      jest.advanceTimersByTime(SHEET_GONE_MS);
+    });
     expect(router.push).toHaveBeenCalledWith(`/principles/${encodeURIComponent(principle.id)}`);
   });
 
@@ -145,6 +155,7 @@ describe('the answer screen Principle row', () => {
     mount(<SessionScreen />);
     pickBy(false);
     press('Check answer');
+    press('More on this question');
     expect(principleRows()).toEqual([]);
   });
 
@@ -153,11 +164,13 @@ describe('the answer screen Principle row', () => {
     mount(<SessionScreen />);
     pickBy(false);
     press('Check answer');
+    press('More on this question');
     expect(principleRows()).toEqual([]);
   });
 
   it('hides for an untagged question', () => {
     answerFirst([untagged.id, ...filler], false);
+    press('More on this question');
     expect(principleRows()).toEqual([]);
     expect(root().findAll((n) => n.props.testID === 'answer-principle-row')).toEqual([]);
   });
@@ -175,6 +188,8 @@ describe('mock exams', () => {
     mount(<SessionScreen />);
     pickBy(false);
     expect(principleRows()).toEqual([]);
+    // No ⋯ in a mock.
+    expect(root().findAll((n) => n.props.accessibilityLabel === 'More on this question')).toEqual([]);
     act(() => {
       r?.unmount();
     });

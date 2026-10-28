@@ -31,6 +31,7 @@ import { CrossFade } from '../components/motion';
 import { IllustrationView, NoteBody } from '../components/notes';
 import { NATIVE_FIGURE_IDS, nativeFigureFor, RecoveryTimeline } from '../components/noteFigures';
 import { AnswerRecap } from '../components/quiz';
+import { moreRowLabels } from '../../jest/answerMore';
 import { IconButton, PushedHeader, Screen } from '../components/ui';
 import { CISA_LESSONS } from '../content/lessons/cisa';
 import type { Scene } from '../content/lessons/types';
@@ -298,10 +299,10 @@ describe('answer screen after a miss', () => {
     answerOnScreen(false);
     mount(<SessionScreen />);
     const note = findNote('cisa', '4B1.2')!;
-    expect(allText()).toContain(`Read the note ${note.name}`);
-    expect(allText()).toContain('the idea this question tests');
-    expect(allText()).toContain('Take the lesson');
+    // Mobile 1.49: one "Go deeper" row (the lesson not done yet); the note is in the ⋯ sheet.
+    expect(allText()).toContain('Go deeper · take the lesson');
     expect(allText()).not.toContain('Replay the lesson');
+    expect(moreRowLabels(root()).some((l) => l.startsWith(`Read the note: ${note.name}`) && l.endsWith('the idea this question tests'))).toBe(true);
     // The recap: hidden (and silent) until the verdict is under the header.
     const swap = () => root().findAllByType(CrossFade)[0];
     expect(swap().props.showSecond).toBe(false);
