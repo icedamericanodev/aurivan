@@ -1,0 +1,2513 @@
+{
+  "domain_number": 5,
+  "domain_name": "Security Operations and Incident Response",
+  "exam_weight": "17.3%",
+  "source": "Not affiliated with or endorsed by ISC2®. CC® is a registered trademark of ISC2, Inc.",
+  "overview": "This domain covers the daily work of keeping an organization's information safe, and what happens when something goes wrong. It starts with protecting data itself through classification, handling, masking, sanitization and encryption, then moves to watching systems through logs, triage and threat intelligence, responding to incidents, protecting assets through their lifecycle, and testing defenses. Throughout, the entry-level practitioner follows policy and procedure, protects people first, stays within their role and escalates to the right owner or the incident response team instead of acting alone.",
+  "analogy": "Think of a hospital. Patient records are sorted by sensitivity and handled by strict rules (data security). Monitors at every bed feed a central station, where staff decide which alarm needs attention first (security operations). When a patient's condition crashes, a trained team runs a rehearsed procedure in which everyone has a role (incident response). Equipment is tracked, maintained and retired safely (asset protection), and drills and inspections check that it all works (security testing). A new nurse who hears an alarm does not operate alone: they call the response team.",
+  "parts": [
+    {
+      "part": "A",
+      "name": "Understand Data Security",
+      "topic_ids": [
+        "5.1"
+      ]
+    },
+    {
+      "part": "B",
+      "name": "Understand Security Operations",
+      "topic_ids": [
+        "5.2"
+      ]
+    },
+    {
+      "part": "C",
+      "name": "Understand Incident Response",
+      "topic_ids": [
+        "5.3"
+      ]
+    },
+    {
+      "part": "D",
+      "name": "Understand Asset Protection",
+      "topic_ids": [
+        "5.4"
+      ]
+    },
+    {
+      "part": "E",
+      "name": "Understand Security Testing",
+      "topic_ids": [
+        "5.5"
+      ]
+    }
+  ],
+  "topics": [
+    {
+      "topic_id": "5.1",
+      "topic_name": "Understand Data Security",
+      "overview": "Data is protected by first deciding how sensitive it is, then handling it by rules that match that level until it is safely destroyed. This topic covers classification and labeling, handling and retention, masking and tokenization, media sanitization, the cryptography that protects data, and keeping sensitive data out of public AI services.",
+      "can_do": [
+        "Tell classification from labeling, and name who sets a data set's classification",
+        "Pick clear, purge or destroy for a device, and explain why deleting files is not sanitization",
+        "Match symmetric encryption, asymmetric encryption, hashing and digital signatures to the job each does",
+        "Explain why pasting sensitive data into a public AI service is a disclosure"
+      ],
+      "subtopics": [
+        {
+          "id": "5.1.1",
+          "name": "Data Classification and Labeling",
+          "legacy_ids": [],
+          "definition": "Data classification sorts information into sensitivity levels, such as public, internal, confidential and restricted, so each level gets protection that fits its value and risk.",
+          "why_it_matters": "Without classification, everything gets the same protection: too little for secrets, too much for public brochures. Labels make the level visible, so people and tools know which handling rules apply.",
+          "how_it_works": [
+            "Classification is decided by the business manager accountable for the data, called the data owner.",
+            "Levels reflect the harm caused if the data were disclosed, altered or lost, so the most damaging data gets the highest level.",
+            "A label then marks the level where people and systems can see it: a header, footer, watermark, file tag or metadata field.",
+            "Tools such as data loss prevention (DLP) read labels to warn or block when restricted data heads somewhere unsafe.",
+            "Owners review levels over time, because sensitivity changes, for example once a product launches."
+          ],
+          "compare": {
+            "columns": [
+              "Classification",
+              "Labeling"
+            ],
+            "rows": [
+              {
+                "label": "Question it answers",
+                "cells": [
+                  "How sensitive is this data?",
+                  "How will everyone know?"
+                ]
+              },
+              {
+                "label": "Who does it",
+                "cells": [
+                  "The data owner decides",
+                  "Users and systems apply the mark the owner set"
+                ]
+              },
+              {
+                "label": "Output",
+                "cells": [
+                  "A level, such as confidential",
+                  "A visible or machine-readable mark on the data"
+                ]
+              },
+              {
+                "label": "If it is missing",
+                "cells": [
+                  "No one knows what protection is needed",
+                  "People guess, and tools cannot enforce the rules"
+                ]
+              }
+            ]
+          },
+          "example": "At a city council, a planning officer saves a report on land the council plans to buy, with no label, in a team-wide folder. Priya, a new security analyst, notices it. Rather than relabeling it themselves, Priya asks the report's owner, the planning director, to set its level, then helps apply the matching label and folder permissions the director chooses.",
+          "audit_focus": {
+            "review": [
+              "Apply the label your policy requires when you create or receive data",
+              "Use the label to choose where data may be stored and shared"
+            ],
+            "evidence": [
+              "The data classification policy and its defined levels",
+              "Labels and access settings on shared folders and files"
+            ],
+            "recommend": "Report mislabeled or unlabeled sensitive data to its owner, or to your supervisor if the owner is unknown.",
+            "decides": "The data owner sets and changes the classification level"
+          },
+          "isaca_rule": "The owner decides the level; everyone else applies and respects it. When data is unlabeled or looks mislabeled, ask the owner rather than guessing, and protect it at the higher level until they answer.",
+          "exam_traps": [
+            {
+              "trap": "The IT team or a security analyst should decide how sensitive a business file is.",
+              "why": "IT and security staff protect data but do not own it. The accountable business owner understands the harm of disclosure, so the owner sets the level."
+            },
+            {
+              "trap": "Labeling a file is the same as classifying it.",
+              "why": "Classification is the decision about sensitivity; the label only records that decision. A label applied without the owner's decision may be wrong."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Data owner",
+              "definition": "The person accountable for a data set, who sets its classification and approves who may access it."
+            },
+            {
+              "term": "Data custodian",
+              "definition": "The person or team that looks after data day to day, such as backups, following the owner's rules."
+            },
+            {
+              "term": "Data loss prevention (DLP)",
+              "definition": "Tools that spot sensitive data by label or content and warn, block or log when it is moved unsafely."
+            }
+          ],
+          "memory_aid": "Owner decides, label shows, controls follow."
+        },
+        {
+          "id": "5.1.2",
+          "name": "Data Handling Across the Lifecycle",
+          "legacy_ids": [],
+          "definition": "Data handling is the set of rules for how each classification level is created, stored, used, shared, archived and destroyed, from the moment data exists until it is gone.",
+          "why_it_matters": "Data often leaks while being used or shared, not while stored. Rules for every stage, including retention and destruction, close those gaps and keep the organization within the law.",
+          "how_it_works": [
+            "The lifecycle runs create, store, use, share, archive and destroy, and each stage has rules for the data's level.",
+            "Handling rules cover where data may be stored, who may see it, how it is sent, and whether it may be printed or copied.",
+            "A retention schedule says how long each type of record is kept, based on legal, regulatory and business needs.",
+            "When retention ends, data is destroyed by a method that fits its level.",
+            "A legal hold, issued by legal counsel, pauses destruction of records that may be needed for a lawsuit or investigation."
+          ],
+          "example": "A logistics firm's policy says confidential customer records may be emailed only inside the company and must be encrypted on removable media. A sales manager asks Jordan, a help desk technician, to copy a customer list onto an unencrypted USB drive for a trade show. Jordan explains the handling rule, offers an approved encrypted drive instead, and logs the request as the procedure requires.",
+          "audit_focus": {
+            "review": [
+              "Follow the handling rule for the data's label before sharing or copying it",
+              "Use only approved storage and transfer methods for sensitive data"
+            ],
+            "evidence": [
+              "The handling matrix listing rules for each classification level",
+              "Legal hold notices listing which records must be preserved"
+            ],
+            "recommend": "Raise any request to bypass a handling rule with your supervisor, and send legal hold questions to legal counsel.",
+            "decides": "Management sets handling rules in policy; legal counsel issues and lifts legal holds"
+          },
+          "isaca_rule": "Handling rules follow the label at every stage, including after data leaves your system. Keep data only as long as the retention schedule says, and never destroy records under a legal hold, even if their retention period has ended.",
+          "exam_traps": [
+            {
+              "trap": "Keeping all data forever is the safest choice.",
+              "why": "Data kept past its retention period can still leak and can still be demanded in a lawsuit. Keeping it longer than needed adds risk and can break privacy law."
+            },
+            {
+              "trap": "Once retention ends, records under a legal hold can be deleted on schedule.",
+              "why": "A legal hold overrides the schedule. Destroying held records can be treated as destroying evidence, so destruction waits until legal counsel lifts the hold."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Data lifecycle",
+              "definition": "The stages data passes through: create, store, use, share, archive and destroy."
+            },
+            {
+              "term": "Retention schedule",
+              "definition": "A list of record types and how long each must be kept before it is destroyed."
+            },
+            {
+              "term": "Legal hold",
+              "definition": "An instruction from legal counsel to preserve specific records, suspending their normal destruction."
+            }
+          ]
+        },
+        {
+          "id": "5.1.3",
+          "name": "Data Masking and Tokenization",
+          "legacy_ids": [],
+          "definition": "Data masking hides real values behind realistic fakes or partial views, and tokenization swaps a sensitive value for a random token that maps back only through a secure vault.",
+          "why_it_matters": "Many people and systems need to work with data without seeing the real sensitive values. Masking and tokenization let testing, support and analytics go ahead while shrinking how much real data is exposed.",
+          "how_it_works": [
+            "Static masking makes a changed copy, such as a test database with fake names, so real values never reach the test team.",
+            "Dynamic masking changes only what a viewer sees, such as the last four card digits, while the stored record stays intact.",
+            "Tokenization keeps the real value in a protected token vault and gives other systems a token with no mathematical link to it.",
+            "Only authorized systems can swap a token back for the real value, so fewer systems hold sensitive data.",
+            "Anonymized data can no longer identify anyone; pseudonymized data can be re-linked, so it still counts as personal data."
+          ],
+          "compare": {
+            "columns": [
+              "Static masking",
+              "Dynamic masking",
+              "Tokenization"
+            ],
+            "rows": [
+              {
+                "label": "Where the real value is",
+                "cells": [
+                  "Not in the masked copy at all",
+                  "Still stored; hidden on display",
+                  "In the token vault only"
+                ]
+              },
+              {
+                "label": "Reversible?",
+                "cells": [
+                  "Usually not",
+                  "The view only; data is unchanged",
+                  "Yes, through the vault"
+                ]
+              },
+              {
+                "label": "Typical use",
+                "cells": [
+                  "Test and training data",
+                  "Support and call center screens",
+                  "Payment card numbers and account IDs"
+                ]
+              }
+            ]
+          },
+          "example": "A school's software team needs realistic student records to test a new grade portal, and a developer suggests copying the live database to the test server. Sam, the junior security analyst on the project, points to the policy that bans live personal data in test systems and asks the database administrator for a statically masked copy, with fake names and birth dates.",
+          "audit_focus": {
+            "review": [
+              "Request masked or synthetic data for testing, never a live production copy",
+              "Use tokens or masked views in reports when full values are not needed"
+            ],
+            "evidence": [
+              "Test environments for real personal or payment data",
+              "Who can reach the token vault and turn tokens back into values"
+            ],
+            "recommend": "Report real sensitive data found in a test or support system to its data owner and your supervisor.",
+            "decides": "The data owner approves any use of real data outside production"
+          },
+          "isaca_rule": "Give each person and system the least real data the task needs. Use masked data for testing and support, tokens where systems only need a reference, and keep the real values in as few places as possible.",
+          "exam_traps": [
+            {
+              "trap": "Tokenization is just another name for encryption.",
+              "why": "Anyone with the key can decrypt an encrypted value. A token has no mathematical link to the original; only the vault can map it back."
+            },
+            {
+              "trap": "Masking a customer's name on screen means the database no longer holds it.",
+              "why": "Dynamic masking changes only what the viewer sees. The real value is still stored and still needs full protection."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Token vault",
+              "definition": "The tightly protected store that holds real values and their matching tokens."
+            },
+            {
+              "term": "Anonymization",
+              "definition": "Removing or changing identifiers so individuals can no longer be identified, even by combining data sets."
+            },
+            {
+              "term": "Pseudonymization",
+              "definition": "Replacing identifiers with substitutes while keeping a separate way to re-link them; the data is still personal data."
+            }
+          ]
+        },
+        {
+          "id": "5.1.4",
+          "name": "Media Sanitization: Clear, Purge and Destroy",
+          "legacy_ids": [],
+          "definition": "Media sanitization makes data on storage media infeasible to recover before the media is reused, leaves the organization's control or is discarded, using the clear, purge or destroy method.",
+          "why_it_matters": "Deleting files or formatting a drive removes the pointers, not the data, so free tools can bring it back. Retired laptops, copiers and phones have leaked records this way.",
+          "how_it_works": [
+            "The method depends on the data's sensitivity, the media type, and whether the media will be reused or leave the organization.",
+            "Overwriting tools built for magnetic hard drives miss spare cells on solid-state drives (SSDs), so flash media needs a purge command or cryptographic erase.",
+            "For cloud storage, where the customer cannot reach the physical disks, cryptographic erase may be the only purge option.",
+            "Degaussing works only on magnetic media, and drilling a hole can leave readable areas, so neither is a dependable shortcut.",
+            "Each sanitization is verified and recorded, often on a certificate of sanitization, before the asset record is closed."
+          ],
+          "compare": {
+            "columns": [
+              "Clear",
+              "Purge",
+              "Destroy"
+            ],
+            "rows": [
+              {
+                "label": "Stops",
+                "cells": [
+                  "Simple recovery through the device's normal interface",
+                  "Even laboratory recovery",
+                  "Even laboratory recovery"
+                ]
+              },
+              {
+                "label": "Media afterward",
+                "cells": [
+                  "Reusable",
+                  "Reusable",
+                  "Unusable"
+                ]
+              },
+              {
+                "label": "Typical technique",
+                "cells": [
+                  "Overwrite or factory reset",
+                  "Built-in sanitize command or cryptographic erase",
+                  "Disintegrate, incinerate or melt; shred paper"
+                ]
+              },
+              {
+                "label": "Good fit",
+                "cells": [
+                  "Reuse inside the organization for lower-sensitivity data",
+                  "Reuse or resale, including outside the organization",
+                  "Failed or obsolete media, and all paper"
+                ]
+              }
+            ]
+          },
+          "example": "A hospital is returning 40 leased laptops with solid-state drives. A facilities supervisor asks Alex, an IT support technician, to 'just format them' to save time. Alex explains that formatting would leave patient data recoverable, runs the approved purge tool on each drive, records each serial number and result, and sends the sanitization records to the asset manager.",
+          "audit_focus": {
+            "review": [
+              "Use the approved sanitization tool and method listed for the media type",
+              "Verify each device and record its serial number and method"
+            ],
+            "evidence": [
+              "Certificates of sanitization from any disposal or recycling vendor",
+              "Asset inventory entries updated as each device is released"
+            ],
+            "recommend": "Stop and tell your team lead when a device cannot be sanitized as the procedure requires, such as a failed drive.",
+            "decides": "Policy and the data owner set the required method for each level"
+          },
+          "isaca_rule": "Deleting is not sanitizing. Match the method to the data and the media's destination: clear for low-risk internal reuse, purge before sensitive media leaves your control, destroy when it cannot be purged or reused. Verify and keep the record.",
+          "exam_traps": [
+            {
+              "trap": "Deleting the files and emptying the recycle bin sanitizes a laptop.",
+              "why": "Deletion removes only the file pointers. The data stays on the drive until it is overwritten, and free tools can recover it."
+            },
+            {
+              "trap": "Degaussing is the right way to sanitize a solid-state drive.",
+              "why": "Degaussing uses magnetic force and does nothing to flash storage. SSDs need a purge technique, such as cryptographic erase, or destruction."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Cryptographic erase",
+              "definition": "A purge technique that destroys the keys protecting encrypted data, leaving only unreadable ciphertext."
+            },
+            {
+              "term": "Certificate of sanitization",
+              "definition": "A record of which media was sanitized, by what method, by whom, when, and how it was verified."
+            },
+            {
+              "term": "NIST SP 800-88 Rev. 2",
+              "definition": "Media sanitization guidelines from the US National Institute of Standards and Technology (NIST), published September 2025."
+            }
+          ]
+        },
+        {
+          "id": "5.1.5",
+          "name": "Symmetric and Asymmetric Encryption",
+          "legacy_ids": [],
+          "definition": "Encryption turns readable plaintext into unreadable ciphertext with an algorithm and a key; symmetric encryption uses one shared key, while asymmetric encryption uses a public and private key pair.",
+          "why_it_matters": "Encryption keeps data confidential even when it is stolen or intercepted. Choosing the wrong type, or losing control of keys, can leave data exposed or make it unrecoverable.",
+          "how_it_works": [
+            "Symmetric algorithms such as the Advanced Encryption Standard (AES) are fast, so they protect bulk data such as disks, databases and network sessions.",
+            "In asymmetric encryption, such as RSA (named after its inventors) or elliptic curve cryptography (ECC), anyone may use the public key, but only the owner holds the private key.",
+            "To send someone a secret, encrypt it with their public key; only their private key can decrypt it.",
+            "Real systems are hybrid: Transport Layer Security (TLS) uses asymmetric methods to agree on a session key, then symmetric encryption for the data."
+          ],
+          "compare": {
+            "columns": [
+              "Symmetric",
+              "Asymmetric"
+            ],
+            "rows": [
+              {
+                "label": "Keys",
+                "cells": [
+                  "One shared secret key",
+                  "A public key and a matching private key"
+                ]
+              },
+              {
+                "label": "Speed",
+                "cells": [
+                  "Fast; suits large volumes of data",
+                  "Slower; suits small items such as keys and signatures"
+                ]
+              },
+              {
+                "label": "Main challenge",
+                "cells": [
+                  "Sharing the key safely with each party",
+                  "Proving a public key really belongs to its owner"
+                ]
+              },
+              {
+                "label": "Typical uses",
+                "cells": [
+                  "Disk, database and session encryption",
+                  "Key exchange, digital signatures and certificates"
+                ]
+              },
+              {
+                "label": "Examples",
+                "cells": [
+                  "AES",
+                  "RSA, ECC"
+                ]
+              }
+            ]
+          },
+          "example": "An accounting firm partner encrypts a client's tax spreadsheet and plans to email it with the password typed in the same message. Morgan, the firm's IT assistant, explains that anyone intercepting the email would get both the locked file and its key. Morgan suggests the secure client portal instead, or at least sharing the password by phone, as the firm's policy requires.",
+          "audit_focus": {
+            "review": [
+              "Use approved encryption tools rather than inventing your own scheme",
+              "Send passwords or keys through a different channel from the data"
+            ],
+            "evidence": [
+              "Devices and data stores missing required encryption at rest",
+              "Certificate and key expiry dates in the key management service"
+            ],
+            "recommend": "Report a lost, exposed or shared private key to the key's owner and the security team immediately.",
+            "decides": "Security management approves algorithms, key lengths and key handling rules"
+          },
+          "isaca_rule": "Use symmetric encryption for speed and bulk data, and asymmetric for exchanging keys and proving identity. Encrypt to someone with their public key. Encryption is only as strong as its key protection, so keep keys apart from the data.",
+          "exam_traps": [
+            {
+              "trap": "To send a confidential message, encrypt it with your own private key.",
+              "why": "Anything encrypted with your private key opens with your public key, which anyone can have. For confidentiality, use the recipient's public key."
+            },
+            {
+              "trap": "Asymmetric encryption is stronger, so use it for all bulk data.",
+              "why": "Asymmetric encryption is much slower and is not designed for large volumes. Systems use it to exchange a symmetric key, then encrypt the data symmetrically."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Key management",
+              "definition": "Creating, storing, rotating, backing up and destroying keys under control; strong encryption fails if keys are exposed."
+            },
+            {
+              "term": "Hardware security module (HSM)",
+              "definition": "A tamper-resistant device that creates and stores keys and uses them without ever exposing them."
+            },
+            {
+              "term": "Data states",
+              "definition": "Data at rest (stored), in transit (moving over a network) and in use (being processed); each needs protection."
+            }
+          ],
+          "memory_aid": "One shared key: symmetric. A public and private pair: asymmetric."
+        },
+        {
+          "id": "5.1.6",
+          "name": "Hashing and Digital Signatures",
+          "legacy_ids": [],
+          "definition": "A hash function turns any input into a fixed-length digest that cannot be reversed; a digital signature applies the signer's private key to a hash to prove origin and integrity.",
+          "why_it_matters": "Hashing shows whether data has changed, and it protects stored passwords. Signatures add proof of who sent the data, so a sender cannot credibly deny it later.",
+          "how_it_works": [
+            "Changing even one character of the input produces a completely different digest, so matching digests show the data is unchanged.",
+            "Hashing uses no key and cannot be undone, which is why it gives integrity, not confidentiality.",
+            "Passwords are stored as salted hashes made with deliberately slow algorithms, so a stolen password file is hard to crack.",
+            "To sign, software hashes the message and applies the sender's private key; anyone can verify the signature with the sender's public key.",
+            "Older algorithms such as Message Digest 5 (MD5) and Secure Hash Algorithm 1 (SHA-1) are broken for collisions; use current ones such as SHA-256 or SHA-3."
+          ],
+          "compare": {
+            "columns": [
+              "Hashing",
+              "Encryption",
+              "Digital signature"
+            ],
+            "rows": [
+              {
+                "label": "Uses a key?",
+                "cells": [
+                  "No",
+                  "Yes, symmetric or asymmetric",
+                  "Yes, the signer's private key"
+                ]
+              },
+              {
+                "label": "Reversible?",
+                "cells": [
+                  "No, one-way",
+                  "Yes, with the right key",
+                  "Checked with the public key, not reversed"
+                ]
+              },
+              {
+                "label": "Provides",
+                "cells": [
+                  "Integrity",
+                  "Confidentiality",
+                  "Integrity, origin authentication and non-repudiation"
+                ]
+              },
+              {
+                "label": "Example use",
+                "cells": [
+                  "Checking a download, storing passwords",
+                  "Protecting a file or a session",
+                  "Signing software or a contract"
+                ]
+              }
+            ]
+          },
+          "example": "A university's IT team receives an email, apparently from a vendor, with an urgent firmware update for its campus parking meters. Before installing it, Casey, a junior systems administrator, checks the file's signature with the vendor's published public key and compares its hash with the vendor's website. The signature fails, so Casey does not install it and reports the email to the security team.",
+          "audit_focus": {
+            "review": [
+              "Install only software and updates whose signature verifies",
+              "Store passwords only with the approved hashing method, never as plain text"
+            ],
+            "evidence": [
+              "Signature verification results on updates and scripts",
+              "Systems still using MD5 or SHA-1 for integrity or signatures"
+            ],
+            "recommend": "Report any signature that fails to verify, or a hash that does not match, to the security team before going further.",
+            "decides": "Security management decides which algorithms are approved"
+          },
+          "isaca_rule": "A hash proves nothing changed; it hides nothing and uses no key. A signature proves who sent something and that it is unchanged, but it does not keep it secret. When data must also be confidential, encrypt it as well.",
+          "exam_traps": [
+            {
+              "trap": "Hashing a customer file keeps it confidential.",
+              "why": "A hash is not encryption. Hashing leaves the original file readable, and a hash cannot be decrypted back. Confidentiality needs encryption."
+            },
+            {
+              "trap": "A digitally signed email is also encrypted.",
+              "why": "A signature proves origin and integrity, but anyone can still read the message. Confidentiality needs separate encryption with the recipient's public key."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Salt",
+              "definition": "A random value added to each password before hashing, so identical passwords produce different hashes."
+            },
+            {
+              "term": "Collision",
+              "definition": "Two different inputs that produce the same digest; once collisions can be made on purpose, the algorithm is broken."
+            },
+            {
+              "term": "Non-repudiation",
+              "definition": "Proof that a specific party sent or approved something, so they cannot credibly deny it."
+            }
+          ]
+        },
+        {
+          "id": "5.1.7",
+          "name": "Quantum-Resistant Cryptography",
+          "legacy_ids": [],
+          "definition": "Quantum-resistant, or post-quantum, cryptography uses public-key algorithms designed to stay secure even against a future quantum computer that could break today's RSA and elliptic curve methods.",
+          "why_it_matters": "Attackers can record encrypted traffic now and decrypt it once a capable quantum computer exists. Data that must stay secret for years is already at risk, and replacing algorithms across an organization takes years.",
+          "how_it_works": [
+            "A large enough quantum computer could solve the math behind RSA and elliptic curve cryptography, breaking today's key exchange and digital signatures.",
+            "Symmetric encryption such as the Advanced Encryption Standard (AES) and modern hash functions are far less affected; longer keys, such as AES-256, keep them strong.",
+            "In August 2024, the US National Institute of Standards and Technology (NIST) published its first post-quantum Federal Information Processing Standards (FIPS): 203, 204 and 205.",
+            "Migration starts with a cryptographic inventory: where each algorithm is used, what data it protects, and how long that data must stay secret."
+          ],
+          "types": [
+            {
+              "term": "ML-KEM (FIPS 203)",
+              "meaning": "A lattice-based method for two parties to agree on a shared key, replacing RSA or elliptic curve key exchange."
+            },
+            {
+              "term": "ML-DSA (FIPS 204)",
+              "meaning": "A lattice-based digital signature algorithm, intended as the main general-purpose replacement for today's signatures."
+            },
+            {
+              "term": "SLH-DSA (FIPS 205)",
+              "meaning": "A hash-based digital signature algorithm, a backup built on different math in case lattice methods weaken."
+            }
+          ],
+          "example": "A health insurer keeps member records that must stay confidential for decades, and shares them with partners over links using RSA-based key exchange. The security manager asks Riley, a new analyst, to help start planning for quantum risk. Riley begins by listing each system, the algorithms it uses and how long its data must stay secret, so the manager can rank systems for migration.",
+          "audit_focus": {
+            "review": [
+              "Record algorithms and key lengths whenever you document a system",
+              "Flag systems protecting long-lived data that rely on RSA or elliptic curves"
+            ],
+            "evidence": [
+              "The migration priority list and the owner's sign-off on it",
+              "Vendor roadmaps for post-quantum support in key products"
+            ],
+            "recommend": "Raise systems that cannot change algorithms, such as embedded devices, with the system owner and security manager.",
+            "decides": "Senior management sets migration priorities and funding"
+          },
+          "isaca_rule": "Quantum risk is a planning problem today. Start with an inventory, put long-lived secrets first, and favor crypto agility. Public-key algorithms need replacing; symmetric encryption mainly needs adequate key lengths.",
+          "exam_traps": [
+            {
+              "trap": "Quantum computers will break all encryption, so AES must be replaced too.",
+              "why": "The main threat is to public-key algorithms such as RSA and elliptic curves. AES with long keys and modern hash functions are expected to stay secure."
+            },
+            {
+              "trap": "There is no risk until a quantum computer actually exists.",
+              "why": "Encrypted data recorded today can be decrypted later. Data that must stay secret for years is already exposed to this harvest now, decrypt later threat."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Harvest now, decrypt later",
+              "definition": "Collecting encrypted data today in the hope of decrypting it once quantum computing makes that possible."
+            },
+            {
+              "term": "Crypto agility",
+              "definition": "The ability to replace cryptographic algorithms in a system without a major redesign."
+            },
+            {
+              "term": "Cryptographic inventory",
+              "definition": "A list of where and how cryptography is used, including algorithms, key lengths and the data protected."
+            }
+          ],
+          "memory_aid": "Public-key is at risk, symmetric holds: list it, rank it, swap it."
+        },
+        {
+          "id": "5.1.8",
+          "name": "Data Leakage into Public AI Services",
+          "legacy_ids": [],
+          "definition": "Data leakage into public artificial intelligence (AI) services happens when people paste or upload sensitive information into an AI tool their organization does not control.",
+          "why_it_matters": "A prompt is a data transfer. Depending on the service's terms, what users type may be stored, reviewed by the provider or used to train models, so confidential data, code or personal data can escape the organization's control.",
+          "how_it_works": [
+            "Typing data into a public AI chatbot sends it to a third party, just like emailing it to an outside company.",
+            "An AI acceptable use policy says which tools are approved and which classification levels may be used with each.",
+            "Approved enterprise AI tools come with contracts covering data retention, training use and location, which free public tools usually lack.",
+            "Data loss prevention (DLP) and web filtering can warn or block when labeled data is pasted into unapproved AI sites.",
+            "Unapproved AI use is found through monitoring and the AI asset inventory, then brought under policy."
+          ],
+          "example": "Taylor, a customer service agent at a utility company, pastes a customer's account and payment history into a free public chatbot to help draft a reply, then remembers the company's AI policy. Instead of deleting the chat and saying nothing, Taylor reports it to the team lead and the security team, so they can assess the exposure under the incident procedure.",
+          "audit_focus": {
+            "review": [
+              "Check the AI policy and approved tools list before using AI for work",
+              "Remove sensitive details before using even an approved tool, where policy requires"
+            ],
+            "evidence": [
+              "The approved AI tools list, with each tool's data limits",
+              "DLP alerts for sensitive data sent to AI websites"
+            ],
+            "recommend": "Report sensitive data shared with an unapproved AI service to your supervisor and the security team at once.",
+            "decides": "Management approves AI tools; the data owner decides what data may be used"
+          },
+          "isaca_rule": "Treat any public AI prompt as sharing data with an outsider. Use only approved AI tools, at the classification levels they are approved for, and report accidental sharing as a possible incident instead of hiding it.",
+          "exam_traps": [
+            {
+              "trap": "Deleting the chat history removes the data from the AI provider.",
+              "why": "Deleting a conversation on screen may not remove copies the provider has already stored or logged. The exposure still needs to be reported and assessed."
+            },
+            {
+              "trap": "Public AI tools are fine for confidential work once the customer's name is removed.",
+              "why": "Other details, such as account numbers, addresses or source code, can still identify people or reveal secrets. Follow the AI policy on what may be shared, and where."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Shadow AI",
+              "definition": "AI tools or services used for work without the organization's approval or oversight."
+            },
+            {
+              "term": "Acceptable use policy (AUP)",
+              "definition": "Rules for how staff may use organization systems and services, including which AI tools are allowed."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "topic_id": "5.2",
+      "topic_name": "Understand Security Operations",
+      "overview": "Security operations is the daily watch over systems: collecting logs, spotting what matters among millions of events, and deciding what to do about it. This topic also covers who attacks and why, how threat intelligence and frameworks such as MITRE ATT&CK help defenders, and how AI can help or hurt alert triage.",
+      "can_do": [
+        "Tell an event from an alert and an incident, and say when to escalate",
+        "Explain what to log, how to protect logs, and what a security information and event management (SIEM) system adds",
+        "Rank alerts by severity, asset value and confidence, and explain how correlation and AI cut noise",
+        "Match threat actors to likely motives, and describe how threat intelligence and ATT&CK are used"
+      ],
+      "subtopics": [
+        {
+          "id": "5.2.1",
+          "name": "Events, Alerts and Incidents",
+          "legacy_ids": [],
+          "definition": "An event is anything observable on a system or network; an alert flags an event for review; an incident actually or imminently harms security or violates policy.",
+          "why_it_matters": "Treating every event as an incident wastes the response team's time, while treating a real incident as routine lets damage spread. Getting this call right decides when the incident response plan starts.",
+          "how_it_works": [
+            "Systems produce huge numbers of events every day, and nearly all of them are normal business activity.",
+            "Monitoring rules turn a small share of events into alerts; an analyst checks each one and closes false alarms with a note.",
+            "The incident response plan defines what counts as an incident, often with examples, so the call is not left to personal judgment.",
+            "Declaring an incident starts the plan: the incident response team takes ownership, and severity decides who must be told.",
+            "Only authorized roles, such as the incident lead with legal counsel, decide whether an incident is a reportable breach."
+          ],
+          "types": [
+            {
+              "term": "Event",
+              "meaning": "Anything observable, such as a login, a file change or a blocked connection."
+            },
+            {
+              "term": "Alert",
+              "meaning": "An event that a rule or tool flags as worth a person's review."
+            },
+            {
+              "term": "Incident",
+              "meaning": "An occurrence that actually or imminently harms confidentiality, integrity or availability, or violates policy."
+            },
+            {
+              "term": "Breach",
+              "meaning": "An incident in which data is confirmed to have been exposed to an unauthorized party."
+            }
+          ],
+          "example": "Overnight, a school district's monitoring tool alerts that a staff account logged in from two countries within an hour. Jamie, the analyst on shift, checks and finds the account then downloaded the payroll file. Because the plan lists unauthorized access to payroll data as an incident, Jamie stops investigating alone and escalates it, with notes, to the on-call incident response lead.",
+          "audit_focus": {
+            "review": [
+              "Compare what you see with the plan's incident definitions and examples",
+              "Write down what you checked before closing or escalating an alert"
+            ],
+            "evidence": [
+              "The alert's source, time, affected asset and account",
+              "Related events on the same host or account"
+            ],
+            "recommend": "Call the on-call incident lead as soon as an event looks like an incident, or whenever you are unsure.",
+            "decides": "The incident lead declares incidents; legal counsel and management decide on notification"
+          },
+          "isaca_rule": "Not every event is an incident. Use the plan's definitions to decide, write down your reasoning, and once an event meets the incident threshold, hand it to the incident response team instead of carrying on alone.",
+          "exam_traps": [
+            {
+              "trap": "Every failed login or blocked connection should be reported as an incident.",
+              "why": "These are normal events. Reporting them all floods the response team and hides real incidents. The plan's thresholds decide what is escalated."
+            },
+            {
+              "trap": "The analyst who finds exposed data should declare a breach and notify customers.",
+              "why": "Breach notification is a legal decision with deadlines and wording rules. Escalate the facts; authorized roles, such as legal counsel and management, decide on notification."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Adverse event",
+              "definition": "An event with a negative effect, such as a system crash or a flood of failed logins; it may become an incident."
+            },
+            {
+              "term": "Declaring an incident",
+              "definition": "The formal point at which an event is treated as an incident and the response plan starts."
+            }
+          ]
+        },
+        {
+          "id": "5.2.2",
+          "name": "Logging and Monitoring",
+          "legacy_ids": [],
+          "definition": "Logging records who did what, when, where and with what result on systems and networks; monitoring reviews those records, often in a central tool, to spot problems quickly.",
+          "why_it_matters": "Without logs, attacks go unseen and investigations have no evidence. Logs that nobody reviews, or that attackers can erase, give a false sense of safety.",
+          "how_it_works": [
+            "Useful log entries record the user or process, the action, the time, the source and destination, and success or failure.",
+            "Every system syncs its clock to a trusted time source, so events from different logs line up in the right order.",
+            "Logs are sent to a central store that ordinary administrators cannot change, so an intruder cannot cover their tracks.",
+            "A security information and event management (SIEM) system collects logs, puts them in a common format and applies rules to raise alerts.",
+            "Logs are kept for a set retention period and can contain personal data, so they are protected like other sensitive records."
+          ],
+          "example": "At a regional bank, a server administrator notices that a file server's security log was cleared overnight. Because the server also sends its logs to the SIEM, Dana, a junior security operations center (SOC) analyst, can still see the earlier entries, which show a new administrator account created just before the clearing. Dana opens a ticket with these findings and escalates it to the incident response lead.",
+          "audit_focus": {
+            "review": [
+              "Confirm each new system sends logs to the SIEM before it goes live",
+              "Investigate when a log source suddenly stops sending"
+            ],
+            "evidence": [
+              "Log source coverage list showing which systems feed the SIEM",
+              "Time sync status across servers and network devices"
+            ],
+            "recommend": "Report cleared, altered or suddenly silent logs to the SOC lead as a possible sign of compromise.",
+            "decides": "Management decides what is logged and how long logs are kept"
+          },
+          "isaca_rule": "Log what matters, sync every clock, and send logs somewhere the people being logged cannot alter. A cleared or silent log is itself a warning sign worth reporting, not a gap to ignore.",
+          "exam_traps": [
+            {
+              "trap": "Turning on logging is enough; review can wait until something goes wrong.",
+              "why": "Unreviewed logs detect nothing. Monitoring, through rules, alerts and regular review, is what turns records into early warning."
+            },
+            {
+              "trap": "Keeping logs only on the server that creates them is fine if the server is secure.",
+              "why": "An attacker who gains administrator rights can wipe local logs. A central, protected copy keeps the evidence."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Time synchronization",
+              "definition": "Setting every system's clock from a common trusted source, often with the Network Time Protocol (NTP)."
+            },
+            {
+              "term": "Log integrity",
+              "definition": "Assurance that log records have not been altered or deleted, for example through write-once or restricted storage."
+            },
+            {
+              "term": "Endpoint detection and response (EDR)",
+              "definition": "Software on laptops and servers that records activity, detects threats and lets responders isolate the device."
+            }
+          ]
+        },
+        {
+          "id": "5.2.3",
+          "name": "Event Triage: Use Cases, Prioritization and Correlation",
+          "legacy_ids": [],
+          "definition": "Event triage is sorting incoming alerts to decide which are real, how urgent each is and who must act, using defined use cases, priority rules and correlation.",
+          "why_it_matters": "A security operations center (SOC) can receive thousands of alerts a day. Triage puts the dangerous few in front of analysts first, so a real attack is not lost among routine noise.",
+          "how_it_works": [
+            "A use case defines one thing to detect, such as many failed logins followed by a success, with its data sources, rule and response steps.",
+            "Priority weighs the alert's severity, the value of the affected asset, and confidence that it is real: a payroll server outranks a test laptop.",
+            "Correlation links related events from different sources, such as a phishing email, a malware alert and an odd login, into one higher-priority case.",
+            "Routine events a tool already blocked, such as quarantined known malware, are logged; events needing a human decision are escalated.",
+            "Analysts close false positives with a reason and send recurring ones for rule tuning, rather than ignoring them.",
+            "Automation can add context, such as the asset owner and user history, before an analyst looks."
+          ],
+          "compare": {
+            "columns": [
+              "False positive",
+              "False negative"
+            ],
+            "rows": [
+              {
+                "label": "What happens",
+                "cells": [
+                  "An alert fires on normal activity",
+                  "A real attack raises no alert"
+                ]
+              },
+              {
+                "label": "Cost",
+                "cells": [
+                  "Wasted analyst time and alert fatigue",
+                  "Undetected damage that keeps spreading"
+                ]
+              },
+              {
+                "label": "Usual fix",
+                "cells": [
+                  "Tune the rule so it fires less on normal activity",
+                  "Add or improve the use case and its data sources"
+                ]
+              }
+            ]
+          },
+          "example": "At a parcel delivery company, the monitoring console shows three alerts: a printer offline, a blocked port scan from the internet, and a domain administrator account logging in at 3 a.m. from a warehouse kiosk it has never used. Lee, the analyst on duty, ranks the administrator login first, because it involves the most powerful account and matches a known use case, and follows its playbook.",
+          "audit_focus": {
+            "review": [
+              "Rank open alerts with the priority matrix before starting work",
+              "Correlate each alert with recent events for the same user and host"
+            ],
+            "evidence": [
+              "Asset criticality and owner for the affected system",
+              "Recent related alerts across email, endpoint and login logs"
+            ],
+            "recommend": "Escalate high-priority or correlated alerts to the incident response team as the playbook directs.",
+            "decides": "The SOC lead approves rule tuning and changes to priority rules"
+          },
+          "isaca_rule": "Triage by impact, not by order of arrival. Rank alerts by severity, asset value and confidence, look for related events, and follow the playbook. Close nothing without a reason, and send noisy rules for tuning.",
+          "exam_traps": [
+            {
+              "trap": "Handle alerts strictly in the order they arrive, so nothing is skipped.",
+              "why": "First in, first out can leave a critical alert waiting behind dozens of trivial ones. Priority rules put the riskiest first."
+            },
+            {
+              "trap": "A rule that produces many false positives should be switched off.",
+              "why": "Disabling it may create false negatives for a real attack. Tune the rule through the proper change process instead."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Correlation",
+              "definition": "Linking related events across sources and time to reveal an attack that single events would not show."
+            },
+            {
+              "term": "Playbook",
+              "definition": "Step-by-step instructions for handling a specific type of alert or incident."
+            }
+          ]
+        },
+        {
+          "id": "5.2.4",
+          "name": "AI-Driven Correlation and Alert Fatigue",
+          "legacy_ids": [],
+          "definition": "Artificial intelligence (AI) correlation uses machine learning to group, rank and summarize security alerts; alert fatigue is when too many alerts cause analysts to miss real ones.",
+          "why_it_matters": "Overloaded analysts skim and close alerts on instinct, which is how real attacks slip past. AI can cut the noise, but trusted blindly or manipulated, it can hide the alerts that matter.",
+          "how_it_works": [
+            "Machine learning in a security information and event management (SIEM) system groups related alerts into one case and removes duplicates.",
+            "It ranks cases by learned risk and can draft summaries, giving analysts a shorter, better-ordered queue.",
+            "Models can be wrong: aggressive suppression creates false negatives, and generated summaries can state facts the logs do not support.",
+            "Humans stay accountable: analysts check the evidence behind AI rankings, and changes to suppression rules go through approval.",
+            "Teams judge the tool by results, such as missed detections in tests and time to respond, not by how far alert counts fall."
+          ],
+          "example": "An airline's new AI-assisted SIEM cuts the daily queue from 4,000 alerts to 300 cases. A month later, Avery, a security analyst, finds the AI has been auto-closing alerts from one baggage-handling server as normal, including logins from an unknown account. Avery does not change the model's settings personally; they escalate the case and the suppression pattern to the security operations lead.",
+          "audit_focus": {
+            "review": [
+              "Open the raw events behind any AI-ranked case before closing it",
+              "Record cases where the AI ranking or summary was wrong"
+            ],
+            "evidence": [
+              "Alerts the AI suppressed or auto-closed during your shift",
+              "Detection test results showing whether known attacks still raise alerts"
+            ],
+            "recommend": "Report suspected AI misses, signs of poisoning or unexplained suppression to the security operations lead.",
+            "decides": "The security operations lead approves AI tuning and suppression changes"
+          },
+          "isaca_rule": "AI should shrink the queue, not replace judgment. Check the evidence behind an AI ranking, treat its summaries as leads, and report suspected misses or odd suppression instead of quietly overriding the tool.",
+          "exam_traps": [
+            {
+              "trap": "Once AI correlation is in place, analysts can trust its priority ranking without checking.",
+              "why": "AI rankings can be wrong or manipulated. Analysts confirm the underlying evidence, especially before closing a case as harmless."
+            },
+            {
+              "trap": "The cure for alert fatigue is to turn off most alert rules.",
+              "why": "That trades noise for blindness. Reduce fatigue by tuning rules, correlating related alerts and automating enrichment, while testing that real attacks still raise alerts."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Alert suppression",
+              "definition": "Automatically hiding or closing alerts judged low value; useful against noise but risky if it hides real attacks."
+            },
+            {
+              "term": "Data poisoning",
+              "definition": "Tampering with the data a model learns from, so it learns to ignore or mislabel certain activity."
+            },
+            {
+              "term": "Human in the loop",
+              "definition": "A design in which a person reviews or approves important automated decisions before they take effect."
+            }
+          ]
+        },
+        {
+          "id": "5.2.5",
+          "name": "Threat Actors and Motives",
+          "legacy_ids": [],
+          "definition": "A threat actor is a person or group that could harm an organization's systems or data; knowing their motive, such as money, spying or protest, predicts what they target.",
+          "why_it_matters": "Different actors want different things and have very different skills. Knowing who is likely to target the organization, and why, helps defenders focus on the attacks that are most likely and most damaging.",
+          "how_it_works": [
+            "Actors differ in motive, skill, resources and whether they are inside or outside the organization.",
+            "Motive predicts the target: criminals seek payment data or ransom, spies seek secrets, and activists seek publicity or embarrassment.",
+            "Advanced persistent threats are skilled, well-funded groups, often state-linked, that stay hidden in a network for long periods.",
+            "Insiders already have access; some act with intent, but many cause harm through mistakes, such as misdirected emails.",
+            "Low-skill attackers use ready-made tools, yet still succeed against unpatched systems and weak passwords."
+          ],
+          "types": [
+            {
+              "term": "Nation-state actor",
+              "meaning": "Government-linked groups, usually seeking espionage or disruption, with the most skill and resources."
+            },
+            {
+              "term": "Organized cybercriminals",
+              "meaning": "Groups seeking money through ransomware, fraud and selling stolen data."
+            },
+            {
+              "term": "Hacktivists",
+              "meaning": "Attackers driven by a political or social cause, often using defacement, leaks or denial of service."
+            },
+            {
+              "term": "Insider threat",
+              "meaning": "Current or former staff, contractors or partners who misuse their access, deliberately or by accident."
+            },
+            {
+              "term": "Unskilled attacker",
+              "meaning": "Someone with little expertise using ready-made tools, often for thrills or notoriety."
+            },
+            {
+              "term": "Competitor",
+              "meaning": "A rival organization seeking trade secrets or advantage through industrial espionage."
+            }
+          ],
+          "example": "A small engineering firm wins a government contract to design a bridge component. Soon after, staff receive well-written emails that seem to come from the client, asking them to open design 'revisions'. Rowan, the firm's only security analyst, notes that the target and the patience fit an espionage-minded actor more than a quick fraud, reports the pattern to the IT manager and suggests a phishing warning to all staff.",
+          "audit_focus": {
+            "review": [
+              "Note the likely motive when you write up suspicious activity",
+              "Share relevant sector threat reports with your team when policy allows"
+            ],
+            "evidence": [
+              "Which assets attackers with each motive would most want",
+              "Signs of insider misuse, such as unusual downloads before someone leaves"
+            ],
+            "recommend": "Report suspected insider activity quietly to your supervisor or the security lead, not to the person or coworkers.",
+            "decides": "Management, with human resources and legal counsel, decides actions on suspected insiders"
+          },
+          "isaca_rule": "Ask who would want this and why. Motive points to the likely target and method, which tells defenders what to protect first. Never assume the organization is too small to target: criminals and automated attacks hit everyone.",
+          "exam_traps": [
+            {
+              "trap": "Insider threats are always malicious employees.",
+              "why": "Many insider incidents are mistakes, such as sending data to the wrong person or falling for phishing. Training and controls aim at both careless and malicious insiders."
+            },
+            {
+              "trap": "Only nation-states are dangerous, so small organizations need not worry.",
+              "why": "Criminal groups and automated tools attack any organization with weak defenses, and small firms are often stepping stones into larger partners."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Advanced persistent threat (APT)",
+              "definition": "A skilled, well-resourced attacker that gains access and stays hidden for a long time to reach its goal."
+            },
+            {
+              "term": "Threat vector",
+              "definition": "The path or method an attacker uses to reach a target, such as email, a web application or a USB drive."
+            }
+          ]
+        },
+        {
+          "id": "5.2.6",
+          "name": "Cyber Threat Intelligence",
+          "legacy_ids": [],
+          "definition": "Cyber threat intelligence (CTI) is information about threats that has been collected, analyzed and put in context, so defenders can make better decisions about likely attacks.",
+          "why_it_matters": "Raw threat data, such as lists of bad Internet Protocol (IP) addresses, is noise until someone judges what matters here. Good intelligence says which threats to expect, how they operate and what to look for.",
+          "how_it_works": [
+            "Intelligence comes from open sources, vendors, government agencies and sector sharing groups such as Information Sharing and Analysis Centers (ISACs).",
+            "Indicators of compromise, such as malicious file hashes, domains or IP addresses, are fed into tools to block or detect known threats.",
+            "Indicators go stale quickly because attackers change infrastructure, so intelligence about attacker methods stays useful longer.",
+            "The intelligence cycle runs from defining what the organization needs, through collection and analysis, to sharing results and gathering feedback.",
+            "Shared intelligence carries a Traffic Light Protocol (TLP) label, such as TLP:RED or TLP:CLEAR, saying how far it may be passed on."
+          ],
+          "types": [
+            {
+              "term": "Strategic intelligence",
+              "meaning": "High-level trends and risks for leaders, such as which actors target the sector and why."
+            },
+            {
+              "term": "Operational intelligence",
+              "meaning": "Details of specific campaigns, such as who is targeting the organization now and how."
+            },
+            {
+              "term": "Tactical intelligence",
+              "meaning": "Attacker tactics, techniques and procedures, used to shape defenses and detections."
+            },
+            {
+              "term": "Technical intelligence",
+              "meaning": "Specific indicators, such as hashes and addresses, used directly by security tools."
+            }
+          ],
+          "example": "A water utility's sector ISAC shares a TLP:AMBER report on ransomware hitting other utilities through an unpatched remote access appliance, with indicators attached. Noor, a junior analyst, searches the utility's logs for the indicators and confirms the same appliance model is in use. Noor shares the report only with the internal team the label allows and gives the findings to the security manager.",
+          "audit_focus": {
+            "review": [
+              "Search your logs and tools for indicators from new trusted reports",
+              "Keep the original TLP label on any intelligence you pass on"
+            ],
+            "evidence": [
+              "Whether products named in reports appear in your asset inventory",
+              "The age and source of indicators before blocking on them"
+            ],
+            "recommend": "Send intelligence that matches your environment to the security manager or incident response lead promptly.",
+            "decides": "The security manager decides what to block and which systems to prioritize"
+          },
+          "isaca_rule": "Intelligence helps only when it is relevant, timely and acted on. Check it against your own assets, feed indicators to your tools, and respect sharing labels such as TLP, or the sharing community stops trusting you.",
+          "exam_traps": [
+            {
+              "trap": "More threat feeds always mean better security.",
+              "why": "Unfiltered feeds add noise and false positives. Value comes from intelligence that matches the organization's sector and assets, and that someone acts on."
+            },
+            {
+              "trap": "A TLP:AMBER report can be posted to a public forum to warn others.",
+              "why": "AMBER limits sharing to the recipient's organization, and its clients where they need to know. Only TLP:CLEAR information may be shared publicly."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Indicator of compromise (IOC)",
+              "definition": "Evidence that a system may have been breached, such as a known malicious file hash, domain or address."
+            },
+            {
+              "term": "Traffic Light Protocol (TLP)",
+              "definition": "A labeling standard from the Forum of Incident Response and Security Teams (FIRST) that sets how widely shared information may travel."
+            }
+          ]
+        },
+        {
+          "id": "5.2.7",
+          "name": "Threat Frameworks: MITRE ATT&CK and the Kill Chain",
+          "legacy_ids": [],
+          "definition": "Threat frameworks describe how attacks unfold in a shared language; MITRE ATT&CK catalogs real attacker goals and methods, while the Cyber Kill Chain sets out attack stages in order.",
+          "why_it_matters": "A common language lets analysts, tools and intelligence reports describe the same behavior the same way. Mapping defenses to a framework shows what the organization can detect and where the gaps are.",
+          "how_it_works": [
+            "ATT&CK (Adversarial Tactics, Techniques and Common Knowledge) is a free knowledge base from the nonprofit MITRE, built from observed attacks rather than theory.",
+            "Tactics are the attacker's goals, such as initial access or exfiltration; techniques are the ways each goal is reached, such as phishing.",
+            "Defenders map their detections to techniques to find gaps, and red teams use the same map to plan realistic tests.",
+            "The Cyber Kill Chain, from Lockheed Martin, has seven stages, from reconnaissance to actions on objectives; breaking any link can stop the attack."
+          ],
+          "compare": {
+            "columns": [
+              "MITRE ATT&CK",
+              "Cyber Kill Chain"
+            ],
+            "rows": [
+              {
+                "label": "Shape",
+                "cells": [
+                  "A matrix of tactics, each with many techniques",
+                  "Seven stages in a fixed order"
+                ]
+              },
+              {
+                "label": "Built from",
+                "cells": [
+                  "Observed real-world attacker behavior",
+                  "A model of how intrusions progress"
+                ]
+              },
+              {
+                "label": "Best for",
+                "cells": [
+                  "Mapping detections and gaps in detail",
+                  "Explaining an attack's flow and where to break it"
+                ]
+              },
+              {
+                "label": "Limit",
+                "cells": [
+                  "Large; not a checklist to complete",
+                  "Less detail; fits outside intrusions best"
+                ]
+              }
+            ]
+          },
+          "example": "After a phishing incident, a museum's security lead asks Quinn, a junior analyst, to map it to ATT&CK. Quinn lists each step against its tactic: the phishing email (initial access), a malicious macro (execution), a scheduled task restarting the malware (persistence) and a large upload to a file-sharing site (exfiltration). Quinn marks which steps raised alerts, giving the lead a list of detection gaps.",
+          "audit_focus": {
+            "review": [
+              "Tag alerts and incident notes with the matching ATT&CK technique",
+              "List which steps of a past attack were and were not detected"
+            ],
+            "evidence": [
+              "Coverage of techniques used by actors targeting your sector",
+              "Techniques that raised no alert during tests"
+            ],
+            "recommend": "Share the detection gaps you find with the security operations lead, with the evidence behind each one.",
+            "decides": "The security operations lead or security manager decides which gaps to close first"
+          },
+          "isaca_rule": "Frameworks are maps, not checklists. Use them to describe attacks, find detection gaps and plan tests. Nobody needs to cover every technique; focus on those the likely attackers actually use.",
+          "exam_traps": [
+            {
+              "trap": "MITRE ATT&CK is a compliance standard that an organization must fully implement.",
+              "why": "ATT&CK is a knowledge base of attacker behavior, not a set of required controls. Organizations use it selectively to guide detection and testing."
+            },
+            {
+              "trap": "Tactics and techniques mean the same thing.",
+              "why": "A tactic is the attacker's goal, the why; a technique is the method used to reach it, the how. One tactic has many techniques."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Tactics, techniques and procedures (TTPs)",
+              "definition": "How an attacker operates: the goals (tactics), the methods (techniques) and a group's specific way of doing them (procedures)."
+            },
+            {
+              "term": "MITRE ATLAS",
+              "definition": "A companion knowledge base (Adversarial Threat Landscape for Artificial-Intelligence Systems) describing attacks on artificial intelligence (AI) and machine learning."
+            },
+            {
+              "term": "Detection coverage",
+              "definition": "Which attacker techniques monitoring can actually spot, often shown as a heat map over ATT&CK."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "topic_id": "5.3",
+      "topic_name": "Understand Incident Response",
+      "overview": "Incident response is how an organization prepares for, detects, contains and recovers from incidents, then learns from them. This topic covers the incident response plan and team, the lifecycle in NIST SP 800-61 Rev. 3, from the US National Institute of Standards and Technology, and its link to the Cybersecurity Framework (CSF) 2.0, handling evidence and data during a response, and testing the plan with exercises such as tabletops.",
+      "can_do": [
+        "Put the incident response phases in order, and explain why containment comes before eradication",
+        "Map the classic lifecycle phases to the CSF 2.0 functions used in NIST SP 800-61 Rev. 3",
+        "Preserve evidence and keep a chain of custody while following the data handling policy",
+        "Choose the right exercise, such as a tabletop, to test an incident response plan"
+      ],
+      "subtopics": [
+        {
+          "id": "5.3.1",
+          "name": "The Incident Response Plan and Team",
+          "legacy_ids": [],
+          "definition": "An incident response plan is the approved document that says what counts as an incident, who responds, what authority they have, how to communicate, and which steps to follow.",
+          "why_it_matters": "In a crisis, people improvise, act alone or wait for permission. A plan approved in advance by management sets roles, authority and contacts, so the response is fast, lawful and coordinated.",
+          "how_it_works": [
+            "Senior management approves the plan, which gives the incident response team authority to act, such as isolating systems.",
+            "Severity levels set how fast to respond and who must be told, with clear escalation thresholds.",
+            "Playbooks give step-by-step actions for common incidents, such as ransomware, phishing and lost devices.",
+            "Contact lists are kept current, including after-hours numbers, outside partners and an out-of-band channel in case email is compromised.",
+            "Everyone, not just the team, knows how to report a suspected incident, and the plan is reviewed after major incidents and changes."
+          ],
+          "types": [
+            {
+              "term": "Incident lead",
+              "meaning": "Coordinates the response, makes operational decisions and keeps management informed."
+            },
+            {
+              "term": "Technical responders",
+              "meaning": "Investigate, contain and eradicate the threat, and preserve evidence."
+            },
+            {
+              "term": "Legal counsel",
+              "meaning": "Advises on laws, contracts, evidence and notification duties."
+            },
+            {
+              "term": "Communications",
+              "meaning": "Prepares approved messages for staff, customers, regulators and the media."
+            },
+            {
+              "term": "Management",
+              "meaning": "Approves major business decisions, such as shutting down a service or paying for outside help."
+            }
+          ],
+          "example": "Late on a Friday, Sky, an IT technician at a community college, sees ransom notes appearing on a shared drive. Sky's instinct is to start restoring files, but the plan's first step for staff is to report through the on-call number. Sky calls it, describes what they saw and when, and keeps notes while waiting for the incident lead to direct the response.",
+          "audit_focus": {
+            "review": [
+              "Know the reporting number and channel before you ever need them",
+              "Report suspected incidents immediately, with what you saw and when"
+            ],
+            "evidence": [
+              "The current contact list and on-call schedule",
+              "Which playbook fits the situation you have found"
+            ],
+            "recommend": "Report anything that may be an incident to the incident response team through the plan's channel, even when unsure.",
+            "decides": "The incident lead directs the response; management approves major business decisions"
+          },
+          "isaca_rule": "Follow the plan, use the defined reporting path, and act only within your role. The plan exists so nobody has to improvise or decide alone in a crisis; escalate early and let the incident lead coordinate.",
+          "exam_traps": [
+            {
+              "trap": "An experienced technician should fix an incident quietly to avoid alarming management.",
+              "why": "Quiet fixes skip evidence collection, notification duties and coordination. Report through the plan's path so the right people can decide."
+            },
+            {
+              "trap": "Email is the best way to coordinate the response team.",
+              "why": "If the attacker controls email or the network, they can read the response plan as it unfolds. The plan should name an out-of-band channel."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Out-of-band communication",
+              "definition": "Contact through a separate channel, such as phones, that an attacker inside the main network cannot read."
+            },
+            {
+              "term": "Escalation threshold",
+              "definition": "A defined trigger, such as data loss or a critical system down, that requires telling a higher level."
+            },
+            {
+              "term": "Computer security incident response team (CSIRT)",
+              "definition": "The group responsible for handling incidents; it may be in-house, outsourced or a mix."
+            }
+          ]
+        },
+        {
+          "id": "5.3.2",
+          "name": "The Incident Response Lifecycle and CSF 2.0",
+          "legacy_ids": [],
+          "definition": "The incident response lifecycle runs from preparation through detection and analysis, containment, eradication and recovery to lessons learned, which feed back into preparation.",
+          "why_it_matters": "Steps done out of order cause harm: wiping a machine before containment lets the attacker carry on elsewhere, and restoring before eradication brings the attacker back.",
+          "how_it_works": [
+            "Preparation builds the plan, team, tools and training before anything happens.",
+            "Detection and analysis confirm an incident, judge its scope and severity, and start the record.",
+            "Containment stops the spread, eradication removes the cause, and recovery restores normal operations from known-good sources while watching for a return.",
+            "Lessons learned review what happened and feed improvements back into the plan and controls.",
+            "The US National Institute of Standards and Technology (NIST) SP 800-61 Rev. 3 maps this work to the six Cybersecurity Framework (CSF) 2.0 functions, with improvement running continuously."
+          ],
+          "compare": {
+            "columns": [
+              "Classic lifecycle phase",
+              "CSF 2.0 functions in SP 800-61 Rev. 3"
+            ],
+            "rows": [
+              {
+                "label": "Get ready",
+                "cells": [
+                  "Preparation",
+                  "Govern, Identify and Protect"
+                ]
+              },
+              {
+                "label": "Find it",
+                "cells": [
+                  "Detection and analysis",
+                  "Detect, plus Identify's improvement category"
+                ]
+              },
+              {
+                "label": "Handle it",
+                "cells": [
+                  "Containment, eradication and recovery",
+                  "Respond and Recover"
+                ]
+              },
+              {
+                "label": "Improve",
+                "cells": [
+                  "Post-incident activity (lessons learned)",
+                  "Identify's improvement category, at any time"
+                ]
+              }
+            ]
+          },
+          "example": "Malware is found on a ferry company's ticketing server, and a sales manager wants it rebuilt from the latest backup at once. Ellis, a systems administrator on the response team, raises the plan's order with the incident lead: isolate the server and check other systems first, remove the cause and confirm the backup predates the infection, and only then restore. The lead agrees.",
+          "audit_focus": {
+            "review": [
+              "Check which phase the response is in before taking an action",
+              "Log each action with time, system and reason as you go"
+            ],
+            "evidence": [
+              "Scope of affected systems before anything is wiped or restored",
+              "Backup dates compared with the first sign of compromise"
+            ],
+            "recommend": "Raise pressure to skip a phase, such as restoring before eradication, with the incident lead.",
+            "decides": "The incident lead decides when to move between phases"
+          },
+          "isaca_rule": "Order matters: contain before you eradicate, eradicate before you recover, and learn from every incident. Whichever model the organization uses, the classic phases and the CSF 2.0 functions describe the same work.",
+          "exam_traps": [
+            {
+              "trap": "The first thing to do when malware is found is to wipe and rebuild the machine.",
+              "why": "Wiping first destroys evidence and does nothing about other infected systems. Contain and scope the incident first, then eradicate and recover."
+            },
+            {
+              "trap": "Under SP 800-61 Rev. 3, lessons are gathered only after the incident is closed.",
+              "why": "Rev. 3 treats improvement as continuous: lessons can be captured and shared as soon as they are found, not held for a final review."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Cybersecurity Framework (CSF) 2.0",
+              "definition": "The NIST framework, published in 2024, organized into six functions: Govern, Identify, Protect, Detect, Respond and Recover."
+            },
+            {
+              "term": "NIST SP 800-61 Rev. 3",
+              "definition": "NIST's April 2025 incident response guidance, written as a CSF 2.0 profile; it replaced Rev. 2 from 2012."
+            },
+            {
+              "term": "Improvement category (ID.IM)",
+              "definition": "The CSF 2.0 category for finding improvements from incidents, exercises and daily work."
+            }
+          ],
+          "memory_aid": "Prepare, detect, contain, eradicate, recover, learn: stop it before you scrub it."
+        },
+        {
+          "id": "5.3.3",
+          "name": "Containment, Eradication and Recovery",
+          "legacy_ids": [],
+          "definition": "Containment stops an incident from spreading, eradication removes its cause, and recovery returns affected systems to normal, trusted operation, in that order.",
+          "why_it_matters": "Cleaning up before containing lets an attacker move to other systems or destroy data. Restoring before the cause is removed puts the same weakness, or the attacker, straight back into production.",
+          "how_it_works": [
+            "Short-term containment acts fast, for example isolating an infected laptop from the network or disabling a compromised account.",
+            "Isolating a running machine, rather than powering it off, usually keeps memory evidence; the playbook may say otherwise for some threats.",
+            "Eradication removes malware and attacker accounts, closes the exploited weakness and resets exposed credentials on every affected system.",
+            "Recovery restores from known-good backups or clean builds, patches and hardens them, then monitors closely for signs of return."
+          ],
+          "example": "At a dental practice group, an office manager reports pop-ups and locked files on a reception PC. Robin, the IT support technician, follows the ransomware playbook: they unplug the PC's network cable but leave it powered on, disable the user's account through the approved process, and call the incident lead. Robin runs no cleanup tools and restores nothing until the lead confirms the scope.",
+          "audit_focus": {
+            "review": [
+              "Isolate the affected system as the playbook directs, leaving it running",
+              "Reset or disable exposed credentials only as the incident lead directs"
+            ],
+            "evidence": [
+              "Other systems showing the same indicators",
+              "Backup dates against the earliest sign of compromise"
+            ],
+            "recommend": "Hand over to the incident lead before running cleanup tools, wiping or restoring anything.",
+            "decides": "The system owner, advised by the incident lead, approves the return to service"
+          },
+          "isaca_rule": "Contain first, then eradicate, then recover. Isolate rather than power off unless the playbook says otherwise, remove every trace of the cause before restoring, and restore only from sources known to be clean.",
+          "exam_traps": [
+            {
+              "trap": "Powering off an infected computer is the safest first step.",
+              "why": "Powering off can erase memory evidence, such as running malware and open connections. Isolating it from the network usually stops the spread and keeps evidence. Follow the playbook."
+            },
+            {
+              "trap": "Once malware is removed from the first infected laptop, the incident is over.",
+              "why": "Attackers often spread or leave persistence on other systems. Eradication covers every affected system and the original weakness, or the incident returns."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Isolation",
+              "definition": "Cutting a system off from the network, by cable or with endpoint tools, while leaving it running."
+            },
+            {
+              "term": "Known-good backup",
+              "definition": "A backup taken before the compromise and confirmed clean, so restoring it does not bring the threat back."
+            },
+            {
+              "term": "Persistence",
+              "definition": "Methods an attacker uses to keep access after a reboot or cleanup, such as hidden accounts or scheduled tasks."
+            }
+          ]
+        },
+        {
+          "id": "5.3.4",
+          "name": "Evidence Handling and Chain of Custody",
+          "legacy_ids": [],
+          "definition": "Evidence handling preserves digital and physical evidence so it stays reliable, and chain of custody records everyone who handled it, when and why, from collection onward.",
+          "why_it_matters": "An incident may lead to disciplinary action, insurance claims or court. Evidence that was altered, or that cannot be shown to be untouched, may be rejected, and the facts may never be proven.",
+          "how_it_works": [
+            "The most volatile evidence, such as memory and network connections, is collected before disk contents that survive a shutdown.",
+            "Investigators work on verified copies, called forensic images, and keep the original sealed and unchanged.",
+            "A hash of the evidence is taken at collection; a matching hash later shows nothing has changed.",
+            "Every transfer is logged with date, time, names, purpose and storage location, and evidence is locked away with restricted access.",
+            "Entry-level staff preserve the scene and report; trained forensic staff, often guided by legal counsel, collect and analyze."
+          ],
+          "example": "A warehouse supervisor finds an unfamiliar USB drive plugged into the back of a payroll PC. Pat, a security technician, photographs the PC and drive in place, does not open any files, and calls the incident lead. When the forensic investigator arrives, Pat hands over the photos and notes, and the investigator records the collection, including Pat's part, on the chain of custody form.",
+          "audit_focus": {
+            "review": [
+              "Leave the device as found and note its state, time and location",
+              "Record every action you take on affected systems"
+            ],
+            "evidence": [
+              "Custody records with a name, time and reason for every handoff",
+              "Hash values recorded at collection and at each analysis"
+            ],
+            "recommend": "Call the incident lead before touching suspected evidence, and let trained forensic staff collect it.",
+            "decides": "Legal counsel and the incident lead decide how evidence is collected and kept"
+          },
+          "isaca_rule": "Preserve first, analyze later, and only within your role. Do not browse, copy or clean a suspect device. Write down what you saw and did, and make sure every handoff of evidence is recorded.",
+          "exam_traps": [
+            {
+              "trap": "The analyst should open the suspicious files right away to see what they contain.",
+              "why": "Opening files changes timestamps and may run malware, damaging both the evidence and the network. Preserve the device and let trained staff analyze a forensic copy."
+            },
+            {
+              "trap": "Chain of custody matters only if the police are already involved.",
+              "why": "Many incidents become legal or disciplinary cases later. If custody was not recorded from the start, it cannot be rebuilt afterward."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Order of volatility",
+              "definition": "Collecting the evidence that disappears fastest first, such as memory, then disk, then backups."
+            },
+            {
+              "term": "Forensic image",
+              "definition": "An exact bit-for-bit copy of storage media, verified by hash, analyzed instead of the original."
+            },
+            {
+              "term": "Write blocker",
+              "definition": "A device or tool that lets investigators read a drive without changing any data on it."
+            }
+          ]
+        },
+        {
+          "id": "5.3.5",
+          "name": "Data Handling During an Incident",
+          "legacy_ids": [],
+          "definition": "Data handling during an incident means applying the organization's classification and handling rules to everything the response touches, including evidence, logs, reports and communications.",
+          "why_it_matters": "Responders copy disk images, logs and customer records, which can hold the very data the attacker wanted. Mishandling those copies, or saying too much too soon, can turn one incident into a second breach or a legal problem.",
+          "how_it_works": [
+            "Evidence and incident reports take the classification of the most sensitive data they contain, and are stored and shared by those rules.",
+            "Details are shared on a need-to-know basis through approved secure channels, not personal email or chat apps.",
+            "The incident record notes which data types were affected, such as personal or payment data, because that drives legal duties.",
+            "Only designated roles, such as communications and legal counsel, speak to customers, regulators or the media.",
+            "Notification deadlines vary by law and contract, so the incident lead involves legal counsel early."
+          ],
+          "example": "During a suspected data theft at a travel agency, a reporter calls the front desk asking whether customer passport details were exposed. A colleague asks Leah, a junior analyst helping the response, to 'just tell them it isn't true'. Leah declines, takes the reporter's details for the communications lead as the plan requires, and keeps working only in the incident's restricted case folder.",
+          "audit_focus": {
+            "review": [
+              "Store incident files only in the approved restricted case location",
+              "Refer outside questions to the designated spokesperson"
+            ],
+            "evidence": [
+              "Data types and classification levels the incident involves",
+              "Access lists on the case folder, limited to named responders"
+            ],
+            "recommend": "Tell the incident lead at once if you learn that personal, health or payment data may be involved.",
+            "decides": "Legal counsel and management decide notifications and public statements"
+          },
+          "isaca_rule": "During a response, handling rules get stricter, not looser. Keep incident data in approved restricted locations, share on a need-to-know basis, and leave statements and notifications to the roles the plan names.",
+          "exam_traps": [
+            {
+              "trap": "In an emergency, it is fine to send logs to a personal email account to keep working from home.",
+              "why": "Logs and evidence can hold sensitive data. Sending them outside approved systems creates a new exposure and breaks the handling policy, emergency or not."
+            },
+            {
+              "trap": "A responder who knows the facts should reassure customers directly.",
+              "why": "Early statements may be wrong and can create legal risk. The plan names who speaks for the organization; refer questions to them."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Need to know",
+              "definition": "Sharing information only with people who require it to do their part in the response."
+            },
+            {
+              "term": "Breach notification",
+              "definition": "A legal or contractual duty to tell affected people, regulators or partners about certain breaches within set deadlines."
+            },
+            {
+              "term": "Designated spokesperson",
+              "definition": "The person authorized to speak for the organization about an incident; everyone else refers questions to them."
+            }
+          ]
+        },
+        {
+          "id": "5.3.6",
+          "name": "Lessons Learned and Continuous Improvement",
+          "legacy_ids": [],
+          "definition": "Lessons learned is the review after an incident or exercise that asks what happened, what worked, what did not and what to change, then tracks those changes to completion.",
+          "why_it_matters": "Without a review, the same weakness causes the next incident. Improvements are also how the plan stays current as systems, threats and people change.",
+          "how_it_works": [
+            "The review happens soon after the incident, while memories are fresh, and includes everyone who took part.",
+            "It is blameless: it looks for gaps in process, tools and training rather than someone to punish, so people speak openly.",
+            "Findings become actions with owners and deadlines, such as updating a playbook, adding a detection or fixing a control.",
+            "NIST SP 800-61 Rev. 3 treats improvement as continuous, so lessons can be shared during the incident, not only at the end.",
+            "Measures such as time to detect and time to contain show whether the changes are working."
+          ],
+          "example": "Two weeks after a phishing attack at a nonprofit, the incident lead holds a review. Drew, the help desk technician, explains that three staff called the help desk about the strange email an hour before anyone told security, because help desk scripts had no reporting step. The group adds a 'forward to security' step to the scripts, with Drew's manager as the owner.",
+          "audit_focus": {
+            "review": [
+              "Bring your timeline notes and observations to the review",
+              "Complete improvement actions assigned to you and report progress"
+            ],
+            "evidence": [
+              "Open improvement actions and their due dates",
+              "Whether the same root cause appeared in earlier incidents"
+            ],
+            "recommend": "Raise overdue or unowned improvement actions with the incident lead or your manager.",
+            "decides": "Management approves and funds the improvements"
+          },
+          "isaca_rule": "Every incident and exercise should change something. Speak up honestly in reviews, focus on process rather than blame, and make sure each improvement has an owner and a due date.",
+          "exam_traps": [
+            {
+              "trap": "The main goal of the review is to find out who was at fault.",
+              "why": "Blame makes people hide mistakes and early warnings. Reviews look for process and control gaps so the organization improves."
+            },
+            {
+              "trap": "A small incident does not need a lessons learned review.",
+              "why": "Small incidents often reveal the same gaps as big ones, at lower cost. The plan sets how deep the review goes, but some review always adds value."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "After-action report",
+              "definition": "A written summary of an incident or exercise: its timeline, findings and agreed improvement actions."
+            },
+            {
+              "term": "Root cause",
+              "definition": "The underlying reason an incident happened, such as a missing patch, rather than its symptoms."
+            },
+            {
+              "term": "Mean time to detect (MTTD)",
+              "definition": "The average time between an incident starting and the organization noticing it."
+            }
+          ]
+        },
+        {
+          "id": "5.3.7",
+          "name": "Incident Response Exercises and Tabletops",
+          "legacy_ids": [],
+          "definition": "Incident response exercises test the plan and the people before a real incident, ranging from discussion-based tabletops to hands-on simulations and full-scale exercises.",
+          "why_it_matters": "A plan nobody has practiced fails under pressure: phone numbers are wrong, roles are unclear and decisions stall. Exercises find these gaps while mistakes cost nothing.",
+          "how_it_works": [
+            "Each exercise has clear objectives, a realistic scenario and an agreed scope, so it does not disrupt real operations.",
+            "A facilitator presents the scenario in stages, adding new facts called injects to test decisions as the situation changes.",
+            "Observers note what worked and what did not, and the exercise ends with a debrief and an after-action report.",
+            "Findings feed lessons learned, such as updated contacts, clearer roles, new playbooks or extra training.",
+            "Exercises repeat regularly and after major changes, and can include outside parties such as cloud providers, legal counsel and insurers."
+          ],
+          "types": [
+            {
+              "term": "Tabletop exercise",
+              "meaning": "A discussion-based session where the team talks through its response to a scenario; no systems are touched."
+            },
+            {
+              "term": "Drill",
+              "meaning": "A focused practice of one task, such as calling the contact list or isolating a test laptop."
+            },
+            {
+              "term": "Functional exercise",
+              "meaning": "Teams carry out their roles in a simulated environment, under realistic time pressure, without touching production."
+            },
+            {
+              "term": "Full-scale exercise",
+              "meaning": "Many teams, and sometimes outside partners, respond to a realistic scenario as close to real operations as is safe."
+            }
+          ],
+          "example": "A food distribution company runs its first ransomware tabletop. Halfway through, the facilitator adds an inject: the email system is down. The team realizes nobody has the incident lead's mobile number and the contact list exists only in email. Mika, the junior analyst taking notes, records the gap, and after the debrief it becomes an action to keep a printed, offline contact list.",
+          "audit_focus": {
+            "review": [
+              "Play the role you would hold in a real incident",
+              "Note anything unclear in your instructions or contacts"
+            ],
+            "evidence": [
+              "Your assigned role and the contact list you would use",
+              "After-action items assigned to your team"
+            ],
+            "recommend": "Report gaps you notice during an exercise to the facilitator or exercise lead, even if they seem minor.",
+            "decides": "Management sets the exercise schedule and approves the resulting changes"
+          },
+          "isaca_rule": "Practice before you need it. Start with tabletops to check roles and decisions, move to hands-on exercises as the plan matures, and treat every gap found as a success to fix, not a failure to hide.",
+          "exam_traps": [
+            {
+              "trap": "A tabletop exercise proves that systems can actually be restored.",
+              "why": "Tabletops are discussions; they test understanding, roles and decisions. Proving technical recovery needs a hands-on test, such as a functional exercise or a restore test."
+            },
+            {
+              "trap": "An exercise is needed only once, when the plan is first written.",
+              "why": "People, systems and threats change. Exercises repeat regularly and after major changes to keep the plan workable."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Inject",
+              "definition": "A new piece of scenario information introduced during an exercise to test how the team adapts."
+            },
+            {
+              "term": "Facilitator",
+              "definition": "The person who runs an exercise, presents the scenario and keeps discussion on its objectives."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "topic_id": "5.4",
+      "topic_name": "Understand Asset Protection",
+      "overview": "You cannot protect what you do not know you have. This topic covers keeping an inventory of hardware, software, data, cloud and AI assets with named owners, managing each asset from purchase to disposal, handling end-of-life systems, and keeping systems in a secure, known state through configuration, patch and change management.",
+      "can_do": [
+        "Explain why an accurate asset inventory with named owners comes first",
+        "Choose a safe option for end-of-life software or devices that can no longer be patched",
+        "Describe secure baselines, configuration drift and how patches are prioritized and tested",
+        "Follow the change management steps, including for emergency changes"
+      ],
+      "subtopics": [
+        {
+          "id": "5.4.1",
+          "name": "Asset Inventory and Ownership",
+          "legacy_ids": [],
+          "definition": "An asset inventory is an up-to-date list of the organization's hardware, software, data, cloud services and artificial intelligence (AI) assets, each with a named owner responsible for it.",
+          "why_it_matters": "Unknown assets are not patched, monitored or backed up, so attackers often get in through them. The inventory is the starting point for nearly every other control.",
+          "how_it_works": [
+            "Automated discovery tools scan networks and cloud accounts for devices and services, and the results are matched against purchase records.",
+            "Each entry records the owner, location, criticality, data handled and support status, so risks can be ranked.",
+            "Software inventories list approved applications and versions, so unapproved or vulnerable software stands out.",
+            "AI assets include models, training data sets, prompts and outside AI services, which are tracked like any other asset.",
+            "Unknown devices or services found on the network are investigated, then brought under management or removed through procedure."
+          ],
+          "example": "A network scan at an elementary school finds a device nobody recognizes: a video recorder for the old security cameras, still using its factory password. Jesse, the school's IT technician, adds it to the inventory, asks the facilities manager to confirm they own it, and logs the default password as a finding for the owner to fix through the change process.",
+          "audit_focus": {
+            "review": [
+              "Add new assets to the inventory before or as they are deployed",
+              "Investigate unknown devices that discovery scans find"
+            ],
+            "evidence": [
+              "Discovery results compared with the inventory for unlisted assets",
+              "Inventory entries missing an owner or a support end date"
+            ],
+            "recommend": "Report unknown or unowned assets to your supervisor so that an owner can be assigned.",
+            "decides": "The asset owner decides how the asset is used and accepts its risks"
+          },
+          "isaca_rule": "Inventory comes first: every asset needs an entry and an owner. When you find something unknown, record it and find its owner instead of ignoring it or unplugging it on your own.",
+          "exam_traps": [
+            {
+              "trap": "Whoever finds an unknown device on the network should unplug it immediately.",
+              "why": "It may support a business process, such as cameras or medical equipment. Report it and follow procedure; isolate it at once only if it is actively harmful and the procedure allows."
+            },
+            {
+              "trap": "The asset inventory needs to list only hardware.",
+              "why": "Software, data, cloud services and AI models are assets too. Each can be attacked and needs an owner and protection."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Asset owner",
+              "definition": "The person accountable for an asset's protection and use, who approves access and accepts its risks."
+            },
+            {
+              "term": "Shadow IT",
+              "definition": "Technology used for work without IT or security approval, such as unapproved cloud apps or personal devices."
+            },
+            {
+              "term": "Configuration management database (CMDB)",
+              "definition": "A central record of assets, their configurations and how they connect, used in change and incident work."
+            }
+          ]
+        },
+        {
+          "id": "5.4.2",
+          "name": "The Asset Lifecycle",
+          "legacy_ids": [],
+          "definition": "The asset lifecycle covers each stage of an asset's life, from planning and buying through deployment, operation and maintenance to retirement and secure disposal.",
+          "why_it_matters": "Security problems are cheapest to avoid early and easiest to forget at the end. A device bought without security requirements, or thrown out without sanitization, can expose data long after anyone remembers it.",
+          "how_it_works": [
+            "Planning and acquisition set security requirements, such as encryption support and vendor patch commitments, before anything is bought.",
+            "Deployment applies the secure baseline, records the asset in the inventory and assigns its owner.",
+            "Operation and maintenance keep the asset, including artificial intelligence (AI) tools and their models, patched, monitored and backed up, with changes made through change management.",
+            "Retirement takes the asset out of service and removes it from access lists, firewall rules and monitoring.",
+            "Disposal sanitizes or destroys storage, records the result and updates the inventory, including for leased or returned equipment."
+          ],
+          "example": "A grocery chain replaces its warehouse handheld scanners, and the old units are boxed for a recycler. Kim, an IT technician, notices the scanners still hold cached delivery addresses and saved Wi-Fi passwords. Kim pauses the shipment, tells the asset manager, sanitizes each device and records its serial number as the disposal procedure requires, and asks the network team to change the Wi-Fi password.",
+          "audit_focus": {
+            "review": [
+              "Follow the disposal procedure for every retired device, including small ones",
+              "Remove retired assets from monitoring, access lists and the inventory"
+            ],
+            "evidence": [
+              "Disposal records matched against assets marked as retired",
+              "Leased or returned equipment still waiting for sanitization"
+            ],
+            "recommend": "Report any asset about to leave the organization without sanitization records to the asset manager.",
+            "decides": "The asset owner approves retirement; policy sets the disposal method"
+          },
+          "isaca_rule": "Security belongs at every stage, not only while an asset is in use. Build requirements in before purchase, and close out properly at the end: sanitize, update the records and remove access.",
+          "exam_traps": [
+            {
+              "trap": "Security starts once a system is installed.",
+              "why": "Requirements set at purchase decide whether the product can be secured and patched at all. Fixing a poor choice after deployment costs far more."
+            },
+            {
+              "trap": "A retired server can stay switched off in the rack until someone has time to deal with it.",
+              "why": "Retired assets still hold data and may still have accounts and network access. Decommission and dispose of them through the process."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Security requirements",
+              "definition": "Conditions a product or service must meet before purchase, such as patch support, encryption and logging."
+            },
+            {
+              "term": "Decommissioning",
+              "definition": "Formally taking an asset out of service, including removing its accounts, network access and monitoring entries."
+            },
+            {
+              "term": "Secure disposal",
+              "definition": "Ending an asset's life so no data can be recovered, using sanitization or destruction, with records kept."
+            }
+          ]
+        },
+        {
+          "id": "5.4.3",
+          "name": "End-of-Life Software and Devices",
+          "legacy_ids": [],
+          "definition": "End-of-life (EOL) software or hardware no longer gets vendor support, including security patches, so newly found weaknesses stay unfixed for good.",
+          "why_it_matters": "Attackers look for unsupported products because every new flaw becomes permanent. EOL systems often run important processes, so they need a plan long before support ends, not after.",
+          "how_it_works": [
+            "Vendors usually announce end-of-sale, end-of-support and end-of-life dates in advance; for security, the key date is when patches stop.",
+            "The inventory tracks support dates, so owners can plan upgrades and budgets before the deadline.",
+            "The preferred fix is to upgrade or replace the system before support ends.",
+            "If that is not yet possible, reduce exposure: isolate the system on its own network segment, limit access, monitor it closely, or buy extended support.",
+            "Any EOL system kept in use is recorded as a risk exception, with the owner's acceptance and a review date."
+          ],
+          "example": "A medical clinic's ultrasound machine runs an operating system that lost vendor support last year, and its maker will not approve an upgrade for two more years. Ari, a junior network administrator, records the machine as end-of-life, proposes moving it to an isolated network segment reachable only from the imaging workstation, and sends the proposal to the owner, the clinic manager, for a decision and a formal risk exception.",
+          "audit_focus": {
+            "review": [
+              "Flag assets whose support ends within the next year",
+              "Propose compensating controls when an EOL system cannot be replaced yet"
+            ],
+            "evidence": [
+              "Support status and end dates in the asset inventory",
+              "Risk exceptions for EOL systems and their review dates"
+            ],
+            "recommend": "Send EOL findings to the asset owner and security manager, with the support end date and the data at risk.",
+            "decides": "The asset owner accepts the risk or funds the upgrade"
+          },
+          "isaca_rule": "Plan for end of support before it arrives. Upgrade or replace when you can; when you cannot, isolate, restrict and monitor, and get the owner's documented risk acceptance. Never let an unsupported system quietly stay as it is.",
+          "exam_traps": [
+            {
+              "trap": "If an unsupported system still works, it is safe to leave as is.",
+              "why": "Working is not the same as secure. Every flaw found after support ends stays open, so the system needs replacing or compensating controls."
+            },
+            {
+              "trap": "An analyst should switch off an unsupported machine as soon as they find it.",
+              "why": "It may run a critical or life-safety process. Report it to the owner, who decides with security on replacement or compensating controls."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "End of support (EOS)",
+              "definition": "The date after which a vendor stops fixing problems, including security flaws, in a product version."
+            },
+            {
+              "term": "Compensating control",
+              "definition": "An alternative safeguard, such as network isolation, used when the normal control, such as patching, is not possible."
+            },
+            {
+              "term": "Risk exception",
+              "definition": "A documented, time-limited approval to operate outside a policy, with the owner accepting the remaining risk."
+            }
+          ]
+        },
+        {
+          "id": "5.4.4",
+          "name": "Configuration Management and Secure Baselines",
+          "legacy_ids": [],
+          "definition": "Configuration management keeps systems in a known, approved state by defining secure baselines, applying them consistently, and detecting and correcting drift away from them.",
+          "why_it_matters": "Default settings are built for easy setup, not security, and attackers know them well. Without baselines, every system ends up configured differently, so weaknesses are easy to miss and hard to fix.",
+          "how_it_works": [
+            "A secure baseline is the approved minimum configuration for one type of system, such as a laptop, web server, firewall or artificial intelligence (AI) service.",
+            "Hardening removes what is not needed, such as unused services, ports, accounts and software, and changes default passwords and settings.",
+            "Organizations often start from published guides such as the Center for Internet Security (CIS) Benchmarks, then adapt them to their needs.",
+            "Automated tools apply the baseline to new systems and scan existing ones for drift, such as a disabled firewall or a new local administrator.",
+            "Drift is corrected or approved as a documented change, and the baseline itself is updated only through change management."
+          ],
+          "example": "A monthly scan at a housing association shows twelve laptops with full-disk encryption turned off, against the baseline. Fran, a desktop support technician, finds that a contractor disabled it to speed up a software install and never turned it back on. Fran opens a ticket, re-enables encryption with the approved tool, and reports the cause to the desktop team lead so the install process can be fixed.",
+          "audit_focus": {
+            "review": [
+              "Build new systems from the approved baseline image or template",
+              "Return drifted settings to the baseline with approved tools"
+            ],
+            "evidence": [
+              "Drift scan results against the current baseline",
+              "Hardening checklist results for each new build"
+            ],
+            "recommend": "Report repeated drift, or a baseline setting that blocks business work, to your team lead for a formal change.",
+            "decides": "The system owner and the security team approve the baseline"
+          },
+          "isaca_rule": "Start every system from an approved baseline and treat any difference as a question: is it an approved change or drift? Return drift to the baseline, and change the baseline itself only through change management.",
+          "exam_traps": [
+            {
+              "trap": "Default settings from a reputable vendor are secure enough to deploy.",
+              "why": "Defaults favor easy setup and are publicly known, including default passwords. Systems are hardened to a baseline before they go live."
+            },
+            {
+              "trap": "A system that passed the baseline check at deployment stays compliant.",
+              "why": "Updates, troubleshooting and quick fixes cause drift over time. Regular scans compare systems with the baseline to catch it."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Hardening",
+              "definition": "Reducing a system's attack surface by removing unneeded features and tightening its settings."
+            },
+            {
+              "term": "Configuration drift",
+              "definition": "Gradual, often unapproved changes that move a system away from its approved baseline."
+            },
+            {
+              "term": "CIS Benchmarks",
+              "definition": "Free, consensus-based secure configuration guides for common systems, published by the Center for Internet Security."
+            }
+          ]
+        },
+        {
+          "id": "5.4.5",
+          "name": "Patch Management",
+          "legacy_ids": [],
+          "definition": "Patch management finds, tests, approves and installs software updates that fix security flaws and bugs, then confirms they worked, across every system in the inventory.",
+          "why_it_matters": "Many breaches use flaws that already had a patch available. Patching quickly closes those doors, but careless patching can break critical systems, so speed and testing must be balanced.",
+          "how_it_works": [
+            "Teams watch vendor notices and vulnerability scan results to learn which systems need which patches.",
+            "Patches are prioritized by risk: the flaw's severity, whether attackers are exploiting it, and how exposed and critical the system is.",
+            "Patches are tested on non-production systems first, then deployed through the change process with a rollback plan.",
+            "Urgent patches for actively exploited flaws use the emergency change route, which is faster but still recorded.",
+            "Rescans or reports confirm each patch installed; systems that cannot be patched get compensating controls and an exception."
+          ],
+          "example": "A vendor releases a fix for a flaw in a file transfer product that attackers are already exploiting, and a pharmacy chain runs the product on an internet-facing server. Devon, a systems administrator, checks the inventory, confirms the server is affected and raises an emergency change. After a quick test on the standby server and approval from the change manager, Devon applies the patch and rescans to confirm it.",
+          "audit_focus": {
+            "review": [
+              "Check affected systems against the inventory when a patch is released",
+              "Confirm installation with a rescan after deployment"
+            ],
+            "evidence": [
+              "Patch compliance reports showing missing patches by system",
+              "Whether a flaw appears on an exploited-vulnerabilities list"
+            ],
+            "recommend": "Raise any actively exploited flaw on an exposed system with your team lead the same day.",
+            "decides": "The change manager or change advisory board approves deployment"
+          },
+          "isaca_rule": "Patch by risk, not by habit: actively exploited flaws on exposed, critical systems come first. Test, use the change process, even its emergency route, and verify. If you cannot patch, protect and document.",
+          "exam_traps": [
+            {
+              "trap": "Install every patch on production systems the moment it is released.",
+              "why": "Untested patches can break critical services. Test first, and use the emergency change process when the risk demands speed."
+            },
+            {
+              "trap": "Patches can wait for the quarterly cycle, whatever the flaw.",
+              "why": "Actively exploited flaws on exposed systems need fast action. Priority depends on risk, not on a fixed calendar."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Known Exploited Vulnerabilities (KEV) catalog",
+              "definition": "A public list, kept by the US Cybersecurity and Infrastructure Security Agency, of flaws confirmed as exploited in real attacks."
+            },
+            {
+              "term": "Zero-day",
+              "definition": "A flaw that attackers exploit before the vendor has released a fix."
+            },
+            {
+              "term": "Maintenance window",
+              "definition": "An agreed time for planned changes, such as patching, when disruption to users is lowest."
+            }
+          ]
+        },
+        {
+          "id": "5.4.6",
+          "name": "Change Management",
+          "legacy_ids": [],
+          "definition": "Change management is the controlled process for requesting, assessing, approving, testing, carrying out and reviewing changes to systems, so changes do not cause outages or security gaps.",
+          "why_it_matters": "Unplanned and untested changes are a leading cause of outages, and an unapproved change can quietly open a security hole. A record of approved changes also helps responders spot what is not normal.",
+          "how_it_works": [
+            "A change request describes what will change and why, the risk and impact, the test plan and the rollback plan.",
+            "An approver reviews the request; the person making the change does not approve their own work.",
+            "Approved changes are tested, scheduled, carried out and checked, and configuration records are updated.",
+            "Emergency changes can be approved quickly by a designated person, but are recorded and reviewed soon afterward.",
+            "Changes found without approval are treated as possible incidents until they are explained."
+          ],
+          "example": "A finance manager at a construction firm asks Jo, a network technician, to open a firewall port right away so a supplier can upload invoices. Jo sees the need is real but there is no approval. Jo raises a change request describing the port, the supplier's addresses and a rollback plan, and tells the manager the change approver can fast-track it if the need is urgent.",
+          "audit_focus": {
+            "review": [
+              "Raise a change request before changing any production system",
+              "Wait for recorded approval before starting, even under pressure"
+            ],
+            "evidence": [
+              "The change calendar for conflicts before scheduling work",
+              "Unapproved changes found in configuration or drift reports"
+            ],
+            "recommend": "Report pressure to make an unapproved change, or an unexplained change you find, to your supervisor or the change manager.",
+            "decides": "The change advisory board or designated approver authorizes the change"
+          },
+          "isaca_rule": "No change without approval, testing and a way back. Urgency changes how fast approval happens, not whether it happens. Keep the person who requests or makes a change separate from the person who approves it.",
+          "exam_traps": [
+            {
+              "trap": "Emergency changes skip the change process entirely.",
+              "why": "They use a faster route with a designated approver, but they are still recorded and reviewed afterward. Skipping the process leaves no record and no check."
+            },
+            {
+              "trap": "A small configuration change by a senior engineer needs no approval.",
+              "why": "Small changes can cause big outages or security gaps. Seniority does not replace review, testing and a rollback plan."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Change advisory board (CAB)",
+              "definition": "A group that reviews and approves significant changes, weighing business, technical and security impact."
+            },
+            {
+              "term": "Rollback plan",
+              "definition": "Steps prepared in advance to undo a change if it fails or causes problems."
+            },
+            {
+              "term": "Emergency change",
+              "definition": "A change that must happen faster than the normal process allows, approved quickly and reviewed afterward."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "topic_id": "5.5",
+      "topic_name": "Understand Security Testing",
+      "overview": "Security testing checks whether defenses work before an attacker finds out they do not. This topic covers red, blue and purple teams, vulnerability scanning and penetration testing, application testing with static and dynamic analysis, threat modeling, physical and social engineering tests, and testing defenses that rely on AI. Every test needs written authorization and an agreed scope.",
+      "can_do": [
+        "Tell a vulnerability scan from a penetration test, and tell red, blue and purple teams apart",
+        "Explain where static analysis, dynamic analysis and threat modeling fit in development",
+        "Describe phishing, tailgating and impersonation tests and the authorization each needs",
+        "Explain how to test a defense that relies on AI, including against prompt injection"
+      ],
+      "subtopics": [
+        {
+          "id": "5.5.1",
+          "name": "Red, Blue and Purple Teams",
+          "legacy_ids": [],
+          "definition": "A red team plays the attacker, a blue team defends and detects, and a purple team is red and blue working together to improve detection and response.",
+          "why_it_matters": "Defenses that are never challenged give false confidence. Testing with realistic attacks shows whether people, processes and tools actually detect and stop what real attackers do.",
+          "how_it_works": [
+            "Red teams emulate real threat actors, often using MITRE ATT&CK techniques, to reach agreed goals, such as reading a test file in the payroll system.",
+            "Blue teams, usually the security operations center (SOC), defend as they normally would, and may not know a test is running.",
+            "In purple teaming, the red team shares each step as it happens, so the blue team can confirm detection and close gaps immediately.",
+            "A white team sets the rules, referees the exercise and can stop it if something goes wrong.",
+            "Every engagement has written authorization from management, a defined scope and rules of engagement that say what is off limits."
+          ],
+          "compare": {
+            "columns": [
+              "Red team",
+              "Blue team",
+              "Purple team"
+            ],
+            "rows": [
+              {
+                "label": "Role",
+                "cells": [
+                  "Attacks, as a realistic adversary",
+                  "Defends, detects and responds",
+                  "Combines both, sharing in real time"
+                ]
+              },
+              {
+                "label": "Main goal",
+                "cells": [
+                  "Show how far an attacker could get",
+                  "Spot and stop the attack",
+                  "Improve detections step by step"
+                ]
+              },
+              {
+                "label": "Typical output",
+                "cells": [
+                  "Attack path and findings report",
+                  "Alerts, response actions and noted gaps",
+                  "Tuned detections and agreed fixes"
+                ]
+              }
+            ]
+          },
+          "example": "A bank's red team is cleared to try to reach a test account in the payments system over two weeks. On day three, Sasha, a blue team analyst, sees an unusual login and, following normal procedure, escalates it and starts containment. The white team then confirms it is the test. Afterward, red and blue walk through each step together to fix the two techniques that went unseen.",
+          "audit_focus": {
+            "review": [
+              "Respond to suspicious activity normally, even during a known test period",
+              "Record which test steps you detected and how"
+            ],
+            "evidence": [
+              "The authorization letter and scope before joining any test",
+              "Detection results from the joint debrief"
+            ],
+            "recommend": "Escalate suspected test activity through normal channels and let the white team confirm it.",
+            "decides": "Management authorizes the test and its scope"
+          },
+          "isaca_rule": "Testing is legitimate only with written authorization, a clear scope and rules of engagement. Blue team staff treat anything suspicious as real; confirming a test is the white team's job.",
+          "exam_traps": [
+            {
+              "trap": "A blue team analyst who suspects a test should ignore the activity.",
+              "why": "Assuming it is a test is exactly what real attackers count on. Analysts follow normal procedures; the exercise controllers confirm whether it is the test."
+            },
+            {
+              "trap": "A purple team is a separate third team that attacks and defends at once.",
+              "why": "Purple teaming is a way of working: red and blue share findings in real time. Someone may facilitate it, but its value is the collaboration."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Rules of engagement",
+              "definition": "The agreed limits of a test: targets, methods, timing, contacts and what testers must never do."
+            },
+            {
+              "term": "Adversary emulation",
+              "definition": "Testing that copies the known behavior of a specific threat actor, to see whether defenses would catch them."
+            }
+          ]
+        },
+        {
+          "id": "5.5.2",
+          "name": "Vulnerability Scanning and Penetration Testing",
+          "legacy_ids": [],
+          "definition": "A vulnerability scan uses automated tools to find known weaknesses; a penetration test is an authorized, mostly manual attempt to exploit weaknesses to show real impact.",
+          "why_it_matters": "Scans show what might be wrong across many systems; penetration tests show what an attacker could actually do. Confusing the two leaves gaps: a clean scan does not prove an attacker cannot get in.",
+          "how_it_works": [
+            "Scans compare systems with databases of known flaws and produce long lists that need checking for false positives.",
+            "Credentialed scans log in and see far more than unauthenticated scans, which see only what an outsider would.",
+            "Penetration testers chain weaknesses together, test defenses and prove impact, within an agreed scope and time window.",
+            "Findings are ranked using the Common Vulnerability Scoring System (CVSS), now version 4.0, together with asset value and evidence of active exploitation.",
+            "Both need approval from the system owner, and fixes are verified by rescanning or retesting."
+          ],
+          "compare": {
+            "columns": [
+              "Vulnerability scan",
+              "Penetration test"
+            ],
+            "rows": [
+              {
+                "label": "How",
+                "cells": [
+                  "Automated and broad",
+                  "Mostly manual and focused"
+                ]
+              },
+              {
+                "label": "Exploits flaws?",
+                "cells": [
+                  "Generally no; it identifies and reports them",
+                  "Yes, within agreed rules"
+                ]
+              },
+              {
+                "label": "How often",
+                "cells": [
+                  "Frequently, even continuously",
+                  "Periodically, and after major changes"
+                ]
+              },
+              {
+                "label": "Answers",
+                "cells": [
+                  "What known weaknesses exist?",
+                  "What could an attacker actually achieve?"
+                ]
+              }
+            ]
+          },
+          "example": "A retailer's monthly scan reports 600 findings, and a manager asks whether the company has therefore 'had its penetration test'. Lou, a junior security analyst, explains that the scan lists possible weaknesses but did not try to exploit them. Lou sorts the findings by CVSS score and asset value, sends the critical ones on internet-facing systems to their owners first, and notes that the annual penetration test is separate.",
+          "audit_focus": {
+            "review": [
+              "Run scans only against systems in the approved scope",
+              "Check high findings for false positives before assigning them"
+            ],
+            "evidence": [
+              "Scan coverage compared with the asset inventory",
+              "Rescan results confirming that fixes worked"
+            ],
+            "recommend": "Send critical findings on exposed systems to the system owner and your team lead promptly.",
+            "decides": "The system owner approves testing and decides how to treat each finding"
+          },
+          "isaca_rule": "A scan finds known weaknesses; a penetration test proves what they allow. Both need the owner's approval. A CVSS score measures severity, not your risk: rank fixes by severity, active exploitation, and the asset's value and exposure.",
+          "exam_traps": [
+            {
+              "trap": "Running a vulnerability scanner counts as a penetration test.",
+              "why": "Scanners identify possible weaknesses but do not exploit or chain them. A penetration test is a scoped, authorized attempt to show actual impact."
+            },
+            {
+              "trap": "An analyst may scan a partner's systems to check their security, as long as nothing is damaged.",
+              "why": "Testing systems you do not own without written permission can be illegal and breaks trust. Get authorization from the system owner first."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Common Vulnerability Scoring System (CVSS)",
+              "definition": "A standard from the Forum of Incident Response and Security Teams (FIRST) rating vulnerability severity from 0 to 10; version 4.0 is current."
+            },
+            {
+              "term": "Common Vulnerabilities and Exposures (CVE)",
+              "definition": "A public catalog that gives each known vulnerability a unique identifier, in the form CVE-year-number."
+            }
+          ]
+        },
+        {
+          "id": "5.5.3",
+          "name": "Static and Dynamic Application Testing",
+          "legacy_ids": [],
+          "definition": "Static application security testing (SAST) examines source code without running it, while dynamic application security testing (DAST) probes the running application from outside, as an attacker would.",
+          "why_it_matters": "Flaws are cheapest to fix while code is being written and most expensive in production. Each method finds problems the other misses, so applications are safest when both are used.",
+          "how_it_works": [
+            "SAST runs early, often in the developer's tools or build pipeline, and points to the exact line of code with a problem.",
+            "SAST can flag issues that are not exploitable in practice, so developers review its results rather than trusting every finding.",
+            "DAST tests a running copy of the application, usually in a test environment, and finds runtime and configuration problems such as weak session handling.",
+            "Software composition analysis (SCA) checks third-party libraries for known flaws, since most applications are built largely from them.",
+            "Many teams use the Open Worldwide Application Security Project (OWASP) Top 10 as a common list of web application risks to test for."
+          ],
+          "compare": {
+            "columns": [
+              "SAST",
+              "DAST"
+            ],
+            "rows": [
+              {
+                "label": "What it examines",
+                "cells": [
+                  "Source code, without running it",
+                  "The running application, from outside"
+                ]
+              },
+              {
+                "label": "When",
+                "cells": [
+                  "Early, while code is written and built",
+                  "Later, once a working version exists"
+                ]
+              },
+              {
+                "label": "Finds well",
+                "cells": [
+                  "Coding flaws, such as unsafe input handling",
+                  "Runtime and configuration flaws"
+                ]
+              },
+              {
+                "label": "Limits",
+                "cells": [
+                  "False positives; misses runtime issues",
+                  "Cannot point to the faulty line of code"
+                ]
+              }
+            ]
+          },
+          "example": "A transit agency's software team is about to release a new fare card top-up website. The SAST report is clean, so the project manager wants to skip the scheduled DAST run to save a week. Nico, a junior application security analyst, explains that SAST cannot see how the live site handles sessions or how its servers are configured, and asks the manager to keep the DAST run, as policy requires.",
+          "audit_focus": {
+            "review": [
+              "Review SAST findings with developers before marking any as false positives",
+              "Run DAST only against approved test environments"
+            ],
+            "evidence": [
+              "Critical findings still open before each release",
+              "Library versions flagged as vulnerable in the dependency report"
+            ],
+            "recommend": "Raise releases planned with unresolved critical findings to the application owner and security lead.",
+            "decides": "The application owner decides on release, accepting any remaining risk"
+          },
+          "isaca_rule": "Use both: SAST early on the code, DAST later on the running application, plus checks on third-party components. A clean result from one method does not cover the other's blind spots. Run DAST against production only with approval.",
+          "exam_traps": [
+            {
+              "trap": "A clean SAST report means the web application is secure.",
+              "why": "SAST cannot see runtime behavior, server settings or how components interact when running. DAST and other testing cover those."
+            },
+            {
+              "trap": "DAST is best run early, before any code compiles.",
+              "why": "DAST needs a running application to test. Early in development, SAST and code review are the tools that fit."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Software composition analysis (SCA)",
+              "definition": "Scanning an application's third-party components for known vulnerabilities and license issues."
+            },
+            {
+              "term": "Shift left",
+              "definition": "Moving security testing earlier in development, where fixes are cheaper and faster."
+            },
+            {
+              "term": "Black-box testing",
+              "definition": "Testing with no knowledge of the internal code or design, as an outside attacker would."
+            }
+          ]
+        },
+        {
+          "id": "5.5.4",
+          "name": "Threat Modeling",
+          "legacy_ids": [],
+          "definition": "Threat modeling is a structured way to find what could go wrong with a system's design, rank those threats, and choose defenses before the system is built or changed.",
+          "why_it_matters": "Design flaws cannot be patched away later without costly rework. Thinking like an attacker at the whiteboard stage finds problems that testing would find only after the system exists.",
+          "how_it_works": [
+            "A simple approach asks four questions: what are we building, what can go wrong, what will we do about it, and did we do a good enough job?",
+            "Teams draw a data flow diagram showing components, data stores, flows and trust boundaries.",
+            "STRIDE prompts the team to consider six threat types at each part of the diagram.",
+            "Threats are ranked by likelihood and impact, and each gets a response: a control, a design change, or documented acceptance by the owner.",
+            "The model is updated when the design changes, and it guides what later testing should focus on."
+          ],
+          "types": [
+            {
+              "term": "Spoofing",
+              "meaning": "Pretending to be someone or something else; countered by authentication."
+            },
+            {
+              "term": "Tampering",
+              "meaning": "Changing data or code without permission; countered by integrity controls."
+            },
+            {
+              "term": "Repudiation",
+              "meaning": "Denying an action when there is no way to prove it; countered by logging and signatures."
+            },
+            {
+              "term": "Information disclosure",
+              "meaning": "Exposing data to people not allowed to see it; countered by encryption and access control."
+            },
+            {
+              "term": "Denial of service",
+              "meaning": "Making a system unavailable; countered by capacity planning and filtering."
+            },
+            {
+              "term": "Elevation of privilege",
+              "meaning": "Gaining rights beyond those granted; countered by authorization checks and least privilege."
+            }
+          ],
+          "example": "A small charity plans an online donation form. In a one-hour threat modeling session, Bailey, the junior security analyst, walks the team through the data flow and asks what could go wrong at each step. The team spots that card details would pass through the charity's own server, so they change the design to send donors straight to the payment provider's hosted page.",
+          "audit_focus": {
+            "review": [
+              "Join design reviews and ask what could go wrong at each trust boundary",
+              "Write down every threat in the threat log with its agreed response"
+            ],
+            "evidence": [
+              "A data flow diagram that matches the design being built",
+              "Threats left open without an owner-approved response"
+            ],
+            "recommend": "Raise high-risk design threats that have no agreed response with the system owner and security lead.",
+            "decides": "The system owner decides how each threat is treated"
+          },
+          "isaca_rule": "Find design threats before building, when fixes are cheapest. Draw the system, look hardest at trust boundaries, use a prompt list such as STRIDE, and give every threat a response the owner approves.",
+          "exam_traps": [
+            {
+              "trap": "Threat modeling is done once the system is finished, as a final check.",
+              "why": "It is most valuable during design, when changing the plan is cheap. Testing after the build checks the result but finds design flaws late."
+            },
+            {
+              "trap": "Threat modeling is a job for expert penetration testers only.",
+              "why": "It works best with the people who design, build and run the system. Simple methods such as the four questions make it practical for whole teams."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Trust boundary",
+              "definition": "A point where data or control passes between parts of a system that have different levels of trust."
+            },
+            {
+              "term": "Data flow diagram",
+              "definition": "A simple drawing of how data moves between users, processes and data stores in a system."
+            }
+          ]
+        },
+        {
+          "id": "5.5.5",
+          "name": "Physical and Social Engineering Penetration Tests",
+          "legacy_ids": [],
+          "definition": "Physical and social engineering penetration tests check, with written permission, whether people and premises resist tricks such as phishing, tailgating and impersonation.",
+          "why_it_matters": "Attackers often find people and doors easier to beat than firewalls. These tests show whether staff challenge strangers, report suspicious messages and follow procedures, so training and controls can improve.",
+          "how_it_works": [
+            "Phishing simulations send realistic but harmless emails and measure who clicks and, more importantly, who reports.",
+            "Tailgating tests check whether staff let someone follow them through a secure door without badging in.",
+            "Impersonation tests use a pretext, such as posing as a delivery driver or IT contractor, to see whether staff verify identity before helping.",
+            "Testers carry a signed authorization letter naming a contact who can confirm the test, and they stop if anyone's safety is at risk.",
+            "Results are reported in aggregate to improve training and controls, not to shame individuals."
+          ],
+          "types": [
+            {
+              "term": "Phishing",
+              "meaning": "Deceptive messages that try to get people to click a link, open a file or give away credentials."
+            },
+            {
+              "term": "Tailgating",
+              "meaning": "Following an authorized person through a controlled entrance without their knowledge or consent."
+            },
+            {
+              "term": "Piggybacking",
+              "meaning": "Entering with an authorized person's consent, such as when someone holds the door; organizations use the terms differently."
+            },
+            {
+              "term": "Impersonation",
+              "meaning": "Pretending to be a trusted person, such as a vendor, coworker or inspector, to gain access or information."
+            }
+          ],
+          "example": "Someone in a high-visibility vest, carrying a toolbox, follows Jun, a records clerk at a regional government office, toward the badge-controlled records room, saying they are there to fix the air conditioning. Jun politely declines to let them in, directs them to reception to sign in and be escorted, and reports it to security. It turns out to be an authorized physical test, and Jun's report is recorded as the correct response.",
+          "audit_focus": {
+            "review": [
+              "Challenge or redirect anyone without a visible badge in secure areas",
+              "Report suspicious emails with the report button rather than just deleting them"
+            ],
+            "evidence": [
+              "Visitor sign-in and escort procedures at your site",
+              "Phishing report rates and speed after each simulation"
+            ],
+            "recommend": "Report suspected tailgating or impersonation to the security team immediately, even if you think it may be a test.",
+            "decides": "Management authorizes physical and social engineering tests and their scope"
+          },
+          "isaca_rule": "Be courteous but verify: no badge, no entry, and confirm identity through a known channel, never through the person's own story. Report suspicious requests even if they turn out to be tests. Testers need signed authorization and must put safety first.",
+          "exam_traps": [
+            {
+              "trap": "Holding a secure door for a friendly stranger carrying boxes is polite and harmless.",
+              "why": "That is how tailgating works. Ask them to badge in, or direct them to reception, where visitors are verified and escorted."
+            },
+            {
+              "trap": "A phishing simulation succeeds only if nobody clicks.",
+              "why": "Some clicks are expected. More useful measures are how many people report the message and how quickly, because reports let the security team respond."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Pretext",
+              "definition": "A made-up story or role an attacker uses to make a request seem legitimate."
+            },
+            {
+              "term": "Authorization letter",
+              "definition": "A signed document from management confirming that a tester may perform specified tests within a defined scope and period."
+            }
+          ]
+        },
+        {
+          "id": "5.5.6",
+          "name": "Testing AI-Integrated Defenses",
+          "legacy_ids": [],
+          "definition": "Testing AI-integrated defenses checks whether security tools and services that rely on artificial intelligence (AI) can be fooled, manipulated or made to fail, and whether humans can override them.",
+          "why_it_matters": "AI now filters email, ranks alerts and answers staff questions. If an attacker can trick the model, the defense fails silently, so AI components need testing like any other control.",
+          "how_it_works": [
+            "AI testing is authorized and scoped like any other test, with extra care because models can act unpredictably.",
+            "Testers try known AI attack types against the component and check whether other defenses catch what the model misses.",
+            "Red teams replay realistic attacks to confirm an AI-based detector still raises alerts after each model update.",
+            "Testers confirm the AI has only the access it needs, logs its actions, and lets a person review or stop high-impact actions.",
+            "Guides such as the Open Worldwide Application Security Project (OWASP) Top 10 for Large Language Model Applications and MITRE ATLAS describe these attacks."
+          ],
+          "types": [
+            {
+              "term": "Prompt injection",
+              "meaning": "Instructions hidden in input, or in content the AI reads, aimed at overriding its rules or extracting data."
+            },
+            {
+              "term": "Evasion",
+              "meaning": "Slightly altered inputs, such as a reworded phishing email, designed to slip past an AI detector."
+            },
+            {
+              "term": "Training data poisoning",
+              "meaning": "Tainting the data a model learns from so that it misclassifies certain attacks."
+            },
+            {
+              "term": "Excessive agency",
+              "meaning": "An AI tool given more permissions or autonomy than it needs, so a manipulated model can do real damage."
+            }
+          ],
+          "example": "A law firm adds an AI assistant that summarizes incoming email for staff. During an authorized test, Remy, a junior security analyst, sends an email with hidden text telling the assistant to forward the client list to an outside address. The assistant tries to comply, but its permissions block sending. Remy records the result and reports the weakness to the application owner and security lead.",
+          "audit_focus": {
+            "review": [
+              "Test AI features only within the approved scope and test accounts",
+              "Record each test input, the AI's response and any actions it took"
+            ],
+            "evidence": [
+              "The AI tool's permissions and which actions need human approval",
+              "Detection results for known attacks after each model update"
+            ],
+            "recommend": "Report any AI weakness that exposes data or takes unapproved actions to the application owner and security lead.",
+            "decides": "The application owner decides on fixes and accepts any remaining risk"
+          },
+          "isaca_rule": "Treat an AI component as a control that can be fooled. Test it with authorization, limit what it can do, keep a human able to override it, and retest after model or data changes.",
+          "exam_traps": [
+            {
+              "trap": "AI security tools learn on their own, so they do not need testing.",
+              "why": "Models can be evaded, poisoned or misled, and they change with updates. Like any control, they need testing, especially after changes."
+            },
+            {
+              "trap": "If the AI assistant's instructions say 'never reveal secrets', prompt injection is not a risk.",
+              "why": "Injected instructions can override or get around built-in rules. Real protection comes from limiting the AI's access and checking its actions, not from instructions alone."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Large language model (LLM)",
+              "definition": "An AI model trained on huge amounts of text to understand and generate language, as in chatbots."
+            },
+            {
+              "term": "NIST AI 100-2",
+              "definition": "A US National Institute of Standards and Technology (NIST) report, updated in 2025, that classifies attacks on AI systems and their mitigations."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "key_terminologies": {
+    "Data classification": "Assigning data a sensitivity level, set by its owner, that decides how it must be protected.",
+    "Labeling": "Marking data with its classification so people and tools can apply the right handling rules.",
+    "Data masking": "Hiding real values behind fake or partial ones, for example in test data or on screens.",
+    "Tokenization": "Replacing a sensitive value with a random token that only a protected vault can map back.",
+    "Media sanitization": "Making data on media infeasible to recover by the clear, purge or destroy method.",
+    "Symmetric encryption": "Encryption with one shared secret key; fast, so it is used for bulk data.",
+    "Asymmetric encryption": "Encryption with a public and private key pair; used for key exchange and digital signatures.",
+    "Hashing": "A one-way function producing a fixed-length digest, used to check integrity; it is not encryption.",
+    "Digital signature": "Proof of origin and integrity, made with the signer's private key and checked with their public key.",
+    "Post-quantum cryptography": "Public-key algorithms designed to resist future quantum computers, such as ML-KEM and ML-DSA.",
+    "Event": "Anything observable on a system or network, such as a login or a blocked connection.",
+    "Incident": "An occurrence that actually or imminently harms security or violates policy, which starts the response plan.",
+    "SIEM": "Security information and event management: a system that collects and correlates logs and raises alerts.",
+    "Alert fatigue": "Missed threats caused by analysts facing more alerts than they can properly review.",
+    "Threat actor": "A person or group that could cause harm, such as criminals, nation-states, hacktivists or insiders.",
+    "Cyber threat intelligence (CTI)": "Analyzed information about threats, used to anticipate, detect and respond to attacks.",
+    "MITRE ATT&CK": "A free knowledge base of real attacker tactics and techniques, used to map detections and plan tests.",
+    "Incident response plan": "The approved document that sets incident definitions, roles, authority, communication and response steps.",
+    "Containment": "Stopping an incident from spreading, for example by isolating a host or disabling an account.",
+    "Chain of custody": "A record of everyone who handled evidence, when and why, showing it was not altered.",
+    "Tabletop exercise": "A discussion-based walk-through of an incident scenario to test roles and decisions, without touching systems.",
+    "Asset inventory": "An up-to-date list of hardware, software, data, cloud and AI assets, each with a named owner.",
+    "End-of-life (EOL)": "A product its vendor no longer supports, so newly found flaws are not patched.",
+    "Secure baseline": "The approved minimum secure configuration for one type of system.",
+    "Change management": "The process for requesting, approving, testing, making and reviewing changes to systems.",
+    "Penetration test": "An authorized attempt to exploit weaknesses to show what an attacker could achieve.",
+    "Purple team": "Red and blue teams working together, sharing findings in real time to improve detection.",
+    "SAST and DAST": "Static testing examines code without running it; dynamic testing probes the running application.",
+    "Prompt injection": "Hidden instructions in input or content that try to make an AI tool ignore its rules."
+  },
+  "references": [
+    {
+      "title": "ISC2® CC® Certification Exam Outline (effective 1 Sep 2026)",
+      "url": "https://www.isc2.org/certifications/cc/cc-certification-exam-outline",
+      "checked": "2026-10-28: via docs/content/CC_BLUEPRINT.md"
+    },
+    {
+      "title": "NIST SP 800-88 Rev. 2, Guidelines for Media Sanitization (Sep 2025)",
+      "url": "https://doi.org/10.6028/NIST.SP.800-88r2",
+      "checked": "2026-10-28"
+    },
+    {
+      "title": "NIST SP 800-61 Rev. 3, Incident Response Recommendations and Considerations for Cybersecurity Risk Management: A CSF 2.0 Community Profile (Apr 2025)",
+      "url": "https://doi.org/10.6028/NIST.SP.800-61r3",
+      "checked": "2026-10-28"
+    },
+    {
+      "title": "NIST CSWP 29, The NIST Cybersecurity Framework (CSF) 2.0 (Feb 2024)",
+      "url": "https://doi.org/10.6028/NIST.CSWP.29",
+      "checked": "2026-10-28: cited by SP 800-61 Rev. 3"
+    },
+    {
+      "title": "FIPS 203, Module-Lattice-Based Key-Encapsulation Mechanism Standard (Aug 2024); with FIPS 204 (ML-DSA) and FIPS 205 (SLH-DSA)",
+      "url": "https://doi.org/10.6028/NIST.FIPS.203",
+      "checked": "2026-10-28"
+    },
+    {
+      "title": "NIST IR 8547, Transition to Post-Quantum Cryptography Standards (final, Oct 2026)",
+      "url": "https://doi.org/10.6028/NIST.IR.8547",
+      "checked": "2026-10-28: final version listed 27 Oct 2026; its timeline was not read, so the notes give no deprecation dates"
+    },
+    {
+      "title": "NIST AI 100-2 E2025, Adversarial Machine Learning: A Taxonomy and Terminology of Attacks and Mitigations (Mar 2025)",
+      "url": "https://doi.org/10.6028/NIST.AI.100-2e2025",
+      "checked": "2026-10-28"
+    },
+    {
+      "title": "FIRST, Common Vulnerability Scoring System v4.0",
+      "url": "https://www.first.org/cvss/v4-0/",
+      "checked": "2026-10-28"
+    },
+    {
+      "title": "FIRST, Traffic Light Protocol (TLP) 2.0",
+      "url": "https://www.first.org/tlp/",
+      "checked": "2026-10-28"
+    },
+    {
+      "title": "MITRE ATT&CK and MITRE ATLAS knowledge bases",
+      "url": "https://attack.mitre.org/",
+      "checked": "2026-10-28: not opened this session (host outside the allowed network domains); edition from prior knowledge"
+    },
+    {
+      "title": "OWASP Top 10 for LLM Applications (2025 edition)",
+      "url": "https://genai.owasp.org/llm-top-10/",
+      "checked": "2026-10-28: not opened this session (host outside the allowed network domains); edition from prior knowledge"
+    },
+    {
+      "title": "CISA Known Exploited Vulnerabilities Catalog",
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "checked": "2026-10-28: not opened this session (not needed for a concept-level mention); edition from prior knowledge"
+    },
+    {
+      "title": "CIS Critical Security Controls v8.1 and CIS Benchmarks",
+      "url": "https://www.cisecurity.org/controls",
+      "checked": "2026-10-28: not opened this session (host outside the allowed network domains); edition from prior knowledge"
+    }
+  ]
+}
