@@ -79,6 +79,7 @@ A calm, trustworthy study companion that helps people **pass** professional secu
 **Owner picks, 29 Oct 2026 (later):**
 - **The Turning: option A.** The silhouette is gold, not white, and the half-swaps keep an even pace, so the reveal is clearly KaiSip's own and unlike any well-known game's transformation.
 - **Phone menu: option A.** 4 tabs (Today, Learn, Practice, You). The brain games move inside Practice as "Drills". The web already has 4 tabs.
+- **Business setup:** KaiSip will be a **DTI sole proprietorship**. The Google payments profile is set up as **Individual** with the public business name **KaiSip** (the public name, support email and statement name can change later; the account type cannot easily).
 - **RevenueCat:** account, Google payments profile and the Play ↔ RevenueCat service account are set up (Parts 1–3). Products, entitlements and the paywall wait for the first Play build with billing (Phase E).
 
 The five directions explored (A Grove Refined, B Editorial Ivory, C Midnight Focus, D Clear Modern, and the wild cards E1/E2) are recorded in the scratchpad boards and the two new agents, `premium-web-designer` and `premium-mobile-designer`.
