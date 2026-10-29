@@ -12,7 +12,11 @@
  *    sheet). Closing the sheet, or the report sheet it opened, puts
  *    screen-reader focus back on ⋯.
  *  - No ⋯ in a mock.
+ *  - §2.1: the answer opens with "Question" and the stem in two lines, then
+ *    "Show question" (its expanded state spoken); the recap is one stop that
+ *    says the whole question.
  */
+import { ScrollView } from 'react-native';
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
 import { router } from 'expo-router';
 import { getAllQuestions } from '../content/loader';
@@ -25,7 +29,7 @@ import { originalToDisplay } from '../engine/shuffle';
 import { useProgress } from '../store/progress';
 import { useSession } from '../store/session';
 import SessionScreen from '../app/session';
-import { AnswerMore, SHEET_GONE_MS } from '../components/quiz';
+import { AnswerMore, SHEET_GONE_MS, STEM_RECAP_CHARS, StemRecap } from '../components/quiz';
 import { moreButton, moreRowLabels } from '../../jest/answerMore';
 
 jest.mock('@react-native-async-storage/async-storage', () =>
@@ -237,5 +241,53 @@ describe('the ⋯ "More on this question" sheet', () => {
       r = create(<SessionScreen />);
     });
     expect(moreButton(root())).toBeUndefined();
+  });
+});
+
+describe('the stem recap at the top of the answer (premium pass §2.1)', () => {
+  // A long stem with no scenario, and (if the bank has one) a question with a scenario.
+  const long = bank.find((q) => !q.scenario && q.stem.length > STEM_RECAP_CHARS && q.id !== other.id)!;
+  const withScenario = bank.find((q) => Boolean(q.scenario) && q.id !== other.id);
+
+  it('"Question", the stem in two lines, then "Show question" (48pt) that opens it in place', () => {
+    answer([long.id, other.id]);
+    const recap = root().findByType(StemRecap);
+    const t = textOf(recap);
+    expect(t.startsWith('Question')).toBe(true);
+    // Clamped to two lines while closed.
+    const stemText = recap.findAll((n) => n.props.children === long.stem && n.props.numberOfLines !== undefined);
+    expect(stemText[0].props.numberOfLines).toBe(2);
+    const toggle = hosts(/^Show question$/)[0];
+    expect(toggle.props.accessibilityState).toMatchObject({ expanded: false });
+    const style = Object.assign({}, ...[toggle.props.style].flat(5).filter(Boolean));
+    expect(style.minHeight).toBeGreaterThanOrEqual(48);
+    press('Show question');
+    expect(hosts(/^Hide question$/)[0].props.accessibilityState).toMatchObject({ expanded: true });
+    expect(recap.findAll((n) => n.props.children === long.stem && typeof n.props.numberOfLines === 'number')).toHaveLength(0);
+    press('Hide question');
+    expect(hosts(/^Show question$/)).toHaveLength(1);
+  });
+
+  it('comes before the verdict, and a screen reader hears the whole question in one stop', () => {
+    answer([long.id, other.id]);
+    // In the page (the header's recap also says "Not quite" once the verdict scrolls away).
+    const t = textOf(root().findByType(ScrollView));
+    expect(t.indexOf('Question')).toBeGreaterThan(-1);
+    expect(t.indexOf('Question')).toBeLessThan(t.indexOf('Not quite'));
+    expect(hosts(/^Question: /).map((n) => n.props.accessibilityLabel)).toEqual([`Question: ${long.stem}`]);
+  });
+
+  it('a short stem has no toggle and is never cut', () => {
+    const short = bank.find((q) => !q.scenario && q.stem.length <= 70 && q.id !== other.id);
+    if (!short) return; // the bank has no short stem: nothing to check
+    answer([short.id, other.id]);
+    expect(hosts(/^Show question$/)).toHaveLength(0);
+  });
+
+  it('a scenario opens with the stem, and is in the spoken question', () => {
+    if (!withScenario) return; // no scenario questions in the bank
+    answer([withScenario.id, other.id]);
+    expect(hosts(/^Question: /)[0].props.accessibilityLabel).toBe(`Question: ${withScenario.scenario} ${withScenario.stem}`);
+    expect(hosts(/^Show question$/)).toHaveLength(1);
   });
 });

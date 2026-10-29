@@ -43,6 +43,8 @@
  *   beside the bookmark: read the note, read the principle, add a note, report
  *   a problem. Focus goes back to ⋯ when it closes. Never in a mock.
  * - The source line stays, as text only.
+ * - The answer opens with the question recapped in two lines ("Show question"
+ *   opens it whole); a screen reader hears the whole question there.
  */
 import * as Router from 'expo-router';
 import { router, useFocusEffect } from 'expo-router';
@@ -77,6 +79,7 @@ import {
   Rise,
   ScenarioBlock,
   SourceLine,
+  StemRecap,
   StickyFooter,
   useVerdictIndent,
   Verdict,
@@ -881,8 +884,10 @@ export default function SessionScreen() {
           ) : (
             response && (
               <>
-                {/* Answer: verdict → your pick → best answer → (after a miss: Key idea + Exam cue → Why, folded →
-                    Eliminate / Final two; after a right answer: Why → the whole vine) → trust */}
+                {/* Answer: recap → verdict → your pick → best answer → (after a miss: Key idea + Exam cue → Why, folded →
+                    Eliminate / Final two; after a right answer: Why → the whole vine) → source */}
+                {/* Mobile 1.49 (premium pass §2.1): the question in two lines, with "Show question". */}
+                <StemRecap key={qid} stem={q.stem} scenario={q.scenario} />
                 <View onLayout={(e) => (verdictBottom.current = e.nativeEvent.layout.y + e.nativeEvent.layout.height)}>
                   <Verdict ref={verdictRef} correct={response.correct} coach={coach} best={response.correct ? undefined : correctDisplay} />
                 </View>

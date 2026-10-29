@@ -285,7 +285,7 @@ describe('Journey 1: report a shuffled practice question', () => {
   });
 
   it('a 1,000-character note still fits the link cap, and the email keeps it whole', async () => {
-    const { q } = openShuffledQuestion();
+    openShuffledQuestion();
     mount(<SessionScreen />);
     act(() => { root().findAllByType(OptionCard)[0].props.onPress(); });
     press('Check answer');

@@ -4,6 +4,8 @@
  * "Vine reveal", §11 "Question".
  *
  * Plain-English map of the answer screen (top to bottom):
+ *   Recap    – (mobile 1.49) "Question" and the stem in two lines, with
+ *              "Show question" to read it whole (StemRecap).
  *   Verdict  – a leaf-shaped mark with ✓/✗, "Correct" / "Not quite", and a
  *              one-line coach note.
  *   Answers  – if wrong: your option, "Why not C" under it, then the best
@@ -35,7 +37,7 @@ import { shortReference } from '../lib/format';
 import { badgeLetter, LARGE_TEXT, motion, optionText, radius, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { LeafBig, LeafSmall, VerdictLeaf } from './glyphs';
-import { Check, Ellipsis, ICON_STROKE, X } from './icons';
+import { Check, ChevronDown, Ellipsis, ICON_STROKE, X } from './icons';
 import { AnimatedPressable, Collapse, ease, FadeIn, Pop, StateLayer, tween, useMotion, usePressScale } from './motion';
 import { ReportRow } from './support';
 import { Sheet } from './settings';
@@ -484,6 +486,60 @@ export function WhyBlock({
       )}
       {/* Folded away until opened (Collapse: no height animation; what opens fades in). No fold: just shown. */}
       {canFold ? <Collapse open={open}>{children}</Collapse> : children}
+    </View>
+  );
+}
+
+// ── StemRecap: the question, recapped at the top of the answer (1.49) ─
+/** A stem longer than this (or one with a scenario) is clamped to 2 lines with "Show question". */
+export const STEM_RECAP_CHARS = 90;
+/**
+ * Premium pass §2.1: once the answer shows, the question would be gone. This
+ * keeps it at the top: a `caption` ("Question"; a lesson check says "The
+ * question"), then the stem in `small` ink2 clamped to two lines, then a ghost
+ * "Show question" (48pt, chevron) that opens it in place: the scenario, if
+ * any, and the whole stem. No height animation (Collapse fades what opens).
+ *
+ * Screen readers: the caption and text are one stop that always says the
+ * WHOLE question ("Question: …"), clamped or not; the toggle is its own stop
+ * with its expanded state, for sighted learners who want it on screen.
+ */
+export function StemRecap({ stem, scenario, caption = 'Question' }: { stem: string; scenario?: string; caption?: string }) {
+  const { c } = useTheme();
+  const [open, setOpen] = useState(false);
+  const canOpen = Boolean(scenario) || stem.length > STEM_RECAP_CHARS;
+  const whole = scenario ? `${scenario} ${stem}` : stem;
+  return (
+    <View style={{ marginTop: space.md }}>
+      <View accessible accessibilityLabel={`${caption}: ${whole}`}>
+        <T v="caption" color={c.ink2}>{caption}</T>
+        {scenario ? (
+          <Collapse open={open}>
+            <T v="small" color={c.ink2} style={{ marginTop: space.xs }}>{scenario}</T>
+          </Collapse>
+        ) : null}
+        <T v="small" color={c.ink2} numberOfLines={canOpen && !open ? 2 : undefined} style={{ marginTop: space.xs }}>
+          {stem}
+        </T>
+      </View>
+      {canOpen && (
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel={open ? 'Hide question' : 'Show question'}
+          accessibilityState={{ expanded: open }}
+          onPress={() => setOpen(!open)}
+          hitSlop={4}
+          style={({ pressed }) => ({ minHeight: 48, justifyContent: 'center', alignSelf: 'flex-start', opacity: pressed ? 0.7 : 1 })}
+        >
+          <Row gap={space.xs}>
+            <T v="label" color={c.accentText}>{open ? 'Hide question' : 'Show question'}</T>
+            {/* The chevron turns over when open: shape, not just the words, says which way it goes. */}
+            <View style={open ? { transform: [{ rotate: '180deg' }] } : undefined}>
+              <ChevronDown size={18} color={c.accentText} strokeWidth={ICON_STROKE} />
+            </View>
+          </Row>
+        </Pressable>
+      )}
     </View>
   );
 }
