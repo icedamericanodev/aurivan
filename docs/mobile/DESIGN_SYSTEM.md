@@ -422,6 +422,20 @@ Rules: there is no confetti, no sound, no full-screen takeover and no "Congrats!
 
 The budget: decorative motion stays within 3 s per session (`claimDecor`). Only celebrations are charged: the full form 1.2 s, the short form 200 ms; past the budget even the short form is skipped (the end state just shows). Informational growth (a number rolling to what changed, a ring growing to its value, ≤ 600 ms) is not decoration: it is the news itself, carries the same words without it, and is never charged (behavioural review §2 treats it separately).
 
+### 8.10 Plant forms (mobile 1.50; the owner's "Turnings" decision, 29 Oct 2026)
+
+**The model.** Four named forms on the six saved growths, worked out from `growth` (`engine/plantForms.ts`): Form I = growth 1–2, II = 3, III = 4–5, IV = 6. Nothing new is saved for a form, so every existing plant shows its form at once and there is no reset. At Form IV the learner chooses the line's own final or one of five flavour finals (Lookout, Moot, Espalier, Coppice, Holdfast); the strongest area never decides, and nothing is listed before Elder. Forms are a botanical-style feature: the storybook art keeps its six growths. Copy: a plant "grows into a new form", never "evolve"; the form is a name, never a second number; no readiness wording beside a form (`copy-consistency.test.ts`, `plant-forms.test.ts`).
+
+**The gate.** The later forms' crossings (Bough, Form III; Elder, Form IV) also need delayed recall: 15 and 30 unique questions answered right, with no hint and not in a game, a week or more after they were last seen (`milestones.longIds`). It only gates crossings still to come: growth is a stored max, and the restore clamp reads this gate generously (plants grew before it existed). The website, which doesn't count recalls yet, is not gated by it.
+
+**The art.** `components/plant/forms/` is a port of the art masters (13 species × 4 forms + 5 finals, opaque page-mixed fills from `plantForm` tokens). Growth 1 is Form I's seed and a smaller shoot; growth 4 is Form III at 0.88 before its fruit and flowers. Layers: `glow` (Form IV's light; never at icon size, resting or with the clear dawn) and `props-back` sit behind, `props-front` in front, so only the tree moves. Budget: at most 90 SVG elements for the plant itself at full detail (the worst is about 51).
+
+**The reveal** (`components/plant/FormReveal.tsx`, tokens `motion.plant.turn` 1200 ms and `turnReduced` 120 ms). On Your plant only, once per form ever (`store/seen.ts` `plantForms`): the learning fact first, then "The Whip Oak" and its look. Full motion: an ink line (`line` token, 1.5pt) rises from the soil past the crown, the new form below it and the old above (two static drawings in clipped windows, transform only), the new form settles 0.97 → 1 on its base, then the words; one `success` haptic; announced once after (`sayLater`). Reduce Motion, or the session's motion budget spent: a 120 ms cross-fade and the words at once. A plant already past Form I when forms arrived (or restored from a file) gets one quiet note ("Your study so far brought Kai to the Standard Oak."), never a reveal for history. Today's grow-up line adds "It grows into a new form: see it in Your plant."
+
+**Staged rollout of the Form IV choice (do this in order).**
+1. **This release (1.50):** `isValidPlantState` ignores fields a newer app adds and accepts an optional `look.final` (a final id); the backup reader reads it. The learner's choice is kept ONLY on this phone, in `store/seen.ts` `plantFinal` (not in the plant, so not in backups or sync). A restore keeps the default (own final) unless a newer app's file carries `look.final`.
+2. **Next release, once 1.50+ is the oldest build in use:** write the choice into `plant.look.final` (backups and sync then carry it; `syncMerge` takes the newer choice), copy any `plantFinal` entry into the plant once, then stop writing `plantFinal`. Never rename `look.final`, the final ids or any species id.
+
 ## 9. Library decision
 
 **Keep our own primitives. Adopt no UI kit.**
