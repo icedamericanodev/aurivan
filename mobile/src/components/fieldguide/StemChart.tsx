@@ -7,7 +7,7 @@
  * - A measured stem (30 answers or more) is drawn to its percent, with the
  *   number above it.
  * - Too few yet (1 to 29 answers): a seed in the soil with a dashed outline
- *   of a shoot, a "—" above it and the words "too few yet · 18 answered". It
+ *   of a shoot, a "–" above it and the words "too few yet · 18 answered". It
  *   never claims a height the data hasn't earned (the web draws the same).
  * - Not started: the seed alone and the words "not started".
  * - Below the line: the status word in `clay` AND the words "below 70" (clay
@@ -41,6 +41,8 @@ export type { Stem };
 
 /** "too few yet", "not started", or the word, as written under a stem. */
 export const stemWord = (s: Stem) => (s.answered <= 0 ? 'not started' : s.thin ? 'too few yet' : s.word.toLowerCase());
+/** The chart's form: the two-word states on two lines, like the names, so five "not started" never run into one line. */
+const chartWord = (s: Stem) => (s.answered <= 0 ? 'not\nstarted' : s.thin ? 'too few\nyet' : stemWord(s));
 /** The extra lines under a stem's word. */
 export function stemLines(s: Stem, line: number): string[] {
   return [s.thin ? `${s.answered} answered` : null, !s.thin && s.pct !== null && s.below ? `below ${line}` : null, s.note ?? null].filter((x): x is string => Boolean(x));
@@ -54,20 +56,24 @@ export const MIN_COLUMN = 58;
 
 /** Five stems on one scale, or the list at large text. */
 export function StemChart({ stems, line = 70, play = false, testID }: { stems: readonly Stem[]; line?: number; play?: boolean; testID?: string }) {
-  const large = useFontScale() >= LARGE_TEXT;
+  const scale = useFontScale();
+  const large = scale >= LARGE_TEXT;
+  // The chart's own words grow with the text size up to ×1.3 (then the list takes over): its columns and height
+  // grow (or shrink) with them, so a name never truncates between ×1.15 and ×1.29 (UX review H2).
+  const fs = Math.min(scale, LARGE_TEXT);
   // A first guess before layout (the phone's width less the gutters and a plate's mount), so the first frame is drawn.
   const { width: screen } = useWindowDimensions();
   const [w, setW] = useState(() => Math.max(0, Math.min(screen, 560) - 2 * space.gutter - 2 * (2 + plate.mount + space.xs)));
   const gap = stems.length ? (w - GUTTER) / stems.length : 0;
-  const list = large || (w > 0 && gap < MIN_COLUMN);
+  const list = large || (w > 0 && gap < MIN_COLUMN * fs);
   return (
     <View testID={testID} onLayout={(e) => setW(e.nativeEvent.layout.width)}>
-      {list ? <StemList stems={stems} line={line} /> : w > 0 ? <Chart stems={stems} line={line} play={play} w={w} /> : <View style={{ height: plate.chart }} />}
+      {list ? <StemList stems={stems} line={line} /> : w > 0 ? <Chart stems={stems} line={line} play={play} w={w} fs={fs} /> : <View style={{ height: plate.chart }} />}
     </View>
   );
 }
 
-function Chart({ stems, line, play, w }: { stems: readonly Stem[]; line: number; play: boolean; w: number }) {
+function Chart({ stems, line, play, w, fs }: { stems: readonly Stem[]; line: number; play: boolean; w: number; /** The text size, up to ×1.3. */ fs: number }) {
   const { c, isDark } = useTheme();
   const ink = fieldInk[isDark ? 'dark' : 'light'];
   const { reduced } = useMotion();
@@ -76,7 +82,10 @@ function Chart({ stems, line, play, w }: { stems: readonly Stem[]; line: number;
   const soil = TOP + PLOT;
   const y = (p: number) => soil - (Math.max(0, Math.min(100, p)) / 100) * PLOT;
   const extras = Math.max(0, ...stems.map((s) => stemLines(s, line).length));
-  const h = soil + 10 + 30 + 16 + extras * 14;
+  // The words under the soil: a two-line name, the word (two lines for not started and too few yet) and its
+  // extra lines, grown with the text size.
+  const twoLineWord = stems.some((s) => s.answered <= 0 || s.thin) ? 16 : 0;
+  const h = soil + 10 + Math.ceil((30 + 16 + twoLineWord + extras * 14) * fs);
   const settle = useSharedValue(moving ? 0 : 1);
   useEffect(() => {
     if (!moving) {
@@ -105,12 +114,13 @@ function Chart({ stems, line, play, w }: { stems: readonly Stem[]; line: number;
           <Path d={`M${GUTTER} ${soil}H${w}`} stroke={c.control} strokeWidth={1} />
         </Svg>
         {[0, 50, line, 100].filter((p, i, a) => a.indexOf(p) === i).map(scaleLabel)}
-        <View style={{ position: 'absolute', right: 0, top: y(line) + 2, backgroundColor: c.raised2, paddingLeft: 3 }}>
-          <FieldText v="tiny" color={c.ink2}>{`${line} line`}</FieldText>
-        </View>
         {stems.map((s, i) => (
           <StemColumn key={s.key} s={s} i={i} left={GUTTER + gap * i} gap={gap} soil={soil} y={y} moving={moving} ink={ink} />
         ))}
+        {/* After the stems, so the last column's stem never paints over it (UX review H1). */}
+        <View style={{ position: 'absolute', right: 0, top: y(line) + 2, backgroundColor: c.raised2, paddingLeft: 3 }}>
+          <FieldText v="tiny" color={c.ink2}>{`${line} line`}</FieldText>
+        </View>
         <Animated.View style={[{ position: 'absolute', left: 0, top: 0, width: w, height: h }, settleStyle]} pointerEvents="none">
           {stems.map((s, i) => {
             const cx = GUTTER + gap * i + gap / 2;
@@ -126,7 +136,7 @@ function Chart({ stems, line, play, w }: { stems: readonly Stem[]; line: number;
                   </View>
                 ) : (
                   <View style={{ backgroundColor: c.raised2, paddingHorizontal: 3 }}>
-                    <FieldText v="chart" color={c.ink2}>—</FieldText>
+                    <FieldText v="chart" color={c.ink2}>–</FieldText>
                   </View>
                 )}
               </View>
@@ -139,7 +149,7 @@ function Chart({ stems, line, play, w }: { stems: readonly Stem[]; line: number;
           return (
             <View key={s.key} style={{ position: 'absolute', left: GUTTER + gap * i - 4, width: gap + 8, top: soil + 8, alignItems: 'center' }}>
               <FieldText v="tiny" color={c.ink} center numberOfLines={2}>{s.name.replace(' ', '\n')}</FieldText>
-              <FieldText v="figSm" color={red ? c.clay : c.ink2} center>{stemWord(s)}</FieldText>
+              <FieldText v="figSm" color={red ? c.clay : c.ink2} center>{chartWord(s)}</FieldText>
               {lines.map((l) => (
                 <FieldText key={l} v="tiny" color={red && l.startsWith('below') ? c.clay : c.ink2} center>{l}</FieldText>
               ))}
@@ -265,7 +275,7 @@ export function StemList({ stems, line = 70 }: { stems: readonly Stem[]; line?: 
               }}
             >
               {s.pct !== null && <View style={{ width: `${Math.max(2, s.pct)}%`, height: 8, borderRadius: 2, backgroundColor: c.accent }} />}
-              <View style={{ position: 'absolute', left: `${line}%`, top: -4, width: 4, height: 16, marginLeft: -2, backgroundColor: c.bg, alignItems: 'center' }}>
+              <View style={{ position: 'absolute', left: `${line}%`, top: -4, width: 4, height: 16, marginLeft: -2, backgroundColor: c.raised2, alignItems: 'center' }}>
                 <View style={{ width: 2, height: 16, backgroundColor: c.ink2 }} />
               </View>
             </View>

@@ -3661,6 +3661,7 @@ exports.examPaceWords = examPaceWords;
 exports.targetPaceWords = targetPaceWords;
 exports.aboutMin = aboutMin;
 exports.spokenMin = spokenMin;
+exports.keepUnits = keepUnits;
 exports.timingOf = timingOf;
 exports.mockPace = mockPace;
 exports.statusOf = statusOf;
@@ -3710,8 +3711,11 @@ function aboutMin(n, mid = false) {
 }
 function spokenMin(line) {
     return line
-        .replace(/\b(\d+(?:\.\d+)?) h\b/g, (_, n) => `${n} hour${n === '1' ? '' : 's'}`)
-        .replace(/\b(\d+(?:\.\d+)?) min\b/g, (_, n) => `${n} minute${n === '1' ? '' : 's'}`);
+        .replace(/\b(\d+(?:\.\d+)?)[ \u00A0]h\b/g, (_, n) => `${n} hour${n === '1' ? '' : 's'}`)
+        .replace(/\b(\d+(?:\.\d+)?)[ \u00A0]min\b/g, (_, n) => `${n} minute${n === '1' ? '' : 's'}`);
+}
+function keepUnits(line) {
+    return line.replace(/(\d)[ ](min|h)\b/g, '$1\u00A0$2').replace(/\b([Aa]bout)[ ](\d)/g, '$1\u00A0$2');
 }
 exports.MOCK_TIMINGS = ['standard', 'plus25', 'plus50', 'untimed'];
 exports.TIMING_FACTOR = {
@@ -10476,7 +10480,7 @@ function decodeUtf8(bytes) {
   var api = {};
   api["browser"] = load("src/webcloud/browser.ts");
   api["config"] = load("src/webcloud/config.ts");
-  api.sourceHash = "676e30c9b4e14d00";
+  api.sourceHash = "0784c9bb6f8d3b36";
   var cloud = load("src/webcloud/index.ts");
   var liveVersion = "1.48.0";
   var liveStoreVersions = {"progress":2,"settings":1};

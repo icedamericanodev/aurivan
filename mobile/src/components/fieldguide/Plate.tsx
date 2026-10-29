@@ -20,11 +20,13 @@ export interface Fig {
   /** The figure's number in the guide ("5"); left out, the caption is the title alone. */
   n?: number | string;
   title: string;
+  /** How it is said, when the numbers need words (Today: "Figure 3, Shoot, growth 3 of 6"). */
+  spoken?: string;
 }
 
 /** "Fig. 5 · Five areas, one scale", and its spoken form. */
 export const figLine = (f: Fig) => (f.n !== undefined && f.n !== '' ? `Fig. ${f.n} · ${f.title}` : f.title);
-export const figSpoken = (f: Fig) => (f.n !== undefined && f.n !== '' ? `Figure ${f.n}, ${f.title}` : f.title);
+export const figSpoken = (f: Fig) => f.spoken ?? (f.n !== undefined && f.n !== '' ? `Figure ${f.n}, ${f.title}` : f.title);
 
 export function FigCaption({ fig, style }: { fig: Fig; style?: StyleProp<ViewStyle> }) {
   return (

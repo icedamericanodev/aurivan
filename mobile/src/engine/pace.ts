@@ -86,8 +86,17 @@ export function aboutMin(n: number, mid = false): string {
  */
 export function spokenMin(line: string): string {
   return line
-    .replace(/\b(\d+(?:\.\d+)?) h\b/g, (_, n: string) => `${n} hour${n === '1' ? '' : 's'}`)
-    .replace(/\b(\d+(?:\.\d+)?) min\b/g, (_, n: string) => `${n} minute${n === '1' ? '' : 's'}`);
+    .replace(/\b(\d+(?:\.\d+)?)[ \u00A0]h\b/g, (_, n: string) => `${n} hour${n === '1' ? '' : 's'}`)
+    .replace(/\b(\d+(?:\.\d+)?)[ \u00A0]min\b/g, (_, n: string) => `${n} minute${n === '1' ? '' : 's'}`);
+}
+
+/**
+ * No-break spaces in a time, so a wrapping caption keeps "about 19 min" as
+ * one piece: never "19" at a line's end and "min" on the next, nor "about"
+ * left behind (mobile 1.51, UX review P5).
+ */
+export function keepUnits(line: string): string {
+  return line.replace(/(\d)[ ](min|h)\b/g, '$1\u00A0$2').replace(/\b([Aa]bout)[ ](\d)/g, '$1\u00A0$2');
 }
 
 // ── Mock timing options (WCAG 2.2.1; ISACA grants accommodations) ─────────

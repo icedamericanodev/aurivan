@@ -139,8 +139,8 @@ describe('the case', () => {
       expect(box.props.accessible).toBe(false);
     }
     // Back-filled (saved quietly when badges arrived): "by" that date, never as if earned that day (UX P6).
-    expect(labels()).toContain('First Foothold. Earned by 12 Oct. Answer your first 20 questions. Groundwork.');
-    expect(labels().some((l) => l.startsWith('Firm Footing · IS Operations, Clay. Earned by 12 Oct.') && l.endsWith('26% of the exam. The Five Domains.'))).toBe(true);
+    expect(labels()).toContain('First Foothold. Pressed by 12 October. Answer your first 20 questions. Groundwork.');
+    expect(labels().some((l) => l.startsWith('Firm Footing · IS Operations, Clay. Pressed by 12 October.') && l.endsWith('26% of the exam. The Five Domains.'))).toBe(true);
     expect(allText()).toContain('Pressed by 12 Oct');
     expect(labels().some((l) => l.startsWith('Mindset Shift. Not yet.') && l.includes('Opens after 100 first tries'))).toBe(true);
   });
@@ -231,13 +231,15 @@ describe('the detail sheet', () => {
   it('earned: what it means (not how to earn it), its date, and no Study button', () => {
     earn('first-foothold', T0 - DAY);
     mount(<Badges />);
-    press(/^First Foothold\. Earned/);
+    press(/^First Foothold\. Pressed/);
     const sheet = root().findByType(Modal);
     const words = sheet.findAll((n) => typeof n.props.children === 'string').map((n) => n.props.children as string);
     expect(words).toContain('Earned 11 Oct');
     expect(words).toContain('You’ve mapped where you stand. Your plan now starts from it.');
     expect(words).not.toContain('How to earn it');
     expect(sheet.findAll((n) => /^Study for/.test(n.props.accessibilityLabel ?? ''))).toHaveLength(0);
+    // Mobile 1.51 (UX review P1): the date is said in full, never "Oct".
+    expect(sheet.findAll((n) => typeof n.type === 'string' && /^Earned 11 October\. You’ve mapped where you stand/.test(n.props.accessibilityLabel ?? ''))).toHaveLength(1);
   });
 
   it('a mock badge opens the full mock’s start sheet; Rooted shows its tiers in words', () => {
@@ -450,7 +452,7 @@ describe('review fixes (PR #40)', () => {
     d4.slice(0, 20).forEach(answer);
     ensureBackfill('cisa', T0);
     mount(<Badges />);
-    press(/^First Foothold\. Earned by/);
+    press(/^First Foothold\. Pressed by/);
     expect(sheetText()).toContain('Already earned when this badge arrived (by 12 Oct)');
     expect(sheetText()).not.toContain('This completed');
   });

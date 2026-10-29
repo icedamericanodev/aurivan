@@ -122,7 +122,8 @@ describe('You: bands below 30 answers, numbers from 30', () => {
     mount(<You />);
     const t = allText();
     // 9 of 10 right: words under its line of growth, never "90" (the chart's own spoken stop is checked below).
-    expect(t).toContain('too few yet');
+    // (The chart sets it on two lines, like the names: "too few" / "yet".)
+    expect(t.replace(/\n/g, ' ')).toContain('too few yet');
     expect(t).toContain('10 answered');
     expect(t.slice(t.indexOf('Fig. 5'), t.indexOf('KEY'))).not.toMatch(/\b90\b/);
     expect(t).toMatch(/Building is under 70, Steady 70 to 79, Strong 80 and up/);
@@ -147,7 +148,8 @@ describe('You: bands below 30 answers, numbers from 30', () => {
     expect(t).toContain('steady');
     // Mobile 1.43: the caption over the areas says what the percents count, once.
     expect(t.match(/latest tries/g)).toHaveLength(1);
-    expect(t).not.toMatch(/Building is under/);
+    // Mobile 1.51 (UX review P3): the bands line stays while any area is under 30 answers (four here have none).
+    expect(t).toMatch(/Building is under/);
   });
 
   it('each area is one spoken stop with its word, and its thin data said as thin', () => {

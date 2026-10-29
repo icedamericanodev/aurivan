@@ -152,13 +152,14 @@ describe('Today greets by name', () => {
     expect(allText()).toContain('Maya, 38 days to go');
   });
 
-  it('a long name at 200% text wraps and stops at three lines, and screen readers still hear all of it', () => {
+  it('a long name at 200% text wraps and stops at four lines, and screen readers still hear all of it', () => {
     setScale(2);
     const name = 'Wolfeschlegelstein Hausen';
     useSettings.setState({ displayName: name });
     mount(<Today />);
     const h = heading();
-    expect(h.props.numberOfLines).toBe(3);
+    // Mobile 1.51: the countdown title takes up to four lines (UX review P7).
+    expect(h.props.numberOfLines).toBe(4);
     expect(h.props.accessibilityLabel).toBe(`${name.slice(0, MAX_DISPLAY_NAME)}, 38 days to go`);
   });
 

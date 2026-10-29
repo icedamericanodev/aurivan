@@ -21,7 +21,7 @@ import type { DomainInfo } from '../content/types';
 import { completingMark, MOCK_SUGGEST_LINE, setSpoken, spokenDetail, STRETCH, stretchLine, studyNote, studyTarget, suggestLine, type CaseMark, type SetView, type StudyTarget } from '../engine/badgeCatalog';
 import type { Stage } from '../engine/journey';
 import { moveFocus } from '../lib/a11y';
-import { longDate, shortDate } from '../lib/format';
+import { longDate, shortDate, spokenShortDate } from '../lib/format';
 import { badgeDef } from '../engine/milestones';
 import { badgeCardText, badgeShareable, type BadgeCardText, type ShareCert } from '../engine/shareCard';
 import { STORE_LINK } from '../content/storeLinks';
@@ -87,6 +87,12 @@ export function cellLine(m: CaseMark, showProgress: boolean, quiet: Quiet = NO_Q
   return m.detail;
 }
 
+/** How a specimen's label is said: "Pressed 11 October", "Pressed by 11 October" for a back-filled badge. */
+export function pressedSpoken(m: CaseMark, quiet: Quiet = NO_QUIET): string {
+  if (m.earnedAt === undefined) return 'Pressed';
+  return `Pressed ${isQuiet(m, quiet) ? 'by ' : ''}${spokenShortDate(m.earnedAt)}`;
+}
+
 /** "Earned 11 Oct", or "Earned by 11 Oct" for a back-filled badge. */
 export const earnedLine = (m: CaseMark, quiet: Quiet = NO_QUIET) => {
   const when = earnedWhen(m, quiet);
@@ -100,7 +106,8 @@ export const tierCaption = (m: CaseMark) => m.tierLabel ?? m.caption;
 export function cellSpoken(m: CaseMark, setName: string, showProgress: boolean, quiet: Quiet = NO_QUIET): string {
   const parts = [m.name + (m.tier ? `, ${tierName(m)}` : '')];
   if (m.stretch) parts.push('Stretch, beyond exam need');
-  parts.push(m.status === 'earned' ? earnedLine(m, quiet) : 'Not yet');
+  // Mobile 1.51: said as the label shows it, "Pressed 3 October" (or "Pressed by 3 October"), the date in full.
+  parts.push(m.status === 'earned' ? pressedSpoken(m, quiet) : 'Not yet');
   parts.push(m.rule.replace(/\.$/, ''));
   if (m.status === 'gated') parts.push(m.gateLine!.replace(/\.$/, ''));
   else if (m.status !== 'earned' && showProgress && m.detail) parts.push(spokenDetail(m.detail));
@@ -270,7 +277,7 @@ export function ShelfHeader({ set, no, quiet = NO_QUIET, grown, children }: { se
   const complete = set.completeAt !== undefined;
   // A set a quiet fill completed: "by 11 Oct" (it was already complete then).
   const when = complete ? `${quiet.includes(set.completeAt!) ? 'by ' : ''}${shortDate(set.completeAt!)}` : '';
-  const spoken = complete ? `${setSpoken(set)}, ${when}` : setSpoken(set);
+  const spoken = complete ? `${setSpoken(set)}, ${quiet.includes(set.completeAt!) ? 'by ' : ''}${spokenShortDate(set.completeAt!)}` : setSpoken(set);
   const counted = set.info.counter && set.total > 0;
   return (
     <HerbariumSheet
@@ -390,7 +397,7 @@ export function NextPanel({
                   {m.stretch ? (
                     <Button kind="ghost" label="Go further ›" accessibilityLabel={`Go further: ${m.name}. Optional, beyond exam need`} onPress={() => onStudy(target)} />
                   ) : (
-                    <Button kind="ghost" label="Study for this ›" accessibilityLabel={`Study for ${m.name}`} accessibilityHint={note} onPress={() => onStudy(target)} />
+                    <Button kind="ghost" label="Study for this ›" accessibilityLabel={`Study for this: ${m.name}`} accessibilityHint={note} onPress={() => onStudy(target)} />
                   )}
                 </View>
               )}
@@ -526,6 +533,17 @@ export function BadgeSheet({
     mark.domain ? `${mark.domain.weight}% of the exam` : undefined,
   ].filter(Boolean);
   const earnedCaption = quietly ? `Already earned when this badge arrived (by ${shortDate(mark.earnedAt!)})` : mark.earnedAt !== undefined ? `Earned ${shortDate(mark.earnedAt)}` : 'Earned';
+  // Said with the dates in full ("Earned 11 October … This completed Groundwork on 4 October."; UX review P1).
+  const earnedSpoken = earned
+    ? [
+        quietly ? `Already earned when this badge arrived, by ${spokenShortDate(mark.earnedAt!)}` : mark.earnedAt !== undefined ? `Earned ${spokenShortDate(mark.earnedAt)}` : 'Earned',
+        mark.unlock,
+        completedHere ? `This completed ${set.info.name} on ${spokenShortDate(set.completeAt!)}.` : null,
+      ]
+        .filter(Boolean)
+        .join('. ')
+        .replace(/\.\./g, '.')
+    : undefined;
   return (
     <Modal visible={visible} animationType={reduced ? 'fade' : 'slide'} presentationStyle="pageSheet" onRequestClose={sharing ? backFromShare : onClose} onDismiss={onDismissed}>
       <SafeAreaView edges={['top', 'bottom']} style={{ flex: 1, backgroundColor: c.raised2 }}>
@@ -560,7 +578,7 @@ export function BadgeSheet({
               </View>
 
               {earned && (
-                <View style={{ marginTop: space.xl, borderLeftWidth: 3, borderLeftColor: c.accent, paddingLeft: space.md }} accessible>
+                <View style={{ marginTop: space.xl, borderLeftWidth: 3, borderLeftColor: c.accent, paddingLeft: space.md }} accessible accessibilityLabel={plantLine ? `${earnedSpoken} ${plantLine}` : earnedSpoken}>
                   <T v="caption" color={c.accentText}>{earnedCaption}</T>
                   <T v="quote" style={{ marginTop: space.xs }}>{mark.unlock}</T>
                   {completedHere && (

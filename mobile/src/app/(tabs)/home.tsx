@@ -79,7 +79,7 @@
  *   plate      Fig. n · <growth>: your plant beside the plan's specimen label (caption with the day's
  *              minutes, the current item, its meta, the checklist in paper inks), captioned PLATE
  *   button     the ONE forest fill on the screen: Start / Continue, 52pt with 12pt corners
- *   readiness  "Measured · readiness" over the scale bar ("a study estimate, not a prediction"), still
+ *   readiness  "Estimated readiness" over the scale bar ("a study estimate, not a prediction"), still
  *              the report's button. The clearing and "Your readiness is holding" stay forest moments.
  *
  * Signature moments (Phase 5b, components/moments.tsx):
@@ -95,8 +95,8 @@ import { ClearingBody, clearingLine, clearingTitle, PlanChecklist, PlanLeaves, p
 import { StreakPill } from '../../components/today';
 import { FieldText, headDate, KeyCaption, Plate, RunningHead } from '../../components/fieldguide';
 import { todayTitle } from '../../engine/fieldGuide';
-import { GROWTH_NAMES } from '../../engine/plant';
-import { shortDate } from '../../lib/format';
+import { GROWTH_NAMES, MAX_GROWTH } from '../../engine/plant';
+import { shortDate, spokenShortDate } from '../../lib/format';
 import { FirstRangePanel, SecondAskCard } from '../../components/firstSet';
 import { FitCard } from '../../components/fit';
 import { NameAskCard, TesterQuestionCard } from '../../components/beta';
@@ -119,7 +119,7 @@ import { countedDone, currentIndex, isOptional, itemMinutes, MINUTES_PER_QUESTIO
 import { shouldAskFit } from '../../engine/fit';
 import { firstRangePanelDue, nameAskDue, nameNudgeDue, secondAskDue, studyDaysAway } from '../../engine/firstRun';
 import { STAGE_ORDER } from '../../engine/journey';
-import { aboutMin, spokenMin } from '../../engine/pace';
+import { aboutMin, keepUnits, spokenMin } from '../../engine/pace';
 import { DAY_MS } from '../../engine/srs';
 import { ANNOUNCE_DELAY, moveFocus, sayLater } from '../../lib/a11y';
 import { greetingWithName } from '../../engine/displayName';
@@ -623,6 +623,9 @@ export default function Today() {
         : j.daysLeft > 0 && j.examDate
           ? `${j.cert.name} exam ${shortDate(new Date(`${j.examDate}T12:00:00`).getTime())}`
           : null;
+  // Said in full: "CISA exam on 6 December".
+  const examSpoken =
+    j.daysLeft !== null && j.daysLeft > 0 && j.examDate ? `${j.cert.name} exam on ${spokenShortDate(new Date(`${j.examDate}T12:00:00`).getTime())}` : (examLine ?? undefined);
   const large = useFontScale() >= LARGE_TEXT;
 
   return (
@@ -645,12 +648,12 @@ export default function Today() {
         />
         {/* One header stop that reads the whole title. A long name wraps (24 characters at most) and, at the
             largest text sizes, stops at three lines with an ellipsis instead of pushing the plan off the screen. */}
-        <T v="display" accessibilityRole="header" accessibilityLabel={titleText} numberOfLines={3} style={{ marginTop: space.lg }}>
+        <T v="display" accessibilityRole="header" accessibilityLabel={titleText} numberOfLines={4} style={{ marginTop: space.lg }}>
           {titleText}
         </T>
         {/* The exam's day and the streak on one quiet line (the weekday and the countdown are in the head and the title). */}
         <Row gap={space.sm} style={{ flexWrap: 'wrap', rowGap: space.xs, marginTop: space.xs }}>
-          {examLine ? <T v="meta" num>{examLine}</T> : null}
+          {examLine ? <T v="meta" num accessibilityLabel={examSpoken}>{examLine}</T> : null}
           {j.streak > 0 && <StreakPill flat streak={j.streak} growth={streakGrowth} />}
         </Row>
       </Enter>
@@ -707,7 +710,11 @@ export default function Today() {
           // specimen label; the caption under it; then the ONE forest fill on the screen, the Start button.
           <View>
             <Plate
-              fig={plantView.plant ? { n: plantView.plant.growth, title: GROWTH_NAMES[plantView.plant.growth] } : { title: 'Today’s study' }}
+              fig={
+                plantView.plant
+                  ? { n: plantView.plant.growth, title: GROWTH_NAMES[plantView.plant.growth], spoken: `Figure ${plantView.plant.growth}, ${GROWTH_NAMES[plantView.plant.growth]}, growth ${plantView.plant.growth} of ${MAX_GROWTH}` }
+                  : { title: 'Today’s study' }
+              }
               testID="today-plate"
             >
               <View style={{ flexDirection: large || !plantView.plant ? 'column' : 'row', alignItems: large ? 'flex-start' : 'flex-end', gap: space.md }}>
@@ -718,7 +725,8 @@ export default function Today() {
                 >
                   {/* "Today's plan, about 17 minutes, 1 of 3 done": the checklist's progress, said once for a screen reader. */}
                   <View accessible accessibilityLabel={`${spokenMin(todayCaption)}, ${countedDone(plan).filter(Boolean).length} of ${countedDone(plan).length} done`}>
-                    <FieldText v="head">{todayCaption}</FieldText>
+                    {/* "19 min" never splits across lines (a no-break space before the unit; UX review P5). */}
+                    <FieldText v="head">{keepUnits(todayCaption)}</FieldText>
                   </View>
                   <FieldText v="value" maxScale={2} accessibilityRole="header" style={{ marginTop: space.xs }}>{hero!.title}</FieldText>
                   {heroNote ? (

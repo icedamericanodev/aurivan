@@ -339,7 +339,7 @@ export default function Badges() {
         {/* Mobile 1.51 (Field Guide): the running head, then the herbarium's title and its one promise. */}
         <RunningHead section="Herbarium · Badges" aside={today.shown} asideLabel={today.spoken} />
         <T v="display" accessibilityRole="header" style={{ marginTop: space.lg }}>Herbarium</T>
-        <FieldText v="sub" style={{ marginTop: 2 }}>Each badge is pressed and labelled the day you earn it. Every sheet counts on its own; there’s no grand total.</FieldText>
+        <FieldText v="sub" style={{ marginTop: 2 }}>Each badge is pressed and labelled the day you earn it. Every sheet counts on its own.</FieldText>
         <T v="meta" style={{ marginTop: space.sm }}>Earned by what you’ve mastered. Once earned, a badge stays.</T>
 
         {fillSummary && (

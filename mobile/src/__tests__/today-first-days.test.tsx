@@ -159,7 +159,7 @@ describe('Day 0: the first five is the whole plan', () => {
     storePlan([FIRST], [false]);
     mount(<Today />);
     const t = allText();
-    expect(t).toContain('Today’s plan · about 6 min');
+    expect(t).toContain('Today’s plan · about\u00A06\u00A0min');
     expect(t).toContain('Your first five 5 questions, no timer');
     expect(byTestID('plan-checklist')).toHaveLength(0);
     expect(byTestID('today-tiles')).toHaveLength(0);

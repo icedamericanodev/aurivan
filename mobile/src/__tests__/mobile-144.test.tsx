@@ -198,7 +198,7 @@ describe('You: "Your study profile"', () => {
     mount(<You />);
     const t = allText();
     expect(t.indexOf('Maya')).toBeGreaterThan(-1);
-    expect(t.indexOf('Maya')).toBeLessThan(t.indexOf('Readiness'));
+    expect(t.indexOf('Maya')).toBeLessThan(t.indexOf('Estimated readiness'));
     expect(t).toContain('Studying for CISA since 12 Oct');
     expect(t).toContain('Exam 14 Feb · about 20 min most days');
     expect(t).toContain('Started with: Some IT audit experience');

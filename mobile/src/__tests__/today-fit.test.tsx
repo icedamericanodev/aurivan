@@ -135,7 +135,7 @@ describe('Today: the day in minutes', () => {
   it('Day 1 is the first five, about 6 min whatever the minutes chosen: the title, then "5 questions, no timer"', () => {
     useSettings.setState({ fitPrompt: 'answered', dailyMinutes: 20 });
     mount(<Today />);
-    expect(allText()).toContain('Today’s plan · about 6 min');
+    expect(allText()).toContain('Today’s plan · about\u00A06\u00A0min');
     expect(allText()).toContain('Your first five 5 questions, no timer');
     expect(allText()).not.toMatch(/\bcheck\b|Starting/);
     expect(storedPlan().budget).toBe(20);
@@ -146,7 +146,7 @@ describe('Today: the day in minutes', () => {
     fiveAnswers();
     mount(<Today />);
     // Mobile 1.21: the day's minutes are in the caption, said once.
-    expect(allText()).toContain('Today’s plan · about 18 min');
+    expect(allText()).toContain('Today’s plan · about\u00A018\u00A0min');
     // The title never holds a count, and the minutes are said once (the caption's, this item's alone),
     // so the meta is the count and the why. Mobile 1.24: plain words, no "Starting check", and no
     // "no score yet" on the day after the learner saw "3 of 5" (UX review S5).
@@ -175,7 +175,7 @@ describe('Today: the day in minutes', () => {
     // Mobile 1.39: the one item after the lesson is a "Then:" line (no hollow circle).
     expect(allText()).toContain('Then: IS Audit practice · 10\u00A0questions');
     expect(root().findAll((n) => typeof n.props.accessibilityHint === 'string').map((n) => n.props.accessibilityHint as string)).toContain(first.title);
-    expect(allText()).toContain(`Today’s plan · about ${first.minutes + 12} min`);
+    expect(allText()).toContain(`Today’s plan · about\u00A0${first.minutes + 12}\u00A0min`);
     expect(allText()).not.toMatch(/Starting check/);
     // Still no range on day 2: the goal is the countdown.
     expect(allText()).toContain('5 of 40 for your first range');
@@ -210,7 +210,7 @@ describe('Today: the day in minutes', () => {
     mount(<Today />);
     // UX review P2: a mock never leads the hero (even in a plan saved with it first).
     // The mock's own row says it is optional and how long it is (no "+ mock" in the caption since 1.21).
-    expect(allText()).toContain('Today’s plan · about 19 min Weak spots: IS Operations');
+    expect(allText()).toContain('Today’s plan · about\u00A019\u00A0min Weak spots: IS Operations');
     // Mobile 1.24: the count and the why are the line under the title; the optional mock is not a checklist row.
     expect(allText()).toContain('Weak spots: IS Operations 16 questions, most points to gain');
     expect(root().findAll((n) => n.props.testID === 'plan-checklist')).toHaveLength(0);

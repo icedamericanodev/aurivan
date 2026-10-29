@@ -8336,6 +8336,7 @@ exports.examPaceWords = examPaceWords;
 exports.targetPaceWords = targetPaceWords;
 exports.aboutMin = aboutMin;
 exports.spokenMin = spokenMin;
+exports.keepUnits = keepUnits;
 exports.timingOf = timingOf;
 exports.mockPace = mockPace;
 exports.statusOf = statusOf;
@@ -8385,8 +8386,11 @@ function aboutMin(n, mid = false) {
 }
 function spokenMin(line) {
     return line
-        .replace(/\b(\d+(?:\.\d+)?) h\b/g, (_, n) => `${n} hour${n === '1' ? '' : 's'}`)
-        .replace(/\b(\d+(?:\.\d+)?) min\b/g, (_, n) => `${n} minute${n === '1' ? '' : 's'}`);
+        .replace(/\b(\d+(?:\.\d+)?)[ \u00A0]h\b/g, (_, n) => `${n} hour${n === '1' ? '' : 's'}`)
+        .replace(/\b(\d+(?:\.\d+)?)[ \u00A0]min\b/g, (_, n) => `${n} minute${n === '1' ? '' : 's'}`);
+}
+function keepUnits(line) {
+    return line.replace(/(\d)[ ](min|h)\b/g, '$1\u00A0$2').replace(/\b([Aa]bout)[ ](\d)/g, '$1\u00A0$2');
 }
 exports.MOCK_TIMINGS = ['standard', 'plus25', 'plus50', 'untimed'];
 exports.TIMING_FACTOR = {
@@ -11417,6 +11421,6 @@ exports.fieldInk = {
   api["domainBand"] = load("src/engine/domainBand.ts");
   api["pace"] = load("src/engine/pace.ts");
   api["readySigns"] = load("src/engine/readySigns.ts");
-  api.sourceHash = "5c83a54972e60613";
+  api.sourceHash = "0a463700aa9e4f05";
   root.KaiSipPlant = Object.freeze(api);
 })(typeof window !== 'undefined' ? window : globalThis);

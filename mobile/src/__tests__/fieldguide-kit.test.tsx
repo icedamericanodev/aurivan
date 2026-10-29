@@ -92,7 +92,9 @@ describe('StemChart', () => {
     });
     layout(340);
     expect(labels()).toEqual(STEMS.map((s) => s.spoken));
-    const t = allText();
+    // The chart sets "not started" and "too few yet" on two lines, like the names.
+    const t = allText().replace(/\n/g, ' ');
+    expect(allText()).toContain('not\nstarted');
     expect(t).toContain('too few yet');
     expect(t).toContain('18 answered');
     expect(t).toContain('not started');
@@ -122,6 +124,83 @@ describe('StemChart', () => {
     });
     // The list's too-few-yet bar is an outline with no fill.
     expect(allText()).toContain('too few yet');
+  });
+
+  // UX review H1: the "70 line" label is drawn after the stems, so the last column's stem never paints over it.
+  it('draws the "70 line" label after every stem', () => atScale(1, () => {
+    act(() => {
+      r = create(<StemChart stems={STEMS} />);
+    });
+    layout(340);
+    const drawing = root().find((n) => typeof n.type === 'string' && n.props.accessibilityElementsHidden === true);
+    const kids = drawing.children.filter((k): k is ReactTestInstance => typeof k !== 'string');
+    const lastStem = kids.map((k) => (typeof k.type === 'function' && k.type.name === 'StemColumn' ? 1 : 0)).lastIndexOf(1);
+    const lineLabel = kids.findIndex((k) => textOf(k) === '70 line');
+    expect(lastStem).toBeGreaterThan(-1);
+    expect(lineLabel).toBeGreaterThan(lastStem);
+  }));
+
+  // UX review H2: between ×1.15 and ×1.29 the columns need room for the grown names, or the list takes over;
+  // where the chart stays (×1.1 on a wide plate) it grows taller with the words under the soil.
+  it('grows with the text below ×1.3: a column too narrow for grown names hands over, a wide one gets taller', () => {
+    const height = () => root().findAll((n) => typeof n.type === 'string' && typeof n.props.style === 'object' && n.props.style?.height > 200 && n.props.accessibilityElementsHidden === undefined)[0]?.props.style.height as number;
+    let base = 0;
+    atScale(1, () => {
+      act(() => {
+        r = create(<StemChart stems={STEMS} />);
+      });
+      layout(340);
+      base = height();
+    });
+    act(() => r?.unmount());
+    atScale(1.2, () => {
+      act(() => {
+        r = create(<StemChart stems={STEMS} />);
+      });
+      // (340 - 24) / 5 = 63pt a column, under 58 × 1.2: the list, never truncated names.
+      layout(340);
+      expect(list()).toHaveLength(1);
+    });
+    act(() => r?.unmount());
+    atScale(1.2, () => {
+      act(() => {
+        r = create(<StemChart stems={STEMS} />);
+      });
+      layout(420);
+      expect(list()).toHaveLength(0);
+      expect(height()).toBeGreaterThan(base);
+    });
+  });
+});
+
+describe('ScaleBar, the tick named', () => {
+  const range = { enough: true as const, answered: 120, low: 64, high: 72, centre: 68 };
+  it('Today names the tick "study bar" under its 80 where the bar has room; a narrow bar keeps the number alone', () => {
+    act(() => {
+      r = create(<ScaleBar range={range} markLabel="study bar" />);
+    });
+    layout(340);
+    expect(allText()).toContain('study bar');
+    // Every number on one baseline (UX review P2): 0, 50, 80 and 100 all sit at the same top.
+    const tops = root()
+      .findAll((n) => typeof n.type === 'string' && n.props.style?.position === 'absolute' && /^(0|50|80|100)$/.test(textOf(n)))
+      .map((n) => n.props.style.top as number);
+    expect(new Set(tops).size).toBe(1);
+    act(() => r?.unmount());
+    act(() => {
+      r = create(<ScaleBar range={range} markLabel="study bar" />);
+    });
+    layout(200);
+    expect(allText()).not.toContain('study bar');
+    expect(allText()).toContain('80');
+  });
+
+  it('You leaves it out: the number alone', () => {
+    act(() => {
+      r = create(<ScaleBar range={range} />);
+    });
+    layout(340);
+    expect(allText()).not.toContain('study bar');
   });
 });
 

@@ -1,7 +1,9 @@
 // Mobile 1.51 Field Guide (SHOTS=fieldguide, see run.sh): You (the scale bar, the areas plate,
 // the Herbarium row, the label rows), the Herbarium (still to collect, the sheets), Today (the
 // plate, the plan's label, the scale bar) and Results (the growth plate, the key list of misses).
-// FONT_SCALE=2 approximates 200% text; FG_ONLY=you,herbarium,today,results narrows it.
+// FONT_SCALE=2 approximates 200% text (1.2 for the chart's grown-but-not-list size); FG_ONLY=you,herbarium,
+// today,results narrows it. Review sets (UX review, 1.51): FG_ONLY=full (You with all five areas measured, one
+// below 70), drop (Results with a set that lowered an area), new (a brand-new learner: Today, You, the Herbarium).
 import { createRequire } from 'module';
 import fs from 'fs';
 const require = createRequire(process.env.PLAYWRIGHT_REQUIRE_FROM || import.meta.url);
@@ -12,8 +14,12 @@ const theme = process.argv[4] || 'light';
 const BASE = 'http://127.0.0.1:8093';
 const FONT_SCALE = Number(process.env.FONT_SCALE) || 0;
 const ONLY = (process.env.FG_ONLY || '').split(',').filter(Boolean);
-const want = (k) => ONLY.length === 0 || ONLY.includes(k);
+const REVIEW = ['full', 'drop', 'new'];
+// The review sets only run when asked for by name.
+const want = (k) => (ONLY.length === 0 ? !REVIEW.includes(k) : ONLY.includes(k));
 const tag = `${theme}${FONT_SCALE ? `-fs${Math.round(FONT_SCALE * 100)}` : ''}`;
+const GEN = new URL('../../src/content/generated/cisa/', import.meta.url);
+const bank = (d) => JSON.parse(fs.readFileSync(new URL(`d${d}.json`, GEN)));
 const W = 393;
 const H = 852;
 const P = 'aurivan.progress.v1';
@@ -82,9 +88,13 @@ await edit(
   P,
   `const cp = v.state.byCert.cisa;
    cp.plant = { species: 'oak', name: 'Kai', plantedAt: a - 26 * ${DAY}, growth: 3, reached: { sprout: a - 24 * ${DAY}, shoot: a - 9 * ${DAY} } };
-   cp.milestones = { ...(cp.milestones || {}), earned: { 'first-foothold': a - 26 * ${DAY}, 'topic-clear': a - 24 * ${DAY}, 'rooted:10': a - 15 * ${DAY}, 'know-what-you-know': a - ${DAY} }, backfill: { at: a - 27 * ${DAY}, count: 0, seen: true }, catalogFill: { at: a - 27 * ${DAY}, count: 0, seen: true } };`,
+   cp.milestones = { earned: { 'first-foothold': a - 26 * ${DAY}, 'topic-clear': a - 24 * ${DAY}, 'rooted:10': a - 15 * ${DAY}, 'know-what-you-know': a - ${DAY} } };`,
   now,
 );
+// The app's launch back-fill awards every badge the seeded study already meets (UX review O2: the seed
+// used to skip it, so Firm Footing showed 20 of 20 unearned). Then its one-time summary line is marked seen.
+await go('/home', 1600);
+await edit(P, `const m = v.state.byCert.cisa.milestones; if (m.backfill) m.backfill.seen = true; if (m.catalogFill) m.catalogFill.seen = true;`);
 
 if (want('you')) {
   await go('/you');
@@ -131,6 +141,66 @@ if (want('results')) {
   await shot('fg-results');
   await into('What you missed', 'start');
   await shot('fg-results-missed');
+}
+
+// ── Review sets ───────────────────────────────────────────────────────────
+if (want('full')) {
+  // Every area measured (30+ answers), all between about 60 and 85: IS Audit 84%, IS Operations below its 70 line (61%).
+  const d5 = bank(5).map((q) => q.id);
+  const d4 = bank(4).map((q) => q.id);
+  await edit(
+    P,
+    `const ans = v.state.byCert.cisa.answers;
+     let k = 0; for (const id of a.d5) { if (Object.keys(ans).filter((x) => x.startsWith('d5_')).length >= 40) break; if (!ans[id]) { ans[id] = { attempts: 1, correctCount: k % 4 ? 1 : 0, lastCorrect: k % 4 !== 0, lastAt: a.now - 2 * ${DAY} }; k++; } }
+     const at = (pre, pct) => Object.keys(ans).filter((x) => x.startsWith(pre)).forEach((id, i) => { ans[id].lastCorrect = (i * pct) % 100 < pct; ans[id].correctCount = ans[id].lastCorrect ? 1 : 0; });
+     at('d1_', 84);
+     at('d4_', 61);`,
+    { d5, d4, now },
+  );
+  await go('/you');
+  await into('Fig. 5', 'start');
+  await shot('fg-full-you-areas');
+}
+
+if (want('drop')) {
+  // A 10-question IS Operations set that lowered it: four right, started 3 points higher.
+  const set = await page.evaluate(() => {
+    const p = JSON.parse(localStorage.getItem('aurivan.progress.v1'));
+    const answers = p.state.byCert.cisa.answers;
+    const ids = Object.keys(answers).filter((k) => k.startsWith('d4_')).slice(0, 10);
+    const d4 = Object.entries(answers).filter(([k]) => k.startsWith('d4_'));
+    const right = d4.filter(([, a]) => a.lastCorrect).length;
+    return { ids, answered: d4.length, pct: Math.round((right / d4.length) * 100) };
+  });
+  const responses = Object.fromEntries(set.ids.map((id, i) => [id, { display: 'A', correct: i % 5 < 2, ms: 80_000, at: now - (10 - i) * 80_000 }]));
+  await edit(
+    'aurivan.session.v1',
+    `v.state.active = { id: 'fg-drop', mode: 'practice', certId: 'cisa', title: 'Practice · IS Operations', questionIds: a.ids,
+      perms: Object.fromEntries(a.ids.map((i) => [i, ['A', 'B', 'C', 'D']])), index: 9, responses: a.responses, flagged: [],
+      before: { '4': [a.answered, a.pct + 3] }, startedAt: a.now - 14 * 60000, finishedAt: a.now };`,
+    { ...set, responses, now },
+  );
+  await go('/results', 2800);
+  await shot('fg-drop-results');
+}
+
+if (want('new')) {
+  // A brand-new learner: no answers, no badges, no plant (a fresh context's seed, then everything cleared).
+  await edit(
+    P,
+    `const cp = v.state.byCert.cisa; cp.answers = {}; cp.review = {}; cp.mistakes = {}; cp.mocks = []; delete cp.plant; cp.milestones = { earned: {}, backfill: { at: Date.now(), count: 0, seen: true } };
+     v.state.streak = { current: 0, best: 0, lastDay: null }; v.state.days = {};`,
+  );
+  await edit('aurivan.session.v1', `v.state.active = null;`);
+  await edit(S, `delete v.state.displayName;`);
+  await go('/home');
+  await shot('fg-new-today');
+  await go('/you');
+  await shot('fg-new-you');
+  await into('Fig. 5', 'start');
+  await shot('fg-new-you-areas');
+  await go('/milestones');
+  await shot('fg-new-herbarium');
 }
 
 if (errs.length) console.log('page errors:', [...new Set(errs)].slice(0, 5));

@@ -43,10 +43,17 @@ const H = 52;
 const BAR_Y = 22;
 const BAR_H = 5;
 const LABEL_W = 56;
+/** Where the numbers sit under the bar, and the extra line the tick's words take. */
+const LABEL_Y = 32;
+const MARK_LINE = 16;
+/** The tick's words need this much bar (a phone in landscape split view, a narrow plate: the number alone). */
+const MARK_MIN_W = 220;
+const MARK_W = 80;
 
 export function ScaleBar({
   range,
   mark = READY_LOW,
+  markLabel,
   size = 38,
   growth,
   accessible = true,
@@ -55,6 +62,8 @@ export function ScaleBar({
   range: ReadinessRange;
   /** The study bar's tick (the app's 80). */
   mark?: number;
+  /** The tick's words, set under its number ("study bar": Today reads "80 / study bar"). Left out (You), the number alone. */
+  markLabel?: string;
   size?: 38 | 34 | 30;
   /** The range rolls, and the bar draws in, on the day's first view or when it changed. */
   growth?: Growth;
@@ -88,8 +97,12 @@ export function ScaleBar({
   const X = (p: number) => x0 + ((x1 - x0) * Math.max(0, Math.min(100, p))) / 100;
   const roll = growth && range.enough ? { play: growth.play, from: growth.from.length === 2 ? `${growth.from[0]}–${growth.from[1]}` : null, run: growth.run } : undefined;
   const ticks = [0, 50, mark, 100].filter((p, i, all) => all.indexOf(p) === i);
-  const label = (p: number, text: string, top: number, color = c.ink2) => (
-    <View key={`${text}-${top}`} style={{ position: 'absolute', left: Math.max(0, Math.min(w - LABEL_W, X(p) - LABEL_W / 2)), top, width: LABEL_W, alignItems: 'center' }}>
+  // The tick's words go on a line of their own under its number, so "80" stays under the tick, on the
+  // numbers' one baseline, and never crowds "100" (UX review P2). They take the room a second line needs.
+  const named = Boolean(markLabel) && w >= MARK_MIN_W;
+  const height = named ? H + MARK_LINE : H;
+  const label = (p: number, text: string, top: number, color = c.ink2, width = LABEL_W) => (
+    <View key={`${text}-${top}`} style={{ position: 'absolute', left: Math.max(0, Math.min(w - width, X(p) - width / 2)), top, width, alignItems: 'center' }}>
       <FieldText v="small" color={color} maxScale={1.3} numberOfLines={1}>{text}</FieldText>
     </View>
   );
@@ -114,7 +127,7 @@ export function ScaleBar({
         accessibilityElementsHidden
         importantForAccessibility="no-hide-descendants"
         onLayout={(e) => setW(e.nativeEvent.layout.width)}
-        style={{ height: H, marginTop: space.sm }}
+        style={{ height, marginTop: space.sm }}
       >
         {w > 0 && (
           <>
@@ -123,8 +136,8 @@ export function ScaleBar({
                 {Array.from({ length: 10 }, (_, i) => (
                   <Rect key={i} x={X(i * 10)} y={BAR_Y} width={X(10) - x0} height={BAR_H} fill={i % 2 ? c.raised : c.ink2} stroke={c.ink2} strokeWidth={0.8} />
                 ))}
-                {/* The study bar's tick, under the bar. */}
-                <Path d={`M${X(mark)} ${BAR_Y + BAR_H + 3}v6`} stroke={c.ink} strokeWidth={1.4} />
+                {/* The study bar's tick runs through the bar, so it reads as a mark on the scale (UX review P2). */}
+                <Path d={`M${X(mark)} ${BAR_Y - 3}V${BAR_Y + BAR_H + 6}`} stroke={c.ink} strokeWidth={1.4} />
               </Svg>
             </Animated.View>
             {range.enough && (
@@ -137,7 +150,9 @@ export function ScaleBar({
                 {!large && label((range.low + range.high) / 2, `${range.low}–${range.high}`, -4, c.accentText)}
               </Animated.View>
             )}
-            {ticks.map((p) => label(p, String(p), p === mark ? 36 : 32))}
+            {/* One baseline for every number; the tick's words under its own. */}
+            {ticks.map((p) => label(p, String(p), LABEL_Y))}
+            {named ? label(mark, markLabel!, LABEL_Y + MARK_LINE, c.ink2, MARK_W) : null}
           </>
         )}
       </View>

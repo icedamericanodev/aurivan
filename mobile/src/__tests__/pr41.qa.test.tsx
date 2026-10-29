@@ -993,7 +993,7 @@ describe('Journey 5 · share card', () => {
   function openShare() {
     filled({ earned: { 'long-memory': new Date(2026, 10, 3, 9).getTime() } });
     mount(<Badges />);
-    press(/^Long Memory · 25 recalls, Clay\. Earned/);
+    press(/^Long Memory · 25 recalls, Clay\. Pressed/);
     press(/^Share Long Memory · 25 recalls$/);
     expect(root().findAllByType(Modal)).toHaveLength(1);
   }

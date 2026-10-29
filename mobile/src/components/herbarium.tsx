@@ -8,7 +8,7 @@
 import { memo } from 'react';
 import { View } from 'react-native';
 import type { LastPressed } from '../engine/fieldGuide';
-import { shortDate } from '../lib/format';
+import { shortDate, spokenShortDate } from '../lib/format';
 import { fieldInk, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { ChevronRight, ICON_STROKE } from './icons';
@@ -24,7 +24,7 @@ export function herbariumLine(last?: LastPressed): string {
 }
 
 export function herbariumSpoken(count: number, newBadge: boolean, last?: LastPressed): string {
-  return `${HERBARIUM}: badges and field notes${newBadge ? ', new badge' : ''}, ${count ? `${count} earned` : 'none yet'}.${last ? ` Last pressed: ${last.name}, ${shortDate(last.at)}.` : ''}`;
+  return `${HERBARIUM}: badges and field notes${newBadge ? ', new badge' : ''}, ${count ? `${count} earned` : 'none yet'}.${last ? ` Last pressed: ${last.name}, ${spokenShortDate(last.at)}.` : ''}`;
 }
 
 export const HerbariumEntry = memo(function HerbariumEntry({

@@ -261,7 +261,7 @@ describe('Today, top to bottom', () => {
   it('the plan panel: caption with the day’s minutes, the title, and a checklist of the REST of the plan', () => {
     storePlan([WARM, REVIEW, LESSON], [false, false, false]);
     mount(<Today />);
-    expect(allText()).toMatch(/Today’s plan · about \d+ min/);
+    expect(allText()).toMatch(/Today’s plan · about\u00A0\d+\u00A0min/);
     const list = byTestID('plan-checklist')[0];
     const lines = list.findAll((n) => typeof n.type === 'string' && n.props.accessible === true).map((n) => n.props.accessibilityLabel as string);
     // Mobile 1.24: the item you are on is the title (with its detail under it), not also the first row.

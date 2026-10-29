@@ -26,6 +26,7 @@ import { GrowthRings, PlanLeaf } from './glyphs';
 import { Check, ICON_STROKE, Pinwheel, Play, RotateCcw, Target, Timer } from './icons';
 import { AnimatedPressable, FadeIn, Pop, usePressScale, type Celebration, type Growth } from './motion';
 import { ESTIMATE_WORDS, FieldText, ScaleBar } from './fieldguide';
+import { READY_LOW } from '../engine/examReady';
 import { BigNum, DomainDot, ICON_SIZE, Row, Stat, StatRow, T, useFontScale } from './ui';
 import { aboutMin, spokenMin, timeStat } from '../engine/pace';
 
@@ -459,7 +460,7 @@ export function ReadinessRow({
     />
   );
   if (scale) {
-    const said = `${range.enough ? `Estimated readiness ${rangeSpoken(range)}, ${ESTIMATE_WORDS}.` : `Not enough data yet. ${meta}.`}${stage ? ` ${stage.replace(' · ', ', ')}.` : ''}`;
+    const said = `${range.enough ? `Estimated readiness ${rangeSpoken(range)}, ${ESTIMATE_WORDS}. The tick marks this app’s ${READY_LOW} percent study bar.` : `Not enough data yet. ${meta}.`}${stage ? ` ${stage.replace(' · ', ', ')}.` : ''}`;
     const body = (
       <View style={{ alignSelf: 'stretch' }}>
         <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'baseline', columnGap: space.md }}>
@@ -467,7 +468,8 @@ export function ReadinessRow({
           <FieldText v="head">{ESTIMATE_LINE}</FieldText>
           {aside ? <FieldText v="small">{aside}</FieldText> : null}
         </View>
-        <ScaleBar range={range} growth={rangeGrowth} accessible={false} style={{ marginTop: space.xs }} />
+        {/* Today names its tick (UX review: the 80 is the app's study bar, not a pass mark). */}
+        <ScaleBar range={range} growth={rangeGrowth} accessible={false} markLabel="study bar" style={{ marginTop: space.xs }} />
         {stage ? <T v="stage" color={c.accentText} style={{ marginTop: space.xs }}>{stage}</T> : null}
       </View>
     );

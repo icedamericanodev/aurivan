@@ -5,6 +5,14 @@
  */
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
+const MONTHS_LONG = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+/** How "6 Oct" is said: "6 December" (mobile 1.51: screen readers hear dates in full, never "Oct"). */
+export function spokenShortDate(ms: number): string {
+  const d = new Date(ms);
+  return `${d.getDate()} ${MONTHS_LONG[d.getMonth()]}`;
+}
+
 /** A timestamp (ms) as "6 Oct", in the phone's local time zone. */
 export function shortDate(ms: number): string {
   const d = new Date(ms);

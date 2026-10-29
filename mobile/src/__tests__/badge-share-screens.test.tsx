@@ -94,7 +94,7 @@ describe('sharing a badge', () => {
     act(() => {
       r = create(<Badges />);
     });
-    press(/^Long Memory · 25 recalls, Clay\. Earned/);
+    press(/^Long Memory · 25 recalls, Clay\. Pressed/);
     const sheet = () => root().findByType(Modal);
     // Nothing opened on its own: the details first.
     expect(textOf(sheet())).not.toContain('Share this badge');
@@ -137,7 +137,7 @@ describe('sharing a badge', () => {
     act(() => {
       r = create(<Badges />);
     });
-    press(/^Long Memory · 25 recalls, Clay\. Earned/);
+    press(/^Long Memory · 25 recalls, Clay\. Pressed/);
     press(/^Share Long Memory · 25 recalls$/);
     const modal = () => root().findByType(Modal);
     expect(textOf(modal())).toContain('Share this badge');
@@ -155,7 +155,7 @@ describe('sharing a badge', () => {
     act(() => {
       r = create(<Badges />);
     });
-    press(/^Firm Footing · IS Operations, Clay\. Earned/);
+    press(/^Firm Footing · IS Operations, Clay\. Pressed/);
     press(/^Share Firm Footing · IS Operations$/);
     const card = textOf(root().findByType(BadgeShareCard));
     expect(card).toContain('Firm Footing Clay · tier 1 of 2 Reached 70% in IS Operations in practice');
@@ -176,7 +176,7 @@ describe('sharing a badge', () => {
     act(() => {
       r = create(<Badges />);
     });
-    press(/^Flown the Nest\. Earned/);
+    press(/^Flown the Nest\. Pressed/);
     const sheet = () => root().findByType(Modal);
     expect(textOf(sheet())).toContain('Flown the Nest');
     expect(textOf(sheet())).not.toMatch(/graduat/i);
@@ -194,7 +194,7 @@ describe('sharing a badge', () => {
     act(() => {
       r = create(<Badges />);
     });
-    press(/^Fresh Start\. Earned/);
+    press(/^Fresh Start\. Pressed/);
     expect(buttons(/^Share /)).toHaveLength(0);
     press(/^Close Fresh Start$/);
     act(() => jest.advanceTimersByTime(700));

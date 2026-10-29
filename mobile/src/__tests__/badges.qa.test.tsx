@@ -802,7 +802,7 @@ describe('4. the case', () => {
   it('detail sheet, earned: the date and what it means, no How to earn, no Study button', () => {
     midLearner();
     mount(<Badges />);
-    press(/^First Foothold\. Earned 22 Sep/);
+    press(/^First Foothold\. Pressed 22 September/);
     const sheet = root().findByType(Modal);
     const t = textOf(sheet);
     expect(t).toContain('Earned 22 Sep');

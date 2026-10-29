@@ -79,7 +79,7 @@ import { pacingStats, pacingStatsLine, spokenMin } from '../../engine/pace';
 import { mockSubtitle } from '../../components/readinessReport';
 import { readinessRange } from '../../engine/readinessRange';
 import { mockPct } from '../../engine/readinessReport';
-import { BANDS_LINE, domainFigure, STUDY_BAR_LINE } from '../../engine/domainBand';
+import { BAND_MIN_ANSWERS, BANDS_LINE, domainFigure, STUDY_BAR_LINE } from '../../engine/domainBand';
 import { dayKey } from '../../engine/streak';
 import { guardedStart, reviewSubtitle, startReview } from '../../lib/sessions';
 import { caseEarnedCount } from '../../engine/badgeCatalog';
@@ -125,7 +125,8 @@ export default function You() {
   // Mobile 1.24: a word below 30 answers in a domain, the number from 30 (engine/domainBand.ts).
   const figures = readiness.domains.map((d) => domainFigure(d.answered, Math.round(d.mastery * 100)));
   // Mobile 1.43: an area with some answers but under 30 is "thin" (its bar is lighter, "N answered" shows).
-  const anyThin = figures.some((f) => f.banded);
+  // UX review P3: any area under 30 answers (a brand-new learner's five too) shows the bands line.
+  const anyThin = readiness.domains.some((d) => d.answered < BAND_MIN_ANSWERS);
   const growth = useMindsetGrowth(cert.id, progress);
   // Help and feedback (mobile 1.7): the row says so when a report's update hasn't been seen yet.
   const { dueItems: creditItems } = useReports();
@@ -246,7 +247,8 @@ export default function You() {
       <Enter i={1}>
         {/* Readiness first (mobile 1.21): a tracked kicker, and its action opens the report. */}
         <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', marginTop: space.lg }}>
-          <FieldText v="head" accessibilityRole="header">Readiness</FieldText>
+          {/* One kicker word on You and Today (UX review O9). */}
+          <FieldText v="head" accessibilityRole="header">Estimated readiness</FieldText>
           <Button
             kind="ghost"
             label="See report"
