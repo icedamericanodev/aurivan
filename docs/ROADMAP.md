@@ -81,6 +81,8 @@ A calm, trustworthy study companion that helps people **pass** professional secu
 - **Phone menu: option A.** 4 tabs (Today, Learn, Practice, You). The brain games move inside Practice as "Drills". The web already has 4 tabs.
 - **Business setup:** KaiSip will be a **DTI sole proprietorship**. The Google payments profile is set up as **Individual** with the public business name **KaiSip** (the public name, support email and statement name can change later; the account type cannot easily).
 - **RevenueCat:** account, Google payments profile and the Play ↔ RevenueCat service account are set up (Parts 1–3). Products, entitlements and the paywall wait for the first Play build with billing (Phase E).
+- **Store title:** `KaiSip: Cyber & IT Audit Prep` (growth-marketer and app-store-compliance-reviewer agreed; "IT Audit Exam Prep" was too narrow for the multi-certification roadmap). See `docs/mobile/STORE_LISTING.md` §2.
+- **Market test: on hold (option C).** The 6-week validation plan (website fake-door /plans pages, reservation form, extra beta surveys) is not started, and the current build order stays (sign-in first, then the closed beta). No DTI/BIR registration and no selling until the owner revisits it. The plan and the expert reports are kept in `docs/business/monetization/` and the prices (₱699 vs ₱999) stay undecided.
 
 The five directions explored (A Grove Refined, B Editorial Ivory, C Midnight Focus, D Clear Modern, and the wild cards E1/E2) are recorded in the scratchpad boards and the two new agents, `premium-web-designer` and `premium-mobile-designer`.
 
