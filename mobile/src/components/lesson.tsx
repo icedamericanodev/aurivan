@@ -44,7 +44,7 @@ import { useTheme } from '../theme/useTheme';
 import { LeafBig, PlanLeaf, type BotanyKind } from './glyphs';
 import { DrawLine, FadeIn } from './motion';
 import { Bullets } from './notes';
-import { OptionCard, Verdict, type OptionState } from './quiz';
+import { FEEDBACK_DELAY, OptionCard, StemRecap, Verdict } from './quiz';
 import { BigNum, Gap, HeroPanel, Stem, T, useFontScale } from './ui';
 
 /** When part `i` of a scene arrives: 120 ms apart in reading order, the first 6 (the rest come with the 6th). */
@@ -549,6 +549,11 @@ export interface RevealBox {
   bottom: number;
   /** Mobile 1.45: the top edge of the option the learner picked, so the scroll never hides it. */
   pick?: number;
+  /**
+   * Mobile 1.49: the page above the verdict just changed (the options gave way to the recap), so
+   * if the scroll is already past the verdict, come back UP to it rather than leaving it hidden.
+   */
+  lead?: boolean;
 }
 
 /** Breathing room kept above the verdict and below the explanation when the page scrolls to them. */
@@ -565,7 +570,9 @@ export const REVEAL_GAP = space.lg;
  * - But never past the verdict's top (minus a small gap): when the
  *   explanation is taller than the screen, the verdict leads.
  * - Never scroll backwards: if the learner has already scrolled further
- *   down, leave them where they are.
+ *   down, leave them where they are. Except (mobile 1.49) a `lead` box whose
+ *   verdict is above the view: the page above it just got shorter, so the
+ *   scroll comes back up to the verdict.
  *
  * `viewport` = the scroll view's height; `footer` = the sticky bar's height
  * (it floats over the bottom of the scroll view); `scrollY` = where the
@@ -580,6 +587,8 @@ export function revealScrollY(box: RevealBox, viewport: number, footer: number, 
   // its words stay on screen; the explanation then continues below, a scroll away.
   const pickTop = box.pick === undefined ? Infinity : box.pick - REVEAL_GAP;
   const target = Math.max(0, Math.min(fitBottom, verdictTop, pickTop));
+  // Mobile 1.49: a `lead` box whose verdict is above the view scrolls back up to it.
+  if (box.lead && Math.max(0, verdictTop) < scrollY - 1) return Math.max(0, verdictTop);
   // 1pt of slack, so a rounding difference never causes a pointless nudge.
   return target > scrollY + 1 ? target : null;
 }
@@ -723,46 +732,51 @@ function CheckScene({
   const verdictRef = useRef<View>(null);
   // The answer block is reported to the player ONCE per pick (a later re-layout must not scroll again).
   const reported = useRef(false);
-  // Mobile 1.45: each option row's top (same parent as the answer block), so the scroll keeps the pick in view.
-  const rowTops = useRef<Partial<Record<Letter, number>>>({});
   const onAnswerLayout = (e: LayoutChangeEvent) => {
     if (reported.current) return;
     reported.current = true;
     const { y, height } = e.nativeEvent.layout;
-    const pick = picked ? rowTops.current[picked] : undefined;
-    onReveal?.({ top: y, bottom: y + height, ...(pick === undefined ? {} : { pick }) });
+    // Mobile 1.49: the options give way to the recap and the two answer rows, so the page above the
+    // verdict gets shorter: `lead` lets the scroll come back UP to the verdict if the learner had
+    // scrolled down to the last option (the picked row is now inside this block, under the verdict).
+    onReveal?.({ top: y, bottom: y + height, lead: true });
     // Focus moves only AFTER the scroll is issued, so the glide (~250–300 ms) has settled
     // before it lands and VoiceOver / TalkBack never scroll to the verdict mid-glide.
     moveFocus(verdictRef, 400);
   };
+  // The learner's pick, as the bank's option behind it (for the "Your answer" row).
+  const pickedText = picked ? (scene.options[LETTERS.indexOf(displayToOriginal(picked, perm))] ?? '') : '';
+  const keyText = scene.options[scene.correctIndex] ?? '';
 
   return (
     <View>
       <Part i={0}>
         <T v="caption" color={c.accentText} accessibilityRole="header">Quick check</T>
-        <Gap h={space.sm} />
-        <Stem>{scene.question}</Stem>
-        <Gap h={space.xl} />
+        {done ? (
+          // Mobile 1.49 (premium pass §5.1): once answered, the question shrinks to the same two-line
+          // recap as the practice answer screen ("The question" + "Show question").
+          <StemRecap stem={scene.question} caption="The question" />
+        ) : (
+          <>
+            <Gap h={space.sm} />
+            <Stem>{scene.question}</Stem>
+            <Gap h={space.xl} />
+          </>
+        )}
       </Part>
-      {displayLetters.map((letter, i) => {
-        // Look up the ORIGINAL option behind this display letter (shuffled like practice).
-        const original = displayToOriginal(letter, perm);
-        const opt = scene.options[LETTERS.indexOf(original)] ?? '';
-        // Grade on the ORIGINAL letter, never on the display position.
-        const isRight = isCheckCorrect(scene.correctIndex, letter, perm);
-        const state: OptionState = !done ? 'idle' : isRight ? 'correct' : letter === picked ? 'wrong' : 'dimmed';
-        // Mobile 1.45: once answered, the ✓ / ✗ badge replaces the letter, so the tinted rows name it in a
-        // tag ("Best answer · D", "Your answer · B"): the coach line's "The best answer is D" can be found.
-        const tag = state === 'correct' ? `Best answer · ${letter}` : state === 'wrong' ? `Your answer · ${letter}` : undefined;
-        return (
-          <View key={opt} onLayout={(e) => (rowTops.current[letter] = e.nativeEvent.layout.y)}>
-            <Part i={i + 1}>
+      {!done &&
+        displayLetters.map((letter, i) => {
+          // Look up the ORIGINAL option behind this display letter (shuffled like practice).
+          const original = displayToOriginal(letter, perm);
+          const opt = scene.options[LETTERS.indexOf(original)] ?? '';
+          // Grade on the ORIGINAL letter, never on the display position.
+          const isRight = isCheckCorrect(scene.correctIndex, letter, perm);
+          return (
+            <Part key={opt} i={i + 1}>
               <OptionCard
                 letter={letter}
                 text={opt}
-                tag={tag}
-                state={state}
-                disabled={done}
+                state="idle"
                 onPress={() => {
                   setPicked(letter);
                   if (isRight) haptic.success();
@@ -775,19 +789,45 @@ function CheckScene({
                 }}
               />
             </Part>
-          </View>
-        );
-      })}
-      {done && (
+          );
+        })}
+      {done && picked && (
         // A plain View measures the answer block (FadeIn only fades and rises, so the
         // layout is final at once): the player scrolls it into view (mobile 1.37).
-        <View onLayout={onAnswerLayout}>
-          {/* The session's verdict (ui.md LP4): the leaf springs in, then the words. */}
+        // Mobile 1.49 (premium pass §5.1): the practice answer screen's order and rows. The verdict,
+        // then only the two rows that matter ("Your answer" in red after a miss, "Best answer" in
+        // green), each with its DISPLAY letter in the badge (no ✓ / ✗: the verdict leaf is the one
+        // mark); the other options are hidden, not dimmed. Then "Why B" and the explanation.
+        <View onLayout={onAnswerLayout} style={{ marginTop: space.lg }}>
+          {/* The session's verdict (ui.md LP4): the leaf springs in once, then the words. */}
           <FadeIn dur="reveal">
             <Verdict ref={verdictRef} correct={right} coach={coach} />
-            <Gap h={space.md} />
+          </FadeIn>
+          {/* The rows fade and rise in (200 ms); under Reduce Motion they are simply there. */}
+          <FadeIn dur="reveal" delay={FEEDBACK_DELAY.rows}>
+            <View style={{ marginTop: space.lg }}>
+              {!right && (
+                <OptionCard
+                  letter={picked}
+                  text={pickedText}
+                  state="wrong"
+                  mark="letter"
+                  tag="Your answer"
+                  spoken={`Your answer, ${picked}, not correct: ${pickedText}`}
+                />
+              )}
+              <OptionCard
+                letter={keyLetter}
+                text={keyText}
+                state="correct"
+                mark="letter"
+                tag="Best answer"
+                spoken={`Best answer, ${keyLetter}: ${keyText}`}
+              />
+            </View>
+            <T v="headline" accessibilityRole="header" style={{ marginTop: space.lg }}>{`Why ${keyLetter}`}</T>
             {/* renderText maps any {{X}} letter reference to what is on screen. */}
-            <T v="body">{renderText(scene.explanation, perm)}</T>
+            <T v="body" style={{ marginTop: space.xs }}>{renderText(scene.explanation, perm)}</T>
           </FadeIn>
         </View>
       )}

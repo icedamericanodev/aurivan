@@ -410,7 +410,7 @@ describe('Journey 3: notes, lesson steps and game recaps', () => {
     expect(allText()).toContain(`Code ${note.id}`);
   });
 
-  it('a lesson: plain steps have no link (mobile 1.20); a check only once answered, and again hidden after Back/Next', async () => {
+  it('a lesson: no report row in any step’s body (mobile 1.49); the header flag reports a check with its pick', async () => {
     const lesson = CISA_LESSONS.find((l) => {
       const at = l.scenes.findIndex((x) => x.type === 'check');
       return at > 0 && l.scenes[at].type === 'check' && (l.scenes[at] as { options: string[] }).options.length >= 3;
@@ -422,19 +422,20 @@ describe('Journey 3: notes, lesson steps and game recaps', () => {
     expect(pressables('Report a problem with this lesson step')).toHaveLength(0);
     for (let i = 0; i < checkAt; i++) press('Next');
     expect(pressables('Report a problem with this lesson step')).toHaveLength(0);
-    // Answer by what is on screen (shuffle is on).
+    // Answer by what is on screen (shuffle is on). Mobile 1.49: still no row in the body.
     act(() => { root().findAllByType(OptionCard)[1].props.onPress(); });
-    expect(pressables('Report a problem with this lesson step')).toHaveLength(1);
+    expect(pressables('Report a problem with this lesson step')).toHaveLength(0);
 
-    // Back, then Next: the check is unanswered again, so the link hides again.
-    press('Back');
+    // Back, then Next: the check is unanswered again.
+    press('Previous step');
     press('Next');
     expect(pressables('Report a problem with this lesson step')).toHaveLength(0);
     act(() => { root().findAllByType(OptionCard)[1].props.onPress(); });
-    // How the screen graded display B (the card's own state).
-    const gradedRight = root().findAllByType(OptionCard)[1].props.state === 'correct';
+    // How the screen graded display B: after a miss a red "Your answer" row shows (mobile 1.49).
+    const gradedRight = !root().findAllByType(OptionCard).some((n) => n.props.state === 'wrong');
 
-    press('Report a problem with this lesson step');
+    // The header's flag reports every scene.
+    press('Report a problem with this step');
     // Opened from a check: "Check question" is preselected.
     expect(pressables('Check question')[0].props.selected).toBe(true);
     press('The check question’s answer looks wrong');

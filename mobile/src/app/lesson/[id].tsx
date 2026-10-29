@@ -38,11 +38,12 @@
 import { router, useLocalSearchParams } from 'expo-router';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ScrollView, useWindowDimensions, View } from 'react-native';
+import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LessonBranch, type BotanyKind } from '../../components/glyphs';
 import { ArrowRight, BookOpen, ChevronLeft, Flag, ICON_STROKE } from '../../components/icons';
 import { revealScrollY, SceneView, type RevealBox } from '../../components/lesson';
-import { Celebrate, FadeIn, PageTurn, useCelebration, useMotion } from '../../components/motion';
+import { Celebrate, PageTurn, useCelebration, useMotion } from '../../components/motion';
 import { StickyFooter } from '../../components/quiz';
 import { useReportFlow } from '../../components/support';
 import { Button, Gap, ICON_SIZE, IconButton, PushedHeader, Row, SegmentBar, T, useFontScale } from '../../components/ui';
@@ -101,6 +102,9 @@ export function lessonPracticeIds(lesson: Lesson, seed = Date.now()): string[] {
   return [...new Set(mixed)];
 }
 
+/** Mobile 1.49: the header's hairline shows once content has scrolled this far (pt) under it. */
+const HEADER_LINE_AFTER = 4;
+
 export default function LessonPlayer() {
   const { c } = useTheme();
   // Very large text (mobile 1.20): three stacked actions would crowd a pinned footer.
@@ -117,14 +121,19 @@ export default function LessonPlayer() {
   const nextRef = useRef<View>(null);
   // The footer's Back, whichever shape it has (the round "Previous step", or the "Back" pill on a check).
   const backRef = useRef<View>(null);
-  // Back changed shape on this turn (a check ↔ another scene): the old control is gone, so screen-reader
-  // focus is handed to the new one once the new page is placed (mobile 1.22 review P3).
-  const backFocusAfterTurn = useRef(false);
   const scrollRef = useRef<ScrollView>(null);
   // Mobile 1.37: the scroll view's height and where it is scrolled to, so a check's answer can be scrolled into view.
   const viewportH = useRef(0);
   const scrollY = useRef(0);
+  // Mobile 1.49: has content scrolled under the header (more than 4pt)? Draws its hairline.
+  const [contentUnder, setContentUnder] = useState(false);
   const { reduced: reduceMotion } = useMotion();
+  // The header's hairline: 160 ms in or out (motion.dur.quick), at once under Reduce Motion.
+  const headerLine = useSharedValue(0);
+  useEffect(() => {
+    headerLine.value = reduceMotion ? (contentUnder ? 1 : 0) : withTiming(contentUnder ? 1 : 0, { duration: motion.dur.quick });
+  }, [contentUnder, reduceMotion, headerLine]);
+  const headerLineStyle = useAnimatedStyle(() => ({ opacity: headerLine.value }));
   // The page on screen: it changes at PageTurn's swap (before paint), so the footer follows the page, not the tap.
   const [onPage, setOnPage] = useState<string | number>(0);
   // The DISPLAY letter picked on this scene's check (for Report a problem), reset with `checked`.
@@ -152,14 +161,12 @@ export default function LessonPlayer() {
   const onSwap = useCallback((to: string | number) => {
     scrollRef.current?.scrollTo({ y: 0, animated: false });
     scrollY.current = 0;
+    setContentUnder(false); // the new page starts at the top: no hairline under the header
     setOnPage(to);
   }, []);
-  // The new page is placed (its footer with it): hand focus to Back if it changed shape.
-  useEffect(() => {
-    if (!backFocusAfterTurn.current) return;
-    backFocusAfterTurn.current = false;
-    moveFocus(backRef);
-  }, [onPage]);
+  // Mobile 1.49: Back is the same round "Previous step" on every scene (a check too), so it stays
+  // mounted across a turn and keeps screen-reader focus; nothing to hand over (1.22 did, when a
+  // check's Back was a different, full-width pill).
   // After a turn, say where we are (once, after a short pause so the turn doesn't cut it off).
   // Lesson complete says its own line.
   const firstPage = useRef(true);
@@ -235,20 +242,18 @@ export default function LessonPlayer() {
     if (turning) return;
     // Back to the first scene removes this button: keep screen-reader focus on Next.
     if (index === 1) moveFocus(nextRef);
-    else if ((lesson.scenes[index].type === 'check') !== (lesson.scenes[index - 1].type === 'check')) backFocusAfterTurn.current = true;
     goTo(index - 1);
   };
 
   // The anchor line under the header (design spec §4.2): every scene starts on it (mobile 1.43). The
   // cover and Lesson complete keep the closer 24 (a forest panel and a moment, not a page of text).
   const anchor = showingDone || scene.type === 'title' ? space.xl : ANCHOR;
-  const onCheck = scene.type === 'check';
   // Mobile 1.37: a check was answered and its verdict + explanation laid out. The scene starts
   // `anchor` below the top of the scroll content (the page turn adds no offset), so add it to
   // get scroll positions, then scroll just enough to show the explanation above the bar.
   const revealAnswer = (box: RevealBox) => {
     const y = revealScrollY(
-      { top: anchor + box.top, bottom: anchor + box.bottom, ...(box.pick === undefined ? {} : { pick: anchor + box.pick }) },
+      { top: anchor + box.top, bottom: anchor + box.bottom, ...(box.pick === undefined ? {} : { pick: anchor + box.pick }), ...(box.lead ? { lead: true } : {}) },
       viewportH.current,
       footerH,
       scrollY.current,
@@ -258,7 +263,14 @@ export default function LessonPlayer() {
 
   return (
     <SafeAreaView edges={['top', 'bottom']} style={{ flex: 1, backgroundColor: c.bg }}>
-      <View style={{ paddingHorizontal: space.gutter }}>
+      {/* Mobile 1.49 (premium pass §5.2): once content scrolls under the header, the header gets a
+          surface: the page's own fill and a 1px hairline that fades in over 160 ms (at once under
+          Reduce Motion), so a stem is never seen cut off against nothing. */}
+      <View style={{ paddingHorizontal: space.gutter, backgroundColor: c.bg }}>
+        <Animated.View
+          pointerEvents="none"
+          style={[{ position: 'absolute', left: 0, right: 0, bottom: 0, height: 1, backgroundColor: c.line }, headerLineStyle]}
+        />
         <PushedHeader
           icon="close"
           onBack={() => router.back()}
@@ -290,7 +302,12 @@ export default function LessonPlayer() {
         <ScrollView
           ref={scrollRef}
           onLayout={(e) => (viewportH.current = e.nativeEvent.layout.height)}
-          onScroll={(e) => (scrollY.current = e.nativeEvent.contentOffset.y)}
+          onScroll={(e) => {
+            scrollY.current = e.nativeEvent.contentOffset.y;
+            // Only a change of side re-renders (the hairline's on/off), never every scroll event.
+            const under = scrollY.current > HEADER_LINE_AFTER;
+            if (under !== contentUnder) setContentUnder(under);
+          }}
           scrollEventThrottle={32}
           // Pad by the sticky footer + 24, so the sources line on the last scene is never under it.
           contentContainerStyle={{ flexGrow: 1, paddingHorizontal: space.gutter, paddingTop: anchor, paddingBottom: footerH + space.xl }}
@@ -333,17 +350,12 @@ export default function LessonPlayer() {
                   art={`branch${toneIndex % 5}` as BotanyKind}
                   tone={domainColor(toneIndex, true)}
                 />
-                {/* The full "Report a problem" row, on check scenes only (mobile 1.20; the header's
-                    flag covers every scene). It waits until the check is answered, so it never
-                    hints at the answer, then arrives at once. */}
-                {lesson.scenes[index].type === 'check' && checked && (
-                  <FadeIn build rise={false} delay={0}>
-                    <View style={{ marginTop: space.xl, alignItems: 'flex-start' }}>
-                      {report.link}
-                      <View style={{ alignSelf: 'stretch' }}>{report.block}</View>
-                    </View>
-                  </FadeIn>
-                )}
+                {/* Mobile 1.49 (premium pass §5.4): no "Report a problem" row in a check's body; the
+                    header's flag reports every scene. The calm note after a report's email app opened
+                    still shows under an answered check. */}
+                {lesson.scenes[index].type === 'check' && checked && report.block ? (
+                  <View style={{ marginTop: space.xl }}>{report.block}</View>
+                ) : null}
                 {index === total - 1 && (
                   <>
                     <Gap h={space.xl} />
@@ -366,21 +378,19 @@ export default function LessonPlayer() {
               <Row gap={space.sm}>
                 {/* No Back on the first scene (a disabled slab looked broken); Next takes the full width.
                     Mobile 1.22: a 56pt round "Previous step" beside Next (half the bright area in dark
-                    mode); a check keeps the full "Back" pill, where it means "the scene before the check". */}
-                {shownIndex > 0 &&
-                  (onCheck ? (
-                    <Button ref={backRef} kind="secondary" label="Back" onPress={back} style={{ flex: 1 }} />
-                  ) : (
-                    <IconButton
-                      ref={backRef}
-                      outline
-                      label="Previous step"
-                      onPress={back}
-                      icon={(col) => <ChevronLeft size={ICON_SIZE.bar} color={col} strokeWidth={ICON_STROKE} />}
-                    />
-                  ))}
+                    mode). Mobile 1.49 (premium pass §5.3): a check has the same shape as every other
+                    scene; its old full "Back" pill is gone. */}
+                {shownIndex > 0 && (
+                  <IconButton
+                    ref={backRef}
+                    outline
+                    label="Previous step"
+                    onPress={back}
+                    icon={(col) => <ChevronLeft size={ICON_SIZE.bar} color={col} strokeWidth={ICON_STROKE} />}
+                  />
+                )}
                 {/* ONE keyed button whose label changes, so screen-reader focus stays on it. */}
-                <Button key="next" ref={nextRef} label={isLast ? 'Finish lesson' : 'Next'} disabled={!canFinish} onPress={next} style={{ flex: onCheck ? 2 : 1 }} />
+                <Button key="next" ref={nextRef} label={isLast ? 'Finish lesson' : 'Next'} disabled={!canFinish} onPress={next} style={{ flex: 1 }} />
               </Row>
             )}
           </StickyFooter>

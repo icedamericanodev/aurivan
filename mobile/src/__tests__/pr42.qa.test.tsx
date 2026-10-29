@@ -221,7 +221,8 @@ describe('Journey 1: a lesson from cover to Lesson complete', () => {
     const wrong = check.options.find((_, i) => i !== check.correctIndex)!;
     pickText(wrong);
     expect(root().findByType(Verdict).props.correct).toBe(false);
-    const keyCard = root().findAll((n) => n.props.letter && n.props.text === check.options[check.correctIndex] && typeof n.props.onPress === 'function')[0];
+    // Mobile 1.49: the answered check shows the "Best answer" row with its display letter in the badge.
+    const keyCard = root().findAll((n) => n.props.letter && n.props.text === check.options[check.correctIndex] && n.props.state === 'correct')[0];
     expect(allText()).toContain(`The best answer is ${keyCard.props.letter}.`);
     // A miss still lets the learner finish.
     expect(nextDisabled()).toBe(false);
@@ -342,7 +343,7 @@ describe('Journey 2: back navigation mid-lesson', () => {
     const order = () => root().findAll((n) => n.props.letter && typeof n.props.text === 'string' && typeof n.props.onPress === 'function').map((n) => n.props.text);
     const first = order();
     pickText(checkOf(charter).options[checkOf(charter).correctIndex]);
-    press('Back');
+    press('Previous step'); // mobile 1.49: the round Back on a check too
     press('Next');
     expect(root().findAllByType(Verdict)).toHaveLength(0);
     expect(nextDisabled()).toBe(true);

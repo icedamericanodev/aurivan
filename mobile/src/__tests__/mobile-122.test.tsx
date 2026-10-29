@@ -202,7 +202,7 @@ describe('lesson scenes: kicker + hero heading', () => {
 describe('lesson player: header flag, round Back, sources date', () => {
   const lesson = CISA_LESSONS.find((l) => l.id === 'cisa-l-d1-charter')!;
 
-  it('the flag is on every scene; Back is the round "Previous step" (a full Back on a check)', () => {
+  it('the flag is on every scene; Back is the round "Previous step", on a check too (mobile 1.49)', () => {
     mockParams = { id: lesson.id };
     mount(<LessonPlayer />);
     expect(pressables('Report a problem with this step')).toHaveLength(1);
@@ -215,7 +215,7 @@ describe('lesson player: header flag, round Back, sources date', () => {
     const prev = root().findAll((n) => n.type === IconButton && n.props.label === 'Previous step');
     expect(prev).toHaveLength(1);
     expect(prev[0].props.outline).toBe(true);
-    // Walk to the check: there Back is the full pill again.
+    // Walk to the check: mobile 1.49, the same round "Previous step" (the full "Back" pill is gone).
     const checkAt = lesson.scenes.findIndex((s) => s.type === 'check');
     for (let i = 1; i < checkAt; i++) {
       press('Next');
@@ -223,14 +223,14 @@ describe('lesson player: header flag, round Back, sources date', () => {
         jest.runOnlyPendingTimers();
       });
     }
-    expect(pressables('Back')).toHaveLength(1);
-    expect(pressables('Previous step')).toHaveLength(0);
+    expect(pressables('Back')).toHaveLength(0);
+    expect(root().findAll((n) => n.type === IconButton && n.props.label === 'Previous step' && n.props.outline === true)).toHaveLength(1);
     // The flag opens the report sheet for this step.
     press('Report a problem with this step');
     expect(allText()).toContain('Report a problem');
   });
 
-  it('Back hands screen-reader focus to the new Back when it changes shape (check ↔ another scene)', () => {
+  it('Back keeps screen-reader focus from a check to the scene before (it no longer changes shape)', () => {
     mockParams = { id: lesson.id };
     mount(<LessonPlayer />);
     const checkAt = lesson.scenes.findIndex((s) => s.type === 'check');
@@ -241,17 +241,17 @@ describe('lesson player: header flag, round Back, sources date', () => {
         jest.runOnlyPendingTimers();
       });
     }
-    // On the check, Back is the pill; back on the scene before, it is the round "Previous step".
-    expect(pressables('Back')).toHaveLength(1);
+    // The same round "Previous step" on the check and on the scene before: the control stays
+    // mounted across the turn, so focus stays on it and nothing has to move it.
+    const before = root().findAll((n) => n.type === IconButton && n.props.label === 'Previous step')[0];
     mockMoveFocus.mockClear();
-    press('Back');
+    press('Previous step');
     act(() => {
       jest.runOnlyPendingTimers();
     });
-    expect(pressables('Previous step')).toHaveLength(1);
-    expect(mockMoveFocus).toHaveBeenCalledTimes(1);
-    const target = mockMoveFocus.mock.calls[0][0] as { current: unknown };
-    expect(target.current).toBeTruthy();
+    const after = root().findAll((n) => n.type === IconButton && n.props.label === 'Previous step')[0];
+    expect(after).toBe(before);
+    expect(mockMoveFocus).not.toHaveBeenCalled();
   });
 
   it('the last scene says when it was reviewed as "Oct 2026"', () => {

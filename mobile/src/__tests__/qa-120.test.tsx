@@ -271,7 +271,7 @@ describe('lesson player: Report a problem on a check scene', () => {
   const lesson = lessonsFor('cisa').find((l) => l.scenes.findIndex((s) => s.type === 'check') > 0)!;
   const checkAt = lesson.scenes.findIndex((s) => s.type === 'check');
 
-  it('is absent until the check is answered (it never hints at the answer), then names the step', () => {
+  it('mobile 1.49: never a row in the body; the header flag is there before and after the answer', () => {
     mockParams = { id: lesson.id };
     const r = mount(<LessonPlayer />);
     for (let i = 0; i < checkAt; i++) {
@@ -281,13 +281,14 @@ describe('lesson player: Report a problem on a check scene', () => {
       });
     }
     expect(r.root.findAllByType(OptionCard).length).toBeGreaterThan(0);
-    // The full row waits for the answer; mobile 1.22: the header's flag is there on every scene.
+    // Mobile 1.22: the header's flag is there on every scene; 1.49: the body's row is gone (§5.4).
     expect(pressables(r, 'Report a problem with this lesson step')).toHaveLength(0);
     expect(pressables(r, 'Report a problem with this step')).toHaveLength(1);
     act(() => {
       r.root.findAllByType(OptionCard)[0].props.onPress();
     });
-    expect(pressables(r, 'Report a problem with this lesson step')).toHaveLength(1);
+    expect(pressables(r, 'Report a problem with this lesson step')).toHaveLength(0);
+    expect(pressables(r, 'Report a problem with this step')).toHaveLength(1);
   });
 });
 

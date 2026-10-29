@@ -345,7 +345,7 @@ describe('lessons', () => {
   const lesson = CISA_LESSONS.find((l) => l.scenes.some((s) => s.type === 'check'))!;
   const checkAt = lesson.scenes.findIndex((s) => s.type === 'check');
 
-  it('only a check has the link, once answered (mobile 1.20: plain scenes stay clear)', async () => {
+  it('no report row in a step’s body; the header flag reports an answered check (mobile 1.49)', async () => {
     mockParams = { id: lesson.id };
     mount(<LessonPlayer />);
     expect(pressables('Report a problem with this lesson step')).toHaveLength(0);
@@ -353,8 +353,8 @@ describe('lessons', () => {
     for (let i = 0; i < checkAt; i++) press('Next');
     expect(pressables('Report a problem with this lesson step')).toHaveLength(0);
     act(() => { root().findAllByType(OptionCard)[0].props.onPress(); });
-    expect(pressables('Report a problem with this lesson step')).toHaveLength(1);
-    press('Report a problem with this lesson step');
+    expect(pressables('Report a problem with this lesson step')).toHaveLength(0);
+    press('Report a problem with this step');
     for (const reason of REASONS.lesson) expect(allText()).toContain(reason.label);
     await sendReport('The check question’s answer looks wrong');
     const body = lastBody();
