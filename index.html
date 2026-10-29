@@ -277,7 +277,7 @@
   --glyph-leaf: #A9D9BA;
   /* Field Guide (web v12.44): the two derived values the kit adds, plus the
      stem's bark ink. Decorative: their meaning is always in words too. */
-  --fg-stem: #5B4B3C;       /* a stem on the plate (8.3:1 on raised2) */
+  --fg-stem: #5B4B3C;       /* a stem on the plate (7.8:1 L, 7.0:1 D on raised2) */
   --fg-leaf: #CFE5D5;       /* a pressed leaf's fill */
   --fg-seed: #E9D9C4;       /* "too few yet": a seed in the soil */
   --fg-tape: rgba(214,205,182,.75);
@@ -5129,7 +5129,6 @@ body[data-tab]:not([data-tab="about"]):not([data-tab="faq"]) .legal-disclaimer {
 .rs-plate.rs-tomorrow { display: block; }
 .rs-tm-cap { margin: 0; font: var(--t-caption); color: var(--accent-text); }
 .rs-tm-t { margin: var(--sp-sm) 0 0; font: var(--t-body); color: var(--text); }
-.rs-one { margin-top: var(--sp-sm); }
 /* The right column: one L1 plate (tonal, never tapped as a whole) with the
    readiness, the week and the plant; --td-paper is what a leaf's vein cuts to. */
 .td-side { margin-top: var(--sp-2xl); }
@@ -5503,8 +5502,8 @@ button.pg-cd:hover { background: var(--surface2); }
 .fg-large .fg-stems-svg { display: none !important; }
 .fg-large .fg-stemlist { position: static; width: auto; height: auto; margin: var(--sp-sm) 0 0; overflow: visible; clip: auto; white-space: normal; }
 @container (max-width: 299px) {
-  .fg-stems-svg { display: none !important; }
-  .fg-stemlist { position: static; width: auto; height: auto; margin: var(--sp-sm) 0 0; overflow: visible; clip: auto; white-space: normal; }
+  .fg-stems:not(.fg-stems-one) .fg-stems-svg { display: none !important; }
+  .fg-stems:not(.fg-stems-one) .fg-stemlist { position: static; width: auto; height: auto; margin: var(--sp-sm) 0 0; overflow: visible; clip: auto; white-space: normal; }
 }
 /* Key list: numbered rows with dotted leaders (misses, plan steps) */
 .fg-keys { list-style: none; margin: 0; padding: 0; }
@@ -6210,6 +6209,22 @@ body[data-tab="practice"][data-pview="focus"] #subNav { display: none; }
 .rs-mock .mock-advisory-item { font: var(--t-small); color: var(--text2); padding: var(--sp-md) 0; border-bottom: 1px solid var(--border); }
 .rs-mock .mock-advisory-item:last-child { border-bottom: 1px solid var(--border); }
 .rs-mock .support-inline-card { margin-top: var(--sp-2xl); }
+/* A set's results as a Field Guide plate (v12.44): the growth plate, the
+   honest counts as a specimen label, the misses as a key list. */
+.rs-fg .fg-sub { margin-top: 0; }
+.rs-fg .fg-plate { margin-top: var(--sp-xl); }
+.rs-fg .rs-label { margin-top: var(--sp-xl); }
+.rs-g { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-sm) var(--sp-xl); }
+.rs-g .fg-stems { flex: 0 0 150px; }
+.fg-large .rs-g .fg-stems { flex-basis: 100%; }
+.rs-g-t { flex: 1 1 160px; min-width: 0; margin: 0; }
+.rs-g-big { display: block; font: 500 30px/36px var(--f-serif); letter-spacing: -.6px; color: var(--text); white-space: nowrap; }
+.rs-g-big sup { font-size: .5em; line-height: 0; vertical-align: .9em; letter-spacing: 0; }
+.rs-g-u { font: var(--t-meta); letter-spacing: 0; color: var(--text2); }
+.rs-g-l { display: block; margin-top: var(--sp-xs); font: italic 400 16px/22px var(--f-serif); color: var(--text2); }
+.rs-missed { margin-top: var(--sp-2xl); }
+.rs-missed .fg-kick { margin-bottom: var(--sp-xs); }
+.rs-missed .fg-keys { border-bottom: 1px solid var(--border); }
 /* Review answers: list rows on the paper, opening in place. */
 .rs-review { margin-top: var(--sp-2xl); }
 .rs-review .ph-h:focus { outline: none; }
@@ -7001,7 +7016,7 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
     <h1 class="vision-title" id="aboutScreenTitle">Think like an IS auditor.</h1>
     <p class="vision-line">CISA exam prep, taught the way the exam thinks.</p>
   </section>
-  <p class="about-version">KaiSip web <span class="bank-pill" id="versionPill">v12.43</span></p>
+  <p class="about-version">KaiSip web <span class="bank-pill" id="versionPill">v12.44</span></p>
   <section class="vision-body" aria-label="What KaiSip stands for">
     <!-- The provenance line (owner, 22 Oct 2026): the same words in the hero, the disclaimer and the FAQ. -->
     <p class="vision-desc">Original questions and notes, written with AI assistance and checked against ISACA’s published exam outline and standards.</p>
@@ -7337,7 +7352,7 @@ const MOCK_TIER_LABEL = { analysis: 'Harder', application: 'Middle', foundationa
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v12.43';
+const APP_VERSION = 'v12.44';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -12649,7 +12664,7 @@ function fgScaleBar(range, o) {
 // phone one and a wide one; the column's own width picks (a container query),
 // and the list of the same facts replaces both at large text or under 300px.
 // areas: [{ id, name, short, pct, answered, before, weight }]
-// o: { ink (trace in once), label (what the list is), unit ('answers'), narrowOnly }
+// o: { ink (trace in once), label (what the list is), unit ('answers'), narrowOnly, w (the phone drawing's width) }
 function fgStemFacts(a) {
   var few = !(a.answered >= DOMAIN_READ_MIN), pct = fgPct(a.pct);
   var delta = (!few && typeof a.before === 'number' && isFinite(a.before)) ? pct - fgPct(a.before) : 0;
@@ -12657,7 +12672,7 @@ function fgStemFacts(a) {
 }
 function fgStemSvg(areas, wide, o) {
   var n = Math.max(1, areas.length);
-  var w = wide ? 600 : 340, T = 34, plotH = wide ? 230 : 170, soil = T + plotH;
+  var w = wide ? 600 : (o.w || 340), T = 34, plotH = wide ? 230 : 170, soil = T + plotH;
   var h = soil + (wide ? 66 : 70), L = 26;
   var y = function (p) { return soil - (p / 100) * plotH; };
   var gap = (w - L) / n, g = '';
@@ -16365,6 +16380,7 @@ var sessionByDomain = {};      // domain -> { t, c } in this set
 var sessionMissedIds = [];     // questions missed in this set, in order
 var sessionMs = 0;             // summed answer time in this set
 var lastSetMissedIds = [];     // the misses behind the results on screen ("Review your mistakes")
+var sessionBefore = null;      // each domain's { pct, answered } when the set began (the results' growth plate)
 var setMistakesReview = false; // the missed-review run is one set's mistakes (reviewSetMistakes)
 
 function resetSessionTally() {
@@ -16381,6 +16397,7 @@ function startSession(n, domain, label) {
   resetSessionTally();
   sessionLabel = label || null;
   pendingDebrief = null;
+  sessionBefore = rsDomainSnapshot();
   // A new set gets a fresh clock (it counts up from zero).
   stopSessionTimer();
   S.domainTimerPaused = false;
@@ -16426,7 +16443,7 @@ function showSessionDebrief() {
   var goal = sessionGoal > 0 ? sessionGoal : sessionAnswered;
   pendingDebrief = {
     goal: goal, correct: sessionCorrect, domain: sessionDomain, label: sessionLabel,
-    answered: sessionAnswered, byDomain: sessionByDomain, missed: sessionMissedIds.slice(), ms: sessionMs,
+    answered: sessionAnswered, byDomain: sessionByDomain, missed: sessionMissedIds.slice(), ms: sessionMs, before: sessionBefore,
     // The welcome's five: the exam date is asked once its results show.
     firstFive: firstFiveRun && sessionLabel === FIRST_FIVE_LABEL
   };
@@ -16452,7 +16469,8 @@ function showSessionDebrief() {
   updateFocusStrip();
 }
 // ── RESULTS (Grove Desk step 5; mobile app/results.tsx) ──
-// One layout for a practice set's end card and a mock's results: a kicker,
+// A practice set's results are a Field Guide plate since v12.44 (debriefHtml,
+// rsGrowthPlate). A mock's results keep this layout: a kicker,
 // one headline (the plain count under 8 answers, mobile resultsCopy), the
 // rings beside a row per domain in the set (Today's figure rule, domainFigure:
 // a band word under 30 answers, then the number), three plain stats, then
@@ -16507,22 +16525,11 @@ function resultsMostMissed(byDomain) {
   });
   return best;
 }
-// The rings + domain rows + stats. o = { byDomain: { d: { t, c } }, correct, total, ms, set }.
-// `set`: a practice set. One domain there has no rings (mobile 1.39): one
-// line, "All IS Audit · 80%", and none for a handful of questions.
+// A mock's rings + domain rows + stats. o = { byDomain: { d: { t, c } }, correct, total, ms, level }.
+// (A practice set's results are a Field Guide plate since v12.44: debriefHtml.)
 function resultsBodyHtml(o) {
   var keys = Object.keys(DI);
   var inSet = keys.filter(function (d) { return o.byDomain[d] && o.byDomain[d].t > 0; });
-  if (o.set && inSet.length <= 1) {
-    var one = inSet[0], tOne = resultsTime(o.ms);
-    var pctOne = o.total > 0 ? Math.round((o.correct / o.total) * 100) : 0;
-    return (one && o.total >= RS_SMALL_SAMPLE ? '<p class="rs-fact rs-one">All ' + escapeHtml(DI[one].short) + ' &middot; ' + pctOne + '%</p>' : '')
-      + '<ul class="rs-stats">'
-      + '<li class="rs-stat"><span class="rs-stat-l">Correct</span><span class="rs-stat-v rs-correct">' + o.correct + '<span class="rs-unit"> of ' + o.total + '</span></span></li>'
-      + '<li class="rs-stat"><span class="rs-stat-l">Time</span><span class="rs-stat-v"><span aria-hidden="true">' + tOne.v + (tOne.u ? '<span class="rs-unit"> ' + tOne.u + '</span>' : '') + '</span><span class="sr-only">' + tOne.s + '</span></span></li>'
-      + '<li class="rs-stat"><span class="rs-stat-l">Accuracy</span><span class="rs-stat-v">' + pctOne + '<span class="rs-unit">%</span></span></li>'
-      + '</ul>';
-  }
   var values = keys.map(function (d) { var x = o.byDomain[d]; return x && x.t ? x.c / x.t : 0; });
   var pct = o.total > 0 ? Math.round((o.correct / o.total) * 100) : 0;
   var banded = false;
@@ -16553,6 +16560,69 @@ function resultsBodyHtml(o) {
     + '</ul>';
 }
 
+// ── A set's results as a Field Guide plate (v12.44) ──
+// Each domain's standing (Today's numbers: its latest tries, a hint half).
+function rsDomainSnapshot() {
+  var out = {};
+  try {
+    computeTodayReadiness().domains.forEach(function (x) { out[x.id] = { pct: pgPct(x), answered: x.answered }; });
+  } catch (e) { return null; }
+  return out;
+}
+// "Five questions in under a minute." / "10 questions in about 14 minutes."
+function rsSetLine(total, ms) {
+  var words = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten'];
+  var n = words[total] || String(total), t = resultsTime(ms);
+  return n + (total === 1 ? ' question' : ' questions') + ' in ' + (t.s === 'under a minute' ? t.s : 'about ' + t.s) + '.';
+}
+// The growth plate: the set's domains as stems, before → now. A domain under
+// 30 answers stays a seed (no number), so a few answers never read as growth.
+function rsGrowthPlate(byDomain, before) {
+  var now = rsDomainSnapshot() || {};
+  var inSet = Object.keys(DI).filter(function (d) { return byDomain[d] && byDomain[d].t > 0 && now[d]; });
+  if (!inSet.length) return '';
+  var areas = inSet.map(function (d) {
+    var b = before && before[d] && before[d].answered >= DOMAIN_READ_MIN ? before[d].pct : null;
+    return { id: d, name: DI[d].name, short: DI[d].short, pct: now[d].pct, answered: now[d].answered, before: b };
+  });
+  var key = 'Dashed: the ' + DOMAIN_TARGET_PCT + ' line. Clay: growth from this set, or a domain still below the line.';
+  if (areas.length > 1) {
+    return fgPlate('Fig. 6 · Your domains after this set', fgStemChart(areas, { ink: true, label: 'Each domain in this set' }))
+      + fgCaption('Key', key + ' A seed: under ' + DOMAIN_READ_MIN + ' answers, too few to measure yet.');
+  }
+  var a = areas[0], f = fgStemFacts(a), nm = escapeHtml(a.short), big, line;
+  if (f.few) {
+    big = '<span class="rs-g-big">' + a.answered + '<span class="rs-g-u"> answers</span></span>';
+    line = nm + '&rsquo;s stem is measured from ' + DOMAIN_READ_MIN + ' answers.';
+  } else if (a.before === null || f.delta === 0) {
+    big = '<span class="rs-g-big">' + f.pct + '<sup>%</sup></span>';
+    line = a.before === null ? nm + ' is measured now: ' + f.word + '.' : nm + ' held at ' + f.pct + '%.';
+  } else {
+    big = '<span class="rs-g-big">' + a.before + ' &rarr; ' + f.pct + '<sup>%</sup></span>';
+    line = f.delta > 0 ? nm + ' grew ' + f.delta + (f.delta === 1 ? ' point' : ' points') + ' in this set.'
+      : nm + ' is ' + (-f.delta) + (f.delta === -1 ? ' point' : ' points') + ' lower after this set.';
+  }
+  var fig = 'Fig. 6 · ' + a.short + (f.delta > 0 ? ', new growth' : ', after this set');
+  return fgPlate(fig, '<div class="rs-g">' + fgStemChart(areas, { ink: true, narrowOnly: true, w: 150, label: a.name })
+      + '<p class="rs-g-t">' + big + '<span class="rs-g-l">' + line + '</span></p></div>')
+    + fgCaption('Key', key);
+}
+// What you missed: a key list (the study note, or the question's topic, and its domain).
+var RS_MISSED_SHOWN = 5;
+function rsMissedHtml(missed) {
+  if (!missed.length) return '';
+  var idx = {};
+  try { idx = CISA_NOTES_RAW ? (railBuildNoteIndex() || {}) : {}; } catch (e) { idx = {}; }
+  var items = missed.slice(0, RS_MISSED_SHOWN).map(function (id) {
+    var q = findQuestionById(id), d = q ? String(q.domain) : rdDomainOf(id);
+    var name = (idx[id] && idx[id].name) || (q && typeof q.subtopic === 'string' && q.subtopic) || (DI[d] ? DI[d].name : 'A question');
+    return { mark: 'x', tHtml: escapeHtml(name), rHtml: DI[d] ? escapeHtml(DI[d].short) : '' };
+  });
+  var more = missed.length - items.length;
+  return '<section class="rs-missed" aria-labelledby="rsMissH"><h3 class="fg-kick" id="rsMissH">What you missed &middot; ' + missed.length + '</h3>'
+    + fgKeyList(items)
+    + '<p class="rs-note">' + (more > 0 ? 'And ' + more + ' more. ' : '') + 'Every one you missed comes back, so it sticks.</p></section>';
+}
 // A practice set's results. `inHub`: shown on the Practice hub (the learner
 // left from the last answer), so it can be closed there.
 function debriefHtml(deb, inHub) {
@@ -16565,11 +16635,25 @@ function debriefHtml(deb, inHub) {
   var factText = total < RS_SMALL_SAMPLE ? resultsFact(byDomain, missed, total, deb.correct) : '';
   var fact = factText ? '<p class="rs-fact">' + factText + '</p>' : '';
   if (deb.firstFive) return firstFiveEndHtml(deb, total, missed, fact);
-  return '<section class="session-debrief rs rs-set" role="region" aria-labelledby="sdKick sdTitle">'
-    + '<p class="rs-kicker" id="sdKick">Set complete &middot; ' + escapeHtml(name) + '</p>'
+  // Field Guide (v12.44): the running head, the count, the growth plate,
+  // the readiness note, the honest counts as a label, then the misses.
+  var r = computeTodayReadiness(), range = todayReadinessRange(r);
+  var note = range.enough ? 'Readiness is ' + range.low + '–' + range.high + '%: a study estimate, not a prediction.'
+    : (RD_RANGE_MIN_ANSWERS - range.needed) + ' of ' + RD_RANGE_MIN_ANSWERS + ' questions for your first readiness range.';
+  var t = resultsTime(deb.ms), pct = total > 0 ? Math.round((deb.correct / total) * 100) : 0;
+  fgLargeText();
+  return '<section class="session-debrief rs rs-set rs-fg" role="region" aria-labelledby="sdKick sdTitle">'
+    + '<div class="fg-rh"><span id="sdKick">Set complete &middot; ' + escapeHtml(name) + '</span><span>' + escapeHtml(fgDate(Date.now())) + '</span></div>'
     + '<h2 class="rs-title" id="sdTitle" tabindex="-1">' + resultsHeadline(deb.correct, total) + '</h2>'
-    + fact
-    + resultsBodyHtml({ byDomain: byDomain, correct: deb.correct, total: total, ms: deb.ms, level: 3, set: true })
+    + '<p class="fg-sub">' + rsSetLine(total, deb.ms) + '</p>'
+    + rsGrowthPlate(byDomain, deb.before)
+    + fgCaption('Note', note)
+    + fgLabel([
+      { k: 'Right', vHtml: deb.correct + '<small>of ' + total + '</small>' },
+      { k: 'Accuracy', vHtml: pct + '<sup>%</sup>' },
+      { k: 'Time', vHtml: '<span aria-hidden="true">' + t.v + (t.u ? '<small>' + t.u + '</small>' : '') + '</span><span class="sr-only">' + t.s + '</span>' }
+    ], 'rs-label')
+    + rsMissedHtml(missed)
     + '<div class="rs-acts">'
     + '<button type="button" class="rs-btn primary" onclick="startSession(' + deb.goal + ', \'' + dom + '\')">Practice another set' + ico('arrow-right', 18) + '</button>'
     + (missed.length ? '<button type="button" class="rs-btn" onclick="reviewSetMistakes()">Review your mistakes</button>' : '')
@@ -21850,6 +21934,17 @@ function toggleMockDetail(i) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
+    title: 'Your study, drawn like a field guide',
+    items: [
+      { cat: 'improved', text: 'Today, Your progress and your results after a set now look like pages from a field guide, matching the KaiSip app.' },
+      { cat: 'improved', text: 'Your progress shows every domain side by side on one scale, so you can see at a glance which are at 70% or more and which are still building.' },
+      { cat: 'improved', text: 'Your readiness range sits on a simple 0 to 100 bar, always marked as a study estimate, not a prediction.' },
+      { cat: 'improved', text: 'After a set, you see how much your domain grew and a short list of what you missed.' },
+      { cat: 'improved', text: 'With an exam date set, Today greets you with your countdown.' },
+    ],
+  },
+  {
+    version: 'v12.43',
     title: 'A shorter answer screen',
     items: [
       { cat: 'new', text: 'Every answer now starts with a short reminder of the question, and Show question opens all of it.' },
