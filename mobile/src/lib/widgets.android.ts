@@ -30,6 +30,7 @@ import { getWidgetInfo, requestPinWidget, requestWidgetUpdate } from 'react-nati
 import { msToNextMidnight, readReveal, REVEAL_KEY, WIDGET_KEY, WIDGET_KINDS, WIDGET_NAMES, type WidgetKind } from '../engine/widgets';
 import { dayKey } from '../engine/streak';
 import { useProgress } from '../store/progress';
+import { useSeen } from '../store/seen';
 import { useSession } from '../store/session';
 import { useSettings } from '../store/settings';
 import { useWidgetStore } from '../store/widgets';
@@ -170,6 +171,11 @@ export function startWidgetSync(): () => void {
     // Only the learner's widget choices (the day's pick and counters change during a refresh itself).
     useWidgetStore.subscribe((s, prev) => {
       if (s.prefs !== prev.prefs) scheduleRefresh(0);
+    }),
+    // Mobile 1.50: the Form IV final the learner chose lives on this phone (store/seen.ts
+    // plantFinal), not in progress, so the plant widget redraws when it changes (QA-150-6).
+    useSeen.subscribe((s, prev) => {
+      if (s.plantFinal !== prev.plantFinal) scheduleRefresh();
     }),
     // A quiz ended (finished, or cleared): its answers now count.
     useSession.subscribe((s, prev) => {

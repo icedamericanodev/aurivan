@@ -3,12 +3,15 @@
  * cdadb99). Engine, data and logic only (copy and colours are being changed
  * in parallel and are out of scope here).
  *
- * Each `it.failing` is a real bug, written as the behaviour we want. When the
- * fix lands the test starts passing, Jest reports it, and it becomes a plain
- * `it`. The plain `it`s next to them pin the set-up (so a failing test can't
- * pass for the wrong reason) and the parts that checked out.
+ * Each bug was first written as a failing test (the behaviour we want); its
+ * fix has landed, so each is now a plain `it`. The `it`s next to them pin the
+ * set-up (so a test can't pass for the wrong reason) and the parts that
+ * checked out. QA-150-2 became a product decision (owner, 29 Oct): the
+ * recall gate applies to every style; only the forms ART is botanical-only.
  */
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { createHash } from 'crypto';
+import { buildPlant } from '../components/plant/art';
 import { AppState, type AppStateStatus } from 'react-native';
 import { requestWidgetUpdate } from 'react-native-android-widget';
 import { getCertification } from '../content/certifications';
@@ -16,10 +19,10 @@ import { getDomainQuestions } from '../content/loader';
 import { afterAnswer, type AnswerEvent, type CertMilestones } from '../engine/milestones';
 import { crossesForm, delayedRecalls, formMoment, RECALL_FORM_III } from '../engine/plantForms';
 import { addDays } from '../engine/examDay';
-import { growthBefore, growthFor, plantNew, type CertPlant } from '../engine/plant';
+import { growthBefore, growthFor, plantNew, PLANT_SPECIES, type CertPlant } from '../engine/plant';
 import { dayKey } from '../engine/streak';
 import { checkBackupText, currentBackup, restoreBackup } from '../lib/backup';
-import { carryPlantIdentity, checkPlant, plantFactsFor, plantSubtopics, plantView } from '../lib/plant';
+import { carryPlantIdentity, checkPlant, plantFactsFor, plantFor, plantSubtopics, plantView } from '../lib/plant';
 import { selectCert, useProgress, type CertProgress, type MockResult } from '../store/progress';
 import { useSeen } from '../store/seen';
 import { useSession } from '../store/session';
@@ -89,7 +92,7 @@ afterEach(() => {
 });
 
 // ── QA-150-1 · Major: restoring an older backup lowers the phone's plant on the recall gate ──
-describe('QA-150-1: a restore that carries the phone plant regrows it WITH the recall gate', () => {
+describe('QA-150-1: a restore that carries the phone plant never lowers it on the recall gate', () => {
   it('set-up: the study opens Crown under the 1.49 rules, but only Shoot with the recall gate', () => {
     crownStudyWithoutRecalls();
     expect(delayedRecalls(cp().milestones?.longIds)).toBe(0);
@@ -97,31 +100,51 @@ describe('QA-150-1: a restore that carries the phone plant regrows it WITH the r
     expect(gated(cp())).toBe(3);
   });
 
-  it.failing('an older file with no plant: the phone plant keeps the growth this study gave it before 1.50', () => {
+  it('an older file with no plant: the phone plant keeps the growth this study gave it before 1.50', () => {
     crownStudyWithoutRecalls();
     const restored: CertProgress = { ...cp(), plant: undefined };
     const want = ungated(restored);
     // The phone's plant grew to Crown on 1.49 from exactly this study.
     const phone = plantNew('oak', 'Kai', T0 - 30 * DAY, want);
     const carried = carryPlantIdentity('cisa', restored, phone, T0)!;
-    // Was: Shoot. carryPlantIdentity -> plantFactsFor passes `recalled`, so the
-    // carried plant is regrown on the STRICT gate, while a file that has a plant
-    // is read generously (bestCaseFacts has no `recalled`).
+    // Was: Shoot. carryPlantIdentity -> plantFactsFor passed `recalled`, so the
+    // carried plant was regrown on the STRICT gate. Now it is read generously,
+    // like a file that has a plant (bestCaseFacts has no `recalled`).
     expect(carried.growth).toBe(want);
+  });
+
+  it('a FRESH plant planted on 1.50 is gated on its history (real recall data, so honest)', () => {
+    crownStudyWithoutRecalls();
+    plantFor('cisa', 'oak', 'Kai', T0);
+    expect(cp().plant!.growth).toBe(gated(cp()));
+    expect(cp().plant!.growth).toBe(3);
   });
 });
 
-// ── QA-150-2 · Major: the storybook plant is gated too ──
-describe('QA-150-2: storybook plants (no forms) are held at Shoot by the forms’ recall gate', () => {
-  it.failing('a storybook plant with Bough-level study grows to Bough as it did in 1.49', () => {
+// ── QA-150-2 · decided: the recall gate applies to every style; the storybook keeps its six-growth art ──
+describe('QA-150-2: a storybook plant (no forms) meets the same recall gate, and keeps its six-growth art', () => {
+  it('growth means the same learning in every style: a storybook plant without recalls stays at Shoot', () => {
     crownStudyWithoutRecalls();
     // A plant saved before 1.40: no style, so it keeps the storybook art and has no forms.
     setCert({ plant: legacy(plantNew('oak', 'Kai', T0 - 30 * DAY, 3)) });
     expect(plantView(cert, cp(), undefined, dayKey(T0)).forms).toBe(false);
     checkPlant('cisa', T0);
-    // Was: still 3. GATES[4] and GATES[6] read `recalled` whatever the style,
-    // although forms (and their gate) are "a botanical-style feature" (§8.10).
-    expect(cp().plant!.growth).toBeGreaterThanOrEqual(4);
+    expect(cp().plant!.growth).toBe(gated(cp()));
+    expect(cp().plant!.growth).toBe(3);
+  });
+
+  it('the storybook art is byte-identical to 1.49 (every species, growth, theme, face and detail level)', () => {
+    const h = createHash('sha256');
+    for (const species of PLANT_SPECIES)
+      for (let stage = 1; stage <= 6; stage++)
+        for (const theme of ['light', 'dark'] as const)
+          for (const quietLook of [true, false])
+            for (const lod of ['full', 'small'] as const) {
+              const b = buildPlant({ species, stage, quietLook, theme, lod, drift: false, mood: 'idle' });
+              h.update(JSON.stringify({ root: b.root, frame: b.frame }));
+            }
+    // Computed from the same loop at 4310a6f (mobile 1.49, before forms), 29 Oct 2026.
+    expect(h.digest('hex')).toBe('4d086ba9cda66f23bc371d8a8f4e7dc0930ff45385abb49bb34b754a4a82f829');
   });
 });
 
@@ -136,13 +159,14 @@ describe('QA-150-3: the Form IV choice on this phone against a look.final from a
     expect(viewFinal(elder('moot'))).toBe('coppice');
   });
 
-  it.failing('choosing the line’s own final on the Look screen draws the own final', () => {
+  it('choosing the line’s own final on the Look screen draws the own final', () => {
     // A newer app's backup wrote look.final = 'moot' into the plant.
     useSeen.getState().setPlantFinal('cisa', 'coppice');
     // The learner taps "Broadcrown Oak" (look-final-own).
     useSeen.getState().setPlantFinal('cisa', 'own');
-    // Was: 'moot'. setPlantFinal('own') DELETES the phone entry, so the view
-    // falls back to plant.look.final and "own" can never be selected.
+    // Was: 'moot'. setPlantFinal('own') deleted the phone entry, so the view
+    // fell back to plant.look.final. 'own' is now kept as a choice.
+    expect(useSeen.getState().plantFinal?.cisa).toBe('own');
     expect(viewFinal(elder('moot'))).toBe('own');
   });
 });
@@ -174,12 +198,12 @@ describe('QA-150-4: a restore and the phone-only Form IV choice (§8.10: default
     expect(cp().plant).toMatchObject({ growth: 6, look: { final: 'holdfast' } });
   });
 
-  it.failing('the file’s look.final shows after the restore, not the choice this phone made earlier', async () => {
+  it('the file’s look.final shows after the restore, not the choice this phone made earlier', async () => {
     const data = elderFileWith('holdfast');
     useSeen.getState().setPlantFinal('cisa', 'coppice'); // chosen on this phone before the restore
     useProgress.setState({ byCert: {} });
     await restoreBackup(data, { fresh: true });
-    // Was: 'coppice'. writeAll forgets plantForms but not plantFinal, and the view reads the phone first.
+    // Was: 'coppice'. writeAll now forgets plantFinal too, so the file decides.
     expect(plantView(cert, cp(), undefined, dayKey(T0), false, useSeen.getState().plantFinal?.cisa).final).toBe('holdfast');
   });
 });
@@ -194,11 +218,11 @@ describe('QA-150-5: a pending grow-up that crosses a form when 1.50 arrives', ()
     expect(crossesForm(growthBefore(p, 3), 3)).toBe(true);
   });
 
-  it.failing('Your plant then plays the reveal for it (it was earned and never shown), not the quiet history note', () => {
+  it('Your plant then plays the reveal for it (it was earned and never shown), not the quiet history note', () => {
     setCert({ plant: waiting() });
     checkPlant('cisa', T0); // Today's first check on 1.50
-    // Was: { kind: 'note', form: 2 }. baselineForms reads `growth` (3), which
-    // already holds the unshown `pending`, so the earned moment becomes history.
+    // Was: { kind: 'note', form: 2 }. The baseline now reads the growth BEFORE
+    // the unshown `pending`, so the earned moment keeps its reveal.
     expect(formMoment(3, useSeen.getState().plantForms?.cisa)).toEqual({ kind: 'reveal', from: 1, to: 2 });
   });
 });
@@ -251,7 +275,7 @@ describe('QA-150-6: Android widget and the Form IV choice', () => {
     for (let i = 0; i < 20; i++) await Promise.resolve();
   };
 
-  it.failing('choosing a final redraws the plant widget (the snapshot carries the new final)', async () => {
+  it('choosing a final redraws the plant widget (the snapshot carries the new final)', async () => {
     jest.useFakeTimers({ now: NOW });
     await AsyncStorage.clear();
     android.resetWidgetsForTest();
@@ -269,8 +293,7 @@ describe('QA-150-6: Android widget and the Form IV choice', () => {
     useSeen.getState().setPlantFinal('cisa', 'moot'); // the Look screen's "Moot Oak"
     await jest.advanceTimersByTimeAsync(3000);
     await settle();
-    // Was: no redraw. startWidgetSync subscribes to settings, progress, widget
-    // prefs and the session, but the choice lives in useSeen.
+    // Was: no redraw. startWidgetSync now also listens for useSeen's plantFinal.
     expect((requestWidgetUpdate as jest.Mock).mock.calls.length).toBeGreaterThan(0);
     const snap = JSON.parse((await AsyncStorage.getItem('aurivan.widget.v1')) ?? '{}') as { plant?: { final?: string } };
     expect(snap.plant?.final).toBe('moot');

@@ -320,10 +320,13 @@ describe('the reveal: once per form, never for history', () => {
     expect(useSeen.getState().plantForms?.cisa).toEqual({ seen: 4 });
     useSeen.getState().forgetForms();
     expect(useSeen.getState().plantForms?.cisa).toBeUndefined();
-    // The Form IV choice: kept here only (staged rollout); 'own' clears it.
+    // The Form IV choice: kept here only (staged rollout); 'own' is kept as a choice (QA-150-3),
+    // and a restore forgets it all (the file decides, QA-150-4).
     useSeen.getState().setPlantFinal('cisa', 'coppice');
     expect(useSeen.getState().plantFinal?.cisa).toBe('coppice');
     useSeen.getState().setPlantFinal('cisa', 'own');
+    expect(useSeen.getState().plantFinal?.cisa).toBe('own');
+    useSeen.getState().forgetFinals();
     expect(useSeen.getState().plantFinal?.cisa).toBeUndefined();
   });
 

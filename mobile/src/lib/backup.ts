@@ -418,6 +418,8 @@ async function writeAll(
   useSeen.getState().forgetValues();
   // Mobile 1.50: a restored plant's forms count as history (one quiet note, never a replayed reveal).
   useSeen.getState().forgetForms();
+  // The file decides the Form IV final: its look.final, else the own final (§8.10, QA-150-4).
+  useSeen.getState().forgetFinals();
   useSettings.setState(settings);
   useProgress.setState(progress);
   for (const s of STORES) await s.persist.rehydrate();

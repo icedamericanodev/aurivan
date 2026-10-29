@@ -31,6 +31,7 @@ import {
   organScales,
   organs,
   plantFace,
+  growthBefore,
   plantFacts,
   plantLabel,
   plantNew,
@@ -117,7 +118,7 @@ export function checkPlant(certId: string, now = Date.now()): GrowthLevel | null
   const before = useProgress.getState().byCert[certId];
   // Mobile 1.50: the first time this release sees the plant, what it already is counts as
   // seen (store/seen.ts plantForms), so only a form reached FROM NOW ON gets its reveal.
-  if (before?.plant) useSeen.getState().baselineForms(certId, before.plant.growth);
+  if (before?.plant) baselinePlantForms(certId, before.plant);
   const last = lastCheck.get(certId);
   if (before && last && last.cp === before && last.day === day) return null;
   let grew: GrowthLevel | null = null;
@@ -133,6 +134,17 @@ export function checkPlant(certId: string, now = Date.now()): GrowthLevel | null
   if (after) lastCheck.set(certId, { cp: after, day });
   return grew;
 }
+/**
+ * Mobile 1.50: count the plant's forms as already seen, the first time this
+ * release sees it. A grow-up still waiting to be shown (`pending`) is NOT
+ * history: Today will say "see it in Your plant", so the baseline is the
+ * growth before it and Your plant then plays its reveal (QA-150-5). Only a
+ * form reached before the update, with nothing pending, gets the quiet note.
+ */
+export function baselinePlantForms(certId: string, plant: Pick<CertPlant, 'growth' | 'pending' | 'reached'>): void {
+  useSeen.getState().baselineForms(certId, plant.pending ? growthBefore(plant, plant.pending) : plant.growth);
+}
+
 /** The progress (by identity) and day each cert's plant was last checked against. */
 const lastCheck = new Map<string, { cp: CertProgress; day: string }>();
 
@@ -185,7 +197,10 @@ export function seePlantBackfill(certId: string): void {
 export function carryPlantIdentity(certId: string, restored: CertProgress, phone: CertPlant | undefined, now: number): CertPlant | undefined {
   if (restored.plant || !phone) return restored.plant;
   const facts = plantFactsFor(certId, { ...restored, plant: undefined }, now);
-  const g = facts ? growthFor(facts) : 1;
+  // Mobile 1.50 (QA-150-1): a carried plant never meets the delayed-recall gate going DOWN.
+  // Its study grew it before the gate existed, so read it generously (no `recalled`),
+  // the same as the restore clamp (bestCaseFacts). Only a fresh planting (plantFor) is gated.
+  const g = facts ? growthFor({ ...facts, recalled: undefined }) : 1;
   // The phone's look exactly as it is: a plant from before mobile 1.40 has no
   // style and must keep its storybook art, so plantNew's botanical is dropped.
   const { look: _newLook, ...fresh } = plantNew(phone.species, phone.name, now, g);

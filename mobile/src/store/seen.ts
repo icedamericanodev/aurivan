@@ -41,10 +41,11 @@
  *     still owed. The first time this release sees a plant, what it already
  *     is counts as seen (no reveal for history); a restore forgets it, so a
  *     restored plant gets the quiet note, never a replayed moment.
- *   - `plantFinal`: the learner's Form IV choice. STAGED ROLLOUT
- *     (DESIGN_SYSTEM §8.10): it lives here, NOT in the plant or a backup,
- *     until every build in use can read `look.final`. A later release
- *     copies it into the plant (and so into backups and sync).
+ *   - `plantFinal`: the learner's Form IV choice ('own' is kept too, so it
+ *     wins over a file's look.final). STAGED ROLLOUT (DESIGN_SYSTEM §8.10):
+ *     it lives here, NOT in the plant or a backup, until every build in use
+ *     can read `look.final`. A restore forgets it (the file decides). A later
+ *     release copies it into the plant (and so into backups and sync).
  *
  * Presentation only: it holds no answers, nothing a backup needs, and losing
  * it only means one number counts up again. So it is NOT in backups. A reset
@@ -112,6 +113,8 @@ interface SeenState {
   seeFormNote: (certId: string) => void;
   /** After a restore: forget which forms were shown (a restored plant gets the quiet note, never a replay). */
   forgetForms: () => void;
+  /** A restore: the file's look.final (or the own final) wins over this phone's old choice (QA-150-4). */
+  forgetFinals: () => void;
   /** The learner chose a Form IV final ('own' clears it). */
   setPlantFinal: (certId: string, final: FinalId) => void;
   setTester: (state: TesterState) => void;
@@ -195,10 +198,12 @@ export const useSeen = create<SeenState>()(
           return rec?.note === undefined ? s : { plantForms: { ...s.plantForms, [certId]: afterNote(rec) } };
         }),
       forgetForms: () => set({ plantForms: {} }),
+      forgetFinals: () => set({ plantFinal: {} }),
       setPlantFinal: (certId, final) =>
         set((s) => {
           const next = { ...s.plantFinal };
-          if (final === 'own' || !isFinalId(final)) delete next[certId];
+          // 'own' is KEPT as a choice (QA-150-3): deleting it would let a backup's look.final win again.
+          if (!isFinalId(final)) delete next[certId];
           else next[certId] = final;
           return { plantFinal: next };
         }),

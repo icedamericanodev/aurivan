@@ -49,7 +49,7 @@ import {
 } from '../engine/plant';
 import { FORM_START, formMoment, formName, formsIntroLine, nextFormLine, newFormLine, type FormMoment, type FormNumber } from '../engine/plantForms';
 import { dayKey } from '../engine/streak';
-import { plantFactsFor, seePlantBackfill, usePlantView } from '../lib/plant';
+import { baselinePlantForms, plantFactsFor, seePlantBackfill, usePlantView } from '../lib/plant';
 import { useActiveCert } from '../lib/useActiveCert';
 import { useSeen } from '../store/seen';
 import { LARGE_TEXT, space } from '../theme/tokens';
@@ -95,7 +95,8 @@ export default function YourPlant() {
   // for this visit, and written down as shown at once (leaving mid-way still counts).
   const formsRec = useSeen((s) => s.plantForms?.[certId]);
   useEffect(() => {
-    if (p) useSeen.getState().baselineForms(certId, p.growth);
+    // A grow-up still pending is not history: it gets its reveal (lib/plant.ts baselinePlantForms).
+    if (p) baselinePlantForms(certId, p);
   }, [p, certId]);
   const [formVisit, setFormVisit] = useState<{ cert: string; moment: NonNullable<FormMoment> } | null>(null);
   const momentNow = p && view.forms ? formMoment(p.growth, formsRec) : null;
