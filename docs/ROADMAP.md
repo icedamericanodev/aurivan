@@ -28,7 +28,7 @@ A calm, trustworthy study companion that helps people **pass** professional secu
 | 1.5 | **Topics named like the official outline + progress per topic** | See exactly which CISA topics are strong and weak | Pick from screenshots | ⏳ Next |
 | 1.6 | **Web Progress dashboard** | A clear progress page on kaisip.com | Pick from 3 mockups | ✅ Done (web v12.41) |
 | 1.7 | **Today screen, step 2** | A calmer, more personal daily start | Pick from mockups | ⏳ |
-| 1.8 | **Play Store closed beta** | Testers install from Google Play; the version resets to 1.0 | Play Console steps, tester email list, store listing approval | ⏳ After 1.2 and 1.4 |
+| 1.8 | **Play Store closed beta** | Testers install from Google Play; the version resets to 1.0 | Play Console steps, tester email list, store listing approval | ⏳ App created in Play Console 29 Oct (`KaiSip: Cyber & IT Audit Prep`, `com.kaisip.app`, Free). Testing waits until the polish is done (owner, 29 Oct) |
 
 **Why this order:**
 - Widgets (1.2) are nearly done.
