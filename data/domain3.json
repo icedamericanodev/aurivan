@@ -1015,7 +1015,7 @@
       "correct_explanation": "Kanban suits work that arrives continuously: items are pulled when capacity frees up, so urgent fixes enter the process instead of waiting or going around it, and work-in-progress limits keep the flow controlled. Shorter sprints are the tempting option, but they still batch work into fixed commitments, so an urgent fix must still wait days or break the sprint.",
       "wrong_explanations": {
         "A": "Adding fixes mid-sprint breaks the sprint commitment each time and turns the current bypass of sprint planning into policy.",
-        "C": "Shorter sprints reduce the wait but still batch work into fixed commitments, so urgent fixes keep waiting or skipping planning.",
+        "C": "Shorter sprints would win if urgent fixes could wait a few days; a delivery method follows the shape of demand, not the planning calendar.",
         "D": "Emergency change is meant for genuine emergencies; sending routine support work through it overloads that path and weakens control, while releases still batch other work."
       },
       "tips": [
@@ -1204,7 +1204,7 @@
       "pre_read": "Ask how often the work is integrated. Then separate the root risk from its symptoms.",
       "correct_explanation": "Deferring integration for a quarter lets months of changes collide at once, so conflicts and integration defects surface late, in large batches whose cause is hard to trace. The review backlog is the tempting option, but it is a symptom of the same practice; the root risk to release quality is the late, large-batch integration.",
       "wrong_explanations": {
-        "B": "A review backlog is a real symptom, but it follows from deferred integration; it is not the root risk to release quality.",
+        "B": "Review backlogs and late defects share one cause, the quarterly merge, though risks rank by harm to production, not by process friction.",
         "C": "Weekly releases are common with automated testing; the risk comes from how rarely work is integrated, not how often it ships.",
         "D": "Late scanning is a real gap, but branch code is still scanned when it merges, before release; the larger risk is how rarely the branches integrate."
       },
@@ -1582,7 +1582,7 @@
       "correct_explanation": "Batch totals are an integrity control: when input and output totals differ, records were lost, duplicated or altered during processing, so completeness and accuracy through processing are at risk. Validity at input is the tempting option because the stem mentions the input file, but the input total is the reference point; the difference arose after it, during processing.",
       "wrong_explanations": {
         "A": "Authorization concerns whether a change was approved before entry; unapproved records would sit in both totals, so a mismatch does not point to it.",
-        "B": "Input validity concerns whether records were acceptable when entered; the input total is the baseline, and the mismatch arose after it.",
+        "B": "Input validity is a genuine control objective, yet a mismatch belongs between the last point where totals agree and the first where they part.",
         "D": "Standing master data between runs is a separate concern; the mismatch is between this run's input file and its output, so the loss arose in processing."
       },
       "tips": [
@@ -1729,7 +1729,7 @@
       "wrong_explanations": {
         "A": "Monitoring shows the gap widening, but spending continues on a two-year-old approval; no one re-decides whether to continue.",
         "B": "The case may no longer hold, but canceling before updating it acts on incomplete analysis, and sponsors make that call.",
-        "C": "An independent estimate improves one input, but benefits have also fallen, and the estimate alone does not put the decision back to the sponsors."
+        "C": "An auditor would value an independent estimate as stronger evidence, but evidence feeds a decision and never stands in for one."
       },
       "tips": [
         "Eliminate: A keeps spending on a two-year-old approval that no longer reflects the facts, and B cancels before the case is updated, a call that belongs to the sponsors.",
@@ -2027,7 +2027,7 @@
       "correct_explanation": "A rollback plan provides assurance only if it has been exercised, can be completed within a defined window, and restores data and configuration as well as code. Many failed rollbacks happen because a schema or configuration change was not reversible. An approved runbook shows the steps were reviewed, but until it is rehearsed nobody knows whether it restores code, data and configuration within the window.",
       "wrong_explanations": {
         "A": "The pieces exist, but nobody has shown they restore together, or how long that takes, so the plan is unproven.",
-        "B": "Approval shows the runbook was reviewed, not that it restores code, data and configuration within the window.",
+        "B": "A reviewed runbook would do for a code-only change; with a schema change in play, approval records intent, not capability.",
         "D": "Last year's rehearsal tested a different release; this release's data and configuration changes have never been rolled back."
       },
       "tips": [
@@ -3922,7 +3922,7 @@
       "pre_read": "Notice that business units already use parts of the program. Ask what stopping it would do to them.",
       "correct_explanation": "Canceling is a management decision, but it must account for exit complexity. Three business units already run live processes on the delivered modules, so stopping without a transition plan could halt operations, a larger and less reversible impact than any one-off cost. Retraining the three units is a real cost to weigh, but it is bounded and plannable, unlike disruption to the business.",
       "wrong_explanations": {
-        "A": "Retraining is a real cost of returning to old processes, but it is bounded and plannable; halting the live processes those units depend on is the larger exposure.",
+        "A": "Before leaving a program, protect what already runs. Retraining is a cost any exit must fund, yet live operations come first in every exit plan.",
         "B": "Knowledge loss matters for future support, but it can be handled through transition terms; it is not the immediate exposure of live operations.",
         "C": "Spend already made is sunk; it is lost whichever way management decides, so it is not a risk created by canceling."
       },
@@ -4332,7 +4332,7 @@
       "pre_read": "Separate completeness (did everything arrive?) from traceability (where did this record come from?).",
       "correct_explanation": "Traceability needs a retained record linking each legacy account key to its new key, together with conversion logs, so any converted balance can be followed back to its source. Reconciled record counts come closest: they show that totals and volumes match, which supports completeness, but they cannot show which legacy account produced a given new record.",
       "wrong_explanations": {
-        "B": "Matching counts and totals supports completeness. It cannot show which legacy account a given new record came from.",
+        "B": "Reconciled counts do prove nothing was lost in bulk, yet a total vouches for the whole and never for any one of its parts.",
         "C": "Screen testing checks that functions work for users. It does not create a link between old and new records.",
         "D": "A field mapping defines how each legacy field converts, but it does not link each converted record to the legacy account it came from."
       },
