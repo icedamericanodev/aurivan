@@ -269,8 +269,8 @@
       "options": {
         "A": "Recommend the hot site that IT has put forward",
         "B": "Reset the archive's three-week recovery target to one day",
-        "C": "Compare each site's recovery time and yearly cost with the target",
-        "D": "Sign a contract for the cheaper cold site"
+        "C": "Compare each site's recovery time and cost with the target",
+        "D": "Sign the contract for the cheaper cold site now"
       },
       "correct": "C",
       "key_concept": "The RTO decides which recovery site fits; senior management chooses and funds it, and the analyst sets each option's time and cost against the target.",
@@ -339,22 +339,22 @@
       "bloom_level": "Application",
       "question": "A new disaster recovery plan has never been tested, and a systems administrator suggests shutting down the main data center for a day to prove it. What is the business continuity coordinator's BEST response?",
       "options": {
-        "A": "Run a parallel test that shuts production down for the day",
+        "A": "Run the full shutdown test as the administrator suggests",
         "B": "Begin with a tabletop walkthrough to find basic errors",
         "C": "Run the shutdown on a weekend, when fewer people need the systems",
-        "D": "Schedule the shutdown once the IT manager has agreed to it"
+        "D": "Approve the plan as written, since IT drafted it"
       },
       "correct": "B",
       "key_concept": "Test a new plan from low risk to realistic: checklist and tabletop before simulation, parallel and full interruption tests.",
       "pre_read": "Notice how mature the plan is and what the suggested test would do to production.",
       "correct_explanation": "An untested plan almost always has basic errors, such as wrong contacts or missing steps, and a full shutdown could cause the very outage the plan is meant to handle. A tabletop finds those errors without touching systems; later tests can grow more realistic. A weekend shutdown is the runner-up because it lowers the impact, but it is still a full interruption test of an unproven plan.",
       "wrong_explanations": {
-        "A": "Tempting because parallel tests are realistic. But a parallel test keeps production running; shutting production down makes it a full interruption test.",
+        "A": "Tempting because a full test is the most realistic proof. But a full interruption of an untested plan could cause the very outage it is meant to handle.",
         "C": "Closest choice: a weekend lowers the impact. But it is still a full interruption of an untested plan; if recovery fails, systems may stay down into the week.",
-        "D": "Tempting because it adds an approval. But a production shutdown needs senior management's approval, and a new plan should not start with one."
+        "D": "Tempting because IT knows the systems. But an untested plan almost always hides basic errors; approval without any test leaves them to surface in a real disaster."
       },
       "tips": [
-        "Eliminate: A mislabels a production shutdown as a parallel test, and D names the wrong approver for a test that still starts at the riskiest level.",
+        "Eliminate: A runs the riskiest test first on an unproven plan, and D signs off a plan before any test has checked it.",
         "Final two: B beats C because a weekend shutdown is still a full interruption of an unproven plan; a tabletop finds basic errors at no risk.",
         "Exam cue: test in order of risk: checklist, tabletop, simulation, parallel, full interruption. A new plan starts at the low end."
       ],
@@ -448,7 +448,7 @@
       "question": "On a video call, someone who looks and sounds like a firm's finance director urgently asks a payments clerk to pay a new supplier. What should the clerk do FIRST?",
       "options": {
         "A": "Pay once the director repeats the request on the call",
-        "B": "Call the director back on the phone number held in company records",
+        "B": "Call the director back on the number in company records",
         "C": "Study the director's face and voice for signs of a fake",
         "D": "Make the payment, then report the call to the security team"
       },
