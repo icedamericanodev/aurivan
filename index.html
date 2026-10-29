@@ -275,6 +275,12 @@
   --qr-bg: #fff;            /* QR codes need a white quiet zone in both themes */
   --figure-accent: #2B6E4A; /* notes diagrams keep their light-mode green */
   --glyph-leaf: #A9D9BA;
+  /* Field Guide (web v12.44): the two derived values the kit adds, plus the
+     stem's bark ink. Decorative: their meaning is always in words too. */
+  --fg-stem: #5B4B3C;       /* a stem on the plate (8.3:1 on raised2) */
+  --fg-leaf: #CFE5D5;       /* a pressed leaf's fill */
+  --fg-seed: #E9D9C4;       /* "too few yet": a seed in the soil */
+  --fg-tape: rgba(214,205,182,.75);
 }
 
 /* ── DARK MODE (Grove night) ── */
@@ -322,6 +328,10 @@
   --scrim: rgba(0,0,0,.6);
   --grain-op: .045;
   --glyph-leaf: #2E5440;
+  --fg-stem: #B9A894;
+  --fg-leaf: #2E5440;
+  --fg-seed: #4A3E33;
+  --fg-tape: rgba(120,112,92,.55);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -5413,6 +5423,151 @@ button.pg-cd:hover { background: var(--surface2); }
 }
 @media (min-width: 1180px) and (min-height: 720px) {
   .pg-side { position: sticky; top: 40px; }
+}
+
+/* ── FIELD GUIDE KIT (web v12.44; the owner's signature pick, 29 Oct 2026) ──
+   Every screen is a plate in a guide to your own study: progress is
+   something you observe, not something that judges you. Grove colours and
+   fonts are unchanged; only the framing changes. The same kit as the phone's
+   (render helpers fg* in the script):
+   running head · plate (a double-hairline mount, no shadow) · "Fig. n ·" and
+   KEY captions · specimen label rows (key · value, never tiles) · scale bar
+   (the readiness range, its words built in) · stem chart (five areas on one
+   scale, a list at large text or in a narrow column) · specimen · herbarium
+   sheet · key list (numbered, dotted leaders) · empty plate · the 52px button.
+   Keep tape and leaves this sparse: the one risk is twee. */
+.fg-rh {
+  display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 2px var(--sp-lg);
+  margin: 0 0 var(--sp-lg); padding: 0 0 var(--sp-sm); border-bottom: 1px solid var(--border);
+  font: 600 12px/16px var(--f-sans); letter-spacing: .09em; text-transform: uppercase; color: var(--text2);
+}
+.fg-rh > * { min-width: 0; }
+.fg-kick { margin: 0; font: 600 12px/16px var(--f-sans); letter-spacing: .09em; text-transform: uppercase; color: var(--text2); }
+.fg-sub { margin: var(--sp-xs) 0 0; font: italic 400 17px/24px var(--f-serif); color: var(--text2); max-width: 60ch; }
+/* Plate: one per screen, the focal point. raised2, two hairlines, square corners. */
+.fg-plate { margin: 0; padding: 6px; background: var(--raised2); border: 1px solid var(--border); --td-paper: var(--raised2); }
+.fg-plate-in { position: relative; min-width: 0; padding: var(--sp-md) var(--sp-md) var(--sp-lg); border: 1px solid var(--border); }
+@media (min-width: 560px) { .fg-plate-in { padding: var(--sp-md) var(--sp-lg) var(--sp-lg); } }
+.fg-fig { margin: 0; font: italic 400 14px/18px var(--f-serif); color: var(--text2); }
+.fg-cap { margin: var(--sp-sm) 0 0; font: italic 400 15px/22px var(--f-serif); color: var(--text2); max-width: 62ch; }
+.fg-cap b { margin-right: 6px; font: 600 12px/16px var(--f-sans); font-style: normal; letter-spacing: .06em; text-transform: uppercase; color: var(--text); }
+/* Specimen label: ruled key · value rows on raised, a 3px corner */
+.fg-label { margin: 0; padding: 0; list-style: none; background: var(--raised); border: 1px solid var(--border); border-radius: var(--r-3); }
+.fg-lrow { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 2px var(--sp-md); padding: var(--sp-md) var(--sp-lg); border-top: 1px solid var(--border); }
+.fg-lrow:first-child { border-top: 0; }
+.fg-k { font: 600 12px/16px var(--f-sans); letter-spacing: .09em; text-transform: uppercase; color: var(--text2); }
+.fg-v { margin-left: auto; font: 500 22px/26px var(--f-serif); letter-spacing: -.3px; color: var(--text); text-align: right; overflow-wrap: anywhere; }
+.fg-v sup { font-size: .5em; line-height: 0; vertical-align: .9em; letter-spacing: 0; }
+.fg-v small { margin-left: 4px; font: 500 14px/20px var(--f-sans); letter-spacing: 0; color: var(--text2); }
+.fg-lrow-x { flex-basis: 100%; min-width: 0; }
+.fg-lrow-note { margin: 0; font: var(--t-meta); color: var(--text2); }
+/* Scale bar: the readiness range on a map-style 0–100 bar, a bracket over the range */
+.fg-scale { min-width: 0; }
+.fg-scale-fig { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 var(--sp-md); margin: 0; }
+.fg-scale-n { font: 500 36px/42px var(--f-serif); letter-spacing: -.8px; color: var(--text); white-space: nowrap; }
+.fg-scale-n sup { font-size: .5em; line-height: 0; vertical-align: .8em; letter-spacing: 0; }
+.fg-scale-w { margin: 0; font: italic 400 15px/20px var(--f-serif); color: var(--text2); }
+.fg-scale-svg { display: block; width: 100%; max-width: 360px; height: auto; margin-top: var(--sp-sm); }
+.fg-sb-a { fill: var(--text2); stroke: var(--text2); stroke-width: .8; }
+.fg-sb-b { fill: var(--raised); stroke: var(--text2); stroke-width: .8; }
+.fg-sb-r { fill: var(--accent); stroke: var(--accent); stroke-width: .8; }
+.fg-sb-br { fill: none; stroke: var(--accent); stroke-width: 2; }
+.fg-sb-tick { stroke: var(--text); stroke-width: 1.4; }
+.fg-sb-t { font: 500 11px var(--f-sans); fill: var(--text2); }
+.fg-sb-rt { font: 600 11px var(--f-sans); fill: var(--accent-text); }
+/* Stem chart: one stem per area on one scale. The list below it is the same
+   data: read by screen readers, and shown instead of the chart at large text
+   (the phone's LARGE_TEXT, font scale 1.3+) or in a column under 300px. */
+.fg-stems { position: relative; container-type: inline-size; min-width: 0; }
+.fg-stems-svg { display: block; width: 100%; height: auto; margin-top: var(--sp-sm); }
+.fg-st-ax { fill: none; stroke: var(--control); stroke-width: 1; }
+.fg-st-70 { fill: none; stroke: var(--text2); stroke-width: 1; stroke-dasharray: 4 4; }
+.fg-st-t { font: 500 11px var(--f-sans); fill: var(--text2); }
+.fg-st-tb { font: 600 11px var(--f-sans); fill: var(--text2); }
+.fg-st-stem { fill: none; stroke: var(--fg-stem); stroke-width: 2; stroke-linecap: round; }
+.fg-st-leaf { fill: var(--fg-leaf); stroke: var(--accent); stroke-width: .9; }
+.fg-st-leaf.c { fill: none; stroke: var(--clay); stroke-width: 1.3; }
+.fg-st-grow { fill: none; stroke: var(--clay); stroke-width: 2.6; stroke-linecap: round; }
+.fg-st-seed { fill: var(--fg-seed); stroke: var(--fg-stem); stroke-width: 1; }
+.fg-st-ghost { fill: none; stroke: var(--control); stroke-width: 1; stroke-dasharray: 2 3; }
+.fg-st-n { font: 500 18px var(--f-serif); fill: var(--text); }
+.fg-st-n .u { font-size: 10px; }
+.fg-st-up { font: 600 11px var(--f-sans); fill: var(--clay); }
+.fg-st-dn { font: 600 11px var(--f-sans); fill: var(--text2); }
+.fg-st-l1 { font: 500 11px var(--f-sans); fill: var(--text2); }
+.fg-st-l2 { font: 600 10.5px var(--f-sans); fill: var(--text); }
+.fg-st-w { font: italic 400 12.5px var(--f-serif); fill: var(--text2); }
+.fg-st-w.c { fill: var(--clay); }
+.fg-wide .fg-st-n { font-size: 22px; }
+.fg-wide .fg-st-n .u { font-size: 12px; }
+.fg-wide .fg-st-l2 { font: 500 13px var(--f-sans); }
+.fg-wide .fg-st-w { font-size: 14px; }
+.fg-wide .fg-st-t, .fg-wide .fg-st-l1 { font-size: 12px; }
+.fg-stemlist {
+  position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap; border: 0; list-style: none;
+}
+.fg-stemlist li { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 2px var(--sp-md); padding: var(--sp-sm) 0; border-top: 1px solid var(--border); }
+.fg-sl-a { flex: 1 1 160px; min-width: 0; }
+.fg-sl-n { display: block; font: var(--t-label); color: var(--text); overflow-wrap: anywhere; }
+.fg-sl-m { display: block; font: var(--t-meta); color: var(--text2); }
+.fg-sl-v { font: 500 20px/24px var(--f-serif); color: var(--text); white-space: nowrap; }
+.fg-sl-w { display: block; font: italic 400 15px/20px var(--f-serif); color: var(--text2); text-align: right; }
+.fg-sl-w.c { color: var(--clay); }
+.fg-large .fg-stems-svg { display: none; }
+.fg-large .fg-stemlist { position: static; width: auto; height: auto; margin: var(--sp-sm) 0 0; overflow: visible; clip: auto; white-space: normal; }
+@container (max-width: 299px) {
+  .fg-stems-svg { display: none; }
+  .fg-stemlist { position: static; width: auto; height: auto; margin: var(--sp-sm) 0 0; overflow: visible; clip: auto; white-space: normal; }
+}
+/* Key list: numbered rows with dotted leaders (misses, plan steps) */
+.fg-keys { list-style: none; margin: 0; padding: 0; }
+.fg-key { display: flex; align-items: baseline; gap: var(--sp-sm) var(--sp-md); min-height: 48px; padding: var(--sp-md) 0; border-top: 1px solid var(--border); }
+.fg-key-n { flex: none; min-width: 16px; font: italic 500 16px/22px var(--f-serif); color: var(--text2); }
+.fg-key-t { flex: 0 1 auto; min-width: 0; font: 500 15px/22px var(--f-sans); color: var(--text); overflow-wrap: anywhere; }
+.fg-key-x { margin-right: 4px; font-weight: 700; color: var(--wrong); }
+.fg-key-ok { margin-right: 4px; font-weight: 700; color: var(--accent-text); }
+.fg-key-dots { flex: 1 1 12px; min-width: 12px; border-bottom: 1.5px dotted var(--control); }
+.fg-key-r { flex: none; max-width: 45%; font: var(--t-meta); color: var(--text2); text-align: right; }
+/* Herbarium sheet: a set of specimens with its own count, never a grand total */
+.fg-sheet-h { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 var(--sp-md); margin: 0; font-weight: 400; }
+.fg-sheet-no { font: italic 400 15px/20px var(--f-serif); color: var(--clay); }
+.fg-sheet-nm { flex: 1 1 auto; font: 500 22px/28px var(--f-serif); color: var(--text); }
+.fg-sheet-ct { font: 500 17px/22px var(--f-serif); color: var(--text); }
+.fg-sheet-ct small { margin-left: 3px; font: 500 13px/18px var(--f-sans); color: var(--text2); }
+.fg-sheet-p { margin: 2px 0 var(--sp-md); font: italic 400 15px/21px var(--f-serif); color: var(--text2); }
+.fg-specs { display: flex; flex-wrap: wrap; gap: var(--sp-lg) var(--sp-md); }
+/* Specimen: earned is pressed and taped; not yet a dashed mount; gated dotted and empty */
+.fg-spec { width: 96px; min-width: 0; }
+.fg-spec-m { position: relative; display: grid; place-items: center; width: 76px; height: 76px; }
+.fg-spec-notyet .fg-spec-m { border: 1.5px dashed var(--control); border-radius: var(--r-xs); opacity: .9; }
+.fg-spec-gated .fg-spec-m { border: 1.5px dotted var(--control); border-radius: var(--r-xs); }
+.fg-spec-tape { position: absolute; width: 22px; height: 9px; background: var(--fg-tape); }
+.fg-spec-tape.a { left: 10px; bottom: 12px; transform: rotate(-14deg); }
+.fg-spec-tape.b { right: 12px; top: 8px; transform: rotate(22deg); }
+.fg-spec-nm { margin: 6px 0 0; font: 600 13px/17px var(--f-sans); color: var(--text); overflow-wrap: anywhere; }
+.fg-spec-d { margin: 0; font: 500 13px/17px var(--f-sans); color: var(--text2); }
+.fg-spec-gated .fg-spec-d { font: italic 400 14px/18px var(--f-serif); }
+/* Empty plate: the mount with nothing drawn yet */
+.fg-empty .fg-plate-in { border: 1px dashed var(--control); text-align: center; padding: var(--sp-xl) var(--sp-lg); }
+.fg-empty-t { margin: 0; font: italic 400 16px/22px var(--f-serif); color: var(--text2); }
+.fg-empty-m { margin: var(--sp-xs) auto 0; max-width: 42ch; font: var(--t-meta); color: var(--text2); }
+/* The button: 52px, 12px corners, the forest fill kept for the one primary action */
+.fg-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--sp-sm); min-height: 52px; padding: var(--sp-sm) var(--sp-xxl);
+  border: 0; border-radius: var(--r-12); background: var(--btn); color: var(--on-btn); font: 600 16px/20px var(--f-sans);
+  text-align: center; text-decoration: none; cursor: pointer;
+}
+.fg-btn:hover { background: var(--forest-top); }
+[data-theme="dark"] .fg-btn:hover { background: var(--sap); filter: brightness(1.06); }
+.fg-btn:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+.fg-btn .ico { flex-shrink: 0; }
+/* Motion: ink lines trace in (400 ms), then fills settle; Reduce Motion shows the finished plate. */
+@keyframes fgTrace { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+@keyframes fgSettle { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: no-preference) {
+  .fg-ink .fg-trace { stroke-dasharray: 1 1; animation: fgTrace .4s cubic-bezier(.33, 1, .68, 1) both; }
+  .fg-ink .fg-settle { animation: fgSettle .2s ease-out .32s both; }
 }
 
 /* Weak spots + mock results: neutral, with the answered count */
@@ -12391,6 +12546,177 @@ function renderHome() {
   if (!hideNext && !CISA_NOTES_RAW && !conceptsLoadFailed) {
     loadConceptsData(refreshTodayNext);
   }
+}
+
+// ── FIELD GUIDE KIT (web v12.44; the owner's signature pick, 29 Oct 2026) ──
+// The phone's kit, for the web: every screen is a plate in a guide to the
+// learner's own study. Each helper returns HTML. Plain-text arguments are
+// escaped here; an argument whose name ends in Html must already be safe.
+// The styles are the fg-* rules (FIELD GUIDE KIT in the stylesheet).
+var FG_LARGE_PX = 20.8;   // 16px × 1.3: the phone's LARGE_TEXT font scale
+var FG_ESTIMATE = 'a study estimate, not a prediction';
+// Large text (the browser's font size at 130% or more): every chart becomes its list.
+function fgLargeText() {
+  var big = false;
+  try { big = parseFloat(getComputedStyle(document.documentElement).fontSize) >= FG_LARGE_PX; } catch (e) { big = false; }
+  try { document.documentElement.classList.toggle('fg-large', big); } catch (e) {}
+  return big;
+}
+// "Thu 29 Oct" for a running head.
+function fgDate(ms) {
+  try { return new Intl.DateTimeFormat('en-GB', { weekday: 'short', day: 'numeric', month: 'short' }).format(new Date(ms)).replace(',', ''); } catch (e) { return ''; }
+}
+// Running head: section · date over a hairline, on every Field Guide screen.
+function fgRunningHead(left, rightHtml) {
+  return '<div class="fg-rh"><span>' + escapeHtml(left) + '</span>' + (rightHtml ? '<span>' + rightHtml + '</span>' : '') + '</div>';
+}
+// Plate: the double-hairline mount around the screen's one focal point.
+function fgPlate(fig, innerHtml, cls) {
+  return '<div class="fg-plate' + (cls ? ' ' + cls : '') + '"><div class="fg-plate-in">'
+    + (fig ? '<p class="fg-fig">' + escapeHtml(fig) + '</p>' : '') + innerHtml + '</div></div>';
+}
+// The caption under a plate: "KEY One stem per area…", "PLATE …", "NOTE …".
+function fgCaption(key, text) {
+  return '<p class="fg-cap"><b>' + escapeHtml(key) + '</b>' + escapeHtml(text) + '</p>';
+}
+// Specimen label: ruled key · value rows. rows: [{ k, vHtml, xHtml }] (xHtml: a full-width line under the row).
+function fgLabel(rows, cls) {
+  return '<ul class="fg-label' + (cls ? ' ' + cls : '') + '">' + rows.map(function (r) {
+    return '<li class="fg-lrow"><span class="fg-k">' + escapeHtml(r.k) + '</span>'
+      + (r.vHtml ? '<span class="fg-v">' + r.vHtml + '</span>' : '')
+      + (r.xHtml ? '<div class="fg-lrow-x">' + r.xHtml + '</div>' : '') + '</li>';
+  }).join('') + '</ul>';
+}
+function fgPct(n) { return Math.max(0, Math.min(100, Math.round(Number(n) || 0))); }
+// Scale bar: the readiness range on a map-style 0–100 bar. The words "a study
+// estimate, not a prediction" are built in, so it can never ship without them.
+// o: { number: false (the range is printed elsewhere), w: viewBox width }
+function fgScaleBar(low, high, o) {
+  o = o || {};
+  var lo = fgPct(low), hi = Math.max(lo, fgPct(high)), w = o.w || 320, x0 = 8, x1 = w - 16;
+  var X = function (p) { return (x0 + (x1 - x0) * p / 100).toFixed(1); };
+  var seg = (x1 - x0) / 10, g = '';
+  for (var i = 0; i < 10; i++) g += '<rect class="' + (i % 2 ? 'fg-sb-b' : 'fg-sb-a') + '" x="' + X(i * 10) + '" y="22" width="' + seg.toFixed(1) + '" height="5"/>';
+  var rw = Math.max(2, Number(X(hi)) - Number(X(lo)));
+  g += '<rect class="fg-sb-r" x="' + X(lo) + '" y="22" width="' + rw.toFixed(1) + '" height="5"/>'
+    + '<path class="fg-sb-br" d="M' + X(lo) + ' 17V13H' + (Number(X(lo)) + rw).toFixed(1) + 'V17"/>'
+    + '<path class="fg-sb-tick" d="M' + X(DOMAIN_TARGET_PCT) + ' 30v6"/>';
+  [[0, 42], [50, 42], [DOMAIN_TARGET_PCT, 48], [100, 42]].forEach(function (t) {
+    g += '<text class="fg-sb-t" x="' + X(t[0]) + '" y="' + t[1] + '" text-anchor="middle">' + t[0] + '</text>';
+  });
+  var mid = Math.min(x1 - 14, Math.max(x0 + 14, (Number(X(lo)) + Number(X(hi))) / 2));
+  g += '<text class="fg-sb-rt" x="' + mid.toFixed(1) + '" y="9" text-anchor="middle">' + lo + '&ndash;' + hi + '</text>';
+  var svg = '<svg class="fg-scale-svg" viewBox="0 0 ' + w + ' 50" width="' + w + '" height="50" aria-hidden="true" focusable="false">' + g + '</svg>';
+  var words = '<span class="fg-scale-w">' + FG_ESTIMATE + '</span>';
+  var fig = o.number === false
+    ? '<p class="fg-scale-fig"><span class="sr-only">Estimated readiness between ' + lo + ' and ' + hi + ' percent, </span>' + words + '</p>'
+    : '<p class="fg-scale-fig"><span class="fg-scale-n"><span class="sr-only">Estimated readiness between ' + lo + ' and ' + hi + ' percent, </span>'
+      + '<span aria-hidden="true">' + lo + '&ndash;' + hi + '<sup>%</sup></span></span>' + words + '</p>';
+  return '<div class="fg-scale">' + fig + svg + '</div>';
+}
+// Stem chart: areas on one scale with the dashed 70 line. Under 30 answers an
+// area is a seed ("too few yet", an outline, no number); below the line it is
+// clay AND says "building", so colour is never the only signal. A `before`
+// value draws this set's growth as a clay segment with ↑n.
+// areas: [{ id, name, short, pct, answered, before, weight }]
+// o: { wide, ink (trace in once), label (what the list is), unit ('answers') }
+function fgStemChart(areas, o) {
+  o = o || {};
+  var wide = !!o.wide, n = Math.max(1, areas.length);
+  var w = o.w || (wide ? 600 : 340), T = 34, plotH = wide ? 230 : 170, soil = T + plotH;
+  var h = soil + (wide ? 62 : 70), L = 26;
+  var y = function (p) { return soil - (p / 100) * plotH; };
+  var gap = (w - L) / n, g = '', list = '';
+  [0, 50, DOMAIN_TARGET_PCT, 100].forEach(function (p) {
+    g += '<text class="fg-st-t" x="0" y="' + (y(p) + 4).toFixed(1) + '">' + p + '</text><path class="fg-st-ax" d="M20 ' + y(p).toFixed(1) + 'h5"/>';
+  });
+  g += '<path class="fg-st-ax" d="M24 ' + soil + 'V' + T + '"/>'
+    + '<path class="fg-st-70" d="M26 ' + y(DOMAIN_TARGET_PCT).toFixed(1) + 'H' + w + '"/>'
+    + '<path class="fg-st-ax" d="M26 ' + soil + 'H' + w + '"/>';
+  if (wide) g += '<text class="fg-st-tb" x="' + w + '" y="' + (y(DOMAIN_TARGET_PCT) + 15).toFixed(1) + '" text-anchor="end">' + DOMAIN_TARGET_PCT + ' line</text>';
+  var unit = o.unit || 'answers';
+  areas.forEach(function (a, i) {
+    var x = L + gap * i + gap / 2, xs = x.toFixed(1);
+    var few = !(a.answered >= DOMAIN_READ_MIN);
+    var pct = fgPct(a.pct);
+    var below = !few && pct < DOMAIN_TARGET_PCT;
+    var word = few ? 'too few yet' : bandFor(pct).toLowerCase();
+    var trace = o.ink ? ' fg-trace' : '', len = o.ink ? ' pathLength="1"' : '';
+    var settle = o.ink ? ' fg-settle' : '';
+    var delta = (!few && typeof a.before === 'number' && isFinite(a.before)) ? pct - fgPct(a.before) : 0;
+    if (few) {
+      g += '<ellipse class="fg-st-seed" cx="' + xs + '" cy="' + (soil - 4) + '" rx="7" ry="4.5"/>'
+        + '<path class="fg-st-ghost" d="M' + xs + ' ' + (soil - 9) + 'v-18"/>'
+        + '<text class="fg-st-n" x="' + xs + '" y="' + (soil - 34) + '" text-anchor="middle">&ndash;</text>';
+    } else {
+      var base = delta > 0 ? pct - delta : pct;
+      g += '<path class="fg-st-stem' + trace + '"' + len + ' d="M' + xs + ' ' + soil + 'V' + y(base).toFixed(1) + '"/>';
+      for (var k = 1; k * 9 < base; k++) {
+        g += '<ellipse class="fg-st-leaf' + settle + '" cx="0" cy="-6" rx="3.2" ry="6.4" transform="translate(' + xs + ' ' + y(k * 9).toFixed(1) + ') rotate(' + (k % 2 ? -58 : 58) + ')"/>';
+      }
+      if (delta > 0) g += '<path class="fg-st-grow' + trace + '"' + len + ' d="M' + xs + ' ' + y(base).toFixed(1) + 'V' + y(pct).toFixed(1) + '"/>';
+      g += '<ellipse class="fg-st-leaf' + (below || delta > 0 ? ' c' : '') + settle + '" cx="' + xs + '" cy="' + (y(pct) - 5).toFixed(1) + '" rx="3" ry="5.6"/>'
+        + '<text class="fg-st-n' + settle + '" x="' + xs + '" y="' + (y(pct) - 16).toFixed(1) + '" text-anchor="middle">' + pct + '<tspan class="u" dy="-6">%</tspan>'
+        + (delta ? '<tspan class="' + (delta > 0 ? 'fg-st-up' : 'fg-st-dn') + '" dy="6"> ' + (delta > 0 ? '&uarr;' : '&darr;') + Math.abs(delta) + '</tspan>' : '') + '</text>';
+    }
+    var nm = String(a.short || a.name || ''), parts = nm.split(' ');
+    if (wide) {
+      g += '<text class="fg-st-l2" x="' + xs + '" y="' + (soil + 18) + '" text-anchor="middle">' + escapeHtml(nm) + '</text>'
+        + '<text class="fg-st-w' + (below ? ' c' : '') + '" x="' + xs + '" y="' + (soil + 37) + '" text-anchor="middle">' + word + '</text>'
+        + (few ? '<text class="fg-st-l1" x="' + xs + '" y="' + (soil + 55) + '" text-anchor="middle">' + (a.answered || 0) + ' answered</text>' : '');
+    } else {
+      var l1 = parts.length > 1 ? parts[0] : '', l2 = parts.length > 1 ? parts.slice(1).join(' ') : nm;
+      g += (l1 ? '<text class="fg-st-l1" x="' + xs + '" y="' + (soil + 16) + '" text-anchor="middle">' + escapeHtml(l1) + '</text>' : '')
+        + '<text class="fg-st-l2" x="' + xs + '" y="' + (soil + 30) + '" text-anchor="middle">' + escapeHtml(l2) + '</text>'
+        + '<text class="fg-st-w' + (below ? ' c' : '') + '" x="' + xs + '" y="' + (soil + 47) + '" text-anchor="middle">' + (few ? 'too few' : word) + '</text>'
+        + (few ? '<text class="fg-st-l1" x="' + xs + '" y="' + (soil + 62) + '" text-anchor="middle">' + (a.answered || 0) + ' so far</text>' : '');
+    }
+    // The list: the same facts in words (screen readers; large text; narrow columns).
+    var meta = [];
+    if (typeof a.weight === 'number') meta.push(a.weight + '% of the exam');
+    meta.push((a.answered || 0) + ' ' + (a.answered === 1 ? unit.replace(/s$/, '') : unit));
+    var val = few ? 'Too few yet' : pct + '%' + (delta ? ' (' + (delta > 0 ? 'up ' : 'down ') + Math.abs(delta) + ')' : '');
+    list += '<li><span class="fg-sl-a"><span class="fg-sl-n">' + escapeHtml(a.name || nm) + '</span><span class="fg-sl-m">' + escapeHtml(meta.join(' · ')) + '</span></span>'
+      + '<span><span class="fg-sl-v">' + val + '</span><span class="fg-sl-w' + (below ? ' c' : '') + '">' + (few ? 'not measured yet' : word) + '</span></span></li>';
+  });
+  return '<div class="fg-stems' + (wide ? ' fg-wide' : '') + '">'
+    + '<svg class="fg-stems-svg' + (o.ink ? ' fg-ink' : '') + '" viewBox="0 0 ' + w + ' ' + h + '" width="' + w + '" height="' + h + '" style="max-width:' + w + 'px" aria-hidden="true" focusable="false">' + g + '</svg>'
+    + '<ul class="fg-stemlist"' + (o.label ? ' aria-label="' + escapeHtml(o.label) + '"' : '') + '>' + list + '</ul></div>';
+}
+// Key list: numbered rows with dotted leaders. items: [{ mark: 'x' | 'ok' | '', tHtml, rHtml }]
+function fgKeyList(items, label) {
+  return '<ol class="fg-keys"' + (label ? ' aria-label="' + escapeHtml(label) + '"' : '') + '>' + items.map(function (it, i) {
+    var mark = it.mark === 'x' ? '<span class="fg-key-x" aria-hidden="true">&#x2717;</span><span class="sr-only">Missed: </span>'
+      : it.mark === 'ok' ? '<span class="fg-key-ok" aria-hidden="true">&#x2713;</span><span class="sr-only">Right: </span>' : '';
+    return '<li class="fg-key"><span class="fg-key-n" aria-hidden="true">' + (i + 1) + '</span>'
+      + '<span class="fg-key-t">' + mark + it.tHtml + '</span>'
+      + (it.rHtml ? '<span class="fg-key-dots" aria-hidden="true"></span><span class="fg-key-r">' + it.rHtml + '</span>' : '') + '</li>';
+  }).join('') + '</ol>';
+}
+// Specimen: one badge cell. o: { state: 'earned' | 'notyet' | 'gated', artHtml, name, line }
+// Earned is pressed and taped; not yet sits in a dashed mount; gated is dotted
+// and empty, its line saying when it opens (never a padlock).
+function fgSpecimen(o) {
+  var st = o.state === 'earned' || o.state === 'gated' ? o.state : 'notyet';
+  return '<div class="fg-spec fg-spec-' + st + '"><div class="fg-spec-m" aria-hidden="true">'
+    + (st === 'gated' ? '' : (o.artHtml || ''))
+    + (st === 'earned' ? '<span class="fg-spec-tape a"></span><span class="fg-spec-tape b"></span>' : '') + '</div>'
+    + '<p class="fg-spec-nm">' + escapeHtml(o.name) + '</p><p class="fg-spec-d">' + escapeHtml(o.line) + '</p></div>';
+}
+// Herbarium sheet: a set's header ("Sheet I · Groundwork · 2 of 3 pressed"), its purpose, then its plate.
+// o: { no, name, countHtml, purpose, innerHtml, level (heading level, default 3), id }
+function fgSheet(o) {
+  var lv = o.level === 2 ? 2 : 3;
+  return '<div class="fg-sheet"><h' + lv + ' class="fg-sheet-h"' + (o.id ? ' id="' + escapeHtml(o.id) + '"' : '') + '>'
+    + (o.no ? '<span class="fg-sheet-no">' + escapeHtml(o.no) + '</span>' : '')
+    + '<span class="fg-sheet-nm">' + escapeHtml(o.name) + '</span>'
+    + (o.countHtml ? '<span class="fg-sheet-ct">' + o.countHtml + '</span>' : '') + '</h' + lv + '>'
+    + (o.purpose ? '<p class="fg-sheet-p">' + escapeHtml(o.purpose) + '</p>' : '') + (o.innerHtml || '') + '</div>';
+}
+// Empty plate: the mount with nothing drawn yet.
+function fgEmptyPlate(textHtml, title) {
+  return fgPlate('', '<p class="fg-empty-t">' + escapeHtml(title || 'Plate not yet drawn') + '</p>'
+    + (textHtml ? '<p class="fg-empty-m">' + textHtml + '</p>' : ''), 'fg-empty');
 }
 
 // ── YOUR PROGRESS (web v12.41, You → Your progress) ──
