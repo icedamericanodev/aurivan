@@ -112,7 +112,8 @@ await page.screenshot({ path: `${out}/03a-lesson-idea.png` });
 console.log('shot lesson idea');
 // Settings → About: the brand vision (lockup, tagline, four pillars).
 // Mobile 1.17: the vision sits behind the "About KaiSip" row, in a sheet.
-await shot0('16b-settings-about', '/settings');
+// Mobile 1.46: About KaiSip moved to the Help and about page (settings-section?category=help).
+await shot0('16b-settings-about', '/settings-section?category=help');
 await page.getByRole('button', { name: /^About KaiSip/ }).first().click();
 await page.waitForTimeout(900);
 await page.screenshot({ path: `${out}/16b-settings-about.png` });
