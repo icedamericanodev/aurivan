@@ -51,6 +51,17 @@
  *   its own line. "What you missed" shows the note rows open, grouped by note
  *   with their question numbers, and "See answers" jumps to Review answers.
  * - "Practice the N you missed" is a quiet ghost link under Done.
+ *
+ * Mobile 1.51 (Field Guide, the owner's signature pick; DESIGN_SYSTEM.md §21): Results is a plate.
+ * - A running head names the set ("Practice · IS Operations"); the headline stays the count.
+ * - The rings give way to Fig. 6, the GROWTH plate: the areas this set asked about on one scale,
+ *   now, with the set's change where both ends have a number (a set remembers where each area
+ *   stood when it began, `ActiveSession.before`): "↑3" in clay, a drop "↓2" in calm ink, "3 of 4
+ *   this set" under each. One area that moved also gets "58 → 61%" and a line in words. Areas with
+ *   too few answers yet draw the empty mount ("Plate not yet drawn"). A NOTE under it: readiness as
+ *   a study estimate. The honest-count rules are unchanged (no percent of a handful).
+ * - Time and pace are ruled label rows; "What you missed" is a key list (✗, the note, its questions);
+ *   Done is the plate button.
  */
 import { router, useFocusEffect } from 'expo-router';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -59,13 +70,18 @@ import { LeafStrip } from '../components/leafStrip';
 import { OptionCard, PickNote, TrustLine } from '../components/quiz';
 import { QuestionNote } from '../components/questionNote';
 import { useReportFlow } from '../components/support';
-import { DomainRings, todayMinutes } from '../components/journey';
+import { todayMinutes } from '../components/journey';
+import { EmptyPlate, FieldText, KeyCaption, KeyList, Plate, RunningHead, SpecimenLabel, SpecimenRow, StemChart } from '../components/fieldguide';
+import { emptyPlateLine, growthFigure, setStems } from '../engine/fieldGuide';
+import { STEADY_FROM } from '../engine/domainBand';
+import { readinessFor } from '../engine/readiness';
+import { readinessRange } from '../engine/readinessRange';
 import { PacingPanel } from '../components/pace';
 import { FirstSetDone } from '../components/firstSet';
 import { MilestoneMomentView } from '../components/milestones';
 import { useOncePerDay } from '../components/motion';
-import { BookOpen, ICON_STROKE, Sprout } from '../components/icons';
-import { BigNum, Button, Enter, Gap, ICON_SIZE, InviteRow, ListRow, Row, Screen, Section, Stat, StatRow, T, useScreenScroll } from '../components/ui';
+import { ICON_STROKE, Sprout } from '../components/icons';
+import { BigNum, Button, Enter, Gap, ICON_SIZE, InviteRow, Row, Screen, Section, T, useScreenScroll } from '../components/ui';
 import { getCertification } from '../content/certifications';
 import { findQuestion } from '../content/loader';
 import { findNote, subtopicOfQuestion } from '../content/notes';
@@ -97,7 +113,7 @@ import { startFromIds } from '../lib/sessions';
 import { runPlanItem } from '../lib/actions';
 import { currentIndex, planComplete } from '../engine/dayPlan';
 import { dayKey } from '../engine/streak';
-import { useProgress } from '../store/progress';
+import { selectCert, useProgress } from '../store/progress';
 import { questionTarget, sessionWhere } from '../lib/support';
 import { useSession } from '../store/session';
 import { motion, space } from '../theme/tokens';
@@ -111,6 +127,8 @@ export default function Results() {
   // Mobile 1.43: "What you missed" → "See answers" jumps to the Review answers heading.
   const reviewHead = useRef<View>(null);
   const score = useMemo(() => (active ? scoreSession(active) : null), [active]);
+  // Mobile 1.51: the areas now, for the growth plate (read from the saved answers, which this set already updated).
+  const answersNow = useProgress((s) => (active ? selectCert(s, active.certId).answers : undefined));
   // Mock pacing: time used, median, checks, unanswered, last 10%, slowest domain.
   const pacing = useMemo(() => (active?.mode === 'mock' && active.deadline ? sessionPacing(active) : null), [active]);
   // The one milestone this session celebrates (lib/finishSession.ts picked it).
@@ -286,15 +304,9 @@ export default function Results() {
     else router.replace('/home');
   };
 
-  const values = cert.domains.map((d) => {
-    const b = score.byDomain[d.id];
-    return b ? b.correct / b.total : null;
-  });
-  // Only the domains this session asked about get a ring (ui.md R1).
+  // The areas this session asked about (the growth plate draws only these, ui.md R1).
   const inSession = cert.domains.map((d, i) => (score.byDomain[d.id] ? i : -1)).filter((i) => i >= 0);
   const oneDomain = inSession.length === 1 ? cert.domains[inSession[0]] : undefined;
-  // Mobile 1.39: the domain rings only where they tell something: a mixed-domain set or a mock.
-  const showRings = active.mode === 'mock' || !oneDomain;
   // Mobile 1.43: "Per question" beside the exam's own pace (Build C answer times). A timed mock's
   // Pacing panel already gives its typical time per question, so it is not said twice there.
   const pace = pacing ? null : practicePace(active.questionIds.map((id) => active.responses[id]?.ms), cert.exam);
@@ -309,14 +321,19 @@ export default function Results() {
   // clock; otherwise answer time), as a stat that reads plainly ("Under 1 min", "24 min").
   const time = timeStat(msUsed(active, active.finishedAt ?? active.startedAt));
   const grow = growing;
-  // Starts as the screen's dissolve ends (it is already mostly in by then).
-  const at = motion.dur.select;
+  // Mobile 1.51: the growth plate's facts (engine/fieldGuide.ts), and readiness now for its NOTE.
+  const readinessNow = readinessFor(cert, answersNow ?? {});
+  const range = readinessRange(cert, readinessNow);
+  const stems = setStems(cert.domains, readinessNow.domains, score.byDomain, active.before);
+  const plateLine = emptyPlateLine(stems);
+  const figure = stems.length === 1 ? growthFigure(stems[0]) : null;
+  const plateTitle = stems.length === 1 ? `${stems[0].name}${figure && !figure.down ? ', new growth' : ''}` : 'This set’s areas';
 
   return (
     <Screen edges={['top', 'bottom']} onScroll={moment && !momentSeen ? watch : undefined} onScrollBeginDrag={moment ? () => skipMoment.current?.() : undefined}>
       <Enter i={0}>
-        {/* Extra time and untimed mocks say so (standard time is the norm, so it isn't named). */}
-        <T v="meta">{active.mode === 'mock' && active.timing && active.timing !== 'standard' ? `${active.title} · ${TIMING_LABEL[active.timing].toLowerCase()}` : legacyTitle(active.title)}</T>
+        {/* Mobile 1.51: the running head names the set. Extra time and untimed mocks say so (standard time is the norm). */}
+        <RunningHead section={active.mode === 'mock' && active.timing && active.timing !== 'standard' ? `${active.title} · ${TIMING_LABEL[active.timing].toLowerCase()}` : legacyTitle(active.title)} />
         {/* A timed mock that ended on the clock says so first (seen here, spoken by the effect above). */}
         {timedOut && (
           <View accessible accessibilityLabel={`${TIMES_UP_LINE} ${TIMES_UP_DETAIL}`} style={{ marginTop: space.sm }}>
@@ -324,79 +341,70 @@ export default function Results() {
             <T v="meta">{TIMES_UP_DETAIL}</T>
           </View>
         )}
-        <T v="display" accessibilityRole="header" style={{ marginTop: space.xs }}>{headline}</T>
+        <T v="display" accessibilityRole="header" style={{ marginTop: space.lg }}>{headline}</T>
         {fact && <T v="small" color={c.ink2} style={{ marginTop: space.xs }}>{fact}</T>}
         {/* A one-domain set (no ring) names its domain once (mobile 1.43: no percent, the headline is the count). */}
-        {!fact && !tiny && oneDomain && !showRings && <T v="meta" style={{ marginTop: space.sm }}>{`All ${oneDomain.short}`}</T>}
+        {!fact && !tiny && oneDomain && !isMock && <T v="meta" style={{ marginTop: space.sm }}>{`All ${oneDomain.short}`}</T>}
       </Enter>
 
-      {/* Score rings in domain tones (spec §10.1, Results 200): arc = this session's score per domain.
-          Mobile 1.39: only for a mixed-domain set or a mock. A one-domain set has no ring (1.43: and no
-          percent line; the headline is the count). */}
-      {showRings ? (
-        <Enter i={1} style={{ marginTop: space.xl }}>
-          <DomainRings
-            cert={cert}
-            values={values}
-            only={inSession}
-            // One domain: the ring alone, centred, with its one line under it (no stranded legend row).
-            legend={!oneDomain}
-            grow={{ play: grow, run: 1, delay: at }}
-            legendValue={(i) => {
-              const b = score.byDomain[cert.domains[i].id];
-              return b ? `${b.correct}/${b.total}` : '–';
-            }}
-            accessibilityLabel={`${tiny ? `${score.correct} of ${score.answered} right` : `Score ${pct} percent`}. ${cert.domains
-              .map((d) => (score.byDomain[d.id] ? `${d.short} ${score.byDomain[d.id].correct} of ${score.byDomain[d.id].total}` : null))
-              .filter(Boolean)
-              .join(', ')}.`}
-            center={
-              tiny ? (
-                // A handful of questions: no percent (a percent of 4 says little), and no count either: the
-                // headline already says "2 of 3 right" (UX review S7, the count once). One domain names it here.
-                oneDomain ? (
-                  <T v="caption" color={c.ink2} center style={{ maxWidth: 96 }}>{oneDomain.short}</T>
-                ) : null
-              ) : (
-                <View style={{ alignItems: 'center' }}>
-                  <BigNum value={String(pct)} pct size={30} roll={{ play: grow, from: null, run: 1, delay: at }} />
-                  <T v="caption" color={c.ink2}>score</T>
-                </View>
-              )
-            }
-          />
-          {oneDomain ? (
-            <T v="meta" center style={{ marginTop: 14 }}>{`All ${oneDomain.short}`}</T>
-          ) : (
-            <T v="meta" style={{ marginTop: 14 }}>Each ring is a domain in this session. Thicker rings weigh more on the exam.</T>
-          )}
-        </Enter>
-      ) : null}
+      {/* Mobile 1.51 (Field Guide): Fig. 6, the growth plate. The areas this set asked about, now, on one scale,
+          with this set's change where both ends have a number; "Plate not yet drawn" while none has one. */}
+      <Enter i={1} style={{ marginTop: space.xl }}>
+        {plateLine ? (
+          <EmptyPlate fig={{ n: 6, title: plateTitle }} body={plateLine} />
+        ) : (
+          <Plate tight fig={{ n: 6, title: plateTitle }} testID="results-plate">
+            {figure && (
+              <View accessible accessibilityLabel={`${figure.spoken}. ${figure.line}.`} style={{ marginHorizontal: space.sm, marginBottom: space.sm }}>
+                <BigNum value={figure.shown.replace('%', '')} pct size={30} color={c.ink} />
+                <FieldText v="fig">{figure.line}</FieldText>
+              </View>
+            )}
+            <StemChart stems={stems} line={STEADY_FROM} play={grow} />
+          </Plate>
+        )}
+        {range.enough && (
+          <KeyCaption label="NOTE">{`Readiness is ${range.low}–${range.high}%: a study estimate, not a prediction.`}</KeyCaption>
+        )}
+      </Enter>
 
       {/* Mobile 1.43: which ones, at a glance (up to 20 practice questions), or one line (a mock, a longer set). */}
-      <Enter i={showRings ? 2 : 1} style={{ marginTop: showRings ? space.xl : space.lg }}>
+      <Enter i={2} style={{ marginTop: space.xl }}>
         {strip ? <LeafStrip states={leafStates} /> : <T v="meta">{missedLine(missed.length, blank)}</T>}
       </Enter>
 
       <View style={{ marginTop: space.xl }} onLayout={(e) => setStatsY(e.nativeEvent.layout.y)}>
-      <Enter i={showRings ? 3 : 2}>
+      <Enter i={3}>
         {/* Mobile 1.43: the count is said once, in the headline, so there is no "Correct" or "Missed" cell:
             the time, and the time per question beside the exam's own pace. */}
-        <StatRow>
-          {[
-            time.word ? <Stat key="t" label="Time" word={time.word} spoken={time.spoken} /> : <Stat key="t" label="Time" value={time.value} unit={time.unit} spoken={time.spoken} />,
-            pace ? (
-              <Stat
-                key="p"
-                label="Per question"
-                value={String(pace.own)}
-                unit="s"
-                note={`Exam pace: about ${pace.exam} s`}
-                spoken={`${pace.own} seconds. Exam pace about ${pace.exam} seconds`}
-              />
-            ) : null,
-          ]}
-        </StatRow>
+        {/* Mobile 1.51: ruled label rows, never tiles. */}
+        <SpecimenLabel testID="results-stats">
+          {/* The set's score where the rings showed one (a mixed set or a mock, with enough answers for a percent to
+              mean something; a one-area set says its count in the headline only, mobile 1.43). It rolls up once, as
+              the rings' centre did, and is spoken with each area's count. */}
+          {!tiny && (isMock || !oneDomain) ? (
+            <SpecimenRow
+              label="Score"
+              value={String(pct)}
+              pct
+              roll={{ play: grow, from: null, run: 1, delay: motion.dur.select }}
+              spoken={`${pct} percent. ${cert.domains
+                .map((d) => (score.byDomain[d.id] ? `${d.short} ${score.byDomain[d.id].correct} of ${score.byDomain[d.id].total}` : null))
+                .filter(Boolean)
+                .join(', ')}.`}
+            />
+          ) : null}
+          {time.word ? <SpecimenRow label="Time" word={time.word} spoken={time.spoken} /> : <SpecimenRow label="Time" value={time.value} unit={time.unit} spoken={time.spoken} />}
+          {pace ? (
+            <SpecimenRow
+              label="Per question"
+              value={String(pace.own)}
+              unit="s"
+              note={`Exam pace: about ${pace.exam} s`}
+              spoken={`${pace.own} seconds. Exam pace about ${pace.exam} seconds`}
+            />
+          ) : null}
+        </SpecimenLabel>
         {isMock && (
           <T v="meta" style={{ marginTop: space.md }}>
             Practice scores are not scaled exam scores. {cert.exam.passingNote}
@@ -424,19 +432,19 @@ export default function Results() {
         {missed.length > 0 && (
           <View>
             <JumpSection title="What you missed" target={reviewHead} />
-            {missedNotes.map((n, i) => (
-              <ListRow
-                key={n.id}
-                icon={<BookOpen size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
-                kicker={noteKicker(n.numbers)}
-                title={n.name}
-                subtitle={aboutMin(n.minutes)}
-                accessibilityLabel={`${noteKicker(n.numbers)}: ${n.name}, ${spokenMin(aboutMin(n.minutes, true))}`}
-                accessibilityHint="Opens the study note. Go back to return to your results."
-                onPress={() => router.push(`/notes/subtopic/${encodeURIComponent(n.id)}`)}
-                last={i === missedNotes.length - 1}
-              />
-            ))}
+            {/* Mobile 1.51: a key list, as under a plate: what the row does, the note's name and its minutes (words, no ✗: mobile 1.24). */}
+            <KeyList
+              testID="results-missed"
+              items={missedNotes.map((n) => ({
+                key: n.id,
+                title: n.name,
+                kicker: noteKicker(n.numbers),
+                right: aboutMin(n.minutes),
+                spoken: `${noteKicker(n.numbers)}: ${n.name}, ${spokenMin(aboutMin(n.minutes, true))}`,
+                hint: 'Opens the study note. Go back to return to your results.',
+                onPress: () => router.push(`/notes/subtopic/${encodeURIComponent(n.id)}`),
+              }))}
+            />
             {moreLine && <T v="meta" style={{ marginTop: space.sm }}>{moreLine}</T>}
           </View>
         )}
@@ -450,11 +458,11 @@ export default function Results() {
           </T>
         )}
         {guidedScope ? (
-          <Button label="Back to your Guided step" onPress={backToGuided} />
+          <Button shape="plate" label="Back to your Guided step" onPress={backToGuided} />
         ) : planLeft > 0 ? (
-          <Button label="Continue" accessibilityHint="Goes on with today’s plan." onPress={continuePlan} />
+          <Button shape="plate" label="Continue" accessibilityHint="Goes on with today’s plan." onPress={continuePlan} />
         ) : (
-          <Button label="Done" onPress={done} />
+          <Button shape="plate" label="Done" onPress={done} />
         )}
         {planLeft > 0 && <Button kind="ghost" label="Done for now" onPress={done} style={{ alignSelf: 'center', marginTop: space.sm }} />}
         {missed.length > 0 && planLeft === 0 && (

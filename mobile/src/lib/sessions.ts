@@ -24,6 +24,8 @@ import { dailyMinutesOf, useSettings } from '../store/settings';
 import { questionsFor } from '../engine/fit';
 import { finishSession } from './finishSession';
 import { claimWidgetStart } from './widgetStats';
+import { areaSnapshot, type AreaSnapshot } from '../engine/fieldGuide';
+import { readinessFor } from '../engine/readiness';
 
 /**
  * Every non-mock session starts timed when Settings → Study defaults →
@@ -32,6 +34,13 @@ import { claimWidgetStart } from './widgetStats';
  * modes. A caller passing `timed` explicitly (Practice's own Timed switch)
  * overrides it for that session. Mocks never use it: they keep the start sheet.
  */
+/** The areas' standing as a set begins (engine/fieldGuide.ts areaSnapshot), or nothing for an unknown exam. */
+function beforeOf(certId: string): { before?: AreaSnapshot } {
+  const cert = getCertification(certId);
+  if (!cert) return {};
+  return { before: areaSnapshot(readinessFor(cert, selectCert(useProgress.getState(), certId).answers).domains) };
+}
+
 function newSession(
   mode: SessionMode,
   certId: string,
@@ -67,6 +76,8 @@ function newSession(
     ...extra,
     ...(timed ? { timed: true } : {}),
     ...(widget ? { widget } : {}),
+    // Mobile 1.51: where each area stands now, so Results can show this set's growth (or drop) honestly.
+    ...beforeOf(certId),
   };
   useSession.getState().start(session);
   return session;

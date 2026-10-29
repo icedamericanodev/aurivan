@@ -37,7 +37,7 @@ import Results from '../app/results';
 import Saved from '../app/saved';
 import { EmptyArt, GrowthRings } from '../components/glyphs';
 import { AreaRows, ReadinessBlock } from '../components/youReadiness';
-import { ScaleBar } from '../components/fieldguide';
+import { ScaleBar, SpecimenRow } from '../components/fieldguide';
 import { ClearingBody, ReadinessRow } from '../components/journey';
 import { BadgeCell, BadgeListRow } from '../components/badges';
 import { MilestoneMomentView, resetBadgeMomentsForTest } from '../components/milestones';
@@ -340,7 +340,10 @@ describe('J1 first open of the day (Today)', () => {
 
 // ── J2 ───────────────────────────────────────────────────────────────────
 describe('J2 practice session → Results', () => {
-  const resultRings = () => r!.root.findAllByType(GrowthRings)[0].props.grow as { play: boolean };
+  // Mobile 1.51 (Field Guide): the rings gave way to the growth plate; the score that rolled in their centre is
+  // the Score label row now, and it rolls the same way (once, on this Results' first look, at 60% or more).
+  const resultRings = () => (r!.root.findAllByType(SpecimenRow).find((n) => n.props.label === 'Score')?.props.roll ?? { play: false }) as { play: boolean };
+  const growingArcs = () => (resultRings().play ? 1 : 0);
 
   it('the rings and the score roll once; reopening the same Results shows them still', () => {
     setMockReducedMotion(false);
@@ -349,7 +352,6 @@ describe('J2 practice session → Results', () => {
     expect(resultRings().play).toBe(true);
     expect(growingArcs()).toBeGreaterThan(0);
     expect(movingDigits()).toBeGreaterThan(0);
-    expect(allText()).toContain('Each ring is a domain in this session.');
     unmount();
     mount(<Results />);
     expect(resultRings().play).toBe(false);

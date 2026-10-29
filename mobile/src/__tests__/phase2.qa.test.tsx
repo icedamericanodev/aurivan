@@ -301,9 +301,9 @@ describe.each([
 
     unmount();
     mount(<Results />);
-    const label = root().find((n) => typeof n.props.accessibilityLabel === 'string' && n.props.accessibilityLabel.startsWith('Score ')).props
+    const label = root().find((n) => typeof n.props.accessibilityLabel === 'string' && n.props.accessibilityLabel.startsWith('Score: ')).props
       .accessibilityLabel as string;
-    expect(label).toMatch(/^Score 50 percent\./);
+    expect(label).toMatch(/^Score: 50 percent\./); // mobile 1.51: the Score label row (the rings' label before)
     for (const dom of CISA.domains) {
       const ids = TEN.filter((id) => findQuestion('cisa', id)!.domainId === dom.id);
       const ok = ids.filter((id) => expected[id]).length;
@@ -420,10 +420,10 @@ describe('J2 mock exam with motion on', () => {
 
     unmount();
     mount(<Results />);
-    const label = root().find((n) => typeof n.props.accessibilityLabel === 'string' && n.props.accessibilityLabel.startsWith('Score ')).props
+    const label = root().find((n) => typeof n.props.accessibilityLabel === 'string' && n.props.accessibilityLabel.startsWith('Score: ')).props
       .accessibilityLabel as string;
     // 2 right of 6 (unanswered count as wrong in a mock).
-    expect(label).toMatch(/^Score 33 percent\./);
+    expect(label).toMatch(/^Score: 33 percent\./);
   });
 
   it('a double tap on Next in a mock moves exactly as many questions as taps, and lands on a settled page', () => {

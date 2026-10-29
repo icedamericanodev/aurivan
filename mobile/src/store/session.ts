@@ -6,6 +6,7 @@
  * the session is still there.
  */
 import type { WidgetKind } from '../engine/widgets';
+import type { AreaSnapshot } from '../engine/fieldGuide';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import type { Letter } from '../content/types';
@@ -108,6 +109,12 @@ export interface ActiveSession {
    * counters only; lib/widgetStats.ts). Optional: every other session has none.
    */
   widget?: WidgetKind;
+  /**
+   * Mobile 1.51 (Field Guide): where each area stood when the set began, [answers, whole percent]
+   * (engine/fieldGuide.ts areaSnapshot), so Results can draw the set's growth honestly. Optional:
+   * older sessions have none (Results then shows the areas without a change).
+   */
+  before?: AreaSnapshot;
   finishedAt?: number; // set when the learner finishes / submits
 }
 

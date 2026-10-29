@@ -61,7 +61,8 @@ export function SpecimenRow({
   const large = useFontScale() >= LARGE_TEXT;
   const said = spoken ?? (word ?? `${value ?? ''}${pct ? ' percent' : ''}${unit ? ` ${unit}` : ''}`);
   return (
-    <View accessible accessibilityLabel={`${label}: ${said}${note ? `. ${note}` : ''}`} style={{ paddingVertical: 10, paddingHorizontal: 14 }}>
+    // A row with its own `spoken` says the note there already (Results: "70 seconds. Exam pace about 96 seconds").
+    <View accessible accessibilityLabel={`${label}: ${said}${note && spoken === undefined ? `. ${note}` : ''}`} style={{ paddingVertical: 10, paddingHorizontal: 14 }}>
       <View style={{ flexDirection: large ? 'column' : 'row', justifyContent: 'space-between', alignItems: large ? 'flex-start' : 'baseline', columnGap: space.md, rowGap: 2 }}>
         <FieldText v="head" style={{ flexShrink: 1 }}>{label}</FieldText>
         <View style={{ flexDirection: 'row', alignItems: 'baseline', flexWrap: 'wrap', justifyContent: large ? 'flex-start' : 'flex-end', columnGap: 6, flexShrink: 1 }}>

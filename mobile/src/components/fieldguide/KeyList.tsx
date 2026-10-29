@@ -20,6 +20,8 @@ export interface KeyItem {
   title: string;
   /** The words at the end of the leader ("yours B · best D", "questions 3 and 7"). */
   right?: string;
+  /** A caption above the title that says what the row does ("Read the note · question 3"). */
+  kicker?: string;
   /** A ✗ or ✓ before the title, always with words beside it (never the only signal). */
   mark?: 'missed' | 'right';
   spoken: string;
@@ -45,17 +47,20 @@ function KeyRow({ item, n, first }: { item: KeyItem; n: number; first: boolean }
     <>
       {press.layer}
       <FieldText v="keyNo" style={{ width: 22 }}>{String(n)}</FieldText>
-      <View style={{ flex: 1, minWidth: 0, flexDirection: large ? 'column' : 'row', alignItems: large ? 'flex-start' : 'center' }}>
-        <T v="label" style={{ flexShrink: 1 }}>
-          {item.mark ? <T v="label" color={item.mark === 'missed' ? c.wrong : c.correct}>{item.mark === 'missed' ? '✗ ' : '✓ '}</T> : null}
-          {item.title}
-        </T>
-        {item.right ? (
-          <>
-            {!large && <Leader color={c.control} />}
-            <T v="meta" style={{ flexShrink: 0 }}>{item.right}</T>
-          </>
-        ) : null}
+      <View style={{ flex: 1, minWidth: 0 }}>
+        {item.kicker ? <T v="caption" color={c.accentText}>{item.kicker}</T> : null}
+        <View style={{ flexDirection: large ? 'column' : 'row', alignItems: large ? 'flex-start' : 'center' }}>
+          <T v="label" style={{ flexShrink: 1 }}>
+            {item.mark ? <T v="label" color={item.mark === 'missed' ? c.wrong : c.correct}>{item.mark === 'missed' ? '✗ ' : '✓ '}</T> : null}
+            {item.title}
+          </T>
+          {item.right ? (
+            <>
+              {!large && <Leader color={c.control} />}
+              <T v="meta" style={{ flexShrink: 0 }}>{item.right}</T>
+            </>
+          ) : null}
+        </View>
       </View>
     </>
   );

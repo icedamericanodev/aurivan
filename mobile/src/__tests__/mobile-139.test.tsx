@@ -276,7 +276,9 @@ describe('#15 short lesson scenes (1.39 centred them; 1.43 puts every scene on t
 });
 
 // ── Results: the rings only where they tell something ─────────────────────
-describe('Results rings: mixed-domain sets and mocks only', () => {
+// Mobile 1.51 (Field Guide): the rings gave way to the growth plate (Fig. 6), drawn for every set,
+// one area or many; it is the empty mount while no area in the set has a number yet.
+describe('Results: the growth plate, not rings', () => {
   const finish = () =>
     act(() => {
       const s = useSession.getState().active!;
@@ -284,11 +286,12 @@ describe('Results rings: mixed-domain sets and mocks only', () => {
       finishSession();
     });
 
-  it('a mock shows the domain rings', () => {
+  it('a mock shows its areas on one plate (no rings)', () => {
     startMock('cisa', 10);
     finish();
     mount(<Results />);
-    expect(root().findAllByType(DomainRings)).toHaveLength(1);
+    expect(root().findAllByType(DomainRings)).toHaveLength(0);
+    expect(allText()).toMatch(/Fig\. 6 · /);
   });
 
   it('a one-domain practice set does not', () => {
