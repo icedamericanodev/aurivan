@@ -260,6 +260,17 @@ Fix-and-push is automatic; only major issues are escalated.
      store/legal, costs, out of scope).
    - Keep sending screenshots and a short summary at each handoff, so the
      maintainer can follow along and interrupt.
+8. **Experts decide first (maintainer rule, 2026-10-29).** The maintainer said:
+   "make the decision efficient; if we have experts that can help decide, spin
+   them. If you need me, tell me after checking the expert agents first." So:
+   - Before asking the maintainer any question, run the expert agents that fit
+     it (for example `product-manager`, `behavioral-scientist`, `growth-marketer`,
+     `app-store-compliance-reviewer`, the UX reviewers, the content auditors).
+     If they agree, decide and go ahead.
+   - Ask the maintainer only when the experts disagree, or the decision is on
+     the "major" list in step 4 even after the experts weigh in. Then bring
+     their recommendation and the options in one short question, never an open
+     question.
 
 ### Post-merge branch hygiene (CRITICAL — avoids recurring squash-merge conflicts)
 
