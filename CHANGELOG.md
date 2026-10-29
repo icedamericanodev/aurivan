@@ -7,11 +7,9 @@ For internal/technical history, see git log and PR descriptions.
 ## [v12.44] — Your study, drawn like a field guide
 
 ### Improved
-- Today, Your progress and your results after a set now look like pages from a field guide, matching the KaiSip app.
-- Your progress shows every domain side by side on one scale, so you can see at a glance which are at 70% or more and which are still building.
-- Your readiness range sits on a simple 0 to 100 bar, always marked as a study estimate, not a prediction.
+- Today, Your progress and your results after a set now read like pages from a field guide, matching the KaiSip app, with your exam countdown at the top of Today.
+- Your progress shows every domain side by side on one scale, so you can see at a glance which are at 70% or more, and your readiness range on a simple 0 to 100 bar, always marked as a study estimate, not a prediction.
 - After a set, you see how much your domain grew and a short list of what you missed.
-- With an exam date set, Today greets you with your countdown.
 
 ## [v12.43] — A shorter answer screen
 

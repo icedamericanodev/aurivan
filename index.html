@@ -235,6 +235,15 @@
   --t-meta: 500 14px/20px var(--f-sans);
   --t-caption: 600 13px/18px var(--f-sans);
   --t-tab: 600 11px/14px var(--f-sans);
+  /* Field Guide type (web v12.44), the phone's fieldType (mobile theme/tokens.ts,
+     DESIGN_SYSTEM §21.3): running heads and keys, figure captions, italic
+     subs, label values, key-list numbers and chart labels. */
+  --t-fg-head: 600 11px/14px var(--f-sans);   --tr-fg-head: 1px;
+  --t-fg-fig: italic 400 14px/20px var(--f-serif);
+  --t-fg-sub: italic 400 16px/22px var(--f-serif);
+  --t-fg-value: 500 22px/26px var(--f-serif); --tr-fg-value: -0.3px;
+  --t-fg-keyno: italic 400 16px/22px var(--f-serif);
+  --t-fg-tiny: 500 11px/14px var(--f-sans);
 
   /* ── Shape, depth and colour tokens (web v12.44 step 1) ──────────────────
      Every literal font, corner radius, shadow and stray colour now points
@@ -5095,7 +5104,7 @@ body[data-tab]:not([data-tab="about"]):not([data-tab="faq"]) .legal-disclaimer {
 /* Today's plan (v12.33): the items in order, on the plan's label */
 .td-plan { list-style: none; margin: 0; padding: var(--sp-xs) 0 0; border-top: 1px solid var(--border); }
 .td-plan li { display: flex; align-items: baseline; gap: var(--sp-md); padding: var(--sp-xs) 0; }
-.td-plan-n { flex-shrink: 0; min-width: 14px; font: italic 500 18px/24px var(--f-serif); color: var(--text2); }
+.td-plan-n { flex-shrink: 0; min-width: 14px; font: var(--t-fg-keyno); color: var(--text2); }
 .td-plan-t { min-width: 0; font: var(--t-label); color: var(--text); overflow-wrap: anywhere; }
 .td-plan-m { display: block; font: var(--t-meta); color: var(--text2); }
 /* The plant is drawn on the plate, so the plant row below keeps its words only. */
@@ -5134,7 +5143,6 @@ body[data-tab]:not([data-tab="about"]):not([data-tab="faq"]) .legal-disclaimer {
 .td-side { margin-top: var(--sp-2xl); }
 .td-plate { --td-paper: var(--raised2); background: var(--raised2); border-radius: var(--r-lg); padding: var(--sp-xxl); }
 .td-fig { display: flex; flex-direction: column; align-items: center; gap: var(--sp-md); text-align: center; }
-.td-fig-text .td-est { margin-top: var(--sp-xs); }
 .td-ready-more > :first-child { margin-top: var(--sp-xl); }
 .td-gain { margin: var(--sp-xl) 0 0; font: var(--t-small); color: var(--text2); }
 .td-gain-d { font: var(--t-label); color: var(--text); }
@@ -5214,10 +5222,7 @@ body[data-tab]:not([data-tab="about"]):not([data-tab="faq"]) .legal-disclaimer {
 /* Every Today control is at least 48px tall */
 .td .gt-btn-ghost, .td .plnt-ghost { min-height: 48px; }
 .td-rings { display: block; max-width: 100%; height: auto; }
-.td-big { font: var(--t-number); letter-spacing: var(--tr-number); color: var(--text); margin: 0; white-space: nowrap; }
-.td-big sup { font-size: .48em; line-height: 0; vertical-align: .8em; margin-left: 0; letter-spacing: 0; }
 .td-none { font: var(--t-headline); color: var(--text); margin: 0; }
-.td-cap { font: var(--t-meta); color: var(--text2); margin: var(--sp-xs) 0 0; }
 .td-legend { list-style: none; margin: var(--sp-xl) 0 0; padding: 0; border-top: 1px solid var(--border); }
 .td-legend li { display: flex; align-items: center; gap: var(--sp-sm); min-height: 44px; padding: var(--sp-sm) 0; border-bottom: 1px solid var(--border); }
 .td-dname { flex: 1; min-width: 0; font: var(--t-small); color: var(--text); }
@@ -5303,7 +5308,7 @@ body[data-tab]:not([data-tab="about"]):not([data-tab="faq"]) .legal-disclaimer {
 /* 1. Where you stand: a specimen label (Field Guide, v12.44); no forest panel */
 .pg-stand { margin: 0; }
 .pg-kick { margin: 0 0 var(--sp-sm); }
-.pg-stand .fg-scale-svg { max-width: 420px; }
+.pg-stand .fg-sb { max-width: 420px; }
 .pg-how { margin-top: var(--sp-sm); border-bottom: 1px solid var(--border); padding-bottom: var(--sp-xs); }
 
 /* 2. The signs: an L1 plate; a filled leaf = in place, an outline = not yet */
@@ -5417,24 +5422,24 @@ button.pg-cd:hover { background: var(--surface2); }
 .fg-rh {
   display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 2px var(--sp-lg);
   margin: 0 0 var(--sp-lg); padding: 0 0 var(--sp-sm); border-bottom: 1px solid var(--border);
-  font: 600 12px/16px var(--f-sans); letter-spacing: .09em; text-transform: uppercase; color: var(--text2);
+  font: var(--t-fg-head); letter-spacing: var(--tr-fg-head); text-transform: uppercase; color: var(--text2);
 }
 .fg-rh > * { min-width: 0; }
-.fg-kick { margin: 0; font: 600 12px/16px var(--f-sans); letter-spacing: .09em; text-transform: uppercase; color: var(--text2); }
-.fg-sub { margin: var(--sp-xs) 0 0; font: italic 400 17px/24px var(--f-serif); color: var(--text2); max-width: 60ch; }
+.fg-kick { margin: 0; font: var(--t-fg-head); letter-spacing: var(--tr-fg-head); text-transform: uppercase; color: var(--text2); }
+.fg-sub { margin: var(--sp-xs) 0 0; font: var(--t-fg-sub); color: var(--text2); max-width: 60ch; }
 /* Plate: one per screen, the focal point. raised2, two hairlines, square corners. */
 .fg-plate { margin: 0; padding: 6px; background: var(--raised2); border: 1px solid var(--border); --td-paper: var(--raised2); }
 .fg-plate-in { position: relative; min-width: 0; padding: var(--sp-md) var(--sp-md) var(--sp-lg); border: 1px solid var(--border); }
 @media (min-width: 560px) { .fg-plate-in { padding: var(--sp-md) var(--sp-lg) var(--sp-lg); } }
-.fg-fig { margin: 0; font: italic 400 14px/18px var(--f-serif); color: var(--text2); }
-.fg-cap { margin: var(--sp-sm) 0 0; font: italic 400 15px/22px var(--f-serif); color: var(--text2); max-width: 62ch; }
-.fg-cap b { margin-right: 6px; font: 600 12px/16px var(--f-sans); font-style: normal; letter-spacing: .06em; text-transform: uppercase; color: var(--text); }
+.fg-fig { margin: 0; font: var(--t-fg-fig); color: var(--text2); }
+.fg-cap { margin: var(--sp-sm) 0 0; font: var(--t-fg-sub); color: var(--text2); max-width: 62ch; }
+.fg-cap b { margin-right: 6px; font: var(--t-fg-head); letter-spacing: var(--tr-fg-head); text-transform: uppercase; color: var(--text); }
 /* Specimen label: ruled key · value rows on raised, a 3px corner */
 .fg-label { margin: 0; padding: 0; list-style: none; background: var(--raised); border: 1px solid var(--border); border-radius: var(--r-3); }
 .fg-lrow { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 2px var(--sp-md); padding: var(--sp-md) var(--sp-lg); border-top: 1px solid var(--border); }
 .fg-lrow:first-child { border-top: 0; }
-.fg-k { font: 600 12px/16px var(--f-sans); letter-spacing: .09em; text-transform: uppercase; color: var(--text2); }
-.fg-v { margin-left: auto; font: 500 22px/26px var(--f-serif); letter-spacing: -.3px; color: var(--text); text-align: right; overflow-wrap: anywhere; }
+.fg-k { font: var(--t-fg-head); letter-spacing: var(--tr-fg-head); text-transform: uppercase; color: var(--text2); }
+.fg-v { margin-left: auto; font: var(--t-fg-value); letter-spacing: var(--tr-fg-value); color: var(--text); text-align: right; overflow-wrap: anywhere; }
 .fg-v sup { font-size: .5em; line-height: 0; vertical-align: .9em; letter-spacing: 0; }
 .fg-v small { margin-left: 4px; font: 500 14px/20px var(--f-sans); letter-spacing: 0; color: var(--text2); }
 .fg-lrow-x { flex-basis: 100%; min-width: 0; }
@@ -5444,16 +5449,21 @@ button.pg-cd:hover { background: var(--surface2); }
 .fg-scale-fig { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 var(--sp-md); margin: 0; }
 .fg-scale-n { font: 500 36px/42px var(--f-serif); letter-spacing: -.8px; color: var(--text); white-space: nowrap; }
 .fg-scale-n sup { font-size: .5em; line-height: 0; vertical-align: .8em; letter-spacing: 0; }
-.fg-scale-w { margin: 0; font: italic 400 15px/20px var(--f-serif); color: var(--text2); }
+.fg-scale-w { margin: 0; font: var(--t-fg-sub); color: var(--text2); }
 .fg-scale-none { font: var(--t-headline); color: var(--text); }
-.fg-scale-svg { display: block; width: 100%; max-width: 360px; height: auto; margin-top: var(--sp-sm); }
+.fg-sb { max-width: 360px; margin-top: var(--sp-sm); padding: 0 var(--sp-md); }
+.fg-sb-in { position: relative; height: 56px; }
+.fg-sb-svg { position: absolute; left: 0; top: 16px; width: 100%; height: 20px; overflow: visible; }
+.fg-sb-svg rect, .fg-sb-svg path { vector-effect: non-scaling-stroke; }
 .fg-sb-a { fill: var(--text2); stroke: var(--text2); stroke-width: .8; }
 .fg-sb-b { fill: var(--raised); stroke: var(--text2); stroke-width: .8; }
 .fg-sb-r { fill: var(--accent); stroke: var(--accent); stroke-width: .8; }
 .fg-sb-br { fill: none; stroke: var(--accent); stroke-width: 2; }
-.fg-sb-tick { stroke: var(--text); stroke-width: 1.4; }
-.fg-sb-t { font: 500 11px var(--f-sans); fill: var(--text2); }
-.fg-sb-rt { font: 600 11px var(--f-sans); fill: var(--accent-text); }
+.fg-sb-tick { fill: none; stroke: var(--text); stroke-width: 1.4; }
+.fg-sb-t, .fg-sb-rt { position: absolute; transform: translateX(-50%); white-space: nowrap; font: var(--t-fg-tiny); }
+.fg-sb-t { top: 38px; color: var(--text2); }
+.fg-sb-t.fg-sb-mark { top: 42px; }
+.fg-sb-rt { top: 0; font-weight: 600; color: var(--accent-text); }
 /* Stem chart: one stem per area on one scale. The list below it is the same
    data: read by screen readers, and shown instead of the chart at large text
    (the phone's LARGE_TEXT, font scale 1.3+) or in a column under 300px. */
@@ -5474,13 +5484,17 @@ button.pg-cd:hover { background: var(--surface2); }
 .fg-st-dn { font: 600 11px var(--f-sans); fill: var(--text2); }
 .fg-st-l1 { font: 500 11px var(--f-sans); fill: var(--text2); }
 .fg-st-l2 { font: 600 10.5px var(--f-sans); fill: var(--text); }
-.fg-st-w { font: italic 400 12.5px var(--f-serif); fill: var(--text2); }
+.fg-st-w { font: italic 400 11.5px var(--f-serif); fill: var(--text2); }
 .fg-st-w.c { fill: var(--clay); }
+.fg-st-x { font: var(--t-fg-tiny); fill: var(--text2); }
+.fg-st-x.c { font-weight: 600; fill: var(--clay); }
+/* Numbers that meet the dashed 70 line keep a paper halo, so the line never cuts them. */
+.fg-st-n, .fg-st-up, .fg-st-dn { paint-order: stroke; stroke: var(--raised2); stroke-width: 4px; stroke-linejoin: round; }
 .fg-wide .fg-st-n { font-size: 24px; }
 .fg-wide .fg-st-n .u { font-size: 13px; }
 .fg-wide .fg-st-l2 { font: 500 14px var(--f-sans); }
 .fg-wide .fg-st-w { font-size: 15px; }
-.fg-wide .fg-st-t, .fg-wide .fg-st-l1, .fg-wide .fg-st-up, .fg-wide .fg-st-dn { font-size: 13px; }
+.fg-wide .fg-st-t, .fg-wide .fg-st-l1, .fg-wide .fg-st-x, .fg-wide .fg-st-up, .fg-wide .fg-st-dn { font-size: 13px; }
 /* The column picks the drawing: the phone one, or the wide one from 500px. */
 .fg-stems-svg.fg-wide { display: none; }
 @container (min-width: 500px) {
@@ -5508,7 +5522,7 @@ button.pg-cd:hover { background: var(--surface2); }
 /* Key list: numbered rows with dotted leaders (misses, plan steps) */
 .fg-keys { list-style: none; margin: 0; padding: 0; }
 .fg-key { display: flex; align-items: baseline; gap: var(--sp-sm) var(--sp-md); min-height: 48px; padding: var(--sp-md) 0; border-top: 1px solid var(--border); }
-.fg-key-n { flex: none; min-width: 16px; font: italic 500 16px/22px var(--f-serif); color: var(--text2); }
+.fg-key-n { flex: none; min-width: 16px; font: var(--t-fg-keyno); color: var(--text2); }
 .fg-key-t { flex: 0 1 auto; min-width: 0; font: 500 15px/22px var(--f-sans); color: var(--text); overflow-wrap: anywhere; }
 .fg-key-x { margin-right: 4px; font-weight: 700; color: var(--wrong); }
 .fg-key-ok { margin-right: 4px; font-weight: 700; color: var(--accent-text); }
@@ -5516,11 +5530,11 @@ button.pg-cd:hover { background: var(--surface2); }
 .fg-key-r { flex: none; max-width: 45%; font: var(--t-meta); color: var(--text2); text-align: right; }
 /* Herbarium sheet: a set of specimens with its own count, never a grand total */
 .fg-sheet-h { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 var(--sp-md); margin: 0; font-weight: 400; }
-.fg-sheet-no { font: italic 400 15px/20px var(--f-serif); color: var(--clay); }
+.fg-sheet-no { font: var(--t-fg-sub); color: var(--clay); }
 .fg-sheet-nm { flex: 1 1 auto; font: 500 22px/28px var(--f-serif); color: var(--text); }
 .fg-sheet-ct { font: 500 17px/22px var(--f-serif); color: var(--text); }
 .fg-sheet-ct small { margin-left: 3px; font: 500 13px/18px var(--f-sans); color: var(--text2); }
-.fg-sheet-p { margin: 2px 0 var(--sp-md); font: italic 400 15px/21px var(--f-serif); color: var(--text2); }
+.fg-sheet-p { margin: 2px 0 var(--sp-md); font: var(--t-fg-sub); color: var(--text2); }
 .fg-specs { display: flex; flex-wrap: wrap; gap: var(--sp-lg) var(--sp-md); }
 /* Specimen: earned is pressed and taped; not yet a dashed mount; gated dotted and empty */
 .fg-spec { width: 96px; min-width: 0; }
@@ -5535,7 +5549,7 @@ button.pg-cd:hover { background: var(--surface2); }
 .fg-spec-gated .fg-spec-d { font: italic 400 14px/18px var(--f-serif); }
 /* Empty plate: the mount with nothing drawn yet */
 .fg-empty .fg-plate-in { border: 1px dashed var(--control); text-align: center; padding: var(--sp-xl) var(--sp-lg); }
-.fg-empty-t { margin: 0; font: italic 400 16px/22px var(--f-serif); color: var(--text2); }
+.fg-empty-t { margin: 0; font: var(--t-fg-sub); color: var(--text2); }
 .fg-empty-m { margin: var(--sp-xs) auto 0; max-width: 42ch; font: var(--t-meta); color: var(--text2); }
 /* The button: 52px, 12px corners, the forest fill kept for the one primary action */
 .fg-btn {
@@ -5826,6 +5840,8 @@ body[data-app-cta-card="shown"][data-section="today"] .app-cta-line { display: n
   header.app-header .brand-lockup { height: 30px; }
   .side-nav { display: block; }
   .rail-foot:not([hidden]) { display: block; }
+  /* Today's title is the countdown (Field Guide, v12.44), so the rail's footer steps back there. */
+  body[data-tab="home"] .rail-foot { display: none; }
   .rail-app:not([hidden]) { display: block; margin-top: auto; padding: var(--sp-lg) 12px 0; border-top: 1px solid var(--border); }
   .rail-app:not([hidden]) ~ .rail-foot { margin-top: var(--sp-lg); }
   #appRail[data-app-fit="tight"], #appRail[data-app-fit="min"] { padding-top: 16px; padding-bottom: 12px; }
@@ -11518,11 +11534,13 @@ function todayReadinessRange(r) {
   };
 }
 
-// mobile domainFigure: "–" before any answer, a band word under 30 answers
-// in the domain, then the number (its latest tries).
+// A domain's figure: "Not started" before any answer, "Too few yet" under 30
+// answers in the domain (Field Guide, v12.44: the same words as the Progress
+// chart, so a few answers never carry a band word), then the number (its
+// latest tries).
 function domainFigure(answered, pct) {
-  if (answered <= 0) return { text: '–', spoken: 'not started', banded: false };
-  if (answered < DOMAIN_READ_MIN) { var b = bandFor(pct); return { text: b, spoken: b, banded: true }; }
+  if (answered <= 0) return { text: 'Not started', spoken: 'not started', banded: false };
+  if (answered < DOMAIN_READ_MIN) return { text: 'Too few yet', spoken: 'too few yet, ' + answered + ' answered', banded: true };
   return { text: pct + '%', spoken: pct + ' percent, latest tries', banded: false };
 }
 
@@ -12209,7 +12227,7 @@ function todayWeekHtml(week) {
 // ── Readiness, glanceable: the range, one line on what it means, where
 // you'll gain most, and the explainers behind one disclosure. Exam week and
 // exam day say it in words only (no rings, no legend). ──
-function todayReadyHtml(r, range, st, showRings) {
+function todayReadyHtml(r, range, st) {
   var head = '<h2 class="sr-only" id="tdReadyH">Readiness</h2>';
   if (!range.enough) {
     // v12.30: no empty rings before the first range, one quiet line. One
@@ -12242,7 +12260,7 @@ function todayReadyHtml(r, range, st, showRings) {
   if (r.answered > 0) {
     html += '<ul class="td-legend">' + r.domains.map(function (x, i) {
       var f = figures[i];
-      var val = f.banded || f.text === '–' ? '<span class="td-word">' + f.text + '</span>' : '<span class="td-num">' + f.text.replace('%', '') + '<sup>%</sup></span>';
+      var val = f.banded || x.answered <= 0 ? '<span class="td-word">' + f.text + '</span>' : '<span class="td-num">' + f.text.replace('%', '') + '<sup>%</sup></span>';
       return '<li><span class="dom-dot" style="background:' + DI[x.id].color + '" aria-hidden="true"></span>'
         + '<span class="td-dname">' + escapeHtml(DI[x.id].short) + '</span>'
         + '<span class="sr-only">: ' + f.spoken + '</span><span class="td-dval" aria-hidden="true">' + val + '</span></li>';
@@ -12251,7 +12269,7 @@ function todayReadyHtml(r, range, st, showRings) {
   var how = '<p class="td-note">The range is about how much of the exam you would get right today, weighted like the exam. It narrows as you answer more.</p>'
     + '<p class="td-note">The bar runs from 0 to 100. The bracket is your range; the tick marks ' + FG_STUDY_BAR + '%, this app&rsquo;s own study bar for your low end.</p>';
   if (figures.some(function (f) { return f.banded; })) how += '<p class="td-note">' + bandsLine() + '</p>';
-  else if (figures.some(function (f) { return f.text !== '–'; })) how += '<p class="td-note">Percentages count your latest try at each question.</p>';
+  else if (r.domains.some(function (x) { return x.answered > 0; })) how += '<p class="td-note">Percentages count your latest try at each question.</p>';
   html += '<details class="td-how"><summary class="td-how-s"><span>How this is worked out</span>' + ico('chevron-down', 18) + '</summary>' + how + '</details>';
   html += '<a class="td-link" href="#' + NAV_HASH[TODAY_REPORT_TAB] + '" onclick="return navTo(event,\'' + TODAY_REPORT_TAB + '\')">' + TODAY_REPORT_LABEL + ico('chevron', 18) + '</a>';
   return html + '</div></section>';
@@ -12449,8 +12467,6 @@ function renderHome() {
   var when;
   if (days === null) {
     when = '<button type="button" class="td-setdate" onclick="todaySetExamDate()">Set exam date</button>';
-  } else if (days < 0) {
-    when = 'Exam done';
   } else {
     var examDay = savedExamDate();
     when = 'Exam ' + (PARITY_DAY_RE.test(examDay) ? escapeHtml(pgShort(examDay)) : escapeHtml(ACTIVE.name));
@@ -12469,8 +12485,11 @@ function renderHome() {
   }
   var name = getDisplayName();
   var greeting = (st.back ? 'Welcome back' : greetingForHour(now.getHours())) + (name ? ', ' + name : '');
-  if (days !== null && days >= 0) {
-    var togo = days === 0 ? 'exam day' : days + (days === 1 ? ' day' : ' days') + ' to go';
+  // The phone's todayTitle (engine/fieldGuide.ts): the countdown is the news.
+  if (days !== null && days < 0) greeting = name ? name + ', your exam is done' : 'Exam done';
+  else if (days === 0) greeting = name ? name + ', it’s exam day' : 'Exam day';
+  else if (days !== null) {
+    var togo = days + (days === 1 ? ' day' : ' days') + ' to go';
     greeting = name ? name + ', ' + togo : togo.charAt(0).toUpperCase() + togo.slice(1);
   }
 
@@ -12502,8 +12521,8 @@ function renderHome() {
   // The right column. Below 1180px it shows ONE visual per visit: the rings
   // or the week, by the day (td-vis-*); from 1180px both, the week small.
   var showWeek = !st.exam && !st.back && !st.newLearner;
-  var showRings = !st.exam && range.enough;
-  var vis = showRings && showWeek ? (todayDayNumber(now) % 2 ? 'week' : 'rings') : showRings ? 'rings' : showWeek ? 'week' : 'none';
+  var showRange = !st.exam && range.enough;
+  var vis = showRange && showWeek ? (todayDayNumber(now) % 2 ? 'week' : 'rings') : showRange ? 'rings' : showWeek ? 'week' : 'none';
   // One invitation per visit: when the backup reminder and the plant
   // invitation are both due, the first study day gets the plant and a later
   // visit the backup (todayInvitePick, kept for this visit).
@@ -12526,7 +12545,7 @@ function renderHome() {
   if (askName && nameAskRead() !== 'shown:' + todayKey) askName = false;
   var nameCard = todayNameHtml(askName);
   var plate = '<div class="td-plate' + (range.enough ? '' : ' td-plate-quiet') + '">'
-    + todayReadyHtml(r, range, st, showRings)
+    + todayReadyHtml(r, range, st)
     + (showWeek ? todayWeekHtml(todayWeek(now, st.studyDays)) : '')
     // The plant companion (mobile Today's plant slot).
     + '<div class="td-plant" id="tdPlant">' + plantSafe(plantTodayHtml) + '</div>'
@@ -12554,7 +12573,7 @@ function renderHome() {
   area.innerHTML = '<div class="td td-vis-' + vis + (shoot.plant ? ' td-has-shoot' : '') + '" data-next="' + (hideNext ? 'off' : 'on') + '">'
     + '<div class="td-main">'
     + '<div class="td-head">'
-    + fgRunningHead('Field guide · Today', escapeHtml(fgDate(now.getTime())))
+    + fgRunningHead('Field guide · Today', fgDateHtml(now.getTime()))
     + '<h1 class="td-title" id="tdTitle" tabindex="-1">' + escapeHtml(greeting) + '</h1>'
     + '<div class="td-top"><p class="td-when">' + when + '</p>' + dayLine + '</div>'
     + intro
@@ -12591,8 +12610,13 @@ function fgLargeText() {
   return big;
 }
 // "Thu 29 Oct" for a running head.
-function fgDate(ms) {
-  try { return new Intl.DateTimeFormat('en-GB', { weekday: 'short', day: 'numeric', month: 'short' }).format(new Date(ms)).replace(',', ''); } catch (e) { return ''; }
+function fgDate(ms, long) {
+  var o = long ? { weekday: 'long', day: 'numeric', month: 'long' } : { weekday: 'short', day: 'numeric', month: 'short' };
+  try { return new Intl.DateTimeFormat('en-GB', o).format(new Date(ms)).replace(',', ''); } catch (e) { return ''; }
+}
+// The running head's date: shown "Thu 29 Oct", said "Thursday 29 October".
+function fgDateHtml(ms) {
+  return '<span aria-hidden="true">' + escapeHtml(fgDate(ms)) + '</span><span class="sr-only">' + escapeHtml(fgDate(ms, true)) + '</span>';
 }
 // Running head: section · date over a hairline, on every Field Guide screen.
 function fgRunningHead(left, rightHtml) {
@@ -12621,28 +12645,30 @@ function fgPct(n) { return Math.max(0, Math.min(100, Math.round(Number(n) || 0))
 // prediction" are built in, so it can never ship without them. The tick marks
 // this app's study bar for the low end (80, mobile examReady READY_LOW).
 // Before the first range: "Not enough data yet", the count, and no bracket.
-// range: todayReadinessRange(). o: { number: false (the range is printed elsewhere), w: viewBox width }
+// range: todayReadinessRange(). o: { number: false (the range is printed elsewhere) }
 var FG_STUDY_BAR = 80;
+// The bar is drawn in percent units and stretches to its column; its labels
+// are HTML set at the same percents, so they read at their true size on any
+// screen (no shrinking with the drawing).
 function fgScaleBar(range, o) {
   o = o || {};
   var on = !!(range && range.enough);
   var lo = on ? fgPct(range.low) : 0, hi = on ? Math.max(lo, fgPct(range.high)) : 0;
-  var w = o.w || 320, x0 = 8, x1 = w - 16;
-  var X = function (p) { return (x0 + (x1 - x0) * p / 100).toFixed(1); };
-  var seg = (x1 - x0) / 10, g = '';
-  for (var i = 0; i < 10; i++) g += '<rect class="' + (i % 2 ? 'fg-sb-b' : 'fg-sb-a') + '" x="' + X(i * 10) + '" y="22" width="' + seg.toFixed(1) + '" height="5"/>';
+  var g = '';
+  for (var i = 0; i < 10; i++) g += '<rect class="' + (i % 2 ? 'fg-sb-b' : 'fg-sb-a') + '" x="' + (i * 10) + '" y="7" width="10" height="5"/>';
+  var lab = '';
   if (on) {
-    var rw = Math.max(2, Number(X(hi)) - Number(X(lo)));
-    var mid = Math.min(x1 - 14, Math.max(x0 + 14, Number(X(lo)) + rw / 2));
-    g += '<rect class="fg-sb-r" x="' + X(lo) + '" y="22" width="' + rw.toFixed(1) + '" height="5"/>'
-      + '<path class="fg-sb-br" d="M' + X(lo) + ' 17V13H' + (Number(X(lo)) + rw).toFixed(1) + 'V17"/>'
-      + '<text class="fg-sb-rt" x="' + mid.toFixed(1) + '" y="9" text-anchor="middle">' + lo + '&ndash;' + hi + '</text>';
+    var rw = Math.max(1, hi - lo), mid = Math.min(94, Math.max(6, lo + rw / 2));
+    g += '<rect class="fg-sb-r" x="' + lo + '" y="7" width="' + rw + '" height="5"/>'
+      + '<path class="fg-sb-br" d="M' + lo + ' 5V1H' + (lo + rw) + 'V5"/>';
+    lab += '<span class="fg-sb-rt" style="left:' + mid + '%">' + lo + '&ndash;' + hi + '</span>';
   }
-  g += '<path class="fg-sb-tick" d="M' + X(FG_STUDY_BAR) + ' 30v6"/>';
-  [[0, 42], [50, 42], [FG_STUDY_BAR, 48], [100, 42]].forEach(function (t) {
-    g += '<text class="fg-sb-t" x="' + X(t[0]) + '" y="' + t[1] + '" text-anchor="middle">' + t[0] + '</text>';
+  g += '<path class="fg-sb-tick" d="M' + FG_STUDY_BAR + ' 13V19"/>';
+  [0, 50, FG_STUDY_BAR, 100].forEach(function (p) {
+    lab += '<span class="fg-sb-t' + (p === FG_STUDY_BAR ? ' fg-sb-mark' : '') + '" style="left:' + p + '%">' + p + '</span>';
   });
-  var svg = '<svg class="fg-scale-svg" viewBox="0 0 ' + w + ' 50" width="' + w + '" height="50" aria-hidden="true" focusable="false">' + g + '</svg>';
+  var bar = '<div class="fg-sb" aria-hidden="true"><div class="fg-sb-in">'
+    + '<svg class="fg-sb-svg" viewBox="0 0 100 20" preserveAspectRatio="none" focusable="false">' + g + '</svg>' + lab + '</div></div>';
   var fig;
   if (!on) {
     var have = range ? Math.max(0, RD_RANGE_MIN_ANSWERS - (range.needed || 0)) : 0;
@@ -12655,7 +12681,7 @@ function fgScaleBar(range, o) {
       ? '<p class="fg-scale-fig">' + said + words + '</p>'
       : '<p class="fg-scale-fig"><span class="fg-scale-n">' + said + '<span aria-hidden="true">' + lo + '&ndash;' + hi + '<sup>%</sup></span></span>' + words + '</p>';
   }
-  return '<div class="fg-scale">' + fig + svg + '</div>';
+  return '<div class="fg-scale">' + fig + bar + '</div>';
 }
 // Stem chart: areas on one scale with the dashed 70 line. Under 30 answers an
 // area is a seed ("too few yet", an outline, no number); below the line it is
@@ -12665,10 +12691,17 @@ function fgScaleBar(range, o) {
 // and the list of the same facts replaces both at large text or under 300px.
 // areas: [{ id, name, short, pct, answered, before, weight }]
 // o: { ink (trace in once), label (what the list is), unit ('answers'), narrowOnly, w (the phone drawing's width) }
+// The words match the phone (engine/fieldGuide.ts, DESIGN_SYSTEM §21.2): no
+// answers = "not started"; 1 to 29 = "too few yet · 18 answered"; measured =
+// the band word, and "below 70" in clay under the line.
 function fgStemFacts(a) {
-  var few = !(a.answered >= DOMAIN_READ_MIN), pct = fgPct(a.pct);
+  var n = Number(a.answered) || 0, none = n <= 0, few = n < DOMAIN_READ_MIN, pct = fgPct(a.pct);
   var delta = (!few && typeof a.before === 'number' && isFinite(a.before)) ? pct - fgPct(a.before) : 0;
-  return { few: few, pct: pct, delta: delta, below: !few && pct < DOMAIN_TARGET_PCT, word: few ? 'too few yet' : bandFor(pct).toLowerCase() };
+  return {
+    none: none, few: few, pct: pct, delta: delta, below: !few && pct < DOMAIN_TARGET_PCT,
+    word: none ? 'not started' : few ? 'too few yet' : bandFor(pct).toLowerCase(),
+    extra: none ? '' : few ? n + ' answered' : pct < DOMAIN_TARGET_PCT ? 'below ' + DOMAIN_TARGET_PCT : ''
+  };
 }
 function fgStemSvg(areas, wide, o) {
   var n = Math.max(1, areas.length);
@@ -12688,8 +12721,8 @@ function fgStemSvg(areas, wide, o) {
     var xs = (L + gap * i + gap / 2).toFixed(1);
     if (f.few) {
       g += '<ellipse class="fg-st-seed" cx="' + xs + '" cy="' + (soil - 4) + '" rx="7" ry="4.5"/>'
-        + '<path class="fg-st-ghost" d="M' + xs + ' ' + (soil - 9) + 'v-18"/>'
-        + '<text class="fg-st-n" x="' + xs + '" y="' + (soil - 34) + '" text-anchor="middle">&ndash;</text>';
+        + (f.none ? '' : '<path class="fg-st-ghost" d="M' + xs + ' ' + (soil - 9) + 'v-18"/>'
+          + '<text class="fg-st-n" x="' + xs + '" y="' + (soil - 34) + '" text-anchor="middle">&ndash;</text>');
     } else {
       var base = delta > 0 ? pct - delta : pct;
       g += '<path class="fg-st-stem' + trace + '"' + len + ' d="M' + xs + ' ' + soil + 'V' + y(base).toFixed(1) + '"/>';
@@ -12702,16 +12735,16 @@ function fgStemSvg(areas, wide, o) {
         + (delta ? '<tspan class="' + (delta > 0 ? 'fg-st-up' : 'fg-st-dn') + '" dy="6"> ' + (delta > 0 ? '&uarr;' : '&darr;') + Math.abs(delta) + '</tspan>' : '') + '</text>';
     }
     var nm = String(a.short || a.name || ''), parts = nm.split(' ');
+    // The extra line: "18 answered" (grey) or "below 70" (clay, with the word).
+    var extra = f.extra ? '<text class="fg-st-x' + (f.below ? ' c' : '') + '" x="' + xs + '" y="' + (soil + (wide ? 58 : 62)) + '" text-anchor="middle">' + f.extra + '</text>' : '';
     if (wide) {
       g += '<text class="fg-st-l2" x="' + xs + '" y="' + (soil + 19) + '" text-anchor="middle">' + escapeHtml(nm) + '</text>'
-        + '<text class="fg-st-w' + (f.below ? ' c' : '') + '" x="' + xs + '" y="' + (soil + 39) + '" text-anchor="middle">' + f.word + '</text>'
-        + (f.few ? '<text class="fg-st-l1" x="' + xs + '" y="' + (soil + 58) + '" text-anchor="middle">' + (a.answered || 0) + ' answered</text>' : '');
+        + '<text class="fg-st-w' + (f.below ? ' c' : '') + '" x="' + xs + '" y="' + (soil + 39) + '" text-anchor="middle">' + f.word + '</text>' + extra;
     } else {
       var l1 = parts.length > 1 ? parts[0] : '', l2 = parts.length > 1 ? parts.slice(1).join(' ') : nm;
       g += (l1 ? '<text class="fg-st-l1" x="' + xs + '" y="' + (soil + 16) + '" text-anchor="middle">' + escapeHtml(l1) + '</text>' : '')
         + '<text class="fg-st-l2" x="' + xs + '" y="' + (soil + 30) + '" text-anchor="middle">' + escapeHtml(l2) + '</text>'
-        + '<text class="fg-st-w' + (f.below ? ' c' : '') + '" x="' + xs + '" y="' + (soil + 47) + '" text-anchor="middle">' + (f.few ? 'too few' : f.word) + '</text>'
-        + (f.few ? '<text class="fg-st-l1" x="' + xs + '" y="' + (soil + 62) + '" text-anchor="middle">' + (a.answered || 0) + ' so far</text>' : '');
+        + '<text class="fg-st-w' + (f.below ? ' c' : '') + '" x="' + xs + '" y="' + (soil + 47) + '" text-anchor="middle">' + f.word + '</text>' + extra;
     }
   });
   return '<svg class="fg-stems-svg ' + (wide ? 'fg-wide' : 'fg-narrow') + (o.ink ? ' fg-ink' : '') + '" viewBox="0 0 ' + w + ' ' + h + '" width="' + w + '" height="' + h + '" style="max-width:' + w + 'px" aria-hidden="true" focusable="false">' + g + '</svg>';
@@ -12723,9 +12756,10 @@ function fgStemChart(areas, o) {
     var f = fgStemFacts(a), meta = [];
     if (typeof a.weight === 'number') meta.push(a.weight + '% of the exam');
     meta.push((a.answered || 0) + ' ' + (a.answered === 1 ? unit.replace(/s$/, '') : unit));
-    var val = f.few ? 'Too few yet' : f.pct + '%' + (f.delta ? ' (' + (f.delta > 0 ? 'up ' : 'down ') + Math.abs(f.delta) + ')' : '');
+    var val = f.none ? 'Not started' : f.few ? 'Too few yet' : f.pct + '%' + (f.delta ? ' (' + (f.delta > 0 ? 'up ' : 'down ') + Math.abs(f.delta) + ')' : '');
+    var words = f.none ? '' : f.few ? 'not measured yet' : f.word + (f.below ? ' · below ' + DOMAIN_TARGET_PCT : '');
     return '<li><span class="fg-sl-a"><span class="fg-sl-n">' + escapeHtml(a.name || a.short || '') + '</span><span class="fg-sl-m">' + escapeHtml(meta.join(' · ')) + '</span></span>'
-      + '<span><span class="fg-sl-v">' + val + '</span><span class="fg-sl-w' + (f.below ? ' c' : '') + '">' + (f.few ? 'not measured yet' : f.word) + '</span></span></li>';
+      + '<span><span class="fg-sl-v">' + val + '</span>' + (words ? '<span class="fg-sl-w' + (f.below ? ' c' : '') + '">' + words + '</span>' : '') + '</span></li>';
   }).join('');
   return '<div class="fg-stems' + (o.narrowOnly ? ' fg-stems-one' : '') + '">'
     + fgStemSvg(areas, false, o) + (o.narrowOnly ? '' : fgStemSvg(areas, true, o))
@@ -12966,8 +13000,8 @@ function pgDomainsHtml(r) {
     if (x.answered >= DOMAIN_READ_MIN) numbered = true; else few = true;
     return { id: x.id, name: DI[x.id].name, short: DI[x.id].short, pct: pgPct(x), answered: x.answered, weight: Math.round(DI[x.id].weight / total * 100) };
   });
-  var key = 'One stem per domain, on one scale. Dashed: the ' + DOMAIN_TARGET_PCT + ' line. Clay: below it, still building.'
-    + (few ? ' A seed: under ' + DOMAIN_READ_MIN + ' answers, too few to measure yet.' : '');
+  var key = 'One line of growth per domain, on one scale. Dashed: the ' + DOMAIN_TARGET_PCT + ' line. Clay and “below ' + DOMAIN_TARGET_PCT + '”: under it, still building.'
+    + (few ? ' A seed: fewer than ' + DOMAIN_READ_MIN + ' answers, not measured yet.' : '');
   return '<section class="pg-sec" aria-labelledby="pgDomH"><h2 class="pg-h2" id="pgDomH">By domain</h2>'
     + fgPlate('Fig. 5 · Five areas, one scale', fgStemChart(areas, { label: 'Each domain, in exam order' }))
     + fgCaption('Key', key)
@@ -13452,7 +13486,7 @@ function renderProgress() {
   if (!area) return;
   var now = new Date(), today = parityDayKey(now.getTime());
   var days = examDaysLeft(), phase = pgPhase(days);
-  var when = escapeHtml(fgDate(now.getTime())) + ' &middot; ' + (phase === 'none' ? 'No exam date set'
+  var when = fgDateHtml(now.getTime()) + ' &middot; ' + (phase === 'none' ? 'No exam date set'
     : phase === 'done' ? 'After your exam date' : days === 0 ? 'Exam day' : 'Exam in ' + days + (days === 1 ? ' day' : ' days'));
   fgLargeText();
   var head = '<div class="pg-head">' + fgRunningHead('Field record · Progress', when)
@@ -13779,7 +13813,7 @@ var DOMAIN_TARGET_PCT = 70;
 var READINESS_MEANS = 'A study estimate, not a prediction: about how much of the exam you would get right today, weighted like the exam.';
 var RINGS_NOTE = 'Each ring is a domain, Domain 1 at the center. Thicker rings count for more of the exam, and an arc grows as you get more right.';
 function bandsLine() {
-  return 'Building is under ' + DOMAIN_TARGET_PCT + '% correct, Steady ' + DOMAIN_TARGET_PCT + '% to 79%, Strong 80% and up. Aim for Steady or better in every domain. A number shows from ' + DOMAIN_READ_MIN + ' answers in a domain.';
+  return 'A domain is measured from ' + DOMAIN_READ_MIN + ' answers.';
 }
 function bandFor(pct) { return pct >= 80 ? 'Strong' : pct >= 70 ? 'Steady' : 'Building'; }
 function domainRead(st) {
@@ -16537,7 +16571,7 @@ function resultsBodyHtml(o) {
     var x = o.byDomain[d];
     var f = domainFigure(x.t, Math.round((x.c / x.t) * 100));
     if (f.banded) banded = true;
-    var val = f.banded || f.text === '–' ? '<span class="td-word">' + f.text + '</span>' : '<span class="td-num">' + f.text.replace('%', '') + '<sup>%</sup></span>';
+    var val = f.banded || x.t <= 0 ? '<span class="td-word">' + f.text + '</span>' : '<span class="td-num">' + f.text.replace('%', '') + '<sup>%</sup></span>';
     return '<li><span class="dom-dot" style="background:' + DI[d].color + '" aria-hidden="true"></span>'
       + '<span class="td-dname">' + escapeHtml(DI[d].short) + '</span>'
       + '<span class="rs-dcount" aria-hidden="true">' + x.c + ' of ' + x.t + '</span>'
@@ -16585,15 +16619,15 @@ function rsGrowthPlate(byDomain, before) {
     var b = before && before[d] && before[d].answered >= DOMAIN_READ_MIN ? before[d].pct : null;
     return { id: d, name: DI[d].name, short: DI[d].short, pct: now[d].pct, answered: now[d].answered, before: b };
   });
-  var key = 'Dashed: the ' + DOMAIN_TARGET_PCT + ' line. Clay: growth from this set, or a domain still below the line.';
+  var key = 'Dashed: the ' + DOMAIN_TARGET_PCT + ' line. Clay: growth from this set (with ↑), or a domain below it (with “below ' + DOMAIN_TARGET_PCT + '”).';
   if (areas.length > 1) {
     return fgPlate('Fig. 6 · Your domains after this set', fgStemChart(areas, { ink: true, label: 'Each domain in this set' }))
-      + fgCaption('Key', key + ' A seed: under ' + DOMAIN_READ_MIN + ' answers, too few to measure yet.');
+      + fgCaption('Key', key + ' A seed: fewer than ' + DOMAIN_READ_MIN + ' answers, not measured yet.');
   }
   var a = areas[0], f = fgStemFacts(a), nm = escapeHtml(a.short), big, line;
   if (f.few) {
     big = '<span class="rs-g-big">' + a.answered + '<span class="rs-g-u"> answers</span></span>';
-    line = nm + '&rsquo;s stem is measured from ' + DOMAIN_READ_MIN + ' answers.';
+    line = nm + ' is measured from ' + DOMAIN_READ_MIN + ' answers.';
   } else if (a.before === null || f.delta === 0) {
     big = '<span class="rs-g-big">' + f.pct + '<sup>%</sup></span>';
     line = a.before === null ? nm + ' is measured now: ' + f.word + '.' : nm + ' held at ' + f.pct + '%.';
@@ -16643,7 +16677,7 @@ function debriefHtml(deb, inHub) {
   var t = resultsTime(deb.ms), pct = total > 0 ? Math.round((deb.correct / total) * 100) : 0;
   fgLargeText();
   return '<section class="session-debrief rs rs-set rs-fg" role="region" aria-labelledby="sdKick sdTitle">'
-    + '<div class="fg-rh"><span id="sdKick">Set complete &middot; ' + escapeHtml(name) + '</span><span>' + escapeHtml(fgDate(Date.now())) + '</span></div>'
+    + '<div class="fg-rh"><span id="sdKick">Set complete &middot; ' + escapeHtml(name) + '</span><span>' + fgDateHtml(Date.now()) + '</span></div>'
     + '<h2 class="rs-title" id="sdTitle" tabindex="-1">' + resultsHeadline(deb.correct, total) + '</h2>'
     + '<p class="fg-sub">' + rsSetLine(total, deb.ms) + '</p>'
     + rsGrowthPlate(byDomain, deb.before)
@@ -21936,11 +21970,9 @@ const CHANGELOG = [
     version: APP_VERSION,
     title: 'Your study, drawn like a field guide',
     items: [
-      { cat: 'improved', text: 'Today, Your progress and your results after a set now look like pages from a field guide, matching the KaiSip app.' },
-      { cat: 'improved', text: 'Your progress shows every domain side by side on one scale, so you can see at a glance which are at 70% or more and which are still building.' },
-      { cat: 'improved', text: 'Your readiness range sits on a simple 0 to 100 bar, always marked as a study estimate, not a prediction.' },
+      { cat: 'improved', text: 'Today, Your progress and your results after a set now read like pages from a field guide, matching the KaiSip app, with your exam countdown at the top of Today.' },
+      { cat: 'improved', text: 'Your progress shows every domain side by side on one scale, so you can see at a glance which are at 70% or more, and your readiness range on a simple 0 to 100 bar, always marked as a study estimate, not a prediction.' },
       { cat: 'improved', text: 'After a set, you see how much your domain grew and a short list of what you missed.' },
-      { cat: 'improved', text: 'With an exam date set, Today greets you with your countdown.' },
     ],
   },
   {
