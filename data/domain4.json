@@ -512,7 +512,7 @@
       "wrong_explanations": {
         "A": "Waiting for user complaints accepts service impact before acting. That is the reactive pattern proactive management avoids.",
         "B": "Buying years ahead is over-provisioning on a guess; it ties up capital and is not a managed capacity plan.",
-        "C": "A 95 percent alert is a real improvement over waiting for complaints, but it is still reactive; it fires too late to procure, test and approve the expansion."
+        "C": "A threshold alert looks proactive because it fires before users notice, but it is still reactive: proactive means forecasting the saturation date with lead time to procure, test and approve."
       },
       "tips": [
         "Eliminate: A waits for user impact, which is purely reactive, and B over-provisions years ahead instead of planning against a forecast.",
@@ -549,7 +549,7 @@
       "correct_explanation": "Incident management aims to restore normal service as quickly as possible, so a proven workaround should be applied at once. The unknown cause is not ignored: it passes to problem management through a problem record. Confirming the root cause first sounds rigorous, but it prolongs a major outage for an investigation that problem management can run after service returns.",
       "wrong_explanations": {
         "B": "A backup rebuild loses a day's transactions and takes longer, when a workaround can restore service now.",
-        "C": "Confirming the cause first sounds rigorous, but holding a working fix prolongs a major outage; incident management restores service, and problem management finds the cause afterward.",
+        "C": "Root-cause analysis is a core control against repeat incidents, but during a major outage incident management restores service first; problem management investigates the cause once users are back.",
         "D": "A permanent fix needs a known cause; committing to one before diagnosis is guesswork under emergency change."
       },
       "tips": [
@@ -2659,7 +2659,7 @@
       "pre_read": "Initiation is done. Ask which step every later step depends on.",
       "correct_explanation": "With sponsorship and policy in place, the next step is the business impact analysis and risk assessment. They identify critical processes, recovery objectives and threats, and every later choice depends on them. Selecting recovery strategies sounds like progress, but strategies chosen before recovery objectives are known may overspend on low-impact systems or miss critical ones.",
       "wrong_explanations": {
-        "B": "Choosing recovery strategies feels like real progress, but strategies are sized to the recovery objectives the BIA sets; picked first, they may overspend on minor systems or miss critical ones.",
+        "B": "Strategy selection is a core BCP step and the sponsorship is in place, but strategies are sized to the recovery objectives the BIA sets; chosen first, they may misdirect spending.",
         "C": "There is no plan or strategy yet to test; testing comes after the plan is written.",
         "D": "Runbooks implement chosen strategies; writing them before the BIA and strategy work is premature."
       },
@@ -3662,7 +3662,7 @@
       "wrong_explanations": {
         "A": "RTOs come from business impact, not budget, and the CIO is not the risk owner; stretching them hides an unaccepted continuity risk.",
         "C": "Untested recovery is unreliable; cutting testing weakens assurance for all 18 systems to cover six.",
-        "D": "Best-effort terms sound pragmatic, but they commit no capacity, so in a wide disruption the six systems may miss their RTO, a risk nobody has formally accepted."
+        "D": "Best-effort terms cost nothing and give the six systems some recovery path, but without committed capacity they may miss the RTO, and no risk owner has accepted that gap."
       },
       "tips": [
         "Eliminate: A bends business-driven RTOs to fit the budget, and C weakens testing for every system to fund six.",
@@ -4805,7 +4805,7 @@
       "wrong_explanations": {
         "A": "Yes or no questions on documentation and testing produce self-attestation. They repeat what document review already shows and reveal nothing about readiness.",
         "B": "Self-ratings are self-attestation: people tend to overrate their readiness, and a score shows nothing about whether they could carry out their duties.",
-        "C": "A section-by-section walkthrough looks thorough, but with the text in front of them members tend to agree, so it tests the document rather than unaided readiness."
+        "C": "Walking through the plan mirrors a recognized test method, so it feels methodical, but with the text in front of them members agree; only unaided recall shows readiness."
       },
       "tips": [
         "Eliminate: A asks yes-or-no questions that document review already answers, and B collects self-ratings, which measure confidence rather than ability.",
@@ -4908,21 +4908,21 @@
       "question": "An IS auditor finds a CEO-signed continuity policy, but no steering group, assigned roles or management reviews. What is the GREATEST risk?",
       "options": {
         "A": "The policy wording omits some critical business units",
-        "B": "The policy wording does not follow ISO 22301 terms",
+        "B": "The policy uses its own terms rather than ISO 22301's",
         "C": "The board has not approved the CEO-signed policy",
-        "D": "Policy commitments are not turned into a maintained program"
+        "D": "Policy commitments never become a maintained program"
       },
       "correct": "D",
       "key_concept": "A policy sets intent; governance, roles and management review turn it into a maintained, improving continuity program.",
       "pre_read": "Notice what is missing in the stem: people, structure and review. What happens to a policy that nobody owns?",
       "correct_explanation": "A signed policy states intent, but without a steering group, defined roles and periodic management review, nobody is accountable for turning it into plans, resources, tests and updates. The program simply never happens or decays. A gap in the policy's scope is a real weakness, but it is the kind of issue the missing governance would normally catch and correct, so it is the narrower risk.",
       "wrong_explanations": {
-        "A": "Omitting critical units is a real scope weakness, but it is one fixable drafting gap; without a steering group, roles and reviews, even a well-scoped policy never becomes a program.",
-        "B": "Matching a standard's terminology is a drafting choice; the policy can still direct a program in its own words.",
+        "A": "A complete scope is a core policy requirement, but governance is what finds and fixes such gaps; without a steering group, roles and reviews, no policy becomes a program.",
+        "B": "ISO 22301 does not mandate its own vocabulary; a policy written in the organization's terms can still direct a full continuity program.",
         "C": "Board endorsement adds weight, but a CEO-signed policy is already authorized; the gap is that no one delivers it."
       },
       "tips": [
-        "Eliminate: B is a wording choice that does not stop the policy directing a program, and C seeks board approval for a policy the CEO already authorized.",
+        "Eliminate: B uses its own vocabulary, which ISO 22301 does not forbid, and C seeks board approval for a policy the CEO already authorized.",
         "Final two: D beats A because missing governance stops the whole program, while a scope gap is one fixable flaw.",
         "Exam cue: a policy without owners, roles and review is intent only; missing governance outranks a flaw in the wording."
       ],
@@ -4934,7 +4934,7 @@
         "Leading vs lagging metrics",
         "Executive sponsorship"
       ],
-      "_provenance": "Authored from concept: 'BCI GPG PP1 Policy and Programme Management six elements'. Public sources: BCI, ISO. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D4 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): B (awareness of location) and C (file storage) were trivial; they are now standard terminology and board approval, lesser governance points. CISA quality pass (Oct 2026): dropped the 'may' hedge from all four options; options are now plain declaratives.",
+      "_provenance": "Authored from concept: 'BCI GPG PP1 Policy and Programme Management six elements'. Public sources: BCI, ISO. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D4 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): B (awareness of location) and C (file storage) were trivial; they are now standard terminology and board approval, lesser governance points. CISA quality pass (Oct 2026): dropped the 'may' hedge from all four options; options are now plain declaratives. Revised after review: key D shortened and B reworded so A and B no longer share an opening.",
       "style_version": 2
     },
     {
@@ -6326,22 +6326,22 @@
       "question": "An IS auditor reviews three months of utility-program logs on production database servers. Which finding should concern the auditor MOST?",
       "options": {
         "A": "A data-editing utility changed records with no change ticket",
-        "B": "A disk utility ran outside the maintenance window on an emergency ticket",
+        "B": "A disk utility was run outside the scheduled maintenance window",
         "C": "Utility sessions were logged under named administrator accounts",
-        "D": "Utility session logs are kept for 90 days rather than one year"
+        "D": "Utility logs are reviewed after incidents rather than on a schedule"
       },
       "correct": "A",
       "key_concept": "Utilities can alter production data outside application controls, so unauthorized utility changes to records are a priority concern.",
       "pre_read": "Ask which utility activity could change production data without any application control seeing it.",
-      "correct_explanation": "Data-editing utilities bypass application controls and audit trails, so an unticketed change to production records could be an unauthorized or fraudulent alteration that no application log captured. An emergency disk-utility run outside the window looks irregular, but it was ticketed through emergency change and a disk utility edits no records.",
+      "correct_explanation": "Data-editing utilities bypass application controls and audit trails, so an unticketed change to production records could be an unauthorized or fraudulent alteration that no application log captured. A disk utility run outside the window is irregular and needs explaining, but disk utilities work on storage rather than on the records themselves, so it is a weaker sign of harm.",
       "wrong_explanations": {
-        "B": "An off-window run looks irregular and merits a check of the emergency ticket, but it was authorized and a disk utility edits no records, unlike an untracked data change.",
+        "B": "Unscheduled production runs deserve follow-up under change control. Still, an actual change to production data outranks a procedural lapse that altered no records.",
         "C": "Logging under named accounts is a good control that supports accountability.",
-        "D": "Short retention limits later investigations and should be fixed, but the three months reviewed are intact, and nothing here shows an unauthorized change to data."
+        "D": "Routine log review is an expected detective control, so its absence is a real gap; still, a monitoring weakness ranks below an actual unauthorized change."
       },
       "tips": [
-        "Eliminate: C is named-account logging, a control that supports accountability, and D is a retention gap that limits later investigations but shows no change to data.",
-        "Final two: A beats B because an untracked change to production data bypasses every application control, while the emergency run was ticketed and changed no records.",
+        "Eliminate: C is named-account logging, which supports accountability, and D delays detection but leaves every session logged and reviewable.",
+        "Final two: A beats B because an untracked change to production data bypasses every application control, while an off-window disk utility run alters no records.",
         "Exam cue: utilities matter most when they change production data outside change control and application audit trails."
       ],
       "framework_ref": "NIST SP 800-53 Rev 5 CM-7 (Least Functionality); NIST SP 800-53 Rev 5 AC-6 (Least Privilege); ISO/IEC 27002:2022 Control 8.18 (Use of Privileged Utility Programs); CIS Controls v8 Control 2 (Inventory and Control of Software Assets)",
@@ -6352,7 +6352,7 @@
         "Diagnostic vs change utilities",
         "Session recording"
       ],
-      "_provenance": "Authored from concept: 'Utility program governance per NIST SP 800-53 CM-7 and AC-6'. Public sources: NIST, ISACA, CIS. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Cross-domain review (Oct 2026): re-angled or clarified to remove duplication/contradiction. Final cross-domain polish (Oct 2026). CISA quality pass (Oct 2026): options B and D rewritten as real but lesser findings (were benign practice: a scheduled-window run, a repeated diagnostic), with the explanations and tips to match.",
+      "_provenance": "Authored from concept: 'Utility program governance per NIST SP 800-53 CM-7 and AC-6'. Public sources: NIST, ISACA, CIS. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Cross-domain review (Oct 2026): re-angled or clarified to remove duplication/contradiction. Final cross-domain polish (Oct 2026). CISA quality pass (Oct 2026): options B and D rewritten as real but lesser findings (were benign practice: a scheduled-window run, a repeated diagnostic), with the explanations and tips to match. Revised after review: B no longer carries a mitigating emergency ticket, and D no longer implies a retention standard the stem does not give.",
       "style_version": 2
     },
     {
@@ -7145,7 +7145,7 @@
       "correct_explanation": "Independent systems can be restored in parallel, while dependent ones must wait for what they rely on. The longest chain of dependencies, adjusted for how many staff can work at once, sets the real total. Adding every recovery time is safely conservative, but it assumes everything runs in series, overstates the total and can drive unnecessary spending on recovery strategy.",
       "wrong_explanations": {
         "A": "The slowest single system ignores dependencies: it may itself have to wait for others, so the real total can be longer.",
-        "B": "Summing the estimates feels safely conservative, but it assumes systems are restored one after another; recovery runs in parallel where dependencies allow, so the sum overstates time and investment.",
+        "B": "A worst-case sum looks prudent, but reliable means accurate, not padded: parallel restores shrink the total to the longest dependency chain, so a sum inflates time and spend.",
         "D": "A past event had different systems, staff and conditions, so it cannot reliably predict this recovery."
       },
       "tips": [
@@ -8140,7 +8140,7 @@
       "correct_explanation": "Settlement must rest on accurate records. Restoring the clean backup and replaying the transaction logs is the fastest route to verified data. Manual reconciliation is accurate in principle, but reworking thousands of trades by hand is far slower and more error-prone than a replay. The replay loses no committed trades and finishes in time, so there is no trade-off for management to weigh.",
       "wrong_explanations": {
         "A": "Settling on known-corrupt data harms customers and breaches books-and-records duties. Later correction does not undo that.",
-        "B": "Checking each trade by hand feels careful, but it takes far longer than a replay and adds human error under deadline pressure; the replay restores verified data in time.",
+        "B": "Manual reconciliation is a valid control when no clean source exists, but here a clean backup and log replay delivers verified data faster and without hand-keying errors.",
         "C": "Extensions are rarely granted, and waiting for an answer wastes hours that the restore needs."
       },
       "tips": [
@@ -9701,7 +9701,7 @@
       "pre_read": "Notice the tool supports daily work and holds customer data. Ask how to manage both facts at once.",
       "correct_explanation": "The tool meets a genuine business need, so the right response is to evaluate its security, contract and data handling, then sanction and secure it or replace it with an approved option. An immediate ban removes the risk on paper, but it disrupts daily sales work, may lose customer records, and teaches staff to hide the next tool rather than disclose it.",
       "wrong_explanations": {
-        "B": "Stopping the tool feels decisive, but it disrupts daily work, risks losing customer records and drives the next tool into hiding, when assessment could make this one safe.",
+        "B": "A ban ends the unsanctioned exposure, but when a tool meets a real need, governance assesses it first; a ban may lose records and drives the next tool underground.",
         "C": "Approval without assessment leaves customer data under unknown security and contract terms.",
         "D": "A firm-wide license expands use before anyone checks the tool's security, contract or data handling."
       },
@@ -10129,7 +10129,7 @@
       },
       "tips": [
         "Eliminate: A overlooks that journaling loses only seconds, and B is a performance issue, not a recovery gap.",
-        "Final two: D beats C because replay can stop before a bad transaction, while restoring last night's backup and replaying a day of entries may not finish inside a one-hour RTO.",
+        "Final two: D beats C because replay can stop before a bad transaction, while restoring last night's backup and replaying up to a day of entries may not finish inside a one-hour RTO.",
         "Exam cue: journaling protects the RPO; ask how long restore plus replay takes before trusting it to meet the RTO."
       ],
       "_provenance": "Authored from concept: 'Remote Journaling. Restore and Replay Time Against the RTO'. Original KaiSip item (Oct 2026), written for CISA subtopic 4B3.2 (Wave 1 coverage batch Q2: a subtopic with thin practice). Public sources: NIST. CISA quality pass (Oct 2026): explanation and Final-two tip reconciled (the tip had asserted replay 'takes hours').",
@@ -10833,7 +10833,7 @@
         "D": "Capping virtual processors would help if the terms count them, but the metric is still unknown; if every physical host core counts, the cap reduces nothing."
       },
       "tips": [
-        "Eliminate: A buys licenses before anyone knows a shortfall exists, and C moves the database back before the license exposure is known.",
+        "Eliminate: A commits a large spend and C disrupts operations, both before anyone knows a shortfall exists.",
         "Final two: B beats D because a virtual-processor cap helps only if the terms count virtual processors, and that is still unknown.",
         "Exam cue: in license questions, confirm the metric and the true gap before buying, moving or reconfiguring anything."
       ],
