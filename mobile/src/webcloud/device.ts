@@ -141,15 +141,29 @@ export function createWebDevice(deps: WebDeviceDeps): WebDevice {
   const knownCertIds = deps.knownCertIds ?? [WEB_CERT];
   const mctx = (): MergeContext => ({ now: clock.now(), knownCertIds });
 
-  const loadMirror = (): Mirror => {
+  /** The saved mirror, or null when it is missing or damaged. */
+  const storedMirror = (): Mirror | null => {
     const v = parse(storage.getItem(SYNC_MIRROR_KEY));
     if (isObj(v) && v.v === 1 && isObj(v.settings) && isObj(v.progress)) {
       return { v: 1, settings: v.settings, progress: v.progress, examDateSeen: typeof v.examDateSeen === 'string' && DAY_RE.test(v.examDateSeen) ? v.examDateSeen : null };
     }
-    return { v: 1, settings: BLANK_SETTINGS(), progress: BLANK_PROGRESS(), examDateSeen: null };
+    return null;
   };
+  const loadMirror = (): Mirror => storedMirror() ?? { v: 1, settings: BLANK_SETTINGS(), progress: BLANK_PROGRESS(), examDateSeen: null };
   const saveMirror = (m: Mirror) => storage.setItem(SYNC_MIRROR_KEY, JSON.stringify(m));
-  const meta = (): SyncMeta => readMeta(storage.getItem(SYNC_META_KEY));
+  /**
+   * The sync record. Its revs and fingerprints describe the MIRROR: without a
+   * readable mirror (storage cleared, a damaged value) they are forgotten
+   * here, so the cycle pulls and merges first instead of pushing a blank
+   * picture over the account (security audit of 6f4469e, HIGH: a push from
+   * an empty mirror would drop the phone's study).
+   */
+  const meta = (): SyncMeta => {
+    const m = readMeta(storage.getItem(SYNC_META_KEY));
+    if (storedMirror()) return m;
+    const none = { settings: null, progress: null };
+    return { ...m, lastRev: { ...none }, lastAt: { ...none }, lastPushedHash: { ...none } };
+  };
   const setMeta = (m: Partial<SyncMeta>) => storage.setItem(SYNC_META_KEY, JSON.stringify({ ...meta(), ...m }));
 
   const webDate = (): string | null => {
@@ -164,7 +178,7 @@ export function createWebDevice(deps: WebDeviceDeps): WebDevice {
     // Settings: the mirror, with the website's exam date. A date changed on the website is stamped now.
     const date = webDate();
     // Never stamped before the first sync (no mirror yet): a date of unknown age must not beat the account's.
-    if (date !== mirror.examDateSeen && storage.getItem(SYNC_MIRROR_KEY) !== null) {
+    if (date !== mirror.examDateSeen && storedMirror()) {
       const m = meta();
       setMeta({ stamps: { ...m.stamps, settings: { ...m.stamps.settings, [`examDates.${WEB_CERT}`]: now } } });
       saveMirror({ ...mirror, examDateSeen: date });

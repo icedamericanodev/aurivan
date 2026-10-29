@@ -124,7 +124,8 @@ fi
 # mobile/src/webcloud and the app's own sync engine. Checked without npm like
 # the plant (its source modules and their hash), plus the version-stamp rule:
 # the bundle stamps pushes with mobile/LIVE_VERSION (the app live on Google
-# Play) and must never be newer, or every phone would pause sync. With
+# Play) and its store versions (mobile/LIVE_STORE_VERSIONS.json), and must
+# never be newer, or every phone would pause sync. With
 # mobile/node_modules installed, the rebuild-and-compare above covers it too.
 printf "\nWebsite cloud client (assets/kaisip-cloud.js):\n"
 if ! python3 - <<'PY'
@@ -157,7 +158,21 @@ if not stamp or not semver.match(stamp.group(1)) or key(stamp.group(1)) > key(li
     print(f"  ✗ the bundle's version stamp is newer than mobile/LIVE_VERSION ({live}): cd mobile && npm run web-plant"); sys.exit(1)
 if stamp.group(1) != live:
     print(f"  ✗ the bundle stamps {stamp.group(1)}, mobile/LIVE_VERSION says {live}: cd mobile && npm run web-plant"); sys.exit(1)
-print(f"  ✓ matches its {len(ids)} source modules; stamps pushes with LIVE_VERSION {live}")
+# The store versions: stamped from mobile/LIVE_STORE_VERSIONS.json, which must equal the engine's own.
+try:
+    stores = json.load(open('mobile/LIVE_STORE_VERSIONS.json'))
+    stores = {k: int(stores[k]) for k in ('progress', 'settings')}
+except Exception:
+    print("  ✗ mobile/LIVE_STORE_VERSIONS.json must be { \"progress\": n, \"settings\": n }"); sys.exit(1)
+mig = open('mobile/src/engine/saveMigrations.ts').read()
+for k, name in (('progress', 'PROGRESS_VERSION'), ('settings', 'SETTINGS_VERSION')):
+    m = re.search(r'export const ' + name + r' = (\d+);', mig)
+    if not m or int(m.group(1)) != stores[k]:
+        print(f"  ✗ the engine's {name} ({m.group(1) if m else '?'}) is not the Play release's ({stores[k]}, mobile/LIVE_STORE_VERSIONS.json)"); sys.exit(1)
+bs = re.search(r'\n  var liveStoreVersions = (\{[^\n]*\});\n', text)
+if not bs or json.loads(bs.group(1)) != stores:
+    print("  ✗ the bundle's store-version stamp is not mobile/LIVE_STORE_VERSIONS.json: cd mobile && npm run web-plant"); sys.exit(1)
+print(f"  ✓ matches its {len(ids)} source modules; stamps pushes with LIVE_VERSION {live}, stores {stores['progress']}/{stores['settings']}")
 PY
 then
   status=1

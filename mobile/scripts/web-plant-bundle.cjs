@@ -38,6 +38,10 @@ const INDEX = path.join(REPO, 'index.html');
 /** mobile/LIVE_VERSION: the app version live on Google Play (one line, updated after each Play rollout). */
 const LIVE_VERSION_FILE = path.join(MOBILE, 'LIVE_VERSION');
 const APP_JSON = path.join(MOBILE, 'app.json');
+/** mobile/LIVE_STORE_VERSIONS.json: that Play release's PROGRESS_VERSION and SETTINGS_VERSION ({ "progress": n, "settings": n }). */
+const LIVE_STORES_FILE = path.join(MOBILE, 'LIVE_STORE_VERSIONS.json');
+/** Where this engine's own store versions are defined. */
+const MIGRATIONS = path.join(MOBILE, 'src', 'engine', 'saveMigrations.ts');
 const SEMVER = /^\d{1,3}\.\d{1,3}\.\d{1,3}$/;
 
 /** What the website reads, by the name it reads it under (KaiSipPlant.<name>). */
@@ -61,13 +65,18 @@ const ENTRIES = {
   readySigns: 'src/engine/readySigns.ts',
 };
 
-/** The website's cloud client (KaiSipCloud.<name>). index.ts wires the rest; the others are for index.html's own use. */
+/**
+ * The website's cloud client, public names (KaiSipCloud.<name>): the browser
+ * port adapters and the public config. The client itself is reached only
+ * through KaiSipCloud.create (security audit of 6f4469e: never a raw
+ * createWebCloud), which stamps the Play versions and the page's address.
+ */
 const CLOUD_ENTRIES = {
-  cloud: 'src/webcloud/index.ts',
   browser: 'src/webcloud/browser.ts',
   config: 'src/webcloud/config.ts',
-  toWeb: 'src/webcloud/toWeb.ts',
 };
+/** Bundled but not exposed. */
+const CLOUD_INTERNAL = { cloud: 'src/webcloud/index.ts' };
 
 /**
  * One output per target. `ref` is how index.html loads it
@@ -96,6 +105,7 @@ const TARGETS = {
     file: 'assets/kaisip-cloud.js',
     global: 'KaiSipCloud',
     entries: CLOUD_ENTRIES,
+    internal: CLOUD_INTERNAL,
     refRe: /assets\/kaisip-cloud\.js\?v=([0-9a-f]*)/g,
     refRequired: false,
     what: 'the mobile sync sources',
@@ -167,6 +177,24 @@ function readAppVersion() {
     return '';
   }
 }
+/** { progress, settings } from mobile/LIVE_STORE_VERSIONS.json, or null when it is missing or malformed. */
+function readLiveStores() {
+  try {
+    const v = JSON.parse(fs.readFileSync(LIVE_STORES_FILE, 'utf8'));
+    return v && Number.isInteger(v.progress) && v.progress >= 1 && Number.isInteger(v.settings) && v.settings >= 1 ? { progress: v.progress, settings: v.settings } : null;
+  } catch {
+    return null;
+  }
+}
+/** This engine's PROGRESS_VERSION and SETTINGS_VERSION, read from the source. */
+function readSourceStores() {
+  const src = fs.readFileSync(MIGRATIONS, 'utf8');
+  const num = (name) => {
+    const m = new RegExp(`export const ${name} = (\\d+);`).exec(src);
+    return m ? Number(m[1]) : NaN;
+  };
+  return { progress: num('PROGRESS_VERSION'), settings: num('SETTINGS_VERSION') };
+}
 function cmpVersion(a, b) {
   const pa = a.split('.').map(Number);
   const pb = b.split('.').map(Number);
@@ -181,10 +209,28 @@ function cmpVersion(a, b) {
  * (mobile/LIVE_VERSION) and never one ahead of it. Problems (empty when fine):
  *   - LIVE_VERSION must be x.y.z;
  *   - it can't be ahead of app.json's expo.version (no such app exists yet);
- *   - the bundle's own stamp can't be newer than LIVE_VERSION.
+ *   - the bundle's own stamp can't be newer than LIVE_VERSION;
+ *   - the store versions (security audit of 6f4469e): the website stamps
+ *     store_version from mobile/LIVE_STORE_VERSIONS.json, so it must be
+ *     readable, the engine's own versions can't be ahead of it (the website
+ *     would push a shape the Play app can't read: phones pause), nor behind
+ *     it (a typo), and the bundle can't stamp newer ones.
+ * The store checks run only when `liveStores` is passed (undefined: skipped).
  */
-function stampProblems({ bundleVersion, liveVersion, appVersion }) {
+function stampProblems({ bundleVersion, liveVersion, appVersion, liveStores, sourceStores, bundleStores }) {
   const out = [];
+  if (liveStores !== undefined) {
+    if (!liveStores) out.push('mobile/LIVE_STORE_VERSIONS.json must be { "progress": n, "settings": n } (the Play release\'s store versions)');
+    else {
+      for (const k of ['progress', 'settings']) {
+        const src = sourceStores ? sourceStores[k] : NaN;
+        if (!Number.isInteger(src)) out.push(`can't read the engine's ${k} store version from src/engine/saveMigrations.ts`);
+        else if (src > liveStores[k]) out.push(`the engine's ${k} store version ${src} is ahead of the Play release's ${liveStores[k]} (mobile/LIVE_STORE_VERSIONS.json): wait for the Play rollout before rebuilding the website bundle`);
+        else if (src < liveStores[k]) out.push(`mobile/LIVE_STORE_VERSIONS.json says ${k} ${liveStores[k]}, but the engine is only at ${src}`);
+        if (bundleStores && bundleStores[k] > liveStores[k]) out.push(`assets/kaisip-cloud.js stamps ${k} store version ${bundleStores[k]}, newer than the Play release's ${liveStores[k]}`);
+      }
+    }
+  }
   if (!SEMVER.test(liveVersion)) {
     out.push(`mobile/LIVE_VERSION must be one x.y.z line (the app version live on Google Play), found "${liveVersion}"`);
     return out;
@@ -203,13 +249,23 @@ function bundleStamp(text) {
   return m ? m[1] : null;
 }
 
+/** The store versions a built cloud bundle stamps (null when none). */
+function bundleStoreStamp(text) {
+  const m = /\n {2}var liveStoreVersions = (\{[^\n]*\});\n/.exec(text || '');
+  try {
+    return m ? JSON.parse(m[1]) : null;
+  } catch {
+    return null;
+  }
+}
+
 /** Builds the bundle text (pure: reads the sources, writes nothing). */
 function buildBundle(targetName = 'plant', opts = {}) {
   const target = TARGETS[targetName];
   if (!target) throw new Error(`unknown bundle target "${targetName}"`);
   const ts = loadTs();
   const mods = new Map();
-  const queue = Object.values(target.entries);
+  const queue = [...Object.values(target.entries), ...Object.values(target.internal || {})];
   while (queue.length) {
     const id = queue.shift();
     if (mods.has(id)) continue;
@@ -256,17 +312,26 @@ function buildBundle(targetName = 'plant', opts = {}) {
     `  api.sourceHash = ${JSON.stringify(sourceHash.digest('hex').slice(0, 16))};`,
   );
   if (target.stamp) {
-    // The app version every push from the website is stamped with: mobile/LIVE_VERSION.
+    // What every push from the website is stamped with: mobile/LIVE_VERSION and LIVE_STORE_VERSIONS.json.
     const live = opts.liveVersion !== undefined ? opts.liveVersion : readLiveVersion();
+    const stores = opts.liveStores !== undefined ? opts.liveStores : readLiveStores() || { progress: 0, settings: 0 };
     lines.push(
+      `  var cloud = load(${JSON.stringify(target.internal.cloud)});`,
       `  var liveVersion = ${JSON.stringify(live)};`,
+      `  var liveStoreVersions = ${JSON.stringify({ progress: stores.progress, settings: stores.settings })};`,
       '  api.liveVersion = liveVersion;',
-      '  // KaiSipCloud.create({ ... }): createWebCloud with the Play version stamped in.',
+      '  api.liveStoreVersions = Object.freeze({ progress: liveStoreVersions.progress, settings: liveStoreVersions.settings });',
+      '  api.accountsAllowed = cloud.accountsAllowed;',
+      '  // KaiSipCloud.create({ ... }): the client, with the Play versions and this page\'s address filled in',
+      '  // (the caller can\'t change them). It refuses any address but https://kaisip.com; `devOrigin: true`',
+      '  // adds only localhost and "no address" (Node tests), never another site.',
       '  api.create = function (o) {',
       '    var opts = {};',
       '    for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) opts[k] = o[k];',
       '    opts.appVersion = liveVersion;',
-      '    return api.cloud.createWebCloud(opts);',
+      '    opts.storeVersions = { progress: liveStoreVersions.progress, settings: liveStoreVersions.settings };',
+      "    opts.origin = root.location && typeof root.location.origin === 'string' ? root.location.origin : '';",
+      '    return cloud.createWebCloud(opts);',
       '  };',
     );
   }
@@ -288,7 +353,9 @@ function checkBundle(text, targetName = 'plant') {
   if (have === null) problems.push(`${target.file} is missing`);
   else if (have !== text) problems.push(`${target.file} is out of date with ${target.what}`);
   if (target.stamp) {
-    problems.push(...stampProblems({ bundleVersion: bundleStamp(have), liveVersion: readLiveVersion(), appVersion: readAppVersion() }));
+    problems.push(
+      ...stampProblems({ bundleVersion: bundleStamp(have), liveVersion: readLiveVersion(), appVersion: readAppVersion(), liveStores: readLiveStores(), sourceStores: readSourceStores(), bundleStores: bundleStoreStamp(have) }),
+    );
   }
   const html = fs.existsSync(INDEX) ? fs.readFileSync(INDEX, 'utf8') : '';
   const refs = [...html.matchAll(target.refRe)].map((m) => m[1]);
@@ -308,7 +375,7 @@ function checkAll() {
 function writeBundle(targetName = 'plant') {
   const target = TARGETS[targetName];
   if (target.stamp) {
-    const problems = stampProblems({ bundleVersion: null, liveVersion: readLiveVersion(), appVersion: readAppVersion() });
+    const problems = stampProblems({ bundleVersion: null, liveVersion: readLiveVersion(), appVersion: readAppVersion(), liveStores: readLiveStores(), sourceStores: readSourceStores() });
     if (problems.length) throw new Error(problems.join('; '));
   }
   const text = buildBundle(targetName);
@@ -327,4 +394,4 @@ function writeBundle(targetName = 'plant') {
   return { text, ref, changed: before !== text || htmlChanged };
 }
 
-module.exports = { ENTRIES, CLOUD_ENTRIES, TARGETS, OUT, REF_RE, buildBundle, checkBundle, checkAll, writeBundle, refFor, stampProblems, bundleStamp };
+module.exports = { ENTRIES, CLOUD_ENTRIES, TARGETS, OUT, REF_RE, buildBundle, checkBundle, checkAll, writeBundle, refFor, stampProblems, bundleStamp, bundleStoreStamp };

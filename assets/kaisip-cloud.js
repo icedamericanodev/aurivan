@@ -7754,7 +7754,7 @@ exports.MAX_PUSH_BYTES = 1500000;
 exports.CONFLICT_WAITS = [1000, 3000, 9000];
 const STORES = ['settings', 'progress'];
 const NO_REV = { settings: null, progress: null };
-const versionOf = (s) => (s === 'settings' ? saveMigrations_1.SETTINGS_VERSION : saveMigrations_1.PROGRESS_VERSION);
+const versionOf = (s, ctx) => { var _a, _b; return (_b = (_a = ctx.storeVersions) === null || _a === void 0 ? void 0 : _a[s]) !== null && _b !== void 0 ? _b : (s === 'settings' ? saveMigrations_1.SETTINGS_VERSION : saveMigrations_1.PROGRESS_VERSION); };
 const hashOf = (side) => (0, syncMerge_1.fnv1a)((0, syncMerge_1.stableStringify)((0, syncMerge_1.toPayload)(side)));
 exports.hashOf = hashOf;
 const mctxOf = (ctx) => ({ now: ctx.now(), knownCertIds: ctx.knownCertIds });
@@ -7950,7 +7950,7 @@ async function syncCycle(ctx) {
             if (!alive())
                 return { kind: 'idle' };
             try {
-                const head = await ctx.port.push({ store: s, expectedRev, storeVersion: versionOf(s), appVersion: ctx.thisApp, deviceId: await ctx.deviceId(), state: payload });
+                const head = await ctx.port.push({ store: s, expectedRev, storeVersion: versionOf(s, ctx), appVersion: ctx.thisApp, deviceId: await ctx.deviceId(), state: payload });
                 if (!alive())
                     return { kind: 'idle' };
                 const m = dev.meta();
@@ -8531,6 +8531,7 @@ exports.plantLine = {
   defs["src/webcloud/auth.ts"] = function (module, exports, require) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.PKCE_MAX_AGE_MS = void 0;
 exports.createWebAuth = createWebAuth;
 const account_1 = require("../engine/account");
 const types_1 = require("../cloud/types");
@@ -8541,6 +8542,7 @@ const session_1 = require("./session");
 const FUNCTIONS = new Set(['delete-account', 'export-my-data']);
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const CODE_RE = /^\d{6,10}$/;
+exports.PKCE_MAX_AGE_MS = 10 * 60000;
 const KNOWN_PROVIDERS = ['email', 'google', 'apple'];
 function sessionFrom(body, now) {
     const at = body.access_token;
@@ -8610,6 +8612,11 @@ function createWebAuth(deps) {
             return cur;
         const shared = store.shared();
         const r = await send('/auth/v1/token?grant_type=refresh_token', { method: 'POST', body: JSON.stringify({ refresh_token: cur.refreshToken }) });
+        const after = store.read();
+        if (!after)
+            throw new types_1.CloudError('unauthorized');
+        if (after.refreshToken !== cur.refreshToken)
+            return after;
         if (!ok(r)) {
             const e = fail('refresh', r);
             if (e.code === 'unauthorized')
@@ -8622,6 +8629,10 @@ function createWebAuth(deps) {
         save({ ...next, email: (_a = next.email) !== null && _a !== void 0 ? _a : cur.email, providers: next.providers.length ? next.providers : cur.providers }, shared);
         return (_b = store.read()) !== null && _b !== void 0 ? _b : next;
     });
+    const clearLocked = async () => {
+        store.clear();
+        await deps.lock.request(config_1.AUTH_LOCK, async () => store.clear());
+    };
     const accessToken = async () => {
         const s = store.read();
         if (!s)
@@ -8700,6 +8711,9 @@ function createWebAuth(deps) {
             }
             if (!(0, pkce_1.isVerifier)(saved.verifier))
                 throw new types_1.CloudError('invalid', undefined, 'oauth');
+            const startedAt = typeof saved.at === 'number' ? saved.at : NaN;
+            if (!(now() - startedAt <= exports.PKCE_MAX_AGE_MS && startedAt - now() <= 60000))
+                throw new types_1.CloudError('invalid', undefined, 'oauth');
             if (typeof code !== 'string' || !/^[A-Za-z0-9._~-]{8,512}$/.test(code))
                 throw new types_1.CloudError('invalid', undefined, 'oauth');
             const r = await send('/auth/v1/token?grant_type=pkce', { method: 'POST', body: JSON.stringify({ auth_code: code, code_verifier: saved.verifier }) });
@@ -8729,10 +8743,10 @@ function createWebAuth(deps) {
                     if (e.code !== 'unauthorized')
                         throw e;
                 }
-                store.clear();
+                await clearLocked();
                 return;
             }
-            store.clear();
+            await clearLocked();
             await send('/auth/v1/logout?scope=local', { method: 'POST', headers: { authorization: `Bearer ${s.accessToken}` } });
         },
         async getUser() {
@@ -8754,7 +8768,7 @@ function createWebAuth(deps) {
             if (res.status < 200 || res.status >= 300)
                 throw (0, errors_1.toCloudError)('function', res.status, text, res);
             if (name === 'delete-account')
-                store.clear();
+                await clearLocked();
             return text;
         },
         async termsVersion() {
@@ -9135,15 +9149,22 @@ function createWebDevice(deps) {
     const { host, storage, bank, clock } = deps;
     const knownCertIds = (_a = deps.knownCertIds) !== null && _a !== void 0 ? _a : [config_1.WEB_CERT];
     const mctx = () => ({ now: clock.now(), knownCertIds });
-    const loadMirror = () => {
+    const storedMirror = () => {
         const v = parse(storage.getItem(config_1.SYNC_MIRROR_KEY));
         if (isObj(v) && v.v === 1 && isObj(v.settings) && isObj(v.progress)) {
             return { v: 1, settings: v.settings, progress: v.progress, examDateSeen: typeof v.examDateSeen === 'string' && DAY_RE.test(v.examDateSeen) ? v.examDateSeen : null };
         }
-        return { v: 1, settings: (0, exports.BLANK_SETTINGS)(), progress: (0, exports.BLANK_PROGRESS)(), examDateSeen: null };
+        return null;
     };
+    const loadMirror = () => { var _a; return (_a = storedMirror()) !== null && _a !== void 0 ? _a : { v: 1, settings: (0, exports.BLANK_SETTINGS)(), progress: (0, exports.BLANK_PROGRESS)(), examDateSeen: null }; };
     const saveMirror = (m) => storage.setItem(config_1.SYNC_MIRROR_KEY, JSON.stringify(m));
-    const meta = () => readMeta(storage.getItem(config_1.SYNC_META_KEY));
+    const meta = () => {
+        const m = readMeta(storage.getItem(config_1.SYNC_META_KEY));
+        if (storedMirror())
+            return m;
+        const none = { settings: null, progress: null };
+        return { ...m, lastRev: { ...none }, lastAt: { ...none }, lastPushedHash: { ...none } };
+    };
     const setMeta = (m) => storage.setItem(config_1.SYNC_META_KEY, JSON.stringify({ ...meta(), ...m }));
     const webDate = () => {
         const d = host.examDate();
@@ -9154,7 +9175,7 @@ function createWebDevice(deps) {
         const mirror = loadMirror();
         const now = clock.now();
         const date = webDate();
-        if (date !== mirror.examDateSeen && storage.getItem(config_1.SYNC_MIRROR_KEY) !== null) {
+        if (date !== mirror.examDateSeen && storedMirror()) {
             const m = meta();
             setMeta({ stamps: { ...m.stamps, settings: { ...m.stamps.settings, [`examDates.${config_1.WEB_CERT}`]: now } } });
             saveMirror({ ...mirror, examDateSeen: date });
@@ -9335,6 +9356,8 @@ function asCloudError(e) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.accountsAllowed = accountsAllowed;
+exports.originAllowed = originAllowed;
+exports.syncStorage = syncStorage;
 exports.webDeviceId = webDeviceId;
 exports.createWebCloud = createWebCloud;
 const account_1 = require("../engine/account");
@@ -9352,6 +9375,33 @@ const KEEP_UNDO = { takenAt: 0, kind: 'sync' };
 function accountsAllowed(origin) {
     return origin === config_1.ACCOUNT_ORIGIN;
 }
+function originAllowed(origin, devOrigin = false) {
+    if (accountsAllowed(origin))
+        return true;
+    return devOrigin && (origin === '' || /^http:\/\/(localhost|127\.0\.0\.1)(:\d{1,5})?$/.test(origin));
+}
+function syncStorage(stores, shared) {
+    const pick = () => (shared() ? { to: stores.session, other: stores.local } : { to: stores.local, other: stores.session });
+    const quietRemove = (s, k) => {
+        try {
+            s.removeItem(k);
+        }
+        catch {
+        }
+    };
+    return {
+        getItem: (k) => pick().to.getItem(k),
+        setItem: (k, v) => {
+            const { to, other } = pick();
+            to.setItem(k, v);
+            quietRemove(other, k);
+        },
+        removeItem: (k) => {
+            quietRemove(stores.local, k);
+            quietRemove(stores.session, k);
+        },
+    };
+}
 function webDeviceId(storage, random) {
     const saved = storage.getItem(config_1.DEVICE_ID_KEY);
     if ((0, deviceId_1.isDeviceId)(saved))
@@ -9362,12 +9412,17 @@ function webDeviceId(storage, random) {
 }
 function createWebCloud(o) {
     var _a;
+    if (!originAllowed(o.origin, o.devOrigin))
+        throw new Error('KaiSipCloud: accounts run only on https://kaisip.com');
     if (!SEMVER.test(o.appVersion))
         throw new Error('KaiSipCloud: appVersion must be x.y.z');
+    const sv = o.storeVersions;
+    if (sv && !(Number.isInteger(sv.progress) && sv.progress >= 1 && Number.isInteger(sv.settings) && sv.settings >= 1))
+        throw new Error('KaiSipCloud: storeVersions must be whole numbers');
     const gzip = 'gunzipCapped' in o.gzip ? o.gzip : (0, codec_1.streamGzip)(o.gzip);
     const auth = (0, auth_1.createWebAuth)({ fetch: o.fetch, stores: o.stores, random: o.random, lock: o.lock, clock: o.clock, url: o.url, apiKey: o.apiKey });
     const sync = (0, rest_1.createRestSync)(auth, gzip);
-    const device = (0, device_1.createWebDevice)({ host: o.host, storage: o.stores.local, bank: o.bank, clock: o.clock });
+    const device = (0, device_1.createWebDevice)({ host: o.host, storage: syncStorage(o.stores, () => auth.sharedComputer()), bank: o.bank, clock: o.clock });
     const wait = (_a = o.wait) !== null && _a !== void 0 ? _a : ((ms) => new Promise((r) => setTimeout(r, ms)));
     const deviceId = async () => webDeviceId(o.stores.local, o.random);
     const signedInHash = () => {
@@ -9381,6 +9436,7 @@ function createWebCloud(o) {
             device,
             deviceId,
             thisApp: o.appVersion,
+            storeVersions: o.storeVersions,
             now: () => o.clock.now(),
             knownCertIds: [config_1.WEB_CERT],
             wait,
@@ -9961,19 +10017,25 @@ function decodeUtf8(bytes) {
     return module.exports;
   }
   var api = {};
-  api["cloud"] = load("src/webcloud/index.ts");
   api["browser"] = load("src/webcloud/browser.ts");
   api["config"] = load("src/webcloud/config.ts");
-  api["toWeb"] = load("src/webcloud/toWeb.ts");
-  api.sourceHash = "544601ac4be3ae97";
+  api.sourceHash = "ffb73529b265be17";
+  var cloud = load("src/webcloud/index.ts");
   var liveVersion = "1.48.0";
+  var liveStoreVersions = {"progress":2,"settings":1};
   api.liveVersion = liveVersion;
-  // KaiSipCloud.create({ ... }): createWebCloud with the Play version stamped in.
+  api.liveStoreVersions = Object.freeze({ progress: liveStoreVersions.progress, settings: liveStoreVersions.settings });
+  api.accountsAllowed = cloud.accountsAllowed;
+  // KaiSipCloud.create({ ... }): the client, with the Play versions and this page's address filled in
+  // (the caller can't change them). It refuses any address but https://kaisip.com; `devOrigin: true`
+  // adds only localhost and "no address" (Node tests), never another site.
   api.create = function (o) {
     var opts = {};
     for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) opts[k] = o[k];
     opts.appVersion = liveVersion;
-    return api.cloud.createWebCloud(opts);
+    opts.storeVersions = { progress: liveStoreVersions.progress, settings: liveStoreVersions.settings };
+    opts.origin = root.location && typeof root.location.origin === 'string' ? root.location.origin : '';
+    return cloud.createWebCloud(opts);
   };
   root.KaiSipCloud = Object.freeze(api);
 })(typeof window !== 'undefined' ? window : globalThis);

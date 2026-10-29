@@ -95,6 +95,21 @@ describe('PKCE (RFC 7636)', () => {
     expect(exchange.body).toEqual({ auth_code: code, code_verifier: saved.verifier });
   });
 
+  it('Google: a sign-in started more than 10 minutes ago is refused', async () => {
+    const a = tab();
+    const url = new URL(a.googleSignInUrl());
+    const code = server.googleCode(url.searchParams.get('code_challenge')!, 'maya@gmail.com');
+    now += 10 * 60_000 + 1;
+    expect(await codeOf(a.finishGoogleSignIn(code))).toBe('invalid:oauth');
+    expect(session.getItem(PKCE_KEY)).toBeNull();
+    expect(server.calls.some((c) => c.path.includes('grant_type=pkce'))).toBe(false);
+    // At 9 minutes it still works.
+    const url2 = new URL(a.googleSignInUrl());
+    const code2 = server.googleCode(url2.searchParams.get('code_challenge')!, 'maya@gmail.com');
+    now += 9 * 60_000;
+    expect(await codeOf(a.finishGoogleSignIn(code2))).toBe('ok');
+  });
+
   it('Google: a code used twice, or with no verifier, is a calm "oauth" error and the verifier is gone', async () => {
     const a = tab();
     const url = new URL(a.googleSignInUrl({ shared: true }));
@@ -214,8 +229,11 @@ describe('refresh under the lock (§1.2 mitigation 4)', () => {
     now += 3_590_000;
     const results = await Promise.all([codeOf(a.accessToken()), codeOf(b.accessToken())]);
     expect(server.refreshCalls()).toBe(2);
-    expect(results).toContain('unauthorized');
+    void results;
+    // The token was spent twice: the server's reuse detection ended the whole session, so the
+    // learner is signed out at the next call (with the lock, above, this never happens).
     expect(server.revokedFamilies.size).toBe(1);
+    expect(await codeOf(a.getUser())).toBe('unauthorized');
   });
 
   it('a token with time left is used without any refresh', async () => {
@@ -252,6 +270,71 @@ describe('refresh under the lock (§1.2 mitigation 4)', () => {
     server.force('/rest/v1/profiles?select', 401, { code: 'PGRST301', message: 'JWT expired' });
     expect(await codeOf(a.termsVersion())).toBe('unauthorized');
     expect(server.refreshCalls()).toBe(2);
+  });
+});
+
+describe('sign out against a refresh in another tab (security audit of 6f4469e, M1)', () => {
+  /**
+   * A fetch whose refresh the server has already answered (a new session exists) but whose answer
+   * arrives only at `release()`, so another tab can sign out while it is on the wire.
+   */
+  function heldRefresh() {
+    let release!: () => void;
+    let started!: () => void;
+    const gate = new Promise<void>((r) => (release = r));
+    const onWire = new Promise<void>((r) => (started = r));
+    const fetch: typeof server.fetch = async (url, init) => {
+      const res = await server.fetch(url, init);
+      if (url.includes('grant_type=refresh_token')) {
+        started();
+        await gate;
+      }
+      return res;
+    };
+    return { fetch, release, onWire };
+  }
+  const tabWith = (fetch: typeof server.fetch, lock: LockPort) => createWebAuth({ fetch, stores: { local, session }, random: seqRandom(), lock, clock, url: FAKE_URL, apiKey: FAKE_KEY });
+
+  it('with the lock: a sign-out while a refresh is on the wire stays signed out', async () => {
+    await signIn(tab());
+    now += 3_590_000;
+    const held = heldRefresh();
+    const a = tabWith(held.fetch, sharedLock);
+    const b = tabWith(server.fetch, sharedLock);
+    const refreshing = codeOf(a.accessToken());
+    await held.onWire;
+    const out = b.signOut('local');
+    held.release();
+    await out;
+    expect(await refreshing).toBe('unauthorized');
+    expect(local.getItem(SESSION_KEY)).toBeNull();
+    expect(a.current()).toBeNull();
+  });
+
+  it('even without shared locks (an older browser): the refresh re-reads storage after the network and never saves the session back', async () => {
+    const noLock: LockPort = { request: (_n, fn) => fn() };
+    await signIn(tab());
+    now += 3_590_000;
+    const held = heldRefresh();
+    const a = tabWith(held.fetch, noLock);
+    const b = tabWith(server.fetch, noLock);
+    const refreshing = codeOf(a.accessToken());
+    await held.onWire;
+    await b.signOut('local');
+    held.release();
+    expect(await refreshing).toBe('unauthorized');
+    expect(local.getItem(SESSION_KEY)).toBeNull();
+  });
+
+  it('delete-account clears inside the lock too', async () => {
+    const a = tab();
+    await signIn(a);
+    const order: string[] = [];
+    const watching: LockPort = { request: (n, fn) => sharedLock.request(n, async () => { order.push(n); return fn(); }) };
+    const d = tab(watching);
+    await d.callFunction('delete-account', { confirm: 'DELETE' });
+    expect(order).toContain('kaisip-auth');
+    expect(local.getItem(SESSION_KEY)).toBeNull();
   });
 });
 

@@ -26,7 +26,7 @@ import { confirmFirstSync, prepareFirstSync, syncCycle, type CycleCtx, type Devi
 import { SYNC_OFF, type SyncMeta } from '../engine/syncMeta';
 import { pageLocks } from '../webcloud/browser';
 import { decodeSnapshot, streamGzip, type StreamEnv } from '../webcloud/codec';
-import { SYNC_MIRROR_KEY, SYNC_UNDO_KEY } from '../webcloud/config';
+import { SYNC_META_KEY, SYNC_MIRROR_KEY, SYNC_UNDO_KEY } from '../webcloud/config';
 import { createWebDevice, type WebDevice } from '../webcloud/device';
 import { createWebCloud, accountsAllowed, type WebCloud } from '../webcloud/index';
 import { fromWeb } from '../webcloud/toWeb';
@@ -190,6 +190,32 @@ describe('two surfaces, one account (memory backend phone + website device)', ()
     expect((await syncCycle(phone.ctx)).kind).toBe('idle');
   });
 
+  it('a lost or damaged mirror never pushes a blank picture over the account (security audit of 6f4469e, HIGH)', async () => {
+    const phone = makePhone(memory);
+    phoneAnswer(phone, ids[0]);
+    certOf(phone.data).gameBest = { daylight: 9 };
+    await firstSync(phone.ctx, phone.device.read, phone.meta.stamps);
+    const site = makeSite(memory);
+    await firstSync(site.ctx, site.device.read, site.device.meta().stamps);
+    expect(site.device.meta().lastRev.progress).not.toBeNull();
+    for (const damage of [() => site.local.removeItem(SYNC_MIRROR_KEY), () => site.local.setItem(SYNC_MIRROR_KEY, '{"v":1,"settings":')]) {
+      damage();
+      // Without the mirror the record's revs mean nothing: forgotten, so the cycle pulls and merges first.
+      expect(site.device.meta().lastRev).toEqual({ settings: null, progress: null });
+      expect(site.device.meta().lastPushedHash).toEqual({ settings: null, progress: null });
+      now += 60_000;
+      webAnswer(site.web, ids[11], true, now);
+      const calls = memory.control.calls.length;
+      expect((await syncCycle(site.ctx)).kind).toBe('synced');
+      const mine = memory.control.calls.slice(calls);
+      expect(mine.indexOf('sync.pull')).toBeGreaterThanOrEqual(0);
+      expect(mine.indexOf('sync.pull')).toBeLessThan(mine.indexOf('sync.push'));
+      const acct = memory.control.snapshots(USER).progress!.state as { byCert: { cisa: Cert } };
+      expect(acct.byCert.cisa.gameBest).toEqual({ daylight: 9 });
+      expect(Object.keys(acct.byCert.cisa.answers ?? {})).toEqual(expect.arrayContaining([ids[0], ids[11]]));
+    }
+  });
+
   it('an older page that drops the mocks\' origin marker never duplicates a mock', async () => {
     const phone = makePhone(memory);
     phoneAnswer(phone, ids[0]);
@@ -252,7 +278,7 @@ describe('the website over REST (fake Supabase)', () => {
   const make = () => {
     web = fakeWeb();
     local = memoryStorage();
-    cloud = createWebCloud({ fetch: server.fetch, stores: { local, session: memoryStorage() }, random: seqRandom(), lock: pageLocks(), clock: { now: () => now }, gzip: env, host: web.host, bank: BANK, appVersion: LIVE, url: FAKE_URL, apiKey: FAKE_KEY, wait: async () => {} });
+    cloud = createWebCloud({ fetch: server.fetch, stores: { local, session: memoryStorage() }, random: seqRandom(), lock: pageLocks(), clock: { now: () => now }, gzip: env, host: web.host, bank: BANK, appVersion: LIVE, origin: 'https://kaisip.com', url: FAKE_URL, apiKey: FAKE_KEY, wait: async () => {} });
   };
   const signIn = async () => {
     await cloud.auth.sendEmailCode('maya@example.com');
@@ -262,6 +288,42 @@ describe('the website over REST (fake Supabase)', () => {
     now = T0;
     server = new FakeSupabase(() => now);
     make();
+  });
+
+  it('a shared computer keeps the sync record, the mirror and the undo copy in sessionStorage too (M2)', async () => {
+    const session = memoryStorage();
+    cloud = createWebCloud({ fetch: server.fetch, stores: { local, session }, random: seqRandom(), lock: pageLocks(), clock: { now: () => now }, gzip: env, host: web.host, bank: BANK, appVersion: LIVE, origin: 'https://kaisip.com', url: FAKE_URL, apiKey: FAKE_KEY, wait: async () => {} });
+    await cloud.auth.sendEmailCode('maya@example.com');
+    await cloud.auth.verifyEmailCode('maya@example.com', server.codes.get('maya@example.com')!, { shared: true });
+    await cloud.auth.acceptTerms({ termsVersion: TERMS_VERSION, ageConfirmed: true });
+    webAnswer(web, ids[0], true, now - 1000);
+    const prep = await cloud.prepareFirst();
+    if (!prep.ok) throw new Error('prep');
+    await cloud.confirmFirst(prep.prep, 'replace');
+    const syncKeys = [SYNC_META_KEY, SYNC_MIRROR_KEY, SYNC_UNDO_KEY];
+    for (const k of syncKeys) {
+      expect(session.getItem(k)).not.toBeNull();
+      expect(local.getItem(k)).toBeNull();
+    }
+    expect(cloud.device.meta().enabled).toBe(true);
+    // Forgetting (sign-out) clears both storages.
+    cloud.device.forget();
+    cloud.device.dropUndo();
+    for (const k of syncKeys) expect(session.getItem(k)).toBeNull();
+  });
+
+  it('pushes are stamped with the store versions passed in (the Play release\'s), not the engine\'s', async () => {
+    cloud = createWebCloud({ fetch: server.fetch, stores: { local, session: memoryStorage() }, random: seqRandom(), lock: pageLocks(), clock: { now: () => now }, gzip: env, host: web.host, bank: BANK, appVersion: LIVE, storeVersions: { progress: 2, settings: 1 }, origin: 'https://kaisip.com', url: FAKE_URL, apiKey: FAKE_KEY, wait: async () => {} });
+    const info = await signIn();
+    await cloud.auth.acceptTerms({ termsVersion: TERMS_VERSION, ageConfirmed: true });
+    webAnswer(web, ids[0], true, now - 1000);
+    const prep = await cloud.prepareFirst();
+    if (!prep.ok) throw new Error('prep');
+    await cloud.confirmFirst(prep.prep, 'merge');
+    expect(server.row(info.userId, 'progress')!.store_version).toBe(2);
+    expect(server.row(info.userId, 'settings')!.store_version).toBe(1);
+    expect(() => createWebCloud({ fetch: server.fetch, stores: { local, session: memoryStorage() }, random: seqRandom(), lock: pageLocks(), clock: { now: () => now }, gzip: env, host: web.host, bank: BANK, appVersion: LIVE, storeVersions: { progress: 0, settings: 1 }, origin: 'https://kaisip.com' })).toThrow();
+    expect(() => createWebCloud({ fetch: server.fetch, stores: { local, session: memoryStorage() }, random: seqRandom(), lock: pageLocks(), clock: { now: () => now }, gzip: env, host: web.host, bank: BANK, appVersion: LIVE, origin: 'https://kaisip.pages.dev' })).toThrow(/only on/);
   });
 
   it('only on https://kaisip.com', () => {

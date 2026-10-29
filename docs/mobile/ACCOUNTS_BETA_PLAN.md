@@ -255,7 +255,9 @@ Fallback (b'): self-host a pinned supabase-js UMD file in `assets/` with SRI (st
 
 ### 1.2 Where the session lives
 
-**Decision: localStorage, one new key `kaisip_auth_v1`** (refresh token, access token, expiry). Offer a **"This is a shared computer"** tick on the sign-in sheet; it uses sessionStorage instead, so the session dies with the tab. The PKCE verifier goes in sessionStorage, deleted after the exchange.
+**Decision: localStorage, one new key `kaisip_auth_v1`** (refresh token, access token, expiry). Offer a **"This is a shared computer"** tick on the sign-in sheet; it uses sessionStorage instead, so the session dies with the tab. On a shared computer the sync record, the account mirror and the undo copy (`kaisip_sync_v1`, `kaisip_sync_mirror_v1`, `kaisip_sync_undo_v1`) live in sessionStorage too. The PKCE verifier goes in sessionStorage, deleted after the exchange, and a Google sign-in older than 10 minutes is refused.
+
+**Accepted risk for the beta (security audit of 6f4469e):** a browser's "Duplicate tab" copies sessionStorage. A shared-computer session and its sync copies then live in both tabs until both close, and a PKCE verifier waiting for Google's answer exists twice (it is still single-use and expires after 10 minutes). Signing out in one tab ends that session on the server, so the other tab's copy stops working at its next refresh (within the hour).
 
 Why not memory only:
 - The learner would have to sign in with a code on every visit, which defeats sync.
@@ -324,6 +326,7 @@ The undo copy goes in `kaisip_sync_undo_v1` for 7 days if it fits in localStorag
 Rule:
 - The web writes `app_version` = the mobile `expo.version` the bundle was built from, and `store_version` = that engine's `PROGRESS_VERSION` / `SETTINGS_VERSION`.
 - The web engine **follows the Play release and never leads it**. Add `mobile/LIVE_VERSION` (one line, updated after each Play rollout). The bundle builder's `--check` fails if the bundle's version is newer than it.
+- *Built (ticket 3):* the store versions too. `mobile/LIVE_STORE_VERSIONS.json` records that Play release's `PROGRESS_VERSION` and `SETTINGS_VERSION`. The web stamps `store_version` from it. `--check` (and `scripts/verify_repo.sh`) fails when the engine's own versions are ahead of it, so a store-version bump waits for the Play rollout before the website bundle is rebuilt. Update both files together after each rollout.
 - A phone on a newer engine than the web makes the web pause with "Refresh the page"; a deploy fixes that within minutes.
 
 **Multi-tab:** run one sync cycle at a time with `navigator.locks.request('kaisip-sync')`. After a pull writes `cisa_profiles_v1`, other tabs must reload state on the `storage` event. Today they only cancel a pending save.

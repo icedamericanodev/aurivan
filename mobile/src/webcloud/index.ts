@@ -25,6 +25,7 @@ import { createWebAuth, type WebAuth } from './auth';
 import { streamGzip, type GzipPort, type StreamEnv } from './codec';
 import { ACCOUNT_ORIGIN, DEVICE_ID_KEY, SYNC_LOCK, WEB_CERT } from './config';
 import { createWebDevice, type WebDevice, type WebHost } from './device';
+import type { PerStore } from '../engine/syncMeta';
 import type { BrowserStores, ClockPort, FetchPort, LockPort, RandomPort, StoragePort } from './ports';
 import { createRestSync } from './rest';
 import type { WebBank } from './toWeb';
@@ -41,6 +42,16 @@ export interface WebCloudOptions {
   bank: WebBank;
   /** The app version pushes are stamped with (the bundle passes mobile/LIVE_VERSION). */
   appVersion: string;
+  /** The store versions pushes are stamped with (the bundle passes mobile/LIVE_STORE_VERSIONS.json). Missing: this engine's. */
+  storeVersions?: PerStore<number>;
+  /** The page's address (location.origin; the bundle fills it in). Accounts run only on https://kaisip.com. */
+  origin: string;
+  /**
+   * Tests and local development only: also allow http://localhost,
+   * http://127.0.0.1 and no address at all (Node). It can't open any other
+   * address, so it can't switch accounts on for a copy of the site elsewhere.
+   */
+  devOrigin?: boolean;
   /** How the cycle waits before retrying a conflict (default setTimeout). */
   wait?: (ms: number) => Promise<void>;
   /** Tests: a fake server's address and key. */
@@ -80,6 +91,41 @@ export function accountsAllowed(origin: string): boolean {
   return origin === ACCOUNT_ORIGIN;
 }
 
+/** The address check createWebCloud makes; `devOrigin` adds only local addresses (and none, for Node tests). */
+export function originAllowed(origin: string, devOrigin = false): boolean {
+  if (accountsAllowed(origin)) return true;
+  return devOrigin && (origin === '' || /^http:\/\/(localhost|127\.0\.0\.1)(:\d{1,5})?$/.test(origin));
+}
+
+/**
+ * Where the sync record, the mirror and the undo copy live: beside the
+ * session. On a shared computer (the session in sessionStorage) they go to
+ * sessionStorage too, so closing the tab leaves no study copy of the account
+ * behind; otherwise localStorage. Writing to one removes the other copy.
+ */
+export function syncStorage(stores: BrowserStores, shared: () => boolean): StoragePort {
+  const pick = () => (shared() ? { to: stores.session, other: stores.local } : { to: stores.local, other: stores.session });
+  const quietRemove = (s: StoragePort, k: string) => {
+    try {
+      s.removeItem(k);
+    } catch {
+      // storage blocked: nothing there
+    }
+  };
+  return {
+    getItem: (k) => pick().to.getItem(k),
+    setItem: (k, v) => {
+      const { to, other } = pick();
+      to.setItem(k, v);
+      quietRemove(other, k);
+    },
+    removeItem: (k) => {
+      quietRemove(stores.local, k);
+      quietRemove(stores.session, k);
+    },
+  };
+}
+
 /** This browser's install id: the saved one, or a new random one saved now. */
 export function webDeviceId(storage: StoragePort, random: RandomPort): string {
   const saved = storage.getItem(DEVICE_ID_KEY);
@@ -90,11 +136,14 @@ export function webDeviceId(storage: StoragePort, random: RandomPort): string {
 }
 
 export function createWebCloud(o: WebCloudOptions): WebCloud {
+  if (!originAllowed(o.origin, o.devOrigin)) throw new Error('KaiSipCloud: accounts run only on https://kaisip.com');
   if (!SEMVER.test(o.appVersion)) throw new Error('KaiSipCloud: appVersion must be x.y.z');
+  const sv = o.storeVersions;
+  if (sv && !(Number.isInteger(sv.progress) && sv.progress >= 1 && Number.isInteger(sv.settings) && sv.settings >= 1)) throw new Error('KaiSipCloud: storeVersions must be whole numbers');
   const gzip: GzipPort = 'gunzipCapped' in o.gzip ? o.gzip : streamGzip(o.gzip);
   const auth = createWebAuth({ fetch: o.fetch, stores: o.stores, random: o.random, lock: o.lock, clock: o.clock, url: o.url, apiKey: o.apiKey });
   const sync = createRestSync(auth, gzip);
-  const device = createWebDevice({ host: o.host, storage: o.stores.local, bank: o.bank, clock: o.clock });
+  const device = createWebDevice({ host: o.host, storage: syncStorage(o.stores, () => auth.sharedComputer()), bank: o.bank, clock: o.clock });
   const wait = o.wait ?? ((ms: number) => new Promise<void>((r) => setTimeout(r, ms)));
   const deviceId = async () => webDeviceId(o.stores.local, o.random);
   const signedInHash = () => {
@@ -108,6 +157,7 @@ export function createWebCloud(o: WebCloudOptions): WebCloud {
       device,
       deviceId,
       thisApp: o.appVersion,
+      storeVersions: o.storeVersions,
       now: () => o.clock.now(),
       knownCertIds: [WEB_CERT],
       wait,

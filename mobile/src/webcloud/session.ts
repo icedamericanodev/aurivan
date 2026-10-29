@@ -7,6 +7,11 @@
  * - When they tick "This is a shared computer", in sessionStorage instead
  *   (same key): closing the tab forgets the session.
  * - Only one copy ever exists: saving to one storage removes the other.
+ * - Accepted risk for the beta (ACCOUNTS_BETA_PLAN §1.2): a browser's
+ *   "Duplicate tab" copies sessionStorage, so a shared-computer session (and
+ *   its sync copy) then lives in both tabs until both are closed. Signing out
+ *   in one tab ends that session on the server, so the other tab's copy stops
+ *   working at its next refresh (within the hour).
  * - What is saved: the two tokens, when the access token expires, the
  *   account id and email (for the account screen), and nothing else.
  * - A damaged or odd-looking saved value reads as "signed out" and is

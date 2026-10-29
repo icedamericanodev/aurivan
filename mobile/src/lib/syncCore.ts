@@ -90,6 +90,12 @@ export interface CycleCtx {
   deviceId: () => Promise<string>;
   /** This app's version ("1.18.0"). */
   thisApp: string;
+  /**
+   * The store versions pushes are stamped with. Missing: this engine's own
+   * (the phone). The website passes the Play release's (mobile/LIVE_VERSION),
+   * so it never stamps a store version a Play phone can't read yet.
+   */
+  storeVersions?: PerStore<number>;
   now: () => number;
   knownCertIds: readonly string[];
   wait: (ms: number) => Promise<void>;
@@ -113,7 +119,8 @@ export type CycleResult =
 
 export type Sides = { settings: Side<SyncedSettings>; progress: Side<SyncedProgress> };
 
-const versionOf = (s: SyncStore) => (s === 'settings' ? SETTINGS_VERSION : PROGRESS_VERSION);
+/** The store version a push says it holds: the caller's (the website stamps the Play release's), else this engine's. */
+const versionOf = (s: SyncStore, ctx: Pick<CycleCtx, 'storeVersions'>) => ctx.storeVersions?.[s] ?? (s === 'settings' ? SETTINGS_VERSION : PROGRESS_VERSION);
 /** A side's fingerprint, as it would be pushed. */
 export const hashOf = (side: Side<object>) => fnv1a(stableStringify(toPayload(side)));
 const mctxOf = (ctx: Pick<CycleCtx, 'now' | 'knownCertIds'>): MergeContext => ({ now: ctx.now(), knownCertIds: ctx.knownCertIds });
@@ -325,7 +332,7 @@ export async function syncCycle(ctx: CycleCtx): Promise<CycleResult> {
       const expectedRev = remote[s] ? remoteRev[s] : (heads[s]?.rev ?? null);
       if (!alive()) return { kind: 'idle' };
       try {
-        const head = await ctx.port.push({ store: s, expectedRev, storeVersion: versionOf(s), appVersion: ctx.thisApp, deviceId: await ctx.deviceId(), state: payload });
+        const head = await ctx.port.push({ store: s, expectedRev, storeVersion: versionOf(s, ctx), appVersion: ctx.thisApp, deviceId: await ctx.deviceId(), state: payload });
         // Stopped while the push was on the wire (sync off, sign-out, remove, undo): record nothing.
         if (!alive()) return { kind: 'idle' };
         const m = dev.meta();

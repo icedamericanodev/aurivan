@@ -50,6 +50,8 @@ export type FunctionName = 'delete-account' | 'export-my-data';
 const FUNCTIONS: ReadonlySet<string> = new Set<FunctionName>(['delete-account', 'export-my-data']);
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const CODE_RE = /^\d{6,10}$/;
+/** How long a Google sign-in may take, from leaving for Google to coming back. */
+export const PKCE_MAX_AGE_MS = 10 * 60_000;
 const KNOWN_PROVIDERS: readonly Provider[] = ['email', 'google', 'apple'];
 
 export interface WebAuth {
@@ -155,6 +157,11 @@ export function createWebAuth(deps: WebAuthDeps): WebAuth {
       if (adopted && cur.expiresAt - now() > REFRESH_MARGIN_MS) return cur;
       const shared = store.shared();
       const r = await send('/auth/v1/token?grant_type=refresh_token', { method: 'POST', body: JSON.stringify({ refresh_token: cur.refreshToken }) });
+      // Read once more after the network: a sign-out (or a browser without locks, another tab)
+      // may have changed the saved session while the refresh was on the wire. Never write over that.
+      const after = store.read();
+      if (!after) throw new CloudError('unauthorized');
+      if (after.refreshToken !== cur.refreshToken) return after;
       if (!ok(r)) {
         const e = fail('refresh', r);
         // Spent or revoked: the session is over here. Offline or a server problem: keep it for later.
@@ -166,6 +173,15 @@ export function createWebAuth(deps: WebAuthDeps): WebAuth {
       save({ ...next, email: next.email ?? cur.email, providers: next.providers.length ? next.providers : cur.providers }, shared);
       return store.read() ?? next;
     });
+
+  /**
+   * Forget the session, inside the lock, so a refresh running in another tab
+   * (which holds the lock until it has saved) can't put it back afterwards.
+   */
+  const clearLocked = async () => {
+    store.clear(); // at once, for this page
+    await deps.lock.request(AUTH_LOCK, async () => store.clear());
+  };
 
   const accessToken = async (): Promise<string> => {
     const s = store.read();
@@ -216,6 +232,8 @@ export function createWebAuth(deps: WebAuthDeps): WebAuth {
     googleSignInUrl(opts) {
       const verifier = makeVerifier(deps.random);
       // This tab only (never localStorage): the code is useless without it, and it dies with the tab.
+      // Accepted for the beta: a browser's "Duplicate tab" copies sessionStorage, so a copy of the
+      // verifier exists there too until either tab finishes (one use; 10 minutes at most).
       deps.stores.session.setItem(PKCE_KEY, JSON.stringify({ verifier, shared: Boolean(opts?.shared), at: now() }));
       const q = [
         ['provider', 'google'],
@@ -229,7 +247,7 @@ export function createWebAuth(deps: WebAuthDeps): WebAuth {
     },
 
     async finishGoogleSignIn(code) {
-      let saved: { verifier?: unknown; shared?: unknown } = {};
+      let saved: { verifier?: unknown; shared?: unknown; at?: unknown } = {};
       try {
         saved = bodyObject(deps.stores.session.getItem(PKCE_KEY) ?? '');
       } finally {
@@ -241,6 +259,9 @@ export function createWebAuth(deps: WebAuthDeps): WebAuth {
         }
       }
       if (!isVerifier(saved.verifier)) throw new CloudError('invalid', undefined, 'oauth');
+      // A sign-in started more than 10 minutes ago (or "in the future": a changed clock) is not finished.
+      const startedAt = typeof saved.at === 'number' ? saved.at : NaN;
+      if (!(now() - startedAt <= PKCE_MAX_AGE_MS && startedAt - now() <= 60_000)) throw new CloudError('invalid', undefined, 'oauth');
       if (typeof code !== 'string' || !/^[A-Za-z0-9._~-]{8,512}$/.test(code)) throw new CloudError('invalid', undefined, 'oauth');
       const r = await send('/auth/v1/token?grant_type=pkce', { method: 'POST', body: JSON.stringify({ auth_code: code, code_verifier: saved.verifier }) });
       if (!ok(r)) throw fail('pkce', r);
@@ -272,11 +293,11 @@ export function createWebAuth(deps: WebAuthDeps): WebAuth {
           // An expired or revoked token: the server has nothing left to end. Forget it here too.
           if (e.code !== 'unauthorized') throw e;
         }
-        store.clear();
+        await clearLocked();
         return;
       }
       // This browser: forget it FIRST, then tell the server (best effort).
-      store.clear();
+      await clearLocked();
       await send('/auth/v1/logout?scope=local', { method: 'POST', headers: { authorization: `Bearer ${s.accessToken}` } });
     },
 
@@ -296,7 +317,7 @@ export function createWebAuth(deps: WebAuthDeps): WebAuth {
       const res = await authedFetch(`/functions/v1/${name}`, { method: 'POST', body: JSON.stringify(body) }, 'function');
       const text = await res.text();
       if (res.status < 200 || res.status >= 300) throw toCloudError('function', res.status, text, res);
-      if (name === 'delete-account') store.clear(); // the account is gone: nothing to keep signed in to
+      if (name === 'delete-account') await clearLocked(); // the account is gone: nothing to keep signed in to
       return text;
     },
 
