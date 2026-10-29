@@ -410,8 +410,9 @@ export const motion = {
    * outside the 1.2 s ceiling (it claims the session's one moment instead).
    * One linear clock runs 0 → total on the UI thread (engine/turnTimeline.ts):
    * - gather [from, to]: the glow gathers, the old form inhales (`inhale`) and fills with light;
-   * - swaps: each half-swap of the alternating silhouettes. An odd count, so it
-   *   ends on the new form; none shorter than `swapFloor` (200 ms: ≤ 2.5 flashes
+   * - swaps: the alternation's half-swaps. An odd count, so it ends on the new
+   *   form. Shipped at an even pace (turnLook.evenPace: each is their mean, ~265 ms);
+   *   the listed lengths are the earlier speeding-up pacing. None shorter than `swapFloor` (200 ms: ≤ 2.5 flashes
    *   a second on any pixel, WCAG 2.3.1 allows 3). `cross`: the share of each half-swap spent changing;
    * - bloom: the light lifts off the new form, which settles (`settle`, a duration spring);
    * - nameAt: the form's name fades in under the learning fact (shown from 0);
@@ -440,8 +441,12 @@ export const motion = {
  * The Turning's light (mobile 1.50, DESIGN_SYSTEM §8.10): warm gold on paper,
  * never white on dark and never saturated red. Decorative (the words carry
  * the moment).
- * - sil: the flat light the forms become while they take turns ('paper');
- *   silGold: the owner's alternative (badge gold, darker than the glow);
+ * - silGold (shipped, the owner's pick, 29 Oct 2026): the flat gold the
+ *   forms become while they take turns. Light: deep gold, darker than the
+ *   glow (2.3:1 on paper, 2.0:1 on the glow's brightest centre); dark: badge
+ *   gold, brighter than the glow (11:1 on the page, 2.2:1 on the glow's peak),
+ *   so the shape never melts into the light it stands in;
+ *   sil: the earlier paper light (kept for turnLook.sil 'paper');
  * - glow: the gathered light behind the crown: three circles at `glowOps`,
  *   or, with `glowStops` ([offset, opacity] pairs), one soft radial wash
  *   (dark: three stacked circles read as steps there, review O5).
@@ -454,10 +459,10 @@ export interface TurnTone {
   glowStops?: readonly (readonly [number, number])[];
 }
 export const turnTone: { light: TurnTone; dark: TurnTone } = {
-  light: { sil: '#FFFCF2', silGold: '#E9C46A', glow: '#F6E2A6', glowOps: [0.6, 0.72, 0.9] },
+  light: { sil: '#FFFCF2', silGold: '#C99A3A', glow: '#F6E2A6', glowOps: [0.6, 0.72, 0.9] },
   dark: {
     sil: '#D8CCA6',
-    silGold: '#C99A3A',
+    silGold: '#E9C46A',
     glow: '#E9C46A',
     glowOps: [0.24, 0.29, 0.36],
     glowStops: [
@@ -470,12 +475,15 @@ export const turnTone: { light: TurnTone; dark: TurnTone } = {
   },
 };
 /**
- * The Turning's look, as ONE switch per choice (owner decision E1 pending,
- * 29 Oct 2026): `sil` 'paper' (shipped) or 'gold' (the forms take turns in
- * badge gold); `evenPace` false (shipped: the half-swaps speed up) or true
- * (every half-swap the same length, the same total). Flip a value to apply the pick.
+ * The Turning's look (owner decision E1, option A, 29 Oct 2026): the forms
+ * take turns in GOLD (`turnTone.silGold`), at an EVEN pace (every half-swap
+ * the same length, the same total). Why: a white shape flashing faster and
+ * faster on a coloured field is a well-known game's transformation; a gold
+ * shape changing at a steady, calm pace is Grove's own (gold is the plant's
+ * Form IV light and the badges' metal). The earlier look stays one switch
+ * away ('paper', false) and is not shipped.
  */
-export const turnLook: { sil: 'paper' | 'gold'; evenPace: boolean } = { sil: 'paper', evenPace: false };
+export const turnLook: { sil: 'paper' | 'gold'; evenPace: boolean } = { sil: 'gold', evenPace: true };
 /**
  * The Turning's motes, per theme [light, dark] (components/plant/turnSignatures.ts):
  * each species' own seeds, petals and pollen. Decorative, small and short-lived.

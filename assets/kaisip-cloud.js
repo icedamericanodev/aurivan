@@ -8630,10 +8630,10 @@ exports.motion = {
     pressOpacity: 0.92,
 };
 exports.turnTone = {
-    light: { sil: '#FFFCF2', silGold: '#E9C46A', glow: '#F6E2A6', glowOps: [0.6, 0.72, 0.9] },
+    light: { sil: '#FFFCF2', silGold: '#C99A3A', glow: '#F6E2A6', glowOps: [0.6, 0.72, 0.9] },
     dark: {
         sil: '#D8CCA6',
-        silGold: '#C99A3A',
+        silGold: '#E9C46A',
         glow: '#E9C46A',
         glowOps: [0.24, 0.29, 0.36],
         glowStops: [
@@ -8645,7 +8645,7 @@ exports.turnTone = {
         ],
     },
 };
-exports.turnLook = { sil: 'paper', evenPace: false };
+exports.turnLook = { sil: 'gold', evenPace: true };
 exports.turnMote = {
     pollen: ['#E7C76B', '#F2DA92'],
     speck: ['#E3C890', '#D2B57A'],
@@ -10476,7 +10476,7 @@ function decodeUtf8(bytes) {
   var api = {};
   api["browser"] = load("src/webcloud/browser.ts");
   api["config"] = load("src/webcloud/config.ts");
-  api.sourceHash = "68e426ab575e981d";
+  api.sourceHash = "676e30c9b4e14d00";
   var cloud = load("src/webcloud/index.ts");
   var liveVersion = "1.48.0";
   var liveStoreVersions = {"progress":2,"settings":1};

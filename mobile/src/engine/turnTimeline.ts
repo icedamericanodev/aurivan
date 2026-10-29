@@ -4,7 +4,7 @@
  *
  * Plain English for the founder:
  * - The plant gathers warm light, its old and new shapes take turns in that
- *   light (slowly, then faster), the light lifts off and the new form is
+ *   light in gold, at an even, calm pace; the light lifts off and the new form is
  *   simply there. The learning fact is on screen from the first frame; the
  *   form's name settles in under it at the end.
  * - Three sizes by how far the plant came: small (Form I → II, 2.4 s),
@@ -61,8 +61,9 @@ export function tierOf(toGrowth: number): TurnTier {
 }
 
 /**
- * The tier's timings. `even` (the owner's E1 option, theme/tokens.ts turnLook):
- * every half-swap the same length, the alternation's total unchanged.
+ * The tier's timings. `even` (shipped, the owner's E1 pick, theme/tokens.ts
+ * turnLook): every half-swap the same length, the alternation's total
+ * unchanged. `even: false` is the earlier speeding-up pacing (the swaps token).
  */
 export function phases(tier: TurnTier, { even = turnLook.evenPace }: { even?: boolean } = {}): TurnPhases {
   const T = motion.turn[tier];

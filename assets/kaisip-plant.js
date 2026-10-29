@@ -11036,10 +11036,10 @@ exports.motion = {
     pressOpacity: 0.92,
 };
 exports.turnTone = {
-    light: { sil: '#FFFCF2', silGold: '#E9C46A', glow: '#F6E2A6', glowOps: [0.6, 0.72, 0.9] },
+    light: { sil: '#FFFCF2', silGold: '#C99A3A', glow: '#F6E2A6', glowOps: [0.6, 0.72, 0.9] },
     dark: {
         sil: '#D8CCA6',
-        silGold: '#C99A3A',
+        silGold: '#E9C46A',
         glow: '#E9C46A',
         glowOps: [0.24, 0.29, 0.36],
         glowStops: [
@@ -11051,7 +11051,7 @@ exports.turnTone = {
         ],
     },
 };
-exports.turnLook = { sil: 'paper', evenPace: false };
+exports.turnLook = { sil: 'gold', evenPace: true };
 exports.turnMote = {
     pollen: ['#E7C76B', '#F2DA92'],
     speck: ['#E3C890', '#D2B57A'],
@@ -11417,6 +11417,6 @@ exports.fieldInk = {
   api["domainBand"] = load("src/engine/domainBand.ts");
   api["pace"] = load("src/engine/pace.ts");
   api["readySigns"] = load("src/engine/readySigns.ts");
-  api.sourceHash = "60a0865fdd70ca8d";
+  api.sourceHash = "5c83a54972e60613";
   root.KaiSipPlant = Object.freeze(api);
 })(typeof window !== 'undefined' ? window : globalThis);

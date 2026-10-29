@@ -10,7 +10,7 @@
  *   readiness words beside the form.
  * - Full motion (engine/turnTimeline.ts; 2.4 s, 3.0 s or 3.6 s by how far
  *   the plant came): the plant gathers warm light and inhales on its base;
- *   its old and new shapes take turns in that light, slowly then faster; the
+ *   its old and new shapes take turns in it, in gold, at an even pace; the
  *   light lifts off and the new form settles; the species' own seeds or
  *   petals rise past it; at Form IV its ring draws itself once. Then the
  *   form's name ("The Whip Oak") settles in under the fact. One success
@@ -214,7 +214,7 @@ export function FormReveal({
     ) : (
       elOf(glowNode, 'gl')
     );
-    // The owner's E1 switch (theme/tokens.ts turnLook): paper light, or badge gold.
+    // The owner's pick (theme/tokens.ts turnLook, E1 option A): the forms take turns in gold.
     const sil = turnLook.sil === 'gold' ? tone.silGold : tone.sil;
     const sameBack = sameLayer(o.back, n.back);
     const sameFront = sameLayer(o.front, n.front);

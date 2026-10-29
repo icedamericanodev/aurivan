@@ -17,7 +17,7 @@ import { PLANT_SPECIES } from '../engine/plant';
 import { events, flashTimes, frame, frameReduced, glowAt, maxFlashesPerPixel, maxFlashesPerSecond, newSilOp, oldSilOp, phases, tierOf, type TurnTier } from '../engine/turnTimeline';
 import fs from 'fs';
 import path from 'path';
-import { motion } from '../theme/tokens';
+import { dark, light, motion, turnLook, turnTone } from '../theme/tokens';
 
 const TIERS: TurnTier[] = ['small', 'medium', 'grand'];
 
@@ -50,7 +50,9 @@ describe('the timeline', () => {
       for (const d of P.swaps) expect(d).toBeGreaterThanOrEqual(motion.turn.swapFloor);
       expect(maxFlashesPerSecond(P)).toBeLessThanOrEqual(2.5);
     }
-    expect(TIERS.map((t) => maxFlashesPerSecond(phases(t)))).toEqual([2, 2.5, 2.5]);
+    // Shipped at an even pace (the owner's pick): 2 a second in every tier; the earlier speeding-up pacing peaked at 2.5.
+    expect(TIERS.map((t) => maxFlashesPerSecond(phases(t)))).toEqual([2, 2, 2]);
+    expect(TIERS.map((t) => maxFlashesPerSecond(phases(t, { even: false })))).toEqual([2, 2.5, 2.5]);
   });
 
   it('per pixel too (review P5): no pixel class (old only, new only, both, the glow) changes more than 2.5 times a second; the floor is 200 ms', () => {
@@ -67,7 +69,38 @@ describe('the timeline', () => {
       }
   });
 
-  it('the owner’s even-pace option (one switch): every half-swap the same length, the same total and bloom', () => {
+  it('shipped look (owner decision E1, option A): gold, at an even pace', () => {
+    expect(turnLook).toEqual({ sil: 'gold', evenPace: true });
+    for (const tier of TIERS) {
+      const P = phases(tier);
+      expect(new Set(P.swaps).size).toBe(1);
+      expect(maxFlashesPerPixel(P)).toBeLessThanOrEqual(2.5);
+    }
+  });
+
+  it('the gold reads in both themes: apart from the page, and apart from the glow where the canopy passes through it', () => {
+    const lin = (v: number) => (v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4);
+    const lum = (h: string) => {
+      const [r, g, b] = [1, 3, 5].map((i) => lin(parseInt(h.slice(i, i + 2), 16) / 255));
+      return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+    };
+    const ratio = (a: string, b: string) => (Math.max(lum(a), lum(b)) + 0.05) / (Math.min(lum(a), lum(b)) + 0.05);
+    const over = (base: string, top: string, a: number) =>
+      '#' + [1, 3, 5].map((i) => Math.round(parseInt(base.slice(i, i + 2), 16) * (1 - a) + parseInt(top.slice(i, i + 2), 16) * a).toString(16).padStart(2, '0')).join('');
+    for (const [theme, page] of [
+      ['light', light.bg],
+      ['dark', dark.bg],
+    ] as const) {
+      const T = turnTone[theme];
+      // The glow's brightest point: every circle (or the wash's centre) at the grand tier's full layer opacity.
+      let peak: string = page;
+      for (const o of T.glowStops ? [T.glowStops[0][1]] : T.glowOps) peak = over(peak, T.glow, o);
+      expect([theme, 'page', ratio(T.silGold, page) >= 2]).toEqual([theme, 'page', true]);
+      expect([theme, 'glow', ratio(T.silGold, peak) >= 1.9]).toEqual([theme, 'glow', true]);
+    }
+  });
+
+  it('the earlier even-pace switch: every half-swap the same length, the same total and bloom', () => {
     for (const tier of TIERS) {
       const a = phases(tier, { even: false });
       const b = phases(tier, { even: true });
