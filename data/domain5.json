@@ -1242,7 +1242,7 @@
       "correct": "B",
       "key_concept": "Every service account needs an accountable owner who confirms its purpose and scope, which makes recertification and retirement possible.",
       "pre_read": "Notice which control is already working and which is missing. Ask who could decide whether an account is still needed.",
-      "correct_explanation": "Credential handling is already controlled; the gap is accountability. Without an owner, nobody can confirm what each account does, how much access it needs, or when it should be retired, so recertification and decommissioning cannot happen. Disabling the accounts at once looks decisive, but with no one knowing their purpose it risks breaking production systems that depend on them.",
+      "correct_explanation": "Credential handling is already controlled; the gap is accountability. Without an owner, nobody can confirm what each account does, how much access it needs, or when it should be retired, so recertification and decommissioning cannot happen. Disabling the accounts would remove them as targets, but with no one knowing their purpose it risks breaking production systems that depend on them.",
       "wrong_explanations": {
         "A": "Credentials are already vaulted and rotated. A shorter interval adds little while the real gap, that nobody is accountable for the accounts, remains.",
         "C": "Disabling would be right for accounts known to be unneeded, but CISO sign-off cannot supply that knowledge; only an owner can confirm purpose before removal.",
@@ -3231,7 +3231,7 @@
       "correct": "B",
       "key_concept": "Every API needs an accountable owner and must pass through the gateway's controls; unmanaged APIs are a leading API security risk.",
       "pre_read": "Notice the forty APIs bypass the gateway. Ask which option brings them under control without guessing what they serve.",
-      "correct_explanation": "Unlisted APIs bypass the gateway's authentication, rate limiting and logging, and nobody is accountable for them. Assigning owners and bringing them under the gateway restores control while keeping legitimate integrations working. Shutting all forty down today is decisive, but without knowing who uses them it may break partner or mobile services; the owner should decide what to retire.",
+      "correct_explanation": "Unlisted APIs bypass the gateway's authentication, rate limiting and logging, and nobody is accountable for them. Assigning owners and bringing them under the gateway restores control while keeping legitimate integrations working. Shutting all forty down would close the bypass, but without knowing who uses them it may break partner or mobile services; the owner should decide what to retire.",
       "wrong_explanations": {
         "A": "An auditor would agree shutdown ends the exposure. Unknown assets, though, are brought under control before anyone decides their fate.",
         "C": "A scan finds known flaws but leaves the forty APIs outside the gateway's authentication, rate limiting and logging, with nobody accountable.",
@@ -3684,7 +3684,7 @@
       "correct": "C",
       "key_concept": "Contain a container escape by isolating the pod and its node, which stops lateral movement and preserves forensic evidence.",
       "pre_read": "Notice the escape may reach the node. Ask which action stops spread to the other pods without destroying evidence.",
-      "correct_explanation": "An escape means the attacker may already control the node, so the priority is stopping movement to the 47 other pods. Network-isolating the pod and its node contains the threat while preserving evidence for investigation. Deleting the pod looks decisive, but it destroys forensic state and leaves the compromised node running, and the replica may be scheduled straight back onto it.",
+      "correct_explanation": "An escape means the attacker may already control the node, so the priority is stopping movement to the 47 other pods. Network-isolating the pod and its node contains the threat while preserving evidence for investigation. Deleting the pod removes the running escape process, but it destroys forensic state and leaves the compromised node running, and the replica may be scheduled straight back onto it.",
       "wrong_explanations": {
         "A": "Replacing a bad pod with a replica is normal Kubernetes recovery. After an escape, contain and preserve before any rebuild.",
         "B": "Notification may be needed later, once scope is known; announcing exposure before containment lets the attack keep spreading.",
@@ -4290,7 +4290,7 @@
       "correct": "C",
       "key_concept": "Recovering data held in an individual's personal accounts runs through counsel and legal process, not self-help or unverified promises.",
       "pre_read": "Notice where the files now sit. Ask who has lawful means to get them back.",
-      "correct_explanation": "Data in a personal cloud account is outside the firm's control, so recovery runs through counsel, using legal demands or court orders that compel return or deletion under supervision. A signed deletion statement is quick and common, but it cannot be verified and gives the firm no means to confirm the files are gone.",
+      "correct_explanation": "Data in a personal cloud account is outside the firm's control, so recovery runs through counsel, using legal demands or court orders that compel return or deletion under supervision. A signed deletion statement is common practice, but it cannot be verified and gives the firm no means to confirm the files are gone.",
       "wrong_explanations": {
         "A": "Signed deletion certificates are right for cooperative parties like exiting vendors. An adverse party's promise is no evidence; legal process compels proof.",
         "B": "Blocking the site stops office access to the service but recovers nothing; the files already sit in the researcher's personal account.",
@@ -5829,7 +5829,7 @@
       "correct": "C",
       "key_concept": "Before choosing a consolidated security platform, inventory what each existing SOC detects, so the choice does not silently drop coverage.",
       "pre_read": "Notice the five-week window. Ask what must be known before a platform choice can be defended to the board.",
-      "correct_explanation": "Each SOC holds detection rules and runbooks built for its environment, and choosing a platform blind risks dropping coverage for one estate. Inventorying both rule sets first lets management compare platforms on what they must detect, which fits within the five-week window. Picking the larger SOC's platform is decisive, but size says nothing about which detections would be lost.",
+      "correct_explanation": "Each SOC holds detection rules and runbooks built for its environment, and choosing a platform blind risks dropping coverage for one estate. Inventorying both rule sets first lets management compare platforms on what they must detect, which fits within the five-week window. Picking the larger SOC's platform keeps most analysts on familiar tools, but size says nothing about which detections would be lost.",
       "wrong_explanations": {
         "A": "The larger platform may prove right, as it carries most load. Still, decisions wait for the evidence that should drive them.",
         "B": "Outsourcing is a major strategic choice made without analysis; it does not answer which detections must be preserved.",
@@ -6542,7 +6542,7 @@
       "correct": "D",
       "key_concept": "When an incident triggers several regulators, map every notification duty and deadline and run the notifications in parallel.",
       "pre_read": "Notice the nine different deadlines. Ask whether they run one after another or all at once.",
-      "correct_explanation": "Each regulator's clock runs independently, so a single sequence or a delay puts later deadlines at risk. Mapping every obligation and running notifications in parallel, coordinated by counsel for consistent facts, meets each deadline. Handling the strictest regulator first looks like sensible prioritization, but working one regulator at a time can still let the other deadlines lapse.",
+      "correct_explanation": "Each regulator's clock runs independently, so a single sequence or a delay puts later deadlines at risk. Mapping every obligation and running notifications in parallel, coordinated by counsel for consistent facts, meets each deadline. Handling the strictest regulator before the others is a familiar triage method, but working one regulator at a time can still let the other deadlines lapse.",
       "wrong_explanations": {
         "A": "Notifying one regulator does not satisfy the others. Each has its own legal duty and deadline.",
         "B": "Regulatory clocks keep running during the investigation. Initial notices with known facts can be followed by updates.",
@@ -6845,7 +6845,7 @@
       "correct": "B",
       "key_concept": "Preserve before you analyze: take a hashed forensic image and keep chain of custody so evidence stays admissible.",
       "pre_read": "Notice the words legal action. Ask which option keeps the evidence provably unchanged.",
-      "correct_explanation": "Evidence for legal action must be shown to be unaltered. Capturing a forensic image and recording its hash before analysis preserves the original state and lets later findings be verified against it. Scanning the live server seems a quick way to learn what happened, but it changes files and timestamps and may destroy the integrity that makes the evidence admissible.",
+      "correct_explanation": "Evidence for legal action must be shown to be unaltered. Capturing a forensic image and recording its hash before analysis preserves the original state and lets later findings be verified against it. Scanning the live server is standard malware triage on ordinary systems, but it changes files and timestamps and may destroy the integrity that makes the evidence admissible.",
       "wrong_explanations": {
         "A": "Chain of custody must be recorded from the moment evidence is collected. Recording it afterwards leaves gaps a court may reject.",
         "C": "Evidence is preserved before it is examined. An antivirus scan would name the malware, but analysis always works on copies, never the original.",
@@ -7109,7 +7109,7 @@
       "correct": "C",
       "key_concept": "After a merger, harmonize severity definitions and escalation first, so one incident triggers one consistent response and notification decision.",
       "pre_read": "Notice the risk is inconsistent escalation of the same breach. Ask which step fixes that while respecting both companies' obligations.",
-      "correct_explanation": "Different severity scales mean the same breach could trigger different escalation and regulatory notification decisions. Agreeing one severity scale and escalation path closes that gap quickly and gives a base for merging playbooks in phases and testing them. Imposing the acquirer's plan sounds decisive, but on day one it can drop the acquired company's regulators, contacts and contractual notice duties.",
+      "correct_explanation": "Different severity scales mean the same breach could trigger different escalation and regulatory notification decisions. Agreeing one severity scale and escalation path closes that gap quickly and gives a base for merging playbooks in phases and testing them. Imposing the acquirer's plan gives one tested process, but on day one it can drop the acquired company's regulators, contacts and contractual notice duties.",
       "wrong_explanations": {
         "A": "Waiting for formal integration approval leaves the inconsistency in place, so a shared incident could still be escalated and reported two ways.",
         "B": "The acquirer's plan is a sensible end state once the acquired firm's duties are mapped. Until then, integrate in stages, not by decree.",
@@ -7374,7 +7374,7 @@
       "correct": "A",
       "key_concept": "In a suspected insider case without active harm, preserve evidence covertly under legal direction first; confronting early invites evidence destruction.",
       "pre_read": "Notice there is no active exfiltration. Ask what an early confrontation would cost when evidence has not yet been secured.",
-      "correct_explanation": "With no active exfiltration, the main risk is that the suspect learns of the investigation and destroys evidence. Quietly preserving logs and device data under legal and HR direction, within privacy law, secures the case before any action. Suspending access is decisive and right when data is actively leaving, but here it tips off the suspect before evidence is preserved.",
+      "correct_explanation": "With no active exfiltration, the main risk is that the suspect learns of the investigation and destroys evidence. Quietly preserving logs and device data under legal and HR direction, within privacy law, secures the case before any action. Suspending access is the right containment when data is actively leaving, but here it tips off the suspect before evidence is preserved.",
       "wrong_explanations": {
         "B": "Suspension is a familiar insider-case containment tool, but overt steps warn a suspect: with no loss under way, covert work precedes visible action.",
         "C": "Interviewing first tips off the suspect, who may delete evidence or speed up any theft before data is preserved.",
@@ -7939,7 +7939,7 @@
       "correct": "B",
       "key_concept": "After containment, capture forensic evidence before recovery actions such as reimaging overwrite it.",
       "pre_read": "Notice the update server is already blocked. Ask what the next step, reimaging, will destroy.",
-      "correct_explanation": "The spread is contained and reimaging is about to begin. Reimaging destroys the evidence needed to confirm how the update was compromised, what the malware did and whether other systems are affected, so images must be captured first. Notifying the insurer is time-sensitive, but it can run in parallel, and nothing is lost for good if it comes an hour later.",
+      "correct_explanation": "The spread is contained and reimaging is about to begin. Reimaging destroys the evidence needed to confirm how the update was compromised, what the malware did and whether other systems are affected, so images must be captured first. Notifying the insurer protects coverage, but it can run in parallel, and nothing is lost for good if it comes an hour later.",
       "wrong_explanations": {
         "A": "Wiper malware destroys data rather than encrypting it for ransom, so paying would not bring back the disks and raises sanctions risk.",
         "C": "An auditor would check that insurer notice meets the policy's terms. A step that overwrites systems should wait until what it erases is captured.",
@@ -8396,7 +8396,7 @@
       "correct": "B",
       "key_concept": "Before retiring an insecure protocol within a set deadline, measure who still depends on it so the cutover can be staged safely.",
       "pre_read": "Notice the six-month window and the unknown partner usage. Ask what must be known before choosing a cutover date.",
-      "correct_explanation": "With six months available, the first step is to measure which partners still connect using the old versions. That evidence shows who must be contacted, supports a realistic staged cutover and avoids breaking critical connections. Disabling both versions now is decisive, but without knowing who depends on them it can break partner services that a planned migration inside the deadline would protect.",
+      "correct_explanation": "With six months available, the first step is to measure which partners still connect using the old versions. That evidence shows who must be contacted, supports a realistic staged cutover and avoids breaking critical connections. Disabling both versions now removes the weak protocols, but without knowing who depends on them it can break partner services that a planned migration inside the deadline would protect.",
       "wrong_explanations": {
         "A": "Switching off both versions does reach the goal itself. With six months left, though, measure impact before changing what others depend on.",
         "C": "Deprecated protocols have known weaknesses. Keeping them indefinitely misses the deadline and leaves the exposure in place.",
@@ -9551,7 +9551,7 @@
       "correct": "B",
       "key_concept": "Before restoring after ransomware, confirm the backups are clean and complete; a tainted backup brings the attacker straight back.",
       "pre_read": "Notice nobody has checked the backups for months. Ask what happens if you restore from a copy the attacker reached.",
-      "correct_explanation": "Attackers often reach network-connected backups, and these have not been checked in eight months. Verifying which copies are intact, recent and isolated shows what can be safely restored and whether paying is even a question. Restoring the fastest network backup and validating along the way feels efficient, but if that copy is tainted it reinfects the systems as they come back.",
+      "correct_explanation": "Attackers often reach network-connected backups, and these have not been checked in eight months. Verifying which copies are intact, recent and isolated shows what can be safely restored and whether paying is even a question. Restoring a network backup and validating along the way gets services back, but if that copy is tainted it reinfects the systems as they come back.",
       "wrong_explanations": {
         "A": "A payment decision needs to know whether clean backups exist; estimating rebuild time first skips the input that decides it.",
         "C": "Cloud backups reachable through stolen credentials or sync can be encrypted or deleted too; they need the same verification as any other copy.",
@@ -9590,7 +9590,7 @@
       "correct": "D",
       "key_concept": "With active theft and planned legal action, stop the transfer and capture volatile evidence together; neither should wait for the other.",
       "pre_read": "Notice that data is leaving now and evidence will be needed in court. Ask which action serves both needs.",
-      "correct_explanation": "Data is leaving now, so the transfer must stop at once, and planned legal action means volatile evidence such as memory and network connections must be kept. Network isolation stops the transfer while the machine stays on for live capture. Pulling the power stops it just as fast, but it destroys the memory evidence the legal case will need.",
+      "correct_explanation": "Data is leaving now, so the transfer must stop at once, and planned legal action means volatile evidence such as memory and network connections must be kept. Network isolation stops the transfer while the machine stays on for live capture. Pulling the power also ends the transfer, but it destroys the memory evidence the legal case will need.",
       "wrong_explanations": {
         "A": "Allowing more theft for intelligence is not justified when isolation can stop it now while evidence is captured.",
         "B": "Reimaging without capture destroys all evidence before the legal case and gives no view of what was taken.",
