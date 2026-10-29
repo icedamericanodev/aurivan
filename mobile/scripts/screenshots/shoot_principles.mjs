@@ -51,17 +51,16 @@ await open('/principles/CONTAIN-FIRST'); await snap('p04-legacy-id');
 await open('/principles/fit-method-to-objective'); await snap('p05-fit-method-top');
 await page.mouse.wheel(0, 20000); await page.waitForTimeout(700); await snap('p05b-fit-method-practice');
 // Mobile 1.31: an answered question (the seed's first sample, a miss on the runner-up)
-// and its "Read the principle" row under Read the note, scrolled into view.
+// and its "Read the principle" row. Since mobile 1.49 the row lives in the ⋯ "More on
+// this question" sheet in the session header, under Read the note.
 const keys = (seed.__shotKeys || 'A').split(',');
 await open('/session');
 await page.getByLabel(new RegExp(`^Option ${keys[0]}:`)).first().click();
 await page.getByText('Check answer', { exact: true }).click();
 await page.waitForTimeout(1500);
-const row = page.getByLabel(/^Read the principle: /).first();
-await row.scrollIntoViewIfNeeded();
-const rbox = await row.boundingBox();
-if (rbox) { await page.mouse.move(196, 400); await page.mouse.wheel(0, rbox.y - 420); }
-await page.waitForTimeout(800);
+await page.getByRole('button', { name: 'More on this question' }).click();
+await page.waitForTimeout(900);
+await page.getByLabel(/^Read the principle: /).first().waitFor();
 await snap('p06-answer-principle-row');
 console.log('errors:', errs.slice(0, 5));
 await browser.close();
