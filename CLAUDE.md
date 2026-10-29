@@ -229,6 +229,8 @@ Fix-and-push is automatic; only major issues are escalated.
    - mobile behaviour → `mobile-qa-tester`
    - question content → `qa-question-tester` (blind) and `cisa-d{N}-standards-auditor`
    - web UI → `cisa-ux-reviewer`
+   - every merge to main and every phone build → `smoke-tester` (walks the
+     key learner paths on web and phone; harness in `scripts/smoke/`)
 3. Fix every finding the reviewers mark blocking, plus plainly correct nits.
    Re-run the local gates (`npm run check`, the linters, `scripts/verify_repo.sh`).
    Push. Repeat until reviews and CI are clean.
