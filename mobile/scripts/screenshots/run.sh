@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Screenshot harness: web-export the app, seed demo data, capture key screens.
-# Usage (from mobile/): [SHOTS=m149|m146|m145|m144|m143|m142|m141|guides|principles|qnote|today|firstdays|notes|data|pace|practice|milestones|support|paths|motion|growth|badges|badgesC|stats|learnplay|plant|fit|proof|settings|cloud|store] bash scripts/screenshots/run.sh [out_dir] [dark|light]
+# Usage (from mobile/): [SHOTS=forms|m149|m146|m145|m144|m143|m142|m141|guides|principles|qnote|today|firstdays|notes|data|pace|practice|milestones|support|paths|motion|growth|badges|badgesC|stats|learnplay|plant|fit|proof|settings|cloud|store] bash scripts/screenshots/run.sh [out_dir] [dark|light]
 # Needs Playwright (preinstalled in Claude cloud sessions; locally: npx playwright install chromium).
 set -euo pipefail
 cd "$(dirname "$0")/../.."
@@ -154,6 +154,10 @@ elif [ "${SHOTS:-}" = plant ]; then
   if [ "${PLANT:-}" != 4b ] && [ "${PLANT:-}" != 140 ]; then node scripts/screenshots/shoot_plant.mjs "$TMP/seed.json" "$OUT" "$THEME"; fi
   if [ "${PLANT:-}" != 140 ]; then node scripts/screenshots/shoot_plant4b.mjs "$TMP/seed.json" "$OUT" "$THEME"; fi
   if [ "${PLANT:-}" != 4b ]; then node scripts/screenshots/shoot_plant140.mjs "$TMP/seed.json" "$OUT" "$THEME"; fi
+elif [ "${SHOTS:-}" = forms ]; then
+  # Mobile 1.50 plant forms: Your plant at each form for three species, a Form IV flavour,
+  # Look's final-form choice, the quiet note, and frame strips of the reveal (shoot_forms.mjs).
+  node scripts/screenshots/shoot_forms.mjs "$TMP/seed.json" "$OUT" "$THEME"
 elif [ "${SHOTS:-}" = fit ]; then
   # Mobile 1.15 "Fit the plan": onboarding's Step 1 and Step 2 of 2, Today (a new learner's
   # day 1, a 10-minute day, the Exam-focused mini mock, the "Fit your plan"

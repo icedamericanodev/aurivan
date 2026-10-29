@@ -339,13 +339,13 @@ describe('Look › Style', () => {
     // A new plant is botanical: on its own (no visitor) until the learner picks one.
     expect(option('botanical').props.accessibilityState).toMatchObject({ checked: true });
     expect(option('no-visitor').props.accessibilityState).toMatchObject({ checked: true });
-    expect(previewLabel()).toMatch(/^Preview: Kai, your oak, botanical style\. Growth: Bough, 4 of 6\./);
+    expect(previewLabel()).toMatch(/^Preview: Kai, your oak, botanical style\. Standard Oak form\. Growth: Bough, 4 of 6\./);
   });
 
   it('the label names the style after the whole name, even a name with a full stop in it (UX review P2)', () => {
     setPlant(plantNewToday('oak', 'J. Kai', Date.now(), 4));
     mount(<PlantLook />);
-    expect(previewLabel()).toMatch(/^Preview: J\. Kai, your oak, botanical style\. Growth: Bough, 4 of 6\./);
+    expect(previewLabel()).toMatch(/^Preview: J\. Kai, your oak, botanical style\. Standard Oak form\. Growth: Bough, 4 of 6\./);
   });
 
   it('a tap saves the style for this plant, and the preview and its label follow', () => {

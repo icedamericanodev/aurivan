@@ -122,6 +122,7 @@ import { useJourney } from '../../lib/useJourney';
 import { checkPlant, growQuietly, seeGrowth, usePlantView } from '../../lib/plant';
 import { markReacted } from '../../components/plant/LivePlant';
 import { grewLabel, growthBefore, plantCallName, type GrowthLevel } from '../../engine/plant';
+import { crossesForm, SEE_NEW_FORM } from '../../engine/plantForms';
 import { dayKey } from '../../engine/streak';
 import { useReports } from '../../lib/useReports';
 import { useProgress } from '../../store/progress';
@@ -300,7 +301,9 @@ export default function Today() {
   // no second haptic); Your plant says it in a calm line next time.
   const quietly = !!pending && showReady;
   // Set during render (React's pattern for state that follows the store).
-  if (pending && plantView.plant && !quietly && grown?.growth !== pending) setGrown({ growth: pending, line: grewLabel(plantView.plant, pending) });
+  // Mobile 1.50: when it grew into a new form, the line says where to see it (the reveal plays on Your plant, never here).
+  if (pending && plantView.plant && !quietly && grown?.growth !== pending)
+    setGrown({ growth: pending, line: `${grewLabel(plantView.plant, pending)}${plantView.forms && crossesForm(growthBefore(plantView.plant, pending), pending) ? ` ${SEE_NEW_FORM}` : ''}` });
   useEffect(() => {
     if (!pending || !focused) return;
     if (quietly) growQuietly(cert, pending);

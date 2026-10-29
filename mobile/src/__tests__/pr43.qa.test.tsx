@@ -259,7 +259,7 @@ describe('J1 a new learner and the plant', () => {
 
     mount(<Today />);
     expect(byTestID('today-plant')).toHaveLength(1);
-    expect(byTestID('today-plant')[0].props.accessibilityLabel).toBe('Summit Lee, your pine. Growth: Seed, 1 of 6.');
+    expect(byTestID('today-plant')[0].props.accessibilityLabel).toBe('Summit Lee, your pine. Starburst Pine form. Growth: Seed, 1 of 6.');
     expect(byTestID('plant-prompt')).toHaveLength(0);
     expect(byTestID('plant-grew')).toHaveLength(0); // planting is not a "grew" moment
     unmount();
@@ -377,7 +377,8 @@ describe('J2 an existing 1.12 save upgrading', () => {
     expect(byTestID('today-plant')).toHaveLength(1);
     unmount();
     mount(<YourPlant />);
-    expect(allText()).toMatch(/Your study so far grew .+ to Sprout\./);
+    // Mobile 1.50: with its form's name ("…to Sprout: the Kernel Mango.").
+    expect(allText()).toMatch(/Your study so far grew .+ to Sprout: the .+ Mango\./);
   });
 });
 

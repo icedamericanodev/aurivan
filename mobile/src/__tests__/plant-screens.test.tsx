@@ -299,7 +299,7 @@ describe('Your plant', () => {
       plantFor('cisa', 'oak', 'Kai');
     });
     mount(<YourPlant />);
-    expect(allText()).toMatch(/Your study so far grew Kai to Sprout\./);
+    expect(allText()).toMatch(/Your study so far grew Kai to Sprout(: the [^.]+)?\./);
     expect(cp().plant!.backfill!.seen).toBe(true);
     act(() => {
       r!.unmount();
