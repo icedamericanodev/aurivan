@@ -106,7 +106,7 @@
         "Final two: D beats C because logging only gives accountability when each identity belongs to one person; detailed logs of a shared login still name nobody.",
         "Exam cue: when logs cannot name who acted, look for unique accounts first. Accounting records actions; accountability also needs one person per identity."
       ],
-      "framework_ref": "NIST SP 800-53 Rev. 5 IA-2 (Identification and Authentication (Organizational Users)) and AU-2 (Event Logging)",
+      "framework_ref": "NIST SP 800-53 Rev. 5 IA-2 (Identification and Authentication (Organizational Users)); NIST SP 800-53 Rev. 5 AU-2 (Event Logging)",
       "related_concepts": [
         "Authentication, authorization and accounting (AAA)",
         "Shared accounts",
@@ -125,8 +125,8 @@
       "options": {
         "A": "Whether the stored transcripts will be encrypted while at rest",
         "B": "Whether that much personal data is needed, and for how long",
-        "C": "Whether the chatbot has rate limits that prevent it being overloaded",
-        "D": "Whether each chatbot action is logged under its own named account"
+        "C": "Whether rate limits stop the chatbot from being overloaded",
+        "D": "Whether each chatbot action is logged under a named account"
       },
       "correct": "B",
       "key_concept": "Privacy by design limits personal data to what the purpose needs and sets how long it is kept, before adding safeguards.",
@@ -142,13 +142,13 @@
         "Final two: B beats A because privacy first asks whether data should be collected and kept; encryption only protects data that perhaps should not exist.",
         "Exam cue: when a design keeps personal data 'just in case', think data minimization and retention limits before any technical safeguard."
       ],
-      "framework_ref": "NIST SP 800-53 Rev. 5 SA-8(33) (Minimization) and SI-12(1) (Limit Personally Identifiable Information Elements)",
+      "framework_ref": "NIST SP 800-53 Rev. 5 SA-8(33) (Security and Privacy Engineering Principles | Minimization); NIST SP 800-53 Rev. 5 SI-12(1) (Information Management and Retention | Limit Personally Identifiable Information Elements)",
       "related_concepts": [
         "Privacy by design",
         "Data minimization",
         "AI training data"
       ],
-      "_provenance": "Authored from concept: notes 1.1.8 Privacy and Personal Data (data minimization, retention, exam trap 'if personal data is encrypted, privacy is taken care of') and 1.1.9 AI and the Core Security Concepts (personal data in training data). Original city council chatbot scenario written for KaiSip; no ISC2 training, CBK or prep-bank text used. CC pilot batch, Oct 2026. Review fixes 28 Oct 2026 (blind test and standards audit): calibrated cues, teaching fields and pre_read.",
+      "_provenance": "Authored from concept: notes 1.1.8 Privacy and Personal Data (data minimization, retention, exam trap 'if personal data is encrypted, privacy is taken care of') and 1.1.9 AI and the Core Security Concepts (personal data in training data). Original city council chatbot scenario written for KaiSip; no ISC2 training, CBK or prep-bank text used. CC pilot batch, Oct 2026. Review fixes 28 Oct 2026 (blind test and standards audit): calibrated cues, teaching fields and pre_read. Audit fix 29 Oct 2026: distractor wording shortened so the key is not always out-worded.",
       "style_version": 2
     },
     {
@@ -178,7 +178,7 @@
         "Final two: B beats A because a patch fixes the weakness; the attackers, the threat, still exist and may try another route.",
         "Exam cue: you rarely control threats. Controls such as patching shrink vulnerabilities or impact, and that is how risk goes down."
       ],
-      "framework_ref": "NIST SP 800-30 Rev. 1 Section 2.3.1 (Risk Models: threats, vulnerabilities, likelihood and impact); NIST CSF 2.0 ID.RA-01 and ID.RA-03",
+      "framework_ref": "NIST SP 800-30 Rev. 1 Section 2.3.1 (Risk Models: threats, vulnerabilities, likelihood and impact); NIST CSF 2.0 ID.RA-01 (vulnerabilities in assets are identified, validated and recorded); NIST CSF 2.0 ID.RA-03 (internal and external threats to the organization are identified and recorded)",
       "related_concepts": [
         "Threat",
         "Vulnerability",
@@ -195,8 +195,8 @@
       "bloom_level": "Application",
       "question": "A parent portal's residual risk, owned by the school district's IT director, is within tolerance, and the project lead asks a security analyst to sign the acceptance. What should the analyst do FIRST?",
       "options": {
-        "A": "Sign the acceptance, then send a copy to the risk owner",
-        "B": "Hold the launch until the residual risk has been fully removed",
+        "A": "Sign the acceptance and copy the risk owner",
+        "B": "Hold the launch until the residual risk is gone",
         "C": "Document the risk and route the acceptance to the risk owner",
         "D": "Escalate the acceptance to the school board for sign-off"
       },
@@ -214,13 +214,13 @@
         "Final two: C beats A because only the risk owner may accept the risk; copying the owner after signing still leaves the analyst making the decision.",
         "Exam cue: when asked to accept or sign off a risk, document it and route it to the risk owner; tolerance decides whether that owner or senior leadership signs."
       ],
-      "framework_ref": "ISO/IEC 27001:2022 Clause 6.1.3 f) (risk owners approve the risk treatment plan and accept residual risk); NIST CSF 2.0 GV.RM-02",
+      "framework_ref": "ISO/IEC 27001:2022 Clause 6.1.3 f) (risk owners approve the risk treatment plan and accept residual risk); NIST CSF 2.0 GV.RM-02 (risk appetite and risk tolerance statements are established, communicated and maintained)",
       "related_concepts": [
         "Residual risk",
         "Risk owner",
         "Risk tolerance"
       ],
-      "_provenance": "Authored from concept: notes 1.2.6 Risk Appetite, Tolerance and Acceptance (practitioners never accept risk; within tolerance the risk owner accepts, above it senior management decides). Original school district parent portal scenario written for KaiSip; no ISC2 training, CBK or prep-bank text used. CC pilot batch, Oct 2026. Review fixes 28 Oct 2026 (blind test and standards audit): calibrated cues, teaching fields and pre_read.",
+      "_provenance": "Authored from concept: notes 1.2.6 Risk Appetite, Tolerance and Acceptance (practitioners never accept risk; within tolerance the risk owner accepts, above it senior management decides). Original school district parent portal scenario written for KaiSip; no ISC2 training, CBK or prep-bank text used. CC pilot batch, Oct 2026. Review fixes 28 Oct 2026 (blind test and standards audit): calibrated cues, teaching fields and pre_read. Audit fix 29 Oct 2026: distractor wording shortened so the key is not always out-worded.",
       "style_version": 2
     },
     {
@@ -234,7 +234,7 @@
         "A": "Yearly loss averages $3,000, so protection costs more than it saves",
         "B": "One flood would cost $15,000, so protection is clearly worthwhile",
         "C": "The server is worth $60,000, so protection is clearly worthwhile",
-        "D": "Protection costs too much, so the analyst can accept the risk"
+        "D": "Protection costs too much, so the analyst accepts the risk"
       },
       "correct": "A",
       "key_concept": "Annualized loss expectancy (ALE) is single loss expectancy (SLE) times the annualized rate of occurrence (ARO); compare it with a control's yearly cost.",
@@ -256,7 +256,7 @@
         "Annualized rate of occurrence",
         "Cost-benefit analysis"
       ],
-      "_provenance": "Authored from concept: notes 1.2.4 Qualitative and Quantitative Analysis (AV, EF, SLE, ARO, ALE worked steps; a control pays off when its yearly cost is below the drop in ALE) and 1.2.6 (the risk owner decides). Original figures and scenario written for KaiSip; no ISC2 training, CBK or prep-bank text used. CC pilot batch, Oct 2026. Audit fix 28 Oct 2026: SP 800-30 Rev. 1 does not use the SLE, ARO or ALE terms; it is cited only for quantitative assessment supporting cost-benefit analysis, and the formula comes from notes 1.2.4. Review fixes 28 Oct 2026 (blind test and standards audit): calibrated cues, teaching fields and pre_read.",
+      "_provenance": "Authored from concept: notes 1.2.4 Qualitative and Quantitative Analysis (AV, EF, SLE, ARO, ALE worked steps; a control pays off when its yearly cost is below the drop in ALE) and 1.2.6 (the risk owner decides). Original figures and scenario written for KaiSip; no ISC2 training, CBK or prep-bank text used. CC pilot batch, Oct 2026. Audit fix 28 Oct 2026: SP 800-30 Rev. 1 does not use the SLE, ARO or ALE terms; it is cited only for quantitative assessment supporting cost-benefit analysis, and the formula comes from notes 1.2.4. Review fixes 28 Oct 2026 (blind test and standards audit): calibrated cues, teaching fields and pre_read. Audit fix 29 Oct 2026: distractor wording shortened so the key is not always out-worded.",
       "style_version": 2
     },
     {
@@ -286,7 +286,7 @@
         "Final two: D beats A because transfer moves some financial impact to the insurer; accountability for patient data stays with the group.",
         "Exam cue: insurance and outsourcing can move costs or work, but not accountability. The organization still answers to customers and regulators."
       ],
-      "framework_ref": "NIST SP 800-53 Rev. 5 RA-7 (Risk Response); NIST CSF 2.0 ID.RA-06",
+      "framework_ref": "NIST SP 800-53 Rev. 5 RA-7 (Risk Response); NIST CSF 2.0 ID.RA-06 (risk responses are chosen, prioritized, planned, tracked and communicated)",
       "related_concepts": [
         "Risk treatment options",
         "Cyber insurance",
@@ -359,7 +359,7 @@
         "Final two: C beats D because exceptions are a normal, controlled part of policy; the policy owner decides, while the analyst routes and records.",
         "Exam cue: when someone asks you to bypass a policy, neither comply nor flatly refuse; send it through the exception process to the policy owner."
       ],
-      "framework_ref": "NIST CSF 2.0 GV.PO-01 (cybersecurity policy is established, communicated and enforced) and ID.RA-07 (changes and exceptions are managed, assessed for risk impact, recorded and tracked)",
+      "framework_ref": "NIST CSF 2.0 GV.PO-01 (cybersecurity policy is established, communicated and enforced); NIST CSF 2.0 ID.RA-07 (changes and exceptions are managed, assessed for risk impact, recorded and tracked)",
       "related_concepts": [
         "Policy exception",
         "Policy owner",
@@ -395,7 +395,7 @@
         "Final two: B beats A because only ISO/IEC 27001 offers certification by an accredited body; the CSF is voluntary and a self-assessment is not independent.",
         "Exam cue: certified, independent proof of security management points to ISO/IEC 27001. CSF describes posture; CIS Controls give a starting list."
       ],
-      "framework_ref": "ISO/IEC 27001:2022 (Information security management systems: Requirements); NIST CSWP 29, The NIST Cybersecurity Framework (CSF) 2.0, Section 1 (CSF Overview); CIS Critical Security Controls v8.1 (Implementation Groups)",
+      "framework_ref": "ISO/IEC 27001:2022 (Information security management systems: Requirements); NIST CSF 2.0 Section 1 (CSF Overview); CIS Controls v8.1 (Implementation Groups)",
       "related_concepts": [
         "Information security management system (ISMS)",
         "Certification",
@@ -414,7 +414,7 @@
       "options": {
         "A": "Refer the pilot to the privacy officer and legal counsel for review",
         "B": "Get the vendor's written confirmation that the tool meets privacy law",
-        "C": "Let the pilot proceed with doctors checking every summary the tool writes",
+        "C": "Let the pilot run with doctors checking every summary",
         "D": "Encrypt the patient notes so privacy law no longer applies"
       },
       "correct": "A",
@@ -437,7 +437,7 @@
         "Privacy law",
         "Legal counsel"
       ],
-      "_provenance": "Authored from concept: notes 1.3.6 Laws and Rules That Apply to AI (privacy law still covers personal data in prompts, training data and outputs) and 1.3.2 Laws and Regulations (never interpret the law alone; bring in legal counsel). Original hospital summarizer scenario written for KaiSip; no ISC2 training, CBK or prep-bank text used. CC pilot batch, Oct 2026. Review fixes 28 Oct 2026 (blind test and standards audit): calibrated cues, teaching fields and pre_read.",
+      "_provenance": "Authored from concept: notes 1.3.6 Laws and Rules That Apply to AI (privacy law still covers personal data in prompts, training data and outputs) and 1.3.2 Laws and Regulations (never interpret the law alone; bring in legal counsel). Original hospital summarizer scenario written for KaiSip; no ISC2 training, CBK or prep-bank text used. CC pilot batch, Oct 2026. Review fixes 28 Oct 2026 (blind test and standards audit): calibrated cues, teaching fields and pre_read. Audit fix 29 Oct 2026: distractor wording shortened so the key is not always out-worded.",
       "style_version": 2
     },
     {
@@ -503,7 +503,7 @@
         "Final two: D beats A because a lock prevents entry, while a camera deters and records but cannot physically stop an intruder.",
         "Exam cue: first name the function that is missing (prevent, detect, correct or deter), then pick the control that performs that function."
       ],
-      "framework_ref": "NIST SP 800-53 Rev. 5 PE-3 (Physical Access Control) and PE-6 (Monitoring Physical Access)",
+      "framework_ref": "NIST SP 800-53 Rev. 5 PE-3 (Physical Access Control); NIST SP 800-53 Rev. 5 PE-6 (Monitoring Physical Access)",
       "related_concepts": [
         "Control functions",
         "Preventive vs detective",
@@ -539,7 +539,7 @@
         "Final two: B beats D because compensating controls come first to lower the risk; the risk owner then accepts only what remains.",
         "Exam cue: when a required control cannot be used, look for a compensating control through the exception process before anyone accepts the risk."
       ],
-      "framework_ref": "NIST SP 800-53 Rev. 5 Appendix A Glossary (compensating controls) and PE-3 (Physical Access Control); NIST CSF 2.0 ID.RA-07",
+      "framework_ref": "NIST SP 800-53 Rev. 5 Appendix A Glossary (compensating controls); NIST SP 800-53 Rev. 5 PE-3 (Physical Access Control); NIST CSF 2.0 ID.RA-07 (changes and exceptions are managed, assessed for risk impact, recorded and tracked)",
       "related_concepts": [
         "Compensating control",
         "Policy exception",
