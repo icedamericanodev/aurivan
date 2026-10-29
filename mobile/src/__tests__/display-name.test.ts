@@ -330,6 +330,7 @@ describe('the name stays on the phone', () => {
       'components/displayName.tsx', // the text field
       'engine/backup.ts', // the learner's own backup file
       'engine/displayName.ts', // the one rule
+      'engine/fieldGuide.ts', // mobile 1.51: Today's countdown title, "Maya, 38 days to go" (the greeting's place; cleans the name again)
       'engine/studyProfile.ts', // mobile 1.44: the profile block's words (cleans the name again)
       'engine/syncMerge.ts', // listed as device-only
       'engine/webImport.ts', // mobile 1.44: the website file's name, read as hostile text, add-only

@@ -193,6 +193,39 @@ export interface MedallionProps {
   strike?: Strike;
 }
 
+/**
+ * Field Guide (mobile 1.51, DESIGN_SYSTEM.md §21): a badge's real emblem ALONE, with no frame,
+ * drawn in the colours given (a pressed specimen's faded inks, or one tone for "not yet").
+ * Same art and ids as the medallion (`emblemId`), so only the frame changes. At 40pt and under,
+ * the compact cut (no fine lattice). Decorative: the specimen around it carries the label.
+ */
+export const EmblemArt = memo(function EmblemArt({
+  badge,
+  tier,
+  emblem: emblemKey,
+  palette,
+  size,
+  opacity = 1,
+}: {
+  badge: string;
+  tier?: number;
+  emblem?: string;
+  palette: Record<string, string>;
+  size: number;
+  opacity?: number;
+}) {
+  const id = emblemId(badge, tier || undefined, emblemKey);
+  const eid = EMBLEMS[id] ? id : 'first-foothold';
+  const nodes = size <= 40 ? compactEmblem(eid, EMBLEMS[eid]) : EMBLEMS[eid];
+  return (
+    <View accessible={false} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden style={{ width: size, height: size, opacity }}>
+      <Svg width={size} height={size} viewBox="0 0 100 100">
+        {drawEmblem(nodes, palette, 'f')}
+      </Svg>
+    </View>
+  );
+});
+
 /** The rim for a tier: Clay, Lichen, Gold leaf; a one-mark badge's calm sage. */
 export const metalFor = (tier: number): BadgeMetal => (tier >= 1 && tier <= 3 ? badgeMetal[tier as 1 | 2 | 3] : badgeStruck);
 

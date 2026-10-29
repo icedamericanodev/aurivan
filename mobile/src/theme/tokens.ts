@@ -885,3 +885,79 @@ export const plantForm: { light: PlantFormTone; dark: PlantFormTone } = {
     wire: '#E9A07A',
   },
 };
+
+/**
+ * Field Guide (mobile 1.51, DESIGN_SYSTEM.md §21; the owner's signature
+ * presentation, 29 Oct 2026). Grove's palette and fonts are unchanged: these
+ * are the grammar's own type cuts and the few derived inks its art needs.
+ * Every screen is a plate in a guide to the learner's own study.
+ *
+ * Type (components/fieldguide/ only, through `FieldText`):
+ * - head: the running head, label keys and kickers (Figtree 600 11/14, tracked, caps);
+ * - fig: "Fig. 5 · Five areas, one scale", status words, italic captions (Fraunces italic 14/20);
+ * - sub: the italic line under a title (Fraunces italic 16/22);
+ * - value: a label row's value and a sheet's name (Fraunces 500 22/26);
+ * - name: a specimen's name (Figtree 600 13/17);
+ * - small: a specimen's date, a stem's name (Figtree 500 12/16);
+ * - chart: the numeral above a stem (Fraunces 500 18/22);
+ * - keyNo: a key list's number and a sheet's number (Fraunces italic 16/22);
+ * - tiny / figSm: a stem's name and status word under the chart (Figtree 500 11/14,
+ *   Fraunces italic 12/16). Only inside the chart, which hands over to its list
+ *   (StemList, at full size) from ×1.3 text, so they cap at ×1.3.
+ */
+export type FieldVariant = 'head' | 'fig' | 'sub' | 'value' | 'name' | 'small' | 'chart' | 'keyNo' | 'tiny' | 'figSm';
+export const fieldType: Record<FieldVariant, TextStyle> = {
+  head: { fontFamily: font.sans600, fontSize: 11, lineHeight: 14, letterSpacing: 1, textTransform: 'uppercase' },
+  fig: { fontFamily: font.serif400Italic, fontSize: 14, lineHeight: 20 },
+  sub: { fontFamily: font.serif400Italic, fontSize: 16, lineHeight: 22 },
+  value: { fontFamily: font.serif500, fontSize: 22, lineHeight: 26, letterSpacing: -0.3 },
+  name: { fontFamily: font.sans600, fontSize: 13, lineHeight: 17 },
+  small: { fontFamily: font.sans500, fontSize: 12, lineHeight: 16 },
+  chart: { fontFamily: font.serif500, fontSize: 18, lineHeight: 22, letterSpacing: -0.3 },
+  keyNo: { fontFamily: font.serif400Italic, fontSize: 16, lineHeight: 22 },
+  tiny: { fontFamily: font.sans500, fontSize: 11, lineHeight: 14 },
+  figSm: { fontFamily: font.serif400Italic, fontSize: 12, lineHeight: 16 },
+};
+/** How far each cut grows with the phone's text size: words to ×2, numerals ×1.3 (as `maxScale`). */
+export const fieldMaxScale: Record<FieldVariant, number> = { head: 2, fig: 2, sub: 2, value: 1.3, name: 2, small: 2, chart: 1.3, keyNo: 1.3, tiny: 1.3, figSm: 1.3 };
+
+/**
+ * The plate's measures (board grammar-1): a double hairline mount (the outer
+ * `line` edge, 6pt of `raised2`, the inner `line` edge), no shadow, no radius;
+ * a specimen label is `raised` with a 3pt corner; the Field Guide button is
+ * 52 tall with 12pt corners (forest stays on the primary button only).
+ */
+export const plate = { mount: 6, labelRadius: 3, button: 52, buttonRadius: 12, chart: 264 } as const;
+
+/**
+ * The guide's derived inks (DESIGN_SYSTEM.md §21.3). Fixed per theme, never
+ * meaning on their own (every mark has its words):
+ * - stem / leaf / seed: the area stems' botanical ink, leaf fill and seed
+ *   (stem 8.0:1 on light `raised2`, 7.4:1 on dark; graphics need 3:1);
+ * - tape: the paper tape on a pressed specimen (light `soft` warmed, at 75%);
+ * - pressed: a badge's real emblem in faded botanical inks (roles E1…K, as
+ *   badgeEnamel; K is the plate's own paper). Decorative: the label says it.
+ */
+export interface FieldInk {
+  stem: string;
+  leaf: string;
+  seed: string;
+  tape: string;
+  pressed: Record<'E1' | 'E2' | 'E3' | 'D2' | 'D3' | 'L3' | 'K', string>;
+}
+export const fieldInk: { light: FieldInk; dark: FieldInk } = {
+  light: {
+    stem: '#5B4B3C',
+    leaf: '#CFE5D5',
+    seed: '#E9D9C4',
+    tape: 'rgba(214,205,182,0.75)',
+    pressed: { E1: '#A3C8AD', E2: '#447A57', E3: '#24603F', D2: '#3B6A4E', D3: '#1E4A34', L3: '#E1ECE2', K: light.raised2 },
+  },
+  dark: {
+    stem: '#B9A894',
+    leaf: dark.forestTrack,
+    seed: '#4A3E33',
+    tape: 'rgba(120,112,92,0.55)',
+    pressed: { E1: '#3C6B51', E2: '#7FC39C', E3: '#A9D9BA', D2: '#5E9C78', D3: '#C9E6D2', L3: dark.forestTrack, K: dark.raised2 },
+  },
+};

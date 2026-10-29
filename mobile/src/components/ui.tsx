@@ -56,6 +56,7 @@ import {
   motion,
   numeralUnit,
   percentSup,
+  plate,
   radius,
   raisedShadow,
   serifNumeral,
@@ -403,7 +404,13 @@ export function Button({
   expanded,
   ref,
   follow,
+  shape = 'pill',
 }: {
+  /**
+   * Mobile 1.51 (Field Guide, spec §21): `plate` = 52 tall with 12pt corners, the guide's
+   * button (Today, You, Results and the herbarium). Other screens keep the 56 pill until they move.
+   */
+  shape?: 'pill' | 'plate';
   /** For moving screen-reader focus here (lib/a11y.ts moveFocus). */
   ref?: Ref<View>;
   /** A button that shows or hides something under it (a menu): spoken as expanded / collapsed. */
@@ -454,6 +461,7 @@ export function Button({
       onPressOut={press.onPressOut}
       style={[
         isForest ? styles.buttonForest : isGhost ? styles.buttonGhost : styles.button,
+        shape === 'plate' && !isGhost && styles.buttonPlate,
         { backgroundColor: look.bg, borderColor: look.border },
         style,
         press.style,
@@ -1590,6 +1598,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  // Field Guide (mobile 1.51): 52 tall, 12pt corners (tokens.ts `plate`).
+  buttonPlate: { minHeight: plate.button, borderRadius: plate.buttonRadius },
   buttonGhost: {
     minHeight: 48, // 48pt touch target (was 44)
     borderWidth: 0,

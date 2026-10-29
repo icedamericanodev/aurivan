@@ -10835,7 +10835,7 @@ function inOrderSession(topics, walk, cursor, count, answers, rng) {
   defs["src/theme/tokens.ts"] = function (module, exports, require) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.plantForm = exports.plantLine = exports.plantTheme = exports.plantArt = exports.plantLeaf = exports.badgeGlaze = exports.badgeLeafPip = exports.badgeStruck = exports.badgeMetal = exports.cardInk = exports.badgeEnamel = exports.motion = exports.LARGE_TEXT = exports.grewLine = exports.statWord = exports.cardType = exports.statUnit = exports.numeralUnit = exports.badgeLetter = exports.optionText = exports.maxScale = exports.stemLong = exports.STEM_LONG_CHARS = exports.type = exports.font = exports.radius = exports.space = exports.domainPalette = exports.raisedShadow = exports.cardShadow = exports.darkCardTopLight = exports.forestHighlight = exports.grainOp = exports.scrimOp = exports.pillarGlyph = exports.kaisip = exports.dark = exports.light = void 0;
+exports.fieldInk = exports.plate = exports.fieldMaxScale = exports.fieldType = exports.plantForm = exports.plantLine = exports.plantTheme = exports.plantArt = exports.plantLeaf = exports.badgeGlaze = exports.badgeLeafPip = exports.badgeStruck = exports.badgeMetal = exports.cardInk = exports.badgeEnamel = exports.motion = exports.LARGE_TEXT = exports.grewLine = exports.statWord = exports.cardType = exports.statUnit = exports.numeralUnit = exports.badgeLetter = exports.optionText = exports.maxScale = exports.stemLong = exports.STEM_LONG_CHARS = exports.type = exports.font = exports.radius = exports.space = exports.domainPalette = exports.raisedShadow = exports.cardShadow = exports.darkCardTopLight = exports.forestHighlight = exports.grainOp = exports.scrimOp = exports.pillarGlyph = exports.kaisip = exports.dark = exports.light = void 0;
 exports.serifNumeral = serifNumeral;
 exports.percentSup = percentSup;
 exports.light = {
@@ -11306,6 +11306,36 @@ exports.plantForm = {
         wire: '#E9A07A',
     },
 };
+exports.fieldType = {
+    head: { fontFamily: exports.font.sans600, fontSize: 11, lineHeight: 14, letterSpacing: 1, textTransform: 'uppercase' },
+    fig: { fontFamily: exports.font.serif400Italic, fontSize: 14, lineHeight: 20 },
+    sub: { fontFamily: exports.font.serif400Italic, fontSize: 16, lineHeight: 22 },
+    value: { fontFamily: exports.font.serif500, fontSize: 22, lineHeight: 26, letterSpacing: -0.3 },
+    name: { fontFamily: exports.font.sans600, fontSize: 13, lineHeight: 17 },
+    small: { fontFamily: exports.font.sans500, fontSize: 12, lineHeight: 16 },
+    chart: { fontFamily: exports.font.serif500, fontSize: 18, lineHeight: 22, letterSpacing: -0.3 },
+    keyNo: { fontFamily: exports.font.serif400Italic, fontSize: 16, lineHeight: 22 },
+    tiny: { fontFamily: exports.font.sans500, fontSize: 11, lineHeight: 14 },
+    figSm: { fontFamily: exports.font.serif400Italic, fontSize: 12, lineHeight: 16 },
+};
+exports.fieldMaxScale = { head: 2, fig: 2, sub: 2, value: 1.3, name: 2, small: 2, chart: 1.3, keyNo: 1.3, tiny: 1.3, figSm: 1.3 };
+exports.plate = { mount: 6, labelRadius: 3, button: 52, buttonRadius: 12, chart: 264 };
+exports.fieldInk = {
+    light: {
+        stem: '#5B4B3C',
+        leaf: '#CFE5D5',
+        seed: '#E9D9C4',
+        tape: 'rgba(214,205,182,0.75)',
+        pressed: { E1: '#A3C8AD', E2: '#447A57', E3: '#24603F', D2: '#3B6A4E', D3: '#1E4A34', L3: '#E1ECE2', K: exports.light.raised2 },
+    },
+    dark: {
+        stem: '#B9A894',
+        leaf: exports.dark.forestTrack,
+        seed: '#4A3E33',
+        tape: 'rgba(120,112,92,0.55)',
+        pressed: { E1: '#3C6B51', E2: '#7FC39C', E3: '#A9D9BA', D2: '#5E9C78', D3: '#C9E6D2', L3: exports.dark.forestTrack, K: exports.dark.raised2 },
+    },
+};
   };
   var cache = {};
   function load(id) {
@@ -11334,6 +11364,6 @@ exports.plantForm = {
   api["domainBand"] = load("src/engine/domainBand.ts");
   api["pace"] = load("src/engine/pace.ts");
   api["readySigns"] = load("src/engine/readySigns.ts");
-  api.sourceHash = "6ae0d7c3762f154a";
+  api.sourceHash = "6d279682a767b41c";
   root.KaiSipPlant = Object.freeze(api);
 })(typeof window !== 'undefined' ? window : globalThis);

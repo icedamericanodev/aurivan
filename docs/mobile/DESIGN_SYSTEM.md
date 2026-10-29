@@ -193,7 +193,7 @@ A plate is tonal, not boxed (about 1.05:1 against the paper in light): it gather
 1. **Default is no card.** Content sits on `bg`; groups are separated by whitespace and a section `headline`.
 2. **Lists** = rows on `bg` with 1px `line` hairlines between them (inset to text start). No container border.
 3. **Raised rows** (L2: white, radius 16, `cardShadow`) only for things you choose between: answer options, mock types, chip-less pickers, Learn's Up next lesson. Never for content nobody chooses between (onboarding's pillars are plain rows since 1.21).
-4. **Forest panel**: one per screen for the single most important action (Today's first plan item, lesson start, results score).
+4. **Forest panel**: one per screen for the single most important action (Today's first plan item, lesson start, results score). *(Mobile 1.51, Field Guide §21.1: on a Field Guide screen the focal point is a plate and forest is kept for the one primary button; Today's clearing and exam-ready moments stay forest panels.)*
 5. **Tinted block** (`correctBg`, `wrongBg`, `tipBg`): feedback only.
 6. **Key idea** is never a card: a 3px `accent` rule on the left + `quote` text (and that rule means only the coach's voice, above).
 7. **Never nest** a surface inside a surface. Never outline a card with 1px border in light mode (the notes compare table was the last one; it is an L1 plate since 1.21).
@@ -1953,3 +1953,54 @@ them at real dp size on a Pixel-style home screen and fails on any overflow,
 an ellipsis in a title or big number, or a lost key word. The same harness
 made the picker previews (`mobile/assets/widgets/`, each a different face:
 Readiness shows rings only). The real check is a phone.
+
+## 21. Field Guide: the signature presentation (mobile 1.51 and the web; the owner's pick, 29 Oct 2026)
+
+**Every screen is a plate in a guide to your own study.** The feeling is unhurried curiosity: progress is something the learner observes, not something that judges them. Grove stays exactly as it is (palette, Fraunces + Figtree, the Kasama mark, the plant); Field Guide changes only the presentation grammar: how surfaces, stats, charts, badges, lists and empty states are framed. Both platforms build the same kit with the same names (mobile `components/fieldguide/`, web `fg-*` styles and helpers in `index.html`). Board: `premium/signature/grammar-1.png`.
+
+| AI-slop habit | Field Guide instead |
+|---|---|
+| Identical icon-and-number squares; 3-up stat tiles | Ruled specimen-label rows (key · value) |
+| Rings everywhere | A map-style scale bar for readiness; five stems on ONE scale for the areas |
+| Gradient hero; the same card shadow everywhere | One plate per screen, captioned "Fig. n ·", a double-hairline mount, no shadows |
+| Trophies or medals | Pressed specimens on herbarium sheets |
+
+The one risk is twee: tape and leaves stay this sparse (two strips of tape per specimen, leaves only on stems).
+
+### 21.1 Rules
+
+- **One plate per screen** is the focal point. Text blocks sit below it on the paper. 20pt gutters (the app's `gutter`).
+- **No shadows** anywhere in the grammar. Surfaces are hairlines: the plate's double mount, the label's single edge.
+- **Forest on the primary button only.** On a Field Guide screen the forest panel gives way to a plate; the forest fill is kept for the one primary button (the 52pt plate button). The two once-a-day moments on Today (the clearing card, "Your readiness is holding") stay forest panels: they are celebrations, not the screen's frame. This replaces §5 rule 4 on Field Guide screens.
+- **Honesty is built in.** The scale bar can't be drawn without "a study estimate, not a prediction". A stem shows a number only from 30 answers. Badges never show a grand total; each sheet keeps its own "2 of 3". No "pass", "you're ready", "guarantee" or "official", and never the bank's size.
+- **Colour is never the only signal.** Below the line = `clay` AND the words "below 70". Growth = a `clay` top AND "↑3". Too few yet = a seed and a dashed outline AND "too few yet · 18 answered". Answers = ✓/✗ AND words. Tiers = pips AND "Clay", "Lichen", "Gold leaf" printed.
+- **200% text.** Running heads, labels and lists reflow (right-hand parts drop under their keys). Every chart has a list fallback from a font scale of 1.3 (the `LARGE_TEXT` rule), and when a column would be under 56pt. Decorative rules are view borders, never tied to a text baseline. Chart text caps at ×1.3 (its list takes over beyond that).
+- **Reduce Motion.** Ink lines trace in (400 ms or less, `draw`), then fills settle (`fill`); a badge is pressed flat and its tape lands, with no bounce. Reduce Motion, or nothing new since the last look: the finished plate at once.
+- **Words.** Learner-facing copy never says "stem" (in this app it means a question's text; `copy-consistency.test.ts`): the chart is "one line of growth per area", "before it is measured". "Stem" is the developer's name for the chart's mark only.
+- **Screen readers.** A figure caption is a header ("Figure 5, Five areas, one scale"), so plates can be skipped between. A chart is one stop per mark (each area, left to right); its drawing is hidden. A label row is one stop ("Days to exam: 38").
+
+### 21.2 The kit (`components/fieldguide/`, in build order)
+
+| Component | Recipe |
+|---|---|
+| `RunningHead` | "Field guide · Today" left, the date ("Thu 29 Oct", said "Thursday 29 October") or ONE action right (You: "Settings" + gear, 48pt). `fieldType.head` (Figtree 600 11/14, tracked 1, caps) in `ink2` over a 1pt `line` hairline; 32pt tall (48 with an action). Plain text, not a header: the title under it is the heading. Wraps at ×1.3. |
+| `Plate` | Outer 1pt `line` edge, 6pt of `raised2`, inner 1pt `line` edge, 12 padding, square corners, no shadow. Never a button. `dashed`: the inner edge in `control`, dashed (the empty mount). |
+| `FigCaption` | "Fig. 5 · Five areas, one scale" in `fieldType.fig` (Fraunces italic 14/20) `ink2`, inside the plate's top-left. A header, said "Figure 5, …". |
+| `KeyCaption` | Under a plate: a tracked key in `ink` ("KEY", "PLATE", "NOTE") then an italic sentence in `ink2`. One stop, "Key: …". |
+| `SpecimenLabel` / `SpecimenRow` | `raised`, 1pt `line` edge, 3pt corners. Rows 10/14 padded with hairlines between: a tracked key left, a Fraunces 500 22/26 value right (`fieldType.value`, ×1.3), a unit in Figtree 12 `ink2`, or a value in words. Replaces `Stat` / `StatRow` tiles on Field Guide screens. One stop per row. At ×1.3 the value drops under its key. |
+| `ScaleBar` | The range numeral (Fraunces 38, rolls on the day's first view) beside "a study estimate, not a prediction" (Fraunces italic 16), then a 52pt-tall bar: ten alternating segments 0–100 (`ink2` / `raised`, 0.8 `ink2` edge, 5pt tall), the range as an `accent` bracket and band with "64–72" in `accentText` above it, and an `ink` tick at the app's 80 study bar; labels 0 · 50 · 80 · 100. Before the first range: "Not enough data yet" and "12 of 40 for your first range", no bracket. Motion: the bar draws from the left, then the bracket settles. Spoken as one image: "Estimated readiness 64 to 72 percent, a study estimate, not a prediction. The tick marks this app's 80 percent study bar." |
+| `StemChart` | Five areas on one 0–100 scale (left axis 0 · 50 · 70 · 100, `control`), a dashed `ink2` line at 70 labelled "70 line", the soil a `control` rule. A measured area (30+ answers): a 2pt stem in `fieldInk.stem` to its percent, a leaf every 9 points (`fieldInk.leaf`, `accent` edge), its number above (Fraunces 20 + raised %). Growth: the top in `clay` (2.6pt) with "↑3". Too few yet: a seed (`fieldInk.seed`) and an 18pt dashed `control` shoot, "—" above, "too few yet · 18 answered" below. Not started: the seed and "not started". Under each stem: its name (Figtree 11, two lines), the status word (Fraunces italic 12, `clay` when below the line) and "below 70" in `clay`. Plot 150pt; one stop per area. |
+| `StemList` | The chart's large-text and narrow-screen fallback: per area a row with the name and the figure (Fraunces 17 + %, or "–"), an 8pt ruler bar (filled `accent` when measured, a dashed `control` outline with no fill for too few yet, the track alone before any answer) with the 70 tick, then the italic word and its extra lines. |
+| `Specimen` | A badge's REAL emblem (`EmblemArt`, `badgeArt.json`) without its medallion frame. Earned: the emblem in `fieldInk.pressed` and two strips of `fieldInk.tape` (22×8 at −14°, 18×8 at 22°); its label: name (Figtree 600 13), tier pips + "Lichen · 75 recalls", "Pressed 3 Oct" in `accentText`. Not yet: a dashed 1.5 `control` mount, the emblem one-tone `control` at 42% (decorative), how close it is. Gated: a dotted mount, empty, "Opens after…" in italics; never a padlock. One button, spoken as the badge case always was. Newly earned: pressed flat (1.06 → 1, `enter`), then the tape fades in. |
+| `HerbariumSheet` | A set as a sheet: "Sheet I" (Fraunces italic 16, `clay`) · the name (Fraunces 22) · "2 of 3 pressed" (count only for counted sets; "· complete 3 Oct"); the purpose in italics; its specimens on a plate. The heading is one header, said as before ("Groundwork, 2 of 3"). |
+| `CollectRow` | "Still to collect": a 42pt dashed mount with the emblem's outline, the name (`label`) and why it helps the exam now (`meta`), a progress bar when there is one, a chevron. One button that opens the badge. |
+| `KeyList` | Numbered rows (Fraunces italic 16 numbers), a ✗/✓ beside words, a dotted `control` leader (drawn, never a dotted border) and the closing words ("question 3"). 48pt rows with hairlines between; a row can be a button. At ×1.3 the leader goes and the closing words drop under the title. |
+| `EmptyPlate` | The dashed mount with "Plate not yet drawn" (Fraunces italic 16) and what will draw it ("IS Acquisition needs a few more answers before it is measured."). One stop. |
+| `Button shape="plate"` | 52 tall, 12pt corners, `btn` fill (forest), the existing label and icon. Ghost links stay text in `accentText`. |
+
+### 21.3 Tokens (`theme/tokens.ts`)
+
+- `fieldType` (used only through `FieldText`): head (Figtree 600 11/14, tracked 1, caps), fig (Fraunces italic 14/20), sub (Fraunces italic 16/22), value (Fraunces 500 22/26), name (Figtree 600 13/17), small (Figtree 500 12/16), chart (Fraunces 500 18/22), keyNo (Fraunces italic 16/22), tiny (Figtree 500 11/14) and figSm (Fraunces italic 12/16), the last two for chart labels only. `fieldMaxScale`: words ×2, numerals and chart labels ×1.3.
+- `plate`: mount 6, label corner 3, button 52 with corner 12, chart height 264.
+- `fieldInk` (decorative, fixed per theme; the web's `--fg-*` match): stem `#5B4B3C` / `#B9A894` (8.0:1 and 7.4:1 on `raised2`), leaf `#CFE5D5` / `forestTrack`, seed `#E9D9C4` / `#4A3E33`, tape `rgba(214,205,182,.75)` / `rgba(120,112,92,.55)`, and the `pressed` emblem palette (roles E1…K; K is the plate's own `raised2`).
+- Every other colour is a Grove token: `clay` 5.3:1 on paper; dashed and dotted `control` outlines at least 3.2:1; `accentText` labels 6:1 and up.
