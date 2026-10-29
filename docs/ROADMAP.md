@@ -62,6 +62,20 @@ A calm, trustworthy study companion that helps people **pass** professional secu
   - real display optical sizes for titles;
   - on wide screens, a margin column on the answer and note pages (the Exam cue sits in the margin).
 
+**Owner update, 29 Oct 2026:**
+- **Look: Grove Refined.** The theme (colours, fonts, the mark) stays. The premium step is a **signature presentation system**: one structure, consistent type, backgrounds, and a distinctive way of presenting badges, stats, cards and progress, unlike common apps ("no AI-slop look"). Three grammars are being explored (Field Guide, Auditor's Workpaper, Bound Volume); the owner picks one. The Editorial Ivory touches fold into that choice.
+- **Plant forms: all 13 species**, using the "Turnings" system: 4 forms mapped from the 6 saved growths, no reset.
+  - A delayed-recall gate for the later forms.
+  - The learner chooses the final form at Form IV.
+  - A calm reveal on Your plant.
+  - Copy says "grows into a new form", never "evolve".
+- **Habit features, approved:**
+  - a fresh start after 3+ days away;
+  - "Just 3 questions";
+  - a study anchor with reminders;
+  - snooze and a Quiet week;
+  - a weekly look-back.
+
 The five directions explored (A Grove Refined, B Editorial Ivory, C Midnight Focus, D Clear Modern, and the wild cards E1/E2) are recorded in the scratchpad boards and the two new agents, `premium-web-designer` and `premium-mobile-designer`.
 
 **Built so far:**
