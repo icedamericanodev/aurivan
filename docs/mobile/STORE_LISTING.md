@@ -1,5 +1,7 @@
 # KaiSip — Store listing, first release (CISA)
 
+> **Owner request (29 Oct 2026):** the revised marketing video and materials must feature the plant's form change, "The Turning". See `docs/MARKETING_PLAN.md`.
+
 Ready-to-paste copy for App Store Connect and Google Play Console.
 Voice: Grove, warm, calm and credible, like a senior colleague who already passed.
 Brand source: `mobile/src/content/brand.ts`. Compliance source: `docs/mobile/ARCHITECTURE.md` §6.
