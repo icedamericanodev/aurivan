@@ -63,7 +63,7 @@ A calm, trustworthy study companion that helps people **pass** professional secu
   - on wide screens, a margin column on the answer and note pages (the Exam cue sits in the margin).
 
 **Owner update, 29 Oct 2026:**
-- **Look: Grove Refined.** The theme (colours, fonts, the mark) stays. The premium step is a **signature presentation system**: one structure, consistent type, backgrounds, and a distinctive way of presenting badges, stats, cards and progress, unlike common apps ("no AI-slop look"). Three grammars are being explored (Field Guide, Auditor's Workpaper, Bound Volume); the owner picks one. The Editorial Ivory touches fold into that choice.
+- **Look: Grove Refined.** The theme (colours, fonts, the mark) stays. The premium step is a **signature presentation system**: one structure, consistent type, backgrounds, and a distinctive way of presenting badges, stats, cards and progress, unlike common apps ("no AI-slop look"). Three grammars were explored (Field Guide, Auditor's Workpaper, Bound Volume). **Owner pick, 29 Oct: Field Guide.** Every screen centres on one captioned plate ("Fig. n ·"). Badges are pressed specimens on herbarium sheets, the five areas are stems on one scale with a 70 line, and readiness is a scale bar. Spec and boards: the signature design notes (starter kit: RunningHead, Plate, FigCaption, SpecimenLabel, ScaleBar, StemChart/StemList, Specimen, HerbariumSheet, KeyList, EmptyPlate). The Editorial Ivory touches fold into that choice.
 - **Plant forms: all 13 species**, using the "Turnings" system: 4 forms mapped from the 6 saved growths, no reset.
   - A delayed-recall gate for the later forms.
   - The learner chooses the final form at Form IV.
