@@ -49,7 +49,7 @@ import {
 } from '../engine/plant';
 import { FORM_START, formMoment, formName, formsIntroLine, nextFormLine, newFormLine, seeNewFormLabel, type FormMoment, type FormNumber } from '../engine/plantForms';
 import { dayKey } from '../engine/streak';
-import { baselinePlantForms, plantFactsFor, seePlantBackfill, usePlantView } from '../lib/plant';
+import { baselinePlantForms, plantFactsFor, seeGrowth, seePlantBackfill, usePlantView } from '../lib/plant';
 import { useActiveCert } from '../lib/useActiveCert';
 import { useSeen } from '../store/seen';
 import { LARGE_TEXT, space } from '../theme/tokens';
@@ -104,13 +104,21 @@ export default function YourPlant() {
   const formMomentKind = formVisit?.moment.kind;
   useEffect(() => {
     if (!p || !formMomentKind) return;
-    if (formMomentKind === 'reveal') useSeen.getState().seeFormReveal(certId, p.growth);
-    else useSeen.getState().seeFormNote(certId);
+    if (formMomentKind === 'reveal') {
+      useSeen.getState().seeFormReveal(certId, p.growth);
+      // The Turning IS the grow-up's moment (QA-TURN-1, QA-TURN-4): clear its `pending`, so a
+      // backup taken now can't replay it on restore, and the widget draws the new form at once.
+      seeGrowth(certId);
+    } else useSeen.getState().seeFormNote(certId);
     // eslint-disable-next-line react-hooks/exhaustive-deps -- once per visit's moment
   }, [formMomentKind, certId]);
   const reveal = formVisit?.moment.kind === 'reveal' ? formVisit.moment : null;
   // A scroll drag ends the reveal (it dissolves to its end; the screen is never blocked).
   const revealRef = useRef<FormRevealHandle>(null);
+  // The old drawing's look (no Form IV choice yet), kept by value, so a re-render never
+  // rebuilds the Turning's two drawings (QA-TURN-3).
+  const art = view.look?.art;
+  const fromLook = useMemo(() => (art ? { ...art, final: undefined } : undefined), [art]);
 
   if (!view.shown) {
     return (
@@ -156,7 +164,7 @@ export default function YourPlant() {
               to={p.growth}
               organs={view.scales}
               look={view.look?.art}
-              fromLook={view.look?.art ? { ...view.look.art, final: undefined } : undefined}
+              fromLook={fromLook}
               theme={isDark ? 'dark' : 'light'}
               size={200}
               accessibilityLabel={view.label}

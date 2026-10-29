@@ -14,7 +14,9 @@ import { buildPlant, type PNode } from '../components/plant/art';
 import { elementCount, lightOf, sameLayer, silhouette, turnLayers } from '../components/plant/turnLayers';
 import { moteShape } from '../components/plant/turnSignatures';
 import { PLANT_SPECIES } from '../engine/plant';
-import { events, frame, frameReduced, maxFlashesPerSecond, newSilOp, oldSilOp, phases, tierOf, type TurnTier } from '../engine/turnTimeline';
+import { events, flashTimes, frame, frameReduced, glowAt, maxFlashesPerPixel, maxFlashesPerSecond, newSilOp, oldSilOp, phases, tierOf, type TurnTier } from '../engine/turnTimeline';
+import fs from 'fs';
+import path from 'path';
 import { motion } from '../theme/tokens';
 
 const TIERS: TurnTier[] = ['small', 'medium', 'grand'];
@@ -49,6 +51,41 @@ describe('the timeline', () => {
       expect(maxFlashesPerSecond(P)).toBeLessThanOrEqual(2.5);
     }
     expect(TIERS.map((t) => maxFlashesPerSecond(phases(t)))).toEqual([2, 2.5, 2.5]);
+  });
+
+  it('per pixel too (review P5): no pixel class (old only, new only, both, the glow) changes more than 2.5 times a second; the floor is 200 ms', () => {
+    expect(motion.turn.swapFloor).toBe(200);
+    for (const even of [false, true])
+      for (const tier of TIERS) {
+        const P = phases(tier, { even });
+        expect([tier, even, maxFlashesPerPixel(P) <= 2.5]).toEqual([tier, even, true]);
+        const f = flashTimes(P);
+        // Each swap toggles both shape-only classes once; the overlap only changes at the gather and the bloom.
+        expect(f.old.length).toBe(P.swaps.length + 2);
+        expect(f.new.length).toBe(P.swaps.length + 1);
+        expect(f.both).toHaveLength(2);
+      }
+  });
+
+  it('the owner’s even-pace option (one switch): every half-swap the same length, the same total and bloom', () => {
+    for (const tier of TIERS) {
+      const a = phases(tier, { even: false });
+      const b = phases(tier, { even: true });
+      expect(new Set(b.swaps).size).toBe(1);
+      expect(Math.abs(b.b0 - a.b0)).toBeLessThanOrEqual(a.swaps.length);
+      expect(b.total).toBe(a.total);
+      for (const d of b.swaps) expect(d).toBeGreaterThanOrEqual(motion.turn.swapFloor);
+      expect(maxFlashesPerSecond(b)).toBeLessThanOrEqual(2);
+    }
+  });
+
+  it('the bloom’s one swell is visible in every tier (review P6): the light stays below full opacity, then brightens', () => {
+    for (const tier of TIERS) {
+      const P = phases(tier);
+      const peak = glowAt(P.b0 + 0.3 * (P.b1 - P.b0), P)[0];
+      expect(peak).toBeLessThanOrEqual(1);
+      expect(peak).toBeGreaterThan(glowAt(P.b0 - 1, P)[0] + 0.05);
+    }
   });
 
   it('cover, then uncover: one of the two shapes is always fully lit during the alternation (no dip, no extra flash)', () => {
@@ -177,5 +214,23 @@ describe('the layers', () => {
       seen.add(JSON.stringify(shapes));
     }
     expect(seen.size).toBe(PLANT_SPECIES.length);
+  });
+});
+
+describe('the worklets (review O8)', () => {
+  it('every animated style and prop reads its shared values itself (a value read only in a nested helper never updates)', () => {
+    for (const file of ['components/plant/FormReveal.tsx', 'components/plant/TurnMotes.tsx']) {
+      const src = fs.readFileSync(path.join(__dirname, '..', file), 'utf8');
+      const bodies: string[] = [];
+      const re = /useAnimated(?:Style|Props)\(/g;
+      for (let m = re.exec(src); m; m = re.exec(src)) {
+        let depth = 1;
+        let i = m.index + m[0].length;
+        for (; i < src.length && depth > 0; i++) depth += src[i] === '(' ? 1 : src[i] === ')' ? -1 : 0;
+        bodies.push(src.slice(m.index, i));
+      }
+      expect(bodies.length).toBeGreaterThan(0);
+      for (const b of bodies) expect([file, b.slice(0, 60), /\.value\b/.test(b)]).toEqual([file, b.slice(0, 60), true]);
+    }
   });
 });

@@ -38,10 +38,10 @@
  * one strokeDashoffset). The plant layers are cached bitmaps while it plays
  * (renderToHardwareTextureAndroid / shouldRasterizeIOS).
  */
-import { useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState, type ReactNode, type RefObject } from 'react';
+import { useCallback, useEffect, useId, useImperativeHandle, useLayoutEffect, useMemo, useRef, useState, type ReactNode, type RefObject } from 'react';
 import { AppState, StyleSheet, View } from 'react-native';
 import Animated, { cancelAnimation, Easing, ReduceMotion, runOnJS, useAnimatedProps, useAnimatedReaction, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
-import Svg, { Circle } from 'react-native-svg';
+import Svg, { Circle, Defs, RadialGradient, Stop } from 'react-native-svg';
 import type { GrowthLevel, PlantSpecies } from '../../engine/plant';
 import { revealMode, type RevealMode } from '../../engine/plantForms';
 import {
@@ -62,7 +62,7 @@ import {
 } from '../../engine/turnTimeline';
 import { moveFocus, sayLater } from '../../lib/a11y';
 import { haptic } from '../../lib/haptics';
-import { motion, space, turnTone } from '../../theme/tokens';
+import { motion, space, turnLook, turnTone } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
 import { claimMoment, useMotion } from '../motion';
 import { Button, T } from '../ui';
@@ -159,16 +159,29 @@ export function FormReveal({
 }: FormRevealProps) {
   const { c } = useTheme();
   const { reduced } = useMotion();
-  // Decided once, on the first frame: a later Reduce Motion change can't restart it.
-  const [mode, setMode] = useState<RevealMode>(() => revealMode(reduced, claimMoment));
+  // Decided once, before the first paint, in a layout effect (review P3): a render React throws
+  // away (a suspended or interrupted one) never spends the session's moment. Reduce Motion is
+  // known at once (it spends nothing). A later Reduce Motion change can't restart it.
+  const [mode, setMode] = useState<RevealMode | 'deciding'>(() => (reduced ? 'reduced' : 'deciding'));
+  const decided = useRef(false);
+  useLayoutEffect(() => {
+    // Once per reveal: StrictMode's second effect run keeps the first decision.
+    if (decided.current) return;
+    decided.current = true;
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- decided before paint, so the first frame is never the wrong mode
+    if (mode === 'deciding') setMode(revealMode(false, claimMoment));
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- decided once
+  }, []);
   // A reveal that waited for its tap already shows the fact (it stays put when it plays).
-  const [waited] = useState(mode === 'wait');
+  const [waited, setWaited] = useState(false);
   const [done, setDone] = useState(false);
   const P = useMemo(() => phases(tierOf(to)), [to]);
   const isReduced = mode === 'reduced';
   const playing = mode === 'full' && !done;
+  const factShown = isReduced || waited || mode === 'wait';
 
   // ── The static layers, built once ─────────────────────────────────────
+  const glowId = `turnGlow${useId().replace(/[^A-Za-z0-9]/g, '')}`;
   const organKey = organs ? organs.map((v) => Math.round(v * 40) / 40).join(',') : '';
   const oldLook = fromLook ?? look;
   const layers = useMemo(() => {
@@ -186,6 +199,23 @@ export function FormReveal({
       id: 'turn-light',
       children: [1, 0.74, 0.48].map((k, i) => ({ t: 'circle' as const, cx: light.cx, cy: light.cy, r: light.r * k, fill: tone.glow, opacity: tone.glowOps[i] })),
     };
+    // Dark: one soft radial wash instead of three stacked circles (they read as steps there, review O5).
+    const gather = tone.glowStops ? (
+      <>
+        <Defs>
+          <RadialGradient id={glowId} cx={light.cx} cy={light.cy} r={light.r} gradientUnits="userSpaceOnUse">
+            {tone.glowStops.map(([o, op]) => (
+              <Stop key={o} offset={o} stopColor={tone.glow} stopOpacity={op} />
+            ))}
+          </RadialGradient>
+        </Defs>
+        <Circle cx={light.cx} cy={light.cy} r={light.r} fill={`url(#${glowId})`} />
+      </>
+    ) : (
+      elOf(glowNode, 'gl')
+    );
+    // The owner's E1 switch (theme/tokens.ts turnLook): paper light, or badge gold.
+    const sil = turnLook.sil === 'gold' ? tone.silGold : tone.sil;
     const sameBack = sameLayer(o.back, n.back);
     const sameFront = sameLayer(o.front, n.front);
     return {
@@ -196,15 +226,15 @@ export function FormReveal({
       backOld: sameBack ? null : elOf(o.back, 'bo'),
       backNew: elOf(n.back, 'bn'),
       artGlow: elOf(n.glow, 'ag'),
-      gather: elOf(glowNode, 'gl'),
+      gather,
       treeOld: elOf(o.tree, 'to'),
       treeNew: elOf(n.tree, 'tn'),
-      silOld: elOf(silhouette(o.tree, tone.sil), 'so'),
-      silNew: elOf(silhouette(n.tree, tone.sil), 'sn'),
+      silOld: elOf(silhouette(o.tree, sil), 'so'),
+      silNew: elOf(silhouette(n.tree, sil), 'sn'),
       frontOld: sameFront ? null : elOf(o.front, 'fo'),
       frontNew: elOf(n.front, 'fn'),
     };
-  }, [species, from, to, organKey, oldLook, look, theme, size, P.glowR]);
+  }, [species, from, to, organKey, oldLook, look, theme, size, P.glowR, glowId]);
   const u = size / 200;
   const baseOrigin = originPx(100 * u, layers.base * u);
   const lightOrigin = originPx(layers.light.cx * u, layers.light.cy * u);
@@ -236,6 +266,8 @@ export function FormReveal({
     sayLater(announce);
     onDone?.();
   }, [announce, bloom, onDone]);
+  // The tap that started a waiting reveal (or its quick second tap) is never a skip (review P2a).
+  const playedAt = useRef(0);
   const skip = useCallback(() => {
     if (mode !== 'full' || finished.current || skipping.current) return;
     skipping.current = true;
@@ -247,15 +279,28 @@ export function FormReveal({
     );
   }, [mode, clock, skipV, finish]);
   useImperativeHandle(controlRef, () => ({ skip }), [skip]);
+  const touchSkip = useCallback(() => {
+    if (Date.now() - playedAt.current < motion.turn.playGuard) return;
+    skip();
+  }, [skip]);
 
   useEffect(() => {
-    if (mode === 'wait') return;
+    if (mode === 'wait' || mode === 'deciding') return;
     const total = mode === 'reduced' ? R : P.total;
-    clock.set(
-      withTiming(total, { duration: total, easing: linear, reduceMotion: ReduceMotion.Never }, (ok) => {
-        if (ok) runOnJS(finish)();
-      }),
-    );
+    const start = () =>
+      clock.set(
+        withTiming(total, { duration: total, easing: linear, reduceMotion: ReduceMotion.Never }, (ok) => {
+          if (ok) runOnJS(finish)();
+        }),
+      );
+    if (mode === 'reduced') {
+      start();
+      return;
+    }
+    // Full motion starts on the frame after the layers mount (review O6): the first, heavy frame
+    // never eats the opening of the clock (the fact's fade and the gather).
+    const f = requestAnimationFrame(start);
+    return () => cancelAnimationFrame(f);
     // eslint-disable-next-line react-hooks/exhaustive-deps -- plays once per mode (on mount, or when the waiting button is tapped)
   }, [mode]);
   // The bloom's haptic, from the UI thread when the clock crosses it (full motion only).
@@ -278,7 +323,10 @@ export function FormReveal({
   }, [playing, skip]);
 
   const play = () => {
-    setMode('full');
+    playedAt.current = Date.now();
+    setWaited(true);
+    // Reduce Motion turned on while it waited: the cross-fade, never the full motion (review P2b).
+    setMode(reduced ? 'reduced' : 'full');
     // The button goes: hand screen-reader focus to the plant (never lost on the page).
     moveFocus(stageRef);
   };
@@ -325,14 +373,14 @@ export function FormReveal({
   }));
   // Each updater reads the clock and the skip ITSELF: a shared value read only inside a nested
   // helper is not seen as an input, and the words would never move until a re-render.
-  const factStyle = useAnimatedStyle(() => wordsStyle(clock.value, skipV.value, 0, isReduced || waited));
+  const factStyle = useAnimatedStyle(() => wordsStyle(clock.value, skipV.value, 0, factShown));
   const nameStyle = useAnimatedStyle(() => wordsStyle(clock.value, skipV.value, P.nameAt, isReduced));
   const lookStyle = useAnimatedStyle(() => wordsStyle(clock.value, skipV.value, P.nameAt + 80, isReduced));
 
   const moving = playing;
   const hideWords = playing;
   return (
-    <View testID={testID} style={{ alignItems: 'center' }} onTouchStart={playing ? skip : undefined}>
+    <View testID={testID} style={{ alignItems: 'center' }} onTouchStart={playing ? touchSkip : undefined}>
       <View
         ref={stageRef}
         style={[styles.stage, { width: size, height: size }]}
@@ -340,6 +388,7 @@ export function FormReveal({
         accessibilityRole="image"
         accessibilityLabel={accessibilityLabel}
         accessibilityIgnoresInvertColors
+        accessibilityHint={playing ? 'Double-tap to show the new form now.' : undefined}
         accessibilityActions={playing ? [{ name: 'activate', label: 'Show the new form now' }] : undefined}
         onAccessibilityAction={playing ? skip : undefined}
         testID={testID ? `${testID}-${mode}` : undefined}
@@ -348,7 +397,7 @@ export function FormReveal({
           {layers.backOld && !done ? <Layer el={layers.backOld} size={size} style={backOld} /> : null}
           <Layer el={layers.backNew} size={size} style={layers.backOld ? backNew : undefined} />
           {layers.artGlow ? <Layer el={layers.artGlow} size={size} style={artGlow} /> : null}
-          {!isReduced && !done ? <Layer el={layers.gather} size={size} style={[gather, { transformOrigin: lightOrigin }]} /> : null}
+          {!isReduced && !done ? <Layer el={layers.gather} size={size} style={[gather, { transformOrigin: lightOrigin }]} raster={moving} /> : null}
           {ring ? (
             <View pointerEvents="none" style={StyleSheet.absoluteFill} testID={testID ? `${testID}-halo` : undefined}>
               <Svg width={size} height={size} viewBox="0 0 200 200">

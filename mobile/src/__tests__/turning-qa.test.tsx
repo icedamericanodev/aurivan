@@ -104,6 +104,11 @@ const said = () => {
   act(() => flushSayLaterForTest());
   return say.mock.calls.map((c) => c[0]);
 };
+/** Full motion starts its clock on the frame after mount (review O6): let that frame come. */
+const nextFrame = () =>
+  act(async () => {
+    await new Promise((res) => setTimeout(res, 0));
+  });
 const motionOn = () => {
   setMockReducedMotion(false);
   setSystemReducedMotionForTest(false);
@@ -264,8 +269,8 @@ describe('1. the trigger', () => {
   // grow-up's `pending` (Your plant never clears it). writeAll forgets every form record, and the
   // next baseline reads the growth BEFORE `pending` (lib/plant.ts baselinePlantForms), so the
   // same Turning plays a second time.
-  // BUG: QA-TURN-1, a restore (or undo-restore) of a file that still carries the grow-up's `pending` replays a Turning already seen.
-  it.skip('a restore of a file taken after the Turning played (the grow-up still pending) never replays it', async () => {
+  // FIXED: QA-TURN-1, a restore (or undo-restore) of a file that still carries the grow-up's `pending` replays a Turning already seen.
+  it('a restore of a file taken after the Turning played (the grow-up still pending) never replays it', async () => {
     elderStudy();
     setPlant(reachedTo(6, Date.now() - DAY, true));
     useSeen.setState({ plantForms: { cisa: { seen: 3 } } });
@@ -274,7 +279,10 @@ describe('1. the trigger', () => {
     expect(reveal()).toHaveLength(1);
     unmount();
     expect(useSeen.getState().plantForms?.cisa?.seen).toBe(4);
-    expect(cp().plant?.pending).toBe(6); // still waiting for Today
+    // The Turning was the grow-up's moment: its `pending` is cleared at once (QA-TURN-1 fix, part 1).
+    expect(cp().plant?.pending).toBeUndefined();
+    // A file that still carries it (taken by an earlier 1.50 build) restores as history (part 2).
+    setPlant({ ...cp().plant!, pending: 6 });
     const file = fileNow(); // Settings → Back up now
     await act(async () => {
       await restoreBackup(file); // later: Restore that file
@@ -311,7 +319,7 @@ describe('1. the trigger', () => {
     expect(reveal()).toHaveLength(0);
   });
 
-  it('two forms earned at once (Shoot → Elder after a long gap): ONE Turning, the grand tier (3.6 s), from Form II', () => {
+  it('two forms earned at once (Shoot → Elder after a long gap): ONE Turning, the grand tier (3.6 s), from Form II', async () => {
     motionOn();
     const timing = jest.spyOn(reanimated, 'withTiming');
     const build = jest.spyOn(art, 'buildPlant');
@@ -320,6 +328,7 @@ describe('1. the trigger', () => {
     setPlant({ ...plantNew('oak', 'Kai', T0 - 60 * DAY, 6), reached: { sprout: T0 - 50 * DAY, shoot: T0 - 40 * DAY, bough: now, crown: now, elder: now } });
     useSeen.setState({ plantForms: { cisa: { seen: 2 } } });
     mount(<YourPlant />);
+    await nextFrame();
     expect(reveal()).toHaveLength(1);
     expect(revealMode()).toBe('full');
     expect(timing.mock.calls.some((c) => c[0] === motion.turn.grand.total && (c[1] as { duration: number }).duration === motion.turn.grand.total)).toBe(true);
@@ -362,7 +371,7 @@ describe('1. the trigger', () => {
 
 // ── 2. The session moment ───────────────────────────────────────────────
 describe('2. the session moment budget (claimMoment)', () => {
-  it('Today’s growth spends the moment: Your plant waits behind "See Kai’s new form"; the tap plays it in full; then the button is gone', () => {
+  it('Today’s growth spends the moment: Your plant waits behind "See Kai’s new form"; the tap plays it in full; then the button is gone', async () => {
     motionOn();
     setPlant(reachedTo(4, Date.now(), true));
     useSeen.setState({ plantForms: { cisa: { seen: 2 } } });
@@ -386,9 +395,9 @@ describe('2. the session moment budget (claimMoment)', () => {
     expect(byTestID('plant-form-reveal-play')).toHaveLength(0);
     expect(byTestID('plant-form-reveal-full')[0].props.accessibilityActions).toEqual([{ name: 'activate', label: 'Show the new form now' }]);
     expect(said()).toEqual([]); // still playing
-    // Let it run to the end.
+    // Let it run to the end (its clock starts on the next frame).
     setMockHoldAnimations(false);
-    act(() => byTestID('plant-form-reveal')[0].props.onTouchStart());
+    await nextFrame();
     expect(byTestID('plant-form-reveal-play')).toHaveLength(0);
     expect(allText()).toContain('The Standard Oak');
     expect(said()).toEqual(['Kai grows into a new form: the Standard Oak.']);
@@ -518,12 +527,13 @@ describe('4. Reduce Motion and haptics', () => {
 
 // ── 5. The Form IV choice ───────────────────────────────────────────────
 describe('5. the Form IV choice', () => {
-  it('a final chosen before the Turning (Settings → Change its look) is the form it turns into: name, look line and drawing', () => {
+  it('a final chosen before the Turning (Settings → Change its look) is the form it turns into: name, look line and drawing', async () => {
     motionOn();
     const build = jest.spyOn(art, 'buildPlant');
     setPlant(grown(6));
     useSeen.setState({ plantForms: { cisa: { seen: 3 } }, plantFinal: { cisa: 'moot' } });
     mount(<YourPlant />);
+    await nextFrame();
     expect(revealMode()).toBe('full');
     const t = textOf(byTestID('plant-form-reveal-words')[0]);
     expect(t).toContain('The Moot Oak');
@@ -555,8 +565,8 @@ describe('5. the Form IV choice', () => {
   // render (plant.tsx `{ ...view.look.art, final: undefined }`), and FormReveal's layers memo
   // depends on it, so both full drawings are rebuilt on the screen's very next render, which
   // the reveal's own "written down as shown" store write causes right after mount.
-  // BUG: QA-TURN-3, plant.tsx passes a new `fromLook` object every render, so both drawings are rebuilt right after the Turning starts.
-  it.skip('on Your plant the two drawings are built once per Turning (never rebuilt by the screen re-rendering)', () => {
+  // FIXED: QA-TURN-3, plant.tsx passes a new `fromLook` object every render, so both drawings are rebuilt right after the Turning starts.
+  it('on Your plant the two drawings are built once per Turning (never rebuilt by the screen re-rendering)', () => {
     motionOn();
     setMockHoldAnimations(true);
     const build = jest.spyOn(art, 'buildPlant');
@@ -587,8 +597,8 @@ describe('6. the widget', () => {
   // "the moment is the app's"), and only Today clears it. A learner who goes Results → You →
   // Your plant sees the Turning, and the home-screen widget still draws the OLD form until they
   // next open Today.
-  // BUG: QA-TURN-4, the widget keeps the old form after a Turning seen without opening Today (only Today clears `pending`).
-  it.skip('after a Turning seen straight from Results (Today not opened), the widget draws the new form', () => {
+  // FIXED: QA-TURN-4, the widget keeps the old form after a Turning seen without opening Today (only Today clears `pending`).
+  it('after a Turning seen straight from Results (Today not opened), the widget draws the new form', () => {
     motionOn();
     setPlant(reachedTo(6, Date.now(), true));
     useSeen.setState({ plantForms: { cisa: { seen: 3 } } });
@@ -623,8 +633,8 @@ describe('review P2 / P3', () => {
       byTestID('rv-play')[0].findAll((n) => typeof n.props.onPress === 'function')[0].props.onPress();
     });
 
-  // BUG: QA-TURN-5 (review P2a), the second tap of a quick double-tap on "See Kai’s new form" lands on the now-playing Turning and skips it.
-  it.skip('P2a: a quick double-tap on "See Kai’s new form" still plays the Turning the learner asked for', () => {
+  // FIXED: QA-TURN-5 (review P2a), the second tap of a quick double-tap on "See Kai’s new form" lands on the now-playing Turning and skips it.
+  it('P2a: a quick double-tap on "See Kai’s new form" still plays the Turning the learner asked for', () => {
     motionOn();
     claimMoment(); // the session's moment was spent elsewhere
     setMockHoldAnimations(true);
@@ -639,8 +649,8 @@ describe('review P2 / P3', () => {
     expect(said()).toEqual([]); // fails: already announced
   });
 
-  // BUG: QA-TURN-6 (review P2b), play() always sets 'full': Reduce Motion switched on while the Turning waits still plays the full 2.4 to 3.6 s motion.
-  it.skip('P2b: Reduce Motion turned on while it waits: the tap plays the 120 ms cross-fade, not the full Turning', () => {
+  // FIXED: QA-TURN-6 (review P2b), play() always sets 'full': Reduce Motion switched on while the Turning waits still plays the full 2.4 to 3.6 s motion.
+  it('P2b: Reduce Motion turned on while it waits: the tap plays the 120 ms cross-fade, not the full Turning', () => {
     motionOn();
     claimMoment();
     mount(<FormReveal {...props} />);
@@ -662,8 +672,8 @@ describe('review P2 / P3', () => {
     expect(mode()).toBe('full'); // React 19 keeps the first initializer result in StrictMode
   });
 
-  // BUG: QA-TURN-7 (review P3), claimMoment() runs in a useState initializer: a first render React throws away (a suspended or interrupted render) spends the moment, and the committed one waits behind the button.
-  it.skip('P3: a first render that React discards (suspended) does not spend the session’s moment', async () => {
+  // FIXED: QA-TURN-7 (review P3), claimMoment() runs in a useState initializer: a first render React throws away (a suspended or interrupted render) spends the moment, and the committed one waits behind the button.
+  it('P3: a first render that React discards (suspended) does not spend the session’s moment', async () => {
     motionOn();
     let ready = false;
     let release!: () => void;

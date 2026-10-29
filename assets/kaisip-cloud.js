@@ -8429,7 +8429,7 @@ async function confirmFirstSync(ctx, prep, mode, undo, opts = {}) {
   defs["src/theme/tokens.ts"] = function (module, exports, require) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.fieldInk = exports.plate = exports.fieldMaxScale = exports.fieldType = exports.plantForm = exports.plantLine = exports.plantTheme = exports.plantArt = exports.plantLeaf = exports.badgeGlaze = exports.badgeLeafPip = exports.badgeStruck = exports.badgeMetal = exports.cardInk = exports.badgeEnamel = exports.turnMote = exports.turnTone = exports.motion = exports.LARGE_TEXT = exports.grewLine = exports.statWord = exports.cardType = exports.statUnit = exports.numeralUnit = exports.badgeLetter = exports.optionText = exports.maxScale = exports.stemLong = exports.STEM_LONG_CHARS = exports.type = exports.font = exports.radius = exports.space = exports.domainPalette = exports.raisedShadow = exports.cardShadow = exports.darkCardTopLight = exports.forestHighlight = exports.grainOp = exports.scrimOp = exports.pillarGlyph = exports.kaisip = exports.dark = exports.light = void 0;
+exports.fieldInk = exports.plate = exports.fieldMaxScale = exports.fieldType = exports.plantForm = exports.plantLine = exports.plantTheme = exports.plantArt = exports.plantLeaf = exports.badgeGlaze = exports.badgeLeafPip = exports.badgeStruck = exports.badgeMetal = exports.cardInk = exports.badgeEnamel = exports.turnMote = exports.turnLook = exports.turnTone = exports.motion = exports.LARGE_TEXT = exports.grewLine = exports.statWord = exports.cardType = exports.statUnit = exports.numeralUnit = exports.badgeLetter = exports.optionText = exports.maxScale = exports.stemLong = exports.STEM_LONG_CHARS = exports.type = exports.font = exports.radius = exports.space = exports.domainPalette = exports.raisedShadow = exports.cardShadow = exports.darkCardTopLight = exports.forestHighlight = exports.grainOp = exports.scrimOp = exports.pillarGlyph = exports.kaisip = exports.dark = exports.light = void 0;
 exports.serifNumeral = serifNumeral;
 exports.percentSup = percentSup;
 exports.light = {
@@ -8617,11 +8617,12 @@ exports.motion = {
     plant: { breath: 2000, breathOut: 2400, breaths: 1, react: 600, lean: 900, grow: 900, plantIn: 820, turnReduced: 120 },
     turn: {
         small: { total: 2400, gather: [160, 760], swaps: [340, 260, 200], bloom: 320, nameAt: 1900, inhale: 0.015, motes: 4, moteLife: 1100, glowMax: 0.7, glowR: 0.72, settle: { from: 0.97, duration: 360, dampingRatio: 1 }, halo: false },
-        medium: { total: 3000, gather: [180, 900], swaps: [380, 300, 240, 200, 180], bloom: 340, nameAt: 2500, inhale: 0.02, motes: 6, moteLife: 1300, glowMax: 0.85, glowR: 0.86, settle: { from: 0.97, duration: 400, dampingRatio: 1 }, halo: false },
-        grand: { total: 3600, gather: [200, 1000], swaps: [420, 340, 280, 230, 200, 180, 180], bloom: 360, nameAt: 3100, inhale: 0.025, motes: 8, moteLife: 1500, glowMax: 1, glowR: 1, settle: { from: 0.96, duration: 460, dampingRatio: 0.85 }, halo: true },
+        medium: { total: 3000, gather: [180, 900], swaps: [380, 300, 240, 200, 200], bloom: 340, nameAt: 2500, inhale: 0.02, motes: 6, moteLife: 1300, glowMax: 0.85, glowR: 0.86, settle: { from: 0.97, duration: 400, dampingRatio: 1 }, halo: false },
+        grand: { total: 3600, gather: [200, 1000], swaps: [420, 340, 280, 230, 200, 200, 200], bloom: 360, nameAt: 3100, inhale: 0.025, motes: 8, moteLife: 1500, glowMax: 0.9, glowR: 1, settle: { from: 0.96, duration: 460, dampingRatio: 0.85 }, halo: true },
         cross: 0.6,
-        swapFloor: 180,
+        swapFloor: 200,
         skip: 120,
+        playGuard: 400,
     },
     rise: 8,
     shift: 16,
@@ -8629,9 +8630,22 @@ exports.motion = {
     pressOpacity: 0.92,
 };
 exports.turnTone = {
-    light: { sil: '#FFFCF2', glow: '#F6E2A6', glowOps: [0.6, 0.72, 0.9] },
-    dark: { sil: '#D8CCA6', glow: '#E9C46A', glowOps: [0.24, 0.29, 0.36] },
+    light: { sil: '#FFFCF2', silGold: '#E9C46A', glow: '#F6E2A6', glowOps: [0.6, 0.72, 0.9] },
+    dark: {
+        sil: '#D8CCA6',
+        silGold: '#C99A3A',
+        glow: '#E9C46A',
+        glowOps: [0.24, 0.29, 0.36],
+        glowStops: [
+            [0, 0.62],
+            [0.4, 0.56],
+            [0.65, 0.4],
+            [0.85, 0.2],
+            [1, 0],
+        ],
+    },
 };
+exports.turnLook = { sil: 'paper', evenPace: false };
 exports.turnMote = {
     pollen: ['#E7C76B', '#F2DA92'],
     speck: ['#E3C890', '#D2B57A'],
@@ -10462,7 +10476,7 @@ function decodeUtf8(bytes) {
   var api = {};
   api["browser"] = load("src/webcloud/browser.ts");
   api["config"] = load("src/webcloud/config.ts");
-  api.sourceHash = "b958ff13a5a23edb";
+  api.sourceHash = "68e426ab575e981d";
   var cloud = load("src/webcloud/index.ts");
   var liveVersion = "1.48.0";
   var liveStoreVersions = {"progress":2,"settings":1};

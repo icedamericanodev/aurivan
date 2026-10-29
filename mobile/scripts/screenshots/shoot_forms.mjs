@@ -1,8 +1,11 @@
 // Mobile 1.50 plant forms (SHOTS=forms): Your plant at each form (I–IV) for
 // three species (oak, lotus, bamboo), a Form IV flavour, the Look screen's
 // final-form choice, the quiet note for a plant already past Form I, frame
-// strips of the reveal (full motion, and Reduce Motion's cross-fade), and
-// Your plant and the Look choice at about 200% text (forms-*-xl).
+// strips of The Turning (small and grand tiers, Reduce Motion's cross-fade,
+// and about 200% text), its waiting state ("See Kai's new form") at 100% and
+// about 200% text, and Your plant and the Look choice at about 200% text
+// (forms-*-xl). REVEAL_ONLY=1 takes the Turning's shots alone; FRAMES=1 also
+// keeps each strip frame as its own PNG.
 //
 // The reveal strips slow the page's clock (performance.now, Date.now,
 // requestAnimationFrame and setTimeout) to 1/10 from the very first frame of
@@ -119,9 +122,25 @@ await shot('forms-oak-quiet-note');
 }
 
 // ── 4. The reveal, frame by frame ──────────────────────────────────────────
+// About 200% text (sections 4b and 5): each text run is zoomed to match the
+// app's ×2 text size (window.__AURIVAN_FONT_SCALE__), titles capped at ×1.3:
+// the same approximation as shoot_cloud.mjs.
+const TEXT_RUNS = 'div[dir="auto"], [role="heading"][dir="auto"], h1[dir="auto"], h2[dir="auto"], h3[dir="auto"], input';
+const zoomText = (f) =>
+  page.evaluate(
+    ([sel, factor]) => {
+      for (const el of document.querySelectorAll(sel)) {
+        if (el.dataset.zoomed) continue;
+        const px = parseFloat(getComputedStyle(el).fontSize) || 16;
+        el.style.zoom = String(px >= 26 ? Math.min(1.3, factor) : factor);
+        el.dataset.zoomed = '1';
+      }
+    },
+    [TEXT_RUNS, f],
+  );
 const SLOW = 10;
 /** Frames at these app times after the reveal appears. */
-async function revealStrip(name, title, appTimes, motion, growth = 3, sp = 'oak') {
+async function revealStrip(name, title, appTimes, motion, growth = 3, sp = 'oak', { xl = false } = {}) {
   await go('/', 600);
   await setMotion(motion);
   await setPlant(plantAt(sp, 'Kai', growth));
@@ -129,6 +148,7 @@ async function revealStrip(name, title, appTimes, motion, growth = 3, sp = 'oak'
   await page.evaluate((k) => localStorage.setItem('__slow', String(1 / k)), SLOW);
   await page.goto(BASE + '/plant');
   await page.waitForSelector('[data-testid^="plant-form-reveal-"]', { timeout: 60_000 });
+  if (xl) await zoomText(2);
   const t0 = await page.evaluate(() => performance.now());
   const frames = [];
   for (const at of appTimes) {
@@ -166,6 +186,36 @@ await setMotion('system');
 await go('/plant');
 await shot('forms-reveal-after');
 
+// ── 4b. The session's moment already spent: "See Kai's new form" (review P7) ──
+// Today plays the grow-up (the session's one full moment), then Your plant opens in
+// the SAME app session (a client-side route change, never a reload), so it waits.
+async function waitingShot(name, xl = false) {
+  await go('/', 600);
+  await setMotion('system');
+  const p = plantAt('oak', 'Kai', 3);
+  p.reached.shoot = Date.now();
+  p.pending = 3;
+  await setPlant(p);
+  await setForms({ seen: 1 });
+  await go('/', 3200);
+  await page.evaluate(() => {
+    window.history.pushState({}, '', '/plant');
+    window.dispatchEvent(new PopStateEvent('popstate', { state: {} }));
+  });
+  await page.waitForSelector('[data-testid="plant-form-reveal-wait"]', { timeout: 20_000 });
+  await wait(900);
+  if (xl) {
+    await zoomText(2);
+    await wait(400);
+  }
+  await shot(name);
+}
+await waitingShot('forms-reveal-waiting');
+// The Turning at about 200% text: the fact, then the name, never clipped or overlapping.
+await ctx.addInitScript(() => (window.__AURIVAN_FONT_SCALE__ = 2));
+await waitingShot('forms-reveal-waiting-xl', true);
+await revealStrip('forms-reveal-xl', 'The Turning at about 200% text (Form I → II)', [0, 900, 1500, 2000, 2400], 'system', 3, 'oak', { xl: true });
+
 if (REVEAL_ONLY) {
   if (errs.length) console.log('page errors:', errs.slice(0, 5));
   await browser.close();
@@ -175,25 +225,11 @@ if (REVEAL_ONLY) {
 // From here on the app's text size is ×2 (window.__AURIVAN_FONT_SCALE__, read
 // by components/ui.tsx useFontScale) and each text run is zoomed to match,
 // titles capped at ×1.3: the same approximation as shoot_cloud.mjs.
-const TEXT_RUNS = 'div[dir="auto"], [role="heading"][dir="auto"], h1[dir="auto"], h2[dir="auto"], h3[dir="auto"], input';
-const zoomText = (f) =>
-  page.evaluate(
-    ([sel, factor]) => {
-      for (const el of document.querySelectorAll(sel)) {
-        if (el.dataset.zoomed) continue;
-        const px = parseFloat(getComputedStyle(el).fontSize) || 16;
-        el.style.zoom = String(px >= 26 ? Math.min(1.3, factor) : factor);
-        el.dataset.zoomed = '1';
-      }
-    },
-    [TEXT_RUNS, f],
-  );
 const bigShot = async (name) => {
   await zoomText(2);
   await wait(400);
   await shot(name);
 };
-await ctx.addInitScript(() => (window.__AURIVAN_FONT_SCALE__ = 2));
 // Your plant at Crown (Form III): the form, "Your oak · Crown", the hairline, then the steps' heading.
 await setPlant(plantAt('oak', 'Kai', 5));
 await setForms({ seen: 3 });

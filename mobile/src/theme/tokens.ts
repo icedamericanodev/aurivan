@@ -411,22 +411,24 @@ export const motion = {
    * One linear clock runs 0 → total on the UI thread (engine/turnTimeline.ts):
    * - gather [from, to]: the glow gathers, the old form inhales (`inhale`) and fills with light;
    * - swaps: each half-swap of the alternating silhouettes. An odd count, so it
-   *   ends on the new form; none shorter than `swapFloor` (≤ 2.5 flashes a
-   *   second, WCAG 2.3.1 allows 3). `cross`: the share of each half-swap spent changing;
+   *   ends on the new form; none shorter than `swapFloor` (200 ms: ≤ 2.5 flashes
+   *   a second on any pixel, WCAG 2.3.1 allows 3). `cross`: the share of each half-swap spent changing;
    * - bloom: the light lifts off the new form, which settles (`settle`, a duration spring);
    * - nameAt: the form's name fades in under the learning fact (shown from 0);
    * - motes: the species' rising motes (≤ celebrate.leaves), each `moteLife` long;
-   * - glowMax / glowR: the gathered light's peak and radius, as shares of the grand tier's;
+   * - glowMax / glowR: the gathered light's peak (below 1, so the bloom's one swell shows) and radius;
    * - halo: Form IV's glow ring draws itself once (grand only).
-   * `skip`: any tap dissolves to the end state over this long.
+   * `skip`: any tap dissolves to the end state over this long. `playGuard`: touches this soon
+   * after the waiting button's tap are not skips (a quick double-tap still plays it).
    */
   turn: {
     small: { total: 2400, gather: [160, 760], swaps: [340, 260, 200], bloom: 320, nameAt: 1900, inhale: 0.015, motes: 4, moteLife: 1100, glowMax: 0.7, glowR: 0.72, settle: { from: 0.97, duration: 360, dampingRatio: 1 }, halo: false },
-    medium: { total: 3000, gather: [180, 900], swaps: [380, 300, 240, 200, 180], bloom: 340, nameAt: 2500, inhale: 0.02, motes: 6, moteLife: 1300, glowMax: 0.85, glowR: 0.86, settle: { from: 0.97, duration: 400, dampingRatio: 1 }, halo: false },
-    grand: { total: 3600, gather: [200, 1000], swaps: [420, 340, 280, 230, 200, 180, 180], bloom: 360, nameAt: 3100, inhale: 0.025, motes: 8, moteLife: 1500, glowMax: 1, glowR: 1, settle: { from: 0.96, duration: 460, dampingRatio: 0.85 }, halo: true },
+    medium: { total: 3000, gather: [180, 900], swaps: [380, 300, 240, 200, 200], bloom: 340, nameAt: 2500, inhale: 0.02, motes: 6, moteLife: 1300, glowMax: 0.85, glowR: 0.86, settle: { from: 0.97, duration: 400, dampingRatio: 1 }, halo: false },
+    grand: { total: 3600, gather: [200, 1000], swaps: [420, 340, 280, 230, 200, 200, 200], bloom: 360, nameAt: 3100, inhale: 0.025, motes: 8, moteLife: 1500, glowMax: 0.9, glowR: 1, settle: { from: 0.96, duration: 460, dampingRatio: 0.85 }, halo: true },
     cross: 0.6,
-    swapFloor: 180,
+    swapFloor: 200,
     skip: 120,
+    playGuard: 400,
   },
   rise: 8, // pt: content enters this far below its place (y only)
   shift: 16, // pt: a page turn's sideways offset
@@ -437,13 +439,43 @@ export const motion = {
 /**
  * The Turning's light (mobile 1.50, DESIGN_SYSTEM §8.10): warm gold on paper,
  * never white on dark and never saturated red. Decorative (the words carry
- * the moment). `sil`: the flat light the forms become while they take turns;
- * `glow`: the gathered light behind the crown, its three circles at `glowOps`.
+ * the moment).
+ * - sil: the flat light the forms become while they take turns ('paper');
+ *   silGold: the owner's alternative (badge gold, darker than the glow);
+ * - glow: the gathered light behind the crown: three circles at `glowOps`,
+ *   or, with `glowStops` ([offset, opacity] pairs), one soft radial wash
+ *   (dark: three stacked circles read as steps there, review O5).
  */
-export const turnTone: { light: { sil: string; glow: string; glowOps: readonly [number, number, number] }; dark: { sil: string; glow: string; glowOps: readonly [number, number, number] } } = {
-  light: { sil: '#FFFCF2', glow: '#F6E2A6', glowOps: [0.6, 0.72, 0.9] },
-  dark: { sil: '#D8CCA6', glow: '#E9C46A', glowOps: [0.24, 0.29, 0.36] },
+export interface TurnTone {
+  sil: string;
+  silGold: string;
+  glow: string;
+  glowOps: readonly [number, number, number];
+  glowStops?: readonly (readonly [number, number])[];
+}
+export const turnTone: { light: TurnTone; dark: TurnTone } = {
+  light: { sil: '#FFFCF2', silGold: '#E9C46A', glow: '#F6E2A6', glowOps: [0.6, 0.72, 0.9] },
+  dark: {
+    sil: '#D8CCA6',
+    silGold: '#C99A3A',
+    glow: '#E9C46A',
+    glowOps: [0.24, 0.29, 0.36],
+    glowStops: [
+      [0, 0.62],
+      [0.4, 0.56],
+      [0.65, 0.4],
+      [0.85, 0.2],
+      [1, 0],
+    ],
+  },
 };
+/**
+ * The Turning's look, as ONE switch per choice (owner decision E1 pending,
+ * 29 Oct 2026): `sil` 'paper' (shipped) or 'gold' (the forms take turns in
+ * badge gold); `evenPace` false (shipped: the half-swaps speed up) or true
+ * (every half-swap the same length, the same total). Flip a value to apply the pick.
+ */
+export const turnLook: { sil: 'paper' | 'gold'; evenPace: boolean } = { sil: 'paper', evenPace: false };
 /**
  * The Turning's motes, per theme [light, dark] (components/plant/turnSignatures.ts):
  * each species' own seeds, petals and pollen. Decorative, small and short-lived.

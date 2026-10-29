@@ -250,12 +250,16 @@ describe('UX review fixes (1.50 forms)', () => {
     expect(say).not.toHaveBeenCalled();
   });
 
-  it('P5: once the motion ends the words are readable, and the form is announced exactly once', () => {
+  it('P5: once the motion ends the words are readable, and the form is announced exactly once', async () => {
     setMockReducedMotion(false);
     setSystemReducedMotionForTest(false);
     const say = jest.spyOn(AccessibilityInfo, 'announceForAccessibility').mockImplementation(() => {});
     say.mockClear(); // jest/setup.ts's mock keeps earlier tests' calls
     mount(<FormReveal {...revealProps} />);
+    // Full motion starts its clock on the frame after mount (review O6).
+    await act(async () => {
+      await new Promise((res) => setTimeout(res, 0));
+    });
     expect(byTestID('rv-full')).toHaveLength(1);
     expect(words().props.accessibilityElementsHidden).toBe(false);
     expect(words().props.importantForAccessibility).toBe('auto');

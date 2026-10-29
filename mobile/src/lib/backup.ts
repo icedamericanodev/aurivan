@@ -423,6 +423,9 @@ async function writeAll(
   useSettings.setState(settings);
   useProgress.setState(progress);
   for (const s of STORES) await s.persist.rehydrate();
+  // Mobile 1.50 (QA-TURN-1): each restored plant's form counts as shown, its grow-up still
+  // `pending` included, so a file taken after a Turning never plays it again (forms in a file are history).
+  for (const [id, c] of Object.entries(useProgress.getState().byCert)) if (c?.plant) useSeen.getState().baselineForms(id, c.plant.growth);
   // A backup from 1.9 already ran its back-fill, so the launch effect never
   // revisits it: a set it holds complete gets its planter here. A backup from
   // 1.10 has the older badge catalogue: its new tiers fill in quietly first.

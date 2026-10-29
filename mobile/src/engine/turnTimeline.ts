@@ -20,7 +20,7 @@
  * re-renders while it plays. A skip mixes every value toward the end state.
  * Ported line for line from the motion spec's preview timeline.
  */
-import { motion } from '../theme/tokens';
+import { motion, turnLook } from '../theme/tokens';
 import { formOf } from './plantForms';
 
 export type TurnTier = 'small' | 'medium' | 'grand';
@@ -60,12 +60,18 @@ export function tierOf(toGrowth: number): TurnTier {
   return f >= 4 ? 'grand' : f === 3 ? 'medium' : 'small';
 }
 
-export function phases(tier: TurnTier): TurnPhases {
+/**
+ * The tier's timings. `even` (the owner's E1 option, theme/tokens.ts turnLook):
+ * every half-swap the same length, the alternation's total unchanged.
+ */
+export function phases(tier: TurnTier, { even = turnLook.evenPace }: { even?: boolean } = {}): TurnPhases {
   const T = motion.turn[tier];
   const [g0, g1] = T.gather;
+  const sum = T.swaps.reduce((a, b) => a + b, 0);
+  const swaps = even ? T.swaps.map(() => Math.max(motion.turn.swapFloor, Math.round(sum / T.swaps.length))) : [...T.swaps];
   const starts: number[] = [];
   let s = g1;
-  for (const d of T.swaps) {
+  for (const d of swaps) {
     starts.push(s);
     s += d;
   }
@@ -75,7 +81,7 @@ export function phases(tier: TurnTier): TurnPhases {
     g0,
     g1,
     starts,
-    swaps: [...T.swaps],
+    swaps,
     b0: s,
     b1: s + T.bloom,
     nameAt: T.nameAt,
@@ -227,7 +233,8 @@ export function glowAt(t: number, P: TurnPhases): [number, number] {
   const bloom = P.b1 - P.b0;
   const up = seg(t, P.b0, P.b0 + 0.3 * bloom);
   const down = seg(t, P.b0 + 0.3 * bloom, P.b1 + 300);
-  return [P.glowMax * (1 + 0.12 * outCubic(up)) * (1 - outCubic(down)), 1.04 + 0.1 * outCubic(seg(t, P.b0, P.b1 + 300))];
+  // Clamped (review P6): the swell must stay below full opacity to be seen at all.
+  return [Math.min(1, P.glowMax * (1 + 0.12 * outCubic(up))) * (1 - outCubic(down)), 1.04 + 0.1 * outCubic(seg(t, P.b0, P.b1 + 300))];
 }
 /** Form IV's own glow fades in as the gathered light leaves (grand); otherwise it is simply there. */
 export function artGlowOp(t: number, P: TurnPhases): number {
@@ -387,5 +394,48 @@ export function maxFlashesPerSecond(P: TurnPhases): number {
   const changes = [...P.starts, P.b0];
   let worst = 0;
   for (const a of changes) worst = Math.max(worst, changes.filter((c) => c >= a && c < a + 1000).length / 2);
+  return worst;
+}
+
+/**
+ * The same check per PIXEL CLASS (review P5), with each change placed where
+ * it really happens inside its half-swap (cover-then-uncover puts the
+ * incoming shape's change in the first half and the outgoing one's in the
+ * second):
+ * - old: pixels only the old shape covers (filled at the gather; each swap
+ *   toggles them once; the gathered light around them leaves after the bloom);
+ * - new: pixels only the new shape covers (each swap toggles them; the light lifts at the bloom);
+ * - both: pixels inside both shapes (lit once at the gather, lifted once at the bloom);
+ * - glow: the gathered light around them (it rises, swells once, fades).
+ * Returns the worst count of flashes (pairs of changes) in any 1 s, over every class.
+ */
+export function flashTimes(P: TurnPhases): Record<'old' | 'new' | 'both' | 'glow', number[]> {
+  const fillMid = P.g0 + 0.675 * (P.g1 - P.g0);
+  const liftMid = P.b0 + (P.b1 - P.b0) / 2;
+  const first = (i: number) => P.starts[i] + P.swaps[i] * P.cross * 0.25;
+  const second = (i: number) => P.starts[i] + P.swaps[i] * P.cross * 0.75;
+  const old: number[] = [fillMid];
+  const nu: number[] = [];
+  P.starts.forEach((_, i) => {
+    // Even half-swaps go old → new (new covers first, old uncovers second); odd ones go back.
+    old.push(i % 2 === 0 ? second(i) : first(i));
+    nu.push(i % 2 === 0 ? first(i) : second(i));
+  });
+  const bloom = P.b1 - P.b0;
+  const fadeMid = P.b0 + 0.3 * bloom + (P.b1 + 300 - P.b0 - 0.3 * bloom) / 2;
+  // After its last uncover an old-only pixel next changes when the gathered light around it leaves.
+  old.push(fadeMid);
+  nu.push(liftMid);
+  return {
+    old,
+    new: nu,
+    both: [fillMid, liftMid],
+    glow: [(P.g0 + P.g1) / 2, P.b0 + 0.15 * bloom, fadeMid],
+  };
+}
+export function maxFlashesPerPixel(P: TurnPhases): number {
+  let worst = 0;
+  for (const changes of Object.values(flashTimes(P)))
+    for (const a of changes) worst = Math.max(worst, changes.filter((c) => c >= a && c < a + 1000).length / 2);
   return worst;
 }

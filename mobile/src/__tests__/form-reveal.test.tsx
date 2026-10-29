@@ -81,6 +81,11 @@ const said = () => {
   act(() => flushSayLaterForTest());
   return say.mock.calls.map((c) => c[0]);
 };
+/** Full motion starts its clock on the frame after mount (review O6): let that frame come. */
+const nextFrame = () =>
+  act(async () => {
+    await new Promise((res) => setTimeout(res, 0));
+  });
 const motionOn = () => {
   setMockReducedMotion(false);
   setSystemReducedMotionForTest(false);
@@ -124,7 +129,7 @@ afterEach(() => {
 });
 
 describe('timing', () => {
-  it('full motion runs the tier’s whole clock, linear: 2.4 s small, 3.0 s medium, 3.6 s grand', () => {
+  it('full motion runs the tier’s whole clock, linear, from the frame after mount: 2.4 s small, 3.0 s medium, 3.6 s grand', async () => {
     motionOn();
     const timing = jest.spyOn(reanimated, 'withTiming');
     for (const [to, total] of [
@@ -136,6 +141,9 @@ describe('timing', () => {
       timing.mockClear();
       mount(<FormReveal {...props} from={to === 3 ? 2 : to === 5 ? 3 : 5} to={to} />);
       expect(byTestID('rv-full')).toHaveLength(1);
+      // Not on the mount frame itself: the heavy first frame never eats the opening.
+      expect(timing.mock.calls.some((c) => c[0] === total)).toBe(false);
+      await nextFrame();
       expect(timing.mock.calls.some((c) => c[0] === total && (c[1] as { duration: number }).duration === total)).toBe(true);
       unmount();
     }
@@ -165,7 +173,7 @@ describe('Reduce Motion', () => {
 });
 
 describe('full motion', () => {
-  it('words hidden from screen readers while it plays; at the end one announcement, one haptic, one onDone', () => {
+  it('words hidden from screen readers while it plays; at the end one announcement, one haptic, one onDone', async () => {
     motionOn();
     setMockHoldAnimations(true);
     const onDone = jest.fn();
@@ -181,6 +189,7 @@ describe('full motion', () => {
     setMockHoldAnimations(false);
     resetCelebrationsForTest();
     mount(<FormReveal {...props} onDone={onDone} />);
+    await nextFrame();
     expect(byTestID('rv-words')[0].props.accessibilityElementsHidden).toBe(false);
     expect(said()).toEqual([ANNOUNCE]);
     expect(success()).toBe(1);
@@ -195,9 +204,10 @@ describe('full motion', () => {
     expect(claimDecor(motion.dur.short)).toBe(false);
   });
 
-  it('a grand change draws Form IV’s ring (the halo) and ends with it whole', () => {
+  it('a grand change draws Form IV’s ring (the halo) and ends with it whole', async () => {
     motionOn();
     mount(<FormReveal {...props} from={5} to={6} />);
+    await nextFrame();
     const halo = byTestID('rv-halo');
     expect(halo).toHaveLength(1);
     const circle = halo[0].findAll((n) => n.props.animatedProps !== undefined)[0];
@@ -236,6 +246,7 @@ describe('skip', () => {
     holdThenMount({ onDone });
     const stage = byTestID('rv-full')[0];
     expect(stage.props.accessibilityActions).toEqual([{ name: 'activate', label: 'Show the new form now' }]);
+    expect(stage.props.accessibilityHint).toBe('Double-tap to show the new form now.'); // review P1
     act(() => stage.props.onAccessibilityAction({ nativeEvent: { actionName: 'activate' } }));
     expect(byTestID('rv-full')[0].props.accessibilityActions).toBeUndefined();
     expect(said()).toEqual([ANNOUNCE]);
@@ -278,7 +289,7 @@ describe('skip', () => {
 });
 
 describe('the session’s moment already spent', () => {
-  it('waits with the fact and one calm button; nothing is announced or buzzed until it is tapped, then it plays in full', () => {
+  it('waits with the fact and one calm button; nothing is announced or buzzed until it is tapped, then it plays in full', async () => {
     motionOn();
     expect(claimMoment()).toBe(true); // the session's one moment, spent elsewhere
     expect(claimMoment()).toBe(false);
@@ -296,6 +307,7 @@ describe('the session’s moment already spent', () => {
     // The tap is the learner's own: it plays in full (not charged, not refused).
     const press = byTestID('rv-play')[0].findAll((n) => typeof n.props.onPress === 'function')[0];
     act(() => press.props.onPress());
+    await nextFrame();
     expect(byTestID('rv-full')).toHaveLength(1);
     expect(byTestID('rv-play')).toHaveLength(0);
     expect(textOf(byTestID('rv-words')[0])).toContain('The Whip Oak');
@@ -330,16 +342,18 @@ describe('the session’s moment already spent', () => {
 });
 
 describe('the haptics setting', () => {
-  it('Settings → Haptics off: the reveal is silent; on: exactly one success, never a selection tick', () => {
+  it('Settings → Haptics off: the reveal is silent; on: exactly one success, never a selection tick', async () => {
     motionOn();
     useSettings.setState({ haptics: false });
     mount(<FormReveal {...props} from={5} to={6} />);
+    await nextFrame();
     expect(said()).toEqual([ANNOUNCE]);
     expect(Haptics.notificationAsync).not.toHaveBeenCalled();
     unmount();
     useSettings.setState({ haptics: true });
     resetCelebrationsForTest();
     mount(<FormReveal {...props} from={5} to={6} />);
+    await nextFrame();
     expect(success()).toBe(1);
     expect(Haptics.selectionAsync).not.toHaveBeenCalled();
   });
