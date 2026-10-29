@@ -141,7 +141,7 @@ describe('the case', () => {
     // Back-filled (saved quietly when badges arrived): "by" that date, never as if earned that day (UX P6).
     expect(labels()).toContain('First Foothold. Earned by 12 Oct. Answer your first 20 questions. Groundwork.');
     expect(labels().some((l) => l.startsWith('Firm Footing · IS Operations, Clay. Earned by 12 Oct.') && l.endsWith('26% of the exam. The Five Domains.'))).toBe(true);
-    expect(allText()).toContain('By 12 Oct');
+    expect(allText()).toContain('Pressed by 12 Oct');
     expect(labels().some((l) => l.startsWith('Mindset Shift. Not yet.') && l.includes('Opens after 100 first tries'))).toBe(true);
   });
 
@@ -165,7 +165,7 @@ describe('the case', () => {
     press(/^Earned badges$/);
     const shown = root().findAllByType(BadgeCell).map((c) => c.props.mark.key).sort();
     expect(shown).toEqual(Object.keys(cp().milestones!.earned).sort());
-    expect(allText()).toContain('Nothing earned here yet.');
+    expect(allText()).toContain('Nothing pressed on this sheet yet.');
   });
 
   it('Sort: by set, recently earned, closest, effort; the choice is kept on this phone', () => {
@@ -371,13 +371,12 @@ describe('review fixes (PR #40)', () => {
     return out.join(' ');
   };
 
-  it('Next for your exam: the not-yet medallion uses the on-forest inks; the heading and the gap are spoken in full', () => {
+  it('Still to collect (1.51; was the forest "Next for your exam"): a header, the first row spoken "For your exam: …" with its gap in full', () => {
     d4.slice(0, 12).forEach(answer);
     mount(<Badges />);
     const panel = root().findByType(NextPanel);
-    const med = panel.findAll((n) => typeof n.type !== 'string' && typeof n.props.badge === 'string' && n.props.size === 56)[0];
-    expect(med.props.surface).toBe('forest');
-    expect(labels()).toContain(`Next for your exam: ${panel.props.best.name}`);
+    expect(panel.findAll((n) => n.props.accessibilityRole === 'header' && n.props.children === 'Still to collect · for your exam').length).toBeGreaterThan(0);
+    expect(labels().some((l) => l.startsWith(`For your exam: ${panel.props.best.name}.`))).toBe(true);
     expect(labels().some((l) => /now, aiming for 70%/.test(l))).toBe(true);
     expect(labels().some((l) => /→| of 70%/.test(l))).toBe(false);
   });

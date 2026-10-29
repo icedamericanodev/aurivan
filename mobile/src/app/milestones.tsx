@@ -24,6 +24,11 @@
  *   moment, never a goal). After the exam: no Next panel, no progress, and
  *   no Closest sort (it is a keepsake album).
  * - Large text: two columns at ×1.3, a list at ×1.6.
+ * - Mobile 1.51 (Field Guide, DESIGN_SYSTEM.md §21): the case is the HERBARIUM. A running head
+ *   ("Herbarium · Badges"), the title and an italic line ("Every sheet counts on its own; there's no
+ *   grand total."); "Still to collect · for your exam" as ruled rows; each set a numbered sheet
+ *   ("Sheet I · Groundwork · 2 of 3 pressed") whose badges are pressed specimens on a plate (the
+ *   real emblem, tape, a label). Every badge, its meaning, tiers and gating are unchanged.
  */
 import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -32,6 +37,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { BadgeCellMemo as BadgeCell, BadgeListRowMemo as BadgeListRow, BadgeSheet, NextPanel, ShelfHeader, StretchHeader } from '../components/badges';
 import { useGrowth } from '../components/motion';
 import { Button, Chip, ChipRow, PushedHeader, RadioRow, T, useFontScale } from '../components/ui';
+import { FieldText, headDate, Plate, RunningHead, sheetNo } from '../components/fieldguide';
 import {
   CASE_SORTS,
   grownLine,
@@ -111,6 +117,7 @@ export default function Badges() {
   // (it shows for 14 days from then). Read once per visit; recorded below.
   const [grownSeen] = useState(() => useSeen.getState().values);
   const [visitAt] = useState(() => Date.now());
+  const today = headDate(visitAt);
   const grownKey = (id: SetId) => `badges:grown:${cert.id}:${id}`;
   const grownFor = (s: SetView) => grownLine(s, planters, grownSeen[grownKey(s.info.id)]?.[0], visitAt);
 
@@ -231,12 +238,13 @@ export default function Badges() {
     setOpen(null);
   };
 
-  // Grid: three columns (88pt medallions), two at ×1.3 text, a list at ×1.6.
+  // A sheet: three specimens across (56pt emblems), two at ×1.3 text, a list at ×1.6. The plate's
+  // mount takes 2 × (1 + 6 + 1 + 12) of the width.
   const list = fontScale >= 1.6;
   const cols = fontScale >= LARGE_TEXT ? 2 : 3;
-  const inner = Math.min(screenW, 560) - space.gutter * 2;
-  const cellW = Math.floor((inner - (cols - 1) * space.sm) / cols);
-  const size = cols === 3 ? Math.min(88, cellW - 16) : Math.min(104, cellW - 24);
+  const inner = Math.min(screenW, 560) - space.gutter * 2 - 40;
+  const cellW = Math.floor((inner - (cols - 1) * space.xs) / cols);
+  const size = cols === 3 ? Math.min(58, cellW - 34) : Math.min(72, cellW - 40);
 
   // Opens at a shelf, once, by set: the one asked for (Field notes), else
   // Exam Day in the final three weeks. Measured on the shelf's outer view,
@@ -272,9 +280,10 @@ export default function Badges() {
         ))}
       </View>
     ) : (
-      <View style={{ flexDirection: 'row', flexWrap: 'wrap', columnGap: space.sm, marginTop: space.sm }}>
-        {items.map((m) => (
+      <View style={{ flexDirection: 'row', flexWrap: 'wrap', columnGap: space.xs }}>
+        {items.map((m, k) => (
           <BadgeCell
+            index={k}
             key={m.key}
             mark={m}
             setName={setName(m)}
@@ -291,6 +300,7 @@ export default function Badges() {
       </View>
     );
 
+  const shelfNo = new Map(sets.filter((x) => x.marks.length > 0).map((x, i) => [x.info.id, sheetNo(i)]));
   const shelf = (s: SetView) => {
     const items = s.marks.filter((m) => !m.stretch && passesFilter(m, filter));
     // The Stretch row: its own caption and small grid under the core marks, after the exam's needs.
@@ -298,24 +308,26 @@ export default function Badges() {
     const id: SetId = s.info.id;
     return (
       <View key={id} testID={`shelf-${id}`} onLayout={id === jumpTo ? (e) => setJumpY(e.nativeEvent.layout.y) : undefined}>
-        {id === 'fieldNotes' && <View style={{ height: 1, backgroundColor: c.line, marginTop: space.xxl }} />}
-        <ShelfHeader set={s} line={setCountLine(s)} quiet={quiet} grown={after ? undefined : grownFor(s)} />
-        {id === 'fieldNotes' && (
-          <Button kind="ghost" label="See game levels ›" onPress={() => router.push('/field-notes')} style={{ alignSelf: 'flex-start', marginLeft: -space.sm }} />
-        )}
-        {items.length > 0 ? (
-          renderMarks(items, false)
-        ) : (
-          <T v="meta" color={c.ink2} style={{ marginTop: space.sm }}>
-            {filter === 'earned' ? 'Nothing earned here yet.' : 'All earned.'}
-          </T>
-        )}
-        {stretch.length > 0 && (
-          <>
-            <StretchHeader set={s} />
-            {renderMarks(stretch, false)}
-          </>
-        )}
+        <ShelfHeader set={s} no={shelfNo.get(id) ?? ''} line={setCountLine(s)} quiet={quiet} grown={after ? undefined : grownFor(s)}>
+          {id === 'fieldNotes' && (
+            <Button kind="ghost" label="See game levels ›" onPress={() => router.push('/field-notes')} style={{ alignSelf: 'flex-start', marginLeft: -space.sm, marginTop: -space.sm }} />
+          )}
+          <Plate>
+            {items.length > 0 ? (
+              renderMarks(items, false)
+            ) : (
+              <T v="meta" color={c.ink2}>
+                {filter === 'earned' ? 'Nothing pressed on this sheet yet.' : 'All earned.'}
+              </T>
+            )}
+            {stretch.length > 0 && (
+              <>
+                <StretchHeader set={s} />
+                {renderMarks(stretch, false)}
+              </>
+            )}
+          </Plate>
+        </ShelfHeader>
       </View>
     );
   };
@@ -323,7 +335,11 @@ export default function Badges() {
   return (
     <SafeAreaView edges={['top', 'bottom']} style={{ flex: 1, backgroundColor: c.bg }}>
       <ScrollView ref={scroll} contentContainerStyle={{ paddingHorizontal: space.gutter, paddingBottom: space.xxl }}>
-        <PushedHeader title="Badges" onBack={() => router.back()} />
+        <PushedHeader onBack={() => router.back()} />
+        {/* Mobile 1.51 (Field Guide): the running head, then the herbarium's title and its one promise. */}
+        <RunningHead section="Herbarium · Badges" aside={today.shown} asideLabel={today.spoken} />
+        <T v="display" accessibilityRole="header" style={{ marginTop: space.lg }}>Herbarium</T>
+        <FieldText v="sub" style={{ marginTop: 2 }}>Each badge is pressed and labelled the day you earn it. Every sheet counts on its own; there’s no grand total.</FieldText>
         <T v="meta" style={{ marginTop: space.sm }}>Earned by what you’ve mastered. Once earned, a badge stays.</T>
 
         {fillSummary && (
@@ -387,7 +403,7 @@ export default function Badges() {
           <View style={{ marginTop: space.md }}>
             {(() => {
               const items = sortMarks(marks.filter((m) => passesFilter(m, filter)), sort);
-              return items.length ? renderMarks(items, true) : <T v="meta" color={c.ink2}>{filter === 'earned' ? 'Nothing earned yet. Next for your exam shows where to start.' : 'All earned.'}</T>;
+              return items.length ? renderMarks(items, true) : <T v="meta" color={c.ink2}>{filter === 'earned' ? 'Nothing pressed yet. Still to collect shows where to start.' : 'All earned.'}</T>;
             })()}
           </View>
         )}

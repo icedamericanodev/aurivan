@@ -625,13 +625,13 @@ describe('3. "Next for your exam" at each journey stage', () => {
     expect(root().findAllByType(NextPanel)).toHaveLength(0);
   });
 
-  it('the screen shows slot 1 in the forest panel, with its button spoken with the badge name', () => {
+  it('the screen shows slot 1 first under Still to collect, with its button spoken with the badge name', () => {
     for (const d of ['1', '2', '3', '4', '5']) answerDomain(d, 5, 0);
     checkMilestones('cisa');
     mount(<Badges />);
     const panel = root().findByType(NextPanel);
     expect(panel.props.best.key).toBe('firm-footing:4');
-    expect(textOf(panel)).toContain('Next for your exam');
+    expect(textOf(panel)).toContain('Still to collect · for your exam'); // mobile 1.51: the herbarium's ruled rows
     expect(textOf(panel)).toContain('Firm Footing · IS Operations');
     expect(textOf(panel)).toContain('26% of the exam');
     expect(panel.props.nearest.map((m: CaseMark) => m.badge)).not.toContain('firm-footing');
@@ -770,7 +770,7 @@ describe('4. the case', () => {
     press(/^Badges not yet earned$/);
     expect(allText()).toContain('All earned.');
     press(/^Earned badges$/);
-    expect(allText()).toContain('Nothing earned here yet.');
+    expect(allText()).toContain('Nothing pressed on this sheet yet.');
   });
 
   it('detail sheet, not yet: rule, progress, how to earn it, effort, and Study for this', () => {
@@ -1182,7 +1182,7 @@ describe('8. regressions', () => {
     expect(existsSync(join(__dirname, '..', 'app', 'milestones.tsx'))).toBe(true);
     expect(readFileSync(join(__dirname, '..', 'app', '_layout.tsx'), 'utf8')).toMatch(/<Stack\.Screen name="milestones"/);
     mount(<Badges />);
-    expect(allText()).toMatch(/^Badges /);
+    expect(allText()).toMatch(/^Herbarium · Badges /); // mobile 1.51: the badge case is the Herbarium
     expect(allText()).toContain('Earned by what you’ve mastered.');
   });
 

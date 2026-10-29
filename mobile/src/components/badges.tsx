@@ -14,7 +14,7 @@
  *   means), one honest effort fact and the button.
  */
 import { memo, useEffect, useRef, useState } from 'react';
-import { Modal, Pressable, ScrollView, View } from 'react-native';
+import { Modal, ScrollView, View } from 'react-native';
 import Animated, { Easing, ReduceMotion, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import type { DomainInfo } from '../content/types';
@@ -29,9 +29,10 @@ import { BadgeSharePanel } from './shareCard';
 import { badgeMetal, motion, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { Medallion, type MedallionState } from './medallion';
-import { AnimatedPressable, Pop, ProgressFill, useMotion, usePressScale } from './motion';
+import { AnimatedPressable, useMotion, usePressScale } from './motion';
 import { ICON_STROKE, Share2 } from './icons';
-import { Button, DomainDot, HeroPanel, ICON_SIZE, ProgressBar, Row, T } from './ui';
+import { Button, DomainDot, ICON_SIZE, ProgressBar, Row, T } from './ui';
+import { CollectRow, FieldText, HerbariumSheet, Specimen, SpecimenMount } from './fieldguide';
 
 /** The medallion state for a mark (started and open both draw "not yet"; gated is dotted). */
 export const medallionState = (m: CaseMark): MedallionState => (m.status === 'earned' ? 'earned' : m.status === 'gated' ? 'gated' : 'open');
@@ -111,7 +112,29 @@ export function cellSpoken(m: CaseMark, setName: string, showProgress: boolean, 
 /** What a cell or row needs to open its sheet: a stable callback, keyed by the mark (so memo holds). */
 type OnOpen = (key: string) => void;
 
-// ── One cell of the grid ─────────────────────────────────────────────────
+// ── One specimen on a herbarium sheet (mobile 1.51, Field Guide §21) ────
+/** The specimen's name: a Firm Footing leaf by its domain, a ladder by its badge ("Rooted"), else the caption. */
+function specimenName(m: CaseMark, domain: DomainInfo | undefined, showSet?: boolean): string {
+  if (domain) return showSet ? m.name : domain.short;
+  if (m.tier && !showSet) return m.name.split(' · ')[0];
+  return m.caption;
+}
+
+/** The label's last line: "Pressed 3 Oct" (or "Pressed by 3 Oct"), the gate, or how close it is. */
+export function specimenLine(m: CaseMark, showProgress: boolean, quiet: Quiet = NO_QUIET): string | undefined {
+  if (m.status === 'earned') {
+    const when = earnedWhen(m, quiet);
+    return when ? `Pressed ${when.replace(/^By /, 'by ')}` : 'Pressed';
+  }
+  if (m.status === 'gated') return m.gateLine?.replace(/\.$/, '') ?? 'Opens later';
+  if (!showProgress) return undefined;
+  if (m.domain) return m.detail.split(' · ')[0];
+  return m.detail;
+}
+
+/** A sheet's specimens are pressed at slightly different sizes and drops, as real ones are. */
+const DROP = [0, 12, 4];
+
 export function BadgeCell({
   mark,
   setName,
@@ -123,69 +146,66 @@ export function BadgeCell({
   showSet,
   showProgress = true,
   quiet,
+  index = 0,
 }: {
   mark: CaseMark;
   setName: string;
   width: number;
-  /** The medallion's size (88 in three columns). */
+  /** The emblem's size (56 in three columns). */
   size: number;
   domains: readonly DomainInfo[];
   onOpen: OnOpen;
-  /** Earned since the case was last opened: it presses in after this many ms. */
+  /** Earned since the case was last opened: it is pressed in after this many ms. */
   press?: number;
-  /** Flat sorts: the set's name under the line. */
+  /** Flat sorts: the set's name under the label. */
   showSet?: boolean;
   showProgress?: boolean;
-  /** When the back-fill ran: badges stamped then read "By 11 Oct". */
+  /** When the back-fill ran: badges stamped then read "Pressed by 11 Oct". */
   quiet?: Quiet;
+  /** Its place on the sheet (its size and drop vary a little with it). */
+  index?: number;
 }) {
   const { c } = useTheme();
-  const touch = usePressScale({});
-  const line = cellLine(mark, showProgress, quiet);
   const domain = mark.domain ? domains.find((d) => d.id === mark.domain!.id) : undefined;
-  // Firm Footing's leaves are named by domain; in a flat sort they also keep the badge's name.
-  // Firm Footing's leaves are named by domain; in a flat sort they keep the badge's whole name.
-  const caption = domain ? (showSet ? mark.name : domain.short) : showSet || !mark.tier ? mark.caption : tierCaption(mark);
+  const props = medallionProps(mark, domains, showProgress);
   return (
-    <AnimatedPressable
-      accessibilityRole="button"
-      accessibilityLabel={cellSpoken(mark, setName, showProgress, quiet)}
-      accessibilityHint="Opens its details"
+    <Specimen
+      badge={props.badge}
+      tier={mark.tier}
+      tiers={mark.tiers}
+      emblem={props.emblem}
+      state={props.state}
+      name={specimenName(mark, domain, showSet)}
+      tierCaption={mark.tier ? tierCaption(mark) : undefined}
+      line={specimenLine(mark, showProgress, quiet)}
+      width={width}
+      size={index % 3 === 0 ? size : size - 6}
+      offset={DROP[index % 3]}
+      press={press}
       onPress={() => onOpen(mark.key)}
-      onPressIn={touch.onPressIn}
-      onPressOut={touch.onPressOut}
-      style={[{ width, alignItems: 'center', paddingVertical: space.sm, minHeight: 48 }, touch.style]}
-    >
-      <Pop mount={press !== undefined} from={0.4} delay={press ?? 0}>
-        <Medallion {...medallionProps(mark, domains, showProgress)} size={size} />
-      </Pop>
-      <T v="label" center style={{ marginTop: space.xs }}>{caption}</T>
-      {domain && mark.domain && (
-        // The domain's blueprint weight, with its tone dot (the dot is never alone: the name is above).
-        // The 80% Stretch row says its tier there instead (the weight is on the row above).
-        <Row gap={6} style={{ marginTop: 2, justifyContent: 'center' }}>
-          <DomainDot domain={domain} />
-          <T v="meta" num color={c.ink2} style={{ flexShrink: 1 }}>{mark.stretch ? `${mark.tierLabel} mastery` : `${mark.domain.weight}% of exam`}</T>
-        </Row>
-      )}
-      {line && (
-        <T v="meta" num center color={mark.status === 'earned' ? c.accentText : c.ink2} style={{ marginTop: 2 }}>
-          {line}
-        </T>
-      )}
-      {showSet && (
-        // Flat sorts have no Stretch row header, so a Stretch tier says so here, in words.
-        <T v="meta" center color={c.muted} style={{ marginTop: 2 }}>
-          {mark.stretch ? `${setName} · Stretch` : setName}
-        </T>
-      )}
-    </AnimatedPressable>
+      spoken={cellSpoken(mark, setName, showProgress, quiet)}
+      extra={
+        <>
+          {domain && mark.domain && (
+            // The domain's blueprint weight, with its tone dot (the dot is never alone: the name is above).
+            <Row gap={6} style={{ marginTop: 2, justifyContent: 'center' }}>
+              <DomainDot domain={domain} />
+              <FieldText v="small" style={{ flexShrink: 1 }}>{mark.stretch ? `${mark.tierLabel} mastery` : `${mark.domain.weight}% of exam`}</FieldText>
+            </Row>
+          )}
+          {showSet && (
+            // Flat sorts have no sheet heading, so a Stretch tier says so here, in words.
+            <FieldText v="small" center color={c.muted}>{mark.stretch ? `${setName} · Stretch` : setName}</FieldText>
+          )}
+        </>
+      }
+    />
   );
 }
-/** The cell, memoised (the case's grid): only cells whose mark, size or press changed re-render. */
+/** The cell, memoised (the herbarium's sheets): only cells whose mark, size or press changed re-render. */
 export const BadgeCellMemo = memo(BadgeCell);
 
-// ── One row (large text, and "Next for your exam" slots 2–3) ─────────────
+// ── One row (very large text, and a flat sort's list) ────────────────────
 export function BadgeListRow({
   mark,
   setName,
@@ -196,7 +216,7 @@ export function BadgeListRow({
   showSet,
   showProgress = true,
   quiet,
-  size = 48,
+  size = 40,
   extra,
 }: {
   mark: CaseMark;
@@ -214,7 +234,8 @@ export function BadgeListRow({
 }) {
   const { c } = useTheme();
   const touch = usePressScale({ scale: 1, tint: c.soft });
-  const line = cellLine(mark, showProgress, quiet);
+  const line = specimenLine(mark, showProgress, quiet);
+  const props = medallionProps(mark, domains, showProgress);
   return (
     <AnimatedPressable
       accessibilityRole="button"
@@ -226,14 +247,12 @@ export function BadgeListRow({
       style={[{ flexDirection: 'row', gap: space.md, paddingVertical: 12, borderBottomWidth: last ? 0 : 1, borderBottomColor: c.line, alignItems: 'center' }, touch.style]}
     >
       {touch.layer}
-      <Pop mount={press !== undefined} from={0.4} delay={press ?? 0}>
-        <Medallion {...medallionProps(mark, domains, showProgress)} size={size} />
-      </Pop>
+      <SpecimenMount badge={props.badge} tier={mark.tier} emblem={props.emblem} state={props.state} size={size} press={press} />
       <View style={{ flex: 1, minWidth: 0 }}>
         <T v="label">{mark.name}{mark.tier ? ` · ${tierName(mark)}` : ''}</T>
         {line && (
           <T v="meta" num color={mark.status === 'earned' ? c.accentText : c.ink2} style={{ marginTop: 2 }}>
-            {`${mark.stretch ? 'Stretch · ' : ''}${mark.status === 'earned' ? earnedLine(mark, quiet) : mark.domain ? `${mark.domain.weight}% of the exam · ${line}` : line}`}
+            {`${mark.stretch ? 'Stretch · ' : ''}${mark.status !== 'earned' && mark.domain ? `${mark.domain.weight}% of the exam · ${line}` : line}`}
           </T>
         )}
         {showSet && <T v="meta" color={c.muted}>{setName}</T>}
@@ -242,57 +261,51 @@ export function BadgeListRow({
     </AnimatedPressable>
   );
 }
-/** The row, memoised (the case's large-text list). */
+/** The row, memoised (the herbarium's large-text list). */
 export const BadgeListRowMemo = memo(BadgeListRow);
 
-// ── A shelf's header ─────────────────────────────────────────────────────
-export function ShelfHeader({ set, line, quiet = NO_QUIET, grown }: { set: SetView; line?: string; quiet?: Quiet; grown?: string }) {
-  const { c } = useTheme();
+// ── A sheet's heading ────────────────────────────────────────────────────
+/** "Sheet I · Groundwork · 2 of 3 pressed", its purpose in italics; said as before ("Groundwork, 2 of 3"). */
+export function ShelfHeader({ set, no, quiet = NO_QUIET, grown, children }: { set: SetView; no: string; line?: string; quiet?: Quiet; grown?: string; children?: React.ReactNode }) {
   const complete = set.completeAt !== undefined;
   // A set a quiet fill completed: "by 11 Oct" (it was already complete then).
   const when = complete ? `${quiet.includes(set.completeAt!) ? 'by ' : ''}${shortDate(set.completeAt!)}` : '';
   const spoken = complete ? `${setSpoken(set)}, ${when}` : setSpoken(set);
+  const counted = set.info.counter && set.total > 0;
   return (
-    <View style={{ marginTop: space.xxl }}>
-      <View accessible accessibilityRole="header" accessibilityLabel={spoken} style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'baseline', columnGap: space.md }}>
-        <T v="headline" style={{ flexShrink: 1 }}>{set.info.name}</T>
-        {line && (
-          <T v="meta" num color={complete ? c.accentText : c.ink2}>
-            {complete ? `${line} · ${when}` : line}
-          </T>
-        )}
-      </View>
-      <T v="meta" color={c.ink2} style={{ marginTop: 2 }}>
-        {set.info.purpose}
-      </T>
-      {grown && (
-        // A set that was complete and has since gained badges (UX O3): said
-        // plainly, never as a loss. Its planter stays.
-        <T v="meta" color={c.accentText} style={{ marginTop: space.xs }}>
-          {grown}
-        </T>
-      )}
-    </View>
+    <HerbariumSheet
+      no={no}
+      name={set.info.name}
+      earned={counted ? set.earned : undefined}
+      total={counted ? set.total : undefined}
+      complete={complete ? when : undefined}
+      purpose={set.info.purpose}
+      spoken={spoken}
+      // A set that was complete and has since gained badges (UX O3): said plainly, never as a loss.
+      note={grown}
+    >
+      {children}
+    </HerbariumSheet>
   );
 }
 
 /**
  * A set's Stretch row: a hairline and "Stretch · beyond exam need · 0 of 5"
- * above its own small grid (badges_game.md §2.1). Never counted in the set.
+ * above its own small group (badges_game.md §2.1). Never counted in the set.
  */
 export function StretchHeader({ set }: { set: SetView }) {
   const { c } = useTheme();
   const line = stretchLine(set);
   if (!line) return null;
   return (
-    <View accessible accessibilityRole="header" accessibilityLabel={`${line.replace(/ · /g, ', ')}. Extra, never needed to feel done.`} style={{ marginTop: space.lg, paddingTop: space.md, borderTopWidth: 1, borderTopColor: c.line }}>
-      <T v="caption" color={c.ink2}>{line}</T>
+    <View accessible accessibilityRole="header" accessibilityLabel={`${line.replace(/ · /g, ', ')}. Extra, never needed to feel done.`} style={{ marginTop: space.md, paddingTop: space.md, borderTopWidth: 1, borderTopColor: c.line }}>
+      <FieldText v="head">{line}</FieldText>
     </View>
   );
 }
 
-// ── Next for your exam ───────────────────────────────────────────────────
-/** The forest panel's line under the name: a domain's weight and gap, or the progress. */
+// ── Still to collect · for your exam ─────────────────────────────────────
+/** The line under a badge's name: a domain's weight and gap, or the progress. */
 function bestMeta(m: CaseMark): string {
   if (m.domain) {
     const [gap] = m.detail.split(' · ');
@@ -302,6 +315,15 @@ function bestMeta(m: CaseMark): string {
   return m.progress > 0 ? m.detail : m.rule;
 }
 
+/** The heading over the rows: what they are for. */
+export const COLLECT_TITLE = 'Still to collect · for your exam';
+
+/**
+ * Still to collect (mobile 1.51; was the "Next for your exam" forest panel): the badge that helps
+ * the exam most right now, then the two nearest, as ruled rows on the paper: a pencilled mount with
+ * the emblem's outline, the name, why it helps now, a progress bar when there is one, and "Study
+ * for this ›". The first row's study note says what a tap starts. Forest stays on primary buttons.
+ */
 export function NextPanel({
   best,
   nearest,
@@ -326,112 +348,56 @@ export function NextPanel({
 }) {
   const { c } = useTheme();
   if (!best && nearest.length === 0) return null;
-  const bestTarget = best ? studyTarget(best, weakest) : null;
-  const bestNote = best && bestTarget ? studyNote(best, bestTarget, dueCount) : undefined;
   // Only Stretch tiers left (every core badge they belong to is done): never
-  // "Next for your exam", which would call depth beyond exam need a next step.
+  // "for your exam", which would call depth beyond exam need a next step.
   const extraOnly = !best && nearest.every((m) => m.stretch);
+  const rows = [...(best ? [best] : []), ...nearest];
   return (
-    <View style={{ marginTop: space.xl }}>
-      {!best && (
-        // Nothing fits slot 1 (its rules are all done): the nearest still sit under a heading.
-        <T v="caption" color={c.accentText} accessibilityRole="header">
-          {extraOnly ? 'If you want to go further' : 'Next for your exam'}
-        </T>
-      )}
+    <View style={{ marginTop: space.xl }} testID="still-to-collect">
+      <FieldText v="head" accessibilityRole="header">{extraOnly ? 'If you want to go further' : COLLECT_TITLE}</FieldText>
       {extraOnly && (
         <T v="meta" color={c.ink2} style={{ marginTop: space.xs }}>
           These go beyond what the exam needs. Entirely optional.
         </T>
       )}
-      {best && (
-        <HeroPanel
-          caption="Next for your exam"
-          title={best.name}
-          // The heading is spoken with its context: "Next for your exam: Dress Rehearsal" (UX P10).
-          titleLabel={`Next for your exam: ${best.name}`}
-          meta={bestMeta(best)}
-          metaLabel={spokenDetail(bestMeta(best))}
-          art="frond"
-          sway={false}
-          action={
-            bestTarget
-              ? {
-                  label: 'Study for this',
-                  onPress: () => onStudy(bestTarget),
-                  hint: `Studies for ${best.name}${bestNote ? `. ${bestNote}` : ''}`,
-                }
-              : undefined
-          }
-        >
-          <Pressable
-            accessibilityRole="button"
-            accessibilityLabel={cellSpoken(best, setName(best), true)}
-            accessibilityHint="Opens its details"
-            onPress={() => onOpen(best.key)}
-            style={{ flexDirection: 'row', alignItems: 'center', gap: space.md, marginTop: space.md, minHeight: 48 }}
-          >
-            {/* On the forest panel: on-forest inks, so a not-yet badge keeps 3:1 (UX review H1). */}
-            <Medallion {...medallionProps(best, domains)} size={56} surface="forest" />
-            <View style={{ flex: 1, minWidth: 0 }}>
-              {best.progress > 0 ? (
-                <>
-                  <View style={{ height: 6, borderRadius: 3, overflow: 'hidden', backgroundColor: c.forestTrack }}>
-                    <ProgressFill value={best.progress} color={c.sap} radius={3} from={barFrom?.(best.key)} delay={motion.dur.screen} />
-                  </View>
-                  {/* Firm Footing's answer count (the gap is in the line above); others' progress is that line. */}
-                  {best.domain && (
-                    <T v="meta" num color={c.onForest2} style={{ marginTop: space.xs }}>
-                      {best.detail.split(' · ')[1] ?? ''}
-                    </T>
-                  )}
-                </>
-              ) : (
-                // Nothing to fill yet (a mock badge): what it takes, instead of an empty bar.
-                <T v="meta" color={c.onForest2}>{best.effort}</T>
-              )}
-            </View>
-          </Pressable>
-          {bestNote && (
-            <T v="meta" color={c.onForest2} style={{ marginTop: space.sm }}>
-              {bestNote}
-            </T>
-          )}
-        </HeroPanel>
-      )}
-      {nearest.map((m, k) => {
-        const target = studyTarget(m, weakest);
-        const note = target ? studyNote(m, target, dueCount) : undefined;
-        return (
-          <View key={m.key} style={{ borderBottomWidth: k === nearest.length - 1 ? 0 : 1, borderBottomColor: c.line }}>
-            <BadgeListRow
-              mark={m}
-              setName={setName(m)}
-              domains={domains}
-              onOpen={onOpen}
-              size={40}
-              last
-              extra={
-                m.progress > 0 ? (
+      <View style={{ marginTop: space.sm }}>
+        {rows.map((m, k) => {
+          const target = studyTarget(m, weakest);
+          const note = target ? studyNote(m, target, dueCount) : undefined;
+          const props = medallionProps(m, domains);
+          const why = bestMeta(m);
+          return (
+            <View key={m.key}>
+              <CollectRow
+                badge={props.badge}
+                tier={m.tier}
+                emblem={props.emblem}
+                name={m === best ? m.name : `${m.name}${m.tier ? ` · ${tierName(m)}` : ''}`}
+                why={`${m.stretch ? 'Stretch · ' : ''}${why}`}
+                spoken={m === best ? `For your exam: ${cellSpoken(m, setName(m), true)}` : cellSpoken(m, setName(m), true)}
+                onPress={() => onOpen(m.key)}
+                last={k === rows.length - 1 && !target}
+              >
+                {m.progress > 0 && (
                   <View style={{ marginTop: space.sm }}>
                     <ProgressBar value={m.progress} height={6} from={barFrom?.(m.key)} delay={motion.dur.screen} />
                   </View>
-                ) : undefined
-              }
-            />
-            {target && (
-              <View style={{ alignItems: 'flex-end', marginTop: -space.sm, paddingBottom: space.xs }}>
-                {note && <T v="meta" color={c.ink2} style={{ alignSelf: 'stretch', marginLeft: 52 }}>{note}</T>}
-                {m.stretch ? (
-                  <Button kind="ghost" label="Go further ›" accessibilityLabel={`Go further: ${m.name}. Optional, beyond exam need`} onPress={() => onStudy(target)} />
-                ) : (
-                  <Button kind="ghost" label="Study for this ›" accessibilityLabel={`Study for ${m.name}`} onPress={() => onStudy(target)} />
                 )}
-              </View>
-            )}
-          </View>
-        );
-      })}
+              </CollectRow>
+              {target && (
+                <View style={{ alignItems: 'flex-end', paddingBottom: space.xs, borderBottomWidth: k === rows.length - 1 ? 1 : 0, borderBottomColor: c.line }}>
+                  {note && <T v="meta" color={c.ink2} style={{ alignSelf: 'stretch', marginLeft: 54 }}>{note}</T>}
+                  {m.stretch ? (
+                    <Button kind="ghost" label="Go further ›" accessibilityLabel={`Go further: ${m.name}. Optional, beyond exam need`} onPress={() => onStudy(target)} />
+                  ) : (
+                    <Button kind="ghost" label="Study for this ›" accessibilityLabel={`Study for ${m.name}`} accessibilityHint={note} onPress={() => onStudy(target)} />
+                  )}
+                </View>
+              )}
+            </View>
+          );
+        })}
+      </View>
     </View>
   );
 }
