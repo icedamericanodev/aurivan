@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Screenshot harness: web-export the app, seed demo data, capture key screens.
-# Usage (from mobile/): [SHOTS=m146|m145|m144|m143|m142|m141|guides|principles|qnote|today|firstdays|notes|data|pace|practice|milestones|support|paths|motion|growth|badges|badgesC|stats|learnplay|plant|fit|proof|settings|cloud|store] bash scripts/screenshots/run.sh [out_dir] [dark|light]
+# Usage (from mobile/): [SHOTS=m149|m146|m145|m144|m143|m142|m141|guides|principles|qnote|today|firstdays|notes|data|pace|practice|milestones|support|paths|motion|growth|badges|badgesC|stats|learnplay|plant|fit|proof|settings|cloud|store] bash scripts/screenshots/run.sh [out_dir] [dark|light]
 # Needs Playwright (preinstalled in Claude cloud sessions; locally: npx playwright install chromium).
 set -euo pipefail
 cd "$(dirname "$0")/../.."
@@ -238,6 +238,10 @@ elif [ "${SHOTS:-}" = store ]; then
   # Copies for the listing live in design-notes/brand-kaisip/store/screenshots/.
   node scripts/screenshots/shoot_store.mjs "$TMP/seed.json" "$OUT"
   python3 scripts/screenshots/flatten_png.py "$OUT"/store-0*.png
+elif [ "${SHOTS:-}" = m149 ]; then
+  # Mobile 1.49 (premium pass): the answer after a miss (recap, Show question, Go deeper, the ⋯
+  # sheet) and an answered lesson quick check, in light and dark (shoot_m149.mjs; THEMES=light for one).
+  node scripts/screenshots/shoot_m149.mjs "$TMP/seed.json" "$OUT"
 elif [ "${SHOTS:-}" = m143 ]; then
   # Mobile 1.43: the six concept boards (answer, results, you, note, settings, lesson idea) and the
   # tab headers (shoot_m143.mjs). M143_ONLY=answer,results picks a few; FONT_SCALE=2 for ~200% text.
@@ -248,5 +252,8 @@ elif [ "${SHOTS:-}" = paths ]; then
   node scripts/screenshots/shoot_paths.mjs "$TMP/seed.json" "$OUT" "$THEME"
 else
   node scripts/screenshots/shoot.mjs "$TMP/seed.json" "$OUT"
+  # The default run used to stop at the question bank: it now also takes the answer after a miss
+  # and an answered lesson check, light and dark (mobile 1.49).
+  node scripts/screenshots/shoot_m149.mjs "$TMP/seed.json" "$OUT"
 fi
 echo "Screenshots in $OUT"
