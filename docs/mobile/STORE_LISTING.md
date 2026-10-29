@@ -19,10 +19,10 @@ Character counts below are exact for the short fields (® counts as 1). Long fie
 
 ## 1. Apple App Store
 
-### App name (30): 26/30
+### App name (30): 29/30
 
 ```
-KaiSip: IT Audit Exam Prep
+KaiSip: Cyber & IT Audit Prep
 ```
 
 ### Subtitle (30): 27/30
@@ -121,17 +121,21 @@ About 250 characters.
 
 ## 2. Google Play
 
-### Title (30): 26/30
+### Title (30): 29/30
 
 ```
-KaiSip: IT Audit Exam Prep
+KaiSip: Cyber & IT Audit Prep
 ```
 
-### Short description (80): 73/80
+Chosen 29 Oct 2026 (owner: "IT Audit" alone is too narrow as KaiSip adds certifications; growth-marketer and app-store-compliance-reviewer agree). "Cyber" is accurate for a CISA-only app because Protection of Information Assets is cybersecurity content; "IT audit" is an exact search phrase KaiSip can win. Conditions: keep CISA® in the short description and the owner's line near the top of the full description until a second certification is live; never add "Certified" or "Cybersecurity Cert" to the title (too close to ISC2's "Certified in Cybersecurity"); check the length of any translated title (29/30 leaves no room); use the same name on the App Store.
+
+### Short description (80): 75/80
 
 ```
-Practice for the CISA® exam: teaching tips, daily plan and spaced review.
+Calm IT audit and cybersecurity practice for the CISA® exam. Works offline.
 ```
+
+It carries "cybersecurity" (Play does not reliably match "cyber" to it) and the exam the title leaves out. Previous text (22 Oct): "Practice for the CISA® exam: teaching tips, daily plan and spaced review." When ISC2 CC ships in the Play build, switch to "Calm cybersecurity and IT audit practice for the CISA® and ISC2® CC® exams." (75) and update the guardrail, the trademark notice and "all 5 CISA domains" in the same change; have app-store-compliance-reviewer confirm the first listing that names ISC2.
 
 ### Full description (4000): 2,293/4000
 
@@ -145,6 +149,8 @@ When the beta ends, change the beta line (the owner decides the wording then).
 Think like an IS auditor.
 
 KaiSip helps IT auditors, security and risk professionals prepare for the CISA® exam in short, calm sessions that fit around work. Every answer teaches the principle behind it, so you grow the judgment the exam rewards, one ring at a time.
+
+Starting with CISA. More certifications later.
 
 KaiSip is free to use during the beta. No account, no ads.
 
@@ -183,8 +189,6 @@ MADE FOR REAL LIFE
 
 A NOTE ON READINESS
 Your readiness range is a study estimate, not a prediction of your exam result. KaiSip cannot promise a pass. It helps you practise with purpose and walk in prepared.
-
-Starting with CISA. More certifications later.
 
 All practice questions are original and are not ISACA exam questions.
 CISA® and ISACA® are registered trademarks of ISACA. KaiSip is not affiliated with or endorsed by ISACA.
@@ -293,7 +297,7 @@ Apple Product Page Optimization can test screenshots, icon and preview video, bu
 | Field | Control (A) | Variant (B) | Hypothesis |
 |---|---|---|---|
 | iOS subtitle (change with a version update) | Practice for the CISA® exam (27) | CISA® exam practice, offline (28) | Same as above, measured as conversion before and after |
-| Name (later, only if data supports it) | KaiSip: IT Audit Exam Prep (26) | KaiSip: IT Audit & Risk Prep (28) | Widens reach to risk professionals; only once a second certification is live (until then the listing stays CISA-only) |
+| Name (later, only if data supports it) | KaiSip: Cyber & IT Audit Prep (29) | (none planned) | Title chosen 29 Oct 2026 for the multi-certification roadmap; revisit only if store data shows a problem |
 | Screenshot 1 caption | Think like an IS auditor. | Know what to study next | A concrete benefit first beats the brand line for cold traffic |
 
 Success metric: store listing conversion rate (visitors to installs), read at 90% confidence and at least 7 days per test.

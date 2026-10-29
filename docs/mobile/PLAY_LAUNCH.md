@@ -99,7 +99,7 @@ What exists in the repo:
 | Store-size screenshots | No, must be made |
 
 **6. Trademark**
-- The title "KaiSip: IT Audit Exam Prep" is safe. "CISA®" in the short and full descriptions is descriptive use, with the notice at `STORE_LISTING.md:93`.
+- The title "KaiSip: Cyber & IT Audit Prep" is safe (re-checked 29 Oct 2026 when it replaced "KaiSip: IT Audit Exam Prep"). "CISA®" in the short and full descriptions is descriptive use, with the notice at `STORE_LISTING.md:93`.
 - Flags:
   - (i) `STORE_LISTING.md:85` "No data collected" is true only with Option A.
   - (ii) A/B variant B (`:193`) starts the short description with "CISA® exam practice…", which reads like a product name. Keep variant A.
@@ -137,7 +137,7 @@ What exists in the repo:
    - Tell anyone who has the preview APK: Settings → Your data → Save a backup before switching.
 4. **Create the app.**
    - Play Console → All apps → Create app.
-   - App name `KaiSip: IT Audit Exam Prep`; Default language English (United States); App; **Free**; tick both declarations; Create app.
+   - App name `KaiSip: Cyber & IT Audit Prep` (29/30; chosen 29 Oct 2026, see STORE_LISTING.md §2); Default language English (United States); App; **Free**; tick both declarations; Create app.
    - Free cannot later become paid, but in-app subscriptions remain possible.
 5. **Check the EAS production variables.** In `/home/user/aurivan/mobile`:
    - Run `npx eas-cli env:list --environment production`. Confirm there is no `EXPO_PUBLIC_AURIVAN_*` variable.
@@ -217,7 +217,7 @@ What exists in the repo:
 5. **`/home/user/aurivan/mobile/eas.json` `submit.production`.** Set `{"android": {"track": "internal", "releaseStatus": "draft"}}` so `eas submit` can never release to the public by itself. eas.json is a fingerprint input, so bundle this with c1/c3.
 6. **Store screenshots.** Add `SHOTS=store` to `/home/user/aurivan/mobile/scripts/screenshots/run.sh` and `shoot.mjs`: viewport 360×640, `deviceScaleFactor: 3` (1080×1920), light theme, the 6 screens in `STORE_LISTING.md:145-152`, saved as 24-bit PNG with no question count visible.
 7. **`/home/user/aurivan/docs/mobile/STORE_LISTING.md`.**
-   - Title count 26/30.
+   - Title count 29/30 (`KaiSip: Cyber & IT Audit Prep`).
    - Add the Play Data safety and IARC answers from section (d).
    - Keep the `:85` "No data collected" line only under Option A; otherwise change it to "No account, no ads, no analytics. Your progress stays on your phone."
    - Retire short-description variant B.
