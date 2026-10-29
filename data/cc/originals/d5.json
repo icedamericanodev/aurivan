@@ -26,7 +26,7 @@
    "correct_explanation": "Symmetric encryption uses one shared secret key and is fast, so it suits bulk data such as a whole database; the Advanced Encryption Standard (AES) is the common example. Asymmetric encryption is the runner-up because a key pair sounds stronger, but it is far slower and is used to exchange keys and sign. Real systems use it to protect the symmetric key.",
    "wrong_explanations": {
     "B": "Tempting because hashing is a core security tool. But a hash is one-way, so the records could never be read back; it checks integrity, not confidentiality.",
-    "C": "Closest choice: a key pair sounds stronger. But asymmetric encryption is far slower, so it protects small items such as keys and signatures, not whole databases.",
+    "C": "Closest choice: a key pair sounds stronger. But asymmetric encryption is far slower, so it is used for small jobs such as exchanging keys and signing, not for whole databases.",
     "D": "Tempting because signatures use keys. But a signature proves who signed and that data is unchanged; anyone could still read the records."
    },
    "tips": [
@@ -58,7 +58,7 @@
    },
    "correct": "D",
    "key_concept": "Sensitive media leaving the organization is purged or destroyed; on SSDs, use the built-in sanitize command or cryptographic erase.",
-   "pre_read": "Notice the type of storage and where the laptops are going next. Then ask what each method can actually reach.",
+   "pre_read": "Notice the type of storage and where the laptops are going next. Then recall which methods suit that storage.",
    "correct_explanation": "The drives held sensitive records and are leaving the school's control, so they need purging, which defeats even laboratory recovery. On solid-state drives, the built-in sanitize command reaches every storage cell. Overwriting is the runner-up: it is a clear method that suits many hard disks, but SSDs keep spare cells that ordinary writes never reach, so student data could survive.",
    "wrong_explanations": {
     "A": "Tempting because the files vanish from view. But deleting removes only the pointers to the data; free recovery tools can still read the records.",
@@ -162,7 +162,7 @@
     "A": "It raises an alert in the security monitoring tool",
     "B": "It has a negative effect on a system, such as a crash",
     "C": "It is recorded in the logs of more than one system",
-    "D": "It harms or threatens security, or breaks a security policy"
+    "D": "It harms or threatens security, or breaks policy"
    },
    "correct": "D",
    "key_concept": "An incident actually or imminently harms security or breaks policy; events and alerts are not incidents until they meet that test.",
@@ -184,7 +184,7 @@
     "Adverse event",
     "Declaring an incident"
    ],
-   "_provenance": "Authored from concept: 'an incident harms or threatens security or breaks policy; alerts and events do not by themselves' (notes 5.2.1 Events, Alerts and Incidents). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 pilot batch, 29 Oct 2026.",
+   "_provenance": "Authored from concept: 'an incident harms or threatens security or breaks policy; alerts and events do not by themselves' (notes 5.2.1 Events, Alerts and Incidents). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 pilot batch, 29 Oct 2026. Review fixes 29 Oct 2026 (standards audit 2 and blind test 2): key shortened so it no longer stands out by length or repeats 'security'.",
    "style_version": 2
   },
   {
@@ -233,7 +233,7 @@
    "options": {
     "A": "Accept the AI tool's rating and close the case",
     "B": "Retune the AI tool's settings for this pattern",
-    "C": "Escalate the case now, with the account activity attached",
+    "C": "Escalate the case now and attach what the account did",
     "D": "Disable the account at once from the admin console"
    },
    "correct": "C",
@@ -256,7 +256,7 @@
     "Account takeover",
     "Escalation"
    ],
-   "_provenance": "Authored from concept: 'AI triage output is a lead; evidence of compromise is escalated, not overridden or contained alone' (notes 5.2.4 AI-Driven Correlation and Alert Fatigue). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 pilot batch, 29 Oct 2026.",
+   "_provenance": "Authored from concept: 'AI triage output is a lead; evidence of compromise is escalated, not overridden or contained alone' (notes 5.2.4 AI-Driven Correlation and Alert Fatigue). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 pilot batch, 29 Oct 2026. Review fixes 29 Oct 2026 (standards audit 2 and blind test 2): key reworded to be the wordiest option by one word while staying within a few characters of the others.",
    "style_version": 2
   },
   {
@@ -301,9 +301,9 @@
    "subtopic": "5.3 Incident response. First response to malware",
    "difficulty": "application",
    "bloom_level": "Application",
-   "question": "A technician reports ransom notes on a networked reception computer, and the incident response lead says to follow the malware playbook until they arrive. What should the technician do FIRST?",
+   "question": "A technician finds a ransom note on a school library's networked self-service computer, and the incident response lead says to follow the malware playbook until they arrive. What should the technician do FIRST?",
    "options": {
-    "A": "Unplug its network cable and leave it running",
+    "A": "Disconnect it from the network but leave it powered on",
     "B": "Shut the computer down straight away",
     "C": "Run the antivirus cleanup tool to remove the malware",
     "D": "Leave it untouched until the incident response lead arrives"
@@ -311,7 +311,7 @@
    "correct": "A",
    "key_concept": "During an incident, practitioners act as the incident response lead directs; a malware playbook isolates the device and keeps it running.",
    "pre_read": "Notice what the incident response lead has already told the technician to do, and what is still happening on the computer.",
-   "correct_explanation": "The lead has directed the technician to the playbook, and its first step for malware is to isolate the device: unplugging the network stops the spread, and leaving it on keeps memory evidence such as running processes. Waiting untouched is the runner-up: it avoids acting alone, but the lead has already authorized the playbook, and every connected minute lets encryption reach more systems.",
+   "correct_explanation": "The lead has directed the technician to the playbook, and its first step for malware is to isolate the device: disconnecting it from the network stops the spread, and leaving it on keeps memory evidence such as running processes. Waiting untouched is the runner-up: it avoids acting alone, but the lead has already authorized the playbook, and every connected minute lets encryption reach more systems.",
    "wrong_explanations": {
     "B": "Tempting because it seems to halt the encryption. But powering off erases memory evidence; isolating stops the spread and keeps that evidence.",
     "C": "Tempting because it sounds like fixing the problem. But cleanup is eradication, which waits until the lead confirms the scope, and it alters evidence.",
@@ -328,7 +328,7 @@
     "Volatile evidence",
     "Playbook"
    ],
-   "_provenance": "Authored from concept: 'following the lead's direction, isolate an infected device and keep it running' (notes 5.3.3 Containment, Eradication and Recovery (+5.2.8 Malware Basics)). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 pilot batch, 29 Oct 2026.",
+   "_provenance": "Authored from concept: 'following the lead's direction, isolate an infected device and keep it running' (notes 5.3.3 Containment, Eradication and Recovery (+5.2.8 Malware Basics)). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 pilot batch, 29 Oct 2026. Audit fix 29 Oct 2026: setting moved away from the notes' reception-computer example; 'unplug its network cable' became 'disconnect it from the network' so the key also fits wireless devices. The audit's three-sentence stem was joined into two sentences to meet the stem rule.",
    "style_version": 2
   },
   {
@@ -370,7 +370,7 @@
   {
    "id": "cc_d5_011",
    "domain": 5,
-   "subtopic": "5.3 Incident response. Chain of custody",
+   "subtopic": "5.3 Incident response. Evidence handling",
    "difficulty": "application",
    "bloom_level": "Application",
    "question": "The incident response lead asks a security technician to carry a seized laptop to the forensic investigator in another building. Which step BEST protects its value as evidence?",
@@ -481,7 +481,7 @@
    "subtopic": "5.4 Asset protection. End-of-life systems",
    "difficulty": "application",
    "bloom_level": "Application",
-   "question": "A warehouse's shipping label printers run firmware that lost vendor support last month; replacements arrive in six months. What is the network technician's BEST proposal to the warehouse manager, the risk owner?",
+   "question": "A warehouse's networked label printers, needed for every shipment, lost firmware support last month; replacements arrive in six months. What is the network technician's BEST proposal to the warehouse manager, the risk owner?",
    "options": {
     "A": "Isolate the printers on their own segment under an exception",
     "B": "Leave the printers as they are until replacements arrive",
@@ -495,10 +495,10 @@
    "wrong_explanations": {
     "B": "Tempting because the printers still work. But working is not secure; every flaw found after support ended stays open for six months.",
     "C": "Closest choice: it removes the exposure. But the warehouse could not print shipping labels for six months, and isolation reduces the risk without stopping the work.",
-    "D": "Tempting because updates usually fix flaws. But end of support means the vendor has stopped releasing them; no new fix is coming."
+    "D": "Tempting because updates usually fix flaws. But end of support means routine fixes have stopped; paid extended support, where offered, is a separate deal for the owner to weigh."
    },
    "tips": [
-    "Eliminate: B assumes working means secure, and D waits for a fix that unsupported firmware will never get.",
+    "Eliminate: B assumes working means secure, and D asks for a routine fix the vendor has stopped making.",
     "Final two: A beats C because a compensating control under an approved exception reduces the risk while shipping continues; going offline stops the business.",
     "Exam cue: for end-of-life systems, replace when you can; until then, isolate, restrict and monitor under a documented, time-limited exception."
    ],
@@ -508,7 +508,7 @@
     "Compensating control",
     "Risk exception"
    ],
-   "_provenance": "Authored from concept: 'unsupported systems get compensating controls under a time-limited exception until replaced' (notes 5.4.3 End-of-Life Software and Devices). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 pilot batch, 29 Oct 2026.",
+   "_provenance": "Authored from concept: 'unsupported systems get compensating controls under a time-limited exception until replaced' (notes 5.4.3 End-of-Life Software and Devices). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 pilot batch, 29 Oct 2026. Review fixes 29 Oct 2026 (standards audit 2 and blind test 2): stem now states that the printers are networked and needed for every shipment, the fact that decides A over C.",
    "style_version": 2
   },
   {
@@ -527,15 +527,15 @@
    "correct": "C",
    "key_concept": "Changes with security impact need a request, independent approval, testing and a rollback plan before they are made, however urgent.",
    "pre_read": "Notice what is being changed, on which system, and what paperwork already exists.",
-   "correct_explanation": "Turning off encryption on a production server is a change with security impact, so it needs a change request, an independent approval and a way back. Urgency changes how fast approval comes, not whether it is needed. Filing the request afterward is the runner-up: it leaves a record, but nobody would have assessed the risk of unencrypted production data before the change.",
+   "correct_explanation": "Turning off encryption on a production server is a change with security impact, so it needs a change request, an independent approval and a way back. Urgency changes how fast approval comes, not whether it is needed. Emailing the security team for approval is the runner-up: it involves security staff, but an email is not the change record, and the change process names its own approvers.",
    "wrong_explanations": {
     "A": "Tempting because the request comes from a senior colleague. But seniority does not replace review, approval and a rollback plan.",
-    "B": "Tempting because security staff sound like the right approvers. But an email is not the change record, and the change process names its own approvers.",
-    "D": "Closest choice: it still leaves a record. But recording after the fact means nobody approved the risk first, and a planned migration is not an emergency."
+    "B": "Closest choice: security staff sound like the right approvers. But an email is not the change record, and the change process names its own approvers.",
+    "D": "Tempting because it still leaves a record. But recording after the fact means nobody approved the risk first, and a planned migration is not an emergency."
    },
    "tips": [
-    "Eliminate: A treats seniority as approval, and B swaps the change process for an informal email from someone who is not the approver.",
-    "Final two: C beats D because approval must come before the change; a request filed afterward only documents a risk nobody assessed.",
+    "Eliminate: A treats seniority as approval, and D makes the change before anyone approves it.",
+    "Final two: C beats B because the change process names its approvers and keeps the record; an email from the security team is neither.",
     "Exam cue: no change without a request, approval and a rollback plan. Urgency speeds approval up; it never removes it."
    ],
    "framework_ref": "NIST SP 800-53 Rev. 5 CM-3 (Configuration Change Control); ISO/IEC 27002:2022 Control 8.32 (Change management)",
@@ -544,7 +544,7 @@
     "Rollback plan",
     "Emergency change"
    ],
-   "_provenance": "Authored from concept: 'no change without a request and approval, however senior the requester' (notes 5.4.6 Change Management). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 pilot batch, 29 Oct 2026.",
+   "_provenance": "Authored from concept: 'no change without a request and approval, however senior the requester' (notes 5.4.6 Change Management). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 pilot batch, 29 Oct 2026. Review fixes 29 Oct 2026 (standards audit 2 and blind test 2): runner-up moved from D to B, the option candidates actually weigh against C.",
    "style_version": 2
   },
   {
@@ -557,7 +557,7 @@
    "options": {
     "A": "The test server flaw, because its severity score is higher",
     "B": "The web server flaw, because attackers are already using it",
-    "C": "The test server flaw, because it is quicker to patch safely",
+    "C": "The test server flaw, because it is faster to patch safely",
     "D": "The web server flaw, at the next quarterly patch cycle"
    },
    "correct": "B",
@@ -574,13 +574,13 @@
     "Final two: B beats A because active exploitation on an internet-facing server outweighs a higher score on an internal test system.",
     "Exam cue: CVSS measures severity, not risk. Rank patches by severity plus active exploitation, exposure and the asset's value."
    ],
-   "framework_ref": "FIRST Common Vulnerability Scoring System (CVSS) v4.0 Specification Document, Section 1 (Introduction); NIST SP 800-40 Rev. 4 (Guide to Enterprise Patch Management Planning: Preventive Maintenance for Technology)",
+   "framework_ref": "FIRST Common Vulnerability Scoring System (CVSS) v4.0 Specification Document Section 1 (Introduction); NIST SP 800-40 Rev. 4 (Guide to Enterprise Patch Management Planning: Preventive Maintenance for Technology)",
    "related_concepts": [
     "Common Vulnerability Scoring System (CVSS)",
     "Active exploitation",
     "Emergency change"
    ],
-   "_provenance": "Authored from concept: 'patch by risk: exploitation and exposure can outrank a higher CVSS score' (notes 5.4.5 Patch Management (+5.5.2 CVSS)). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 pilot batch, 29 Oct 2026.",
+   "_provenance": "Authored from concept: 'patch by risk: exploitation and exposure can outrank a higher CVSS score' (notes 5.4.5 Patch Management (+5.5.2 CVSS)). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 pilot batch, 29 Oct 2026. Review fixes 29 Oct 2026 (standards audit 2 and blind test 2): C reworded ('faster' for 'quicker') for length balance.",
    "style_version": 2
   },
   {
@@ -625,24 +625,24 @@
    "subtopic": "5.5 Security testing. Red and blue teams",
    "difficulty": "application",
    "bloom_level": "Application",
-   "question": "During a month when an authorized red team test may be running, a blue team analyst spots an unusual login on a payments server. What should the analyst do FIRST?",
+   "question": "During a month when an authorized red team test may be running, a blue team analyst sees a file server sending large volumes of data to an unknown address. What should the analyst do FIRST?",
    "options": {
-    "A": "Leave the login alone as likely red team activity",
-    "B": "Message the red team to ask whether the login is theirs",
-    "C": "Handle the login as a real attack and escalate it",
-    "D": "Block the login's source address and close the alert"
+    "A": "Leave the transfer alone as likely red team activity",
+    "B": "Message the red team to ask whether the transfer is theirs",
+    "C": "Handle the transfer as a real attack and escalate it",
+    "D": "Block the destination address and close the alert"
    },
    "correct": "C",
    "key_concept": "Blue team staff treat suspicious activity as real and escalate it under procedure; the white team, not the testers, confirms test activity.",
    "pre_read": "Notice what the analyst knows for sure and what is only possible. Then recall who runs each part of an exercise.",
    "correct_explanation": "Blue team staff treat suspicious activity as real and follow normal procedure, because real attackers count on defenders assuming it is a test. Escalating also tests the response itself, and the white team, which referees the exercise, confirms what is a test. Asking the red team is the runner-up: it seems efficient, but confirming tests is not the red team's role, and asking spoils the exercise.",
    "wrong_explanations": {
-    "A": "Tempting because a test is known to be running. But assuming activity is a test is exactly what real attackers rely on; procedure applies either way.",
+    "A": "Tempting because a test may be running. But assuming activity is a test is exactly what real attackers rely on; procedure applies either way.",
     "B": "Closest choice: it would settle the question fast. But the white team, not the red team, confirms tests, and tipping off the testers spoils the exercise.",
-    "D": "Tempting because it stops the login. But blocking and closing the alert alone skips escalation and the record the response needs, test or not."
+    "D": "Tempting because it stops the transfer. But blocking and closing the alert alone skips escalation and the record the response needs, test or not."
    },
    "tips": [
-    "Eliminate: A assumes the activity is a test, and D blocks and closes the alert alone, skipping escalation.",
+    "Eliminate: A assumes the transfer is a test, and D blocks it and closes the alert alone, skipping escalation.",
     "Final two: C beats B because blue team staff follow normal procedure and the white team confirms tests; asking the testers spoils the exercise.",
     "Exam cue: during any test window, treat suspicious activity as real and follow procedure. Confirming a test is the referee's job, not yours."
    ],
@@ -652,7 +652,7 @@
     "Blue team",
     "White team"
    ],
-   "_provenance": "Authored from concept: 'blue team treats suspected test activity as real; the white team confirms tests' (notes 5.5.1 Red, Blue and Purple Teams). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 pilot batch, 29 Oct 2026.",
+   "_provenance": "Authored from concept: 'blue team treats suspected test activity as real; the white team confirms tests' (notes 5.5.1 Red, Blue and Purple Teams). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 pilot batch, 29 Oct 2026. Audit fix 29 Oct 2026: signal changed from the notes' unusual-login example to an outbound transfer.",
    "style_version": 2
   },
   {
@@ -664,9 +664,9 @@
    "question": "A development team wants to test its web application for weak session handling while it is running. Which testing method BEST fits?",
    "options": {
     "A": "Software composition analysis of the third-party libraries",
-    "B": "Dynamic application security testing (DAST) against a deployed copy",
+    "B": "Dynamic application security testing (DAST) on a deployed copy",
     "C": "Threat modeling of the application's design",
-    "D": "Static application security testing (SAST) on the full source code"
+    "D": "Static application security testing (SAST) on the code"
    },
    "correct": "B",
    "key_concept": "Static testing (SAST) reads source code without running it; dynamic testing (DAST) probes the running application for runtime flaws.",
@@ -688,7 +688,7 @@
     "Dynamic application security testing (DAST)",
     "Software composition analysis (SCA)"
    ],
-   "_provenance": "Authored from concept: 'DAST tests the running application; SAST reads code' (notes 5.5.3 Static and Dynamic Application Testing). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 pilot batch, 29 Oct 2026.",
+   "_provenance": "Authored from concept: 'DAST tests the running application; SAST reads code' (notes 5.5.3 Static and Dynamic Application Testing). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 pilot batch, 29 Oct 2026. Review fixes 29 Oct 2026 (standards audit 2 and blind test 2): D shortened so the key is the wordiest option; B trimmed so it leads by only a few characters.",
    "style_version": 2
   },
   {
@@ -699,9 +699,9 @@
    "bloom_level": "Analysis",
    "question": "An authorized test last quarter showed a firm's AI email filter caught simulated phishing well, but the vendor has since replaced its model. What should the security team do FIRST?",
    "options": {
-    "A": "Rerun the phishing simulations against the new model",
+    "A": "Rerun the same phishing simulations on the new model",
     "B": "Keep last quarter's passing result as evidence",
-    "C": "Ask the vendor for its results on the new model",
+    "C": "Ask the vendor for its new model results",
     "D": "Let the new model learn phishing patterns itself"
    },
    "correct": "A",
@@ -724,7 +724,7 @@
     "AI-integrated defenses",
     "Retesting after change"
    ],
-   "_provenance": "Authored from concept: 'AI defenses are retested after a model change' (notes 5.5.6 Testing AI-Integrated Defenses). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 pilot batch, 29 Oct 2026.",
+   "_provenance": "Authored from concept: 'AI defenses are retested after a model change' (notes 5.5.6 Testing AI-Integrated Defenses). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 pilot batch, 29 Oct 2026. Review fixes 29 Oct 2026 (standards audit 2 and blind test 2): key now says 'the same' simulations, a precise qualifier; C shortened.",
    "style_version": 2
   }
  ]

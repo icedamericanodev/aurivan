@@ -234,7 +234,7 @@
         "A": "Reset the contractor's password and leave the account active",
         "B": "Delete the account and mailbox as the meeting starts",
         "C": "Disable the account and end its sessions as the meeting starts",
-        "D": "Disable the account and end its sessions after the meeting ends"
+        "D": "Disable the account and end its sessions after the meeting"
       },
       "correct": "C",
       "key_concept": "For a hostile exit, access is cut as the person is told; disable first and delete later so logs stay traceable.",
@@ -256,7 +256,7 @@
         "Session revocation",
         "Disable versus delete"
       ],
-      "_provenance": "Authored from concept: 'hostile exits: disable and revoke sessions as the person is told' (notes 3.1.11 Deprovisioning Leavers). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 pilot batch, 28 Oct 2026.",
+      "_provenance": "Authored from concept: 'hostile exits: disable and revoke sessions as the person is told' (notes 3.1.11 Deprovisioning Leavers). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 pilot batch, 28 Oct 2026. Review fixes 29 Oct 2026 (standards audit 2 and blind test 2): D shortened by one word so the key is the wordiest option.",
       "style_version": 2
     },
     {
@@ -268,7 +268,7 @@
       "question": "An email that seems to be from a department head asks a help desk analyst to add an intern to the team drive today, without a ticket. What should the analyst do FIRST?",
       "options": {
         "A": "Add the intern now on the department head's authority",
-        "B": "Reply to the email and ask the sender to confirm it",
+        "B": "Reply to the email to ask the sender to confirm",
         "C": "Call the department head on the number in the staff directory",
         "D": "Give the intern read-only access until a ticket arrives"
       },
@@ -292,7 +292,7 @@
         "Business email compromise",
         "Fulfillment"
       ],
-      "_provenance": "Authored from concept: 'verify unusual requests through a channel already on file' (notes 3.1.14 Access Requests and Approvals). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 pilot batch, 28 Oct 2026.",
+      "_provenance": "Authored from concept: 'verify unusual requests through a channel already on file' (notes 3.1.14 Access Requests and Approvals). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 pilot batch, 28 Oct 2026. Review fixes 29 Oct 2026 (standards audit 2 and blind test 2): B shortened by one word so the key is the wordiest option.",
       "style_version": 2
     },
     {
@@ -502,7 +502,7 @@
         "Final two: B beats C because a separate daily account removes admin rights from risky work; a filter only lowers the odds of a bad click.",
         "Exam cue: admin accounts are for admin tasks only. Everyday email and browsing belong to a standard account."
       ],
-      "framework_ref": "CIS Controls v8.1 Safeguard 5.4 (Restrict Administrator Privileges to Dedicated Administrator Accounts); NIST SP 800-53 Rev. 5 AC-6(2) (Non-privileged Access for Nonsecurity Functions)",
+      "framework_ref": "CIS Controls v8.1 Safeguard 5.4 (Restrict Administrator Privileges to Dedicated Administrator Accounts); NIST SP 800-53 Rev. 5 AC-6(2) (Least Privilege | Non-privileged Access for Nonsecurity Functions)",
       "related_concepts": [
         "Privileged access management (PAM)",
         "Dedicated admin accounts",
@@ -538,7 +538,7 @@
         "Final two: A beats B because the folder's owner picked the group; role-based access is set centrally by job role.",
         "Exam cue: name the model by its decider. An owner choosing, even choosing a group, means discretionary."
       ],
-      "framework_ref": "NIST SP 800-53 Rev. 5 AC-3(4) (Discretionary Access Control); NIST SP 800-53 Rev. 5 AC-3(7) (Role-based Access Control)",
+      "framework_ref": "NIST SP 800-53 Rev. 5 AC-3(4) (Access Enforcement | Discretionary Access Control); NIST SP 800-53 Rev. 5 AC-3(7) (Access Enforcement | Role-based Access Control)",
       "related_concepts": [
         "Resource owner",
         "Role-based access control",
@@ -574,7 +574,7 @@
         "Final two: B beats A because only the central security authority can approve a release; a manager cannot override the system's labels.",
         "Exam cue: under mandatory access control, route any change to labels, clearances or releases to the central security authority."
       ],
-      "framework_ref": "NIST SP 800-53 Rev. 5 AC-3(3) (Mandatory Access Control); NIST SP 800-53 Rev. 5 AC-16 (Security and Privacy Attributes)",
+      "framework_ref": "NIST SP 800-53 Rev. 5 AC-3(3) (Access Enforcement | Mandatory Access Control); NIST SP 800-53 Rev. 5 AC-16 (Security and Privacy Attributes)",
       "related_concepts": [
         "Security label",
         "Clearance",
@@ -610,7 +610,7 @@
         "Final two: D beats A because one attribute policy covers every ward, device and shift; roles would need one per combination.",
         "Exam cue: several conditions at once, such as who, where, when and on what device, point to attribute-based access control."
       ],
-      "framework_ref": "NIST SP 800-162 (Guide to Attribute Based Access Control (ABAC) Definition and Considerations); NIST SP 800-53 Rev. 5 AC-3(13) (Attribute-based Access Control)",
+      "framework_ref": "NIST SP 800-162 (Guide to Attribute Based Access Control (ABAC) Definition and Considerations); NIST SP 800-53 Rev. 5 AC-3(13) (Access Enforcement | Attribute-based Access Control)",
       "related_concepts": [
         "Attributes",
         "Policy engine",
@@ -682,7 +682,7 @@
         "Final two: C beats D because human approval stops a bad payment before it happens; a monthly log review only finds it afterward.",
         "Exam cue: for AI agents and bots, high-impact actions such as payments get a human approval step, not just an after-the-fact review."
       ],
-      "framework_ref": "OWASP Top 10 for LLM Applications 2025, LLM06 (Excessive Agency); NIST SP 800-53 Rev. 5 AC-6 (Least Privilege)",
+      "framework_ref": "OWASP Top 10 for LLM Applications 2025 LLM06 (Excessive Agency); NIST SP 800-53 Rev. 5 AC-6 (Least Privilege)",
       "related_concepts": [
         "Excessive agency",
         "Prompt injection",
@@ -701,7 +701,7 @@
       "options": {
         "A": "Give every admin permanent rights protected by a long password",
         "B": "Share one admin login among the night team for emergencies",
-        "C": "Give on-call admins standing rights for the length of their shift",
+        "C": "Give on-call admins standing rights for their whole shift",
         "D": "Grant rights just in time for each approved task, with logging"
       },
       "correct": "D",
@@ -724,7 +724,7 @@
         "Break-glass account",
         "Standing privilege"
       ],
-      "_provenance": "Authored from concept: 'privilege is borrowed for an approved task, then expires' (notes 3.2.12 Just-in-Time and Break-Glass Access). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 pilot batch, 28 Oct 2026.",
+      "_provenance": "Authored from concept: 'privilege is borrowed for an approved task, then expires' (notes 3.2.12 Just-in-Time and Break-Glass Access). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 pilot batch, 28 Oct 2026. Review fixes 29 Oct 2026 (standards audit 2 and blind test 2): C shortened so the key is the wordiest option.",
       "style_version": 2
     }
   ]
