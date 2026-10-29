@@ -28,40 +28,17 @@
  */
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import type { Stamps } from '../engine/syncMerge';
+import { SYNC_OFF, type SyncMeta } from '../engine/syncMeta';
 import { persistStorage } from './storage';
 
-export type SyncPause = 'newer' | 'unreadable' | 'toobig';
-export type PerStore<T> = { settings: T; progress: T };
-
-export interface SyncMeta {
-  enabled: boolean;
-  accountHash: string | null;
-  lastRev: PerStore<number | null>;
-  lastAt: PerStore<number | null>;
-  lastPushedHash: PerStore<string | null>;
-  pausedRev: PerStore<number | null>;
-  lastSyncAt: number | null;
-  pausedReason: SyncPause | null;
-  deferredPull: boolean;
-  stamps: PerStore<Stamps>;
-}
+// The record's types and its "off" blank live in engine/syncMeta.ts (pure, so the
+// website's sync bundle can use them); re-exported here under the same names.
+export { SYNC_OFF };
+export type { PerStore, SyncMeta, SyncPause } from '../engine/syncMeta';
 
 interface SyncState extends SyncMeta {
   setMeta: (m: Partial<SyncMeta>) => void;
 }
-
-export const SYNC_OFF: Omit<SyncMeta, 'stamps'> = {
-  enabled: false,
-  accountHash: null,
-  lastRev: { settings: null, progress: null },
-  lastAt: { settings: null, progress: null },
-  lastPushedHash: { settings: null, progress: null },
-  pausedRev: { settings: null, progress: null },
-  lastSyncAt: null,
-  pausedReason: null,
-  deferredPull: false,
-};
 
 export const useSyncMeta = create<SyncState>()(
   persist(

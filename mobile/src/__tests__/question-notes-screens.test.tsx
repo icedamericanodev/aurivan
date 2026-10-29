@@ -396,6 +396,7 @@ describe('privacy', () => {
     'engine/syncMerge.ts',
     'engine/webImport.ts', // mobile 1.42: brings the website's notes into the app (merged like a sync)
     'store/progress.ts',
+    'webcloud/toWeb.ts', // accounts beta: carries the notes between the account and the website's own record (sync only)
   ];
   const src = join(__dirname, '..');
   const files = (dir: string): string[] =>

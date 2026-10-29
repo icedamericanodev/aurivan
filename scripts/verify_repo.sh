@@ -119,6 +119,50 @@ else
   status=1
 fi
 
+# 4c. The website's cloud client (assets/kaisip-cloud.js) ---------------------
+# Accounts beta §1.1: the GENERATED sign-in and sync client, compiled from
+# mobile/src/webcloud and the app's own sync engine. Checked without npm like
+# the plant (its source modules and their hash), plus the version-stamp rule:
+# the bundle stamps pushes with mobile/LIVE_VERSION (the app live on Google
+# Play) and must never be newer, or every phone would pause sync. With
+# mobile/node_modules installed, the rebuild-and-compare above covers it too.
+printf "\nWebsite cloud client (assets/kaisip-cloud.js):\n"
+if ! python3 - <<'PY'
+import hashlib, json, re, sys
+try:
+    text = open('assets/kaisip-cloud.js', 'rb').read().decode('utf8')
+except OSError:
+    print("  ✗ assets/kaisip-cloud.js is missing: cd mobile && npm run web-plant"); sys.exit(1)
+ids = sorted(set(re.findall(r'^  defs\["([^"]+)"\] = function', text, re.M)))
+h = hashlib.sha256()
+for i in ids:
+    try:
+        src = open('mobile/' + i, 'rb').read()
+    except OSError:
+        print(f"  ✗ source mobile/{i} is missing"); sys.exit(1)
+    h.update(i.encode() + b"\n" + src + b"\n")
+want = re.search(r'api\.sourceHash = "([0-9a-f]+)"', text)
+if not ids or not want or want.group(1) != h.hexdigest()[:16]:
+    print("  ✗ out of date with the mobile sync sources: cd mobile && npm run web-plant"); sys.exit(1)
+semver = re.compile(r'^\d{1,3}\.\d{1,3}\.\d{1,3}$')
+def key(v): return tuple(int(x) for x in v.split('.'))
+live = open('mobile/LIVE_VERSION').read().strip()
+app = json.load(open('mobile/app.json'))['expo']['version']
+stamp = re.search(r'\n  var liveVersion = "([^"]*)";\n', text)
+if not semver.match(live):
+    print(f"  ✗ mobile/LIVE_VERSION must be one x.y.z line, found {live!r}"); sys.exit(1)
+if semver.match(app) and key(live) > key(app):
+    print(f"  ✗ mobile/LIVE_VERSION {live} is ahead of app.json's {app}"); sys.exit(1)
+if not stamp or not semver.match(stamp.group(1)) or key(stamp.group(1)) > key(live):
+    print(f"  ✗ the bundle's version stamp is newer than mobile/LIVE_VERSION ({live}): cd mobile && npm run web-plant"); sys.exit(1)
+if stamp.group(1) != live:
+    print(f"  ✗ the bundle stamps {stamp.group(1)}, mobile/LIVE_VERSION says {live}: cd mobile && npm run web-plant"); sys.exit(1)
+print(f"  ✓ matches its {len(ids)} source modules; stamps pushes with LIVE_VERSION {live}")
+PY
+then
+  status=1
+fi
+
 # 5. Originals (rebuild content) schema validation --------------------------
 # The bank lives under data/originals/ and is validated against the schema
 # in docs/content/QUESTION_SCHEMA.md. Empty banks are valid (the

@@ -53,7 +53,7 @@ import {
 } from '../engine/syncMerge';
 import { firstCase, plan, type FirstCase, type SyncAction } from '../engine/syncPlan';
 import { errorCode, type CloudErrorCode, type SnapshotHead, type SyncPort, type SyncStore } from '../cloud/types';
-import { SYNC_OFF, type PerStore, type SyncMeta, type SyncPause } from '../store/sync';
+import { SYNC_OFF, type PerStore, type SyncMeta, type SyncPause } from '../engine/syncMeta';
 
 /** The biggest snapshot this app pushes (UTF-8). Bigger: "too large to sync", kept safe on the phone. */
 export const MAX_PUSH_BYTES = 1_500_000;

@@ -20,10 +20,10 @@ name: Mobile
 on:
   pull_request:
     branches: [main]
-    paths: ['mobile/**', 'data/domain*.json', 'data/cisa_notes.json', 'data/mindset/**', 'data/exam/**', 'data/lessons/**', 'assets/kaisip-plant.js', 'supabase/functions/_shared/**', '.github/workflows/mobile.yml']
+    paths: ['mobile/**', 'data/domain*.json', 'data/cisa_notes.json', 'data/mindset/**', 'data/exam/**', 'data/lessons/**', 'assets/kaisip-plant.js', 'assets/kaisip-cloud.js', 'supabase/functions/_shared/**', '.github/workflows/mobile.yml']
   push:
     branches: [main]
-    paths: ['mobile/**', 'data/domain*.json', 'data/cisa_notes.json', 'data/mindset/**', 'data/exam/**', 'data/lessons/**', 'assets/kaisip-plant.js', 'supabase/functions/_shared/**', '.github/workflows/mobile.yml']
+    paths: ['mobile/**', 'data/domain*.json', 'data/cisa_notes.json', 'data/mindset/**', 'data/exam/**', 'data/lessons/**', 'assets/kaisip-plant.js', 'assets/kaisip-cloud.js', 'supabase/functions/_shared/**', '.github/workflows/mobile.yml']
 
 # Read-only token: `npm ci` runs third-party install scripts, which must not
 # be able to push to the repo.
@@ -53,7 +53,7 @@ jobs:
         run: node scripts/check-release-config.mjs
       - name: Cloud guard G8 (the server's copies of the board's text rules match the engine)
         run: node scripts/sync-shared.mjs --check
-      - name: Web plant guard (assets/kaisip-plant.js matches the plant sources)
+      - name: Website bundle guard (assets/kaisip-plant.js and kaisip-cloud.js match their sources)
         run: node scripts/build-web-plant.mjs --check
       - name: Lint (includes the design-system guard)
         run: npm run lint
