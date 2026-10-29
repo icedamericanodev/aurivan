@@ -140,7 +140,7 @@
       "wrong_explanations": {
         "A": "A CIO-only strategy shared for information shows IT acting alone. Alignment requires business input and approval, not notification.",
         "C": "Peer spending levels show what IT costs relative to others, not whether this strategy's investments serve this retailer's objectives.",
-        "D": "An auditor would expect business sign-off on any IT strategy, though approval evidences a process step; alignment lives in the content itself."
+        "D": "An auditor would expect business sign-off on any IT strategy, though approval is a process step; alignment is demonstrated investment by investment."
       },
       "tips": [
         "Eliminate: A has the CIO setting strategy without business approval, and C benchmarks spending, which measures cost, not alignment.",
@@ -562,7 +562,7 @@
       "pre_read": "For each indicator, ask what question it answers, not when it is measured.",
       "correct_explanation": "Each indicator answers a different question. KPIs show how well objectives are being achieved, KRIs signal the level or movement of risk exposure, and KCIs show whether specific controls are operating as intended. Option B classifies by timing, but any of the three can be leading or lagging; timing does not define the type, and KRIs are usually forward-looking.",
       "wrong_explanations": {
-        "B": "Leading versus lagging is a genuine design choice for any indicator. Attributes describe a category, though; the subject measured defines it.",
+        "B": "Leading versus lagging is a genuine design choice for any indicator. Timing is an attribute, though; what is measured (goal, exposure or control) sets the type.",
         "C": "Indicators are not split by business area. Each type can measure financial, operational or compliance matters.",
         "D": "Incident counts are lagging loss data and audit findings are assurance results; neither defines what a KRI or a KCI measures."
       },
@@ -1698,12 +1698,12 @@
       "wrong_explanations": {
         "A": "A historical average ignores peaks and rapid growth, so capacity will fall short as demand rises.",
         "B": "A utilization trigger reacts after demand arrives; with procurement lead times and 35% growth, the capacity lands late.",
-        "D": "Capacity follows the demand driver: peak-plus-buffer sizing is an accepted method, but history can only calibrate a forecast, never replace one."
+        "D": "Capacity follows the demand driver: peak-plus-buffer sizing is an accepted method, but history calibrates a forecast; it cannot stand in for one while demand is growing."
       },
       "tips": [
         "Eliminate: A sizes on a historical average, and B adds capacity after utilization is already high; neither looks ahead to growth.",
         "Final two: C beats D because capacity must follow business demand; sizing to past peaks is sound practice, but a buffer on them still looks backward.",
-        "Exam cue: capacity plans start from business demand forecasts; when teams deadlock over competing plans, the gap is decision rights instead."
+        "Exam cue: capacity plans start from business demand forecasts."
       ],
       "framework_ref": "COBIT 2019 BAI04 (Managed Availability and Capacity); ITIL 4 Capacity and Performance Management",
       "related_concepts": [
@@ -1848,7 +1848,7 @@
       "correct_explanation": "Data ownership follows business accountability. The lending head decides on classification, access and use, and remains answerable to regulators; the SaaS provider only holds and processes the data as custodian under the contract. The chief data officer sets enterprise data policy and oversees owners, but cannot replace the business owner who understands the data and bears the business risk.",
       "wrong_explanations": {
         "B": "Hosting the data makes the provider a custodian or processor. The bank stays accountable to regulators, so ownership cannot move to a vendor.",
-        "C": "Both the CDO and the head of lending carry data accountability, at different levels: whoever supervises owners cannot also be one.",
+        "C": "Both the CDO and the head of lending carry data accountability at different levels; a CDO owning loan data would be checking their own decisions.",
         "D": "IT operations administers controls on the owner's behalf. Running access controls is a custodian duty, not ownership."
       },
       "tips": [
@@ -1922,7 +1922,7 @@
       "pre_read": "Notice the phrase operating as designed. Ask which indicator type measures control health rather than risk or performance.",
       "correct_explanation": "The committee wants to know whether a control works. A key control indicator measures control health, such as reviews completed on time and exceptions resolved. A key risk indicator is useful too, but it signals changing exposure to a risk; exposure could rise or fall regardless of whether the review control is operating as designed.",
       "wrong_explanations": {
-        "A": "An auditor would also want a privileged-access KRI on the dashboard, but an indicator is chosen by the question it must answer.",
+        "A": "An auditor would also want a privileged-access KRI on the dashboard, but the committee asked about the review itself, not the access it guards.",
         "B": "A KPI measures progress toward goals. It says nothing direct about a single control's operation.",
         "C": "Hours spent measure effort, not whether reviews actually detect and resolve inappropriate access."
       },
@@ -2521,7 +2521,7 @@
       "correct_explanation": "Whether to retire, rehost, refactor or replace an application is a business decision about its value and risk, so the owners who answer for each application should decide it with IT's technical input. A provider's assessment tool is a useful input, but it measures technical fit and cost, not business value, and the provider gains when more workloads move.",
       "wrong_explanations": {
         "A": "Path choices for 80 applications are management decisions. The board sets cloud direction and monitors results; approving each path pulls it into management detail.",
-        "B": "A provider's tool would settle a purely technical choice such as instance sizing; whoever answers for an outcome owns the decision.",
+        "B": "A provider's tool would settle a purely technical choice such as instance sizing; whether to keep, rebuild or retire each application is its owner's call.",
         "C": "Peer review checks technical quality, but every decision still comes from IT alone, without the business view of each application's value and risk."
       },
       "tips": [
@@ -2712,7 +2712,7 @@
       "wrong_explanations": {
         "A": "Completeness of the server list matters, but it is a detail. The bigger gap is that no layer connects technology to the business.",
         "C": "Currency is a maintenance issue for any documentation. It does not explain why the architecture cannot support business decisions.",
-        "D": "TOGAF would be worth adopting once the content is complete: weaknesses rank by the purpose they defeat, and form ranks below substance."
+        "D": "TOGAF is an established way to structure architecture work, but weaknesses rank by the purpose they defeat, and form ranks below substance."
       },
       "tips": [
         "Eliminate: A and C are documentation-maintenance points, not design weaknesses of the architecture.",
@@ -2784,7 +2784,7 @@
       "pre_read": "Separate who oversees the control system from the activities that evaluate whether controls work.",
       "correct_explanation": "COSO 2013 places board oversight in the control environment: Principle 2 says the board demonstrates independence from management and exercises oversight of the development and performance of internal control. Monitoring activities is tempting because oversight sounds like monitoring, but that component covers the ongoing and separate evaluations that check whether controls are present and functioning, not the governance structure above them.",
       "wrong_explanations": {
-        "A": "Boards do review control results, usually through the audit committee, though in COSO anything that conditions every other component belongs to its control environment.",
+        "A": "Boards do review control results, often via the audit committee, though COSO counts board oversight as the foundation that monitoring rests on.",
         "B": "Control activities are the policies and procedures that mitigate risks within processes. Board oversight sets the conditions for them rather than being one.",
         "D": "Risk assessment is management's process for identifying and analyzing risks to objectives; the board's oversight of internal control sits in the control environment."
       },
@@ -3233,7 +3233,7 @@
       "correct_explanation": "GDPR Article 25 requires that, by default, only personal data necessary for each purpose is processed. Aggregated team metrics meet the analytics purpose without identifying individuals, and individual views are enabled only deliberately for a stated purpose. Pseudonymization is a useful design measure, but individual tracking with IP addresses is still personal data processed beyond what the default purpose needs.",
       "wrong_explanations": {
         "A": "An opt-out starts from maximum data collection, which is the opposite of protection by default.",
-        "B": "Article 25 itself cites pseudonymization as an expected technique, yet safeguards protect data already collected and never justify collecting it.",
+        "B": "Article 25 itself names pseudonymization as an appropriate technique, yet safeguards lower the risk of data already held; they never make that data necessary.",
         "C": "Restricting who sees individual data limits access, but the data is still collected and processed by default, beyond what the purpose needs."
       },
       "tips": [
@@ -3345,7 +3345,7 @@
       "pre_read": "Impact is only half of risk. Also ask what is mandatory and who must accept the risks left untreated.",
       "correct_explanation": "Regulatory deadlines are mandatory, so they come first. The remaining budget goes to risks with the highest expected loss, which weighs likelihood as well as impact, and cheap quick wins can stretch coverage. Untreated risks are escalated to the level the risk policy names, which formally accepts or funds them. Ranking by impact alone ignores likelihood and could leave a regulatory deadline unmet.",
       "wrong_explanations": {
-        "A": "Impact ranking is a common first cut on a crowded register, though any priority rule fails on the factor it leaves out.",
+        "A": "Impact ranking is a common first cut, though four of these risks carry regulatory dates that a size-only ranking can pass over.",
         "B": "Spreading the budget thinly leaves every risk partly treated, may miss the regulatory deadlines, and never escalates the gap for a decision.",
         "C": "Insurance can transfer some financial loss, but not regulatory obligations or most operational and reputational harm."
       },
@@ -4137,7 +4137,7 @@
       "wrong_explanations": {
         "B": "A second test round is more inspection of the finished product. Defects are still created upstream and found late.",
         "C": "Reporting defect rates adds visibility, but it still measures quality after the fact rather than building it into each development stage.",
-        "D": "Speed never changes a control's type. Automated testing is a mainstay of mature pipelines, yet a faster final gate builds no quality in."
+        "D": "Automated testing is a mainstay of mature pipelines, yet running the same end-of-cycle suite faster leaves the earlier stages, where defects enter, unchecked."
       },
       "tips": [
         "Eliminate: B adds another round of the same end-of-line inspection, and C only reports defects after the fact.",
@@ -4584,7 +4584,7 @@
       "pre_read": "Notice both laws can apply at once. Ask which option meets every obligation rather than choosing one regime.",
       "correct_explanation": "Both regimes can apply: CCPA through the consumer's California residence, and GDPR through the company's EU establishment or its targeting of people in the EU. The defensible response meets the shorter deadline, satisfies both sets of access and deletion duties, and records the dual basis. GDPR alone looks safe because it is often stricter, but it can miss CCPA-specific duties, such as its rules for verifying the consumer's identity.",
       "wrong_explanations": {
-        "B": "GDPR handling would meet much of what CCPA asks. Strictness is not coverage: each law that applies is satisfied and recorded separately.",
+        "B": "GDPR handling would meet much of what CCPA asks. Strictness is not coverage, though: each applicable law's duties are checked one by one.",
         "C": "Residence does not switch GDPR off. GDPR can apply through the company's EU establishment or processing, so ignoring it creates exposure.",
         "D": "Responding to a rights request is the controller's decision; supervisory authorities enforce the law, they do not answer requests for a company."
       },
@@ -4736,7 +4736,7 @@
       "wrong_explanations": {
         "A": "Uniform maximum controls ignore actual sensitivity, raising cost without proportionate benefit. Controls should follow classification tiers.",
         "B": "A flat seven-year period keeps some data longer than needed, breaching storage limitation, and may keep other data too briefly.",
-        "D": "Consent would settle one marketing use. Architecture starts from classification, since no control can be sized for unclassified data."
+        "D": "Consent can lawfully cover one marketing use. Architecture starts from classification, since every later decision depends on knowing what data it governs."
       },
       "tips": [
         "Eliminate: A applies costly controls regardless of sensitivity, and B breaches storage limitation with a flat retention period.",
@@ -6164,7 +6164,7 @@
       "pre_read": "Ask whether a compliant way to serve the customer has been explored before rejecting the business.",
       "correct_explanation": "Governance supports the business while honoring obligations. The firm should evaluate architectures such as anonymization, regional staging or customer-held keys, agree an option with the customer, write residency commitments that match it and use SCCs with transfer impact assessments where transfers are needed. Dropping the integration feature avoids the conflict, but it gives up the customer's need without testing whether a compliant design exists.",
       "wrong_explanations": {
-        "A": "Avoidance is a recognized response that keeps every residency promise, but it is the fallback after enabling designs fail, not the opening move.",
+        "A": "Avoidance is a recognized response that keeps every residency promise, though obligations usually constrain how a business need is met, not whether it is met.",
         "C": "Encryption protects data moving between sites, but the data still leaves the EU, so the written residency commitments are still broken.",
         "D": "Moving EU data to the US breaks the residency commitments made to EU customers, whatever transfer mechanism is cited."
       },
@@ -6978,7 +6978,7 @@
       "wrong_explanations": {
         "A": "ISO/IEC 27001 sets requirements for a security management system that management runs. It covers one area and is not board guidance.",
         "B": "ITIL 4 guides service management practice for IT teams. It does not set principles for a board's direction and oversight of IT.",
-        "D": "COBIT would win had the option cited its EDM domain, which speaks to governing bodies; frameworks are chosen by audience before coverage."
+        "D": "COBIT's EDM domain does address the board, yet this option names the four management domains; frameworks are chosen by audience before coverage."
       },
       "tips": [
         "Eliminate: A sets requirements for a security management system and B is a service management framework; both guide management's practice in one area, not board oversight.",
@@ -8143,7 +8143,7 @@
       "pre_read": "Ask which finding could stop the buyer from using what it is paying for, and which can be managed later.",
       "correct_explanation": "A change-of-control clause that ends the core component license threatens the buyer's right to run the platform that produces all the revenue. Only terms agreed before closing, such as the licensor's consent or a price change, can address it. Undocumented developer knowledge is a serious key-person risk, but retention agreements and documentation can reduce it, while the clause lets the licensor end or reprice the right to run the revenue platform.",
       "wrong_explanations": {
-        "A": "An auditor would flag key-person dependency in any software deal, yet risks the buyer controls after closing rank below those a third party holds.",
+        "A": "An auditor would flag key-person dependency in any software deal, yet risks the buyer controls after closing usually rank below those a third party holds.",
         "C": "Different email systems are a routine integration task after closing. They do not affect the value or legality of what is being bought.",
         "D": "Overdue policy reviews are a minor governance gap the buyer can fix after closing, with little effect on the price or the deal."
       },
