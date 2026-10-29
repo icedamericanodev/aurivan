@@ -27,6 +27,7 @@
  */
 import { BADGES, WHOLE_MAP_FLOOR } from './milestones';
 import type { CertPlant, GrowthLevel, LookId, PlantLook, PlantSettings, PlantSpecies } from './plant';
+import type { FinalId } from './plantForms';
 
 /**
  * The species list, written out here (not imported from plant.ts) so the two
@@ -414,6 +415,12 @@ export interface ArtLook {
   /** The visitor perched today ("wren", "robin"); unset = none. */
   visitor?: string;
   keepsakes?: readonly string[];
+  /**
+   * Mobile 1.50: the Form IV final drawn at Elder (engine/plantForms.ts
+   * resolveFinal: the learner's choice, else the line's own). Unset = own.
+   * Botanical style only (forms are a botanical-style feature).
+   */
+  final?: FinalId;
 }
 
 export const DEFAULT_LOOK = { ground: 'meadow', planter: 'native', visitor: 'wren' } as const;

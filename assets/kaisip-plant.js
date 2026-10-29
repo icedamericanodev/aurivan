@@ -3,7 +3,7 @@
  * from the mobile app's own plant sources (growth engine, looks, SVG art),
  * so the website and the app grow the same plant. Rebuild after changing
  * any of them: cd mobile && npm run web-plant
- * TypeScript 6.0.3. Modules: 32.
+ * TypeScript 6.0.3. Modules: 38.
  */
 (function (root) {
   "use strict";
@@ -2109,7 +2109,7 @@ exports.ORGAN_DRAW_MAX = 1.25;
 exports.ORGAN_DEFAULT = 1.011;
 const BUILT = new Map();
 const BUILT_MAX = 32;
-const lookKey = (l) => { var _a, _b, _d, _f, _g; return (l ? [(_a = l.palette) !== null && _a !== void 0 ? _a : '', (_b = l.ground) !== null && _b !== void 0 ? _b : '', (_d = l.planter) !== null && _d !== void 0 ? _d : '', (_f = l.visitor) !== null && _f !== void 0 ? _f : '', ((_g = l.keepsakes) !== null && _g !== void 0 ? _g : []).join('+')].join('/') : ''); };
+const lookKey = (l) => { var _a, _b, _d, _f, _g, _h; return (l ? [(_a = l.palette) !== null && _a !== void 0 ? _a : '', (_b = l.ground) !== null && _b !== void 0 ? _b : '', (_d = l.planter) !== null && _d !== void 0 ? _d : '', (_f = l.visitor) !== null && _f !== void 0 ? _f : '', ((_g = l.keepsakes) !== null && _g !== void 0 ? _g : []).join('+'), (_h = l.final) !== null && _h !== void 0 ? _h : ''].join('/') : ''); };
 const isBotanical = (o) => { var _a, _b; return ((_a = o.style) !== null && _a !== void 0 ? _a : (_b = o.look) === null || _b === void 0 ? void 0 : _b.style) === 'botanical'; };
 exports.isBotanical = isBotanical;
 const buildKey = (o) => {
@@ -2520,203 +2520,45 @@ function countShapes(n) {
     return n.t === 'g' ? n.children.reduce((s, c) => s + countShapes(c), 0) : 1;
 }
   };
-  links["src/components/plant/botanical.ts"] = {"../../theme/tokens":"src/theme/tokens.ts"};
+  links["src/components/plant/botanical.ts"] = {"../../engine/plantForms":"src/engine/plantForms.ts","../../theme/tokens":"src/theme/tokens.ts","./forms":"src/components/plant/forms/index.ts","./forms/kit":"src/components/plant/forms/kit.ts"};
   defs["src/components/plant/botanical.ts"] = function (module, exports, require) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.buildBotanical = buildBotanical;
 exports.ink = ink;
+const plantForms_1 = require("../../engine/plantForms");
 const tokens_1 = require("../../theme/tokens");
-const D2R = Math.PI / 180;
-const lerp = (a, b, t) => a + (b - a) * t;
+const forms_1 = require("./forms");
+const kit_1 = require("./forms/kit");
 const f = (n) => Math.round(n * 10) / 10;
 const LINE_PT = { icon: { main: 1.25, fine: 0 }, small: { main: 1.3, fine: 0.7 }, full: { main: 1.5, fine: 0.75 } };
 const P = (d, fill, extra = {}) => ({ t: 'path', d, fill, ...extra });
 const C = (cx, cy, r, fill, extra = {}) => ({ t: 'circle', cx: f(cx), cy: f(cy), r: f(r), fill, ...extra });
 const G = (id, children, extra = {}) => ({ t: 'g', id, children: children.filter(Boolean), ...extra });
 const L = (d, stroke, pt, extra = {}) => ({ t: 'path', d, fill: 'none', stroke, sw: pt, ...extra });
-const PARSED = new Map();
-function parse(d) {
-    var _a;
-    const hit = PARSED.get(d);
-    if (hit)
-        return hit;
-    const segs = [];
-    for (const t of (_a = d.match(/[MLQCZ]|-?\d*\.?\d+(?:e-?\d+)?/gi)) !== null && _a !== void 0 ? _a : []) {
-        if (/^[MLQCZ]$/i.test(t))
-            segs.push({ c: t.toUpperCase(), n: [] });
-        else if (segs.length)
-            segs[segs.length - 1].n.push(parseFloat(t));
-    }
-    PARSED.set(d, segs);
-    return segs;
-}
-function xf(d, x, y, a, s) {
-    const c = Math.cos(a) * s;
-    const sn = Math.sin(a) * s;
-    let out = '';
-    for (const g of parse(d)) {
-        out += g.c;
-        const n = g.n;
-        for (let i = 0; i + 1 < n.length; i += 2) {
-            const u = n[i];
-            const v = n[i + 1];
-            out += `${f(x + u * c - v * sn)} ${f(y + u * sn + v * c)} `;
-        }
-    }
-    return out.trim();
-}
-const qpt = (p0, pc, p1, t) => [(1 - t) ** 2 * p0[0] + 2 * (1 - t) * t * pc[0] + t * t * p1[0], (1 - t) ** 2 * p0[1] + 2 * (1 - t) * t * pc[1] + t * t * p1[1]];
-const qtan = (p0, pc, p1, t) => Math.atan2(2 * (1 - t) * (pc[1] - p0[1]) + 2 * t * (p1[1] - pc[1]), 2 * (1 - t) * (pc[0] - p0[0]) + 2 * t * (p1[0] - pc[0]));
-const Q = (p0, pc, p1) => `M${f(p0[0])} ${f(p0[1])}Q${f(pc[0])} ${f(pc[1])} ${f(p1[0])} ${f(p1[1])}`;
-function cubic(p0, c1, c2, p3) {
-    const pt = (t) => {
-        const u = 1 - t;
-        return [u * u * u * p0[0] + 3 * u * u * t * c1[0] + 3 * u * t * t * c2[0] + t * t * t * p3[0], u * u * u * p0[1] + 3 * u * u * t * c1[1] + 3 * u * t * t * c2[1] + t * t * t * p3[1]];
-    };
-    const tan = (t) => {
-        const u = 1 - t;
-        const dx = 3 * u * u * (c1[0] - p0[0]) + 6 * u * t * (c2[0] - c1[0]) + 3 * t * t * (p3[0] - c2[0]);
-        const dy = 3 * u * u * (c1[1] - p0[1]) + 6 * u * t * (c2[1] - c1[1]) + 3 * t * t * (p3[1] - c2[1]);
-        return Math.atan2(dy, dx);
-    };
-    return { pt, tan };
-}
-function taper(p0, pc, p1, w0, w1, N = 12, curve) {
-    const Lp = [];
-    const Rp = [];
-    const at = curve ? curve.pt : (t) => qpt(p0, pc, p1, t);
-    const tanAt = curve ? curve.tan : (t) => qtan(p0, pc, p1, t);
-    for (let i = 0; i <= N; i++) {
-        const t = i / N;
-        const [x, y] = at(t);
-        const a = tanAt(t);
-        const w = lerp(w0, w1, Math.pow(t, 0.85)) / 2;
-        Lp.push([x + Math.sin(a) * w, y - Math.cos(a) * w]);
-        Rp.push([x - Math.sin(a) * w, y + Math.cos(a) * w]);
-    }
-    const pl = (arr) => arr.map((p, i) => `${i ? 'L' : 'M'}${f(p[0])} ${f(p[1])}`).join('');
-    const tip = Lp[N];
-    const ta = tanAt(1);
-    const closed = pl(Lp) +
-        `Q${f(tip[0] + (Rp[N][0] - tip[0]) / 2 + Math.cos(ta) * w1 * 0.6)} ${f(tip[1] + (Rp[N][1] - tip[1]) / 2 + Math.sin(ta) * w1 * 0.6)} ${f(Rp[N][0])} ${f(Rp[N][1])}` +
-        [...Rp]
-            .reverse()
-            .slice(1)
-            .map((p) => `L${f(p[0])} ${f(p[1])}`)
-            .join('') +
-        'Z';
-    return { closed, sides: pl(Lp) + ' ' + pl(Rp) };
-}
-const MAPLE = (() => {
-    const tips = [
-        [-90, 7.2],
-        [-142, 6.4],
-        [-38, 6.4],
-        [-208, 4.6],
-        [28, 4.6],
-    ];
-    const order = [3, 1, 0, 2, 4];
-    const pt = (a, r) => [r * Math.cos(a * D2R), -6 + r * Math.sin(a * D2R)];
-    let d = 'M0 0L' + pt(-240, 2).map(f).join(' ');
-    order.forEach((ti, i) => {
-        const [a, r] = tips[ti];
-        d += ' L' + pt(a, r).map(f).join(' ');
-        if (i < order.length - 1)
-            d += ' L' + pt((a + tips[order[i + 1]][0]) / 2, 2.4).map(f).join(' ');
-    });
-    return { d: d + ' L' + pt(60, 2).map(f).join(' ') + 'Z', h: 13.2, rib: 'M0 -0.5L0 -11M0 -5L-4.6 -9M0 -5L4.6 -9' };
-})();
-const OAK = {
-    d: 'M0 0C-2 -.6 -3.6 -1.6 -2.8 -3.4C-5 -3.4 -5.2 -5.8 -3.2 -6.6C-5.2 -7.6 -4.4 -10.2 -2.2 -10C-2.6 -12.2 -.6 -13 0 -13C.6 -13 2.6 -12.2 2.2 -10C4.4 -10.2 5.2 -7.6 3.2 -6.6C5.2 -5.8 5 -3.4 2.8 -3.4C3.6 -1.6 2 -.6 0 0Z',
-    h: 13,
-    rib: 'M0 -0.5L0 -11.5',
-};
-const lensD = (W) => ({ d: `M0 0Q${W * 1.9} -0.46 0 -1Q${-W * 1.9} -0.46 0 0Z`, h: 1, rib: 'M0 -0.08L0 -0.86' });
-const BANYAN = { d: 'M0 0C0.46 -0.15 0.5 -0.68 0 -1C-0.5 -0.68 -0.46 -0.15 0 0Z', h: 1, rib: 'M0 -0.08L0 -0.86' };
-const LEAF = { lens: lensD(0.3), olive: lensD(0.19), long: lensD(0.16), banyan: BANYAN, oak: OAK, maple: MAPLE };
-for (const g of Object.values(LEAF)) {
-    parse(g.d);
-    parse(g.rib);
-}
-function leaf(kind, x, y, len, ang, fine) {
-    var _a;
-    const g = (_a = LEAF[kind]) !== null && _a !== void 0 ? _a : LEAF.lens;
-    const s = len / g.h;
-    const a = ang + Math.PI / 2;
-    const shape = xf(g.d, x, y, a, s);
-    return { wash: shape, line: fine ? shape + ' ' + xf(g.rib, x, y, a, s) : shape };
-}
-const PETAL_BLOSSOM = 'M0 0Q0.62 -0.55 0 -1Q-0.62 -0.55 0 0Z';
-const PETAL_STAR = 'M0 0Q0.25 -0.5 0 -1Q-0.25 -0.5 0 0Z';
-function blossom(x, y, r, rot) {
-    let d = '';
-    for (let i = 0; i < 5; i++)
-        d += xf(PETAL_BLOSSOM, x, y, (i * 72 + rot) * D2R, r * 1.25) + ' ';
-    return d.trim();
-}
-function star(x, y, r, rot) {
-    let d = '';
-    for (let i = 0; i < 8; i++)
-        d += xf(PETAL_STAR, x, y, (i * 45 + rot) * D2R, r) + ' ';
-    return d.trim();
-}
-function needles(x, y, len, ang, n = 5, spread = 0.9) {
-    let d = '';
-    for (let i = 0; i < n; i++) {
-        const a = ang + (i / (n - 1) - 0.5) * spread;
-        d += `M${f(x)} ${f(y)}L${f(x + Math.cos(a) * len)} ${f(y + Math.sin(a) * len)}`;
-    }
-    return d;
-}
-const BARK = tokens_1.plantArt.bark;
-const GIFT = tokens_1.plantArt.gift;
-const SPECIES = {
-    oak: { kind: 'cloud', pal: 'grove', bark: BARK.oak, leaf: 'oak', crown: { sx: 1.06, sy: 0.98, a0: 198, step: 36, spread: 0.56 }, flourish: 'acorn' },
-    maple: { kind: 'cloud', pal: 'ember', bark: BARK.maple, leaf: 'maple', crown: { sx: 0.92, sy: 1.12, a0: 214, step: 28, spread: 0.5, dy: -4 }, flourish: 'samara' },
-    narra: { kind: 'cloud', pal: 'spring', bark: BARK.narra, leaf: 'banyan', flare: 0.8, crown: { sx: 1.3, sy: 0.7, a0: 188, step: 41, spread: 0.6, dy: 4 }, flourish: 'narra' },
-    'cherry-blossom': { kind: 'cloud', pal: 'blossom', bark: BARK.cherry, leaf: 'blossom', crown: { sx: 1.18, sy: 0.84, a0: 194, step: 38, spread: 0.58, dy: 4 }, flourish: 'blossom' },
-    mango: { kind: 'cloud', pal: 'evergreen', bark: BARK.mango, leaf: 'long', crown: { sx: 1.22, sy: 0.78, a0: 192, step: 39, spread: 0.6, dy: 8 }, flourish: 'mango', fruitFrom: 5 },
-    pine: { kind: 'pine', pal: 'evergreen', bark: BARK.pine, leaf: 'needle', flourish: 'cone' },
-    'coconut-palm': { kind: 'palm', pal: 'spring', bark: BARK.coconut, leaf: 'olive', flourish: 'coconut', fruitFrom: 5, seed: GIFT.coconutRipe },
-    bonsai: { kind: 'bonsai', pal: 'grove', bark: BARK.bonsai, leaf: 'needle', flourish: 'moss', pot: true },
-    sunflower: { kind: 'sunflower', pal: 'gold', fol: 'spring', leaf: 'banyan', seed: tokens_1.plantArt.seed.sunflower, stripe: true },
-    lotus: { kind: 'lotus', pal: 'blossom', fol: 'grove', leaf: 'banyan', seed: tokens_1.plantArt.seed.lotus, pot: true },
-    sampaguita: { kind: 'sampaguita', pal: 'pearl', fol: 'grove', leaf: 'olive', seed: tokens_1.plantArt.seed.sampaguita },
-    cactus: { kind: 'cactus', pal: 'blossom', fol: 'cactus', leaf: 'lens', seed: tokens_1.plantArt.seed.cactus, pot: true },
-    bamboo: { kind: 'bamboo', pal: 'grove', fol: 'grove', leaf: 'olive' },
-};
-const GEO = {
-    3: { top: 116, cy: 94, rx: 38, ry: 33, wb: 8, wt: 4, ground: 2 },
-    4: { top: 108, cy: 79, rx: 54, ry: 42, wb: 12, wt: 6, ground: 2 },
-    5: { top: 102, cy: 70, rx: 68, ry: 49, wb: 17, wt: 8, ground: 3 },
-    6: { top: 98, cy: 64, rx: 78, ry: 52, wb: 22, wt: 10, ground: 3 },
-};
 const GROUND_W = [0, 34, 46, 62];
-const groundSize = (st) => (st <= 2 ? 1 : GEO[st].ground);
+const groundSize = (st) => (st <= 2 ? 1 : st <= 4 ? 2 : 3);
+const FORM_BASE = 170;
+const SEED_PARTS = new Set(['seed', 'roots', 'sprout', 'stem', 'husk', 'pads', 'pads-front']);
+const SEED_SHOOT = new Set(['sprout', 'stem']);
+const SEED_K = 0.8;
+const BOUGH_K = 0.88;
+const BOUGH_DROPS = new Set(['fruit', 'blooms']);
+const ORGAN_DEFAULT = 1.011;
+const scaleAbout = (k) => `translate(100 ${FORM_BASE}) scale(${k}) translate(-100 ${-FORM_BASE})`;
+const idOf = (n) => (n.t === 'g' ? n.id : null);
 function buildBotanical(o, kit) {
-    var _a, _b, _c, _d, _e;
+    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _p, _q;
     const key = o.species;
-    const sp = SPECIES[key];
+    const line = forms_1.FORM_LINES[key];
     const st = Math.max(1, Math.min(6, Math.round(o.stage)));
     const lod = o.lod || 'full';
     const theme = o.theme || 'light';
     const TL = tokens_1.plantLine[theme];
-    const pal = tokens_1.plantLeaf[(_b = (_a = o.look) === null || _a === void 0 ? void 0 : _a.palette) !== null && _b !== void 0 ? _b : sp.pal];
-    const fol = sp.fol ? tokens_1.plantLeaf[sp.fol] : pal;
     const W = LINE_PT[lod];
-    const fine = lod === 'full';
-    const sc = [0, 1, 2, 3, 4].map((i) => {
-        var _a;
-        const v = (_a = o.organs) === null || _a === void 0 ? void 0 : _a[i];
-        return typeof v === 'number' && Number.isFinite(v) ? Math.max(0.5, Math.min(1.25, v)) : 1.011;
-    });
     const restMix = o.resting ? TL.restLineMix : 0;
     const rest = (c) => (restMix ? kit.mix(c, TL.woodInk, restMix) : c);
-    const lineOf = (p) => {
-        const c = p[TL.leaf];
-        return rest(TL.paleLineMix && (p === tokens_1.plantLeaf.snow || p === tokens_1.plantLeaf.pearl) ? kit.mix(c, TL.woodInk, TL.paleLineMix) : c);
-    };
+    const lineOf = (p) => rest(p[TL.leaf]);
     const { gr, potKind } = kit.ground(key, o.look, st, lod, theme);
     const meadow = potKind === 'meadow';
     const gw = GROUND_W[groundSize(st)];
@@ -2744,72 +2586,96 @@ function buildBotanical(o, kit) {
         groundBack = { ...ink(gr.back, theme, W.main, kit.mix), id: 'ground' };
         groundFront = { ...ink(gr.front, theme, W.main, kit.mix), id: 'ground-front' };
     }
-    const A = { base: { x: 100, y: base }, organs: [] };
-    const ctx = {
-        key,
-        sp,
-        st,
-        lod,
-        TL,
-        dark: theme === 'dark',
-        pal,
-        fol,
-        wood: (c) => kit.mix(c, TL.woodInk, TL.woodMix),
-        lineOf,
+    const inPot = !meadow;
+    const gb = inPot ? kit.bounds(groundBack) : null;
+    const span = gb ? (gb.maxX - gb.minX) / 2 - 3 : 60;
+    const keepsakes = (_b = (_a = o.look) === null || _a === void 0 ? void 0 : _a.keepsakes) !== null && _b !== void 0 ? _b : [];
+    const clearDawn = keepsakes.includes('clear-dawn');
+    const palKey = ((_d = (_c = o.look) === null || _c === void 0 ? void 0 : _c.palette) !== null && _d !== void 0 ? _d : line.pal);
+    const S = (0, forms_1.paint)(theme, lod, {
+        pal: palKey,
+        fol: (_e = line.fol) !== null && _e !== void 0 ? _e : palKey,
+        mix: kit.mix,
         rest,
-        giftLine: (c) => kit.mix(c, TL.propInk, TL.giftMix),
-        W,
-        fine,
-        seed: kit.hash(key + st + 'b'),
-        sc,
-        base,
-        A,
-        kit,
-    };
-    const res = st <= 2 ? young(ctx) : BUILD[sp.kind](ctx);
-    const drift = [];
-    if (st === 6 && o.drift !== false && lod !== 'icon' && A.drift && key !== 'pine') {
-        const d = A.drift;
-        const kind = sp.kind === 'cloud' || sp.kind === 'palm' ? (sp.leaf === 'needle' ? 'lens' : sp.leaf) : 'lens';
-        const low = base - 8;
-        for (const [dx, dy, len, a] of [
-            [14, 22, 9, 120],
-            [4, 44, 8, -60],
-        ]) {
-            const y = Math.min(d.y + dy, low);
-            const lf = kind === 'blossom' ? { wash: blossom(d.x + dx, y, 2.4, a), line: blossom(d.x + dx, y, 2.4, a) } : leaf(kind, d.x + dx, y, len, a * D2R, fine);
-            drift.push(G(null, [P(lf.wash, pal[TL.washLeaf], { opacity: TL.washLeafOp }), L(lf.line, ctx.lineOf(pal), W.main * 0.9)]));
-        }
+        sc: [0, 1, 2, 3, 4].map((i) => {
+            var _a;
+            const v = (_a = o.organs) === null || _a === void 0 ? void 0 : _a[i];
+            return typeof v === 'number' && Number.isFinite(v) ? v : ORGAN_DEFAULT;
+        }),
+    });
+    const final = (0, plantForms_1.resolveFinal)(st, (_f = o.look) === null || _f === void 0 ? void 0 : _f.final);
+    const out = (0, forms_1.drawForm)(key, st, final, { S, species: key, inPot, span, keeps: keepsakes.filter((k) => k !== 'clear-dawn').length });
+    let parts = flatKids(out.body);
+    let shoot = [];
+    let k = 1;
+    if (st === 1) {
+        parts = parts.filter((n) => { var _a; return SEED_PARTS.has((_a = idOf(n)) !== null && _a !== void 0 ? _a : ''); });
+        shoot = parts.filter((n) => { var _a; return SEED_SHOOT.has((_a = idOf(n)) !== null && _a !== void 0 ? _a : ''); });
+        parts = parts.filter((n) => { var _a; return !SEED_SHOOT.has((_a = idOf(n)) !== null && _a !== void 0 ? _a : ''); });
     }
+    else if (st === 4) {
+        parts = parts.filter((n) => { var _a; return !BOUGH_DROPS.has((_a = idOf(n)) !== null && _a !== void 0 ? _a : ''); });
+        k = BOUGH_K;
+    }
+    const dy = base - FORM_BASE;
+    const shift = Math.abs(dy) > 0.01 ? `translate(0 ${f(dy)})` : '';
+    const placed = (extra) => [shift, extra].filter(Boolean).join(' ');
+    const formT = placed(k !== 1 ? scaleAbout(k) : '');
+    const body = G(null, [...parts, shoot.length ? G(null, shoot, { transform: scaleAbout(SEED_K) }) : null], formT ? { transform: formT } : {});
+    const at = (p, kk = st === 1 ? SEED_K : k) => (p ? { x: f(100 + (p[0] - 100) * kk), y: f(FORM_BASE + (p[1] - FORM_BASE) * kk + dy) } : undefined);
+    const A = { base: { x: 100, y: base }, organs: [] };
+    const crownParts = body.children.filter((c) => idOf(c) === 'canopy');
+    const cb = measure(crownParts.length ? { ...body, children: crownParts } : body, kit);
+    A.canopyBox = { cx: (cb.minX + cb.maxX) / 2, cy: (cb.minY + cb.maxY) / 2, rx: Math.max(8, (cb.maxX - cb.minX) / 2), ry: Math.max(8, (cb.maxY - cb.minY) / 2) };
+    const box = A.canopyBox;
+    A.crown = { x: box.cx, y: box.cy - box.ry };
+    A.perch = (_g = at(out.perch)) !== null && _g !== void 0 ? _g : { x: box.cx - box.rx * 0.5, y: box.cy - box.ry * 0.6 };
+    A.branchL = { x: box.cx - box.rx * 0.58, y: box.cy + box.ry * 0.62 };
+    A.branchR = { x: box.cx + box.rx * 0.6, y: box.cy + box.ry * 0.62 };
+    A.neck = { x: 100, y: base - 12, w: 6 };
+    A.drift = { x: box.cx + box.rx * 0.7, y: box.cy + box.ry * 0.4 };
+    if (st >= 4)
+        for (const org of (_h = out.organs) !== null && _h !== void 0 ? _h : []) {
+            const i = org.dom - 1;
+            if (i >= 0 && i < 5 && !A.organs[i])
+                A.organs[i] = at([org.x, org.y]);
+        }
+    const drift = o.drift !== false && st === 6 ? [G(null, flatKids((_j = out.drift) !== null && _j !== void 0 ? _j : []), shift ? { transform: shift } : {})] : [];
     const pose = o.resting ? `rotate(1.5 100 ${f(base)})` : null;
     let fx = null;
-    if (o.resting && lod !== 'icon' && A.canopyBox) {
-        const { cx, cy, rx, ry } = A.canopyBox;
+    if (o.resting && lod !== 'icon') {
+        const { cx, cy, rx, ry } = box;
         const mx = Math.min(186, cx + rx * 0.7);
         const my = Math.max(14, cy - ry - 8);
         const moon = `M${f(mx)} ${f(my - 8)}A8 8 0 1 0 ${f(mx + 7)} ${f(my + 4)}A6.4 6.4 0 1 1 ${f(mx)} ${f(my - 8)}Z`;
         fx = G('fx', [P(moon, TL.moon, { opacity: TL.moonWashOp }), L(moon, TL.moon, W.main)]);
     }
-    const bird = ((_c = o.look) === null || _c === void 0 ? void 0 : _c.visitor) && o.look.visitor !== 'no-visitor' ? kit.visitor(o.look.visitor, A, lod) : null;
+    const bird = ((_k = o.look) === null || _k === void 0 ? void 0 : _k.visitor) && o.look.visitor !== 'no-visitor' ? kit.visitor(o.look.visitor, A, lod) : null;
     const visitor = bird ? { ...ink(bird, theme, W.main * 0.9, kit.mix), id: 'visitor' } : null;
-    const tree = G('tree', [G('body', [...((_d = res.behind) !== null && _d !== void 0 ? _d : []), ...res.body, visitor], pose ? { transform: pose } : {}), G('drift', drift), fx]);
-    const tb = measure(tree, kit);
+    const tree = G('tree', [G('body', [body, visitor], pose ? { transform: pose } : {}), G('drift', drift), fx]);
+    const propsBack = G('props-back', [meadow ? ((_l = out.cutaway) !== null && _l !== void 0 ? _l : null) : null, ...flatKids((_m = out.back) !== null && _m !== void 0 ? _m : [])], shift ? { transform: shift } : {});
+    const propsFront = G('props-front', flatKids((_p = out.front) !== null && _p !== void 0 ? _p : []), shift ? { transform: shift } : {});
+    const tb = measure(G(null, [tree, propsBack, propsFront]), kit);
     const M = 3;
     const fitK = Math.min(1, (base - M) / Math.max(1, base - tb.minY), (100 - M) / Math.max(1, 100 - tb.minX), (100 - M) / Math.max(1, tb.maxX - 100));
-    if (fitK < 1)
-        tree.transform = `translate(100 ${f(base)}) scale(${fitK.toFixed(3)}) translate(-100 ${f(-base)})`;
-    const ks = kit.keepsakes((_e = o.look) === null || _e === void 0 ? void 0 : _e.keepsakes, st, gr, tree, base, potKind, A, lod, theme);
-    const keepBack = G('keepsakes-back', ks.back.map((k) => ink(k, theme, W.main * 0.9, kit.mix)));
-    const keepFront = G('keepsakes', ks.front.map((k) => ink(k, theme, W.main * 0.9, kit.mix)));
-    const k = Math.min(1, fitK);
-    const box = kit.bounds(G(null, [groundBack, keepBack, groundFront, keepFront, ks.dawn]));
-    const sx = (x) => 100 + (x - 100) * k;
-    const sy = (y) => base + (y - base) * k;
+    if (fitK < 1) {
+        const fit = `translate(100 ${f(base)}) scale(${fitK.toFixed(3)}) translate(-100 ${f(-base)})`;
+        for (const g of [tree, propsBack, propsFront])
+            g.transform = g.transform ? `${fit} ${g.transform}` : fit;
+    }
+    const glowNode = st === 6 && out.glow && !o.resting && !clearDawn ? (0, kit_1.glow)(S, out.glow[0], out.glow[1] + dy, out.glow[2]) : null;
+    const ks = kit.keepsakes((_q = o.look) === null || _q === void 0 ? void 0 : _q.keepsakes, st, gr, tree, base, potKind, A, lod, theme);
+    const keepBack = G('keepsakes-back', ks.back.map((x) => ink(x, theme, W.main * 0.9, kit.mix)));
+    const keepFront = G('keepsakes', ks.front.map((x) => ink(x, theme, W.main * 0.9, kit.mix)));
+    const kk = Math.min(1, fitK);
+    const gbox = kit.bounds(G(null, [groundBack, keepBack, groundFront, keepFront, ks.dawn]));
+    const sx = (x) => 100 + (x - 100) * kk;
+    const sy = (y) => base + (y - base) * kk;
     const frame = kit.frameFor({
-        minX: Math.min(box.minX, sx(tb.minX)),
-        maxX: Math.max(box.maxX, sx(tb.maxX)),
-        minY: Math.min(box.minY, sy(tb.minY)),
-        maxY: Math.max(box.maxY, sy(tb.maxY)),
+        minX: Math.min(gbox.minX, sx(tb.minX)),
+        maxX: Math.max(gbox.maxX, sx(tb.maxX)),
+        minY: Math.min(gbox.minY, sy(tb.minY)),
+        maxY: Math.max(gbox.maxY, sy(tb.maxY)),
     });
     let backdrop = null;
     if (o.resting) {
@@ -2820,10 +2686,24 @@ function buildBotanical(o, kit) {
         const dr = Math.max(8, Math.min(fs0 * 0.48, dcx - 1, dcy - 1, 199 - dcx, 199 - dcy));
         backdrop = G('dusk', [C(dcx, dcy, dr, T.dusk, { opacity: T.duskOpacity })]);
     }
-    const root = G('mascot', [backdrop, ks.dawn, groundBack, keepBack, tree, groundFront, keepFront]);
+    const root = G('mascot', [backdrop, ks.dawn, glowNode, groundBack, propsBack, keepBack, tree, propsFront, groundFront, keepFront]);
     const side = o.fit ? Number(frame.split(' ')[2]) : 200;
     scaleLines(root, side / (o.px || 200), 1);
     return { root, anchors: A, frame };
+}
+function flatKids(xs, out = []) {
+    for (const x of xs) {
+        if (Array.isArray(x))
+            flatKids(x, out);
+        else if (x)
+            out.push(x);
+    }
+    return out;
+}
+function measure(n, kit) {
+    const prune = (x) => (x.t === 'g' ? { ...x, children: x.children.filter((c) => !kit_1.INSIDE.has(c)).map(prune) } : x);
+    const b = kit.bounds(prune(n));
+    return { minX: b.minX - 1, minY: b.minY - 1, maxX: b.maxX + 1, maxY: b.maxY + 1 };
 }
 function scaleOf(t) {
     if (!t || t.indexOf('scale(') < 0)
@@ -2867,833 +2747,3290 @@ function ink(n, theme, pt, mix) {
     const out = walk(n);
     return out.length === 1 && out[0].t === 'g' ? out[0] : G(null, out);
 }
-const INSIDE = new WeakSet();
-function measure(n, kit) {
-    const prune = (x) => (x.t === 'g' ? { ...x, children: x.children.filter((c) => !INSIDE.has(c)).map(prune) } : x);
-    const b = kit.bounds(prune(n));
-    return { minX: b.minX - 1, minY: b.minY - 1, maxX: b.maxX + 1, maxY: b.maxY + 1 };
-}
-function leafGroup(ctx, id, list, palette = ctx.pal, extra = []) {
-    const { TL, W } = ctx;
-    let wash = '';
-    let line = '';
-    for (const l of list) {
-        wash += l.wash + ' ';
-        line += l.line + ' ';
+  };
+  links["src/components/plant/forms/conifers.ts"] = {"./kit":"src/components/plant/forms/kit.ts","./trees":"src/components/plant/forms/trees.ts"};
+  defs["src/components/plant/forms/conifers.ts"] = function (module, exports, require) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.CONIFER_LINES = void 0;
+const kit_1 = require("./kit");
+const trees_1 = require("./trees");
+function cones(S, pts) {
+    if (S.icon || !pts.length)
+        return null;
+    let d = '';
+    let sc = '';
+    for (const [x, y] of pts) {
+        d += `M${(0, kit_1.f)(x)} ${(0, kit_1.f)(y)}C${(0, kit_1.f)(x + 3)} ${(0, kit_1.f)(y + 1)} ${(0, kit_1.f)(x + 3.2)} ${(0, kit_1.f)(y + 6)} ${(0, kit_1.f)(x)} ${(0, kit_1.f)(y + 8)}C${(0, kit_1.f)(x - 3.2)} ${(0, kit_1.f)(y + 6)} ${(0, kit_1.f)(x - 3)} ${(0, kit_1.f)(y + 1)} ${(0, kit_1.f)(x)} ${(0, kit_1.f)(y)}Z`;
+        if (S.full)
+            sc += `M${(0, kit_1.f)(x - 2.4)} ${(0, kit_1.f)(y + 3)}L${(0, kit_1.f)(x + 2.4)} ${(0, kit_1.f)(y + 4)}M${(0, kit_1.f)(x - 2.6)} ${(0, kit_1.f)(y + 5.4)}L${(0, kit_1.f)(x + 2.6)} ${(0, kit_1.f)(y + 6.4)}`;
     }
-    const lineNode = line ? L(line.trim(), ctx.lineOf(palette), W.main) : null;
-    if (lineNode && wash)
-        INSIDE.add(lineNode);
-    return G(id, [...extra, wash ? P(wash.trim(), palette[TL.washLeaf], { opacity: TL.washLeafOp }) : null, lineNode]);
+    return (0, kit_1.G)('fruit', [(0, kit_1.P)(d, S.giftFill(kit_1.A0.gift.cone)), (0, kit_1.L)(d + sc, S.gift(kit_1.A0.gift.cone), S.hair * 1.7)]);
 }
-const inkLimb = (p0, pc, p1, w0, w1, color) => P(taper(p0, pc, p1, w0, w1).closed, color);
-function trunk(ctx, p0, pc, p1, w0, w1, bark, lines = true) {
-    const { TL, W, fine } = ctx;
-    const t = taper(p0, pc, p1, w0, w1, 16);
-    const kids = [P(t.closed, bark, { opacity: TL.washWoodOp }), L(t.sides, ctx.wood(bark), W.main)];
-    if (fine && lines && w0 > 9) {
-        for (const [ta, tb, off] of [
-            [0.18, 0.42, 0.18],
-            [0.5, 0.72, -0.12],
+const PINE = { bark: kit_1.A0.bark.pine, kind: 'lens', ll: 8, aspect: 1, pads: true, needle: true, fruit: (S, ms) => cones(S, (0, kit_1.lowerRim)(ms, 4, 7, 0.3, 0.7)) };
+const pineForms = {
+    I: (c) => {
+        const { S } = c;
+        const set = (0, kit_1.leafSet)();
+        const lp = (0, trees_1.green)(S.pal);
+        for (let i = 0; i < 9; i++)
+            set.add((0, kit_1.leaf)('long', 100, 140, 13, (-172 + i * 20.5) * kit_1.D2R, S, 0.55));
+        return {
+            cutaway: (0, kit_1.cutaway)(S, 64, 136, 171, 188, 10),
+            body: [
+                (0, kit_1.G)('roots', [(0, kit_1.L)('M99 170Q98 178 100 188M99 178l-4 3M100 183l4 2', S.wood(PINE.bark), S.fine * 1.5)]),
+                (0, kit_1.seedPart)(S, (0, kit_1.oval)(84, 167, 4.6, 3.2) + ' M87 165C94 160 108 160 114 166C108 170 94 170 87 169Z', kit_1.A0.seedLight, 'M90 166L112 166'),
+                (0, kit_1.G)('sprout', [(0, kit_1.L)('M99 170Q98 154 100 140', S.lineOf(lp), S.main), (0, kit_1.P)(set.wash(), S.washOf(lp), { opacity: S.washOp }), (0, kit_1.L)(set.line(), S.lineOf(lp), S.fine * 1.4)]),
+            ],
+            perch: [70, 170],
+        };
+    },
+    II: (c) => {
+        const { S } = c;
+        let nd = '';
+        let tw = '';
+        for (const [y, w] of [
+            [140, 18],
+            [112, 14],
+            [86, 10],
+        ])
+            for (const s of [-1, 1]) {
+                tw += `M100 ${y}Q${100 + s * w * 0.5} ${y - 2} ${100 + s * w} ${y - 6}`;
+                nd += (0, kit_1.needles)(100 + s * w, y - 6, 7, -Math.PI / 2 + s * 0.9, 5, 1.4) + (0, kit_1.needles)(100 + s * w * 0.55, y - 3, 6, -Math.PI / 2 + s * 0.6, 4, 1.2);
+            }
+        nd += (0, kit_1.needles)(100, 58, 7, -Math.PI / 2, 7, 2.6);
+        const candle = 'M100 58C102.4 52 102.6 44 100 36C97.4 44 97.6 52 100 58Z';
+        return {
+            body: [
+                (0, kit_1.G)('stem', [(0, kit_1.L)('M100 171L100 58', S.wood(PINE.bark), S.main * 1.6), (0, kit_1.L)(tw, S.wood(PINE.bark), S.fine * 1.4)]),
+                (0, kit_1.G)('leaves', [(0, kit_1.L)(nd, S.lineOf(S.pal), S.fine * 1.2)]),
+                (0, kit_1.G)('bud', [(0, kit_1.P)(candle, kit_1.LEAF[S.pal].hi), (0, kit_1.L)(candle, S.lineOf(S.pal), S.fine * 1.3)]),
+            ],
+            perch: [82, 134],
+        };
+    },
+    III: (c) => (0, trees_1.tree)(c, {
+        ...(0, trees_1.habitBase)(PINE),
+        pal: c.S.pal,
+        seed: 25,
+        masses: [(0, kit_1.M)(100, 140, 42, 16, 1), (0, kit_1.M)(100, 118, 35, 15, 2), (0, kit_1.M)(100, 96, 28, 14, 3), (0, kit_1.M)(100, 74, 21, 13, 4), (0, kit_1.M)(100, 52, 13, 12, 5)],
+        trunk: [[100, 171], [100, 110], [100, 44], 9, 3, { furrows: 0 }],
+        extras: () => [
+            cones(c.S, [
+                [72, 146],
+                [124, 124],
+            ]),
+        ],
+        perch: [64, 134],
+    }),
+    IV: (c) => (0, trees_1.tree)(c, {
+        ...(0, trees_1.habitBase)(PINE),
+        pal: c.S.pal,
+        seed: 35,
+        masses: [(0, kit_1.M)(44, 104, 26, 16, 1), (0, kit_1.M)(156, 92, 24, 16, 5), (0, kit_1.M)(64, 72, 26, 16, 2), (0, kit_1.M)(140, 58, 26, 16, 4), (0, kit_1.M)(108, 36, 32, 19, 3)],
+        trunk: [[100, 171], [96, 110], [106, 44], 16, 7, { furrows: 6 }],
+        limbs: [
+            [[99, 130], [70, 114], [46, 106], 5, 1.8],
+            [[102, 112], [130, 98], [152, 94], 5, 1.8],
+            [[102, 94], [80, 78], [66, 74], 5, 1.8],
+            [[104, 74], [124, 62], [140, 60], 5, 1.8],
+        ],
+        rootD: c.inPot ? null : 'M92 168Q82 171 72 173M108 168Q120 171 130 172',
+        extras: () => [
+            cones(c.S, [
+                [50, 110],
+                [70, 78],
+                [148, 64],
+                [112, 44],
+            ]),
+        ],
+        glow: [104, 80, 80],
+        perch: [140, 46],
+    }),
+};
+function pineEspalier(c) {
+    const { S } = c;
+    const post = kit_1.A0.planter.post;
+    const masses = [(0, kit_1.M)(40, 120, 28, 12, 1, { flat: 0.6 }), (0, kit_1.M)(160, 120, 28, 12, 5, { flat: 0.6 }), (0, kit_1.M)(64, 92, 28, 12, 2, { flat: 0.6 }), (0, kit_1.M)(136, 92, 28, 12, 4, { flat: 0.6 }), (0, kit_1.M)(100, 66, 30, 13, 3, { flat: 0.6 })];
+    const tops = [
+        [22, 116],
+        [178, 116],
+        [44, 88],
+        [156, 88],
+        [80, 62],
+        [120, 62],
+    ];
+    const ropes = tops.map(([x, y]) => `M100 14Q${(0, kit_1.f)((100 + x) / 2)} ${(0, kit_1.f)((14 + y) / 2 + 6)} ${x} ${y}`).join('');
+    return (0, trees_1.tree)(c, {
+        ...(0, trees_1.habitBase)(PINE),
+        pal: S.pal,
+        seed: 45,
+        masses,
+        trunk: [[100, 171], [100, 120], [100, 64], 16, 7, { furrows: 5 }],
+        limbs: [
+            [[100, 128], [64, 124], [24, 120], 6, 2],
+            [[100, 128], [136, 124], [176, 120], 6, 2],
+            [[100, 100], [76, 96], [46, 92], 5, 1.8],
+            [[100, 100], [124, 96], [154, 92], 5, 1.8],
+        ],
+        afterTrunk: [(0, kit_1.G)('pole', [(0, kit_1.L)('M100 66L100 14', S.wood(post), S.main * 1.3)])],
+        extras: () => [
+            S.icon ? null : (0, kit_1.G)('ropes', [(0, kit_1.L)(ropes, S.wood(post), S.hair * 1.4, { opacity: 0.9 })]),
+            cones(S, [
+                [48, 126],
+                [152, 126],
+            ]),
+        ],
+        glow: [100, 92, 84],
+        perch: [40, 108],
+    });
+}
+const pineFlavours = {
+    lookout: (c) => trees_1.RECIPES.lookout(c, PINE, c.S.pal),
+    moot: (c) => trees_1.RECIPES.moot(c, PINE, c.S.pal),
+    espalier: pineEspalier,
+    coppice: (c) => trees_1.RECIPES.coppice(c, PINE, c.S.pal),
+    holdfast: (c) => trees_1.RECIPES.holdfast(c, PINE, c.S.pal),
+};
+const PB = kit_1.A0.bark.coconut;
+function frond(S, set, p0, ang, len, droop = 0.36, n, ll) {
+    const a = ang * kit_1.D2R;
+    const p2 = [p0[0] + Math.cos(a) * len, p0[1] + Math.sin(a) * len * 0.75 + len * 0.12 + Math.abs(Math.cos(a)) * len * droop];
+    const p1 = [p0[0] + Math.cos(a) * len * 0.62, p0[1] + Math.sin(a) * len * 0.75 * 0.62 - len * 0.12];
+    const k = n !== null && n !== void 0 ? n : (S.full ? 9 : S.small ? 6 : 0);
+    for (let i = 1; i <= k; i++) {
+        const t = i / (k + 1);
+        const p = (0, kit_1.qp)(p0, p1, p2, t);
+        const tn = (0, kit_1.qa)(p0, p1, p2, t);
+        const l = (ll || len * 0.3) * (1 - t * 0.55);
+        const dr = Math.cos(tn) >= 0 ? 0.35 : -0.35;
+        set.add((0, kit_1.leaf)('long', p[0], p[1], l, tn + 0.75 + dr, S)).add((0, kit_1.leaf)('long', p[0], p[1], l, tn - 0.75 + dr, S));
+    }
+    return { d: (0, kit_1.Q)(p0, p1, p2), mid: (0, kit_1.qp)(p0, p1, p2, 0.6), tip: p2, wedge: (0, kit_1.taper)(p0, p1, p2, len * 0.2, 2).closed };
+}
+function palmCrown(S, at, fr, pal, doms) {
+    const organs = [];
+    const gs = fr.map(([ang, len, droop], i) => {
+        var _a;
+        const dom = (_a = doms === null || doms === void 0 ? void 0 : doms[i]) !== null && _a !== void 0 ? _a : null;
+        const set = (0, kit_1.leafSet)();
+        const r = frond(S, set, at, ang, len * (dom ? S.sc(dom) : 1), droop);
+        if (dom)
+            organs.push({ dom, x: r.mid[0], y: r.mid[1] });
+        return (0, kit_1.G)(dom ? `domain-${dom}` : null, [S.icon ? (0, kit_1.P)(r.wedge, S.washOf(pal), { opacity: 0.85 }) : null, (0, kit_1.P)(set.wash(), S.washOf(pal), { opacity: S.washOp }), (0, kit_1.L)(r.d + ' ' + set.line(), S.lineOf(pal), S.icon ? S.main : S.fine * 1.4)]);
+    });
+    return { node: (0, kit_1.G)('canopy', gs), organs };
+}
+function ringTrunk(S, p0, pc, p1, w0, w1) {
+    return (0, kit_1.trunk)(S, p0, pc, p1, w0, w1, PB, {
+        furrows: 0,
+        extra: (t) => {
+            let d = '';
+            for (let i = 1; i < t.left.length - 1; i++) {
+                const a = t.left[i];
+                const b = t.right[i];
+                d += `M${(0, kit_1.f)(a[0])} ${(0, kit_1.f)(a[1])}Q${(0, kit_1.f)((a[0] + b[0]) / 2)} ${(0, kit_1.f)((a[1] + b[1]) / 2 + 1.6)} ${(0, kit_1.f)(b[0])} ${(0, kit_1.f)(b[1])}`;
+            }
+            return d;
+        },
+    });
+}
+function nuts(S, at, pts, ripe, pal) {
+    if (S.icon)
+        return null;
+    const col = pal === 'golden' ? kit_1.A0.gift.coconutGolden : ripe ? kit_1.A0.gift.coconutRipe : kit_1.A0.gift.coconutGreen;
+    const d = pts.map(([dx, dy, r]) => (0, kit_1.disc)(at[0] + dx, at[1] + dy, r || 5.2)).join(' ');
+    return (0, kit_1.G)('fruit', [(0, kit_1.P)(d, S.giftFill(col)), (0, kit_1.L)(d, S.gift(col), S.fine * 1.4)]);
+}
+const FR5 = [
+    [-168, 54, 0.36],
+    [-130, 58, 0.3],
+    [-92, 50, 0.1],
+    [-54, 58, 0.3],
+    [-12, 54, 0.36],
+];
+const palmForms = {
+    I: (c) => {
+        const { S } = c;
+        const set = (0, kit_1.leafSet)();
+        const lp = S.pal;
+        set.add((0, kit_1.leaf)('strap', 108, 140, 26, -104 * kit_1.D2R, S, 1.4)).add((0, kit_1.leaf)('strap', 108, 140, 20, -66 * kit_1.D2R, S, 1.4));
+        return {
+            cutaway: (0, kit_1.cutaway)(S, 60, 140, 171, 188, 11),
+            body: [
+                (0, kit_1.G)('roots', [(0, kit_1.L)('M96 170Q94 180 97 189M100 170Q104 179 108 186', S.wood(PB), S.fine * 1.5)]),
+                (0, kit_1.seedPart)(S, 'M80 164C80 154 92 150 104 152C116 154 120 162 116 168C112 173 86 173 80 164Z', PB, 'M86 160Q98 156 112 158M84 166Q98 162 114 164'),
+                (0, kit_1.G)('sprout', [(0, kit_1.L)('M107 154Q106 146 108 140', S.lineOf(lp), S.main * 1.3), (0, kit_1.P)(set.wash(), S.washOf(lp), { opacity: S.washOp }), (0, kit_1.L)(set.line(), S.lineOf(lp), S.main)]),
+            ],
+            perch: [70, 168],
+        };
+    },
+    II: (c) => {
+        const { S } = c;
+        const set = (0, kit_1.leafSet)();
+        let pleat = '';
+        for (const [a, l] of [
+            [-134, 50],
+            [-110, 58],
+            [-84, 58],
+            [-58, 50],
         ]) {
-            const a = qpt(p0, pc, p1, ta);
-            const b = qpt(p0, pc, p1, tb);
-            const w = lerp(w0, w1, ta) * off;
-            kids.push(L(`M${f(a[0] + w)} ${f(a[1])}Q${f((a[0] + b[0]) / 2 + w + 1)} ${f((a[1] + b[1]) / 2)} ${f(b[0] + w)} ${f(b[1])}`, ctx.wood(bark), W.fine, { opacity: 0.7 }));
+            set.add((0, kit_1.leaf)('lens', 100, 162, l, a * kit_1.D2R, S, 0.5));
+            if (S.full)
+                for (const u of [0.35, 0.55, 0.75]) {
+                    const x = 100 + Math.cos(a * kit_1.D2R) * l * u;
+                    const y = 162 + Math.sin(a * kit_1.D2R) * l * u;
+                    pleat += (0, kit_1.xf)('M-4 2L0 0L4 2', x, y, (a + 90) * kit_1.D2R, 0.9);
+                }
+        }
+        return { body: [(0, kit_1.seedPart)(S, 'M84 171C84 162 92 157 100 158C108 159 114 164 114 171Z', PB), (0, kit_1.leavesNode)(S, 'leaves', set, S.pal, [pleat ? (0, kit_1.L)(pleat, S.lineOf(S.pal), S.hair * 1.4) : null])], perch: [72, 160] };
+    },
+    III: (c) => {
+        const { S } = c;
+        const at = [104, 104];
+        const cr = palmCrown(S, at, FR5.map(([a, l, d]) => [a, l * 0.92, d]), S.pal, [1, 2, 3, 4, 5]);
+        return {
+            body: [
+                ringTrunk(S, [100, 171], [99, 140], [104, 106], 13, 9),
+                cr.node,
+                nuts(S, at, [
+                    [-5, 8, 4.4],
+                    [5, 9, 4.4],
+                    [0, 13, 4.4],
+                ], false, S.pal),
+            ],
+            perch: [70, 92],
+            organs: cr.organs,
+        };
+    },
+    IV: (c) => {
+        const { S } = c;
+        const at = [124, 40];
+        const cr = palmCrown(S, at, [
+            [-172, 66, 0.4],
+            [-134, 66, 0.32],
+            [-94, 54, 0.1],
+            [-54, 66, 0.32],
+            [-10, 62, 0.42],
+        ], S.pal, [1, 2, 3, 4, 5]);
+        const sprout = (0, kit_1.leafSet)();
+        sprout.add((0, kit_1.leaf)('strap', 64, 162, 16, -100 * kit_1.D2R, S, 1.3)).add((0, kit_1.leaf)('strap', 64, 162, 12, -70 * kit_1.D2R, S, 1.3));
+        const nutD = 'M56 171C56 164 62 162 68 163C74 164 76 168 75 171Z';
+        return {
+            body: [
+                c.inPot || S.icon ? null : (0, kit_1.G)('roots', [(0, kit_1.L)('M88 169Q80 171 74 174M92 170Q88 173 86 177M104 169Q112 171 118 174', S.wood(PB), S.fine * 1.5)]),
+                ringTrunk(S, [96, 171], [88, 98], [124, 42], 16, 9),
+                cr.node,
+                nuts(S, at, [
+                    [-7, 9],
+                    [5, 10],
+                    [-1, 15],
+                    [-12, 15],
+                    [10, 16],
+                    [3, 20],
+                ], true, S.pal),
+                c.inPot || S.icon
+                    ? null
+                    : (0, kit_1.G)('sprout', [(0, kit_1.P)(nutD, S.woodFill(PB)), (0, kit_1.L)(nutD, S.wood(PB), S.fine * 1.4), (0, kit_1.P)(sprout.wash(), S.washOf(S.pal), { opacity: S.washOp }), (0, kit_1.L)(sprout.line(), S.lineOf(S.pal), S.fine * 1.4)]),
+            ],
+            glow: [116, 66, 70],
+            perch: [124, 28],
+            organs: cr.organs,
+        };
+    },
+};
+const palmFlavours = {
+    lookout: (c) => {
+        const { S } = c;
+        const at = [100, 26];
+        const cr = palmCrown(S, at, [
+            [-176, 46, 0.5],
+            [-136, 48, 0.3],
+            [-90, 34, 0],
+            [-44, 48, 0.3],
+            [-4, 46, 0.5],
+        ], S.pal, [1, 2, 3, 4, 5]);
+        return {
+            body: [
+                ringTrunk(S, [100, 171], [100, 100], [100, 28], 12, 8),
+                cr.node,
+                nuts(S, at, [
+                    [-5, 8, 4.4],
+                    [5, 9, 4.4],
+                    [0, 13, 4.4],
+                ], true, S.pal),
+            ],
+            glow: [100, 60, 64],
+            perch: [100, 14],
+            organs: cr.organs,
+        };
+    },
+    moot: (c) => {
+        const { S } = c;
+        const at = [100, 70];
+        const cr = palmCrown(S, at, [
+            [-178, 76, 0.02],
+            [-160, 66, 0.04],
+            [-90, 30, 0],
+            [-20, 66, 0.04],
+            [-2, 76, 0.02],
+        ], S.pal, [1, 2, 3, 4, 5]);
+        const st = c.inPot
+            ? { front: [(0, kit_1.stones)(S, 'stones-front', [[88, 171, 2.6], [112, 171, 2.6], [100, 172.5, 2.4]])], back: [] }
+            : { back: [(0, kit_1.stones)(S, 'stones', [[54, 167, 7], [146, 167, 7]])], front: [(0, kit_1.stones)(S, 'stones-front', [[72, 175, 6], [128, 175, 6], [100, 179, 5]])] };
+        return {
+            body: [
+                ringTrunk(S, [100, 171], [100, 120], [100, 72], 14, 10),
+                cr.node,
+                nuts(S, at, [
+                    [-6, 8],
+                    [6, 8],
+                    [0, 13],
+                ], true, S.pal),
+            ],
+            ...st,
+            glow: [100, 96, 78],
+            perch: [60, 62],
+            organs: cr.organs,
+        };
+    },
+    espalier: (c) => {
+        const { S } = c;
+        const at = [100, 62];
+        const post = kit_1.A0.planter.post;
+        const cr = palmCrown(S, at, [
+            [-162, 56, 0.3],
+            [-126, 56, 0.2],
+            [-90, 46, 0],
+            [-54, 56, 0.2],
+            [-18, 56, 0.3],
+        ], S.pal, [1, 2, 3, 4, 5]);
+        const w = c.inPot ? Math.min(40, c.span + 4) : 40;
+        const poles = `M${100 - w} 171L97 112M${100 + w} 171L103 112M100 176L100 112`;
+        return {
+            body: [
+                ringTrunk(S, [100, 171], [100, 116], [100, 64], 12, 9),
+                (0, kit_1.G)('frame', [(0, kit_1.L)(poles.replace('M100 176L100 112', ''), S.wood(post), S.main * 1.5), S.icon ? null : (0, kit_1.L)('M95 112L105 112M95 115.5L105 115.5', S.wood(post), S.fine * 1.4)]),
+                cr.node,
+                nuts(S, at, [
+                    [-5, 8, 4.6],
+                    [5, 9, 4.6],
+                    [0, 13, 4.6],
+                ], true, S.pal),
+            ],
+            glow: [100, 84, 74],
+            perch: [100, 50],
+            organs: cr.organs,
+        };
+    },
+    coppice: (c) => {
+        const { S } = c;
+        const main = palmCrown(S, [104, 46], [
+            [-140, 52, 0.3],
+            [-92, 44, 0.1],
+            [-44, 52, 0.3],
+        ], S.pal, [2, 3, 4]);
+        const lc = palmCrown(S, [66, 100], [
+            [-170, 34, 0.4],
+            [-120, 34, 0.2],
+            [-60, 30, 0.2],
+        ], S.pal, [1, null, null]);
+        const rc = palmCrown(S, [138, 108], [
+            [-120, 30, 0.2],
+            [-60, 34, 0.2],
+            [-10, 34, 0.4],
+        ], S.pal, [null, null, 5]);
+        const t = (p0, pc, p1, w0, w1) => ringTrunk(S, p0, pc, p1, w0, w1).children;
+        return {
+            body: [
+                (0, kit_1.G)('trunk', [...t([92, 171], [80, 136], [66, 102], 9, 6), ...t([108, 171], [124, 140], [138, 110], 9, 6), ...t([100, 171], [98, 110], [104, 48], 13, 9)]),
+                (0, kit_1.G)('canopy', [lc.node.children, rc.node.children, main.node.children]),
+                nuts(S, [104, 46], [
+                    [-5, 8, 4.6],
+                    [5, 9, 4.6],
+                    [0, 13, 4.6],
+                ], true, S.pal),
+            ],
+            glow: [100, 84, 80],
+            perch: [66, 88],
+            organs: [...main.organs, ...lc.organs, ...rc.organs],
+        };
+    },
+    holdfast: (c) => {
+        const { S } = c;
+        const sc = c.inPot ? Math.min(1, (c.span + 8) / 44) : 1;
+        const X = (x) => 100 + (x - 100) * sc;
+        const top = 170 - 30 * sc;
+        const rock = `M${(0, kit_1.f)(X(60))} 171C${(0, kit_1.f)(X(56))} ${(0, kit_1.f)(170 - 16 * sc)} ${(0, kit_1.f)(X(70))} ${(0, kit_1.f)(top + 2)} ${(0, kit_1.f)(X(90))} ${(0, kit_1.f)(top)}C${(0, kit_1.f)(X(110))} ${(0, kit_1.f)(top - 2)} ${(0, kit_1.f)(X(136))} ${(0, kit_1.f)(top + 4)} ${(0, kit_1.f)(X(141))} ${(0, kit_1.f)(170 - 12 * sc)}L${(0, kit_1.f)(X(140))} 171Z`;
+        const at = [100, 84];
+        const cr = palmCrown(S, at, [
+            [-170, 46, 0.4],
+            [-140, 50, 0.3],
+            [-112, 44, 0.15],
+            [-90, 36, 0],
+            [-68, 44, 0.15],
+            [-40, 50, 0.3],
+            [-10, 46, 0.4],
+        ], S.pal, [1, 2, null, 3, null, 4, 5]);
+        return {
+            back: [(0, kit_1.boulder)(S, rock, 100, 170 - 15 * sc, 40 * sc, 15 * sc)],
+            body: [
+                (0, kit_1.rootTapers)(S, [
+                    [[96, top + 6], [X(74), top + 8], [X(66), 171], 6, 2.2],
+                    [[98, top + 6], [X(88), top + 16], [X(88), 171], 5, 2.2],
+                    [[102, top + 6], [X(112), top + 16], [X(114), 171], 5, 2.2],
+                    [[104, top + 6], [X(128), top + 8], [X(136), 171], 6, 2.2],
+                ], PB),
+                ringTrunk(S, [100, top + 8], [100, 112], [100, 86], 20, 13),
+                cr.node,
+                nuts(S, at, [
+                    [-6, 8],
+                    [6, 8],
+                    [0, 13],
+                ], true, S.pal),
+            ],
+            glow: [100, 76, 72],
+            perch: [62, 74],
+            organs: cr.organs,
+        };
+    },
+};
+const BB = kit_1.A0.bark.bonsai;
+function bonsaiTree(c, sp) {
+    const { S } = c;
+    const body = [];
+    if (sp.roots)
+        body.push((0, kit_1.rootTapers)(S, sp.roots, BB));
+    if (sp.limbs)
+        body.push((0, kit_1.limbs)(S, sp.limbs, BB));
+    const tr = sp.trunks.map(([p0, pc, p1, w0, w1]) => (0, kit_1.taper)(p0, pc, p1, w0, w1, 14));
+    body.push((0, kit_1.G)('trunk', [
+        (0, kit_1.P)(tr.map((t) => t.closed).join(' '), S.woodFill(BB)),
+        S.full && sp.fur !== false ? (0, kit_1.L)(tr.map((t) => (0, kit_1.furrows)(t.left, t.right, 2, 5)).join(''), S.wood(BB), S.hair * 1.4, { opacity: 0.7 }) : null,
+        (0, kit_1.L)(tr.map((t) => t.sides).join(' '), S.wood(BB), S.main),
+    ]));
+    if (sp.wire && !S.icon)
+        body.push((0, kit_1.G)('wire', [(0, kit_1.L)(sp.wire, S.wire, S.hair * 1.5)]));
+    const ms = sp.masses.map((m) => { var _a; return ({ ...m, flat: (_a = m.flat) !== null && _a !== void 0 ? _a : 0.62, n: m.n || Math.max(8, Math.round(m.rx / 2.6)) }); });
+    if (sp.ids !== false)
+        (0, kit_1.scaleMasses)(S, ms);
+    const cr = (0, kit_1.crown)(S, ms, { kind: 'lens', ll: 6, pal: S.pal, needle: true, seed: sp.seed || 5, dense: sp.dense, ids: sp.ids, rim: 1.4 });
+    body.push(cr.node);
+    if (sp.blooms && !S.icon)
+        body.push((0, kit_1.blossoms)(S, (0, kit_1.upperRim)(ms, sp.blooms, 3), 2.5, 'pearl'));
+    return { body, back: sp.back || [], front: sp.front || [], glow: sp.glow || null, perch: sp.perch, organs: cr.organs };
+}
+const moss = (S, xs) => S.icon
+    ? null
+    : (0, kit_1.G)('moss', [(0, kit_1.L)(xs.map((x) => `M${x - 3} 170.5Q${x} 166.5 ${x + 3} 170.5`).join(''), S.lineOf('grove'), S.fine * 1.5), (0, kit_1.P)(xs.map((x) => `M${x - 3} 170.5Q${x} 166.5 ${x + 3} 170.5Z`).join(''), S.washOf('grove'), { opacity: S.washOp })]);
+const bonsaiForms = {
+    I: (c) => {
+        const { S } = c;
+        let nd = '';
+        for (const [x, y, a] of [
+            [104, 128, -90],
+            [96, 140, -150],
+            [101, 146, -30],
+        ])
+            nd += (0, kit_1.needles)(x, y, 8, a * kit_1.D2R, 5, 1.6);
+        return { body: [(0, kit_1.G)('sprout', [(0, kit_1.L)('M100 171Q92 158 98 148Q104 138 104 128M98 148L96 140M100 150L101 146', S.wood(BB), S.main * 1.3), (0, kit_1.L)(nd, S.lineOf(S.pal), S.fine * 1.3)])], perch: [80, 168] };
+    },
+    II: (c) => bonsaiTree(c, {
+        trunks: [[[100, 171], [100, 130], [100, 82], 11, 3]],
+        ids: false,
+        seed: 6,
+        limbs: [
+            [[100, 138], [86, 134], [76, 130], 3, 1.2],
+            [[100, 120], [114, 116], [124, 114], 3, 1.2],
+        ],
+        masses: [(0, kit_1.M)(74, 128, 20, 12, 1), (0, kit_1.M)(126, 112, 18, 12, 2), (0, kit_1.M)(100, 84, 20, 14, 3)],
+        perch: [74, 118],
+    }),
+    III: (c) => bonsaiTree(c, {
+        trunks: [
+            [[100, 171], [116, 150], [96, 128], 15, 9],
+            [[96, 129], [82, 110], [104, 88], 9, 4],
+        ],
+        seed: 7,
+        limbs: [
+            [[99, 134], [80, 128], [62, 124], 3.6, 1.2],
+            [[92, 112], [80, 102], [70, 96], 3.4, 1.2],
+            [[102, 140], [122, 132], [140, 126], 3.6, 1.2],
+            [[100, 104], [118, 100], [134, 100], 3.4, 1.2],
+        ],
+        masses: [(0, kit_1.M)(60, 124, 22, 13, 1), (0, kit_1.M)(70, 96, 20, 13, 2), (0, kit_1.M)(104, 76, 24, 16, 3), (0, kit_1.M)(134, 100, 20, 13, 4), (0, kit_1.M)(140, 126, 20, 13, 5)],
+        perch: [60, 112],
+    }),
+    IV: (c) => bonsaiTree(c, {
+        trunks: [
+            [[92, 171], [96, 130], [138, 96], 17, 7],
+            [[136, 97], [150, 88], [160, 84], 7, 3],
+        ],
+        seed: 8,
+        limbs: [
+            [[99, 140], [94, 128], [96, 122], 3.6, 1.2],
+            [[110, 120], [116, 110], [124, 108], 3.6, 1.2],
+            [[126, 104], [140, 108], [154, 110], 3.6, 1.2],
+        ],
+        masses: [(0, kit_1.M)(94, 124, 14, 10, 1), (0, kit_1.M)(120, 106, 22, 11, 2), (0, kit_1.M)(156, 82, 30, 14, 3), (0, kit_1.M)(156, 108, 24, 11, 4), (0, kit_1.M)(170, 126, 18, 10, 5)],
+        blooms: 6,
+        glow: [128, 112, 62],
+        perch: [120, 94],
+        front: [moss(c.S, [80, 108, 116])],
+    }),
+};
+const bonsaiFlavours = {
+    lookout: (c) => bonsaiTree(c, {
+        trunks: [
+            [[100, 171], [88, 130], [102, 96], 8, 5],
+            [[102, 97], [114, 70], [108, 46], 5, 2.4],
+        ],
+        seed: 9,
+        fur: false,
+        limbs: [
+            [[106, 66], [96, 70], [88, 72], 2.2, 1],
+            [[109, 58], [118, 62], [126, 62], 2.2, 1],
+        ],
+        masses: [(0, kit_1.M)(86, 72, 14, 8, 1), (0, kit_1.M)(96, 56, 13, 8, 2), (0, kit_1.M)(110, 42, 15, 9, 3), (0, kit_1.M)(126, 60, 13, 8, 4), (0, kit_1.M)(120, 76, 11, 7, 5)],
+        blooms: 3,
+        glow: [104, 96, 64],
+        perch: [86, 62],
+    }),
+    moot: (c) => bonsaiTree(c, {
+        trunks: [[[100, 171], [100, 146], [100, 112], 18, 11]],
+        seed: 10,
+        limbs: [
+            [[100, 136], [70, 132], [46, 130], 4, 1.4],
+            [[100, 136], [130, 132], [154, 130], 4, 1.4],
+            [[100, 120], [80, 114], [66, 112], 3.6, 1.2],
+            [[100, 120], [120, 114], [134, 112], 3.6, 1.2],
+        ],
+        masses: [(0, kit_1.M)(44, 130, 20, 9, 1, { flat: 0.45 }), (0, kit_1.M)(156, 130, 20, 9, 5, { flat: 0.45 }), (0, kit_1.M)(64, 112, 24, 9, 2, { flat: 0.45 }), (0, kit_1.M)(136, 112, 24, 9, 4, { flat: 0.45 }), (0, kit_1.M)(100, 94, 44, 12, 3, { flat: 0.45 })],
+        blooms: 4,
+        glow: [100, 116, 64],
+        perch: [44, 118],
+        front: [
+            (0, kit_1.stones)(c.S, 'stones-front', [
+                [78, 170.5, 2.6],
+                [88, 171.5, 2.2],
+                [114, 171.5, 2.2],
+                [124, 170.5, 2.6],
+                [100, 172, 2],
+            ]),
+        ],
+    }),
+    espalier: (c) => {
+        const lim = [
+            [[100, 150], [80, 140], [56, 136]],
+            [[100, 132], [76, 116], [62, 104]],
+            [[100, 132], [124, 116], [138, 104]],
+            [[100, 150], [120, 140], [144, 136]],
+        ];
+        let wire = '';
+        for (const [a, cc, b] of lim)
+            for (let t = 0.1; t < 0.95; t += 0.1) {
+                const p = (0, kit_1.qp)(a, cc, b, t);
+                wire += `M${(0, kit_1.f)(p[0] - 1.4)} ${(0, kit_1.f)(p[1] + 2)}L${(0, kit_1.f)(p[0] + 1.4)} ${(0, kit_1.f)(p[1] - 2)}`;
+            }
+        for (let y = 168; y > 96; y -= 6)
+            wire += `M97 ${y + 2}L103 ${y - 2}`;
+        return bonsaiTree(c, {
+            trunks: [[[100, 171], [100, 130], [100, 88], 10, 4]],
+            seed: 11,
+            wire,
+            limbs: lim.map(([a, cc, b]) => [a, cc, b, 3.6, 1.2]),
+            masses: [(0, kit_1.M)(52, 134, 18, 10, 1), (0, kit_1.M)(60, 100, 18, 10, 2), (0, kit_1.M)(100, 80, 22, 12, 3), (0, kit_1.M)(140, 100, 18, 10, 4), (0, kit_1.M)(148, 134, 18, 10, 5)],
+            blooms: 4,
+            glow: [100, 112, 62],
+            perch: [52, 122],
+        });
+    },
+    coppice: (c) => bonsaiTree(c, {
+        trunks: [
+            [[94, 171], [86, 140], [78, 102], 9, 3],
+            [[100, 171], [102, 128], [102, 78], 11, 3],
+            [[106, 171], [116, 142], [124, 108], 8, 3],
+        ],
+        seed: 12,
+        limbs: [
+            [[86, 132], [74, 124], [64, 118], 2.6, 1],
+            [[112, 140], [128, 132], [140, 122], 2.6, 1],
+        ],
+        masses: [(0, kit_1.M)(64, 114, 18, 11, 1), (0, kit_1.M)(78, 98, 17, 11, 2), (0, kit_1.M)(102, 76, 22, 13, 3), (0, kit_1.M)(124, 102, 17, 11, 4), (0, kit_1.M)(140, 118, 17, 11, 5)],
+        blooms: 4,
+        glow: [102, 110, 62],
+        perch: [64, 102],
+    }),
+    holdfast: (c) => {
+        const rock = 'M72 171C70 160 76 148 88 144C96 141 106 141 114 144C124 148 130 160 128 171Z';
+        return bonsaiTree(c, {
+            trunks: [[[100, 146], [98, 126], [100, 104], 15, 8]],
+            seed: 13,
+            dense: true,
+            roots: [
+                [[96, 146], [80, 148], [76, 171], 4.4, 1.6],
+                [[98, 147], [90, 158], [90, 171], 4, 1.6],
+                [[102, 147], [110, 158], [110, 171], 4, 1.6],
+                [[104, 146], [120, 148], [124, 171], 4.4, 1.6],
+            ],
+            limbs: [
+                [[99, 116], [86, 110], [76, 106], 3.4, 1.2],
+                [[101, 114], [114, 108], [124, 104], 3.4, 1.2],
+            ],
+            masses: [(0, kit_1.M)(76, 104, 20, 14, 1), (0, kit_1.M)(124, 102, 20, 14, 5), (0, kit_1.M)(84, 88, 20, 14, 2), (0, kit_1.M)(116, 86, 20, 14, 4), (0, kit_1.M)(100, 76, 24, 16, 3)].map((m) => ({ ...m, flat: 0.75 })),
+            blooms: 4,
+            back: [(0, kit_1.boulder)(c.S, rock, 100, 156, 28, 15)],
+            glow: [100, 104, 62],
+            perch: [76, 92],
+        });
+    },
+};
+exports.CONIFER_LINES = {
+    pine: { pal: 'evergreen', forms: pineForms, flavours: pineFlavours },
+    'coconut-palm': { pal: 'spring', forms: palmForms, flavours: palmFlavours },
+    bonsai: { pal: 'grove', forms: bonsaiForms, flavours: bonsaiFlavours },
+};
+  };
+  links["src/components/plant/forms/flowers.ts"] = {"./kit":"src/components/plant/forms/kit.ts"};
+  defs["src/components/plant/forms/flowers.ts"] = function (module, exports, require) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.FLOWER_LINES = void 0;
+const kit_1 = require("./kit");
+const POST = kit_1.A0.planter.post;
+const groundStones = (c) => c.inPot
+    ? {
+        back: [],
+        front: [
+            (0, kit_1.stones)(c.S, 'stones-front', [
+                [100 - Math.min(c.span, 28) * 0.8, 170.5, 2.8],
+                [100 - Math.min(c.span, 28) * 0.4, 171.5, 2.4],
+                [100 + Math.min(c.span, 28) * 0.4, 171.5, 2.4],
+                [100 + Math.min(c.span, 28) * 0.8, 170.5, 2.8],
+                [100, 172, 2.2],
+            ]),
+        ],
+    }
+    : { back: [(0, kit_1.stones)(c.S, 'stones', [[54, 167, 7], [146, 167, 7]])], front: [(0, kit_1.stones)(c.S, 'stones-front', [[72, 175, 6], [128, 175, 6], [100, 179, 5]])] };
+const rockAt = (c, w = 42, h = 30) => {
+    const sc = c.inPot ? Math.min(1, (c.span + 6) / w) : 1;
+    const X = (x) => 100 + (x - 100) * sc;
+    const top = 170 - h * sc;
+    const d = `M${(0, kit_1.f)(X(100 - w))} 171C${(0, kit_1.f)(X(100 - w - 3))} ${(0, kit_1.f)(170 - h * 0.5 * sc)} ${(0, kit_1.f)(X(100 - w * 0.6))} ${(0, kit_1.f)(top + 2)} ${(0, kit_1.f)(X(96))} ${(0, kit_1.f)(top)}C${(0, kit_1.f)(X(100 + w * 0.5))} ${(0, kit_1.f)(top - 1)} ${(0, kit_1.f)(X(100 + w))} ${(0, kit_1.f)(170 - h * 0.45 * sc)} ${(0, kit_1.f)(X(100 + w - 1))} 171Z`;
+    return { node: (0, kit_1.boulder)(c.S, d, 100, 170 - h * 0.5 * sc, w * sc, h * 0.5 * sc), top, X };
+};
+const ties = (S, pts) => S.icon ? null : (0, kit_1.G)('ties', [(0, kit_1.L)(pts.map(([x0, x1, y]) => `M${x0} ${y}Q${(0, kit_1.f)((x0 + x1) / 2)} ${y - 2.6} ${x1} ${y}Q${(0, kit_1.f)((x0 + x1) / 2)} ${y + 2.6} ${x0} ${y}`).join(''), S.wood(POST), S.hair * 1.6)]);
+function stalk(S, p0, pc, p1, w0, w1, pal) {
+    if (w0 < 3.2)
+        return (0, kit_1.G)('stem', [(0, kit_1.L)((0, kit_1.Q)(p0, pc, p1), S.lineOf(pal), S.main)]);
+    const t = (0, kit_1.taper)(p0, pc, p1, w0, w1);
+    return (0, kit_1.G)('stem', [(0, kit_1.P)(t.closed, S.massFill(pal, true)), (0, kit_1.L)(t.sides, S.lineOf(pal), S.main)]);
+}
+function sunHead(S, x, y, R, o = {}) {
+    var _a, _b, _c;
+    const sx = (_a = o.sx) !== null && _a !== void 0 ? _a : 1;
+    const sy = (_b = o.sy) !== null && _b !== void 0 ? _b : 1;
+    const rot = (_c = o.rot) !== null && _c !== void 0 ? _c : 0;
+    const pal = S.pal;
+    const at = (u, v) => [x + u * sx * Math.cos(rot) - v * sy * Math.sin(rot), y + u * sx * Math.sin(rot) + v * sy * Math.cos(rot)];
+    const np = R > 16 ? 22 : 16;
+    const pl = R * 0.78;
+    let back = '';
+    let front = '';
+    for (let i = 0; i < np; i++) {
+        const a = (i / np) * Math.PI * 2;
+        const b0 = at(Math.cos(a) * R * 0.86, Math.sin(a) * R * 0.86);
+        const b1 = at(Math.cos(a) * (R + pl), Math.sin(a) * (R + pl));
+        const ang = Math.atan2(b1[1] - b0[1], b1[0] - b0[0]);
+        const len = Math.hypot(b1[0] - b0[0], b1[1] - b0[1]);
+        const d = (0, kit_1.xf)('M0 0Q0.36 -0.5 0 -1Q-0.36 -0.5 0 0Z', b0[0], b0[1], ang + Math.PI / 2, len, Math.max(0.55, Math.min(1, len / pl)));
+        if (i % 2)
+            back += d + ' ';
+        else
+            front += d + ' ';
+    }
+    const ring = [];
+    for (let i = 0; i < 18; i++) {
+        const a = (i / 18) * Math.PI * 2;
+        ring.push(at(Math.cos(a) * R, Math.sin(a) * R));
+    }
+    const discD = (0, kit_1.smooth)(ring);
+    let dots = '';
+    if (!S.icon) {
+        const n = S.full ? Math.round(R * 2.2) : Math.round(R * 0.8);
+        for (let i = 1; i <= n; i++) {
+            const rr = R * 0.82 * Math.sqrt(i / n);
+            const a = i * 2.39996;
+            const p = at(Math.cos(a) * rr, Math.sin(a) * rr);
+            dots += `M${(0, kit_1.f)(p[0])} ${(0, kit_1.f)(p[1])}h0.01`;
         }
     }
-    return kids;
+    const dc = kit_1.A0.sunflower.discMid;
+    return (0, kit_1.G)('head', [
+        (0, kit_1.P)(back.trim(), S.washOf(pal), { opacity: 0.65 }),
+        (0, kit_1.L)(back.trim(), S.lineOf(pal), S.fine * 1.3),
+        (0, kit_1.P)(front.trim(), S.washOf(pal), { opacity: 0.9 }),
+        (0, kit_1.L)(front.trim(), S.lineOf(pal), S.fine * 1.4),
+        (0, kit_1.P)(discD, S.giftFill(dc)),
+        (0, kit_1.L)(discD, S.wood(dc), S.main),
+        dots ? (0, kit_1.L)(dots, S.wood(kit_1.A0.sunflower.seeds), 1.7) : null,
+    ]);
 }
-function roots(ctx, n, wb, bark) {
+function sunLeaves(S, p0, pc, p1, spec, fol, o = {}) {
+    const organs = [];
+    const gs = spec.map(([t, side, len0, ang], i) => {
+        const len = len0 * (o.ids === false ? 1 : S.sc(i + 1));
+        const p = (0, kit_1.qp)(p0, pc, p1, t);
+        const a = (ang !== null && ang !== void 0 ? ang : -90 + side * 60) * kit_1.D2R;
+        const pet = [p[0] + Math.cos(a) * 5, p[1] + Math.sin(a) * 5];
+        const set = (0, kit_1.leafSet)().add((0, kit_1.leaf)('heart', pet[0], pet[1], len * (S.small ? 1.1 : 1), a, S));
+        organs.push({ dom: i + 1, x: pet[0] + Math.cos(a) * len * 0.5, y: pet[1] + Math.sin(a) * len * 0.5 });
+        return (0, kit_1.G)(o.ids === false ? null : `domain-${i + 1}`, [(0, kit_1.P)(set.wash(), S.washOf(fol), { opacity: S.washOp }), (0, kit_1.L)(`M${(0, kit_1.f)(p[0])} ${(0, kit_1.f)(p[1])}L${(0, kit_1.f)(pet[0])} ${(0, kit_1.f)(pet[1])} ` + set.line(), S.lineOf(fol), S.fine * 1.4)]);
+    });
+    return { node: (0, kit_1.G)('leaves', gs), organs };
+}
+const SEPAL = 'M0 0Q0.4 -0.6 0 -1Q-0.4 -0.6 0 0Z';
+const sunflower = {
+    pal: 'gold',
+    fol: 'spring',
+    forms: {
+        I: (c) => {
+            const { S } = c;
+            const set = (0, kit_1.leafSet)();
+            const fol = S.fol;
+            set.add((0, kit_1.leaf)('ovate', 100, 140, 16, -150 * kit_1.D2R, S, 1.25)).add((0, kit_1.leaf)('ovate', 100, 140, 16, -30 * kit_1.D2R, S, 1.25));
+            const sd = kit_1.A0.seed.sunflower;
+            const cap = 'M0 -6C3 -6 3.6 -2 3.6 0C3.6 3 2 6 0 6C-2 6 -3.6 3 -3.6 0C-3.6 -2 -3 -6 0 -6Z';
+            return {
+                cutaway: (0, kit_1.cutaway)(S, 64, 136, 171, 188, 12),
+                body: [
+                    (0, kit_1.G)('roots', [(0, kit_1.L)('M100 171Q99 179 101 189M100 179l-4 3M100 184l4 2', S.wood(sd), S.fine * 1.5)]),
+                    (0, kit_1.G)('sprout', [(0, kit_1.L)('M100 171Q99 156 100 140', S.lineOf(fol), S.main), (0, kit_1.P)(set.wash(), S.washOf(fol), { opacity: S.washOp }), (0, kit_1.L)(set.line(), S.lineOf(fol), S.main)]),
+                    (0, kit_1.G)('seed', [
+                        (0, kit_1.P)((0, kit_1.xf)(cap, 86, 129, -0.9, 1), S.woodFill(sd)),
+                        S.icon ? null : (0, kit_1.L)((0, kit_1.xf)('M-1.4 -4.6L-1.6 4.6M1.4 -4.6L1.6 4.6', 86, 129, -0.9, 1), kit_1.A0.seed.sunflowerStripe, S.hair * 2),
+                        (0, kit_1.L)((0, kit_1.xf)(cap, 86, 129, -0.9, 1), S.wood(sd), S.main),
+                    ]),
+                ],
+                perch: [72, 170],
+            };
+        },
+        II: (c) => {
+            const { S } = c;
+            const fol = S.fol;
+            const p0 = [100, 171];
+            const pc = [99, 120];
+            const p1 = [100, 64];
+            const lv = sunLeaves(S, p0, pc, p1, [
+                [0.2, -1, 24],
+                [0.2, 1, 24],
+                [0.45, -1, 21],
+                [0.45, 1, 21],
+                [0.7, -1, 17],
+                [0.7, 1, 17],
+            ], fol, { ids: false });
+            let sep = '';
+            for (let i = 0; i < 8; i++)
+                sep += (0, kit_1.xf)(SEPAL, 100, 58, (i / 8) * Math.PI * 2, 10) + ' ';
+            return { body: [stalk(S, p0, pc, p1, 3.4, 2.6, fol), lv.node, (0, kit_1.G)('head', [(0, kit_1.P)(sep, S.washOf(fol), { opacity: S.washOp }), (0, kit_1.L)(sep + (0, kit_1.disc)(100, 58, 4), S.lineOf(fol), S.fine * 1.4)])], perch: [76, 128] };
+        },
+        III: (c) => {
+            const { S } = c;
+            const p0 = [100, 171];
+            const pc = [97, 112];
+            const p1 = [104, 64];
+            const lv = sunLeaves(S, p0, pc, p1, [
+                [0.12, -1, 26],
+                [0.26, 1, 25],
+                [0.42, -1, 23],
+                [0.56, 1, 21],
+                [0.7, -1, 18],
+            ], S.fol);
+            return { body: [stalk(S, p0, pc, p1, 5, 3.6, S.fol), lv.node, sunHead(S, 110, 52, 14, { sx: 0.6, rot: -0.15 })], perch: [76, 112], organs: lv.organs };
+        },
+        IV: (c) => {
+            const { S } = c;
+            const p0 = [100, 171];
+            const pc = [95, 104];
+            const p1 = [103, 66];
+            const lv = sunLeaves(S, p0, pc, p1, [
+                [0.1, -1, 32],
+                [0.24, 1, 31],
+                [0.4, -1, 28],
+                [0.56, 1, 25],
+                [0.72, -1, 21],
+            ], S.fol);
+            const bud = (0, kit_1.qp)(p0, pc, p1, 0.5);
+            let sep = '';
+            for (let i = 0; i < 7; i++)
+                sep += (0, kit_1.xf)(SEPAL, 80, 100, (i / 7) * Math.PI * 2, 6) + ' ';
+            return {
+                body: [
+                    stalk(S, p0, pc, p1, 7, 5, S.fol),
+                    (0, kit_1.G)('stem', [(0, kit_1.L)(`M${(0, kit_1.f)(bud[0])} ${(0, kit_1.f)(bud[1])}Q86 104 80 100`, S.lineOf(S.fol), S.main)]),
+                    lv.node,
+                    S.icon ? null : (0, kit_1.G)('bud', [(0, kit_1.P)(sep, S.washOf(S.fol), { opacity: S.washOp }), (0, kit_1.L)(sep, S.lineOf(S.fol), S.fine * 1.3)]),
+                    sunHead(S, 104, 44, 21),
+                ],
+                glow: [104, 50, 60],
+                perch: [72, 128],
+                organs: lv.organs,
+            };
+        },
+    },
+    flavours: {
+        lookout: (c) => {
+            const { S } = c;
+            const p0 = [100, 171];
+            const pc = [99, 100];
+            const p1 = [102, 34];
+            const lv = sunLeaves(S, p0, pc, p1, [
+                [0.06, -1, 24],
+                [0.14, 1, 24],
+                [0.23, -1, 22],
+                [0.31, 1, 21],
+                [0.39, -1, 19],
+            ], S.fol);
+            return { body: [stalk(S, p0, pc, p1, 4.6, 3.2, S.fol), lv.node, sunHead(S, 108, 26, 13, { sx: 0.58, rot: -0.3 })], glow: [104, 40, 40], perch: [80, 132], organs: lv.organs };
+        },
+        moot: (c) => {
+            const { S } = c;
+            const p0 = [100, 171];
+            const pc = [100, 120];
+            const p1 = [100, 70];
+            const lv = sunLeaves(S, p0, pc, p1, [
+                [0.18, -1, 30, -178],
+                [0.18, 1, 30, -2],
+                [0.46, -1, 26, -176],
+                [0.46, 1, 26, -4],
+                [0.74, 1, 20, -30],
+            ], S.fol);
+            return { body: [stalk(S, p0, pc, p1, 6.4, 5, S.fol), lv.node, sunHead(S, 100, 54, 19, { sy: 0.5 })], ...groundStones(c), glow: [100, 76, 66], perch: [64, 136], organs: lv.organs };
+        },
+        espalier: (c) => {
+            const { S } = c;
+            const p0 = [100, 171];
+            const pc = [100, 110];
+            const p1 = [100, 62];
+            const lv = sunLeaves(S, p0, pc, p1, [
+                [0.18, -1, 28, -172],
+                [0.18, 1, 28, -8],
+                [0.46, -1, 25, -174],
+                [0.46, 1, 25, -6],
+                [0.72, -1, 20, -166],
+            ], S.fol);
+            return {
+                back: [(0, kit_1.G)('frame', [(0, kit_1.L)('M113 171L113 40', S.wood(POST), S.main * 1.6)])],
+                body: [
+                    stalk(S, p0, pc, p1, 6, 4.4, S.fol),
+                    lv.node,
+                    ties(S, [
+                        [100, 113, 146],
+                        [100, 113, 114],
+                        [100, 113, 82],
+                    ]),
+                    sunHead(S, 100, 46, 17),
+                ],
+                glow: [100, 66, 60],
+                perch: [116, 38],
+                organs: lv.organs,
+            };
+        },
+        coppice: (c) => {
+            const { S } = c;
+            const p0 = [100, 171];
+            const pc = [99, 116];
+            const p1 = [100, 66];
+            const lv = sunLeaves(S, p0, pc, p1, [
+                [0.1, -1, 26],
+                [0.22, 1, 25],
+                [0.6, -1, 18],
+                [0.72, 1, 17],
+                [0.84, -1, 15],
+            ], S.fol);
+            return {
+                body: [
+                    stalk(S, p0, pc, p1, 6, 4, S.fol),
+                    (0, kit_1.G)('stem', [(0, kit_1.L)('M100 136Q84 120 70 94M100 126Q118 112 132 90', S.lineOf(S.fol), S.main * 1.3)]),
+                    lv.node,
+                    sunHead(S, 68, 84, 10, { sx: 0.7, rot: 0.35 }),
+                    sunHead(S, 134, 80, 10, { sx: 0.7, rot: -0.35 }),
+                    sunHead(S, 100, 52, 15),
+                ],
+                glow: [100, 76, 70],
+                perch: [62, 140],
+                organs: lv.organs,
+            };
+        },
+        holdfast: (c) => {
+            const { S } = c;
+            const r = rockAt(c, 40, 28);
+            const top = r.top + 4;
+            const p0 = [100, top];
+            const pc = [98, 104];
+            const p1 = [112, 80];
+            const lv = sunLeaves(S, p0, pc, p1, [
+                [0.06, -1, 32, -168],
+                [0.1, 1, 32, -12],
+                [0.3, -1, 28, -142],
+                [0.34, 1, 28, -38],
+                [0.56, -1, 22, -118],
+            ], S.fol);
+            return {
+                back: [r.node],
+                body: [
+                    (0, kit_1.rootTapers)(S, [
+                        [[97, top], [r.X(74), top + 4], [r.X(66), 171], 4, 1.6],
+                        [[99, top], [r.X(90), top + 14], [r.X(90), 171], 3.6, 1.6],
+                        [[101, top], [r.X(112), top + 14], [r.X(114), 171], 3.6, 1.6],
+                        [[103, top], [r.X(128), top + 4], [r.X(134), 171], 4, 1.6],
+                    ], kit_1.A0.seed.sunflower),
+                    stalk(S, p0, pc, p1, 9, 7, S.fol),
+                    lv.node,
+                    sunHead(S, 122, 90, 16, { sy: 0.42, rot: 0.75 }),
+                ],
+                glow: [106, 92, 62],
+                perch: [66, 112],
+                organs: lv.organs,
+            };
+        },
+    },
+};
+function floatPad(S, x, y, rx, ry) {
+    const d = `M${(0, kit_1.f)(x)} ${(0, kit_1.f)(y)}L${(0, kit_1.f)(x + rx * 0.95)} ${(0, kit_1.f)(y - ry * 0.25)}A${(0, kit_1.f)(rx)} ${(0, kit_1.f)(ry)} 0 1 0 ${(0, kit_1.f)(x + rx * 0.95)} ${(0, kit_1.f)(y + ry * 0.25)}Z`;
+    let v = '';
+    if (S.full)
+        for (let i = 1; i < 7; i++) {
+            const a = 0.4 + i * 0.85;
+            v += `M${(0, kit_1.f)(x)} ${(0, kit_1.f)(y)}L${(0, kit_1.f)(x + Math.cos(a) * rx * 0.85)} ${(0, kit_1.f)(y + Math.sin(a) * ry * 0.85)}`;
+        }
+    return { wash: d, line: d + v, stalk: '' };
+}
+function raisedPad(S, x, top, rx, bend = 0) {
+    const ry = rx * 0.42;
+    const d = `M${(0, kit_1.f)(x - rx)} ${(0, kit_1.f)(top)}Q${(0, kit_1.f)(x)} ${(0, kit_1.f)(top + ry * 1.5)} ${(0, kit_1.f)(x + rx)} ${(0, kit_1.f)(top)}Q${(0, kit_1.f)(x)} ${(0, kit_1.f)(top - ry * 0.7)} ${(0, kit_1.f)(x - rx)} ${(0, kit_1.f)(top)}Z`;
+    const v = S.full ? `M${(0, kit_1.f)(x)} ${(0, kit_1.f)(top + ry * 0.4)}L${(0, kit_1.f)(x - rx * 0.6)} ${(0, kit_1.f)(top + ry * 0.1)}M${(0, kit_1.f)(x)} ${(0, kit_1.f)(top + ry * 0.4)}L${(0, kit_1.f)(x + rx * 0.6)} ${(0, kit_1.f)(top + ry * 0.1)}` : '';
+    return { wash: d, line: d + v, stalk: `M${(0, kit_1.f)(x + bend)} 170Q${(0, kit_1.f)(x + bend * 0.4)} ${(0, kit_1.f)((170 + top) / 2)} ${(0, kit_1.f)(x)} ${(0, kit_1.f)(top + ry * 0.55)}` };
+}
+function pads(S, spec) {
+    const organs = [];
+    const back = [];
+    const front = [];
+    for (const [kind, x, y, rx0, dom] of spec) {
+        const fol = S.fol;
+        const rx = rx0 * (dom ? S.sc(dom) : 1);
+        const p = kind === 'f' ? floatPad(S, x, y, rx, rx * 0.32) : raisedPad(S, x, y, rx, (x - 100) * 0.12);
+        const g = (0, kit_1.G)(dom ? `domain-${dom}` : null, [p.stalk ? (0, kit_1.L)(p.stalk, S.lineOf(fol), S.fine * 1.5) : null, (0, kit_1.P)(p.wash, S.massFill(fol)), (0, kit_1.P)(p.wash, S.washOf(fol), { opacity: 0.3 }), (0, kit_1.L)(p.line, S.lineOf(fol), S.fine * 1.4)]);
+        (kind === 'f' ? front : back).push(g);
+        if (dom)
+            organs.push({ dom, x, y });
+    }
+    return { back: (0, kit_1.G)('pads', back), front: (0, kit_1.G)('pads-front', front), organs };
+}
+const petal = (x, y, len, ang, w = 0.34) => (0, kit_1.xf)(`M0 0Q${(0, kit_1.f)(w * 1.4)} -0.5 0 -1Q${(0, kit_1.f)(-w * 1.4)} -0.5 0 0Z`, x, y, ang + Math.PI / 2, len);
+function lotusBloom(S, x, y, R, o = {}) {
+    const pal = S.pal;
+    if (o.bud) {
+        const d = petal(x, y + 2, R * 1.1, -Math.PI / 2, 0.42) + ' ' + petal(x, y + 2, R * 0.85, -Math.PI / 2 - 0.42, 0.3) + ' ' + petal(x, y + 2, R * 0.85, -Math.PI / 2 + 0.42, 0.3);
+        return (0, kit_1.G)('flower', [(0, kit_1.P)(d, S.washOf(pal), { opacity: 0.8 }), (0, kit_1.L)(d, S.lineOf(pal), S.fine * 1.5)]);
+    }
+    const open = o.cup ? 0.55 : 1;
+    const back = [-1.2, -0.72, -0.24, 0.24, 0.72, 1.2].map((a) => petal(x, y, R, -Math.PI / 2 + a * open, 0.34)).join(' ');
+    const front = [-0.9, -0.32, 0.32, 0.9].map((a) => petal(x, y + 2, R * 0.86, -Math.PI / 2 + a * 0.9 * open, 0.36)).join(' ') + ' ' + petal(x, y + 3, R * 0.95, -Math.PI / 2, 0.36);
+    const kids = [(0, kit_1.P)(back, S.washOf(pal), { opacity: 0.55 }), (0, kit_1.L)(back, S.lineOf(pal), S.fine * 1.3), (0, kit_1.P)(front, S.washOf(pal), { opacity: 0.88 }), (0, kit_1.L)(front, S.lineOf(pal), S.fine * 1.5)];
+    if (!o.cup && !S.icon) {
+        const w = R * 0.26;
+        const pod = `M${(0, kit_1.f)(x - w)} ${(0, kit_1.f)(y - R * 0.3)}Q${(0, kit_1.f)(x)} ${(0, kit_1.f)(y - R * 0.46)} ${(0, kit_1.f)(x + w)} ${(0, kit_1.f)(y - R * 0.3)}L${(0, kit_1.f)(x + w * 0.7)} ${(0, kit_1.f)(y - R * 0.06)}Q${(0, kit_1.f)(x)} ${(0, kit_1.f)(y)} ${(0, kit_1.f)(x - w * 0.7)} ${(0, kit_1.f)(y - R * 0.06)}Z`;
+        let st = '';
+        for (let i = 0; i < 9; i++) {
+            const a = -Math.PI + (i / 8) * Math.PI;
+            st += `M${(0, kit_1.f)(x + Math.cos(a) * w * 1.1)} ${(0, kit_1.f)(y - R * 0.18)}l${(0, kit_1.f)(Math.cos(a) * 2.4)} ${(0, kit_1.f)(Math.sin(a) * 2.4 - 1)}`;
+        }
+        kids.push((0, kit_1.L)(st, S.gold, S.fine * 1.2), (0, kit_1.P)(pod, S.giftFill(kit_1.A0.lotus.podTop)), (0, kit_1.L)(pod + (S.full ? `M${(0, kit_1.f)(x - w * 0.4)} ${(0, kit_1.f)(y - R * 0.33)}h0.01M${(0, kit_1.f)(x + w * 0.4)} ${(0, kit_1.f)(y - R * 0.33)}h0.01M${(0, kit_1.f)(x)} ${(0, kit_1.f)(y - R * 0.35)}h0.01` : ''), S.lineOf(S.fol), S.fine * 1.4));
+    }
+    return (0, kit_1.G)('flower', kids);
+}
+const stems = (S, list) => (0, kit_1.G)('stem', [(0, kit_1.L)(list.join(''), S.lineOf(S.fol), S.main)]);
+function seedHead(S, x, y) {
+    if (S.icon)
+        return null;
+    const d = `M${(0, kit_1.f)(x - 7)} ${(0, kit_1.f)(y)}L${(0, kit_1.f)(x + 7)} ${(0, kit_1.f)(y)}L${(0, kit_1.f)(x + 3.5)} ${(0, kit_1.f)(y + 9)}L${(0, kit_1.f)(x - 3.5)} ${(0, kit_1.f)(y + 9)}Z`;
+    return (0, kit_1.G)('fruit', [
+        (0, kit_1.P)(d, S.giftFill(kit_1.A0.lotus.pod)),
+        (0, kit_1.L)(d + `M${(0, kit_1.f)(x - 3.5)} ${(0, kit_1.f)(y + 3)}h0.01M${(0, kit_1.f)(x)} ${(0, kit_1.f)(y + 3)}h0.01M${(0, kit_1.f)(x + 3.5)} ${(0, kit_1.f)(y + 3)}h0.01M${(0, kit_1.f)(x - 1.8)} ${(0, kit_1.f)(y + 6)}h0.01M${(0, kit_1.f)(x + 1.8)} ${(0, kit_1.f)(y + 6)}h0.01`, S.lineOf(S.fol), S.fine * 1.4),
+    ]);
+}
+const lotus = {
+    pal: 'blossom',
+    fol: 'grove',
+    forms: {
+        I: (c) => {
+            const { S } = c;
+            const pd = pads(S, [['f', 112, 169, 13]]);
+            const set = (0, kit_1.leafSet)().add((0, kit_1.leaf)('narrow', 92, 150, 18, -84 * kit_1.D2R, S, 0.6));
+            return { body: [pd.back, (0, kit_1.G)('sprout', [(0, kit_1.L)('M92 170Q90 160 92 150', S.lineOf(S.fol), S.main), (0, kit_1.P)(set.wash(), S.washOf(S.fol), { opacity: S.washOp }), (0, kit_1.L)(set.line(), S.lineOf(S.fol), S.main)]), pd.front], perch: [74, 166] };
+        },
+        II: (c) => {
+            const { S } = c;
+            const pd = pads(S, [
+                ['r', 86, 128, 12],
+                ['r', 118, 114, 13],
+                ['f', 68, 169, 14],
+                ['f', 132, 170, 12],
+            ]);
+            const set = (0, kit_1.leafSet)().add((0, kit_1.leaf)('narrow', 104, 140, 16, -88 * kit_1.D2R, S, 0.6));
+            return { body: [pd.back, (0, kit_1.G)('sprout', [(0, kit_1.L)('M104 170Q103 154 104 140', S.lineOf(S.fol), S.main), (0, kit_1.P)(set.wash(), S.washOf(S.fol), { opacity: S.washOp }), (0, kit_1.L)(set.line(), S.lineOf(S.fol), S.main)]), pd.front], perch: [72, 120] };
+        },
+        III: (c) => {
+            const { S } = c;
+            const pd = pads(S, [
+                ['r', 80, 128, 14, 2],
+                ['r', 124, 122, 14, 4],
+                ['r', 92, 108, 11, 3],
+                ['f', 62, 169, 15, 1],
+                ['f', 140, 169, 14, 5],
+            ]);
+            return { body: [pd.back, stems(S, ['M100 170Q98 130 100 94']), lotusBloom(S, 100, 94, 24, { bud: true }), pd.front], perch: [66, 116], organs: pd.organs };
+        },
+        IV: (c) => {
+            const { S } = c;
+            const pd = pads(S, [
+                ['r', 72, 132, 15, 2],
+                ['r', 130, 128, 16, 4],
+                ['r', 100, 148, 12, 3],
+                ['f', 56, 169, 16, 1],
+                ['f', 146, 169, 15, 5],
+            ]);
+            return {
+                body: [pd.back, stems(S, ['M100 170Q97 136 100 106', 'M112 170Q122 130 138 96', 'M90 170Q80 140 70 116']), seedHead(S, 138, 90), lotusBloom(S, 70, 116, 16, { bud: true }), lotusBloom(S, 100, 104, 26), pd.front],
+                glow: [100, 100, 62],
+                perch: [56, 120],
+                organs: pd.organs,
+            };
+        },
+    },
+    flavours: {
+        lookout: (c) => {
+            const { S } = c;
+            const pd = pads(S, [
+                ['r', 78, 146, 14, 2],
+                ['r', 122, 142, 14, 4],
+                ['r', 100, 156, 10, 3],
+                ['f', 60, 169, 15, 1],
+                ['f', 142, 169, 14, 5],
+            ]);
+            return { body: [pd.back, stems(S, ['M100 170Q96 104 100 44']), lotusBloom(S, 100, 44, 20), pd.front], glow: [100, 52, 48], perch: [64, 132], organs: pd.organs };
+        },
+        moot: (c) => {
+            const { S } = c;
+            const pd = pads(S, [
+                ['r', 56, 136, 14, 1],
+                ['r', 78, 130, 14, 2],
+                ['r', 122, 130, 14, 4],
+                ['r', 144, 136, 14, 5],
+                ['f', 100, 169, 16, 3],
+            ]);
+            const st = groundStones(c);
+            return { body: [pd.back, stems(S, ['M100 170Q99 140 100 114']), lotusBloom(S, 100, 114, 24), pd.front], back: st.back, front: st.front, glow: [100, 112, 62], perch: [56, 124], organs: pd.organs };
+        },
+        espalier: (c) => {
+            const { S } = c;
+            const pd = pads(S, [
+                ['r', 60, 138, 11, 1],
+                ['r', 80, 138, 11, 2],
+                ['r', 100, 144, 10, 3],
+                ['r', 120, 138, 11, 4],
+                ['r', 140, 138, 11, 5],
+            ]);
+            const w = c.inPot ? Math.min(34, c.span) : 34;
+            return {
+                back: [(0, kit_1.G)('frame', [(0, kit_1.L)(`M${100 - w} 171L${100 - w} 70M${100 + w} 171L${100 + w} 70`, S.wood(POST), S.main * 1.5), S.icon ? null : (0, kit_1.L)(`M${100 - w} 76L${100 + w} 76M${100 - w} 112L${100 + w} 112`, S.wood(POST), S.fine * 1.4)])],
+                body: [
+                    pd.back,
+                    stems(S, ['M100 170Q100 120 100 70']),
+                    ties(S, [
+                        [100, 100, 76],
+                        [100, 100, 112],
+                    ]),
+                    lotusBloom(S, 100, 70, 22),
+                    pd.front,
+                ],
+                glow: [100, 84, 60],
+                perch: [100 - w, 66],
+                organs: pd.organs,
+            };
+        },
+        coppice: (c) => {
+            const { S } = c;
+            const pd = pads(S, [
+                ['r', 66, 140, 14, 2],
+                ['r', 136, 136, 14, 4],
+                ['r', 100, 152, 11, 3],
+                ['f', 52, 169, 14, 1],
+                ['f', 150, 169, 13, 5],
+            ]);
+            return {
+                body: [
+                    pd.back,
+                    (0, kit_1.G)('rhizome', [(0, kit_1.L)('M84 170Q100 166 118 170', S.lineOf(S.fol), S.main)]),
+                    stems(S, ['M100 168Q97 130 100 92', 'M90 169Q78 140 72 112', 'M112 169Q126 136 130 104']),
+                    lotusBloom(S, 72, 112, 15, { bud: true }),
+                    lotusBloom(S, 130, 104, 18, { cup: true }),
+                    lotusBloom(S, 100, 92, 24),
+                    pd.front,
+                ],
+                glow: [100, 96, 66],
+                perch: [52, 128],
+                organs: pd.organs,
+            };
+        },
+        holdfast: (c) => {
+            const { S } = c;
+            const r = rockAt(c, 30, 22);
+            const pd = pads(S, [
+                ['r', 66, 126, 16, 1],
+                ['r', 82, 112, 15, 2],
+                ['r', 118, 112, 15, 4],
+                ['r', 134, 126, 16, 5],
+                ['r', 100, 132, 14, 3],
+            ]);
+            return {
+                back: [r.node],
+                body: [
+                    (0, kit_1.rootTapers)(S, [
+                        [[96, r.top + 2], [r.X(78), r.top + 6], [r.X(72), 171], 3.6, 1.4],
+                        [[104, r.top + 2], [r.X(122), r.top + 6], [r.X(128), 171], 3.6, 1.4],
+                    ], kit_1.A0.seed.lotus),
+                    stems(S, ['M100 150Q99 126 100 100']),
+                    pd.back,
+                    lotusBloom(S, 100, 100, 22, { cup: true }),
+                    pd.front,
+                ],
+                glow: [100, 104, 60],
+                perch: [66, 114],
+                organs: pd.organs,
+            };
+        },
+    },
+};
+const SW = kit_1.A0.seed.sampaguita;
+function stars(S, pts, r0 = 4.4, id = 'blooms') {
+    if (S.icon || !pts.length)
+        return null;
+    const R = (0, kit_1.rng)(19);
+    let d = '';
+    let core = '';
+    for (const [x, y, s] of pts) {
+        d += (0, kit_1.star)(x, y, r0 * (s || 1) * (S.small ? 1.2 : 1), R() * 40) + ' ';
+        core += `M${(0, kit_1.f)(x)} ${(0, kit_1.f)(y)}h0.01`;
+    }
+    return (0, kit_1.G)(id, [(0, kit_1.P)(d, kit_1.LEAF[S.pal].light, { opacity: 0.95 }), (0, kit_1.L)(d, S.starLine, S.fine * 1.1), (0, kit_1.L)(core, kit_1.A0.sampaguita.core, 2)]);
+}
+const sprigs = (S, list, id = 'stem') => (0, kit_1.G)(id, [(0, kit_1.L)(list.join(''), S.wood(SW), S.main)]);
+function leafPairs(S, curves, n, len, pal, id = 'leaves') {
+    const set = (0, kit_1.leafSet)();
+    for (const [a, cc, b] of curves)
+        for (let j = 1; j <= n; j++) {
+            const t = j / (n + 0.4);
+            const p = (0, kit_1.qp)(a, cc, b, t);
+            const tn = (0, kit_1.qa)(a, cc, b, t);
+            set.add((0, kit_1.leaf)('ovate', p[0], p[1], len * (1 - t * 0.3), tn - 0.9, S, 0.8)).add((0, kit_1.leaf)('ovate', p[0], p[1], len * (1 - t * 0.3), tn + 0.9, S, 0.8));
+        }
+    return (0, kit_1.leavesNode)(S, id, set, pal);
+}
+function shrub(c, masses, o = {}) {
+    const { S } = c;
+    const cr = (0, kit_1.crown)(S, masses, { kind: 'ovate', ll: 8, rim: 1.6, pal: S.fol, seed: o.seed || 3, dense: true });
+    const nodes = [o.stems ? sprigs(S, o.stems) : null, cr.node, stars(S, o.stars || (0, kit_1.upperRim)(masses, o.nStars || 8, o.seed || 4))];
+    return { cr, nodes };
+}
+const sampaguita = {
+    pal: 'pearl',
+    fol: 'grove',
+    forms: {
+        I: (c) => {
+            const { S } = c;
+            const set = (0, kit_1.leafSet)();
+            set
+                .add((0, kit_1.leaf)('ovate', 101, 152, 14, -155 * kit_1.D2R, S, 0.8))
+                .add((0, kit_1.leaf)('ovate', 101, 152, 14, -25 * kit_1.D2R, S, 0.8))
+                .add((0, kit_1.leaf)('ovate', 103, 140, 10, -120 * kit_1.D2R, S, 0.8))
+                .add((0, kit_1.leaf)('ovate', 103, 140, 10, -60 * kit_1.D2R, S, 0.8));
+            return {
+                cutaway: (0, kit_1.cutaway)(S, 64, 136, 171, 190, 13),
+                body: [(0, kit_1.G)('roots', [(0, kit_1.L)('M95 180Q90 184 86 188M96 181Q98 186 104 189M95 181L93 189', S.wood(SW), S.fine * 1.4)]), (0, kit_1.G)('stem', [(0, kit_1.L)('M95 181L103 138', S.wood(SW), S.main * 1.7)]), (0, kit_1.leavesNode)(S, 'sprout', set, S.fol)],
+                perch: [74, 170],
+            };
+        },
+        II: (c) => {
+            const { S } = c;
+            const cv = [
+                [[100, 171], [86, 124], [70, 96]],
+                [[100, 171], [114, 116], [128, 84]],
+            ];
+            const bud = (0, kit_1.leafSet)()
+                .add((0, kit_1.leaf)('narrow', 70, 96, 9, -130 * kit_1.D2R, S))
+                .add((0, kit_1.leaf)('narrow', 66, 100, 7, -160 * kit_1.D2R, S))
+                .add((0, kit_1.leaf)('narrow', 128, 84, 9, -60 * kit_1.D2R, S))
+                .add((0, kit_1.leaf)('narrow', 132, 90, 7, -20 * kit_1.D2R, S));
+            return {
+                body: [sprigs(S, cv.map(([a, cc, b]) => (0, kit_1.Q)(a, cc, b))), leafPairs(S, cv, 3, 14, S.fol), S.icon ? null : (0, kit_1.G)('bud', [(0, kit_1.P)(bud.wash(), kit_1.LEAF[S.pal].light, { opacity: 0.95 }), (0, kit_1.L)(bud.line(), S.starLine, S.fine * 1.2)])],
+                perch: [80, 150],
+            };
+        },
+        III: (c) => {
+            const ms = [(0, kit_1.M)(66, 148, 18, 14, 1), (0, kit_1.M)(134, 148, 18, 14, 5), (0, kit_1.M)(80, 128, 20, 16, 2), (0, kit_1.M)(120, 128, 20, 16, 4), (0, kit_1.M)(100, 116, 22, 17, 3)];
+            const s = shrub(c, ms, { stems: ['M100 171L80 140M100 171L100 124M100 171L120 140'], nStars: 6 });
+            return { body: s.nodes, perch: [62, 136], organs: s.cr.organs };
+        },
+        IV: (c) => {
+            const { S } = c;
+            const ms = [(0, kit_1.M)(46, 140, 22, 16, 1), (0, kit_1.M)(154, 140, 22, 16, 5), (0, kit_1.M)(66, 112, 26, 20, 2), (0, kit_1.M)(134, 112, 26, 20, 4), (0, kit_1.M)(100, 96, 30, 22, 3)];
+            const s = shrub(c, ms, { stems: ['M100 171L60 140M100 171L100 100M100 171L140 140'], nStars: 12, seed: 5 });
+            const sp = (0, kit_1.leafSet)();
+            for (const [x, y, a] of [
+                [26, 126, -160],
+                [174, 126, -20],
+                [30, 116, -140],
+                [170, 116, -40],
+            ])
+                sp.add((0, kit_1.leaf)('ovate', x, y, 12, a * kit_1.D2R, S, 0.8));
+            const g0 = [58, 132];
+            const gc = [100, 168];
+            const g1 = [142, 132];
+            const gp = [];
+            for (let t = 0.08; t < 0.95; t += 0.12)
+                gp.push([...(0, kit_1.qp)(g0, gc, g1, t), 0.8]);
+            return {
+                body: [
+                    (0, kit_1.leavesNode)(S, 'sprays', sp, S.fol, [(0, kit_1.L)('M40 136Q32 128 26 126M160 136Q168 128 174 126', S.wood(SW), S.fine * 1.4)]),
+                    ...s.nodes,
+                    S.icon ? null : (0, kit_1.G)('garland', [(0, kit_1.L)((0, kit_1.Q)(g0, gc, g1) + `M${g0[0]} ${g0[1]}l-1 8M${g1[0]} ${g1[1]}l1 8`, S.starLine, S.fine * 1.2)]),
+                    stars(S, gp, 3.4, 'garland-flowers'),
+                ],
+                glow: [100, 116, 74],
+                perch: [100, 72],
+                organs: s.cr.organs,
+            };
+        },
+    },
+    flavours: {
+        lookout: (c) => {
+            const ms = [(0, kit_1.M)(78, 78, 16, 13, 1), (0, kit_1.M)(122, 78, 16, 13, 5), (0, kit_1.M)(86, 60, 16, 13, 2), (0, kit_1.M)(114, 60, 16, 13, 4), (0, kit_1.M)(100, 50, 18, 14, 3), (0, kit_1.M)(100, 72, 20, 14, 3)];
+            const s = shrub(c, ms, { stems: ['M100 171L100 80'], nStars: 8, seed: 6 });
+            s.nodes[0] = (0, kit_1.G)('trunk', [(0, kit_1.L)('M100 171L100 80', c.S.wood(SW), c.S.main * 2.2)]);
+            return { body: s.nodes, glow: [100, 68, 52], perch: [100, 34], organs: s.cr.organs };
+        },
+        moot: (c) => {
+            const fl = { flat: 0.45 };
+            const ms = [(0, kit_1.M)(62, 150, 28, 12, 1, fl), (0, kit_1.M)(138, 150, 28, 12, 5, fl), (0, kit_1.M)(100, 148, 30, 13, 2, fl), (0, kit_1.M)(86, 112, 22, 10, 3, fl), (0, kit_1.M)(114, 112, 22, 10, 4, fl)];
+            const s = shrub(c, ms, { stems: ['M100 160L100 112'], nStars: 7, seed: 7 });
+            const st = groundStones(c);
+            return { body: s.nodes, back: st.back, front: st.front, glow: [100, 130, 66], perch: [62, 136], organs: s.cr.organs };
+        },
+        espalier: (c) => {
+            const { S } = c;
+            const angs = [-154, -122, -90, -58, -26];
+            const R0 = c.inPot ? Math.min(78, c.span + 50) : 78;
+            const slats = angs.map((a) => `M100 171L${(0, kit_1.f)(100 + Math.cos(a * kit_1.D2R) * R0)} ${(0, kit_1.f)(171 + Math.sin(a * kit_1.D2R) * R0)}`).join('');
+            const cv = angs.map((a, i) => {
+                const k = S.sc(i + 1);
+                return [
+                    [100, 171],
+                    [100 + Math.cos(a * kit_1.D2R) * R0 * 0.4 * k, 171 + Math.sin(a * kit_1.D2R) * R0 * 0.5 * k],
+                    [100 + Math.cos(a * kit_1.D2R) * R0 * 0.86 * k, 171 + Math.sin(a * kit_1.D2R) * R0 * 0.86 * k],
+                ];
+            });
+            const gs = cv.map((cc, i) => leafPairs(S, [cc], 3, 12, S.fol, `domain-${i + 1}`));
+            return {
+                back: [(0, kit_1.G)('frame', [(0, kit_1.L)(slats, S.wood(POST), S.fine * 1.6)])],
+                body: [
+                    sprigs(S, cv.map(([a, cc, b]) => (0, kit_1.Q)(a, cc, b))),
+                    (0, kit_1.G)('canopy', gs),
+                    ties(S, cv.map(([a, cc, b]) => {
+                        const p = (0, kit_1.qp)(a, cc, b, 0.6);
+                        return [(0, kit_1.f)(p[0] - 3), (0, kit_1.f)(p[0] + 3), (0, kit_1.f)(p[1])];
+                    })),
+                    stars(S, cv.map(([, , b]) => [b[0], b[1] - 2, 1.1]).concat(cv.map(([a, cc, b]) => [...(0, kit_1.qp)(a, cc, b, 0.7), 0.8]))),
+                ],
+                glow: [100, 120, 74],
+                perch: [40, 120],
+                organs: cv.map(([, , b], i) => ({ dom: i + 1, x: b[0], y: b[1] })),
+            };
+        },
+        coppice: (c) => {
+            const { S } = c;
+            const tips = [
+                [64, 106],
+                [80, 92],
+                [100, 84],
+                [120, 92],
+                [136, 106],
+            ];
+            const ms = tips.map(([x, y], i) => (0, kit_1.M)(x, y, 13, 11, i + 1));
+            const s = shrub(c, ms, { stems: tips.map(([x, y]) => `M${(0, kit_1.f)(96 + (x - 100) * 0.08)} 160Q${(0, kit_1.f)((x + 100) / 2)} ${(0, kit_1.f)((y + 160) / 2 + 6)} ${x} ${y + 6}`), nStars: 7, seed: 8 });
+            const stool = 'M84 171C84 162 90 158 100 158C110 158 116 162 116 171Z';
+            const shoot = leafPairs(S, [
+                [[90, 162], [84, 148], [78, 136]],
+                [[110, 162], [118, 150], [124, 140]],
+            ], 2, 10, S.fol, 'shoots');
+            return { body: [(0, kit_1.G)('stool', [(0, kit_1.P)(stool, S.woodFill(SW)), (0, kit_1.L)(stool, S.wood(SW), S.main)]), shoot, ...s.nodes], glow: [100, 112, 68], perch: [56, 94], organs: s.cr.organs };
+        },
+        holdfast: (c) => {
+            const { S } = c;
+            const r = rockAt(c, 36, 26);
+            const ms = [(0, kit_1.M)(72, 116, 22, 16, 1, { dense: true }), (0, kit_1.M)(128, 116, 22, 16, 5, { dense: true }), (0, kit_1.M)(82, 98, 22, 16, 2, { dense: true }), (0, kit_1.M)(118, 98, 22, 16, 4, { dense: true }), (0, kit_1.M)(100, 90, 26, 18, 3, { dense: true }), (0, kit_1.M)(100, 114, 26, 18, 3, { dense: true })];
+            const s = shrub(c, ms, { nStars: 6, seed: 9 });
+            return {
+                back: [r.node],
+                body: [
+                    (0, kit_1.rootTapers)(S, [
+                        [[96, r.top + 2], [r.X(76), r.top + 6], [r.X(70), 171], 4, 1.4],
+                        [[99, r.top + 2], [r.X(90), r.top + 14], [r.X(92), 171], 3.4, 1.4],
+                        [[101, r.top + 2], [r.X(112), r.top + 14], [r.X(110), 171], 3.4, 1.4],
+                        [[104, r.top + 2], [r.X(124), r.top + 6], [r.X(130), 171], 4, 1.4],
+                    ], SW),
+                    (0, kit_1.G)('trunk', [(0, kit_1.L)(`M100 ${(0, kit_1.f)(r.top + 3)}L100 124`, S.wood(SW), S.main * 2.4)]),
+                    ...s.nodes,
+                ],
+                glow: [100, 104, 64],
+                perch: [64, 102],
+                organs: s.cr.organs,
+            };
+        },
+    },
+};
+const colD = (x, y0, h, w) => `M${(0, kit_1.f)(x - w / 2)} ${(0, kit_1.f)(y0)}L${(0, kit_1.f)(x - w / 2)} ${(0, kit_1.f)(y0 - h + w / 2)}A${(0, kit_1.f)(w / 2)} ${(0, kit_1.f)(w / 2)} 0 0 1 ${(0, kit_1.f)(x + w / 2)} ${(0, kit_1.f)(y0 - h + w / 2)}L${(0, kit_1.f)(x + w / 2)} ${(0, kit_1.f)(y0)}Z`;
+function armD(cx, cw, side, y, len, up, ww) {
+    const x0 = cx + side * cw * 0.4;
+    const x1 = cx + side * (cw * 0.5 + len);
+    const o = (side * ww) / 2;
+    if (up <= ww)
+        return `M${(0, kit_1.f)(x0)} ${(0, kit_1.f)(y)}L${(0, kit_1.f)(x1)} ${(0, kit_1.f)(y)}A${(0, kit_1.f)(ww / 2)} ${(0, kit_1.f)(ww / 2)} 0 0 ${side > 0 ? 0 : 1} ${(0, kit_1.f)(x1)} ${(0, kit_1.f)(y - ww)}L${(0, kit_1.f)(x0)} ${(0, kit_1.f)(y - ww)}Z`;
+    return `M${(0, kit_1.f)(x0)} ${(0, kit_1.f)(y)}L${(0, kit_1.f)(x1 - o)} ${(0, kit_1.f)(y)}Q${(0, kit_1.f)(x1 + o)} ${(0, kit_1.f)(y)} ${(0, kit_1.f)(x1 + o)} ${(0, kit_1.f)(y - ww)}L${(0, kit_1.f)(x1 + o)} ${(0, kit_1.f)(y - up)}A${(0, kit_1.f)(ww / 2)} ${(0, kit_1.f)(ww / 2)} 0 0 ${side > 0 ? 0 : 1} ${(0, kit_1.f)(x1 - o)} ${(0, kit_1.f)(y - up)}L${(0, kit_1.f)(x1 - o)} ${(0, kit_1.f)(y - ww)}L${(0, kit_1.f)(x0)} ${(0, kit_1.f)(y - ww)}Z`;
+}
+function spines(S, segs) {
+    if (S.icon)
+        return '';
+    let d = '';
+    for (const [x0, y0, x1, y1, side] of segs)
+        for (let t = 0.1; t < 0.95; t += S.full ? 0.1 : 0.16) {
+            const x = (0, kit_1.lerp)(x0, x1, t);
+            const y = (0, kit_1.lerp)(y0, y1, t);
+            d += `M${(0, kit_1.f)(x)} ${(0, kit_1.f)(y)}l${(0, kit_1.f)(side * 2.6)} -1.2`;
+        }
+    return d;
+}
+function cactusBody(c, H, w, arms, o = {}) {
+    const { S } = c;
+    const fol = S.fol;
+    const base = 171;
+    const col = colD(100, base, H, w);
+    const gs = [];
+    const organs = [{ dom: 3, x: 100, y: base - H * 0.6 }];
+    const ribs = S.full ? `M100 ${base - 2}L100 ${(0, kit_1.f)(base - H + 5)}M${(0, kit_1.f)(100 - w * 0.25)} ${base - 2}L${(0, kit_1.f)(100 - w * 0.25)} ${(0, kit_1.f)(base - H + w * 0.5)}M${(0, kit_1.f)(100 + w * 0.25)} ${base - 2}L${(0, kit_1.f)(100 + w * 0.25)} ${(0, kit_1.f)(base - H + w * 0.5)}` : '';
+    const sp0 = spines(S, [
+        [100 - w / 2, base - 6, 100 - w / 2, base - H + 6, -1],
+        [100 + w / 2, base - 6, 100 + w / 2, base - H + 6, 1],
+    ]);
+    arms.forEach(([side, ty, len0, up0, dom]) => {
+        const k = dom ? S.sc(dom) : 1;
+        const len = len0 * k;
+        const up = up0 * k;
+        const ww = w * (o.armW || 0.62);
+        const y = base - H * ty;
+        const d = armD(100, w, side, y, len, up, ww);
+        const x1 = 100 + side * (w * 0.5 + len);
+        const sp = spines(S, [[x1 + (side * ww) / 2, y - ww, x1 + (side * ww) / 2, y - up + 2, side]]);
+        gs.push((0, kit_1.G)(dom ? `domain-${dom}` : null, [
+            (0, kit_1.P)(d, S.massFill(fol, true)),
+            (0, kit_1.L)(d + (S.full && up > ww ? `M${(0, kit_1.f)(x1)} ${(0, kit_1.f)(y - ww)}L${(0, kit_1.f)(x1)} ${(0, kit_1.f)(y - up + 2)}` : ''), S.lineOf(fol), S.icon ? S.main : S.fine * 1.5),
+            sp ? (0, kit_1.L)(sp, S.lineOf(fol), S.hair * 1.4, { opacity: 0.8 }) : null,
+        ]));
+        if (dom)
+            organs.push({ dom, x: x1, y: y - up * 0.6 });
+    });
+    const main = (0, kit_1.G)(o.ids === false ? null : 'domain-3', [
+        (0, kit_1.P)(col, S.massFill(fol, true)),
+        ribs ? (0, kit_1.L)(ribs, S.lineOf(fol), S.hair * 1.4, { opacity: 0.7 }) : null,
+        (0, kit_1.L)(col, S.lineOf(fol), S.icon ? S.main : S.fine * 1.6),
+        sp0 ? (0, kit_1.L)(sp0, S.lineOf(fol), S.hair * 1.4, { opacity: 0.8 }) : null,
+    ]);
+    return { node: (0, kit_1.G)('canopy', [main, ...gs]), organs, top: base - H };
+}
+function cactusBlooms(S, pts, len = 9) {
+    if (!pts.length)
+        return null;
+    let d = '';
+    for (const [x, y, a0] of pts)
+        for (let i = 0; i < 5; i++)
+            d += (0, kit_1.xf)('M0 0Q0.42 -0.55 0 -1Q-0.42 -0.55 0 0Z', x, y, ((a0 || -90) + (i - 2) * 30) * kit_1.D2R + Math.PI / 2, len) + ' ';
+    return (0, kit_1.G)('blooms', [(0, kit_1.P)(d, S.washOf(S.pal), { opacity: 0.88 }), (0, kit_1.L)(d, S.lineOf(S.pal), S.fine * 1.4)]);
+}
+const cactus = {
+    pal: 'blossom',
+    fol: 'cactus',
+    forms: {
+        I: (c) => {
+            const { S } = c;
+            const r = 9;
+            const cy = 162;
+            const ring = (0, kit_1.disc)(100, cy, r);
+            let sp = '';
+            if (!S.icon)
+                for (let i = 0; i < 7; i++) {
+                    const a = (-160 + i * 23) * kit_1.D2R;
+                    sp += `M${(0, kit_1.f)(100 + Math.cos(a) * r)} ${(0, kit_1.f)(cy + Math.sin(a) * r)}l${(0, kit_1.f)(Math.cos(a) * 3)} ${(0, kit_1.f)(Math.sin(a) * 3)}`;
+                }
+            return {
+                body: [(0, kit_1.G)('sprout', [(0, kit_1.P)(ring, S.massFill(S.fol, true)), (0, kit_1.L)(ring + (S.full ? `M100 ${cy - r}Q96 ${cy} 100 ${cy + r}M100 ${cy - r}Q104 ${cy} 100 ${cy + r}` : ''), S.lineOf(S.fol), S.main), sp ? (0, kit_1.L)(sp, S.lineOf(S.fol), S.fine * 1.2) : null])],
+                perch: [84, 168],
+            };
+        },
+        II: (c) => {
+            const b = cactusBody(c, 56, 16, [], { ids: false });
+            return { body: [b.node], perch: [86, 150] };
+        },
+        III: (c) => {
+            const { S } = c;
+            const b = cactusBody(c, 72, 18, [
+                [-1, 0.42, 8, 13, 1],
+                [1, 0.56, 8, 14, 4],
+                [-1, 0.7, 6, 10, 2],
+                [1, 0.3, 7, 10, 5],
+            ]);
+            const bud = (0, kit_1.leafSet)().add((0, kit_1.leaf)('lens', 100, b.top + 2, 10, -90 * kit_1.D2R, S, 0.7));
+            return { body: [b.node, S.icon ? null : (0, kit_1.G)('bud', [(0, kit_1.P)(bud.wash(), S.washOf(S.pal), { opacity: 0.85 }), (0, kit_1.L)(bud.line(), S.lineOf(S.pal), S.fine * 1.4)])], perch: [76, 120], organs: b.organs };
+        },
+        IV: (c) => {
+            const b = cactusBody(c, 98, 20, [
+                [-1, 0.32, 16, 46, 1],
+                [1, 0.44, 14, 40, 4],
+                [-1, 0.6, 11, 30, 2],
+                [1, 0.24, 20, 34, 5],
+            ]);
+            const k1 = c.S.sc(1);
+            const tipX = 100 - 18 - 16 * k1;
+            const tipY = 171 - 98 * 0.32 - 46 * k1 + 2;
+            return {
+                body: [
+                    b.node,
+                    cactusBlooms(c.S, [
+                        [94, b.top + 4, -110],
+                        [106, b.top + 4, -70],
+                        [100, b.top + 1, -90],
+                        [tipX, tipY, -90],
+                    ], 10),
+                ],
+                glow: [100, 104, 66],
+                perch: [64, 110],
+                organs: b.organs,
+            };
+        },
+    },
+    flavours: {
+        lookout: (c) => {
+            const b = cactusBody(c, 122, 16, [
+                [-1, 0.2, 6, 10, 1],
+                [1, 0.26, 6, 10, 4],
+                [-1, 0.33, 5, 8, 2],
+                [1, 0.4, 5, 8, 5],
+            ]);
+            return { body: [b.node, cactusBlooms(c.S, [[100, b.top + 1, -90]], 11)], glow: [100, 72, 52], perch: [86, 64], organs: b.organs };
+        },
+        moot: (c) => {
+            const st = groundStones(c);
+            const b = cactusBody(c, 80, 20, [
+                [-1, 0.34, 22, 0, 1],
+                [1, 0.34, 22, 0, 5],
+                [-1, 0.62, 16, 0, 2],
+                [1, 0.62, 16, 0, 4],
+            ], { armW: 0.6 });
+            return { body: [b.node, cactusBlooms(c.S, [[100, b.top + 1, -90]], 10)], back: st.back, front: st.front, glow: [100, 120, 60], perch: [70, 132], organs: b.organs };
+        },
+        espalier: (c) => {
+            const { S } = c;
+            const b = cactusBody(c, 96, 18, [
+                [-1, 0.36, 14, 44, 1],
+                [1, 0.36, 14, 44, 5],
+                [-1, 0.62, 8, 22, 2],
+                [1, 0.62, 8, 22, 4],
+            ]);
+            const tipY = (dom) => 171 - 96 * 0.36 - 44 * S.sc(dom) + 2;
+            const tipX = (dom, side) => 100 + side * (17 + 14 * S.sc(dom));
+            return {
+                back: [(0, kit_1.G)('frame', [(0, kit_1.L)('M100 171L100 52', S.wood(POST), S.main * 1.3), (0, kit_1.L)((0, kit_1.oval)(100, 100, 36, 34), S.wood(POST), S.fine * 1.5)])],
+                body: [
+                    b.node,
+                    ties(S, [
+                        [66, 72, 114],
+                        [128, 134, 114],
+                    ]),
+                    cactusBlooms(S, [
+                        [100, b.top + 1, -90],
+                        [tipX(1, -1), tipY(1), -90],
+                        [tipX(5, 1), tipY(5), -90],
+                    ], 9),
+                ],
+                glow: [100, 100, 62],
+                perch: [64, 110],
+                organs: b.organs,
+            };
+        },
+        coppice: (c) => {
+            const { S } = c;
+            const sp = c.inPot ? Math.min(c.span - 6, 30) : 34;
+            const b = cactusBody(c, 64, 18, []);
+            const pups = [
+                [100 - sp, 9, 1, 'g'],
+                [100 - sp * 0.55, 30, 2, 'c'],
+                [100 + sp * 0.55, 34, 4, 'c'],
+                [100 + sp, 8, 5, 'g'],
+            ];
+            const gs = pups.map(([x, s0, dom, k]) => {
+                const s = s0 * S.sc(dom);
+                const d = k === 'g' ? (0, kit_1.disc)(x, 171 - s, s) : colD(x, 171, s, 11);
+                const segs = k === 'g'
+                    ? [
+                        [x - s, 171 - s, x - s * 0.4, 171 - s * 1.8, -1],
+                        [x + s, 171 - s, x + s * 0.4, 171 - s * 1.8, 1],
+                    ]
+                    : [
+                        [x - 5.5, 168, x - 5.5, 171 - s + 4, -1],
+                        [x + 5.5, 168, x + 5.5, 171 - s + 4, 1],
+                    ];
+                return (0, kit_1.G)(`domain-${dom}`, [(0, kit_1.P)(d, S.massFill(S.fol, true)), (0, kit_1.L)(d, S.lineOf(S.fol), S.icon ? S.main : S.fine * 1.5), (0, kit_1.L)(spines(S, segs), S.lineOf(S.fol), S.hair * 1.4, { opacity: 0.8 })]);
+            });
+            return {
+                body: [
+                    (0, kit_1.G)('canopy', [...b.node.children, ...gs]),
+                    cactusBlooms(S, [
+                        [96, b.top + 3, -110],
+                        [104, b.top + 3, -70],
+                    ], 9),
+                ],
+                glow: [100, 130, 56],
+                perch: [100 - sp, 156],
+                organs: [...b.organs, ...pups.map(([x, s, dom]) => ({ dom, x, y: 171 - s }))],
+            };
+        },
+        holdfast: (c) => {
+            const { S } = c;
+            const r = rockAt(c, 30, 26);
+            const cx = 92;
+            const cy = 140;
+            const rx = 26;
+            const ry = 26;
+            const barrel = (0, kit_1.oval)(cx, cy, rx, ry);
+            let ribs = '';
+            if (!S.icon)
+                for (const u of [-0.6, -0.25, 0.1, 0.45])
+                    ribs += `M${(0, kit_1.f)(cx + u * rx)} ${(0, kit_1.f)(cy - ry + 3)}Q${(0, kit_1.f)(cx + u * rx * 1.25)} ${(0, kit_1.f)(cy)} ${(0, kit_1.f)(cx + u * rx)} ${(0, kit_1.f)(cy + ry - 3)}`;
+            let sp = '';
+            if (!S.icon)
+                for (let i = 0; i < (S.full ? 22 : 12); i++) {
+                    const a = (-180 + i * (360 / (S.full ? 22 : 12))) * kit_1.D2R;
+                    sp += `M${(0, kit_1.f)(cx + Math.cos(a) * rx)} ${(0, kit_1.f)(cy + Math.sin(a) * ry)}l${(0, kit_1.f)(Math.cos(a) * 5)} ${(0, kit_1.f)(Math.sin(a) * 5)}`;
+                }
+            const dom = (k) => (0, kit_1.G)(`domain-${k}`, []);
+            return {
+                back: [(0, kit_1.G)('stone', [r.node.children[0], r.node.children[1], r.node.children[2]], { transform: 'translate(22 0)' })],
+                body: [
+                    (0, kit_1.G)('canopy', [
+                        (0, kit_1.G)('domain-3', [(0, kit_1.P)(barrel, S.massFill(S.fol, true)), ribs ? (0, kit_1.L)(ribs, S.lineOf(S.fol), S.hair * 1.4, { opacity: 0.7 }) : null, (0, kit_1.L)(barrel, S.lineOf(S.fol), S.icon ? S.main : S.fine * 1.6), sp ? (0, kit_1.L)(sp, S.lineOf(S.fol), S.hair * 1.6) : null]),
+                        dom(1),
+                        dom(2),
+                        dom(4),
+                        dom(5),
+                    ]),
+                    cactusBlooms(S, [
+                        [82, 116, -120],
+                        [92, 113, -95],
+                        [102, 114, -70],
+                    ], 9),
+                ],
+                glow: [96, 126, 56],
+                perch: [124, 130],
+                organs: [1, 2, 3, 4, 5].map((d) => ({ dom: d, x: cx, y: cy })),
+            };
+        },
+    },
+};
+function culm(S, p0, pc, p1, w0, w1, nodes = 8) {
+    const t = (0, kit_1.taper)(p0, pc, p1, w0, w1, 12);
+    let nd = '';
+    if (!S.icon)
+        for (let i = 1; i < nodes; i++) {
+            const u = i / nodes;
+            const p = (0, kit_1.qp)(p0, pc, p1, u);
+            const a = (0, kit_1.qa)(p0, pc, p1, u);
+            const n = [-Math.sin(a), Math.cos(a)];
+            const w = (0, kit_1.lerp)(w0, w1, u) / 2 + 0.5;
+            nd += `M${(0, kit_1.f)(p[0] - n[0] * w)} ${(0, kit_1.f)(p[1] - n[1] * w)}L${(0, kit_1.f)(p[0] + n[0] * w)} ${(0, kit_1.f)(p[1] + n[1] * w)}`;
+        }
+    return { fill: t.closed, sides: t.sides, nodes: nd };
+}
+function spray(S, set, x, y, deg, n, l, spread = 24) {
+    for (let i = 0; i < n; i++) {
+        const a = deg + ((i - (n - 1) / 2) * (spread * 2)) / Math.max(1, n - 1);
+        set.add((0, kit_1.leaf)('long', x, y, l * (0.85 + (0.15 * (((i * 7) % 3) / 2))), a * kit_1.D2R, S));
+    }
+}
+function culms(S, list, o = {}) {
+    const pal = S.pal;
+    const organs = [];
+    const gs = list.map(([p0, pc0, p10, w0, w1, dom, ts]) => {
+        const k = dom ? S.sc(dom) : 1;
+        const pc = [p0[0] + (pc0[0] - p0[0]) * k, p0[1] + (pc0[1] - p0[1]) * k];
+        const p1 = [p0[0] + (p10[0] - p0[0]) * k, p0[1] + (p10[1] - p0[1]) * k];
+        const cm = culm(S, p0, pc, p1, w0, w1, o.nodes || 9);
+        const set = (0, kit_1.leafSet)();
+        if (!(S.icon && o.iconBare))
+            for (const t of ts || [0.66, 0.82, 0.96]) {
+                const p = (0, kit_1.qp)(p0, pc, p1, t);
+                const out = p[0] < 100 ? -1 : p[0] > 100 ? 1 : t > 0.8 ? 1 : -1;
+                spray(S, set, p[0], p[1], out < 0 ? 200 : -20, S.icon ? 2 : 3, S.small ? 17 : 14, 24);
+            }
+        if (dom)
+            organs.push({ dom, x: p1[0], y: p1[1] });
+        return (0, kit_1.G)(dom ? `domain-${dom}` : null, [
+            (0, kit_1.P)(cm.fill, S.massFill(pal)),
+            (0, kit_1.L)(cm.sides, S.lineOf('spring'), S.icon ? S.main : S.fine * 1.5),
+            cm.nodes ? (0, kit_1.L)(cm.nodes, S.lineOf('spring'), S.hair * 1.6) : null,
+            set.n() ? (0, kit_1.P)(set.wash(), S.washOf(pal), { opacity: S.washOp }) : null,
+            set.n() ? (0, kit_1.L)(set.line(), S.lineOf(pal), S.fine * 1.3) : null,
+        ]);
+    });
+    return { node: (0, kit_1.G)('canopy', gs), organs };
+}
+function sheathCone(S, x, yb, h, w) {
+    const d = `M${(0, kit_1.f)(x - w / 2)} ${(0, kit_1.f)(yb)}C${(0, kit_1.f)(x - w / 2)} ${(0, kit_1.f)(yb - h * 0.5)} ${(0, kit_1.f)(x - w * 0.12)} ${(0, kit_1.f)(yb - h * 0.85)} ${(0, kit_1.f)(x)} ${(0, kit_1.f)(yb - h)}C${(0, kit_1.f)(x + w * 0.12)} ${(0, kit_1.f)(yb - h * 0.85)} ${(0, kit_1.f)(x + w / 2)} ${(0, kit_1.f)(yb - h * 0.5)} ${(0, kit_1.f)(x + w / 2)} ${(0, kit_1.f)(yb)}Z`;
+    let sc = '';
+    if (!S.icon)
+        for (let i = 1; i < 4; i++) {
+            const y = yb - h * i * 0.23;
+            const hw = (w / 2) * (1 - i * 0.2);
+            sc += `M${(0, kit_1.f)(x - hw)} ${(0, kit_1.f)(y + 2)}Q${(0, kit_1.f)(x)} ${(0, kit_1.f)(y - 3)} ${(0, kit_1.f)(x + hw * 0.7)} ${(0, kit_1.f)(y - 4)}`;
+        }
+    return { d, sc };
+}
+function shoots(S, list, id = 'shoot') {
+    let d = '';
+    let sc = '';
+    for (const [x, h, w] of list) {
+        const s = sheathCone(S, x, 171, h, w);
+        d += s.d;
+        sc += s.sc;
+    }
+    const col = kit_1.A0.bamboo.sheathMid;
+    return (0, kit_1.G)(id, [(0, kit_1.P)(d, S.woodFill(col)), (0, kit_1.L)(d + sc, S.wood(col), S.fine * 1.4)]);
+}
+const V5 = [
+    [[90, 171], [84, 110], [58, 62], 6.5, 4, 1],
+    [[95, 171], [90, 100], [80, 42], 6.5, 4, 2],
+    [[100, 171], [100, 96], [102, 32], 7, 4, 3],
+    [[105, 171], [110, 100], [124, 46], 6.5, 4, 4],
+    [[110, 171], [116, 112], [144, 66], 6.5, 4, 5],
+];
+const bamboo = {
+    pal: 'grove',
+    forms: {
+        I: (c) => {
+            const { S } = c;
+            const s = sheathCone(S, 100, 171, 40, 26);
+            const set = (0, kit_1.leafSet)()
+                .add((0, kit_1.leaf)('long', 100, 132, 13, -112 * kit_1.D2R, S))
+                .add((0, kit_1.leaf)('long', 100, 132, 11, -70 * kit_1.D2R, S));
+            const col = kit_1.A0.bamboo.sheathMid;
+            return {
+                cutaway: (0, kit_1.cutaway)(S, 62, 138, 171, 190, 14),
+                body: [
+                    (0, kit_1.G)('roots', [(0, kit_1.L)('M70 180L130 180', S.wood(col), S.main), S.icon ? null : (0, kit_1.L)('M84 177L84 183M100 177L100 183M116 177L116 183M78 180l-3 5M92 180l2 6M108 180l-2 6M124 180l3 5', S.wood(col), S.fine)]),
+                    (0, kit_1.G)('sprout', [(0, kit_1.P)(s.d, S.woodFill(col)), (0, kit_1.L)(s.d + s.sc, S.wood(col), S.main)]),
+                    (0, kit_1.leavesNode)(S, 'leaves', set, S.pal),
+                ],
+                perch: [74, 170],
+            };
+        },
+        II: (c) => {
+            const { S } = c;
+            const cm = culms(S, [[[98, 171], [96, 100], [108, 40], 7, 4.5, null, [0.55, 0.66, 0.77, 0.88, 0.99]]]);
+            return { body: [cm.node, shoots(S, [[122, 16, 10]])], perch: [76, 150] };
+        },
+        III: (c) => {
+            const cm = culms(c.S, V5);
+            return { body: [cm.node], perch: [62, 96], organs: cm.organs };
+        },
+        IV: (c) => {
+            const { S } = c;
+            const Lc = [
+                [[58, 171], [26, 44], [99, 26]],
+                [[66, 171], [38, 60], [97, 40]],
+                [[74, 171], [56, 100], [84, 64]],
+            ];
+            const Cs = [...Lc, ...Lc.map(([a, cc, b]) => [[200 - a[0], a[1]], [200 - cc[0], cc[1]], [200 - b[0], b[1]]])];
+            const doms = [1, 2, 3, 5, 4, 3];
+            const cm = culms(S, [0, 3, 1, 4, 2, 5].map((i) => [...Cs[i], 7, 4, doms[i], i % 3 === 2 ? [0.95] : [0.72, 0.86, 0.98]]));
+            return {
+                body: [S.icon ? null : (0, kit_1.G)('roots', [(0, kit_1.L)('M60 171q6 -4 12 0q6 -4 12 0M116 171q6 -4 12 0q6 -4 12 0', S.wood(kit_1.A0.bamboo.sheathMid), S.fine * 1.4)]), cm.node, shoots(S, [[92, 10, 7], [110, 8, 6]])],
+                glow: [100, 104, 52],
+                perch: [100, 22],
+                organs: cm.organs,
+            };
+        },
+    },
+    flavours: {
+        lookout: (c) => {
+            const cm = culms(c.S, [
+                [[90, 171], [86, 130], [72, 88], 6, 4, 1],
+                [[95, 171], [92, 124], [86, 72], 6, 4, 2],
+                [[105, 171], [108, 124], [114, 72], 6, 4, 4],
+                [[110, 171], [114, 130], [128, 88], 6, 4, 5],
+                [[100, 171], [100, 90], [102, 14], 7, 4, 3, [0.8, 0.9, 0.99]],
+            ]);
+            return { body: [cm.node], glow: [100, 76, 58], perch: [102, 6], organs: cm.organs };
+        },
+        moot: (c) => {
+            const { S } = c;
+            const xs = [80, 90, 100, 110, 120];
+            const cm = culms(S, xs.map((x, i) => [[x, 171], [x, 110], [x, 40 + Math.abs(i - 2) * 6], 6, 4.2, null, []]));
+            const fl = { flat: 0.5 };
+            const cr = (0, kit_1.crown)(S, [(0, kit_1.M)(58, 102, 24, 9, 1, fl), (0, kit_1.M)(142, 102, 24, 9, 5, fl), (0, kit_1.M)(72, 70, 24, 9, 2, fl), (0, kit_1.M)(128, 70, 24, 9, 4, fl), (0, kit_1.M)(100, 44, 30, 10, 3, fl)], { kind: 'long', ll: 9, pal: S.pal, seed: 17 });
+            const st = groundStones(c);
+            return {
+                body: [(0, kit_1.G)('culms', cm.node.children), (0, kit_1.G)('branches', [(0, kit_1.L)('M80 106L60 102M120 106L140 102M90 74L74 70M110 74L126 70', S.lineOf('spring'), S.fine * 1.4)]), cr.node],
+                back: st.back,
+                front: st.front,
+                glow: [100, 92, 72],
+                perch: [58, 90],
+                organs: cr.organs,
+            };
+        },
+        espalier: (c) => {
+            const { S } = c;
+            const w = c.inPot ? Math.min(46, c.span + 14) : 46;
+            const xs = [-1, -0.5, 0, 0.5, 1].map((u) => 100 + u * w * 0.85);
+            const cm = culms(S, xs.map((x, i) => [[x, 171], [x, 120], [x, 54 - (i === 2 ? 10 : 0)], 6, 4.2, i + 1, [0.8, 0.94]]));
+            return {
+                back: [(0, kit_1.G)('frame', [(0, kit_1.L)(`M${100 - w} 171L${100 - w} 70M${100 + w} 171L${100 + w} 70`, S.wood(POST), S.main * 1.5), S.icon ? null : (0, kit_1.L)(`M${100 - w} 124L${100 + w} 124M${100 - w} 84L${100 + w} 84`, S.wood(POST), S.fine * 1.5)])],
+                body: [cm.node, ties(S, xs.flatMap((x) => [[(0, kit_1.f)(x - 3), (0, kit_1.f)(x + 3), 124], [(0, kit_1.f)(x - 3), (0, kit_1.f)(x + 3), 84]]))],
+                glow: [100, 96, 66],
+                perch: [100 - w, 66],
+                organs: cm.organs,
+            };
+        },
+        coppice: (c) => {
+            const { S } = c;
+            const L9 = [
+                [86, 66, -26],
+                [91, 54, -14],
+                [96, 76, -6],
+                [100, 48, 2],
+                [104, 72, 8],
+                [109, 58, 16],
+                [114, 70, 28],
+                [82, 98, -36],
+                [118, 96, 36],
+            ];
+            const doms = [1, 2, 2, 3, 3, 4, 4, 1, 5];
+            const cm = culms(S, L9.map(([x, top, lean], i) => [[x, 171], [x + lean * 0.2, (171 + top) / 2], [x + lean, top], 5.4, 3.6, doms[i], [0.8, 0.97]]));
+            return {
+                body: [
+                    cm.node,
+                    shoots(S, [
+                        [78, 14, 8],
+                        [92, 18, 9],
+                        [108, 12, 7],
+                        [122, 16, 8],
+                    ]),
+                ],
+                glow: [100, 92, 66],
+                perch: [64, 80],
+                organs: cm.organs,
+            };
+        },
+        holdfast: (c) => {
+            const { S } = c;
+            const r = rockAt(c, 40, 24);
+            const col = kit_1.A0.bamboo.sheathMid;
+            const xs = [86, 92, 98, 104, 110, 116];
+            const cm = culms(S, xs.map((x, i) => [[x, r.top + 6], [x, 100], [x + (i - 2.5) * 2, 30 + Math.abs(i - 2.5) * 6], 6, 4, [1, 2, 3, 3, 4, 5][i], [0.62, 0.78, 0.94]]));
+            const roots = [
+                [[88, r.top + 6], [r.X(70), r.top + 8], [r.X(64), 171], 4, 1.6],
+                [[96, r.top + 7], [r.X(88), r.top + 18], [r.X(88), 171], 3.6, 1.6],
+                [[106, r.top + 7], [r.X(114), r.top + 18], [r.X(114), 171], 3.6, 1.6],
+                [[114, r.top + 6], [r.X(132), r.top + 8], [r.X(138), 171], 4, 1.6],
+            ];
+            return { back: [r.node], body: [(0, kit_1.rootTapers)(S, roots, col), cm.node], glow: [100, 84, 66], perch: [70, 70], organs: cm.organs };
+        },
+    },
+};
+exports.FLOWER_LINES = { sunflower, lotus, sampaguita, cactus, bamboo };
+  };
+  links["src/components/plant/forms/index.ts"] = {"./conifers":"src/components/plant/forms/conifers.ts","./flowers":"src/components/plant/forms/flowers.ts","./trees":"src/components/plant/forms/trees.ts","./kit":"src/components/plant/forms/kit.ts"};
+  defs["src/components/plant/forms/index.ts"] = function (module, exports, require) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.paint = exports.formKeyOf = exports.FORM_LINES = void 0;
+exports.drawForm = drawForm;
+const conifers_1 = require("./conifers");
+const flowers_1 = require("./flowers");
+const trees_1 = require("./trees");
+exports.FORM_LINES = { ...trees_1.TREE_LINES, ...conifers_1.CONIFER_LINES, ...flowers_1.FLOWER_LINES };
+const formKeyOf = (growth) => (growth <= 2 ? 'I' : growth === 3 ? 'II' : growth <= 5 ? 'III' : 'IV');
+exports.formKeyOf = formKeyOf;
+function drawForm(species, growth, final, c) {
+    const line = exports.FORM_LINES[species];
+    const key = (0, exports.formKeyOf)(growth);
+    if (key === 'IV' && final !== 'own')
+        return line.flavours[final](c);
+    return line.forms[key](c);
+}
+var kit_1 = require("./kit");
+Object.defineProperty(exports, "paint", { enumerable: true, get: function () { return kit_1.paint; } });
+  };
+  links["src/components/plant/forms/kit.ts"] = {"../../../theme/tokens":"src/theme/tokens.ts"};
+  defs["src/components/plant/forms/kit.ts"] = function (module, exports, require) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.rootTapers = exports.rootLines = exports.M = exports.oval = exports.disc = exports.SH = exports.Q = exports.qa = exports.qp = exports.G = exports.C = exports.L = exports.P = exports.INSIDE = exports.f = exports.lerp = exports.D2R = exports.LEAF = exports.A0 = void 0;
+exports.rng = rng;
+exports.inside = inside;
+exports.paint = paint;
+exports.smooth = smooth;
+exports.taper = taper;
+exports.massD = massD;
+exports.hatchE = hatchE;
+exports.furrows = furrows;
+exports.xf = xf;
+exports.leaf = leaf;
+exports.blossom = blossom;
+exports.star = star;
+exports.needles = needles;
+exports.leafSet = leafSet;
+exports.leavesNode = leavesNode;
+exports.cutaway = cutaway;
+exports.glow = glow;
+exports.stones = stones;
+exports.boulder = boulder;
+exports.scaleMasses = scaleMasses;
+exports.crown = crown;
+exports.limbs = limbs;
+exports.trunk = trunk;
+exports.lowerRim = lowerRim;
+exports.upperRim = upperRim;
+exports.acorns = acorns;
+exports.samaras = samaras;
+exports.goldSprays = goldSprays;
+exports.blossoms = blossoms;
+exports.hanging = hanging;
+exports.drift = drift;
+exports.seedPart = seedPart;
+const tokens_1 = require("../../../theme/tokens");
+exports.A0 = tokens_1.plantArt;
+exports.LEAF = tokens_1.plantLeaf;
+exports.D2R = Math.PI / 180;
+const lerp = (a, b, t) => a + (b - a) * t;
+exports.lerp = lerp;
+const f = (n) => Math.round(n * 10) / 10;
+exports.f = f;
+function rng(seed) {
+    let a = seed >>> 0;
+    return () => {
+        a |= 0;
+        a = (a + 0x6d2b79f5) | 0;
+        let t = Math.imul(a ^ (a >>> 15), 1 | a);
+        t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+        return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+}
+function flat(xs, out = []) {
+    for (const x of xs) {
+        if (Array.isArray(x))
+            flat(x, out);
+        else if (x)
+            out.push(x);
+    }
+    return out;
+}
+exports.INSIDE = new WeakSet();
+function inside(n) {
+    if (n)
+        exports.INSIDE.add(n);
+    return n;
+}
+const P = (d, fill, extra = {}) => (d ? { t: 'path', d, fill, ...extra } : null);
+exports.P = P;
+const L = (d, stroke, pt, extra = {}) => (d ? { t: 'path', d, fill: 'none', stroke, sw: pt, ...extra } : null);
+exports.L = L;
+const C = (cx, cy, r, fill, extra = {}) => ({ t: 'circle', cx: (0, exports.f)(cx), cy: (0, exports.f)(cy), r: (0, exports.f)(r), fill, ...extra });
+exports.C = C;
+const G = (id, children = [], extra = {}) => ({ t: 'g', id, children: flat(children), ...extra });
+exports.G = G;
+const LINE_PT = { icon: { main: 1.25, fine: 0 }, small: { main: 1.3, fine: 0.7 }, full: { main: 1.5, fine: 0.75 } };
+function paint(theme, lod, o) {
+    var _a, _b;
+    const TL = tokens_1.plantLine[theme];
+    const F = tokens_1.plantForm[theme];
+    const W = LINE_PT[lod];
+    const mix = o.mix;
+    const rest = (_a = o.rest) !== null && _a !== void 0 ? _a : ((c) => c);
+    const lt = theme === 'light';
+    const lineOf = (p) => {
+        const c = exports.LEAF[p][TL.leaf];
+        return rest(TL.paleLineMix && (p === 'pearl' || p === 'snow') ? mix(c, TL.woodInk, TL.paleLineMix) : c);
+    };
+    const sc = o.sc;
+    return {
+        theme,
+        lod,
+        full: lod === 'full',
+        icon: lod === 'icon',
+        small: lod === 'small',
+        main: W.main,
+        fine: W.fine || W.main * 0.7,
+        hair: lod === 'full' ? 0.5 : 0.6,
+        pal: o.pal,
+        fol: (_b = o.fol) !== null && _b !== void 0 ? _b : o.pal,
+        lightTheme: lt,
+        lineOf,
+        washOf: (p) => exports.LEAF[p][TL.washLeaf],
+        washOp: TL.washLeafOp,
+        massFill: (p, dense) => mix(F.page, exports.LEAF[p][F.massTone], dense ? F.massMixDense : F.massMix),
+        wood: (c) => mix(c, TL.woodInk, TL.woodMix),
+        woodFill: (c) => mix(F.page, c, F.woodFillMix),
+        gift: (c) => mix(c, TL.propInk, TL.giftMix),
+        giftFill: (c) => mix(F.page, c, F.giftFillMix),
+        soil: rest(TL.soil),
+        stone: mix(F.stoneBase, F.stoneInk, F.stoneMix),
+        stoneFill: mix(F.page, exports.A0.keepsake.stone, F.stoneFillMix),
+        glow: exports.LEAF.gold[F.glowTone],
+        glowOps: F.glowOps,
+        glowRing: exports.LEAF.gold[F.glowRingTone],
+        gold: exports.LEAF.gold[F.goldTone],
+        goldWash: exports.LEAF.gold[F.goldWashTone],
+        wire: F.wire,
+        starLine: rest(TL.starLine),
+        sc: (dom) => {
+            const v = sc === null || sc === void 0 ? void 0 : sc[dom - 1];
+            return typeof v === 'number' && Number.isFinite(v) ? Math.max(0.5, Math.min(1.25, v)) : 1;
+        },
+    };
+}
+function smooth(pts) {
+    const n = pts.length;
+    const m = (a, b) => [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2];
+    const s = m(pts[n - 1], pts[0]);
+    let d = `M${(0, exports.f)(s[0])} ${(0, exports.f)(s[1])}`;
+    for (let i = 0; i < n; i++) {
+        const p = pts[i];
+        const q = m(p, pts[(i + 1) % n]);
+        d += `Q${(0, exports.f)(p[0])} ${(0, exports.f)(p[1])} ${(0, exports.f)(q[0])} ${(0, exports.f)(q[1])}`;
+    }
+    return d + 'Z';
+}
+const qp = (a, c, b, t) => [(1 - t) ** 2 * a[0] + 2 * (1 - t) * t * c[0] + t * t * b[0], (1 - t) ** 2 * a[1] + 2 * (1 - t) * t * c[1] + t * t * b[1]];
+exports.qp = qp;
+const qa = (a, c, b, t) => Math.atan2(2 * (1 - t) * (c[1] - a[1]) + 2 * t * (b[1] - c[1]), 2 * (1 - t) * (c[0] - a[0]) + 2 * t * (b[0] - c[0]));
+exports.qa = qa;
+const Q = (a, c, b) => `M${(0, exports.f)(a[0])} ${(0, exports.f)(a[1])}Q${(0, exports.f)(c[0])} ${(0, exports.f)(c[1])} ${(0, exports.f)(b[0])} ${(0, exports.f)(b[1])}`;
+exports.Q = Q;
+function taper(p0, pc, p1, w0, w1, N = 12) {
+    const Lp = [];
+    const Rp = [];
+    for (let i = 0; i <= N; i++) {
+        const t = i / N;
+        const [x, y] = (0, exports.qp)(p0, pc, p1, t);
+        const a = (0, exports.qa)(p0, pc, p1, t);
+        const w = (0, exports.lerp)(w0, w1, Math.pow(t, 0.85)) / 2;
+        Lp.push([x + Math.sin(a) * w, y - Math.cos(a) * w]);
+        Rp.push([x - Math.sin(a) * w, y + Math.cos(a) * w]);
+    }
+    const pl = (arr) => arr.map((p, i) => `${i ? 'L' : 'M'}${(0, exports.f)(p[0])} ${(0, exports.f)(p[1])}`).join('');
+    const ta = (0, exports.qa)(p0, pc, p1, 1);
+    const tip = Lp[N];
+    const closed = pl(Lp) +
+        `Q${(0, exports.f)(tip[0] + (Rp[N][0] - tip[0]) / 2 + Math.cos(ta) * w1 * 0.6)} ${(0, exports.f)(tip[1] + (Rp[N][1] - tip[1]) / 2 + Math.sin(ta) * w1 * 0.6)} ${(0, exports.f)(Rp[N][0])} ${(0, exports.f)(Rp[N][1])}` +
+        [...Rp]
+            .reverse()
+            .slice(1)
+            .map((p) => `L${(0, exports.f)(p[0])} ${(0, exports.f)(p[1])}`)
+            .join('') +
+        'Z';
+    return { closed, sides: pl(Lp) + pl(Rp), left: Lp, right: Rp };
+}
+function massD(cx, cy, rx, ry, n = 9, seed = 1, bulge = 0.2, flatK = 9) {
+    const r = rng(seed);
+    const ph = r() * Math.PI;
+    const Pp = [];
+    for (let i = 0; i < n; i++) {
+        const a = ph + (i / n) * Math.PI * 2;
+        const j = 0.93 + r() * 0.1;
+        Pp.push([cx + Math.cos(a) * rx * j, Math.min(cy + ry * flatK, cy + Math.sin(a) * ry * j), a]);
+    }
+    let d = `M${(0, exports.f)(Pp[0][0])} ${(0, exports.f)(Pp[0][1])}`;
+    for (let i = 0; i < n; i++) {
+        const p = Pp[(i + 1) % n];
+        const a0 = Pp[i][2];
+        const a1 = i + 1 < n ? Pp[i + 1][2] : Pp[0][2] + Math.PI * 2;
+        const am = (a0 + a1) / 2;
+        const k = 1 + bulge * (0.8 + r() * 0.5);
+        d += `Q${(0, exports.f)(cx + Math.cos(am) * rx * k)} ${(0, exports.f)(Math.min(cy + ry * flatK + ry * 0.1, cy + Math.sin(am) * ry * k))} ${(0, exports.f)(p[0])} ${(0, exports.f)(p[1])}`;
+    }
+    return d + 'Z';
+}
+function hatchE(cx, cy, rx, ry, y0, y1, gap, ang = -14, even = false) {
+    const tn = Math.tan(ang * exports.D2R);
+    let d = '';
+    let y = y0;
+    const A = 1 / (rx * rx) + (tn * tn) / (ry * ry);
+    while (y < y1) {
+        const a = y - cy;
+        const B = (2 * a * tn) / (ry * ry);
+        const Cc = (a * a) / (ry * ry) - 1;
+        const disc = B * B - 4 * A * Cc;
+        if (disc > 0) {
+            const s = Math.sqrt(disc);
+            const u0 = (-B - s) / (2 * A);
+            const u1 = (-B + s) / (2 * A);
+            if (u1 - u0 > 1.2)
+                d += `M${(0, exports.f)(cx + u0)} ${(0, exports.f)(y + u0 * tn)}L${(0, exports.f)(cx + u1)} ${(0, exports.f)(y + u1 * tn)}`;
+        }
+        const k = (y - y0) / Math.max(1, y1 - y0);
+        y += gap * (even ? 1 : 1.3 - 0.6 * k);
+    }
+    return d;
+}
+function furrows(left, right, n, seed, side = 1) {
+    const r = rng(seed);
+    let d = '';
+    const N = left.length - 1;
+    for (let k = 0; k < n; k++) {
+        const u = side > 0 ? 0.55 + (k / n) * 0.38 : 0.07 + (k / n) * 0.38;
+        const i0 = 1 + Math.floor(r() * 2);
+        const i1 = N - 1 - Math.floor(r() * 3);
+        const pt = (i) => [(0, exports.lerp)(left[i][0], right[i][0], u) + (r() - 0.5) * 0.8, (0, exports.lerp)(left[i][1], right[i][1], u)];
+        const a = pt(i0);
+        const m = pt(Math.floor((i0 + i1) / 2));
+        const b = pt(i1);
+        d += `M${(0, exports.f)(a[0])} ${(0, exports.f)(a[1])}Q${(0, exports.f)(m[0] + (r() - 0.5) * 2)} ${(0, exports.f)(m[1])} ${(0, exports.f)(b[0])} ${(0, exports.f)(b[1])}`;
+    }
+    return d;
+}
+const PARSED = new Map();
+function parse(d) {
+    var _a;
+    const hit = PARSED.get(d);
+    if (hit)
+        return hit;
+    const segs = [];
+    for (const t of (_a = d.match(/[MLQCZ]|-?\d*\.?\d+(?:e-?\d+)?/gi)) !== null && _a !== void 0 ? _a : []) {
+        if (/^[MLQCZ]$/i.test(t))
+            segs.push({ c: t.toUpperCase(), n: [] });
+        else if (segs.length)
+            segs[segs.length - 1].n.push(parseFloat(t));
+    }
+    PARSED.set(d, segs);
+    return segs;
+}
+function xf(d, x, y, a, s, sx = 1) {
+    const c = Math.cos(a);
+    const sn = Math.sin(a);
+    let out = '';
+    for (const g of parse(d)) {
+        out += g.c;
+        for (let i = 0; i + 1 < g.n.length; i += 2) {
+            const u = g.n[i] * s * sx;
+            const v = g.n[i + 1] * s;
+            out += `${(0, exports.f)(x + u * c - v * sn)} ${(0, exports.f)(y + u * sn + v * c)} `;
+        }
+    }
+    return out.trim();
+}
+const MAPLE = (() => {
+    const tips = [
+        [-90, 7.2],
+        [-142, 6.4],
+        [-38, 6.4],
+        [-208, 4.6],
+        [28, 4.6],
+    ];
+    const order = [3, 1, 0, 2, 4];
+    const pt = (a, r) => [r * Math.cos(a * exports.D2R), -6 + r * Math.sin(a * exports.D2R)];
+    let d = 'M0 0L' + pt(-240, 2).map(exports.f).join(' ');
+    order.forEach((ti, i) => {
+        const [a, r] = tips[ti];
+        d += ' L' + pt(a, r).map(exports.f).join(' ');
+        if (i < order.length - 1)
+            d += ' L' + pt((a + tips[order[i + 1]][0]) / 2, 2.4).map(exports.f).join(' ');
+    });
+    return { d: d + ' L' + pt(60, 2).map(exports.f).join(' ') + 'Z', h: 13.2, rib: 'M0 -0.5L0 -11M0 -5L-4.6 -9M0 -5L4.6 -9' };
+})();
+exports.SH = {
+    lens: { d: 'M0 0Q0.57 -0.46 0 -1Q-0.57 -0.46 0 0Z', h: 1, rib: 'M0 -0.08L0 -0.86' },
+    narrow: { d: 'M0 0Q0.3 -0.46 0 -1Q-0.3 -0.46 0 0Z', h: 1, rib: 'M0 -0.08L0 -0.88' },
+    long: { d: 'M0 0Q0.24 -0.5 0 -1Q-0.24 -0.5 0 0Z', h: 1, rib: 'M0 -0.06L0 -0.9' },
+    ovate: { d: 'M0 0C0.42 -0.12 0.44 -0.62 0 -1C-0.44 -0.62 -0.42 -0.12 0 0Z', h: 1, rib: 'M0 -0.08L0 -0.86' },
+    heart: { d: 'M0 0C0.2 0.04 0.56 -0.1 0.52 -0.4C0.48 -0.68 0.2 -0.82 0 -1C-0.2 -0.82 -0.48 -0.68 -0.52 -0.4C-0.56 -0.1 -0.2 0.04 0 0Z', h: 1, rib: 'M0 -0.04L0 -0.9M0 -0.4L0.3 -0.56M0 -0.4L-0.3 -0.56' },
+    oak: {
+        d: 'M0 0C-2 -.6 -3.6 -1.6 -2.8 -3.4C-5 -3.4 -5.2 -5.8 -3.2 -6.6C-5.2 -7.6 -4.4 -10.2 -2.2 -10C-2.6 -12.2 -.6 -13 0 -13C.6 -13 2.6 -12.2 2.2 -10C4.4 -10.2 5.2 -7.6 3.2 -6.6C5.2 -5.8 5 -3.4 2.8 -3.4C3.6 -1.6 2 -.6 0 0Z',
+        h: 13,
+        rib: 'M0 -0.5L0 -11.5',
+    },
+    petal: { d: 'M0 0Q0.62 -0.55 0 -1Q-0.62 -0.55 0 0Z', h: 1 },
+    star: { d: 'M0 0Q0.25 -0.5 0 -1Q-0.25 -0.5 0 0Z', h: 1 },
+    strap: { d: 'M-0.07 0C-0.16 -0.4 -0.14 -0.8 0 -1C0.14 -0.8 0.16 -0.4 0.07 0Z', h: 1, rib: 'M0 -0.04L0 -0.94' },
+    maple: MAPLE,
+};
+function leaf(kind, x, y, len, ang, S, sx = 1) {
+    var _a;
+    const g = (_a = exports.SH[kind]) !== null && _a !== void 0 ? _a : exports.SH.lens;
+    const s = len / g.h;
+    const a = ang + Math.PI / 2;
+    const shape = xf(g.d, x, y, a, s, sx);
+    return { wash: shape, line: S.full && g.rib ? shape + ' ' + xf(g.rib, x, y, a, s, sx) : shape };
+}
+function blossom(x, y, r, rot) {
+    let d = '';
+    for (let i = 0; i < 5; i++)
+        d += xf(exports.SH.petal.d, x, y, (i * 72 + rot) * exports.D2R, r * 1.25) + ' ';
+    return d.trim();
+}
+function star(x, y, r, rot) {
+    let d = '';
+    for (let i = 0; i < 8; i++)
+        d += xf(exports.SH.star.d, x, y, (i * 45 + rot) * exports.D2R, r) + ' ';
+    return d.trim();
+}
+function needles(x, y, len, ang, n = 5, spread = 0.9) {
+    let d = '';
+    for (let i = 0; i < n; i++) {
+        const a = ang + (i / (n - 1) - 0.5) * spread;
+        d += `M${(0, exports.f)(x)} ${(0, exports.f)(y)}L${(0, exports.f)(x + Math.cos(a) * len)} ${(0, exports.f)(y + Math.sin(a) * len)}`;
+    }
+    return d;
+}
+const disc = (x, y, r) => `M${(0, exports.f)(x - r)} ${(0, exports.f)(y)}A${(0, exports.f)(r)} ${(0, exports.f)(r)} 0 1 0 ${(0, exports.f)(x + r)} ${(0, exports.f)(y)}A${(0, exports.f)(r)} ${(0, exports.f)(r)} 0 1 0 ${(0, exports.f)(x - r)} ${(0, exports.f)(y)}Z`;
+exports.disc = disc;
+const oval = (x, y, rx, ry) => `M${(0, exports.f)(x - rx)} ${(0, exports.f)(y)}A${(0, exports.f)(rx)} ${(0, exports.f)(ry)} 0 1 0 ${(0, exports.f)(x + rx)} ${(0, exports.f)(y)}A${(0, exports.f)(rx)} ${(0, exports.f)(ry)} 0 1 0 ${(0, exports.f)(x - rx)} ${(0, exports.f)(y)}Z`;
+exports.oval = oval;
+function leafSet() {
+    const w = [];
+    const l = [];
+    const set = {
+        add(lf) {
+            w.push(lf.wash);
+            l.push(lf.line);
+            return set;
+        },
+        wash: () => w.join(' '),
+        line: () => l.join(' '),
+        n: () => w.length,
+    };
+    return set;
+}
+function leavesNode(S, id, set, p = S.fol, extra = []) {
+    return (0, exports.G)(id, [...extra, (0, exports.P)(set.wash(), S.washOf(p), { opacity: S.washOp }), inside((0, exports.L)(set.line(), S.lineOf(p), S.main))]);
+}
+function cutaway(S, x0, x1, y0 = 171, y1 = 190, seed = 5) {
+    if (S.icon)
+        return null;
+    const r = rng(seed);
+    let d = '';
+    const n = S.small ? 12 : 30;
+    for (let i = 0; i < n; i++) {
+        const x = x0 + 6 + r() * (x1 - x0 - 12);
+        const y = y0 + 4 + r() * (y1 - y0 - 6);
+        d += `M${(0, exports.f)(x)} ${(0, exports.f)(y)}h0.6`;
+    }
+    const floor = Array.from({ length: Math.floor((x1 - x0) / 4) }, (_, i) => `M${(0, exports.f)(x0 + i * 4)} ${(0, exports.f)(y1)}h2`).join('');
+    return (0, exports.G)('cutaway', [(0, exports.L)(d, S.soil, S.hair * 2, { opacity: 0.6 }), (0, exports.L)(floor, S.soil, S.hair, { opacity: 0.45 })]);
+}
+function glow(S, cx, cy, r0) {
+    if (S.icon)
+        return null;
+    const r = Math.max(20, Math.min(r0, cy - 2, cx - 2, 198 - cx));
+    const [a, b, c] = S.glowOps;
+    return (0, exports.G)('glow', [
+        (0, exports.C)(cx, cy, r, S.glow, { opacity: a }),
+        (0, exports.C)(cx, cy, r * 0.74, S.glow, { opacity: b }),
+        (0, exports.C)(cx, cy, r * 0.48, S.glow, { opacity: c }),
+        S.full ? { t: 'circle', cx: (0, exports.f)(cx), cy: (0, exports.f)(cy), r: (0, exports.f)(r * 0.86), fill: 'none', stroke: S.glowRing, sw: S.hair, opacity: 0.3 } : null,
+    ]);
+}
+function stones(S, id, pts) {
+    let d = '';
+    let h = '';
+    for (const [x, y, r] of pts) {
+        d += `M${(0, exports.f)(x - r)} ${(0, exports.f)(y)}Q${(0, exports.f)(x - r)} ${(0, exports.f)(y - r * 0.9)} ${(0, exports.f)(x)} ${(0, exports.f)(y - r * 0.95)}Q${(0, exports.f)(x + r)} ${(0, exports.f)(y - r * 0.9)} ${(0, exports.f)(x + r)} ${(0, exports.f)(y)}Z`;
+        if (S.full)
+            h += hatchE(x, y - r * 0.4, r * 0.8, r * 0.5, y - r * 0.45, y, 1.4, 0, true);
+    }
+    return (0, exports.G)(id, [(0, exports.P)(d, S.stoneFill), h ? inside((0, exports.L)(h, S.stone, S.hair, { opacity: 0.6 })) : null, inside((0, exports.L)(d, S.stone, S.fine * 1.6))]);
+}
+function boulder(S, d, cx, cy, rx, ry) {
+    return (0, exports.G)('stone', [(0, exports.P)(d, S.stoneFill), S.icon ? null : inside((0, exports.L)(hatchE(cx, cy, rx * 0.85, ry * 0.8, cy, cy + ry, 1.8, 8), S.stone, S.hair, { opacity: 0.6 })), inside((0, exports.L)(d, S.stone, S.main))]);
+}
+const M = (x, y, rx, ry, dom, o = {}) => ({ x, y, rx, ry, dom, ...o });
+exports.M = M;
+function scaleMasses(S, ms) {
+    for (const m of ms) {
+        if (m.scaled)
+            continue;
+        const k = S.sc(m.dom);
+        m.rx *= k;
+        m.ry *= k;
+        m.scaled = true;
+    }
+    return ms;
+}
+function crown(S, masses, o = {}) {
+    var _a;
+    const pal = (_a = o.pal) !== null && _a !== void 0 ? _a : S.pal;
+    const r = rng(o.seed || 11);
+    if (o.ids !== false)
+        scaleMasses(S, masses);
+    const byDom = new Map();
+    for (const m of masses) {
+        if (!byDom.has(m.dom))
+            byDom.set(m.dom, []);
+        byDom.get(m.dom).push(m);
+    }
+    const lw = S.icon ? S.main : S.fine * 1.45;
+    const organs = [];
+    const groups = [...byDom.entries()].map(([dom, ms]) => {
+        let fill = '';
+        let hatch = '';
+        const set = leafSet();
+        let marks = '';
+        let needleD = '';
+        ms.forEach((m, k) => {
+            var _a, _b, _c, _d, _e, _f;
+            const d = massD(m.x, m.y, m.rx, m.ry, m.n || Math.max(7, Math.round(m.rx / 3.4)), (o.seed || 11) + dom * 13 + k * 7, (_a = m.bulge) !== null && _a !== void 0 ? _a : 0.2, (_b = m.flat) !== null && _b !== void 0 ? _b : 9);
+            fill += d;
+            if (!S.icon) {
+                const fy = m.flat !== undefined && m.flat < 1 ? m.y + m.ry * m.flat : m.y + m.ry;
+                hatch += hatchE(m.x, m.y + m.ry * 0.05, m.rx * 0.82, m.ry * 0.8, m.y + m.ry * ((_c = m.hatchFrom) !== null && _c !== void 0 ? _c : 0.05), Math.min(fy, m.y + m.ry), S.small ? 3.4 : m.dense || o.dense ? 1.8 : 2.2, (_d = o.hatchAng) !== null && _d !== void 0 ? _d : -14);
+                const per = ((_e = o.rim) !== null && _e !== void 0 ? _e : 1.2) * (S.small ? 0.5 : 1);
+                const n = Math.max((_f = o.rimMin) !== null && _f !== void 0 ? _f : 2, Math.round((m.rx / 10) * per * 2));
+                for (let j = 0; j < n; j++) {
+                    const a = (-170 + (j + 0.5) * (160 / n) + (r() - 0.5) * 12) * exports.D2R;
+                    const x = m.x + Math.cos(a) * m.rx * 0.95;
+                    const y = m.y + Math.sin(a) * m.ry * 0.95;
+                    if (m.flat !== undefined && y > m.y + m.ry * m.flat)
+                        continue;
+                    if (o.needle) {
+                        needleD += needles(x, y + 1.5, S.small ? 7 : 6, a + (r() - 0.5) * 0.3, 3, 1.1);
+                        continue;
+                    }
+                    if (o.blossom)
+                        marks += blossom(x, y, (o.ll || 9) * 0.32 * (S.small ? 1.25 : 1), r() * 70) + ' ';
+                    else
+                        set.add(leaf(o.kind || 'lens', x, y, (o.ll || 10) * (S.small ? 1.25 : 1), a + (r() - 0.5) * 0.6, S));
+                }
+            }
+            organs.push({ dom, x: m.x, y: m.y });
+        });
+        const dense = ms.some((m) => m.dense) || o.dense;
+        return (0, exports.G)(o.ids === false ? null : `domain-${dom}`, [
+            (0, exports.P)(fill, S.massFill(pal, dense)),
+            hatch ? inside((0, exports.L)(hatch, S.lineOf(pal), S.hair, { opacity: 0.5 })) : null,
+            set.n() ? (0, exports.P)(set.wash(), S.washOf(pal), { opacity: S.washOp }) : null,
+            marks ? (0, exports.P)(marks, S.washOf(pal), { opacity: 0.85 }) : null,
+            inside((0, exports.L)(fill + ' ' + set.line() + (marks ? ' ' + marks : ''), S.lineOf(pal), lw)),
+            needleD ? (0, exports.L)(needleD, S.lineOf(pal), S.fine * 1.2) : null,
+        ]);
+    });
+    return { node: (0, exports.G)('canopy', groups), organs };
+}
+function limbs(S, list, bark, id = 'branches') {
+    const fills = [];
+    for (const [p0, pc, p1, w0, w1] of list)
+        fills.push(taper(p0, pc, p1, w0 * (S.icon ? 1.15 : 1), w1, 10).closed);
+    return (0, exports.G)(id, [(0, exports.P)(fills.join(' '), S.woodFill(bark)), inside((0, exports.L)(fills.join(' '), S.wood(bark), S.icon ? S.main * 0.9 : S.fine * 1.5))]);
+}
+function trunk(S, p0, pc, p1, w0, w1, bark, o = {}) {
+    const t = taper(p0, pc, p1, w0, w1, 16);
+    const fur = S.full && o.furrows !== 0 && w0 > 8 ? furrows(t.left, t.right, o.furrows || 4, o.seed || 3) : '';
+    const extra = o.extra && !S.icon ? o.extra(t) : '';
+    return (0, exports.G)('trunk', [(0, exports.P)(t.closed, S.woodFill(bark)), fur || extra ? inside((0, exports.L)(fur + extra, S.wood(bark), S.hair * 1.4, { opacity: 0.75 })) : null, inside((0, exports.L)(t.sides, S.wood(bark), S.main))]);
+}
+const rootLines = (S, d, bark) => (S.icon ? null : (0, exports.G)('roots', [(0, exports.L)(d, S.wood(bark), S.main * 1.1)]));
+exports.rootLines = rootLines;
+const rootTapers = (S, list, bark) => limbs(S, list, bark, 'roots');
+exports.rootTapers = rootTapers;
+function lowerRim(masses, n, seed, from = 0.15, to = 0.85) {
+    const r = rng(seed);
     const out = [];
     for (let i = 0; i < n; i++) {
-        const side = i % 2 ? 1 : -1;
-        const k = Math.floor(i / 2);
-        const x0 = 100 + side * (wb * 0.32 + k * 2);
-        const x1 = 100 + side * (wb * 0.7 + 9 + k * 7);
-        out.push(inkLimb([x0, ctx.base - 3], [x0 + side * 4, ctx.base], [x1, ctx.base + 1.2 + k * 0.8], 3.2 - k * 0.8, 0.4, ctx.wood(bark)));
+        const m = masses[i % masses.length];
+        const a = (0, exports.lerp)(from, to, (Math.floor(i / masses.length) + r()) / Math.max(1, Math.ceil(n / masses.length))) * 180 * exports.D2R;
+        out.push([m.x + Math.cos(a) * m.rx * 0.7, m.y + Math.sin(a) * m.ry * (m.flat !== undefined && m.flat < 1 ? Math.min(0.9, m.flat) : 0.86)]);
     }
-    return G('roots', out);
+    return out;
 }
-function young(ctx) {
-    var _a, _b;
-    const { key, sp, st, lod, TL, pal, fol, W, fine, base, A, kit } = ctx;
-    if (key === 'bamboo')
-        return youngBamboo(ctx);
+function upperRim(masses, n, seed) {
+    const r = rng(seed);
+    const out = [];
+    for (let i = 0; i < n; i++) {
+        const m = masses[i % masses.length];
+        const a = (-160 + r() * 140) * exports.D2R;
+        out.push([m.x + Math.cos(a) * m.rx * 0.72, m.y + Math.sin(a) * m.ry * 0.72]);
+    }
+    return out;
+}
+function acorns(S, pts) {
+    if (S.icon || !pts.length)
+        return null;
+    let nut = '';
+    let cup = '';
+    for (const [x, y] of pts) {
+        nut += (0, exports.oval)(x, y + 3, 2.3, 3.1);
+        cup += `M${(0, exports.f)(x - 2.9)} ${(0, exports.f)(y + 1.4)}Q${(0, exports.f)(x)} ${(0, exports.f)(y - 2.6)} ${(0, exports.f)(x + 2.9)} ${(0, exports.f)(y + 1.4)}Z`;
+    }
+    const c = exports.A0.gift.acorn;
+    return (0, exports.G)('fruit', [(0, exports.P)(nut, S.giftFill(c)), (0, exports.P)(cup, S.woodFill(exports.A0.bark.oak)), (0, exports.L)(nut + cup, S.gift(c), S.hair * 1.8)]);
+}
+const WING = 'M0 0C1.5 1 4.5 1.8 7 1.2C6 3.4 2.6 3.8 0.6 2.4Z';
+function samaras(S, pts) {
+    if (S.icon || !pts.length)
+        return null;
+    let d = '';
+    let st = '';
+    for (const [x, y] of pts) {
+        st += `M${(0, exports.f)(x)} ${(0, exports.f)(y - 4)}L${(0, exports.f)(x)} ${(0, exports.f)(y)}`;
+        d += xf(WING, x, y, 0.5, 1) + ' ' + xf(WING, x, y, Math.PI - 0.5, 1, -1) + ' ';
+    }
+    const c = exports.A0.gift.samara;
+    return (0, exports.G)('fruit', [(0, exports.P)(d, S.giftFill(c)), (0, exports.L)(st + d, S.gift(c), S.hair * 1.6)]);
+}
+function goldSprays(S, pts, s = 1) {
+    if (!pts.length)
+        return null;
+    let stem = '';
+    let fl = '';
+    const r = rng(77);
+    for (const [x, y] of pts) {
+        if (S.icon) {
+            fl += (0, exports.disc)(x, y, 2.4 * s);
+            continue;
+        }
+        const dir = r() > 0.5 ? 1 : -1;
+        const len = 7 * s;
+        const tip = [x + dir * len, y - len * 0.35];
+        const c = [x + dir * len * 0.4, y - len * 0.75];
+        stem += (0, exports.Q)([x, y], c, tip);
+        const n = S.small ? 3 : 5;
+        for (let i = 0; i < n; i++) {
+            const t = 0.2 + (i / (n - 1)) * 0.8;
+            const p = (0, exports.qp)([x, y], c, tip, t);
+            fl += (0, exports.disc)(p[0] + (i % 2 ? 1.1 : -1.1), p[1] + (i % 2 ? 0.8 : -0.8), (1.5 - t * 0.6) * s);
+        }
+    }
+    return (0, exports.G)('blooms', [(0, exports.P)(fl, S.goldWash, { opacity: 0.85 }), (0, exports.L)(stem + fl, S.gold, S.hair * 1.4)]);
+}
+function blossoms(S, pts, r0, pal, id = 'blooms') {
+    if (S.icon || !pts.length)
+        return null;
+    const rr = rng(31);
+    let d = '';
+    for (const [x, y] of pts)
+        d += blossom(x, y, r0 * (S.small ? 1.2 : 1), rr() * 70) + ' ';
+    return (0, exports.G)(id, [(0, exports.P)(d, S.washOf(pal), { opacity: 0.9 }), (0, exports.L)(d, S.lineOf(pal), S.hair * 1.6)]);
+}
+function hanging(S, pts, o) {
+    if (S.icon || !pts.length)
+        return null;
+    let st = '';
+    let fr = '';
+    let blush = '';
+    for (const [x, y] of pts) {
+        const len = o.stalk || 6;
+        st += `M${(0, exports.f)(x)} ${(0, exports.f)(y)}Q${(0, exports.f)(x + 1)} ${(0, exports.f)(y + len * 0.5)} ${(0, exports.f)(x)} ${(0, exports.f)(y + len)}`;
+        const cy = y + len + o.ry;
+        fr += o.shape ? o.shape(x, cy) : (0, exports.oval)(x, cy, o.rx, o.ry);
+        if (o.blush)
+            blush += (0, exports.oval)(x + o.rx * 0.3, cy - o.ry * 0.3, o.rx * 0.45, o.ry * 0.4);
+    }
+    return (0, exports.G)(o.id || 'fruit', [(0, exports.P)(fr, S.giftFill(o.color)), blush && o.blush ? (0, exports.P)(blush, o.blush, { opacity: 0.35 }) : null, (0, exports.L)(st, S.wood(exports.A0.bark.mango), S.hair * 1.4), (0, exports.L)(fr, S.gift(o.color), S.hair * 1.8)]);
+}
+function drift(S, items, pal, kind = 'lens') {
+    if (!S.full)
+        return [];
+    const set = leafSet();
+    let marks = '';
+    for (const [x, y, len, a] of items) {
+        if (kind === 'blossom')
+            marks += blossom(x, y, len * 0.3, a) + ' ';
+        else
+            set.add(leaf(kind, x, y, len, a * exports.D2R, S));
+    }
+    return [(0, exports.P)(set.wash() + marks, S.washOf(pal), { opacity: S.washOp }), (0, exports.L)(set.line() + marks, S.lineOf(pal), S.fine * 1.3)];
+}
+function seedPart(S, d, color, extraLine = '') {
+    return (0, exports.G)('seed', [(0, exports.P)(d, S.woodFill(color)), extraLine && !S.icon ? (0, exports.L)(extraLine, S.wood(color), S.hair * 1.6, { opacity: 0.8 }) : null, inside((0, exports.L)(d, S.wood(color), S.main))]);
+}
+  };
+  links["src/components/plant/forms/trees.ts"] = {"./kit":"src/components/plant/forms/kit.ts"};
+  defs["src/components/plant/forms/trees.ts"] = function (module, exports, require) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.habitBase = exports.TREE_LINES = exports.flavoursFor = exports.RECIPES = exports.bands = exports.HABIT = exports.green = void 0;
+exports.tree = tree;
+exports.young1 = young1;
+exports.pinnate = pinnate;
+const kit_1 = require("./kit");
+const green = (p) => p === 'ember' || p === 'gold' || p === 'golden' || p === 'lemon' ? 'spring' : p === 'blossom' || p === 'snow' || p === 'twilight' || p === 'rosewood' || p === 'pearl' ? 'grove' : p;
+exports.green = green;
+function tree(c, sp) {
+    const { S } = c;
     const body = [];
-    const barkC = (_a = sp.bark) !== null && _a !== void 0 ? _a : tokens_1.plantArt.soil;
-    const seedC = (_b = sp.seed) !== null && _b !== void 0 ? _b : kit.mix(barkC, tokens_1.plantArt.seedLight, 0.35);
-    const leafPal = sp.fol ? fol : sp.kind === 'cloud' && sp.pal === 'blossom' ? tokens_1.plantLeaf.grove : pal === tokens_1.plantLeaf.ember || pal === tokens_1.plantLeaf.gold ? tokens_1.plantLeaf.spring : pal;
-    const sw = st === 1 ? 15 : 12;
-    const sh = st === 1 ? 19 : 15;
-    const sx = st === 1 ? 100 : 91;
-    const sy = base - sh * 0.32;
-    const rot = (st === 1 ? 0 : -24) * D2R;
-    const almond = xf(`M0 ${-sh / 2}C${sw * 0.42} ${-sh / 2} ${sw / 2} ${sh * 0.05} ${sw / 2} ${sh * 0.18}C${sw / 2} ${sh * 0.42} ${sw * 0.25} ${sh / 2} 0 ${sh / 2}C${-sw * 0.25} ${sh / 2} ${-sw / 2} ${sh * 0.42} ${-sw / 2} ${sh * 0.18}C${-sw / 2} ${sh * 0.05} ${-sw * 0.42} ${-sh / 2} 0 ${-sh / 2}Z`, sx, sy, rot, 1);
-    const seedKids = [P(almond, seedC, { opacity: TL.washWoodOp * 2.2 }), L(almond, ctx.wood(seedC), W.main)];
-    if (fine)
-        seedKids.push(L(xf(`M0 ${-sh * 0.36}Q${sw * 0.12} 0 0 ${sh * 0.36}`, sx, sy, rot, 1), ctx.wood(seedC), W.fine, { opacity: 0.7 }));
-    if (sp.stripe && lod !== 'icon')
-        seedKids.push(L(xf(`M${-sw * 0.22} ${-sh * 0.3}L${-sw * 0.26} ${sh * 0.3}M${sw * 0.22} ${-sh * 0.3}L${sw * 0.26} ${sh * 0.3}`, sx, sy, rot, 1), ctx.wood(seedC), W.fine || W.main * 0.6, { opacity: 0.6 }));
-    if (key === 'cactus' && st === 2)
-        return youngCactus(ctx);
-    if (st === 1) {
-        const top = [sx, sy - sh / 2 + 1];
-        const tip = [sx + 4, top[1] - 9];
-        const lf = leaf('lens', tip[0], tip[1], 8, -40 * D2R, fine);
-        body.push(G('trunk', seedKids));
-        body.push(G('sprout', [L(Q(top, [sx - 1, top[1] - 6], tip), ctx.lineOf(leafPal), W.main), P(lf.wash, leafPal[TL.washLeaf], { opacity: TL.washLeafOp }), L(lf.line, ctx.lineOf(leafPal), W.main)]));
-        A.crown = { x: 100, y: sy - sh / 2 - 1 };
-        A.canopyBox = { cx: 100, cy: sy, rx: sw * 0.7, ry: sh * 0.6 };
-        A.neck = { x: 100, y: sy - sh * 0.28, w: sw * 0.82 };
-    }
-    else {
-        const topY = 118;
-        const p0 = [100, base];
-        const pc = [99, base - 26];
-        const p1 = [101, topY];
-        const cot = [leaf('lens', 101, topY + 3, 22, -150 * D2R, fine), leaf('lens', 101, topY + 1, 24, -30 * D2R, fine)];
-        const trueKind = sp.kind === 'cloud' && sp.leaf !== 'blossom' && sp.leaf !== 'needle' ? sp.leaf : sp.kind === 'palm' ? 'long' : sp.kind === 'pine' || sp.kind === 'bonsai' ? 'olive' : 'lens';
-        const tl = leaf(trueKind, 101, topY - 1, trueKind === 'oak' || trueKind === 'maple' ? 15 : 13, -95 * D2R, fine);
-        body.push(G('trunk', seedKids));
-        body.push(G('stem', [L(`M${p0[0]} ${f(p0[1])}Q${pc[0]} ${f(pc[1])} ${p1[0]} ${p1[1]}`, ctx.lineOf(leafPal), W.main)]));
-        body.push(leafGroup(ctx, 'leaves', [...cot, tl], leafPal));
-        A.crown = { x: 100, y: topY - 14 };
-        A.canopyBox = { cx: 100, cy: (topY + base) / 2, rx: 26, ry: (base - topY) / 2 + 8 };
-        A.neck = { x: 100, y: base - 12, w: 6 };
-    }
-    A.perch = { x: 100 - 22, y: base + 1 };
-    A.branchL = { x: 80, y: base - 10 };
-    A.branchR = { x: 120, y: base - 10 };
-    A.drift = A.crown;
-    return { body };
-}
-function youngBamboo(ctx) {
-    const { st, base, W, TL, A } = ctx;
-    const [w, h] = st === 1 ? [16, 20] : [18, 36];
-    const sheath = tokens_1.plantArt.bamboo.sheathMid;
-    const shoot = `M${100 - w / 2} ${f(base + 1)}Q${f(100 - w * 0.45)} ${f(base - h * 0.55)} 100 ${f(base - h)}Q${f(100 + w * 0.45)} ${f(base - h * 0.55)} ${100 + w / 2} ${f(base + 1)}`;
-    const kids = [P(shoot + 'Z', sheath, { opacity: TL.washWoodOp * 2 }), L(shoot, ctx.wood(sheath), W.main)];
-    kids.push(L(`M${f(100 - w * 0.3)} ${f(base - 2)}Q${f(100 - w * 0.1)} ${f(base - h * 0.45)} 100 ${f(base - h * 0.78)}M${f(100 + w * 0.32)} ${f(base - 3)}Q${f(100 + w * 0.12)} ${f(base - h * 0.4)} 101 ${f(base - h * 0.6)}`, ctx.wood(sheath), W.fine || W.main * 0.7, { opacity: 0.7 }));
-    const body = [G(st === 1 ? 'sprout' : 'trunk', kids)];
-    if (st === 2)
-        body.push(leafGroup(ctx, 'leaves', [leaf('olive', 100, base - h + 1, 15, -55 * D2R, ctx.fine), leaf('olive', 100, base - h + 3, 13, -130 * D2R, ctx.fine)], tokens_1.plantLeaf.grove));
-    A.crown = { x: 100, y: base - h - 3 };
-    A.canopyBox = { cx: 100, cy: base - h * 0.5, rx: w * 0.8, ry: h * 0.6 };
-    A.perch = { x: 100 - w * 0.95, y: base + 1 };
-    A.neck = { x: 100, y: base - h * 0.55, w: w * 0.62 };
-    A.drift = A.crown;
-    return { body };
-}
-function youngCactus(ctx) {
-    const { base, W, TL, fol, A, fine } = ctx;
-    const r = 12;
-    const cy = base - r + 2;
-    const ring = `M${100 - r} ${f(cy)}A${r} ${r} 0 1 1 ${100 + r} ${f(cy)}A${r} ${r} 0 1 1 ${100 - r} ${f(cy)}Z`;
-    const kids = [P(ring, fol[TL.washLeaf], { opacity: TL.washLeafOp }), L(ring, ctx.lineOf(fol), W.main)];
-    if (fine)
-        kids.push(L(`M100 ${f(cy - r)}Q96 ${f(cy)} 100 ${f(cy + r)}M100 ${f(cy - r)}Q105 ${f(cy)} 100 ${f(cy + r)}`, ctx.lineOf(fol), W.fine, { opacity: 0.7 }));
-    let spines = '';
-    for (let i = 0; i < 7; i++) {
-        const a = (-160 + i * 23) * D2R;
-        spines += `M${f(100 + Math.cos(a) * r)} ${f(cy + Math.sin(a) * r)}l${f(Math.cos(a) * 3)} ${f(Math.sin(a) * 3)}`;
-    }
-    kids.push(L(spines, ctx.lineOf(fol), W.main * 0.7, { opacity: 0.8 }));
-    A.crown = { x: 100, y: cy - r - 3 };
-    A.canopyBox = { cx: 100, cy, rx: r * 1.4, ry: r * 1.2 };
-    A.perch = { x: 100 - r * 1.3, y: base + 1 };
-    A.neck = { x: 100, y: cy - r * 0.55, w: r * 1.5 };
-    A.drift = A.crown;
-    return { body: [G('trunk', kids)] };
-}
-function cloudTree(ctx) {
-    var _a, _b;
-    const { sp, st, lod, TL, pal, W, fine, seed, sc, base, A, kit } = ctx;
-    const g = GEO[st];
-    const cr = sp.crown;
-    const bark = sp.bark;
-    const woodC = ctx.wood(bark);
-    const r = kit.rng(seed);
-    const cx = 100;
-    const cy = g.cy + ((_a = cr.dy) !== null && _a !== void 0 ? _a : 0) * (st / 5);
-    const rx = g.rx * cr.sx * (st >= 5 ? 1 : 0.95);
-    const ry = g.ry * cr.sy;
-    const isBlossom = sp.leaf === 'blossom';
-    const leafKind = sp.leaf === 'blossom' || sp.leaf === 'needle' ? 'lens' : sp.leaf;
-    const flare = (_b = sp.flare) !== null && _b !== void 0 ? _b : 0.35;
-    const top = st === 3 ? g.top : Math.min(g.top, cy + ry * 0.35);
-    const tk = trunk(ctx, [100, base + 1], [100, (base + top) / 2], [100, top], g.wb * (1 + flare * 0.25), g.wt, bark);
-    const branches = [];
-    const domains = [];
-    const leafLen = { icon: st === 3 ? 22 : 0, small: 17, full: 12.5 }[lod] * (leafKind === 'maple' || leafKind === 'oak' ? 1.08 : leafKind === 'long' ? 1.35 : 1) * (st === 3 ? 0.9 : 1);
-    const blossomR = { icon: 0, small: 3.8, full: 3.1 }[lod];
-    const makeLeaf = (x, y, ang, s = 1) => {
-        if (!isBlossom)
-            return leaf(leafKind, x, y, leafLen * s, ang, fine);
-        const d = blossom(x, y, blossomR * s, r() * 70);
-        return { wash: d, line: d };
+    if (sp.rootD)
+        body.push((0, kit_1.rootLines)(S, sp.rootD, sp.bark));
+    if (sp.roots)
+        body.push((0, kit_1.rootTapers)(S, sp.roots, sp.bark));
+    if (sp.limbs)
+        body.push((0, kit_1.limbs)(S, sp.limbs, sp.bark));
+    const [p0, pc, p1, w0, w1, to] = sp.trunk;
+    body.push((0, kit_1.trunk)(S, p0, pc, p1, w0, w1, sp.bark, to || {}));
+    if (sp.afterTrunk)
+        body.push(...sp.afterTrunk);
+    if (sp.ids !== false)
+        (0, kit_1.scaleMasses)(S, sp.masses);
+    let masses = sp.masses;
+    if (sp.pads)
+        masses = masses.map((m) => { var _a; return ({ ...m, ry: Math.max(6.5, m.ry * 0.55), flat: Math.min((_a = m.flat) !== null && _a !== void 0 ? _a : 9, 0.62), n: m.n || Math.max(8, Math.round(m.rx / 3)) }); });
+    const cr = (0, kit_1.crown)(S, masses, { kind: sp.kind, ll: sp.ll, pal: sp.pal, rim: sp.rim, blossom: sp.blossom, needle: sp.needle, seed: sp.seed, dense: sp.dense, ids: sp.ids });
+    body.push(cr.node);
+    if (sp.extras)
+        body.push(...sp.extras(cr));
+    const left = masses.reduce((a, m) => (m.x < a.x ? m : a));
+    return {
+        body,
+        back: sp.back || [],
+        front: sp.front || [],
+        drift: sp.drift || [],
+        glow: sp.glow || null,
+        perch: sp.perch || [left.x + left.rx * 0.2, left.y - left.ry * 0.85],
+        organs: cr.organs,
     };
-    if (st === 3) {
-        branches.push(L(Q([100, top + 2], [98, top - 24], [101, top - 50]), woodC, W.main));
-        const twigs = [
-            [[100, top - 6], [86, top - 14], [74, top - 22], -1],
-            [[100, top - 18], [114, top - 26], [126, top - 34], 1],
-            [[100, top - 32], [88, top - 40], [80, top - 50], -1],
-        ];
-        const list = [];
-        for (const [p0, pc, p1, side] of twigs) {
-            branches.push(L(Q(p0, pc, p1), woodC, W.main * 0.9));
-            const n = lod === 'full' ? 3 : 2;
-            for (let i = 1; i <= n; i++) {
-                const t = i / (n + 0.2);
-                const [x, y] = qpt(p0, pc, p1, t);
-                list.push(makeLeaf(x, y, qtan(p0, pc, p1, t) + (i % 2 ? -1 : 1) * 0.9 * side, 0.9));
-            }
-            list.push(makeLeaf(p1[0], p1[1], qtan(p0, pc, p1, 1), 1));
-        }
-        list.push(makeLeaf(101, top - 50, -90 * D2R, 1.05));
-        list.push(makeLeaf(99, top - 42, -140 * D2R, 0.85), makeLeaf(100, top - 44, -40 * D2R, 0.85));
-        domains.push(leafGroup(ctx, null, list));
-        A.canopyBox = { cx, cy: top - 28, rx: 30, ry: 30 };
-    }
-    else {
-        const lobes = [0, 1, 2, 3, 4].map((i) => {
-            const th = (cr.a0 + i * cr.step) * D2R;
-            const s = sc[i];
-            return { i, s, x: cx + rx * cr.spread * Math.cos(th), y: cy + ry * cr.spread * 0.95 * Math.sin(th), R: Math.min(rx, ry * 1.25) * (0.44 + 0.04 * (st - 4)) * s, th };
-        });
-        const limbW = { 4: 4.2, 5: 6, 6: 7.5 }[st];
-        const trunkLen = base - top;
-        const leaveAt = [0.3, 0.12, 0, 0.12, 0.3].map((u) => top + trunkLen * u * (st === 4 ? 0.8 : 1));
-        const massTone = ctx.dark && (pal === tokens_1.plantLeaf.snow || pal === tokens_1.plantLeaf.pearl) ? pal.deep : pal[TL.washMass];
-        for (const k of [0, 4, 1, 3, 2]) {
-            const Lb = lobes[k];
-            const y0 = leaveAt[k];
-            const half = lerp(g.wt, g.wb, (y0 - top) / trunkLen) / 2;
-            const side = Math.sign(Math.cos(Lb.th)) || 0;
-            const start = [100 + side * half * 0.55, y0 + 2];
-            const end = [Lb.x - Math.cos(Lb.th) * Lb.R * 0.25, Lb.y + Lb.R * 0.15];
-            const ctrl = k === 2 ? [100, lerp(start[1], end[1], 0.5)] : [lerp(start[0], end[0], 0.55), lerp(start[1], end[1], 0.2) - 2];
-            const w0 = limbW * (k === 2 ? 1.05 : k === 0 || k === 4 ? 0.8 : 0.72);
-            branches.push(inkLimb(start, ctrl, end, w0, 1.2, woodC));
-            const nT = lod === 'full' ? 3 : 2;
-            let twigs = '';
-            const tips = [];
-            for (let j = 0; j < nT; j++) {
-                const a = Lb.th + (j - (nT - 1) / 2) * 0.9 + (r() - 0.5) * 0.3;
-                const tip = [Lb.x + Math.cos(a) * Lb.R * 0.72, Lb.y + Math.sin(a) * Lb.R * 0.62];
-                twigs += Q(end, [lerp(end[0], tip[0], 0.5) + (r() - 0.5) * 4, lerp(end[1], tip[1], 0.5) - 3], tip);
-                tips.push({ tip, a });
-            }
-            if (lod !== 'icon')
-                branches.push(L(twigs, woodC, W.main * 0.85));
-            const nLeaf = Math.round((lod === 'full' ? 7 : lod === 'small' ? 5 : 0) * (0.75 + 0.3 * Lb.s) * (isBlossom ? 1.15 : 1));
-            const list = [];
-            for (let j = 0; j < nLeaf; j++) {
-                const a = Lb.th + ((j + 0.5) / nLeaf - 0.5) * Math.PI * 1.7 + (r() - 0.5) * 0.35;
-                const d = (j % 3 === 2 ? 0.35 : 0.68) + r() * 0.18;
-                const x = Lb.x + Math.cos(a) * Lb.R * d;
-                const y = Lb.y + Math.sin(a) * Lb.R * d * 0.82;
-                const down = Math.sin(a) > 0.55;
-                list.push(makeLeaf(x, y, a + (r() - 0.5) * 0.5 + (down ? 0.35 * Math.sign(Math.cos(a) || 1) : 0), 0.85 + r() * 0.3));
-            }
-            for (const t of tips)
-                list.push(makeLeaf(t.tip[0], t.tip[1], t.a + (r() - 0.5) * 0.3, 1.05));
-            const mass = kit.scallop({ cx: Lb.x, cy: Lb.y, rx: Lb.R * 1.02, ry: Lb.R * 0.86, n: 7, seed: seed + k * 7, jit: 0.45, bulge: 0.5, flat: 0.2 });
-            const massNode = P(mass, massTone, { opacity: lod === 'icon' ? 0.85 : TL.washMassOp + (isBlossom ? 0.08 : 0) + (lod === 'small' ? 0.1 : 0) });
-            domains[k] = leafGroup(ctx, `domain-${k + 1}`, list, pal, [massNode, lod === 'icon' ? L(mass, ctx.lineOf(pal), W.main) : null]);
-            A.organs[k] = { x: Lb.x + (Lb.x - cx) * 0.3, y: Lb.y + (Lb.y - cy) * 0.3 };
-        }
-        A.canopyBox = { cx, cy, rx: rx * 0.98, ry: ry * 0.95 };
-        A.lobes = lobes;
-    }
-    const behind = st >= 5 ? [roots(ctx, st === 6 ? 4 : 2, g.wb, bark)] : [];
-    const order = st === 3 ? domains : [0, 4, 1, 3, 2].map((k) => domains[k]);
-    const body = [G('trunk', tk), G('branches', branches), G('canopy', order), G('leaves', [])];
-    if (st === 6 || (st === 5 && sp.fruitFrom === 5))
-        body.push(flourishCloud(ctx, r));
-    const box = A.canopyBox;
-    A.crown = { x: box.cx + 4, y: box.cy - box.ry * 0.97 };
-    A.perch = st === 3 ? { x: 86, y: top - 14 } : { x: box.cx - box.rx * 0.5, y: box.cy - box.ry * 0.62 };
-    A.branchL = { x: box.cx - box.rx * 0.58, y: box.cy + box.ry * 0.62 };
-    A.branchR = { x: box.cx + box.rx * 0.6, y: box.cy + box.ry * 0.62 };
-    A.neck = { x: 100, y: top + 6, w: g.wt * 1.4 };
-    A.drift = { x: box.cx + box.rx * 0.7, y: box.cy + box.ry * 0.4 };
-    return { body, behind };
 }
-function flourishCloud(ctx, r) {
-    const { sp, st, lod, W, A } = ctx;
-    if (lod === 'icon' || !A.lobes)
-        return G('blooms', []);
-    const kids = [];
-    const pts = [];
-    for (const Lb of A.lobes) {
-        const n = lod === 'full' ? 2 : 1;
-        for (let j = 0; j < n; j++) {
-            const a = Lb.th + (r() - 0.5) * 2.2;
-            pts.push([Lb.x + Math.cos(a) * Lb.R * 0.5, Lb.y + Math.sin(a) * Lb.R * 0.45]);
-        }
-    }
-    const washOp = 0.75;
-    if (sp.flourish === 'acorn')
-        for (const [x, y] of pts) {
-            const nut = `M${f(x - 2.4)} ${f(y)}Q${f(x - 2.4)} ${f(y + 5.4)} ${f(x)} ${f(y + 5.8)}Q${f(x + 2.4)} ${f(y + 5.4)} ${f(x + 2.4)} ${f(y)}Z`;
-            const cap = `M${f(x - 3)} ${f(y + 0.6)}Q${f(x)} ${f(y - 3.4)} ${f(x + 3)} ${f(y + 0.6)}Z`;
-            kids.push(P(nut, GIFT.acorn, { opacity: washOp }), L(nut + cap + `M${f(x)} ${f(y - 2.2)}l0.6 -2`, ctx.giftLine(GIFT.acorn), W.main * 0.9));
-        }
-    if (sp.flourish === 'samara')
-        for (const [x, y] of pts) {
-            const d = xf('M0 0C-1 -3 -6 -6 -8 -4C-6 -2 -3 -1 0 0ZM0 0C1 -3 6 -6 8 -4C6 -2 3 -1 0 0Z', x, y, (r() - 0.5) * 0.8, 0.9);
-            kids.push(P(d, GIFT.samara, { opacity: washOp }), L(d, ctx.giftLine(tokens_1.plantLeaf.ember.mid), W.main * 0.85));
-        }
-    if (sp.flourish === 'narra' || sp.flourish === 'blossom') {
-        const narra = sp.flourish === 'narra';
-        const fill = narra ? GIFT.narra : GIFT.cherryBloom;
-        for (const [x, y] of pts.concat(pts.map(([x, y]) => [x + 6, y - 4]))) {
-            const d = blossom(x, y, 2.2, r() * 70);
-            kids.push(P(d, fill, { opacity: 0.9 }), L(d, ctx.giftLine(narra ? GIFT.narraCore : GIFT.cherryCore), W.main * 0.8));
-        }
-    }
-    if (sp.flourish === 'mango') {
-        const ripe = st === 6;
-        const { cx, cy, rx, ry } = A.canopyBox;
-        const xs = ripe ? [-0.62, -0.38, 0.38, 0.62, -0.8, 0.8] : [-0.55, -0.3, 0.3, 0.55];
-        for (const dx of xs) {
-            const x = cx + rx * dx;
-            const y = cy + ry * 0.55 + 6 + r() * 4;
-            const fr = xf('M0.6 -6.2C4.6 -6.4 6.2 -1.2 5.2 3C4.2 7 -0.6 8.6 -3.6 6.2C-6.2 4 -5.4 -6 0.6 -6.2Z', x, y + 6, (r() - 0.5) * 0.4, 1.05);
-            kids.push(L(`M${f(x)} ${f(y - 4)}L${f(x)} ${f(y + 0.5)}`, ctx.wood(BARK.mango), W.main * 0.8), P(fr, ripe ? GIFT.mangoRipe : GIFT.mangoGreen, { opacity: washOp }), L(fr, ctx.giftLine(ripe ? GIFT.mangoBlush : GIFT.mangoGreen), W.main * 0.9));
-        }
-    }
-    return G('blooms', kids);
-}
-function pineTree(ctx) {
-    const { st, lod, TL, pal, W, seed, sc, base, A, kit } = ctx;
-    const g = GEO[st];
-    const bark = BARK.pine;
-    const woodC = ctx.wood(bark);
-    const count = st >= 4 ? 5 : 3;
-    const topY = g.cy - g.ry * 0.95;
-    const bottom = g.cy + g.ry * 0.62;
-    const lean = 1 + st * 0.4;
-    const trunkTop = topY + 4;
-    const tk = trunk(ctx, [100, base + 1], [100 + lean * 0.3, (base + trunkTop) / 2], [100 + lean, trunkTop], g.wb * 0.85, 1.6, bark);
-    const branches = [];
-    const pads = [];
-    for (let i = 0; i < count; i++) {
-        const t = i / (count - 1);
-        const dom = count - 1 - i;
-        const s = st >= 4 ? sc[dom] : 1;
-        const y = lerp(topY + 8, bottom, t);
-        const side = i === 0 ? 0 : i % 2 ? -1 : 1;
-        const w = lerp(g.rx * 0.32, g.rx * 0.92, t) * s * (st === 3 ? 1.15 : 1);
-        pads.push({ x: 100 + lean * (1 - t) + side * w * 0.38, y, w, side, dom });
-    }
-    const groups = [];
-    pads.forEach((p, k) => {
-        const trunkX = 100 + lean * ((base - p.y) / (base - trunkTop));
-        const p0 = [trunkX, p.y + 5];
-        const p1 = [p.x + p.side * p.w * 0.45, p.y - 1];
-        if (p.side !== 0)
-            branches.push(inkLimb(p0, [lerp(p0[0], p1[0], 0.5), p.y + 4], p1, 2.6 + st * 0.3, 0.8, woodC));
-        const ry = Math.max(6, p.w * 0.28);
-        const mass = kit.scallop({ cx: p.x, cy: p.y, rx: p.w * 0.6, ry, n: 9, seed: seed + k * 13, jit: 0.3, bulge: 0.55, flat: 0.55 });
-        let nd = '';
-        const n = lod === 'icon' ? 0 : Math.max(3, Math.round(p.w / (lod === 'full' ? 9 : 13)));
-        for (let j = 0; j < n; j++) {
-            const u = j / (n - 1);
-            const x = p.x - p.w * 0.52 + u * p.w * 1.04;
-            const yy = p.y - ry * 0.35 * Math.sin(Math.PI * u) + 2;
-            nd += needles(x, yy, lod === 'full' ? 8 : 10, -Math.PI / 2 + (u - 0.5) * 1.6, lod === 'full' ? 4 : 3, 1.5);
-        }
-        const kids = [P(mass, pal[TL.washMass], { opacity: lod === 'icon' ? 0.85 : TL.washMassOp + 0.12 })];
-        kids.push(lod === 'icon' ? L(mass, ctx.lineOf(pal), W.main) : L(nd, ctx.lineOf(pal), lod === 'full' ? W.fine * 1.3 : W.main * 0.8));
-        groups.push(G(count === 5 ? `domain-${p.dom + 1}` : null, kids));
-        if (count === 5)
-            A.organs[p.dom] = { x: p.x, y: p.y };
+function mangoes(S, pts) {
+    return (0, kit_1.hanging)(S, pts, {
+        color: kit_1.A0.gift.mangoRipe,
+        blush: kit_1.A0.gift.mangoBlush,
+        stalk: 7,
+        rx: 3.2,
+        ry: 4.4,
+        shape: (x, y) => `M${(0, kit_1.f)(x)} ${(0, kit_1.f)(y - 4.6)}C${(0, kit_1.f)(x + 4)} ${(0, kit_1.f)(y - 4)} ${(0, kit_1.f)(x + 3.6)} ${(0, kit_1.f)(y + 4.4)} ${(0, kit_1.f)(x - 0.4)} ${(0, kit_1.f)(y + 4.6)}C${(0, kit_1.f)(x - 3.6)} ${(0, kit_1.f)(y + 4.4)} ${(0, kit_1.f)(x - 3)} ${(0, kit_1.f)(y - 1)} ${(0, kit_1.f)(x)} ${(0, kit_1.f)(y - 4.6)}Z`,
     });
-    const body = [G('trunk', tk), G('branches', branches), G('canopy', groups), G('leaves', [])];
-    if (st === 6 && lod !== 'icon') {
-        const kids = [];
-        for (const p of pads.slice(1)) {
-            const x = p.x + p.side * p.w * 0.3;
-            const y = p.y + 9;
-            const d = `M${f(x - 2.6)} ${f(y)}A2.6 4 0 1 0 ${f(x + 2.6)} ${f(y)}A2.6 4 0 1 0 ${f(x - 2.6)} ${f(y)}Z`;
-            kids.push(P(d, GIFT.cone, { opacity: 0.7 }), L(d + `M${f(x - 2.2)} ${f(y - 1.2)}h4.4M${f(x - 2.4)} ${f(y + 1.2)}h4.8`, ctx.wood(GIFT.cone), W.main * 0.8));
-        }
-        body.push(G('blooms', kids));
-    }
-    A.canopyBox = { cx: 100, cy: (topY + bottom) / 2, rx: g.rx, ry: (bottom - topY) / 2 + 8 };
-    A.crown = { x: pads[0].x, y: topY - 4 };
-    A.perch = { x: pads[1].x - 4, y: pads[1].y - 6 };
-    A.neck = { x: 100, y: bottom + 8, w: g.wb * 0.6 };
-    A.branchL = { x: 70, y: bottom };
-    A.branchR = { x: 130, y: bottom };
-    A.drift = { x: 130, y: bottom };
-    return { body, behind: st >= 5 ? [roots(ctx, 2, g.wb, bark)] : [] };
 }
-function palmTree(ctx) {
-    const { st, lod, pal, W, sc, base, A } = ctx;
-    const bark = BARK.coconut;
-    const lean = 4 + st * 2;
-    const crown = { x: 100 + lean, y: { 3: 112, 4: 94, 5: 78, 6: 68 }[st] };
-    const tp0 = [100, base + 1];
-    const tpc = [98, (base + crown.y) / 2];
-    const tp1 = [crown.x, crown.y + 3];
-    const tk = trunk(ctx, tp0, tpc, tp1, { 3: 9, 4: 11, 5: 13, 6: 14 }[st], { 3: 6, 4: 7, 5: 8, 6: 8 }[st], bark, false);
-    if (lod !== 'icon') {
-        let rings = '';
-        for (let t = 0.12; t < 0.92; t += lod === 'full' ? 0.09 : 0.14) {
-            const [x, y] = qpt(tp0, tpc, tp1, t);
-            const w = lerp(10, 7, t) * 0.5;
-            rings += `M${f(x - w)} ${f(y)}Q${f(x)} ${f(y + 2)} ${f(x + w)} ${f(y)}`;
-        }
-        tk.push(L(rings, ctx.wood(bark), (W.fine || W.main) * 0.9, { opacity: 0.75 }));
+exports.HABIT = {
+    oak: { bark: kit_1.A0.bark.oak, kind: 'oak', ll: 11, aspect: 1, fruit: (S, ms) => (0, kit_1.acorns)(S, (0, kit_1.lowerRim)(ms, 6, 3)) },
+    maple: { bark: kit_1.A0.bark.maple, kind: 'maple', ll: 11, aspect: 0.94, fruit: (S, ms) => (0, kit_1.samaras)(S, (0, kit_1.lowerRim)(ms, 6, 5)) },
+    narra: { bark: kit_1.A0.bark.narra, kind: 'ovate', ll: 9, aspect: 1.1, fruit: (S, ms) => (0, kit_1.goldSprays)(S, (0, kit_1.upperRim)(ms, 8, 9), 1.05) },
+    'cherry-blossom': { bark: kit_1.A0.bark.cherry, kind: 'lens', ll: 9, aspect: 1.05, blossom: true, bands: true, fruit: () => null },
+    mango: { bark: kit_1.A0.bark.mango, kind: 'long', ll: 13, aspect: 1.04, fruit: (S, ms) => mangoes(S, (0, kit_1.lowerRim)(ms, 6, 4)) },
+};
+const bands = (t) => {
+    let d = '';
+    const n = t.left.length - 1;
+    for (let i = 2; i < n - 1; i += 2) {
+        const a = t.left[i];
+        const b = t.right[i];
+        d += `M${(0, kit_1.f)(a[0] + (b[0] - a[0]) * 0.22)} ${(0, kit_1.f)(a[1] + (b[1] - a[1]) * 0.22)}L${(0, kit_1.f)(a[0] + (b[0] - a[0]) * 0.5)} ${(0, kit_1.f)(a[1] + (b[1] - a[1]) * 0.5)}`;
     }
-    const angs = st >= 4 ? [-168, -132, -96, -58, -14] : [-150, -98, -36];
-    const Lb = { 3: 40, 4: 56, 5: 68, 6: 76 }[st];
-    const order = st >= 4 ? [2, 1, 3, 0, 4] : [1, 0, 2];
-    const fronds = [];
-    for (const k of order) {
-        const Ln = Lb * (st >= 4 ? sc[k] : 1);
-        const a = angs[k] * D2R;
-        const droop = Ln * 0.12 + Math.abs(Math.cos(a)) * Ln * 0.36;
-        const p0 = [crown.x, crown.y];
-        const p2 = [crown.x + Math.cos(a) * Ln, crown.y + Math.sin(a) * Ln * 0.75 + droop];
-        const p1 = [crown.x + Math.cos(a) * Ln * 0.62, crown.y + Math.sin(a) * Ln * 0.75 * 0.62 - Ln * 0.12];
-        const n = lod === 'full' ? 9 : lod === 'small' ? 6 : 0;
-        const list = [];
-        for (let i = 1; i <= n; i++) {
-            const t = i / (n + 1);
-            const [x, y] = qpt(p0, p1, p2, t);
-            const tan = qtan(p0, p1, p2, t);
-            const len = Ln * 0.3 * (1 - t * 0.55);
-            for (const sd of [1, -1])
-                list.push(leaf('long', x, y, len, tan + sd * 0.75 + 0.25, false));
-        }
-        const kids = [];
-        if (lod === 'icon')
-            kids.push(P(taper(p0, p1, p2, Ln * 0.22, 2).closed, pal.mid, { opacity: 0.85 }));
-        kids.push(L(Q(p0, p1, p2), ctx.lineOf(pal), W.main));
-        fronds.push(leafGroup(ctx, st >= 4 ? `domain-${k + 1}` : null, list, pal, kids));
-        if (st >= 4) {
-            const [ox, oy] = qpt(p0, p1, p2, 0.6);
-            A.organs[k] = { x: ox, y: oy };
-        }
-    }
-    const body = [G('trunk', tk), G('canopy', fronds), G('leaves', [])];
-    if (st >= 5 && lod !== 'icon') {
-        const m = st === 6 ? 5 : 3;
-        const nut = pal === tokens_1.plantLeaf.golden ? GIFT.coconutGolden : st === 6 ? GIFT.coconutRipe : GIFT.coconutGreen;
-        const kids = [];
-        for (const [dx, dy] of [
-            [-6, 9],
-            [6, 10],
-            [0, 15],
-            [-12, 15],
-            [11, 16],
-        ].slice(0, m)) {
-            const x = crown.x + dx;
-            const y = crown.y + dy;
-            const rr = st === 6 ? 6 : 5.4;
-            const d = `M${f(x - rr)} ${f(y)}A${rr} ${rr} 0 1 0 ${f(x + rr)} ${f(y)}A${rr} ${rr} 0 1 0 ${f(x - rr)} ${f(y)}Z`;
-            kids.push(P(d, nut, { opacity: 0.7 }), L(d, ctx.wood(nut), W.main * 0.9));
-        }
-        body.push(G('blooms', kids));
-    }
-    A.canopyBox = { cx: crown.x, cy: crown.y + 4, rx: Lb, ry: Lb * 0.55 };
-    A.crown = { x: crown.x, y: crown.y - 6 };
-    A.perch = { x: crown.x - 4, y: crown.y - 4 };
-    A.neck = { x: 100, y: base - 30, w: 10 };
-    A.drift = { x: crown.x + Lb * 0.5, y: crown.y + 20 };
-    return { body };
-}
-function bonsaiTree(ctx) {
-    var _a, _b;
-    const { st, lod, TL, pal, W, seed, sc, base, A, kit } = ctx;
-    const bark = BARK.bonsai;
-    const woodC = ctx.wood(bark);
-    const g = GEO[st];
-    const k = st / 5;
-    const r = kit.rng(seed);
-    const wb = { 3: 9, 4: 12, 5: 15, 6: 18 }[st];
-    const pC = [104, base - 52 * k - 10];
-    const S = cubic([100, base + 1], [112, base - 22 * k], [76, base - 34 * k - 4], pC);
-    const t1 = taper([0, 0], [0, 0], [0, 0], wb, wb * 0.4, 24, S);
-    const tk = [P(t1.closed, bark, { opacity: TL.washWoodOp }), L(t1.sides, woodC, W.main)];
-    const spots = st >= 4
-        ? [
-            [-0.86, 0.55, 0.42, 0.2],
-            [-0.42, -0.05, 0.4, 0.22],
-            [0.2, -0.62, 0.42, 0.26],
-            [0.56, 0.0, 0.4, 0.22],
-            [0.86, 0.5, 0.44, 0.2],
-        ]
-        : [
-            [0.12, -0.5, 0.55, 0.3],
-            [-0.6, 0.3, 0.45, 0.24],
-        ];
-    const hx = Math.min(g.rx, 62);
-    const branches = [];
-    const groups = [];
-    spots.forEach(([ox, oy, sx, sy], i) => {
-        const s = st >= 4 ? sc[i] : 1;
-        const p = { x: 100 + ox * hx, y: g.cy + 22 * (g.rx / 70) + oy * g.ry, rx: sx * hx * s, ry: Math.max(7, sy * g.ry * s) };
-        branches.push(inkLimb([pC[0] + (ox < 0 ? -2 : 2), pC[1] + 10 + oy * 12], [lerp(pC[0], p.x, 0.5), pC[1] + 4 + oy * 10], [p.x, p.y + p.ry * 0.4], 2.6 + st * 0.35, 0.8, woodC));
-        const mass = kit.scallop({ cx: p.x, cy: p.y, rx: p.rx, ry: p.ry, n: 8, seed: seed + i * 13, jit: 0.3, bulge: 0.62, flat: 0.5 });
-        let topLine = '';
-        const n = lod === 'icon' ? 0 : lod === 'full' ? 5 : 4;
-        for (let j = 0; j < n; j++) {
-            const u = (j + 0.5) / n;
-            const x = p.x - p.rx + u * p.rx * 2;
-            const y = p.y - p.ry * 0.8 * Math.sin(Math.PI * u) + 1;
-            topLine += needles(x, y + 2, lod === 'full' ? 7 : 9, -Math.PI / 2 + (u - 0.5) * 1.2, 3, 1.5);
-        }
-        const kids = [P(mass, pal[TL.washMass], { opacity: lod === 'icon' ? 0.85 : TL.washMassOp + 0.14 })];
-        kids.push(lod === 'icon' ? L(mass, ctx.lineOf(pal), W.main) : L(topLine, ctx.lineOf(pal), lod === 'full' ? W.fine * 1.3 : W.main * 0.8));
-        groups.push(G(st >= 4 ? `domain-${i + 1}` : null, kids));
-        if (st >= 4)
-            A.organs[i] = { x: p.x, y: p.y };
+    return d;
+};
+exports.bands = bands;
+const ax = (H, x) => { var _a; return 100 + (x - 100) * ((_a = H.aspect) !== null && _a !== void 0 ? _a : 1); };
+const base = (H) => ({ bark: H.bark, kind: H.kind, ll: H.ll, aspect: H.aspect, blossom: H.blossom, bands: H.bands, pads: H.pads, needle: H.needle });
+exports.habitBase = base;
+function lookout(c, H, pal) {
+    const k = (x) => ax(H, x);
+    const masses = [(0, kit_1.M)(k(60), 72, 20, 14, 1), (0, kit_1.M)(k(70), 42, 19, 13, 2), (0, kit_1.M)(k(130), 42, 19, 13, 4), (0, kit_1.M)(k(140), 72, 20, 14, 5), (0, kit_1.M)(100, 20, 17, 11, 3)];
+    return tree(c, {
+        ...base(H),
+        pal,
+        seed: 41,
+        masses,
+        trunk: [[100, 171], [100, 132], [100, 92], 16, 9, { furrows: 5, extra: H.bands ? exports.bands : null }],
+        limbs: [
+            [[100, 104], [80, 96], [k(62), 76], 6, 2],
+            [[100, 104], [120, 96], [k(138), 76], 6, 2],
+            [[100, 96], [82, 70], [k(72), 46], 5, 1.8],
+            [[100, 96], [118, 70], [k(128), 46], 5, 1.8],
+            [[100, 96], [101, 60], [100, 24], 6, 1.6],
+        ],
+        extras: () => [H.fruit(c.S, masses)],
+        glow: [100, 56, 70],
+        perch: [100, 60],
+        rootD: c.inPot ? null : 'M92 168Q82 171 74 173M108 168Q118 171 126 173',
     });
-    const body = [G('trunk', tk), G('branches', branches), G('canopy', groups), G('leaves', [])];
-    if (st === 6 && lod !== 'icon') {
-        const kids = [];
-        for (const o of A.organs) {
-            const d = blossom(o.x + 4, o.y - 3, 2, r() * 60);
-            kids.push(P(d, tokens_1.plantArt.white, { opacity: 0.9 }), L(d, ctx.lineOf(tokens_1.plantLeaf.pearl), W.main * 0.7));
-        }
-        body.push(G('blooms', kids));
-    }
-    A.canopyBox = { cx: 100, cy: g.cy + 10 * (g.rx / 70), rx: hx * 1.05, ry: g.ry * 0.75 };
-    A.crown = { x: 104, y: g.cy - g.ry * 0.5 };
-    A.perch = { x: ((_a = A.organs[0]) !== null && _a !== void 0 ? _a : { x: 60 }).x + 4, y: ((_b = A.organs[0]) !== null && _b !== void 0 ? _b : { y: 120 }).y - 6 };
-    A.neck = { x: 92, y: base - 30, w: wb * 0.7 };
-    A.drift = { x: 140, y: g.cy + 10 };
-    return { body };
 }
-function stemLine(ctx, p0, pc, p1, w, palette) {
-    if (w < 3.2)
-        return [L(Q(p0, pc, p1), ctx.lineOf(palette), ctx.W.main)];
-    const t = taper(p0, pc, p1, w, w * 0.6);
-    return [P(t.closed, palette[ctx.TL.washLeaf], { opacity: ctx.TL.washLeafOp }), L(t.sides, ctx.lineOf(palette), ctx.W.main)];
-}
-const disc = (x, y, r) => `M${f(x - r)} ${f(y)}A${f(r)} ${f(r)} 0 1 0 ${f(x + r)} ${f(y)}A${f(r)} ${f(r)} 0 1 0 ${f(x - r)} ${f(y)}Z`;
-function sunflower(ctx) {
-    var _a, _b;
-    const { st, lod, TL, pal, fol, W, fine, sc, base, A } = ctx;
-    const g4 = st;
-    const hy = { 3: 114, 4: 82, 5: 70, 6: 62 }[g4];
-    const hx = 100 + (st >= 5 ? 4 : 2);
-    const p0 = [100, base];
-    const pc = [98, base - (base - hy) * 0.45];
-    const p1 = [hx, hy];
-    const body = [G('stem', stemLine(ctx, p0, pc, p1, { 3: 3, 4: 4, 5: 4.6, 6: 5.4 }[g4], fol))];
-    const leaves = [];
-    const at = (t) => qpt(p0, pc, p1, t);
-    if (st === 3) {
-        const list = [
-            [-1, 0.2, 20],
-            [1, 0.22, 20],
-            [-1, 0.48, 15],
-            [1, 0.5, 15],
-        ].map(([s, t, len]) => {
-            const [x, y] = at(t);
-            return leaf('banyan', x, y, len, (-90 + s * 58) * D2R, fine);
-        });
-        leaves.push(leafGroup(ctx, null, list, fol));
-    }
-    else {
-        for (let i = 0; i < 5; i++) {
-            const side = i % 2 ? 1 : -1;
-            const [x, y] = at(0.1 + i * 0.15);
-            const len = (17 + st * 2.4) * sc[i] * (1 - i * 0.05) * (lod === 'small' ? 1.1 : 1);
-            leaves.push(leafGroup(ctx, `domain-${i + 1}`, [leaf('banyan', x, y, len, (-90 + side * (62 - i * 3)) * D2R, fine)], fol));
-            A.organs[i] = { x: x + side * len * 0.5, y: y - len * 0.3 };
-        }
-    }
-    body.push(G('leaves', leaves));
-    const head = [];
-    if (st <= 4) {
-        const rr = st === 3 ? 9 : 13;
-        let sep = '';
-        const nS = st === 3 ? 6 : 8;
-        for (let i = 0; i < nS; i++)
-            sep += xf('M0 0Q0.4 -0.6 0 -1Q-0.4 -0.6 0 0Z', hx, hy, (i / nS) * 2 * Math.PI, rr * 1.15) + ' ';
-        head.push(P(sep, fol[TL.washLeaf], { opacity: TL.washLeafOp }), L(sep, ctx.lineOf(fol), W.main));
-        if (st === 4) {
-            let pet = '';
-            for (let i = 0; i < 12; i++)
-                pet += xf('M0 0Q0.32 -0.55 0 -1Q-0.32 -0.55 0 0Z', hx + Math.cos(i * 0.5236) * rr * 0.55, hy + Math.sin(i * 0.5236) * rr * 0.55, i * 0.5236 + Math.PI / 2, rr * 0.75) + ' ';
-            head.push(P(pet, pal[TL.washLeaf], { opacity: 0.8 }), L(pet, ctx.lineOf(pal), W.main * 0.9));
-        }
-        const d = disc(hx, hy, rr * 0.6);
-        head.push(P(d, fol[TL.washLeaf], { opacity: 0.8 }), L(d, ctx.lineOf(fol), W.main));
-        A.canopyBox = { cx: hx, cy: hy, rx: rr * 1.4, ry: rr * 1.4 };
-    }
-    else {
-        const R = st === 5 ? 15 : 19;
-        const pl = st === 5 ? 14 : 17;
-        const np = st === 5 ? 16 : 20;
-        let pet = '';
-        let pet2 = '';
-        for (let i = 0; i < np; i++) {
-            const a = (i / np) * 2 * Math.PI;
-            const d = xf('M0 0Q0.36 -0.5 0 -1Q-0.36 -0.5 0 0Z', hx + Math.cos(a) * R * 0.86, hy + Math.sin(a) * R * 0.86, a + Math.PI / 2, pl);
-            if (i % 2)
-                pet2 += d + ' ';
-            else
-                pet += d + ' ';
-        }
-        head.push(P(pet2, pal[TL.washLeaf], { opacity: 0.65 }), L(pet2, ctx.lineOf(pal), W.main * 0.9), P(pet, pal[TL.washLeaf], { opacity: 0.85 }), L(pet, ctx.lineOf(pal), W.main));
-        const dc = tokens_1.plantArt.sunflower.discMid;
-        const d = disc(hx, hy, R);
-        head.push(P(d, dc, { opacity: ctx.dark ? 0.55 : 0.3 }), L(d, ctx.wood(dc), W.main));
-        if (lod !== 'icon') {
-            let dots = '';
-            const n = lod === 'full' ? 34 : 14;
-            for (let i = 1; i <= n; i++) {
-                const rr = R * 0.82 * Math.sqrt(i / n);
-                const a = i * 2.39996;
-                dots += `M${f(hx + Math.cos(a) * rr)} ${f(hy + Math.sin(a) * rr)}h0.01`;
-            }
-            head.push(L(dots, ctx.wood(dc), 1.6));
-        }
-        A.canopyBox = { cx: hx, cy: hy, rx: R + pl, ry: R + pl };
-    }
-    body.push(G('head', head));
-    A.crown = { x: hx, y: hy - A.canopyBox.ry };
-    A.perch = { x: ((_a = A.organs[1]) !== null && _a !== void 0 ? _a : { x: 86 }).x, y: ((_b = A.organs[1]) !== null && _b !== void 0 ? _b : { y: 140 }).y - 4 };
-    A.neck = { x: 100, y: hy + 30, w: 5 };
-    A.drift = { x: hx + 20, y: hy + 10 };
-    return { body };
-}
-function lotus(ctx) {
-    const { st, TL, pal, fol, W, fine, sc, base, A } = ctx;
-    const wy = base - 1;
-    const pad = (x, y, rx, ry) => {
-        const notch = `M${f(x)} ${f(y)}L${f(x + rx * 0.95)} ${f(y - ry * 0.25)}A${f(rx)} ${f(ry)} 0 1 0 ${f(x + rx * 0.95)} ${f(y + ry * 0.25)}Z`;
-        let veins = '';
-        if (fine)
-            for (let i = 1; i < 7; i++) {
-                const a = 0.4 + i * 0.85;
-                veins += `M${f(x)} ${f(y)}L${f(x + Math.cos(a) * rx * 0.85)} ${f(y + Math.sin(a) * ry * 0.85)}`;
-            }
-        return { wash: notch, line: notch + veins };
+function pebbles(c) {
+    const s = Math.min(c.span, 30);
+    return {
+        back: [],
+        front: [
+            (0, kit_1.stones)(c.S, 'stones-front', [
+                [100 - s * 0.8, 170.5, 3],
+                [100 - s * 0.45, 171.5, 2.6],
+                [100 + s * 0.45, 171.5, 2.6],
+                [100 + s * 0.8, 170.5, 3],
+                [100 + s * 0.05, 172, 2.4],
+            ]),
+        ],
     };
-    const petal = (x, y, len, ang, w = 0.34) => xf(`M0 0Q${f(w * 1.4)} -0.5 0 -1Q${f(-w * 1.4)} -0.5 0 0Z`, x, y, ang + Math.PI / 2, len);
-    const body = [];
-    const behind = [];
-    const n = st >= 4 ? 5 : st === 3 ? 2 : 0;
-    const spots = [
-        [-0.62, 0.0, 13],
-        [0.6, 0.05, 12],
-        [-0.28, -0.6, 10],
-        [0.3, -0.62, 10],
-        [0.0, 0.1, 9],
+}
+function moot(c, H, pal) {
+    const k = (x) => { var _a; return 100 + (x - 100) * Math.min(1, (_a = H.aspect) !== null && _a !== void 0 ? _a : 1); };
+    const masses = [
+        (0, kit_1.M)(100, 66, 44, 11, 3, { flat: 0.55, n: 12 }),
+        (0, kit_1.M)(k(58), 88, 30, 10, 2, { flat: 0.55 }),
+        (0, kit_1.M)(k(142), 88, 30, 10, 4, { flat: 0.55 }),
+        (0, kit_1.M)(100, 86, 30, 11, 3, { flat: 0.55 }),
+        (0, kit_1.M)(k(26), 110, 22, 9, 1, { flat: 0.55 }),
+        (0, kit_1.M)(k(174), 110, 22, 9, 5, { flat: 0.55 }),
     ];
-    for (let i = 0; i < n; i++) {
-        const [dx, dy, r0] = spots[i];
-        const rr = r0 * (st >= 4 ? sc[i] : 1) * (0.85 + st * 0.08);
-        const x = 100 + dx * (30 + st * 6);
-        const y = wy - 2 + dy * 10;
-        const kids = [];
-        let shape;
-        let at;
-        if (dy < -0.3) {
-            const top = y - 18 - st * 4;
-            kids.push(L(Q([x, wy], [x - dx * 6, (wy + top) / 2], [x, top]), ctx.lineOf(fol), W.main));
-            shape = pad(x, top, rr, rr * 0.42);
-            at = [x, top];
-        }
-        else {
-            shape = pad(x, y, rr, rr * 0.34);
-            at = [x, y];
-        }
-        const grp = leafGroup(ctx, st >= 4 ? `domain-${i + 1}` : null, [shape], fol, kids);
-        (kids.length ? behind : body).push(grp);
-        if (st >= 4)
-            A.organs[i] = { x: at[0], y: at[1] };
-    }
-    const fh = { 3: 30, 4: 44, 5: 50, 6: 54 }[st];
-    const fy = wy - fh;
-    body.push(G('stem', [L(Q([100, wy], [98, wy - fh * 0.5], [100, fy]), ctx.lineOf(fol), W.main)]));
-    const fl = [];
-    if (st <= 4) {
-        const big = st === 3 ? 16 : 20;
-        const side = st === 3 ? 13 : 16;
-        const d = petal(100, fy + 2, big, -Math.PI / 2, 0.42) + ' ' + petal(100, fy + 2, side, -Math.PI / 2 - 0.45, 0.3) + ' ' + petal(100, fy + 2, side, -Math.PI / 2 + 0.45, 0.3);
-        fl.push(P(d, pal[TL.washLeaf], { opacity: 0.75 }), L(d, ctx.lineOf(pal), W.main));
-        A.canopyBox = { cx: 100, cy: fy - 8, rx: 16, ry: 14 };
-    }
-    else {
-        const back = [-1.15, -0.7, -0.25, 0.25, 0.7, 1.15].map((a) => petal(100, fy, 22, -Math.PI / 2 + a, 0.34)).join(' ');
-        const front = [-0.85, -0.3, 0.3, 0.85].map((a) => petal(100, fy + 2, 19, -Math.PI / 2 + a * 0.9, 0.36)).join(' ') + ' ' + petal(100, fy + 3, 21, -Math.PI / 2, 0.36);
-        fl.push(P(back, pal[TL.washLeaf], { opacity: 0.55 }), L(back, ctx.lineOf(pal), W.main * 0.9), P(front, pal[TL.washLeaf], { opacity: 0.85 }), L(front, ctx.lineOf(pal), W.main));
-        if (st === 6) {
-            const pod = `M94 ${f(fy - 6)}Q100 ${f(fy - 11)} 106 ${f(fy - 6)}L104 ${f(fy - 1)}Q100 ${f(fy)} 96 ${f(fy - 1)}Z`;
-            fl.push(P(pod, tokens_1.plantArt.lotus.podTop, { opacity: 0.85 }), L(pod, ctx.lineOf(fol), W.main * 0.9));
-        }
-        A.canopyBox = { cx: 100, cy: fy - 10, rx: 26, ry: 18 };
-    }
-    body.push(G('flower', fl));
-    A.crown = { x: 100, y: fy - 24 };
-    A.perch = { x: 74, y: wy - 4 };
-    A.neck = { x: 100, y: fy + 10, w: 4 };
-    A.drift = { x: 124, y: fy };
-    return { body, behind };
+    masses.sort((a, b) => a.dom - b.dom);
+    const one = (d) => masses.find((m) => m.dom === d);
+    const order = [one(1), one(5), one(2), one(4), ...masses.filter((m) => m.dom === 3)];
+    const st = c.inPot
+        ? pebbles(c)
+        : {
+            back: [(0, kit_1.stones)(c.S, 'stones', [[54, 167, 7], [146, 167, 7]])],
+            front: [(0, kit_1.stones)(c.S, 'stones-front', [[72, 175, 6], [128, 175, 6], [100, 179, 5]])],
+        };
+    return tree(c, {
+        ...base(H),
+        pal,
+        seed: 51,
+        masses: order,
+        trunk: [[100, 171], [100, 150], [100, 126], 24, 17, { furrows: 6, extra: H.bands ? exports.bands : null }],
+        limbs: [
+            [[100, 134], [62, 130], [k(22), 116], 8, 2.2],
+            [[100, 134], [138, 130], [k(178), 116], 8, 2.2],
+            [[100, 130], [76, 112], [k(52), 94], 7, 2],
+            [[100, 130], [124, 112], [k(148), 94], 7, 2],
+            [[100, 128], [100, 104], [100, 70], 7, 2],
+        ],
+        extras: () => [H.fruit(c.S, masses.slice(0, 4))],
+        back: st.back,
+        front: st.front,
+        glow: [100, 92, 80],
+        perch: [k(52), 80],
+    });
 }
-function sampaguita(ctx) {
-    const { st, lod, TL, pal, fol, W, fine, sc, base, A, seed, kit } = ctx;
-    const r = kit.rng(seed);
-    const h = { 3: 34, 4: 52, 5: 62, 6: 70 }[st];
-    const n = st >= 4 ? 5 : 3;
-    const angs = n === 5 ? [-150, -118, -90, -62, -30] : [-130, -90, -50];
-    const stems = [];
-    const groups = [];
-    for (let i = 0; i < n; i++) {
-        const s = st >= 4 ? sc[i] : 1;
-        const a = angs[i] * D2R;
-        const len = h * s * (i === (n - 1) / 2 ? 1 : 0.86);
-        const p0 = [100 + Math.cos(a) * 3, base - 2];
-        const p1 = [100 + Math.cos(a) * len * 0.7, base - 2 + Math.sin(a) * len];
-        const pc = [lerp(p0[0], p1[0], 0.2), lerp(p0[1], p1[1], 0.6)];
-        stems.push(Q(p0, pc, p1));
-        const list = [];
-        const np = lod === 'full' ? 3 : 2;
-        for (let j = 1; j <= np; j++) {
-            if (j === 1 && i % 2)
-                continue;
-            const t = j / (np + 0.6);
-            const [x, y] = qpt(p0, pc, p1, t);
-            const tan = qtan(p0, pc, p1, t);
-            const ll = (lod === 'full' ? 13 : 16) * (1 - t * 0.3);
-            list.push(leaf('lens', x, y, ll, tan - 0.8, fine), leaf('lens', x, y, ll, tan + 0.8, fine));
+function espalier(c, H, pal) {
+    const { S } = c;
+    const w = c.inPot ? Math.min(74, c.span + 34) : c.keeps ? 62 : 74;
+    const X = (u) => 100 + u * w;
+    const rows = [130, 98, 66];
+    const ls = [];
+    rows.forEach((y, i) => {
+        const reach = 0.94 - i * 0.12;
+        for (const s of [-1, 1])
+            ls.push([[100, y + 5], [100 + s * 10, y], [X(s * reach), y], 6 - i, 2]);
+    });
+    const masses = [
+        (0, kit_1.M)(X(-0.52), 124, w * 0.36, 7, 1, { flat: 0.6, n: 10 }),
+        (0, kit_1.M)(X(-0.46), 92, w * 0.32, 7, 2, { flat: 0.6, n: 10 }),
+        (0, kit_1.M)(100, 56, w * 0.46, 10, 3, { flat: 0.6, n: 12 }),
+        (0, kit_1.M)(X(0.46), 92, w * 0.32, 7, 4, { flat: 0.6, n: 10 }),
+        (0, kit_1.M)(X(0.52), 124, w * 0.36, 7, 5, { flat: 0.6, n: 10 }),
+    ];
+    const post = kit_1.A0.planter.post;
+    const px0 = X(-1);
+    const px1 = X(1);
+    const frameD = `M${(0, kit_1.f)(px0)} 171L${(0, kit_1.f)(px0)} 52M${(0, kit_1.f)(px1)} 171L${(0, kit_1.f)(px1)} 52`;
+    const wires = rows.map((y) => `M${(0, kit_1.f)(px0)} ${y}L${(0, kit_1.f)(px1)} ${y}`).join('') + `M${(0, kit_1.f)(px0)} 58L${(0, kit_1.f)(px1)} 58`;
+    const ties = S.icon ? '' : rows.flatMap((y) => [-0.94, -0.5, 0.5, 0.94].map((u) => `M${(0, kit_1.f)(X(u) - 1.4)} ${y - 1.6}L${(0, kit_1.f)(X(u) + 1.4)} ${y + 1.6}`)).join('');
+    const posts = frameD.replace(/M(\S+) 171L\S+ 52/g, (_m, x) => `M${(0, kit_1.f)(+x - 1.6)} 171L${(0, kit_1.f)(+x - 1.4)} 52L${(0, kit_1.f)(+x + 1.4)} 52L${(0, kit_1.f)(+x + 1.6)} 171Z`);
+    return tree(c, {
+        ...base(H),
+        pal,
+        seed: 61,
+        masses,
+        trunk: [[100, 171], [100, 110], [100, 52], 12, 5, { furrows: 3, extra: H.bands ? exports.bands : null }],
+        limbs: ls,
+        extras: () => [H.fruit(S, masses.slice(0, 2).concat(masses.slice(3))), ties ? (0, kit_1.G)('ties', [(0, kit_1.L)(ties, S.wood(post), S.hair * 1.6)]) : null],
+        back: [(0, kit_1.G)('frame', [(0, kit_1.P)(posts, S.woodFill(post)), (0, kit_1.L)(frameD, S.wood(post), S.main), S.icon ? null : (0, kit_1.L)(wires, S.wood(post), S.hair * 1.4, { opacity: 0.85 })])],
+        glow: [100, 96, 82],
+        perch: [X(-0.9), 124],
+    });
+}
+function coppice(c, H, pal) {
+    const { S } = c;
+    const k = (x) => ax(H, x);
+    const masses = [(0, kit_1.M)(k(56), 88, 19, 15, 1), (0, kit_1.M)(k(72), 70, 18, 15, 2), (0, kit_1.M)(100, 42, 22, 17, 3), (0, kit_1.M)(k(128), 70, 18, 15, 4), (0, kit_1.M)(k(144), 88, 19, 15, 5)];
+    const stool = 'M80 171C80 160 86 152 100 152C114 152 120 160 120 171Z';
+    const shoots = (0, kit_1.leafSet)();
+    for (const [x0, x1, y1, s] of [
+        [86, 74, 140, -1],
+        [114, 128, 142, 1],
+    ]) {
+        shoots.add((0, kit_1.leaf)(H.kind === 'maple' || H.kind === 'oak' ? H.kind : 'lens', x1, y1, 9, (-90 + s * 40) * kit_1.D2R, S));
+        shoots.add((0, kit_1.leaf)('lens', (x0 + x1) / 2, 152, 7, (-90 - s * 30) * kit_1.D2R, S));
+    }
+    const g = (0, exports.green)(pal);
+    return tree(c, {
+        ...base(H),
+        pal,
+        seed: 71,
+        masses,
+        trunk: [[100, 171], [100, 162], [100, 152], 40, 26, { furrows: 0 }],
+        limbs: [
+            [[92, 156], [80, 120], [k(64), 82], 10, 4],
+            [[100, 154], [98, 100], [100, 46], 11, 4],
+            [[108, 156], [120, 120], [k(136), 82], 10, 4],
+            [[k(64), 84], [k(68), 78], [k(72), 70], 4, 2],
+            [[k(136), 84], [k(132), 78], [k(128), 70], 4, 2],
+        ],
+        afterTrunk: [
+            (0, kit_1.G)('stool', [(0, kit_1.P)(stool, S.woodFill(H.bark)), S.full ? (0, kit_1.L)('M88 158Q100 154 112 158M84 165Q100 160 116 165', S.wood(H.bark), S.hair * 1.4, { opacity: 0.7 }) : null, (0, kit_1.L)(stool.replace('Z', ''), S.wood(H.bark), S.main)]),
+            S.icon ? null : (0, kit_1.G)('shoots', [(0, kit_1.L)('M86 160Q82 150 74 140M114 160Q120 152 128 142', S.lineOf(g), S.fine * 1.4), (0, kit_1.P)(shoots.wash(), S.washOf(g), { opacity: S.washOp }), (0, kit_1.L)(shoots.line(), S.lineOf(g), S.fine * 1.4)]),
+        ],
+        extras: () => [H.fruit(S, masses)],
+        glow: [100, 76, 78],
+        perch: [k(52), 72],
+    });
+}
+function holdfast(c, H, pal) {
+    const { S } = c;
+    const sc = c.inPot ? Math.min(1, (c.span + 8) / 44) : 1;
+    const X = (x) => 100 + (x - 100) * sc;
+    const top = 170 - 32 * sc;
+    const rock = `M${(0, kit_1.f)(X(58))} 171C${(0, kit_1.f)(X(54))} ${(0, kit_1.f)(170 - 14 * sc)} ${(0, kit_1.f)(X(62))} ${(0, kit_1.f)(170 - 26 * sc)} ${(0, kit_1.f)(X(76))} ${(0, kit_1.f)(170 - 30 * sc)}C${(0, kit_1.f)(X(86))} ${(0, kit_1.f)(top - 3)} ${(0, kit_1.f)(X(96))} ${(0, kit_1.f)(top + 1)} ${(0, kit_1.f)(X(104))} ${(0, kit_1.f)(top - 1)}C${(0, kit_1.f)(X(120))} ${(0, kit_1.f)(top - 3)} ${(0, kit_1.f)(X(138))} ${(0, kit_1.f)(170 - 24 * sc)} ${(0, kit_1.f)(X(142))} ${(0, kit_1.f)(170 - 10 * sc)}C${(0, kit_1.f)(X(143))} 167 ${(0, kit_1.f)(X(142))} 169 ${(0, kit_1.f)(X(141))} 171Z`;
+    const masses = [
+        (0, kit_1.M)(72, 72, 26, 20, 1, { dense: true }),
+        (0, kit_1.M)(128, 72, 26, 20, 5, { dense: true }),
+        (0, kit_1.M)(82, 50, 24, 20, 2, { dense: true }),
+        (0, kit_1.M)(118, 50, 24, 20, 4, { dense: true }),
+        (0, kit_1.M)(100, 40, 28, 22, 3, { dense: true }),
+        (0, kit_1.M)(100, 66, 28, 20, 3, { dense: true }),
+    ];
+    return tree(c, {
+        ...base(H),
+        pal,
+        seed: 81,
+        masses,
+        dense: true,
+        roots: [
+            [[94, top + 2], [X(68), top + 6], [X(62), 171], 7, 2.4],
+            [[97, top + 4], [X(86), top + 18], [X(86), 171], 6, 2.4],
+            [[103, top + 4], [X(116), top + 18], [X(116), 171], 6, 2.4],
+            [[106, top + 2], [X(134), top + 6], [X(140), 171], 7, 2.4],
+        ],
+        trunk: [[100, top + 4], [99, top - 20], [98, 92], 24, 15, { furrows: 6, extra: H.bands ? exports.bands : null }],
+        limbs: [
+            [[99, 100], [84, 86], [72, 72], 6, 2],
+            [[99, 98], [114, 86], [128, 72], 6, 2],
+            [[98, 96], [98, 72], [100, 46], 6, 2],
+        ],
+        extras: () => [H.fruit(S, masses.slice(0, 2))],
+        back: [(0, kit_1.boulder)(S, rock, 100, 170 - 16 * sc, 42 * sc, 16 * sc)],
+        glow: [100, 66, 74],
+        perch: [74, 52],
+    });
+}
+exports.RECIPES = { lookout, moot, espalier, coppice, holdfast };
+const flavoursFor = (H) => ({
+    lookout: (c) => lookout(c, H, c.S.pal),
+    moot: (c) => moot(c, H, c.S.pal),
+    espalier: (c) => espalier(c, H, c.S.pal),
+    coppice: (c) => coppice(c, H, c.S.pal),
+    holdfast: (c) => holdfast(c, H, c.S.pal),
+});
+exports.flavoursFor = flavoursFor;
+function young1(c, o) {
+    const { S } = c;
+    const lp = (0, exports.green)(S.pal);
+    const set = (0, kit_1.leafSet)();
+    for (const [kind, x, y, len, a, sx] of o.leaves)
+        set.add((0, kit_1.leaf)(kind, x, y, len, a * kit_1.D2R, S, sx || 1));
+    return {
+        cutaway: (0, kit_1.cutaway)(S, 64, 136, 171, 190, o.seed || 5),
+        body: [
+            (0, kit_1.G)('roots', [(0, kit_1.L)(o.root, S.wood(o.seedColor), S.fine * 1.5)]),
+            (0, kit_1.seedPart)(S, o.seedD, o.seedColor, o.seedLine),
+            ...(o.extra || []),
+            (0, kit_1.G)('sprout', [(0, kit_1.L)(o.stem, S.lineOf(lp), S.main), (0, kit_1.P)(set.wash(), S.washOf(lp), { opacity: S.washOp }), (0, kit_1.L)(set.line(), S.lineOf(lp), S.main)]),
+        ],
+        perch: [74, 170],
+    };
+}
+const oak = {
+    I: (c) => young1(c, {
+        seedColor: kit_1.A0.gift.acorn,
+        seedD: 'M86 163C86 156 92 152 97 152C103 152 107 157 106 163C105 169 100 172 96 172C90 172 86 169 86 163Z M84 160C84 151 104 149 107 158C100 162 90 163 84 160Z',
+        seedLine: (0, kit_1.hatchE)(95.5, 156.5, 10.5, 4.4, 151, 162, 1.6, 35, true) + (0, kit_1.hatchE)(95.5, 156.5, 10.5, 4.4, 151, 162, 1.6, -35, true),
+        root: 'M97 168Q95 178 99 189M96 176l-5 3M97 182l5 3M98 186l-4 3',
+        stem: 'M98 154Q96 140 101 122',
+        leaves: [
+            ['oak', 101, 122, 16, -150],
+            ['oak', 101, 122, 16, -30],
+            ['lens', 101, 122, 6, -88],
+        ],
+    }),
+    II: (c) => {
+        const { S } = c;
+        const set = (0, kit_1.leafSet)();
+        const lp = (0, exports.green)(S.pal);
+        let tw = '';
+        for (const [x, y, s] of [
+            [100, 146, -1],
+            [101, 128, 1],
+            [99, 110, -1],
+            [101, 94, 1],
+        ]) {
+            tw += `M${x} ${y}l${s * 8} -5`;
+            set.add((0, kit_1.leaf)('oak', x + s * 8, y - 5, 20, (s > 0 ? -28 : -152) * kit_1.D2R, S)).add((0, kit_1.leaf)('oak', x + s * 8, y - 5, 14, (s > 0 ? 18 : 162) * kit_1.D2R, S));
         }
-        groups.push(leafGroup(ctx, n === 5 ? `domain-${i + 1}` : null, list, fol));
-        if (n === 5)
-            A.organs[i] = { x: p1[0], y: p1[1] };
-        if (st >= 4 && lod !== 'icon') {
-            const fr = st === 6 ? 4.6 : 4;
-            const d = star(p1[0], p1[1] - 2, fr * 1.4, r() * 40);
-            groups.push(G(null, [P(d, pal.light, { opacity: 0.95 }), L(d, ctx.rest(TL.starLine), W.main * 0.8), C(p1[0], p1[1] - 2, 1, tokens_1.plantArt.sampaguita.core)]));
-            if (st === 6 && i % 2 === 0) {
-                const [x2, y2] = qpt(p0, pc, p1, 0.6);
-                const d2 = star(x2 + 5, y2 - 3, 4.4, r() * 40);
-                groups.push(G(null, [P(d2, pal.light, { opacity: 0.95 }), L(d2, ctx.rest(TL.starLine), W.main * 0.8)]));
+        for (const a of [-60, -120, -90])
+            set.add((0, kit_1.leaf)('oak', 100, 70, a === -90 ? 14 : 18, a * kit_1.D2R, S));
+        return {
+            body: [
+                (0, kit_1.G)('stem', [(0, kit_1.L)('M100 171L100 146L101 128L99 110L101 94L100 70', S.wood(kit_1.A0.bark.oak), S.main * 1.5), (0, kit_1.L)(tw, S.wood(kit_1.A0.bark.oak), S.fine * 1.4)]),
+                (0, kit_1.leavesNode)(S, 'leaves', set, lp),
+                S.icon ? null : (0, kit_1.G)('bud', [(0, kit_1.P)((0, kit_1.oval)(100, 66, 1.8, 2.6), S.woodFill(kit_1.A0.bark.oak)), (0, kit_1.L)((0, kit_1.oval)(100, 66, 1.8, 2.6), S.wood(kit_1.A0.bark.oak), S.fine)]),
+            ],
+            perch: [80, 150],
+        };
+    },
+    III: (c) => tree(c, {
+        ...base(exports.HABIT.oak),
+        pal: c.S.pal,
+        seed: 51,
+        masses: [(0, kit_1.M)(100, 56, 26, 22, 3), (0, kit_1.M)(78, 80, 23, 19, 1), (0, kit_1.M)(122, 80, 23, 19, 5), (0, kit_1.M)(86, 102, 20, 13, 2), (0, kit_1.M)(114, 102, 20, 13, 4)],
+        trunk: [[100, 171], [100, 140], [100, 108], 10, 6],
+        limbs: [
+            [[100, 116], [88, 104], [80, 88], 4, 1.4],
+            [[100, 112], [104, 96], [100, 70], 4, 1.4],
+            [[100, 116], [114, 104], [122, 88], 4, 1.4],
+        ],
+        extras: () => [
+            (0, kit_1.acorns)(c.S, [
+                [84, 106],
+                [118, 102],
+                [104, 84],
+            ]),
+        ],
+        perch: [76, 62],
+    }),
+    IV: (c) => {
+        const { S } = c;
+        const masses = [(0, kit_1.M)(32, 92, 24, 15, 1), (0, kit_1.M)(168, 92, 24, 15, 5), (0, kit_1.M)(58, 66, 26, 19, 2), (0, kit_1.M)(142, 66, 26, 19, 4), (0, kit_1.M)(100, 50, 31, 21, 3)];
+        return tree(c, {
+            ...base(exports.HABIT.oak),
+            pal: S.pal,
+            seed: 61,
+            masses,
+            rootD: c.inPot ? null : 'M86 167Q70 170 52 172M88 168Q80 172 70 176M114 167Q130 170 150 172M112 168Q122 172 132 176',
+            limbs: [
+                [[100, 124], [62, 120], [30, 98], 8, 2.4],
+                [[100, 120], [76, 98], [56, 70], 8, 2.4],
+                [[100, 118], [96, 88], [100, 54], 9, 2.4],
+                [[100, 120], [124, 98], [144, 70], 8, 2.4],
+                [[100, 124], [138, 120], [170, 98], 8, 2.4],
+            ],
+            trunk: [[100, 171], [100, 144], [100, 118], 28, 18, { furrows: 7, seed: 8 }],
+            afterTrunk: S.icon ? [] : [(0, kit_1.G)('burl', [(0, kit_1.L)((0, kit_1.oval)(108, 146, 4.5, 3.4) + (0, kit_1.oval)(108, 146, 2.2, 1.6), S.wood(kit_1.A0.bark.oak), S.fine)])],
+            extras: () => [
+                (0, kit_1.acorns)(S, [
+                    [42, 104],
+                    [66, 84],
+                    [92, 66],
+                    [112, 64],
+                    [136, 84],
+                    [160, 104],
+                    [78, 74],
+                    [124, 74],
+                ]),
+            ],
+            drift: (0, kit_1.drift)(S, [
+                [180, 126, 9, 60],
+                [174, 148, 8, 120],
+            ], S.pal, 'oak'),
+            glow: [100, 74, 88],
+            perch: [52, 52],
+        });
+    },
+};
+const WING = 'M0 0C1.5 1 4.5 1.8 7 1.2C6 3.4 2.6 3.8 0.6 2.4Z';
+const maple = {
+    I: (c) => young1(c, {
+        seedColor: kit_1.A0.gift.samara,
+        seedD: (0, kit_1.xf)(WING, 92, 168, -0.25, 3.2) + ' ' + (0, kit_1.xf)(WING, 92, 168, Math.PI + 0.35, 3.2, -1),
+        seedLine: 'M84 160L98 165M80 172L92 169',
+        root: 'M96 168Q95 178 99 188M97 178l-4 3M98 183l4 2',
+        stem: 'M96 165Q96 146 100 128',
+        leaves: [
+            ['narrow', 100, 128, 18, -150],
+            ['narrow', 100, 128, 18, -30],
+            ['maple', 100, 127, 12, -90],
+        ],
+        seed: 6,
+    }),
+    II: (c) => {
+        const { S } = c;
+        const set = (0, kit_1.leafSet)();
+        const b = kit_1.A0.bark.maple;
+        let tw = '';
+        for (const y of [146, 122])
+            for (const s of [-1, 1]) {
+                tw += `M100 ${y}l${s * 7} -4`;
+                set.add((0, kit_1.leaf)('maple', 100 + s * 7, y - 4, 15, (s > 0 ? -30 : -150) * kit_1.D2R, S));
+            }
+        for (const [x, y, s] of [
+            [82, 64, -1],
+            [118, 64, 1],
+        ])
+            for (const a of [-60, -120])
+                set.add((0, kit_1.leaf)('maple', x, y, 14, (a + s * 12) * kit_1.D2R, S));
+        set.add((0, kit_1.leaf)('maple', 92, 84, 12, -150 * kit_1.D2R, S)).add((0, kit_1.leaf)('maple', 108, 84, 12, -30 * kit_1.D2R, S));
+        return {
+            body: [(0, kit_1.G)('stem', [(0, kit_1.L)('M100 171L100 96M100 98Q92 86 82 64M100 98Q108 86 118 64', S.wood(b), S.main * 1.5), (0, kit_1.L)(tw + 'M95 88l-3 -4M105 88l3 -4', S.wood(b), S.fine * 1.4)]), (0, kit_1.leavesNode)(S, 'leaves', set, S.pal)],
+            perch: [80, 150],
+        };
+    },
+    III: (c) => tree(c, {
+        ...base(exports.HABIT.maple),
+        pal: c.S.pal,
+        seed: 52,
+        masses: [(0, kit_1.M)(100, 38, 17, 26, 3), (0, kit_1.M)(84, 64, 20, 21, 2), (0, kit_1.M)(116, 64, 20, 21, 4), (0, kit_1.M)(82, 94, 22, 18, 1), (0, kit_1.M)(118, 94, 22, 18, 5)],
+        trunk: [[100, 171], [100, 142], [100, 112], 9, 5],
+        limbs: [
+            [[100, 118], [90, 106], [82, 94], 4, 1.4],
+            [[100, 114], [110, 102], [118, 92], 4, 1.4],
+            [[100, 112], [98, 84], [86, 64], 3.6, 1.3],
+            [[100, 110], [102, 84], [114, 64], 3.6, 1.3],
+            [[100, 108], [101, 70], [100, 40], 3.6, 1.3],
+        ],
+        extras: () => [
+            (0, kit_1.samaras)(c.S, [
+                [86, 110],
+                [114, 108],
+                [94, 80],
+            ]),
+        ],
+        perch: [80, 76],
+    }),
+    IV: (c) => {
+        const { S } = c;
+        const masses = [(0, kit_1.M)(38, 90, 26, 15, 1, { flat: 0.7 }), (0, kit_1.M)(162, 90, 26, 15, 5, { flat: 0.7 }), (0, kit_1.M)(64, 60, 30, 19, 2, { flat: 0.75 }), (0, kit_1.M)(136, 60, 30, 19, 4, { flat: 0.75 }), (0, kit_1.M)(100, 44, 32, 21, 3, { flat: 0.8 })];
+        return tree(c, {
+            ...base(exports.HABIT.maple),
+            pal: S.pal,
+            seed: 62,
+            masses,
+            rootD: c.inPot ? null : 'M90 168Q80 171 70 172M110 168Q120 171 130 172',
+            trunk: [[100, 171], [100, 152], [100, 132], 20, 14, { furrows: 5 }],
+            limbs: [
+                [[98, 138], [70, 116], [44, 90], 8, 2.4],
+                [[99, 134], [80, 96], [68, 62], 8, 2.4],
+                [[101, 134], [120, 96], [132, 62], 8, 2.4],
+                [[102, 138], [130, 116], [156, 90], 8, 2.4],
+                [[100, 134], [101, 92], [100, 48], 7, 2.2],
+            ],
+            extras: () => [
+                (0, kit_1.samaras)(S, [
+                    [28, 102],
+                    [46, 104],
+                    [58, 76],
+                    [76, 74],
+                    [124, 74],
+                    [142, 76],
+                    [154, 104],
+                    [172, 102],
+                ]),
+            ],
+            drift: (0, kit_1.drift)(S, [
+                [178, 128, 10, 40],
+                [24, 140, 9, 150],
+            ], S.pal, 'maple'),
+            glow: [100, 72, 86],
+            perch: [56, 44],
+        });
+    },
+};
+function pinnate(S, set, x, y, deg, len, n, ll, droop = 0.25) {
+    const a = deg * kit_1.D2R;
+    const p0 = [x, y];
+    const p1 = [x + Math.cos(a) * len, y + Math.sin(a) * len + len * droop * 0.6];
+    const pc = [x + Math.cos(a) * len * 0.55, y + Math.sin(a) * len * 0.55 - len * 0.12];
+    for (let i = 1; i <= n; i++) {
+        const t = 0.18 + (i / n) * 0.78;
+        const p = (0, kit_1.qp)(p0, pc, p1, t);
+        const ta = (0, kit_1.qa)(p0, pc, p1, t);
+        set.add((0, kit_1.leaf)('ovate', p[0], p[1], ll * (0.8 + 0.2 * Math.sin(Math.PI * t)), ta + (i % 2 ? -1 : 1) * 0.9, S, 0.8));
+    }
+    set.add((0, kit_1.leaf)('ovate', p1[0], p1[1], ll * 0.9, (0, kit_1.qa)(p0, pc, p1, 1), S, 0.8));
+    return (0, kit_1.Q)(p0, pc, p1);
+}
+const narra = {
+    I: (c) => {
+        const { S } = c;
+        const set = (0, kit_1.leafSet)();
+        const lp = (0, exports.green)(S.pal);
+        let veins = '';
+        for (let i = 0; i < 9; i++) {
+            const a = (i / 9) * Math.PI * 2;
+            veins += `M${(0, kit_1.f)(97 + Math.cos(a) * 6)} ${(0, kit_1.f)(160 + Math.sin(a) * 5)}L${(0, kit_1.f)(97 + Math.cos(a) * 14)} ${(0, kit_1.f)(160 + Math.sin(a) * 10)}`;
+        }
+        set.add((0, kit_1.leaf)('ovate', 101, 126, 13, -160 * kit_1.D2R, S)).add((0, kit_1.leaf)('ovate', 101, 126, 13, -20 * kit_1.D2R, S));
+        const rach = pinnate(S, set, 101, 126, -80, 14, 3, 6, 0.1);
+        return {
+            cutaway: (0, kit_1.cutaway)(S, 64, 136, 171, 188, 7),
+            body: [
+                (0, kit_1.G)('roots', [(0, kit_1.L)('M98 168Q97 176 100 184M99 177l-4 4M100 181l4 3', S.wood(kit_1.A0.bark.narra), S.fine * 1.5)]),
+                (0, kit_1.seedPart)(S, 'M80 166C78 152 92 144 104 148C116 152 116 166 106 171C96 175 82 174 80 166Z ' + (0, kit_1.oval)(97, 160, 6, 4.6), kit_1.A0.seedLight, veins),
+                (0, kit_1.G)('sprout', [(0, kit_1.L)('M99 156Q94 140 101 126' + rach, S.lineOf(lp), S.main), (0, kit_1.P)(set.wash(), S.washOf(lp), { opacity: S.washOp }), (0, kit_1.L)(set.line(), S.lineOf(lp), S.main)]),
+            ],
+            perch: [70, 170],
+        };
+    },
+    II: (c) => {
+        const { S } = c;
+        const set = (0, kit_1.leafSet)();
+        const p0 = [100, 171];
+        const cc = [93, 112];
+        const p1 = [106, 62];
+        let r = '';
+        for (const [t, a] of [
+            [0.3, 200],
+            [0.44, -22],
+            [0.58, 196],
+            [0.72, -28],
+            [0.86, 206],
+        ]) {
+            const p = (0, kit_1.qp)(p0, cc, p1, t);
+            r += pinnate(S, set, p[0], p[1], a, 28 + (1 - t) * 14, S.icon ? 2 : 5, 7.5, 0.3);
+        }
+        r += pinnate(S, set, 120, 50, -10, 18, 3, 6.5, 0.4);
+        const husk = 'M76 171C74 163 81 159 88 161C94 163 93 170 89 171Z';
+        return {
+            body: [
+                (0, kit_1.G)('husk', [(0, kit_1.P)(husk, S.woodFill(kit_1.A0.seedLight)), (0, kit_1.L)(husk, S.wood(kit_1.A0.seedLight), S.fine * 1.3)]),
+                (0, kit_1.G)('stem', [(0, kit_1.L)('M100 171Q93 112 106 62Q110 52 120 50', S.wood(kit_1.A0.bark.narra), S.main * 1.5)]),
+                (0, kit_1.leavesNode)(S, 'leaves', set, S.pal, [(0, kit_1.L)(r, S.lineOf(S.pal), S.fine * 1.2)]),
+            ],
+            perch: [66, 104],
+        };
+    },
+    III: (c) => tree(c, {
+        ...base(exports.HABIT.narra),
+        pal: c.S.pal,
+        seed: 21,
+        masses: [(0, kit_1.M)(44, 86, 26, 13, 1), (0, kit_1.M)(156, 86, 26, 13, 5), (0, kit_1.M)(72, 74, 27, 15, 2), (0, kit_1.M)(128, 74, 27, 15, 4), (0, kit_1.M)(100, 68, 28, 16, 3)],
+        trunk: [[100, 171], [100, 142], [100, 112], 11, 6.5],
+        limbs: [
+            [[100, 116], [70, 104], [42, 90], 5, 1.6],
+            [[100, 116], [82, 96], [68, 80], 5, 1.6],
+            [[100, 116], [100, 96], [100, 72], 5, 1.6],
+            [[100, 116], [118, 96], [132, 80], 5, 1.6],
+            [[100, 116], [130, 104], [158, 90], 5, 1.6],
+        ],
+        extras: () => [
+            (0, kit_1.goldSprays)(c.S, [
+                [86, 58],
+                [112, 56],
+                [140, 64],
+            ]),
+        ],
+        perch: [40, 72],
+    }),
+    IV: (c) => {
+        const { S } = c;
+        const R = (0, kit_1.rng)(44);
+        const set = (0, kit_1.leafSet)();
+        let fr = '';
+        if (!S.icon) {
+            const n = S.small ? 7 : 13;
+            for (let i = 0; i < n; i++) {
+                const x = 22 + i * (156 / (n - 1));
+                const y = 95 + Math.sin((i / (n - 1)) * Math.PI) * 4;
+                const l = 10 + R() * 8;
+                fr += `M${(0, kit_1.f)(x)} ${(0, kit_1.f)(y)}Q${(0, kit_1.f)(x + 2)} ${(0, kit_1.f)(y + l * 0.6)} ${(0, kit_1.f)(x - 1)} ${(0, kit_1.f)(y + l)}`;
+                set.add((0, kit_1.leaf)('ovate', x - 1, y + l, 6, 95 * kit_1.D2R, S, 0.8));
             }
         }
-    }
-    A.canopyBox = { cx: 100, cy: base - h * 0.6, rx: h * 0.7, ry: h * 0.55 };
-    A.crown = { x: 100, y: base - h - 6 };
-    A.perch = { x: 100 - h * 0.45, y: base - h * 0.75 };
-    A.neck = { x: 100, y: base - 8, w: 8 };
-    A.drift = { x: 100 + h * 0.5, y: base - h * 0.5 };
-    return { body: [G('stem', [L(stems.join(' '), ctx.wood(tokens_1.plantArt.seed.sampaguita), W.main)]), G('canopy', groups)] };
-}
-function cactus(ctx) {
-    const { st, lod, TL, pal, fol, W, fine, sc, base, A } = ctx;
-    const g4 = st;
-    const H = { 3: 34, 4: 50, 5: 60, 6: 66 }[g4];
-    const w = { 3: 12, 4: 15, 5: 17, 6: 19 }[g4];
-    const col = (x, y0, h, ww) => `M${f(x - ww / 2)} ${f(y0)}L${f(x - ww / 2)} ${f(y0 - h + ww / 2)}A${f(ww / 2)} ${f(ww / 2)} 0 0 1 ${f(x + ww / 2)} ${f(y0 - h + ww / 2)}L${f(x + ww / 2)} ${f(y0)}`;
-    const arm = (side, y, len, up, ww) => {
-        const x0 = 100 + side * w * 0.45;
-        const x1 = 100 + side * (w * 0.5 + len);
-        return `M${f(x0)} ${f(y)}L${f(x1 - (side * ww) / 2)} ${f(y)}Q${f(x1 + (side * ww) / 2)} ${f(y)} ${f(x1 + (side * ww) / 2)} ${f(y - ww)}L${f(x1 + (side * ww) / 2)} ${f(y - up)}A${f(ww / 2)} ${f(ww / 2)} 0 0 ${side > 0 ? 0 : 1} ${f(x1 - (side * ww) / 2)} ${f(y - up)}L${f(x1 - (side * ww) / 2)} ${f(y - ww)}L${f(x0)} ${f(y - ww)}`;
-    };
-    const groups = [];
-    const mainH = H * (st >= 4 ? sc[2] : 1);
-    const main = col(100, base, mainH, w);
-    const ribs = fine ? `M100 ${f(base - 2)}L100 ${f(base - mainH + 4)}M${f(100 - w * 0.25)} ${f(base - 2)}L${f(100 - w * 0.25)} ${f(base - H * 0.86)}M${f(100 + w * 0.25)} ${f(base - 2)}L${f(100 + w * 0.25)} ${f(base - H * 0.86)}` : '';
-    groups.push(G(st >= 4 ? 'domain-3' : null, [P(main + 'Z', fol[TL.washLeaf], { opacity: TL.washLeafOp }), L(main, ctx.lineOf(fol), W.main), ribs ? L(ribs, ctx.lineOf(fol), W.fine, { opacity: 0.6 }) : null]));
-    const arms = st >= 4
-        ? [
-            [-1, 0.45, 0, 1],
-            [1, 0.62, 3, 3],
-            [-1, 0.78, 1, 1],
-            [1, 0.35, 4, 0.8],
-        ]
-        : [[1, 0.5, -1, 0.8]];
-    for (const [side, ty, dom, kk] of arms) {
-        const s = st >= 4 ? sc[dom === -1 ? 0 : dom] : 1;
-        const y = base - H * ty;
-        const ww = w * 0.62;
-        const d = arm(side, y, w * 0.55 * s * kk + 4, H * 0.28 * s, ww);
-        groups.push(G(st >= 4 ? `domain-${dom + 1}` : null, [P(d + 'Z', fol[TL.washLeaf], { opacity: TL.washLeafOp }), L(d, ctx.lineOf(fol), W.main)]));
-        if (st >= 4)
-            A.organs[dom] = { x: 100 + side * (w + 6), y: y - 8 };
-    }
-    A.organs[2] = { x: 100, y: base - H * 0.6 };
-    if (lod !== 'icon') {
-        let sp = '';
-        for (let y = base - 8; y > base - H + 6; y -= lod === 'full' ? 7 : 10)
-            for (const sd of [-1, 1])
-                sp += `M${f(100 + (sd * w) / 2)} ${f(y)}l${f(sd * 2.6)} -1.2`;
-        groups.push(G(null, [L(sp, ctx.lineOf(fol), W.main * 0.6, { opacity: 0.75 })]));
-    }
-    const body = [G('canopy', groups)];
-    if (st >= 5 && lod !== 'icon') {
-        const top = base - mainH;
-        const bl = [0, 1, 2, 3, 4].map((i) => xf('M0 0Q0.42 -0.55 0 -1Q-0.42 -0.55 0 0Z', 100, top + 2, (-90 + (i - 2) * 30) * D2R + Math.PI / 2, st === 6 ? 10 : 8)).join(' ');
-        body.push(G('blooms', [P(bl, pal[TL.washLeaf], { opacity: 0.85 }), L(bl, ctx.lineOf(pal), W.main)]));
-    }
-    A.canopyBox = { cx: 100, cy: base - H * 0.55, rx: w * 2.2, ry: H * 0.55 };
-    A.crown = { x: 100, y: base - H - 6 };
-    A.perch = { x: 100 - w * 1.8, y: base - H * 0.5 };
-    A.neck = { x: 100, y: base - 10, w };
-    A.drift = { x: 120, y: base - H * 0.6 };
-    return { body };
-}
-function bamboo(ctx) {
-    const { st, lod, TL, W, fine, sc, base, A, seed, kit, pal } = ctx;
-    const r = kit.rng(seed);
-    const n = st >= 4 ? 5 : 2;
-    const H = { 3: 62, 4: 96, 5: 112, 6: 124 }[st];
-    const xs = n === 5 ? [-22, -11, 0, 11, 22] : [-6, 7];
-    const hs = n === 5 ? [0.66, 0.84, 1, 0.9, 0.72] : [1, 0.78];
-    const groups = [];
-    const culmLine = tokens_1.plantLeaf.spring;
-    for (let i = 0; i < n; i++) {
-        const h = H * hs[i] * (st >= 4 ? sc[i] : 1);
-        const x = 100 + xs[i];
-        const ww = { 3: 6, 4: 6.4, 5: 7, 6: 7.6 }[st] * (i === 2 ? 1.1 : 1);
-        const lean = (i - (n - 1) / 2) * 1.6;
-        const top = [x + lean, base - h];
-        const t = taper([x, base + 1], [x + lean * 0.3, base - h * 0.5], top, ww, ww * 0.8);
-        let nodes = '';
-        const seg = lod === 'full' ? 14 : 18;
-        for (let y = base - seg; y > base - h + 6; y -= seg) {
-            const tt = (base - y) / h;
-            const cxn = x + lean * tt * tt;
-            nodes += `M${f(cxn - ww * 0.55)} ${f(y)}Q${f(cxn)} ${f(y + 1.4)} ${f(cxn + ww * 0.55)} ${f(y)}`;
+        const bt = c.inPot ? [] : ['M92 140C88 156 76 166 60 171L92 171Z', 'M96 146C95 158 88 166 80 171L96 171Z', 'M108 140C112 156 124 166 142 171L108 171Z', 'M104 148C106 160 112 166 120 171L104 171Z'];
+        const masses = [(0, kit_1.M)(30, 84, 26, 13, 1), (0, kit_1.M)(170, 84, 26, 13, 5), (0, kit_1.M)(58, 68, 30, 17, 2), (0, kit_1.M)(142, 68, 30, 17, 4), (0, kit_1.M)(100, 60, 32, 18, 3)];
+        let coins = '';
+        if (!S.icon)
+            for (const [x, y] of [
+                [58, 108],
+                [140, 104],
+                [152, 113],
+            ])
+                coins += (0, kit_1.disc)(x, y, 3.4);
+        const specks = [
+            [30, 130],
+            [44, 150],
+            [150, 136],
+            [168, 154],
+            [132, 158],
+        ];
+        const speckD = specks.map(([x, y]) => (0, kit_1.oval)(x, y, 1.6, 1)).join(' ');
+        return tree(c, {
+            ...base(exports.HABIT.narra),
+            pal: S.pal,
+            seed: 31,
+            masses,
+            limbs: [
+                [[100, 112], [64, 104], [26, 88], 6.5, 2],
+                [[100, 112], [76, 88], [54, 68], 7, 2],
+                [[100, 112], [92, 86], [86, 58], 7, 2],
+                [[100, 112], [108, 86], [116, 58], 7, 2],
+                [[100, 112], [124, 88], [146, 68], 7, 2],
+                [[100, 112], [136, 104], [174, 88], 6.5, 2],
+            ],
+            trunk: [[100, 171], [100, 140], [100, 108], 22, 12, { furrows: 6 }],
+            afterTrunk: bt.length
+                ? [(0, kit_1.G)('buttress', [(0, kit_1.P)(bt.join(' '), S.woodFill(kit_1.A0.bark.narra)), S.icon ? null : (0, kit_1.L)((0, kit_1.hatchE)(100, 166, 44, 10, 156, 171, 2, 30), S.wood(kit_1.A0.bark.narra), S.hair, { opacity: 0.45 }), (0, kit_1.L)(bt.join(' '), S.wood(kit_1.A0.bark.narra), S.main)])]
+                : [],
+            extras: () => [
+                fr ? (0, kit_1.G)('fringe', [(0, kit_1.L)(fr, S.lineOf(S.pal), S.fine * 1.1), (0, kit_1.P)(set.wash(), S.washOf(S.pal), { opacity: S.washOp }), (0, kit_1.L)(set.line(), S.lineOf(S.pal), S.fine * 1.1)]) : null,
+                coins ? (0, kit_1.G)('fruit', [(0, kit_1.L)('M58 101V105M140 97V101M152 106V110', S.wood(kit_1.A0.bark.narra), S.hair * 1.4), (0, kit_1.P)(coins, S.woodFill(kit_1.A0.seedLight)), (0, kit_1.L)(coins, S.wood(kit_1.A0.seedLight), S.fine)]) : null,
+                (0, kit_1.goldSprays)(S, [
+                    [44, 72],
+                    [66, 54],
+                    [88, 46],
+                    [112, 44],
+                    [134, 54],
+                    [158, 70],
+                    [80, 64],
+                    [122, 62],
+                    [26, 80],
+                    [176, 80],
+                    [100, 52],
+                ], 1.15),
+            ],
+            drift: S.full ? [(0, kit_1.P)(speckD, S.goldWash, { opacity: 0.85 }), (0, kit_1.L)(speckD, S.gold, S.hair)] : [],
+            glow: [100, 74, 86],
+            perch: [36, 70],
+        });
+    },
+};
+const cherry = {
+    I: (c) => young1(c, {
+        seedColor: kit_1.A0.seedLight,
+        seedD: (0, kit_1.oval)(96, 163, 8.5, 7.4),
+        seedLine: 'M88 162Q96 158 104 164',
+        root: 'M98 170Q97 178 100 188M98 178l-4 3M99 183l4 2',
+        stem: 'M98 156Q96 142 101 126',
+        leaves: [
+            ['ovate', 101, 126, 15, -155, 0.75],
+            ['ovate', 101, 126, 15, -25, 0.75],
+            ['ovate', 101, 126, 7, -90, 0.7],
+        ],
+        seed: 8,
+    }),
+    II: (c) => {
+        const { S } = c;
+        const set = (0, kit_1.leafSet)();
+        const lp = (0, exports.green)(S.pal);
+        const b = kit_1.A0.bark.cherry;
+        let bandD = '';
+        for (let y = 160; y > 80; y -= 9)
+            bandD += `M98.6 ${y}h2.8`;
+        for (const [x, y, s] of [
+            [100, 142, -1],
+            [101, 124, 1],
+            [100, 106, -1],
+            [101, 90, 1],
+            [101, 76, -1],
+        ])
+            set.add((0, kit_1.leaf)('ovate', x, y, 15, (-90 + s * 55) * kit_1.D2R, S, 0.7));
+        let bd = '';
+        for (const [x, y] of [
+            [104, 66],
+            [96, 70],
+            [101, 60],
+            [108, 86],
+        ])
+            bd += (0, kit_1.oval)(x, y, 2.2, 3);
+        return {
+            body: [
+                (0, kit_1.G)('stem', [(0, kit_1.L)('M100 171L100 142L101 124L100 106L101 90L101 70', S.wood(b), S.main * 1.6), S.icon ? null : (0, kit_1.L)(bandD, S.wood(b), S.hair * 1.6)]),
+                (0, kit_1.leavesNode)(S, 'leaves', set, lp),
+                S.icon ? null : (0, kit_1.G)('blooms', [(0, kit_1.L)('M101 74L104 66M101 74L96 70M101 70L101 60M101 92L108 86', S.wood(b), S.hair * 1.4), (0, kit_1.P)(bd, S.washOf(S.pal), { opacity: 0.9 }), (0, kit_1.L)(bd, S.lineOf(S.pal), S.fine * 1.2)]),
+            ],
+            perch: [80, 150],
+        };
+    },
+    III: (c) => tree(c, {
+        ...base(exports.HABIT['cherry-blossom']),
+        pal: c.S.pal,
+        seed: 23,
+        masses: [(0, kit_1.M)(46, 96, 26, 14, 1), (0, kit_1.M)(154, 96, 26, 14, 5), (0, kit_1.M)(70, 78, 28, 17, 2), (0, kit_1.M)(130, 78, 28, 17, 4), (0, kit_1.M)(100, 70, 28, 17, 3)],
+        trunk: [[100, 171], [100, 144], [98, 118], 11, 7, { extra: exports.bands }],
+        limbs: [
+            [[98, 122], [70, 114], [46, 100], 5, 1.6],
+            [[98, 120], [80, 98], [70, 82], 5, 1.6],
+            [[98, 120], [98, 96], [100, 74], 5, 1.6],
+            [[99, 120], [118, 98], [130, 82], 5, 1.6],
+            [[99, 122], [130, 114], [154, 100], 5, 1.6],
+        ],
+        perch: [44, 80],
+    }),
+    IV: (c) => {
+        const { S } = c;
+        const masses = [(0, kit_1.M)(34, 92, 17, 12, 1), (0, kit_1.M)(166, 92, 17, 12, 5), (0, kit_1.M)(62, 70, 21, 15, 2), (0, kit_1.M)(138, 70, 21, 15, 4), (0, kit_1.M)(100, 54, 30, 20, 3)];
+        let strands = '';
+        const tips = [];
+        const R = (0, kit_1.rng)(12);
+        if (!S.icon)
+            for (const [x0, y0, len] of [
+                [22, 98, 50],
+                [32, 102, 62],
+                [44, 100, 54],
+                [52, 80, 70],
+                [64, 82, 64],
+                [74, 78, 56],
+                [86, 70, 48],
+                [114, 70, 48],
+                [126, 78, 56],
+                [136, 82, 64],
+                [148, 80, 70],
+                [156, 100, 54],
+                [168, 102, 62],
+                [178, 98, 50],
+            ]) {
+                const x1 = x0 + (x0 < 100 ? -2 : 2);
+                const y1 = Math.min(160, y0 + len);
+                strands += `M${x0} ${y0}Q${(0, kit_1.f)(x0 + (x0 < 100 ? 1 : -1))} ${(0, kit_1.f)((y0 + y1) / 2)} ${x1} ${y1}`;
+                for (let t = 0.3; t <= 1.01; t += S.small ? 0.35 : 0.22)
+                    tips.push([x0 + (x1 - x0) * t + (R() - 0.5) * 2, y0 + (y1 - y0) * t]);
+            }
+        return tree(c, {
+            ...base(exports.HABIT['cherry-blossom']),
+            pal: S.pal,
+            seed: 33,
+            masses,
+            rootD: c.inPot ? null : 'M90 168Q82 171 72 172M110 168Q118 171 128 172',
+            limbs: [
+                [[100, 112], [64, 60], [32, 92], 7, 2],
+                [[100, 110], [80, 46], [60, 72], 7, 2],
+                [[100, 108], [100, 70], [100, 50], 7, 2],
+                [[100, 110], [120, 46], [140, 72], 7, 2],
+                [[100, 112], [136, 60], [168, 92], 7, 2],
+            ],
+            trunk: [[100, 171], [100, 140], [100, 108], 20, 12, { extra: exports.bands, furrows: 0 }],
+            extras: () => [strands ? (0, kit_1.G)('fringe', [(0, kit_1.L)(strands, S.wood(kit_1.A0.bark.cherry), S.hair * 1.5)]) : null, (0, kit_1.blossoms)(S, tips, 2.4, S.pal)],
+            drift: (0, kit_1.drift)(S, [
+                [16, 164, 9, 20],
+                [184, 164, 9, 50],
+                [150, 166, 8, 10],
+            ], S.pal, 'blossom'),
+            glow: [100, 84, 84],
+            perch: [100, 32],
+        });
+    },
+};
+const mango = {
+    I: (c) => young1(c, {
+        seedColor: kit_1.A0.seedLight,
+        seedD: 'M82 166C80 158 88 154 96 155C106 156 110 162 106 168C102 173 86 173 82 166Z',
+        seedLine: 'M86 158l3 12M90 156l3 15M95 155l2 16M100 156l1 15M104 158l0 11',
+        root: 'M96 170Q95 178 98 188M96 178l-4 3M97 183l4 2',
+        stem: 'M97 156Q97 140 100 124',
+        leaves: [
+            ['long', 100, 124, 22, -140],
+            ['long', 100, 124, 22, -40],
+            ['long', 100, 124, 18, -90],
+        ],
+        seed: 9,
+    }),
+    II: (c) => {
+        const { S } = c;
+        const old = (0, kit_1.leafSet)();
+        const flush = (0, kit_1.leafSet)();
+        for (let i = 0; i < 7; i++)
+            old.add((0, kit_1.leaf)('long', 100, 112, 26, (-180 + i * 30) * kit_1.D2R + 0.08, S));
+        for (let i = 0; i < 5; i++)
+            flush.add((0, kit_1.leaf)('long', 100, 64, 22, (55 + i * 17.5) * kit_1.D2R, S));
+        flush.add((0, kit_1.leaf)('long', 100, 64, 12, -90 * kit_1.D2R, S));
+        return { body: [(0, kit_1.G)('stem', [(0, kit_1.L)('M100 171L100 66', S.wood(kit_1.A0.bark.mango), S.main * 1.6)]), (0, kit_1.leavesNode)(S, 'leaves', old, S.pal), (0, kit_1.leavesNode)(S, 'flush', flush, 'ember')], perch: [72, 112] };
+    },
+    III: (c) => {
+        const { S } = c;
+        const masses = [(0, kit_1.M)(68, 98, 24, 18, 1), (0, kit_1.M)(132, 98, 24, 18, 5), (0, kit_1.M)(80, 74, 24, 20, 2), (0, kit_1.M)(120, 74, 24, 20, 4), (0, kit_1.M)(100, 64, 26, 20, 3)];
+        let tas = '';
+        let dots = '';
+        for (const [x, y, h] of [
+            [76, 58, 18],
+            [96, 46, 22],
+            [118, 52, 20],
+            [138, 74, 16],
+            [60, 80, 15],
+        ]) {
+            tas += `M${x - 4} ${y}L${x} ${y - h}L${x + 4} ${y}Z`;
+            if (S.full)
+                for (let i = 0; i < 4; i++)
+                    dots += `M${(0, kit_1.f)(x - 2 + (i % 2) * 4)} ${(0, kit_1.f)(y - 3 - i * h * 0.2)}h0.01`;
         }
-        const kids = [P(t.closed, tokens_1.plantArt.bamboo.mid, { opacity: TL.washLeafOp * 0.8 }), L(t.sides, ctx.lineOf(culmLine), W.main)];
-        if (lod !== 'icon')
-            kids.push(L(nodes, ctx.lineOf(culmLine), W.main * 0.9));
-        const list = [];
-        for (let j = 0; j < 2; j++) {
-            const y = base - h * (0.62 + j * 0.15);
-            const side = (i + j) % 2 ? 1 : -1;
-            const cxn = x + lean * ((base - y) / h) ** 2;
-            const tip = [cxn + side * 12, y - 6];
-            kids.push(L(Q([cxn + side * ww * 0.4, y], [cxn + side * 7, y - 1], tip), ctx.lineOf(culmLine), W.main * 0.8));
-            const ll = lod === 'full' ? 16 : 19;
-            list.push(leaf('long', tip[0], tip[1], ll, (side > 0 ? -10 : -170) * D2R + (r() - 0.5) * 0.3, fine), leaf('long', tip[0], tip[1], ll * 0.85, (side > 0 ? 35 : 145) * D2R, fine));
-        }
-        list.push(leaf('long', top[0], top[1], lod === 'full' ? 12 : 15, -70 * D2R, fine), leaf('long', top[0], top[1], lod === 'full' ? 11 : 14, -120 * D2R, fine));
-        groups.push(leafGroup(ctx, n === 5 ? `domain-${i + 1}` : null, list, pal, kids));
-        if (n === 5)
-            A.organs[i] = { x: top[0], y: top[1] + h * 0.2 };
-    }
-    const order = n === 5 ? [0, 4, 1, 3, 2].map((k) => groups[k]) : groups;
-    A.canopyBox = { cx: 100, cy: base - H * 0.6, rx: 40, ry: H * 0.5 };
-    A.crown = { x: 100, y: base - H - 6 };
-    A.perch = { x: 72, y: base - H * 0.5 };
-    A.neck = { x: 100, y: base - 10, w: 30 };
-    A.drift = { x: 130, y: base - H * 0.5 };
-    return { body: [G('canopy', order)] };
-}
-const BUILD = { cloud: cloudTree, pine: pineTree, palm: palmTree, bonsai: bonsaiTree, sunflower, lotus, sampaguita, cactus, bamboo };
+        return tree(c, {
+            ...base(exports.HABIT.mango),
+            pal: S.pal,
+            seed: 24,
+            masses,
+            trunk: [[100, 171], [100, 146], [100, 118], 12, 7],
+            limbs: [
+                [[100, 122], [82, 112], [70, 100], 5, 1.6],
+                [[100, 120], [86, 96], [80, 76], 5, 1.6],
+                [[100, 118], [100, 92], [100, 66], 5, 1.6],
+                [[100, 120], [114, 96], [120, 76], 5, 1.6],
+                [[100, 122], [118, 112], [130, 100], 5, 1.6],
+            ],
+            extras: () => [(0, kit_1.G)('blooms', [(0, kit_1.P)(tas, S.goldWash, { opacity: 0.7 }), (0, kit_1.L)(tas, S.gold, S.fine * 1.2), dots ? (0, kit_1.L)(dots, S.gold, 1.4) : null])],
+            perch: [62, 76],
+        });
+    },
+    IV: (c) => {
+        const { S } = c;
+        const masses = [(0, kit_1.M)(30, 118, 26, 20, 1, { dense: true }), (0, kit_1.M)(170, 118, 26, 20, 5, { dense: true }), (0, kit_1.M)(56, 86, 32, 26, 2, { dense: true }), (0, kit_1.M)(144, 86, 32, 26, 4, { dense: true }), (0, kit_1.M)(100, 66, 40, 30, 3, { dense: true })];
+        return tree(c, {
+            ...base(exports.HABIT.mango),
+            pal: S.pal,
+            seed: 34,
+            masses,
+            dense: true,
+            rootD: c.inPot ? null : 'M88 168Q78 171 66 172M112 168Q122 171 134 172',
+            limbs: [
+                [[100, 146], [62, 140], [34, 124], 9, 3],
+                [[100, 144], [74, 116], [58, 92], 9, 3],
+                [[100, 142], [100, 104], [100, 70], 9, 3],
+                [[100, 144], [126, 116], [142, 92], 9, 3],
+                [[100, 146], [138, 140], [166, 124], 9, 3],
+            ],
+            trunk: [[100, 171], [100, 156], [100, 140], 26, 20, { furrows: 6 }],
+            extras: () => [
+                mangoes(S, [
+                    [24, 134],
+                    [44, 134],
+                    [66, 108],
+                    [86, 92],
+                    [114, 92],
+                    [134, 108],
+                    [156, 134],
+                    [176, 134],
+                    [100, 94],
+                ]),
+            ],
+            glow: [100, 92, 88],
+            perch: [100, 34],
+        });
+    },
+};
+exports.TREE_LINES = {
+    oak: { pal: 'grove', forms: oak, flavours: (0, exports.flavoursFor)(exports.HABIT.oak) },
+    maple: { pal: 'ember', forms: maple, flavours: (0, exports.flavoursFor)(exports.HABIT.maple) },
+    narra: { pal: 'spring', forms: narra, flavours: (0, exports.flavoursFor)(exports.HABIT.narra) },
+    'cherry-blossom': { pal: 'blossom', forms: cherry, flavours: (0, exports.flavoursFor)(exports.HABIT['cherry-blossom']) },
+    mango: { pal: 'evergreen', forms: mango, flavours: (0, exports.flavoursFor)(exports.HABIT.mango) },
+};
   };
   links["src/engine/answerClock.ts"] = {};
   defs["src/engine/answerClock.ts"] = function (module, exports, require) {
@@ -7059,6 +9396,317 @@ function organLabel(index, domainName, mastery, step, next = false) {
     return `Domain ${index + 1}, ${domainName}, ${pc} percent, ${exports.ORGAN_STEP_WORDS[step]}.${next ? ' Next to grow.' : ''}`;
 }
   };
+  links["src/engine/plantForms.ts"] = {};
+  defs["src/engine/plantForms.ts"] = function (module, exports, require) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.RECALL_FORM_IV = exports.RECALL_FORM_III = exports.RECALL_GAP_DAYS = exports.SEE_NEW_FORM = exports.theForm = exports.FLAVOUR_LOOKS = exports.FORMS = exports.SPECIES_KEY = exports.FLAVOURS = exports.FINAL_IDS = exports.FLAVOUR_IDS = exports.FORM_START = exports.FORM_OF_GROWTH = void 0;
+exports.formOf = formOf;
+exports.crossesForm = crossesForm;
+exports.nextFormAt = nextFormAt;
+exports.isFinalId = isFinalId;
+exports.resolveFinal = resolveFinal;
+exports.finalName = finalName;
+exports.finalLook = finalLook;
+exports.formName = formName;
+exports.formLook = formLook;
+exports.nextFormLine = nextFormLine;
+exports.newFormLine = newFormLine;
+exports.formsIntroLine = formsIntroLine;
+exports.delayedRecalls = delayedRecalls;
+exports.baselineForms = baselineForms;
+exports.formMoment = formMoment;
+exports.afterReveal = afterReveal;
+exports.afterNote = afterNote;
+exports.revealMode = revealMode;
+exports.revealTimeline = revealTimeline;
+exports.FORM_OF_GROWTH = { 1: 1, 2: 1, 3: 2, 4: 3, 5: 3, 6: 4 };
+exports.FORM_START = { 1: 1, 2: 3, 3: 4, 4: 6 };
+const GROWTH_WORD = { 1: 'Seed', 2: 'Sprout', 3: 'Shoot', 4: 'Bough', 5: 'Crown', 6: 'Elder' };
+const clampGrowth = (g) => Math.max(1, Math.min(6, Math.round(Number.isFinite(g) ? g : 1)));
+function formOf(growth) {
+    return exports.FORM_OF_GROWTH[clampGrowth(growth)];
+}
+function crossesForm(from, to) {
+    return formOf(to) > formOf(from);
+}
+function nextFormAt(growth) {
+    const f = formOf(growth);
+    if (f >= 4)
+        return null;
+    const next = (f + 1);
+    return { form: next, at: exports.FORM_START[next] };
+}
+exports.FLAVOUR_IDS = ['lookout', 'moot', 'espalier', 'coppice', 'holdfast'];
+exports.FINAL_IDS = ['own', ...exports.FLAVOUR_IDS];
+function isFinalId(x) {
+    return typeof x === 'string' && exports.FINAL_IDS.includes(x);
+}
+exports.FLAVOURS = {
+    lookout: { name: 'Lookout', idea: 'A high, open crown with a clear view through it.' },
+    moot: { name: 'Moot', idea: 'Level limbs make a roof over a ring of meeting stones.' },
+    espalier: { name: 'Espalier', idea: 'Limbs trained along a frame, built to a plan.' },
+    coppice: { name: 'Coppice', idea: 'Several stems rise from one base and keep growing back.' },
+    holdfast: { name: 'Holdfast', idea: 'Roots grip a stone under a dense, closed crown.' },
+};
+function resolveFinal(growth, choice) {
+    return clampGrowth(growth) >= 6 && isFinalId(choice) ? choice : 'own';
+}
+exports.SPECIES_KEY = {
+    oak: 'Oak',
+    maple: 'Maple',
+    narra: 'Narra',
+    'cherry-blossom': 'Cherry',
+    pine: 'Pine',
+    'coconut-palm': 'Palm',
+    mango: 'Mango',
+    bonsai: 'Bonsai',
+    sunflower: 'Sunflower',
+    lotus: 'Lotus',
+    sampaguita: 'Sampaguita',
+    cactus: 'Cactus',
+    bamboo: 'Bamboo',
+};
+exports.FORMS = {
+    oak: [
+        ['Acorn-cup Oak', 'An acorn in its engraved cup; the first root shows in the soil.'],
+        ['Whip Oak', 'One straight leader with lobed leaves at each node.'],
+        ['Standard Oak', 'A clear stem and an upright oval crown; the first acorns.'],
+        ['Broadcrown Oak', 'A short, massive trunk, low sinuous limbs and a broad, open dome hung with acorns.'],
+    ],
+    maple: [
+        ['Samara Maple', 'The paired winged seed on the soil; two strap seed-leaves and a first five-point leaf.'],
+        ['Forked Maple', 'Leaves in opposite pairs up a slim stem that forks in two.'],
+        ['Flame Maple', 'A tall, pointed crown shaped like a candle flame.'],
+        ['Vaulted Maple', 'A tall, open vase of limbs under a broad vault; winged seeds hang from its eaves.'],
+    ],
+    narra: [
+        ['Coin Narra', 'The round winged pod, half settled; a first shoot and root.'],
+        ['Featherleaf Narra', 'One arching wand of feathered leaves; the husk stays by it.'],
+        ['Parasol Narra', 'A flat, spreading parasol on a clean stem; the first golden sprays.'],
+        ['Gold-rain Narra', 'Plank buttresses, a vast weeping umbrella, golden showers and hanging coins.'],
+    ],
+    'cherry-blossom': [
+        ['Cherry Stone', 'The round stone with its seam; two first serrated leaves.'],
+        ['Banded Cherry', 'A slim stem with the cherry’s banded bark and its first pink buds.'],
+        ['Spreading Cherry', 'Wide, low clouds of bud and blossom on spreading limbs.'],
+        ['Cascade Cherry', 'Limbs rise, then fall in long curtains of blossom; petals drift.'],
+    ],
+    pine: [
+        ['Starburst Pine', 'The winged seed, and a starburst of seed-needles.'],
+        ['Candle Pine', 'One leader in whorls of needles, a pale new candle at its tip.'],
+        ['Spire Pine', 'A tiered cone of whorls, narrowing to a point.'],
+        ['Highcloud Pine', 'A tall, leaning bole carrying level cloud pads high up; cones below.'],
+    ],
+    'coconut-palm': [
+        ['Husk Palm', 'The husked nut lying on the soil, a shoot rising from its eye.'],
+        ['Strapleaf Palm', 'Whole, pleated young leaves fanning from the nut.'],
+        ['Ringed Palm', 'A short ringed trunk, five arching fronds and the first green nuts.'],
+        ['Shoreline Palm', 'A tall curving trunk, a full crown of fronds, ripe nuts, and a nut sprouting at its foot.'],
+    ],
+    mango: [
+        ['Kernel Mango', 'The flat, fibred stone and a first flush of leaves.'],
+        ['Whorl Mango', 'Leaves gather in whorls; the new flush hangs bronze at the tip.'],
+        ['Tassel Mango', 'A rounded crown with flower tassels standing up like candles.'],
+        ['Laden Mango', 'A vast, low, dark dome with fruit hanging on long stalks.'],
+    ],
+    bonsai: [
+        ['First-bend Bonsai', 'A seedling in its tray, taking its first bend.'],
+        ['Upright Bonsai', 'A straight, tapering trunk and three pads in a triangle.'],
+        ['Winding Bonsai', 'An S-curved trunk carrying five cloud pads.'],
+        ['Windswept Bonsai', 'The trunk leans with the wind and every pad streams one way; small white flowers.'],
+    ],
+    sunflower: [
+        ['Seed-cap Sunflower', 'Two round seed-leaves, one still wearing the striped seed as a cap.'],
+        ['Heart-leaf Sunflower', 'Paired heart-shaped leaves and a tight green bud.'],
+        ['Morning Sunflower', 'A tall stem, the head open and turned to one side.'],
+        ['Spiral Sunflower', 'A great head facing you, its seeds set in spirals; a second bud below.'],
+    ],
+    lotus: [
+        ['First-pad Lotus', 'One floating pad and a rolled leaf rising from the water.'],
+        ['Raised-pad Lotus', 'Pads lift on stalks above the water; a new leaf unrolls.'],
+        ['Tall-bud Lotus', 'Five pads and one tall, pointed bud.'],
+        ['Open Lotus', 'The flower fully open around its seed cup, a bud and a seed head beside it.'],
+    ],
+    sampaguita: [
+        ['Cutting Sampaguita', 'A cutting set in the soil, rooting from its node.'],
+        ['Twining Sampaguita', 'Two arching stems with paired leaves and the first star-buds.'],
+        ['Star-mound Sampaguita', 'A dark green mound dotted with white star flowers.'],
+        ['Garland Sampaguita', 'A full shrub in flower, with a strung garland of its own stars.'],
+    ],
+    cactus: [
+        ['Pebble Cactus', 'A small spined globe in its pot.'],
+        ['Column Cactus', 'One ribbed column lined with spines.'],
+        ['Cross-arm Cactus', 'Four short arms and a first bud on top.'],
+        ['Crown-bloom Cactus', 'A tall column, arms raised high, crowned with flowers.'],
+    ],
+    bamboo: [
+        ['Sheath Bamboo', 'The shoot in its overlapping sheaths; the rhizome below.'],
+        ['First-culm Bamboo', 'One jointed culm with leaf fans; the next shoot beside it.'],
+        ['Vase Bamboo', 'Five culms rise in a vase, sprays leaning outward.'],
+        ['Moon-gate Bamboo', 'The culms arch together into a round gate.'],
+    ],
+};
+exports.FLAVOUR_LOOKS = {
+    oak: {
+        lookout: 'A tall clear bole; the oak’s crown parts into a ring around an open window.',
+        moot: 'Long level limbs roof a ring of five stones; the crown sits in tiers.',
+        espalier: 'Three tiers of oak limbs trained level along wires between two posts.',
+        coppice: 'Three oak stems rise from one broad stool; new shoots at the foot.',
+        holdfast: 'Oak roots grip a boulder under a dense, closed dome.',
+    },
+    maple: {
+        lookout: 'A tall maple with its crown opened into a ring, winged seeds hanging.',
+        moot: 'Maple limbs held level in calm tiers over five meeting stones.',
+        espalier: 'Maple cordons trained flat along a frame, seeds along the wires.',
+        coppice: 'Three slim maple stems from one stool, each with its own small crown.',
+        holdfast: 'A short, thick maple gripping a stone, its crown closed and dense.',
+    },
+    narra: {
+        lookout: 'A raised narra parasol, parted around a sightline, gold sprays on top.',
+        moot: 'The narra’s parasol spread into level tiers above five stones.',
+        espalier: 'Narra limbs trained level along wires, golden sprays along each tier.',
+        coppice: 'Three narra stems from one stool, each with a small gold-flecked crown.',
+        holdfast: 'Narra roots clasp a boulder beneath a dense, closed crown.',
+    },
+    'cherry-blossom': {
+        lookout: 'A tall banded cherry, its blossom parted into a ring around an open window.',
+        moot: 'Level blossom tiers on long banded limbs over five meeting stones.',
+        espalier: 'Cherry limbs trained flat on a frame, blossom along every tier.',
+        coppice: 'Three cherry stems from one stool, each in its own cloud of blossom.',
+        holdfast: 'A thick banded trunk on a boulder under a dense dome of blossom.',
+    },
+    pine: {
+        lookout: 'A tall bare bole with level pads only near the top, around a sightline.',
+        moot: 'Broad, level pads in calm tiers, like a roof, over five meeting stones.',
+        espalier: 'A pole rises above the crown and ropes fan down to hold the level limbs.',
+        coppice: 'Three pine stems from one stool, each carrying its own pads.',
+        holdfast: 'A pine on a rock, its roots clasping the stone; dense pads above.',
+    },
+    'coconut-palm': {
+        lookout: 'The tallest, straightest trunk, its crown high above everything.',
+        moot: 'Fronds held level like a flat roof over five meeting stones.',
+        espalier: 'A young palm braced by a timber tripod, its fronds trained into an even fan.',
+        coppice: 'A mother palm with two young palms rising from the same base.',
+        holdfast: 'A short, stout trunk on a rock, roots gripping, a dense crown of fronds.',
+    },
+    mango: {
+        lookout: 'A tall mango, its dark crown parted around a sightline, fruit hanging.',
+        moot: 'The mango’s dome spread into level tiers over five meeting stones.',
+        espalier: 'Mango limbs trained level along a frame, fruit hanging along the wires.',
+        coppice: 'Three mango stems from one stool, each with its own small dome.',
+        holdfast: 'A thick mango gripping a boulder under a closed, dark dome.',
+    },
+    bonsai: {
+        lookout: 'A tall, slender trunk with a few small pads high up: the scholar’s style.',
+        moot: 'A thick, short trunk with broad pads in level tiers; pebbles on the soil.',
+        espalier: 'Branches wired into a flat fan, the wire coiled along each one.',
+        coppice: 'Three trunks rising together from one root.',
+        holdfast: 'Roots grip over a stone set in the tray; a dense crown above.',
+    },
+    sunflower: {
+        lookout: 'An extra-tall stem, the head high and turned outward; leaves stay low.',
+        moot: 'Leaves held level in tiers, the head turned up to the sky, five stones below.',
+        espalier: 'Tied to a cane at three points, leaves trained flat to each side.',
+        coppice: 'One stem branches into three heads from a single base.',
+        holdfast: 'A short, stout stem on a stone, the head bowed, leaves overlapping like a shield.',
+    },
+    lotus: {
+        lookout: 'One flower lifted far above the pads on a tall stalk.',
+        moot: 'Pads held level in a ring around the open flower; stepping stones in the water.',
+        espalier: 'A reed frame in the bowl; the stem tied to its rails, pads in a neat row.',
+        coppice: 'Three flowers rise from one root: a bud, a half-open cup and a full bloom.',
+        holdfast: 'A stone in the bowl gripped by the root; raised pads close round a cupped bloom.',
+    },
+    sampaguita: {
+        lookout: 'Trained as a little tree: a clear stem and a round, starred head.',
+        moot: 'Clipped into two level tiers, stars along the edges, over five stones.',
+        espalier: 'Stems tied along a fan trellis, a star flower at each tip.',
+        coppice: 'Cut back to a low stool; many slim stems spring up again.',
+        holdfast: 'A dense clipped dome over a stone its roots hold fast.',
+    },
+    cactus: {
+        lookout: 'The tallest column, tiny arms low down, a single flower at the top.',
+        moot: 'Arms held level in two tiers, like a table; pebbles in the pot.',
+        espalier: 'Arms trained round a wire hoop on a stake, a flower on each.',
+        coppice: 'A clustering cactus: young offsets ring the mother column.',
+        holdfast: 'A broad barrel wedged against a stone, dense with spines.',
+    },
+    bamboo: {
+        lookout: 'One culm rises far above the rest of the stand.',
+        moot: 'Straight culms with leaves clipped into level shelves, five stones at the foot.',
+        espalier: 'Culms tied in a straight row to two rails: a living screen.',
+        coppice: 'A dense clump of short culms, new shoots coming up all round.',
+        holdfast: 'The rhizome grips a stone; culms stand close as a palisade.',
+    },
+};
+function finalName(species, final) {
+    return final === 'own' ? exports.FORMS[species][3][0] : `${exports.FLAVOURS[final].name} ${exports.SPECIES_KEY[species]}`;
+}
+function finalLook(species, final) {
+    return final === 'own' ? exports.FORMS[species][3][1] : exports.FLAVOUR_LOOKS[species][final];
+}
+function formName(species, growth, final = 'own') {
+    const f = formOf(growth);
+    return f === 4 ? finalName(species, resolveFinal(growth, final)) : exports.FORMS[species][f - 1][0];
+}
+function formLook(species, growth, final = 'own') {
+    const f = formOf(growth);
+    return f === 4 ? finalLook(species, resolveFinal(growth, final)) : exports.FORMS[species][f - 1][1];
+}
+const theForm = (name) => `the ${name}`;
+exports.theForm = theForm;
+function nextFormLine(species, growth) {
+    const n = nextFormAt(growth);
+    if (!n)
+        return null;
+    return `Grows into ${(0, exports.theForm)(formName(species, n.at))} at ${GROWTH_WORD[n.at]}.`;
+}
+exports.SEE_NEW_FORM = 'It grows into a new form: see it in Your plant.';
+function newFormLine(callName, name) {
+    return `${callName} grows into a new form: ${(0, exports.theForm)(name)}.`;
+}
+function formsIntroLine(callName, name) {
+    return `Your study so far brought ${callName} to ${(0, exports.theForm)(name)}.`;
+}
+exports.RECALL_GAP_DAYS = 7;
+exports.RECALL_FORM_III = 15;
+exports.RECALL_FORM_IV = 30;
+function delayedRecalls(longIds) {
+    return new Set(longIds !== null && longIds !== void 0 ? longIds : []).size;
+}
+function baselineForms(growth) {
+    const f = formOf(growth);
+    return f > 1 ? { seen: f, note: f } : { seen: f };
+}
+function formMoment(growth, rec) {
+    if (!rec)
+        return null;
+    const f = formOf(growth);
+    if (f > rec.seen)
+        return { kind: 'reveal', from: rec.seen, to: f };
+    if (rec.note !== undefined && rec.note === f)
+        return { kind: 'note', form: f };
+    return null;
+}
+function afterReveal(rec, growth) {
+    var _a;
+    const f = formOf(growth);
+    return { seen: Math.max((_a = rec === null || rec === void 0 ? void 0 : rec.seen) !== null && _a !== void 0 ? _a : 1, f) };
+}
+function afterNote(rec) {
+    return { seen: rec.seen };
+}
+function revealMode(reduced, budget) {
+    return !reduced && budget() ? 'full' : 'reduced';
+}
+function revealTimeline(reduced, total = 1200, reducedFade = 120) {
+    if (reduced)
+        return { hold: 0, change: reducedFade, settle: 0, wordsAt: 0, wordsIn: 0, total: reducedFade };
+    const k = total / 1200;
+    return { hold: 120 * k, change: 360 * k, settle: 300 * k, wordsAt: 780 * k, wordsIn: 300 * k, total };
+}
+  };
   links["src/engine/plantLooks.ts"] = {"./milestones":"src/engine/milestones.ts"};
   defs["src/engine/plantLooks.ts"] = function (module, exports, require) {
 "use strict";
@@ -8164,7 +10812,7 @@ function inOrderSession(topics, walk, cursor, count, answers, rng) {
   defs["src/theme/tokens.ts"] = function (module, exports, require) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.plantLine = exports.plantTheme = exports.plantArt = exports.plantLeaf = exports.badgeGlaze = exports.badgeLeafPip = exports.badgeStruck = exports.badgeMetal = exports.cardInk = exports.badgeEnamel = exports.motion = exports.LARGE_TEXT = exports.grewLine = exports.statWord = exports.cardType = exports.statUnit = exports.numeralUnit = exports.badgeLetter = exports.optionText = exports.maxScale = exports.stemLong = exports.STEM_LONG_CHARS = exports.type = exports.font = exports.radius = exports.space = exports.domainPalette = exports.raisedShadow = exports.cardShadow = exports.darkCardTopLight = exports.forestHighlight = exports.grainOp = exports.scrimOp = exports.pillarGlyph = exports.kaisip = exports.dark = exports.light = void 0;
+exports.plantForm = exports.plantLine = exports.plantTheme = exports.plantArt = exports.plantLeaf = exports.badgeGlaze = exports.badgeLeafPip = exports.badgeStruck = exports.badgeMetal = exports.cardInk = exports.badgeEnamel = exports.motion = exports.LARGE_TEXT = exports.grewLine = exports.statWord = exports.cardType = exports.statUnit = exports.numeralUnit = exports.badgeLetter = exports.optionText = exports.maxScale = exports.stemLong = exports.STEM_LONG_CHARS = exports.type = exports.font = exports.radius = exports.space = exports.domainPalette = exports.raisedShadow = exports.cardShadow = exports.darkCardTopLight = exports.forestHighlight = exports.grainOp = exports.scrimOp = exports.pillarGlyph = exports.kaisip = exports.dark = exports.light = void 0;
 exports.serifNumeral = serifNumeral;
 exports.percentSup = percentSup;
 exports.light = {
@@ -8349,7 +10997,7 @@ exports.motion = {
     },
     stagger: { group: 40, maxGroups: 4, row: 30, maxRows: 6, digit: 30, stat: 60, leaf: 80, maxLeaves: 3, scene: 120, maxScene: 6 },
     celebrate: { fullTimes: 3, sessionMs: 3000, leaves: 8 },
-    plant: { breath: 2000, breathOut: 2400, breaths: 1, react: 600, lean: 900, grow: 900, plantIn: 820 },
+    plant: { breath: 2000, breathOut: 2400, breaths: 1, react: 600, lean: 900, grow: 900, plantIn: 820, turn: 1200, turnReduced: 120 },
     rise: 8,
     shift: 16,
     pressScale: 0.98,
@@ -8597,6 +11245,44 @@ exports.plantLine = {
         restLineMix: 0,
     },
 };
+exports.plantForm = {
+    light: {
+        page: exports.light.bg,
+        massTone: 'light',
+        massMix: 0.44,
+        massMixDense: 0.58,
+        woodFillMix: 0.32,
+        giftFillMix: 0.7,
+        stoneBase: exports.light.control,
+        stoneInk: exports.light.ink,
+        stoneMix: 0.35,
+        stoneFillMix: 0.38,
+        glowTone: 'hi',
+        glowOps: [0.2, 0.24, 0.3],
+        glowRingTone: 'deep',
+        goldTone: 'deep',
+        goldWashTone: 'light',
+        wire: exports.plantLeaf.ember.deep,
+    },
+    dark: {
+        page: exports.dark.bg,
+        massTone: 'mid',
+        massMix: 0.36,
+        massMixDense: 0.46,
+        woodFillMix: 0.42,
+        giftFillMix: 0.62,
+        stoneBase: exports.light.control,
+        stoneInk: exports.dark.ink,
+        stoneMix: 0.45,
+        stoneFillMix: 0.34,
+        glowTone: 'light',
+        glowOps: [0.05, 0.06, 0.08],
+        glowRingTone: 'light',
+        goldTone: 'light',
+        goldWashTone: 'mid',
+        wire: '#E9A07A',
+    },
+};
   };
   var cache = {};
   function load(id) {
@@ -8625,6 +11311,6 @@ exports.plantLine = {
   api["domainBand"] = load("src/engine/domainBand.ts");
   api["pace"] = load("src/engine/pace.ts");
   api["readySigns"] = load("src/engine/readySigns.ts");
-  api.sourceHash = "92148b257ca7f17a";
+  api.sourceHash = "9953f693e8c5c565";
   root.KaiSipPlant = Object.freeze(api);
 })(typeof window !== 'undefined' ? window : globalThis);

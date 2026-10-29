@@ -398,10 +398,12 @@ export const motion = {
    * - react: a mood's one reaction (happy stretches, proud stands tall);
    * - lean: curious' reaction (a lean, a held look, back);
    * - grow: the growth sequence (old swells, cross-fade, new settles);
-   * - plantIn: onboarding's seed settling and the first sprout popping.
-   * Reduce Motion stills all of it (no cross-fade token: the end state shows).
+   * - plantIn: onboarding's seed settling and the first sprout popping;
+   * - turn: mobile 1.50, the calm reveal of a new form on Your plant (once
+   *   per form); turnReduced: its Reduce Motion cross-fade (never a hard cut).
+   * Reduce Motion stills the rest (the end state shows).
    */
-  plant: { breath: 2000, breathOut: 2400, breaths: 1, react: 600, lean: 900, grow: 900, plantIn: 820 },
+  plant: { breath: 2000, breathOut: 2400, breaths: 1, react: 600, lean: 900, grow: 900, plantIn: 820, turn: 1200, turnReduced: 120 },
   rise: 8, // pt: content enters this far below its place (y only)
   shift: 16, // pt: a page turn's sideways offset
   pressScale: 0.98,
@@ -803,5 +805,83 @@ export const plantLine: { light: PlantLineTone; dark: PlantLineTone } = {
     starLine: '#E3E8DD',
     paleLineMix: 0,
     restLineMix: 0,
+  },
+};
+
+/**
+ * Mobile 1.50: the plant's FORMS (components/plant/forms/). The four forms
+ * and the Form IV finals are drawn with opaque fills mixed from the page
+ * colour, so a trunk and a limb that overlap never show a darker "knot"
+ * where two see-through washes would add up. Everything else (the ink line,
+ * the leaf washes, wood, gifts) still comes from `plantLine`.
+ *
+ * Plain English: every fill is "this much of the plant's colour on the
+ * page". Contrast (non-text, 3:1 on `bg`): stone line 5.4:1 light, ≥ 3.7:1
+ * dark; the gold bloom line 3.5:1 light; the wire 4.5:1 light, 5.2:1 dark.
+ */
+export interface PlantFormTone {
+  /** The page the opaque fills are mixed toward (= `bg`). */
+  page: string;
+  /** A crown mass: this tone of the leaf palette, mixed onto the page by `massMix` (`massMixDense` for a closed, dense crown). */
+  massTone: keyof PlantLeafPalette;
+  massMix: number;
+  massMixDense: number;
+  /** Wood fills (trunks, limbs, seeds): the bark mixed onto the page. */
+  woodFillMix: number;
+  /** Gift fills (acorns, nuts, fruit, a sunflower's disc). */
+  giftFillMix: number;
+  /** Stones (Moot's meeting stones, Holdfast's boulder): their line is `stoneBase` mixed toward `stoneInk`. */
+  stoneBase: string;
+  stoneInk: string;
+  stoneMix: number;
+  /** Their fill: the keepsake stone mixed onto the page. */
+  stoneFillMix: number;
+  /** The Form IV light behind the plant: three stacked circles of the gold palette, and one hairline ring. */
+  glowTone: keyof PlantLeafPalette;
+  glowOps: readonly [number, number, number];
+  glowRingTone: keyof PlantLeafPalette;
+  /** Golden flowers (narra sprays, mango tassels, lotus stamens): the line tone and the wash tone of the gold palette. */
+  goldTone: keyof PlantLeafPalette;
+  goldWashTone: keyof PlantLeafPalette;
+  /** A bonsai's training wire (copper). */
+  wire: string;
+}
+export const plantForm: { light: PlantFormTone; dark: PlantFormTone } = {
+  light: {
+    page: light.bg,
+    massTone: 'light',
+    massMix: 0.44,
+    massMixDense: 0.58,
+    woodFillMix: 0.32,
+    giftFillMix: 0.7,
+    stoneBase: light.control,
+    stoneInk: light.ink,
+    stoneMix: 0.35,
+    stoneFillMix: 0.38,
+    glowTone: 'hi',
+    glowOps: [0.2, 0.24, 0.3],
+    glowRingTone: 'deep',
+    goldTone: 'deep',
+    goldWashTone: 'light',
+    wire: plantLeaf.ember.deep,
+  },
+  dark: {
+    page: dark.bg,
+    massTone: 'mid',
+    massMix: 0.36,
+    massMixDense: 0.46,
+    woodFillMix: 0.42,
+    giftFillMix: 0.62,
+    // The art masters mix the light theme's control grey toward the dark ink (a lighter stone line on the night page).
+    stoneBase: light.control,
+    stoneInk: dark.ink,
+    stoneMix: 0.45,
+    stoneFillMix: 0.34,
+    glowTone: 'light',
+    glowOps: [0.05, 0.06, 0.08],
+    glowRingTone: 'light',
+    goldTone: 'light',
+    goldWashTone: 'mid',
+    wire: '#E9A07A',
   },
 };

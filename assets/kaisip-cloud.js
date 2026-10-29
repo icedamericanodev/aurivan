@@ -8093,7 +8093,7 @@ async function confirmFirstSync(ctx, prep, mode, undo, opts = {}) {
   defs["src/theme/tokens.ts"] = function (module, exports, require) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.plantLine = exports.plantTheme = exports.plantArt = exports.plantLeaf = exports.badgeGlaze = exports.badgeLeafPip = exports.badgeStruck = exports.badgeMetal = exports.cardInk = exports.badgeEnamel = exports.motion = exports.LARGE_TEXT = exports.grewLine = exports.statWord = exports.cardType = exports.statUnit = exports.numeralUnit = exports.badgeLetter = exports.optionText = exports.maxScale = exports.stemLong = exports.STEM_LONG_CHARS = exports.type = exports.font = exports.radius = exports.space = exports.domainPalette = exports.raisedShadow = exports.cardShadow = exports.darkCardTopLight = exports.forestHighlight = exports.grainOp = exports.scrimOp = exports.pillarGlyph = exports.kaisip = exports.dark = exports.light = void 0;
+exports.plantForm = exports.plantLine = exports.plantTheme = exports.plantArt = exports.plantLeaf = exports.badgeGlaze = exports.badgeLeafPip = exports.badgeStruck = exports.badgeMetal = exports.cardInk = exports.badgeEnamel = exports.motion = exports.LARGE_TEXT = exports.grewLine = exports.statWord = exports.cardType = exports.statUnit = exports.numeralUnit = exports.badgeLetter = exports.optionText = exports.maxScale = exports.stemLong = exports.STEM_LONG_CHARS = exports.type = exports.font = exports.radius = exports.space = exports.domainPalette = exports.raisedShadow = exports.cardShadow = exports.darkCardTopLight = exports.forestHighlight = exports.grainOp = exports.scrimOp = exports.pillarGlyph = exports.kaisip = exports.dark = exports.light = void 0;
 exports.serifNumeral = serifNumeral;
 exports.percentSup = percentSup;
 exports.light = {
@@ -8278,7 +8278,7 @@ exports.motion = {
     },
     stagger: { group: 40, maxGroups: 4, row: 30, maxRows: 6, digit: 30, stat: 60, leaf: 80, maxLeaves: 3, scene: 120, maxScene: 6 },
     celebrate: { fullTimes: 3, sessionMs: 3000, leaves: 8 },
-    plant: { breath: 2000, breathOut: 2400, breaths: 1, react: 600, lean: 900, grow: 900, plantIn: 820 },
+    plant: { breath: 2000, breathOut: 2400, breaths: 1, react: 600, lean: 900, grow: 900, plantIn: 820, turn: 1200, turnReduced: 120 },
     rise: 8,
     shift: 16,
     pressScale: 0.98,
@@ -8524,6 +8524,44 @@ exports.plantLine = {
         starLine: '#E3E8DD',
         paleLineMix: 0,
         restLineMix: 0,
+    },
+};
+exports.plantForm = {
+    light: {
+        page: exports.light.bg,
+        massTone: 'light',
+        massMix: 0.44,
+        massMixDense: 0.58,
+        woodFillMix: 0.32,
+        giftFillMix: 0.7,
+        stoneBase: exports.light.control,
+        stoneInk: exports.light.ink,
+        stoneMix: 0.35,
+        stoneFillMix: 0.38,
+        glowTone: 'hi',
+        glowOps: [0.2, 0.24, 0.3],
+        glowRingTone: 'deep',
+        goldTone: 'deep',
+        goldWashTone: 'light',
+        wire: exports.plantLeaf.ember.deep,
+    },
+    dark: {
+        page: exports.dark.bg,
+        massTone: 'mid',
+        massMix: 0.36,
+        massMixDense: 0.46,
+        woodFillMix: 0.42,
+        giftFillMix: 0.62,
+        stoneBase: exports.light.control,
+        stoneInk: exports.dark.ink,
+        stoneMix: 0.45,
+        stoneFillMix: 0.34,
+        glowTone: 'light',
+        glowOps: [0.05, 0.06, 0.08],
+        glowRingTone: 'light',
+        goldTone: 'light',
+        goldWashTone: 'mid',
+        wire: '#E9A07A',
     },
 };
   };
@@ -10019,7 +10057,7 @@ function decodeUtf8(bytes) {
   var api = {};
   api["browser"] = load("src/webcloud/browser.ts");
   api["config"] = load("src/webcloud/config.ts");
-  api.sourceHash = "ffb73529b265be17";
+  api.sourceHash = "f5aa1ad2e6829bd1";
   var cloud = load("src/webcloud/index.ts");
   var liveVersion = "1.48.0";
   var liveStoreVersions = {"progress":2,"settings":1};

@@ -115,7 +115,7 @@ function PlantInner({ species, stage, organs, quietLook, size, theme, resting, m
 }
 
 /** A look as a stable string, so an equal look built fresh never redraws. */
-export const lookKeyOf = (l: ArtLook | undefined) => (l ? JSON.stringify([l.style, l.palette, l.ground, l.planter, l.visitor, l.keepsakes]) : '');
+export const lookKeyOf = (l: ArtLook | undefined) => (l ? JSON.stringify([l.style, l.palette, l.ground, l.planter, l.visitor, l.keepsakes, l.final]) : '');
 
 /** Same props, same drawing: the organs compare by their rounded values, not the array (code review M6c). */
 function sameProps(a: PlantProps, b: PlantProps): boolean {
