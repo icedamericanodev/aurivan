@@ -9,6 +9,9 @@
  * - "What's next" (kaisip://whats-next) was removed in mobile 1.17.1: the
  *   plan is internal now (kept outside this repo). Its old links open Help, which
  *   has What's new and "Suggest an idea".
+ * - The Play tab (kaisip://play) was removed in mobile 1.51 (the owner's menu
+ *   pick A): its games are Drills, a section of Practice. Its old links open
+ *   Practice at Drills (the same place app/play.tsx sends in-app links).
  *
  * Pure: no React, no storage, no network. Tested in legacy-links.test.ts.
  */
@@ -16,6 +19,7 @@
 /** Removed screen (the last part of the link) → where it lands now. */
 const MOVED: Record<string, string> = {
   'whats-next': '/help',
+  play: '/practice?section=drills',
 };
 
 /**

@@ -101,14 +101,13 @@ function foreground() {
   });
 }
 
-// ── The tab host: all five tabs mounted side by side ──────────────────────
-const TABS = ['home', 'learn', 'practice', 'play', 'you'] as const;
+// ── The tab host: all four tabs mounted side by side (mobile 1.51: Play's games are Practice's Drills) ──
+const TABS = ['home', 'learn', 'practice', 'you'] as const;
 type Tab = (typeof TABS)[number];
 const SCREENS: Record<Tab, () => ComponentType> = {
   home: () => require('../app/(tabs)/home').default,
   learn: () => require('../app/(tabs)/learn').default,
   practice: () => require('../app/(tabs)/practice').default,
-  play: () => require('../app/(tabs)/play').default,
   you: () => require('../app/(tabs)/you').default,
 };
 const emitters = Object.fromEntries(TABS.map((t) => [t, new FocusEmitter(false)])) as Record<Tab, FocusEmitter>;
@@ -217,7 +216,7 @@ function expectTabsFresh(tabs: readonly Tab[] = TABS) {
     tap(t);
     const first = sinceLast(comparable(t, textOf(t)));
     expect({ tab: t, view: 1, text: first }).toEqual({ tab: t, view: 1, text: sinceLast(comparable(t, freshText(t))) });
-    tap(t === 'play' ? 'learn' : 'play');
+    tap(t === 'you' ? 'learn' : 'you');
     tap(t);
     expect({ tab: t, view: 2, text: comparable(t, textOf(t)) }).toEqual({ tab: t, view: 2, text: comparable(t, freshText(t)) });
   }
@@ -409,7 +408,7 @@ describe('answering, then switching tabs: every tab shows fresh numbers', () => 
     expectTabsFresh();
   });
 
-  it('a lesson finished and a game played reach Learn and Play (their narrow selectors)', () => {
+  it('a lesson finished and a game played reach Learn and Practice’s Drills (their narrow selectors)', () => {
     mountAll();
     tap('learn');
     const lesson = require('../content/lessons').lessonsFor('cisa')[0];
@@ -418,7 +417,7 @@ describe('answering, then switching tabs: every tab shows fresh numbers', () => 
       useProgress.getState().recordGame('cisa', 'trap', 7);
     });
     expect(joined('learn')).toContain(`1 of ${lessonsFor('cisa').length} done`); // the course total, never a hard-coded count
-    expectTabsFresh(['learn', 'play']);
+    expectTabsFresh(['learn', 'practice']);
   });
 
   it('a review falling due later (the shared count’s time cache) shows once the clock passes it', () => {
@@ -509,7 +508,7 @@ describe('switching certification', () => {
     });
     expectTabsFresh();
     // Back on CISA: the same numbers as before the round trip (Today's fit card aside, all tabs).
-    for (const t of ['learn', 'practice', 'play', 'you'] as const) expect(joined(t)).toBe(cisaText[t]);
+    for (const t of ['learn', 'practice', 'you'] as const) expect(joined(t)).toBe(cisaText[t]);
   });
 });
 

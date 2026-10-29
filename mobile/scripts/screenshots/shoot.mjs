@@ -7,7 +7,7 @@ const seed = JSON.parse(fs.readFileSync(process.argv[2]));
 const out = process.argv[3];
 const routes = [
   ['01-today','/home'],['02-learn','/learn'],['03-lesson','/lesson/cisa-l-d1-charter'],
-  ['04-practice','/practice'],['05-play','/play'],['06-priority-lens','/game/priority'],
+  ['04-practice','/practice'],['05-practice-drills','/practice?section=drills'],['06-priority-lens','/game/priority'],
   ['07-trap-spotter','/game/trap'],['08-sprint','/game/sprint'],['09-you','/you'],['10-mistakes','/mistakes'],
   ['16-settings','/settings'],['17-saved-empty','/saved'],['18-caught-up','/caught-up'],
 ];

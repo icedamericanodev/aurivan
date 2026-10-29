@@ -44,6 +44,7 @@ Every screen knows where the learner is. Home always shows **one next best step*
 ## 3. Information architecture
 
 Five tabs: **Journey · Learn · Practice · Play · You.**
+*Mobile 1.51 (the owner's menu pick A): four tabs, **Today · Learn · Practice · You**. Play's games are Drills, a section of Practice; old Play links land there (DESIGN_SYSTEM.md §21.5).*
 Lessons, sessions and games open full-screen (tab bar hidden).
 
 - **Journey** — countdown, today's plan, readiness ring, domain route, resume.

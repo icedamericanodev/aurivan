@@ -23,16 +23,28 @@ const openSession = () => router.push('/session');
  * its Results returns to the Guided screen under the session.
  */
 /**
- * Go to a tab (Today, Learn, Play…) from a screen in the root stack (mobile
+ * Go to a tab (Today, Learn, Practice…) from a screen in the root stack (mobile
  * 1.20). The tabs sit at the bottom of that stack; push and navigate would
  * both stack a NEW tab navigator on top (expo-router 57), so dismiss back to
  * the one already there. Nothing under this screen (a deep link): replace.
  */
+/** Practice, opened at Drills: where every old Play link lands (app/play.tsx, lib/legacyLinks.ts, a badge's "Study for this"). */
+export const DRILLS_SECTION = 'drills';
+export const DRILLS_HREF = { pathname: '/practice', params: { section: DRILLS_SECTION } } as const;
+export const DRILLS_PATH = `/practice?section=${DRILLS_SECTION}`;
+
 export function openTab(href: TabHref) {
   if (router.canDismiss()) router.dismissTo(href);
   else router.replace(href);
 }
-type TabHref = '/home' | '/learn' | '/practice' | '/play' | '/you' | { pathname: '/learn'; params: { domain: string } };
+type TabHref =
+  | '/home'
+  | '/learn'
+  | '/practice'
+  | '/you'
+  | { pathname: '/learn'; params: { domain: string } }
+  // Mobile 1.51: Practice opened at Drills (where the Play tab's links land now).
+  | { readonly pathname: '/practice'; readonly params: { readonly section: 'drills' } };
 
 /**
  * A route param decoded for lookup. A malformed one (a lone "%" in a link)

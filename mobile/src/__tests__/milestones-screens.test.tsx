@@ -20,7 +20,7 @@ import Results from '../app/results';
 import Milestones from '../app/milestones';
 import FieldNotes from '../app/field-notes';
 import You from '../app/(tabs)/you';
-import Play from '../app/(tabs)/play';
+import { Drills } from '../components/drills';
 
 jest.mock('@react-native-async-storage/async-storage', () =>
   jest.requireActual('@react-native-async-storage/async-storage/jest/async-storage-mock'),
@@ -202,12 +202,12 @@ describe('Field notes', () => {
   });
 });
 
-describe('Play', () => {
+describe('Drills (the old Play tab, mobile 1.51)', () => {
   it('every game row says its level in words', () => {
     useProgress.setState({ byCert: { cisa: { ...cp(), gameGrowth: { sprint: { tier: 'heartwood', up: 0, down: 0 } } } } });
-    mount(<Play />);
-    // Mobile 1.24: three games are in sight; the rest are folded under "More games". Open it.
-    const more = root().findAll((n) => typeof n.props.onPress === 'function' && /^More games/.test(String(n.props.accessibilityLabel)))[0];
+    mount(<Drills />);
+    // Mobile 1.24: three games are in sight; the rest are folded under "More drills". Open it.
+    const more = root().findAll((n) => typeof n.props.onPress === 'function' && /^More drills/.test(String(n.props.accessibilityLabel)))[0];
     act(() => {
       more.props.onPress();
     });
@@ -215,8 +215,9 @@ describe('Play', () => {
     expect(rows.length).toBeGreaterThan(0);
     for (const l of rows) expect(l).toMatch(/Your level: (Seedling|Sapling|Heartwood)\./);
     expect(rows.find((l) => l.startsWith('Forecast'))).toMatch(/Your level: Heartwood\./);
-    // The featured game says its level too (leaf + text on the hero).
-    expect(labels()).toContain('Your level: Seedling');
+    // Today's drill (the first row) says its level too, and a grown level is printed on its row.
+    expect(rows[0]).toMatch(/^Today’s drill: .*Your level: Seedling\./);
+    expect(allText()).toContain('Heartwood');
   });
 });
 

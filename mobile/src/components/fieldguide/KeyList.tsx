@@ -87,11 +87,11 @@ function KeyRow({ item, n, first }: { item: KeyItem; n: number; first: boolean }
   );
 }
 
-export function KeyList({ items, testID }: { items: readonly KeyItem[]; testID?: string }) {
+export function KeyList({ items, start = 1, testID }: { items: readonly KeyItem[]; /** The first row's number, when a list continues another (Drills' "More drills"). */ start?: number; testID?: string }) {
   return (
     <View testID={testID}>
       {items.map((item, i) => (
-        <KeyRow key={item.key} item={item} n={i + 1} first={i === 0} />
+        <KeyRow key={item.key} item={item} n={start + i} first={i === 0} />
       ))}
     </View>
   );

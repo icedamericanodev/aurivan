@@ -1,6 +1,9 @@
 /**
- * Bottom tabs: Today · Learn · Practice · Play · You.
+ * Bottom tabs: Today · Learn · Practice · You.
  * (docs/mobile/PRODUCT_VISION.md §3, Grove v2 tab bar in DESIGN_SYSTEM.md §6).
+ * Mobile 1.51 (the owner's menu pick A): four tabs. The Play tab is gone; its
+ * games are Drills, a section of Practice (components/drills.tsx), and every
+ * old Play link lands there (app/play.tsx, lib/legacyLinks.ts).
  * Lessons, sessions and games open full-screen on top, which hides the tab
  * bar so learners stay focused.
  *
@@ -9,8 +12,8 @@
  * (240 ms, mobile 1.8): the old tab fades out in the first half and the new
  * one fades in during the second, so two screens never show at once. Tabs
  * are peers, so nothing slides; under Reduce Motion the switch is instant.
- * The dot pops in under the new tab. Today, Play and You use custom glyphs
- * (sprout, a pinwheel of leaves since mobile 1.22, growth rings); the others stay Lucide. Practice is a checklist,
+ * The dot pops in under the new tab. Today and You use custom glyphs
+ * (sprout, growth rings); the others stay Lucide. Practice is a checklist,
  * not a target: a target's concentric circles looked like the You rings.
  * Mobile 1.10: a small "new" mark on the You icon while a newly earned badge
  * waits to be seen (spoken "You, new badge"). Never a number. It is a RING
@@ -21,7 +24,7 @@ import { Tabs } from 'expo-router';
 import { PlatformPressable } from 'expo-router/react-navigation';
 import { Easing, View, type Animated, type ColorValue } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { BookOpen, ICON_STROKE, ListChecks, Pinwheel, Rings, Sprout } from '../../components/icons';
+import { BookOpen, ICON_STROKE, ListChecks, Rings, Sprout } from '../../components/icons';
 import { useMotion } from '../../components/motion';
 import { ICON_SIZE, TAB_BAR_HEIGHT, TabLabel } from '../../components/ui';
 import { useNewBadge } from '../../lib/badges';
@@ -114,7 +117,6 @@ export default function TabsLayout() {
       <Tabs.Screen name="home" options={{ title: 'Today', tabBarLabel: label('Today'), tabBarButton: tabButton('Today'), tabBarIcon: icon(Sprout) }} />
       <Tabs.Screen name="learn" options={{ title: 'Learn', tabBarLabel: label('Learn'), tabBarButton: tabButton('Learn'), tabBarIcon: icon(BookOpen as Glyph) }} />
       <Tabs.Screen name="practice" options={{ title: 'Practice', tabBarLabel: label('Practice'), tabBarButton: tabButton('Practice'), tabBarIcon: icon(ListChecks as Glyph) }} />
-      <Tabs.Screen name="play" options={{ title: 'Play', tabBarLabel: label('Play'), tabBarButton: tabButton('Play'), tabBarIcon: icon(Pinwheel) }} />
       <Tabs.Screen
         name="you"
         options={{

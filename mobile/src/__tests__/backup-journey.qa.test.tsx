@@ -7,7 +7,7 @@
  * not yet allowed) restores the file the next day.
  *
  * Then, rendered with react-test-renderer against the real stores:
- * - Today, Practice, Play, You and Settings show exactly the same text on
+ * - Today, Practice (with its Drills, the old Play tab), You and Settings show exactly the same text on
  *   both phones (every number, date and label), apart from the "Your data"
  *   lines that are about THIS phone's backups;
  * - the review queue is due on the same days for the next 90 days;
@@ -25,7 +25,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Alert } from 'react-native';
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
 import Today from '../app/(tabs)/home';
-import Play from '../app/(tabs)/play';
 import Practice from '../app/(tabs)/practice';
 import You from '../app/(tabs)/you';
 import Settings from '../app/settings';
@@ -175,7 +174,6 @@ const BACKUP_LINE = /Last backup|No backup yet|Undo restore|Available until|Rest
 const SCREENS: [string, () => React.ReactElement][] = [
   ['Today', () => <Today />],
   ['Practice', () => <Practice />],
-  ['Play', () => <Play />],
   ['You', () => <You />],
   ['Settings', () => <Settings />],
 ];

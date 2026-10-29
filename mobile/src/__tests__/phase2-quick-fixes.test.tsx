@@ -15,7 +15,7 @@ import { Dimensions, StyleSheet } from 'react-native';
 import { router } from 'expo-router';
 import Today from '../app/(tabs)/home';
 import You from '../app/(tabs)/you';
-import Play from '../app/(tabs)/play';
+import { Drills } from '../components/drills';
 import Results from '../app/results';
 import SessionScreen from '../app/session';
 import { OptionCard } from '../components/quiz';
@@ -161,14 +161,14 @@ describe('Y3: one phrasing for the review queue', () => {
   });
 });
 
-describe('Play', () => {
+describe('Drills (the old Play tab, mobile 1.51)', () => {
   it('G2: every game at Seedling is said once, in the section line, not on each row; rows still speak it', () => {
-    mount(<Play />);
+    mount(<Drills />);
     expect(allText()).toMatch(/All at Seedling/);
     const rows = root().findAll((n) => n.props.accessibilityRole === 'button' && typeof n.props.onPress === 'function' && /Your level: Seedling/.test(n.props.accessibilityLabel ?? ''));
     expect(rows.length).toBeGreaterThan(1);
-    // The rows show no visible "Seedling" tag (only the hero's caption and the section line say it).
-    expect(allText().match(/Seedling/g)!.length).toBe(2);
+    // The rows show no visible "Seedling" tag: only the section line says it (no hero since 1.51).
+    expect(allText().match(/Seedling/g)!.length).toBe(1);
   });
 });
 

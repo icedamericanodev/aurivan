@@ -653,6 +653,8 @@ describe('3. "Next for your exam" at each journey stage', () => {
       return `session:${s!.title}`;
     }
     if (path === '/mock-start') expect((to as { params: Record<string, string> }).params.questions).toBe(String(cert.exam.questions));
+    // Mobile 1.51: a tab opened at one of its sections (Practice at Drills, where the Play tab's games moved).
+    if (typeof to !== 'string' && to.params?.section) return `${path}?section=${to.params.section}`;
     return path;
   };
 
@@ -687,7 +689,7 @@ describe('3. "Next for your exam" at each journey stage', () => {
     expect(results['dress-rehearsal']).toBe('/mock-start');
     expect(results['rooted:10']).toBe('/home');
     expect(results['snare-wise']).toBe('/game/trap');
-    expect(results['whole-grove']).toBe('/play');
+    expect(results['whole-grove']).toBe('/practice?section=drills');
     expect(results['loop-closed']).toBe('/mistakes');
     expect(results['topic-clear']).toBe('/guided');
     expect(results['long-memory']).toBe('session:Questions to revisit'); // two misses are due

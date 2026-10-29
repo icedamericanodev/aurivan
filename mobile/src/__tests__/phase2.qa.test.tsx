@@ -25,7 +25,7 @@ import Settings from '../app/settings';
 import Today from '../app/(tabs)/home';
 import You from '../app/(tabs)/you';
 import Practice from '../app/(tabs)/practice';
-import Play from '../app/(tabs)/play';
+import { Drills } from '../components/drills';
 import LessonPlayer from '../app/lesson/[id]';
 import CanopyCall from '../app/game/canopy';
 import FieldGuide from '../app/game/field';
@@ -799,8 +799,8 @@ describe('J5 quick fixes', () => {
     }
   });
 
-  it('Play says "All at Seedling" exactly once for a new learner', () => {
-    mount(<Play />);
+  it('Drills (the old Play tab) say "All at Seedling" exactly once for a new learner', () => {
+    mount(<Drills />);
     expect(allText().match(/All at Seedling/g)).toHaveLength(1);
   });
 });

@@ -52,13 +52,13 @@ jest.mock('../lib/haptics', () => ({ haptic: { success: () => {}, selection: () 
 // Real motion (not Reduce Motion): what most learners run.
 const REDUCED = process.env.PERF_REDUCED === '1';
 
-const TABS = ['home', 'learn', 'practice', 'play', 'you'] as const;
+// Mobile 1.51: four tabs; Play's games are Drills, a section of Practice (counted by name below).
+const TABS = ['home', 'learn', 'practice', 'you'] as const;
 type Tab = (typeof TABS)[number];
 const SCREENS: Record<Tab, () => ComponentType> = {
   home: () => require('../app/(tabs)/home').default,
   learn: () => require('../app/(tabs)/learn').default,
   practice: () => require('../app/(tabs)/practice').default,
-  play: () => require('../app/(tabs)/play').default,
   you: () => require('../app/(tabs)/you').default,
 };
 
@@ -357,8 +357,14 @@ it('builds the heavy save', () => {
  * What must not come back is pinned exactly: a tab re-renders with the tab
  * press only, never again when the focus events arrive.
  */
+/** Drills (Play's games, a section of Practice since mobile 1.51) re-rendered: counted by name inside Practice. */
+const drillsRenders = () => {
+  const n = renderNames().practice ?? {};
+  return (n.Drills ?? 0) + (n.KeyList ?? 0) + (n.KeyRow ?? 0);
+};
+
 describe('budgets with the heavy save', () => {
-  const LAP: Tab[] = ['learn', 'practice', 'play', 'you', 'home'];
+  const LAP: Tab[] = ['learn', 'practice', 'you', 'home'];
   function lap() {
     startMeasure();
     for (const t of LAP) tapTab(t);
@@ -383,14 +389,14 @@ describe('budgets with the heavy save', () => {
   it('one answer recorded while the tabs are open', () => {
     openAll();
     tapTab('practice');
-    startMeasure();
+    startMeasure(true);
     act(() => {
       useProgress.getState().recordAnswer('cisa', 'd3_005', true, 'sure');
     });
     const s = snapshot();
     expect(total(s).renders).toBeLessThan(1150); // 1.15.0: 2,308 (now ~865)
     expect(s.learn.renders).toBe(0); // 1.15.0: 634
-    expect(s.play.renders).toBe(0); // 1.15.0: 459
+    expect(drillsRenders()).toBe(0); // as Play's own tab (1.15.0: 459)
     expect(total(s).saves).toBe(1); // the answer itself
   });
 
@@ -406,13 +412,13 @@ describe('budgets with the heavy save', () => {
     const open = Object.entries(useProgress.getState().byCert.cisa!.mistakes).find(([, m]) => !m.resolved);
     expect(open).toBeDefined();
     const id = open![0];
-    startMeasure();
+    startMeasure(true);
     act(() => {
       useProgress.getState().recordAnswer('cisa', id, true, 'sure');
     });
     expect(useProgress.getState().byCert.cisa!.mistakes[id].resolved).toBe(true);
     const s = snapshot();
-    expect(s.play.renders).toBe(0); // before the fix: 230
+    expect(drillsRenders()).toBe(0); // as Play's own tab (before the fix: 230)
     expect(s.learn.renders).toBe(0);
     expect(total(s).renders).toBeLessThan(1150);
     expect(total(s).saves).toBe(1);

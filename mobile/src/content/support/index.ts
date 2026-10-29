@@ -44,7 +44,10 @@ export const WHATS_NEW: readonly WhatsNewEntry[] = [
   {
     version: '1.51.0',
     date: '2026-10-29',
-    improved: ['Today, You, results and badges now read like a field guide to your own study: your areas side by side on one scale, readiness as a study estimate, and badges pressed into a herbarium.'],
+    improved: [
+      'Today, You, results and badges now read like a field guide to your own study: your areas side by side on one scale, readiness as a study estimate, and badges pressed into a herbarium.',
+      'A simpler menu with four tabs: the brain games now live in Practice as Drills, with your scores and levels kept.',
+    ],
   },
   {
     version: '1.50.0',

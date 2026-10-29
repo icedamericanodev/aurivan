@@ -196,7 +196,7 @@ const heroStart = (page) => page.getByRole('button', { name: /^(Start|Open step)
 // ── 8. Play lists both games; Settings → Default mode ──
 {
   const page = await newPage();
-  await open(page, '/play');
+  await open(page, '/practice?section=drills');
   await page.mouse.move(196, 500); await page.mouse.wheel(0, 500); await page.waitForTimeout(700);
   await snap(page, 'e15-play');
   await open(page, '/settings');

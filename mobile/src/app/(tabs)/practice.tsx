@@ -35,12 +35,20 @@
  * ("10 questions · about 12 min"). The title is short, so it keeps clear of
  * the frond (no wideTitle). The "Practice at exam pace?" offer is an L1
  * plate, not a raised card: it is an offer, not a choice between things.
+ *
+ * Mobile 1.51 (the owner's menu pick A): the Play tab is gone and its games
+ * are **Drills**, a section here (components/drills.tsx), after "More ways to
+ * practice". Every old Play link opens `/practice?section=drills`, which
+ * scrolls to Drills and moves screen-reader focus to its heading, once.
  */
+import * as Router from 'expo-router';
 import { router } from 'expo-router';
-import { useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { AccessibilityInfo, View, type Switch } from 'react-native';
 import { ArrowRight, Crosshair, ICON_STROKE, Library, ListChecks, RotateCcw } from '../../components/icons';
 import { Collapse } from '../../components/motion';
+import { Drills } from '../../components/drills';
+import { DRILLS_SECTION } from '../../lib/actions';
 import { DisclosureRow, FieldLabel, PathChooser, pathSummary } from '../../components/pathChooser';
 import { Button, Card, Chip, ChipRow, Enter, Gap, HeroPanel, ICON_SIZE, Lead, ListRow, Screen, Section, Segmented, T, ToggleRow } from '../../components/ui';
 import type { Difficulty } from '../../content/types';
@@ -57,6 +65,11 @@ import { useDailyMinutes, useSettings } from '../../store/settings';
 import { space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
 
+/** The route's params and this screen's own navigation (absent where a test's expo-router stand-in has none). */
+type Nav = { setParams?: (p: { section?: string }) => void };
+const useParams: () => { section?: string } = (Router as { useLocalSearchParams?: () => { section?: string } }).useLocalSearchParams ?? (() => ({}));
+const useOwnNavigation: () => Nav | undefined = (Router as { useNavigation?: () => Nav }).useNavigation ?? (() => undefined);
+
 const DIFFS: { label: string; value?: Difficulty }[] = [
   { label: 'Any difficulty' },
   { label: 'Foundational', value: 'foundational' },
@@ -67,6 +80,14 @@ const DIFFS: { label: string; value?: Difficulty }[] = [
 export default function Practice() {
   const { c } = useTheme();
   const { cert, readiness, dueCount, daysLeft, stage, progress, examFocused } = useJourney();
+  // An old Play link (?section=drills): Drills scrolls into view once, then the param is cleared, so a
+  // later tap on the Practice tab opens at the top as usual. Through Practice's OWN navigation (as Learn).
+  const { section } = useParams();
+  const navigation = useOwnNavigation();
+  const jumped = useCallback(() => {
+    if (navigation?.setParams) navigation.setParams({ section: undefined });
+    else (router as { setParams?: (p: object) => void }).setParams?.({ section: undefined });
+  }, [navigation]);
   const familiarity = useSettings((s) => s.familiarity);
   // Mock exams right under the hero for the Exam-focused plan and at the mock / ready stages.
   const mocksFirst = examFocused || stage === 'mock' || stage === 'ready';
@@ -166,7 +187,7 @@ export default function Practice() {
   ) : null;
   /** Mock exams: under the hero for the Exam-focused plan and the mock / ready stages (`top`), else last. */
   const mockExams = (top: boolean) => (
-    <Enter i={top ? 2 : 4}>
+    <Enter i={top ? 2 : 5}>
         <Section title="Mock exams" />
         <ListRow
           lead={<Lead value={String(mini)} unit="questions" />}
@@ -377,6 +398,11 @@ export default function Practice() {
             />
           </View>
         </Collapse>
+      </Enter>
+
+      {/* The brain games (mobile 1.51: the Play tab moved here). */}
+      <Enter i={4}>
+        <Drills jump={section === DRILLS_SECTION} onJumped={jumped} />
       </Enter>
 
       {!mocksFirst && mockExams(false)}

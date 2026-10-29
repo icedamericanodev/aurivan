@@ -1,5 +1,8 @@
 /**
  * Mobile 1.24, stream S3b: the Play tab leads with "Today's drill".
+ * Mobile 1.51 (the owner's menu pick A): the Play tab is gone; the same games
+ * are Drills, a numbered key list in Practice (components/drills.tsx), led by
+ * "Today's drill" as its first row. The rules below are unchanged.
  *
  * Plain English for the founder: Play now shows ONE lead game (the one that
  * drills your own mistake pattern; Snare Spotter for a new learner), two
@@ -13,7 +16,7 @@
  */
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
 import { router } from 'expo-router';
-import Play from '../app/(tabs)/play';
+import { Drills } from '../components/drills';
 import { getAllQuestions } from '../content/loader';
 import { GAMES, GAME_ORDER } from '../engine/games/registry';
 import { useProgress, type MistakeEntry } from '../store/progress';
@@ -43,7 +46,7 @@ jest.mock('react-native-safe-area-context', () => {
 let r: ReactTestRenderer | undefined;
 const mount = () => {
   act(() => {
-    r = create(<Play />);
+    r = create(<Drills />);
   });
 };
 const root = () => r!.root;
@@ -53,7 +56,7 @@ const textOf = (n: ReactTestInstance) => {
   walk(n);
   return out.join(' ');
 };
-/** The game rows (one button each, spoken "<Name>. <plain subtitle>. …"). */
+/** The game rows (one button each, spoken "<Name>. <plain subtitle>. …"; the first "Today’s drill: <Name>. …"). */
 const gameRows = () => {
   const seen = new Set<string>();
   // One row appears as a wrapper and a host node with the same label: count each label once.
@@ -61,8 +64,12 @@ const gameRows = () => {
     .findAll((n) => typeof n.props.onPress === 'function' && /\. Your level: .*About \d+ minutes/.test(String(n.props.accessibilityLabel)))
     .filter((n) => !seen.has(n.props.accessibilityLabel) && !!seen.add(n.props.accessibilityLabel));
 };
-const rowNames = () => gameRows().map((n) => String(n.props.accessibilityLabel).split('. ')[0]);
-const moreRow = () => root().findAll((n) => n.props.accessibilityRole === 'button' && /^More games/.test(String(n.props.accessibilityLabel)) && typeof n.props.onPress === 'function')[0];
+const names = () => gameRows().map((n) => String(n.props.accessibilityLabel).split('. ')[0].replace(/^Today’s drill: /, ''));
+/** Today's drill (the first row) and the rows after it. */
+const drill = () => names()[0];
+const rowNames = () => names().slice(1);
+const drillRow = () => gameRows()[0];
+const moreRow = () => root().findAll((n) => n.props.accessibilityRole === 'button' && /^More drills/.test(String(n.props.accessibilityLabel)) && typeof n.props.onPress === 'function')[0];
 
 /** Answer `n` practice questions (distinct), right: what opens "More games" at 50. */
 const answerN = (n: number) => {
@@ -94,23 +101,23 @@ afterEach(() => {
   r = undefined;
 });
 
-describe('Play: Today’s drill', () => {
+describe('Drills: Today’s drill', () => {
   it('a new learner: the three core games only (Snare Spotter leads, Signpost and Call It First beside it), and one quiet line', () => {
     mount();
     const text = textOf(root());
     expect(text).toContain('Today’s drill');
-    expect(text).toContain('A good place to start');
-    // Hero = Snare Spotter; its related games are Signpost and Call It First.
-    const [hero] = root().findAll((n) => n.props.testID === 'hero-content' && typeof n.type === 'string');
-    expect(textOf(hero)).toContain(GAMES.trap.name);
+    expect(text).toContain('Missed questions go to your review.');
+    // Today's drill = Snare Spotter, said so first; its related games are Signpost and Call It First.
+    expect(drill()).toBe(GAMES.trap.name);
+    expect(String(drillRow().props.accessibilityLabel)).toMatch(/^Today’s drill: /);
     expect(rowNames()).toEqual([GAMES.priority.name, GAMES.callit.name]);
-    // Mobile 1.40: no "More games" row yet, just one quiet line (no count of the games waiting).
+    // Mobile 1.40: no "More drills" row yet, just one quiet line (no count of the games waiting).
     expect(moreRow()).toBeUndefined();
     expect(waitLine()).toHaveLength(1);
-    expect(textOf(waitLine()[0])).toBe('More games open after 50 answers.');
+    expect(textOf(waitLine()[0])).toBe('More drills open after 50 answers.');
   });
 
-  it('49 answers: still the three; 50: "More games" opens, folded, with the other six', () => {
+  it('49 answers: still the three; 50: "More drills" opens, folded, with the other six', () => {
     answerN(49);
     mount();
     expect(moreRow()).toBeUndefined();
@@ -121,7 +128,7 @@ describe('Play: Today’s drill', () => {
     expect(textOf(moreRow())).toContain('6 more');
   });
 
-  it('nobody loses a game: one already played stays under "More games" before 50 answers', () => {
+  it('nobody loses a game: one already played stays under "More drills" before 50 answers', () => {
     act(() => {
       useProgress.setState((s) => ({ byCert: { ...s.byCert, cisa: { ...s.byCert.cisa, gameBest: { sprint: 5 } } } }));
     });
@@ -131,16 +138,15 @@ describe('Play: Today’s drill', () => {
       moreRow().props.onPress();
     });
     expect(rowNames()).toEqual([GAMES.priority.name, GAMES.callit.name, GAMES.sprint.name]);
-    // The others still wait, so the quiet line stays; "More games" lists one already, so it says "The other games".
+    // The others still wait, so the quiet line stays; "More drills" lists one already, so it says "The other drills".
     expect(waitLine()).toHaveLength(1);
-    expect(textOf(waitLine()[0])).toBe('The other games open after 50 answers.');
+    expect(textOf(waitLine()[0])).toBe('The other drills open after 50 answers.');
   });
 
   it('before 50 answers, a mistake pattern that names a waiting game falls back to a core game', () => {
     tagFive('role');
     mount();
-    const [hero] = root().findAll((n) => n.props.testID === 'hero-content' && typeof n.type === 'string');
-    expect(textOf(hero)).toContain(GAMES.trap.name);
+    expect(drill()).toBe(GAMES.trap.name);
     expect(textOf(root())).not.toContain(GAMES.canopy.name);
   });
 
@@ -148,32 +154,30 @@ describe('Play: Today’s drill', () => {
     answerN(50);
     tagFive('role');
     mount();
-    const [hero] = root().findAll((n) => n.props.testID === 'hero-content' && typeof n.type === 'string');
-    expect(textOf(hero)).toContain(GAMES.canopy.name);
-    expect(textOf(root())).toContain('Picked from your mistakes. You answer as the wrong person.');
-    expect(textOf(root())).toContain('Also good for this');
-    // The play button opens that game.
-    const play = hero.findAll((n) => n.props.accessibilityRole === 'button' && typeof n.props.onPress === 'function')[0];
+    expect(drill()).toBe(GAMES.canopy.name);
+    expect(textOf(root())).toContain('Today’s pick is from your mistakes: You answer as the wrong person.');
+    // Its row opens that game.
     act(() => {
-      play.props.onPress();
+      drillRow().props.onPress();
     });
     expect(router.push).toHaveBeenCalledWith('/game/canopy');
   });
 
-  it('"More games" opens to the other six, each with a plain subtitle, and folds again', () => {
+  it('"More drills" opens to the other six, each with a plain subtitle, and folds again', () => {
     answerN(50);
     mount();
     act(() => {
       moreRow().props.onPress();
     });
     expect(moreRow().props.accessibilityState).toMatchObject({ expanded: true });
-    // All nine games are reachable: the hero + 2 rows + 6 more rows.
+    // All nine games are reachable: Today's drill + 2 rows + 6 more rows, numbered on from 4.
     expect(rowNames()).toHaveLength(8);
-    const names = [GAMES.trap.name, ...rowNames()].sort();
-    expect(names).toEqual(GAME_ORDER.map((id) => GAMES[id].name).sort());
+    expect(names().sort()).toEqual(GAME_ORDER.map((id) => GAMES[id].name).sort());
+    const more = root().findAll((n) => n.props.testID === 'drills-more' && typeof n.type === 'string')[0];
+    expect(textOf(more).startsWith('4 ')).toBe(true);
     // Every row speaks its plain subtitle right after the name.
     for (const n of gameRows()) {
-      const label = String(n.props.accessibilityLabel);
+      const label = String(n.props.accessibilityLabel).replace(/^Today’s drill: /, '');
       const game = GAME_ORDER.map((id) => GAMES[id]).find((g) => label.startsWith(`${g.name}. `))!;
       expect(label).toContain(`${game.name}. ${game.plain}.`);
       expect(textOf(n)).toContain(game.plain);

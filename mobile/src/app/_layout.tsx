@@ -256,6 +256,8 @@ export default function RootLayout() {
         <Stack.Screen name="plant-look" />
         {/* Mobile 1.47: where a home-screen widget tap lands; it opens the named place at once. */}
         <Stack.Screen name="widget" options={{ animation: 'none' }} />
+        {/* Mobile 1.51: the old Play tab's route, which opens Practice at Drills at once (app/play.tsx). */}
+        <Stack.Screen name="play" options={{ animation: 'none' }} />
       </Stack>
       <MotionRoot />
       {/* Light ⇄ Dark dissolves (mobile 1.9): a veil in the old paper fades out over the new theme. */}

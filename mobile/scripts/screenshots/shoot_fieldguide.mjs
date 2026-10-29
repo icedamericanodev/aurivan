@@ -2,7 +2,7 @@
 // the Herbarium row, the label rows), the Herbarium (still to collect, the sheets), Today (the
 // plate, the plan's label, the scale bar) and Results (the growth plate, the key list of misses).
 // FONT_SCALE=2 approximates 200% text (1.2 for the chart's grown-but-not-list size); FG_ONLY=you,herbarium,
-// today,results narrows it. Review sets (UX review, 1.51): FG_ONLY=full (You with all five areas measured, one
+// today,results,drills narrows it. Review sets (UX review, 1.51): FG_ONLY=full (You with all five areas measured, one
 // below 70), drop (Results with a set that lowered an area), new (a brand-new learner: Today, You, the Herbarium).
 import { createRequire } from 'module';
 import fs from 'fs';
@@ -143,6 +143,24 @@ if (want('results')) {
   await shot('fg-results-missed');
 }
 
+// Mobile 1.51 (the owner's menu pick A): four tabs; the games are Drills, a section of Practice. An old Play
+// link lands there (?section=drills scrolls to it); "More drills" opened; then Practice from its top.
+if (want('drills')) {
+  await go('/practice?section=drills', 3200);
+  await shot('fg-drills');
+  const more = page.getByText('More drills').first();
+  if (await more.count()) {
+    await more.click();
+    await wait(700);
+    await into('More drills', 'start');
+  }
+  await shot('fg-drills-more');
+  await go('/practice');
+  await shot('fg-practice-top');
+  await go('/play', 3200);
+  await shot('fg-drills-from-play-link');
+}
+
 // ── Review sets ───────────────────────────────────────────────────────────
 if (want('full')) {
   // Every area measured (30+ answers), all between about 60 and 85: IS Audit 84%, IS Operations below its 70 line (61%).
@@ -188,7 +206,7 @@ if (want('new')) {
   // A brand-new learner: no answers, no badges, no plant (a fresh context's seed, then everything cleared).
   await edit(
     P,
-    `const cp = v.state.byCert.cisa; cp.answers = {}; cp.review = {}; cp.mistakes = {}; cp.mocks = []; delete cp.plant; cp.milestones = { earned: {}, backfill: { at: Date.now(), count: 0, seen: true } };
+    `const cp = v.state.byCert.cisa; cp.answers = {}; cp.review = {}; cp.mistakes = {}; cp.mocks = []; cp.gameBest = {}; cp.gameRecent = {}; cp.gameGrowth = {}; delete cp.plant; cp.milestones = { earned: {}, backfill: { at: Date.now(), count: 0, seen: true } };
      v.state.streak = { current: 0, best: 0, lastDay: null }; v.state.days = {};`,
   );
   await edit('aurivan.session.v1', `v.state.active = null;`);
@@ -201,6 +219,9 @@ if (want('new')) {
   await shot('fg-new-you-areas');
   await go('/milestones');
   await shot('fg-new-herbarium');
+  // A new learner's Drills: the three core games, the rest after 50 answers (one quiet line).
+  await go('/practice?section=drills', 3200);
+  await shot('fg-new-drills');
 }
 
 if (errs.length) console.log('page errors:', [...new Set(errs)].slice(0, 5));

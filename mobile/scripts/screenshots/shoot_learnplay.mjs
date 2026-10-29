@@ -325,7 +325,7 @@ if (noteOk) {
 }
 
 // ── 5. Play, each game's header and intro ──────────────────────────────
-await go('/play');
+await go('/practice?section=drills');
 await shot('p10-play');
 await scrollTo('Stepping Stones', 120);
 await shot('p10b-play-rows');

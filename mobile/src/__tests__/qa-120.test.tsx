@@ -41,6 +41,7 @@ import { moreRowLabels, viaMore } from '../../jest/answerMore';
 import SessionScreen from '../app/session';
 import NoteSubtopicScreen from '../app/notes/subtopic/[id]';
 import ReadinessReport from '../app/readiness';
+import PlayMoved from '../app/play';
 import LessonPlayer from '../app/lesson/[id]';
 import Results from '../app/results';
 import { OptionCard } from '../components/quiz';
@@ -304,8 +305,9 @@ describe('lesson player: Report a problem on a check scene', () => {
 const { StackRouter } = require('expo-router/build/layouts/StackClient');
 type Route = { key: string; name: string; params?: Record<string, unknown> };
 type StackState = { key: string; index: number; routes: Route[]; routeNames: string[]; preloadedRoutes: Route[] };
-const ROOT_NAMES = ['(tabs)', 'readiness', 'session', 'results', 'notes/subtopic/[id]', 'lesson/[id]'];
-const TABS = ['home', 'learn', 'play', 'practice', 'you'];
+const ROOT_NAMES = ['(tabs)', 'readiness', 'session', 'results', 'notes/subtopic/[id]', 'lesson/[id]', 'play'];
+// Mobile 1.51: four tabs ("play" is now a root route that opens Practice at Drills: app/play.tsx).
+const TABS = ['home', 'learn', 'practice', 'you'];
 const rootOptions = { routeNames: ROOT_NAMES, routeParamList: {}, routeGetIdList: {} };
 const makeRoot = () => {
   const sr = StackRouter({});
@@ -345,6 +347,21 @@ describe('router model (expo-router StackRouter): reaching a tab from a pushed s
     b.dismissTo({ pathname: '/learn', params: { domain: '3' } });
     expect(b.names()).toEqual(['(tabs)']);
     expect(b.state.routes[0].params).toEqual({ screen: 'learn', params: { domain: '3' } });
+  });
+});
+
+describe('the old Play route → Practice at Drills (real root StackRouter; mobile 1.51)', () => {
+  it('a pushed /play leaves ONE (tabs) in the root stack, on Practice with ?section=drills', () => {
+    const stack = makeRoot();
+    stack.push('/play');
+    expect(stack.names()).toEqual(['(tabs)', 'play']);
+    navigate.mockImplementation((href) => stack.navigate(href));
+    dismissTo.mockImplementation((href) => stack.dismissTo(href));
+    push.mockImplementation((href) => stack.push(href));
+    const r = mount(<PlayMoved />);
+    expect(stack.names()).toEqual(['(tabs)']);
+    expect(stack.state.routes[0].params).toEqual({ screen: 'practice', params: { section: 'drills' } });
+    unmount(r);
   });
 });
 

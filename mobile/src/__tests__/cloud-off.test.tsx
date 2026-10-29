@@ -121,7 +121,6 @@ describeOff('the cloud flag is off', () => {
     today: () => require('../app/(tabs)/home').default,
     learn: () => require('../app/(tabs)/learn').default,
     practice: () => require('../app/(tabs)/practice').default,
-    play: () => require('../app/(tabs)/play').default,
     you: () => require('../app/(tabs)/you').default,
     settings: () => require('../app/settings').default,
     // Mobile 1.46: Your data's own screen (Settings' door).
