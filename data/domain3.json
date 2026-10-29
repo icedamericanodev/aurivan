@@ -791,7 +791,7 @@
       "wrong_explanations": {
         "A": "Functional managers control staff in functional and matrix structures. In a projectized structure, staff report to the project manager.",
         "B": "A central resource manager allocates pooled staff in matrix settings; in a projectized structure the project manager already controls the team.",
-        "D": "The sponsor authorizes the project and resolves escalations. Routine task assignment is delegated to the project manager."
+        "D": "A sponsor's mandate covers funding, scope and escalation, but the organization's structure, not seniority, decides who directs a project's people."
       },
       "tips": [
         "Eliminate: A describes functional or matrix authority, and B describes a shared resource pool; in a projectized structure the team reports to the project manager.",
@@ -827,7 +827,7 @@
       "correct_explanation": "A customer number can be in range and carry a valid check digit yet belong to no customer. Only an existence check, a lookup against the customer master records, rejects numbers that match no real customer before processing. The check digit is the tempting option: it catches keying errors such as transposed digits, but a well-formed number that was never issued still passes it.",
       "wrong_explanations": {
         "A": "A range check confirms the number falls within allowed limits; a number inside the range can still belong to no customer.",
-        "B": "A check digit catches transposed or mistyped digits, but a correctly formed number that was never issued still passes.",
+        "B": "Check digits do stop most mistyped numbers at entry, yet form and existence are separate questions, and each input edit answers only one.",
         "C": "A format check confirms the number is well formed; a well-formed number can still match no customer on file."
       },
       "tips": [
@@ -863,7 +863,7 @@
       "pre_read": "Ask which artifact links a component to the products that contain it, not which one finds weaknesses on servers.",
       "correct_explanation": "An SBOM is a formal, machine-readable record of the components and versions in each product, so the vendor can query it and name affected releases within hours. A disclosure policy is the tempting option because it sets response-time targets, but it cannot tell the vendor which products contain the library, so the targets cannot be met.",
       "wrong_explanations": {
-        "A": "A disclosure policy promises response times, but it cannot tell the vendor which products contain the library.",
+        "A": "An auditor would expect a disclosure policy as a vendor commitment, but a response promise is only as good as the inventory behind it.",
         "C": "An annual penetration test probes products for exploitable flaws at one point in time; it does not inventory the components inside each one.",
         "D": "Host scans assess the vendor's own infrastructure. They do not inventory libraries compiled into products shipped to customers."
       },
@@ -902,11 +902,11 @@
       "correct_explanation": "Repudiation is the threat that a user denies an action and the system cannot prove otherwise. The control that answers it is a tamper-evident record tying each approval to the individual who made it. Stronger sign-in authentication is the tempting option: it proves who opened the session, but without a protected record of each action the approver can still dispute the payment.",
       "wrong_explanations": {
         "A": "Encryption protects the confidentiality of the records; it does not prove which individual approved a payment.",
-        "B": "Stronger authentication proves who signed in, not which actions they took; without a protected action record the approval can still be disputed.",
+        "B": "Sign-in strength answers spoofing, a different STRIDE threat; match each STRIDE threat to its own control family.",
         "D": "Dual approval reduces the chance of a fraudulent payment, but either approver could still deny acting; it creates no proof of who approved."
       },
       "tips": [
-        "Eliminate: A protects confidentiality, while repudiation is an accountability threat that secrecy cannot answer, and D adds a second approver, which spreads authorization but leaves no proof of who approved.",
+        "Eliminate: A protects confidentiality, but repudiation is an accountability threat that secrecy cannot answer. D is dual control, which guards against one person's fraud rather than a later denial.",
         "Final two: C beats B because the gap is evidence of the action, which logging supplies; authentication alone proves only who signed in.",
         "Exam cue: in STRIDE, repudiation is answered by tamper-evident action records tied to individuals; spoofing is answered by authentication."
       ],
@@ -1469,7 +1469,7 @@
       "pre_read": "Notice counsel has already flagged the risk. Ask which option reduces exposure now and keeps new copyleft code out.",
       "correct_explanation": "Counsel has already flagged a real disclosure risk, so the sound response reduces exposure now: isolate the copyleft component behind a service boundary or replace it, and scan licenses before code is merged, which also stops new issues entering. A second legal opinion nearly wins: it may refine the legal view, but it reduces no exposure and adds no ongoing control, whatever it concludes.",
       "wrong_explanations": {
-        "B": "A second opinion refines a risk counsel has already raised, but it reduces no exposure and adds no control to stop new copyleft code entering.",
+        "B": "A second opinion would win if counsel's advice were in doubt; once a credible warning stands, treatment begins while analysis continues.",
         "C": "License notices satisfy attribution terms, but the AGPL's obligation is to offer source to network users; a notice reduces no exposure.",
         "D": "Disclosure is transparent and may be expected, but deferring remediation leaves the exposure in place and new copyleft code can still enter."
       },
@@ -1801,7 +1801,7 @@
       "correct_explanation": "Consumer-driven contract tests run in the provider's pipeline check each change against what partners actually rely on, so a breaking change is caught before it is deployed. A shared staging environment helps partners find breaks early, but it depends on every partner testing every release; nothing in the provider's pipeline blocks a breaking change.",
       "wrong_explanations": {
         "A": "Notice informs but does not prevent. Partners who miss the email or cannot migrate in time still break on release day.",
-        "C": "Shared staging helps partners find breaks early, but it relies on every partner testing every release; nothing in the provider's pipeline stops a breaking change.",
+        "C": "Staging and contract tests both aim to catch breaks before release; preventing one, though, is the job of whoever makes the change.",
         "D": "The provider's own tests check its intended behavior, not what each partner relies on, so changes that break consumers still pass."
       },
       "tips": [
@@ -2327,7 +2327,7 @@
       "pre_read": "Ask who should decide to carry a known high risk into production, and how that decision is recorded.",
       "correct_explanation": "High-risk findings from pre-production security testing should be fixed before go-live or, if the business must launch, formally accepted by the accountable risk owner with compensating controls and a fix date. Launching with the project manager's approval is the strongest alternative: it may match the business choice, but the project manager is not the risk owner, so known high risks would reach customers without accountable acceptance.",
       "wrong_explanations": {
-        "A": "A project manager's approval is not formal acceptance by the risk owner. Known high risks would enter production with no accountable owner agreeing to carry them.",
+        "A": "Project managers weigh delivery risks daily as a core duty, but the person under schedule pressure is the wrong one to waive a risk.",
         "B": "Monitoring detects exploitation rather than preventing it, and the CISO advises on security risk; residual business risk must be accepted by the accountable business risk owner.",
         "D": "Firewall rules may reduce exposure, but they are an unproven compensating control, and no accountable risk owner has accepted the residual risk."
       },
@@ -2625,7 +2625,7 @@
       "correct_explanation": "At 50,000 payments a day, an automated preventive control is most effective: a system check that holds payments matching earlier ones stops duplicates before money leaves, consistently and at volume. The daily duplicates report nearly wins: it is a useful detective control, but it finds duplicates after payment and depends on clerks keeping up with a high-volume queue.",
       "wrong_explanations": {
         "A": "Monthly sampling detects problems weeks later and examines a fraction of payments. Duplicates paid meanwhile must be recovered.",
-        "B": "A duplicates report serves where matches are too fuzzy to block; a rule that can be coded is enforced before money moves.",
+        "B": "A duplicates report earns its place when matches are too fuzzy to block; where a rule can be coded, prevention outranks detection.",
         "C": "A policy relies on every clerk checking by hand. At high volume it is inconsistent and leaves no reliable evidence."
       },
       "tips": [
@@ -2734,7 +2734,7 @@
       "pre_read": "Ask how much of the decision rests on one number.",
       "correct_explanation": "The whole return rests on one optimistic assumption, so approvers need a sensitivity analysis showing how the result changes at lower adoption rates before committing funds. Benchmarking against peer portals is the tempting option: it tests whether 90% is plausible, but not how far the return falls if adoption misses it.",
       "wrong_explanations": {
-        "A": "A benchmark tests whether 90% is plausible, but it is one input to the range tested; approvers still cannot see how far the return falls if adoption misses.",
+        "A": "Peer benchmarking is a valid check on an assumption's realism, but realism and resilience differ: a case must survive its assumption being wrong.",
         "B": "A review after a year confirms adoption too late; approvers need to see the risk in the assumption before funds are committed.",
         "C": "A reserve adds cost to absorb a shortfall, but approvers still cannot see how far the return falls if adoption misses."
       },
@@ -3336,7 +3336,7 @@
       "pre_read": "Benefits remain central, and the business owner is already measuring them. Ask what assurance only the auditor is placed to add.",
       "correct_explanation": "Benefits remain the review's central question, and here the business owner is measuring them, so the auditor adds most value by testing whether the controls designed into the system work in live operation and meet their objectives, such as complete and accurate settlement. Budget and schedule performance comes closest: it is reviewed at closure, but on-time delivery can still leave settlement risks uncontrolled.",
       "wrong_explanations": {
-        "B": "Cost and schedule results are project measures reviewed at closure. They say nothing about whether live controls protect settlements.",
+        "B": "Budget and schedule are the usual measures of a finished project; once a system is live, the audit question moves from project to product.",
         "C": "Usability matters for adoption, but a preference for screens is not an assurance question about controls.",
         "D": "Coding standard compliance is a build-phase quality check. After go-live, the question is whether controls work in operation."
       },
@@ -3701,7 +3701,7 @@
       "pre_read": "Notice the issue is outside the playbook. Ask which option assesses impact before committing, and who decides.",
       "correct_explanation": "A sound cutover uses decision gates so that unexpected issues are assessed before commitment. Pausing to size the fix and judge whether it fits the window lets management proceed or invoke fallback on evidence. Proceeding and cleaning up later keeps the schedule, but it loads known-bad master data into production without assessing the effect on supplier transactions.",
       "wrong_explanations": {
-        "B": "Proceeding does protect a 48-hour window that is hard to rebook. When the playbook is silent, though, nobody commits further until the problem is sized.",
+        "B": "Proceeding does protect a hard-to-rebook 48-hour window, yet it accepts a risk nobody has sized, and only sized risk can be accepted.",
         "C": "One unforeseen data issue does not prove the whole plan is flawed. Rollback should follow an assessment, not replace it.",
         "D": "The auditor advises but must not make management's operational decisions; doing so impairs independence."
       },
@@ -3814,7 +3814,7 @@
       "wrong_explanations": {
         "A": "A second review would confirm the backlog again. It adds cost without making anyone responsible for acting.",
         "C": "A target date sets a deadline, but with no named owner and no tracking, nobody is answerable when it passes.",
-        "D": "The PMO can track and chase, but it cannot change business processes; each recommendation needs an owner in the area that must act."
+        "D": "An auditor would welcome the PMO as tracker and chaser, but follow-up is a service and ownership a duty; only duties close findings."
       },
       "tips": [
         "Eliminate: A repeats the review without creating accountability, and C adds a date with no one named to meet it and no tracking to notice a miss.",
@@ -4371,7 +4371,7 @@
       "wrong_explanations": {
         "A": "A survey measures opinion, not errors; supervisors' impressions may reflect bias and cannot confirm a 40% reduction.",
         "B": "Results at other warehouses describe someone else's operation. They are not evidence of what happened here.",
-        "D": "A closure report is the project's own claim of success. The auditor should test it against underlying data rather than rely on it."
+        "D": "Evidence outranks assertion. A closure report usefully records what the project believes it achieved, yet a claim is a lead to test."
       },
       "tips": [
         "Eliminate: A relies on opinion, and B describes results from other organizations.",
@@ -5047,7 +5047,7 @@
       "wrong_explanations": {
         "A": "Fewer releases reduce volume, but each one still reaches production without validation or approval.",
         "B": "Freezing the model lets it fall out of step with demand for a year; the aim is controlled change, not no change.",
-        "D": "A log records what the builders did, but they still approve and release their own changes with no independent check."
+        "D": "A retraining log does give the model the audit trail it needs, yet a record of a change is never its authorization."
       },
       "tips": [
         "Eliminate: A only slows the release rate, and B stops needed retraining instead of controlling it.",
@@ -5084,7 +5084,7 @@
       "correct_explanation": "Model validation must be independent of the builders, who tend to test their own assumptions. Independent testing of accuracy, unfair bias and known limits gives the business owner a sound basis for acceptance. Owner sign-off comes closest: the owner should accept the model, but signing off on the builders' own results adds accountability without independent evidence, so validation comes first.",
       "wrong_explanations": {
         "A": "A colleague on the same project shares the team's assumptions and incentives, so the review is not independent.",
-        "C": "The owner should accept the model, but sign-off based only on the builders' results adds approval, not independent evidence.",
+        "C": "Owner sign-off and independent testing both gate the model's release, though acceptance is a decision, and decisions rest on evidence someone has challenged.",
         "D": "Live alerts watch the model after release; they cannot show it is sound before it starts flagging transactions."
       },
       "tips": [
@@ -5307,7 +5307,7 @@
       "pre_read": "Ask what test transactions could set off in a live system before anyone reverses them.",
       "correct_explanation": "Testing belongs in a separate environment that mirrors production in configuration and versions, so results are reliable without putting live data or service at risk. Building one fixes the real gap. Testing live and reversing transactions afterward is the most tempting alternative: test orders can still trigger shipments, postings and interface messages, and reversals may miss some, so live data and service stay exposed.",
       "wrong_explanations": {
-        "A": "Reversals are a standard cleanup for test postings, but testing is kept away from the assets it could harm rather than repaired afterward.",
+        "A": "Reversals are a standard cleanup for test postings, but isolating tests from live assets beats repairing what they touched afterward.",
         "B": "A development environment is controlled by programmers and rarely matches production, so results would be unreliable and testing would lack independence.",
         "D": "Inquiry-only testing cannot exercise order entry, pricing or posting, so the functions users must accept would go untested."
       },
@@ -5452,7 +5452,7 @@
       "pre_read": "Ask which parts of the system this practice never exercises after a release.",
       "correct_explanation": "Regression testing exists because a change can break functions that were never touched, such as a claims calculation that calls a modified module. Rerunning only the changed modules' tests skips exactly those dependents. An error inside a changed module is the closest choice, but those modules are the ones being retested, so their defects are the most likely to be caught.",
       "wrong_explanations": {
-        "A": "Changed modules breed most new defects, though regression risk lives in code that depends on a change.",
+        "A": "Changed modules do breed most new defects, yet a defect slips through only where testing stops, so judge escape risk by coverage, not by origin.",
         "B": "Peak-volume slowdowns call for performance testing, which a functional regression suite, full or partial, does not provide.",
         "C": "Outdated library flaws are found by software composition analysis, not by choosing which functional tests to rerun."
       },
@@ -5635,7 +5635,7 @@
       "correct_explanation": "Controls are cheapest to build in at requirements and design, so the IS auditor should take part from the start in an advisory role. Independence comes from agreed advisory terms and from not designing, building or approving the system, not from staying away. A voting steering committee seat nearly wins: it gives early involvement, but voting makes the IS auditor share management's project decisions, which impairs independence.",
       "wrong_explanations": {
         "A": "Advisory input under agreed terms keeps independence; waiting until testing ends means missing controls are found when they are costliest to add.",
-        "B": "Early involvement is right, but voting on project decisions makes the IS auditor share management's decisions, which impairs independence.",
+        "B": "No one audits objectively a decision they helped make. A steering seat does give early sight, yet auditors influence projects by advice, never by vote.",
         "C": "Quality assurance checks deliverables against standards; it does not replace the IS auditor's independent view of control requirements."
       },
       "tips": [
@@ -5673,7 +5673,7 @@
       "wrong_explanations": {
         "A": "User acceptance testing finds gaps late, when fixing them means rework; missing needs should be caught while requirements are written.",
         "C": "Consultants may know the industry but not this organization's claims process, and they cannot take on the business's ownership.",
-        "D": "Sign-off records ownership on paper, but managers approving a document they did not help write rarely spot missing needs."
+        "D": "Sign-off would close the loop if users had helped write the requirements; approval cannot add knowledge that was never gathered."
       },
       "tips": [
         "Eliminate: A finds gaps only after the system is built, and C substitutes outsiders for the business's own knowledge.",
@@ -5707,7 +5707,7 @@
       "pre_read": "Ask when the benefit promised in the business case can first be observed.",
       "correct_explanation": "A review must wait until the system has run long enough, under representative conditions, to measure the promised benefits. Here the benefit is faster bookings from December to March, so the review belongs soon after the first such period ends, while fixes are still practical. Three months after go-live is the strongest alternative: it is a common settling period, but August data shows off-season volumes and cannot confirm the peak-season benefit.",
       "wrong_explanations": {
-        "A": "Three months is a common settling period, but August volumes cannot show whether bookings are faster from December to March.",
+        "A": "An auditor would accept a usual settling interval as a default, but a seasonal promise can only be judged in its season.",
         "B": "One week after go-live shows start-up problems and the learning curve, not the normal or peak results the review must measure.",
         "D": "Two booking periods later, context is lost and changes have piled up, so findings come too late to correct cheaply."
       },
@@ -5744,7 +5744,7 @@
       "pre_read": "Compare who performs the approval in each option, not only what evidence the approval uses.",
       "correct_explanation": "The change authority, a management role independent of the developers, approves each release on the attached test and scan evidence; the IS auditor can later test that approvals were evidence-based. The IS auditor approving releases is the most tempting alternative. It uses the same evidence, but it makes the IS auditor operate a production control that the IS auditor must later audit, a self-review threat.",
       "wrong_explanations": {
-        "B": "The evidence is right but the approver is wrong: approving releases makes the IS auditor run a production control that the IS auditor must later audit.",
+        "B": "Both approvers would rely on identical test results, but independence is lost by what an auditor does, not by what an auditor reads.",
         "C": "Peer review helps, but the author still approves the author's own release, so the separation between writing and approving code is lost.",
         "D": "A board that both approves and deploys merges authorizing with doing; deployment should run through the pipeline or operations staff, separate from approval."
       },
