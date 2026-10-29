@@ -119,6 +119,13 @@ function mix(v: number, end: number, s: number): number {
   return v + (end - v) * s;
 }
 
+/** A line of words at time t: it fades in and rises 8pt from `at` (or is simply there). */
+function wordsStyle(t: number, skip: number, at: number, shown: boolean) {
+  'worklet';
+  const p = shown ? 1 : mix(wordsIn(t, at), 1, skip);
+  return { opacity: p, transform: [{ translateY: RISE * (1 - p) }] };
+}
+
 /** One static drawing on the 200-unit stage, built once. */
 function Layer({ el, size, style, raster }: { el: ReactNode; size: number; style?: object; raster?: boolean }) {
   return (
@@ -316,14 +323,11 @@ export function FormReveal({
   const haloProps = useAnimatedProps(() => ({
     strokeDashoffset: circ * (1 - (isReduced ? 1 : mix(haloDraw(clock.value, P), 1, skipV.value))),
   }));
-  const wordsStyle = (at: number, shown: boolean) => {
-    'worklet';
-    const p = isReduced || shown ? 1 : mix(wordsIn(clock.value, at), 1, skipV.value);
-    return { opacity: p, transform: [{ translateY: RISE * (1 - p) }] };
-  };
-  const factStyle = useAnimatedStyle(() => wordsStyle(0, waited));
-  const nameStyle = useAnimatedStyle(() => wordsStyle(P.nameAt, false));
-  const lookStyle = useAnimatedStyle(() => wordsStyle(P.nameAt + 80, false));
+  // Each updater reads the clock and the skip ITSELF: a shared value read only inside a nested
+  // helper is not seen as an input, and the words would never move until a re-render.
+  const factStyle = useAnimatedStyle(() => wordsStyle(clock.value, skipV.value, 0, isReduced || waited));
+  const nameStyle = useAnimatedStyle(() => wordsStyle(clock.value, skipV.value, P.nameAt, isReduced));
+  const lookStyle = useAnimatedStyle(() => wordsStyle(clock.value, skipV.value, P.nameAt + 80, isReduced));
 
   const moving = playing;
   const hideWords = playing;
