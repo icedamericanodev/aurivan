@@ -34,6 +34,7 @@ read them from repository variables, apps from their build settings.
 | Publishable key `sb_publishable_s9eKQUQ0w3MTnCUBF05EkA_5e_kGEw2` | web and mobile clients |
 | Google OAuth client ID `849696377968-fm4s9mm9f3poe5q9f2k3537sio3d1v7c.apps.googleusercontent.com` (Google Cloud project "KaiSip", web client "KaiSip (Supabase)") | set in Supabase → Providers → Google; the clients never need it |
 | Turnstile site key `0x4AAAAAAFptlSqMhAvLUI8w` (widget "KaiSip sign-in", hostname kaisip.com, Managed) | the web sign-in form and the mobile sign-in screen |
+| Backup age public key `age1qx9267k39fjw7t7c8wf6s0xeu2hytk8t7qagedhlnjd7am0ku4xsepfc0f` (29 Oct 2026; the private key is only in Sky's password manager) | GitHub Actions variable `BACKUP_AGE_RECIPIENT`, read by `db-backup.yml` to encrypt each backup |
 
 Checked from the cloud session on 28 Oct 2026: `/auth/v1/settings` lists Google and email as enabled, and `/auth/v1/authorize?provider=google` redirects to Google with the client ID above and the Supabase callback.
 
