@@ -860,11 +860,11 @@ The job runs in GitHub Environment `db-backup`, limited to `main`. No artefacts 
 
 40. Supabase → Usage: database under 300 MB, egress under 3 GB. Glance at Resend usage. Any GitHub "workflow failed" email (keep-awake or backup) means: tell Claude the same day.
 
-**Open owner decisions (short)**
-1. Board stays off in the beta (recommended).
-2. Web version name v13.
-3. Optional: let Claude read the two test sign-in codes through Gmail for the smoke test (say yes in your own message, or run it yourself).
-4. Later: one plant across web and phone.
+**Owner decisions (settled 29 Oct 2026 under the "experts decide first" rule)**
+1. The feedback board stays off in the beta (the plan's recommendation; no owner action).
+2. The sign-in web release is named v13 (a MAJOR bump: accounts are an architecture change).
+3. The smoke test's two sign-in codes: Sky runs that step on Sky's own inbox. Claude does not read the inbox (privacy by default); this can change only if Sky asks in Sky's own message.
+4. Later: one plant across web and phone (still open, not needed for the beta).
 
 ---
 
