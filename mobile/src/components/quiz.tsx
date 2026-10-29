@@ -643,7 +643,7 @@ export function AnswerMore({ rows: given, buttonRef }: { rows: (MoreRow | null)[
       <IconButton
         ref={buttonRef}
         label="More on this question"
-        hint="Opens the note, the principle, your note and Report a problem"
+        hint={rows.length > 1 ? 'Opens the note, the principle, your note and Report a problem' : 'Opens Report a problem'}
         expanded={open}
         icon={(col) => <Ellipsis size={24} color={col} strokeWidth={ICON_STROKE} />}
         onPress={() => setOpen(true)}
