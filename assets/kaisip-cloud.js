@@ -4017,6 +4017,7 @@ exports.isResting = isResting;
 exports.restLine = restLine;
 exports.plantLabel = plantLabel;
 exports.backfillLine = backfillLine;
+exports.formGrowthLine = formGrowthLine;
 exports.growthShort = growthShort;
 exports.grewLabel = grewLabel;
 exports.organLabel = organLabel;
@@ -4109,6 +4110,8 @@ function nextGrowth(prevHighest, computed) {
 }
 const READY_RULE = `The low end of your readiness holds at ${examReady_1.READY_LOW}% or more for ${examReady_1.READY_DAYS === 7 ? 'a week' : `${examReady_1.READY_DAYS} days`}`;
 const CLEAN_LOW = 'The low end of your readiness, without hints or games,';
+const STUDY_STEADY = `Your study estimate holds steady for ${examReady_1.READY_DAYS === 7 ? 'a week' : `${examReady_1.READY_DAYS} days`}`;
+const STUDY_LOW = 'Your study estimate, without hints or games,';
 const RECALL_WEEK = plantForms_1.RECALL_GAP_DAYS === 7 ? 'a week' : `${plantForms_1.RECALL_GAP_DAYS} days`;
 const recallRule = (n) => `get ${n} questions right, without a hint, ${RECALL_WEEK} or more after you last saw them`;
 exports.GROWTH_RULES = {
@@ -4128,7 +4131,7 @@ exports.SPREAD_EXPLAINER = "Subtopics you've answered right, without a hint, on 
 function pct(x) {
     return `${Math.round(x * 100)}%`;
 }
-function nextGrowthSteps(current, f) {
+function nextGrowthSteps(current, f, opts = {}) {
     var _a;
     if (current >= exports.MAX_GROWTH)
         return null;
@@ -4136,7 +4139,7 @@ function nextGrowthSteps(current, f) {
     const frac = (have, need) => (need <= 0 ? 1 : Math.max(0, Math.min(1, have / need)));
     const low = (_a = f.low) !== null && _a !== void 0 ? _a : 0;
     const spread = (need) => ({ label: `Know ${pct(need)} of the outline`, progress: frac(f.spread, need) });
-    const lowStep = (need) => ({ label: `${CLEAN_LOW} reaches ${need}%`, progress: f.low === null ? 0 : frac(low, need) });
+    const lowStep = (need) => ({ label: `${opts.forms ? STUDY_LOW : CLEAN_LOW} reaches ${need}%`, progress: f.low === null ? 0 : frac(low, need) });
     const recallStep = (need) => (f.recalled === undefined ? [] : [{ label: `Get ${need} questions right ${RECALL_WEEK} or more after you last saw them`, progress: frac(f.recalled, need) }]);
     let steps;
     switch (g) {
@@ -4158,7 +4161,7 @@ function nextGrowthSteps(current, f) {
         default: {
             const min = f.cleanMastery.length ? Math.min(...f.cleanMastery) : 0;
             steps = [
-                { label: READY_RULE, progress: f.readyHeld ? 1 : 0 },
+                { label: opts.forms ? STUDY_STEADY : READY_RULE, progress: f.readyHeld ? 1 : 0 },
                 { label: `Every domain at ${pct(exports.ELDER_DOMAIN_FLOOR)} or more`, progress: frac(min, exports.ELDER_DOMAIN_FLOOR) },
                 spread(exports.ELDER_SPREAD),
                 { label: 'A full, timed mock with every question answered', progress: f.dress ? 1 : 0 },
@@ -4719,12 +4722,16 @@ function plantLabel(i) {
     const sp = exports.SPECIES_INFO[i.species].lower;
     const who = i.name ? `${shownName(i.name)}, your ${sp}` : `Your ${sp}`;
     const extra = [i.newGrowth ? 'New growth today.' : '', i.resting ? 'Resting.' : '', i.mood ? plantLooks_1.MOOD_WORDS[i.mood] : '', i.visitor ? `A ${i.visitor} is visiting.` : ''].filter(Boolean).join(' ');
-    return `${who}.${i.form ? ` ${i.form} form.` : ''} Growth: ${exports.GROWTH_NAMES[i.growth]}, ${i.growth} of 6.${extra ? ` ${extra}` : ''}`;
+    const growth = i.form ? `${i.form} form. Growth: ${exports.GROWTH_NAMES[i.growth]}.` : `Growth: ${exports.GROWTH_NAMES[i.growth]}, ${i.growth} of 6.`;
+    return `${who}. ${growth}${extra ? ` ${extra}` : ''}`;
 }
 function backfillLine(p, growth, form) {
     return growth > 1
         ? `Your study so far grew ${p.name ? shownName(p.name) : `your ${exports.SPECIES_INFO[p.species].lower}`} to ${exports.GROWTH_NAMES[growth]}${form ? `: the ${form}` : ''}.`
         : `Planted. Your first ${exports.SPROUT_ANSWERS} answers give it its first sprout.`;
+}
+function formGrowthLine(species, growth) {
+    return `Your ${exports.SPECIES_INFO[species].lower} · ${exports.GROWTH_NAMES[growth]}`;
 }
 function growthShort(growth) {
     return `${exports.GROWTH_NAMES[growth]} · growth ${growth} of ${exports.MAX_GROWTH}`;
@@ -10386,7 +10393,7 @@ function decodeUtf8(bytes) {
   var api = {};
   api["browser"] = load("src/webcloud/browser.ts");
   api["config"] = load("src/webcloud/config.ts");
-  api.sourceHash = "0af376f23e52e431";
+  api.sourceHash = "2dd2a8445e1522c6";
   var cloud = load("src/webcloud/index.ts");
   var liveVersion = "1.48.0";
   var liveStoreVersions = {"progress":2,"settings":1};

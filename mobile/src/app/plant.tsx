@@ -3,7 +3,8 @@
  *
  * Top to bottom:
  *   the plant at 200pt (the shared stage, so growth reads from one size to the next)
- *   its name, species and growth ("Bough · growth 4 of 6"; never "stage")
+ *   its name, species and growth ("Bough · growth 4 of 6"; never "stage").
+ *     With forms on (1.50) the count goes: "Your oak · Bough" (no "n of m" by a form)
  *   one calm line when there is one: the back-fill (once), or resting
  *   What grows it next: the next growth's rule, step by step, with progress
  *   Your domains: each domain's part of the plant, as text rows
@@ -21,7 +22,7 @@
  */
 import { router } from 'expo-router';
 import { useEffect, useMemo, useState } from 'react';
-import { ScrollView, View } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { EmptyScreen } from '../components/emptyScreen';
 import { FormReveal } from '../components/plant/FormReveal';
@@ -31,6 +32,7 @@ import { Button, ListRow, ProgressBar, PushedHeader, Section, T, Tag, useFontSca
 import {
   backfillLine,
   FORM_FACTS,
+  formGrowthLine,
   grewLabel,
   GROWTH_LOOKS,
   GROWTH_NAMES,
@@ -67,8 +69,9 @@ export default function YourPlant() {
   const [now] = useState(() => Date.now());
   const next = useMemo(() => {
     const facts = plantFactsFor(certId, progress, now);
-    return p && facts ? nextGrowthSteps(p.growth, facts) : null;
-  }, [certId, progress, now, p]);
+    // With forms on, the readiness gates are worded as "Your study estimate…" (no readiness words by a form).
+    return p && facts ? nextGrowthSteps(p.growth, facts, { forms: view.forms }) : null;
+  }, [certId, progress, now, p, view.forms]);
 
   // The back-fill line shows ONCE: kept for this visit, marked seen at once.
   const backfill = p?.backfill;
@@ -182,7 +185,10 @@ export default function YourPlant() {
         <T v="display" center accessibilityRole="header" style={{ marginTop: space.md }}>{plantCallName(p)}</T>
         {/* Mobile 1.50: the form is a NAME under the plant's name, never a second number beside the growth. */}
         {view.forms && !reveal ? <T v="stage" center color={c.ink2} style={{ marginTop: space.xs }}>{`The ${view.formName}`}</T> : null}
-        <T v="meta" center style={{ marginTop: space.xs }}>{`${p.name ? `Your ${SPECIES_INFO[p.species].lower} · ` : ''}${growthShort(p.growth)}`}</T>
+        {/* With forms on: "Your oak · Crown", the growth by name only (no count near a form, UX review H2). */}
+        <T v="meta" center style={{ marginTop: space.xs }}>
+          {view.forms ? formGrowthLine(p.species, p.growth) : `${p.name ? `Your ${SPECIES_INFO[p.species].lower} · ` : ''}${growthShort(p.growth)}`}
+        </T>
         {!reveal ? <T v="quote" center color={c.ink2} style={{ marginTop: space.xs }}>{view.forms ? view.formLook : GROWTH_LOOKS[p.growth]}</T> : null}
         {nextForm ? <T v="meta" center style={{ marginTop: space.xs }}>{nextForm}</T> : null}
         {view.look?.visiting ? (
@@ -198,6 +204,8 @@ export default function YourPlant() {
           </View>
         )}
 
+        {/* With forms on, a hairline ends the form's block, so the steps sit under their own heading, apart from the form (UX review P4). */}
+        {view.forms ? <View testID="plant-steps-rule" style={{ height: StyleSheet.hairlineWidth, backgroundColor: c.line, marginTop: space.xl }} /> : null}
         <Section title="What grows it next" meta={next ? GROWTH_NAMES[next.growth] : undefined} />
         {next ? (
           <View style={{ gap: space.lg, marginTop: space.sm }}>

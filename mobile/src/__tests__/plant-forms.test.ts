@@ -23,6 +23,7 @@ import {
   bestCaseFacts,
   cleanPlantName,
   FORM_FACTS,
+  formGrowthLine,
   GROWTH_RULES,
   growthFor,
   isValidPlantState,
@@ -134,11 +135,39 @@ describe('form mapping: every growth and species', () => {
     expect(FINAL_IDS).toEqual(['own', 'lookout', 'moot', 'espalier', 'coppice', 'holdfast']);
   });
 
-  it('the spoken label names the form after the plant, and never a second number', () => {
-    expect(plantLabel({ name: 'Kai', species: 'oak', growth: 4, form: formName('oak', 4) })).toBe('Kai, your oak. Standard Oak form. Growth: Bough, 4 of 6.');
-    expect(plantLabel({ species: 'bamboo', growth: 2, form: formName('bamboo', 2) })).toBe('Your bamboo. Sheath Bamboo form. Growth: Sprout, 2 of 6.');
+  it('the spoken label names the form after the plant, and never a count beside it (UX review H2)', () => {
+    expect(plantLabel({ name: 'Kai', species: 'oak', growth: 4, form: formName('oak', 4) })).toBe('Kai, your oak. Standard Oak form. Growth: Bough.');
+    expect(plantLabel({ species: 'bamboo', growth: 2, form: formName('bamboo', 2), resting: true })).toBe('Your bamboo. Sheath Bamboo form. Growth: Sprout. Resting.');
     // Without forms (the storybook style keeps its six growths), the label is as before.
     expect(plantLabel({ name: 'Kai', species: 'oak', growth: 4 })).toBe('Kai, your oak. Growth: Bough, 4 of 6.');
+  });
+});
+
+describe('words near a form (UX review H2, P4)', () => {
+  it('the line under a form names the growth, never counts it', () => {
+    expect(formGrowthLine('oak', 3)).toBe('Your oak · Shoot');
+    expect(formGrowthLine('cherry-blossom', 6)).toBe('Your cherry blossom · Elder');
+    for (const sp of PLANT_SPECIES) for (let g = 1; g <= 6; g++) expect(formGrowthLine(sp, g as GrowthLevel)).not.toMatch(/\d/);
+  });
+
+  /** Facts that open every gate. */
+  const all: PlantFacts = { cleanAnswered: 400, cleanByDomain: [80, 80, 80, 80, 80], cleanMastery: [0.8, 0.8, 0.8, 0.8, 0.8], low: 85, spread: 0.7, mock50: true, dress: true, readyHeld: true };
+
+  it('with forms on, the next steps say "study estimate", never readiness; the gates are unchanged', () => {
+    for (let g = 1; g <= 5; g++) {
+      const plain = nextGrowthSteps(g as GrowthLevel, all)!;
+      const forms = nextGrowthSteps(g as GrowthLevel, all, { forms: true })!;
+      // Same growth, same number of steps, same progress: only the words differ.
+      expect(forms.growth).toBe(plain.growth);
+      expect(forms.steps.map((x) => x.progress)).toEqual(plain.steps.map((x) => x.progress));
+      for (const st of forms.steps) expect([st.label, /ready|readiness|\bpass|guarantee/i.test(st.label)]).toEqual([st.label, false]);
+    }
+    expect(nextGrowthSteps(5, all, { forms: true })!.steps[0].label).toBe('Your study estimate holds steady for a week');
+    expect(nextGrowthSteps(3, all, { forms: true })!.steps[0].label).toBe('Your study estimate, without hints or games, reaches 55%');
+    // Without forms (storybook, and the website's bundle) the words stay as they were.
+    expect(nextGrowthSteps(5, all)!.steps[0].label).toBe('The low end of your readiness holds at 80% or more for a week');
+    // The gate still reads readyHeld: not held, not done.
+    expect(nextGrowthSteps(5, { ...all, readyHeld: false }, { forms: true })!.steps[0].progress).toBe(0);
   });
 });
 

@@ -9,7 +9,7 @@
  */
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
 import { AccessibilityInfo, Dimensions } from 'react-native';
-import { setMockReducedMotion } from '../../jest/reanimated-mock';
+import { setMockHoldAnimations, setMockReducedMotion } from '../../jest/reanimated-mock';
 import Today from '../app/(tabs)/home';
 import YourPlant from '../app/plant';
 import PlantLook from '../app/plant-look';
@@ -17,7 +17,9 @@ import { resetCelebrationsForTest, resetOncePerDayForTest, setSystemReducedMotio
 import { FORM_FACTS, plantNew, type CertPlant } from '../engine/plant';
 import { SEE_NEW_FORM } from '../engine/plantForms';
 import { widgetFace, type WidgetSnapshot } from '../engine/widgets';
+import { FormReveal } from '../components/plant/FormReveal';
 import { flushSayLaterForTest } from '../lib/a11y';
+import { light } from '../theme/tokens';
 import { useProgress } from '../store/progress';
 import { useSeen } from '../store/seen';
 import { useSession } from '../store/session';
@@ -170,6 +172,108 @@ describe('Your plant', () => {
     mount(<YourPlant />);
     expect(allText()).not.toContain('Standard Oak');
     expect(byTestID('plant-form-reveal')).toHaveLength(0);
+  });
+});
+
+describe('UX review fixes (1.50 forms)', () => {
+  it('H2: under the form, "Your oak · Shoot": the growth by name, no count anywhere on the screen', () => {
+    setPlant(grown(3));
+    useSeen.setState({ plantForms: { cisa: { seen: 2 } } });
+    mount(<YourPlant />);
+    const text = allText();
+    expect(text).toContain('Your oak · Shoot');
+    expect(text).not.toMatch(/growth \d|\d of 6/);
+    // The spoken plant label: the form and the growth's name, no count either.
+    expect(r!.root.findAll((n) => typeof n.props.accessibilityLabel === 'string' && /\d of 6/.test(n.props.accessibilityLabel))).toHaveLength(0);
+  });
+
+  it('H2: a storybook plant (no forms) keeps its "growth n of 6" line', () => {
+    const { look: _look, ...old } = grown(5);
+    setPlant(old);
+    mount(<YourPlant />);
+    expect(allText()).toContain('growth 5 of 6');
+    expect(byTestID('plant-steps-rule')).toHaveLength(0);
+  });
+
+  it('P4: the steps sit under their own heading after a hairline, worded as a study estimate', () => {
+    setPlant(grown(5));
+    useSeen.setState({ plantForms: { cisa: { seen: 3 } } });
+    mount(<YourPlant />);
+    expect(byTestID('plant-steps-rule')).toHaveLength(1);
+    const heading = r!.root.findAll((n) => n.props.accessibilityRole === 'header' && n.props.children === 'What grows it next');
+    expect(heading.length).toBeGreaterThan(0);
+    const text = allText();
+    expect(text).toContain('Your study estimate holds steady for a week');
+    expect(text).not.toMatch(/readiness|\bready\b|\bpass|guarantee/i);
+  });
+
+  it('P3, P6: Look at Elder drops "or your readiness", and each final says its idea once', () => {
+    setPlant(grown(6));
+    useSeen.setState({ plantForms: { cisa: { seen: 4 } } });
+    mount(<PlantLook />);
+    const text = allText();
+    expect(text).toContain('A look is just for you: it never changes your growth.');
+    expect(text).not.toMatch(/readiness/i);
+    expect(text).toContain('Your oak · Elder');
+    expect(text).not.toMatch(/growth \d|\d of 6/);
+    // The Moot row: its look line only (the flavour's idea is not said a second time).
+    expect(text).toContain('Long level limbs roof a ring of five stones; the crown sits in tiers.');
+    expect(text).not.toContain('Level limbs make a roof over a ring of meeting stones.');
+    expect(text).not.toContain('Its own final form.');
+  });
+
+  const revealProps = {
+    species: 'oak' as const,
+    from: 2 as const,
+    to: 3 as const,
+    theme: 'light' as const,
+    size: 200,
+    accessibilityLabel: 'Kai, your oak. Whip Oak form. Growth: Shoot.',
+    fact: FORM_FACTS[3],
+    name: 'Whip Oak',
+    lookLine: 'One straight leader with lobed leaves at each node.',
+    announce: 'Kai grows into a new form: the Whip Oak.',
+    testID: 'rv',
+  };
+  const words = () => byTestID('rv-words')[0];
+
+  it('H1, P5: mid-motion, the ink line is the ≥3:1 control colour and the words are hidden from screen readers', () => {
+    setMockReducedMotion(false);
+    setSystemReducedMotionForTest(false);
+    // Hold every animation mid-way (the mock normally finishes them at once).
+    setMockHoldAnimations(true);
+    const say = jest.spyOn(AccessibilityInfo, 'announceForAccessibility').mockImplementation(() => {});
+    say.mockClear(); // jest/setup.ts's mock keeps earlier tests' calls
+    mount(<FormReveal {...revealProps} />);
+    expect(byTestID('rv-full')).toHaveLength(1);
+    const ink = byTestID('rv-ink')[0];
+    expect(JSON.stringify(ink.props.style)).toContain(light.control);
+    expect(JSON.stringify(ink.props.style)).not.toContain(light.line);
+    expect(words().props.accessibilityElementsHidden).toBe(true);
+    expect(words().props.importantForAccessibility).toBe('no-hide-descendants');
+    act(() => flushSayLaterForTest());
+    expect(say).not.toHaveBeenCalled();
+  });
+
+  it('P5: once the motion ends the words are readable, and the form is announced exactly once', () => {
+    setMockReducedMotion(false);
+    setSystemReducedMotionForTest(false);
+    const say = jest.spyOn(AccessibilityInfo, 'announceForAccessibility').mockImplementation(() => {});
+    say.mockClear(); // jest/setup.ts's mock keeps earlier tests' calls
+    mount(<FormReveal {...revealProps} />);
+    expect(byTestID('rv-full')).toHaveLength(1);
+    expect(words().props.accessibilityElementsHidden).toBe(false);
+    expect(words().props.importantForAccessibility).toBe('auto');
+    act(() => flushSayLaterForTest());
+    expect(say).toHaveBeenCalledTimes(1);
+    expect(say).toHaveBeenCalledWith('Kai grows into a new form: the Whip Oak.');
+  });
+
+  it('P5: Reduce Motion shows the words at once, never hidden', () => {
+    setSystemReducedMotionForTest(true);
+    mount(<FormReveal {...revealProps} />);
+    expect(byTestID('rv-reduced')).toHaveLength(1);
+    expect(words().props.accessibilityElementsHidden).toBe(false);
   });
 });
 

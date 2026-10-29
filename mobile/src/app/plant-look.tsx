@@ -34,9 +34,9 @@ import { LivePlant } from '../components/plant/LivePlant';
 import { Plant } from '../components/plant/Plant';
 import { KeepsakeIcon, LookOption, PlanterIcon, Swatch } from '../components/plant/LookUI';
 import { ICON_SIZE, PushedHeader, Row, Section, T, useFontScale } from '../components/ui';
-import { growthShort, plantCallName, type GrowthLevel } from '../engine/plant';
+import { formGrowthLine, growthShort, plantCallName, type GrowthLevel } from '../engine/plant';
 import { colourwaysFor, GROUNDS, howToOpen, skillLine, KEEPSAKE_ITEMS, lookItem, MAX_SHOWN_KEEPSAKES, plantersFor, STYLES, toggleKeepsake, VISITORS, type LookItem, type LookSlot, type PlantStyle } from '../engine/plantLooks';
-import { FINAL_IDS, FLAVOURS, finalLook, finalName, type FinalId } from '../engine/plantForms';
+import { FINAL_IDS, finalLook, finalName, type FinalId } from '../engine/plantForms';
 import { haptic } from '../lib/haptics';
 import { useSeen } from '../store/seen';
 import { usePlantView } from '../lib/plant';
@@ -191,10 +191,12 @@ export default function PlantLook() {
           look={preview}
           accessibilityLabel={previewLabel}
         />
-        <T v="meta" center style={{ marginTop: space.xs }}>{`${plantCallName(p)} · ${growthShort(p.growth)}`}</T>
+        {/* With forms on: "Your oak · Crown", the growth by name only (no count near a form, UX review H2). */}
+        <T v="meta" center style={{ marginTop: space.xs }}>{view.forms ? formGrowthLine(p.species, p.growth) : `${plantCallName(p)} · ${growthShort(p.growth)}`}</T>
       </View>
       <ScrollView contentContainerStyle={{ paddingHorizontal: space.gutter, paddingBottom: space.xxxl }} onLayout={(e) => setWidth(e.nativeEvent.layout.width - space.gutter * 2)}>
-        <T v="meta" style={{ marginTop: space.md }}>A look is just for you: it never changes your growth or your readiness.</T>
+        {/* With forms on, no readiness word near the form choice (UX review P3). */}
+        <T v="meta" style={{ marginTop: space.md }}>{view.forms ? 'A look is just for you: it never changes your growth.' : 'A look is just for you: it never changes your growth or your readiness.'}</T>
 
         {view.forms && p.growth >= 6 ? (
           <>
@@ -205,7 +207,8 @@ export default function PlantLook() {
                   key={id}
                   testID={`look-final-${id}`}
                   name={finalName(p.species, id)}
-                  line={id === 'own' ? `Its own final form. ${finalLook(p.species, id)}` : `${FLAVOURS[id].idea} ${finalLook(p.species, id)}`}
+                  // One line per choice: its look (the flavour's idea is already in it, UX review P6).
+                  line={finalLook(p.species, id)}
                   art={<Plant species={p.species} stage={6} organs={view.scales} size={56} theme={theme} quietLook look={{ ...look.art, visitor: undefined, keepsakes: [], final: id }} />}
                   selected={view.final === id}
                   locked={false}

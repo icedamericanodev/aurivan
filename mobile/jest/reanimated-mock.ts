@@ -70,9 +70,18 @@ export const useFrameCallback = () => ({ setActive: () => {}, isActive: false })
 export const useReducedMotion = () => reduced;
 
 // ── Animations: they land on their end value at once ────────────────────
+let held = false;
+/**
+ * Hold every animation mid-way: values still land, but no "finished" callback
+ * runs, so a test can look at a component DURING its motion (the plant form
+ * reveal before its words are shown). Reset after each test (jest/after-env.ts).
+ */
+export function setMockHoldAnimations(value: boolean) {
+  held = value;
+}
 type Done = ((finished?: boolean) => void) | undefined;
 export const withTiming = <T,>(to: T, _config?: unknown, done?: Done) => {
-  done?.(true);
+  if (!held) done?.(true);
   return to;
 };
 export const withSpring = withTiming;

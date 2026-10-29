@@ -1,7 +1,8 @@
 // Mobile 1.50 plant forms (SHOTS=forms): Your plant at each form (I–IV) for
 // three species (oak, lotus, bamboo), a Form IV flavour, the Look screen's
-// final-form choice, the quiet note for a plant already past Form I, and
-// frame strips of the reveal (full motion, and Reduce Motion's cross-fade).
+// final-form choice, the quiet note for a plant already past Form I, frame
+// strips of the reveal (full motion, and Reduce Motion's cross-fade), and
+// Your plant and the Look choice at about 200% text (forms-*-xl).
 //
 // The reveal strips slow the page's clock (performance.now, Date.now,
 // requestAnimationFrame and setTimeout) to 1/10 from the very first frame of
@@ -156,6 +157,46 @@ await revealStrip('forms-reveal-reduced', 'Reduce Motion: a 120 ms cross-fade, t
 await setMotion('system');
 await go('/plant');
 await shot('forms-reveal-after');
+
+// ── 5. About 200% text: Your plant and the Look choice ─────────────────────
+// From here on the app's text size is ×2 (window.__AURIVAN_FONT_SCALE__, read
+// by components/ui.tsx useFontScale) and each text run is zoomed to match,
+// titles capped at ×1.3: the same approximation as shoot_cloud.mjs.
+const TEXT_RUNS = 'div[dir="auto"], [role="heading"][dir="auto"], h1[dir="auto"], h2[dir="auto"], h3[dir="auto"], input';
+const zoomText = (f) =>
+  page.evaluate(
+    ([sel, factor]) => {
+      for (const el of document.querySelectorAll(sel)) {
+        if (el.dataset.zoomed) continue;
+        const px = parseFloat(getComputedStyle(el).fontSize) || 16;
+        el.style.zoom = String(px >= 26 ? Math.min(1.3, factor) : factor);
+        el.dataset.zoomed = '1';
+      }
+    },
+    [TEXT_RUNS, f],
+  );
+const bigShot = async (name) => {
+  await zoomText(2);
+  await wait(400);
+  await shot(name);
+};
+await ctx.addInitScript(() => (window.__AURIVAN_FONT_SCALE__ = 2));
+// Your plant at Crown (Form III): the form, "Your oak · Crown", the hairline, then the steps' heading.
+await setPlant(plantAt('oak', 'Kai', 5));
+await setForms({ seen: 3 });
+await go('/plant');
+await bigShot('forms-oak-formIII-xl');
+// The same screen scrolled to the steps (worded as a study estimate).
+await page.evaluate(() => {
+  for (const el of document.querySelectorAll('div')) if (el.scrollHeight > el.clientHeight + 40 && getComputedStyle(el).overflowY !== 'visible') el.scrollTop = 700;
+});
+await wait(400);
+await shot('forms-oak-formIII-steps-xl');
+// Look at Elder: the final-form choice, one line per flavour.
+await setPlant(plantAt('oak', 'Kai', 6));
+await setForms({ seen: 4 }, 'moot');
+await go('/plant-look');
+await bigShot('forms-look-final-choice-xl');
 
 if (errs.length) console.log('page errors:', errs.slice(0, 5));
 await browser.close();

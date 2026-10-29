@@ -4,6 +4,7 @@
  */
 import { cancelA11yTimersForTest } from '../src/lib/a11y';
 import { cancelSheetWaitsForTest } from '../src/lib/sheetWait';
+import { setMockHoldAnimations } from './reanimated-mock';
 
 // A focus move or announcement still waiting for its pause (lib/a11y.ts:
 // moveFocus, sayLater, the backup messages) must not fire after its test has
@@ -13,6 +14,7 @@ import { cancelSheetWaitsForTest } from '../src/lib/sheetWait';
 // and once more after the file's own hooks (an unmount can schedule one).
 // The same for a sheet row's action waiting for its sheet to go (lib/sheetWait.ts).
 afterEach(() => {
+  setMockHoldAnimations(false);
   cancelA11yTimersForTest();
   cancelSheetWaitsForTest();
 });

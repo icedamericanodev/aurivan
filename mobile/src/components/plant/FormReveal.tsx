@@ -133,9 +133,16 @@ export function FormReveal({ species, from, to, organs, look, fromLook, theme, s
             <Plant species={species} stage={to} organs={organs} size={size} fit={false} theme={theme} quietLook look={look} />
           </Animated.View>
         </Animated.View>
-        {mode === 'full' && !done ? <Animated.View pointerEvents="none" testID={testID ? `${testID}-ink` : undefined} style={[styles.ink, { backgroundColor: c.line }, ink]} /> : null}
+        {mode === 'full' && !done ? <Animated.View pointerEvents="none" testID={testID ? `${testID}-ink` : undefined} style={[styles.ink, { backgroundColor: c.control }, ink]} /> : null}
       </View>
-      <Animated.View style={[{ marginTop: space.md, alignItems: 'center', gap: space.xs, paddingHorizontal: space.md }, wordsStyle]} testID={testID ? `${testID}-words` : undefined}>
+      {/* Full motion: the words are hidden from screen readers until they have faded in (UX review P5),
+          so nobody hears text that isn't on screen yet; the one announcement (sayLater) still comes at the end. */}
+      <Animated.View
+        style={[{ marginTop: space.md, alignItems: 'center', gap: space.xs, paddingHorizontal: space.md }, wordsStyle]}
+        testID={testID ? `${testID}-words` : undefined}
+        accessibilityElementsHidden={full && !done}
+        importantForAccessibility={full && !done ? 'no-hide-descendants' : 'auto'}
+      >
         <T v="caption" center color={c.ink2}>A new form</T>
         <T v="body" center>{fact}</T>
         <T v="hero" center accessibilityRole="header">{`The ${name}`}</T>
@@ -148,6 +155,6 @@ export function FormReveal({ species, from, to, organs, look, fromLook, theme, s
 const styles = StyleSheet.create({
   stage: { overflow: 'hidden' },
   clip: { overflow: 'hidden' },
-  // A fine ink line (1.5pt), drawn just above the window's top edge.
+  // A fine ink line (1.5pt), drawn just above the window's top edge. Its colour is `control` (≥3:1, UX review H1).
   ink: { position: 'absolute', left: 0, right: 0, top: -0.75, height: 1.5 },
 });

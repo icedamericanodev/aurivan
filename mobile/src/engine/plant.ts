@@ -208,6 +208,14 @@ const READY_RULE = `The low end of your readiness holds at ${READY_LOW}% or more
  * disagree (code review M8).
  */
 const CLEAN_LOW = 'The low end of your readiness, without hints or games,';
+/**
+ * Mobile 1.50 forms (UX review P4): a botanical plant shows its FORM on Your
+ * plant, and the owner's rule is no readiness wording beside a form. So with
+ * forms on, the same two gates are worded as the learner's "study estimate".
+ * Only the words change: each gate still reads the same numbers.
+ */
+const STUDY_STEADY = `Your study estimate holds steady for ${READY_DAYS === 7 ? 'a week' : `${READY_DAYS} days`}`;
+const STUDY_LOW = 'Your study estimate, without hints or games,';
 /** Delayed recall in words (mobile 1.50): "a week" is RECALL_GAP_DAYS. */
 const RECALL_WEEK = RECALL_GAP_DAYS === 7 ? 'a week' : `${RECALL_GAP_DAYS} days`;
 const recallRule = (n: number) => `get ${n} questions right, without a hint, ${RECALL_WEEK} or more after you last saw them`;
@@ -240,14 +248,18 @@ function pct(x: number): string {
   return `${Math.round(x * 100)}%`;
 }
 
-/** The parts of the next growth's rule, each with 0..1 progress (the Your plant screen). Empty at Elder. */
-export function nextGrowthSteps(current: GrowthLevel, f: PlantFacts): { growth: GrowthLevel; steps: { label: string; progress: number }[] } | null {
+/**
+ * The parts of the next growth's rule, each with 0..1 progress (the Your plant screen). Empty at Elder.
+ * `forms`: the plant shows a form (mobile 1.50), so the readiness gates are
+ * worded as "Your study estimate…" (no readiness words beside a form). The gates themselves are unchanged.
+ */
+export function nextGrowthSteps(current: GrowthLevel, f: PlantFacts, opts: { forms?: boolean } = {}): { growth: GrowthLevel; steps: { label: string; progress: number }[] } | null {
   if (current >= MAX_GROWTH) return null;
   const g = (current + 1) as Exclude<GrowthLevel, 1>;
   const frac = (have: number, need: number) => (need <= 0 ? 1 : Math.max(0, Math.min(1, have / need)));
   const low = f.low ?? 0;
   const spread = (need: number) => ({ label: `Know ${pct(need)} of the outline`, progress: frac(f.spread, need) });
-  const lowStep = (need: number) => ({ label: `${CLEAN_LOW} reaches ${need}%`, progress: f.low === null ? 0 : frac(low, need) });
+  const lowStep = (need: number) => ({ label: `${opts.forms ? STUDY_LOW : CLEAN_LOW} reaches ${need}%`, progress: f.low === null ? 0 : frac(low, need) });
   // Mobile 1.50: delayed recall, shown only when it is counted (PlantFacts.recalled).
   const recallStep = (need: number) => (f.recalled === undefined ? [] : [{ label: `Get ${need} questions right ${RECALL_WEEK} or more after you last saw them`, progress: frac(f.recalled, need) }]);
   let steps: { label: string; progress: number }[];
@@ -270,7 +282,7 @@ export function nextGrowthSteps(current: GrowthLevel, f: PlantFacts): { growth: 
     default: {
       const min = f.cleanMastery.length ? Math.min(...f.cleanMastery) : 0;
       steps = [
-        { label: READY_RULE, progress: f.readyHeld ? 1 : 0 },
+        { label: opts.forms ? STUDY_STEADY : READY_RULE, progress: f.readyHeld ? 1 : 0 },
         { label: `Every domain at ${pct(ELDER_DOMAIN_FLOOR)} or more`, progress: frac(min, ELDER_DOMAIN_FLOOR) },
         spread(ELDER_SPREAD),
         { label: 'A full, timed mock with every question answered', progress: f.dress ? 1 : 0 },
@@ -1216,7 +1228,9 @@ export function plantLabel(i: LabelInput): string {
   const sp = SPECIES_INFO[i.species].lower;
   const who = i.name ? `${shownName(i.name)}, your ${sp}` : `Your ${sp}`;
   const extra = [i.newGrowth ? 'New growth today.' : '', i.resting ? 'Resting.' : '', i.mood ? MOOD_WORDS[i.mood] : '', i.visitor ? `A ${i.visitor} is visiting.` : ''].filter(Boolean).join(' ');
-  return `${who}.${i.form ? ` ${i.form} form.` : ''} Growth: ${GROWTH_NAMES[i.growth]}, ${i.growth} of 6.${extra ? ` ${extra}` : ''}`;
+  // With a form (mobile 1.50) the growth is named only: no "n of 6" count beside a form (UX review H2).
+  const growth = i.form ? `${i.form} form. Growth: ${GROWTH_NAMES[i.growth]}.` : `Growth: ${GROWTH_NAMES[i.growth]}, ${i.growth} of 6.`;
+  return `${who}. ${growth}${extra ? ` ${extra}` : ''}`;
 }
 
 /** The quiet back-fill line when an existing learner plants: "Your study so far grew Kai to Bough." */
@@ -1225,6 +1239,15 @@ export function backfillLine(p: Pick<CertPlant, 'name' | 'species'>, growth: Gro
   return growth > 1
     ? `Your study so far grew ${p.name ? shownName(p.name) : `your ${SPECIES_INFO[p.species].lower}`} to ${GROWTH_NAMES[growth]}${form ? `: the ${form}` : ''}.`
     : `Planted. Your first ${SPROUT_ANSWERS} answers give it its first sprout.`;
+}
+
+/**
+ * Mobile 1.50 forms (UX review H2): the line under a form's name. "Your oak ·
+ * Bough": the growth by NAME only, because a count ("growth 4 of 6") beside a
+ * form reads as a second "n of m" ladder, which the guard rails ban.
+ */
+export function formGrowthLine(species: PlantSpecies, growth: GrowthLevel): string {
+  return `Your ${SPECIES_INFO[species].lower} · ${GROWTH_NAMES[growth]}`;
 }
 
 /** "Bough · growth 4 of 6": the short growth line beside the plant. Never "stage". */

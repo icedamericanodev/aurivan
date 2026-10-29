@@ -259,7 +259,7 @@ describe('J1 a new learner and the plant', () => {
 
     mount(<Today />);
     expect(byTestID('today-plant')).toHaveLength(1);
-    expect(byTestID('today-plant')[0].props.accessibilityLabel).toBe('Summit Lee, your pine. Starburst Pine form. Growth: Seed, 1 of 6.');
+    expect(byTestID('today-plant')[0].props.accessibilityLabel).toBe('Summit Lee, your pine. Starburst Pine form. Growth: Seed.');
     expect(byTestID('plant-prompt')).toHaveLength(0);
     expect(byTestID('plant-grew')).toHaveLength(0); // planting is not a "grew" moment
     unmount();
