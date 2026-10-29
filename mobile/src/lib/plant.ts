@@ -21,6 +21,7 @@ import { CERTIFICATIONS, getCertification } from '../content/certifications';
 import { onClearContentCaches } from '../content/packs';
 import type { Certification } from '../content/types';
 import { examMoment } from '../engine/examDay';
+import { delayedRecalls, formLook, formName, resolveFinal, type FinalId } from '../engine/plantForms';
 import {
   advance,
   clearPending,
@@ -96,6 +97,8 @@ export function plantFactsFor(certId: string, cp: CertProgress, now: number): Pl
     readySeenAt: cp.moments?.readySeenAt,
     replantedAt: cp.plant?.replantedAt,
     today: dayKey(now),
+    // Mobile 1.50: delayed recall gates the later forms (Bough, Elder).
+    recalled: delayedRecalls(cp.milestones?.longIds),
   });
 }
 
@@ -112,6 +115,9 @@ export function checkPlant(certId: string, now = Date.now()): GrowthLevel | null
   // day can't open a new gate. Skip the facts scan and the store write then.
   const day = dayKey(now);
   const before = useProgress.getState().byCert[certId];
+  // Mobile 1.50: the first time this release sees the plant, what it already is counts as
+  // seen (store/seen.ts plantForms), so only a form reached FROM NOW ON gets its reveal.
+  if (before?.plant) useSeen.getState().baselineForms(certId, before.plant.growth);
   const last = lastCheck.get(certId);
   if (before && last && last.cp === before && last.day === day) return null;
   let grew: GrowthLevel | null = null;
@@ -141,6 +147,9 @@ export function plantFor(certId: string, species: PlantSpecies, name: string, no
     const facts = plantFactsFor(certId, cp, now);
     return plantNew(species, name, now, facts ? growthFor(facts) : 1);
   });
+  // Mobile 1.50: a back-filled growth is history: its form shows at once, with the back-fill line (no reveal).
+  const planted = useProgress.getState().byCert[certId]?.plant;
+  if (planted) useSeen.getState().baselineForms(certId, planted.growth);
   // Planted: Today's quiet "Plant a companion" line has done its job.
   useProgress.getState().setPlantSettings({ promptHidden: true });
 }
@@ -215,10 +224,20 @@ export interface PlantView {
   next: number;
   /** The plant's one spoken label. */
   label: string;
+  /**
+   * Mobile 1.50: the plant is drawn in its FORMS (the botanical style; the
+   * storybook art keeps its six growths), so its form name shows and is spoken.
+   */
+  forms: boolean;
+  /** The Form IV final drawn (engine/plantForms.ts resolveFinal: the learner's choice at Elder, else 'own'). */
+  final: FinalId;
+  /** The form's name and look ("Whip Oak", "One straight leader…"); empty without a plant or forms. */
+  formName: string;
+  formLook: string;
 }
 
 /** Pure: the view for one cert's progress (tests call this directly). Reads only answers, the plant and the last study day. */
-export function plantView(cert: Certification, cp: Pick<CertProgress, 'answers' | 'plant' | 'milestones'>, settings: PlantSettings | undefined, today: string, plannedRest = false): PlantView {
+export function plantView(cert: Certification, cp: Pick<CertProgress, 'answers' | 'plant' | 'milestones'>, settings: PlantSettings | undefined, today: string, plannedRest = false, finalChoice?: unknown): PlantView {
   const shown = plantShown(settings);
   const readiness = readinessFor(cert, cp.answers);
   const weights = cert.domains.map((d) => d.weight);
@@ -228,6 +247,10 @@ export function plantView(cert: Certification, cp: Pick<CertProgress, 'answers' 
   const resting = isResting(lastDay, today, plannedRest);
   const newGrowth = lastDay === today;
   const style = resolveStyle(cp.plant?.look, settings);
+  // Mobile 1.50: the learner's Form IV choice (this phone's, else one a newer app wrote into the plant).
+  const forms = style === 'botanical';
+  const final = plant ? resolveFinal(plant.growth, finalChoice ?? plant.look?.final) : 'own';
+  const fName = plant && forms ? formName(plant.species, plant.growth, final) : '';
   return {
     shown,
     settings: settings ?? {},
@@ -242,7 +265,11 @@ export function plantView(cert: Certification, cp: Pick<CertProgress, 'answers' 
       weights,
       domains.map((d) => d.mastery),
     ),
-    label: plant ? plantLabel({ name: plant.name, species: plant.species, growth: plant.growth, resting, newGrowth }) : '',
+    label: plant ? plantLabel({ name: plant.name, species: plant.species, growth: plant.growth, resting, newGrowth, form: fName || undefined }) : '',
+    forms,
+    final,
+    formName: fName,
+    formLook: plant && forms ? formLook(plant.species, plant.growth, final) : '',
   };
 }
 
@@ -315,6 +342,8 @@ export interface LookInput {
   newTopicToday: boolean;
   newKeepsakeToday: boolean;
   today: string;
+  /** Mobile 1.50: the learner's Form IV choice on this phone (store/seen.ts plantFinal). */
+  final?: unknown;
 }
 
 /** Pure: the look and mood for one plant (tests call this directly). */
@@ -331,7 +360,16 @@ export function plantLookView(plant: CertPlant, i: LookInput): PlantLookView {
   return {
     unlocked,
     resolved,
-    art: { style, palette: resolved.palette, ground: resolved.ground, planter: resolved.planter, visitor: visiting ? resolved.visitor : undefined, keepsakes: resolved.keepsakes },
+    art: {
+      style,
+      palette: resolved.palette,
+      ground: resolved.ground,
+      planter: resolved.planter,
+      visitor: visiting ? resolved.visitor : undefined,
+      keepsakes: resolved.keepsakes,
+      // Mobile 1.50: the Form IV final (forms are drawn in the botanical style only).
+      ...(style === 'botanical' ? { final: resolveFinal(plant.growth, i.final ?? plant.look?.final) } : {}),
+    },
     mood,
     face: styleHasFace(style),
     visiting,
@@ -348,6 +386,7 @@ export function usePlantView(): PlantView & { cert: Certification; certId: strin
   const plant = useProgress((s) => selectCert(s, certId).plant);
   const lastDay = useProgress((s) => selectCert(s, certId).milestones?.lastDay);
   const settings = useProgress((s) => s.plantSettings);
+  const finalChoice = useSeen((s) => s.plantFinal?.[certId]);
   const cert = getCertification(certId) ?? CERTIFICATIONS[0];
   // Today's date, read once per render of a screen that is already re-rendering.
   // eslint-disable-next-line react-hooks/purity -- the day only matters at day granularity
@@ -357,8 +396,8 @@ export function usePlantView(): PlantView & { cert: Certification; certId: strin
   const exam = examMoment(examDate, now);
   const plannedRest = exam !== null;
   const view = useMemo(
-    () => plantView(cert, { answers, plant, milestones: lastDay ? { earned: {}, lastDay } : undefined }, settings, today, plannedRest),
-    [cert, answers, plant, lastDay, settings, today, plannedRest],
+    () => plantView(cert, { answers, plant, milestones: lastDay ? { earned: {}, lastDay } : undefined }, settings, today, plannedRest, finalChoice),
+    [cert, answers, plant, lastDay, settings, today, plannedRest, finalChoice],
   );
   // Mobile 1.14: the look and the mood, from small, stable selections.
   const marks = useProgress((s) => marksKey(s, today, certId));
@@ -379,10 +418,10 @@ export function usePlantView(): PlantView & { cert: Certification; certId: strin
   const occasionKey = occasions.map((o) => o.id).join(',');
   const look = useMemo(() => {
     if (!view.plant) return null;
-    return plantLookView(view.plant, { marks: allCertMarks(useProgress.getState().byCert), style: view.style, resting: view.resting, planCleared, newTopicToday, newKeepsakeToday: proud.keepsake, today });
+    return plantLookView(view.plant, { marks: allCertMarks(useProgress.getState().byCert), style: view.style, resting: view.resting, planCleared, newTopicToday, newKeepsakeToday: proud.keepsake, today, final: view.final });
     // `marks` changes when a badge or planter does: the unlocks are read fresh from the store then.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [view.plant, view.style, view.resting, marks, planCleared, newTopicToday, proud.keepsake, today]);
+  }, [view.plant, view.style, view.resting, marks, planCleared, newTopicToday, proud.keepsake, today, view.final]);
   // Write down the new occasions (the cap applies once, here), but ONLY while
   // the proud moment really shows (PR #51 review). With the plant hidden or
   // resting, nobody sees a proud moment, so it must not use up one of the 3
@@ -398,6 +437,9 @@ export function usePlantView(): PlantView & { cert: Certification; certId: strin
   // and a new occasion later today is a new reason); the others by mood and day.
   const reactionId = look ? (look.mood === 'proud' ? (proudReactionId(proud.ids) ?? `${certId}:proud:${today}`) : `${certId}:${look.mood}:${today}`) : null;
   // The spoken label says the mood (only with a face: a faceless plant has no expression to read) and the visitor too.
-  const label = view.plant && look ? plantLabel({ name: view.plant.name, species: view.plant.species, growth: view.plant.growth, resting: view.resting, newGrowth: view.newGrowth, mood: look.face ? look.mood : undefined, visitor: look.visiting ? look.resolved.visitor : undefined }) : view.label;
+  const label =
+    view.plant && look
+      ? plantLabel({ name: view.plant.name, species: view.plant.species, growth: view.plant.growth, resting: view.resting, newGrowth: view.newGrowth, mood: look.face ? look.mood : undefined, visitor: look.visiting ? look.resolved.visitor : undefined, form: view.formName || undefined })
+      : view.label;
   return { ...view, label, cert, certId, exam, look, reactionId };
 }

@@ -416,6 +416,8 @@ async function writeAll(
   // First, forget the numbers each screen last showed: restored progress is
   // not growth earned since the last look, so nothing shows "+N" for it.
   useSeen.getState().forgetValues();
+  // Mobile 1.50: a restored plant's forms count as history (one quiet note, never a replayed reveal).
+  useSeen.getState().forgetForms();
   useSettings.setState(settings);
   useProgress.setState(progress);
   for (const s of STORES) await s.persist.rehydrate();

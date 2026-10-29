@@ -117,6 +117,11 @@ describe('the scanner itself (code review M3 probes)', () => {
 });
 
 describe('copy consistency: the old words stay gone', () => {
+  it('mobile 1.50 forms: a plant "grows into a new form", never "evolves", and no game-creature words', () => {
+    // The app's own words (screens, components, lib, engine). Study content may say "evolve" about systems ("needs that will evolve").
+    expect(hits(/\bevol(ve|ves|ved|ving|ution)\b|\blevel(s|led)? up\b|pok[eé]mon|\bshiny\b|\blegendary\b/i, { in: (f) => !f.startsWith('content') })).toEqual([]);
+  });
+
   it('no "weighted by the blueprint", "Stage N", "Follow my stage" or "Counts half toward readiness"', () => {
     expect(hits(/weighted by the (exam )?blueprint/i)).toEqual([]);
     // Mobile 1.23 (owner's mockup A, decided): ONLY Today's readiness row says "Stage 4 · Rehearse the exam".

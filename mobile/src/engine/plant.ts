@@ -16,6 +16,13 @@
  * - The plant has no needs (no water, food, energy or health).
  *
  * UI copy rule: the six steps are called "growth", never "stage".
+ *
+ * Mobile 1.50 (forms, engine/plantForms.ts): the plant grows into four named
+ * FORMS on these six growths. A form is worked out from `growth`, so nothing
+ * here changes for it except two things: the later forms' crossings (Bough,
+ * Elder) also need DELAYED RECALL (questions right a week after they were
+ * last seen), and the backup check now reads an optional `look.final` and
+ * ignores fields a newer app may add.
  */
 import type { Certification } from '../content/types';
 import { MOCK_DOMAIN_FLOOR, DIAGNOSTIC_SIZE, DOMAIN_TARGET, MAX_MOCKS } from './journey';
@@ -25,6 +32,7 @@ import { computeReadiness, MIN_SAMPLE, domainMastery, type AnswerRecord } from '
 import { RANGE_MIN_ANSWERS, readinessRange } from './readinessRange';
 import { daysBetween, dayKey } from './streak';
 import { defaultKeepsakes, isCatalogLook, isKeepable, isLookOfSlot, keepOnReset, MOOD_WORDS, NEW_PLANT_STYLE, resolveStyle, styleHasFace, type CertMarks, type PlantMood } from './plantLooks';
+import { isFinalId, RECALL_FORM_III, RECALL_FORM_IV, RECALL_GAP_DAYS, type FinalId } from './plantForms';
 
 // ── Species ────────────────────────────────────────────────────────────
 
@@ -149,16 +157,29 @@ export interface PlantFacts {
    * let games open Elder (code review B2).
    */
   readyHeld: boolean;
+  /**
+   * Mobile 1.50: delayed recalls, i.e. unique questions answered right with no
+   * hint and not in a game, a week or more after they were last seen
+   * (milestones.longIds; engine/plantForms.ts). Optional: a caller that
+   * doesn't count them (the website, which has no such log yet) leaves it
+   * out, and then it never blocks a gate.
+   */
+  recalled?: number;
 }
+
+/** A delayed-recall gate: met when the count reaches `need`, or when it isn't counted at all (see PlantFacts.recalled). */
+const recalledAtLeast = (f: PlantFacts, need: number) => f.recalled === undefined || f.recalled >= need;
 
 /** Each gate (growth 2..6) as a test on the facts. Cumulative: a growth needs every gate below it too. */
 const GATES: Record<Exclude<GrowthLevel, 1>, (f: PlantFacts) => boolean> = {
   2: (f) => f.cleanAnswered >= SPROUT_ANSWERS,
   3: (f) => f.cleanByDomain.length > 0 && f.cleanByDomain.every((n) => n >= SHOOT_PER_DOMAIN) && f.spread >= SHOOT_SPREAD,
-  4: (f) => f.low !== null && f.low >= BOUGH_LOW && f.spread >= BOUGH_SPREAD,
+  // Bough opens Form III, and Elder Form IV: both also need delayed recall (mobile 1.50).
+  // It only gates a crossing still to come: growth is a stored max, so no plant goes down.
+  4: (f) => f.low !== null && f.low >= BOUGH_LOW && f.spread >= BOUGH_SPREAD && recalledAtLeast(f, RECALL_FORM_III),
   5: (f) => f.low !== null && f.low >= CROWN_LOW && f.spread >= CROWN_SPREAD && f.mock50,
   6: (f) =>
-    f.readyHeld && f.cleanMastery.length > 0 && Math.min(...f.cleanMastery) >= ELDER_DOMAIN_FLOOR && f.spread >= ELDER_SPREAD && f.dress,
+    f.readyHeld && f.cleanMastery.length > 0 && Math.min(...f.cleanMastery) >= ELDER_DOMAIN_FLOOR && f.spread >= ELDER_SPREAD && f.dress && recalledAtLeast(f, RECALL_FORM_IV),
 };
 
 /** The highest growth the facts support right now (1..6). The plant itself never goes below what it reached. */
@@ -187,15 +208,30 @@ const READY_RULE = `The low end of your readiness holds at ${READY_LOW}% or more
  * disagree (code review M8).
  */
 const CLEAN_LOW = 'The low end of your readiness, without hints or games,';
+/** Delayed recall in words (mobile 1.50): "a week" is RECALL_GAP_DAYS. */
+const RECALL_WEEK = RECALL_GAP_DAYS === 7 ? 'a week' : `${RECALL_GAP_DAYS} days`;
+const recallRule = (n: number) => `get ${n} questions right, without a hint, ${RECALL_WEEK} or more after you last saw them`;
 
 /** One line per growth: the rule, in learner words (shown before it is reached). No bank sizes. */
 export const GROWTH_RULES: Record<GrowthLevel, string> = {
   1: 'Plant it.',
   2: `Answer ${SPROUT_ANSWERS} questions without a hint or a game (your diagnostic).`,
   3: `Answer ${SHOOT_PER_DOMAIN} or more questions in every domain, and know ${pct(SHOOT_SPREAD)} of the outline.`,
-  4: `${CLEAN_LOW} reaches ${BOUGH_LOW}%, and you know ${pct(BOUGH_SPREAD)} of the outline.`,
+  4: `${CLEAN_LOW} reaches ${BOUGH_LOW}%, you know ${pct(BOUGH_SPREAD)} of the outline, and you ${recallRule(RECALL_FORM_III)}.`,
   5: `${CLEAN_LOW} reaches ${CROWN_LOW}%, you know ${pct(CROWN_SPREAD)} of the outline, and you finish a mock of ${CROWN_MOCK} questions or more.`,
-  6: `${READY_RULE}, every domain is at ${pct(ELDER_DOMAIN_FLOOR)} or more, you know ${pct(ELDER_SPREAD)} of the outline, and you finish a full, timed mock with every question answered.`,
+  6: `${READY_RULE}, every domain is at ${pct(ELDER_DOMAIN_FLOOR)} or more, you know ${pct(ELDER_SPREAD)} of the outline, you finish a full, timed mock with every question answered, and you ${recallRule(RECALL_FORM_IV)}.`,
+};
+
+/**
+ * Mobile 1.50: what a NEW FORM was earned with, in the past tense, for its
+ * reveal (it leads with the learning fact, then the form). Growth 3, 4 and 6
+ * are where a form starts. Never readiness wording beside a form: these name
+ * the breadth, the recall and the mock behind it, not a score or a pass.
+ */
+export const FORM_FACTS: Record<3 | 4 | 6, string> = {
+  3: `You answered ${SHOOT_PER_DOMAIN} or more questions in every domain, without a hint or a game, and you know ${pct(SHOOT_SPREAD)} of the outline.`,
+  4: `You got ${RECALL_FORM_III} questions right ${RECALL_WEEK} or more after you last saw them, and you know ${pct(BOUGH_SPREAD)} of the outline.`,
+  6: `Every domain reached ${pct(ELDER_DOMAIN_FLOOR)}, you know ${pct(ELDER_SPREAD)} of the outline, you got ${RECALL_FORM_IV} questions right ${RECALL_WEEK} later, and you sat a full, timed mock.`,
 };
 /** The one-line explainer for "know X% of the outline". */
 export const SPREAD_EXPLAINER = "Subtopics you've answered right, without a hint, on two different days, weighted like the exam.";
@@ -212,6 +248,8 @@ export function nextGrowthSteps(current: GrowthLevel, f: PlantFacts): { growth: 
   const low = f.low ?? 0;
   const spread = (need: number) => ({ label: `Know ${pct(need)} of the outline`, progress: frac(f.spread, need) });
   const lowStep = (need: number) => ({ label: `${CLEAN_LOW} reaches ${need}%`, progress: f.low === null ? 0 : frac(low, need) });
+  // Mobile 1.50: delayed recall, shown only when it is counted (PlantFacts.recalled).
+  const recallStep = (need: number) => (f.recalled === undefined ? [] : [{ label: `Get ${need} questions right ${RECALL_WEEK} or more after you last saw them`, progress: frac(f.recalled, need) }]);
   let steps: { label: string; progress: number }[];
   switch (g) {
     case 2:
@@ -224,7 +262,7 @@ export function nextGrowthSteps(current: GrowthLevel, f: PlantFacts): { growth: 
       break;
     }
     case 4:
-      steps = [lowStep(BOUGH_LOW), spread(BOUGH_SPREAD)];
+      steps = [lowStep(BOUGH_LOW), spread(BOUGH_SPREAD), ...recallStep(RECALL_FORM_III)];
       break;
     case 5:
       steps = [lowStep(CROWN_LOW), spread(CROWN_SPREAD), { label: `Finish a mock of ${CROWN_MOCK} questions or more`, progress: f.mock50 ? 1 : 0 }];
@@ -236,6 +274,7 @@ export function nextGrowthSteps(current: GrowthLevel, f: PlantFacts): { growth: 
         { label: `Every domain at ${pct(ELDER_DOMAIN_FLOOR)} or more`, progress: frac(min, ELDER_DOMAIN_FLOOR) },
         spread(ELDER_SPREAD),
         { label: 'A full, timed mock with every question answered', progress: f.dress ? 1 : 0 },
+        ...recallStep(RECALL_FORM_IV),
       ];
     }
   }
@@ -286,6 +325,8 @@ export interface PlantFactsInput {
   /** The last Reset: an exam-ready moment seen before it can't help a replanted plant bloom. */
   replantedAt?: number;
   today: string;
+  /** Mobile 1.50: delayed recalls (plantForms.ts delayedRecalls of milestones.longIds). Left out: not counted. */
+  recalled?: number;
 }
 
 const isClean = (a: AnswerRecord) => !a.lastAssisted && !a.lastRetest && !a.lastGame;
@@ -325,6 +366,7 @@ export function plantFacts(i: PlantFactsInput): PlantFacts {
     mock50: i.mocks.some((m) => m.total >= CROWN_MOCK),
     dress: i.mocks.some((m) => isDressMock(m, i.cert.exam.questions)),
     readyHeld: (held || seen) && cleanReady,
+    ...(i.recalled !== undefined ? { recalled: i.recalled } : {}),
   };
 }
 
@@ -349,6 +391,13 @@ export interface PlantLook {
   visitor?: LookId;
   /** At most MAX_KEEPSAKES, all different. */
   keepsakes?: LookId[];
+  /**
+   * Mobile 1.50: the Form IV final the learner chose (engine/plantForms.ts
+   * FINAL_IDS). STAGED: this release only READS it (from a newer app's
+   * backup); the learner's own choice is kept on this phone (store/seen.ts
+   * plantFinal) until every build in use reads this field (DESIGN_SYSTEM §8.10).
+   */
+  final?: FinalId;
 }
 
 /**
@@ -718,6 +767,8 @@ export function bestCaseFacts(e: SupportEvidence): PlantFacts {
     mock50: e.mock50,
     dress: e.dress,
     readyHeld: e.readyEver,
+    // Mobile 1.50: no `recalled` (the delayed-recall gate is read generously): plants grew before
+    // that gate existed, so a restore never lowers a growth on it.
   };
 }
 
@@ -845,12 +896,15 @@ const LOOK_SLOTS = [
 /**
  * True when `x` is a well-formed CertPlant: known species, a clean name, a
  * growth 1..6 with nothing reached or pending above it, keepsakes ≤ 3 and
- * distinct, no unknown keys. A backup that fails this is refused (bad data),
- * never half-loaded.
+ * distinct. A backup that fails this is refused (bad data), never half-loaded.
+ *
+ * Mobile 1.50 (forward-compatible, DESIGN_SYSTEM §8.10): fields a NEWER app
+ * may add are ignored, not refused, so its backups still restore here (the
+ * backup reader keeps only the fields it knows). `look.final`, the Form IV
+ * choice, is known: when present it must be a final id.
  */
 export function isValidPlantState(x: unknown): x is CertPlant {
   if (!isObj(x)) return false;
-  if (!onlyKeys(x, ['species', 'name', 'plantedAt', 'replantedAt', 'growth', 'reached', 'pending', 'backfill', 'look', 'kept', 'passedOn'])) return false;
   if (!isPlantSpecies(x.species)) return false;
   if (typeof x.name !== 'string' || cleanPlantName(x.name) !== x.name) return false;
   if (!isTs(x.plantedAt)) return false;
@@ -867,13 +921,14 @@ export function isValidPlantState(x: unknown): x is CertPlant {
   if (x.pending !== undefined && !(isGrowthLevel(x.pending) && x.pending > 1 && x.pending <= growth)) return false;
   if (x.backfill !== undefined) {
     const b = x.backfill;
-    if (!isObj(b) || !onlyKeys(b, ['at', 'growth', 'seen']) || !isTs(b.at) || !isGrowthLevel(b.growth) || b.growth > growth) return false;
+    if (!isObj(b) || !isTs(b.at) || !isGrowthLevel(b.growth) || b.growth > growth) return false;
     if (b.seen !== undefined && typeof b.seen !== 'boolean') return false;
   }
   if (x.look !== undefined) {
     const l = x.look;
-    if (!isObj(l) || !onlyKeys(l, ['style', 'colourway', 'ground', 'planter', 'visitor', 'keepsakes'])) return false;
+    if (!isObj(l)) return false;
     for (const [k, slot] of LOOK_SLOTS) if (l[k] !== undefined && !isLookOfSlot(l[k], slot)) return false;
+    if (l.final !== undefined && !isFinalId(l.final)) return false;
     if (l.keepsakes !== undefined) {
       const ks = l.keepsakes;
       if (!Array.isArray(ks) || ks.length > MAX_KEEPSAKES || !ks.every((k) => isLookOfSlot(k, 'keepsake')) || new Set(ks).size !== ks.length) return false;
@@ -916,6 +971,7 @@ export function repairPlant(p: CertPlant): CertPlant {
     const look: PlantLook = {};
     for (const [k, slot] of LOOK_SLOTS) if (isLookOfSlot(out.look[k], slot)) look[k] = out.look[k];
     if (out.look.keepsakes) look.keepsakes = [...new Set(out.look.keepsakes.filter((k) => isLookOfSlot(k, 'keepsake')))].slice(0, MAX_KEEPSAKES);
+    if (isFinalId(out.look.final)) look.final = out.look.final;
     out.look = look;
   }
   if (out.kept) out.kept = [...new Set(out.kept.filter(isKeepable))].slice(0, MAX_KEPT);
@@ -1148,22 +1204,27 @@ export interface LabelInput {
   mood?: PlantMood;
   /** Mobile 1.14: the visitor perched today ("wren", "robin"). */
   visitor?: string;
+  /** Mobile 1.50: the form's name ("Whip Oak"), when the plant is drawn in its forms (the botanical style). */
+  form?: string;
 }
 
 /**
- * The plant's one screen-reader label: "Kai, your oak. Growth: Bough, 4 of 6. New growth today."
- * Name first when there is one. Never a bank size, never "stage".
+ * The plant's one screen-reader label: "Kai, your oak. Standard Oak form. Growth: Bough, 4 of 6. New growth today."
+ * Name first when there is one. The form is a NAME, never a second number. Never a bank size, never "stage".
  */
 export function plantLabel(i: LabelInput): string {
   const sp = SPECIES_INFO[i.species].lower;
   const who = i.name ? `${shownName(i.name)}, your ${sp}` : `Your ${sp}`;
   const extra = [i.newGrowth ? 'New growth today.' : '', i.resting ? 'Resting.' : '', i.mood ? MOOD_WORDS[i.mood] : '', i.visitor ? `A ${i.visitor} is visiting.` : ''].filter(Boolean).join(' ');
-  return `${who}. Growth: ${GROWTH_NAMES[i.growth]}, ${i.growth} of 6.${extra ? ` ${extra}` : ''}`;
+  return `${who}.${i.form ? ` ${i.form} form.` : ''} Growth: ${GROWTH_NAMES[i.growth]}, ${i.growth} of 6.${extra ? ` ${extra}` : ''}`;
 }
 
 /** The quiet back-fill line when an existing learner plants: "Your study so far grew Kai to Bough." */
-export function backfillLine(p: Pick<CertPlant, 'name' | 'species'>, growth: GrowthLevel): string {
-  return growth > 1 ? `Your study so far grew ${p.name ? shownName(p.name) : `your ${SPECIES_INFO[p.species].lower}`} to ${GROWTH_NAMES[growth]}.` : `Planted. Your first ${SPROUT_ANSWERS} answers give it its first sprout.`;
+export function backfillLine(p: Pick<CertPlant, 'name' | 'species'>, growth: GrowthLevel, form?: string): string {
+  // Mobile 1.50: with its form's name ("…grew Kai to Crown: the Standard Oak.").
+  return growth > 1
+    ? `Your study so far grew ${p.name ? shownName(p.name) : `your ${SPECIES_INFO[p.species].lower}`} to ${GROWTH_NAMES[growth]}${form ? `: the ${form}` : ''}.`
+    : `Planted. Your first ${SPROUT_ANSWERS} answers give it its first sprout.`;
 }
 
 /** "Bough · growth 4 of 6": the short growth line beside the plant. Never "stage". */

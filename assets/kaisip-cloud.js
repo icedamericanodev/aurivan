@@ -3,7 +3,7 @@
  * from the mobile app's own TypeScript (mobile/src/webcloud and the sync
  * engine it uses), so the website syncs with the same rules as the app.
  * Loaded only when an account is used. Rebuild: cd mobile && npm run web-plant
- * TypeScript 6.0.3. Modules: 62.
+ * TypeScript 6.0.3. Modules: 63.
  */
 (function (root) {
   "use strict";
@@ -435,7 +435,7 @@ function addMs(earlier, more) {
     return Math.min(exports.MAX_ANSWER_MS, Math.max(0, (earlier !== null && earlier !== void 0 ? earlier : 0) + more));
 }
   };
-  links["src/engine/backup.ts"] = {"../content/certifications":"src/content/certifications.ts","./answerClock":"src/engine/answerClock.ts","./games/growth":"src/engine/games/growth.ts","./milestones":"src/engine/milestones.ts","./plant":"src/engine/plant.ts","./plantLooks":"src/engine/plantLooks.ts","./examDay":"src/engine/examDay.ts","./fit":"src/engine/fit.ts","./displayName":"src/engine/displayName.ts","./examWeek":"src/engine/examWeek.ts","./reminders":"src/engine/reminders.ts","./questionNotes":"src/engine/questionNotes.ts","./saveMigrations":"src/engine/saveMigrations.ts","./streak":"src/engine/streak.ts","./studyModes":"src/engine/studyModes.ts","./support":"src/engine/support.ts"};
+  links["src/engine/backup.ts"] = {"../content/certifications":"src/content/certifications.ts","./answerClock":"src/engine/answerClock.ts","./games/growth":"src/engine/games/growth.ts","./milestones":"src/engine/milestones.ts","./plant":"src/engine/plant.ts","./plantForms":"src/engine/plantForms.ts","./plantLooks":"src/engine/plantLooks.ts","./examDay":"src/engine/examDay.ts","./fit":"src/engine/fit.ts","./displayName":"src/engine/displayName.ts","./examWeek":"src/engine/examWeek.ts","./reminders":"src/engine/reminders.ts","./questionNotes":"src/engine/questionNotes.ts","./saveMigrations":"src/engine/saveMigrations.ts","./streak":"src/engine/streak.ts","./studyModes":"src/engine/studyModes.ts","./support":"src/engine/support.ts"};
   defs["src/engine/backup.ts"] = function (module, exports, require) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
@@ -468,6 +468,7 @@ const answerClock_1 = require("./answerClock");
 const growth_1 = require("./games/growth");
 const milestones_1 = require("./milestones");
 const plant_1 = require("./plant");
+const plantForms_1 = require("./plantForms");
 const plantLooks_1 = require("./plantLooks");
 const examDay_1 = require("./examDay");
 const fit_1 = require("./fit");
@@ -728,6 +729,7 @@ const plantShape = rule(obj({ species: oneOf(...plant_1.PLANT_SPECIES), name: pl
         planter: slotLook('planter'),
         visitor: slotLook('visitor'),
         keepsakes: list(slotLook('keepsake'), plant_1.MAX_KEEPSAKES),
+        final: oneOf(...plantForms_1.FINAL_IDS),
     }),
     kept: list(lookId, plant_1.MAX_KEPT),
     passedOn: date,
@@ -3967,11 +3969,11 @@ function pacingStatsLine(s) {
     return `In ${mocks} you took ${aboutSeconds(s.medianSec)} per question. ${all}`;
 }
   };
-  links["src/engine/plant.ts"] = {"./journey":"src/engine/journey.ts","./examReady":"src/engine/examReady.ts","./readiness":"src/engine/readiness.ts","./readinessRange":"src/engine/readinessRange.ts","./streak":"src/engine/streak.ts","./plantLooks":"src/engine/plantLooks.ts"};
+  links["src/engine/plant.ts"] = {"./journey":"src/engine/journey.ts","./examReady":"src/engine/examReady.ts","./readiness":"src/engine/readiness.ts","./readinessRange":"src/engine/readinessRange.ts","./streak":"src/engine/streak.ts","./plantLooks":"src/engine/plantLooks.ts","./plantForms":"src/engine/plantForms.ts"};
   defs["src/engine/plant.ts"] = function (module, exports, require) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.EXAM_REST_LINES = exports.RETURN_DAYS = exports.REST_AFTER_DAYS = exports.FLOWER_DAYS = exports.FLOWER_SCORE = exports.PLANT_SLOTS = exports.organScales = exports.ORGAN_STEP_WORDS = exports.ORGAN_WEIGHT_PULL = exports.ORGAN_SPAN = exports.ORGAN_MIN = exports.MAX_NAME = exports.plantFace = exports.plantHasFace = exports.plantShown = exports.MAX_KEPT = exports.MAX_KEEPSAKES = exports.SPREAD_EXPLAINER = exports.GROWTH_RULES = exports.ELDER_SPREAD = exports.ELDER_DOMAIN_FLOOR = exports.CROWN_MOCK = exports.CROWN_SPREAD = exports.CROWN_LOW = exports.BOUGH_SPREAD = exports.BOUGH_LOW = exports.SHOOT_SPREAD = exports.SHOOT_PER_DOMAIN = exports.SPROUT_ANSWERS = exports.GROWTH_LOOKS = exports.GROWTH_NAMES = exports.MAX_GROWTH = exports.GROWTH_IDS = exports.SPECIES_INFO = exports.PLANT_SPECIES = void 0;
+exports.EXAM_REST_LINES = exports.RETURN_DAYS = exports.REST_AFTER_DAYS = exports.FLOWER_DAYS = exports.FLOWER_SCORE = exports.PLANT_SLOTS = exports.organScales = exports.ORGAN_STEP_WORDS = exports.ORGAN_WEIGHT_PULL = exports.ORGAN_SPAN = exports.ORGAN_MIN = exports.MAX_NAME = exports.plantFace = exports.plantHasFace = exports.plantShown = exports.MAX_KEPT = exports.MAX_KEEPSAKES = exports.SPREAD_EXPLAINER = exports.FORM_FACTS = exports.GROWTH_RULES = exports.ELDER_SPREAD = exports.ELDER_DOMAIN_FLOOR = exports.CROWN_MOCK = exports.CROWN_SPREAD = exports.CROWN_LOW = exports.BOUGH_SPREAD = exports.BOUGH_LOW = exports.SHOOT_SPREAD = exports.SHOOT_PER_DOMAIN = exports.SPROUT_ANSWERS = exports.GROWTH_LOOKS = exports.GROWTH_NAMES = exports.MAX_GROWTH = exports.GROWTH_IDS = exports.SPECIES_INFO = exports.PLANT_SPECIES = void 0;
 exports.isPlantSpecies = isPlantSpecies;
 exports.growthId = growthId;
 exports.isGrowthLevel = isGrowthLevel;
@@ -4024,6 +4026,7 @@ const readiness_1 = require("./readiness");
 const readinessRange_1 = require("./readinessRange");
 const streak_1 = require("./streak");
 const plantLooks_1 = require("./plantLooks");
+const plantForms_1 = require("./plantForms");
 exports.PLANT_SPECIES = [
     'oak',
     'maple',
@@ -4084,12 +4087,13 @@ exports.CROWN_SPREAD = 0.45;
 exports.CROWN_MOCK = 50;
 exports.ELDER_DOMAIN_FLOOR = journey_1.MOCK_DOMAIN_FLOOR;
 exports.ELDER_SPREAD = 0.6;
+const recalledAtLeast = (f, need) => f.recalled === undefined || f.recalled >= need;
 const GATES = {
     2: (f) => f.cleanAnswered >= exports.SPROUT_ANSWERS,
     3: (f) => f.cleanByDomain.length > 0 && f.cleanByDomain.every((n) => n >= exports.SHOOT_PER_DOMAIN) && f.spread >= exports.SHOOT_SPREAD,
-    4: (f) => f.low !== null && f.low >= exports.BOUGH_LOW && f.spread >= exports.BOUGH_SPREAD,
+    4: (f) => f.low !== null && f.low >= exports.BOUGH_LOW && f.spread >= exports.BOUGH_SPREAD && recalledAtLeast(f, plantForms_1.RECALL_FORM_III),
     5: (f) => f.low !== null && f.low >= exports.CROWN_LOW && f.spread >= exports.CROWN_SPREAD && f.mock50,
-    6: (f) => f.readyHeld && f.cleanMastery.length > 0 && Math.min(...f.cleanMastery) >= exports.ELDER_DOMAIN_FLOOR && f.spread >= exports.ELDER_SPREAD && f.dress,
+    6: (f) => f.readyHeld && f.cleanMastery.length > 0 && Math.min(...f.cleanMastery) >= exports.ELDER_DOMAIN_FLOOR && f.spread >= exports.ELDER_SPREAD && f.dress && recalledAtLeast(f, plantForms_1.RECALL_FORM_IV),
 };
 function growthFor(f) {
     let g = 1;
@@ -4105,13 +4109,20 @@ function nextGrowth(prevHighest, computed) {
 }
 const READY_RULE = `The low end of your readiness holds at ${examReady_1.READY_LOW}% or more for ${examReady_1.READY_DAYS === 7 ? 'a week' : `${examReady_1.READY_DAYS} days`}`;
 const CLEAN_LOW = 'The low end of your readiness, without hints or games,';
+const RECALL_WEEK = plantForms_1.RECALL_GAP_DAYS === 7 ? 'a week' : `${plantForms_1.RECALL_GAP_DAYS} days`;
+const recallRule = (n) => `get ${n} questions right, without a hint, ${RECALL_WEEK} or more after you last saw them`;
 exports.GROWTH_RULES = {
     1: 'Plant it.',
     2: `Answer ${exports.SPROUT_ANSWERS} questions without a hint or a game (your diagnostic).`,
     3: `Answer ${exports.SHOOT_PER_DOMAIN} or more questions in every domain, and know ${pct(exports.SHOOT_SPREAD)} of the outline.`,
-    4: `${CLEAN_LOW} reaches ${exports.BOUGH_LOW}%, and you know ${pct(exports.BOUGH_SPREAD)} of the outline.`,
+    4: `${CLEAN_LOW} reaches ${exports.BOUGH_LOW}%, you know ${pct(exports.BOUGH_SPREAD)} of the outline, and you ${recallRule(plantForms_1.RECALL_FORM_III)}.`,
     5: `${CLEAN_LOW} reaches ${exports.CROWN_LOW}%, you know ${pct(exports.CROWN_SPREAD)} of the outline, and you finish a mock of ${exports.CROWN_MOCK} questions or more.`,
-    6: `${READY_RULE}, every domain is at ${pct(exports.ELDER_DOMAIN_FLOOR)} or more, you know ${pct(exports.ELDER_SPREAD)} of the outline, and you finish a full, timed mock with every question answered.`,
+    6: `${READY_RULE}, every domain is at ${pct(exports.ELDER_DOMAIN_FLOOR)} or more, you know ${pct(exports.ELDER_SPREAD)} of the outline, you finish a full, timed mock with every question answered, and you ${recallRule(plantForms_1.RECALL_FORM_IV)}.`,
+};
+exports.FORM_FACTS = {
+    3: `You answered ${exports.SHOOT_PER_DOMAIN} or more questions in every domain, without a hint or a game, and you know ${pct(exports.SHOOT_SPREAD)} of the outline.`,
+    4: `You got ${plantForms_1.RECALL_FORM_III} questions right ${RECALL_WEEK} or more after you last saw them, and you know ${pct(exports.BOUGH_SPREAD)} of the outline.`,
+    6: `Every domain reached ${pct(exports.ELDER_DOMAIN_FLOOR)}, you know ${pct(exports.ELDER_SPREAD)} of the outline, you got ${plantForms_1.RECALL_FORM_IV} questions right ${RECALL_WEEK} later, and you sat a full, timed mock.`,
 };
 exports.SPREAD_EXPLAINER = "Subtopics you've answered right, without a hint, on two different days, weighted like the exam.";
 function pct(x) {
@@ -4126,6 +4137,7 @@ function nextGrowthSteps(current, f) {
     const low = (_a = f.low) !== null && _a !== void 0 ? _a : 0;
     const spread = (need) => ({ label: `Know ${pct(need)} of the outline`, progress: frac(f.spread, need) });
     const lowStep = (need) => ({ label: `${CLEAN_LOW} reaches ${need}%`, progress: f.low === null ? 0 : frac(low, need) });
+    const recallStep = (need) => (f.recalled === undefined ? [] : [{ label: `Get ${need} questions right ${RECALL_WEEK} or more after you last saw them`, progress: frac(f.recalled, need) }]);
     let steps;
     switch (g) {
         case 2:
@@ -4138,7 +4150,7 @@ function nextGrowthSteps(current, f) {
             break;
         }
         case 4:
-            steps = [lowStep(exports.BOUGH_LOW), spread(exports.BOUGH_SPREAD)];
+            steps = [lowStep(exports.BOUGH_LOW), spread(exports.BOUGH_SPREAD), ...recallStep(plantForms_1.RECALL_FORM_III)];
             break;
         case 5:
             steps = [lowStep(exports.CROWN_LOW), spread(exports.CROWN_SPREAD), { label: `Finish a mock of ${exports.CROWN_MOCK} questions or more`, progress: f.mock50 ? 1 : 0 }];
@@ -4150,6 +4162,7 @@ function nextGrowthSteps(current, f) {
                 { label: `Every domain at ${pct(exports.ELDER_DOMAIN_FLOOR)} or more`, progress: frac(min, exports.ELDER_DOMAIN_FLOOR) },
                 spread(exports.ELDER_SPREAD),
                 { label: 'A full, timed mock with every question answered', progress: f.dress ? 1 : 0 },
+                ...recallStep(plantForms_1.RECALL_FORM_IV),
             ];
         }
     }
@@ -4194,6 +4207,7 @@ function plantFacts(i) {
         mock50: i.mocks.some((m) => m.total >= exports.CROWN_MOCK),
         dress: i.mocks.some((m) => isDressMock(m, i.cert.exam.questions)),
         readyHeld: (held || seen) && cleanReady,
+        ...(i.recalled !== undefined ? { recalled: i.recalled } : {}),
     };
 }
 exports.MAX_KEEPSAKES = 3;
@@ -4503,8 +4517,6 @@ const LOOK_SLOTS = [
 function isValidPlantState(x) {
     if (!isObj(x))
         return false;
-    if (!onlyKeys(x, ['species', 'name', 'plantedAt', 'replantedAt', 'growth', 'reached', 'pending', 'backfill', 'look', 'kept', 'passedOn']))
-        return false;
     if (!isPlantSpecies(x.species))
         return false;
     if (typeof x.name !== 'string' || cleanPlantName(x.name) !== x.name)
@@ -4529,18 +4541,20 @@ function isValidPlantState(x) {
         return false;
     if (x.backfill !== undefined) {
         const b = x.backfill;
-        if (!isObj(b) || !onlyKeys(b, ['at', 'growth', 'seen']) || !isTs(b.at) || !isGrowthLevel(b.growth) || b.growth > growth)
+        if (!isObj(b) || !isTs(b.at) || !isGrowthLevel(b.growth) || b.growth > growth)
             return false;
         if (b.seen !== undefined && typeof b.seen !== 'boolean')
             return false;
     }
     if (x.look !== undefined) {
         const l = x.look;
-        if (!isObj(l) || !onlyKeys(l, ['style', 'colourway', 'ground', 'planter', 'visitor', 'keepsakes']))
+        if (!isObj(l))
             return false;
         for (const [k, slot] of LOOK_SLOTS)
             if (l[k] !== undefined && !(0, plantLooks_1.isLookOfSlot)(l[k], slot))
                 return false;
+        if (l.final !== undefined && !(0, plantForms_1.isFinalId)(l.final))
+            return false;
         if (l.keepsakes !== undefined) {
             const ks = l.keepsakes;
             if (!Array.isArray(ks) || ks.length > exports.MAX_KEEPSAKES || !ks.every((k) => (0, plantLooks_1.isLookOfSlot)(k, 'keepsake')) || new Set(ks).size !== ks.length)
@@ -4577,6 +4591,8 @@ function repairPlant(p) {
                 look[k] = out.look[k];
         if (out.look.keepsakes)
             look.keepsakes = [...new Set(out.look.keepsakes.filter((k) => (0, plantLooks_1.isLookOfSlot)(k, 'keepsake')))].slice(0, exports.MAX_KEEPSAKES);
+        if ((0, plantForms_1.isFinalId)(out.look.final))
+            look.final = out.look.final;
         out.look = look;
     }
     if (out.kept)
@@ -4703,10 +4719,12 @@ function plantLabel(i) {
     const sp = exports.SPECIES_INFO[i.species].lower;
     const who = i.name ? `${shownName(i.name)}, your ${sp}` : `Your ${sp}`;
     const extra = [i.newGrowth ? 'New growth today.' : '', i.resting ? 'Resting.' : '', i.mood ? plantLooks_1.MOOD_WORDS[i.mood] : '', i.visitor ? `A ${i.visitor} is visiting.` : ''].filter(Boolean).join(' ');
-    return `${who}. Growth: ${exports.GROWTH_NAMES[i.growth]}, ${i.growth} of 6.${extra ? ` ${extra}` : ''}`;
+    return `${who}.${i.form ? ` ${i.form} form.` : ''} Growth: ${exports.GROWTH_NAMES[i.growth]}, ${i.growth} of 6.${extra ? ` ${extra}` : ''}`;
 }
-function backfillLine(p, growth) {
-    return growth > 1 ? `Your study so far grew ${p.name ? shownName(p.name) : `your ${exports.SPECIES_INFO[p.species].lower}`} to ${exports.GROWTH_NAMES[growth]}.` : `Planted. Your first ${exports.SPROUT_ANSWERS} answers give it its first sprout.`;
+function backfillLine(p, growth, form) {
+    return growth > 1
+        ? `Your study so far grew ${p.name ? shownName(p.name) : `your ${exports.SPECIES_INFO[p.species].lower}`} to ${exports.GROWTH_NAMES[growth]}${form ? `: the ${form}` : ''}.`
+        : `Planted. Your first ${exports.SPROUT_ANSWERS} answers give it its first sprout.`;
 }
 function growthShort(growth) {
     return `${exports.GROWTH_NAMES[growth]} · growth ${growth} of ${exports.MAX_GROWTH}`;
@@ -4717,6 +4735,317 @@ function grewLabel(p, growth) {
 function organLabel(index, domainName, mastery, step, next = false) {
     const pc = Math.round(Math.max(0, Math.min(1, mastery)) * 100);
     return `Domain ${index + 1}, ${domainName}, ${pc} percent, ${exports.ORGAN_STEP_WORDS[step]}.${next ? ' Next to grow.' : ''}`;
+}
+  };
+  links["src/engine/plantForms.ts"] = {};
+  defs["src/engine/plantForms.ts"] = function (module, exports, require) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.RECALL_FORM_IV = exports.RECALL_FORM_III = exports.RECALL_GAP_DAYS = exports.SEE_NEW_FORM = exports.theForm = exports.FLAVOUR_LOOKS = exports.FORMS = exports.SPECIES_KEY = exports.FLAVOURS = exports.FINAL_IDS = exports.FLAVOUR_IDS = exports.FORM_START = exports.FORM_OF_GROWTH = void 0;
+exports.formOf = formOf;
+exports.crossesForm = crossesForm;
+exports.nextFormAt = nextFormAt;
+exports.isFinalId = isFinalId;
+exports.resolveFinal = resolveFinal;
+exports.finalName = finalName;
+exports.finalLook = finalLook;
+exports.formName = formName;
+exports.formLook = formLook;
+exports.nextFormLine = nextFormLine;
+exports.newFormLine = newFormLine;
+exports.formsIntroLine = formsIntroLine;
+exports.delayedRecalls = delayedRecalls;
+exports.baselineForms = baselineForms;
+exports.formMoment = formMoment;
+exports.afterReveal = afterReveal;
+exports.afterNote = afterNote;
+exports.revealMode = revealMode;
+exports.revealTimeline = revealTimeline;
+exports.FORM_OF_GROWTH = { 1: 1, 2: 1, 3: 2, 4: 3, 5: 3, 6: 4 };
+exports.FORM_START = { 1: 1, 2: 3, 3: 4, 4: 6 };
+const GROWTH_WORD = { 1: 'Seed', 2: 'Sprout', 3: 'Shoot', 4: 'Bough', 5: 'Crown', 6: 'Elder' };
+const clampGrowth = (g) => Math.max(1, Math.min(6, Math.round(Number.isFinite(g) ? g : 1)));
+function formOf(growth) {
+    return exports.FORM_OF_GROWTH[clampGrowth(growth)];
+}
+function crossesForm(from, to) {
+    return formOf(to) > formOf(from);
+}
+function nextFormAt(growth) {
+    const f = formOf(growth);
+    if (f >= 4)
+        return null;
+    const next = (f + 1);
+    return { form: next, at: exports.FORM_START[next] };
+}
+exports.FLAVOUR_IDS = ['lookout', 'moot', 'espalier', 'coppice', 'holdfast'];
+exports.FINAL_IDS = ['own', ...exports.FLAVOUR_IDS];
+function isFinalId(x) {
+    return typeof x === 'string' && exports.FINAL_IDS.includes(x);
+}
+exports.FLAVOURS = {
+    lookout: { name: 'Lookout', idea: 'A high, open crown with a clear view through it.' },
+    moot: { name: 'Moot', idea: 'Level limbs make a roof over a ring of meeting stones.' },
+    espalier: { name: 'Espalier', idea: 'Limbs trained along a frame, built to a plan.' },
+    coppice: { name: 'Coppice', idea: 'Several stems rise from one base and keep growing back.' },
+    holdfast: { name: 'Holdfast', idea: 'Roots grip a stone under a dense, closed crown.' },
+};
+function resolveFinal(growth, choice) {
+    return clampGrowth(growth) >= 6 && isFinalId(choice) ? choice : 'own';
+}
+exports.SPECIES_KEY = {
+    oak: 'Oak',
+    maple: 'Maple',
+    narra: 'Narra',
+    'cherry-blossom': 'Cherry',
+    pine: 'Pine',
+    'coconut-palm': 'Palm',
+    mango: 'Mango',
+    bonsai: 'Bonsai',
+    sunflower: 'Sunflower',
+    lotus: 'Lotus',
+    sampaguita: 'Sampaguita',
+    cactus: 'Cactus',
+    bamboo: 'Bamboo',
+};
+exports.FORMS = {
+    oak: [
+        ['Acorn-cup Oak', 'An acorn in its engraved cup; the first root shows in the soil.'],
+        ['Whip Oak', 'One straight leader with lobed leaves at each node.'],
+        ['Standard Oak', 'A clear stem and an upright oval crown; the first acorns.'],
+        ['Broadcrown Oak', 'A short, massive trunk, low sinuous limbs and a broad, open dome hung with acorns.'],
+    ],
+    maple: [
+        ['Samara Maple', 'The paired winged seed on the soil; two strap seed-leaves and a first five-point leaf.'],
+        ['Forked Maple', 'Leaves in opposite pairs up a slim stem that forks in two.'],
+        ['Flame Maple', 'A tall, pointed crown shaped like a candle flame.'],
+        ['Vaulted Maple', 'A tall, open vase of limbs under a broad vault; winged seeds hang from its eaves.'],
+    ],
+    narra: [
+        ['Coin Narra', 'The round winged pod, half settled; a first shoot and root.'],
+        ['Featherleaf Narra', 'One arching wand of feathered leaves; the husk stays by it.'],
+        ['Parasol Narra', 'A flat, spreading parasol on a clean stem; the first golden sprays.'],
+        ['Gold-rain Narra', 'Plank buttresses, a vast weeping umbrella, golden showers and hanging coins.'],
+    ],
+    'cherry-blossom': [
+        ['Cherry Stone', 'The round stone with its seam; two first serrated leaves.'],
+        ['Banded Cherry', 'A slim stem with the cherry’s banded bark and its first pink buds.'],
+        ['Spreading Cherry', 'Wide, low clouds of bud and blossom on spreading limbs.'],
+        ['Cascade Cherry', 'Limbs rise, then fall in long curtains of blossom; petals drift.'],
+    ],
+    pine: [
+        ['Starburst Pine', 'The winged seed, and a starburst of seed-needles.'],
+        ['Candle Pine', 'One leader in whorls of needles, a pale new candle at its tip.'],
+        ['Spire Pine', 'A tiered cone of whorls, narrowing to a point.'],
+        ['Highcloud Pine', 'A tall, leaning bole carrying level cloud pads high up; cones below.'],
+    ],
+    'coconut-palm': [
+        ['Husk Palm', 'The husked nut lying on the soil, a shoot rising from its eye.'],
+        ['Strapleaf Palm', 'Whole, pleated young leaves fanning from the nut.'],
+        ['Ringed Palm', 'A short ringed trunk, five arching fronds and the first green nuts.'],
+        ['Shoreline Palm', 'A tall curving trunk, a full crown of fronds, ripe nuts, and a nut sprouting at its foot.'],
+    ],
+    mango: [
+        ['Kernel Mango', 'The flat, fibred stone and a first flush of leaves.'],
+        ['Whorl Mango', 'Leaves gather in whorls; the new flush hangs bronze at the tip.'],
+        ['Tassel Mango', 'A rounded crown with flower tassels standing up like candles.'],
+        ['Laden Mango', 'A vast, low, dark dome with fruit hanging on long stalks.'],
+    ],
+    bonsai: [
+        ['First-bend Bonsai', 'A seedling in its tray, taking its first bend.'],
+        ['Upright Bonsai', 'A straight, tapering trunk and three pads in a triangle.'],
+        ['Winding Bonsai', 'An S-curved trunk carrying five cloud pads.'],
+        ['Windswept Bonsai', 'The trunk leans with the wind and every pad streams one way; small white flowers.'],
+    ],
+    sunflower: [
+        ['Seed-cap Sunflower', 'Two round seed-leaves, one still wearing the striped seed as a cap.'],
+        ['Heart-leaf Sunflower', 'Paired heart-shaped leaves and a tight green bud.'],
+        ['Morning Sunflower', 'A tall stem, the head open and turned to one side.'],
+        ['Spiral Sunflower', 'A great head facing you, its seeds set in spirals; a second bud below.'],
+    ],
+    lotus: [
+        ['First-pad Lotus', 'One floating pad and a rolled leaf rising from the water.'],
+        ['Raised-pad Lotus', 'Pads lift on stalks above the water; a new leaf unrolls.'],
+        ['Tall-bud Lotus', 'Five pads and one tall, pointed bud.'],
+        ['Open Lotus', 'The flower fully open around its seed cup, a bud and a seed head beside it.'],
+    ],
+    sampaguita: [
+        ['Cutting Sampaguita', 'A cutting set in the soil, rooting from its node.'],
+        ['Twining Sampaguita', 'Two arching stems with paired leaves and the first star-buds.'],
+        ['Star-mound Sampaguita', 'A dark green mound dotted with white star flowers.'],
+        ['Garland Sampaguita', 'A full shrub in flower, with a strung garland of its own stars.'],
+    ],
+    cactus: [
+        ['Pebble Cactus', 'A small spined globe in its pot.'],
+        ['Column Cactus', 'One ribbed column lined with spines.'],
+        ['Cross-arm Cactus', 'Four short arms and a first bud on top.'],
+        ['Crown-bloom Cactus', 'A tall column, arms raised high, crowned with flowers.'],
+    ],
+    bamboo: [
+        ['Sheath Bamboo', 'The shoot in its overlapping sheaths; the rhizome below.'],
+        ['First-culm Bamboo', 'One jointed culm with leaf fans; the next shoot beside it.'],
+        ['Vase Bamboo', 'Five culms rise in a vase, sprays leaning outward.'],
+        ['Moon-gate Bamboo', 'The culms arch together into a round gate.'],
+    ],
+};
+exports.FLAVOUR_LOOKS = {
+    oak: {
+        lookout: 'A tall clear bole; the oak’s crown parts into a ring around an open window.',
+        moot: 'Long level limbs roof a ring of five stones; the crown sits in tiers.',
+        espalier: 'Three tiers of oak limbs trained level along wires between two posts.',
+        coppice: 'Three oak stems rise from one broad stool; new shoots at the foot.',
+        holdfast: 'Oak roots grip a boulder under a dense, closed dome.',
+    },
+    maple: {
+        lookout: 'A tall maple with its crown opened into a ring, winged seeds hanging.',
+        moot: 'Maple limbs held level in calm tiers over five meeting stones.',
+        espalier: 'Maple cordons trained flat along a frame, seeds along the wires.',
+        coppice: 'Three slim maple stems from one stool, each with its own small crown.',
+        holdfast: 'A short, thick maple gripping a stone, its crown closed and dense.',
+    },
+    narra: {
+        lookout: 'A raised narra parasol, parted around a sightline, gold sprays on top.',
+        moot: 'The narra’s parasol spread into level tiers above five stones.',
+        espalier: 'Narra limbs trained level along wires, golden sprays along each tier.',
+        coppice: 'Three narra stems from one stool, each with a small gold-flecked crown.',
+        holdfast: 'Narra roots clasp a boulder beneath a dense, closed crown.',
+    },
+    'cherry-blossom': {
+        lookout: 'A tall banded cherry, its blossom parted into a ring around an open window.',
+        moot: 'Level blossom tiers on long banded limbs over five meeting stones.',
+        espalier: 'Cherry limbs trained flat on a frame, blossom along every tier.',
+        coppice: 'Three cherry stems from one stool, each in its own cloud of blossom.',
+        holdfast: 'A thick banded trunk on a boulder under a dense dome of blossom.',
+    },
+    pine: {
+        lookout: 'A tall bare bole with level pads only near the top, around a sightline.',
+        moot: 'Broad, level pads in calm tiers, like a roof, over five meeting stones.',
+        espalier: 'A pole rises above the crown and ropes fan down to hold the level limbs.',
+        coppice: 'Three pine stems from one stool, each carrying its own pads.',
+        holdfast: 'A pine on a rock, its roots clasping the stone; dense pads above.',
+    },
+    'coconut-palm': {
+        lookout: 'The tallest, straightest trunk, its crown high above everything.',
+        moot: 'Fronds held level like a flat roof over five meeting stones.',
+        espalier: 'A young palm braced by a timber tripod, its fronds trained into an even fan.',
+        coppice: 'A mother palm with two young palms rising from the same base.',
+        holdfast: 'A short, stout trunk on a rock, roots gripping, a dense crown of fronds.',
+    },
+    mango: {
+        lookout: 'A tall mango, its dark crown parted around a sightline, fruit hanging.',
+        moot: 'The mango’s dome spread into level tiers over five meeting stones.',
+        espalier: 'Mango limbs trained level along a frame, fruit hanging along the wires.',
+        coppice: 'Three mango stems from one stool, each with its own small dome.',
+        holdfast: 'A thick mango gripping a boulder under a closed, dark dome.',
+    },
+    bonsai: {
+        lookout: 'A tall, slender trunk with a few small pads high up: the scholar’s style.',
+        moot: 'A thick, short trunk with broad pads in level tiers; pebbles on the soil.',
+        espalier: 'Branches wired into a flat fan, the wire coiled along each one.',
+        coppice: 'Three trunks rising together from one root.',
+        holdfast: 'Roots grip over a stone set in the tray; a dense crown above.',
+    },
+    sunflower: {
+        lookout: 'An extra-tall stem, the head high and turned outward; leaves stay low.',
+        moot: 'Leaves held level in tiers, the head turned up to the sky, five stones below.',
+        espalier: 'Tied to a cane at three points, leaves trained flat to each side.',
+        coppice: 'One stem branches into three heads from a single base.',
+        holdfast: 'A short, stout stem on a stone, the head bowed, leaves overlapping like a shield.',
+    },
+    lotus: {
+        lookout: 'One flower lifted far above the pads on a tall stalk.',
+        moot: 'Pads held level in a ring around the open flower; stepping stones in the water.',
+        espalier: 'A reed frame in the bowl; the stem tied to its rails, pads in a neat row.',
+        coppice: 'Three flowers rise from one root: a bud, a half-open cup and a full bloom.',
+        holdfast: 'A stone in the bowl gripped by the root; raised pads close round a cupped bloom.',
+    },
+    sampaguita: {
+        lookout: 'Trained as a little tree: a clear stem and a round, starred head.',
+        moot: 'Clipped into two level tiers, stars along the edges, over five stones.',
+        espalier: 'Stems tied along a fan trellis, a star flower at each tip.',
+        coppice: 'Cut back to a low stool; many slim stems spring up again.',
+        holdfast: 'A dense clipped dome over a stone its roots hold fast.',
+    },
+    cactus: {
+        lookout: 'The tallest column, tiny arms low down, a single flower at the top.',
+        moot: 'Arms held level in two tiers, like a table; pebbles in the pot.',
+        espalier: 'Arms trained round a wire hoop on a stake, a flower on each.',
+        coppice: 'A clustering cactus: young offsets ring the mother column.',
+        holdfast: 'A broad barrel wedged against a stone, dense with spines.',
+    },
+    bamboo: {
+        lookout: 'One culm rises far above the rest of the stand.',
+        moot: 'Straight culms with leaves clipped into level shelves, five stones at the foot.',
+        espalier: 'Culms tied in a straight row to two rails: a living screen.',
+        coppice: 'A dense clump of short culms, new shoots coming up all round.',
+        holdfast: 'The rhizome grips a stone; culms stand close as a palisade.',
+    },
+};
+function finalName(species, final) {
+    return final === 'own' ? exports.FORMS[species][3][0] : `${exports.FLAVOURS[final].name} ${exports.SPECIES_KEY[species]}`;
+}
+function finalLook(species, final) {
+    return final === 'own' ? exports.FORMS[species][3][1] : exports.FLAVOUR_LOOKS[species][final];
+}
+function formName(species, growth, final = 'own') {
+    const f = formOf(growth);
+    return f === 4 ? finalName(species, resolveFinal(growth, final)) : exports.FORMS[species][f - 1][0];
+}
+function formLook(species, growth, final = 'own') {
+    const f = formOf(growth);
+    return f === 4 ? finalLook(species, resolveFinal(growth, final)) : exports.FORMS[species][f - 1][1];
+}
+const theForm = (name) => `the ${name}`;
+exports.theForm = theForm;
+function nextFormLine(species, growth) {
+    const n = nextFormAt(growth);
+    if (!n)
+        return null;
+    return `Grows into ${(0, exports.theForm)(formName(species, n.at))} at ${GROWTH_WORD[n.at]}.`;
+}
+exports.SEE_NEW_FORM = 'It grows into a new form: see it in Your plant.';
+function newFormLine(callName, name) {
+    return `${callName} grows into a new form: ${(0, exports.theForm)(name)}.`;
+}
+function formsIntroLine(callName, name) {
+    return `Your study so far brought ${callName} to ${(0, exports.theForm)(name)}.`;
+}
+exports.RECALL_GAP_DAYS = 7;
+exports.RECALL_FORM_III = 15;
+exports.RECALL_FORM_IV = 30;
+function delayedRecalls(longIds) {
+    return new Set(longIds !== null && longIds !== void 0 ? longIds : []).size;
+}
+function baselineForms(growth) {
+    const f = formOf(growth);
+    return f > 1 ? { seen: f, note: f } : { seen: f };
+}
+function formMoment(growth, rec) {
+    if (!rec)
+        return null;
+    const f = formOf(growth);
+    if (f > rec.seen)
+        return { kind: 'reveal', from: rec.seen, to: f };
+    if (rec.note !== undefined && rec.note === f)
+        return { kind: 'note', form: f };
+    return null;
+}
+function afterReveal(rec, growth) {
+    var _a;
+    const f = formOf(growth);
+    return { seen: Math.max((_a = rec === null || rec === void 0 ? void 0 : rec.seen) !== null && _a !== void 0 ? _a : 1, f) };
+}
+function afterNote(rec) {
+    return { seen: rec.seen };
+}
+function revealMode(reduced, budget) {
+    return !reduced && budget() ? 'full' : 'reduced';
+}
+function revealTimeline(reduced, total = 1200, reducedFade = 120) {
+    if (reduced)
+        return { hold: 0, change: reducedFade, settle: 0, wordsAt: 0, wordsIn: 0, total: reducedFade };
+    const k = total / 1200;
+    return { hold: 120 * k, change: 360 * k, settle: 300 * k, wordsAt: 780 * k, wordsIn: 300 * k, total };
 }
   };
   links["src/engine/plantLooks.ts"] = {"./milestones":"src/engine/milestones.ts"};
@@ -10057,7 +10386,7 @@ function decodeUtf8(bytes) {
   var api = {};
   api["browser"] = load("src/webcloud/browser.ts");
   api["config"] = load("src/webcloud/config.ts");
-  api.sourceHash = "f5aa1ad2e6829bd1";
+  api.sourceHash = "0af376f23e52e431";
   var cloud = load("src/webcloud/index.ts");
   var liveVersion = "1.48.0";
   var liveStoreVersions = {"progress":2,"settings":1};

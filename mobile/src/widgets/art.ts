@@ -15,6 +15,7 @@
 import { isPlantSpecies } from '../engine/plant';
 import { ringArc, ringGeometry } from '../engine/ringGeometry';
 import type { FaceTone, PlantSnap } from '../engine/widgets';
+import { isFinalId } from '../engine/plantForms';
 import { buildPlant, plantLayers, type ArtLook, type PNode } from '../components/plant/art';
 import { KAI_LEAF, KAI_PAIR_DOWN, KAI_PAIR_UP, KAI_VEIN } from '../theme/kasama';
 import { dark, font, kaisip, light } from '../theme/tokens';
@@ -250,6 +251,8 @@ export function plantSvg(p: PlantSnap, theme: WidgetTheme): string | null {
     ...(p.palette ? { palette: p.palette as ArtLook['palette'] } : {}),
     ...(p.ground ? { ground: p.ground } : {}),
     ...(p.planter ? { planter: p.planter } : {}),
+    // Mobile 1.50: the Form IV final the learner chose.
+    ...(isFinalId(p.final) ? { final: p.final } : {}),
     keepsakes: [],
   };
   const built = buildPlant({ species: p.species, stage: Math.max(1, Math.min(6, p.growth)), quietLook: true, lod: 'small', theme, resting: false, mood: 'idle', drift: false, look, px: 120, fit: true });

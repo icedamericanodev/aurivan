@@ -35,6 +35,17 @@
  *   - `plantOffer`: 'later' when the learner chose "Not now" on the first-set
  *     screen's plant offer, so it is never offered there again.
  *
+ * - mobile 1.50 plant forms (engine/plantForms.ts), both per cert and on this
+ *   phone only:
+ *   - `plantForms`: the highest form whose reveal was shown, and a quiet note
+ *     still owed. The first time this release sees a plant, what it already
+ *     is counts as seen (no reveal for history); a restore forgets it, so a
+ *     restored plant gets the quiet note, never a replayed moment.
+ *   - `plantFinal`: the learner's Form IV choice. STAGED ROLLOUT
+ *     (DESIGN_SYSTEM §8.10): it lives here, NOT in the plant or a backup,
+ *     until every build in use can read `look.final`. A later release
+ *     copies it into the plant (and so into backups and sync).
+ *
  * Presentation only: it holds no answers, nothing a backup needs, and losing
  * it only means one number counts up again. So it is NOT in backups. A reset
  * leaves it alone (a value that went down just shows); a restore forgets the
@@ -45,6 +56,7 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import type { TesterState } from '../engine/betaTester';
 import type { AskAnswer } from '../engine/firstRun';
+import { afterNote, afterReveal, baselineForms, isFinalId, type FinalId, type FormSeen } from '../engine/plantForms';
 import { admitProud, PROUD_KEEP_DAYS, type ProudLog, type ProudOccasion } from '../engine/proud';
 import { DAY_MS } from '../engine/srs';
 import { watchHydration } from './hydration';
@@ -88,6 +100,20 @@ interface SeenState {
   nameAsk?: 'due' | 'shown';
   /** Mobile 1.41: "Not now" on the first-set screen's plant offer. */
   plantOffer?: 'later';
+  /** Mobile 1.50: each cert's plant forms already shown on this phone (engine/plantForms.ts FormSeen). */
+  plantForms?: Record<string, FormSeen>;
+  /** Mobile 1.50: each cert's Form IV choice, on this phone only (staged rollout; see the header). */
+  plantFinal?: Record<string, FinalId>;
+  /** The first sight of a plant on this release: what it is counts as seen (a plant past Form I is owed one quiet note). */
+  baselineForms: (certId: string, growth: number) => void;
+  /** The reveal of a new form played (or was cut short: it still counts). */
+  seeFormReveal: (certId: string, growth: number) => void;
+  /** The quiet "brought to its form" note showed. */
+  seeFormNote: (certId: string) => void;
+  /** After a restore: forget which forms were shown (a restored plant gets the quiet note, never a replay). */
+  forgetForms: () => void;
+  /** The learner chose a Form IV final ('own' clears it). */
+  setPlantFinal: (certId: string, final: FinalId) => void;
   setTester: (state: TesterState) => void;
   setNameAsk: (v: 'due' | 'shown') => void;
   setPlantOffer: (v: 'later') => void;
@@ -161,6 +187,21 @@ export const useSeen = create<SeenState>()(
       reactions: {},
       proud: {},
       reminderAsk: {},
+      baselineForms: (certId, growth) => set((s) => (s.plantForms?.[certId] ? s : { plantForms: { ...s.plantForms, [certId]: baselineForms(growth) } })),
+      seeFormReveal: (certId, growth) => set((s) => ({ plantForms: { ...s.plantForms, [certId]: afterReveal(s.plantForms?.[certId], growth) } })),
+      seeFormNote: (certId) =>
+        set((s) => {
+          const rec = s.plantForms?.[certId];
+          return rec?.note === undefined ? s : { plantForms: { ...s.plantForms, [certId]: afterNote(rec) } };
+        }),
+      forgetForms: () => set({ plantForms: {} }),
+      setPlantFinal: (certId, final) =>
+        set((s) => {
+          const next = { ...s.plantFinal };
+          if (final === 'own' || !isFinalId(final)) delete next[certId];
+          else next[certId] = final;
+          return { plantFinal: next };
+        }),
       setTester: (tester) => set({ tester }),
       // 'shown' is final: a later onboarding (a restore on a fresh phone) never asks again.
       setNameAsk: (v) => set((s) => (s.nameAsk === 'shown' || s.nameAsk === v ? s : { nameAsk: v })),

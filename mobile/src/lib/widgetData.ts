@@ -50,6 +50,7 @@ import {
   type WidgetSnapshot,
 } from '../engine/widgets';
 import type { AnswerRecord } from '../engine/readiness';
+import { useSeen } from '../store/seen';
 import { selectCert, useProgress } from '../store/progress';
 import { dailyMinutesOf, examDateOf, useSettings } from '../store/settings';
 import { effectiveCertId } from './activeCert';
@@ -212,6 +213,8 @@ function plantSnap(certId: string, today: string): PlantSnap | { off: true } | n
     newTopicToday: false,
     newKeepsakeToday: false,
     today,
+    // Mobile 1.50: the Form IV choice kept on this phone.
+    final: useSeen.getState().plantFinal?.[certId],
   }).art;
   return {
     species: plant.species,
@@ -222,6 +225,7 @@ function plantSnap(certId: string, today: string): PlantSnap | { off: true } | n
     ...(look.palette ? { palette: look.palette } : {}),
     ...(look.ground ? { ground: look.ground } : {}),
     ...(look.planter ? { planter: look.planter } : {}),
+    ...(look.final ? { final: look.final } : {}),
   };
 }
 

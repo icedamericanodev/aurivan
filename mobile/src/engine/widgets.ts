@@ -45,6 +45,8 @@
 import { addDays, daysToExam } from './examDay';
 import { aboutMin, spokenMin } from './pace';
 import { daysBetween, dayKey } from './streak';
+import { isPlantSpecies } from './plant';
+import { formName, isFinalId } from './plantForms';
 
 // ── Keys, kinds and names ────────────────────────────────────────────────
 /** The snapshot's AsyncStorage key (the app's usual key style; never renamed once shipped). */
@@ -165,6 +167,8 @@ export interface PlantSnap {
   palette?: string;
   ground?: string;
   planter?: string;
+  /** Mobile 1.50: the Form IV final drawn at Elder (engine/plantForms.ts FINAL_IDS); unset = its own. */
+  final?: string;
 }
 
 export interface ThinkSnap {
@@ -371,6 +375,7 @@ function cleanPlant(pt: Record<string, unknown> | null | undefined): WidgetSnaps
     ...(typeof pt.palette === 'string' ? { palette: str(pt.palette, MAX.name) } : {}),
     ...(typeof pt.ground === 'string' ? { ground: str(pt.ground, MAX.name) } : {}),
     ...(typeof pt.planter === 'string' ? { planter: str(pt.planter, MAX.name) } : {}),
+    ...(isFinalId(pt.final) ? { final: pt.final } : {}),
   };
 }
 
@@ -1231,22 +1236,25 @@ function plantFace(s: WidgetSnapshot, today: string): WidgetFace {
   if ('off' in p) {
     return { ...base, title: 'Plant is off', short: 'Plant off', line: 'You can turn it on in Settings.', art: { type: 'mark' }, link: widgetLink(kind, 'plant-settings'), key: 'off', label: 'Your plant is off. You can turn it on in Settings.' };
   }
-  const stage = Math.max(1, Math.min(6, p.growth));
-  const word = GROWTH_WORDS[stage - 1];
+  const growth = Math.max(1, Math.min(6, p.growth));
+  const word = GROWTH_WORDS[growth - 1];
   const grewToday = p.grew === today;
-  // The line moves with the plant: the next stage, and the day it grew.
-  const next = stage < 6 ? `${GROWTH_WORDS[stage]} is next` : 'Fully grown';
+  // The line moves with the plant: the next growth, and the day it grew.
+  const next = growth < 6 ? `${GROWTH_WORDS[growth]} is next` : 'Fully grown';
+  // Mobile 1.50: a botanical plant is in its form; the form is a name in the spoken label, never a second number.
+  const form = p.style === 'botanical' && isPlantSpecies(p.species) ? ` ${formName(p.species, growth, p.final)} form.` : '';
   return {
     ...base,
     caption: `Your ${p.name}`,
     title: word,
-    sub: `Fig. ${stage}`,
+    sub: `Fig. ${growth}`,
     line: `${next}.`,
     badge: grewToday ? 'New growth today' : undefined,
     art: { type: 'plant', plant: p },
     link: widgetLink(kind, 'plant'),
     key: word,
-    label: `Your ${p.name}, at stage ${stage}, ${word.toLowerCase()}.${grewToday ? ' New growth today.' : ''} ${next}. ${PLANT_LINE}.`,
+    // Growth, never "stage" (the plant's copy rule), and no "n of 6" on a widget: "Your oak, at growth 4, bough. Standard Oak form."
+    label: `Your ${p.name}, at growth ${growth}, ${word.toLowerCase()}.${form}${grewToday ? ' New growth today.' : ''} ${next}. ${PLANT_LINE}.`,
   };
 }
 

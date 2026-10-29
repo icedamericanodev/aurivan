@@ -8644,11 +8644,11 @@ function pacingStatsLine(s) {
     return `In ${mocks} you took ${aboutSeconds(s.medianSec)} per question. ${all}`;
 }
   };
-  links["src/engine/plant.ts"] = {"./journey":"src/engine/journey.ts","./examReady":"src/engine/examReady.ts","./readiness":"src/engine/readiness.ts","./readinessRange":"src/engine/readinessRange.ts","./streak":"src/engine/streak.ts","./plantLooks":"src/engine/plantLooks.ts"};
+  links["src/engine/plant.ts"] = {"./journey":"src/engine/journey.ts","./examReady":"src/engine/examReady.ts","./readiness":"src/engine/readiness.ts","./readinessRange":"src/engine/readinessRange.ts","./streak":"src/engine/streak.ts","./plantLooks":"src/engine/plantLooks.ts","./plantForms":"src/engine/plantForms.ts"};
   defs["src/engine/plant.ts"] = function (module, exports, require) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.EXAM_REST_LINES = exports.RETURN_DAYS = exports.REST_AFTER_DAYS = exports.FLOWER_DAYS = exports.FLOWER_SCORE = exports.PLANT_SLOTS = exports.organScales = exports.ORGAN_STEP_WORDS = exports.ORGAN_WEIGHT_PULL = exports.ORGAN_SPAN = exports.ORGAN_MIN = exports.MAX_NAME = exports.plantFace = exports.plantHasFace = exports.plantShown = exports.MAX_KEPT = exports.MAX_KEEPSAKES = exports.SPREAD_EXPLAINER = exports.GROWTH_RULES = exports.ELDER_SPREAD = exports.ELDER_DOMAIN_FLOOR = exports.CROWN_MOCK = exports.CROWN_SPREAD = exports.CROWN_LOW = exports.BOUGH_SPREAD = exports.BOUGH_LOW = exports.SHOOT_SPREAD = exports.SHOOT_PER_DOMAIN = exports.SPROUT_ANSWERS = exports.GROWTH_LOOKS = exports.GROWTH_NAMES = exports.MAX_GROWTH = exports.GROWTH_IDS = exports.SPECIES_INFO = exports.PLANT_SPECIES = void 0;
+exports.EXAM_REST_LINES = exports.RETURN_DAYS = exports.REST_AFTER_DAYS = exports.FLOWER_DAYS = exports.FLOWER_SCORE = exports.PLANT_SLOTS = exports.organScales = exports.ORGAN_STEP_WORDS = exports.ORGAN_WEIGHT_PULL = exports.ORGAN_SPAN = exports.ORGAN_MIN = exports.MAX_NAME = exports.plantFace = exports.plantHasFace = exports.plantShown = exports.MAX_KEPT = exports.MAX_KEEPSAKES = exports.SPREAD_EXPLAINER = exports.FORM_FACTS = exports.GROWTH_RULES = exports.ELDER_SPREAD = exports.ELDER_DOMAIN_FLOOR = exports.CROWN_MOCK = exports.CROWN_SPREAD = exports.CROWN_LOW = exports.BOUGH_SPREAD = exports.BOUGH_LOW = exports.SHOOT_SPREAD = exports.SHOOT_PER_DOMAIN = exports.SPROUT_ANSWERS = exports.GROWTH_LOOKS = exports.GROWTH_NAMES = exports.MAX_GROWTH = exports.GROWTH_IDS = exports.SPECIES_INFO = exports.PLANT_SPECIES = void 0;
 exports.isPlantSpecies = isPlantSpecies;
 exports.growthId = growthId;
 exports.isGrowthLevel = isGrowthLevel;
@@ -8701,6 +8701,7 @@ const readiness_1 = require("./readiness");
 const readinessRange_1 = require("./readinessRange");
 const streak_1 = require("./streak");
 const plantLooks_1 = require("./plantLooks");
+const plantForms_1 = require("./plantForms");
 exports.PLANT_SPECIES = [
     'oak',
     'maple',
@@ -8761,12 +8762,13 @@ exports.CROWN_SPREAD = 0.45;
 exports.CROWN_MOCK = 50;
 exports.ELDER_DOMAIN_FLOOR = journey_1.MOCK_DOMAIN_FLOOR;
 exports.ELDER_SPREAD = 0.6;
+const recalledAtLeast = (f, need) => f.recalled === undefined || f.recalled >= need;
 const GATES = {
     2: (f) => f.cleanAnswered >= exports.SPROUT_ANSWERS,
     3: (f) => f.cleanByDomain.length > 0 && f.cleanByDomain.every((n) => n >= exports.SHOOT_PER_DOMAIN) && f.spread >= exports.SHOOT_SPREAD,
-    4: (f) => f.low !== null && f.low >= exports.BOUGH_LOW && f.spread >= exports.BOUGH_SPREAD,
+    4: (f) => f.low !== null && f.low >= exports.BOUGH_LOW && f.spread >= exports.BOUGH_SPREAD && recalledAtLeast(f, plantForms_1.RECALL_FORM_III),
     5: (f) => f.low !== null && f.low >= exports.CROWN_LOW && f.spread >= exports.CROWN_SPREAD && f.mock50,
-    6: (f) => f.readyHeld && f.cleanMastery.length > 0 && Math.min(...f.cleanMastery) >= exports.ELDER_DOMAIN_FLOOR && f.spread >= exports.ELDER_SPREAD && f.dress,
+    6: (f) => f.readyHeld && f.cleanMastery.length > 0 && Math.min(...f.cleanMastery) >= exports.ELDER_DOMAIN_FLOOR && f.spread >= exports.ELDER_SPREAD && f.dress && recalledAtLeast(f, plantForms_1.RECALL_FORM_IV),
 };
 function growthFor(f) {
     let g = 1;
@@ -8782,13 +8784,20 @@ function nextGrowth(prevHighest, computed) {
 }
 const READY_RULE = `The low end of your readiness holds at ${examReady_1.READY_LOW}% or more for ${examReady_1.READY_DAYS === 7 ? 'a week' : `${examReady_1.READY_DAYS} days`}`;
 const CLEAN_LOW = 'The low end of your readiness, without hints or games,';
+const RECALL_WEEK = plantForms_1.RECALL_GAP_DAYS === 7 ? 'a week' : `${plantForms_1.RECALL_GAP_DAYS} days`;
+const recallRule = (n) => `get ${n} questions right, without a hint, ${RECALL_WEEK} or more after you last saw them`;
 exports.GROWTH_RULES = {
     1: 'Plant it.',
     2: `Answer ${exports.SPROUT_ANSWERS} questions without a hint or a game (your diagnostic).`,
     3: `Answer ${exports.SHOOT_PER_DOMAIN} or more questions in every domain, and know ${pct(exports.SHOOT_SPREAD)} of the outline.`,
-    4: `${CLEAN_LOW} reaches ${exports.BOUGH_LOW}%, and you know ${pct(exports.BOUGH_SPREAD)} of the outline.`,
+    4: `${CLEAN_LOW} reaches ${exports.BOUGH_LOW}%, you know ${pct(exports.BOUGH_SPREAD)} of the outline, and you ${recallRule(plantForms_1.RECALL_FORM_III)}.`,
     5: `${CLEAN_LOW} reaches ${exports.CROWN_LOW}%, you know ${pct(exports.CROWN_SPREAD)} of the outline, and you finish a mock of ${exports.CROWN_MOCK} questions or more.`,
-    6: `${READY_RULE}, every domain is at ${pct(exports.ELDER_DOMAIN_FLOOR)} or more, you know ${pct(exports.ELDER_SPREAD)} of the outline, and you finish a full, timed mock with every question answered.`,
+    6: `${READY_RULE}, every domain is at ${pct(exports.ELDER_DOMAIN_FLOOR)} or more, you know ${pct(exports.ELDER_SPREAD)} of the outline, you finish a full, timed mock with every question answered, and you ${recallRule(plantForms_1.RECALL_FORM_IV)}.`,
+};
+exports.FORM_FACTS = {
+    3: `You answered ${exports.SHOOT_PER_DOMAIN} or more questions in every domain, without a hint or a game, and you know ${pct(exports.SHOOT_SPREAD)} of the outline.`,
+    4: `You got ${plantForms_1.RECALL_FORM_III} questions right ${RECALL_WEEK} or more after you last saw them, and you know ${pct(exports.BOUGH_SPREAD)} of the outline.`,
+    6: `Every domain reached ${pct(exports.ELDER_DOMAIN_FLOOR)}, you know ${pct(exports.ELDER_SPREAD)} of the outline, you got ${plantForms_1.RECALL_FORM_IV} questions right ${RECALL_WEEK} later, and you sat a full, timed mock.`,
 };
 exports.SPREAD_EXPLAINER = "Subtopics you've answered right, without a hint, on two different days, weighted like the exam.";
 function pct(x) {
@@ -8803,6 +8812,7 @@ function nextGrowthSteps(current, f) {
     const low = (_a = f.low) !== null && _a !== void 0 ? _a : 0;
     const spread = (need) => ({ label: `Know ${pct(need)} of the outline`, progress: frac(f.spread, need) });
     const lowStep = (need) => ({ label: `${CLEAN_LOW} reaches ${need}%`, progress: f.low === null ? 0 : frac(low, need) });
+    const recallStep = (need) => (f.recalled === undefined ? [] : [{ label: `Get ${need} questions right ${RECALL_WEEK} or more after you last saw them`, progress: frac(f.recalled, need) }]);
     let steps;
     switch (g) {
         case 2:
@@ -8815,7 +8825,7 @@ function nextGrowthSteps(current, f) {
             break;
         }
         case 4:
-            steps = [lowStep(exports.BOUGH_LOW), spread(exports.BOUGH_SPREAD)];
+            steps = [lowStep(exports.BOUGH_LOW), spread(exports.BOUGH_SPREAD), ...recallStep(plantForms_1.RECALL_FORM_III)];
             break;
         case 5:
             steps = [lowStep(exports.CROWN_LOW), spread(exports.CROWN_SPREAD), { label: `Finish a mock of ${exports.CROWN_MOCK} questions or more`, progress: f.mock50 ? 1 : 0 }];
@@ -8827,6 +8837,7 @@ function nextGrowthSteps(current, f) {
                 { label: `Every domain at ${pct(exports.ELDER_DOMAIN_FLOOR)} or more`, progress: frac(min, exports.ELDER_DOMAIN_FLOOR) },
                 spread(exports.ELDER_SPREAD),
                 { label: 'A full, timed mock with every question answered', progress: f.dress ? 1 : 0 },
+                ...recallStep(plantForms_1.RECALL_FORM_IV),
             ];
         }
     }
@@ -8871,6 +8882,7 @@ function plantFacts(i) {
         mock50: i.mocks.some((m) => m.total >= exports.CROWN_MOCK),
         dress: i.mocks.some((m) => isDressMock(m, i.cert.exam.questions)),
         readyHeld: (held || seen) && cleanReady,
+        ...(i.recalled !== undefined ? { recalled: i.recalled } : {}),
     };
 }
 exports.MAX_KEEPSAKES = 3;
@@ -9180,8 +9192,6 @@ const LOOK_SLOTS = [
 function isValidPlantState(x) {
     if (!isObj(x))
         return false;
-    if (!onlyKeys(x, ['species', 'name', 'plantedAt', 'replantedAt', 'growth', 'reached', 'pending', 'backfill', 'look', 'kept', 'passedOn']))
-        return false;
     if (!isPlantSpecies(x.species))
         return false;
     if (typeof x.name !== 'string' || cleanPlantName(x.name) !== x.name)
@@ -9206,18 +9216,20 @@ function isValidPlantState(x) {
         return false;
     if (x.backfill !== undefined) {
         const b = x.backfill;
-        if (!isObj(b) || !onlyKeys(b, ['at', 'growth', 'seen']) || !isTs(b.at) || !isGrowthLevel(b.growth) || b.growth > growth)
+        if (!isObj(b) || !isTs(b.at) || !isGrowthLevel(b.growth) || b.growth > growth)
             return false;
         if (b.seen !== undefined && typeof b.seen !== 'boolean')
             return false;
     }
     if (x.look !== undefined) {
         const l = x.look;
-        if (!isObj(l) || !onlyKeys(l, ['style', 'colourway', 'ground', 'planter', 'visitor', 'keepsakes']))
+        if (!isObj(l))
             return false;
         for (const [k, slot] of LOOK_SLOTS)
             if (l[k] !== undefined && !(0, plantLooks_1.isLookOfSlot)(l[k], slot))
                 return false;
+        if (l.final !== undefined && !(0, plantForms_1.isFinalId)(l.final))
+            return false;
         if (l.keepsakes !== undefined) {
             const ks = l.keepsakes;
             if (!Array.isArray(ks) || ks.length > exports.MAX_KEEPSAKES || !ks.every((k) => (0, plantLooks_1.isLookOfSlot)(k, 'keepsake')) || new Set(ks).size !== ks.length)
@@ -9254,6 +9266,8 @@ function repairPlant(p) {
                 look[k] = out.look[k];
         if (out.look.keepsakes)
             look.keepsakes = [...new Set(out.look.keepsakes.filter((k) => (0, plantLooks_1.isLookOfSlot)(k, 'keepsake')))].slice(0, exports.MAX_KEEPSAKES);
+        if ((0, plantForms_1.isFinalId)(out.look.final))
+            look.final = out.look.final;
         out.look = look;
     }
     if (out.kept)
@@ -9380,10 +9394,12 @@ function plantLabel(i) {
     const sp = exports.SPECIES_INFO[i.species].lower;
     const who = i.name ? `${shownName(i.name)}, your ${sp}` : `Your ${sp}`;
     const extra = [i.newGrowth ? 'New growth today.' : '', i.resting ? 'Resting.' : '', i.mood ? plantLooks_1.MOOD_WORDS[i.mood] : '', i.visitor ? `A ${i.visitor} is visiting.` : ''].filter(Boolean).join(' ');
-    return `${who}. Growth: ${exports.GROWTH_NAMES[i.growth]}, ${i.growth} of 6.${extra ? ` ${extra}` : ''}`;
+    return `${who}.${i.form ? ` ${i.form} form.` : ''} Growth: ${exports.GROWTH_NAMES[i.growth]}, ${i.growth} of 6.${extra ? ` ${extra}` : ''}`;
 }
-function backfillLine(p, growth) {
-    return growth > 1 ? `Your study so far grew ${p.name ? shownName(p.name) : `your ${exports.SPECIES_INFO[p.species].lower}`} to ${exports.GROWTH_NAMES[growth]}.` : `Planted. Your first ${exports.SPROUT_ANSWERS} answers give it its first sprout.`;
+function backfillLine(p, growth, form) {
+    return growth > 1
+        ? `Your study so far grew ${p.name ? shownName(p.name) : `your ${exports.SPECIES_INFO[p.species].lower}`} to ${exports.GROWTH_NAMES[growth]}${form ? `: the ${form}` : ''}.`
+        : `Planted. Your first ${exports.SPROUT_ANSWERS} answers give it its first sprout.`;
 }
 function growthShort(growth) {
     return `${exports.GROWTH_NAMES[growth]} · growth ${growth} of ${exports.MAX_GROWTH}`;
@@ -11311,6 +11327,6 @@ exports.plantForm = {
   api["domainBand"] = load("src/engine/domainBand.ts");
   api["pace"] = load("src/engine/pace.ts");
   api["readySigns"] = load("src/engine/readySigns.ts");
-  api.sourceHash = "9953f693e8c5c565";
+  api.sourceHash = "19b5b2d114d60261";
   root.KaiSipPlant = Object.freeze(api);
 })(typeof window !== 'undefined' ? window : globalThis);

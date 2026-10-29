@@ -43,6 +43,7 @@ import {
   type GrowthLevel,
   type PlantSpecies,
 } from './plant';
+import { FINAL_IDS, type FinalId } from './plantForms';
 import { isLookOfSlot, type LookSlot } from './plantLooks';
 import { examDateLabel } from './examDay';
 import { snapMinutes, type DailyMinutes, type Familiarity } from './fit';
@@ -475,6 +476,9 @@ const plantShape = rule(
           planter: slotLook('planter'),
           visitor: slotLook('visitor'),
           keepsakes: list(slotLook('keepsake'), MAX_KEEPSAKES),
+          // Mobile 1.50: the Form IV choice. Read here, but not yet written by this
+          // release (DESIGN_SYSTEM §8.10); an older build drops it like `style`.
+          final: oneOf<FinalId>(...FINAL_IDS),
         },
       ),
       kept: list(lookId, MAX_KEPT),
@@ -946,6 +950,8 @@ export function keepSupportedPlants(progress: BackupProgress, known?: (certId: s
       readinessLog: cp.moments?.readiness,
       readySeenAt: cp.moments?.readySeenAt,
       earned: cp.milestones?.earned,
+      // Mobile 1.50: no delayed-recall count here ON PURPOSE. Plants grew before the recall gate
+      // existed, so a restore must never refute a growth on it (it only gates crossings to come).
     });
     const clamped = clampToSupported(cp.plant, maxSupportedGrowth(e));
     if (clamped !== cp.plant) changed = true;

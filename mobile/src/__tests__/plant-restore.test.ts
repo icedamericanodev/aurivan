@@ -66,7 +66,8 @@ function answerClean(perDomain: number[], at = T0 - 20 * DAY) {
 function masterAll() {
   const mastery: Record<string, { firstDay: string; masteredAt: string }> = {};
   for (const s of plantSubtopics('cisa').flat()) mastery[s] = { firstDay: '2026-09-01', masteredAt: '2026-09-03' };
-  setCert({ mastery });
+  // Mobile 1.50: a learner this far along also recalled questions a week after seeing them (the later forms' gate).
+  setCert({ mastery, milestones: { ...(cp().milestones ?? { earned: {} }), longIds: Object.keys(cp().answers).slice(0, 40) } });
 }
 function setCert(patch: Record<string, unknown>) {
   const c = cp();
