@@ -14,6 +14,8 @@
  *   is never the only signal).
  * - Growth (what went up since the learner last looked, or in this set): the
  *   top of the stem in `clay` with "↑3" beside the number (words and shape too).
+ *   A drop in a set is said as plainly, in calm ink: "↓2" (`ink2`, never the
+ *   answer-feedback red), spoken "2 points lower".
  *
  * Every column is its own screen-reader stop, left to right ("IS Audit:
  * Strong, 84 percent on latest tries, at or above the 70 line"); the drawing
@@ -120,6 +122,7 @@ function Chart({ stems, line, play, w }: { stems: readonly Stem[]; line: number;
                   <View style={{ flexDirection: 'row', alignItems: 'flex-start', backgroundColor: c.raised2, paddingHorizontal: 3, borderRadius: 3 }}>
                     <BigNum value={String(s.pct)} pct size={20} />
                     {s.up ? <T v="caption" color={c.clay} style={{ marginLeft: 2, marginTop: 6 }}>{`↑${Math.round(s.up)}`}</T> : null}
+                    {s.down ? <T v="caption" color={c.ink2} style={{ marginLeft: 2, marginTop: 6 }}>{`↓${Math.round(s.down)}`}</T> : null}
                   </View>
                 ) : (
                   <View style={{ backgroundColor: c.raised2, paddingHorizontal: 3 }}>
@@ -248,6 +251,7 @@ export function StemList({ stems, line = 70 }: { stems: readonly Stem[]; line?: 
               <View style={{ flexDirection: 'row', alignItems: 'baseline', gap: 4 }}>
                 {s.pct !== null ? <BigNum value={String(s.pct)} pct size={17} /> : <T v="meta">–</T>}
                 {s.up ? <T v="caption" color={c.clay}>{`↑${Math.round(s.up)}`}</T> : null}
+                {s.down ? <T v="caption" color={c.ink2}>{`↓${Math.round(s.down)}`}</T> : null}
               </View>
             </View>
             {/* The ruler: a filled bar for a measured area, an outline for too few yet, the track alone before any answer. */}

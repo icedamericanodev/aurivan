@@ -34,6 +34,8 @@ export interface Stem {
   thin: boolean;
   /** Points grown, drawn as the stem's top and "↑3". */
   up?: number;
+  /** Points lower (Results, in this set), said plainly in calm ink: "↓2", "2 points lower". */
+  down?: number;
   /** One more line under the words ("3 of 4 this set"). */
   note?: string;
   /** The column's whole spoken label. */
@@ -72,21 +74,11 @@ export function areaStems(domains: readonly AreaInfo[], mastery: readonly AreaMa
       below: f.below,
       thin: f.thin,
       ...(up ? { up } : {}),
-      spoken: `${d.short}: ${stemSpoken(f, answered)}${up ? `. Up ${up} since you last looked` : ''}`,
+      spoken: `${d.short}: ${f.spoken}${up ? `. Up ${up} since you last looked` : ''}`,
     };
   });
 }
 
-/**
- * What a stem says: the same words it shows. A measured area keeps the
- * band word, its percent and the line ("Building, 61 percent on latest
- * tries, below the 70 line"); under 30 answers it is "too few yet, from 18
- * answers" (no band word: the plate shows none, and 18 answers can't carry one).
- */
-function stemSpoken(f: ReturnType<typeof areaFigure>, answered: number): string {
-  if (f.thin) return `too few yet, from ${answered} ${answered === 1 ? 'answer' : 'answers'}`;
-  return f.spoken;
-}
 
 /** Where each area stood when a session started: [answers, whole percent]. */
 export type AreaSnapshot = Record<string, readonly [number, number]>;
@@ -118,6 +110,7 @@ export function setStems(
       const wasFigure = was ? areaFigure(was[0], was[1]) : undefined;
       const delta = f.pct !== null && wasFigure?.pct != null ? f.pct - wasFigure.pct : 0;
       const up = delta > 0 ? delta : undefined;
+      const down = delta < 0 ? -delta : undefined;
       const k = counts[d.id];
       const note = `${k.correct} of ${k.total} this set`;
       return {
@@ -129,23 +122,29 @@ export function setStems(
         below: f.below,
         thin: f.thin,
         ...(up ? { up } : {}),
+        ...(down ? { down } : {}),
         note,
-        spoken: `${d.short}: ${stemSpoken(f, answered)}${up ? `, up ${up} points in this set` : ''}. ${note}`,
+        spoken: `${d.short}: ${f.spoken}${up ? `, up ${up} ${up === 1 ? 'point' : 'points'} in this set` : ''}${down ? `, ${down} ${down === 1 ? 'point' : 'points'} lower after this set` : ''}. ${note}`,
       };
     });
 }
 
 /**
- * The growth plate's one-area figure: "58 → 61%" and "IS Operations grew 3
- * points", only when that area has a number at both ends and it moved up.
+ * The growth plate's one-area figure: "58 → 61%" and "IS Operations grew 3 points in this set", or
+ * a drop said as plainly ("61 → 58%", "IS Operations is 3 points lower after this set"); only when
+ * that area has a number at both ends and it moved.
  */
-export function growthFigure(stem: Stem | undefined): { shown: string; line: string; spoken: string } | null {
-  if (!stem || stem.pct === null || !stem.up) return null;
-  const from = stem.pct - stem.up;
+export function growthFigure(stem: Stem | undefined): { shown: string; line: string; spoken: string; down: boolean } | null {
+  if (!stem || stem.pct === null || !(stem.up || stem.down)) return null;
+  const move = stem.up ?? -(stem.down ?? 0);
+  const from = stem.pct - move;
+  const n = Math.abs(move);
+  const pts = `${n} ${n === 1 ? 'point' : 'points'}`;
   return {
     shown: `${from} → ${stem.pct}%`,
-    line: `${stem.name} grew ${stem.up} ${stem.up === 1 ? 'point' : 'points'} in this set`,
+    line: move > 0 ? `${stem.name} grew ${pts} in this set` : `${stem.name} is ${pts} lower after this set`,
     spoken: `${stem.name}, from ${from} to ${stem.pct} percent on latest tries`,
+    down: move < 0,
   };
 }
 

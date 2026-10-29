@@ -220,16 +220,16 @@ describe('domain bands', () => {
     expect(bandOf(100)).toBe('Strong');
   });
 
-  it('below 30 answers a domain shows a word; from 30 the number with "%" and a "latest tries" label', () => {
+  it('below 30 answers a domain says "Too few yet" (no band word: mobile 1.51, web parity); from 30 the number with "%" and a "latest tries" label', () => {
     expect(BAND_MIN_ANSWERS).toBe(30);
     expect(domainFigure(0, 0)).toEqual({ text: '–', spoken: 'not started', banded: false });
-    expect(domainFigure(10, 90)).toEqual({ text: 'Strong', spoken: 'Strong', banded: true });
-    expect(domainFigure(29, 74)).toEqual({ text: 'Steady', spoken: 'Steady', banded: true });
-    expect(domainFigure(29, 40).text).toBe('Building');
+    expect(domainFigure(10, 90)).toEqual({ text: 'Too few yet', spoken: 'too few yet, 10 answered', banded: true });
+    expect(domainFigure(29, 74)).toEqual({ text: 'Too few yet', spoken: 'too few yet, 29 answered', banded: true });
+    expect(domainFigure(29, 40).text).toBe('Too few yet');
     expect(domainFigure(30, 74)).toEqual({ text: '74%', spoken: '74 percent, latest tries', banded: false });
     expect(domainFigure(250, 91).text).toBe('91%');
     expect(LATEST_TRIES_LABEL).toMatch(/latest try/);
-    expect(BANDS_LINE).toMatch(/Building is under 70, Steady 70 to 79, Strong 80 and up/);
+    expect(BANDS_LINE).toBe('Building is under 70, Steady 70 to 79, Strong 80 and up. A domain is measured from 30 answers.');
   });
 });
 

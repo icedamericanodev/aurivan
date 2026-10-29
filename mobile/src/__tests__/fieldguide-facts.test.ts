@@ -54,8 +54,18 @@ describe('setStems and the growth plate', () => {
       ['IS Acquisition', null, 0, '3 of 4 this set'],
       ['IS Operations', 61, 3, '7 of 10 this set'],
     ]);
-    expect(growthFigure(stems[1])).toEqual({ shown: '58 → 61%', line: 'IS Operations grew 3 points in this set', spoken: 'IS Operations, from 58 to 61 percent on latest tries' });
+    expect(growthFigure(stems[1])).toEqual({ shown: '58 → 61%', line: 'IS Operations grew 3 points in this set', spoken: 'IS Operations, from 58 to 61 percent on latest tries', down: false });
     expect(growthFigure(stems[0])).toBeNull();
+    expect(stems[0].spoken).toBe('IS Acquisition: too few yet, 18 answered. 3 of 4 this set');
+  });
+
+  it('a drop is said as plainly as a gain, in points (web parity)', () => {
+    const before = areaSnapshot([{ domainId: '4', answered: 60, mastery: 0.64 }]);
+    const [s] = setStems(DOMAINS, now, { '4': { correct: 4, total: 10 } }, before);
+    expect(s.down).toBe(3);
+    expect(s.up).toBeUndefined();
+    expect(s.spoken).toBe('IS Operations: Building, 61 percent on latest tries, below the 70 line, 3 points lower after this set. 4 of 10 this set');
+    expect(growthFigure(s)).toEqual({ shown: '64 → 61%', line: 'IS Operations is 3 points lower after this set', spoken: 'IS Operations, from 64 to 61 percent on latest tries', down: true });
   });
 
   it('an area that crossed 30 answers in this set shows its number, never a growth from a word', () => {

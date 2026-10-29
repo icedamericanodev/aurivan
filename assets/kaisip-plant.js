@@ -6070,7 +6070,7 @@ function addMs(earlier, more) {
   defs["src/engine/domainBand.ts"] = function (module, exports, require) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.YARDSTICK_LINE = exports.AREA_LINE_LABEL = exports.AREAS_CAPTION = exports.STUDY_BAR_LINE = exports.BANDS_LINE = exports.LATEST_TRIES_LABEL = exports.STRONG_FROM = exports.STEADY_FROM = exports.BAND_MIN_ANSWERS = void 0;
+exports.YARDSTICK_LINE = exports.AREA_LINE_LABEL = exports.AREAS_CAPTION = exports.STUDY_BAR_LINE = exports.BANDS_LINE = exports.LATEST_TRIES_LABEL = exports.tooFewSpoken = exports.TOO_FEW = exports.STRONG_FROM = exports.STEADY_FROM = exports.BAND_MIN_ANSWERS = void 0;
 exports.bandOf = bandOf;
 exports.domainFigure = domainFigure;
 exports.areaFigure = areaFigure;
@@ -6089,26 +6089,26 @@ function bandOf(pct) {
 function domainFigure(answered, pct) {
     if (answered <= 0)
         return { text: '–', spoken: 'not started', banded: false };
-    if (answered < exports.BAND_MIN_ANSWERS) {
-        const band = bandOf(pct);
-        return { text: band, spoken: band, banded: true };
-    }
+    if (answered < exports.BAND_MIN_ANSWERS)
+        return { text: exports.TOO_FEW, spoken: (0, exports.tooFewSpoken)(answered), banded: true };
     return { text: `${pct}%`, spoken: `${pct} percent, latest tries`, banded: false };
 }
+exports.TOO_FEW = 'Too few yet';
+const tooFewSpoken = (answered) => `too few yet, ${answered} answered`;
+exports.tooFewSpoken = tooFewSpoken;
 exports.LATEST_TRIES_LABEL = 'Percentages count your latest try at each question.';
-exports.BANDS_LINE = `Building is under ${exports.STEADY_FROM}, Steady ${exports.STEADY_FROM} to ${exports.STRONG_FROM - 1}, Strong ${exports.STRONG_FROM} and up. A number shows from ${exports.BAND_MIN_ANSWERS} answers in a domain.`;
+exports.BANDS_LINE = `Building is under ${exports.STEADY_FROM}, Steady ${exports.STEADY_FROM} to ${exports.STRONG_FROM - 1}, Strong ${exports.STRONG_FROM} and up. A domain is measured from ${exports.BAND_MIN_ANSWERS} answers.`;
 exports.STUDY_BAR_LINE = `The tick marks ${examReady_1.READY_LOW}%, this app’s study bar for your low end. Each area has its own ${exports.STEADY_FROM}% line. A study bar, not an exam score.`;
 exports.AREAS_CAPTION = 'Right on your latest tries';
 exports.AREA_LINE_LABEL = `Area line ${exports.STEADY_FROM}%`;
 function areaFigure(answered, pct) {
     if (answered <= 0)
         return { word: 'Not started', pct: null, thin: false, below: false, spoken: 'not started' };
+    if (answered < exports.BAND_MIN_ANSWERS)
+        return { word: exports.TOO_FEW, pct: null, thin: true, below: false, spoken: (0, exports.tooFewSpoken)(answered) };
     const word = bandOf(pct);
     const below = pct < exports.STEADY_FROM;
     const line = below ? `below the ${exports.STEADY_FROM} line` : `at or above the ${exports.STEADY_FROM} line`;
-    if (answered < exports.BAND_MIN_ANSWERS) {
-        return { word, pct: null, thin: true, below, spoken: `${word}, from ${answered} ${answered === 1 ? 'answer' : 'answers'}, ${line}` };
-    }
     return { word, pct, thin: false, below, spoken: `${word}, ${pct} percent on latest tries, ${line}` };
 }
 exports.YARDSTICK_LINE = `This app’s own yardstick: a low end of ${examReady_1.READY_LOW}% or more, with every domain at ${exports.STEADY_FROM}% or more. It is a study bar for this app, not a promise or a prediction of your exam result.`;
@@ -11403,6 +11403,6 @@ exports.fieldInk = {
   api["domainBand"] = load("src/engine/domainBand.ts");
   api["pace"] = load("src/engine/pace.ts");
   api["readySigns"] = load("src/engine/readySigns.ts");
-  api.sourceHash = "0e6b643ba69cc748";
+  api.sourceHash = "4c3eea1d5273153a";
   root.KaiSipPlant = Object.freeze(api);
 })(typeof window !== 'undefined' ? window : globalThis);

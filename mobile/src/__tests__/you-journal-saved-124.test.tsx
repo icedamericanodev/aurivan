@@ -155,7 +155,7 @@ describe('You: bands below 30 answers, numbers from 30', () => {
     mount(<You />);
     const row = root().findAll((n) => typeof n.type === 'string' && typeof n.props.accessibilityLabel === 'string' && n.props.accessibilityLabel.startsWith('IS Audit: '))[0];
     // Mobile 1.51 (Field Guide): it says what it shows, "too few yet", never a band word for 10 answers.
-    expect(row.props.accessibilityLabel).toBe('IS Audit: too few yet, from 10 answers');
+    expect(row.props.accessibilityLabel).toBe('IS Audit: too few yet, 10 answered');
     expect(row.props.accessibilityLabel).not.toContain('90');
   });
 

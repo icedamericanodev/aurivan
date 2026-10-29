@@ -48,17 +48,20 @@ export interface DomainFigure {
  */
 export function domainFigure(answered: number, pct: number): DomainFigure {
   if (answered <= 0) return { text: '–', spoken: 'not started', banded: false };
-  if (answered < BAND_MIN_ANSWERS) {
-    const band = bandOf(pct);
-    return { text: band, spoken: band, banded: true };
-  }
+  // Mobile 1.51 (Field Guide, web parity): under 30 answers there is no band word either, only "Too few yet".
+  if (answered < BAND_MIN_ANSWERS) return { text: TOO_FEW, spoken: tooFewSpoken(answered), banded: true };
   return { text: `${pct}%`, spoken: `${pct} percent, latest tries`, banded: false };
 }
+
+/** Under 30 answers in a domain: no number and no band word (mobile 1.51, one word on both platforms). */
+export const TOO_FEW = 'Too few yet';
+/** "too few yet, 18 answered". */
+export const tooFewSpoken = (answered: number) => `too few yet, ${answered} answered`;
 
 /** The small label under the legend once any domain shows a number ("%" = latest tries). */
 export const LATEST_TRIES_LABEL = 'Percentages count your latest try at each question.';
 /** The line under the legend while a domain shows a band word. */
-export const BANDS_LINE = `Building is under ${STEADY_FROM}, Steady ${STEADY_FROM} to ${STRONG_FROM - 1}, Strong ${STRONG_FROM} and up. A number shows from ${BAND_MIN_ANSWERS} answers in a domain.`;
+export const BANDS_LINE = `Building is under ${STEADY_FROM}, Steady ${STEADY_FROM} to ${STRONG_FROM - 1}, Strong ${STRONG_FROM} and up. A domain is measured from ${BAND_MIN_ANSWERS} answers.`;
 
 /**
  * You's readiness (mobile 1.43, board 3; a scale bar with a tick since 1.51, Field Guide): the study bar,
@@ -71,11 +74,11 @@ export const AREAS_CAPTION = 'Right on your latest tries';
 export const AREA_LINE_LABEL = `Area line ${STEADY_FROM}%`;
 
 export interface AreaFigure {
-  /** Always a word: "Not started", "Building", "Steady", "Strong". */
+  /** Always a word: "Not started", "Too few yet", "Building", "Steady", "Strong". */
   word: string;
   /** The whole percent, shown only from BAND_MIN_ANSWERS answers; null below that. */
   pct: number | null;
-  /** Under BAND_MIN_ANSWERS answers (but some): the bar is drawn lighter and "N answered" shows. */
+  /** Under BAND_MIN_ANSWERS answers (but some): "Too few yet", drawn as an outline, and "N answered" shows. */
   thin: boolean;
   /** Below the area's 70% line (with any answers): the row stands out, by its word as well as its colour. */
   below: boolean;
@@ -90,12 +93,11 @@ export interface AreaFigure {
  */
 export function areaFigure(answered: number, pct: number): AreaFigure {
   if (answered <= 0) return { word: 'Not started', pct: null, thin: false, below: false, spoken: 'not started' };
+  // Mobile 1.51 (Field Guide, web parity): under 30 answers, "Too few yet": no band word and no line it hasn't earned.
+  if (answered < BAND_MIN_ANSWERS) return { word: TOO_FEW, pct: null, thin: true, below: false, spoken: tooFewSpoken(answered) };
   const word = bandOf(pct);
   const below = pct < STEADY_FROM;
   const line = below ? `below the ${STEADY_FROM} line` : `at or above the ${STEADY_FROM} line`;
-  if (answered < BAND_MIN_ANSWERS) {
-    return { word, pct: null, thin: true, below, spoken: `${word}, from ${answered} ${answered === 1 ? 'answer' : 'answers'}, ${line}` };
-  }
   return { word, pct, thin: false, below, spoken: `${word}, ${pct} percent on latest tries, ${line}` };
 }
 

@@ -81,8 +81,9 @@ afterEach(() => {
 describe('the area words (engine/domainBand.ts)', () => {
   it('a word for every area; the percent only from 30 answers; below the 70 line is marked', () => {
     expect(areaFigure(0, 0)).toMatchObject({ word: 'Not started', pct: null, thin: false, below: false, spoken: 'not started' });
-    expect(areaFigure(12, 90)).toMatchObject({ word: 'Strong', pct: null, thin: true, below: false, spoken: 'Strong, from 12 answers, at or above the 70 line' });
-    expect(areaFigure(12, 50)).toMatchObject({ word: 'Building', thin: true, below: true });
+    // Mobile 1.51 (web parity): under 30 answers, "Too few yet": no band word and no line it hasn't earned.
+    expect(areaFigure(12, 90)).toMatchObject({ word: 'Too few yet', pct: null, thin: true, below: false, spoken: 'too few yet, 12 answered' });
+    expect(areaFigure(12, 50)).toMatchObject({ word: 'Too few yet', thin: true, below: false });
     expect(areaFigure(BAND_MIN_ANSWERS, 68)).toMatchObject({ word: 'Building', pct: 68, thin: false, below: true, spoken: 'Building, 68 percent on latest tries, below the 70 line' });
     expect(areaFigure(40, 75)).toMatchObject({ word: 'Steady', pct: 75, below: false });
   });
