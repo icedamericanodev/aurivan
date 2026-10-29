@@ -60,8 +60,8 @@ import {
   RECALL_GAP_DAYS,
   resolveFinal,
   revealMode,
-  revealTimeline,
   SEE_NEW_FORM,
+  seeNewFormLabel,
   SPECIES_KEY,
 } from '../engine/plantForms';
 import { useSeen } from '../store/seen';
@@ -330,16 +330,17 @@ describe('the reveal: once per form, never for history', () => {
     expect(useSeen.getState().plantFinal?.cisa).toBeUndefined();
   });
 
-  it('Reduce Motion: a 120 ms cross-fade and the words at once; full motion is about 1.2 s', () => {
-    const full = revealTimeline(false);
-    expect(full.total).toBe(1200);
-    expect(full.hold + full.change + full.settle).toBeLessThanOrEqual(full.wordsAt);
-    expect(full.wordsAt + full.wordsIn).toBeLessThanOrEqual(full.total);
-    expect(revealTimeline(true)).toEqual({ hold: 0, change: 120, settle: 0, wordsAt: 0, wordsIn: 0, total: 120 });
+  it('how The Turning plays: Reduce Motion cross-fades; a spent session waits for a tap, never a short fade', () => {
     expect(revealMode(true, () => true)).toBe('reduced');
-    // The session's motion budget already spent: the calm cross-fade, never no moment at all.
-    expect(revealMode(false, () => false)).toBe('reduced');
+    // The session's one moment already played: the calm "See Kai's new form" button.
+    expect(revealMode(false, () => false)).toBe('wait');
     expect(revealMode(false, () => true)).toBe('full');
+    // The claim is only asked with motion on (it spends the session's moment).
+    const claim = jest.fn(() => true);
+    revealMode(true, claim);
+    expect(claim).not.toHaveBeenCalled();
+    expect(seeNewFormLabel('Kai')).toBe('See Kai’s new form');
+    expect(seeNewFormLabel('Your oak')).toBe('See your oak’s new form');
   });
 });
 

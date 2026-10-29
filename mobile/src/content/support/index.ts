@@ -44,7 +44,7 @@ export const WHATS_NEW: readonly WhatsNewEntry[] = [
   {
     version: '1.50.0',
     date: '2026-10-29',
-    new: ['Your plant now grows into new forms as your knowledge holds, each with its own name, and at its last growth you choose its final form.'],
+    new: ['Your plant now grows into new forms as your knowledge holds, each with its own name and a short moment to see it arrive, and at its last growth you choose its final form.'],
   },
   {
     version: '1.49.0',

@@ -416,35 +416,26 @@ export function afterNote(rec: FormSeen): FormSeen {
 }
 
 /**
- * The reveal's timeline, in ms (DESIGN_SYSTEM §8.10). Full motion: an ink
- * line rises through the plant (the new form below it, the old above), the
- * new form settles, then the words. Reduce Motion: a 120 ms cross-fade
- * (never a hard cut) and the words at once. Total about 1.2 s.
+ * How the reveal ("The Turning", DESIGN_SYSTEM §8.10) plays, decided once on
+ * its first frame:
+ * - 'reduced': Reduce Motion. A 120 ms cross-fade (never a hard cut), every
+ *   word at once;
+ * - 'full': the whole Turning (2.4 / 3.0 / 3.6 s by tier). It is a once-ever
+ *   celebration (once per form, for life), so it claims the session's moment
+ *   (`claim` says yes and spends it);
+ * - 'wait': the session's moment was already spent. The old form rests with
+ *   the learning fact and one calm button ("See Kai's new form") that plays
+ *   it in full when tapped. Never wasted on a short fade.
+ * `claim` is only asked when motion is on.
  */
-/**
- * How the reveal plays: full motion, or the Reduce Motion cross-fade. A
- * session whose motion budget is spent (`budget` says no) gets the calm
- * cross-fade too: never no moment at all. `budget` is only asked when
- * motion is on (it spends the session's decor time).
- */
-export function revealMode(reduced: boolean, budget: () => boolean): 'full' | 'reduced' {
-  return !reduced && budget() ? 'full' : 'reduced';
+export type RevealMode = 'full' | 'reduced' | 'wait';
+export function revealMode(reduced: boolean, claim: () => boolean): RevealMode {
+  if (reduced) return 'reduced';
+  return claim() ? 'full' : 'wait';
 }
 
-export interface RevealTimeline {
-  /** The old form at rest before anything moves. */
-  hold: number;
-  /** The ink line's rise (full) or the cross-fade (reduced). */
-  change: number;
-  /** The new form settling on its base (0.97 → 1). 0 when reduced. */
-  settle: number;
-  /** When the words start to show, and how long they take to fade in. */
-  wordsAt: number;
-  wordsIn: number;
-  total: number;
-}
-export function revealTimeline(reduced: boolean, total = 1200, reducedFade = 120): RevealTimeline {
-  if (reduced) return { hold: 0, change: reducedFade, settle: 0, wordsAt: 0, wordsIn: 0, total: reducedFade };
-  const k = total / 1200;
-  return { hold: 120 * k, change: 360 * k, settle: 300 * k, wordsAt: 780 * k, wordsIn: 300 * k, total };
+/** The calm button that plays a waiting reveal: "See Kai's new form", or "See your oak's new form". */
+export function seeNewFormLabel(callName: string): string {
+  const who = callName.startsWith('Your ') ? `your ${callName.slice(5)}` : callName;
+  return `See ${who}’s new form`;
 }

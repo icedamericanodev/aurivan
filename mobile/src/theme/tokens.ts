@@ -399,16 +399,82 @@ export const motion = {
    * - lean: curious' reaction (a lean, a held look, back);
    * - grow: the growth sequence (old swells, cross-fade, new settles);
    * - plantIn: onboarding's seed settling and the first sprout popping;
-   * - turn: mobile 1.50, the calm reveal of a new form on Your plant (once
-   *   per form); turnReduced: its Reduce Motion cross-fade (never a hard cut).
+   * - turnReduced: mobile 1.50, the form reveal's Reduce Motion cross-fade
+   *   (never a hard cut; the full reveal is `turn` below).
    * Reduce Motion stills the rest (the end state shows).
    */
-  plant: { breath: 2000, breathOut: 2400, breaths: 1, react: 600, lean: 900, grow: 900, plantIn: 820, turn: 1200, turnReduced: 120 },
+  plant: { breath: 2000, breathOut: 2400, breaths: 1, react: 600, lean: 900, grow: 900, plantIn: 820, turnReduced: 120 },
+  /**
+   * "The Turning" (mobile 1.50, DESIGN_SYSTEM §8.10): a plant's form change on
+   * Your plant, once per form for life. A once-ever celebration, so it sits
+   * outside the 1.2 s ceiling (it claims the session's one moment instead).
+   * One linear clock runs 0 → total on the UI thread (engine/turnTimeline.ts):
+   * - gather [from, to]: the glow gathers, the old form inhales (`inhale`) and fills with light;
+   * - swaps: each half-swap of the alternating silhouettes. An odd count, so it
+   *   ends on the new form; none shorter than `swapFloor` (≤ 2.5 flashes a
+   *   second, WCAG 2.3.1 allows 3). `cross`: the share of each half-swap spent changing;
+   * - bloom: the light lifts off the new form, which settles (`settle`, a duration spring);
+   * - nameAt: the form's name fades in under the learning fact (shown from 0);
+   * - motes: the species' rising motes (≤ celebrate.leaves), each `moteLife` long;
+   * - glowMax / glowR: the gathered light's peak and radius, as shares of the grand tier's;
+   * - halo: Form IV's glow ring draws itself once (grand only).
+   * `skip`: any tap dissolves to the end state over this long.
+   */
+  turn: {
+    small: { total: 2400, gather: [160, 760], swaps: [340, 260, 200], bloom: 320, nameAt: 1900, inhale: 0.015, motes: 4, moteLife: 1100, glowMax: 0.7, glowR: 0.72, settle: { from: 0.97, duration: 360, dampingRatio: 1 }, halo: false },
+    medium: { total: 3000, gather: [180, 900], swaps: [380, 300, 240, 200, 180], bloom: 340, nameAt: 2500, inhale: 0.02, motes: 6, moteLife: 1300, glowMax: 0.85, glowR: 0.86, settle: { from: 0.97, duration: 400, dampingRatio: 1 }, halo: false },
+    grand: { total: 3600, gather: [200, 1000], swaps: [420, 340, 280, 230, 200, 180, 180], bloom: 360, nameAt: 3100, inhale: 0.025, motes: 8, moteLife: 1500, glowMax: 1, glowR: 1, settle: { from: 0.96, duration: 460, dampingRatio: 0.85 }, halo: true },
+    cross: 0.6,
+    swapFloor: 180,
+    skip: 120,
+  },
   rise: 8, // pt: content enters this far below its place (y only)
   shift: 16, // pt: a page turn's sideways offset
   pressScale: 0.98,
   pressOpacity: 0.92, // the press under Reduce Motion (no scale)
 } as const;
+
+/**
+ * The Turning's light (mobile 1.50, DESIGN_SYSTEM §8.10): warm gold on paper,
+ * never white on dark and never saturated red. Decorative (the words carry
+ * the moment). `sil`: the flat light the forms become while they take turns;
+ * `glow`: the gathered light behind the crown, its three circles at `glowOps`.
+ */
+export const turnTone: { light: { sil: string; glow: string; glowOps: readonly [number, number, number] }; dark: { sil: string; glow: string; glowOps: readonly [number, number, number] } } = {
+  light: { sil: '#FFFCF2', glow: '#F6E2A6', glowOps: [0.6, 0.72, 0.9] },
+  dark: { sil: '#D8CCA6', glow: '#E9C46A', glowOps: [0.24, 0.29, 0.36] },
+};
+/**
+ * The Turning's motes, per theme [light, dark] (components/plant/turnSignatures.ts):
+ * each species' own seeds, petals and pollen. Decorative, small and short-lived.
+ */
+export const turnMote = {
+  pollen: ['#E7C76B', '#F2DA92'],
+  speck: ['#E3C890', '#D2B57A'],
+  water: ['#7FAFBE', '#9CC9D6'],
+  glint: ['#FFF3CF', '#F6E7B8'],
+  oakLeaf: ['#9CC768', '#8FBF7E'],
+  oakLeafLine: ['#3F6B45', '#CFE3C4'],
+  samara: ['#E2BE84', '#D9B27A'],
+  samaraLine: ['#8A5A2B', '#F2D3A1'],
+  samaraSeed: ['#B7834A', '#E6C08A'],
+  coin: ['#EBD49A', '#D9BE77'],
+  coinLine: ['#A8771F', '#F2DA92'],
+  coinEye: ['#C99A3A', '#F2DA92'],
+  spray: ['#E2B33F', '#F2D27A'],
+  petal: ['#F4CFD8', '#EBC3CE'],
+  petalLine: ['#C98A9A', '#F6DCE3'],
+  floret: ['#EFD98A', '#E9D98C'],
+  floretDeep: ['#E5C66A', '#F2E3A0'],
+  puff: ['#E6D49A', '#D9C98A'],
+  salt: ['#F1E6C6', '#E6DDBE'],
+  roundLeaf: ['#8FBF6A', '#86B676'],
+  seed: ['#6B4A2B', '#C9A06A'],
+  droplet: ['#BFDDE6', '#A9CFD9'],
+  star: ['#FFFDF6', '#F4F1E6'],
+  starLine: ['#B9B39C', '#ECEFE8'],
+  node: ['#6F9A5C', '#A9CF94'],
+} as const satisfies Record<string, readonly [string, string]>;
 
 /**
  * Badge art (mobile 1.10, DESIGN_SYSTEM.md §11 "Badges"). An earned badge is

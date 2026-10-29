@@ -82,8 +82,10 @@ const setMotion = (m) => edit(SETTINGS, `v.state.motion = a;`, m);
 const FORM_OF = { 1: 1, 2: 1, 3: 2, 4: 3, 5: 3, 6: 4 };
 
 await go('/', 600);
+const REVEAL_ONLY = process.env.REVEAL_ONLY === '1';
 
 // ── 1. Your plant at each form, for three species ──────────────────────────
+if (!REVEAL_ONLY) {
 const species = [
   ['oak', 'Kai'],
   ['lotus', 'Padma'],
@@ -114,15 +116,16 @@ await setPlant(plantAt('oak', 'Kai', 5));
 await setForms(null);
 await go('/plant');
 await shot('forms-oak-quiet-note');
+}
 
 // ── 4. The reveal, frame by frame ──────────────────────────────────────────
 const SLOW = 10;
 /** Frames at these app times after the reveal appears. */
-async function revealStrip(name, title, appTimes, motion) {
+async function revealStrip(name, title, appTimes, motion, growth = 3, sp = 'oak') {
   await go('/', 600);
   await setMotion(motion);
-  await setPlant(plantAt('oak', 'Kai', 3));
-  await setForms({ seen: 1 });
+  await setPlant(plantAt(sp, 'Kai', growth));
+  await setForms({ seen: FORM_OF[growth] - 1 });
   await page.evaluate((k) => localStorage.setItem('__slow', String(1 / k)), SLOW);
   await page.goto(BASE + '/plant');
   await page.waitForSelector('[data-testid^="plant-form-reveal-"]', { timeout: 60_000 });
@@ -135,7 +138,9 @@ async function revealStrip(name, title, appTimes, motion) {
       await wait(15);
     }
     const appMs = Math.round((await page.evaluate(() => performance.now())) - t0);
-    frames.push({ appMs, data: (await page.screenshot({ clip: { x: 0, y: 40, width: W, height: 560 } })).toString('base64') });
+    const png = await page.screenshot({ clip: { x: 0, y: 40, width: W, height: 560 } });
+    if (process.env.FRAMES === '1') fs.writeFileSync(`${out}/${name}-${theme}-${frames.length + 1}-${appMs}ms.png`, png);
+    frames.push({ appMs, data: png.toString('base64') });
   }
   await page.evaluate(() => localStorage.removeItem('__slow'));
   const bg = theme === 'dark' ? '#111613' : '#F3F1EA';
@@ -152,12 +157,20 @@ async function revealStrip(name, title, appTimes, motion) {
   await p.close();
   console.log('strip', name, frames.map((f) => f.appMs).join(','));
 }
-await revealStrip('forms-reveal-full', 'The Whip Oak arrives: the ink line rises, the new form settles, then the learning fact and the name (about 1.2 s)', [0, 200, 330, 450, 600, 850, 1000, 1300], 'system');
+// The Turning, small tier (Form I → II, 2.4 s): the fact, the gather, the shapes taking turns, the bloom, the name.
+await revealStrip('forms-reveal-full', 'The Turning, Form I → II (2.4 s): fact first, the light gathers, the shapes take turns, the light lifts, then the name', [0, 500, 900, 1250, 1500, 1700, 2000, 2400], 'system');
+// The grand tier (Form III → IV, 3.6 s): seven half-swaps, Form IV's ring draws itself once.
+await revealStrip('forms-reveal-grand', 'The Turning, Form III → IV (3.6 s): seven half-swaps, then the ring draws itself and the Elder’s light stays', [0, 700, 1300, 1900, 2450, 2850, 3100, 3600], 'system', 6);
 await revealStrip('forms-reveal-reduced', 'Reduce Motion: a 120 ms cross-fade, the words at once', [0, 60, 140, 400], 'reduced');
 await setMotion('system');
 await go('/plant');
 await shot('forms-reveal-after');
 
+if (REVEAL_ONLY) {
+  if (errs.length) console.log('page errors:', errs.slice(0, 5));
+  await browser.close();
+  process.exit(0);
+}
 // ── 5. About 200% text: Your plant and the Look choice ─────────────────────
 // From here on the app's text size is ×2 (window.__AURIVAN_FONT_SCALE__, read
 // by components/ui.tsx useFontScale) and each text run is zoomed to match,

@@ -12,7 +12,7 @@
  *
  * Mobile 1.50 forms: the plant's form name sits under its name, with its
  * look line and the next form's name. A form reached since the last visit
- * plays its calm reveal here, once (components/plant/FormReveal.tsx): never
+ * plays The Turning here, once (components/plant/FormReveal.tsx): never
  * on a study screen. A plant already past Form I when forms arrived gets one
  * quiet line instead. At Elder the learner may choose its final form (Look).
  *
@@ -21,11 +21,11 @@
  * screen says the plant is hidden and how to show it.
  */
 import { router } from 'expo-router';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { EmptyScreen } from '../components/emptyScreen';
-import { FormReveal } from '../components/plant/FormReveal';
+import { FormReveal, type FormRevealHandle } from '../components/plant/FormReveal';
 import { LivePlant } from '../components/plant/LivePlant';
 import { PlantNote } from '../components/plant/PlantUI';
 import { Button, ListRow, ProgressBar, PushedHeader, Section, T, Tag, useFontScale } from '../components/ui';
@@ -47,7 +47,7 @@ import {
   SPREAD_EXPLAINER,
   type GrowthLevel,
 } from '../engine/plant';
-import { FORM_START, formMoment, formName, formsIntroLine, nextFormLine, newFormLine, type FormMoment, type FormNumber } from '../engine/plantForms';
+import { FORM_START, formMoment, formName, formsIntroLine, nextFormLine, newFormLine, seeNewFormLabel, type FormMoment, type FormNumber } from '../engine/plantForms';
 import { dayKey } from '../engine/streak';
 import { baselinePlantForms, plantFactsFor, seePlantBackfill, usePlantView } from '../lib/plant';
 import { useActiveCert } from '../lib/useActiveCert';
@@ -109,6 +109,8 @@ export default function YourPlant() {
     // eslint-disable-next-line react-hooks/exhaustive-deps -- once per visit's moment
   }, [formMomentKind, certId]);
   const reveal = formVisit?.moment.kind === 'reveal' ? formVisit.moment : null;
+  // A scroll drag ends the reveal (it dissolves to its end; the screen is never blocked).
+  const revealRef = useRef<FormRevealHandle>(null);
 
   if (!view.shown) {
     return (
@@ -141,12 +143,12 @@ export default function YourPlant() {
   const nextForm = view.forms ? nextFormLine(p.species, p.growth) : null;
   return (
     <SafeAreaView edges={['top', 'bottom']} style={{ flex: 1, backgroundColor: c.bg }}>
-      <ScrollView contentContainerStyle={{ paddingHorizontal: space.gutter, paddingBottom: space.xxxl }}>
+      <ScrollView contentContainerStyle={{ paddingHorizontal: space.gutter, paddingBottom: space.xxxl }} onScrollBeginDrag={reveal ? () => revealRef.current?.skip() : undefined}>
         <PushedHeader title="Your plant" onBack={() => (router.canGoBack() ? router.back() : router.replace('/you'))} />
 
         <View style={{ alignItems: 'center', marginTop: space.sm }}>
           {reveal ? (
-            // Mobile 1.50: the new form's calm reveal (once per form): the learning fact first, then the form.
+            // Mobile 1.50: The Turning (once per form, ever): the learning fact first, then the form.
             <FormReveal
               testID="plant-form-reveal"
               species={p.species}
@@ -162,6 +164,8 @@ export default function YourPlant() {
               name={view.formName}
               lookLine={view.formLook}
               announce={newFormLine(plantCallName(p), view.formName)}
+              playLabel={seeNewFormLabel(plantCallName(p))}
+              controlRef={revealRef}
             />
           ) : (
           /* Mobile 1.14: dressed in its look; one slow breath the first time it opens this session, then still; one reaction per occasion. */

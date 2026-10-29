@@ -982,6 +982,24 @@ export function claimDecor(ms: number): boolean {
   return true;
 }
 
+/**
+ * The once-ever celebration class (mobile 1.50, DESIGN_SYSTEM §8.9): a moment
+ * that plays once per thing for life (a plant's new form, "The Turning",
+ * 2.4–3.6 s). It sits outside the 1.2 s ceiling and the 3 s budget because
+ * it never repeats, and it is never fatigued. Instead it claims the session's
+ * ONE full moment and the whole budget, so everything after it that session
+ * plays short. False when the session's moment is already spent: the caller
+ * offers a calm button that plays it on tap (a learner-started moment is
+ * never charged).
+ */
+export function claimMoment(): boolean {
+  watchSession();
+  if (sessionFull || spentMs + motion.dur.celebrate > motion.celebrate.sessionMs) return false;
+  sessionFull = true;
+  spentMs = motion.celebrate.sessionMs;
+  return true;
+}
+
 /** Tests: a fresh app session (no celebration yet, nothing spent). */
 export function resetCelebrationsForTest() {
   newSession();

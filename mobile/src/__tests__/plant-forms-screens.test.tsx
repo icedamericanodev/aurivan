@@ -2,7 +2,7 @@
  * Mobile 1.50 plant forms on the real screens:
  * - Your plant names the form under the plant's name, with its look line and the next form;
  * - a form reached since the last visit plays its reveal ONCE (learning fact first, then the
- *   form), full motion with its ink line, or the Reduce Motion cross-fade;
+ *   form), full motion (The Turning), or the Reduce Motion cross-fade;
  * - a plant already past Form I when forms arrived gets one quiet note, never a reveal;
  * - at Elder the learner chooses the final form on the Look screen (never before Elder);
  * - Today's grow-up line points to Your plant when a new form came; the widget says "growth".
@@ -19,7 +19,6 @@ import { SEE_NEW_FORM } from '../engine/plantForms';
 import { widgetFace, type WidgetSnapshot } from '../engine/widgets';
 import { FormReveal } from '../components/plant/FormReveal';
 import { flushSayLaterForTest } from '../lib/a11y';
-import { light } from '../theme/tokens';
 import { useProgress } from '../store/progress';
 import { useSeen } from '../store/seen';
 import { useSession } from '../store/session';
@@ -136,14 +135,13 @@ describe('Your plant', () => {
     expect(byTestID('plant-form-reveal')).toHaveLength(0);
   });
 
-  it('Reduce Motion: a cross-fade with no ink line; full motion draws the rising ink line', () => {
+  it('Reduce Motion: a cross-fade with no light; full motion plays The Turning', () => {
     setPlant(grown(6));
     useSeen.setState({ plantForms: { cisa: { seen: 3 } } });
     setSystemReducedMotionForTest(true);
     mount(<YourPlant />);
     expect(byTestID('plant-form-reveal')).toHaveLength(1);
     expect(byTestID('plant-form-reveal-reduced')).toHaveLength(1);
-    expect(byTestID('plant-form-reveal-ink')).toHaveLength(0);
     expect(allText()).toContain('The Broadcrown Oak');
     unmount();
     setSystemReducedMotionForTest(false);
@@ -237,7 +235,7 @@ describe('UX review fixes (1.50 forms)', () => {
   };
   const words = () => byTestID('rv-words')[0];
 
-  it('H1, P5: mid-motion, the ink line is the ≥3:1 control colour and the words are hidden from screen readers', () => {
+  it('P5: mid-motion, the words are hidden from screen readers and nothing is announced yet', () => {
     setMockReducedMotion(false);
     setSystemReducedMotionForTest(false);
     // Hold every animation mid-way (the mock normally finishes them at once).
@@ -246,9 +244,6 @@ describe('UX review fixes (1.50 forms)', () => {
     say.mockClear(); // jest/setup.ts's mock keeps earlier tests' calls
     mount(<FormReveal {...revealProps} />);
     expect(byTestID('rv-full')).toHaveLength(1);
-    const ink = byTestID('rv-ink')[0];
-    expect(JSON.stringify(ink.props.style)).toContain(light.control);
-    expect(JSON.stringify(ink.props.style)).not.toContain(light.line);
     expect(words().props.accessibilityElementsHidden).toBe(true);
     expect(words().props.importantForAccessibility).toBe('no-hide-descendants');
     act(() => flushSayLaterForTest());

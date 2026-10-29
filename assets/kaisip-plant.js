@@ -9442,7 +9442,7 @@ exports.formMoment = formMoment;
 exports.afterReveal = afterReveal;
 exports.afterNote = afterNote;
 exports.revealMode = revealMode;
-exports.revealTimeline = revealTimeline;
+exports.seeNewFormLabel = seeNewFormLabel;
 exports.FORM_OF_GROWTH = { 1: 1, 2: 1, 3: 2, 4: 3, 5: 3, 6: 4 };
 exports.FORM_START = { 1: 1, 2: 3, 3: 4, 4: 6 };
 const GROWTH_WORD = { 1: 'Seed', 2: 'Sprout', 3: 'Shoot', 4: 'Bough', 5: 'Crown', 6: 'Elder' };
@@ -9720,14 +9720,14 @@ function afterReveal(rec, growth) {
 function afterNote(rec) {
     return { seen: rec.seen };
 }
-function revealMode(reduced, budget) {
-    return !reduced && budget() ? 'full' : 'reduced';
-}
-function revealTimeline(reduced, total = 1200, reducedFade = 120) {
+function revealMode(reduced, claim) {
     if (reduced)
-        return { hold: 0, change: reducedFade, settle: 0, wordsAt: 0, wordsIn: 0, total: reducedFade };
-    const k = total / 1200;
-    return { hold: 120 * k, change: 360 * k, settle: 300 * k, wordsAt: 780 * k, wordsIn: 300 * k, total };
+        return 'reduced';
+    return claim() ? 'full' : 'wait';
+}
+function seeNewFormLabel(callName) {
+    const who = callName.startsWith('Your ') ? `your ${callName.slice(5)}` : callName;
+    return `See ${who}’s new form`;
 }
   };
   links["src/engine/plantLooks.ts"] = {"./milestones":"src/engine/milestones.ts"};
@@ -10835,7 +10835,7 @@ function inOrderSession(topics, walk, cursor, count, answers, rng) {
   defs["src/theme/tokens.ts"] = function (module, exports, require) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.fieldInk = exports.plate = exports.fieldMaxScale = exports.fieldType = exports.plantForm = exports.plantLine = exports.plantTheme = exports.plantArt = exports.plantLeaf = exports.badgeGlaze = exports.badgeLeafPip = exports.badgeStruck = exports.badgeMetal = exports.cardInk = exports.badgeEnamel = exports.motion = exports.LARGE_TEXT = exports.grewLine = exports.statWord = exports.cardType = exports.statUnit = exports.numeralUnit = exports.badgeLetter = exports.optionText = exports.maxScale = exports.stemLong = exports.STEM_LONG_CHARS = exports.type = exports.font = exports.radius = exports.space = exports.domainPalette = exports.raisedShadow = exports.cardShadow = exports.darkCardTopLight = exports.forestHighlight = exports.grainOp = exports.scrimOp = exports.pillarGlyph = exports.kaisip = exports.dark = exports.light = void 0;
+exports.fieldInk = exports.plate = exports.fieldMaxScale = exports.fieldType = exports.plantForm = exports.plantLine = exports.plantTheme = exports.plantArt = exports.plantLeaf = exports.badgeGlaze = exports.badgeLeafPip = exports.badgeStruck = exports.badgeMetal = exports.cardInk = exports.badgeEnamel = exports.turnMote = exports.turnTone = exports.motion = exports.LARGE_TEXT = exports.grewLine = exports.statWord = exports.cardType = exports.statUnit = exports.numeralUnit = exports.badgeLetter = exports.optionText = exports.maxScale = exports.stemLong = exports.STEM_LONG_CHARS = exports.type = exports.font = exports.radius = exports.space = exports.domainPalette = exports.raisedShadow = exports.cardShadow = exports.darkCardTopLight = exports.forestHighlight = exports.grainOp = exports.scrimOp = exports.pillarGlyph = exports.kaisip = exports.dark = exports.light = void 0;
 exports.serifNumeral = serifNumeral;
 exports.percentSup = percentSup;
 exports.light = {
@@ -11020,11 +11020,50 @@ exports.motion = {
     },
     stagger: { group: 40, maxGroups: 4, row: 30, maxRows: 6, digit: 30, stat: 60, leaf: 80, maxLeaves: 3, scene: 120, maxScene: 6 },
     celebrate: { fullTimes: 3, sessionMs: 3000, leaves: 8 },
-    plant: { breath: 2000, breathOut: 2400, breaths: 1, react: 600, lean: 900, grow: 900, plantIn: 820, turn: 1200, turnReduced: 120 },
+    plant: { breath: 2000, breathOut: 2400, breaths: 1, react: 600, lean: 900, grow: 900, plantIn: 820, turnReduced: 120 },
+    turn: {
+        small: { total: 2400, gather: [160, 760], swaps: [340, 260, 200], bloom: 320, nameAt: 1900, inhale: 0.015, motes: 4, moteLife: 1100, glowMax: 0.7, glowR: 0.72, settle: { from: 0.97, duration: 360, dampingRatio: 1 }, halo: false },
+        medium: { total: 3000, gather: [180, 900], swaps: [380, 300, 240, 200, 180], bloom: 340, nameAt: 2500, inhale: 0.02, motes: 6, moteLife: 1300, glowMax: 0.85, glowR: 0.86, settle: { from: 0.97, duration: 400, dampingRatio: 1 }, halo: false },
+        grand: { total: 3600, gather: [200, 1000], swaps: [420, 340, 280, 230, 200, 180, 180], bloom: 360, nameAt: 3100, inhale: 0.025, motes: 8, moteLife: 1500, glowMax: 1, glowR: 1, settle: { from: 0.96, duration: 460, dampingRatio: 0.85 }, halo: true },
+        cross: 0.6,
+        swapFloor: 180,
+        skip: 120,
+    },
     rise: 8,
     shift: 16,
     pressScale: 0.98,
     pressOpacity: 0.92,
+};
+exports.turnTone = {
+    light: { sil: '#FFFCF2', glow: '#F6E2A6', glowOps: [0.6, 0.72, 0.9] },
+    dark: { sil: '#D8CCA6', glow: '#E9C46A', glowOps: [0.24, 0.29, 0.36] },
+};
+exports.turnMote = {
+    pollen: ['#E7C76B', '#F2DA92'],
+    speck: ['#E3C890', '#D2B57A'],
+    water: ['#7FAFBE', '#9CC9D6'],
+    glint: ['#FFF3CF', '#F6E7B8'],
+    oakLeaf: ['#9CC768', '#8FBF7E'],
+    oakLeafLine: ['#3F6B45', '#CFE3C4'],
+    samara: ['#E2BE84', '#D9B27A'],
+    samaraLine: ['#8A5A2B', '#F2D3A1'],
+    samaraSeed: ['#B7834A', '#E6C08A'],
+    coin: ['#EBD49A', '#D9BE77'],
+    coinLine: ['#A8771F', '#F2DA92'],
+    coinEye: ['#C99A3A', '#F2DA92'],
+    spray: ['#E2B33F', '#F2D27A'],
+    petal: ['#F4CFD8', '#EBC3CE'],
+    petalLine: ['#C98A9A', '#F6DCE3'],
+    floret: ['#EFD98A', '#E9D98C'],
+    floretDeep: ['#E5C66A', '#F2E3A0'],
+    puff: ['#E6D49A', '#D9C98A'],
+    salt: ['#F1E6C6', '#E6DDBE'],
+    roundLeaf: ['#8FBF6A', '#86B676'],
+    seed: ['#6B4A2B', '#C9A06A'],
+    droplet: ['#BFDDE6', '#A9CFD9'],
+    star: ['#FFFDF6', '#F4F1E6'],
+    starLine: ['#B9B39C', '#ECEFE8'],
+    node: ['#6F9A5C', '#A9CF94'],
 };
 exports.badgeEnamel = {
     forest: { field: '#1E4A34', deep: '#123021', lite: '#2C5E44', E1: '#F3F1EA', E2: '#A9D9BA', D2: '#7DB592', E3: '#E9C46A', D3: '#B98A2E', L3: '#F4DE9E', ribbon: '#2B6E4A', ribbonDeep: '#1E4A34' },
@@ -11364,6 +11403,6 @@ exports.fieldInk = {
   api["domainBand"] = load("src/engine/domainBand.ts");
   api["pace"] = load("src/engine/pace.ts");
   api["readySigns"] = load("src/engine/readySigns.ts");
-  api.sourceHash = "6d279682a767b41c";
+  api.sourceHash = "555acddfc9ef6868";
   root.KaiSipPlant = Object.freeze(api);
 })(typeof window !== 'undefined' ? window : globalThis);
