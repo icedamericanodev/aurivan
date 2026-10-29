@@ -84,7 +84,7 @@ const setScale = (fontScale: number) => {
     Dimensions.set({ window: { ...w, width: 393, fontScale }, screen: { ...w, width: 393, fontScale } });
   });
 };
-const heading = () => root().findAll((n) => n.props.accessibilityRole === 'header' && /^Good (morning|afternoon|evening)/.test(String(n.props.accessibilityLabel ?? textOf(n))))[0];
+const heading = () => root().findAll((n) => n.props.accessibilityRole === 'header' && /^Good (morning|afternoon|evening)|days? to go$/.test(String(n.props.accessibilityLabel ?? textOf(n))))[0];
 
 const at = (h: number) => new Date(2026, 9, 15, h, 0, 0);
 
@@ -116,14 +116,16 @@ afterEach(() => {
   jest.useRealTimers();
 });
 
+// Mobile 1.51 (Field Guide, the owner's option A): the countdown is Today's title ("Maya, 38 days to go");
+// with no exam date the title is still the greeting by the hour.
 describe('Today greets by name', () => {
   it.each([
     [9, 'Good morning'],
     [13, 'Good afternoon'],
     [20, 'Good evening'],
-  ])('at %i:00 it says "%s, Maya" with a name and "%s" without', (hour, words) => {
+  ])('with no exam date, at %i:00 it says "%s, Maya" with a name and "%s" without', (hour, words) => {
     jest.setSystemTime(at(hour));
-    useSettings.setState({ displayName: 'Maya' });
+    useSettings.setState({ displayName: 'Maya', examDates: {} });
     mount(<Today />);
     expect(allText()).toContain(`${words}, Maya`);
     act(() => {
@@ -133,12 +135,12 @@ describe('Today greets by name', () => {
     expect(allText()).not.toContain(`${words},`);
   });
 
-  it('the heading is one stop that reads the whole greeting', () => {
+  it('the heading is one stop that reads the whole title: "Maya, 38 days to go"', () => {
     useSettings.setState({ displayName: 'Maya' });
     mount(<Today />);
     const h = heading();
-    expect(h.props.accessibilityLabel).toBe('Good morning, Maya');
-    expect(textOf(h)).toBe('Good morning, Maya');
+    expect(h.props.accessibilityLabel).toBe('Maya, 38 days to go');
+    expect(textOf(h)).toBe('Maya, 38 days to go');
   });
 
   it('a name changed in Settings shows on Today at once', () => {
@@ -147,7 +149,7 @@ describe('Today greets by name', () => {
     act(() => {
       useSettings.getState().setDisplayName('  Maya  ');
     });
-    expect(allText()).toContain('Good morning, Maya');
+    expect(allText()).toContain('Maya, 38 days to go');
   });
 
   it('a long name at 200% text wraps and stops at three lines, and screen readers still hear all of it', () => {
@@ -157,13 +159,13 @@ describe('Today greets by name', () => {
     mount(<Today />);
     const h = heading();
     expect(h.props.numberOfLines).toBe(3);
-    expect(h.props.accessibilityLabel).toBe(`Good morning, ${name.slice(0, MAX_DISPLAY_NAME)}`);
+    expect(h.props.accessibilityLabel).toBe(`${name.slice(0, MAX_DISPLAY_NAME)}, 38 days to go`);
   });
 
   it('a bad value in the save (a link) never shows', () => {
     useSettings.setState({ displayName: 'https://example.com' });
     mount(<Today />);
-    expect(allText()).toContain('Good morning');
+    expect(allText()).toContain('38 days to go');
     expect(allText()).not.toContain('example.com');
   });
 });

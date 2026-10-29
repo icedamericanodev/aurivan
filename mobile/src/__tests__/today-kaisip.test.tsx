@@ -207,11 +207,12 @@ describe('planCheckLabel: the plan as checklist lines, in the plan’s own words
 describe('Today, top to bottom', () => {
   beforeEach(() => seedAnswers(200, 146));
 
-  it('header: the lockup, the streak pill and the Settings gear', () => {
+  it('header (mobile 1.51, Field Guide): the running head with the day said in full, the gear, and the streak under the title', () => {
     storePlan([WARM, REVIEW, LESSON], [false, false, false]);
     mount(<Today />);
     const s = stops();
-    expect(s[0]).toBe('KaiSip');
+    expect(s[0]).toBe('Field guide, Today');
+    expect(s).toContain('Thursday 15 October');
     expect(s).toContain('6-day streak');
     expect(allText()).toContain('day streak');
     const gear = root().findAll((n) => n.props.accessibilityLabel === 'Settings' && typeof n.props.onPress === 'function')[0];
@@ -230,14 +231,13 @@ describe('Today, top to bottom', () => {
     expect(stops().some((l) => /-day streak/.test(l))).toBe(false);
   });
 
-  it('meta line and greeting: the real weekday, the real days to the exam, the cert’s name, no name until the learner gives one', () => {
+  it('the countdown is the title (the owner’s option A): the real days to the exam, the cert and its date under it, no name until the learner gives one', () => {
     storePlan([WARM, REVIEW, LESSON], [false, false, false]);
     mount(<Today />);
-    expect(allText()).toContain('Thursday · 38 days to CISA');
-    expect(allText()).toContain('Good morning');
-    expect(allText()).not.toMatch(/Good morning,/);
-    // The greeting is the screen's heading.
-    const heading = root().findAll((n) => n.props.accessibilityRole === 'header' && textOf(n) === 'Good morning');
+    expect(allText()).toContain('CISA exam 22 Nov');
+    expect(allText()).not.toMatch(/Good morning/);
+    // The countdown is the screen's heading.
+    const heading = root().findAll((n) => n.props.accessibilityRole === 'header' && textOf(n) === '38 days to go');
     expect(heading.length).toBeGreaterThan(0);
   });
 
@@ -247,13 +247,15 @@ describe('Today, top to bottom', () => {
       useSettings.setState({ examDates: {} });
     });
     mount(<Today />);
-    expect(allText()).toContain('Thursday · No exam date set');
+    // No date: the greeting by the hour is the title, and the line says so.
+    expect(allText()).toContain('Good morning');
+    expect(allText()).toContain('No exam date set');
     unmount();
     act(() => {
       useSettings.setState({ examDates: { cisa: '2026-10-16' } });
     });
     mount(<Today />);
-    expect(allText()).toContain('Thursday · 1 day to CISA');
+    expect(allText()).toContain('1 day to go');
   });
 
   it('the plan panel: caption with the day’s minutes, the title, and a checklist of the REST of the plan', () => {
@@ -331,8 +333,9 @@ describe('Today, top to bottom', () => {
       j.props.onPress();
     });
     expect(router.push).toHaveBeenCalledWith('/readiness');
-    // Rings (the readiness row's picture), never a single readiness percent.
-    expect(root().findAll((n) => typeof n.type !== 'string' && n.props.preset === 'row').length).toBeGreaterThan(0);
+    // Mobile 1.51: the scale bar (its words built in), never a single readiness percent.
+    expect(byTestID('scale-bar').length).toBeGreaterThan(0);
+    expect(allText()).toContain('a study estimate, not a prediction');
   });
 
   it('no stat tiles any more: one quiet line names the weakest area once there is a range, and no accuracy sits beside the range', () => {
@@ -353,18 +356,18 @@ describe('Today, top to bottom', () => {
     expect(allText()).not.toMatch(/studied/i);
   });
 
-  it('the screen-reader order: header, meta line, greeting, plan, readiness', () => {
+  it('the screen-reader order: running head, title, meta line, plan, readiness', () => {
     storePlan([WARM, REVIEW, LESSON], [false, false, false]);
     mount(<Today />);
     const t = allText();
     const at = (s: string) => t.indexOf(s);
-    const order = ['Thursday · 38 days to CISA', 'Good morning', 'Today’s plan · about', 'Estimated readiness', 'weakest area'];
+    const order = ['Field guide · Today', '38 days to go', 'CISA exam 22 Nov', 'Today’s plan · about', 'Estimated readiness', 'weakest area'];
     const idx = order.map(at);
     expect(idx.every((i) => i >= 0)).toBe(true);
     expect([...idx].sort((a, b) => a - b)).toEqual(idx);
     const s = stops();
     const first = (re: RegExp) => s.findIndex((l) => re.test(l));
-    const seq = [first(/^KaiSip$/), first(/^Today’s plan/), first(/^Estimated readiness/)];
+    const seq = [first(/^Field guide, Today$/), first(/^Today’s plan/), first(/^Estimated readiness/)];
     expect(seq.every((i) => i >= 0)).toBe(true);
     expect([...seq].sort((a, b) => a - b)).toEqual(seq);
   });

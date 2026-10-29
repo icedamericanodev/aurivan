@@ -31,6 +31,7 @@ import You from '../app/(tabs)/you';
 import { router } from 'expo-router';
 import * as registry from '../engine/games/registry';
 import { planText } from '../components/journey';
+import { HeroPanel } from '../components/ui';
 import { setMockReducedMotion } from '../../jest/reanimated-mock';
 
 // Motion ON (the shared mock defaults to Reduce Motion), so the swaying frond
@@ -119,10 +120,11 @@ describe('Play hero renders its content (Android blank-hero regression)', () => 
     expect(textOf(button[0])).toBe('Play');
   });
 
-  // Mobile 1.43 (tab header C): Play, Learn and Practice lead with a white seal card; the forest panel
-  // with its swaying frond is Today's alone, so the layering checks run there.
-  it('Today: draws the art in its own clipped layer BELOW the content, with explicit sizes', () => {
-    mount(<Today />);
+  // Mobile 1.43 (tab header C): Play, Learn and Practice lead with a white seal card. Mobile 1.51 (Field
+  // Guide): Today's plan is a plate too; the forest panel with its swaying frond is now only Today's moments
+  // (the clearing, "Your readiness is holding"), so the layering checks run on the panel itself.
+  it('the forest panel: draws the art in its own clipped layer BELOW the content, with explicit sizes', () => {
+    mount(<HeroPanel caption="Today’s clearing" title="Two done" art="frond" />);
     const [art] = byTestId('hero-art');
     const [content] = byTestId('hero-content');
     // Art layer: absolute fill, does its own rounded clipping, never takes touches.
@@ -146,8 +148,8 @@ describe('Play hero renders its content (Android blank-hero regression)', () => 
     expect(flat(slot)).toMatchObject(botanySize('frond'));
   });
 
-  it('Today: the swaying frond has an explicit size and a pivot in points, not percentages', () => {
-    mount(<Today />);
+  it('the forest panel: the swaying frond has an explicit size and a pivot in points, not percentages', () => {
+    mount(<HeroPanel caption="Today’s clearing" title="Two done" art="frond" />);
     const [art] = byTestId('hero-art');
     const sway = art.findAll((n) => typeof n.type === 'string' && typeof flat(n).transformOrigin === 'string');
     expect(sway.length).toBe(1);

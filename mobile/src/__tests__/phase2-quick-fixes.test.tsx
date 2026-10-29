@@ -110,12 +110,11 @@ describe('Today', () => {
     expect(root().findAll((n) => typeof n.props.accessibilityLabel === 'string' && n.props.accessibilityLabel.startsWith('Estimated readiness'))).not.toHaveLength(0);
   });
 
-  it('T3: without the panel, the readiness row keeps its rings', () => {
+  it('T3: without the panel, the readiness row is the scale bar (mobile 1.51, Field Guide; it was the small rings)', () => {
     answeredEnough();
     mount(<Today />);
-    expect(root().findAllByType(GrowthRings)).toHaveLength(1);
-    // Mobile 1.21: the condensed readiness row draws the small `row` rings.
-    expect(root().findAllByType(GrowthRings)[0].props.preset).toBe('row');
+    expect(root().findAllByType(GrowthRings)).toHaveLength(0);
+    expect(root().findAll((n) => typeof n.type === 'string' && n.props.testID === 'scale-bar')).toHaveLength(1);
   });
 
   it('T4: "Also today" says how long the rest takes, not a count of a list that shows every item', () => {

@@ -25,6 +25,7 @@ import { useTheme } from '../theme/useTheme';
 import { GrowthRings, PlanLeaf } from './glyphs';
 import { Check, ICON_STROKE, Pinwheel, Play, RotateCcw, Target, Timer } from './icons';
 import { AnimatedPressable, FadeIn, Pop, usePressScale, type Celebration, type Growth } from './motion';
+import { ESTIMATE_WORDS, FieldText, ScaleBar } from './fieldguide';
 import { BigNum, DomainDot, ICON_SIZE, Row, Stat, StatRow, T, useFontScale } from './ui';
 import { aboutMin, spokenMin, timeStat } from '../engine/pace';
 
@@ -302,6 +303,7 @@ export function PlanChecklist({
   due,
   focused = true,
   seenKey,
+  paper = false,
 }: {
   items: readonly PlanItem[];
   done: boolean[];
@@ -309,8 +311,13 @@ export function PlanChecklist({
   due?: number;
   focused?: boolean;
   seenKey?: string;
+  /** Mobile 1.51 (Field Guide): on Today's plate label, in paper inks (`accent` check, `control` ring, `ink2` words). */
+  paper?: boolean;
 }) {
   const { c } = useTheme();
+  const ink = paper
+    ? { then: c.accentText, done: c.accent, check: c.bg, later: c.control, words: c.ink2 }
+    : { then: c.sap, done: c.sap, check: c.forest, later: c.onForest2, words: c.onForest2 };
   const shown = useShownDone(done, focused, seenKey);
   const rows = items.map((item, i) => ({ item, i })).filter(({ i }) => i !== current && !isOptional(items, i));
   if (rows.length === 0) return null;
@@ -323,13 +330,13 @@ export function PlanChecklist({
     return (
       <View testID="plan-checklist" style={{ marginTop: space.lg }}>
         <View accessible accessibilityLabel={spokenMin(line)}>
-          <T v="body" color={c.sap}>{line}</T>
+          <T v={paper ? 'small' : 'body'} color={ink.then}>{line}</T>
         </View>
       </View>
     );
   }
   return (
-    <View testID="plan-checklist" style={{ marginTop: space.lg, gap: 10 }}>
+    <View testID="plan-checklist" style={{ marginTop: paper ? space.md : space.lg, gap: paper ? space.sm : 10 }}>
       {rows.map(({ item, i }) => {
         const isDone = done[i];
         const label = planCheckLabel(item, due);
@@ -338,14 +345,14 @@ export function PlanChecklist({
           <View key={i} accessible accessibilityLabel={spokenMin(said)} style={{ flexDirection: 'row', alignItems: 'center', gap: 14 }}>
             <Pop trigger={shown.pops.includes(i) ? shown.run : undefined} spring="leaf">
               {isDone ? (
-                <View style={{ width: MARK, height: MARK, borderRadius: MARK / 2, backgroundColor: c.sap, alignItems: 'center', justifyContent: 'center' }}>
-                  <Check size={15} color={c.forest} strokeWidth={3} />
+                <View style={{ width: MARK, height: MARK, borderRadius: MARK / 2, backgroundColor: ink.done, alignItems: 'center', justifyContent: 'center' }}>
+                  <Check size={15} color={ink.check} strokeWidth={3} />
                 </View>
               ) : (
-                <View style={{ width: MARK, height: MARK, borderRadius: MARK / 2, borderWidth: 1.5, borderColor: c.onForest2, opacity: 0.7 }} />
+                <View style={{ width: MARK, height: MARK, borderRadius: MARK / 2, borderWidth: 1.5, borderColor: ink.later, opacity: paper ? 1 : 0.7 }} />
               )}
             </Pop>
-            <T v="body" color={c.onForest2} style={[{ flex: 1, minWidth: 0 }, isDone && { textDecorationLine: 'line-through' }]}>
+            <T v={paper ? 'small' : 'body'} color={ink.words} style={[{ flex: 1, minWidth: 0 }, isDone && { textDecorationLine: 'line-through' }]}>
               {label}
             </T>
           </View>
@@ -400,7 +407,16 @@ export function ReadinessRow({
   ringsGrowth,
   rangeGrowth,
   onPress,
+  scale = false,
+  aside,
 }: {
+  /**
+   * Mobile 1.51 (Field Guide): the range on a scale bar (its words built in) under a tracked
+   * "Estimated readiness" key, instead of the rings. The whole block is still the report's button.
+   */
+  scale?: boolean;
+  /** Words at the right of the key ("Weakest: IS Operations"), with `scale`. */
+  aside?: string;
   cert: Certification;
   readiness: Readiness;
   range: ReadinessRange;
@@ -442,6 +458,29 @@ export function ReadinessRow({
       grow={ringsGrowth ? { play: ringsGrowth.play, from: ringsGrowth.from.map((v) => v / 100), run: ringsGrowth.run } : undefined}
     />
   );
+  if (scale) {
+    const said = `${range.enough ? `Estimated readiness ${rangeSpoken(range)}, ${ESTIMATE_WORDS}.` : `Not enough data yet. ${meta}.`}${stage ? ` ${stage.replace(' · ', ', ')}.` : ''}`;
+    const body = (
+      <View style={{ alignSelf: 'stretch' }}>
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'baseline', columnGap: space.md }}>
+          {/* "Estimated", never "measured": it is a study estimate (the board's "Measured" overclaimed). */}
+          <FieldText v="head">{ESTIMATE_LINE}</FieldText>
+          {aside ? <FieldText v="small">{aside}</FieldText> : null}
+        </View>
+        <ScaleBar range={range} growth={rangeGrowth} accessible={false} style={{ marginTop: space.xs }} />
+        {stage ? <T v="stage" color={c.accentText} style={{ marginTop: space.xs }}>{stage}</T> : null}
+      </View>
+    );
+    return onPress ? (
+      <ReportTap onPress={onPress} label={said} style={{ marginTop: space.xl - 6 }} testID="readiness-tap">
+        {body}
+      </ReportTap>
+    ) : (
+      <View accessible accessibilityLabel={said} style={{ marginTop: space.xl }}>
+        {body}
+      </View>
+    );
+  }
   const rowStyle = { flexDirection: stacked ? 'column' : 'row', alignItems: stacked ? 'flex-start' : 'center', gap: stacked ? space.md : space.lg, marginTop: space.xl } as const;
   return onPress ? (
     <ReportTap onPress={onPress} label={spoken} style={{ ...rowStyle, marginTop: rowStyle.marginTop - 6 }} testID="readiness-tap">

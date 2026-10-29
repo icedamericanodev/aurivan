@@ -37,7 +37,8 @@ import Results from '../app/results';
 import Saved from '../app/saved';
 import { EmptyArt, GrowthRings } from '../components/glyphs';
 import { AreaRows, ReadinessBlock } from '../components/youReadiness';
-import { ClearingBody } from '../components/journey';
+import { ScaleBar } from '../components/fieldguide';
+import { ClearingBody, ReadinessRow } from '../components/journey';
 import { BadgeCell, BadgeListRow } from '../components/badges';
 import { MilestoneMomentView, resetBadgeMomentsForTest } from '../components/milestones';
 import { resetCelebrationsForTest, resetOncePerDayForTest, RollingText, setSystemReducedMotionForTest, ThemeFade } from '../components/motion';
@@ -262,8 +263,10 @@ afterEach(() => {
 
 // ── J1 ───────────────────────────────────────────────────────────────────
 describe('J1 first open of the day (Today)', () => {
-  // Mobile 1.21: Today's condensed readiness row draws the small `row` rings.
-  const todayRings = () => r!.root.findAllByType(GrowthRings).find((n) => n.props.preset === 'row')!.props.grow as { play: boolean; from?: number[] };
+  // Mobile 1.51 (Field Guide): Today's readiness is the scale bar. Its growth still follows the day's
+  // rings record (`today:rings`), and the bar draws in when the range does.
+  const todayRings = () => r!.root.findAllByType(ReadinessRow)[0].props.ringsGrowth as { play: boolean; from?: number[] };
+  const growingArcs = () => (r!.root.findAllByType(ScaleBar)[0]?.props.growth?.play ? 1 : 0);
   const rangeRoll = () => r!.root.findAllByType(RollingText).find((n) => /\d–\d/.test(n.props.value))!.props;
 
   it('grows once on the first view, shows still on a revisit and a remount, grows again the next day, never after a fall', () => {
@@ -329,7 +332,8 @@ describe('J1 first open of the day (Today)', () => {
     // Only Operations (index 2) starts below its value; the rest start where they are.
     const now = useSeen.getState().values['today:rings:cisa'];
     expect(now[2]).toBeGreaterThan(seen[2]);
-    expect(g.from!.map((v) => Math.round(v * 100))).toEqual(seen);
+    expect(g.from).toEqual(seen); // the growth record in whole percent (the rings took it / 100)
+    // The range rose with it, so the scale bar draws in once.
     expect(growingArcs()).toBe(1);
   });
 });
@@ -1083,12 +1087,14 @@ describe('Review fixes on the real screens', () => {
     jest.useFakeTimers({ now: new Date(2026, 9, 12, 9, 0, 0), doNotFake: ['nextTick', 'setImmediate', 'queueMicrotask'] });
     setMockReducedMotion(false);
     seed(60);
+    // Mobile 1.51: Today's scale bar draws in on the day's first view only.
+    const scaleDraws = () => (r!.root.findAllByType(ScaleBar)[0]?.props.growth?.play ? 1 : 0);
     mount(<Today />);
-    expect(growingArcs()).toBeGreaterThan(0);
+    expect(scaleDraws()).toBeGreaterThan(0);
     unmount();
     resetCelebrationsForTest(); // a new launch: memory is fresh, saved stores are kept
     mount(<Today />);
-    expect(growingArcs()).toBe(0);
+    expect(scaleDraws()).toBe(0);
     expect(movingDigits()).toBe(0);
   });
 

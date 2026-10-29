@@ -339,11 +339,10 @@ describe('1. the trigger', () => {
     expect(reveal()).toHaveLength(0); // never a second Turning for the skipped Form III
   });
 
-  // BUG QA-TURN-2: Today's pointer is worked out from the growth alone (home.tsx crossesForm), not
-  // from what this phone already showed. After Reset progress the forms record stays at "seen",
-  // so a re-earned Shoot never plays a Turning, but Today still sends the learner to see one.
-  // BUG: QA-TURN-2, Today says "see it in Your plant" for a form this phone already revealed (after a Reset), and Your plant plays nothing.
-  it.skip('after a Reset, Today never promises a Turning that Your plant will not play', () => {
+  // QA-TURN-2 (fixed): Today's pointer follows formMoment (what this phone already showed), not the growth alone.
+  // After Reset progress the forms record stays at "seen", so a re-earned Shoot plays no Turning, and Today
+  // no longer sends the learner to see one.
+  it('after a Reset, Today never promises a Turning that Your plant will not play', () => {
     setPlant(grown(6));
     useSeen.setState({ plantForms: { cisa: { seen: 4 } } });
     act(() => {
@@ -357,7 +356,7 @@ describe('1. the trigger', () => {
     unmount();
     mount(<YourPlant />);
     const played = reveal().length > 0;
-    expect(promised).toBe(played); // fails: Today promises it (true), Your plant plays nothing (false)
+    expect(promised).toBe(played);
   });
 });
 

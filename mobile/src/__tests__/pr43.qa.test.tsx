@@ -142,7 +142,8 @@ const hidePlantRow = () => {
 const plants = () => root().findAll((n) => typeof n.type !== 'string' && typeof n.props.species === 'string' && typeof n.props.stage === 'number' && typeof n.props.size === 'number');
 /** Is a growth-ring drawing on screen? (GrowthRings takes `preset`.) */
 // Mobile 1.21: Today's condensed readiness row draws the small `row` rings (the exam-ready panel keeps `today`).
-const ringsShown = () => root().findAll((n) => typeof n.type !== 'string' && (n.props.preset === 'today' || n.props.preset === 'row')).length > 0;
+// The readiness picture: the rings, or (mobile 1.51, Field Guide) Today's scale bar.
+const ringsShown = () => root().findAll((n) => (typeof n.type !== 'string' && (n.props.preset === 'today' || n.props.preset === 'row')) || (typeof n.type === 'string' && n.props.testID === 'scale-bar')).length > 0;
 const layoutGrid = () => {
   const grid = root().findAll((n) => n.props.accessibilityRole === 'radiogroup')[0];
   act(() => {

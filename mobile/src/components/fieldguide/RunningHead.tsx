@@ -34,6 +34,8 @@ export interface HeadAction {
   onPress: () => void;
   icon?: (color: string) => ReactNode;
   hint?: string;
+  /** The icon alone (Today: the gear beside the date); the label is still its spoken name. */
+  compact?: boolean;
 }
 
 export function RunningHead({
@@ -102,9 +104,11 @@ export function RunningHead({
             style={[{ flexDirection: 'row', alignItems: 'center', gap: 6, minHeight: 48, minWidth: 48, justifyContent: 'flex-end', paddingHorizontal: space.sm }, large ? { marginLeft: -space.sm } : { marginRight: -space.sm }, press.style]}
           >
             {press.layer}
-            <FieldText v="head" color={c.ink}>
-              {action.label}
-            </FieldText>
+            {!action.compact && (
+              <FieldText v="head" color={c.ink}>
+                {action.label}
+              </FieldText>
+            )}
             {action.icon?.(c.ink)}
           </AnimatedPressable>
         )}

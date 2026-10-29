@@ -460,7 +460,7 @@ describe('midnight rollover', () => {
     expect(plan.done.every((d) => !d)).toBe(true);
     expect(joined('home')).toContain(`, 0 of ${plan.items.length} done]`);
     // The countdown moved by one day too.
-    expect(joined('home')).toContain(`${daysToExam('2027-06-01', dayKey(T0 + DAY))} days to CISA`);
+    expect(joined('home')).toContain(`${daysToExam('2027-06-01', dayKey(T0 + DAY))} days to go`);
     expectTabsFresh();
   });
 
@@ -568,13 +568,13 @@ describe('changing the exam date', () => {
   it('Today’s countdown and every tab follow the new date', () => {
     studySession(10);
     mountAll();
-    expect(joined('home')).toContain(`${daysToExam('2027-06-01', dayKey(T0))} days to CISA`);
+    expect(joined('home')).toContain(`${daysToExam('2027-06-01', dayKey(T0))} days to go`);
     tap('you');
     act(() => {
       useSettings.setState({ examDates: { cisa: '2026-12-01' } });
     });
     expectTabsFresh();
-    expect(joined('home')).toContain(`${daysToExam('2026-12-01', dayKey(T0))} days to CISA`);
+    expect(joined('home')).toContain(`${daysToExam('2026-12-01', dayKey(T0))} days to go`);
   });
 });
 
