@@ -114,7 +114,7 @@ describe('Drills: Today’s drill', () => {
     // Mobile 1.40: no "More drills" row yet, just one quiet line (no count of the games waiting).
     expect(moreRow()).toBeUndefined();
     expect(waitLine()).toHaveLength(1);
-    expect(textOf(waitLine()[0])).toBe('More drills open after 50 answers.');
+    expect(textOf(waitLine()[0])).toBe('More drills open after 50 practice questions.');
   });
 
   it('49 answers: still the three; 50: "More drills" opens, folded, with the other six', () => {
@@ -140,7 +140,7 @@ describe('Drills: Today’s drill', () => {
     expect(rowNames()).toEqual([GAMES.priority.name, GAMES.callit.name, GAMES.sprint.name]);
     // The others still wait, so the quiet line stays; "More drills" lists one already, so it says "The other drills".
     expect(waitLine()).toHaveLength(1);
-    expect(textOf(waitLine()[0])).toBe('The other drills open after 50 answers.');
+    expect(textOf(waitLine()[0])).toBe('The other drills open after 50 practice questions.');
   });
 
   it('before 50 answers, a mistake pattern that names a waiting game falls back to a core game', () => {
@@ -155,7 +155,7 @@ describe('Drills: Today’s drill', () => {
     tagFive('role');
     mount();
     expect(drill()).toBe(GAMES.canopy.name);
-    expect(textOf(root())).toContain('Today’s pick is from your mistakes: You answer as the wrong person.');
+    expect(textOf(root())).toContain('Today’s pick is from your mistakes: you answer as the wrong person.');
     // Its row opens that game.
     act(() => {
       drillRow().props.onPress();

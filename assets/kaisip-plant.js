@@ -7748,7 +7748,7 @@ exports.BADGES = [
     },
     { id: 'dress-rehearsal', kind: 'milestone', name: 'Dress Rehearsal', rule: 'Finish a full, timed mock with every question answered.' },
     { id: 'on-pace', kind: 'milestone', name: 'On Pace', rule: `Finish a timed mock with every pace check within ${Math.round(pace_1.PACE_TOLERANCE * 100)}% of the target.` },
-    { id: 'mindset-shift', kind: 'milestone', name: 'Mindset Shift', rule: 'Pick the tempting runner-up clearly less often than in your first weeks.' },
+    { id: 'mindset-shift', kind: 'milestone', name: 'Mindset Shift', rule: 'Pick the closest wrong choice clearly less often than in your first weeks.' },
     {
         id: 'rooted',
         kind: 'milestone',
@@ -9853,7 +9853,7 @@ const KEEPSAKES = [
     ['fern', 'Fern', 'took-root', 'The fern: a whole topic took root.', 'tall', 'Help a whole topic take root'],
     ['still-pond', 'Still pond', 'know-what-you-know', 'The still pond: when you say sure, you’re right.', 'flat', 'Be right when you say you’re sure'],
     ['dew-web', 'Dew-lit web', 'slip-spotter', 'The dew-lit web: you can name your own thinking slips.', 'tall', 'Tag your mistakes with their thinking slip'],
-    ['weather-vane', 'Weather vane', 'mindset-shift', 'The weather vane: you fall for the runner-up less often.', 'tall', 'Pick the tempting runner-up less often'],
+    ['weather-vane', 'Weather vane', 'mindset-shift', 'The weather vane: you fall for the closest wrong choice less often.', 'tall', 'Pick the closest wrong choice less often'],
     ['lantern', 'Lantern', 'dress-rehearsal', 'The lantern: you sat a full, timed mock.', 'tall', 'Sit a full, timed mock'],
     ['sundial', 'Sundial', 'on-pace', 'The sundial: you finished a timed mock on pace.', 'tall', 'Finish a timed mock on pace'],
     ['swallow', 'Swallow', 'fresh-start', 'The swallow: you came back and picked up again.', 'tall', 'Pick up again after some time away'],
@@ -11421,6 +11421,6 @@ exports.fieldInk = {
   api["domainBand"] = load("src/engine/domainBand.ts");
   api["pace"] = load("src/engine/pace.ts");
   api["readySigns"] = load("src/engine/readySigns.ts");
-  api.sourceHash = "0a463700aa9e4f05";
+  api.sourceHash = "32d00a0251a3a61a";
   root.KaiSipPlant = Object.freeze(api);
 })(typeof window !== 'undefined' ? window : globalThis);

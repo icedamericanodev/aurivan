@@ -19,7 +19,10 @@ import Practice from '../app/(tabs)/practice';
 import { redirectSystemPath } from '../app/+native-intent';
 import { DRILLS_HREF, DRILLS_PATH } from '../lib/actions';
 import { redirectLegacyPath } from '../lib/legacyLinks';
+import { AccessibilityInfo, Platform } from 'react-native';
+import { DRILLS_MOVED } from '../components/drills';
 import { useProgress } from '../store/progress';
+import { useSeen } from '../store/seen';
 import { useSettings } from '../store/settings';
 import { setMockReducedMotion } from '../../jest/reanimated-mock';
 
@@ -42,8 +45,8 @@ jest.mock('../components/icons', () => {
 jest.mock('expo-router', () => {
   const React = jest.requireActual('react');
   const Tabs = ({ children }: { children: unknown }) => React.createElement(React.Fragment, null, children);
-  Tabs.Screen = function TabScreen({ name, options }: { name: string; options: { title?: string; tabBarAccessibilityLabel?: string } }) {
-    return React.createElement('TabScreen', { name, title: options.title, spoken: options.tabBarAccessibilityLabel ?? options.title });
+  Tabs.Screen = function TabScreen({ name, options }: { name: string; options: { title?: string; tabBarAccessibilityLabel?: string; tabBarButton?: unknown } }) {
+    return React.createElement('TabScreen', { name, title: options.title, spoken: options.tabBarAccessibilityLabel ?? options.title, button: options.tabBarButton });
   };
   return {
     router: {
@@ -62,7 +65,11 @@ jest.mock('expo-router', () => {
     Tabs,
   };
 });
-jest.mock('expo-router/react-navigation', () => ({ PlatformPressable: () => null }));
+// The pressable as a host element, so the props each tab button passes are visible.
+jest.mock('expo-router/react-navigation', () => {
+  const React = jest.requireActual('react');
+  return { PlatformPressable: (p: object) => React.createElement('PlatformPressable', p) };
+});
 jest.mock('react-native-safe-area-context', () => {
   const { View } = jest.requireActual('react-native');
   return { SafeAreaView: View, useSafeAreaInsets: () => ({ top: 0, bottom: 0, left: 0, right: 0 }) };
@@ -105,6 +112,28 @@ describe('the tab bar', () => {
     expect(tabs.map((t) => t.props.name)).toEqual(['home', 'learn', 'practice', 'you']);
     expect(tabs.map((t) => t.props.title)).toEqual(['Today', 'Learn', 'Practice', 'You']);
     expect(tabs.map((t) => t.props.spoken)).toEqual(['Today', 'Learn', 'Practice', 'You']);
+  });
+
+  // UX review H2: the navigator's item asks for role "button" on iOS (VoiceOver said "Practice, button").
+  it('every tab button is a tab to screen readers, with its selected state kept', () => {
+    mount(<TabsLayout />);
+    const made = root()
+      .findAll((n) => (n.type as unknown) === 'TabScreen')
+      .map((t) => t.props.button as React.ComponentType<Record<string, unknown>>);
+    const buttons = made.map((Button, i) => {
+      act(() => {
+        r!.update(<Button aria-selected={i === 2} role="button" onPress={() => {}} />);
+      });
+      return root().find((n) => (n.type as unknown) === 'PlatformPressable').props;
+    });
+    expect(buttons).toHaveLength(4);
+    for (const [i, b] of buttons.entries()) {
+      expect([i, b.role, b.accessibilityRole]).toEqual([i, 'tab', 'tab']);
+      expect([i, b.accessibilityState?.selected]).toEqual([i, i === 2]);
+      expect(b['aria-selected']).toBe(i === 2);
+      // The position ("3 of 4") is the navigator's own label: never written into ours.
+      expect(String(b.accessibilityLabel ?? '')).not.toMatch(/\d of \d/);
+    }
   });
 
   it('the Play tab’s screen is gone; its route is a redirect outside the tabs', () => {
@@ -161,9 +190,8 @@ describe('Practice opened at Drills', () => {
     const t = textOf(root());
     expect(t.indexOf('More ways to practice')).toBeLessThan(t.indexOf('Drills'));
     expect(mockSetParams).not.toHaveBeenCalled();
-    act(() => {
-      jest.advanceTimersByTime(400);
-    });
+    // The jump runs from Drills' own layout (no fixed delay), then the param is cleared.
+    layDrills();
     expect(mockSetParams).toHaveBeenCalledWith({ section: undefined });
   });
 
@@ -187,5 +215,99 @@ describe('Practice opened at Drills', () => {
       rows[0].props.onPress();
     });
     expect(router.push).toHaveBeenCalledWith(expect.stringMatching(/^\/game\//));
+  });
+});
+
+/** Host refs that can be measured and focused (react-test-renderer gives none by default). */
+const nodeMock = () => ({ measureInWindow: (cb: (x: number, y: number, w: number, h: number) => void) => cb(0, 300, 360, 400), measureLayout: () => {} });
+const mountMeasured = (el: React.ReactElement) => {
+  act(() => {
+    r = create(el, { createNodeMock: nodeMock });
+  });
+};
+/** Drills' own outer view, laid out (the jump and the on-screen check run from it). */
+const layDrills = () =>
+  act(() => {
+    // The mocked View's own measureInWindow never answers: on screen, 300pt down.
+    const view = root().find((n) => n.props.testID === 'drills' && typeof n.type !== 'string' && n.instance);
+    view.instance.measureInWindow = (cb: (x: number, y: number, w: number, h: number) => void) => cb(0, 300, 360, 400);
+    root()
+      .find((n) => n.props.testID === 'drills' && typeof n.type === 'string')
+      .props.onLayout({ nativeEvent: { layout: { x: 0, y: 900, width: 360, height: 400 } } });
+  });
+
+describe('the jump moves screen-reader focus to Drills (UX review P2)', () => {
+  it('once, after Drills is laid out (not on a fixed timer)', () => {
+    jest.useFakeTimers();
+    expect(Platform.OS).not.toBe('web');
+    const RN = jest.requireActual('react-native');
+    const handle = jest.spyOn(RN, 'findNodeHandle').mockReturnValue(7);
+    const focus = jest.spyOn(AccessibilityInfo, 'setAccessibilityFocus').mockImplementation(() => {});
+    mockParams.current = { section: 'drills' };
+    mountMeasured(<Practice />);
+    act(() => {
+      jest.advanceTimersByTime(700);
+    });
+    // Nothing until Drills has its layout.
+    expect(focus).not.toHaveBeenCalled();
+    layDrills();
+    act(() => {
+      jest.advanceTimersByTime(700);
+    });
+    expect(focus).toHaveBeenCalledTimes(1);
+    expect(mockSetParams).toHaveBeenCalledWith({ section: undefined });
+    // A later layout (the sections above grew) scrolls again but never moves focus twice.
+    layDrills();
+    act(() => {
+      jest.advanceTimersByTime(700);
+    });
+    expect(focus).toHaveBeenCalledTimes(1);
+    focus.mockRestore();
+    handle.mockRestore();
+  });
+});
+
+describe('the one-time "games moved" line (UX review P4)', () => {
+  const moved = () => root().findAll((n) => n.props.testID === 'drills-moved' && typeof n.type === 'string');
+  const played = () =>
+    act(() => {
+      useProgress.setState((s) => ({ byCert: { ...s.byCert, cisa: { ...s.byCert.cisa, gameBest: { trap: 5 } } } }));
+    });
+  beforeEach(() => {
+    act(() => {
+      useSeen.setState((s) => ({ moments: Object.fromEntries(Object.entries(s.moments).filter(([k]) => k !== DRILLS_MOVED)) }));
+    });
+  });
+
+  it('a learner who never played a game: no line', () => {
+    mount(<Practice />);
+    expect(moved()).toHaveLength(0);
+  });
+
+  it('one who played: a meta line and a ghost "Go to Drills" (no second solid button); the tap jumps and it never shows again', () => {
+    played();
+    mountMeasured(<Practice />);
+    expect(moved()).toHaveLength(1);
+    expect(textOf(moved()[0])).toContain('The games are here now, as Drills.');
+    const go = moved()[0].findAll((n) => n.props.accessibilityRole === 'button' && typeof n.props.onPress === 'function')[0];
+    expect(go.props.accessibilityLabel ?? textOf(go)).toContain('Go to Drills');
+    expect(go.props.accessibilityHint).toBe('Scrolls to Drills on this page');
+    act(() => {
+      go.props.onPress();
+    });
+    expect(useSeen.getState().moments[DRILLS_MOVED]).toBe(1);
+    expect(moved()).toHaveLength(0);
+    act(() => r?.unmount());
+    mount(<Practice />);
+    expect(moved()).toHaveLength(0);
+  });
+
+  it('or the first time Drills is on screen', () => {
+    played();
+    mountMeasured(<Practice />);
+    expect(moved()).toHaveLength(1);
+    layDrills();
+    expect(useSeen.getState().moments[DRILLS_MOVED]).toBe(1);
+    expect(moved()).toHaveLength(0);
   });
 });

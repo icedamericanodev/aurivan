@@ -9,7 +9,7 @@
  */
 import { Dimensions, StyleSheet } from 'react-native';
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
-import { EmptyPlate, EMPTY_PLATE_TITLE, ESTIMATE_WORDS, KeyCaption, KeyList, Plate, RunningHead, ScaleBar, scaleSpoken, Specimen, SpecimenLabel, SpecimenRow, StemChart, type Stem } from '../components/fieldguide';
+import { EmptyPlate, EMPTY_PLATE_TITLE, ESTIMATE_WORDS, KeyCaption, KeyList, lineLabelSpot, Plate, RunningHead, ScaleBar, scaleSpoken, Specimen, SpecimenLabel, SpecimenRow, StemChart, type Stem } from '../components/fieldguide';
 import { Button } from '../components/ui';
 import { plate } from '../theme/tokens';
 
@@ -139,6 +139,30 @@ describe('StemChart', () => {
     expect(lastStem).toBeGreaterThan(-1);
     expect(lineLabel).toBeGreaterThan(lastStem);
   }));
+
+  // Follow-up to H1: the last column's top in the label's band under the line moves the words beside the line's end.
+  it('places the "70 line" words beside the line’s end when the last stem’s top sits under them', () => {
+    const at = (lastPct: number | null) => lineLabelSpot({ lastPct, line: 70, gap: 63, fs: 1 });
+    // Default: under the line at the right, one line.
+    for (const p of [null, 100, 90, 75, 45, 20]) expect([p, at(p).beside]).toEqual([p, false]);
+    expect(at(90).top).toBe(at(null).top);
+    // A top at or just under the line (its top leaf in the band): beside, in the strip right of the stem.
+    for (const p of [71, 68, 64, 60, 55, 52]) expect([p, at(p).beside]).toEqual([p, true]);
+    expect(at(68).width).toBe(63 / 2 - 8);
+    // Never above the line (that is where the stem's own number sits), pushed down under a low top's number.
+    expect(at(68).top).toBe(at(null).top);
+    expect(at(55).top).toBeGreaterThan(at(null).top);
+    atScale(1, () => {
+      const near = STEMS.map((s, i) => (i === STEMS.length - 1 ? { ...s, pct: 68, answered: 40, thin: false, below: true } : s));
+      act(() => {
+        r = create(<StemChart stems={near} />);
+      });
+      layout(340);
+      const label = root().find((n) => n.props.testID === 'line-label' && typeof n.type === 'string');
+      expect(textOf(label)).toBe('70\nline');
+      expect(StyleSheet.flatten(label.props.style).backgroundColor).toBeUndefined();
+    });
+  });
 
   // UX review H2: between ×1.15 and ×1.29 the columns need room for the grown names, or the list takes over;
   // where the chart stays (×1.1 on a wide plate) it grows taller with the words under the soil.

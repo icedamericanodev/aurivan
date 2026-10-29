@@ -248,7 +248,7 @@ describe('Q1', () => {
   it('the hint line under the verdict starts where the coach line does (left 50)', () => {
     answerHinted(true);
     expect(indentOf(/^You used a hint, so this counts as half a right answer\.$/)).toBe(50);
-    expect(indentOf(/^(Clean read\.|You picked the runner-up\. That’s the trap\.|Check who you are in the question\.)$/)).toBe(50);
+    expect(indentOf(/^(Clean read\.|You picked the closest wrong choice\. That’s the trap\.|Check who you are in the question\.)$/)).toBe(50);
   });
   it('UX review H1: a WRONG hinted answer never says it "counts as half a right answer"', () => {
     answerHinted(false);

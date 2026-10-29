@@ -351,8 +351,8 @@ function copyFor(key: string, badge: BadgeId, exam: ExamFacts, domain?: CaseDoma
       };
     case 'mindset-shift':
       return {
-        howTo: 'Read every tip’s “Final two” line. It shows why the runner-up loses.',
-        unlock: 'You fall for the runner-up much less than you did. That’s the exam mindset.',
+        howTo: 'Read every tip’s “Final two” line. It shows why the closest wrong choice loses.',
+        unlock: 'You fall for the closest wrong choice much less than you did. That’s the exam mindset.',
         effort: `Needs ${GROWTH_MIN_DAYS / 7} weeks or more between your first and latest answers.`,
         skill: 'Thinks like the exam',
         minDays: GROWTH_MIN_DAYS + 1,

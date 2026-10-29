@@ -209,7 +209,7 @@ describe('mindset growth', () => {
     expect(g.show).toBe(true);
     if (!g.show) return;
     expect([g.earlyIn10, g.lateIn10]).toEqual([4, 2]);
-    expect(g.line).toBe('In your first weeks you picked the tempting runner-up 4 times in 10. Lately it’s 2 in 10.');
+    expect(g.line).toBe('In your first weeks you picked the closest wrong choice 4 times in 10. Lately it’s 2 in 10.');
   });
 
   it('needs 2 weeks of history', () => {

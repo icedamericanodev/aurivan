@@ -3073,7 +3073,7 @@ exports.BADGES = [
     },
     { id: 'dress-rehearsal', kind: 'milestone', name: 'Dress Rehearsal', rule: 'Finish a full, timed mock with every question answered.' },
     { id: 'on-pace', kind: 'milestone', name: 'On Pace', rule: `Finish a timed mock with every pace check within ${Math.round(pace_1.PACE_TOLERANCE * 100)}% of the target.` },
-    { id: 'mindset-shift', kind: 'milestone', name: 'Mindset Shift', rule: 'Pick the tempting runner-up clearly less often than in your first weeks.' },
+    { id: 'mindset-shift', kind: 'milestone', name: 'Mindset Shift', rule: 'Pick the closest wrong choice clearly less often than in your first weeks.' },
     {
         id: 'rooted',
         kind: 'milestone',
@@ -5178,7 +5178,7 @@ const KEEPSAKES = [
     ['fern', 'Fern', 'took-root', 'The fern: a whole topic took root.', 'tall', 'Help a whole topic take root'],
     ['still-pond', 'Still pond', 'know-what-you-know', 'The still pond: when you say sure, you’re right.', 'flat', 'Be right when you say you’re sure'],
     ['dew-web', 'Dew-lit web', 'slip-spotter', 'The dew-lit web: you can name your own thinking slips.', 'tall', 'Tag your mistakes with their thinking slip'],
-    ['weather-vane', 'Weather vane', 'mindset-shift', 'The weather vane: you fall for the runner-up less often.', 'tall', 'Pick the tempting runner-up less often'],
+    ['weather-vane', 'Weather vane', 'mindset-shift', 'The weather vane: you fall for the closest wrong choice less often.', 'tall', 'Pick the closest wrong choice less often'],
     ['lantern', 'Lantern', 'dress-rehearsal', 'The lantern: you sat a full, timed mock.', 'tall', 'Sit a full, timed mock'],
     ['sundial', 'Sundial', 'on-pace', 'The sundial: you finished a timed mock on pace.', 'tall', 'Finish a timed mock on pace'],
     ['swallow', 'Swallow', 'fresh-start', 'The swallow: you came back and picked up again.', 'tall', 'Pick up again after some time away'],
@@ -5960,7 +5960,7 @@ const priorityLens_1 = require("./games/priorityLens");
 const tips_1 = require("./tips");
 exports.SLIP_COACH_MIN = 5;
 exports.PATTERN_COPY = {
-    'runner-up': { title: 'You often pick the runner-up', coach: 'Two options look right. Say why the best one wins before you tap.', game: 'trap' },
+    'runner-up': { title: 'You often pick the closest wrong choice', coach: 'Two options look right. Say why the best one wins before you tap.', game: 'trap' },
     priority: { title: 'You miss priority words like FIRST and BEST', coach: 'Find the priority word before you read the options.', game: 'priority' },
     overconfident: { title: 'You miss when you feel sure', coach: 'A sure answer still deserves one more read of the question.', game: 'sprint' },
     role: { title: 'You answer as the wrong person', coach: 'Ask who you are in the question: auditor, manager or board?', game: 'canopy' },
@@ -5971,7 +5971,7 @@ exports.PATTERN_COPY = {
 };
 exports.PATTERN_ORDER = ['runner-up', 'priority', 'overconfident', 'role', 'tech-first', 'symptom', 'misread', 'knowledge'];
 exports.NEUTRAL_MISS_LINE = 'Here’s the idea to take with you.';
-exports.RUNNER_UP_LINE = 'You picked the runner-up. That’s the trap.';
+exports.RUNNER_UP_LINE = 'You picked the closest wrong choice. That’s the trap.';
 exports.SLIP_LINE = {
     role: 'Check who you are in the question.',
     priority: 'Find the priority word before the options.',
@@ -10480,7 +10480,7 @@ function decodeUtf8(bytes) {
   var api = {};
   api["browser"] = load("src/webcloud/browser.ts");
   api["config"] = load("src/webcloud/config.ts");
-  api.sourceHash = "0784c9bb6f8d3b36";
+  api.sourceHash = "f5241081b3aaf08e";
   var cloud = load("src/webcloud/index.ts");
   var liveVersion = "1.48.0";
   var liveStoreVersions = {"progress":2,"settings":1};

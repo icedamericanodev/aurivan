@@ -10,7 +10,7 @@ export { RunningHead, headDate, type HeadAction } from './RunningHead';
 export { Plate, FigCaption, KeyCaption, figLine, figSpoken, type Fig } from './Plate';
 export { SpecimenLabel, SpecimenRow } from './SpecimenLabel';
 export { ScaleBar, scaleSpoken, ESTIMATE_WORDS } from './ScaleBar';
-export { StemChart, StemList, stemWord, stemLines, MIN_COLUMN, type Stem } from './StemChart';
+export { StemChart, StemList, stemWord, stemLines, lineLabelSpot, MIN_COLUMN, type Stem } from './StemChart';
 export { Specimen, SpecimenMount, TierLine, type SpecimenState } from './Specimen';
 export { HerbariumSheet, CollectRow, sheetNo } from './HerbariumSheet';
 export { KeyList, type KeyItem } from './KeyList';

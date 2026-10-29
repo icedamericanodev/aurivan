@@ -43,7 +43,8 @@ const zoomText = () =>
   page.evaluate(
     ([sel, f]) => {
       for (const el of document.querySelectorAll(sel)) {
-        if (el.dataset.zoomed) continue;
+        // The tab bar's own text is capped at ×1.2 in the app: never zoomed here (UX review P1).
+        if (el.dataset.zoomed || el.closest('[role="tablist"]')) continue;
         const px = parseFloat(getComputedStyle(el).fontSize) || 16;
         el.style.zoom = String(px >= 26 ? Math.min(1.3, f) : f);
         el.dataset.zoomed = '1';
@@ -145,8 +146,26 @@ if (want('results')) {
 
 // Mobile 1.51 (the owner's menu pick A): four tabs; the games are Drills, a section of Practice. An old Play
 // link lands there (?section=drills scrolls to it); "More drills" opened; then Practice from its top.
+// With FONT_SCALE the text is zoomed FIRST, then the page scrolls to Drills (zooming after the jump would push
+// Drills off the shot; UX review P1).
+const toDrills = async () => {
+  if (FONT_SCALE) {
+    await zoomText();
+    await wait(300);
+    // The heading itself (the "games moved" line also says Drills).
+    const head = page.getByText('Drills', { exact: true }).first();
+    if (await head.count()) {
+      await head.evaluate((x) => x.scrollIntoView({ block: 'start' }));
+      await wait(700);
+    }
+  }
+};
 if (want('drills')) {
+  // The demo learner played games on the old Play tab: the one-time line under Practice's title, first.
+  await go('/practice', 2800);
+  await shot('fg-practice-moved-hint');
   await go('/practice?section=drills', 3200);
+  await toDrills();
   await shot('fg-drills');
   const more = page.getByText('More drills').first();
   if (await more.count()) {
@@ -158,6 +177,7 @@ if (want('drills')) {
   await go('/practice');
   await shot('fg-practice-top');
   await go('/play', 3200);
+  await toDrills();
   await shot('fg-drills-from-play-link');
 }
 

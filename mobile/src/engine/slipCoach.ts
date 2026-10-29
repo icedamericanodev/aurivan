@@ -48,13 +48,13 @@ export interface SlipInput {
 }
 
 export interface SlipCoachCopy {
-  title: string; // "You often pick the runner-up"
+  title: string; // "You often pick the closest wrong choice"
   coach: string; // one short line of advice
   game: DrillGame | null; // the drill; null = no game fits, practise instead
 }
 
 export const PATTERN_COPY: Record<SlipPattern, SlipCoachCopy> = {
-  'runner-up': { title: 'You often pick the runner-up', coach: 'Two options look right. Say why the best one wins before you tap.', game: 'trap' },
+  'runner-up': { title: 'You often pick the closest wrong choice', coach: 'Two options look right. Say why the best one wins before you tap.', game: 'trap' },
   priority: { title: 'You miss priority words like FIRST and BEST', coach: 'Find the priority word before you read the options.', game: 'priority' },
   overconfident: { title: 'You miss when you feel sure', coach: 'A sure answer still deserves one more read of the question.', game: 'sprint' },
   // Build F: the role pattern drills in Canopy Call ("who has the authority to decide?").
@@ -76,7 +76,8 @@ export const PATTERN_ORDER: SlipPattern[] = ['runner-up', 'priority', 'overconfi
  * "Final two" tip and the letter picked (both ORIGINAL letters).
  */
 export const NEUTRAL_MISS_LINE = 'Here’s the idea to take with you.';
-export const RUNNER_UP_LINE = 'You picked the runner-up. That’s the trap.';
+// Learner copy never says "runner-up" (mobile 1.51): the closest wrong choice. The id 'runner-up' stays (saved data).
+export const RUNNER_UP_LINE = 'You picked the closest wrong choice. That’s the trap.';
 export const SLIP_LINE: Record<ThinkingSlip, string> = {
   role: 'Check who you are in the question.',
   priority: 'Find the priority word before the options.',

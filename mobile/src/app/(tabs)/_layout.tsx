@@ -69,9 +69,25 @@ const label = (text: string) =>
  * the pressable (the element that gets the touch), not the inner label.
  */
 type TabButtonProps = React.ComponentProps<typeof PlatformPressable>;
-const tabButton = (text: string) =>
+/**
+ * Mobile 1.51 (UX review H2): a TAB to screen readers on every platform. The navigator's item asks for
+ * role "button" on iOS (VoiceOver said "Practice, button"); here it is "tab", with its selected state kept
+ * (the item's aria-selected, also as accessibilityState). The position ("2 of 4") is the navigator's own
+ * label; it is not written here (check it on a device: the You tab sets its own label for the badge dot).
+ */
+export const tabButton = (text: string) =>
   function TabButton(props: TabButtonProps) {
-    return <PlatformPressable {...props} accessibilityShowsLargeContentViewer accessibilityLargeContentTitle={text} />;
+    const selected = Boolean((props as { 'aria-selected'?: boolean })['aria-selected']);
+    return (
+      <PlatformPressable
+        {...props}
+        role="tab"
+        accessibilityRole="tab"
+        accessibilityState={{ ...props.accessibilityState, selected }}
+        accessibilityShowsLargeContentViewer
+        accessibilityLargeContentTitle={text}
+      />
+    );
   };
 
 /** The tab fade's curve: Material's standard easing, in React Native's Animated (the tab navigator's engine). */

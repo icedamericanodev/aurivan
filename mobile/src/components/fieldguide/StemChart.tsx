@@ -51,6 +51,31 @@ export function stemLines(s: Stem, line: number): string[] {
 const GUTTER = 24;
 const TOP = 40;
 const PLOT = 150;
+
+/**
+ * Where the "70 line" words go (UX follow-up to H1, mobile 1.51). By default under the dashed line at its
+ * right end, one line, on a paper halo. But when the LAST column's top (its top leaf reaches ~11pt above it)
+ * sits in or just under that band, the halo would hide the top of that stem, and just above the line is
+ * taken by the same stem's own number. Then the words go beside the line's end, on two lines ("70" /
+ * "line"), in the clear strip right of that stem (right-aligned, no halo so no leaf tip is hidden), pushed
+ * down below the number when a low top brings it under the line. Pure, so it is tested on its own.
+ */
+export function lineLabelSpot({ lastPct, line, gap, fs }: { /** The last column's measured percent, or null. */ lastPct: number | null; line: number; gap: number; fs: number }): {
+  beside: boolean;
+  top: number;
+  /** The box's width from the plot's right edge (beside only). */
+  width?: number;
+} {
+  const y = (p: number) => TOP + PLOT - (Math.max(0, Math.min(100, p)) / 100) * PLOT;
+  const below = y(line) + 2;
+  const band = Math.ceil(14 * fs);
+  if (lastPct === null) return { beside: false, top: below };
+  const top = y(lastPct);
+  const near = top >= y(line) - 2 && top - 11 <= below + band;
+  if (!near) return { beside: false, top: below };
+  // The number above a stem ends about 12pt over its top: the words start under it.
+  return { beside: true, top: Math.max(below, top - 10), width: Math.max(0, gap / 2 - 8) };
+}
 /** A column narrower than this hands over to the list (the longest names need it at 11pt). */
 export const MIN_COLUMN = 58;
 
@@ -82,6 +107,8 @@ function Chart({ stems, line, play, w, fs }: { stems: readonly Stem[]; line: num
   const soil = TOP + PLOT;
   const y = (p: number) => soil - (Math.max(0, Math.min(100, p)) / 100) * PLOT;
   const extras = Math.max(0, ...stems.map((s) => stemLines(s, line).length));
+  const last = stems[stems.length - 1];
+  const spot = lineLabelSpot({ lastPct: last && !last.thin ? last.pct : null, line, gap, fs });
   // The words under the soil: a two-line name, the word (two lines for not started and too few yet) and its
   // extra lines, grown with the text size.
   const twoLineWord = stems.some((s) => s.answered <= 0 || s.thin) ? 16 : 0;
@@ -117,10 +144,17 @@ function Chart({ stems, line, play, w, fs }: { stems: readonly Stem[]; line: num
         {stems.map((s, i) => (
           <StemColumn key={s.key} s={s} i={i} left={GUTTER + gap * i} gap={gap} soil={soil} y={y} moving={moving} ink={ink} />
         ))}
-        {/* After the stems, so the last column's stem never paints over it (UX review H1). */}
-        <View style={{ position: 'absolute', right: 0, top: y(line) + 2, backgroundColor: c.raised2, paddingLeft: 3 }}>
-          <FieldText v="tiny" color={c.ink2}>{`${line} line`}</FieldText>
-        </View>
+        {/* After the stems, so the last column's stem never paints over it (UX review H1); beside the line's
+            end instead when the last stem's top would sit under it (lineLabelSpot). */}
+        {spot.beside ? (
+          <View testID="line-label" style={{ position: 'absolute', right: 0, top: spot.top, width: spot.width, alignItems: 'flex-end' }}>
+            <FieldText v="tiny" color={c.ink2} style={{ textAlign: 'right' }}>{`${line}\nline`}</FieldText>
+          </View>
+        ) : (
+          <View testID="line-label" style={{ position: 'absolute', right: 0, top: spot.top, backgroundColor: c.raised2, paddingLeft: 3 }}>
+            <FieldText v="tiny" color={c.ink2}>{`${line} line`}</FieldText>
+          </View>
+        )}
         <Animated.View style={[{ position: 'absolute', left: 0, top: 0, width: w, height: h }, settleStyle]} pointerEvents="none">
           {stems.map((s, i) => {
             const cx = GUTTER + gap * i + gap / 2;
