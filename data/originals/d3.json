@@ -679,7 +679,7 @@
       "wrong_explanations": {
         "A": "Removing failing cases hides the problem and makes the exit criteria meaningless. It defeats the control.",
         "B": "Executing tests is management's job. Audit performing them would impair independence and not fix the defects.",
-        "D": "Moving failed cases to a later phase works when gaps are few and formally accepted; at 47 percent, exit criteria, not the calendar, decide readiness."
+        "D": "Carrying a few defects forward is normal with formal sign-off, but here the date is deciding; a deadline is a constraint, not evidence."
       },
       "tips": [
         "Eliminate: A re-scopes UAT so failing cases no longer count, which defeats the agreed exit criteria, and B has the auditor perform testing that belongs to management.",
@@ -3228,7 +3228,7 @@
       "correct_explanation": "Changing a production flag changes production behavior, so it needs the same discipline as code: an accountable owner, a planned expiry and a logged, authorized change trail. That addresses both findings, flags nobody can explain and toggling outside the release process. A yearly cleanup that assigns owners is the tempting option, but it acts once a year and leaves toggles changing production without a logged, authorized trail in between.",
       "wrong_explanations": {
         "A": "Change tickets bring toggles into change control, but hundreds of flags still have no owner, purpose or expiry.",
-        "B": "A cleanup drive is a sensible way to clear a flag backlog, but each toggle is a production change, governed every time.",
+        "B": "A cleanup drive sensibly clears a flag backlog, yet an ongoing gap is not one-off debt: recurring risks need standing controls.",
         "C": "Restricting who toggles adds access control, but flags still lack owners, expiry and an authorized, logged change trail."
       },
       "tips": [
