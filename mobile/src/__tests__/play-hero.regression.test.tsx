@@ -195,8 +195,9 @@ describe('Settings gear in the Today and You headers', () => {
     const gear = root().findAll((n) => n.props.accessibilityLabel === 'Settings' && n.props.accessibilityRole === 'button' && typeof n.props.onPress === 'function');
     expect(gear.length).toBe(1);
     const style = StyleSheet.flatten(typeof gear[0].props.style === 'function' ? gear[0].props.style({ pressed: false }) : gear[0].props.style);
-    expect(style.width).toBeGreaterThanOrEqual(44);
-    expect(style.height).toBeGreaterThanOrEqual(44);
+    // Mobile 1.51: You's gear is the running head's action (at least 48pt, grown by its "Settings" word).
+    expect(style.width ?? style.minWidth).toBeGreaterThanOrEqual(44);
+    expect(style.height ?? style.minHeight).toBeGreaterThanOrEqual(44);
     act(() => {
       gear[0].props.onPress();
     });

@@ -117,12 +117,14 @@ afterEach(() => {
 });
 
 describe('You: bands below 30 answers, numbers from 30', () => {
-  it('10 answers in a domain show a word and "10 answered", never a number (mobile 1.43: thin data looks thin)', () => {
+  it('10 answers in a domain show "too few yet" and "10 answered", never a number (mobile 1.51: thin data looks thin)', () => {
     seedDomain('1', 10, 9);
     mount(<You />);
     const t = allText();
-    expect(t).toMatch(/IS Audit\s+Strong\s+10 answered/); // 9 of 10 right: a word, not 90
-    expect(t).not.toMatch(/IS Audit\s+Strong\s+90/);
+    // 9 of 10 right: words under its line of growth, never "90" (the chart's own spoken stop is checked below).
+    expect(t).toContain('too few yet');
+    expect(t).toContain('10 answered');
+    expect(t.slice(t.indexOf('Fig. 5'), t.indexOf('KEY'))).not.toMatch(/\b90\b/);
     expect(t).toMatch(/Building is under 70, Steady 70 to 79, Strong 80 and up/);
   });
 
@@ -141,7 +143,8 @@ describe('You: bands below 30 answers, numbers from 30', () => {
     seedDomain('4', 40, 30); // 30/40 -> mastery 75
     mount(<You />);
     const t = allText();
-    expect(t).toMatch(/IS Operations\s+Steady\s+75\s+%/);
+    expect(t).toMatch(/\b75\s+%/);
+    expect(t).toContain('steady');
     // Mobile 1.43: the caption over the areas says what the percents count, once.
     expect(t.match(/latest tries/g)).toHaveLength(1);
     expect(t).not.toMatch(/Building is under/);
@@ -151,19 +154,20 @@ describe('You: bands below 30 answers, numbers from 30', () => {
     seedDomain('1', 10, 9);
     mount(<You />);
     const row = root().findAll((n) => typeof n.type === 'string' && typeof n.props.accessibilityLabel === 'string' && n.props.accessibilityLabel.startsWith('IS Audit: '))[0];
-    expect(row.props.accessibilityLabel).toBe('IS Audit: Strong, from 10 answers, at or above the 70 line');
+    // Mobile 1.51 (Field Guide): it says what it shows, "too few yet", never a band word for 10 answers.
+    expect(row.props.accessibilityLabel).toBe('IS Audit: too few yet, from 10 answers');
     expect(row.props.accessibilityLabel).not.toContain('90');
   });
 
-  it('Badges and Field notes are one row', () => {
+  it('Badges and Field notes are one row: the Herbarium (mobile 1.51)', () => {
     mount(<You />);
     const labels = root()
       .findAll((n) => typeof n.props.accessibilityLabel === 'string')
       .map((n) => n.props.accessibilityLabel as string);
-    expect(labels.some((l) => l.startsWith('Badges and field notes'))).toBe(true);
+    expect(labels.some((l) => l.startsWith('Herbarium: badges and field notes'))).toBe(true);
     expect(labels.some((l) => l.startsWith('Field notes'))).toBe(false);
     expect(labels.some((l) => l.startsWith('Badges,'))).toBe(false);
-    press(/^Badges and field notes/);
+    press(/^Herbarium: badges and field notes/);
     expect(router.push).toHaveBeenCalledWith('/milestones');
   });
 
@@ -174,7 +178,7 @@ describe('You: bands below 30 answers, numbers from 30', () => {
       .findAll((n) => typeof n.props.accessibilityLabel === 'string')
       .map((n) => n.props.accessibilityLabel as string);
     expect(labels.some((l) => l.startsWith('Field notes'))).toBe(true);
-    expect(labels.some((l) => l.startsWith('Badges and field notes'))).toBe(false);
+    expect(labels.some((l) => l.startsWith('Herbarium'))).toBe(false);
   });
 });
 

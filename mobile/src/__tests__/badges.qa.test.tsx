@@ -254,7 +254,7 @@ describe('1. upgrade from a 1.9 save with earned milestones', () => {
     expect(hasNewBadge('cisa')).toBe(false);
     mount(<You />);
     expect(root().findAll((n) => n.props.testID === 'new-badge-dot')).toHaveLength(0);
-    expect(labels().some((l) => l.startsWith(`Badges and field notes, ${Object.keys(SAVED).length} earned.`))).toBe(true);
+    expect(labels().some((l) => l.startsWith(`Herbarium: badges and field notes, ${Object.keys(SAVED).length} earned.`))).toBe(true);
     unmount();
     mount(<TabsLayout />);
     expect(root().findAll((n) => n.props.testID === 'you-new-dot')).toHaveLength(0);
@@ -442,7 +442,7 @@ describe('2. earning a new badge in a session', () => {
     expect(hasNewBadge('cisa')).toBe(true);
     mount(<You />);
     expect(root().findAll((n) => n.props.testID === 'new-badge-dot').length).toBeGreaterThan(0);
-    expect(labels().some((l) => l.startsWith('Badges and field notes, new badge, 2 earned.'))).toBe(true);
+    expect(labels().some((l) => l.startsWith('Herbarium: badges and field notes, new badge, 2 earned.'))).toBe(true);
     unmount();
     mount(<TabsLayout />);
     expect(root().findAll((n) => n.props.testID === 'you-new-dot').length).toBeGreaterThan(0);
@@ -967,7 +967,7 @@ describe('5. Settings → Show badges', () => {
     // And the row is back, with its dot (two badges arrived since the case was last opened).
     jest.setSystemTime(T0 + 60_000);
     mount(<You />);
-    expect(labels().some((l) => l.startsWith('Badges and field notes, new badge, 2 earned.'))).toBe(true);
+    expect(labels().some((l) => l.startsWith('Herbarium: badges and field notes, new badge, 2 earned.'))).toBe(true);
   });
 
   it('the choice travels in a backup; an older backup (no such field) keeps this phone’s choice', async () => {
@@ -1145,7 +1145,7 @@ describe('7. reset', () => {
     expect(sets.every((s) => s.earned === 0)).toBe(true);
     expect(hasNewBadge('cisa')).toBe(false);
     mount(<You />);
-    expect(labels().some((l) => l.startsWith('Badges and field notes, none yet.'))).toBe(true);
+    expect(labels().some((l) => l.startsWith('Herbarium: badges and field notes, none yet.'))).toBe(true);
     unmount();
     // The phone's own choices (the Sort) stay; a new badge after the reset is new.
     expect(useSeen.getState().badgeSort).toBe('effort');

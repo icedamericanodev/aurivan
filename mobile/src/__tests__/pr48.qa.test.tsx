@@ -26,6 +26,7 @@
  * Gotcha: never `act(() => store.action())` — use braces.
  */
 /* eslint-disable @typescript-eslint/no-require-imports */
+import { areaStems } from '../engine/fieldGuide';
 import { type ComponentType } from 'react';
 import { AppState, View } from 'react-native';
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
@@ -34,7 +35,6 @@ import { FocusEmitter, FocusScope, routeParams } from '../../jest/perf/focusRout
 import { setMockReducedMotion } from '../../jest/reanimated-mock';
 import { CERTIFICATIONS, getCertification } from '../content/certifications';
 import { lessonsFor } from '../content/lessons';
-import { areaFigure } from '../engine/domainBand';
 import { daysToExam } from '../engine/examDay';
 import { grewLabel } from '../engine/plant';
 import { computeReadiness } from '../engine/readiness';
@@ -357,7 +357,7 @@ describe('answering, then switching tabs: every tab shows fresh numbers', () => 
     if (range.enough) {
       // Today says it in its clearing ("Readiness grew to 45–61%", a word joiner inside); You in its rings label.
       expect(joined('home').replace(/\u2060/g, '')).toContain(`${range.low}–${range.high}`);
-      expect(joined('you')).toContain(`[Estimated readiness ${range.low} to ${range.high} percent.`);
+      expect(joined('you')).toContain(`[Estimated readiness ${range.low} to ${range.high} percent, a study estimate`);
     }
     const answered = Object.keys(cp().answers).length;
     expect(joined('you')).toContain(`[Answered: ${answered}]`);
@@ -366,7 +366,10 @@ describe('answering, then switching tabs: every tab shows fresh numbers', () => 
     for (const d of rd.domains) {
       const short = cert.domains.find((x) => x.id === d.domainId)!.short;
       // Mobile 1.43: each area row says its word, its percent from 30 answers, and its line (engine/domainBand.ts areaFigure).
-      expect(joined('you')).toContain(`[${short}: ${areaFigure(d.answered, Math.round(d.mastery * 100)).spoken}`);
+      // Mobile 1.51 (Field Guide): each area's line of growth says what it shows (engine/fieldGuide.ts areaStems).
+      const stem = areaStems(cert.domains, rd.domains).find((x) => x.key === d.domainId)!;
+      expect(stem.spoken.startsWith(`${short}: `)).toBe(true);
+      expect(joined('you')).toContain(`[${stem.spoken}`);
     }
     // Learn's "Up next" follows the focus domain.
     const focus = cert.domains.find((d) => d.id === rd.focusDomainId)!;
@@ -620,7 +623,7 @@ describe('a badge earned: the tab dot and the count', () => {
       dot = create(<Dot />);
     });
     expect(dot!.root.findAllByProps({ testID: 'you-new-dot' })).toHaveLength(0);
-    expect(joined('you')).toContain('[Badges and field notes, none yet.');
+    expect(joined('you')).toContain('[Herbarium: badges and field notes, none yet.');
     // A finished mock of 50 earns a badge live (after the launch back-fill).
     mockExam(40);
     const earned = caseEarnedCount(cp().milestones?.earned);
@@ -628,7 +631,7 @@ describe('a badge earned: the tab dot and the count', () => {
     expect(hasNewBadge('cisa')).toBe(true);
     expect(dot!.root.findAllByProps({ testID: 'you-new-dot' }).length).toBeGreaterThan(0);
     expectTabsFresh(['you']);
-    expect(joined('you')).not.toContain('[Badges and field notes, none yet.');
+    expect(joined('you')).not.toContain('[Herbarium: badges and field notes, none yet.');
     act(() => dot!.unmount());
   });
 });

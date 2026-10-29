@@ -49,12 +49,20 @@
  * Uplift Phase 6 (accounts, built OFF): in a cloud build only, the first row
  * of Help and feedback is "Sync across devices" (components/account.tsx).
  * With the flag off (every build today) nothing here changes.
+ * Mobile 1.51 (Field Guide, the owner's signature pick; DESIGN_SYSTEM.md §21): a running head
+ * ("Field record · You", Settings on its right) over the study profile; readiness as a scale bar
+ * with the words "a study estimate" built in; the areas as one line of growth each on ONE scale in
+ * a plate (Fig. 5, with its key); then the Herbarium row (the badges' way in, with the newest
+ * pressed specimens); the stats are ruled label rows (Answered, Accuracy, Streak), not tiles.
  */
 import { router, useFocusEffect } from 'expo-router';
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { View } from 'react-native';
 import { ringsChangeLine } from '../../components/journey';
 import { AreaRows, ReadinessBlock } from '../../components/youReadiness';
+import { FieldText, RunningHead, SpecimenLabel, SpecimenRow } from '../../components/fieldguide';
+import { HerbariumEntry } from '../../components/herbarium';
+import { lastPressed } from '../../engine/fieldGuide';
 import { FadeIn, useGrowth, useScreenFocus } from '../../components/motion';
 import { creditSubtitle } from '../../components/help';
 import { AccountSection } from '../../components/account';
@@ -66,7 +74,7 @@ import { ShareProgressSheet } from '../../components/shareCard';
 import { LivePlant } from '../../components/plant/LivePlant';
 import { growthShort, plantCallName } from '../../engine/plant';
 import { usePlantView } from '../../lib/plant';
-import { Button, EmptyState, Enter, ICON_SIZE, InviteRow, Lead, ListRow, Row, Screen, ScreenTitle, Section, Stat, StatRow, T, Trail } from '../../components/ui';
+import { Button, EmptyState, Enter, ICON_SIZE, InviteRow, Lead, ListRow, Screen, Section, T, Trail } from '../../components/ui';
 import { pacingStats, pacingStatsLine, spokenMin } from '../../engine/pace';
 import { mockSubtitle } from '../../components/readinessReport';
 import { readinessRange } from '../../engine/readinessRange';
@@ -100,6 +108,9 @@ const openNameEditor = () => {
   router.push({ pathname: '/settings', params: { open: 'name' } });
 };
 
+/** The herbarium (the route keeps its old name, so links and Results still work). */
+const openHerbarium = () => router.push('/milestones');
+
 /** When You's rings have finished growing (five arcs, outer first 60 ms apart, each over `grow`): the plant breathes after. */
 const RINGS_SETTLED_MS = motion.dur.grow + 4 * motion.stagger.stat;
 
@@ -124,6 +135,9 @@ export default function You() {
   const [shareDay, setShareDay] = useState<string | null>(null);
   // Mobile 1.10: every badge the case shows as earned (a kept key it doesn't show never counts), and the "new" dot.
   const badgeCount = caseEarnedCount(progress.milestones?.earned);
+  // Mobile 1.51: the herbarium row's newest specimens, from the saved keys alone (worked out again only when they change).
+  const earnedKeys = progress.milestones?.earned;
+  const pressed = useMemo(() => lastPressed(earnedKeys, cert.domains), [earnedKeys, cert.domains]);
   const newBadge = useNewBadge();
   const badgesHidden = useSettings((s) => s.badgesHidden);
   // The back-fill line shows ONCE (code review): kept in state for this
@@ -213,34 +227,42 @@ export default function You() {
   return (
     <Screen>
       <Enter i={0}>
-        <ScreenTitle title="You" settings={() => router.push('/settings')} />
-        {/* Mobile 1.44: the first block, on the paper, with a hairline under it. It opens the one name editor. */}
-        <View style={{ marginTop: space.lg, paddingBottom: space.md, borderBottomWidth: 1, borderColor: c.line }}>
+        {/* Mobile 1.51 (Field Guide): the running head says where you are; Settings is its one action. */}
+        <RunningHead
+          section="Field record · You"
+          action={{
+            label: 'Settings',
+            hint: 'Exam date, reminders and more',
+            onPress: () => router.push('/settings'),
+            icon: (col) => <Settings size={ICON_SIZE.row} color={col} strokeWidth={ICON_STROKE} />,
+          }}
+        />
+        {/* Mobile 1.44: the first block, on the paper. It opens the one name editor. */}
+        <View style={{ marginTop: space.sm }}>
           <StudyProfile ref={profileRef} lines={profile} initial={nameInitial(displayName)} onPress={openNameEditor} />
         </View>
       </Enter>
 
       <Enter i={1}>
-        {/* Readiness first (mobile 1.21): the section's action opens the report. */}
-        <Section
-          title="Readiness"
-          style={{ marginTop: space.lg }}
-          action={{
-            label: 'See report',
+        {/* Readiness first (mobile 1.21): a tracked kicker, and its action opens the report. */}
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', marginTop: space.lg }}>
+          <FieldText v="head" accessibilityRole="header">Readiness</FieldText>
+          <Button
+            kind="ghost"
+            label="See report"
             // WCAG 2.5.3: the spoken name starts with the visible words.
-            accessibilityLabel: 'See report, your readiness report',
-            hint: 'Your mock trend, each domain side by side, and what would raise your low end',
-            onPress: () => router.push('/readiness'),
-          }}
-        />
-        {/* Mobile 1.43 (owner decision, one ring): the overall range on ONE ring with a notch at the study bar,
-            the range beside it, the study-bar line, then one row per area (components/youReadiness.tsx). */}
-        <View style={{ marginTop: space.md }}>
-          <ReadinessBlock range={range} growth={rangeGrowth} />
+            accessibilityLabel="See report, your readiness report"
+            accessibilityHint="Your mock trend, each domain side by side, and what would raise your low end"
+            onPress={() => router.push('/readiness')}
+            style={{ marginRight: -space.sm }}
+          />
         </View>
+        {/* Mobile 1.51 (Field Guide): the range on a scale bar with a tick at the study bar and its words
+            built in, the study-bar line, then the areas on one scale in a plate (components/youReadiness.tsx). */}
+        <ReadinessBlock range={range} growth={rangeGrowth} />
         <T v="meta" style={{ marginTop: space.md }}>{STUDY_BAR_LINE}</T>
         <View style={{ marginTop: space.xl }}>
-          <AreaRows cert={cert} readiness={readiness} ups={sinceLook ? ups : undefined} />
+          <AreaRows cert={cert} readiness={readiness} ups={sinceLook ? ups : undefined} play={rings.play} />
         </View>
         {/* What went up since the last look, said once under the areas (mobile 1.24); the rows' labels hold the figures. */}
         {changeLine && (
@@ -250,32 +272,30 @@ export default function You() {
         )}
         {/* A number shows from 30 answers in an area: said once while any area is still thin. */}
         {anyThin && <T v="meta" style={{ marginTop: space.sm }}>{BANDS_LINE}</T>}
+        {/* Mobile 1.51: the badges' way in, right under the plate (the herbarium; Settings → Show badges off hides it). */}
+        {!badgesHidden && (
+          <View style={{ marginTop: space.lg }}>
+            <HerbariumEntry pressed={pressed} count={badgeCount} newBadge={newBadge} onPress={openHerbarium} />
+          </View>
+        )}
       </Enter>
 
       <Enter i={2} style={{ marginTop: space.xl }}>
-        <StatRow>
-          {[
-            <Stat key="a" label="Answered" value={String(answered)} roll={statRoll(0, String(stats.from[0]))} />,
-            answered ? (
-              <Stat key="b" label="Accuracy" value={String(accuracy)} pct roll={statRoll(1, String(stats.from[1]))} />
-            ) : (
-              <Stat key="b" label="Accuracy" word="Not yet" spoken="not yet, answer a question first" />
-            ),
-            streak > 0 ? (
-              <Stat
-                key="c"
-                label="Streak"
-                value={String(streak)}
-                unit={streak === 1 ? 'day' : 'days'}
-                color={c.clay}
-                roll={statRoll(2, String(stats.from[2]))}
-              />
-            ) : (
-              // No streak yet (or a new start): an invitation, never a "0" that reads as a failure.
-              <Stat key="c" label="Streak" word="Starts today" spoken="starts today, with your first answer" color={c.clay} />
-            ),
-          ]}
-        </StatRow>
+        {/* Mobile 1.51 (Field Guide): ruled label rows, a tracked key and a serif value, never tiles. */}
+        <SpecimenLabel testID="you-stats">
+          <SpecimenRow label="Answered" value={String(answered)} roll={statRoll(0, String(stats.from[0]))} />
+          {answered ? (
+            <SpecimenRow label="Accuracy" value={String(accuracy)} pct roll={statRoll(1, String(stats.from[1]))} />
+          ) : (
+            <SpecimenRow label="Accuracy" word="Not yet" spoken="not yet, answer a question first" />
+          )}
+          {streak > 0 ? (
+            <SpecimenRow label="Streak" value={String(streak)} unit={streak === 1 ? 'day' : 'days'} color={c.clay} roll={statRoll(2, String(stats.from[2]))} />
+          ) : (
+            // No streak yet (or a new start): an invitation, never a "0" that reads as a failure.
+            <SpecimenRow label="Streak" word="Starts today" spoken="starts today, with your first answer" color={c.clay} />
+          )}
+        </SpecimenLabel>
         {/* Two "Accuracy" stats in the app count different things (C8): say what this one counts.
             Mobile 1.39: only when the rings' "Percentages count your latest try…" line is not already
             on screen two blocks up (that one covers this percentage too); never both. */}
@@ -338,8 +358,6 @@ export default function You() {
           dueCount={dueCount}
           saved={progress.bookmarks.length}
           badgesHidden={badgesHidden}
-          newBadge={newBadge}
-          badgeCount={badgeCount}
           mocks={progress.mocks}
           pacingLine={pacingLine}
           creditItems={creditItems}
@@ -381,8 +399,6 @@ const YouLists = memo(function YouLists({
   dueCount,
   saved,
   badgesHidden,
-  newBadge,
-  badgeCount,
   mocks,
   pacingLine,
   creditItems,
@@ -395,8 +411,6 @@ const YouLists = memo(function YouLists({
   dueCount: number;
   saved: number;
   badgesHidden: boolean;
-  newBadge: boolean;
-  badgeCount: number;
   mocks: readonly MockResult[];
   pacingLine: string | null;
   creditItems: number;
@@ -446,30 +460,15 @@ const YouLists = memo(function YouLists({
           accessibilityLabel={`Saved questions, ${saved} saved`}
           onPress={() => router.push('/saved')}
         />
-        {/* One row for both (mobile 1.24): the badge case has the Field notes shelf and its
-            "See game levels" link. With badges hidden in Settings, only Field notes remains. */}
-        {badgesHidden ? (
+        {/* Mobile 1.51: the badges' way in is the Herbarium row under the areas (it holds the Field notes
+            sheet and its "See game levels" link). With badges hidden in Settings, Field notes has its own row here. */}
+        {badgesHidden && (
           <ListRow
             icon={icon(Leaf)}
             title="Field notes"
             subtitle="Your level in each game"
             accessibilityLabel="Field notes. Your level in each game"
             onPress={() => router.push('/field-notes')}
-          />
-        ) : (
-          <ListRow
-            icon={icon(BadgeIcon)}
-            title="Badges and field notes"
-            subtitle="What you’ve mastered, and your level in each game"
-            trailing={
-              <Row gap={space.sm}>
-                {/* A badge earned since the case was last opened: a dot (shape, and spoken), never a number. */}
-                {newBadge && <View testID="new-badge-dot" style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: c.accent }} />}
-                {badgeCount ? <Trail value={String(badgeCount)} unit="earned" /> : null}
-              </Row>
-            }
-            accessibilityLabel={`Badges and field notes${newBadge ? ', new badge' : ''}, ${badgeCount ? `${badgeCount} earned` : 'none yet'}. What you've mastered, and your level in each game`}
-            onPress={() => router.push('/milestones')}
           />
         )}
         {/* Share progress as a row (it was a full-width button mid-screen). */}

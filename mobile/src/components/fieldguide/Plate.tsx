@@ -40,6 +40,7 @@ export function Plate({
   fig,
   children,
   dashed,
+  tight,
   style,
   innerStyle,
   testID,
@@ -48,6 +49,8 @@ export function Plate({
   children?: ReactNode;
   /** The empty mount: the inner edge is dashed ("Plate not yet drawn"). */
   dashed?: boolean;
+  /** A chart that wants the whole width: 4pt inside the inner edge instead of 12. */
+  tight?: boolean;
   style?: StyleProp<ViewStyle>;
   innerStyle?: StyleProp<ViewStyle>;
   testID?: string;
@@ -55,8 +58,8 @@ export function Plate({
   const { c } = useTheme();
   return (
     <View testID={testID} style={[{ backgroundColor: c.raised2, borderWidth: 1, borderColor: c.line, padding: plate.mount }, style]}>
-      <View style={[{ borderWidth: 1, borderColor: dashed ? c.control : c.line, borderStyle: dashed ? 'dashed' : 'solid', padding: space.md }, innerStyle]}>
-        {fig && <FigCaption fig={fig} style={{ marginBottom: space.sm }} />}
+      <View style={[{ borderWidth: 1, borderColor: dashed ? c.control : c.line, borderStyle: dashed ? 'dashed' : 'solid', padding: space.md, paddingHorizontal: tight ? space.xs : space.md }, innerStyle]}>
+        {fig && <FigCaption fig={fig} style={{ marginBottom: space.sm, marginLeft: tight ? space.sm : 0 }} />}
         {children}
       </View>
     </View>

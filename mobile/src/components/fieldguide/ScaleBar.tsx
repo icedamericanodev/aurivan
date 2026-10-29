@@ -42,7 +42,7 @@ export function scaleSpoken(range: ReadinessRange, mark = READY_LOW): string {
 const H = 52;
 const BAR_Y = 22;
 const BAR_H = 5;
-const LABEL_W = 44;
+const LABEL_W = 56;
 
 export function ScaleBar({
   range,
@@ -90,7 +90,7 @@ export function ScaleBar({
   const ticks = [0, 50, mark, 100].filter((p, i, all) => all.indexOf(p) === i);
   const label = (p: number, text: string, top: number, color = c.ink2) => (
     <View key={`${text}-${top}`} style={{ position: 'absolute', left: Math.max(0, Math.min(w - LABEL_W, X(p) - LABEL_W / 2)), top, width: LABEL_W, alignItems: 'center' }}>
-      <FieldText v="small" color={color} maxScale={1.3}>{text}</FieldText>
+      <FieldText v="small" color={color} maxScale={1.3} numberOfLines={1}>{text}</FieldText>
     </View>
   );
 
@@ -133,7 +133,8 @@ export function ScaleBar({
                   <Path d={`M${X(range.low)} 16V12H${X(range.high)}V16`} fill="none" stroke={c.accent} strokeWidth={2} />
                   <Rect x={X(range.low)} y={BAR_Y} width={Math.max(2, X(range.high) - X(range.low))} height={BAR_H} fill={c.accent} />
                 </Svg>
-                {label((range.low + range.high) / 2, `${range.low}–${range.high}`, -4, c.accentText)}
+                {/* The bracket's own label: at large text the range above says it (it would crowd the bar). */}
+                {!large && label((range.low + range.high) / 2, `${range.low}–${range.high}`, -4, c.accentText)}
               </Animated.View>
             )}
             {ticks.map((p) => label(p, String(p), p === mark ? 36 : 32))}

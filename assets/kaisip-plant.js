@@ -6097,7 +6097,7 @@ function domainFigure(answered, pct) {
 }
 exports.LATEST_TRIES_LABEL = 'Percentages count your latest try at each question.';
 exports.BANDS_LINE = `Building is under ${exports.STEADY_FROM}, Steady ${exports.STEADY_FROM} to ${exports.STRONG_FROM - 1}, Strong ${exports.STRONG_FROM} and up. A number shows from ${exports.BAND_MIN_ANSWERS} answers in a domain.`;
-exports.STUDY_BAR_LINE = `The notch marks ${examReady_1.READY_LOW}%, this app’s study bar for your low end. Each area has its own ${exports.STEADY_FROM}% line. A study bar, not an exam score.`;
+exports.STUDY_BAR_LINE = `The tick marks ${examReady_1.READY_LOW}%, this app’s study bar for your low end. Each area has its own ${exports.STEADY_FROM}% line. A study bar, not an exam score.`;
 exports.AREAS_CAPTION = 'Right on your latest tries';
 exports.AREA_LINE_LABEL = `Area line ${exports.STEADY_FROM}%`;
 function areaFigure(answered, pct) {
@@ -11403,6 +11403,6 @@ exports.fieldInk = {
   api["domainBand"] = load("src/engine/domainBand.ts");
   api["pace"] = load("src/engine/pace.ts");
   api["readySigns"] = load("src/engine/readySigns.ts");
-  api.sourceHash = "555acddfc9ef6868";
+  api.sourceHash = "0e6b643ba69cc748";
   root.KaiSipPlant = Object.freeze(api);
 })(typeof window !== 'undefined' ? window : globalThis);

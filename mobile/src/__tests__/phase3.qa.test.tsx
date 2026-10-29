@@ -36,7 +36,7 @@ import Reports from '../app/reports';
 import Results from '../app/results';
 import Saved from '../app/saved';
 import { EmptyArt, GrowthRings } from '../components/glyphs';
-import { ReadinessRing } from '../components/youReadiness';
+import { AreaRows, ReadinessBlock } from '../components/youReadiness';
 import { ClearingBody } from '../components/journey';
 import { BadgeCell, BadgeListRow } from '../components/badges';
 import { MilestoneMomentView, resetBadgeMomentsForTest } from '../components/milestones';
@@ -587,8 +587,10 @@ describe('J3b the exam-ready moment (T3)', () => {
 
 // ── J4 ───────────────────────────────────────────────────────────────────
 describe('J4 You', () => {
-  // Mobile 1.43: one readiness ring; its solid arc grows from the low end last seen.
-  const youRings = () => r!.root.findAllByType(ReadinessRing)[0].props.growth as { play: boolean; from?: number[] };
+  // Mobile 1.43: one readiness figure; it grows from the low end last seen (a scale bar since 1.51, Field Guide).
+  // The areas' lines of growth trace in with the same growth (AreaRows `play`).
+  const youRings = () => r!.root.findAllByType(ReadinessBlock)[0].props.growth as { play: boolean; from?: number[] };
+  const growingArcs = () => (r!.root.findAllByType(AreaRows)[0].props.play ? 1 : 0);
 
   it('first look of the day grows from 0 with no "+N"; a rise since the last look grows from there with "+N" on that domain only; a revisit is still', () => {
     setMockReducedMotion(false);
@@ -631,7 +633,7 @@ describe('J4 You', () => {
     expect(plusTags()).toEqual([]);
     expect(growingArcs()).toBe(0);
     // "answered" went up (it may roll); accuracy went down and must not roll.
-    const accuracy = byName('Stat').find((s) => s.props.label === 'Accuracy')!;
+    const accuracy = byName('SpecimenRow').find((s) => s.props.label === 'Accuracy')!;
     const accRoll = accuracy.findAllByType(RollingText)[0];
     expect(accRoll.props.from === accRoll.props.value || !accRoll.props.play).toBe(true);
   });

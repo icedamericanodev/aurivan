@@ -44,18 +44,18 @@ export function stemLines(s: Stem, line: number): string[] {
   return [s.thin ? `${s.answered} answered` : null, !s.thin && s.pct !== null && s.below ? `below ${line}` : null, s.note ?? null].filter((x): x is string => Boolean(x));
 }
 
-const GUTTER = 26;
+const GUTTER = 24;
 const TOP = 40;
 const PLOT = 150;
 /** A column narrower than this hands over to the list (the longest names need it at 11pt). */
-export const MIN_COLUMN = 56;
+export const MIN_COLUMN = 58;
 
 /** Five stems on one scale, or the list at large text. */
 export function StemChart({ stems, line = 70, play = false, testID }: { stems: readonly Stem[]; line?: number; play?: boolean; testID?: string }) {
   const large = useFontScale() >= LARGE_TEXT;
   // A first guess before layout (the phone's width less the gutters and a plate's mount), so the first frame is drawn.
   const { width: screen } = useWindowDimensions();
-  const [w, setW] = useState(() => Math.max(0, Math.min(screen, 560) - 2 * space.gutter - 2 * (2 + plate.mount + space.md)));
+  const [w, setW] = useState(() => Math.max(0, Math.min(screen, 560) - 2 * space.gutter - 2 * (2 + plate.mount + space.xs)));
   const gap = stems.length ? (w - GUTTER) / stems.length : 0;
   const list = large || (w > 0 && gap < MIN_COLUMN);
   return (
@@ -256,9 +256,7 @@ export function StemList({ stems, line = 70 }: { stems: readonly Stem[]; line?: 
                 height: 8,
                 borderRadius: 2,
                 backgroundColor: s.thin ? 'transparent' : c.track,
-                borderWidth: s.thin ? 1 : 0,
-                borderStyle: 'dashed',
-                borderColor: c.control,
+                ...(s.thin ? { borderWidth: 1, borderStyle: 'dashed' as const, borderColor: c.control } : null),
                 marginVertical: 4,
               }}
             >
@@ -267,7 +265,7 @@ export function StemList({ stems, line = 70 }: { stems: readonly Stem[]; line?: 
                 <View style={{ width: 2, height: 16, backgroundColor: c.ink2 }} />
               </View>
             </View>
-            <View style={{ flexDirection: 'row', flexWrap: 'wrap', columnGap: space.sm }}>
+            <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'baseline', columnGap: space.sm }}>
               <FieldText v="fig" color={red ? c.clay : c.ink2}>{stemWord(s)}</FieldText>
               {extra.map((l) => (
                 <FieldText key={l} v="small" color={red && l.startsWith('below') ? c.clay : c.ink2}>{`· ${l}`}</FieldText>

@@ -99,7 +99,7 @@ export function RunningHead({
             onPressIn={press.onPressIn}
             onPressOut={press.onPressOut}
             hitSlop={4}
-            style={[{ flexDirection: 'row', alignItems: 'center', gap: 6, minHeight: 48, minWidth: 48, justifyContent: 'flex-end', paddingHorizontal: space.sm, marginRight: -space.sm }, press.style]}
+            style={[{ flexDirection: 'row', alignItems: 'center', gap: 6, minHeight: 48, minWidth: 48, justifyContent: 'flex-end', paddingHorizontal: space.sm }, large ? { marginLeft: -space.sm } : { marginRight: -space.sm }, press.style]}
           >
             {press.layer}
             <FieldText v="head" color={c.ink}>

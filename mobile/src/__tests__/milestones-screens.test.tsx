@@ -161,11 +161,11 @@ describe('Badges screen', () => {
 });
 
 describe('You', () => {
-  it('has ONE Badges and field notes row (mobile 1.24), and the back-fill line until it is seen', () => {
+  it('has ONE badges and field notes row, the Herbarium (mobile 1.24; 1.51), and the back-fill line until it is seen', () => {
     d4.slice(0, 20).forEach(answer);
     ensureBackfill('cisa', T0);
     mount(<You />);
-    expect(labels()).toContain("Badges and field notes, 2 earned. What you've mastered, and your level in each game");
+    expect(labels().some((l) => /^Herbarium: badges and field notes, 2 earned\. Last pressed: .+, \d+ \w+\.$/.test(l))).toBe(true);
     expect(labels().some((l) => l.startsWith('Field notes'))).toBe(false); // merged into the row above
     expect(allText()).toContain('You’d already earned 2 badges.');
     // Shown once: You marks it seen, and the line stays for this visit.
@@ -182,7 +182,7 @@ describe('You', () => {
     ensureBackfill('cisa', T0);
     mount(<You />);
     expect(allText()).not.toContain('already earned');
-    expect(labels()).toContain("Badges and field notes, none yet. What you've mastered, and your level in each game");
+    expect(labels()).toContain('Herbarium: badges and field notes, none yet.');
   });
 });
 

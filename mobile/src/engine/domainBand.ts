@@ -61,11 +61,11 @@ export const LATEST_TRIES_LABEL = 'Percentages count your latest try at each que
 export const BANDS_LINE = `Building is under ${STEADY_FROM}, Steady ${STEADY_FROM} to ${STRONG_FROM - 1}, Strong ${STRONG_FROM} and up. A number shows from ${BAND_MIN_ANSWERS} answers in a domain.`;
 
 /**
- * You's readiness (mobile 1.43, board 3): one ring with a notch at the study bar,
- * then one row per area. The two lines are labelled apart (80 is the overall
+ * You's readiness (mobile 1.43, board 3; a scale bar with a tick since 1.51, Field Guide): the study bar,
+ * then one line of growth per area. The two lines are labelled apart (80 is the overall
  * study bar, 70 each area's line), and never called a pass mark.
  */
-export const STUDY_BAR_LINE = `The notch marks ${READY_LOW}%, this app’s study bar for your low end. Each area has its own ${STEADY_FROM}% line. A study bar, not an exam score.`;
+export const STUDY_BAR_LINE = `The tick marks ${READY_LOW}%, this app’s study bar for your low end. Each area has its own ${STEADY_FROM}% line. A study bar, not an exam score.`;
 /** The caption over the area rows, and its partner on the right. */
 export const AREAS_CAPTION = 'Right on your latest tries';
 export const AREA_LINE_LABEL = `Area line ${STEADY_FROM}%`;
