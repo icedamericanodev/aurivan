@@ -251,7 +251,7 @@
       "wrong_explanations": {
         "A": "Materiality looks at aggregate volume and control reliance, not average values. Thousands of disputes monthly can add up to a material amount.",
         "B": "The reconciliation has been skipped in most months, so it cannot provide the assurance the module depends on.",
-        "C": "High-value testing assumes risk sits in large items. With the compensating control failing, systematic errors across small disputes go unexamined."
+        "C": "Value thresholds are right when controls already cover small items. With the compensating control rarely running, scope covers everything a failed control leaves exposed."
       },
       "tips": [
         "Eliminate: A judges materiality by average value, and B relies on a control that rarely operates.",
@@ -279,7 +279,7 @@
       "options": {
         "A": "Some sessions were reviewed by the session holder",
         "B": "Many reviews contain generic, boilerplate approval text",
-        "C": "A small percentage of review tickets remain open",
+        "C": "Review tickets are often closed after the target date",
         "D": "The review closure target was set below 100 percent"
       },
       "correct": "A",
@@ -288,11 +288,11 @@
       "correct_explanation": "The control's value depends on segregation of duties: someone other than the session holder reviews the activity. A self-review removes that element entirely, so the control provides no assurance while still appearing complete in metrics. Boilerplate notes weaken review quality, but an independent person still looked at the session.",
       "wrong_explanations": {
         "B": "Boilerplate notes degrade review quality and evidence, but an independent reviewer was still involved, so segregation of duties is preserved.",
-        "C": "Open tickets are visible exceptions that management can track and chase. The risk is small and already detectable.",
+        "C": "Late closure is a timeliness lapse, but each session still gets an independent review, so the control's assurance survives.",
         "D": "A target below 100 percent is a design choice open to management view. It does not create hidden false assurance."
       },
       "tips": [
-        "Eliminate: C is a small, visible exception, and D is an openly known target-setting choice.",
+        "Eliminate: C is a timeliness lapse the reviews still catch, and D is a disclosed design choice.",
         "Final two: A beats B because self-review removes segregation of duties entirely, while boilerplate review is weak but still independent.",
         "Exam cue: when a control relies on a second person, a breach of that independence outranks poor quality of the review."
       ],
@@ -303,7 +303,7 @@
         "False assurance",
         "Control effectiveness"
       ],
-      "_provenance": "Authored from concept: 'SoD violation inside a peer-review compensating control — false assurance'. Public source: ISACA IT Audit Standard 1203 + NIST SP 800-53. All scenario specifics (utility, SCADA, SOAR workflow, percentages) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D1 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Runner-up B lost the word 'only' (lone-absolute warning).",
+      "_provenance": "Authored from concept: 'SoD violation inside a peer-review compensating control — false assurance'. Public source: ISACA IT Audit Standard 1203 + NIST SP 800-53. All scenario specifics (utility, SCADA, SOAR workflow, percentages) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D1 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Runner-up B lost the word 'only' (lone-absolute warning). CISA quality pass (Oct 2026): option C no longer minimizes itself ('a small percentage' under GREATEST); it is now a timeliness lapse the reviews still catch, with its explanation and Eliminate tip updated.",
       "style_version": 2
     },
     {
@@ -403,7 +403,7 @@
       "wrong_explanations": {
         "A": "Advance notice to management may happen through an engagement letter, but it is not the purpose of the program.",
         "C": "Budgets and deadlines are set in engagement planning and resourcing. The program describes procedures, not cost controls.",
-        "D": "Objectives and scope come from the engagement plan. The program sets out the procedures that will address them."
+        "D": "Programs often open by restating their objectives, yet each audit document is defined by the one question it answers."
       },
       "tips": [
         "Eliminate: A is a courtesy notice to the auditee, and C is a resourcing matter, not the program's purpose.",
@@ -437,7 +437,7 @@
       "pre_read": "Notice when the engine acts relative to the loss. Classify by the effect on the transaction, not by the technique used.",
       "correct_explanation": "Classification depends on when a control acts. The engine blocks suspicious payments before they complete, so the fraudulent loss never occurs, which makes it preventive. It does identify suspicious activity, which tempts a detective label, but detective controls report events that have already happened, leaving the loss to be corrected later. Stopping the transaction is what decides the classification.",
       "wrong_explanations": {
-        "B": "Detective controls identify events after they have occurred. This engine stops the transaction before any loss happens.",
+        "B": "An auditor would see real detection logic in the scoring, but controls are classed by effect: one that stops the event is preventive.",
         "C": "Corrective controls repair effects after an event, such as refunds or restores. Nothing has occurred yet to correct.",
         "D": "Compensating controls substitute for a missing or weak primary control. Nothing suggests this engine stands in for another control."
       },
@@ -480,7 +480,7 @@
         "D": "Read access lets auditors use the output, but operations still owns the tool and response, so it remains monitoring."
       },
       "tips": [
-        "Eliminate: A labels by technology, and B misplaces approval of operational tools with the audit committee.",
+        "Eliminate: A labels the tool by its round-the-clock automation, which monitoring and auditing tools share, and B misplaces approval of operational tools with the audit committee.",
         "Final two: C beats D because ownership defines the capability; read access does not turn management's monitoring into audit work.",
         "Exam cue: who owns and acts on it decides the label; management runs monitoring, the audit function runs auditing."
       ],
@@ -513,7 +513,7 @@
       "pre_read": "Notice the evidence existed but was never filed, and the report is already out. Ask how to complete the file without rewriting its history.",
       "correct_explanation": "Work papers must show what supported each conclusion and when it was documented. Because the evidence was obtained before the report was issued, the IS auditor adds it now in a dated, signed addendum that explains the late filing, leaving earlier papers untouched. Inserting it into the signed-off paper looks tidy, but it hides when the evidence was added, so the file no longer shows its true history.",
       "wrong_explanations": {
-        "A": "Editing a signed-off work paper hides when the evidence was added, so reviewers can no longer trust the file's record of what existed at sign-off.",
+        "A": "Like the addendum, inserting the evidence completes the support for the conclusion. Signed-off papers stay frozen, though; later additions carry their own date.",
         "B": "The evidence was obtained and the conclusion stands; only the filing lagged. Recalling the report is out of proportion to a documentation gap that can be fixed now.",
         "C": "This engagement's file would stay incomplete for a year, and next year's audit cannot repair the documentation behind this report."
       },
@@ -550,7 +550,7 @@
       "pre_read": "Notice that management has only reported remediation. Ask what the auditor must independently confirm, and how wide the scope should be.",
       "correct_explanation": "Follow-up is a verification procedure bounded by the original findings. The auditor independently confirms that each agreed corrective action has actually been implemented, rather than relying on management's self-report. It is deliberately narrower than a new audit; repeating the full program or forming a fresh opinion belongs to a separate engagement planned through the risk-based audit plan.",
       "wrong_explanations": {
-        "A": "Re-performing the whole program is a new audit. Follow-up targets only the agreed remediation for the reported findings.",
+        "A": "Repeating original procedures is a valid way to verify a fix, but only for the findings at issue: follow-up is scoped to the agreed actions.",
         "C": "Designing corrective actions is management's responsibility. An auditor who designs fixes impairs objectivity when later assessing them.",
         "D": "A revised opinion needs a full new engagement. Follow-up reports on remediation status, not a fresh opinion."
       },
@@ -854,7 +854,7 @@
         "D": "Override is one inherent limitation, but the full answer is the broader principle of reasonable assurance."
       },
       "tips": [
-        "Eliminate: A treats tested controls as a guarantee, though tested controls still give only reasonable assurance, and C limits internal control to financial reporting.",
+        "Eliminate: A treats a passed test as a guarantee, though testing shows past operation, not future outcomes, and C limits internal control to financial reporting, though it also covers operations and compliance.",
         "Final two: B beats D because reasonable assurance is the governing principle; management override is just one limitation behind it.",
         "Exam cue: when a question asks if controls guarantee an outcome, look for reasonable assurance rather than one specific limitation."
       ],
@@ -889,7 +889,7 @@
       "wrong_explanations": {
         "A": "Systems, sites and periods are the engagement scope, which is set from the objectives rather than being their purpose.",
         "B": "Budget and staffing follow from objectives and scope but are a resourcing output, not the objectives' purpose.",
-        "D": "Detailed test steps belong in the audit program, which is derived from the objectives rather than replacing them."
+        "D": "Test steps are the working substance of fieldwork, but objectives set direction and steps carry it out; pick the answer at the right level."
       },
       "tips": [
         "Eliminate: A describes the scope, which follows from the objectives, and B is a resourcing estimate that follows from planning.",
@@ -1145,7 +1145,7 @@
         "A": "Maintain competency and keep knowledge current in relevant fields",
         "B": "Support the professional education of stakeholders and the public",
         "C": "Perform duties with objectivity, due diligence and professional care",
-        "D": "Disclose all significant facts when reporting work results"
+        "D": "Disclose all significant facts when communicating work results"
       },
       "correct": "D",
       "key_concept": "Removing a finding for an inducement breaches the ISACA Code's duty to disclose all significant facts that would otherwise distort reported results.",
@@ -1168,7 +1168,7 @@
         "Conflict of interest",
         "Acts discreditable to the profession"
       ],
-      "_provenance": "Authored from concept: 'integrity violation — removing audit findings for financial inducement'. Public source: ISACA Code of Professional Ethics. All scenario specifics (public accounting firm, CFO advisory-contract offer) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): stem says 'accepting this offer' to remove the ambiguous 'complying'. Blind re-check clarity fix (Oct 2026). Round 2 review (Oct 2026): stem now asks what the issued report breaches, so objectivity (C) is clearly second; explanation concedes the objectivity breach.",
+      "_provenance": "Authored from concept: 'integrity violation — removing audit findings for financial inducement'. Public source: ISACA Code of Professional Ethics. All scenario specifics (public accounting firm, CFO advisory-contract offer) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): stem says 'accepting this offer' to remove the ambiguous 'complying'. Blind re-check clarity fix (Oct 2026). Round 2 review (Oct 2026): stem now asks what the issued report breaches, so objectivity (C) is clearly second; explanation concedes the objectivity breach. CISA quality pass (Oct 2026): key reworded from 'when reporting work results' so it no longer is the only option repeating the stem's 'report'.",
       "style_version": 2
     },
     {
@@ -1191,11 +1191,11 @@
       "correct_explanation": "Before relying on an expert's work, the IS auditor must assess the expert's competence, objectivity and the relevance of the work, because the auditor keeps responsibility for the conclusion. Reperforming tests can add assurance, but an auditor without cryptographic skill cannot reperform them meaningfully, and reperformance does not show the expert was qualified or independent.",
       "wrong_explanations": {
         "A": "A confidentiality agreement protects the client's information. It is a contractual matter and says nothing about whether the expert's conclusions can be relied on.",
-        "C": "Reperformance needs the very expertise the auditor lacks, and it does not establish whether the expert was qualified or free of conflicts.",
+        "C": "Reperforming an expert's tests is a recognized evaluation step, though it follows vetting the expert: reliance starts with who did the work.",
         "D": "The IS auditor remains responsible for the audit conclusion, so the expert's work must flow through the auditor, not around them."
       },
       "tips": [
-        "Eliminate: A is a contractual protection, and D bypasses the auditor, who stays responsible for the conclusion.",
+        "Eliminate: A protects the client's data, which says nothing about whether the work can be relied on, and D bypasses the auditor, who stays responsible for the conclusion.",
         "Final two: B beats C because reliance rests first on the expert's qualifications and independence, which reperforming tests cannot replace.",
         "Exam cue: before using another expert's work, assess their competence and objectivity first."
       ],
@@ -1226,10 +1226,10 @@
       "correct": "C",
       "key_concept": "Advisory and assurance engagements differ in purpose and reporting; agreeing the type, scope and limits up front protects later audit independence.",
       "pre_read": "Notice IS audit will audit the same system next year. Ask what must be settled before any pre-go-live work begins.",
-      "correct_explanation": "Before any work starts, the manager should agree in writing that the pre-go-live review is advisory, stating its scope, its limits and that management keeps every decision. That protects next year's assurance audit from self-review. Declining outright is the runner-up, but it loses early, low-cost control input; advisory work is allowed when the engagement type, terms and safeguards are defined up front.",
+      "correct_explanation": "Before any work starts, the manager should agree in writing that the pre-go-live review is advisory, stating its scope, its limits and that management keeps every decision. That protects next year's assurance audit from self-review. Declining outright is the most tempting alternative, but it loses early, low-cost control input; advisory work is allowed when the engagement type, terms and safeguards are defined up front.",
       "wrong_explanations": {
         "A": "Starting with an audit program before agreeing the engagement type leaves scope, limits and reporting unclear, so the review could later be mistaken for assurance.",
-        "B": "Declining is overly cautious. Advisory work before go-live is allowed when its terms and independence safeguards are agreed in advance.",
+        "B": "An auditor would rightly guard next year's independence, but self-review threats are met with safeguards before refusal.",
         "D": "Reusing the advising auditors on the later audit creates a self-review threat; continuity does not outweigh objectivity."
       },
       "tips": [
@@ -1302,7 +1302,7 @@
       "pre_read": "Picture each reader in turn. Which structure lets all three get value without conflicting versions?",
       "correct_explanation": "A layered report lets each reader find the depth they need: leaders read the executive summary, while operational managers use the detailed findings, ratings, recommendations and management responses. Everyone works from one consistent set of conclusions. Separate tailored reports also reach each audience, but they risk inconsistent messages and duplicate effort, and they fragment the record the committee oversees.",
       "wrong_explanations": {
-        "B": "Tailored versions can drift apart in wording and emphasis, so readers may act on different conclusions. One layered report avoids that.",
+        "B": "Like the summary-first report, tailored versions match detail to the reader, but an engagement owes all its readers the same conclusions.",
         "C": "Program order reflects how the work was done, not what matters most; readers need a summary first and findings ranked by significance.",
         "D": "Work-paper evidence supports conclusions in the audit file; appending it to the report buries key messages under detail no reader needs."
       },
@@ -1717,7 +1717,7 @@
       "correct_explanation": "Embedded audit modules sit inside the production processing path and test every transaction against predefined rules as it occurs, flagging anomalies immediately. That meets the near-real-time, full-population need, at the cost of some added processing load the system owner must accept. Snapshots also work alongside processing, but they capture selected transactions at chosen points, so anomalies between captures would go undetected.",
       "wrong_explanations": {
         "A": "Monthly extracts are analyzed after the fact, so anomalies surface weeks late rather than in near real time.",
-        "B": "Snapshots record selected transactions at chosen points. Anything between captures is missed, so coverage of a high-volume stream is incomplete.",
+        "B": "Snapshots would win if the IS auditor needed a trail of how chosen transactions change; full-population screening needs a module that sees every posting.",
         "C": "Parallel simulation reprocesses data after the period ends, so it cannot flag anomalies as they happen."
       },
       "tips": [
@@ -1982,7 +1982,7 @@
       "correct_explanation": "Sampling risk is the chance that a sample-based conclusion differs from what testing the whole population would show. In a test of controls, concluding a control is effective when it is not is the risk of overreliance, the more dangerous direction because it gives unwarranted assurance. Detection risk is a broader audit-risk component, so it is less precise.",
       "wrong_explanations": {
         "A": "Inherent risk exists before controls or audit procedures are considered. It has nothing to do with a sample-based conclusion.",
-        "B": "Detection risk is the broad audit-risk component. The question describes a specific sampling error, which has its own precise term.",
+        "B": "Sampling risk does sit inside detection risk. When a control test wrongly trusts a failing control, though, pick the most specific risk the facts describe.",
         "C": "Underreliance is the opposite direction: concluding a control fails when it actually works, which only wastes audit effort."
       },
       "tips": [
@@ -2019,7 +2019,7 @@
       "pre_read": "Match each option to its phase. Which one belongs to reporting rather than fieldwork or next year's planning?",
       "correct_explanation": "In the reporting phase, the team turns evidence into a communication: it finalizes conclusions, confirms the facts behind findings with management, and shapes the report for its audience. Gathering more evidence may feel prudent, but sufficient evidence should already support each finding; reopening fieldwork delays the report and signals the original work may not hold.",
       "wrong_explanations": {
-        "A": "Evidence should already be sufficient when fieldwork closes. New gaps found here signal a fieldwork problem, not a reporting task.",
+        "A": "More evidence would be right if validation exposed a gap. Otherwise reporting works from closed fieldwork: each phase finishes its own job.",
         "B": "Severity rests on the auditor's judgment of evidence and risk; the auditee's agreement shapes the response, not the rating.",
         "D": "Auditees validate facts; they do not approve content. Pre-approval would compromise the auditor's independence."
       },
@@ -2058,7 +2058,7 @@
       "wrong_explanations": {
         "A": "The director remains accountable for managing the function. Handing that duty to a staff auditor weakens oversight and blurs accountability.",
         "B": "Small size can justify co-sourcing specialist work, but outsourcing the plan does not remove the director's management duties.",
-        "C": "Quality monitoring is required at any size. Deferring it leaves no way to detect weak engagements until problems surface."
+        "C": "Delivering the plan is a director's core duty, but quality monitoring is what makes delivered work worth relying on."
       },
       "tips": [
         "Eliminate: A gives away the director's accountability, and B assumes outsourcing removes the need to manage the function.",
@@ -2094,7 +2094,7 @@
       "pre_read": "Ask what made this audit high priority. The scope should follow from that, not exceed it.",
       "correct_explanation": "Each engagement needs defined objectives, scope and timeframe derived from the risks that placed it in the plan, which keeps work focused and achievable. High priority calls for depth on the risks that matter. Covering every connected system sounds thorough, but it confuses priority with breadth, spreads resources thinly and dilutes attention on the risks that justified the audit.",
       "wrong_explanations": {
-        "B": "Priority calls for depth on key risks, not maximum breadth. Covering every connected system spreads effort thinly and may miss what matters.",
+        "B": "Wide coverage is right for an inventory exercise; a high-priority engagement earns depth, and depth comes from scoping to identified risks.",
         "C": "Last year's scope reflects last year's risks. Copying it ignores changes since then.",
         "D": "Management's register is useful input, but letting the auditee's ranking set scope compromises independence and may steer the audit away from its risks."
       },
@@ -2170,7 +2170,7 @@
       "correct_explanation": "Application controls are adequate when each one is mapped to the business-process risk it should mitigate and operates consistently across the transaction population. Testing both design and operation answers whether the controls do their job. Vendor-recommended settings are a sensible starting point, but they are generic and may not address this organization's specific fraud or validation risks.",
       "wrong_explanations": {
         "A": "Owner sign-off shows acceptance of the design, not that each control covers its risk or operates consistently across transactions.",
-        "B": "Vendor baselines are generic. Matching them does not show the controls address this business's specific risks or operate consistently.",
+        "B": "An auditor would accept baseline conformance as configuration evidence, but adequacy is judged against the process's own risks and how controls operate.",
         "D": "A documented control may still miss its risk or fail in practice; documentation describes design, not adequacy in operation."
       },
       "tips": [
@@ -2237,7 +2237,7 @@
         "A": "The audit charter, setting the function's authority and scope",
         "B": "ITAF guidelines, explaining how to apply the standards in practice",
         "C": "ITAF standards, setting mandatory requirements for every audit engagement",
-        "D": "ITAF tools and techniques, offering practical sample programs"
+        "D": "ITAF tools and techniques, offering practical sample templates"
       },
       "correct": "D",
       "key_concept": "ITAF has three layers: mandatory standards, advisory guidelines, and practical tools and techniques such as example programs and checklists.",
@@ -2261,7 +2261,7 @@
         "ISACA Guidelines",
         "Audit program templates"
       ],
-      "_provenance": "Authored from concept: 'ITAF layer selection — match the auditor's stated need (workflow + checklist) to Tools and Techniques'. Public source: publicly published ITAF framework structure. All scenario specifics (public research university, research-data-management environment, IRB + HPC scope) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D1 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Key reworded so it no longer reads as a three-part list. Cross-domain round: Exam cue now names the deciding fact that separates this item from its sibling rules.",
+      "_provenance": "Authored from concept: 'ITAF layer selection — match the auditor's stated need (workflow + checklist) to Tools and Techniques'. Public source: publicly published ITAF framework structure. All scenario specifics (public research university, research-data-management environment, IRB + HPC scope) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D1 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Key reworded so it no longer reads as a three-part list. Cross-domain round: Exam cue now names the deciding fact that separates this item from its sibling rules. CISA quality pass (Oct 2026): key reworded from 'practical sample programs' so it no longer is the only option repeating the stem's 'program'.",
       "style_version": 2
     },
     {
@@ -2360,7 +2360,7 @@
       "pre_read": "Notice the control was well designed. Ask what kind of control works when people collude.",
       "correct_explanation": "Collusion is an inherent limitation of preventive controls such as segregation of duties, so the practical response is a detective control, such as independent review of payment outcomes, that can catch what collusion gets past. A third approver raises the bar, but it slows every payment and can itself be drawn into collusion.",
       "wrong_explanations": {
-        "A": "Another approver adds cost and delay to every payment and can still be drawn into collusion.",
+        "A": "When collusion beats prevention, add a different kind of control. A third approver deepens prevention, but stacked approvals share prevention's blind spot.",
         "C": "The control was well designed; collusion is an inherent limitation, not a design flaw.",
         "D": "Collusion is an inherent limitation, but it calls for a complementary detective control, and accepting the residual risk is management's decision, not the auditor's."
       },
@@ -2400,7 +2400,7 @@
       "wrong_explanations": {
         "A": "Attribute sampling estimates the rate of a control deviation. It does not estimate a dollar amount of misstatement.",
         "B": "Discovery sampling only shows whether at least one error exists. It cannot estimate the total dollar value of overbilling.",
-        "C": "Every claim gets an equal chance regardless of value, so the large claims carrying most of the dollar risk can be underrepresented."
+        "C": "Random selection is unbiased and statistically valid, but when values vary this widely, selection should follow the dollars that drive misstatement."
       },
       "tips": [
         "Eliminate: A estimates deviation rates, and B only detects whether an error exists; neither projects dollar value.",
@@ -2441,7 +2441,7 @@
         "D": "A self-assessment certified by the director involves no external party, so it cannot satisfy the external assessment requirement."
       },
       "tips": [
-        "Eliminate: C makes external review reactive, and D involves no external party.",
+        "Eliminate: C makes external review reactive, though standards require it on a fixed cycle, and D involves no external party.",
         "Final two: A beats B because external means independent of the whole organization, not merely of the audit team.",
         "Exam cue: for external quality assessment, remember qualified, independent of the organization, and at least every five years."
       ],
@@ -2475,7 +2475,7 @@
       "correct_explanation": "A model learns only what its training data shows, so data that is unrepresentative, biased or wrongly labeled produces systematically wrong fraud scores however often the model is retrained. The auditor should confirm representativeness and a documented, reliable labeling process. Retraining cadence matters, but retraining more often on flawed data simply repeats the flaw faster.",
       "wrong_explanations": {
         "A": "Encryption protects stored data from disclosure, a real control, but it says nothing about whether the data is representative or correctly labeled.",
-        "B": "Cadence is a tuning decision management can adjust. More frequent retraining on unrepresentative or mislabeled data does not fix the model's errors.",
+        "B": "Retraining cadence is a legitimate fraud-model control, yet only a tuning choice; data quality decides model behavior.",
         "D": "More data is not better data; a growing dataset can still be unrepresentative or mislabeled, so volume does not show quality."
       },
       "tips": [
@@ -2550,7 +2550,7 @@
       "pre_read": "Ask what the auditor needs from management before issuing the report, and what management must never control.",
       "correct_explanation": "The exit conference lets management confirm that the facts are accurate, add context the auditor may have lacked and commit to remediation actions and dates for the report. Formal sign-off on each finding sounds rigorous, but the auditor does not need management's agreement to report a finding; disagreement is recorded in the report rather than resolved by signature.",
       "wrong_explanations": {
-        "A": "Report content rests on evidence, not management approval. Requiring sign-off would let management delay or veto findings.",
+        "A": "Like validation, a sign-off engages management on each finding, though confirming facts is not approving conclusions.",
         "B": "Dropping disputed findings to preserve relationships compromises objectivity. Disputes are resolved on the evidence and noted in the report.",
         "C": "Follow-up timing is set by the audit function from risk and management's dates; it follows from the meeting rather than being its purpose."
       },
@@ -2628,7 +2628,7 @@
       "wrong_explanations": {
         "A": "Referral to law enforcement is a decision for leadership and counsel, usually after proper investigation, not the auditor's immediate recommendation.",
         "B": "The billing manager may be involved or may alert those who are; asking for explanations before specialists are engaged puts the evidence and the case at risk.",
-        "D": "Training takes time while evidence is at risk, and a short course does not give the litigation-grade competence this matter needs now."
+        "D": "Forensic training is worthwhile long-term development, but competence must exist before work proceeds; when it is missing, specialists supply it."
       },
       "tips": [
         "Eliminate: A refers the matter externally before any investigation, and B approaches the business owner of the suspect area, risking tip-off and lost evidence.",
@@ -2666,7 +2666,7 @@
       "correct_explanation": "An audit program is a plan, not a fixed contract, so when fieldwork reveals a significant uncovered risk, the manager updates it, with approval, and the extra procedures are documented and supervised. Deferring the interface to next year sounds orderly, but it leaves a known risk untested in an engagement whose conclusions would then rely on an incomplete scope.",
       "wrong_explanations": {
         "A": "Following a program that misses a known significant risk produces conclusions that do not cover it.",
-        "C": "Deferring a known risk leaves this engagement's conclusions incomplete for another year.",
+        "C": "Carrying an area forward is right for risks outside the engagement's objectives; a risk inside them enters the program now, by approved change.",
         "D": "A self-assessment by the interface's owners is not independent evidence; the program change must bring the interface into audit testing."
       },
       "tips": [
@@ -2779,7 +2779,7 @@
       "pre_read": "Notice that some systems are missing from the list. Ask what the ranking step can see.",
       "correct_explanation": "A risk-based plan can only rank what it can see, so the manager first adds the unregistered SaaS applications to the audit universe and then assesses all areas together. Ranking now and adding them next year keeps the timetable, but it lets potentially high-risk applications escape assessment entirely for a full cycle.",
       "wrong_explanations": {
-        "A": "Ranking an incomplete universe can leave the riskiest applications out of the plan for a whole year.",
+        "A": "Ranking the known universe is the core act of risk-based planning. Completeness is its precondition: settle the list, then rank.",
         "B": "Letting IT choose what audit covers impairs independence, and IT may not know the applications exist.",
         "D": "Auditing everything regardless of risk ignores prioritization and wastes limited audit resources."
       },
@@ -2818,7 +2818,7 @@
       "correct_explanation": "When subgroups of a population behave differently, stratified sampling divides it into strata and sizes each sample to that stratum's variability and error rate, so fewer items give a more precise result. Monetary-unit sampling is tempting because amounts vary, but it concentrates on large adjustments, which rarely err, and under-samples the small ones where errors cluster.",
       "wrong_explanations": {
         "A": "Picking the largest items targets the group that rarely errs and cannot support conclusions about the whole population.",
-        "C": "Monetary-unit sampling favors high-value items. Here errors cluster in small adjustments, which it would rarely select.",
+        "C": "Monetary-unit sampling is right when misstatement risk rises with value. When subgroups err differently, sample each subgroup on its own terms.",
         "D": "Simple random sampling is valid but ignores the known differences between groups, needing a larger sample for the same precision."
       },
       "tips": [
@@ -2857,7 +2857,7 @@
       "wrong_explanations": {
         "A": "External reviews are a separate requirement and do not replace continuous internal monitoring between them.",
         "B": "Counting completed engagements measures productivity against plan, not the quality of audit work or conformance with standards.",
-        "C": "Teams reviewing their own engagements lack objectivity and tend to overlook their own errors, so the review gives weak assurance."
+        "C": "Like uninvolved reviewers, team reviews give the program a periodic check on finished work. But quality assurance is never self-assurance."
       },
       "tips": [
         "Eliminate: A confuses external with internal assessment, and B measures output rather than quality.",
@@ -2931,11 +2931,11 @@
       "correct_explanation": "Follow-up should be proportional to risk: the critical finding warrants early verification, often within weeks, with status reported to the audit committee, while high and moderate findings get progressively lighter checks. A uniform quarterly schedule is orderly and better than waiting a year, but it under-monitors the critical issue and spends effort on moderate ones.",
       "wrong_explanations": {
         "A": "Management owns remediation, but auditors must still verify it; skipping follow-up leaves the committee without assurance.",
-        "B": "A uniform cadence treats the critical finding like a moderate one, leaving the critical risk under-monitored and wasting effort on low-risk items.",
+        "B": "Quarterly checks do keep every finding under watch, though audit effort, follow-up included, always tracks severity.",
         "D": "A single review a year later leaves the critical finding unverified for too long and gives the committee no interim assurance."
       },
       "tips": [
-        "Eliminate: D waits a year on a critical risk, and A drops the auditor's follow-up duty.",
+        "Eliminate: D verifies each finding only once, so fixes due early go unchecked for months, and A drops the auditor's follow-up duty.",
         "Final two: C beats B because follow-up effort should track risk; a uniform schedule under-watches the critical finding.",
         "Exam cue: when findings differ in severity, choose the answer that scales effort to risk."
       ],
@@ -2970,10 +2970,10 @@
       "wrong_explanations": {
         "A": "Adjusting language for seniority compromises objectivity and independence. The same standard applies to every finding.",
         "C": "Suppressing a reportable finding to handle it privately compromises the report's completeness and the auditor's independence.",
-        "D": "Emotive emphasis undermines the report's objectivity and gives the subject grounds to dispute tone rather than facts."
+        "D": "An auditor rightly wants the committee to grasp the misconduct, but objectivity runs both ways: a report neither softens nor sharpens for its subject."
       },
       "tips": [
-        "Eliminate: A bends to seniority, and C suppresses a reportable finding.",
+        "Eliminate: A softens the finding for seniority, though rank never changes how a finding is reported, and C suppresses a reportable finding.",
         "Final two: B beats D because objectivity cuts both ways: no softening and no dramatizing, just facts and impact.",
         "Exam cue: on sensitive findings, choose factual, evidence-based reporting applied equally to everyone."
       ],
@@ -3006,7 +3006,7 @@
       "pre_read": "Separate performance from verifiability. The stem asks whether the auditor can check the model, not how good it is.",
       "correct_explanation": "To audit a model, the auditor must be able to rerun an input on a given version, get the same output, and trace why a decision was reached. Reproducibility and explainability make verification possible. High accuracy is valuable and tempting, but an accurate black box cannot be verified; the auditor would have to trust performance claims rather than test them.",
       "wrong_explanations": {
-        "A": "Accuracy is a performance attribute. Without reproducibility and explainability, the auditor cannot verify how any decision was reached.",
+        "A": "Accuracy would decide a question about model fitness for the task. Auditability asks something else: whether an auditor can re-perform and trace each decision.",
         "B": "Platform security protects the model from tampering, but it does not let the auditor rerun inputs or trace why a decision was made.",
         "C": "Legal approval shows the model was cleared for use, not that its decisions can be reproduced or explained for verification."
       },
@@ -3084,7 +3084,7 @@
       "wrong_explanations": {
         "A": "One broad statement cannot be tested and gives no basis for designing or evaluating specific controls.",
         "B": "Naming performers assigns control responsibility, which belongs in procedures; an objective states the outcome to achieve, not who does the work.",
-        "D": "Starting from existing controls reverses the logic. Objectives must come from risks and requirements, or uncovered risks never appear."
+        "D": "Like testable objectives, a mapping to implemented controls makes objectives auditable, though objectives flow from risk to control, never the reverse."
       },
       "tips": [
         "Eliminate: A is too broad to test, and B assigns control duties, which belong in procedures rather than objectives.",
@@ -3276,7 +3276,7 @@
       "wrong_explanations": {
         "A": "Withholding a relevant prior relationship denies governance the information it needs to judge independence, even when the threat itself is low.",
         "B": "Repeating a fact the committee already knows while leaving out the undisclosed consulting fails the transparency the framework requires.",
-        "C": "Reassignment overcorrects. Low threats that disclosure and safeguards can reduce do not require the auditor to step away."
+        "C": "Reassignment does remove both threats cleanly, but independence responses are proportionate, and disclosure with safeguards answers low threats."
       },
       "tips": [
         "Eliminate: A and B both leave the consulting work undisclosed, so governance cannot assess the threat.",
@@ -3312,7 +3312,7 @@
       "pre_read": "Ask what an integrated audit can show that separate audits cannot, and how the report keeps it.",
       "correct_explanation": "An integrated audit's value is showing how IT weaknesses affect operations and financial reporting, so one report links each IT finding to its business impact for a single audience. Separate reports serve specialist readers, but they split cause from effect, so governance may not see that an IT weakness is why a financial risk exists.",
       "wrong_explanations": {
-        "B": "Separate reports split IT causes from business effects and lose the integrated view.",
+        "B": "Separate IT and financial reports are normal for stand-alone audits, but an integrated audit reports each IT weakness with the business effect it creates.",
         "C": "An appendix aimed at the IT team keeps IT weaknesses away from the governance readers who must weigh their business effect.",
         "D": "Technical scores measure exploitability, not business effect; an integrated report rates IT weaknesses by their impact on operations and financial reporting."
       },
@@ -3352,7 +3352,7 @@
       "wrong_explanations": {
         "A": "The meeting is 45 days away, far beyond a five-day notice window, and the flaw stays exploitable meanwhile.",
         "C": "Counsel decides legal questions, but the audit function still owes timely reporting of critical findings to the audit committee.",
-        "D": "Management's commitment does not remove today's exposure or the regulatory deadline; governance needs to know now, not after slippage."
+        "D": "An auditor would track the remediation plan in any case, but escalation is triggered by severity and deadlines, not by slipped dates."
       },
       "tips": [
         "Eliminate: A waits 45 days against a five-day window, and C hands the audit function's reporting duty to counsel.",
@@ -3390,7 +3390,7 @@
       "wrong_explanations": {
         "A": "Vetting competence beforehand does not prove the delivered work is adequate. The auditor must still evaluate what was actually produced.",
         "B": "Undocumented methods undermine every section, not just the contradictory ones, so partial reliance still rests on work the auditor cannot evaluate.",
-        "D": "Replacement is premature. The firm has not been told the deficiencies or asked to fix work it was contracted to deliver."
+        "D": "A new specialist would win only if the firm refused to fix its work: contracts are enforced before they are abandoned."
       },
       "tips": [
         "Eliminate: A relies on vetting instead of the work, and B relies on parts of a deliverable whose methods are undocumented throughout.",
@@ -3657,7 +3657,7 @@
       "pre_read": "Notice the ratings vary widely between experts. Ask what makes qualitative scores comparable.",
       "correct_explanation": "Wide disagreement usually means participants are using different scales, so the auditor first agrees defined criteria for likelihood and impact and has them score again. Averaging produces a single number, but it hides the disagreement and turns inconsistent judgments into false precision that the audit plan would then rely on.",
       "wrong_explanations": {
-        "A": "Averaging inconsistent scores hides why they differ and gives a misleading appearance of precision.",
+        "A": "Averaging is right for scores built on one shared scale. These were not, and arithmetic cannot repair that: fix the scale before the score.",
         "C": "Deferring to seniority replaces structured judgment with authority and loses the group's knowledge.",
         "D": "Annualized loss figures need reliable loss data, which this system does not have."
       },
@@ -3891,7 +3891,7 @@
       "wrong_explanations": {
         "B": "Seeking the auditee's agreement on the expectation compromises independence and lets the auditee shape the test.",
         "C": "Analytics test relationships across aggregated data; they do not require transaction-level application to be effective.",
-        "D": "Prior-period figures may contain the same errors and ignore changes in drivers like weather, so the expectation is imprecise."
+        "D": "Prior-period figures do give an analytic a baseline, but an analytic is only as strong as its expectation's precision and independence."
       },
       "tips": [
         "Eliminate: B lets the auditee shape the test, and C misunderstands how analytics work on aggregated data.",
@@ -4081,7 +4081,7 @@
       "correct_explanation": "Accuracy on a frozen test set shows how the model performs on data like its training data; it cannot reveal that production data has shifted. Rising overrides after a population change are classic drift signals, so the auditor should report likely drift and recommend production monitoring and retraining. Blaming radiologists is plausible, but overrides rose after the population changed.",
       "wrong_explanations": {
         "A": "A frozen test set reflects old data. Stable results there cannot detect shifts in the live population.",
-        "C": "Overrides rose when the patient population changed, which points to the model's inputs shifting, not reviewer inconsistency.",
+        "C": "Override rates are a recognized gauge of reviewer consistency, but a change that tracks a data shift points to the model.",
         "D": "Assessing whether a model's performance is monitored and controlled is within audit scope; specialists can support, not replace, the auditor."
       },
       "tips": [
@@ -4199,7 +4199,7 @@
       "wrong_explanations": {
         "B": "Automated calculations cannot be relied on when the general controls that protect them are ineffective.",
         "C": "An opinion needs evidence; weak IT controls call for more testing before concluding.",
-        "D": "Application controls depend on IT general controls, so they cannot be relied on either."
+        "D": "Like extra substantive work, heavier application testing seeks assurance elsewhere; once general controls fail, assurance must come from the data itself."
       },
       "tips": [
         "Eliminate: B relies on automated calculations whose general controls failed, and C concludes before gathering evidence.",
@@ -4311,7 +4311,7 @@
       "pre_read": "A perfect sample of the wrong or incomplete population still gives the wrong answer. Decide what comes before any sizing.",
       "correct_explanation": "Population definition comes first: the auditor confirms the extract contains every item the conclusion will cover and nothing outside the objective, for example by reconciling ticket counts to the source system. Sample sizing matters, but it is calculated for a defined population; sizing an incomplete extract only produces a precise answer about the wrong set of items.",
       "wrong_explanations": {
-        "A": "Sample size depends on the population, so sizing before confirming completeness risks a precise result for an incomplete population.",
+        "A": "Sizing from confidence and expected error is the standard method, though sampling runs in a fixed order: population, method, size, then items.",
         "B": "System-generated extracts can still be filtered or incomplete. The auditor independently verifies completeness before relying on them.",
         "C": "Convenience selection introduces bias and does not support projecting results to the population."
       },
@@ -4350,11 +4350,11 @@
       "correct_explanation": "Once evidence strongly indicates fraud with regulatory exposure, the auditor escalates promptly through the audit director to those charged with governance and to legal counsel, who direct the investigation and meet any filing deadlines. Expanding testing feels thorough, but delay can miss statutory windows and alert suspects; the investigation is directed by those with authority, not by the auditor alone.",
       "wrong_explanations": {
         "A": "The suspected activity sits in this manager's department, so asking them to investigate risks tipping off those involved and losing evidence.",
-        "C": "With strong evidence already in hand, delaying escalation risks missed filing deadlines and alerting suspects. Counsel decides how the investigation proceeds.",
+        "C": "Establishing extent is right while indicators are still weak; once evidence is strong, escalation comes before any further work.",
         "D": "External reporting is a decision for governance and counsel. Bypassing the organization ignores the auditor's reporting obligations."
       },
       "tips": [
-        "Eliminate: A alerts the department under suspicion, and D bypasses governance and counsel entirely.",
+        "Eliminate: A alerts the department under suspicion, and D goes outside the organization before governance and counsel can act.",
         "Final two: B beats C because strong evidence calls for prompt escalation through audit leadership; any further work is directed by governance and counsel.",
         "Exam cue: a staff auditor escalates through audit leadership, and the CAE takes it to governance; with strong evidence, escalate before doing more work."
       ],
@@ -4388,7 +4388,7 @@
       "pre_read": "There are two parameters here. Decide what drives each one: the assessed risk, or the size of error that would matter.",
       "correct_explanation": "When inherent and control risk are high, detection risk must be low, so the auditor lowers the acceptable risk of incorrect acceptance and enlarges the sample. Tolerable error is a separate judgment derived from materiality for the assertion. Setting it near zero sounds conservative, but it is not anchored to what would matter to users and drives sample sizes beyond any practical, risk-based need.",
       "wrong_explanations": {
-        "B": "Near-zero tolerable error is not tied to materiality and inflates the sample toward full testing, with no risk-based justification.",
+        "B": "Like the materiality-based setting, it rightly lowers the risk of incorrect acceptance, but tolerable error derives from materiality, whatever the risk level.",
         "C": "High control risk requires more substantive assurance, so the risk of incorrect acceptance should fall, not rise.",
         "D": "Precision parameters follow the current risk assessment; reusing prior values ignores changes in risk and population."
       },
@@ -4427,7 +4427,7 @@
       "correct_explanation": "Integrated scope needs IT, operational and financial audit skills on one team, with a single accountable leader who connects findings across disciplines, such as a scheduling change that breaks fatigue rules and payroll accruals. Separate specialist teams bring the right skills, but separate reports leave the seams between domains unexamined, which is the very risk the integrated audit exists to cover.",
       "wrong_explanations": {
         "A": "Learning operational and financial areas during fieldwork leaves the engagement without the proficiency it needs from the start.",
-        "B": "Specialist teams reporting separately each conclude in isolation, so risks at the boundaries between domains go unexamined.",
+        "B": "Discipline-specific teams do supply proficiency in each area, yet integration needs one leader who owns conclusions across disciplines.",
         "D": "One person working through the disciplines in turn lacks the combined proficiency and cannot examine how a change in one area affects the others."
       },
       "tips": [
@@ -4541,12 +4541,12 @@
       "pre_read": "Notice why management wants a delay. Ask what governance loses if the report waits.",
       "correct_explanation": "Reports must be timely and reflect conditions found, so the auditor issues on schedule and includes management's action plans and target dates, which show remediation is under way. Delaying the report seems to give a fairer picture, but it withholds known risks from governance and lets management shape when audit results are seen.",
       "wrong_explanations": {
-        "B": "Delay withholds known risks from governance and lets management control report timing.",
+        "B": "An auditor does want a report to reflect remediation, but a report records conditions as found; progress belongs in management's response, not in the timing.",
         "C": "Remediation in progress does not remove a finding; the condition existed when tested.",
         "D": "A verbal report leaves no formal record of findings for governance."
       },
       "tips": [
-        "Eliminate: C deletes valid findings, and D replaces the formal report with a conversation.",
+        "Eliminate: C deletes findings that stay valid until fixes are verified, and D replaces the formal report with a conversation that leaves governance no record.",
         "Final two: A beats B because timely reporting with action plans informs governance now; delay hides risk.",
         "Exam cue: report findings on time with management's planned actions; remediation does not erase findings."
       ],
@@ -4654,7 +4654,7 @@
       "correct": "A",
       "key_concept": "Agreed-upon procedures reports state procedures and factual findings only; they give no opinion or assurance, unlike examinations or reviews.",
       "pre_read": "Notice the engagement type named in the stem. Ask what level of assurance, if any, that type allows.",
-      "correct_explanation": "In an agreed-upon procedures engagement, the engaging party agrees which procedures suit its purpose, and the auditor reports what was done and what was found. The report gives no opinion and no assurance, leaving users to draw their own conclusions. Negative assurance is the runner-up, but it is limited assurance from a review engagement, which this engagement does not provide.",
+      "correct_explanation": "In an agreed-upon procedures engagement, the engaging party agrees which procedures suit its purpose, and the auditor reports what was done and what was found. The report gives no opinion and no assurance, leaving users to draw their own conclusions. Negative assurance comes closest, but it is limited assurance from a review engagement, which this engagement does not provide.",
       "wrong_explanations": {
         "B": "An opinion requires an examination engagement with criteria and sufficient evidence. Agreed-upon procedures do not support an overall conclusion.",
         "C": "Negative assurance belongs to review engagements. Agreed-upon procedures report findings only and give no assurance of any level.",
@@ -4771,7 +4771,7 @@
       "correct_explanation": "With inherent and control risk both low, the auditor can accept a higher detection risk and still keep audit risk acceptable, so substantive testing can be reduced. Relying on control tests alone looks efficient, but some substantive work on material balances is still needed, because detection risk cannot be accepted at the maximum and controls give only reasonable assurance.",
       "wrong_explanations": {
         "A": "Expanding testing when inherent and control risk are low spends effort the risk model does not require.",
-        "C": "Controls give only reasonable assurance, so some substantive procedures on material areas are still needed.",
+        "C": "Like accepting higher detection risk, using the control tests rightly trims substantive work, but low assessed risk changes how much substantive testing is done, never whether.",
         "D": "Budget limits do not set detection risk; the assessed inherent and control risk do."
       },
       "tips": [
@@ -4810,7 +4810,7 @@
       "correct_explanation": "A risk-based plan should flex with resources: deliver the highest-risk engagements at full scope, defer lower-risk ones, document the changes and brief the audit committee on the revised coverage. Completing every engagement at reduced depth preserves the appearance of the plan, but thin work on high-risk areas gives assurance the evidence cannot support.",
       "wrong_explanations": {
         "A": "Stopping all audits leaves high-risk areas without coverage for months and abandons the risk-based plan entirely.",
-        "B": "Cutting depth across the board weakens evidence on the highest-risk areas while appearing to deliver the full plan.",
+        "B": "Holding the approved plan is a director's commitment to the committee, but when capacity shrinks, coverage is cut by risk and depth is kept.",
         "D": "Management's self-assessment is not independent assurance; deferred areas should be documented and reported to the committee, not covered by the auditee."
       },
       "tips": [
@@ -4887,7 +4887,7 @@
       "correct_explanation": "The report states the finding at the severity the evidence supports and includes management's response, so the audit committee can see both and decide. Waiting for agreement seems courteous, but it lets management control the timing of an unresolved high-severity risk and delays governance from acting on exposure in critical infrastructure.",
       "wrong_explanations": {
         "B": "Adopting management's rating lets the audited party set the conclusion, which compromises the auditor's independence.",
-        "C": "Holding the report lets management delay disclosure of a high-severity risk; disagreement is reported, not used as a gate.",
+        "C": "Seeking agreement before issue is normal exit-stage practice; when it fails, the disagreement itself is reported.",
         "D": "A compromise rating is not supported by evidence and dilutes the auditor's objective judgment."
       },
       "tips": [
@@ -4923,7 +4923,7 @@
       "correct": "C",
       "key_concept": "In continuous auditing, the audit role is detection, escalation and evidence preservation; operational responses such as halting trading belong to management or compliance.",
       "pre_read": "The anomaly is urgent, but ask who has the authority to stop trading, and what the auditor's role is.",
-      "correct_explanation": "The auditor's role is to detect, escalate urgently to those with authority and preserve the evidence, so paging on-call compliance leaders gets the decision to the right people within minutes. Halting the account is decisive, but it is an operational decision with business and regulatory consequences; taking it would place the auditor in a management role and impair independence.",
+      "correct_explanation": "The auditor's role is to detect, escalate urgently to those with authority and preserve the evidence, so paging on-call compliance leaders gets the decision to the right people within minutes. A halt is a recognized trading control, but it is an operational decision with business and regulatory consequences; taking it would place the auditor in a management role and impair independence.",
       "wrong_explanations": {
         "A": "Halting trading is an operational decision for compliance or management. Taking it puts the auditor in a management role.",
         "B": "Contacting the trader directly may tip off a possible bad actor and compromise evidence.",
@@ -4963,7 +4963,7 @@
       "pre_read": "CSA's value comes from the process owners' knowledge. Ask which practice draws that out instead of replacing it.",
       "correct_explanation": "A CSA workshop exists to capture the process owners' own assessment of their controls, so the facilitator uses open questions, records consensus and dissent, and avoids steering. Presenting a prepared list of weaknesses feels efficient and structured, but it anchors participants on the auditor's view, turning self-assessment into confirmation and losing the insight only they can provide.",
       "wrong_explanations": {
-        "A": "A pre-built list anchors participants on the auditor's conclusions, so the workshop confirms the auditor's view rather than eliciting theirs.",
+        "A": "A ready-made list is right for an exit meeting; in CSA, owners assess, and the facilitator only draws out their judgment.",
         "C": "Senior managers in the room make participants guarded, so weaknesses go unspoken; support is better shown by sponsoring the workshop.",
         "D": "Individual interviews are a different technique and lose the group discussion that makes CSA useful."
       },
@@ -5119,7 +5119,7 @@
       "wrong_explanations": {
         "A": "Certification to one framework does not establish alignment with another; their scope and orientation differ.",
         "C": "Recency does not make one framework a superset of the other, so inferring compliance leaves gaps untested.",
-        "D": "Testing shared controls before mapping skips requirements unique to either framework and assumes the overlap is already known."
+        "D": "Scope is defined before effectiveness is tested. Testing shared controls gives double coverage, yet equivalence between frameworks is never assumed; it is mapped."
       },
       "tips": [
         "Eliminate: A and C both assume one framework's compliance implies the other's.",
@@ -5156,7 +5156,7 @@
       "pre_read": "SOX scope covers controls relevant to financial reporting. Ask how a broader governance framework fits that narrower scope.",
       "correct_explanation": "SOX 404 covers IT general controls relevant to financial reporting, so the auditor maps the relevant COBIT objectives, mainly in delivery, build and alignment areas, to access, change and operations controls over in-scope systems. Testing every COBIT objective sounds thorough, but most fall outside financial-reporting relevance, wasting effort and blurring the risk-based SOX scope.",
       "wrong_explanations": {
-        "B": "COBIT is far broader than SOX needs; testing every objective dilutes effort away from controls relevant to financial reporting.",
+        "B": "Full COBIT coverage would be right for an enterprise governance review. A regulatory engagement borrows only what its scope needs, through mapping.",
         "C": "COBIT is a recognized control framework that management may use; mapping it to SOX scope is efficient, not prohibited.",
         "D": "Management chooses its control framework. SOX does not require a specific one, and COBIT is commonly used."
       },
@@ -5196,7 +5196,7 @@
       "correct_explanation": "The manager first pins down which ICS knowledge is missing, such as industrial protocols or safety systems, then closes the gap with an expert, targeted training or co-sourcing. Reassigning to an experienced team may work, but it skips the diagnosis, assumes such a team is available, and may sacrifice the existing team's strong IT knowledge that the audit still needs.",
       "wrong_explanations": {
         "A": "Learning on the job means fieldwork starts without the proficiency the engagement requires, risking missed ICS-specific issues.",
-        "B": "Reassignment may not be feasible and skips diagnosis; the existing team's IT skills remain valuable with targeted support.",
+        "B": "A team with ICS experience does bring the missing proficiency, but a competency gap is sized before it is filled, so the fix matches the need.",
         "D": "A skills gap does not remove the risk. Dropping a planned audit leaves an important area without coverage."
       },
       "tips": [
@@ -5309,7 +5309,7 @@
       "correct_explanation": "Agile auditing relies on short feedback loops: each sprint delivers a defined increment and ends with a team retrospective whose lessons shape the next sprint. That is how the engagement adapts while it is still running. A single end-of-engagement retrospective does capture lessons, but they arrive too late to improve this audit, which defeats the purpose of working in sprints.",
       "wrong_explanations": {
         "A": "A demo reviews the work delivered with stakeholders; a retrospective reviews how the team worked. Replacing one with the other loses the team's process lessons.",
-        "C": "Lessons gathered only at the end cannot change the current engagement; it becomes a waterfall audit with a post-mortem.",
+        "C": "An end-of-engagement retrospective is standard close-out practice. Agile adds a shorter loop: every sprint ends by improving the one after it.",
         "D": "A manager-only review loses the team's insight into what worked, and agile retrospectives are a whole-team activity."
       },
       "tips": [
@@ -5347,7 +5347,7 @@
       "pre_read": "Notice who now holds authority for the investigation. Ask what the auditor adds without duplicating or weakening that work.",
       "correct_explanation": "Once authorized specialists take over, the IS auditor shifts to a supporting role: providing system context and access, preserving evidence and reporting through the established audit line. This keeps one controlled investigation under counsel's privilege. Parallel analysis looks diligent, but duplicate interviews or data handling can taint the chain of custody, waive privilege and alert suspects.",
       "wrong_explanations": {
-        "A": "Running a second, unprivileged investigation risks contaminating evidence and undermining counsel's privilege over the forensic work.",
+        "A": "Independent analysis is normally the backbone of audit evidence, but once counsel's specialists own an investigation, there is one inquiry and audit supports it.",
         "B": "The auditor still holds system knowledge and evidence the forensic team needs; walking away breaks continuity and the reporting channel.",
         "D": "Managing counsel is a legal and audit-director responsibility. The auditor bypassing the reporting line confuses authority over the matter."
       },
@@ -5387,7 +5387,7 @@
       "correct_explanation": "The audit universe should reflect where risk actually sits. Mapping each subsidiary to its regulatory regime captures differing compliance obligations, and treating shared IT services as cross-cutting entries recognizes that one failure there affects every subsidiary. Mirroring the legal structure covers every entity, but it hides the shared-service risk inside one subsidiary and ignores regime differences.",
       "wrong_explanations": {
         "A": "A single entity cannot distinguish regulatory regimes or risk profiles, so planning cannot prioritize anything within the group.",
-        "B": "A legal-entity list treats shared IT services as just another subsidiary and misses that its controls support all fifteen.",
+        "B": "A legal-entity list does tie the universe to accountable management, though auditable units follow where risk concentrates.",
         "C": "Small subsidiaries still carry regulatory and control risk; they need a place in the universe, even if covered on rotation."
       },
       "tips": [
@@ -5580,7 +5580,7 @@
       "correct_explanation": "Methods can be layered to serve different needs. ISO 31000 supplies a principles-based process that regulators recognize, while FAIR quantifies loss exposure for the highest-priority risks where dollar figures matter. Applying FAIR across the whole register sounds rigorous, but it is costly for low-priority risks and still lacks the governance process the audit committee asked for.",
       "wrong_explanations": {
         "A": "A heat map communicates well but gives neither dollar-loss figures nor a defensible process framework.",
-        "C": "Quantifying every risk is expensive and data-hungry, and FAIR alone does not supply the governance process regulators expect.",
+        "C": "Like the layered approach, FAIR delivers the dollar figures the committee wants, but analysis effort should be proportionate: quantify where priority risks justify it.",
         "D": "CSF tiers describe how mature risk-management practices are; they produce neither dollar-loss figures nor a regulator-recognized risk assessment process."
       },
       "tips": [
@@ -5619,7 +5619,7 @@
       "correct_explanation": "Management's continuous monitoring is itself a control, so the auditor tests whether it operates effectively and then adjusts the nature and extent of other testing. Replacing audit testing with its reports looks efficient, but it relies on management's output without independent evidence that the monitoring works, which is the auditor's job to establish.",
       "wrong_explanations": {
         "B": "Ignoring an effective control wastes effort; the auditor can rely on it once tested.",
-        "C": "Unverified management reports are not independent evidence; their reliability must be tested first.",
+        "C": "Using the reports would be right once the monitoring itself had been tested; reliance is earned by testing, never granted by good documentation.",
         "D": "Operating management's tool puts the auditor in a management role and impairs independence."
       },
       "tips": [
@@ -5969,7 +5969,7 @@
       "wrong_explanations": {
         "A": "Different versions for different readers produce inconsistent conclusions and undermine the report's objectivity.",
         "B": "The committee's preference is not evidence of lower risk; removing supported findings sacrifices objectivity.",
-        "C": "A note downplaying the area misstates the audit scope and dilutes supported findings under stakeholder pressure."
+        "C": "Scope notes are legitimate when they state what was actually covered, but report content moves only with evidence, never with a reader's comfort."
       },
       "tips": [
         "Eliminate: A creates inconsistent versions of the report, and B removes findings without evidence.",
@@ -6122,7 +6122,7 @@
       "wrong_explanations": {
         "A": "A consistent pattern is not noise; small per-trade differences can add up to a material total.",
         "B": "No cause has been identified yet; referral before investigation is premature and outside the auditor's authority.",
-        "D": "Three weeks of consistent deviation already confirms the pattern; more waiting adds loss without adding insight."
+        "D": "More observation is right for a one-off spike. Weeks of steady drift mean something is set wrong, and causes are found by testing, not watching."
       },
       "tips": [
         "Eliminate: A dismisses a consistent pattern as noise, and B escalates before any cause is known.",
@@ -6316,7 +6316,7 @@
       "correct_explanation": "A budget cut changes how much work can be done, not the evidence needed for what is concluded. The director should redirect remaining effort to the highest-risk areas and disclose the resulting scope reduction so readers know what was not covered. Cutting samples evenly also saves time, but it spreads the shortfall across high- and low-risk areas alike and leaves the riskiest conclusions thinly supported.",
       "wrong_explanations": {
         "A": "Reporting on half-finished work, with no substantive testing done, leaves the conclusions without sufficient evidence.",
-        "C": "Uniform cuts are not risk-based; high-risk areas lose the same coverage as trivial ones, weakening the conclusions that matter most.",
+        "C": "Smaller samples do fit a smaller budget, but budget cuts belong where risk is lowest, with the lost scope disclosed.",
         "D": "Management representations cannot replace substantive evidence; they are the weakest evidence type and test no transactions or balances."
       },
       "tips": [
@@ -6354,7 +6354,7 @@
       "correct_explanation": "A material incident is a change in risk that justifies revising the audit plan, and the audit committee is asking for it. Because the team lacks incident-response skills, the director should bring in qualified specialists through co-sourcing while retaining responsibility for the work. Staffing it with the existing team adds the audit but without the proficiency needed to reach reliable conclusions.",
       "wrong_explanations": {
         "A": "Risk-based plans are meant to change when risk changes; a material incident is a classic reason to revise the plan.",
-        "B": "Auditors must have the skills for the work they perform; an unskilled team risks missing the real control failures.",
+        "B": "Like co-sourcing, using the internal team rightly accepts the committee's request. Proficiency, though, is a precondition of the work, not something learned during it.",
         "D": "The incident team reviewing its own response lacks independence; its report is useful input, not audit assurance."
       },
       "tips": [
@@ -6393,7 +6393,7 @@
       "correct_explanation": "A special-purpose report must be backed by work designed for that purpose. The auditor should scope the engagement to the regulator's criteria and effective date, perform any procedures the annual audit did not cover, and then issue the required wording. Simply rewording the annual report would attest to things the evidence may not support, such as controls at the specific as-of date.",
       "wrong_explanations": {
         "A": "The annual report does not meet the regulator's criteria or date, so submitting it fails the stated requirement.",
-        "B": "Rewording without extra procedures attests beyond the evidence; the annual work may not cover the required date or scope.",
+        "B": "An auditor would reuse the annual work wherever it covers the regulator's criteria, but special-purpose reports start from their criteria and date, not from existing text.",
         "C": "Work papers are the audit's evidence file, not an attestation; handing them over shifts the conclusion to the regulator and may breach confidentiality."
       },
       "tips": [
@@ -6433,7 +6433,7 @@
       "wrong_explanations": {
         "A": "Acknowledgment is not remediation. Silencing an unresolved finding hides a persistent weakness from governance.",
         "C": "Absence of loss so far does not reduce the underlying risk; severity reflects exposure, not luck.",
-        "D": "A firmer deadline repeats the cycle that has already failed and leaves governance unaware of the pattern."
+        "D": "A dated commitment is the standard remedy for a first-time finding. When commitments keep lapsing, the pattern itself is the finding, and it goes to governance."
       },
       "tips": [
         "Eliminate: A drops an unresolved weakness on acknowledgment alone, and C lowers severity because no loss has happened yet.",
@@ -6509,7 +6509,7 @@
       "correct_explanation": "Audit results must reach those accountable for acting on them, but exploitable detail should not spread further than necessary. Restricting the report to governance, responsible management and counsel, with restricted-use terms, achieves both. Holding the report until remediation sounds protective, but it denies management and the audit committee the information they need to fix and oversee the weaknesses.",
       "wrong_explanations": {
         "A": "IT staff outside the remediation work gain nothing from exploitable detail; wider circulation only raises the chance it reaches attackers.",
-        "B": "Delay keeps accountable managers and the audit committee uninformed, so the weaknesses may never be fixed.",
+        "B": "Protecting the weaknesses from attackers is a legitimate aim, but sensitive results are controlled by audience, never by delay.",
         "D": "Accountable managers need the specifics to fix the weaknesses; restricting who receives the report protects the detail without stripping it."
       },
       "tips": [
@@ -6701,7 +6701,7 @@
       "correct_explanation": "Intangible risks can still be translated into financial terms using indirect indicators, such as peer incident costs, customer churn or replacement costs, with likelihood ranges and assumptions stated. That places them on the same scale as other risks so they rank fairly. A separate qualitative rating is legitimate in general, but here it keeps the most strategic risks out of the ranking decision-makers will use.",
       "wrong_explanations": {
         "A": "Excluding hard-to-measure risks leaves material exposures out of the assessment; difficulty of measurement is not absence of risk.",
-        "B": "A separate qualitative list cannot be compared with the financial ranking, so intangible risks lose out in prioritization.",
+        "B": "A qualitative rating would win without usable proxy data. With churn data available, every risk belongs on one scale.",
         "C": "A uniform placeholder ignores real differences in impact and makes the ranking arbitrary."
       },
       "tips": [
@@ -6817,7 +6817,7 @@
       "correct_explanation": "Risk-based planning is the method; sector drivers are inputs that change likelihood and impact scores. The director should keep one risk-based plan and weight in healthcare-specific risks, frameworks and cadences. Building the plan around the regulatory examination calendar sounds sector-aware, but it lets compliance timing, not relative risk, decide what is audited and underweights risks such as ransomware.",
       "wrong_explanations": {
         "A": "Rolling the plan forward skips a fresh risk assessment, so this year's sector drivers, such as healthcare ransomware, never reweight the priorities.",
-        "B": "Calendar-driven planning lets examination timing, not relative risk, set priorities, underweighting risks no regulator is examining.",
+        "B": "An auditor would use the examination calendar to time and coordinate engagements, but sector factors enter the plan as risk inputs, never as its method.",
         "D": "Two parallel plans duplicate effort and cannot rank sector and general risks against each other."
       },
       "tips": [
@@ -6893,7 +6893,7 @@
       "pre_read": "Notice the manager is experienced. Ask whether the failure was a lack of skill or a lack of diligence.",
       "correct_explanation": "ITAF Standard 1005 (Due Professional Care) requires the diligence a reasonable practitioner would apply, including review before conclusions are issued. Signing off without reviewing flawed work papers is a lapse of diligence. Proficiency (Standard 1006) is the close alternative, but the manager is experienced: the skills existed and simply were not applied, which is the essence of a due-care failure.",
       "wrong_explanations": {
-        "B": "Proficiency concerns having adequate knowledge and skills. The manager is experienced, so the failure lies in applying them.",
+        "B": "Like due care, proficiency shapes the quality of engagement work, but missing skill is a proficiency gap and unused skill a diligence lapse.",
         "C": "Organizational independence concerns freedom from interference; nothing in the stem suggests anyone pressured the manager.",
         "D": "The audit charter defines the function's authority and scope; skipping a review does not breach the charter itself."
       },
@@ -6990,7 +6990,7 @@
       "correct_explanation": "Running CAATs on a read-only copy protects production processing from the auditor's queries while the auditor keeps control of the procedure and the data. Having the DBA run them puts the test in expert hands, but the auditor then relies on the auditee to execute the test and pass on the results, which weakens independence and evidence integrity.",
       "wrong_explanations": {
         "A": "Off-peak timing reduces load, but heavy ad hoc queries on the live database can still lock or slow payments; a read-only copy avoids that while audit keeps control.",
-        "C": "When the auditee runs the test, the auditor loses control over the procedure and its output.",
+        "C": "An auditor may use auditee-run queries once their output is validated, but a new test is designed, run and read by the auditor.",
         "D": "Duplicate detection across a large population is exactly where CAATs outperform manual sampling."
       },
       "tips": [
@@ -7162,7 +7162,7 @@
       "correct_explanation": "The review is an IT-dependent manual control: the controller can only examine entries the report shows. Testing the report's completeness and accuracy, so that it captures every entry above the threshold, is what makes the review reliable. Re-performing the review checks the controller's diligence, but it uses the same report, so entries the report omits would escape both the controller and the IS auditor.",
       "wrong_explanations": {
         "B": "Inquiry alone is weak evidence. The controller's description cannot show whether the report behind the review was complete.",
-        "C": "Re-performance uses the same report. If the report drops entries, the IS auditor repeats the controller's blind spot.",
+        "C": "A manual review is only as complete as its report. Re-performance strongly tests the reviewer, though a review's inputs always need their own test.",
         "D": "Sign-off authority matters, but an authorized reviewer working from an incomplete report still misses entries."
       },
       "tips": [
@@ -7314,7 +7314,7 @@
       "correct_explanation": "Deciding whether to proceed with residual risk above appetite belongs to management: the risk must be treated, or formally accepted at the level the risk policy sets, here the risk committee. The IS auditor declines to approve and reports the exposure to that committee. Arranging the sponsor's signature looks constructive, but the IS auditor would be steering a risk decision, and the sponsor lacks the authority policy requires.",
       "wrong_explanations": {
         "A": "Approving go-live is a management decision. An IS auditor who approves it takes on risk ownership and impairs independence.",
-        "B": "The IS auditor would be steering a risk decision, and policy reserves acceptance above appetite for the risk committee, not the sponsor.",
+        "B": "Like reporting to the committee, a signed acceptance puts the gap on record, but auditors stay out of risk decisions they may later audit.",
         "D": "Holding the report until the committee decides delays the very information it needs; the IS auditor reports the exposure now, and the committee decides."
       },
       "tips": [
@@ -7352,7 +7352,7 @@
       "correct_explanation": "No set of controls removes all risk, and each added control costs money. Once residual risk is within appetite, the right step is a documented acceptance by the authorized risk owner, with reasons and a review date. Closing the risk in the register also stops the spending, but it drops the decision record and the review that would catch the risk growing later.",
       "wrong_explanations": {
         "B": "Zero residual risk is unreachable. Each extra control adds cost while the risk already sits inside the accepted appetite.",
-        "C": "Closing the entry removes the decision record and the scheduled review, so a growing risk could go unnoticed.",
+        "C": "Like documented acceptance, closing the entry ends the chase for zero risk, but a risk leaves the register only when its exposure is gone.",
         "D": "The board sets risk appetite to reflect strategy. Lowering it just to justify more spending reverses the logic."
       },
       "tips": [
@@ -7387,7 +7387,7 @@
       "correct": "A",
       "key_concept": "A recommendation targets the root cause named in the finding; correcting only the sampled exceptions lets the same gap return.",
       "pre_read": "Find the cause stated in the stem, then ask which option would stop new exceptions, not just fix old ones.",
-      "correct_explanation": "The cause is a tool setting that closes emergency tickets before anyone approves them, so the recommendation must change that setting; otherwise new unapproved changes keep appearing. Retrospective approval of the nine sampled changes is the runner-up: management may sensibly do it as cleanup, but it treats only the symptom the sample exposed and leaves the cause in place.",
+      "correct_explanation": "The cause is a tool setting that closes emergency tickets before anyone approves them, so the recommendation must change that setting; otherwise new unapproved changes keep appearing. Retrospective approval of the nine sampled changes nearly wins: management may sensibly do it as cleanup, but it treats only the symptom the sample exposed and leaves the cause in place.",
       "wrong_explanations": {
         "B": "Approving the nine sampled changes cleans up known exceptions, but the tool keeps closing new emergency tickets unapproved, so the gap returns.",
         "C": "The changes went unapproved because the tool closed the tickets, not because managers forgot the policy, so a reminder misses the cause.",
@@ -7424,7 +7424,7 @@
       "correct": "B",
       "key_concept": "The effect element states the business risk of a gap; it is what justifies a finding's severity rating.",
       "pre_read": "Ask what question each part of a finding answers, and which question management is actually asking.",
-      "correct_explanation": "A rating reflects risk, and the effect element states it: what could happen to the business if attackers exploit the flaws, such as an outage or a data breach. Without it, readers see a gap but not why it matters. The policy section is the runner-up: criteria show that a requirement was breached, but every finding breaches something, so criteria alone cannot justify a high rating.",
+      "correct_explanation": "A rating reflects risk, and the effect element states it: what could happen to the business if attackers exploit the flaws, such as an outage or a data breach. Without it, readers see a gap but not why it matters. The policy section comes closest: criteria show that a requirement was breached, but every finding breaches something, so criteria alone cannot justify a high rating.",
       "wrong_explanations": {
         "A": "Criteria show which requirement the servers breach. That makes it a finding, but every finding breaches something, so criteria cannot show why this one rates high.",
         "C": "The server list is the condition, what was found. It shows that the gap exists, not how serious the gap is for the business.",
@@ -7461,7 +7461,7 @@
       "correct": "C",
       "key_concept": "Audit criteria must be objective, authoritative and agreed; where internal policy is silent, a recognized framework can supply them.",
       "pre_read": "Ask what makes a benchmark one that management, the IS auditor and readers would all accept.",
-      "correct_explanation": "Criteria must be objective and authoritative so that management and readers accept the comparison. When internal policy is silent, a widely recognized framework, such as COBIT 2019 or ISO/IEC 27001, agreed as criteria for the engagement gives that footing. The IS auditor's own experience is the runner-up: professional judgment matters, but personal views are not criteria others can check, so management could dismiss the finding as opinion.",
+      "correct_explanation": "Criteria must be objective and authoritative so that management and readers accept the comparison. When internal policy is silent, a widely recognized framework, such as COBIT 2019 or ISO/IEC 27001, agreed as criteria for the engagement gives that footing. The IS auditor's own experience is the strongest alternative: professional judgment matters, but personal views are not criteria others can check, so management could dismiss the finding as opinion.",
       "wrong_explanations": {
         "A": "Professional judgment applies the criteria, but personal experience is not an authoritative benchmark that management and readers can verify, so the finding would read as opinion.",
         "B": "Other clients' practices are confidential and were not agreed for this engagement, so citing them breaches confidentiality and gives no accepted benchmark.",
@@ -7498,7 +7498,7 @@
       "correct": "D",
       "key_concept": "Inherent risk comes from the nature of the activity before controls; control failures raise control risk, and audit limits raise detection risk.",
       "pre_read": "For each observation, ask whether it describes the activity, management's controls or the audit's own procedures.",
-      "correct_explanation": "Inherent risk is the exposure before any controls, driven by the nature of the activity. Transfers run on complex, newly written code raise it directly, because errors are likelier before any control applies. Skipped access reviews are the runner-up: they matter, but they describe a control failing, which raises control risk rather than inherent risk. Mixing up the two leads the IS auditor to plan the wrong response.",
+      "correct_explanation": "Inherent risk is the exposure before any controls, driven by the nature of the activity. Transfers run on complex, newly written code raise it directly, because errors are likelier before any control applies. Skipped access reviews come closest: they matter, but they describe a control failing, which raises control risk rather than inherent risk. Mixing up the two leads the IS auditor to plan the wrong response.",
       "wrong_explanations": {
         "A": "Skipped reviews mean a control is not operating. That raises control risk, which is assessed separately from the activity's inherent risk before controls.",
         "B": "A short fieldwork window limits the IS auditor's own procedures, which affects detection risk, not the platform's inherent risk.",
@@ -7535,7 +7535,7 @@
       "correct": "B",
       "key_concept": "The IS auditor's procedures affect only detection risk; testing reveals control risk but cannot lower it.",
       "pre_read": "Ask which part of audit risk the IS auditor's own actions can actually change.",
-      "correct_explanation": "Detection risk is the chance that the IS auditor's procedures miss a material error, and it is the only part of audit risk the IS auditor controls. Examining every payment removes sampling risk, so detection risk falls. Control risk is the runner-up: testing more payments shows how well controls work but cannot make them work better, so control risk stays high until management fixes the controls.",
+      "correct_explanation": "Detection risk is the chance that the IS auditor's procedures miss a material error, and it is the only part of audit risk the IS auditor controls. Examining every payment removes sampling risk, so detection risk falls. Control risk is the closest choice: testing more payments shows how well controls work but cannot make them work better, so control risk stays high until management fixes the controls.",
       "wrong_explanations": {
         "A": "Control risk depends on how well management's controls work. Recalculating payments measures their effect but does not improve them, so control risk stays high.",
         "C": "Inherent risk comes from the nature of claim payments before any control or test. The IS auditor's recalculation does not change that nature.",
@@ -7573,7 +7573,7 @@
       "correct": "C",
       "key_concept": "Materiality is judged in aggregate: related errors are combined and projected to the population before their significance is decided.",
       "pre_read": "Notice whether small errors share a cause, and ask what they add up to across the whole population.",
-      "correct_explanation": "Errors that share one cause must be judged together, and errors found in a sample must be projected to the population. Fourteen small errors from one rounding rule may add up to a material misstatement across every loan. Recommending a fix to the rule is the runner-up: it will follow, but the IS auditor first needs the combined size to rate the finding and judge how urgently to escalate it.",
+      "correct_explanation": "Errors that share one cause must be judged together, and errors found in a sample must be projected to the population. Fourteen small errors from one rounding rule may add up to a material misstatement across every loan. Recommending a fix to the rule nearly wins: it will follow, but the IS auditor first needs the combined size to rate the finding and judge how urgently to escalate it.",
       "wrong_explanations": {
         "A": "Each error is small, but materiality is judged in aggregate; one systematic cause repeated across the population can add up to a material amount.",
         "B": "Fixing the rule is a sound later recommendation, but without the projected total the IS auditor cannot rate the finding or judge its urgency.",
@@ -7611,7 +7611,7 @@
       "correct": "A",
       "key_concept": "In IS audits, a weakness is material because of what relies on it, such as critical processing that feeds financial records.",
       "pre_read": "Separate why something is a weakness from why it matters enough to change readers' decisions.",
-      "correct_explanation": "Materiality in an IS audit turns on what depends on the weakness. Because payroll, billing and ledger jobs run under the shared account, misuse could alter processing that feeds the financial records, so the weakness could change readers' decisions. Lost accountability is the runner-up: it explains why sharing an account is a weakness, but it comes with every shared account, so it does not show how far the damage could reach.",
+      "correct_explanation": "Materiality in an IS audit turns on what depends on the weakness. Because payroll, billing and ledger jobs run under the shared account, misuse could alter processing that feeds the financial records, so the weakness could change readers' decisions. Lost accountability is the closest choice: it explains why sharing an account is a weakness, but it comes with every shared account, so it does not show how far the damage could reach.",
       "wrong_explanations": {
         "B": "Lost accountability comes with every shared account, so it cannot separate a material one from a trivial one; materiality turns on what depends on it.",
         "C": "The breached policy is the criterion for the finding, not a measure of its significance; any breach meets it, whatever depends on the account.",
@@ -7649,7 +7649,7 @@
       "correct": "D",
       "key_concept": "Preventive controls can fail or be bypassed, so a detective control behind them is still needed to show when they have.",
       "pre_read": "Ask what the control being removed would catch, and whether anything else still would.",
-      "correct_explanation": "A configuration is a preventive control, and it can fail: a defect, an emergency override or a payment file loaded outside the workflow can send a wire without dual approval. The daily reconciliation is the detective layer that catches such wires, so ending it leaves them unnoticed. Collusion is the runner-up: it is a real limit of dual approval, but colluded wires match approved instructions, so the reconciliation never caught them either.",
+      "correct_explanation": "A configuration is a preventive control, and it can fail: a defect, an emergency override or a payment file loaded outside the workflow can send a wire without dual approval. The daily reconciliation is the detective layer that catches such wires, so ending it leaves them unnoticed. Collusion is the closest concern: it is a real limit of dual approval, but colluded wires match approved instructions, so the reconciliation never caught them either.",
       "wrong_explanations": {
         "A": "Collusion defeats dual approval, but colluded wires match approved instructions, so the reconciliation never caught them; ending it does not change this exposure.",
         "B": "Processing delay is an efficiency question about dual approval itself and has nothing to do with ending the reconciliation.",
@@ -7687,7 +7687,7 @@
       "correct": "C",
       "key_concept": "When prevention is impractical, a timely detective control with follow-up limits harm; a log no one reviews detects nothing.",
       "pre_read": "Ask which option would actually find an inappropriate override soon enough for someone to act.",
-      "correct_explanation": "Because overrides must stay possible, prevention cannot do the job, so the control has to find inappropriate overrides quickly and act on them. A pharmacist reviewing each override within hours can stop a harmful combination before further doses. The reason code is the runner-up: it documents intent and may deter casual overrides, but any code can be chosen, and nobody checks whether the override was justified.",
+      "correct_explanation": "Because overrides must stay possible, prevention cannot do the job, so the control has to find inappropriate overrides quickly and act on them. A pharmacist reviewing each override within hours can stop a harmful combination before further doses. The reason code is the strongest alternative: it documents intent and may deter casual overrides, but any code can be chosen, and nobody checks whether the override was justified.",
       "wrong_explanations": {
         "A": "Training improves understanding but neither stops nor finds a specific inappropriate override, so it cannot address the risk on its own.",
         "B": "Requiring a reason adds a record and a pause, but clinicians can pick any code, and no one checks whether the override was justified.",
@@ -7725,7 +7725,7 @@
       "correct": "A",
       "key_concept": "A compensating control stands in only while the preferred control is impractical; when prevention becomes feasible, it should be implemented.",
       "pre_read": "Ask why the compensating control existed, and whether that reason still holds after the change.",
-      "correct_explanation": "A compensating control is a substitute for when the preferred control is impractical. Once the new system can split the duties by role, prevention becomes practical, so the IS auditor should recommend enforcing it. Keeping the review is the runner-up: it has worked, but it finds problems only after the fact and relies on a manager's diligence every month, so it is weaker than the preventive split now available.",
+      "correct_explanation": "A compensating control is a substitute for when the preferred control is impractical. Once the new system can split the duties by role, prevention becomes practical, so the IS auditor should recommend enforcing it. Keeping the review is the most tempting alternative: it has worked, but it finds problems only after the fact and relies on a manager's diligence every month, so it is weaker than the preventive split now available.",
       "wrong_explanations": {
         "B": "An effective review still detects problems only after the fact. Once the preferred preventive control is practical, the substitute should not remain the primary control.",
         "C": "A second sign-off adds cost to a detective control while the stronger preventive control is now available with little effort.",
@@ -7763,7 +7763,7 @@
       "correct": "D",
       "key_concept": "A compensating control must address the same risk the missing control covered, and it is judged by that test.",
       "pre_read": "Name the risk the missing control was meant to stop, then check which option addresses that same risk.",
-      "correct_explanation": "A compensating control must address the same risk as the missing one. Without lockout, the exposure is password guessing, so real-time alerts on bursts of rejected logons, acted on promptly, detect the attack while it can still be stopped. Access recertification is the runner-up: it removes unneeded accounts and narrows the target, but it does nothing to notice someone guessing passwords on the accounts that remain.",
+      "correct_explanation": "A compensating control must address the same risk as the missing one. Without lockout, the exposure is password guessing, so real-time alerts on bursts of rejected logons, acted on promptly, detect the attack while it can still be stopped. Access recertification comes closest: it removes unneeded accounts and narrows the target, but it does nothing to notice someone guessing passwords on the accounts that remain.",
       "wrong_explanations": {
         "A": "Training may improve password choices, but it neither stops nor reveals an attacker repeatedly guessing passwords, which is the risk lockout addressed.",
         "B": "Encryption at rest protects stored files from theft, a different risk; an attacker who guesses a password reads the data through the application.",
@@ -7801,7 +7801,7 @@
       "correct": "B",
       "key_concept": "More evidence from a weak source does not fix reliability; the IS auditor needs evidence from an independent or system source.",
       "pre_read": "Ask whether the problem is how much evidence there is or how trustworthy its source is.",
-      "correct_explanation": "The spreadsheet is a reliability problem: the team being audited compiled it by hand, so errors or omissions cannot be ruled out. Evidence the IS auditor obtains directly from independent sources, by matching human resources exit records to the user list extracted from the system, is far more reliable. Accepting the extra months is the runner-up: it improves sufficiency, but more entries from the same unreliable source cannot fix its quality.",
+      "correct_explanation": "The spreadsheet is a reliability problem: the team being audited compiled it by hand, so errors or omissions cannot be ruled out. Evidence the IS auditor obtains directly from independent sources, by matching human resources exit records to the user list extracted from the system, is far more reliable. Accepting the extra months is the most tempting alternative: it improves sufficiency, but more entries from the same unreliable source cannot fix its quality.",
       "wrong_explanations": {
         "A": "The extra months add quantity, but every entry comes from the same hand-compiled source, so more of it cannot fix reliability.",
         "C": "Inquiry is the auditee's own account of its work; it explains the process but gives no independent check that the entries are complete.",
@@ -7839,7 +7839,7 @@
       "correct": "C",
       "key_concept": "Snapshots record selected transactions at chosen processing points, building a step-by-step trail; embedded modules screen against rules instead.",
       "pre_read": "Ask what the IS auditor needs to see: rule breaches, early alerts, or each stage of processing.",
-      "correct_explanation": "Snapshots capture the data of selected transactions at chosen points as they move through processing, building a step-by-step trail of how each one changed. That is exactly what the IS auditor must show. Embedded audit modules are the runner-up: they screen every application against the IS auditor's rules and log exceptions, but they record rule breaches, not a picture of each stage.",
+      "correct_explanation": "Snapshots capture the data of selected transactions at chosen points as they move through processing, building a step-by-step trail of how each one changed. That is exactly what the IS auditor must show. Embedded audit modules come closest: they screen every application against the IS auditor's rules and log exceptions, but they record rule breaches, not a picture of each stage.",
       "wrong_explanations": {
         "A": "Embedded modules log applications that break the IS auditor's rules; they do not record what each application looked like at every processing stage.",
         "B": "Audit hooks raise an early alert on the few applications that meet a trigger; they leave no stage-by-stage record of how applications change.",
@@ -7877,7 +7877,7 @@
       "correct": "A",
       "key_concept": "Audit hooks flag a few selected high-risk transactions for early attention and are the simplest online audit technique to build.",
       "pre_read": "Weigh coverage against cost: does the team need every transaction screened, or an early warning on one pattern?",
-      "correct_explanation": "Audit hooks are small triggers embedded in the application that flag selected suspicious transactions for immediate attention. Watching one known fraud pattern, a bank-detail change followed by a quick payment, is their ideal use, and they are the simplest online technique to build. Embedded audit modules are the runner-up: they screen every payment, but they are costly to build and run for a two-person team watching one pattern.",
+      "correct_explanation": "Audit hooks are small triggers embedded in the application that flag selected suspicious transactions for immediate attention. Watching one known fraud pattern, a bank-detail change followed by a quick payment, is their ideal use, and they are the simplest online technique to build. Embedded audit modules nearly win: they screen every payment, but they are costly to build and run for a two-person team watching one pattern.",
       "wrong_explanations": {
         "B": "Embedded modules give full screening, but they are the most complex online technique to build and run, which a small team cannot justify for one pattern.",
         "C": "Snapshots record payments at chosen processing points to build a trail; they do not raise an early alert when the risky sequence occurs.",
@@ -7915,9 +7915,9 @@
       "correct": "D",
       "key_concept": "Audit must control an embedded module's screening rules and exception file, or the auditee could alter the evidence used to audit it.",
       "pre_read": "Ask who could change the evidence if the team being audited maintained the audit tool.",
-      "correct_explanation": "Evidence from an embedded audit module is reliable only if the auditee cannot change what it screens or what it reports. Keeping the screening logic and the exception file under audit control protects that evidence. Accepting with a change log is the runner-up: it adds a record, but the team being audited could still weaken a rule or delete its own exceptions before anyone reads the log.",
+      "correct_explanation": "Evidence from an embedded audit module is reliable only if the auditee cannot change what it screens or what it reports. Keeping the screening logic and the exception file under audit control protects that evidence. Accepting with a change log is the most tempting alternative: it adds a record, but the team being audited could still weaken a rule or delete its own exceptions before anyone reads the log.",
       "wrong_explanations": {
-        "A": "A change log kept by the team being audited still lets it weaken rules or remove exceptions; recording a change does not prevent it.",
+        "A": "A logged change trail is a recognized detective control, but audit tools differ: the auditee never controls what audits it.",
         "B": "The problem is who controls the module, not the technique; monthly extracts would give up timely screening of wires for no gain.",
         "C": "Holding wires is a preventive operational control that management owns; it turns the audit tool into part of the process being audited."
       },
@@ -7952,9 +7952,9 @@
       "correct": "B",
       "key_concept": "Confidentiality under the ISACA Code yields to disclosure required by legal authority, made through proper channels and limited to what is required.",
       "pre_read": "Ask whether the request carries legal authority, and what confidentiality allows when it does.",
-      "correct_explanation": "The ISACA Code of Professional Ethics protects information gained at work unless disclosure is required by legal authority. A regulator using statutory powers is such an authority, so the IS auditor, through the chief audit executive and the bank's legal counsel, releases only what the law requires. Withholding is the runner-up: it sounds protective, but confidentiality never overrides a lawful demand.",
+      "correct_explanation": "The ISACA Code of Professional Ethics protects information gained at work unless disclosure is required by legal authority. A regulator using statutory powers is such an authority, so the IS auditor, through the chief audit executive and the bank's legal counsel, releases only what the law requires. Withholding nearly wins: it sounds protective, but confidentiality never overrides a lawful demand.",
       "wrong_explanations": {
-        "A": "Confidentiality under the Code gives way when disclosure is required by legal authority; refusing a lawful demand puts the bank and the IS auditor in breach.",
+        "A": "The Code does protect client information, yet its exceptions are part of the duty: disclosure the law requires is compliance, not breach.",
         "C": "Removing disputed findings alters the record and omits significant facts, breaching the Code's disclosure principle and misleading the regulator.",
         "D": "A lawful demand does not depend on management's consent; leaving the decision to management lets the auditee block what the law requires."
       },
@@ -7990,14 +7990,14 @@
       "correct": "C",
       "key_concept": "Information gained at work is never used for personal benefit; a personal interest in a client is disclosed so audit leadership can decide.",
       "pre_read": "Check two duties at once: protecting confidential information and disclosing a threat to objectivity.",
-      "correct_explanation": "The ISACA Code of Professional Ethics bars using information gained at work for personal benefit, and a personal stake in the client threatens objectivity. Disclosing the holding lets audit leadership decide whether to reassign the work, and making no trades keeps the inside information unused. Selling at once is the runner-up: it looks like removing the conflict, but selling on unannounced bad news uses confidential information for personal gain.",
+      "correct_explanation": "The ISACA Code of Professional Ethics bars using information gained at work for personal benefit, and a personal stake in the client threatens objectivity. Disclosing the holding lets audit leadership decide whether to reassign the work, and making no trades keeps the inside information unused. Selling at once is the most tempting alternative: it looks like removing the conflict, but selling on unannounced bad news uses confidential information for personal gain.",
       "wrong_explanations": {
-        "A": "Selling on unannounced bad news uses confidential client information for personal benefit, breaching the Code and possibly insider trading law.",
+        "A": "Divesting would be a valid remedy for a holding with no inside knowledge attached. Once inside knowledge exists, conflicts are disclosed, never traded away.",
         "B": "The announcement date does nothing to address the conflict, and asking for it seeks more inside information the IS auditor has no need for.",
         "D": "A personal stake in the client threatens objectivity; hiding it denies audit leadership the chance to decide whether the IS auditor should continue."
       },
       "tips": [
-        "Eliminate: B seeks more inside information, which solves nothing, and D keeps private a stake that threatens objectivity.",
+        "Eliminate: B seeks more inside information, which deepens the conflict, and D keeps private a stake that threatens objectivity.",
         "Final two: C beats A because selling now profits from unannounced news, while disclosure lets leadership manage the conflict without any trade.",
         "Exam cue: removing a conflict by acting on confidential information is still a breach of the Code."
       ],
@@ -8028,7 +8028,7 @@
       "correct": "D",
       "key_concept": "The criteria name the audit type: efficiency and effectiveness against management's own goals call for an operational audit.",
       "pre_read": "Identify the criteria first: laws or policy, fair presentation, system controls, or management's performance goals.",
-      "correct_explanation": "The question is whether the desk works quickly and economically, judged against goals management set. That is an operational audit: efficiency and effectiveness measured against management's criteria. A compliance audit against the service management policy is the runner-up: it tests whether staff follow the prescribed steps, but a desk can follow every step and still be slow and costly.",
+      "correct_explanation": "The question is whether the desk works quickly and economically, judged against goals management set. That is an operational audit: efficiency and effectiveness measured against management's criteria. A compliance audit against the service management policy comes closest: it tests whether staff follow the prescribed steps, but a desk can follow every step and still be slow and costly.",
       "wrong_explanations": {
         "A": "A compliance audit tests conformity with the policy's steps; a desk can follow every step and still miss management's speed and cost goals.",
         "B": "A financial audit tests whether costs are fairly recorded, not whether the desk resolves incidents efficiently against management's goals.",
@@ -8066,7 +8066,7 @@
       "correct": "A",
       "key_concept": "When the objective is evidence of wrongdoing for legal action, the engagement is forensic, with evidence handled to withstand legal challenge.",
       "pre_read": "Ask what the results will be used for: assurance on controls, or proof for dismissal and prosecution.",
-      "correct_explanation": "The objective is to establish who did what, with evidence fit for dismissal and prosecution. That is a forensic audit: evidence is collected, preserved and documented under chain of custody, with specialists and legal counsel involved, so it can withstand legal challenge. An IS audit of payroll access controls is the runner-up: it shows how fictitious employees could be added, but not, to legal standards, who added them.",
+      "correct_explanation": "The objective is to establish who did what, with evidence fit for dismissal and prosecution. That is a forensic audit: evidence is collected, preserved and documented under chain of custody, with specialists and legal counsel involved, so it can withstand legal challenge. An IS audit of payroll access controls is the closest choice: it shows how fictitious employees could be added, but not, to legal standards, who added them.",
       "wrong_explanations": {
         "B": "Access control testing shows whether the weakness exists, not who exploited it, and its evidence is not gathered to legal standards.",
         "C": "Testing conformity with the hiring policy finds procedural gaps; it does not establish wrongdoing by a named person for legal action.",
@@ -8104,7 +8104,7 @@
       "correct": "B",
       "key_concept": "Observation shows a moment and invites best behavior; records sampled across the period corroborate that a control operated throughout.",
       "pre_read": "Ask what evidence covers the whole period, not just the day the IS auditor was watching.",
-      "correct_explanation": "Observation shows only what happened while the IS auditor watched, and an announced visit invites best behavior. Sign-in records sampled across the year are records of the check being performed throughout the period, so they corroborate what was seen. An unannounced repeat observation is the runner-up: it reduces the observer effect, but it still covers a single day, not the year.",
+      "correct_explanation": "Observation shows only what happened while the IS auditor watched, and an announced visit invites best behavior. Sign-in records sampled across the year are records of the check being performed throughout the period, so they corroborate what was seen. An unannounced repeat observation is the strongest alternative: it reduces the observer effect, but it still covers a single day, not the year.",
       "wrong_explanations": {
         "A": "A surprise visit reduces the observer effect, but it still shows one day; it cannot show the check operated across the whole year.",
         "C": "The guards' own account is testimonial evidence from the people performing the control; it needs corroboration before it supports a conclusion.",
@@ -8142,7 +8142,7 @@
       "correct": "D",
       "key_concept": "When a committed standard's requirement cannot be met, the nonconformance is disclosed to the audit committee with a plan to restore conformance.",
       "pre_read": "Ask who relies on the unit's claim to meet its standards, and who must hear when it does not.",
-      "correct_explanation": "When a requirement of a committed standard cannot be met, the nonconformance is disclosed to those charged with governance, so the audit committee can judge its effect on reliance and support a fix. Pairing it with a plan to complete the review shows how conformance will be restored. Recording it in the quality file is the runner-up: it documents the gap but keeps it from the people who rely on the unit's work.",
+      "correct_explanation": "When a requirement of a committed standard cannot be met, the nonconformance is disclosed to those charged with governance, so the audit committee can judge its effect on reliance and support a fix. Pairing it with a plan to complete the review shows how conformance will be restored. Recording it in the quality file nearly wins: it documents the gap but keeps it from the people who rely on the unit's work.",
       "wrong_explanations": {
         "A": "A note in the quality file documents the gap but hides it from the audit committee, which relies on the unit's claim to conform.",
         "B": "Stopping every report harms stakeholders who need timely results and still leaves the nonconformance unreported to governance.",
@@ -8180,7 +8180,7 @@
       "correct": "B",
       "key_concept": "Before a first formal assessment, a readiness review finds design gaps against the target standard; it gives no assurance that controls operate.",
       "pre_read": "Match the work to the question: are we ready, how capable are we, or do the controls work?",
-      "correct_explanation": "With the formal assessment six months away and controls still being built, management needs to know what is missing. A readiness review compares current control design with the standard's requirements and produces a gap list to fix in time. An assurance audit is the runner-up: it is what eventually proves controls work, but controls still under construction have no period of operation to test.",
+      "correct_explanation": "With the formal assessment six months away and controls still being built, management needs to know what is missing. A readiness review compares current control design with the standard's requirements and produces a gap list to fix in time. An assurance audit is the most tempting alternative: it is what eventually proves controls work, but controls still under construction have no period of operation to test.",
       "wrong_explanations": {
         "A": "Efficiency of payment processing is a different question; it does not show whether controls meet the standard's requirements.",
         "C": "Testing operation over a period needs controls that have been running; several are still being built, so the test would be premature.",
@@ -8218,7 +8218,7 @@
       "correct": "A",
       "key_concept": "Measure an improvement action by whether the targeted defect stops recurring, not by whether the action was carried out.",
       "pre_read": "Separate measures of activity from measures of the outcome the action was meant to change.",
-      "correct_explanation": "Improvement actions are judged by outcomes: if the sign-off step and the briefing worked, later quality reviews should find work papers with missing review evidence less often. That recurrence rate measures the problem itself. Briefing attendance is the runner-up: it confirms managers heard the message, but they can attend and still skip the review, so it measures activity rather than results.",
+      "correct_explanation": "Improvement actions are judged by outcomes: if the sign-off step and the briefing worked, later quality reviews should find work papers with missing review evidence less often. That recurrence rate measures the problem itself. Briefing attendance comes closest: it confirms managers heard the message, but they can attend and still skip the review, so it measures activity rather than results.",
       "wrong_explanations": {
         "B": "Attendance shows the briefing was delivered, not that managers now review and sign off work papers; it measures activity, not results.",
         "C": "Report timeliness tracks speed; faster reports could even mean less review, and it says nothing about missing review evidence.",
@@ -8256,7 +8256,7 @@
       "correct": "C",
       "key_concept": "Validating an artificial intelligence (AI) tool covers only the version tested; after retraining, revalidate on known outcomes because missed items stay invisible.",
       "pre_read": "Ask which failure the IS auditor would never see: a visible extra flag, or a silent miss.",
-      "correct_explanation": "Validation holds only for the model that was tested. After retraining, the tool may miss improper entries it used to catch, and misses are invisible: nothing flags them, so the IS auditor could conclude that entries are clean. The tool must be revalidated on data with known outcomes. A version mismatch with the work papers is the runner-up: it weakens reproducibility, but it can be documented.",
+      "correct_explanation": "Validation holds only for the model that was tested. After retraining, the tool may miss improper entries it used to catch, and misses are invisible: nothing flags them, so the IS auditor could conclude that entries are clean. The tool must be revalidated on data with known outcomes. A version mismatch with the work papers is the closest concern: it weakens reproducibility, but it can be documented.",
       "wrong_explanations": {
         "A": "A fee increase is a budget matter; it does not affect whether the tool's output is reliable audit evidence.",
         "B": "Use of other clients' data is a contract and confidentiality matter for the vendor; it does not by itself make the tool's output unreliable audit evidence.",
@@ -8294,7 +8294,7 @@
       "correct": "B",
       "key_concept": "Controls give reasonable assurance because of built-in limits: human error happens most often, while management override is rarer but causes greater loss.",
       "pre_read": "Before reading the options, decide whether the stem asks how often a limitation occurs or how much damage it could do.",
-      "correct_explanation": "Human error is the limitation that occurs most often: approvers handle many invoices, and a mistyped amount can pass two busy reviewers. A senior executive overriding the control is the runner-up. It would cause the GREATEST loss, so it would win if the stem asked for the most severe limitation. Overrides are rare, though, and MOST LIKELY asks about frequency, not severity.",
+      "correct_explanation": "Human error is the limitation that occurs most often: approvers handle many invoices, and a mistyped amount can pass two busy reviewers. A senior executive overriding the control comes closest. It would cause the GREATEST loss, so it would win if the stem asked for the most severe limitation. Overrides are rare, though, and MOST LIKELY asks about frequency, not severity.",
       "wrong_explanations": {
         "A": "Override would cause the greatest loss, but it is rare; MOST LIKELY asks how often a limitation occurs, and routine human error happens far more often.",
         "C": "Cost compared with benefit limits which controls are worth running, but it does not let a specific wrong payment pass the approval.",
@@ -8332,7 +8332,7 @@
       "correct": "D",
       "key_concept": "For an external quality assessment, the CAE agrees its terms, including scope and the assessor's independence, with the board before the work begins.",
       "pre_read": "Ask which of the two plausible steps the other depends on before it can be done properly.",
-      "correct_explanation": "The assessment's terms, meaning its scope and the validator's qualifications and independence, are agreed with the board, usually through its audit committee, before any work starts. They decide what the self-assessment must cover and whether its validation will be accepted. Completing the self-assessment is the runner-up. It is necessary, but done first it may follow a scope the board later changes, or be checked by a validator the board rejects.",
+      "correct_explanation": "The assessment's terms, meaning its scope and the validator's qualifications and independence, are agreed with the board, usually through its audit committee, before any work starts. They decide what the self-assessment must cover and whether its validation will be accepted. Completing the self-assessment is the strongest alternative. It is necessary, but done first it may follow a scope the board later changes, or be checked by a validator the board rejects.",
       "wrong_explanations": {
         "A": "The self-assessment is needed, but it depends on an agreed scope and an accepted validator; done first, it may have to be redone.",
         "B": "A compliance officer works for the organization, so is not independent of it; external validation needs a qualified assessor from outside.",
