@@ -5489,12 +5489,13 @@ button.pg-cd:hover { background: var(--surface2); }
 .fg-st-x { font: var(--t-fg-tiny); fill: var(--text2); }
 .fg-st-x.c { font-weight: 600; fill: var(--clay); }
 /* Numbers that meet the dashed 70 line keep a paper halo, so the line never cuts them. */
-.fg-st-n, .fg-st-up, .fg-st-dn { paint-order: stroke; stroke: var(--raised2); stroke-width: 4px; stroke-linejoin: round; }
+.fg-st-line { font: var(--t-fg-tiny); fill: var(--text2); }
+.fg-st-n, .fg-st-up, .fg-st-dn, .fg-st-line { paint-order: stroke; stroke: var(--raised2); stroke-width: 4px; stroke-linejoin: round; }
 .fg-wide .fg-st-n { font-size: 24px; }
 .fg-wide .fg-st-n .u { font-size: 13px; }
 .fg-wide .fg-st-l2 { font: 500 14px var(--f-sans); }
 .fg-wide .fg-st-w { font-size: 15px; }
-.fg-wide .fg-st-t, .fg-wide .fg-st-l1, .fg-wide .fg-st-x, .fg-wide .fg-st-up, .fg-wide .fg-st-dn { font-size: 13px; }
+.fg-wide .fg-st-t, .fg-wide .fg-st-l1, .fg-wide .fg-st-x, .fg-wide .fg-st-line, .fg-wide .fg-st-up, .fg-wide .fg-st-dn { font-size: 13px; }
 /* The column picks the drawing: the phone one, or the wide one from 500px. */
 .fg-stems-svg.fg-wide { display: none; }
 @container (min-width: 500px) {
@@ -12448,7 +12449,7 @@ function todayShootRefresh() {
   if (!art || !fig || !cap) return;
   var shoot = todayShoot();
   art.innerHTML = shoot.art;
-  fig.textContent = shoot.fig;
+  fig.outerHTML = fgFigHtml(shoot.fig, 2, 'tdShootFig');
   cap.innerHTML = '<b>Plate</b>' + escapeHtml(shoot.cap);
   var td = art.closest('.td');
   if (td) td.classList.toggle('td-has-shoot', shoot.plant);
@@ -12554,7 +12555,7 @@ function renderHome() {
   // planted, beside the plan's label; forest only on the Start button.
   var shoot = todayShoot();
   hero = '<section class="td-hero" aria-labelledby="tdHeroT">'
-    + fgPlate('', '<p class="fg-fig" id="tdShootFig">' + escapeHtml(shoot.fig) + '</p>'
+    + fgPlate('', fgFigHtml(shoot.fig, 2, 'tdShootFig')
       + '<div class="td-shoot" id="tdShoot" aria-hidden="true">' + shoot.art + '</div>'
       + '<div class="fg-label td-plan-label">' + label + '</div>', 'td-shoot-plate')
     + '<p class="fg-cap" id="tdShootCap"><b>Plate</b>' + escapeHtml(shoot.cap) + '</p>'
@@ -12622,10 +12623,19 @@ function fgDateHtml(ms) {
 function fgRunningHead(left, rightHtml) {
   return '<div class="fg-rh"><span>' + escapeHtml(left) + '</span>' + (rightHtml ? '<span>' + rightHtml + '</span>' : '') + '</div>';
 }
+// A plate's caption is a heading (the phone's FigCaption), shown "Fig. 5 ·
+// Five areas, one scale" and said "Figure 5, Five areas, one scale", so a
+// screen reader can move between plates. level: one under the section's own.
+function fgFigHtml(fig, level, id) {
+  var lv = level === 2 ? 2 : 3, m = /^Fig\. (\d+) · (.*)$/.exec(String(fig));
+  var said = m ? 'Figure ' + m[1] + ', ' + m[2] : String(fig);
+  return '<h' + lv + ' class="fg-fig"' + (id ? ' id="' + escapeHtml(id) + '"' : '') + '><span aria-hidden="true">' + escapeHtml(fig) + '</span>'
+    + '<span class="sr-only">' + escapeHtml(said) + '</span></h' + lv + '>';
+}
 // Plate: the double-hairline mount around the screen's one focal point.
-function fgPlate(fig, innerHtml, cls) {
+function fgPlate(fig, innerHtml, cls, level) {
   return '<div class="fg-plate' + (cls ? ' ' + cls : '') + '"><div class="fg-plate-in">'
-    + (fig ? '<p class="fg-fig">' + escapeHtml(fig) + '</p>' : '') + innerHtml + '</div></div>';
+    + (fig ? fgFigHtml(fig, level) : '') + innerHtml + '</div></div>';
 }
 // The caption under a plate: "KEY One stem per area…", "PLATE …", "NOTE …".
 function fgCaption(key, text) {
@@ -12689,7 +12699,7 @@ function fgScaleBar(range, o) {
 // value draws this set's growth as a clay segment with ↑n. Two drawings, a
 // phone one and a wide one; the column's own width picks (a container query),
 // and the list of the same facts replaces both at large text or under 300px.
-// areas: [{ id, name, short, pct, answered, before, weight }]
+// areas: [{ id, name, short, pct, answered, before, weight, note ("3 of 4 this set") }]
 // o: { ink (trace in once), label (what the list is), unit ('answers'), narrowOnly, w (the phone drawing's width) }
 // The words match the phone (engine/fieldGuide.ts, DESIGN_SYSTEM §21.2): no
 // answers = "not started"; 1 to 29 = "too few yet · 18 answered"; measured =
@@ -12697,16 +12707,20 @@ function fgScaleBar(range, o) {
 function fgStemFacts(a) {
   var n = Number(a.answered) || 0, none = n <= 0, few = n < DOMAIN_READ_MIN, pct = fgPct(a.pct);
   var delta = (!few && typeof a.before === 'number' && isFinite(a.before)) ? pct - fgPct(a.before) : 0;
+  var extra = none ? '' : few ? n + ' answered' : pct < DOMAIN_TARGET_PCT ? 'below ' + DOMAIN_TARGET_PCT : '';
   return {
     none: none, few: few, pct: pct, delta: delta, below: !few && pct < DOMAIN_TARGET_PCT,
     word: none ? 'not started' : few ? 'too few yet' : bandFor(pct).toLowerCase(),
-    extra: none ? '' : few ? n + ' answered' : pct < DOMAIN_TARGET_PCT ? 'below ' + DOMAIN_TARGET_PCT : ''
+    // The lines under the word, in the phone's order (stemLines): "18 answered" or "below 70", then the set's "3 of 4 this set".
+    lines: [extra, a.note ? String(a.note) : ''].filter(Boolean)
   };
 }
 function fgStemSvg(areas, wide, o) {
   var n = Math.max(1, areas.length);
+  var extras = Math.max.apply(null, [0].concat(areas.map(function (a) { return fgStemFacts(a).lines.length; })));
   var w = wide ? 600 : (o.w || 340), T = 34, plotH = wide ? 230 : 170, soil = T + plotH;
-  var h = soil + (wide ? 66 : 70), L = 26;
+  var step = wide ? 18 : 15, first = wide ? 58 : 62;
+  var h = soil + (wide ? 44 : 52) + extras * step + 4, L = 26;
   var y = function (p) { return soil - (p / 100) * plotH; };
   var gap = (w - L) / n, g = '';
   var trace = o.ink ? ' fg-trace' : '', len = o.ink ? ' pathLength="1"' : '', settle = o.ink ? ' fg-settle' : '';
@@ -12715,7 +12729,8 @@ function fgStemSvg(areas, wide, o) {
   });
   g += '<path class="fg-st-ax" d="M24 ' + soil + 'V' + T + '"/>'
     + '<path class="fg-st-70" d="M26 ' + y(DOMAIN_TARGET_PCT).toFixed(1) + 'H' + w + '"/>'
-    + '<path class="fg-st-ax" d="M26 ' + soil + 'H' + w + '"/>';
+    + '<path class="fg-st-ax" d="M26 ' + soil + 'H' + w + '"/>'
+    + '<text class="fg-st-line" x="' + w + '" y="' + (y(DOMAIN_TARGET_PCT) + 13).toFixed(1) + '" text-anchor="end">' + DOMAIN_TARGET_PCT + ' line</text>';
   areas.forEach(function (a, i) {
     var f = fgStemFacts(a), pct = f.pct, delta = f.delta;
     var xs = (L + gap * i + gap / 2).toFixed(1);
@@ -12735,8 +12750,10 @@ function fgStemSvg(areas, wide, o) {
         + (delta ? '<tspan class="' + (delta > 0 ? 'fg-st-up' : 'fg-st-dn') + '" dy="6"> ' + (delta > 0 ? '&uarr;' : '&darr;') + Math.abs(delta) + '</tspan>' : '') + '</text>';
     }
     var nm = String(a.short || a.name || ''), parts = nm.split(' ');
-    // The extra line: "18 answered" (grey) or "below 70" (clay, with the word).
-    var extra = f.extra ? '<text class="fg-st-x' + (f.below ? ' c' : '') + '" x="' + xs + '" y="' + (soil + (wide ? 58 : 62)) + '" text-anchor="middle">' + f.extra + '</text>' : '';
+    // The lines under the word: "18 answered" (grey) or "below 70" (clay), then the set's note.
+    var extra = f.lines.map(function (t, k) {
+      return '<text class="fg-st-x' + (f.below && k === 0 ? ' c' : '') + '" x="' + xs + '" y="' + (soil + first + k * step) + '" text-anchor="middle">' + escapeHtml(t) + '</text>';
+    }).join('');
     if (wide) {
       g += '<text class="fg-st-l2" x="' + xs + '" y="' + (soil + 19) + '" text-anchor="middle">' + escapeHtml(nm) + '</text>'
         + '<text class="fg-st-w' + (f.below ? ' c' : '') + '" x="' + xs + '" y="' + (soil + 39) + '" text-anchor="middle">' + f.word + '</text>' + extra;
@@ -12756,6 +12773,7 @@ function fgStemChart(areas, o) {
     var f = fgStemFacts(a), meta = [];
     if (typeof a.weight === 'number') meta.push(a.weight + '% of the exam');
     meta.push((a.answered || 0) + ' ' + (a.answered === 1 ? unit.replace(/s$/, '') : unit));
+    if (a.note) meta.push(String(a.note));
     var val = f.none ? 'Not started' : f.few ? 'Too few yet' : f.pct + '%' + (f.delta ? ' (' + (f.delta > 0 ? 'up ' : 'down ') + Math.abs(f.delta) + ')' : '');
     var words = f.none ? '' : f.few ? 'not measured yet' : f.word + (f.below ? ' · below ' + DOMAIN_TARGET_PCT : '');
     return '<li><span class="fg-sl-a"><span class="fg-sl-n">' + escapeHtml(a.name || a.short || '') + '</span><span class="fg-sl-m">' + escapeHtml(meta.join(' · ')) + '</span></span>'
@@ -13779,7 +13797,7 @@ function updateStats() {
   document.getElementById('sTotal').textContent = t;
   document.getElementById('sCorrect').textContent = c;
   var pe = document.getElementById('sPct');
-  // Same honest rule as the domains: a band word until 30 answers, then the number.
+  // Same honest rule as the domains: "Too few yet" until 30 answers, then the number.
   pe.textContent = t > 0 ? domainReadLabel(read) : '--';
   pe.className = 'stat-num';
   document.getElementById('sStreak').textContent = S.streak;
@@ -13821,10 +13839,11 @@ function domainRead(st) {
   var pct = n > 0 ? Math.round(((st.c || 0) / n) * 100) : null;
   return { n: n, pct: pct, enough: n >= DOMAIN_READ_MIN, band: pct === null ? '' : bandFor(pct) };
 }
-// Text for a small score slot: the number from 30 answers, a band word before that.
+// Text for a small score slot: the number from 30 answers, the same words as
+// every other domain figure before that ("Not started", "Too few yet").
 function domainReadLabel(r) {
-  if (r.pct === null) return '--';
-  return r.enough ? r.pct + '%' : r.band;
+  if (!r.n || r.pct === null) return 'Not started';
+  return r.enough ? r.pct + '%' : 'Too few yet';
 }
 // Width of an accuracy bar: none until the read is real, so a band word is
 // never drawn next to a bar that gives the number away (mobile does the same).
@@ -16617,7 +16636,8 @@ function rsGrowthPlate(byDomain, before) {
   if (!inSet.length) return '';
   var areas = inSet.map(function (d) {
     var b = before && before[d] && before[d].answered >= DOMAIN_READ_MIN ? before[d].pct : null;
-    return { id: d, name: DI[d].name, short: DI[d].short, pct: now[d].pct, answered: now[d].answered, before: b };
+    return { id: d, name: DI[d].name, short: DI[d].short, pct: now[d].pct, answered: now[d].answered, before: b,
+      note: byDomain[d].c + ' of ' + byDomain[d].t + ' this set' };
   });
   var key = 'Dashed: the ' + DOMAIN_TARGET_PCT + ' line. Clay: growth from this set (with ↑), or a domain below it (with “below ' + DOMAIN_TARGET_PCT + '”).';
   if (areas.length > 1) {
