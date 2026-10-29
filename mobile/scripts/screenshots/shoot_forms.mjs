@@ -149,6 +149,8 @@ async function revealStrip(name, title, appTimes, motion, growth = 3, sp = 'oak'
   await page.goto(BASE + '/plant');
   await page.waitForSelector('[data-testid^="plant-form-reveal-"]', { timeout: 60_000 });
   if (xl) await zoomText(2);
+  // At about 200% text the name sits lower: keep the whole screen in the frame.
+  const CH = xl ? H - 40 : 560;
   const t0 = await page.evaluate(() => performance.now());
   const frames = [];
   for (const at of appTimes) {
@@ -158,7 +160,7 @@ async function revealStrip(name, title, appTimes, motion, growth = 3, sp = 'oak'
       await wait(15);
     }
     const appMs = Math.round((await page.evaluate(() => performance.now())) - t0);
-    const png = await page.screenshot({ clip: { x: 0, y: 40, width: W, height: 560 } });
+    const png = await page.screenshot({ clip: { x: 0, y: 40, width: W, height: CH } });
     if (process.env.FRAMES === '1') fs.writeFileSync(`${out}/${name}-${theme}-${frames.length + 1}-${appMs}ms.png`, png);
     frames.push({ appMs, data: png.toString('base64') });
   }
@@ -168,10 +170,10 @@ async function revealStrip(name, title, appTimes, motion, growth = 3, sp = 'oak'
   const html = `<html><body style="margin:0;background:${bg};font:600 13px -apple-system,Segoe UI,sans-serif;color:${ink}">
     <div style="padding:10px 12px 4px">${title}</div>
     <div style="display:flex;gap:10px;padding:6px 12px 12px">${frames
-      .map((f, i) => `<div><div style="padding:0 0 4px">${i + 1} · ${f.appMs} ms</div><img src="data:image/png;base64,${f.data}" style="width:${W}px;height:560px;display:block;outline:1px solid ${ink}33"></div>`)
+      .map((f, i) => `<div><div style="padding:0 0 4px">${i + 1} · ${f.appMs} ms</div><img src="data:image/png;base64,${f.data}" style="width:${W}px;height:${CH}px;display:block;outline:1px solid ${ink}33"></div>`)
       .join('')}</div></body></html>`;
   const p = await ctx.newPage();
-  await p.setViewportSize({ width: frames.length * (W + 10) + 14, height: 560 + 64 });
+  await p.setViewportSize({ width: frames.length * (W + 10) + 14, height: CH + 64 });
   await p.setContent(html);
   await p.screenshot({ path: `${out}/${name}-${theme}.png`, fullPage: true });
   await p.close();
