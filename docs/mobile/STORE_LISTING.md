@@ -275,7 +275,7 @@ Thank you for reviewing KaiSip.
 - Support URL: https://<the website>/support.html
 
 To reach a mock exam:
-1. On first launch, tap "Start my plan", then "Continue", then "Start studying".
+1. On first launch, tap "Get started", then "Continue", then "Start my first questions".
 2. Open the Practice tab.
 3. Scroll to "Mock exams" and tap "Mini mock" (short) or "Full mock".
 
