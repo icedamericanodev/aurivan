@@ -20,6 +20,7 @@ work without rediscovering the layout.
 | `wrangler.jsonc` | Cloudflare settings, used only if the site is connected via the Workers screen: publish `_site/` only |
 | `scripts/verify_repo.sh` | Repo health check (run via the SessionStart hook) |
 | `scripts/lint_exam_style_v2.py` | Harness for exam-style v2 questions (short stems, Eliminate / Final two / Exam cue tips). Rules: `docs/content/EXAM_STYLE_V2.md` |
+| `scripts/check_longest_option.py` | Longest-option tell per domain: how often "always pick the longest" would win (target about 20%, chance 25%; fails outside 15–24%). Run by `verify_repo.sh` |
 | `scripts/print_alignment.py` | Prints v2 options beside their explanations and tips for the alignment read (catches option texts under the wrong letters) |
 | `scripts/lint_inline_js.sh` | Extracts inline `<script>` blocks from `index.html` and runs ESLint `no-undef` |
 | `.claude/settings.json` | Permission allowlist + SessionStart validation hook |
