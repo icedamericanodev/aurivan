@@ -374,7 +374,7 @@
               "AI inventory entry marked retired, with the location of kept records"
             ],
             "recommend": "Have the model owner follow a retirement checklist covering records, access, dependencies and the inventory.",
-            "decides": "The model owner approves retirement; legal counsel sets retention needs"
+            "decides": "The model owner approves retirement; legal counsel advises on retention and legal holds"
           },
           "isaca_rule": "Retiring a model ends its use, not its accountability. Keep what is needed to explain past decisions for as long as they can be challenged, and remove everything else: access, keys, endpoints and dependencies.",
           "exam_traps": [
@@ -420,7 +420,7 @@
             "A system prompt, the standing instructions given to a generative model, can change behavior as much as a code release.",
             "Decision thresholds, such as the score that triggers a referral, change outcomes directly.",
             "Each change gets an impact assessment, testing against acceptance criteria, owner approval and a rollback plan, scaled to risk.",
-            "Emergency changes are allowed but are tested, documented and approved after the fact."
+            "Emergency changes may skip prior approval, but are tested as far as time allows, documented, and independently reviewed and approved soon after."
           ],
           "example": "At a Polish bank's contact center, a supervisor lowers the score at which a sentiment model escalates calls to managers, hoping to cut escalations. Nobody tests or approves the edit, and complaint handling slows for a week. The IS auditor samples recent threshold and prompt edits and reports that none went through change management.",
           "audit_focus": {
@@ -434,7 +434,7 @@
               "Change tickets with test results and owner approval",
               "Comparison of production settings against the approved baseline"
             ],
-            "recommend": "Have the change advisory board bring retraining, prompt, threshold and setting changes into change management, scaled to risk.",
+            "recommend": "Have IT management extend the change policy to retraining, prompt, threshold and setting changes, scaled to risk.",
             "decides": "The model owner approves each change within the change policy management sets"
           },
           "isaca_rule": "If it can change what the system decides, it is a change. Retraining, prompts, thresholds and settings need the same impact assessment, testing, approval and rollback as code, scaled to the decisions they affect.",
@@ -466,10 +466,10 @@
           "practice_ids": [
             "aaia_d2_009"
           ],
-          "definition": "Model versioning gives every deployed model a unique identity tied to its code, data snapshot and settings; a configuration baseline is the approved state to compare against.",
+          "definition": "Model versioning gives every deployed model a unique identity tied to its trained artifact, code, data snapshot and settings; a configuration baseline is the approved state to compare against.",
           "why_it_matters": "Without versions tied to their data and settings, nobody can reproduce a bad decision, prove which model made it or roll back to a version known to be sound.",
           "how_it_works": [
-            "A model registry stores each version with its code commit, data snapshot, training settings, test results and approval.",
+            "A model registry stores each trained model with its code commit, data snapshot, training settings, test results and approval.",
             "The configuration baseline covers model version, prompts, thresholds, feature settings and the software libraries the model depends on.",
             "Production is compared with the baseline regularly; unexplained differences are investigated as unauthorized changes.",
             "Rollback restores a previous approved version and its settings together, and is tested before it is needed.",
@@ -490,7 +490,7 @@
             "recommend": "Have the model owner keep a registry linking each version to its data, code and settings, with tested rollback.",
             "decides": "The model owner chooses the version in use and approves any rollback"
           },
-          "isaca_rule": "A model version is code, data and settings together. If any of the three is missing from the record, the model cannot be reproduced, explained or reliably rolled back. What runs in production should match the approved record, not what the team remembers.",
+          "isaca_rule": "A model version is the trained model plus the code, data and settings that produced it. If any is missing from the record, the model cannot be traced, explained or reliably rolled back, and retraining alone may not reproduce it.",
           "exam_traps": [
             {
               "trap": "The source code repository is enough to track model versions.",
@@ -598,7 +598,7 @@
               "meaning": "The system acts on its own while a person monitors it and can intervene or stop it."
             },
             {
-              "term": "Human-over-the-loop",
+              "term": "Human-in-command",
               "meaning": "People set policy, limits and shutdown conditions without reviewing individual decisions."
             }
           ],
@@ -822,7 +822,7 @@
             "Fairness is tested before release and monitored in production, because group mixes and behavior change.",
             "Where group data is not collected, the organization documents how it will estimate fairness lawfully."
           ],
-          "example": "A Nigerian fintech's model sets starting credit limits for market traders. Validation shows 91% accuracy overall. The IS auditor asks for results by gender and state and finds that women traders in two states are wrongly given the lowest limit three times as often. The auditor reports the gap to the product owner.",
+          "example": "A Vietnamese telehealth service's symptom-checker model advises patients whether to see a doctor. Its validation report gives one overall rate of missed urgent cases. The IS auditor asks the clinical lead for results by age band and app language and finds that older patients using the Khmer-language version are told to stay home twice as often when they needed care. The auditor reports the gap to the clinical lead.",
           "audit_focus": {
             "review": [
               "Reperform fairness metrics by group on a sample of decisions",
@@ -871,7 +871,7 @@
             "Red teaming has testers act as attackers or misusers, for example trying to make a generative model leak data or ignore its rules.",
             "The IS auditor assesses whether validation is independent and adequate; the auditor does not perform or approve it."
           ],
-          "example": "A Korean marine insurer's actuarial team builds a model that predicts hull damage claims, then validates it with the same staff. The chief risk officer wants to deploy next week. The IS auditor reviews the validation report and staffing and reports that the validation lacks independence and includes no testing with unusual voyage data.",
+          "example": "A Korean marine insurer's actuarial team builds a model that predicts hull damage claims, then validates it with the same staff. The head of underwriting wants to deploy next week. The IS auditor reviews the validation report and staffing and reports that the validation lacks independence and includes no testing with unusual voyage data.",
           "audit_focus": {
             "review": [
               "Compare validator names with the development team roster",
@@ -930,7 +930,7 @@
           "definition": "Attacks on data and models target how AI learns or answers: poisoning corrupts training, evasion fools a trained model, and extraction or inference steals the model or its data.",
           "why_it_matters": "These attacks arrive through normal data feeds and queries, so perimeter controls rarely see them. A poisoned or copied model can fail, leak data or lose its value without any system breach.",
           "how_it_works": [
-            "NIST AI 100-2e2025, the National Institute of Standards and Technology (NIST) taxonomy of adversarial machine learning, groups attacks by goal and attacker access; MITRE ATLAS catalogs real attack techniques.",
+            "NIST AI 100-2e2025, the National Institute of Standards and Technology (NIST) adversarial machine learning taxonomy, classifies attacks by attacker goals, capabilities, knowledge and lifecycle stage; MITRE ATLAS catalogs real techniques.",
             "Poisoning is countered by provenance checks, limits on who can add training data or feedback, and anomaly checks before retraining.",
             "Extraction and inference are made harder by query limits, monitoring for unusual query patterns and less detailed outputs.",
             "Downloaded models, libraries and datasets are treated as untrusted until their source and integrity are verified.",
@@ -950,7 +950,7 @@
               "meaning": "Querying a model repeatedly and using its answers to build a working copy."
             },
             {
-              "term": "Membership inference and model inversion",
+              "term": "Membership inference and data reconstruction (model inversion)",
               "meaning": "Using a model's outputs to learn whether a record was in its training data, or to reconstruct that data."
             },
             {
@@ -1111,7 +1111,7 @@
     {
       "topic_id": "2G",
       "topic_name": "Incident Response Management specific to AI",
-      "overview": "AI incidents include harmful, biased or wrong outputs, data leakage, manipulation and drift beyond tolerance, not only security breaches. This topic covers recognizing and triaging them by impact on people, containing them by disengaging or rolling back while preserving evidence, and finding the root cause before closing.",
+      "overview": "AI incidents include harmful, biased or wrong outputs, data leakage, manipulation and drift beyond tolerance, not only security breaches. This topic covers recognizing and triaging them by impact on people, containing them by disengaging or rolling back while preserving evidence, and making sure the root cause is removed: through problem management for faults, and before closure when the incident is manipulation such as poisoning.",
       "can_do": [
         "Recognize an AI incident from complaints, monitoring alerts or reports",
         "Order containment, evidence preservation and root cause analysis correctly",
@@ -1195,7 +1195,7 @@
             "recommend": "Have the model owner assign disengagement authority, test fallbacks and preserve inputs, outputs and versions before any fix.",
             "decides": "The model owner decides to disengage; the incident manager directs containment"
           },
-          "isaca_rule": "Stop the harm and keep the evidence, then fix. Disengage or roll back when people are being harmed, preserve inputs, outputs and versions before anything is changed, and treat rollback as containment, not closure.",
+          "isaca_rule": "Stop the harm and keep the evidence, then fix. Disengage or roll back when people are being harmed, preserve inputs, outputs and versions before anything is changed, and treat rollback as containment or restoration, never as the root-cause fix.",
           "exam_traps": [
             {
               "trap": "Retrain the model at once to fix the faulty behavior.",
@@ -1229,14 +1229,14 @@
           "how_it_works": [
             "Investigators compare preserved inputs, outputs and versions with the last known good state to locate what changed.",
             "Causes are traced across layers: data (drift, poisoning, labeling), model, prompt or configuration, integration and human oversight.",
-            "Problem management records the cause, fixes it through change control and checks that the fix worked.",
+            "Once service is restored, a problem record carries the cause; the fix goes through change control and is checked to confirm it worked.",
             "Incidents are reported to owners, the governance committee and, where required, regulators and affected people.",
             "Lessons learned update the threat model, monitoring tolerances, tests and training."
           ],
-          "example": "An Indian education company's essay-scoring model began giving lower marks to essays from one region. Engineers adjusted the prompt and closed the ticket. After the next retraining two months later, the gap returned. The IS auditor reviews the incident and problem records and reports that no root cause analysis examined the training data, so the fix treated only the symptom.",
+          "example": "An Indian education company's essay-scoring model began giving lower marks to essays from one region. Engineers adjusted the prompt and closed the ticket. After the next retraining two months later, the gap returned. The IS auditor reviews the incident and problem records and reports that no problem record was opened, so no root cause analysis examined the training data and the fix treated only the symptom.",
           "audit_focus": {
             "review": [
-              "Trace closed AI incidents to documented root cause analysis",
+              "Sample closed AI incidents and check each has a linked problem record",
               "Compare problem records with later recurrences of the same failure",
               "Inspect reports to owners and regulators for timeliness and completeness"
             ],
@@ -1245,14 +1245,14 @@
               "Problem register linking causes to changes and verification",
               "Incident reports sent to owners, committees and regulators"
             ],
-            "recommend": "Have the problem manager require root cause analysis across data, model, prompt and integration before AI incidents close.",
+            "recommend": "Have the problem manager link every AI incident of unknown cause to a problem register entry tracked to a tested fix.",
             "decides": "The model owner decides remediation; management decides external reporting with legal counsel"
           },
-          "isaca_rule": "A rollback or a prompt patch contains an incident; it does not close it. Closure needs the cause found in whichever layer failed, a fix that is verified and reports to the people who must know.",
+          "isaca_rule": "A rollback or prompt patch restores service; it does not remove the cause. An ordinary fault's incident may close once service is confirmed, while a problem record carries root cause analysis to a verified fix. Deliberate manipulation, such as poisoning, stays open until the cause is removed.",
           "exam_traps": [
             {
-              "trap": "Once outputs return to normal after a rollback, the incident can be closed.",
-              "why": "The cause may still sit in the data or pipeline and return at the next retraining. Close only after root cause analysis and a verified fix."
+              "trap": "Once outputs return to normal after a rollback, the AI failure is resolved.",
+              "why": "Rollback restores service but leaves the cause, often in the data or pipeline, to return at the next retraining. A problem record, or for manipulation an open security incident, must carry the root cause to a verified fix."
             }
           ],
           "key_terms": [
