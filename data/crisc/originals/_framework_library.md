@@ -126,7 +126,9 @@ checked against a local text copy of the source, fetched this session with
 Merge under the matching publisher headings. Hosts tried and blocked:
 genai.owasp.org (OWASP Top 10 for LLM Applications), doi.org. iso.org and
 coso.org were not used (blocked per the blueprint), so ISO 31000 and
-ISO/IEC 27005 appear in the notes as context only.
+ISO/IEC 27005 appear in the notes as context only. Notes 2B1.1 gives ISO 31000's
+"effect of uncertainty on objectives" wording, labeled in the note as context only;
+it is not a keyed citation.
 
 Note for the library owner: NIST IR 8286 (Oct 2020) and IR 8286A (Nov 2021)
 are withdrawn and superseded by IR 8286 Rev. 1 and IR 8286A Rev. 1 (both
@@ -146,13 +148,13 @@ published 18 Dec 2025). Cite the Rev. 1 forms below in every CRISC domain.
 - ISACA Glossary (business impact analysis)
   - Verified, 30 Oct 2026: evaluating the criticality and sensitivity of information assets by determining the impact of losing the support of any resource; establishes the escalation of loss over time and prioritizes recovery. Used in crisc_d2_011, crisc_d2_012.
 - ISACA Glossary (risk owner)
-  - Verified, 30 Oct 2026: the person invested with the authority and accountability for making risk-based decisions, who owns the loss of a realized risk scenario. Used in crisc_d2_014.
+  - Verified, 30 Oct 2026: the person invested with the authority and accountability for making risk-based decisions, who owns the loss of a realized risk scenario. Defined in notes 2B3.1; no longer keyed after the 30 Oct 2026 review (crisc_d2_014 was re-aimed to aggregation).
 - ISACA Glossary (inherent risk)
   - Verified, 30 Oct 2026: the level of risk or exposure that does not account for the actions management has taken or might take (for example, implementing controls). Used in crisc_d2_018.
 - ISACA Glossary (residual risk)
   - Verified, 30 Oct 2026: "The remaining risk after management has implemented a risk response". Used in crisc_d2_018, crisc_d2_019, crisc_d2_020.
 - ISACA Glossary (current risk)
-  - Verified, 30 Oct 2026: the risk state that exists now, taking into account actions already taken but not actions anticipated or proposed. Used in crisc_d2_013.
+  - Verified, 30 Oct 2026: the risk state that exists now, taking into account actions already taken but not actions anticipated or proposed. Used in crisc_d2_013, crisc_d2_018.
 - ISACA Glossary (prompt injection)
   - Verified, 30 Oct 2026: in large language models, a technique where an attacker manipulates the input to produce unintended or harmful outputs. Used in crisc_d2_004.
 - ISACA Glossary (loss event)
@@ -198,11 +200,11 @@ published 18 Dec 2025). Cite the Rev. 1 forms below in every CRISC domain.
 
 ### IR 8286 Rev. 1, Integrating Cybersecurity and Enterprise Risk Management (ERM) (Dec 2025)
 - NIST IR 8286 Rev. 1 Section 3 Table 1 (Descriptions of notional cybersecurity risk register template elements)
-  - New. Verified, 30 Oct 2026, nvlpubs.nist.gov/nistpubs/ir/2025/NIST.IR.8286r1.pdf (published 18 Dec 2025; supersedes IR 8286, Oct 2020): elements include risk description (threats, assets, methods and impacts in every scenario), current assessment likelihood, impact and exposure rating, risk response type and description, risk owner ("responsible and accountable"), status. The text before Table 1 explains current risk versus inherent risk. Used in crisc_d2_013, crisc_d2_014.
+  - New. Verified, 30 Oct 2026, nvlpubs.nist.gov/nistpubs/ir/2025/NIST.IR.8286r1.pdf (published 18 Dec 2025; supersedes IR 8286, Oct 2020): elements include risk description (threats, assets, methods and impacts in every scenario), current assessment likelihood, impact and exposure rating, risk response type and description, risk owner ("responsible and accountable"), status. The text before Table 1 explains current risk versus inherent risk. Note on terms: Table 1's "Current Assessment" columns mean the estimate before any (further) risk response, which later cycles call inherent; this differs from the ISACA Glossary's "current risk" (risk as it stands, counting actions already taken). crisc_d2_013 pairs the two because the text after Table 1 keeps the current assessment separate from anticipated changes from a planned response, which is the item's point. Used in crisc_d2_013.
 - NIST IR 8286 Rev. 1 Section 3.5.2 (Responding to Residual Risk)
-  - New. Verified, 30 Oct 2026: residual risk remains after a response; if beyond the acceptable level the risk owner evaluates further action; enterprise risk officers analyze residual risk against appetite and tolerance set by senior leadership, and senior management makes final decisions. Used in crisc_d2_020.
+  - New. Verified, 30 Oct 2026: residual risk remains after a response; if beyond the acceptable level the risk owner evaluates further action; enterprise risk officers analyze residual risk against appetite and tolerance set by senior leadership, and senior management makes final decisions. Used in crisc_d2_018, crisc_d2_020.
 - NIST IR 8286 Rev. 1 Section 3.8 (Creating and Maintaining an Enterprise-Level Cybersecurity Risk Register)
-  - New. Verified, 30 Oct 2026: registers with agreed criteria and categories are normalized and aggregated into the enterprise risk register and risk profile. Supports notes 2B3.3; not keyed in the pilot.
+  - New. Verified, 30 Oct 2026: registers with agreed criteria and categories are normalized and aggregated into the enterprise risk register and risk profile. Supports notes 2B3.3. Used in crisc_d2_014 (re-aimed to aggregation, 30 Oct 2026 review).
 
 ### IR 8286A Rev. 1, Identifying and Estimating Cybersecurity Risk for Enterprise Risk Management (Dec 2025)
 - NIST IR 8286A Rev. 1 Section 2.2.3 (Vulnerability Identification)
@@ -220,7 +222,7 @@ published 18 Dec 2025). Cite the Rev. 1 forms below in every CRISC domain.
 - NIST CSF 2.0 ID.RA-02 (cyber threat intelligence is received from information sharing forums and sources)
   - New. Verified, 30 Oct 2026, nvlpubs NIST.CSWP.29.pdf. Used in crisc_d2_004.
 - NIST CSF 2.0 ID.RA-05 (threats, vulnerabilities, likelihoods and impacts are used to understand inherent risk and inform risk response prioritization)
-  - New. Verified, 30 Oct 2026. Used in crisc_d2_018.
+  - New. Verified, 30 Oct 2026. No longer keyed after the 30 Oct 2026 review: it concerns inherent risk, while crisc_d2_018 keys residual risk against appetite (replaced there by IR 8286 Rev. 1 Section 3.5.2).
 - NIST CSF 2.0 ID.IM-02 (improvements are identified from security tests and exercises, including those done in coordination with suppliers and relevant third parties)
   - Same form as the CC library. Verified again 30 Oct 2026. Used in crisc_d2_008.
 
