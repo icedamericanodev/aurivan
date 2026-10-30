@@ -735,10 +735,10 @@
    "bloom_level": "Application",
    "question": "A transit agency's records clerk is running the scheduled destruction of personnel files past their seven-year retention, and legal counsel has put one former employee's files under legal hold. Which action is BEST?",
    "options": {
-    "A": "Destroy every expired file, since the retention period has ended",
+    "A": "Destroy the expired files on schedule, since the retention period has ended",
     "B": "Keep every personnel file indefinitely in case of future claims",
     "C": "Set aside the held employee's files and destroy the rest",
-    "D": "Postpone destroying any files until that employee's hold is lifted"
+    "D": "Postpone the destruction run until that employee's hold is lifted"
    },
    "correct": "C",
    "key_concept": "A legal hold pauses destruction only for the records it names; all other records still follow the retention schedule.",
@@ -773,7 +773,7 @@
    "options": {
     "A": "Replace each card number with a token mapped in a secure vault",
     "B": "Show analysts only the last four digits of each card number",
-    "C": "Encrypt each card number with a key the analysts also hold",
+    "C": "Turn on encryption at rest for the analytics database's storage",
     "D": "Delete the card numbers from every record in the analytics copy"
    },
    "correct": "A",
@@ -782,11 +782,11 @@
    "correct_explanation": "Tokenization swaps each card number for a random token that only a protected vault can map back. The same card keeps the same token, so analysts can still link purchases while the analytics system holds no real numbers. Showing the last four digits is the runner-up: this dynamic masking hides digits on screen, but the full numbers still sit in the analytics database.",
    "wrong_explanations": {
     "B": "Closest choice: analysts would see only four digits. But dynamic masking changes the view, not the data; the full card numbers stay stored in the analytics system.",
-    "C": "Tempting because encryption protects data. But if the analysts hold the key, anyone in the analytics system can recover every real card number.",
+    "C": "Tempting because encryption protects stored data. But the database decrypts on every read, so the analytics system and its users still handle real card numbers.",
     "D": "Tempting because deleted numbers cannot leak. But with no card reference left, the team can no longer link purchases made with the same card."
    },
    "tips": [
-    "Eliminate: C hands the decryption key to the people the numbers should be kept from, and D removes the link the analysis needs.",
+    "Eliminate: C protects the disk, but the system still decrypts and uses real numbers, and D removes the link the analysis needs.",
     "Final two: A beats B because tokenization removes real numbers from the system; dynamic masking only hides them on screen.",
     "Exam cue: masking on screen leaves the real data stored. When a system needs a stand-in reference but never the real value, think tokenization."
    ],
@@ -805,12 +805,12 @@
    "subtopic": "5.1 Data security. Digital signatures",
    "difficulty": "foundational",
    "bloom_level": "Foundational",
-   "question": "A recruiter digitally signs emails carrying job offers, and a hiring manager believes the signature also keeps the salary figures private. Which statement should the IT technician give as MOST accurate?",
+   "question": "A recruiter digitally signs emails carrying job offers, and a hiring manager believes the signature also keeps the salary figures private. Which statement is MOST accurate for the IT technician to give?",
    "options": {
     "A": "It hides the figures from everyone except the named candidate",
     "B": "It encrypts the figures with the recruiter's private key",
     "C": "It proves nobody else read the email on its way",
-    "D": "It proves who sent the offer and that it was not changed"
+    "D": "It proves who sent the email and that it was not changed"
    },
    "correct": "D",
    "key_concept": "A digital signature proves origin and integrity, not confidentiality; keeping content private needs encryption.",
@@ -913,34 +913,34 @@
    "subtopic": "5.1 Data security. Public AI services",
    "difficulty": "application",
    "bloom_level": "Application",
-   "question": "A university marketing analyst wants an AI summary of a survey labeled confidential, and the AI policy approves the enterprise assistant for internal-level data only. What should the analyst do FIRST?",
+   "question": "An insurance broker approves an enterprise AI assistant for customer data but blocks the free public version of the same chatbot. What should the security analyst tell staff is the MOST important difference?",
    "options": {
-    "A": "Paste the survey into a public chatbot after removing respondents' names",
-    "B": "Upload the survey to the enterprise assistant the policy approves",
-    "C": "Use a personal paid chatbot account with chat history turned off",
-    "D": "Ask the AI policy owner which tool may process this survey"
+    "A": "The enterprise version makes staff sign in with company accounts",
+    "B": "The enterprise version gives more accurate answers about customer issues",
+    "C": "The enterprise terms require encryption of prompts sent to the provider",
+    "D": "The enterprise terms limit how prompts are kept and reused"
    },
    "correct": "D",
-   "key_concept": "AI tools are approved for specific classification levels; data above a tool's level needs another approved route.",
-   "pre_read": "Compare the survey's label with the level each tool is approved for. Then ask who decides when no tool fits.",
-   "correct_explanation": "The enterprise assistant is approved only for internal data, and this survey is confidential, so no approved tool covers it yet. Asking the policy owner keeps the analyst within policy and may reveal an approved route. Uploading to the enterprise assistant is the runner-up: the tool is approved, but approval is tied to a classification level, and confidential data sits above it.",
+   "key_concept": "A prompt is a data transfer; enterprise AI tools are approved for sensitive data because contracts limit how providers keep and reuse prompts.",
+   "pre_read": "Notice what the two versions share. Then ask what happens to a prompt after it reaches the provider.",
+   "correct_explanation": "A prompt is a data transfer to the provider. Both versions run the same chatbot, so what makes the enterprise one fit for customer data is its contract, which limits how long prompts are kept and bars training on them; free versions usually lack those limits. Company sign-in is the runner-up: it controls who uses the tool, not what the provider does with the data.",
    "wrong_explanations": {
-    "A": "Tempting because removing names feels like enough. But the confidential survey still goes to an outside provider the university does not control.",
-    "B": "Closest choice: the enterprise assistant is an approved tool. But it is approved only up to internal data, and a confidential survey sits above that level.",
-    "C": "Tempting because history settings sound private. But a personal account is still an outside service the university does not control, so the data is disclosed."
+    "A": "Closest choice: company sign-in adds accountability and lets IT remove leavers. But it controls who uses the tool, not how the provider keeps or reuses what staff type.",
+    "B": "Tempting because better answers sound safer. But both versions run the same chatbot, and answer quality says nothing about where customer data goes once typed.",
+    "C": "Tempting because encryption protects data. But the free version also encrypts connections, and that protection ends at the provider, who can still keep the prompt."
    },
    "tips": [
-    "Eliminate: A and C both send a confidential survey to services the university does not control, whatever names or settings are removed.",
-    "Final two: D beats B because tool approval comes with a data level; the enterprise assistant is not approved for confidential data.",
-    "Exam cue: before using AI on work data, check two things: is the tool approved, and is it approved for this classification?"
+    "Eliminate: B judges the tool by answer quality, and C credits encryption in transit, which both versions use and which ends at the provider.",
+    "Final two: D beats A because leakage depends on what the provider may do with prompts; sign-in controls who uses the tool, not where data goes.",
+    "Exam cue: a prompt is a data transfer. Whether a tool may take sensitive data depends on what its terms let the provider keep and reuse."
    ],
-   "framework_ref": "ISO/IEC 27002:2022 Control 5.10 (Acceptable use of information and other associated assets); ISO/IEC 27002:2022 Control 8.12 (Data leakage prevention)",
+   "framework_ref": "NIST SP 800-53 Rev. 5 SA-9 (External System Services); ISO/IEC 27002:2022 Control 5.10 (Acceptable use of information and other associated assets)",
    "related_concepts": [
     "AI acceptable use policy",
     "Shadow AI",
-    "Data classification"
+    "Supplier agreements"
    ],
-   "_provenance": "Authored from concept: 'AI tools are approved for set classification levels; data above that level needs the policy owner' (notes 5.1.8 Data Leakage into Public AI Services). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 2, 30 Oct 2026.",
+   "_provenance": "Authored from concept: 'AI tools are approved for set classification levels; data above that level needs the policy owner' (notes 5.1.8 Data Leakage into Public AI Services). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 2, 30 Oct 2026. Standards audit fix (30 Oct 2026): rewritten on the 5.1.8 point (prompts as data transfers under enterprise terms); the data-level lesson repeated cc_d1_019.",
    "style_version": 2
   },
   {
@@ -949,7 +949,7 @@
    "subtopic": "5.2 Security operations. Logging and monitoring",
    "difficulty": "foundational",
    "bloom_level": "Foundational",
-   "question": "While building an incident timeline, a ski resort's security analyst finds that the firewall, VPN and server logs disagree by several minutes for the same events. Which fix BEST prevents this?",
+   "question": "While building an incident timeline, a ski resort's security analyst finds that the firewall, VPN and server logs disagree by between two and seven minutes for the same events. Which fix BEST prevents this?",
    "options": {
     "A": "Keep every log for a longer period before deleting it",
     "B": "Sync every system's clock to one trusted time source",
@@ -959,10 +959,10 @@
    "correct": "B",
    "key_concept": "Log correlation depends on synchronized clocks; every system should take its time from one trusted source.",
    "pre_read": "Notice how big the gap between the logs is. Then ask what kind of problem causes a gap of that size.",
-   "correct_explanation": "Logs line up only when every system's clock is right, so syncing all clocks to one trusted time source, usually through the Network Time Protocol (NTP), fixes the cause. Converting to one time zone is the runner-up: it removes fixed time-zone offsets, usually whole hours, but these logs differ by a few minutes, which points to drifting clocks that conversion cannot correct.",
+   "correct_explanation": "Logs line up only when every system's clock is right, so syncing all clocks to one trusted time source, usually through the Network Time Protocol (NTP), fixes the cause. Converting to one time zone is the runner-up: it removes fixed time-zone offsets, whole or half hours, but these logs differ by a few minutes, which points to drifting clocks that conversion cannot correct.",
    "wrong_explanations": {
     "A": "Tempting because more history helps investigations. But keeping drifting timestamps for longer does not make them line up.",
-    "C": "Closest choice: mixed time zones do confuse timelines. But zone offsets are fixed, usually whole hours, and these logs disagree by minutes, a sign of drifting clocks.",
+    "C": "Closest choice: mixed time zones do confuse timelines. But zone offsets are fixed, whole or half hours, and these logs disagree by minutes, a sign of drifting clocks.",
     "D": "Tempting because more detail feels useful. But extra entries carry the same wrong timestamps, so events still cannot be put in order."
    },
    "tips": [
@@ -985,10 +985,10 @@
    "subtopic": "5.2 Security operations. Threat actors",
    "difficulty": "foundational",
    "bloom_level": "Foundational",
-   "question": "A payroll officer at a housing charity emails a spreadsheet of staff bank details to the wrong outside address by mistake. How should the security analyst MOST accurately classify the threat source?",
+   "question": "A payroll officer at a housing charity lets email auto-complete pick an outside address and sends it a spreadsheet of staff bank details. How should the security analyst MOST accurately classify this threat source?",
    "options": {
     "A": "A malicious insider, because staff data left the organization",
-    "B": "An outside criminal, because an outsider now holds the data",
+    "B": "An external threat, since the data reached an outside mail server",
     "C": "An accidental insider, because a staff member's error exposed data",
     "D": "No threat source, because nobody meant to cause any harm"
    },
@@ -1025,7 +1025,7 @@
    "options": {
     "A": "Keep it to those present and ask the source before sharing",
     "B": "Forward it to the IT team, who share the same employer",
-    "C": "Post a summary on the sector forum to warn other members",
+    "C": "Share only the report's indicators with the IT team",
     "D": "Remove the TLP label, then email the report to the IT team"
    },
    "correct": "A",
@@ -1034,13 +1034,13 @@
    "correct_explanation": "TLP:RED limits a report to the people who received it; at a meeting, that means those present. Sharing more widely needs the source's explicit permission, so the analyst asks first. Forwarding to the IT team is the runner-up: sharing inside one's own organization on a need-to-know basis is what TLP:AMBER allows, not TLP:RED.",
    "wrong_explanations": {
     "B": "Closest choice: the IT team works for the same firm. But sharing within the organization is what TLP:AMBER allows; TLP:RED stays with the people who received it.",
-    "C": "Tempting because warning others sounds helpful. But posting a TLP:RED report, even as a summary, breaks the source's limit and the trust that sharing depends on.",
+    "C": "Tempting because indicators feel like raw data, not the report. But a TLP label covers the information itself, so indicators taken from a TLP:RED report are RED too.",
     "D": "Tempting because the label seems to be the barrier. But the label must stay with the information; removing it does not remove the source's restriction."
    },
    "tips": [
-    "Eliminate: C publishes restricted intelligence to a wider community, and D strips the label, though the restriction travels with the information.",
+    "Eliminate: C passes on the report's indicators and D strips its label, but a TLP label covers the information itself, however it is cut or copied.",
     "Final two: A beats B because TLP:RED stays with the individual recipients; sharing inside your own firm is TLP:AMBER's rule.",
-    "Exam cue: RED is recipients only, AMBER is your organization on a need-to-know basis, GREEN is your community and CLEAR is public."
+    "Exam cue: RED is recipients only; AMBER is your organization and its clients on a need-to-know basis (AMBER+STRICT: organization only); GREEN is your community; CLEAR is public."
    ],
    "framework_ref": "FIRST Traffic Light Protocol (TLP) v2.0 Section 3a (TLP:RED: for the eyes and ears of individual recipients only); FIRST Traffic Light Protocol (TLP) v2.0 Section 1h (sharing more widely than the label allows needs explicit permission from the source); NIST CSF 2.0 ID.RA-02 (cyber threat intelligence is received from information sharing forums and sources)",
    "related_concepts": [
@@ -1048,7 +1048,7 @@
     "Cyber threat intelligence",
     "Information sharing"
    ],
-   "_provenance": "Authored from concept: 'TLP:RED intelligence stays with its individual recipients; wider sharing needs the source' (notes 5.2.6 Cyber Threat Intelligence). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 2, 30 Oct 2026.",
+   "_provenance": "Authored from concept: 'TLP:RED intelligence stays with its individual recipients; wider sharing needs the source' (notes 5.2.6 Cyber Threat Intelligence). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 2, 30 Oct 2026. Standards audit fix (30 Oct 2026): AMBER now includes clients per TLP v2.0; the key is no longer the only cautious option.",
    "style_version": 2
   },
   {
@@ -1057,20 +1057,20 @@
    "subtopic": "5.2 Security operations. Malware types",
    "difficulty": "foundational",
    "bloom_level": "Foundational",
-   "question": "A youth sports league volunteer installs a photo-resizing tool on a club laptop; it works as promised but secretly opens a remote connection for an attacker. How should the IT technician MOST accurately classify it?",
+   "question": "A sports club volunteer installs a photo-resizing tool that works as promised and copies itself nowhere, but secretly opens a remote connection for an attacker. How should the IT technician MOST accurately classify it?",
    "options": {
     "A": "A worm, because it reached the laptop across a network",
-    "B": "A virus, because it arrived inside a program the user ran",
+    "B": "A virus, because it arrived inside a tool the user installed",
     "C": "Ransomware, because it hands an attacker control of the laptop",
     "D": "A Trojan, because it posed as a useful tool the user installed"
    },
    "correct": "D",
    "key_concept": "A Trojan poses as useful software the user installs; unlike a virus or worm, it does not copy itself.",
    "pre_read": "Note how the tool arrived, whether it spreads to other files or machines, and what it does once inside.",
-   "correct_explanation": "A Trojan poses as useful software, so the user installs it willingly, and it carries a hidden malicious purpose, here a remote connection. A virus is the runner-up, since the user did run a program, but a virus copies itself into other files and spreads. This tool is self-contained and does not replicate, which marks it as a Trojan.",
+   "correct_explanation": "A Trojan poses as useful software, so the user installs it willingly, and it carries a hidden malicious purpose, here a remote connection. A virus is the runner-up, since the user did run a program, but a virus copies itself into other files and spreads. This tool copies itself nowhere, which marks it as a Trojan.",
    "wrong_explanations": {
     "A": "Tempting because the attacker connects over the network. But a worm spreads by itself with no one installing it; here the volunteer chose to install the tool.",
-    "B": "Closest choice: the user did run a program. But a virus copies itself into other files and spreads; this tool is self-contained and does not replicate.",
+    "B": "Closest choice: the user did install a program. But a virus copies itself into other files and spreads; this tool copies itself nowhere.",
     "C": "Tempting because ransomware is the best-known malware. But ransomware locks files and demands payment; nothing here was encrypted or demanded."
    },
    "tips": [
@@ -1129,20 +1129,20 @@
    "subtopic": "5.2 Security operations. Alert volume",
    "difficulty": "application",
    "bloom_level": "Application",
-   "question": "A small security operations center receives about 5,000 alerts a day, and analysts have started missing real attacks among duplicates. Which change should the SOC lead make as BEST?",
+   "question": "A small security operations center (SOC) faces thousands of alerts a day, mostly duplicates, and analysts have started missing real attacks. Which change is BEST for the SOC lead to make?",
    "options": {
     "A": "Add AI correlation that groups related alerts into cases to review",
     "B": "Switch off the half of the detection rules that alert most often",
-    "C": "Let an AI tool close alerts it judges harmless, with no review",
+    "C": "Let an AI tool close the alerts it rates as harmless",
     "D": "Have analysts work through alerts strictly in the order they arrive"
    },
    "correct": "A",
    "key_concept": "AI correlation reduces alert fatigue by grouping and ranking alerts, while analysts keep the decision to close or escalate.",
    "pre_read": "Name the cause of the missed attacks. Then ask which option reduces the noise without removing human judgment.",
-   "correct_explanation": "Alert fatigue comes from volume and duplicates, so AI correlation that groups related alerts into ranked cases shrinks the queue while analysts still judge each case. Letting the AI close alerts with no review is the runner-up: it cuts the queue further, but models make mistakes, and silent auto-closing turns those mistakes into missed attacks that nobody checks.",
+   "correct_explanation": "Alert fatigue comes from volume and duplicates, so AI correlation that groups related alerts into ranked cases shrinks the queue while analysts still judge each case. Letting the AI close alerts it rates harmless is the runner-up: it cuts the queue further, but models make mistakes, and auto-closing with no analyst check turns those mistakes into missed attacks.",
    "wrong_explanations": {
     "B": "Tempting because noisy rules cause the flood. But switching rules off creates blind spots; noisy rules are tuned so they fire less on normal activity.",
-    "C": "Closest choice: it shrinks the queue the most. But models can be wrong, and with no human review, wrongly closed alerts become attacks nobody sees.",
+    "C": "Closest choice: it shrinks the queue the most. But models can be wrong, and alerts closed with no analyst check become attacks nobody sees.",
     "D": "Tempting because it feels fair and thorough. But arrival order ignores impact, and the queue stays just as long, so real attacks still wait behind noise."
    },
    "tips": [
@@ -1167,10 +1167,10 @@
    "bloom_level": "Application",
    "question": "During a suspected compromise of a city library network's email server, the incident response lead must coordinate the team. Which channel should the lead use as BEST?",
    "options": {
-    "A": "Company email, with every message marked confidential",
-    "B": "The company chat tool, which signs in with email accounts",
-    "C": "A group chat on staff members' personal messaging apps",
-    "D": "A separate out-of-band channel arranged before any incident"
+    "A": "The library's email, with every message marked confidential",
+    "B": "The library's chat tool, which signs in with email accounts",
+    "C": "A group chat channel on staff members' personal messaging apps",
+    "D": "A separate out-of-band channel arranged in advance by the plan"
    },
    "correct": "D",
    "key_concept": "Incident plans set up out-of-band channels in advance, so responders can coordinate if normal systems are compromised.",
@@ -1201,25 +1201,25 @@
    "subtopic": "5.3 Incident response. Lessons learned",
    "difficulty": "application",
    "bloom_level": "Application",
-   "question": "After a contained phishing compromise at a furniture maker, a department head wants the lessons learned review to focus on the employee who clicked. Which approach is BEST for the incident response lead?",
+   "question": "After a contained ransomware outbreak at a furniture maker, a department head wants the lessons learned review to focus on the technician who missed a patch. Which approach is BEST for the incident response lead?",
    "options": {
-    "A": "Name the employee as the root cause in the review's findings",
+    "A": "Name the technician as the root cause in the review's findings",
     "B": "Cancel the review, since the incident was contained within hours",
-    "C": "Look for gaps in process, tools and training, with owners for fixes",
-    "D": "Make retraining that employee the review's main corrective action"
+    "C": "Find why one missed patch went unnoticed and assign owned fixes",
+    "D": "Make retraining that technician the review's main corrective action"
    },
    "correct": "C",
    "key_concept": "Lessons learned reviews are blameless: they look for process, tool and training gaps and give each fix an owner.",
    "pre_read": "Ask what the review is for: finding someone to blame, or stopping the next incident. Then judge each option.",
-   "correct_explanation": "A lessons learned review is blameless: it asks why one click could lead to a compromise, such as gaps in email filtering, reporting or sign-in protection, and gives each fix an owner and a deadline. Retraining the employee is the runner-up: awareness matters, but it treats one person as the whole problem and leaves open the gaps that let the attack succeed.",
+   "correct_explanation": "A lessons learned review is blameless: it asks why one missed patch could go unnoticed, such as gaps in patch tracking, asset records or monitoring, and gives each fix an owner and a deadline. Retraining the technician is the runner-up: skills matter, but it treats one person as the whole problem and leaves open the gaps that let a single miss cause an outbreak.",
    "wrong_explanations": {
-    "A": "Tempting because the click started the attack. But naming individuals makes people hide mistakes in future, and the real causes usually lie in process and controls.",
+    "A": "Tempting because the missed patch let the attack in. But naming individuals makes people hide mistakes, and the real causes usually lie in process and controls.",
     "B": "Tempting because the incident ended quickly. But small incidents still expose gaps, and reviewing them costs less than learning the same lesson from a bigger one.",
-    "D": "Closest choice: training can reduce clicks. But focusing on one person leaves the filtering, reporting and sign-in gaps that let a single click succeed."
+    "D": "Closest choice: training can prevent repeat misses. But focusing on one person leaves the tracking and monitoring gaps that let one missed patch go unnoticed."
    },
    "tips": [
     "Eliminate: A pins the cause on one person, which discourages honest reporting, and B skips a review because the incident was small.",
-    "Final two: C beats D because a review fixes the system that let one click succeed; retraining one person leaves those gaps open.",
+    "Final two: C beats D because a review fixes the system that let one miss go unnoticed; retraining one person leaves those gaps open.",
     "Exam cue: lessons learned reviews are blameless and end with owned, dated actions on process, tools and training."
    ],
    "framework_ref": "NIST CSF 2.0 ID.IM-03 (improvements are identified from execution of operational processes, procedures, and activities); NIST SP 800-53 Rev. 5 IR-4 (Incident Handling)",
@@ -1228,7 +1228,7 @@
     "Blameless review",
     "Continuous improvement"
    ],
-   "_provenance": "Authored from concept: 'lessons learned reviews are blameless and assign owned fixes to process, tool and training gaps' (notes 5.3.6 Lessons Learned and Continuous Improvement). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 2, 30 Oct 2026.",
+   "_provenance": "Authored from concept: 'lessons learned reviews are blameless and assign owned fixes to process, tool and training gaps' (notes 5.3.6 Lessons Learned and Continuous Improvement). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 2, 30 Oct 2026. Standards audit fix (30 Oct 2026): new incident (it repeated cc_d2_015 and the notes' phishing example); the key no longer contains D's idea.",
    "style_version": 2
   },
   {
@@ -1237,34 +1237,34 @@
    "subtopic": "5.3 Incident response. Exercises",
    "difficulty": "foundational",
    "bloom_level": "Foundational",
-   "question": "A university's incident response lead wants to confirm that the IT team can really restore its file servers from backup within four hours. Which exercise fits this goal BEST?",
+   "question": "A hospital's incident response lead wants to confirm on-call responders can actually carry out the ransomware playbook's isolation steps within 30 minutes, without touching live systems. Which exercise fits this goal BEST?",
    "options": {
-    "A": "A tabletop exercise in which the team discusses a restore scenario",
-    "B": "A functional exercise restoring backups in an isolated test setup",
+    "A": "A tabletop exercise in which the team talks through the steps",
+    "B": "A functional exercise performing the steps on a simulated network",
     "C": "A drill in which staff phone everyone on the contact list",
-    "D": "A read-through of the written restore procedure by the team"
+    "D": "A read-through of the written ransomware playbook by the team"
    },
    "correct": "B",
-   "key_concept": "Tabletop exercises test roles and decisions by discussion; proving a restore time needs a hands-on functional exercise.",
-   "pre_read": "Notice what must be proven: a capability and a time. Ask which exercises actually touch systems.",
-   "correct_explanation": "Only a hands-on exercise can show how long a restore really takes. In a functional exercise, the team performs the restore in an isolated environment and times it without touching production. The tabletop is the runner-up: it is the best-known exercise and checks roles and decisions, but it is discussion only, so nothing is restored and no time is measured.",
+   "key_concept": "Tabletop exercises test roles and decisions by discussion; proving people can perform steps in time needs a hands-on functional exercise.",
+   "pre_read": "Notice what must be shown: people performing steps, and a time limit. Ask which exercises have people act rather than talk.",
+   "correct_explanation": "Only a hands-on exercise shows whether responders can perform the isolation steps and how long they take. In a functional exercise, responders carry out their roles in a simulated environment, so the time is measured without touching live systems. The tabletop is the runner-up: it is the best-known exercise and checks roles and decisions, but it is discussion only, so no step is performed or timed.",
    "wrong_explanations": {
-    "A": "Closest choice: a tabletop checks who does what. But it is discussion only; no backup is restored, so it cannot prove a four-hour restore.",
-    "C": "Tempting because drills are hands-on. But calling the contact list tests whether people can be reached, not whether servers can be restored.",
-    "D": "Tempting because the procedure must be right. But reading it checks the document, not whether the team and backups can restore in time."
+    "A": "Closest choice: a tabletop checks who does what. But it is discussion only; nobody performs the steps, so it cannot show they take under 30 minutes.",
+    "C": "Tempting because drills are hands-on. But calling the contact list tests whether people can be reached, not whether they can isolate systems.",
+    "D": "Tempting because the playbook must be right. But reading it checks the document, not whether responders can carry out its steps in time."
    },
    "tips": [
-    "Eliminate: C tests whether people can be reached, and D checks a document; neither restores anything or measures time.",
-    "Final two: B beats A because a tabletop only discusses the restore; a functional exercise actually performs and times it.",
-    "Exam cue: talk-through exercises test roles and decisions. To prove a capability or a time, choose a hands-on exercise."
+    "Eliminate: C practices a different task, and D checks a document; neither has responders perform the isolation steps or measures time.",
+    "Final two: B beats A because a tabletop only discusses the steps; a functional exercise has responders perform and time them.",
+    "Exam cue: talk-through exercises test roles and decisions. To prove people can act within a time, choose a hands-on exercise."
    ],
    "framework_ref": "NIST SP 800-84 Section 4 (Tabletop Exercises: discussion-based events); NIST SP 800-84 Section 5 (Functional Exercises: performing duties in a simulated operational environment)",
    "related_concepts": [
     "Tabletop exercise",
     "Functional exercise",
-    "Restore testing"
+    "Incident response playbook"
    ],
-   "_provenance": "Authored from concept: 'tabletops test decisions by discussion; proving a capability or time needs a hands-on exercise' (notes 5.3.7 Incident Response Exercises and Tabletops). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 2, 30 Oct 2026.",
+   "_provenance": "Authored from concept: 'tabletops test decisions by discussion; proving a capability or time needs a hands-on exercise' (notes 5.3.7 Incident Response Exercises and Tabletops). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 2, 30 Oct 2026. Standards audit fix (30 Oct 2026): a timed restore is a test under SP 800-84, so the item moved to an IR functional exercise; it also repeated cc_d2_009.",
    "style_version": 2
   },
   {
@@ -1278,7 +1278,7 @@
     "A": "Share it now with the detection team through the response lead",
     "B": "Hold it for the lessons learned meeting once recovery ends",
     "C": "Record it as the incident's root cause and close the analysis",
-    "D": "Rewrite the detection rule themselves at once, without telling anyone"
+    "D": "Fix the detection rule themselves straight away in the live system"
    },
    "correct": "A",
    "key_concept": "NIST's CSF 2.0-based model treats improvement as continuous: lessons are shared when found, not only after recovery.",
@@ -1312,8 +1312,8 @@
    "question": "A staff email account at a print shop is sending phishing messages to coworkers, and the playbook lets the on-call analyst disable accounts that send malicious mail. What should the analyst do FIRST?",
    "options": {
     "A": "Email all staff, warning them not to open the messages",
-    "B": "Shut down the whole email service until the investigation has ended",
-    "C": "Delete the messages the account sent from every coworker's mailbox",
+    "B": "Disable the email service for everyone until the investigation ends",
+    "C": "Delete the phishing messages it sent from every coworker's mailbox",
     "D": "Disable the account that is sending the phishing messages"
    },
    "correct": "D",
@@ -1355,7 +1355,7 @@
    "correct": "C",
    "key_concept": "Asset inventories include outside services and AI tools, each with a named owner; unknown assets are recorded before any removal decision.",
    "pre_read": "Ask what belongs in an asset inventory and who decides what happens to an asset. Then judge each option.",
-   "correct_explanation": "An inventory covers every asset the organization relies on, including outside services and AI tools, and each needs a named owner who decides how it may be used. Recording the service and confirming its owner brings it under management. Blocking it is the runner-up: unknown services are a risk, but removal goes through the owner and procedure, not an analyst acting alone.",
+   "correct_explanation": "An inventory covers every asset the organization relies on, including outside services and AI tools, and each needs a named owner who decides how it may be used. Recording the service and confirming its owner brings it under management, so the owner can take it through the AI approval route. Blocking it is the runner-up: unknown services are a risk, but removal goes through the owner and procedure, not an analyst acting alone.",
    "wrong_explanations": {
     "A": "Closest choice: unapproved services carry risk. But cutting off a service the business uses is a decision for its owner and the procedure, not an analyst's own call.",
     "B": "Tempting because hardware is the classic inventory. But inventories also cover software, outside services and AI tools, or unknown services go unmanaged.",
@@ -1364,7 +1364,7 @@
    "tips": [
     "Eliminate: B limits the inventory to hardware, and D hands tracking to the provider; inventories cover the services and AI tools the organization uses.",
     "Final two: C beats A because unknown assets are recorded and given an owner first; removal goes through the owner, not a lone analyst.",
-    "Exam cue: found something unknown? Record it and find its owner before anyone blocks, unplugs or ignores it."
+    "Exam cue: found something unknown? Record it and find its owner, who takes it through approval, before anyone blocks, unplugs or ignores it."
    ],
    "framework_ref": "NIST CSF 2.0 ID.AM-04 (inventories of services provided by suppliers are maintained); NIST AI 100-1 (AI RMF 1.0) GOVERN 1.6 (mechanisms are in place to inventory AI systems)",
    "related_concepts": [
@@ -1383,7 +1383,7 @@
    "bloom_level": "Application",
    "question": "A hotel group's procurement team will buy 300 smart room thermostats next month and plans to involve IT security after installation. What should the IT security analyst recommend as BEST?",
    "options": {
-    "A": "Set purchase requirements, such as patch support, before choosing a model",
+    "A": "Set purchase requirements, such as patch support, before buying",
     "B": "Harden each thermostat to the secure baseline once it is installed",
     "C": "Pick the cheapest model and replace any that later prove insecure",
     "D": "Keep each thermostat's default settings, since the vendor is reputable"
@@ -1463,15 +1463,15 @@
    "correct": "D",
    "key_concept": "Unapproved changes are treated as possible security incidents until explained, and are reported instead of quietly undone.",
    "pre_read": "Ask what an unexplained change could mean, and who runs the firewall. Then decide what the analyst's role allows.",
-   "correct_explanation": "A change with no approval is treated as a possible incident until explained, and a rule opening the payroll database to the internet could be an intruder's work. Reporting it starts the response, and the firewall's owners and responders decide on containment. Deleting the rule is the runner-up: it closes the exposure, but the analyst does not run the firewall, and deleting it erases evidence of who made it and how.",
+   "correct_explanation": "A change with no approval is treated as a possible incident until explained, and a rule opening the payroll database to the internet could be an intruder's work. Reporting it starts the response, and the firewall's owners and responders decide on containment. Deleting the rule is the runner-up: it closes the exposure, but the analyst does not run the firewall, and deleting it alters the evidence responders need to trace who added it.",
    "wrong_explanations": {
-    "A": "Closest choice: the rule is risky and should not stay. But the network team runs the firewall, and deleting the rule alone erases evidence responders need.",
+    "A": "Closest choice: the rule is risky and should not stay. But the network team runs the firewall, and deleting the rule alone alters evidence responders need to trace it.",
     "B": "Tempting because change requests fix missing paperwork. But approving an unexplained rule after the fact could legitimize an intruder's change.",
     "C": "Tempting because senior staff do make quick fixes. But unapproved changes are treated as possible incidents until explained, whoever may have made them."
    },
    "tips": [
     "Eliminate: B approves an unexplained change after the fact, and C assumes good intent without checking.",
-    "Final two: D beats A because unapproved changes are possible incidents; owners and responders decide containment, and deleting the rule alone erases evidence.",
+    "Final two: D beats A because unapproved changes are possible incidents; owners and responders decide containment, and deleting the rule alone alters evidence.",
     "Exam cue: a change with no approval is a possible incident until someone explains it. Report it; don't quietly undo it."
    ],
    "framework_ref": "NIST SP 800-53 Rev. 5 CM-3 (Configuration Change Control); ISO/IEC 27002:2022 Control 6.8 (Information security event reporting)",
@@ -1530,7 +1530,7 @@
     "A": "Keep up the courier story to see whether staff follow procedure",
     "B": "Ask to be walked to reception, still posing as the delivery courier",
     "C": "Stop the test, say who they are and show the authorization letter",
-    "D": "Pull free and leave by the nearest exit without a word"
+    "D": "End the test by pulling free and leaving by the nearest exit"
    },
    "correct": "C",
    "key_concept": "Physical testers stop when anyone's safety is at risk and use their authorization letter so staff can verify the test.",
@@ -1597,7 +1597,7 @@
    "subtopic": "5.5 Security testing. Testing AI-integrated defenses",
    "difficulty": "analysis",
    "bloom_level": "Analysis",
-   "question": "An authorized test shows that a crafted message tricks a help desk chatbot into revealing internal staff phone numbers. Which fix should the security analyst recommend as BEST before retesting?",
+   "question": "An authorized test shows a crafted message tricks a customer help desk chatbot into revealing internal staff phone numbers that customers never get. Which fix should the security analyst recommend as BEST before retesting?",
    "options": {
     "A": "Add 'never reveal internal data' to the chatbot's instructions",
     "B": "Retrain the chatbot on a larger set of help desk chats",
