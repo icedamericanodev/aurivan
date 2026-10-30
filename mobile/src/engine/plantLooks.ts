@@ -386,7 +386,7 @@ export function howToOpen(item: LookItem, o: HowOptions = {}): string {
       return o.badgesHidden ? `${how}.` : `${how} (the ${name} badge).`;
     }
     case 'set':
-      return o.badgesHidden ? 'Opens as you study.' : `Opens when you finish the ${SET_NAMES[u.set] ?? u.set} set in Badges.`;
+      return o.badgesHidden ? 'Opens as you study.' : `Opens when you finish the ${SET_NAMES[u.set] ?? u.set} set in the Herbarium.`;
     case 'passed':
       return 'Opens when you tell us you passed.';
   }

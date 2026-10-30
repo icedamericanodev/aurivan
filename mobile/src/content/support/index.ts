@@ -44,7 +44,7 @@ export const WHATS_NEW: readonly WhatsNewEntry[] = [
   {
     version: '1.51.1',
     date: '2026-10-30',
-    fixed: ['Badge settings now point to the Herbarium on You, where your badges live.'],
+    fixed: ['Badge settings and plant looks now point to the Herbarium, where your badges live.'],
   },
   {
     version: '1.51.0',

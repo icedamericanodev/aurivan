@@ -1,4 +1,4 @@
-// Mobile 1.10 badge collection (SHOTS=badges, see run.sh): You → Badges
+// Mobile 1.10 badge collection (SHOTS=badges, see run.sh): You → Herbarium
 // (empty-ish, mid-progress, nearly complete), each shelf, "Next for your
 // exam", the Sort menu and a flat sort, the detail sheet (not yet, earned,
 // Rooted's tiers), Results with a new badge, You with the "new" dot, and
@@ -285,7 +285,7 @@ await page.getByRole('switch', { name: /Show badges/ }).click();
 await wait(700);
 await shot('b14-settings-badges-off');
 await go('/you', 2400);
-// The same place as b13: the stats just under where the entry was.
+// Near b13's place: the stats, just under where the entry was.
 await toMiddle('you-stats');
 await shot('b15-you-badges-hidden');
 // Earned while hidden (quietly): switching back on says so in one line.

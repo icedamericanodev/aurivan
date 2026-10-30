@@ -403,7 +403,7 @@ describe('J3 completing a set opens its planter exactly once', () => {
     mount(<PlantLook />);
     openMore();
     expect(option('root-woven').props.accessibilityState).toMatchObject({ disabled: true });
-    expect(textOf(option('root-woven'))).toMatch(/Opens when you finish the Rooted set in Badges\./);
+    expect(textOf(option('root-woven'))).toMatch(/Opens when you finish the Rooted set in the Herbarium\./);
     unmount();
     let added: unknown;
     act(() => {
