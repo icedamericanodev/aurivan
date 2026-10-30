@@ -170,7 +170,9 @@ export function MilestoneMomentView({
         <View
           accessible
           accessibilityLabel={spoken}
-          style={{ flexDirection: 'row', gap: space.md, borderLeftWidth: 3, borderLeftColor: c.accent, paddingLeft: space.md }}
+          // Premium round 2 (expert ruling B side check): no 3pt accent rule. That rule is the coach's voice
+          // only (spec §5: Key idea, the IS auditor's lens); this block is an award, so it sits on the paper.
+          style={{ flexDirection: 'row', gap: space.md }}
         >
           <View
             accessible={false}
@@ -204,7 +206,8 @@ export function MilestoneMomentView({
           </View>
         </View>
       </Celebrate>
-      <View style={{ paddingLeft: space.md + 3 }}>
+      {/* The link and the next step line up under the words, past the medallion's column. */}
+      <View style={{ paddingLeft: MEDAL + space.md }}>
         {link}
         {moment.next && (
           <T v="meta" num color={c.ink2}>

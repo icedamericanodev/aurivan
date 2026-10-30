@@ -22,7 +22,7 @@ import { RANGE_MIN_ANSWERS, rangeLabel, rangeSpoken, type ReadinessRange } from 
 import { haptic } from '../lib/haptics';
 import { grewLine, LARGE_TEXT, motion, radius, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
-import { GrowthRings, PlanLeaf } from './glyphs';
+import { GrowthRings, MiniStem, PlanLeaf } from './glyphs';
 import { Check, ICON_STROKE, Pinwheel, Play, RotateCcw, Target, Timer } from './icons';
 import { AnimatedPressable, FadeIn, Pop, usePressScale, type Celebration, type Growth } from './motion';
 import { ESTIMATE_WORDS, FieldText, ScaleBar } from './fieldguide';
@@ -660,8 +660,8 @@ export function ringsSpoken(cert: Certification, values: (number | null)[], spok
 /**
  * The clearing's numbers. Mobile 1.9, in a full celebration (≤ 1.2 s, any
  * tap skips to the end): the three stats roll up, 60 ms apart; the mini
- * ring grows from where readiness stood this morning to now; then "grew
- * to" and the ring line fade in last. Short: the panel cross-fades in.
+ * stem grows from where readiness stood this morning to now (premium round
+ * 2: it was a mini ring); then "grew to" and the growth line fade in last. Short: the panel cross-fades in.
  * Reduced: all of it at once. The words are the same in every mode.
  */
 export function ClearingBody({
@@ -684,10 +684,11 @@ export function ClearingBody({
   const full = celebration?.mode === 'full';
   const run = celebration?.run ?? 0;
   const line = clearingLine(plan, readiness, range);
+  const { words: growthWords, spoken: growthSpoken } = clearingGrowth(range.enough && grewDomain && grew ? { area: grewDomain.short, points: grew.points } : null, cert.domains.length);
   // Each stat reads on its own: "Questions 31", "Accuracy 81%", "Time 24 min".
   // "Accuracy" for a percentage everywhere (You, Today); "Correct" is a count (Results).
   const time = timeStat(plan.minutes * 60_000);
-  // The beats, inside the 1.2 s budget: stats 120–840 ms, ring 240–840, words from 840.
+  // The beats, inside the 1.2 s budget: stats 120–840 ms, stem 240–840, words from 840.
   const statsAt = motion.dur.select;
   const ringAt = 2 * motion.dur.select;
   const wordsAt = ringAt + motion.dur.grow;
@@ -724,27 +725,34 @@ export function ClearingBody({
         ]}
       </StatRow>
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12, marginTop: 18, paddingTop: 16, borderTopWidth: 1, borderTopColor: c.forestTrack }}>
-        <GrowthRings
-          preset="mini"
-          mastery={readiness.domains.map((d) => d.mastery)}
-          weights={cert.domains.map((d) => d.weight)}
-          colors={c.sap}
-          track={c.forestTrack}
-          // From this morning's readiness to now: the day's growth, drawn.
-          grow={{ play: full, from: readiness.domains.map((d) => plan.start.domains[d.domainId] ?? 0), run, delay: ringAt }}
-        />
+        {/* Premium round 2 (item 11): a mini stem, the Field Guide's growth mark, in place of the mini rings.
+            From this morning's readiness to now: the day's growth, drawn. */}
+        <MiniStem score={readiness.score} from={plan.start.score} play={full} run={run} delay={ringAt} color={c.sap} soil={c.forestTrack} />
         {/* Keyed by the celebration, so its words wait for their beat (a tap shows them at once). */}
         <FadeIn key={run} delay={full ? wordsAt : 0} rise={false} style={{ flex: 1 }}>
           <Text maxFontSizeMultiplier={2} style={[grewLine, { color: c.onForest }]}>{line}</Text>
-          <T v="meta" color={c.onForest2} style={{ marginTop: 2 }}>
-            {/* No "+10" before the first range exists: a ring delta reads as a score on the day Today
-                says "Not enough data yet" (UX review S4). */}
-            {range.enough && grewDomain && grew ? `${grewDomain.short} ring +${grew.points}` : 'Every answer feeds the rings'}
+          {/* No "↑10" before the first range exists: a delta reads as a score on the day Today says
+              "Not enough data yet" (UX review S4). Premium round 2 (item 11): the old ring wording is gone,
+              a gain is "↑3" as everywhere in the Field Guide, said "up 3 points". */}
+          <T v="meta" color={c.onForest2} accessibilityLabel={growthSpoken} style={{ marginTop: 2 }}>
+            {growthWords}
           </T>
         </FadeIn>
       </View>
     </>
   );
+}
+
+/**
+ * The clearing's growth line (premium round 2, item 11): "IS Audit ↑3", said "IS Audit, up 3 points";
+ * with nothing to name, "Every answer feeds your five areas". Exported for tests.
+ */
+export function clearingGrowth(grew: { area: string; points: number } | null, areas = 5): { words: string; spoken: string } {
+  // The exam's own count of areas, in a word (CISA has five).
+  const count = ['no', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten'][areas] ?? String(areas);
+  const all = `Every answer feeds your ${count} areas`;
+  if (!grew) return { words: all, spoken: all };
+  return { words: `${grew.area} ↑${grew.points}`, spoken: `${grew.area}, up ${grew.points} ${grew.points === 1 ? 'point' : 'points'}` };
 }
 
 /**

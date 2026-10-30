@@ -37,16 +37,14 @@
  *   action sits in a sticky footer.
  */
 import { router } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
 import { useEffect, useRef, useState, type RefObject } from 'react';
-import { BackHandler, KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
-import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
-import Svg, { Circle } from 'react-native-svg';
+import { BackHandler, KeyboardAvoidingView, Platform, ScrollView, useWindowDimensions, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { KaisipLockup } from '../components/brand';
 import { FamiliarityRows, FAMILIARITY_QUESTION, MinutesControl } from '../components/fit';
-import { Check, ICON_STROKE } from '../components/icons';
+import { FieldText, Plate, SeedSketch } from '../components/fieldguide';
 import { StickyFooter } from '../components/quiz';
-import { Button, Chip, Enter, Gap, ICON_SIZE, Row, T } from '../components/ui';
+import { Button, Chip, Enter, Gap, T } from '../components/ui';
 import { DataMessage, RestorePreview } from '../components/yourData';
 import { WebImportPreview } from '../components/webImport';
 import { EXAM_TRADEMARK_LINE, WELCOME_FACTS, WELCOME_HEADLINE, WELCOME_LINE } from '../content/brand';
@@ -64,7 +62,7 @@ import { dayKey } from '../engine/streak';
 import { selectCert, useProgress } from '../store/progress';
 import { useSeen } from '../store/seen';
 import { examDateOf, useSettings } from '../store/settings';
-import { radius, space } from '../theme/tokens';
+import { plate, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 
 // Exam date presets (shared with Settings and the calendar). The calendar is
@@ -77,7 +75,7 @@ type Step = 0 | 1 | 2;
 export default function Onboarding() {
   const { c } = useTheme();
   const complete = useSettings((s) => s.completeOnboarding);
-  const insets = useSafeAreaInsets();
+  const { width } = useWindowDimensions();
   const [step, setStep] = useState<Step>(0);
   // Step 1 of 2: nothing chosen to start (no default biases the answer); skip leaves it unset.
   const [familiarity, setFamiliarity] = useState<Familiarity | undefined>(undefined);
@@ -136,56 +134,41 @@ export default function Onboarding() {
     return () => sub.remove();
   }, [step]);
 
-  // Welcome: forest panel, then the four plain lines on the page. A fixed forest strip
-  // sits behind the status bar (outside the scroll view), so the light
-  // status-bar icons stay readable when the panel scrolls away.
+  // Welcome (premium round 2, expert ruling C): a title page on the paper, like the first page of a
+  // field guide. The Kasama mark and "kaisip", the headline, the sub ("A field guide to your CISA® exam
+  // study."), an unnumbered seed plate ("Seed, before Day 1": Fig. 1 belongs to Day 1), then the four
+  // plain lines and the not-affiliated line. Screen readers hear "Welcome to KaiSip. Think like an IS
+  // auditor." as one header; the lockup and the plate are hidden (the words carry them).
   const welcome = (
     <Enter key="s0">
-      <View
-        style={{
-          backgroundColor: c.forest,
-          paddingTop: space.xl,
-          paddingHorizontal: space.gutter,
-          paddingBottom: space.xxl,
-          borderBottomLeftRadius: radius.lg,
-          borderBottomRightRadius: radius.lg,
-          overflow: 'hidden',
-        }}
-      >
-        {/* Growth rings bleeding off the bottom-right corner, like the app icon. Decorative. */}
-        <View
-          accessible={false}
-          importantForAccessibility="no-hide-descendants"
-          style={{ position: 'absolute', right: -90, bottom: -110, pointerEvents: 'none' }}
-        >
-          <Svg width={260} height={260} viewBox="0 0 260 260">
-            {[60, 92, 126].map((r) => (
-              <Circle key={r} cx={130} cy={130} r={r} fill="none" stroke={c.forestLine} strokeWidth={1.5} />
-            ))}
-          </Svg>
-        </View>
-        <KaisipLockup tone="dark" height={34} />
-        <T v="display" color={c.onForest} accessibilityRole="header" style={{ marginTop: space.xl }}>
+      <View style={{ paddingHorizontal: space.gutter, paddingTop: space.xl }}>
+        <KaisipLockup height={34} decorative />
+        <T v="display" accessibilityRole="header" accessibilityLabel={`Welcome to KaiSip. ${WELCOME_HEADLINE}`} style={{ marginTop: space.xl }}>
           {WELCOME_HEADLINE}
         </T>
-        <T v="quote" color={c.onForest2} style={{ marginTop: space.xs }}>{WELCOME_LINE}</T>
+        <FieldText v="sub" style={{ marginTop: space.xs }}>{WELCOME_LINE}</FieldText>
+        <View testID="welcome-plate" accessibilityElementsHidden importantForAccessibility="no-hide-descendants" style={{ marginTop: space.xl }}>
+          <Plate fig={{ title: 'Seed, before Day 1' }}>
+            <View style={{ alignItems: 'center' }}>
+              <SeedSketch width={Math.min(240, width - 2 * space.gutter - 2 * (plate.mount + space.md + 2))} />
+            </View>
+          </Plate>
+        </View>
       </View>
-      <View style={{ paddingHorizontal: space.gutter, paddingTop: space.xl, gap: space.lg }}>
-        {WELCOME_FACTS.map((line) => (
-          <View key={line} accessible accessibilityRole="text" accessibilityLabel={line}>
-            <Row gap={space.md} style={{ alignItems: 'flex-start' }}>
-              <View
-                importantForAccessibility="no-hide-descendants"
-                accessibilityElementsHidden
-                style={{ width: 28, height: 28, borderRadius: 14, backgroundColor: c.soft, alignItems: 'center', justifyContent: 'center' }}
-              >
-                <Check size={ICON_SIZE.inline} color={c.accentText} strokeWidth={ICON_STROKE} />
-              </View>
-              <T v="body" style={{ flex: 1 }}>{line}</T>
-            </Row>
+      <View style={{ paddingHorizontal: space.gutter, paddingTop: space.lg }}>
+        {/* Ruled lines on the paper (no icon circles): one stop each. */}
+        {WELCOME_FACTS.map((line, i) => (
+          <View
+            key={line}
+            accessible
+            accessibilityRole="text"
+            accessibilityLabel={line}
+            style={{ paddingVertical: space.md, borderTopWidth: i === 0 ? 0 : 1, borderTopColor: c.line }}
+          >
+            <T v="body">{line}</T>
           </View>
         ))}
-        <T v="meta" color={c.muted}>{EXAM_TRADEMARK_LINE}</T>
+        <T v="meta" color={c.muted} style={{ marginTop: space.md }}>{EXAM_TRADEMARK_LINE}</T>
       </View>
     </Enter>
   );
@@ -275,11 +258,9 @@ export default function Onboarding() {
     );
 
   return (
-    // The welcome panel draws its own top inset; the steps keep the safe area.
-    <SafeAreaView edges={step === 0 ? ['bottom'] : ['top', 'bottom']} style={{ flex: 1, backgroundColor: c.bg }}>
-      {/* Light status-bar icons over the forest panel; the app's default returns on step 1. */}
-      {step === 0 && <StatusBar style="light" />}
-      {step === 0 && <View style={{ height: insets.top, backgroundColor: c.forest }} />}
+    // Premium round 2: the welcome is a title page on the paper, so every step keeps the safe area
+    // and the app's own status bar (no forest strip behind it any more).
+    <SafeAreaView edges={['top', 'bottom']} style={{ flex: 1, backgroundColor: c.bg }}>
       {step === 0 ? (
         <ScrollView contentContainerStyle={{ paddingBottom: footerH + space.xl }}>{welcome}</ScrollView>
       ) : (

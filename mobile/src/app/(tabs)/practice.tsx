@@ -45,12 +45,13 @@ import * as Router from 'expo-router';
 import { router } from 'expo-router';
 import { useCallback, useRef, useState } from 'react';
 import { AccessibilityInfo, View, type Switch } from 'react-native';
-import { ArrowRight, Crosshair, ICON_STROKE, Library, ListChecks, RotateCcw } from '../../components/icons';
+import { ArrowRight, ICON_STROKE } from '../../components/icons';
+import { FieldText, KeyList, Plate, type KeyItem } from '../../components/fieldguide';
 import { Collapse } from '../../components/motion';
 import { Drills, DRILLS_MOVED, playedAnyGame } from '../../components/drills';
 import { DRILLS_SECTION } from '../../lib/actions';
 import { DisclosureRow, FieldLabel, PathChooser, pathSummary } from '../../components/pathChooser';
-import { Button, Card, Chip, ChipRow, Enter, Gap, HeroPanel, ICON_SIZE, Lead, ListRow, Screen, Section, Segmented, T, ToggleRow } from '../../components/ui';
+import { Button, Card, Chip, ChipRow, Enter, Gap, ICON_SIZE, Lead, ListRow, Screen, Section, Segmented, T, ToggleRow } from '../../components/ui';
 import type { Difficulty } from '../../content/types';
 import { topicQuestionIds } from '../../engine/outline';
 import { aboutMin, examPaceWords, MINUTES_PER_QUESTION, shouldOfferTimer, spokenMin } from '../../engine/pace';
@@ -183,7 +184,6 @@ export default function Practice() {
   const mini = Math.round(cert.exam.questions / 3);
   const miniMinutes = Math.round((cert.exam.minutes / cert.exam.questions) * mini);
   const hours = cert.exam.minutes / 60;
-  const icon = (G: typeof Crosshair) => <G size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />;
 
   /** The one-time "Practice at exam pace?" card: under Timed, or under Mock exams when they lead. */
   const paceCard = offer ? (
@@ -206,7 +206,7 @@ export default function Practice() {
   /** Mock exams: under the hero for the Exam-focused plan and the mock / ready stages (`top`), else last. */
   const mockExams = (top: boolean) => (
     <Enter i={top ? 2 : 5}>
-        <Section title="Mock exams" />
+        <Section variant="head" title="Mock exams" />
         <ListRow
           lead={<Lead value={String(mini)} unit="questions" />}
           title="Mini mock"
@@ -227,6 +227,31 @@ export default function Practice() {
         <T v="meta">{cert.exam.passingNote}</T>
     </Enter>
   );
+
+  // "More ways to practice" as an index list (premium round 2): spoken as the rows were.
+  const moreWays: KeyItem[] = [
+    {
+      key: 'review',
+      // Premium pass 4.6: the kicker names the set a tap starts; no trailing queue total.
+      kicker: reviewSubtitle(dueCount),
+      title: 'Questions to revisit',
+      spoken: `Questions to revisit, ${dueCount ? reviewSubtitle(dueCount).replace(' · ', ', ') : 'all caught up'}`,
+      onPress: () => guardedStart(() => startReview(cert.id), open, () => router.push('/caught-up')),
+    },
+    ...(focus
+      ? [
+          {
+            key: 'weak',
+            kicker: 'Most points to gain',
+            title: `Weak spots: ${focus.short}`,
+            spoken: `Weak spots: ${focus.short}, Most points to gain`,
+            onPress: () => guardedStart(() => startPractice(cert.id, { count: 10, domainId: focus.id, title: focus.short }), open),
+          },
+        ]
+      : []),
+    // Browse every question by domain and topic (app/bank). Never shows bank size.
+    { key: 'bank', kicker: 'Browse by domain and topic', title: 'Question bank', spoken: 'Question bank, Browse by domain and topic', onPress: () => router.push('/bank') },
+  ];
 
   return (
     <Screen>
@@ -252,12 +277,14 @@ export default function Practice() {
       </Enter>
 
       <Enter i={1} style={{ marginTop: space.xl }}>
-        <HeroPanel
-          // The mode, domain and length live in the summary row below (O2: said once).
-          caption="Your path"
-          // Mobile 1.21: the title names the path, never a count (the count goes to the meta).
-          title={
-            mode === 'guided'
+        {/* Premium round 2 (Field Guide foundation): the white shadowed seal hero became Practice's
+            plate, Fig. 2 in the guide's register (Learn or Practice, §21.1; 4 is the answer); the forest fill is kept for the plate button under it.
+            The mode, domain and length live in the summary row below (O2: said once). */}
+        <Plate fig={{ n: 2, title: 'Your next set' }} testID="practice-plate">
+          <FieldText v="head">Your path</FieldText>
+          {/* Mobile 1.21: the title names the path, never a count (the count goes to the meta). */}
+          <T v="hero" accessibilityRole="header" style={{ marginTop: space.xs }}>
+            {mode === 'guided'
               ? guidedTopic
                 ? `Next topic: ${guidedTopic.name}`
                 : 'Your next topic'
@@ -265,22 +292,18 @@ export default function Practice() {
                 ? 'Picked for you'
                 : mode === 'inOrder'
                   ? 'Topic by topic'
-                  : 'A mixed set'
-          }
-          // The mode's why lives once, under its radio (O2); the hero says how many and how long.
-          meta={heroMeta}
-          metaLabel={spokenMin(heroMeta)}
-          art="frond2"
-          // Mobile 1.43 (tab header C): a white card with the Practice seal; Today keeps the forest panel.
-          seal="leafvein"
-          action={{
-            label: mode === 'guided' ? 'Open step' : 'Start',
-            // Play is for lessons (the 1.20 icon rule): practice goes forward with an arrow (mobile 1.22).
-            icon: (col) => <ArrowRight size={ICON_SIZE.inline} color={col} strokeWidth={ICON_STROKE} />,
-            iconTrailing: true,
-            hint: mode === 'guided' ? 'Opens your Guided step' : `${pathSize} questions, ${MODE_INFO[mode].name}`,
-            onPress: startPath,
-          }}
+                  : 'A mixed set'}
+          </T>
+          {/* The mode's why lives once, under its radio (O2); the plate says how many and how long. */}
+          <T v="meta" accessibilityLabel={spokenMin(heroMeta)} style={{ marginTop: space.xs }}>{heroMeta}</T>
+        </Plate>
+        <Button
+          label={mode === 'guided' ? 'Open step' : 'Start'}
+          // Play is for lessons (the 1.20 icon rule): practice goes forward with an arrow (mobile 1.22).
+          icon={(col) => <ArrowRight size={ICON_SIZE.inline} color={col} strokeWidth={ICON_STROKE} />}
+          accessibilityHint={mode === 'guided' ? 'Opens your Guided step' : `${pathSize} questions, ${MODE_INFO[mode].name}`}
+          onPress={startPath}
+          style={{ marginTop: space.lg }}
         />
         {!heroIsQuickMix && (
           <Button
@@ -337,33 +360,14 @@ export default function Practice() {
       {mocksFirst && paceCard && <Enter i={2}>{paceCard}</Enter>}
 
       <Enter i={3}>
-        <Section title="More ways to practice" />
-        <ListRow
-          icon={icon(RotateCcw)}
-          title="Questions to revisit"
-          // Premium pass 4.6: the subtitle names the set a tap starts; no trailing queue total.
-          subtitle={reviewSubtitle(dueCount)}
-          accessibilityLabel={`Questions to revisit, ${dueCount ? reviewSubtitle(dueCount).replace(' · ', ', ') : 'all caught up'}`}
-          onPress={() => guardedStart(() => startReview(cert.id), open, () => router.push('/caught-up'))}
-        />
-        {focus && (
-          <ListRow
-            icon={icon(Crosshair)}
-            title={`Weak spots: ${focus.short}`}
-            subtitle="Most points to gain"
-            onPress={() => guardedStart(() => startPractice(cert.id, { count: 10, domainId: focus.id, title: focus.short }), open)}
-          />
-        )}
-        {/* Browse every question by domain and topic (app/bank). Never shows bank size. */}
-        <ListRow
-          icon={icon(Library)}
-          title="Question bank"
-          subtitle="Browse by domain and topic"
-          onPress={() => router.push('/bank')}
-        />
+        <Section variant="head" title="More ways to practice" />
+        {/* Premium round 2 (Field Guide foundation): an index list, the old subtitle as each row's
+            kicker; Build a set stays the one row that opens a panel under it (as Drills' "More drills"). */}
+        <KeyList items={moreWays} testID="practice-more" />
         {/* A one-off set: saves nothing, and the only place with topic and difficulty. */}
+        {/* A hairline above, like the index rows between themselves. */}
+        <View style={{ borderTopWidth: 1, borderTopColor: c.line }} />
         <DisclosureRow
-          icon={icon(ListChecks)}
           title="Build a set"
           subtitle="Pick a domain, topic and difficulty"
           expanded={setOpen}

@@ -528,7 +528,9 @@ describe('Journey 4: notes Mark as read', () => {
     useProgress.getState().setNoteRead('cisa', note.id, true);
     mount(<Learn />);
     // Mobile 1.21: a reference has no finish line, so the row counts notes read (no "of N" meter).
-    expect(allText()).toContain('1 note read · every topic, with traps');
+    // Premium round 2: an index row, "1 read" at the end of its leader; the spoken label keeps the full words.
+    expect(allText()).toContain('Study notes 1 read');
+    expect(root().findAll((n) => n.props.accessibilityLabel === 'Study notes, 1 note read · every topic, with traps').length).toBeGreaterThan(0);
     expect(allText()).not.toContain(`of ${noteSubtopics('cisa').length} read`);
   });
 });
@@ -789,7 +791,9 @@ describe('Journey 7: an old 1.11 save and a backup restore', () => {
     // Learn and notes see the old progress.
     unmount();
     mount(<Learn />);
-    expect(allText()).toContain('1 note read · every topic, with traps');
+    // Premium round 2: an index row, "1 read" at the end of its leader; the spoken label keeps the full words.
+    expect(allText()).toContain('Study notes 1 read');
+    expect(root().findAll((n) => n.props.accessibilityLabel === 'Study notes, 1 note read · every topic, with traps').length).toBeGreaterThan(0);
     expect(root().findAll((n) => typeof n.props.accessibilityLabel === 'string' && /^Information System Auditing Process, \d+ lessons, 1 of \d+ done$/.test(n.props.accessibilityLabel)).length).toBeGreaterThan(0);
   });
 

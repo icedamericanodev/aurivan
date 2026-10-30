@@ -15,3 +15,4 @@ export { Specimen, SpecimenMount, TierLine, type SpecimenState } from './Specime
 export { HerbariumSheet, CollectRow, sheetNo } from './HerbariumSheet';
 export { KeyList, type KeyItem } from './KeyList';
 export { EmptyPlate, EMPTY_PLATE_TITLE } from './EmptyPlate';
+export { SeedSketch } from './SeedSketch';

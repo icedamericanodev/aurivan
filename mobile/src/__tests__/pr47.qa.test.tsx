@@ -572,7 +572,7 @@ describe('QA 3: the exam-week taper plans', () => {
     // While the mock sits in "Also today" its row reads "Optional this week · about 4 h";
     // the "a last long rehearsal; skip it if you’d rather rest" meta only shows once it
     // becomes the hero (after the top-up). Observation, not a bug: both say optional.
-    expect(t).toContain('Full mock Optional this week · about 4 h');
+    expect(t).toContain('Optional this week · about 4 h Full mock');
     expect(t).not.toContain('a last long rehearsal');
     expect(t.indexOf('Top-up:')).toBeGreaterThanOrEqual(0);
     expect(t.indexOf('Top-up:')).toBeLessThan(t.indexOf('Full mock'));

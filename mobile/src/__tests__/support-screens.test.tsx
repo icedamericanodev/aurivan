@@ -402,7 +402,7 @@ describe('Your reports and the credit loop', () => {
 
   it('You has one entry to Help and feedback', () => {
     mount(<You />);
-    press('Get help or send feedback');
+    press('Get help or send feedback, Common questions, reports and what’s new');
     expect(mockPush).toHaveBeenCalledWith('/help');
   });
 });

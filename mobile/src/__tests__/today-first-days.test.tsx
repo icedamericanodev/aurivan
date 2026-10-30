@@ -247,7 +247,7 @@ describe('the title is said once, and the optional mock is not a checklist row',
     // With one required item there is no checklist at all.
     expect(byTestID('plan-checklist')).toHaveLength(0);
     expect(allText()).toContain('Also today');
-    expect(allText()).toContain('Mini mock Optional this week · about 80 min');
+    expect(allText()).toContain('Optional this week · about 80 min Mini mock');
     const caption = root().findAll((n) => typeof n.props.accessibilityLabel === 'string' && /^Today’s plan/.test(n.props.accessibilityLabel))[0];
     expect(caption.props.accessibilityLabel).toMatch(/0 of 1 done$/);
   });

@@ -82,7 +82,7 @@ export default function NotesHome() {
 
       {searching ? (
         <Enter i={1}>
-          <Section title="Results" meta={hits.length ? `${hits.length}${hits.length === 30 ? '+' : ''} found` : undefined} />
+          <Section variant="head" title="Results" meta={hits.length ? `${hits.length}${hits.length === 30 ? '+' : ''} found` : undefined} />
           {hits.length === 0 ? (
             <EmptyState compact art="fieldbook" title="No matches" body="Try a shorter word, or an acronym like RTO or SoD." />
           ) : (
@@ -110,7 +110,7 @@ export default function NotesHome() {
       ) : (
         <Enter i={1}>
           {/* Mobile 1.24: no "0 of 252 read" to start with; the counts show once a note has been read. */}
-          <Section title="By domain" meta={readProgressText(readCount(noteSubtopics(cert.id).map((s) => s.id), read), total) ?? undefined} />
+          <Section variant="head" title="By domain" meta={readProgressText(readCount(noteSubtopics(cert.id).map((s) => s.id), read), total) ?? undefined} />
           {domains.map((d, i) => {
             const ids = noteSubtopics(cert.id, d.id).map((s) => s.id);
             const done = readCount(ids, read);

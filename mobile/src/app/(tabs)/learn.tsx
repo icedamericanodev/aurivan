@@ -60,10 +60,11 @@ import * as Router from 'expo-router';
 import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
 import { memo, useCallback, useDeferredValue, useEffect, useMemo, useRef, useState } from 'react';
 import { AccessibilityInfo, Pressable, View } from 'react-native';
-import { DomainRing, type BotanyKind } from '../../components/glyphs';
-import { BookOpen, CalendarCheck, ChevronDown, Compass, ICON_STROKE, Info, Play } from '../../components/icons';
+import { DomainRing } from '../../components/glyphs';
+import { ChevronDown, ICON_STROKE, Play } from '../../components/icons';
+import { FieldText, KeyList, Plate, type KeyItem } from '../../components/fieldguide';
 import { AnimatedPressable, CheckDraw, Collapse, Turn, usePressScale, useScreenFocus } from '../../components/motion';
-import { BigNum, EmptyState, Enter, HeroPanel, ICON_SIZE, ListRow, ProgressBar, Row, Screen, SearchField, Section, T } from '../../components/ui';
+import { BigNum, Button, EmptyState, Enter, ICON_SIZE, ListRow, ProgressBar, Row, Screen, SearchField, Section, T } from '../../components/ui';
 import { CERTIFICATIONS, domainColor, domainLabel, getCertification } from '../../content/certifications';
 import { lessonsFor, nextLesson } from '../../content/lessons';
 import type { Lesson } from '../../content/lessons/types';
@@ -106,7 +107,6 @@ const useOwnNavigation: () => { setParams?: (p: { domain?: string }) => void } |
   (Router as { useNavigation?: () => { setParams?: (p: { domain?: string }) => void } }).useNavigation ?? (() => undefined);
 
 export default function Learn() {
-  const { isDark } = useTheme();
   // Only what Learn shows (performance, 1.15.x): lessons done, notes read,
   // and from readiness only the focus domain and whether there are answers.
   // Learn stays mounted (hidden) during study; an answer that doesn't move
@@ -180,10 +180,6 @@ export default function Learn() {
   const showLookUp = showNotes || showPrinciples || showGuide || showWeek;
   const noteIds = showNotes ? noteSubtopics(cert.id).map((s) => s.id) : [];
   const notesRead = readCount(noteIds, notesReadIds);
-  // One line each (design spec §2): the subtitle above already says "reference".
-  const notesState = notesRead === 0
-    ? 'Every topic, with traps and key terms'
-    : `${notesRead} ${notesRead === 1 ? 'note' : 'notes'} read · every topic, with traps`;
   // The cover's one meta line: its length, then why this one. The caption
   // already names the domain, so "next in IS Audit" becomes its place on the trail.
   const upItems = upNext ? lessons.filter((l) => l.domainId === upNext.domainId) : [];
@@ -200,39 +196,44 @@ export default function Learn() {
       </Enter>
 
       <Enter i={1} style={{ marginTop: space.xl }}>
+        {/* Premium round 2 (Field Guide foundation): the white shadowed seal hero became Learn's plate,
+            Fig. 2 in the guide's register; the forest fill is kept for the one plate button under it. */}
         {upNext && upDomain ? (
-          <HeroPanel
-            // Mobile 1.43 (tab header C): a white card with the Learn seal; the dot takes the page's own tone.
-            seal="seedhead"
-            captionLead={<View style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: domainColor(upDomain.tone, isDark) }} />}
-            caption={`Up next · ${upDomain.short}`}
-            title={upNext.title}
-            // Why this one (ui.md L3), on the same line as its length.
-            meta={hero?.meta}
-            metaLabel={hero?.spoken}
-            // One line under the title, over the faint low branch art (design spec §2).
-            wideMeta
-            art={`branch${upDomain.tone % 5}` as BotanyKind}
-            action={{ label: 'Start lesson', icon: (col) => play(col), hint: upNext.title, onPress: () => router.push(`/lesson/${upNext.id}`) }}
-          />
+          <>
+            <Plate fig={{ n: 2, title: 'Next lesson' }} testID="learn-plate">
+              <FieldText v="head">{`Up next · ${upDomain.short}`}</FieldText>
+              <T v="hero" accessibilityRole="header" style={{ marginTop: space.xs }}>{upNext.title}</T>
+              {/* Why this one (ui.md L3), on the same line as its length. */}
+              {hero && <T v="meta" accessibilityLabel={hero.spoken} style={{ marginTop: space.xs }}>{hero.meta}</T>}
+            </Plate>
+            <Button
+              label="Start lesson"
+              icon={(col) => play(col)}
+              iconLeading
+              accessibilityHint={upNext.title}
+              onPress={() => router.push(`/lesson/${upNext.id}`)}
+              style={{ marginTop: space.lg }}
+            />
+          </>
         ) : (
           // Mobile 1.45 (PM story 3): lessons start each topic, so the next step is practice, with the
-          // notes for what it turns up; the hero says so and its one action goes to Practice.
-          <HeroPanel
-            seal="seedhead"
-            caption="All caught up"
-            title="Every lesson done"
-            meta={showNotes ? 'Keep practicing, and open the study notes for any topic that trips you up.' : 'Keep practicing to make it stick.'}
-            art="branch1"
-            action={{ label: 'Go to Practice', hint: 'Opens the Practice tab', onPress: () => router.push('/practice') }}
-          />
+          // notes for what it turns up; the plate says so and its one action goes to Practice.
+          <>
+            <Plate fig={{ n: 2, title: 'All caught up' }} testID="learn-plate">
+              <T v="hero" accessibilityRole="header">Every lesson done</T>
+              <T v="meta" style={{ marginTop: space.xs }}>
+                {showNotes ? 'Keep practicing, and open the study notes for any topic that trips you up.' : 'Keep practicing to make it stick.'}
+              </T>
+            </Plate>
+            <Button label="Go to Practice" accessibilityHint="Opens the Practice tab" onPress={() => router.push('/practice')} style={{ marginTop: space.lg }} />
+          </>
         )}
       </Enter>
 
       {showLookUp && (
         <Enter i={2}>
           {/* Memoised, with its own query state: typing re-renders only this block, never the hero or the lessons. */}
-          <LookItUp cert={cert} notesState={notesState} showNotes={showNotes} showPrinciples={showPrinciples} showGuide={showGuide} showWeek={showWeek} />
+          <LookItUp cert={cert} notesRead={notesRead} showNotes={showNotes} showPrinciples={showPrinciples} showGuide={showGuide} showWeek={showWeek} />
         </Enter>
       )}
 
@@ -252,6 +253,66 @@ export default function Learn() {
   );
 }
 
+/**
+ * Learn's reference rows as an index list (premium round 2): the study notes (with how many are
+ * read, once any are), the principles, the exam guide and the final review week, each only when
+ * this exam has it. Spoken as before ("Study notes, Every topic, with traps and key terms").
+ * Exported for tests.
+ */
+export function lookUpItems(
+  cert: Certification,
+  notesRead: number,
+  show: { showNotes: boolean; showPrinciples: boolean; showGuide: boolean; showWeek: boolean },
+): KeyItem[] {
+  const items: KeyItem[] = [];
+  if (show.showNotes) {
+    // One line each (design spec §2): the kicker says what is in them; the count closes the row.
+    const notesState = notesRead === 0
+      ? 'Every topic, with traps and key terms'
+      : `${notesRead} ${notesRead === 1 ? 'note' : 'notes'} read · every topic, with traps`;
+    items.push({
+      key: 'notes',
+      kicker: 'Every topic, with traps and key terms',
+      title: 'Study notes',
+      right: notesRead > 0 ? `${notesRead} read` : undefined,
+      spoken: `Study notes, ${notesState}`,
+      hint: 'Opens the notes, by domain',
+      onPress: () => router.push('/notes'),
+    });
+  }
+  // The exam-mindset principles: how to think.
+  if (show.showPrinciples)
+    items.push({
+      key: 'principles',
+      kicker: 'The thinking the exam rewards',
+      title: 'Principles',
+      spoken: 'Principles, the thinking the exam rewards',
+      hint: 'Opens the exam-mindset principles, by family',
+      onPress: () => router.push('/principles'),
+    });
+  // About the exam: the format, booking, the day and after (facts, not study).
+  if (show.showGuide)
+    items.push({
+      key: 'guide',
+      kicker: 'Format, booking, exam day and after',
+      title: `About the ${cert.name} exam`,
+      spoken: `About the ${cert.name} exam, Format, booking, exam day and after`,
+      hint: 'Opens the exam guide',
+      onPress: () => router.push('/exam-guide'),
+    });
+  // The last seven days before the exam, day by day (the same screen Today opens in exam week).
+  if (show.showWeek)
+    items.push({
+      key: 'week',
+      kicker: 'Your last seven days, day by day',
+      title: 'Final review week',
+      spoken: 'Final review week, Your last seven days, day by day',
+      hint: 'Opens the final review week',
+      onPress: () => router.push('/exam-week'),
+    });
+  return items;
+}
+
 /** Search results shown on Learn itself; more opens Study notes with the same search. */
 const SEARCH_INLINE = 5;
 
@@ -264,20 +325,19 @@ const SEARCH_INLINE = 5;
  */
 const LookItUp = memo(function LookItUp({
   cert,
-  notesState,
+  notesRead,
   showNotes,
   showPrinciples,
   showGuide,
   showWeek,
 }: {
   cert: Certification;
-  notesState: string;
+  notesRead: number;
   showNotes: boolean;
   showPrinciples: boolean;
   showGuide: boolean;
   showWeek: boolean;
 }) {
-  const { c } = useTheme();
   const [query, setQuery] = useState('');
   const deferred = useDeferredValue(query);
   const searching = showNotes && deferred.trim().length >= 2;
@@ -292,7 +352,7 @@ const LookItUp = memo(function LookItUp({
   const shown = hits.slice(0, SEARCH_INLINE);
   return (
     <>
-      <Section title="Look it up" />
+      <Section variant="head" title="Look it up" />
       {showNotes && (
         <View style={{ marginTop: space.sm }}>
           <SearchField
@@ -339,51 +399,11 @@ const LookItUp = memo(function LookItUp({
           )}
         </View>
       )}
-      {showNotes && (
-        <ListRow
-          icon={<BookOpen size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
-          title="Study notes"
-          subtitle={notesState}
-          accessibilityLabel={`Study notes, ${notesState}`}
-          accessibilityHint="Opens the notes, by domain"
-          onPress={() => router.push('/notes')}
-          last={!showPrinciples && !showGuide && !showWeek}
-        />
-      )}
-      {/* The exam-mindset principles: the second reference row (Compass = how to think). */}
-      {showPrinciples && (
-        <ListRow
-          icon={<Compass size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
-          title="Principles"
-          subtitle="The thinking the exam rewards"
-          accessibilityLabel="Principles, the thinking the exam rewards"
-          accessibilityHint="Opens the exam-mindset principles, by family"
-          onPress={() => router.push('/principles')}
-          last={!showGuide && !showWeek}
-        />
-      )}
-      {/* About the exam: the format, booking, the day and after (Info = facts, not study). */}
-      {showGuide && (
-        <ListRow
-          icon={<Info size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
-          title={`About the ${cert.name} exam`}
-          subtitle="Format, booking, exam day and after"
-          accessibilityHint="Opens the exam guide"
-          onPress={() => router.push('/exam-guide')}
-          last={!showWeek}
-        />
-      )}
-      {/* The last seven days before the exam, day by day (the same screen Today opens in exam week). */}
-      {showWeek && (
-        <ListRow
-          icon={<CalendarCheck size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
-          title="Final review week"
-          subtitle="Your last seven days, day by day"
-          accessibilityHint="Opens the final review week"
-          onPress={() => router.push('/exam-week')}
-          last
-        />
-      )}
+      {/* Premium round 2 (Field Guide foundation): the reference rows are an index list, the old
+          subtitle as each row's kicker and the notes' count at the end of its leader. */}
+      <View style={{ marginTop: space.sm }}>
+        <KeyList items={lookUpItems(cert, notesRead, { showNotes, showPrinciples, showGuide, showWeek })} testID="learn-lookup" />
+      </View>
     </>
   );
 });
@@ -427,7 +447,7 @@ const LessonGroups = memo(function LessonGroups({
   return (
     <>
         {/* The one progress meter on Learn (the notes row counts, it never meters). */}
-        <Section title="Lessons" meta={`${doneCount} of ${lessons.length} done`} />
+        <Section variant="head" title="Lessons" meta={`${doneCount} of ${lessons.length} done`} />
         {/* The course's role, in one line; never "a lesson for every topic" (one outline topic has none).
             J25: the short names keep "IS"; say once what it stands for. */}
         <T v="meta">In exam order. Each ends with a quick check.</T>

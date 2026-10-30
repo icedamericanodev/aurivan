@@ -384,7 +384,7 @@ describe('Today: the weekly mock beside the day', () => {
     start();
     mount(<Today />);
     expect(allText()).toContain('Weak spots: IS Operations');
-    expect(allText()).toContain('Mini mock Optional this week · about 80 min');
+    expect(allText()).toContain('Optional this week · about 80 min Mini mock');
     const row = root().findAll((n) => typeof n.props.accessibilityLabel === 'string' && n.props.accessibilityLabel.startsWith('Mini mock, '))[0];
     expect(row.props.accessibilityLabel).toBe('Mini mock, Optional this week · about 80 minutes');
     // The caption meta and the hero meta are spoken with "minutes" (O9, M7a).

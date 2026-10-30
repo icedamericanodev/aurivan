@@ -877,7 +877,9 @@ describe('4. the case', () => {
     press(/^Firm Footing · Info Protection, Clay\. Not yet/);
     const sheet = root().findByType(Modal);
     expect(textOf(sheet)).not.toContain('12 of 20 answered');
-    expect(medallions(sheet)[0].props.progress).toBe(0);
+    // Premium round 2: the sheet draws a pressed specimen (no progress trace at all); nothing in it shows progress.
+    expect(medallions(sheet).length).toBeGreaterThan(0);
+    expect(medallions(sheet).some((m) => (m.props.progress ?? 0) > 0)).toBe(false);
   });
 
   // Fixed in review; was a bug (Minor): in album mode the cells still draw each started badge's

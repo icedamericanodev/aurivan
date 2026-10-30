@@ -15,7 +15,6 @@
  */
 import { memo, useEffect, useRef, useState } from 'react';
 import { Modal, ScrollView, View } from 'react-native';
-import Animated, { Easing, ReduceMotion, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import type { DomainInfo } from '../content/types';
 import { completingMark, MOCK_SUGGEST_LINE, setSpoken, spokenDetail, STRETCH, stretchLine, studyNote, studyTarget, suggestLine, type CaseMark, type SetView, type StudyTarget } from '../engine/badgeCatalog';
@@ -28,11 +27,11 @@ import { STORE_LINK } from '../content/storeLinks';
 import { BadgeSharePanel } from './shareCard';
 import { badgeMetal, motion, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
-import { Medallion, type MedallionState } from './medallion';
+import type { MedallionState } from './medallion';
 import { AnimatedPressable, useMotion, usePressScale } from './motion';
 import { ICON_STROKE, Share2 } from './icons';
 import { Button, DomainDot, ICON_SIZE, ProgressBar, Row, T } from './ui';
-import { CollectRow, FieldText, HerbariumSheet, Specimen, SpecimenMount } from './fieldguide';
+import { CollectRow, FieldText, HerbariumSheet, Specimen, SpecimenMount, TierLine } from './fieldguide';
 
 /** The medallion state for a mark (started and open both draw "not yet"; gated is dotted). */
 export const medallionState = (m: CaseMark): MedallionState => (m.status === 'earned' ? 'earned' : m.status === 'gated' ? 'gated' : 'open');
@@ -437,23 +436,6 @@ export function cardText(mark: CaseMark, cert: ShareCert, quiet: Quiet = NO_QUIE
   }
 }
 
-/**
- * The medallion turns in once as the sheet opens, from edge-on to facing you
- * (400 ms), like a coin turned in the hand. It never shows its back, so an
- * emblem is never mirrored (UX P13). Still under Reduce Motion.
- */
-export const TURN_MS = 400;
-function Turn({ children }: { children: React.ReactNode }) {
-  const { reduced } = useMotion();
-  const a = useSharedValue(reduced ? 1 : 0);
-  useEffect(() => {
-    if (reduced) return;
-    a.set(withTiming(1, { duration: TURN_MS, easing: Easing.out(Easing.cubic), reduceMotion: ReduceMotion.Never }));
-  }, [a, reduced]);
-  const style = useAnimatedStyle(() => ({ transform: [{ perspective: 800 }, { rotateY: `${(1 - a.value) * -90}deg` }] }));
-  return <Animated.View style={style}>{children}</Animated.View>;
-}
-
 export function BadgeSheet({
   mark,
   set,
@@ -552,13 +534,22 @@ export function BadgeSheet({
             <Button kind="ghost" label="Close" accessibilityLabel={`Close ${mark.name}`} onPress={onClose} />
           </View>
           {sharing && shareText ? (
-            <BadgeSharePanel text={shareText} art={<Medallion {...medallionProps(mark, domains, false)} size={124} />} onBack={backFromShare} />
+            // Premium round 2 (expert ruling B): the card shows the pressed specimen, not the struck medallion.
+            <BadgeSharePanel text={shareText} art={<SpecimenMount badge={mark.badge} tier={mark.tier} emblem={mark.domain?.emblem} state="earned" size={112} />} onBack={backFromShare} />
           ) : (
             <>
               <View style={{ alignItems: 'center' }}>
-                <Turn>
-                  <Medallion {...medallionProps(mark, domains, showProgress)} size={160} />
-                </Turn>
+                {/* Premium round 2 (expert ruling B): the sheet shows the badge as a pressed specimen (the
+                    Medallion stays only for the once-only unlock moment). An earned one is pressed flat as the
+                    sheet opens (1.06 → 1, then its tape); Reduce Motion shows it flat at once. */}
+                <SpecimenMount
+                  badge={mark.badge}
+                  tier={mark.tier}
+                  emblem={mark.domain?.emblem}
+                  state={medallionState(mark)}
+                  size={148}
+                  press={earned ? 0 : undefined}
+                />
                 <View
                   ref={title}
                   accessible
@@ -578,7 +569,8 @@ export function BadgeSheet({
               </View>
 
               {earned && (
-                <View style={{ marginTop: space.xl, borderLeftWidth: 3, borderLeftColor: c.accent, paddingLeft: space.md }} accessible accessibilityLabel={plantLine ? `${earnedSpoken} ${plantLine}` : earnedSpoken}>
+                // No 3pt accent rule: that rule is the coach's voice only (spec §5); this is an award.
+                <View style={{ marginTop: space.xl }} accessible accessibilityLabel={plantLine ? `${earnedSpoken} ${plantLine}` : earnedSpoken}>
                   <T v="caption" color={c.accentText}>{earnedCaption}</T>
                   <T v="quote" style={{ marginTop: space.xs }}>{mark.unlock}</T>
                   {completedHere && (
@@ -610,8 +602,11 @@ export function BadgeSheet({
                   <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: space.sm }}>
                     {ladder.map((t) => (
                       <View key={t.key} style={{ alignItems: 'center', flex: 1 }}>
-                        <Medallion {...medallionProps(t, domains, showProgress)} size={56} />
-                        <T v="label" center style={{ marginTop: space.xs }}>{tierName(t)!}</T>
+                        {/* A 56pt pressed specimen per tier, its pips and its metal's name printed (never colour alone). */}
+                        <SpecimenMount badge={t.badge} tier={t.tier} emblem={t.domain?.emblem} state={medallionState(t)} size={44} />
+                        <View style={{ marginTop: space.xs }}>
+                          <TierLine tier={t.tier ?? 0} tiers={ladder.length} earned={t.status === 'earned'} />
+                        </View>
                         <T v="meta" num center color={c.ink2}>{tierCaption(t)}</T>
                         {/* Its state on a line of its own, so neighbouring tiers never run together. */}
                         <T v="meta" center color={t.status === 'earned' ? c.accentText : c.ink2}>

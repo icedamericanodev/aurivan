@@ -25,7 +25,8 @@ import { router, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
 import { Pressable, View } from 'react-native';
 import { EmptyScreen } from '../../components/emptyScreen';
-import { ChevronDown, ICON_STROKE, Play } from '../../components/icons';
+import { ChevronDown, ICON_STROKE } from '../../components/icons';
+import { KeyList } from '../../components/fieldguide';
 import { Collapse, Turn } from '../../components/motion';
 import { Bullets, ReadMark, TermList } from '../../components/notes';
 import { Button, Enter, HeroPanel, ICON_SIZE, ListRow, PushedHeader, Row, Screen, Section, T, useFontScale } from '../../components/ui';
@@ -161,7 +162,7 @@ export default function NotesDomain() {
       <Enter i={1}>
         {groups.map((g) => (
           <View key={g.title}>
-            <Section title={g.title} />
+            <Section variant="head" title={g.title} />
             {g.topics.map((t) => {
               const isOpen = isOpenTopic(t.id);
               const readHere = t.subtopics.filter((st) => read.includes(st.id)).length;
@@ -210,16 +211,22 @@ export default function NotesDomain() {
                       </View>
                     )}
                     {lesson && (
-                      <View style={{ marginTop: space.sm }}>
-                        <ListRow
-                          icon={<Play size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
-                          // The lesson's own title on screen (no double colon); the spoken label keeps "Lesson:".
-                          title={lesson.title}
-                          subtitle={`Lesson · ${lesson.minutes} min · ${lessonDone ? 'Done' : 'Not done yet'}`}
-                          accessibilityLabel={`Lesson: ${lesson.title}, ${lesson.minutes} minutes, ${lessonDone ? 'done' : 'not done yet'}`}
-                          accessibilityHint="Opens the short lesson on this topic"
-                          onPress={() => router.push(`/lesson/${lesson.id}`)}
-                          last
+                      // Premium round 2 (Field Guide foundation): an index row, its state as the kicker over
+                      // the lesson's own title (no icon circle), between hairlines (as on a note); the spoken
+                      // label keeps "Lesson:".
+                      <View style={{ marginTop: space.sm, borderTopWidth: 1, borderBottomWidth: 1, borderColor: c.line }}>
+                        <KeyList
+                          numbered={false}
+                          items={[
+                            {
+                              key: lesson.id,
+                              kicker: `Lesson · ${lesson.minutes} min · ${lessonDone ? 'Done' : 'Not done yet'}`,
+                              title: lesson.title,
+                              spoken: `Lesson: ${lesson.title}, ${lesson.minutes} minutes, ${lessonDone ? 'done' : 'not done yet'}`,
+                              hint: 'Opens the short lesson on this topic',
+                              onPress: () => router.push(`/lesson/${lesson.id}`),
+                            },
+                          ]}
                         />
                       </View>
                     )}

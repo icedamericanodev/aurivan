@@ -357,10 +357,15 @@ it('builds the heavy save', () => {
  * What must not come back is pinned exactly: a tab re-renders with the tab
  * press only, never again when the focus events arrive.
  */
-/** Drills (Play's games, a section of Practice since mobile 1.51) re-rendered: counted by name inside Practice. */
+/**
+ * Drills (Play's games, a section of Practice since mobile 1.51) re-rendered: counted by name inside Practice.
+ * Premium round 2: Practice's own "More ways to practice" is a KeyList too (its review row's line changes
+ * with an answer, so it re-renders with Practice by design), so only Drills itself is counted: its list
+ * holds no store subscription of its own, so it cannot re-render unless Drills does.
+ */
 const drillsRenders = () => {
   const n = renderNames().practice ?? {};
-  return (n.Drills ?? 0) + (n.KeyList ?? 0) + (n.KeyRow ?? 0);
+  return n.Drills ?? 0;
 };
 
 describe('budgets with the heavy save', () => {
