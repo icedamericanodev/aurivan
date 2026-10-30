@@ -34,8 +34,7 @@ as context only.
 ## Domain 1 Governance (pilot crisc_d1_001 to 020, 30 Oct 2026)
 
 
-Bullets in the library format. Paste under the CRISC library's `---` line. Each was
-opened on 30 Oct 2026 unless marked Likely.
+Each bullet was opened on 30 Oct 2026 unless marked Likely.
 
 ### ISACA Glossary (https://www.isaca.org/resources/glossary)
 - ISACA Glossary (risk appetite)
@@ -44,7 +43,7 @@ opened on 30 Oct 2026 unless marked Likely.
 - ISACA Glossary (risk culture)
 - ISACA Glossary (IT risk profile)
 - ISACA Glossary (policy)
-  - All Verified, 30 Oct 2026: glossary page opened with curl and each entry read. Wording used in items is our own paraphrase. Note the glossary has no plain "risk profile" entry; the entry is "IT risk profile" (a description of the overall identified IT risk to which the enterprise is exposed).
+  - All Verified, 30 Oct 2026: glossary page opened with curl and each entry read. Wording used in items is our own paraphrase. Note the glossary has no plain "risk profile" entry; the entry is "IT risk profile" (a description of the overall identified IT risk to which the enterprise is exposed). Fit note for crisc_d1_008: the Glossary's "policy" entry defines a policy as a document that communicates required and prohibited activities and behaviors; it does not itself mention management intent or senior management approval, so that part of the item rests on NIST CSF 2.0 GV.PO-01, which is cited alongside it.
 
 ### ISACA Code of Professional Ethics (https://www.isaca.org/code-of-professional-ethics)
 - ISACA Code of Professional Ethics (objectivity, due diligence and professional care)
@@ -77,7 +76,7 @@ opened on 30 Oct 2026 unless marked Likely.
 - NIST CSF 2.0 GV.RR-02 (roles, responsibilities and authorities related to cybersecurity risk management are established, communicated, understood and enforced)
 - NIST CSF 2.0 GV.PO-01 (policy for managing cybersecurity risks is established based on organizational context, cybersecurity strategy and priorities and is communicated and enforced)
 - NIST CSF 2.0 GV.PO-02 (policy for managing cybersecurity risks is reviewed, updated, communicated and enforced to reflect changes)
-  - All Verified, 30 Oct 2026, against the CSWP 29 PDF (https://nvlpubs.nist.gov/nistpubs/CSWP/NIST.CSWP.29.pdf), pages 16 to 18. GV.OC-03, GV.RM-02, GV.RR-01 and GV.RR-02 use the same strings as the CC library. GV.PO-02 paraphrase is shortened ("to reflect changes in requirements, threats, technology and organizational mission").
+  - All Verified, 30 Oct 2026, against the CSWP 29 PDF (https://nvlpubs.nist.gov/nistpubs/CSWP/NIST.CSWP.29.pdf), pages 16 to 18. GV.OC-03, GV.RM-02 and GV.RR-02 use the same strings as the CC library. GV.PO-02 paraphrase is shortened ("to reflect changes in requirements, threats, technology and organizational mission").
 
 ### NIST IR 8286 Rev. 1 (December 2025)
 - NIST IR 8286 Rev. 1 Section 2.1 (Overview of ERM: risk appetite and risk tolerance)
@@ -91,7 +90,7 @@ opened on 30 Oct 2026 unless marked Likely.
 
 ### NIST SP 800-34 Rev. 1
 - NIST SP 800-34 Rev. 1 Section 3.5 (Plan Testing, Training, and Exercises)
-  - Verified, 30 Oct 2026, against the SP 800-34 Rev. 1 PDF (CSRC page https://csrc.nist.gov/pubs/sp/800/34/r1/upd1/final). 2.2.1: the BCP sustains mission/business processes; 2.2.6: the DRP is information system-focused. 3.5: test, training and exercise events periodically and after changes; tests as close to the operating environment as possible. Section 2.2 string matches the CC library.
+  - Verified, 30 Oct 2026, against the SP 800-34 Rev. 1 PDF (CSRC page https://csrc.nist.gov/pubs/sp/800/34/r1/upd1/final). 2.2.1: the BCP sustains mission/business processes; 2.2.6: the DRP is information system-focused. 3.5: test, training and exercise events periodically and after changes; tests as close to the operating environment as possible. The Section 2.2 string (same as the CC library) is in the not-yet-used list below.
 
 ### NIST AI 100-1 (AI RMF 1.0, January 2023)
 - NIST AI 100-1 (AI RMF 1.0) GOVERN 1.6 (mechanisms are in place to inventory AI systems)
@@ -373,7 +372,8 @@ summaries of the official text. Bullets also present in the CC library
 - NIST AI 100-1 (AI RMF 1.0) MANAGE 1.1 (a determination is made as to whether the AI system achieves its intended purposes and whether its development or deployment should proceed)
 - NIST AI 100-1 (AI RMF 1.0) MANAGE 3.1 (AI risks and benefits from third-party resources are regularly monitored and risk controls are applied and documented)
 - NIST AI 100-1 (AI RMF 1.0) MEASURE 2.11 (fairness and bias as identified in the MAP function are evaluated and results are documented)
-  - All Verified, 30 Oct 2026, against the AI 100-1 PDF (nvlpubs.nist.gov/nistpubs/ai/NIST.AI.100-1.pdf), Tables 3 and 4. MANAGE 1.1 in full: "A determination is made as to whether the AI system achieves its intended purposes and stated objectives and whether its development or deployment should proceed." Section 1.1 also says AI impacts "can be positive, negative, or both and can result in opportunities or threats" (used in notes 4A7). Uses: MANAGE 3.1 in crisc_d4_006 (vendor model swap); MEASURE 2.11 and MANAGE 1.1 in crisc_d4_014 (housing-assistance ranking tool).
+- NIST AI 100-1 (AI RMF 1.0) MEASURE 2.3 (AI system performance or assurance criteria are measured and demonstrated for conditions similar to deployment settings)
+  - All Verified, 30 Oct 2026, against the AI 100-1 PDF (nvlpubs.nist.gov/nistpubs/ai/NIST.AI.100-1.pdf), Tables 3 and 4. MANAGE 1.1 in full: "A determination is made as to whether the AI system achieves its intended purposes and stated objectives and whether its development or deployment should proceed." Section 1.1 also says AI impacts "can be positive, negative, or both and can result in opportunities or threats" (used in notes 4A7). MEASURE 2.3 in full: "AI system performance or assurance criteria are measured qualitatively or quantitatively and demonstrated for conditions similar to deployment setting(s). Measures are documented." (Table 3; Verified 30 Oct 2026). Uses: MANAGE 3.1 in crisc_d4_006 (vendor model swap); MEASURE 2.11 and MEASURE 2.3 in crisc_d4_014 (housing-assistance ranking tool tested on past council applications). MANAGE 1.1 was used by crisc_d4_014 until the 30 Oct 2026 review fixes and is kept for later batches.
 
 ### Other NIST publications
 - NIST SP 800-12 Rev. 1 Section 3.4 (Information Owner/Steward)
@@ -381,7 +381,7 @@ summaries of the official text. Bullets also present in the CC library
 - NIST SP 800-34 Rev. 1 Section 3.2.1 (Determine Business Processes and Recovery Criticality: MTD, RTO and RPO)
   - Verified, 30 Oct 2026 (re-listed from CC): PDF read; still the current revision on csrc.nist.gov. Section 3.4.3 (not cited here) describes cold, warm, hot and mirrored sites, used in notes 4A6.1. Used in crisc_d4_011.
 - NIST SP 800-50 Rev. 1 Section 5.2.3 (Evaluating CPLP Effectiveness)
-  - Verified, 30 Oct 2026: Sep 2024 PDF read; Section 5.2.3 says program managers periodically evaluate the learning program's effectiveness with documented metrics and measurements (see its Sec. 2.4) and report results to leadership. Used in crisc_d4_018 (behavior measure over completion). The CC library cites this publication by title only; this bullet adds the section.
+  - Verified, 30 Oct 2026: Sep 2024 PDF read; Section 5.2.3 says program managers periodically evaluate the learning program's effectiveness with documented metrics and measurements (see its Sec. 2.4) and report results to leadership. Used in crisc_d4_018 (behavior measure over completion). The CC library cites this publication by title only; this bullet adds the section. Section 5.2.3.3 Table 3 (Kirkpatrick Model) separates Level 2 Learning (whether participants absorbed the knowledge) from Level 3 Behavior (whether they apply it at work), which is the line between quiz scores and the upload trend in crisc_d4_018 (Verified 30 Oct 2026).
 - NIST SP 800-88 Rev. 2 Section 3.1 (Sanitization Methods: clear, purge and destroy)
   - Verified, 30 Oct 2026 (re-listed from CC): Sep 2025 PDF read. 3.1.2 says purge makes recovery infeasible with state-of-the-art laboratory techniques while keeping the media potentially reusable, and lists cryptographic erase among purge techniques; the section also warns that overwrite habits from magnetic media expose data on flash media. Used in crisc_d4_008.
 - NIST SP 800-128 Section 3.3.2 (Implement the Configuration Change Control Process: unscheduled changes are reviewed by the CCB as soon as practical)

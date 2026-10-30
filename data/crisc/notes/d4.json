@@ -102,7 +102,7 @@
             "Each roadmap milestone should carry a risk assessment, not just a budget line.",
             "Slippage is itself a risk signal when it delays the retirement of weak technology."
           ],
-          "example": "Ayo, a risk manager at a logistics firm, sees that the sales team has signed up for a route-planning software service with a corporate card. It is not on the technology roadmap and it holds customer addresses. Ayo asks the sales director, as business owner, to sponsor a risk assessment and logs the tool in the risk register while the assessment runs.",
+          "example": "Ayo, a risk analyst at a logistics firm, sees that the sales team has signed up for a route-planning software service with a corporate card. It is not on the technology roadmap and it holds customer addresses. Ayo asks the sales director, as business owner, to sponsor a risk assessment and logs the tool in the risk register while the assessment runs.",
           "audit_focus": {
             "review": [
               "Compare purchasing and expense records with the approved technology roadmap",
@@ -159,7 +159,7 @@
             "recommend": "Have each legacy system's business owner approve a dated plan to upgrade, isolate or replace it.",
             "decides": "The business owner signs any time-limited acceptance of legacy risk"
           },
-          "isaca_rule": "It still works is not a risk assessment. The practitioner records legacy and technical-debt risk in the register with a business owner, analyzes it against appetite and presents options; the owner chooses and accepts any residual risk for a defined period.",
+          "isaca_rule": "'It still works' is not a risk assessment. The practitioner records legacy and technical-debt risk in the register with a business owner, analyzes it against appetite and presents options; the owner chooses and accepts any residual risk for a defined period.",
           "exam_traps": [
             {
               "trap": "Leaving a legacy system off the risk register because it has run without failure for years.",
@@ -201,7 +201,7 @@
           "why_it_matters": "Many outages and security incidents follow a change. Controlled change keeps risk within appetite by making sure someone judged the impact, can undo the change and knows what the system should look like.",
           "how_it_works": [
             "Each change has a request, an impact assessment, an approval suited to its risk, a test result and a back-out plan.",
-            "Emergency changes may skip prior approval but are documented and reviewed after the fact as soon as practical.",
+            "Emergency changes may bypass the normal approval path, usually through an emergency approver, but are documented and reviewed after the fact as soon as practical.",
             "A configuration management database (CMDB) records configuration items, their approved settings and how they depend on each other.",
             "Comparing live settings with the baseline finds unauthorized changes, which are investigated, not quietly reversed.",
             "Low-risk, repeatable changes can be pre-approved, so review effort follows risk."
@@ -217,7 +217,7 @@
             },
             {
               "term": "Emergency change",
-              "meaning": "Made fast to restore service or stop harm, then documented and reviewed after the fact."
+              "meaning": "Made fast to restore service or stop harm through an expedited approval, then documented and reviewed after the fact."
             }
           ],
           "example": "At a city council, Ines, a risk analyst, reviews the month's changes and finds that a third were marked emergency, including routine firewall updates. Several have no after-the-fact review. Ines reports the pattern to the head of IT operations, with the risk that the emergency route is being used to avoid assessment.",
@@ -352,7 +352,7 @@
             "Infrastructure as code puts server and network settings under the same review and version control as software.",
             "Pipeline logs record every change, which supports both monitoring and audit."
           ],
-          "example": "Hana, a risk manager at a payments start-up, learns that any of the five engineers can merge their own code and deploy it, and the pipeline's deployment key is shared in a chat channel. Hana maps the risk to the fraud-loss scenario in the register and works with the engineering lead, as control owner, on peer review and secret storage options.",
+          "example": "Hana, a risk analyst at a payments start-up, learns that any of the five engineers can merge their own code and deploy it, and the pipeline's deployment key is shared in a chat channel. Hana maps the risk to the fraud-loss scenario in the register and works with the engineering lead, as control owner, on peer review and secret storage options.",
           "audit_focus": {
             "review": [
               "Inspect pipeline settings for self-approval or bypass of required reviews",
@@ -654,7 +654,7 @@
             },
             {
               "term": "Purge",
-              "meaning": "Uses methods such as cryptographic erase that defeat laboratory-level recovery."
+              "meaning": "Uses methods such as cryptographic erase, which works only if the data was encrypted from the start, to defeat laboratory-level recovery."
             },
             {
               "term": "Destroy",
@@ -757,7 +757,7 @@
       "can_do": [
         "Rank investments on value and risk, not cost or sponsor influence alone",
         "Show where risk lives in an Agile backlog and definition of done",
-        "Escalate a deferred control to the sponsor before release"
+        "Escalate a deferred control to the business owner before release"
       ],
       "subtopics": [
         {
@@ -773,7 +773,7 @@
             "Projects can also reduce risk, such as retiring a weak system, and that benefit counts in scoring.",
             "Dependencies between projects are tracked, since one delay can push risk into others."
           ],
-          "example": "A city transit authority's steering group ranks nine technology proposals by cost alone. Amara, the enterprise risk manager, adds a risk column and shows that a mid-ranked upgrade would remove a weakness behind fare collection, a top-rated scenario, while the cheapest proposal adds a new vendor dependency. Amara presents both views to the steering group.",
+          "example": "A city transit authority's steering group ranks nine technology proposals by cost alone. Amara, the enterprise risk analyst, adds a risk column and shows that a mid-ranked upgrade would remove a weakness behind fare collection, a top-rated scenario, while the cheapest proposal adds a new vendor dependency. Amara presents both views to the steering group.",
           "audit_focus": {
             "review": [
               "Compare funded projects with their value and risk scores",
@@ -831,10 +831,10 @@
               "Backlog history showing deferred risk items and their age",
               "Enterprise register entries that originated in project logs"
             ],
-            "recommend": "Have the product owner record every deferred control as a risk and escalate it to the sponsor before release.",
-            "decides": "The business sponsor accepts project risk that will reach operations"
+            "recommend": "Have the product owner record every deferred control as a risk and escalate it to the business owner before release.",
+            "decides": "The business owner who will run the system accepts project risk that reaches operations"
           },
-          "isaca_rule": "Agile changes how risk is handled, not whether. The practitioner looks for risk in the backlog, the definition of done and the register, and escalates deferred controls to the sponsor; dropping risk work to meet a date is a decision the owner must make knowingly.",
+          "isaca_rule": "Agile changes how risk is handled, not whether. The practitioner looks for risk in the backlog, the definition of done and the register, and escalates deferred controls to the business owner who will run the system; dropping risk work to meet a date is a decision that owner makes knowingly.",
           "exam_traps": [
             {
               "trap": "Believing Agile projects do not need documented risk decisions.",
@@ -927,10 +927,10 @@
               }
             ]
           },
-          "example": "A food distributor's recovery site sits in a building across the street from its main data center, on the same power substation and flood plain. Dara, the risk manager, maps both sites to the regional flood scenario and shows the operations director that one flood would take out both, breaching the four-hour RTO for order processing.",
+          "example": "A food distributor's recovery site sits in a building across the street from its main data center, on the same power substation and flood plain. Dara, the risk analyst, maps both sites to the regional flood scenario and shows the operations director that one flood would take out both, breaching the four-hour RTO for order processing.",
           "audit_focus": {
             "review": [
-              "Reperform the recovery timeline for one critical process against its objectives",
+              "Walk through the recovery timeline for one critical process against its RTO and RPO",
               "Trace shared dependencies between primary and alternate sites"
             ],
             "evidence": [
@@ -1122,7 +1122,7 @@
               "meaning": "Future computing power that could break today's public-key encryption, so cryptography inventories and migration plans matter."
             }
           ],
-          "example": "A farm cooperative's operations head wants soil sensors linked to a cloud dashboard to cut fertilizer costs, while some board members want to block the idea over security fears. Luca, the risk manager, assesses both the savings and the risks, such as default device passwords and vendor lock-in, and proposes a limited pilot with conditions for the board to consider.",
+          "example": "A farm cooperative's operations head wants soil sensors linked to a cloud dashboard to cut fertilizer costs, while some board members want to block the idea over security fears. Luca, the risk analyst, assesses both the savings and the risks, such as default device passwords and vendor lock-in, and proposes a limited pilot with conditions for the board to consider.",
           "audit_focus": {
             "review": [
               "Compare the technology's business case with its risk assessment",
@@ -1277,13 +1277,13 @@
           "definition": "Zero Trust is a security approach that grants no implicit trust based on network location; each access request is checked using identity, device state and policy.",
           "why_it_matters": "Remote work, cloud and partners have dissolved the network edge. Zero Trust limits how far a stolen account or infected device can reach, lowering the impact of the most common attack paths.",
           "how_it_works": [
-            "NIST SP 800-207 sets out tenets, including that every resource is protected and access is granted per session.",
+            "NIST SP 800-207 sets out tenets, including that all data sources and services count as resources, all communication is secured regardless of location, and access is granted per session.",
             "Decisions use identity, device health, behavior and data sensitivity, and are re-checked over time.",
             "Least privilege and micro-segmentation keep each user or workload to what it needs.",
             "Monitoring of assets and access feeds back into policy decisions.",
             "Adoption is a multi-year journey, usually starting with the most critical data and identities."
           ],
-          "example": "A manufacturer's engineers connect to plant systems through a remote access link that, once joined, reaches the whole network. Yusuf, the risk manager, maps this to a ransomware scenario rated above appetite and proposes a phased Zero Trust plan, starting with per-application access to plant control systems, for the CIO and plant director to prioritize.",
+          "example": "A manufacturer's engineers connect to plant systems through a remote access link that, once joined, reaches the whole network. Yusuf, the risk analyst, maps this to a ransomware scenario rated above appetite and proposes a phased Zero Trust plan, starting with per-application access to plant control systems, for the CIO and plant director to prioritize.",
           "audit_focus": {
             "review": [
               "Trace access to critical applications to per-session identity and device checks",
@@ -1391,7 +1391,7 @@
             "Reporting channels are easy and safe, and reports get visible follow-up.",
             "Mistakes lead to process fixes first; discipline is for willful or repeated misconduct."
           ],
-          "example": "At a pharmaceutical distributor, help desk staff know that password resets skip identity checks at busy times, but they stopped reporting it after past reports led to blame for the shift. Rosa, the risk manager, raises this with the service desk director as a culture risk and proposes a no-blame reporting channel with visible fixes.",
+          "example": "At a pharmaceutical distributor, help desk staff know that password resets skip identity checks at busy times, but they stopped reporting it after past reports led to blame for the shift. Rosa, the risk analyst, raises this with the service desk director as a culture risk and proposes a no-blame reporting channel with visible fixes.",
           "audit_focus": {
             "review": [
               "Compare training content with the top risks for each role",
@@ -1732,7 +1732,7 @@
       "checked": "2026-10-30: opened this session"
     },
     {
-      "title": "NIST SP 800-34 Rev. 1, Contingency Planning Guide for Federal Information Systems (May 2010)",
+      "title": "NIST SP 800-34 Rev. 1, Contingency Planning Guide for Federal Information Systems (May 2010, updated Nov 2010)",
       "url": "https://csrc.nist.gov/pubs/sp/800/34/r1/upd1/final",
       "checked": "2026-10-30: opened this session"
     },
