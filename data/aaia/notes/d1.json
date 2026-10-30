@@ -116,7 +116,7 @@
           "practice_ids": [
             "aaia_d1_002"
           ],
-          "definition": "A machine learning (ML) model learns patterns from training data toward an objective people set, so its outputs are probabilistic and only as good as that data and objective.",
+          "definition": "A machine learning (ML) model learns patterns from data toward an objective people set, so its outputs are statistical estimates, not certainties, and only as good as that data.",
           "why_it_matters": "Auditors are often shown one accuracy score. Without knowing the data, the objective and which errors matter, the auditor cannot judge whether the model serves the business purpose.",
           "how_it_works": [
             "Training data supplies examples; features are the inputs a model uses, and labels are the known answers it learns to predict.",
@@ -125,7 +125,7 @@
             "With rare events, a model that always predicts the common outcome still scores high accuracy while missing every case that matters.",
             "Errors carry different costs, such as a missed defect versus a wrongly rejected batch, so the business must say which matters more."
           ],
-          "example": "At a Brazilian seed producer, data scientist Ana reports that a germination model is 95% accurate. Auditor Kofi asks how it performs on the weak seed lots that trigger customer refunds, which are about 5% of samples. It catches almost none of them. Kofi reports that the metric does not reflect the business purpose and recommends error-cost targets set by the product owner.",
+          "example": "A Brazilian seed producer's model ranks seed lots for sale by predicted germination, trained only on lab results. Data scientist Ana reports strong validation scores. Auditor Kofi finds that customer refunds come from lots that fail in hot, dry fields, conditions the lab data never covered. Kofi reports that the objective and data do not match the business purpose and recommends field-based acceptance criteria.",
           "audit_focus": {
             "review": [
               "Compare reported metrics with the error types the business purpose cares about",
@@ -266,7 +266,7 @@
               "Board or committee minutes recording the policy's approval"
             ],
             "recommend": "Have the AI program owner keep the inventory current from independent sources, including vendor and shadow AI.",
-            "decides": "Senior management approves the AI policy; the board oversees the strategy"
+            "decides": "The board or senior management approves the AI policy; the board oversees strategy and appetite"
           },
           "isaca_rule": "Inventory first: governance covers only what it can see. Test completeness against independent evidence, not surveys, and include AI inside purchased products and AI that staff use without approval.",
           "exam_traps": [
@@ -368,7 +368,7 @@
             "AI shifts work: people move from doing tasks to reviewing AI output and handling exceptions, which needs new skills.",
             "Training records and spot tests show whether people can apply the policy, not just that they attended."
           ],
-          "example": "At an Indian tax-preparation firm, an AI tool now drafts returns and preparers review them. Auditor Priya finds the training still teaches manual preparation, and reviewers approve 98% of drafts unchanged within two minutes. Priya reports that reviewers were never trained to check AI drafts and recommends role-based training on the review duty.",
+          "example": "At an Indian tax-preparation firm, the AI program's quarterly report counts licenses issued, drafts produced and hours saved. Auditor Priya finds no measure of how many AI drafts reviewers corrected, how many policy breaches occurred or whether staff finished the required training. Priya reports that the metrics show adoption, not whether the program works as intended, and recommends outcome metrics.",
           "audit_focus": {
             "review": [
               "Compare awareness content, topic by topic, with current AI policy duties",
@@ -414,10 +414,10 @@
     {
       "topic_id": "1C",
       "topic_name": "AI Risk Management",
-      "overview": "This area covers how AI risk is identified, assessed, responded to and monitored, including harm to people, board-set appetite and tolerance, AI key risk indicators and risk from vendors and supply chains. The auditor assesses the process; management owns the risk.",
+      "overview": "This area covers how AI risk is identified, assessed, responded to and monitored, including harm to people, board-approved appetite, management-set tolerances, AI key risk indicators and risk from vendors and supply chains. The auditor assesses the process; management owns the risk.",
       "can_do": [
         "Check that AI risk assessments weigh harm to affected people, not only security and uptime",
-        "Trace AI key risk indicators to tolerances the board approved",
+        "Trace AI key risk indicators to approved tolerances within the board's appetite",
         "Evaluate third-party AI risk controls in contracts and ongoing monitoring"
       ],
       "subtopics": [
@@ -437,7 +437,7 @@
             "Assessment repeats when the data, use, model or law changes, not only before launch.",
             "The risk owner chooses the response; the auditor assesses whether the process is sound."
           ],
-          "example": "A Polish bus manufacturer uses a vision model to pass or fail welds. The risk register rates it low because the hosting is secure and test accuracy was high. Auditor Marek learns that weak welds the model misses go into passenger buses. Marek reports that the rating leaves out the safety impact and recommends a reassessment that weighs harm to passengers.",
+          "example": "A Polish bus manufacturer's weld-inspection model was rated medium risk when it only advised inspectors. Last quarter it began passing welds without a person checking, but the rating was never revisited. Auditor Marek reports that the change in use raised the impact on passenger safety and recommends that the risk owner reassess at defined triggers.",
           "audit_focus": {
             "review": [
               "Trace each high-impact AI system to a current risk register entry",
@@ -489,32 +489,32 @@
           "definition": "Risk appetite is how much AI risk the board accepts to pursue its goals; tolerances set measurable limits, and key risk indicators (KRIs) show when limits near breach.",
           "why_it_matters": "Without board-set limits, every artificial intelligence (AI) risk decision is made case by case, often by whoever is keen to launch. KRIs turn the limits into numbers management can watch and escalate.",
           "how_it_works": [
-            "Appetite is usually proposed by management and approved by the board, then broken into tolerances for each high-impact use.",
+            "Appetite is usually proposed by management and approved by the board; senior management then sets tolerances within it for each high-impact use.",
             "Tolerances are measurable, such as a maximum rate of wrongful denials or a minimum share of outputs reviewed by people.",
             "Key performance indicators (KPIs) show whether AI delivers value; KRIs show whether risk is climbing toward tolerance.",
             "Each KRI needs a reliable source, warning levels and a route that takes breaches to the committee and the board.",
             "A breach triggers a documented response that the owner decides, not quiet model tuning."
           ],
-          "example": "A Spanish electricity retailer's board allows its AI collections model to wrongly mark no more than 1 in 500 customers as high risk. Auditor Lucía finds that the monthly AI dashboard reports model uptime and processing volume, and nothing else. Lucía reports that no indicator compares wrong flags with the limit and recommends adding one with an escalation threshold.",
+          "example": "A Ghanaian microfinance lender's senior management caps loan applications its AI credit model wrongly declines at 2%, within the board's appetite. Auditor Kwame finds the indicator breached that limit twice last quarter, and each time the data team quietly retuned the model without telling the owner. Kwame reports that breaches never reached the owner or the board, and recommends a documented escalation route.",
           "audit_focus": {
             "review": [
-              "Trace each AI tolerance to board approval records",
+              "Trace each AI tolerance to its approval record",
               "Compare KRI definitions and thresholds with the approved tolerances",
               "Reperform one KRI from source data for a recent period"
             ],
             "evidence": [
-              "Board minutes approving AI risk appetite and tolerances",
+              "Board minutes approving AI risk appetite and records approving each tolerance",
               "KRI reports showing values, thresholds and escalations",
               "Decision logs from which each indicator is calculated"
             ],
             "recommend": "Have management define a KRI for each AI tolerance, with an owner, thresholds and escalation to the board.",
             "decides": "The board, on management's proposal, decides how much AI risk is acceptable"
           },
-          "isaca_rule": "The board sets AI risk appetite and tolerance; management measures against them. Look for KRIs tied to each tolerance, with owners and escalation. Volume and uptime reports are not risk indicators.",
+          "isaca_rule": "The board approves AI risk appetite; senior management or the board sets tolerances within it, and model owners set use-level criteria inside those tolerances. Look for KRIs tied to each tolerance, with owners and escalation. Volume and uptime reports are not risk indicators.",
           "exam_traps": [
             {
               "trap": "The data science team should set acceptable error rates for its models.",
-              "why": "Error rates express how much harm the organization will accept. The board sets appetite and tolerances; the team measures and reports against them."
+              "why": "Error rates express how much harm the organization will accept. Appetite and tolerances are set above the team (the board, senior management); the team measures and reports against them."
             }
           ],
           "key_terms": [
@@ -535,7 +535,7 @@
               "definition": "A metric that shows whether an activity is delivering its intended value."
             }
           ],
-          "memory_aid": "Board sets the limit, owner watches the KRI, auditor checks both."
+          "memory_aid": "Board approves appetite, management sets tolerances, owner watches the KRI, auditor checks all three."
         },
         {
           "id": "1C.3",
@@ -553,7 +553,7 @@
             "Vendor reports give the vendor's view; ongoing monitoring adds independent checks on how the model performs in the buyer's setting.",
             "Contingency plans cover a vendor outage, withdrawal or failed update for high-risk AI services."
           ],
-          "example": "A Vietnamese garment exporter uses a vendor's AI model to grade fabric defects. After a silent vendor update, rejection rates double overnight. Auditor Thanh finds that the contract gives no notice of model changes and no right to test them first. Thanh reports that the exporter could neither see nor test the change before relying on it, and recommends contract changes.",
+          "example": "A Vietnamese garment exporter grades fabric defects with a vendor's AI model. The vendor's only assurance is a general controls report on its data centers, and the contract never mentions that the model is built on another firm's foundation model. Auditor Thanh finds no tests of the model on the exporter's own fabric. Thanh reports both gaps and recommends supply-chain due diligence and testing on the exporter's data.",
           "audit_focus": {
             "review": [
               "Inspect AI contracts for change notice, testing, data use and exit terms",
@@ -620,7 +620,7 @@
             "Each dataset has a named data owner who answers for its quality, classification and permitted uses.",
             "Lineage records where data came from, how it was changed and which models it fed, so problems can be traced.",
             "Quality rules cover accuracy, completeness, timeliness and how well the data represents the people affected.",
-            "Rights to use come from contracts, licenses or consent; data that is publicly visible is not automatically free to use.",
+            "Rights to use come from contracts, licenses, consent or another lawful basis; data that is publicly visible is not automatically free to use.",
             "A data catalog links datasets to owners, classifications and the models that use them."
           ],
           "example": "At a Swedish forestry company, a yield model trains on drone imagery bought from a contractor. Auditor Elin finds no license term that allows the imagery to be used for training, and no record of which model versions used it. Elin reports both gaps and recommends that the data owner confirm usage rights and record lineage.",
@@ -733,11 +733,11 @@
           "how_it_works": [
             "Retention schedules cover training sets, prompt and output logs, model versions and the records needed to explain past decisions.",
             "Models can memorize rare or repeated training examples and reproduce them in outputs, a known privacy risk for generative AI.",
-            "When personal data must be erased, the owner assesses affected models: retrain without it, filter outputs, or document why the risk is low.",
+            "When personal data must be erased, the owner assesses affected models: retrain, filter outputs or document low risk, with the privacy officer confirming the choice meets the legal duty.",
             "Prompt and output logs often hold personal data and need their own retention limits and access controls.",
             "Retired models and their data are disposed of securely, while decision logs that must be kept are preserved."
           ],
-          "example": "A French dating app trains a message-suggestion model on members' chats. Auditor Camille finds that closed accounts are purged from the database within 30 days, but the model trained on their chats is never reviewed, and in testing it completes a former member's distinctive phrases. Camille reports the gap and recommends adding model review to the deletion process.",
+          "example": "A Mexican law firm's internal generative AI assistant keeps every prompt and output, including client names and case facts, with no disposal date. Auditor Rodrigo finds that the retention schedule covers case files but not the assistant's logs, some of which are older than clients agreed the firm would keep their data. Rodrigo reports the gap and recommends retention limits for prompt and output logs.",
           "audit_focus": {
             "review": [
               "Trace a sample of erasure requests to affected models and actions taken",
@@ -780,7 +780,7 @@
     {
       "topic_id": "1E",
       "topic_name": "Leading Practices, Ethics, Regulations, and Standards for AI",
-      "overview": "This area covers the characteristics of trustworthy AI, how ethics principles become testable criteria, how risk-based AI laws apply, and how voluntary frameworks and management-system standards fit together. The auditor turns principles into criteria and tests against them.",
+      "overview": "This area covers the characteristics of trustworthy AI, how ethics principles become testable criteria, how risk-based AI laws apply, and how voluntary frameworks and management-system standards fit together. Owners turn principles into measurable criteria; the auditor judges whether those criteria are adequate and tests against them.",
       "can_do": [
         "Turn trustworthy-AI characteristics into measurable audit criteria with owners",
         "Map AI legal obligations to specific controls, owners and evidence",
@@ -804,7 +804,7 @@
             "Each principle becomes a criterion with a metric, a threshold, a test method, a review frequency and an owner.",
             "Explainability must be enough for the people overseeing a high-impact system to question, override and support appeals."
           ],
-          "example": "A Danish wind-farm operator's AI policy says its turbine-fault models must be safe and reliable. Auditor Freja finds no definition of either word, no thresholds and no test results. Freja reports that the principles cannot be tested as written and recommends that the model owner define measurable thresholds, such as a maximum missed-fault rate, with review dates.",
+          "example": "A Danish wind-farm operator set a maximum missed-fault rate for its turbine-fault model. The model owner's team runs every check and reports one average across all turbines. Auditor Freja reperforms the check on offshore turbines alone and finds the rate above the agreed limit. Freja reports the breach and recommends that a separate validation team report results by turbine type.",
           "audit_focus": {
             "review": [
               "Trace each stated AI principle to a measurable criterion and owner",
@@ -819,7 +819,7 @@
             "recommend": "Have model owners turn each AI principle into measurable criteria with thresholds, test methods and review dates.",
             "decides": "The AI governance committee approves criteria; model owners accept trade-offs"
           },
-          "isaca_rule": "A principle without a measure, a threshold and an owner cannot be audited. Turn each trustworthy-AI characteristic into testable criteria for the specific use, then test against them independently.",
+          "isaca_rule": "A principle without a measure, a threshold and an owner cannot be audited. Expect owners to turn each trustworthy-AI characteristic into testable criteria for the specific use; the auditor then tests against them independently.",
           "exam_traps": [
             {
               "trap": "Publishing responsible-AI principles shows the organization's AI is trustworthy.",
@@ -873,7 +873,7 @@
               "Obligations register linking each duty to a control and owner",
               "Counsel's written opinion on which laws apply in each market"
             ],
-            "recommend": "Have legal counsel and compliance build an obligations register and assign each duty to a control owner.",
+            "recommend": "Have legal counsel, compliance and the model owner map each applicable duty to a control, a control owner and evidence.",
             "decides": "Senior management sets compliance strategy on legal counsel's advice"
           },
           "isaca_rule": "Map before you test: obligation, control, owner, evidence. Legal decides which laws apply, owners run the controls, and the auditor tests the mapping and the evidence. One law is a floor, not proof of responsible AI.",
@@ -917,7 +917,7 @@
           "example": "An Irish software company tells customers its AI is certified trustworthy after its AI management system was certified. Auditor Siobhán finds that the certificate covers the governance process, while no fairness testing exists for the company's insurance-quote feature. Siobhán reports that the claim overstates the assurance and recommends model-level testing and corrected marketing wording.",
           "audit_focus": {
             "review": [
-              "Confirm with management which framework supplies the audit criteria",
+              "Identify the framework management adopted, then select audit criteria from it and applicable law",
               "Compare certificate scope with the AI systems and claims it supports",
               "Trace adopted framework requirements to operating controls"
             ],
@@ -926,7 +926,7 @@
               "Gap assessment against the adopted framework",
               "Policy adopting the framework, with its approval date"
             ],
-            "recommend": "Have management agree the criteria framework and limit public claims to what the certification scope covers.",
+            "recommend": "Have management formally record which framework the organization adopts and limit public claims to what the certification scope covers.",
             "decides": "Senior management chooses which frameworks the organization adopts"
           },
           "isaca_rule": "Know what each source is. The NIST framework is voluntary guidance, a management-system certificate covers a process within its scope, and neither proves a given model is fair or accurate. Model-level testing is still needed.",
