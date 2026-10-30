@@ -956,7 +956,7 @@ describe('5. Settings → Show badges', () => {
     toggle().props.onValueChange(true);
   });
     const lines = allText().match(/Badges are on again\.[^.]*\./g) ?? [];
-    expect(lines).toEqual(['Badges are on again. 2 badges arrived while they were hidden: see You → Badges.']);
+    expect(lines).toEqual(['Badges are on again. 2 badges arrived while they were hidden: see You → Herbarium.']);
     unmount();
     // The next session earns nothing new: its Results show no moment for the two that waited.
     const more = ids('4', 20, 5);

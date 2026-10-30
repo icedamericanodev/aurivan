@@ -9963,7 +9963,7 @@ function howToOpen(item, o = {}) {
             return o.badgesHidden ? `${how}.` : `${how} (the ${name} badge).`;
         }
         case 'set':
-            return o.badgesHidden ? 'Opens as you study.' : `Opens when you finish the ${(_d = SET_NAMES[u.set]) !== null && _d !== void 0 ? _d : u.set} set in Badges.`;
+            return o.badgesHidden ? 'Opens as you study.' : `Opens when you finish the ${(_d = SET_NAMES[u.set]) !== null && _d !== void 0 ? _d : u.set} set in the Herbarium.`;
         case 'passed':
             return 'Opens when you tell us you passed.';
     }
@@ -11421,6 +11421,6 @@ exports.fieldInk = {
   api["domainBand"] = load("src/engine/domainBand.ts");
   api["pace"] = load("src/engine/pace.ts");
   api["readySigns"] = load("src/engine/readySigns.ts");
-  api.sourceHash = "32d00a0251a3a61a";
+  api.sourceHash = "4538311ec1991737";
   root.KaiSipPlant = Object.freeze(api);
 })(typeof window !== 'undefined' ? window : globalThis);

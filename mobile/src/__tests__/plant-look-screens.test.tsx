@@ -166,7 +166,7 @@ describe('Look', () => {
     expect(allText()).toMatch(/Badges and finished badge sets add more\. Each one says how\./);
     expect(option('lantern').props.accessibilityState).toMatchObject({ disabled: true });
     expect(allText()).toMatch(/Sit a full, timed mock \(the Dress Rehearsal badge\)\./);
-    expect(allText()).toMatch(/Opens when you finish the Groundwork set in Badges\./);
+    expect(allText()).toMatch(/Opens when you finish the Groundwork set in the Herbarium\./);
     // No collection counters (only the plant's own "growth n of 6"), no "unlocked!", never "Pokémon".
     expect(allText().replace(/growth \d of 6/, '')).not.toMatch(/\b\d+ of \d+\b|collected|unlocked!|Pokémon|Pokemon/i);
   });

@@ -135,7 +135,7 @@ const subscribeAll = (cb: () => void) => {
   };
 };
 
-/** The "new" dot for the active cert, live (You tab and its Badges row). */
+/** The "new" dot for the active cert, live (You tab and its Herbarium entry). */
 export function useNewBadge(): boolean {
   return useSyncExternalStore(subscribeAll, () => hasNewBadge(activeCertIdNow()));
 }
@@ -167,8 +167,8 @@ export function hideBadges() {
   useSettings.getState().setBadgesHidden(true);
 }
 
-/** "Badges are on again. 2 arrived while they were hidden: they're in You → Badges." */
+/** "Badges are on again. 2 badges arrived while they were hidden: see You → Herbarium." */
 export function shownAgainLine(n: number): string {
   if (n <= 0) return 'Badges are on again.';
-  return `Badges are on again. ${n === 1 ? '1 badge' : `${n} badges`} arrived while they were hidden: see You → Badges.`;
+  return `Badges are on again. ${n === 1 ? '1 badge' : `${n} badges`} arrived while they were hidden: see You → Herbarium.`;
 }

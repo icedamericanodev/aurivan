@@ -1,5 +1,6 @@
-// "Your note" screenshots (393x852 @2x): the answer screen with "Add a note",
-// the note sheet open while typing, the saved note as a plate, and
+// "Your note" screenshots (393x852 @2x): the answer screen's ⋯ "More on this
+// question" sheet with "Add a note" (mobile 1.49 moved it there from the page
+// body), the note sheet open while typing, the saved note as a plate, and
 // Saved → Your notes.
 // Usage: node shoot_qnote.mjs <seed.json> <out> <suffix>
 // Run via: SHOTS=qnote bash scripts/screenshots/run.sh <out> <dark|light>
@@ -60,18 +61,21 @@ const scrollTo = async (text, top) => {
   await page.waitForTimeout(800);
 };
 
-// 1. Answer the first sample (a miss on the runner-up), then the end of the answer screen.
+// 1. Answer the first sample (a miss on the runner-up), then open ⋯ in the session
+// header: "Add a note" is a row of the "More on this question" sheet.
 const keys = (seed.__shotKeys || 'A').split(',');
 await open('/session');
 await page.getByLabel(new RegExp(`^Option ${keys[0]}:`)).first().click();
 await page.getByText('Check answer', { exact: true }).click();
 await page.waitForTimeout(1200);
-await scrollTo('Add a note', 470);
+await page.getByRole('button', { name: 'More on this question' }).click();
+await page.waitForTimeout(900);
 await snap('q01-answer-add-note');
 
-// 2. The sheet, typing (and with the page shortened by a keyboard's height).
-await page.getByText('Add a note', { exact: true }).click();
-await page.waitForTimeout(900);
+// 2. The note sheet (it opens once the ⋯ sheet has gone), typing, and with the
+// page shortened by a keyboard's height.
+await page.getByRole('button', { name: 'Add a note', exact: true }).click();
+await page.waitForTimeout(1200);
 const field = page.getByLabel('Your note on this question');
 await field.click();
 await page.keyboard.type('Escalate first. More testing only once the fraud lead says so.', { delay: 5 });

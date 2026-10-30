@@ -87,7 +87,7 @@ elif [ "${SHOTS:-}" = guides ]; then
 elif [ "${SHOTS:-}" = pace ]; then
   node scripts/screenshots/shoot_pace.mjs "$TMP/seed.json" "$OUT" "$THEME"
 elif [ "${SHOTS:-}" = qnote ]; then
-  # "Your note" on a question: the answer screen's "Add a note", the sheet (typing, and
+  # "Your note" on a question: "Add a note" in the answer's ⋯ sheet, the note sheet (typing, and
   # above a keyboard-sized gap), the saved note's plate, Saved → Your notes (shoot_qnote.mjs).
   node scripts/screenshots/shoot_qnote.mjs "$TMP/seed.json" "$OUT" "$THEME"
 elif [ "${SHOTS:-}" = practice ]; then
@@ -115,7 +115,7 @@ elif [ "${SHOTS:-}" = growth ]; then
   # moment, the theme fade and You's growth (shoot_growth.mjs).
   node scripts/screenshots/shoot_growth.mjs "$TMP/seed.json" "$OUT" "$THEME"
 elif [ "${SHOTS:-}" = badges ]; then
-  # Mobile 1.10 badge collection: the case (empty-ish, mid, nearly complete),
+  # Mobile 1.10 badge collection (the Herbarium since 1.51): the case (empty-ish, mid, nearly complete),
   # each shelf, Next for your exam, Sort, the detail sheet, Results with a new
   # badge, You's dot, Show badges off/on, and a strip of the unlock moment
   # (shoot_badges.mjs; REDUCED=1 for the reduced set; FONT_SCALE=1.3 or 2 for the
@@ -134,7 +134,7 @@ elif [ "${SHOTS:-}" = stats ]; then
   node scripts/screenshots/shoot_stats.mjs "$TMP/seed.json" "$OUT" "$THEME"
 elif [ "${SHOTS:-}" = learnplay ]; then
   # Mobile 1.12 Learn and Play: Learn's trail and reason, the lesson cover, the
-  # scene templates, a check's verdict, Lesson complete, Mark as read, Play,
+  # scene templates, a check's verdict, Lesson complete, Mark as read, Drills (Play until 1.51),
   # each game's header, a recap with its sparkline and a level up; strips of
   # the scene turn, the step line, the timeline, the lesson ✓, a match, a
   # stone and the level-leaf morph (shoot_learnplay.mjs; REDUCED=1; NARROW=1;
@@ -237,7 +237,7 @@ elif [ "${SHOTS:-}" = cloud ]; then
   if [ "${CLOUD_PART:-}" != account ]; then node scripts/screenshots/shoot_board.mjs "$TMP/seed.json" "$OUT" "$THEME"; fi
 elif [ "${SHOTS:-}" = principles ]; then
   # Exam-mindset principles: the Learn row, the list by family, one principle
-  # (top, trap and example, the Practice ending) and an old id (shoot_principles.mjs).
+  # (top, trap and example, the Practice ending), an old id and the answer's ⋯ sheet (shoot_principles.mjs).
   node scripts/screenshots/shoot_principles.mjs "$TMP/seed.json" "$OUT" "$THEME"
 elif [ "${SHOTS:-}" = store ]; then
   # Mobile 1.40.1, the Google Play listing (docs/mobile/PLAY_LAUNCH.md c6): six screens at

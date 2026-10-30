@@ -5288,7 +5288,7 @@ function howToOpen(item, o = {}) {
             return o.badgesHidden ? `${how}.` : `${how} (the ${name} badge).`;
         }
         case 'set':
-            return o.badgesHidden ? 'Opens as you study.' : `Opens when you finish the ${(_d = SET_NAMES[u.set]) !== null && _d !== void 0 ? _d : u.set} set in Badges.`;
+            return o.badgesHidden ? 'Opens as you study.' : `Opens when you finish the ${(_d = SET_NAMES[u.set]) !== null && _d !== void 0 ? _d : u.set} set in the Herbarium.`;
         case 'passed':
             return 'Opens when you tell us you passed.';
     }
@@ -10480,7 +10480,7 @@ function decodeUtf8(bytes) {
   var api = {};
   api["browser"] = load("src/webcloud/browser.ts");
   api["config"] = load("src/webcloud/config.ts");
-  api.sourceHash = "f5241081b3aaf08e";
+  api.sourceHash = "3cc6037a74d14be4";
   var cloud = load("src/webcloud/index.ts");
   var liveVersion = "1.48.0";
   var liveStoreVersions = {"progress":2,"settings":1};
