@@ -69,7 +69,7 @@
             "Rank each use by the likelihood and impact of harm to people and the business, how autonomous its decisions are and how strong its controls are.",
             "Refresh the universe when new AI uses, incidents or regulations appear, not only once a year."
           ],
-          "example": "At a water utility in Chile, IS audit manager Rafael sees that the AI inventory lists six in-house models. Procurement records show the billing platform also has an AI feature that flags households for disconnection. Rafael adds it to the audit universe and rates it high, because it makes decisions about families with little human review.",
+          "example": "At a water utility in Chile, IS audit manager Rafael reviews the AI audit universe of nine AI uses. A colleague proposes auditing the newest first, a deep-learning leak detector. Rafael ranks a simpler billing feature that flags households for disconnection higher, because it decides about families with little human review.",
           "audit_focus": {
             "review": [
               "Compare the AI inventory with procurement and contract records for missing uses",
@@ -129,7 +129,7 @@
           "audit_focus": {
             "review": [
               "Map each lifecycle stage and decision point into or out of scope",
-              "Inspect the engagement plan for agreed criteria and their sources",
+              "Inspect the engagement plan for the selected criteria and their sources",
               "Identify which components the organization controls and which a vendor supplies"
             ],
             "evidence": [
@@ -137,7 +137,7 @@
               "AI policy and regulatory obligations mapped to the system",
               "Supplier agreements and monitoring reports for the purchased model"
             ],
-            "recommend": "Have the audit manager agree scope and criteria with the engagement sponsor and record each exclusion and its reason.",
+            "recommend": "Have the audit manager select the audit criteria, agree scope with the engagement sponsor and record each exclusion and its reason.",
             "decides": "The chief audit executive approves the engagement scope"
           },
           "isaca_rule": "Scope an AI audit around where risk sits: data, design, decisions, oversight and suppliers across the lifecycle. For a vendor model, audit what the organization controls and how it manages the vendor, not weights it can never see.",
@@ -319,7 +319,7 @@
               "Control descriptions with owners and frequencies"
             ],
             "recommend": "Have the model owner give reviewers the reasons behind outputs and monitor override rates and review times.",
-            "decides": "The business owner decides whether the model may keep deciding unaided"
+            "decides": "The model owner decides whether the model may keep deciding unaided"
           },
           "isaca_rule": "Test AI controls like any control, design then operation, but treat human oversight as a control in its own right. Oversight counts only when reviewers can understand, challenge and override outputs, and records show they do.",
           "exam_traps": [
@@ -375,7 +375,7 @@
               "Per-stratum exception counts and outcome comparisons"
             ],
             "recommend": "Have the model owner track outcomes by affected group so small-group errors surface between audits.",
-            "decides": "The business owner decides how to address group differences, within law and board risk appetite"
+            "decides": "The model owner decides how to address group differences, within law and board risk appetite"
           },
           "isaca_rule": "Design an AI sample around where errors hide: by group, by confidence and by override. A sample that cannot contain enough of a small group cannot say anything about fairness to that group.",
           "exam_traps": [
@@ -548,7 +548,7 @@
             "Read vendor attestations for scope: a System and Organization Controls (SOC) 2 report rarely covers model behavior.",
             "Ask owners to preserve versions, configurations and logs before planned changes overwrite them."
           ],
-          "example": "A Japanese insurer's speech model transcribes customer calls for complaint handling. The vendor sends a SOC 2 report and an accuracy certificate. IS auditor Kenji notes the report covers hosting only, so Kenji tests a sample of transcripts against the call recordings and asks the owner to keep the transcripts, logs and model version identifier, and to confirm with the vendor that the current version can be retained or rerun, before next month's update.",
+          "example": "A Japanese insurer's speech model transcribes customer calls for complaint handling. The vendor sends a SOC 2 report and an accuracy certificate. IS auditor Kenji notes the report covers hosting only, so Kenji tests a sample of transcripts against the call recordings.",
           "audit_focus": {
             "review": [
               "Confirm each evidence item matches the model version and period audited",
@@ -685,7 +685,7 @@
               "Extract query with its parameters and run time",
               "Platform logging configuration showing what is kept and for how long"
             ],
-            "recommend": "Have the system owner log every AI decision and keep logs unfiltered for the required retention period.",
+            "recommend": "Have the model owner log every AI decision and keep logs unfiltered for the required retention period.",
             "decides": "The data owner sets which AI decisions must be logged and kept"
           },
           "isaca_rule": "Never trust an extract just because a system produced it. Reconcile it to the source and learn how the population was formed; if a model or filter chose the records, what it missed is outside the data.",
@@ -856,7 +856,7 @@
           "why_it_matters": "Technical findings such as falling accuracy mean little to a board. A finding that states the harm to people and the business gets attention, ownership and funding for the fix.",
           "how_it_works": [
             "Condition: what the auditor found, such as approval rates differing by group or accuracy below threshold.",
-            "Criteria: the policy, framework, regulation or agreed threshold the condition is measured against.",
+            "Criteria: the policy, framework, regulation or approved threshold the condition is measured against.",
             "Cause: why it happened, named as the control gap, such as no drift monitoring, unrepresentative data or missing oversight.",
             "Effect: the consequence for people and the business, such as unfair denials, losses or complaints.",
             "Recommendation: the outcome management should achieve and who owns it, not a model fix the auditor designed."

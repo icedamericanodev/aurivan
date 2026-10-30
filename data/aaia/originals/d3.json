@@ -194,26 +194,26 @@
       "subtopic": "3B Testing and sampling. Testing human review",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "Policy requires a supervisor to review every courier deactivation a delivery platform's model recommends, and logs show supervisors confirm 99% within 15 seconds. What should the IS auditor be MOST concerned about?",
+      "question": "Policy requires a supervisor to review every courier deactivation a delivery platform's model recommends. Which test gives the IS auditor the BEST evidence that this review operates effectively?",
       "options": {
-        "A": "Supervisors cannot read the model's source code or weights",
-        "B": "The model's accuracy may have drifted since its last formal validation",
-        "C": "The review step slows deactivations and may delay action",
-        "D": "Supervisors may be confirming recommendations without any real review"
+        "A": "Inspect the review procedure and each supervisor's training record",
+        "B": "Confirm every logged deactivation carries a supervisor's approval",
+        "C": "Rerun sampled recommendations through the current production model",
+        "D": "Analyze override rates and time spent on each review"
       },
       "correct": "D",
-      "key_concept": "Human oversight of AI works only if reviewers can and do challenge outputs; near-total, instant agreement signals automation bias.",
-      "pre_read": "Read the log numbers as evidence about the people in the process, not only about the model.",
-      "correct_explanation": "The control exists on paper, but near-total agreement in seconds suggests automation bias: supervisors defer to the model instead of weighing the evidence. If so, the human oversight step is not operating, and couriers lose work with no real check. Drift is possible, but nothing in the logs points to it; they point directly at how the review operates.",
+      "key_concept": "Human oversight of AI is tested by reviewer behavior, such as override rates and review time, not by sign-offs alone.",
+      "pre_read": "Ask what each test would show if supervisors approved every case without reading it.",
+      "correct_explanation": "Policy puts a supervisor on every deactivation, but sign-offs alone cannot show that anyone judged the case. Override rates and time spent per review show whether supervisors engage with recommendations or defer to the model, the pattern called automation bias. Confirming that every deactivation carries an approval, option B, is the runner-up: it proves the step happened, not that oversight works.",
       "wrong_explanations": {
-        "A": "Tempting because understanding seems to need code access. But effective reviewers need the case evidence and the model's reasons, not its source code.",
-        "B": "Tempting because drift is a common AI risk. But the stem gives no evidence of drift; the logs describe reviewer behavior, which is where the concern lies.",
-        "C": "Tempting because speed matters to the business. But a review this fast is a control concern, not a delay concern."
+        "A": "Tempting because procedures and training support a control. But they show design and readiness, not how supervisors actually review over the period.",
+        "B": "Tempting because complete sign-offs look like an operating control. But a sign-off given in seconds can be a rubber stamp; it shows the step, not the judgment.",
+        "C": "Tempting because reperformance is strong evidence. But it tests the model, not the supervisors, and today's model may differ from the one that decided."
       },
       "tips": [
-        "Eliminate: A confuses meaningful oversight with reading source code, and C treats review time as a cost when it is evidence about the control.",
-        "Final two: D beats B because the logs show what reviewers actually do; drift is a possibility the facts in the stem do not show.",
-        "Exam cue: a human review that almost always agrees, almost instantly, may be a rubber stamp. Test whether oversight operates, not just whether it exists."
+        "Eliminate: A inspects design documents rather than operation, and C tests the model instead of the human review.",
+        "Final two: D beats B because a sign-off proves the step happened; override rates and review times show whether supervisors actually judge each case.",
+        "Exam cue: test human oversight of AI by what reviewers do, such as overrides and time per case, not by the presence of approvals."
       ],
       "framework_ref": "NIST AI 100-1 MAP 3.5 (Processes for human oversight defined and assessed); NIST AI 100-1 GOVERN 3.2 (Roles defined for human-AI configurations and oversight)",
       "related_concepts": [
@@ -221,7 +221,7 @@
         "Human-in-the-loop",
         "Operating effectiveness"
       ],
-      "_provenance": "Authored from concept: notes 3B.1 Testing AI Controls and Human Oversight (oversight counts only when reviewers really review; automation bias). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA pilot, 30 Oct 2026.",
+      "_provenance": "Authored from concept: notes 3B.1 Testing AI Controls and Human Oversight (oversight counts only when reviewers really review; automation bias). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA pilot, 30 Oct 2026. Cross-domain review fixes 30 Oct 2026.",
       "style_version": 2
     },
     {
@@ -447,7 +447,7 @@
       "subtopic": "3D Data quality and analytics. Log population",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "An IS auditor will test a travel agency's booking chatbot for personal-data disclosure using vendor logs, which keep only chats the safety filter flagged; the vendor says it catches 98%. What is the GREATEST concern?",
+      "question": "An IS auditor will test a concert-ticketing site's support chatbot for personal-data disclosure using vendor logs, which keep only chats the safety filter flagged; the vendor says it catches 98%. What is the GREATEST concern?",
       "options": {
         "A": "Disclosures the filter missed never reach the population",
         "B": "The log export format may not load into audit software",
@@ -474,7 +474,7 @@
         "Log retention settings",
         "Safety filters"
       ],
-      "_provenance": "Authored from concept: notes 3D.1 Completeness and Accuracy of Audit Data (learn how the population was formed; a filter-selected log omits what the filter missed). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA pilot, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test, standards audit, concept review).",
+      "_provenance": "Authored from concept: notes 3D.1 Completeness and Accuracy of Audit Data (learn how the population was formed; a filter-selected log omits what the filter missed). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA pilot, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test, standards audit, concept review). Cross-domain review fixes 30 Oct 2026.",
       "style_version": 2
     },
     {
@@ -667,8 +667,8 @@
       "options": {
         "A": "Disclose in the report that an AI tool drafted the findings",
         "B": "Have the auditor check each statement against the evidence",
-        "C": "Ask the tool to rate its confidence in each finding",
-        "D": "Rerun the tool to see whether it drafts the same findings"
+        "C": "Have a second AI tool cross-check the drafted findings",
+        "D": "Have a colleague edit the findings for clarity and tone"
       },
       "correct": "B",
       "key_concept": "The auditor stays accountable for conclusions an AI tool helped draft and verifies each against the evidence before issue.",
@@ -676,11 +676,11 @@
       "correct_explanation": "The auditor, not the tool, is accountable for every reported finding, so each statement must be checked against the evidence before issue. Generative tools can invent or overstate details. Disclosing AI use is good practice, but disclosure does not make an unsupported finding true; it tells readers how the report was made, not that it is right.",
       "wrong_explanations": {
         "A": "Tempting because transparency about AI use is good practice. But disclosure explains the method; it does not make an unchecked finding supportable.",
-        "C": "Tempting because a confidence score looks like quality control. But the model's self-rating is not evidence, and confident text can still be wrong.",
-        "D": "Tempting because consistent output seems reliable. But the tool can repeat the same error; only the evidence shows whether a finding holds."
+        "C": "Tempting because a second model seems to add independence. But another tool can miss or repeat errors, and the auditor still owns every conclusion.",
+        "D": "Tempting because a second reader looks like supervision. But editing for clarity improves wording; it does not test whether each finding is supported."
       },
       "tips": [
-        "Eliminate: D mistakes repeatable output for accuracy, and C treats the model's self-rating as evidence.",
+        "Eliminate: C hands verification to another AI tool when the auditor owns the conclusions, and D edits wording without testing support.",
         "Final two: B beats A because disclosure explains how the report was made; only checking against evidence makes the findings supportable.",
         "Exam cue: an AI tool can draft, but the auditor reviews and owns every conclusion. Verify against evidence before disclosure or issue."
       ],
@@ -690,7 +690,7 @@
         "Disclosure of AI use",
         "Confabulation"
       ],
-      "_provenance": "Authored from concept: notes 3E.3 Disclosing AI Use and Owning Conclusions (the auditor verifies and owns every conclusion; disclosure is not verification). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA pilot, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test, standards audit, concept review).",
+      "_provenance": "Authored from concept: notes 3E.3 Disclosing AI Use and Owning Conclusions (the auditor verifies and owns every conclusion; disclosure is not verification). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA pilot, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test, standards audit, concept review). Cross-domain review fixes 30 Oct 2026.",
       "style_version": 2
     },
     {
