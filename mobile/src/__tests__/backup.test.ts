@@ -66,6 +66,8 @@ const mockFiles = new Map<string, string>();
 const mockShared: string[] = [];
 /** What each shared file held at the moment the share sheet opened. */
 const mockSharedText: (string | undefined)[] = [];
+/** Makes the next write() fail part-way (a full disk), after the empty file exists. */
+let mockWriteFails = false;
 let mockPick: { canceled: boolean; assets: { uri: string; name: string; size?: number; lastModified: number }[] | null } = { canceled: true, assets: null };
 jest.mock('expo-file-system', () => {
   class MockFile {
@@ -79,8 +81,15 @@ jest.mock('expo-file-system', () => {
     // Expo SDK 58: write() returns a Promise and the file is written later, as here.
     write(text: string) {
       return Promise.resolve().then(() => {
+        if (mockWriteFails) {
+          mockFiles.set(this.uri, text.slice(0, 10));
+          throw new Error('disk full');
+        }
         mockFiles.set(this.uri, text);
       });
+    }
+    delete() {
+      mockFiles.delete(this.uri);
     }
     get size() {
       return (mockFiles.get(this.uri) ?? '').length;
@@ -180,6 +189,20 @@ describe('round trip', () => {
     expect(progressData()).toEqual(before.progress);
     // Today's plan is rebuilt by the planner, never taken from a file.
     expect(useProgress.getState().days).toEqual({});
+  });
+
+  it('a failed write is not shared, and its partial copy is removed at once', async () => {
+    studiedLearner();
+    const lastBefore = useBackup.getState().lastBackupAt;
+    mockWriteFails = true;
+    try {
+      await expect(saveBackup(NOW)).rejects.toThrow('disk full');
+    } finally {
+      mockWriteFails = false;
+    }
+    expect(mockShared).toEqual([]);
+    expect(mockFiles.has('file:///cache/kaisip-backup-2026-10-10.json')).toBe(false);
+    expect(useBackup.getState().lastBackupAt).toBe(lastBefore);
   });
 
   it('the file holds the envelope and both stores, and nothing about the device', () => {

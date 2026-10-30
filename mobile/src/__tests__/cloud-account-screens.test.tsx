@@ -60,6 +60,9 @@ jest.mock('expo-router', () => {
   };
 });
 const mockWritten: string[] = [];
+/** Makes the next write() fail (a full disk); the files deleted after it. */
+let mockWriteFails = false;
+const mockDeleted: string[] = [];
 /** How many files had finished writing each time the share sheet opened (Expo SDK 58: write() is async). */
 const mockWrittenAtShare: number[] = [];
 jest.mock('expo-sharing', () => ({
@@ -80,10 +83,13 @@ jest.mock('expo-file-system', () => {
     // Expo SDK 58: write() returns a Promise and the file is written later, as here.
     write(t: string) {
       return Promise.resolve().then(() => {
+        if (mockWriteFails) throw new Error('disk full');
         mockWritten.push(t);
       });
     }
-    delete() {}
+    delete() {
+      mockDeleted.push(this.uri);
+    }
   }
   return { File, Directory: class { list() { return []; } }, Paths: { cache: 'cache' } };
 });
@@ -177,6 +183,8 @@ beforeEach(() => {
   mockRedirects.length = 0;
   mockWritten.length = 0;
   mockWrittenAtShare.length = 0;
+  mockDeleted.length = 0;
+  mockWriteFails = false;
   account.setAgreed(false);
   useProgress.getState().resetCert('cisa');
   useSession.getState().clear();
@@ -621,6 +629,17 @@ describe('A5: Download my data, A6: sign out', () => {
     expect(allText()).toContain('Your data file is ready.');
     await press('Download my data, A copy of everything your account holds, as a file.');
     expect(allText()).toContain('You can download your data once an hour. Try again later.');
+  });
+
+  it('a failed write opens no share sheet and removes the partial file', async () => {
+    signedIn();
+    const Account = screen('index');
+    mount(<Account />);
+    mockWriteFails = true;
+    await press('Download my data, A copy of everything your account holds, as a file.');
+    expect(mockWrittenAtShare).toEqual([]);
+    expect(mockDeleted).toHaveLength(1);
+    expect(mockDeleted[0]).toMatch(/^file:\/\/\/cache\//);
   });
 
   it('the file is a backup a restore accepts (the account section is dropped)', async () => {
