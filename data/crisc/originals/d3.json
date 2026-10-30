@@ -17,12 +17,12 @@
       "options": {
         "A": "The breach risk can now be removed from the risk register",
         "B": "Part of the financial loss shifts, but likelihood and harm remain",
-        "C": "A breach becomes less likely because the insurer requires controls",
+        "C": "A breach becomes less likely under the insurer's control requirements",
         "D": "Accountability for harm to customers passes to the insurance company"
       },
       "correct": "B",
       "key_concept": "Risk transfer, such as insurance, shifts part of the financial impact; it does not reduce likelihood, harm or accountability.",
-      "pre_read": "Ask what the policy actually changes: the chance of a breach, the harm it causes, or who pays for it.",
+      "pre_read": "Picture a breach happening after the policy is bought, then check each option against what would actually differ.",
       "correct_explanation": "Insurance is a transfer response: it shifts part of the financial consequence to the insurer. It reduces neither the likelihood of a breach nor the harm to customers and operations, and the retailer still answers to customers and regulators. That is why D loses: accountability for the harm cannot be bought. The breach risk stays in the register with its residual rating, and the risk owner keeps monitoring it.",
       "wrong_explanations": {
         "A": "Tempting because the risk now feels covered. Transferred risk stays in the register with its residual rating, because the breach can still happen and still harm customers.",
@@ -51,10 +51,10 @@
       "bloom_level": "Application",
       "question": "A logistics firm's shipment-tracking risk, owned by the operations director, is now within appetite, but the IT manager proposes an extra monitoring tool. What is the risk analyst's BEST recommendation?",
       "options": {
-        "A": "Buy the tool, because extra monitoring lowers the risk further",
+        "A": "Approve purchase of the extra monitoring tool now",
         "B": "Ask the IT manager to accept the residual risk formally",
         "C": "Run a cost-benefit analysis of the proposed monitoring tool",
-        "D": "Have the director accept the residual risk and keep monitoring it"
+        "D": "Have the director accept the residual risk, then monitor it"
       },
       "correct": "D",
       "key_concept": "A risk already within appetite is accepted by its owner and monitored; it does not need further treatment.",
@@ -82,23 +82,23 @@
     {
       "id": "crisc_d3_003",
       "domain": 3,
-      "subtopic": "3A1 Risk response options. A service the strategy needs",
+      "subtopic": "3A1 Risk response options. Privacy risk above appetite",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A hospital's telehealth service is central to its growth strategy, and the compliance lead wants it closed because its privacy risk exceeds appetite. What is the BEST recommendation to the risk owner?",
+      "question": "A hospital's telehealth service is central to its growth strategy, but its privacy risk exceeds appetite; safeguards could reduce it, yet the compliance lead wants it closed. What is the risk practitioner's BEST recommendation?",
       "options": {
-        "A": "Mitigate with controls until the privacy risk falls within appetite",
+        "A": "Mitigate the risk until it falls within appetite",
         "B": "Avoid the risk by closing the service until it is secure",
-        "C": "Accept the risk because the service supports the hospital's growth strategy",
+        "C": "Accept the above-appetite risk and record the decision",
         "D": "Transfer the risk to the platform vendor through the contract"
       },
       "correct": "A",
       "key_concept": "Avoidance fits only when an activity is not needed for objectives or no treatment can bring its risk within appetite.",
-      "pre_read": "Weigh what the business gains from the service against the risk, and notice whether controls could work.",
-      "correct_explanation": "Avoidance gives up the activity and its benefit, so it fits when the activity is not needed or no response can bring the risk within appetite. Telehealth is central to strategy, and nothing suggests controls cannot work, so the practitioner recommends mitigation down to appetite. Closing the service, even for a time, sacrifices an objective the response is meant to protect. The risk owner then decides.",
+      "pre_read": "Note the service's role in the strategy and where its risk sits, then test each response against both.",
+      "correct_explanation": "Avoidance gives up the activity and its benefit, so it fits when the activity is not needed or no response can bring the risk within appetite. Telehealth is central to strategy, and the stem says safeguards could reduce the risk, so the practitioner recommends mitigation down to appetite. Closing the service, even for a time, sacrifices an objective the response is meant to protect. The risk owner then decides.",
       "wrong_explanations": {
         "B": "Tempting because it removes the exposure at once. It also stops a service central to strategy when controls could bring the risk within appetite.",
-        "C": "Tempting because the service matters. Strategic value does not make a risk above appetite acceptable; it argues for treating the risk, not keeping it as it is.",
+        "C": "Tempting because the service drives growth. Strategic value does not make a risk above appetite acceptable; it argues for treating the risk, not keeping it as it is.",
         "D": "Tempting because the vendor runs the platform. Contracts can share costs, but the hospital still answers to patients and regulators for their privacy."
       },
       "tips": [
@@ -106,7 +106,7 @@
         "Final two: A beats B because avoidance sacrifices an objective the business needs; when controls can bring risk within appetite, mitigation keeps both the service and the limit.",
         "Exam cue: before choosing avoid, ask whether the activity serves a business objective; if it does, look for the response that treats the risk instead."
       ],
-      "framework_ref": "NIST IR 8286B-upd1 Section 2.3.2 (Risk Avoidance: not conducting the activity when exposure exceeds tolerance); NIST SP 800-39 Section 3.3 (Responding to Risk: accept, avoid, mitigate, share or transfer)",
+      "framework_ref": "NIST IR 8286B-upd1 Section 2.3.2 (Risk Avoidance: not conducting the activity when exposure exceeds tolerance); NIST IR 8286B-upd1 Section 2.3.4 (Risk Mitigation: preventive, deterrent, detective, corrective and compensating controls)",
       "related_concepts": [
         "Risk avoidance",
         "Risk mitigation",
@@ -124,17 +124,17 @@
       "question": "A bank plans to let a generative AI tool draft replies to customers' loan disputes, and the analyzed risk of wrong advice exceeds appetite. Which response should the risk practitioner recommend as BEST?",
       "options": {
         "A": "Rely on the vendor's contract clause covering losses from wrong replies",
-        "B": "Ban the use of AI tools across the bank until rules exist",
+        "B": "Ban generative AI tools across the whole bank for now",
         "C": "Require a trained staff member to review each draft before sending",
-        "D": "Accept the risk, since staff can correct complaints after replies go out"
+        "D": "Accept the risk and let staff correct replies after complaints"
       },
       "correct": "C",
       "key_concept": "AI risk above appetite is treated with controls such as human review; a vendor clause shifts cost, not accountability.",
-      "pre_read": "Note where the risk sits against appetite, and whether each option prevents wrong advice or only pays for it.",
-      "correct_explanation": "The risk exceeds appetite, so it needs treatment. Human review of each draft is a mitigating control aimed at the cause, wrong advice reaching customers, and it keeps the benefit of the tool. A vendor liability clause is a transfer: it may pay back some losses, but customers still receive wrong advice and the bank still answers for it. The risk owner then accepts what remains.",
+      "pre_read": "Note where the risk sits against appetite, and trace what happens to one wrong draft under each option.",
+      "correct_explanation": "The risk exceeds appetite, so it needs treatment. Human review of each draft is a mitigating control placed before the harm occurs: it stops wrong advice from reaching customers and keeps the benefit of the tool. A vendor liability clause is a transfer: it may pay back some losses, but customers still receive wrong advice and the bank still answers for it. The risk owner then accepts what remains.",
       "wrong_explanations": {
         "A": "Tempting because the vendor built the tool. Contract terms share costs; customers still get wrong advice, and regulators hold the bank accountable.",
-        "B": "Tempting because it removes AI risk at once. A bank-wide ban gives up benefits far beyond this use, when a targeted control can bring this risk within appetite.",
+        "B": "Tempting because it removes AI risk at once. A bank-wide ban gives up benefits far beyond this one use, when a control aimed at this use may be enough.",
         "D": "Tempting because errors can be fixed later. The risk is above appetite, and fixing replies after customers act on them does not prevent the harm."
       },
       "tips": [
@@ -166,7 +166,7 @@
       },
       "correct": "C",
       "key_concept": "The risk owner is the business manager accountable for the affected objective, with authority to fund and accept the response.",
-      "pre_read": "Ask who loses if the outage happens, and who controls the budget to respond to it.",
+      "pre_read": "For each candidate, ask what they could actually decide or fund if the outage happened.",
       "correct_explanation": "Risk ownership follows accountability for the business outcome and authority to fund and accept the response. The outage threatens production targets, so the production director should own the risk, with IT owning the scheduling controls. The infrastructure manager runs the servers but does not answer for lost output or control the production budget, which is why IT ownership is the trap here.",
       "wrong_explanations": {
         "A": "Tempting because the system is technical. IT runs the servers as control owner, but the production loss and the decision on the response belong to the business.",
@@ -193,30 +193,30 @@
       "subtopic": "3A3 Vendor/supply chain risk management. Report scope",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A university relies on its payroll provider's SOC 2 Type 2 report, which excludes the subcontractor that calculates employees' tax deductions. What is the risk analyst's BEST next step?",
+      "question": "A university relies on its payroll provider's independent controls report, tested over a full year, which excludes the subcontractor that calculates employees' tax deductions. What is the risk analyst's BEST next step?",
       "options": {
-        "A": "Obtain assurance over the subcontractor's tax calculation controls",
-        "B": "Rely on the provider's contract, which makes it liable for any errors",
-        "C": "Accept the report, because Type 2 testing covers a full period",
-        "D": "Recommend ending the contract and bringing payroll back in-house"
+        "A": "Record the gap and advise the service owner to seek assurance",
+        "B": "Rely on the provider's contractual liability for any payroll errors",
+        "C": "Accept the report's full-year testing as enough assurance",
+        "D": "Advise the owner to end the contract and bring payroll in-house"
       },
       "correct": "A",
-      "key_concept": "An assurance report covers only its stated scope; a carved-out fourth party needs assurance of its own.",
+      "key_concept": "An assurance report covers only its stated scope; an excluded fourth party is a gap the business owner closes with assurance of its own.",
       "pre_read": "Check what the report covers, and which part of the service it leaves out.",
-      "correct_explanation": "An assurance report covers only the services and parties in its scope. Tax calculation sits with an excluded subcontractor, a fourth party to the university, so the report says nothing about those controls. The analyst should seek assurance over them, such as the subcontractor's own report. A liability clause may recover some costs, but it gives no evidence the deductions are right and leaves employees exposed.",
+      "correct_explanation": "An assurance report covers only the services and parties in its scope. Tax calculation sits with an excluded subcontractor, a fourth party, so the report says nothing about those controls. The analyst records the gap against the vendor risk and advises the service owner to seek assurance, such as the subcontractor's own report. A liability clause may recover some costs, but it gives no evidence the deductions are right.",
       "wrong_explanations": {
-        "B": "Tempting because the provider signed up to cover errors. Liability shares cost after the fact; it gives no evidence that deductions are being calculated correctly.",
-        "C": "Tempting because Type 2 tests operation over time. That testing covers only what is in scope, and the subcontractor was excluded from it.",
-        "D": "Tempting because it would remove the gap. Exit is a large step to take before anyone has assessed the gap or sought the missing assurance."
+        "B": "Tempting because the provider has signed up to cover errors. Liability shares cost after the fact; it gives no evidence that deductions are being calculated correctly.",
+        "C": "Tempting because the testing ran for a full year. Period testing covers only what is in scope, and the subcontractor was excluded from it.",
+        "D": "Tempting because it would remove the gap. Exit is a large step to advise before anyone has assessed the gap or sought the missing assurance."
       },
       "tips": [
         "Eliminate: C trusts a report for a scope it excludes, and D moves to exit the contract before the gap has been assessed.",
-        "Final two: A beats B because the risk owner needs evidence the excluded controls work; a liability clause shifts cost but proves nothing about them.",
-        "Exam cue: with any assurance report, check its scope and period first; carved-out services and subcontractors need their own assurance."
+        "Final two: A beats B because the service owner needs evidence the excluded controls work; a liability clause shifts cost but proves nothing about them.",
+        "Exam cue: with any assurance report, check its scope and period first; an excluded subcontractor is a gap to record and close with assurance of its own."
       ],
       "framework_ref": "NIST SP 800-53 Rev. 5 SR-6 (Supplier Assessments and Reviews); NIST CSF 2.0 GV.SC-07 (supplier and third-party risks are understood, recorded, prioritized, assessed, responded to and monitored over the course of the relationship)",
       "related_concepts": [
-        "SOC 2 Type 2 report",
+        "Assurance report scope",
         "Fourth party",
         "Vendor assurance"
       ],
@@ -231,18 +231,18 @@
       "bloom_level": "Application",
       "question": "A clinic's imaging system cannot meet the new encryption standard until next year's vendor upgrade, and its manager asks the risk analyst to approve an exception. What should the analyst do FIRST?",
       "options": {
-        "A": "Approve a one-year exception, since the upgrade date is already set",
-        "B": "Record an exemption that removes the system from the standard",
+        "A": "Approve a one-year exception, then assess the risk",
+        "B": "Have the owner record an exemption from the standard",
         "C": "Require the clinic to stop using the imaging system until it complies",
-        "D": "Assess the risk and propose compensating controls for owner approval"
+        "D": "Assess the risk and propose compensating controls to the owner"
       },
       "correct": "D",
       "key_concept": "An exception is a temporary, owner-approved deviation with compensating controls and an expiry; the practitioner assesses and advises.",
       "pre_read": "Ask whether the standard applies to this system, and who may accept the risk of not meeting it.",
       "correct_explanation": "The requirement applies but cannot be met for a time, so this is an exception, and granting it means accepting risk, which is the risk owner's decision. The analyst first assesses the risk and proposes compensating controls, such as restricting access to the images, so the owner can approve a time-bound exception. An exemption would wrongly treat the standard as not applying and drop the expiry that forces the upgrade.",
       "wrong_explanations": {
-        "A": "Tempting because the fix date is known. Approving a deviation accepts its risk; that decision belongs to the risk owner, after the risk is assessed.",
-        "B": "Tempting because the system cannot comply now. An exemption excludes a requirement that does not apply; this one applies, so a time-bound exception fits.",
+        "A": "Tempting because the fix date is known. Approving a deviation accepts its risk, a decision for the risk owner, and the risk must be assessed before, not after.",
+        "B": "Tempting because the system cannot comply now. An exemption is a standing exclusion with no end date; this gap ends at next year's upgrade, so a time-bound exception fits.",
         "C": "Tempting because it closes the gap. Stopping a clinical system before assessing the risk may harm patient care more than the encryption gap does."
       },
       "tips": [
@@ -267,10 +267,10 @@
       "bloom_level": "Foundational",
       "question": "Each Monday, a hospital's IT team compares last week's firewall changes with approved change tickets and raises an incident for any mismatch. How should the risk practitioner classify this control MOST accurately?",
       "options": {
-        "A": "Preventive, because it stops unapproved changes from taking effect",
-        "B": "Detective, because it finds unapproved changes after they are made",
-        "C": "Corrective, because it restores the firewall to its approved settings",
-        "D": "Deterrent, because staff know their changes will be reviewed weekly"
+        "A": "A preventive control that stops unapproved changes taking effect",
+        "B": "A detective control that finds unapproved changes once made",
+        "C": "A corrective control that restores approved firewall settings",
+        "D": "A deterrent control that discourages unapproved changes by staff"
       },
       "correct": "B",
       "key_concept": "A control that reviews events after they happen is detective, even when it targets unauthorized activity.",
@@ -339,14 +339,14 @@
       "bloom_level": "Analysis",
       "question": "A retailer's card-fraud risk exceeds appetite: control X costs $60,000 a year and brings it within appetite, while control Y costs $250,000 a year and leaves almost none. Which is the risk practitioner's BEST recommendation?",
       "options": {
-        "A": "Control Y, because it leaves the least residual risk",
-        "B": "Both controls together, to reduce fraud as far as possible",
-        "C": "Control X, because it meets appetite at a much lower cost",
-        "D": "Neither control, and accept the fraud risk as it stands now"
+        "A": "Implement control Y only",
+        "B": "Implement both X and Y together",
+        "C": "Implement control X only",
+        "D": "Implement neither and accept the risk"
       },
       "correct": "C",
       "key_concept": "Choose the response that brings residual risk within appetite at a proportionate cost, not the one that removes the most risk.",
-      "pre_read": "Compare each option's cost with what it achieves against appetite, not just how much risk it removes.",
+      "pre_read": "Work out what each option costs and where it leaves the risk relative to appetite.",
       "correct_explanation": "The goal is residual risk within appetite at a cost proportionate to the benefit. Control X reaches appetite for $60,000; control Y spends $190,000 more each year to push the risk below a level the business has already said it can live with. That money is better spent on risks still above appetite. The risk owner makes the final choice, informed by this comparison.",
       "wrong_explanations": {
         "A": "Tempting because less risk sounds better. Below appetite, the extra $190,000 a year buys reduction the business does not need, at the expense of other risks.",
@@ -375,10 +375,10 @@
       "bloom_level": "Application",
       "question": "A risk analyst at a software company is helping the support manager set up a weekly review of bulk customer-data exports. What is MOST important to agree before the review goes live?",
       "options": {
-        "A": "That the analyst performs the first few reviews personally",
-        "B": "That internal audit approves the review design in advance",
-        "C": "A lower residual risk rating to record once reviews begin",
-        "D": "The review's owner, its steps and the evidence each review leaves"
+        "A": "The analyst running the first few reviews personally",
+        "B": "Internal audit's approval of the review design in advance",
+        "C": "The risk owner's acceptance of a lower rating from the first review",
+        "D": "The review's owner, its steps and the evidence it leaves"
       },
       "correct": "D",
       "key_concept": "A new control needs an owner, a documented procedure and an evidence trail, agreed with the control owner before go-live.",
@@ -387,7 +387,7 @@
       "wrong_explanations": {
         "A": "Tempting because the analyst knows the risk. Running the control would make the analyst its operator and leave the support team without ownership.",
         "B": "Tempting because audit gives assurance. Internal audit assesses controls independently afterward; approving management's design in advance would weaken that independence.",
-        "C": "Tempting because the register should reflect new controls. The rating changes only after the review is shown to work, not when it is planned."
+        "C": "Tempting because the owner should accept the new rating. One review shows the control exists, not that it works; the rating changes once operation is shown."
       },
       "tips": [
         "Eliminate: A puts the analyst in the control owner's seat, and B asks internal audit to approve a management control it must later assess independently.",
@@ -418,7 +418,7 @@
       },
       "correct": "B",
       "key_concept": "For operating effectiveness, evidence across the period that the tester selects beats inquiry and one-time observation.",
-      "pre_read": "Ask which evidence covers the whole period, and which shows only a single moment or a belief.",
+      "pre_read": "Ask what each piece of evidence would show if the control had been skipped on some days.",
       "correct_explanation": "Operating effectiveness needs evidence that the control ran over the period, not just once. Inspecting reconciliation records for days the analyst chooses tests that directly and keeps the selection out of the owner's hands. Watching today's reconciliation shows the control can be done and was done once, while the owner knew they were being observed, so it says little about the other days.",
       "wrong_explanations": {
         "A": "Tempting because it is formal and signed. It is still inquiry: it records what the owner believes, not evidence that the work was done.",
@@ -447,10 +447,10 @@
       "bloom_level": "Application",
       "question": "A telecom's network manager reports that the action plan to require multifactor sign-in for remote access is complete. What should the risk practitioner do FIRST?",
       "options": {
-        "A": "Obtain evidence that multifactor sign-in is now enforced",
+        "A": "Obtain evidence that the control is enforced for remote users",
         "B": "Lower the residual risk rating and close the action plan",
         "C": "Report the completed plan to the risk owner and the risk committee",
-        "D": "Ask internal audit to schedule an audit of remote access"
+        "D": "Accept the manager's signed statement as completion evidence"
       },
       "correct": "A",
       "key_concept": "The practitioner validates with evidence that an action plan was carried out before re-rating the risk or reporting it complete.",
@@ -459,10 +459,10 @@
       "wrong_explanations": {
         "B": "Tempting because the plan says done. Lowering the rating on the manager's word could understate a risk whose control may not be enforced.",
         "C": "Tempting because reporting progress is part of the job. Reporting before validation passes an unverified claim to the people who decide.",
-        "D": "Tempting because audit is independent. Validating action plans is part of the practitioner's monitoring; waiting for an audit cycle delays a check needed now."
+        "D": "Tempting because a signed statement looks formal. It is still the manager's own claim; completion needs evidence such as configuration reports or test results."
       },
       "tips": [
-        "Eliminate: B re-rates the risk on a status report, and D hands a routine validation to internal audit's later cycle.",
+        "Eliminate: B re-rates the risk on a status report, and D treats the manager's own claim as proof of completion.",
         "Final two: A beats C because the practitioner validates completion before reporting it; otherwise the owner and committee decide on an unverified claim.",
         "Exam cue: done is a claim until evidence shows the control is in place and working; validate before you re-rate or report."
       ],
@@ -479,8 +479,8 @@
       "id": "crisc_d3_014",
       "domain": 3,
       "subtopic": "3C2 Data collection, aggregation, analysis and validation. Mixed rating scales",
-      "difficulty": "analysis",
-      "bloom_level": "Analysis",
+      "difficulty": "application",
+      "bloom_level": "Application",
       "question": "An enterprise risk analyst at a retail group is combining unit risk registers: two units score risks from 1 to 5, and one uses high, medium and low. What should the analyst do FIRST?",
       "options": {
         "A": "Add each unit's scores together to rank the group's risks",
@@ -557,8 +557,8 @@
       "options": {
         "A": "Ask the IT team to patch every affected server immediately",
         "B": "Report the breach to the commercial director as the risk owner",
-        "C": "Raise the threshold to 15% to reflect current patching levels",
-        "D": "Show the breach in the next quarterly risk report with its trend"
+        "C": "Raise the red threshold to 15% to reflect current patching levels",
+        "D": "Show the breach to the risk owner in the next quarterly report"
       },
       "correct": "B",
       "key_concept": "A KRI threshold breach is escalated to the risk owner, who decides the response; the practitioner does not direct the fix.",
@@ -566,8 +566,8 @@
       "correct_explanation": "A threshold breach is escalated to the risk owner, or to the level that set the threshold, through the agreed path, because they decide the response. The commercial director may then direct IT to patch, accept a short delay or fund extra help. Instructing IT directly skips that decision: the practitioner monitors and reports but does not choose or direct the treatment of a business risk.",
       "wrong_explanations": {
         "A": "Tempting because patching fixes the cause. Directing the remediation is the owner's call, made with IT; the practitioner's step is escalation.",
-        "C": "Tempting because current levels may be normal for now. Thresholds follow tolerance, which the risk owner sets, not current performance.",
-        "D": "Tempting because trends matter. A red breach needs escalation now, not at the next scheduled report."
+        "C": "Tempting because current levels may be normal for now. Thresholds come from tolerance and are agreed with the risk owner; moving one to fit current performance hides the breach.",
+        "D": "Tempting because the owner does get told. A red breach needs escalation now, not at the next scheduled report."
       },
       "tips": [
         "Eliminate: C moves the limit to fit the breach, and D waits for the reporting cycle when a red threshold calls for prompt escalation.",
@@ -592,14 +592,14 @@
       "question": "An insurer's underwriting team prices home policies with a machine-learning model. Which indicator should the risk practitioner propose as the BEST early warning that the model's risk is growing?",
       "options": {
         "A": "Weekly shift in input data away from the training baseline",
-        "B": "Number of customer complaints about prices each quarter",
+        "B": "Number of customer complaints about prices received each quarter",
         "C": "Model accuracy measured once at its last validation",
         "D": "Percentage of underwriters trained to use the model"
       },
       "correct": "A",
       "key_concept": "AI model risk needs leading production indicators, such as input drift, not only lagging signals such as complaints.",
       "pre_read": "Ask which indicator would move first if the model began to go wrong.",
-      "correct_explanation": "Drift in the input data comes before the model's errors show up in prices, so tracking it weekly gives the owner time to retrain or review the model. Complaints are relevant but lagging: they arrive after mispriced policies reach customers, and many affected customers never complain. A single accuracy figure from the last validation cannot show any change in production.",
+      "correct_explanation": "Drift in the input data is an early sign that pricing errors may follow, so tracking it weekly gives the owner time to retrain or review the model. Complaints are relevant but lagging: they arrive after mispriced policies reach customers, and many affected customers never complain. A single accuracy figure from the last validation cannot show any change in production.",
       "wrong_explanations": {
         "B": "Tempting because complaints reflect real harm. They lag behind the errors, arrive quarterly and miss customers who never complain.",
         "C": "Tempting because accuracy is the core quality measure. Measured once, it cannot show whether performance has changed since deployment.",
@@ -607,7 +607,7 @@
       },
       "tips": [
         "Eliminate: C is a one-time snapshot that cannot show change in production, and D measures training activity rather than the model's behavior.",
-        "Final two: A beats B because input drift moves before pricing errors appear; complaints arrive after customers are harmed.",
+        "Final two: A beats B because input drift is an early sign of pricing errors; complaints arrive after customers are harmed.",
         "Exam cue: for AI models, early warning comes from production monitoring of drift and error trends; complaints and incidents confirm harm after it happens."
       ],
       "framework_ref": "NIST AI 100-1 (AI RMF 1.0) MEASURE 2.4 (the functionality and behavior of the AI system are monitored when in production); NIST AI 100-1 (AI RMF 1.0) MANAGE 4.1 (post-deployment monitoring plans, including capturing user input, appeal and override)",
@@ -625,24 +625,24 @@
       "subtopic": "3C4 Risk and control monitoring techniques. Unread alerts",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "At a law firm, an automated tool emails a shared inbox whenever laptop antivirus is disabled, and the risk analyst finds most alerts unread. What should the analyst recommend as MOST important?",
+      "question": "At a law firm, a tool emails a shared inbox a few alerts a week when laptop antivirus is disabled, and the risk analyst finds most unread. What should the analyst recommend as MOST important?",
       "options": {
-        "A": "Add a second monitoring tool to widen coverage of laptops",
-        "B": "Review the shared inbox during the annual internal audit",
+        "A": "Add a second monitoring tool to widen coverage of every laptop",
+        "B": "Name an owner to check the shared inbox once a month",
         "C": "Tune the tool so it sends fewer, higher-priority alerts",
         "D": "Assign each alert type an owner with a required response time"
       },
       "correct": "D",
       "key_concept": "Automated monitoring reduces risk only when each alert has an owner who responds within a set time.",
       "pre_read": "Ask what happens after an alert is sent, and who is expected to act on it.",
-      "correct_explanation": "Monitoring reduces risk only when someone acts on what it finds. Alerts sent to a shared inbox have no owner, so disabled antivirus goes unanswered. Giving each alert type a named owner and a response time, with tracking to closure, turns detection into response. Tuning down the noise helps, but fewer alerts in an unowned inbox would still go unread.",
+      "correct_explanation": "Monitoring reduces risk only when someone acts on what it finds. Alerts sent to a shared inbox have no owner, so disabled antivirus goes unanswered. Giving each alert type a named owner and a response time, with tracking to closure, turns detection into response. The stem says volume is low, so tuning would not help: fewer alerts in an unowned inbox would still go unread.",
       "wrong_explanations": {
         "A": "Tempting because broader coverage sounds safer. More alerts into an unowned inbox add volume without adding any response.",
-        "B": "Tempting because audit gives independent review. A yearly look leaves disabled antivirus unanswered for months; these alerts need same-day handling.",
-        "C": "Tempting because alert fatigue is real. Tuning reduces noise, but someone still has to own and act on the alerts that remain."
+        "B": "Tempting because it names an owner. A monthly check leaves disabled antivirus unanswered for weeks; these alerts need a same-day response.",
+        "C": "Tempting because alert fatigue is real. Volume here is already low; tuning cannot help when no one owns the alerts that arrive."
       },
       "tips": [
-        "Eliminate: A adds more alerts to a queue nobody works, and B checks on an audit cycle a risk that needs same-day response.",
+        "Eliminate: A adds more alerts to a queue nobody works, and B checks monthly a risk that needs a same-day response.",
         "Final two: D beats C because tuning reduces noise, but without an owner and a response time even important alerts go unanswered.",
         "Exam cue: when monitoring exists but nothing happens, the fix is ownership and response, not more or different monitoring."
       ],
@@ -664,7 +664,7 @@
       "question": "A regional bank's risk manager is preparing the quarterly IT risk report for the board risk committee. Which content is MOST appropriate for this audience?",
       "options": {
         "A": "Every open vulnerability, listed by system and severity",
-        "B": "A heat map of every registered risk at its current rating",
+        "B": "A heat map of every registered risk against appetite",
         "C": "Risks beyond appetite, their trend and decisions needed",
         "D": "Results of each control test performed during the quarter"
       },
@@ -674,7 +674,7 @@
       "correct_explanation": "The board sets appetite and makes the major risk decisions, so its report should show where the profile sits against appetite, which way key risks are moving and what it is being asked to decide. A heat map of every risk shows position but not trend or the request, and buries the few risks that need board attention among many that do not.",
       "wrong_explanations": {
         "A": "Tempting because full detail looks transparent. Vulnerability lists suit the teams who fix them; the board cannot act on them directly.",
-        "B": "Tempting because heat maps are a familiar board format. Without trend or a decision request, it shows where risks sit, not what the board must do.",
+        "B": "Tempting because heat maps are a familiar board format. Even plotted against appetite, it shows where risks sit, not their trend or what the board must decide.",
         "D": "Tempting because control results show assurance. Test-by-test detail suits risk and control owners; the board needs the overall effect against appetite."
       },
       "tips": [
@@ -682,7 +682,7 @@
         "Final two: C beats B because the board needs risks against appetite, their trend and the decision asked of it; a full heat map shows position only.",
         "Exam cue: match the report to its reader's decisions; the board gets the profile against appetite and clear asks, owners get their risks and actions."
       ],
-      "framework_ref": "NIST SP 800-137 Section 3.4 (Analyze Data and Report Findings: recipients, content, format and frequency of reports); NIST CSF 2.0 GV.OV-01 (cybersecurity risk management strategy outcomes are reviewed to inform and adjust strategy and direction)",
+      "framework_ref": "NIST SP 800-137 Section 3.4 (Analyze Data and Report Findings: recipients, content, format and frequency of reports); NIST CSF 2.0 GV.RM-02 (risk appetite and risk tolerance statements are established, communicated and maintained)",
       "related_concepts": [
         "Risk reporting",
         "Risk appetite",
@@ -695,21 +695,21 @@
       "id": "crisc_d3_020",
       "domain": 3,
       "subtopic": "3C6 Monitoring and reporting of emerging risks. Rules under consultation",
-      "difficulty": "application",
-      "bloom_level": "Application",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
       "question": "A pharmacy chain is piloting an AI tool for patient reminder messages when the risk analyst learns that regulators are consulting on rules for AI in patient communications. What should the analyst do FIRST?",
       "options": {
-        "A": "Pause the AI pilot until the final rules are published",
+        "A": "Ask the owner to pause the AI pilot until rules are final",
         "B": "Record an emerging risk with its uncertainty and an owner",
         "C": "Wait for the final rules before assessing any possible impact",
-        "D": "Rate the regulatory risk as critical to secure budget quickly"
+        "D": "Rate the regulatory risk as critical in the register now"
       },
       "correct": "B",
       "key_concept": "Emerging risks are recorded early with stated uncertainty, an owner and a review date, then refined as evidence grows.",
       "pre_read": "Notice how certain the new rules are, and what each option does with that uncertainty.",
       "correct_explanation": "A consultation is an early signal: the rules may change the pilot's obligations, but their content and timing are uncertain. The analyst records it as an emerging risk, with its uncertainty stated, a business owner and a short review date, then refines it as the rules take shape. Pausing the pilot now gives up its benefit on a guess about rules that do not yet exist.",
       "wrong_explanations": {
-        "A": "Tempting because it avoids breaking future rules. It gives up the pilot's benefit before anyone knows what the rules will require.",
+        "A": "Tempting because it avoids breaking future rules. Pausing gives up the pilot's benefit before anyone knows what the rules will require.",
         "C": "Tempting because the rules are not final. Waiting leaves no time to prepare; emerging risks are recorded early and refined as they develop.",
         "D": "Tempting because it gets attention. Overstating certainty misdirects budget and damages trust; the rating should reflect what is actually known."
       },

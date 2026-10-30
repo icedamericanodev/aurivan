@@ -16,21 +16,21 @@
       "question": "A risk practitioner at an insurance broker learns the marketing team has used an unapproved cloud survey tool for six months to collect client contact details. What should the practitioner do FIRST?",
       "options": {
         "A": "Find the tool's business owner and assess its risk against appetite",
-        "B": "Have IT block the tool until a full security review is done",
-        "C": "Add the tool to the technology roadmap as an approved service",
+        "B": "Have IT block the tool until the owner completes a security review",
+        "C": "Approve the tool on the roadmap now and assess it at year end",
         "D": "Report the marketing team's policy breach to the compliance function"
       },
       "correct": "A",
       "key_concept": "Technology adopted outside the roadmap is assessed with its business owner against appetite before anyone blocks or approves it.",
-      "pre_read": "Notice the tool is already in use. Ask what the practitioner needs to know before any response is chosen.",
+      "pre_read": "Notice how long the tool has been in use and what data it holds, then weigh the timing of each option.",
       "correct_explanation": "An unapproved tool is a risk to understand before it is a problem to remove. Finding the business owner gives the risk an accountable decision-maker, and assessing it against appetite shows whether the client data exposure needs urgent treatment. Blocking first acts before analysis: it may disrupt a working process, push staff to another workaround and still leave six months of collected data unassessed.",
       "wrong_explanations": {
         "B": "Closest choice, because it stops new exposure. But blocking before analysis can disrupt the business and leaves the data already collected unassessed; containment follows a risk-based decision.",
-        "C": "Adding the tool to the roadmap approves it without any risk review, which is the very gap that made it a concern.",
+        "C": "Approving now and assessing later reverses the order: the client data risk would stay unexamined for months.",
         "D": "A policy breach may need reporting later, but treating it as a conduct matter first leaves the client data risk unanalyzed and unowned."
       },
       "tips": [
-        "Eliminate: C approves the tool with no risk review, and D treats a data risk as a conduct issue before anyone knows its size.",
+        "Eliminate: C approves the tool before any risk review, and D treats a data risk as a conduct issue before anyone knows its size.",
         "Final two: A beats B because the practitioner finds an owner and analyzes before acting; blocking first is a response chosen without knowing the risk.",
         "Exam cue: for shadow IT found in use, the FIRST step is usually to identify the owner and assess the risk, not to ban or approve the tool."
       ],
@@ -51,15 +51,15 @@
       "bloom_level": "Application",
       "question": "At a county court service, the operations manager says a case-filing system on unsupported software needs no risk entry because it has not failed in twelve years. What is the risk practitioner's BEST response?",
       "options": {
-        "A": "Agree, since twelve years without failure shows the likelihood is low",
+        "A": "Rate the likelihood as low against appetite from its clean record",
         "B": "Ask internal audit to test the system before recording any risk",
-        "C": "Log the risk, owned by the manager, and rate it against appetite",
-        "D": "Run a vulnerability scan to prove the exposure before recording a risk"
+        "C": "Log the risk with a business owner and rate it against appetite",
+        "D": "Run a vulnerability scan to assess exposure before recording risk"
       },
       "correct": "C",
       "key_concept": "Legacy and unsupported systems belong in the risk register with a business owner, whatever their reliability record.",
-      "pre_read": "Separate what the manager observed, reliability, from what drives the risk, the loss of vendor support.",
-      "correct_explanation": "Unsupported software is a known exposure whatever its track record: no patches arrive, skills fade and the impact stays tied to court filings. Logging the risk with the manager as owner makes someone accountable, and rating it against appetite shows whether action is needed. A scan adds useful evidence for the rating, but waiting for it before recording leaves a known risk invisible and unowned.",
+      "pre_read": "Separate the manager's evidence from the facts in the stem that drive the risk.",
+      "correct_explanation": "Unsupported software is a known exposure whatever its track record: no patches arrive, skills fade and the impact stays tied to court filings. Logging the risk with a business owner makes someone accountable, and rating it against appetite shows whether action is needed. A scan adds useful evidence for the rating, but waiting for it before recording leaves a known risk invisible and unowned.",
       "wrong_explanations": {
         "A": "Tempting because the system has been reliable. But past uptime says nothing about missing patches; the likelihood of compromise rises once support ends, and the impact is unchanged.",
         "B": "Internal audit gives independent assurance; it does not run the risk register. Recording and rating the risk is the practitioner's job and should not wait for an audit.",
@@ -68,7 +68,7 @@
       "tips": [
         "Eliminate: A reads past reliability as low likelihood, and B hands the practitioner's risk recording to internal audit, which gives assurance but does not run the register.",
         "Final two: C beats D because a known exposure is recorded and owned first; scans refine the rating but are not a gate before the risk becomes visible.",
-        "Exam cue: it still works is never a risk assessment. Legacy and unsupported systems go in the register with a business owner, then get rated."
+        "Exam cue: 'it still works' is never a risk assessment. Legacy and unsupported systems go in the register with a business owner, then get rated."
       ],
       "framework_ref": "NIST SP 800-53 Rev. 5 SA-22 (Unsupported System Components); NIST CSF 2.0 PR.PS-02 (software is maintained, replaced and removed commensurate with risk)",
       "related_concepts": [
@@ -88,18 +88,18 @@
       "question": "A risk practitioner reviews a retailer's change management process after two outages. Which finding should concern the practitioner MOST?",
       "options": {
         "A": "Standard changes go live with no change advisory board review",
-        "B": "Emergency changes skip prior approval and are seldom reviewed afterward",
-        "C": "The change advisory board meets weekly instead of before each new change",
-        "D": "Team leads, not the change board, approve low-risk normal changes"
+        "B": "Emergency changes bypass the board and are seldom reviewed afterward",
+        "C": "The change advisory board meets weekly rather than before each change",
+        "D": "Team leads act as change authority for low-risk normal changes"
       },
       "correct": "B",
       "key_concept": "Emergency changes are acceptable only when each one receives a timely after-the-fact review.",
       "pre_read": "Sort the findings into design choices and real control gaps before judging which matters most.",
-      "correct_explanation": "Emergency changes may skip prior approval only because a review follows soon after. When most are never reviewed, untested or unauthorized changes sit in production unseen, a plausible cause of the outages. Standard changes without board review are working as designed: they are pre-approved, low-risk and run from a set procedure, so the missing check there is intended, not a gap.",
+      "correct_explanation": "Emergency changes may bypass the normal approval path only because a review follows soon after. When few are reviewed afterward, untested or unauthorized changes sit in production unseen, a plausible cause of the outages. Standard changes without board review are working as designed: they are pre-approved, low-risk and run from a set procedure, so the missing check there is intended, not a gap.",
       "wrong_explanations": {
         "A": "Closest choice, since it also sounds like missing review. But standard changes are pre-approved by design because they are low risk and repeatable.",
         "C": "A weekly board is normal practice; urgent work goes through the emergency route. Meeting cadence is not a weakness in itself.",
-        "D": "Delegating approval of low-risk changes to team leads matches review effort to risk, which is sound design rather than a gap."
+        "D": "Delegating change authority for low-risk changes to team leads matches review effort to risk, which is sound design rather than a gap."
       },
       "tips": [
         "Eliminate: C describes a normal board cadence, and D describes risk-based delegation of approval; both are design choices, not weaknesses.",
@@ -130,7 +130,7 @@
       },
       "correct": "D",
       "key_concept": "Incident management restores service; problem management removes the root cause of repeated incidents.",
-      "pre_read": "Count how often the same failure returns, then ask which process deals with causes rather than symptoms.",
+      "pre_read": "Notice how often the same failure returns and what each option would change about it.",
       "correct_explanation": "Repeated incidents with the same symptom point to an unresolved cause. Incident management has done its job by restoring service; problem management now needs to find why the kiosks freeze and remove the cause through a controlled change, which lowers future likelihood. Tracking outages as an indicator is useful monitoring, but it only measures the risk; it does not reduce it.",
       "wrong_explanations": {
         "A": "A tighter restore target improves incident handling but leaves the cause in place, so the freezes and passenger delays keep recurring.",
@@ -196,21 +196,21 @@
       "question": "A health insurer's chatbot vendor will replace the underlying AI model next month, saying the interface and prices stay the same. What should the risk practitioner recommend FIRST?",
       "options": {
         "A": "Handle the swap as a change, validating the new model before use",
-        "B": "Accept the vendor's assurance, since the interface is not changing",
+        "B": "Rely on the vendor's assurance that the service will work as before",
         "C": "Watch customer complaints after the swap and escalate any rise",
         "D": "Ask the vendor to keep the current model under the existing contract"
       },
       "correct": "A",
       "key_concept": "A vendor's change to the AI model behind a service is a change that needs validation before use.",
-      "pre_read": "Ask where the chatbot's behavior comes from, and whether an unchanged interface means unchanged answers.",
+      "pre_read": "Notice what the vendor says will stay the same, and what it does not mention.",
       "correct_explanation": "A new model can answer the same questions differently even when the interface and price stay fixed, so the swap is a change to a member-facing process. Treating it as one means the insurer's owner sees validation results, such as accuracy and harmful-answer tests, before members are exposed. Monitoring complaints is a useful second layer, but it detects harm only after members have received wrong answers.",
       "wrong_explanations": {
-        "B": "Tempting because nothing visible changes. But behavior lives in the model, not the interface, and the insurer stays accountable for the answers its members receive.",
+        "B": "Tempting because the vendor knows its own service. But behavior lives in the model, not the interface, and the insurer stays accountable for the answers its members receive.",
         "C": "Closest choice: monitoring catches problems in production. But it is detective and late; members would already have received any wrong or harmful answers.",
         "D": "Freezing the vendor's model resists normal change instead of managing it, and the vendor may refuse; assessing the new model is the risk-based step."
       },
       "tips": [
-        "Eliminate: B trusts an unchanged interface to mean unchanged behavior, and D tries to stop the vendor's change instead of assessing it.",
+        "Eliminate: B trusts the vendor's word that behavior will not change, and D tries to stop the vendor's change instead of assessing it.",
         "Final two: A beats C because validating before use prevents harm to members, while complaint monitoring only detects it after the new model is live.",
         "Exam cue: a new model, new training data or a retrained model is a change, even from a vendor; validate and approve it before go-live."
       ],
@@ -238,7 +238,7 @@
       },
       "correct": "D",
       "key_concept": "The data owner, an accountable business manager, approves access to and new uses of data; IT is the custodian.",
-      "pre_read": "Separate who runs the systems from who is accountable for the data and its uses.",
+      "pre_read": "For each person named, ask what their role lets them decide about the data.",
       "correct_explanation": "The data owner, the business manager accountable for the customer records, sets the rules for using the data. They can judge whether the reporting use fits the purpose the data was collected for and its classification. The CISO sets security policy and advises on controls, but does not own business data or decide its uses; the IT manager is the custodian who carries out the owner's rules.",
       "wrong_explanations": {
         "A": "Tempting because IT runs the database. But IT is the custodian: it applies the owner's rules and cannot judge the data's business value or permitted uses.",
@@ -268,7 +268,7 @@
       "question": "A school district will donate retired staff laptops whose solid-state drives held student records. Which approach should the risk practitioner recommend as BEST for making the data unrecoverable?",
       "options": {
         "A": "Delete the user folders and empty the recycle bin on each laptop",
-        "B": "Purge each drive, such as by cryptographic erase, and record it",
+        "B": "Purge each drive with a method such as cryptographic erase",
         "C": "Reformat each drive and reinstall a clean operating system",
         "D": "Overwrite each drive with zeros once using standard disk software"
       },
@@ -305,21 +305,21 @@
       "options": {
         "A": "A comparison of how each project changes the enterprise risk profile",
         "B": "A ranking of the two projects by projected return on investment",
-        "C": "A detailed security test plan for the systems each project delivers",
+        "C": "A new rating of the patient-safety risk against the hospital's appetite",
         "D": "The risk logs each project manager keeps for their own project"
       },
       "correct": "A",
       "key_concept": "Portfolio decisions weigh value and risk together, including the enterprise risk a project would reduce.",
       "pre_read": "Note what the two projects share and what separates them, then ask which information shows that difference.",
-      "correct_explanation": "With returns roughly equal, the deciding difference is risk. Showing how each project would change the enterprise risk profile, including the patient-safety risk one would reduce, lets the committee weigh value and risk together and make the call. Project risk logs cover delivery risks such as delays and budget, not the enterprise exposure each choice leaves behind, so they cannot answer the committee's question.",
+      "correct_explanation": "With returns roughly equal, the deciding difference is risk. Showing how each project would change the enterprise risk profile, including the patient-safety risk one would reduce, lets the committee weigh value and risk together and make the call. Re-rating the patient-safety risk, already rated high, sizes one effect but misses any risk the other project would reduce or add, so it cannot settle the comparison.",
       "wrong_explanations": {
         "B": "Return alone cannot separate two projects with similar returns, and it hides the risk reduction one of them offers.",
-        "C": "Security testing matters later in delivery; it does not help the committee choose which investment best balances value and risk.",
-        "D": "Closest choice: project logs contain real risk data. But they track delivery risks to each project, not how each choice changes enterprise exposure."
+        "C": "Closest choice: it sizes the risk one project would retire. But the committee is comparing two projects, so it needs each one's effect on the whole risk profile.",
+        "D": "Project logs track delivery risks such as delay and budget overrun, not how each choice changes the enterprise's exposure."
       },
       "tips": [
-        "Eliminate: B ranks on return, which cannot separate projects with similar returns, and C offers delivery-stage testing that does not inform an investment choice.",
-        "Final two: A beats D because portfolio decisions need the enterprise risk view; project logs show delivery risk, not the exposure each choice leaves.",
+        "Eliminate: B ranks on return, which cannot separate projects with similar returns, and D offers project delivery logs that do not show enterprise exposure.",
+        "Final two: A beats C because the committee is choosing between two projects; rating one risk alone misses what else each project adds or removes.",
         "Exam cue: in portfolio items, the practitioner gives decision-makers value and risk together, including risks a project would reduce; the committee decides."
       ],
       "framework_ref": "NIST CSF 2.0 GV.RM-03 (cybersecurity risk management activities and outcomes are included in enterprise risk management processes)",
@@ -334,27 +334,27 @@
     {
       "id": "crisc_d4_010",
       "domain": 4,
-      "subtopic": "4A5 Portfolio and project management. Risk acceptance in Agile delivery",
+      "subtopic": "4A5 Portfolio and project management. Project risk log in Agile delivery",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
       "question": "A pension fund's Agile project keeps its own risk log, where the scrum team has marked as accepted a weak access control that will remain after go-live. What should the risk practitioner do FIRST?",
       "options": {
-        "A": "Ask the scrum team to fix the control in the next sprint",
-        "B": "Record the team's acceptance and monitor the control after go-live",
-        "C": "Escalate it to the enterprise register and the business risk owner",
-        "D": "Stop the release until the access control weakness is fixed"
+        "A": "Ask the scrum team to fix the access control in the next sprint",
+        "B": "Record the team's acceptance in the register and monitor it later",
+        "C": "Raise it with the business risk owner in the enterprise register",
+        "D": "Have the product owner hold the release until the control is fixed"
       },
       "correct": "C",
       "key_concept": "Project risks that outlive the project go to the enterprise register and the business risk owner for a decision.",
-      "pre_read": "Check who marked the risk accepted and whether that role can accept a risk that lasts beyond the project.",
-      "correct_explanation": "A risk that will outlive the project becomes an operational risk, so a scrum team cannot accept it on the enterprise's behalf. Escalating it to the enterprise register puts it before the business risk owner, who can accept it within appetite or require treatment. Asking the team to fix it may be the eventual answer, but choosing the response before the owner weighs the risk skips the decision.",
+      "pre_read": "Notice who marked the entry accepted and how long the weakness will last.",
+      "correct_explanation": "A risk that will outlive the project becomes an operational risk, so a scrum team cannot accept it on the enterprise's behalf. Raising it in the enterprise register with the business risk owner puts the decision with someone who can accept it within appetite or require treatment. Asking the team to fix it may be the eventual answer, but choosing the response before the owner weighs the risk skips the decision.",
       "wrong_explanations": {
         "A": "Closest choice: fixing the weakness may be right. But the team would be choosing the response; the owner first decides whether to fix, compensate or accept.",
         "B": "Recording the team's acceptance treats a delivery team as the risk owner. Operational risk after go-live must be accepted by the accountable business owner.",
-        "D": "The practitioner advises and escalates but does not control releases; halting one is the sponsor's or owner's call."
+        "D": "A product owner runs the backlog, not the operational risk; holding the release picks a response before the business risk owner has weighed it."
       },
       "tips": [
-        "Eliminate: B lets a delivery team accept an operational risk, and D has the practitioner halting a release, a decision that belongs to the sponsor or owner.",
+        "Eliminate: B lets a delivery team accept an operational risk, and D has the product owner hold the release, a response chosen before the business risk owner decides.",
         "Final two: C beats A because the owner decides the response first; asking the team to fix it picks a treatment before the right person has weighed the risk.",
         "Exam cue: project risks that remain after go-live move to the enterprise register and the business owner; delivery teams do not accept them."
       ],
@@ -375,14 +375,14 @@
       "bloom_level": "Application",
       "question": "A payroll provider's disaster recovery site is in another city but relies on the same internet carrier as its main data center. What should the risk practitioner do FIRST?",
       "options": {
-        "A": "Ask the carrier for its outage history and service-level commitments",
-        "B": "Move the recovery site to a city served by another carrier",
-        "C": "Recommend contracting a second carrier for the recovery site",
+        "A": "Assess the carrier's outage history and service-level commitments",
+        "B": "Move the recovery site to a city served by a different carrier",
+        "C": "Recommend that the owner fund a second carrier for the recovery site",
         "D": "Assess whether losing the shared carrier would breach the payroll RTO"
       },
       "correct": "D",
       "key_concept": "A dependency shared by primary and recovery sites is analyzed against recovery objectives before a treatment is chosen.",
-      "pre_read": "Look for anything the two sites have in common, then ask what must be known before fixing it.",
+      "pre_read": "Look for anything the two sites have in common, then weigh what each option assumes is already known.",
       "correct_explanation": "A shared carrier is a single point of failure that could take down both sites, but the size of the risk depends on what an outage would do to payroll recovery. Assessing it against the recovery time objective (RTO) shows whether the exposure is within tolerance and what treatment is justified. A second carrier may well be the answer, yet recommending it before analysis skips the cost-benefit judgment the owner needs.",
       "wrong_explanations": {
         "A": "Outage history and service levels describe the carrier, not the effect of losing it. A service credit does not get payroll out on time.",
@@ -411,14 +411,14 @@
       "bloom_level": "Analysis",
       "question": "Ransomware has encrypted a distributor's order system, and the operations director urges an immediate restore from last night's backup to resume shipping. What should the risk practitioner advise as the BEST next step?",
       "options": {
-        "A": "Restore from last night's backup now to meet the recovery target",
+        "A": "Restore the order system from last night's backup without delay",
         "B": "Contain the attack and verify the backup is clean before restoring",
         "C": "Pay the ransom if it costs less than the expected outage losses",
         "D": "Restore from an older backup, taken before the attack likely began"
       },
       "correct": "B",
       "key_concept": "During ransomware recovery, contain the attack and verify backup integrity before restoring.",
-      "pre_read": "Ask whether the attacker could still be present, and what that means for anything restored now.",
+      "pre_read": "Notice the pressure in the stem and what is still unknown about the attack.",
       "correct_explanation": "Restoring while the attacker still has access, or from a backup that holds the malware, invites a second encryption and a longer outage. Containing the attack and verifying the backup is clean comes first, then restoration. An older backup lowers the chance of restoring malware, but without containment the attacker can simply encrypt the restored system again, and an older copy also loses more orders.",
       "wrong_explanations": {
         "A": "Tempting because it is fastest. But if the attacker is still inside or the backup carries the malware, restored systems are encrypted again.",
@@ -447,10 +447,10 @@
       "bloom_level": "Application",
       "question": "A retail bank's innovation team wants to adopt a blockchain trade-finance platform, citing the vendor's claim that it is tamper-proof. What should the risk practitioner do FIRST?",
       "options": {
-        "A": "Approve a pilot, since a tamper-proof ledger removes fraud risk",
-        "B": "Advise against adoption until the technology is more mature",
+        "A": "Approve a limited pilot relying on the ledger's tamper-proof design",
+        "B": "Rate the platform above appetite until the technology has matured",
         "C": "Assess its risks and benefits against the bank's objectives and appetite",
-        "D": "Request independent certification of the vendor's platform security controls"
+        "D": "Assess the vendor's controls through independent security certification"
       },
       "correct": "C",
       "key_concept": "Emerging technology is assessed for both risks and benefits against objectives and appetite before adoption.",
@@ -458,11 +458,11 @@
       "correct_explanation": "A vendor's tamper-proof claim covers the ledger, not the bank's whole use: key management, smart-contract errors, legal standing and integration all carry risk, and the platform may also offer real gains. Assessing risks and benefits against objectives and appetite gives senior management a basis to adopt, adapt or decline. Independent certification is useful evidence within that assessment, but it describes vendor controls, not fit.",
       "wrong_explanations": {
         "A": "Tamper evidence does not stop fraud through stolen keys or false data entered at the start, and approving is not the practitioner's call.",
-        "B": "Advising against adoption on maturity alone forgoes possible value without analysis; uncertainty calls for assessment, not a reflex no.",
+        "B": "Rating it above appetite before any analysis forgoes possible value; uncertainty calls for assessment, not a reflex no.",
         "D": "Closest choice: certification tests the vendor's claims. But it covers the vendor's controls at a point in time, not the bank's use, benefits or appetite."
       },
       "tips": [
-        "Eliminate: A takes the vendor's claim as proof and has the practitioner approve, and B rejects the technology without weighing its benefits or risks.",
+        "Eliminate: A takes the vendor's design claim as proof and has the practitioner approve, and B rates the platform above appetite without weighing its benefits or risks.",
         "Final two: C beats D because a fit-specific assessment of risks and benefits is the basis for the decision; certification is one input about vendor controls.",
         "Exam cue: for emerging technology, assess both threats and opportunities against objectives and appetite before anyone adopts or bans it."
       ],
@@ -481,17 +481,17 @@
       "subtopic": "4A7 Emerging technologies. High-impact AI before go-live",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A city council plans to rank housing-assistance applications with a vendor's AI tool whose model scored well in the vendor's own tests. What should the risk practitioner recommend FIRST?",
+      "question": "A city council plans to rank housing-assistance applications with a vendor's AI tool that scored well in tests on the vendor's own data. What should the risk practitioner recommend FIRST?",
       "options": {
-        "A": "Assess the tool's bias and accuracy on the council's own applicants",
-        "B": "Rely on the vendor's test results, since the vendor built the model",
+        "A": "Test the tool for bias and accuracy on past council applications",
+        "B": "Accept the vendor's test results as evidence of the tool's fairness",
         "C": "Have caseworkers review every ranking before any decision is issued",
         "D": "Limit the tool to ranking applications from a single district at first"
       },
       "correct": "A",
       "key_concept": "High-impact AI is assessed on the organization's own data and use before controls are chosen or the tool goes live.",
       "pre_read": "Notice whose data the vendor's tests used, and how serious the decisions are for the people ranked.",
-      "correct_explanation": "Housing assistance rankings affect people's lives, and a vendor's tests on its own data say little about bias or accuracy for the council's applicants. Assessing the tool on local data comes first, because it shows whether the risk is within appetite and which controls are needed. Caseworker review is a likely control, but adding it before the assessment chooses a treatment blind, and reviewers tend to follow a biased ranking.",
+      "correct_explanation": "Housing-assistance rankings affect people's lives, and tests on the vendor's data say little about bias or accuracy for the council's applicants. Testing the tool on past council applications comes first, because it shows whether the risk is within appetite and which controls are needed. Caseworker review is a likely control, but adding it before the test chooses a treatment blind, and reviewers tend to follow a biased ranking.",
       "wrong_explanations": {
         "B": "Vendor tests use the vendor's data and goals. The council remains accountable for decisions about its applicants and needs results on its own population.",
         "C": "Closest choice: human review is a strong control for high-impact AI. But it is a treatment chosen before the risk is known, and reviewers often defer to rankings.",
@@ -499,10 +499,10 @@
       },
       "tips": [
         "Eliminate: B accepts the vendor's own tests as proof for a different population, and D narrows the rollout but still runs an unassessed tool on real applicants.",
-        "Final two: A beats C because assessment comes before treatment; human review may be needed, but only local bias and accuracy results show how much.",
+        "Final two: A beats C because assessment comes before treatment; human oversight will likely be part of the answer, but only local bias and accuracy results show what kind and how much.",
         "Exam cue: for high-impact AI, the FIRST step is an assessment on the organization's own data and use, then controls such as human oversight."
       ],
-      "framework_ref": "NIST AI 100-1 (AI RMF 1.0) MEASURE 2.11 (fairness and bias as identified in the MAP function are evaluated and results are documented); NIST AI 100-1 (AI RMF 1.0) MANAGE 1.1 (a determination is made as to whether the AI system achieves its intended purposes and whether its development or deployment should proceed)",
+      "framework_ref": "NIST AI 100-1 (AI RMF 1.0) MEASURE 2.11 (fairness and bias as identified in the MAP function are evaluated and results are documented); NIST AI 100-1 (AI RMF 1.0) MEASURE 2.3 (AI system performance or assurance criteria are measured and demonstrated for conditions similar to deployment settings)",
       "related_concepts": [
         "AI bias",
         "Human oversight",
@@ -517,16 +517,16 @@
       "subtopic": "4B1 Security concepts, frameworks and standards. Conflicting duties",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "At a charity's finance office, one employee can add new suppliers, approve their invoices and release payments. Which security principle does this arrangement MOST directly violate, in the risk practitioner's view?",
+      "question": "A risk practitioner finds that one employee at a charity's finance office can add new suppliers, approve their invoices and release payments. Which security principle does this MOST directly violate?",
       "options": {
-        "A": "Least privilege, because the employee holds unusually broad finance access",
-        "B": "Separation of duties, because one person runs the full payment cycle",
-        "C": "Defense in depth, because payments depend on a single control layer",
-        "D": "Need to know, because the employee can view every supplier record"
+        "A": "Least privilege: the employee holds unusually broad finance access",
+        "B": "Separation of duties: one person runs the full payment cycle",
+        "C": "Defense in depth: payments depend on a single control layer",
+        "D": "Need to know: the employee can view every supplier record"
       },
       "correct": "B",
       "key_concept": "Separation of duties splits conflicting steps of a process so no one person can complete and conceal misuse alone.",
-      "pre_read": "List the steps one person controls, then ask what they could do with all of them together.",
+      "pre_read": "List the steps one person controls, then match the risk to the principle each option names.",
       "correct_explanation": "Adding suppliers, approving invoices and releasing payments are conflicting duties: together they let one person create a fake supplier, approve its invoice and pay it, with no one else involved. That is a separation of duties failure. Least privilege is the close runner-up, but each right might be justified for some finance role; the danger comes from combining them in one person.",
       "wrong_explanations": {
         "A": "Closest choice: the access is broad. But least privilege asks whether each right is needed; the real flaw is that one person holds every conflicting step.",
@@ -553,25 +553,25 @@
       "subtopic": "4B1 Security concepts, frameworks and standards. Relying on certification",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A bank is choosing a cloud HR provider whose ISO/IEC 27001 certificate covers its data centers but not the support team that can access customer data. What is the risk practitioner's BEST conclusion?",
+      "question": "A bank is choosing a cloud HR provider whose ISO/IEC 27001 certificate covers its data centers but not the support team that can access staff records. What is the risk practitioner's BEST conclusion?",
       "options": {
-        "A": "The certificate shows the provider's access controls meet an accepted standard",
-        "B": "The support team is low risk because the data centers are certified",
-        "C": "The provider should be rejected because its certification is incomplete",
+        "A": "The certificate assesses the provider's access controls against a standard",
+        "B": "The certified data centers show the support team is also low risk",
+        "C": "The incomplete certification puts the provider's risk above appetite",
         "D": "The support team's access needs its own assessment before the decision"
       },
       "correct": "D",
       "key_concept": "A certification gives assurance only within its scope; risks outside that scope still need assessment.",
-      "pre_read": "Compare what the certificate covers with where the customer data risk actually sits.",
-      "correct_explanation": "A certificate covers only its stated scope at a point in time. Here the people who can reach customer data sit outside it, so the certificate gives no assurance about the exposure that matters most. Assessing the support team's access, through the provider's evidence or contract terms, fills the gap before the owner decides. The certificate is still useful evidence for the data centers, but it cannot speak for what it excludes.",
+      "pre_read": "Compare what the certificate covers with who can reach the staff records.",
+      "correct_explanation": "A certificate covers only its stated scope at a point in time. Here the people who can reach the bank's staff records sit outside it, so the certificate gives no assurance about the exposure that matters most. Assessing the support team's access, through the provider's evidence or contract terms, fills the gap before the owner decides. The certificate is still useful evidence for the data centers, but it cannot speak for what it excludes.",
       "wrong_explanations": {
-        "A": "Closest choice: the certificate is real evidence. But it shows conformity within its scope only, and the support team's access to customer data is outside it.",
+        "A": "Closest choice: the certificate is real evidence. But it shows conformity within its scope only, and the support team's access to staff records is outside it.",
         "B": "Certification of one part says nothing about another; the support team's access is uncertified and unassessed, not low risk.",
-        "C": "A scope gap calls for assessment, not automatic rejection; the provider's support controls may be strong, or contract terms may cover them."
+        "C": "An incomplete scope is a gap to assess, not proof that risk exceeds appetite; the provider's support controls may be strong, or contract terms may cover them."
       },
       "tips": [
-        "Eliminate: B extends the certificate beyond its scope, and C rejects the provider over a gap that has not yet been assessed.",
-        "Final two: D beats A because certification is evidence only within its scope; the exposure that matters, support access to data, still needs assessment.",
+        "Eliminate: B extends the certificate beyond its scope, and C judges the risk above appetite over a gap that has not yet been assessed.",
+        "Final two: D beats A because certification is evidence only within its scope; the exposure that matters, support access to staff records, still needs assessment.",
         "Exam cue: before relying on a certificate or framework claim, check its scope and date against the risk you actually face."
       ],
       "framework_ref": "NIST CSF 2.0 ID.RA-10 (critical suppliers are assessed prior to acquisition); NIST CSF 2.0 GV.SC-07 (the risks posed by a supplier, their products and services and other third parties are understood, recorded, prioritized, assessed, responded to and monitored)",
@@ -586,19 +586,19 @@
     {
       "id": "crisc_d4_017",
       "domain": 4,
-      "subtopic": "4B2 Security/risk awareness and training. Workarounds and blame",
+      "subtopic": "4B2 Security/risk awareness and training. Policy workarounds",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "After a near miss, a hospital finds nurses routinely share one login on ward computers because individual sign-in is too slow in emergencies. What should the risk practitioner recommend FIRST?",
+      "question": "After a near miss, a hospital finds nurses, though trained on the policy, routinely share one ward login because individual sign-in is too slow in emergencies. What should the risk practitioner recommend FIRST?",
       "options": {
-        "A": "Work with ward managers to fix the sign-in delay behind the sharing",
+        "A": "Work with ward managers to make individual sign-in faster",
         "B": "Retrain nurses on the policy that forbids sharing a login",
         "C": "Discipline the nurses involved to deter further login sharing",
         "D": "Lock ward computers automatically after one minute without activity"
       },
       "correct": "A",
       "key_concept": "When staff break a rule to do their work, the risk-aware response fixes the process before retraining or blaming people.",
-      "pre_read": "Ask why the nurses share the login, and whether training or discipline would change that reason.",
+      "pre_read": "Note the reason the stem gives for the sharing, then judge each option by whether it changes that reason.",
       "correct_explanation": "The nurses are working around a process that fails them when speed matters, so the root cause is the slow sign-in, not a lack of knowledge. Working with ward managers to fix it, for example with fast badge sign-in, removes the reason to share. Retraining is tempting, but staff who already know the rule will keep breaking it while the process forces a choice between patients and policy.",
       "wrong_explanations": {
         "B": "Closest choice: awareness supports the rule. But the nurses already know it; training cannot remove the time pressure that drives the sharing.",
@@ -629,12 +629,12 @@
       "options": {
         "A": "The share of staff who complete the AI-use course each year",
         "B": "The number of AI tools added to the blocked-website list",
-        "C": "The monthly trend in flagged uploads to unapproved AI services",
+        "C": "The monthly trend in documents sent to unapproved AI services",
         "D": "Average staff scores on the quiz that ends the AI-use course"
       },
       "correct": "C",
       "key_concept": "Awareness is measured by changes in risky behavior, not by course completion or quiz scores.",
-      "pre_read": "Notice the gap between the training figure and the tool's alerts, then ask which number tracks behavior.",
+      "pre_read": "Notice the gap between the training figure and the tool's alerts, then ask what each measure would show.",
       "correct_explanation": "Awareness aims to change behavior, so the best measure tracks the risky behavior itself. A falling trend in flagged uploads to unapproved AI services would show staff acting differently, which is what reduces the risk to client data. Quiz scores show what staff know right after the course, and completion shows who attended; completion is already high while uploads continue, which proves knowing is not doing.",
       "wrong_explanations": {
         "A": "Completion is already 98% while uploads continue, which shows attendance does not measure safer behavior.",
@@ -658,10 +658,10 @@
     {
       "id": "crisc_d4_019",
       "domain": 4,
-      "subtopic": "4B3 Data privacy and data protection principles. Privacy versus security",
+      "subtopic": "4B3 Data privacy and data protection principles. New use of customer data",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A retailer that encrypts customer purchase history and tightly restricts access now wants marketing to use it to infer customers' health conditions for targeted ads. What PRIMARY concern should the risk practitioner raise?",
+      "question": "A retailer collects purchase history for its loyalty program, encrypts it and restricts access, and marketing now wants to infer customers' health conditions from it for ads. What PRIMARY concern should the risk practitioner raise?",
       "options": {
         "A": "Attackers could steal the encryption keys and expose the history",
         "B": "Marketing staff may lack training in secure data handling",
@@ -670,7 +670,7 @@
       },
       "correct": "D",
       "key_concept": "Privacy governs whether a use of personal data fits its stated purpose; security only protects the data from unauthorized access.",
-      "pre_read": "Separate how well the data is protected from whether this new use is allowed.",
+      "pre_read": "Note what the retailer already does well, then ask what the new proposal changes.",
       "correct_explanation": "Purpose limitation means personal data is used only for the purposes stated when it was collected. Inferring health conditions from purchases for ads is a new and sensitive purpose customers never agreed to, whatever the encryption. Strong security keeps outsiders out but does not make an unfair use by authorized staff acceptable. Access requests are a real privacy right, but they are not what this proposal puts at risk.",
       "wrong_explanations": {
         "A": "Key theft is a security risk the encryption and access limits already address; the concern this proposal raises is how authorized staff will use the data.",
@@ -699,7 +699,7 @@
       "bloom_level": "Application",
       "question": "A gym chain's member app passed a privacy impact assessment at launch and will now share workout data with an insurance partner. What should the risk practitioner recommend FIRST?",
       "options": {
-        "A": "Rely on the launch assessment, since the app itself has not changed",
+        "A": "Confirm the launch assessment still applies to the unchanged app",
         "B": "Update the privacy impact assessment to cover the new insurer sharing",
         "C": "Collect fresh consent from members before any data is shared",
         "D": "Encrypt the workout data before it is sent to the insurance partner"
