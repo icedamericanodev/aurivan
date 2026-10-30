@@ -4,6 +4,14 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v12.48] — Polish for the new frame
+
+### Improved
+- Keyboard and screen reader users can jump straight to the three moves beside an answer, and every page now has a clear title.
+
+### Fixed
+- Small layout and wording fixes on the answer screen, Today, Mock exam and Weak spots.
+
 ## [v12.47] — The three moves beside your answer
 
 ### Improved

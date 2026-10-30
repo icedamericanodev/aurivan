@@ -1553,7 +1553,7 @@ header {
   border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow);
 }
 .bk-panel-title {
-  font-family: var(--f-serif); font-size: 20px; font-weight: 500;
+  margin-top: 0; font-family: var(--f-serif); font-size: 20px; font-weight: 500;
   margin-bottom: 16px; color: var(--text);
 }
 .bk-item {
@@ -2690,7 +2690,7 @@ header {
   color: var(--accent-fill); margin-bottom: 10px;
 }
 .gloss-hero .gloss-title {
-  font-family: var(--f-serif);
+  margin-top: 0; font-family: var(--f-serif);
   font-size: 28px; font-weight: 500;
   line-height: 1.1; margin-bottom: 8px;
   color: var(--text); letter-spacing: -0.01em;
@@ -5582,6 +5582,7 @@ button.pg-cd:hover { background: var(--surface2); }
 .ws-count { font: 400 13px/18px var(--f-sans); color: var(--text2); }
 .ws-band { font: italic 400 14px/18px var(--f-serif); color: var(--text2); }
 .ws-band.c { color: var(--clay); }
+.ws-n { white-space: nowrap; }
 .ws-pct { width: auto; min-width: 64px; color: var(--text); }
 .ws-quiet { font: 400 14px/20px var(--f-sans); color: var(--text2); margin: 0 0 16px; }
 .ws-sub-label { font: 600 15px/20px var(--f-sans); color: var(--text); margin: 24px 0 12px; }
@@ -6045,8 +6046,7 @@ body[data-app-cta-card="shown"][data-section="today"] .app-cta-line { display: n
 .vr-next:hover { opacity: .92; }
 /* From 1024px Next stays in the page (v12.45) as the kit's 52px plate button. */
 @media (min-width: 1024px) {
-  .vr-next { min-height: 52px; border-radius: var(--r-12); font: 600 16px/20px var(--f-sans); }
-  .vr-next:focus-visible { border-radius: var(--r-12); }
+  .vr-next { min-height: 52px; border-radius: var(--r-12); }
 }
 
 /* Fig. 4 · Three moves for this question: the margin's plate (from 1240px). */
@@ -6055,8 +6055,8 @@ body[data-app-cta-card="shown"][data-section="today"] .app-cta-line { display: n
 .vm-plate .fg-key-n { padding-top: 0; }
 .vm-plate .fg-key-t { flex: 1 1 auto; display: block; }
 .vm-h { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-xs) var(--sp-sm); }
-.vm-t { font: 600 16px/22px var(--f-sans); color: var(--text); }
-.vm-b { display: block; margin-top: 2px; font: 400 15px/22px var(--f-sans); color: var(--text); }
+.vm-t { font: var(--t-label); color: var(--text); }
+.vm-b { display: block; margin-top: 2px; font: var(--t-small); color: var(--text); }
 .vm-tag {
   display: inline-flex; align-items: center; gap: var(--sp-xs); padding: 1px 6px;
   border: 1px solid var(--control); border-radius: var(--r-3); font: 600 12px/16px var(--f-sans); color: var(--text); white-space: nowrap;
@@ -6074,6 +6074,15 @@ body[data-qmoves] .vr-panel .vine-cue,
 body[data-qmoves] .vr-panel .vr-why-more,
 body[data-qmoves] .vr-panel .vr-rm-tips { display: none; }
 body[data-qmoves] .vr-panel .vine-key::after { bottom: 4px; }
+.vr-skip-moves { display: none; }
+body[data-qmoves] .vr-skip-moves { display: block; }
+.sr-only-focusable:focus, .sr-only-focusable:focus-visible {
+  position: static !important; width: auto; height: auto; margin: var(--sp-lg) 0 0; overflow: visible; clip: auto; white-space: normal;
+  display: inline-flex; align-items: center; min-height: 44px; font: var(--t-label); color: var(--accent-text);
+  text-decoration: underline; text-underline-offset: 3px; outline: 2px solid var(--focus-ring); outline-offset: 2px; border-radius: var(--r-sm);
+}
+#srhMoves:focus { outline: none; }
+#srhMoves:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
 /* Motion: the plate's rows fade in 60ms apart from 120ms after the verdict;
    the tag settles from .96. Reduce Motion: the finished plate. */
 @keyframes vmRow { from { opacity: 0; } to { opacity: 1; } }
@@ -6082,9 +6091,9 @@ body[data-qmoves] .vr-panel .vine-key::after { bottom: 4px; }
   .sr-sec-moves .fg-key { animation: vmRow 200ms ease-out both; animation-delay: 120ms; }
   .sr-sec-moves .fg-key:nth-child(2) { animation-delay: 180ms; }
   .sr-sec-moves .fg-key:nth-child(3) { animation-delay: 240ms; }
-  .sr-sec-moves .vm-tag { animation: vmTag 160ms cubic-bezier(.33, 1, .68, 1) 120ms both; }
+  .sr-sec-moves .vm-tag { animation: vmTag 160ms cubic-bezier(.33, 1, .68, 1) 120ms backwards; }
 }
-.vr-next:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; border-radius: var(--r-pill); }
+.vr-next:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
 
 @media (prefers-reduced-motion: no-preference) {
   .conf-seg .conf-btn { transition: background-color .12s ease, color .12s ease; }
@@ -6364,6 +6373,8 @@ body[data-tab="practice"][data-pview="focus"] #subNav { display: none; }
 .mk-types { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--sp-md); margin-top: var(--sp-md); }
 .mk-intro.fg-sub { font: var(--t-fg-sub); color: var(--text2); margin: var(--sp-xs) 0 var(--sp-xxl); }
 .mk-pick > .ph-h + .fg-plate { margin-top: var(--sp-md); }
+/* Inside the Fig. 7 plate the cards are mounted flat: no shadow, a hairline, 3px corners. */
+.mk-pick .mk-type { box-shadow: none; border-radius: var(--r-3); border: 1px solid var(--border); }
 @media (min-width: 640px) { .mk-types { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 .mk-type { display: flex; flex-direction: column; align-items: flex-start; padding: var(--sp-xxl); background: var(--raised); border: 1px solid var(--raised-outline); border-radius: var(--r-md); box-shadow: var(--shadow); }
 .mk-type-t { font: var(--t-hero); letter-spacing: var(--tr-hero); color: var(--text); margin: 0; }
@@ -6529,6 +6540,8 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
     padding: var(--page-top) var(--sp-xxxl) 0;
   }
   .fg-frame > .fg-page-rh { grid-column: 1 / -1; grid-row: 1; }
+  /* switchTab scrolls the running head into view: keep the page's 40px top. */
+  #pageRh { scroll-margin-top: var(--page-top); }
   .fg-frame > .fg-page-rh .fg-rh { margin-bottom: 28px; }
   .fg-frame > main.app { grid-column: 1; grid-row: 2; max-width: none; margin: 0; padding-top: 0; padding-left: 0; padding-right: 0; min-width: 0; }
   .fg-frame > .fg-margin { display: none; }
@@ -6554,7 +6567,9 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 /* The page fades in with a 4px rise; the margin's notes follow 40ms later.
    Opacity and transform only; under Reduce Motion it is simply there. */
 @keyframes fgPageIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
-.screen.active { animation: fgPageIn 160ms cubic-bezier(.33, 1, .68, 1) both; }
+/* backwards, not both: no transform is left on the page once it has landed
+   (a transform would make it the containing block for fixed children). */
+.screen.active { animation: fgPageIn 160ms cubic-bezier(.33, 1, .68, 1) backwards; }
 @media (prefers-reduced-motion: reduce) { .screen.active { animation: none; } }
 @media (min-width: 1240px) {
   body[data-rail="hub"] .ph .mindset-strip { display: none; }
@@ -7091,7 +7106,7 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 <!-- BOOKMARKS -->
 <div id="screen-bookmarks" class="screen">
   <div class="bk-panel">
-    <div class="bk-panel-title">Saved questions</div>
+    <h1 class="bk-panel-title">Saved questions</h1>
     <div id="bkList"><div class="no-bk">Nothing saved yet. Tap the bookmark on any question to keep it here.</div></div>
   </div>
 </div>
@@ -7143,7 +7158,7 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
     <h2 class="vision-title" id="aboutVisionT">Think like an IS auditor.</h2>
     <p class="vision-line">CISA exam prep, taught the way the exam thinks.</p>
   </section>
-  <p class="about-version">KaiSip web <span class="bank-pill" id="versionPill">v12.47</span></p>
+  <p class="about-version">KaiSip web <span class="bank-pill" id="versionPill">v12.48</span></p>
   <section class="vision-body" aria-label="What KaiSip stands for">
     <!-- The provenance line (owner, 22 Oct 2026): the same words in the hero, the disclaimer and the FAQ. -->
     <p class="vision-desc">Original questions and notes, written with AI assistance and checked against ISACA’s published exam outline and standards.</p>
@@ -7480,7 +7495,7 @@ const MOCK_TIER_LABEL = { analysis: 'Harder', application: 'Middle', foundationa
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v12.47';
+const APP_VERSION = 'v12.48';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -10227,7 +10242,7 @@ function renderTopics() {
   var totalItems = domProg.total;
 
   // ── Header ──
-  var headHtml = '<div class="gt-head"><h2 class="gt-title">Study notes</h2>'
+  var headHtml = '<div class="gt-head"><h1 class="gt-title">Study notes</h1>'
     + '<p class="gt-sub">Plain-language study notes for every exam topic.</p></div>';
 
   // ── Domain switcher (segmented control; chip scroller on phones) ──
@@ -12557,16 +12572,19 @@ function todayShoot() {
     var v = plantSafe(function () { return plantView(Date.now()); });
     if (v) {
       var g = v.plant.growth, names = (K.plant && K.plant.GROWTH_NAMES) || {};
+      // The Fig. register (DESIGN_SYSTEM §21.1): Today's plate is always
+      // Fig. 3; the growth stage is said in the PLATE caption, not the number.
       return {
         plant: true,
-        // The Fig. register (premium round 2): 3 is Today's plan plate.
-        fig: 'Fig. 3 · ' + (names[g] || 'Your plant'),
+        fig: 'Fig. 3 · Today’s plan',
         art: plantSafe(function () { return plantDraw(v, 'today', 150, { fit: true }); }),
-        cap: K.plant.plantCallName(v.plant) + ' grows only from real progress.'
+        cap: (names[g] ? names[g] + ': ' : '') + K.plant.plantCallName(v.plant) + ' grows only from real progress.'
       };
     }
   }
-  return { plant: false, fig: 'Fig. 1 · A frond for today', art: gtFrondSvg(), cap: 'Your progress grows from what you practise here.' };
+  // Fig. 1 is a new learner's day one (fewer than two study days, Today's own rule).
+  var fresh = todayStudyDayList(parityDayKey(Date.now())).length < 2;
+  return { plant: false, fig: fresh ? 'Fig. 1 · A frond for today' : 'Fig. 3 · Today’s plan', art: gtFrondSvg(), cap: 'Your progress grows from what you practise here.' };
 }
 function todayShootRefresh() {
   var art = document.getElementById('tdShoot'), fig = document.getElementById('tdShootFig'), cap = document.getElementById('tdShootCap');
@@ -12768,16 +12786,26 @@ function pageRhHtml(t) {
   var now = Date.now(), right = fgDateHtml(now);
   if (t === 'mock' && mv === 'results' && pageRhRight.mockResults) {
     // "Mock · Mini · 50 questions" | "29 Oct · 64 min"
-    var m = pageRhRight.mockResults, day = '';
-    try { day = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short' }).format(new Date(m.at)); } catch (e) { day = ''; }
+    // Shown "29 Oct · 64 min", said "29 October, 64 minutes" (as fgDateHtml).
+    var m = pageRhRight.mockResults, day = '', dayLong = '';
+    try {
+      day = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short' }).format(new Date(m.at));
+      dayLong = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long' }).format(new Date(m.at));
+    } catch (e) { day = ''; dayLong = ''; }
+    var dur = m.min < 1 ? 'under 1 min' : m.min + ' min', durLong = m.min < 1 ? 'under a minute' : m.min + (m.min === 1 ? ' minute' : ' minutes');
     return fgRunningHead('Mock · ' + (m.kind === 'full' ? 'Full' : 'Mini') + ' · ' + m.total + ' questions',
-      escapeHtml(day) + (day ? ' &middot; ' : '') + (m.min < 1 ? 'under 1 min' : m.min + ' min'));
+      '<span aria-hidden="true">' + escapeHtml(day) + (day ? ' &middot; ' : '') + dur + '</span>'
+      + '<span class="sr-only">' + escapeHtml(dayLong) + (dayLong ? ', ' : '') + durLong + '</span>');
   }
   if (t === 'progress' && pageRhRight.progress) right = pageRhRight.progress;
   if (t === 'examguide') {
     var iso = EXAM_GUIDE && EXAM_GUIDE.data ? String(EXAM_GUIDE.data.last_checked || '') : '';
     if (PARITY_DAY_RE.test(iso)) {
-      try { right = 'Checked ' + escapeHtml(new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }).format(new Date(iso + 'T12:00:00'))); } catch (e) {}
+      try {
+        var ck = new Date(iso + 'T12:00:00');
+        right = '<span aria-hidden="true">Checked ' + escapeHtml(new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }).format(ck)) + '</span>'
+          + '<span class="sr-only">Checked ' + escapeHtml(new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }).format(ck)) + '</span>';
+      } catch (e) {}
     }
   }
   return fgRunningHead(PAGE_RH[t], right);
@@ -13738,7 +13766,7 @@ function renderFAQ() {
   var raw = (faqState.search || '').trim();
   var words = raw ? raw.toLowerCase().split(/\s+/) : [];
   var hero = '<div class="gloss-hero"><div class="gloss-hero-left">'
-    + '<div class="gloss-title">FAQ &amp; Help</div>'
+    + '<h1 class="gloss-title">FAQ &amp; Help</h1>'
     + '<div class="gloss-sub">Answers about using the app, the CISA exam, and how to study effectively. Search a question or browse by topic.</div>'
     + '</div></div>';
   var searchBox = '<div style="margin-bottom:8px"><input type="text" class="faq-search" id="faqSearch" aria-label="Search the FAQ" '
@@ -15095,14 +15123,23 @@ function vrMovesHtml(q) {
     // Map the whole tip, as the page does (the letter after "Eliminate:" is always an option).
     var body = tipParts(mapLettersInText(tip, sh), 0).body;
     var names = pickOrig && r[0] !== 'Exam cue' && tipOptionLetters(tip).indexOf(pickOrig) >= 0;
-    var tag = names ? '<span class="vm-tag"><svg class="vm-tag-x" viewBox="0 0 14 14" aria-hidden="true" focusable="false"><circle cx="7" cy="7" r="7"/><path d="M4.6 4.6l4.8 4.8M9.4 4.6l-4.8 4.8"/></svg>Your pick, ' + pick.chosen + '</span>' : '';
+    var tag = names ? '<span class="vm-tag"><svg class="vm-tag-x" viewBox="0 0 14 14" aria-hidden="true" focusable="false"><circle cx="7" cy="7" r="7"/><path d="M4.6 4.6l4.8 4.8M9.4 4.6l-4.8 4.8"/></svg>Your pick, ' + pick.chosen + '</span><span class="sr-only">.</span>' : '';
     items.push({ tHtml: '<span class="vm-h"><span class="vm-t">' + r[1] + '</span>' + tag + '</span>'
       + '<span class="vm-b">' + escapeHtml(smartQuotes(body)) + '</span>' });
   });
   if (items.length < 2) return '';
-  return '<div class="fg-plate vm-plate"><div class="fg-plate-in">' + fgFigHtml('Fig. 4 · Three moves for this question', 2, 'srhMoves')
+  // The caption is a script focus target for the page's skip link.
+  return '<div class="fg-plate vm-plate"><div class="fg-plate-in">' + fgFigHtml('Fig. 4 · Three moves for this question', 2, 'srhMoves').replace(' id="srhMoves"', ' id="srhMoves" tabindex="-1"')
     + fgKeyList(items) + '</div></div>'
-    + fgCaption('Key', 'Moves 1 and 2 work on questions you haven’t seen yet.');
+    + fgCaption('Key', 'Move 3, the Exam cue, works on questions you haven’t seen yet.');
+}
+// The skip link's target is in the margin: focus it there (never a hash
+// change, which is the app's page router).
+function vrSkipToMoves(e) {
+  if (e && e.preventDefault) e.preventDefault();
+  var h = document.getElementById('srhMoves');
+  if (h) { try { h.focus({ preventScroll: true }); h.scrollIntoView({ block: 'nearest' }); } catch (ex) { h.focus(); } }
+  return false;
 }
 function railQSections() {
   if (!railQAnswered()) return [];
@@ -17322,7 +17359,7 @@ function verdictCoachLine(q, ok, timeout, chosenOrig, exam, shuffle) {
   var sh = shuffle || DISPLAY_LETTERS, pk = pickCoachKind(q, chosenOrig);
   if (pk === 'elim') return 'Your pick, ' + originalToDisplay(chosenOrig, sh) + ', is one of the two to rule out first.';
   if (pk === 'final') return 'You reached the final two: ' + originalToDisplay(chosenOrig, sh) + ' against ' + originalToDisplay(q.correct, sh) + '.';
-  if (chosenOrig && chosenOrig === runnerUpLetter(q)) return 'You picked the runner-up. That’s the trap.';
+  if (chosenOrig && chosenOrig === runnerUpLetter(q)) return 'You picked the closest wrong choice. That’s the trap.';
   if (detectMindsetIssue(q, chosenOrig)) return 'That’s the implementer’s move. Auditors assess and report.';
   return 'Here’s the idea to take with you.';
 }
@@ -17492,7 +17529,10 @@ function showResult(chosen, correct, timeout, info) {
 
   // 6. Footer: one full-width Next question (sticky on phones). Save sits in
   //    the header, beside More (premium pass 2.6).
-  var footHtml = '<div class="vr-foot">'
+  // From 1240px the three moves are only in the margin, after Next in the
+  // reading order: one link to them, shown on keyboard focus (vrMovesMode).
+  var footHtml = '<a class="sr-only sr-only-focusable vr-skip-moves" href="#srhMoves" onclick="return vrSkipToMoves(event)">Three moves for this question, in the margin</a>'
+    + '<div class="vr-foot">'
     + '<button type="button" class="vr-next" id="vrNext" onclick="nextQ()">Next question' + ico('arrow-right', 18) + '</button>'
     + '</div>';
 
@@ -17666,11 +17706,13 @@ function wsEarlySignHtml(rows) {
     + '<button class="ws-prac-btn" onclick="' + go + '">Practice &rarr;</button>'
     + '</div>' + later;
 }
+// The page's title (v12.48: every page has one h1).
+var WS_TITLE_HTML = '<h1 class="ph-title" id="wsTitle" tabindex="-1">Weak spots</h1>';
 function renderWeakSpots() {
   var area = document.getElementById('wsArea');
   if (S.score.t === 0) {
     // Decision 7 (e) — Review tab, no sessions
-    area.innerHTML = emptyState({
+    area.innerHTML = WS_TITLE_HTML + emptyState({
       kind: 'chart',
       heading: 'No practice data yet.',
       body: "Complete a practice session or mock exam to see how each domain is going.",
@@ -17693,9 +17735,9 @@ function renderWeakSpots() {
     var r = x.r;
     var below = r.enough && r.pct < DOMAIN_TARGET_PCT;
     var line = !r.n ? 'not started'
-      : !r.enough ? 'too few yet &middot; ' + escapeHtml(String(r.n)) + ' answered'
+      : !r.enough ? 'too few yet &middot; <span class="ws-n">' + escapeHtml(String(r.n)) + ' answered</span>'
       : (below ? '<span class="ws-band c">' + r.band + ' &middot; below ' + DOMAIN_TARGET_PCT + '</span>' : '<span class="ws-band">' + r.band + '</span>')
-        + ' &middot; ' + escapeHtml(String(r.n)) + ' answered';
+        + ' &middot; <span class="ws-n">' + escapeHtml(String(r.n)) + ' answered</span>';
     return '<div class="ws-row">'
       + '<span class="ws-label"><span><span class="dom-dot" style="background:' + x.info.color + '"></span>' + 'D' + x.d + ' ' + x.info.short + '</span>'
       + '<span class="ws-count">' + line + '</span></span>'
@@ -17718,9 +17760,9 @@ function renderWeakSpots() {
       }).join('')
     : (anyRead ? '<div class="ws-quiet">No domain is below the ' + DOMAIN_TARGET_PCT + '% target. Keep building coverage across all five.</div>' : wsEarlySignHtml(rows));
 
-  area.innerHTML = '<button class="train-ws-btn" onclick="startWeakSpotsDrill()">Train my weak spots <span class="train-ws-badge">20 questions</span></button>'
+  area.innerHTML = WS_TITLE_HTML + '<button class="train-ws-btn" onclick="startWeakSpotsDrill()">Train my weak spots <span class="train-ws-badge">20 questions</span></button>'
     + '<div class="ws-panel"><div class="ws-title">Domain performance</div>'
-    + '<p class="ws-quiet">From your practice answers: an estimate, not a prediction. ' + escapeHtml(bandsLine()) + ' Under ' + DOMAIN_TARGET_PCT + ' it says Building.</p>'
+    + '<p class="ws-quiet">From your practice answers: an estimate, not a prediction. Building is under ' + DOMAIN_TARGET_PCT + ', Steady ' + DOMAIN_TARGET_PCT + ' to 79, Strong 80 and up. A domain is measured from ' + DOMAIN_READ_MIN + ' answers.</p>'
     + rowsHtml
     + '<div class="ws-sub-label">Where to focus</div>'
     + recsHtml + '</div>';
@@ -20269,7 +20311,7 @@ function renderGlossary() {
 
   var hero = '<div class="gloss-hero">'
     +   '<div class="gloss-hero-left">'
-    +     '<div class="gloss-title">Glossary</div>'
+    +     '<h1 class="gloss-title">Glossary</h1>'
     +     '<div class="gloss-sub">Master the language of information systems audit. Curated terms across audit, governance, development, operations and security &mdash; search a definition, filter by domain, or drill yourself with flashcards.</div>'
     +   '</div>'
     +   '<div class="gloss-hero-right">'
@@ -22272,6 +22314,14 @@ function toggleMockDetail(i) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
+    title: 'Polish for the new frame',
+    items: [
+      { cat: 'improved', text: 'Keyboard and screen reader users can jump straight to the three moves beside an answer, and every page now has a clear title.' },
+      { cat: 'fixed', text: 'Small layout and wording fixes on the answer screen, Today, Mock exam and Weak spots.' },
+    ],
+  },
+  {
+    version: 'v12.47',
     title: 'The three moves beside your answer',
     items: [
       { cat: 'improved', text: 'On wide screens, the three moves for every question now sit beside your answer, and the coach tells you when you picked a trap.' },

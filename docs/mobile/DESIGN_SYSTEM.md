@@ -2003,6 +2003,7 @@ The one risk is twee: tape and leaves stay this sparse (two strips of tape per s
 - **Reduce Motion.** Ink lines trace in (400 ms or less, `draw`), then fills settle (`fill`); a badge is pressed flat and its tape lands, with no bounce. Reduce Motion, or nothing new since the last look: the finished plate at once.
 - **Words.** Learner-facing copy never says "stem" (in this app it means a question's text; `copy-consistency.test.ts`): the chart is "one line of growth per area", "before it is measured". "Stem" is the developer's name for the chart's mark only.
 - **Screen readers.** A figure caption is a header ("Figure 5, Five areas, one scale"), so plates can be skipped between. A chart is one stop per mark (each area, left to right); its drawing is hidden. A label row is one stop ("Days to exam: 38").
+- **Figure numbers are one fixed register (settles O8; web v12.48 first, the phone in its next round).** Fig. 1 day one or a new learner · 2 Learn or Practice (per surface) · 3 Today · 4 the answer's three moves · 5 You or Progress areas · 6 Results · 7 Mock setup · 8 You record · 9 Study notes · 10 the plant or the Index. The number names the screen's plate, never a growth stage: Today is always Fig. 3 and the stage goes in its PLATE caption (the widget's growth-number figure is a phone follow-up). Lists inside a plate count 1, 2, 3, and "Question 3" stays.
 
 ### 21.2 The kit (`components/fieldguide/`, in build order)
 

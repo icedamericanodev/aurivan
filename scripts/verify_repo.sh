@@ -260,7 +260,7 @@ vm.runInContext(src, ctx);
 const LINES = [
   ['elim', /^Your pick, [A-D], is one of the two to rule out first\.$/, 'Your pick, X, is one of the two to rule out first.'],
   ['final', /^You reached the final two: [A-D] against [A-D]\.$/, 'You reached the final two: X against Y.'],
-  ['runner', /runner-up/, 'You picked the runner-up. That’s the trap.'],
+  ['runner', /closest wrong choice/, 'You picked the closest wrong choice. That’s the trap.'],
   ['mindset', /implementer/, 'That’s the implementer’s move. Auditors assess and report.'],
   ['usual', /^Here’s the idea to take with you\.$/, 'Here’s the idea to take with you.']
 ];
