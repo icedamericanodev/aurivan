@@ -194,20 +194,20 @@
       "subtopic": "3B Testing and sampling. Testing human review",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "Policy requires a supervisor to review every courier deactivation a delivery platform's model recommends. Which test gives the IS auditor the BEST evidence that this review operates effectively?",
+      "question": "Policy requires a supervisor to review every courier deactivation a delivery platform's model recommends, and every logged deactivation carries an approval. Which test gives the IS auditor the BEST evidence that the review operates effectively?",
       "options": {
         "A": "Inspect the review procedure and each supervisor's training record",
         "B": "Confirm every logged deactivation carries a supervisor's approval",
         "C": "Rerun sampled recommendations through the current production model",
-        "D": "Analyze override rates and time spent on each review"
+        "D": "Analyze override rates and review times across all deactivations"
       },
       "correct": "D",
       "key_concept": "Human oversight of AI is tested by reviewer behavior, such as override rates and review time, not by sign-offs alone.",
       "pre_read": "Ask what each test would show if supervisors approved every case without reading it.",
-      "correct_explanation": "Policy puts a supervisor on every deactivation, but sign-offs alone cannot show that anyone judged the case. Override rates and time spent per review show whether supervisors engage with recommendations or defer to the model, the pattern called automation bias. Confirming that every deactivation carries an approval, option B, is the runner-up: it proves the step happened, not that oversight works.",
+      "correct_explanation": "Every deactivation already carries an approval, but sign-offs alone cannot show that anyone judged the case. Override rates and time spent per review show whether supervisors engage with recommendations or defer to the model, the pattern called automation bias. Confirming that every deactivation carries an approval, option B, is the runner-up: it proves the step happened, not that oversight works.",
       "wrong_explanations": {
         "A": "Tempting because procedures and training support a control. But they show design and readiness, not how supervisors actually review over the period.",
-        "B": "Tempting because complete sign-offs look like an operating control. But a sign-off given in seconds can be a rubber stamp; it shows the step, not the judgment.",
+        "B": "Tempting because full coverage is a classic operating test. But approvals are already logged on every case; that proves the step happened, not that supervisors judged anything.",
         "C": "Tempting because reperformance is strong evidence. But it tests the model, not the supervisors, and today's model may differ from the one that decided."
       },
       "tips": [

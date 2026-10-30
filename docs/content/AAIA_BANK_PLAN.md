@@ -221,8 +221,23 @@ the notice is part of the description.
 |---|---|---|---|---|
 | Pilot (30 Oct 2026) | 20 | 20 | 20 | 60 |
 
-Pilot review, 30 Oct 2026: blind tests 20/20 in every domain (60/60 picks
-matched the keys). Findings fixed before merge are listed in the PR.
+Pilot review, 30 Oct 2026:
+- **Blind tests:** 60/60 picks matched the keys on the first pass. After the
+  fixes, every revised item was re-tested blind: 43/43, then 8/8 after the
+  cross-domain fixes.
+- **Standards audits and concept reviews** (one each per domain): all keys
+  correct, no lens leakage. Four HARD ERRORs, all fixed without changing a
+  key: a second defensible answer (D1 008); an incident-closure rule that
+  contradicted CISA (D2 notes and 020); an arithmetic slip (D3 017). About 40
+  PRECISION fixes: stem words echoed only in keys, subtopic labels that hinted
+  at keys, items a CISA holder could answer without AI knowledge, notes
+  examples that mirrored items, and who-decides wording aligned with CISA.
+- **Cross-domain gate:** no HARD ERRORs; 9 PRECISION fixes (one duplicate
+  lesson across domains, three items too close to CISA or AAIA items,
+  appetite/tolerance and audit-criteria wording made consistent).
+- **Carried to batch 2:** 2G.1 has no item yet; vary settings (travel and
+  pension settings are used); a few items stay answerable from general audit
+  sense (D2 007, 014, 017; D3 004, 011, 019) and are the first to re-angle.
 
 ## 10. Follow-ups outside this plan's scope
 
