@@ -4,6 +4,15 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v12.49] — Practice and mock results, redrawn
+
+### Improved
+- Practice now shows your pick as a clear plate, and each domain on the same scale with the 70 line.
+- Mock results now show how each area moved, the time and pace you kept, and your mistakes first.
+
+### Fixed
+- Drill your weak spots now skips domains where you are already strong.
+
 ## [v12.48] — Polish for the new frame
 
 ### Improved
