@@ -85,7 +85,7 @@
    "subtopic": "4.1 Network security. Virtual private networks",
    "difficulty": "application",
    "bloom_level": "Application",
-   "question": "A clinic manager tells a junior analyst that staff laptops are safe at home because every connection runs over the VPN. Which reply from the analyst is MOST accurate?",
+   "question": "A clinic's staff will work from home over the clinic's VPN, and the manager asks a junior analyst what it protects. Which answer is MOST accurate?",
    "options": {
     "A": "It encrypts traffic in transit but does not secure the laptop",
     "B": "It scans incoming files for malware before they reach the laptop",
@@ -162,7 +162,7 @@
     "A": "Catching known attacks through a larger signature library",
     "B": "Reading encrypted traffic content without the decryption keys",
     "C": "Flagging unusual behavior that matches no known signature",
-    "D": "Blocking attacks with no false positives or missed threats"
+    "D": "Removing the need for analysts to review its alerts"
    },
    "correct": "C",
    "key_concept": "Machine-learning monitors learn normal traffic and flag departures from it, catching new threats signatures miss, though with more false alarms.",
@@ -171,10 +171,10 @@
    "wrong_explanations": {
     "A": "Closest choice: more signatures do catch more known attacks. But that improves the existing method; the new tool's value is spotting behavior no signature describes.",
     "B": "Tempting because AI sounds powerful. But without the keys, encrypted content stays unreadable; models work from patterns such as timing, volume and destinations.",
-    "D": "Tempting because vendors promise accuracy. But learned models still raise false alarms and miss some attacks, so analysts must verify what they flag."
+    "D": "Tempting because automation promises to cut analyst workload. But learned models still raise false alarms and miss some attacks, so people must verify what they flag."
    },
    "tips": [
-    "Eliminate: B assumes AI can read encrypted content without keys, and D assumes a learned model never errs; both overstate machine learning.",
+    "Eliminate: B assumes AI can read encrypted content without the keys, and D assumes its alerts need no human review; learned models still make mistakes.",
     "Final two: C beats A because learning normal behavior can catch new threats; more signatures still find only attacks already known.",
     "Exam cue: signatures catch the known; behavior-based and AI tools catch the unusual, but they raise more false alarms that people must check."
    ],
@@ -193,11 +193,11 @@
    "subtopic": "4.1 Network security. Wi-Fi security",
    "difficulty": "foundational",
    "bloom_level": "Foundational",
-   "question": "A small accounting office is replacing its Wi-Fi access point, and every staff laptop supports WPA3. Which setting should the IT technician choose as BEST?",
+   "question": "A small accounting office is replacing its Wi-Fi access point, and every staff laptop supports the latest Wi-Fi security standard. Which setting should the IT technician choose as BEST?",
    "options": {
     "A": "WPA3 with a strong passphrase",
     "B": "WEP with a long hexadecimal key",
-    "C": "WPA2 with AES and a shared passphrase",
+    "C": "WPA2 with AES and a strong passphrase",
     "D": "An open network with its name hidden"
    },
    "correct": "A",
@@ -238,7 +238,7 @@
    },
    "correct": "D",
    "key_concept": "Controllers that run physical processes are patched only after their owner tests and schedules the fix, because untested patches or shutdowns can endanger people.",
-   "pre_read": "List what each option would do to the flaw and to the wards that depend on the air supply.",
+   "pre_read": "For each option, picture what would happen in the building over the next day.",
    "correct_explanation": "Controllers that run a physical process are patched only after testing, because an untested patch can crash them and stop the air supply. The analyst reports the flaw to the owner, who tests and schedules the fix and tightens isolation meanwhile. Shutting ventilation down is the runner-up: it removes the exposure, but operating rooms and isolation wards depend on that airflow to keep patients safe.",
    "wrong_explanations": {
     "A": "Tempting because the flaw is critical. But untested patches can crash controllers and halt a physical process; the owner tests and schedules them first.",
@@ -270,7 +270,7 @@
     "A": "On the staff network, behind the edge firewall",
     "B": "On its own segment, allowing only the traffic it needs",
     "C": "On the residents' Wi-Fi network, apart from staff systems",
-    "D": "On the staff network, with the network name hidden"
+    "D": "On the staff network, with its default password changed"
    },
    "correct": "B",
    "key_concept": "IoT devices often lack strong built-in security, so they go on their own segment with only the traffic they need allowed.",
@@ -279,10 +279,10 @@
    "wrong_explanations": {
     "A": "Tempting because the edge firewall blocks outside attackers. But once the hub is hijacked, that firewall cannot stop it reaching staff systems on the same network.",
     "C": "Closest choice: it does keep the hub away from staff systems. But every resident's device could then reach the hub that controls their doors.",
-    "D": "Tempting because a hidden name feels private. But hidden names are easy to reveal, and the hub would still share a network with staff systems."
+    "D": "Tempting because default passwords are a common smart-device weakness. But a hijacked hub would still share a network with staff systems."
    },
    "tips": [
-    "Eliminate: A trusts the edge firewall to stop a threat already inside, and D relies on a hidden network name, which free tools reveal.",
+    "Eliminate: A trusts the edge firewall to stop a threat already inside, and D fixes one weakness but leaves the hub on the staff network.",
     "Final two: B beats C because a dedicated segment exposes the hub to nothing it does not need; the residents' Wi-Fi puts it beside every resident's device.",
     "Exam cue: treat each smart device as an untrusted computer: give it a segment of its own and allow only the traffic it needs."
    ],
@@ -341,7 +341,7 @@
    "options": {
     "A": "Put the patient VLAN on a different IP address range",
     "B": "Turn on MAC address filtering for the patient Wi-Fi",
-    "C": "Filter the traffic where it is routed between the VLANs",
+    "C": "Filter traffic at the device that links the VLANs",
     "D": "Upgrade the patient Wi-Fi's encryption from WPA2 to WPA3"
    },
    "correct": "C",
@@ -373,7 +373,7 @@
    "subtopic": "4.2 Network security architecture. Micro-segmentation",
    "difficulty": "application",
    "bloom_level": "Application",
-   "question": "A council's 40 virtual servers share one data-center segment, and the infrastructure team wants each server to reach only the few systems it needs. Which approach BEST fits?",
+   "question": "A council's 40 virtual servers share one data-center segment, and the infrastructure team wants a breached server unable to reach the rest. Which approach BEST fits?",
    "options": {
     "A": "Add a second firewall at the council's internet edge",
     "B": "Group the servers into three VLANs, one per department",
@@ -383,10 +383,10 @@
    "correct": "D",
    "key_concept": "Micro-segmentation applies policy to each workload, so servers sharing a segment can reach only the systems they need.",
    "pre_read": "For each option, ask which traffic it controls and how finely.",
-   "correct_explanation": "Micro-segmentation sets policy for each workload, so every server can talk only to the systems it actually needs, even inside one shared segment. Department VLANs are the runner-up: they split the 40 servers into a few larger groups, but servers inside each VLAN could still reach each other freely, which misses the per-server goal.",
+   "correct_explanation": "Micro-segmentation sets policy for each workload, so every server can talk only to the systems it actually needs, even inside one shared segment. Department VLANs are the runner-up: they split the 40 servers into a few larger groups, but servers inside each VLAN still reach each other freely, so a breach can still spread within each group.",
    "wrong_explanations": {
     "A": "Tempting because firewalls control traffic. But an edge firewall filters traffic entering from the internet; it does not see traffic between servers inside the segment.",
-    "B": "Closest choice: VLANs do create smaller groups. But servers within each group still talk freely, and the goal is control for every individual server.",
+    "B": "Closest choice: VLANs do create smaller groups. But servers within each group still talk freely, so a breached server can reach every server in its VLAN.",
     "C": "Tempting because it watches traffic between servers. But an IDS raises alerts; it does not limit which systems each server can reach."
    },
    "tips": [
@@ -485,7 +485,7 @@
    "options": {
     "A": "Allow unrestricted outbound internet access from the training segment",
     "B": "Deny outbound internet traffic from the training segment",
-    "C": "Allow outbound traffic only to approved model and package sources",
+    "C": "Allow outbound traffic only to an approved list of sites",
     "D": "Move the training servers onto the campus office network"
    },
    "correct": "C",
@@ -553,7 +553,7 @@
    "subtopic": "4.3 Cloud security. Service models",
    "difficulty": "application",
    "bloom_level": "Application",
-   "question": "A council runs its permit app on a PaaS platform, and a critical flaw is found in an open-source library its developers bundled into the app. Who is MOST responsible for applying the fix?",
+   "question": "A council runs its permit app on a PaaS offering, and a critical flaw is found in an open-source library packaged inside the app. Who is MOST responsible for applying the fix?",
    "options": {
     "A": "The council's application development team",
     "B": "The library's open-source maintainers",
@@ -625,7 +625,7 @@
    "subtopic": "4.3 Cloud security. Deployment models",
    "difficulty": "foundational",
    "bloom_level": "Foundational",
-   "question": "A logistics firm rents cloud servers in a provider's data center, on hardware dedicated to the firm and shared with no other customer. Which deployment model should the junior analyst record as MOST accurate?",
+   "question": "A provider runs a cloud platform in its own data center for one logistics firm, and no other customer uses any part of it. Which deployment model should the junior analyst record as MOST accurate?",
    "options": {
     "A": "A public cloud",
     "B": "A private cloud",
@@ -634,10 +634,10 @@
    },
    "correct": "B",
    "key_concept": "Deployment models are defined by who shares the infrastructure, not where it sits; a private cloud serves one organization, on or off premises.",
-   "pre_read": "Note each fact the stem gives about the servers before matching a model.",
-   "correct_explanation": "A private cloud is infrastructure provisioned for one organization's exclusive use. It may be run by a third party and sit off premises, as here. The public cloud is the runner-up because the servers sit in a provider's data center, but public means the infrastructure is open to any customer, and this hardware serves only the logistics firm.",
+   "pre_read": "Note each fact the stem gives about the platform before matching a model.",
+   "correct_explanation": "A private cloud is infrastructure provisioned for one organization's exclusive use. It may be run by a third party and sit off premises, as here. The public cloud is the runner-up because the platform sits in a provider's data center, but public means the infrastructure is open to any customer, and this platform serves only the logistics firm.",
    "wrong_explanations": {
-    "A": "Closest choice: the hardware does sit in a provider's data center. But public means open to any customer; dedicated hardware for one firm is private.",
+    "A": "Closest choice: the platform does sit in a provider's data center. But public means open to any customer; a cloud used by one firm alone is private.",
     "C": "Tempting because a provider runs it for clients. But a community cloud serves a group of organizations with shared needs, not one firm.",
     "D": "Tempting because two parties, the firm and the provider, are involved. But hybrid means combining two or more deployment models, such as private with public."
    },
@@ -661,25 +661,25 @@
    "subtopic": "4.3 Cloud security. Cloud access security brokers",
    "difficulty": "analysis",
    "bloom_level": "Analysis",
-   "question": "A CASB report shows dozens of law-firm staff uploading client files to an unapproved personal file-sharing app; the security manager decides what cloud use is allowed. What should the junior analyst do FIRST?",
+   "question": "A CASB report shows dozens of law-firm staff uploading client files to an unapproved personal file-sharing app; the security manager owns the firm's cloud-use policy. What should the junior analyst do FIRST?",
    "options": {
     "A": "Have the network team close port 443 for those staff",
     "B": "Approve the app after confirming that it uses TLS encryption",
-    "C": "Have the CASB block uploads to the app straight away",
-    "D": "Send the CASB findings to the security manager for a decision"
+    "C": "Block uploads through the CASB, then tell the security manager",
+    "D": "Report the CASB findings and usage data to the security manager"
    },
    "correct": "D",
    "key_concept": "A CASB reveals and can control cloud app use, but the policy owner decides what use is allowed and whether to block it.",
    "pre_read": "Note what the report shows and what each option would change for the firm.",
-   "correct_explanation": "The CASB has done its job: it found shadow IT, with client files leaving for an unapproved app. Deciding what cloud use is allowed, and whether to block it, belongs to the security manager, so the analyst reports the findings with the usage data. Blocking uploads through the CASB is the runner-up: it is the right tool, but using it now makes a policy decision the analyst does not own.",
+   "correct_explanation": "The CASB has done its job: it found shadow IT, with client files leaving for an unapproved app. Deciding what cloud use is allowed belongs to the security manager, so the analyst reports the findings with the usage data. Blocking first and telling the manager afterward is the runner-up: it uses the right tool, but it makes the owner's policy call for them.",
    "wrong_explanations": {
     "A": "Tempting because firewalls block traffic. But port 443 carries nearly all secure web traffic; closing it breaks every site and cannot single out one app.",
     "B": "Tempting because TLS protects files in transit. But client files would still sit in personal accounts, outside the firm's control and policy.",
-    "C": "Closest choice: the CASB can block uploads to that app. But choosing to block is the security manager's policy call, and the analyst's first job is to report."
+    "C": "Closest choice: the CASB can block uploads, and the manager hears afterward. But blocking is the security manager's policy call, so the analyst reports first."
    },
    "tips": [
     "Eliminate: A blocks a port that carries nearly all web traffic, and B treats encryption in transit as approval to store client files outside the firm.",
-    "Final two: D beats C because the security manager decides allowed cloud use; the analyst reports first rather than making that call alone.",
+    "Final two: D beats C because the security manager decides allowed cloud use; blocking first, even with a report afterward, makes that call for them.",
     "Exam cue: a CASB finds and can control cloud app use, but the policy owner decides what is allowed. Report findings to the owner."
    ],
    "framework_ref": "NIST SP 800-215 Section 3.1 (Cloud Access Security Broker (CASB))",
@@ -697,25 +697,25 @@
    "subtopic": "4.3 Cloud security. AI workloads",
    "difficulty": "application",
    "bloom_level": "Application",
-   "question": "A clinic plans to use a cloud provider's managed AI service to summarize patient visit notes. Under shared responsibility, which duty BEST stays with the clinic?",
+   "question": "A courier firm plans to use a cloud provider's managed AI service to sort complaint emails that include customers' names and addresses. Under shared responsibility, which duty BEST stays with the firm?",
    "options": {
-    "A": "Patching the servers that run the provider's AI model",
-    "B": "Protecting the provider's base model from tampering",
-    "C": "Deciding which patient data staff may send to the service",
-    "D": "Physically securing the data centers that host the AI service"
+    "A": "Patching the servers that run the AI model",
+    "B": "Protecting the base model's weights from tampering",
+    "C": "Deciding which records staff may send to the service",
+    "D": "Physically securing the data centers that host the service"
    },
    "correct": "C",
    "key_concept": "With a managed AI service, the provider secures the platform and base model; the customer owns its data, access and how the service is used.",
    "pre_read": "Sort each duty by which party controls that part of the service day to day.",
-   "correct_explanation": "A managed AI service is still a cloud service: the provider secures its servers, data centers and base model, and the clinic owns its data and how the service is used. Deciding which patient data may go to the service is therefore the clinic's job. Protecting the base model is the runner-up because model integrity matters, but the provider controls that model, not the clinic.",
+   "correct_explanation": "A managed AI service is still a cloud service: the provider secures its servers, data centers and base model, and the firm owns its data and how the service is used. Deciding which customer records may go to the service is therefore the firm's job. Protecting the base model is the runner-up because model integrity matters, but the provider controls that model, not the firm.",
    "wrong_explanations": {
     "A": "Tempting because unpatched servers put data at risk. But in a managed service the provider runs and patches the servers beneath the AI model.",
-    "B": "Closest choice: a tampered model would harm the clinic. But the base model runs on the provider's platform, so protecting its integrity is the provider's duty.",
-    "D": "Tempting because physical security matters for patient data. But the provider secures its own data centers in every cloud service model."
+    "B": "Closest choice: a tampered model would harm the firm. But the base model runs on the provider's platform, so protecting its integrity is the provider's duty.",
+    "D": "Tempting because physical security matters for customer data. But the provider secures its own data centers in every cloud service model."
    },
    "tips": [
     "Eliminate: A and D are platform duties; in a managed service the provider patches its own servers and guards its own data centers.",
-    "Final two: C beats B because the clinic controls its own data and use; the provider controls the base model it offers.",
+    "Final two: C beats B because the firm controls its own data and use; the provider controls the base model it offers.",
     "Exam cue: treat an AI service like any cloud service: ask who controls each layer, and keep data and usage decisions with the customer."
    ],
    "framework_ref": "NIST SP 800-53 Rev. 5 SA-9 (External System Services); NIST SP 800-144 Section 4.7 (Data Protection)",
