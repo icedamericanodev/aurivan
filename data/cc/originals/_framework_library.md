@@ -121,7 +121,7 @@ were removed on 29 Oct 2026, audit pilot 2, S7.)
 - NIST SP 800-53 Rev. 5 AT-2(6) (Literacy Training and Awareness | Cyber Threat Environment)
   - Verified, 30 Oct 2026, against sp800-53r5-catalog.json (NIST OSCAL catalog, release 5.2.0; title and text): "Provide literacy training on the cyber threat environment"; the discussion says "threat literacy training by the organization is dynamic" because threats change. Fits updating awareness content for AI-written lures. Used in cc_d2_038.
 - NIST SP 800-53 Rev. 5 PM-6 (Measures of Performance)
-  - Verified, 30 Oct 2026, against sp800-53r5-catalog.json (NIST OSCAL catalog, release 5.2.0; title and text): "Develop, monitor, and report on the results of information security and privacy measures of performance"; organizations "consider aligning measures of performance with the organizational risk tolerance". Fits revising KRI thresholds after the board lowers its tolerance. Used in cc_d2_044.
+  - Verified, 30 Oct 2026, against sp800-53r5-catalog.json (NIST OSCAL catalog, release 5.2.0; title and text): "Develop, monitor, and report on the results of information security and privacy measures of performance"; organizations "consider aligning measures of performance with the organizational risk tolerance". Fits revising KRI thresholds after leaders lower the tolerance. Used in cc_d2_044.
 - NIST SP 800-53 Rev. 5 SI-12 (Information Management and Retention)
   - Verified, 30 Oct 2026, against sp800-53r5-catalog.json (NIST OSCAL catalog, release 5.2.0; title and text): manage and retain information "in accordance with applicable laws, executive orders, directives, regulations, policies, standards, guidelines and operational requirements"; the discussion says retention requirements cover the full information life cycle. Fits destroying expired files on schedule while honoring a legal hold. Used in cc_d5_021.
 - NIST SP 800-53 Rev. 5 SC-45(1) (System Time Synchronization | Synchronization with Authoritative Time Source)
@@ -177,7 +177,7 @@ were removed on 29 Oct 2026, audit pilot 2, S7.)
   - Verified 29 Oct 2026 (local copy of the NIST PDF). Cited by title; it covers awareness, role-based training and learning culture.
 - NIST SP 800-50 Rev. 1 Section 1.6.2 (Senior Leadership: leading by example and participating in their own training)
   - Verified, 30 Oct 2026, against sp800-50r1.txt (nvlpubs.nist.gov): "senior leaders must champion workforce requirements by: Leading by example and participating in their own CPLP training, as required". Fits fixing senior managers' absence from required awareness sessions first. Used in cc_d2_035.
-- NIST SP 800-50 Rev. 1 Section 2.7.2 (Experiential Learning: phishing exercises designed to avoid negative impacts and never punitive)
+- NIST SP 800-50 Rev. 1 Section 2.7.2 (Experiential Learning: phishing exercises reviewed in advance, run at random and never punitive)
   - Verified, 30 Oct 2026, against sp800-50r1.txt (nvlpubs.nist.gov): phishing exercises should be designed and reviewed "to avoid negative impacts", because "employees may not like being tricked", and "These activities should not be punitive, nor should any employee be called out for their response." Fits replacing a job-cut lure during a restructuring. Used in cc_d2_040.
 
 ### SP 800-55 Vol. 1, Measurement Guide for Information Security: Identifying and Selecting Measures (Dec 2024)
@@ -194,6 +194,8 @@ were removed on 29 Oct 2026, audit pilot 2, S7.)
 - NIST AI 100-1 (AI RMF 1.0) MANAGE 4.1 (post-deployment monitoring plans, including capturing user input, appeal and override)
 - NIST AI 600-1 (Generative AI Profile) Section 2.8 (Information Integrity: deepfakes and content that impersonates others)
   - Verified 29 Oct 2026 (local copies of the NIST PDFs). Wording paraphrases the subcategory text; MANAGE 4.1 names "appeal and override" explicitly.
+- NIST AI 100-1 (AI RMF 1.0) MANAGE 3.1 (AI risks and benefits from third-party resources are regularly monitored, and risk controls are applied and documented)
+  - Verified, 30 Oct 2026, against ai100-1.txt (nvlpubs.nist.gov), MANAGE 3 table: third-party AI risks are monitored and controls applied and documented. Fits a vendor terms change reopening an AI tool's approval. Used in cc_d2_026.
 - NIST AI 100-1 (AI RMF 1.0) GOVERN 3.2 (roles and responsibilities for human-AI configurations and oversight of AI systems are defined)
   - Verified, 30 Oct 2026, against ai100-1.txt (nvlpubs.nist.gov): "Policies and procedures are in place to define and differentiate roles and responsibilities for human-AI configurations and oversight of AI systems." Fits keeping staff review of high-impact AI replies. Used in cc_d1_040.
 - NIST AI 600-1 (Generative AI Profile) Section 2.9 (Information Security: generative AI may augment attacks such as hacking, malware and phishing)

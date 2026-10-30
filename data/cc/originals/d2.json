@@ -773,21 +773,21 @@
       "options": {
         "A": "Mark the outcome not applicable and record the reason for review",
         "B": "Write a secure coding policy so that every outcome has a control",
-        "C": "Leave the outcome out of the mapping without adding a note",
+        "C": "Ask the firm's owner to accept the outcome as a risk",
         "D": "Switch to another framework that has no software outcomes"
       },
       "correct": "A",
       "key_concept": "Frameworks are tailored to the organization: an item that does not apply may be excluded, with the reason recorded for review.",
       "pre_read": "Notice what the firm does and does not do, and ask what a later reviewer would need to see.",
-      "correct_explanation": "Frameworks expect tailoring: an outcome that does not fit the organization can be excluded, but the reason is written down so reviewers can see it was a decision, not an oversight. Leaving the outcome out silently is the runner-up: the mapping looks the same today, but nobody can later tell a deliberate exclusion from a gap, and the reason is never re-checked if the firm starts writing code.",
+      "correct_explanation": "Frameworks expect tailoring: an outcome that does not fit the organization can be excluded, with the reason written down so reviewers can see it was a decision, not an oversight. Asking the owner to accept it as a risk is the runner-up: owner sign-off feels proper, but acceptance is for a real risk left untreated, and a firm that writes no software carries no secure-development risk to accept.",
       "wrong_explanations": {
         "B": "Tempting because full coverage looks thorough. But frameworks expect tailoring; a policy for work the firm never does adds paperwork, not protection.",
-        "C": "Closest choice: excluding the outcome is right. But without a recorded reason, nobody can later tell a deliberate exclusion from a missed control.",
+        "C": "Closest choice: involving the owner feels proper. But acceptance is for a real risk left untreated; the firm writes no software, so this outcome simply does not apply.",
         "D": "Tempting because a better fit sounds tidy. But every framework has items that will not apply; tailoring, not switching, is the normal answer."
       },
       "tips": [
         "Eliminate: B treats the framework as all-or-nothing, and D swaps frameworks over one item, though every framework is tailored to fit.",
-        "Final two: A beats C because every exclusion needs a recorded reason; a silent gap looks like a missed control.",
+        "Final two: A beats C because risk acceptance is for a real risk left untreated; an outcome that cannot apply is tailored out, with the reason recorded.",
         "Exam cue: frameworks are tailored, not swallowed whole. Not applicable is a valid answer when the reason is written down for review."
       ],
       "framework_ref": "NIST CSF 2.0 Section 3.1 (CSF Profiles: Organizational Profiles are used to understand, tailor, assess, prioritize and communicate outcomes); NIST SP 800-37 Rev. 2 Task S-2 (Control Tailoring)",
@@ -796,7 +796,7 @@
         "Statement of applicability",
         "Framework mapping"
       ],
-      "_provenance": "Authored from concept: 'tailoring is expected, but every exclusion needs a recorded reason' (notes 2.1.5 Choosing and Mapping Frameworks in GRC). Angle: tailoring an inapplicable outcome, not the notes example of a crosswalk between two frameworks. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 2, 30 Oct 2026.",
+      "_provenance": "Authored from concept: 'tailoring is expected, but every exclusion needs a recorded reason' (notes 2.1.5 Choosing and Mapping Frameworks in GRC). Angle: tailoring an inapplicable outcome, not the notes example of a crosswalk between two frameworks. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 2, 30 Oct 2026. Standards audit fix (30 Oct 2026): runner-up is no longer a subset of the key.",
       "style_version": 2
     },
     {
@@ -807,7 +807,7 @@
       "bloom_level": "Application",
       "question": "While updating an airport's risk register, a junior analyst finds a risk the IT director accepted 18 months ago, with a 12-month review date that has passed. What should the analyst do FIRST?",
       "options": {
-        "A": "Mark the risk as closed in the register",
+        "A": "Ask the IT director to mark the risk closed",
         "B": "Set the review date another 12 months ahead",
         "C": "Rate the risk as high until it is reviewed",
         "D": "Flag the overdue review to the IT director"
@@ -817,12 +817,12 @@
       "pre_read": "Notice who accepted the risk and what the review date was for. Ask whose decision a renewal would be.",
       "correct_explanation": "Accepting a risk is a decision for a period, not forever: it carries a reason and a review date because threats, systems and tolerance change. The IT director owns the acceptance, so the analyst flags the overdue review to them. Moving the date forward is the runner-up: it looks like routine housekeeping, but it re-accepts the risk on the owner's behalf without anyone checking it.",
       "wrong_explanations": {
-        "A": "Tempting because acceptance sounds final. But an accepted risk stays open and needs regular review; closing it hides a risk the airport still carries.",
+        "A": "Tempting because acceptance sounds final. But an accepted risk stays open with a review date; closing it, even with the owner's agreement, hides a risk the airport still carries.",
         "B": "Closest choice: the register will need a new date. But only the risk owner can re-accept a risk; moving the date quietly renews it unchecked.",
         "C": "Tempting because caution feels safe. But a rating comes from assessing likelihood and impact; an overdue review is not new evidence of either."
       },
       "tips": [
-        "Eliminate: A treats acceptance as closing the risk, and C changes the rating without any new assessment of likelihood or impact.",
+        "Eliminate: A closes an accepted risk, though accepted risks stay open for review, and C changes the rating without any new assessment of likelihood or impact.",
         "Final two: D beats B because re-accepting a risk is the owner's decision; a new date entered by the analyst renews it with no review.",
         "Exam cue: accepted risks stay on the register with an owner, a reason and a review date. When the date passes, the owner decides again."
       ],
@@ -913,34 +913,34 @@
       "subtopic": "2.1 GRC. Governing AI use",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A human resources coordinator asks an IT support analyst whether the approved AI writing assistant, cleared for internal data, may summarize confidential disciplinary files. What is the analyst's BEST answer?",
+      "question": "The vendor of an accounting firm's approved AI writing assistant changes its terms so business customers' prompts may train its models. What should the IT support analyst who spots the notice do FIRST?",
       "options": {
-        "A": "Yes, because the assistant is on the approved tools list",
-        "B": "No, because the files are above the level it is cleared for",
-        "C": "Yes, provided the coordinator checks each summary before use",
-        "D": "No, because AI tools should not handle human resources work"
+        "A": "Keep using the assistant, since it remains on the approved list",
+        "B": "Report the new terms to the security team for a fresh review",
+        "C": "Uninstall the assistant from every staff laptop today",
+        "D": "Under the new terms, tell staff to leave client names out"
       },
       "correct": "B",
-      "key_concept": "An approved AI tool is approved for named data types; data above its clearance needs a tool approved for that level.",
-      "pre_read": "Notice two facts: what the tool is cleared for and how the files are classified. Compare them.",
-      "correct_explanation": "Approval covers a tool for named data types, not for everything. The assistant is cleared for internal data and disciplinary files are confidential, so this use falls outside its approval; the coordinator can ask for a tool cleared for that level through the request route. The approved-list answer is the runner-up: it is half the rule, since the list also sets which data each tool may handle.",
+      "key_concept": "An AI tool's approval rests on the facts checked at the time; when vendor terms, data or purpose change, the use is reviewed again.",
+      "pre_read": "Notice what has changed since the tool was approved, and what that change means for the firm's data.",
+      "correct_explanation": "An approval rests on the facts checked at the time, including how the vendor treats prompts. A change that lets the firm's prompts train the vendor's models reopens that decision, so the analyst reports it for a fresh review by the security team and data owners. Telling staff to leave client names out is the runner-up: it reduces exposure, but it sets data rules the analyst does not own and leaves other client details flowing.",
       "wrong_explanations": {
-        "A": "Closest choice: the tool is approved. But approval names the data it may handle, and confidential files sit above its internal-only clearance.",
-        "C": "Tempting because checking AI output is part of the policy. But reviewing summaries afterward does nothing about confidential files already sent to the tool.",
-        "D": "Tempting because a ban feels safe. But AI governance sets approved tools and data limits; a blanket ban pushes staff toward unapproved tools."
+        "A": "Tempting because the tool is still on the list. But approval was based on the old terms; once prompts may train the vendor's models, that decision needs a fresh review.",
+        "C": "Tempting because removal stops any new exposure. But withdrawing an approved tool is the owners' decision, not a support analyst's, and the review may simply add limits.",
+        "D": "Closest choice: it cuts some exposure at once. But the analyst does not set data rules for the tool, and client figures and other details would still reach the vendor."
       },
       "tips": [
-        "Eliminate: C checks the output but not the data sent in, and D bans a whole function's AI use instead of applying data limits.",
-        "Final two: B beats A because approval is for a tool and a data level together; confidential files exceed what this tool is cleared for.",
-        "Exam cue: for any AI request, check two things: is the tool approved, and is this data allowed in it? Both answers must be yes."
+        "Eliminate: A treats an approval as permanent though the facts behind it changed, and C withdraws an approved tool, which is the owners' call, not the analyst's.",
+        "Final two: B beats D because new vendor terms reopen the approval; a workaround the analyst invents sets data rules they do not own.",
+        "Exam cue: an AI approval rests on the facts at the time. When the vendor's terms, the data or the purpose change, send the use back for review."
       ],
-      "framework_ref": "ISO/IEC 27002:2022 Control 5.10 (Acceptable use of information and other associated assets); NIST SP 800-53 Rev. 5 PL-4 (Rules of Behavior)",
+      "framework_ref": "NIST AI 100-1 (AI RMF 1.0) MANAGE 3.1 (AI risks and benefits from third-party resources are regularly monitored, and risk controls are applied and documented); NIST SP 800-53 Rev. 5 SA-9 (External System Services)",
       "related_concepts": [
-        "AI acceptable use",
-        "Approved tools list",
-        "Data classification"
+        "AI vendor terms",
+        "Approval review",
+        "Third-party AI risk"
       ],
-      "_provenance": "Authored from concept: 'once a tool is on the approved list, any work data may go into it (exam trap)' (notes 2.1.8 Governing AI Use). Angle: data limits on an approved tool; the pilot item tests an unapproved tool. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 2, 30 Oct 2026.",
+      "_provenance": "Authored from concept: 'an AI tool's approval is reviewed again when the vendor's terms, the data or the purpose change' (notes 2.1.8 Governing AI Use). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 2, 30 Oct 2026. Standards audit fix (30 Oct 2026): replaced an item that duplicated cc_d5_026 (data level on an approved tool).",
       "style_version": 2
     },
     {
@@ -1021,9 +1021,9 @@
       "subtopic": "2.2 Redundancy. Backing up AI systems",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A college's admissions chatbot runs on a tuned model with its own prompts and settings, but backups cover only its document library. Which addition BEST lets the IT technician restore the service?",
+      "question": "A college's admissions chatbot runs on a tuned AI model and answers from a document library, which is backed up nightly. Which addition BEST lets the IT technician restore the same service?",
       "options": {
-        "A": "Logs of every conversation users have had with it",
+        "A": "Logs of every answer the model has given to users",
         "B": "A second copy of the document library, stored offsite",
         "C": "Versioned copies of the model, its prompts and its settings",
         "D": "A faster server to rebuild the chatbot quickly"
@@ -1033,7 +1033,7 @@
       "pre_read": "List what makes the chatbot answer the way it does, then compare that list with what the backups cover.",
       "correct_explanation": "An AI service is rebuilt from more than its data: the tuned model, its prompts and its settings all shape the answers, and only matching versions restore the same behavior. Backing up these versions closes the gap. An offsite copy of the library is the runner-up: it follows the 3-2-1 rule, but it protects what is already backed up and still leaves the model unrecoverable.",
       "wrong_explanations": {
-        "A": "Tempting because chat logs record what the chatbot said. But logs show past answers; they cannot rebuild the model or the settings behind them.",
+        "A": "Tempting because logs record what the model said. But past answers cannot rebuild the model version, prompts or settings that produced them.",
         "B": "Closest choice: an offsite copy is good practice. But it protects the library, which is already backed up, and leaves the model and settings unrecoverable.",
         "D": "Tempting because speed matters in recovery. But a fast server with nothing to restore onto it rebuilds an empty service."
       },
@@ -1057,7 +1057,7 @@
       "subtopic": "2.2 Redundancy. AI monitoring and resilience",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A regional airline's disaster recovery plan restores booking and check-in at the recovery site first, and its AI threat-monitoring tool a week later. What should the continuity coordinator recommend as BEST?",
+      "question": "Reviewing a regional airline's disaster recovery plan, the continuity coordinator sees booking and check-in restored first at the recovery site and the AI threat-monitoring tool a week later. What should they recommend as BEST?",
       "options": {
         "A": "Keep the plan's order and restore monitoring after a week",
         "B": "Rely on the recovery site's firewall until the monitoring returns",
@@ -1093,11 +1093,11 @@
       "subtopic": "2.2 Redundancy. BC and DR plans",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A fire alarm sounds while a technician at a printing plant is swapping backup drives, and the only current offsite copy sits in a cabinet across the room. What should the technician do FIRST?",
+      "question": "A fire alarm sounds while a technician at a printing plant is swapping backup drives, and the drives due offsite, the only current copy, sit across the room. What should the technician do FIRST?",
       "options": {
         "A": "Finish the swap, then leave by the nearest exit",
         "B": "Leave by the nearest exit and go to the assembly point",
-        "C": "Collect the drives from the cabinet, then leave",
+        "C": "Collect the drives from across the room, then leave",
         "D": "Leave by the nearest exit, then return for the drives"
       },
       "correct": "B",
@@ -1129,7 +1129,7 @@
       "subtopic": "2.2 Redundancy. Recovery objectives",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A ticket seller's maximum tolerable downtime (MTD) is 12 hours; recovery takes 6 hours to restore systems and 4 to check orders before selling. Which finding should the continuity planner record as MOST accurate?",
+      "question": "A ticket seller's maximum tolerable downtime (MTD) is 12 hours; recovery takes 6 hours to restore systems and 4 hours to check orders before selling. Which finding should the continuity planner record as MOST accurate?",
       "options": {
         "A": "The plan meets the MTD, with 2 hours to spare",
         "B": "The plan meets the MTD, with 6 hours to spare",
@@ -1165,20 +1165,20 @@
       "subtopic": "2.2 Redundancy. Backups",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A film studio runs a full backup each Sunday night and a differential backup every other night, and its file server fails on Thursday morning. Which backups are BEST for the IT technician to restore?",
+      "question": "A studio takes a full backup every Sunday night and a differential on all other nights. Its server fails Thursday morning; which restore is MOST efficient for the IT technician to recover Wednesday night's data?",
       "options": {
-        "A": "Sunday's full backup only",
+        "A": "Sunday's full backup",
         "B": "Sunday's full and the Monday, Tuesday and Wednesday differentials",
-        "C": "Wednesday's differential backup only",
+        "C": "Wednesday's differential backup",
         "D": "Sunday's full and Wednesday's differential"
       },
       "correct": "D",
       "key_concept": "A differential backup holds all changes since the last full, so a restore needs the full plus only the latest differential.",
       "pre_read": "Recall what each differential backup contains, counted from which earlier backup.",
-      "correct_explanation": "A differential backup holds every change since the last full backup, so Wednesday's differential already includes Monday's and Tuesday's changes. Restoring Sunday's full and then Wednesday's differential brings the server back to Wednesday night. Restoring all three differentials is the runner-up: that is the incremental rule, and here it repeats work the last differential already covers, which only lengthens the restore.",
+      "correct_explanation": "A differential backup holds every change since the last full backup, so Wednesday's differential already includes Monday's and Tuesday's changes. Restoring Sunday's full and then Wednesday's differential brings the server back to Wednesday night. Restoring all three differentials is the runner-up: it reaches the same state, but that is the incremental rule, and here it repeats work the last differential already covers, which only lengthens the restore.",
       "wrong_explanations": {
         "A": "Tempting because a full backup holds everything. But it holds everything as of Sunday; changes from Monday to Wednesday would be lost.",
-        "B": "Closest choice: it would end in the same state. But each differential already holds every change since Sunday, so the earlier two only add restore time.",
+        "B": "Closest choice: it reaches the same Wednesday state. But each differential already holds every change since Sunday, so the two earlier ones only add restore time.",
         "C": "Tempting because it is the newest copy. But a differential holds only changes since the full backup; without Sunday's full, most files are missing."
       },
       "tips": [
@@ -1192,16 +1192,16 @@
         "Incremental backup",
         "Restore sets"
       ],
-      "_provenance": "Authored from concept: 'an incremental restore needs the full plus every incremental; a differential restore needs the full plus the latest differential' (notes 2.2.5 Backups: Types, the 3-2-1 Rule and Restore Testing). Angle: backup types; the pilot item tests restore testing and the notes example covers immutable copies. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 2, 30 Oct 2026.",
+      "_provenance": "Authored from concept: 'an incremental restore needs the full plus every incremental; a differential restore needs the full plus the latest differential' (notes 2.2.5 Backups: Types, the 3-2-1 Rule and Restore Testing). Angle: backup types; the pilot item tests restore testing and the notes example covers immutable copies. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 2, 30 Oct 2026. Standards audit fix (30 Oct 2026): stem asks for the most efficient restore and no longer says 'every other night'.",
       "style_version": 2
     },
     {
       "id": "cc_d2_034",
       "domain": 2,
       "subtopic": "2.2 Redundancy. Recovery sites",
-      "difficulty": "foundational",
-      "bloom_level": "Foundational",
-      "question": "A parts distributor's business impact analysis sets a one-day recovery time objective (RTO) for orders, and leaders want the cheapest site that meets it. Which site should the IT manager propose as BEST?",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IT manager at a parts distributor that runs orders at head office must pick the cheapest site meeting a two-day recovery time objective (RTO) from its business impact analysis. Which site is BEST?",
       "options": {
         "A": "A hot site with live copies of current data",
         "B": "A cold site that has space, power and cooling only",
@@ -1211,15 +1211,15 @@
       "correct": "C",
       "key_concept": "Choose the least costly recovery site whose readiness still meets the RTO; readier sites cost more to keep.",
       "pre_read": "Note the target recovery time and the cost limit, then check each site against both.",
-      "correct_explanation": "Recovery sites trade readiness for cost. A warm site has equipment and connections in place, so restoring data can bring orders back within about a day, at medium cost. A hot site is the runner-up: it would meet the target easily, but it costs the most to keep running, and leaders asked for the cheapest site that meets a one-day RTO.",
+      "correct_explanation": "Recovery sites trade readiness for cost. A warm site has equipment and connections in place, so restoring data can bring orders back within a day or two, at medium cost. A hot site is the runner-up: it would meet the target easily, but it costs the most to keep running, and leaders asked for the cheapest site that meets a two-day RTO.",
       "wrong_explanations": {
-        "A": "Closest choice: a hot site meets a one-day target with room to spare. But it costs the most to keep ready, and leaders asked for the cheapest fit.",
-        "B": "Tempting because it is the cheapest site. But equipping an empty room takes days to weeks, far beyond a one-day target.",
+        "A": "Closest choice: a hot site meets a two-day target with room to spare. But it costs the most to keep ready, and leaders asked for the cheapest fit.",
+        "B": "Tempting because it is the cheapest site. But equipping an empty room takes days to weeks, too slow for a two-day target.",
         "D": "Tempting because it costs little and is close by. But a fire or flood at head office would take out the spare room too."
       },
       "tips": [
         "Eliminate: B takes days or weeks to equip, missing the target, and D shares the main site, so one disaster hits both.",
-        "Final two: C beats A because both meet one day, but the warm site does it at lower cost; match the site to the RTO.",
+        "Final two: C beats A because both meet two days, but the warm site does it at lower cost; match the site to the RTO.",
         "Exam cue: hot sites recover in hours or less, warm in about a day to a few days, cold in weeks. Pick the cheapest that still meets the RTO."
       ],
       "framework_ref": "NIST SP 800-34 Rev. 1 Section 3.4.3 (Alternate Sites); NIST SP 800-53 Rev. 5 CP-7 (Alternate Processing Site)",
@@ -1228,7 +1228,7 @@
         "Hot site",
         "Cost against recovery time"
       ],
-      "_provenance": "Authored from concept: 'match the site to the RTO from the BIA, not to habit or budget' (notes 2.2.6 Recovery Sites). Angle: the cheapest site that meets a one-day RTO; the pilot item tests an over-ready hot site for a three-week RTO. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 2, 30 Oct 2026.",
+      "_provenance": "Authored from concept: 'match the site to the RTO from the BIA, not to habit or budget' (notes 2.2.6 Recovery Sites). Angle: the cheapest site that meets a two-day RTO; the pilot item tests an over-ready hot site for a three-week RTO. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 2, 30 Oct 2026. Standards audit fix (30 Oct 2026): two-day RTO sits inside the warm-site band; stem says orders run at head office.",
       "style_version": 2
     },
     {
@@ -1309,26 +1309,26 @@
       "subtopic": "2.3 Security awareness. Social engineering tactics",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "At a design agency's badge-controlled door, someone in a courier uniform carrying boxes asks an employee to hold it open. What is the employee's BEST response?",
+      "question": "At a design agency's badge-controlled door, someone in a contractor's high-visibility vest carrying a ladder asks an employee to hold it open. What is the employee's BEST response?",
       "options": {
-        "A": "Hold the door and help carry the boxes inside",
-        "B": "Check the courier's ID card, then hold the door",
+        "A": "Hold the door and help carry the ladder inside",
+        "B": "Check the contractor's ID card, then hold the door",
         "C": "Let them in, then report it if they act oddly",
         "D": "Direct them to reception to sign in and be collected"
       },
       "correct": "D",
       "key_concept": "Never let unbadged people through a controlled door; send them to reception, because uniforms and ID cards are easy to fake.",
       "pre_read": "Notice what the person is asking for, and what the badge reader on the door is meant to check.",
-      "correct_explanation": "Holding a controlled door for someone without a badge is piggybacking, and a courier uniform with boxes is a classic way to get it. The safe, polite answer is to send them to reception, where visits are checked and staff come to collect them. Checking their ID card is the runner-up: it feels like verification, but the card comes from the visitor and is easy to fake.",
+      "correct_explanation": "Holding a controlled door for someone without a badge is piggybacking, and a work vest and a ladder are a classic way to get it. The safe, polite answer is to send them to reception, where visits are checked and staff come to collect them. Checking their ID card is the runner-up: it feels like verification, but the card comes from the visitor and is easy to fake.",
       "wrong_explanations": {
-        "A": "Tempting because helping is polite. But holding a controlled door lets an unverified person past the badge reader, which is what the story aims for.",
+        "A": "Tempting because helping is polite. But holding a controlled door lets an unverified person past the badge reader, which is exactly what the disguise is for.",
         "B": "Closest choice: checking ID feels careful. But the visitor supplies the card and it is easy to fake; verification needs a channel the organization controls.",
         "C": "Tempting because reporting is good practice. But once inside, an intruder can act at once; the badge reader exists to stop entry, not record it."
       },
       "tips": [
         "Eliminate: A lets an unverified person past the badge reader, and C reports only after access is already given.",
         "Final two: D beats B because verification must come through a channel you trust; an ID card the visitor carries proves little.",
-        "Exam cue: uniforms, boxes and urgency are props. Send anyone without a badge to the proper check-in point instead of judging them yourself."
+        "Exam cue: uniforms, ladders and urgency are props. Send anyone without a badge to the proper check-in point instead of judging them yourself."
       ],
       "framework_ref": "NIST SP 800-53 Rev. 5 AT-2(3) (Literacy Training and Awareness | Social Engineering and Mining); NIST SP 800-53 Rev. 5 PE-3 (Physical Access Control)",
       "related_concepts": [
@@ -1336,7 +1336,7 @@
         "Visitor check-in",
         "Pretexting"
       ],
-      "_provenance": "Authored from concept: 'verify through a separate known channel and follow procedure' (notes 2.3.3 Social Engineering Tactics). Angle: in-person piggybacking; the pilot items test quid pro quo and phone requests. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 2, 30 Oct 2026.",
+      "_provenance": "Authored from concept: 'verify through a separate known channel and follow procedure' (notes 2.3.3 Social Engineering Tactics). Angle: in-person piggybacking; the pilot items test quid pro quo and phone requests. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 2, 30 Oct 2026. Standards audit fix (30 Oct 2026): re-set away from cc_d5_043's courier prop.",
       "style_version": 2
     },
     {
@@ -1347,7 +1347,7 @@
       "bloom_level": "Application",
       "question": "A regional broadcaster's awareness course still teaches staff to spot phishing by spelling mistakes, though attackers now use AI to write fluent lures. Which change should the awareness lead make FIRST?",
       "options": {
-        "A": "Teach staff to recognize the writing style of AI tools",
+        "A": "Add AI-written examples so staff learn to spot their style",
         "B": "Install an AI-text detector on email and retire the old course",
         "C": "Teach staff to verify unusual requests through known channels",
         "D": "Run the existing course twice a year instead of once"
@@ -1383,7 +1383,7 @@
       "bloom_level": "Foundational",
       "question": "A shop assistant must set a new password for the store's ordering system, which accepts up to 64 characters. Which choice BEST follows current password advice?",
       "options": {
-        "A": "Four random words joined into one long passphrase",
+        "A": "A 24-character phrase of four randomly chosen words",
         "B": "Eight characters mixing symbols, numbers and capital letters",
         "C": "The old password with its final number raised by one",
         "D": "A favorite team's name with the current year added"
@@ -1422,7 +1422,7 @@
         "A": "Send the job-cut lure only to staff who clicked before",
         "B": "Announce the test date so staff know to watch for it",
         "C": "Keep the job-cut lure, since realistic tests teach the most",
-        "D": "Use a realistic lure that causes no real distress instead"
+        "D": "Replace it with a realistic lure, such as a parcel notice"
       },
       "correct": "D",
       "key_concept": "Phishing simulations should be realistic but must avoid lures that cause real distress, since trust drives reporting.",
@@ -1438,13 +1438,13 @@
         "Final two: D beats C because simulations must teach without real harm; a job-cut lure during restructuring costs the trust reporting depends on.",
         "Exam cue: good simulations are realistic, approved in advance, no-blame and never cruel. Trust is what makes people report real attacks."
       ],
-      "framework_ref": "NIST SP 800-53 Rev. 5 AT-2(1) (Literacy Training and Awareness | Practical Exercises); NIST SP 800-50 Rev. 1 Section 2.7.2 (Experiential Learning: phishing exercises designed to avoid negative impacts and never punitive)",
+      "framework_ref": "NIST SP 800-53 Rev. 5 AT-2(1) (Literacy Training and Awareness | Practical Exercises); NIST SP 800-50 Rev. 1 Section 2.7.2 (Experiential Learning: phishing exercises reviewed in advance, run at random and never punitive)",
       "related_concepts": [
         "Phishing simulations",
         "Reporting culture",
         "Ethical test design"
       ],
-      "_provenance": "Authored from concept: 'simulations avoid lures that cause real distress and treat a click as a teaching moment' (notes 2.3.7 Reporting Culture and Phishing Simulations). Angle: lure design; the pilot item tests naming clickers. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 2, 30 Oct 2026.",
+      "_provenance": "Authored from concept: 'simulations avoid lures that cause real distress and treat a click as a teaching moment' (notes 2.3.7 Reporting Culture and Phishing Simulations). Angle: lure design; the pilot item tests naming clickers. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 2, 30 Oct 2026. Standards audit fix (30 Oct 2026): key no longer the only negated option; citation paraphrase matches what the section says.",
       "style_version": 2
     },
     {
@@ -1457,7 +1457,7 @@
       "options": {
         "A": "Present the rise as proof that awareness training is working",
         "B": "Note the counting change and mark where the trend restarts",
-        "C": "Report the new figure as usual, as the data is more complete",
+        "C": "Report the new count as usual, as the data is more complete",
         "D": "Drop the metric, since its figures can no longer be trusted"
       },
       "correct": "B",
@@ -1561,11 +1561,11 @@
       "subtopic": "2.4 Measuring effectiveness. Thresholds",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "After a competitor's breach, a retailer's board lowers its tolerance for unpatched payment systems, and the risk owner approves key risk indicator (KRI) thresholds. What should the dashboard analyst do FIRST?",
+      "question": "After a competitor's breach, a retailer's leaders lower the tolerance for unpatched payment systems, and only the risk owner may approve key risk indicator (KRI) thresholds. What should the dashboard analyst do FIRST?",
       "options": {
-        "A": "Ask the risk owner to approve thresholds matching the new tolerance",
+        "A": "Ask the risk owner to sign off thresholds matching the new tolerance",
         "B": "Tell the risk owner the current thresholds still fit",
-        "C": "Tighten the dashboard's thresholds to match the board's new tolerance",
+        "C": "Tighten the dashboard's thresholds to match the leaders' new tolerance",
         "D": "Add a KRI that tracks news of the competitor's breach"
       },
       "correct": "A",
@@ -1588,7 +1588,7 @@
         "Risk tolerance",
         "Threshold review"
       ],
-      "_provenance": "Authored from concept: 'thresholds come from the risk appetite and tolerance leaders agreed, and are reviewed when they change' (notes 2.4.4 Thresholds, Targets and Escalation). Angle: a tolerance change; the pilot item tests escalating a red KRI. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 2, 30 Oct 2026.",
+      "_provenance": "Authored from concept: 'thresholds come from the risk appetite and tolerance leaders agreed, and are reviewed when they change' (notes 2.4.4 Thresholds, Targets and Escalation). Angle: a tolerance change; the pilot item tests escalating a red KRI. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 2, 30 Oct 2026. Standards audit fix (30 Oct 2026): stem no longer reads as if the owner already approved new thresholds; leaders, not the board, set tolerance.",
       "style_version": 2
     },
     {
