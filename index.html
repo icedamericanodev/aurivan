@@ -5544,8 +5544,8 @@ button.pg-cd:hover { background: var(--surface2); }
 .fg-key-body { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
 .fg-key-line { display: flex; align-items: baseline; gap: var(--sp-sm) var(--sp-md); min-width: 0; }
 .fg-key-2 .fg-key-t { font-weight: 600; }
-.fg-key-m { font: 500 15px/22px var(--f-sans); color: var(--text2); overflow-wrap: anywhere; }
-.fg-key-chev { flex: none; align-self: center; display: inline-flex; color: var(--muted); }
+.fg-key-m { font: var(--t-small); color: var(--text2); overflow-wrap: anywhere; }
+.fg-key-chev { flex: none; align-self: center; display: inline-flex; margin-left: auto; color: var(--muted); }
 .fg-key-btn:hover .fg-key-chev { color: var(--text); }
 .fg-key-btn:hover .fg-key-t { text-decoration: underline; text-underline-offset: 3px; }
 /* Herbarium sheet: a set of specimens with its own count, never a grand total */
@@ -6215,9 +6215,10 @@ body[data-qmoves] .vr-skip-moves { display: block; }
 .ph-dom-body { min-width: 0; display: flex; flex-direction: column; }
 .ph-dom-t { display: inline-flex; align-items: center; font: var(--t-label); color: var(--text); }
 .ph-dom-t .dom-dot { margin-right: var(--sp-sm); }
-.ph-ruler { position: relative; display: block; height: 8px; max-width: 360px; margin: var(--sp-sm) 0 6px; border-radius: var(--r-xs); background: var(--track); }
+.ph-ruler { position: relative; display: block; height: 8px; max-width: 360px; margin: var(--sp-sm) 0 var(--sp-sm); border-radius: var(--r-xs); background: var(--track); }
 .ph-ruler-f { position: absolute; left: 0; top: 0; bottom: 0; width: 100%; border-radius: var(--r-xs); background: var(--accent); transform: scaleX(var(--f, 0)); transform-origin: left center; }
-.ph-ruler-70 { position: absolute; left: 70%; top: -4px; bottom: -4px; width: 0; border-left: 1.5px dashed var(--text2); }
+/* The 70 tick: a 1px paper gap each side, so it reads across the fill. */
+.ph-ruler-70 { position: absolute; left: 70%; top: -4px; bottom: -4px; width: 0; border-left: 1.5px dashed var(--text2); box-shadow: -1px 0 0 var(--bg), 1px 0 0 var(--bg); }
 .ph-ruler.seed { background: transparent; outline: 1.5px dashed var(--control); outline-offset: -1.5px; }
 .ph-dom-foot { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 var(--sp-md); }
 .ph-dom-w { font: italic 400 15px/20px var(--f-serif); color: var(--text2); }
@@ -6380,8 +6381,8 @@ body[data-tab="practice"][data-pview="focus"] #subNav { display: none; }
 .mr-h-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--sp-sm) var(--sp-lg); }
 .mr-seg { display: inline-flex; flex-wrap: wrap; gap: 2px; padding: 3px; border: 1.5px solid var(--control); border-radius: var(--r-pill); }
 .mr-seg-b {
-  min-height: 38px; padding: 0 var(--sp-lg); border: 0; border-radius: var(--r-pill); background: none; cursor: pointer;
-  color: var(--text2); font: 600 14px/20px var(--f-sans);
+  min-height: 44px; padding: 0 var(--sp-lg); border: 0; border-radius: var(--r-pill); background: none; cursor: pointer;
+  color: var(--text2); font: var(--t-meta); font-weight: 600;
 }
 .mr-seg-b:hover { color: var(--text); }
 .mr-seg-b.on { background: var(--text); color: var(--bg); }
@@ -6396,7 +6397,7 @@ body[data-tab="practice"][data-pview="focus"] #subNav { display: none; }
 .mr-row:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; border-radius: var(--r-12); }
 .mr-n { flex: none; min-width: 22px; font: var(--t-fg-keyno); color: var(--text2); }
 .mr-body { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
-.mr-top { display: flex; align-items: baseline; gap: var(--sp-sm) 10px; min-width: 0; }
+.mr-top { display: flex; align-items: baseline; gap: var(--sp-sm) var(--sp-md); min-width: 0; }
 .mr-mark { flex: none; align-self: center; overflow: visible; }
 .mr-mark .mr-mk-s { fill: none; stroke: var(--on-fill); stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
 .mr-mark.no .mr-mk-l { fill: var(--wrong-fill); }
@@ -6408,9 +6409,21 @@ body[data-tab="practice"][data-pview="focus"] #subNav { display: none; }
 .mr-chev { flex: none; align-self: center; display: inline-flex; color: var(--muted); }
 .mr-row:hover .mr-chev { color: var(--text); }
 .mr-row[aria-expanded="true"] .mr-chev .ico { transform: rotate(180deg); }
+/* Narrow phones (320px) and large text: "You C · Best A" drops to its own
+   line under "Question 3"; the leader goes, the chevron keeps the right end. */
+@media (max-width: 400px) {
+  .mr-top { flex-wrap: wrap; }
+  .mr-dots { display: none; }
+  .mr-chev { margin-left: auto; }
+  .mr-yb { order: 5; flex-basis: 100%; white-space: normal; }
+}
+.fg-large .mr-top { flex-wrap: wrap; }
+.fg-large .mr-dots { display: none; }
+.fg-large .mr-chev { margin-left: auto; }
+.fg-large .mr-yb { order: 5; flex-basis: 100%; white-space: normal; }
 /* The domain and a one-line preview of the stem. */
 .mr-meta { display: block; min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font: var(--t-meta); color: var(--text2); }
-.mr-meta .dom-dot { margin-right: 6px; vertical-align: 1px; }
+.mr-meta .dom-dot { margin-right: var(--sp-xs); vertical-align: 1px; }
 .mr-flag { display: inline-flex; align-items: center; gap: var(--sp-xs); color: var(--text); }
 .mr-flag .ico { vertical-align: -2px; }
 /* Open: the full stem below replaces the one-line preview. */
@@ -6656,7 +6669,7 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
    after Review and saved; on the answer screen, the note link and "Add a
    note" after the Key idea. */
 .ph-focus { margin-top: var(--sp-2xl); }
-.ph-focus + .ph-focus { margin-top: 32px; }
+.ph-focus + .ph-focus { margin-top: var(--sp-2xl); }
 .ph-focus .sr-kick { display: block; }
 /* Ready today: plain rows (no icon circles), a hairline above and below. */
 .sr-rows-plain .you-ico { display: none; }
@@ -7145,6 +7158,8 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
         <button type="button" class="ph-done" onclick="togglePracticeSetup(false)">Done</button>
       </div>
     </div>
+    <!-- Below 1240px, Ready today follows the plate (the margin from 1240px) -->
+    <div id="phFocus"></div>
     <section class="ph-sec" aria-labelledby="phDomH">
       <div class="ph-h-row"><h2 class="ph-h" id="phDomH">By domain</h2><p class="ph-h-meta">Starts a set in that domain</p></div>
       <ul class="ph-doms" id="domainGrid"></ul>
@@ -7154,8 +7169,8 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
       <h2 class="ph-h" id="phMoreH">Review and saved</h2>
       <div id="phMore"></div>
     </section>
-    <!-- The margin's notes in the page (below 1240px): Ready today and Today's principle -->
-    <div id="phFocus"></div>
+    <!-- Below 1240px, Today's principle closes the page (the margin from 1240px) -->
+    <div id="phPrin"></div>
   </div>
 
   <div class="pf" id="practiceFocus" hidden>
@@ -13105,7 +13120,9 @@ function fgKeyList(items, label, cls) {
         + '<span class="fg-key-t">' + mark + it.tHtml + '</span>'
         + (it.rHtml ? '<span class="fg-key-dots" aria-hidden="true"></span><span class="fg-key-r">' + it.rHtml + '</span>' : '') + '</li>';
     }
-    var lead = it.rHtml || it.onclick;
+    // The dotted leader only runs to something at the right end; a row that
+    // is only a button keeps its chevron there (.fg-key-chev).
+    var lead = it.rHtml;
     var body = n + '<span class="fg-key-body"><span class="fg-key-line"><span class="fg-key-t">' + mark + it.tHtml + '</span>'
       + (lead ? '<span class="fg-key-dots" aria-hidden="true"></span>' : '')
       + (it.rHtml ? '<span class="fg-key-r">' + it.rHtml + '</span>' : '')
@@ -14528,7 +14545,7 @@ function renderPracticeHub() {
   var cap = !p.resume && dx && dx.answered >= DOMAIN_READ_MIN && pct < DOMAIN_TARGET_PCT && pct >= DOMAIN_TARGET_PCT - PH_JUST_UNDER
     ? fgCaption('Plate', DI[d].short + ' is ' + DI[d].weight + '% of the exam and sits just under the ' + DOMAIN_TARGET_PCT + ' line.') : '';
   hero.innerHTML = '<section class="ph-pick" aria-labelledby="phHeroF">'
-    + fgPlate('', fgFigHtml(p.resume ? 'Fig. 2 · Where you left off' : 'Fig. 2 · Picked for you', 2, 'phHeroF')
+    + fgPlate('', fgFigHtml(p.resume ? 'Fig. 2 · Where you left off' : rd && rd.answered === 0 ? 'Fig. 2 · A place to start' : 'Fig. 2 · Picked for you', 2, 'phHeroF')
       + '<div class="ph-pick-g"><div class="ph-pick-a">'
       + '<p class="ph-hero-t" id="phHeroT">' + p.title + '</p>'
       + '<p class="ph-hero-m">' + meta + '</p>'
@@ -14566,7 +14583,7 @@ function renderPracticeHub() {
   if (more) {
     var missed = (S.missedQuestions || []).length;
     var saved = (S.bookmarks || []).length;
-    var weak = weakDrillDomains().map(function (k) { return DI[k].short; });
+    var weak = weakDrillRanked().slice(0, 3).filter(function (r) { return r.tier < 2; }).map(function (r) { return DI[r.d].short; });
     var weakLine = S.score && S.score.t > 0 && weak.length ? listWords(weak) : 'The domains you miss most';
     var mockLine = isMockInProgress() ? 'In progress &middot; resume where you left off' : 'Full or mini, timed like the real exam';
     more.innerHTML = fgKeyList([
@@ -14595,6 +14612,8 @@ var BANDS_LINE = 'Building is under 70, Steady 70 to 79, Strong 80 and up. A dom
 var PH_FILL_DAY_KEY = 'aurivan_ph_fill_day';   // new device key: the day the rulers last filled in
 function phFillToday() {
   if (typeof S === 'undefined' || !S || S.activeTab !== 'practice' || practiceView !== 'hub') return false;
+  // Wait for the banks: the once-a-day fill plays on the render after they load.
+  if (Object.keys(DI).some(function (d) { return isQBLoading(d); })) return false;
   var today = parityDayKey(Date.now()), last = '';
   try { last = localStorage.getItem(PH_FILL_DAY_KEY) || ''; } catch (e) { last = today; }
   if (last === today) return false;
@@ -14613,6 +14632,8 @@ function renderDomainGrid() {
     var pct = Math.round(x.mastery * 100);
     var n = x.answered, none = n <= 0, few = n < DOMAIN_READ_MIN, below = !few && pct < DOMAIN_TARGET_PCT;
     var band = few ? '' : bandFor(pct);
+    // Not started: the track alone; a few answers: the dashed seed outline.
+    var seed = few && !none;
     var wordHtml = none ? '<span class="ph-dom-w">not started</span>'
       : few ? '<span class="ph-dom-w">too few yet &middot; ' + n + ' answered</span>'
       : '<span class="ph-dom-w' + (below ? ' c' : '') + '">' + band + (below ? ' &middot; below ' + DOMAIN_TARGET_PCT : '') + '</span><span class="ph-dom-m">' + n + ' answered</span>';
@@ -14625,7 +14646,7 @@ function renderDomainGrid() {
       + '<span class="ph-dom-n" aria-hidden="true">' + (i + 1) + '</span>'
       + '<span class="ph-dom-body" aria-hidden="true">'
       + '<span class="ph-dom-t"><span class="dom-dot" style="background:' + info.color + '"></span>' + escapeHtml(info.short) + '</span>'
-      + '<span class="ph-ruler' + (few ? ' seed' : '') + '">' + (few ? '' : '<span class="ph-ruler-f" style="--f:' + (pct / 100) + ';--i:' + i + '"></span>')
+      + '<span class="ph-ruler' + (seed ? ' seed' : '') + '">' + (few ? '' : '<span class="ph-ruler-f" style="--f:' + (pct / 100) + ';--i:' + i + '"></span>')
       + '<span class="ph-ruler-70"></span></span>'
       + '<span class="ph-dom-foot">' + wordHtml + '</span></span>'
       + '<span class="ph-dom-v' + (few ? ' none' : '') + '" aria-hidden="true">' + (few ? '&ndash;' : pct + '<sup>%</sup>') + '</span>'
@@ -15363,16 +15384,19 @@ function railMockSections() {
 }
 
 // The fallbacks inside the page (below the breakpoints).
-// v12.49: below 1240px the hub's margin follows the page, after Review and saved.
+// v12.49: below 1240px Ready today sits right under the Fig. 2 plate and
+// Today's principle closes the page, after Review and saved.
 function railHubInline(show) {
-  var slot = document.getElementById('phFocus');
-  if (!slot) return;
   var secs = show ? railHubSections('phm') : [];
-  var html = secs.map(function (s) {
-    var h = /^<h2[^>]* id="([^"]+)"/.exec(s.html);
-    return '<section class="ph-focus sr-sec"' + (h ? ' aria-labelledby="' + h[1] + '"' : '') + '>' + s.html + '</section>';
-  }).join('');
-  if (slot.innerHTML !== html) slot.innerHTML = html;
+  [['focus', 'phFocus'], ['principle', 'phPrin']].forEach(function (pair) {
+    var slot = document.getElementById(pair[1]);
+    if (!slot) return;
+    var html = secs.filter(function (s) { return s.id === pair[0]; }).map(function (s) {
+      var h = /^<h2[^>]* id="([^"]+)"/.exec(s.html);
+      return '<section class="ph-focus sr-sec"' + (h ? ' aria-labelledby="' + h[1] + '"' : '') + '>' + s.html + '</section>';
+    }).join('');
+    if (slot.innerHTML !== html) slot.innerHTML = html;
+  });
 }
 // The answer screen's one "Go deeper" row (premium pass 2.2): the study note
 // this question practises, else its principle; never more than one. The
@@ -18765,6 +18789,7 @@ function showMockResults() {
     + mockAreasPlate(db)
     + mockResultsLabel(cor, tot, blank, usedSec, kind)
     + '<section class="mr-next" aria-labelledby="mrNextH"><h2 class="ph-h" id="mrNextH">Where to look next</h2>'
+    + '<p class="ph-h-meta">From this mock&rsquo;s questions only.</p>'
     + buildMockAdvisory(db, missIds)
     + '<div class="rs-acts">' + acts + '</div></section>'
     + '<section class="rs-review" aria-labelledby="mrRevH">'
@@ -18860,6 +18885,9 @@ function mockReviewPaint() {
   [].slice.call(list.querySelectorAll('.mr-item')).forEach(function (it) {
     var m = mockReviewMatch(it, f);
     it.hidden = !m || (!mrShowAll[f] && k >= MR_SHOWN);
+    // The row number is its place in this list (1, 2, 3); "Question N" keeps the mock's order.
+    var num = m ? it.querySelector('.mr-n') : null;
+    if (num) num.textContent = String(k + 1);
     if (m) k++;
   });
   var more = document.getElementById('mrMore');
@@ -18893,7 +18921,7 @@ function reviewMockMistakes() {
 // for an exam date as a key list (the app's readySigns, the same signs as
 // Your progress), its note, and the way to Your progress. None after the exam date.
 var MOCKS_SIGN_N = 2;   // the app's readySigns MOCKS_NEEDED
-var MR_SIGN_TITLE = { low: 'Low end at ' + FG_STUDY_BAR + '+ for a week', mocks: MOCKS_SIGN_N + ' mocks, one full', domains: 'Every domain at ' + DOMAIN_TARGET_PCT + '+' };
+var MR_SIGN_TITLE = { low: 'Estimated readiness, low end ' + FG_STUDY_BAR + '+ for a week', mocks: MOCKS_SIGN_N + ' mocks, one full', domains: 'Every domain at ' + DOMAIN_TARGET_PCT + '+' };
 function mockSignsHtml(pre) {
   var K = plantApi();
   if (!K || !K.readySigns) return '';
@@ -18929,7 +18957,9 @@ function mockSignsHtml(pre) {
           return DI[x.id].short + ' needs ' + g + ' more ' + (g === 1 ? 'answer' : 'answers') + ' to be measured';
         });
       var parts = under.concat(thin);
-      m = s.met ? '' : parts.slice(0, 2).join('; ') + (parts.length > 2 ? '; and ' + (parts.length - 2) + ' more' : '') + '.';
+      // No domain measured yet: one plain line instead of five "needs N more".
+      m = s.met ? '' : thin.length === r.domains.length ? 'Each domain needs ' + DOMAIN_READ_MIN + ' answers before it is measured.'
+        : parts.slice(0, 2).join('; ') + (parts.length > 2 ? '; and ' + (parts.length - 2) + ' more' : '') + '.';
     }
     return { tHtml: escapeHtml(t), rHtml: escapeHtml(rr), mHtml: m ? escapeHtml(m) : '' };
   });
@@ -21238,13 +21268,24 @@ function renderPacingFeedbackHtml() {
 }
 
 // ── PHASE 2: TRAIN WEAK SPOTS ──
-// The drill's domains: those with a real sample come first (lowest score
-// first), then the least-practiced ones, so a lucky or unlucky handful never
-// steers the drill. The Practice hub names them on its row (v12.49).
+// The drill's domains, on the same figure as the hub's By domain rows (the
+// latest try at each question): measured domains below Strong first (lowest
+// first), then the ones still too few to measure (least practiced first),
+// and Strong domains only when nothing weaker is left. So a lucky or unlucky
+// handful never steers the drill. The Practice hub names the picks that are
+// not Strong; "Practice weak spots" on Mock results uses the same list.
+function weakDrillRanked() {
+  var rd = computeTodayReadiness();
+  return rd.domains.map(function (x) {
+    var pct = Math.round(x.mastery * 100), n = x.answered;
+    var tier = n >= DOMAIN_READ_MIN ? (bandFor(pct) === 'Strong' ? 2 : 0) : 1;
+    return { d: String(x.id), tier: tier, pct: pct, n: n };
+  }).sort(function (a, b) {
+    return a.tier - b.tier || (a.tier === 1 ? a.n - b.n : a.pct - b.pct);
+  });
+}
 function weakDrillDomains() {
-  return [1,2,3,4,5].map(function(d) {
-    return {d: String(d), r: domainRead(S.ds[d] || {t:0,c:0})};
-  }).sort(domainOrder).slice(0, 3).map(function(item) { return item.d; });
+  return weakDrillRanked().slice(0, 3).map(function (r) { return r.d; });
 }
 function getTrainWeakSpotsPool() {
   var pool = [];
@@ -22578,6 +22619,10 @@ function buildMockAnswerKey(answers, queue) {
     var yb = !answered ? 'Blank &middot; Best ' + escapeHtml(correctAns)
       : isCorrect ? 'You ' + escapeHtml(a.chosen) + ' &middot; right'
       : 'You ' + escapeHtml(a.chosen) + ' &middot; Best ' + escapeHtml(correctAns);
+    // The short form is for the eye; a screen reader hears it as a sentence.
+    var ybSaid = !answered ? 'Not answered, best answer ' + escapeHtml(correctAns)
+      : isCorrect ? 'Your answer ' + escapeHtml(a.chosen) + ', the best answer'
+      : 'Your answer ' + escapeHtml(a.chosen) + ', best answer ' + escapeHtml(correctAns);
     var mark = '<svg class="mr-mark ' + kind + '" width="16" height="16" viewBox="0 0 38 38" aria-hidden="true" focusable="false"><path class="mr-mk-l" d="' + VR_LEAF_PATH + '"/>'
       + (kind === 'skip' ? '' : '<path class="mr-mk-s" d="' + (kind === 'ok' ? VR_TICK : VR_CROSS) + '"/>') + '</svg>';
 
@@ -22588,7 +22633,8 @@ function buildMockAnswerKey(answers, queue) {
       + '<span class="mr-q">Question ' + (i + 1) + '</span>'
       + '<span class="mr-status sr-only">' + status + '</span>'
       + '<span class="mr-dots" aria-hidden="true"></span>'
-      + '<span class="mr-yb">' + yb + '</span>'
+      + '<span class="mr-yb" aria-hidden="true">' + yb + '</span>'
+      + '<span class="sr-only">. ' + ybSaid + '.</span>'
       + '<span class="mr-chev" id="mockChevron' + i + '" aria-hidden="true">' + ico('chevron-down', 18) + '</span></span>'
       + '<span class="mr-meta">' + metaBits.join(' &middot; ') + '<span class="mr-stem"> &middot; ' + escapeHtml(short) + '</span></span>'
       + '</span></button>'
