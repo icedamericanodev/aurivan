@@ -231,6 +231,25 @@ Learned from two blind tests and two standards audits of the pilot.
    don't repeat a scenario or lesson from another CC item.
 9. **One citation form.** Every `framework_ref` part matches a library bullet
    exactly, with no comma before the parenthesis and one citation per `;` part.
+10. **No form cues.** Added after batch 2, where the audits found a stem word
+    echoed only in the key in 8 of 25 Domain 4 items. Before review, check
+    every stem noun against the options. The key must not be the only option
+    that is hedged ("may", "can"), the only cautious one, the only negation,
+    or the only one in a different grammatical form. Give it a rival of the
+    same form.
+11. **Name the runner-up that testers weigh.** If blind testers keep naming a
+    different runner-up than the tips do, change the tips and explanations to
+    match, and add the deciding fact to the stem (batch 2, `cc_d1_037`).
+
+## Progress
+
+| Round | D1 | D2 | D3 | D4 | D5 | Total |
+|---|---|---|---|---|---|---|
+| Pilot (Oct 2026) | 20 | 20 | 20 | 20 | 20 | 100 |
+| Batch 2 (30 Oct 2026) | +25 | | | +25 | | 150 |
+
+Batch 2 for D1 and D4: blind test 25/25 in each domain; re-tests of every
+changed item all matched the keys. No hard errors remained.
 
 ## 7. Follow-ups outside this plan's scope
 
