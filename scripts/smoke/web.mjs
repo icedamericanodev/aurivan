@@ -183,8 +183,15 @@ for (const [view, scheme] of [['phone', 'light'], ['desktop', 'dark']]) {
       }
       const exp = norm(await page.locator('#vrExp').innerText().catch(() => ''));
       c.check(exp.length > 40, `Q${k + 1}: the explanation is missing or very short`);
-      const tips = await page.locator('#rPanel .vine-elim, #rPanel .vine-final, #rPanel .vine-cue')
-        .evaluateAll((els) => els.filter((e) => e.offsetParent !== null).map((e) => e.querySelector('.vine-cap')?.textContent.trim()));
+      // The three moves sit under the answer below 1240px and in the margin plate
+      // ("Fig. 4 · Three moves", .vm-plate) from 1240px (web v12.47): check whichever shows.
+      const tips = await ev(page, () => {
+        const shown = (e) => e && e.offsetParent !== null;
+        const inline = [...document.querySelectorAll('#rPanel .vine-elim, #rPanel .vine-final, #rPanel .vine-cue')]
+          .filter(shown).map((e) => e.querySelector('.vine-cap')?.textContent.trim());
+        if (inline.length) return inline;
+        return [...document.querySelectorAll('.vm-plate .vm-t')].filter(shown).map((e) => e.textContent.trim());
+      });
       c.check(tips.length === 3, `Q${k + 1}: ${tips.length} tips visible (${tips.join(', ')}), expected Eliminate two / Final two / Exam cue`);
       await page.locator('#rPanel .vine').first().scrollIntoViewIfNeeded().catch(() => {});
       await c.shot(`w2-q${k + 1}-tips-${tag}`);
@@ -329,7 +336,7 @@ for (const [view, scheme] of [['phone', 'light'], ['desktop', 'dark']]) {
     const pg = await ev(page, () => {
       const a = document.getElementById('pgArea');
       return { text: a.innerText, svgs: a.querySelectorAll('svg').length, loading: !!a.querySelector('.gt-loading'),
-        head: a.querySelector('.pg-head')?.innerText || '',
+        head: (document.getElementById('pageRh')?.innerText || '') + ' ' + (a.querySelector('.pg-head')?.innerText || ''),
         figs: [...a.querySelectorAll('.fg-fig [aria-hidden="true"]')].map((e) => e.textContent.trim()) };
     });
     c.check(!pg.loading, 'Progress is stuck on "Loading your progress"');
