@@ -251,7 +251,7 @@ published 18 Dec 2025). Cite the Rev. 1 forms below in every CRISC domain.
 
 ### NIST SP 800-39, Managing Information Security Risk (Mar 2011, no revision)
 - NIST SP 800-39 Section 3.3 (Responding to Risk: accept, avoid, mitigate, share or transfer)
-  - Verified, 30 Oct 2026, against nistspecialpublication800-39.pdf (nvlpubs.nist.gov), Section 3.3 Task 3-1: responses are acceptance, avoidance, mitigation, sharing, transfer or a combination; risk transfer "reduces neither the likelihood of harmful events occurring nor the consequences"; avoidance eliminates the activities or technologies that are the basis for the risk. Same string as the CC library. Used in crisc_d3_001 and crisc_d3_003.
+  - Verified, 30 Oct 2026, against nistspecialpublication800-39.pdf (nvlpubs.nist.gov), Section 3.3 Task 3-1: responses are acceptance, avoidance, mitigation, sharing, transfer or a combination; risk transfer "reduces neither the likelihood of harmful events occurring nor the consequences"; avoidance eliminates the activities or technologies that are the basis for the risk. Same string as the CC library. Used in crisc_d3_001. crisc_d3_003 moved to NIST IR 8286B-upd1 Sections 2.3.2 and 2.3.4 on 30 Oct 2026 (audit), because Section 3.3 read alone says avoidance may be appropriate when risk exceeds tolerance, which backs that item's runner-up.
 - NIST SP 800-39 Section 3.3 Task 3-2 (Evaluation of Alternatives: effectiveness, feasibility and cost)
   - Verified, 30 Oct 2026, same PDF: Task 3-2 evaluates each course of action on expected effectiveness and feasibility, including mission or business impact and costs over the period the course of action is followed, as a risk versus risk-response trade-off. Used in crisc_d3_009 (root-cause control chosen for effectiveness) and crisc_d3_010 (control that meets appetite at lower cost).
 - NIST SP 800-39 Section 3.4 (Monitoring Risk: compliance, response effectiveness and risk-impacting changes)
@@ -262,7 +262,7 @@ published 18 Dec 2025). Cite the Rev. 1 forms below in every CRISC domain.
 - NIST IR 8286B-upd1 Section 2.3.2 (Risk Avoidance: not conducting the activity when exposure exceeds tolerance)
 - NIST IR 8286B-upd1 Section 2.3.4 (Risk Mitigation: preventive, deterrent, detective, corrective and compensating controls)
 - NIST IR 8286B-upd1 Section 2.4.3 (Risk Owner: risk escalation and elevation)
-  - All Verified, 30 Oct 2026, against NIST.IR.8286B-upd1.pdf (nvlpubs.nist.gov; csrc.nist.gov lists Feb 2025, superseding the Feb 2022 original). 2.3.1: acceptance is first considered when exposure is already acceptable under risk tolerance, and the risk "must be reported, monitored, and managed" (crisc_d3_002). 2.3.2: if exposure exceeds tolerance, the risk owner may decide not to conduct the activity; the text notes it is rare that no mix of transfer and mitigation would work (crisc_d3_003). 2.3.4: mitigation applies controls listed as preventative, deterrent, detective, corrective and compensating, with a definition and example for each (crisc_d3_008, crisc_d3_009). 2.4.3: the risk owner column names who ensures the response is implemented; escalation happens when a threshold or time frame is reached, and elevation moves the decision to a more senior stakeholder (crisc_d3_005, crisc_d3_016).
+  - All Verified, 30 Oct 2026, against NIST.IR.8286B-upd1.pdf (nvlpubs.nist.gov; csrc.nist.gov lists Feb 2025, superseding the Feb 2022 original). 2.3.1: acceptance is first considered when exposure is already acceptable under risk tolerance, and the risk "must be reported, monitored, and managed" (crisc_d3_002). 2.3.2: if exposure exceeds tolerance, the risk owner may decide not to conduct the activity; the text notes it is rare that no mix of transfer and mitigation would work (crisc_d3_003). 2.3.4: mitigation applies controls listed as preventative, deterrent, detective, corrective and compensating, with a definition and example for each (crisc_d3_003, crisc_d3_008, crisc_d3_009). 2.4.3: the risk owner column names who ensures the response is implemented; escalation happens when a threshold or time frame is reached, and elevation moves the decision to a more senior stakeholder (crisc_d3_005, crisc_d3_016).
 
 ### NIST IR 8286C-upd1, Staging Cybersecurity Risks for Enterprise Risk Management and Governance Oversight (Sep 2022, updates as of 6 Mar 2024)
 - NIST IR 8286C-upd1 Section 2.2 (Normalization of CSRR Information: the same rating criteria enable comparison and tracking)
@@ -280,7 +280,7 @@ published 18 Dec 2025). Cite the Rev. 1 forms below in every CRISC domain.
 - NIST SP 800-53 Rev. 5 CA-7(4) (Continuous Monitoring | Risk Monitoring)
   - Verified, 30 Oct 2026, same PDF: risk monitoring is part of the continuous monitoring strategy (effectiveness, compliance and change monitoring) and "is informed by the established organizational risk tolerance". Used in crisc_d3_016.
 - NIST SP 800-53 Rev. 5 SR-6 (Supplier Assessments and Reviews)
-  - Verified, 30 Oct 2026, same PDF: assess and review supply chain risks of suppliers at a defined frequency; the discussion includes the supplier's ability to assess its second-tier and third-tier suppliers and contractors. Used in crisc_d3_006 (subcontractor excluded from a SOC report).
+  - Verified, 30 Oct 2026, same PDF: assess and review supply chain risks of suppliers at a defined frequency; the discussion includes the supplier's ability to assess its second-tier and third-tier suppliers and contractors. Used in crisc_d3_006 (subcontractor excluded from an assurance report).
 
 ### NIST SP 800-53A Rev. 5, Assessing Security and Privacy Controls (Jan 2022; minor release 5.2.0, Aug 2025)
 - NIST SP 800-53A Rev. 5 Section 2.4.2 (Assessment Methods: examine, interview and test, with depth and coverage)
@@ -297,11 +297,11 @@ published 18 Dec 2025). Cite the Rev. 1 forms below in every CRISC domain.
 
 ### NIST CSF 2.0 (CSWP 29, Feb 2024)
 - NIST CSF 2.0 GV.SC-07 (supplier and third-party risks are understood, recorded, prioritized, assessed, responded to and monitored over the course of the relationship)
-- NIST CSF 2.0 GV.OV-01 (cybersecurity risk management strategy outcomes are reviewed to inform and adjust strategy and direction)
+- NIST CSF 2.0 GV.RM-02 (risk appetite and risk tolerance statements are established, communicated and maintained)
 - NIST CSF 2.0 GV.RR-02 (roles, responsibilities and authorities related to cybersecurity risk management are established, communicated, understood and enforced)
 - NIST CSF 2.0 ID.RA-06 (risk responses are chosen, prioritized, planned, tracked and communicated)
 - NIST CSF 2.0 ID.RA-07 (changes and exceptions are managed, assessed for risk impact, recorded and tracked)
-  - All Verified, 30 Oct 2026, against NIST.CSWP.29.pdf (nvlpubs.nist.gov), subcategory text read. GV.RR-02, ID.RA-06 and ID.RA-07 use the same strings as the CC library. GV.SC-07 (crisc_d3_006), GV.OV-01 (crisc_d3_019), GV.RR-02 (crisc_d3_011), ID.RA-06 (crisc_d3_013), ID.RA-07 (crisc_d3_007).
+  - All Verified, 30 Oct 2026, against NIST.CSWP.29.pdf (nvlpubs.nist.gov), subcategory text read. GV.RR-02, ID.RA-06 and ID.RA-07 use the same strings as the CC library. GV.SC-07 (crisc_d3_006), GV.RM-02 (crisc_d3_019; same string as the D1 block and the CC library, text read in the CSWP 29 PDF on 30 Oct 2026: "Risk appetite and risk tolerance statements are established, communicated, and maintained"; it replaced GV.OV-01, a loose fit for board-report content, after the audit), GV.RR-02 (crisc_d3_011), ID.RA-06 (crisc_d3_013), ID.RA-07 (crisc_d3_007).
 
 ### NIST AI 100-1, AI Risk Management Framework (AI RMF 1.0, Jan 2023)
 - NIST AI 100-1 (AI RMF 1.0) GOVERN 1.1 (legal and regulatory requirements involving AI are understood, managed and documented)
@@ -312,13 +312,14 @@ published 18 Dec 2025). Cite the Rev. 1 forms below in every CRISC domain.
   - All Verified, 30 Oct 2026, against NIST.AI.100-1.pdf (nvlpubs.nist.gov), Tables 1, 3 and 4. GOVERN 3.2, MEASURE 2.4 and MANAGE 4.1 use the same strings as the CC library. MANAGE 1.3 says risk response options "can include mitigating, transferring, avoiding, or accepting" (crisc_d3_004). GOVERN 1.1 (crisc_d3_020), GOVERN 3.2 (crisc_d3_004), MEASURE 2.4 and MANAGE 4.1 (crisc_d3_017).
 
 ### Named in the D3 notes as context only (not keyed)
-- ISACA COBIT 2019 Framework: Governance and Management Objectives
+These use `*` instead of `- ` so the parser does not read them as citable strings. Promote one to a `- ` bullet only after checking its fit to an item.
+* ISACA COBIT 2019 Framework: Governance and Management Objectives
   - Verified (title), 30 Oct 2026: title listed on https://www.isaca.org/resources/cobit. The notes name objectives "managed risk" and "managed vendors" and the 0 to 5 capability levels in plain words; the objective codes and capability text were not opened (paid publication), so no D3 item cites COBIT.
-- ISACA Risk IT Framework 2nd Edition
+* ISACA Risk IT Framework 2nd Edition
   - Verified (title), 30 Oct 2026: title listed on https://www.isaca.org/resources/it-risk. Full text not opened; not cited by any D3 item.
-- NIST SP 800-161 Rev. 1 Section 3.1 (C-SCRM in Acquisition)
+* NIST SP 800-161 Rev. 1 Section 3.1 (C-SCRM in Acquisition)
   - Verified, 30 Oct 2026, against NIST.SP.800-161r1-upd1.pdf (csrc.nist.gov lists May 2022 with updates as of 1 Nov 2024): after award, ensure the supplier meets the contract terms, and monitor for changes that affect supply chain risk throughout the life cycle. Supports notes 3A3.1 and 3A3.2; not cited by a pilot item.
-- NIST SP 800-53B (Control Baselines for Information Systems and Organizations)
+* NIST SP 800-53B (Control Baselines for Information Systems and Organizations)
   - Verified (title), 30 Oct 2026: csrc.nist.gov lists Sep 2020 with updates as of 10 Dec 2020. Named in notes 3B1.3 only.
 
 ## Domain 4 Technology and Security (pilot crisc_d4_001 to 020, 30 Oct 2026)
