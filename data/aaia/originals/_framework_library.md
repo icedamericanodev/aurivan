@@ -78,11 +78,11 @@ The bracket is a short paraphrase of the subcategory statement.
 - NIST AI 100-1 MEASURE 2.2 (Evaluations involving human subjects meet requirements)
 - NIST AI 100-1 MEASURE 2.3 (Performance measured in conditions similar to deployment)
 - NIST AI 100-1 MEASURE 2.4 (Functionality and behavior monitored in production)
-- NIST AI 100-1 MEASURE 2.5 (System shown to be valid and reliable; limits documented)
-- NIST AI 100-1 MEASURE 2.6 (Evaluated regularly for safety risks; fails safely)
+- NIST AI 100-1 MEASURE 2.5 (System shown to be valid and reliable, limits documented)
+- NIST AI 100-1 MEASURE 2.6 (Evaluated regularly for safety risks, fails safely)
 - NIST AI 100-1 MEASURE 2.7 (Security and resilience evaluated and documented)
 - NIST AI 100-1 MEASURE 2.8 (Transparency and accountability risks examined)
-- NIST AI 100-1 MEASURE 2.9 (Model explained, validated and documented; output interpreted in context)
+- NIST AI 100-1 MEASURE 2.9 (Model explained, validated and documented, output interpreted in context)
 - NIST AI 100-1 MEASURE 2.10 (Privacy risk examined and documented)
 - NIST AI 100-1 MEASURE 2.11 (Fairness and bias evaluated and documented)
 - NIST AI 100-1 MEASURE 2.12 (Environmental impact assessed)
@@ -110,6 +110,8 @@ The bracket is a short paraphrase of the subcategory statement.
 - NIST AI 100-1 MANAGE 4.3 (Incidents and errors communicated and tracked)
 
 ### Other parts of AI RMF 1.0
+- NIST AI 100-1 Executive Summary (Framework intended to be voluntary and use-case agnostic)
+  - Verified 30 Oct 2026: page 2 says the Framework "is intended to be voluntary, rights-preserving, non-sector-specific, and use-case agnostic".
 - NIST AI 100-1 Section 3 (AI Risks and Trustworthiness)
   - Verified 30 Oct 2026: the seven characteristics (valid and reliable; safe; secure and resilient; accountable and transparent; explainable and interpretable; privacy-enhanced; fair with harmful bias managed).
 - NIST AI 100-1 Section 3.4 (Accountable and Transparent)
