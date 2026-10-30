@@ -139,6 +139,7 @@ https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.100-2e2025.pdf (table of contents a
 - NIST AI 100-2e2025 Section 2.2 (Evasion Attacks and Mitigations)
 - NIST AI 100-2e2025 Section 2.3 (Poisoning Attacks and Mitigations)
 - NIST AI 100-2e2025 Section 2.4 (Privacy Attacks and Mitigations)
+- NIST AI 100-2e2025 Section 2.4.4 (Model Extraction)
 - NIST AI 100-2e2025 Section 3.2 (Supply Chain Attacks and Mitigations)
 - NIST AI 100-2e2025 Section 3.3 (Direct Prompting Attacks and Mitigations)
 - NIST AI 100-2e2025 Section 3.4 (Indirect Prompt Injection Attacks and Mitigations)
@@ -154,6 +155,8 @@ https://raw.githubusercontent.com/mitre-atlas/atlas-data/main/dist/ATLAS.yaml
 - MITRE ATLAS AML.T0018 (Manipulate AI Model)
 - MITRE ATLAS AML.T0020 (Poison Training Data)
 - MITRE ATLAS AML.T0024 (Exfiltration via AI Inference API)
+- MITRE ATLAS AML.T0024.002 (Extract AI Model)
+  - Sub-technique of AML.T0024; Verified 30 Oct 2026 in ATLAS data v5.6.0.
 - MITRE ATLAS AML.T0029 (Denial of AI Service)
 - MITRE ATLAS AML.T0043 (Craft Adversarial Data)
 - MITRE ATLAS AML.T0051 (LLM Prompt Injection)
