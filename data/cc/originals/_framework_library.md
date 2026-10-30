@@ -94,6 +94,22 @@ were removed on 29 Oct 2026, audit pilot 2, S7.)
   - Verified, 30 Oct 2026, against sp800-53r5-catalog.json (NIST OSCAL catalog, release 5.2.0; title and text) and sp800-53r5.txt (nvlpubs.nist.gov): use cryptography to protect information during transmission. Fits replacing FTP with SFTP. Used in cc_d4_002.
 - NIST SP 800-53 Rev. 5 SI-4(13) (System Monitoring | Analyze Traffic and Event Patterns)
   - Verified, 30 Oct 2026, against sp800-53r5-catalog.json (NIST OSCAL catalog, release 5.2.0; title and text) and sp800-53r5.txt (nvlpubs.nist.gov): develop profiles of common traffic and event patterns and use them to tune monitoring so anomalous traffic stands out. Fits machine-learning traffic monitoring. Used in cc_d4_005.
+- NIST SP 800-53 Rev. 5 AU-9 (Protection of Audit Information)
+  - Verified, 30 Oct 2026, against sp800-53r5-catalog.json (OSCAL 5.2.0) and sp800-53r5.txt (nvlpubs.nist.gov): the control protects audit information and logging tools from unauthorized access, modification and deletion. Fits a log the administrator can delete. Used in cc_d1_027.
+- NIST SP 800-53 Rev. 5 AU-9(2) (Protection of Audit Information | Store on Separate Physical Systems or Components)
+  - Verified, 30 Oct 2026, against sp800-53r5-catalog.json (OSCAL 5.2.0) and sp800-53r5.txt (nvlpubs.nist.gov): store audit records in a repository on a physically different system, so a compromise of the audited system does not also compromise its records. Fits copying log entries to a server the administrator cannot alter. Used in cc_d1_027.
+- NIST SP 800-53 Rev. 5 PT-3 (Personally Identifiable Information Processing Purposes)
+  - Verified, 30 Oct 2026, against sp800-53r5-catalog.json (OSCAL 5.2.0) and sp800-53r5.txt (nvlpubs.nist.gov): identify and document the purposes for processing PII, describe them in privacy notices, and restrict processing to what is compatible with those purposes. Fits reusing booking phone numbers for sales texts. Used in cc_d1_028.
+- NIST SP 800-53 Rev. 5 PL-4 (Rules of Behavior)
+  - Verified, 30 Oct 2026, against sp800-53r5-catalog.json (OSCAL 5.2.0) and sp800-53r5.txt (nvlpubs.nist.gov): provide the rules for system use, and receive a documented acknowledgment that they have been read and agreed to before authorizing access. Fits signed data-use rules before volunteers get access. Used in cc_d1_039.
+- NIST SP 800-53 Rev. 5 CP-10 (System Recovery and Reconstitution)
+  - Verified, 30 Oct 2026, against sp800-53r5-catalog.json (OSCAL 5.2.0) and sp800-53r5.txt (nvlpubs.nist.gov): provide for recovery and reconstitution of the system to a known state after a disruption, compromise or failure. Fits restoring a ransomware-locked server from backup as a recovery control. Used in cc_d1_041.
+- NIST SP 800-53 Rev. 5 Appendix A Glossary (defense in depth)
+  - Verified, 30 Oct 2026, in Appendix A Glossary of sp800-53r5.txt (nvlpubs.nist.gov): a strategy that integrates people, technology and operations capabilities to set variable barriers across multiple layers. Fits adding an administrative, detective layer instead of more locks. Used in cc_d1_042.
+- NIST SP 800-53 Rev. 5 PL-8(1) (Security and Privacy Architectures | Defense in Depth)
+  - Verified, 30 Oct 2026, against sp800-53r5-catalog.json (NIST OSCAL catalog, release 5.2.0; title and text): design the architecture with a defense-in-depth approach so "adversaries must overcome multiple controls to achieve their objective", with the allocated controls operating "in a coordinated and mutually reinforcing manner". Fits four controls sharing one administrator password failing as one layer. Used in cc_d4_027.
+- NIST SP 800-53 Rev. 5 SC-7(15) (Boundary Protection | Networked Privileged Accesses)
+  - Verified, 30 Oct 2026, against sp800-53r5-catalog.json (NIST OSCAL catalog, release 5.2.0; title and text): "Route networked, privileged accesses through a dedicated, managed interface for purposes of access control and auditing." Fits moving switch and firewall admin pages to a management VLAN only network staff can reach. Used in cc_d4_038.
 
 ### SP 800-34 Rev. 1, Contingency Planning Guide for Federal Information Systems (May 2010, updated Nov 2010)
 - NIST SP 800-34 Rev. 1 Section 2.2 (Types of Plans: Business Continuity Plan and Disaster Recovery Plan)
@@ -118,6 +134,8 @@ were removed on 29 Oct 2026, audit pilot 2, S7.)
 - NIST AI 100-1 (AI RMF 1.0) MANAGE 4.1 (post-deployment monitoring plans, including capturing user input, appeal and override)
 - NIST AI 600-1 (Generative AI Profile) Section 2.8 (Information Integrity: deepfakes and content that impersonates others)
   - Verified 29 Oct 2026 (local copies of the NIST PDFs). Wording paraphrases the subcategory text; MANAGE 4.1 names "appeal and override" explicitly.
+- NIST AI 100-1 (AI RMF 1.0) GOVERN 3.2 (roles and responsibilities for human-AI configurations and oversight of AI systems are defined)
+  - Verified, 30 Oct 2026, against ai100-1.txt (nvlpubs.nist.gov): "Policies and procedures are in place to define and differentiate roles and responsibilities for human-AI configurations and oversight of AI systems." Fits keeping staff review of high-impact AI replies. Used in cc_d1_040.
 
 ### SP 800-63-4 Digital Identity Guidelines (final, 2025; csrc.nist.gov lists 31 Jul 2025)
 - NIST SP 800-63B-4 (Authentication and Authenticator Management: multi-factor authentication)
@@ -132,6 +150,12 @@ were removed on 29 Oct 2026, audit pilot 2, S7.)
 - NIST SP 800-41 Rev. 1 Section 3.1 (Network Layouts with Firewalls: public-facing servers on the DMZ)
   - Verified, 30 Oct 2026, against sp800-41r1.txt (nvlpubs.nist.gov): "It is common to put public-facing servers, such as web and email servers, on the DMZ", with DMZ-to-internal traffic still passing the firewall. Used in cc_d4_009.
   - Current final; csrc.nist.gov shows no newer revision or withdrawal (checked 30 Oct 2026).
+- NIST SP 800-41 Rev. 1 Section 2.1.2 (Stateful Inspection: tracking TCP connection state)
+  - Verified, 30 Oct 2026, against sp800-41r1.txt (nvlpubs.nist.gov): stateful inspection keeps "track of each connection in a state table" with "greater awareness of the transport layer"; when two hosts "complete the three-way TCP handshake, the connection state will change to 'established'", and UDP is connectionless. Fits SYN, SYN-ACK, ACK opening a TCP connection (cc_d4_022) and stateful inspection tracking connections without recognizing applications (cc_d4_024). Used in cc_d4_022 and cc_d4_024.
+- NIST SP 800-41 Rev. 1 Section 2.1.3 (Application Firewalls)
+  - Verified, 30 Oct 2026, against sp800-41r1.txt (nvlpubs.nist.gov): stateful protocol analysis inspects protocols at the application layer, letting a firewall "allow or deny access based on how an application is running over the network", for example detecting "if instant messaging (IM) is being used over port 80". Fits blocking a banned app that shares port 443 with browsing. Used in cc_d4_024.
+- NIST SP 800-41 Rev. 1 Section 4.1.2 (IPv6: filter IPv6 traffic as fully as IPv4)
+  - Verified, 30 Oct 2026, against sp800-41r1.txt (nvlpubs.nist.gov): deny-by-default "should be done regardless of whether or not the traffic has an IPv4 or IPv6 address"; "The firewall should be able to use IPv6 addresses in all filtering rules that use IPv4 addresses", and admins may "clone IPv4 rules to IPv6 addresses". Fits writing matching IPv6 rules before enabling IPv6. Used in cc_d4_023.
 
 ### SP 800-46 Rev. 2, Guide to Enterprise Telework, Remote Access, and Bring Your Own Device (BYOD) Security (Jul 2016)
 - NIST SP 800-46 Rev. 2 Section 2.1 (Vulnerabilities, Threats, and Security Controls: infected client devices)
@@ -152,6 +176,8 @@ were removed on 29 Oct 2026, audit pilot 2, S7.)
 - NIST SP 800-82 Rev. 3 Section 6.2.11 (Flaw Remediation and Patch Management: test OT patches before applying)
   - Verified, 30 Oct 2026, against sp800-82r3.txt (nvlpubs.nist.gov): OT patches "should be adequately tested"; a patch "can also introduce a greater risk from a production or safety perspective". Fits reporting a controller flaw to its owner for a tested, scheduled fix. Used in cc_d4_007.
   - Rev. 3 is the current final. csrc.nist.gov notes (21 Sep 2026) an initial public draft of Rev. 4, comments due 30 Nov 2026; re-check these sections when Rev. 4 is final.
+- NIST SP 800-82 Rev. 3 Appendix B Glossary (router)
+  - Verified, 30 Oct 2026, against sp800-82r3.txt (nvlpubs.nist.gov), Appendix B Glossary: a router is "A computer that is a gateway between two networks at OSI layer 3 and that relays and directs data packets through that inter-network. The most common form of router operates on IP packets." Fits the device that carries traffic between two IP subnets. Used in cc_d4_021. (Rev. 4 initial public draft noted under this heading; the glossary entry is unaffected for now.)
 
 ### SP 800-94, Guide to Intrusion Detection and Prevention Systems (IDPS) (Feb 2007)
 - NIST SP 800-94 Section 2.3.2 (Anomaly-Based Detection)
@@ -159,6 +185,8 @@ were removed on 29 Oct 2026, audit pilot 2, S7.)
 - NIST SP 800-94 Section 4.2.2 (Network Architectures and Sensor Locations: inline versus passive sensors)
   - Verified, 30 Oct 2026, against sp800-94.txt (nvlpubs.nist.gov): inline sensors exist "to enable them to stop attacks by blocking network traffic"; a passive sensor "monitors a copy of the actual network traffic". Fits IPS versus IDS. Used in cc_d4_004.
   - Still the current final: csrc.nist.gov says Draft Rev. 1 (2012) never became final and was retired (checked 30 Oct 2026).
+- NIST SP 800-94 Section 7.1.3 (Agent Locations: host agents see activity inside encrypted communications)
+  - Verified, 30 Oct 2026, against sp800-94.txt (nvlpubs.nist.gov): host-based agents go on "critical hosts such as publicly accessible servers and servers containing sensitive information"; "network-based IDPS sensors cannot analyze the activity within encrypted network communications, but host-based IDPS agents installed on endpoints can see the unencrypted activity" (Section 4.3.3.4 says the same). Fits a host-based IDS on a loan server whose traffic is encrypted. Used in cc_d4_034.
 
 ### SP 800-144, Guidelines on Security and Privacy in Public Cloud Computing (Dec 2011)
 - NIST SP 800-144 Section 2.3 (Outsourcing and Accountability)
@@ -166,6 +194,10 @@ were removed on 29 Oct 2026, audit pilot 2, S7.)
 - NIST SP 800-144 Section 4.7 (Data Protection)
   - Verified, 30 Oct 2026, against sp800-144.txt (nvlpubs.nist.gov): organizations placing sensitive data in a public cloud "must account for the means by which access to the data is controlled and the data is kept secure". Fits the clinic deciding what patient data goes to a managed AI service. Used in cc_d4_020.
   - Current final on csrc.nist.gov, no newer revision or withdrawal shown (checked 30 Oct 2026).
+- NIST SP 800-144 Section 4.6 (Software Isolation)
+  - Verified, 30 Oct 2026, against sp800-144.txt (nvlpubs.nist.gov): "cloud providers have to ensure dynamic, flexible delivery of service and isolation of consumer resources"; IaaS multi-tenancy is done by running different consumers' virtual machines on one physical server, and the hypervisor "itself can potentially be compromised". Fits the provider patching a hypervisor flaw beneath IaaS virtual machines. Used in cc_d4_043.
+- NIST SP 800-144 Section 5.1 (General Concerns: a provider's certification does not extend to the tenant's systems)
+  - Verified, 30 Oct 2026, against sp800-144.txt (nvlpubs.nist.gov): "a third-party certification or other assurances from the cloud provider do not necessarily grant a tenant application or system that same level of certification or compliance", and provider assurances "should be verified whenever possible through independent assessment by the organization". Fits an independent report covering only the provider's controls. Used in cc_d4_030.
 
 ### SP 800-145, The NIST Definition of Cloud Computing (Sep 2011)
 - NIST SP 800-145 Section 2 (The NIST Definition of Cloud Computing: essential characteristics)
@@ -182,6 +214,14 @@ were removed on 29 Oct 2026, audit pilot 2, S7.)
 - NIST SP 800-207 Section 3.1.2 (ZTA Using Micro-Segmentation)
   - Verified, 30 Oct 2026, against sp800-207.txt (nvlpubs.nist.gov): individual resources or small groups sit on their own segments behind gateways or host-based agents that act as enforcement points. Fits per-server rules in a shared segment. Used in cc_d4_011.
   - Current final on csrc.nist.gov (checked 30 Oct 2026).
+- NIST SP 800-207 Section 2 (Zero Trust Basics: perimeter firewalls do little against attacks from inside)
+  - Verified, 30 Oct 2026, against sp800-207.txt (nvlpubs.nist.gov): perimeter firewalls "help block attackers from the internet" but "are less useful for detecting and blocking attacks from inside the network", and "unauthorized lateral movement within the environment has been one of the biggest challenges". Fits internal segments limiting how far an attacker already inside can reach. Used in cc_d4_026.
+- NIST SP 800-207 Section 3 (Logical Components of Zero Trust Architecture)
+  - Verified, 30 Oct 2026, against sp800-207.txt (nvlpubs.nist.gov): the policy engine "is responsible for the ultimate decision to grant access to a resource for a given subject"; the policy enforcement point "is responsible for enabling, monitoring, and eventually terminating connections". Section 2 states identity covers "person and non-person entities", and Section 5.7 discusses AI agents as non-person entities. Fits the policy engine deciding an AI assistant's request. Used in cc_d4_028.
+- NIST SP 800-207 Section 7 (Migrating to a Zero Trust Architecture)
+  - Verified, 30 Oct 2026, against sp800-207.txt (nvlpubs.nist.gov): "Implementing a ZTA is a journey rather than a wholesale replacement of infrastructure or processes"; organizations should "incrementally implement zero trust principles, process changes, and technology solutions" (Section 1: ZT "is not a single architecture but a set of guiding principles"). Fits rejecting a vendor's "Zero Trust in a week" product claim. Used in cc_d4_040.
+- NIST SP 800-207 Section 7.3 (Steps to Introducing ZTA to a Perimeter-Based Architected Network)
+  - Verified, 30 Oct 2026, against sp800-207.txt (nvlpubs.nist.gov): "Before undertaking an effort to bring ZTA to an enterprise, there should be a survey of assets, subjects, data flows, and workflows", because "An enterprise cannot determine what new processes or systems need to be in place if there is no knowledge of the current state". Fits mapping real server traffic before writing micro-segmentation rules (with SP 800-215 Section 5.1). Used in cc_d4_039.
 
 ### SP 800-213, IoT Device Cybersecurity Guidance for the Federal Government: Establishing IoT Device Cybersecurity Requirements (Nov 2021)
 - NIST SP 800-213 Section 2.3 (How IoT Devices May Create Security Challenges)
@@ -220,6 +260,22 @@ were removed on 29 Oct 2026, audit pilot 2, S7.)
   - Mar 2025, current (csrc.nist.gov checked 29 Oct 2026). Cited by title.
 - NIST AI 100-2 E2025 Section 3.2 (Supply Chain Attacks and Mitigations)
   - Verified, 30 Oct 2026, against ai100-2e2025.txt (nvlpubs.nist.gov): AI development adds dependencies such as third-party models; attackers can offer "maliciously designed models", and models are best treated as untrusted components. Fits limiting a training segment's downloads to approved sources. Used in cc_d4_014.
+- NIST SP 800-12 Rev. 1 Section 9.1.2 (Integrity)
+  - Jun 2017. Verified, 30 Oct 2026, against sp800-12r1.txt (nvlpubs.nist.gov): integrity means data has not been altered in an unauthorized manner; an attacker who modifies a message can also replace its error detection code, while cryptography can detect intentional and unintentional changes. Fits the plain-hash runner-up in cc_d1_022 and wrong-but-unnoticed figures in cc_d1_026. Used in cc_d1_022 and cc_d1_026.
+- NIST SP 800-12 Rev. 1 Section 9.1.3.1 (Secret Key Electronic Signatures)
+  - Jun 2017. Verified, 30 Oct 2026, against sp800-12r1.txt (nvlpubs.nist.gov): with a message authentication code (MAC) verified under a shared secret key, the receiver may assume the other key holder produced the data; a MAC gives data integrity and a form of electronic signature, assuming the parties trust each other. Fits a keyed hash between each sensor and the server. Used in cc_d1_022.
+- NIST SP 800-30 Rev. 1 Appendix B Glossary (criticality and sensitivity)
+  - Sep 2012. Verified, 30 Oct 2026, against sp800-30r1.txt (nvlpubs.nist.gov), Appendix B Glossary: criticality is the degree to which an organization depends on the information or system for a mission or business function; sensitivity is the importance the owner assigns to information to denote its need for protection (both sourced to SP 800-60). Fits rating a public but business-critical price list. Used in cc_d1_021.
+- NIST SP 800-30 Rev. 1 Section 3.4 (Maintaining the Risk Assessment)
+  - Sep 2012. Verified, 30 Oct 2026, against sp800-30r1.txt (nvlpubs.nist.gov): the fourth step keeps risk knowledge current, monitoring risk factors such as threat sources and updating the assessment to reflect changes. Fits reassessing after a new threat (cc_d1_029) and re-rating after a new control (cc_d1_030). Used in cc_d1_029 and cc_d1_030.
+- NIST SP 800-39 Section 2.1 (Components of Risk Management: frame, assess, respond and monitor)
+  - Mar 2011, no revision. Verified, 30 Oct 2026, against sp800-39.txt (nvlpubs.nist.gov): risk management requires organizations to frame risk, assess risk, respond to risk and monitor risk on an ongoing basis with a feedback loop. Fits the risk lifecycle looping back after a new threat. Used in cc_d1_029.
+- NIST SP 800-39 Section 3.3 (Responding to Risk: accept, avoid, mitigate, share or transfer)
+  - Mar 2011, no revision. Verified, 30 Oct 2026, against sp800-39.txt (nvlpubs.nist.gov): the responses are acceptance, avoidance, mitigation, sharing and transfer; avoidance eliminates the activities or technologies that are the basis for the risk. Fits dropping an AI refund plan. Used in cc_d1_032.
+- NIST AI 100-2 E2025 Section 2.3.2 (Targeted Poisoning)
+  - Mar 2025. Verified, 30 Oct 2026, against ai100-2e2025.txt (nvlpubs.nist.gov): targeted poisoning changes a model's predictions on a small number of targeted samples; label flipping is effective when the adversary controls labels; mitigations include access controls on training data, data sanitization and validation, and dataset provenance. Section 2.3 says targeted poisoning induces integrity violations. Fits users mass-marking phishing as "not spam". Used in cc_d1_025.
+- NIST AI 100-2 E2025 Section 3.3.2 (Information Extraction: leaking sensitive training data)
+  - Verified, 30 Oct 2026, against ai100-2e2025.txt (nvlpubs.nist.gov): GenAI models are exposed to "personally identifying information (PII) in the training data"; training data extraction attacks have drawn "email addresses, phone numbers, and locations" from language models, a "behavior of verbatim memorization of sensitive information". Fits treating a model tuned on customer chats as sensitive. Used in cc_d4_045.
 
 ### Cybersecurity Framework (CSF) 2.0, NIST CSWP 29 (Feb 2024)
 - NIST CSF 2.0 Section 1 (CSF Overview)
@@ -248,6 +304,20 @@ were removed on 29 Oct 2026, audit pilot 2, S7.)
 - NIST CSF 2.0 RS.MI-01 (incidents are contained)
 - NIST CSF 2.0 RS.MI-02 (incidents are eradicated)
   - D5 pilot. Verified 29 Oct 2026 against the CSWP 29 text.
+- NIST CSF 2.0 PR.IR-03 (mechanisms are implemented to achieve resilience requirements in normal and adverse situations)
+  - Verified, 30 Oct 2026, against csf2.txt (CSWP 29, nvlpubs.nist.gov): PR.IR-03 reads "Mechanisms are implemented to achieve resilience requirements in normal and adverse situations." Fits a failover server removing a single point of failure. Used in cc_d1_023.
+
+### SP 800-121 Rev. 2, Guide to Bluetooth Security (May 2017, includes updates as of 19 Jan 2022)
+- NIST SP 800-121 Rev. 2 Update 1 Section 4.4 (Bluetooth Security Checklist: undiscoverable except when pairing)
+  - Verified, 30 Oct 2026, against sp800-121r2u1.txt (nvlpubs.nist.gov, doi 10.6028/NIST.SP.800-121r2-upd1): Table 4-2 checklist item 18, "Bluetooth devices should be configured by default as undiscoverable and remain undiscoverable except as needed for pairing"; Table 4-1 item 25, a device "should not be in discoverable or connectable mode all the time". Fits scanners left discoverable all day. Used in cc_d4_036. Current final on csrc.nist.gov (pubs/sp/800/121/r2/upd1/final, checked 30 Oct 2026); note the checklist also advises non-identifying device names, so renaming was kept out of the distractors.
+
+### SP 800-153, Guidelines for Securing Wireless Local Area Networks (WLANs) (Feb 2012)
+- NIST SP 800-153 Section 3.1.1 (Attack Monitoring: interference from other devices can deny WLAN service)
+  - Verified, 30 Oct 2026, against sp800-153.txt (nvlpubs.nist.gov): among active attacks, "Denial of service (DoS). A DoS can occur inadvertently, such as other electronic devices causing interference". SP 800-94 Section 5 likewise names microwaves as benign interference sources. Fits scanners dropping off Wi-Fi when a microwave oven runs, a physical-layer problem. Used in cc_d4_032. Current final on csrc.nist.gov (pubs/sp/800/153/final, checked 30 Oct 2026).
+
+### SP 800-190, Application Container Security Guide (Sep 2017)
+- NIST SP 800-190 Section 3.5.2 (Shared kernel: container isolation is not as strong as a hypervisor's)
+  - Verified, 30 Oct 2026, against sp800-190.txt (nvlpubs.nist.gov): "the use of a shared kernel invariably results in a larger inter-object attack surface than seen with hypervisors ... the level of isolation provided by container runtimes is not as high as that provided by hypervisors" (Section 2.2 adds that containers "do not offer as clear and concrete of a security boundary as a VM"). Fits separate virtual machines over separate containers for a public portal and payroll. Used in cc_d4_029. Current final on csrc.nist.gov (pubs/sp/800/190/final, checked 30 Oct 2026).
 
 ## ISO/IEC
 
@@ -318,3 +388,5 @@ were removed on 29 Oct 2026, audit pilot 2, S7.)
 - ISC2 Code of Ethics, Canons
 - ISC2 Code of Ethics, Canons (service to principals)
   - Verified at isc2.org/ethics, 28 Oct 2026. These go in `framework_ref` only, never in stems, options, explanations or tips. Open question: if the app shows `framework_ref` to learners, add the ® at first mention.
+- ISC2 Ethical Complaint Procedures (standing of complainant and form of complaints)
+  - Verified, 30 Oct 2026, against isc2-ethics.txt (isc2.org/ethics, opened 30 Oct 2026; the procedures sit on the same page as the Code). Complaints are accepted only from those injured; anyone may complain under canons I or II, only principals under canon III, and only certified or licensed professionals who follow an ethics code under canon IV. Complaints must be written sworn affidavits naming the canon breached; the committee is not an investigative body and closes complaints with no prima facie case. Fits a client's complaint about incompetent work. Used in cc_d1_044. Same display note as the Code bullets: framework_ref only.
