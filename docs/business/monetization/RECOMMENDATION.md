@@ -54,7 +54,8 @@
 4. **Owner must-do.** Talk to a Philippine tax adviser about BIR registration and tax on store payouts. Optionally, ask ISACA and ISC2 to confirm the product-name wording.
 
 ## Must-dos found by the compliance review (build time)
-- Product names lead with KaiSip or a generic course name and put the exam after "for", e.g. "KaiSip IT Audit course, 6-month access (for the CISA® exam)". No exam mark at the start of a name.
+- Product names lead with KaiSip or a generic course name and put the exam after "for", e.g. "KaiSip IT Audit course, 6 months (for the CISA® exam)" (53 characters). No exam mark at the start of a name.
+  - Google Play caps a subscription name at 55 characters and Apple caps an in-app purchase display name at 30 (store-compliance review, 30 Oct 2026; Play's limit was read through search results because support.google.com is blocked here). The earlier "6-month access" form was 59 characters, too long for Play. On iOS, use a short name such as "KaiSip IT Audit, 6 months".
 - No links, buttons or price comparisons in the app that point to web checkout or Ko-fi.
 - Store listing changes: remove "free to use during the beta" and "No data collected"; set IARC "allows purchases" to Yes.
 - terms.html gets a paid-terms section, and privacy.html adds RevenueCat.

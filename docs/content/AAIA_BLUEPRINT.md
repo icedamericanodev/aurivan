@@ -238,7 +238,15 @@ ISACA product) may be cited by name and number, never quoted.
 - Notice, as in `mobile/src/content/certifications.ts`: "Not affiliated with or
   endorsed by ISACA®. AAIA is a trademark of ISACA."
 - Product names lead with KaiSip or a generic course name and put the exam after
-  "for": "KaiSip AI Audit course, 6-month access (for the AAIA exam)".
+  "for": "KaiSip AI Audit course, 6 months (for the AAIA exam)" (52 characters;
+  Google Play allows 55). iOS display name (30 max): "KaiSip AI Audit, 6 months".
+- ISACA's own pages write "ISACA Advanced in AI Audit™ (AAIA™)", and a US
+  trademark application for the composite mark "AAIA ISACA ADVANCED IN AI AUDIT"
+  (USPTO 99164468, filed 30 Apr 2025) was still pending on 30 Oct 2026. The app
+  shows "Advanced in AI Audit" as the course's full name, but the notice names
+  only AAIA. Before AAIA goes live, the maintainer decides between dropping that
+  subtitle and extending the notice to "AAIA and Advanced in AI Audit are
+  trademarks of ISACA." (legal item, escalated).
 - Never call KaiSip content official, approved or endorsed; never say "Pass" as
   a product name; never promise a pass.
 - ISACA sells its own AAIA review manual, QAE database and online course. Never
@@ -251,6 +259,9 @@ ISACA product) may be cited by name and number, never quoted.
   AAIA.
 - Whether ISACA plans an AAIA outline refresh (none announced). Re-check the
   outline page every six months and before each bank release.
+- Store copy that names the June 2025 outline must be re-checked with the
+  outline (every six months and before each release).
+- The trademark decision on the full name "Advanced in AI Audit" (see Trademarks).
 - Allowing iso.org, eur-lex.europa.eu and genai.owasp.org would let ISO/IEC
   42001, the EU AI Act and the OWASP 2025 list become Verified citations.
 
