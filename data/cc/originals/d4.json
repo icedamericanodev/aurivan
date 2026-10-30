@@ -87,7 +87,7 @@
    "bloom_level": "Application",
    "question": "A clinic's staff will work from home over the clinic's VPN, and the manager asks a junior analyst what it protects. Which answer is MOST accurate?",
    "options": {
-    "A": "It encrypts traffic in transit but does not secure the laptop",
+    "A": "It encrypts traffic in the tunnel but does not secure the laptop",
     "B": "It scans incoming files for malware before they reach the laptop",
     "C": "It secures the laptop for as long as the tunnel is up",
     "D": "It encrypts the files stored on the laptop's hard drive"
@@ -378,7 +378,7 @@
     "A": "Add a second firewall at the council's internet edge",
     "B": "Group the servers into three VLANs, one per department",
     "C": "Deploy an IDS to alert on traffic between the servers",
-    "D": "Give each server its own rules for allowed flows"
+    "D": "Give each server rules that allow only its approved flows"
    },
    "correct": "D",
    "key_concept": "Micro-segmentation applies policy to each workload, so servers sharing a segment can reach only the systems they need.",
@@ -661,7 +661,7 @@
    "subtopic": "4.3 Cloud security. Cloud access security brokers",
    "difficulty": "analysis",
    "bloom_level": "Analysis",
-   "question": "A CASB report shows dozens of law-firm staff uploading client files to an unapproved personal file-sharing app; the security manager owns the firm's cloud-use policy. What should the junior analyst do FIRST?",
+   "question": "A CASB report shows law-firm staff uploading client files to an unapproved file-sharing app; the security manager owns cloud-use policy and approves any CASB blocking rule. What should the junior analyst do FIRST?",
    "options": {
     "A": "Have the network team close port 443 for those staff",
     "B": "Approve the app after confirming that it uses TLS encryption",
