@@ -1203,7 +1203,7 @@
       "bloom_level": "Analysis",
       "question": "A council's role-based system has 380 roles for 400 staff, mostly one-offs created for single requests, though staff fall into about 15 job types. Which fix should the access analyst propose as BEST?",
       "options": {
-        "A": "Consolidate into a few standard roles, with timed extras",
+        "A": "Consolidate into standard roles, adding time-limited extras",
         "B": "Keep the custom roles and review each one yearly",
         "C": "Replace the roles with attribute-based access control",
         "D": "Let managers edit their own team's roles whenever needed"
@@ -1600,7 +1600,7 @@
       "question": "A retailer's administrators all sign in through single sign-on (SSO), and the IT manager wants an emergency account for when SSO itself fails. Which setup should the security analyst propose as BEST?",
       "options": {
         "A": "Assign it to the IT manager as a second everyday admin account",
-        "B": "Give it a strong password that rotates monthly, like other admin accounts",
+        "B": "Give it a strong password that rotates monthly",
         "C": "Protect it with SSO and multifactor sign-in like other admins",
         "D": "Keep its credentials sealed offline and alert on each use"
       },
@@ -1610,7 +1610,7 @@
       "correct_explanation": "A break-glass account must work when normal sign-in fails, so it cannot depend on SSO. Its credentials are sealed offline, such as in a safe,, held by few people and tested regularly, and every use raises an alert and a review. Putting it behind SSO with multifactor sign-in is the runner-up: that suits daily admin accounts, but it would fail in exactly the outage it exists for.",
       "wrong_explanations": {
         "A": "Tempting because one named person is accountable. But daily use exposes it to the same attacks as normal accounts; an emergency account stays unused until needed.",
-        "B": "Tempting because rotation sounds safe. But treating it like other admin accounts misses its purpose: few should hold it, it stays sealed, and every use raises an alert.",
+        "B": "Tempting because rotation sounds safe. But routine rotation misses its purpose: few should hold it, it stays sealed, and every use raises an alert.",
         "C": "Closest choice: strong sign-in suits admin accounts. But if it depends on SSO, it fails in the very outage it exists for; use a strong factor that works without SSO."
       },
       "tips": [
