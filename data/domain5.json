@@ -105,7 +105,7 @@
       "pre_read": "Notice what sits above the data center. Ask which hazard is most likely there and whether anything would detect it.",
       "correct_explanation": "Plumbing directly above the room makes water the most likely environmental hazard, and with no sensors under the floor or in the ceiling, a leak could reach power and equipment unnoticed. An overdue fire suppression inspection comes closest: it is a real gap to schedule promptly, but the system remains installed and likely to work, while the leak exposure has no control at all.",
       "wrong_explanations": {
-        "B": "An overdue inspection would weigh more if fire were the likeliest hazard; a late check dents assurance, a missing control removes protection.",
+        "B": "An overdue inspection would matter more if fire were the likeliest hazard; the hazard every checklist leads with is not always the likeliest one here.",
         "C": "Clean-agent gas is the preferred suppression for equipment rooms because it puts out fire without water damage; it is a strength, not a gap.",
         "D": "A setpoint inside the vendor's range is acceptable, if tight, and causes no damage while monitoring works."
       },
@@ -2933,7 +2933,7 @@
       "wrong_explanations": {
         "A": "Power-cycling clears evidence of tampering and puts trust back in a device that may be compromised.",
         "C": "Moving keys out of the HSM breaks the hardware boundary PCI DSS relies on and leaves card-data keys copyable on a server.",
-        "D": "As with failover, a payment hold refuses to trust the alarmed device. Stopping the business, though, is an impact that needs its own justification."
+        "D": "A payment hold shares failover's caution, but maximum caution is not maximum safety: a response should cost the business no more than the threat requires."
       },
       "tips": [
         "Eliminate: A trusts and resets a possibly tampered device, and C moves keys outside the hardware boundary that protects them.",
@@ -3611,7 +3611,7 @@
       "pre_read": "Notice the app stores account data on the device. Ask which testing depth fits that sensitivity.",
       "correct_explanation": "Security testing should match the sensitivity of the data. OWASP's mobile verification standard (MASVS) and its testing guide separate baseline requirements for typical apps from stronger requirements, plus resilience testing, for apps handling sensitive data such as banking. Applying the baseline used for other apps is consistent, but it ignores the higher risk of account data stored on the device.",
       "wrong_explanations": {
-        "B": "Both tiers come from OWASP's mobile standard, but a baseline is a floor to build on, not a target to stop at.",
+        "B": "Both tiers come from OWASP's mobile standard, but a baseline is a floor: it says what every app needs, not what this one needs.",
         "C": "Store review and sandboxing are platform baselines; they do not test the app's own storage, cryptography or authentication.",
         "D": "The mobile website is a different product; web scanning does not test the app's on-device storage or code."
       },
@@ -4484,7 +4484,7 @@
       "wrong_explanations": {
         "A": "Questioning the agent delays containment while the attacker is already signed in to the account.",
         "B": "Stakeholders need to be involved, but a call before containment leaves the attacker active in the customer data.",
-        "C": "A password reset does stop the stolen password working again, yet judge containment by what the attacker can still do in the next minute."
+        "C": "A password reset does stop the stolen password from working again, yet judge containment by what the attacker can still do in the next minute."
       },
       "tips": [
         "Eliminate: A and B both delay containment while the attacker is already inside.",
@@ -5531,7 +5531,7 @@
       "pre_read": "Notice analysts dismiss most alerts as noise. Ask what shows whether a rule's alerts are worth acting on.",
       "correct_explanation": "Tuning should keep rules that find real threats and fix those whose alerts are mostly false, so the guiding measure is each rule's share of alerts confirmed as genuine. Comparing each rule's alert count with the average comes closest: it shows which rules are busy, but a busy rule may also catch serious attacks, so tuning by volume alone can remove vital detections.",
       "wrong_explanations": {
-        "B": "Volume shows how busy a rule is, not whether its alerts are real; cutting the busiest rules can remove detections of serious attacks.",
+        "B": "Alert volume is a common triage signal for noisy rules, but busyness describes workload; a tuning measure must describe accuracy.",
         "C": "Closing time measures analyst speed, not rule quality; a quickly closed alert may still come from a rule that only produces noise.",
         "D": "Compliance mapping shows which requirements rules relate to, not whether their alerts are accurate, so it cannot guide which rules to fix."
       },
@@ -6505,10 +6505,10 @@
       "correct": "A",
       "key_concept": "A provider that confirms a breach of customer data should notify the affected customers promptly so they can meet their own obligations.",
       "pre_read": "Notice what is already confirmed and whose deadlines are running. Ask who needs to know first.",
-      "correct_explanation": "The 47 customers control the exposed data and face their own regulatory deadlines, which they cannot meet until they are told. Notifying them now with the confirmed facts, and updating them as forensics finishes, lets them act in time. Completing the investigation first sounds careful, but the deciding facts are already confirmed, and waiting could make customers miss their deadlines.",
+      "correct_explanation": "The 47 customers control the exposed data and face their own regulatory deadlines, which they cannot meet until they are told. Notifying them now with the confirmed facts, and updating them as forensics finishes, lets them act in time. Completing the investigation first is a cautious instinct, but the deciding facts are already confirmed, and waiting could make customers miss their deadlines.",
       "wrong_explanations": {
         "B": "A general notice does not give the 47 customers the specific facts they need to assess their own exposure and meet their deadlines.",
-        "C": "Full forensics before notice suits cases with unknown victims. Once those affected are known, notify on confirmed facts and update as findings land.",
+        "C": "Completing forensics first is usual when the affected parties are still unknown; once they are known, the clock that matters is theirs, not the investigation's.",
         "D": "The customers control the data and their regulatory duties. The provider supports them but should not file on their behalf."
       },
       "tips": [
@@ -7942,7 +7942,7 @@
       "correct_explanation": "The spread is contained and reimaging is about to begin. Reimaging destroys the evidence needed to confirm how the update was compromised, what the malware did and whether other systems are affected, so images must be captured first. Notifying the insurer protects coverage, but it can run in parallel, and nothing is lost for good if it comes an hour later.",
       "wrong_explanations": {
         "A": "Wiper malware destroys data rather than encrypting it for ransom, so paying would not bring back the disks and raises sanctions risk.",
-        "C": "An auditor would check insurer notice against the policy's terms, yet order turns on reversibility: first comes the step whose window shuts once reimaging starts.",
+        "C": "An auditor would check insurer notice against the policy's terms, yet sequence turns on reversibility: the step that cannot be redone later goes first.",
         "D": "Scanning may identify the malware, but it preserves nothing, and the wiper's damage remains whether or not signatures now match."
       },
       "tips": [
@@ -9708,7 +9708,7 @@
       "wrong_explanations": {
         "A": "Proxy inspection sees web uploads, but data hidden in DNS lookups never passes through it as web traffic.",
         "C": "Antivirus may miss custom tunneling tools, and a weekly scan does not watch the traffic that carries the data out.",
-        "D": "Auditors do mine blocked-connection logs for malware calling home. Covert channels hide in allowed traffic, so watch what passes, not just refusals."
+        "D": "Auditors do mine blocked-connection logs for malware calling home, but a log records only what its control judged; pick evidence the attack must pass through."
       },
       "tips": [
         "Eliminate: A inspects web traffic that the tunnel never uses, and C looks for files rather than watching the traffic.",
@@ -10760,7 +10760,7 @@
       "correct_explanation": "Network DLP can only inspect what it can read, so encrypted uploads pass unchecked. Decrypting web traffic at the proxy, under an approved policy that exempts sensitive categories such as personal banking or health sites, restores visibility for DLP rules. Asking staff to label files comes closest; labels help DLP decide, but the tool still cannot read encrypted uploads, and a careless or malicious user simply skips the label.",
       "wrong_explanations": {
         "A": "An approved policy does not make a blanket block workable. It stops legitimate business use of web services for most teams.",
-        "B": "Staff labeling aids classification. It asks those monitored to flag their own files, though, and monitoring should not hinge on its subjects' cooperation.",
+        "B": "Staff labeling is a valid classification step, but a label guides inspection and cannot stand in for it; fix the control that is failing.",
         "C": "Email rules inspect email only; they have no view of files sent through encrypted web sessions."
       },
       "tips": [
@@ -11546,7 +11546,7 @@
       "correct_explanation": "Outbound rules decide where internal systems may send traffic. With none, malware on a database server can reach its command and control (C2) server and move stolen records out over any port. Egress filtering to approved destinations cuts both channels. Unapproved software downloads are the most tempting alternative: open outbound access makes them easier, but change control and administrator rights govern installs, so the open path for theft is the greater exposure.",
       "wrong_explanations": {
         "A": "Inbound connections are governed by separate inbound rules; open outbound access does not by itself let outsiders reach the servers.",
-        "C": "Limiting downloads is a worthwhile hardening goal. Where other controls already own a risk, though, weigh a setting by the risk it chiefly governs.",
+        "C": "Unapproved installs are a genuine hardening concern, though a setting's primary risk is the most damaging use of the path it opens, not its everyday misuse.",
         "D": "Bandwidth use is a capacity concern; it is not the security exposure that open outbound access creates."
       },
       "tips": [
@@ -11732,7 +11732,7 @@
       "pre_read": "Ask who could read the payroll file if the email were forwarded or intercepted.",
       "correct_explanation": "Sending the key with the data defeats the encryption: anyone who intercepts, forwards or later finds the email holds both the file and the key needed to read it. The key must travel by a separate, protected route. Reuse of the same key for later files is the most tempting alternative: it widens the damage of any leak, but this key is already exposed with the very file it protects.",
       "wrong_explanations": {
-        "B": "Per-file keys are good key-management hygiene, yet hygiene limits future leaks. Rank what a weakness exposes today above what it might enlarge later.",
+        "B": "Per-file keys are good key-management hygiene, yet they only bound future leaks; rank what a weakness exposes today above what it might enlarge later.",
         "C": "AES-256 is a current, strong cipher; the weakness lies in how the key was sent, not in the algorithm.",
         "D": "Size limits are an operational issue; they do not expose the payroll data to anyone."
       },
@@ -11806,7 +11806,7 @@
       "pre_read": "Ask who else, besides the sender, could have produced a valid code.",
       "correct_explanation": "A message authentication code shows an instruction was not changed and came from someone holding the shared key, but both partners hold that key. Either could have produced a valid code, so it cannot show a third party which one sent the instruction. Believing the code identifies the sender is the closest choice; only a digital signature made with one party's private key supports non-repudiation.",
       "wrong_explanations": {
-        "A": "Both partners can compute the same code, so it cannot single out the sender; that needs a private-key signature.",
+        "A": "Shared-key codes are an efficient integrity check between trusted partners; settling a dispute, though, needs evidence only one party could have produced.",
         "C": "A MAC is designed for integrity and origin between key holders, not secrecy, so not hiding content is no failure.",
         "D": "Key length affects resistance to guessing; it cannot show which of two key holders produced the code."
       },
@@ -11881,7 +11881,7 @@
       "correct_explanation": "Every laptop trusts any certificate that chains to a root in its store. If unapproved roots can be added, an attacker or careless technician can insert one, issue certificates for any website and intercept staff traffic without a single warning. Changes to trust anchors need approval and logging. Expired roots left in the store come closest: untidy, but they let no one create new certificates the laptops trust.",
       "wrong_explanations": {
         "B": "Root certificates are small files; storage space is not a realistic concern.",
-        "C": "Both stale and unapproved roots weaken trust-store hygiene, but a weakness is ranked by the power it could hand an attacker.",
+        "C": "Both expired and unapproved roots are trust-store findings an auditor would log, but a weakness ranks by the power it could hand an attacker.",
         "D": "Adding roots makes more certificates trusted, so warnings would fall, not rise; the danger is silent trust."
       },
       "tips": [
@@ -12888,7 +12888,7 @@
       "correct_explanation": "A zero-day exploit attacks a flaw before its vendor has released a patch, often before anyone else knows of it. Scanners need a published check and patching needs a fix, so a scan-and-patch program cannot see or close the gap; compensating controls and reduced exposure must cover it. A slow monthly cycle is a real weakness, but it concerns known flaws, and a faster cycle would still miss a zero-day.",
       "wrong_explanations": {
         "A": "Systems missing older, available patches face known exploits, which patching does address; a zero-day targets a flaw with no patch yet.",
-        "B": "Monthly scanning does leave patched flaws open for weeks. Speed and reach are separate tests, though: first ask whether a control can see the threat.",
+        "B": "Monthly scanning does leave fixable flaws open for weeks. Speed and reach are separate tests, though: first ask whether a control can see the threat.",
         "D": "Ranking by active exploitation improves the patch order for known flaws, but a zero-day has no patch to rank or apply."
       },
       "tips": [
