@@ -2,7 +2,7 @@
 
 **Purpose:** the canonical `framework_ref` strings for the CC question bank
 (`data/cc/originals/d{N}.json`). Started 28 Oct 2026 from the D1 and D3 pilot
-batches (`cc_d1_001`–`020`, `cc_d3_001`–`020`); D2 pilot citations (`cc_d2_001`–`020`) added 29 Oct 2026. D5 pilot citations (`cc_d5_001`–`020`) added 29 Oct 2026.
+batches (`cc_d1_001`–`020`, `cc_d3_001`–`020`); D2 pilot citations (`cc_d2_001`–`020`) added 29 Oct 2026. D5 pilot citations (`cc_d5_001`–`020`) added 29 Oct 2026. D4 pilot citations (`cc_d4_001`–`020`) added 30 Oct 2026, all NIST, each checked against a local text copy of the NIST PDF.
 
 **Format** (same as `data/originals/_framework_library.md`):
 - Each canonical citation is a bullet at the start of a line (`- `). Split a
@@ -76,6 +76,24 @@ were removed on 29 Oct 2026, audit pilot 2, S7.)
 - NIST SP 800-53 Rev. 5 SA-11(8) (Developer Testing and Evaluation | Dynamic Code Analysis)
 - NIST SP 800-53 Rev. 5 SA-22 (Unsupported System Components)
   - D5 pilot. Verified 29 Oct 2026: titles matched against the Rev. 5 PDF text. CM-3 is also used by cc_d1_013 and cc_d2_003.
+- NIST SP 800-53 Rev. 5 AC-4 (Information Flow Enforcement)
+  - Verified, 30 Oct 2026, against sp800-53r5-catalog.json (NIST OSCAL catalog, release 5.2.0; title and text) and sp800-53r5.txt (nvlpubs.nist.gov): enforce approved authorizations for the flow of information within a system and between connected systems. Fits filtering what crosses between VLANs. Used in cc_d4_010.
+- NIST SP 800-53 Rev. 5 AC-18(1) (Wireless Access | Authentication and Encryption)
+  - Verified, 30 Oct 2026, against sp800-53r5-catalog.json (NIST OSCAL catalog, release 5.2.0; title and text) and sp800-53r5.txt (nvlpubs.nist.gov): protect wireless access with authentication and encryption; strong encryption reduces wireless threats. Fits choosing WPA3. Used in cc_d4_006.
+- NIST SP 800-53 Rev. 5 CM-7 (Least Functionality)
+  - Verified, 30 Oct 2026, against sp800-53r5-catalog.json (NIST OSCAL catalog, release 5.2.0; title and text) and sp800-53r5.txt (nvlpubs.nist.gov): prohibit or restrict functions, ports, protocols and services that are not needed. Fits retiring cleartext FTP. Used in cc_d4_002.
+- NIST SP 800-53 Rev. 5 SA-9 (External System Services)
+  - Verified, 30 Oct 2026, against sp800-53r5-catalog.json (NIST OSCAL catalog, release 5.2.0; title and text) and sp800-53r5.txt (nvlpubs.nist.gov): define and document oversight and user roles and responsibilities for external system services. Fits the provider and customer duty split for a managed AI service. Used in cc_d4_020.
+- NIST SP 800-53 Rev. 5 SC-7 (Boundary Protection)
+  - Verified, 30 Oct 2026, against sp800-53r5-catalog.json (NIST OSCAL catalog, release 5.2.0; title and text) and sp800-53r5.txt (nvlpubs.nist.gov): implement subnetworks for publicly accessible components separated from internal networks; the discussion calls these DMZs. Fits placing the web server in the screened subnet and the database inside. Used in cc_d4_009.
+- NIST SP 800-53 Rev. 5 SC-7(5) (Boundary Protection | Deny by Default — Allow by Exception)
+  - Verified, 30 Oct 2026, against sp800-53r5-catalog.json (NIST OSCAL catalog, release 5.2.0; title and text) and sp800-53r5.txt (nvlpubs.nist.gov): deny traffic by default and allow by exception, inbound and outbound, so only essential, approved connections pass. Fits outbound access from an AI training segment only to approved sources. Used in cc_d4_014.
+- NIST SP 800-53 Rev. 5 SC-7(21) (Boundary Protection | Isolation of System Components)
+  - Verified, 30 Oct 2026, against sp800-53r5-catalog.json (NIST OSCAL catalog, release 5.2.0; title and text) and sp800-53r5.txt (nvlpubs.nist.gov): isolate system components with boundary protection to limit unauthorized flows between them. Fits putting a smart door-lock hub on its own segment. Used in cc_d4_008.
+- NIST SP 800-53 Rev. 5 SC-8(1) (Transmission Confidentiality and Integrity | Cryptographic Protection)
+  - Verified, 30 Oct 2026, against sp800-53r5-catalog.json (NIST OSCAL catalog, release 5.2.0; title and text) and sp800-53r5.txt (nvlpubs.nist.gov): use cryptography to protect information during transmission. Fits replacing FTP with SFTP. Used in cc_d4_002.
+- NIST SP 800-53 Rev. 5 SI-4(13) (System Monitoring | Analyze Traffic and Event Patterns)
+  - Verified, 30 Oct 2026, against sp800-53r5-catalog.json (NIST OSCAL catalog, release 5.2.0; title and text) and sp800-53r5.txt (nvlpubs.nist.gov): develop profiles of common traffic and event patterns and use them to tune monitoring so anomalous traffic stands out. Fits machine-learning traffic monitoring. Used in cc_d4_005.
 
 ### SP 800-34 Rev. 1, Contingency Planning Guide for Federal Information Systems (May 2010, updated Nov 2010)
 - NIST SP 800-34 Rev. 1 Section 2.2 (Types of Plans: Business Continuity Plan and Disaster Recovery Plan)
@@ -108,6 +126,74 @@ were removed on 29 Oct 2026, audit pilot 2, S7.)
 - NIST SP 800-63C-4 (Federation and Assertions)
   - Verified, 28 Oct 2026. Cited by topic, not section number; the full text on pages.nist.gov was blocked during authoring. A biometric counts only when paired with a physical authenticator (the cc_d3_001 fix depends on this).
 
+### SP 800-41 Rev. 1, Guidelines on Firewalls and Firewall Policy (Sep 2009)
+- NIST SP 800-41 Rev. 1 Section 2.1.7 (Network Access Control: health checks and limited access for remediation)
+  - Verified, 30 Oct 2026, against sp800-41r1.txt (nvlpubs.nist.gov): "If the user has acceptable credentials but the device does not pass the health check, the user and device may get only limited access to the internal network for remediation purposes." Fits cc_d4_013. Used in cc_d4_013.
+- NIST SP 800-41 Rev. 1 Section 3.1 (Network Layouts with Firewalls: public-facing servers on the DMZ)
+  - Verified, 30 Oct 2026, against sp800-41r1.txt (nvlpubs.nist.gov): "It is common to put public-facing servers, such as web and email servers, on the DMZ", with DMZ-to-internal traffic still passing the firewall. Used in cc_d4_009.
+  - Current final; csrc.nist.gov shows no newer revision or withdrawal (checked 30 Oct 2026).
+
+### SP 800-46 Rev. 2, Guide to Enterprise Telework, Remote Access, and Bring Your Own Device (BYOD) Security (Jul 2016)
+- NIST SP 800-46 Rev. 2 Section 2.1 (Vulnerabilities, Threats, and Security Controls: infected client devices)
+  - Verified, 30 Oct 2026, against sp800-46r2.txt (nvlpubs.nist.gov): "If a client device is infected with malware, this malware may spread throughout the organization"; organizations should assume client devices will become infected. Fits a VPN not making the laptop safe. Used in cc_d4_003. Current final on csrc.nist.gov (checked 30 Oct 2026).
+
+### SP 800-77 Rev. 1, Guide to IPsec VPNs (Jun 2020)
+- NIST SP 800-77 Rev. 1 Section 2.1 (The Need for Network Layer Security: controls at each layer)
+  - Verified, 30 Oct 2026, against sp800-77r1.txt (nvlpubs.nist.gov): compares application, transport, network and data link layer controls; "data link layer controls for WiFi networks are usually provided through WiFi chipset firmware". Fits placing WPA3 at layer 2. Used in cc_d4_001.
+- NIST SP 800-77 Rev. 1 Section 2.3 (Virtual Private Networking (VPN))
+  - Verified, 30 Oct 2026, against sp800-77r1.txt (nvlpubs.nist.gov): a VPN provides a secure communications mechanism for data transmitted across existing networks such as the internet. Fits a VPN protecting traffic in transit. Used in cc_d4_003.
+- NIST SP 800-77 Rev. 1 Section 8.1.1 (WiFi Data Link Protection)
+  - Verified, 30 Oct 2026, against sp800-77r1.txt (nvlpubs.nist.gov): WEP "is easily broken"; WPA2 uses AES-CCM; WPA3 replaces the PSK with a password-authenticated key exchange that better resists weak passwords and adds forward secrecy; Wi-Fi encryption protects only device to access point. Used in cc_d4_001 and cc_d4_006.
+  - Current final on csrc.nist.gov (checked 30 Oct 2026).
+
+### SP 800-82 Rev. 3, Guide to Operational Technology (OT) Security (Sep 2023)
+- NIST SP 800-82 Rev. 3 Section 6.2.1.3 (Network Segmentation and Isolation: only explicitly authorized traffic between segments)
+  - Verified, 30 Oct 2026, against sp800-82r3.txt (nvlpubs.nist.gov): segmentation is done with switches or VLANs, and firewalls or gateways enforce restrictions by "only permitting explicitly authorized communication between segments". Fits filtering traffic routed between VLANs. Used in cc_d4_010.
+- NIST SP 800-82 Rev. 3 Section 6.2.11 (Flaw Remediation and Patch Management: test OT patches before applying)
+  - Verified, 30 Oct 2026, against sp800-82r3.txt (nvlpubs.nist.gov): OT patches "should be adequately tested"; a patch "can also introduce a greater risk from a production or safety perspective". Fits reporting a controller flaw to its owner for a tested, scheduled fix. Used in cc_d4_007.
+  - Rev. 3 is the current final. csrc.nist.gov notes (21 Sep 2026) an initial public draft of Rev. 4, comments due 30 Nov 2026; re-check these sections when Rev. 4 is final.
+
+### SP 800-94, Guide to Intrusion Detection and Prevention Systems (IDPS) (Feb 2007)
+- NIST SP 800-94 Section 2.3.2 (Anomaly-Based Detection)
+  - Verified, 30 Oct 2026, against sp800-94.txt (nvlpubs.nist.gov): profiles of normal behavior are learned over a training period; the method is "very effective at detecting previously unknown threats" but "often produce[s] many false positives". Fits what a machine-learning monitor adds over signatures. Used in cc_d4_005.
+- NIST SP 800-94 Section 4.2.2 (Network Architectures and Sensor Locations: inline versus passive sensors)
+  - Verified, 30 Oct 2026, against sp800-94.txt (nvlpubs.nist.gov): inline sensors exist "to enable them to stop attacks by blocking network traffic"; a passive sensor "monitors a copy of the actual network traffic". Fits IPS versus IDS. Used in cc_d4_004.
+  - Still the current final: csrc.nist.gov says Draft Rev. 1 (2012) never became final and was retired (checked 30 Oct 2026).
+
+### SP 800-144, Guidelines on Security and Privacy in Public Cloud Computing (Dec 2011)
+- NIST SP 800-144 Section 2.3 (Outsourcing and Accountability)
+  - Verified, 30 Oct 2026, against sp800-144.txt (nvlpubs.nist.gov): "Ultimately, the organization is accountable for the choice of public cloud and the security and privacy of the outsourced service." Fits the school removing leavers' SaaS accounts. Used in cc_d4_017.
+- NIST SP 800-144 Section 4.7 (Data Protection)
+  - Verified, 30 Oct 2026, against sp800-144.txt (nvlpubs.nist.gov): organizations placing sensitive data in a public cloud "must account for the means by which access to the data is controlled and the data is kept secure". Fits the clinic deciding what patient data goes to a managed AI service. Used in cc_d4_020.
+  - Current final on csrc.nist.gov, no newer revision or withdrawal shown (checked 30 Oct 2026).
+
+### SP 800-145, The NIST Definition of Cloud Computing (Sep 2011)
+- NIST SP 800-145 Section 2 (The NIST Definition of Cloud Computing: essential characteristics)
+  - Verified, 30 Oct 2026, against sp800-145.txt (nvlpubs.nist.gov): on-demand self-service is a consumer provisioning capabilities "without requiring human interaction with each service provider"; rapid elasticity is scaling outward and inward with demand. Used in cc_d4_015.
+- NIST SP 800-145 Section 2 (The NIST Definition of Cloud Computing: service models)
+  - Verified, 30 Oct 2026, against sp800-145.txt (nvlpubs.nist.gov): in PaaS the consumer does not manage the operating systems or infrastructure "but has control over the deployed applications". Fits who fixes a library bundled into a PaaS app. Used in cc_d4_016.
+- NIST SP 800-145 Section 2 (The NIST Definition of Cloud Computing: deployment models)
+  - Verified, 30 Oct 2026, against sp800-145.txt (nvlpubs.nist.gov): a private cloud is "provisioned for exclusive use by a single organization" and "may exist on or off premises"; a public cloud is for open use by the general public. Used in cc_d4_018.
+  - Section 2 has three unnumbered parts (Essential Characteristics, Service Models, Deployment Models), so the paraphrase names the part. Current final on csrc.nist.gov (checked 30 Oct 2026).
+
+### SP 800-207, Zero Trust Architecture (Aug 2020)
+- NIST SP 800-207 Section 2.1 (Tenets of Zero Trust)
+  - Verified, 30 Oct 2026, against sp800-207.txt (nvlpubs.nist.gov): "Network location alone does not imply trust"; access is "granted on a per-session basis" with least privilege, by dynamic policy that includes identity and the requesting asset's state. Used in cc_d4_012.
+- NIST SP 800-207 Section 3.1.2 (ZTA Using Micro-Segmentation)
+  - Verified, 30 Oct 2026, against sp800-207.txt (nvlpubs.nist.gov): individual resources or small groups sit on their own segments behind gateways or host-based agents that act as enforcement points. Fits per-server rules in a shared segment. Used in cc_d4_011.
+  - Current final on csrc.nist.gov (checked 30 Oct 2026).
+
+### SP 800-213, IoT Device Cybersecurity Guidance for the Federal Government: Establishing IoT Device Cybersecurity Requirements (Nov 2021)
+- NIST SP 800-213 Section 2.3 (How IoT Devices May Create Security Challenges)
+  - Verified, 30 Oct 2026, against sp800-213.txt (nvlpubs.nist.gov): IoT devices "often lack cybersecurity functionality commonly present in conventional IT equipment (e.g., laptops)", and gaps may be compensated by other controls. Fits isolating a smart door-lock hub. Used in cc_d4_008. Current final on csrc.nist.gov (checked 30 Oct 2026).
+
+### SP 800-215, Guide to a Secure Enterprise Network Landscape (Nov 2022)
+- NIST SP 800-215 Section 3.1 (Cloud Access Security Broker (CASB))
+  - Verified, 30 Oct 2026, against sp800-215.txt and the PDF bookmarks of sp800-215.pdf (nvlpubs.nist.gov; the text export drops heading numbers): CASBs give visibility into cloud use, "thus preventing or minimizing the chances of shadow IT", and enforce security and governance policies for cloud applications. Used in cc_d4_019.
+- NIST SP 800-215 Section 5.1 (Microsegmentation)
+  - Verified, 30 Oct 2026, against sp800-215.txt (nvlpubs.nist.gov): microsegmentation divides an internal network into isolated segments with granular policies that "restrict the unauthorized lateral movement" of users or applications. Used in cc_d4_011.
+  - Current final on csrc.nist.gov (checked 30 Oct 2026).
+
 ### Other NIST publications
 - NIST SP 800-162 (Guide to Attribute Based Access Control (ABAC) Definition and Considerations)
   - Jan 2014, with updates of Feb 2019. Verified, 28 Oct 2026.
@@ -132,6 +218,8 @@ were removed on 29 Oct 2026, audit pilot 2, S7.)
   - Apr 2022, current final (csrc.nist.gov checked 29 Oct 2026). Cited by title, not section.
 - NIST AI 100-2 E2025 (Adversarial Machine Learning: A Taxonomy and Terminology of Attacks and Mitigations)
   - Mar 2025, current (csrc.nist.gov checked 29 Oct 2026). Cited by title.
+- NIST AI 100-2 E2025 Section 3.2 (Supply Chain Attacks and Mitigations)
+  - Verified, 30 Oct 2026, against ai100-2e2025.txt (nvlpubs.nist.gov): AI development adds dependencies such as third-party models; attackers can offer "maliciously designed models", and models are best treated as untrusted components. Fits limiting a training segment's downloads to approved sources. Used in cc_d4_014.
 
 ### Cybersecurity Framework (CSF) 2.0, NIST CSWP 29 (Feb 2024)
 - NIST CSF 2.0 Section 1 (CSF Overview)
