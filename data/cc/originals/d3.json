@@ -1203,7 +1203,7 @@
       "bloom_level": "Analysis",
       "question": "A council's role-based system has 380 roles for 400 staff, mostly one-offs created for single requests, though staff fall into about 15 job types. Which fix should the access analyst propose as BEST?",
       "options": {
-        "A": "Rebuild a small set of job roles, with time-limited extras",
+        "A": "Consolidate into a few standard roles, with timed extras",
         "B": "Keep the custom roles and review each one yearly",
         "C": "Replace the roles with attribute-based access control",
         "D": "Let managers edit their own team's roles whenever needed"
@@ -1239,8 +1239,8 @@
       "bloom_level": "Application",
       "question": "A junior network administrator finds 140 allow rules, many with no recorded purpose, on the firewall guarding a clinic's lab systems, which the network manager owns. What should the administrator do FIRST?",
       "options": {
-        "A": "Add a final rule that allows any traffic the others miss",
-        "B": "Replace the rules with role-based access control on the firewall",
+        "A": "Move the unexplained rules to the end of the rule list",
+        "B": "Write a purpose for each rule from its recent traffic logs",
         "C": "List the rules and ask the manager to arrange a review",
         "D": "Disable the unexplained rules now, then tell the manager"
       },
@@ -1249,12 +1249,12 @@
       "pre_read": "Note what the administrator found and who owns the device.",
       "correct_explanation": "Rules pile up, and each needs an owner, a purpose and a periodic review. The administrator's part is to document the rules and bring them to the firewall's owner, who can arrange a review with each business area. Disabling unexplained rules is the runner-up: they may look unused, but some may carry live lab traffic, and changing the firewall is the owner's decision, made through change control.",
       "wrong_explanations": {
-        "A": "Tempting because it stops wanted traffic being dropped. But a rule set should end by denying whatever no rule allows, not by allowing it.",
-        "B": "Tempting because role-based control is common. But firewalls apply rule-based control, the same conditions for all traffic; roles describe people's jobs, not connections.",
+        "A": "Tempting because rules at the end are matched last. But reordering an owned firewall's rules is still a change; it can break live lab traffic and skips the owner.",
+        "B": "Tempting because recorded purposes are the goal. But traffic shows what a rule carries, not why it should exist; only the owner can confirm each purpose.",
         "D": "Closest choice: unexplained rules are a real risk. But some may carry live lab traffic, and changes to an owned firewall go through its owner and change control."
       },
       "tips": [
-        "Eliminate: B confuses role-based with rule-based control, and A ends the rule set by allowing everything instead of denying it.",
+        "Eliminate: A reorders an owned firewall's rules without change control, and B guesses purposes from traffic that only the owner can confirm.",
         "Final two: C beats D because the manager owns the firewall; the administrator documents and raises the issue rather than changing live rules alone.",
         "Exam cue: every access rule needs an owner, a purpose and a review. Report rule sprawl to the owner; do not clean it up alone."
       ],
@@ -1599,8 +1599,8 @@
       "bloom_level": "Application",
       "question": "A retailer's administrators all sign in through single sign-on (SSO), and the IT manager wants an emergency account for when SSO itself fails. Which setup should the security analyst propose as BEST?",
       "options": {
-        "A": "Share its password with every administrator so anyone can respond",
-        "B": "Leave it out of logging so emergencies are not slowed down",
+        "A": "Assign it to the IT manager as a second everyday admin account",
+        "B": "Give it a strong password that rotates monthly, like other admin accounts",
         "C": "Protect it with SSO and multifactor sign-in like other admins",
         "D": "Keep its credentials sealed offline and alert on each use"
       },
@@ -1609,12 +1609,12 @@
       "pre_read": "Note what the emergency account is for, and what each setup depends on.",
       "correct_explanation": "A break-glass account must work when normal sign-in fails, so it cannot depend on SSO. Its credentials are sealed offline, such as in a safe,, held by few people and tested regularly, and every use raises an alert and a review. Putting it behind SSO with multifactor sign-in is the runner-up: that suits daily admin accounts, but it would fail in exactly the outage it exists for.",
       "wrong_explanations": {
-        "A": "Tempting because anyone could respond. But a widely shared password cannot show who used it and leaks easily; few people should hold it.",
-        "B": "Tempting because emergencies need speed. But a powerful, rarely used account is exactly the one whose every sign-in must be logged and checked.",
+        "A": "Tempting because one named person is accountable. But daily use exposes it to the same attacks as normal accounts; an emergency account stays unused until needed.",
+        "B": "Tempting because rotation sounds safe. But treating it like other admin accounts misses its purpose: few should hold it, it stays sealed, and every use raises an alert.",
         "C": "Closest choice: strong sign-in suits admin accounts. But if it depends on SSO, it fails in the very outage it exists for; use a strong factor that works without SSO."
       },
       "tips": [
-        "Eliminate: B removes oversight from the most powerful account, and A spreads a password that cannot show who used it.",
+        "Eliminate: A turns the emergency account into an everyday one, and B treats it like any admin account instead of sealing it and watching its use.",
         "Final two: D beats C because the account must work when SSO fails; tying it to SSO defeats its purpose.",
         "Exam cue: break-glass access is sealed, independent of the system that might fail, tested, and alerts on every use."
       ],
