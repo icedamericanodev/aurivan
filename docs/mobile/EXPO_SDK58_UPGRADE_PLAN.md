@@ -55,6 +55,30 @@ Left to do:
 5. Then preview APKs to testers (SDK 57 APKs stop getting updates once this
    merges), then production.
 
+Fixed after review (code, QA and security reviewers, same PR):
+- Help's deep link (`kaisip://help?open=…`) cleared its param with
+  `router.setParams`, which on router 58 hits the screen underneath during a
+  warm push, so a second identical link did nothing. It now clears through
+  Help's own navigation (`src/__tests__/help-router58.test.tsx`).
+- A failed backup or account-data write now deletes the partial file at once
+  instead of leaving it for the cache sweep (tests in `backup.test.ts` and
+  `cloud-account-screens.test.tsx`).
+- QA's real-router journeys (app start, onboarding, leaving deep stacks) are
+  kept as `src/__tests__/router58-journeys.test.tsx`.
+
+Follow-ups found in review, already on main before SDK 58 (separate PRs):
+- **Stacked tab bars:** Results "Done" and Session "Back to Today" / "Pause"
+  call `router.replace('/home')` (`results.tsx` ~248, `session.tsx` ~442/550/563)
+  from the root stack, which adds a second `(tabs)` each time; Android Back then
+  goes to an old Today. Use `openTab('/home')` (`lib/actions.ts`, `dismissTo`).
+- **Back with nothing to go back to:** Settings, settings-section, Mistakes,
+  Milestones, Field notes, Fit, lesson, the games and mock-start call plain
+  `router.back()`, so Back does nothing when a direct link opened them. Add the
+  `canGoBack() ? back() : replace(<tab>)` fallback.
+- **Screenshot tool:** `scripts/screenshots/shoot_data.mjs` still looks for the
+  backup buttons on Settings; they moved to Settings → Your data, so
+  `SHOTS=data` times out.
+
 ---
 
 *The plan as written before the upgrade (unchanged below).*
