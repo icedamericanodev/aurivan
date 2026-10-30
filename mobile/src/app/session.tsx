@@ -26,6 +26,8 @@
  *   lines come first. A right answer keeps the old order.
  * - The coach line under "Not quite" is specific only when the learner tagged
  *   why they slipped (engine/slipCoach.ts missCoachLine); otherwise neutral.
+ *   (Premium round 2 adds the pick-aware line first; a tagged slip still wins unless the pick
+ *   reached the final two. See below.)
  * - A right answer given less than 4 hours after a MISS on the same question
  *   is a retest: it counts half and says "Back in your review tomorrow."
  * - A wrong answer gets the neutral tap, not the "error" buzz.
@@ -46,14 +48,17 @@
  * - The answer opens with the question recapped in two lines ("Show question"
  *   opens it whole); a screen reader hears the whole question there.
  *
- * Premium round 2 (REPORT spec 2, the Plate register's Fig. 7), practice and review only:
+ * Premium round 2 (REPORT spec 2; Fig. 4 = the answer in the figure register the web shares), practice and review only:
  * - A running head ("Practice · IS Audit" / "Question 4 of 10") over the recap.
  * - The verdict word in ink; the leaf keeps its colour and its ✗ / ✓.
- * - One plate, "Fig. 7 · Your pick, and the best answer" (a right answer: "Fig. 7 · Your answer",
+ * - One plate, "Fig. 4 · Your pick, and the best answer" (a right answer: "Fig. 4 · Your answer",
  *   one ✓ row). "Your pick" replaces "Your answer" on this screen.
- * - "KEY IDEA" over the quotation and the Exam cue as a label (no vine rule), on the vine's timing.
+ * - "KEY IDEA" over the quotation and the Exam cue as a label (no vine rule), on the vine's timing,
+ *   after a miss and after a right answer (where it follows Why; Eliminate / Final two stay on the vine).
  * - The coach line names the learner's own pick when the tips do ("Your pick, B, is one of the two
- *   to rule out first." / "You reached the final two: B against D."; engine/pickCoach.ts).
+ *   to rule out first." / "You reached the final two: B against D."; engine/pickCoach.ts). A slip
+ *   the learner tagged themselves still wins over "rule out first" (their own words come first);
+ *   only reaching the final two outranks it.
  * - "Next question" is the plate button over a hairline. A mock is unchanged.
  */
 import * as Router from 'expo-router';
@@ -121,7 +126,7 @@ import { RETEST_LINE, type Confidence } from '../engine/srs';
 import { shortDate } from '../lib/format';
 import { priorityWord } from '../engine/games/priorityLens';
 import { missCoachLine } from '../engine/slipCoach';
-import { pickCoachLine } from '../engine/pickCoach';
+import { pickCoachKind, pickCoachLine } from '../engine/pickCoach';
 import { RunningHead } from '../components/fieldguide';
 import { eliminateTip, runnerUp, splitMissTips, tipParts } from '../engine/tips';
 import { finishSession } from '../lib/finishSession';
@@ -584,16 +589,20 @@ export default function SessionScreen() {
   const pickedOriginal = response ? displayToOriginal(response.display, perm) : undefined;
   const whyWrong = pickedOriginal && pickedOriginal !== q.correct ? q.wrongExplanations[pickedOriginal] : undefined;
   const correctDisplay = originalToDisplay(q.correct, perm);
-  // Premium round 2 (web v12.47 parity): after a miss, first a line about the learner's OWN pick, read
+  // Premium round 2 (web v12.47 parity): after a miss, a line about the learner's OWN pick, read
   // from the tips on ORIGINAL letters and said in DISPLAY letters ("Your pick, B, is one of the two to
   // rule out first." / "You reached the final two: B against D."). Only when the tips name the pick
   // exactly; otherwise the usual line (the closest wrong choice, a tagged slip, or the neutral line).
+  // UX review P1: a slip the learner TAGGED themselves ("I misread it") is their own words, so it still
+  // wins, except when the pick reached the final two (that line is the more useful news).
   const coach = !response
     ? ''
     : response.correct
       ? 'Clean read.'
-      : (pickCoachLine(q.tips, q.correct, pickedOriginal, perm) ??
-        missCoachLine(Boolean(pickedOriginal && pickedOriginal === runnerUp(q.tips, q.correct)), taggedSlip));
+      : taggedSlip && pickCoachKind(q.tips, q.correct, pickedOriginal) !== 'final-two'
+        ? missCoachLine(false, taggedSlip)
+        : (pickCoachLine(q.tips, q.correct, pickedOriginal, perm) ??
+          missCoachLine(Boolean(pickedOriginal && pickedOriginal === runnerUp(q.tips, q.correct)), taggedSlip));
   const flagged = active.flagged.includes(qid);
   const shownFlagged = active.flagged.includes(shownQid);
   // Build E: why this question is here ("Weak spot", "Mixed review"…).
@@ -914,8 +923,9 @@ export default function SessionScreen() {
             response && (
               <>
                 {/* Answer (premium round 2, the Field Guide answer): running head → recap → verdict →
-                    Fig. 7 (your pick against the best answer) → (after a miss: Key idea + Exam cue → Why, folded →
-                    Eliminate / Final two; after a right answer: Why → the whole vine) → source */}
+                    Fig. 4 (your pick against the best answer) → (after a miss: Key idea + Exam cue → Why, folded →
+                    Eliminate / Final two; after a right answer: Why → Key idea + Exam cue → Eliminate / Final two
+                    on the vine) → source */}
                 {/* Where you are: "Practice · IS Audit" and "Question 4 of 10" (the set's own length, never the bank's). */}
                 <RunningHead
                   section={[active.mode === 'review' ? 'Review' : 'Practice', domain?.short].filter(Boolean).join(' · ')}
@@ -932,7 +942,7 @@ export default function SessionScreen() {
                 {response.assisted && response.correct && <T v="meta" style={{ marginTop: space.xs, marginLeft: verdictIndent }}>{HINT_AFTER_LINE}</T>}
                 {/* A right retest (under 4 hours after a miss) is not promoted: say when it is back. */}
                 {response.retest && response.correct && <T v="meta" style={{ marginTop: space.xs, marginLeft: verdictIndent }}>{RETEST_LINE}</T>}
-                {/* Premium round 2: Fig. 7, one plate. After a miss: your pick (with "Why not B") and the best answer,
+                {/* Premium round 2: Fig. 4, one plate. After a miss: your pick (with "Why not B") and the best answer,
                     a hairline between; after a right answer: "Your answer", one ✓ row. DISPLAY letters on screen and
                     in every spoken label; the options are looked up by their ORIGINAL letters. The plate rises in,
                     then its rows 40 ms apart, from where the rows always started (FEEDBACK_DELAY.rows). */}
@@ -951,10 +961,25 @@ export default function SessionScreen() {
                     <Rise delay={FEEDBACK_DELAY.why}>
                       <WhyBlock letter={correctDisplay} text={renderText(q.explanation, perm)} fold={false} />
                     </Rise>
-                    {/* In reading order: the vine's words arrive after the Why above them (motion round 2, 3a). */}
+                    {/* In reading order: these arrive after the Why above them (motion round 2, 3a).
+                        Premium round 2 (UX review P2): a right answer gets the same "KEY IDEA" quotation and Exam cue
+                        label as a miss, then Eliminate two / Final two stay on the vine below. All of it sits in the
+                        one feedback-vine view, so VINE_ARRIVES and the single tick hold: KeyIdeaCue ticks as the key
+                        idea appears, and this Vine has no Key idea leaf, so it never ticks a second time. */}
                     <Rise delay={FEEDBACK_DELAY.why + motion.stagger.group}>
                       <View ref={vineRef} collapsable={false} onLayout={checkVine} testID="feedback-vine">
-                        <Vine key={qid} keyIdea={q.keyConcept} tips={q.tips.map((t) => renderText(t, perm))} visible={vineVisible} />
+                        <KeyIdeaCue
+                          key={`${qid}:a`}
+                          keyIdea={q.keyConcept}
+                          cues={missTips.first.map((i) => tipParts(renderText(q.tips[i], perm), i))}
+                          visible={vineVisible}
+                        />
+                        <Vine
+                          key={qid}
+                          tips={missTips.rest.map((i) => renderText(q.tips[i], perm))}
+                          tipIndex={missTips.rest}
+                          visible={vineVisible}
+                        />
                       </View>
                     </Rise>
                   </>

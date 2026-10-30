@@ -21,7 +21,7 @@ import { moveFocus } from '../lib/a11y';
 import { haptic } from '../lib/haptics';
 import { RETEST_LINE } from '../engine/srs';
 import { NEUTRAL_MISS_LINE, RUNNER_UP_LINE } from '../engine/slipCoach';
-import { pickCoachLine } from '../engine/pickCoach';
+import { pickCoachKind, pickCoachLine } from '../engine/pickCoach';
 import { displayToOriginal } from '../engine/shuffle';
 import { TIMES_UP_DETAIL, TIMES_UP_LINE } from '../engine/resultsCopy';
 import { selectCert, useProgress } from '../store/progress';
@@ -137,7 +137,7 @@ describe('the answer screen after a miss', () => {
     const t = allText();
     // "Why D" (the heading), not the pick's own "Why not B" note under its row (mobile 1.43).
     const at = (s: string) => (s === 'Why ' ? t.search(/Why [A-D]\b/) : t.indexOf(s));
-    // Premium round 2: "Your pick" (not "Your answer") on the Fig. 7 plate.
+    // Premium round 2: "Your pick" (not "Your answer") on the Fig. 4 plate.
     const order = ['Not quite', '✗ Your pick', '✓ Best answer', 'Key idea', 'Exam cue', 'Why ', 'Eliminate two', 'Final two'].map(at);
     expect(order.every((i) => i >= 0)).toBe(true);
     expect([...order].sort((a, b) => a - b)).toEqual(order);
@@ -189,7 +189,7 @@ describe('the answer screen after a miss', () => {
     expect(coach === RUNNER_UP_LINE).toBe(false);
   });
 
-  it('a tagged "acted as the wrong person" slip: the pick-aware line first, the slip line as the fallback', () => {
+  it('a tagged "acted as the wrong person" slip: the slip line, unless the pick reached the final two', () => {
     const q = others[0];
     act(() => {
       useProgress.getState().recordMistake('cisa', q.id, 'A');
@@ -199,11 +199,12 @@ describe('the answer screen after a miss', () => {
     mount(<SessionScreen />);
     pickBy(false);
     press('Check answer');
-    // Premium round 2: a line about this very pick, read from its tips, comes first (never a guess);
-    // the tagged slip's line is the fallback when the tips don't name the pick.
+    // Premium round 2 (UX review P1): the learner's own tag is their words, so it wins over "rule out
+    // first"; only reaching the final two (the more useful news) outranks it.
     const s = useSession.getState().active!;
     const picked = displayToOriginal(s.responses[q.id].display, s.perms[q.id]);
-    const expected = pickCoachLine(q.tips, q.correct, picked, s.perms[q.id]) ?? 'Check who you are in the question.';
+    const expected =
+      pickCoachKind(q.tips, q.correct, picked) === 'final-two' ? pickCoachLine(q.tips, q.correct, picked, s.perms[q.id]) : 'Check who you are in the question.';
     expect(root().findByType(Verdict).props.coach).toBe(expected);
   });
 

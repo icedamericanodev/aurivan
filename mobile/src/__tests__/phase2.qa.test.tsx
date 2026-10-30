@@ -251,7 +251,7 @@ describe.each([
       expect(resp.correct).toBe(right);
       // The answer screen marks the key at its SHUFFLED letter.
       const q = findQuestion('cisa', qid)!;
-      // Premium round 2: the key is the best answer's row on the Fig. 7 plate.
+      // Premium round 2: the key is the best answer's row on the Fig. 4 plate.
       const best = root().findByType(AnswerPlate).props.best;
       expect(best.letter).toBe(originalToDisplay(q.correct, active().perms[qid]));
       if (!right) {

@@ -115,6 +115,14 @@ describe('Mistake journal: tags in plain words, with an example each', () => {
     expect(chip.props.accessibilityHint).toBe('For example: You picked a new tool before anyone agreed who owns the risk.');
   });
 
+  it('each mistake says "Your pick" over "Best answer" (premium round 2, the answer screen’s words)', () => {
+    miss(1);
+    mount(<Mistakes />);
+    expect(allText()).toContain('Your pick');
+    expect(allText()).toContain('Best answer');
+    expect(allText()).not.toContain('Your answer');
+  });
+
   it('"What do these mean?" opens one example for each tag', () => {
     miss(1);
     mount(<Mistakes />);

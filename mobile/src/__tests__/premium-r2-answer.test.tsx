@@ -1,12 +1,14 @@
 /**
- * Premium round 2, spec 2: the answer as a Field Guide plate (Fig. 7).
+ * Premium round 2, spec 2: the answer as a Field Guide plate (Fig. 4).
  *
  *  - a running head: "Practice · IS Audit" / "Question 1 of 2" ("Review ·" in a review set);
  *  - the recap's "Question" head and two-line stem with "Show question";
  *  - the verdict word in ink (the leaf keeps its colour and its ✗ / ✓);
- *  - Fig. 7: after a miss "Your pick, and the best answer" with two rows (one stop each);
+ *  - Fig. 4: after a miss "Your pick, and the best answer" with two rows (one stop each);
  *    after a right answer "Your answer" with one ✓ row;
- *  - KEY IDEA over the quotation and the Exam cue as a clay-keyed label;
+ *  - KEY IDEA over the quotation and the Exam cue as a clay-keyed label (after a right answer too,
+ *    under Why, with Eliminate / Final two left on the vine; UX review P2);
+ *  - the coach line: a tagged slip wins over "rule out first", never over "final two" (UX review P1);
  *  - the plate button over a hairline; a mock's footer and screens unchanged;
  *  - motion: the plate, then its rows 40 ms apart (`enter`); the 1.52 vine timing intact;
  *  - 200% text: the disc sits above its key from ×1.6.
@@ -20,7 +22,10 @@ import { originalToDisplay } from '../engine/shuffle';
 import { useProgress } from '../store/progress';
 import { useSession } from '../store/session';
 import SessionScreen from '../app/session';
-import { AnswerPlate, FEEDBACK_DELAY, KeyIdeaCue, PLATE_ROW_STAGGER, StemRecap, StickyFooter, Verdict, VINE_ARRIVES, DISC_ABOVE_FROM } from '../components/quiz';
+import { AnswerPlate, FEEDBACK_DELAY, KeyIdeaCue, PLATE_ROW_STAGGER, StemRecap, StickyFooter, Verdict, Vine, VINE_ARRIVES, DISC_ABOVE_FROM, WhyBlock } from '../components/quiz';
+import type { Letter } from '../content/types';
+import { finalTwoLine, pickCoachKind, ruleOutLine } from '../engine/pickCoach';
+import { SLIP_LINE } from '../engine/slipCoach';
 import { RunningHead } from '../components/fieldguide';
 import { light, motion } from '../theme/tokens';
 import { setMockReducedMotion } from '../../jest/reanimated-mock';
@@ -73,7 +78,7 @@ const pressStarting = (prefix: string) => {
 };
 
 /** Open a set on `rich`, pick a wrong (or the right) option by ORIGINAL letter and check it. */
-function answer(right: boolean, mode: 'practice' | 'review' = 'practice') {
+function answer(right: boolean, mode: 'practice' | 'review' = 'practice', pickOriginal?: Letter) {
   startFromIds('cisa', [rich.id, other.id], 'T');
   if (mode === 'review') {
     act(() => {
@@ -84,7 +89,7 @@ function answer(right: boolean, mode: 'practice' | 'review' = 'practice') {
     r = create(<SessionScreen />);
   });
   const perm = useSession.getState().active!.perms[rich.id];
-  const original = right ? rich.correct : (['A', 'B', 'C', 'D'] as const).find((l) => l !== rich.correct)!;
+  const original = right ? rich.correct : (pickOriginal ?? (['A', 'B', 'C', 'D'] as const).find((l) => l !== rich.correct)!);
   const display = originalToDisplay(original, perm);
   const card = root().findAll((n) => n.props.letter === display && typeof n.props.onPress === 'function' && n.props.state !== undefined)[0];
   act(() => {
@@ -130,10 +135,10 @@ describe('after a miss', () => {
     expect(StyleSheet.flatten(word.props.style).color).toBe(light.ink);
   });
 
-  it('Fig. 7 · Your pick, and the best answer: a header caption and two rows, one stop each', () => {
+  it('Fig. 4 · Your pick, and the best answer: a header caption and two rows, one stop each', () => {
     const { picked, best } = answer(false);
-    expect(allText()).toContain('Fig. 7 · Your pick, and the best answer');
-    const caption = labelled(/^Figure 7, Your pick, and the best answer$/);
+    expect(allText()).toContain('Fig. 4 · Your pick, and the best answer');
+    const caption = labelled(/^Figure 4, Your pick, and the best answer$/);
     expect(caption).toHaveLength(1);
     expect(caption[0].props.accessibilityRole).toBe('header');
     const pick = byTestId('answer-row-pick');
@@ -175,14 +180,64 @@ describe('after a miss', () => {
 });
 
 describe('after a right answer', () => {
-  it('Fig. 7 · Your answer, with one ✓ row', () => {
+  it('Fig. 4 · Your answer, with one ✓ row', () => {
     const { best } = answer(true);
-    expect(allText()).toContain('Fig. 7 · Your answer');
+    expect(allText()).toContain('Fig. 4 · Your answer');
     expect(byTestId('answer-row-pick')).toHaveLength(0);
     const key = byTestId('answer-row-best');
     expect(key).toHaveLength(1);
     expect(key[0].props.accessibilityLabel).toMatch(new RegExp(`^Best answer, ${best}, your pick: `));
     expect(root().findByType(AnswerPlate).props.pick).toBeUndefined();
+  });
+
+  it('Why first, then KEY IDEA and the Exam cue label, then Eliminate / Final two on the vine (UX review P2)', () => {
+    answer(true);
+    // Tree order is reading order.
+    const order = root()
+      .findAll((n) => n.type === WhyBlock || n.type === KeyIdeaCue || n.type === Vine)
+      .map((n) => (n.type === WhyBlock ? 'why' : n.type === KeyIdeaCue ? 'key' : 'vine'));
+    expect(order).toEqual(['why', 'key', 'vine']);
+    expect(root().findByType(KeyIdeaCue).props.keyIdea).toBe(rich.keyConcept);
+    expect(byTestId('exam-cue-label')).toHaveLength(1);
+    // The vine keeps the other two tips and no Key idea leaf (so it never ticks a second time).
+    const vine = root().findByType(Vine);
+    expect(vine.props.keyIdea).toBeUndefined();
+    expect(vine.props.tips).toHaveLength(2);
+    expect(vine.props.tips.some((t: string) => t.startsWith('Exam cue'))).toBe(false);
+    // Both live in the one feedback-vine view that carries the vine's timing.
+    const host = root().findAll((n) => n.props.testID === 'feedback-vine')[0];
+    expect(host.findAllByType(KeyIdeaCue)).toHaveLength(1);
+    expect(host.findAllByType(Vine)).toHaveLength(1);
+  });
+});
+
+describe('the coach line after a miss (UX review P1)', () => {
+  const wrong = (['A', 'B', 'C', 'D'] as const).filter((l) => l !== rich.correct);
+  const ruleOut = wrong.find((l) => pickCoachKind(rich.tips, rich.correct, l) === 'rule-out')!;
+  const finalTwo = wrong.find((l) => pickCoachKind(rich.tips, rich.correct, l) === 'final-two')!;
+  /** The learner tagged an earlier miss on this question "Misread". */
+  const tag = () =>
+    act(() => {
+      useProgress.getState().recordMistake('cisa', rich.id, ruleOut);
+      useProgress.getState().tagMistake('cisa', rich.id, 'misread');
+    });
+  const coach = () => root().findByType(Verdict).props.coach as string;
+
+  it('untagged, a rule-out pick hears "rule out first"', () => {
+    const { picked } = answer(false, 'practice', ruleOut);
+    expect(coach()).toBe(ruleOutLine(picked));
+  });
+
+  it('a tagged slip wins over "rule out first": the learner’s own words', () => {
+    tag();
+    answer(false, 'practice', ruleOut);
+    expect(coach()).toBe(SLIP_LINE.misread);
+  });
+
+  it('reaching the final two still says so, even with a tagged slip', () => {
+    tag();
+    const { picked, best } = answer(false, 'practice', finalTwo);
+    expect(coach()).toBe(finalTwoLine(picked, best));
   });
 });
 
@@ -205,10 +260,15 @@ describe('motion', () => {
     expect(motion.dur.enter).toBe(240);
   });
 
-  it.each([['motion on', false], ['Reduce Motion', true]])('%s: the Key idea keeps the vine’s timing (nothing, and no tick, before it lands)', (_name, reduced) => {
+  it.each([
+    ['motion on, a miss', false, false],
+    ['Reduce Motion, a miss', true, false],
+    ['motion on, a right answer', false, true],
+    ['Reduce Motion, a right answer', true, true],
+  ])('%s: the Key idea keeps the vine’s timing (nothing, and no tick, before it lands; then one)', (_name, reduced, right) => {
     setMockReducedMotion(reduced);
     try {
-      answer(false);
+      answer(right);
       jest.mocked(haptic.selection).mockClear();
       const host = byTestId('feedback-vine')[0];
       // The block's view says it is on screen whenever it is asked (as in motion-round2's vine test).
@@ -244,6 +304,28 @@ describe('a mock is unchanged', () => {
 });
 
 describe('200% text', () => {
+  it('on a wide screen the Exam cue takes a margin column, but not from ×1.3 text (UX review P4)', () => {
+    const w = Dimensions.get('window');
+    const at = (fontScale: number) => act(() => Dimensions.set({ window: { ...w, width: 700, fontScale }, screen: { ...w, width: 700, fontScale } }));
+    const direction = () => {
+      const outer = r!.root.findByType(KeyIdeaCue).children[0] as ReactTestInstance;
+      return StyleSheet.flatten(outer.props.style).flexDirection;
+    };
+    const el = <KeyIdeaCue keyIdea="Independence first." cues={[{ label: 'Exam cue', body: 'Look for who owns it.' }]} visible={false} />;
+    try {
+      at(1);
+      act(() => { r = create(el); });
+      expect(direction()).toBe('row');
+      act(() => r!.unmount());
+      at(1.3);
+      act(() => { r = create(el); });
+      expect(direction()).toBeUndefined();
+    } finally {
+      at(w.fontScale);
+      act(() => Dimensions.set({ window: w, screen: w }));
+    }
+  });
+
   it('from ×1.6 the disc sits above its key; below it, beside', () => {
     const w = Dimensions.get('window');
     const at = (fontScale: number) => act(() => Dimensions.set({ window: { ...w, fontScale }, screen: { ...w, fontScale } }));

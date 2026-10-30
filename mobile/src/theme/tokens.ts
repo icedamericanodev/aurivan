@@ -1012,8 +1012,28 @@ export const plantForm: { light: PlantFormTone; dark: PlantFormTone } = {
  * - tiny / figSm: a stem's name and status word under the chart (Figtree 500 11/14,
  *   Fraunces italic 12/16). Only inside the chart, which hands over to its list
  *   (StemList, at full size) from ×1.3 text, so they cap at ×1.3.
+ * - The answer screen's cuts (premium round 2, the answer plate):
+ *   - verdict: "Correct" / "Not quite" (Fraunces 500 30/34; a numeral-like word, caps at ×1.3);
+ *   - recap: the recapped question, cut to two lines (Fraunces 17/24, `ink2`);
+ *   - option / best: the plate's option words, your pick and the best answer (Figtree 500 / 600 16/22);
+ *   - why: "Why not B: …" under your pick (Fraunces italic 15/21, `ink2`).
  */
-export type FieldVariant = 'head' | 'fig' | 'sub' | 'value' | 'name' | 'small' | 'chart' | 'keyNo' | 'tiny' | 'figSm';
+export type FieldVariant =
+  | 'head'
+  | 'fig'
+  | 'sub'
+  | 'value'
+  | 'name'
+  | 'small'
+  | 'chart'
+  | 'keyNo'
+  | 'tiny'
+  | 'figSm'
+  | 'verdict'
+  | 'recap'
+  | 'option'
+  | 'best'
+  | 'why';
 export const fieldType: Record<FieldVariant, TextStyle> = {
   head: { fontFamily: font.sans600, fontSize: 11, lineHeight: 14, letterSpacing: 1, textTransform: 'uppercase' },
   fig: { fontFamily: font.serif400Italic, fontSize: 14, lineHeight: 20 },
@@ -1025,9 +1045,30 @@ export const fieldType: Record<FieldVariant, TextStyle> = {
   keyNo: { fontFamily: font.serif400Italic, fontSize: 16, lineHeight: 22 },
   tiny: { fontFamily: font.sans500, fontSize: 11, lineHeight: 14 },
   figSm: { fontFamily: font.serif400Italic, fontSize: 12, lineHeight: 16 },
+  verdict: { fontFamily: font.serif500, fontSize: 30, lineHeight: 34, letterSpacing: -0.4 },
+  recap: { fontFamily: font.serif400, fontSize: 17, lineHeight: 24 },
+  option: { fontFamily: font.sans500, fontSize: 16, lineHeight: 22 },
+  best: { fontFamily: font.sans600, fontSize: 16, lineHeight: 22 },
+  why: { fontFamily: font.serif400Italic, fontSize: 15, lineHeight: 21 },
 };
 /** How far each cut grows with the phone's text size: words to ×2, numerals ×1.3 (as `maxScale`). */
-export const fieldMaxScale: Record<FieldVariant, number> = { head: 2, fig: 2, sub: 2, value: 1.3, name: 2, small: 2, chart: 1.3, keyNo: 1.3, tiny: 1.3, figSm: 1.3 };
+export const fieldMaxScale: Record<FieldVariant, number> = {
+  head: 2,
+  fig: 2,
+  sub: 2,
+  value: 1.3,
+  name: 2,
+  small: 2,
+  chart: 1.3,
+  keyNo: 1.3,
+  tiny: 1.3,
+  figSm: 1.3,
+  verdict: 1.3,
+  recap: 2,
+  option: 2,
+  best: 2,
+  why: 2,
+};
 
 /**
  * The plate's measures (board grammar-1): a double hairline mount (the outer

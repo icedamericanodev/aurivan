@@ -192,7 +192,8 @@ describe('Results review on a non-identity shuffle', () => {
     expect(mine.props.text).toBe(q.options.C);
     expect(key.props.letter).toBe('D');
     expect(key.props.text).toBe(q.options.A);
-    expect(hostLabelled(/^Your answer, B, not correct: /)).toHaveLength(1);
+    // Premium round 2 (UX review P3): "Your pick" here too, as on the answer screen.
+    expect(hostLabelled(/^Your pick, B, not the best answer: /)).toHaveLength(1);
     expect(hostLabelled(/^Best answer, D: /)).toHaveLength(1);
     const note = root().findByType(PickNote);
     expect(note.props.letter).toBe('B');

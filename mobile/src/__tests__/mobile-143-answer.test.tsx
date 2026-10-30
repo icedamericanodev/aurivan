@@ -4,7 +4,7 @@
  *    explanation; "Read more" opens all of it, "Show less" closes all of it;
  *    nothing is dropped (Final two stays, even after a runner-up pick);
  *  - the rows carry the DISPLAY letter in their badge and in every spoken label
- *    (premium round 2, the Fig. 7 plate: "Your pick, B, not the best answer: … Why not B: …",
+ *    (premium round 2, the Fig. 4 plate: "Your pick, B, not the best answer: … Why not B: …",
  *    "Best answer, D: …");
  *  - the pick's own note sits in its row as "Why not B: …", never a header,
  *    so "Why D" is the one "Why" heading on the screen;
@@ -138,7 +138,7 @@ describe('the Read more fold holds Eliminate two and Final two', () => {
   });
 });
 
-describe('the answer rows (the Fig. 7 plate, premium round 2)', () => {
+describe('the answer rows (the Fig. 4 plate, premium round 2)', () => {
   it('say the DISPLAY letter in their spoken labels, and show it in the disc', () => {
     const { picked, best } = miss();
     const plate = root().findByType(AnswerPlate);

@@ -11375,8 +11375,29 @@ exports.fieldType = {
     keyNo: { fontFamily: exports.font.serif400Italic, fontSize: 16, lineHeight: 22 },
     tiny: { fontFamily: exports.font.sans500, fontSize: 11, lineHeight: 14 },
     figSm: { fontFamily: exports.font.serif400Italic, fontSize: 12, lineHeight: 16 },
+    verdict: { fontFamily: exports.font.serif500, fontSize: 30, lineHeight: 34, letterSpacing: -0.4 },
+    recap: { fontFamily: exports.font.serif400, fontSize: 17, lineHeight: 24 },
+    option: { fontFamily: exports.font.sans500, fontSize: 16, lineHeight: 22 },
+    best: { fontFamily: exports.font.sans600, fontSize: 16, lineHeight: 22 },
+    why: { fontFamily: exports.font.serif400Italic, fontSize: 15, lineHeight: 21 },
 };
-exports.fieldMaxScale = { head: 2, fig: 2, sub: 2, value: 1.3, name: 2, small: 2, chart: 1.3, keyNo: 1.3, tiny: 1.3, figSm: 1.3 };
+exports.fieldMaxScale = {
+    head: 2,
+    fig: 2,
+    sub: 2,
+    value: 1.3,
+    name: 2,
+    small: 2,
+    chart: 1.3,
+    keyNo: 1.3,
+    tiny: 1.3,
+    figSm: 1.3,
+    verdict: 1.3,
+    recap: 2,
+    option: 2,
+    best: 2,
+    why: 2,
+};
 exports.plate = { mount: 6, labelRadius: 3, button: 52, buttonRadius: 12, chart: 264 };
 exports.fieldInk = {
     light: {
@@ -11422,6 +11443,6 @@ exports.fieldInk = {
   api["domainBand"] = load("src/engine/domainBand.ts");
   api["pace"] = load("src/engine/pace.ts");
   api["readySigns"] = load("src/engine/readySigns.ts");
-  api.sourceHash = "4274e5b37603ec4d";
+  api.sourceHash = "b3531ab7eacad049";
   root.KaiSipPlant = Object.freeze(api);
 })(typeof window !== 'undefined' ? window : globalThis);
