@@ -108,7 +108,7 @@
       "pre_read": "Notice what sits above the data center. Ask which hazard is most likely there and whether anything would detect it.",
       "correct_explanation": "Plumbing directly above the room makes water the most likely environmental hazard, and with no sensors under the floor or in the ceiling, a leak could reach power and equipment unnoticed. An overdue fire suppression inspection comes closest: it is a real gap to schedule promptly, but the system remains installed and likely to work, while the leak exposure has no control at all.",
       "wrong_explanations": {
-        "B": "An overdue fire inspection would weigh more where fire is the likeliest hazard; environmental gaps rank by the site's own exposures.",
+        "B": "An overdue inspection would weigh more if fire were the likeliest hazard; a late check dents assurance, a missing control removes protection.",
         "C": "Clean-agent gas is the preferred suppression for equipment rooms because it puts out fire without water damage; it is a strength, not a gap.",
         "D": "A setpoint inside the vendor's range is acceptable, if tight, and causes no damage while monitoring works."
       },
@@ -148,7 +148,7 @@
       "wrong_explanations": {
         "A": "Patrols deter and may spot an intruder between rounds, but they neither restrict entry nor record who opened the closet.",
         "B": "A camera is a detective control. It records who entered after the fact but does not restrict entry to the closet.",
-        "D": "Keyed locks restrict entry as badge readers do, but a key works for whoever holds it: prefer preventive controls that name each user."
+        "D": "Keyed locks restrict entry as badge readers do, but when two controls both prevent, the tie is broken by what else each one provides."
       },
       "tips": [
         "Eliminate: A deters and detects only between rounds, and B records entries; neither restricts who gets in.",
@@ -262,7 +262,7 @@
       "wrong_explanations": {
         "A": "Sign-off does not make the change sound. Dropping the setting from the standard weakens every server to accommodate one legacy system.",
         "B": "Waiting for a refresh leaves an unrecorded, unaccepted gap for an unknown period.",
-        "C": "An auditor would welcome segmentation around a legacy server. A fix nobody recorded or approved leaves the deviation ungoverned, and every exception needs an owner."
+        "C": "An auditor would welcome segmentation around a legacy server, but an unrecorded control tends to lapse unnoticed when the network around it changes."
       },
       "tips": [
         "Eliminate: A weakens every server to suit one legacy system, and B leaves an unmanaged gap with no end date.",
@@ -569,7 +569,7 @@
       "correct_explanation": "Camera footage is evidence, and evidence is only useful if the people it might implicate cannot alter it. Guards who can delete footage without approval could remove a record of their own or a colleague's actions, so the whole program loses integrity. Clock drift makes it harder to match footage with badge events, but the recordings still exist and the offset can be corrected.",
       "wrong_explanations": {
         "A": "Live monitoring at high-risk times is a reasonable, cost-aware design. It is not a weakness on its own.",
-        "C": "An auditor would want camera and badge clocks synchronized, yet a measured drift can be adjusted later: repairable evidence flaws rank below irreversible ones.",
+        "C": "An auditor would want camera and badge clocks synchronized, but evidence flaws that can be repaired later rank below those that cannot.",
         "D": "Sixty days is within common retention practice, was formally approved, and leaves time to review incidents before footage is overwritten."
       },
       "tips": [
@@ -645,7 +645,7 @@
       "pre_read": "Compare 20 minutes with the two-hour failover. Ask which action protects the data before power drops.",
       "correct_explanation": "When power will drop before any alternative is ready, the priority is protecting the data. An orderly shutdown of database and storage servers completes transactions and writes, so nothing is corrupted when the generator stops. Starting failover is the right recovery step, but it cannot finish in 20 minutes, and a transfer cut off midway risks corrupt or inconsistent data at both sites.",
       "wrong_explanations": {
-        "B": "Site failover works when power lasts long enough to finish it. With two hours needed and 20 minutes left, begin with what can complete.",
+        "B": "Site failover would win if power outlasted the transfer. Under a hard deadline, choose the step that leaves a safe state if time runs out.",
         "C": "UPS batteries bridge minutes, not hours; the servers would still lose power abruptly long before a two-hour failover finished.",
         "D": "A rental generator cannot arrive and be connected within 20 minutes, so servers would still lose power abruptly."
       },
@@ -1172,7 +1172,7 @@
       "correct_explanation": "The symptom points to the service provider side of the trust: the application keeps its own session after sign-in and does not recheck the user once the identity provider disables them. Examining session lifetime and revocation handling targets the observed risk directly. Certificate expiry is a genuine federation control, but an expired certificate would stop logins, not let disabled users continue.",
       "wrong_explanations": {
         "B": "Password settings govern new sign-ins at the identity provider. Disabled users are not signing in again; their old application session carries on.",
-        "C": "Certificate expiry would be the place to check if users were locked out. Start with controls whose failure could cause what was observed.",
+        "C": "Certificate expiry would matter if users were locked out. Faults that block access and faults that prolong it point to different controls.",
         "D": "A data center assurance report covers the vendor's hosting controls. It does not explain sessions outliving a disabled account."
       },
       "tips": [
@@ -1359,7 +1359,7 @@
       "pre_read": "Notice the second way to sign in. Ask which method an attacker would choose.",
       "correct_explanation": "An attacker does not need to defeat the hardware key if the account still accepts a weaker method. Text-message codes can be phished through a fake sign-in page or intercepted by SIM swapping, so the fallback is a way around the keys. Lockout when a key is lost is the closest concern: it is a real availability concern, but a second registered key solves it without a phishable fallback.",
       "wrong_explanations": {
-        "A": "A spare key handles lost-key lockout. A fallback, though, should be no weaker than the method it backs up.",
+        "A": "Lost keys can lock administrators out. A recovery method, though, is judged by what it lets an attacker do, not only a stranded user.",
         "B": "A FIDO2 key also needs its PIN or the account password, so theft alone does not grant access, and the owner can report and revoke it.",
         "D": "Browser support for FIDO2 keys is broad, and a compatibility gap is an operational issue, not a path for attackers."
       },
@@ -1436,7 +1436,7 @@
       "correct_explanation": "Migration should follow risk. Administrator accounts can change configurations, create users and reach every system in the acquired estate, so compromising one does the widest damage. Moving them to the stronger authentication first removes the largest exposure early. Executives are attractive phishing targets, but their accounts usually hold business access rather than control over the systems themselves.",
       "wrong_explanations": {
         "A": "Accounts about to expire carry little long-term risk. They are better removed on schedule than migrated first.",
-        "B": "Executives do draw heavy phishing, yet migration order follows the damage a compromised account could do; prominence is not privilege.",
+        "B": "Prominence is not privilege. Executives are a known whaling target, yet accounts are ranked by what they can change, not by who holds them.",
         "C": "Large-volume migration shows progress but does not target the accounts whose compromise would do the most damage."
       },
       "tips": [
@@ -1510,7 +1510,7 @@
       "pre_read": "Ask what makes a label mean the same thing in every part of the company.",
       "correct_explanation": "A single organization-wide classification scheme, approved by management and paired with handling rules for each level, gives every unit the same meaning for each label and the same protection for shared data. Keeping separate schemes with a published mapping is the most tempting alternative; it can help during transition, but people must translate labels at every handoff, and mismatched levels keep producing gaps.",
       "wrong_explanations": {
-        "A": "A mapping, like one scheme, gives labels agreed meaning. Each crossing between schemes invites a mislabel, so consistency is easiest with one definition.",
+        "A": "A mapping, like one scheme, gives labels agreed meaning, but it manages the inconsistency rather than removing it. Fix a variance at its source.",
         "B": "Labeling everything at the top level over-protects routine data, raises cost and teaches staff to ignore labels.",
         "D": "IT can implement protection, but data owners decide sensitivity; a technical team choosing levels skips business ownership."
       },
@@ -1736,7 +1736,7 @@
       "wrong_explanations": {
         "A": "Self-attestation records a promise, not a fact; an infected or unpatched device is admitted as soon as the user ticks the box.",
         "B": "Credentials are already being checked. Longer passwords do not reveal whether the device itself is compromised or unpatched.",
-        "C": "An auditor would credit device registration as asset control, but the risk here is device condition: admission should test what the risk turns on."
+        "C": "An auditor would credit device registration as asset control. Admission, though, should test the property the risk turns on."
       },
       "tips": [
         "Eliminate: A accepts the user's word instead of testing the device, and B strengthens a credential check that already exists.",
@@ -1998,7 +1998,7 @@
       "wrong_explanations": {
         "B": "Watermarking printouts helps deter and trace leaks, but printing carries far less client data here than the uninspected collaboration channel.",
         "C": "Logged USB copies can still be detected and traced, and USB carries far less client data here than the uninspected collaboration channel.",
-        "D": "Encrypted attachments would top the list if email carried most client files; DLP gaps rank by the sensitive volume each route moves."
+        "D": "Encrypted attachments would top the list if email carried most client files; counting covered channels says little about how much data is covered."
       },
       "tips": [
         "Eliminate: B only deters low-volume printing, and C covers a channel that is already logged.",
@@ -2186,7 +2186,7 @@
       "wrong_explanations": {
         "A": "Employee consent is rarely valid under GDPR because of the power imbalance, so a contract clause gives no lawful basis for monitoring.",
         "C": "Metadata is still personal data. Choosing a lighter scope without legal assessment or works council consultation still lacks a lawful basis.",
-        "D": "Piloting is a well-worn way to de-risk rollouts, but it tests whether monitoring works, not whether it is lawful."
+        "D": "Piloting does de-risk a rollout, but it tests whether monitoring works, not whether it is lawful."
       },
       "tips": [
         "Eliminate: A relies on employee consent, which GDPR rarely accepts at work, and C picks a monitoring scope before any legal assessment.",
@@ -2260,7 +2260,7 @@
       "pre_read": "Notice the words right now and still logged in. Ask which action stops more client data leaving.",
       "correct_explanation": "Client files are leaving at this moment, and every minute adds more. Disabling the accounts and ending active sessions stops the transfer within seconds and does not destroy evidence on the device. Involving HR and legal is important for the interview and any dismissal, but waiting for agreement lets the upload continue; they join immediately after access is cut.",
       "wrong_explanations": {
-        "A": "An auditor expects HR and legal in any action against an employee, but while data flows out, coordination follows containment rather than gating it.",
+        "A": "An auditor expects HR and legal in any employee action, but an access cut can be undone and an upload cannot: take the reversible step first.",
         "B": "Blocking one domain stops this route, but the manager stays logged in and can switch to email, USB or another cloud service.",
         "C": "Client notification comes after the exposure is stopped and scoped. Notifying first leaves the transfer running."
       },
@@ -2336,7 +2336,7 @@
       "wrong_explanations": {
         "A": "Emailing the key exposes it to anyone who can read the mail, so the encryption it protects can be broken.",
         "B": "Hashing supports integrity checks but provides no confidentiality. The files still travel readable.",
-        "D": "Direct RSA keeps each file secret, but public-key math suits small payloads such as session keys: a design must also hold at production volume."
+        "D": "Direct RSA would be workable for a handful of small files; a design is judged at production volume, not on a single test file."
       },
       "tips": [
         "Eliminate: A sends the secret key over an insecure channel, and B gives integrity, not confidentiality.",
@@ -2786,7 +2786,7 @@
       "wrong_explanations": {
         "A": "Certificate expiry dates set renewal schedules, not quantum risk. Short-lived internal data is a low priority.",
         "C": "AES with 256-bit keys is expected to remain secure against quantum attacks, so it needs little change.",
-        "D": "Ranking by volume works for availability planning, but the quantum threat preys on long-lived secrets: order migrations by what the threat exploits."
+        "D": "Ranking by volume works for availability planning. Priorities set for one threat, though, do not carry over to another."
       },
       "tips": [
         "Eliminate: A ranks by expiry dates, and C targets symmetric encryption that already resists quantum attack.",
@@ -2823,7 +2823,7 @@
       "wrong_explanations": {
         "B": "Card numbers have limited variety, so unsalted hashes are easily brute-forced, and a hash cannot be reversed for refunds.",
         "C": "Truncated numbers cannot process refunds against the original card, which the stem requires.",
-        "D": "Centrally keyed encryption would win if protecting stored numbers were the goal. Ciphertext usually remains in PCI DSS scope, so the stated objective decides."
+        "D": "Centrally keyed encryption is a prudent safeguard for stored card numbers, yet protection is not removal; scope shrinks where card data leaves a system."
       },
       "tips": [
         "Eliminate: B is crackable and irreversible, and C cannot support the refunds the stem requires.",
@@ -2936,7 +2936,7 @@
       "wrong_explanations": {
         "A": "Power-cycling clears evidence of tampering and puts trust back in a device that may be compromised.",
         "C": "Moving keys out of the HSM breaks the hardware boundary PCI DSS relies on and leaves card-data keys copyable on a server.",
-        "D": "As with failover, a payment hold keeps the tampered module out of use. When a trusted alternative protects equally, keep the business running."
+        "D": "As with failover, a payment hold refuses to trust the alarmed device. Stopping the business, though, is an impact that needs its own justification."
       },
       "tips": [
         "Eliminate: A trusts and resets a possibly tampered device, and C moves keys outside the hardware boundary that protects them.",
@@ -3049,7 +3049,7 @@
       "correct_explanation": "Broken access control heads the OWASP Top 10 because any logged-in user can read other customers' data with no special skill. Missing account lockout is an authentication weakness, but multi-factor authentication means a guessed password alone does not open an account, so its practical exposure is much lower.",
       "wrong_explanations": {
         "A": "Version disclosure is a minor misconfiguration that helps attacker reconnaissance but exposes no customer data by itself.",
-        "C": "An auditor would still report missing lockout, though MFA already blunts guessing here; rank findings by exposure left after other controls.",
+        "C": "An auditor would still report missing lockout. Severity is residual, though: rate each finding after the controls around it.",
         "D": "Slightly outdated libraries need routine patching, but no exploitable flaw is reported, so the risk is lower than live data exposure."
       },
       "tips": [
@@ -3160,7 +3160,7 @@
       "pre_read": "Notice that former employees know the passphrase. Ask which option removes access per person rather than for everyone.",
       "correct_explanation": "Enterprise mode (WPA2-Enterprise or WPA3-Enterprise) authenticates each user individually through 802.1X, so access ends when an account is disabled and activity is attributable. Rotating the shared passphrase every quarter shortens the exposure from former staff, but everyone still shares one secret, and anyone who leaves keeps access until the next change.",
       "wrong_explanations": {
-        "A": "Rotation is normal hygiene for a pre-shared key, but a secret everyone holds cannot be withdrawn from one leaver; tie access to individuals.",
+        "A": "Rotation is normal hygiene for a pre-shared key, but revocation can be no finer than the credential it acts on.",
         "B": "Hiding the network name is obscurity; the name still appears in normal wireless traffic and common tools reveal it.",
         "C": "Hardware address lists are easily bypassed because attackers can copy an approved device's address seen in wireless traffic."
       },
@@ -3463,7 +3463,7 @@
       "pre_read": "Notice the phones are encrypted and passcode-protected. Ask which finding those controls do not offset.",
       "correct_explanation": "Mobile device management is only effective if non-compliant devices lose access. Phones that fail the policy, for example jailbroken ones, still receiving corporate email means enforcement is missing for every such device. Slow loss reporting delays remote wipe, but device encryption and passcodes protect lost phones in the meantime, so that exposure is limited.",
       "wrong_explanations": {
-        "B": "Two-day reporting would be serious on unprotected phones. These are encrypted and locked, so weigh each finding by the risk other controls leave.",
+        "B": "Two-day reporting would weigh more on unprotected phones, but a control that never acts usually outweighs one that acts late.",
         "C": "Stale inventory entries are a housekeeping issue; retired phones listed in the system do not expose corporate data.",
         "D": "One missed uptime target is an availability blip for the platform and does not weaken device security."
       },
@@ -3614,7 +3614,7 @@
       "pre_read": "Notice the app stores account data on the device. Ask which testing depth fits that sensitivity.",
       "correct_explanation": "Security testing should match the sensitivity of the data. OWASP's mobile verification standard (MASVS) and its testing guide separate baseline requirements for typical apps from stronger requirements, plus resilience testing, for apps handling sensitive data such as banking. Applying the baseline used for other apps is consistent, but it ignores the higher risk of account data stored on the device.",
       "wrong_explanations": {
-        "B": "Both tiers come from OWASP's mobile standard, but a baseline is a floor: on-device banking data calls for the higher tier.",
+        "B": "Both tiers come from OWASP's mobile standard, but a baseline is a floor to build on, not a target to stop at.",
         "C": "Store review and sandboxing are platform baselines; they do not test the app's own storage, cryptography or authentication.",
         "D": "The mobile website is a different product; web scanning does not test the app's on-device storage or code."
       },
@@ -3651,7 +3651,7 @@
       "pre_read": "Notice the faulty rule is already identified. Ask which option restores sales while keeping the most protection.",
       "correct_explanation": "Moving only the confirmed faulty rule to monitor mode restores legitimate checkouts within minutes, keeps a record of what it would have caught while it is corrected, and leaves every other rule blocking attacks. Switching the whole firewall to monitor mode also restores sales, but it removes all preventive protection from a payment site at peak traffic, far more exposure than the problem requires.",
       "wrong_explanations": {
-        "A": "Whole-firewall monitor mode and a single-rule change both restore good checkouts. A remedy's scope should match the confirmed fault.",
+        "A": "Both whole-firewall monitor mode and the single-rule change end the false blocks, but a fix also costs whatever protection it switches off.",
         "B": "Bypassing the checkout pages removes protection from the most sensitive part of the site.",
         "C": "Root-cause analysis belongs after service is restored; investigating first prolongs the loss of legitimate sales."
       },
@@ -3729,7 +3729,7 @@
       "wrong_explanations": {
         "B": "Three days of waiting leaves the attacker with live access to corporate systems through the compromised phone and its stolen credentials.",
         "C": "Wiping personal data without consent breaches privacy, destroys evidence, and still leaves stolen tokens usable elsewhere.",
-        "D": "A work-profile wipe fits a phone that is simply lost; stolen credentials are contained where they are honored, not on the device."
+        "D": "A work-profile wipe fits a phone that is simply lost. Spyware turns a lost-data problem into a stolen-identity problem."
       },
       "tips": [
         "Eliminate: B leaves access open for three days, and C erases personal data without consent.",
@@ -3767,7 +3767,7 @@
       "wrong_explanations": {
         "A": "Botnet malware often persists in firmware or returns at once through the same flaw, so a reboot neither contains nor removes it.",
         "C": "Scanning finds weaknesses for later patching; it does not tell staff how to contain a device that is attacking right now.",
-        "D": "Spares and traffic blocking both aim to keep stores running, but swapping still means a shutdown. Choose the narrowest containment that stops the harm."
+        "D": "Spares and traffic blocking both aim to keep stores open. When the response caused the outage, change the response rather than stock for it."
       },
       "tips": [
         "Eliminate: A assumes a reboot removes persistent malware, and C adds detection without changing how staff contain an attack.",
@@ -3805,7 +3805,7 @@
       "wrong_explanations": {
         "A": "Poster refresh frequency is a minor delivery detail; posters supplement training rather than replace it.",
         "B": "Online delivery is a common, effective format; the delivery channel alone is not a control weakness.",
-        "C": "Quiz scores are an accepted measure of learning. Gaps rank first by the harm their audience can do, then by how completion is recorded."
+        "C": "Quiz scores are an accepted learning measure. Better proof, though, leaves a control unchanged: fix what a control does before how it is evidenced."
       },
       "tips": [
         "Eliminate: A and B are delivery details that do not weaken what staff learn.",
@@ -3842,7 +3842,7 @@
       "correct_explanation": "A catalog of observed adversary tactics and techniques, such as MITRE ATT&CK, lets the organization compare each detection rule with the behaviors attackers really use and see where coverage is missing. Vulnerability severity scores rank weaknesses in systems, which is useful for patching, but they do not describe attacker behavior, so they cannot show detection coverage.",
       "wrong_explanations": {
         "A": "Motive explains why attackers act, not how they operate, so it cannot show which techniques the rules detect.",
-        "B": "Severity scores, like a technique catalog, give an outside yardstick, but they rate system flaws. Measure detection against the behavior it should catch.",
+        "B": "Severity scores, like a technique catalog, give an outside yardstick. A yardstick must match the kind of thing it grades, though.",
         "D": "Alert counts show how busy rules are, not which attacker techniques they cover; a technique no rule catches never appears in the count."
       },
       "tips": [
@@ -3993,7 +3993,7 @@
       "correct_explanation": "New employees are a favored target because they do not yet know how requests are verified or how to report suspicious messages. Making security training a condition of access ensures nobody uses systems before learning the basics. Running the session twice a year shortens the wait, but new staff could still work for months with live access and no training, so the gap remains.",
       "wrong_explanations": {
         "B": "An emailed policy is rarely read on a busy first day, and it gives no evidence that staff understood it.",
-        "C": "More frequent sessions do keep the workforce current, but onboarding risk follows an event: tie the control to the event, not the calendar.",
+        "C": "Twice-yearly sessions are fine for refreshers, but a schedule is judged by its longest gap, not its average.",
         "D": "A signature records acknowledgment, not understanding; new staff still work for months before learning how to spot and report attacks."
       },
       "tips": [
@@ -4182,7 +4182,7 @@
       "pre_read": "Notice the word FIRST and that the monitoring covers employees' personal activity. Ask what must exist before any tool runs.",
       "correct_explanation": "Monitoring employees' email and files touches privacy and employment law, so the firm first needs a lawful policy agreed with legal and HR that sets scope, purpose and notice to staff. Behavior analytics may be the right tool later, but deploying it before the policy exists risks unlawful monitoring and unusable evidence. Policy comes before technology.",
       "wrong_explanations": {
-        "A": "Behavior analytics holds up once a lawful mandate exists, since the mandate sets what may be collected, from whom and with what notice.",
+        "A": "Behavior analytics is a legitimate insider-threat tool, yet deployed early it bakes in choices nobody authorized: governance sets the limits, technology enforces them.",
         "B": "Covert monitoring without a policy or notice can breach privacy and employment law and taint any evidence collected.",
         "D": "IT management sign-off sets no defined criteria or legal authority, and it invites bias and abuse of monitoring powers."
       },
@@ -4333,7 +4333,7 @@
       "pre_read": "Notice the backdoor is still sending data out. Ask what happens to new secrets if the malicious code keeps running.",
       "correct_explanation": "The backdoor is active in production, so containment comes first: rolling back to the last known-good version stops further theft. Rotating secrets and tokens is essential, but if it happens while the malicious package still runs, the backdoor can capture the new values too. Contain first, then rotate, then notify and recover.",
       "wrong_explanations": {
-        "A": "Rotation belongs in this response, but secrets issued into a compromised app are exposed at birth. Remove the intruder before replacing what it touched.",
+        "A": "Both rotation and rollback belong in this response, but cleanup done while the cause still runs usually has to be repeated.",
         "C": "Waiting lets the backdoor keep stealing secrets. The firm must contain its own exposure without depending on the maintainer.",
         "D": "Rewriting seven apps takes far too long while secrets are leaking, and a rollback contains the threat much faster."
       },
@@ -4487,7 +4487,7 @@
       "wrong_explanations": {
         "A": "Questioning the agent delays containment while the attacker is already signed in to the account.",
         "B": "Stakeholders need to be involved, but a call before containment leaves the attacker active in the customer data.",
-        "C": "A password reset does stop the stolen password working again. Containment, though, is judged by whether access already granted has ended."
+        "C": "A password reset does stop the stolen password working again, yet judge containment by what the attacker can still do in the next minute."
       },
       "tips": [
         "Eliminate: A and B both delay containment while the attacker is already inside.",
@@ -4560,7 +4560,7 @@
       "pre_read": "Notice when the flaws must be found: at commit, before any build. Ask which technique works without a running application.",
       "correct_explanation": "Static application security testing examines source code without running it, so it can flag flaws the moment code is committed. Dynamic scanning is also run before release, but it needs a built, running application, so it cannot meet the stated timing of before any build. Matching the technique to the point in the lifecycle is the deciding factor.",
       "wrong_explanations": {
-        "B": "Dynamic scanning does catch runtime-only flaws, but the stem's checkpoint comes before any build: a test runs only where its input exists.",
+        "B": "Dynamic scanning does catch runtime-only flaws, yet a technique can be placed no earlier than the stage that produces what it examines.",
         "C": "An annual penetration test of production finds issues long after release, far from the commit-time objective.",
         "D": "A network scan checks server configurations and missing patches, not flaws in the application's source code."
       },
@@ -4636,7 +4636,7 @@
       "correct_explanation": "Developers dismissing findings in their own code with no review is a segregation of duties gap: real vulnerabilities can be suppressed unnoticed. Requiring security team approval for each suppression adds an independent, expert check. Approval by another developer adds a second person, but a teammate shares the same delivery pressure and usually lacks security expertise, so the review is not truly independent.",
       "wrong_explanations": {
         "A": "Scanning more often produces findings sooner, but developers could still dismiss them with no review.",
-        "B": "Peer approval is a mainstay of code review. A fellow developer faces the same deadlines, though, so security exceptions belong with the rule's owner.",
+        "B": "Peer approval is a mainstay of code review, but independence means no stake in the outcome, and a fellow developer ships the same release.",
         "C": "Better judgment helps, but developers would still decide alone on their own code's findings, leaving the independence gap open."
       },
       "tips": [
@@ -4749,7 +4749,7 @@
       "correct_explanation": "A two-person team cannot watch alerts around the clock. A managed provider gives continuous coverage at proportionate cost, while escalation to the in-house team keeps business context and accountability with the credit union. Hiring three shifts in-house would also achieve coverage, but at a cost out of proportion to a small institution's risk, so the hybrid model is more appropriate.",
       "wrong_explanations": {
         "A": "Next-morning review leaves overnight attacks running for hours, so it does not meet the round-the-clock requirement.",
-        "B": "Three in-house shifts cover the clock as a managed service does, at a payroll beyond a two-person team. Buy the work, keep the accountability.",
+        "B": "Three in-house shifts cover the clock as a managed service does, but providers spread night staffing across clients: share capacity one firm's load cannot fill.",
         "D": "Accountability cannot be outsourced, and the vendor's alerts cover only its own product, leaving other systems unmonitored."
       },
       "tips": [
@@ -4897,7 +4897,7 @@
       "pre_read": "Separate reacting to alerts from searching for what alerts miss. Ask which option is genuinely proactive.",
       "correct_explanation": "Investigating alerts is reactive triage, not threat hunting. Hunting starts from a hypothesis about how an attacker might operate and searches for evidence that existing rules miss. Adding vendor rules widens detection, but analysts would still wait for alerts, so the team would remain reactive and the gap the auditor found would persist.",
       "wrong_explanations": {
-        "A": "More vendor rules would answer a finding about known-pattern coverage. This finding concerns how work starts, and a recommendation answers the gap named.",
+        "A": "An auditor would welcome broader vendor rules, but this finding is about how work begins, and a recommendation answers the gap a finding names.",
         "B": "Raising thresholds reduces alerts by suppressing some, which can hide attacks, and it is still reactive.",
         "C": "Playbooks speed handling of alerts already raised but add no search for threats that raise no alert."
       },
@@ -4974,7 +4974,7 @@
       "wrong_explanations": {
         "A": "Early alert volume is a real burden, but it is temporary and visible, and tuning resolves it.",
         "C": "Vendor hosting is governed through the contract and the provider's assurance reports; it does not change which accounts the analytics watches.",
-        "D": "Profiling staff does trigger transparency duties, yet a duty with a bounded fix ranks below a gap that hides harm."
+        "D": "Profiling staff does trigger transparency duties. A notice duty shapes how monitoring runs, though; a coverage gap decides whether it sees the attack."
       },
       "tips": [
         "Eliminate: A is temporary alert noise while baselines form, and C is a hosting arrangement governed by the vendor contract; neither changes which accounts are watched.",
@@ -5014,7 +5014,7 @@
         "C": "Reward levels affect how many researchers take part, not whether the testing is authorized or safe."
       },
       "tips": [
-        "Eliminate: C and A affect researcher motivation, not the safety or authority of the testing.",
+        "Eliminate: A and C affect researcher motivation, not the safety or authority of the testing.",
         "Final two: D beats B because scope authorizes the testing itself; disclosure rules only matter after findings exist.",
         "Exam cue: for any testing program, the first control is a defined, authorized scope."
       ],
@@ -5236,7 +5236,7 @@
       "correct_explanation": "No corrected rule is ready, so monitor mode is the least harmful stopgap: merges flow again, yet the rule keeps flagging code, so genuine unsafe deserialization is still recorded while it is tuned. Removing the rule also ends the disruption, but it leaves no visibility of the risk until the fix ships. Where a precise fix exists, apply that instead.",
       "wrong_explanations": {
         "B": "Forcing rewrites of legitimate code wastes effort and delays delivery because of a known false positive.",
-        "C": "Pulling a rule would win if it detected nothing of value: a misfiring control is scaled back from blocking to watching, not switched off.",
+        "C": "Pulling a rule would win if it detected nothing of value; a stopgap should cure the harm at the least cost in coverage.",
         "D": "Self-overrides restore flow, but each developer decides alone whether their own flagged code is safe, so genuine unsafe code passes unreviewed and unrecorded."
       },
       "tips": [
@@ -5576,7 +5576,7 @@
         "D": "More frequent firewall reviews tighten the perimeter but give no visibility of traffic already inside it."
       },
       "tips": [
-        "Eliminate: D and A strengthen perimeter or host defenses without adding any visibility of internal traffic.",
+        "Eliminate: A and D strengthen perimeter or host defenses without adding any visibility of internal traffic.",
         "Final two: C beats B because the attacker moved internally; outbound inspection still watches only the boundary.",
         "Exam cue: match the monitoring point to where the attack happened; lateral movement needs internal east-west visibility."
       ],
@@ -5760,7 +5760,7 @@
       "wrong_explanations": {
         "A": "Format differences are solved by normalizing logs during aggregation and leave no activity unrecorded.",
         "C": "Cost differences are a budgeting matter, not a gap in the evidence of who accessed sensitive data.",
-        "D": "An auditor would favor a central store, but missing evidence outranks evidence that is merely hard to reach."
+        "D": "An auditor would favor central logging for correlation, but correlation joins only events already recorded, so judge what is captured before where it lands."
       },
       "tips": [
         "Eliminate: A is solved by normalization, and C is a budget matter, not a control gap.",
@@ -5909,7 +5909,7 @@
       "pre_read": "Notice the two sources would be dropped, not stored more cheaply. Ask what the SOC would stop seeing.",
       "correct_explanation": "DNS and endpoint logs feed many detections of malware and command-and-control traffic, so dropping them could blind the SOC. The auditor should first establish which active detections and investigations depend on them, since that defines the risk of the cut. Moving the logs to cheaper archive storage sounds like a compromise, but archived logs keep history for investigations and do not feed real-time detection.",
       "wrong_explanations": {
-        "B": "Tiered storage is a familiar way to trim log costs, but archives stop feeding live rules. Know what data feeds before cutting it.",
+        "B": "Tiered storage is a familiar way to trim log costs. Relocating a source, though, can cut a use as surely as deleting it.",
         "C": "Peer practice shows what others collect, not which of this firm's detections would stop working.",
         "D": "Vendor support shows the change is technically possible; it says nothing about the detection coverage the firm would lose."
       },
@@ -6286,7 +6286,7 @@
       "correct_explanation": "Buying help during an incident costs hours or days while the attacker remains active, and terms such as scope, confidentiality and evidence handling get negotiated under pressure. A retainer agreed in advance fixes response times, scope and legal terms so experts can start at once. A shortlist saves search time, but without a signed contract the firm still negotiates and has no guaranteed response.",
       "wrong_explanations": {
         "A": "Faster bidding is still bidding during an incident. Delay and rushed contract terms remain.",
-        "C": "Prequalifying responders is prudent vendor management, yet a list obliges no one; capacity needed on a deadline is contracted in advance.",
+        "C": "An auditor would credit a prequalified shortlist, yet it records only intent; outside help is assured by terms the provider must honor.",
         "D": "Forensic work needs specialist skills and tools. Untrained help desk staff can damage evidence and miss the attacker."
       },
       "tips": [
@@ -6398,7 +6398,7 @@
       "correct_explanation": "A blame-focused review discourages people from admitting errors or describing what really happened, so process and control weaknesses stay hidden and incidents recur. Reviews should focus on systems and contributing factors so root causes surface and get fixed. Privacy handling of disciplinary records deserves attention, but it is secondary to a review design that defeats the review's purpose.",
       "wrong_explanations": {
         "A": "Training may help an individual, but it does not address the concealment that blame creates across the whole team.",
-        "B": "An auditor would raise record privacy in its own right. Learning reviews run on candid reporting, and blame suppresses it.",
+        "B": "An auditor would raise record privacy in its own right, yet it is a side risk; first ask whether the process can still reach its goal.",
         "C": "Report length is a presentation issue and does not affect whether the review finds and fixes root causes."
       },
       "tips": [
@@ -6549,7 +6549,7 @@
       "wrong_explanations": {
         "A": "Notifying one regulator does not satisfy the others. Each has its own legal duty and deadline.",
         "B": "Regulatory clocks keep running during the investigation. Initial notices with known facts can be followed by updates.",
-        "C": "Deadline-ordered sequencing makes sense when one notice depends on another. Nine clocks running at once call for parallel work."
+        "C": "Deadline-ordered sequencing makes sense when one notice depends on another; with independent duties, a plan is judged by the deadline it serves worst."
       },
       "tips": [
         "Eliminate: A assumes one regulator covers the rest, and B lets every clock run while waiting for full scope.",
@@ -6624,7 +6624,7 @@
       "correct_explanation": "Exercises build in stages. The tabletop has done its job: it exposed gaps in roles and decisions, and the plan was revised. The next step is a functional drill in which responders actually run the new playbooks and escalation steps, showing they work in practice. A second tabletop of the original scenario is the closest choice; it checks that people understand the changes but cannot show the playbooks can be executed.",
       "wrong_explanations": {
         "A": "An unannounced attack on production skips a stage; running new playbooks for the first time under live conditions risks disruption.",
-        "B": "Tabletops are an established way to rehearse decisions; once one has fixed the plan, the next test should prove what talk could not.",
+        "B": "A second tabletop is fine while the plan is still in dispute. Each new test, though, should answer what the last could not.",
         "D": "A document review shows the text changed, not that responders can follow the new escalation steps and playbooks under pressure."
       },
       "tips": [
@@ -6777,7 +6777,7 @@
       "wrong_explanations": {
         "A": "One owner for everything gives accountability on paper, but no ordering by severity, and a single person cannot drive eighteen fixes.",
         "B": "Report order reflects how the assessor wrote it, not the severity of each gap, so critical items may wait behind medium ones.",
-        "D": "Critical-first triage ranks work as the key does, but deferral leaves seven high findings unowned: ranking sets when a fix happens, ownership whether."
+        "D": "Critical-first triage ranks work as severity deadlines do, but ranking sets when a fix happens, and ownership whether it does."
       },
       "tips": [
         "Eliminate: A loads every finding onto one person with no ordering, and B follows report order rather than severity.",
@@ -7379,7 +7379,7 @@
       "pre_read": "Notice there is no active exfiltration. Ask what an early confrontation would cost when evidence has not yet been secured.",
       "correct_explanation": "With no active exfiltration, the main risk is that the suspect learns of the investigation and destroys evidence. Quietly preserving logs and device data under legal and HR direction, within privacy law, secures the case before any action. Suspending access is the right containment when data is actively leaving, but here it tips off the suspect before evidence is preserved.",
       "wrong_explanations": {
-        "B": "Suspension is a familiar insider-case containment tool, but overt steps warn a suspect: with no loss under way, covert work precedes visible action.",
+        "B": "Suspension is a familiar tool for insider cases, but the first move answers the risk live now, not the one the case is named for.",
         "C": "Interviewing first tips off the suspect, who may delete evidence or speed up any theft before data is preserved.",
         "D": "Announcing monitoring warns the suspect and may change behavior, defeating the purpose of the investigation."
       },
@@ -7417,7 +7417,7 @@
       "pre_read": "Notice two goals conflict: removing the spyware and keeping evidence. Ask which order achieves both.",
       "correct_explanation": "A factory reset permanently destroys the spyware and the evidence legal needs for the referral. Imaging the phone first preserves that evidence, and the executive can be protected at once by switching to a clean device and isolating the old one. Resetting now feels protective, but the same protection comes from taking the device out of use without destroying anything.",
       "wrong_explanations": {
-        "A": "A factory reset does usually clear spyware. When protection and evidence seem to collide, seek the step that serves both.",
+        "A": "A factory reset does usually clear spyware, but an irreversible step should need a reason that no reversible step can meet.",
         "C": "Continuing to use a compromised phone keeps exposing the executive's calls, messages and location to the attacker.",
         "D": "Destroying the device removes the threat but also the evidence the referral depends on."
       },
@@ -7945,7 +7945,7 @@
       "correct_explanation": "The spread is contained and reimaging is about to begin. Reimaging destroys the evidence needed to confirm how the update was compromised, what the malware did and whether other systems are affected, so images must be captured first. Notifying the insurer protects coverage, but it can run in parallel, and nothing is lost for good if it comes an hour later.",
       "wrong_explanations": {
         "A": "Wiper malware destroys data rather than encrypting it for ransom, so paying would not bring back the disks and raises sanctions risk.",
-        "C": "An auditor would check that insurer notice meets the policy's terms. A step that overwrites systems should wait until what it erases is captured.",
+        "C": "An auditor would check insurer notice against the policy's terms, yet order turns on reversibility: first comes the step whose window shuts once reimaging starts.",
         "D": "Scanning may identify the malware, but it preserves nothing, and the wiper's damage remains whether or not signatures now match."
       },
       "tips": [
@@ -8442,7 +8442,7 @@
       "wrong_explanations": {
         "A": "Mutual TLS proves which app is calling, but on its own it does not limit that app to the data each customer consented to share.",
         "B": "Rate limits protect availability and slow scraping, but they do not decide which customer data each app may receive.",
-        "C": "A tuned firewall would win against malformed or injected calls; consent, though, is enforced where access is granted, per caller and record."
+        "C": "A tuned firewall is an established outer layer against injected or malformed calls; consent, though, is enforced where access is granted, per caller and record."
       },
       "tips": [
         "Eliminate: A authenticates each app without limiting its data, and B controls call volume rather than what data is returned.",
@@ -8479,7 +8479,7 @@
       "correct_explanation": "A hypervisor escape lets code in one virtual machine reach others on the same host. Dedicated hosts remove co-tenants from the sensitive client's hardware, and a bare-metal hypervisor keeps the attack surface small. Fast patching is essential, but it only closes known flaws; an unpatched or zero-day escape would still reach the client while hardware is shared.",
       "wrong_explanations": {
         "A": "A hosted hypervisor runs on a full operating system, adding attack surface rather than reducing it, and tenants still share hardware.",
-        "B": "Strict patching shrinks escape risk as dedicated hosts do, yet unpublished flaws persist on shared hosts. For sensitive tenants, remove exposure rather than reduce it.",
+        "B": "Patching and dedicated hosts both cut escape risk, but patching must win a race against every new flaw; prefer controls that need not race.",
         "D": "Nested virtualization adds complexity and new flaws while every tenant still shares the same physical hardware."
       },
       "tips": [
@@ -8516,7 +8516,7 @@
       "pre_read": "Notice the click rate is already low and flat. Ask which behavior can still improve and show progress.",
       "correct_explanation": "Once click rates have flattened, they no longer show progress. A rising report rate shows staff actively spotting and escalating suspicious email, which turns the workforce into an early-warning control and is a stronger sign of maturity. Click rate still matters, but it is already low and flat here, so it cannot show further improvement.",
       "wrong_explanations": {
-        "B": "Click rate is the usual headline phishing metric. Maturity shows in behaviors people add, though, not only in mistakes they avoid.",
+        "B": "An auditor would keep click rate as a tripwire, but maturity needs a measure with room left to rise.",
         "C": "Volume measures activity, not outcomes. Sending more simulations says nothing about how staff respond.",
         "D": "Completion shows reach, not behavior. Staff can finish training and still fail to recognize or report phishing."
       },
@@ -8595,7 +8595,7 @@
       "wrong_explanations": {
         "A": "Blocking with untested rules risks stopping legitimate client work.",
         "B": "The noisiest rules may cover the most sensitive data; disabling them removes protection.",
-        "C": "An auditor would want each owner's consent before blocking their data, but an approval means little until the approver holds the evidence it rests on."
+        "C": "An auditor would want each owner's consent before blocking their data, yet a step that needs another's output is scheduled after it."
       },
       "tips": [
         "Eliminate: A blocks with untested rules, and B disables the noisiest rules, which may be the ones protecting the most sensitive data.",
@@ -8900,7 +8900,7 @@
       "correct_explanation": "A copied private key can sign certificates on any machine, so the attacker never needs the CA itself, and nothing they sign appears in its issuance log. A clean log therefore proves nothing about misuse of the copy; the key must be treated as compromised. A tampered log is the closest concern: log integrity matters, but even an intact log cannot record signing done outside the CA.",
       "wrong_explanations": {
         "A": "Approval records support accountability for issued certificates, but they say nothing about certificates the attacker signs elsewhere.",
-        "B": "Admins who can edit logs are an integrity risk, yet a copied key signs elsewhere: evidence counts only if it could record the event.",
+        "B": "Admin log tampering is a genuine integrity threat. Once a key leaves custody, though, judge risk by what it could sign, not what was recorded.",
         "D": "Revocation lists are commonly weekly, and the CA's own list cannot cover certificates it never issued; distrusting the CA itself must come from its issuer or trust stores."
       },
       "tips": [
@@ -9170,7 +9170,7 @@
       "correct_explanation": "The attacker never needed a password; a user granted a malicious application lasting access to mail. Requiring administrator approval before any application receives mailbox permissions removes that decision from individual users and lets each request be vetted. Training executives to spot consent requests helps, but it relies on every person judging every prompt correctly, which is how this grant happened.",
       "wrong_explanations": {
         "B": "Shorter retention limits stored mail, but the application still gets live access to every new message.",
-        "C": "An auditor would support consent-phishing awareness, but a grant with lasting reach belongs with a vetted approver, not whoever sees the prompt.",
+        "C": "An auditor would support consent-phishing awareness, but training lowers an error rate, and where one error is enough, a lower rate still loses.",
         "D": "Users approve consent prompts after a valid sign-in, so multi-factor authentication does not stop the grant."
       },
       "tips": [
@@ -9636,7 +9636,7 @@
       "wrong_explanations": {
         "A": "The transfer was never authorized, so a recall needs no client approval; seeking that approval first would have used up more of the recovery window.",
         "B": "Law enforcement reporting runs alongside a recall and gives no clearance the bank needs; waiting for it would have delayed recovery further.",
-        "C": "Each outcome is traced to its own cause. Callback checks are a core payment-fraud control, but prevention and recovery are judged as separate objectives."
+        "C": "Callback checks are a core payment-fraud control. One incident can hold several failures, though, each traced to the step where it occurred."
       },
       "tips": [
         "Eliminate: A and B, because an unauthorized transfer needs neither client approval nor police clearance before a recall is requested.",
@@ -9672,7 +9672,7 @@
       "pre_read": "Ask whether the problem is the exclusion itself or the missing reason behind it.",
       "correct_explanation": "ISO/IEC 27001 lets an organization exclude Annex A controls, but the Statement of Applicability must justify each exclusion, normally by tracing it to the risk assessment and treatment decisions. With no reasons recorded, the auditor cannot show that control selection was risk based. Saying the controls must be implemented goes too far: justified exclusions are acceptable, so the gap is the missing rationale, not the exclusion itself.",
       "wrong_explanations": {
-        "B": "Some of the 14 controls may well be needed, yet the standard permits justified exclusions. A conclusion goes no further than its evidence.",
+        "B": "Some of the 14 controls may well be needed, yet a conclusion goes no further than its evidence.",
         "C": "Scope defines which parts of the organization the ISMS covers. Unexplained control exclusions point to weak risk treatment, not a scope error.",
         "D": "A generic checklist would cut the link between risks and controls. The Statement of Applicability is a required ISMS document to fix, not replace."
       },
@@ -9927,7 +9927,7 @@
       "pre_read": "Notice when security currently hears about leavers. Ask when insider data theft usually happens.",
       "correct_explanation": "Data theft by leavers often happens during the notice period, so the leaver process should start when notice is given: HR informs security at once, access is reviewed and monitoring is heightened while it matters. Disabling accounts automatically on the last day is sound leaver practice, but it acts only after the notice period, when any copying has already happened.",
       "wrong_explanations": {
-        "A": "Automated last-day disabling is a cornerstone of offboarding, yet leavers' risk peaks while they serve notice: time a control to its risk.",
+        "A": "Automated last-day disabling works for closing access at exit; a control at the close of a risk window cannot reduce what happens inside it.",
         "B": "Reminders rely on the leaver's goodwill and give security no visibility.",
         "C": "An annual review is far too infrequent to cover a notice period."
       },
@@ -10061,7 +10061,7 @@
       "correct_explanation": "Data diddling changes data before or as it enters a system, so the records look legitimate once stored and later controls simply protect false figures. The defense is an input control that checks keyed quantities against an independent source, such as receiving counts made by someone else. Change logging is the strongest alternative; it tracks edits after saving, but the fraud happened before entry, so the log shows an ordinary input.",
       "wrong_explanations": {
         "A": "Encryption stops stored data being read, but here the false figures were entered normally, so encryption simply protects wrong data.",
-        "B": "An auditor values change logs for stored records. This fraud preceded entry, though, and a control sees only what happens downstream of it.",
+        "B": "An auditor values change logs for stored records, but a control can see only what happens downstream of where it sits.",
         "C": "Clerks must enter data to do their jobs, so read-only access is impractical, and it would not stop altered input documents."
       },
       "tips": [
@@ -10134,7 +10134,7 @@
       "pre_read": "Ask who the laptop is trusting when it signs in, and how it knows.",
       "correct_explanation": "When laptops skip server certificate validation, they will authenticate to any access point advertising the company network name. An attacker can set up a look-alike access point with a fake authentication server and capture staff credentials for later use. Unencrypted traffic comes closest, yet links to genuine access points are still encrypted; the flaw is trusting an impostor during sign-in.",
       "wrong_explanations": {
-        "A": "Encryption is intact on the firm's own network, but an encrypted link is only as safe as the check on who is at its far end.",
+        "A": "Encrypting wireless traffic is a baseline WLAN control, but encryption protects a conversation, not the choice of who to have it with.",
         "C": "Certificate validation has no meaningful effect on speed, and slow connections are a performance issue, not the security risk here.",
         "D": "Controller failure is an availability concern unrelated to whether laptops verify who they are authenticating to."
       },
@@ -10172,7 +10172,7 @@
       "pre_read": "Ask whether the attacker ever needed to know the password.",
       "correct_explanation": "In a pass-the-hash attack, the attacker never cracks the password; the stolen hash is presented directly to authenticate, so password length makes no difference. Effective controls limit where privileged hashes are exposed, such as unique local administrator passwords on every machine and privileged sign-ins only from dedicated admin workstations, and monitor for hash reuse across servers. Longer passwords are the closest choice: they slow offline cracking, but this attack never needs to crack anything.",
       "wrong_explanations": {
-        "B": "Longer passwords do resist offline guessing, but a replayed hash is never cracked: match a remedy to the technique used.",
+        "B": "Password length is a common defense against cracking, but a remedy aimed at a step the attacker skipped changes nothing.",
         "C": "The algorithm may be sound; the attack reuses the hash as a credential rather than reversing it.",
         "D": "Pass-the-hash works with properly hashed passwords; it abuses how the protocol accepts hashes, not plain-text storage."
       },
@@ -10375,7 +10375,7 @@
       "pre_read": "Notice that one weakness can be fixed after delivery and one cannot. Ask which control stops both.",
       "correct_explanation": "Default passwords can be changed, but a device with no firmware update path stays vulnerable for life, and no installation step fixes that. Setting security requirements, such as unique credentials and supported updates, before purchase stops weak devices entering the estate. Changing passwords at installation is the strongest alternative: it is necessary hygiene but leaves the unpatchable firmware and depends on every installer remembering.",
       "wrong_explanations": {
-        "A": "Changing default passwords at setup works for devices that can be patched later; flaws built into a product are best kept out at purchase.",
+        "A": "Changing default passwords at setup works for devices that can be patched later; when one source yields several defects, fix the source.",
         "B": "Segmentation limits damage from weak devices already installed, but it does not stop the organization from buying more of them.",
         "D": "Scanning finds known flaws after deployment; it cannot patch devices with no update mechanism or prevent future weak purchases."
       },
@@ -10533,7 +10533,7 @@
       "pre_read": "Notice the clerk is changing data, not reading or disclosing it. Match that action to the objective it affects.",
       "correct_explanation": "The weakness lets one person alter bank details with no check, so payments could be redirected through unauthorized or erroneous changes. That is a threat to integrity, which protects data from improper modification. Confidentiality also sounds relevant because bank details are sensitive, but the clerk is authorized to see them; the gap is the unchecked ability to change them.",
       "wrong_explanations": {
-        "B": "Payment details do deserve secrecy, but the clerk's viewing is already sanctioned: classify a weakness by the action it permits.",
+        "B": "Payment details do deserve secrecy, but sensitivity shows which objectives matter, while the weakness shows which one is threatened.",
         "C": "Nothing in the finding prevents staff from using the payroll application, so availability is not the affected objective.",
         "D": "Batch run speed is an operational performance matter, not a security objective."
       },
@@ -10763,7 +10763,7 @@
       "correct_explanation": "Network DLP can only inspect what it can read, so encrypted uploads pass unchecked. Decrypting web traffic at the proxy, under an approved policy that exempts sensitive categories such as personal banking or health sites, restores visibility for DLP rules. Asking staff to label files comes closest; labels help DLP decide, but the tool still cannot read encrypted uploads, and a careless or malicious user simply skips the label.",
       "wrong_explanations": {
         "A": "An approved policy does not make a blanket block workable. It stops legitimate business use of web services for most teams.",
-        "B": "Staff labeling aids classification, but a labeled file still crosses as ciphertext: labels steer inspection, while visibility enables it.",
+        "B": "Staff labeling aids classification. It asks those monitored to flag their own files, though, and monitoring should not hinge on its subjects' cooperation.",
         "C": "Email rules inspect email only; they have no view of files sent through encrypted web sessions."
       },
       "tips": [
@@ -10876,7 +10876,7 @@
       "correct_explanation": "A certificate is only as trustworthy as the identity check behind it. If the registration authority issues certificates to anyone who emails a request, an impostor can obtain a certificate in another person's name, and every system that trusts the PKI will accept it. Unencrypted requests come closest, but a request carries the public key, which is not secret; missing identity proofing is the real weakness.",
       "wrong_explanations": {
         "A": "Expiry is a routine lifecycle matter handled by renewal reminders; it does not let an impostor obtain a trusted certificate.",
-        "B": "Unencrypted email does expose whatever it carries, but a signing request holds no secret: protect a channel according to what it carries.",
+        "B": "Unencrypted email does expose whatever it carries, but a channel's protection should match the secrecy of its content, not the importance of the process.",
         "D": "Extra certificates add overhead, but the greater danger is certificates issued to people whose identity nobody checked."
       },
       "tips": [
@@ -11214,7 +11214,7 @@
       "correct_explanation": "An anomaly-based sensor treats whatever it saw while learning as normal. If an attacker was active during that period, the exfiltration became part of the baseline and will raise no alert, a false negative. The baseline must be relearned from a known-clean period. A flood of false alarms is the closest choice: it is the usual weakness of anomaly detection, but a poisoned baseline makes the sensor miss the attacker instead.",
       "wrong_explanations": {
         "A": "Training may help analysts, but the sensor's flaw lies in what it learned, not in how staff use its console.",
-        "B": "Anomaly sensors do tend to raise noisy alerts, but a baseline learned mid-attack fails silently, and missed attacks outweigh extra noise.",
+        "B": "Anomaly sensors often raise noisy alerts. Noise costs analyst time, though, while a false negative lets the breach run.",
         "D": "Anomaly-based detection works from a learned baseline rather than signatures, so update timing does not explain this outcome."
       },
       "tips": [
@@ -11438,7 +11438,7 @@
       "wrong_explanations": {
         "A": "An unauthenticated caller could fill flow tables, but that is one narrow effect; the same access lets an attacker reroute or drop any traffic.",
         "B": "Interface calls are control-plane traffic to the controller; switches keep forwarding user packets in the data plane.",
-        "D": "Rank access by what it can change. Seeing the routing layout does aid reconnaissance, yet write access to a controller outweighs read access."
+        "D": "Seeing the routing layout helps an attacker plan. Write access to the controller is harm itself: rank exposures by their distance from damage."
       },
       "tips": [
         "Eliminate: A is one narrow effect of the same access, and B mixes up the control plane with the data plane that forwards packets.",
@@ -11549,7 +11549,7 @@
       "correct_explanation": "Outbound rules decide where internal systems may send traffic. With none, malware on a database server can reach its command and control (C2) server and move stolen records out over any port. Egress filtering to approved destinations cuts both channels. Unapproved software downloads are the most tempting alternative: open outbound access makes them easier, but change control and administrator rights govern installs, so the open path for theft is the greater exposure.",
       "wrong_explanations": {
         "A": "Inbound connections are governed by separate inbound rules; open outbound access does not by itself let outsiders reach the servers.",
-        "C": "Limiting downloads is a worthwhile hardening goal, but install rights and change control police software: weigh a setting by the threat it chiefly governs.",
+        "C": "Limiting downloads is a worthwhile hardening goal. Where other controls already own a risk, though, weigh a setting by the risk it chiefly governs.",
         "D": "Bandwidth use is a capacity concern; it is not the security exposure that open outbound access creates."
       },
       "tips": [
@@ -11735,7 +11735,7 @@
       "pre_read": "Ask who could read the payroll file if the email were forwarded or intercepted.",
       "correct_explanation": "Sending the key with the data defeats the encryption: anyone who intercepts, forwards or later finds the email holds both the file and the key needed to read it. The key must travel by a separate, protected route. Reuse of the same key for later files is the most tempting alternative: it widens the damage of any leak, but this key is already exposed with the very file it protects.",
       "wrong_explanations": {
-        "B": "Rank what a weakness exposes today above what it might enlarge. Per-file keys are good hygiene, but no hygiene saves a key already handed over.",
+        "B": "Per-file keys are good key-management hygiene, yet hygiene limits future leaks. Rank what a weakness exposes today above what it might enlarge later.",
         "C": "AES-256 is a current, strong cipher; the weakness lies in how the key was sent, not in the algorithm.",
         "D": "Size limits are an operational issue; they do not expose the payroll data to anyone."
       },
@@ -11884,7 +11884,7 @@
       "correct_explanation": "Every laptop trusts any certificate that chains to a root in its store. If unapproved roots can be added, an attacker or careless technician can insert one, issue certificates for any website and intercept staff traffic without a single warning. Changes to trust anchors need approval and logging. Expired roots left in the store come closest: untidy, but they let no one create new certificates the laptops trust.",
       "wrong_explanations": {
         "B": "Root certificates are small files; storage space is not a realistic concern.",
-        "C": "Expired and rogue roots both clutter the trusted store, but a grant of new power outranks leftover residue.",
+        "C": "Both stale and unapproved roots weaken trust-store hygiene, but a weakness is ranked by the power it could hand an attacker.",
         "D": "Adding roots makes more certificates trusted, so warnings would fall, not rise; the danger is silent trust."
       },
       "tips": [
@@ -11920,7 +11920,7 @@
       "pre_read": "Ask what the server's private key can now sign that it never should.",
       "correct_explanation": "An end-entity certificate should not be able to issue others. Because this one can, whoever steals the server's private key can sign certificates for any name, and company systems will trust them because the chain leads back to the internal root. Exposure of the root CA's key is the most tempting alternative: it would be worse, but that key is not on the web server, so this breach does not reveal it.",
       "wrong_explanations": {
-        "B": "Guarding the root key is central to PKI, but a breach is sized by what the breached host holds; the root key lives elsewhere.",
+        "B": "An auditor would check root-key protection in any PKI review, but size a breach by what the breached host holds and can do.",
         "C": "A breach does not change a certificate's validity dates; expiry is not the risk here.",
         "D": "The certificate stays valid and trusted, so visitors see no warnings; the danger is silent misuse."
       },
@@ -11996,7 +11996,7 @@
       "correct_explanation": "Loosening the match threshold cuts false rejections but lets more impostors through. The IS auditor should first obtain the false acceptance rate at the new setting, so any finding rests on evidence of how far the vault's risk has risen. Recommending the original threshold is the closest choice: it may well be the right outcome, but recommending it before measuring the impact skips the evidence step.",
       "wrong_explanations": {
         "A": "Re-enrollment is a fix management may choose later; it does not show how much the impostor risk has risen.",
-        "B": "Rollback would win once the false acceptance rate proved unacceptable. Recommendations rest on the measured size of a risk.",
+        "B": "Rolling back is a legitimate remedy, but the old threshold caused real rejections too; a trade-off between two error rates is settled with both rates measured.",
         "C": "A survey measures rejections, the convenience side, not how many impostors the readers now accept."
       },
       "tips": [
@@ -12519,7 +12519,7 @@
       "pre_read": "Ask what a control needs from its surroundings to work, and whether a recent change has taken that away.",
       "correct_explanation": "Clean-agent systems put out fire by holding a set gas concentration in a sealed room for several minutes. Unsealed cable holes let the gas leak away, so the fire may not go out or may reignite; the room needs resealing and an integrity test. Harm to staff nearby is the most tempting alternative: these agents are chosen to be safe at the planned level, and escaping gas only becomes more diluted.",
       "wrong_explanations": {
-        "A": "Occupant safety is a routine check for gas systems, and these agents pass it; after a room changes, ask whether the control still works.",
+        "A": "Escaping gas does reach nearby offices, yet it costs the protected room most: weigh a control's failure above its side effects.",
         "B": "Dust is a housekeeping concern that filters and cleaning manage; it does not stop the suppression system from working in a fire.",
         "C": "Humidity control is a separate environmental issue; small cable holes barely affect it and do not disable fire protection."
       },
@@ -12589,7 +12589,7 @@
       "correct_explanation": "An external scan tests the claim directly: if the servers accept no inbound connections from the internet, they are hidden behind the broker in practice. The approved design is the closest choice: it shows the intended setup, but a leftover firewall rule or old remote-access path could still expose a server, and only a test of the live state would reveal it.",
       "wrong_explanations": {
         "A": "Broker logs show decisions on traffic that passes through the broker; they cannot show whether servers are also reachable by another path.",
-        "C": "An auditor reads an approved design to judge intent. A claim about operation needs evidence of operation.",
+        "C": "An auditor would use the approved design to scope the test. Stronger evidence is the kind that could have shown the claim false.",
         "D": "A vendor certificate speaks to the product in general, not to how this organization configured its own servers."
       },
       "tips": [
@@ -12664,7 +12664,7 @@
       "pre_read": "Ask whether the proposed change works against the stated threat before weighing its side effects.",
       "correct_explanation": "A large quantum computer breaks RSA with Shor's algorithm, whose cost grows only modestly with key length, so longer keys buy no lasting protection. Signatures on long-term contracts must stay trustworthy for decades, so they need a standardized post-quantum signature algorithm. Slower signing on older devices is the closest concern: it is a real cost, but a manageable one beside a change that fails against the threat.",
       "wrong_explanations": {
-        "B": "Effectiveness comes before cost: longer keys do slow older devices, yet side effects matter only among remedies that defeat the threat.",
+        "B": "False assurance is a risk in itself. Longer keys do slow older devices, yet a remedy that cannot stop the threat invites unearned trust.",
         "C": "256-bit symmetric encryption is expected to stay strong against quantum attack; the urgent exposure is public-key cryptography such as RSA.",
         "D": "Certificate fees rarely depend on key length, and even a higher fee would be minor beside a control that fails."
       },
@@ -12702,7 +12702,7 @@
       "pre_read": "Separate how the attacker got in from what the compromised component was allowed to reach.",
       "correct_explanation": "Each function acts with the rights of its execution role. If all functions share one role with wide database rights, a flaw in any function, even a receipt formatter, reaches everything those rights allow. Missing event validation is the most tempting alternative: it may explain how the attacker got into the function, but not why that function could touch HR data; a least-privilege role would have contained it.",
       "wrong_explanations": {
-        "A": "Entry and reach have different causes. Weak input validation may be the way in, but the rights granted set how far an attacker gets.",
+        "A": "Reach is fixed at design time, before any attack. Input validation is a first-line defense, yet no entry flaw sets how far a breach spreads.",
         "B": "Provider isolation separates different customers; here the function and the HR database belong to the same customer, whose permissions decided the reach.",
         "C": "Encryption at rest protects stored files from theft; a function acting through an authorized role sees the data in clear text anyway."
       },
@@ -12816,7 +12816,7 @@
       "pre_read": "Compare the fix with the cause named in the finding: does it remove the cause, or only reduce exposure?",
       "correct_explanation": "The finding is about flaws in the headsets' firmware, and only patching removes them. Hiding the phones treats the exposure, not the cause: the headsets themselves are untouched, and a hidden device's address can still be learned from its traffic. Staff switching discoverability back on comes closest: enforcing the setting through device management would help, yet the flaws would still be there.",
       "wrong_explanations": {
-        "A": "Settings users can reverse do weaken a workaround, but a finding closes when the condition it reported no longer exists.",
+        "A": "Settings users can reverse do weaken a workaround. Even enforced, a workaround compensates: it lowers risk without closing the finding.",
         "B": "A missing change record is a process gap worth noting, but it does not show whether the headsets' flaws were fixed.",
         "D": "Antennas extend Bluetooth range, but range is not what the finding is about; the headsets' unpatched flaws are the issue either way."
       },
@@ -12891,7 +12891,7 @@
       "correct_explanation": "A zero-day exploit attacks a flaw before its vendor has released a patch, often before anyone else knows of it. Scanners need a published check and patching needs a fix, so a scan-and-patch program cannot see or close the gap; compensating controls and reduced exposure must cover it. A slow monthly cycle is a real weakness, but it concerns known flaws, and a faster cycle would still miss a zero-day.",
       "wrong_explanations": {
         "A": "Systems missing older, available patches face known exploits, which patching does address; a zero-day targets a flaw with no patch yet.",
-        "B": "Monthly scanning does leave patched flaws open for weeks. No cadence, though, rescues a method that depends on vendor disclosure.",
+        "B": "Monthly scanning does leave patched flaws open for weeks. Speed and reach are separate tests, though: first ask whether a control can see the threat.",
         "D": "Ranking by active exploitation improves the patch order for known flaws, but a zero-day has no patch to rank or apply."
       },
       "tips": [
@@ -12928,7 +12928,7 @@
       "correct_explanation": "Containers share the host's operating system kernel instead of each running its own, so their isolation is thinner than that of virtual machines. A kernel flaw or a privileged container lets an attacker escape from the public website to the host and reach the payment service. Shared vulnerable base images are a real risk, but pipeline scanning addresses them, and they do not explain why the boundary itself is weak.",
       "wrong_explanations": {
         "A": "Container platforms support per-container network policies, so separate access rules are possible; the weakness lies in the shared kernel underneath.",
-        "B": "An auditor would want base images scanned, but a separation design is judged by the wall between workloads.",
+        "B": "An auditor would want base images kept current, yet a separation is rated by what an attacker must break to cross it.",
         "C": "Runtime monitoring tools watch container behavior, and detection would not strengthen the boundary between the two services anyway."
       },
       "tips": [
@@ -13004,7 +13004,7 @@
       "correct_explanation": "IoT devices such as cameras, sensors and building controls are often bought by facilities or business teams and connected without IT's knowledge, so they never reach the asset register. Scans driven by that register skip them, leaving their flaws unseen. That many devices cannot be patched is a real problem, but it arises only after a flaw is found; here the devices are never examined at all.",
       "wrong_explanations": {
         "A": "Encryption protects the content of traffic; a scanner still finds and probes the device on the network if it is told to look.",
-        "B": "Unpatchable firmware is a frequent IoT weakness, but a reason must explain the stated symptom: trace a coverage gap to how the list is built.",
+        "B": "Unpatchable firmware is a well-documented IoT weakness, but a reason must explain the stated symptom: trace a coverage gap to how the list is built.",
         "D": "Vulnerability scanners assess network devices, appliances and embedded systems as well as computers; the gap is which devices they are pointed at."
       },
       "tips": [
@@ -13079,7 +13079,7 @@
       "correct_explanation": "Many business email compromise attacks come from a real mailbox the attacker has taken over, at the company or a supplier, so the sender address is exactly right and checking it reveals nothing. That is why callbacks and segregated duties must stop the payment even when the email convinces. Training fading over time is a real limit, but even freshly trained staff cannot spot a correct address.",
       "wrong_explanations": {
         "A": "Filters catch some spoofed mail but not mail from hijacked real mailboxes, and filtering would not explain why the training fails.",
-        "C": "Refreshers are a common answer to decaying recall, but a hijacked mailbox sends from the authentic address: checks fail when attacks leave nothing to examine.",
+        "C": "Refreshers are a routine answer to fading recall. A check is only as good as the signal it inspects, though.",
         "D": "Checking the actual address is exactly what exposes a faked display name; a hijacked genuine mailbox is what defeats the check."
       },
       "tips": [
@@ -13115,7 +13115,7 @@
       "pre_read": "Ask whether the hidden code needs its author to sign in before it can run.",
       "correct_explanation": "A logic bomb is code hidden inside approved software that fires when a condition is met, such as a date. It runs with the program's own authority, so it needs no account and no sign-in from its author. A shared service account is a real gap to close, but even with it removed the planted code would still fire.",
       "wrong_explanations": {
-        "B": "Shared service accounts do let leavers slip past deprovisioning, but revoking access leaves planted code untouched.",
+        "B": "Shared service accounts do let leavers slip past deprovisioning, but offboarding governs what a person can do next, not what they already shipped.",
         "C": "Disabled accounts are not restored automatically, and account status does not matter here, since the code runs without anyone signing in.",
         "D": "Security tools can scan code held on servers; the issue is that the code sits inside approved software that runs with authority."
       },
@@ -13191,7 +13191,7 @@
       "pre_read": "Check whether one plausible step needs the other's result before it can start.",
       "correct_explanation": "The procedure must first find every system running an affected version, using software inventories, bills of materials and credentialed scans, because nothing can be ranked or patched until it is found. Ranking by exposure and exploitation is the most tempting alternative. It is the right way to order the work, but it can only rank the systems already identified, so it depends on the inventory step.",
       "wrong_explanations": {
-        "A": "Exposure-based triage is how mature teams sequence patching, yet its quality is capped by the completeness of the population it sorts.",
+        "A": "Exposure ranking and inventory both feed patch order, but each step in a chain inherits the gaps of the one before.",
         "C": "An uncredentialed scan sees only what the network exposes, so it usually cannot detect library versions installed inside applications.",
         "D": "A critical, widely used flaw needs risk-based urgency; waiting for the monthly window leaves exposed systems open longer than needed."
       },
