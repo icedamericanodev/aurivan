@@ -5918,11 +5918,13 @@ body[data-app-cta-card="shown"][data-section="today"] .app-cta-line { display: n
 .vr-wrong .vr-leaf-fill { fill: var(--wrong-fill); }
 .vr-timeout .vr-leaf-fill { fill: var(--tip-fill); }
 .vr-leaf-mark { fill: none; stroke: var(--on-fill); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
-.vr-hero { margin: 0; font: var(--t-hero); letter-spacing: var(--tr-hero); color: var(--correct); }
-.vr-wrong .vr-hero { color: var(--wrong); }
-.vr-timeout .vr-hero { color: var(--tip); }
+/* v12.47: the verdict word is ink; the leaf's fill and mark carry the state
+   (and the word says it), so colour is never doubled or the only signal. */
+.vr-hero { margin: 0; font: var(--t-hero); letter-spacing: var(--tr-hero); color: var(--text); }
 .vr-hero:focus { outline: none; }
-.vr-coach { margin: var(--sp-xs) 0 0 50px; font: var(--t-meta); color: var(--text2); }
+/* The coach's voice: the italic lead, under the word from 700px (leaf 38 + gap 12). */
+.vr-coach { margin: var(--sp-xs) 0 0; font: var(--t-fg-sub); color: var(--text2); }
+@media (min-width: 700px) { .vr-coach { margin-left: 50px; } }
 
 .vr-rows { display: flex; flex-direction: column; gap: var(--sp-lg); margin-top: var(--sp-lg); }
 .vr-row { display: flex; align-items: flex-start; gap: var(--sp-md); padding: var(--sp-lg); border-radius: var(--r-md); }
@@ -5940,10 +5942,14 @@ body[data-app-cta-card="shown"][data-section="today"] .app-cta-line { display: n
 .vr-row-wrong .vr-tag { color: var(--wrong); }
 .vr-row-right .vr-tag { color: var(--correct); }
 .vr-opt { font: var(--t-body); color: var(--text); overflow-wrap: anywhere; }
-/* "Why not B" (mobile PickNote): plain text under the red row, not inside it. */
-.vr-pick { margin-top: calc(var(--sp-md) - var(--sp-lg)); padding: 0 var(--sp-lg); }
-.vr-pick-cap { margin: 0; font: var(--t-caption); letter-spacing: 0.1px; color: var(--text2); }
-.vr-pick-t { margin: 2px 0 0; font: var(--t-small); color: var(--text); overflow-wrap: anywhere; }
+/* "Why not A." (v12.47): a bold lead-in inside the learner's own row, over a
+   hairline at 22% of the wrong colour. */
+.vr-row-why {
+  display: block; margin-top: var(--sp-md); padding-top: var(--sp-md);
+  border-top: 1px solid var(--border); border-top-color: color-mix(in srgb, var(--wrong) 22%, transparent);
+  font: var(--t-small); color: var(--text); overflow-wrap: anywhere;
+}
+.vr-row-why b { font-weight: 600; }
 
 .vr-why { margin: var(--sp-2xl) 0 var(--sp-xs); font: var(--t-headline); color: var(--text); }
 .vr-exp { margin: 0; font: var(--t-body); color: var(--text); }
@@ -6037,6 +6043,47 @@ body[data-app-cta-card="shown"][data-section="today"] .app-cta-line { display: n
   background: var(--btn); color: var(--on-btn); font: 600 17px/22px var(--f-sans);
 }
 .vr-next:hover { opacity: .92; }
+/* From 1024px Next stays in the page (v12.45) as the kit's 52px plate button. */
+@media (min-width: 1024px) {
+  .vr-next { min-height: 52px; border-radius: var(--r-12); font: 600 16px/20px var(--f-sans); }
+  .vr-next:focus-visible { border-radius: var(--r-12); }
+}
+
+/* Fig. 4 · Three moves for this question: the margin's plate (from 1240px). */
+.vm-plate .fg-fig { margin-bottom: var(--sp-xs); }
+.vm-plate .fg-key { align-items: flex-start; }
+.vm-plate .fg-key-n { padding-top: 0; }
+.vm-plate .fg-key-t { flex: 1 1 auto; display: block; }
+.vm-h { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-xs) var(--sp-sm); }
+.vm-t { font: 600 16px/22px var(--f-sans); color: var(--text); }
+.vm-b { display: block; margin-top: 2px; font: 400 15px/22px var(--f-sans); color: var(--text); }
+.vm-tag {
+  display: inline-flex; align-items: center; gap: var(--sp-xs); padding: 1px 6px;
+  border: 1px solid var(--control); border-radius: var(--r-3); font: 600 12px/16px var(--f-sans); color: var(--text); white-space: nowrap;
+}
+.vm-tag-x { width: 14px; height: 14px; flex: none; }
+.vm-tag-x circle { fill: var(--wrong-fill); }
+.vm-tag-x path { fill: none; stroke: var(--on-fill); stroke-width: 1.6; stroke-linecap: round; }
+.sr-sec-moves .fg-cap { margin-bottom: 0; }
+/* Nothing said twice: with the plate in the margin the page drops the Exam
+   cue node and the folded Eliminate two and Final two (and a Read more that
+   only held them). */
+body[data-qmoves] .vr-panel .vine-elim,
+body[data-qmoves] .vr-panel .vine-final,
+body[data-qmoves] .vr-panel .vine-cue,
+body[data-qmoves] .vr-panel .vr-why-more,
+body[data-qmoves] .vr-panel .vr-rm-tips { display: none; }
+body[data-qmoves] .vr-panel .vine-key::after { bottom: 4px; }
+/* Motion: the plate's rows fade in 60ms apart from 120ms after the verdict;
+   the tag settles from .96. Reduce Motion: the finished plate. */
+@keyframes vmRow { from { opacity: 0; } to { opacity: 1; } }
+@keyframes vmTag { from { transform: scale(.96); } to { transform: none; } }
+@media (prefers-reduced-motion: no-preference) {
+  .sr-sec-moves .fg-key { animation: vmRow 200ms ease-out both; animation-delay: 120ms; }
+  .sr-sec-moves .fg-key:nth-child(2) { animation-delay: 180ms; }
+  .sr-sec-moves .fg-key:nth-child(3) { animation-delay: 240ms; }
+  .sr-sec-moves .vm-tag { animation: vmTag 160ms cubic-bezier(.33, 1, .68, 1) 120ms both; }
+}
 .vr-next:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; border-radius: var(--r-pill); }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -7096,7 +7143,7 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
     <h2 class="vision-title" id="aboutVisionT">Think like an IS auditor.</h2>
     <p class="vision-line">CISA exam prep, taught the way the exam thinks.</p>
   </section>
-  <p class="about-version">KaiSip web <span class="bank-pill" id="versionPill">v12.46</span></p>
+  <p class="about-version">KaiSip web <span class="bank-pill" id="versionPill">v12.47</span></p>
   <section class="vision-body" aria-label="What KaiSip stands for">
     <!-- The provenance line (owner, 22 Oct 2026): the same words in the hero, the disclaimer and the FAQ. -->
     <p class="vision-desc">Original questions and notes, written with AI assistance and checked against ISACA’s published exam outline and standards.</p>
@@ -7433,7 +7480,7 @@ const MOCK_TIER_LABEL = { analysis: 'Harder', application: 'Middle', foundationa
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v12.46';
+const APP_VERSION = 'v12.47';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -15031,21 +15078,72 @@ function railHubSections() {
 function railQAnswered() {
   return !!(S.current && document.querySelector('#qArea .q-card.is-answered') && document.getElementById('rPanel'));
 }
+// Fig. 4 · Three moves for this question (web v12.47; premium round 2, 5.2):
+// Eliminate two, Final two and Exam cue as a captioned plate in the margin,
+// in DISPLAY letters. After a miss, the row(s) naming the pick carry a
+// "Your pick, A" tag (real text). None in exam-day rehearsal.
+var VM_ROWS = [['Eliminate', 'Eliminate two'], ['Final two', 'Final two'], ['Exam cue', 'Exam cue']];
+function vrMovesHtml(q) {
+  if (!q || S.examMode) return '';
+  var sh = S.currentShuffle || DISPLAY_LETTERS;
+  var pick = vrPick && vrPick.id === q.id ? vrPick : null;
+  var pickOrig = pick && pick.chosen && pick.chosen !== pick.correct ? displayToOriginal(pick.chosen, sh) : null;
+  var items = [];
+  VM_ROWS.forEach(function (r) {
+    var tip = qTipByLabel(q, r[0]);
+    if (!tip) return;
+    // Map the whole tip, as the page does (the letter after "Eliminate:" is always an option).
+    var body = tipParts(mapLettersInText(tip, sh), 0).body;
+    var names = pickOrig && r[0] !== 'Exam cue' && tipOptionLetters(tip).indexOf(pickOrig) >= 0;
+    var tag = names ? '<span class="vm-tag"><svg class="vm-tag-x" viewBox="0 0 14 14" aria-hidden="true" focusable="false"><circle cx="7" cy="7" r="7"/><path d="M4.6 4.6l4.8 4.8M9.4 4.6l-4.8 4.8"/></svg>Your pick, ' + pick.chosen + '</span>' : '';
+    items.push({ tHtml: '<span class="vm-h"><span class="vm-t">' + r[1] + '</span>' + tag + '</span>'
+      + '<span class="vm-b">' + escapeHtml(smartQuotes(body)) + '</span>' });
+  });
+  if (items.length < 2) return '';
+  return '<div class="fg-plate vm-plate"><div class="fg-plate-in">' + fgFigHtml('Fig. 4 · Three moves for this question', 2, 'srhMoves')
+    + fgKeyList(items) + '</div></div>'
+    + fgCaption('Key', 'Moves 1 and 2 work on questions you haven’t seen yet.');
+}
 function railQSections() {
   if (!railQAnswered()) return [];
   var q = S.current, secs = [];
   var exam = !!S.examMode;
+  var mv = vrMovesHtml(q);
+  if (mv) secs.push({ id: 'moves', key: 'moves:' + q.id + ':' + (vrPick && vrPick.id === q.id ? vrPick.chosen || '' : ''), labelId: 'srhMoves', cls: 'sr-sec-moves', html: mv });
+  // Go deeper: the note this question practises (one row), then its principle.
   var res = railNoteFor(q.id);
-  if (res.state !== 'none') secs.push({ id: 'note', key: 'note:' + q.id + ':' + res.state + ':' + (exam ? 1 : 0) + ':' + (res.note ? gtNoteState(res.note.id) : ''),
-    html: '<h2 class="sr-cap" id="srhNote">From your study notes</h2>' + railNoteCardHtml(res, exam, false) });
   var pl = railPrincipleFor(q);
-  if (pl) secs.push({ id: 'principle-q', key: 'pq:' + pl.id, cls: 'sr-sec-pl', html: railPrincipleLinkHtml(pl) });
+  var deeper = '';
+  if (res.state === 'found') {
+    var n = res.note, nst = gtNoteState(n.id);
+    deeper = vrDeeperRowHtml({
+      href: '#notes', data: ' data-id="' + escapeHtml(n.id) + '" data-d="' + escapeHtml(n.domain) + '"',
+      onclick: 'return railOpenNote(event,this.dataset.id,this.dataset.d)', icon: 'topics',
+      kicker: 'Read the note', title: escapeHtml(n.name),
+      meta: escapeHtml(DI[n.domain] ? DI[n.domain].short : '') + ' &middot; ' + GT_STATE_WORD[nst] + ' &middot; about&nbsp;' + n.mins + '&nbsp;min' });
+  } else if (res.state === 'loading') {
+    deeper = railNoteCardHtml(res, exam, false);
+  }
+  if (pl) deeper += railPrincipleLinkHtml(pl);
+  if (deeper) secs.push({ id: 'deeper', key: 'deeper:' + q.id + ':' + res.state + ':' + (res.note ? res.note.id + gtNoteState(res.note.id) : '') + ':' + (pl ? pl.id : ''),
+    cls: 'sr-sec-deeper', html: '<h2 class="sr-cap" id="srhDeeper">Go deeper</h2>' + deeper });
   if (!(firstFiveRun && sessionLabel === FIRST_FIVE_LABEL)) secs.push({ id: 'mine', key: railMineKey(q.id), html: '<h2 class="sr-cap" id="srhMine">Your note on this question</h2>' + railMineHtml(q.id, 'sr', 'srhMine') });
-  // The glossary terms this question uses first; the search box below them.
   var terms = railQuestionTerms(q);
   if (terms.length) secs.push({ id: 'terms', key: 'terms:' + q.id, html: '<h2 class="sr-cap" id="srhTerms">Terms in this question</h2>' + railTermsHtml(terms) });
-  secs.push({ id: 'look', key: 'look', html: '<h2 class="sr-cap" id="srhLook">Look up a term</h2>' + railLookupHtml() });
   return secs;
+}
+// From 1240px, with the plate in the margin, the page drops what the plate
+// says (the Exam cue node, the folded Eliminate two and Final two): nothing
+// is said twice. Below that the page is unchanged.
+function vrMovesMode(on) {
+  var b = document.body;
+  if (on) b.setAttribute('data-qmoves', 'margin'); else b.removeAttribute('data-qmoves');
+  var btn = document.getElementById('vrReadMore');
+  if (!btn) return;
+  var what = btn.getAttribute(on ? 'data-what-why' : 'data-what-all') || '';
+  btn.setAttribute('data-what', what);
+  var sr = btn.querySelector('.vr-rm-sr');
+  if (sr) sr.textContent = (btn.getAttribute('aria-expanded') === 'true' ? ': hides ' : ': ') + what;
 }
 function railMockSections() {
   var hist = (Array.isArray(S.mockHistory) ? S.mockHistory : []).slice(0, 3);
@@ -15131,8 +15229,10 @@ function railSync() {
   var secs = [];
   if (page === 'hub') { railHubInline(!wide); if (wide) secs = railHubSections(); }
   else railHubInline(false);
-  if (page === 'q') { railQInline(true); if (wide) secs = railQSections(); }
+  // The question: from 1240px Go deeper is in the margin; below, in the page.
+  if (page === 'q') { railQInline(!wide); if (wide) secs = railQSections(); }
   else railQInline(false);
+  vrMovesMode(page === 'q' && wide && secs.some(function (x) { return x.id === 'moves'; }));
   if (page === 'notes' && wide) secs = railNotesSections();
   if (page === 'mock' && wide) secs = railMockSections();
   if (page === 'you') { plantSafe(function () { plantYouInline(!wide); }); if (wide) secs = plantSafe(plantRailSections) || []; }
@@ -15150,7 +15250,8 @@ function railRender(aside, secs) {
     var el = document.createElement('section');
     el.className = 'sr-sec sr-in' + (s.cls ? ' ' + s.cls : '');
     var h = /^<h2[^>]* id="([^"]+)"/.exec(s.html);
-    if (h) el.setAttribute('aria-labelledby', h[1]);
+    if (s.labelId) el.setAttribute('aria-labelledby', s.labelId);
+    else if (h) el.setAttribute('aria-labelledby', h[1]);
     el.innerHTML = s.html;
     return el;
   });
@@ -17181,11 +17282,46 @@ function runnerUpLetter(q) {
   return null;
 }
 
+// ── PICK-AWARE COACH LINE (web v12.47; premium round 2, 5.2) ──
+// The option letters a tip names: ORIGINAL letters, in order, once each,
+// read with the app's own letter rule (isOptionLetterRef), so "C-level",
+// "A SOC 2 report" or "the A/B test" are never taken for options.
+// scripts/verify_repo.sh runs these over the whole bank (coach-line check).
+function tipOptionLetters(text) {
+  var t = String(text || ''), out = [], re = /\b([A-D])\b(?![-&.]\w|['’](?!s\b))/g, m;
+  while ((m = re.exec(t))) {
+    if (isOptionLetterRef(t, m[1], m.index) && out.indexOf(m[1]) < 0) out.push(m[1]);
+  }
+  return out;
+}
+// The v2 tip with this label ('Eliminate', 'Final two', 'Exam cue'), or ''.
+function qTipByLabel(q, label) {
+  var pre = label + ':';
+  return ((q && q.tips) || []).filter(function (x) { return typeof x === 'string' && x.indexOf(pre) === 0; })[0] || '';
+}
+// Which pick-aware line a wrong pick gets (original letters in). Never a guess:
+// 'elim'  when the Eliminate tip names exactly two options, the pick is one
+//         and the best answer is neither;
+// 'final' when the Final two tip names exactly the pick and the best answer;
+// null    otherwise (the usual line).
+function pickCoachKind(q, chosenOrig) {
+  if (!q || !chosenOrig || chosenOrig === q.correct) return null;
+  var el = tipOptionLetters(qTipByLabel(q, 'Eliminate'));
+  if (el.length === 2 && el.indexOf(chosenOrig) >= 0 && el.indexOf(q.correct) < 0) return 'elim';
+  var fi = tipOptionLetters(qTipByLabel(q, 'Final two'));
+  if (fi.length === 2 && fi.indexOf(chosenOrig) >= 0 && fi.indexOf(q.correct) >= 0) return 'final';
+  return null;
+}
+
 // One short coach line under the verdict (mobile parity, engine/slipCoach).
-function verdictCoachLine(q, ok, timeout, chosenOrig, exam) {
+// v12.47: first the pick-aware line, in DISPLAY letters (the shuffle).
+function verdictCoachLine(q, ok, timeout, chosenOrig, exam, shuffle) {
   if (exam) return '';
   if (timeout) return 'Time ran out on this one.';
   if (ok) return 'That’s the answer the exam wants.';
+  var sh = shuffle || DISPLAY_LETTERS, pk = pickCoachKind(q, chosenOrig);
+  if (pk === 'elim') return 'Your pick, ' + originalToDisplay(chosenOrig, sh) + ', is one of the two to rule out first.';
+  if (pk === 'final') return 'You reached the final two: ' + originalToDisplay(chosenOrig, sh) + ' against ' + originalToDisplay(q.correct, sh) + '.';
   if (chosenOrig && chosenOrig === runnerUpLetter(q)) return 'You picked the runner-up. That’s the trap.';
   if (detectMindsetIssue(q, chosenOrig)) return 'That’s the implementer’s move. Auditors assess and report.';
   return 'Here’s the idea to take with you.';
@@ -17202,19 +17338,17 @@ function vineLeafSvg(key) {
 // Mobile 1.43 rows (premium pass 2.5): the DISPLAY letter sits in a filled
 // badge (no tick or cross disc: the verdict leaf is the screen's one mark),
 // the tag is words alone and screen readers hear the letter after it.
-function vrOptionRow(kind, tag, displayL, text, spoken) {
+// v12.47: "Why not A." is a bold lead-in inside the learner's own row, above
+// a hairline (never a heading: the screen has one "Why" heading).
+function vrOptionRow(kind, tag, displayL, text, spoken, whyNot) {
   return '<div class="vr-row vr-row-' + kind + '">'
     + '<span class="vr-badge" aria-hidden="true">' + displayL + '</span>'
     + '<span class="vr-row-body">'
       + '<span class="vr-tag">' + tag + '<span class="sr-only">' + spoken + '</span></span>'
       + '<span class="vr-opt">' + text + '</span>'
+      + (whyNot ? '<span class="vr-row-why"><b>Why not ' + displayL + '.</b> ' + whyNot + '</span>' : '')
     + '</span>'
     + '</div>';
-}
-// "Why not B": the learner's own pick, explained, under its red row (mobile
-// PickNote). A caption, never a heading: the screen has one "Why" heading.
-function vrPickNoteHtml(displayL, note) {
-  return note ? '<div class="vr-pick"><p class="vr-pick-cap">Why not ' + displayL + '<span class="sr-only">:</span></p><p class="vr-pick-t">' + note + '</p></div>' : '';
 }
 // The stem recap at the top of the answer (premium pass 2.1): "Question",
 // the stem clamped to two lines, and "Show question" to open it in place.
@@ -17260,7 +17394,7 @@ function showResult(chosen, correct, timeout, info) {
   // 1. Verdict: leaf mark + hero, then one coach line (the review-queue
   //    note folds into it).
   var hero = timeout ? 'Time’s up' : ok ? 'Correct' : 'Not quite';
-  var coach = verdictCoachLine(q, ok, timeout, chosenOrig, inExamMode);
+  var coach = verdictCoachLine(q, ok, timeout, chosenOrig, inExamMode, shuffle);
   // When it comes back (the review rules, updateReviewSchedule).
   var back = info.review === 'missed' ? 'It comes back tomorrow.'
     : info.review === 'retest' ? 'Back in your review tomorrow.'
@@ -17281,10 +17415,9 @@ function showResult(chosen, correct, timeout, info) {
   //    two options are not shown here (Review shows all four).
   var rows = '';
   if (chosen && ok) {
-    rows += vrOptionRow('right', 'Your answer', chosen, optText(correctOrig), ', ' + chosen + ', correct');
+    rows += vrOptionRow('right', 'Your answer &middot; the best', chosen, optText(correctOrig), ', ' + chosen);
   } else if (chosen) {
-    rows += vrOptionRow('wrong', 'Your answer', chosen, optText(chosenOrig), ', ' + chosen + ', not correct');
-    rows += vrPickNoteHtml(chosen, wrongNote(chosenOrig));
+    rows += vrOptionRow('wrong', 'Your answer &middot; not the best', chosen, optText(chosenOrig), ', ' + chosen, wrongNote(chosenOrig));
   }
   if (!ok) rows += vrOptionRow('right', 'Best answer', correct, optText(correctOrig), ', ' + correct);
 
@@ -17340,8 +17473,10 @@ function showResult(chosen, correct, timeout, info) {
   if (!ok && !inExamMode && (longWhy || vineB)) {
     var foldNames = (longWhy ? ['the full explanation'] : []).concat(vineRest.length ? vineRestLabels : []);
     var what = foldNames.length > 1 ? foldNames.slice(0, -1).join(', ') + ' and ' + foldNames[foldNames.length - 1] : foldNames[0];
-    whyHtml += '<button type="button" class="vr-readmore" id="vrReadMore" aria-expanded="false" aria-controls="vrExp' + (vineB ? ' vrWhyMore' : '') + '"'
-      + ' data-what="' + escapeHtml(what) + '" onclick="toggleWhyFold(this)"><span class="vr-rm-t">Read more</span><span class="sr-only vr-rm-sr">: ' + escapeHtml(what) + '</span></button>'
+    // From 1240px Eliminate two and Final two are in the margin (vrMovesMode):
+    // then Read more opens the long Why only, and hides when there is none.
+    whyHtml += '<button type="button" class="vr-readmore' + (longWhy ? '' : ' vr-rm-tips') + '" id="vrReadMore" aria-expanded="false" aria-controls="vrExp' + (vineB ? ' vrWhyMore' : '') + '"'
+      + ' data-what="' + escapeHtml(what) + '" data-what-all="' + escapeHtml(what) + '" data-what-why="the full explanation" onclick="toggleWhyFold(this)"><span class="vr-rm-t">Read more</span><span class="sr-only vr-rm-sr">: ' + escapeHtml(what) + '</span></button>'
       + (vineB ? '<div class="vr-why-more" id="vrWhyMore" hidden>' + vineB + '</div>' : '');
     vineB = '';
   }
@@ -17380,7 +17515,7 @@ function showResult(chosen, correct, timeout, info) {
   armVine(document.getElementById('vrVine'));
   armVine(document.getElementById('vrVine2'));
   vrRecapWatch();
-  // The study rail starts teaching now: the note, your note, the lookup.
+  // The margin starts teaching now: the three moves, the note, your note.
   try { railSync(); } catch (e) {}
   // The strip: progress moves on, and its Save hands over to the footer's.
   try { updateFocusStrip(); } catch (e) {}
@@ -22137,6 +22272,13 @@ function toggleMockDetail(i) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
+    title: 'The three moves beside your answer',
+    items: [
+      { cat: 'improved', text: 'On wide screens, the three moves for every question now sit beside your answer, and the coach tells you when you picked a trap.' },
+    ],
+  },
+  {
+    version: 'v12.46',
     title: 'One page frame',
     items: [
       { cat: 'improved', text: 'Every page now lines up on one grid, with notes in the margin on wide screens.' },

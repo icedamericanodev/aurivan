@@ -229,6 +229,74 @@ if ! python3 scripts/check_token_parity.py; then
   status=1
 fi
 
+# 6e. The answer screen's pick-aware coach line (web v12.47) ---------------
+# Runs the app's own parser (tipOptionLetters, pickCoachKind and
+# verdictCoachLine, taken from index.html as they ship) over every wrong pick
+# in the whole bank and prints how many questions and picks get each line.
+# The pick-aware lines only fire when the tips name the letters exactly, so
+# a tip the parser cannot read falls back to the usual line, never a guess.
+# Fails only if the parser cannot be loaded or throws.
+printf "\nPick-aware coach line (every wrong pick, whole bank):\n"
+if command -v node >/dev/null 2>&1; then
+  node - <<'JS' || status=1
+const fs = require('fs'), vm = require('vm');
+const html = fs.readFileSync('index.html', 'utf8');
+const lines = html.split('\n');
+function grab(re, endTest) {
+  const i = lines.findIndex(l => re.test(l));
+  if (i < 0) throw new Error('not found in index.html: ' + re);
+  let j = i;
+  while (j < lines.length && !endTest(lines[j], j === i)) j++;
+  return lines.slice(i, j + 1).join('\n');
+}
+const fn = n => grab(new RegExp('^function ' + n + '\\('), l => /^}\s*$/.test(l));
+const v = n => grab(new RegExp('^var ' + n + ' = '), l => /;\s*$/.test(l.trim()));
+const src = ['DISPLAY_LETTERS', 'LETTER_LABEL_WORDS', 'LETTER_VERBISH_AFTER_A', 'LETTER_CHOICE_WORDS', 'IMPLEMENTER_WORDS', 'AUDITOR_WORDS'].map(v)
+  .concat(['originalToDisplay', 'isOptionLetterRef', 'tipOptionLetters', 'qTipByLabel', 'pickCoachKind', 'runnerUpLetter', 'detectMindsetIssue', 'verdictCoachLine'].map(fn))
+  .join('\n');
+const ctx = {};
+vm.createContext(ctx);
+vm.runInContext(src, ctx);
+const LINES = [
+  ['elim', /^Your pick, [A-D], is one of the two to rule out first\.$/, 'Your pick, X, is one of the two to rule out first.'],
+  ['final', /^You reached the final two: [A-D] against [A-D]\.$/, 'You reached the final two: X against Y.'],
+  ['runner', /runner-up/, 'You picked the runner-up. That’s the trap.'],
+  ['mindset', /implementer/, 'That’s the implementer’s move. Auditors assess and report.'],
+  ['usual', /^Here’s the idea to take with you\.$/, 'Here’s the idea to take with you.']
+];
+const picks = {}, qs = {};
+LINES.forEach(l => { picks[l[0]] = 0; qs[l[0]] = 0; });
+let nq = 0, np = 0, odd = 0, elimTwo = 0, finalTwo = 0;
+for (const d of [1, 2, 3, 4, 5]) {
+  for (const q of JSON.parse(fs.readFileSync(`data/domain${d}.json`, 'utf8')).questions) {
+    nq++;
+    const el = ctx.tipOptionLetters(ctx.qTipByLabel(q, 'Eliminate'));
+    const fi = ctx.tipOptionLetters(ctx.qTipByLabel(q, 'Final two'));
+    if (el.length === 2 && el.indexOf(q.correct) < 0) elimTwo++;
+    if (fi.length === 2 && fi.indexOf(q.correct) >= 0) finalTwo++;
+    const got = {};
+    for (const pick of ['A', 'B', 'C', 'D']) {
+      if (pick === q.correct || !(q.options || {})[pick]) continue;
+      np++;
+      const line = ctx.verdictCoachLine(q, false, false, pick, false, ['A', 'B', 'C', 'D']);
+      const hit = LINES.find(l => l[1].test(line));
+      if (!hit) { odd++; continue; }
+      picks[hit[0]]++;
+      got[hit[0]] = 1;
+    }
+    Object.keys(got).forEach(k => qs[k]++);
+  }
+}
+console.log(`  ✓ ${nq} questions, ${np} wrong picks`);
+LINES.forEach(l => console.log(`    ${String(qs[l[0]]).padStart(5)} questions · ${String(picks[l[0]]).padStart(5)} picks  ${l[2]}`));
+console.log(`  Eliminate tips that name exactly two wrong options: ${elimTwo} of ${nq}`);
+console.log(`  Final two tips that name exactly the best and one other: ${finalTwo} of ${nq}`);
+if (odd) { console.log(`  ✗ ${odd} picks got a line the check does not know`); process.exit(1); }
+JS
+else
+  printf "  skipped (node not available)\n"
+fi
+
 # 7. Accessibility (pa11y, WCAG AA) -----------------------------------------
 # pa11y runs WCAG AA against a served URL. We skip silently if node/npx is
 # absent or no local server is running on port 8000 — the maintainer can run

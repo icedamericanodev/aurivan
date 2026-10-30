@@ -4,6 +4,11 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v12.47] — The three moves beside your answer
+
+### Improved
+- On wide screens, the three moves for every question now sit beside your answer, and the coach tells you when you picked a trap.
+
 ## [v12.46] — One page frame
 
 ### Improved
