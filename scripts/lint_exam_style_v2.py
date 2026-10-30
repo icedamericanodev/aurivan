@@ -27,6 +27,8 @@ from collections import Counter
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from check_longest_option import pick_longest_rate  # noqa: E402  (one tie-sharing rule for both checks)
 
 PRIORITY_WORDS = ["BEST", "FIRST", "MOST", "PRIMARY", "GREATEST", "LEAST", "MAIN", "STRONGEST"]
 ACTOR_WORDS = ["auditor", "audit", "management", "board", "organization", "committee", "firm", "owner", "officer", "manager",
@@ -224,8 +226,13 @@ def main(args):
             print(f"ERROR key is the wordiest option in {wshare:.0%} of items (max 30%): "
                   + ", ".join(q["id"] for q in wordiest[:12]) + ("…" if len(wordiest) > 12 else ""))
             n_err += 1
-        if len(v2) >= 20 and wshare < 0.15:
-            print(f"warn  key is the wordiest option in only {wshare:.0%} of items (target 15–30%): "
+        # The reverse tell ("never pick the wordiest") is measured with ties
+        # shared: options often tie on words, so a strict share near 0% is not
+        # a tell by itself. The domain-level target (about 20%) lives in
+        # scripts/check_longest_option.py.
+        wrate, _ = pick_longest_rate(v2, words)
+        if len(v2) >= 40 and wrate < 0.10:
+            print(f"warn  picking the wordiest option (ties shared) wins only {wrate:.0%} of items (min 10%): "
                   "'never pick the wordiest' is a reverse tell; lengthen some keys with precise qualifiers")
             n_warn += 1
         spread = ", ".join(f"{k}{keys[k]}" for k in "ABCD")
