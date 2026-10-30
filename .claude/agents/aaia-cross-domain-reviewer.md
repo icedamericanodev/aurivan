@@ -12,8 +12,8 @@ You are the final cross-domain gate for KaiSip's AAIA course. Read `.claude/agen
 3. **Drift.** An item outside its area or domain (a 2E testing item filed under 3B, a pure CISA sampling item with no AI fact). Propose the right code and whether to move or re-angle.
 4. **Role conventions** stay the same everywhere:
    - the model owner (business) is accountable for the model and its decisions;
-   - management and the board set AI risk appetite and accept residual risk;
-   - an AI governance committee approves policy and high-impact use cases;
+   - the board approves AI risk appetite, senior management sets tolerances within it, and management accepts residual risk within that appetite;
+   - the board or senior management approves AI policy, and an AI governance committee approves high-impact use cases;
    - independent validation is separate from the builders;
    - the IS auditor assesses, recommends, reports and follows up.
    Same terms throughout (model owner, AI governance committee, human oversight, drift), US spelling, priority words in caps.

@@ -107,8 +107,10 @@ section 6, which also apply.
 3. **Who decides is consistent with CISA.** The board approves AI risk
    appetite; senior management sets tolerances within it; model owners set
    use-level criteria inside those tolerances; the auditor assesses all three.
-   Owners turn principles (fairness, explainability) into measurable criteria;
-   the auditor selects the *audit* criteria (ITAF 1008) and tests against them.
+   Owners turn principles (fairness, explainability) into measurable criteria.
+   The auditor selects the *audit* criteria for suitability (ITAF 1008) and tells
+   management which were chosen; management's agreement is never a condition, or
+   the auditee would hold a veto over the audit.
 4. **Rank by likelihood and impact**, counting harm to people as well as to the
    business (CISA `risk-sets-priority`), never by impact alone.
 5. **No list keys.** A key that is the only option listing four things, or the
