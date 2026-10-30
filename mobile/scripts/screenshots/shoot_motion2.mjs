@@ -4,6 +4,8 @@
 //       band opens from its centre);
 //  - B: the growth plate: Results' Fig. 6 after a mixed set (only the area that grew moves) and
 //       You's Fig. 5 after a rise since the last look;
+//  - C: the answer moment after a miss: the tips' block rises after the rows, and the vine draws only
+//       once it has landed;
 // plus the end states. REDUCED=1 runs the same steps with Reduce Motion on (files end "-reduced").
 // The page clock runs at 1/SLOW speed (performance.now, Date.now, rAF, setTimeout), as in
 // shoot_motion.mjs; a page can also START slowed (sessionStorage __slowLoad) for a screen that
@@ -210,6 +212,35 @@ await tabStrip(
   areasClip,
 );
 await page.setViewportSize({ width: 393, height: 852 });
+
+// ── C. The answer moment (3a and UX H1): a miss on the seed's first sample ──
+// The rows rise, then the Key idea and Exam cue in reading order; the vine's stem draws and its
+// leaves pop only once that block has landed (never while it is still invisible).
+{
+  const keys = (seed.__shotKeys || 'D').split(',');
+  // B1 cleared the active session: put the seed's practice set back.
+  await page.evaluate((v) => localStorage.setItem('aurivan.session.v1', v), seed['aurivan.session.v1']);
+  await go('/session', 2000);
+  await page.getByLabel(new RegExp(`^Option ${keys[0]}:`)).first().click();
+  await wait(700);
+  const full = { x: 0, y: 0, width: 393, height: 852 };
+  await page.evaluate((s) => window.__timeScale(1 / s), SLOW);
+  const t0 = await page.evaluate(() => window.__appNow());
+  await page.getByText('Check answer', { exact: true }).click();
+  const frames = await framesAt(t0, [60, 200, 330, 460, 640, 1100], full);
+  await page.evaluate(() => window.__timeScale(1));
+  await compose(
+    'r2-c-answer-moment',
+    [
+      'Check answer (a miss): the verdict, then the rows (+120), then the Key idea block (+200) in reading order; the vine draws only after it has landed (from 440 ms)',
+      'Check answer (a miss): everything fades in together (120 ms); the vine is simply drawn',
+    ],
+    frames,
+    full,
+  );
+  await wait(1200);
+  await edit('aurivan.session.v1', 'v.state.active = null;');
+}
 
 if (errs.length) console.log('page errors:', errs.slice(0, 5).join(' | '));
 await browser.close();

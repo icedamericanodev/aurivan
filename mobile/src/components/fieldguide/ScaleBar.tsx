@@ -19,19 +19,21 @@
  * `grow` (600 ms, ease-out, the numeral's own roll), and the bracket's label
  * fades in as they land. On the day's first view (nothing seen yet) the band
  * opens from its centre (`openFrom` → 1 over `draw`, enter curve) and its end
- * ticks and label fade in after. A fall never moves. Reduce Motion, or
+ * ticks and label fade in to land with it. A fall never moves; when the low
+ * end falls while the high end rises, the low edge moves at once and only the
+ * high edge slides. Reduce Motion, or
  * nothing new: the finished bar.
  * At 200% text the numeral and its words stack; the bar keeps its labels at ×1.3.
  */
-import { useEffect, useState } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 import { View, type StyleProp, type ViewStyle } from 'react-native';
-import Animated, { useAnimatedStyle, useSharedValue, withDelay } from 'react-native-reanimated';
+import Animated, { useAnimatedStyle, useSharedValue, withDelay, withSequence } from 'react-native-reanimated';
 import Svg, { Path, Rect } from 'react-native-svg';
 import { READY_LOW } from '../../engine/examReady';
 import { rangeLabel, RANGE_MIN_ANSWERS, type ReadinessRange } from '../../engine/readinessRange';
 import { LARGE_TEXT, motion, space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
-import { ease, tween, useMotion, type Growth } from '../motion';
+import { ease, snap, tween, useMotion, type Growth } from '../motion';
 import { BigNum, T, useFontScale } from '../ui';
 import { FieldText } from './FieldText';
 
@@ -117,26 +119,27 @@ export function ScaleBar({
   // One clock for the estimate (0 → 1) and one for what arrives after it (its ticks and label).
   const p = useSharedValue(move.mode === 'still' ? 1 : 0);
   const q = useSharedValue(move.mode === 'still' ? 1 : 0);
-  const sig = move.mode === 'since' ? `${move.dxLow},${move.dxHigh},${move.band}` : move.mode;
-  useEffect(() => {
+  // What a growth is: its start and end in percents (never in points, so a relayout or a width change
+  // never replays it) and its run.
+  const sig = move.mode === 'since' ? `since:${growth!.from.join(',')}>${range.enough ? `${range.low},${range.high}` : ''}` : move.mode;
+  const started = useRef<string | null>(null);
+  // Before paint (UX P5): a growth starts from its start pose in the very frame it is decided, so the
+  // bar never shows its end for a frame and then snaps back to slide.
+  useLayoutEffect(() => {
     if (move.mode === 'still') {
+      started.current = null;
       p.set(1);
       q.set(1);
       return;
     }
-    p.set(0);
-    q.set(0);
-    if (move.mode === 'since') {
-      p.set(tween(1, 'grow', ease.out));
-      // The label arrives as the band lands (it names where the band ends, never where it passes).
-      q.set(withDelay(motion.dur.grow - motion.dur.quick, tween(1, 'quick')));
-    } else {
-      p.set(tween(1, 'draw', ease.enter));
-      q.set(withDelay(motion.dur.quick, tween(1, 'quick')));
-    }
-    // Restart only for a new growth (its run) or a new start.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sig, growth?.run, p, q]);
+    const key = `${sig}|${growth?.run ?? 0}`;
+    if (started.current === key) return;
+    started.current = key;
+    p.set(withSequence(snap(0), move.mode === 'since' ? tween(1, 'grow', ease.out) : tween(1, 'draw', ease.enter)));
+    // Its ends and label land with it: the label names where the band ends, never where it passes.
+    const landsAt = (move.mode === 'since' ? motion.dur.grow : motion.dur.draw) - motion.dur.quick;
+    q.set(withSequence(snap(0), withDelay(landsAt, tween(1, 'quick'))));
+  }, [move.mode, sig, growth?.run, p, q]);
   const since = move.mode === 'since' ? move : null;
   const open = move.mode === 'open';
   const from = motion.openFrom;

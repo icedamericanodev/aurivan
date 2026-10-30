@@ -693,3 +693,9 @@ export function StickyFooter({ children, onHeight }: { children: ReactNode; onHe
 // Exported for the session screen: delays used to stagger the answer screen
 // (spec §10.2): the rows start as the verdict leaf settles, "Why" just after.
 export const FEEDBACK_DELAY = { rows: motion.dur.select, why: motion.dur.reveal } as const;
+/**
+ * When the vine's entrance has landed (premium round 2, UX H1): the latest vine group rises at
+ * `why + stagger.group` over `reveal`. The vine may draw (stem, leaf pops, its one haptic) only from
+ * here, never while its group is still invisible. Under Reduce Motion everything is in after `reduced`.
+ */
+export const VINE_ARRIVES = FEEDBACK_DELAY.why + motion.stagger.group + motion.dur.reveal;

@@ -119,6 +119,9 @@ import { useSession } from '../store/session';
 import { motion, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 
+/** The growth plate's entrance group: its growth waits for this group to land (premium round 2, UX P4). */
+const PLATE_GROUP = 1;
+
 export default function Results() {
   const { c } = useTheme();
   const active = useSession((s) => s.active);
@@ -349,7 +352,7 @@ export default function Results() {
 
       {/* Mobile 1.51 (Field Guide): Fig. 6, the growth plate. The areas this set asked about, now, on one scale,
           with this set's change where both ends have a number; "Plate not yet drawn" while none has one. */}
-      <Enter i={1} style={{ marginTop: space.xl }}>
+      <Enter i={PLATE_GROUP} style={{ marginTop: space.xl }}>
         {plateLine ? (
           <EmptyPlate fig={{ n: 6, title: plateTitle }} body={plateLine} />
         ) : (
@@ -361,7 +364,7 @@ export default function Results() {
               </View>
             )}
             {/* Premium round 2 (#2): with where the set began, only what grew moves; an older session traces in. */}
-            <StemChart stems={stems} line={STEADY_FROM} play={grow ? (active.before ? 'growth' : 'trace') : false} delay={motion.dur.enter + motion.stagger.group} />
+            <StemChart stems={stems} line={STEADY_FROM} play={grow ? (active.before ? 'growth' : 'trace') : false} delay={motion.dur.enter + PLATE_GROUP * motion.stagger.group} />
           </Plate>
         )}
         {range.enough && (

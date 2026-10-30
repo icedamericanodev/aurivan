@@ -75,6 +75,7 @@ import {
   ConfidenceRow,
   FEEDBACK_DELAY,
   OptionCard,
+  VINE_ARRIVES,
   PickNote,
   Rise,
   ScenarioBlock,
@@ -170,6 +171,9 @@ export default function SessionScreen() {
   const verdictBottom = useRef(0);
   const [pastVerdict, setPastVerdict] = useState(false);
   const vineRef = useRef<View>(null);
+  // The question whose vine may draw: armed once its entrance has landed (VINE_ARRIVES), never at the
+  // tap while it is still invisible (UX H1). Keyed by question, so a new question starts unarmed.
+  const vineArmedFor = useRef<string | null>(null);
   // Mobile 1.24: after a miss the tips come in two parts (Key idea + Exam cue, then
   // Eliminate / Final two after the folded "Why"); the second part draws on its own.
   const [vine2Visible, setVine2Visible] = useState(false);
@@ -291,18 +295,23 @@ export default function SessionScreen() {
   const [leavingIndex, setLeavingIndex] = useState<number | null>(null);
   const onTurning = useCallback((from: string | number | null) => setLeavingIndex(typeof from === 'number' ? from : null), []);
 
-  // After an answer, if the vine is already on screen (short questions),
-  // draw it without waiting for a scroll.
+  // After an answer, once the vine's entrance has landed, arm it; and if it is already on screen
+  // (short questions), draw it without waiting for a scroll.
   const answeredHere = Boolean(qid && active?.responses[qid]) && active?.mode !== 'mock';
   useEffect(() => {
+    vineArmedFor.current = null;
     if (!answeredHere) return;
-    const t = setTimeout(() => {
-      vineRef.current?.measureInWindow((_x, y) => {
-        if (y < Dimensions.get('window').height - 40) setVineVisible(true);
-      });
-    }, 450);
+    const t = setTimeout(
+      () => {
+        vineArmedFor.current = qid ?? null;
+        vineRef.current?.measureInWindow((_x, y) => {
+          if (y < Dimensions.get('window').height - 40) setVineVisible(true);
+        });
+      },
+      reduceMotion ? motion.dur.reduced : VINE_ARRIVES,
+    );
     return () => clearTimeout(t);
-  }, [answeredHere, qid]);
+  }, [answeredHere, qid, reduceMotion]);
 
   // After Coach me is tapped, the hint mounts (and fades in for 200ms).
   // Then move screen-reader focus onto it, so VoiceOver / TalkBack read the
@@ -693,6 +702,8 @@ export default function SessionScreen() {
   // scroll we ask where it sits on screen (measureInWindow works on phones
   // and on the web build alike).
   const checkVine = () => {
+    // Not before its entrance has landed (a layout at the tap must not draw it unseen).
+    if (vineArmedFor.current !== qid) return;
     if (!vineVisible && vineRef.current) {
       vineRef.current.measureInWindow((_x, y) => {
         if (y < Dimensions.get('window').height - 40) setVineVisible(true);

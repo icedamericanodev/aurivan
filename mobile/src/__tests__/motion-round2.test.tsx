@@ -18,7 +18,9 @@ import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'rea
 import { setMockReducedMotion } from '../../jest/reanimated-mock';
 import { estimateMotion, growingStems, growthDrop, ScaleBar, scaleSpoken, StemChart, type Stem } from '../components/fieldguide';
 import { SPLASH_FADE, type Growth } from '../components/motion';
-import { FEEDBACK_DELAY } from '../components/quiz';
+import { FEEDBACK_DELAY, Vine, VINE_ARRIVES } from '../components/quiz';
+import * as Reanimated from 'react-native-reanimated';
+import { haptic } from '../lib/haptics';
 import { TAB_DOT_FROM, TabLabel } from '../components/ui';
 import { getAllQuestions } from '../content/loader';
 import { startFromIds } from '../lib/sessions';
@@ -127,6 +129,47 @@ describe('ScaleBar motion (#1)', () => {
       expect(flat(n.props.style).opacity ?? 1).toBe(1);
     }
     expect(labels()).toContain(scaleSpoken(RANGE));
+  });
+
+  it('a rise starts from the range last seen, placed before paint (UX P5)', () => {
+    setMockReducedMotion(false);
+    // Hold every sequence on its first step (the snap to the start pose).
+    const seq = jest.spyOn(Reanimated, 'withSequence').mockImplementation(((...a: unknown[]) => a[0]) as typeof Reanimated.withSequence);
+    try {
+      act(() => {
+        r = create(<ScaleBar range={RANGE} growth={grow([60, 72], true)} />);
+      });
+      layout(340);
+      const at = (p: number) => 8 + ((340 - 14 - 8) * p) / 100;
+      const t = Object.assign({}, ...transformOf(byTestId('scale-band')[0]));
+      expect(t.translateX).toBeCloseTo(at(60) - at(68));
+      expect(t.scaleX).toBeCloseTo((at(72) - at(60)) / (at(78) - at(68)));
+      // The bracket's label waits to land with the band.
+      const labelLayer = root().findAll((n) => typeof n.type === 'string' && flat(n.props.style).opacity === 0);
+      expect(labelLayer.length).toBeGreaterThan(0);
+    } finally {
+      seq.mockRestore();
+    }
+  });
+
+  it('a relayout or width change never replays a growth; a new run does (UX P2)', () => {
+    setMockReducedMotion(false);
+    const seq = jest.spyOn(Reanimated, 'withSequence');
+    try {
+      act(() => {
+        r = create(<ScaleBar range={RANGE} growth={grow([60, 72], true)} />);
+      });
+      layout(340);
+      const started = seq.mock.calls.length;
+      expect(started).toBeGreaterThan(0);
+      layout(300);
+      layout(360);
+      expect(seq.mock.calls.length).toBe(started);
+      act(() => r!.update(<ScaleBar range={RANGE} growth={{ ...grow([60, 72], true), run: 2 }} />));
+      expect(seq.mock.calls.length).toBeGreaterThan(started);
+    } finally {
+      seq.mockRestore();
+    }
   });
 });
 
@@ -250,5 +293,40 @@ describe('after an answer, the vine arrives in reading order (3a)', () => {
     // Never at the tap: at least the rows' delay, and after the Why on a right answer.
     expect(entranceDelay(vine[0])).toBeGreaterThanOrEqual(right ? FEEDBACK_DELAY.why + motion.stagger.group : FEEDBACK_DELAY.why);
     expect(entranceDelay(vine[0])).toBeGreaterThan(FEEDBACK_DELAY.rows);
+  });
+
+  it.each([['motion on', false], ['Reduce Motion', true]])('%s: the vine never draws (nor ticks) while its entrance is still invisible (UX H1)', (_name, reduced) => {
+    setMockReducedMotion(reduced);
+    const tick = jest.spyOn(haptic, 'selection');
+    const qs = getAllQuestions('cisa').filter((q) => q.keyConcept).slice(0, 2);
+    startFromIds('cisa', qs.map((q) => q.id), 'T');
+    act(() => {
+      r = create(<SessionScreen />);
+    });
+    const q = qs[0];
+    const cards = root().findAll((n) => n.props.letter && typeof n.props.onPress === 'function' && typeof n.props.text === 'string');
+    act(() => { cards.find((c) => c.props.text === q.options[q.correct])!.props.onPress(); });
+    tick.mockClear();
+    const check = root().findAll((n) => n.props.label === 'Check answer' && typeof n.props.onPress === 'function')[0];
+    act(() => { check.props.onPress(); });
+    // The vine's view says it is on screen whenever it is asked.
+    const host = byTestId('feedback-vine')[0];
+    const onScreen = (cb: (x: number, y: number) => void) => cb(0, 100);
+    const views = root().findAll((n) => n.props.testID === 'feedback-vine');
+    for (const v of views) if (v.instance) (v.instance as { measureInWindow?: unknown }).measureInWindow = onScreen;
+    // Every layout at the tap: still not drawn.
+    act(() => { host.props.onLayout?.({ nativeEvent: { layout: { x: 0, y: 400, width: 340, height: 200 } } }); });
+    const vineOf = () => root().findAllByType(Vine)[0];
+    expect(vineOf().props.visible).toBe(false);
+    act(() => { jest.advanceTimersByTime((reduced ? motion.dur.reduced : VINE_ARRIVES) - 1); });
+    act(() => { host.props.onLayout?.({ nativeEvent: { layout: { x: 0, y: 400, width: 340, height: 200 } } }); });
+    expect(vineOf().props.visible).toBe(false);
+    expect(tick).not.toHaveBeenCalled();
+    // Once its entrance has landed it is armed: a layout (or a scroll) on screen draws it.
+    act(() => { jest.advanceTimersByTime(1); });
+    act(() => { host.props.onLayout?.({ nativeEvent: { layout: { x: 0, y: 400, width: 340, height: 200 } } }); });
+    expect(views.some((v) => v.instance)).toBe(true);
+    expect(vineOf().props.visible).toBe(true);
+    tick.mockRestore();
   });
 });

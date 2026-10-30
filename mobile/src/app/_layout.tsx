@@ -59,8 +59,9 @@ import { useHydration } from '../store/useHydrated';
 import { useTheme } from '../theme/useTheme';
 
 SplashScreen.preventAutoHideAsync().catch(() => {});
-// The splash dissolves into the app instead of cutting (iOS; Android 12+ keeps its own system exit).
-// A dissolve is already the gentle form, so Reduce Motion keeps it (motion round 2, #5).
+// The splash dissolves into the app over `enter`: an iOS cross-dissolve; Android's own exit fade
+// (accelerating) takes the same `enter`. A dissolve is already the gentle form, so Reduce Motion keeps it
+// (motion round 2, #5).
 SplashScreen.setOptions(SPLASH_FADE);
 
 // Show study reminders even if the app is open (no-op where unsupported).
