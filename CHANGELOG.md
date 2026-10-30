@@ -4,6 +4,16 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v12.45] — Small fixes, calmer screens
+
+### Fixed
+- Opening a question no longer draws a box around the line above it.
+- On a computer, Next question now sits after your answer instead of covering part of it.
+- A streak shows only from two days in a row; before that you see your study days this week.
+- Mock results name each area to look at in plain words, with how many you got right and its share of the exam.
+- Glossary terms are easier to read.
+- Weak spots use the same words as Your progress: a domain under 70 says Building, and one with too few answers says so.
+
 ## [v12.44] — Your study, drawn like a field guide
 
 ### Improved

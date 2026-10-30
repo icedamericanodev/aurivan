@@ -74,7 +74,7 @@
      compiled into one plain script (mobile/scripts/build-web-plant.mjs;
      never edit it by hand). Deferred: the page never waits for it, and the
      plant draws itself once it has arrived (plantReady). -->
-<script id="kaisipPlantJs" src="assets/kaisip-plant.js?v=380231c768" defer></script>
+<script id="kaisipPlantJs" src="assets/kaisip-plant.js?v=aad4fc366b" defer></script>
 <link rel="preload" href="assets/fonts/Figtree_400Regular.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/Fraunces_500Medium.woff2" as="font" type="font/woff2" crossorigin>
 <style>
@@ -2890,8 +2890,8 @@ header {
 .gloss-card > .gloss-card-top:first-of-type { padding-right: 28px; }
 @media (max-width: 600px) { .gloss-card > .gloss-card-top:first-of-type { padding-right: 48px; } }
 .gloss-card-term {
-  font-family: var(--f-serif); font-size: 15px; font-weight: 500;
-  color: var(--text); line-height: 1.2; flex: 1; min-width: 0;
+  font: var(--t-label);
+  color: var(--text); flex: 1; min-width: 0;
 }
 .gloss-card-acronym {
   background: var(--surface2); border: 1.5px solid var(--border2);
@@ -5571,8 +5571,14 @@ button.pg-cd:hover { background: var(--surface2); }
 }
 
 /* Weak spots + mock results: neutral, with the answered count */
-.ws-label { width: 128px; display: flex; flex-direction: column; gap: 2px; }
+.ws-label { width: 176px; display: flex; flex-direction: column; gap: 2px; }
+@media (max-width: 559px) {
+  .ws-row { flex-wrap: wrap; row-gap: var(--sp-xs); }
+  .ws-label { width: 100%; }
+}
 .ws-count { font: 400 13px/18px var(--f-sans); color: var(--text2); }
+.ws-band { font: italic 400 14px/18px var(--f-serif); color: var(--text2); }
+.ws-band.c { color: var(--clay); }
 .ws-pct { width: auto; min-width: 64px; color: var(--text); }
 .ws-quiet { font: 400 14px/20px var(--f-sans); color: var(--text2); margin: 0 0 16px; }
 .ws-sub-label { font: 600 15px/20px var(--f-sans); color: var(--text); margin: 24px 0 12px; }
@@ -5600,6 +5606,9 @@ button.pg-cd:hover { background: var(--surface2); }
 
 /* Dialogs: the box takes focus on open, so it must not draw a ring */
 [role="dialog"]:focus { outline: none; }
+/* Script focus targets (tabindex -1) never draw a box after a click or tap;
+   a keyboard user still sees the ring where the element sets one. */
+[tabindex="-1"]:focus:not(:focus-visible) { outline: none; }
 /* Links inside dialogs are underlined, not colour-only */
 .fb-helper a, .changelog-modal a, .summary-modal a { color: var(--accent-text); text-decoration: underline; }
 
@@ -5994,21 +6003,27 @@ body[data-app-cta-card="shown"][data-section="today"] .app-cta-line { display: n
 .vr-deeper:hover .vr-deeper-t { text-decoration: underline; text-underline-offset: 3px; }
 .vr-deeper:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; border-radius: var(--r-sm); }
 
-/* Footer: Save + Next question, held at the bottom of the screen while the
-   answer is in view (above the phone tab bar); sits in its own slot at the
-   end, so it never covers the last line. */
+/* Footer: Save + Next question. On phones it is held at the bottom of the
+   screen while the answer is in view (above the tab bar), over a 24px paper
+   fade; it sits in its own slot at the end, so it never covers the last
+   line. From 1024px (v12.45) it stays in the page after the last block, so
+   it never covers a row on a desktop screen. */
 .vr-foot {
   position: sticky; bottom: 0; z-index: 5; display: flex; align-items: center; gap: var(--sp-md);
-  margin-top: var(--sp-xl); padding: var(--sp-xl) 0 var(--sp-lg);
-  background: linear-gradient(to bottom, transparent, var(--bg) var(--sp-xl));
+  margin-top: var(--sp-xl); padding: var(--sp-xxl) 0 var(--sp-lg);
+  background: linear-gradient(to bottom, transparent, var(--bg) var(--sp-xxl));
 }
 /* The page's grain, anchored to the viewport like body::before, so the bar
    never reads as a flat box on the paper. */
 .vr-foot::before {
   content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none;
   background-image: var(--grain-img); background-attachment: fixed; opacity: var(--grain-op);
-  -webkit-mask-image: linear-gradient(to bottom, transparent, black var(--sp-xl));
-  mask-image: linear-gradient(to bottom, transparent, black var(--sp-xl));
+  -webkit-mask-image: linear-gradient(to bottom, transparent, black var(--sp-xxl));
+  mask-image: linear-gradient(to bottom, transparent, black var(--sp-xxl));
+}
+@media (min-width: 1024px) {
+  .vr-foot { position: static; padding-top: var(--sp-sm); background: none; }
+  .vr-foot::before { display: none; }
 }
 @media (max-width: 1023px) {
   .vr-foot { bottom: calc(73px + env(safe-area-inset-bottom)); }
@@ -6158,9 +6173,12 @@ body[data-app-cta-card="shown"][data-section="today"] .app-cta-line { display: n
 .q-line .dom-dot { margin-right: var(--sp-sm); }
 .q-line:focus { outline: none; }
 .q-line:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; border-radius: var(--r-xs); }
-/* v12.42: focus targets after Try again (the card's heading, then the stem). */
-.q-text:focus, .empty-state .es-heading:focus { outline: none; }
-.q-text:focus-visible, .empty-state .es-heading:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; border-radius: var(--r-xs); }
+/* v12.42: focus targets after Try again (the card's heading, then the stem).
+   v12.45: the stem is where a new question puts focus. It is a script
+   target only (never reachable with Tab), so it draws no box: the reading
+   point is the stem itself, and Tab goes on to the first option. */
+.q-text:focus, .q-text:focus-visible, .empty-state .es-heading:focus { outline: none; }
+.empty-state .es-heading:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; border-radius: var(--r-xs); }
 .pf .q-body { padding-top: var(--sp-md); }
 /* Only the session on screen: the section's page links and, on phones and
    tablets, the logo bar step aside (the bottom bar stays). */
@@ -7033,7 +7051,7 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
     <h1 class="vision-title" id="aboutScreenTitle">Think like an IS auditor.</h1>
     <p class="vision-line">CISA exam prep, taught the way the exam thinks.</p>
   </section>
-  <p class="about-version">KaiSip web <span class="bank-pill" id="versionPill">v12.44</span></p>
+  <p class="about-version">KaiSip web <span class="bank-pill" id="versionPill">v12.45</span></p>
   <section class="vision-body" aria-label="What KaiSip stands for">
     <!-- The provenance line (owner, 22 Oct 2026): the same words in the hero, the disclaimer and the FAQ. -->
     <p class="vision-desc">Original questions and notes, written with AI assistance and checked against ISACA’s published exam outline and standards.</p>
@@ -7114,9 +7132,9 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
         <div class="stat-card"><span class="stat-num" id="sTotal">0</span><span class="stat-label">Answered</span></div>
         <div class="stat-card"><span class="stat-num good" id="sCorrect">0</span><span class="stat-label">Correct</span></div>
         <div class="stat-card"><span class="stat-num" id="sPct">--</span><span class="stat-label">Accuracy</span></div>
-        <div class="stat-card"><span class="stat-num" id="sStreak">0</span><span class="stat-label">In a row</span></div>
+        <div class="stat-card"><span class="stat-num" id="sStreak">0</span><span class="stat-label" id="sStreakL">This week</span></div>
       </div>
-      <p class="you-stats-wait" id="youStatsNote" hidden>Each question counts once, at your latest try. In a row counts right answers.</p>
+      <p class="you-stats-wait" id="youStatsNote" hidden>Each question counts once, at your latest try.</p>
       <ul class="you-list">
         <!-- Your progress (v12.41): where you stand, the signs for your exam date, charts and study days. -->
         <li><a class="you-row" href="#progress" onclick="return navTo(event,'progress')"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg></span><span class="you-text"><span class="you-t">Your progress</span><span class="you-m">Where you stand, charts and study days</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></a></li>
@@ -7369,7 +7387,7 @@ const MOCK_TIER_LABEL = { analysis: 'Harder', application: 'Middle', foundationa
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v12.44';
+const APP_VERSION = 'v12.45';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -12192,6 +12210,15 @@ function todayListWords(a) {
   return a.length < 2 ? a.join('') : a.slice(0, -1).join(', ') + ' and ' + a[a.length - 1];
 }
 
+// Study days so far this week (Monday to today). v12.45: shown instead of a
+// streak below 2, which only ever reads as "you nearly have nothing".
+var STREAK_SHOW_MIN = 2;
+function studyDaysThisWeek(now) {
+  now = now || new Date();
+  return todayWeek(now, todayStudyDayList(parityDayKey(now.getTime()))).filter(function (d) { return d.on; }).length;
+}
+function studyDaysWeekWords(n) { return n + (n === 1 ? ' study day' : ' study days') + ' this week'; }
+
 // ── This week: seven leaves, Monday to Sunday, from S.studyDays ──
 // Filled = studied; an outline otherwise (missed and future days look the
 // same, so a gap is never marked). No count here: the day line has it.
@@ -12480,8 +12507,11 @@ function renderHome() {
       var wk = todayWeek(now, st.studyDays).filter(function (d) { return d.on; }).length;
       if (wk > 0) dayLine = '<p class="td-streak td-wkline">' + todayLeafSvg('on') + '<span>' + wk + (wk === 1 ? ' day' : ' days') + ' this week</span></p>';
     } else {
+      // Never a streak below 2: the week's study days instead.
       var streak = studyDayStreak(now.getTime());
-      if (streak > 0) dayLine = '<p class="td-streak">' + ico('sprig', 20) + '<span>' + streak + '-day study streak</span></p>';
+      var wkd = streak >= STREAK_SHOW_MIN ? 0 : studyDaysThisWeek(now);
+      if (streak >= STREAK_SHOW_MIN) dayLine = '<p class="td-streak">' + ico('sprig', 20) + '<span>' + streak + '-day study streak</span></p>';
+      else if (wkd > 0) dayLine = '<p class="td-streak td-wkline">' + todayLeafSvg('on') + '<span>' + studyDaysWeekWords(wkd) + '</span></p>';
     }
   }
   var name = getDisplayName();
@@ -13800,7 +13830,13 @@ function updateStats() {
   // Same honest rule as the domains: "Too few yet" until 30 answers, then the number.
   pe.textContent = t > 0 ? domainReadLabel(read) : '--';
   pe.className = 'stat-num';
-  document.getElementById('sStreak').textContent = S.streak;
+  // Right answers in a row from 2; below that, the week's study days (never a 0 or 1 streak).
+  var inRow = (Number(S.streak) || 0) >= STREAK_SHOW_MIN;
+  document.getElementById('sStreak').textContent = inRow ? S.streak : studyDaysThisWeek();
+  var sl = document.getElementById('sStreakL');
+  if (sl) sl.textContent = inRow ? 'In a row' : 'Study days this week';
+  var sNote = document.getElementById('youStatsNote');
+  if (sNote) sNote.textContent = 'Each question counts once, at your latest try.' + (inRow ? ' In a row counts right answers.' : '');
   // v12.30: the stats wait for 10 answers (a row of zeros is not progress);
   // a band word ("Building") is set as a word, not as a numeral.
   var statsReady = t >= YOU_STATS_MIN;
@@ -14075,13 +14111,14 @@ function updateFocusStrip() {
     more.hidden = !answered;
     if (!answered && document.activeElement === more) { try { (bk || document.getElementById('pfExit')).focus(); } catch (e) {} }
   }
-  // Just opened from the hub: focus lands on the question's meta line (or
-  // the card shown instead), without scrolling.
+  // Just opened from the hub: focus lands on the question text (or the card
+  // shown instead), without scrolling. v12.45: the stem, not the meta line,
+  // so a screen reader starts on the question and no box is drawn.
   if (pfMoveFocus) {
     var area = document.getElementById('qArea');
     // A loading or error card (v12.42) takes focus its own way (esFocus).
-    if (!document.getElementById('qMeta') && esFocus(area)) pfMoveFocus = false;
-    var target = !pfMoveFocus ? null : document.getElementById('qMeta')
+    if (!document.getElementById('qStem') && !document.getElementById('qMeta') && esFocus(area)) pfMoveFocus = false;
+    var target = !pfMoveFocus ? null : document.getElementById('qStem') || document.getElementById('qMeta')
       || (area && area.querySelector('[tabindex="-1"], h2, h3, .es-heading, .empty-title'))
       || null;
     if (target) {
@@ -17420,13 +17457,21 @@ function renderWeakSpots() {
     return { d: d, info: DI[d], r: domainRead({ t: x.answered, c: Math.round(x.mastered) }) };
   }).sort(domainOrder);
 
+  // v12.45: the Field Guide's words (as Your progress): under 30 answers
+  // "too few yet · 18 answered" and no number; under the line the band word
+  // and "below 70" in clay, so colour is never the only signal.
   var rowsHtml = rows.map(function(x){
     var r = x.r;
+    var below = r.enough && r.pct < DOMAIN_TARGET_PCT;
+    var line = !r.n ? 'not started'
+      : !r.enough ? 'too few yet &middot; ' + escapeHtml(String(r.n)) + ' answered'
+      : (below ? '<span class="ws-band c">' + r.band + ' &middot; below ' + DOMAIN_TARGET_PCT + '</span>' : '<span class="ws-band">' + r.band + '</span>')
+        + ' &middot; ' + escapeHtml(String(r.n)) + ' answered';
     return '<div class="ws-row">'
       + '<span class="ws-label"><span><span class="dom-dot" style="background:' + x.info.color + '"></span>' + 'D' + x.d + ' ' + x.info.short + '</span>'
-      + '<span class="ws-count">' + escapeHtml(String(r.n)) + ' answered</span></span>'
-      + '<div class="ws-track"><div class="ws-fill" style="width:' + readBarWidth(r) + '%;background:var(--accent)"></div></div>'
-      + '<span class="ws-pct">' + domainReadLabel(r) + '</span>'
+      + '<span class="ws-count">' + line + '</span></span>'
+      + '<div class="ws-track" aria-hidden="true"><div class="ws-fill" style="width:' + readBarWidth(r) + '%;background:var(--accent)"></div></div>'
+      + '<span class="ws-pct">' + (r.enough ? r.pct + '%' : '<span aria-hidden="true">&ndash;</span>') + '</span>'
       + '</div>';
   }).join('');
 
@@ -17438,7 +17483,7 @@ function renderWeakSpots() {
         return '<div class="ws-rec">'
           + '<span class="ws-rec-dot" style="background:var(--tip)" aria-hidden="true"></span>'
           + '<div><div class="ws-rec-title">Domain ' + x.d + ': ' + x.info.name + '</div>'
-          + '<div class="ws-rec-sub">At ' + x.r.pct + '%, below the ' + DOMAIN_TARGET_PCT + '% per-domain target.</div></div>'
+          + '<div class="ws-rec-sub">' + x.r.pct + '% &middot; <span class="ws-band c">' + x.r.band + ' &middot; below ' + DOMAIN_TARGET_PCT + '</span></div></div>'
           + '<button class="ws-prac-btn" onclick="selectDomain(' + x.d + ');switchTab(\x27practice\x27)">Practice &rarr;</button>'
           + '</div>';
       }).join('')
@@ -17446,7 +17491,7 @@ function renderWeakSpots() {
 
   area.innerHTML = '<button class="train-ws-btn" onclick="startWeakSpotsDrill()">Train my weak spots <span class="train-ws-badge">20 questions</span></button>'
     + '<div class="ws-panel"><div class="ws-title">Domain performance</div>'
-    + '<p class="ws-quiet">From your practice answers. An estimate, not a prediction. Until a domain has ' + DOMAIN_READ_MIN + ' answers you see Building, Steady or Strong instead of a number.</p>'
+    + '<p class="ws-quiet">From your practice answers: an estimate, not a prediction. ' + escapeHtml(bandsLine()) + ' Under ' + DOMAIN_TARGET_PCT + ' it says Building.</p>'
     + rowsHtml
     + '<div class="ws-sub-label">Where to focus</div>'
     + recsHtml + '</div>';
@@ -20859,7 +20904,9 @@ function buildMockAdvisory(domainStats) {
   }
 
   var items = advisories.map(function(a) {
-    return '<div class="mock-advisory-item"><strong>D' + a.d + ' ' + escapeHtml(a.name) + '</strong> &#8212; ' + a.pct + '% in this mock, and this domain is <strong>' + a.weight + '%</strong> of the exam blueprint. A topic review and a short drill would help.</div>';
+    // v12.45: no domain codes, no dashes. "IS Operations · 6 of 13 right in this mock · 26% of the exam".
+    var s = domainStats[a.d];
+    return '<div class="mock-advisory-item"><strong>' + escapeHtml(a.name) + '</strong> &middot; ' + s.c + ' of ' + s.t + ' right in this mock &middot; ' + a.weight + '% of the exam</div>';
   }).join('');
 
   return '<section class="mock-advisory" aria-labelledby="mrNextH"><h2 class="mock-advisory-title" id="mrNextH">Where to look next</h2>' + items + '</section>';
@@ -21665,7 +21712,9 @@ function showSessionSummary() {
     + '<div class="summary-grid">'
     + '<div class="summary-stat"><span class="summary-stat-num">' + escapeHtml(String(t)) + '</span><span class="summary-stat-label">Answered</span></div>'
     + '<div class="summary-stat"><span class="summary-stat-num" style="color:var(--correct)">' + escapeHtml(String(c)) + '</span><span class="summary-stat-label">Correct</span></div>'
-    + '<div class="summary-stat"><span class="summary-stat-num">' + escapeHtml(String(S.streak)) + '</span><span class="summary-stat-label">In a row</span></div>'
+    + ((Number(S.streak) || 0) >= STREAK_SHOW_MIN
+      ? '<div class="summary-stat"><span class="summary-stat-num">' + escapeHtml(String(S.streak)) + '</span><span class="summary-stat-label">In a row</span></div>'
+      : '<div class="summary-stat"><span class="summary-stat-num">' + escapeHtml(String(studyDaysThisWeek())) + '</span><span class="summary-stat-label">Study days this week</span></div>')
     + '</div>'
     + '<div class="summary-section-label">Confidence Breakdown</div>'
     + confCards
@@ -21988,6 +22037,18 @@ function toggleMockDetail(i) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
+    title: 'Small fixes, calmer screens',
+    items: [
+      { cat: 'fixed', text: 'Opening a question no longer draws a box around the line above it.' },
+      { cat: 'fixed', text: 'On a computer, Next question now sits after your answer instead of covering part of it.' },
+      { cat: 'fixed', text: 'A streak shows only from two days in a row; before that you see your study days this week.' },
+      { cat: 'fixed', text: 'Mock results name each area to look at in plain words, with how many you got right and its share of the exam.' },
+      { cat: 'fixed', text: 'Glossary terms are easier to read.' },
+      { cat: 'fixed', text: 'Weak spots use the same words as Your progress: a domain under 70 says Building, and one with too few answers says so.' },
+    ],
+  },
+  {
+    version: 'v12.44',
     title: 'Your study, drawn like a field guide',
     items: [
       { cat: 'improved', text: 'Today, Your progress and your results after a set now read like pages from a field guide, matching the KaiSip app, with your exam countdown at the top of Today.' },
