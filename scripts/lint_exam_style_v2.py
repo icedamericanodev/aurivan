@@ -224,8 +224,20 @@ def main(args):
             print(f"ERROR key is the wordiest option in {wshare:.0%} of items (max 30%): "
                   + ", ".join(q["id"] for q in wordiest[:12]) + ("…" if len(wordiest) > 12 else ""))
             n_err += 1
-        if len(v2) >= 20 and wshare < 0.15:
-            print(f"warn  key is the wordiest option in only {wshare:.0%} of items (target 15–30%): "
+        # The reverse tell ("never pick the wordiest") is measured with ties
+        # shared: options often tie on words, so a strict share near 0% is not
+        # a tell by itself. The domain-level target (about 20%) lives in
+        # scripts/check_longest_option.py.
+        wwins = 0.0
+        for q in v2:
+            if not q.get("options") or q.get("correct") not in q["options"]:
+                continue
+            wc = {k: words(v) for k, v in q["options"].items()}
+            tied = [k for k, n in wc.items() if n == max(wc.values())]
+            if q["correct"] in tied:
+                wwins += 1 / len(tied)
+        if len(v2) >= 40 and wwins / len(v2) < 0.10:
+            print(f"warn  picking the wordiest option (ties shared) wins only {wwins / len(v2):.0%} of items (min 10%): "
                   "'never pick the wordiest' is a reverse tell; lengthen some keys with precise qualifiers")
             n_warn += 1
         spread = ", ".join(f"{k}{keys[k]}" for k in "ABCD")

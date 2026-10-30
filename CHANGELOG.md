@@ -4,6 +4,11 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v12.49.2] — Fairer answer choices
+
+### Improved
+- Answer choices are better balanced in length, so the longest option is no longer a clue to the right answer.
+
 ## [v12.49.1] — Clearer closest-choice explanations
 
 ### Improved
