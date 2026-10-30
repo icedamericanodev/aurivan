@@ -5532,6 +5532,22 @@ button.pg-cd:hover { background: var(--surface2); }
 .fg-key-ok { margin-right: 4px; font-weight: 700; color: var(--accent-text); }
 .fg-key-dots { flex: 1 1 12px; min-width: 12px; border-bottom: 1.5px dotted var(--control); }
 .fg-key-r { flex: none; max-width: 45%; font: var(--t-meta); color: var(--text2); text-align: right; }
+/* A row with a line under its title, or a row that is one button (v12.49) */
+.fg-key-2 { display: block; }
+.fg-key-2:not(.fg-key-act), .fg-key-btn { display: flex; align-items: baseline; gap: var(--sp-sm) var(--sp-md); }
+.fg-key-act { padding: 0; }
+.fg-key-btn {
+  width: 100%; min-height: 48px; margin: 0; padding: var(--sp-md) 0; background: none; border: 0; border-radius: 0;
+  color: var(--text); font: inherit; text-align: left; cursor: pointer;
+}
+.fg-key-btn:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; border-radius: var(--r-sm); }
+.fg-key-body { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.fg-key-line { display: flex; align-items: baseline; gap: var(--sp-sm) var(--sp-md); min-width: 0; }
+.fg-key-2 .fg-key-t { font-weight: 600; }
+.fg-key-m { font: 500 15px/22px var(--f-sans); color: var(--text2); overflow-wrap: anywhere; }
+.fg-key-chev { flex: none; align-self: center; display: inline-flex; color: var(--muted); }
+.fg-key-btn:hover .fg-key-chev { color: var(--text); }
+.fg-key-btn:hover .fg-key-t { text-decoration: underline; text-underline-offset: 3px; }
 /* Herbarium sheet: a set of specimens with its own count, never a grand total */
 .fg-sheet-h { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 var(--sp-md); margin: 0; font-weight: 400; }
 .fg-sheet-no { font: var(--t-fg-sub); color: var(--clay); }
@@ -6124,36 +6140,39 @@ body[data-qmoves] .vr-skip-moves { display: block; }
 .ph[hidden], .pf[hidden] { display: none; }
 .ph-title { font: var(--t-display); letter-spacing: var(--tr-display); color: var(--text); margin: var(--sp-xs) 0 var(--sp-lg); }
 .ph-title:focus { outline: none; }
-.ph .mindset-strip { margin-bottom: var(--sp-xxl); }
+/* v12.49 (premium round 2, 5.3): the coach's line is an italic lead under the title. */
+.ph-lead { margin: calc(-1 * var(--sp-sm)) 0 var(--sp-xxl); font: var(--t-fg-sub); color: var(--text2); max-width: 60ch; }
+@media (prefers-reduced-motion: no-preference) { .ph-lead { transition: opacity .4s ease; } }
 .ph #sessionBoundaryArea .session-debrief { margin-bottom: var(--sp-xl); }
 
-/* Start panel: the screen's one forest panel (DESIGN_SYSTEM §6, Hero panel). */
-.ph-hero { margin-bottom: var(--sp-sm); padding: var(--sp-xxl); }
-.ph-hero-t { font: var(--t-hero); letter-spacing: var(--tr-hero); color: var(--on-forest); margin: var(--sp-xs) 0; }
-.ph-hero-m { font: var(--t-meta); color: var(--on-forest2); margin: 0; }
-.ph-hero-t, .ph-hero-m { max-width: min(520px, calc(100% - 110px)); }
-.ph-hero-acts { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-sm) var(--sp-lg); margin-top: var(--sp-xl); }
-.ph-go { padding: 0 var(--sp-xxl); }
+/* Fig. 2 · Picked for you: the set as a plate (left: the pick and its two
+   actions; right: the set as a 248px specimen label, under it below 700px). */
+.ph-pick { margin-bottom: var(--sp-sm); }
+.ph-pick-g { display: grid; grid-template-columns: minmax(0, 1fr) 248px; gap: var(--sp-lg) var(--sp-xl); align-items: start; margin-top: var(--sp-sm); }
+.ph-pick-a { min-width: 0; }
+@container phpick (max-width: 559px) { .ph-pick-g { grid-template-columns: minmax(0, 1fr); } }
+.ph-plate .fg-plate-in { container: phpick / inline-size; }
+.ph-hero-t { font: var(--t-hero); letter-spacing: var(--tr-hero); color: var(--text); margin: 0 0 var(--sp-xs); overflow-wrap: anywhere; }
+.ph-hero-m { font: var(--t-meta); color: var(--text2); margin: 0; }
+.ph-hero-acts { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-sm) var(--sp-lg); margin-top: var(--sp-lg); }
+.ph-go { padding: 0 var(--sp-xl); }
 .ph-ghost {
   min-height: 48px; padding: 0 var(--sp-xs); background: none; border: 0; cursor: pointer;
-  color: var(--on-forest); font: 600 16px/22px var(--f-sans); text-decoration: underline; text-underline-offset: 3px;
+  color: var(--accent-text); font: 600 16px/22px var(--f-sans); text-decoration: none;
 }
+.ph-ghost:hover { text-decoration: underline; text-underline-offset: 3px; }
+.ph-pick-l .fg-lrow { align-items: center; min-height: 48px; padding-top: var(--sp-sm); padding-bottom: var(--sp-sm); }
+.ph-words { font: 500 16px/22px var(--f-sans); letter-spacing: 0; }
+.ph-pick .fg-cap { margin-top: var(--sp-sm); }
 
-/* The set's options: one row that says what Start does, opening in place. */
+/* The set's options open in place under the plate ("Change the set"). */
 .ph-setup { margin-bottom: var(--sp-xs); }
-.ph-sum {
-  display: flex; align-items: center; justify-content: space-between; gap: var(--sp-md); width: 100%; min-height: 56px;
-  padding: var(--sp-md) 0; background: none; border: 0; border-bottom: 1px solid var(--border); border-radius: 0;
-  color: var(--text); font: var(--t-label); text-align: left; cursor: pointer;
-}
-.ph-sum-t { min-width: 0; text-transform: none; }
-.ph-sum-a { display: inline-flex; align-items: center; gap: var(--sp-xs); flex-shrink: 0; color: var(--accent-text); }
-.ph-sum[aria-expanded="true"] .ph-sum-a .ico { transform: rotate(180deg); }
-.ph-sum:focus-visible, .ph-dom:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; border-radius: var(--r-12); }
+.ph-dom:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; border-radius: var(--r-12); }
 .ph-panel { padding: 0 0 var(--sp-xl); border-bottom: 1px solid var(--border); }
 .ph-panel[hidden] { display: none; }
 .ph-field { font: var(--t-caption); color: var(--text2); margin: var(--sp-xl) 0 var(--sp-md); }
 .ph-hint { font: var(--t-meta); color: var(--text2); margin: var(--sp-md) 0 0; max-width: 60ch; }
+.ph-timer { margin-top: var(--sp-xl); }
 .ph-timer .ph-hint { margin: calc(-1 * var(--sp-sm)) 0 var(--sp-md); }
 .ph-chips { display: flex; flex-wrap: wrap; gap: var(--sp-sm); }
 .ph-chip {
@@ -6176,24 +6195,46 @@ body[data-qmoves] .vr-skip-moves { display: block; }
 .ph-sec { margin-top: var(--sp-2xl); }
 .ph-h { font: var(--t-headline); color: var(--text); margin: 0; }
 .ph-h-meta { font: var(--t-meta); color: var(--text2); margin: var(--sp-xs) 0 var(--sp-xs); }
+.ph-h-row { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0 var(--sp-lg); margin-bottom: var(--sp-sm); }
+.ph-h-row .ph-h-meta { margin: 0; }
 .you-stats { margin: var(--sp-md) 0 var(--sp-lg); }
 
-/* Domain picks: list rows with a lead serif numeral and a quiet read bar. */
+/* By domain: one scale for all five (an 8px ruler with the dashed 70 tick),
+   the band word in italic serif, the value on the right. Under 30 answers a
+   dashed outline, no fill, no number. */
+.ph-doms { list-style: none; margin: 0; padding: 0; }
+.ph-doms li + li .ph-dom { border-top: 1px solid var(--border); }
 .ph-dom {
-  display: flex; align-items: center; gap: var(--sp-md); width: 100%; min-height: 72px; padding: var(--sp-md) 0;
-  background: none; border: 0; border-bottom: 1px solid var(--border); border-radius: 0;
+  display: grid; grid-template-columns: 28px minmax(0, 1fr) auto 18px; align-items: center; gap: var(--sp-xs) var(--sp-md);
+  width: 100%; min-height: 72px; padding: var(--sp-md) 0; background: none; border: 0; border-radius: 0;
   color: var(--text); text-align: left; cursor: pointer; font: inherit;
 }
 .ph-dom:hover .you-chev { color: var(--text); }
-.ph-dom-n { width: 40px; flex-shrink: 0; text-align: center; font: 500 24px/28px var(--f-serif); color: var(--text); }
-.ph-dom-text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.ph-dom:hover .ph-dom-t { text-decoration: underline; text-underline-offset: 3px; }
+.ph-dom-n { align-self: start; padding-top: 1px; font: var(--t-fg-keyno); color: var(--text2); }
+.ph-dom-body { min-width: 0; display: flex; flex-direction: column; }
 .ph-dom-t { display: inline-flex; align-items: center; font: var(--t-label); color: var(--text); }
 .ph-dom-t .dom-dot { margin-right: var(--sp-sm); }
+.ph-ruler { position: relative; display: block; height: 8px; max-width: 360px; margin: var(--sp-sm) 0 6px; border-radius: var(--r-xs); background: var(--track); }
+.ph-ruler-f { position: absolute; left: 0; top: 0; bottom: 0; width: 100%; border-radius: var(--r-xs); background: var(--accent); transform: scaleX(var(--f, 0)); transform-origin: left center; }
+.ph-ruler-70 { position: absolute; left: 70%; top: -4px; bottom: -4px; width: 0; border-left: 1.5px dashed var(--text2); }
+.ph-ruler.seed { background: transparent; outline: 1.5px dashed var(--control); outline-offset: -1.5px; }
+.ph-dom-foot { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 var(--sp-md); }
+.ph-dom-w { font: italic 400 15px/20px var(--f-serif); color: var(--text2); }
+.ph-dom-w.c { color: var(--clay); }
 .ph-dom-m { font: var(--t-meta); color: var(--text2); }
-.ph-dom-bar { display: block; height: 4px; max-width: 280px; margin-top: var(--sp-sm); border-radius: var(--r-xxs); background: var(--track); overflow: hidden; }
-.ph-dom-bar > span { display: block; height: 100%; border-radius: var(--r-xxs); background: var(--accent); }
-.ph-dom-r { flex-shrink: 0; font: 600 15px/20px var(--f-sans); color: var(--text2); }
-
+.ph-dom-v { min-width: 52px; text-align: right; font: var(--t-fg-value); letter-spacing: var(--tr-fg-value); color: var(--text); white-space: nowrap; }
+.ph-dom-v sup { font-size: .5em; line-height: 0; vertical-align: .9em; letter-spacing: 0; }
+.ph-dom-v.none { color: var(--text2); }
+.ph-bands { margin: var(--sp-sm) 0 0; font: var(--t-meta); color: var(--text2); max-width: 62ch; }
+/* The rulers fill once a day: 400ms, 40ms apart. Transform only; Reduce Motion shows them filled. */
+@keyframes phFill { from { transform: scaleX(0); } }
+@media (prefers-reduced-motion: no-preference) {
+  .ph-fill-in .ph-ruler-f { animation: phFill .4s cubic-bezier(.33, 1, .68, 1) both; animation-delay: calc(var(--i, 0) * 40ms); }
+}
+/* Review and saved: a key list, one button per row */
+.ph-keys { margin-top: var(--sp-xs); }
+.ph-keys .fg-key:first-child { border-top: 0; }
 /* Focused session */
 .pf { max-width: 640px; margin: 0 auto; }
 .pf #qArea { max-width: none; margin: 0; }
@@ -6250,9 +6291,6 @@ body[data-tab="practice"][data-pview="focus"] #subNav { display: none; }
 }
 @media (min-width: 1024px) {
   .consent-banner { left: calc(248px + 24px); right: 24px; bottom: 24px; }
-}
-@media (prefers-reduced-motion: no-preference) {
-  .ph-sum .ico { transition: transform .15s ease; }
 }
 /* Sub-topic chips show sentence case (subtopicLabel), not Title Case. */
 .subtopic-chip { text-transform: none; }
@@ -6319,32 +6357,71 @@ body[data-tab="practice"][data-pview="focus"] #subNav { display: none; }
 .rs-missed { margin-top: var(--sp-2xl); }
 .rs-missed .fg-kick { margin-bottom: var(--sp-xs); }
 .rs-missed .fg-keys { border-bottom: 1px solid var(--border); }
-/* Review answers: list rows on the paper, opening in place. */
+/* Mock results in the Field Guide (v12.49; premium round 2, 5.4): Fig. 6,
+   one specimen label, where to look next as a key list, and the review as
+   key-list rows opening on the mistakes, five at a time. */
+.rs-mock .mr-honest { margin-top: var(--sp-xs); }
+.rs-mock .mr-label { margin-top: var(--sp-xl); }
+.mr-label .fg-lrow { align-items: center; }
+.mr-label .fg-lrow-note { margin-top: 2px; }
+.mr-next { margin-top: var(--sp-2xl); }
+.mr-next .fg-keys, .mr-next-none { margin-top: var(--sp-xs); }
+.mr-next .fg-key:first-child { border-top: 0; }
+.rs-mock .rs-acts { margin-top: var(--sp-xl); }
+.mr-side:empty { display: none; }
+.mr-side { margin-top: var(--sp-2xl); }
+/* The signs in the margin: numbered rows, the count on the right. */
+.mr-signs .fg-key:first-child { border-top: 0; }
+.mr-signs + .fg-cap { margin-top: var(--sp-sm); }
+.sr-sec .mr-signs + .fg-cap + .sr-link { margin-top: var(--sp-md); }
+/* Review answers: key-list rows on the paper, opening in place. */
 .rs-review { margin-top: var(--sp-2xl); }
 .rs-review .ph-h:focus { outline: none; }
-.rs-filter { margin: var(--sp-md) 0 var(--sp-xs); }
-.mr-list { border-top: 1px solid var(--border); margin-top: var(--sp-md); }
-.mr-list[data-filter="miss"] .mr-item[data-ok="1"], .mr-list[data-filter="flag"] .mr-item[data-flag="0"] { display: none; }
-.mr-item { border-bottom: 1px solid var(--border); }
+.mr-h-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--sp-sm) var(--sp-lg); }
+.mr-seg { display: inline-flex; flex-wrap: wrap; gap: 2px; padding: 3px; border: 1.5px solid var(--control); border-radius: var(--r-pill); }
+.mr-seg-b {
+  min-height: 38px; padding: 0 var(--sp-lg); border: 0; border-radius: var(--r-pill); background: none; cursor: pointer;
+  color: var(--text2); font: 600 14px/20px var(--f-sans);
+}
+.mr-seg-b:hover { color: var(--text); }
+.mr-seg-b.on { background: var(--text); color: var(--bg); }
+.mr-seg-b:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+.mr-list { list-style: none; margin: var(--sp-sm) 0 0; padding: 0; }
+.mr-item[hidden] { display: none; }
+.mr-item:not([hidden]) ~ .mr-item:not([hidden]) { border-top: 1px solid var(--border); }
 .mr-row {
-  display: flex; flex-direction: column; gap: var(--sp-xs); width: 100%; min-height: 64px; padding: var(--sp-md) 0;
+  display: flex; align-items: baseline; gap: var(--sp-md); width: 100%; min-height: 64px; padding: var(--sp-md) 0;
   background: none; border: 0; border-radius: 0; color: var(--text); text-align: left; cursor: pointer; font: inherit;
 }
 .mr-row:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; border-radius: var(--r-12); }
-.mr-top { display: flex; align-items: center; gap: var(--sp-md); }
-.mr-n { flex: 1; min-width: 0; font: var(--t-label); }
-.mr-status { font: var(--t-label); }
-.mr-status.ok { color: var(--correct); }
-.mr-status.no { color: var(--wrong); }
-.mr-status.skip { color: var(--text2); }
-.mr-chev { display: inline-flex; color: var(--muted); }
+.mr-n { flex: none; min-width: 22px; font: var(--t-fg-keyno); color: var(--text2); }
+.mr-body { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.mr-top { display: flex; align-items: baseline; gap: var(--sp-sm) 10px; min-width: 0; }
+.mr-mark { flex: none; align-self: center; overflow: visible; }
+.mr-mark .mr-mk-s { fill: none; stroke: var(--on-fill); stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+.mr-mark.no .mr-mk-l { fill: var(--wrong-fill); }
+.mr-mark.ok .mr-mk-l { fill: var(--correct-fill); }
+.mr-mark.skip .mr-mk-l { fill: none; stroke: var(--control); stroke-width: 2.4; }
+.mr-q { flex: none; font: var(--t-label); color: var(--text); }
+.mr-dots { flex: 1 1 12px; min-width: 12px; border-bottom: 1.5px dotted var(--control); }
+.mr-yb { flex: none; font: var(--t-meta); color: var(--text2); white-space: nowrap; }
+.mr-chev { flex: none; align-self: center; display: inline-flex; color: var(--muted); }
+.mr-row:hover .mr-chev { color: var(--text); }
 .mr-row[aria-expanded="true"] .mr-chev .ico { transform: rotate(180deg); }
-.mr-meta { display: flex; flex-wrap: wrap; align-items: center; column-gap: var(--sp-xs); font: var(--t-meta); color: var(--text2); }
-.mr-meta .dom-dot { margin-right: var(--sp-xs); }
+/* The domain and a one-line preview of the stem. */
+.mr-meta { display: block; min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font: var(--t-meta); color: var(--text2); }
+.mr-meta .dom-dot { margin-right: 6px; vertical-align: 1px; }
 .mr-flag { display: inline-flex; align-items: center; gap: var(--sp-xs); color: var(--text); }
-.mr-stem { font: var(--t-small); color: var(--text); }
-/* Open: the full stem below replaces the cut-off one. */
+.mr-flag .ico { vertical-align: -2px; }
+/* Open: the full stem below replaces the one-line preview. */
 .mr-row[aria-expanded="true"] .mr-stem { display: none; }
+.mr-more {
+  display: inline-flex; align-items: center; min-height: 44px; margin-top: var(--sp-xs); padding: 0; background: none; border: 0;
+  cursor: pointer; color: var(--accent-text); font: var(--t-label);
+}
+.mr-more[hidden] { display: none; }
+.mr-more:hover { text-decoration: underline; text-underline-offset: 3px; }
+.mr-more:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; border-radius: var(--r-sm); }
 .mr-detail { padding: 0 0 var(--sp-xl); }
 .mr-detail[hidden] { display: none; }
 .mr-full { font: var(--t-small); color: var(--text); margin: 0 0 var(--sp-md); }
@@ -6572,15 +6649,19 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 .screen.active { animation: fgPageIn 160ms cubic-bezier(.33, 1, .68, 1) backwards; }
 @media (prefers-reduced-motion: reduce) { .screen.active { animation: none; } }
 @media (min-width: 1240px) {
-  body[data-rail="hub"] .ph .mindset-strip { display: none; }
   body[data-rail="notes"] #screen-topics .gt-practice { display: none; }
   body[data-rail="mock"] .mk-past-sec { display: none; }
 }
-/* Fallbacks in the page: Focus next under the forest panel; on the answer
-   screen, the note link and "Add a note" after the Key idea. */
+/* Fallbacks in the page: the hub's margin (Ready today, Today's principle)
+   after Review and saved; on the answer screen, the note link and "Add a
+   note" after the Key idea. */
 .ph-focus { margin-top: var(--sp-2xl); }
-.ph-focus .you-list { margin-top: var(--sp-xs); }
+.ph-focus + .ph-focus { margin-top: 32px; }
 .ph-focus .sr-kick { display: block; }
+/* Ready today: plain rows (no icon circles), a hairline above and below. */
+.sr-rows-plain .you-ico { display: none; }
+.sr-rows-plain { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.sr-rows-plain li:last-child .you-row { border-bottom: 0; }
 .vr-study:empty { display: none; }
 .vr-study { margin-top: var(--sp-xxl); }
 .vr-nl { padding: var(--sp-lg) var(--sp-xl); border-radius: var(--r-md); background: var(--raised2); }
@@ -7033,20 +7114,13 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 <div id="screen-practice" class="screen active">
   <div class="ph" id="practiceHub">
     <h1 class="ph-title" id="phTitle" tabindex="-1">Practice</h1>
-    <!-- MINDSET LINE (the coach's voice) -->
-    <div class="mindset-strip">
-      <span class="ms-label">Mindset</span>
-      <div class="ms-divider"></div>
-      <span class="ms-text" id="msText">You are an auditor: you assess, recommend, and report. You don't fix.</span>
-    </div>
+    <!-- MINDSET LINE (the coach's voice): an italic lead under the title (v12.49) -->
+    <p class="ph-lead" id="msText">You are an auditor: you assess, recommend, and report. You don't fix.</p>
     <!-- Decision 9 — a finished set's debrief, when you leave from it -->
     <div id="sessionBoundaryArea"></div>
+    <!-- Fig. 2 · Picked for you (v12.49): the set as a plate; "Change the set" opens the options below it. -->
     <div id="phHero"></div>
     <div class="ph-setup">
-      <button type="button" class="ph-sum" id="phSumBtn" aria-expanded="false" aria-controls="phPanel" onclick="togglePracticeSetup()">
-        <span class="ph-sum-t" id="phSumText">All domains &middot; 10 questions</span>
-        <span class="ph-sum-a"><span id="phSumAct">Change</span><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m6 9 6 6 6-6"/></svg></span>
-      </button>
       <div class="ph-panel" id="phPanel" role="region" aria-label="Set options" hidden>
         <p class="ph-field" id="phDomL">Domain</p>
         <div class="ph-chips" role="group" aria-labelledby="phDomL" id="phDomChips"></div>
@@ -7061,27 +7135,27 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
           <button type="button" class="ph-chip" data-diff="analysis" aria-pressed="false" onclick="setDiff(this,'analysis')">Analysis</button>
         </div>
         <p class="ph-hint">Foundational is recall, Application is a scenario, Analysis is best judgment. The exam is mostly Application and Analysis.</p>
+        <!-- Timed (v12.30, the mobile rule): a switch; the clock counts up while you answer, never down. -->
+        <div class="ph-timer">
+          <ul class="you-list">
+            <li><button type="button" class="you-row" id="phTimedBtn" role="switch" aria-checked="false" aria-labelledby="phTimedT" aria-describedby="phTimedM phTimedH" onclick="toggleTimer()"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2"/><path d="M9.5 2.5h5"/></svg></span><span class="you-text"><span class="you-t" id="phTimedT">Timed</span><span class="you-m" id="phTimedM">Counts up while you answer; never a countdown.</span></span><span class="you-switch" aria-hidden="true"></span></button></li>
+          </ul>
+          <p class="ph-hint" id="phTimedH">The exam allows about 96 seconds a question.</p>
+        </div>
         <button type="button" class="ph-done" onclick="togglePracticeSetup(false)">Done</button>
       </div>
-      <!-- Timed (v12.30, the mobile rule): a switch; the clock counts up while you answer, never down. -->
-      <div class="ph-timer">
-        <ul class="you-list">
-          <li><button type="button" class="you-row" id="phTimedBtn" role="switch" aria-checked="false" aria-labelledby="phTimedT" aria-describedby="phTimedM phTimedH" onclick="toggleTimer()"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2"/><path d="M9.5 2.5h5"/></svg></span><span class="you-text"><span class="you-t" id="phTimedT">Timed</span><span class="you-m" id="phTimedM">Counts up while you answer; never a countdown.</span></span><span class="you-switch" aria-hidden="true"></span></button></li>
-        </ul>
-        <p class="ph-hint" id="phTimedH">The exam allows about 96 seconds a question.</p>
-      </div>
     </div>
-    <!-- Focus next (below the rail's breakpoint; on wide screens it is in the study rail) -->
-    <div id="phFocus"></div>
     <section class="ph-sec" aria-labelledby="phDomH">
-      <h2 class="ph-h" id="phDomH">By domain</h2>
-      <p class="ph-h-meta">Starts a set in that domain.</p>
-      <div class="ph-doms" id="domainGrid"></div>
+      <div class="ph-h-row"><h2 class="ph-h" id="phDomH">By domain</h2><p class="ph-h-meta">Starts a set in that domain</p></div>
+      <ul class="ph-doms" id="domainGrid"></ul>
+      <p class="ph-bands" id="phBands"></p>
     </section>
     <section class="ph-sec" aria-labelledby="phMoreH">
       <h2 class="ph-h" id="phMoreH">Review and saved</h2>
-      <ul class="you-list" id="phMore"></ul>
+      <div id="phMore"></div>
     </section>
+    <!-- The margin's notes in the page (below 1240px): Ready today and Today's principle -->
+    <div id="phFocus"></div>
   </div>
 
   <div class="pf" id="practiceFocus" hidden>
@@ -7939,6 +8013,11 @@ var S_DEFAULTS = {
   // flagged for review in it (id -> true). Saved beside the mock fields.
   mockType: 'full',
   mockFlags: {},
+  // v12.49 (premium round 2, 5.4): each domain's standing when the mock
+  // started, { "<domain>": [answers, percent] }, so the results can show how
+  // each area moved. Saved beside the mock fields as mockBefore; a save from
+  // before this field has none, and its results show no change marks.
+  mockBefore: null,
   missedQuestions: [],
   answeredIds: {},
   glossMastered: {},
@@ -8252,7 +8331,31 @@ function sanitizeSavedMock(state) {
       if (typeof f === 'string' && ids.indexOf(f) >= 0 && flags.indexOf(f) < 0) flags.push(f);
     });
   }
-  return { mockQueueIds: ids, mockAnswers: answers, mockCurrent: answers.length, mockTotalSecondsLeft: left, mockId: mid, mockType: type, mockFlagIds: flags };
+  return { mockQueueIds: ids, mockAnswers: answers, mockCurrent: answers.length, mockTotalSecondsLeft: left, mockId: mid, mockType: type, mockFlagIds: flags,
+    mockBefore: sanitizeMockBefore(state.mockBefore) };
+}
+// The mock's starting standings (v12.49): { "<domain>": [answers, percent] }
+// for known domains only, whole numbers in range; anything else is null.
+function sanitizeMockBefore(b) {
+  if (!b || typeof b !== 'object' || Array.isArray(b)) return null;
+  var out = {}, any = false;
+  Object.keys(DI).forEach(function(d) {
+    var v = b[d];
+    if (!Array.isArray(v) || v.length < 2) return;
+    var n = Number(v[0]), pct = Number(v[1]);
+    if (!isFinite(n) || !isFinite(pct) || n < 0 || pct < 0 || pct > 100) return;
+    out[d] = [Math.min(1e6, Math.round(n)), Math.round(pct)];
+    any = true;
+  });
+  return any ? out : null;
+}
+// Each domain's standing now, in the saved shape (Today's figure: latest tries).
+function mockBeforeSnapshot() {
+  var now = rsDomainSnapshot();
+  if (!now) return null;
+  var out = {};
+  Object.keys(now).forEach(function(d) { out[d] = [now[d].answered, now[d].pct]; });
+  return out;
 }
 
 // Rebuilds the saved mock once every bank it uses has loaded. Until then the
@@ -8288,6 +8391,7 @@ function tryResumeSavedMock() {
   S.mockTotalSecondsLeft = p.mockTotalSecondsLeft;
   S.mockFlags = {};
   (p.mockFlagIds || []).forEach(function(f) { S.mockFlags[f] = true; });
+  S.mockBefore = p.mockBefore || null;
   // A save from before mock ids still gets one, so its results are kept.
   S.mockId = p.mockId || newMockId();
   mockAnswerLock = false;
@@ -8883,6 +8987,7 @@ function normalizeImportedState(state) {
   clean.mockId = mock ? mock.mockId : null;
   clean.mockType = mock ? mock.mockType : 'full';
   clean.mockFlagIds = mock ? mock.mockFlagIds : [];
+  clean.mockBefore = mock ? mock.mockBefore : null;
   // Parity fields: older saves have none and load as empty (no invented history).
   clean.answerLog = sanitizeAnswerLog(clean.answerLog);
   clean.mistakeLog = sanitizeMistakeLog(clean.mistakeLog);
@@ -9106,7 +9211,8 @@ function saveState() {
     mockTotalSecondsLeft: Math.max(0, Number(S.mockTotalSecondsLeft) || 0),
     mockId: S.mockId || null,
     mockType: mockTypeOf(S.mockType),
-    mockFlagIds: Object.keys(S.mockFlags || {}).filter(function(f) { return S.mockFlags[f]; })
+    mockFlagIds: Object.keys(S.mockFlags || {}).filter(function(f) { return S.mockFlags[f]; }),
+    mockBefore: S.mockBefore || null
   } : null);
   var persist = {
     score: S.score, ds: S.ds, streak: S.streak, bookmarks: S.bookmarks,
@@ -9139,6 +9245,8 @@ function saveState() {
     // Step 5 (new fields beside the old ones): the mock's type and its flags.
     mockType: mockSave ? mockTypeOf(mockSave.mockType) : 'full',
     mockFlagIds: mockSave ? (mockSave.mockFlagIds || []) : [],
+    // v12.49 (new field beside the old ones): each domain's [answers, percent] at the mock's start.
+    mockBefore: mockSave ? (mockSave.mockBefore || null) : null,
   };
   profiles[id].state = persist;
   profiles[id].lastActive = Date.now();
@@ -12893,8 +13001,8 @@ function fgScaleBar(range, o) {
 // value draws this set's growth as a clay segment with ↑n. Two drawings, a
 // phone one and a wide one; the column's own width picks (a container query),
 // and the list of the same facts replaces both at large text or under 300px.
-// areas: [{ id, name, short, pct, answered, before, weight, note ("3 of 4 this set") }]
-// o: { ink (trace in once), label (what the list is), unit ('answers'), narrowOnly, w (the phone drawing's width) }
+// areas: [{ id, name, short, pct, answered, before, weight, note ("3 of 4 this set"), noteShort, said }]
+// o: { ink (trace in once), label (what the list is), unit ('answers'), narrowOnly, w (the phone drawing's width), lineInKey }
 // The words match the phone (engine/fieldGuide.ts, DESIGN_SYSTEM §21.2): no
 // answers = "not started"; 1 to 29 = "too few yet · 18 answered"; measured =
 // the band word, and "below 70" in clay under the line.
@@ -12924,7 +13032,8 @@ function fgStemSvg(areas, wide, o) {
   g += '<path class="fg-st-ax" d="M24 ' + soil + 'V' + T + '"/>'
     + '<path class="fg-st-70" d="M26 ' + y(DOMAIN_TARGET_PCT).toFixed(1) + 'H' + w + '"/>'
     + '<path class="fg-st-ax" d="M26 ' + soil + 'H' + w + '"/>'
-    + '<text class="fg-st-line" x="' + w + '" y="' + (y(DOMAIN_TARGET_PCT) + 13).toFixed(1) + '" text-anchor="end">' + DOMAIN_TARGET_PCT + ' line</text>';
+    // o.lineInKey: the phone drawing leaves the line unlabelled (the KEY caption names it).
+    + (o.lineInKey && !wide ? '' : '<text class="fg-st-line" x="' + w + '" y="' + (y(DOMAIN_TARGET_PCT) + 13).toFixed(1) + '" text-anchor="end">' + DOMAIN_TARGET_PCT + ' line</text>');
   areas.forEach(function (a, i) {
     var f = fgStemFacts(a), pct = f.pct, delta = f.delta;
     var xs = (L + gap * i + gap / 2).toFixed(1);
@@ -12945,7 +13054,9 @@ function fgStemSvg(areas, wide, o) {
     }
     var nm = String(a.short || a.name || ''), parts = nm.split(' ');
     // The lines under the word: "18 answered" (grey) or "below 70" (clay), then the set's note.
-    var extra = f.lines.map(function (t, k) {
+    // a.noteShort: the phone drawing's shorter note ("6 of 9" for "6 of 9 this mock").
+    var lines = (!wide && a.noteShort && a.note) ? f.lines.slice(0, -1).concat([String(a.noteShort)]) : f.lines;
+    var extra = lines.map(function (t, k) {
       return '<text class="fg-st-x' + (f.below && k === 0 ? ' c' : '') + '" x="' + xs + '" y="' + (soil + first + k * step) + '" text-anchor="middle">' + escapeHtml(t) + '</text>';
     }).join('');
     if (wide) {
@@ -12970,21 +13081,39 @@ function fgStemChart(areas, o) {
     if (a.note) meta.push(String(a.note));
     var val = f.none ? 'Not started' : f.few ? 'Too few yet' : f.pct + '%' + (f.delta ? ' (' + (f.delta > 0 ? 'up ' : 'down ') + Math.abs(f.delta) + ')' : '');
     var words = f.none ? '' : f.few ? 'not measured yet' : f.word + (f.below ? ' · below ' + DOMAIN_TARGET_PCT : '');
-    return '<li><span class="fg-sl-a"><span class="fg-sl-n">' + escapeHtml(a.name || a.short || '') + '</span><span class="fg-sl-m">' + escapeHtml(meta.join(' · ')) + '</span></span>'
-      + '<span><span class="fg-sl-v">' + val + '</span>' + (words ? '<span class="fg-sl-w' + (f.below ? ' c' : '') + '">' + words + '</span>' : '') + '</span></li>';
+    // a.said (v12.49): one sentence per area for a screen reader, one stop.
+    var hide = a.said ? ' aria-hidden="true"' : '';
+    return '<li>' + (a.said ? '<span class="sr-only">' + escapeHtml(a.said) + '</span>' : '')
+      + '<span class="fg-sl-a"' + hide + '><span class="fg-sl-n">' + escapeHtml(a.name || a.short || '') + '</span><span class="fg-sl-m">' + escapeHtml(meta.join(' · ')) + '</span></span>'
+      + '<span' + hide + '><span class="fg-sl-v">' + val + '</span>' + (words ? '<span class="fg-sl-w' + (f.below ? ' c' : '') + '">' + words + '</span>' : '') + '</span></li>';
   }).join('');
   return '<div class="fg-stems' + (o.narrowOnly ? ' fg-stems-one' : '') + '">'
     + fgStemSvg(areas, false, o) + (o.narrowOnly ? '' : fgStemSvg(areas, true, o))
     + '<ul class="fg-stemlist"' + (o.label ? ' aria-label="' + escapeHtml(o.label) + '"' : '') + '>' + list + '</ul></div>';
 }
 // Key list: numbered rows with dotted leaders. items: [{ mark: 'x' | 'ok' | '', tHtml, rHtml }]
-function fgKeyList(items, label) {
-  return '<ol class="fg-keys"' + (label ? ' aria-label="' + escapeHtml(label) + '"' : '') + '>' + items.map(function (it, i) {
+// v12.49 (premium round 2, 5.3 and 5.4), optional per row: mHtml (a line
+// under the title), onclick (the whole row is one button, with a chevron)
+// and said (that button's accessible name, plain text).
+function fgKeyList(items, label, cls) {
+  return '<ol class="fg-keys' + (cls ? ' ' + cls : '') + '"' + (label ? ' aria-label="' + escapeHtml(label) + '"' : '') + '>' + items.map(function (it, i) {
     var mark = it.mark === 'x' ? '<span class="fg-key-x" aria-hidden="true">&#x2717;</span><span class="sr-only">Missed: </span>'
       : it.mark === 'ok' ? '<span class="fg-key-ok" aria-hidden="true">&#x2713;</span><span class="sr-only">Right: </span>' : '';
-    return '<li class="fg-key"><span class="fg-key-n" aria-hidden="true">' + (i + 1) + '</span>'
-      + '<span class="fg-key-t">' + mark + it.tHtml + '</span>'
-      + (it.rHtml ? '<span class="fg-key-dots" aria-hidden="true"></span><span class="fg-key-r">' + it.rHtml + '</span>' : '') + '</li>';
+    var n = '<span class="fg-key-n" aria-hidden="true">' + (i + 1) + '</span>';
+    if (!it.mHtml && !it.onclick) {
+      return '<li class="fg-key">' + n
+        + '<span class="fg-key-t">' + mark + it.tHtml + '</span>'
+        + (it.rHtml ? '<span class="fg-key-dots" aria-hidden="true"></span><span class="fg-key-r">' + it.rHtml + '</span>' : '') + '</li>';
+    }
+    var lead = it.rHtml || it.onclick;
+    var body = n + '<span class="fg-key-body"><span class="fg-key-line"><span class="fg-key-t">' + mark + it.tHtml + '</span>'
+      + (lead ? '<span class="fg-key-dots" aria-hidden="true"></span>' : '')
+      + (it.rHtml ? '<span class="fg-key-r">' + it.rHtml + '</span>' : '')
+      + (it.onclick ? '<span class="fg-key-chev" aria-hidden="true">' + ico('chevron', 18) + '</span>' : '') + '</span>'
+      + (it.mHtml ? '<span class="fg-key-m">' + it.mHtml + '</span>' : '') + '</span>';
+    return '<li class="fg-key fg-key-2' + (it.onclick ? ' fg-key-act' : '') + '">'
+      + (it.onclick ? '<button type="button" class="fg-key-btn" onclick="' + it.onclick + '"' + (it.said ? ' aria-label="' + escapeHtml(it.said) + '"' : '') + '>' + body + '</button>' : body)
+      + '</li>';
   }).join('') + '</ol>';
 }
 // Specimen: one badge cell. o: { state: 'earned' | 'notyet' | 'gated', artHtml, name, line }
@@ -14330,15 +14459,13 @@ function continuePractice() {
 function togglePracticeSetup(open) {
   phSetupOpen = typeof open === 'boolean' ? open : !phSetupOpen;
   renderPracticeHub();
-  if (open === false) { var b = document.getElementById('phSumBtn'); if (b) b.focus(); }
-}
-
-function hubRow(icon, title, meta, onclick) {
-  return '<li><button type="button" class="you-row" onclick="' + onclick + '">'
-    + '<span class="you-ico" aria-hidden="true">' + ico(icon, 20) + '</span>'
-    + '<span class="you-text"><span class="you-t">' + title + '</span><span class="you-m">' + meta + '</span></span>'
-    + '<span class="you-chev" aria-hidden="true">' + ico('chevron', 18) + '</span>'
-    + '</button></li>';
+  // "Change the set" lives in the plate, which was just drawn again: focus
+  // goes back to the new button (on Done too).
+  var b = document.getElementById('phSumBtn');
+  if (b) { try { b.focus({ preventScroll: true }); } catch (e) {} }
+  // Opened: the options come into view (below the plate, often under the fold on a phone).
+  var panel = document.getElementById('phPanel');
+  if (phSetupOpen && panel) { try { panel.scrollIntoView({ block: 'nearest' }); } catch (e) {} }
 }
 
 // The hub's one start action, shared with Today's panel (step 4): continue
@@ -14371,41 +14498,51 @@ function runPracticePrimary() {
   else startPracticeSet();
 }
 
+// Fig. 2 · Picked for you (web v12.49; premium round 2, 5.3): the set as a
+// plate. Left: what Start opens (the domain, its length and time, and "where
+// you'll gain most" only when it is the domain with the most to gain), Start
+// and "Change the set" (which opens the set's options in place). Right: the
+// set as a specimen label. The PLATE caption only when it is true: a measured
+// domain just under the 70 line.
+var PH_JUST_UNDER = 5;   // "just under the 70 line": within 5 points of it
 function renderPracticeHub() {
   var hero = document.getElementById('phHero');
   if (!hero || typeof S === 'undefined' || !S) return;
   var scope = practiceScopeName();
   var p = practicePrimary();
-  var acts = '<button type="button" class="gt-pill ph-go" onclick="runPracticePrimary()">' + p.label + ico('arrow-right', 18) + '</button>'
-    + (p.resume ? '<button type="button" class="ph-ghost" onclick="startPracticeSet()">Start a new set</button>' : '');
-  hero.innerHTML = '<section class="gt-panel ph-hero" aria-labelledby="phHeroT">'
-    + gtFrondSvg()
-    + '<p class="gt-panel-cap">' + p.cap + '</p>'
-    + '<h2 class="ph-hero-t" id="phHeroT">' + p.title + '</h2>'
-    + '<p class="ph-hero-m">' + p.meta + '</p>'
-    + '<div class="ph-hero-acts">' + acts + '</div>'
-    + '</section>';
+  var d = S.selectedDomain && S.selectedDomain !== 'all' && DI[S.selectedDomain] ? String(S.selectedDomain) : null;
+  var rd = null;
+  try { rd = computeTodayReadiness(); } catch (e) { rd = null; }
+  var dx = d && rd ? rd.domains.filter(function (x) { return x.id === d; })[0] : null;
+  var meta = p.meta;
+  if (!p.resume && d && rd && rd.answered > 0 && rd.focusId === d) meta += ' &middot; where you&rsquo;ll gain most';
+  var change = '<button type="button" class="ph-ghost" id="phSumBtn" aria-expanded="' + (phSetupOpen ? 'true' : 'false') + '" aria-controls="phPanel" onclick="togglePracticeSetup()">Change the set</button>';
+  var acts = '<button type="button" class="fg-btn ph-go" onclick="runPracticePrimary()">' + p.label + ico('arrow-right', 18) + '</button>'
+    + (p.resume ? '<button type="button" class="ph-ghost" onclick="startPracticeSet()">Start a new set</button>' : '') + change;
+  var rows = [{ k: 'Domain', vHtml: '<span class="ph-words">' + escapeHtml(scope) + '</span>' }];
+  if (activeSubtopic) rows.push({ k: 'Topic', vHtml: '<span class="ph-words">' + escapeHtml(subtopicLabel(activeSubtopic)) + '</span>' });
+  rows.push({ k: 'Length', vHtml: practiceLen === -1 ? '<span class="ph-words">Open-ended</span>' : practiceLen + '<small>questions</small>' });
+  rows.push({ k: 'Difficulty', vHtml: '<span class="ph-words">' + escapeHtml(S.diff && S.diff !== 'any' ? S.diff.charAt(0).toUpperCase() + S.diff.slice(1) : 'Any') + '</span>' });
+  rows.push({ k: 'Timed', vHtml: '<span class="ph-words">' + (S.timerEnabled ? 'On' : 'Off') + '</span>' });
+  var pct = dx ? Math.round(dx.mastery * 100) : null;
+  var cap = !p.resume && dx && dx.answered >= DOMAIN_READ_MIN && pct < DOMAIN_TARGET_PCT && pct >= DOMAIN_TARGET_PCT - PH_JUST_UNDER
+    ? fgCaption('Plate', DI[d].short + ' is ' + DI[d].weight + '% of the exam and sits just under the ' + DOMAIN_TARGET_PCT + ' line.') : '';
+  hero.innerHTML = '<section class="ph-pick" aria-labelledby="phHeroF">'
+    + fgPlate('', fgFigHtml(p.resume ? 'Fig. 2 · Where you left off' : 'Fig. 2 · Picked for you', 2, 'phHeroF')
+      + '<div class="ph-pick-g"><div class="ph-pick-a">'
+      + '<p class="ph-hero-t" id="phHeroT">' + p.title + '</p>'
+      + '<p class="ph-hero-m">' + meta + '</p>'
+      + '<div class="ph-hero-acts">' + acts + '</div></div>'
+      + fgLabel(rows, 'ph-pick-l') + '</div>', 'ph-plate')
+    + cap + '</section>';
 
-  // One row says what the set is; it opens the options right here.
-  var sum = [escapeHtml(scope), practiceLen === -1 ? 'Open-ended' : practiceLen + ' questions'];
-  if (S.diff && S.diff !== 'any') sum.push(S.diff.charAt(0).toUpperCase() + S.diff.slice(1));
-  if (activeSubtopic) sum.push(escapeHtml(subtopicLabel(activeSubtopic)));
-  var st = document.getElementById('phSumText');
-  if (st) st.innerHTML = sum.join(' &middot; ');
-  var sb = document.getElementById('phSumBtn');
-  if (sb) {
-    sb.setAttribute('aria-expanded', phSetupOpen ? 'true' : 'false');
-    sb.setAttribute('aria-label', 'Your set: ' + sum.join(', ').replace(/&middot;/g, '') + '. ' + (phSetupOpen ? 'Close' : 'Change'));
-  }
-  var sa = document.getElementById('phSumAct');
-  if (sa) sa.textContent = phSetupOpen ? 'Close' : 'Change';
   var panel = document.getElementById('phPanel');
   if (panel) panel.hidden = !phSetupOpen;
 
   var dc = document.getElementById('phDomChips');
   if (dc) {
     var sel = S.selectedDomain || 'all';
-    dc.innerHTML = [['all', 'All domains']].concat(Object.keys(DI).map(function (d) { return [d, DI[d].short]; }))
+    dc.innerHTML = [['all', 'All domains']].concat(Object.keys(DI).map(function (k) { return [k, DI[k].short]; }))
       .map(function (c) {
         var on = sel === c[0];
         return '<button type="button" class="ph-chip' + (on ? ' active' : '') + '" aria-pressed="' + on + '" onclick="selectDomain(\'' + c[0] + '\')">'
@@ -14422,55 +14559,81 @@ function renderPracticeHub() {
   }
   syncDiffChips();
 
-  // The full lists (owner decision, 19 Oct): Focus next carries the smart
-  // picks (what is due, one weak spot, this week's mistakes); this list holds
-  // everything, so it has no spaced-review row of its own.
+  // Review and saved: the full lists as a key list (owner decision, 19 Oct:
+  // the margin's "Ready today" carries the smart picks, so this list has no
+  // spaced-review row of its own).
   var more = document.getElementById('phMore');
   if (more) {
     var missed = (S.missedQuestions || []).length;
     var saved = (S.bookmarks || []).length;
-    more.innerHTML = hubRow('missed', 'All missed questions', missed ? 'Each one you missed, to try again' : 'None yet', 'practiceMissed()')
-      + hubRow('weak', 'Weak spots drill (by domain)', 'Questions from the domains you miss most', 'startWeakSpotsDrill()')
-      + hubRow('saved', 'All saved questions', saved ? saved + ' saved' : 'Save a question to find it here', "switchTab('bookmarks')")
-      + hubRow('mock', 'Mock exam', isMockInProgress() ? 'In progress &middot; resume where you left off' : 'Full or mini, timed like the real exam', "switchTab('mock')");
+    var weak = weakDrillDomains().map(function (k) { return DI[k].short; });
+    var weakLine = S.score && S.score.t > 0 && weak.length ? listWords(weak) : 'The domains you miss most';
+    var mockLine = isMockInProgress() ? 'In progress &middot; resume where you left off' : 'Full or mini, timed like the real exam';
+    more.innerHTML = fgKeyList([
+      { tHtml: 'All missed questions', mHtml: missed ? 'Each one, to try again' : 'None yet', onclick: 'practiceMissed()' },
+      { tHtml: 'Saved questions', mHtml: saved ? saved + ' saved' : 'Save a question to find it here', onclick: "switchTab('bookmarks')" },
+      { tHtml: 'Drill your weak spots', mHtml: escapeHtml(weakLine), onclick: 'startWeakSpotsDrill()' },
+      { tHtml: 'Mock exam', mHtml: mockLine, onclick: "switchTab('mock')" }
+    ], '', 'ph-keys');
   }
-  // Focus next and Today's principle (the study rail, or rows under the panel).
+  // Ready today and Today's principle (the margin, or in the page below 1240px).
   try { railSync(); } catch (e) {}
 }
+// "A", "A and B", "A, B and C"
+function listWords(a) {
+  return a.length < 2 ? (a[0] || '') : a.slice(0, -1).join(', ') + ' and ' + a[a.length - 1];
+}
 
-// ── PRACTICE HUB: DOMAIN PICKS ──
-// One row per domain (DI order): its read, how many you have seen, and a
-// bar that fills only once the read is a number. A row starts a set there.
-// The read is Today's figure (domainFigure over the latest try at each
-// question, the mobile rule): a band word until 30 answers, then the number,
-// so a learner sees one figure per domain everywhere.
+// ── PRACTICE HUB: BY DOMAIN (v12.49; premium round 2, 5.3) ──
+// Each domain on one scale: an 8px ruler with the dashed 70 tick, the band
+// word (clay with "below 70" under the line), how many answered, the value.
+// Under 30 answers the ruler is a dashed outline with no fill and no number
+// ("too few yet"), so a few answers never read as a verdict. The read is
+// Today's figure (the latest try at each question, the mobile rule). Each
+// row is one button that starts a set there. The rulers fill once a day.
+var BANDS_LINE = 'Building is under 70, Steady 70 to 79, Strong 80 and up. A domain is measured from 30 answers.';
+var PH_FILL_DAY_KEY = 'aurivan_ph_fill_day';   // new device key: the day the rulers last filled in
+function phFillToday() {
+  if (typeof S === 'undefined' || !S || S.activeTab !== 'practice' || practiceView !== 'hub') return false;
+  var today = parityDayKey(Date.now()), last = '';
+  try { last = localStorage.getItem(PH_FILL_DAY_KEY) || ''; } catch (e) { last = today; }
+  if (last === today) return false;
+  try { localStorage.setItem(PH_FILL_DAY_KEY, today); } catch (e) {}
+  return true;
+}
 function renderDomainGrid() {
   var g = document.getElementById('domainGrid');
   if (!g) return;
   var rd = computeTodayReadiness();
+  var fill = phFillToday();
+  g.classList.toggle('ph-fill-in', fill);
   g.innerHTML = Object.keys(DI).map(function (d, i) {
     var info = DI[d];
     var x = rd.domains[i];
     var pct = Math.round(x.mastery * 100);
-    var f = domainFigure(x.answered, pct);
-    var seen = (S.answeredIds && S.answeredIds[d]) ? Object.keys(S.answeredIds[d]).length : 0;
-    var read = x.answered <= 0 ? 'Not started' : f.text;
-    var bar = (x.answered > 0 && !f.banded) ? pct : 0;
-    var meta = info.weight + '% of the exam' + (seen ? ' &middot; ' + seen + ' seen' : '');
-    if (isQBLoading(d)) meta += ' &middot; loading';
-    else if (window.QB_LOAD_ERROR && window.QB_LOAD_ERROR[d]) meta += ' &middot; could not load';
-    return '<button type="button" class="ph-dom" data-d="' + d + '" onclick="practiceDomain(\'' + d + '\')">'
-      + '<span class="ph-dom-n" aria-hidden="true">' + d + '</span>'
-      + '<span class="ph-dom-text">'
+    var n = x.answered, none = n <= 0, few = n < DOMAIN_READ_MIN, below = !few && pct < DOMAIN_TARGET_PCT;
+    var band = few ? '' : bandFor(pct);
+    var wordHtml = none ? '<span class="ph-dom-w">not started</span>'
+      : few ? '<span class="ph-dom-w">too few yet &middot; ' + n + ' answered</span>'
+      : '<span class="ph-dom-w' + (below ? ' c' : '') + '">' + band + (below ? ' &middot; below ' + DOMAIN_TARGET_PCT : '') + '</span><span class="ph-dom-m">' + n + ' answered</span>';
+    var load = isQBLoading(d) ? 'loading' : (window.QB_LOAD_ERROR && window.QB_LOAD_ERROR[d]) ? 'could not load' : '';
+    if (load) wordHtml += '<span class="ph-dom-m">' + load + '</span>';
+    var said = info.short + ', ' + (none ? 'not started' : few ? 'too few yet, ' + n + ' answered'
+      : pct + ' percent, ' + band + (below ? ', below ' + DOMAIN_TARGET_PCT : '') + ', ' + n + ' answered')
+      + (load ? ', ' + load : '') + '. Starts a set.';
+    return '<li><button type="button" class="ph-dom" data-d="' + d + '" aria-label="' + escapeHtml(said) + '" onclick="practiceDomain(\'' + d + '\')">'
+      + '<span class="ph-dom-n" aria-hidden="true">' + (i + 1) + '</span>'
+      + '<span class="ph-dom-body" aria-hidden="true">'
       + '<span class="ph-dom-t"><span class="dom-dot" style="background:' + info.color + '"></span>' + escapeHtml(info.short) + '</span>'
-      + '<span class="ph-dom-m">' + meta + '</span>'
-      + '<span class="ph-dom-bar" aria-hidden="true"><span style="width:' + bar + '%"></span></span>'
-      + '</span>'
-      + '<span class="ph-dom-r">' + read + '</span>'
-      + '<span class="sr-only">. Start a set</span>'
+      + '<span class="ph-ruler' + (few ? ' seed' : '') + '">' + (few ? '' : '<span class="ph-ruler-f" style="--f:' + (pct / 100) + ';--i:' + i + '"></span>')
+      + '<span class="ph-ruler-70"></span></span>'
+      + '<span class="ph-dom-foot">' + wordHtml + '</span></span>'
+      + '<span class="ph-dom-v' + (few ? ' none' : '') + '" aria-hidden="true">' + (few ? '&ndash;' : pct + '<sup>%</sup>') + '</span>'
       + '<span class="you-chev" aria-hidden="true">' + ico('chevron', 18) + '</span>'
-      + '</button>';
+      + '</button></li>';
   }).join('');
+  var b = document.getElementById('phBands');
+  if (b) b.textContent = BANDS_LINE;
 }
 
 // An open question from last time: refresh it from the bank, then the hub's
@@ -14496,6 +14659,8 @@ function showSessionStart() { renderPracticeHub(); }
 //   the glossary terms used in the question and a glossary lookup.
 // - Study notes (>=1240px): "Check yourself" for the note in view, the topic's
 //   notes with their read marks (following the scroll), and the lookup.
+// - Mock results (>=1240px, v12.49): the signs for an exam date, their note
+//   and the way to Your progress (below, at the end of the page).
 // - Mock setup (>=1240px): the last 3 mocks (the main column's list steps
 //   aside, so nothing shows twice). Never during a mock question.
 // Below the breakpoints each part falls back into the page (railSync): Focus
@@ -14505,7 +14670,7 @@ function showSessionStart() { renderPracticeHub(); }
 // No streaks, counters, tip of the day or second countdown live here.
 // v12.46: one breakpoint, the page frame's margin (1240px).
 var FRAME_MARGIN_BP = 1240;
-var RAIL_BP = { hub: FRAME_MARGIN_BP, notes: FRAME_MARGIN_BP, mock: FRAME_MARGIN_BP, q: FRAME_MARGIN_BP, you: FRAME_MARGIN_BP };
+var RAIL_BP = { hub: FRAME_MARGIN_BP, notes: FRAME_MARGIN_BP, mock: FRAME_MARGIN_BP, results: FRAME_MARGIN_BP, q: FRAME_MARGIN_BP, you: FRAME_MARGIN_BP };
 var RAIL_SHOW_MAX = 20;          // the most a retry set holds; a backlog total is never shown
 var RAIL_WEAK_MIN = 8;           // answers in a topic before it can be called weak
 var RAIL_MIX_SIZE = 10;          // the weak spot's mixed set
@@ -14543,7 +14708,11 @@ function railPage() {
   var t = S.activeTab;
   if (t === 'practice') return practiceView === 'focus' ? 'q' : 'hub';
   if (t === 'topics') return 'notes';
-  if (t === 'mock') return document.body.getAttribute('data-mview') === 'setup' ? 'mock' : null;
+  if (t === 'mock') {
+    var mv = document.body.getAttribute('data-mview');
+    // A mock's results (v12.49): the signs for an exam date in the margin.
+    return mv === 'setup' ? 'mock' : mv === 'results' ? 'results' : null;
+  }
   // You (web v12.11): the plant companion in the empty right column.
   if (t === 'you') return 'you';
   return null;
@@ -14633,7 +14802,7 @@ function railFocusRows() {
   var dueMap = {};
   dueIds.forEach(function (id) { dueMap[id] = true; });
   // The set it starts (at most REVIEW_SESSION_CAP), never the queue total.
-  if (dueIds.length) rows.push({ kind: 'review', icon: 'review', cap: 'Ready today', title: 'Questions to revisit', meta: Math.min(dueIds.length, REVIEW_SESSION_CAP) + ' ready to revisit &middot; oldest first' });
+  if (dueIds.length) rows.push({ kind: 'review', icon: 'review', cap: '', title: 'Questions to revisit', meta: Math.min(dueIds.length, REVIEW_SESSION_CAP) + ' ready to revisit &middot; oldest first' });
   var w = railWeakSpot();
   if (w) rows.push({ kind: 'weak', icon: 'target', cap: 'Weak spot &middot; mixed set', title: escapeHtml(w.name), meta: escapeHtml(DI[w.d].short) + ' &middot; ' + w.right + ' of ' + w.n + ' right' });
   var m = railRecentMistakes(dueMap).length;
@@ -14643,7 +14812,7 @@ function railFocusRows() {
 function railRowHtml(r) {
   return '<li><button type="button" class="you-row sr-row" data-rail-start="' + r.kind + '" onclick="railStart(\'' + r.kind + '\')">'
     + '<span class="you-ico" aria-hidden="true">' + ico(r.icon, 20) + '</span>'
-    + '<span class="you-text"><span class="sr-kick">' + r.cap + '</span><span class="you-t">' + r.title + '</span><span class="you-m">' + r.meta + '</span></span>'
+    + '<span class="you-text">' + (r.cap ? '<span class="sr-kick">' + r.cap + '</span>' : '') + '<span class="you-t">' + r.title + '</span><span class="you-m">' + r.meta + '</span></span>'
     + '<span class="you-chev" aria-hidden="true">' + ico('chevron', 18) + '</span>'
     + '</button></li>';
 }
@@ -15091,13 +15260,17 @@ function railJumpNote(id) {
 }
 
 // ── Sections per page ──
-function railHubSections() {
+// The Practice hub's margin (v12.49; premium round 2, 5.3): "Ready today"
+// (the smart picks, plain rows) and Today's principle. `pre` keeps the ids
+// apart when the same notes are drawn in the page (below 1240px).
+function railHubSections(pre) {
+  pre = pre || 'srh';
   var secs = [];
   var rows = railFocusRows();
   if (rows.length) secs.push({ id: 'focus', key: rows.map(function (r) { return r.kind + r.meta + r.title; }).join('|'),
-    html: '<h2 class="sr-cap" id="srhFocus">Focus next</h2><ul class="you-list sr-rows">' + rows.map(railRowHtml).join('') + '</ul>' });
+    html: '<h2 class="sr-cap" id="' + pre + 'Focus">Ready today</h2><ul class="you-list sr-rows sr-rows-plain">' + rows.map(railRowHtml).join('') + '</ul>' });
   var p = railPrinciple();
-  if (p) secs.push({ id: 'principle', key: 'p:' + p.id, html: '<h2 class="sr-cap" id="srhPrin">Today&rsquo;s principle</h2>'
+  if (p) secs.push({ id: 'principle', key: 'p:' + p.id, html: '<h2 class="sr-cap" id="' + pre + 'Prin">Today&rsquo;s principle</h2>'
     + '<div class="sr-key"><p class="sr-quote">' + escapeHtml(p.rule || '') + '</p><p class="sr-meta">' + escapeHtml(p.title) + '</p></div>'
     + '<a class="sr-link" href="#principles/' + escapeHtml(p.id) + '" data-pid="' + escapeHtml(p.id) + '" onclick="return railOpenPrinciples(event,this.dataset.pid)">Read this principle' + ico('arrow-right', 16) + '</a>' });
   return secs;
@@ -15190,12 +15363,15 @@ function railMockSections() {
 }
 
 // The fallbacks inside the page (below the breakpoints).
+// v12.49: below 1240px the hub's margin follows the page, after Review and saved.
 function railHubInline(show) {
   var slot = document.getElementById('phFocus');
   if (!slot) return;
-  var rows = show ? railFocusRows() : [];
-  var html = rows.length ? '<section class="ph-focus" aria-labelledby="phFocusH"><h2 class="ph-h" id="phFocusH">Focus next</h2>'
-    + '<ul class="you-list">' + rows.map(railRowHtml).join('') + '</ul></section>' : '';
+  var secs = show ? railHubSections('phm') : [];
+  var html = secs.map(function (s) {
+    var h = /^<h2[^>]* id="([^"]+)"/.exec(s.html);
+    return '<section class="ph-focus sr-sec"' + (h ? ' aria-labelledby="' + h[1] + '"' : '') + '>' + s.html + '</section>';
+  }).join('');
   if (slot.innerHTML !== html) slot.innerHTML = html;
 }
 // The answer screen's one "Go deeper" row (premium pass 2.2): the study note
@@ -15243,7 +15419,7 @@ function railQInline(show) {
 // question, the first section): measured, so it holds at any text size.
 function railAlign(aside, page) {
   var main = document.getElementById('main');
-  var a = page === 'hub' ? document.getElementById('phHero')
+  var a = page === 'hub' ? null
     : page === 'q' ? document.getElementById('qArea')
     : page === 'mock' ? document.querySelector('#mkResume:not(:empty), #mockArea .ph-sec')
     : page === 'you' ? document.querySelector('#screen-you .you-group') : null;
@@ -15272,6 +15448,8 @@ function railSync() {
   vrMovesMode(page === 'q' && wide && secs.some(function (x) { return x.id === 'moves'; }));
   if (page === 'notes' && wide) secs = railNotesSections();
   if (page === 'mock' && wide) secs = railMockSections();
+  if (page === 'results') { railResultsInline(!wide); if (wide) secs = railResultsSections(); }
+  else railResultsInline(false);
   if (page === 'you') { plantSafe(function () { plantYouInline(!wide); }); if (wide) secs = plantSafe(plantRailSections) || []; }
   else plantSafe(function () { plantYouInline(false); });
   // The question view keeps its column before the answer, so nothing moves on Check.
@@ -16847,40 +17025,6 @@ function resultsMostMissed(byDomain) {
   });
   return best;
 }
-// A mock's rings + domain rows + stats. o = { byDomain: { d: { t, c } }, correct, total, ms, level }.
-// (A practice set's results are a Field Guide plate since v12.44: debriefHtml.)
-function resultsBodyHtml(o) {
-  var keys = Object.keys(DI);
-  var inSet = keys.filter(function (d) { return o.byDomain[d] && o.byDomain[d].t > 0; });
-  var values = keys.map(function (d) { var x = o.byDomain[d]; return x && x.t ? x.c / x.t : 0; });
-  var pct = o.total > 0 ? Math.round((o.correct / o.total) * 100) : 0;
-  var banded = false;
-  var rows = inSet.map(function (d) {
-    var x = o.byDomain[d];
-    var f = domainFigure(x.t, Math.round((x.c / x.t) * 100));
-    if (f.banded) banded = true;
-    var val = f.banded || x.t <= 0 ? '<span class="td-word">' + f.text + '</span>' : '<span class="td-num">' + f.text.replace('%', '') + '<sup>%</sup></span>';
-    return '<li><span class="dom-dot" style="background:' + DI[d].color + '" aria-hidden="true"></span>'
-      + '<span class="td-dname">' + escapeHtml(DI[d].short) + '</span>'
-      + '<span class="rs-dcount" aria-hidden="true">' + x.c + ' of ' + x.t + '</span>'
-      + '<span class="sr-only">: ' + x.c + ' of ' + x.t + ' right, ' + f.spoken + '</span>'
-      + '<span class="td-dval" aria-hidden="true">' + val + '</span></li>';
-  }).join('');
-  var t = resultsTime(o.ms);
-  var lvl = o.level === 2 ? 2 : 3;
-  return '<div class="rs-plate">'
-    + '<div class="td-fig">' + growthRingsSvg(values, pct >= 60) + '</div>'
-    // The section heading's level follows the page: h2 under a mock's h1, h3 under a set's h2.
-    + '<div class="rs-detail"><h' + lvl + ' class="sr-only">By domain</h' + lvl + '><ul class="td-legend">' + rows + '</ul>'
-    + '<p class="td-note">' + RINGS_NOTE + '</p>'
-    + (banded ? '<p class="td-note">' + bandsLine() + '</p>' : '')
-    + '</div></div>'
-    + '<ul class="rs-stats">'
-    + '<li class="rs-stat"><span class="rs-stat-l">Correct</span><span class="rs-stat-v rs-correct">' + o.correct + '<span class="rs-unit"> of ' + o.total + '</span></span></li>'
-    + '<li class="rs-stat"><span class="rs-stat-l">Time</span><span class="rs-stat-v"><span aria-hidden="true">' + t.v + (t.u ? '<span class="rs-unit"> ' + t.u + '</span>' : '') + '</span><span class="sr-only">' + t.s + '</span></span></li>'
-    + '<li class="rs-stat"><span class="rs-stat-l">Accuracy</span><span class="rs-stat-v">' + pct + '<span class="rs-unit">%</span></span></li>'
-    + '</ul>';
-}
 
 // ── A set's results as a Field Guide plate (v12.44) ──
 // Each domain's standing (Today's numbers: its latest tries, a hint half).
@@ -18348,6 +18492,8 @@ function startMock(type, notesWaited) {
   S.mockFlags = {};
   mockAnswerLock = false;
   S.mockId = newMockId(); // parity mock id
+  // Where each domain stood before this mock's first answer (v12.49).
+  try { S.mockBefore = mockBeforeSnapshot(); } catch (e) { S.mockBefore = null; }
 
   // The same blueprint for both: domain weights and difficulty mix, scaled,
   // each domain spread across its outline topics when the notes are here.
@@ -18556,6 +18702,16 @@ function selectMockAnswer(chosen, _ignoredCorrect) {
   else showMockQuestion();
 }
 
+// ── MOCK RESULTS (web v12.49; premium round 2, 5.4) ──
+// The running head ("Mock · Mini · 50 questions" | "29 Oct · 64 min"), the
+// count and the honesty sentence; Fig. 6, each area now on one scale with
+// how this mock went under it and, when both ends have 30+ answers, how far
+// it moved since the mock began (↑ clay, ↓ ink, never red); one label (right,
+// time, pace, unanswered); where to look next; the review, opening on the
+// mistakes, five rows at a time. Margin: the signs for an exam date.
+var MR_SHOWN = 5;              // review rows shown before "Show the other …"
+var mrShowAll = {};            // filter -> the learner asked for every row
+var NUM_WORDS = ['Zero', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten'];
 function showMockResults() {
   document.body.setAttribute('data-mock-results', '1');
   mockSetMview('results');
@@ -18574,15 +18730,17 @@ function showMockResults() {
   // Every question counts: a blank is not correct (graded on original letters).
   var tot = Math.max(queue.length, answers.length);
   var cor = 0, blank = 0;
-  var db = {};
+  var db = {}, missIds = {};
   for (var i = 0; i < tot; i++) {
     var a = answers[i];
     var q = queue[i] || (a && a.q) || null;
     var d = q && q.domain !== undefined ? String(q.domain) : null;
     if (d && !db[d]) db[d] = { c: 0, t: 0 };
     if (d) db[d].t++;
-    if (!a || a.timedOut || !a.chosenOriginal) { blank++; continue; }
-    if (a.ok) { cor++; if (d) db[d].c++; }
+    var right = !!(a && !a.timedOut && a.chosenOriginal && a.ok);
+    if (!a || a.timedOut || !a.chosenOriginal) blank++;
+    if (right) { cor++; if (d) db[d].c++; }
+    else if (d && q && q.id) (missIds[d] = missIds[d] || []).push(q.id);
   }
   var missed = tot - cor;
   var kind = mockTypeOf(S.mockType);
@@ -18590,33 +18748,41 @@ function showMockResults() {
   var flagged = queue.filter(function (q) { return q && S.mockFlags && S.mockFlags[q.id]; }).length;
   pageRhRight.mockResults = { kind: kind, total: tot, at: Date.now(), min: Math.round(usedSec / 60) };
   try { syncPageRh(); } catch (e) {}
+  fgLargeText();
+  mrShowAll = {};
 
   var acts = missed > 0
-    ? '<button type="button" class="rs-btn primary" onclick="reviewMockMistakes()">Review your mistakes</button>'
-      + '<button type="button" class="rs-btn" onclick="startWeakSpotsDrill()">Practice your weak spots</button>'
-    : '<button type="button" class="rs-btn primary" onclick="switchTab(\'home\')">Back to Today' + ico('arrow-right', 18) + '</button>';
+    ? '<button type="button" class="fg-btn" onclick="reviewMockMistakes()">' + (missed === 1 ? 'Review your 1 mistake' : 'Review your ' + missed + ' mistakes') + ico('arrow-right', 18) + '</button>'
+      + '<button type="button" class="rs-btn" onclick="startWeakSpotsDrill()">Practice weak spots</button>'
+    : '<button type="button" class="fg-btn" onclick="switchTab(\'home\')">Back to Today' + ico('arrow-right', 18) + '</button>';
+  var first = missed > 0 ? 'miss' : 'all';
 
   document.getElementById('mockArea').innerHTML =
-    '<div class="rs rs-mock">'
-    + '<p class="rs-kicker" id="mrKick">' + MOCK_TYPES[kind].name + ' &middot; ' + tot + ' questions</p>'
+    '<div class="rs rs-mock rs-fg">'
     + (timedOut ? '<p class="rs-timesup">Time&rsquo;s up. Your exam was submitted.</p><p class="rs-fact">Questions you did not answer count as not correct.</p>' : '')
     + '<h1 class="rs-title" id="mrTitle" tabindex="-1">' + resultsHeadline(cor, tot) + '</h1>'
-    + '<p class="rs-note">An estimate from this mock, not a prediction of your exam result. Practice scores are not scaled exam scores.</p>'
-    + buildMockAdvisory(db)
-    + '<div class="rs-acts">' + acts + '</div>'
-    + resultsBodyHtml({ byDomain: db, correct: cor, total: tot, ms: usedSec * 1000, level: 2 })
-    + (blank > 0 ? '<p class="rs-note">' + (blank === 1 ? '1 question was' : blank + ' questions were') + ' left blank: a blank counts as not correct.</p>' : '')
+    + '<p class="rs-note mr-honest">An estimate from this mock, not a prediction of your exam result. Practice scores are not scaled exam scores.</p>'
+    + mockAreasPlate(db)
+    + mockResultsLabel(cor, tot, blank, usedSec, kind)
+    + '<section class="mr-next" aria-labelledby="mrNextH"><h2 class="ph-h" id="mrNextH">Where to look next</h2>'
+    + buildMockAdvisory(db, missIds)
+    + '<div class="rs-acts">' + acts + '</div></section>'
     + '<section class="rs-review" aria-labelledby="mrRevH">'
-    + '<h2 class="ph-h" id="mrRevH" tabindex="-1">Review answers</h2>'
-    + '<div class="ph-chips rs-filter" role="group" aria-label="Show">'
-    + '<button type="button" class="ph-chip active" data-f="all" aria-pressed="true" onclick="mockReviewFilter(\'all\')">All ' + tot + '</button>'
-    + (missed ? '<button type="button" class="ph-chip" data-f="miss" aria-pressed="false" onclick="mockReviewFilter(\'miss\')">Mistakes ' + missed + '</button>' : '')
-    + (flagged ? '<button type="button" class="ph-chip" data-f="flag" aria-pressed="false" onclick="mockReviewFilter(\'flag\')">Flagged ' + flagged + '</button>' : '')
-    + '</div>'
-    + '<div class="mr-list" id="mrList" data-filter="all">' + buildMockAnswerKey(answers, queue) + '</div>'
+    + '<div class="mr-h-row"><h2 class="ph-h" id="mrRevH" tabindex="-1">Review answers</h2>'
+    + '<div class="mr-seg" role="group" aria-label="Show">'
+    + (missed ? '<button type="button" class="mr-seg-b" data-f="miss" aria-pressed="false" onclick="mockReviewFilter(\'miss\')">Mistakes ' + missed + '</button>' : '')
+    + '<button type="button" class="mr-seg-b" data-f="all" aria-pressed="false" onclick="mockReviewFilter(\'all\')">All ' + tot + '</button>'
+    + (flagged ? '<button type="button" class="mr-seg-b" data-f="flag" aria-pressed="false" onclick="mockReviewFilter(\'flag\')">Flagged ' + flagged + '</button>' : '')
+    + '</div></div>'
+    + '<ol class="mr-list" id="mrList" data-filter="' + first + '">' + buildMockAnswerKey(answers, queue) + '</ol>'
+    + '<button type="button" class="mr-more" id="mrMore" hidden onclick="mockReviewMore()"></button>'
     + '</section>'
+    // The margin's notes in the page below 1240px (railSync).
+    + '<div class="mr-side" id="mrSide"></div>'
     // (The support card lives on About only, as on Today: owner, step 5 review.)
     + '</div>';
+  mockReviewFilter(first);
+  try { railSync(); } catch (e) {}
   if (S.activeTab === 'mock') {
     try { window.scrollTo(0, 0); } catch (e) {}
     var h = document.getElementById('mrTitle');
@@ -18624,16 +18790,95 @@ function showMockResults() {
   }
 }
 
-// The review list: all, only the mistakes, or only the flagged questions.
+// Fig. 6 · Your five areas after this mock: each area now (Today's figure,
+// its latest tries), "6 of 9 this mock" under it, and the change since the
+// mock began only when both ends have 30+ answers (a save from before the
+// mock's starting standings were kept shows none).
+function mockAreasPlate(db) {
+  var now = rsDomainSnapshot() || {};
+  var before = S.mockBefore && typeof S.mockBefore === 'object' ? S.mockBefore : null;
+  var anyFew = false, anyMove = false;
+  var areas = Object.keys(DI).map(function (d) {
+    var x = db[d] || { c: 0, t: 0 }, n = now[d] || { pct: 0, answered: 0 };
+    var b = before && Array.isArray(before[d]) && before[d][0] >= DOMAIN_READ_MIN ? before[d][1] : null;
+    var a = { id: d, name: DI[d].short, short: DI[d].short, pct: n.pct, answered: n.answered, before: b, weight: DI[d].weight,
+      note: x.t ? x.c + ' of ' + x.t + ' this mock' : '', noteShort: x.t ? x.c + ' of ' + x.t : '' };
+    var f = fgStemFacts(a);
+    if (f.few) anyFew = true;
+    if (f.delta) anyMove = true;
+    var pts = Math.abs(f.delta) + (Math.abs(f.delta) === 1 ? ' point' : ' points');
+    a.said = DI[d].short + ', ' + (f.none ? 'not started' : f.few ? 'too few yet, ' + n.answered + ' answered'
+      : f.pct + ' percent, ' + bandFor(f.pct) + (f.below ? ', below ' + DOMAIN_TARGET_PCT : '')
+        + (f.delta ? ', ' + (f.delta > 0 ? 'up ' : 'down ') + pts : ''))
+      + (x.t ? ', ' + x.c + ' of ' + x.t + ' right in this mock' : '') + '.';
+    return a;
+  });
+  var key = 'Each line is where an area stands now, on your latest tries; under it, how this mock went (right of asked). Dashed: the ' + DOMAIN_TARGET_PCT + ' line.'
+    + (anyMove ? ' ↑ and ↓: the change in points since the mock began.' : '')
+    + (anyFew ? ' A seed: fewer than ' + DOMAIN_READ_MIN + ' answers, not measured yet.' : '');
+  return fgPlate('Fig. 6 · Your five areas after this mock', fgStemChart(areas, { ink: true, lineInKey: true, label: 'Each area, in exam order' }), 'mr-plate', 2)
+    + fgCaption('Key', key);
+}
+// One specimen label for the mock: right, time, pace, unanswered.
+function mockResultsLabel(cor, tot, blank, usedSec, kind) {
+  // In minutes, as the running head says it ("64 min").
+  var min = Math.round(usedSec / 60);
+  var t = min < 1 ? { v: '&lt;1', u: 'min', s: 'under a minute' } : { v: String(min), u: 'min', s: min + (min === 1 ? ' minute' : ' minutes') };
+  var done = tot - blank;
+  var examPace = Math.round(mockSecondsFor(kind) / MOCK_TYPES[kind].total);
+  var pace = done > 0 ? Math.round(usedSec / done) : null;
+  return fgLabel([
+    { k: 'Right', vHtml: cor + '<small>of ' + tot + '</small>' },
+    { k: 'Time', vHtml: '<span aria-hidden="true">' + t.v + (t.u ? '<small>' + t.u + '</small>' : '') + '</span><span class="sr-only">' + t.s + '</span>' },
+    { k: 'Pace', vHtml: pace === null ? '&ndash;'
+      : '<span aria-hidden="true">' + (pace < 1 ? '&lt;1' : pace) + '<small>s a question &middot; exam pace ' + examPace + '</small></span>'
+        + '<span class="sr-only">' + (pace < 1 ? 'under a second' : pace + (pace === 1 ? ' second' : ' seconds')) + ' a question; the exam pace is ' + examPace + ' seconds</span>' },
+    { k: 'Unanswered', vHtml: String(blank), xHtml: blank > 0 ? '<p class="fg-lrow-note">A blank counts as not correct.</p>' : '' }
+  ], 'mr-label');
+}
+
+// The review list: the mistakes, every question, or the flagged ones; five
+// rows at a time, then "Show the other …".
 function mockReviewFilter(f) {
   var list = document.getElementById('mrList');
   if (!list) return;
   list.setAttribute('data-filter', f);
-  document.querySelectorAll('.rs-filter .ph-chip').forEach(function (b) {
+  document.querySelectorAll('.mr-seg .mr-seg-b').forEach(function (b) {
     var on = b.getAttribute('data-f') === f;
-    b.classList.toggle('active', on);
+    b.classList.toggle('on', on);
     b.setAttribute('aria-pressed', on ? 'true' : 'false');
   });
+  mockReviewPaint();
+}
+function mockReviewMatch(item, f) {
+  return f === 'all' || (f === 'miss' && item.getAttribute('data-ok') === '0') || (f === 'flag' && item.getAttribute('data-flag') === '1');
+}
+function mockReviewPaint() {
+  var list = document.getElementById('mrList');
+  if (!list) return;
+  var f = list.getAttribute('data-filter') || 'all', k = 0;
+  [].slice.call(list.querySelectorAll('.mr-item')).forEach(function (it) {
+    var m = mockReviewMatch(it, f);
+    it.hidden = !m || (!mrShowAll[f] && k >= MR_SHOWN);
+    if (m) k++;
+  });
+  var more = document.getElementById('mrMore');
+  if (!more) return;
+  var rest = mrShowAll[f] ? 0 : Math.max(0, k - MR_SHOWN);
+  more.hidden = rest <= 0;
+  var what = f === 'miss' ? (rest === 1 ? 'mistake' : 'mistakes') : f === 'flag' ? 'flagged' : (rest === 1 ? 'question' : 'questions');
+  more.textContent = rest > 0 ? 'Show the other ' + rest + ' ' + what : '';
+}
+// Every row of the filter; focus moves to the first row that was hidden.
+function mockReviewMore() {
+  var list = document.getElementById('mrList');
+  if (!list) return;
+  var f = list.getAttribute('data-filter') || 'all';
+  var was = [].slice.call(list.querySelectorAll('.mr-item')).filter(function (it) { return mockReviewMatch(it, f); });
+  mrShowAll[f] = true;
+  mockReviewPaint();
+  var next = was[MR_SHOWN] && was[MR_SHOWN].querySelector('.mr-row');
+  if (next) { try { next.focus({ preventScroll: false }); } catch (e) {} }
 }
 // "Review your mistakes": the review shows only the misses, from its heading.
 function reviewMockMistakes() {
@@ -18644,6 +18889,67 @@ function reviewMockMistakes() {
   try { h.focus({ preventScroll: true }); } catch (e) {}
 }
 
+// The margin on a mock's results (from 1240px; in the page below): the signs
+// for an exam date as a key list (the app's readySigns, the same signs as
+// Your progress), its note, and the way to Your progress. None after the exam date.
+var MOCKS_SIGN_N = 2;   // the app's readySigns MOCKS_NEEDED
+var MR_SIGN_TITLE = { low: 'Low end at ' + FG_STUDY_BAR + '+ for a week', mocks: MOCKS_SIGN_N + ' mocks, one full', domains: 'Every domain at ' + DOMAIN_TARGET_PCT + '+' };
+function mockSignsHtml(pre) {
+  var K = plantApi();
+  if (!K || !K.readySigns) return '';
+  var days = examDaysLeft(), phase = pgPhase(days);
+  if (phase === 'done') return '';
+  var r = computeTodayReadiness();
+  var mocks = Array.isArray(S.mockHistory) ? S.mockHistory : [];
+  var res = K.readySigns.readySigns({
+    readinessLog: Array.isArray(S.readinessLog) ? S.readinessLog : [],
+    today: parityDayKey(Date.now()),
+    domains: r.domains.map(function (x) { return { id: x.id, answered: x.answered, pct: pgPct(x) }; }),
+    mocks: mocks, examQuestions: MOCK_TOTAL, mockSign: PROGRESS_MOCK_SIGN
+  });
+  var items = res.signs.map(function (s) {
+    var t = MR_SIGN_TITLE[s.id] || s.title, rr = s.met ? K.readySigns.SIGN_MET : K.readySigns.SIGN_NOT_YET, m = '';
+    if (s.id === 'mocks') {
+      var hasFull = mocks.some(function (x) { return x.total === MOCK_TOTAL && x.timing !== 'untimed'; });
+      var left = Math.max(0, MOCKS_SIGN_N - mocks.length);
+      rr = s.met ? rr : Math.min(mocks.length, MOCKS_SIGN_N) + ' of ' + MOCKS_SIGN_N;
+      m = s.met ? '' : !hasFull ? (left > 1 ? (NUM_WORDS[left] || left) + ' mocks to go, one of them the full timed mock.' : 'The full timed mock is still to do.')
+        : left === 1 ? 'One more mock to go.' : (NUM_WORDS[left] || left) + ' more mocks to go.';
+    } else if (s.id === 'domains') {
+      var ok = r.domains.filter(function (x) { return x.answered >= DOMAIN_READ_MIN && pgPct(x) >= DOMAIN_TARGET_PCT; }).length;
+      rr = s.met ? rr : ok + ' of ' + r.domains.length;
+      var under = r.domains.filter(function (x) { return x.answered >= DOMAIN_READ_MIN && pgPct(x) < DOMAIN_TARGET_PCT; })
+        .sort(function (a, b) { return pgPct(b) - pgPct(a); }).map(function (x) {
+          var g = DOMAIN_TARGET_PCT - pgPct(x);
+          return DI[x.id].short + ' is ' + g + (g === 1 ? ' point' : ' points') + ' under';
+        });
+      var thin = r.domains.filter(function (x) { return x.answered < DOMAIN_READ_MIN; })
+        .sort(function (a, b) { return b.answered - a.answered; }).map(function (x) {
+          var g = DOMAIN_READ_MIN - x.answered;
+          return DI[x.id].short + ' needs ' + g + ' more ' + (g === 1 ? 'answer' : 'answers') + ' to be measured';
+        });
+      var parts = under.concat(thin);
+      m = s.met ? '' : parts.slice(0, 2).join('; ') + (parts.length > 2 ? '; and ' + (parts.length - 2) + ' more' : '') + '.';
+    }
+    return { tHtml: escapeHtml(t), rHtml: escapeHtml(rr), mHtml: m ? escapeHtml(m) : '' };
+  });
+  var head = phase === 'dated' || phase === 'week' ? K.readySigns.SIGNS_HEADING_DATED : K.readySigns.SIGNS_HEADING;
+  return '<h2 class="sr-cap" id="' + pre + 'Signs">' + escapeHtml(head) + '</h2>'
+    + fgKeyList(items, '', 'mr-signs')
+    + fgCaption('Note', res.line + (res.isacaLine ? ' ' + res.isacaLine : ''))
+    + '<a class="sr-link" href="#progress" onclick="return navTo(event,\'progress\')">Your progress' + ico('arrow-right', 16) + '</a>';
+}
+function railResultsSections() {
+  var html = mockSignsHtml('srh');
+  return html ? [{ id: 'signs', key: 'signs:' + html, html: html }] : [];
+}
+function railResultsInline(show) {
+  var slot = document.getElementById('mrSide');
+  if (!slot) return;
+  var html = show ? mockSignsHtml('mrm') : '';
+  html = html ? '<section class="sr-sec" aria-labelledby="mrmSigns">' + html + '</section>' : '';
+  if (slot.innerHTML !== html) slot.innerHTML = html;
+}
 
 
 // ── ONBOARDING (v12.30: the mobile welcome, ported) ──
@@ -18963,6 +19269,7 @@ function doResetProgress() {
   S.mockId = null;
   S.mockType = 'full';
   S.mockFlags = {};
+  S.mockBefore = null;
   // Reading progress too: kept in memory, the next save wrote it back.
   S.topicReviewed = {};
   S.topicViewed = {};
@@ -20931,16 +21238,18 @@ function renderPacingFeedbackHtml() {
 }
 
 // ── PHASE 2: TRAIN WEAK SPOTS ──
-function getTrainWeakSpotsPool() {
-  // Domains with a real sample come first (lowest score first), then the
-  // least-practiced ones, so a lucky or unlucky handful never steers the drill.
-  var ranked = [1,2,3,4,5].map(function(d) {
+// The drill's domains: those with a real sample come first (lowest score
+// first), then the least-practiced ones, so a lucky or unlucky handful never
+// steers the drill. The Practice hub names them on its row (v12.49).
+function weakDrillDomains() {
+  return [1,2,3,4,5].map(function(d) {
     return {d: String(d), r: domainRead(S.ds[d] || {t:0,c:0})};
-  }).sort(domainOrder);
-
+  }).sort(domainOrder).slice(0, 3).map(function(item) { return item.d; });
+}
+function getTrainWeakSpotsPool() {
   var pool = [];
-  ranked.slice(0, 3).forEach(function(item) {
-    var domQ = (QB[item.d] || []).slice().sort(function(){ return Math.random() - 0.5; });
+  weakDrillDomains().forEach(function(d) {
+    var domQ = (QB[d] || []).slice().sort(function(){ return Math.random() - 0.5; });
     domQ.slice(0, 7).forEach(function(q){ pool.push(q); });
   });
 
@@ -21165,7 +21474,11 @@ function drillSingleBookmark(qId) {
 var MOCK_CHECKPOINT_KEY = 'cisa_mock_ckpt_v1';
 
 // ── PHASE 2: MOCK RESULTS ADVISORY ──
-function buildMockAdvisory(domainStats) {
+// v12.49 (premium round 2, 5.4): a key list, no domain codes, no dashes.
+// "IS Operations ···· 6 of 13" over "26% of the exam. A topic review and a
+// short drill would help." When two or more misses share a study note, the
+// line names it instead. missIds: domain -> the ids not answered right.
+function buildMockAdvisory(domainStats, missIds) {
   // A domain is only flagged when the mock gave it at least 10 questions.
   var advisories = [];
   Object.keys(DI).forEach(function(d) {
@@ -21177,16 +21490,25 @@ function buildMockAdvisory(domainStats) {
   advisories.sort(function(a,b){ return (b.weight*(DOMAIN_TARGET_PCT-b.pct)) - (a.weight*(DOMAIN_TARGET_PCT-a.pct)); });
 
   if (!advisories.length) {
-    return '<section class="mock-advisory" aria-labelledby="mrNextH"><h2 class="mock-advisory-title" id="mrNextH">Where to look next</h2><div class="mock-advisory-item">No domain with enough questions in this mock fell below the ' + DOMAIN_TARGET_PCT + '% target. Keep practicing across all five.</div></section>';
+    return '<p class="rs-note mr-next-none">No domain with enough questions in this mock fell below the ' + DOMAIN_TARGET_PCT + '% target. Keep practicing across all five.</p>';
   }
-
-  var items = advisories.map(function(a) {
-    // v12.45: no domain codes, no dashes. "IS Operations · 6 of 13 right in this mock · 26% of the exam".
+  var idx = {};
+  try { idx = CISA_NOTES_RAW ? (railBuildNoteIndex() || {}) : {}; } catch (e) { idx = {}; }
+  return fgKeyList(advisories.map(function(a) {
     var s = domainStats[a.d];
-    return '<div class="mock-advisory-item"><strong>' + escapeHtml(a.name) + '</strong> &middot; ' + s.c + ' of ' + s.t + ' right in this mock &middot; ' + a.weight + '% of the exam</div>';
-  }).join('');
-
-  return '<section class="mock-advisory" aria-labelledby="mrNextH"><h2 class="mock-advisory-title" id="mrNextH">Where to look next</h2>' + items + '</section>';
+    var count = {}, best = null;
+    ((missIds && missIds[a.d]) || []).forEach(function(id) {
+      var n = idx[id];
+      if (!n) return;
+      count[n.name] = (count[n.name] || 0) + 1;
+      if (!best || count[n.name] > count[best]) best = n.name;
+    });
+    var why = best && count[best] >= 2
+      ? (NUM_WORDS[count[best]] || count[best]) + ' of your misses were about ' + best + '.'
+      : 'A topic review and a short drill would help.';
+    return { tHtml: escapeHtml(a.name), rHtml: s.c + ' of ' + s.t,
+      mHtml: a.weight + '% of the exam. ' + escapeHtml(why) };
+  }), '', 'mr-look');
 }
 
 
@@ -22249,16 +22571,27 @@ function buildMockAnswerKey(answers, queue) {
     var short = stem.length > 110 ? stem.slice(0, 110) + '…' : stem;
     var metaBits = ['<span class="dom-dot" style="background:' + info.color + '" aria-hidden="true"></span>' + escapeHtml(info.short)];
     if (flag) metaBits.push('<span class="mr-flag">' + ico('flag', 14) + 'Flagged</span>');
-    if (answered && !isCorrect) metaBits.push('You: ' + escapeHtml(a.chosen) + ' &middot; Best: ' + escapeHtml(correctAns));
+    // v12.49 (premium round 2, 5.4): a key-list row. Its number, a mark,
+    // "Question 3", a dotted leader, "You C · Best A" (display letters, as
+    // the candidate saw them), then the domain and a one-line preview.
+    var kind = !answered ? 'skip' : isCorrect ? 'ok' : 'no';
+    var yb = !answered ? 'Blank &middot; Best ' + escapeHtml(correctAns)
+      : isCorrect ? 'You ' + escapeHtml(a.chosen) + ' &middot; right'
+      : 'You ' + escapeHtml(a.chosen) + ' &middot; Best ' + escapeHtml(correctAns);
+    var mark = '<svg class="mr-mark ' + kind + '" width="16" height="16" viewBox="0 0 38 38" aria-hidden="true" focusable="false"><path class="mr-mk-l" d="' + VR_LEAF_PATH + '"/>'
+      + (kind === 'skip' ? '' : '<path class="mr-mk-s" d="' + (kind === 'ok' ? VR_TICK : VR_CROSS) + '"/>') + '</svg>';
 
-    html += '<div class="mr-item" data-ok="' + (isCorrect ? '1' : '0') + '" data-flag="' + (flag ? '1' : '0') + '">'
+    html += '<li class="mr-item" data-ok="' + (isCorrect ? '1' : '0') + '" data-flag="' + (flag ? '1' : '0') + '">'
       + '<button type="button" class="mr-row" aria-expanded="false" aria-controls="mockDetail' + i + '" onclick="toggleMockDetail(' + i + ')">'
-      + '<span class="mr-top"><span class="mr-n">Question ' + (i + 1) + '</span>'
-      + '<span class="mr-status ' + (!answered ? 'skip' : isCorrect ? 'ok' : 'no') + '">' + status + '</span>'
+      + '<span class="mr-n" aria-hidden="true">' + (i + 1) + '</span>'
+      + '<span class="mr-body"><span class="mr-top">' + mark
+      + '<span class="mr-q">Question ' + (i + 1) + '</span>'
+      + '<span class="mr-status sr-only">' + status + '</span>'
+      + '<span class="mr-dots" aria-hidden="true"></span>'
+      + '<span class="mr-yb">' + yb + '</span>'
       + '<span class="mr-chev" id="mockChevron' + i + '" aria-hidden="true">' + ico('chevron-down', 18) + '</span></span>'
-      + '<span class="mr-meta">' + metaBits.join(' &middot; ') + '</span>'
-      + '<span class="mr-stem">' + escapeHtml(short) + '</span>'
-      + '</button>'
+      + '<span class="mr-meta">' + metaBits.join(' &middot; ') + '<span class="mr-stem"> &middot; ' + escapeHtml(short) + '</span></span>'
+      + '</span></button>'
       + '<div class="mr-detail" id="mockDetail' + i + '" hidden>'
       + '<p class="mr-full">' + escapeHtml(stem) + '</p>';
 
@@ -22291,7 +22624,7 @@ function buildMockAnswerKey(answers, queue) {
     // The learner's own note on this question (written in practice).
     html += qNoteBlockHtml(q.id, 'q-note mr-note');
 
-    html += '</div></div>';
+    html += '</div></li>';
   }
   return html;
 }
