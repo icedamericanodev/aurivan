@@ -807,19 +807,19 @@
    "bloom_level": "Application",
    "question": "A sports club's network technician is turning on IPv6 across the club's network, whose firewall has rules for IPv4 traffic only. Which step is BEST?",
    "options": {
-    "A": "Rely on the IPsec support built into IPv6 for protection",
+    "A": "Use the IPsec support built into IPv6 as protection",
     "B": "Turn IPv6 on now and add rules after a month of monitoring",
-    "C": "Rely on the existing IPv4 rules to filter IPv6 traffic",
+    "C": "Let the existing IPv4 rules filter IPv6 traffic too",
     "D": "Write IPv6 rules matching the IPv4 policy before turning it on"
    },
    "correct": "D",
    "key_concept": "IPv4 and IPv6 need matching firewall rules; IPv6 is not secure by default, and IPv4 rules do not filter IPv6 traffic.",
    "pre_read": "Compare what each option assumes about how IPv6 traffic will be protected.",
-   "correct_explanation": "IPv4 rules do not apply to IPv6 traffic, so turning IPv6 on without matching rules opens an unfiltered second door. The technician should mirror the IPv4 policy for IPv6 first, so both versions get the same allow and deny decisions. Monitoring first is the runner-up because learning real traffic is useful, but the network would be exposed for the whole month.",
+   "correct_explanation": "IPv4 rules do not match IPv6 traffic, so turning IPv6 on without matching rules can leave a second, unfiltered door. The technician should mirror the IPv4 policy for IPv6 first, so both versions get the same allow and deny decisions. Monitoring first is the runner-up because learning real traffic is useful, but the network would be exposed for the whole month.",
    "wrong_explanations": {
     "A": "Tempting because IPv6 was designed with IPsec in mind. But IPsec protects only connections set up to use it; it filters nothing at the firewall.",
-    "B": "Closest choice: watching real IPv6 traffic does help tune rules later. But for that month the IPv6 door stands open, with no rules filtering it.",
-    "C": "Tempting because both are versions of IP. But IPv4 rules match IPv4 addresses only; IPv6 traffic passes them unless rules are written for it."
+    "B": "Closest choice: watching real IPv6 traffic does help tune rules later. But for that month IPv6 would run with no rules of its own, an unguarded second door.",
+    "C": "Tempting because both are versions of IP. But IPv4 rules match IPv4 addresses only; without IPv6 rules, IPv6 traffic may pass unchecked or be handled unpredictably."
    },
    "tips": [
     "Eliminate: A treats IPv6 as secure by default, and C assumes IPv4 rules also filter IPv6 traffic.",
@@ -841,7 +841,7 @@
    "subtopic": "4.1 Network security. Firewall types",
    "difficulty": "foundational",
    "bloom_level": "Foundational",
-   "question": "A port authority's policy bans a remote-control app that staff have started using over port 443, which web browsing also needs. Which firewall capability BEST lets the network team block only the app?",
+   "question": "A port authority's policy bans a remote-control tool that staff have started using over port 443, which web browsing also needs. Which firewall capability BEST lets the network team block only that tool?",
    "options": {
     "A": "Stateful inspection that tracks each connection's state",
     "B": "Application-aware rules that identify the app itself",
@@ -879,8 +879,8 @@
    "bloom_level": "Application",
    "question": "A bus company's old firewall allows all traffic except a list of known-bad ports, and the network lead asks a junior technician to draft rules for its replacement. Which approach is BEST?",
    "options": {
-    "A": "Allow all traffic and let the IDS alert on attacks",
-    "B": "Allow all traffic on the well-known service ports",
+    "A": "Allow traffic by default and have the IDS alert",
+    "B": "Allow whatever traffic uses the well-known service ports",
     "C": "Allow only the traffic the business needs and deny the rest",
     "D": "Keep the bad-port list and add new entries each month"
    },
@@ -889,7 +889,7 @@
    "pre_read": "Note how the old firewall decides what passes, then compare each option's starting assumption.",
    "correct_explanation": "A blocklist lets through everything not yet listed, so any new attack, tool or service gets in by default. Deny by default flips that: the technician lists the traffic the business needs, allows it, and blocks everything else. Updating the bad-port list monthly is the runner-up because it does improve the old rules, but it still allows whatever nobody has listed.",
    "wrong_explanations": {
-    "A": "Tempting because an IDS does spot many attacks. But it alerts as traffic passes; with everything allowed, nothing is blocked at the boundary.",
+    "A": "Tempting because an IDS does spot many attacks. But it alerts as traffic passes; with traffic allowed by default, nothing is blocked at the boundary.",
     "B": "Tempting because well-known ports carry common services. But attackers and malware use those ports too; a port number says nothing about trust.",
     "D": "Closest choice: a fresher blocklist does catch more known threats. But anything not yet listed still passes, which is the weakness of allowing by default."
    },
@@ -959,7 +959,7 @@
    "correct": "D",
    "key_concept": "Defense in depth needs independent layers; controls that share one password or flaw fail together and count as one.",
    "pre_read": "Weigh each option against the specific claim the IT lead is making.",
-   "correct_explanation": "Defense in depth works only if layers fail independently, so an attacker must defeat each one separately. Here one stolen password would let an attacker switch off the firewall, filter, endpoint tool and backups together, so the four layers act as one. Lost traceability is the runner-up: shared passwords do destroy accountability, but that is a separate weakness from whether the layers are independent.",
+   "correct_explanation": "Defense in depth works only if layers fail independently, so an attacker must defeat each one separately. Here one stolen password would let an attacker switch off the firewall, filter and endpoint tool and wipe the backups, so the four layers act as one. Lost traceability is the runner-up: shared passwords do destroy accountability, but that is a separate weakness from whether the layers are independent.",
    "wrong_explanations": {
     "A": "Closest choice: shared passwords do hide who did what. But that is an accountability problem; the claim fails because one password defeats every layer at once.",
     "B": "Tempting because more layers sounds deeper. But depth comes from independent controls of different types, not from a minimum count of products.",
@@ -985,7 +985,7 @@
    "subtopic": "4.2 Network security architecture. Zero Trust components",
    "difficulty": "foundational",
    "bloom_level": "Foundational",
-   "question": "At a bank adopting Zero Trust, an AI assistant asks to read a customer records service, and the request reaches an enforcement point. Which component MOST accurately makes the allow-or-deny decision?",
+   "question": "At a bank adopting Zero Trust, an AI assistant asks to read data from a customer records service, and the request reaches an enforcement point. Which component MOST accurately makes the allow-or-deny decision?",
    "options": {
     "A": "The AI assistant, based on the task it was given",
     "B": "The policy engine, weighing the request against policy",
@@ -1023,9 +1023,9 @@
    "bloom_level": "Foundational",
    "question": "An engineering consultancy must run its public project portal and its payroll app on one dedicated cloud host, with the strongest separation possible. Which setup should the infrastructure team choose as BEST?",
    "options": {
-    "A": "Separate containers sharing the host's operating system kernel",
+    "A": "Separate containers, one for each app",
     "B": "One container running both apps in separate folders",
-    "C": "Separate virtual machines, each with its own operating system",
+    "C": "Separate virtual machines, one for each app",
     "D": "One virtual machine running both apps under different accounts"
    },
    "correct": "C",
@@ -1061,21 +1061,21 @@
    "options": {
     "A": "The report moves accountability for any data breach to the provider",
     "B": "The report shows the service will have no outages",
-    "C": "The report is enough as long as it was issued this year",
+    "C": "The report covers the association too if it keeps default settings",
     "D": "The report covers the provider's controls, not the association's data"
    },
    "correct": "D",
    "key_concept": "A provider's independent report or certificate covers the provider's own controls in scope, never the customer's users, settings or data.",
    "pre_read": "Read the project manager's claim closely, then test each reply against it.",
-   "correct_explanation": "An independent report shows how well the provider runs its own controls, within the scope it covers. It says nothing about the association's accounts, sharing settings or data, which stay the customer's job in every service model. A recent report is the runner-up because freshness matters for evidence, but even a current report covers only the provider's side.",
+   "correct_explanation": "An independent report shows how well the provider runs its own controls, within the scope it covers. It says nothing about the association's accounts, sharing settings or data, which stay the customer's job in every service model. Keeping default settings is the runner-up because defaults feel provider-approved, but the report still covers only the provider's side.",
    "wrong_explanations": {
     "A": "Tempting because the provider runs the service. But the association stays accountable for its data; contracts and reports share duties, not accountability.",
     "B": "Tempting because strong controls support uptime. But a security report gives assurance about controls; it promises nothing about availability, and outages still happen.",
-    "C": "Closest choice: a recent report is better evidence than an old one. But however fresh, it covers only the provider's controls, not the association's own tasks."
+    "C": "Closest choice: defaults can feel provider-approved. But a provider's report does not extend to a tenant's use; accounts, sharing and data stay the association's job whatever the settings."
    },
    "tips": [
     "Eliminate: A moves accountability, which stays with the customer, and B reads an availability promise into a security report.",
-    "Final two: D beats C because even a current report covers only the provider's side; the association's settings and data remain its job.",
+    "Final two: D beats C because a provider's report does not extend to the tenant; keeping defaults leaves the association's accounts, settings and data its own job.",
     "Exam cue: provider evidence proves the provider's part. The customer's users, settings and data always stay the customer's job."
    ],
    "framework_ref": "NIST SP 800-144 Section 5.1 (General Concerns: a provider's certification does not extend to the tenant's systems); NIST SP 800-144 Section 2.3 (Outsourcing and Accountability)",
@@ -1084,7 +1084,7 @@
     "Provider scope",
     "Customer accountability"
    ],
-   "_provenance": "Authored from concept: 'independent proof covers the provider's controls, not the customer's' (notes 4.3.6 Cloud Roles and Agreements). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 2, 30 Oct 2026.",
+   "_provenance": "Authored from concept: 'independent proof covers the provider's controls, not the customer's' (notes 4.3.6 Cloud Roles and Agreements). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 2, 30 Oct 2026. Standards audit fix (30 Oct 2026): runner-up no longer agrees with the manager's premise or repeats cc_d2_005.",
    "style_version": 2
   },
   {
@@ -1096,22 +1096,22 @@
    "question": "A translation agency's contract bars outsiders, including its cloud provider, from reading a client's files, which the provider encrypts with keys it manages. What should the IT administrator change to BEST meet it?",
    "options": {
     "A": "Encrypt the files with keys that only the agency holds",
-    "B": "Turn on the provider's strongest at-rest encryption setting",
+    "B": "Have the provider re-encrypt the files with longer keys",
     "C": "Require TLS for every upload to and download from the service",
     "D": "Restrict the storage account to the agency's staff accounts"
    },
    "correct": "A",
    "key_concept": "Whoever controls the encryption keys can decrypt the data; only keys the customer alone holds keep the provider from reading it.",
    "pre_read": "Note exactly what the contract forbids, then test each option against it.",
-   "correct_explanation": "Encryption keeps data from anyone without the key, so the deciding question is who holds the keys. With provider-managed keys, the provider can technically decrypt the files, however strong the algorithm. Encrypting with keys only the agency holds meets the contract. A stronger provider setting is the runner-up because it sounds like more protection, but the provider still manages those keys.",
+   "correct_explanation": "Encryption keeps data from anyone without the key, so the deciding question is who holds the keys. With provider-managed keys, the provider can technically decrypt the files, however strong the algorithm. Encrypting with keys only the agency holds meets the contract. Re-encrypting with longer provider keys is the runner-up because it sounds like more protection, but the provider still manages those keys.",
    "wrong_explanations": {
-    "B": "Closest choice: stronger encryption does resist outsiders better. But the provider still manages the keys, so it can technically decrypt the files.",
+    "B": "Closest choice: longer keys do resist outside attackers better. But the provider still manages them, so it can still decrypt the files.",
     "C": "Tempting because TLS is strong encryption. But it protects files only while they move; once stored, they sit under the provider's keys.",
     "D": "Tempting because it limits who signs in. But the provider runs the platform underneath and manages the keys, so account rules do not bind it."
    },
    "tips": [
     "Eliminate: C protects files only in transit, and D limits the agency's own sign-ins without touching the provider's access.",
-    "Final two: A beats B because whoever manages the keys can decrypt; stronger provider-side encryption leaves the keys with the provider.",
+    "Final two: A beats B because whoever manages the keys can decrypt; longer keys still managed by the provider leave it able to read the files.",
     "Exam cue: to know who can read encrypted data, ask who holds the keys. Keys only the customer holds must also never be lost."
    ],
    "framework_ref": "NIST SP 800-144 Section 4.7 (Data Protection)",
@@ -1132,7 +1132,7 @@
    "question": "A supermarket's handheld stock scanners drop off the Wi-Fi whenever the staff-room microwave oven is running. Which fix should the network technician try FIRST?",
    "options": {
     "A": "Give the scanners fixed IP addresses instead of DHCP",
-    "B": "Move the Wi-Fi to a band the microwave does not disrupt",
+    "B": "Move the scanners and access point to a different radio band",
     "C": "Change the scanner app to use a different port",
     "D": "Put the scanners on a VLAN of their own"
    },
@@ -1203,7 +1203,7 @@
    "bloom_level": "Application",
    "question": "A credit union wants to spot suspicious activity on its loan server, but almost all traffic to the server is encrypted. Which detection control should the security analyst propose as BEST?",
    "options": {
-    "A": "A network IDS watching traffic on the server's segment",
+    "A": "A network IDS sensor on the loan server's own segment",
     "B": "An inline IPS at the credit union's internet edge",
     "C": "A host-based IDS agent installed on the loan server",
     "D": "A weekly review of the edge firewall's logs"
@@ -1240,7 +1240,7 @@
    "question": "A transit agency's AI traffic monitor learned its baseline over two weeks, and an incident review shows an intruder was active throughout. Which risk to the monitor should the security analyst rate GREATEST?",
    "options": {
     "A": "The intruder's traffic may now be scored as normal",
-    "B": "Encrypted traffic was invisible to the model in training",
+    "B": "The intruder's encrypted sessions stayed invisible to the model",
     "C": "Two weeks may miss monthly jobs, causing false alarms",
     "D": "The monitor will now flag all traffic as unusual"
    },
@@ -1273,11 +1273,11 @@
    "subtopic": "4.1 Network security. Bluetooth security",
    "difficulty": "application",
    "bloom_level": "Application",
-   "question": "A furniture retailer's delivery drivers pair Bluetooth barcode scanners with their phones, and the IT technician finds the scanners stay discoverable all day. Which change is BEST?",
+   "question": "A furniture retailer's delivery drivers connect Bluetooth barcode scanners to their phones, and the IT technician finds the scanners announce themselves to nearby devices all day. Which change is BEST?",
    "options": {
     "A": "Update the scanners' firmware on a regular schedule",
     "B": "Keep the scanners non-discoverable except while pairing",
-    "C": "Rely on Bluetooth's short range to keep strangers out of reach",
+    "C": "Count on Bluetooth's short range to keep strangers away",
     "D": "Require a screen-lock PIN on each driver's phone"
    },
    "correct": "B",
@@ -1309,9 +1309,9 @@
    "subtopic": "4.2 Network security architecture. Screened subnet",
    "difficulty": "application",
    "bloom_level": "Application",
-   "question": "A concert venue's ticketing website runs in its screened subnet and must save orders to a database on the internal network. Which firewall rule should the network technician propose as BEST?",
+   "question": "A concert venue's ticketing website runs in its screened subnet and must save orders to a database on the internal network. Which change should the network technician propose as BEST?",
    "options": {
-    "A": "Allow the web server to reach every internal system",
+    "A": "Join the web server to the internal network through a VPN tunnel",
     "B": "Allow all screened-subnet traffic into the internal network",
     "C": "Allow the whole screened subnet to reach the database port",
     "D": "Allow the web server alone to reach the database port"
@@ -1321,12 +1321,12 @@
    "pre_read": "For each rule, ask who else could use the path it opens.",
    "correct_explanation": "The screened subnet holds the systems most exposed to attack, so any path inward must be as narrow as possible: only the web server, only to the database, only on the database port. Opening the database port to the whole screened subnet is the runner-up, but then any other server there, such as a mail gateway, gains a path to the order data.",
    "wrong_explanations": {
-    "A": "Tempting because the web server is the only one asking. But reaching every internal system gives an attacker who breaches it the whole network.",
+    "A": "Tempting because a tunnel encrypts the link. But it joins an exposed server to the internal network, so an attacker who breaches it rides straight in.",
     "B": "Tempting because it saves writing rules. But it lets any breached screened-subnet server into the internal network, defeating the screened subnet's purpose.",
     "C": "Closest choice: it limits traffic to the database port. But every other server in the screened subnet also gains a path to the order data."
    },
    "tips": [
-    "Eliminate: A and B open the whole internal network, undoing the reason for having a screened subnet.",
+    "Eliminate: A tunnels an exposed server into the internal network, and B lets all screened-subnet traffic inside; both undo the screened subnet's purpose.",
     "Final two: D beats C because only the web server needs the path; opening it to the whole subnet hands it to other exposed servers.",
     "Exam cue: paths from the screened subnet inward should name one source, one destination and one port."
    ],
@@ -1345,7 +1345,7 @@
    "subtopic": "4.2 Network security architecture. VLANs",
    "difficulty": "application",
    "bloom_level": "Application",
-   "question": "At a car dealership group, the admin pages of every switch and firewall can be reached from any device on the staff VLAN. Which change should the network technician propose as BEST?",
+   "question": "At a car dealership group, the admin pages of every switch and firewall can be reached from any employee's computer. Which change should the IT technician propose as BEST?",
    "options": {
     "A": "Turn off the switch ports that no one is using",
     "B": "Switch the admin pages from plain HTTP to HTTPS",
@@ -1430,11 +1430,11 @@
    "correct_explanation": "Zero Trust is a set of principles: verify identity, device health and need on every request, grant least privilege and assume breach. An organization adopts it in stages across identity, devices, policy and monitoring, so no single product delivers it in a week. Identity checks are the runner-up because they are central, but identity alone ignores device health, context and ongoing monitoring.",
    "wrong_explanations": {
     "A": "Tempting because outsiders are an obvious threat. But Zero Trust gives no trust to internal traffic either; requests from inside are checked just the same.",
-    "C": "Tempting because the gateway controls access. But Zero Trust relies on fine-grained segmentation; it moves boundaries closer to resources rather than removing them.",
+    "C": "Tempting because the gateway controls access. But a full Zero Trust design still includes segmentation; it moves boundaries closer to resources rather than removing them.",
     "D": "Closest choice: identity checks are central to Zero Trust. But identity alone ignores device health, context and continued monitoring, which the principles also require."
    },
    "tips": [
-    "Eliminate: A limits Zero Trust to internet traffic, and C drops the segmentation that Zero Trust depends on.",
+    "Eliminate: A limits Zero Trust to internet traffic, and C drops segmentation, which a full Zero Trust design still includes.",
     "Final two: B beats D because Zero Trust needs identity, device, policy and monitoring together; one identity check is only part of it.",
     "Exam cue: Zero Trust is a strategy adopted in stages; no single purchase delivers it."
    ],
@@ -1453,7 +1453,7 @@
    "subtopic": "4.3 Cloud security. Cloud characteristics",
    "difficulty": "foundational",
    "bloom_level": "Foundational",
-   "question": "A recruitment agency's security analyst learns that its cloud servers run on physical hardware shared with other customers, each kept separate by the provider. Which essential characteristic of cloud computing is this MOST accurately?",
+   "question": "A recruitment agency's security analyst learns that its cloud servers run on physical hardware shared with other customers, each kept separate by the provider. Which essential cloud characteristic does this MOST accurately show?",
    "options": {
     "A": "Rapid elasticity",
     "B": "Virtualization",
@@ -1525,12 +1525,12 @@
    "subtopic": "4.3 Cloud security. Shared responsibility",
    "difficulty": "foundational",
    "bloom_level": "Foundational",
-   "question": "A food delivery startup runs its order system on IaaS virtual machines, and a critical flaw is found in the provider's hypervisor beneath them. Who is MOST responsible for patching the hypervisor?",
+   "question": "A food delivery startup runs its order system on IaaS virtual machines, and a critical flaw is found in the hypervisor beneath them. Who is MOST responsible for patching the hypervisor?",
    "options": {
-    "A": "The provider, which runs the hypervisor and host servers",
+    "A": "The provider, which runs the physical host servers",
     "B": "The startup's server team, which manages the virtual machines",
     "C": "The startup's developers, who wrote the order system",
-    "D": "The startup's network team, which sets the virtual firewall rules"
+    "D": "The hypervisor's maker, which releases fixes for its flaws"
    },
    "correct": "A",
    "key_concept": "In every service model the provider secures the physical hosts and virtualization layer; in IaaS the customer starts at the guest operating system.",
@@ -1539,10 +1539,10 @@
    "wrong_explanations": {
     "B": "Closest choice: in IaaS the server team patches the virtual machines' operating systems. But the hypervisor sits beneath them, on the provider's side of the line.",
     "C": "Tempting because developers fix flaws in code. But the order system is application code; the hypervisor is infrastructure the startup cannot touch.",
-    "D": "Tempting because the network team configures virtual networking. But setting firewall rules is not the same as patching the provider's hypervisor."
+    "D": "Tempting because the maker writes the fix. But releasing a patch is not applying it; the provider, which runs the hypervisor on its hosts, must install it."
    },
    "tips": [
-    "Eliminate: C confuses application code with infrastructure, and D confuses configuring virtual networks with patching the hypervisor.",
+    "Eliminate: C confuses application code with infrastructure, and D confuses releasing a fix with applying it.",
     "Final two: A beats B because the provider runs the hypervisor; the customer's IaaS duties start at the guest operating system.",
     "Exam cue: the provider always secures the hardware and virtualization layer. In IaaS, the customer's share starts at the guest operating system."
    ],
@@ -1552,7 +1552,7 @@
     "Hypervisor",
     "Shared responsibility"
    ],
-   "_provenance": "Authored from concept: 'the provider secures the virtualization layer and the IaaS customer starts at the guest operating system' (notes 4.3.5 The Shared Responsibility Model). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 2, 30 Oct 2026.",
+   "_provenance": "Authored from concept: 'the provider secures the virtualization layer and the IaaS customer starts at the guest operating system' (notes 4.3.5 The Shared Responsibility Model). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 2, 30 Oct 2026. Standards audit fix (30 Oct 2026): stem no longer names who runs the hypervisor.",
    "style_version": 2
   },
   {
@@ -1564,18 +1564,18 @@
    "question": "A payroll firm's procedure lets its junior cloud engineer fix CSPM findings that break the approved baseline, and CSPM flags a test server with SSH open to the internet. What should the engineer do FIRST?",
    "options": {
     "A": "Open a ticket asking the cloud provider to fix the setting",
-    "B": "Restrict SSH to the baseline's approved admin addresses and record it",
+    "B": "Restrict SSH to the admin team's addresses and record the change",
     "C": "Report the finding to the server's owner and await a decision",
     "D": "Accept the finding as low risk for a test server"
    },
    "correct": "B",
-   "key_concept": "When a procedure assigns a fix to you, carry it out; cloud settings are the customer's job, and an exposed test server is still exposed.",
+   "key_concept": "When a procedure assigns you a fix, make it and record it; access settings on a customer's own cloud servers are the customer's job.",
    "pre_read": "Picture the test server's next few hours under each option.",
-   "correct_explanation": "The procedure gives the engineer authority to fix findings that break the baseline, so the engineer restricts SSH to the approved admin addresses now and records the change. Reporting to the server's owner is the runner-up: escalation suits decisions outside one's role, but here the procedure assigns the fix, and waiting leaves SSH open to the internet.",
+   "correct_explanation": "The procedure gives the engineer authority to fix findings that break the baseline, so this is a pre-approved change: the engineer restricts SSH to the approved admin addresses now and records the change. Reporting to the server's owner is the runner-up: escalation suits decisions outside one's role, but here the procedure assigns the fix, and waiting leaves SSH open to the internet.",
    "wrong_explanations": {
-    "A": "Tempting because the server runs on the provider's platform. But network access settings are the customer's job in every cloud model.",
+    "A": "Tempting because the server runs on the provider's platform. But who may reach the customer's own servers is a customer setting; the provider will not change it.",
     "C": "Closest choice: owners decide on changes outside the procedure. But this fix is assigned to the engineer, and waiting leaves SSH exposed to the internet.",
-    "D": "Tempting because test servers seem low value. But attackers scan the whole internet, and a breached test server can be a foothold into the account."
+    "D": "Tempting because test servers seem low value. But accepting risk is the owner's call, not the engineer's, and attackers scan the internet for open SSH on any server."
    },
    "tips": [
     "Eliminate: A hands a customer setting to the provider, and D treats a test server as safe to expose.",
@@ -1588,7 +1588,7 @@
     "Configuration baselines",
     "In-role action"
    ],
-   "_provenance": "Authored from concept: 'CSPM compares settings to a baseline; fix assigned drift promptly because cloud settings are the customer's' (notes 4.3.8 Cloud Misconfiguration, CSPM and CASB). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 2, 30 Oct 2026.",
+   "_provenance": "Authored from concept: 'CSPM compares settings to a baseline; fix assigned drift promptly because cloud settings are the customer's' (notes 4.3.8 Cloud Misconfiguration, CSPM and CASB). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 2, 30 Oct 2026. Standards audit fix (30 Oct 2026): framed as a pre-approved change so it agrees with the change-control items in D2 and D5.",
    "style_version": 2
   },
   {
@@ -1597,25 +1597,25 @@
    "subtopic": "4.3 Cloud security. AI workloads",
    "difficulty": "application",
    "bloom_level": "Application",
-   "question": "An electricity retailer fine-tuned a model on a cloud AI platform using customer support chats, and a developer wants to publish the tuned model openly. Which advice from the security analyst is MOST accurate?",
+   "question": "A travel insurer fine-tuned a language model on customer claim emails using a cloud AI service, and a developer wants to publish it openly. Which advice from the security analyst is MOST accurate?",
    "options": {
-    "A": "Publishing is safe once the original chats are deleted",
+    "A": "Publishing is safe once the original emails are deleted",
     "B": "The model holds only numbers, so publishing reveals nothing",
     "C": "The provider protects tuned models, so publishing is its decision",
-    "D": "The model may reveal chat details, so protect it like the data"
+    "D": "The model may leak personal details, so protect it like the data"
    },
    "correct": "D",
    "key_concept": "A model tuned on sensitive data can leak that data, so it needs the same protection as the data it learned from.",
    "pre_read": "Picture a stranger downloading the published model and trying it out.",
-   "correct_explanation": "Models can memorize parts of their training data, and researchers have drawn names, email addresses and phone numbers out of language models by prompting them. A model tuned on support chats may therefore reveal customer details, so it needs the same protection as the chats. Deleting the original chats is the runner-up because it removes the source, but the tuned model keeps what it learned.",
+   "correct_explanation": "Models can memorize parts of their training data, and researchers have drawn email addresses, phone numbers and locations out of language models by prompting them. A model tuned on claim emails may therefore reveal customers' details, so it needs the same protection as the emails. Deleting the original emails is the runner-up because it removes the source, but the tuned model keeps what it learned.",
    "wrong_explanations": {
-    "A": "Closest choice: deleting the source chats does remove one copy of the data. But the tuned model keeps what it learned, so it can still reveal details.",
+    "A": "Closest choice: deleting the source emails does remove one copy of the data. But the tuned model keeps what it learned, so it can still reveal details.",
     "B": "Tempting because model files are numeric weights. But those weights can encode memorized training text that the right prompts draw back out.",
     "C": "Tempting because the model sits on the provider's platform. But the tuned model is the customer's asset, and the customer decides how it is shared."
    },
    "tips": [
     "Eliminate: B treats model weights as harmless numbers, and C hands the customer's sharing decision to the provider.",
-    "Final two: D beats A because the tuned model carries what it learned; deleting the source chats does not remove it from the model.",
+    "Final two: D beats A because the tuned model carries what it learned; deleting the source emails does not remove it from the model.",
     "Exam cue: a model trained on sensitive data inherits that data's sensitivity. Protect it like the data."
    ],
    "framework_ref": "NIST AI 100-2 E2025 Section 3.3.2 (Information Extraction: leaking sensitive training data)",
@@ -1624,7 +1624,7 @@
     "Training data leakage",
     "Customer-owned AI assets"
    ],
-   "_provenance": "Authored from concept: 'a tuned model carries patterns from its training data and needs the same protection' (notes 4.3.9 Shared Responsibility for AI Workloads). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 2, 30 Oct 2026.",
+   "_provenance": "Authored from concept: 'a tuned model carries patterns from its training data and needs the same protection' (notes 4.3.9 Shared Responsibility for AI Workloads). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 2, 30 Oct 2026. Standards audit fix (30 Oct 2026): scenario changed away from the notes 4.3.9 worked example; explanation matches the source's examples of leaked details.",
    "style_version": 2
   }
  ]
