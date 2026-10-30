@@ -959,15 +959,15 @@
    "correct": "B",
    "key_concept": "Log correlation depends on synchronized clocks; every system should take its time from one trusted source.",
    "pre_read": "Notice how big the gap between the logs is. Then ask what kind of problem causes a gap of that size.",
-   "correct_explanation": "Logs line up only when every system's clock is right, so syncing all clocks to one trusted time source, usually through the Network Time Protocol (NTP), fixes the cause. Converting to one time zone is the runner-up: it removes time-zone offsets, which come in whole or half hours, but these logs differ by a few minutes, which points to drifting clocks that conversion cannot correct.",
+   "correct_explanation": "Logs line up only when every system's clock is right, so syncing all clocks to one trusted time source, usually through the Network Time Protocol (NTP), fixes the cause. Converting to one time zone is the runner-up: it removes fixed time-zone offsets, usually whole hours, but these logs differ by a few minutes, which points to drifting clocks that conversion cannot correct.",
    "wrong_explanations": {
     "A": "Tempting because more history helps investigations. But keeping drifting timestamps for longer does not make them line up.",
-    "C": "Closest choice: mixed time zones do confuse timelines. But zone offsets come in whole or half hours, and these logs disagree by minutes, a sign of drifting clocks.",
+    "C": "Closest choice: mixed time zones do confuse timelines. But zone offsets are fixed, usually whole hours, and these logs disagree by minutes, a sign of drifting clocks.",
     "D": "Tempting because more detail feels useful. But extra entries carry the same wrong timestamps, so events still cannot be put in order."
    },
    "tips": [
     "Eliminate: A keeps logs longer and D logs more detail, but neither fixes timestamps from clocks that disagree.",
-    "Final two: B beats C because a few minutes' difference means drifting clocks; time-zone conversion fixes only zone offsets.",
+    "Final two: B beats C because a few minutes' difference means drifting clocks; time-zone conversion fixes only fixed zone offsets.",
     "Exam cue: when logs from different systems will not line up, think clock synchronization to one trusted time source."
    ],
    "framework_ref": "NIST SP 800-53 Rev. 5 SC-45(1) (System Time Synchronization | Synchronization with Authoritative Time Source); NIST SP 800-53 Rev. 5 AU-8 (Time Stamps)",
@@ -1057,7 +1057,7 @@
    "subtopic": "5.2 Security operations. Malware types",
    "difficulty": "foundational",
    "bloom_level": "Foundational",
-   "question": "A volunteer at a youth sports league installs a free photo-resizing tool, which works as promised but secretly opens a remote connection for an attacker. How should the IT technician MOST accurately classify it?",
+   "question": "A youth sports league volunteer installs a photo-resizing tool on a club laptop; it works as promised but secretly opens a remote connection for an attacker. How should the IT technician MOST accurately classify it?",
    "options": {
     "A": "A worm, because it reached the laptop across a network",
     "B": "A virus, because it arrived inside a program the user ran",
@@ -1170,7 +1170,7 @@
     "A": "Company email, with every message marked confidential",
     "B": "The company chat tool, which signs in with email accounts",
     "C": "A group chat on staff members' personal messaging apps",
-    "D": "The pre-arranged out-of-band channel named in the plan"
+    "D": "A separate out-of-band channel arranged before any incident"
    },
    "correct": "D",
    "key_concept": "Incident plans set up out-of-band channels in advance, so responders can coordinate if normal systems are compromised.",
@@ -1313,8 +1313,8 @@
    "options": {
     "A": "Email all staff, warning them not to open the messages",
     "B": "Shut down the whole email service until the investigation has ended",
-    "C": "Delete the phishing messages from every coworker's mailbox",
-    "D": "Disable the sending account and alert the incident response lead"
+    "C": "Delete the messages the account sent from every coworker's mailbox",
+    "D": "Disable the account that is sending the phishing messages"
    },
    "correct": "D",
    "key_concept": "Containment stops the spread at its source first; clean-up and eradication follow under the incident response lead.",
@@ -1350,7 +1350,7 @@
     "A": "Block the AI service's website at the web proxy straight away",
     "B": "Leave it out, since the inventory tracks company-owned hardware only",
     "C": "Add the AI service to the inventory and confirm its business owner",
-    "D": "Let the provider track it, since the service runs on its systems"
+    "D": "Let the provider track it, since the provider owns the systems"
    },
    "correct": "C",
    "key_concept": "Asset inventories include outside services and AI tools, each with a named owner; unknown assets are recorded before any removal decision.",
@@ -1458,7 +1458,7 @@
     "A": "Delete the rule at once to restore the approved configuration",
     "B": "File a change request now so the rule is approved retroactively",
     "C": "Leave it, since a senior engineer probably added it for a reason",
-    "D": "Report it as a possible security incident through the set procedure"
+    "D": "Report it as a possible security incident for responders to handle"
    },
    "correct": "D",
    "key_concept": "Unapproved changes are treated as possible security incidents until explained, and are reported instead of quietly undone.",
@@ -1525,7 +1525,7 @@
    "subtopic": "5.5 Security testing. Physical penetration tests",
    "difficulty": "application",
    "bloom_level": "Application",
-   "question": "During an authorized tailgating test at a garden-supply wholesaler, a staff member grabs the arm of the tester posing as a courier, and others gather angrily. What should the tester do FIRST?",
+   "question": "During a tailgating test the client approved at a garden-supply wholesaler, a staff member grabs the arm of the tester posing as a courier, and others gather angrily. What should the tester do FIRST?",
    "options": {
     "A": "Keep up the courier story to see whether staff follow procedure",
     "B": "Ask to be walked to reception, still posing as the delivery courier",
@@ -1602,7 +1602,7 @@
     "A": "Add 'never reveal internal data' to the chatbot's instructions",
     "B": "Retrain the chatbot on a larger set of help desk chats",
     "C": "Accept the finding, since phone numbers are rarely sensitive data",
-    "D": "Remove the chatbot's access to staff data it does not need"
+    "D": "Remove the chatbot's access to data it does not need"
    },
    "correct": "D",
    "key_concept": "Models stay open to prompt injection, so limit the data and actions an AI tool can reach instead of relying on instructions.",
