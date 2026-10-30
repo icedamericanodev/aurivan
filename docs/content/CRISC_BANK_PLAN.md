@@ -105,7 +105,30 @@ Same order as CC. Don't skip a step to go faster.
 
 ## 6. Pilot calibration rules
 
-Filled in from the pilot reviews (section 8). Each new batch applies them.
+From the pilot's four blind tests and four standards audits (30 Oct 2026).
+Every new batch applies them before review; they are also in the shared
+standard (`.claude/agents/crisc-standards-auditor.md`, "Calibration rules").
+
+1. **Lens words are not key-only.** "owner", "assess", "appetite",
+   "tolerance", "scenario", "objectives", "evidence", "register" also appear
+   in a distractor that stays wrong. Before the fix, a guesser who picked the
+   option with one of these words scored about half of each domain.
+2. **No option carries its own reason** ("since …", "because …", "so that …").
+3. **pre_read is a reading habit, never a reveal.**
+4. **The stem holds the deciding fact.** If the explanation beats the
+   runner-up with a fact, that fact is in the stem.
+5. **Parallel options:** similar length and form; the key is never the only
+   option that echoes a stem word.
+6. **No key cycle in file order.** Keys balanced and in mixed order.
+7. **The candidate is "the risk practitioner" or "the risk analyst".**
+   "Risk manager" only as another named role.
+8. **Money as `$600,000`.** Subtopic labels: code, ISACA heading in sentence
+   case, a period, a short neutral label.
+9. **Residual risk** is what remains after a response is IMPLEMENTED (ISACA
+   Glossary). A projection for planned controls is a **target**.
+10. **Don't mirror our other courses.** Check new items against the CISA and
+    CC banks for the same scenario and key (the pilot's crisc_d3_006 had
+    mirrored CISA d1_187).
 
 ## 7. Course description (draft for growth-marketer)
 

@@ -59,6 +59,16 @@ Read first:
 10. **Inclusive and global.** Neutral names, globally recognisable settings (hospital, bank, retailer, city council, university, logistics firm, manufacturer, SaaS provider), US spelling, they/them for people.
 11. **AI.** About 10% of each domain's items cover AI and machine-learning risk (see the blueprint's "AI across the domains"), with the same lens: AI risk has a business owner, goes in the register, and is analyzed against appetite.
 
+## Calibration rules (from the pilot reviews, 30 Oct 2026)
+Apply before any batch goes to review; audit against them. Full list and
+reasons: `docs/content/CRISC_BANK_PLAN.md` section 6.
+- Lens words (owner, assess, appetite, tolerance, scenario, objectives, evidence, register) also appear in a wrong option; at most 3 items per domain where one is key-only.
+- No option carries its own reason ("since", "because", "so that"); pre_read never reveals the key; the stem holds every fact the explanation uses against the runner-up.
+- Keys balanced and in mixed file order; options parallel in length and form.
+- The candidate is "the risk practitioner" or "the risk analyst"; money as `$600,000`; subtopic heading in sentence case.
+- Residual risk is after a response is implemented; a projection for planned controls is a target.
+- Check new items against `data/originals/` (CISA) and `data/cc/originals/` (CC) for mirrored scenarios.
+
 ## Notes (data/crisc/notes/d{N}.json)
 - Notes schema v2 (`docs/content/NOTES_SCHEMA_V2.md`), same shape as `data/cc/notes/d1.json`: `parts` = the outline parts (1A, 1B …), `topics` = the outline codes (1A1 …) in order, `subtopics` = `1A1.1`, `1A1.2` … (2–4 per topic).
 - `isaca_rule` states the CRISC decision rule for the subtopic. `audit_focus` is read as the practitioner's focus: `review` (what the practitioner examines), `evidence` (what shows it), `recommend` (what the practitioner proposes), `decides` (who owns the decision: risk owner, control owner, senior management, board).

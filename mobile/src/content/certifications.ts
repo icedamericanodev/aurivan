@@ -101,8 +101,9 @@ export const CERTIFICATIONS: Certification[] = [
       passingNote: 'ISACA reports scaled scores from 200–800; 450 is the passing mark.',
     },
     domains: [
-      // Verified 30 Oct 2026 against ISACA's candidate guide v1.26 (outline effective 2025, exam since
-      // 3 Nov 2025): titles and weights 26/22/32/20. Sources: docs/content/CRISC_BLUEPRINT.md.
+      // TO VERIFY before launch: the CRISC outline in force since 3 Nov 2025 is 26/22/32/20 (was 26/20/32/22),
+      // with Domain 2 "Risk Assessment" and Domain 4 "Technology and Security". Check the exact domain
+      // titles against ISACA's published outline (cert-blueprint-researcher, 27 Oct 2026).
       { id: '1', name: 'Governance', short: 'Governance', weight: 26, tone: 0 },
       { id: '2', name: 'Risk Assessment', short: 'Assessment', weight: 22, tone: 1 },
       { id: '3', name: 'Risk Response and Reporting', short: 'Response', weight: 32, tone: 2 },
