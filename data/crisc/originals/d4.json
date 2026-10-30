@@ -1,0 +1,731 @@
+{
+  "_meta": {
+    "comment": "Original CRISC practice questions for Domain 4 (Technology and Security), written to the CRISC exam content outline effective 2025. Every item is authored from public concepts and KaiSip's own CRISC study notes (data/crisc/notes/d4.json), with no reference to the CRISC Review Manual, ISACA's QAE database, ISACA's practice quiz or any prior question bank. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/crisc-standards-auditor.md. Not affiliated with or endorsed by ISACA®. CRISC® is a registered trademark of ISACA. Pilot batch crisc_d4_001 to crisc_d4_020, 30 Oct 2026.",
+    "schema_version": 1
+  },
+  "domain": 4,
+  "domain_name": "Technology and Security",
+  "weight": 20,
+  "questions": [
+    {
+      "id": "crisc_d4_001",
+      "domain": 4,
+      "subtopic": "4A1 Technology roadmaps and enterprise architecture (EA). Technology found outside the roadmap",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A risk practitioner at an insurance broker learns the marketing team has used an unapproved cloud survey tool for six months to collect client contact details. What should the practitioner do FIRST?",
+      "options": {
+        "A": "Find the tool's business owner and assess its risk against appetite",
+        "B": "Have IT block the tool until a full security review is done",
+        "C": "Add the tool to the technology roadmap as an approved service",
+        "D": "Report the marketing team's policy breach to the compliance function"
+      },
+      "correct": "A",
+      "key_concept": "Technology adopted outside the roadmap is assessed with its business owner against appetite before anyone blocks or approves it.",
+      "pre_read": "Notice the tool is already in use. Ask what the practitioner needs to know before any response is chosen.",
+      "correct_explanation": "An unapproved tool is a risk to understand before it is a problem to remove. Finding the business owner gives the risk an accountable decision-maker, and assessing it against appetite shows whether the client data exposure needs urgent treatment. Blocking first acts before analysis: it may disrupt a working process, push staff to another workaround and still leave six months of collected data unassessed.",
+      "wrong_explanations": {
+        "B": "Closest choice, because it stops new exposure. But blocking before analysis can disrupt the business and leaves the data already collected unassessed; containment follows a risk-based decision.",
+        "C": "Adding the tool to the roadmap approves it without any risk review, which is the very gap that made it a concern.",
+        "D": "A policy breach may need reporting later, but treating it as a conduct matter first leaves the client data risk unanalyzed and unowned."
+      },
+      "tips": [
+        "Eliminate: C approves the tool with no risk review, and D treats a data risk as a conduct issue before anyone knows its size.",
+        "Final two: A beats B because the practitioner finds an owner and analyzes before acting; blocking first is a response chosen without knowing the risk.",
+        "Exam cue: for shadow IT found in use, the FIRST step is usually to identify the owner and assess the risk, not to ban or approve the tool."
+      ],
+      "framework_ref": "NIST CSF 2.0 ID.AM-02 (inventories of software, services and systems managed by the organization are maintained); NIST CSF 2.0 ID.RA-07 (changes and exceptions are managed, assessed for risk impact, recorded and tracked)",
+      "related_concepts": [
+        "Shadow IT",
+        "Technology roadmap",
+        "Risk ownership"
+      ],
+      "_provenance": "Authored from concept: notes 4A1.2 Technology Roadmaps and Off-Roadmap Technology (assess off-roadmap technology with its owner instead of banning or approving it). Original insurance broker survey-tool scenario written for KaiSip; no ISACA Review Manual, QAE or prep-bank text used. CRISC D4 pilot batch, 30 Oct 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_002",
+      "domain": 4,
+      "subtopic": "4A1 Technology roadmaps and enterprise architecture (EA). Legacy system risk",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "At a county court service, the operations manager says a case-filing system on unsupported software needs no risk entry because it has not failed in twelve years. What is the risk practitioner's BEST response?",
+      "options": {
+        "A": "Agree, since twelve years without failure shows the likelihood is low",
+        "B": "Ask internal audit to test the system before recording any risk",
+        "C": "Log the risk, owned by the manager, and rate it against appetite",
+        "D": "Run a vulnerability scan to prove the exposure before recording a risk"
+      },
+      "correct": "C",
+      "key_concept": "Legacy and unsupported systems belong in the risk register with a business owner, whatever their reliability record.",
+      "pre_read": "Separate what the manager observed, reliability, from what drives the risk, the loss of vendor support.",
+      "correct_explanation": "Unsupported software is a known exposure whatever its track record: no patches arrive, skills fade and the impact stays tied to court filings. Logging the risk with the manager as owner makes someone accountable, and rating it against appetite shows whether action is needed. A scan adds useful evidence for the rating, but waiting for it before recording leaves a known risk invisible and unowned.",
+      "wrong_explanations": {
+        "A": "Tempting because the system has been reliable. But past uptime says nothing about missing patches; the likelihood of compromise rises once support ends, and the impact is unchanged.",
+        "B": "Internal audit gives independent assurance; it does not run the risk register. Recording and rating the risk is the practitioner's job and should not wait for an audit.",
+        "D": "Closest choice: scan results sharpen the rating. But unsupported software is already a known risk, so it is recorded and owned now, with the scan informing the analysis."
+      },
+      "tips": [
+        "Eliminate: A reads past reliability as low likelihood, and B hands the practitioner's risk recording to internal audit, which gives assurance but does not run the register.",
+        "Final two: C beats D because a known exposure is recorded and owned first; scans refine the rating but are not a gate before the risk becomes visible.",
+        "Exam cue: it still works is never a risk assessment. Legacy and unsupported systems go in the register with a business owner, then get rated."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 SA-22 (Unsupported System Components); NIST CSF 2.0 PR.PS-02 (software is maintained, replaced and removed commensurate with risk)",
+      "related_concepts": [
+        "Technical debt",
+        "Risk register",
+        "Unsupported components"
+      ],
+      "_provenance": "Authored from concept: notes 4A1.3 Technical Debt and Legacy Systems (exam trap: leaving a reliable legacy system off the register). Original county court case-filing scenario written for KaiSip; no ISACA Review Manual, QAE or prep-bank text used. CRISC D4 pilot batch, 30 Oct 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_003",
+      "domain": 4,
+      "subtopic": "4A2 Operations management. Change process findings",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A risk practitioner reviews a retailer's change management process after two outages. Which finding should concern the practitioner MOST?",
+      "options": {
+        "A": "Standard changes go live with no change advisory board review",
+        "B": "Emergency changes skip prior approval and are seldom reviewed afterward",
+        "C": "The change advisory board meets weekly instead of before each new change",
+        "D": "Team leads, not the change board, approve low-risk normal changes"
+      },
+      "correct": "B",
+      "key_concept": "Emergency changes are acceptable only when each one receives a timely after-the-fact review.",
+      "pre_read": "Sort the findings into design choices and real control gaps before judging which matters most.",
+      "correct_explanation": "Emergency changes may skip prior approval only because a review follows soon after. When most are never reviewed, untested or unauthorized changes sit in production unseen, a plausible cause of the outages. Standard changes without board review are working as designed: they are pre-approved, low-risk and run from a set procedure, so the missing check there is intended, not a gap.",
+      "wrong_explanations": {
+        "A": "Closest choice, since it also sounds like missing review. But standard changes are pre-approved by design because they are low risk and repeatable.",
+        "C": "A weekly board is normal practice; urgent work goes through the emergency route. Meeting cadence is not a weakness in itself.",
+        "D": "Delegating approval of low-risk changes to team leads matches review effort to risk, which is sound design rather than a gap."
+      },
+      "tips": [
+        "Eliminate: C describes a normal board cadence, and D describes risk-based delegation of approval; both are design choices, not weaknesses.",
+        "Final two: B beats A because standard changes are pre-approved by design, while emergency changes depend on an after-the-fact review that is not happening.",
+        "Exam cue: when a control lets a step be skipped, look for the follow-up check that makes skipping safe; a missing follow-up is the real gap."
+      ],
+      "framework_ref": "NIST SP 800-128 Section 3.3.2 (Implement the Configuration Change Control Process: unscheduled changes are reviewed by the CCB as soon as practical); NIST SP 800-53 Rev. 5 CM-3 (Configuration Change Control)",
+      "related_concepts": [
+        "Emergency change",
+        "Standard change",
+        "Change advisory board"
+      ],
+      "_provenance": "Authored from concept: notes 4A2.1 Change and Configuration Management (emergency changes need a timely retrospective review; standard changes are pre-approved). Original retailer outage scenario written for KaiSip; no ISACA Review Manual, QAE or prep-bank text used. CRISC D4 pilot batch, 30 Oct 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_004",
+      "domain": 4,
+      "subtopic": "4A2 Operations management. Recurring service failures",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Self-service check-in kiosks at a regional airline freeze several times a month, and the service desk restores each one within minutes and closes the ticket. What should the risk practitioner recommend as MOST important?",
+      "options": {
+        "A": "Set a tighter target for restoring each kiosk within five minutes",
+        "B": "Replace the kiosks with a newer model from a different vendor",
+        "C": "Track kiosk outages as a key risk indicator on the dashboard",
+        "D": "Raise a problem record to find and permanently remove the root cause"
+      },
+      "correct": "D",
+      "key_concept": "Incident management restores service; problem management removes the root cause of repeated incidents.",
+      "pre_read": "Count how often the same failure returns, then ask which process deals with causes rather than symptoms.",
+      "correct_explanation": "Repeated incidents with the same symptom point to an unresolved cause. Incident management has done its job by restoring service; problem management now needs to find why the kiosks freeze and remove the cause through a controlled change, which lowers future likelihood. Tracking outages as an indicator is useful monitoring, but it only measures the risk; it does not reduce it.",
+      "wrong_explanations": {
+        "A": "A tighter restore target improves incident handling but leaves the cause in place, so the freezes and passenger delays keep recurring.",
+        "B": "Replacing hardware before the cause is known may not fix it; the fault could be software, network or configuration, and the money may be wasted.",
+        "C": "Closest choice: an indicator makes the trend visible to owners. But measuring recurrence does not stop it; the root cause still needs to be found."
+      },
+      "tips": [
+        "Eliminate: A speeds up incident handling without touching the cause, and B picks a fix before root cause analysis shows what is actually failing.",
+        "Final two: D beats C because problem management removes the cause and lowers likelihood, while an indicator only reports a risk that keeps recurring.",
+        "Exam cue: repeated incidents with the same symptom call for problem management and root cause analysis, not faster restores."
+      ],
+      "framework_ref": "NIST CSF 2.0 RS.AN-03 (analysis is performed to establish what has taken place during an incident and the root cause of the incident); NIST CSF 2.0 ID.IM-03 (improvements are identified from execution of operational processes, procedures and activities)",
+      "related_concepts": [
+        "Incident management",
+        "Problem management",
+        "Root cause analysis"
+      ],
+      "_provenance": "Authored from concept: notes 4A2.2 Incident and Problem Management (fast closure is not risk reduction; repeats call for a problem record). Original airline kiosk scenario written for KaiSip; no ISACA Review Manual, QAE or prep-bank text used. CRISC D4 pilot batch, 30 Oct 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_005",
+      "domain": 4,
+      "subtopic": "4A3 System development life cycle (SDLC). Acceptance testing roles",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "To meet a launch date, a university's project manager plans to have developers run user acceptance testing on a new student-fees system. What is the risk practitioner's BEST recommendation?",
+      "options": {
+        "A": "Allow it if developers document every test case and its result",
+        "B": "Ask internal audit to review the test results before go-live",
+        "C": "Have finance users perform and sign off the acceptance testing",
+        "D": "Delay launch until an external testing firm completes the tests"
+      },
+      "correct": "C",
+      "key_concept": "User acceptance testing is performed and signed off by business users, independent of the developers who built the system.",
+      "pre_read": "Ask what acceptance testing is meant to prove, and who is able to prove it.",
+      "correct_explanation": "User acceptance testing confirms that the system meets the business's needs, so the people who will rely on it, here finance staff, should run it and sign it off. That keeps the check independent of the builders and puts acceptance with the business. An external firm adds independence but cannot judge business fit, and delaying the launch is the sponsor's decision, not the practitioner's.",
+      "wrong_explanations": {
+        "A": "Documentation records what developers tested, but they still test against their own understanding, so the check is neither independent nor business-led.",
+        "B": "Internal audit provides assurance on the process, not acceptance of the system. Reviewing results after the fact does not replace testing by users.",
+        "D": "Closest choice: an external firm is independent of the developers. But only users can confirm business fit, and launch dates belong to the sponsor."
+      },
+      "tips": [
+        "Eliminate: A documents developer testing without making it independent, and B gives the job to internal audit, whose role is assurance, not system acceptance.",
+        "Final two: C beats D because acceptance is about business needs, so business users test and sign off; outside testers are independent but cannot judge fit.",
+        "Exam cue: in SDLC items, developers build and test their code, business users accept the system, and owners accept residual risk."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 SA-3 (System Development Life Cycle); NIST SP 800-53 Rev. 5 AC-5 (Separation of Duties)",
+      "related_concepts": [
+        "User acceptance testing",
+        "Separation of duties",
+        "Phase gate"
+      ],
+      "_provenance": "Authored from concept: notes 4A3.1 Risk Across the SDLC Phases (exam trap: developers performing user acceptance testing). Original university student-fees scenario written for KaiSip; no ISACA Review Manual, QAE or prep-bank text used. CRISC D4 pilot batch, 30 Oct 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_006",
+      "domain": 4,
+      "subtopic": "4A3 System development life cycle (SDLC). Third-party AI model update",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A health insurer's chatbot vendor will replace the underlying AI model next month, saying the interface and prices stay the same. What should the risk practitioner recommend FIRST?",
+      "options": {
+        "A": "Handle the swap as a change, validating the new model before use",
+        "B": "Accept the vendor's assurance, since the interface is not changing",
+        "C": "Watch customer complaints after the swap and escalate any rise",
+        "D": "Ask the vendor to keep the current model under the existing contract"
+      },
+      "correct": "A",
+      "key_concept": "A vendor's change to the AI model behind a service is a change that needs validation before use.",
+      "pre_read": "Ask where the chatbot's behavior comes from, and whether an unchanged interface means unchanged answers.",
+      "correct_explanation": "A new model can answer the same questions differently even when the interface and price stay fixed, so the swap is a change to a member-facing process. Treating it as one means the insurer's owner sees validation results, such as accuracy and harmful-answer tests, before members are exposed. Monitoring complaints is a useful second layer, but it detects harm only after members have received wrong answers.",
+      "wrong_explanations": {
+        "B": "Tempting because nothing visible changes. But behavior lives in the model, not the interface, and the insurer stays accountable for the answers its members receive.",
+        "C": "Closest choice: monitoring catches problems in production. But it is detective and late; members would already have received any wrong or harmful answers.",
+        "D": "Freezing the vendor's model resists normal change instead of managing it, and the vendor may refuse; assessing the new model is the risk-based step."
+      },
+      "tips": [
+        "Eliminate: B trusts an unchanged interface to mean unchanged behavior, and D tries to stop the vendor's change instead of assessing it.",
+        "Final two: A beats C because validating before use prevents harm to members, while complaint monitoring only detects it after the new model is live.",
+        "Exam cue: a new model, new training data or a retrained model is a change, even from a vendor; validate and approve it before go-live."
+      ],
+      "framework_ref": "NIST AI 100-1 (AI RMF 1.0) MANAGE 3.1 (AI risks and benefits from third-party resources are regularly monitored and risk controls are applied and documented); NIST SP 800-53 Rev. 5 CM-4 (Impact Analyses)",
+      "related_concepts": [
+        "Model validation",
+        "Third-party AI",
+        "Change impact analysis"
+      ],
+      "_provenance": "Authored from concept: notes 4A3.3 AI Models in the SDLC (a model change is a change; validate and approve before deployment), applied to a vendor-hosted model. Original health insurer chatbot scenario written for KaiSip; no ISACA Review Manual, QAE or prep-bank text used. CRISC D4 pilot batch, 30 Oct 2026. AI item.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_007",
+      "domain": 4,
+      "subtopic": "4A4 Data lifecycle management. Approving a new data use",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A grocery chain's analytics team wants to copy loyalty-card purchase records into a new reporting tool. Who is the MOST appropriate person to approve this new use of the data?",
+      "options": {
+        "A": "The IT manager who administers the database holding the records",
+        "B": "The risk analyst who assessed the reporting tool's security",
+        "C": "The CISO, who sets the organization's data security policy",
+        "D": "The business manager accountable for the customer records"
+      },
+      "correct": "D",
+      "key_concept": "The data owner, an accountable business manager, approves access to and new uses of data; IT is the custodian.",
+      "pre_read": "Separate who runs the systems from who is accountable for the data and its uses.",
+      "correct_explanation": "The data owner, the business manager accountable for the customer records, sets the rules for using the data. They can judge whether the reporting use fits the purpose the data was collected for and its classification. The CISO sets security policy and advises on controls, but does not own business data or decide its uses; the IT manager is the custodian who carries out the owner's rules.",
+      "wrong_explanations": {
+        "A": "Tempting because IT runs the database. But IT is the custodian: it applies the owner's rules and cannot judge the data's business value or permitted uses.",
+        "B": "The analyst assesses and advises on the tool's risk; approving a new use of business data is the data owner's decision.",
+        "C": "Closest choice: the CISO sets security policy and can advise on controls. But policy authority is not data ownership; the accountable business manager approves uses."
+      },
+      "tips": [
+        "Eliminate: A names the custodian, who carries out the owner's rules, and B names the risk analyst, who advises but does not approve uses of business data.",
+        "Final two: D beats C because data ownership sits with the accountable business manager; the CISO sets security policy but does not decide business uses.",
+        "Exam cue: who decides access, use or retention of data? The data owner, a business role, not IT, security or the risk function."
+      ],
+      "framework_ref": "NIST SP 800-12 Rev. 1 Section 3.4 (Information Owner/Steward)",
+      "related_concepts": [
+        "Data owner",
+        "Data custodian",
+        "Data classification"
+      ],
+      "_provenance": "Authored from concept: notes 4A4.1 Data Lifecycle, Classification and Ownership (data belongs to the business; IT is custodian). Original grocery loyalty-data scenario written for KaiSip; no ISACA Review Manual, QAE or prep-bank text used. CRISC D4 pilot batch, 30 Oct 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_008",
+      "domain": 4,
+      "subtopic": "4A4 Data lifecycle management. Sanitizing solid-state media",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A school district will donate retired staff laptops whose solid-state drives held student records. Which approach should the risk practitioner recommend as BEST for making the data unrecoverable?",
+      "options": {
+        "A": "Delete the user folders and empty the recycle bin on each laptop",
+        "B": "Purge each drive, such as by cryptographic erase, and record it",
+        "C": "Reformat each drive and reinstall a clean operating system",
+        "D": "Overwrite each drive with zeros once using standard disk software"
+      },
+      "correct": "B",
+      "key_concept": "Sanitization must match the media: solid-state drives need a purge method, and the result is recorded.",
+      "pre_read": "Note the drive type and that the laptops must stay usable, then rule out methods that leave data behind.",
+      "correct_explanation": "Solid-state drives spread data across spare cells that normal writes cannot reach, so deleting, reformatting or a standard overwrite can leave student records recoverable. A purge method such as cryptographic erase defeats laboratory recovery while keeping the laptops usable for donation. Recording the method and result gives evidence the data owner can rely on. Overwriting is a valid clear method on magnetic disks, not a reliable one here.",
+      "wrong_explanations": {
+        "A": "Deleting files removes pointers, not data; common recovery tools can often restore deleted student records.",
+        "C": "Reformatting rebuilds the file system but usually leaves the underlying data in place and recoverable.",
+        "D": "Closest choice: overwriting is a recognized clear method on magnetic disks. On solid-state drives, wear leveling leaves cells the overwrite never reaches."
+      },
+      "tips": [
+        "Eliminate: A and C only remove file pointers or the file system, so the records stay recoverable with common tools.",
+        "Final two: B beats D because purge methods defeat recovery on solid-state drives, while a standard overwrite can miss cells hidden by wear leveling.",
+        "Exam cue: deleting is not sanitizing. Match the method, clear, purge or destroy, to the media type and data sensitivity, and keep a record."
+      ],
+      "framework_ref": "NIST SP 800-88 Rev. 2 Section 3.1 (Sanitization Methods: clear, purge and destroy); NIST SP 800-53 Rev. 5 MP-6 (Media Sanitization)",
+      "related_concepts": [
+        "Media sanitization",
+        "Cryptographic erase",
+        "Data disposal"
+      ],
+      "_provenance": "Authored from concept: notes 4A4.2 Retention and Sanitization (deleting is not sanitizing; method matched to media). Original school district laptop donation scenario written for KaiSip; no ISACA Review Manual, QAE or prep-bank text used. CRISC D4 pilot batch, 30 Oct 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_009",
+      "domain": 4,
+      "subtopic": "4A5 Portfolio and project management. Investment prioritization",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A hospital's investment committee can fund one of two projects with similar returns; one would retire a system tied to a high-rated patient-safety risk. What is the MOST useful input from the risk practitioner?",
+      "options": {
+        "A": "A comparison of how each project changes the enterprise risk profile",
+        "B": "A ranking of the two projects by projected return on investment",
+        "C": "A detailed security test plan for the systems each project delivers",
+        "D": "The risk logs each project manager keeps for their own project"
+      },
+      "correct": "A",
+      "key_concept": "Portfolio decisions weigh value and risk together, including the enterprise risk a project would reduce.",
+      "pre_read": "Note what the two projects share and what separates them, then ask which information shows that difference.",
+      "correct_explanation": "With returns roughly equal, the deciding difference is risk. Showing how each project would change the enterprise risk profile, including the patient-safety risk one would reduce, lets the committee weigh value and risk together and make the call. Project risk logs cover delivery risks such as delays and budget, not the enterprise exposure each choice leaves behind, so they cannot answer the committee's question.",
+      "wrong_explanations": {
+        "B": "Return alone cannot separate two projects with similar returns, and it hides the risk reduction one of them offers.",
+        "C": "Security testing matters later in delivery; it does not help the committee choose which investment best balances value and risk.",
+        "D": "Closest choice: project logs contain real risk data. But they track delivery risks to each project, not how each choice changes enterprise exposure."
+      },
+      "tips": [
+        "Eliminate: B ranks on return, which cannot separate projects with similar returns, and C offers delivery-stage testing that does not inform an investment choice.",
+        "Final two: A beats D because portfolio decisions need the enterprise risk view; project logs show delivery risk, not the exposure each choice leaves.",
+        "Exam cue: in portfolio items, the practitioner gives decision-makers value and risk together, including risks a project would reduce; the committee decides."
+      ],
+      "framework_ref": "NIST CSF 2.0 GV.RM-03 (cybersecurity risk management activities and outcomes are included in enterprise risk management processes)",
+      "related_concepts": [
+        "Portfolio management",
+        "Enterprise risk profile",
+        "Investment committee"
+      ],
+      "_provenance": "Authored from concept: notes 4A5.1 Portfolio Management by Value and Risk (score value and risk together, counting risks a project reduces). Original hospital investment scenario written for KaiSip; no ISACA Review Manual, QAE or prep-bank text used. CRISC D4 pilot batch, 30 Oct 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_010",
+      "domain": 4,
+      "subtopic": "4A5 Portfolio and project management. Risk acceptance in Agile delivery",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A pension fund's Agile project keeps its own risk log, where the scrum team has marked as accepted a weak access control that will remain after go-live. What should the risk practitioner do FIRST?",
+      "options": {
+        "A": "Ask the scrum team to fix the control in the next sprint",
+        "B": "Record the team's acceptance and monitor the control after go-live",
+        "C": "Escalate it to the enterprise register and the business risk owner",
+        "D": "Stop the release until the access control weakness is fixed"
+      },
+      "correct": "C",
+      "key_concept": "Project risks that outlive the project go to the enterprise register and the business risk owner for a decision.",
+      "pre_read": "Check who marked the risk accepted and whether that role can accept a risk that lasts beyond the project.",
+      "correct_explanation": "A risk that will outlive the project becomes an operational risk, so a scrum team cannot accept it on the enterprise's behalf. Escalating it to the enterprise register puts it before the business risk owner, who can accept it within appetite or require treatment. Asking the team to fix it may be the eventual answer, but choosing the response before the owner weighs the risk skips the decision.",
+      "wrong_explanations": {
+        "A": "Closest choice: fixing the weakness may be right. But the team would be choosing the response; the owner first decides whether to fix, compensate or accept.",
+        "B": "Recording the team's acceptance treats a delivery team as the risk owner. Operational risk after go-live must be accepted by the accountable business owner.",
+        "D": "The practitioner advises and escalates but does not control releases; halting one is the sponsor's or owner's call."
+      },
+      "tips": [
+        "Eliminate: B lets a delivery team accept an operational risk, and D has the practitioner halting a release, a decision that belongs to the sponsor or owner.",
+        "Final two: C beats A because the owner decides the response first; asking the team to fix it picks a treatment before the right person has weighed the risk.",
+        "Exam cue: project risks that remain after go-live move to the enterprise register and the business owner; delivery teams do not accept them."
+      ],
+      "framework_ref": "NIST CSF 2.0 GV.RM-03 (cybersecurity risk management activities and outcomes are included in enterprise risk management processes); NIST CSF 2.0 GV.RR-02 (roles, responsibilities and authorities related to cybersecurity risk management are established, communicated, understood and enforced)",
+      "related_concepts": [
+        "Agile delivery",
+        "Risk acceptance",
+        "Enterprise risk register"
+      ],
+      "_provenance": "Authored from concept: notes 4A5.2 Project Risk and Agile Delivery (exam trap: project risk log kept apart from the enterprise register). Original pension fund Agile scenario written for KaiSip; no ISACA Review Manual, QAE or prep-bank text used. CRISC D4 pilot batch, 30 Oct 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_011",
+      "domain": 4,
+      "subtopic": "4A6 Technology resilience and disaster response/recovery. Shared recovery dependency",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A payroll provider's disaster recovery site is in another city but relies on the same internet carrier as its main data center. What should the risk practitioner do FIRST?",
+      "options": {
+        "A": "Ask the carrier for its outage history and service-level commitments",
+        "B": "Move the recovery site to a city served by another carrier",
+        "C": "Recommend contracting a second carrier for the recovery site",
+        "D": "Assess whether losing the shared carrier would breach the payroll RTO"
+      },
+      "correct": "D",
+      "key_concept": "A dependency shared by primary and recovery sites is analyzed against recovery objectives before a treatment is chosen.",
+      "pre_read": "Look for anything the two sites have in common, then ask what must be known before fixing it.",
+      "correct_explanation": "A shared carrier is a single point of failure that could take down both sites, but the size of the risk depends on what an outage would do to payroll recovery. Assessing it against the recovery time objective (RTO) shows whether the exposure is within tolerance and what treatment is justified. A second carrier may well be the answer, yet recommending it before analysis skips the cost-benefit judgment the owner needs.",
+      "wrong_explanations": {
+        "A": "Outage history and service levels describe the carrier, not the effect of losing it. A service credit does not get payroll out on time.",
+        "B": "Relocating the site is a costly treatment chosen before the risk is analyzed, and the RTO might be met far more cheaply.",
+        "C": "Closest choice: diverse carriers remove the shared dependency. But the practitioner first analyzes the impact so the owner can weigh the fix against its cost."
+      },
+      "tips": [
+        "Eliminate: A gathers assurances about the carrier rather than the impact of losing it, and B jumps to a costly relocation before the risk is sized.",
+        "Final two: D beats C because analysis comes before treatment; the RTO comparison tells the owner whether a second carrier is worth its cost.",
+        "Exam cue: when a recovery design shares a dependency with production, first measure the impact against RTO and RPO, then recommend a treatment."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 CP-8(2) (Telecommunications Services | Single Points of Failure); NIST SP 800-34 Rev. 1 Section 3.2.1 (Determine Business Processes and Recovery Criticality: MTD, RTO and RPO)",
+      "related_concepts": [
+        "Single point of failure",
+        "Recovery time objective",
+        "Alternate site"
+      ],
+      "_provenance": "Authored from concept: notes 4A6.1 Recovery Strategies and Alternate Sites (shared dependencies are single points of failure; judge the design against RTO). Original payroll provider carrier scenario written for KaiSip; no ISACA Review Manual, QAE or prep-bank text used. CRISC D4 pilot batch, 30 Oct 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_012",
+      "domain": 4,
+      "subtopic": "4A6 Technology resilience and disaster response/recovery. Ransomware restore sequence",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Ransomware has encrypted a distributor's order system, and the operations director urges an immediate restore from last night's backup to resume shipping. What should the risk practitioner advise as the BEST next step?",
+      "options": {
+        "A": "Restore from last night's backup now to meet the recovery target",
+        "B": "Contain the attack and verify the backup is clean before restoring",
+        "C": "Pay the ransom if it costs less than the expected outage losses",
+        "D": "Restore from an older backup, taken before the attack likely began"
+      },
+      "correct": "B",
+      "key_concept": "During ransomware recovery, contain the attack and verify backup integrity before restoring.",
+      "pre_read": "Ask whether the attacker could still be present, and what that means for anything restored now.",
+      "correct_explanation": "Restoring while the attacker still has access, or from a backup that holds the malware, invites a second encryption and a longer outage. Containing the attack and verifying the backup is clean comes first, then restoration. An older backup lowers the chance of restoring malware, but without containment the attacker can simply encrypt the restored system again, and an older copy also loses more orders.",
+      "wrong_explanations": {
+        "A": "Tempting because it is fastest. But if the attacker is still inside or the backup carries the malware, restored systems are encrypted again.",
+        "C": "Paying is a senior management and legal decision, does not guarantee recovery and may breach sanctions rules; it is not a choice made on cost alone.",
+        "D": "Closest choice: an older copy is less likely to hold malware. But without containment the attacker can re-encrypt it, and it loses more data."
+      },
+      "tips": [
+        "Eliminate: A restores into a live attack, and C reduces a legal and senior management decision about paying criminals to a cost comparison.",
+        "Final two: B beats D because containment must come first; an older backup without containment can be encrypted again and costs extra lost data.",
+        "Exam cue: in ransomware recovery the order is contain, verify the backup is clean, then restore, even under pressure to resume quickly."
+      ],
+      "framework_ref": "NIST CSF 2.0 RS.MI-01 (incidents are contained); NIST CSF 2.0 RC.RP-03 (the integrity of backups and other restoration assets is verified before using them for restoration)",
+      "related_concepts": [
+        "Ransomware recovery",
+        "Backup integrity",
+        "Containment"
+      ],
+      "_provenance": "Authored from concept: notes 4A6.2 Backups and Ransomware Recovery (contain, verify the backup is clean, then restore). Original distributor order-system scenario written for KaiSip; no ISACA Review Manual, QAE or prep-bank text used. CRISC D4 pilot batch, 30 Oct 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_013",
+      "domain": 4,
+      "subtopic": "4A7 Emerging technologies. Vendor claims for a new platform",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A retail bank's innovation team wants to adopt a blockchain trade-finance platform, citing the vendor's claim that it is tamper-proof. What should the risk practitioner do FIRST?",
+      "options": {
+        "A": "Approve a pilot, since a tamper-proof ledger removes fraud risk",
+        "B": "Advise against adoption until the technology is more mature",
+        "C": "Assess its risks and benefits against the bank's objectives and appetite",
+        "D": "Request independent certification of the vendor's platform security controls"
+      },
+      "correct": "C",
+      "key_concept": "Emerging technology is assessed for both risks and benefits against objectives and appetite before adoption.",
+      "pre_read": "Separate what the vendor claims from what the bank still needs to know about its own use.",
+      "correct_explanation": "A vendor's tamper-proof claim covers the ledger, not the bank's whole use: key management, smart-contract errors, legal standing and integration all carry risk, and the platform may also offer real gains. Assessing risks and benefits against objectives and appetite gives senior management a basis to adopt, adapt or decline. Independent certification is useful evidence within that assessment, but it describes vendor controls, not fit.",
+      "wrong_explanations": {
+        "A": "Tamper evidence does not stop fraud through stolen keys or false data entered at the start, and approving is not the practitioner's call.",
+        "B": "Advising against adoption on maturity alone forgoes possible value without analysis; uncertainty calls for assessment, not a reflex no.",
+        "D": "Closest choice: certification tests the vendor's claims. But it covers the vendor's controls at a point in time, not the bank's use, benefits or appetite."
+      },
+      "tips": [
+        "Eliminate: A takes the vendor's claim as proof and has the practitioner approve, and B rejects the technology without weighing its benefits or risks.",
+        "Final two: C beats D because a fit-specific assessment of risks and benefits is the basis for the decision; certification is one input about vendor controls.",
+        "Exam cue: for emerging technology, assess both threats and opportunities against objectives and appetite before anyone adopts or bans it."
+      ],
+      "framework_ref": "NIST CSF 2.0 GV.RM-07 (strategic opportunities or positive risks are characterized and are included in organizational cybersecurity risk discussions); NIST CSF 2.0 ID.RA-10 (critical suppliers are assessed prior to acquisition)",
+      "related_concepts": [
+        "Emerging technology",
+        "Opportunity",
+        "Vendor claims"
+      ],
+      "_provenance": "Authored from concept: notes 4A7.1 Evaluating Emerging Technologies (neither ban nor adopt on vendor claims; weigh threats and opportunities). Original bank blockchain scenario written for KaiSip; no ISACA Review Manual, QAE or prep-bank text used. CRISC D4 pilot batch, 30 Oct 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_014",
+      "domain": 4,
+      "subtopic": "4A7 Emerging technologies. High-impact AI before go-live",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A city council plans to rank housing-assistance applications with a vendor's AI tool whose model scored well in the vendor's own tests. What should the risk practitioner recommend FIRST?",
+      "options": {
+        "A": "Assess the tool's bias and accuracy on the council's own applicants",
+        "B": "Rely on the vendor's test results, since the vendor built the model",
+        "C": "Have caseworkers review every ranking before any decision is issued",
+        "D": "Limit the tool to ranking applications from a single district at first"
+      },
+      "correct": "A",
+      "key_concept": "High-impact AI is assessed on the organization's own data and use before controls are chosen or the tool goes live.",
+      "pre_read": "Notice whose data the vendor's tests used, and how serious the decisions are for the people ranked.",
+      "correct_explanation": "Housing assistance rankings affect people's lives, and a vendor's tests on its own data say little about bias or accuracy for the council's applicants. Assessing the tool on local data comes first, because it shows whether the risk is within appetite and which controls are needed. Caseworker review is a likely control, but adding it before the assessment chooses a treatment blind, and reviewers tend to follow a biased ranking.",
+      "wrong_explanations": {
+        "B": "Vendor tests use the vendor's data and goals. The council remains accountable for decisions about its applicants and needs results on its own population.",
+        "C": "Closest choice: human review is a strong control for high-impact AI. But it is a treatment chosen before the risk is known, and reviewers often defer to rankings.",
+        "D": "A smaller rollout still exposes real applicants in that district to an unassessed tool; limiting scope does not replace assessment."
+      },
+      "tips": [
+        "Eliminate: B accepts the vendor's own tests as proof for a different population, and D narrows the rollout but still runs an unassessed tool on real applicants.",
+        "Final two: A beats C because assessment comes before treatment; human review may be needed, but only local bias and accuracy results show how much.",
+        "Exam cue: for high-impact AI, the FIRST step is an assessment on the organization's own data and use, then controls such as human oversight."
+      ],
+      "framework_ref": "NIST AI 100-1 (AI RMF 1.0) MEASURE 2.11 (fairness and bias as identified in the MAP function are evaluated and results are documented); NIST AI 100-1 (AI RMF 1.0) MANAGE 1.1 (a determination is made as to whether the AI system achieves its intended purposes and whether its development or deployment should proceed)",
+      "related_concepts": [
+        "AI bias",
+        "Human oversight",
+        "Third-party AI"
+      ],
+      "_provenance": "Authored from concept: notes 4A7.2 AI and Machine Learning Adoption (assess AI use against appetite before go-live; vendor reputation does not transfer accountability). Original city council housing-assistance scenario written for KaiSip; no ISACA Review Manual, QAE or prep-bank text used. CRISC D4 pilot batch, 30 Oct 2026. AI item.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_015",
+      "domain": 4,
+      "subtopic": "4B1 Security concepts, frameworks and standards. Conflicting duties",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "At a charity's finance office, one employee can add new suppliers, approve their invoices and release payments. Which security principle does this arrangement MOST directly violate, in the risk practitioner's view?",
+      "options": {
+        "A": "Least privilege, because the employee holds unusually broad finance access",
+        "B": "Separation of duties, because one person runs the full payment cycle",
+        "C": "Defense in depth, because payments depend on a single control layer",
+        "D": "Need to know, because the employee can view every supplier record"
+      },
+      "correct": "B",
+      "key_concept": "Separation of duties splits conflicting steps of a process so no one person can complete and conceal misuse alone.",
+      "pre_read": "List the steps one person controls, then ask what they could do with all of them together.",
+      "correct_explanation": "Adding suppliers, approving invoices and releasing payments are conflicting duties: together they let one person create a fake supplier, approve its invoice and pay it, with no one else involved. That is a separation of duties failure. Least privilege is the close runner-up, but each right might be justified for some finance role; the danger comes from combining them in one person.",
+      "wrong_explanations": {
+        "A": "Closest choice: the access is broad. But least privilege asks whether each right is needed; the real flaw is that one person holds every conflicting step.",
+        "C": "Defense in depth is about layering different controls around an asset; the core issue here is who holds which duties in one process.",
+        "D": "Need to know limits who can view information. The risk here is not viewing supplier data but completing a payment fraud alone."
+      },
+      "tips": [
+        "Eliminate: C concerns layers of controls and D concerns who may view information; neither addresses one person completing a whole transaction.",
+        "Final two: B beats A because the danger is the combination of conflicting duties; least privilege judges each right alone, separation of duties judges the set.",
+        "Exam cue: when one person can initiate, approve and execute the same transaction, the principle at stake is separation of duties."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 AC-5 (Separation of Duties)",
+      "related_concepts": [
+        "Separation of duties",
+        "Least privilege",
+        "Payment fraud"
+      ],
+      "_provenance": "Authored from concept: notes 4B1.1 Core Security Principles (separation of duties versus least privilege). Original charity finance-office scenario written for KaiSip; no ISACA Review Manual, QAE or prep-bank text used. CRISC D4 pilot batch, 30 Oct 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_016",
+      "domain": 4,
+      "subtopic": "4B1 Security concepts, frameworks and standards. Relying on certification",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A bank is choosing a cloud HR provider whose ISO/IEC 27001 certificate covers its data centers but not the support team that can access customer data. What is the risk practitioner's BEST conclusion?",
+      "options": {
+        "A": "The certificate shows the provider's access controls meet an accepted standard",
+        "B": "The support team is low risk because the data centers are certified",
+        "C": "The provider should be rejected because its certification is incomplete",
+        "D": "The support team's access needs its own assessment before the decision"
+      },
+      "correct": "D",
+      "key_concept": "A certification gives assurance only within its scope; risks outside that scope still need assessment.",
+      "pre_read": "Compare what the certificate covers with where the customer data risk actually sits.",
+      "correct_explanation": "A certificate covers only its stated scope at a point in time. Here the people who can reach customer data sit outside it, so the certificate gives no assurance about the exposure that matters most. Assessing the support team's access, through the provider's evidence or contract terms, fills the gap before the owner decides. The certificate is still useful evidence for the data centers, but it cannot speak for what it excludes.",
+      "wrong_explanations": {
+        "A": "Closest choice: the certificate is real evidence. But it shows conformity within its scope only, and the support team's access to customer data is outside it.",
+        "B": "Certification of one part says nothing about another; the support team's access is uncertified and unassessed, not low risk.",
+        "C": "A scope gap calls for assessment, not automatic rejection; the provider's support controls may be strong, or contract terms may cover them."
+      },
+      "tips": [
+        "Eliminate: B extends the certificate beyond its scope, and C rejects the provider over a gap that has not yet been assessed.",
+        "Final two: D beats A because certification is evidence only within its scope; the exposure that matters, support access to data, still needs assessment.",
+        "Exam cue: before relying on a certificate or framework claim, check its scope and date against the risk you actually face."
+      ],
+      "framework_ref": "NIST CSF 2.0 ID.RA-10 (critical suppliers are assessed prior to acquisition); NIST CSF 2.0 GV.SC-07 (the risks posed by a supplier, their products and services and other third parties are understood, recorded, prioritized, assessed, responded to and monitored)",
+      "related_concepts": [
+        "Certification scope",
+        "Supplier assessment",
+        "Assurance"
+      ],
+      "_provenance": "Authored from concept: notes 4B1.3 Security Frameworks and Standards (certification is evidence within its scope, not proof of low risk). Original bank cloud HR provider scenario written for KaiSip; ISO/IEC 27001 named as context only. No ISACA Review Manual, QAE or prep-bank text used. CRISC D4 pilot batch, 30 Oct 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_017",
+      "domain": 4,
+      "subtopic": "4B2 Security/risk awareness and training. Workarounds and blame",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "After a near miss, a hospital finds nurses routinely share one login on ward computers because individual sign-in is too slow in emergencies. What should the risk practitioner recommend FIRST?",
+      "options": {
+        "A": "Work with ward managers to fix the sign-in delay behind the sharing",
+        "B": "Retrain nurses on the policy that forbids sharing a login",
+        "C": "Discipline the nurses involved to deter further login sharing",
+        "D": "Lock ward computers automatically after one minute without activity"
+      },
+      "correct": "A",
+      "key_concept": "When staff break a rule to do their work, the risk-aware response fixes the process before retraining or blaming people.",
+      "pre_read": "Ask why the nurses share the login, and whether training or discipline would change that reason.",
+      "correct_explanation": "The nurses are working around a process that fails them when speed matters, so the root cause is the slow sign-in, not a lack of knowledge. Working with ward managers to fix it, for example with fast badge sign-in, removes the reason to share. Retraining is tempting, but staff who already know the rule will keep breaking it while the process forces a choice between patients and policy.",
+      "wrong_explanations": {
+        "B": "Closest choice: awareness supports the rule. But the nurses already know it; training cannot remove the time pressure that drives the sharing.",
+        "C": "Blame discourages reporting and leaves the slow sign-in in place, so sharing continues and near misses go unreported.",
+        "D": "Faster lockout adds sign-in friction, which is the cause of the sharing, and is likely to make the workaround more common."
+      },
+      "tips": [
+        "Eliminate: C punishes individuals for a process failure, and D adds friction to the very step that drives the workaround.",
+        "Final two: A beats B because the cause is a slow process, not missing knowledge; training cannot fix a workflow that forces staff to break the rule.",
+        "Exam cue: when people break a rule to get work done, fix the process that makes the rule hard to follow before retraining or disciplining."
+      ],
+      "framework_ref": "NIST CSF 2.0 GV.RR-01 (organizational leadership is responsible and accountable for cybersecurity risk and fosters a culture that is risk-aware, ethical and continually improving)",
+      "related_concepts": [
+        "Risk-aware culture",
+        "Root cause",
+        "Shared accounts"
+      ],
+      "_provenance": "Authored from concept: notes 4B2.1 Risk-Aware Culture and Role-Based Training (exam trap: blaming the user instead of fixing the process). Original hospital ward login scenario written for KaiSip; no ISACA Review Manual, QAE or prep-bank text used. CRISC D4 pilot batch, 30 Oct 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_018",
+      "domain": 4,
+      "subtopic": "4B2 Security/risk awareness and training. Measuring awareness of AI use",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A law firm reports 98% completion of AI-use training, but its data-loss tool still flags client files uploaded to public chatbots. Which measure should the risk practitioner track to BEST show awareness is working?",
+      "options": {
+        "A": "The share of staff who complete the AI-use course each year",
+        "B": "The number of AI tools added to the blocked-website list",
+        "C": "The monthly trend in flagged uploads to unapproved AI services",
+        "D": "Average staff scores on the quiz that ends the AI-use course"
+      },
+      "correct": "C",
+      "key_concept": "Awareness is measured by changes in risky behavior, not by course completion or quiz scores.",
+      "pre_read": "Notice the gap between the training figure and the tool's alerts, then ask which number tracks behavior.",
+      "correct_explanation": "Awareness aims to change behavior, so the best measure tracks the risky behavior itself. A falling trend in flagged uploads to unapproved AI services would show staff acting differently, which is what reduces the risk to client data. Quiz scores show what staff know right after the course, and completion shows who attended; completion is already high while uploads continue, which proves knowing is not doing.",
+      "wrong_explanations": {
+        "A": "Completion is already 98% while uploads continue, which shows attendance does not measure safer behavior.",
+        "B": "Counting blocked tools measures a technical control's reach, not whether staff awareness or behavior has changed.",
+        "D": "Closest choice: quiz scores test understanding. But staff can pass a quiz and still upload files under deadline pressure; knowledge is not behavior."
+      },
+      "tips": [
+        "Eliminate: A measures attendance, which is already high while uploads continue, and B counts a technical control rather than any change in staff behavior.",
+        "Final two: C beats D because the goal of awareness is safer behavior; quiz scores show knowledge, the upload trend shows what staff actually do.",
+        "Exam cue: the BEST awareness metric tracks the risky behavior itself over time, not course completion or test scores."
+      ],
+      "framework_ref": "NIST SP 800-50 Rev. 1 Section 5.2.3 (Evaluating CPLP Effectiveness); NIST CSF 2.0 PR.AT-01 (personnel are provided with awareness and training so that they possess the knowledge and skills to perform general tasks with cybersecurity risks in mind)",
+      "related_concepts": [
+        "Shadow AI",
+        "Awareness metrics",
+        "Behavior change"
+      ],
+      "_provenance": "Authored from concept: notes 4B2.2 Measuring Awareness, Phishing Simulations and Shadow AI (measure behavior, not attendance; shadow AI as an awareness topic). Original law firm AI-upload scenario written for KaiSip; no ISACA Review Manual, QAE or prep-bank text used. CRISC D4 pilot batch, 30 Oct 2026. AI item.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_019",
+      "domain": 4,
+      "subtopic": "4B3 Data privacy and data protection principles. Privacy versus security",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A retailer that encrypts customer purchase history and tightly restricts access now wants marketing to use it to infer customers' health conditions for targeted ads. What PRIMARY concern should the risk practitioner raise?",
+      "options": {
+        "A": "Attackers could steal the encryption keys and expose the history",
+        "B": "Marketing staff may lack training in secure data handling",
+        "C": "Customers may ask to see the purchase data held about them",
+        "D": "The new use exceeds the purpose the data was collected for"
+      },
+      "correct": "D",
+      "key_concept": "Privacy governs whether a use of personal data fits its stated purpose; security only protects the data from unauthorized access.",
+      "pre_read": "Separate how well the data is protected from whether this new use is allowed.",
+      "correct_explanation": "Purpose limitation means personal data is used only for the purposes stated when it was collected. Inferring health conditions from purchases for ads is a new and sensitive purpose customers never agreed to, whatever the encryption. Strong security keeps outsiders out but does not make an unfair use by authorized staff acceptable. Access requests are a real privacy right, but they are not what this proposal puts at risk.",
+      "wrong_explanations": {
+        "A": "Key theft is a security risk the encryption and access limits already address; the concern this proposal raises is how authorized staff will use the data.",
+        "B": "Training affects how safely staff handle data, not whether this new use is allowed.",
+        "C": "Closest choice: access requests are a real privacy right. But the proposal's problem is a new, sensitive use that customers did not agree to."
+      },
+      "tips": [
+        "Eliminate: A and B are security and handling concerns about data that is already well protected; neither asks whether the new use is permitted.",
+        "Final two: D beats C because the proposal creates a new, sensitive use beyond the stated purpose; access rights matter but are not what this change threatens.",
+        "Exam cue: privacy asks whether a use is fair and fits the stated purpose; strong encryption never answers that question."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 PT-3 (Personally Identifiable Information Processing Purposes); NIST Privacy Framework Version 1.0 Section 1.2.1 (Cybersecurity and Privacy Risk Management: privacy risk can arise from data processing unrelated to cybersecurity incidents)",
+      "related_concepts": [
+        "Purpose limitation",
+        "Privacy versus security",
+        "Sensitive inferences"
+      ],
+      "_provenance": "Authored from concept: notes 4B3.1 Privacy Principles (privacy is not security; encryption does not make an unfair use acceptable). Original retailer health-inference scenario written for KaiSip; no ISACA Review Manual, QAE or prep-bank text used. CRISC D4 pilot batch, 30 Oct 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_020",
+      "domain": 4,
+      "subtopic": "4B3 Data privacy and data protection principles. Privacy impact assessment updates",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A gym chain's member app passed a privacy impact assessment at launch and will now share workout data with an insurance partner. What should the risk practitioner recommend FIRST?",
+      "options": {
+        "A": "Rely on the launch assessment, since the app itself has not changed",
+        "B": "Update the privacy impact assessment to cover the new insurer sharing",
+        "C": "Collect fresh consent from members before any data is shared",
+        "D": "Encrypt the workout data before it is sent to the insurance partner"
+      },
+      "correct": "B",
+      "key_concept": "A privacy impact assessment is updated before new processing starts when purpose, data or recipients change.",
+      "pre_read": "Ask what the original assessment covered and what is new about the planned sharing.",
+      "correct_explanation": "A privacy impact assessment (PIA) describes the processing it assessed. Sharing workout data with an insurer is a new purpose and a new recipient, so the PIA must be updated before sharing starts, to judge the risk to members and show which protections the owner needs. Fresh consent may be one of those protections, but choosing it first skips the analysis that shows whether consent is the right basis or is enough.",
+      "wrong_explanations": {
+        "A": "The app may be unchanged, but the processing is not: a new purpose and recipient are exactly what the launch assessment never covered.",
+        "C": "Closest choice: consent may be needed. But it is one possible measure; the updated assessment decides whether it is the right basis and what else is required.",
+        "D": "Encryption protects data in transit, but it does not decide whether sharing health-related data with an insurer is fair or lawful."
+      },
+      "tips": [
+        "Eliminate: A treats an unchanged app as unchanged processing, and D offers a security control that does not decide whether the sharing is acceptable.",
+        "Final two: B beats C because the assessment comes before the mitigation; consent may be part of the answer, but the updated PIA shows what is required.",
+        "Exam cue: a privacy impact assessment is updated whenever the purpose, data or recipients change, before the new processing starts."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 RA-8 (Privacy Impact Assessments)",
+      "related_concepts": [
+        "Privacy impact assessment",
+        "Data sharing",
+        "Lawful basis"
+      ],
+      "_provenance": "Authored from concept: notes 4B3.2 Privacy by Design and Privacy Impact Assessment (the PIA is updated when the system, purpose or data changes). Original gym chain data-sharing scenario written for KaiSip; no ISACA Review Manual, QAE or prep-bank text used. CRISC D4 pilot batch, 30 Oct 2026.",
+      "style_version": 2
+    }
+  ]
+}

@@ -1,0 +1,1686 @@
+{
+  "domain_number": 2,
+  "domain_name": "Risk Assessment",
+  "exam_weight": "22%",
+  "source": "Original KaiSip study notes, organized by the CRISC exam content outline effective 2025. Not affiliated with or endorsed by ISACA®. CRISC® is a registered trademark of ISACA.",
+  "overview": "Risk Assessment is where a risk practitioner finds risk and sizes it. Risk Identification gathers risk events, threats and vulnerabilities and turns them into specific risk scenarios the business recognizes. Risk Analysis rates those scenarios for likelihood and impact, measures how business impact grows over time, records each one in the risk register with an owner, and separates inherent from residual risk so owners can compare it with appetite. AI runs through both parts: prompt injection, poisoned data, biased or drifting models, and AI services the business now depends on.",
+  "analogy": "Think of a public health team preparing for flu season. It studies last winter's cases and the near misses that almost became outbreaks (risk events), tracks which strains are circulating (threats) and finds which groups are unvaccinated (vulnerabilities). It writes concrete scenarios, such as a care-home outbreak in January, and asks the care homes to check them. It then estimates how likely and how harmful each is, notes how long hospitals could cope with a surge, logs each scenario with a named owner, and compares the risk left after vaccination with what the health board will tolerate.",
+  "parts": [
+    {
+      "part": "A",
+      "name": "Risk Identification",
+      "topic_ids": [
+        "2A1",
+        "2A2",
+        "2A3",
+        "2A4"
+      ]
+    },
+    {
+      "part": "B",
+      "name": "Risk Analysis",
+      "topic_ids": [
+        "2B1",
+        "2B2",
+        "2B3",
+        "2B4",
+        "2B5"
+      ]
+    }
+  ],
+  "topics": [
+    {
+      "topic_id": "2A1",
+      "topic_name": "Risk Events",
+      "overview": "This topic covers the events that show a risk practitioner where risk is real: losses, incidents and near misses, from inside and outside the enterprise. Each event is evidence about likelihood and impact, so it updates scenarios and the risk register. AI adds new kinds of events, such as biased decisions and model drift.",
+      "can_do": [
+        "Tell a loss event, an incident and a near miss apart in a scenario",
+        "Decide what to update in the risk register after an incident is resolved",
+        "Name internal and external sources of event data and the limits of each",
+        "Treat AI bias and model drift as risk events with a business owner"
+      ],
+      "subtopics": [
+        {
+          "id": "2A1.1",
+          "name": "Loss Events, Incidents and Near Misses",
+          "legacy_ids": [],
+          "definition": "A risk event is something that happened, or nearly happened, that shows a risk scenario can occur. Loss events cause harm; near misses stop just short of it.",
+          "why_it_matters": "Events are the best evidence a practitioner has about real likelihood and impact. Counting only losses hides how often controls were nearly beaten, so the register understates risk.",
+          "how_it_works": [
+            "A loss event is one where a threat event actually causes harm, such as money lost or a service stopped.",
+            "A near miss would have caused loss but was stopped by a control, by chance or by timing.",
+            "An incident breaks, or nearly breaks, security policy; it may or may not cause loss.",
+            "Each event is linked to the scenario it supports and used to re-rate that scenario's likelihood or impact.",
+            "Fixing the immediate cause closes the incident ticket, not the risk."
+          ],
+          "example": "At a regional water utility, an operator nearly opens the wrong valve after a remote session times out mid-command, and an alarm stops them. Nothing is lost. Priya Raman, the risk analyst, logs a near miss against the remote operation error scenario, notes that the alarm was the last barrier, and asks the operations manager, the scenario's risk owner, to review its likelihood rating.",
+          "audit_focus": {
+            "review": [
+              "Trace recent incidents and near misses to the risk scenarios they affect",
+              "Compare scenario likelihood ratings with the event history since the last review"
+            ],
+            "evidence": [
+              "Incident and near-miss log entries linked to register scenario IDs",
+              "Register change history showing ratings updated after events"
+            ],
+            "recommend": "Have the incident manager route every closed incident and near miss to the relevant risk owner for scenario review.",
+            "decides": "The risk owner decides whether the scenario rating and response change"
+          },
+          "isaca_rule": "Treat every loss event and near miss as evidence about a risk scenario. Closing the incident is not closing the risk: link the event to its scenario, reassess likelihood and impact, and let the risk owner decide on any change.",
+          "exam_traps": [
+            {
+              "trap": "A near miss caused no loss, so it does not need to be recorded.",
+              "why": "A near miss shows the threat can reach the asset and that controls barely held. It is strong likelihood evidence that is lost if nobody records it."
+            },
+            {
+              "trap": "Once the root cause is fixed, the incident and its register entry can both be closed.",
+              "why": "The fix may lower the risk, but the scenario must be reassessed first. The risk owner then decides whether the change is enough."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Loss event",
+              "definition": "Any event in which a threat event results in loss (ISACA Glossary, which credits the FAIR taxonomy)."
+            },
+            {
+              "term": "Near miss",
+              "definition": "An event that could have caused loss but did not, because a control, chance or timing stopped it."
+            },
+            {
+              "term": "Incident",
+              "definition": "A violation, or imminent threat of violation, of security policies, acceptable use policies or standard security practices."
+            }
+          ],
+          "memory_aid": "Loss hurt, near miss nearly hurt: both re-rate the scenario."
+        },
+        {
+          "id": "2A1.2",
+          "name": "Internal and External Event Sources",
+          "legacy_ids": [],
+          "definition": "Event sources are where risk event data comes from: inside the enterprise, such as incident logs and audit findings, and outside it, such as peers, regulators and insurers.",
+          "why_it_matters": "Internal data shows the enterprise's own controls and history; external data covers events too rare to have happened here yet. Relying on one source alone distorts likelihood.",
+          "how_it_works": [
+            "Internal sources include incident and problem records, audit and control test findings, customer complaints, operational losses and staff reports.",
+            "External sources include industry loss databases, sector information sharing groups, regulator notices, insurer data and public breach reports.",
+            "External events are adjusted for differences in size, controls and exposure before they inform the enterprise's own ratings.",
+            "Event data is recorded the same way each time, with date, scenario, cause, impact and source, so trends can be compared.",
+            "Underreporting is a known weakness; a blame-free reporting culture raises the number of near misses staff report."
+          ],
+          "example": "A university's internal logs show few payroll fraud losses, but the sector information sharing group reports a wave of salary diversion scams against universities. Tomás Ferreira, the risk manager, adds the external events to the payroll fraud scenario, notes that the university runs the same self-service payroll portal as the victims, and asks the finance director to review the scenario's likelihood.",
+          "audit_focus": {
+            "review": [
+              "Compare internal event counts with sector loss reports for the same scenarios",
+              "Sample event records for missing cause, impact or scenario fields"
+            ],
+            "evidence": [
+              "Event log extract with source, cause and scenario fields completed",
+              "Sector or regulator reports cited in the scenario rating rationale"
+            ],
+            "recommend": "Have the risk function set one event data standard and ask process owners to report near misses without blame.",
+            "decides": "Risk owners decide how external events change their scenario ratings"
+          },
+          "isaca_rule": "Use both internal and external event data. Internal data shows the enterprise's own control history; external data warns of events it has not yet suffered. Adjust external events for local exposure before changing a rating.",
+          "exam_traps": [
+            {
+              "trap": "No internal losses in five years means the scenario's likelihood is low.",
+              "why": "A quiet history may reflect luck, a short record or underreporting. Events at similar enterprises can show the scenario is likely here too."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Information sharing group",
+              "definition": "A sector body, such as an ISAC (information sharing and analysis center), where members exchange threat and incident data."
+            },
+            {
+              "term": "Loss database",
+              "definition": "A collection of recorded loss events, internal or industry-wide, used to estimate how often and how badly losses occur."
+            },
+            {
+              "term": "Underreporting",
+              "definition": "Events that happen but are never logged, often because staff fear blame or see no value in reporting."
+            }
+          ]
+        },
+        {
+          "id": "2A1.3",
+          "name": "AI Risk Events: Bias and Model Drift",
+          "legacy_ids": [],
+          "definition": "AI risk events are occurrences in which an AI system harms objectives, such as a biased decision, a harmful output, or accuracy that falls as live data drifts.",
+          "why_it_matters": "AI failures often look like normal outputs, so nobody files an incident. Without event capture, a biased or drifting model keeps making decisions the business is accountable for.",
+          "how_it_works": [
+            "Bias events are outputs that treat groups unfairly, such as a screening model rejecting qualified applicants from one region.",
+            "Model drift is a fall in accuracy as live data or real-world relationships change after training; it builds gradually rather than in one incident.",
+            "Signals include complaints, increasing human override rates, accuracy monitoring and error trends found by reviewers.",
+            "Each AI event is logged against an AI risk scenario with a named business owner, not only the data science team.",
+            "Repeated small errors are aggregated, because their combined impact may exceed what any single event shows."
+          ],
+          "example": "A logistics firm's route-planning model starts adding about four percent more driving time after new delivery zones open. No system fails, so no incident is raised. Amara Okafor, a risk analyst, spots the trend in the weekly fuel cost report, logs it as a drift event against the route model degradation scenario and briefs the head of operations, who owns the model's business outcome.",
+          "audit_focus": {
+            "review": [
+              "Compare model accuracy and override trends with the AI scenario's ratings",
+              "Trace AI complaints and human overrides to logged risk events"
+            ],
+            "evidence": [
+              "Production monitoring reports showing accuracy and drift measures over time",
+              "Event log entries tagged to AI risk scenarios"
+            ],
+            "recommend": "Have the model's business owner set drift and bias thresholds that trigger an event record and a scenario review.",
+            "decides": "The AI system's business owner decides whether to retrain, restrict or retire it"
+          },
+          "isaca_rule": "Treat bias and drift as risk events, not just model tuning issues. Capture them, link them to an AI risk scenario with a business owner, and reassess likelihood and impact against appetite like any other risk.",
+          "exam_traps": [
+            {
+              "trap": "Model drift is a data science issue, so the risk function does not need to track it.",
+              "why": "Drift harms business outcomes the enterprise is accountable for. It belongs in the register under a business owner, with the data science team as control owner."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Model drift",
+              "definition": "Loss of an AI model's accuracy over time as live data, or the relationships it learned, change."
+            },
+            {
+              "term": "Algorithmic bias",
+              "definition": "AI outputs that systematically and unfairly favor or disadvantage a group of people."
+            },
+            {
+              "term": "Override rate",
+              "definition": "How often human reviewers reject or change AI outputs; a rising rate can signal drift."
+            }
+          ],
+          "memory_aid": "Drift is slow, bias is skewed: both are risk events with an owner."
+        }
+      ]
+    },
+    {
+      "topic_id": "2A2",
+      "topic_name": "Threat Modeling and Threat Landscape",
+      "overview": "This topic covers who or what could harm the enterprise, and how. It uses the NIST SP 800-30 taxonomy of threat sources, threat intelligence, and structured threat modeling such as STRIDE and attack trees, with MITRE ATT&CK as context. It ends with threats unique to AI systems.",
+      "can_do": [
+        "Classify a threat source as adversarial, accidental, structural or environmental",
+        "Tell a threat from a vulnerability in a scenario",
+        "Explain why threat intelligence feeds analysis rather than replacing it",
+        "Name prompt injection, data poisoning and model theft and the asset each targets"
+      ],
+      "subtopics": [
+        {
+          "id": "2A2.1",
+          "name": "Threat Sources and Threat Events",
+          "legacy_ids": [],
+          "definition": "A threat source is anyone or anything that could cause harm; a threat event is what that source does, such as phishing staff or flooding a data center.",
+          "why_it_matters": "Scenarios built only around outside hackers miss insiders, errors, equipment failures and disasters. A full taxonomy keeps identification complete and keeps threats separate from weaknesses.",
+          "how_it_works": [
+            "NIST SP 800-30 Rev. 1 groups threat sources into four types in its Table D-2.",
+            "For adversaries, likelihood weighs capability, intent and targeting; for other sources, it uses history and empirical data.",
+            "One threat source can cause many threat events, and one event can come from several sources.",
+            "A threat acts on a vulnerability: the threat is the actor or force, the vulnerability is the weakness it uses.",
+            "Each scenario names its threat source and threat event, so the right likelihood evidence can be gathered."
+          ],
+          "types": [
+            {
+              "term": "Adversarial",
+              "meaning": "Intentional harm by outsiders, insiders, groups, competitors, suppliers, partners or nation-states."
+            },
+            {
+              "term": "Accidental",
+              "meaning": "Errors by users or privileged administrators while doing their everyday work."
+            },
+            {
+              "term": "Structural",
+              "meaning": "Failures of IT equipment, environmental controls such as cooling, or software."
+            },
+            {
+              "term": "Environmental",
+              "meaning": "Natural disasters and outages of infrastructure outside the enterprise's control, such as power or telecommunications."
+            }
+          ],
+          "example": "At a hospital network, the risk lead, Daniel Kim, reviews the scenarios for the electronic health record and finds all eight assume an external hacker. Using the four source types, Daniel drafts scenarios for a clinician's misdirected bulk export, a failed storage array and regional flooding, then asks the clinical systems director to confirm which are credible.",
+          "audit_focus": {
+            "review": [
+              "Compare the scenario list against all four threat source types",
+              "Evaluate whether insider and accidental sources appear for critical assets"
+            ],
+            "evidence": [
+              "Threat catalog mapping each source type to risk scenarios",
+              "Register entries showing each scenario's source type and likelihood basis"
+            ],
+            "recommend": "Have scenario owners add missing insider, accidental, structural and environmental sources for critical assets.",
+            "decides": "Asset and risk owners confirm which threat sources are credible for their assets"
+          },
+          "isaca_rule": "Identify threats across all source types, not just outside attackers. Keep the threat (who or what acts) separate from the vulnerability (the weakness it uses), because each points to different evidence and controls.",
+          "exam_traps": [
+            {
+              "trap": "An unpatched server is a threat to the business.",
+              "why": "The missing patch is a vulnerability. The threat is the source that could exploit it, such as a ransomware group or a careless administrator."
+            },
+            {
+              "trap": "Threat identification means listing the external attackers likely to target the enterprise.",
+              "why": "NIST SP 800-30 also lists accidental, structural and environmental sources. Errors and equipment failures often cause more events than attackers do."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Threat event",
+              "definition": "An event in which a threat source acts against an asset in a way that could directly cause harm."
+            },
+            {
+              "term": "Privileged insider",
+              "definition": "A trusted person with elevated system rights, such as an administrator, whose actions or errors can cause wide harm."
+            }
+          ]
+        },
+        {
+          "id": "2A2.2",
+          "name": "Threat Intelligence and Threat Modeling",
+          "legacy_ids": [],
+          "definition": "Threat intelligence is analyzed information about threat actors and their methods; threat modeling is a structured way to work out how a system could be attacked or fail.",
+          "why_it_matters": "Intelligence shows what is happening outside; modeling shows whether it matters to this enterprise's assets. A feed nobody analyzes creates noise, not risk insight.",
+          "how_it_works": [
+            "Intelligence comes from vendors, information sharing groups, government alerts and the enterprise's own security monitoring.",
+            "Intelligence is filtered for relevance: does the actor target this sector, and does the enterprise use the targeted technology?",
+            "STRIDE prompts six threat types against a design: spoofing, tampering, repudiation, information disclosure, denial of service and elevation of privilege.",
+            "Attack trees break an attacker's goal into the paths that could reach it, showing where one control blocks several paths.",
+            "MITRE ATT&CK catalogs real adversary tactics and techniques, giving context for which attack paths are credible.",
+            "Modeling results feed risk scenarios, where likelihood and impact are rated with the risk owner."
+          ],
+          "compare": {
+            "columns": [
+              "Threat intelligence",
+              "Threat modeling"
+            ],
+            "rows": [
+              {
+                "label": "Question it answers",
+                "cells": [
+                  "Which threats are active out there?",
+                  "How could this system be harmed?"
+                ]
+              },
+              {
+                "label": "Main input",
+                "cells": [
+                  "Feeds, alerts and sector reports",
+                  "System design, data flows and assets"
+                ]
+              },
+              {
+                "label": "Output for risk work",
+                "cells": [
+                  "Likelihood evidence for scenarios",
+                  "Specific attack paths and weak points"
+                ]
+              }
+            ]
+          },
+          "example": "A payments start-up subscribes to a threat feed that sends about 400 alerts a week, and nobody reads them. Lena Novak, the risk manager, runs a STRIDE session with the engineers who build the card tokenization service, picks out the two alerts that target its software, and adds a tampering scenario to the register for the product owner to rate.",
+          "audit_focus": {
+            "review": [
+              "Trace recent threat alerts to the scenarios they changed or a dismissal reason",
+              "Evaluate whether threat models exist for systems supporting critical processes"
+            ],
+            "evidence": [
+              "Threat model documents with date, scope and participants",
+              "Register entries citing threat intelligence as likelihood evidence"
+            ],
+            "recommend": "Have system owners refresh threat models after major design changes and route relevant intelligence into risk scenarios.",
+            "decides": "System and risk owners decide which modeled threats need a response"
+          },
+          "isaca_rule": "Intelligence is an input, not an answer. Filter it for relevance to the enterprise's assets, test it against a threat model, and record the result as scenario evidence for the risk owner to weigh.",
+          "exam_traps": [
+            {
+              "trap": "Buying a premium threat feed means threat identification is done.",
+              "why": "A feed lists outside activity. Someone must still decide which threats apply to the enterprise's assets and update the scenarios; unread alerts reduce no risk."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Attack tree",
+              "definition": "A diagram that breaks an attacker's goal into alternative sub-goals and steps."
+            },
+            {
+              "term": "MITRE ATT&CK",
+              "definition": "A public knowledge base of adversary tactics and techniques drawn from real-world observations."
+            },
+            {
+              "term": "Indicator of compromise",
+              "definition": "Evidence, such as a file hash or IP address, that a system may have been breached."
+            }
+          ]
+        },
+        {
+          "id": "2A2.3",
+          "name": "AI-Specific Threats",
+          "legacy_ids": [],
+          "definition": "AI-specific threats attack the parts unique to AI systems: the prompts they accept, the data they learn from and the trained model itself.",
+          "why_it_matters": "Firewalls and malware tools do not see a malicious instruction hidden in a document an AI assistant reads. Missing these threats leaves AI scenarios out of the register.",
+          "how_it_works": [
+            "AI threats target three new assets: the prompt channel, the training data pipeline and the model's learned parameters.",
+            "Indirect prompt injection is mounted by a third party who plants instructions in content the model later reads, such as an email or web page.",
+            "Poisoning can enter through third-party datasets and pre-trained models, so the AI supply chain is part of the threat surface.",
+            "Extraction and inversion attacks need only query access, so a public interface is enough to attempt them.",
+            "NIST AI 100-2 E2025 names and classifies these attacks; the practitioner turns the relevant ones into scenarios with a business owner."
+          ],
+          "types": [
+            {
+              "term": "Prompt injection",
+              "meaning": "Crafted input that makes a language model ignore its instructions and produce unintended or harmful output."
+            },
+            {
+              "term": "Data poisoning",
+              "meaning": "Corrupting training or fine-tuning data so the model learns wrong or hidden behavior."
+            },
+            {
+              "term": "Model extraction",
+              "meaning": "Querying a model repeatedly to rebuild a working copy of it, stealing its value."
+            },
+            {
+              "term": "Model inversion",
+              "meaning": "Using a model's outputs to reconstruct sensitive details of the data it was trained on."
+            }
+          ],
+          "example": "A city council plans an AI assistant that drafts replies to residents' emails. Joon Park, the risk analyst, notes that anyone can send text the assistant will read, so a hidden instruction could make it reveal other residents' case details. Joon records an indirect prompt injection scenario and asks the customer services director, who owns the service, to review it before launch.",
+          "audit_focus": {
+            "review": [
+              "Compare the AI system's inputs and data sources with the AI threat taxonomy",
+              "Confirm the register holds a scenario for each AI attack type in scope"
+            ],
+            "evidence": [
+              "AI threat model listing prompt, training data and model access paths",
+              "Register entries for AI scenarios with named business owners"
+            ],
+            "recommend": "Have the AI system owner add prompt, poisoning and extraction scenarios before launch and after major model changes.",
+            "decides": "The AI system's business owner accepts or treats the AI threat scenarios"
+          },
+          "isaca_rule": "Treat the prompt channel, training data and model as assets with their own threats. Map each AI system to prompt injection, poisoning and model theft, and record the credible ones as scenarios before deployment.",
+          "exam_traps": [
+            {
+              "trap": "Existing network and endpoint controls already cover AI assistants.",
+              "why": "Prompt injection arrives as ordinary text through approved channels. Perimeter tools cannot tell a malicious instruction from a normal document."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Retrieval-augmented generation (RAG)",
+              "definition": "An AI design in which the model pulls in documents at query time to ground its answers."
+            },
+            {
+              "term": "Fine-tuning",
+              "definition": "Further training of a pre-trained model on an enterprise's own data for a specific task."
+            }
+          ],
+          "memory_aid": "Prompt, data, model: three new doors to guard."
+        }
+      ]
+    },
+    {
+      "topic_id": "2A3",
+      "topic_name": "Vulnerability Management",
+      "overview": "This topic covers finding and ranking the weaknesses threats could exploit, in people, processes and technology. It treats a CVSS v4.0 score as a severity input, not a risk rating, and ranks fixes by business impact and exploitability. Control deficiencies found in testing or audit count as vulnerabilities too.",
+      "can_do": [
+        "Identify people, process and technology vulnerabilities in one scenario",
+        "Explain why a CVSS score measures severity, not risk",
+        "Rank remediation by asset criticality, reachability and exploitability",
+        "Record a control deficiency as a vulnerability in a risk scenario"
+      ],
+      "subtopics": [
+        {
+          "id": "2A3.1",
+          "name": "Vulnerabilities in People, Process and Technology",
+          "legacy_ids": [],
+          "definition": "A vulnerability is a weakness in the design, implementation, operation or internal control of a process or system that a threat could exploit.",
+          "why_it_matters": "Most serious losses combine a technical flaw with a process gap or a human error. Looking only at scanner output leaves the process and people weaknesses unmanaged.",
+          "how_it_works": [
+            "People weaknesses include missing skills, weak security awareness, key-person dependency and too few staff for a critical task.",
+            "Process weaknesses include missing approvals, poor segregation of duties, untested recovery plans and undocumented procedures.",
+            "Technology weaknesses include unpatched software, misconfigurations, default passwords and unsupported systems.",
+            "A control deficiency found in testing or audit is a vulnerability, because it weakens protection against a scenario.",
+            "Predisposing conditions, such as a flood-prone site, change likelihood even when nothing is broken."
+          ],
+          "compare": {
+            "columns": [
+              "People",
+              "Process",
+              "Technology"
+            ],
+            "rows": [
+              {
+                "label": "Example weakness",
+                "cells": [
+                  "Only one administrator knows the restore steps",
+                  "Changes to supplier bank details need no second approval",
+                  "A database runs an unsupported version"
+                ]
+              },
+              {
+                "label": "How it is found",
+                "cells": [
+                  "Skills reviews, phishing tests and interviews",
+                  "Walkthroughs, control testing and audit findings",
+                  "Scans, configuration reviews and penetration tests"
+                ]
+              }
+            ]
+          },
+          "example": "A food manufacturer's control test finds that recipe changes in the production system need no second approval. Yusuf Haddad, the IT risk analyst, records the gap as a process vulnerability under the unauthorized recipe change scenario, attaches the test result as evidence, and asks the plant quality manager, who owns the scenario, to review its likelihood rating.",
+          "audit_focus": {
+            "review": [
+              "Compare scenario vulnerability lists against scan, control test and audit results",
+              "Evaluate whether people and process weaknesses appear beside technical ones"
+            ],
+            "evidence": [
+              "Control test results linked to the scenarios they weaken",
+              "Vulnerability records tagged as people, process or technology"
+            ],
+            "recommend": "Have control owners log every confirmed control deficiency as a vulnerability against the affected risk scenarios.",
+            "decides": "The risk owner decides how the weakness changes the scenario's response"
+          },
+          "isaca_rule": "Vulnerabilities are not only technical. A missing approval, an untrained team or a failed control test weakens protection as much as a missing patch; record each one against the scenarios it affects.",
+          "exam_traps": [
+            {
+              "trap": "The vulnerability scanner report is the complete list of the enterprise's vulnerabilities.",
+              "why": "Scanners find technical flaws only. Process gaps, weak segregation of duties and people weaknesses come from walkthroughs, control tests and audits."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Control deficiency",
+              "definition": "A control that is missing, badly designed or not operating as intended."
+            },
+            {
+              "term": "Predisposing condition",
+              "definition": "A condition, such as location or architecture, that raises or lowers the chance a threat event causes harm."
+            },
+            {
+              "term": "Key-person dependency",
+              "definition": "Reliance on one person's knowledge or access for a critical task, with no trained backup."
+            }
+          ]
+        },
+        {
+          "id": "2A3.2",
+          "name": "CVSS as a Severity Input",
+          "legacy_ids": [],
+          "definition": "CVSS (Common Vulnerability Scoring System) v4.0 is FIRST's open standard for scoring the technical severity of a software vulnerability from 0 to 10.",
+          "why_it_matters": "A CVSS score describes the flaw, not the enterprise's exposure. Used as the risk rating, it can rank an isolated test server above a payment system just because its flaw scored higher.",
+          "how_it_works": [
+            "Base metrics describe the flaw's intrinsic traits and assume the reasonable worst case across environments.",
+            "Threat metrics adjust for exploit maturity, such as public exploit code or attacks already seen.",
+            "Environmental metrics adjust for the enterprise's own setting, such as mitigating controls and how much the asset's confidentiality, integrity and availability matter.",
+            "Supplemental metrics, such as Safety and Automatable, add context without changing the score.",
+            "Scores are labeled by the metrics used, from CVSS-B for Base only to CVSS-BTE for Base, Threat and Environmental.",
+            "FIRST describes CVSS as one input to risk assessment, beside factors such as regulation, customers affected and monetary loss."
+          ],
+          "example": "A retailer's scanner reports a 9.3 Base score on a kiosk app in a closed training room and a 7.1 on its internet-facing loyalty site, which holds card tokens and has public exploit code. Sofia Marin, the risk analyst, adds threat and environmental context, rates the loyalty site scenario higher, and gives both findings to the e-commerce manager to set the fix order.",
+          "audit_focus": {
+            "review": [
+              "Compare register risk ratings with the CVSS scores behind them",
+              "Sample high-scoring findings for asset criticality and reachability context"
+            ],
+            "evidence": [
+              "Vulnerability records showing which CVSS metric groups were scored",
+              "Asset inventory with criticality ratings linked to findings"
+            ],
+            "recommend": "Have the vulnerability management lead add threat and environmental context before findings feed scenario risk ratings.",
+            "decides": "Asset owners set remediation priority within the risk-based policy"
+          },
+          "isaca_rule": "CVSS rates the flaw's severity. Risk also needs the asset's business value, how reachable it is and how likely exploitation is. Use the score as one input to the scenario rating, never as the rating itself.",
+          "exam_traps": [
+            {
+              "trap": "A vulnerability scored 9.8 is always a higher risk than one scored 6.5.",
+              "why": "Risk depends on the asset and its exposure. A 6.5 on an exposed system holding customer data can matter more than a 9.8 on an isolated test box."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Base score",
+              "definition": "The CVSS score from a flaw's intrinsic traits, before threat or environmental adjustment."
+            },
+            {
+              "term": "Exploit maturity",
+              "definition": "The CVSS v4.0 Threat metric for how ready and available attack code or techniques are."
+            },
+            {
+              "term": "CVSS-BTE",
+              "definition": "A CVSS v4.0 score that uses the Base, Threat and Environmental metric groups."
+            }
+          ]
+        },
+        {
+          "id": "2A3.3",
+          "name": "Risk-Based Remediation Priority",
+          "legacy_ids": [],
+          "definition": "Risk-based remediation ranks vulnerability fixes by business impact and likelihood of exploitation, not by severity score or discovery date alone.",
+          "why_it_matters": "No enterprise can fix everything at once. Ranking by business risk spends limited patching effort where a successful exploit would hurt objectives most.",
+          "how_it_works": [
+            "Start from asset criticality: which business process the asset supports and what a compromise would cost.",
+            "Add reachability: internet-facing, reachable from partners, or isolated behind strong segmentation.",
+            "Add exploitability: public exploit code, active attacks or a listing in a known-exploited vulnerabilities catalog.",
+            "Set fix time frames by risk tier in a policy approved by management, so teams do not negotiate each fix.",
+            "When a fix cannot meet its time frame, raise an exception with compensating controls for the risk owner to accept or reject."
+          ],
+          "example": "A city transit agency has 1,200 open findings and patches them in the order they arrive. Marcus Bell, the risk lead, groups them by the service each asset supports, flags the internet-facing fare payment servers that have public exploits, and drafts risk tiers with fix deadlines for management approval.",
+          "audit_focus": {
+            "review": [
+              "Compare actual remediation order with asset criticality and exploitability data",
+              "Sample overdue findings for approved exceptions and compensating controls"
+            ],
+            "evidence": [
+              "Approved remediation policy and patch records showing fix dates by tier",
+              "Exception register with expiry dates and risk owner sign-off"
+            ],
+            "recommend": "Have IT operations patch by approved risk tier and route missed deadlines to the risk owner as exceptions.",
+            "decides": "Management approves the tiers; risk owners accept or reject each exception"
+          },
+          "isaca_rule": "Rank fixes by business risk: asset criticality, reachability and exploitability together. A missed deadline is a risk acceptance decision for the risk owner, never a quiet backlog item.",
+          "exam_traps": [
+            {
+              "trap": "Patch the highest CVSS scores first, whatever the asset.",
+              "why": "The score alone ignores what the asset supports and whether attackers can reach it. Risk-based priority puts critical, exposed, actively exploited assets first."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Asset criticality",
+              "definition": "How much a business process depends on an asset, which sets the impact of losing or compromising it."
+            },
+            {
+              "term": "Reachability",
+              "definition": "How easily threat sources can get to an asset, for example from the internet or partner links."
+            },
+            {
+              "term": "Remediation exception",
+              "definition": "A documented, time-limited approval to leave a vulnerability open, usually with compensating controls."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "topic_id": "2A4",
+      "topic_name": "Risk Scenario Development and Evaluation",
+      "overview": "This topic covers turning threats, vulnerabilities and events into risk scenarios the business recognizes and can rate. A good scenario names the actor, event, asset, timing and consequence. Scenarios come top-down from objectives and bottom-up from assets and threats, are validated with business owners, and are tested in tabletop exercises.",
+      "can_do": [
+        "Rewrite a generic risk into a specific, assessable scenario",
+        "Choose top-down or bottom-up development for a stated purpose",
+        "Explain why business owners must validate scenarios",
+        "Use a tabletop exercise to find gaps in scenarios and responses"
+      ],
+      "subtopics": [
+        {
+          "id": "2A4.1",
+          "name": "Anatomy of a Risk Scenario",
+          "legacy_ids": [],
+          "definition": "A risk scenario is a specific, assessable description of how a threat could cause an event that affects an asset and harms business objectives.",
+          "why_it_matters": "A vague entry such as 'cyberattack' cannot be rated, owned or treated. A specific scenario shows which controls matter and lets the owner compare it with appetite.",
+          "how_it_works": [
+            "Actor: who or what causes it, such as a criminal group, a careless user or a failed cooling unit.",
+            "Event: what happens, such as malicious encryption, disclosure, an error or an outage.",
+            "Asset: the process, system, data or people affected.",
+            "Time: when, or for how long, such as during payroll week or an outage of more than four hours.",
+            "Consequence: the effect on objectives in business terms, such as lost revenue, fines or harm to patients.",
+            "NIST IR 8286A Rev. 1 suggests a cause-and-effect sentence: an actor exploits a weakness in an asset, resulting in a business impact."
+          ],
+          "example": "An airline's register lists 'third-party risk' as high, with no detail. Chen Wei, the risk analyst, rewrites it: a ransomware attack on the baggage-handling vendor stops bag tracking at the main hub for more than six hours in peak season, causing missed connections, compensation claims and regulator scrutiny. Chen then asks the ground operations director to rate the rewritten scenario.",
+          "audit_focus": {
+            "review": [
+              "Sample register scenarios for actor, event, asset, time and consequence",
+              "Evaluate whether each consequence is stated in business terms"
+            ],
+            "evidence": [
+              "Scenario records with all five elements completed",
+              "Rating rationale tied to the stated consequence"
+            ],
+            "recommend": "Have scenario owners rewrite generic entries as specific cause-and-effect scenarios before the next rating cycle.",
+            "decides": "The risk owner confirms the scenario reflects the real business exposure"
+          },
+          "isaca_rule": "A scenario must be specific enough to rate and own: name the actor, the event, the asset, the timing and the business consequence. If two people would rate it very differently, it is too vague.",
+          "exam_traps": [
+            {
+              "trap": "Broad scenarios such as 'cyberattack' are better because they cover everything.",
+              "why": "A scenario that covers everything cannot be rated or linked to controls. Specific scenarios show the likelihood drivers and which controls reduce them."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Risk scenario",
+              "definition": "ISACA Glossary: a tangible and assessable representation of risk."
+            },
+            {
+              "term": "Cause-and-effect statement",
+              "definition": "A scenario sentence linking a cause, the actor and weakness, to an effect on objectives."
+            }
+          ],
+          "memory_aid": "Who, what, which asset, when, and so what."
+        },
+        {
+          "id": "2A4.2",
+          "name": "Top-Down and Bottom-Up Scenario Development",
+          "legacy_ids": [],
+          "definition": "Top-down development starts from business objectives and asks what could stop them; bottom-up development starts from assets, threats and vulnerabilities and asks where they could lead.",
+          "why_it_matters": "Each approach misses what the other catches. Using both keeps the scenario set tied to objectives without missing technical threats, and keeps it small enough to manage.",
+          "how_it_works": [
+            "Top-down: work with executives from strategy and objectives to the events that would damage them most.",
+            "Bottom-up: work from asset inventories, threat models, vulnerability data and event history toward possible business effects.",
+            "Generic scenario libraries are a starting point, tailored to the enterprise's own processes and assets.",
+            "Merge overlapping scenarios and drop implausible ones so the set stays reviewable.",
+            "NIST SP 800-30 notes that any single starting point can bias results, so adding a second orientation improves rigor."
+          ],
+          "compare": {
+            "columns": [
+              "Top-down",
+              "Bottom-up"
+            ],
+            "rows": [
+              {
+                "label": "Starts from",
+                "cells": [
+                  "Business objectives and strategy",
+                  "Assets, threats and vulnerabilities"
+                ]
+              },
+              {
+                "label": "Strength",
+                "cells": [
+                  "Tied to what executives care about",
+                  "Detailed and grounded in real weaknesses"
+                ]
+              },
+              {
+                "label": "Risk if used alone",
+                "cells": [
+                  "Misses technical paths to harm",
+                  "Many scenarios with unclear business impact"
+                ]
+              }
+            ]
+          },
+          "example": "A pharmaceutical distributor's IT team builds 140 scenarios from scan results, and the executives cannot review them. Ana Costa, the risk manager, holds a session with the supply chain director on the objective of delivering temperature-controlled orders on time, derives six top-down scenarios, then maps the technical scenarios beneath them and merges the duplicates.",
+          "audit_focus": {
+            "review": [
+              "Compare the scenario set with stated business objectives for gaps",
+              "Evaluate whether technical scenarios roll up to a business consequence"
+            ],
+            "evidence": [
+              "Scenario workshop records showing business participants",
+              "Mapping of scenarios to objectives and critical assets"
+            ],
+            "recommend": "Have the risk function anchor scenario workshops on business objectives and merge technical scenarios under them.",
+            "decides": "Senior management confirms which objectives the scenario set must cover"
+          },
+          "isaca_rule": "Combine both directions. Start from objectives so scenarios matter to the business, check from the bottom up so real threats are not missed, and merge until the set is small enough for owners to manage.",
+          "exam_traps": [
+            {
+              "trap": "More scenarios always mean more complete risk identification.",
+              "why": "Hundreds of overlapping scenarios cannot be rated or monitored well. A manageable set, organized under business objectives, covers what matters better."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Scenario library",
+              "definition": "A generic set of example risk scenarios that an enterprise adapts before use."
+            },
+            {
+              "term": "Scenario consolidation",
+              "definition": "Merging similar scenarios into one so the set stays manageable."
+            }
+          ]
+        },
+        {
+          "id": "2A4.3",
+          "name": "Validating Scenarios and Tabletop Exercises",
+          "legacy_ids": [],
+          "definition": "Validation confirms with business owners that a scenario is realistic and its impact is right; a tabletop exercise walks a team through a scenario to test plans and find gaps.",
+          "why_it_matters": "Scenarios written by the risk team alone often misjudge business impact. Tabletop exercises reveal missing scenarios, unclear roles and weak responses before a real event does.",
+          "how_it_works": [
+            "Process and asset owners review each scenario's events, impacts and existing controls and sign off the description.",
+            "A tabletop exercise is a facilitated, discussion-based walkthrough; no systems are touched.",
+            "Participants include business owners, control owners, IT, communications and, where relevant, key suppliers.",
+            "Injects, new facts added during play, test decisions such as escalation, customer notice and recovery order.",
+            "Findings become actions: new or revised scenarios, register updates and control changes, each with an owner and a date."
+          ],
+          "example": "A credit union runs a tabletop exercise on its online banking outage scenario. Midway, the facilitator adds an inject: the backup data center uses the same network provider as the primary one. Nobody had considered it. Fatima Zahra, the risk lead, records a new shared-supplier scenario and an action for the IT director to assess the dependency.",
+          "audit_focus": {
+            "review": [
+              "Confirm business owners reviewed and signed off each critical scenario",
+              "Trace exercise findings to register updates and assigned actions"
+            ],
+            "evidence": [
+              "Signed scenario approvals dated within the review cycle",
+              "After-action report with action owners and due dates"
+            ],
+            "recommend": "Have risk owners run tabletop exercises on their top scenarios each year and track every finding to closure.",
+            "decides": "Risk owners approve scenario changes and own the resulting actions"
+          },
+          "isaca_rule": "Scenarios are validated by the people who own the business impact. Use tabletop exercises to test scenarios and responses, and turn every gap they reveal into a tracked register action.",
+          "exam_traps": [
+            {
+              "trap": "The risk team knows the threats best, so it can finalize scenarios without the business.",
+              "why": "The risk team may know the threats, but business owners know the impact, dependencies and timing. Unvalidated scenarios carry ratings nobody owns."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Tabletop exercise",
+              "definition": "A discussion-based session in which a team talks through its response to a scenario."
+            },
+            {
+              "term": "Inject",
+              "definition": "A new development introduced during an exercise to test the participants' decisions."
+            },
+            {
+              "term": "After-action report",
+              "definition": "The record of an exercise's findings, gaps and assigned improvement actions."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "topic_id": "2B1",
+      "topic_name": "Risk Assessment Concepts and Standards",
+      "overview": "This topic covers what a risk assessment measures and how it runs. Risk combines likelihood and impact on objectives. NIST SP 800-30 sets four steps: prepare, conduct, communicate and maintain; ISO 31000 and ISO/IEC 27005 describe similar processes. Scope and context come first, and an assessment is kept current, not done once.",
+      "can_do": [
+        "Explain risk as a combination of likelihood and impact on objectives",
+        "Put the four NIST SP 800-30 assessment steps in order",
+        "Choose the FIRST step for a new risk assessment",
+        "Tell when an existing assessment must be updated"
+      ],
+      "subtopics": [
+        {
+          "id": "2B1.1",
+          "name": "Likelihood, Impact and Risk",
+          "legacy_ids": [],
+          "definition": "Risk is the combination of how likely an event is and how much it would affect objectives. The ISACA Glossary calls it an event's likelihood combined with its impact.",
+          "why_it_matters": "Rating only impact makes every disaster look urgent; rating only likelihood ignores rare but severe events. Both together let owners compare risks fairly against appetite.",
+          "how_it_works": [
+            "Likelihood combines the chance a threat event starts and the chance it causes harm, over a stated time frame.",
+            "For adversaries, likelihood weighs capability, intent and targeting; for other sources, history and empirical data.",
+            "Impact is the effect on objectives: financial, operational, legal, reputational, safety or customer harm.",
+            "Existing controls and predisposing conditions change likelihood, so they are understood before rating.",
+            "Risk is the effect of uncertainty on objectives, so it can include upside opportunity as well as harm."
+          ],
+          "example": "A ski resort's register rates a ticketing system outage as high because it would stop sales. Kofi Mensah, the risk analyst, adds the missing half: two outages in five years, both under an hour, and a working offline sales mode. Kofi re-rates the scenario on likelihood and impact over the next 12 months and shares the rationale with the commercial director.",
+          "audit_focus": {
+            "review": [
+              "Sample register ratings for a separate likelihood and impact rationale",
+              "Confirm each likelihood estimate states the period it covers"
+            ],
+            "evidence": [
+              "Rating worksheets showing likelihood and impact separately",
+              "Approved assessment scales with defined levels and periods"
+            ],
+            "recommend": "Have risk owners record likelihood and impact separately, each with a written rationale and a stated period.",
+            "decides": "The risk owner agrees the final rating for their scenario"
+          },
+          "isaca_rule": "Rate risk on both likelihood and impact, tied to business objectives and a stated time frame. An entry with only one dimension cannot be compared with appetite or with other risks.",
+          "exam_traps": [
+            {
+              "trap": "A high-impact event is always a high risk.",
+              "why": "If likelihood is very low and controls are strong, the combined risk may be moderate. Both factors set the rating."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Likelihood",
+              "definition": "The estimated chance that a threat event occurs and causes harm within a stated time frame."
+            },
+            {
+              "term": "Impact",
+              "definition": "The size of the harm to objectives if the event occurs."
+            },
+            {
+              "term": "Time frame",
+              "definition": "The period, such as the next 12 months, that a likelihood estimate covers."
+            }
+          ]
+        },
+        {
+          "id": "2B1.2",
+          "name": "The Risk Assessment Process and Scope",
+          "legacy_ids": [],
+          "definition": "A risk assessment identifies, estimates and prioritizes risk. NIST SP 800-30 runs it in four steps: prepare, conduct, communicate the results and maintain the assessment.",
+          "why_it_matters": "Skipping preparation means assessing the wrong things against the wrong criteria. Skipping communication or maintenance means decisions rest on results nobody saw or that are out of date.",
+          "how_it_works": [
+            "Prepare: set the purpose, scope, assumptions and constraints, information sources, risk model and analytic approach.",
+            "Conduct: identify threat sources and events, vulnerabilities and predisposing conditions, then determine likelihood, impact and risk.",
+            "Communicate: give results to decision makers in a form they can act on, such as a briefing, report or dashboard.",
+            "Maintain: monitor risk factors and update the assessment when systems, threats or the business change.",
+            "ISO 31000 and ISO/IEC 27005 describe a similar flow that starts with scope, context and risk criteria."
+          ],
+          "example": "A hotel group's CIO asks for a cloud migration risk assessment by Friday. Before collecting threats, Isabel Duarte, the risk manager, agrees the scope with the CIO: the booking platform and payment data only, a three-year horizon, the group's five-point rating scales and the decisions the results must support. Isabel then plans who will receive the results.",
+          "audit_focus": {
+            "review": [
+              "Confirm scope, purpose and criteria were agreed before analysis began",
+              "Trace assessment results to the decision makers who received them"
+            ],
+            "evidence": [
+              "Approved assessment plan with scope, assumptions and rating criteria",
+              "Distribution list or briefing notes for the results"
+            ],
+            "recommend": "Have the assessment sponsor approve scope and criteria first, and set reassessment triggers in the plan.",
+            "decides": "The sponsor approves the scope; risk owners act on the results"
+          },
+          "isaca_rule": "Define purpose, scope and criteria before analyzing anything. An assessment is not finished until decision makers have the results, and it stays live: reassess when the system, the threats or the business change.",
+          "exam_traps": [
+            {
+              "trap": "Start a risk assessment by listing threats and vulnerabilities.",
+              "why": "Without agreed scope, context and criteria, the team cannot tell which threats matter or how to rate them. Preparation comes first."
+            },
+            {
+              "trap": "A completed assessment stays valid until the next annual cycle.",
+              "why": "The maintain step updates the assessment whenever risk factors change, such as a new threat, a system change or a reorganization."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Risk criteria",
+              "definition": "The terms of reference, such as scales and thresholds, used to judge how significant a risk is."
+            },
+            {
+              "term": "Assessment scope",
+              "definition": "The boundaries of an assessment: which processes, systems, locations and period it covers."
+            },
+            {
+              "term": "Risk evaluation",
+              "definition": "Comparing estimated risk with risk criteria to decide how significant it is."
+            }
+          ],
+          "memory_aid": "Prepare, conduct, communicate, maintain: scope before threats."
+        }
+      ]
+    },
+    {
+      "topic_id": "2B2",
+      "topic_name": "Business Impact Analysis (BIA)",
+      "overview": "This topic covers the business impact analysis (BIA): which processes matter most, how harm grows the longer they are down, and what they depend on. The BIA sets MTD, RTO and RPO with the business. It measures impact only and ignores likelihood, so it complements a risk assessment rather than replacing it.",
+      "can_do": [
+        "Tell a BIA from a risk assessment by what each measures",
+        "Tell MTD, RTO and RPO apart and put RTO and MTD in order",
+        "Name who sets recovery objectives and why",
+        "Include dependencies, suppliers and AI systems in a BIA"
+      ],
+      "subtopics": [
+        {
+          "id": "2B2.1",
+          "name": "BIA Purpose, Dependencies and AI Systems",
+          "legacy_ids": [],
+          "definition": "A business impact analysis (BIA) finds the critical business processes, how their impact grows over time when disrupted, and the resources and dependencies they need to recover.",
+          "why_it_matters": "Recovery money and effort are limited. The BIA tells the enterprise what to restore first, and it gives risk assessments the impact data they need.",
+          "how_it_works": [
+            "Process owners describe each process, its outputs and the harm of losing it at intervals such as one hour, one day and one week.",
+            "Impact includes lost revenue, regulatory breaches, safety, contract penalties and reputation, and rises as an outage lengthens.",
+            "Dependencies are traced: systems, data, people, facilities, suppliers and other processes, including cloud and AI services.",
+            "A BIA assumes the disruption happens; it does not estimate likelihood, so it is not a risk assessment.",
+            "Results set recovery priorities and feed continuity plans and the impact ratings in risk scenarios."
+          ],
+          "compare": {
+            "columns": [
+              "BIA",
+              "Risk assessment"
+            ],
+            "rows": [
+              {
+                "label": "Main question",
+                "cells": [
+                  "What happens if this process stops?",
+                  "How likely is harm, and how bad would it be?"
+                ]
+              },
+              {
+                "label": "Likelihood",
+                "cells": [
+                  "Not considered",
+                  "Rated together with impact"
+                ]
+              },
+              {
+                "label": "Main output",
+                "cells": [
+                  "Critical processes, MTD, RTO and RPO",
+                  "Risk ratings for scenarios"
+                ]
+              }
+            ]
+          },
+          "example": "An online grocer adds an AI demand-forecasting service to its BIA for the first time. Ravi Shah, the risk analyst, interviews the replenishment manager, who explains that without forecasts stores reorder by hand, and after three days fresh-food waste and empty shelves climb sharply. Ravi records the forecasting service and its cloud host as dependencies of the replenishment process.",
+          "audit_focus": {
+            "review": [
+              "Confirm process owners supplied the impact-over-time estimates themselves",
+              "Trace each critical process to every system, supplier and AI dependency"
+            ],
+            "evidence": [
+              "BIA interview records signed by process owners",
+              "Dependency map linking processes to systems and suppliers"
+            ],
+            "recommend": "Have process owners refresh the BIA after major changes, including new AI or cloud services.",
+            "decides": "Senior management approves the critical process list and recovery priorities"
+          },
+          "isaca_rule": "The BIA measures impact over time, not likelihood. Get impact from business owners, include every dependency, AI services and suppliers included, and use the results to rank recovery and inform risk ratings.",
+          "exam_traps": [
+            {
+              "trap": "A completed BIA can replace the risk assessment for continuity risks.",
+              "why": "The BIA assumes the disruption happens and never weighs likelihood. A risk assessment is still needed to rank which disruptions are likely and to choose responses."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Critical process",
+              "definition": "A business process whose disruption would quickly cause unacceptable harm to objectives."
+            },
+            {
+              "term": "Dependency",
+              "definition": "Any resource a process needs to run, such as a system, supplier, site, dataset or person."
+            }
+          ]
+        },
+        {
+          "id": "2B2.2",
+          "name": "MTD, RTO and RPO",
+          "legacy_ids": [],
+          "definition": "MTD is the longest a process can be down before harm is unacceptable; RTO is the time allowed to restore a system; RPO is how much data loss is tolerable.",
+          "why_it_matters": "These numbers drive recovery design and cost. If IT sets them alone, they reflect what the technology can do, not what the business can survive.",
+          "how_it_works": [
+            "Process owners and leadership set the maximum tolerable downtime (MTD) from the impact-over-time results.",
+            "The recovery time objective (RTO) for each supporting system must normally be shorter than the MTD, leaving time to reprocess work.",
+            "The recovery point objective (RPO) sets backup or replication frequency; a four-hour RPO allows up to four hours of lost data.",
+            "RTO is about time to recover and RPO is about data that may be lost, so they are set separately.",
+            "Shorter objectives cost more, so the business weighs recovery cost against the impact the BIA found."
+          ],
+          "compare": {
+            "columns": [
+              "MTD",
+              "RTO",
+              "RPO"
+            ],
+            "rows": [
+              {
+                "label": "Measures",
+                "cells": [
+                  "Total tolerable outage of the process",
+                  "Time allowed to restore a system",
+                  "Tolerable data loss, counted back in time"
+                ]
+              },
+              {
+                "label": "Drives",
+                "cells": [
+                  "Overall recovery strategy",
+                  "Recovery technology and procedures",
+                  "Backup and replication frequency"
+                ]
+              },
+              {
+                "label": "Example",
+                "cells": [
+                  "48 hours",
+                  "24 hours",
+                  "15 minutes"
+                ]
+              }
+            ]
+          },
+          "example": "A veterinary clinic chain moves its records system to the cloud. The IT manager proposes a 72-hour RTO because the standard cloud backup restores in that time. Grace Liu, the risk analyst, asks the clinical operations lead what happens without records; they say emergency surgery becomes unsafe after 12 hours. Grace records the gap between the proposed RTO and the business tolerance.",
+          "audit_focus": {
+            "review": [
+              "Trace each approved objective to the BIA result and owner sign-off",
+              "Compare tested recovery times and data points with the approved objectives"
+            ],
+            "evidence": [
+              "Approved recovery objectives with business owner sign-off",
+              "Recovery test results showing actual restore time and data point"
+            ],
+            "recommend": "Have business owners set recovery objectives from the BIA and have IT design recovery to meet them.",
+            "decides": "Process owners set MTD, RTO and RPO; senior management funds the recovery"
+          },
+          "isaca_rule": "Recovery objectives come from the business, through the BIA, not from what IT can deliver today. RTO must fit inside MTD, and RPO is set separately by how much data loss is tolerable.",
+          "exam_traps": [
+            {
+              "trap": "RTO and RPO are two names for how fast a system comes back.",
+              "why": "RTO is time to restore; RPO is the point in time data is restored to. A system can return in one hour yet lose a day of data."
+            },
+            {
+              "trap": "IT should set the RTO because it knows the recovery technology.",
+              "why": "IT knows what is achievable and what it costs, but only business owners know how long the process can be down. IT advises; the business sets the objective."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Recovery strategy",
+              "definition": "The chosen approach, such as a hot site or cloud failover, for meeting the recovery objectives."
+            },
+            {
+              "term": "Replication",
+              "definition": "Copying data to a second location continuously or at short intervals to support a short RPO."
+            }
+          ],
+          "memory_aid": "RTO looks forward to recovery; RPO looks back to the last good data."
+        }
+      ]
+    },
+    {
+      "topic_id": "2B3",
+      "topic_name": "Risk Register",
+      "overview": "This topic covers the risk register: the record of identified, analyzed and prioritized risk scenarios, each with an owner, ratings, controls, response, status and indicators. It must be kept current as events and controls change, and it feeds the enterprise risk profile senior management uses to decide.",
+      "can_do": [
+        "Name the fields a complete register entry needs",
+        "Explain why every entry needs an accountable business owner",
+        "Decide when an entry can change status or close",
+        "Explain how unit registers roll up into the enterprise risk profile"
+      ],
+      "subtopics": [
+        {
+          "id": "2B3.1",
+          "name": "Register Fields and Ownership",
+          "legacy_ids": [],
+          "definition": "A risk register is the record of risk scenarios that have been identified, analyzed and prioritized, with the owner, ratings, controls and response for each one.",
+          "why_it_matters": "The register is how risk is tracked and decided on. An entry with no owner has nobody to accept, treat or monitor it, so it drifts.",
+          "how_it_works": [
+            "Core fields: ID, scenario, category, risk owner, inherent and residual ratings, existing controls, response, action plan, status, KRIs and review date.",
+            "The risk owner is an accountable business manager with authority to decide the response, not the person who found the risk.",
+            "Control owners and action owners are recorded separately, because running a control differs from owning the risk.",
+            "Ratings use the enterprise's common scales so entries can be compared and combined.",
+            "IT or the risk function may maintain the register, but business owners own the entries in it."
+          ],
+          "example": "A shipping line's register has 30 entries owned by IT Security. Noor Al-Amin, the risk manager, maps each scenario to the business process it harms, proposes the accountable manager as owner, such as the head of vessel operations for navigation system outages, and keeps IT Security as control owner where it runs the controls. Noor then sends the proposed owners to the risk committee.",
+          "audit_focus": {
+            "review": [
+              "Sample entries for a named owner with authority over the harmed process",
+              "Compare owner names with the organization chart and delegation of authority"
+            ],
+            "evidence": [
+              "Register extract with risk owner, control owner and status fields",
+              "Owner acknowledgments of their assigned entries"
+            ],
+            "recommend": "Have the risk committee name an accountable business manager for every entry that has none.",
+            "decides": "Senior management assigns risk owners; each owner decides the response"
+          },
+          "isaca_rule": "Every register entry needs an accountable business owner with authority to decide the response. The risk function maintains the register and facilitates; IT may own controls, but the business owns the risk.",
+          "exam_traps": [
+            {
+              "trap": "IT risks belong to the IT department, so IT should own the register entries.",
+              "why": "IT may run the controls, but the harm falls on business processes. The business manager who bears the loss owns the risk and decides the response."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Risk owner",
+              "definition": "ISACA Glossary: the person with authority and accountability for risk-based decisions, who owns the loss of a realized scenario."
+            },
+            {
+              "term": "Action owner",
+              "definition": "The person responsible for completing a specific risk treatment task by its due date."
+            },
+            {
+              "term": "Risk detail record",
+              "definition": "A supporting record of a scenario's detail, assumptions and history, which keeps the register itself a summary."
+            }
+          ]
+        },
+        {
+          "id": "2B3.2",
+          "name": "Keeping the Register Current",
+          "legacy_ids": [],
+          "definition": "Keeping the register current means updating ratings, controls, responses and status whenever events, assessments, control tests or business changes alter a risk.",
+          "why_it_matters": "Decisions are only as good as the register behind them. A stale register reports risks as treated that are not, and hides risks that have grown.",
+          "how_it_works": [
+            "Update triggers include incidents, near misses, control test results, audit findings, new threats, projects and reorganizations.",
+            "Status follows evidence: an entry moves to treated only when the response is implemented and working, not when it is planned.",
+            "Residual ratings are re-scored after controls are tested, not on the day they are approved.",
+            "Each owner reviews their entries on a set cycle, and KRIs flag when an earlier review is needed.",
+            "Closing an entry needs a reason, such as the asset being retired or the risk avoided, and the owner's approval."
+          ],
+          "example": "A pension fund's register shows member portal account takeover as treated because multifactor sign-in was approved in March. In September, Elif Yilmaz, the risk analyst, finds the rollout covers only 20 percent of members. Elif moves the status back to in treatment, re-scores the residual risk on the control as it stands, and flags the gap to the member services director.",
+          "audit_focus": {
+            "review": [
+              "Sample entries marked treated and confirm the control is implemented and tested",
+              "Compare last review dates with the required review cycle"
+            ],
+            "evidence": [
+              "Control test results dated after the status change",
+              "Register audit trail of rating and status changes"
+            ],
+            "recommend": "Have risk owners mark entries treated only after control testing confirms the response works.",
+            "decides": "The risk owner approves status changes and closure of their entries"
+          },
+          "isaca_rule": "Status must follow evidence. A planned or approved control does not reduce residual risk until it is implemented and shown to work; update the register whenever events, tests or changes alter a risk.",
+          "exam_traps": [
+            {
+              "trap": "Close the register entry once the treatment plan is approved.",
+              "why": "Approval is a plan, not a result. The risk stays at its current level until the control is in place and working."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Risk status",
+              "definition": "The stage of a register entry, such as open, in treatment, accepted, monitored or closed."
+            },
+            {
+              "term": "Review trigger",
+              "definition": "An event or threshold that requires an entry to be reassessed before its scheduled review."
+            }
+          ]
+        },
+        {
+          "id": "2B3.3",
+          "name": "From Register to Enterprise Risk Profile",
+          "legacy_ids": [],
+          "definition": "The enterprise risk profile is the combined view of an enterprise's significant risks, built by normalizing and aggregating unit and IT risk registers for senior management and the board.",
+          "why_it_matters": "Leaders cannot read hundreds of entries. Consistent registers that roll up show which risks threaten enterprise objectives and where appetite is exceeded.",
+          "how_it_works": [
+            "Units use common categories, scales and time frames, so entries can be compared and combined.",
+            "Similar risks across units are aggregated, which can reveal a risk that is small locally but large in total.",
+            "Normalization corrects for units rating the same kind of risk differently.",
+            "The IT risk register feeds the enterprise risk register and risk profile, as NIST IR 8286 Rev. 1 describes.",
+            "The profile is compared with the appetite set by senior management and the board."
+          ],
+          "example": "Five plants of a car-parts maker each rate unsupported controller software as low. When Hana Sato, the enterprise risk analyst, rolls up the registers, she finds all five share the same controller vendor and patch gap. Hana aggregates them into one enterprise scenario, normalizes the plants' scales, and reports the combined exposure in the quarterly risk profile.",
+          "audit_focus": {
+            "review": [
+              "Compare rating scales and categories used across unit registers",
+              "Trace the top enterprise risks back to the unit entries behind them"
+            ],
+            "evidence": [
+              "Enterprise risk profile with links to source register entries",
+              "Common rating scale and risk category guide"
+            ],
+            "recommend": "Have the enterprise risk function set one taxonomy and scale and roll up unit registers each quarter.",
+            "decides": "Senior management and the board decide whether the profile is acceptable"
+          },
+          "isaca_rule": "Keep the IT risk register consistent with the enterprise's categories and scales so it can roll up. Aggregation can turn many small local risks into one significant enterprise risk.",
+          "exam_traps": [
+            {
+              "trap": "If every unit rates a risk as low, the enterprise-level risk is low.",
+              "why": "The same weakness in many units can add up to a significant total exposure. Aggregation is needed to see it."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Enterprise risk profile",
+              "definition": "The aggregated, prioritized view of an enterprise's significant risks, compared with appetite."
+            },
+            {
+              "term": "Normalization",
+              "definition": "Adjusting risk data so values from different units mean the same thing."
+            },
+            {
+              "term": "Aggregation",
+              "definition": "Combining related risks to show their total effect on enterprise objectives."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "topic_id": "2B4",
+      "topic_name": "Risk Analysis Methodologies",
+      "overview": "This topic covers how risk is rated: qualitative scales, semi-quantitative scores and quantitative money values such as SLE, ARO and ALE, with FAIR and Monte Carlo simulation as context. The method is chosen by the data available and the decision it must support, and scales stay consistent across the enterprise.",
+      "can_do": [
+        "Choose a qualitative, semi-quantitative or quantitative method for a stated purpose",
+        "Calculate SLE and ALE and compare the ALE reduction with a control's cost",
+        "Spot false precision built on poor data",
+        "Explain why rating scales must be consistent across units"
+      ],
+      "subtopics": [
+        {
+          "id": "2B4.1",
+          "name": "Qualitative and Semi-Quantitative Analysis",
+          "legacy_ids": [],
+          "definition": "Qualitative analysis rates likelihood and impact on defined word scales, such as low to very high; semi-quantitative analysis maps those levels to numbered bins or scores.",
+          "why_it_matters": "Most enterprises lack reliable loss data for many risks. Well-defined scales give fast, comparable ratings decision makers understand, as long as everyone uses them the same way.",
+          "how_it_works": [
+            "Each level needs a clear definition and example, such as high impact meaning a loss over 1 million dollars or a regulator investigation.",
+            "Without defined levels, different experts produce very different ratings for the same risk.",
+            "Semi-quantitative scales, such as 1 to 5 or bins of 0 to 100, allow finer ranking than words alone.",
+            "Scores on these scales show order, not true size: a 4 is not exactly twice as bad as a 2.",
+            "One enterprise scale is used by every unit, so ratings can be compared and aggregated."
+          ],
+          "compare": {
+            "columns": [
+              "Qualitative",
+              "Semi-quantitative",
+              "Quantitative"
+            ],
+            "rows": [
+              {
+                "label": "Values",
+                "cells": [
+                  "Words, from low to very high",
+                  "Numbered bins or scores",
+                  "Money amounts and probabilities"
+                ]
+              },
+              {
+                "label": "Best for",
+                "cells": [
+                  "Fast ranking and clear communication",
+                  "Finer ranking and heat maps",
+                  "Cost-benefit decisions"
+                ]
+              },
+              {
+                "label": "Main weakness",
+                "cells": [
+                  "Coarse and subjective",
+                  "Numbers look more exact than they are",
+                  "Needs good data, or gives false precision"
+                ]
+              }
+            ]
+          },
+          "example": "Two business units of an insurer rate the same data center outage scenario: one calls it medium, the other very high. Pablo Ruiz, the risk analyst, finds each unit uses its own scale and its own meaning for high. Pablo proposes one enterprise scale with money, customer and regulatory thresholds for each level, and both units re-rate the scenario on it.",
+          "audit_focus": {
+            "review": [
+              "Compare rating scales used across units for definitions and thresholds",
+              "Sample ratings for a written reason tied to the scale level"
+            ],
+            "evidence": [
+              "Approved scale document signed off by senior management",
+              "Rating worksheets showing the level chosen and its rationale"
+            ],
+            "recommend": "Have the enterprise risk function publish one defined scale and require all units to rate against it.",
+            "decides": "Senior management approves the enterprise rating scales and thresholds"
+          },
+          "isaca_rule": "Qualitative is not less correct: it fits when data is thin and decisions need clear ranking. It works only with defined levels used the same way across the enterprise and a written reason for each rating.",
+          "exam_traps": [
+            {
+              "trap": "Qualitative ratings are less correct than numbers, so they should be avoided.",
+              "why": "With little reliable data, qualitative scales can be more honest than invented numbers. NIST SP 800-30 notes qualitative results support communication with decision makers."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Ordinal scale",
+              "definition": "A scale that ranks items in order without showing how far apart they are."
+            },
+            {
+              "term": "Heat map",
+              "definition": "A grid that plots risks by likelihood and impact, colored by rating."
+            }
+          ]
+        },
+        {
+          "id": "2B4.2",
+          "name": "Quantitative Analysis: SLE, ARO and ALE",
+          "legacy_ids": [],
+          "definition": "Quantitative analysis expresses risk in money and probability. The classic method multiplies single loss expectancy (SLE) by annual rate of occurrence (ARO) to get annualized loss expectancy (ALE).",
+          "why_it_matters": "Money values let owners weigh a control's cost against the loss it avoids, which supports cost-benefit decisions that word scales cannot.",
+          "how_it_works": [
+            "SLE is the expected loss from one occurrence: asset value times exposure factor, the share of value lost.",
+            "ARO is how many times a year the event is expected; once every four years is 0.25.",
+            "ALE equals SLE times ARO: the expected yearly loss from the scenario.",
+            "Worked example: an 800,000-dollar asset with a 25 percent exposure factor has an SLE of 200,000; at an ARO of 0.5, ALE is 100,000 dollars.",
+            "A control is cost-justified when the yearly drop in ALE, ALE before minus ALE after, exceeds the control's yearly cost.",
+            "Results are only as good as the inputs, so state each figure's source and uncertainty."
+          ],
+          "example": "Each outage of a port operator's crane control system costs about 300,000 dollars, and history suggests two outages every five years, an ARO of 0.4, so the ALE is 120,000 dollars. A redundant controller costs 50,000 dollars a year and would cut the ARO to 0.1, an ALE of 30,000. Mei Tanaka, the risk analyst, shows the terminal manager the 90,000-dollar yearly reduction against the 50,000 cost.",
+          "audit_focus": {
+            "review": [
+              "Reperform the SLE, ARO and ALE calculations from the stated inputs",
+              "Trace each input to a documented data source"
+            ],
+            "evidence": [
+              "Calculation worksheet with asset value, exposure factor and ARO sources",
+              "Loss history or industry data supporting the ARO"
+            ],
+            "recommend": "Have the risk owner present ALE with its data sources and uncertainty when requesting control funding.",
+            "decides": "The risk owner decides whether the control's cost is justified"
+          },
+          "isaca_rule": "ALE equals SLE times ARO. Compare the yearly reduction in ALE with the control's yearly cost; a control costing more than the loss it avoids is not justified on cost grounds alone. Always show where the numbers came from.",
+          "exam_traps": [
+            {
+              "trap": "Compare the control's yearly cost with the SLE to decide whether it is worth buying.",
+              "why": "SLE covers one occurrence. The yearly cost must be compared with the yearly reduction in ALE, which accounts for how often the event happens."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Exposure factor (EF)",
+              "definition": "The percentage of an asset's value lost in one occurrence of the event."
+            },
+            {
+              "term": "Single loss expectancy (SLE)",
+              "definition": "The expected loss from one occurrence: asset value times exposure factor."
+            },
+            {
+              "term": "Annual rate of occurrence (ARO)",
+              "definition": "The expected number of occurrences per year; once every ten years is 0.1."
+            },
+            {
+              "term": "Annualized loss expectancy (ALE)",
+              "definition": "The expected yearly loss from a scenario: SLE times ARO."
+            }
+          ],
+          "memory_aid": "One loss times how often equals the yearly loss."
+        },
+        {
+          "id": "2B4.3",
+          "name": "Choosing a Method: Data, Decisions, FAIR and Monte Carlo",
+          "legacy_ids": [],
+          "definition": "Choosing a method means matching the analysis to the decision it must support and the quality of the data available, from simple scales to FAIR models and Monte Carlo simulation.",
+          "why_it_matters": "A precise-looking number built on guesses misleads decision makers more than an honest qualitative rating. The method must fit both the data and the decision.",
+          "how_it_works": [
+            "Ask what the decision needs: ranking many risks, a funding case for one control, or capital and insurance planning.",
+            "Check the data: loss history, industry benchmarks and expert estimates, and how reliable each one is.",
+            "FAIR, an Open Group standard, breaks risk into loss event frequency and loss magnitude for quantitative analysis.",
+            "Monte Carlo simulation runs thousands of trials from estimated ranges to produce a spread of possible losses, not one figure.",
+            "Ranges with stated confidence beat single-point numbers when data is uncertain.",
+            "Methods can be combined: qualitative screening first, then quantitative analysis of the top risks."
+          ],
+          "example": "A biotech firm's board asks how much cyber insurance to buy. The previous analysis gave one ALE figure from a single guess. Olu Adeyemi, the risk manager, gathers ranges from claims data and experts, runs a Monte Carlo simulation and shows the board a loss distribution, including a one-in-twenty-year loss of about 9 million dollars, with every assumption listed.",
+          "audit_focus": {
+            "review": [
+              "Evaluate whether input data quality supports the precision of the results",
+              "Confirm assumptions and ranges are documented beside the results"
+            ],
+            "evidence": [
+              "Analysis report listing data sources, ranges and assumptions",
+              "Model inputs traced to loss history or expert estimates"
+            ],
+            "recommend": "Have the risk function select the method by decision need and data quality, and report uncertainty with results.",
+            "decides": "The board or risk owner makes the decision the analysis supports"
+          },
+          "isaca_rule": "Pick the method by the decision and the data. Quantitative results need reliable inputs and stated uncertainty; with thin data, use ranges or a qualitative rating rather than a falsely precise figure.",
+          "exam_traps": [
+            {
+              "trap": "A quantitative result is always more accurate than a qualitative one.",
+              "why": "Numbers built on guesses carry false precision. Accuracy depends on input quality, and NIST SP 800-30 warns that buried subjective inputs weaken quantitative rigor."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "FAIR",
+              "definition": "Factor Analysis of Information Risk: an Open Group model that quantifies risk from loss event frequency and loss magnitude."
+            },
+            {
+              "term": "Monte Carlo simulation",
+              "definition": "Repeated random sampling from input ranges to estimate the spread of possible outcomes."
+            },
+            {
+              "term": "False precision",
+              "definition": "Presenting a result as more exact than its inputs can support."
+            },
+            {
+              "term": "Three-point estimate",
+              "definition": "An estimate given as a minimum, most likely and maximum value."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "topic_id": "2B5",
+      "topic_name": "Inherent and Residual Risk",
+      "overview": "This topic covers risk before controls (inherent), with the controls in place today (current), and after the chosen response (residual). Residual risk is what owners compare with appetite and tolerance. How well controls actually work sets the gap between inherent and residual risk, so controls are tested, not assumed. Residual risk is never zero.",
+      "can_do": [
+        "Tell inherent, current and residual risk apart in a scenario",
+        "Explain why a control's existence does not prove its effect",
+        "Compare residual risk with appetite to recommend a next step",
+        "Explain why residual risk is never zero"
+      ],
+      "subtopics": [
+        {
+          "id": "2B5.1",
+          "name": "Inherent, Current and Residual Risk",
+          "legacy_ids": [],
+          "definition": "Inherent risk is risk before any management action; current risk reflects controls already in place; residual risk is what remains after the chosen risk response is implemented.",
+          "why_it_matters": "Mixing these up leads to wrong decisions. Comparing inherent risk with appetite overstates the need for new controls; counting planned controls as working understates real exposure.",
+          "how_it_works": [
+            "Inherent risk shows how much a scenario depends on controls; a high inherent rating marks controls that must not fail.",
+            "Current risk counts only actions already taken, not those proposed or planned.",
+            "Residual risk is rated with the same scales and method as inherent risk, so the two are comparable.",
+            "Residual risk is compared with appetite and tolerance to decide whether more treatment is needed.",
+            "Residual risk is never zero; some uncertainty always remains after any response."
+          ],
+          "compare": {
+            "columns": [
+              "Inherent",
+              "Current",
+              "Residual"
+            ],
+            "rows": [
+              {
+                "label": "Controls counted",
+                "cells": [
+                  "None",
+                  "Those in place today",
+                  "Those in place after the response"
+                ]
+              },
+              {
+                "label": "Main use",
+                "cells": [
+                  "Shows reliance on controls",
+                  "Shows today's real exposure",
+                  "Compared with appetite for decisions"
+                ]
+              }
+            ]
+          },
+          "example": "A hospital's infusion pump tampering scenario has very high inherent risk. Network isolation exists today, and firmware signing for the pumps is planned for next year. Siobhan Kelly, the risk analyst, records current risk as high, counting only isolation, and shows the expected residual risk after signing on a separate line, so the patient safety director sees both today's exposure and the planned improvement.",
+          "audit_focus": {
+            "review": [
+              "Compare inherent, current and residual ratings for use of the same scales",
+              "Confirm planned controls are excluded from current risk ratings"
+            ],
+            "evidence": [
+              "Register fields showing inherent, current and residual ratings separately",
+              "Control status records for each control credited in a rating"
+            ],
+            "recommend": "Have risk owners record the three ratings separately, crediting only implemented controls in current risk.",
+            "decides": "The risk owner compares residual risk with appetite and decides further treatment"
+          },
+          "isaca_rule": "Inherent risk shows reliance on controls; residual risk drives decisions. Compare residual, not inherent, risk with appetite, and count only controls that are in place and working.",
+          "exam_traps": [
+            {
+              "trap": "Compare inherent risk with appetite to decide whether to add controls.",
+              "why": "Inherent risk ignores controls already working. The decision compares current or residual risk with appetite."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Target residual risk",
+              "definition": "The level of risk the enterprise prefers to hold after its responses, set within appetite."
+            },
+            {
+              "term": "Key control",
+              "definition": "A control whose failure would move a risk well outside appetite."
+            }
+          ]
+        },
+        {
+          "id": "2B5.2",
+          "name": "Control Effectiveness and the Residual Gap",
+          "legacy_ids": [],
+          "definition": "Control effectiveness is how well a control actually reduces a risk's likelihood or impact; it sets the gap between inherent and residual risk.",
+          "why_it_matters": "A residual rating that assumes controls work, without evidence, can hide a risk far above appetite. Effectiveness must be shown, not assumed.",
+          "how_it_works": [
+            "Design effectiveness asks whether the control, run as intended, would address the scenario's cause.",
+            "Operating effectiveness asks whether it actually ran as designed over the period, shown by testing or monitoring.",
+            "Evidence includes control test results, key control indicators (KCIs), audit findings and incident history.",
+            "An untested or failed control earns little or no reduction in the residual rating.",
+            "When test results change, residual risk is re-rated and the owner is told."
+          ],
+          "example": "A broadband provider's register rates staff export of customer data as low residual risk because a data loss prevention tool is installed. Kwame Asante, the risk analyst, asks for its results: it has run in monitor-only mode for a year and blocked nothing. Kwame re-rates the residual risk without credit for blocking and sends the evidence to the customer data owner.",
+          "audit_focus": {
+            "review": [
+              "Trace each control credited in residual ratings to recent test results",
+              "Compare KCI trends with the risk reduction the rating assumes"
+            ],
+            "evidence": [
+              "Dated test results for every credited control",
+              "KCI reports showing control performance over time"
+            ],
+            "recommend": "Have control owners provide test evidence before a control earns credit in the residual rating.",
+            "decides": "The risk owner accepts the re-rated residual risk or requests more treatment"
+          },
+          "isaca_rule": "A control earns credit in residual risk only for what evidence shows it does. Existence is not effectiveness: check design and operation, and re-rate when tests fail.",
+          "exam_traps": [
+            {
+              "trap": "The control is installed, so residual risk can be rated low.",
+              "why": "An installed control may be misconfigured, bypassed or switched off. Credit follows tested design and operating effectiveness."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Design effectiveness",
+              "definition": "Whether a control, run as intended, would address the risk it targets."
+            },
+            {
+              "term": "Operating effectiveness",
+              "definition": "Whether a control actually worked as designed throughout the period reviewed."
+            },
+            {
+              "term": "Key control indicator (KCI)",
+              "definition": "A metric showing how well a control is performing, such as the backup success rate."
+            }
+          ]
+        },
+        {
+          "id": "2B5.3",
+          "name": "Residual Risk Against Appetite and Tolerance",
+          "legacy_ids": [],
+          "definition": "Comparing residual risk with appetite and tolerance decides what happens next: accept and monitor, treat further, or escalate to the level that set the threshold.",
+          "why_it_matters": "This comparison is where analysis becomes a decision. It must reach the person with authority to decide, together with the options and their costs.",
+          "how_it_works": [
+            "Within appetite: the risk owner may accept the risk, document the acceptance and monitor it with KRIs.",
+            "Above appetite: the practitioner presents treatment options, such as mitigate, transfer or avoid, with costs, for the risk owner to choose.",
+            "Beyond tolerance: escalate to the level that set the threshold, usually senior management.",
+            "Acceptance is documented with the owner's name, the rationale and a review date.",
+            "Residual risk is reviewed again when KRIs move, controls change or the business changes."
+          ],
+          "example": "After a new fraud rule engine goes live, a mobile payments firm's account takeover fraud scenario still sits above the appetite the board set for customer losses. Rosa Mendes, the risk manager, prepares three options with costs and expected residual ratings: added device checks, fraud insurance, or pausing instant transfers for new accounts. Rosa presents them to the head of payments.",
+          "audit_focus": {
+            "review": [
+              "Compare each residual rating with the applicable appetite and tolerance",
+              "Sample signed acceptances for authority level and an unexpired review date"
+            ],
+            "evidence": [
+              "Risk acceptance forms signed by authorized owners",
+              "Board-approved appetite and tolerance statements"
+            ],
+            "recommend": "Have risk owners document acceptance within appetite and choose treatment options for risks above it.",
+            "decides": "The risk owner decides within appetite; senior management decides beyond tolerance"
+          },
+          "isaca_rule": "Residual risk within appetite can be accepted by the risk owner and monitored. Above appetite, the practitioner presents options and the owner chooses. The practitioner never accepts risk on the owner's behalf.",
+          "exam_traps": [
+            {
+              "trap": "After controls are added, the risk practitioner can sign off the residual risk as acceptable.",
+              "why": "Acceptance belongs to the risk owner, who has the authority. The practitioner analyzes, recommends and documents, but never accepts the risk."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Risk appetite",
+              "definition": "ISACA Glossary: the broad amount of risk an entity is willing to accept in pursuit of its mission."
+            },
+            {
+              "term": "Risk tolerance",
+              "definition": "The acceptable variation management allows for a particular risk as the enterprise pursues its objectives."
+            },
+            {
+              "term": "Risk acceptance",
+              "definition": "A documented decision by an authorized owner to hold a risk, made within appetite and tolerance."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "key_terminologies": {
+    "Risk event": "Something that happened, or nearly happened, showing that a risk scenario can occur.",
+    "Loss event": "An event in which a threat event results in loss.",
+    "Near miss": "An event that would have caused loss but was stopped by a control, chance or timing.",
+    "Threat source": "Anyone or anything that could cause harm: adversarial, accidental, structural or environmental.",
+    "Threat event": "What a threat source does against an asset that could directly cause harm.",
+    "Vulnerability": "A weakness in design, implementation, operation or internal control that a threat could exploit.",
+    "Threat modeling": "A structured way, such as STRIDE or attack trees, to work out how a system could be harmed.",
+    "CVSS": "Common Vulnerability Scoring System: FIRST's 0 to 10 severity score for a software flaw; one input to risk, not the risk rating.",
+    "Risk scenario": "A tangible, assessable description of how a threat could cause an event that harms objectives.",
+    "Tabletop exercise": "A facilitated discussion in which a team walks through a scenario to test plans and find gaps.",
+    "Risk assessment": "The process of identifying, estimating and prioritizing risk: prepare, conduct, communicate, maintain.",
+    "Business impact analysis (BIA)": "Analysis of critical processes, how impact grows over time and what they depend on; it ignores likelihood.",
+    "Maximum tolerable downtime (MTD)": "The longest a business process can be disrupted before harm becomes unacceptable.",
+    "Recovery time objective (RTO)": "The time allowed to restore a system; normally shorter than the MTD.",
+    "Recovery point objective (RPO)": "How much data loss, measured back in time, the business can tolerate.",
+    "Risk register": "A list of risk scenarios that have been identified, analyzed and prioritized, each with an owner.",
+    "Risk owner": "The accountable person with authority to make risk-based decisions and who bears the loss.",
+    "Enterprise risk profile": "The aggregated view of an enterprise's significant risks, compared with appetite.",
+    "Qualitative analysis": "Rating likelihood and impact on defined word scales, such as low to very high.",
+    "Single loss expectancy (SLE)": "Expected loss from one occurrence: asset value times exposure factor.",
+    "Annual rate of occurrence (ARO)": "Expected number of occurrences per year.",
+    "Annualized loss expectancy (ALE)": "Expected yearly loss: SLE times ARO.",
+    "Inherent risk": "Risk before management takes any action, such as implementing controls.",
+    "Current risk": "Risk as it stands today, counting actions already taken but not those planned.",
+    "Residual risk": "Risk remaining after the chosen risk response is implemented; compared with appetite.",
+    "Prompt injection": "Crafted input that makes a language model ignore its instructions or produce harmful output.",
+    "Data poisoning": "Corrupting an AI model's training or fine-tuning data so it learns wrong or hidden behavior.",
+    "Model drift": "Loss of an AI model's accuracy over time as live data or real-world patterns change."
+  },
+  "references": [
+    {
+      "title": "ISACA® CRISC® Exam Content Outline (effective 2025)",
+      "url": "https://www.isaca.org/credentialing/crisc/crisc-exam-content-outline",
+      "checked": "2026-10-30: via docs/content/CRISC_BLUEPRINT.md"
+    },
+    {
+      "title": "ISACA Interactive Glossary (risk, risk scenario, loss event, threat event, vulnerability, BIA, risk register, risk owner, inherent, current and residual risk, RPO, RTO, prompt injection)",
+      "url": "https://www.isaca.org/resources/glossary",
+      "checked": "2026-10-30: page read this session"
+    },
+    {
+      "title": "ISACA press release: Risk IT Framework, 2nd Edition and Risk IT Practitioner Guide, 2nd Edition (25 Jun 2020)",
+      "url": "https://www.isaca.org/about-us/newsroom/press-releases/2020/isacas-risk-it-framework-offers-a-structured-methodology",
+      "checked": "2026-10-30: title and edition only; the paid framework text was not opened"
+    },
+    {
+      "title": "COBIT 2019 APO12 Managed Risk practices (as listed in an ISACA Industry News article, 2020)",
+      "url": "https://www.isaca.org/resources/news-and-trends/industry-news/2020/evaluating-business-service-continuity-and-availability-using-cobit-2019",
+      "checked": "2026-10-30: objective and practice titles only"
+    },
+    {
+      "title": "NIST SP 800-30 Rev. 1, Guide for Conducting Risk Assessments (Sep 2012)",
+      "url": "https://csrc.nist.gov/pubs/sp/800/30/r1/final",
+      "checked": "2026-10-30"
+    },
+    {
+      "title": "NIST SP 800-34 Rev. 1, Contingency Planning Guide for Federal Information Systems (May 2010)",
+      "url": "https://csrc.nist.gov/pubs/sp/800/34/r1/upd1/final",
+      "checked": "2026-10-30"
+    },
+    {
+      "title": "NIST IR 8286 Rev. 1, Integrating Cybersecurity and Enterprise Risk Management (ERM) (Dec 2025)",
+      "url": "https://csrc.nist.gov/pubs/ir/8286/r1/final",
+      "checked": "2026-10-30"
+    },
+    {
+      "title": "NIST IR 8286A Rev. 1, Identifying and Estimating Cybersecurity Risk for Enterprise Risk Management (Dec 2025)",
+      "url": "https://csrc.nist.gov/pubs/ir/8286/a/r1/final",
+      "checked": "2026-10-30"
+    },
+    {
+      "title": "NIST CSWP 29, The NIST Cybersecurity Framework (CSF) 2.0 (Feb 2024)",
+      "url": "https://csrc.nist.gov/pubs/cswp/29/the-nist-cybersecurity-framework-csf-20/final",
+      "checked": "2026-10-30"
+    },
+    {
+      "title": "NIST AI 100-1, Artificial Intelligence Risk Management Framework (AI RMF 1.0) (Jan 2023)",
+      "url": "https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.100-1.pdf",
+      "checked": "2026-10-30"
+    },
+    {
+      "title": "NIST AI 100-2 E2025, Adversarial Machine Learning: A Taxonomy and Terminology of Attacks and Mitigations (Mar 2025)",
+      "url": "https://csrc.nist.gov/pubs/ai/100/2/e2025/final",
+      "checked": "2026-10-30"
+    },
+    {
+      "title": "FIRST Common Vulnerability Scoring System v4.0: Specification Document (document version 1.2)",
+      "url": "https://www.first.org/cvss/v4-0/specification-document",
+      "checked": "2026-10-30"
+    },
+    {
+      "title": "ISO 31000:2018 and ISO/IEC 27005:2022 (named as context only)",
+      "url": "https://www.iso.org/standard/65694.html",
+      "checked": "not opened: iso.org is blocked from the authoring environment"
+    }
+  ]
+}

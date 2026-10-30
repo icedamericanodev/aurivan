@@ -48,7 +48,7 @@ Read first:
 7. **Concepts.** `key_concept` is one plain sentence. `subtopic` is the outline code plus a neutral label that doesn't leak the answer (for example `"1B4 Risk appetite and risk tolerance. Threshold breach"`). `pre_read` is one sentence that tells the learner what to look for.
 8. **Citations (`framework_ref`).** Only real, current public sources, each part matching a bullet in `data/crisc/originals/_framework_library.md` exactly. Preferred:
    - ISACA: Risk IT Framework 2nd Edition (2020), Risk IT Practitioner Guide 2nd Edition (2020), COBIT 2019 governance and management objectives (EDM03, APO12, APO13, APO10, BAI06, DSS04 and so on), the ISACA Glossary, the ISACA Code of Professional Ethics.
-   - NIST: SP 800-30 Rev. 1, SP 800-37 Rev. 2, SP 800-39, IR 8286 and 8286A–D, CSF 2.0, SP 800-53 Rev. 5, SP 800-34 Rev. 1, SP 800-161 Rev. 1, SP 800-55 (current volumes), SP 800-137, SP 800-218, AI 100-1 (AI RMF 1.0), AI 600-1, the Privacy Framework.
+   - NIST: SP 800-30 Rev. 1, SP 800-37 Rev. 2, SP 800-39, IR 8286 Rev. 1 (the original IR 8286 was withdrawn 18 Dec 2025) and 8286A–D, CSF 2.0, SP 800-53 Rev. 5, SP 800-34 Rev. 1, SP 800-161 Rev. 1, SP 800-55 (current volumes), SP 800-137, SP 800-218, AI 100-1 (AI RMF 1.0), AI 600-1, the Privacy Framework.
    - FIRST CVSS v4.0; OWASP (current Top 10 lists).
    - ISO 31000:2018, ISO/IEC 27005:2022, COSO ERM (2017), the IIA Three Lines Model (2020) and EU law may be named in notes as context, but they can't be opened from the cloud environment, so they are not keyed citations until the library marks them Verified.
    - Never invent "ISACA guidance on X"; never quote the CRISC Review Manual or the QAE database. Add a new citation to the library in the same change, marked Verified (opened) or Likely.
