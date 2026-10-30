@@ -47,7 +47,7 @@ were removed on 29 Oct 2026, audit pilot 2, S7.)
 - NIST SP 800-53 Rev. 5 PS-5 (Personnel Transfer)
   - All of the above: Verified, 28 Oct 2026.
 - NIST SP 800-53 Rev. 5 AC-6(2) (Least Privilege | Non-privileged Access for Nonsecurity Functions)
-  - Likely, 28 Oct 2026. Title and intent confirmed through secondary copies of the catalog; the NIST catalog itself was not opened. Used in cc_d3_014.
+  - Verified, 30 Oct 2026, against the NIST OSCAL catalog (usnistgov/oscal-content, release 5.2.0) and the Rev. 5 PDF on nvlpubs.nist.gov. The enhancement requires users with privileged access to use non-privileged accounts or roles for nonsecurity functions, which fits cc_d3_014 (no email or browsing on admin accounts).
 - NIST SP 800-53 Rev. 5 AU-2 (Event Logging)
 - NIST SP 800-53 Rev. 5 AU-10 (Non-repudiation)
 - NIST SP 800-53 Rev. 5 PE-3 (Physical Access Control)
@@ -57,8 +57,9 @@ were removed on 29 Oct 2026, audit pilot 2, S7.)
 - NIST SP 800-53 Rev. 5 SI-2 (Flaw Remediation)
 - NIST SP 800-53 Rev. 5 SI-12(1) (Information Management and Retention | Limit Personally Identifiable Information Elements)
   - D1 pilot controls: Verified, 28 Oct 2026. Comma forms and "and" compounds replaced with one citation per part, 29 Oct 2026; enhancement titles now carry the parent control.
+  - PE-3 alone carries cc_d1_016 from 30 Oct 2026: its discussion covers entry and exit points and says physical access control systems comply with applicable laws and regulations. ISO/IEC 27002:2022 Control 7.1 was dropped there because its fire-door guidance could not be checked against the 2022 text.
 - NIST SP 800-53 Rev. 5 Appendix A Glossary (compensating controls)
-  - Likely (28 Oct 2026): the term comes from OMB Circular A-130 and is carried in the Rev. 5 glossary. Used in cc_d1_015.
+  - Verified, 30 Oct 2026, in Appendix A Glossary of the Rev. 5 PDF (nvlpubs.nist.gov): controls employed in lieu of the baseline controls that give equivalent or comparable protection. The entry carries no source tag. Fits cc_d1_015 (compensating controls in place of a required badge reader). Used in cc_d1_015.
 - NIST SP 800-53 Rev. 5 AT-2(3) (Literacy Training and Awareness | Social Engineering and Mining)
 - NIST SP 800-53 Rev. 5 AT-3 (Role-based Training)
 - NIST SP 800-53 Rev. 5 CA-7 (Continuous Monitoring)
@@ -111,10 +112,10 @@ were removed on 29 Oct 2026, audit pilot 2, S7.)
 - NIST SP 800-162 (Guide to Attribute Based Access Control (ABAC) Definition and Considerations)
   - Jan 2014, with updates of Feb 2019. Verified, 28 Oct 2026.
 - NIST SP 800-12 Rev. 1 Section 1.4 (Important Terminology: confidentiality, integrity, availability)
+- NIST SP 800-12 Rev. 1 Section 3.4 (Information Owner/Steward)
 - NIST SP 800-12 Rev. 1 Section 5.1 (Standards, Guidelines, and Procedures)
-  - Jun 2017. Likely, 28 Oct 2026 (the author read them; the audit could not confirm them independently).
 - NIST SP 800-12 Rev. 1 Section 9.1.3 (Electronic Signatures)
-  - Likely, lower confidence, 28 Oct 2026. Confirm the section number against the PDF table of contents.
+  - Jun 2017. Verified, 30 Oct 2026, against the PDF table of contents and text (nvlpubs.nist.gov). 1.4 defines confidentiality, integrity and availability (availability: timely and reliable access), used in cc_d1_001. 3.4: the information owner has authority over the information and sets the rules for its use and protection, used in cc_d5_004. 5.1: standards are normally compulsory and specify uniform use of technologies or parameters, used in cc_d1_009. 9.1.3 (with 9.1.3.2): a digital signature applies the signer's private key, used in cc_d1_002.
 - NIST SP 800-30 Rev. 1 Section 2.3.1 (Risk Models: threats, vulnerabilities, likelihood and impact)
 - NIST SP 800-30 Rev. 1 Section 2.3.2 (Assessment Approaches: quantitative assessments support cost-benefit analysis of risk responses)
   - Sep 2012. Verified, 28 Oct 2026. 800-30 does not use the terms SLE, ALE or ARO; cite it only for "quantitative supports cost-benefit".
@@ -181,8 +182,6 @@ were removed on 29 Oct 2026, audit pilot 2, S7.)
   - Verified (title), 28 Oct 2026. iso.org could not be reached; the titles were confirmed from the published 2022 control list. 5.10 is used in cc_d1_019 and cc_d2_004.
 - ISO/IEC 27002:2022 Control 5.31 (Legal, statutory, regulatory and contractual requirements)
   - Verified (title), 29 Oct 2026, on the same basis as the entries above (upgraded from Likely by audit pilot 2). Used in cc_d2_001 and 005.
-- ISO/IEC 27002:2022 Control 7.1 (Physical security perimeters)
-  - Verified (title); the fit is Likely (28 Oct 2026). Cited for the guidance that perimeter fire doors fail safe under local fire codes.
 - ISO/IEC 27002:2022 Control 5.12 (Classification of information)
 - ISO/IEC 27002:2022 Control 5.25 (Assessment and decision on information security events)
 - ISO/IEC 27002:2022 Control 5.26 (Response to information security incidents)
@@ -205,16 +204,15 @@ were removed on 29 Oct 2026, audit pilot 2, S7.)
 - CIS Controls v8.1 Safeguard 6.8 (Define and Maintain Role-Based Access Control)
   - Verified, 28 Oct 2026. The titles are unchanged from v8. v8.1 uses "Implementation Groups" and "essential cyber hygiene", not "basic set".
 - CIS Controls v8.1 Safeguard 5.4 (Restrict Administrator Privileges to Dedicated Administrator Accounts)
-  - Likely, 28 Oct 2026. Title and IG1 status confirmed through secondary copies; cisecurity.org was not opened. Used in cc_d3_014.
-- CIS Controls v8.1 Safeguard 3.7 (Establish and Maintain a Data Classification Scheme)
-  - Likely, 29 Oct 2026. cisecurity.org was blocked by the session proxy; title from prior knowledge of v8/v8.1. Used in cc_d5_004.
+  - Verified (title), 30 Oct 2026, against the v8.1 safeguard list published by MITRE SAF (github.com/mitre/cis-cci-mappings, mappings/cis-cci-mapping-v8.1.json); cisecurity.org was blocked by the session proxy. The title itself fits cc_d3_014 (separate accounts for admin work). Used in cc_d3_014.
+  - Safeguard 3.7 (title verified on the same list) was dropped from cc_d5_004 on 30 Oct 2026: it sets up a classification scheme but does not say who classifies. NIST SP 800-12 Rev. 1 Section 3.4 replaces it.
 
 ## OWASP
 
 - OWASP Top 10 for LLM Applications 2025 LLM06 (Excessive Agency)
   - Verified, 28 Oct 2026.
 - OWASP Non-Human Identities Top 10 (2025) NHI2 (Secret Leakage)
-  - Likely, 28 Oct 2026. owasp.github.io was blocked during authoring.
+  - Verified, 30 Oct 2026, against the project's own page source (github.com/OWASP/www-project-non-human-identities-top-10, index.md): "NHI2:2025 - Secret Leakage", which names secrets "sent over public chat applications". Fits cc_d3_010. owasp.github.io was blocked by the session proxy.
 
 ## FIRST
 
@@ -224,7 +222,7 @@ were removed on 29 Oct 2026, audit pilot 2, S7.)
 ## MITRE
 
 - MITRE ATT&CK knowledge base (Enterprise matrix: tactics and techniques)
-  - Likely, 29 Oct 2026. attack.mitre.org was blocked by the session proxy. Tactic = the adversary's goal, technique = how it is reached (prior knowledge). Used in cc_d5_008.
+  - Verified, 30 Oct 2026, against MITRE's STIX data for Enterprise ATT&CK v20.0 (github.com/mitre-attack/attack-stix-data); attack.mitre.org was blocked by the session proxy. Each tactic is written as the adversary's goal ("The adversary is trying to get into your network" for Initial Access, TA0001), and Phishing (T1566) is a technique under it, which fits cc_d5_008. Used in cc_d5_008.
 
 ## Code of Ethics
 
