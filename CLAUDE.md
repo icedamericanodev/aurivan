@@ -26,6 +26,7 @@ work without rediscovering the layout.
 | `CONTRIBUTING.md` | Human-facing version of this file (workflows, code style, PR rules) |
 | `CHANGELOG.md` | Canonical user-facing release history (mirrors the in-app What's New) |
 | `SECURITY.md` | Disclosure policy + privacy summary |
+| `data/crisc/` | CRISC course (paid pack, not wired into the apps yet): `notes/d{1..4}.json` and `originals/d{1..4}.json` + `_framework_library.md`. Outline: `docs/content/CRISC_BLUEPRINT.md`; plan: `docs/content/CRISC_BANK_PLAN.md`; standard: `.claude/agents/crisc-standards-auditor.md`. Lint notes with `scripts/lint_notes.py <file> --outline docs/content/CRISC_BLUEPRINT.md --bank data/crisc/originals` |
 | `mobile/` | **Expo (React Native) iOS + Android app.** Own `package.json`, tests and `mobile/CLAUDE.md`. Reads questions from `data/domain*.json` via `mobile/scripts/build-content.mjs` |
 | `docs/mobile/ARCHITECTURE.md` | Mobile tech-stack decision, architecture, roadmap, store-launch plan |
 | `supabase/migrations/` | Phase 3 database schema (accounts + sync). Written, not yet applied |
@@ -201,6 +202,7 @@ kill %1
   `mobile-security-auditor`, `app-store-compliance-reviewer`. Multi-cert content
   agents: `isaca-concept-reviewer`, `isaca-mindset-coach`, `qa-question-tester`,
   `cert-blueprint-researcher`. Product/marketing: `product-manager`, `growth-marketer`, `brand-logo-designer` (logo, icon, splash, lockups), `mobile-ui-designer` (assess and redesign crowded screens, then implement), `mobile-motion-designer` (motion system, micro-interactions, Reduce Motion), `mobile-performance-engineer` (lag, slow tabs and screens: measure with realistic saves, find the regressing release, fix root causes), `mascot-character-designer` (the tree companion's art, stages and customization), `community-support-designer` (report a problem, support email, feedback board and moderation). Learning and motivation: `behavioral-scientist` (habits, nudges, rewards, pacing), `learning-game-designer` (brain games, names, badges).
+  CRISC content: `crisc-standards-auditor` (shared standard), `crisc-d1..d4-domain-expert`, `crisc-cross-domain-reviewer`. AAIA kickoff prompt: `docs/content/AAIA_KICKOFF_PROMPT.md`.
   Notes and web: `cisa-notes-curator` (notes structure and rewrites), `learner-reader`
   (first-time candidate read-through), `web-app-engineer` (index.html),
   `notes-application-tester` (do the notes let a learner answer the bank?),
