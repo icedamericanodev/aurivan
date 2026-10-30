@@ -6,6 +6,13 @@ Usage:
     python3 scripts/lint_notes.py path/to/domain4.json # one domain object (writer drafts)
     python3 scripts/lint_notes.py --domain 4           # one domain of the main file
     python3 scripts/lint_notes.py --audit-focus        # also list each subtopic without audit_focus
+    python3 scripts/lint_notes.py data/aaia/notes/d1.json \
+        --outline docs/content/AAIA_BLUEPRINT.md --bank data/aaia/originals
+                                                       # another course: its outline and its bank
+
+--outline FILE reads the topic codes from "- 1A Name" or "- 1.1 Name" lines in FILE
+(default: the CISA outline, docs/content/CISA_ECO.md). --bank DIR reads the question
+bank from DIR/d{N}.json (default: data/originals/ and data/domain{N}.json).
 
 Errors break the schema or a hard limit; warnings are style targets.
 Exit code 1 if there are errors.
@@ -63,11 +70,22 @@ AF_MISSING = []
 
 PRACTICE_SEEN = {}
 _BANK = None
+BANK_DIR = None  # --bank: another course's originals folder (d{N}.json files)
+OUTLINE = None   # --outline: another course's outline file
+
+def _bank_questions(path):
+    data = json.loads(path.read_text())
+    return data["questions"] if isinstance(data, dict) else data
+
 def bank_ids():
-    """Question ids in data/domain{1..5}.json (practice_ids must point at these)."""
+    """Question ids in data/domain{1..5}.json, or in --bank (practice_ids must point at these)."""
     global _BANK
     if _BANK is None:
         _BANK = set()
+        if BANK_DIR is not None:
+            for f in sorted(BANK_DIR.glob("d*.json")):
+                _BANK |= {q["id"] for q in _bank_questions(f)}
+            return _BANK
         for n in range(1, 6):
             f = ROOT / "data" / f"domain{n}.json"
             if f.exists():
@@ -86,17 +104,18 @@ def content_words(s):
     return {w for w in re.findall(r"[a-z0-9]+", (s or "").lower()) if w not in EX_STOP and len(w) > 2}
 
 def bank_items(n):
-    path = ROOT / "data" / "originals" / f"d{n}.json"
+    path = (BANK_DIR or ROOT / "data" / "originals") / f"d{n}.json"
     if not path.exists():
         return []
-    data = json.loads(path.read_text())
-    data = data["questions"] if isinstance(data, dict) else data
+    data = _bank_questions(path)
     return [(q["id"], content_words(q["question"] + " " + q["options"][q["correct"]])) for q in data]
 
 def eco_codes():
     codes = []
-    for line in ECO.read_text().splitlines():
-        m = re.match(r"- (\d[AB]\d+) ", line)
+    # CISA codes look like 4B1; other outlines use 1A (ISACA) or 1.1 (ISC2).
+    pattern = r"- (\d[A-Z]\d*|\d+\.\d+) " if OUTLINE else r"- (\d[AB]\d+) "
+    for line in (OUTLINE or ECO).read_text().splitlines():
+        m = re.match(pattern, line)
         if m and m.group(1) not in codes:
             codes.append(m.group(1))
     return codes
@@ -213,7 +232,7 @@ def lint_sub(r, s, topic_id, seen_terms):
             for q in pids:
                 if q not in bank:
                     r.err(where, f"practice_ids: {q} is not in the question bank")
-                elif not q.startswith(dom):
+                elif not (q.startswith(dom) or (BANK_DIR is not None and "_" + dom in q)):
                     r.err(where, f"practice_ids: {q} is from another domain")
                 elif q in PRACTICE_SEEN:
                     r.err(where, f"practice_ids: {q} is also under {PRACTICE_SEEN[q]}")
@@ -380,6 +399,19 @@ def lint_domain(r, dom, codes):
     return len(ids)
 
 def main(argv):
+    global BANK_DIR, OUTLINE
+    for flag in ("--outline", "--bank"):
+        if flag in argv:
+            i = argv.index(flag)
+            if i + 1 >= len(argv):
+                print(f"ERROR {flag} needs a path")
+                return 1
+            value = Path(argv[i + 1])
+            if flag == "--outline":
+                OUTLINE = value
+            else:
+                BANK_DIR = value
+            argv = argv[:i] + argv[i + 2:]
     args = [a for a in argv if not a.startswith("--")]
     only = None
     if "--domain" in argv:

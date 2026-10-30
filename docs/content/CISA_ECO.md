@@ -3,13 +3,14 @@
 The topic map every KaiSip CISA question is tagged against. Use it to find
 thin or missing topics before writing new questions.
 
-**Status: partly verified (2026-10-07).** The cloud environment blocks
-isaca.org, so this list was rebuilt from search results that quote the
-official outline and its copies. The weights and the effective date are
-confirmed. The topic names below match those results; a few titles have
-small wording variants between sources (noted). Re-check against the
-official page when it can be reached:
-https://www.isaca.org/credentialing/cisa/cisa-exam-content-outline
+**Status: verified (2026-10-30)** against ISACA's own outline page,
+https://www.isaca.org/credentialing/cisa/cisa-exam-content-outline (isaca.org
+is reachable from the cloud environment since late October 2026). All 60
+topics are present, in this order, under the same domains, parts and weights.
+Four titles below use an older wording; ISACA's current page wording is in
+"Wording on ISACA's page" at the end. The codes are KaiSip's (ISACA's page
+lists parts A and B without topic numbers). Earlier status (2026-10-07):
+rebuilt from search results while isaca.org was blocked.
 
 Exam facts (confirmed): 150 questions, 240 minutes, scaled score 200–800,
 pass at 450. Domain weights match `DI` in `index.html` and
@@ -108,14 +109,23 @@ number, part letter, topic number. Scripts parse this file.
 - 5B5 Security Incident Response Management
 - 5B6 Evidence Collection and Forensics
 
-## Wording variants seen in sources
+## Wording on ISACA's page (checked 2026-10-30)
 
-- 1A1: some sources drop "Functions" (that is the 2019 title).
-- 2A3: "IT Policies, Standards, Procedures, and Guidelines" (2024) vs
-  "... and Processes" in older copies.
-- 4A5: the 2024 Candidate Guide lists "Shadow IT and End-User Computing";
-  some copies reverse it.
-- 5A1: some sources omit "Policies".
+The titles in the list above match ISACA's page except these four. ISACA's
+page is the reference; the learner-facing topic names in
+`data/cisa_notes.json` still use the left-hand wording (a separate, versioned
+copy change).
+
+| Code | Title in this file | ISACA's page |
+|---|---|---|
+| 1A1 | IS Audit Standards, Guidelines, Functions, and Codes of Ethics | IS Audit Standards, Guidelines, and Codes of Ethics |
+| 2A3 | IT Policies, Standards, Procedures, and Guidelines | IT Policies, Standards, Procedures and Practices |
+| 5A1 | Information Asset Security Policies, Frameworks, Standards, and Guidelines | Information Asset Security Frameworks, Standards, and Guidelines |
+| 5B4 | Security Monitoring Logs, Tools, and Techniques | Security Monitoring Tools and Techniques |
+
+Cosmetic only: ISACA writes "Enterprise Risk Management" and "Public Key
+Infrastructure" without the acronyms this file adds, and lists 4A5 as
+"Shadow IT and End-User Computing" (as here).
 
 ## App name differences (cosmetic)
 
