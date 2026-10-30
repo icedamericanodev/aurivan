@@ -91,9 +91,9 @@ import { router, useFocusEffect } from 'expo-router';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { View } from 'react-native';
 import { ExamEveCard, ExamReadyPanel } from '../../components/moments';
-import { ClearingBody, clearingLine, clearingTitle, PlanChecklist, PlanLeaves, planHero, planIcon, planText, ReadinessRow, todayMinutes } from '../../components/journey';
+import { ClearingBody, clearingLine, clearingTitle, PlanChecklist, PlanLeaves, planHero, planText, ReadinessRow, todayMinutes } from '../../components/journey';
 import { StreakPill } from '../../components/today';
-import { FieldText, headDate, KeyCaption, Plate, RunningHead } from '../../components/fieldguide';
+import { FieldText, headDate, KeyCaption, KeyList, Plate, RunningHead } from '../../components/fieldguide';
 import { todayTitle } from '../../engine/fieldGuide';
 import { GROWTH_NAMES, MAX_GROWTH } from '../../engine/plant';
 import { shortDate, spokenShortDate } from '../../lib/format';
@@ -112,7 +112,7 @@ import type { FinalWeek } from '../../content/exam/types';
 import { examWeekCardDue, examWeekCount, examWeekOf, FINAL_WEEK_WINDOW, weekDaysCount, weekDaysOf } from '../../engine/examWeek';
 import { dayForToday } from '../../engine/finalWeek';
 import { Celebrate, useCelebration, useGrowth, useScreenFocus } from '../../components/motion';
-import { ArrowRight, ICON_STROKE, Inbox, Play, Settings, Sprout, Target, Timer } from '../../components/icons';
+import { ArrowRight, ICON_STROKE, Inbox, Play, Settings, Sprout } from '../../components/icons';
 import { PlantButton, PlantNote } from '../../components/plant/PlantUI';
 import { Button, Enter, HeroPanel, ICON_SIZE, InviteRow, ListRow, Row, Screen, Section, T, useFontScale } from '../../components/ui';
 import { countedDone, currentIndex, isOptional, itemMinutes, MINUTES_PER_QUESTION, planComplete, SHORT_SET_SIZE, shortSetItem } from '../../engine/dayPlan';
@@ -864,17 +864,17 @@ export default function Today() {
           <>
             {tomorrow.length > 0 && (
               <>
-                <Section title="Tomorrow" meta={tomorrowMinutes} metaLabel={tomorrowMinutes && spokenMin(tomorrowMinutes)} headRef={nextHeadRef} />
-                {tomorrow.map((item, k) => (
-                  <ListRow
-                    key={k}
-                    icon={planIcon(item, c.accentText)}
-                    title={planText(item, undefined, 'tomorrow').title}
-                    subtitle={rowShort(item, tomorrow, k, undefined, 'tomorrow')}
-                    accessibilityLabel={`${planText(item, undefined, 'tomorrow').title}, ${spokenMin(rowShort(item, tomorrow, k, undefined, 'tomorrow'))}`}
-                    last={k === tomorrow.length - 1}
-                  />
-                ))}
+                <Section variant="head" title="Tomorrow" meta={tomorrowMinutes} metaLabel={tomorrowMinutes && spokenMin(tomorrowMinutes)} headRef={nextHeadRef} />
+                {/* Premium round 2 (Field Guide foundation): an index list, the old subtitle as the kicker. */}
+                <KeyList
+                  testID="tomorrow-list"
+                  items={tomorrow.map((item, k) => ({
+                    key: String(k),
+                    kicker: rowShort(item, tomorrow, k, undefined, 'tomorrow'),
+                    title: planText(item, undefined, 'tomorrow').title,
+                    spoken: `${planText(item, undefined, 'tomorrow').title}, ${spokenMin(rowShort(item, tomorrow, k, undefined, 'tomorrow'))}`,
+                  }))}
+                />
               </>
             )}
             <View style={{ alignSelf: 'flex-start', marginTop: space.sm, marginLeft: -space.sm }}>
@@ -888,29 +888,33 @@ export default function Today() {
         ) : (
           alsoCount > 0 && (
             <>
-              <Section title="Also today" meta={sectionMinutes(alsoMinutes)} metaLabel={alsoMinutes > 0 ? spokenMin(aboutMin(alsoMinutes)) : undefined} headRef={nextHeadRef} />
-              {resume && (
-                <ListRow
-                  // Mobile 1.20: Play now means a lesson; a set resumes with the plan's practice / mock icons.
-                  icon={resume.mode === 'mock' ? <Timer size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} /> : <Target size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
-                  // legacyTitle: a set paused in 1.23 was titled "Starting check…"; it reads "Mixed practice" now.
-                  title={`Resume: ${legacyTitle(resume.title)}`}
-                  subtitle={`Question ${resume.index + 1} of ${resume.questionIds.length}`}
-                  onPress={() => router.push('/session')}
-                  last={rest.length === 0}
-                />
-              )}
-              {rest.map(({ item, i }, k) => (
-                <ListRow
-                  key={i}
-                  icon={planIcon(item, c.accentText)}
-                  title={planText(item, j.dueCount).title}
-                  subtitle={rowShort(item, plan.items, i, j.dueCount)}
-                  accessibilityLabel={`${planText(item, j.dueCount).title}, ${spokenMin(rowShort(item, plan.items, i, j.dueCount))}`}
-                  onPress={() => runPlanItem(item, j.cert.id)}
-                  last={k === rest.length - 1}
-                />
-              ))}
+              <Section variant="head" title="Also today" meta={sectionMinutes(alsoMinutes)} metaLabel={alsoMinutes > 0 ? spokenMin(aboutMin(alsoMinutes)) : undefined} headRef={nextHeadRef} />
+              {/* Premium round 2 (Field Guide foundation): an index list, the old subtitle ("Lesson · 5 min")
+                  as each row's kicker over its title; spoken as the rows were. */}
+              <KeyList
+                testID="also-today"
+                items={[
+                  ...(resume
+                    ? [
+                        {
+                          key: 'resume',
+                          // legacyTitle: a set paused in 1.23 was titled "Starting check…"; it reads "Mixed practice" now.
+                          kicker: `Question ${resume.index + 1} of ${resume.questionIds.length}`,
+                          title: `Resume: ${legacyTitle(resume.title)}`,
+                          spoken: `Resume: ${legacyTitle(resume.title)}, Question ${resume.index + 1} of ${resume.questionIds.length}`,
+                          onPress: () => router.push('/session'),
+                        },
+                      ]
+                    : []),
+                  ...rest.map(({ item, i }) => ({
+                    key: String(i),
+                    kicker: rowShort(item, plan.items, i, j.dueCount),
+                    title: planText(item, j.dueCount).title,
+                    spoken: `${planText(item, j.dueCount).title}, ${spokenMin(rowShort(item, plan.items, i, j.dueCount))}`,
+                    onPress: () => runPlanItem(item, j.cert.id),
+                  })),
+                ]}
+              />
             </>
           )
         )}

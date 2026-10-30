@@ -115,7 +115,7 @@ describe('the welcome screen: literal, names the exam, no metaphors', () => {
     mount(<Onboarding />);
     const t = allText();
     expect(t).toContain('Think like an IS auditor.');
-    expect(t).toContain('CISA exam prep, taught the way the exam thinks.');
+    expect(t).toContain('A field guide to your CISA® exam study.');
     // Mobile 1.41: the best feature first, in the web welcome's words.
     expect(t).toContain('Questions that explain every option, the trap included.');
     expect(t).toContain('Your daily plan, built around your exam date.');

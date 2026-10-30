@@ -60,7 +60,7 @@ import { selectCert, useProgress } from '../store/progress';
 import { useSeen } from '../store/seen';
 import { useSession, type ActiveSession } from '../store/session';
 import { useSettings } from '../store/settings';
-import { LARGE_TEXT, radius, space } from '../theme/tokens';
+import { LARGE_TEXT, plate, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { Seedling } from './glyphs';
 import { ChevronDown, ICON_STROKE } from './icons';
@@ -184,7 +184,7 @@ export function ReminderAsk({
           accessibilityHint="Turns on a study reminder. Your phone may ask to allow notifications."
           disabled={busy}
           onPress={accept}
-          // 16 a side (the pill's usual 32 is for a lone button), so with the chip beside it the row fits 393pt.
+          // 16 a side (the button's usual 32 is for a lone button), so with the chip beside it the row fits 393pt.
           style={{ flexShrink: 1, paddingHorizontal: space.lg }}
         />
         <TimeChip ref={chipRef} time={shown} disabled={busy} onPress={() => setPicking(true)} />
@@ -227,12 +227,13 @@ export function ReminderAsk({
 }
 
 /**
- * The reminder ask's time chip: an outlined pill with the time and a down chevron (it opens the
- * time sheet). 56pt tall, the same height as the button beside it (and well over the 48pt touch target).
+ * The reminder ask's time chip: an outlined chip with the time and a down chevron (it opens the
+ * time sheet). Premium round 2 (Field Guide foundation): the plate button's shape, 52pt tall with 12pt
+ * corners, the same as the button beside it (and over the 48pt touch target).
  */
 function TimeChip({ time, onPress, disabled, ref }: { time: string; onPress: () => void; disabled?: boolean; ref?: Ref<View> }) {
   const { c } = useTheme();
-  const press = usePressScale({ tint: c.soft, tintRadius: radius.pill });
+  const press = usePressScale({ tint: c.soft, tintRadius: plate.buttonRadius });
   return (
     <AnimatedPressable
       ref={ref}
@@ -246,9 +247,9 @@ function TimeChip({ time, onPress, disabled, ref }: { time: string; onPress: () 
       onPressOut={press.onPressOut}
       style={[
         {
-          minHeight: 56,
+          minHeight: plate.button,
           maxWidth: '100%',
-          borderRadius: radius.pill,
+          borderRadius: plate.buttonRadius,
           borderWidth: 1.5,
           borderColor: c.control,
           paddingHorizontal: space.md,

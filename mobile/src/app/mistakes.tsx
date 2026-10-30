@@ -29,7 +29,8 @@
  *
  * Mobile 1.24 (accessibility): the question is shown whole (the ask, FIRST or
  * BEST, is at the END of most stems, and the options are no longer cut to two
- * lines); "Your answer" / "Best answer" are plain words (no ✓ / ✗ glyphs read
+ * lines); "Your pick" (premium round 2, the answer screen's word; "Your answer"
+ * before) / "Best answer" are plain words (no ✓ / ✗ glyphs read
  * aloud as "check mark"); and the six tag chips are not repeated under every
  * mistake: an untagged mistake has one "Tag why you slipped" button, a tagged
  * one shows its tag as a line with "Change", and the chips (one labelled radio
@@ -228,7 +229,7 @@ export default function Mistakes() {
               <Gap h={space.md} />
               {m.picked && (
                 <>
-                  <T v="caption" color={c.wrong}>Your answer</T>
+                  <T v="caption" color={c.wrong}>Your pick</T>
                   <T v="small">{q.options[m.picked]}</T>
                   <Gap h={space.sm} />
                 </>

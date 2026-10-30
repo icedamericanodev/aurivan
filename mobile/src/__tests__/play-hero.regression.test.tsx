@@ -98,28 +98,31 @@ afterEach(() => {
 });
 
 // Mobile 1.51: the Play tab is gone (its games are Drills, a list inside Practice), so the tab hero checked
-// here is Practice's: the same HeroPanel with its seal.
+// here is Practice's. Premium round 2 (Field Guide foundation): its white seal card became a plate (Fig. 4),
+// with the plate button under it; no art shares the plate with the words.
 describe('the tab hero renders its content (Android blank-hero regression)', () => {
   const cases: [string, 'light' | 'dark', number][] = [
     ['light', 'light', 1],
     ['dark', 'dark', 1],
     ['light at 200% text', 'light', 2],
   ];
-  it.each(cases)('%s: caption, title, text and the Start button are inside the hero', (_name, theme, scale) => {
+  it.each(cases)('%s: the plate holds its caption, title and text; the Start button follows it', (_name, theme, scale) => {
     useSettings.setState({ theme });
     setFontScale(scale);
     mount(<Practice />);
-    const [content] = byTestId('hero-content');
+    const [content] = byTestId('practice-plate');
     expect(content).toBeDefined();
     const text = textOf(content);
-    // The path's title, its one-line text and the button label.
+    // The figure caption and the path's title are the plate's two headers.
     const header = content.findAll((n) => n.props.accessibilityRole === 'header' && typeof n.type === 'string');
-    expect(header.length).toBe(1);
-    expect(textOf(header[0]).length).toBeGreaterThan(3);
-    expect(text).toMatch(/min/); // the caption carries the honest length
-    const button = content.findAll((n) => n.props.accessibilityRole === 'button' && typeof n.props.onPress === 'function');
-    expect(button.length).toBe(1);
-    expect(textOf(button[0])).toBe('Start');
+    expect(header.map((h) => h.props.accessibilityLabel ?? textOf(h))).toContain('Figure 2, Your next set');
+    expect(header.length).toBe(2);
+    expect(text).toMatch(/min/); // the meta carries the honest length
+    // The plate is never a button: the Start button sits under it.
+    expect(content.findAll((n) => n.props.accessibilityRole === 'button')).toHaveLength(0);
+    const start = root().findAll((n) => typeof n.type === 'string' && n.props.accessibilityRole === 'button' && n.props.accessibilityLabel === 'Start');
+    expect(start).toHaveLength(1);
+    expect(byTestId('hero-seal')).toHaveLength(0);
   });
 
   // Mobile 1.43 (tab header C): Play, Learn and Practice lead with a white seal card. Mobile 1.51 (Field
@@ -161,26 +164,23 @@ describe('the tab hero renders its content (Android blank-hero regression)', () 
     expect(s).toMatchObject(botanySize('frond'));
   });
 
-  it('Practice: a white card with the tab seal, no forest art layer (mobile 1.43, tab header C); Drills adds no second hero', () => {
+  it('Practice: a plate, no seal and no forest art layer (premium round 2, Field Guide foundation); Drills adds no second hero', () => {
     mount(<Practice />);
     expect(byTestId('hero-art')).toHaveLength(0);
-    expect(byTestId('hero-seal')).toHaveLength(1);
-    expect(byTestId('hero-content')).toHaveLength(1);
-    // The seal is decorative: hidden from screen readers.
-    expect(byTestId('hero-seal')[0].props.importantForAccessibility).toBe('no-hide-descendants');
-    const [content] = byTestId('hero-content');
-    // Build E: the hero starts the learner's study path (a new learner: Random, 10 questions).
+    expect(byTestId('hero-seal')).toHaveLength(0);
+    expect(byTestId('practice-plate')).toHaveLength(1);
+    const [content] = byTestId('practice-plate');
+    // Build E: the plate shows the learner's study path (a new learner: Random, 10 questions).
     // Mobile 1.21: the title names the path ("A mixed set"); the count is the meta.
     expect(textOf(content)).toContain('A mixed set');
     expect(textOf(content)).toContain('10 questions · ');
   });
 
-  it('beside the seal the title stops short of it by its width and a gap, not a fixed 250 (QA bug 2: 360pt phones)', () => {
+  it('the plate has no shadow and square corners (the white shadowed card is retired)', () => {
     mount(<Practice />);
-    const [content] = byTestId('hero-content');
-    const [title] = content.findAll((n) => n.props.accessibilityRole === 'header' && typeof n.type === 'string');
-    expect(flat(title).marginRight).toBe(56 + 12);
-    expect(flat(title).maxWidth).toBeUndefined();
+    const [plateEl] = byTestId('practice-plate');
+    expect(flat(plateEl).boxShadow).toBeUndefined();
+    expect(flat(plateEl).borderRadius).toBeUndefined();
   });
 });
 
@@ -243,9 +243,9 @@ describe("Today's review card: the 'N today' line only when more are due than to
   });
 });
 
-// A seal hero with art and a meta line, as the Play tab's featured game was (mobile 1.51: that tab is gone, the
-// HeroPanel rule stays).
-const SEAL_HERO = <HeroPanel seal="sprig" caption="Beating distractors · 6 min" title="Snare Spotter" meta="Find the answer built to fool you." art="frond" />;
+// A forest hero with art and a meta line, as the Play tab's featured game was (mobile 1.51: that tab is gone;
+// premium round 2: the white seal variant is retired, the HeroPanel rule stays for the forest panel).
+const SEAL_HERO = <HeroPanel caption="Beating distractors · 6 min" title="Snare Spotter" meta="Find the answer built to fool you." art="frond" />;
 
 describe('hero meta line keeps clear of the art', () => {
   const metaOf = () => {

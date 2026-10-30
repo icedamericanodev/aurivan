@@ -24,7 +24,7 @@ import { Tabs } from 'expo-router';
 import { PlatformPressable } from 'expo-router/react-navigation';
 import { Easing, View, type Animated, type ColorValue } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { BookOpen, ICON_STROKE, ListChecks, Rings, Sprout } from '../../components/icons';
+import { BookOpen, ICON_STROKE, ListChecks, SpecimenTag, Sprout } from '../../components/icons';
 import { useMotion } from '../../components/motion';
 import { ICON_SIZE, TAB_BAR_HEIGHT, TabLabel } from '../../components/ui';
 import { useNewBadge } from '../../lib/badges';
@@ -48,7 +48,8 @@ export function YouIcon({ color, dot }: IconProps & { dot: boolean }) {
   const { c } = useTheme();
   return (
     <View>
-      <Rings size={ICON_SIZE.bar} color={color as string} strokeWidth={ICON_STROKE} />
+      {/* Premium round 2 (expert ruling B): a plain specimen tag, the Field Guide's label (was the growth rings). */}
+      <SpecimenTag size={ICON_SIZE.bar} color={color as string} strokeWidth={ICON_STROKE} />
       {dot && (
         <View
           testID="you-new-dot"

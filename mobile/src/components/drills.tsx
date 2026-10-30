@@ -183,7 +183,7 @@ export const Drills = memo(function Drills({
   return (
     <View ref={box} testID="drills" collapsable={false} onLayout={onLayout}>
       <Enter i={enter}>
-      <Section title="Drills" headRef={head} meta={allSeedling ? 'All at Seedling' : undefined} />
+      <Section variant="head" title="Drills" headRef={head} meta={allSeedling ? 'All at Seedling' : undefined} />
       {!plan.drill ? (
         // No game has enough questions for this exam yet: said calmly, no numbers.
         <T v="meta">Drills arrive once this exam has enough practice questions for them.</T>

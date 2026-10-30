@@ -260,7 +260,10 @@ for (const [view, scheme] of [['phone', 'light'], ['desktop', 'dark']]) {
     await page.locator('#mrTitle').waitFor({ timeout: 10000 });
     await sleep(500);
     await c.shot(`w3-results-${tag}`);
-    c.step('open the review rows for the first 3 questions');
+    // Web v12.49: the review opens on the mistakes, five rows at a time; "All" shows every question in order.
+    c.step('review: show All, then open the rows for the first 3 questions');
+    await page.locator('.mr-seg [data-f="all"]').click();
+    await sleep(200);
     for (let i = 0; i < 3; i++) {
       const item = page.locator('#mrList .mr-item').nth(i);
       await item.locator('.mr-row').click();
@@ -275,8 +278,9 @@ for (const [view, scheme] of [['phone', 'light'], ['desktop', 'dark']]) {
       c.check(best && norm(best.t) === p.key, `review row ${i + 1}: "Best answer" is on the wrong option text`);
       c.check(yours && norm(yours.t) === p.text, `review row ${i + 1}: "Your answer" is on a different option than the one picked`);
       if (!p.right) {
-        const m = norm(await item.locator('.mr-meta').innerText());
-        const mm = m.match(/You: ([A-D]) . Best: ([A-D])/);
+        // v12.49: "You C · Best A" on the row's right, in display letters.
+        const m = norm(await item.locator('.mr-yb').innerText());
+        const mm = m.match(/You ([A-D]) . Best ([A-D])/);
         c.check(mm && mm[1] === yours.l && mm[2] === best.l, `review row ${i + 1}: meta "${m}" letters do not match the rows (yours ${yours && yours.l}, best ${best && best.l})`);
       }
     }

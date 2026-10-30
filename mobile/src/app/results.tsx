@@ -7,7 +7,7 @@
  *
  * Results — score rings per domain (Grove v2 growth rings in domain tones,
  * replacing the old ring and bars), the stat row, and a question-by-question
- * review (your answer vs the best answer). "Practice what I missed"
+ * review (your pick vs the best answer). "Practice what I missed"
  * turns mistakes straight into a new session.
  *
  * Build F: when this session earned a milestone, ONE quiet moment sits under
@@ -549,8 +549,8 @@ export default function Results() {
                       text={q.options[picked] ?? ''}
                       state="wrong"
                       mark="letter"
-                      tag="Your answer"
-                      spoken={`Your answer, ${r.display}, not correct: ${q.options[picked] ?? ''}`}
+                      tag="Your pick"
+                      spoken={`Your pick, ${r.display}, not the best answer: ${q.options[picked] ?? ''}`}
                     />
                     {q.wrongExplanations[picked] ? <PickNote letter={r.display} text={renderText(q.wrongExplanations[picked]!, perm)} /> : null}
                   </>

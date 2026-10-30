@@ -505,7 +505,9 @@ describe('Learn: the course and the reference (mobile 1.21)', () => {
       useProgress.getState().setNoteRead('cisa', '4B1.2', true);
     });
     mount(<Learn />);
-    expect(allText()).toContain('1 note read · every topic, with traps');
+    // Premium round 2: an index row, "1 read" at the end of its leader; the spoken label keeps the full words.
+    expect(allText()).toContain('Study notes 1 read');
+    expect(root().findAll((n) => n.props.accessibilityLabel === 'Study notes, 1 note read · every topic, with traps').length).toBeGreaterThan(0);
   });
 
   it('searches the notes right on Learn, announces the count, and opens a hit', () => {

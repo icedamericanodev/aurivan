@@ -31,8 +31,8 @@ export function FieldText({
   accessibilityRole?: 'header' | 'text';
 }) {
   const { c } = useTheme();
-  // Keys, captions and dates are secondary text; names and figures are ink.
-  const fallback = v === 'head' || v === 'fig' || v === 'sub' || v === 'small' || v === 'keyNo' ? c.ink2 : c.ink;
+  // Keys, captions, dates, a recapped question and "Why not B" are secondary text; names and figures are ink.
+  const fallback = v === 'head' || v === 'fig' || v === 'sub' || v === 'small' || v === 'keyNo' || v === 'recap' || v === 'why' ? c.ink2 : c.ink;
   return (
     <Text
       maxFontSizeMultiplier={maxScale ?? fieldMaxScale[v]}

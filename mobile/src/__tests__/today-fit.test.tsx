@@ -216,7 +216,7 @@ describe('Today: the day in minutes', () => {
     expect(root().findAll((n) => n.props.testID === 'plan-checklist')).toHaveLength(0);
     expect(root().findAll((n) => typeof n.props.accessibilityHint === 'string').map((n) => n.props.accessibilityHint as string)).toContain('Weak spots: IS Operations');
     // Its row says it is optional this week, and how long it is.
-    expect(allText()).toContain('Mini mock Optional this week · about 80 min');
+    expect(allText()).toContain('Optional this week · about 80 min Mini mock');
   });
 });
 

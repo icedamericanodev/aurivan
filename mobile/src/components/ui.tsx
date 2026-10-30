@@ -49,6 +49,8 @@ import {
   cardShadow,
   font,
   darkCardTopLight,
+  fieldMaxScale,
+  fieldType,
   forestHighlight,
   grainOp,
   LARGE_TEXT,
@@ -71,7 +73,6 @@ import {
 } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { Botany, botanySize, EmptyArt, type BotanyKind, type EmptyArtKind } from './glyphs';
-import { Motif, type MotifKind } from './motifs';
 import { Check, ChevronLeft, ChevronRight, ICON_STROKE, Minus, Plus, Search, Settings as SettingsIcon, X } from './icons';
 import { AnimatedPressable, CrossFade, FadeIn, ProgressFill, RollingText, StateLayer, tween, useMotion, usePressScale } from './motion';
 
@@ -404,11 +405,12 @@ export function Button({
   expanded,
   ref,
   follow,
-  shape = 'pill',
+  shape = 'plate',
 }: {
   /**
-   * Mobile 1.51 (Field Guide, spec §21): `plate` = 52 tall with 12pt corners, the guide's
-   * button (Today, You, Results and the herbarium). Other screens keep the 56 pill until they move.
+   * Premium round 2 (Field Guide foundation, spec §21.2): every button is the guide's `plate`
+   * button by default, 52 tall with 12pt corners (tokens.ts `plate`), in every kind but ghost
+   * (ghost stays text alone). `pill` (56 tall, round ends) is kept only for a caller that asks.
    */
   shape?: 'pill' | 'plate';
   /** For moving screen-reader focus here (lib/a11y.ts moveFocus). */
@@ -555,14 +557,12 @@ export function HeroPanel({
   wideTitle,
   wideMeta,
   captionLabel,
-  seal,
 }: {
-  /**
-   * Mobile 1.43 (tab header option C, "Forest seal", the owner's choice): Learn, Practice and Play
-   * lead with a white card (L2) instead of a second forest panel, and a small forest square in its
-   * top-right corner shows the tab's own line drawing (`motifs.tsx`). Today keeps the forest panel.
+  /*
+   * Premium round 2 (Field Guide foundation): the white shadowed "seal" hero (mobile 1.43, Learn
+   * and Practice) is retired. Those screens lead with a Field Guide `Plate` instead (no shadow);
+   * HeroPanel is now only the forest panel (Today's moments, a lesson's cover, a domain's notes).
    */
-  seal?: MotifKind;
   caption?: string;
   /** Before the caption on the same line (e.g. a domain dot). */
   captionLead?: ReactNode;
@@ -606,27 +606,12 @@ export function HeroPanel({
   // the whole task seems to rise toward you. Static under Reduce Motion.
   const lift = useSharedValue(0);
   const liftStyle = useAnimatedStyle(() => ({ transform: [{ scale: reduced ? 1 : 1 - 0.01 * lift.value }] }));
-  // The seal card is paper ink on a white card; the forest panel is on-forest ink.
-  const ink1 = seal ? c.ink : c.onForest;
-  const ink2 = seal ? c.ink2 : c.onForest2;
-  const capInk = seal ? c.accentText : c.onForest2;
-  // The seal: a 56pt forest square with the tab's drawing in sap, top-right (above the words at large text).
-  const sealTile = seal ? (
-    <View
-      testID="hero-seal"
-      accessible={false}
-      importantForAccessibility="no-hide-descendants"
-      style={[styles.seal, { backgroundColor: c.forest }, large ? { marginBottom: space.md } : styles.sealCorner]}
-    >
-      <Motif kind={seal} color={c.sap} size={56} />
-    </View>
-  ) : null;
-  // Beside the corner seal (below large text) the caption row and the title stop short of it: the
-  // seal's width and a gap, measured from the card's edge, so no phone width lets text run under it.
-  const sealClear = seal && !large ? { marginRight: 56 + space.md } : null;
+  const ink1 = c.onForest;
+  const ink2 = c.onForest2;
+  const capInk = c.onForest2;
   return (
     <Animated.View style={[style, liftStyle]}>
-    <Card variant={seal ? 'raised' : 'forest'} style={seal ? { padding: space.gutter } : undefined}>
+    <Card variant="forest">
       {/* Two layers, so the text can never disappear behind the art (the
           Android "empty green block" on Play):
           1. ART: its own absolutely-filled layer that does the rounded
@@ -635,7 +620,6 @@ export function HeroPanel({
              clipping parent with a rotating (swaying) SVG.
           2. CONTENT: zIndex 1, always drawn above the art on every platform.
           Decorative art bleeds off the top-right; screen readers skip it. */}
-      {!seal && (
       <View
         testID="hero-art"
         style={[StyleSheet.absoluteFill, styles.heroArtClip, styles.noTouch]}
@@ -650,16 +634,14 @@ export function HeroPanel({
           <Botany kind={art} color={c.forestLine} sway={sway} breathe={breathe} />
         </View>
       </View>
-      )}
-      {large && sealTile}
       <View testID="hero-content" style={styles.heroContent}>
         {caption && (
-          <Row gap={space.sm} style={[{ flexWrap: 'wrap' }, sealClear]}>
+          <Row gap={space.sm} style={{ flexWrap: 'wrap' }}>
             {captionLead ? (
               // A lead (a domain dot, a game glyph) stays on its caption's line: at large text
               // the caption wraps BESIDE it (never the lead alone on a line). With nothing after
               // it, the pair keeps clear of the art like the title (full width at large text).
-              <Row gap={space.sm} style={{ flexShrink: 1, maxWidth: !seal && !captionExtra && !large && !wideTitle ? 250 : '100%' }}>
+              <Row gap={space.sm} style={{ flexShrink: 1, maxWidth: !captionExtra && !large && !wideTitle ? 250 : '100%' }}>
                 {captionLead}
                 <T v="caption" color={capInk} accessibilityLabel={captionLabel} style={{ flexShrink: 1 }}>{caption}</T>
               </Row>
@@ -681,8 +663,7 @@ export function HeroPanel({
           color={ink1}
           accessibilityRole="header"
           accessibilityLabel={titleLabel}
-          // With a seal (1.43) the title always keeps clear of it below large text: the seal is opaque.
-          style={[{ marginTop: caption ? space.sm : 0, maxWidth: !seal && title.length <= 34 && !large && !wideTitle ? 250 : undefined }, sealClear]}
+          style={{ marginTop: caption ? space.sm : 0, maxWidth: title.length <= 34 && !large && !wideTitle ? 250 : undefined }}
         >
           {title}
         </T>
@@ -696,18 +677,17 @@ export function HeroPanel({
         {children}
         {action && (
           <Button
-            kind={seal ? 'primary' : 'forest'}
+            kind="forest"
             label={action.label}
             onPress={action.onPress}
             accessibilityHint={action.hint}
             icon={action.icon}
             iconLeading={!action.iconTrailing}
             follow={lift}
-            style={{ marginTop: space.gutter, alignSelf: 'flex-start', minHeight: 52 }}
+            style={{ marginTop: space.gutter, alignSelf: 'flex-start' }}
           />
         )}
       </View>
-      {!large && sealTile}
     </Card>
     </Animated.View>
   );
@@ -746,9 +726,10 @@ export function IconButton({
   /** Mobile 1.43: it opens another screen (the Settings gear): its pressed circle settles at once, never fading on behind the new screen. */
   leaves?: boolean;
   /**
-   * Mobile 1.22: a 56pt round SECONDARY button (1.5 `control` ring, the
-   * secondary pill's look) for a footer beside a primary pill: the lesson's
-   * "Previous step". Plain (no ring, 48pt) by default, for headers.
+   * A SECONDARY button for a footer beside a primary button: the lesson's
+   * "Previous step". Premium round 2: a 52×52 square with 12pt corners and a
+   * 1.5 `control` edge, the plate button's own shape (a 56pt circle from
+   * mobile 1.22). Plain (no edge, a 48pt circle) by default, for headers.
    */
   outline?: boolean;
   /** For moving screen-reader focus here. */
@@ -771,7 +752,7 @@ export function IconButton({
     ...(disabled ? { disabled } : {}),
   };
   // Pressed: a soft circle grows in behind the icon (.9 → 1) and fades.
-  const press = usePressScale({ scale: 1, tint: c.soft, tintRadius: outline ? 28 : 24, tintFrom: 0.9 });
+  const press = usePressScale({ scale: 1, tint: c.soft, tintRadius: outline ? plate.buttonRadius : 24, tintFrom: 0.9 });
   return (
     <AnimatedPressable
       ref={ref}
@@ -915,9 +896,17 @@ export function Section({
   action,
   style,
   headRef,
+  variant = 'headline',
 }: {
   title: string;
   meta?: string;
+  /**
+   * Premium round 2 (Field Guide foundation, spec §21.2): `head` sets the title as a Field Guide
+   * section head, `fieldType.head` (Figtree 600 11/14, tracked, caps) in `ink` ("LOOK IT UP").
+   * Write the title in sentence case: the caps are drawn, and screen readers hear the sentence-case
+   * words ("Look it up"), still as a header. `headline` (the default) is the 1.21 Figtree 20.
+   */
+  variant?: 'headline' | 'head';
   /** Spoken meta, when it differs ("About 19 minutes" for "About 19 min"). */
   metaLabel?: string;
   /**
@@ -935,11 +924,23 @@ export function Section({
 }) {
   // Large text: the meta drops under the title instead of squeezing beside it.
   const large = useFontScale() >= LARGE_TEXT;
+  const { c } = useTheme();
+  const head = variant === 'head';
+  // The head's words: drawn in caps, said as written (sentence case), never spelled out letter by letter.
+  const words = head ? (
+    <Text maxFontSizeMultiplier={fieldMaxScale.head} accessibilityLabel={headRef ? undefined : title} style={[fieldType.head, { color: c.ink }]}>
+      {title}
+    </Text>
+  ) : null;
   return (
-    <View style={[styles.section, action && styles.sectionAction, large && styles.sectionStacked, style]}>
+    <View style={[styles.section, head && styles.sectionHead, action && styles.sectionAction, large && styles.sectionStacked, style]}>
       {headRef ? (
-        <View ref={headRef} accessible accessibilityRole="header" accessibilityLabel={title} style={{ flexShrink: 1 }}>
-          <T v="headline">{title}</T>
+        <View ref={headRef} accessible accessibilityRole="header" accessibilityLabel={head ? title.replace(/ · /g, ', ') : title} style={{ flexShrink: 1 }}>
+          {words ?? <T v="headline">{title}</T>}
+        </View>
+      ) : head ? (
+        <View accessible accessibilityRole="header" accessibilityLabel={title.replace(/ · /g, ', ')} style={{ flexShrink: 1 }}>
+          {words}
         </View>
       ) : (
         <T v="headline" accessibilityRole="header" style={{ flexShrink: 1 }}>{title}</T>
@@ -1625,14 +1626,14 @@ const styles = StyleSheet.create({
   forest: { borderRadius: radius.lg, padding: space.xl, borderTopWidth: 1 },
   screenTitle: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: space.sm, marginTop: space.xs, marginRight: -10 },
   iconButton: { width: 48, height: 48, borderRadius: radius.pill, alignItems: 'center', justifyContent: 'center' },
-  iconButtonOutline: { width: 56, height: 56, borderWidth: 1.5 },
+  // Premium round 2 (Field Guide foundation): the footer's square outline, the plate button's height and corners.
+  iconButtonOutline: { width: plate.button, height: plate.button, borderRadius: plate.buttonRadius, borderWidth: 1.5 },
   heroArtClip: { borderRadius: radius.lg, overflow: 'hidden', zIndex: 0 },
   heroArt: { position: 'absolute', right: -18, top: -14 },
   heroContent: { zIndex: 1 },
-  // Mobile 1.43: the tab seal (option C), a 56pt forest square at the card's top-right corner.
-  seal: { width: 56, height: 56, borderRadius: radius.md, overflow: 'hidden', alignItems: 'center', justifyContent: 'center' },
-  sealCorner: { position: 'absolute', top: space.gutter, right: space.gutter },
   sectionStacked: { flexDirection: 'column', alignItems: 'flex-start', gap: space.xs },
+  // A Field Guide head is a small tracked line: it sits on the meta's centre (11pt caps on a 13pt baseline floats).
+  sectionHead: { alignItems: 'center', marginBottom: space.sm },
   // With a ghost button: centred on the button's 48pt target (a baseline would float the title).
   sectionAction: { alignItems: 'center', marginBottom: -space.sm },
   // The rhythm rule (spec §4): 32 between sections, 4 from a heading to its first line.

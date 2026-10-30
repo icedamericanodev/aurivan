@@ -60,7 +60,7 @@ import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { View } from 'react-native';
 import { ringsChangeLine } from '../../components/journey';
 import { AreaRows, ReadinessBlock } from '../../components/youReadiness';
-import { FieldText, RunningHead, SpecimenLabel, SpecimenRow } from '../../components/fieldguide';
+import { FieldText, KeyList, RunningHead, SpecimenLabel, SpecimenRow } from '../../components/fieldguide';
 import { HerbariumEntry } from '../../components/herbarium';
 import { lastPressed } from '../../engine/fieldGuide';
 import { FadeIn, useGrowth, useScreenFocus } from '../../components/motion';
@@ -69,12 +69,12 @@ import { AccountSection } from '../../components/account';
 import { BoardRow } from '../../components/board';
 import { CLOUD } from '../../cloud/flag';
 import { MindsetGrowthCard } from '../../components/moments';
-import { BadgeIcon, Bookmark, ICON_STROKE, Leaf, LifeBuoy, NotebookPen, RotateCcw, Settings, Share2, Sprout } from '../../components/icons';
+import { BadgeIcon, ICON_STROKE, Settings, Sprout } from '../../components/icons';
 import { ShareProgressSheet } from '../../components/shareCard';
 import { LivePlant } from '../../components/plant/LivePlant';
 import { growthShort, plantCallName } from '../../engine/plant';
 import { usePlantView } from '../../lib/plant';
-import { Button, EmptyState, Enter, ICON_SIZE, InviteRow, Lead, ListRow, Screen, Section, T, Trail } from '../../components/ui';
+import { Button, EmptyState, Enter, ICON_SIZE, InviteRow, Lead, ListRow, Screen, Section, T } from '../../components/ui';
 import { pacingStats, pacingStatsLine, spokenMin } from '../../engine/pace';
 import { mockSubtitle } from '../../components/readinessReport';
 import { readinessRange } from '../../engine/readinessRange';
@@ -436,54 +436,55 @@ const YouLists = memo(function YouLists({
             />
           </View>
         )}
-        <Section title="Study tools" style={{ marginTop: space.xl }} />
-        {/* The review set: the same line as Practice ("16 ready today · oldest first"). */}
-        <ListRow
-          icon={icon(RotateCcw)}
-          title="Questions to revisit"
-          // Premium pass 4.6: the subtitle names the set a tap starts; no trailing queue total.
-          subtitle={reviewSubtitle(dueCount)}
-          accessibilityLabel={`Questions to revisit, ${dueCount ? reviewSubtitle(dueCount).replace(' · ', ', ') : 'all caught up'}`}
-          onPress={() => guardedStart(() => startReview(cert.id), () => router.push('/session'), () => router.push('/caught-up'))}
-        />
-        <ListRow
-          icon={icon(NotebookPen)}
-          title="Mistake journal"
-          // Premium pass 4.6: what the journal shows, not a count of open misses (a total that only grows).
-          subtitle="Your pattern first, then each miss"
-          accessibilityLabel="Mistake journal, your pattern first, then each miss"
-          onPress={() => router.push('/mistakes')}
-        />
-        <ListRow
-          icon={icon(Bookmark)}
-          title="Saved questions"
-          subtitle="Your own revision set"
-          trailing={saved ? <Trail value={String(saved)} unit="saved" /> : undefined}
-          accessibilityLabel={`Saved questions, ${saved} saved`}
-          onPress={() => router.push('/saved')}
-        />
-        {/* Mobile 1.51: the badges' way in is the Herbarium row under the areas (it holds the Field notes
-            sheet and its "See game levels" link). With badges hidden in Settings, Field notes has its own row here. */}
-        {badgesHidden && (
-          <ListRow
-            icon={icon(Leaf)}
-            title="Field notes"
-            subtitle="Your level in each game"
-            accessibilityLabel="Field notes. Your level in each game"
-            onPress={() => router.push('/field-notes')}
-          />
-        )}
-        {/* Share progress as a row (it was a full-width button mid-screen). */}
-        <ListRow
-          icon={icon(Share2)}
-          title="Share progress"
-          subtitle="A card with one honest number"
-          accessibilityHint="Opens a preview of a progress card you can share"
-          onPress={() => onShare(dayKey(Date.now()))}
-          last
+        <Section variant="head" title="Study tools" style={{ marginTop: space.xl }} />
+        {/* Premium round 2 (Field Guide foundation): an index list, the old subtitle as each row's
+            kicker and the saved count at the end of its leader; spoken as the rows were. */}
+        <KeyList
+          testID="study-tools"
+          items={[
+            {
+              key: 'review',
+              // The review set: the same line as Practice ("16 ready today · oldest first"). Premium pass 4.6:
+              // the kicker names the set a tap starts; no trailing queue total.
+              kicker: reviewSubtitle(dueCount),
+              title: 'Questions to revisit',
+              spoken: `Questions to revisit, ${dueCount ? reviewSubtitle(dueCount).replace(' · ', ', ') : 'all caught up'}`,
+              onPress: () => guardedStart(() => startReview(cert.id), () => router.push('/session'), () => router.push('/caught-up')),
+            },
+            {
+              key: 'mistakes',
+              // Premium pass 4.6: what the journal shows, not a count of open misses (a total that only grows).
+              kicker: 'Your pattern first, then each miss',
+              title: 'Mistake journal',
+              spoken: 'Mistake journal, your pattern first, then each miss',
+              onPress: () => router.push('/mistakes'),
+            },
+            {
+              key: 'saved',
+              kicker: 'Your own revision set',
+              title: 'Saved questions',
+              right: saved ? `${saved} saved` : undefined,
+              spoken: `Saved questions, ${saved} saved`,
+              onPress: () => router.push('/saved'),
+            },
+            // Mobile 1.51: the badges' way in is the Herbarium row under the areas (it holds the Field notes
+            // sheet and its "See game levels" link). With badges hidden in Settings, Field notes has its own row here.
+            ...(badgesHidden
+              ? [{ key: 'field-notes', kicker: 'Your level in each game', title: 'Field notes', spoken: 'Field notes. Your level in each game', onPress: () => router.push('/field-notes') }]
+              : []),
+            // Share progress as a row (it was a full-width button mid-screen).
+            {
+              key: 'share',
+              kicker: 'A card with one honest number',
+              title: 'Share progress',
+              spoken: 'Share progress, A card with one honest number',
+              hint: 'Opens a preview of a progress card you can share',
+              onPress: () => onShare(dayKey(Date.now())),
+            },
+          ]}
         />
 
-        <Section title="Mock exams" />
+        <Section variant="head" title="Mock exams" />
         <MockHistory mocks={mocks} miniMock={miniMock} />
         {/* Pacing across timed mocks only (untimed ones are left out). */}
         {pacingLine && <T v="meta" style={{ marginTop: space.md }}>{pacingLine}</T>}
@@ -491,15 +492,22 @@ const YouLists = memo(function YouLists({
         {/* Cloud builds only: its own "Account" section, "Sync across devices" / "Account and sync" (one of the two ways in). */}
         {CLOUD && <AccountSection />}
         {/* One entry to Help and feedback (mobile 1.7); the full list is on that screen. */}
-        <Section title="Help and feedback" />
+        <Section variant="head" title="Help and feedback" />
         {/* Cloud builds only: the feedback board (Phase 8). */}
         {CLOUD && <BoardRow />}
-        <ListRow
-          icon={icon(LifeBuoy)}
-          title="Get help or send feedback"
-          subtitle={creditItems ? creditSubtitle(creditItems) : 'Common questions, reports and what’s new'}
-          onPress={() => router.push('/help')}
-          last
+        {/* Premium round 2 (Field Guide foundation): one index row, its line as the kicker (no icon circle). */}
+        <KeyList
+          numbered={false}
+          testID="you-help"
+          items={[
+            {
+              key: 'help',
+              kicker: creditItems ? creditSubtitle(creditItems) : 'Common questions, reports and what’s new',
+              title: 'Get help or send feedback',
+              spoken: `Get help or send feedback, ${creditItems ? creditSubtitle(creditItems) : 'Common questions, reports and what’s new'}`,
+              onPress: () => router.push('/help'),
+            },
+          ]}
         />
         <T v="meta" center style={{ marginTop: space.xl }}>{cert.trademarkNotice}</T>
     </>

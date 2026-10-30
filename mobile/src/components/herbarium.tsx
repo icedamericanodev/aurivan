@@ -9,12 +9,12 @@ import { memo } from 'react';
 import { View } from 'react-native';
 import type { LastPressed } from '../engine/fieldGuide';
 import { shortDate, spokenShortDate } from '../lib/format';
-import { fieldInk, space } from '../theme/tokens';
+import { fieldInk, LARGE_TEXT, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { ChevronRight, ICON_STROKE } from './icons';
 import { EmblemArt } from './medallion';
 import { AnimatedPressable, usePressScale } from './motion';
-import { Row, T, Trail } from './ui';
+import { Row, T, Trail, useFontScale } from './ui';
 
 export const HERBARIUM = 'Herbarium';
 
@@ -41,6 +41,8 @@ export const HerbariumEntry = memo(function HerbariumEntry({
   const { c, isDark } = useTheme();
   const ink = fieldInk[isDark ? 'dark' : 'light'];
   const press = usePressScale({ scale: 1, tint: c.soft });
+  // ×1.3 and up (the KeyList rule): emblems above, the words full width, the count under them.
+  const large = useFontScale() >= LARGE_TEXT;
   return (
     <AnimatedPressable
       testID="herbarium-entry"
@@ -53,7 +55,7 @@ export const HerbariumEntry = memo(function HerbariumEntry({
       }}
       onPressIn={press.onPressIn}
       onPressOut={press.onPressOut}
-      style={[{ flexDirection: 'row', alignItems: 'center', gap: space.md, minHeight: 64, paddingVertical: space.sm, borderTopWidth: 1, borderBottomWidth: 1, borderColor: c.line }, press.style]}
+      style={[{ flexDirection: large ? 'column' : 'row', alignItems: large ? 'flex-start' : 'center', gap: large ? space.sm : space.md, minHeight: 64, paddingVertical: space.sm, borderTopWidth: 1, borderBottomWidth: 1, borderColor: c.line }, press.style]}
     >
       {press.layer}
       <View accessibilityElementsHidden importantForAccessibility="no-hide-descendants" style={{ flexDirection: 'row', minWidth: 40 }}>
@@ -67,7 +69,7 @@ export const HerbariumEntry = memo(function HerbariumEntry({
           <View style={{ width: 30, height: 30, borderWidth: 1.5, borderStyle: 'dashed', borderColor: c.control, borderRadius: 3 }} />
         )}
       </View>
-      <View style={{ flex: 1, minWidth: 0 }}>
+      <View style={large ? { alignSelf: 'stretch' } : { flex: 1, minWidth: 0 }}>
         <T v="label">{HERBARIUM}</T>
         <T v="meta" style={{ marginTop: 2 }}>{herbariumLine(pressed[0])}</T>
       </View>

@@ -270,12 +270,13 @@ describe('entry points', () => {
     expect(text.indexOf('Look it up')).toBeLessThan(notesRow);
     expect(notesRow).toBeLessThan(text.indexOf('The thinking the exam rewards'));
     expect(text.indexOf('The thinking the exam rewards')).toBeLessThan(text.indexOf('In exam order. Each ends with a quick check.'));
-    // Only the final row drops its hairline. Since the exam guide, "About the CISA exam" and
-    // "Final review week" follow Principles (exam-guide-screens.test.tsx), so the week row is last.
-    const rowNamed = (title: string) => root().findAll((n) => n.props.title === title && 'last' in n.props)[0];
-    expect(rowNamed('Study notes').props.last).toBe(false);
-    expect(rowNamed('Principles').props.last).toBe(false);
-    expect(rowNamed('Final review week').props.last).toBe(true);
+    // Premium round 2: one index list (KeyList), numbered in order: notes 1, Principles 2, the exam
+    // guide and the final review week after (exam-guide-screens.test.tsx), the week row last.
+    const [lookup] = root().findAll((n) => n.props.testID === 'learn-lookup' && typeof n.type === 'string');
+    const order = lookup.findAll((n) => n.props.accessibilityRole === 'button' && typeof n.type === 'string').map((n) => n.props.accessibilityLabel as string);
+    expect(order[0]).toMatch(/^Study notes, /);
+    expect(order[1]).toBe('Principles, the thinking the exam rewards');
+    expect(order[order.length - 1]).toMatch(/^Final review week/);
     press('Principles, the thinking the exam rewards');
     expect(mockPush).toHaveBeenCalledWith('/principles');
   });

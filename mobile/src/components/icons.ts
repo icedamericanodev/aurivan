@@ -1,7 +1,7 @@
 /**
  * The icons KaiSip uses — imported one by one so the app bundles only
  * these (the full Lucide set is ~1,800 icons). Lucide, stroke 1.75.
- * Grove v2 custom glyphs (Sprout, Rings, Pinwheel, Sprig) live in glyphs.tsx.
+ * Grove v2 custom glyphs (Sprout, SpecimenTag, Rings, Pinwheel, Sprig) live in glyphs.tsx.
  */
 export { default as ArrowRight } from 'lucide-react-native/icons/arrow-right';
 export { default as BookOpen } from 'lucide-react-native/icons/book-open';
@@ -82,6 +82,6 @@ export { default as MessagesSquare } from 'lucide-react-native/icons/messages-sq
 export { default as Bell } from 'lucide-react-native/icons/bell';
 export { default as Palette } from 'lucide-react-native/icons/palette';
 // Mobile 1.22: Pinwheel replaces Lucide's gamepad as the Play glyph (tab bar, plan items).
-export { Pinwheel, Rings, Sprig, Sprout } from './glyphs';
+export { Pinwheel, Rings, SpecimenTag, Sprig, Sprout } from './glyphs';
 
 export const ICON_STROKE = 1.75;

@@ -69,7 +69,8 @@ const pathRow = () => byLabel(/^Your path:/)[0];
 const heroText = () => {
   const out: string[] = [];
   const walk = (n: ReactTestInstance | string) => (typeof n === 'string' ? out.push(n) : n.children.forEach(walk));
-  walk(root().findAll((n) => n.props.testID === 'hero-content')[0]);
+  // Premium round 2 (Field Guide foundation): the hero is Practice's plate (Fig. 2, the register's Learn-or-Practice number).
+  walk(root().findAll((n) => n.props.testID === 'practice-plate')[0]);
   return out.join(' ');
 };
 

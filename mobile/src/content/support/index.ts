@@ -42,6 +42,17 @@ export interface WhatsNewEntry {
 /** Newest first. The first entry must match app.json (a test checks it). */
 export const WHATS_NEW: readonly WhatsNewEntry[] = [
   {
+    version: '1.53.0',
+    date: '2026-10-30',
+    new: [
+      'After each answer, one clear plate shows your pick beside the best answer, and the coach tells you when you picked a trap.',
+    ],
+    improved: [
+      'Every tab now shares the field guide look: the same buttons, lists and plates from Today to Learn, Practice and You.',
+      'A calmer welcome page, and a new You tab icon.',
+    ],
+  },
+  {
     version: '1.52.0',
     date: '2026-10-30',
     improved: [
