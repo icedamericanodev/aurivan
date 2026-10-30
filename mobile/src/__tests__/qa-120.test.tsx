@@ -10,10 +10,10 @@
  *  3. a session saved by 1.19 with the old `support` flag still loads and
  *     offers the note (no crash, no old "A short read…" row);
  *  4. a lesson's Report a problem never shows on an UNANSWERED check;
- *  5. readiness "Lessons and notes ›" → Learn: checked against expo-router's
- *     OWN StackRouter (the one app/_layout.tsx's <Stack> runs): the root
- *     stack must hold ONE (tabs) afterwards. As committed in 7e685d1,
- *     router.navigate stacked a second (tabs) navigator (QA report, S1);
+ *  5. readiness "Lessons and notes ›" → Learn: the root stack must hold ONE
+ *     (tabs) afterwards. As committed in 7e685d1, router.navigate stacked a
+ *     second (tabs) navigator (QA report, S1). Since Expo SDK 58 this runs on
+ *     the real router, in qa-120-router.test.tsx;
  *  6. a set started from a note / Lesson complete that sits ABOVE an old
  *     session or Results: exactly one session screen is left mounted and
  *     Results opens once. As committed, the old session screen stayed under
@@ -40,12 +40,9 @@ import { useSession } from '../store/session';
 import { moreRowLabels, viaMore } from '../../jest/answerMore';
 import SessionScreen from '../app/session';
 import NoteSubtopicScreen from '../app/notes/subtopic/[id]';
-import ReadinessReport from '../app/readiness';
-import PlayMoved from '../app/play';
 import LessonPlayer from '../app/lesson/[id]';
 import Results from '../app/results';
 import { OptionCard } from '../components/quiz';
-import { getCertification } from '../content/certifications';
 
 jest.mock('@react-native-async-storage/async-storage', () =>
   jest.requireActual('@react-native-async-storage/async-storage/jest/async-storage-mock'),
@@ -293,92 +290,9 @@ describe('lesson player: Report a problem on a check scene', () => {
   });
 });
 
-// ── 5 + A. Readiness → Learn, against expo-router's real stack router ──
-/**
- * A model of the ROOT stack, run by expo-router's own StackRouter (the one
- * app/_layout.tsx's <Stack> uses). Only the mapping from an href to the
- * root-level action is modelled, as expo-router's getNavigateAction makes it:
- * from a pushed root screen (readiness), "/learn" diverges at the root
- * stack, so the action targets the root with name "(tabs)".
- */
-// eslint-disable-next-line @typescript-eslint/no-require-imports
-const { StackRouter } = require('expo-router/build/layouts/StackClient');
-type Route = { key: string; name: string; params?: Record<string, unknown> };
-type StackState = { key: string; index: number; routes: Route[]; routeNames: string[]; preloadedRoutes: Route[] };
-const ROOT_NAMES = ['(tabs)', 'readiness', 'session', 'results', 'notes/subtopic/[id]', 'lesson/[id]', 'play'];
-// Mobile 1.51: four tabs ("play" is now a root route that opens Practice at Drills: app/play.tsx).
-const TABS = ['home', 'learn', 'practice', 'you'];
-const rootOptions = { routeNames: ROOT_NAMES, routeParamList: {}, routeGetIdList: {} };
-const makeRoot = () => {
-  const sr = StackRouter({});
-  let state: StackState = sr.getInitialState(rootOptions);
-  const apply = (type: string, name: string, params?: Record<string, unknown>) => {
-    const next = sr.getStateForAction(state, { type, payload: { name, params } }, rootOptions);
-    if (next) state = next;
-  };
-  const toRoot = (href: string | { pathname: string; params?: Record<string, string> }) => {
-    const pathname = typeof href === 'string' ? href : href.pathname;
-    const params = typeof href === 'string' ? undefined : href.params;
-    const tab = pathname.replace(/^\//, '');
-    return TABS.includes(tab) ? { name: '(tabs)', params: { screen: tab, params } } : { name: tab, params };
-  };
-  return {
-    get state() {
-      return state;
-    },
-    push: (href: string) => apply('PUSH', toRoot(href).name, toRoot(href).params),
-    navigate: (href: Parameters<typeof toRoot>[0]) => apply('NAVIGATE', toRoot(href).name, toRoot(href).params),
-    dismissTo: (href: Parameters<typeof toRoot>[0]) => apply('POP_TO', toRoot(href).name, toRoot(href).params),
-    tabsCount: () => state.routes.filter((r) => r.name === '(tabs)').length,
-    names: () => state.routes.map((r) => r.name),
-  };
-};
-
-describe('router model (expo-router StackRouter): reaching a tab from a pushed screen', () => {
-  it('navigate stacks a SECOND (tabs) on top; dismissTo returns to the one already there', () => {
-    const a = makeRoot();
-    a.push('/readiness');
-    a.navigate({ pathname: '/learn', params: { domain: '3' } });
-    expect(a.names()).toEqual(['(tabs)', 'readiness', '(tabs)']);
-    expect(a.tabsCount()).toBe(2);
-
-    const b = makeRoot();
-    b.push('/readiness');
-    b.dismissTo({ pathname: '/learn', params: { domain: '3' } });
-    expect(b.names()).toEqual(['(tabs)']);
-    expect(b.state.routes[0].params).toEqual({ screen: 'learn', params: { domain: '3' } });
-  });
-});
-
-describe('the old Play route → Practice at Drills (real root StackRouter; mobile 1.51)', () => {
-  it('a pushed /play leaves ONE (tabs) in the root stack, on Practice with ?section=drills', () => {
-    const stack = makeRoot();
-    stack.push('/play');
-    expect(stack.names()).toEqual(['(tabs)', 'play']);
-    navigate.mockImplementation((href) => stack.navigate(href));
-    dismissTo.mockImplementation((href) => stack.dismissTo(href));
-    push.mockImplementation((href) => stack.push(href));
-    const r = mount(<PlayMoved />);
-    expect(stack.names()).toEqual(['(tabs)']);
-    expect(stack.state.routes[0].params).toEqual({ screen: 'practice', params: { section: 'drills' } });
-    unmount(r);
-  });
-});
-
-describe('readiness "Lessons and notes ›" → Learn (real root StackRouter)', () => {
-  it('leaves ONE (tabs) in the root stack, on Learn with ?domain=', () => {
-    const stack = makeRoot();
-    stack.push('/readiness');
-    navigate.mockImplementation((href) => stack.navigate(href));
-    dismissTo.mockImplementation((href) => stack.dismissTo(href));
-    push.mockImplementation((href) => stack.push(href));
-    const r = mount(<ReadinessReport />);
-    const d = getCertification('cisa')!.domains[2];
-    press(r, `Lessons and notes for ${d.name}`);
-    expect(stack.names()).toEqual(['(tabs)']);
-    expect(stack.state.routes[0].params).toEqual({ screen: 'learn', params: { domain: d.id } });
-  });
-});
+// ── 5 + A. Readiness → Learn, and the old Play route ────────────────────
+// Moved to qa-120-router.test.tsx at Expo SDK 58: they run on the REAL router
+// there (expo-router/testing-library), not on a model of its private StackRouter.
 
 // ── 6. Starting a set from a screen that sits above a session / Results ──
 /** The screens above the tabs, bottom to top, each in its own renderer. */

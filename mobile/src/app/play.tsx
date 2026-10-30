@@ -13,18 +13,14 @@
  * this screen (a cold link). Saved data is untouched: game scores, levels
  * and recent rounds were never keyed by the tab.
  */
-import { useEffect, useRef } from 'react';
 import { View } from 'react-native';
 import { DRILLS_HREF, openTab } from '../lib/actions';
+import { useOnceOnFocus } from '../lib/useOnceOnFocus';
 import { useTheme } from '../theme/useTheme';
 
 export default function PlayMoved() {
   const { c } = useTheme();
-  const ran = useRef(false);
-  useEffect(() => {
-    if (ran.current) return;
-    ran.current = true;
-    openTab(DRILLS_HREF);
-  }, []);
+  // Expo SDK 58: on first focus, not on mount (the router isn't ready / the push hasn't landed on mount).
+  useOnceOnFocus(() => openTab(DRILLS_HREF));
   return <View accessible={false} testID="play-moved" style={{ flex: 1, backgroundColor: c.bg }} />;
 }
