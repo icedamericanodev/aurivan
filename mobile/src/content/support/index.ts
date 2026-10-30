@@ -42,6 +42,42 @@ export interface WhatsNewEntry {
 /** Newest first. The first entry must match app.json (a test checks it). */
 export const WHATS_NEW: readonly WhatsNewEntry[] = [
   {
+    version: '1.52.0',
+    date: '2026-10-30',
+    improved: [
+      'Your readiness and area charts now show what changed since you last looked, and an answer’s tips appear in reading order.',
+      'Clearer explanations of why the tempting wrong answer is wrong, across every domain.',
+    ],
+  },
+  {
+    version: '1.51.1',
+    date: '2026-10-30',
+    fixed: ['Badge settings and plant looks now point to the Herbarium, where your badges live.'],
+  },
+  {
+    version: '1.51.0',
+    date: '2026-10-29',
+    improved: [
+      'Today, You, results and badges now read like a field guide to your own study: your areas side by side on one scale, readiness as a study estimate, and badges pressed into a herbarium.',
+      'A simpler menu with four tabs: the brain games now live in Practice as Drills, with your scores and levels kept.',
+    ],
+  },
+  {
+    version: '1.50.0',
+    date: '2026-10-29',
+    new: ['Your plant now grows into new forms as your knowledge holds, each with its own name and a short moment to see it arrive, and at its last growth you choose its final form.'],
+  },
+  {
+    version: '1.49.0',
+    date: '2026-10-29',
+    improved: ['Answers end sooner: one next step after a miss, the question kept at the top, and the rest a tap away under ⋯. Lesson quick checks now look like practice answers.'],
+  },
+  {
+    version: '1.48.0',
+    date: '2026-10-28',
+    new: ['New look for your home-screen widgets, plus a recall card, a daily key term and your road to the exam.'],
+  },
+  {
     version: '1.47.1',
     date: '2026-10-28',
     fixed: ['Home-screen widgets now update right after you study, and taps open the right place.'],

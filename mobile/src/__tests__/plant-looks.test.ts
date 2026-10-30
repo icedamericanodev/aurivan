@@ -239,7 +239,7 @@ describe('copy', () => {
     expect(howToOpen(lookItem('lantern')!)).toBe('Sit a full, timed mock (the Dress Rehearsal badge).');
     expect(howToOpen(lookItem('stepping-stone')!)).toBe('Answer your first 20 questions (the First Foothold badge).');
     // Code review M9c: the Domains set is four, five or eight domains, so it is named neutrally.
-    expect(howToOpen(lookItem('five-stone')!)).toBe('Opens when you finish the Domains set in Badges.');
+    expect(howToOpen(lookItem('five-stone')!)).toBe('Opens when you finish the Domains set in the Herbarium.');
     expect(howToOpen(lookItem('ribbon')!)).toBe('Opens when you tell us you passed.');
     for (const k of KEEPSAKE_ITEMS) expect(k.how).toMatch(/^[A-Z][^.]+$/);
   });

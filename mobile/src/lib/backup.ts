@@ -416,9 +416,16 @@ async function writeAll(
   // First, forget the numbers each screen last showed: restored progress is
   // not growth earned since the last look, so nothing shows "+N" for it.
   useSeen.getState().forgetValues();
+  // Mobile 1.50: a restored plant's forms count as history (one quiet note, never a replayed reveal).
+  useSeen.getState().forgetForms();
+  // The file decides the Form IV final: its look.final, else the own final (§8.10, QA-150-4).
+  useSeen.getState().forgetFinals();
   useSettings.setState(settings);
   useProgress.setState(progress);
   for (const s of STORES) await s.persist.rehydrate();
+  // Mobile 1.50 (QA-TURN-1): each restored plant's form counts as shown, its grow-up still
+  // `pending` included, so a file taken after a Turning never plays it again (forms in a file are history).
+  for (const [id, c] of Object.entries(useProgress.getState().byCert)) if (c?.plant) useSeen.getState().baselineForms(id, c.plant.growth);
   // A backup from 1.9 already ran its back-fill, so the launch effect never
   // revisits it: a set it holds complete gets its planter here. A backup from
   // 1.10 has the older badge catalogue: its new tiers fill in quietly first.

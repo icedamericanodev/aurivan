@@ -26,7 +26,7 @@ import { selectCert, useProgress, type CertProgress } from '../store/progress';
 import { useSeen } from '../store/seen';
 import { dailyMinutesOf, examDateOf, useSettings } from '../store/settings';
 import { badgeCase } from './milestones';
-import { openTab } from './actions';
+import { DRILLS_HREF, openTab } from './actions';
 import { guardedStart, startPractice, startReview, startStudy } from './sessions';
 import { daysUntil } from './useActiveCert';
 import { activeCertIdNow } from './activeCert';
@@ -97,8 +97,9 @@ export function studyFor(target: StudyTarget, certId: string, dueCount: number) 
     case 'game':
       return router.push(`/game/${target.game}`);
     case 'play':
-      // A tab, from the Badges screen in the root stack: back to the tabs, never a second set (mobile 1.20).
-      return openTab('/play');
+      // The games, from the Badges screen in the root stack: back to the tabs, at Practice's Drills
+      // (mobile 1.51: the Play tab moved there), never a second set (mobile 1.20).
+      return openTab(DRILLS_HREF);
   }
 }
 
@@ -134,7 +135,7 @@ const subscribeAll = (cb: () => void) => {
   };
 };
 
-/** The "new" dot for the active cert, live (You tab and its Badges row). */
+/** The "new" dot for the active cert, live (You tab and its Herbarium entry). */
 export function useNewBadge(): boolean {
   return useSyncExternalStore(subscribeAll, () => hasNewBadge(activeCertIdNow()));
 }
@@ -166,8 +167,8 @@ export function hideBadges() {
   useSettings.getState().setBadgesHidden(true);
 }
 
-/** "Badges are on again. 2 arrived while they were hidden: they're in You → Badges." */
+/** "Badges are on again. 2 badges arrived while they were hidden: see You → Herbarium." */
 export function shownAgainLine(n: number): string {
   if (n <= 0) return 'Badges are on again.';
-  return `Badges are on again. ${n === 1 ? '1 badge' : `${n} badges`} arrived while they were hidden: see You → Badges.`;
+  return `Badges are on again. ${n === 1 ? '1 badge' : `${n} badges`} arrived while they were hidden: see You → Herbarium.`;
 }

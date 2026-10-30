@@ -138,13 +138,13 @@ await edit(
   P,
   `const c = v.state.byCert.cisa; c.answers = Object.fromEntries(Object.entries(c.answers || {}).slice(0, 12)); c.gameBest = {}; c.gameRecent = {}; c.gameGrowth = {};`,
 );
-await go('/play', 2600);
+await go('/practice?section=drills', 2600);
 await shot('p140-08-play-before-50');
 
 // ── 7. Play after 50 answers: "More games", folded, then open ───────────
 await reseed();
 await setPlant(botanical);
-await go('/play', 2600);
+await go('/practice?section=drills', 2600);
 await shot('p140-09-play-after-50');
 await page.getByRole('button', { name: /^More games/ }).first().click();
 await wait(900);

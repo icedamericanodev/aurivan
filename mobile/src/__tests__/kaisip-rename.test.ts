@@ -38,6 +38,8 @@ const ALLOWED_FILES: Record<string, string> = {
   'lib/backup.ts': 'cleans up old aurivan-backup files',
   'lib/account.ts': 'cleans up old aurivan-account files',
   'cloud/memory/backend.ts': 'mirrors the server’s export marker',
+  'webcloud/config.ts': 'names the website’s saved keys that keep the old name on purpose',
+  'webcloud/device.ts': 'reads the website’s exam date, saved as aurivan_exam_date',
 };
 /** Identifiers that keep their old spelling on purpose. */
 const IDENTIFIER = /aurivan\.[A-Za-z]|AURIVAN/;

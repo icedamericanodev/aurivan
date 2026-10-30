@@ -3,8 +3,9 @@
  *
  * - collectSnapshot reads the real stores: no name ever (even with one saved),
  *   readiness only when the widget is on, Think first from the real
- *   principles, Quick question from the real bank (short stems, kept once
- *   picked), the plant's look, today's plan.
+ *   principles, the Recall card from questions answered RIGHT 2+ weeks ago
+ *   (1.48; never a question not yet met, and progress is never written), the
+ *   Key term from the notes' glossary, the road, the plant's look, today's plan.
  * - lib/widgets.android.ts: writes the key and asks for a redraw of every
  *   kind after a change (settings, a finished session, a restore), never in
  *   the middle of a quiz, never throws, and uses no network.
@@ -13,13 +14,15 @@
  */
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getWidgetInfo, requestPinWidget, requestWidgetUpdate } from 'react-native-android-widget';
-import { findQuestion } from '../content/loader';
+import { findQuestion, getAllQuestions } from '../content/loader';
 import { getPrinciples } from '../content/principles';
 import { RULE_PROMPTS } from '../content/principles/widgetPrompts';
 import { addDays } from '../engine/examDay';
 import { dayKey } from '../engine/streak';
 import { parseSnapshot, REVEAL_KEY, snapshotBytes, SNAPSHOT_MAX_BYTES, widgetFace, WIDGET_KEY, WIDGET_KINDS, WIDGET_NAMES, type WidgetTap } from '../engine/widgets';
-import { collectSnapshot, QUIZ_STEM_MAX, quizDays, thinkDays } from '../lib/widgetData';
+import { findNote } from '../content/notes';
+import { termsFor } from '../content/terms';
+import { collectSnapshot, examCue, grewTopic, planDomain, RECALL_AFTER_DAYS, recallDays, recallFit, termDays, thinkDays } from '../lib/widgetData';
 import * as defaultWidgets from '../lib/widgets';
 import { useProgress } from '../store/progress';
 import { useSession } from '../store/session';
@@ -127,22 +130,89 @@ describe('collectSnapshot', () => {
     expect(thinkDays('cisa', TODAY, { anchor: TODAY, self: had }).think[0].id).not.toBe(pack.principles[0].id);
   });
 
-  it('Quick question: a short stem with no case study, the same all day once picked', () => {
-    const { quiz, picks } = quizDays('cisa', TODAY, {}, {});
-    expect(quiz).toHaveLength(4);
-    for (const q of quiz) expect(q.stem.length).toBeLessThanOrEqual(QUIZ_STEM_MAX);
-    // Answering it later in the day doesn't change today's pick; it marks it answered.
-    const again = quizDays('cisa', TODAY, picks, { [quiz[0].id]: { lastAt: NOW + 3_600_000 } });
-    expect(again.quiz[0].id).toBe(quiz[0].id);
-    expect(again.quiz[0].done).toBe(true);
-    for (const q of quiz) expect(q.stem).not.toMatch(/\bBIA\b/);
+  /** Real bank questions that fit a Recall card, and answers for them. */
+  const fitting = () => getAllQuestions('cisa').filter(recallFit).slice(0, 30);
+  const DAY = 86_400_000;
+
+  it('Recall card: only questions answered RIGHT at least 14 days before, never a fresh or a wrong one; only the correct answer and its Exam cue', () => {
+    const qs = fitting();
+    expect(qs.length).toBe(30);
+    const answers: Record<string, { lastCorrect: boolean; lastAt: number }> = {};
+    qs.slice(0, 10).forEach((q, i) => (answers[q.id] = { lastCorrect: true, lastAt: NOW - (20 + i) * DAY })); // right, long ago
+    qs.slice(10, 20).forEach((q) => (answers[q.id] = { lastCorrect: false, lastAt: NOW - 30 * DAY })); // wrong
+    qs.slice(20, 25).forEach((q) => (answers[q.id] = { lastCorrect: true, lastAt: NOW - 5 * DAY })); // right, too recent
+    const { recall, picks } = recallDays('cisa', TODAY, {}, answers);
+    expect(recall).toHaveLength(4);
+    const okIds = new Set(qs.slice(0, 10).map((q) => q.id));
+    for (const r of recall) {
+      expect(okIds.has(r.id)).toBe(true);
+      const q = findQuestion('cisa', r.id)!;
+      expect(r.answer).toBe(q.options[q.correct]);
+      expect(r.cue).toBe(examCue(q.tips));
+      expect(r.weeks).toBeGreaterThanOrEqual(2);
+      // Never a wrong option on the card.
+      for (const [l, text] of Object.entries(q.options)) if (l !== q.correct) expect(JSON.stringify(r)).not.toContain(text as string);
+    }
+    expect(new Set(recall.map((r) => r.id)).size).toBe(4);
+    // The same all day once picked.
+    expect(recallDays('cisa', TODAY, picks, answers).recall[0].id).toBe(recall[0].id);
+    // Nothing answered right long enough ago: no card (the widget shows its calm empty face).
+    expect(recallDays('cisa', TODAY, {}, {}).recall).toEqual([]);
+    expect(RECALL_AFTER_DAYS).toBe(14);
   });
 
-  it('Quick question prefers the day’s first question to revisit, when it fits a widget', () => {
-    const fits = quizDays('cisa', TODAY, {}, {}).quiz.map((q) => q.id);
-    const due = fits[2];
-    const { quiz } = quizDays('cisa', TODAY, {}, {}, [due]);
-    expect(quiz[0].id).toBe(due);
+  it('Recall card: "Not yet" brings a question back first (from 3 days later); "Had it" rests it', () => {
+    const qs = fitting();
+    const answers: Record<string, { lastCorrect: boolean; lastAt: number }> = {};
+    qs.slice(0, 10).forEach((q, i) => (answers[q.id] = { lastCorrect: true, lastAt: NOW - (20 + i) * DAY }));
+    const later = qs[7].id;
+    const rested = qs[0].id;
+    const self = { [later]: { had: 0, notYet: 1, last: 'notyet' as const, on: addDays(TODAY, -3) }, [rested]: { had: 1, notYet: 0, last: 'had' as const, on: addDays(TODAY, -1) } };
+    const { recall } = recallDays('cisa', TODAY, {}, answers, self);
+    expect(recall[0].id).toBe(later);
+    expect(recall.map((r) => r.id)).not.toContain(rested);
+  });
+
+  it('Recall card: never writes to progress', () => {
+    setUp();
+    const before = JSON.stringify(useProgress.getState());
+    collectSnapshot(NOW);
+    expect(JSON.stringify(useProgress.getState())).toBe(before);
+  });
+
+  it('Key term: one term a day from today’s plan topic, the same all day, with the note that teaches it', () => {
+    const t = termDays('cisa', TODAY, '4');
+    expect(t).toHaveLength(4);
+    const four = termsFor('cisa', '4').map((x) => x.id);
+    for (const x of t) {
+      expect(four).toContain(x.id);
+      expect(x.topic).toBe('Operations');
+      expect(Boolean(findNote('cisa', x.note)) || x.note === '4').toBe(true);
+    }
+    expect(termDays('cisa', TODAY, '4')).toEqual(t);
+    for (let i = 1; i < t.length; i++) expect(t[i].id).not.toBe(t[i - 1].id);
+    // No plan topic: a domain chosen by the day.
+    expect(termDays('cisa', TODAY).length).toBe(4);
+    expect(planDomain({ items: [{ kind: 'review', count: 6 }, { kind: 'practice', domainId: '5', count: 10, label: 'x' }] } as never)).toBe('5');
+    expect(planDomain(null)).toBeUndefined();
+  });
+
+  it('Readiness says which ring grew this week, never one that shrank', () => {
+    expect(grewTopic('cisa', ['1', '2', '3', '4', '5'], [50, 50, 50, 50, 50], [52, 60, 49, 40, 51])).toBe('Governance');
+    expect(grewTopic('cisa', ['1', '2', '3', '4', '5'], [50, 50, 50, 50, 50], [51, 40, 49, 52, 50])).toBeUndefined();
+    expect(grewTopic('cisa', ['1', '2'], undefined, [1, 2])).toBeUndefined();
+  });
+
+  it('the snapshot carries the recall cards, key terms and (with exam timing) the road; it stays under the size cap', () => {
+    setUp();
+    useWidgetStore.getState().setTiming(true);
+    const s = collectSnapshot(NOW);
+    expect(s.terms.length).toBe(4);
+    expect(s.road?.stage).toBeTruthy();
+    expect(s.road?.from).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+    expect(snapshotBytes(s)).toBeLessThanOrEqual(SNAPSHOT_MAX_BYTES);
+    useWidgetStore.getState().setTiming(false);
+    expect(collectSnapshot(NOW).road).toBeNull();
   });
 
   it('the plant: none, off, and its growth', () => {
@@ -340,12 +410,26 @@ describe('a widget tap', () => {
     expect(useSession.getState().active?.id).toBe('s');
   });
 
-  it('a quick question opens that question (answered in the app); a missing one just opens Today', () => {
+  it('the Recall card opens that question (answered in the app); a missing one just opens Today', () => {
     setUp();
     expect(openFromWidget(tap({ kind: 'question', go: 'question', id: 'd1_001' }))).toBe(true);
     expect(useSession.getState().active?.questionIds).toEqual(['d1_001']);
+    expect(useSession.getState().active?.title).toBe('Recall card');
     useSession.setState({ active: null });
     expect(openFromWidget(tap({ kind: 'question', go: 'question', id: 'nope_999' }))).toBe(false);
+    // Today's rule's "Try one" keeps its own title.
+    openFromWidget(tap({ kind: 'think', go: 'question', id: 'd1_001' }));
+    expect(useSession.getState().active?.title).toBe('Quick question');
+  });
+
+  it('the Key term opens the study note that teaches it, its domain’s notes, or the notes list', () => {
+    setUp();
+    openFromWidget(tap({ kind: 'revisit', go: 'note', id: '4A1.2' }));
+    expect(mockRouter.push).toHaveBeenLastCalledWith({ pathname: '/notes/subtopic/[id]', params: { id: '4A1.2' } });
+    openFromWidget(tap({ kind: 'revisit', go: 'note', id: '4' }));
+    expect(mockRouter.push).toHaveBeenLastCalledWith({ pathname: '/notes/[domain]', params: { domain: '4' } });
+    openFromWidget(tap({ kind: 'revisit', go: 'note', id: 'zz9' }));
+    expect(mockRouter.push).toHaveBeenLastCalledWith('/notes');
   });
 
   it('plain goals open their screen; a principle by id, else the list', () => {

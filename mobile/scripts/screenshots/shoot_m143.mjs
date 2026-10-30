@@ -205,7 +205,7 @@ if (want('lesson')) {
 
 // ── Tab headers ──────────────────────────────────────────────────────────
 if (want('headers')) {
-  for (const [name, route] of [['h1-today', '/home'], ['h2-learn', '/learn'], ['h3-practice', '/practice'], ['h4-play', '/play']]) {
+  for (const [name, route] of [['h1-today', '/home'], ['h2-learn', '/learn'], ['h3-practice', '/practice'], ['h4-practice-drills', '/practice?section=drills']]) {
     await go(route, 2400);
     await shot(name);
   }

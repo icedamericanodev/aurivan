@@ -89,7 +89,7 @@ function onlyStretchLeft(): CaseMark[] {
 }
 
 describe('only Stretch tiers left (UX H2)', () => {
-  it('the panel says "If you want to go further", never "Next for your exam"; each row offers "Go further ›"', () => {
+  it('the panel says "If you want to go further", never "for your exam"; each row offers "Go further ›"', () => {
     const marks = onlyStretchLeft();
     const n = nextForExam({ marks, stage: 'practice', daysLeft: null, mastery: Object.fromEntries(cisa.domains.map((d) => [d.id, 0.78])) });
     expect(n.best).toBeUndefined();
@@ -99,16 +99,16 @@ describe('only Stretch tiers left (UX H2)', () => {
     const t = textOf(r!.root);
     expect(t).toContain('If you want to go further');
     expect(t).toContain('These go beyond what the exam needs. Entirely optional.');
-    expect(t).not.toContain('Next for your exam');
+    expect(t).not.toContain('for your exam');
     expect(t).not.toContain('Study for this');
     expect(t.match(/Go further ›/g)).toHaveLength(n.nearest.length);
   });
 
-  it('with a core badge still open the heading stays "Next for your exam"', () => {
+  it('with a core badge still open the heading stays "Still to collect · for your exam" (mobile 1.51)', () => {
     const marks = caseMarks({ marks: allMarks(facts()), earned: { 'whole-map': T0 }, domains: DOMAINS, exam: EXAM, mindsetData: true });
     const core = marks.filter((m) => !m.stretch && m.status !== 'earned' && m.set === 'evergreen').slice(0, 1);
     mount(<NextPanel nearest={core} setName={() => 'Evergreen'} domains={cisa.domains} dueCount={0} onOpen={() => {}} onStudy={() => {}} />);
-    expect(textOf(r!.root)).toContain('Next for your exam');
+    expect(textOf(r!.root)).toContain('Still to collect · for your exam');
     expect(textOf(r!.root)).toContain('Study for this ›');
   });
 });

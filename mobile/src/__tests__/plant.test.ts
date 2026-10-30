@@ -307,15 +307,23 @@ describe('isValidPlantState (backup restore)', () => {
     ['pending above growth', { ...ok, pending: 4 }],
     ['pending at Seed', { ...ok, pending: 1 }],
     ['a back-fill above growth', { ...ok, backfill: { at: T0, growth: 4 } }],
-    ['a back-fill with extra keys', { ...ok, backfill: { at: T0, growth: 2, x: 1 } }],
     ['four keepsakes', { ...ok, look: { keepsakes: ['a', 'b', 'c', 'd'] } }],
     ['a repeated keepsake', { ...ok, look: { keepsakes: ['jay', 'jay'] } }],
     ['a look id with spaces', { ...ok, look: { ground: 'stone ring' } }],
-    ['an unknown look key', { ...ok, look: { hat: 'cap' } }],
+    ['an unknown Form IV final', { ...ok, look: { final: 'sparkle' } }],
     ['a bad pass date', { ...ok, passedOn: '2 Nov' }],
-    ['an unknown top-level key', { ...ok, water: 3 }],
   ])('refuses %s', (_why, x) => {
     expect(isValidPlantState(x)).toBe(false);
+  });
+
+  // Mobile 1.50 (forward-compatible): a newer app's extra fields are ignored, never a reason to refuse its backup.
+  it.each([
+    ['a back-fill with extra keys', { ...ok, backfill: { at: T0, growth: 2, x: 1 } }],
+    ['an unknown look key', { ...ok, look: { hat: 'cap' } }],
+    ['an unknown top-level key', { ...ok, water: 3 }],
+    ['the Form IV final', { ...ok, look: { final: 'moot' } }],
+  ])('accepts %s', (_why, x) => {
+    expect(isValidPlantState(x)).toBe(true);
   });
 
   it('settings: three optional booleans, nothing else', () => {

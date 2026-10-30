@@ -13,6 +13,7 @@ import { Plant } from '../components/plant/Plant';
 import { bounds, buildPlant, countShapes, groupNames, keepsakeIcon, liftGroup, lodFor, mix, pathTokens, planterIcon, plantLayers, type GNode, type Lod, type PNode } from '../components/plant/art';
 import { ink } from '../components/plant/botanical';
 import { PLANT_SPECIES, type GrowthLevel, type PlantSpecies } from '../engine/plant';
+import { FINAL_IDS } from '../engine/plantForms';
 import { dark, light, plantArt, plantLeaf, plantLine, plantTheme } from '../theme/tokens';
 
 const LODS: Lod[] = ['icon', 'small', 'full'];
@@ -45,9 +46,8 @@ describe('the botanical part tree (same contract as the storybook art)', () => {
   it('exactly five domain organs from Bough on, and none before', () => {
     for (const { species, stage } of all)
       for (const lod of LODS) {
-        const organs = groupNames(bot(species, stage, { lod }).root)
-          .filter((n) => n.startsWith('domain-'))
-          .sort();
+        // Mobile 1.50: a form may draw one domain as two parts (the Moon-gate Bamboo's two centre culms are both D3).
+        const organs = [...new Set(groupNames(bot(species, stage, { lod }).root).filter((n) => n.startsWith('domain-')))].sort();
         expect([species, stage, organs]).toEqual([species, stage, stage >= 4 ? ['domain-1', 'domain-2', 'domain-3', 'domain-4', 'domain-5'] : []]);
       }
   });
@@ -113,7 +113,14 @@ describe('the line', () => {
     [140, true],
     [200, false],
   ];
-  it('every stroke is a true 0.6–1.6pt line at every size the app draws', () => {
+  /**
+   * Mobile 1.50 (the forms): the art masters' line set, in points at the
+   * rendered size. Hairlines (hatch, bark, a frame's wires) are 0.5pt at full
+   * detail and 0.6pt smaller; the ink line is 1.25–1.5pt; a woody stem is up
+   * to 2.4 × the line (a sampaguita's standard, a holdfast trunk), and a seed
+   * dot 2pt. Nothing thinner than a hairline, nothing a smear.
+   */
+  it('every stroke is a true 0.5–3.6pt line at every size the app draws', () => {
     for (const species of PLANT_SPECIES)
       for (const stage of [1, 3, 6])
         for (const [px, fit] of SIZES) {
@@ -121,7 +128,7 @@ describe('the line', () => {
           const side = fit ? Number(b.frame.split(' ')[2]) : 200;
           for (const s of strokes(b.root)) {
             const pt = (s.sw * s.k * px) / side;
-            expect([species, stage, px, pt >= 0.59 && pt <= 1.61]).toEqual([species, stage, px, true]);
+            expect([species, stage, px, pt >= 0.49 && pt <= 3.61]).toEqual([species, stage, px, true]);
           }
         }
   });
@@ -129,8 +136,9 @@ describe('the line', () => {
   it('the main line is 1.5pt on the 200pt Your plant screen', () => {
     const b = bot('oak', 5, { px: 200, fit: false, lod: 'full' });
     const trunk = find(b.root, 'trunk')!;
-    const line = trunk.children.find((c) => c.stroke)!;
-    expect(line.sw).toBeCloseTo(1.5, 2);
+    // The trunk's outline (its bark furrows are hairlines inside it).
+    const main = Math.max(...trunk.children.filter((c) => c.stroke).map((c) => c.sw ?? 0));
+    expect(main).toBeCloseTo(1.5, 2);
   });
 
   it('resting (UX review H1): leaf, soil and star lines stay ≥ 3:1 on the dusk disc in light; dark leaf lines ≥ 4.5:1', () => {
@@ -263,12 +271,21 @@ describe('props on a botanical plant (opt-in, drawn in line)', () => {
 });
 
 describe('performance', () => {
-  it('fewer shapes than the storybook plant at every species and growth', () => {
-    for (const { species, stage } of all) {
-      const b = countShapes(bot(species, stage).root);
-      const s = countShapes(buildPlant({ species, stage }).root);
-      expect([species, stage, b <= s]).toEqual([species, stage, true]);
-    }
+  /**
+   * Mobile 1.50: the element budget per form (the art masters' DESIGN_SYSTEM
+   * §8.10 target). The plant's own parts (the tree and its props, not the
+   * ground or keepsakes) stay at or under 90 SVG elements at full detail for
+   * every species, growth and Form IV final, and fewer at the smaller sizes.
+   */
+  it('every form, and every Form IV final, stays within its SVG element budget', () => {
+    const own = (r: GNode) => countShapes({ t: 'g', id: null, children: r.children.filter((c) => c.t === 'g' && ['tree', 'props-back', 'props-front', 'glow'].includes(c.id ?? '')) });
+    for (const { species, stage } of all)
+      for (const final of stage === 6 ? FINAL_IDS : (['own'] as const)) {
+        const full = own(bot(species, stage, { lod: 'full', look: { final } }).root);
+        const small = own(bot(species, stage, { lod: 'small', px: 120, fit: true, look: { final } }).root);
+        const icon = own(bot(species, stage, { lod: 'icon', px: 24, fit: true, look: { final } }).root);
+        expect([species, stage, final, full <= 90, small <= full, icon <= small]).toEqual([species, stage, final, true, true, true]);
+      }
   });
 
   /**

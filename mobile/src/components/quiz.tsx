@@ -4,6 +4,8 @@
  * "Vine reveal", §11 "Question".
  *
  * Plain-English map of the answer screen (top to bottom):
+ *   Recap    – (mobile 1.49) "Question" and the stem in two lines, with
+ *              "Show question" to read it whole (StemRecap).
  *   Verdict  – a leaf-shaped mark with ✓/✗, "Correct" / "Not quite", and a
  *              one-line coach note.
  *   Answers  – if wrong: your option, "Why not C" under it, then the best
@@ -14,10 +16,13 @@
  *              when it scrolls into view (static under Reduce Motion).
  *              After a miss, Eliminate two and Final two sit inside Why's
  *              "Read more" fold (mobile 1.43).
- *   Trust    – "Original · Reviewed Oct 2026 · Report a problem".
+ *   Trust    – "Original · Reviewed Oct 2026 · Report a problem" (Results' review).
+ *   Source   – the practice answer's source line, no link (mobile 1.49: the
+ *              report lives in the header's ⋯ "More on this question" sheet,
+ *              AnswerMore).
  */
-import { useEffect, useState, type ReactNode, type Ref } from 'react';
-import { Pressable, useWindowDimensions, View, type LayoutChangeEvent } from 'react-native';
+import { useEffect, useRef, useState, type ReactNode, type Ref, type RefObject } from 'react';
+import { Platform, Pressable, useWindowDimensions, View, type LayoutChangeEvent } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withDelay } from 'react-native-reanimated';
 import Svg, { Defs, LinearGradient, Rect, Stop } from 'react-native-svg';
 import type { Letter } from '../content/types';
@@ -25,15 +30,18 @@ import type { Confidence } from '../engine/srs';
 import type { ReportTarget } from '../engine/support';
 import { tipParts } from '../engine/tips';
 import { config } from '../lib/config';
+import { moveFocus } from '../lib/a11y';
+import { afterSheet } from '../lib/sheetWait';
 import { haptic } from '../lib/haptics';
 import { shortReference } from '../lib/format';
 import { badgeLetter, LARGE_TEXT, motion, optionText, radius, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { LeafBig, LeafSmall, VerdictLeaf } from './glyphs';
-import { Check, X } from './icons';
+import { Check, ChevronDown, Ellipsis, ICON_STROKE, X } from './icons';
 import { AnimatedPressable, Collapse, ease, FadeIn, Pop, StateLayer, tween, useMotion, usePressScale } from './motion';
 import { ReportRow } from './support';
-import { CARD_LIFT, Chip, Gap, Row, T, useFontScale } from './ui';
+import { Sheet } from './settings';
+import { cardLift, Chip, Gap, IconButton, ListRow, Row, T, useFontScale } from './ui';
 
 
 // ── Scenario block: a longer case study above the stem, collapsible ───
@@ -135,7 +143,7 @@ export function OptionCard({
     borderColor: look.border,
     backgroundColor: look.bg,
     marginBottom: 10, // the gap between option rows (spec §6)
-    ...(!isDark && !tinted ? CARD_LIFT : null),
+    ...(!tinted ? cardLift(isDark) : null),
   };
   const content = (
     <>
@@ -482,6 +490,60 @@ export function WhyBlock({
   );
 }
 
+// ── StemRecap: the question, recapped at the top of the answer (1.49) ─
+/** A stem longer than this (or one with a scenario) is clamped to 2 lines with "Show question". */
+export const STEM_RECAP_CHARS = 90;
+/**
+ * Premium pass §2.1: once the answer shows, the question would be gone. This
+ * keeps it at the top: a `caption` ("Question"; a lesson check says "The
+ * question"), then the stem in `small` ink2 clamped to two lines, then a ghost
+ * "Show question" (48pt, chevron) that opens it in place: the scenario, if
+ * any, and the whole stem. No height animation (Collapse fades what opens).
+ *
+ * Screen readers: the caption and text are one stop that always says the
+ * WHOLE question ("Question: …"), clamped or not; the toggle is its own stop
+ * with its expanded state, for sighted learners who want it on screen.
+ */
+export function StemRecap({ stem, scenario, caption = 'Question' }: { stem: string; scenario?: string; caption?: string }) {
+  const { c } = useTheme();
+  const [open, setOpen] = useState(false);
+  const canOpen = Boolean(scenario) || stem.length > STEM_RECAP_CHARS;
+  const whole = scenario ? `${scenario} ${stem}` : stem;
+  return (
+    <View style={{ marginTop: space.md }}>
+      <View accessible accessibilityLabel={`${caption}: ${whole}`}>
+        <T v="caption" color={c.ink2}>{caption}</T>
+        {scenario ? (
+          <Collapse open={open}>
+            <T v="small" color={c.ink2} style={{ marginTop: space.xs }}>{scenario}</T>
+          </Collapse>
+        ) : null}
+        <T v="small" color={c.ink2} numberOfLines={canOpen && !open ? 2 : undefined} style={{ marginTop: space.xs }}>
+          {stem}
+        </T>
+      </View>
+      {canOpen && (
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel={open ? 'Hide question' : 'Show question'}
+          accessibilityState={{ expanded: open }}
+          onPress={() => setOpen(!open)}
+          hitSlop={4}
+          style={({ pressed }) => ({ minHeight: 48, justifyContent: 'center', alignSelf: 'flex-start', opacity: pressed ? 0.7 : 1 })}
+        >
+          <Row gap={space.xs}>
+            <T v="label" color={c.accentText}>{open ? 'Hide question' : 'Show question'}</T>
+            {/* The chevron turns over when open: shape, not just the words, says which way it goes. */}
+            <View style={open ? { transform: [{ rotate: '180deg' }] } : undefined}>
+              <ChevronDown size={18} color={c.accentText} strokeWidth={ICON_STROKE} />
+            </View>
+          </Row>
+        </Pressable>
+      )}
+    </View>
+  );
+}
+
 // ── Trust line: provenance + Report a problem ────────────────────────
 // Under every revealed answer: "Original · Reviewed Oct 2026" with the
 // report link on the right, then the code and source. The link, its sheet
@@ -497,6 +559,112 @@ export function TrustLine({ certId, target, reference }: { certId: string; targe
       // sees the source, and the code travels with a report as before.
       sub={reference ? shortReference(reference) : undefined}
     />
+  );
+}
+
+// ── Source line: provenance only (mobile 1.49) ───────────────────────
+// The practice answer's last line: a hairline, "Original · Reviewed Oct 2026",
+// then the source. "Report a problem" moved into the ⋯ sheet (premium pass
+// §2.4), so the line is text only. `children`: the note after a report's email
+// app opened (useReportFlow's `block`), kept under the source as before.
+export function SourceLine({ reference, children }: { reference?: string; children?: ReactNode }) {
+  const { c } = useTheme();
+  return (
+    <View style={{ borderTopWidth: 1, borderTopColor: c.line, marginTop: space.xs, paddingTop: space.md }}>
+      <T v="meta">{`Original · Reviewed ${config.contentReviewed}`}</T>
+      {reference ? <T v="meta" color={c.muted}>{shortReference(reference)}</T> : null}
+      {children}
+    </View>
+  );
+}
+
+// ── AnswerMore: the ⋯ "More on this question" sheet (mobile 1.49) ─────
+/**
+ * One row of the ⋯ sheet: what it does (`kicker`, a verb), the name (`title`),
+ * and what runs once the sheet has gone (`run`).
+ */
+export interface MoreRow {
+  key: string;
+  icon: (color: string) => ReactNode;
+  kicker?: string;
+  title: string;
+  subtitle?: string;
+  /** The whole row's spoken label (starts with the words on screen, WCAG 2.5.3). */
+  label: string;
+  hint?: string;
+  /** Opens another screen or sheet (a chevron). "Add a note" opens in place: none. */
+  chevron?: boolean;
+  run: () => void;
+}
+
+/**
+ * How long a closing sheet needs before the next screen or sheet opens. iOS
+ * cannot present a Modal (or push under one) while another is still fading
+ * away; Android can at once. The same wait as the badge sheet's "Study for this".
+ */
+export const SHEET_GONE_MS = Platform.OS === 'ios' ? 700 : 60;
+/** Screen-reader focus goes back to ⋯ once the sheet has gone. */
+export const MORE_FOCUS_BACK_MS = Platform.OS === 'ios' ? 750 : 400;
+
+/**
+ * Premium pass §2.3: a 48pt ⋯ IconButton (spoken "More on this question")
+ * that opens a Sheet of the extra ways on from an answer: read the note, read
+ * the principle, add a note, report a problem. The page body keeps only one
+ * "Go deeper" row, so the answer ends in about a screen and a half.
+ *
+ * - A row closes the sheet first, then runs once it has gone (SHEET_GONE_MS).
+ * - Closing it any other way (Close, the dim, Back, the escape gesture) puts
+ *   screen-reader focus back on ⋯ (`buttonRef`).
+ * - The sheet fades in with an 8pt rise (Sheet's FadeIn); Reduce Motion fades only.
+ * - Never in a mock: the session screen does not render it there.
+ */
+export function AnswerMore({ rows: given, buttonRef }: { rows: (MoreRow | null)[]; buttonRef: RefObject<View | null> }) {
+  const { c } = useTheme();
+  // The screen passes null for a row that doesn't apply (no note, no principle…).
+  const rows = given.filter((row): row is MoreRow => row !== null);
+  const [open, setOpen] = useState(false);
+  // A row's action waits for the sheet to go (lib/sheetWait.ts); leaving the screen first cancels it.
+  const cancelWait = useRef<(() => void) | null>(null);
+  useEffect(() => () => cancelWait.current?.(), []);
+  const close = () => {
+    setOpen(false);
+    moveFocus(buttonRef, MORE_FOCUS_BACK_MS);
+  };
+  const choose = (row: MoreRow) => {
+    setOpen(false);
+    cancelWait.current?.();
+    cancelWait.current = afterSheet(() => {
+      cancelWait.current = null;
+      row.run();
+    }, SHEET_GONE_MS);
+  };
+  return (
+    <>
+      <IconButton
+        ref={buttonRef}
+        label="More on this question"
+        hint={rows.length > 1 ? 'Opens the note, the principle, your note and Report a problem' : 'Opens Report a problem'}
+        expanded={open}
+        icon={(col) => <Ellipsis size={24} color={col} strokeWidth={ICON_STROKE} />}
+        onPress={() => setOpen(true)}
+      />
+      <Sheet visible={open} onClose={close} title="More on this question">
+        {rows.map((row, i) => (
+          <ListRow
+            key={row.key}
+            icon={row.icon(c.accentText)}
+            kicker={row.kicker}
+            title={row.title}
+            subtitle={row.subtitle}
+            chevron={row.chevron !== false}
+            accessibilityLabel={row.label}
+            accessibilityHint={row.hint}
+            onPress={() => choose(row)}
+            last={i === rows.length - 1}
+          />
+        ))}
+      </Sheet>
+    </>
   );
 }
 
@@ -525,3 +693,9 @@ export function StickyFooter({ children, onHeight }: { children: ReactNode; onHe
 // Exported for the session screen: delays used to stagger the answer screen
 // (spec §10.2): the rows start as the verdict leaf settles, "Why" just after.
 export const FEEDBACK_DELAY = { rows: motion.dur.select, why: motion.dur.reveal } as const;
+/**
+ * When the vine's entrance has landed (premium round 2, UX H1): the latest vine group rises at
+ * `why + stagger.group` over `reveal`. The vine may draw (stem, leaf pops, its one haptic) only from
+ * here, never while its group is still invisible. Under Reduce Motion everything is in after `reduced`.
+ */
+export const VINE_ARRIVES = FEEDBACK_DELAY.why + motion.stagger.group + motion.dur.reveal;

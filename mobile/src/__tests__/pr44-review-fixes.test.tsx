@@ -234,7 +234,8 @@ describe('reactions (code review M3 and M7a; probe P2)', () => {
     expect(claimReaction('lean:3', reactionMs('curious'))).toBe(false);
   });
   it('no unused plant motion tokens (code review M7b, UX review P7)', () => {
-    expect(Object.keys(motion.plant).sort()).toEqual(['breath', 'breathOut', 'breaths', 'grow', 'lean', 'plantIn', 'react']);
+    // Mobile 1.50: turnReduced is the form reveal's Reduce Motion cross-fade (its full form is motion.turn).
+    expect(Object.keys(motion.plant).sort()).toEqual(['breath', 'breathOut', 'breaths', 'grow', 'lean', 'plantIn', 'react', 'turnReduced']);
     expect((motion.plant.breath + motion.plant.breathOut) * motion.plant.breaths).toBeLessThanOrEqual(5000);
   });
 });

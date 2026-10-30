@@ -2018,7 +2018,7 @@ export interface BuiltPlant {
 const BUILT = new Map<string, BuiltPlant>();
 // 32 (code review M8c): about 13 previews and 4 screens are ever live, and keys churn as organs move.
 const BUILT_MAX = 32;
-const lookKey = (l: ArtLook | undefined) => (l ? [l.palette ?? '', l.ground ?? '', l.planter ?? '', l.visitor ?? '', (l.keepsakes ?? []).join('+')].join('/') : '');
+const lookKey = (l: ArtLook | undefined) => (l ? [l.palette ?? '', l.ground ?? '', l.planter ?? '', l.visitor ?? '', (l.keepsakes ?? []).join('+'), l.final ?? ''].join('/') : '');
 /** True when these options draw the botanical plant (mobile 1.40). */
 export const isBotanical = (o: Pick<BuildOpts, 'style' | 'look'>) => (o.style ?? o.look?.style) === 'botanical';
 const buildKey = (o: BuildOpts) =>

@@ -48,7 +48,7 @@ import { useSettings } from '../store/settings';
 import { hasContent } from '../content/loader';
 import { useActiveCertId } from '../lib/activeCert';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { MotionRoot, ThemeFade, useMotion } from '../components/motion';
+import { MotionRoot, SPLASH_FADE, ThemeFade, useMotion } from '../components/motion';
 import { Grain } from '../components/ui';
 import { motion } from '../theme/tokens';
 import { RecoveryScreen } from '../components/recovery';
@@ -59,6 +59,10 @@ import { useHydration } from '../store/useHydrated';
 import { useTheme } from '../theme/useTheme';
 
 SplashScreen.preventAutoHideAsync().catch(() => {});
+// The splash dissolves into the app over `enter`: an iOS cross-dissolve; Android's own exit fade
+// (accelerating) takes the same `enter`. A dissolve is already the gentle form, so Reduce Motion keeps it
+// (motion round 2, #5).
+SplashScreen.setOptions(SPLASH_FADE);
 
 // Show study reminders even if the app is open (no-op where unsupported).
 initNotifications();
@@ -256,6 +260,8 @@ export default function RootLayout() {
         <Stack.Screen name="plant-look" />
         {/* Mobile 1.47: where a home-screen widget tap lands; it opens the named place at once. */}
         <Stack.Screen name="widget" options={{ animation: 'none' }} />
+        {/* Mobile 1.51: the old Play tab's route, which opens Practice at Drills at once (app/play.tsx). */}
+        <Stack.Screen name="play" options={{ animation: 'none' }} />
       </Stack>
       <MotionRoot />
       {/* Light ⇄ Dark dissolves (mobile 1.9): a veil in the old paper fades out over the new theme. */}

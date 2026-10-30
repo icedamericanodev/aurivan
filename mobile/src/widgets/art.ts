@@ -4,7 +4,8 @@
  * No widget library here (it loads only from `.android.ts(x)` files), so this
  * file is tested in Jest and can feed an iOS widget later.
  *
- * - Colours are the Grove tokens (theme/tokens.ts), light and dark. Material
+ * - Colours are the Grove tokens (theme/tokens.ts), light and dark, one set per
+ *   card (1.48 "Study card": forest, paper, ruled card, plate, ink). Material
  *   You wallpaper colours are a later option (they need a small native module).
  * - The Kasama mark, the leaves, the growth rings and the plant are the app's
  *   own drawings: the same paths (theme/kasama.ts), the same ring maths
@@ -13,7 +14,8 @@
  */
 import { isPlantSpecies } from '../engine/plant';
 import { ringArc, ringGeometry } from '../engine/ringGeometry';
-import type { PlantSnap } from '../engine/widgets';
+import type { FaceTone, PlantSnap } from '../engine/widgets';
+import { isFinalId } from '../engine/plantForms';
 import { buildPlant, plantLayers, type ArtLook, type PNode } from '../components/plant/art';
 import { KAI_LEAF, KAI_PAIR_DOWN, KAI_PAIR_UP, KAI_VEIN } from '../theme/kasama';
 import { dark, font, kaisip, light } from '../theme/tokens';
@@ -35,6 +37,11 @@ export interface WidgetColors {
   /** The Kasama mark's two tones on this surface. */
   markLeaf: `#${string}`;
   markPair: `#${string}`;
+  /** The ruled card's lines and its clay margin line and "Q." / "Rule" label (decorative; the label passes AA). */
+  rule: `#${string}`;
+  margin: `#${string}`;
+  /** A 1 dp outline, so a dark card doesn't vanish on a dark wallpaper (dark theme only). */
+  border?: `#${string}`;
   /** The forest panel's lit top edge (a gradient down to `bg`), forest faces only. */
   bgTop?: `#${string}`;
   /** Botanical line art on the forest panel (decorative). */
@@ -44,9 +51,17 @@ export interface WidgetColors {
 type Hex = `#${string}`;
 const h = (s: string) => s as Hex;
 
-/** Paper (most widgets) or forest (today's plan, the exam-week faces), in light or dark. */
-export function widgetColors(tone: 'paper' | 'forest', theme: WidgetTheme): WidgetColors {
+/**
+ * The colours for a card (1.48 "Study card"), in light or dark, all Grove tokens:
+ * - forest: Today's plan only (forestTop → forest), the "do this now" signal;
+ * - paper: the raised sheet colour; card: the same paper, ruled like an index card;
+ * - plate: the plant's warm botanical plate (tipBg in light, soft in dark);
+ * - ink: Road to exam's dark card (ink in light; the night bg with an outline in dark).
+ * Dark paper, card, plate and ink cards carry a 1 dp `line` outline.
+ */
+export function widgetColors(tone: FaceTone, theme: WidgetTheme): WidgetColors {
   const p = theme === 'dark' ? dark : light;
+  const darkBorder = theme === 'dark' ? { border: h(dark.line) } : {};
   if (tone === 'forest') {
     return {
       bg: h(p.forest),
@@ -62,23 +77,49 @@ export function widgetColors(tone: 'paper' | 'forest', theme: WidgetTheme): Widg
       soft: h(p.forestTrack),
       markLeaf: h(kaisip.dark.leaf),
       markPair: h(kaisip.dark.pair),
+      rule: h(p.forestTrack),
+      margin: h(p.sap),
       frond: h(p.forestLine),
     };
   }
+  if (tone === 'ink') {
+    // Light: the ink colour as the card; dark: the night background, outlined.
+    return {
+      bg: h(theme === 'dark' ? dark.bg : light.ink),
+      ink: h(theme === 'dark' ? dark.ink : light.bg),
+      ink2: h(theme === 'dark' ? dark.ink2 : light.onForest2),
+      accentText: h(dark.sap),
+      accent: h(dark.sap),
+      line: h(theme === 'dark' ? dark.line : light.forestTrack),
+      track: h(theme === 'dark' ? dark.track : light.forestTrack),
+      btn: h(dark.pill),
+      onBtn: h(dark.onPill),
+      soft: h(dark.soft),
+      markLeaf: h(kaisip.dark.leaf),
+      markPair: h(kaisip.dark.pair),
+      rule: h(dark.line),
+      margin: h(dark.clay),
+      // Dark: the night-coloured card gets a visible 1 dp edge (the control outline, ≥ 3:1), or it melts into a dark wallpaper.
+      ...(theme === 'dark' ? { border: h(dark.control) } : {}),
+    };
+  }
   return {
-    // Paper: the raised sheet colour, a step above the wallpaper-facing screen colour.
-    bg: h(theme === 'dark' ? p.raised : p.raised2),
+    // Paper: the raised sheet colour, a step above the wallpaper-facing screen colour. The plate is warmer.
+    bg: h(tone === 'plate' ? (theme === 'dark' ? p.soft : p.tipBg) : theme === 'dark' ? p.raised : p.raised2),
     ink: h(p.ink),
     ink2: h(p.ink2),
     accentText: h(p.accentText),
     accent: h(p.accent),
     line: h(p.line),
     track: h(p.track),
-    btn: h(p.btn),
-    onBtn: h(p.onBtn),
+    btn: h(p.ink),
+    onBtn: h(theme === 'dark' ? p.raised : p.raised2),
     soft: h(p.soft),
     markLeaf: h(kaisip[theme].leaf),
     markPair: h(kaisip[theme].pair),
+    rule: h(p.line),
+    margin: h(p.clay),
+    ...darkBorder,
   };
 }
 
@@ -145,6 +186,11 @@ export function ringsSvg(rings: readonly number[], weights: readonly number[], c
   geo.forEach((ring) => {
     body += `<path d="${ring.track}Z" fill="none" stroke="${c.track}" stroke-width="${ring.w.toFixed(2)}"/>`;
   });
+  if (faint) {
+    // Before the first estimate: the tracks at full strength and a dashed outer edge, so the hero still shows (1.48).
+    const last = geo[geo.length - 1];
+    if (last) body += `<circle cx="${cx}" cy="${cx}" r="${(last.rm + last.w / 2 + 1.5).toFixed(2)}" fill="none" stroke="${c.accent}" stroke-width="1.2" stroke-dasharray="3 3"/>`;
+  }
   if (!faint) {
     geo.forEach((ring, i) => {
       const m = Math.max(0, Math.min(100, rings[i] ?? 0)) / 100;
@@ -154,7 +200,24 @@ export function ringsSvg(rings: readonly number[], weights: readonly number[], c
     });
     body += `<circle cx="${cx}" cy="${cx}" r="${(r0 * 0.32).toFixed(2)}" fill="${c.accent}"/>`;
   }
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${size} ${size}"${faint ? ' opacity="0.55"' : ''}>${body}</svg>`;
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${size} ${size}">${body}</svg>`;
+}
+
+/**
+ * The index card's ruling (1.48): a clay margin line under the card's top row
+ * and faint rules every 22 dp below it. Decorative, drawn behind the words.
+ */
+export function ruledSvg(width: number, height: number, top: number, c: Pick<WidgetColors, 'rule' | 'margin'>): string {
+  const w = Math.max(1, Math.round(width));
+  const hgt = Math.max(1, Math.round(height));
+  let lines = `<path d="M0 ${top} H${w}" stroke="${c.margin}" stroke-opacity="0.55" stroke-width="1.2"/>`;
+  for (let y = top + 22; y < hgt - 4; y += 22) lines += `<path d="M0 ${y} H${w}" stroke="${c.rule}" stroke-width="1"/>`;
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${hgt}">${lines}</svg>`;
+}
+
+/** The play mark inside Today's plan's round button on a 2×1 (the whole widget is the Start tap). */
+export function playSvg(color: string): string {
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12"><path d="M3.2 1.6 L10.4 6 L3.2 10.4Z" fill="${attr(color)}"/></svg>`;
 }
 
 function nodeSvg(n: PNode | null | undefined): string {
@@ -188,6 +251,8 @@ export function plantSvg(p: PlantSnap, theme: WidgetTheme): string | null {
     ...(p.palette ? { palette: p.palette as ArtLook['palette'] } : {}),
     ...(p.ground ? { ground: p.ground } : {}),
     ...(p.planter ? { planter: p.planter } : {}),
+    // Mobile 1.50: the Form IV final the learner chose.
+    ...(isFinalId(p.final) ? { final: p.final } : {}),
     keepsakes: [],
   };
   const built = buildPlant({ species: p.species, stage: Math.max(1, Math.min(6, p.growth)), quietLook: true, lod: 'small', theme, resting: false, mood: 'idle', drift: false, look, px: 120, fit: true });

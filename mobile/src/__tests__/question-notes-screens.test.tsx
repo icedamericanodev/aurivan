@@ -1,7 +1,8 @@
 /**
  * "Your note" on screen:
- *  - the answer screen: "Add a note" only AFTER the answer is checked, under
- *    the next-step rows and before the trust line; never in the first set;
+ *  - the answer screen: "Add a note" only AFTER the answer is checked; mobile
+ *    1.49: it is a row in the header's ⋯ "More on this question" sheet (before
+ *    "Report a problem"), not a button in the page body; never in the first set;
  *  - the sheet: saves 600 ms after typing stops and on Done; deleting a saved
  *    note (Delete note, or Done on an emptied field) asks first, and typing
  *    never deletes; the counter shows only near the 1,000 limit; past the
@@ -25,6 +26,7 @@ import { startFirstSet } from '../lib/firstSet';
 import { finishSession } from '../lib/finishSession';
 import { selectCert, useProgress } from '../store/progress';
 import { useSession } from '../store/session';
+import { moreRowLabels, viaMore } from '../../jest/answerMore';
 import SessionScreen from '../app/session';
 import Results from '../app/results';
 import Saved from '../app/saved';
@@ -78,6 +80,9 @@ const press = (label: string) => {
     b.props.onPress();
   });
 };
+/** Mobile 1.49: "Add a note" is a row in the ⋯ sheet. */
+const addNote = () => viaMore(root(), ADD_NOTE);
+const inMore = (label: string) => moreRowLabels(root()).includes(label);
 const field = () => root().findAll((n) => n.props.accessibilityLabel === 'Your note on this question' && typeof n.props.onChangeText === 'function')[0];
 const type = (text: string) =>
   act(() => {
@@ -128,24 +133,26 @@ describe('the answer screen', () => {
     expect(has(ADD_NOTE)).toBe(false);
   });
 
-  it('after a miss and after a right answer: "Add a note" sits after the next steps and before the source line', () => {
+  it('after a miss and after a right answer: "Add a note" is in ⋯, after the reading rows and before the report', () => {
     answerFirst([qa.id, qb.id], false);
-    expect(has(ADD_NOTE)).toBe(true);
-    const t = allText();
-    expect(t.indexOf(ADD_NOTE)).toBeGreaterThan(-1);
-    expect(t.indexOf(ADD_NOTE)).toBeLessThan(t.indexOf('Report a problem'));
-    if (t.includes('Read the note')) expect(t.indexOf('Read the note')).toBeLessThan(t.indexOf(ADD_NOTE));
+    expect(has(ADD_NOTE)).toBe(false); // not in the page body any more
+    const labels = moreRowLabels(root());
+    const at = labels.indexOf(ADD_NOTE);
+    expect(at).toBeGreaterThan(-1);
+    expect(at).toBeLessThan(labels.indexOf('Report a problem with this question'));
+    const note = labels.findIndex((l) => l.startsWith('Read the note'));
+    if (note >= 0) expect(note).toBeLessThan(at);
     act(() => {
       r!.unmount();
     });
     useSession.getState().clear();
     answerFirst([qb.id, qc.id], true);
-    expect(has(ADD_NOTE)).toBe(true);
+    expect(inMore(ADD_NOTE)).toBe(true);
   });
 
   it('the sheet saves as you type (600 ms) and on Done; the note comes back as a plate with Edit', () => {
     answerFirst([qa.id, qb.id]);
-    press(ADD_NOTE);
+    addNote();
     // Builds that can sync (CI runs the suite a second time with the cloud on) say so.
     expect(allText()).toContain(CLOUD ? NOTE_INTRO_SYNC : NOTE_INTRO);
     type('Escalate first.');
@@ -196,12 +203,12 @@ describe('the answer screen', () => {
       (alert.mock.calls[1][2] as { text: string; onPress?: () => void }[]).find((b) => b.text === 'Delete')!.onPress!();
     });
     expect(noteOf(qa.id)?.text).toBe('');
-    expect(has(ADD_NOTE)).toBe(true);
+    expect(inMore(ADD_NOTE)).toBe(true);
   });
 
   it('a note typed and cleared in one sitting (never saved before) just closes, with nothing to confirm', () => {
     answerFirst([qa.id, qb.id]);
-    press(ADD_NOTE);
+    addNote();
     type('Second thoughts');
     act(() => {
       jest.advanceTimersByTime(NOTE_SAVE_MS);
@@ -211,7 +218,7 @@ describe('the answer screen', () => {
     press('Done, Your note');
     expect(alert).not.toHaveBeenCalled();
     expect(noteOf(qa.id)?.text ?? '').toBe('');
-    expect(has(ADD_NOTE)).toBe(true);
+    expect(inMore(ADD_NOTE)).toBe(true);
   });
 
   it('past the total cap for all notes, a new note is not saved and the sheet says why', () => {
@@ -221,7 +228,7 @@ describe('the answer screen', () => {
       for (const q of others) useProgress.getState().setQuestionNote('cisa', q.id, 'x'.repeat(QNOTE_MAX));
     });
     answerFirst([qa.id, qb.id]);
-    press(ADD_NOTE);
+    addNote();
     type('One more');
     act(() => {
       jest.advanceTimersByTime(NOTE_SAVE_MS);
@@ -232,7 +239,7 @@ describe('the answer screen', () => {
 
   it('"Delete note" shows only for a saved note, and asks first', () => {
     answerFirst([qa.id, qb.id]);
-    press(ADD_NOTE);
+    addNote();
     expect(has('Delete note')).toBe(false);
     press('Done, Your note');
     act(() => {
@@ -247,12 +254,12 @@ describe('the answer screen', () => {
       del.onPress!();
     });
     expect(noteOf(qa.id)?.text).toBe('');
-    expect(has(ADD_NOTE)).toBe(true);
+    expect(inMore(ADD_NOTE)).toBe(true);
   });
 
   it('the counter shows only near the 1,000-character limit', () => {
     answerFirst([qa.id, qb.id]);
-    press(ADD_NOTE);
+    addNote();
     type('Short note');
     expect(allText()).not.toContain('/ 1000');
     type('n'.repeat(850));
@@ -267,6 +274,7 @@ describe('the answer screen', () => {
     press('Check answer');
     expect(allText()).toContain('Not quite');
     expect(has(ADD_NOTE)).toBe(false);
+    expect(inMore(ADD_NOTE)).toBe(false);
   });
 });
 
@@ -388,6 +396,7 @@ describe('privacy', () => {
     'engine/syncMerge.ts',
     'engine/webImport.ts', // mobile 1.42: brings the website's notes into the app (merged like a sync)
     'store/progress.ts',
+    'webcloud/toWeb.ts', // accounts beta: carries the notes between the account and the website's own record (sync only)
   ];
   const src = join(__dirname, '..');
   const files = (dir: string): string[] =>
@@ -411,6 +420,8 @@ describe('privacy', () => {
   it('the report target on the answer screen carries no note text', () => {
     useProgress.getState().setQuestionNote('cisa', qa.id, 'PRIVATE-NOTE-TEXT');
     answerFirst([qa.id, qb.id]);
+    // Mobile 1.49: the report opens from the ⋯ sheet.
+    viaMore(root(), 'Report a problem with this question');
     const trust = root().findAll((n) => n.props.target !== undefined && n.props.certId === 'cisa');
     expect(trust.length).toBeGreaterThan(0);
     for (const t of trust) expect(JSON.stringify(t.props.target)).not.toContain('PRIVATE-NOTE-TEXT');

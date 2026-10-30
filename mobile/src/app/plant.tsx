@@ -3,26 +3,36 @@
  *
  * Top to bottom:
  *   the plant at 200pt (the shared stage, so growth reads from one size to the next)
- *   its name, species and growth ("Bough · growth 4 of 6"; never "stage")
+ *   its name, species and growth ("Bough · growth 4 of 6"; never "stage").
+ *     With forms on (1.50) the count goes: "Your oak · Bough" (no "n of m" by a form)
  *   one calm line when there is one: the back-fill (once), or resting
  *   What grows it next: the next growth's rule, step by step, with progress
  *   Your domains: each domain's part of the plant, as text rows
  *   Look: change plant (the species; the growth stays) and rename
+ *
+ * Mobile 1.50 forms: the plant's form name sits under its name, with its
+ * look line and the next form's name. A form reached since the last visit
+ * plays The Turning here, once (components/plant/FormReveal.tsx): never
+ * on a study screen. A plant already past Form I when forms arrived gets one
+ * quiet line instead. At Elder the learner may choose its final form (Look).
  *
  * No needs, no guilt: the plant asks for nothing. Resting is a calm look
  * that never counts the days away. Settings → Show my plant off: this
  * screen says the plant is hidden and how to show it.
  */
 import { router } from 'expo-router';
-import { useEffect, useMemo, useState } from 'react';
-import { ScrollView, View } from 'react-native';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { EmptyScreen } from '../components/emptyScreen';
+import { FormReveal, type FormRevealHandle } from '../components/plant/FormReveal';
 import { LivePlant } from '../components/plant/LivePlant';
 import { PlantNote } from '../components/plant/PlantUI';
 import { Button, ListRow, ProgressBar, PushedHeader, Section, T, Tag, useFontScale } from '../components/ui';
 import {
   backfillLine,
+  FORM_FACTS,
+  formGrowthLine,
   grewLabel,
   GROWTH_LOOKS,
   GROWTH_NAMES,
@@ -37,12 +47,16 @@ import {
   SPREAD_EXPLAINER,
   type GrowthLevel,
 } from '../engine/plant';
+import { FORM_START, formMoment, formName, formsIntroLine, nextFormLine, newFormLine, seeNewFormLabel, type FormMoment, type FormNumber } from '../engine/plantForms';
 import { dayKey } from '../engine/streak';
-import { plantFactsFor, seePlantBackfill, usePlantView } from '../lib/plant';
+import { baselinePlantForms, plantFactsFor, seeGrowth, seePlantBackfill, usePlantView } from '../lib/plant';
 import { useActiveCert } from '../lib/useActiveCert';
 import { useSeen } from '../store/seen';
 import { LARGE_TEXT, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
+
+/** The growth each form's drawing is shown at when it is the OLD form of a reveal (its fullest growth). */
+const OLD_FORM_GROWTH: Record<FormNumber, GrowthLevel> = { 1: 2, 2: 3, 3: 5, 4: 6 };
 
 export default function YourPlant() {
   const { c, isDark } = useTheme();
@@ -55,13 +69,14 @@ export default function YourPlant() {
   const [now] = useState(() => Date.now());
   const next = useMemo(() => {
     const facts = plantFactsFor(certId, progress, now);
-    return p && facts ? nextGrowthSteps(p.growth, facts) : null;
-  }, [certId, progress, now, p]);
+    // With forms on, the readiness gates are worded as "Your study estimate…" (no readiness words by a form).
+    return p && facts ? nextGrowthSteps(p.growth, facts, { forms: view.forms }) : null;
+  }, [certId, progress, now, p, view.forms]);
 
   // The back-fill line shows ONCE: kept for this visit, marked seen at once.
   const backfill = p?.backfill;
   const [kept, setKept] = useState<{ at: number; line: string } | null>(null);
-  if (p && backfill && !backfill.seen && kept?.at !== backfill.at) setKept({ at: backfill.at, line: backfillLine(p, backfill.growth) });
+  if (p && backfill && !backfill.seen && kept?.at !== backfill.at) setKept({ at: backfill.at, line: backfillLine(p, backfill.growth, view.forms ? formName(p.species, backfill.growth, view.final) : undefined) });
   useEffect(() => {
     if (backfill && !backfill.seen) seePlantBackfill(certId);
   }, [backfill, certId]);
@@ -74,6 +89,36 @@ export default function YourPlant() {
   useEffect(() => {
     if (quiet) useSeen.getState().seeQuietGrowth(certId);
   }, [quiet, certId]);
+
+  // Mobile 1.50 forms: the first sight of this plant on this release counts what it is as seen
+  // (no reveal for history). Then a form reached since the last visit is revealed ONCE, kept
+  // for this visit, and written down as shown at once (leaving mid-way still counts).
+  const formsRec = useSeen((s) => s.plantForms?.[certId]);
+  useEffect(() => {
+    // A grow-up still pending is not history: it gets its reveal (lib/plant.ts baselinePlantForms).
+    if (p) baselinePlantForms(certId, p);
+  }, [p, certId]);
+  const [formVisit, setFormVisit] = useState<{ cert: string; moment: NonNullable<FormMoment> } | null>(null);
+  const momentNow = p && view.forms ? formMoment(p.growth, formsRec) : null;
+  if (momentNow && formVisit?.cert !== certId) setFormVisit({ cert: certId, moment: momentNow });
+  const formMomentKind = formVisit?.moment.kind;
+  useEffect(() => {
+    if (!p || !formMomentKind) return;
+    if (formMomentKind === 'reveal') {
+      useSeen.getState().seeFormReveal(certId, p.growth);
+      // The Turning IS the grow-up's moment (QA-TURN-1, QA-TURN-4): clear its `pending`, so a
+      // backup taken now can't replay it on restore, and the widget draws the new form at once.
+      seeGrowth(certId);
+    } else useSeen.getState().seeFormNote(certId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- once per visit's moment
+  }, [formMomentKind, certId]);
+  const reveal = formVisit?.moment.kind === 'reveal' ? formVisit.moment : null;
+  // A scroll drag ends the reveal (it dissolves to its end; the screen is never blocked).
+  const revealRef = useRef<FormRevealHandle>(null);
+  // The old drawing's look (no Form IV choice yet), kept by value, so a re-render never
+  // rebuilds the Turning's two drawings (QA-TURN-3).
+  const art = view.look?.art;
+  const fromLook = useMemo(() => (art ? { ...art, final: undefined } : undefined), [art]);
 
   if (!view.shown) {
     return (
@@ -103,13 +148,35 @@ export default function YourPlant() {
   // The exam eve and exam day have their own calm line (UX review P2).
   const rest = restLine(p, progress.milestones?.lastDay, dayKey(now), view.exam) ?? (view.resting ? `${plantCallName(p)} is resting. Pick up whenever you're ready.` : null);
   const cert = view.cert;
+  const nextForm = view.forms ? nextFormLine(p.species, p.growth) : null;
   return (
     <SafeAreaView edges={['top', 'bottom']} style={{ flex: 1, backgroundColor: c.bg }}>
-      <ScrollView contentContainerStyle={{ paddingHorizontal: space.gutter, paddingBottom: space.xxxl }}>
+      <ScrollView contentContainerStyle={{ paddingHorizontal: space.gutter, paddingBottom: space.xxxl }} onScrollBeginDrag={reveal ? () => revealRef.current?.skip() : undefined}>
         <PushedHeader title="Your plant" onBack={() => (router.canGoBack() ? router.back() : router.replace('/you'))} />
 
         <View style={{ alignItems: 'center', marginTop: space.sm }}>
-          {/* Mobile 1.14: dressed in its look; one slow breath the first time it opens this session, then still; one reaction per occasion. */}
+          {reveal ? (
+            // Mobile 1.50: The Turning (once per form, ever): the learning fact first, then the form.
+            <FormReveal
+              testID="plant-form-reveal"
+              species={p.species}
+              from={OLD_FORM_GROWTH[reveal.from]}
+              to={p.growth}
+              organs={view.scales}
+              look={view.look?.art}
+              fromLook={fromLook}
+              theme={isDark ? 'dark' : 'light'}
+              size={200}
+              accessibilityLabel={view.label}
+              fact={FORM_FACTS[FORM_START[reveal.to] as 3 | 4 | 6]}
+              name={view.formName}
+              lookLine={view.formLook}
+              announce={newFormLine(plantCallName(p), view.formName)}
+              playLabel={seeNewFormLabel(plantCallName(p))}
+              controlRef={revealRef}
+            />
+          ) : (
+          /* Mobile 1.14: dressed in its look; one slow breath the first time it opens this session, then still; one reaction per occasion. */
           <LivePlant
             testID="plant-hero"
             species={p.species}
@@ -126,22 +193,32 @@ export default function YourPlant() {
             breathe="plant"
             reaction={view.look && view.reactionId ? { id: view.reactionId, mood: view.look.mood } : null}
           />
+          )}
         </View>
         <T v="display" center accessibilityRole="header" style={{ marginTop: space.md }}>{plantCallName(p)}</T>
-        <T v="meta" center style={{ marginTop: space.xs }}>{`${p.name ? `Your ${SPECIES_INFO[p.species].lower} · ` : ''}${growthShort(p.growth)}`}</T>
-        <T v="quote" center color={c.ink2} style={{ marginTop: space.xs }}>{GROWTH_LOOKS[p.growth]}</T>
+        {/* Mobile 1.50: the form is a NAME under the plant's name, never a second number beside the growth. */}
+        {view.forms && !reveal ? <T v="stage" center color={c.ink2} style={{ marginTop: space.xs }}>{`The ${view.formName}`}</T> : null}
+        {/* With forms on: "Your oak · Crown", the growth by name only (no count near a form, UX review H2). */}
+        <T v="meta" center style={{ marginTop: space.xs }}>
+          {view.forms ? formGrowthLine(p.species, p.growth) : `${p.name ? `Your ${SPECIES_INFO[p.species].lower} · ` : ''}${growthShort(p.growth)}`}
+        </T>
+        {!reveal ? <T v="quote" center color={c.ink2} style={{ marginTop: space.xs }}>{view.forms ? view.formLook : GROWTH_LOOKS[p.growth]}</T> : null}
+        {nextForm ? <T v="meta" center style={{ marginTop: space.xs }}>{nextForm}</T> : null}
         {view.look?.visiting ? (
           <T v="meta" center style={{ marginTop: space.xs }}>{`A ${view.look.resolved.visitor} came by: you cleared today’s plan.`}</T>
         ) : null}
 
-        {(kept || rest || grewQuietly) && (
+        {(kept || rest || grewQuietly || formVisit?.moment.kind === 'note') && (
           <View style={{ marginTop: space.xl, gap: space.lg }}>
+            {formVisit?.moment.kind === 'note' && !kept ? <PlantNote caption="New: forms" line={formsIntroLine(plantCallName(p), view.formName)} testID="plant-forms-note" /> : null}
             {grewQuietly ? <PlantNote caption="Your plant grew" line={grewLabel(p, grewQuietly as GrowthLevel)} testID="plant-grew-quietly" /> : null}
             {kept && <PlantNote caption="From your study so far" line={kept.line} testID="plant-backfill" />}
             {rest && <PlantNote caption={view.exam === 'day' ? 'Exam day' : 'Resting'} line={rest} testID="plant-rest" />}
           </View>
         )}
 
+        {/* With forms on, a hairline ends the form's block, so the steps sit under their own heading, apart from the form (UX review P4). */}
+        {view.forms ? <View testID="plant-steps-rule" style={{ height: StyleSheet.hairlineWidth, backgroundColor: c.line, marginTop: space.xl }} /> : null}
         <Section title="What grows it next" meta={next ? GROWTH_NAMES[next.growth] : undefined} />
         {next ? (
           <View style={{ gap: space.lg, marginTop: space.sm }}>
@@ -186,6 +263,10 @@ export default function YourPlant() {
         {p.growth < 4 && <T v="meta" style={{ marginTop: space.sm }}>Each domain grows its own part of the plant from Bough.</T>}
 
         <Section title="Look" />
+        {view.forms && p.growth >= 6 ? (
+          // Mobile 1.50: at Elder the learner chooses its final form (the strongest area never decides).
+          <ListRow title="Its final form" subtitle={`Now: the ${view.formName}. You choose.`} onPress={() => router.push('/plant-look')} />
+        ) : null}
         <ListRow title="Change its look" subtitle="Its style, colours and keepsakes" onPress={() => router.push('/plant-look')} />
         <ListRow title="Change plant" subtitle="Same growth, new look." onPress={() => router.push({ pathname: '/plant-pick', params: { mode: 'species' } })} />
         <ListRow title="Rename" subtitle={p.name ? `Now: ${shownName(p.name)}` : 'No name yet'} onPress={() => router.push({ pathname: '/plant-pick', params: { mode: 'name' } })} last />

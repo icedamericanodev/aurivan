@@ -4,6 +4,9 @@
  * journal, study notes, lesson steps, a game's round recap, and the app
  * itself ("Something not working?"). Rendered against the real stores.
  *
+ * Mobile 1.49: on the practice answer screen the report opens from the
+ * header's ⋯ "More on this question" sheet (premium pass §2.3).
+ *
  * Checked on the way:
  * - the sheet opens from each one, with that kind's reasons;
  * - the email that opens names the ORIGINAL letter of a shuffled pick;
@@ -17,6 +20,7 @@
  */
 import { Linking, Share } from 'react-native';
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
+import { moreRowLabels, viaMore } from '../../jest/answerMore';
 import { RoundEnd } from '../components/game';
 import { OptionCard } from '../components/quiz';
 import { CISA_LESSONS } from '../content/lessons/cisa';
@@ -126,6 +130,9 @@ const q = getAllQuestions('cisa').find((x) => x.options.D)!;
 // Display slots A B C D show the bank's D C B A.
 const PERM = ['D', 'C', 'B', 'A'] as const;
 
+/** Mobile 1.49: the answer screen's ⋯ row that opens the report form. */
+const REPORT_ROW = 'Report a problem with this question';
+
 function answerShuffled(displayIndex: number) {
   startFromIds('cisa', [q.id], 'Quick 10');
   act(() => {
@@ -136,12 +143,12 @@ function answerShuffled(displayIndex: number) {
   press('Check answer');
 }
 
-describe('practice: under the answer', () => {
+describe('practice: from the answer screen’s ⋯ sheet (mobile 1.49)', () => {
 
   it('opens the sheet with the question’s reasons, and the email names the ORIGINAL letter', async () => {
     answerShuffled(1); // the learner taps display B = the bank's C
     expect(sheetOpen()).toBe(false);
-    press(`Report a problem with question ${q.id}`);
+    viaMore(root(), REPORT_ROW);
     expect(sheetOpen()).toBe(true);
     for (const reason of REASONS.question) expect(allText()).toContain(reason.label);
     // "Which answer do you think is best?" lists the options as shown, for key disputes.
@@ -174,16 +181,16 @@ describe('practice: under the answer', () => {
     expect(allText()).toContain('Finished in your email app?');
     expect(allText()).toContain('We read every report');
     expect(allText()).not.toMatch(/\bSent\b/);
-    // The link says a report was STARTED (we can't know it was sent), and still opens the sheet.
-    expect(allText()).toContain('Report started 11 Oct');
+    // The ⋯ row says a report was STARTED (we can't know it was sent), and still opens the sheet.
+    expect(moreRowLabels(root())).toContain(`${REPORT_ROW}. Report started 11 Oct`);
     expect(allText()).not.toMatch(/(^|\s)Reported\b/);
-    press(/^Report started 11 Oct\. Report a problem with question/);
+    viaMore(root(), REPORT_ROW);
     expect(allText()).toContain('You started a report about this on 11 Oct.');
   });
 
   it('Write the email waits for a reason', () => {
     answerShuffled(0);
-    press(`Report a problem with question ${q.id}`);
+    viaMore(root(), REPORT_ROW);
     expect(pressables('Write the email')[0].props.disabled).toBe(true);
     press('Typo or grammar');
     expect(pressables('Write the email')[0].props.disabled).toBe(false);
@@ -191,17 +198,17 @@ describe('practice: under the answer', () => {
 
   it('Cancel keeps the note for next time', () => {
     answerShuffled(0);
-    press(`Report a problem with question ${q.id}`);
+    viaMore(root(), REPORT_ROW);
     act(() => { root().findAll((n) => n.props.accessibilityLabel === 'Add a note' && typeof n.props.onChangeText === 'function')[0].props.onChangeText('B reads better'); });
     press('Cancel');
     expect(sheetOpen()).toBe(false);
-    press(`Report a problem with question ${q.id}`);
+    viaMore(root(), REPORT_ROW);
     expect(root().findAll((n) => n.props.accessibilityLabel === 'Add a note' && typeof n.props.onChangeText === 'function')[0].props.value).toBe('B reads better');
   });
 
   it('“What we’ll send” shows the exact lines, and nothing about the learner', () => {
     answerShuffled(2);
-    press(`Report a problem with question ${q.id}`);
+    viaMore(root(), REPORT_ROW);
     press('Typo or grammar');
     press('What we’ll send');
     const text = allText();
@@ -221,7 +228,7 @@ describe('no email app: the fallback', () => {
     mount(<SessionScreen />);
     act(() => { root().findAllByType(OptionCard)[0].props.onPress(); });
     press('Check answer');
-    press(`Report a problem with question ${q.id}`);
+    viaMore(root(), REPORT_ROW);
     await sendReport('Outdated standard or reference');
 
     const text = allText();
@@ -338,7 +345,7 @@ describe('lessons', () => {
   const lesson = CISA_LESSONS.find((l) => l.scenes.some((s) => s.type === 'check'))!;
   const checkAt = lesson.scenes.findIndex((s) => s.type === 'check');
 
-  it('only a check has the link, once answered (mobile 1.20: plain scenes stay clear)', async () => {
+  it('no report row in a step’s body; the header flag reports an answered check (mobile 1.49)', async () => {
     mockParams = { id: lesson.id };
     mount(<LessonPlayer />);
     expect(pressables('Report a problem with this lesson step')).toHaveLength(0);
@@ -346,8 +353,8 @@ describe('lessons', () => {
     for (let i = 0; i < checkAt; i++) press('Next');
     expect(pressables('Report a problem with this lesson step')).toHaveLength(0);
     act(() => { root().findAllByType(OptionCard)[0].props.onPress(); });
-    expect(pressables('Report a problem with this lesson step')).toHaveLength(1);
-    press('Report a problem with this lesson step');
+    expect(pressables('Report a problem with this lesson step')).toHaveLength(0);
+    press('Report a problem with this step');
     for (const reason of REASONS.lesson) expect(allText()).toContain(reason.label);
     await sendReport('The check question’s answer looks wrong');
     const body = lastBody();
@@ -451,10 +458,10 @@ describe('game recaps', () => {
 });
 
 describe('the report sheet’s other ways out', () => {
-  it('no email app: Try again goes back to the form, and after Close the link opens a fresh form, not the old panel', async () => {
+  it('no email app: Try again goes back to the form, and after Close the ⋯ row opens a fresh form, not the old panel', async () => {
     openUrl.mockRejectedValue(new Error('no mail app'));
     answerShuffled(0);
-    press(`Report a problem with question ${q.id}`);
+    viaMore(root(), REPORT_ROW);
     await sendReport('Typo or grammar');
     expect(allText()).toContain('We couldn’t open an email app.');
     // Try again: the form is back, the reason still chosen; logged once only.
@@ -464,7 +471,8 @@ describe('the report sheet’s other ways out', () => {
     await pressAsync('Write the email');
     expect(useProgress.getState().reports).toHaveLength(1);
     press('Close');
-    press(/^Report started 11 Oct\. Report a problem with question/);
+    expect(moreRowLabels(root())).toContain(`${REPORT_ROW}. Report started 11 Oct`);
+    viaMore(root(), REPORT_ROW);
     expect(allText()).toContain('You started a report about this on 11 Oct.');
     expect(allText()).not.toContain('We couldn’t open an email app.');
   });
@@ -472,7 +480,7 @@ describe('the report sheet’s other ways out', () => {
   it('“Copy or share instead” shows the whole message to copy or share, with no email app needed', async () => {
     const share = jest.spyOn(Share, 'share').mockResolvedValue({ action: 'sharedAction' });
     answerShuffled(0);
-    press(`Report a problem with question ${q.id}`);
+    viaMore(root(), REPORT_ROW);
     expect(pressables('Copy or share instead')[0].props.disabled).toBe(true); // a reason first
     press('Typo or grammar');
     press('Copy or share instead');
@@ -488,7 +496,7 @@ describe('the report sheet’s other ways out', () => {
 
   it('a sighted learner sees why “Write the email” waits', () => {
     answerShuffled(0);
-    press(`Report a problem with question ${q.id}`);
+    viaMore(root(), REPORT_ROW);
     expect(allText()).toContain('Choose what’s wrong to continue.');
     press('Typo or grammar');
     expect(allText()).not.toContain('Choose what’s wrong to continue.');

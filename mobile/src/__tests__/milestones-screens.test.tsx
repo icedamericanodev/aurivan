@@ -20,7 +20,7 @@ import Results from '../app/results';
 import Milestones from '../app/milestones';
 import FieldNotes from '../app/field-notes';
 import You from '../app/(tabs)/you';
-import Play from '../app/(tabs)/play';
+import { Drills } from '../components/drills';
 
 jest.mock('@react-native-async-storage/async-storage', () =>
   jest.requireActual('@react-native-async-storage/async-storage/jest/async-storage-mock'),
@@ -142,7 +142,7 @@ describe('Badges screen', () => {
     // Every badge is one button whose label holds its exact rule: no mystery badges.
     const buttons = labels();
     for (const b of [...MILESTONES, ...SKILL_BADGES].filter((x) => x.id !== 'fresh-start')) expect(buttons.some((l) => l.includes(b.rule.replace(/\.$/, '')))).toBe(true);
-    expect(buttons.some((l) => l.startsWith('Firm Footing · IS Operations, Clay. Earned'))).toBe(true);
+    expect(buttons.some((l) => l.startsWith('Firm Footing · IS Operations, Clay. Pressed'))).toBe(true);
     // No bank size anywhere (the only 3-digit target is Long Memory's own top tier, 150 recalls).
     expect(text.replace(/of 150 remembered/g, '')).not.toMatch(/of \d{3,}/);
   });
@@ -161,11 +161,11 @@ describe('Badges screen', () => {
 });
 
 describe('You', () => {
-  it('has ONE Badges and field notes row (mobile 1.24), and the back-fill line until it is seen', () => {
+  it('has ONE badges and field notes row, the Herbarium (mobile 1.24; 1.51), and the back-fill line until it is seen', () => {
     d4.slice(0, 20).forEach(answer);
     ensureBackfill('cisa', T0);
     mount(<You />);
-    expect(labels()).toContain("Badges and field notes, 2 earned. What you've mastered, and your level in each game");
+    expect(labels().some((l) => /^Herbarium: badges and field notes, 2 earned\. Last pressed: .+, \d+ \w+\.$/.test(l))).toBe(true);
     expect(labels().some((l) => l.startsWith('Field notes'))).toBe(false); // merged into the row above
     expect(allText()).toContain('You’d already earned 2 badges.');
     // Shown once: You marks it seen, and the line stays for this visit.
@@ -182,7 +182,7 @@ describe('You', () => {
     ensureBackfill('cisa', T0);
     mount(<You />);
     expect(allText()).not.toContain('already earned');
-    expect(labels()).toContain("Badges and field notes, none yet. What you've mastered, and your level in each game");
+    expect(labels()).toContain('Herbarium: badges and field notes, none yet.');
   });
 });
 
@@ -202,12 +202,12 @@ describe('Field notes', () => {
   });
 });
 
-describe('Play', () => {
+describe('Drills (the old Play tab, mobile 1.51)', () => {
   it('every game row says its level in words', () => {
     useProgress.setState({ byCert: { cisa: { ...cp(), gameGrowth: { sprint: { tier: 'heartwood', up: 0, down: 0 } } } } });
-    mount(<Play />);
-    // Mobile 1.24: three games are in sight; the rest are folded under "More games". Open it.
-    const more = root().findAll((n) => typeof n.props.onPress === 'function' && /^More games/.test(String(n.props.accessibilityLabel)))[0];
+    mount(<Drills />);
+    // Mobile 1.24: three games are in sight; the rest are folded under "More drills". Open it.
+    const more = root().findAll((n) => typeof n.props.onPress === 'function' && /^More drills/.test(String(n.props.accessibilityLabel)))[0];
     act(() => {
       more.props.onPress();
     });
@@ -215,8 +215,9 @@ describe('Play', () => {
     expect(rows.length).toBeGreaterThan(0);
     for (const l of rows) expect(l).toMatch(/Your level: (Seedling|Sapling|Heartwood)\./);
     expect(rows.find((l) => l.startsWith('Forecast'))).toMatch(/Your level: Heartwood\./);
-    // The featured game says its level too (leaf + text on the hero).
-    expect(labels()).toContain('Your level: Seedling');
+    // Today's drill (the first row) says its level too, and a grown level is printed on its row.
+    expect(rows[0]).toMatch(/^Today’s drill: .*Your level: Seedling\./);
+    expect(allText()).toContain('Heartwood');
   });
 });
 

@@ -116,7 +116,7 @@ const grown = {
 // ── 4. Play with level leaves; 5. Field notes ──
 {
   const page = await newPage(grown);
-  await open(page, '/play');
+  await open(page, '/practice?section=drills');
   await snap(page, 'f04-play-levels');
   await scrollBy(page, 700);
   await snap(page, 'f04b-play-levels-more');

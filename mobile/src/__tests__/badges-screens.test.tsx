@@ -139,9 +139,9 @@ describe('the case', () => {
       expect(box.props.accessible).toBe(false);
     }
     // Back-filled (saved quietly when badges arrived): "by" that date, never as if earned that day (UX P6).
-    expect(labels()).toContain('First Foothold. Earned by 12 Oct. Answer your first 20 questions. Groundwork.');
-    expect(labels().some((l) => l.startsWith('Firm Footing · IS Operations, Clay. Earned by 12 Oct.') && l.endsWith('26% of the exam. The Five Domains.'))).toBe(true);
-    expect(allText()).toContain('By 12 Oct');
+    expect(labels()).toContain('First Foothold. Pressed by 12 October. Answer your first 20 questions. Groundwork.');
+    expect(labels().some((l) => l.startsWith('Firm Footing · IS Operations, Clay. Pressed by 12 October.') && l.endsWith('26% of the exam. The Five Domains.'))).toBe(true);
+    expect(allText()).toContain('Pressed by 12 Oct');
     expect(labels().some((l) => l.startsWith('Mindset Shift. Not yet.') && l.includes('Opens after 100 first tries'))).toBe(true);
   });
 
@@ -165,7 +165,7 @@ describe('the case', () => {
     press(/^Earned badges$/);
     const shown = root().findAllByType(BadgeCell).map((c) => c.props.mark.key).sort();
     expect(shown).toEqual(Object.keys(cp().milestones!.earned).sort());
-    expect(allText()).toContain('Nothing earned here yet.');
+    expect(allText()).toContain('Nothing pressed on this sheet yet.');
   });
 
   it('Sort: by set, recently earned, closest, effort; the choice is kept on this phone', () => {
@@ -231,13 +231,15 @@ describe('the detail sheet', () => {
   it('earned: what it means (not how to earn it), its date, and no Study button', () => {
     earn('first-foothold', T0 - DAY);
     mount(<Badges />);
-    press(/^First Foothold\. Earned/);
+    press(/^First Foothold\. Pressed/);
     const sheet = root().findByType(Modal);
     const words = sheet.findAll((n) => typeof n.props.children === 'string').map((n) => n.props.children as string);
     expect(words).toContain('Earned 11 Oct');
     expect(words).toContain('You’ve mapped where you stand. Your plan now starts from it.');
     expect(words).not.toContain('How to earn it');
     expect(sheet.findAll((n) => /^Study for/.test(n.props.accessibilityLabel ?? ''))).toHaveLength(0);
+    // Mobile 1.51 (UX review P1): the date is said in full, never "Oct".
+    expect(sheet.findAll((n) => typeof n.type === 'string' && /^Earned 11 October\. You’ve mapped where you stand/.test(n.props.accessibilityLabel ?? ''))).toHaveLength(1);
   });
 
   it('a mock badge opens the full mock’s start sheet; Rooted shows its tiers in words', () => {
@@ -258,7 +260,7 @@ describe('the "new" dot', () => {
     earn('first-foothold', T0);
     expect(hasNewBadge('cisa')).toBe(true);
     mount(<You />);
-    expect(labels().some((l) => l.startsWith('Badges and field notes, new badge, 1 earned.'))).toBe(true);
+    expect(labels().some((l) => l.startsWith('Herbarium: badges and field notes, new badge, 1 earned.'))).toBe(true);
     expect(root().findAll((n) => n.props.testID === 'new-badge-dot').length).toBeGreaterThan(0);
     act(() => r!.unmount());
     jest.setSystemTime(T0 + 1000);
@@ -298,7 +300,7 @@ describe('Settings → Show badges', () => {
     const n = showBadgesAgain();
     expect(n).toBe(2); // First Foothold and Firm Footing · IS Operations
     expect(cp().milestones!.queue).toEqual([]);
-    expect(shownAgainLine(n)).toBe('Badges are on again. 2 badges arrived while they were hidden: see You → Badges.');
+    expect(shownAgainLine(n)).toBe('Badges are on again. 2 badges arrived while they were hidden: see You → Herbarium.');
     expect(useSettings.getState().badgesHidden).toBe(false);
   });
 });
@@ -371,13 +373,12 @@ describe('review fixes (PR #40)', () => {
     return out.join(' ');
   };
 
-  it('Next for your exam: the not-yet medallion uses the on-forest inks; the heading and the gap are spoken in full', () => {
+  it('Still to collect (1.51; was the forest "Next for your exam"): a header, the first row spoken "For your exam: …" with its gap in full', () => {
     d4.slice(0, 12).forEach(answer);
     mount(<Badges />);
     const panel = root().findByType(NextPanel);
-    const med = panel.findAll((n) => typeof n.type !== 'string' && typeof n.props.badge === 'string' && n.props.size === 56)[0];
-    expect(med.props.surface).toBe('forest');
-    expect(labels()).toContain(`Next for your exam: ${panel.props.best.name}`);
+    expect(panel.findAll((n) => n.props.accessibilityRole === 'header' && n.props.children === 'Still to collect · for your exam').length).toBeGreaterThan(0);
+    expect(labels().some((l) => l.startsWith(`For your exam: ${panel.props.best.name}.`))).toBe(true);
     expect(labels().some((l) => /now, aiming for 70%/.test(l))).toBe(true);
     expect(labels().some((l) => /→| of 70%/.test(l))).toBe(false);
   });
@@ -451,7 +452,7 @@ describe('review fixes (PR #40)', () => {
     d4.slice(0, 20).forEach(answer);
     ensureBackfill('cisa', T0);
     mount(<Badges />);
-    press(/^First Foothold\. Earned by/);
+    press(/^First Foothold\. Pressed by/);
     expect(sheetText()).toContain('Already earned when this badge arrived (by 12 Oct)');
     expect(sheetText()).not.toContain('This completed');
   });
@@ -482,7 +483,7 @@ describe('review fixes (PR #40)', () => {
     earn('first-foothold', T0 - DAY);
     earn('long-memory:999', T0 - DAY);
     mount(<You />);
-    expect(labels().some((l) => l.startsWith('Badges and field notes, 1 earned.'))).toBe(true);
+    expect(labels().some((l) => l.startsWith('Herbarium: badges and field notes, 1 earned.'))).toBe(true);
   });
 
   it('Show badges back on counts the active exam’s waiting moments only', () => {

@@ -14,6 +14,12 @@
  * says how to open it in plain words. There is no "n of m" anywhere, no
  * purchase, and nothing here says anything about readiness: it's a look.
  *
+ * Mobile 1.50: at Elder a botanical plant shows one more section first, its
+ * final form: the line's own final or one of five flavours. The learner
+ * chooses; the strongest area never decides, and nothing locked is listed
+ * before Elder (no wall of forms to collect). The choice is kept on this
+ * phone for now (store/seen.ts plantFinal; DESIGN_SYSTEM §8.10).
+ *
  * Large text: one column of full-width rows (two across otherwise, when two
  * fit). Never on question, mock, lesson or game screens.
  */
@@ -28,9 +34,11 @@ import { LivePlant } from '../components/plant/LivePlant';
 import { Plant } from '../components/plant/Plant';
 import { KeepsakeIcon, LookOption, PlanterIcon, Swatch } from '../components/plant/LookUI';
 import { ICON_SIZE, PushedHeader, Row, Section, T, useFontScale } from '../components/ui';
-import { growthShort, plantCallName, type GrowthLevel } from '../engine/plant';
+import { formGrowthLine, growthShort, plantCallName, type GrowthLevel } from '../engine/plant';
 import { colourwaysFor, GROUNDS, howToOpen, skillLine, KEEPSAKE_ITEMS, lookItem, MAX_SHOWN_KEEPSAKES, plantersFor, STYLES, toggleKeepsake, VISITORS, type LookItem, type LookSlot, type PlantStyle } from '../engine/plantLooks';
+import { FINAL_IDS, finalLook, finalName, type FinalId } from '../engine/plantForms';
 import { haptic } from '../lib/haptics';
+import { useSeen } from '../store/seen';
 import { usePlantView } from '../lib/plant';
 import { useProgress } from '../store/progress';
 import { useSettings } from '../store/settings';
@@ -109,7 +117,8 @@ export default function PlantLook() {
   const named = (id: string | undefined) => (id ? lookItem(id)?.name.toLowerCase() : undefined);
   const extras = [preview.visitor ? `a ${named(preview.visitor)}` : '', r.planter !== 'native' ? `in the ${named(r.planter)}` : '', ...r.keepsakes.map((k) => `the ${named(k)}`)].filter(Boolean);
   // Mobile 1.40: the style follows the name ("Kai, your oak, botanical style. Growth: …").
-  const cut = view.label.indexOf('. Growth:');
+  // Mobile 1.50: before the form's name when there is one ("Kai, your oak, botanical style. Standard Oak form. Growth: …").
+  const cut = view.formName ? view.label.indexOf(`. ${view.formName} form.`) : view.label.indexOf('. Growth:');
   const styled = cut > 0 ? `${view.label.slice(0, cut)}, ${STYLE_WORDS[r.style]}${view.label.slice(cut)}` : view.label;
   const previewLabel = `Preview: ${styled}${extras.length ? ` With ${extras.join(', ')}.` : ''}`;
 
@@ -182,10 +191,38 @@ export default function PlantLook() {
           look={preview}
           accessibilityLabel={previewLabel}
         />
-        <T v="meta" center style={{ marginTop: space.xs }}>{`${plantCallName(p)} · ${growthShort(p.growth)}`}</T>
+        {/* With forms on: "Your oak · Crown", the growth by name only (no count near a form, UX review H2). */}
+        <T v="meta" center style={{ marginTop: space.xs }}>{view.forms ? formGrowthLine(p.species, p.growth) : `${plantCallName(p)} · ${growthShort(p.growth)}`}</T>
       </View>
       <ScrollView contentContainerStyle={{ paddingHorizontal: space.gutter, paddingBottom: space.xxxl }} onLayout={(e) => setWidth(e.nativeEvent.layout.width - space.gutter * 2)}>
-        <T v="meta" style={{ marginTop: space.md }}>A look is just for you: it never changes your growth or your readiness.</T>
+        {/* With forms on, no readiness word near the form choice (UX review P3). */}
+        <T v="meta" style={{ marginTop: space.md }}>{view.forms ? 'A look is just for you: it never changes your growth.' : 'A look is just for you: it never changes your growth or your readiness.'}</T>
+
+        {view.forms && p.growth >= 6 ? (
+          <>
+            <Section title="Its final form" meta="You choose" />
+            <View accessibilityRole="radiogroup" accessibilityLabel="Its final form" style={{ gap: space.sm, marginTop: space.sm }}>
+              {FINAL_IDS.map((id: FinalId) => (
+                <LookOption
+                  key={id}
+                  testID={`look-final-${id}`}
+                  name={finalName(p.species, id)}
+                  // One line per choice: its look (the flavour's idea is already in it, UX review P6).
+                  line={finalLook(p.species, id)}
+                  art={<Plant species={p.species} stage={6} organs={view.scales} size={56} theme={theme} quietLook look={{ ...look.art, visitor: undefined, keepsakes: [], final: id }} />}
+                  selected={view.final === id}
+                  locked={false}
+                  multi={false}
+                  row
+                  onPress={() => {
+                    haptic.selection();
+                    useSeen.getState().setPlantFinal(certId, id);
+                  }}
+                />
+              ))}
+            </View>
+          </>
+        ) : null}
 
         <Section title="Style" />
         {group('Style', false, STYLES, (x) => x.id === r.style, (x) => choose('style', x.id), { asRows: true, art: styleArt })}
@@ -248,7 +285,7 @@ export default function PlantLook() {
         )}
 
         {morePlanters.length + moreKeepsakes.length > 0 && (
-          <View style={{ marginTop: space.section }}>
+          <View style={{ marginTop: space.xxl }}>
             {/* Closed by default: what is still to earn never crowds what is open. No count. */}
             <Pressable
               accessibilityRole="button"

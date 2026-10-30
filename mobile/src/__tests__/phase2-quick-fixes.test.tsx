@@ -15,7 +15,7 @@ import { Dimensions, StyleSheet } from 'react-native';
 import { router } from 'expo-router';
 import Today from '../app/(tabs)/home';
 import You from '../app/(tabs)/you';
-import Play from '../app/(tabs)/play';
+import { Drills } from '../components/drills';
 import Results from '../app/results';
 import SessionScreen from '../app/session';
 import { OptionCard } from '../components/quiz';
@@ -110,12 +110,11 @@ describe('Today', () => {
     expect(root().findAll((n) => typeof n.props.accessibilityLabel === 'string' && n.props.accessibilityLabel.startsWith('Estimated readiness'))).not.toHaveLength(0);
   });
 
-  it('T3: without the panel, the readiness row keeps its rings', () => {
+  it('T3: without the panel, the readiness row is the scale bar (mobile 1.51, Field Guide; it was the small rings)', () => {
     answeredEnough();
     mount(<Today />);
-    expect(root().findAllByType(GrowthRings)).toHaveLength(1);
-    // Mobile 1.21: the condensed readiness row draws the small `row` rings.
-    expect(root().findAllByType(GrowthRings)[0].props.preset).toBe('row');
+    expect(root().findAllByType(GrowthRings)).toHaveLength(0);
+    expect(root().findAll((n) => typeof n.type === 'string' && n.props.testID === 'scale-bar')).toHaveLength(1);
   });
 
   it('T4: "Also today" says how long the rest takes, not a count of a list that shows every item', () => {
@@ -158,18 +157,18 @@ describe('Y3: one phrasing for the review queue', () => {
     const plan = todaysPlan({ stage: 'practice', dueReviews: 55, dailyMinutes: 20, daysLeft: 40, examQuestions: 150 });
     // Mobile 1.15: a 20-minute day takes 8 of the 55, and keeps the whole queue for its title.
     expect(plan[0]).toMatchObject({ kind: 'review', count: 8, due: 55 });
-    expect(reviewSubtitle(55)).toBe('20 at a time, most overdue first');
+    expect(reviewSubtitle(55)).toBe('20 ready today · oldest first');
   });
 });
 
-describe('Play', () => {
+describe('Drills (the old Play tab, mobile 1.51)', () => {
   it('G2: every game at Seedling is said once, in the section line, not on each row; rows still speak it', () => {
-    mount(<Play />);
+    mount(<Drills />);
     expect(allText()).toMatch(/All at Seedling/);
     const rows = root().findAll((n) => n.props.accessibilityRole === 'button' && typeof n.props.onPress === 'function' && /Your level: Seedling/.test(n.props.accessibilityLabel ?? ''));
     expect(rows.length).toBeGreaterThan(1);
-    // The rows show no visible "Seedling" tag (only the hero's caption and the section line say it).
-    expect(allText().match(/Seedling/g)!.length).toBe(2);
+    // The rows show no visible "Seedling" tag: only the section line says it (no hero since 1.51).
+    expect(allText().match(/Seedling/g)!.length).toBe(1);
   });
 });
 
@@ -249,7 +248,7 @@ describe('Q1', () => {
   it('the hint line under the verdict starts where the coach line does (left 50)', () => {
     answerHinted(true);
     expect(indentOf(/^You used a hint, so this counts as half a right answer\.$/)).toBe(50);
-    expect(indentOf(/^(Clean read\.|You picked the runner-up\. That’s the trap\.|Check who you are in the question\.)$/)).toBe(50);
+    expect(indentOf(/^(Clean read\.|You picked the closest wrong choice\. That’s the trap\.|Check who you are in the question\.)$/)).toBe(50);
   });
   it('UX review H1: a WRONG hinted answer never says it "counts as half a right answer"', () => {
     answerHinted(false);

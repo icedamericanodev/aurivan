@@ -135,8 +135,9 @@ describe('what a hidden tab re-renders', () => {
     });
   }
 
-  it('one answer (a session on top): Play and Learn do not re-render at all', () => {
-    mountTabs({ learn: require('../app/(tabs)/learn').default, play: require('../app/(tabs)/play').default });
+  // Mobile 1.51: Play's games are Drills, a section of Practice; the section keeps Play's narrow selectors.
+  it('one answer (a session on top): Drills and Learn do not re-render at all', () => {
+    mountTabs({ learn: require('../app/(tabs)/learn').default, play: require('../components/drills').Drills });
     flip(false);
     resetRenders();
     // A question already answered right, right again: Learn's focus domain stays where it was.
@@ -145,7 +146,7 @@ describe('what a hidden tab re-renders', () => {
     });
     expect(renders().learn ?? 0).toBe(0);
     expect(renders().play ?? 0).toBe(0);
-    // A game round does reach Play (its best scores).
+    // A game round does reach Drills (its best scores).
     act(() => {
       useProgress.getState().recordGame('cisa', 'trap', 7);
     });
@@ -203,7 +204,7 @@ describe('an unknown active certification (the screens study the default exam: l
   // content and another id's (empty) progress, as before.
   for (const [name, load] of [
     ['Learn', () => require('../app/(tabs)/learn').default],
-    ['Play', () => require('../app/(tabs)/play').default],
+    ['Drills', () => require('../components/drills').Drills],
   ] as const) {
     it(`${name}: studies CISA, with CISA’s own progress`, () => {
       act(() => {

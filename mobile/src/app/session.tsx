@@ -35,6 +35,16 @@
  *   it started: the button says "Done", there is no Results page, and it goes back.
  * - The mock footer has icons AND words; the navigator says how many are
  *   answered / flagged / left and keeps Submit in a sticky footer.
+ *
+ * Mobile 1.49 (premium pass §2.2–2.4), the practice answer screen ends sooner:
+ * - ONE "Go deeper" row after a miss: the lesson when it is not done yet,
+ *   otherwise the note. Never more than one.
+ * - Everything else moved to a ⋯ "More on this question" sheet in the header,
+ *   beside the bookmark: read the note, read the principle, add a note, report
+ *   a problem. Focus goes back to ⋯ when it closes. Never in a mock.
+ * - The source line stays, as text only.
+ * - The answer opens with the question recapped in two lines ("Show question"
+ *   opens it whole); a screen reader hears the whole question there.
  */
 import * as Router from 'expo-router';
 import { router, useFocusEffect } from 'expo-router';
@@ -57,27 +67,33 @@ import {
 import { CrossFade, PageTurn, Pop, useMotion } from '../components/motion';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LeafSmall } from '../components/glyphs';
-import { ArrowRight, BookOpen, Bookmark, BookmarkCheck, ChevronLeft, Compass, Flag, ICON_STROKE, LayoutGrid, Lightbulb, Play, X } from '../components/icons';
+import { ArrowRight, BookOpen, Bookmark, BookmarkCheck, ChevronLeft, Compass, Flag, ICON_STROKE, LayoutGrid, Lightbulb, PencilLine, Play, X } from '../components/icons';
 import {
+  AnswerMore,
   AnswerRecap,
+  MORE_FOCUS_BACK_MS,
   ConfidenceRow,
   FEEDBACK_DELAY,
   OptionCard,
+  VINE_ARRIVES,
   PickNote,
   Rise,
   ScenarioBlock,
+  SourceLine,
+  StemRecap,
   StickyFooter,
-  TrustLine,
   useVerdictIndent,
   Verdict,
   Vine,
   WhyBlock,
+  type MoreRow,
   type OptionState,
 } from '../components/quiz';
 import { addMs } from '../engine/answerClock';
 import { aboutMin, dueCheckpoints, formatClock, mockPace, paceMessage, paceShort, practiceElapsedMs, SOFT_CUE_LINE, softCue, spokenClockCoarse, spokenMin, statusOf } from '../engine/pace';
 import { PaceStrip, type PaceStripProps } from '../components/pace';
-import { QuestionNote } from '../components/questionNote';
+import { QuestionNote, useHasQuestionNote, type QuestionNoteHandle } from '../components/questionNote';
+import { useReportFlow } from '../components/support';
 import { moveFocus, sayLater } from '../lib/a11y';
 import { haptic } from '../lib/haptics';
 import { questionTarget, sessionWhere } from '../lib/support';
@@ -91,6 +107,7 @@ import { REASON_LABEL } from '../engine/studyModes';
 import { LETTERS, type Letter } from '../content/types';
 import { displayToOriginal, isCorrect, originalToDisplay, renderText } from '../engine/shuffle';
 import { RETEST_LINE, type Confidence } from '../engine/srs';
+import { shortDate } from '../lib/format';
 import { priorityWord } from '../engine/games/priorityLens';
 import { missCoachLine } from '../engine/slipCoach';
 import { eliminateTip, runnerUp, splitMissTips, tipParts } from '../engine/tips';
@@ -100,7 +117,7 @@ import { HINT_AFTER_LINE, HINT_BEFORE_LINE } from '../engine/readiness';
 import { useAnswerClock } from '../lib/useAnswerClock';
 import { selectCert, useProgress } from '../store/progress';
 import { useSession } from '../store/session';
-import { LARGE_TEXT, radius, space } from '../theme/tokens';
+import { LARGE_TEXT, motion, radius, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 
 // Stable empty array: a new [] on every render would make the store re-render forever.
@@ -154,6 +171,9 @@ export default function SessionScreen() {
   const verdictBottom = useRef(0);
   const [pastVerdict, setPastVerdict] = useState(false);
   const vineRef = useRef<View>(null);
+  // The question whose vine may draw: armed once its entrance has landed (VINE_ARRIVES), never at the
+  // tap while it is still invisible (UX H1). Keyed by question, so a new question starts unarmed.
+  const vineArmedFor = useRef<string | null>(null);
   // Mobile 1.24: after a miss the tips come in two parts (Key idea + Exam cue, then
   // Eliminate / Final two after the folded "Why"); the second part draws on its own.
   const [vine2Visible, setVine2Visible] = useState(false);
@@ -173,21 +193,24 @@ export default function SessionScreen() {
   const taggedSlip = useProgress((s) => (active && qid ? selectCert(s, active.certId).mistakes[qid]?.slip : undefined));
   // Mobile 1.20, after a miss: the note first, the lesson when there is one.
   // Practice, review and Guided only (a mock never shows an answer screen, and
-  // this says so out loud). Nothing after a right answer. Looked up once per
-  // question, not on every render (the mock clock re-renders each second).
-  const missed = !isMock && Boolean(response && !response.correct);
+  // this says so out loud). Looked up once per question, not on every render
+  // (the mock clock re-renders each second). Mobile 1.49: the note is looked up
+  // after a right answer too, for the ⋯ sheet's "Read the note"; the lessons
+  // (the "Go deeper" row) only matter after a miss.
+  const checked = !isMock && Boolean(response);
+  const missed = checked && Boolean(response && !response.correct);
   const missCert = active?.certId;
   const missLinks = useMemo(() => {
-    if (!missed || !missCert || !qid) return null;
+    if (!checked || !missCert || !qid) return null;
     const noteId = subtopicOfQuestion(missCert, qid);
     const note = noteId ? findNote(missCert, noteId) : undefined;
     // The lesson candidates, in order: the ones that prepare for this question, then (mobile 1.22,
     // design spec §6.3) the ones that list its note in `notes` (d4_062 → 4B1.2 → RPO and RTO).
     // Mobile 1.45: no outline-topic fallback here, so the row never offers a lesson that only shares
     // the topic. The first one not done yet is offered (below).
-    const lessons = missLessons(missCert, qid, noteId);
+    const lessons = missed ? missLessons(missCert, qid, noteId) : [];
     return { noteId, noteName: note?.name, noteMinutes: note?.minutes ?? 2, lessons };
-  }, [missed, missCert, qid]);
+  }, [checked, missed, missCert, qid]);
   // Mobile 1.31: the principle this question tests (its `principleId`), for a
   // "Read the principle" row after ANY checked answer. Same rule as the note
   // and lesson rows: never in a mock (a mock shows no answer screen until it
@@ -272,18 +295,23 @@ export default function SessionScreen() {
   const [leavingIndex, setLeavingIndex] = useState<number | null>(null);
   const onTurning = useCallback((from: string | number | null) => setLeavingIndex(typeof from === 'number' ? from : null), []);
 
-  // After an answer, if the vine is already on screen (short questions),
-  // draw it without waiting for a scroll.
+  // After an answer, once the vine's entrance has landed, arm it; and if it is already on screen
+  // (short questions), draw it without waiting for a scroll.
   const answeredHere = Boolean(qid && active?.responses[qid]) && active?.mode !== 'mock';
   useEffect(() => {
+    vineArmedFor.current = null;
     if (!answeredHere) return;
-    const t = setTimeout(() => {
-      vineRef.current?.measureInWindow((_x, y) => {
-        if (y < Dimensions.get('window').height - 40) setVineVisible(true);
-      });
-    }, 450);
+    const t = setTimeout(
+      () => {
+        vineArmedFor.current = qid ?? null;
+        vineRef.current?.measureInWindow((_x, y) => {
+          if (y < Dimensions.get('window').height - 40) setVineVisible(true);
+        });
+      },
+      reduceMotion ? motion.dur.reduced : VINE_ARRIVES,
+    );
     return () => clearTimeout(t);
-  }, [answeredHere, qid]);
+  }, [answeredHere, qid, reduceMotion]);
 
   // After Coach me is tapped, the hint mounts (and fades in for 200ms).
   // Then move screen-reader focus onto it, so VoiceOver / TalkBack read the
@@ -363,6 +391,24 @@ export default function SessionScreen() {
   useEffect(() => {
     if (active?.finishedAt && inView) router.replace('/results');
   }, [active?.finishedAt, inView]);
+
+  // Mobile 1.49: the ⋯ button (screen-reader focus comes back to it) and the note sheet it opens.
+  const moreRef = useRef<View>(null);
+  const noteRef = useRef<QuestionNoteHandle>(null);
+  const openNote = useCallback(() => noteRef.current?.open(), []);
+  // The report flow for the question on screen (the ⋯ sheet's last row). Called before the early
+  // return below, so hooks keep their order; null until there is a question. The sheet gets the
+  // options in the order shown, and the email names letters as the bank's ORIGINAL ones.
+  const reportCert = active?.certId ?? '';
+  const reportPlace = active ? sessionWhere(active.mode === 'review' ? 'Questions to revisit' : 'Practice', active.title) : '';
+  const pickedShown = response?.display;
+  const reportTarget = useMemo(
+    () => (reportCert && q && perm ? questionTarget(reportCert, q, reportPlace, { perm, pickedDisplay: pickedShown }) : null),
+    [reportCert, q, perm, reportPlace, pickedShown],
+  );
+  const report = useReportFlow(reportCert, reportTarget, { onClosed: () => moveFocus(moreRef, MORE_FOCUS_BACK_MS) });
+  // Has the learner a note on this question? The ⋯ row then says "Edit your note".
+  const hasQNote = useHasQuestionNote(reportCert, qid);
 
   if (!active || !q || !perm || !qid) {
     return (
@@ -545,6 +591,60 @@ export default function SessionScreen() {
   const missNoteMin = missLinks?.noteMinutes ?? 2;
   const reviewLesson = missLinks?.lessons.find((l) => !lessonsDone.includes(l.id));
   const saved = bookmarks.includes(shownQid);
+  // Mobile 1.49 (premium pass §2.3): the ⋯ "More on this question" rows. Before the answer is
+  // checked, only the report: the note and the principle would give the answer away, and a note
+  // is written after the answer. Each row PUSHES or opens a sheet, so Back lands on this answer.
+  const noteRow: MoreRow | null =
+    submitted && missNote && missNoteName
+      ? {
+          key: 'note',
+          icon: (col) => <BookOpen size={ICON_SIZE.row} color={col} strokeWidth={ICON_STROKE} />,
+          kicker: 'Read the note',
+          title: missNoteName,
+          subtitle: `${aboutMin(missNoteMin)} · the idea this question tests`,
+          label: `Read the note: ${missNoteName}, ${spokenMin(aboutMin(missNoteMin, true))}, the idea this question tests`,
+          hint: 'Opens the study note. Go back to return to this answer.',
+          run: () => router.push(`/notes/subtopic/${encodeURIComponent(missNote)}`),
+        }
+      : null;
+  // Compass = how to think, as in Learn (mobile 1.31).
+  const principleRow: MoreRow | null =
+    submitted && answerPrinciple
+      ? {
+          key: 'principle',
+          icon: (col) => <Compass size={ICON_SIZE.row} color={col} strokeWidth={ICON_STROKE} />,
+          kicker: 'Read the principle',
+          title: answerPrinciple.title,
+          subtitle: 'How to think it through',
+          label: `Read the principle: ${answerPrinciple.title}, how to think it through`,
+          hint: 'Opens the principle. Go back to return to this answer.',
+          run: () => router.push(`/principles/${encodeURIComponent(answerPrinciple.id)}`),
+        }
+      : null;
+  // "Your note": not on the very first set (one less thing in the first minute, as before).
+  const yourNoteRow: MoreRow | null =
+    submitted && !active.firstSet
+      ? {
+          key: 'yourNote',
+          icon: (col) => <PencilLine size={ICON_SIZE.row} color={col} strokeWidth={ICON_STROKE} />,
+          title: hasQNote ? 'Edit your note' : 'Add a note',
+          label: hasQNote ? 'Edit your note' : 'Add a note',
+          hint: hasQNote ? 'Opens your note on this question.' : 'Write a note to yourself on this question.',
+          chevron: false,
+          run: openNote,
+        }
+      : null;
+  const reportRow: MoreRow = {
+    key: 'report',
+    icon: (col) => <Flag size={ICON_SIZE.row} color={col} strokeWidth={ICON_STROKE} />,
+    title: 'Report a problem with this question',
+    subtitle: report.reportedAt ? `Report started ${shortDate(report.reportedAt)}` : 'Opens a short form, then your email app',
+    label: report.reportedAt ? `Report a problem with this question. Report started ${shortDate(report.reportedAt)}` : 'Report a problem with this question',
+    hint: 'Opens a short form, then your email app',
+    run: report.open,
+  };
+  // AnswerMore drops the nulls (the rows that don't apply here), in this order.
+  const moreRows = [noteRow, principleRow, yourNoteRow, reportRow];
   const lowTime = isMock && remaining < LOW_TIME_MS;
   // The shared pace strip (components/pace.tsx): mock clock and pace line.
   const lastCheck = active.checkpoints?.[active.checkpoints.length - 1];
@@ -602,6 +702,8 @@ export default function SessionScreen() {
   // scroll we ask where it sits on screen (measureInWindow works on phones
   // and on the web build alike).
   const checkVine = () => {
+    // Not before its entrance has landed (a layout at the tap must not draw it unseen).
+    if (vineArmedFor.current !== qid) return;
     if (!vineVisible && vineRef.current) {
       vineRef.current.measureInWindow((_x, y) => {
         if (y < Dimensions.get('window').height - 40) setVineVisible(true);
@@ -668,7 +770,7 @@ export default function SessionScreen() {
               toggleBookmark(active.certId, qid);
             })}
             hitSlop={4}
-            style={{ width: 48, height: 48, marginRight: -12, alignItems: 'center', justifyContent: 'center' }}
+            style={{ width: 48, height: 48, alignItems: 'center', justifyContent: 'center' }}
           >
             {/* Saving pops the filled mark in (a small leaf spring); un-saving just swaps it. */}
             <Pop trigger={savedTaps}>
@@ -679,6 +781,12 @@ export default function SessionScreen() {
               )}
             </Pop>
           </Pressable>
+        )}
+        {/* Mobile 1.49: ⋯ "More on this question" beside the bookmark. Never in a mock. */}
+        {!isMock && (
+          <View style={{ marginRight: -12 }}>
+            <AnswerMore rows={moreRows} buttonRef={moreRef} />
+          </View>
         )}
       </Row>
       {strip && <PaceStrip {...strip} />}
@@ -787,8 +895,10 @@ export default function SessionScreen() {
           ) : (
             response && (
               <>
-                {/* Answer: verdict → your pick → best answer → (after a miss: Key idea + Exam cue → Why, folded →
-                    Eliminate / Final two; after a right answer: Why → the whole vine) → trust */}
+                {/* Answer: recap → verdict → your pick → best answer → (after a miss: Key idea + Exam cue → Why, folded →
+                    Eliminate / Final two; after a right answer: Why → the whole vine) → source */}
+                {/* Mobile 1.49 (premium pass §2.1): the question in two lines, with "Show question". */}
+                <StemRecap key={qid} stem={q.stem} scenario={q.scenario} />
                 <View onLayout={(e) => (verdictBottom.current = e.nativeEvent.layout.y + e.nativeEvent.layout.height)}>
                   <Verdict ref={verdictRef} correct={response.correct} coach={coach} best={response.correct ? undefined : correctDisplay} />
                 </View>
@@ -829,25 +939,31 @@ export default function SessionScreen() {
                     <Rise delay={FEEDBACK_DELAY.why}>
                       <WhyBlock letter={correctDisplay} text={renderText(q.explanation, perm)} fold={false} />
                     </Rise>
-                    <View ref={vineRef} collapsable={false} onLayout={checkVine}>
-                      <Vine key={qid} keyIdea={q.keyConcept} tips={q.tips.map((t) => renderText(t, perm))} visible={vineVisible} />
-                    </View>
+                    {/* In reading order: the vine's words arrive after the Why above them (motion round 2, 3a). */}
+                    <Rise delay={FEEDBACK_DELAY.why + motion.stagger.group}>
+                      <View ref={vineRef} collapsable={false} onLayout={checkVine} testID="feedback-vine">
+                        <Vine key={qid} keyIdea={q.keyConcept} tips={q.tips.map((t) => renderText(t, perm))} visible={vineVisible} />
+                      </View>
+                    </Rise>
                   </>
                 ) : (
                   <>
-                    {/* The short, memorable lines first: the Key idea and the Exam cue. */}
-                    <View ref={vineRef} collapsable={false} onLayout={checkVine}>
-                      <Vine
-                        key={`${qid}:a`}
-                        keyIdea={q.keyConcept}
-                        tips={missTips.first.map((i) => renderText(q.tips[i], perm))}
-                        tipIndex={missTips.first}
-                        visible={vineVisible}
-                      />
-                    </View>
+                    {/* The short, memorable lines first: the Key idea and the Exam cue. They arrive in reading order,
+                        after the rows above them (motion round 2, 3a: they used to show at the tap, before the rows). */}
+                    <Rise delay={FEEDBACK_DELAY.why}>
+                      <View ref={vineRef} collapsable={false} onLayout={checkVine} testID="feedback-vine">
+                        <Vine
+                          key={`${qid}:a`}
+                          keyIdea={q.keyConcept}
+                          tips={missTips.first.map((i) => renderText(q.tips[i], perm))}
+                          tipIndex={missTips.first}
+                          visible={vineVisible}
+                        />
+                      </View>
+                    </Rise>
                     {/* Then the long "Why", folded to two lines, with Eliminate two / Final two inside the fold
                         (mobile 1.43, owner decision): "Read more" opens all three, "Show less" closes them. */}
-                    <Rise delay={FEEDBACK_DELAY.why}>
+                    <Rise delay={FEEDBACK_DELAY.why + motion.stagger.group}>
                       <WhyBlock
                         key={qid}
                         letter={correctDisplay}
@@ -867,70 +983,52 @@ export default function SessionScreen() {
                     </Rise>
                   </>
                 )}
-                {/* After a miss (mobile 1.20): the note first (BookOpen = notes), then the
-                    lesson when one is still to do (Play = lessons). Both PUSH, so Back lands
-                    here again, on this same answer with its explanation. */}
-                {/* A hairline sets the next steps apart from the vine (design spec §6). */}
-                {Boolean((missNote && missNoteName) || reviewLesson || answerPrinciple) && <View style={{ height: 1, backgroundColor: c.line, marginTop: space.md }} />}
-                {missNote && missNoteName && (
-                  // Title = the note's own name; the verb is the kicker above it (mobile 1.22:
-                  // "Read the note" on screen, not only in the spoken label).
-                  <ListRow
-                    icon={<BookOpen size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
-                    kicker="Read the note"
-                    title={missNoteName}
-                    subtitle={`${aboutMin(missNoteMin)} · the idea this question tests`}
-                    accessibilityLabel={`Read the note: ${missNoteName}, ${spokenMin(aboutMin(missNoteMin, true))}, the idea this question tests`}
-                    accessibilityHint="Opens the study note. Go back to return to this answer."
-                    onPress={() => router.push(`/notes/subtopic/${encodeURIComponent(missNote)}`)}
-                    // TrustLine below draws its own top rule, so the last row skips its hairline.
-                    last={!reviewLesson && !answerPrinciple}
-                  />
+                {/* Mobile 1.49 (premium pass §2.2): ONE "Go deeper" row after a miss, after a hairline.
+                    The lesson when it is not done yet (Play = lessons), otherwise the note (BookOpen =
+                    notes). Never more than one: the principle, the note and the rest are in ⋯. Both PUSH,
+                    so Back lands here again, on this same answer with its explanation. */}
+                {missed && (reviewLesson || (missNote && missNoteName)) && (
+                  <>
+                    <View style={{ height: 1, backgroundColor: c.line, marginTop: space.md }} />
+                    {reviewLesson ? (
+                      // Only a lesson not done yet is offered, so it is "take", never "Replay" (1.22 review).
+                      <ListRow
+                        testID="go-deeper-row"
+                        icon={<Play size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
+                        kicker="Go deeper · take the lesson"
+                        title={reviewLesson.title}
+                        subtitle={`${reviewLesson.minutes} min · Not done yet`}
+                        accessibilityLabel={`Go deeper, take the lesson: ${reviewLesson.title}, ${reviewLesson.minutes} minutes, not done yet`}
+                        accessibilityHint="Opens the lesson. Go back to return to this answer."
+                        onPress={() => router.push(`/lesson/${reviewLesson.id}`)}
+                        // The source line below draws its own top rule.
+                        last
+                      />
+                    ) : (
+                      missNote &&
+                      missNoteName && (
+                        <ListRow
+                          testID="go-deeper-row"
+                          icon={<BookOpen size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
+                          kicker="Go deeper · read the note"
+                          title={missNoteName}
+                          subtitle={`${aboutMin(missNoteMin)} · the idea this question tests`}
+                          accessibilityLabel={`Go deeper, read the note: ${missNoteName}, ${spokenMin(aboutMin(missNoteMin, true))}, the idea this question tests`}
+                          accessibilityHint="Opens the study note. Go back to return to this answer."
+                          onPress={() => router.push(`/notes/subtopic/${encodeURIComponent(missNote)}`)}
+                          last
+                        />
+                      )
+                    )}
+                  </>
                 )}
-                {reviewLesson && (
-                  // Only a lesson not done yet is offered, so the row says so (never "Review").
-                  <ListRow
-                    icon={<Play size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
-                    // Only a lesson not done yet is offered, so it is "Take", never "Replay" (1.22 review).
-                    kicker="Take the lesson"
-                    title={reviewLesson.title}
-                    subtitle={`${reviewLesson.minutes} min · Not done yet`}
-                    accessibilityLabel={`Take the lesson: ${reviewLesson.title}, ${reviewLesson.minutes} minutes, not done yet`}
-                    accessibilityHint="Opens the lesson. Go back to return to this answer."
-                    onPress={() => router.push(`/lesson/${reviewLesson.id}`)}
-                    last={!answerPrinciple}
-                  />
-                )}
-                {answerPrinciple && (
-                  // Mobile 1.31: the principle this question tests (Compass = how to think, as in
-                  // Learn). After a right answer too: it names the thinking that won. PUSH, so
-                  // Back lands here again.
-                  <ListRow
-                    testID="answer-principle-row"
-                    icon={<Compass size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
-                    kicker="Read the principle"
-                    title={answerPrinciple.title}
-                    subtitle="How to think it through"
-                    accessibilityLabel={`Read the principle: ${answerPrinciple.title}, how to think it through`}
-                    accessibilityHint="Opens the principle. Go back to return to this answer."
-                    onPress={() => router.push(`/principles/${encodeURIComponent(answerPrinciple.id)}`)}
-                    last
-                  />
-                )}
-                {/* "Your note" (components/questionNote.tsx): only here, on a CHECKED practice or
-                    review answer (this branch never renders in a mock). Not on the very first
-                    set: one less thing in the first minute, like Coach me's line. */}
-                {!active.firstSet && <QuestionNote certId={active.certId} questionId={qid} />}
-                {/* Report a problem (mobile 1.7): the sheet gets the options in the order shown,
-                    and the email names letters as the bank's ORIGINAL ones. */}
-                <TrustLine
-                  certId={active.certId}
-                  reference={q.reference}
-                  target={questionTarget(active.certId, q, sessionWhere(active.mode === 'review' ? 'Questions to revisit' : 'Practice', active.title), {
-                    perm,
-                    pickedDisplay: response.display,
-                  })}
-                />
+                {/* "Your note" (components/questionNote.tsx): only on a CHECKED practice or review
+                    answer (this branch never renders in a mock), never on the very first set. Mobile
+                    1.49: a saved note still shows here; "Add a note" moved into ⋯, which opens it. */}
+                {!active.firstSet && <QuestionNote ref={noteRef} certId={active.certId} questionId={qid} quietAdd returnFocus={moreRef} />}
+                {/* The source line, text only (premium pass §2.4); "Report a problem" is in ⋯. The note after a
+                    report's email app opened sits under it, as before. */}
+                <SourceLine reference={q.reference}>{report.block}</SourceLine>
               </>
             )
           )}
@@ -997,6 +1095,8 @@ export default function SessionScreen() {
           )}
         </StickyFooter>
       </View>
+      {/* The report sheet the ⋯ sheet opens (a Modal: anywhere in the screen works). */}
+      {report.sheet}
       {/* Mock navigator. Mobile 1.24: one summary line (answered · flagged · left), and "Submit exam"
           in a footer that stays put (it used to sit under the grid, up to 25 rows down). */}
       <Modal visible={navOpen} animationType={reduceMotion ? 'fade' : 'slide'} presentationStyle="pageSheet" onRequestClose={() => setNavOpen(false)}>

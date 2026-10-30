@@ -35,18 +35,25 @@
  * ("10 questions · about 12 min"). The title is short, so it keeps clear of
  * the frond (no wideTitle). The "Practice at exam pace?" offer is an L1
  * plate, not a raised card: it is an offer, not a choice between things.
+ *
+ * Mobile 1.51 (the owner's menu pick A): the Play tab is gone and its games
+ * are **Drills**, a section here (components/drills.tsx), after "More ways to
+ * practice". Every old Play link opens `/practice?section=drills`, which
+ * scrolls to Drills and moves screen-reader focus to its heading, once.
  */
+import * as Router from 'expo-router';
 import { router } from 'expo-router';
-import { useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { AccessibilityInfo, View, type Switch } from 'react-native';
 import { ArrowRight, Crosshair, ICON_STROKE, Library, ListChecks, RotateCcw } from '../../components/icons';
 import { Collapse } from '../../components/motion';
+import { Drills, DRILLS_MOVED, playedAnyGame } from '../../components/drills';
+import { DRILLS_SECTION } from '../../lib/actions';
 import { DisclosureRow, FieldLabel, PathChooser, pathSummary } from '../../components/pathChooser';
-import { Button, Card, Chip, ChipRow, Enter, Gap, HeroPanel, ICON_SIZE, Lead, ListRow, Screen, Section, Segmented, T, ToggleRow, Trail } from '../../components/ui';
+import { Button, Card, Chip, ChipRow, Enter, Gap, HeroPanel, ICON_SIZE, Lead, ListRow, Screen, Section, Segmented, T, ToggleRow } from '../../components/ui';
 import type { Difficulty } from '../../content/types';
 import { topicQuestionIds } from '../../engine/outline';
 import { aboutMin, examPaceWords, MINUTES_PER_QUESTION, shouldOfferTimer, spokenMin } from '../../engine/pace';
-import { REVIEW_UNIT } from '../../engine/srs';
 import { activeMode, MODE_INFO, scopeKey, SESSION_SIZES, sessionSize, suggestedMode } from '../../engine/studyModes';
 import { currentGuidedTopic } from '../../engine/studyPath';
 import { guidedStatus, scopeTopics } from '../../lib/outline';
@@ -55,8 +62,15 @@ import { guardedStart, reviewSubtitle, startPractice, startReview, startStudy } 
 import { moveFocus } from '../../lib/a11y';
 import { useJourney } from '../../lib/useJourney';
 import { useDailyMinutes, useSettings } from '../../store/settings';
+import { useProgress } from '../../store/progress';
+import { useSeen } from '../../store/seen';
 import { space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
+
+/** The route's params and this screen's own navigation (absent where a test's expo-router stand-in has none). */
+type Nav = { setParams?: (p: { section?: string }) => void };
+const useParams: () => { section?: string } = (Router as { useLocalSearchParams?: () => { section?: string } }).useLocalSearchParams ?? (() => ({}));
+const useOwnNavigation: () => Nav | undefined = (Router as { useNavigation?: () => Nav }).useNavigation ?? (() => undefined);
 
 const DIFFS: { label: string; value?: Difficulty }[] = [
   { label: 'Any difficulty' },
@@ -68,6 +82,30 @@ const DIFFS: { label: string; value?: Difficulty }[] = [
 export default function Practice() {
   const { c } = useTheme();
   const { cert, readiness, dueCount, daysLeft, stage, progress, examFocused } = useJourney();
+  // An old Play link (?section=drills): Drills scrolls into view once, then the param is cleared, so a
+  // later tap on the Practice tab opens at the top as usual. Through Practice's OWN navigation (as Learn).
+  const { section } = useParams();
+  const navigation = useOwnNavigation();
+  // Each jump is a new number (Drills runs it from its own layout): one per arrival with ?section=drills,
+  // one per "Go to Drills" tap. React's "adjust state when a value changes" pattern, during render.
+  const [jumpKey, setJumpKey] = useState(0);
+  const [sectionSeen, setSectionSeen] = useState<string | undefined>(undefined);
+  if (sectionSeen !== section) {
+    setSectionSeen(section);
+    if (section === DRILLS_SECTION) setJumpKey((k) => k + 1);
+  }
+  const jumped = useCallback(() => {
+    if (navigation?.setParams) navigation.setParams({ section: undefined });
+    else (router as { setParams?: (p: object) => void }).setParams?.({ section: undefined });
+  }, [navigation]);
+  // Mobile 1.51 (UX review P4): one quiet line for a learner who played games on the old Play tab, once.
+  // Seen on "Go to Drills" or the first time Drills is on screen; kept in the seen store's `moments`.
+  const playedBefore = useProgress(playedAnyGame);
+  const movedSeen = useSeen((s) => (s.moments[DRILLS_MOVED] ?? 0) > 0);
+  const movedHint = playedBefore && !movedSeen;
+  const seeMoved = useCallback(() => {
+    if (!((useSeen.getState().moments[DRILLS_MOVED] ?? 0) > 0)) useSeen.getState().played(DRILLS_MOVED);
+  }, []);
   const familiarity = useSettings((s) => s.familiarity);
   // Mock exams right under the hero for the Exam-focused plan and at the mock / ready stages.
   const mocksFirst = examFocused || stage === 'mock' || stage === 'ready';
@@ -167,7 +205,7 @@ export default function Practice() {
   ) : null;
   /** Mock exams: under the hero for the Exam-focused plan and the mock / ready stages (`top`), else last. */
   const mockExams = (top: boolean) => (
-    <Enter i={top ? 2 : 4}>
+    <Enter i={top ? 2 : 5}>
         <Section title="Mock exams" />
         <ListRow
           lead={<Lead value={String(mini)} unit="questions" />}
@@ -195,6 +233,22 @@ export default function Practice() {
       <Enter i={0}>
         <T v="display" accessibilityRole="header" style={{ marginTop: space.xs }}>Practice</T>
         <T v="meta" style={{ marginTop: space.xs }}>Every option explained, every trap named.</T>
+        {movedHint && (
+          // Once, for those who played on the old Play tab: where the games went (no modal, no toast).
+          <View testID="drills-moved" style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', columnGap: space.sm, marginTop: space.xs }}>
+            <T v="meta">The games are here now, as Drills.</T>
+            <Button
+              kind="ghost"
+              label="Go to Drills"
+              accessibilityHint="Scrolls to Drills on this page"
+              onPress={() => {
+                seeMoved();
+                setJumpKey((k) => k + 1);
+              }}
+              style={{ marginLeft: -space.sm }}
+            />
+          </View>
+        )}
       </Enter>
 
       <Enter i={1} style={{ marginTop: space.xl }}>
@@ -287,9 +341,9 @@ export default function Practice() {
         <ListRow
           icon={icon(RotateCcw)}
           title="Questions to revisit"
+          // Premium pass 4.6: the subtitle names the set a tap starts; no trailing queue total.
           subtitle={reviewSubtitle(dueCount)}
-          trailing={dueCount ? <Trail value={String(dueCount)} unit={REVIEW_UNIT} /> : undefined}
-          accessibilityLabel={`Questions to revisit, ${dueCount ? `${dueCount} ${REVIEW_UNIT}. ${reviewSubtitle(dueCount)}` : 'all caught up'}`}
+          accessibilityLabel={`Questions to revisit, ${dueCount ? reviewSubtitle(dueCount).replace(' · ', ', ') : 'all caught up'}`}
           onPress={() => guardedStart(() => startReview(cert.id), open, () => router.push('/caught-up'))}
         />
         {focus && (
@@ -379,6 +433,10 @@ export default function Practice() {
           </View>
         </Collapse>
       </Enter>
+
+      {/* The brain games (mobile 1.51: the Play tab moved here). Its own outer view sits right in the page, so
+          its layout follows the sections above (the jump runs from it). */}
+      <Drills enter={4} jumpKey={jumpKey} onJumped={section === DRILLS_SECTION ? jumped : undefined} onSeen={movedHint ? seeMoved : undefined} />
 
       {!mocksFirst && mockExams(false)}
     </Screen>

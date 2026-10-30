@@ -33,6 +33,7 @@ import { loadFeed, needsGate, openBoard, setVote, useBoard, visibleCards } from 
 import { useAccount } from '../../../store/account';
 import { space } from '../../../theme/tokens';
 import { useActiveCertId } from '../../../lib/activeCert';
+import { ListSkeleton } from '../../../components/skeleton';
 
 const TABS: { value: BoardTab; label: string }[] = [
   { value: 'top', label: copy('board.tab.top') },
@@ -199,6 +200,8 @@ export default function BoardHome() {
               <Button kind="ghost" label={copy('board.retry')} onPress={() => void open()} style={{ alignSelf: 'flex-start' }} />
             </>
           )}
+          {/* Mobile 1.49: a static skeleton (components/skeleton.tsx) holds the list's place while it loads. */}
+          {state === 'loading' && shown.length === 0 && <ListSkeleton rows={5} label="Loading posts" />}
           <View style={{ marginTop: space.sm }}>
             {shown.map((p, i) => (
               <PostRow key={p.id} post={p} onVote={() => vote(p)} last={i === shown.length - 1} />

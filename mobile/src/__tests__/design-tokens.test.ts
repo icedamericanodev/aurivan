@@ -7,7 +7,7 @@
 import { CERTIFICATIONS, domainColor, getCertification } from '../content/certifications';
 import type { DomainTone } from '../content/types';
 import { shortDate, shortReference, shortSubtopic } from '../lib/format';
-import { badgeEnamel, badgeMetal, badgeStruck, dark, domainPalette, font, grainOp, light, maxScale, type, type Palette } from '../theme/tokens';
+import { badgeEnamel, badgeMetal, badgeStruck, dark, darkCardTopLight, domainPalette, font, grainOp, light, maxScale, space, type, type Palette } from '../theme/tokens';
 
 const HEX = /^#[0-9A-F]{6}$/i;
 const TONES: DomainTone[] = [0, 1, 2, 3, 4];
@@ -73,6 +73,28 @@ describe('palettes', () => {
     expect(luminance(dark.forestTop)).toBeGreaterThan(luminance(dark.forest));
     expect(luminance(light.raised2)).toBeGreaterThan(luminance(light.bg));
     expect(luminance(light.forestTop)).toBeGreaterThan(luminance(light.forest));
+  });
+
+  it('premium pass T1: the dark card is a visible step off the night, and raised2 sits between them', () => {
+    expect(dark.raised).toBe('#1D2621'); // was #1A211C (1.11:1 on bg)
+    expect(contrast(dark.raised, dark.bg)).toBeGreaterThanOrEqual(1.17);
+    expect(luminance(dark.raised2)).toBeGreaterThan(luminance(dark.bg));
+    expect(luminance(dark.raised2)).toBeLessThan(luminance(dark.raised));
+    // The spec's checks for text on the new card (all AA) and the control outline (3:1).
+    expect(contrast(dark.ink, dark.raised)).toBeGreaterThanOrEqual(13);
+    expect(contrast(dark.ink2, dark.raised)).toBeGreaterThanOrEqual(8);
+    expect(contrast(dark.muted, dark.raised)).toBeGreaterThanOrEqual(5.9);
+    expect(contrast(dark.accentText, dark.raised)).toBeGreaterThanOrEqual(8.6);
+    expect(contrast(dark.control, dark.raised)).toBeGreaterThanOrEqual(3);
+  });
+
+  it('premium pass T2: the dark L2 card has a faint inner top light (decorative)', () => {
+    expect(darkCardTopLight).toBe('inset 0 1px 0 rgba(255,255,255,0.05)');
+  });
+
+  it('premium pass T4: the 28 section gap is retired; sections are 32 apart (xxl, web --sp-2xl)', () => {
+    expect(space).not.toHaveProperty('section');
+    expect(space.xxl).toBe(32);
   });
 
   it('muted on soft is pinned at 4.53 light (disabled labels only: a disabled button\'s label on its `soft` fill)', () => {

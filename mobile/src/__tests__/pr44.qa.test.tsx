@@ -371,7 +371,7 @@ describe('J2 earning a badge opens its keepsake', () => {
     });
     earn('long-memory', 'cisa', Date.now() - 2 * DAY);
     mount(<Badges />);
-    press(/^Long Memory · 25 recalls, Clay\. Earned/);
+    press(/^Long Memory · 25 recalls, Clay\. Pressed/);
     expect(allText()).toContain('On your plant: the jay.');
     expect(allText()).not.toMatch(/Unlocked!|\d+ of \d+ collected/i);
     unmount();
@@ -379,7 +379,7 @@ describe('J2 earning a badge opens its keepsake', () => {
       useProgress.getState().setPlantSettings({ showPlant: false });
     });
     mount(<Badges />);
-    press(/^Long Memory · 25 recalls, Clay\. Earned/);
+    press(/^Long Memory · 25 recalls, Clay\. Pressed/);
     expect(allText()).not.toContain('On your plant');
   });
 });
@@ -403,7 +403,7 @@ describe('J3 completing a set opens its planter exactly once', () => {
     mount(<PlantLook />);
     openMore();
     expect(option('root-woven').props.accessibilityState).toMatchObject({ disabled: true });
-    expect(textOf(option('root-woven'))).toMatch(/Opens when you finish the Rooted set in Badges\./);
+    expect(textOf(option('root-woven'))).toMatch(/Opens when you finish the Rooted set in the Herbarium\./);
     unmount();
     let added: unknown;
     act(() => {

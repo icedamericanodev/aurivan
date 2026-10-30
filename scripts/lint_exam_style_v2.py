@@ -92,7 +92,7 @@ def check(q):
     if not any(a in stem.lower() for a in ACTOR_WORDS):
         warns.append("stem names no actor (IS auditor, audit firm, management…)")
 
-    # 3. Four short options; key never uniquely the longest
+    # 3. Four short options; the key never stands out by length
     if sorted(opts) != list("ABCD"):
         errs.append("options must be exactly A–D")
         return errs, warns
@@ -108,8 +108,8 @@ def check(q):
         errs.append("correct letter missing")
         return errs, warns
     others = [v for k, v in ol.items() if k != c]
-    if ol[c] > max(others):
-        errs.append(f"key is the longest option {ol}")
+    # The key may be the wordiest option in some items (a bank-level share is
+    # checked in main): banning it everywhere made "never pick the wordiest" a tell.
     chars = {k: len(v) for k, v in opts.items()}
     longest_other = max(v for k, v in chars.items() if k != c)
     if chars[c] > longest_other + 8:
@@ -215,6 +215,19 @@ def main(args):
             print(f"ERROR key is the longest option (by characters) in {share:.0%} of items (max 30%): "
                   + ", ".join(q["id"] for q in longest[:12]) + ("…" if len(longest) > 12 else ""))
             n_err += 1
+        # Same tell by words: the key should be the single wordiest option in
+        # 15–30% of a domain, never in none (a reverse tell) or in most.
+        wordiest = [q for q in v2 if q.get("options") and q.get("correct") in q["options"]
+                    and words(q["options"][q["correct"]]) > max(words(v) for k, v in q["options"].items() if k != q["correct"])]
+        wshare = len(wordiest) / len(v2)
+        if len(v2) >= 12 and wshare > 0.30:
+            print(f"ERROR key is the wordiest option in {wshare:.0%} of items (max 30%): "
+                  + ", ".join(q["id"] for q in wordiest[:12]) + ("…" if len(wordiest) > 12 else ""))
+            n_err += 1
+        if len(v2) >= 20 and wshare < 0.15:
+            print(f"warn  key is the wordiest option in only {wshare:.0%} of items (target 15–30%): "
+                  "'never pick the wordiest' is a reverse tell; lengthen some keys with precise qualifiers")
+            n_warn += 1
         spread = ", ".join(f"{k}{keys[k]}" for k in "ABCD")
         top = max(keys.values()) / len(v2)
         if len(v2) >= 12 and top > 0.35:

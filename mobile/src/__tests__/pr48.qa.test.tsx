@@ -26,6 +26,7 @@
  * Gotcha: never `act(() => store.action())` — use braces.
  */
 /* eslint-disable @typescript-eslint/no-require-imports */
+import { areaStems } from '../engine/fieldGuide';
 import { type ComponentType } from 'react';
 import { AppState, View } from 'react-native';
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
@@ -34,7 +35,6 @@ import { FocusEmitter, FocusScope, routeParams } from '../../jest/perf/focusRout
 import { setMockReducedMotion } from '../../jest/reanimated-mock';
 import { CERTIFICATIONS, getCertification } from '../content/certifications';
 import { lessonsFor } from '../content/lessons';
-import { areaFigure } from '../engine/domainBand';
 import { daysToExam } from '../engine/examDay';
 import { grewLabel } from '../engine/plant';
 import { computeReadiness } from '../engine/readiness';
@@ -101,14 +101,13 @@ function foreground() {
   });
 }
 
-// ── The tab host: all five tabs mounted side by side ──────────────────────
-const TABS = ['home', 'learn', 'practice', 'play', 'you'] as const;
+// ── The tab host: all four tabs mounted side by side (mobile 1.51: Play's games are Practice's Drills) ──
+const TABS = ['home', 'learn', 'practice', 'you'] as const;
 type Tab = (typeof TABS)[number];
 const SCREENS: Record<Tab, () => ComponentType> = {
   home: () => require('../app/(tabs)/home').default,
   learn: () => require('../app/(tabs)/learn').default,
   practice: () => require('../app/(tabs)/practice').default,
-  play: () => require('../app/(tabs)/play').default,
   you: () => require('../app/(tabs)/you').default,
 };
 const emitters = Object.fromEntries(TABS.map((t) => [t, new FocusEmitter(false)])) as Record<Tab, FocusEmitter>;
@@ -217,7 +216,7 @@ function expectTabsFresh(tabs: readonly Tab[] = TABS) {
     tap(t);
     const first = sinceLast(comparable(t, textOf(t)));
     expect({ tab: t, view: 1, text: first }).toEqual({ tab: t, view: 1, text: sinceLast(comparable(t, freshText(t))) });
-    tap(t === 'play' ? 'learn' : 'play');
+    tap(t === 'you' ? 'learn' : 'you');
     tap(t);
     expect({ tab: t, view: 2, text: comparable(t, textOf(t)) }).toEqual({ tab: t, view: 2, text: comparable(t, freshText(t)) });
   }
@@ -270,8 +269,12 @@ function mockExam(right: number, total = 50) {
 }
 /** Independent of the PR's caches: the engine, computed from scratch. */
 const engineDue = () => dueIds(cp().review, Date.now(), questionExists('cisa')).length;
-/** The review row's spoken start: "N due." or, with nothing due yet (mobile 1.43: fresh misses wait for tomorrow), "all caught up". */
-const revisitLabel = (due: number) => (due > 0 ? `[Questions to revisit, ${due} due.` : '[Questions to revisit, all caught up');
+/**
+ * The review row's spoken start: the set a tap starts ("N ready today, oldest first", at most 20;
+ * mobile 1.49 never says the queue total) or, with nothing due yet (mobile 1.43: fresh misses wait
+ * for tomorrow), "all caught up".
+ */
+const revisitLabel = (due: number) => (due > 0 ? `[Questions to revisit, ${Math.min(due, 20)} ready today, oldest first` : '[Questions to revisit, all caught up');
 const engineRange = () => readinessRange(cert, computeReadiness(cert, cp().answers));
 
 // ── Saves (AsyncStorage writes per key) ──────────────────────────────────
@@ -353,7 +356,7 @@ describe('answering, then switching tabs: every tab shows fresh numbers', () => 
     if (range.enough) {
       // Today says it in its clearing ("Readiness grew to 45–61%", a word joiner inside); You in its rings label.
       expect(joined('home').replace(/\u2060/g, '')).toContain(`${range.low}–${range.high}`);
-      expect(joined('you')).toContain(`[Estimated readiness ${range.low} to ${range.high} percent.`);
+      expect(joined('you')).toContain(`[Estimated readiness ${range.low} to ${range.high} percent, a study estimate`);
     }
     const answered = Object.keys(cp().answers).length;
     expect(joined('you')).toContain(`[Answered: ${answered}]`);
@@ -362,7 +365,10 @@ describe('answering, then switching tabs: every tab shows fresh numbers', () => 
     for (const d of rd.domains) {
       const short = cert.domains.find((x) => x.id === d.domainId)!.short;
       // Mobile 1.43: each area row says its word, its percent from 30 answers, and its line (engine/domainBand.ts areaFigure).
-      expect(joined('you')).toContain(`[${short}: ${areaFigure(d.answered, Math.round(d.mastery * 100)).spoken}`);
+      // Mobile 1.51 (Field Guide): each area's line of growth says what it shows (engine/fieldGuide.ts areaStems).
+      const stem = areaStems(cert.domains, rd.domains).find((x) => x.key === d.domainId)!;
+      expect(stem.spoken.startsWith(`${short}: `)).toBe(true);
+      expect(joined('you')).toContain(`[${stem.spoken}`);
     }
     // Learn's "Up next" follows the focus domain.
     const focus = cert.domains.find((d) => d.id === rd.focusDomainId)!;
@@ -386,7 +392,9 @@ describe('answering, then switching tabs: every tab shows fresh numbers', () => 
     });
     expect(textOf('you')).toEqual(freshText('you'));
     expect(joined('you')).toContain(revisitLabel(engineDue()));
-    expect(joined('you')).toContain('[Mistake journal, 6 open]');
+    // Mobile 1.49 (premium pass 4.6): the journal row says what it shows, never a count of open misses.
+    expect(joined('you')).toContain('[Mistake journal, your pattern first, then each miss]');
+    expect(joined('you')).not.toContain('6 open');
     // A hidden tab (never switched to) is fresh too, the moment it is opened.
     expectTabsFresh(['practice', 'learn', 'home']);
   });
@@ -400,7 +408,7 @@ describe('answering, then switching tabs: every tab shows fresh numbers', () => 
     expectTabsFresh();
   });
 
-  it('a lesson finished and a game played reach Learn and Play (their narrow selectors)', () => {
+  it('a lesson finished and a game played reach Learn and Practice’s Drills (their narrow selectors)', () => {
     mountAll();
     tap('learn');
     const lesson = require('../content/lessons').lessonsFor('cisa')[0];
@@ -409,7 +417,7 @@ describe('answering, then switching tabs: every tab shows fresh numbers', () => 
       useProgress.getState().recordGame('cisa', 'trap', 7);
     });
     expect(joined('learn')).toContain(`1 of ${lessonsFor('cisa').length} done`); // the course total, never a hard-coded count
-    expectTabsFresh(['learn', 'play']);
+    expectTabsFresh(['learn', 'practice']);
   });
 
   it('a review falling due later (the shared count’s time cache) shows once the clock passes it', () => {
@@ -451,7 +459,7 @@ describe('midnight rollover', () => {
     expect(plan.done.every((d) => !d)).toBe(true);
     expect(joined('home')).toContain(`, 0 of ${plan.items.length} done]`);
     // The countdown moved by one day too.
-    expect(joined('home')).toContain(`${daysToExam('2027-06-01', dayKey(T0 + DAY))} days to CISA`);
+    expect(joined('home')).toContain(`${daysToExam('2027-06-01', dayKey(T0 + DAY))} days to go`);
     expectTabsFresh();
   });
 
@@ -500,7 +508,7 @@ describe('switching certification', () => {
     });
     expectTabsFresh();
     // Back on CISA: the same numbers as before the round trip (Today's fit card aside, all tabs).
-    for (const t of ['learn', 'practice', 'play', 'you'] as const) expect(joined(t)).toBe(cisaText[t]);
+    for (const t of ['learn', 'practice', 'you'] as const) expect(joined(t)).toBe(cisaText[t]);
   });
 });
 
@@ -559,13 +567,13 @@ describe('changing the exam date', () => {
   it('Today’s countdown and every tab follow the new date', () => {
     studySession(10);
     mountAll();
-    expect(joined('home')).toContain(`${daysToExam('2027-06-01', dayKey(T0))} days to CISA`);
+    expect(joined('home')).toContain(`${daysToExam('2027-06-01', dayKey(T0))} days to go`);
     tap('you');
     act(() => {
       useSettings.setState({ examDates: { cisa: '2026-12-01' } });
     });
     expectTabsFresh();
-    expect(joined('home')).toContain(`${daysToExam('2026-12-01', dayKey(T0))} days to CISA`);
+    expect(joined('home')).toContain(`${daysToExam('2026-12-01', dayKey(T0))} days to go`);
   });
 });
 
@@ -614,7 +622,7 @@ describe('a badge earned: the tab dot and the count', () => {
       dot = create(<Dot />);
     });
     expect(dot!.root.findAllByProps({ testID: 'you-new-dot' })).toHaveLength(0);
-    expect(joined('you')).toContain('[Badges and field notes, none yet.');
+    expect(joined('you')).toContain('[Herbarium: badges and field notes, none yet.');
     // A finished mock of 50 earns a badge live (after the launch back-fill).
     mockExam(40);
     const earned = caseEarnedCount(cp().milestones?.earned);
@@ -622,7 +630,7 @@ describe('a badge earned: the tab dot and the count', () => {
     expect(hasNewBadge('cisa')).toBe(true);
     expect(dot!.root.findAllByProps({ testID: 'you-new-dot' }).length).toBeGreaterThan(0);
     expectTabsFresh(['you']);
-    expect(joined('you')).not.toContain('[Badges and field notes, none yet.');
+    expect(joined('you')).not.toContain('[Herbarium: badges and field notes, none yet.');
     act(() => dot!.unmount());
   });
 });

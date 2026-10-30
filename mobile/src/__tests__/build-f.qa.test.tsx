@@ -251,8 +251,8 @@ describe('Journey 1: a 1.5 learner upgrades', () => {
     const { marks } = badgeCase('cisa', cp(), T0);
     const earnedKeys = Object.keys(cp().milestones!.earned);
     for (const k of earnedKeys) expect(marks.find((m) => m.key === k)?.status).toBe('earned');
-    expect(labels().some((l) => l.startsWith('Firm Footing · IS Audit, Clay. Earned'))).toBe(true);
-    expect(labels().some((l) => l.startsWith('Rooted · 10 days, Clay. Earned'))).toBe(true);
+    expect(labels().some((l) => l.startsWith('Firm Footing · IS Audit, Clay. Pressed'))).toBe(true);
+    expect(labels().some((l) => l.startsWith('Rooted · 10 days, Clay. Pressed'))).toBe(true);
     // Every open badge says "Not yet" with its progress (or when it opens): nothing hidden.
     // (Fresh Start, a moment, stays off the case until it happens: it is never a goal.)
     for (const m of marks.filter((x) => x.status !== 'earned' && x.set !== 'moments')) {

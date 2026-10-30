@@ -151,7 +151,8 @@ describe('You: the legend 1 → 5, and what Accuracy counts', () => {
       for (const q of getAllQuestions('cisa').slice(0, 3)) useProgress.getState().recordAnswer('cisa', q.id, true);
     });
     mount(<You />);
-    const t = allText();
+    // The chart may break a name over two lines ("IS" / "Audit"): read it as words.
+    const t = allText().replace(/\s+/g, ' ');
     const at = ['IS Audit', 'IT Governance', 'IS Acquisition', 'IS Operations', 'Info Protection'].map((n) => t.indexOf(n));
     expect(at.every((i) => i > -1)).toBe(true);
     expect([...at].sort((a, b) => a - b)).toEqual(at);

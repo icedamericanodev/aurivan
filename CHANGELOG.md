@@ -4,6 +4,63 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v12.48] — Polish for the new frame
+
+### Improved
+- Keyboard and screen reader users can jump straight to the three moves beside an answer, and every page now has a clear title.
+
+### Fixed
+- Small layout and wording fixes on the answer screen, Today, Mock exam and Weak spots.
+
+## [v12.47] — The three moves beside your answer
+
+### Improved
+- On wide screens, the three moves for every question now sit beside your answer, and the coach tells you when you picked a trap.
+
+## [v12.46] — One page frame
+
+### Improved
+- Every page now lines up on one grid, with notes in the margin on wide screens.
+
+## [v12.45] — Small fixes, calmer screens
+
+### Improved
+- Clearer explanations of why the tempting wrong answer is wrong, across every domain.
+
+### Fixed
+- Opening a question no longer draws a box around the line above it.
+- On a computer, Next question now sits after your answer instead of covering part of it.
+- A streak shows only from two days in a row; before that you see your study days this week.
+- Mock results name each area to look at in plain words, with how many you got right and its share of the exam.
+- Glossary terms are easier to read.
+- Weak spots use the same words as Your progress: a domain under 70 says Building, and one with too few answers says so.
+
+## [v12.44] — Your study, drawn like a field guide
+
+### Improved
+- Today, Your progress and your results after a set now read like pages from a field guide, matching the KaiSip app, with your exam countdown at the top of Today.
+- Your progress shows every domain side by side on one scale, so you can see at a glance which are at 70% or more, and your readiness range on a simple 0 to 100 bar, always marked as a study estimate, not a prediction.
+- After a set, you see how much your domain grew and a short list of what you missed.
+
+## [v12.43] — A shorter answer screen
+
+### New
+- Every answer now starts with a short reminder of the question, and Show question opens all of it.
+
+### Improved
+- After a miss, your answer, why it falls short, the best answer and the key idea come first; the extra tips open with Read more.
+- One Go deeper link opens the note or principle behind the question; the rest is under More, beside Save.
+- Under More, Why the other options are wrong explains each choice you didn’t pick.
+- In dark mode, cards and answer rows stand out more clearly from the page, and a missed answer reads more calmly.
+- Questions to revisit now say how many are ready today, oldest first, instead of a growing total.
+
+## [v12.42] — Calmer loading and first-day prompts
+
+### Fixed
+- While questions load, you now see a short, plain message.
+- If questions or notes can’t load, you get a clear message and a Try again button.
+- After your first five questions, your results stay clear: the exam date question waits for Today, and the cookie question comes after it, never both at once.
+
 ## [v12.41] — Your progress, in one place
 
 ### New

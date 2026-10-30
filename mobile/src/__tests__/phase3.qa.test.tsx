@@ -36,8 +36,9 @@ import Reports from '../app/reports';
 import Results from '../app/results';
 import Saved from '../app/saved';
 import { EmptyArt, GrowthRings } from '../components/glyphs';
-import { ReadinessRing } from '../components/youReadiness';
-import { ClearingBody } from '../components/journey';
+import { AreaRows, ReadinessBlock } from '../components/youReadiness';
+import { ScaleBar, SpecimenRow } from '../components/fieldguide';
+import { ClearingBody, ReadinessRow } from '../components/journey';
 import { BadgeCell, BadgeListRow } from '../components/badges';
 import { MilestoneMomentView, resetBadgeMomentsForTest } from '../components/milestones';
 import { resetCelebrationsForTest, resetOncePerDayForTest, RollingText, setSystemReducedMotionForTest, ThemeFade } from '../components/motion';
@@ -262,8 +263,10 @@ afterEach(() => {
 
 // ── J1 ───────────────────────────────────────────────────────────────────
 describe('J1 first open of the day (Today)', () => {
-  // Mobile 1.21: Today's condensed readiness row draws the small `row` rings.
-  const todayRings = () => r!.root.findAllByType(GrowthRings).find((n) => n.props.preset === 'row')!.props.grow as { play: boolean; from?: number[] };
+  // Mobile 1.51 (Field Guide): Today's readiness is the scale bar. Its growth still follows the day's
+  // rings record (`today:rings`), and the bar draws in when the range does.
+  const todayRings = () => r!.root.findAllByType(ReadinessRow)[0].props.ringsGrowth as { play: boolean; from?: number[] };
+  const growingArcs = () => (r!.root.findAllByType(ScaleBar)[0]?.props.growth?.play ? 1 : 0);
   const rangeRoll = () => r!.root.findAllByType(RollingText).find((n) => /\d–\d/.test(n.props.value))!.props;
 
   it('grows once on the first view, shows still on a revisit and a remount, grows again the next day, never after a fall', () => {
@@ -329,14 +332,18 @@ describe('J1 first open of the day (Today)', () => {
     // Only Operations (index 2) starts below its value; the rest start where they are.
     const now = useSeen.getState().values['today:rings:cisa'];
     expect(now[2]).toBeGreaterThan(seen[2]);
-    expect(g.from!.map((v) => Math.round(v * 100))).toEqual(seen);
+    expect(g.from).toEqual(seen); // the growth record in whole percent (the rings took it / 100)
+    // The range rose with it, so the scale bar draws in once.
     expect(growingArcs()).toBe(1);
   });
 });
 
 // ── J2 ───────────────────────────────────────────────────────────────────
 describe('J2 practice session → Results', () => {
-  const resultRings = () => r!.root.findAllByType(GrowthRings)[0].props.grow as { play: boolean };
+  // Mobile 1.51 (Field Guide): the rings gave way to the growth plate; the score that rolled in their centre is
+  // the Score label row now, and it rolls the same way (once, on this Results' first look, at 60% or more).
+  const resultRings = () => (r!.root.findAllByType(SpecimenRow).find((n) => n.props.label === 'Score')?.props.roll ?? { play: false }) as { play: boolean };
+  const growingArcs = () => (resultRings().play ? 1 : 0);
 
   it('the rings and the score roll once; reopening the same Results shows them still', () => {
     setMockReducedMotion(false);
@@ -345,7 +352,6 @@ describe('J2 practice session → Results', () => {
     expect(resultRings().play).toBe(true);
     expect(growingArcs()).toBeGreaterThan(0);
     expect(movingDigits()).toBeGreaterThan(0);
-    expect(allText()).toContain('Each ring is a domain in this session.');
     unmount();
     mount(<Results />);
     expect(resultRings().play).toBe(false);
@@ -587,8 +593,10 @@ describe('J3b the exam-ready moment (T3)', () => {
 
 // ── J4 ───────────────────────────────────────────────────────────────────
 describe('J4 You', () => {
-  // Mobile 1.43: one readiness ring; its solid arc grows from the low end last seen.
-  const youRings = () => r!.root.findAllByType(ReadinessRing)[0].props.growth as { play: boolean; from?: number[] };
+  // Mobile 1.43: one readiness figure; it grows from the low end last seen (a scale bar since 1.51, Field Guide).
+  // The areas' lines of growth trace in with the same growth (AreaRows `play`).
+  const youRings = () => r!.root.findAllByType(ReadinessBlock)[0].props.growth as { play: boolean; from?: number[] };
+  const growingArcs = () => (r!.root.findAllByType(AreaRows)[0].props.play ? 1 : 0);
 
   it('first look of the day grows from 0 with no "+N"; a rise since the last look grows from there with "+N" on that domain only; a revisit is still', () => {
     setMockReducedMotion(false);
@@ -631,7 +639,7 @@ describe('J4 You', () => {
     expect(plusTags()).toEqual([]);
     expect(growingArcs()).toBe(0);
     // "answered" went up (it may roll); accuracy went down and must not roll.
-    const accuracy = byName('Stat').find((s) => s.props.label === 'Accuracy')!;
+    const accuracy = byName('SpecimenRow').find((s) => s.props.label === 'Accuracy')!;
     const accRoll = accuracy.findAllByType(RollingText)[0];
     expect(accRoll.props.from === accRoll.props.value || !accRoll.props.play).toBe(true);
   });
@@ -1081,12 +1089,14 @@ describe('Review fixes on the real screens', () => {
     jest.useFakeTimers({ now: new Date(2026, 9, 12, 9, 0, 0), doNotFake: ['nextTick', 'setImmediate', 'queueMicrotask'] });
     setMockReducedMotion(false);
     seed(60);
+    // Mobile 1.51: Today's scale bar draws in on the day's first view only.
+    const scaleDraws = () => (r!.root.findAllByType(ScaleBar)[0]?.props.growth?.play ? 1 : 0);
     mount(<Today />);
-    expect(growingArcs()).toBeGreaterThan(0);
+    expect(scaleDraws()).toBeGreaterThan(0);
     unmount();
     resetCelebrationsForTest(); // a new launch: memory is fresh, saved stores are kept
     mount(<Today />);
-    expect(growingArcs()).toBe(0);
+    expect(scaleDraws()).toBe(0);
     expect(movingDigits()).toBe(0);
   });
 

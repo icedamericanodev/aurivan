@@ -83,7 +83,7 @@ const responses = (n, sec, at, right = (i) => i % 10 < 7) =>
   await scrollTo(page, 'Practice', 300); // mobile 1.17: "Study defaults" is the Practice group
   await snap(page, 'p03-settings-study-defaults');
   // Play lists Daylight with the other games.
-  await open(page, '/play');
+  await open(page, '/practice?section=drills');
   await page.mouse.move(196, 500); await page.mouse.wheel(0, 400); await page.waitForTimeout(700);
   await snap(page, 'p10-play');
   await page.context().close();

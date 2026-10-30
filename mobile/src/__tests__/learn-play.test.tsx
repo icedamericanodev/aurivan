@@ -19,7 +19,7 @@ import Svg, { Circle, Path } from 'react-native-svg';
 import { setMockReducedMotion } from '../../jest/reanimated-mock';
 import LessonPlayer, { lessonPracticeIds } from '../app/lesson/[id]';
 import Learn, { upNextMeta, upNextReason } from '../app/(tabs)/learn';
-import Play from '../app/(tabs)/play';
+import { Drills } from '../components/drills';
 import { branchLeaves, DomainRing, GAME_GLYPHS, GameGlyph, LeafBig, LessonBranch, sparkPoints, TierLeaf, TierLeafMorph } from '../components/glyphs';
 import { T } from '../components/ui';
 import { GameFrame, RoundEnd, RoundScore } from '../components/game';
@@ -473,9 +473,12 @@ describe('Play identity', () => {
     }
   });
 
-  it('Play shows each game with its glyph; the Sure Footing game is now Forecast, same id', () => {
-    mount(<Play />);
-    expect(root().findAllByType(GameGlyph).length).toBeGreaterThanOrEqual(2);
+  // Mobile 1.51: the games are Drills, a numbered key list in Practice (Field Guide: no icon tiles). Each
+  // game keeps its glyph on its intro, its round header and its recap (checked below).
+  it('Drills list the games by name and number, no icon tiles; the Sure Footing game is now Forecast, same id', () => {
+    mount(<Drills />);
+    expect(root().findAllByType(GameGlyph)).toHaveLength(0);
+    expect(allText()).toContain(GAMES.trap.name);
     expect(GAMES.sprint.name).toBe('Forecast');
     expect(allText()).not.toContain('Sure Footing');
   });

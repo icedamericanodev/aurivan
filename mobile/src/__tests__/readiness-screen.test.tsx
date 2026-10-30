@@ -310,7 +310,7 @@ describe('the ways in', () => {
     const tap = root().findAll((n) => n.props.testID === 'readiness-tap' && typeof n.props.onPress === 'function' && n.props.accessibilityRole === 'button')[0];
     expect(tap.props.accessibilityRole).toBe('button');
     expect(tap.props.accessibilityHint).toBe('Opens your readiness report');
-    expect(tap.props.accessibilityLabel).toMatch(/^Estimated readiness between \d+ and \d+ percent\./);
+    expect(tap.props.accessibilityLabel).toMatch(/^Estimated readiness between \d+ and \d+ percent, a study estimate, not a prediction\./);
     act(() => {
       tap.props.onPress();
     });

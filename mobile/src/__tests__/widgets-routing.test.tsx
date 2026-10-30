@@ -129,7 +129,7 @@ describe('a tap opens what the widget promised', () => {
     useProgress.setState((s) => ({ streak: { ...s.streak, lastDay: addDays(TODAY, -daysAgo), recentDays: [addDays(TODAY, -daysAgo - 1), addDays(TODAY, -daysAgo)] } }));
   }
 
-  it('Questions to revisit: "6 to revisit" starts the plan’s 6, not the whole queue (up to 20)', () => {
+  it('a revisit link (drawn by 1.47, or from the plan) starts the plan’s 6, not the whole queue (up to 20)', () => {
     onboard();
     // 25 questions answered wrong yesterday: all due for review now.
     const ids = Array.from({ length: 25 }, (_, i) => `d${(i % 5) + 1}_0${String(10 + i).padStart(2, '0')}`);
@@ -137,10 +137,8 @@ describe('a tap opens what the widget promised', () => {
     ids.forEach((id) => useProgress.getState().recordAnswer('cisa', id, false, 'sure'));
     jest.setSystemTime(NOW);
     const snap = collectSnapshot(NOW) as WidgetSnapshot;
-    const face = widgetFace('revisit', snap, { now: NOW });
     const promised = snap.plan?.back ?? 0;
     expect(promised).toBeGreaterThan(0);
-    expect(face.action?.label).toBe('Revisit');
     openFromWidget({ kind: 'revisit', go: 'review', id: null, fromWidget: true });
     const asked = useSession.getState().active?.questionIds.length ?? 0;
     // Was a bug: startReview(certId) used the 20-question cap, not the plan's count the widget showed.

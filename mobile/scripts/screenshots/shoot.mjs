@@ -7,7 +7,7 @@ const seed = JSON.parse(fs.readFileSync(process.argv[2]));
 const out = process.argv[3];
 const routes = [
   ['01-today','/home'],['02-learn','/learn'],['03-lesson','/lesson/cisa-l-d1-charter'],
-  ['04-practice','/practice'],['05-play','/play'],['06-priority-lens','/game/priority'],
+  ['04-practice','/practice'],['05-practice-drills','/practice?section=drills'],['06-priority-lens','/game/priority'],
   ['07-trap-spotter','/game/trap'],['08-sprint','/game/sprint'],['09-you','/you'],['10-mistakes','/mistakes'],
   ['16-settings','/settings'],['17-saved-empty','/saved'],['18-caught-up','/caught-up'],
 ];
@@ -112,7 +112,8 @@ await page.screenshot({ path: `${out}/03a-lesson-idea.png` });
 console.log('shot lesson idea');
 // Settings → About: the brand vision (lockup, tagline, four pillars).
 // Mobile 1.17: the vision sits behind the "About KaiSip" row, in a sheet.
-await shot0('16b-settings-about', '/settings');
+// Mobile 1.46: About KaiSip moved to the Help and about page (settings-section?category=help).
+await shot0('16b-settings-about', '/settings-section?category=help');
 await page.getByRole('button', { name: /^About KaiSip/ }).first().click();
 await page.waitForTimeout(900);
 await page.screenshot({ path: `${out}/16b-settings-about.png` });

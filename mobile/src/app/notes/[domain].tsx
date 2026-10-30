@@ -259,7 +259,7 @@ export default function NotesDomain() {
         ))}
 
         {notes.keyTerms.length > 0 && (
-          <View style={{ marginTop: space.section }}>
+          <View style={{ marginTop: space.xxl }}>
             {/* Folded by default: 15–30 terms would bury the topic list. */}
             <Pressable
               accessibilityRole="button"

@@ -28,7 +28,7 @@ A calm, trustworthy study companion that helps people **pass** professional secu
 | 1.5 | **Topics named like the official outline + progress per topic** | See exactly which CISA topics are strong and weak | Pick from screenshots | ⏳ Next |
 | 1.6 | **Web Progress dashboard** | A clear progress page on kaisip.com | Pick from 3 mockups | ✅ Done (web v12.41) |
 | 1.7 | **Today screen, step 2** | A calmer, more personal daily start | Pick from mockups | ⏳ |
-| 1.8 | **Play Store closed beta** | Testers install from Google Play; the version resets to 1.0 | Play Console steps, tester email list, store listing approval | ⏳ After 1.2 and 1.4 |
+| 1.8 | **Play Store closed beta** | Testers install from Google Play; the version resets to 1.0 | Play Console steps, tester email list, store listing approval | ⏳ App created in Play Console 29 Oct (`KaiSip: Cyber & IT Audit Prep`, `com.kaisip.app`, Free). Testing waits until the polish is done (owner, 29 Oct) |
 
 **Why this order:**
 - Widgets (1.2) are nearly done.
@@ -53,7 +53,43 @@ A calm, trustworthy study companion that helps people **pass** professional secu
 
 **Recommendation:** start the beta with CISA as soon as Stage 1 is done, and add CC *into* the running beta when 2.6 passes. Don't hold the beta back for CC.
 
-## Stage 3: premium UI pass, web and mobile (owner decision 27 Oct: after the CC pack)
+## Stage 3: premium UI pass, web and mobile (started early: owner decision 28 Oct, in parallel with CC)
+
+**Owner decisions, 28 Oct 2026:**
+- **Timing:** start now, in parallel with the CC content work, instead of after the CC pack.
+- **Look: "A + B touches".** Keep Grove (forest green, Fraunces + Figtree, the Kasama mark, the plant, icon and widgets) and refine it. Borrow three moves from the Editorial Ivory direction:
+  - hairline rules instead of shadows on anything that isn't a choice;
+  - real display optical sizes for titles;
+  - on wide screens, a margin column on the answer and note pages (the Exam cue sits in the margin).
+
+**Owner update, 29 Oct 2026:**
+- **Look: Grove Refined.** The theme (colours, fonts, the mark) stays. The premium step is a **signature presentation system**: one structure, consistent type, backgrounds, and a distinctive way of presenting badges, stats, cards and progress, unlike common apps ("no AI-slop look"). Three grammars were explored (Field Guide, Auditor's Workpaper, Bound Volume). **Owner pick, 29 Oct: Field Guide.** Every screen centres on one captioned plate ("Fig. n ·"). Badges are pressed specimens on herbarium sheets, the five areas are stems on one scale with a 70 line, and readiness is a scale bar. Spec and boards: the signature design notes (starter kit: RunningHead, Plate, FigCaption, SpecimenLabel, ScaleBar, StemChart/StemList, Specimen, HerbariumSheet, KeyList, EmptyPlate). The Editorial Ivory touches fold into that choice.
+- **Plant forms: all 13 species**, using the "Turnings" system: 4 forms mapped from the 6 saved growths, no reset.
+  - A delayed-recall gate for the later forms.
+  - The learner chooses the final form at Form IV.
+  - A calm reveal on Your plant.
+  - Copy says "grows into a new form", never "evolve".
+- **Habit features, approved:**
+  - a fresh start after 3+ days away;
+  - "Just 3 questions";
+  - a study anchor with reminders;
+  - snooze and a Quiet week;
+  - a weekly look-back.
+
+**Owner picks, 29 Oct 2026 (later):**
+- **The Turning: option A.** The silhouette is gold, not white, and the half-swaps keep an even pace, so the reveal is clearly KaiSip's own and unlike any well-known game's transformation.
+- **Phone menu: option A.** 4 tabs (Today, Learn, Practice, You). The brain games move inside Practice as "Drills". The web already has 4 tabs.
+- **Business setup:** KaiSip will be a **DTI sole proprietorship**. The Google payments profile is set up as **Individual** with the public business name **KaiSip** (the public name, support email and statement name can change later; the account type cannot easily).
+- **RevenueCat:** account, Google payments profile and the Play ↔ RevenueCat service account are set up (Parts 1–3). Products, entitlements and the paywall wait for the first Play build with billing (Phase E).
+- **Store title:** `KaiSip: Cyber & IT Audit Prep` (growth-marketer and app-store-compliance-reviewer agreed; "IT Audit Exam Prep" was too narrow for the multi-certification roadmap). See `docs/mobile/STORE_LISTING.md` §2.
+- **Market test: on hold (option C).** The 6-week validation plan (website fake-door /plans pages, reservation form, extra beta surveys) is not started, and the current build order stays (sign-in first, then the closed beta). No DTI/BIR registration and no selling until the owner revisits it. The plan and the expert reports are kept in `docs/business/monetization/` and the prices (₱699 vs ₱999) stay undecided.
+
+The five directions explored (A Grove Refined, B Editorial Ivory, C Midnight Focus, D Clear Modern, and the wild cards E1/E2) are recorded in the scratchpad boards and the two new agents, `premium-web-designer` and `premium-mobile-designer`.
+
+**Built so far:**
+- web v12.43 and mobile 1.49: tokens T1–T4, backlog-free counts, and the shorter answer screen with the ⋯ menu and question recap;
+- mobile 1.48: the widget Study cards.
+
 Every expert agent reviews the whole app, plus a new `ui-reference-researcher`. It gathers references from Mobbin, Figma, Dribbble, Behance, Apple HIG and Material 3, and turns them into Grove-compatible changes.
 
 How it runs:

@@ -27,6 +27,7 @@
  */
 import { BADGES, WHOLE_MAP_FLOOR } from './milestones';
 import type { CertPlant, GrowthLevel, LookId, PlantLook, PlantSettings, PlantSpecies } from './plant';
+import type { FinalId } from './plantForms';
 
 /**
  * The species list, written out here (not imported from plant.ts) so the two
@@ -213,7 +214,7 @@ const KEEPSAKES: [string, string, string, string, KeepsakeShape, string, Keepsak
   ['fern', 'Fern', 'took-root', 'The fern: a whole topic took root.', 'tall', 'Help a whole topic take root'],
   ['still-pond', 'Still pond', 'know-what-you-know', 'The still pond: when you say sure, you’re right.', 'flat', 'Be right when you say you’re sure'],
   ['dew-web', 'Dew-lit web', 'slip-spotter', 'The dew-lit web: you can name your own thinking slips.', 'tall', 'Tag your mistakes with their thinking slip'],
-  ['weather-vane', 'Weather vane', 'mindset-shift', 'The weather vane: you fall for the runner-up less often.', 'tall', 'Pick the tempting runner-up less often'],
+  ['weather-vane', 'Weather vane', 'mindset-shift', 'The weather vane: you fall for the closest wrong choice less often.', 'tall', 'Pick the closest wrong choice less often'],
   ['lantern', 'Lantern', 'dress-rehearsal', 'The lantern: you sat a full, timed mock.', 'tall', 'Sit a full, timed mock'],
   ['sundial', 'Sundial', 'on-pace', 'The sundial: you finished a timed mock on pace.', 'tall', 'Finish a timed mock on pace'],
   ['swallow', 'Swallow', 'fresh-start', 'The swallow: you came back and picked up again.', 'tall', 'Pick up again after some time away'],
@@ -385,7 +386,7 @@ export function howToOpen(item: LookItem, o: HowOptions = {}): string {
       return o.badgesHidden ? `${how}.` : `${how} (the ${name} badge).`;
     }
     case 'set':
-      return o.badgesHidden ? 'Opens as you study.' : `Opens when you finish the ${SET_NAMES[u.set] ?? u.set} set in Badges.`;
+      return o.badgesHidden ? 'Opens as you study.' : `Opens when you finish the ${SET_NAMES[u.set] ?? u.set} set in the Herbarium.`;
     case 'passed':
       return 'Opens when you tell us you passed.';
   }
@@ -414,6 +415,12 @@ export interface ArtLook {
   /** The visitor perched today ("wren", "robin"); unset = none. */
   visitor?: string;
   keepsakes?: readonly string[];
+  /**
+   * Mobile 1.50: the Form IV final drawn at Elder (engine/plantForms.ts
+   * resolveFinal: the learner's choice, else the line's own). Unset = own.
+   * Botanical style only (forms are a botanical-style feature).
+   */
+  final?: FinalId;
 }
 
 export const DEFAULT_LOOK = { ground: 'meadow', planter: 'native', visitor: 'wren' } as const;

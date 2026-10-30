@@ -24,13 +24,14 @@ import { Dimensions, StyleSheet } from 'react-native';
 import { swayOrigin, botanySize } from '../components/glyphs';
 import { useProgress } from '../store/progress';
 import { useSettings } from '../store/settings';
-import Play from '../app/(tabs)/play';
+import { Drills } from '../components/drills';
 import Practice from '../app/(tabs)/practice';
 import Today from '../app/(tabs)/home';
 import You from '../app/(tabs)/you';
 import { router } from 'expo-router';
 import * as registry from '../engine/games/registry';
 import { planText } from '../components/journey';
+import { HeroPanel } from '../components/ui';
 import { setMockReducedMotion } from '../../jest/reanimated-mock';
 
 // Motion ON (the shared mock defaults to Reduce Motion), so the swaying frond
@@ -96,33 +97,36 @@ afterEach(() => {
   r = undefined;
 });
 
-describe('Play hero renders its content (Android blank-hero regression)', () => {
+// Mobile 1.51: the Play tab is gone (its games are Drills, a list inside Practice), so the tab hero checked
+// here is Practice's: the same HeroPanel with its seal.
+describe('the tab hero renders its content (Android blank-hero regression)', () => {
   const cases: [string, 'light' | 'dark', number][] = [
     ['light', 'light', 1],
     ['dark', 'dark', 1],
     ['light at 200% text', 'light', 2],
   ];
-  it.each(cases)('%s: caption, title, text and the Play button are inside the hero', (_name, theme, scale) => {
+  it.each(cases)('%s: caption, title, text and the Start button are inside the hero', (_name, theme, scale) => {
     useSettings.setState({ theme });
     setFontScale(scale);
-    mount(<Play />);
+    mount(<Practice />);
     const [content] = byTestId('hero-content');
     expect(content).toBeDefined();
     const text = textOf(content);
-    // The featured game's title, its one-line text and the button label.
+    // The path's title, its one-line text and the button label.
     const header = content.findAll((n) => n.props.accessibilityRole === 'header' && typeof n.type === 'string');
     expect(header.length).toBe(1);
     expect(textOf(header[0]).length).toBeGreaterThan(3);
     expect(text).toMatch(/min/); // the caption carries the honest length
     const button = content.findAll((n) => n.props.accessibilityRole === 'button' && typeof n.props.onPress === 'function');
     expect(button.length).toBe(1);
-    expect(textOf(button[0])).toBe('Play');
+    expect(textOf(button[0])).toBe('Start');
   });
 
-  // Mobile 1.43 (tab header C): Play, Learn and Practice lead with a white seal card; the forest panel
-  // with its swaying frond is Today's alone, so the layering checks run there.
-  it('Today: draws the art in its own clipped layer BELOW the content, with explicit sizes', () => {
-    mount(<Today />);
+  // Mobile 1.43 (tab header C): Play, Learn and Practice lead with a white seal card. Mobile 1.51 (Field
+  // Guide): Today's plan is a plate too; the forest panel with its swaying frond is now only Today's moments
+  // (the clearing, "Your readiness is holding"), so the layering checks run on the panel itself.
+  it('the forest panel: draws the art in its own clipped layer BELOW the content, with explicit sizes', () => {
+    mount(<HeroPanel caption="Today’s clearing" title="Two done" art="frond" />);
     const [art] = byTestId('hero-art');
     const [content] = byTestId('hero-content');
     // Art layer: absolute fill, does its own rounded clipping, never takes touches.
@@ -146,8 +150,8 @@ describe('Play hero renders its content (Android blank-hero regression)', () => 
     expect(flat(slot)).toMatchObject(botanySize('frond'));
   });
 
-  it('Today: the swaying frond has an explicit size and a pivot in points, not percentages', () => {
-    mount(<Today />);
+  it('the forest panel: the swaying frond has an explicit size and a pivot in points, not percentages', () => {
+    mount(<HeroPanel caption="Today’s clearing" title="Two done" art="frond" />);
     const [art] = byTestId('hero-art');
     const sway = art.findAll((n) => typeof n.type === 'string' && typeof flat(n).transformOrigin === 'string');
     expect(sway.length).toBe(1);
@@ -157,18 +161,13 @@ describe('Play hero renders its content (Android blank-hero regression)', () => 
     expect(s).toMatchObject(botanySize('frond'));
   });
 
-  it('Play and Practice: a white card with the tab seal, no forest art layer (mobile 1.43, tab header C)', () => {
-    mount(<Play />);
-    expect(byTestId('hero-art')).toHaveLength(0);
-    expect(byTestId('hero-seal')).toHaveLength(1);
-    // The seal is decorative: hidden from screen readers.
-    expect(byTestId('hero-seal')[0].props.importantForAccessibility).toBe('no-hide-descendants');
-    act(() => {
-      r?.unmount();
-    });
+  it('Practice: a white card with the tab seal, no forest art layer (mobile 1.43, tab header C); Drills adds no second hero', () => {
     mount(<Practice />);
     expect(byTestId('hero-art')).toHaveLength(0);
     expect(byTestId('hero-seal')).toHaveLength(1);
+    expect(byTestId('hero-content')).toHaveLength(1);
+    // The seal is decorative: hidden from screen readers.
+    expect(byTestId('hero-seal')[0].props.importantForAccessibility).toBe('no-hide-descendants');
     const [content] = byTestId('hero-content');
     // Build E: the hero starts the learner's study path (a new learner: Random, 10 questions).
     // Mobile 1.21: the title names the path ("A mixed set"); the count is the meta.
@@ -177,7 +176,7 @@ describe('Play hero renders its content (Android blank-hero regression)', () => 
   });
 
   it('beside the seal the title stops short of it by its width and a gap, not a fixed 250 (QA bug 2: 360pt phones)', () => {
-    mount(<Play />);
+    mount(<Practice />);
     const [content] = byTestId('hero-content');
     const [title] = content.findAll((n) => n.props.accessibilityRole === 'header' && typeof n.type === 'string');
     expect(flat(title).marginRight).toBe(56 + 12);
@@ -195,8 +194,9 @@ describe('Settings gear in the Today and You headers', () => {
     const gear = root().findAll((n) => n.props.accessibilityLabel === 'Settings' && n.props.accessibilityRole === 'button' && typeof n.props.onPress === 'function');
     expect(gear.length).toBe(1);
     const style = StyleSheet.flatten(typeof gear[0].props.style === 'function' ? gear[0].props.style({ pressed: false }) : gear[0].props.style);
-    expect(style.width).toBeGreaterThanOrEqual(44);
-    expect(style.height).toBeGreaterThanOrEqual(44);
+    // Mobile 1.51: You's gear is the running head's action (at least 48pt, grown by its "Settings" word).
+    expect(style.width ?? style.minWidth).toBeGreaterThanOrEqual(44);
+    expect(style.height ?? style.minHeight).toBeGreaterThanOrEqual(44);
     act(() => {
       gear[0].props.onPress();
     });
@@ -215,37 +215,37 @@ describe('Settings gear in the Today and You headers', () => {
   });
 });
 
-describe('Play when no game is playable for this exam', () => {
-  it('shows a calm empty state with a way to Practice, and no game or numbers', () => {
+describe('Drills when no game is playable for this exam', () => {
+  it('one calm line, no game, no numbers (Practice is right there: Drills is a section of it, mobile 1.51)', () => {
     const spy = jest.spyOn(registry, 'isPlayable').mockReturnValue(false);
     (router.push as jest.Mock).mockClear();
-    mount(<Play />);
-    expect(textOf(root())).toContain('Games are on the way');
-    expect(byTestId('hero-content')).toHaveLength(0);
+    mount(<Drills />);
+    expect(textOf(root())).toContain('Drills arrive once this exam has enough practice questions for them.');
+    expect(byTestId('drills-list')).toHaveLength(0);
     expect(textOf(root())).not.toMatch(/\d+ (questions|more)/);
-    const go = root().findAll((n) => n.props.accessibilityLabel === 'Go to Practice' && typeof n.props.onPress === 'function')[0];
-    act(() => {
-      go.props.onPress();
-    });
-    expect(router.push).toHaveBeenCalledWith('/practice');
+    expect(router.push).not.toHaveBeenCalled();
     spy.mockRestore();
   });
 });
 
 describe("Today's review card: the 'N today' line only when more are due than today takes", () => {
-  it('all of them today says "questions to revisit"; part of the queue says "N today, most overdue first" (mobile 1.15 C7)', () => {
+  it('all of them today says "questions to revisit"; part of the queue says "N today, oldest first" (mobile 1.15 C7; 1.49 wording)', () => {
     expect(planText({ kind: 'review', count: 20 }).meta).toBe('About 24 min · questions to revisit');
-    expect(planText({ kind: 'review', count: 20, capped: true, due: 55 }).meta).toBe('About 24 min · 20 today, most overdue first');
-    expect(planText({ kind: 'review', count: 8 }, 55).meta).toBe('About 10 min · 8 today, most overdue first');
-    expect(planText({ kind: 'review', count: 20 }).title).toBe('Review 20 due');
+    expect(planText({ kind: 'review', count: 20, capped: true, due: 55 }).meta).toBe('About 24 min · 20 today, oldest first');
+    expect(planText({ kind: 'review', count: 8 }, 55).meta).toBe('About 10 min · 8 today, oldest first');
+    expect(planText({ kind: 'review', count: 20 }).title).toBe('Questions to revisit');
   });
 
-  it('capped: the title shows the whole queue, the same number as You and Practice (one phrasing, 1.8)', () => {
-    expect(planText({ kind: 'review', count: 20, capped: true, due: 55 }).title).toBe('Review 55 due');
-    // A plan saved before 1.8 has no `due`: it keeps the session's count.
-    expect(planText({ kind: 'review', count: 20, capped: true }).title).toBe('Review 20 due');
+  it('capped: the title never shows the queue total (premium pass 1.4, mobile 1.49)', () => {
+    expect(planText({ kind: 'review', count: 20, capped: true, due: 55 }).title).toBe('Questions to revisit'); // 1.49: never the queue total
+    // A plan saved before 1.8 has no `due`: the same plain title.
+    expect(planText({ kind: 'review', count: 20, capped: true }).title).toBe('Questions to revisit');
   });
 });
+
+// A seal hero with art and a meta line, as the Play tab's featured game was (mobile 1.51: that tab is gone, the
+// HeroPanel rule stays).
+const SEAL_HERO = <HeroPanel seal="sprig" caption="Beating distractors · 6 min" title="Snare Spotter" meta="Find the answer built to fool you." art="frond" />;
 
 describe('hero meta line keeps clear of the art', () => {
   const metaOf = () => {
@@ -256,12 +256,12 @@ describe('hero meta line keeps clear of the art', () => {
   };
   it('at normal text it wraps inside 250pt, like the title', () => {
     setFontScale(1);
-    mount(<Play />);
+    mount(SEAL_HERO);
     expect(metaOf().maxWidth).toBe(250);
   });
   it('at large text it runs full width', () => {
     setFontScale(2);
-    mount(<Play />);
+    mount(SEAL_HERO);
     expect(metaOf().maxWidth).toBeUndefined();
   });
 });

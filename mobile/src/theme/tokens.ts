@@ -84,7 +84,7 @@ export const light: Palette = {
 
 export const dark: Palette = {
   bg: '#111613',
-  raised: '#1A211C',
+  raised: '#1D2621', // premium pass T1: was #1A211C (1.11:1 on bg); now a visible 1.18:1 step. raised2 sits between bg and raised
   raised2: '#1B231E',
   soft: '#202A23',
   line: '#29322B',
@@ -163,6 +163,14 @@ export const grainOp = { light: 0.035, dark: 0.045 } as const;
 export const forestHighlight = { light: 'rgba(255,255,255,0.08)', dark: 'rgba(255,255,255,0.06)' } as const;
 
 /**
+ * Premium pass T2: the dark L2 card's top light. Besides its 1.5 `line`
+ * outline, a dark card gets a 1px inner highlight along its top edge (the
+ * forest panel's trick, a touch fainter at 5%), so it reads as a surface
+ * lit from above, not an outline. Decorative only: it carries no meaning.
+ */
+export const darkCardTopLight = 'inset 0 1px 0 rgba(255,255,255,0.05)';
+
+/**
  * The one real shadow (mobile 1.21, DESIGN_SYSTEM.md §5 "Surface model"), for
  * L2 cards (things you choose between) only, in light mode only (dark uses a
  * 1.5px `line` outline; a sheet sits on its scrim and needs none). A crisp
@@ -196,8 +204,12 @@ export const domainPalette = {
   dark: ['#72B4CB', '#8CC474', '#DDB066', '#B99DCD', '#9AAFBB'],
 } as const;
 
-/** Spacing scale 4…48. `gutter` is the screen side padding (20). */
-export const space = { xs: 4, sm: 8, md: 12, lg: 16, gutter: 20, xl: 24, section: 28, xxl: 32, xxxl: 48 } as const;
+/**
+ * Spacing scale 4…48. `gutter` is the screen side padding (20).
+ * Premium pass T4: the old `section` (28) is retired. A gap between sections
+ * is `xxl` (32), the same as the web's --sp-2xl (scripts/check_token_parity.py).
+ */
+export const space = { xs: 4, sm: 8, md: 12, lg: 16, gutter: 20, xl: 24, xxl: 32, xxxl: 48 } as const;
 /** sm = tags/progress, md = option rows/inputs, lg = hero panel, sheet = sheet top corners. */
 export const radius = { sm: 8, md: 16, lg: 24, sheet: 28, pill: 999 } as const;
 
@@ -386,15 +398,125 @@ export const motion = {
    * - react: a mood's one reaction (happy stretches, proud stands tall);
    * - lean: curious' reaction (a lean, a held look, back);
    * - grow: the growth sequence (old swells, cross-fade, new settles);
-   * - plantIn: onboarding's seed settling and the first sprout popping.
-   * Reduce Motion stills all of it (no cross-fade token: the end state shows).
+   * - plantIn: onboarding's seed settling and the first sprout popping;
+   * - turnReduced: mobile 1.50, the form reveal's Reduce Motion cross-fade
+   *   (never a hard cut; the full reveal is `turn` below).
+   * Reduce Motion stills the rest (the end state shows).
    */
-  plant: { breath: 2000, breathOut: 2400, breaths: 1, react: 600, lean: 900, grow: 900, plantIn: 820 },
+  plant: { breath: 2000, breathOut: 2400, breaths: 1, react: 600, lean: 900, grow: 900, plantIn: 820, turnReduced: 120 },
+  /**
+   * "The Turning" (mobile 1.50, DESIGN_SYSTEM §8.10): a plant's form change on
+   * Your plant, once per form for life. A once-ever celebration, so it sits
+   * outside the 1.2 s ceiling (it claims the session's one moment instead).
+   * One linear clock runs 0 → total on the UI thread (engine/turnTimeline.ts):
+   * - gather [from, to]: the glow gathers, the old form inhales (`inhale`) and fills with light;
+   * - swaps: the alternation's half-swaps. An odd count, so it ends on the new
+   *   form. Shipped at an even pace (turnLook.evenPace: each is their mean, ~265 ms);
+   *   the listed lengths are the earlier speeding-up pacing. None shorter than `swapFloor` (200 ms: ≤ 2.5 flashes
+   *   a second on any pixel, WCAG 2.3.1 allows 3). `cross`: the share of each half-swap spent changing;
+   * - bloom: the light lifts off the new form, which settles (`settle`, a duration spring);
+   * - nameAt: the form's name fades in under the learning fact (shown from 0);
+   * - motes: the species' rising motes (≤ celebrate.leaves), each `moteLife` long;
+   * - glowMax / glowR: the gathered light's peak (below 1, so the bloom's one swell shows) and radius;
+   * - halo: Form IV's glow ring draws itself once (grand only).
+   * `skip`: any tap dissolves to the end state over this long. `playGuard`: touches this soon
+   * after the waiting button's tap are not skips (a quick double-tap still plays it).
+   */
+  turn: {
+    small: { total: 2400, gather: [160, 760], swaps: [340, 260, 200], bloom: 320, nameAt: 1900, inhale: 0.015, motes: 4, moteLife: 1100, glowMax: 0.7, glowR: 0.72, settle: { from: 0.97, duration: 360, dampingRatio: 1 }, halo: false },
+    medium: { total: 3000, gather: [180, 900], swaps: [380, 300, 240, 200, 200], bloom: 340, nameAt: 2500, inhale: 0.02, motes: 6, moteLife: 1300, glowMax: 0.85, glowR: 0.86, settle: { from: 0.97, duration: 400, dampingRatio: 1 }, halo: false },
+    grand: { total: 3600, gather: [200, 1000], swaps: [420, 340, 280, 230, 200, 200, 200], bloom: 360, nameAt: 3100, inhale: 0.025, motes: 8, moteLife: 1500, glowMax: 0.9, glowR: 1, settle: { from: 0.96, duration: 460, dampingRatio: 0.85 }, halo: true },
+    cross: 0.6,
+    swapFloor: 200,
+    skip: 120,
+    playGuard: 400,
+  },
+  /** A mark that opens from its centre starts at this share of its width, never from nothing (premium round 2: the readiness band). */
+  openFrom: 0.2,
   rise: 8, // pt: content enters this far below its place (y only)
   shift: 16, // pt: a page turn's sideways offset
   pressScale: 0.98,
   pressOpacity: 0.92, // the press under Reduce Motion (no scale)
 } as const;
+
+/**
+ * The Turning's light (mobile 1.50, DESIGN_SYSTEM §8.10): warm gold on paper,
+ * never white on dark and never saturated red. Decorative (the words carry
+ * the moment).
+ * - silGold (shipped, the owner's pick, 29 Oct 2026): the flat gold the
+ *   forms become while they take turns. Light: deep gold, darker than the
+ *   glow (2.3:1 on paper, 2.0:1 on the glow's brightest centre); dark: badge
+ *   gold, brighter than the glow (11:1 on the page, 2.2:1 on the glow's peak),
+ *   so the shape never melts into the light it stands in;
+ *   sil: the earlier paper light (kept for turnLook.sil 'paper');
+ * - glow: the gathered light behind the crown: three circles at `glowOps`,
+ *   or, with `glowStops` ([offset, opacity] pairs), one soft radial wash
+ *   (dark: three stacked circles read as steps there, review O5).
+ */
+export interface TurnTone {
+  sil: string;
+  silGold: string;
+  glow: string;
+  glowOps: readonly [number, number, number];
+  glowStops?: readonly (readonly [number, number])[];
+}
+export const turnTone: { light: TurnTone; dark: TurnTone } = {
+  light: { sil: '#FFFCF2', silGold: '#C99A3A', glow: '#F6E2A6', glowOps: [0.6, 0.72, 0.9] },
+  dark: {
+    sil: '#D8CCA6',
+    silGold: '#E9C46A',
+    glow: '#E9C46A',
+    glowOps: [0.24, 0.29, 0.36],
+    glowStops: [
+      [0, 0.62],
+      [0.4, 0.56],
+      [0.65, 0.4],
+      [0.85, 0.2],
+      [1, 0],
+    ],
+  },
+};
+/**
+ * The Turning's look (owner decision E1, option A, 29 Oct 2026): the forms
+ * take turns in GOLD (`turnTone.silGold`), at an EVEN pace (every half-swap
+ * the same length, the same total). Why: a white shape flashing faster and
+ * faster on a coloured field is a well-known game's transformation; a gold
+ * shape changing at a steady, calm pace is Grove's own (gold is the plant's
+ * Form IV light and the badges' metal). The earlier look stays one switch
+ * away ('paper', false) and is not shipped.
+ */
+export const turnLook: { sil: 'paper' | 'gold'; evenPace: boolean } = { sil: 'gold', evenPace: true };
+/**
+ * The Turning's motes, per theme [light, dark] (components/plant/turnSignatures.ts):
+ * each species' own seeds, petals and pollen. Decorative, small and short-lived.
+ */
+export const turnMote = {
+  pollen: ['#E7C76B', '#F2DA92'],
+  speck: ['#E3C890', '#D2B57A'],
+  water: ['#7FAFBE', '#9CC9D6'],
+  glint: ['#FFF3CF', '#F6E7B8'],
+  oakLeaf: ['#9CC768', '#8FBF7E'],
+  oakLeafLine: ['#3F6B45', '#CFE3C4'],
+  samara: ['#E2BE84', '#D9B27A'],
+  samaraLine: ['#8A5A2B', '#F2D3A1'],
+  samaraSeed: ['#B7834A', '#E6C08A'],
+  coin: ['#EBD49A', '#D9BE77'],
+  coinLine: ['#A8771F', '#F2DA92'],
+  coinEye: ['#C99A3A', '#F2DA92'],
+  spray: ['#E2B33F', '#F2D27A'],
+  petal: ['#F4CFD8', '#EBC3CE'],
+  petalLine: ['#C98A9A', '#F6DCE3'],
+  floret: ['#EFD98A', '#E9D98C'],
+  floretDeep: ['#E5C66A', '#F2E3A0'],
+  puff: ['#E6D49A', '#D9C98A'],
+  salt: ['#F1E6C6', '#E6DDBE'],
+  roundLeaf: ['#8FBF6A', '#86B676'],
+  seed: ['#6B4A2B', '#C9A06A'],
+  droplet: ['#BFDDE6', '#A9CFD9'],
+  star: ['#FFFDF6', '#F4F1E6'],
+  starLine: ['#B9B39C', '#ECEFE8'],
+  node: ['#6F9A5C', '#A9CF94'],
+} as const satisfies Record<string, readonly [string, string]>;
 
 /**
  * Badge art (mobile 1.10, DESIGN_SYSTEM.md §11 "Badges"). An earned badge is
@@ -791,5 +913,159 @@ export const plantLine: { light: PlantLineTone; dark: PlantLineTone } = {
     starLine: '#E3E8DD',
     paleLineMix: 0,
     restLineMix: 0,
+  },
+};
+
+/**
+ * Mobile 1.50: the plant's FORMS (components/plant/forms/). The four forms
+ * and the Form IV finals are drawn with opaque fills mixed from the page
+ * colour, so a trunk and a limb that overlap never show a darker "knot"
+ * where two see-through washes would add up. Everything else (the ink line,
+ * the leaf washes, wood, gifts) still comes from `plantLine`.
+ *
+ * Plain English: every fill is "this much of the plant's colour on the
+ * page". Contrast (non-text, 3:1 on `bg`): stone line 5.4:1 light, ≥ 3.7:1
+ * dark; the gold bloom line 3.5:1 light; the wire 4.5:1 light, 5.2:1 dark.
+ */
+export interface PlantFormTone {
+  /** The page the opaque fills are mixed toward (= `bg`). */
+  page: string;
+  /** A crown mass: this tone of the leaf palette, mixed onto the page by `massMix` (`massMixDense` for a closed, dense crown). */
+  massTone: keyof PlantLeafPalette;
+  massMix: number;
+  massMixDense: number;
+  /** Wood fills (trunks, limbs, seeds): the bark mixed onto the page. */
+  woodFillMix: number;
+  /** Gift fills (acorns, nuts, fruit, a sunflower's disc). */
+  giftFillMix: number;
+  /** Stones (Moot's meeting stones, Holdfast's boulder): their line is `stoneBase` mixed toward `stoneInk`. */
+  stoneBase: string;
+  stoneInk: string;
+  stoneMix: number;
+  /** Their fill: the keepsake stone mixed onto the page. */
+  stoneFillMix: number;
+  /** The Form IV light behind the plant: three stacked circles of the gold palette, and one hairline ring. */
+  glowTone: keyof PlantLeafPalette;
+  glowOps: readonly [number, number, number];
+  glowRingTone: keyof PlantLeafPalette;
+  /** Golden flowers (narra sprays, mango tassels, lotus stamens): the line tone and the wash tone of the gold palette. */
+  goldTone: keyof PlantLeafPalette;
+  goldWashTone: keyof PlantLeafPalette;
+  /** A bonsai's training wire (copper). */
+  wire: string;
+}
+export const plantForm: { light: PlantFormTone; dark: PlantFormTone } = {
+  light: {
+    page: light.bg,
+    massTone: 'light',
+    massMix: 0.44,
+    massMixDense: 0.58,
+    woodFillMix: 0.32,
+    giftFillMix: 0.7,
+    stoneBase: light.control,
+    stoneInk: light.ink,
+    stoneMix: 0.35,
+    stoneFillMix: 0.38,
+    glowTone: 'hi',
+    glowOps: [0.2, 0.24, 0.3],
+    glowRingTone: 'deep',
+    goldTone: 'deep',
+    goldWashTone: 'light',
+    wire: plantLeaf.ember.deep,
+  },
+  dark: {
+    page: dark.bg,
+    massTone: 'mid',
+    massMix: 0.36,
+    massMixDense: 0.46,
+    woodFillMix: 0.42,
+    giftFillMix: 0.62,
+    // The art masters mix the light theme's control grey toward the dark ink (a lighter stone line on the night page).
+    stoneBase: light.control,
+    stoneInk: dark.ink,
+    stoneMix: 0.45,
+    stoneFillMix: 0.34,
+    glowTone: 'light',
+    glowOps: [0.05, 0.06, 0.08],
+    glowRingTone: 'light',
+    goldTone: 'light',
+    goldWashTone: 'mid',
+    wire: '#E9A07A',
+  },
+};
+
+/**
+ * Field Guide (mobile 1.51, DESIGN_SYSTEM.md §21; the owner's signature
+ * presentation, 29 Oct 2026). Grove's palette and fonts are unchanged: these
+ * are the grammar's own type cuts and the few derived inks its art needs.
+ * Every screen is a plate in a guide to the learner's own study.
+ *
+ * Type (components/fieldguide/ only, through `FieldText`):
+ * - head: the running head, label keys and kickers (Figtree 600 11/14, tracked, caps);
+ * - fig: "Fig. 5 · Five areas, one scale", status words, italic captions (Fraunces italic 14/20);
+ * - sub: the italic line under a title (Fraunces italic 16/22);
+ * - value: a label row's value and a sheet's name (Fraunces 500 22/26);
+ * - name: a specimen's name (Figtree 600 13/17);
+ * - small: a specimen's date, a stem's name (Figtree 500 12/16);
+ * - chart: the numeral above a stem (Fraunces 500 18/22);
+ * - keyNo: a key list's number and a sheet's number (Fraunces italic 16/22);
+ * - tiny / figSm: a stem's name and status word under the chart (Figtree 500 11/14,
+ *   Fraunces italic 12/16). Only inside the chart, which hands over to its list
+ *   (StemList, at full size) from ×1.3 text, so they cap at ×1.3.
+ */
+export type FieldVariant = 'head' | 'fig' | 'sub' | 'value' | 'name' | 'small' | 'chart' | 'keyNo' | 'tiny' | 'figSm';
+export const fieldType: Record<FieldVariant, TextStyle> = {
+  head: { fontFamily: font.sans600, fontSize: 11, lineHeight: 14, letterSpacing: 1, textTransform: 'uppercase' },
+  fig: { fontFamily: font.serif400Italic, fontSize: 14, lineHeight: 20 },
+  sub: { fontFamily: font.serif400Italic, fontSize: 16, lineHeight: 22 },
+  value: { fontFamily: font.serif500, fontSize: 22, lineHeight: 26, letterSpacing: -0.3 },
+  name: { fontFamily: font.sans600, fontSize: 13, lineHeight: 17 },
+  small: { fontFamily: font.sans500, fontSize: 12, lineHeight: 16 },
+  chart: { fontFamily: font.serif500, fontSize: 18, lineHeight: 22, letterSpacing: -0.3 },
+  keyNo: { fontFamily: font.serif400Italic, fontSize: 16, lineHeight: 22 },
+  tiny: { fontFamily: font.sans500, fontSize: 11, lineHeight: 14 },
+  figSm: { fontFamily: font.serif400Italic, fontSize: 12, lineHeight: 16 },
+};
+/** How far each cut grows with the phone's text size: words to ×2, numerals ×1.3 (as `maxScale`). */
+export const fieldMaxScale: Record<FieldVariant, number> = { head: 2, fig: 2, sub: 2, value: 1.3, name: 2, small: 2, chart: 1.3, keyNo: 1.3, tiny: 1.3, figSm: 1.3 };
+
+/**
+ * The plate's measures (board grammar-1): a double hairline mount (the outer
+ * `line` edge, 6pt of `raised2`, the inner `line` edge), no shadow, no radius;
+ * a specimen label is `raised` with a 3pt corner; the Field Guide button is
+ * 52 tall with 12pt corners (forest stays on the primary button only).
+ */
+export const plate = { mount: 6, labelRadius: 3, button: 52, buttonRadius: 12, chart: 264 } as const;
+
+/**
+ * The guide's derived inks (DESIGN_SYSTEM.md §21.3). Fixed per theme, never
+ * meaning on their own (every mark has its words):
+ * - stem / leaf / seed: the area stems' botanical ink, leaf fill and seed
+ *   (stem 8.0:1 on light `raised2`, 7.4:1 on dark; graphics need 3:1);
+ * - tape: the paper tape on a pressed specimen (light `soft` warmed, at 75%);
+ * - pressed: a badge's real emblem in faded botanical inks (roles E1…K, as
+ *   badgeEnamel; K is the plate's own paper). Decorative: the label says it.
+ */
+export interface FieldInk {
+  stem: string;
+  leaf: string;
+  seed: string;
+  tape: string;
+  pressed: Record<'E1' | 'E2' | 'E3' | 'D2' | 'D3' | 'L3' | 'K', string>;
+}
+export const fieldInk: { light: FieldInk; dark: FieldInk } = {
+  light: {
+    stem: '#5B4B3C',
+    leaf: '#CFE5D5',
+    seed: '#E9D9C4',
+    tape: 'rgba(214,205,182,0.75)',
+    pressed: { E1: '#A3C8AD', E2: '#447A57', E3: '#24603F', D2: '#3B6A4E', D3: '#1E4A34', L3: '#E1ECE2', K: light.raised2 },
+  },
+  dark: {
+    stem: '#B9A894',
+    leaf: dark.forestTrack,
+    seed: '#4A3E33',
+    tape: 'rgba(120,112,92,0.55)',
+    pressed: { E1: '#3C6B51', E2: '#7FC39C', E3: '#A9D9BA', D2: '#5E9C78', D3: '#C9E6D2', L3: dark.forestTrack, K: dark.raised2 },
   },
 };

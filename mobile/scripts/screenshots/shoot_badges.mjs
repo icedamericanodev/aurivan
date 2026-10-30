@@ -1,4 +1,4 @@
-// Mobile 1.10 badge collection (SHOTS=badges, see run.sh): You → Badges
+// Mobile 1.10 badge collection (SHOTS=badges, see run.sh): You → Herbarium
 // (empty-ish, mid-progress, nearly complete), each shelf, "Next for your
 // exam", the Sort menu and a flat sort, the detail sheet (not yet, earned,
 // Rooted's tiers), Results with a new badge, You with the "new" dot, and
@@ -9,6 +9,10 @@
 // run at 1/SLOW speed, so a 1.2 s moment lasts ~12 s and frames land inside
 // it; each strip is 4 frames labelled with app-time, side by side.
 // REDUCED=1 runs it with the browser's Reduce Motion on (files end "-reduced").
+//
+// Mobile 1.51: the case is the Field Guide Herbarium. An earned badge is spoken
+// "Pressed by <date>" (it was "Earned"), and Long Memory is a tier ladder
+// ("Long Memory · 25 recalls, Clay. Not yet. …").
 import { createRequire } from 'module';
 import fs from 'fs';
 const require = createRequire(process.env.PLAYWRIGHT_REQUIRE_FROM || import.meta.url);
@@ -103,6 +107,11 @@ const toTop = async (text, offset = 70) => {
   await wait(300);
   await scrollBy(-offset);
 };
+/** Scroll an element (by its testID) to the middle of the screen. */
+const toMiddle = async (testId) => {
+  await page.getByTestId(testId).first().evaluate((n) => n.scrollIntoView({ block: 'center' }));
+  await wait(500);
+};
 const tab = (name) => page.getByRole('tab', { name: new RegExp(name) }).click();
 
 async function strip(name, titles, act, appTimes, clip) {
@@ -148,13 +157,13 @@ if (FONT_SCALE) {
   await shot('b01-case-next');
   await toTop('Groundwork');
   await shot('b02-shelf-groundwork-domains');
-  await page.getByRole('button', { name: /^First Foothold\. Earned/ }).first().click();
+  await page.getByRole('button', { name: /^First Foothold\. Pressed/ }).first().click();
   await wait(1400);
   await shot('b09-sheet-earned');
   await page.getByRole('button', { name: /^Close First Foothold/ }).click();
   await wait(700);
   await toTop('Evergreen');
-  await page.getByRole('button', { name: /^Long Memory\. Not yet/ }).first().click();
+  await page.getByRole('button', { name: /^Long Memory · 25 recalls, Clay\. Not yet/ }).first().click();
   await wait(1400);
   await shot('b08-sheet-not-yet');
   console.log('errors:', errs.slice(0, 5));
@@ -190,13 +199,13 @@ await edit(SEEN, `v.state.badgeSort = 'set';`);
 // ── 2. The detail sheet: not yet, earned, and Rooted's tiers ───────────
 await go('/milestones', 2200);
 await toTop('Evergreen');
-await page.getByRole('button', { name: /^Long Memory\. Not yet/ }).first().click();
+await page.getByRole('button', { name: /^Long Memory · 25 recalls, Clay\. Not yet/ }).first().click();
 await wait(1400);
 await shot('b08-sheet-not-yet');
 await page.getByRole('button', { name: /^Close Long Memory/ }).click();
 await wait(700);
 await toTop('Groundwork');
-await page.getByRole('button', { name: /^First Foothold\. Earned/ }).first().click();
+await page.getByRole('button', { name: /^First Foothold\. Pressed/ }).first().click();
 await wait(1400);
 await shot('b09-sheet-earned');
 await page.getByRole('button', { name: /^Close First Foothold/ }).click();
@@ -261,25 +270,28 @@ await wait(600);
 await shot('b12-results-unlock');
 
 // ── 5. You with the "new" dot (a badge earned since the case was opened) ─
+// Mobile 1.51: the way in is the Herbarium entry under You's plate (it was a row in Study tools).
 await edit(SEEN, `v.state.caseSeen = { cisa: a - 2 * 86400000 };`, now);
 await edit('aurivan.session.v1', `v.state.active = null;`);
 await go('/you', 2600);
-await toTop('Study tools', 40);
+await toMiddle('herbarium-entry');
 await shot('b13-you-new-dot');
 
-// ── 6. Settings → Show badges: off (You has no row), then back on ───────
+// ── 6. Settings → Show badges: off (You has no entry), then back on ─────
+// Mobile 1.46: the switch is in the "Badges and your plant" group.
 await go('/settings', 2000);
-await toTop('Study', 20);
+await toTop('Badges and your plant', 20);
 await page.getByRole('switch', { name: /Show badges/ }).click();
 await wait(700);
 await shot('b14-settings-badges-off');
 await go('/you', 2400);
-await toTop('Study tools', 40);
+// Near b13's place: the stats, just under where the entry was.
+await toMiddle('you-stats');
 await shot('b15-you-badges-hidden');
 // Earned while hidden (quietly): switching back on says so in one line.
 await edit(P, `const m = v.state.byCert.cisa.milestones; m.earned['myth-clearer'] = Date.now() + 1000; m.queue = ['myth-clearer'];`);
 await go('/settings', 2000);
-await toTop('Study', 20);
+await toTop('Badges and your plant', 20);
 await page.getByRole('switch', { name: /Show badges/ }).click();
 await wait(700);
 await shot('b16-settings-badges-on-again');

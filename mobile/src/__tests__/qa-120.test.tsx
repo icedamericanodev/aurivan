@@ -37,9 +37,11 @@ import { finishSession } from '../lib/finishSession';
 import { startFromIds } from '../lib/sessions';
 import { selectCert, useProgress } from '../store/progress';
 import { useSession } from '../store/session';
+import { moreRowLabels, viaMore } from '../../jest/answerMore';
 import SessionScreen from '../app/session';
 import NoteSubtopicScreen from '../app/notes/subtopic/[id]';
 import ReadinessReport from '../app/readiness';
+import PlayMoved from '../app/play';
 import LessonPlayer from '../app/lesson/[id]';
 import Results from '../app/results';
 import { OptionCard } from '../components/quiz';
@@ -181,7 +183,9 @@ describe('journey: practice miss → Read the note → Back', () => {
 
     // Read the note (pushed): the note page mounts ABOVE the session, which stays mounted.
     // Copy renamed in the UX pass (mobile 1.20): the spoken label names the reading time and "the idea".
-    press(session, new RegExp(`^Read the note: ${noted.name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}, about \\d+ minutes?, the idea this question tests$`));
+    // Mobile 1.49: the row is in the header's ⋯ "More on this question" sheet.
+    expect(moreRowLabels(session.root).some((l) => new RegExp(`^Read the note: ${noted.name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}, about \\d+ minutes?, the idea this question tests$`).test(l))).toBe(true);
+    viaMore(session.root, 'Read the note: ');
     expect(push).toHaveBeenLastCalledWith(`/notes/subtopic/${encodeURIComponent(noted.sub)}`);
     mockParams = { id: noted.sub };
     const note = mount(<NoteSubtopicScreen />);
@@ -208,7 +212,7 @@ describe('journey: kill the app on the note page, then resume', () => {
     startFromIds('cisa', [noted.qid, noted2.qid], 'Quick 10');
     const session = mount(<SessionScreen />);
     answerByUi(session, false);
-    press(session, /^Read the note: /);
+    viaMore(session.root, 'Read the note: ');
     mockParams = { id: noted.sub };
     mount(<NoteSubtopicScreen />);
     const saved = useSession.getState().active!;
@@ -228,7 +232,7 @@ describe('journey: kill the app on the note page, then resume', () => {
     expect(s.id).toBe(saved.id);
     expect(s.index).toBe(0);
     expect(s.responses[noted.qid]).toMatchObject({ correct: false });
-    expect(pressables(again, /^Read the note: /)).toHaveLength(1);
+    expect(pressables(again, /^Go deeper, /)).toHaveLength(1); // mobile 1.49: the one way on after a miss
     expect(pressables(again, 'Next question')).toHaveLength(1);
     expect(cp().answers[noted.qid].attempts).toBe(1);
   });
@@ -255,7 +259,7 @@ describe('saves: a session saved by 1.19 (Smart, with `support`) still loads', (
     await useSession.persist.rehydrate();
     expect(useSession.getState().active!.support).toBe(true);
     const session = mount(<SessionScreen />);
-    expect(pressables(session, /^Read the note: /)).toHaveLength(1);
+    expect(pressables(session, /^Go deeper, /)).toHaveLength(1); // mobile 1.49: the one way on after a miss
     expect(textOf(session)).not.toContain('A short read, then try more like this');
     // And it carries on.
     press(session, 'Next question');
@@ -268,7 +272,7 @@ describe('lesson player: Report a problem on a check scene', () => {
   const lesson = lessonsFor('cisa').find((l) => l.scenes.findIndex((s) => s.type === 'check') > 0)!;
   const checkAt = lesson.scenes.findIndex((s) => s.type === 'check');
 
-  it('is absent until the check is answered (it never hints at the answer), then names the step', () => {
+  it('mobile 1.49: never a row in the body; the header flag is there before and after the answer', () => {
     mockParams = { id: lesson.id };
     const r = mount(<LessonPlayer />);
     for (let i = 0; i < checkAt; i++) {
@@ -278,13 +282,14 @@ describe('lesson player: Report a problem on a check scene', () => {
       });
     }
     expect(r.root.findAllByType(OptionCard).length).toBeGreaterThan(0);
-    // The full row waits for the answer; mobile 1.22: the header's flag is there on every scene.
+    // Mobile 1.22: the header's flag is there on every scene; 1.49: the body's row is gone (§5.4).
     expect(pressables(r, 'Report a problem with this lesson step')).toHaveLength(0);
     expect(pressables(r, 'Report a problem with this step')).toHaveLength(1);
     act(() => {
       r.root.findAllByType(OptionCard)[0].props.onPress();
     });
-    expect(pressables(r, 'Report a problem with this lesson step')).toHaveLength(1);
+    expect(pressables(r, 'Report a problem with this lesson step')).toHaveLength(0);
+    expect(pressables(r, 'Report a problem with this step')).toHaveLength(1);
   });
 });
 
@@ -300,8 +305,9 @@ describe('lesson player: Report a problem on a check scene', () => {
 const { StackRouter } = require('expo-router/build/layouts/StackClient');
 type Route = { key: string; name: string; params?: Record<string, unknown> };
 type StackState = { key: string; index: number; routes: Route[]; routeNames: string[]; preloadedRoutes: Route[] };
-const ROOT_NAMES = ['(tabs)', 'readiness', 'session', 'results', 'notes/subtopic/[id]', 'lesson/[id]'];
-const TABS = ['home', 'learn', 'play', 'practice', 'you'];
+const ROOT_NAMES = ['(tabs)', 'readiness', 'session', 'results', 'notes/subtopic/[id]', 'lesson/[id]', 'play'];
+// Mobile 1.51: four tabs ("play" is now a root route that opens Practice at Drills: app/play.tsx).
+const TABS = ['home', 'learn', 'practice', 'you'];
 const rootOptions = { routeNames: ROOT_NAMES, routeParamList: {}, routeGetIdList: {} };
 const makeRoot = () => {
   const sr = StackRouter({});
@@ -341,6 +347,21 @@ describe('router model (expo-router StackRouter): reaching a tab from a pushed s
     b.dismissTo({ pathname: '/learn', params: { domain: '3' } });
     expect(b.names()).toEqual(['(tabs)']);
     expect(b.state.routes[0].params).toEqual({ screen: 'learn', params: { domain: '3' } });
+  });
+});
+
+describe('the old Play route → Practice at Drills (real root StackRouter; mobile 1.51)', () => {
+  it('a pushed /play leaves ONE (tabs) in the root stack, on Practice with ?section=drills', () => {
+    const stack = makeRoot();
+    stack.push('/play');
+    expect(stack.names()).toEqual(['(tabs)', 'play']);
+    navigate.mockImplementation((href) => stack.navigate(href));
+    dismissTo.mockImplementation((href) => stack.dismissTo(href));
+    push.mockImplementation((href) => stack.push(href));
+    const r = mount(<PlayMoved />);
+    expect(stack.names()).toEqual(['(tabs)']);
+    expect(stack.state.routes[0].params).toEqual({ screen: 'practice', params: { section: 'drills' } });
+    unmount(r);
   });
 });
 
@@ -410,7 +431,7 @@ describe('a set started above an old session or Results', () => {
     startFromIds('cisa', [noted.qid, noted2.qid], 'Quick 10');
     const first = open('session', <SessionScreen />);
     answerByUi(first, false);
-    press(first, /^Read the note: /);
+    viaMore(first.root, 'Read the note: ');
     mockParams = { id: noted.sub };
     const note = open('note', <NoteSubtopicScreen />);
     press(note, 'Practice this concept');
@@ -429,7 +450,7 @@ describe('a set started above an old session or Results', () => {
     startFromIds('cisa', [prepped.qid], 'Quick 10');
     const first = open('session', <SessionScreen />);
     answerByUi(first, false);
-    press(first, /^Take the lesson: /); // was "Review the lesson:", then "Lesson:" (1.20), now "Take the lesson:" (1.22)
+    press(first, /^Go deeper, take the lesson: /); // was "Review the lesson:", "Lesson:" (1.20), "Take the lesson:" (1.22), now "Go deeper, take the lesson:" (1.49)
     mockParams = { id: prepped.lesson.id };
     const player = open('lesson', <LessonPlayer />);
     const scenes = prepped.lesson.scenes;

@@ -21,7 +21,7 @@ for dn, rate in {1: .82, 2: .74, 3: .61, 4: .70, 5: .66}.items():
             review[q["id"]] = {"box": 1, "dueAt": now - 3600000, "lastSeen": t, "reps": 1}
 # Mobile 1.43 (SHOTS=m143): one THIN area, so You shows a row under 30 answers ("12 answered",
 # the bar drawn lighter), the row that overflowed at 200% text. Info Protection keeps 12 answers.
-if os.environ.get("SHOTS") == "m143":
+if os.environ.get("SHOTS") in ("m143", "fieldguide"):  # 1.51 Field Guide: the "too few yet" line too
     for qid in sorted(k for k in answers if k.startswith("d5_"))[12:]:
         answers.pop(qid); mistakes.pop(qid, None); review.pop(qid, None)
 days = [dk(now - i * day) for i in (6, 5, 4, 2, 1, 0)]

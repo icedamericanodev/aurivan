@@ -23,7 +23,7 @@
       "correct": "C",
       "key_concept": "The project charter formally authorizes a project, names its sponsor and grants the project manager authority over resources.",
       "pre_read": "Separate documents that justify a project from the one that authorizes it and delegates authority.",
-      "correct_explanation": "The project charter is the document that formally authorizes the project, names the sponsor and grants the project manager authority to use organizational resources. The business case is the runner-up: it justifies the investment and supports the decision to proceed, but it does not delegate authority to a named project manager.",
+      "correct_explanation": "The project charter is the document that formally authorizes the project, names the sponsor and grants the project manager authority to use organizational resources. The business case is the strongest alternative: it justifies the investment and supports the decision to proceed, but it does not delegate authority to a named project manager.",
       "wrong_explanations": {
         "A": "The work breakdown structure is a planning artifact produced after authorization. It decomposes deliverables but grants no one authority.",
         "B": "The risk register records threats and responses during planning and execution. It does not authorize the project or its manager.",
@@ -62,7 +62,7 @@
       "correct": "D",
       "key_concept": "Approved requirements are the baseline every later SDLC phase builds on; skipping them risks a system that misses business needs.",
       "pre_read": "Recall the SDLC order and ask what each phase hands to the next. Then weigh outcome risk against symptom risk.",
-      "correct_explanation": "In a linear SDLC each phase produces artifacts that feed the next, and approved requirements are the baseline for design, build and testing. Coding without them means the system may be built to the wrong target and fail to deliver business value. Cost overrun from rework is the runner-up: it is real, but it is a symptom of the larger risk of not meeting business needs.",
+      "correct_explanation": "In a linear SDLC each phase produces artifacts that feed the next, and approved requirements are the baseline for design, build and testing. Coding without them means the system may be built to the wrong target and fail to deliver business value. Cost overrun from rework comes closest: it is real, but it is a symptom of the larger risk of not meeting business needs.",
       "wrong_explanations": {
         "A": "Tests built on unconfirmed assumptions are one technical effect; they inherit the same wrong target rather than being the main risk.",
         "B": "Documentation out of sequence is a process weakness, but the business impact is a system that misses what users need.",
@@ -100,7 +100,7 @@
       "correct": "A",
       "key_concept": "Each test level has its own scope: unit for modules, integration for interfaces between components, system for the whole, UAT for business acceptance.",
       "pre_read": "Match the audit objective in the stem to the test level whose scope covers it.",
-      "correct_explanation": "Integration testing is the level designed to verify that data passes correctly between connected components and systems, so its results directly evidence the payroll-to-ledger and bank flows. Business acceptance sign-off is the runner-up: it shows users accept the workflows, but users judge business outcomes on selected scenarios and do not systematically verify every interface record.",
+      "correct_explanation": "Integration testing is the level designed to verify that data passes correctly between connected components and systems, so its results directly evidence the payroll-to-ledger and bank flows. Business acceptance sign-off comes closest: it shows users accept the workflows, but users judge business outcomes on selected scenarios and do not systematically verify every interface record.",
       "wrong_explanations": {
         "B": "Acceptance confirms the system meets user needs. It is not designed to verify each interface's data transfer systematically.",
         "C": "Unit tests verify single modules in isolation. They cannot show that data moves correctly between systems.",
@@ -177,7 +177,7 @@
       "correct": "D",
       "key_concept": "Project risks are escalated when residual exposure exceeds delegated tolerance or the response needs authority beyond the manager's mandate.",
       "pre_read": "Ask who owns the decision for this risk, and what would move it to someone else.",
-      "correct_explanation": "Escalation is driven by authority: when residual exposure exceeds the tolerance the project manager was delegated, or a response needs authority beyond that mandate, the decision belongs to the sponsor. A higher re-rating is the runner-up: it signals a worsening risk, but the manager may still be able to treat it within existing tolerance.",
+      "correct_explanation": "Escalation is driven by authority: when residual exposure exceeds the tolerance the project manager was delegated, or a response needs authority beyond that mandate, the decision belongs to the sponsor. A higher re-rating nearly wins: it signals a worsening risk, but the manager may still be able to treat it within existing tolerance.",
       "wrong_explanations": {
         "A": "A higher rating is a useful signal, but if exposure stays within the manager's tolerance it can be handled without escalating.",
         "B": "A critical-path delay is serious, but escalation follows delegated tolerance; if the delay stays within the manager's limits, the manager treats it.",
@@ -217,7 +217,7 @@
       "pre_read": "Notice the time horizon and when the benefits arrive. Ask which metric counts cash flows after cost is recovered.",
       "correct_explanation": "Net present value discounts every expected cash flow over the investment's whole life, so it reflects both the time value of money and the large benefits arriving after year three. Payback period is the tempting option: it is useful when quick recovery dominates, but it stops counting once the cost is recovered, so it ignores the late cash flows that carry most of the value here.",
       "wrong_explanations": {
-        "A": "Payback ignores both the time value of money and benefits after recovery. With value concentrated late, it would understate the strongest option.",
+        "A": "Payback does measure how long capital stays at risk, a real liquidity concern, but a liquidity measure answers when, never how much.",
         "B": "Adding seven years of cash flows without discounting treats a year-seven benefit as worth the same as one today, overstating late returns.",
         "D": "Accounting rate of return uses accounting profit, not cash flows, and ignores when the returns arrive."
       },
@@ -254,7 +254,7 @@
       "correct": "A",
       "key_concept": "A requirements traceability matrix links each requirement to design, code and tests, proving completeness and supporting change impact analysis.",
       "pre_read": "Ask which evidence follows each requirement all the way to a test result.",
-      "correct_explanation": "A requirements traceability matrix links each approved requirement forward to its design, code and test cases, so the auditor can spot any requirement with no test or no result. Acceptance sign-off is the runner-up: it shows users accepted what they tested, but it cannot show that every requirement was covered by a test.",
+      "correct_explanation": "A requirements traceability matrix links each approved requirement forward to its design, code and test cases, so the auditor can spot any requirement with no test or no result. Acceptance sign-off is the most tempting alternative: it shows users accepted what they tested, but it cannot show that every requirement was covered by a test.",
       "wrong_explanations": {
         "B": "Sign-off confirms acceptance of the tests that were run. Without traceability, untested requirements would go unnoticed.",
         "C": "Code reviews check how code was written. They do not map code back to approved requirements.",
@@ -293,7 +293,7 @@
       "pre_read": "Remember that velocity is empirical and belongs to one team. Ask what data a committed date should rest on.",
       "correct_explanation": "Velocity is an empirical, team-specific measure: it becomes a reliable basis for committed dates only after the same team has sized work against its own past stories for several sprints. Converting points to hours is the tempting option because it sounds precise, but it abandons relative sizing and turns two sprints of unstable data into time commitments the team cannot yet support.",
       "wrong_explanations": {
-        "A": "Hours conversion defeats relative sizing and creates false precision. It does not make a new team's forecasts more reliable.",
+        "A": "An auditor would welcome tying commitments to effort, but a unit change adds no evidence. Forecasts earn trust from a team's own settled history.",
         "C": "Sizing by one person loses the team's shared judgment. Points stop reflecting the effort of those doing the work.",
         "D": "Story points are relative to each team, so another team's velocity does not translate; it gives a precise-looking but invalid forecast."
       },
@@ -330,11 +330,11 @@
       "correct": "D",
       "key_concept": "In CI/CD, automated quality gates that block deployment on failed tests or scans give consistent preventive assurance for every build.",
       "pre_read": "Note the deployment frequency. Ask which control acts on every build before production rather than afterwards.",
-      "correct_explanation": "With several deployments a day, only an enforced control in the pipeline can act on every build before it reaches production. Gates that fail the build on test or scan failures are preventive and consistent. Nightly automated regression runs are the runner-up: they are consistent, but they are detective and run after many builds have already been deployed.",
+      "correct_explanation": "With several deployments a day, only an enforced control in the pipeline can act on every build before it reaches production. Gates that fail the build on test or scan failures are preventive and consistent. Nightly automated regression runs are the strongest alternative: they are consistent, but they are detective and run after many builds have already been deployed.",
       "wrong_explanations": {
         "A": "Self-attestation is unverified and not independent. It gives little assurance that defects were really fixed.",
         "B": "Quarterly testing examines a tiny fraction of releases. Hundreds of builds would reach production untested in between.",
-        "C": "Nightly runs are automated but detective. They test code after it has already been deployed several times that day."
+        "C": "Nightly regression runs suffice for daily releases; when code ships several times a day, the check sits where every build must pass."
       },
       "tips": [
         "Eliminate: A relies on unverified self-attestation, and B tests far too rarely for daily deployments.",
@@ -368,7 +368,7 @@
       "correct": "C",
       "key_concept": "Production-derived test data should be masked or pseudonymized before extraction, so non-production environments never hold real personal data.",
       "pre_read": "Ask who can see the data once it is in test. Prefer controls that remove exposure over controls that guard it.",
-      "correct_explanation": "Masking or pseudonymizing personal data before extraction means the test environment never holds recoverable personal data, which applies data protection by design. Encryption at rest is the runner-up: it protects stored data from theft of the media, but anyone using the test system still sees real identifiers.",
+      "correct_explanation": "Masking or pseudonymizing personal data before extraction means the test environment never holds recoverable personal data, which applies data protection by design. Encryption at rest nearly wins: it protects stored data from theft of the media, but anyone using the test system still sees real identifiers.",
       "wrong_explanations": {
         "A": "Encryption at rest protects against stolen media, but authorized test users still see real personal data in clear text.",
         "B": "Agreements deter misuse but do not reduce exposure. Real personal data still sits in a less controlled environment.",
@@ -407,14 +407,14 @@
       "correct": "A",
       "key_concept": "SAST adds most value when run on every pull request, with builds failing on high-severity findings: shift left, fast feedback.",
       "pre_read": "Think about when a flaw is cheapest to fix. Compare an early enforced check with a later one.",
-      "correct_explanation": "Static testing is most effective early and often: scanning each pull request gives developers fast feedback while the code is fresh, and failing builds on high-severity findings stops flaws from progressing. Scanning release candidates is the runner-up: it still finds flaws before production, but late in the cycle, when fixes are slower and costlier and may delay the release.",
+      "correct_explanation": "Static testing is most effective early and often: scanning each pull request gives developers fast feedback while the code is fresh, and failing builds on high-severity findings stops flaws from progressing. Scanning release candidates is the closest choice: it still finds flaws before production, but late in the cycle, when fixes are slower and costlier and may delay the release.",
       "wrong_explanations": {
-        "B": "Release-candidate scans catch flaws late. Fixes then compete with release dates, and pressure to accept risk rises.",
+        "B": "Both release-candidate and pull-request scans apply the same rules to the same code; feedback teaches most, though, while the author still has the change open.",
         "C": "Quarterly scans of production find flaws only after they are live. They measure trends rather than prevent defects.",
         "D": "Filtering findings through another team slows feedback and leaves most issues unfixed. Developers lose ownership of secure code."
       },
       "tips": [
-        "Eliminate: C scans production code long after release, and D delays and filters feedback away from developers.",
+        "Eliminate: C tracks trends in released code, which measures posture but stops no flaw from shipping, and D delays and filters feedback away from developers.",
         "Final two: A beats B because shifting scans left to each pull request fixes flaws earliest and cheapest; release-time scans come late.",
         "Exam cue: for security testing in development, choose the earliest enforced point that gives developers fast feedback."
       ],
@@ -525,7 +525,7 @@
       "pre_read": "Notice what changed at the same time as the metric. Ask whether a conclusion is justified yet.",
       "correct_explanation": "A rise in defect density can mean more thorough testing finds more defects, or that the code itself got worse. A new test team makes both plausible, so the auditor must analyze root causes before concluding. Comparing with the previous team's results is the tempting option because it looks like analysis, but that comparison is what showed the doubling; it cannot say whether detection or the code changed.",
       "wrong_explanations": {
-        "A": "That comparison is how the doubling was found. Repeating it restates the rise without showing whether better detection or worse code caused it.",
+        "A": "Comparing teams is a standard trend check, though a metric that moves when its measurer changes is explained before it is compared.",
         "B": "An outside benchmark assumes comparable measurement, but the way defects are found has just changed; the comparison proves nothing yet.",
         "C": "Recommending a delay acts on the number before its cause is known; the rise may reflect better testing rather than worse code."
       },
@@ -560,7 +560,7 @@
       "correct": "A",
       "key_concept": "Source code escrow protects continuity of business-critical custom software when the vendor may fail or stop supporting it.",
       "pre_read": "Identify the main risk: the vendor might not survive. Ask which provision still works after the vendor is gone.",
-      "correct_explanation": "Escrow places the source code with an independent agent and releases it if defined events occur, such as vendor failure. For business-critical custom software from a vendor whose survival is uncertain, that protects continuity. A right-to-audit clause is the runner-up: it gives visibility into how the vendor builds software, but it does nothing if the vendor stops trading.",
+      "correct_explanation": "Escrow places the source code with an independent agent and releases it if defined events occur, such as vendor failure. For business-critical custom software from a vendor whose survival is uncertain, that protects continuity. A right-to-audit clause is the strongest alternative: it gives visibility into how the vendor builds software, but it does nothing if the vendor stops trading.",
       "wrong_explanations": {
         "B": "Audit rights help assess development quality while the vendor operates. They provide no access to source code if it fails.",
         "C": "A bond pays compensation, but money does not keep critical software supported once the vendor is gone.",
@@ -636,7 +636,7 @@
       "correct": "D",
       "key_concept": "Regulated projects can use agile delivery when stage gates, signed baselines and traceability give auditors the evidence they need.",
       "pre_read": "Ask what the regulator and auditor need to see. Then look for the option that provides it without discarding agility.",
-      "correct_explanation": "A hybrid keeps agile delivery while adding the controls regulators and auditors rely on: stage gates, signed requirements baselines, traceability and controlled scope changes. Strict waterfall is the runner-up: it produces strong evidence, but it assumes agile cannot be controlled and gives up delivery flexibility the organization values, when a hybrid can satisfy both needs.",
+      "correct_explanation": "A hybrid keeps agile delivery while adding the controls regulators and auditors rely on: stage gates, signed requirements baselines, traceability and controlled scope changes. Strict waterfall nearly wins: it produces strong evidence, but it assumes agile cannot be controlled and gives up delivery flexibility the organization values, when a hybrid can satisfy both needs.",
       "wrong_explanations": {
         "A": "Sprint reviews show working increments but leave no signed baselines or traceability. Auditors would lack evidence over requirements and changes.",
         "B": "Waterfall yields strong evidence but gives up the delivery flexibility the CIO wants, when agile with gates and baselines can satisfy regulators too.",
@@ -679,7 +679,7 @@
       "wrong_explanations": {
         "A": "Removing failing cases hides the problem and makes the exit criteria meaningless. It defeats the control.",
         "B": "Executing tests is management's job. Audit performing them would impair independence and not fix the defects.",
-        "D": "Going live with most cases unpassed shifts major untested risk into production and overrides the agreed criteria under schedule pressure."
+        "D": "Carrying a few defects forward is normal with formal sign-off, but here the date is deciding; a deadline is a constraint, not evidence."
       },
       "tips": [
         "Eliminate: A re-scopes UAT so failing cases no longer count, which defeats the agreed exit criteria, and B has the auditor perform testing that belongs to management.",
@@ -714,7 +714,7 @@
       "correct": "A",
       "key_concept": "When cutover reconciliation shows an unexplained material variance, invoking the tested fallback plan protects data integrity and customers.",
       "pre_read": "Note that the cause is unknown. Ask which option avoids relying on any data from the new platform.",
-      "correct_explanation": "A material variance with an unknown cause means the integrity of the new platform's balances cannot be trusted. The documented, tested fallback exists for exactly this situation. Locking affected accounts is the runner-up: it contains part of the exposure, but with the root cause unknown the auditor cannot be sure other accounts are correct.",
+      "correct_explanation": "A material variance with an unknown cause means the integrity of the new platform's balances cannot be trusted. The documented, tested fallback exists for exactly this situation. Locking affected accounts is the most tempting alternative: it contains part of the exposure, but with the root cause unknown the auditor cannot be sure other accounts are correct.",
       "wrong_explanations": {
         "B": "Locking only the visibly affected accounts assumes the problem is contained. With the root cause unknown, other balances may also be wrong.",
         "C": "Clearing an unexplained variance to suspense hides an integrity failure. It also delays resolution until month-end.",
@@ -752,11 +752,11 @@
       "correct": "B",
       "key_concept": "Under fixed deadlines, ship a fully tested scope subset and defer blocked items with documented risk acceptance; never skip testing silently.",
       "pre_read": "Notice the deadline is fixed and only part of the scope is blocked. Ask which option keeps testing intact and still meets the date.",
-      "correct_explanation": "Splitting scope lets the organization meet the regulatory deadline with a subset that has fully passed UAT, while the blocked reports follow in a later release under formally documented risk acceptance. Halting everything is the runner-up: it protects quality, but it guarantees a missed fixed deadline when a fully tested subset could ship safely.",
+      "correct_explanation": "Splitting scope lets the organization meet the regulatory deadline with a subset that has fully passed UAT, while the blocked reports follow in a later release under formally documented risk acceptance. Halting everything comes closest: it protects quality, but it guarantees a missed fixed deadline when a fully tested subset could ship safely.",
       "wrong_explanations": {
         "A": "Silently dropping blocked items from test scope ships untested code and hides the gap from decision-makers.",
         "C": "Workarounds can bridge a short gap, but making them permanent replaces a designed control with an informal one.",
-        "D": "Holding the whole release forfeits the regulatory deadline even though most reports could ship fully tested."
+        "D": "Holding the whole release would win if the blocked reports were required by the regulation; optional scope should never hold a mandated date hostage."
       },
       "tips": [
         "Eliminate: A ships untested code without disclosure, and C turns a temporary workaround into a permanent control.",
@@ -794,7 +794,7 @@
       "wrong_explanations": {
         "A": "Functional managers control staff in functional and matrix structures. In a projectized structure, staff report to the project manager.",
         "B": "A central resource manager allocates pooled staff in matrix settings; in a projectized structure the project manager already controls the team.",
-        "D": "The sponsor authorizes the project and resolves escalations. Routine task assignment is delegated to the project manager."
+        "D": "A sponsor's mandate covers funding, scope and escalation, but the organization's structure, not seniority, decides who directs a project's people."
       },
       "tips": [
         "Eliminate: A describes functional or matrix authority, and B describes a shared resource pool; in a projectized structure the team reports to the project manager.",
@@ -830,7 +830,7 @@
       "correct_explanation": "A customer number can be in range and carry a valid check digit yet belong to no customer. Only an existence check, a lookup against the customer master records, rejects numbers that match no real customer before processing. The check digit is the tempting option: it catches keying errors such as transposed digits, but a well-formed number that was never issued still passes it.",
       "wrong_explanations": {
         "A": "A range check confirms the number falls within allowed limits; a number inside the range can still belong to no customer.",
-        "B": "A check digit catches transposed or mistyped digits, but a correctly formed number that was never issued still passes.",
+        "B": "Check digits do stop most mistyped numbers at entry, yet form and existence are separate questions, and each input edit answers only one.",
         "C": "A format check confirms the number is well formed; a well-formed number can still match no customer on file."
       },
       "tips": [
@@ -866,7 +866,7 @@
       "pre_read": "Ask which artifact links a component to the products that contain it, not which one finds weaknesses on servers.",
       "correct_explanation": "An SBOM is a formal, machine-readable record of the components and versions in each product, so the vendor can query it and name affected releases within hours. A disclosure policy is the tempting option because it sets response-time targets, but it cannot tell the vendor which products contain the library, so the targets cannot be met.",
       "wrong_explanations": {
-        "A": "A disclosure policy promises response times, but it cannot tell the vendor which products contain the library.",
+        "A": "An auditor would expect a disclosure policy as a vendor commitment, but a response promise is only as good as the inventory behind it.",
         "C": "An annual penetration test probes products for exploitable flaws at one point in time; it does not inventory the components inside each one.",
         "D": "Host scans assess the vendor's own infrastructure. They do not inventory libraries compiled into products shipped to customers."
       },
@@ -905,11 +905,11 @@
       "correct_explanation": "Repudiation is the threat that a user denies an action and the system cannot prove otherwise. The control that answers it is a tamper-evident record tying each approval to the individual who made it. Stronger sign-in authentication is the tempting option: it proves who opened the session, but without a protected record of each action the approver can still dispute the payment.",
       "wrong_explanations": {
         "A": "Encryption protects the confidentiality of the records; it does not prove which individual approved a payment.",
-        "B": "Stronger authentication proves who signed in, not which actions they took; without a protected action record the approval can still be disputed.",
+        "B": "Sign-in strength answers spoofing, a different STRIDE threat; match each STRIDE threat to its own control family.",
         "D": "Dual approval reduces the chance of a fraudulent payment, but either approver could still deny acting; it creates no proof of who approved."
       },
       "tips": [
-        "Eliminate: A protects confidentiality, and D adds a second approver, which spreads authorization but leaves no proof of who approved.",
+        "Eliminate: A protects confidentiality, but repudiation is an accountability threat that secrecy cannot answer. D is dual control, which guards against one person's fraud rather than a later denial.",
         "Final two: C beats B because the gap is evidence of the action, which logging supplies; authentication alone proves only who signed in.",
         "Exam cue: in STRIDE, repudiation is answered by tamper-evident action records tied to individuals; spoofing is answered by authentication."
       ],
@@ -979,7 +979,7 @@
       "pre_read": "Note the mixed technologies. Ask which measure stays comparable when languages and teams differ.",
       "correct_explanation": "Function points measure functional size from what users see, independent of language, so Java, COBOL and low-code teams can be compared on the same scale. Story points are useful for a team's own planning, but each team calibrates them differently, so they cannot support cross-team productivity comparisons.",
       "wrong_explanations": {
-        "B": "Story points are relative to each team's own calibration. A point in one team does not equal a point in another.",
+        "B": "Story points do size work within one team, but comparing teams needs a unit no team defines for itself.",
         "C": "Lines of code depend on language; COBOL and low-code platforms produce very different counts for the same function.",
         "D": "File counts reflect how code is organized, not delivered functionality, and vary widely across languages and platforms."
       },
@@ -1018,7 +1018,7 @@
       "correct_explanation": "Kanban suits work that arrives continuously: items are pulled when capacity frees up, so urgent fixes enter the process instead of waiting or going around it, and work-in-progress limits keep the flow controlled. Shorter sprints are the tempting option, but they still batch work into fixed commitments, so an urgent fix must still wait days or break the sprint.",
       "wrong_explanations": {
         "A": "Adding fixes mid-sprint breaks the sprint commitment each time and turns the current bypass of sprint planning into policy.",
-        "C": "Shorter sprints reduce the wait but still batch work into fixed commitments, so urgent fixes keep waiting or skipping planning.",
+        "C": "Shorter sprints would win if urgent fixes could wait a few days; a delivery method follows the shape of demand, not the planning calendar.",
         "D": "Emergency change is meant for genuine emergencies; sending routine support work through it overloads that path and weakens control, while releases still batch other work."
       },
       "tips": [
@@ -1053,9 +1053,9 @@
       "correct": "C",
       "key_concept": "DevSecOps makes security a shared responsibility: scan findings go into delivery teams' backlogs with severity-based fix deadlines.",
       "pre_read": "Ask who owns a security finding in DevSecOps, and how it reaches the people who can fix it.",
-      "correct_explanation": "DevSecOps makes security a shared responsibility: findings flow into the delivery team's own backlog, are prioritized like other work and must be fixed within severity-based deadlines, so the people who wrote the code fix it. Central fixing by the security team is the runner-up: it gets findings addressed, but it keeps security outside the team, creates a bottleneck and leaves developers repeating the same flaws.",
+      "correct_explanation": "DevSecOps makes security a shared responsibility: findings flow into the delivery team's own backlog, are prioritized like other work and must be fixed within severity-based deadlines, so the people who wrote the code fix it. Central fixing by the security team is the strongest alternative: it gets findings addressed, but it keeps security outside the team, creates a bottleneck and leaves developers repeating the same flaws.",
       "wrong_explanations": {
-        "A": "A central fixing team becomes a bottleneck and keeps developers unaware of their own flaws, so the same weaknesses keep recurring.",
+        "A": "A central remediation team is a recognized stopgap when findings pile up, but in DevSecOps each delivery team owns the flaws its code creates.",
         "B": "Reporting raises visibility, but findings still sit outside the teams who must fix them, so the delay continues.",
         "D": "An annual test is periodic and late. It does not change who owns findings or how quickly they are fixed."
       },
@@ -1092,7 +1092,7 @@
       "correct": "A",
       "key_concept": "Well-formed UAT criteria are measurable, tied to business requirements, agreed by the business owner and fixed before testing starts.",
       "pre_read": "Ask who owns acceptance and what the system is being tested against: business requirements or the technical build.",
-      "correct_explanation": "UAT confirms the system meets business needs, so its criteria must be measurable, agreed by the business owner and fixed before testing begins. QA approval with traceability to the technical design is the runner-up: it shows rigor, but it validates against how the system was built rather than what the business required, and the business owner has not accepted the criteria.",
+      "correct_explanation": "UAT confirms the system meets business needs, so its criteria must be measurable, agreed by the business owner and fixed before testing begins. QA approval with traceability to the technical design nearly wins: it shows rigor, but it validates against how the system was built rather than what the business required, and the business owner has not accepted the criteria.",
       "wrong_explanations": {
         "B": "Tracing to the technical design tests what was built, not what the business needs. Without business-owner agreement, acceptance lacks its proper owner.",
         "C": "Developers defining criteria from their own build choices removes independence; the system is judged against itself.",
@@ -1207,7 +1207,7 @@
       "pre_read": "Ask how often the work is integrated. Then separate the root risk from its symptoms.",
       "correct_explanation": "Deferring integration for a quarter lets months of changes collide at once, so conflicts and integration defects surface late, in large batches whose cause is hard to trace. The review backlog is the tempting option, but it is a symptom of the same practice; the root risk to release quality is the late, large-batch integration.",
       "wrong_explanations": {
-        "B": "A review backlog is a real symptom, but it follows from deferred integration; it is not the root risk to release quality.",
+        "B": "Review backlogs and late defects share one cause, the quarterly merge, though risks rank by harm to production, not by process friction.",
         "C": "Weekly releases are common with automated testing; the risk comes from how rarely work is integrated, not how often it ships.",
         "D": "Late scanning is a real gap, but branch code is still scanned when it merges, before release; the larger risk is how rarely the branches integrate."
       },
@@ -1243,7 +1243,7 @@
       "correct": "D",
       "key_concept": "Signing images at build and verifying signatures before deployment proves an image's origin and that it was not altered.",
       "pre_read": "Ask which control proves who built the image, rather than where it is stored or how it travels.",
-      "correct_explanation": "Signing each image in the build pipeline and having the cluster verify the signature before scheduling proves both who built the image and that it has not changed since. Restricting pulls to one approved registry is the runner-up: it narrows the source, but anyone able to push to that registry could place an altered image there.",
+      "correct_explanation": "Signing each image in the build pipeline and having the cluster verify the signature before scheduling proves both who built the image and that it has not changed since. Restricting pulls to one approved registry is the closest choice: it narrows the source, but anyone able to push to that registry could place an altered image there.",
       "wrong_explanations": {
         "A": "Antivirus finds known malware. It cannot show where an image was built or detect subtle unauthorized changes.",
         "B": "TLS protects images in transit. It does not prove who built the image or that it was unaltered at the source.",
@@ -1281,7 +1281,7 @@
       "correct": "C",
       "key_concept": "Verify target infrastructure against its approved security baseline before production data is migrated into it.",
       "pre_read": "Ask what is put at risk the moment real data lands in the new environment.",
-      "correct_explanation": "Once production data is loaded, any misconfiguration exposes real customer information, so the target infrastructure must first be verified against the approved security baseline, covering hardening, access and network rules. Load testing is the runner-up: capacity matters before go-live, but it can be proven with test data, while an insecure environment puts claims data at risk the moment it arrives.",
+      "correct_explanation": "Once production data is loaded, any misconfiguration exposes real customer information, so the target infrastructure must first be verified against the approved security baseline, covering hardening, access and network rules. Load testing comes closest: capacity matters before go-live, but it can be proven with test data, while an insecure environment puts claims data at risk the moment it arrives.",
       "wrong_explanations": {
         "A": "Monitoring detects problems once the system runs; it does not stop a misconfigured server from exposing data loaded into it.",
         "B": "Inventory tagging supports asset management and can be completed before go-live; it does not protect the data being loaded.",
@@ -1470,9 +1470,9 @@
       "correct": "A",
       "key_concept": "Open-source license risk is managed by tracking licenses, scanning before merge and isolating strong-copyleft components.",
       "pre_read": "Notice counsel has already flagged the risk. Ask which option reduces exposure now and keeps new copyleft code out.",
-      "correct_explanation": "Counsel has already flagged a real disclosure risk, so the sound response reduces exposure now: isolate the copyleft component behind a service boundary or replace it, and scan licenses before code is merged, which also stops new issues entering. A second legal opinion is the runner-up: it may refine the legal view, but it reduces no exposure and adds no ongoing control, whatever it concludes.",
+      "correct_explanation": "Counsel has already flagged a real disclosure risk, so the sound response reduces exposure now: isolate the copyleft component behind a service boundary or replace it, and scan licenses before code is merged, which also stops new issues entering. A second legal opinion nearly wins: it may refine the legal view, but it reduces no exposure and adds no ongoing control, whatever it concludes.",
       "wrong_explanations": {
-        "B": "A second opinion refines a risk counsel has already raised, but it reduces no exposure and adds no control to stop new copyleft code entering.",
+        "B": "A second opinion would win if counsel's advice were in doubt; once a credible warning stands, treatment begins while analysis continues.",
         "C": "License notices satisfy attribution terms, but the AGPL's obligation is to offer source to network users; a notice reduces no exposure.",
         "D": "Disclosure is transparent and may be expected, but deferring remediation leaves the exposure in place and new copyleft code can still enter."
       },
@@ -1546,7 +1546,7 @@
       "correct": "A",
       "key_concept": "PMI process groups are not SDLC phases; they repeat within each phase, and monitoring and controlling runs throughout the project.",
       "pre_read": "Distinguish project management process groups from SDLC phases, and ask which group must operate continuously.",
-      "correct_explanation": "Process groups are not phases: they interact and repeat within every phase, and monitoring and controlling runs throughout to catch cost, schedule and scope variances. Confining it to one phase leaves the rest of the project without oversight. Revisiting planning is the runner-up: progressive elaboration matters, but missing oversight is the greater control gap because variances would go undetected.",
+      "correct_explanation": "Process groups are not phases: they interact and repeat within every phase, and monitoring and controlling runs throughout to catch cost, schedule and scope variances. Confining it to one phase leaves the rest of the project without oversight. Revisiting planning is the closest concern: progressive elaboration matters, but missing oversight is the greater control gap because variances would go undetected.",
       "wrong_explanations": {
         "B": "Planning does recur as detail emerges, but uncontrolled variance across most phases is the larger governance risk.",
         "C": "Waiting for planning to finish slows delivery, but it is an efficiency issue; it does not leave the project without oversight.",
@@ -1585,7 +1585,7 @@
       "correct_explanation": "Batch totals are an integrity control: when input and output totals differ, records were lost, duplicated or altered during processing, so completeness and accuracy through processing are at risk. Validity at input is the tempting option because the stem mentions the input file, but the input total is the reference point; the difference arose after it, during processing.",
       "wrong_explanations": {
         "A": "Authorization concerns whether a change was approved before entry; unapproved records would sit in both totals, so a mismatch does not point to it.",
-        "B": "Input validity concerns whether records were acceptable when entered; the input total is the baseline, and the mismatch arose after it.",
+        "B": "Input validity is a genuine control objective, yet a mismatch belongs between the last point where totals agree and the first where they part.",
         "D": "Standing master data between runs is a separate concern; the mismatch is between this run's input file and its output, so the loss arose in processing."
       },
       "tips": [
@@ -1621,7 +1621,7 @@
       "correct_explanation": "Formal closure follows acceptance: the project releases staff and contracts, completes financial closeout and archives records so it stops consuming resources. Closure schedules the post-implementation review and records lessons learned; the review itself comes later. Measuring benefits before closing is the tempting option, but benefits take months of live operation to appear, so measuring them is not a closure step.",
       "wrong_explanations": {
         "A": "Security testing belongs before go-live and acceptance; testing after acceptance is an operational activity, not a closure step.",
-        "C": "Closure assigns an owner and a date for the post-implementation review; benefits can only be measured after months of live operation, so measuring them is not a closure step.",
+        "C": "Benefit measurement shares closure's aim of accounting for what was delivered, though projects close on outputs while the business owns and measures outcomes.",
         "D": "Warranty defects are handled through the support or vendor contract; holding the project open keeps consuming its budget and team."
       },
       "tips": [
@@ -1655,7 +1655,7 @@
       "correct": "A",
       "key_concept": "Lessons learned capture what worked and what did not, and add value only when future projects can find and apply them.",
       "pre_read": "The same problem recurring is the clue. Ask whether the gap is capturing lessons or reusing them.",
-      "correct_explanation": "The same delay recurring across three projects shows lessons are being captured but not reused. Value comes when lessons are stored where others can find them and consulted at initiation and planning. More thorough end-of-project workshops are the runner-up, but better capture alone does not change what the next project does if no one reads the lessons.",
+      "correct_explanation": "The same delay recurring across three projects shows lessons are being captured but not reused. Value comes when lessons are stored where others can find them and consulted at initiation and planning. More thorough end-of-project workshops come closest, but better capture alone does not change what the next project does if no one reads the lessons.",
       "wrong_explanations": {
         "B": "Workshops capture lessons, which appears to happen already. The repeated delays show the gap is reuse at project start.",
         "C": "A sign-off proves lessons were captured at closure, which already happens; it does not make the next project consult them.",
@@ -1728,11 +1728,11 @@
       "correct": "D",
       "key_concept": "A business case is a living document: when costs or benefits change materially, update it and have sponsors re-approve the investment.",
       "pre_read": "Ask what decision makers need before choosing to continue or stop, and who makes that choice.",
-      "correct_explanation": "A business case is a living document: when costs and benefits shift materially, it should be updated and put back to the sponsors so they judge continued investment on current facts. An independent cost-to-complete estimate is the tempting first step, but benefits have fallen too, and an estimate refines one input without putting the decision back to the sponsors.",
+      "correct_explanation": "A business case is a living document: when costs and benefits shift materially, it should be updated and put back to the sponsors so they judge continued investment on current facts. An independent cost-to-complete estimate is a tempting check, but benefits have fallen too, and an estimate refines one input without putting the decision back to the sponsors.",
       "wrong_explanations": {
         "A": "Monitoring shows the gap widening, but spending continues on a two-year-old approval; no one re-decides whether to continue.",
         "B": "The case may no longer hold, but canceling before updating it acts on incomplete analysis, and sponsors make that call.",
-        "C": "An independent estimate improves one input, but benefits have also fallen, and the estimate alone does not put the decision back to the sponsors."
+        "C": "An auditor would value an independent estimate as stronger evidence, but evidence feeds a decision and never stands in for one."
       },
       "tips": [
         "Eliminate: A keeps spending on a two-year-old approval that no longer reflects the facts, and B cancels before the case is updated, a call that belongs to the sponsors.",
@@ -1764,7 +1764,7 @@
       "correct": "A",
       "key_concept": "Agile favors just-enough documentation, not none: design and control decisions must be recorded well enough for maintenance and audit.",
       "pre_read": "Agile values working software over comprehensive documentation. Ask whether that means no documentation.",
-      "correct_explanation": "Agile favors working software over comprehensive documentation, but not over none: the team should record design decisions, control-relevant logic and interfaces at the level needed for maintenance, support and audit. Relying on code comments is the runner-up: comments help developers, but they rarely explain architecture, control decisions or why choices were made, and non-developers cannot use them.",
+      "correct_explanation": "Agile favors working software over comprehensive documentation, but not over none: the team should record design decisions, control-relevant logic and interfaces at the level needed for maintenance, support and audit. Relying on code comments is the most tempting alternative: comments help developers, but they rarely explain architecture, control decisions or why choices were made, and non-developers cannot use them.",
       "wrong_explanations": {
         "B": "Heavy design documents every sprint undermine agile delivery and quickly go stale. The need is proportionate, not exhaustive.",
         "C": "Agile values documentation less, not at nothing. Unrecorded design decisions hurt maintenance and control assurance.",
@@ -1804,7 +1804,7 @@
       "correct_explanation": "Consumer-driven contract tests run in the provider's pipeline check each change against what partners actually rely on, so a breaking change is caught before it is deployed. A shared staging environment helps partners find breaks early, but it depends on every partner testing every release; nothing in the provider's pipeline blocks a breaking change.",
       "wrong_explanations": {
         "A": "Notice informs but does not prevent. Partners who miss the email or cannot migrate in time still break on release day.",
-        "C": "Shared staging helps partners find breaks early, but it relies on every partner testing every release; nothing in the provider's pipeline stops a breaking change.",
+        "C": "Staging and contract tests both aim to catch breaks before release; preventing one, though, is the job of whoever makes the change.",
         "D": "The provider's own tests check its intended behavior, not what each partner relies on, so changes that break consumers still pass."
       },
       "tips": [
@@ -1841,7 +1841,7 @@
       "pre_read": "Notice the stem asks for a basis for tolerances. Ask which option ties acceptable variance to the impact of the error.",
       "correct_explanation": "Tolerances should be risk-based: financial balances may need near-zero variance, while descriptive reference fields can tolerate more, each with documented investigation rules. This focuses effort where an error would matter. Zero tolerance sounds rigorous, but it treats a trivial formatting difference like a misstated balance, consumes investigation effort on immaterial items and can delay cutover without reducing meaningful risk.",
       "wrong_explanations": {
-        "A": "Investigating every immaterial variance wastes effort and can stall cutover while adding little assurance over the data that matters.",
+        "A": "Zero tolerance is defensible for cash balances, yet a threshold exists to sort errors that matter from noise, and one that sorts nothing is no threshold.",
         "B": "One threshold for every category treats balances and reference fields alike, though materiality differs by data category and business impact.",
         "C": "Another project's tolerances reflect different data and risks; they are not tied to the materiality of this organization's categories."
       },
@@ -1879,7 +1879,7 @@
       "pre_read": "Notice the constraint: limited time. Ask which strategy uses that time where a failure would hurt most.",
       "correct_explanation": "Risk-based testing allocates effort by the product of failure impact and likelihood, so interest calculation, payments and access control get deep coverage while low-risk screens get lighter checks. With limited time, this delivers the most assurance per hour. Even coverage sounds thorough and fair, but it gives a cosmetic report the same attention as the interest engine and runs out of time before the riskiest areas are tested deeply.",
       "wrong_explanations": {
-        "A": "Even spreading treats low- and high-risk modules alike, leaving critical functions under-tested when time runs out.",
+        "A": "Even coverage holds up only when time allows every module deep testing; under a squeeze, depth goes where failure is likeliest and costliest.",
         "B": "Usage volume is only part of risk; a rarely run but high-impact function, such as interest calculation, would be tested late.",
         "D": "Loan value is one part of impact; ranking by it misses high-risk functions such as interest calculation or access control whatever a transaction's value."
       },
@@ -1953,7 +1953,7 @@
       "pre_read": "Notice the scale (hundreds of libraries) and frequency (each build). Ask which control keeps pace with both.",
       "correct_explanation": "Software composition analysis inventories every dependency at each build and matches it against vulnerability databases, so newly disclosed vulnerabilities (CVEs) are flagged and routed for remediation quickly. It scales to hundreds of libraries and runs continuously. An annual penetration test is a valuable independent check, but it samples exploitable paths once a year, while new dependency vulnerabilities are published daily and can sit unpatched for months.",
       "wrong_explanations": {
-        "A": "A yearly test is too infrequent for dependencies that change every build, and it may miss vulnerable code that is not easily exploitable.",
+        "A": "An auditor values a penetration test for what attackers can reach, but controls must keep pace with their risk.",
         "C": "An approved list is enforced at each build but vetted once; it goes stale as new vulnerabilities are disclosed in libraries already on it.",
         "D": "A single review at adoption cannot track vulnerabilities disclosed later and does not scale to hundreds of libraries."
       },
@@ -2030,7 +2030,7 @@
       "correct_explanation": "A rollback plan provides assurance only if it has been exercised, can be completed within a defined window, and restores data and configuration as well as code. Many failed rollbacks happen because a schema or configuration change was not reversible. An approved runbook shows the steps were reviewed, but until it is rehearsed nobody knows whether it restores code, data and configuration within the window.",
       "wrong_explanations": {
         "A": "The pieces exist, but nobody has shown they restore together, or how long that takes, so the plan is unproven.",
-        "B": "Approval shows the runbook was reviewed, not that it restores code, data and configuration within the window.",
+        "B": "A reviewed runbook would do for a code-only change; with a schema change in play, approval records intent, not capability.",
         "D": "Last year's rehearsal tested a different release; this release's data and configuration changes have never been rolled back."
       },
       "tips": [
@@ -2071,7 +2071,7 @@
         "D": "Unit tests verify each service alone. They cannot detect failures in the calls and data flows between services."
       },
       "tips": [
-        "Eliminate: A invites incompatible services, and C drops application-level controls entirely.",
+        "Eliminate: A invites incompatible services, and C trades application controls for platform security, though validation and authorization still run inside each service.",
         "Final two: B beats D because the new risk lives between services, and unit tests only check each service in isolation.",
         "Exam cue: when architecture becomes distributed, look for controls over interfaces and end-to-end visibility."
       ],
@@ -2145,7 +2145,7 @@
       "wrong_explanations": {
         "A": "A pilot tests one product in practice before requirements and alternatives are compared, so it assumes SaaS and skips the business case.",
         "B": "Scoring both options compares them, but on one executive's framing and one factor; lifetime cost and delivery risk are left out.",
-        "D": "Demonstrations before a requirements-based comparison let vendors steer the choice and assume buying is the answer."
+        "D": "Requirements are the yardstick for build and buy alike. Demos show how a product handles real work, yet yardsticks are fixed before anything is measured."
       },
       "tips": [
         "Eliminate: A trials one product before the options are compared, and B compares both but only on fit to processes one executive defined.",
@@ -2215,9 +2215,9 @@
       "correct": "B",
       "key_concept": "When a rollback would strand or lose data written by the failed release, preserve that data first, then restore service by hotfix or roll forward.",
       "pre_read": "Notice the rollback script cannot read the new data. Ask what is lost if the rollback runs anyway.",
-      "correct_explanation": "The known rollback path cannot read orders written in the new format, so running it would leave them unreadable or lost; the first priority is preserving that data in a safe staging area. Only then should service be restored by a hotfix or roll forward, followed by reconciliation. Rolling back immediately restores service fastest, but it knowingly strands customer transactions that may not be recoverable.",
+      "correct_explanation": "The known rollback path cannot read orders written in the new format, so running it would leave them unreadable or lost; the first priority is preserving that data in a safe staging area. Only then should service be restored by a hotfix or roll forward, followed by reconciliation. Rolling back follows the usual recovery playbook, but it knowingly strands customer transactions that may not be recoverable.",
       "wrong_explanations": {
-        "A": "Proceeding knowingly strands customer orders. Speed of recovery does not justify data loss that can be avoided.",
+        "A": "Rollback is the standard recovery path, but data that cannot be recreated is protected before service is restored.",
         "C": "Failover suits loss of a site; the standby replicates the same failed release and new-format orders, so the problem moves with it.",
         "D": "Restoring last night's backup discards every order written since, and replaying new-format orders may fail or corrupt them."
       },
@@ -2256,11 +2256,11 @@
       "correct_explanation": "An acquired bank's real environment rarely matches its documentation: integrations, custom rules and in-flight projects must be discovered before migration is planned. Sequencing by risk, informed by those dependencies, avoids breaking hidden links and protects customers. Moving shared infrastructure first sounds dependency-aware, but it fixes the order before the acquired bank's real links are known.",
       "wrong_explanations": {
         "B": "Running both platforms for the whole program doubles operating cost and reconciliation effort, and it does not decide what moves when.",
-        "C": "A fixed infrastructure-first rule sets the order before the acquired bank's dependencies are known; customer systems may rely on links the rule misses.",
+        "C": "An infrastructure-first order is a common migration pattern, but patterns from other estates stay hypotheses until this estate's dependencies are mapped.",
         "D": "Moving the riskiest systems first sounds prudent, but risk cannot be ranked before dependencies are discovered, and failures would hit the most critical systems first."
       },
       "tips": [
-        "Eliminate: B runs two platforms for the whole program without ordering the moves, and D ranks risk before the dependencies that drive it are known.",
+        "Eliminate: B runs two platforms for the whole program without ordering the moves, and D sends the highest-risk systems through a migration process not yet proven on anything.",
         "Final two: A beats C because the order must follow dependencies discovered in the acquired bank, not a fixed rule set before discovery.",
         "Exam cue: in M&A integration, discovery of the acquired environment comes before any migration sequencing."
       ],
@@ -2291,7 +2291,7 @@
       "correct": "D",
       "key_concept": "Build segregation of duties into the role design so the application prevents conflicting combinations, rather than detecting misuse later.",
       "pre_read": "The system is still being designed. Ask which option stops the conflict rather than spotting it afterwards.",
-      "correct_explanation": "Design is the cheapest point to fix segregation of duties: defining the conflicting tasks in the role model and having the application prevent one user from holding both builds the control in, consistent and testable. A monthly log review is the runner-up: it is a reasonable compensating control where separation is impossible, but here the conflict can be prevented outright.",
+      "correct_explanation": "Design is the cheapest point to fix segregation of duties: defining the conflicting tasks in the role model and having the application prevent one user from holding both builds the control in, consistent and testable. A monthly log review nearly wins: it is a reasonable compensating control where separation is impossible, but here the conflict can be prevented outright.",
       "wrong_explanations": {
         "A": "A log review detects misuse weeks after payments are made. It is a compensating control, not a substitute for preventable separation.",
         "B": "Manual care in assigning roles is inconsistent, and nothing in the system stops a conflicting combination.",
@@ -2328,9 +2328,9 @@
       "correct": "C",
       "key_concept": "High-risk findings from pre-production testing are fixed before go-live or formally accepted by the accountable risk owner.",
       "pre_read": "Ask who should decide to carry a known high risk into production, and how that decision is recorded.",
-      "correct_explanation": "High-risk findings from pre-production security testing should be fixed before go-live or, if the business must launch, formally accepted by the accountable risk owner with compensating controls and a fix date. Launching with the project manager's approval is the runner-up: it may match the business choice, but the project manager is not the risk owner, so known high risks would reach customers without accountable acceptance.",
+      "correct_explanation": "High-risk findings from pre-production security testing should be fixed before go-live or, if the business must launch, formally accepted by the accountable risk owner with compensating controls and a fix date. Launching with the project manager's approval is the strongest alternative: it may match the business choice, but the project manager is not the risk owner, so known high risks would reach customers without accountable acceptance.",
       "wrong_explanations": {
-        "A": "A project manager's approval is not formal acceptance by the risk owner. Known high risks would enter production with no accountable owner agreeing to carry them.",
+        "A": "Project managers weigh delivery risks daily as a core duty, but the person under schedule pressure is the wrong one to waive a risk.",
         "B": "Monitoring detects exploitation rather than preventing it, and the CISO advises on security risk; residual business risk must be accepted by the accountable business risk owner.",
         "D": "Firewall rules may reduce exposure, but they are an unproven compensating control, and no accountable risk owner has accepted the residual risk."
       },
@@ -2367,7 +2367,7 @@
       "pre_read": "Notice the stem asks about matching approved changes over time. Ask which option keeps checking after deployment.",
       "correct_explanation": "In GitOps, Git holds the reviewed, declared state, and an in-cluster agent continuously compares actual state to it and corrects drift. Any manual change is reverted or flagged, so production keeps matching what was approved. A weekly drift report is the tempting option because it also compares clusters to Git, but it runs days apart and corrects nothing, so production can run unapproved changes in between.",
       "wrong_explanations": {
-        "A": "Weekly drift reports find mismatches days later and correct nothing; production can run unapproved changes in between.",
+        "A": "Drift reports and the agent check against the same reviewed Git state, but assurance comes from enforcing the approved state, not from reporting departures.",
         "C": "Recorded approvals prove what was authorized, but they say nothing about whether production still matches that state.",
         "D": "Push deployment controls what goes in, but nothing detects later manual drift, so ongoing alignment is not assured."
       },
@@ -2406,7 +2406,7 @@
       "wrong_explanations": {
         "B": "A passing build shows the code compiles and tests pass. It does not review logic, design or security.",
         "C": "Requiring every team member creates bottlenecks and diffuses responsibility, so each reviewer looks less carefully.",
-        "D": "A fixed pairing breeds familiarity and routine approval, and does not address oversized changes that hide defects."
+        "D": "A named reviewer gives each merge clear accountability. Review quality, though, depends on fresh eyes and on how much one reader can hold in mind."
       },
       "tips": [
         "Eliminate: B skips human review, and C slows merging while diluting accountability.",
@@ -2476,14 +2476,14 @@
       "correct": "C",
       "key_concept": "Schedule a post-implementation review after a period of stable operation, so benefits and control performance can be measured on real data.",
       "pre_read": "Ask what a post-implementation review measures, then ask whether one week of live operation can produce that evidence.",
-      "correct_explanation": "A post-implementation review judges whether the system delivers its intended benefits and operates stably, so it should follow a period of normal operation, often several months, long enough for real performance data to build up. Keeping the one-week date is the runner-up: fresh memories help capture lessons, but one week of start-up issues cannot show benefits, and lessons can be recorded separately at project closure.",
+      "correct_explanation": "A post-implementation review judges whether the system delivers its intended benefits and operates stably, so it should follow a period of normal operation, often several months, long enough for real performance data to build up. Keeping the one-week date comes closest: fresh memories help capture lessons, but one week of start-up issues cannot show benefits, and lessons can be recorded separately at project closure.",
       "wrong_explanations": {
         "A": "Early timing preserves memories, but one week of live data reflects start-up issues and cannot show whether benefits were achieved.",
         "B": "Project closure looks back on delivery a month in; benefits need longer stable operation before they can be measured.",
         "D": "A satisfaction survey after one week captures early impressions, not measured benefits or control performance."
       },
       "tips": [
-        "Eliminate: B folds the review into project closure a month in, and D swaps measured benefits for early user opinion.",
+        "Eliminate: B folds the review into project closure, which looks back on delivery rather than on benefits, and D swaps measured benefits for early user opinion.",
         "Final two: C beats A because benefits need stable operation to show; lessons can be captured at closure without rushing the review.",
         "Exam cue: a post-implementation review needs enough live operation to produce evidence, typically months, not days, after go-live."
       ],
@@ -2513,10 +2513,10 @@
       "correct": "C",
       "key_concept": "Control requirements come from a risk assessment informed by data classification; frameworks help select controls, not decide what is needed.",
       "pre_read": "Ask what makes this system's controls proportionate to its own risks.",
-      "correct_explanation": "Controls should be proportionate to risk, so requirements are derived from a risk assessment that considers the classification of patient data, threats and business impact, with a framework then used to select and check controls. Applying a full framework catalog is the runner-up: it looks thorough, but it ignores this system's specific risks, adding unneeded controls and possibly missing context-specific ones.",
+      "correct_explanation": "Controls should be proportionate to risk, so requirements are derived from a risk assessment that considers the classification of patient data, threats and business impact, with a framework then used to select and check controls. Applying a full framework catalog is the most tempting alternative: it looks thorough, but it ignores this system's specific risks, adding unneeded controls and possibly missing context-specific ones.",
       "wrong_explanations": {
         "A": "Another client's controls reflect that client's risks. They may not fit this application's data, users or threats.",
-        "B": "A full catalog applied without risk analysis over-controls some areas and may still miss risks specific to this application.",
+        "B": "An auditor would check coverage against a recognized framework, but a catalog lists what is possible; risk decides what is required.",
         "D": "Budget shapes choices, but letting it define the requirements leaves high risks uncontrolled without a deliberate decision."
       },
       "tips": [
@@ -2625,10 +2625,10 @@
       "correct": "D",
       "key_concept": "For high-volume, well-defined risks, automated preventive controls built into the application beat manual or detective controls.",
       "pre_read": "Compare when each control acts: before the money leaves, or after.",
-      "correct_explanation": "At 50,000 payments a day, an automated preventive control is most effective: a system check that holds payments matching earlier ones stops duplicates before money leaves, consistently and at volume. The daily duplicates report is the runner-up: it is a useful detective control, but it finds duplicates after payment and depends on clerks keeping up with a high-volume queue.",
+      "correct_explanation": "At 50,000 payments a day, an automated preventive control is most effective: a system check that holds payments matching earlier ones stops duplicates before money leaves, consistently and at volume. The daily duplicates report nearly wins: it is a useful detective control, but it finds duplicates after payment and depends on clerks keeping up with a high-volume queue.",
       "wrong_explanations": {
         "A": "Monthly sampling detects problems weeks later and examines a fraction of payments. Duplicates paid meanwhile must be recovered.",
-        "B": "A daily exception report detects duplicates after payment, and it depends on clerks clearing a high-volume queue.",
+        "B": "A duplicates report earns its place when matches are too fuzzy to block; where a rule can be coded, prevention outranks detection.",
         "C": "A policy relies on every clerk checking by hand. At high volume it is inconsistent and leaves no reliable evidence."
       },
       "tips": [
@@ -2662,7 +2662,7 @@
       "correct": "C",
       "key_concept": "During development the auditor advises on control requirements; management designs, implements and owns the controls.",
       "pre_read": "Ask whose job it is to design controls, and what the auditor's role is during a project.",
-      "correct_explanation": "Early auditor involvement is valuable, but control design is a management responsibility. The auditor can advise on control requirements under agreed advisory terms, while management designs, implements and owns the controls, which keeps the auditor objective for later audits. Having a colleague audit auditor-designed controls is the runner-up: it reduces the self-review threat, but audit would still have taken on a management role.",
+      "correct_explanation": "Early auditor involvement is valuable, but control design is a management responsibility. The auditor can advise on control requirements under agreed advisory terms, while management designs, implements and owns the controls, which keeps the auditor objective for later audits. Having a colleague audit auditor-designed controls is the strongest alternative: it reduces the self-review threat, but audit would still have taken on a management role.",
       "wrong_explanations": {
         "A": "Management's approval does not change who designed the controls; audit would still be reviewing its own work in later audits.",
         "B": "Waiting until go-live means gaps are found when they are costliest to fix. Advisory involvement during design is appropriate.",
@@ -2737,7 +2737,7 @@
       "pre_read": "Ask how much of the decision rests on one number.",
       "correct_explanation": "The whole return rests on one optimistic assumption, so approvers need a sensitivity analysis showing how the result changes at lower adoption rates before committing funds. Benchmarking against peer portals is the tempting option: it tests whether 90% is plausible, but not how far the return falls if adoption misses it.",
       "wrong_explanations": {
-        "A": "A benchmark tests whether 90% is plausible, but it is one input to the range tested; approvers still cannot see how far the return falls if adoption misses.",
+        "A": "Peer benchmarking is a valid check on an assumption's realism, but realism and resilience differ: a case must survive its assumption being wrong.",
         "B": "A review after a year confirms adoption too late; approvers need to see the risk in the assumption before funds are committed.",
         "C": "A reserve adds cost to absorb a shortfall, but approvers still cannot see how far the return falls if adoption misses."
       },
@@ -2774,7 +2774,7 @@
       "pre_read": "List the two findings. Then ask which option enforces a control on every use rather than relying on people.",
       "correct_explanation": "The findings are license contamination in generated code and sensitive data leaking into prompts. Usage rules backed by automated checks, license scanning of output and secret detection on prompts, target both while keeping the tool. Peer review with reminders is the tempting option because it covers both findings, but it relies on people: reviewers cannot spot copied licensed code, and a reminder does not stop a secret being pasted.",
       "wrong_explanations": {
-        "B": "Review and reminders are manual and unenforced: reviewers cannot see where generated code came from, and a reminder does not stop secrets reaching prompts.",
+        "B": "Peer review does catch logic flaws in AI output, but a risk raised by every use needs a control on every use.",
         "C": "Team-level policies produce inconsistent controls; the license and data-handling risks are enterprise-wide and need one policy.",
         "D": "Blocking until license review treats one finding at the cost of the tool, and does nothing about secrets pasted into prompts."
       },
@@ -3042,7 +3042,7 @@
       "pre_read": "Ask whether every line of code carries the same risk.",
       "correct_explanation": "Coverage shows which code tests exercise, not whether the tests are good, so it is most useful when directed by risk. Higher targets for critical paths, such as authentication or calculations, put testing effort where failure matters most. A single uniform gate is simple to enforce, but it treats trivial code like critical code and encourages padding tests to hit the number.",
       "wrong_explanations": {
-        "A": "A uniform gate ignores risk: critical paths may stay untested while trivial code is padded to reach the target.",
+        "A": "Both a uniform gate and risk-based targets make coverage a release condition, though a measure turned into a target soon stops measuring anything.",
         "B": "Gating new code is common, but risk does not follow code age; critical existing paths stay untested.",
         "D": "A rising blanket target still treats all code alike and pushes teams to pad tests; coverage shows which code ran, not whether tests are good."
       },
@@ -3081,7 +3081,7 @@
       "wrong_explanations": {
         "A": "Random values rarely land exactly on a limit, so many tests would be needed to hit an edge defect by chance.",
         "B": "Real applicants' ages mostly fall mid-range, so business-chosen values seldom test the limits where defects occur.",
-        "C": "More values inside each range add cost but still sit away from the limits where off-by-one errors appear."
+        "C": "Extra in-range values do raise confidence that each class behaves alike, yet partitioning chooses the classes and boundary analysis chooses where to probe them."
       },
       "tips": [
         "Eliminate: A relies on chance to hit a limit, and B uses realistic mid-range ages that seldom reach the edges.",
@@ -3118,7 +3118,7 @@
       "wrong_explanations": {
         "B": "Coverage shows how much code the unit tests exercise, not whether features do what the business asked for.",
         "C": "Developer test logs show builds passed the developers' own tests; they say nothing about business requirements.",
-        "D": "Sign-off emails after go-live are informal and late, and they do not link approval to specific tested behavior."
+        "D": "An auditor would keep the emails as corroboration of business satisfaction, but satisfaction is not conformance: requirements are proven criterion by criterion."
       },
       "tips": [
         "Eliminate: B and C measure developers' code testing, not whether features meet business requirements.",
@@ -3154,7 +3154,7 @@
       "pre_read": "Ask which lineage records would still be accurate the day after a pipeline change.",
       "correct_explanation": "Lineage evidence is reliable only if it reflects how data actually moves today. Pipelines that emit source, transformation and destination metadata at runtime keep a central repository current without depending on people to remember changes. An owner-maintained register adds accountability, but manual records drift between reviews, so the auditor could rely on lineage that no longer matches the pipelines.",
       "wrong_explanations": {
-        "A": "Manual registers go stale between reviews; ownership does not stop recorded lineage drifting from the real pipelines.",
+        "A": "A signed register is fine for lineage that rarely changes; for live pipelines, evidence the system emits outranks records people keep.",
         "B": "A catalog filled in at onboarding records lineage once; it drifts as pipelines change unless something keeps it current.",
         "D": "Design-time diagrams show intended flows, which drift as pipelines change; they are not evidence of how data moves today."
       },
@@ -3189,7 +3189,7 @@
       "correct": "B",
       "key_concept": "A steering committee governs through decisions, so its members need authority to commit resources and resolve issues.",
       "pre_read": "Separate governing (deciding and committing resources) from managing (tracking tasks).",
-      "correct_explanation": "A steering committee governs by making decisions on scope, funding and priorities, so its members must be senior business and IT stakeholders with authority to commit resources and resolve issues. Weekly task-level reviews are the runner-up: they show engagement, but they pull the committee into management detail, which belongs to the project manager, and do not give it power to decide.",
+      "correct_explanation": "A steering committee governs by making decisions on scope, funding and priorities, so its members must be senior business and IT stakeholders with authority to commit resources and resolve issues. Weekly task-level reviews come closest: they show engagement, but they pull the committee into management detail, which belongs to the project manager, and do not give it power to decide.",
       "wrong_explanations": {
         "A": "Task-level tracking is project management. A committee absorbed in detail may still lack the authority to decide.",
         "C": "The project manager reports to the committee. Chairing it would leave the manager overseeing their own performance.",
@@ -3228,7 +3228,7 @@
       "correct_explanation": "Changing a production flag changes production behavior, so it needs the same discipline as code: an accountable owner, a planned expiry and a logged, authorized change trail. That addresses both findings, flags nobody can explain and toggling outside the release process. A yearly cleanup that assigns owners is the tempting option, but it acts once a year and leaves toggles changing production without a logged, authorized trail in between.",
       "wrong_explanations": {
         "A": "Change tickets bring toggles into change control, but hundreds of flags still have no owner, purpose or expiry.",
-        "B": "A yearly cleanup assigns owners once a year; between cleanups new flags lack owners and toggles still change production without an authorized, logged trail.",
+        "B": "A cleanup drive sensibly clears a flag backlog, yet an ongoing gap is not one-off debt: recurring risks need standing controls.",
         "C": "Restricting who toggles adds access control, but flags still lack owners, expiry and an authorized, logged change trail."
       },
       "tips": [
@@ -3264,7 +3264,7 @@
       "pre_read": "Recall what blue-green deployment limits and what it does not. Then picture the next faulty release.",
       "correct_explanation": "Blue-green deployment keeps two identical environments and switches all traffic to the new one at once. It allows a fast switch back and near-zero downtime, but every customer meets a defect before anyone reverses it, repeating the failed release's harm. Relaxed approvals are the tempting option: they are a real behavior risk, but change management can control them, while all-at-once exposure is built into blue-green and happens on every release.",
       "wrong_explanations": {
-        "B": "Relaxed approvals are a behavior management can control through change management; exposing every customer to a defect at once is built into blue-green and happens on every release.",
+        "B": "Complacent approvals are a genuine hazard when rollback seems cheap, but risks are ranked by what remains once existing controls have acted.",
         "C": "Both environments are built from one template, which controls drift; all-at-once exposure is built into blue-green and no template removes it.",
         "D": "Blue-green switches traffic almost instantly, so long downtime is the problem it solves, not one it creates."
       },
@@ -3337,14 +3337,14 @@
       "correct": "A",
       "key_concept": "In a post-implementation review, the IS auditor adds assurance on whether designed controls work in live operation and meet their objectives.",
       "pre_read": "Benefits remain central, and the business owner is already measuring them. Ask what assurance only the auditor is placed to add.",
-      "correct_explanation": "Benefits remain the review's central question, and here the business owner is measuring them, so the auditor adds most value by testing whether the controls designed into the system work in live operation and meet their objectives, such as complete and accurate settlement. Budget and schedule performance is the runner-up: it is reviewed at closure, but on-time delivery can still leave settlement risks uncontrolled.",
+      "correct_explanation": "Benefits remain the review's central question, and here the business owner is measuring them, so the auditor adds most value by testing whether the controls designed into the system work in live operation and meet their objectives, such as complete and accurate settlement. Budget and schedule performance comes closest: it is reviewed at closure, but on-time delivery can still leave settlement risks uncontrolled.",
       "wrong_explanations": {
-        "B": "Cost and schedule results are project measures reviewed at closure. They say nothing about whether live controls protect settlements.",
+        "B": "Budget and schedule are the usual measures of a finished project; once a system is live, the audit question moves from project to product.",
         "C": "Usability matters for adoption, but a preference for screens is not an assurance question about controls.",
         "D": "Coding standard compliance is a build-phase quality check. After go-live, the question is whether controls work in operation."
       },
       "tips": [
-        "Eliminate: C is a usability preference, and D checks build practice rather than live results.",
+        "Eliminate: C measures user preference, an adoption input the business owner tracks, and D checks build practice rather than live results.",
         "Final two: A beats B because the auditor's value is assurance over live controls; on-budget delivery does not show risk is controlled.",
         "Exam cue: in a post-implementation review, the IS auditor asks whether controls met their objectives in live operation."
       ],
@@ -3373,7 +3373,7 @@
       "correct": "C",
       "key_concept": "Configurable parameters change system behavior like code does; design them with restricted access, approval and change logging.",
       "pre_read": "Ask what changes the way loans are approved without any code change, and who should control it.",
-      "correct_explanation": "Configurable limit tables change how the application approves loans without any code change, so the design should restrict who can change them and require approval and a logged record of every change. Hard-coding the limits is the runner-up: changes would pass through release management, but it removes the flexibility the business needs and pushes simple limit updates through a slow development cycle.",
+      "correct_explanation": "Configurable limit tables change how the application approves loans without any code change, so the design should restrict who can change them and require approval and a logged record of every change. Hard-coding the limits nearly wins: changes would pass through release management, but it removes the flexibility the business needs and pushes simple limit updates through a slow development cycle.",
       "wrong_explanations": {
         "A": "Hard-coding forces change control but makes every limit update a software release, defeating the design's purpose and inviting workarounds.",
         "B": "Open editing lets anyone change lending limits without approval or a record, which is the risk the control should address.",
@@ -3409,7 +3409,7 @@
       "correct": "B",
       "key_concept": "Before any irreversible migration step, confirm legal, regulatory and contractual retention requirements are met, for example by archiving.",
       "pre_read": "Discarding records cannot be undone. Ask what obligation applies to those records regardless of daily use.",
-      "correct_explanation": "Discarding records is irreversible, so before conversion the auditor should confirm that legal, regulatory and contractual retention requirements for the older 12 years are satisfied, for example by archiving them in a retrievable form. User agreement is the runner-up: business need decides what goes into the live system, but users cannot waive retention obligations that apply regardless of daily use.",
+      "correct_explanation": "Discarding records is irreversible, so before conversion the auditor should confirm that legal, regulatory and contractual retention requirements for the older 12 years are satisfied, for example by archiving them in a retrievable form. User agreement is the closest choice: business need decides what goes into the live system, but users cannot waive retention obligations that apply regardless of daily use.",
       "wrong_explanations": {
         "A": "Storage capacity is a technical question. Whether records may be discarded is decided by retention obligations, not by available space.",
         "C": "Users can say what they need day to day, but they cannot waive legal or regulatory retention obligations.",
@@ -3446,7 +3446,7 @@
       "correct": "D",
       "key_concept": "A post-implementation review needs an objective reviewer; the person who delivered the system faces a self-review threat.",
       "pre_read": "Ask who benefits if the review finds the project a success, then ask whether that person should write the verdict.",
-      "correct_explanation": "A post-implementation review must give the sponsor an objective view of whether the system delivered what was promised. A project manager reviewing their own delivery faces a self-review threat and an incentive to present results favorably, so an independent party should lead it. A process-heavy focus is the runner-up: it is a real scoping risk, but it is a symptom of the missing independence, not the root concern.",
+      "correct_explanation": "A post-implementation review must give the sponsor an objective view of whether the system delivered what was promised. A project manager reviewing their own delivery faces a self-review threat and an incentive to present results favorably, so an independent party should lead it. A process-heavy focus is the closest concern: it is a real scoping risk, but it is a symptom of the missing independence, not the root concern.",
       "wrong_explanations": {
         "A": "A narrow focus on delivery process is a scoping weakness, but it stems from the reviewer's conflict of interest, which is the root concern.",
         "B": "Relying on status reports is a real evidence weakness, but it follows from who leads the review; the root concern is self-review.",
@@ -3555,9 +3555,9 @@
       "correct": "A",
       "key_concept": "Mandatory projects are justified by the obligation itself; the business case compares options to comply at the lowest cost and risk.",
       "pre_read": "Ask why this investment is being made at all, then ask what a business case should compare when doing nothing is not allowed.",
-      "correct_explanation": "Mandatory projects are justified by the obligation itself: the business case should state the regulatory requirement and the consequences of non-compliance, then compare options to meet it at the lowest cost and risk. Estimating efficiency gains is the runner-up: genuine side benefits can be noted, but inventing a return to fit a financial template misstates why the investment is being made.",
+      "correct_explanation": "Mandatory projects are justified by the obligation itself: the business case should state the regulatory requirement and the consequences of non-compliance, then compare options to meet it at the lowest cost and risk. Estimating efficiency gains is the strongest alternative: genuine side benefits can be noted, but inventing a return to fit a financial template misstates why the investment is being made.",
       "wrong_explanations": {
-        "B": "Stretching speculative efficiencies into a return misrepresents the case. The real justification is the obligation.",
+        "B": "A projected return decides discretionary spending; once regulation rules out doing nothing, the case compares ways to comply.",
         "C": "Every investment should align with strategy, but alignment does not state why this one is required or compare ways to comply.",
         "D": "A weighted score ranks discretionary investments against each other; a mandatory project is not competing for approval, so the case should state the obligation and compare ways to comply."
       },
@@ -3594,7 +3594,7 @@
       "pre_read": "Ask how anyone could later prove these benefits arrived, and who would answer if they did not.",
       "correct_explanation": "Benefits stated in general terms cannot be measured or managed, so the case should give each benefit a measurable target, a baseline and a named business owner accountable for realizing it. Converting every benefit into money is the tempting option: it looks rigorous, but non-financial benefits can be measured without a price, and a valuation with no owner leaves no one accountable for delivering it.",
       "wrong_explanations": {
-        "A": "Forcing a financial value on every benefit can distort ones that are measurable in their own terms, and it still names no owner.",
+        "A": "An auditor would accept money values where conversion is reliable, but a figure's precision never substitutes for someone answering for it.",
         "B": "IT can supply measurements, but business owners are accountable for benefits, and undefined benefits give nothing to measure.",
         "D": "Setting targets after go-live lets the review measure whatever happened; even with named owners, targets must be set before approval."
       },
@@ -3629,14 +3629,14 @@
       "correct": "D",
       "key_concept": "Post-implementation review effort should be scaled to the significance and risk of the change, defined in policy.",
       "pre_read": "Reviews cost effort. Ask which basis puts that effort where failure would matter most.",
-      "correct_explanation": "Reviews cost effort, so policy should scale them to the significance and risk of the change: major systems and high-risk changes get a full review, while minor fixes are covered by change management and lighter checks. A yearly review cycle is the runner-up: it is predictable, but it follows the calendar, so a major change may wait a year while stable systems are reviewed.",
+      "correct_explanation": "Reviews cost effort, so policy should scale them to the significance and risk of the change: major systems and high-risk changes get a full review, while minor fixes are covered by change management and lighter checks. A yearly review cycle nearly wins: it is predictable, but it follows the calendar, so a major change may wait a year while stable systems are reviewed.",
       "wrong_explanations": {
         "A": "A yearly cycle is predictable but not tied to change; a major change could wait months while stable systems consume effort.",
         "B": "Complaint-driven reviews are reactive. Control failures and missed benefits often go unnoticed by users.",
         "C": "Fully reviewing every change wastes effort on trivial fixes and dilutes attention from the changes that matter."
       },
       "tips": [
-        "Eliminate: B waits for complaints, and C spends full review effort on trivial and major changes alike.",
+        "Eliminate: B waits for complaints, though users rarely notice failed controls or missed benefits, and C spends full review effort on trivial and major changes alike.",
         "Final two: D beats A because review effort should follow risk and significance, not the calendar.",
         "Exam cue: when a choice is about where to spend review or audit effort, the risk-based option usually wins."
       ],
@@ -3666,9 +3666,9 @@
       "correct": "B",
       "key_concept": "Low adoption is a symptom; establish its root cause before recommending a remedy.",
       "pre_read": "Before choosing a fix, ask whether you yet know why staff avoid the system.",
-      "correct_explanation": "Low adoption is a symptom. Before recommending anything, the auditor should establish the cause, such as missing functions, poor training, slow performance or data quality, because the right remedy depends on it. Mandating use is the runner-up: it may raise usage figures, but if the system does not fit how staff work, forced use can produce poor data and hide the real problem.",
+      "correct_explanation": "Low adoption is a symptom. Before recommending anything, the auditor should establish the cause, such as missing functions, poor training, slow performance or data quality, because the right remedy depends on it. Mandating use is the most tempting alternative: it may raise usage figures, but if the system does not fit how staff work, forced use can produce poor data and hide the real problem.",
       "wrong_explanations": {
-        "A": "A mandate treats the symptom. If the system lacks needed functions, forced use yields poor data and more workarounds.",
+        "A": "A mandate and a cause analysis share the goal of getting sales data into the CRM. A remedy chosen before diagnosis is a guess, though.",
         "C": "Training assumes the cause is skill; if the system lacks functions staff need, more training will not change their behavior.",
         "D": "Concluding failure before understanding the cause is premature. The cause shapes what the report should say."
       },
@@ -3704,7 +3704,7 @@
       "pre_read": "Notice the issue is outside the playbook. Ask which option assesses impact before committing, and who decides.",
       "correct_explanation": "A sound cutover uses decision gates so that unexpected issues are assessed before commitment. Pausing to size the fix and judge whether it fits the window lets management proceed or invoke fallback on evidence. Proceeding and cleaning up later keeps the schedule, but it loads known-bad master data into production without assessing the effect on supplier transactions.",
       "wrong_explanations": {
-        "B": "Proceeding loads known-bad master data into production without assessing its impact on supplier payments and orders.",
+        "B": "Proceeding does protect a hard-to-rebook 48-hour window, yet it accepts a risk nobody has sized, and only sized risk can be accepted.",
         "C": "One unforeseen data issue does not prove the whole plan is flawed. Rollback should follow an assessment, not replace it.",
         "D": "The auditor advises but must not make management's operational decisions; doing so impairs independence."
       },
@@ -3743,7 +3743,7 @@
       "wrong_explanations": {
         "A": "The conclusion may be right, but the stated reason is sunk cost. Past spend is irrelevant to whether future spend is worthwhile.",
         "B": "Rebaselining lowers the target to fit results without asking whether further spend is worthwhile; it is escalation of commitment to a failing course.",
-        "D": "Including the $14M already spent distorts the comparison; past spend is the same whichever way the board decides, so only future costs and benefits differ."
+        "D": "Both weighings set the module's future benefits beside the alternatives, yet a decision weighs only what the decision itself can still change."
       },
       "tips": [
         "Eliminate: A justifies stopping by money already spent, and B moves the target instead of assessing whether further spend is worthwhile.",
@@ -3817,7 +3817,7 @@
       "wrong_explanations": {
         "A": "A second review would confirm the backlog again. It adds cost without making anyone responsible for acting.",
         "C": "A target date sets a deadline, but with no named owner and no tracking, nobody is answerable when it passes.",
-        "D": "The PMO can track and chase, but it cannot change business processes; each recommendation needs an owner in the area that must act."
+        "D": "An auditor would welcome the PMO as tracker and chaser, but follow-up is a service and ownership a duty; only duties close findings."
       },
       "tips": [
         "Eliminate: A repeats the review without creating accountability, and C adds a date with no one named to meet it and no tracking to notice a miss.",
@@ -3887,9 +3887,9 @@
       "correct": "C",
       "key_concept": "Cleanse data before loading it into the new system, with the data owner authorizing each change.",
       "pre_read": "Ask whether known bad data should ever enter production, and who may authorize changing it.",
-      "correct_explanation": "Cleansing before loading means the new system starts with accurate data and its controls are not undermined by known errors, and data owner approval ensures each change is authorized and recorded. Loading as is and cleansing later is the runner-up: it protects the schedule, but known bad data enters production, and cleanup after go-live is often deprioritized and harder to control.",
+      "correct_explanation": "Cleansing before loading means the new system starts with accurate data and its controls are not undermined by known errors, and data owner approval ensures each change is authorized and recorded. Loading as is and cleansing later comes closest: it protects the schedule, but known bad data enters production, and cleanup after go-live is often deprioritized and harder to control.",
       "wrong_explanations": {
-        "A": "Known errors enter production and spread into transactions. Cleanup after go-live is often deprioritized and harder to control.",
+        "A": "An auditor would tolerate deferred cleanup of descriptive fields on a tracked plan, but defects are cheapest to fix before production.",
         "B": "Silently dropping failed records loses data and hides the problem. Rejected records need review, not deletion.",
         "D": "Fixing after loading lets known errors enter production first, and the system owner is not the data owner who answers for the records' meaning."
       },
@@ -3925,7 +3925,7 @@
       "pre_read": "Notice that business units already use parts of the program. Ask what stopping it would do to them.",
       "correct_explanation": "Canceling is a management decision, but it must account for exit complexity. Three business units already run live processes on the delivered modules, so stopping without a transition plan could halt operations, a larger and less reversible impact than any one-off cost. Retraining the three units is a real cost to weigh, but it is bounded and plannable, unlike disruption to the business.",
       "wrong_explanations": {
-        "A": "Retraining is a real cost of returning to old processes, but it is bounded and plannable; halting the live processes those units depend on is the larger exposure.",
+        "A": "Before leaving a program, protect what already runs. Retraining is a cost any exit must fund, yet live operations come first in every exit plan.",
         "B": "Knowledge loss matters for future support, but it can be handled through transition terms; it is not the immediate exposure of live operations.",
         "C": "Spend already made is sunk; it is lost whichever way management decides, so it is not a risk created by canceling."
       },
@@ -4000,7 +4000,7 @@
       "pre_read": "Notice the incidents come from interactions between teams. Ask which option targets those changes without slowing all others.",
       "correct_explanation": "Cross-team incidents come from changes to shared interfaces. Risk-tiered coordination, as COBIT BAI06 expects, focuses review on changes that can affect others, while interface contracts and contract tests catch breaks before release. A joint review by all teams sounds thorough, but it adds delay to every low-risk change and gives teams a reason to bypass the process.",
       "wrong_explanations": {
-        "B": "Reviewing every release with all teams treats low-risk changes like high-risk ones, adding delay and encouraging workarounds.",
+        "B": "Change control scales only when scrutiny follows impact. Joint sign-off does involve every affected team, yet attention spread evenly starves the few risky changes.",
         "C": "Separate production environments do not reflect how shared services interact, and the integration risk returns when they connect.",
         "D": "Fewer, larger releases bundle more changes together, which raises the risk of each release rather than lowering it."
       },
@@ -4113,7 +4113,7 @@
       "correct_explanation": "The strongest evidence is a proof of concept that runs this system's own workloads, the 1.6 million writes per second and the relational queries, against each candidate design before commitment. Vendor benchmarks are the tempting option: they show write capacity, but the vendor chose the configuration and the test, and they say nothing about the relational queries this system also needs.",
       "wrong_explanations": {
         "A": "Reference customers run different workloads and configurations; their satisfaction does not show fit for this system's write and query mix.",
-        "B": "Vendor-run benchmarks use the vendor's own configuration and cover only write volume, not the relational queries also required.",
+        "B": "An auditor would treat vendor benchmarks as a reasonable shortlisting input, but a decision is tested against its own requirements, not someone else's showcase.",
         "C": "Team experience affects delivery risk, but it cannot show that any engine meets 1.6 million writes per second."
       },
       "tips": [
@@ -4152,7 +4152,7 @@
       "wrong_explanations": {
         "A": "Refactoring everything spends the most expensive treatment on stable and retiring applications that return little value from it.",
         "C": "Listing every path does not make the choice value-based; team preference replaces a portfolio decision, so costly treatments may go where value is low.",
-        "D": "Rehosting everything first moves soon-to-retire applications for no benefit and makes strategic ones migrate twice."
+        "D": "Rehosting first holds up only when a deadline, such as a data center exit, forces everyone out at once; otherwise each application's path follows its value."
       },
       "tips": [
         "Eliminate: A applies the costliest treatment uniformly, and C leaves each path to team preference instead of business value.",
@@ -4253,20 +4253,20 @@
       "options": {
         "A": "That the legacy hardware has a buyer or a disposal contract",
         "B": "That business users have stopped logging in to the legacy system",
-        "C": "That the legacy vendor's support contract has been canceled",
+        "C": "That legacy user accounts have been disabled",
         "D": "That reconciliation is signed off and legacy data is archived"
       },
       "correct": "D",
       "key_concept": "Decommission a legacy system only after final reconciliation is signed off and its records are archived in an accessible form.",
       "pre_read": "Ask what you lose for good when the old system is switched off.",
-      "correct_explanation": "Shutting down the legacy system removes the last way to check or recover converted data. The auditor should first confirm that the business has signed off final reconciliation and that legacy data needed for retention or inquiry is archived in an accessible form. Users having stopped logging in is the runner-up: it shows adoption, but not that the data is complete or preserved.",
+      "correct_explanation": "Shutting down the legacy system removes the last way to check or recover converted data. The auditor should first confirm that the business has signed off final reconciliation and that legacy data needed for retention or inquiry is archived in an accessible form. Users having stopped logging in is the closest choice: it shows adoption, but not that the data is complete or preserved.",
       "wrong_explanations": {
         "A": "Disposal arrangements come later. Selling hardware before data is preserved could lose records permanently.",
         "B": "Users leaving the legacy system shows adoption. It does not prove converted data is complete or that records are retained.",
-        "C": "Canceling support saves cost, but it can wait until the data questions are settled."
+        "C": "Disabling accounts is a routine deprovisioning step, but shutdown ends access anyway; what cannot be undone is losing data no one reconciled or archived."
       },
       "tips": [
-        "Eliminate: A and C are commercial clean-up steps that can wait until the data questions are settled.",
+        "Eliminate: A is commercial clean-up that can wait until the data questions are settled, and C removes access that the shutdown itself will end.",
         "Final two: D beats B because sign-off and archiving protect the data; users leaving the old system shows adoption, not completeness.",
         "Exam cue: never retire the old system until the new data is reconciled and the old records are preserved."
       ],
@@ -4276,7 +4276,7 @@
         "Data migration",
         "Reconciliation"
       ],
-      "_provenance": "Authored from concept: 'Data sovereignty in M&A per GDPR Articles 44-50 and ISACA Data Sovereignty guidance'. Public sources: GDPR, ISACA. Scenario specifics (US SaaS acquiring German competitor, €280M revenue, 1.4M EU subjects, EU data-localization contractual commitments) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Rebalanced (Oct 2026): re-angled from 2A6 to 3B3.",
+      "_provenance": "Authored from concept: 'Data sovereignty in M&A per GDPR Articles 44-50 and ISACA Data Sovereignty guidance'. Public sources: GDPR, ISACA. Scenario specifics (US SaaS acquiring German competitor, €280M revenue, 1.4M EU subjects, EU data-localization contractual commitments) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Rebalanced (Oct 2026): re-angled from 2A6 to 3B3. CISA quality pass (Oct 2026): option C (cancel the vendor support contract) and A were both commercial clean-up, so a test-wise reader could drop both; C is now a real decommissioning step (disable legacy accounts) that loses on FIRST, with its explanation and Eliminate tip updated.",
       "style_version": 2
     },
     {
@@ -4298,7 +4298,7 @@
       "pre_read": "Separate what the contract requires now from what risk might justify later.",
       "correct_explanation": "A maturity target should first meet the level the contract requires, then rise in phases where the risk reduction justifies the cost, with gates to reassess as requirements evolve. Committing to the top level appears thorough, but it fixes an $8M spend before the firm knows which risks justify it, and it may delay meeting the contract's requirement while the full program is built.",
       "wrong_explanations": {
-        "A": "Maximum maturity is not automatically best; an $8M commitment without risk-based justification may overshoot and delay required compliance.",
+        "A": "The top level is a legitimate long-term aim, but compliance sets the floor and risk prices each step above it.",
         "C": "Copying peers ignores the firm's own contractual floor and risk profile, so the target is neither compliance-based nor risk-based.",
         "D": "Phasing by release leaves legacy software delivered under the contract below the required level; the contractual minimum applies to every covered product."
       },
@@ -4333,9 +4333,9 @@
       "correct": "A",
       "key_concept": "Conversion traceability needs a retained cross-reference from each legacy key to its new key, plus conversion logs.",
       "pre_read": "Separate completeness (did everything arrive?) from traceability (where did this record come from?).",
-      "correct_explanation": "Traceability needs a retained record linking each legacy account key to its new key, together with conversion logs, so any converted balance can be followed back to its source. Reconciled record counts are the runner-up: they show that totals and volumes match, which supports completeness, but they cannot show which legacy account produced a given new record.",
+      "correct_explanation": "Traceability needs a retained record linking each legacy account key to its new key, together with conversion logs, so any converted balance can be followed back to its source. Reconciled record counts come closest: they show that totals and volumes match, which supports completeness, but they cannot show which legacy account produced a given new record.",
       "wrong_explanations": {
-        "B": "Matching counts and totals supports completeness. It cannot show which legacy account a given new record came from.",
+        "B": "Reconciled counts do prove nothing was lost in bulk, yet a total vouches for the whole and never for any one of its parts.",
         "C": "Screen testing checks that functions work for users. It does not create a link between old and new records.",
         "D": "A field mapping defines how each legacy field converts, but it does not link each converted record to the legacy account it came from."
       },
@@ -4370,11 +4370,11 @@
       "correct": "C",
       "key_concept": "Benefit claims are best supported by objective measured data compared with a pre-project baseline, not by assertions or opinion.",
       "pre_read": "Rank the options by how independent and objective each source is, then ask which one actually measures the 40%.",
-      "correct_explanation": "Measured error rates from operational records, compared with the pre-project baseline, are objective, complete and independent of anyone's view of the project, so they directly test the claimed 40% reduction. The project closure report is the runner-up: it is formal, but it is the project's own assertion of success, and an auditor should verify such claims against underlying data rather than accept them.",
+      "correct_explanation": "Measured error rates from operational records, compared with the pre-project baseline, are objective, complete and independent of anyone's view of the project, so they directly test the claimed 40% reduction. The project closure report is the strongest alternative: it is formal, but it is the project's own assertion of success, and an auditor should verify such claims against underlying data rather than accept them.",
       "wrong_explanations": {
         "A": "A survey measures opinion, not errors; supervisors' impressions may reflect bias and cannot confirm a 40% reduction.",
         "B": "Results at other warehouses describe someone else's operation. They are not evidence of what happened here.",
-        "D": "A closure report is the project's own claim of success. The auditor should test it against underlying data rather than rely on it."
+        "D": "Evidence outranks assertion. A closure report usefully records what the project believes it achieved, yet a claim is a lead to test."
       },
       "tips": [
         "Eliminate: A relies on opinion, and B describes results from other organizations.",
@@ -4410,7 +4410,7 @@
       "wrong_explanations": {
         "A": "Relying on unvalidated ETL jobs for public financial reporting risks misstatement and certification exposure.",
         "B": "Public-company filing deadlines are fixed; delaying them creates regulatory breaches rather than reducing risk.",
-        "C": "Halting the migration overreacts to three unvalidated reports and forgoes evidence that could resolve the issue."
+        "C": "Closing on the old warehouse does protect this quarter, but a fallback is a safety net under a decision, not a substitute for one."
       },
       "tips": [
         "Eliminate: A relies on unvalidated jobs, and B treats a fixed filing deadline as optional.",
@@ -4481,10 +4481,10 @@
       "correct": "A",
       "key_concept": "User workarounds for a missing designed control are a control gap: report the risk so management assigns an owner and a fix date.",
       "pre_read": "Ask whether the approval step was a designed control. If it was, its absence is a risk, not a feature request.",
-      "correct_explanation": "The approval workflow was a designed control, so its absence is a control gap: payments now rely on spreadsheets that can be changed without trace. The auditor should report it with a risk rating so management assigns an owner and a remediation date. An enhancement request is the runner-up: it may be the eventual fix, but filing it as routine change hides the risk and lets it wait for release planning.",
+      "correct_explanation": "The approval workflow was a designed control, so its absence is a control gap: payments now rely on spreadsheets that can be changed without trace. The auditor should report it with a risk rating so management assigns an owner and a remediation date. An enhancement request nearly wins: it may be the eventual fix, but filing it as routine change hides the risk and lets it wait for release planning.",
       "wrong_explanations": {
         "B": "Staff are not misusing the system. The designed control is missing, so training cannot close the gap.",
-        "C": "Logging it as an enhancement treats a missing control as optional and can leave payment risk unaddressed for months.",
+        "C": "Change requests are the normal channel for fixes; a finding's label, though, decides who answers for it, so missing controls are labeled as risk.",
         "D": "Locking and logging spreadsheets makes the workaround more traceable, but it replaces a designed system control with a manual one management never accepted."
       },
       "tips": [
@@ -4792,7 +4792,7 @@
       "correct": "B",
       "key_concept": "Go-live decisions rest on readiness criteria signed off by accountable owners, with open exceptions visible and formally accepted.",
       "pre_read": "Separate evidence of activity (tasks done) from evidence of outcomes (criteria met).",
-      "correct_explanation": "Readiness depends on more than finished tasks: testing results, data conversion, training, support and rollback must each meet agreed criteria. A checklist signed by the accountable owners, with open exceptions listed and risk-accepted, gives the committee a basis to decide. A schedule showing tasks complete is the runner-up: tasks can be done while their outcomes still fall short of the criteria.",
+      "correct_explanation": "Readiness depends on more than finished tasks: testing results, data conversion, training, support and rollback must each meet agreed criteria. A checklist signed by the accountable owners, with open exceptions listed and risk-accepted, gives the committee a basis to decide. A schedule showing tasks complete is the closest choice: tasks can be done while their outcomes still fall short of the criteria.",
       "wrong_explanations": {
         "A": "The vendor has an interest in go-live and is not accountable for the organization's readiness. It is not independent evidence.",
         "C": "Completed tasks show activity, not outcomes, even with the owner's sign-off. Testing can finish with critical defects still open.",
@@ -4860,9 +4860,9 @@
       "correct": "B",
       "key_concept": "Three-point estimating, as in the program evaluation and review technique (PERT), weights optimistic, most likely and pessimistic durations for each uncertain task.",
       "pre_read": "Ask how the plan can show a range of possible durations instead of one guess per task.",
-      "correct_explanation": "Three-point estimating, used in the program evaluation and review technique (PERT), weights optimistic, most likely and pessimistic durations as (O + 4M + P) / 6, so each task's estimate reflects its own uncertainty and the spread shows schedule risk. A flat 20% buffer is the runner-up: it adds contingency, but the amount is arbitrary and spread evenly instead of where the uncertainty lies.",
+      "correct_explanation": "Three-point estimating, used in the program evaluation and review technique (PERT), weights optimistic, most likely and pessimistic durations as (O + 4M + P) / 6, so each task's estimate reflects its own uncertainty and the spread shows schedule risk. A flat 20% buffer is the most tempting alternative: it adds contingency, but the amount is arbitrary and spread evenly instead of where the uncertainty lies.",
       "wrong_explanations": {
-        "A": "A uniform buffer is arbitrary: it pads predictable tasks needlessly and may still be too small for the most uncertain ones.",
+        "A": "A flat buffer serves repeat work whose variance history is known; where no history exists, the estimate itself must carry the uncertainty.",
         "C": "Simulation needs a range for each task; fed single points, it repeats them and shows no spread of possible durations.",
         "D": "Scaling helps only when the past project is comparable; this migration is the first of its kind, so the analogy carries little weight."
       },
@@ -4897,7 +4897,7 @@
       "correct": "C",
       "key_concept": "A chain that slips beyond its slack becomes the critical path and moves the end date by the excess.",
       "pre_read": "Compare the slip with the slack the chain had before it started to slip.",
-      "correct_explanation": "Slack, or total float, is how far a chain can slip without moving the end date. The conversion chain had five days, so an eight-day slip uses all of it and adds three more, making conversion the new critical path. Concluding that go-live holds because conversion was not critical is the runner-up error: a chain stays non-critical only while its delay stays within its slack.",
+      "correct_explanation": "Slack, or total float, is how far a chain can slip without moving the end date. The conversion chain had five days, so an eight-day slip uses all of it and adds three more, making conversion the new critical path. Concluding that go-live holds because conversion was not critical comes closest, yet a chain stays non-critical only while its delay stays within its slack.",
       "wrong_explanations": {
         "A": "Conversion was off the critical path only while its delay stayed within five days of slack; at eight days it drives the end date.",
         "B": "Five of the eight days are absorbed by the chain's slack, so only the excess three days move go-live.",
@@ -4934,7 +4934,7 @@
       "correct": "A",
       "key_concept": "Aggregate progress measures, including the schedule performance index, can hide critical-path delays; only critical-path forecasts show end-date risk.",
       "pre_read": "Ask which tasks actually decide the finish date, and whether the indicator looks at them.",
-      "correct_explanation": "Only critical-path tasks have zero slack, so their forecast finish decides whether go-live holds. Early work on non-critical training and reporting tasks inflates aggregate progress. The schedule performance index is the runner-up: it values work done instead of counting tasks, but it still sums all work, so early non-critical progress can offset, and hide, late critical-path tasks.",
+      "correct_explanation": "Only critical-path tasks have zero slack, so their forecast finish decides whether go-live holds. Early work on non-critical training and reporting tasks inflates aggregate progress. The schedule performance index nearly wins: it values work done instead of counting tasks, but it still sums all work, so early non-critical progress can offset, and hide, late critical-path tasks.",
       "wrong_explanations": {
         "B": "The index aggregates earned value across all tasks, so early non-critical work can offset a late critical path and show a healthy figure.",
         "C": "Budget spent measures cost consumption, not whether the tasks that drive the end date are on time.",
@@ -4971,9 +4971,9 @@
       "correct": "D",
       "key_concept": "A check digit tests an identification number's internal consistency at entry, catching transpositions that an existence check misses.",
       "pre_read": "Ask whether a mistyped account number could still match a real customer.",
-      "correct_explanation": "A check digit is calculated from the other digits of the account number, so most transpositions produce a number that fails the calculation and is rejected at entry, before posting. An existence check is the runner-up: it is a sound input edit, but a transposed number that belongs to another real customer is on file and passes it.",
+      "correct_explanation": "A check digit is calculated from the other digits of the account number, so most transpositions produce a number that fails the calculation and is rejected at entry, before posting. An existence check comes closest: it is a sound input edit, but a transposed number that belongs to another real customer is on file and passes it.",
       "wrong_explanations": {
-        "A": "A transposed number that matches another real customer is on file, so an existence check accepts it.",
+        "A": "Match the edit to the error: existence checks catch numbers never issued, while keying errors need a test of the number's own structure.",
         "B": "The amounts are keyed correctly, so the batch total still agrees even though payments reach the wrong customers.",
         "C": "A report reviewed after posting is detective, and a supervisor is unlikely to spot a swapped pair of digits."
       },
@@ -5008,9 +5008,9 @@
       "correct": "A",
       "key_concept": "Run-to-run control totals prove completeness across each processing step and show where records were lost.",
       "pre_read": "Ask where the records went missing and which control watches that point.",
-      "correct_explanation": "Run-to-run control totals carry a record count or amount from one processing step to the next, so a step that drops records is caught the same night, and the failing step is identified. Reconciling billed revenue to the general ledger is the runner-up: it also tests completeness, but only monthly and in aggregate, so missing records surface weeks later and are hard to trace.",
+      "correct_explanation": "Run-to-run control totals carry a record count or amount from one processing step to the next, so a step that drops records is caught the same night, and the failing step is identified. Reconciling billed revenue to the general ledger is the strongest alternative: it also tests completeness, but only monthly and in aggregate, so missing records surface weeks later and are hard to trace.",
       "wrong_explanations": {
-        "B": "A monthly ledger reconciliation finds the gap weeks later, as a total only, without showing which step lost the records.",
+        "B": "Revenue-to-ledger reconciliation is a core financial close control, but detection belongs at the stage where records are lost.",
         "C": "Range checks test values at input; they cannot notice records lost later during processing.",
         "D": "Controlling who receives invoices protects output; it does nothing to show that records went missing earlier."
       },
@@ -5046,11 +5046,11 @@
       "correct": "C",
       "key_concept": "A retrained machine learning model is a production change and needs validation, approval and controlled release with a way back.",
       "pre_read": "Ask whether new model behavior counts as a change, even when no code changes.",
-      "correct_explanation": "A retrained model changes system behavior just as new code does, so each version needs validation, approval and deployment through change control, with a way back to the prior version. Having the data scientists log each run is the runner-up: it creates a record, but the builders still release their own changes with no independent check before customers see the new fares.",
+      "correct_explanation": "A retrained model changes system behavior just as new code does, so each version needs validation, approval and deployment through change control, with a way back to the prior version. Having the data scientists log each run nearly wins: it creates a record, but the builders still release their own changes with no independent check before customers see the new fares.",
       "wrong_explanations": {
         "A": "Fewer releases reduce volume, but each one still reaches production without validation or approval.",
         "B": "Freezing the model lets it fall out of step with demand for a year; the aim is controlled change, not no change.",
-        "D": "A log records what the builders did, but they still approve and release their own changes with no independent check."
+        "D": "A retraining log does give the model the audit trail it needs, yet a record of a change is never its authorization."
       },
       "tips": [
         "Eliminate: A only slows the release rate, and B stops needed retraining instead of controlling it.",
@@ -5084,10 +5084,10 @@
       "correct": "B",
       "key_concept": "Before release, a model needs validation independent of its builders; business acceptance should rest on that evidence.",
       "pre_read": "Ask who has checked the builders' work, and whether they are independent of it.",
-      "correct_explanation": "Model validation must be independent of the builders, who tend to test their own assumptions. Independent testing of accuracy, unfair bias and known limits gives the business owner a sound basis for acceptance. Owner sign-off is the runner-up: the owner should accept the model, but signing off on the builders' own results adds accountability without independent evidence, so validation comes first.",
+      "correct_explanation": "Model validation must be independent of the builders, who tend to test their own assumptions. Independent testing of accuracy, unfair bias and known limits gives the business owner a sound basis for acceptance. Owner sign-off comes closest: the owner should accept the model, but signing off on the builders' own results adds accountability without independent evidence, so validation comes first.",
       "wrong_explanations": {
         "A": "A colleague on the same project shares the team's assumptions and incentives, so the review is not independent.",
-        "C": "The owner should accept the model, but sign-off based only on the builders' results adds approval, not independent evidence.",
+        "C": "Owner sign-off and independent testing both gate the model's release, though acceptance is a decision, and decisions rest on evidence someone has challenged.",
         "D": "Live alerts watch the model after release; they cannot show it is sound before it starts flagging transactions."
       },
       "tips": [
@@ -5121,7 +5121,7 @@
       "correct": "D",
       "key_concept": "Automated decisions are traceable only if each one records the model version and inputs that produced it.",
       "pre_read": "Ask what links one past decision to the exact model that made it.",
-      "correct_explanation": "Tracing a decision requires a record, made at the time, of which model version and which inputs produced it. With that record, the lender can rebuild and explain any disputed decline. Archiving every version is the runner-up: it keeps the models, but without a link from each decision to its version, staff still cannot tell which archived model declined a given applicant.",
+      "correct_explanation": "Tracing a decision requires a record, made at the time, of which model version and which inputs produced it. With that record, the lender can rebuild and explain any disputed decline. Archiving every version is the closest choice: it keeps the models, but without a link from each decision to its version, staff still cannot tell which archived model declined a given applicant.",
       "wrong_explanations": {
         "A": "Archived versions are needed, but without the version recorded on each decision, nobody knows which archived model to examine.",
         "B": "The current model may differ from the one that made the decision, so its output proves nothing about past declines.",
@@ -5158,7 +5158,7 @@
       "correct": "A",
       "key_concept": "A license grants use, not ownership; reverse engineering vendor software needs legal confirmation that the license permits it.",
       "pre_read": "Ask what the license actually lets the organization do with the vendor's code.",
-      "correct_explanation": "A software license grants the right to use the product, not rights to its code. Many licenses forbid decompiling, and many jurisdictions allow it only in narrow cases, such as interoperability, so legal review must come before any work starts. An isolated, logged environment is the runner-up: it controls technical risk, such as harm to production, but it does nothing to make the decompiling lawful.",
+      "correct_explanation": "A software license grants the right to use the product, not rights to its code. Many licenses forbid decompiling, and many jurisdictions allow it only in narrow cases, such as interoperability, so legal review must come before any work starts. An isolated, logged environment is the strongest alternative: it controls technical risk, such as harm to production, but it does nothing to make the decompiling lawful.",
       "wrong_explanations": {
         "B": "Escrow releases code only on defined events such as vendor failure; refusing to share design is not one.",
         "C": "Isolation contains technical risk, but the decompiling itself may breach the license wherever it runs.",
@@ -5196,14 +5196,14 @@
       "correct": "B",
       "key_concept": "Reused components must be tested in each new system, with its data and interfaces; earlier success elsewhere is not evidence.",
       "pre_read": "Ask what is different about the new system the component will serve.",
-      "correct_explanation": "A component that worked in one system can fail in another that sends it different data or calls it differently. Testing it inside the wholesale system, with wholesale pricing data and interfaces, shows whether it works in its new setting. Rerunning the original unit tests is the runner-up: it confirms the component is unchanged, but those cases reflect retail data, not wholesale use.",
+      "correct_explanation": "A component that worked in one system can fail in another that sends it different data or calls it differently. Testing it inside the wholesale system, with wholesale pricing data and interfaces, shows whether it works in its new setting. Rerunning the original unit tests comes closest: it confirms the component is unchanged, but those cases reflect retail data, not wholesale use.",
       "wrong_explanations": {
-        "A": "The cases still use retail data and calls, so passing them inside the wholesale build says little about wholesale pricing.",
+        "A": "Rerunning unit tests also exercises the component inside the wholesale build, but tests prove only the conditions they were written for.",
         "C": "Retail results show the component works in retail; the wholesale system will use it with different data.",
         "D": "Secure coding review looks for vulnerabilities, not whether tax is calculated correctly on wholesale data."
       },
       "tips": [
-        "Eliminate: C relies on results from another setting, and D checks for security flaws rather than correct calculation.",
+        "Eliminate: C counts operating history as test evidence, though no test was designed or run for this system, and D checks for security flaws rather than correct calculation.",
         "Final two: B beats A because old unit tests confirm the component is unchanged, not that it works with new data.",
         "Exam cue: reused components need integration testing in each new system, however well they worked before."
       ],
@@ -5233,7 +5233,7 @@
       "correct": "C",
       "key_concept": "Audit trails for sensitive data changes must capture prior and new values, not just who and when, to support investigation.",
       "pre_read": "Ask which part of who, what and when the audit trail is missing.",
-      "correct_explanation": "The gap is content: the trail shows who changed bank details but not what changed, so the diverted account numbers cannot be traced or reversed from it. Recording prior and new values closes that gap. Central, protected storage is the runner-up: it makes logs trustworthy, but protecting a record that lacks the changed values still leaves investigators without the evidence they need.",
+      "correct_explanation": "The gap is content: the trail shows who changed bank details but not what changed, so the diverted account numbers cannot be traced or reversed from it. Recording prior and new values closes that gap. Central, protected storage nearly wins: it makes logs trustworthy, but protecting a record that lacks the changed values still leaves investigators without the evidence they need.",
       "wrong_explanations": {
         "A": "Protection keeps logs from being altered, but a protected log that omits the changed values still cannot show where pay was redirected.",
         "B": "Longer retention keeps the same incomplete records for longer; it adds none of the missing detail.",
@@ -5271,7 +5271,7 @@
       "correct": "D",
       "key_concept": "Business events must be defined for logging in requirements, because actions taken before logging exists leave no evidence.",
       "pre_read": "Ask what happens to accountability for actions taken before the logging is added.",
-      "correct_explanation": "Business events such as loan approvals and rate exceptions are the evidence of who did what. If they are not logged from go-live, any error or fraud in the early months leaves no trail, and that history can never be recreated. Higher retrofit cost is the runner-up: building controls in early is cheaper, but cost can be absorbed, while missing evidence is lost for good.",
+      "correct_explanation": "Business events such as loan approvals and rate exceptions are the evidence of who did what. If they are not logged from go-live, any error or fraud in the early months leaves no trail, and that history can never be recreated. Higher retrofit cost is the closest concern: building controls in early is cheaper, but cost can be absorbed, while missing evidence is lost for good.",
       "wrong_explanations": {
         "A": "Retrofitting costs more, but the extra cost can be funded later; months of approvals with no record cannot be recovered.",
         "B": "Storage capacity is a routine operational matter, and nothing suggests error logs will exhaust it.",
@@ -5308,9 +5308,9 @@
       "correct": "C",
       "key_concept": "User acceptance testing belongs in a separate, production-like environment; only controlled audit techniques, such as an integrated test facility, run test data in live systems.",
       "pre_read": "Ask what test transactions could set off in a live system before anyone reverses them.",
-      "correct_explanation": "Testing belongs in a separate environment that mirrors production in configuration and versions, so results are reliable without putting live data or service at risk. Building one fixes the real gap. Testing live and reversing transactions afterward is the runner-up: test orders can still trigger shipments, postings and interface messages, and reversals may miss some, so live data and service stay exposed.",
+      "correct_explanation": "Testing belongs in a separate environment that mirrors production in configuration and versions, so results are reliable without putting live data or service at risk. Building one fixes the real gap. Testing live and reversing transactions afterward is the most tempting alternative: test orders can still trigger shipments, postings and interface messages, and reversals may miss some, so live data and service stay exposed.",
       "wrong_explanations": {
-        "A": "Test orders can still trigger shipments, financial postings and interface messages, and reversals may be incomplete, so live data and service remain at risk.",
+        "A": "Reversals are a standard cleanup for test postings, but isolating tests from live assets beats repairing what they touched afterward.",
         "B": "A development environment is controlled by programmers and rarely matches production, so results would be unreliable and testing would lack independence.",
         "D": "Inquiry-only testing cannot exercise order entry, pricing or posting, so the functions users must accept would go untested."
       },
@@ -5344,7 +5344,7 @@
       "correct": "D",
       "key_concept": "Synthetic data fits early testing and edge cases that real records lack, and it carries no personal data.",
       "pre_read": "Ask whether any copy of production data, masked or not, could contain these cases.",
-      "correct_explanation": "Synthetic data suits cases that real data does not contain: records generated to the specified scenarios exercise the rare rules and hold no personal data. A masked production extract is the runner-up because masking is the right way to use real data in test, but no extract, however large, contains cases that appear in no production record.",
+      "correct_explanation": "Synthetic data suits cases that real data does not contain: records generated to the specified scenarios exercise the rare rules and hold no personal data. A masked production extract nearly wins because masking is the right way to use real data in test, but no extract, however large, contains cases that appear in no production record.",
       "wrong_explanations": {
         "A": "Masking protects real data, but these cases appear in no production record, so no extract can supply them.",
         "B": "Editing live records to stage tests corrupts real member data and mixes test activity with production.",
@@ -5381,14 +5381,14 @@
       "correct": "A",
       "key_concept": "Sociability testing confirms a new system can share production resources without harming, or being harmed by, existing systems.",
       "pre_read": "Ask which risk remains when each system has only ever been tested on its own.",
-      "correct_explanation": "Sociability testing runs the new system alongside the systems it will share production with, revealing contention for database locks, memory or connections that neither shows alone. That is the untested risk here. Stress testing is the runner-up: finding the warehouse system's breaking point is useful, but done in isolation it still cannot show whether the two systems harm each other.",
+      "correct_explanation": "Sociability testing runs the new system alongside the systems it will share production with, revealing contention for database locks, memory or connections that neither shows alone. That is the untested risk here. Stress testing is the strongest alternative: finding the warehouse system's breaking point is useful, but done in isolation it still cannot show whether the two systems harm each other.",
       "wrong_explanations": {
         "B": "Stress testing finds the warehouse system's breaking point, but run alone it cannot reveal contention with order entry on the shared cluster.",
         "C": "Beta testing checks fit with real users' work; it does not create the combined load that reveals conflicts between systems.",
         "D": "Unit tests check individual queries in isolation, so they cannot show how two systems compete for one database cluster."
       },
       "tips": [
-        "Eliminate: C checks user fit rather than shared resources, and D tests isolated code units.",
+        "Eliminate: C checks user fit rather than shared resources, and D is developer unit testing, a build-stage check of query logic rather than of load.",
         "Final two: A beats B because a stress test of the warehouse system alone still misses conflicts with order entry on the shared cluster.",
         "Exam cue: when a new system shares infrastructure, test sociability by running it with its neighbors under production-like conditions."
       ],
@@ -5417,7 +5417,7 @@
       "correct": "B",
       "key_concept": "Performance targets come from business needs and are fixed before testing, or a pass proves nothing.",
       "pre_read": "Ask what a pass means when the bar was set after seeing the score.",
-      "correct_explanation": "Performance targets must come from business needs and be fixed before testing. Targets set after seeing results can simply be moved to whatever the system achieves, so every pass proves little. A production-like environment is the runner-up: it also matters for valid results, but nothing suggests it is missing, while the moved targets are a known flaw that undermines every result.",
+      "correct_explanation": "Performance targets must come from business needs and be fixed before testing. Targets set after seeing results can simply be moved to whatever the system achieves, so every pass proves little. A production-like environment comes closest: it also matters for valid results, but nothing suggests it is missing, while the moved targets are a known flaw that undermines every result.",
       "wrong_explanations": {
         "A": "Environment fidelity matters, but nothing in the report suggests a mismatch; the known flaw is that targets were fitted to the results.",
         "C": "Nothing suggests the tools fell short, and better load tools would not fix targets that were set to match the results.",
@@ -5453,9 +5453,9 @@
       "correct": "D",
       "key_concept": "Regression testing confirms unchanged functions still work after a change, so its scope follows dependencies, not just changed code.",
       "pre_read": "Ask which parts of the system this practice never exercises after a release.",
-      "correct_explanation": "Regression testing exists because a change can break functions that were never touched, such as a claims calculation that calls a modified module. Rerunning only the changed modules' tests skips exactly those dependents. An error inside a changed module is the runner-up, but those modules are the ones being retested, so their defects are the most likely to be caught.",
+      "correct_explanation": "Regression testing exists because a change can break functions that were never touched, such as a claims calculation that calls a modified module. Rerunning only the changed modules' tests skips exactly those dependents. An error inside a changed module is the closest choice, but those modules are the ones being retested, so their defects are the most likely to be caught.",
       "wrong_explanations": {
-        "A": "The changed modules are exactly the ones being retested, so defects inside them are the most likely to be caught.",
+        "A": "Changed modules do breed most new defects, yet a defect slips through only where testing stops, so judge escape risk by coverage, not by origin.",
         "B": "Peak-volume slowdowns call for performance testing, which a functional regression suite, full or partial, does not provide.",
         "C": "Outdated library flaws are found by software composition analysis, not by choosing which functional tests to rerun."
       },
@@ -5489,7 +5489,7 @@
       "correct": "A",
       "key_concept": "Internal rate of return can mislead between projects of very different sizes; net present value shows the value each adds.",
       "pre_read": "Ask whether a high percentage on a small sum beats a lower percentage on a large one.",
-      "correct_explanation": "Internal rate of return is a percentage, so it can mislead when options differ greatly in size: 45% on $0.3 million may add far less value than 20% on $6 million. Net present value at the required rate shows which project adds more value in today's money. Choosing by the higher rate is the runner-up: it ranks return per dollar invested, not the total value created.",
+      "correct_explanation": "Internal rate of return is a percentage, so it can mislead when options differ greatly in size: 45% on $0.3 million may add far less value than 20% on $6 million. Net present value at the required rate shows which project adds more value in today's money. Choosing by the higher rate nearly wins: it ranks return per dollar invested, not the total value created.",
       "wrong_explanations": {
         "B": "A higher rate on a much smaller investment can create less total value; rates alone mislead when project sizes differ greatly.",
         "C": "Value per dollar invested is a ratio, so like the rate of return it can rank the smaller project first while hiding the total value each adds.",
@@ -5525,7 +5525,7 @@
       "correct": "B",
       "key_concept": "Choose the financial measure that fits the decision: payback when quick recovery of cost is the binding constraint.",
       "pre_read": "Ask which question the 18-month rule forces management to answer first.",
-      "correct_explanation": "Measures answer different questions, and the plan agreed with the lender makes speed of recovery the binding constraint: a system that pays back in 30 months fails it, however valuable it is. Payback period answers exactly that question, so it is the primary screen. Net present value is the runner-up: it best shows whole-life value and can rank the proposals that pass, but it does not show when cost is recovered.",
+      "correct_explanation": "Measures answer different questions, and the plan agreed with the lender makes speed of recovery the binding constraint: a system that pays back in 30 months fails it, however valuable it is. Payback period answers exactly that question, so it is the primary screen. Net present value comes closest: it best shows whole-life value and can rank the proposals that pass, but it does not show when cost is recovered.",
       "wrong_explanations": {
         "A": "Net present value shows whole-life value, but a high-value proposal may still take too long to recover its cost under the 18-month rule.",
         "C": "Total cost of ownership counts costs only; without benefits and their timing it cannot show whether cost is recovered in time.",
@@ -5561,7 +5561,7 @@
       "correct": "C",
       "key_concept": "Select vendors on weighted criteria fixed before proposals arrive; meeting minimum requirements only makes a bid eligible.",
       "pre_read": "Ask how much the request for proposal said price should decide.",
-      "correct_explanation": "Vendors should be selected against criteria and weights fixed before proposals arrive. The request for proposal gave cost 30%, so fit, support and stability carry the rest, and meeting minimum requirements makes a proposal eligible, not equal. Rescoring with new weights is the runner-up: input from operations staff sounds sensible, but changing weights after seeing the bids invites bias toward a favored vendor.",
+      "correct_explanation": "Vendors should be selected against criteria and weights fixed before proposals arrive. The request for proposal gave cost 30%, so fit, support and stability carry the rest, and meeting minimum requirements makes a proposal eligible, not equal. Rescoring with new weights is the strongest alternative: input from operations staff sounds sensible, but changing weights after seeing the bids invites bias toward a favored vendor.",
       "wrong_explanations": {
         "A": "Meeting minimum requirements makes a proposal eligible, not equal; awarding on price alone ignores the 70% of the score set for other criteria.",
         "B": "Best and final offers still decide on price and pass over vendors that may score highest on fit, support and stability.",
@@ -5598,7 +5598,7 @@
       "correct": "A",
       "key_concept": "Document requirements before issuing a request for proposal, because they are the basis for evaluating every proposal.",
       "pre_read": "Ask what the evaluation team would score the proposals against.",
-      "correct_explanation": "Requirements come first because they are the yardstick for scoring proposals. Without them, the county cannot tell which proposal fits its permitting process and may commit funds to a system that does not meet business needs. Costly change requests are the runner-up: they are a likely consequence, but they are a symptom of that root problem rather than the problem itself.",
+      "correct_explanation": "Requirements come first because they are the yardstick for scoring proposals. Without them, the county cannot tell which proposal fits its permitting process and may commit funds to a system that does not meet business needs. Costly change requests come closest: they are a likely consequence, but they are a symptom of that root problem rather than the problem itself.",
       "wrong_explanations": {
         "B": "Change-request costs are likely, but they are a symptom of the root problem: selecting a system without defined needs to judge it by.",
         "C": "A shorter bidding window may reduce responses, but more proposals would not help with no requirements to judge them against.",
@@ -5635,10 +5635,10 @@
       "correct": "D",
       "key_concept": "The IS auditor advises from requirements onward; independence comes from not designing, building or approving, not from staying away.",
       "pre_read": "Ask when controls are cheapest to add, and which roles would impair independence.",
-      "correct_explanation": "Controls are cheapest to build in at requirements and design, so the IS auditor should take part from the start in an advisory role. Independence comes from agreed advisory terms and from not designing, building or approving the system, not from staying away. A voting steering committee seat is the runner-up: it gives early involvement, but voting makes the IS auditor share management's project decisions, which impairs independence.",
+      "correct_explanation": "Controls are cheapest to build in at requirements and design, so the IS auditor should take part from the start in an advisory role. Independence comes from agreed advisory terms and from not designing, building or approving the system, not from staying away. A voting steering committee seat nearly wins: it gives early involvement, but voting makes the IS auditor share management's project decisions, which impairs independence.",
       "wrong_explanations": {
         "A": "Advisory input under agreed terms keeps independence; waiting until testing ends means missing controls are found when they are costliest to add.",
-        "B": "Early involvement is right, but voting on project decisions makes the IS auditor share management's decisions, which impairs independence.",
+        "B": "No one audits objectively a decision they helped make. A steering seat does give early sight, yet auditors influence projects by advice, never by vote.",
         "C": "Quality assurance checks deliverables against standards; it does not replace the IS auditor's independent view of control requirements."
       },
       "tips": [
@@ -5672,11 +5672,11 @@
       "correct": "B",
       "key_concept": "User management owns requirements and must supply knowledgeable staff; the steering committee resolves gaps in business participation.",
       "pre_read": "Ask who can commit business people to the project, and why their input matters.",
-      "correct_explanation": "User management owns the new system and must supply people who know the work, because requirements written by IT alone often miss how claims are really handled. The steering committee can commit those people, so escalating is the first step. Formal sign-off by business managers is the runner-up: it records ownership, but approving a document they did not help write rarely catches missing needs.",
+      "correct_explanation": "User management owns the new system and must supply people who know the work, because requirements written by IT alone often miss how claims are really handled. The steering committee can commit those people, so escalating is the first step. Formal sign-off by business managers is the closest choice: it records ownership, but approving a document they did not help write rarely catches missing needs.",
       "wrong_explanations": {
         "A": "User acceptance testing finds gaps late, when fixing them means rework; missing needs should be caught while requirements are written.",
         "C": "Consultants may know the industry but not this organization's claims process, and they cannot take on the business's ownership.",
-        "D": "Sign-off records ownership on paper, but managers approving a document they did not help write rarely spot missing needs."
+        "D": "Sign-off would close the loop if users had helped write the requirements; approval cannot add knowledge that was never gathered."
       },
       "tips": [
         "Eliminate: A finds gaps only after the system is built, and C substitutes outsiders for the business's own knowledge.",
@@ -5708,9 +5708,9 @@
       "correct": "C",
       "key_concept": "Schedule the post-implementation review once the system has run under conditions that let the promised benefits be measured.",
       "pre_read": "Ask when the benefit promised in the business case can first be observed.",
-      "correct_explanation": "A review must wait until the system has run long enough, under representative conditions, to measure the promised benefits. Here the benefit is faster bookings from December to March, so the review belongs soon after the first such period ends, while fixes are still practical. Three months after go-live is the runner-up: it is a common settling period, but August data shows off-season volumes and cannot confirm the peak-season benefit.",
+      "correct_explanation": "A review must wait until the system has run long enough, under representative conditions, to measure the promised benefits. Here the benefit is faster bookings from December to March, so the review belongs soon after the first such period ends, while fixes are still practical. Three months after go-live is the strongest alternative: it is a common settling period, but August data shows off-season volumes and cannot confirm the peak-season benefit.",
       "wrong_explanations": {
-        "A": "Three months is a common settling period, but August volumes cannot show whether bookings are faster from December to March.",
+        "A": "An auditor would accept a usual settling interval as a default, but a seasonal promise can only be judged in its season.",
         "B": "One week after go-live shows start-up problems and the learning curve, not the normal or peak results the review must measure.",
         "D": "Two booking periods later, context is lost and changes have piled up, so findings come too late to correct cheaply."
       },
@@ -5745,9 +5745,9 @@
       "correct": "A",
       "key_concept": "Release approval is a management control: the change authority approves on attached evidence, and the IS auditor later tests that approvals were evidence-based.",
       "pre_read": "Compare who performs the approval in each option, not only what evidence the approval uses.",
-      "correct_explanation": "The change authority, a management role independent of the developers, approves each release on the attached test and scan evidence; the IS auditor can later test that approvals were evidence-based. The IS auditor approving releases is the runner-up. It uses the same evidence, but it makes the IS auditor operate a production control that the IS auditor must later audit, a self-review threat.",
+      "correct_explanation": "The change authority, a management role independent of the developers, approves each release on the attached test and scan evidence; the IS auditor can later test that approvals were evidence-based. The IS auditor approving releases is the most tempting alternative. It uses the same evidence, but it makes the IS auditor operate a production control that the IS auditor must later audit, a self-review threat.",
       "wrong_explanations": {
-        "B": "The evidence is right but the approver is wrong: approving releases makes the IS auditor run a production control that the IS auditor must later audit.",
+        "B": "Both approvers would rely on identical test results, but independence is lost by what an auditor does, not by what an auditor reads.",
         "C": "Peer review helps, but the author still approves the author's own release, so the separation between writing and approving code is lost.",
         "D": "A board that both approves and deploys merges authorizing with doing; deployment should run through the pipeline or operations staff, separate from approval."
       },
@@ -5783,7 +5783,7 @@
       "correct": "C",
       "key_concept": "Project closure starts with the business owner's formal acceptance; releasing resources, financial closeout and lessons learned follow it.",
       "pre_read": "Ask which closing step decides whether the others can happen at all.",
-      "correct_explanation": "Closure starts by confirming the business owner's formal acceptance of the deliverables against the agreed criteria, because go-live is not acceptance. If acceptance reveals gaps, the team is still needed, so acceptance decides whether the project can close at all. The lessons-learned review is the runner-up. It is valuable and time-sensitive, but it can be held after acceptance, and it does not decide whether closure may proceed.",
+      "correct_explanation": "Closure starts by confirming the business owner's formal acceptance of the deliverables against the agreed criteria, because go-live is not acceptance. If acceptance reveals gaps, the team is still needed, so acceptance decides whether the project can close at all. The lessons-learned review comes closest. It is valuable, but it can be held after acceptance, and it does not decide whether closure may proceed.",
       "wrong_explanations": {
         "A": "Lessons matter, but they can be captured after acceptance; they do not decide whether the project may close or the team may go.",
         "B": "Deployment is not acceptance; releasing the team before the owner signs off leaves no one to fix gaps that acceptance finds.",

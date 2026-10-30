@@ -136,9 +136,10 @@ describe('Today and Results copy', () => {
     mount(<Today />);
     const text = textOf(root());
     // Mobile 1.24: the panel's title names the activity, and today's share of the queue is the line under it
-    // ("8 of 56 due", the same queue You and Practice count, and the order).
+    // ("12 ready to revisit", never the 56 behind them, and the order).
     expect(text).toContain('Questions to revisit');
-    expect(text).toMatch(/\d+ of 56 due · most overdue first/);
+    expect(text).toMatch(/\d+ ready to revisit · oldest first/);
+    expect(text).not.toMatch(/\b56\b/);
     // Mobile 1.15 (C1): one minutes style everywhere, "About N min" (screen readers say "minutes").
     expect(text).toMatch(/Also today About \d+ min/);
     expect(text).not.toMatch(/about \d+ minutes/i);
@@ -147,10 +148,10 @@ describe('Today and Results copy', () => {
   it('a review row under "Also today" says how many TODAY takes when the queue is bigger (live count; mobile 1.15 C7)', () => {
     const item = { kind: 'review' as const, count: 20, capped: true, due: 56 };
     expect(planText(item, 56).short).toBe('Revisit · 20 today');
-    expect(planText({ kind: 'review', count: 8, due: 56 }, 56)).toEqual({ title: 'Review 56 due', meta: 'About 10 min · 8 today, most overdue first', short: 'Revisit · 8 today' });
-    expect(planText(item, 56).title).toBe('Review 56 due');
+    expect(planText({ kind: 'review', count: 8, due: 56 }, 56)).toEqual({ title: 'Questions to revisit', meta: 'About 10 min · 8 today, oldest first', short: 'Revisit · 8 today' });
+    expect(planText(item, 56).title).toBe('Questions to revisit');
     // Reviews done since the morning: the live queue, and no cap line once it fits one session.
-    expect(planText(item, 12)).toEqual({ title: 'Review 12 due', meta: expect.stringContaining('questions to revisit'), short: expect.stringMatching(/^Revisit · \d+ min$/) });
+    expect(planText(item, 12)).toEqual({ title: 'Questions to revisit', meta: expect.stringContaining('questions to revisit'), short: expect.stringMatching(/^Revisit · \d+ min$/) });
     expect(planText(item, 0).title).toBe('Review · all caught up');
   });
 

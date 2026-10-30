@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Screenshot harness: web-export the app, seed demo data, capture key screens.
-# Usage (from mobile/): [SHOTS=m146|m145|m144|m143|m142|m141|guides|principles|qnote|today|firstdays|notes|data|pace|practice|milestones|support|paths|motion|growth|badges|badgesC|stats|learnplay|plant|fit|proof|settings|cloud|store] bash scripts/screenshots/run.sh [out_dir] [dark|light]
+# Usage (from mobile/): [SHOTS=motion2|fieldguide|forms|m149|m146|m145|m144|m143|m142|m141|guides|principles|qnote|today|firstdays|notes|data|pace|practice|milestones|support|paths|motion|growth|badges|badgesC|stats|learnplay|plant|fit|proof|settings|cloud|store] bash scripts/screenshots/run.sh [out_dir] [dark|light]
 # Needs Playwright (preinstalled in Claude cloud sessions; locally: npx playwright install chromium).
 set -euo pipefail
 cd "$(dirname "$0")/../.."
@@ -87,7 +87,7 @@ elif [ "${SHOTS:-}" = guides ]; then
 elif [ "${SHOTS:-}" = pace ]; then
   node scripts/screenshots/shoot_pace.mjs "$TMP/seed.json" "$OUT" "$THEME"
 elif [ "${SHOTS:-}" = qnote ]; then
-  # "Your note" on a question: the answer screen's "Add a note", the sheet (typing, and
+  # "Your note" on a question: "Add a note" in the answer's ⋯ sheet, the note sheet (typing, and
   # above a keyboard-sized gap), the saved note's plate, Saved → Your notes (shoot_qnote.mjs).
   node scripts/screenshots/shoot_qnote.mjs "$TMP/seed.json" "$OUT" "$THEME"
 elif [ "${SHOTS:-}" = practice ]; then
@@ -103,6 +103,10 @@ elif [ "${SHOTS:-}" = support ]; then
   # note after sending, the no-email-app fallback, Settings → Help and feedback,
   # Help, What's new (top and end), Common questions, Your reports (shoot_support.mjs).
   node scripts/screenshots/shoot_support.mjs "$TMP/seed.json" "$OUT" "$THEME"
+elif [ "${SHOTS:-}" = motion2 ]; then
+  # Premium motion round 2: slow strips of the readiness scale bar (a rise, the day's first view)
+  # and the growth plate (Results' set, You's areas) with their end states (shoot_motion2.mjs).
+  node scripts/screenshots/shoot_motion2.mjs "$TMP/seed.json" "$OUT" "$THEME"
 elif [ "${SHOTS:-}" = motion ]; then
   # Mobile 1.8 motion: end states of the changed screens, and slow-motion
   # frame strips of the press, the page turn, the segment fill, the tab fade,
@@ -115,7 +119,7 @@ elif [ "${SHOTS:-}" = growth ]; then
   # moment, the theme fade and You's growth (shoot_growth.mjs).
   node scripts/screenshots/shoot_growth.mjs "$TMP/seed.json" "$OUT" "$THEME"
 elif [ "${SHOTS:-}" = badges ]; then
-  # Mobile 1.10 badge collection: the case (empty-ish, mid, nearly complete),
+  # Mobile 1.10 badge collection (the Herbarium since 1.51): the case (empty-ish, mid, nearly complete),
   # each shelf, Next for your exam, Sort, the detail sheet, Results with a new
   # badge, You's dot, Show badges off/on, and a strip of the unlock moment
   # (shoot_badges.mjs; REDUCED=1 for the reduced set; FONT_SCALE=1.3 or 2 for the
@@ -134,7 +138,7 @@ elif [ "${SHOTS:-}" = stats ]; then
   node scripts/screenshots/shoot_stats.mjs "$TMP/seed.json" "$OUT" "$THEME"
 elif [ "${SHOTS:-}" = learnplay ]; then
   # Mobile 1.12 Learn and Play: Learn's trail and reason, the lesson cover, the
-  # scene templates, a check's verdict, Lesson complete, Mark as read, Play,
+  # scene templates, a check's verdict, Lesson complete, Mark as read, Drills (Play until 1.51),
   # each game's header, a recap with its sparkline and a level up; strips of
   # the scene turn, the step line, the timeline, the lesson ✓, a match, a
   # stone and the level-leaf morph (shoot_learnplay.mjs; REDUCED=1; NARROW=1;
@@ -154,6 +158,14 @@ elif [ "${SHOTS:-}" = plant ]; then
   if [ "${PLANT:-}" != 4b ] && [ "${PLANT:-}" != 140 ]; then node scripts/screenshots/shoot_plant.mjs "$TMP/seed.json" "$OUT" "$THEME"; fi
   if [ "${PLANT:-}" != 140 ]; then node scripts/screenshots/shoot_plant4b.mjs "$TMP/seed.json" "$OUT" "$THEME"; fi
   if [ "${PLANT:-}" != 4b ]; then node scripts/screenshots/shoot_plant140.mjs "$TMP/seed.json" "$OUT" "$THEME"; fi
+elif [ "${SHOTS:-}" = fieldguide ]; then
+  # Mobile 1.51 Field Guide: You, the Herbarium, Today and Results as plates (shoot_fieldguide.mjs;
+  # FONT_SCALE=2 for about 200% text; FG_ONLY=you,herbarium,today,results narrows it).
+  node scripts/screenshots/shoot_fieldguide.mjs "$TMP/seed.json" "$OUT" "$THEME"
+elif [ "${SHOTS:-}" = forms ]; then
+  # Mobile 1.50 plant forms: Your plant at each form for three species, a Form IV flavour,
+  # Look's final-form choice, the quiet note, and frame strips of the reveal (shoot_forms.mjs).
+  node scripts/screenshots/shoot_forms.mjs "$TMP/seed.json" "$OUT" "$THEME"
 elif [ "${SHOTS:-}" = fit ]; then
   # Mobile 1.15 "Fit the plan": onboarding's Step 1 and Step 2 of 2, Today (a new learner's
   # day 1, a 10-minute day, the Exam-focused mini mock, the "Fit your plan"
@@ -229,7 +241,7 @@ elif [ "${SHOTS:-}" = cloud ]; then
   if [ "${CLOUD_PART:-}" != account ]; then node scripts/screenshots/shoot_board.mjs "$TMP/seed.json" "$OUT" "$THEME"; fi
 elif [ "${SHOTS:-}" = principles ]; then
   # Exam-mindset principles: the Learn row, the list by family, one principle
-  # (top, trap and example, the Practice ending) and an old id (shoot_principles.mjs).
+  # (top, trap and example, the Practice ending), an old id and the answer's ⋯ sheet (shoot_principles.mjs).
   node scripts/screenshots/shoot_principles.mjs "$TMP/seed.json" "$OUT" "$THEME"
 elif [ "${SHOTS:-}" = store ]; then
   # Mobile 1.40.1, the Google Play listing (docs/mobile/PLAY_LAUNCH.md c6): six screens at
@@ -238,6 +250,10 @@ elif [ "${SHOTS:-}" = store ]; then
   # Copies for the listing live in design-notes/brand-kaisip/store/screenshots/.
   node scripts/screenshots/shoot_store.mjs "$TMP/seed.json" "$OUT"
   python3 scripts/screenshots/flatten_png.py "$OUT"/store-0*.png
+elif [ "${SHOTS:-}" = m149 ]; then
+  # Mobile 1.49 (premium pass): the answer after a miss (recap, Show question, Go deeper, the ⋯
+  # sheet) and an answered lesson quick check, in light and dark (shoot_m149.mjs; THEMES=light for one).
+  node scripts/screenshots/shoot_m149.mjs "$TMP/seed.json" "$OUT"
 elif [ "${SHOTS:-}" = m143 ]; then
   # Mobile 1.43: the six concept boards (answer, results, you, note, settings, lesson idea) and the
   # tab headers (shoot_m143.mjs). M143_ONLY=answer,results picks a few; FONT_SCALE=2 for ~200% text.
@@ -248,5 +264,8 @@ elif [ "${SHOTS:-}" = paths ]; then
   node scripts/screenshots/shoot_paths.mjs "$TMP/seed.json" "$OUT" "$THEME"
 else
   node scripts/screenshots/shoot.mjs "$TMP/seed.json" "$OUT"
+  # The default run used to stop at the question bank: it now also takes the answer after a miss
+  # and an answered lesson check, light and dark (mobile 1.49).
+  node scripts/screenshots/shoot_m149.mjs "$TMP/seed.json" "$OUT"
 fi
 echo "Screenshots in $OUT"

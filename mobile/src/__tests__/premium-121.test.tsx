@@ -51,17 +51,19 @@ describe('planHero: no count in the title, minutes said once', () => {
   const review: PlanItem = { kind: 'review', count: 16, due: 55 };
   it('a review takes its share of the live queue into the meta', () => {
     const m = itemMinutes(review);
-    expect(planHero(review, 55)).toEqual({ title: 'Questions to revisit', meta: `About ${m} min · 16 of 55 due · most overdue first` });
+    expect(planHero(review, 55)).toEqual({ title: 'Questions to revisit', meta: `About ${m} min · 16 ready to revisit · oldest first` });
     // The caption already says the day's minutes (this item's alone): the meta leaves them out.
-    expect(planHero(review, 55, { minutesSaid: true })).toEqual({ title: 'Questions to revisit', meta: '16 of 55 due · most overdue first' });
-    expect(planHero({ kind: 'review', count: 8 }, 8, { minutesSaid: true }).meta).toBe('8 questions from before');
+    expect(planHero(review, 55, { minutesSaid: true })).toEqual({ title: 'Questions to revisit', meta: '16 ready to revisit · oldest first' });
+    expect(planHero({ kind: 'review', count: 8 }, 8, { minutesSaid: true }).meta).toBe('8 ready to revisit · oldest first');
+    // Fewer due than the plan made room for: the live count is the set.
+    expect(planHero({ kind: 'review', count: 8 }, 5, { minutesSaid: true }).meta).toBe('5 ready to revisit · oldest first');
     expect(planHero({ kind: 'review', count: 0 }, 0, { minutesSaid: true }).meta).toBe('All caught up');
   });
   it('an old save\'s "Review 20 due" label reads as the plain review; exam week\'s label keeps its name', () => {
     expect(planHero({ kind: 'review', count: 20, label: 'Review 20 due' }, 20).title).toBe('Questions to revisit');
     expect(planHero({ kind: 'review', count: 8, label: 'Light review · 8 questions' }, 30, { minutesSaid: true })).toEqual({
       title: 'Light review',
-      meta: '8 questions, most overdue first',
+      meta: '8 questions, oldest first',
     });
   });
   it('practice, lessons, games and mocks', () => {

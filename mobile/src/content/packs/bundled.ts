@@ -20,6 +20,7 @@ import type { ExamPack } from '../exam/types';
 import type { Lesson } from '../lessons/types';
 import type { NotesPack } from '../notes/types';
 import type { PrinciplesPack } from '../principles/types';
+import type { TermsPack } from '../terms';
 import type { PackQuestion } from '../types';
 import type { GameDeckKind, PackInfo, PackSource } from './types';
 
@@ -31,6 +32,7 @@ type Gen = {
   generatedExam?: Record<string, () => ExamPack>;
   generatedLessons?: Record<string, () => Lesson[]>;
   generatedGames?: Record<string, Partial<Record<string, () => unknown>>>;
+  generatedTerms?: Record<string, () => TermsPack>;
   generatedInfo?: Record<string, PackInfo>;
 };
 // Read through a function, never copied at import: jest.mock swaps the module's exports.
@@ -58,4 +60,5 @@ export const BundledSource: PackSource = {
   exam: (certId) => own(gen().generatedExam, certId)?.() ?? null,
   lessons: (certId) => own(gen().generatedLessons, certId)?.() ?? null,
   gameDeck: (certId, kind: GameDeckKind) => own(own(gen().generatedGames, certId), kind)?.() ?? null,
+  terms: (certId) => own(gen().generatedTerms, certId)?.() ?? null,
 };

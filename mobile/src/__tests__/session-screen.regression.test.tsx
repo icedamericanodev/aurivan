@@ -181,7 +181,7 @@ describe('lesson player: the quick-check gate', () => {
     expect(btn(fwd()).props.disabled).toBe(true);
     act(() => { cards()[0].props.onPress(); });
     expect(btn(fwd()).props.disabled).toBe(false);
-    press('Back'); // the scene before the check is never gated
+    press('Previous step'); // the scene before the check is never gated (1.49: the round Back on a check too)
     expect(btn('Next').props.disabled).toBe(false);
     press('Next'); // revisit: the check re-mounts unanswered and is gated again
     expect(cards().every((n) => n.props.state === 'idle')).toBe(true);

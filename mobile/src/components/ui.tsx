@@ -16,7 +16,8 @@
  *   L1 plate   figures, compare grids, quiet offers: `raised2`, radius 24, no
  *              shadow, no border (Card variant="plate");
  *   L2 card    things you choose between: `raised` + `cardShadow` in light,
- *              a 1.5 `line` outline in dark (Card, the default);
+ *              a 1.5 `line` outline plus a 1px inner top light in dark
+ *              (Card, the default; premium pass T2);
  *   L3 sheet   bottom sheets (`raised2`, 28 corners, over the scrim);
  *   brand      the forest panel, one per screen, lit from the top.
  */
@@ -47,6 +48,7 @@ import { lastWholeWordIndex } from '../engine/games/priorityLens';
 import {
   cardShadow,
   font,
+  darkCardTopLight,
   forestHighlight,
   grainOp,
   LARGE_TEXT,
@@ -54,6 +56,7 @@ import {
   motion,
   numeralUnit,
   percentSup,
+  plate,
   radius,
   raisedShadow,
   serifNumeral,
@@ -112,6 +115,14 @@ export function cardLiftFor(os: string, version: string | number): ViewStyle {
   return { boxShadow: cardShadow };
 }
 export const CARD_LIFT: ViewStyle = cardLiftFor(Platform.OS, Platform.Version);
+/**
+ * Premium pass T2: the dark L2 card's top light (`darkCardTopLight`), drawn
+ * inside the 1.5 `line` outline. Android below 10 skips inset shadows, which
+ * is fine: the outline still draws the card there.
+ */
+export const DARK_CARD_LIFT: ViewStyle = { boxShadow: darkCardTopLight };
+/** The L2 lift for the current theme: the shadow in light, the top light in dark. */
+export const cardLift = (isDark: boolean): ViewStyle => (isDark ? DARK_CARD_LIFT : CARD_LIFT);
 
 // ── Screen: safe-area aware page with optional scrolling ──────────────
 /**
@@ -393,7 +404,13 @@ export function Button({
   expanded,
   ref,
   follow,
+  shape = 'pill',
 }: {
+  /**
+   * Mobile 1.51 (Field Guide, spec §21): `plate` = 52 tall with 12pt corners, the guide's
+   * button (Today, You, Results and the herbarium). Other screens keep the 56 pill until they move.
+   */
+  shape?: 'pill' | 'plate';
   /** For moving screen-reader focus here (lib/a11y.ts moveFocus). */
   ref?: Ref<View>;
   /** A button that shows or hides something under it (a menu): spoken as expanded / collapsed. */
@@ -444,6 +461,7 @@ export function Button({
       onPressOut={press.onPressOut}
       style={[
         isForest ? styles.buttonForest : isGhost ? styles.buttonGhost : styles.button,
+        shape === 'plate' && !isGhost && styles.buttonPlate,
         { backgroundColor: look.bg, borderColor: look.border },
         style,
         press.style,
@@ -489,7 +507,7 @@ export function Card({
           : [
               styles.card,
               { backgroundColor: c.raised, borderColor: emphasis ? c.accent : isDark ? c.line : 'transparent' },
-              !isDark && styles.cardLift,
+              isDark ? DARK_CARD_LIFT : styles.cardLift,
             ];
   const base = [look, style];
   // A static card has no press feedback, so it builds no animated styles (long lists on low-end Android).
@@ -1499,16 +1517,19 @@ export function Stat({
 
 // ── Tab bar label: "Today", with a 4pt dot under the active tab ───────
 // The dot means the active tab isn't shown by colour alone (spec §6).
+/** The selected-tab dot's starting scale: it pops from .6, never from nothing (the `Pop` convention). */
+export const TAB_DOT_FROM = 0.6;
+
 export function TabLabel({ label, focused }: { label: string; focused: boolean }) {
   const { c } = useTheme();
   const { reduced } = useMotion();
-  // The dot pops in under the new tab (scale 0 → 1, 160 ms) and fades from
-  // the old one; under Reduce Motion it only fades. No icon bounce.
+  // The dot pops in under the new tab (scale .6 → 1 with its fade, 160 ms: never from 0, like Pop)
+  // and fades from the old one; under Reduce Motion it only fades. No icon bounce.
   const d = useSharedValue(focused ? 1 : 0);
   useEffect(() => {
     d.set(tween(focused ? 1 : 0, 'quick'));
   }, [focused, d]);
-  const dotStyle = useAnimatedStyle(() => ({ opacity: d.value, transform: [{ scale: reduced ? 1 : d.value }] }));
+  const dotStyle = useAnimatedStyle(() => ({ opacity: d.value, transform: [{ scale: reduced ? 1 : TAB_DOT_FROM + (1 - TAB_DOT_FROM) * d.value }] }));
   return (
     // The Large Content Viewer props live on the tab BUTTON ((tabs)/_layout.tsx).
     <View style={styles.tabLabel}>
@@ -1580,6 +1601,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  // Field Guide (mobile 1.51): 52 tall, 12pt corners (tokens.ts `plate`).
+  buttonPlate: { minHeight: plate.button, borderRadius: plate.buttonRadius },
   buttonGhost: {
     minHeight: 48, // 48pt touch target (was 44)
     borderWidth: 0,

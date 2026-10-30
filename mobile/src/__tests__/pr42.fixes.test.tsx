@@ -453,7 +453,7 @@ describe('UX fixes', () => {
     });
   });
 
-  it('O3: "Report a problem" arrives at once after an answer on a check (mobile 1.20: checks only)', () => {
+  it('O3 (mobile 1.49): no "Report a problem" row in a check’s body, before or after the answer (the header flag reports it)', () => {
     mockParams = { id: charter.id };
     mount(<LessonPlayer />);
     const says = (n: ReactTestInstance, text: string) => n.findAll((x) => isHost(x) && x.children.some((ch) => typeof ch === 'string' && ch.includes(text))).length > 0;
@@ -463,7 +463,8 @@ describe('UX fixes', () => {
     for (let k = 0; k < charter.scenes.length - 1; k++) press('Next');
     expect(reportFade()).toHaveLength(0);
     press(/^Option [A-D]: The audit committee/);
-    expect(reportFade()[0].props.delay).toBe(0);
+    expect(reportFade()).toHaveLength(0);
+    expect(root().findAll((n) => n.props.accessibilityLabel === 'Report a problem with this step' && typeof n.props.onPress === 'function').length).toBeGreaterThan(0);
   });
 });
 

@@ -4,7 +4,8 @@
 // Shots: Learn (cover with its reason, the lesson trail), a lesson cover, the
 // three scene templates (steps, layers, timeline), "The IS auditor’s lens", a
 // check with its verdict leaf, Lesson complete, a note read to its end (p09: since 1.22 the
-// note marks itself read when its ending comes into view; a tap only if it hasn't), Play,
+// note marks itself read when its ending comes into view; a tap only if it hasn't), Drills
+// (Play until mobile 1.51: now a section of Practice, with "More drills" opened),
 // each game's header, a recap with its sparkline and a level up.
 // Strips (slow motion, see shoot_motion.mjs): the scene turn, the step line
 // drawing, the timeline rail, the lesson ✓ on Learn, Lesson complete's leaf,
@@ -324,9 +325,11 @@ if (noteOk) {
   await shot('p09-note-marked-read');
 }
 
-// ── 5. Play, each game's header and intro ──────────────────────────────
-await go('/play');
+// ── 5. Drills (Play until 1.51, now inside Practice), each game's header and intro ──
+await go('/practice?section=drills');
 await shot('p10-play');
+// Only three drills show until "More drills" is opened; Stepping Stones is one of the others.
+if (await visible('More drills')) await tapText('More drills', 700);
 await scrollTo('Stepping Stones', 120);
 await shot('p10b-play-rows');
 const games = ['trap', 'sprint', 'priority', 'daylight', 'rumor', 'callit', 'field', 'canopy', 'stones'];

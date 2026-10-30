@@ -8,7 +8,7 @@
  * Readiness is always a range ("62–70%") or "Not enough data yet". The copy
  * never promises a pass: it describes mastery, weighted like the exam.
  */
-import { REVIEW_UNIT } from '../engine/srs';
+import { readyLine, REVIEW_ORDER } from '../engine/srs';
 import { gameTitle } from '../engine/games/registry';
 import { useEffect, useState, type ReactNode } from 'react';
 import { Text, useWindowDimensions, View, type ViewStyle } from 'react-native';
@@ -25,6 +25,8 @@ import { useTheme } from '../theme/useTheme';
 import { GrowthRings, PlanLeaf } from './glyphs';
 import { Check, ICON_STROKE, Pinwheel, Play, RotateCcw, Target, Timer } from './icons';
 import { AnimatedPressable, FadeIn, Pop, usePressScale, type Celebration, type Growth } from './motion';
+import { ESTIMATE_WORDS, FieldText, ScaleBar } from './fieldguide';
+import { READY_LOW } from '../engine/examReady';
 import { BigNum, DomainDot, ICON_SIZE, Row, Stat, StatRow, T, useFontScale } from './ui';
 import { aboutMin, spokenMin, timeStat } from '../engine/pace';
 
@@ -56,14 +58,14 @@ export function planIcon(item: PlanItem, color: string): ReactNode {
  * Mobile 1.15 (PHASE5.md §2.3, C1, C7): one minutes style everywhere
  * ("About 10 min" first in a line, "about 6 min" mid-line), and a review
  * that takes part of the queue says how much of it TODAY takes ("8 today,
- * most overdue first"), not the session cap. `when`: the Tomorrow preview
- * says "8 tomorrow".
+ * oldest first"), not the session cap. `when`: the Tomorrow preview
+ * says "8 tomorrow". Premium pass 1.4 (mobile 1.49): never the queue total,
+ * so the title is "Questions to revisit", not "Review 55 due".
  */
 export function planText(item: PlanItem, due?: number, when: 'today' | 'tomorrow' = 'today'): { title: string; meta: string; short: string } {
   const mins = itemMinutes(item);
   switch (item.kind) {
     case 'review': {
-      // Same word as Practice and You ("due").
       const queue = due ?? item.due ?? item.count;
       const more = queue > item.count;
       // Tomorrow's queue isn't known yet (today's reviews change it), so the
@@ -76,10 +78,9 @@ export function planText(item: PlanItem, due?: number, when: 'today' | 'tomorrow
         };
       }
       return {
-        // The whole queue ("Review 55 due"), the same number You and Practice show;
-        // the meta says how much of it today takes.
-        title: item.label ?? (queue > 0 ? `Review ${queue} ${REVIEW_UNIT}` : 'Review · all caught up'),
-        meta: `${aboutMin(mins)} · ${more ? `${item.count} ${when}, most overdue first` : 'questions to revisit'}`,
+        // Premium pass 1.4: no queue total in the title. An old save's "Review 20 due" label is a count, so it reads as the plain title.
+        title: item.label && !/^Review \d/.test(item.label) ? item.label : queue > 0 ? 'Questions to revisit' : 'Review · all caught up',
+        meta: `${aboutMin(mins)} · ${more ? `${item.count} ${when}, ${REVIEW_ORDER}` : 'questions to revisit'}`,
         short: more ? `Revisit · ${item.count} ${when}` : `Revisit · ${mins} min`,
       };
     }
@@ -148,11 +149,12 @@ export function planHero(item: PlanItem, due?: number, opts: { minutesSaid?: boo
       const queue = due ?? item.due ?? item.count;
       const more = queue > item.count;
       // A labelled review is exam week's ("Light review · 8 questions"). An old save's "Review 20 due" label is a count, so it reads as the plain review.
-      if (item.label && !/^Review \d/.test(item.label)) return { title: item.label.split(' · ')[0], meta: join(`${qs(item.count)}, most overdue first`) };
+      if (item.label && !/^Review \d/.test(item.label)) return { title: item.label.split(' · ')[0], meta: join(`${qs(item.count)}, ${REVIEW_ORDER}`) };
       return {
         title: 'Questions to revisit',
-        // "16 of 55 due": today's share of the live queue (the same "55 due" as You and Practice).
-        meta: join(queue === 0 ? 'all caught up' : more ? `${item.count} of ${queue} ${REVIEW_UNIT} · most overdue first` : `${qs(queue)} from before`),
+        // Premium pass 1.4: today's set only ("16 ready to revisit · oldest first"), never "16 of 55 due".
+        // When fewer are due than the plan made room for, the live count is the set.
+        meta: join(queue === 0 ? 'all caught up' : readyLine(more ? item.count : queue)),
       };
     }
     case 'lesson':
@@ -238,7 +240,7 @@ export function PlanLeaves({ done, focused = true, seenKey }: { done: boolean[];
 
 /**
  * One plan item as a checklist line (mobile 1.23, Today): what it is, with its
- * real size. "Warm-up · 5 questions", "Questions to revisit · 20 due", "Lesson ·
+ * real size. "Warm-up · 5 questions", "Questions to revisit · 20 ready", "Lesson ·
  * Business impact analysis". The title never changes the plan's own words;
  * it only puts the count or the length after them.
  */
@@ -249,10 +251,9 @@ export function planCheckLabel(item: PlanItem, due?: number): string {
       const queue = due ?? item.due ?? item.count;
       // A labelled review is exam week's ("Light review · 8 questions"); an old save's "Review 20 due" is a count.
       if (item.label && !/^Review \d/.test(item.label)) return item.label;
-      // A review that takes part of the queue says how much of it TODAY takes ("8 of 56 due", the same
-      // queue You and Practice count), not the session's size.
+      // Premium pass 1.4: today's set ("Questions to revisit · 8 ready"), never the queue behind it.
       if (queue === 0) return 'Questions to revisit · all caught up';
-      return queue > item.count ? `Questions to revisit · ${item.count} of ${queue} ${REVIEW_UNIT}` : `Questions to revisit · ${queue} ${REVIEW_UNIT}`;
+      return `Questions to revisit · ${Math.min(queue, item.count)} ready`;
     }
     case 'lesson':
       return `Lesson · ${item.title}`;
@@ -303,6 +304,7 @@ export function PlanChecklist({
   due,
   focused = true,
   seenKey,
+  paper = false,
 }: {
   items: readonly PlanItem[];
   done: boolean[];
@@ -310,8 +312,13 @@ export function PlanChecklist({
   due?: number;
   focused?: boolean;
   seenKey?: string;
+  /** Mobile 1.51 (Field Guide): on Today's plate label, in paper inks (`accent` check, `control` ring, `ink2` words). */
+  paper?: boolean;
 }) {
   const { c } = useTheme();
+  const ink = paper
+    ? { then: c.accentText, done: c.accent, check: c.bg, later: c.control, words: c.ink2 }
+    : { then: c.sap, done: c.sap, check: c.forest, later: c.onForest2, words: c.onForest2 };
   const shown = useShownDone(done, focused, seenKey);
   const rows = items.map((item, i) => ({ item, i })).filter(({ i }) => i !== current && !isOptional(items, i));
   if (rows.length === 0) return null;
@@ -324,13 +331,13 @@ export function PlanChecklist({
     return (
       <View testID="plan-checklist" style={{ marginTop: space.lg }}>
         <View accessible accessibilityLabel={spokenMin(line)}>
-          <T v="body" color={c.sap}>{line}</T>
+          <T v={paper ? 'small' : 'body'} color={ink.then}>{line}</T>
         </View>
       </View>
     );
   }
   return (
-    <View testID="plan-checklist" style={{ marginTop: space.lg, gap: 10 }}>
+    <View testID="plan-checklist" style={{ marginTop: paper ? space.md : space.lg, gap: paper ? space.sm : 10 }}>
       {rows.map(({ item, i }) => {
         const isDone = done[i];
         const label = planCheckLabel(item, due);
@@ -339,14 +346,14 @@ export function PlanChecklist({
           <View key={i} accessible accessibilityLabel={spokenMin(said)} style={{ flexDirection: 'row', alignItems: 'center', gap: 14 }}>
             <Pop trigger={shown.pops.includes(i) ? shown.run : undefined} spring="leaf">
               {isDone ? (
-                <View style={{ width: MARK, height: MARK, borderRadius: MARK / 2, backgroundColor: c.sap, alignItems: 'center', justifyContent: 'center' }}>
-                  <Check size={15} color={c.forest} strokeWidth={3} />
+                <View style={{ width: MARK, height: MARK, borderRadius: MARK / 2, backgroundColor: ink.done, alignItems: 'center', justifyContent: 'center' }}>
+                  <Check size={15} color={ink.check} strokeWidth={3} />
                 </View>
               ) : (
-                <View style={{ width: MARK, height: MARK, borderRadius: MARK / 2, borderWidth: 1.5, borderColor: c.onForest2, opacity: 0.7 }} />
+                <View style={{ width: MARK, height: MARK, borderRadius: MARK / 2, borderWidth: 1.5, borderColor: ink.later, opacity: paper ? 1 : 0.7 }} />
               )}
             </Pop>
-            <T v="body" color={c.onForest2} style={[{ flex: 1, minWidth: 0 }, isDone && { textDecorationLine: 'line-through' }]}>
+            <T v={paper ? 'small' : 'body'} color={ink.words} style={[{ flex: 1, minWidth: 0 }, isDone && { textDecorationLine: 'line-through' }]}>
               {label}
             </T>
           </View>
@@ -401,7 +408,16 @@ export function ReadinessRow({
   ringsGrowth,
   rangeGrowth,
   onPress,
+  scale = false,
+  aside,
 }: {
+  /**
+   * Mobile 1.51 (Field Guide): the range on a scale bar (its words built in) under a tracked
+   * "Estimated readiness" key, instead of the rings. The whole block is still the report's button.
+   */
+  scale?: boolean;
+  /** Words at the right of the key ("Weakest: IS Operations"), with `scale`. */
+  aside?: string;
   cert: Certification;
   readiness: Readiness;
   range: ReadinessRange;
@@ -443,6 +459,30 @@ export function ReadinessRow({
       grow={ringsGrowth ? { play: ringsGrowth.play, from: ringsGrowth.from.map((v) => v / 100), run: ringsGrowth.run } : undefined}
     />
   );
+  if (scale) {
+    const said = `${range.enough ? `Estimated readiness ${rangeSpoken(range)}, ${ESTIMATE_WORDS}. The tick marks this app’s ${READY_LOW} percent study bar.` : `Not enough data yet. ${meta}.`}${stage ? ` ${stage.replace(' · ', ', ')}.` : ''}`;
+    const body = (
+      <View style={{ alignSelf: 'stretch' }}>
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'baseline', columnGap: space.md }}>
+          {/* "Estimated", never "measured": it is a study estimate (the board's "Measured" overclaimed). */}
+          <FieldText v="head">{ESTIMATE_LINE}</FieldText>
+          {aside ? <FieldText v="small">{aside}</FieldText> : null}
+        </View>
+        {/* Today names its tick (UX review: the 80 is the app's study bar, not a pass mark). */}
+        <ScaleBar range={range} growth={rangeGrowth} accessible={false} markLabel="study bar" style={{ marginTop: space.xs }} />
+        {stage ? <T v="stage" color={c.accentText} style={{ marginTop: space.xs }}>{stage}</T> : null}
+      </View>
+    );
+    return onPress ? (
+      <ReportTap onPress={onPress} label={said} style={{ marginTop: space.xl - 6 }} testID="readiness-tap">
+        {body}
+      </ReportTap>
+    ) : (
+      <View accessible accessibilityLabel={said} style={{ marginTop: space.xl }}>
+        {body}
+      </View>
+    );
+  }
   const rowStyle = { flexDirection: stacked ? 'column' : 'row', alignItems: stacked ? 'flex-start' : 'center', gap: stacked ? space.md : space.lg, marginTop: space.xl } as const;
   return onPress ? (
     <ReportTap onPress={onPress} label={spoken} style={{ ...rowStyle, marginTop: rowStyle.marginTop - 6 }} testID="readiness-tap">

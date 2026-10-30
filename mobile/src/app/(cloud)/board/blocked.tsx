@@ -15,6 +15,7 @@ import { loadBlocked, unblock } from '../../../lib/board';
 import { useAccount } from '../../../store/account';
 import { space } from '../../../theme/tokens';
 import { useTheme } from '../../../theme/useTheme';
+import { ListSkeleton } from '../../../components/skeleton';
 
 export default function Blocked() {
   const { c } = useTheme();
@@ -41,6 +42,8 @@ export default function Blocked() {
     <Screen edges={['top', 'bottom']}>
       <PushedHeader title={copy('board.blocked.title')} onBack={back} />
       {state === 'problem' && <AccountNotice text={copy('board.error')} />}
+      {/* Mobile 1.49: a static skeleton (components/skeleton.tsx) holds the list's place while it loads. */}
+      {state === 'loading' && <ListSkeleton rows={3} label="Loading blocked members" />}
       {state === 'ready' && members.length === 0 && <EmptyState compact title={copy('board.blocked.title')} body={copy('board.blocked.empty')} />}
       {members.map((m, i) => (
         <View

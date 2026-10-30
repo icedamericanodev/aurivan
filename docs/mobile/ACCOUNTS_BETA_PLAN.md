@@ -22,9 +22,21 @@ read them from repository variables, apps from their build settings.
 | Ticket | What | State |
 |---|---|---|
 | 1 | Database fixes before the first apply (§3.1), Edge Function changes (§3.3), workflows (§6), docs, legal drafts, email templates, Data safety answers; then the security audit's fixes (below) | **Done** (PR #141) |
-| 2 | MCP apply, SQL checks, advisors, function deploy (§3.3) | **Database applied 28 Oct 2026** (all five migrations, byte-for-byte, checks and advisors clean: see "Hosted apply record" below). Function deploy waits for the `DELETION_PEPPER` secret (§9 step 29) |
+| 2 | MCP apply, SQL checks, advisors, function deploy (§3.3) | **Done 28 Oct 2026.** All five migrations are applied byte-for-byte, with checks and advisors clean (see "Hosted apply record" below). Both functions are deployed and smoke-tested; `DELETION_PEPPER` is set and read |
 | 3 | Web client (§1, web engineer) and mobile go-live (§2, mobile engineer) | Not started |
-| 4 | Sky's checklist (§9) | Groups A–E can start now |
+| 4 | Sky's checklist (§9) | **29 Oct 2026:** A, A2a, B3–B5, C, D, E and F are done (F30, CAPTCHA, waits for go-live day). **G is done:** R2 bucket `kaisip-db-backups` (30-day delete rule, storage alert at 5 GB), the `db-backup` environment (main only) and its secrets and variables. The first manual run (29 Oct, run 2) dumped, encrypted and uploaded an 11 MB database. Sky decrypted the first backup on 29 Oct and found schema.sql, data.sql and stats.txt (gate 12, first half). Still open: a full restore drill into a scratch database before go-live (gate 12, second half) and H (go-live day) |
+
+### Public config values (safe to commit; no secrets here)
+
+| Value | Where it is used |
+|---|---|
+| Supabase URL `https://ziadnvepttlgcowvqvom.supabase.co` | web and mobile clients |
+| Publishable key `sb_publishable_s9eKQUQ0w3MTnCUBF05EkA_5e_kGEw2` | web and mobile clients |
+| Google OAuth client ID `849696377968-fm4s9mm9f3poe5q9f2k3537sio3d1v7c.apps.googleusercontent.com` (Google Cloud project "KaiSip", web client "KaiSip (Supabase)") | set in Supabase → Providers → Google; the clients never need it |
+| Turnstile site key `0x4AAAAAAFptlSqMhAvLUI8w` (widget "KaiSip sign-in", hostname kaisip.com, Managed) | the web sign-in form and the mobile sign-in screen |
+| Backup age public key `age1qx9267k39fjw7t7c8wf6s0xeu2hytk8t7qagedhlnjd7am0ku4xsepfc0f` (29 Oct 2026; the private key is only in Sky's password manager) | GitHub Actions variable `BACKUP_AGE_RECIPIENT`, read by `db-backup.yml` to encrypt each backup |
+
+Checked from the cloud session on 28 Oct 2026: `/auth/v1/settings` lists Google and email as enabled, and `/auth/v1/authorize?provider=google` redirects to Google with the client ID above and the Supabase callback.
 
 ### Hosted apply record (28 Oct 2026, Supabase MCP, project `ziadnvepttlgcowvqvom`)
 
@@ -244,7 +256,9 @@ Fallback (b'): self-host a pinned supabase-js UMD file in `assets/` with SRI (st
 
 ### 1.2 Where the session lives
 
-**Decision: localStorage, one new key `kaisip_auth_v1`** (refresh token, access token, expiry). Offer a **"This is a shared computer"** tick on the sign-in sheet; it uses sessionStorage instead, so the session dies with the tab. The PKCE verifier goes in sessionStorage, deleted after the exchange.
+**Decision: localStorage, one new key `kaisip_auth_v1`** (refresh token, access token, expiry). Offer a **"This is a shared computer"** tick on the sign-in sheet; it uses sessionStorage instead, so the session dies with the tab. On a shared computer the sync record, the account mirror and the undo copy (`kaisip_sync_v1`, `kaisip_sync_mirror_v1`, `kaisip_sync_undo_v1`) live in sessionStorage too. The PKCE verifier goes in sessionStorage, deleted after the exchange, and a Google sign-in older than 10 minutes is refused.
+
+**Accepted risk for the beta (security audit of 6f4469e):** a browser's "Duplicate tab" copies sessionStorage. A shared-computer session and its sync copies then live in both tabs until both close, and a PKCE verifier waiting for Google's answer exists twice (it is still single-use and expires after 10 minutes). Signing out in one tab ends that session on the server, so the other tab's copy stops working at its next refresh (within the hour).
 
 Why not memory only:
 - The learner would have to sign in with a code on every visit, which defeats sync.
@@ -313,6 +327,7 @@ The undo copy goes in `kaisip_sync_undo_v1` for 7 days if it fits in localStorag
 Rule:
 - The web writes `app_version` = the mobile `expo.version` the bundle was built from, and `store_version` = that engine's `PROGRESS_VERSION` / `SETTINGS_VERSION`.
 - The web engine **follows the Play release and never leads it**. Add `mobile/LIVE_VERSION` (one line, updated after each Play rollout). The bundle builder's `--check` fails if the bundle's version is newer than it.
+- *Built (ticket 3):* the store versions too. `mobile/LIVE_STORE_VERSIONS.json` records that Play release's `PROGRESS_VERSION` and `SETTINGS_VERSION`. The web stamps `store_version` from it. `--check` (and `scripts/verify_repo.sh`) fails when the engine's own versions are ahead of it, so a store-version bump waits for the Play rollout before the website bundle is rebuilt. Update both files together after each rollout.
 - A phone on a newer engine than the web makes the web pause with "Refresh the page"; a deploy fixes that within minutes.
 
 **Multi-tab:** run one sync cycle at a time with `navigator.locks.request('kaisip-sync')`. After a pull writes `cisa_profiles_v1`, other tabs must reload state on the `storage` event. Today they only cancel a pending save.
@@ -845,11 +860,11 @@ The job runs in GitHub Environment `db-backup`, limited to `main`. No artefacts 
 
 40. Supabase → Usage: database under 300 MB, egress under 3 GB. Glance at Resend usage. Any GitHub "workflow failed" email (keep-awake or backup) means: tell Claude the same day.
 
-**Open owner decisions (short)**
-1. Board stays off in the beta (recommended).
-2. Web version name v13.
-3. Optional: let Claude read the two test sign-in codes through Gmail for the smoke test (say yes in your own message, or run it yourself).
-4. Later: one plant across web and phone.
+**Owner decisions (settled 29 Oct 2026 under the "experts decide first" rule)**
+1. The feedback board stays off in the beta (the plan's recommendation; no owner action).
+2. The sign-in web release is named v13 (a MAJOR bump: accounts are an architecture change).
+3. The smoke test's two sign-in codes: Sky runs that step on Sky's own inbox. Claude does not read the inbox (privacy by default); this can change only if Sky asks in Sky's own message.
+4. Later: one plant across web and phone (still open, not needed for the beta).
 
 ---
 

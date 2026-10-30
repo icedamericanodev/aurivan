@@ -273,6 +273,7 @@
             "A passkey's private key stays on the device and signs a challenge from the real site.",
             "The browser checks the site's address, so a look-alike domain gets nothing it can reuse.",
             "Text and app codes can be typed into a fake page and replayed.",
+            "Number matching stops blind approvals, but a fake page can show the real number, so it is not phishing-resistant.",
             "Synced passkeys copy across a user's devices; device-bound security keys never leave one."
           ],
           "compare": {
@@ -582,6 +583,7 @@
             "The reviewer is the manager or data owner, never the person whose access is reviewed.",
             "Reviews run on a schedule, more often for privileged and sensitive access.",
             "Each right is confirmed or removed; access nobody confirms is removed.",
+            "Usage reports can inform a review, but they show what is used, not what is needed; the owner still decides.",
             "The review ends when removals are done in the systems, not when the form is signed."
           ],
           "types": [
@@ -690,6 +692,7 @@
             "Give each one a named human owner, a purpose and an inventory entry.",
             "Give each workload or agent its own identity, never a borrowed staff login.",
             "Keep secrets in a vault, not in code or chat; owners rotate them on schedule and after exposure.",
+            "Deleting a leaked secret from chat or code does not revoke it; anyone who copied it can use it until it is rotated.",
             "Retire the identity when its owner leaves or the project ends, unless a new owner takes it on."
           ],
           "example": "Months after a developer leaves a food delivery startup, an API key in an old test script, still in a public code repository, is running someone else's workloads. Elif, a junior cloud engineer, reports it to the security team, revokes the key when the incident response lead directs, then starts an inventory of keys and owners.",
@@ -952,7 +955,7 @@
             "A subject (a user, process or AI agent) asks to read, write, run or delete an object.",
             "The system checks the object's permissions; anything not explicitly allowed is refused.",
             "Grant permissions to groups or roles, not individuals, so changes and reviews stay manageable.",
-            "Log decisions, especially denials and permission changes, so misuse can be traced."
+            "Accounting, the third A of authentication, authorization and accounting (AAA), records each access decision so misuse can be traced; it grants or blocks nothing."
           ],
           "example": "At a small law firm, a paralegal can open every client folder because the folders were shared with Everyone years ago. Sol, the IT assistant, notices while setting up a new folder, lists the open folders and asks the managing partner, who owns the client files, which teams should keep access to each.",
           "audit_focus": {
@@ -990,6 +993,10 @@
             {
               "term": "Default deny",
               "definition": "The rule that any access not explicitly allowed is refused; also called implicit deny."
+            },
+            {
+              "term": "Accounting",
+              "definition": "The third A of AAA: recording what each identity did, so actions can be traced. It grants or blocks nothing (see 1.1.6)."
             }
           ]
         },
@@ -1080,6 +1087,7 @@
             "Separate who requests, approves, carries out and checks a sensitive task.",
             "Classic conflicts: adding a supplier and paying it, or writing code and releasing it.",
             "Check new roles and access requests for conflicts before granting them.",
+            "A second account for the same person splits nothing; separation of duties needs a second person.",
             "Teams too small to split duties use compensating controls, such as independent review."
           ],
           "types": [

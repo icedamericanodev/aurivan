@@ -192,7 +192,7 @@ await shot('m04-you-mocks');
 await go('/settings');
 await scrollTo('Motion', 160);
 await shot('m05-settings-motion');
-await go('/play');
+await go('/practice?section=drills');
 await shot('m11-play');
 await go('/lesson/cisa-l-d1-charter', 1500);
 await shot('m10-lesson-first-scene');

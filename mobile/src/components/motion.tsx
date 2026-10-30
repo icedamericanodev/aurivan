@@ -161,8 +161,16 @@ export function tween(to: number, dur: MotionDur, easing: Ease = ease.out) {
   return withTiming(to, { duration: motion.dur[dur], easing, reduceMotion: ReduceMotion.Never });
 }
 
+/**
+ * The launch (motion round 2, #5): the splash dissolves into the first screen over `enter`: an iOS
+ * cross-dissolve (`fade`); Android's own exit fade (accelerating) takes the same `enter` (`duration`
+ * shortens it from its default 400 ms). A dissolve is the gentle form already, so Reduce Motion keeps
+ * it. Passed to `SplashScreen.setOptions` in app/_layout.tsx.
+ */
+export const SPLASH_FADE = { fade: true, duration: motion.dur.enter } as const;
+
 /** Jump to a value at once (the first step of a sequence). */
-const snap = (to: number) => withTiming(to, { duration: 0, reduceMotion: ReduceMotion.Never });
+export const snap = (to: number) => withTiming(to, { duration: 0, reduceMotion: ReduceMotion.Never });
 
 // ── useOncePerDay ──────────────────────────────────────────────────────
 // Signature growth plays on the first view of the day only; after that a
@@ -979,6 +987,24 @@ function watchSession() {
 export function claimDecor(ms: number): boolean {
   if (spentMs + ms > motion.celebrate.sessionMs) return false;
   spentMs += ms;
+  return true;
+}
+
+/**
+ * The once-ever celebration class (mobile 1.50, DESIGN_SYSTEM §8.9): a moment
+ * that plays once per thing for life (a plant's new form, "The Turning",
+ * 2.4–3.6 s). It sits outside the 1.2 s ceiling and the 3 s budget because
+ * it never repeats, and it is never fatigued. Instead it claims the session's
+ * ONE full moment and the whole budget, so everything after it that session
+ * plays short. False when the session's moment is already spent: the caller
+ * offers a calm button that plays it on tap (a learner-started moment is
+ * never charged).
+ */
+export function claimMoment(): boolean {
+  watchSession();
+  if (sessionFull || spentMs + motion.dur.celebrate > motion.celebrate.sessionMs) return false;
+  sessionFull = true;
+  spentMs = motion.celebrate.sessionMs;
   return true;
 }
 

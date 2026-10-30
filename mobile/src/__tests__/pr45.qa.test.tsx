@@ -130,7 +130,7 @@ const storedPlan = () => useProgress.getState().days.cisa;
 const budgetCap = (m: number) => m + planTolerance(m);
 /** The day's minutes in the panel's caption ("Today’s plan · about N min", mobile 1.21), as a number (null when absent). */
 const todayMinutesShown = () => {
-  const m = allText().match(/Today’s plan · about (\d+) min/);
+  const m = allText().match(/Today’s plan · about\u00A0(\d+)\u00A0min/);
   return m ? Number(m[1]) : null;
 };
 
@@ -303,7 +303,7 @@ describe('J2 the Exam-focused path', () => {
     expect(items[1]).toMatchObject({ kind: 'mock', questions: 50, minutes: 80 });
     expect(allText()).toContain('Mini mock');
     expect(allText()).toContain('Optional this week · about 80 min');
-    expect(allText()).toMatch(/Today’s plan · about \d+ min/);
+    expect(allText()).toMatch(/Today’s plan · about\u00A0\d+\u00A0min/);
     // The mock is exempt; everything else fits the day.
     expect(planMinutes(items)).toBeLessThanOrEqual(budgetCap(20));
     // The stage is never "Learn the concepts" for the Exam-focused plan.
@@ -663,7 +663,7 @@ describe('J5 edge cases', () => {
     expect(todayMinutesShown()).toBe(6);
   });
 
-  it('a huge backlog at 10 min: reviews only, 8 of them, most overdue first', () => {
+  it('a huge backlog at 10 min: reviews only, 8 of them, oldest first (never the 300 total)', () => {
     useSettings.setState({ fitPrompt: 'answered', dailyMinutes: 10 });
     setCert({ review: seedDue(300) });
     mount(<Today />);
@@ -671,7 +671,8 @@ describe('J5 edge cases', () => {
     // The title names the activity; today's share of the queue and the order are the line under it
     // (mobile 1.24), and the minutes are said once (the caption's, this item's alone).
     expect(allText()).toContain('Questions to revisit');
-    expect(allText()).toContain('8 of 300 due · most overdue first');
+    expect(allText()).toContain('8 ready to revisit · oldest first');
+    expect(allText()).not.toMatch(/\b300\b/);
     expect(todayMinutesShown()).toBe(10);
   });
 

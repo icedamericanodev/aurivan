@@ -30,6 +30,7 @@ import { shortDate } from '../../../lib/format';
 import { useAccount } from '../../../store/account';
 import { space } from '../../../theme/tokens';
 import { useTheme } from '../../../theme/useTheme';
+import { Skeleton, SkelRows, SkelText } from '../../../components/skeleton';
 
 type Menu = { kind: 'post' } | { kind: 'comment'; c: Comment } | null;
 type Reporting = { kind: 'post' | 'comment' | 'member'; id: string } | null;
@@ -112,7 +113,19 @@ export default function PostScreen() {
     return (
       <Screen edges={['top', 'bottom']}>
         <PushedHeader onBack={back} />
-        {state === 'loading' ? null : state === 'offline' ? (
+        {/* Mobile 1.49: a static skeleton shaped like the post (title, body, comments) while it loads. */}
+        {state === 'loading' ? (
+          <Skeleton label="Loading post">
+            <SkelText v="hero" width="80%" />
+            <SkelText v="meta" width="40%" />
+            <View style={{ marginTop: space.md }}>
+              <SkelText v="body" lines={3} />
+            </View>
+            <View style={{ marginTop: space.xl }}>
+              <SkelRows rows={2} />
+            </View>
+          </Skeleton>
+        ) : state === 'offline' ? (
           <AccountNotice text={copy('board.offline')} />
         ) : state === 'error' ? (
           <>

@@ -137,7 +137,7 @@
       "wrong_explanations": {
         "A": "A CIO-only strategy shared for information shows IT acting alone. Alignment requires business input and approval, not notification.",
         "C": "Peer spending levels show what IT costs relative to others, not whether this strategy's investments serve this retailer's objectives.",
-        "D": "Formal sign-off shows agreement with the document, but it does not prove each investment supports a business objective or that success can be measured."
+        "D": "An auditor would expect business sign-off on any IT strategy, though approval is a process step; alignment is demonstrated investment by investment."
       },
       "tips": [
         "Eliminate: A has the CIO setting strategy without business approval, and C benchmarks spending, which measures cost, not alignment.",
@@ -172,7 +172,7 @@
       "pre_read": "Ask whether the problem is structure or coordination before choosing a fix.",
       "correct_explanation": "Integrated GRC keeps the specialist roles and authorities of governance, risk and compliance but connects how they work: a shared risk taxonomy, a common platform and coordinated reporting remove duplicated assessments and gaps. Option A also removes duplication, but merging blurs distinct accountabilities and expertise; integration is about shared processes and data, not one organizational box.",
       "wrong_explanations": {
-        "A": "A merger may cut cost, but it blurs distinct accountabilities and specialist expertise. Integration needs shared processes and data, not a single department.",
+        "A": "Merging makes sense for a firm too small to staff three specialist teams: when only the work overlaps, connect the work, not the org chart.",
         "B": "Sequencing cuts some rework, but each function keeps its own taxonomy and data, so results still conflict and gaps between them stay unmanaged.",
         "C": "Internal audit must stay independent. Taking ownership of governance, risk and compliance would make it audit its own work."
       },
@@ -359,7 +359,7 @@
         "A": "The charter is well designed; the lapses are routine operational issues",
         "B": "Each lapse is a separate operational issue to report to its owner",
         "C": "Governance exists on paper but is not operating in practice",
-        "D": "Recommend quarterly charter reviews so lapses are caught sooner"
+        "D": "The charter's requirements are too demanding to sustain"
       },
       "correct": "C",
       "key_concept": "Auditing IT governance tests design and practice; consistent divergence, including a lapsed review cycle, is itself a systemic finding.",
@@ -367,11 +367,11 @@
       "correct_explanation": "Seen together, the lapses show documented governance and actual practice have diverged on every requirement, including the charter's own update cycle. That pattern is the finding: governance exists on paper only, and the mechanism that should have caught the drift has also failed. Option B reports symptoms one by one and misses the common root cause the board needs to see.",
       "wrong_explanations": {
         "A": "Auditing governance covers design and implementation. A charter nobody follows provides no governance, whatever its design quality.",
-        "B": "Separate reports treat symptoms and hide the shared root cause: governance discipline has broken down, including the charter's own review cycle.",
-        "D": "More frequent reviews add a requirement to a charter whose existing reviews already lapse; the discipline, not the review cadence, has failed."
+        "B": "Owner-level reporting is right for an isolated lapse; when lapses share a cause, findings go to the level that owns that cause.",
+        "D": "Demanding rules can explain a missed step or two, but meetings, approvals and annual reviews are baseline governance duties; when all lapse, operation has failed, not design."
       },
       "tips": [
-        "Eliminate: A judges the charter on design while a governance audit tests practice, and D adds reviews to a charter whose reviews already lapse.",
+        "Eliminate: A judges the charter on design while a governance audit tests practice, and D blames the rules, though meetings, approvals and annual updates are baseline governance duties.",
         "Final two: C beats B because the pattern across every requirement is the root-cause finding; reporting each lapse separately hides it.",
         "Exam cue: when several lapses share one cause, report the systemic finding to governance rather than isolated items to owners."
       ],
@@ -383,7 +383,7 @@
         "Self-correction mechanism",
         "Governance discipline"
       ],
-      "_provenance": "Authored from concept: 'auditing IT governance structure - synthesis finding when documented governance and operational practice diverge across multiple dimensions AND self-correction mechanism is also broken'. Public source: COBIT 2019 EDM + ITAF Performance Standards on IT Governance. All scenario specifics (state university IT system, four divergence observations) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Round 2 review (Oct 2026): framework_ref updated to ISO/IEC 38500:2024. D2 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): D (discard the charter) was a strawman; it is now more frequent reviews, a partial fix. Key no longer reads as a list; tip no longer says 'ignores'.",
+      "_provenance": "Authored from concept: 'auditing IT governance structure - synthesis finding when documented governance and operational practice diverge across multiple dimensions AND self-correction mechanism is also broken'. Public source: COBIT 2019 EDM + ITAF Performance Standards on IT Governance. All scenario specifics (state university IT system, four divergence observations) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Round 2 review (Oct 2026): framework_ref updated to ISO/IEC 38500:2024. D2 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): D (discard the charter) was a strawman; it is now more frequent reviews, a partial fix. Key no longer reads as a list; tip no longer says 'ignores'. CISA quality pass (Oct 2026): option D was a recommendation under a 'conclusion' stem; it is now a conclusion (the charter is too demanding), with its explanation and Eliminate tip updated.",
       "style_version": 2
     },
     {
@@ -444,7 +444,7 @@
       "pre_read": "Notice that loss data is sparse; it decides how credible quantitative output would be.",
       "correct_explanation": "Method choice should follow the data available and what the decision needs. Quantitative analysis is credible only where loss data supports the estimates; with sparse data it produces precise-looking but unreliable numbers. Reserving quantitative work for large risks sounds proportionate, but size does not create data: a large risk with no loss history still yields guessed figures.",
       "wrong_explanations": {
-        "A": "Size alone does not make quantitative output credible. A large risk with no loss history still produces dollar figures built on guesses.",
+        "A": "Materiality does decide how much analysis a risk deserves; which technique the evidence supports is a separate question.",
         "C": "Simulation propagates its inputs. With sparse loss data the input ranges are guesses, so the output only looks precise.",
         "D": "A fixed conversion adds dollar labels without new evidence, giving false precision to judgments that remain qualitative."
       },
@@ -559,7 +559,7 @@
       "pre_read": "For each indicator, ask what question it answers, not when it is measured.",
       "correct_explanation": "Each indicator answers a different question. KPIs show how well objectives are being achieved, KRIs signal the level or movement of risk exposure, and KCIs show whether specific controls are operating as intended. Option B classifies by timing, but any of the three can be leading or lagging; timing does not define the type, and KRIs are usually forward-looking.",
       "wrong_explanations": {
-        "B": "Timing is not the distinction. KRIs are usually designed as early warnings, and KPIs and KCIs can be leading or lagging.",
+        "B": "Leading versus lagging is a genuine design choice for any indicator. Timing is an attribute, though; what is measured (goal, exposure or control) sets the type.",
         "C": "Indicators are not split by business area. Each type can measure financial, operational or compliance matters.",
         "D": "Incident counts are lagging loss data and audit findings are assurance results; neither defines what a KRI or a KCI measures."
       },
@@ -638,7 +638,7 @@
       "wrong_explanations": {
         "A": "Weighing the saving against the risks is management's decision. An auditor who recommends approval takes a side in a choice it may later audit.",
         "B": "A certificate covers the provider's security management only. Knowledge loss, data residency and exit flexibility remain unweighed.",
-        "C": "Designing contract controls is management's job and could impair independence. It also skips the prior question of whether the move is sound."
+        "C": "Residency and knowledge-transfer clauses belong in any offshore contract; still, an auditor who drafts a control cannot later audit it objectively."
       },
       "tips": [
         "Eliminate: A has the auditor endorse management's decision, and B checks one factor, a certificate, while the other sourcing risks go unweighed.",
@@ -751,7 +751,7 @@
       "correct_explanation": "QA is judged by what it stops reaching users. Pre-release fixes show only the defects QA found; a 40% rise in production defects shows more are now escaping, so effectiveness has declined. Restoring the budget looks like the obvious answer, but it is a remedy, not a conclusion, and it assumes the cut is the only cause before anyone has analyzed why defects escape.",
       "wrong_explanations": {
         "B": "Pre-release remediation measures only defects QA found. Rising production defects show more are now being missed.",
-        "C": "The cut is a likely cause, but restoring funds is a remedy that assumes it is the only one; the evidence first supports a conclusion about effectiveness.",
+        "C": "Coinciding in time makes a cause a hypothesis, not a finding. The budget cut is a strong suspect, but conclusions state only what evidence establishes.",
         "D": "QA exists to catch what development misses; a 40% rise in escaped defects after a QA cut points to QA capacity, whoever wrote the code."
       },
       "tips": [
@@ -789,7 +789,7 @@
       "correct_explanation": "A risk register is the working tool of the risk program: each entry records the risk, its rating, controls, residual risk, owner and response status, so management can prioritize, decide and monitor. Option B describes part of its content, but a register used only to store ratings supports no decisions; ownership and response tracking make it useful.",
       "wrong_explanations": {
         "A": "A remediation log records past actions. The register covers current risks, their owners and pending responses, not just completed fixes.",
-        "B": "Ratings are part of each entry, but recording them alone does not drive decisions. Owners and response status turn the list into a management tool.",
+        "B": "Rating likelihood and impact is a needed assessment step that fills the register, but purpose asks what a record is used for, not what it stores.",
         "D": "Choosing controls to test is internal audit's planning task. The register is management's tool for prioritizing and treating risk."
       },
       "tips": [
@@ -824,9 +824,9 @@
       "correct": "D",
       "key_concept": "The four treatments are accept, reduce, transfer and avoid; when no other treatment brings a risk within appetite, avoid it.",
       "pre_read": "Note that the risk stays above appetite after controls and that the project is only planned. Ask which treatment remains.",
-      "correct_explanation": "When a planned activity's risk would still far exceed appetite after the proposed controls, the IS auditor should recommend avoiding it by redesigning or dropping the activity that creates it. Acceptance is the tempting runner-up because senior sign-off looks like governance, but accepting a risk far beyond board-set appetite overrides that appetite rather than respecting it.",
+      "correct_explanation": "When a planned activity's risk would still far exceed appetite after the proposed controls, the IS auditor should recommend avoiding it by redesigning or dropping the activity that creates it. Acceptance is the most tempting alternative because senior sign-off looks like governance, but accepting a risk far beyond board-set appetite overrides that appetite rather than respecting it.",
       "wrong_explanations": {
-        "A": "Routine sign-off cannot justify keeping risk far above appetite; that needs a documented exception at the right level, and a planned project can still be redesigned or dropped.",
+        "A": "Sign-off is the proper route for risk within appetite; far beyond it, a plan still on paper is redesigned, since avoidance is cheapest before commitment.",
         "B": "Monitoring detects misuse after it happens; it does not lower the exposure the project's design creates, so residual risk stays above appetite.",
         "C": "A controller stays accountable for personal data its vendors process. A contract can shift costs but cannot transfer the privacy risk or accountability."
       },
@@ -903,7 +903,7 @@
       "correct_explanation": "A strategic plan must show where IT needs to be to support enterprise goals and how it will get there: a target state derived from those goals, a gap assessment against today, and a prioritized roadmap with measures. Option C is useful, but a one-year project list is tactical; it cannot show whether a five-year direction is aligned or achievable.",
       "wrong_explanations": {
         "A": "Vendor records support operations and sourcing, but they describe current contracts, not where IT must go to support enterprise goals.",
-        "C": "A one-year project list is a tactical plan. It cannot show the multi-year direction or how projects add up to the target state.",
+        "C": "A budgeted project list with owners is the backbone of annual planning. Plans cascade, though: the strategic plan sets the destination that yearly lists work toward.",
         "D": "An organization chart shows current structure. It says nothing about direction, priorities or how IT will support enterprise goals."
       },
       "tips": [
@@ -978,7 +978,7 @@
       "correct_explanation": "Portfolio management balances investments against enterprise strategy. Target allocation ranges per tier make the run, grow and transform mix an explicit strategic choice, and each tier can then be judged with fitting criteria. Ranking everything by net present value looks rigorous, but transform initiatives rarely show early financial returns, so a single financial ranking starves strategic change and loses alignment.",
       "wrong_explanations": {
         "A": "Funding transformation only from leftovers makes strategic change an afterthought. The mix should be a deliberate choice, not a residual.",
-        "B": "A single financial ranking ignores strategic posture. Long-horizon transform work loses to quick operational payback even when strategy needs it.",
+        "B": "Net present value is a recognized way to compare proposals within a tier. Strategy, not return, sets the mix across tiers.",
         "C": "Sponsor-set budgets make the mix the sum of separate bids, so no one decides the balance across tiers that strategy needs."
       },
       "tips": [
@@ -1018,7 +1018,7 @@
       "wrong_explanations": {
         "A": "An annual commercial review comes too late to catch service failures and focuses on price rather than delivery.",
         "B": "Governance meetings about the relationship build goodwill but produce no performance evidence or risk assessment.",
-        "D": "A SOC 2 report is one input. It covers a set period and scope and does not measure SLA performance against the company's needs."
+        "D": "The provider's SOC 2 report does carry independent weight on its controls; outsourcing hands over the work, though, not the duty to oversee it."
       },
       "tips": [
         "Eliminate: A is an infrequent price review, and B builds relationships without measuring delivery.",
@@ -1044,10 +1044,10 @@
       "bloom_level": "Application",
       "question": "IT operations must cut defects in a high-volume change-deployment process where small variations matter and root causes are unclear. Which method should the IS auditor consider MOST suitable?",
       "options": {
-        "A": "Agile Scrum, delivering improvements in short sprints",
-        "B": "Six Sigma, applying DMAIC and statistical analysis of variation",
-        "C": "IT balanced scorecard, aligning IT goals with business strategy",
-        "D": "Lean, removing waste and non-value-adding steps from the flow"
+        "A": "Agile Scrum, using sprint retrospectives",
+        "B": "Six Sigma, using the DMAIC cycle",
+        "C": "An IT balanced scorecard, using process KPIs",
+        "D": "Lean, using value stream mapping"
       },
       "correct": "B",
       "key_concept": "Match the improvement method to the problem: Six Sigma suits high-volume processes where variation causes defects and root causes need statistical analysis.",
@@ -1072,7 +1072,7 @@
         "Lean",
         "Method-fit selection"
       ],
-      "_provenance": "Authored from concept: 'method selection across Six Sigma / Agile / Balanced Scorecard / Lean - method-fit by situation, distinct from Agile-universal / BSC-as-improvement / Lean-universal'. Public source: ITAF + COBIT 2019 APO11. All scenario specifics (precision-instruments manufacturer, change-deployment defects) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'method selection across Six Sigma / Agile / Balanced Scorecard / Lean - method-fit by situation, distinct from Agile-universal / BSC-as-improvement / Lean-universal'. Public source: ITAF + COBIT 2019 APO11. All scenario specifics (precision-instruments manufacturer, change-deployment defects) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. CISA quality pass (Oct 2026): every option glossed its own purpose and only the key echoed the stem's 'variation'; the options now name the method only, so the item tests knowing what each method is for. Blind-tester polish (Oct 2026): options A and C now follow the same 'method, using …' pattern as B and D.",
       "style_version": 2
     },
     {
@@ -1094,7 +1094,7 @@
       "pre_read": "Notice the obligations conflict, not just differ. Ask who decides which law governs, and what the auditor tests against.",
       "correct_explanation": "When two laws truly conflict, meeting one breaks the other, so no stricter option satisfies both; deciding which obligation governs is a legal judgment management makes with counsel. The auditor obtains that documented position, uses it as audit criteria and reports if none exists. Testing against the stricter requirement sounds safe, but it has the auditor making the legal call and could fault the firm for obeying the law that governs.",
       "wrong_explanations": {
-        "A": "A stricter rule satisfies both only when rules differ in degree. When they conflict, choosing one is a legal judgment for management and counsel.",
+        "A": "Conservative testing is a prudent default under regulatory doubt, yet a legal clash is not a test-design choice: auditors source disputed criteria rather than settle them.",
         "B": "Deciding which law prevails is a legal determination for management and counsel; an auditor who makes it sets the criteria it then audits.",
         "C": "Excluding the requirement limits scope and hides a known compliance risk; the conflict and how management resolves it belong in the audit."
       },
@@ -1321,11 +1321,11 @@
       "correct_explanation": "COBIT 2019 asks for a governance system tailored to the enterprise's needs, covering the whole enterprise end to end, and keeping governance distinct from management. One uniform capability target for every objective looks thorough and consistent, but COBIT rejects that: design factors set which objectives matter and at what target capability, so a uniform target wastes resources and ignores stakeholder value.",
       "wrong_explanations": {
         "A": "EGIT covers the whole enterprise. Confining it to IT planning contradicts the end-to-end principle and excludes business stakeholders.",
-        "B": "COBIT uses design factors to set which objectives matter and their target capability; one uniform target for every objective ignores tailoring.",
+        "B": "COBIT does define capability levels for every objective, yet those levels are targets to choose from, not a standard every objective must meet.",
         "C": "COBIT 2019 treats the governance system as dynamic: when design factors such as strategy or threats change, the system must be revisited."
       },
       "tips": [
-        "Eliminate: A confines governance to IT, and C fixes a governance system that COBIT 2019 says must change as its design factors change.",
+        "Eliminate: A confines governance to IT, though COBIT 2019 governs enterprise I&T end to end, and C fixes a governance system that COBIT 2019 says must change as its design factors change.",
         "Final two: D beats B because COBIT 2019 tailors the governance system to enterprise needs; one uniform capability target for every objective is not the goal.",
         "Exam cue: COBIT 2019 answers favor tailoring and separating governance from management over applying the framework uniformly."
       ],
@@ -1359,7 +1359,7 @@
       "wrong_explanations": {
         "A": "Invoice checks control cost, not service or risk. They give no criticality tiering and no view of performance against SLAs.",
         "C": "Renewal-time reviews leave years between checks; performance and risk can change long before a contract is next renewed.",
-        "D": "Decentralized management hides enterprise-wide concentration risk and leaves shared vendors governed inconsistently."
+        "D": "An auditor would expect business units to own day-to-day vendor contact, yet vendor concentration builds up across units, and risk is governed where it aggregates."
       },
       "tips": [
         "Eliminate: A checks cost rather than service or risk, and C reviews vendors only at renewal, often years apart.",
@@ -1432,7 +1432,7 @@
       "pre_read": "Notice the policy is reviewed on a calendar only. Ask what could make it outdated between scheduled reviews.",
       "correct_explanation": "ISO/IEC 27001 expects security policies to be reviewed at planned intervals and when significant changes occur. The annual cycle already covers the planned interval, so the gap is event-triggered review after incidents, regulatory changes or restructuring. Moving to quarterly reviews adds effort and policy churn yet still waits for the calendar, so a major change can leave the policy outdated for months.",
       "wrong_explanations": {
-        "A": "A quarterly board cycle adds churn but remains calendar-driven. A significant change can still go unaddressed until the next cycle.",
+        "A": "A quarterly cycle would help if the annual review kept slipping; frequency fixes lateness, not blindness to events.",
         "B": "Approving policy is top management's responsibility. External auditor approval would impair the auditor's independence.",
         "D": "Event-driven change is right, but approving policy belongs to top management; a change the CISO approves alone lacks the authority that makes it policy."
       },
@@ -1508,7 +1508,7 @@
       "wrong_explanations": {
         "B": "Vital interests cover life-or-death situations. Product suggestions do not protect anyone's life.",
         "C": "Public task applies to official functions set out in law. A retailer's marketing does not qualify.",
-        "D": "The contract basis needs processing that is objectively necessary to deliver the purchase. Recommendations are optional extras."
+        "D": "Contract performance properly covers order, payment and delivery data; a lawful basis attaches to each purpose, not to the customer relationship."
       },
       "tips": [
         "Eliminate: B is reserved for life-threatening situations, and C applies to official public functions.",
@@ -1544,7 +1544,7 @@
       "correct_explanation": "Sourcing decisions follow business strategy and risk. A function that differentiates the bank or whose loss of control would be unacceptable should stay in-house whatever the price. A small cost advantage also points toward keeping the work, but it is a weak and changeable reason: vendor pricing moves, and cost says nothing about strategic value or control risk.",
       "wrong_explanations": {
         "A": "Mature, cheaper vendors are a reason to outsource. This factor argues against keeping the function.",
-        "B": "A slight cost edge can disappear with the next vendor quote. It ignores strategic value and control risk.",
+        "B": "Sourcing starts from what the bank must control; cost, a legitimate input, decides only among options that keep that control.",
         "D": "Staff disruption is a change-management issue. Status-quo comfort is not a strategic sourcing driver."
       },
       "tips": [
@@ -1579,7 +1579,7 @@
       "correct": "B",
       "key_concept": "Outsourcing governance forums must be able to escalate and enforce, not just review; oversight without authority lets breaches recur.",
       "pre_read": "Notice the forum already reviews SLAs. Ask why reviewing has not stopped the breaches.",
-      "correct_explanation": "A forum that sees the same breaches every quarter is reviewing without acting. Ongoing outsourcing governance needs escalation to executives with authority to demand remediation, invoke remedies or change providers. Weak penalties are the tempting runner-up, but larger penalties only work when someone is empowered to enforce them; without escalation authority, even strong terms go unused.",
+      "correct_explanation": "A forum that sees the same breaches every quarter is reviewing without acting. Ongoing outsourcing governance needs escalation to executives with authority to demand remediation, invoke remedies or change providers. Weak penalties come closest, but larger penalties only work when someone is empowered to enforce them; without escalation authority, even strong terms go unused.",
       "wrong_explanations": {
         "A": "Penalty size matters, but the forum already sees the breaches. Without authority to escalate and enforce, larger penalties would also go unapplied.",
         "C": "Meeting more often would surface breaches sooner, but seeing them is not the problem; the forum cannot act after review.",
@@ -1695,12 +1695,12 @@
       "wrong_explanations": {
         "A": "A historical average ignores peaks and rapid growth, so capacity will fall short as demand rises.",
         "B": "A utilization trigger reacts after demand arrives; with procurement lead times and 35% growth, the capacity lands late.",
-        "D": "Sizing to peaks is sound, but a 25% buffer on past peaks falls behind 35% annual growth and is not tied to the demand the business plans."
+        "D": "Capacity follows the demand driver: peak-plus-buffer sizing is an accepted method, but history calibrates a forecast; it cannot stand in for one while demand is growing."
       },
       "tips": [
         "Eliminate: A sizes on a historical average, and B adds capacity after utilization is already high; neither looks ahead to growth.",
         "Final two: C beats D because capacity must follow business demand; sizing to past peaks is sound practice, but a buffer on them still looks backward.",
-        "Exam cue: capacity plans start from business demand forecasts; when teams deadlock over competing plans, the gap is decision rights instead."
+        "Exam cue: capacity plans start from business demand forecasts."
       ],
       "framework_ref": "COBIT 2019 BAI04 (Managed Availability and Capacity); ITIL 4 Capacity and Performance Management",
       "related_concepts": [
@@ -1845,7 +1845,7 @@
       "correct_explanation": "Data ownership follows business accountability. The lending head decides on classification, access and use, and remains answerable to regulators; the SaaS provider only holds and processes the data as custodian under the contract. The chief data officer sets enterprise data policy and oversees owners, but cannot replace the business owner who understands the data and bears the business risk.",
       "wrong_explanations": {
         "B": "Hosting the data makes the provider a custodian or processor. The bank stays accountable to regulators, so ownership cannot move to a vendor.",
-        "C": "The chief data officer sets data policy and oversees owners. Accountability for specific business data sits with the business that uses it.",
+        "C": "Both the CDO and the head of lending carry data accountability at different levels; a CDO owning loan data would be checking their own decisions.",
         "D": "IT operations administers controls on the owner's behalf. Running access controls is a custodian duty, not ownership."
       },
       "tips": [
@@ -1919,7 +1919,7 @@
       "pre_read": "Notice the phrase operating as designed. Ask which indicator type measures control health rather than risk or performance.",
       "correct_explanation": "The committee wants to know whether a control works. A key control indicator measures control health, such as reviews completed on time and exceptions resolved. A key risk indicator is useful too, but it signals changing exposure to a risk; exposure could rise or fall regardless of whether the review control is operating as designed.",
       "wrong_explanations": {
-        "A": "A KRI warns of rising exposure. It does not show whether the specific review control is operating as designed.",
+        "A": "An auditor would also want a privileged-access KRI on the dashboard, but the committee asked about the review itself, not the access it guards.",
         "B": "A KPI measures progress toward goals. It says nothing direct about a single control's operation.",
         "C": "Hours spent measure effort, not whether reviews actually detect and resolve inappropriate access."
       },
@@ -1956,7 +1956,7 @@
       "pre_read": "Separate the broad statement from the measurable threshold. Ask which term describes a specific, quantified limit.",
       "correct_explanation": "The board's broad willingness to take moderate risk for growth is its risk appetite. The four-hour outage limit is a specific, measurable boundary for one risk category, which is risk tolerance. Appetite is tempting because the board set both, but appetite is the overall stance, while tolerance turns it into thresholds management can monitor.",
       "wrong_explanations": {
-        "B": "Appetite is the broad stance, here accepting moderate risk for growth. The specific outage threshold expresses tolerance around that appetite.",
+        "B": "Appetite statements can carry figures too, such as an aggregate loss range. A limit on one named risk is a tolerance, however it is phrased.",
         "C": "Capacity is the most risk the organization could absorb before failing. A chosen outage limit is set well inside it.",
         "D": "Residual risk is what remains after treatment. The four-hour figure is a target limit, not a measure of remaining risk."
       },
@@ -1995,10 +1995,10 @@
       "wrong_explanations": {
         "A": "A blanket deadline ignores each platform's risk and cost; waivers exist because some deviations need planned, prioritized remediation.",
         "C": "Reporting records the exposure but sets no end date or owner, so the deviations stay permanent with the board's knowledge.",
-        "D": "An expiry date alone just gets renewed; without a named owner and a remediation plan, the waivers still become permanent."
+        "D": "Like a sunset date, a three-year expiry puts each waiver back on the agenda. Deadlines without owners only time a deviation, though."
       },
       "tips": [
-        "Eliminate: A sets one deadline whatever each platform's risk and cost, and C records the deviations without an owner or an end date.",
+        "Eliminate: A sets one deadline whatever each platform's risk and cost, and C labels the waivers accepted risk although no one has assessed them.",
         "Final two: B beats D because owners and remediation plans retire the deviation; an expiry date alone just gets renewed.",
         "Exam cue: a temporary deviation needs an end date and an owner, or it quietly becomes permanent technical debt."
       ],
@@ -2031,7 +2031,7 @@
       "correct_explanation": "Compiling existing procedures bottom-up captures how teams work today, including local habits and gaps, rather than what the enterprise needs. Policies should be anchored top-down in business objectives, so the GREATEST risk is misalignment. Coverage gaps are a real side effect, but mapping the set to a control framework finds and fills them; a policy set aimed at the wrong objectives cannot be fixed that way.",
       "wrong_explanations": {
         "A": "Inconsistent terms are an editing issue, corrected when the set is reviewed; they do not change what the policies aim at.",
-        "B": "Coverage gaps are real in a bottom-up build, but mapping the set to a control framework finds them; misalignment runs through every policy.",
+        "B": "Compiling team documents does leave gaps. Risks rank by how much of the result they can spoil, though, and objectives shape every policy in the set.",
         "D": "Granular wording is a fixable drafting issue. Moving detail into standards solves it, but that does not fix policies aimed at the wrong objectives."
       },
       "tips": [
@@ -2104,7 +2104,7 @@
       "pre_read": "Notice what the team needs every day. Ask which risk threatens that need most directly.",
       "correct_explanation": "The team depends on daily sessions with product owners to confirm requirements, and offshore time zones leave little shared working time, so misunderstood requirements reach the build. Cross-border data transfer is the tempting option: it is a real risk for a bank, but contracts, transfer safeguards and masked test data (real data with identifiers hidden) manage it, while nothing in the plan restores the lost overlap.",
       "wrong_explanations": {
-        "B": "Masked test data and standard transfer safeguards manage the data risk; nothing in the plan restores the lost overlap with product owners.",
+        "B": "Every bank's outsourcing review lists cross-border transfer; risks are ranked, though, on the exposure left after controls, not on their category.",
         "C": "Right-to-audit clauses, remote reviews and independent assurance reports keep oversight effective at a distance; travel cost is not the main exposure.",
         "D": "Accountability cannot be outsourced; the bank stays answerable for the software whatever the vendor delivers."
       },
@@ -2144,10 +2144,10 @@
       "wrong_explanations": {
         "A": "Confirming contract terms still hold says nothing about whether cloud controls are working. It is an administrative check, not risk evidence.",
         "B": "A pre-migration test is point-in-time evidence that ages quickly as the environment changes.",
-        "D": "A SOC 2 report covers the provider's side over a past period. It gives no assurance over the firm's own configurations."
+        "D": "Evidence follows whoever runs the control. SOC 2 review anchors provider oversight, yet the customer's side of a shared model needs its own proof."
       },
       "tips": [
-        "Eliminate: A checks paperwork, and B is a single point-in-time test that ages quickly.",
+        "Eliminate: A confirms contract terms, a commercial check that tests no control, and B is a single point-in-time test that ages quickly.",
         "Final two: C beats D because the firm must evidence its own side continuously; SOC 2 covers the provider's side.",
         "Exam cue: in cloud questions, match evidence to the responsible party; the customer's configurations need the customer's own ongoing evidence."
       ],
@@ -2217,7 +2217,7 @@
       "pre_read": "Ask who sets the limits and who is later held to them.",
       "correct_explanation": "Risk appetite is a governance decision: COBIT 2019 places it in Evaluate, Direct and Monitor, where the board decides how much risk the enterprise will take for its objectives. Senior management, through the CRO, drafts the statement and then manages within it. CRO approval is tempting because the CRO heads the risk function, but management would then set the limits it is later held to.",
       "wrong_explanations": {
-        "A": "The CRO drafts and monitors appetite, but approving it lets management set the limits it is judged against; approval belongs to the board.",
+        "A": "The CRO and the board both shape appetite: expertise drafts it, and approval follows authority, not knowledge.",
         "C": "IT is one source of risk, and appetite is an enterprise decision. A CIO approving it would set limits for the CIO's own function.",
         "D": "Internal audit gives independent assurance over risk management. Approving the appetite would make audit part of a decision it later assesses."
       },
@@ -2256,7 +2256,7 @@
       "wrong_explanations": {
         "A": "Responsible roles do the work, but without an Accountable role no one answers for the outcome or makes the final call.",
         "B": "Consulting everyone slows decisions and blurs input with authority; it does not say who owns the outcome.",
-        "D": "Two Accountable roles dilute ownership. Each can defer to the other, so no one clearly answers for the outcome."
+        "D": "Naming two owners would reflect a genuine joint stake when two units rely on one outcome; ownership, though, stays single however many parties share the stake."
       },
       "tips": [
         "Eliminate: A names doers but no owner, and B makes everyone Consulted; neither says who answers for the outcome.",
@@ -2292,12 +2292,12 @@
       "pre_read": "Ask where in the buying process the duplication could be stopped before it starts.",
       "correct_explanation": "The duplicates arise because purchases skip any check against the enterprise architecture. Adding architecture review to procurement approval is a preventive control that tests each new tool against existing capabilities, data standards and integration patterns before money is spent. Scanning for subscriptions is a useful detective control, but it finds tools after data has already been copied and integrations built.",
       "wrong_explanations": {
-        "A": "Scanning is detective. It finds tools after customer data has been copied and integrations built, so duplication keeps happening.",
+        "A": "Card-spend scans are how shadow SaaS usually comes to light, but when harm is built in at purchase, the control belongs there.",
         "B": "A total ban ignores legitimate business needs and drives purchases underground. Governed approval works better than prohibition.",
         "C": "A data owner can reconcile duplicates already created, but purchasing is still unchecked, so new duplicate stores keep appearing."
       },
       "tips": [
-        "Eliminate: B bans what the business needs, and C reconciles duplicates after they appear.",
+        "Eliminate: B bans what the business needs, and C reconciles the existing duplicate stores, which leaves the unmanaged integrations untouched.",
         "Final two: D beats A because preventive review stops duplication before purchase; scanning only finds it afterward.",
         "Exam cue: when unmanaged purchases fragment the architecture, prefer a preventive architecture check in procurement."
       ],
@@ -2330,7 +2330,7 @@
       "pre_read": "Notice the evidence is mixed. Ask which method uses the data where it exists without inventing it where it does not.",
       "correct_explanation": "Calibrated scales with defined loss ranges let the team score data-rich risks from evidence and judgment-based risks consistently, so all risks can be ranked on one basis. Qualitative ratings are tempting because they work everywhere, but they discard the precision the loss data offers and make rankings depend more on individual interpretation.",
       "wrong_explanations": {
-        "B": "Pure qualitative ratings ignore the available loss data and rely on subjective labels that different raters read differently.",
+        "B": "Workshop ratings work when no risk has usable loss data. With mixed data, score each risk on its best evidence.",
         "C": "Risks without loss data still need assessing now; deferring them leaves part of the register unrated, so the team cannot rank all risks together.",
         "D": "ALE needs loss frequency and size for each risk. Estimating the missing values turns judgment into single-point figures that look precise but are not."
       },
@@ -2370,7 +2370,7 @@
       "wrong_explanations": {
         "A": "Publishing a policy creates awareness at best. Without process integration or training, behavior rarely changes.",
         "B": "Training builds awareness, but unless privacy tasks are built into processes such as requests and incidents, staff know the rules and no work routes through them.",
-        "D": "A central team cannot see every process. Accountability must sit with the units that handle the data, with the officer overseeing."
+        "D": "Central enforcement does raise privacy's standing, but an officer who owns compliance ends up monitoring their own work; oversight must stay independent."
       },
       "tips": [
         "Eliminate: A stops at publication, and B builds awareness without putting privacy tasks into the processes staff run.",
@@ -2442,7 +2442,7 @@
       "pre_read": "Notice each framework already serves a different team. Ask how to point them at one goal without losing fit.",
       "correct_explanation": "Each framework fits its domain: ITIL 4 for service management, SAFe for delivery, ISO 9001 for regulated quality. Keeping them, linked by shared cost, quality and speed goals and metrics, preserves that fit, with Lean or Six Sigma applied where they fit. Adopting Lean everywhere is tempting for consistency, but it discards domain fit, including the regulated group's quality discipline.",
       "wrong_explanations": {
-        "A": "A single method across every team ignores domain needs and could weaken the regulated group's established quality system.",
+        "A": "Shared goals and one Lean method both give teams a common improvement language; excellence programs standardize outcomes and measures, though, and leave methods to each domain.",
         "C": "Owners keep each framework running, but nothing points them at a shared excellence goal, so the teams still optimize separately.",
         "D": "Separate maturity scores show how each framework performs on its own terms; they do not link the frameworks to one excellence objective."
       },
@@ -2518,7 +2518,7 @@
       "correct_explanation": "Whether to retire, rehost, refactor or replace an application is a business decision about its value and risk, so the owners who answer for each application should decide it with IT's technical input. A provider's assessment tool is a useful input, but it measures technical fit and cost, not business value, and the provider gains when more workloads move.",
       "wrong_explanations": {
         "A": "Path choices for 80 applications are management decisions. The board sets cloud direction and monitors results; approving each path pulls it into management detail.",
-        "B": "Assessment tools measure technical fit and cost, not business value or risk, and the provider benefits from migration; the tool informs owners but does not decide.",
+        "B": "A provider's tool would settle a purely technical choice such as instance sizing; whether to keep, rebuild or retire each application is its owner's call.",
         "C": "Peer review checks technical quality, but every decision still comes from IT alone, without the business view of each application's value and risk."
       },
       "tips": [
@@ -2558,7 +2558,7 @@
       "wrong_explanations": {
         "A": "Equal cuts ignore priorities and can starve run operations or the compliance work as much as optional projects.",
         "B": "Cutting run spending threatens system stability and the operations the business depends on today.",
-        "D": "A material change to a board-approved portfolio needs board reauthorization, not a unilateral management decision."
+        "D": "An auditor would expect the CIO to propose the reallocation; in governance, management proposes and the board decides, and the two roles never merge."
       },
       "tips": [
         "Eliminate: A cuts every category alike whatever its priority, and B takes funds from the operations that keep the business running.",
@@ -2599,7 +2599,7 @@
         "D": "Peer designs may inform the target, but they describe other banks. They cannot reveal the gaps in this bank's own estate."
       },
       "tips": [
-        "Eliminate: A starts with tooling, and C approves projects before any gap analysis.",
+        "Eliminate: A starts with tooling, which supports architecture work but defines none of it, and C approves projects before any gap analysis.",
         "Final two: B beats D because gap analysis needs this bank's baseline; peer benchmarks describe someone else's estate.",
         "Exam cue: in architecture and improvement programs, document the current state before planning the move to the target state."
       ],
@@ -2670,7 +2670,7 @@
       "correct_explanation": "Compliance supports and challenges how operations manages risk, which is the second-line role in the IIA Three Lines Model. Third line is tempting because compliance may report to the board, but the third line is internal audit, which provides assurance fully independent of management; compliance remains part of management's structure.",
       "wrong_explanations": {
         "A": "The first line is operations itself, which owns and manages the risk. Compliance monitors that work rather than doing it.",
-        "C": "The third line is internal audit, independent of management. Board reporting alone does not give compliance that independence.",
+        "C": "An auditor would value compliance's board access, which shields it from operational pressure, but role, not reporting line, decides which line a function is in.",
         "D": "Second-line functions are part of the model and do provide assurance to management and the governing body."
       },
       "tips": [
@@ -2709,7 +2709,7 @@
       "wrong_explanations": {
         "A": "Completeness of the server list matters, but it is a detail. The bigger gap is that no layer connects technology to the business.",
         "C": "Currency is a maintenance issue for any documentation. It does not explain why the architecture cannot support business decisions.",
-        "D": "A framework is a tool, not the goal. The real weakness is the missing business layer, which a framework alone would not fix."
+        "D": "TOGAF is an established way to structure architecture work, but weaknesses rank by the purpose they defeat, and form ranks below substance."
       },
       "tips": [
         "Eliminate: A and C are documentation-maintenance points, not design weaknesses of the architecture.",
@@ -2781,7 +2781,7 @@
       "pre_read": "Separate who oversees the control system from the activities that evaluate whether controls work.",
       "correct_explanation": "COSO 2013 places board oversight in the control environment: Principle 2 says the board demonstrates independence from management and exercises oversight of the development and performance of internal control. Monitoring activities is tempting because oversight sounds like monitoring, but that component covers the ongoing and separate evaluations that check whether controls are present and functioning, not the governance structure above them.",
       "wrong_explanations": {
-        "A": "Monitoring covers ongoing and separate evaluations of whether controls work. Board independence and oversight is a control environment principle in COSO 2013.",
+        "A": "Boards do review control results, often via the audit committee, though COSO counts board oversight as the foundation that monitoring rests on.",
         "B": "Control activities are the policies and procedures that mitigate risks within processes. Board oversight sets the conditions for them rather than being one.",
         "D": "Risk assessment is management's process for identifying and analyzing risks to objectives; the board's oversight of internal control sits in the control environment."
       },
@@ -2856,7 +2856,7 @@
       "correct_explanation": "A sustainable inventory needs accountability and a trigger. Named data stewards, working through change management, record each new data asset at creation, with its purpose and sensitivity. The inventory then grows with the business. Automated discovery scans are valuable for finding unknown data, but they run on a schedule, lack business context such as purpose and owner, and do not make anyone accountable.",
       "wrong_explanations": {
         "A": "A one-time survey is out of date as soon as it is finished, and depends on staff remembering every data store.",
-        "C": "Scans find data stores but miss business context such as purpose and ownership, and they leave gaps between quarterly runs.",
+        "C": "Discovery scans would win if the aim were catching drift in an existing inventory; keeping one current happens where data is created.",
         "D": "An IT asset database lists hardware and software. It does not show what data those systems hold or who owns it."
       },
       "tips": [
@@ -2930,7 +2930,7 @@
       "pre_read": "Ask whether quality is designed into the process or checked at the end by one person.",
       "correct_explanation": "APO11 expects a quality management system: defined standards and acceptance criteria, quality activities built into delivery, measurement, and continuous improvement from root-cause analysis. Quality then improves at the source. A manager approving every release adds a final check, but it relies on one person, becomes a bottleneck, and catches defects late instead of preventing them.",
       "wrong_explanations": {
-        "A": "One person inspecting every release is a late, single-point check. It does not set standards or fix causes.",
+        "A": "An auditor would credit a named approver with clear accountability, but APO11 follows the oldest quality rule: build quality in, never inspect it in.",
         "B": "Satisfaction surveys are lagging, perception-based signals. They miss process measures and defect prevention.",
         "D": "Team-set targets vary and may be set to be met; APO11 expects enterprise quality standards that every team works to."
       },
@@ -2969,7 +2969,7 @@
       "wrong_explanations": {
         "A": "A review meeting is a governance forum, not a contract term; without measurable targets and remedies, there is nothing to enforce.",
         "B": "Provider-defined targets and reporting let the provider mark its own work, removing independent verification.",
-        "C": "A high target with no measurement method or remedy gives the customer nothing to enforce when service falls short."
+        "C": "A 99.99 percent target does set a demanding standard, yet in contract terms, enforceability always outranks ambition."
       },
       "tips": [
         "Eliminate: A offers a meeting rather than an enforceable term, and B lets the provider define and grade its own performance.",
@@ -3117,7 +3117,7 @@
       "correct_explanation": "COBIT 2019 APO09 expects service agreements that reflect each customer's needs, define service levels and responsibilities, and are monitored and reviewed regularly. Jointly agreed, documented service levels with regular performance reviews keep IT aligned to clinical and business priorities. One standard SLA is simpler and consistent, but it over-serves low-criticality units and under-serves critical ones such as clinical systems.",
       "wrong_explanations": {
         "A": "Vendor terms set what suppliers owe IT, not what each business unit needs; they were never agreed with the customer.",
-        "B": "A uniform SLA ignores differences in criticality and volume, so services are not aligned with each unit's needs.",
+        "B": "A single SLA would win for a commodity service; APO09 otherwise sets each level with the customer who depends on it.",
         "D": "IT-only drafting skips the customer, so agreed levels may not reflect what the business actually needs."
       },
       "tips": [
@@ -3144,7 +3144,7 @@
       "bloom_level": "Application",
       "question": "Before an EU retailer deploys facial recognition for loss prevention, which privacy activity should the IS auditor recommend management complete FIRST?",
       "options": {
-        "A": "A vendor comparison based on cost and matching accuracy",
+        "A": "A records-of-processing (Article 30) entry for the camera system",
         "B": "A data protection impact assessment of the planned processing",
         "C": "Updated privacy notices informing shoppers about the cameras",
         "D": "A two-store pilot, with privacy review after value is proven"
@@ -3154,12 +3154,12 @@
       "pre_read": "Biometric processing of the public is high risk. Ask what must be decided before anything else, including what to tell people.",
       "correct_explanation": "GDPR Article 35 requires a data protection impact assessment before high-risk processing such as biometric identification. It describes the processing, tests necessity and proportionality, assesses risks to individuals and sets mitigations, and may show the plan should not go ahead. Updated notices are also required for transparency, but they inform people about processing that the DPIA must first show is justified.",
       "wrong_explanations": {
-        "A": "Vendor cost and accuracy matter for procurement, but they do not assess necessity or risks to the people being scanned.",
+        "A": "An Article 30 entry is a required accountability record, but it lists processing rather than assessing it; only Article 35 tests necessity and risk before biometric use.",
         "C": "Notices are needed, but they only describe processing. The DPIA must first decide whether the processing is justified.",
         "D": "A pilot is itself live biometric processing of real shoppers, so the assessment must come before it, not after."
       },
       "tips": [
-        "Eliminate: A is a procurement step and D starts the risky processing before assessing it.",
+        "Eliminate: A is the routine Article 30 record kept for all processing, not the gate Article 35 sets for high-risk use, and D starts the risky processing before assessing it.",
         "Final two: B beats C because the DPIA decides whether the processing should happen at all; notices only describe it.",
         "Exam cue: for new high-risk processing, the impact assessment comes before deployment, notices and pilots."
       ],
@@ -3170,7 +3170,7 @@
         "Privacy by design",
         "Biometric processing"
       ],
-      "_provenance": "Authored from concept: 'DPIA application for high-risk processing (2.6.1 depth) - Article 35 specific application, complements d2_039 (RoPA Article 30) and d2_040 (Article 6 lawful basis)'. Public source: GDPR Article 35 + EDPB Guidelines 248/2017. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): stem names the EU so the GDPR basis is given. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged.",
+      "_provenance": "Authored from concept: 'DPIA application for high-risk processing (2.6.1 depth) - Article 35 specific application, complements d2_039 (RoPA Article 30) and d2_040 (Article 6 lawful basis)'. Public source: GDPR Article 35 + EDPB Guidelines 248/2017. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): stem names the EU so the GDPR basis is given. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. CISA quality pass (Oct 2026): option A (a vendor cost comparison) was not a privacy activity; it is now an Article 30 records-of-processing entry, with its explanation and Eliminate tip updated. Blind-tester polish (Oct 2026): option A names Article 30 so the record it means is unambiguous.",
       "style_version": 2
     },
     {
@@ -3192,7 +3192,7 @@
       "pre_read": "Weigh the size of the response against the size of the change, and ask who must approve shifts in direction.",
       "correct_explanation": "Material changes mid-cycle mean the strategy's assumptions, priorities and funding no longer fully hold. A focused update addresses those changes, keeps the parts that remain valid, and goes to the board for endorsement so governance owns the revised direction. Separate projects respond quickly, but they shift resources and priorities outside the strategy, leaving the approved plan out of date.",
       "wrong_explanations": {
-        "B": "Projects outside the strategy change priorities and funding without governance approval, so the approved plan no longer reflects reality.",
+        "B": "Dedicated projects will deliver most of this work, but material change to direction is a board decision, and projects only execute decisions.",
         "C": "Starting over discards still-valid work and causes churn. The changes call for an update, not a rewrite.",
         "D": "Waiting for the next refresh risks missing the privacy deadline and losing time to plan for vendor exit."
       },
@@ -3230,7 +3230,7 @@
       "correct_explanation": "GDPR Article 25 requires that, by default, only personal data necessary for each purpose is processed. Aggregated team metrics meet the analytics purpose without identifying individuals, and individual views are enabled only deliberately for a stated purpose. Pseudonymization is a useful design measure, but individual tracking with IP addresses is still personal data processed beyond what the default purpose needs.",
       "wrong_explanations": {
         "A": "An opt-out starts from maximum data collection, which is the opposite of protection by default.",
-        "B": "Pseudonymized individual data with IP addresses is still personal data, and collecting it by default exceeds what is necessary.",
+        "B": "Article 25 itself names pseudonymization as an appropriate technique, yet safeguards lower the risk of data already held; they never make that data necessary.",
         "C": "Restricting who sees individual data limits access, but the data is still collected and processed by default, beyond what the purpose needs."
       },
       "tips": [
@@ -3305,7 +3305,7 @@
       "correct_explanation": "The uncertainty is specific: two regulations that may or may not take effect. Scenario-based ROI models costs and benefits for each outcome and values the flexibility of a modular design, so the board can decide in line with its risk appetite. A higher hurdle rate does reflect risk, but it blends both regulations into one number and hides which outcome drives the result.",
       "wrong_explanations": {
         "A": "A single payback figure assumes today's rules hold; it hides that either pending regulation could change the case.",
-        "C": "A single risk-adjusted rate blurs distinct regulatory outcomes, so decision makers cannot see what drives the risk or plan responses.",
+        "C": "A risk-adjusted hurdle rate holds up for diffuse, general uncertainty; when named events drive the risk, each one gets its own scenario.",
         "D": "Indemnities may recover some costs, but the bank stays accountable for compliant credit decisions."
       },
       "tips": [
@@ -3342,7 +3342,7 @@
       "pre_read": "Impact is only half of risk. Also ask what is mandatory and who must accept the risks left untreated.",
       "correct_explanation": "Regulatory deadlines are mandatory, so they come first. The remaining budget goes to risks with the highest expected loss, which weighs likelihood as well as impact, and cheap quick wins can stretch coverage. Untreated risks are escalated to the level the risk policy names, which formally accepts or funds them. Ranking by impact alone ignores likelihood and could leave a regulatory deadline unmet.",
       "wrong_explanations": {
-        "A": "Impact alone ignores likelihood and treatment cost, and could leave a mandatory regulatory deadline unaddressed.",
+        "A": "Impact ranking is a common first cut, though four of these risks carry regulatory dates that a size-only ranking can pass over.",
         "B": "Spreading the budget thinly leaves every risk partly treated, may miss the regulatory deadlines, and never escalates the gap for a decision.",
         "C": "Insurance can transfer some financial loss, but not regulatory obligations or most operational and reputational harm."
       },
@@ -3456,7 +3456,7 @@
       "pre_read": "Sort the documents into mandatory and advisory before deciding whether anything was violated.",
       "correct_explanation": "Guidelines are recommended practices that give flexibility in how a requirement is met; they are not mandatory. Because developers still satisfy the mandatory secure-coding standard, the control objective is achieved and there is no noncompliance. Reporting a violation treats advice as a rule, which misstates the audit criteria; findings must rest on mandatory requirements in policies, standards and procedures.",
       "wrong_explanations": {
-        "A": "A guideline is advisory, so not following it is not a violation. Findings must rest on mandatory criteria such as policies and standards.",
+        "A": "A violation would stand if policy or procedure mandated the checklist: advice is measured by whether the requirement it serves is met.",
         "C": "Documenting reasons for skipping advice treats a guideline as mandatory; no requirement was broken, so there is nothing to justify.",
         "D": "The standard already sets the requirement and is met. Raising advice to policy misplaces operational detail; promoting guideline text is warranted only when it holds an unmet requirement."
       },
@@ -3492,9 +3492,9 @@
       "correct": "D",
       "key_concept": "SLA compliance is best shown by customer-side measurements against defined metrics; provider reports need independent verification.",
       "pre_read": "Ask who produced each piece of evidence and whether it measures actual delivery.",
-      "correct_explanation": "Evidence the customer generates independently, such as its own timing records reconciled to the SLA's defined metrics, shows whether targets were actually met. The provider's report is the tempting runner-up because it addresses the right targets, but it is self-reported by the party being measured; the customer should verify it rather than rely on it alone.",
+      "correct_explanation": "Evidence the customer generates independently, such as its own timing records reconciled to the SLA's defined metrics, shows whether targets were actually met. The provider's report is the strongest alternative because it addresses the right targets, but it is self-reported by the party being measured; the customer should verify it rather than rely on it alone.",
       "wrong_explanations": {
-        "A": "Provider reports, even attested by its own service owner, come from the party being measured. Without independent verification they cannot confirm the targets were met.",
+        "A": "An auditor would read the attested report as useful corroboration. Evidence gains weight, however, with its independence from the party it describes.",
         "B": "Satisfaction reflects perception, not measured performance against agreed targets. Users can be content while targets are missed.",
         "C": "The signed SLA shows what was promised, not what was delivered. It is the baseline for testing, not evidence of performance."
       },
@@ -3607,7 +3607,7 @@
       "correct_explanation": "Drift is data that exists but is not recorded, or records for data that no longer exists. Recurring discovery scans reconciled to the inventory find both, independent of anyone remembering to report, and data stewards resolve the differences. Business unit notification is a sound preventive habit, but it relies on people reporting every change and cannot detect shadow data they miss.",
       "wrong_explanations": {
         "A": "An annual survey depends on memory and leaves up to a year of undetected drift.",
-        "C": "Notification is useful but depends on people reporting every change, so it cannot detect the flows they forget or do not know about.",
+        "C": "Notification works well for keeping records current as flows change; finding drift takes a check that runs independently of those it checks.",
         "D": "An asset database records systems, not the data held inside them, so it cannot reveal data drift."
       },
       "tips": [
@@ -3646,7 +3646,7 @@
       "wrong_explanations": {
         "A": "A pre-launch review comes after the design is fixed, so privacy is inspected rather than designed in, and fixes become costly trade-offs.",
         "B": "Article 25 covers all personal data processing, not just special categories. Ordinary personal data still needs protection by design.",
-        "C": "One checklist everywhere spends effort on projects with no personal data and dilutes attention on risky ones; Article 25 expects measures that fit the processing's risks."
+        "C": "The full checklist shares early screening's design-stage timing. Article 25 measures scale with each processing's risk, though."
       },
       "tips": [
         "Eliminate: A inspects privacy after the design is fixed, and B limits protection to sensitive data though Article 25 covers all personal data.",
@@ -3681,7 +3681,7 @@
       "pre_read": "Notice the three regimes pull in different directions. Ask which approach satisfies both minimum retention and storage limitation.",
       "correct_explanation": "Each regime sets different obligations: HIPAA and SOX require certain records, such as compliance documentation and audit records, to be kept for minimum periods, while GDPR forbids keeping personal data longer than necessary. Category-based periods with a documented basis satisfy every rule at once. A blanket longest period looks safe for compliance, but it over-retains personal data, breaching GDPR storage limitation and enlarging breach exposure.",
       "wrong_explanations": {
-        "B": "Keeping everything for the longest period breaches GDPR storage limitation and increases the volume of data at risk in a breach.",
+        "B": "The longest period does meet every minimum rule, but retention limits run both ways: long enough, and no longer.",
         "C": "The shortest period destroys records that HIPAA and SOX require to be kept, creating direct legal violations.",
         "D": "Operational convenience is not a legal basis; owners would keep data as long as it is useful, missing both minimums and storage limitation."
       },
@@ -3720,7 +3720,7 @@
       "correct_explanation": "A core banking provider is a critical third party, so due diligence must be proportionate: financial viability, security, business continuity, regulatory compliance and audit rights. A SOC 2 Type 2 report is valuable evidence on controls, but it says nothing about financial health or exit, and its scope is set by the vendor. Relying on it alone under-examines a critical dependency.",
       "wrong_explanations": {
         "A": "References give anecdotes from other customers, not verified evidence about this provider's controls, finances or resilience.",
-        "B": "A SOC 2 report covers selected controls in a vendor-defined scope. It does not address financial viability, continuity or contract terms.",
+        "B": "A SOC 2 Type 2 report could carry most of the review for a low-tier vendor; due diligence widens as a provider's criticality rises.",
         "D": "An audit after signing comes too late to decline or negotiate; due diligence must come before the bank is committed."
       },
       "tips": [
@@ -3758,7 +3758,7 @@
       "wrong_explanations": {
         "A": "A total gives the CFO visibility but no allocation; no team sees its own spend or answers for it.",
         "C": "A discount lowers the unit rate but leaves wasteful consumption untouched. Spend keeps rising with usage.",
-        "D": "Central provisioning creates a bottleneck and removes accountability from the teams that consume resources, without improving cost visibility."
+        "D": "Cost discipline lasts only where spending decisions are made. Central provisioning does stop unapproved resources, yet a gate controls entry, not use."
       },
       "tips": [
         "Eliminate: A reports a total no team can act on, and C cuts rates but not wasteful use.",
@@ -3982,7 +3982,7 @@
       "pre_read": "Notice the bank still needs the service for nine months. Ask which option protects both continuity and the bank's data.",
       "correct_explanation": "The bank depends on the service until migration and holds contractual rights over its data. A managed exit plan keeps service levels enforced, secures data return and verified deletion, and pursues any remedies from the incident. Immediate termination feels decisive, but the incident is remediated and the new provider is not ready, so it trades a contained risk for service disruption.",
       "wrong_explanations": {
-        "A": "Terminating early disrupts a service the bank still needs, for an incident already remediated. It creates a larger continuity risk.",
+        "A": "Termination for cause would win if the access weakness were still open; once it is remediated, continuity and data rights set the exit's pace.",
         "B": "A clause states the duty but proves nothing; after a vendor-staff access incident, the bank needs data returned and deletion verified.",
         "C": "An annual report covers a past period; during an exit, service levels and data obligations need active monitoring month by month."
       },
@@ -4056,12 +4056,12 @@
       "pre_read": "Notice the risk is high impact and the outage is 90 days away. Ask whether waiting for the cycle wastes treatment time.",
       "correct_explanation": "Risk management is continuous, not tied to the reporting calendar. A high-impact risk with a known date needs an owner and treatment, such as vendor negotiation and manual workarounds, while there is time to act; the board can be informed at its next meeting. An informal log preserves the cycle but leaves the risk unowned and untreated for weeks.",
       "wrong_explanations": {
-        "A": "An informal log has no owner or treatment. Weeks of lead time for workarounds are lost waiting for the calendar.",
+        "A": "An auditor would welcome any record of the new risk, but the risk process runs continuously, and calendars never pace a response.",
         "B": "Halting policy issuance during business hours is high impact. Accepting it without analysis or approval is unjustified.",
         "D": "An emergency board meeting is disproportionate; management can register and treat the risk and inform the board at its next meeting."
       },
       "tips": [
-        "Eliminate: B accepts a high-impact risk without analysis, and D escalates disproportionately.",
+        "Eliminate: B accepts a high-impact risk without analysis, and D calls an emergency board meeting for a risk management can own and treat itself.",
         "Final two: C beats A because risk management is continuous; a known high-impact risk needs an owner and treatment now, not at the next cycle.",
         "Exam cue: emerging risks are handled when they emerge; reporting cycles schedule updates, they do not delay treatment."
       ],
@@ -4095,7 +4095,7 @@
       "correct_explanation": "The findings show waste: untagged spend, idle resources and unused reservations. Restoring tagging separates growth from waste, and named leads in each unit then rightsize and reclaim it. A spend cap with CIO exceptions controls the total quickly, but it treats the symptom, cannot tell growth from waste, and risks starving legitimate demand while the waste stays in place.",
       "wrong_explanations": {
         "A": "Migration is costly and disruptive, and the same waste would move with the workloads to the new provider.",
-        "B": "A cap limits the total without finding waste. It may block legitimate growth while idle resources keep running.",
+        "B": "A spend cap is a valid stopgap while causes are unknown; once findings name them, causes are treated at the source.",
         "D": "A discount cuts the price of waste but not the waste. Idle and oversized resources still consume budget."
       },
       "tips": [
@@ -4134,7 +4134,7 @@
       "wrong_explanations": {
         "B": "A second test round is more inspection of the finished product. Defects are still created upstream and found late.",
         "C": "Reporting defect rates adds visibility, but it still measures quality after the fact rather than building it into each development stage.",
-        "D": "Automation improves the speed and consistency of testing. It is still end-of-cycle inspection, so defects are found as late as before."
+        "D": "Automated testing is a mainstay of mature pipelines, yet running the same end-of-cycle suite faster leaves the earlier stages, where defects enter, unchecked."
       },
       "tips": [
         "Eliminate: B adds another round of the same end-of-line inspection, and C only reports defects after the fact.",
@@ -4169,7 +4169,7 @@
       "pre_read": "Notice the phrase well-founded. Ask which element lets the board judge and later verify business value.",
       "correct_explanation": "Investment decisions should rest on expected business value. Benefits tied to specific outcomes, with measurable success criteria, let decision-makers compare options and later confirm the value was delivered. A vendor cost model gives financial figures that look rigorous, but it was prepared by an interested party, is unvalidated, and speaks to cost recovery rather than business outcomes.",
       "wrong_explanations": {
-        "A": "The model comes from a party that benefits from the sale and has not been independently validated. Payback alone ignores business outcomes.",
+        "A": "A payback figure belongs in any business case. Still, an investment is judged by measurable outcomes the business owns and will answer for.",
         "B": "A small demonstration shows technical feasibility, not business value or scalability.",
         "C": "Sponsorship signatures show support, not evidence. Approval without analysis is not an evidence-based decision."
       },
@@ -4244,7 +4244,7 @@
       "pre_read": "Notice the many overlapping regulations. Ask which design avoids duplication while keeping each requirement traceable.",
       "correct_explanation": "Many requirements overlap across these regulations. A single control library mapped to each one lets a control satisfy several obligations, makes gaps visible, and gives each area a named owner. Separate teams per regulation bring depth, but they duplicate controls and testing, burden the business with repeated requests, and can miss cross-regulation gaps no single team owns.",
       "wrong_explanations": {
-        "A": "Siloed teams duplicate controls and testing, and gaps between regulations may fall to nobody.",
+        "A": "Dedicated teams share the mapped library's aim of covering each regulation in full; controls are built once and mapped many times, though.",
         "C": "Regulations differ in scope, not just strictness. One regulation's rules do not cover another's specific requirements.",
         "D": "Providers can support, but the bank remains accountable for compliance. Outsourcing does not transfer that accountability."
       },
@@ -4281,7 +4281,7 @@
       "pre_read": "Notice the words effective governance. Ask which structure makes clear who decides what, and how issues move up.",
       "correct_explanation": "Strategy, risk, architecture and operational change need different members, cadences and authority. Distinct committees with chartered decision rights and escalation paths give each decision a clear owner and route issues to the right level. One combined committee seems efficient for coordination, but it mixes governance with operational decisions, overloads one agenda and blurs accountability.",
       "wrong_explanations": {
-        "A": "One committee mixes strategic and operational decisions, overloads the agenda, and blurs who is accountable for what.",
+        "A": "One committee would be fine for a small firm; at network scale, each decision type needs its own chartered owner.",
         "B": "Without charters, decision rights and scope are unclear, so overlap and gaps grow.",
         "C": "Governance bodies answer to the board; committees reporting to the CIO become management forums, and the board loses its oversight route."
       },
@@ -4318,7 +4318,7 @@
       "pre_read": "Notice the contracts are new. Ask when the credit union has the most leverage to secure exit support.",
       "correct_explanation": "Leverage is highest before signing. Agreeing exit terms then, covering data return formats, transition assistance and knowledge transfer, means the credit union can leave without losing data or service. A termination-for-convenience right lets it leave, but says nothing about how: without transition obligations, the vendor has little reason to help a departing customer.",
       "wrong_explanations": {
-        "B": "A right to leave without transition support risks lost data and service gaps. Exit needs cooperation terms, not just termination rights.",
+        "B": "Termination for convenience is a standard exit protection, but exit risk is about data and service continuity, and a notice period protects neither.",
         "C": "Once termination is likely, leverage is gone and the vendor has little reason to cooperate.",
         "D": "Escrow protects access to code if the provider fails, but it gives no data return, transition help or knowledge transfer."
       },
@@ -4356,7 +4356,7 @@
       "pre_read": "Notice the program is new. Ask what DLP needs to know before it can decide what to block.",
       "correct_explanation": "DLP can only protect data it can recognize, so classification comes first; policies are then tuned for email, endpoint and cloud channels and refined from false-positive analysis. Blanket blocking feels like the strongest protection for a defense contractor, but without classification it blocks legitimate work, floods analysts with alerts and drives users to unmonitored workarounds.",
       "wrong_explanations": {
-        "A": "Context-free blocking disrupts legitimate work and drives users to workarounds, weakening protection overall.",
+        "A": "Hard blocking is an established DLP mode, but strictness is not precision; controls are judged by accuracy, not volume stopped.",
         "B": "Defaults do not reflect the contractor's own data or classification scheme, so sensitive data may go unrecognized.",
         "D": "Monitoring alone lets sensitive data leave. Monitor mode suits tuning new rules before blocking, not a program's permanent design."
       },
@@ -4420,20 +4420,20 @@
       "principle_id": "risk-sets-priority",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "An IS auditor finds that 60% of a holding company's IT operations spend goes to one cloud provider. Which response is BEST?",
+      "question": "An IS auditor finds that 60% of a holding company's IT operations spend goes to one cloud provider. Which response should the IS auditor recommend as BEST?",
       "options": {
         "A": "Accept the concentration as the price of negotiated discounts",
-        "B": "Diversify across three cloud providers at once, whatever the cost",
-        "C": "Negotiate higher service credits for provider outages",
+        "B": "Begin moving critical workloads to a second cloud provider",
+        "C": "Transfer outage impact through higher service credits",
         "D": "Weigh failure scenarios against appetite, then treat any excess"
       },
       "correct": "D",
       "key_concept": "Concentration risk is managed risk-based: quantify the exposure, compare it with appetite, and mitigate only where it exceeds tolerance.",
       "pre_read": "Notice the stem gives a number but no analysis. Ask what must happen before deciding whether to diversify.",
-      "correct_explanation": "Concentration is not automatically acceptable or unacceptable. The company should model failure, regulatory and exit scenarios, compare the exposure with risk appetite, and then mitigate where tolerance is exceeded, through exit readiness or selective diversification. Immediate multi-cloud diversification feels protective, but it commits major cost and complexity before anyone knows whether the risk warrants it.",
+      "correct_explanation": "Concentration is not automatically acceptable or unacceptable. The company should model failure, regulatory and exit scenarios, compare the exposure with risk appetite, and then mitigate where tolerance is exceeded, through exit readiness or selective diversification. Moving critical workloads to a second provider feels protective, but it commits major cost and complexity before anyone knows whether the risk warrants it.",
       "wrong_explanations": {
         "A": "Accepting without analysis is not informed risk acceptance. Discounts do not offset an unmeasured exposure.",
-        "B": "Diversifying before assessment may add cost and complexity that exceed the risk itself. Treatment should follow analysis.",
+        "B": "A second provider would be the right treatment once analysis shows exposure beyond appetite; a response is sized only after the risk is.",
         "C": "Credits compensate after an outage but do not reduce the operational impact of losing a provider that runs 60% of IT operations."
       },
       "tips": [
@@ -4448,7 +4448,7 @@
         "Multi-cloud",
         "Contract diversification"
       ],
-      "_provenance": "Authored from concept: 'Vendor concentration risk quantify-then-mitigate, no prior D2 coverage'. Public source: OCC Bulletin 2013-29 + FFIEC. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D2 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): C (defer until failure) was a strawman; it is now higher service credits. Audit round: principle tag moved from final-two to risk-sets-priority.",
+      "_provenance": "Authored from concept: 'Vendor concentration risk quantify-then-mitigate, no prior D2 coverage'. Public source: OCC Bulletin 2013-29 + FFIEC. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D2 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): C (defer until failure) was a strawman; it is now higher service credits. Audit round: principle tag moved from final-two to risk-sets-priority. CISA quality pass (Oct 2026): runner-up B no longer rests on 'at once, whatever the cost'; it is now a serious, defensible treatment, with its explanation and the CE's last sentence updated. Blind-tester polish (Oct 2026): the stem now asks what the IS auditor recommends, and C uses risk-treatment wording (transfer).",
       "style_version": 2
     },
     {
@@ -4469,7 +4469,7 @@
       "pre_read": "Notice the word maturity. Ask which role scales control across many teams without becoming a bottleneck.",
       "correct_explanation": "A Cloud Center of Excellence matures governance by setting architecture standards, security baselines, cost guardrails and reusable patterns, while teams manage their own usage within those limits. Central provisioning gives tight control and looks safe, but it bottlenecks every team, slows the business and keeps accountability for consumption away from the people making the decisions.",
       "wrong_explanations": {
-        "B": "Central provisioning creates a bottleneck and separates consumers from accountability for what they use.",
+        "B": "Like guardrails, central provisioning keeps every resource within approved standards. Mature governance sets the limits and lets owners act inside them, though.",
         "C": "Advice without authority cannot enforce baselines or cost discipline, so governance stays optional.",
         "D": "Security accountability stays with workload owners. A central team cannot be the sole defense for every business unit's workload."
       },
@@ -4506,7 +4506,7 @@
       "pre_read": "Ask what the committee cannot see today, then which option closes that gap in one view.",
       "correct_explanation": "Governance oversight must cover every service the business depends on, not just the ones IT operates. Reporting on all critical business services, whoever runs them, shows the committee where performance and risk sit across the enterprise. Asking units to report separately looks practical, but it fragments the picture, so no one sees the combined exposure or compares services against the same targets.",
       "wrong_explanations": {
-        "A": "Separate unit reports fragment oversight; the committee still cannot see combined exposure or compare services against common targets.",
+        "A": "An auditor would value unit reports for bringing business-run SaaS into view, yet oversight is organized around critical services, not around who operates them.",
         "B": "Moving support to IT is an operational restructuring decision for management; it does not fix what the committee sees now.",
         "D": "More detail on systems already reported deepens the existing view but leaves the critical SaaS services invisible."
       },
@@ -4581,7 +4581,7 @@
       "pre_read": "Notice both laws can apply at once. Ask which option meets every obligation rather than choosing one regime.",
       "correct_explanation": "Both regimes can apply: CCPA through the consumer's California residence, and GDPR through the company's EU establishment or its targeting of people in the EU. The defensible response meets the shorter deadline, satisfies both sets of access and deletion duties, and records the dual basis. GDPR alone looks safe because it is often stricter, but it can miss CCPA-specific duties, such as its rules for verifying the consumer's identity.",
       "wrong_explanations": {
-        "B": "GDPR is often stricter, but not on every point. One regime alone can miss CCPA duties, such as its consumer-verification rules, and leaves no record of dual compliance.",
+        "B": "GDPR handling would meet much of what CCPA asks. Strictness is not coverage, though: each applicable law's duties are checked one by one.",
         "C": "Residence does not switch GDPR off. GDPR can apply through the company's EU establishment or processing, so ignoring it creates exposure.",
         "D": "Responding to a rights request is the controller's decision; supervisory authorities enforce the law, they do not answer requests for a company."
       },
@@ -4619,7 +4619,7 @@
       "pre_read": "Notice the analysis is done and exposure exceeds appetite. Ask who has authority to keep risk above that line.",
       "correct_explanation": "Exposure above appetite cannot be accepted by the function that manages the relationship. It must be escalated so senior management treats it; keeping it anyway is an exception to the board-set appetite and needs a documented decision at the level the risk policy names, often senior management or the board. The CIO owns the provider relationship, so acceptance looks natural, but accepting above-appetite risk to protect discounts overrides the appetite without authority.",
       "wrong_explanations": {
-        "A": "The CIO manages the relationship but cannot accept risk beyond the board-set appetite; it is treated, or kept only under a documented exception at the level the risk policy names.",
+        "A": "Relationship owners may accept risk within appetite; beyond it, acceptance moves up and away from whoever gains by keeping the risk.",
         "B": "Auditors assess and report risk. Signing off acceptance makes the auditor part of management's decision and impairs independence.",
         "C": "A file note is not a risk decision; above-appetite exposure needs treatment or an exception approved at the level the risk policy names."
       },
@@ -4656,7 +4656,7 @@
       "pre_read": "Ask how often each detail would change, and which document level is built to change at that pace.",
       "correct_explanation": "A policy states management's intent and direction, so it should change rarely and be approved at a senior level. Settings such as password lengths and port numbers change often and belong in standards, which make the policy measurable and can be updated without re-approving it. Keeping them in the policy feels convenient, but every technical change would then force a full policy revision and approval cycle.",
       "wrong_explanations": {
-        "A": "Mixing settings into the policy makes it unstable. Every technology change would trigger a full policy revision and senior approval.",
+        "A": "As with referenced standards, in-policy settings give staff clear rules. Policy states intent, though; the specifics live a tier below.",
         "C": "Mandatory settings issued as advice become optional; they belong in standards so compliance can be required and audited.",
         "D": "Top management or the board approves policy. Approving individual technical settings is management detail that would overload governance and slow change."
       },
@@ -4694,7 +4694,7 @@
       "pre_read": "Notice the facts are incomplete. Ask what the accountable organization can do now without waiting or overreacting.",
       "correct_explanation": "The insurer remains accountable for its members' data even when a vendor processes it. It should start its own incident response now: enforce contractual notification rights, assess its HIPAA notification obligations with counsel, and plan communications while documenting the timeline. Waiting for the vendor feels prudent because facts are uncertain, but the insurer's own obligations and timelines may already be running.",
       "wrong_explanations": {
-        "B": "Waiting hands control of the timeline to the vendor. The insurer's own notification obligations and deadlines may already be running.",
+        "B": "The vendor's findings will shape any member notice; accountability, though, stays with the organization that outsourced the processing, and so does the duty to respond.",
         "C": "Contracts rarely allow the customer to take over a vendor's investigation. Doing so oversteps rights and may disrupt evidence handling.",
         "D": "Notifying members before scope is known risks inaccurate communication. Notification should follow an assessment of who is actually affected."
       },
@@ -4733,7 +4733,7 @@
       "wrong_explanations": {
         "A": "Uniform maximum controls ignore actual sensitivity, raising cost without proportionate benefit. Controls should follow classification tiers.",
         "B": "A flat seven-year period keeps some data longer than needed, breaching storage limitation, and may keep other data too briefly.",
-        "D": "Consent is only one lawful basis and is often inappropriate. It also leaves classification and retention unaddressed."
+        "D": "Consent can lawfully cover one marketing use. Architecture starts from classification, since every later decision depends on knowing what data it governs."
       },
       "tips": [
         "Eliminate: A applies costly controls regardless of sensitivity, and B breaches storage limitation with a flat retention period.",
@@ -4771,7 +4771,7 @@
       "wrong_explanations": {
         "A": "Deferring to expertise skips independent analysis. The proposal favors the lowest-impact risk, which is exactly what needs testing.",
         "B": "Accepting all three risks without analysis abandons treatment of exposures that may exceed appetite, and partial treatment is not formal acceptance.",
-        "C": "Impact alone ignores likelihood and treatment effectiveness. The largest risk may not deliver the greatest loss reduction per dollar."
+        "C": "The skew toward the smallest risk does deserve challenge, but a reallocation needs the analysis the original lacked, or one guess replaces another."
       },
       "tips": [
         "Eliminate: A skips independent analysis, and B accepts all three risks without checking them against appetite.",
@@ -4809,7 +4809,7 @@
       "wrong_explanations": {
         "A": "Deferring depth until after closing means risks are discovered when the bank already owns them and can no longer price or decline.",
         "C": "Incidents matter, but their root cause and remediation decide the risk. An automatic rejection ignores evidence that may be favorable.",
-        "D": "Equal depth spreads six weeks thinly across every system, so the critical systems and the incidents get no more scrutiny than minor ones."
+        "D": "A full-depth sweep would add assurance on every system, yet diligence is risk-based at any pace: a fixed window only tightens the rationing."
       },
       "tips": [
         "Eliminate: A finds risks only after the bank owns them, and C rejects the deal without examining root causes.",
@@ -4847,7 +4847,7 @@
       "wrong_explanations": {
         "A": "Uniform active-active pays the highest cost for tiers that have no SLA and generate little revenue. Spending is not aligned to value.",
         "C": "Waiting for a breach accepts a known shortfall against a 99.99% commitment and pays penalties before acting.",
-        "D": "One mode for all tiers overspends where no SLA exists, and active-passive failover time may still break the 99.99% enterprise SLA."
+        "D": "Active-passive across regions is a proven resilience design. Still, resilience is bought per service: each tier gets what its commitments and revenue justify."
       },
       "tips": [
         "Eliminate: A overspends on every tier, and C waits for an SLA breach the single-region design already makes likely.",
@@ -4885,7 +4885,7 @@
       "wrong_explanations": {
         "B": "Peer benchmarks show where others are mature, not what this firm's expansion and acquisitions need, so closing gaps blindly can fund the wrong capabilities.",
         "C": "Threat-driven planning is still generic to the business. It ignores what expansion and acquisitions require, so alignment remains missing.",
-        "D": "An appendix lists needs beside a plan whose priorities and capabilities stay unchanged; alignment means the plan itself is built from the goals."
+        "D": "The appendix shares the revision's step of putting business needs before the board; alignment, though, shows in what a plan funds, not what it mentions."
       },
       "tips": [
         "Eliminate: B measures against peers, not this firm's goals, and C plans around threats while the business goals stay unaddressed.",
@@ -4922,7 +4922,7 @@
       "correct_explanation": "A SOC 2 Type 2 report covers the Trust Services Criteria, including security, availability and confidentiality, and describes the service auditor's tests and results over a period. That detail is what an auditor needs to rely on the controls. A SOC 3 report addresses the same criteria, but it is a general-use summary without test details, so it cannot support reliance.",
       "wrong_explanations": {
         "A": "SOC 1 addresses controls relevant to user entities' financial reporting, not the security, availability and confidentiality objectives here.",
-        "B": "SOC 3 is a general-use summary without detailed tests and results. It suits marketing, not audit reliance.",
+        "B": "A SOC 3 report still carries an independent service auditor's opinion, but reliance on another auditor's work means evaluating the work, not only its conclusion.",
         "C": "A vendor's own internal audit lacks independence from the vendor and follows no attestation standard, so reliance is weak."
       },
       "tips": [
@@ -4960,7 +4960,7 @@
       "pre_read": "Notice what enterprise customers want: assurance. Ask which option produces an ISMS that works, not just paperwork.",
       "correct_explanation": "Certification is valuable only when it reflects an ISMS that actually operates: defined scope, risk assessment, controls selected in a Statement of Applicability, internal audit and management review, followed by an accredited body's Stage 1, Stage 2 and surveillance audits. Consultant-written documentation is tempting, but certification auditors test whether the ISMS operates, and paperwork alone gives customers no real assurance.",
       "wrong_explanations": {
-        "A": "Documents without operation fail Stage 2, which tests whether the ISMS works in practice. Management also stays accountable for the system.",
+        "A": "An auditor would accept consultant drafting help, but accountability for a management system cannot be contracted out with the drafting.",
         "B": "ISO/IEC 27001 selects controls from the risk assessment and records them in the Statement of Applicability; implementing all of Annex A first reverses that logic.",
         "D": "Internal audit and management review are required ISMS clauses that the certifier checks at Stage 2, so they must operate before certification."
       },
@@ -5035,7 +5035,7 @@
       "correct_explanation": "The board's role is to ensure IT investments deliver value, so its dashboard should show the portfolio by category, such as run, grow and transform, with business outcomes, realized benefits and flagged exceptions. A single on-time, on-budget score is board-level and concise, but it measures delivery efficiency only and says nothing about whether investments are producing the intended benefits.",
       "wrong_explanations": {
         "B": "Task-level detail is management altitude. It buries the board in operations and hides portfolio-level value and risk.",
-        "C": "One delivery score hides which investments are at risk and ignores whether benefits are realized, which is the board's core concern.",
+        "C": "Schedule and budget adherence are legitimate measures for the managers who run projects. Execution is management's to track; results are the board's to judge.",
         "D": "Spend against budget shows financial control, not whether investments deliver business value; the board needs outcomes and benefits."
       },
       "tips": [
@@ -5110,7 +5110,7 @@
       "correct_explanation": "Linking investments to objectives at approval shows intended alignment; whether IT actually serves the business shows only when the promised benefits are measured after delivery. Benefits realized against each business case close that loop and expose investments that drifted from their objectives. Satisfaction scores add the business's view, but they measure how users feel about IT services, not whether investments achieved what they were approved for.",
       "wrong_explanations": {
         "A": "Efficiency metrics show how well IT operates, not whether approved investments delivered the business outcomes they were tied to.",
-        "B": "Satisfaction reflects how users feel about IT services; it does not show whether investments achieved the objectives they were approved to serve.",
+        "B": "Satisfaction surveys are an established user-orientation measure in the IT balanced scorecard, but perception complements outcome evidence and cannot replace it.",
         "D": "Throughput counts show how much work IT completes, not whether the investments behind it delivered their intended benefits."
       },
       "tips": [
@@ -5223,10 +5223,10 @@
       "wrong_explanations": {
         "A": "One total line cannot show which category drives cost, so it cannot guide where to invest.",
         "B": "Tracking appraisal alone ignores prevention returns and the failure costs, including regulatory consequences, that matter most here.",
-        "D": "A budget share is one aggregate number. It cannot show whether spending prevents failures or pays for them, so it cannot guide where to invest."
+        "D": "A budget share would serve a board tracking quality funding over time; investment choices need costs split by category."
       },
       "tips": [
-        "Eliminate: A gives one undifferentiated number, and B omits prevention and failure costs.",
+        "Eliminate: A tracks total spend, which shows cost but not return, and B omits prevention and failure costs.",
         "Final two: C beats D because a budget share hides which cost category drives losses; the four-category split shows where prevention spending pays off.",
         "Exam cue: when a question asks what supports investment decisions, prefer the structure that links spending to the losses it prevents."
       ],
@@ -5369,11 +5369,11 @@
       "correct": "A",
       "key_concept": "Unplanned post-breach investment must first rest on a root-cause and residual-risk assessment, so funding targets the actual gaps.",
       "pre_read": "Notice the funding request comes before anyone knows why the breach happened. Ask what evidence must exist first.",
-      "correct_explanation": "Before any strategy or budget decision, management needs to know which control failures caused the breach and what risk remains. A root-cause and residual-risk assessment shows whether $25M targets the real gaps and gives the board evidence for reprioritizing. Approving the funds now feels decisive, but it commits capital to an unvalidated request that may miss the causes or crowd out other priorities.",
+      "correct_explanation": "Before any strategy or budget decision, management needs to know which control failures caused the breach and what risk remains. A root-cause and residual-risk assessment shows whether $25M targets the real gaps and gives the board evidence for reprioritizing. The CISO's request may target genuine weaknesses, but approving the funds now commits capital to an unvalidated request that may miss the causes or crowd out other priorities.",
       "wrong_explanations": {
         "B": "Incident response fixes the immediate issue, but a breach of this size changes risk and priorities, which the strategy must reflect.",
         "C": "Waiting for inquiries to close leaves known weaknesses and customer-trust issues unaddressed for months.",
-        "D": "Approving before assessment commits $25M without evidence that it addresses the breach's causes, and bypasses portfolio governance."
+        "D": "The CISO is well placed to size security needs. Still, spending follows diagnosis: the root cause decides what the money fixes."
       },
       "tips": [
         "Eliminate: B treats a strategic event as an incident only, and C delays response to known weaknesses.",
@@ -5446,7 +5446,7 @@
       "pre_read": "Ask whether either single framework fully covers the other regime's specific obligations.",
       "correct_explanation": "The combined entity must comply with both regimes from day one, so the program should meet HIPAA's and GDPR's specific obligations while sharing one data-governance baseline, joint data-flow mapping and clear officer accountability. Adopting GDPR as the single standard is tempting because it is stricter overall, but it does not cover HIPAA-specific duties such as business associate agreements and HIPAA breach-notification rules.",
       "wrong_explanations": {
-        "B": "GDPR is broader, but it does not satisfy HIPAA-specific requirements such as business associate agreements, so US health-data obligations would go unmet.",
+        "B": "Adopting the stricter regime works only where both laws set one duty at different strengths; distinct duties are each met on their own terms.",
         "C": "HIPAA does not address GDPR duties such as lawful basis, data-subject rights and transfer rules, leaving EU data noncompliant from day one.",
         "D": "Both regimes apply from the day the deal closes. Deferring integration leaves cross-entity data flows ungoverned during the riskiest period."
       },
@@ -5524,7 +5524,7 @@
       "wrong_explanations": {
         "A": "Equal cuts treat a regulatory mandate and an above-appetite cyber risk like discretionary growth, so obligations can go unmet.",
         "B": "Funding everything abandons prioritization, ignores the cost-reduction target and treats limited capacity as unlimited.",
-        "C": "Return is one lens, but mandatory compliance and risks beyond appetite must be addressed regardless of financial payback."
+        "C": "Ranking by return is accepted practice for optional projects; obligations are a floor beneath that contest, not entries in it."
       },
       "tips": [
         "Eliminate: A cuts mandatory and discretionary work alike, and B treats limited capacity as if the budget could simply grow.",
@@ -5597,7 +5597,7 @@
       "pre_read": "Separate what customers need to be consistent from how each region delivers it.",
       "correct_explanation": "Customers need consistent outcomes, so the program should fix global objectives and metrics while letting each region choose how to meet them, preserving existing certifications and lifting lower-maturity sites in phases (APO11). Identical processes everywhere look like the purest form of consistency, but they ignore regional maturity, language and regulation, so adoption stalls and outcomes stay uneven.",
       "wrong_explanations": {
-        "B": "Uniform processes ignore regional maturity and context. Adoption typically fails, so outcome consistency, the real goal, is not achieved.",
+        "B": "Programs answer for the outcomes customers see. Identical templates do ease comparison, yet standards fix the result and leave the route local.",
         "C": "Full autonomy keeps today's inconsistent results and gives no basis for a common quality commitment across the seven countries.",
         "D": "A consultancy can help, but accountability for quality stays with management, and outsourcing does not resolve regional adoption."
       },
@@ -5671,11 +5671,11 @@
       "correct": "C",
       "key_concept": "ISO 9001 certifies a quality management system within its scope; it does not guarantee the quality of a vendor's products.",
       "pre_read": "Separate what a management-system certificate examines from what the vendor claims it proves.",
-      "correct_explanation": "ISO 9001 certifies that a quality management system exists and operates within its scope; it does not test or guarantee the quality of any product. The bank still needs its own acceptance testing and contractual quality criteria. Accreditation of the certifying body is the runner-up: it makes the certificate more credible, but a credible certificate still covers the process, not the releases.",
+      "correct_explanation": "ISO 9001 certifies that a quality management system exists and operates within its scope; it does not test or guarantee the quality of any product. The bank still needs its own acceptance testing and contractual quality criteria. Accreditation of the certifying body comes closest: it makes the certificate more credible, but a credible certificate still covers the process, not the releases.",
       "wrong_explanations": {
         "A": "Certification of the vendor's process does not test the bank's requirements. The bank still needs its own acceptance testing.",
         "B": "ISO 9001 sets no product quality levels. It certifies how quality is managed, not the results releases achieve.",
-        "D": "Accreditation makes the certificate more credible, but even a credible certificate covers the management system, not the quality of releases."
+        "D": "An auditor does check the certifier's accreditation; reliability and relevance are separate tests, and evidence must pass both."
       },
       "tips": [
         "Eliminate: A drops the bank's own testing, and B credits ISO 9001 with product quality levels it does not set.",
@@ -5713,7 +5713,7 @@
       "wrong_explanations": {
         "A": "Teams requesting waivers are using governance, not ignoring it. The pattern points to the standards, not to the teams.",
         "C": "Rejecting waivers forces projects onto standards that may be obsolete. It treats the symptom and could block sound designs.",
-        "D": "Each waiver may be handled correctly, but the rate matters. When most projects deviate, the standards have stopped guiding decisions."
+        "D": "A busy waiver route does show teams asking instead of bypassing. Exception volume is feedback on the rule itself."
       },
       "tips": [
         "Eliminate: A blames teams who are in fact using the waiver process, and C blocks waivers without asking why they arise.",
@@ -5750,7 +5750,7 @@
       "wrong_explanations": {
         "B": "Named owners improve accountability for each figure, but the board still receives 150 operational metrics and cannot see progress on goals.",
         "C": "More frequent delivery multiplies the overload. The issue is the content and level of the report, not how often it arrives.",
-        "D": "Teaching directors to parse operational detail misplaces the fix. Board reporting should be pitched at strategic goals, not daily operations."
+        "D": "An auditor would support director education on IT generally, but a report is cut to fit its reader, never the reader to fit the report."
       },
       "tips": [
         "Eliminate: B keeps all 150 metrics, and C sends the same overload more often.",
@@ -5825,7 +5825,7 @@
       "wrong_explanations": {
         "A": "Banning open source is impractical and drives unmanaged shadow use; commercial software also embeds open-source components.",
         "B": "Community review is uneven and not accountable to the firm. Widely used libraries have shipped serious, long-undetected vulnerabilities.",
-        "C": "Up-front approval helps, but it is point-in-time and misses transitive dependencies and vulnerabilities disclosed after adoption."
+        "C": "As with dependency scanning, an approval gate checks components for known flaws and license terms. A control must last as long as the exposure it covers."
       },
       "tips": [
         "Eliminate: A is impractical and drives shadow use, and B relies on reviewers accountable to no one at the firm.",
@@ -5896,7 +5896,7 @@
       "correct": "A",
       "key_concept": "Metrics must share one definition and calculation method before they are compared, ranked or aggregated.",
       "pre_read": "Ask whether the three regional numbers measure the same thing.",
-      "correct_explanation": "Figures built on different definitions cannot be compared or combined, so the first step is a single enterprise definition and calculation method, including what downtime counts. Only then are regional results meaningful. Averaging the three figures looks like a quick enterprise view, but it blends incompatible numbers into one misleading result that hides which regions are actually performing poorly.",
+      "correct_explanation": "Figures built on different definitions cannot be compared or combined, so the first step is a single enterprise definition and calculation method, including what downtime counts. Only then are regional results meaningful. Averaging the three figures looks like a tidy enterprise view, but it blends incompatible numbers into one misleading result that hides which regions are actually performing poorly.",
       "wrong_explanations": {
         "B": "Ranking regions on inconsistent definitions rewards whoever excludes the most downtime. The comparison is meaningless until definitions match.",
         "C": "Averaging incompatible figures produces one number that looks precise but measures nothing consistent, hiding real regional problems.",
@@ -5938,7 +5938,7 @@
       "wrong_explanations": {
         "A": "Trend comparison analyzes figures not yet verified. If the underlying data is wrong, both months mislead.",
         "B": "Using results untested would base the audit conclusion on data nobody verified. Reliability must be established first.",
-        "D": "A signed confirmation is a representation from the person being measured. It supplements, but cannot replace, the auditor's own testing."
+        "D": "An auditor obtains written representations near the end of an engagement; reliance on any report starts with testing the data beneath it."
       },
       "tips": [
         "Eliminate: A analyzes unverified figures, and B uses them untested.",
@@ -5975,7 +5975,7 @@
       "wrong_explanations": {
         "A": "Switching vendors without defined quality criteria repeats the problem. Size and reputation do not guarantee the retailer's requirements are met.",
         "B": "More acceptance tests catch failures later and at the retailer's cost; quality is still not defined or checked before work reaches acceptance.",
-        "C": "Penalties compensate after a release has already failed; without quality criteria defined and checked earlier, the partner still does not know what will pass."
+        "C": "An auditor would see penalties as fair incentive, but the retailer stays accountable for the quality it accepts, so it defines that quality itself."
       },
       "tips": [
         "Eliminate: A swaps vendors without defining quality, and B adds end-of-line testing that catches failures late.",
@@ -6049,7 +6049,7 @@
       "pre_read": "Ask who produces the evidence in each option and whether that party benefits from understating misses.",
       "correct_explanation": "Service credits protect the organization only if breaches are measured on the contracted methodology using data it controls or can verify, then claimed through a formal process with escalation for disputes (APO09). Calculating credits from vendor-produced reports is efficient, but the party paying the penalty controls the evidence, so misses can be understated and credits lost.",
       "wrong_explanations": {
-        "B": "The vendor has an incentive to understate misses. Without independent measurement, the organization cannot verify the credits it is owed.",
+        "B": "Independent measurement and the vendor's reports both track the contracted metrics. A check is only as independent as the data it runs on, though.",
         "C": "Escalation to the account team is a relationship step; without measured breaches and a claim process, the credits owed are never recovered.",
         "D": "Deferring credits to renewal weakens their deterrent and relies on remembering misses no one formally recorded or claimed."
       },
@@ -6086,7 +6086,7 @@
       "pre_read": "Ask whose problem the non-standard choice becomes after the project closes.",
       "correct_explanation": "Architecture review exists to keep the technology estate coherent. A product outside the standards creates an island that other systems struggle to integrate with, that support teams cannot maintain and that security tooling may not cover, and these costs compound as other projects follow suit. Licensing cost is visible and easy to measure, but it is a one-project expense; fragmentation is a lasting, enterprise-wide risk.",
       "wrong_explanations": {
-        "A": "Cost matters, but it is a contained, one-project expense. Fragmentation affects integration, support and security across the whole estate.",
+        "A": "An auditor would query an unbudgeted license premium; a bypassed control, though, is judged by the harm it existed to prevent.",
         "B": "Training is a manageable project task. It does not address why bypassing architecture governance creates enterprise risk.",
         "C": "Schedule slippage affects one project. The enterprise risk is a non-standard platform that others must integrate with and support."
       },
@@ -6124,7 +6124,7 @@
       "pre_read": "Ask whether the root problem is the model's data or the absence of oversight that should have caught it.",
       "correct_explanation": "The failure is a governance gap: no one measured outcomes by population. An independent bias audit establishes the extent and cause of the disparity, and demographic-segmented monitoring under an AI governance policy prevents recurrence (NIST AI RMF Measure and Govern functions). Human review of each denial is a sensible interim check, but reviewers tend to defer to the model, and it neither diagnoses the cause nor watches outcomes by group.",
       "wrong_explanations": {
-        "A": "Human review adds a check on each denial, but reviewers tend to follow the model, and it neither diagnoses the cause nor monitors outcomes by group.",
+        "A": "Human-in-the-loop review does add accountability to each decision. A disparity between groups, though, shows only in aggregate data.",
         "B": "Retraining before diagnosis guesses at the cause; rebalanced historical data may carry the same bias, and without segmented monitoring a recurrence would go unnoticed.",
         "D": "Accountability for model outcomes stays with the insurer. A vendor can support remediation but cannot own the governance obligation."
       },
@@ -6161,7 +6161,7 @@
       "pre_read": "Ask whether a compliant way to serve the customer has been explored before rejecting the business.",
       "correct_explanation": "Governance supports the business while honoring obligations. The firm should evaluate architectures such as anonymization, regional staging or customer-held keys, agree an option with the customer, write residency commitments that match it and use SCCs with transfer impact assessments where transfers are needed. Dropping the integration feature avoids the conflict, but it gives up the customer's need without testing whether a compliant design exists.",
       "wrong_explanations": {
-        "A": "Dropping the feature avoids the conflict, but it gives up the customer's need before testing whether a compliant design can deliver it.",
+        "A": "Avoidance is a recognized response that keeps every residency promise, though obligations usually constrain how a business need is met, not whether it is met.",
         "C": "Encryption protects data moving between sites, but the data still leaves the EU, so the written residency commitments are still broken.",
         "D": "Moving EU data to the US breaks the residency commitments made to EU customers, whatever transfer mechanism is cited."
       },
@@ -6237,7 +6237,7 @@
       "correct_explanation": "Taken together, the incidents point to a deteriorating vendor, so the relationship should be reassessed as a whole: re-tier its risk, intensify oversight, require contractual remediation and prepare exit readiness, then present options to senior management for a decision. Invoking the exit clause immediately is decisive, but a rushed replacement of a critical POS system carries its own continuity risk and skips the analysis governance requires.",
       "wrong_explanations": {
         "A": "Per-incident handling is what hid the pattern. It never asks whether the vendor's overall risk rating is still correct.",
-        "B": "Exit may be the end result, but a 90-day replacement of a critical POS system creates serious continuity risk without analysis.",
+        "B": "Exit is a fair end point for a vendor this troubled, yet a termination right held in reserve buys remediation leverage that using it forfeits.",
         "C": "Higher penalties at renewal act later and only on service levels; they leave the breach and leadership signals unassessed."
       },
       "tips": [
@@ -6275,7 +6275,7 @@
       "correct_explanation": "Under a board-mandated cut, governance applies reductions by risk and value: protect regulatory obligations and customer-critical availability, cut discretionary and lower-priority work hardest, preserve recovery capability and document the risks accepted (APO05, APO06). Deferring transformation first looks prudent, but it protects every run service by category, including low-priority ones, and can remove the capabilities the bank needs to recover.",
       "wrong_explanations": {
         "A": "Equal cuts ignore priority, so compliance and critical systems lose as much as discretionary spend.",
-        "B": "Shielding all run spend by category protects low-priority services too, while sacrificing the investment the bank needs to recover.",
+        "B": "Shielding run budgets does keep daily operations whole. Cuts are ranked service by service, though: a budget category is too coarse to carry risk.",
         "D": "The board set the target. Seeking an exemption resists its direction rather than managing the trade-offs."
       },
       "tips": [
@@ -6350,7 +6350,7 @@
       "correct_explanation": "A target architecture changes nothing until it is translated into a roadmap: gap analysis between current and target states produces sequenced transition projects, and new proposals are then judged against that roadmap. Adding architecture sign-off to each charter is a useful check, but it only screens proposals as they arrive; it does not create the transition projects that close the gap.",
       "wrong_explanations": {
         "B": "The problem is not the framework. Any target design stays unused until it is broken into planned, funded transition steps.",
-        "C": "Sign-off checks new proposals against the target, but without a gap-based roadmap no one plans the transition projects that would close the gap.",
+        "C": "Charter sign-off is a proven way to hold projects to the architecture. A check, though, needs a plan to check against first.",
         "D": "Awareness helps, but it does not turn the target into planned work. Projects stay ad hoc without a sequenced roadmap."
       },
       "tips": [
@@ -6390,7 +6390,7 @@
       "wrong_explanations": {
         "A": "A simultaneous transformation across every discipline and country overloads the organization and raises the risk of failure at this scale.",
         "B": "Country-designed governance keeps the inconsistency that caused the problem; local law is handled by mapped exceptions to one common framework.",
-        "C": "A tool without agreed owners and policy automates inconsistent decisions. Technology should follow governance, not lead it."
+        "C": "A classification tool earns its place once roles and rules exist; tools apply governance decisions and cannot substitute for them."
       },
       "tips": [
         "Eliminate: A attempts a big-bang change too large to absorb, and B lets each country set its own governance, which keeps the inconsistency.",
@@ -6468,7 +6468,7 @@
         "D": "Automation affects collection effort, not target integrity. Fully automated figures can still be measured against weakened targets."
       },
       "tips": [
-        "Eliminate: A is about dashboard clutter, and D is about collection tooling.",
+        "Eliminate: A is a presentation choice the board can trim, and D is a tooling cost that changes effort, not meaning.",
         "Final two: B beats C because lowered targets hide the problem; more frequent review still sees only green.",
         "Exam cue: when every metric is green, check how targets were set and who approved changes to them."
       ],
@@ -6500,7 +6500,7 @@
       "pre_read": "Notice the authority has made a formal request with a deadline. Ask which approach cooperates while still controlling accuracy and legal exposure.",
       "correct_explanation": "GDPR requires cooperation with the supervisory authority, but the response must also be accurate and controlled. A counsel-led approach preserves evidence, reviews what is produced and cooperates within the requested scope and timeline. Handing over everything at once with voluntary extras looks cooperative, but unreviewed material can be inaccurate or incomplete and may widen the investigation beyond the original concerns.",
       "wrong_explanations": {
-        "B": "Unreviewed, unscoped disclosure risks inaccurate evidence and new lines of inquiry. Cooperation should be complete but controlled.",
+        "B": "Full disclosure honors the duty to assist the authority, but what leaves the organization is reviewed first: regulators act on accuracy, not volume.",
         "C": "Controllers must cooperate with the authority. Blanket refusal invites enforcement and stronger penalties.",
         "D": "An extension may be reasonable, but delaying preservation risks losing evidence; the firm should secure evidence and cooperate within the timeline."
       },
@@ -6538,7 +6538,7 @@
       "pre_read": "Notice the plan exists but has stalled. Ask what governance element is missing.",
       "correct_explanation": "A stalled, uneven migration and an uninformed audit committee point to missing governance: a named executive accountable for delivery and regular progress reporting to the board, so slippage is visible and funded. A fresh cryptographic inventory is tempting because inventory starts every migration, but the inventory is already complete; repeating discovery delays the work and still leaves no one accountable.",
       "wrong_explanations": {
-        "A": "The inventory is already complete, so refreshing it delays work again. The stall comes from missing ownership and oversight, which an inventory does not supply.",
+        "A": "A stalled program is a governance problem until shown otherwise. Inventories do age, yet stalls answer to direction from above, not to more data.",
         "B": "More money and a deadline do not fix the cause. Without an accountable owner and reporting, an accelerated program stalls the same way.",
         "C": "Vendors cover only their products, not the bank's own systems, priorities and long-lived data."
       },
@@ -6573,11 +6573,11 @@
       "correct": "B",
       "key_concept": "Policies should be drafted with input from the functions that must apply them, so the rules are workable and followed.",
       "pre_read": "Notice who was left out of drafting. Ask what happens when those people must follow the rules.",
-      "correct_explanation": "A policy only works if the people who must apply it can do so. Drafting without HR, legal and business input risks rules that clash with real processes, so staff route around them and the policy fails in practice. Lack of authority is the runner-up, but IT security may properly draft a policy; its authority comes later, from top-management approval.",
+      "correct_explanation": "A policy only works if the people who must apply it can do so. Drafting without HR, legal and business input risks rules that clash with real processes, so staff route around them and the policy fails in practice. Lack of authority is the closest concern, but IT security may properly draft a policy; its authority comes later, from top-management approval.",
       "wrong_explanations": {
         "A": "A later publication date is a scheduling issue. It does not make the policy less effective once issued.",
         "C": "Template formatting is a document-control matter fixed in review; it does not affect whether people can follow the rules.",
-        "D": "A function may draft a policy; authority comes from top-management approval, which is still ahead. Missing stakeholder input is the gap now."
+        "D": "Enforcement authority matters for any policy, though a gap the remaining process will close ranks below one nothing addresses."
       },
       "tips": [
         "Eliminate: A is a scheduling point and C a formatting point; neither affects whether the policy can be followed.",
@@ -6612,12 +6612,12 @@
       "pre_read": "Ask how anyone would know whether performance improved without a starting point.",
       "correct_explanation": "Improvement targets make sense only relative to where performance stands today, so the program should first measure current performance to set a baseline, then set realistic targets linked to business needs. Borrowing a peer's targets is tempting because it looks objective, but the peer's starting point, scope and definitions differ, so the targets may be unreachable or trivially easy here.",
       "wrong_explanations": {
-        "A": "Peer targets reflect another firm's starting point and definitions. Without this firm's own baseline, they may be unreachable or too easy.",
+        "A": "An auditor would use peer targets later, as a check on ambition; a target means nothing, however, until the organization's own baseline exists.",
         "B": "Reporting against arbitrary targets produces figures with no meaning. Nobody can tell whether results reflect improvement or a guess.",
         "D": "Teams setting their own targets lack independence and consistency. The targets still have no baseline to anchor them."
       },
       "tips": [
-        "Eliminate: B reports against arbitrary targets, and D lets teams set their own.",
+        "Eliminate: B reports against arbitrary targets, and D lets each team set its own targets, which tend to be ones it can already meet.",
         "Final two: C beats A because targets must start from this firm's measured baseline; peer targets assume someone else's starting point.",
         "Exam cue: measure the current state before setting targets; improvement is only meaningful against a baseline."
       ],
@@ -6651,7 +6651,7 @@
       "wrong_explanations": {
         "A": "Without pre-close planning, data ownership and access are unclear on day one, exposing both parties to data and access risk.",
         "B": "Open-ended sharing with no exit criteria keeps the companies entangled and leaves access to shared data unresolved.",
-        "C": "Separating every shared service at once, with no transition support, risks outages and untested cutovers."
+        "C": "A cutover at close shares the transition agreement's firm end date. Deal dates are legal milestones, though, not proof of operational readiness."
       },
       "tips": [
         "Eliminate: A defers separation risk to after close, and B keeps the businesses entangled with no exit date.",
@@ -6686,7 +6686,7 @@
       "pre_read": "Notice the price is above market but switching is slow and costly. Ask which approach protects value without forcing an expensive move.",
       "correct_explanation": "The price is above market, yet a three-year migration makes switching costly and risky. Renegotiating with market benchmarks, longer commitments in exchange for price relief and a credible exit plan protects value while keeping the reliable service. Accepting the increase for a better service level keeps the relationship calm, but it locks in pricing well above peers without using any of the firm's leverage.",
       "wrong_explanations": {
-        "B": "A service-level upgrade does not offset paying well above market, and it gives up leverage the firm actually has.",
+        "B": "Trading price for service improvements is a normal negotiating move. Value delivery starts from evidence, though: market benchmarks set what the service is worth.",
         "C": "Starting a three-year migration before negotiating incurs heavy cost and risk that may prove unnecessary.",
         "D": "A rigid ultimatum ignores the firm's lock-in and the vendor's leverage, and may end talks with no deal."
       },
@@ -6724,7 +6724,7 @@
       "correct_explanation": "Data-center emissions and energy figures come from IT systems, and investors and assurers will test their accuracy. Integrating ESG data controls into existing IT governance gives the metrics ownership, quality checks and audit trails, ready for external assurance. Letting the sustainability team own disclosures with quarterly coordination keeps clear ownership, but leaves the underlying IT data outside the controls that make it reliable.",
       "wrong_explanations": {
         "A": "Separate minimal filings risk inconsistent figures across jurisdictions, which investors and regulators will notice.",
-        "B": "Quarterly coordination is too loose. The IT-sourced data still sits outside the controls that would make it reliable.",
+        "B": "Quarterly coordination does bring IT into the reporting cycle, yet externally assured figures need the same controls as financial data.",
         "D": "Consultants can help, but management stays accountable for disclosure accuracy and must govern the data it publishes."
       },
       "tips": [
@@ -6761,7 +6761,7 @@
       "correct_explanation": "The functions already hold the needed expertise; the problem is that they do not coordinate. A common framework, a cross-function forum and shared key risk indicators connect them, so overlapping risks are seen and escalated once. A shared GRC platform looks like a direct fix for silos, but a tool only pools data; without a common framework and forum, no one decides jointly on overlapping risks.",
       "wrong_explanations": {
         "A": "Separate maturity reviews measure each silo on its own terms; they do not connect the functions or give a shared view of risk.",
-        "C": "A shared platform pools data, but without a common framework and forum no one jointly decides on overlapping risks; tools should follow governance.",
+        "C": "One GRC platform and a joint forum both give the functions a single view of risk, but tools automate a governance design rather than supply one.",
         "D": "Pairwise links multiply quickly and still give no shared view of risk across all functions."
       },
       "tips": [
@@ -6800,7 +6800,7 @@
       "wrong_explanations": {
         "A": "The auditor evaluates governance but must not make management's capacity decisions; doing so impairs independence.",
         "B": "A good forecast is one input, but it does not settle trade-offs between cost, resilience and performance, and still leaves no one accountable.",
-        "C": "SRE ownership favors resilience and sidelines cost and demand inputs, so one view settles the dispute."
+        "C": "An auditor would treat SRE's platform knowledge as essential input, but trade-offs belong to a body answerable for every view they balance."
       },
       "tips": [
         "Eliminate: A makes the auditor decide for management, and B lets one input, the forecast, pick the plan with no one accountable.",
@@ -6867,7 +6867,7 @@
       "correct_explanation": "Capacity must follow demand, so funding needs a governed mechanism, such as pre-approved tranches released when forecasts cross agreed points, rather than a fixed annual figure. Buying a full year's peak up front avoids shortfalls, but it ties up money in idle capacity for months and still fails if growth outruns the forecast.",
       "wrong_explanations": {
         "A": "Changing the forecast to fit the budget hides the demand instead of meeting it.",
-        "C": "Up-front peak purchases waste money on idle capacity and still miss unforecast growth.",
+        "C": "Buying peak capacity up front would be right if demand were steady across the year; when it moves, governed funding moves with it.",
         "D": "Spending first and approving later bypasses financial governance."
       },
       "tips": [
@@ -6899,7 +6899,7 @@
       "correct_explanation": "Policy states intent; a standard turns 'strong authentication' into a measurable requirement, such as specific factors. Without one, each region interprets the policy its own way, and neither management nor the auditor can judge compliance consistently. A weaker regional method is a real possibility, but it is a symptom of the missing standard; fixing only that region leaves the root cause and future drift in place.",
       "wrong_explanations": {
         "B": "Testing needs a defined requirement to test against. Without the standard, owners would only confirm each region's own interpretation.",
-        "C": "A weak regional method is a symptom. The root cause is the missing standard, which lets every region interpret the policy differently.",
+        "C": "An auditor would ask whether one region is weaker, yet weaker can only be judged against a defined requirement: criteria precede conformance testing.",
         "D": "Spending differences are not the control issue. The concern is whether authentication meets a defined, measurable requirement."
       },
       "tips": [
@@ -6971,11 +6971,11 @@
       "correct": "C",
       "key_concept": "ISO/IEC 38500:2024 gives governing bodies principles for directing and overseeing IT use; management frameworks guide how IT is run.",
       "pre_read": "Ask who each framework is written for: the governing body that directs and oversees, or the managers who run IT.",
-      "correct_explanation": "ISO/IEC 38500:2024 is written for governing bodies: it sets principles for how the board directs and oversees the organization's use of IT, while management runs the processes. COBIT 2019 is the strong runner-up, but its plan, build, run and monitor objectives are management objectives; they guide how executives run IT, not how the board oversees it.",
+      "correct_explanation": "ISO/IEC 38500:2024 is written for governing bodies: it sets principles for how the board directs and oversees the organization's use of IT, while management runs the processes. COBIT 2019 nearly wins, but its plan, build, run and monitor objectives are management objectives; they guide how executives run IT, not how the board oversees it.",
       "wrong_explanations": {
         "A": "ISO/IEC 27001 sets requirements for a security management system that management runs. It covers one area and is not board guidance.",
         "B": "ITIL 4 guides service management practice for IT teams. It does not set principles for a board's direction and oversight of IT.",
-        "D": "COBIT's EDM objectives do address the board, but the plan, build, run and monitor objectives are management's, describing how executives run IT."
+        "D": "COBIT's EDM domain does address the board, yet this option names the four management domains; frameworks are chosen by audience before coverage."
       },
       "tips": [
         "Eliminate: A sets requirements for a security management system and B is a service management framework; both guide management's practice in one area, not board oversight.",
@@ -7004,7 +7004,7 @@
       "pre_read": "Separate the board-level IT strategy committee from the management-level steering committee. Ask which duty belongs at management level.",
       "correct_explanation": "An IT steering committee works at executive management level: it prioritizes projects, allocates resources and monitors delivery against business objectives. Advising the board on emerging technology and long-term direction is a genuine committee role, which makes it tempting, but it belongs to the board-level IT strategy committee, not the steering committee. Mixing the two blurs governance and management responsibilities.",
       "wrong_explanations": {
-        "B": "Advising the board on long-term direction is the role of the board-level IT strategy committee, not the steering committee.",
+        "B": "Technology foresight for the board is an accepted governance duty, but a charter's duties are tested against the level its committee serves.",
         "C": "Routine change approval belongs to operational change management, such as a change advisory board, not a senior committee.",
         "D": "Independent assurance is internal audit's role. A management committee cannot independently assure its own decisions."
       },
@@ -7035,7 +7035,7 @@
       "pre_read": "Recall the four ITIL 4 dimensions. Match culture, roles and competencies to the dimension about structures and staff.",
       "correct_explanation": "ITIL 4 defines four dimensions of service management. Organizations and people covers structures, culture, roles, responsibilities and staff competencies, which is exactly what the IS auditor is reviewing. Value streams and processes is also a real dimension and can mention roles, but it focuses on how activities and workflows create value, not on culture and people capability.",
       "wrong_explanations": {
-        "A": "Value streams and processes is a real dimension, but it covers workflows and activities, not culture and staff competencies.",
+        "A": "Value-stream maps also name roles, since every activity has a performer, but reviews are classified by their main subject.",
         "C": "Strategy, design and transition are ITIL v3 lifecycle stages, not ITIL 4 dimensions.",
         "D": "Plan, build and run is a general IT operating model, not one of the ITIL 4 dimensions."
       },
@@ -7133,7 +7133,7 @@
       "wrong_explanations": {
         "A": "Maintaining procedures is management's job. Internal audit would end up auditing documents it maintains, which impairs independence.",
         "B": "Policies state intent, not steps. Staff still need detailed procedures to perform tasks consistently.",
-        "D": "A one-time rewrite improves today's content only. Without an owner and review cycle, the procedures will drift out of date again."
+        "D": "Both a template rewrite and owner review would bring the procedures up to date; recommendations target the cause of a lapse, not just its latest instance."
       },
       "tips": [
         "Eliminate: A gives document upkeep to internal audit, and B swaps step-by-step procedures for high-level policy.",
@@ -7248,7 +7248,7 @@
         "D": "Risk-based focus sounds sensible, but it only shrinks scope. Releases still reviewed would be judged without standards, so the disputes continue."
       },
       "tips": [
-        "Eliminate: C hands disputes to a conflicted manager, and D cuts QA coverage.",
+        "Eliminate: C hands disputes to a conflicted manager, and D cuts QA coverage, which reduces disputes only by reviewing less.",
         "Final two: A beats B because reviews need written criteria; better reviewers still apply only personal judgment.",
         "Exam cue: QA needs defined standards before it can assure anything; look for the criteria first."
       ],
@@ -7323,7 +7323,7 @@
         "C": "Testing more releases against the same criteria would just pass more releases that users reject. Coverage is not the gap."
       },
       "tips": [
-        "Eliminate: B blames the users, and C adds coverage with the same flawed criteria.",
+        "Eliminate: B blames the users without evidence that their testing is unfair, and C adds coverage with the same flawed criteria.",
         "Final two: D beats A because quality must trace to user needs; more detailed specifications can still miss them.",
         "Exam cue: quality is fitness for purpose; if requesters reject what QA passes, check where the quality criteria come from."
       ],
@@ -7356,7 +7356,7 @@
       "pre_read": "Ask why projects avoid the review, and whether the cause is capacity or the way the method was adopted.",
       "correct_explanation": "TOGAF is meant to be tailored to an organization's size and needs. Adopted whole, it produces heavy deliverables that arrive too late, so projects route around the architecture. Tailoring its Architecture Development Method (ADM) restores architecture's role in decisions. Adding architects treats the symptom: the same oversized method would still slow every review, just with more people producing it.",
       "wrong_explanations": {
-        "B": "More staff only speeds up an oversized method. Projects would still face the same heavy deliverables before review.",
+        "B": "Adding architects answers a genuine capacity gap, but resources scale a method; they never repair one.",
         "C": "Zachman classifies architecture descriptions but gives no method for developing them, so it cannot replace a development process.",
         "D": "Team-chosen standards fragment the technology environment, the very problem enterprise architecture exists to prevent."
       },
@@ -7544,7 +7544,7 @@
       "pre_read": "Picture a dismissed administrator with two weeks of full access. Ask which step prevents harm rather than detecting it.",
       "correct_explanation": "An administrator dismissed for misconduct is the classic sabotage and data-theft risk, and privileged access makes damage fast and hard to undo. Removing privileged and remote access at or before notice prevents that harm; handover can continue under supervision with ordinary access. Monitoring is a useful backup, but it detects misuse only after it happens. If management still keeps the access, that is a risk-acceptance decision it must formally own.",
       "wrong_explanations": {
-        "A": "Monitoring is detective. A privileged administrator can cause serious damage before anyone reviews the alerts.",
+        "A": "Monitoring privileged users is an established detective layer while trust holds; once trust is withdrawn, prevention takes over and the access goes.",
         "C": "A renewed agreement is a promise from someone being dismissed; it does nothing to stop misuse of live privileges.",
         "D": "Waiting for a successor extends the period of highest risk; handover can happen without privileged access."
       },
@@ -7731,7 +7731,7 @@
       "pre_read": "Ask what the control is meant to reveal, and whether anyone else actually does the job.",
       "correct_explanation": "Mandatory leave works because someone else performs the role for a sustained period and may notice what the regular holder has been hiding. An administrator who keeps remote access and keeps approving jobs never hands over, so the leave gives no detection value. Misuse through remote approvals is possible, but the administrator could do the same from the office; the new concern is that the leave no longer exposes it.",
       "wrong_explanations": {
-        "A": "The administrator could misuse approvals from the office too. The new concern is that leave without a handover no longer exposes such misuse.",
+        "A": "Remote payment approval is a recognized access concern in treasury; findings, though, are framed by the purpose of the control that failed.",
         "C": "Two consecutive weeks is a common, adequate period. Length is not the problem when the person keeps doing the job throughout.",
         "D": "Wellbeing matters, but mandatory leave is a detective control here. Treating it as a perk misses why the IS auditor reviews it."
       },
@@ -7805,7 +7805,7 @@
       "pre_read": "Trace every place an expired record still exists after the live copy is deleted.",
       "correct_explanation": "A retention schedule covers every copy of the data, not just the live system. Keeping backups three years longer means expired patient records still exist, can be restored, and may have to be produced in litigation or exposed in a breach. Aligning backup retention with the schedule makes disposal complete. Encryption protects confidentiality, but the clinic holds the keys, so the records stay recoverable and over-retained.",
       "wrong_explanations": {
-        "B": "The clinic holds the keys, so the records can still be restored and must be produced if requested. Encryption limits exposure; it is not disposal.",
+        "B": "An auditor would expect patient backups to be encrypted anyway, but a retention limit is met by destroying copies, not by protecting them.",
         "C": "Extending live retention keeps patient data longer than its purpose needs, enlarging breach and privacy exposure instead of closing the gap.",
         "D": "Cutting live retention below seven years breaks the documented period for live records and still leaves the backup copies over-retained."
       },
@@ -7842,7 +7842,7 @@
       "pre_read": "Ask whether the stated purpose actually needs to know who each person is.",
       "correct_explanation": "Trend analysis needs patterns, not identities. Anonymizing the histories when the retention period ends honors the schedule, because data that can no longer identify anyone is no longer personal data, while still giving marketing what it needs. Seeking consent from former customers is a weaker route: few will reply, consent can be withdrawn, and it keeps identifiable data indefinitely for a purpose that does not require it.",
       "wrong_explanations": {
-        "A": "Few former customers will respond, consent can be withdrawn, and it still keeps identifiable data the purpose no longer needs, which breaks data minimization.",
+        "A": "Consent is a valid lawful basis, but a lawful basis does not answer minimization: keep the least identifying form that still serves the purpose.",
         "B": "A legitimate purpose does not justify keeping identifiable data indefinitely when the purpose can be met without identities.",
         "D": "Deleting at departure ignores the documented retention period, which may exist for tax, warranty or dispute needs."
       },
@@ -7879,7 +7879,7 @@
       "pre_read": "Work out the loss the control removes before comparing it with the control's cost.",
       "correct_explanation": "A control's financial benefit is the loss it removes: $40,000 minus $15,000, or $25,000 a year. It costs $30,000 a year, so on these figures it costs $5,000 more than it saves each year. Comparing its cost with the full current ALE overstates the benefit, because the control does not remove the whole exposure. Management may still choose it for regulatory or other reasons the figures do not show.",
       "wrong_explanations": {
-        "A": "The benefit is the reduction in ALE, $25,000, not the full $40,000. Measured correctly, the control costs more than it saves.",
+        "A": "Both conclusions apply the accepted annual cost-against-loss test; a return calculation counts only what the investment changes.",
         "B": "Zero risk is neither achievable nor required; treatment aims to bring risk within appetite at a cost the benefit justifies.",
         "D": "Money figures already support a cost-benefit comparison. Converting them to qualitative ratings would lose precision, not add it."
       },
@@ -7953,7 +7953,7 @@
       "pre_read": "Ask where each obligation comes from: law, regulation or contract. All three bind the organization.",
       "correct_explanation": "The card acquirer's agreement makes the standard binding even though no law names it; outside obligations come from contracts as well as statutes. The IS auditor should recommend that management record it as an obligation and plan compliance. A legal opinion on whether a law applies asks the wrong question: the agreement already binds the hotel, and breaching it can bring fees, higher card processing costs or loss of card acceptance.",
       "wrong_explanations": {
-        "A": "Whether a law applies is beside the point. The acquirer's agreement already binds the hotel, so the opinion would not change the duty.",
+        "A": "Seeking counsel on enforceability is wise for a disputed duty, while an undisputed duty needs a compliance plan, not an opinion.",
         "B": "An ISO/IEC 27001 certificate does not show that the specific card-data requirements in the agreement are met, so it cannot replace them.",
         "C": "A contractual obligation is not a risk the IT director may waive; doing so exposes the hotel to penalties and loss of card acceptance."
       },
@@ -8029,7 +8029,7 @@
       "pre_read": "Ask what each option leaves the bank able to examine once the contract is signed.",
       "correct_explanation": "A SOC 2 Type 2 report is efficient routine evidence, but the provider sets its scope and period, so it may miss what the bank or its regulators later need, such as evidence after an incident. Keeping the right to audit preserves that backstop while the report covers normal oversight. Dropping the clause looks reasonable because Type 2 tests operating effectiveness, yet no report reaches what it does not cover.",
       "wrong_explanations": {
-        "A": "A Type 2 report covers only the scope and period the provider chose. Without audit rights, the bank cannot examine gaps, incidents or regulator requests.",
+        "A": "Keeping the clause also relies on the report for assurance, but audit rights cost nothing until needed and are rarely won back once given up.",
         "C": "Leverage is highest before signing. At renewal the bank depends on the provider, which then has little reason to restore the clause.",
         "D": "Rejecting a provider over one negotiable clause is disproportionate, and unrestricted on-site audits are neither needed nor realistic."
       },
@@ -8066,7 +8066,7 @@
       "pre_read": "Picture the day after the start-up fails: what would the hospital actually need to keep scheduling patients?",
       "correct_explanation": "Source code escrow protects a customer that can run the software itself. For a SaaS platform, the hospital has no hosting environment, operating staff or current copy of its data, so released code would not restore scheduling for weeks. Continuity needs data return and service transition terms. Deposit verification matters, but even a complete, verified deposit leaves the same gap, so it is a secondary concern.",
       "wrong_explanations": {
-        "B": "Verification strengthens escrow, but even a complete, verified deposit would not give the hospital the infrastructure, data and staff to run the service.",
+        "B": "Fit comes before execution. Deposit verification is a normal escrow term, yet refining a protection cannot cure a mismatch with the delivery model.",
         "C": "Clear triggers matter, but even a timely release would give the hospital code it has no infrastructure or staff to run.",
         "D": "Escrow agents hold deposits in confidence and release them only to the customer when agreed conditions occur, such as vendor failure."
       },
@@ -8103,7 +8103,7 @@
       "pre_read": "Ask what one review per vendor can and cannot reveal about what the vendors share.",
       "correct_explanation": "Vendor-by-vendor reviews cannot show that several critical vendors depend on the same fourth party (a vendor's own subcontractor). Requiring disclosure of key subcontractors, and mapping where they overlap, lets management see and treat this hidden concentration. Reviewing each vendor's continuity tests looks thorough, but each vendor can pass its own test while all rely on one hosting company, so the shared exposure stays invisible.",
       "wrong_explanations": {
-        "A": "Each vendor can pass its own continuity test while all depend on the same host. Vendor-level results do not reveal shared fourth-party dependencies.",
+        "A": "Continuity-test review is a core part of critical-vendor oversight. Concentration belongs to the portfolio, though, and shows only when dependencies are added up.",
         "B": "Replacing vendors after the event treats one symptom. New providers could share another hidden dependency, because nothing yet tracks subcontractors.",
         "C": "A direct contract with one host is rarely obtainable and covers only that host; it would not reveal other fourth parties vendors share."
       },
@@ -8140,7 +8140,7 @@
       "pre_read": "Ask which finding could stop the buyer from using what it is paying for, and which can be managed later.",
       "correct_explanation": "A change-of-control clause that ends the core component license threatens the buyer's right to run the platform that produces all the revenue. Only terms agreed before closing, such as the licensor's consent or a price change, can address it. Undocumented developer knowledge is a serious key-person risk, but retention agreements and documentation can reduce it, while the clause lets the licensor end or reprice the right to run the revenue platform.",
       "wrong_explanations": {
-        "A": "Key-person dependency is a serious exposure, but retention agreements and knowledge transfer can reduce it. It does not remove the right to run the platform.",
+        "A": "An auditor would flag key-person dependency in any software deal, yet risks the buyer controls after closing usually rank below those a third party holds.",
         "C": "Different email systems are a routine integration task after closing. They do not affect the value or legality of what is being bought.",
         "D": "Overdue policy reviews are a minor governance gap the buyer can fix after closing, with little effect on the price or the deal."
       },
@@ -8216,7 +8216,7 @@
       "pre_read": "Ask what the city must know before it can decide which AI features to assess, test or switch off.",
       "correct_explanation": "Governance starts with knowing what exists. An inventory of AI uses, with an owner and an impact rating for each, shows which features affect residents most and where assessment and monitoring must go first. Testing features for bias is valuable, but testing only those found so far, without an inventory, leaves unknown high-impact uses untested and gives no basis for ranking the effort.",
       "wrong_explanations": {
-        "B": "Bias testing before knowing what exists covers only the features already found. High-impact uses could stay unknown and untested.",
+        "B": "Bias testing is a core AI assurance step, but every test is scoped from a known population.",
         "C": "The city stays accountable for decisions made with vendor AI. A vendor's self-certification is not independent evidence of fair outcomes.",
         "D": "Disabling the features could halt services to residents before anyone knows which ones are low risk. It is a disproportionate first response."
       },
@@ -8254,7 +8254,7 @@
       "pre_read": "Ask which option ties the target to what each process means to the business.",
       "correct_explanation": "Management should set each process's target level from its business importance, risk and the cost of improvement, so effort goes where it pays. Level 5 everywhere would spend heavily on processes that need only defined, repeatable practice. A level 3 floor sounds prudent, but it is still one uniform target; some critical processes need more and minor ones less, so it does not reflect business need either.",
       "wrong_explanations": {
-        "A": "A uniform floor ignores differences in business importance. Some critical processes need more than level 3, and some minor ones need less.",
+        "A": "Both a common level 3 minimum and need-based targets rein in the level 5 push; capability, though, is bought process by process, where value exceeds cost.",
         "B": "Peer levels reflect other organizations' needs and costs. Targets should follow this organization's business objectives and risk.",
         "D": "Higher levels cost more, and the gain is often not worth it. Level 5 everywhere spends heavily where the business gains little."
       },
@@ -8329,7 +8329,7 @@
       "pre_read": "Ask which option decides whether the collection should continue, rather than only describing it.",
       "correct_explanation": "Undisclosed collection raises a prior question: should the app collect precise location at all? An impact assessment tests necessity, lawful basis and risk to users, and its result decides whether to stop, reduce or properly document the collection. Updating the notice and record looks like the direct fix, but it would describe processing that may be unnecessary or unlawful instead of deciding whether it should continue.",
       "wrong_explanations": {
-        "A": "Documenting first would describe processing that may be unnecessary or unlawful. The documents should reflect a decision on necessity, not replace it.",
+        "A": "Updated notices and records are both required for transparency, but the privacy sequence runs assess, decide, then disclose.",
         "B": "Deleting data before assessment is premature. It may remove data with a lawful use and destroy evidence of what was collected.",
         "C": "The IS auditor reports findings to management. Whether and when to inform the regulator is the controller's decision, not the IS auditor's."
       },
@@ -8368,7 +8368,7 @@
       "wrong_explanations": {
         "B": "Encryption protects data in storage, but analysts holding the key see every identity. It does not reduce the personal data they are exposed to.",
         "C": "Agreements add accountability but still expose identities the analysis never needs, so they do not minimize the data used.",
-        "D": "The hospital record number is an identifier many staff can look up, so patients stay easily identifiable. No separately protected key exists."
+        "D": "Like coding, removing names keeps the visit linkage analysts need, though a pseudonym protects only if it means nothing to those who see it."
       },
       "tips": [
         "Eliminate: B protects data only in storage, since key holders see everything, and C relies on promises instead of reducing the data shown.",
@@ -8402,7 +8402,7 @@
       "correct": "C",
       "key_concept": "Monitoring artificial intelligence (AI) outcomes is a management control run by the business owner; IS audit recommends it and later tests it.",
       "pre_read": "Before reading the options, decide which role the stem's request would put the IS auditor in.",
-      "correct_explanation": "Outcome monitoring is a management control, so the tool's business owner runs the monthly check against agreed thresholds and acts on breaches; IS audit later tests that monitoring. IS audit running the check is the runner-up. It would catch bias, but the IS auditor would be operating a control it must later audit, and the business would never own the risk.",
+      "correct_explanation": "Outcome monitoring is a management control, so the tool's business owner runs the monthly check against agreed thresholds and acts on breaches; IS audit later tests that monitoring. IS audit running the check is the most tempting alternative. It would catch bias, but the IS auditor would be operating a control it must later audit, and the business would never own the risk.",
       "wrong_explanations": {
         "A": "The organization stays accountable for decisions made with a vendor's model; contracts can require testing, but ownership of monitoring stays in-house.",
         "B": "The check would run, but IS audit would be operating management's control; continuous auditing gives audit its own assurance, running the business's monitoring for it does not.",
@@ -8440,7 +8440,7 @@
       "correct": "A",
       "key_concept": "Over-retention raises breach impact as well as storage cost; under GREATEST, the larger potential harm outranks the cost already being paid.",
       "pre_read": "Decide whether the stem asks for the most frequent consequence or the most severe one before comparing options.",
-      "correct_explanation": "Keeping records with no business use means a single breach would expose years of customer data, bringing notification costs, regulatory penalties and lasting harm to customers. Rising storage costs are the runner-up. They are already happening, so they would win if the stem asked which consequence is MOST LIKELY, but GREATEST asks for the worst consequence, and storage cost grows gradually and stays bounded.",
+      "correct_explanation": "Keeping records with no business use means a single breach would expose years of customer data, bringing notification costs, regulatory penalties and lasting harm to customers. Rising storage costs come closest. They are already happening, so they would win if the stem asked which consequence is MOST LIKELY, but GREATEST asks for the worst consequence, and storage cost grows gradually and stays bounded.",
       "wrong_explanations": {
         "B": "Rising storage cost is already happening, so it is the MOST LIKELY consequence, but its impact grows slowly and stays far below a large breach.",
         "C": "Tax laws set minimum retention periods, not maximums, so keeping records longer does not draw tax penalties.",

@@ -23,6 +23,7 @@ import { shortDate } from '../../../lib/format';
 import { useAccount } from '../../../store/account';
 import { radius, space } from '../../../theme/tokens';
 import { useTheme } from '../../../theme/useTheme';
+import { ListSkeleton } from '../../../components/skeleton';
 
 export default function Activity() {
   const { c } = useTheme();
@@ -74,6 +75,8 @@ export default function Activity() {
       {state === 'error' && <AccountNotice text={copy('board.error')} />}
 
       <Section title={copy('board.activity.notices')} />
+      {/* Mobile 1.49: a static skeleton (components/skeleton.tsx) holds the list's place while it loads. */}
+      {state === 'loading' && notices.length === 0 && <ListSkeleton rows={3} label="Loading notices" />}
       {notices.length === 0 && state === 'ready' ? (
         <EmptyState compact title={copy('board.empty.title')} body={copy('board.activity.empty')} />
       ) : (

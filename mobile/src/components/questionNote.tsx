@@ -22,7 +22,7 @@
  *   own backup file). It is never put in a report email, a share card or
  *   analytics (the question-notes-privacy test keeps it that way).
  */
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useImperativeHandle, useRef, useState, type Ref, type RefObject } from 'react';
 import { AccessibilityInfo, Alert, type TextInput, View } from 'react-native';
 import { moveFocus, sayLater } from '../lib/a11y';
 import { useKeyboardShown } from '../lib/useKeyboardShown';
@@ -54,7 +54,42 @@ export const NOTE_SAVE_MS = 600;
 /** The "800 / 1000" counter shows only near the limit. */
 export const NOTE_COUNTER_FROM = 800;
 
-export function QuestionNote({ certId, questionId }: { certId: string; questionId: string }) {
+/**
+ * Mobile 1.49 (premium pass §2.3–2.4), for the practice answer screen:
+ * - `quietAdd`: no "Add a note" button in the page body; the ⋯ "More on this
+ *   question" sheet offers it instead. A saved note still shows its plate.
+ * - `ref`: `ref.current.open()` opens the note sheet (the ⋯ sheet's "Add a
+ *   note" / "Edit your note" row).
+ * - `returnFocus`: where screen-reader focus goes when the sheet closes with
+ *   no note in the body to land on (the ⋯ button).
+ */
+/**
+ * Has the learner a note on this question? (Mobile 1.49: the ⋯ sheet's row
+ * then says "Edit your note".) Only a yes or no leaves this file, never the
+ * text, so the session screen never reads the notes itself (privacy test).
+ */
+export function useHasQuestionNote(certId: string, questionId: string | undefined): boolean {
+  return useProgress((s) => Boolean(certId && questionId && isLiveNote(s.byCert[certId]?.qNotes?.[questionId])));
+}
+
+/** What the answer screen can do with a QuestionNote (its `ref`). */
+export interface QuestionNoteHandle {
+  open: () => void;
+}
+
+export function QuestionNote({
+  certId,
+  questionId,
+  quietAdd,
+  returnFocus,
+  ref,
+}: {
+  certId: string;
+  questionId: string;
+  quietAdd?: boolean;
+  returnFocus?: RefObject<View | null>;
+  ref?: Ref<QuestionNoteHandle>;
+}) {
   const { c } = useTheme();
   // The saved note (a tombstone or nothing reads as no note).
   const saved = useProgress((s) => s.byCert[certId]?.qNotes?.[questionId]);
@@ -134,6 +169,9 @@ export function QuestionNote({ certId, questionId }: { certId: string; questionI
     setOpen(true);
   };
 
+  // The ⋯ sheet opens the note sheet through this handle.
+  useImperativeHandle(ref, () => ({ open: openSheet }));
+
   const change = (value: string) => {
     draftRef.current = value;
     setDraft(value);
@@ -162,8 +200,9 @@ export function QuestionNote({ certId, questionId }: { certId: string; questionI
     // Said once, politely; typing itself never announces anything.
     if (has && !hadNote) sayLater('Note saved.');
     if (!has && hadNote) sayLater('Note deleted.');
-    // Focus lands on what is now in this place: the note (read aloud), or "Add a note".
-    moveFocus(has ? plateRef : addRef, 400);
+    // Focus lands on what is now in this place: the note (read aloud), or "Add a note"
+    // (or, with no "Add a note" in the body, the control that opened the sheet).
+    moveFocus(has ? plateRef : quietAdd && returnFocus ? returnFocus : addRef, 400);
   };
 
   /** Ask before deleting a saved note. Cancel keeps it, and the sheet stays open with the note back in the field. */
@@ -190,7 +229,7 @@ export function QuestionNote({ certId, questionId }: { certId: string; questionI
     ]);
 
   return (
-    <View style={{ marginTop: space.md }}>
+    <View style={{ marginTop: text || !quietAdd ? space.md : 0 }}>
       {text ? (
         // A plate means "quiet, yours": no tint (tints mean feedback), no green rule (the coach's voice).
         <Rise>
@@ -208,7 +247,7 @@ export function QuestionNote({ certId, questionId }: { certId: string; questionI
             </View>
           </Card>
         </Rise>
-      ) : (
+      ) : quietAdd ? null : (
         <Button
           ref={addRef}
           kind="ghost"

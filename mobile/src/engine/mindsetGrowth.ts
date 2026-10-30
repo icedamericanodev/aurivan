@@ -122,7 +122,7 @@ export function mindsetGrowth(tries: FirstTry[], now: number): MindsetGrowth {
     return { show: false, reason: 'no-improvement' };
   }
   const lately = lateIn10 === 0 ? 'Lately it’s fewer than 1 in 10.' : `Lately it’s ${lateIn10} in 10.`;
-  const line = `In your first weeks you picked the tempting runner-up ${earlyIn10} ${earlyIn10 === 1 ? 'time' : 'times'} in 10. ${lately}`;
+  const line = `In your first weeks you picked the closest wrong choice ${earlyIn10} ${earlyIn10 === 1 ? 'time' : 'times'} in 10. ${lately}`;
   const spoken = line.replace(/’/g, "'");
   return { show: true, earlyIn10, lateIn10, earlyRate, lateRate, line, spoken };
 }

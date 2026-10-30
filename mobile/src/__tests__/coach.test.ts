@@ -43,7 +43,7 @@ describe('slip coach', () => {
     expect(r.pattern).toBe('runner-up');
     expect(r.count).toBe(3);
     expect(r.game).toBe('trap');
-    expect(r.title).toBe('You often pick the runner-up');
+    expect(r.title).toBe('You often pick the closest wrong choice');
   });
 
   it('counts priority misses from the tag and from "Misread" on a priority-word stem', () => {

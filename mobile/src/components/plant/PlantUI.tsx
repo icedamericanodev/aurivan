@@ -23,7 +23,7 @@ import { cleanPlantName, MAX_NAME, PLANT_SPECIES, SPECIES_INFO, suggestName, typ
 import { radius, space, type as typeScale, maxScale, LARGE_TEXT } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
 import { ICON_STROKE, Sprout } from '../icons';
-import { Button, CARD_LIFT, ICON_SIZE, InviteRow, T, useFontScale } from '../ui';
+import { Button, cardLift, ICON_SIZE, InviteRow, T, useFontScale } from '../ui';
 import { Plant } from './Plant';
 import { LivePlant, type LivePlantProps } from './LivePlant';
 import type { ArtLook, Lod } from './art';
@@ -182,7 +182,7 @@ export function SpeciesGrid({ value, onChange, plantStyle = NEW_PLANT_STYLE }: {
                   paddingBottom: selected ? space.sm + 1.5 : space.sm + 2,
                   paddingHorizontal: rows ? (selected ? space.md - 0.5 : space.md) : space.xs,
                 },
-                !isDark && CARD_LIFT,
+                cardLift(isDark),
                 pressed && { transform: [{ scale: 0.98 }] },
               ]}
             >

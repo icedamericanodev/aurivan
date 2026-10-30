@@ -21,6 +21,7 @@ import { startFromIds, startMock, startReview } from '../lib/sessions';
 import { useProgress } from '../store/progress';
 import { useSession } from '../store/session';
 import { useSettings } from '../store/settings';
+import { moreRowLabels } from '../../jest/answerMore';
 import SessionScreen from '../app/session';
 import { OptionCard } from '../components/quiz';
 import { Tag } from '../components/ui';
@@ -118,11 +119,11 @@ describe('#5 the label above a question', () => {
     expect(metaTag()).not.toContain(sub);
     pickWrong();
     press('Check answer');
-    // After the reveal: the note row names the idea the question tests.
-    expect(allText()).toContain('Read the note');
+    // After the reveal: the note row names the idea the question tests (mobile 1.49: in the ⋯ sheet,
+    // and on the page too when the one "Go deeper" row is the note).
     const s = useSession.getState().active!;
     const note = findNote('cisa', subtopicOfQuestion('cisa', s.questionIds[0])!)!;
-    expect(allText()).toContain(note.name);
+    expect(moreRowLabels(r!.root).some((l) => l.startsWith(`Read the note: ${note.name},`))).toBe(true);
   });
 
   it('review: the same, domain and count only before the answer', () => {
@@ -275,7 +276,9 @@ describe('#15 short lesson scenes (1.39 centred them; 1.43 puts every scene on t
 });
 
 // ── Results: the rings only where they tell something ─────────────────────
-describe('Results rings: mixed-domain sets and mocks only', () => {
+// Mobile 1.51 (Field Guide): the rings gave way to the growth plate (Fig. 6), drawn for every set,
+// one area or many; it is the empty mount while no area in the set has a number yet.
+describe('Results: the growth plate, not rings', () => {
   const finish = () =>
     act(() => {
       const s = useSession.getState().active!;
@@ -283,11 +286,12 @@ describe('Results rings: mixed-domain sets and mocks only', () => {
       finishSession();
     });
 
-  it('a mock shows the domain rings', () => {
+  it('a mock shows its areas on one plate (no rings)', () => {
     startMock('cisa', 10);
     finish();
     mount(<Results />);
-    expect(root().findAllByType(DomainRings)).toHaveLength(1);
+    expect(root().findAllByType(DomainRings)).toHaveLength(0);
+    expect(allText()).toMatch(/Fig\. 6 · /);
   });
 
   it('a one-domain practice set does not', () => {

@@ -119,6 +119,65 @@ else
   status=1
 fi
 
+# 4c. The website's cloud client (assets/kaisip-cloud.js) ---------------------
+# Accounts beta §1.1: the GENERATED sign-in and sync client, compiled from
+# mobile/src/webcloud and the app's own sync engine. Checked without npm like
+# the plant (its source modules and their hash), plus the version-stamp rule:
+# the bundle stamps pushes with mobile/LIVE_VERSION (the app live on Google
+# Play) and its store versions (mobile/LIVE_STORE_VERSIONS.json), and must
+# never be newer, or every phone would pause sync. With
+# mobile/node_modules installed, the rebuild-and-compare above covers it too.
+printf "\nWebsite cloud client (assets/kaisip-cloud.js):\n"
+if ! python3 - <<'PY'
+import hashlib, json, re, sys
+try:
+    text = open('assets/kaisip-cloud.js', 'rb').read().decode('utf8')
+except OSError:
+    print("  ✗ assets/kaisip-cloud.js is missing: cd mobile && npm run web-plant"); sys.exit(1)
+ids = sorted(set(re.findall(r'^  defs\["([^"]+)"\] = function', text, re.M)))
+h = hashlib.sha256()
+for i in ids:
+    try:
+        src = open('mobile/' + i, 'rb').read()
+    except OSError:
+        print(f"  ✗ source mobile/{i} is missing"); sys.exit(1)
+    h.update(i.encode() + b"\n" + src + b"\n")
+want = re.search(r'api\.sourceHash = "([0-9a-f]+)"', text)
+if not ids or not want or want.group(1) != h.hexdigest()[:16]:
+    print("  ✗ out of date with the mobile sync sources: cd mobile && npm run web-plant"); sys.exit(1)
+semver = re.compile(r'^\d{1,3}\.\d{1,3}\.\d{1,3}$')
+def key(v): return tuple(int(x) for x in v.split('.'))
+live = open('mobile/LIVE_VERSION').read().strip()
+app = json.load(open('mobile/app.json'))['expo']['version']
+stamp = re.search(r'\n  var liveVersion = "([^"]*)";\n', text)
+if not semver.match(live):
+    print(f"  ✗ mobile/LIVE_VERSION must be one x.y.z line, found {live!r}"); sys.exit(1)
+if semver.match(app) and key(live) > key(app):
+    print(f"  ✗ mobile/LIVE_VERSION {live} is ahead of app.json's {app}"); sys.exit(1)
+if not stamp or not semver.match(stamp.group(1)) or key(stamp.group(1)) > key(live):
+    print(f"  ✗ the bundle's version stamp is newer than mobile/LIVE_VERSION ({live}): cd mobile && npm run web-plant"); sys.exit(1)
+if stamp.group(1) != live:
+    print(f"  ✗ the bundle stamps {stamp.group(1)}, mobile/LIVE_VERSION says {live}: cd mobile && npm run web-plant"); sys.exit(1)
+# The store versions: stamped from mobile/LIVE_STORE_VERSIONS.json, which must equal the engine's own.
+try:
+    stores = json.load(open('mobile/LIVE_STORE_VERSIONS.json'))
+    stores = {k: int(stores[k]) for k in ('progress', 'settings')}
+except Exception:
+    print("  ✗ mobile/LIVE_STORE_VERSIONS.json must be { \"progress\": n, \"settings\": n }"); sys.exit(1)
+mig = open('mobile/src/engine/saveMigrations.ts').read()
+for k, name in (('progress', 'PROGRESS_VERSION'), ('settings', 'SETTINGS_VERSION')):
+    m = re.search(r'export const ' + name + r' = (\d+);', mig)
+    if not m or int(m.group(1)) != stores[k]:
+        print(f"  ✗ the engine's {name} ({m.group(1) if m else '?'}) is not the Play release's ({stores[k]}, mobile/LIVE_STORE_VERSIONS.json)"); sys.exit(1)
+bs = re.search(r'\n  var liveStoreVersions = (\{[^\n]*\});\n', text)
+if not bs or json.loads(bs.group(1)) != stores:
+    print("  ✗ the bundle's store-version stamp is not mobile/LIVE_STORE_VERSIONS.json: cd mobile && npm run web-plant"); sys.exit(1)
+print(f"  ✓ matches its {len(ids)} source modules; stamps pushes with LIVE_VERSION {live}, stores {stores['progress']}/{stores['settings']}")
+PY
+then
+  status=1
+fi
+
 # 5. Originals (rebuild content) schema validation --------------------------
 # The bank lives under data/originals/ and is validated against the schema
 # in docs/content/QUESTION_SCHEMA.md. Empty banks are valid (the
@@ -159,6 +218,83 @@ fi
 printf "\n"
 if ! python3 scripts/lint_exam_guide.py; then
   status=1
+fi
+
+# 6d. Web <-> mobile design-token parity (premium pass §0) -------------------
+# The web dark tokens that the premium pass moved (raised, wrongBg, the
+# section gap) must match mobile/src/theme/tokens.ts. A pair the web has moved
+# ahead of mobile is reported as pending (see PENDING in the script).
+printf "\n"
+if ! python3 scripts/check_token_parity.py; then
+  status=1
+fi
+
+# 6e. The answer screen's pick-aware coach line (web v12.47) ---------------
+# Runs the app's own parser (tipOptionLetters, pickCoachKind and
+# verdictCoachLine, taken from index.html as they ship) over every wrong pick
+# in the whole bank and prints how many questions and picks get each line.
+# The pick-aware lines only fire when the tips name the letters exactly, so
+# a tip the parser cannot read falls back to the usual line, never a guess.
+# Fails only if the parser cannot be loaded or throws.
+printf "\nPick-aware coach line (every wrong pick, whole bank):\n"
+if command -v node >/dev/null 2>&1; then
+  node - <<'JS' || status=1
+const fs = require('fs'), vm = require('vm');
+const html = fs.readFileSync('index.html', 'utf8');
+const lines = html.split('\n');
+function grab(re, endTest) {
+  const i = lines.findIndex(l => re.test(l));
+  if (i < 0) throw new Error('not found in index.html: ' + re);
+  let j = i;
+  while (j < lines.length && !endTest(lines[j], j === i)) j++;
+  return lines.slice(i, j + 1).join('\n');
+}
+const fn = n => grab(new RegExp('^function ' + n + '\\('), l => /^}\s*$/.test(l));
+const v = n => grab(new RegExp('^var ' + n + ' = '), l => /;\s*$/.test(l.trim()));
+const src = ['DISPLAY_LETTERS', 'LETTER_LABEL_WORDS', 'LETTER_VERBISH_AFTER_A', 'LETTER_CHOICE_WORDS', 'IMPLEMENTER_WORDS', 'AUDITOR_WORDS'].map(v)
+  .concat(['originalToDisplay', 'isOptionLetterRef', 'tipOptionLetters', 'qTipByLabel', 'pickCoachKind', 'runnerUpLetter', 'detectMindsetIssue', 'verdictCoachLine'].map(fn))
+  .join('\n');
+const ctx = {};
+vm.createContext(ctx);
+vm.runInContext(src, ctx);
+const LINES = [
+  ['elim', /^Your pick, [A-D], is one of the two to rule out first\.$/, 'Your pick, X, is one of the two to rule out first.'],
+  ['final', /^You reached the final two: [A-D] against [A-D]\.$/, 'You reached the final two: X against Y.'],
+  ['runner', /closest wrong choice/, 'You picked the closest wrong choice. That’s the trap.'],
+  ['mindset', /implementer/, 'That’s the implementer’s move. Auditors assess and report.'],
+  ['usual', /^Here’s the idea to take with you\.$/, 'Here’s the idea to take with you.']
+];
+const picks = {}, qs = {};
+LINES.forEach(l => { picks[l[0]] = 0; qs[l[0]] = 0; });
+let nq = 0, np = 0, odd = 0, elimTwo = 0, finalTwo = 0;
+for (const d of [1, 2, 3, 4, 5]) {
+  for (const q of JSON.parse(fs.readFileSync(`data/domain${d}.json`, 'utf8')).questions) {
+    nq++;
+    const el = ctx.tipOptionLetters(ctx.qTipByLabel(q, 'Eliminate'));
+    const fi = ctx.tipOptionLetters(ctx.qTipByLabel(q, 'Final two'));
+    if (el.length === 2 && el.indexOf(q.correct) < 0) elimTwo++;
+    if (fi.length === 2 && fi.indexOf(q.correct) >= 0) finalTwo++;
+    const got = {};
+    for (const pick of ['A', 'B', 'C', 'D']) {
+      if (pick === q.correct || !(q.options || {})[pick]) continue;
+      np++;
+      const line = ctx.verdictCoachLine(q, false, false, pick, false, ['A', 'B', 'C', 'D']);
+      const hit = LINES.find(l => l[1].test(line));
+      if (!hit) { odd++; continue; }
+      picks[hit[0]]++;
+      got[hit[0]] = 1;
+    }
+    Object.keys(got).forEach(k => qs[k]++);
+  }
+}
+console.log(`  ✓ ${nq} questions, ${np} wrong picks`);
+LINES.forEach(l => console.log(`    ${String(qs[l[0]]).padStart(5)} questions · ${String(picks[l[0]]).padStart(5)} picks  ${l[2]}`));
+console.log(`  Eliminate tips that name exactly two wrong options: ${elimTwo} of ${nq}`);
+console.log(`  Final two tips that name exactly the best and one other: ${finalTwo} of ${nq}`);
+if (odd) { console.log(`  ✗ ${odd} picks got a line the check does not know`); process.exit(1); }
+JS
+else
+  printf "  skipped (node not available)\n"
 fi
 
 # 7. Accessibility (pa11y, WCAG AA) -----------------------------------------

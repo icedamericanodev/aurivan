@@ -210,12 +210,32 @@ export const FUTURE_SLACK_MS = DAY_MS;
 const LONGEST_REVIEW_MS = Math.max(...Object.values(INTERVAL_DAYS)) * DAY_MS;
 
 /**
+ * Mock ids across the two surfaces (accounts beta §1.3, "Mock ids round-trip").
+ * - A mock made on the website gets WEB_MOCK_PREFIX in the app ("web-" +
+ *   its website id), so it is never confused with the app's own.
+ * - A mock made in the app and shown on the website (website sync,
+ *   webcloud/toWeb.ts) keeps its own id there, marked `origin: 'app'`.
+ *   Reading it back must NOT add the prefix, or every sync would add a copy.
+ */
+export const WEB_MOCK_PREFIX = 'web-';
+export const APP_MOCK_ORIGIN = 'app';
+
+export interface WebReadOptions {
+  /**
+   * Mock ids known to come from the app (the account's own copy, held by
+   * the website's sync). Kept as they are even when the website dropped the
+   * `origin` marker (an older page that doesn't save it).
+   */
+  appMockIds?: ReadonlySet<string>;
+}
+
+/**
  * Read one profile's `state` (untrusted) into the app's shapes. `now` is the
  * phone's clock: anything dated later than now + FUTURE_SLACK_MS is DROPPED
  * (and counted), so a computer with a wrong clock can't plant answers,
  * notes or study days in the future.
  */
-export function readWebState(state: Record<string, unknown>, known: WebKnown, now: number): Omit<WebProfile, 'key' | 'name' | 'lastActive'> {
+export function readWebState(state: Record<string, unknown>, known: WebKnown, now: number, opts: WebReadOptions = {}): Omit<WebProfile, 'key' | 'name' | 'lastActive'> {
   const limit = now + FUTURE_SLACK_MS;
   const lastDayAllowed = dayKey(limit);
   let future = 0;
@@ -308,7 +328,8 @@ export function readWebState(state: Record<string, unknown>, known: WebKnown, no
   }
 
   // Mock results (the app's MockResult). Ids get a "web-" prefix: never confused with the phone's own,
-  // and the same every time, so a second import adds nothing.
+  // and the same every time, so a second import adds nothing. A mock that came FROM the app (marked
+  // `origin: 'app'`, or listed in opts.appMockIds) keeps its id, so it matches the app's own copy.
   const mocks: Mock[] = [];
   if (Array.isArray(state.mockHistory)) {
     const seen = new Set<string>();
@@ -327,7 +348,7 @@ export function readWebState(state: Record<string, unknown>, known: WebKnown, no
         }
       }
       const r: Mock = {
-        id: `web-${m.id}`,
+        id: m.origin === APP_MOCK_ORIGIN || opts.appMockIds?.has(m.id) ? m.id : `${WEB_MOCK_PREFIX}${m.id}`,
         finishedAt: m.finishedAt,
         total,
         correct: Math.min(total, whole(m.correct, 1000)),

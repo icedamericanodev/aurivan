@@ -157,6 +157,14 @@ describe('revealScrollY: how far to scroll after a check is answered', () => {
     expect(revealScrollY({ top: 600, bottom: 900 }, 0, FOOTER, 0)).toBe(600 - REVEAL_GAP);
   });
 
+  it('mobile 1.49: a `lead` box scrolls back UP to a verdict above the view (the page above it got shorter)', () => {
+    expect(revealScrollY({ top: 300, bottom: 600, lead: true }, VIEWPORT, FOOTER, 800)).toBe(300 - REVEAL_GAP);
+    // Without `lead`, never backwards.
+    expect(revealScrollY({ top: 300, bottom: 600 }, VIEWPORT, FOOTER, 800)).toBeNull();
+    // A lead box with the verdict already in view behaves as before.
+    expect(revealScrollY({ top: 600, bottom: 900, lead: true }, VIEWPORT, FOOTER, 0)).toBe(900 + REVEAL_GAP - 600);
+  });
+
   it('mobile 1.45: never past the top of the learner’s own pick', () => {
     // The pick sits above the verdict: the scroll stops at the pick, the explanation is a scroll away.
     expect(revealScrollY({ top: 600, bottom: 2000, pick: 300 }, VIEWPORT, FOOTER, 0)).toBe(300 - REVEAL_GAP);
@@ -190,35 +198,46 @@ describe('the lesson player after a check is answered', () => {
     expect(scrollSpy).toHaveBeenCalledWith({ y: ANCHOR + 500 - REVEAL_GAP, animated: true });
   });
 
-  it('mobile 1.45: the scroll keeps the learner’s own pick on screen', () => {
+  it('mobile 1.49: the options give way to the answer, so a scroll already past the verdict comes back up to it', () => {
     openCheck();
+    // The learner scrolled down to reach the last option.
+    act(() => {
+      root().findByType(ScrollView).props.onScroll({ nativeEvent: { contentOffset: { x: 0, y: 900 } } });
+    });
     scrollSpy.mockClear();
     press(new RegExp(`^Option [A-D]: ${wrongText.slice(0, 20).replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`));
-    // The picked row's wrapper reports where it sits (same parent as the answer block).
-    const row = root().find(
-      (n) => n.type === View && typeof n.props.onLayout === 'function' && n.findAll((m) => m.props.text === wrongText && m.props.letter !== undefined).length > 0 && n.findAllByType(Verdict).length === 0,
-    );
-    act(() => {
-      row.props.onLayout({ nativeEvent: { layout: { x: 0, y: 260, width: 353, height: 80 } } });
-    });
-    layoutAnswer(500, 1200);
-    expect(scrollSpy).toHaveBeenCalledWith({ y: ANCHOR + 260 - REVEAL_GAP, animated: true });
+    layoutAnswer(500, 300);
+    expect(scrollSpy).toHaveBeenCalledWith({ y: ANCHOR + 500 - REVEAL_GAP, animated: true });
   });
 
-  it('mobile 1.45: after a miss, the tinted rows keep their letters in a tag, matching the coach line', () => {
+  it('mobile 1.49: after a miss, only "Your answer" and "Best answer" show, letters in their badges, matching the coach line', () => {
     openCheck();
     press(new RegExp(`^Option [A-D]: ${wrongText.slice(0, 20).replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`));
     layoutAnswer(500, 300);
-    const tags = root()
-      .findAll((n) => typeof n.props.tag === 'string' && typeof n.props.letter === 'string' && n.props.text !== undefined)
-      .map((n) => ({ tag: n.props.tag as string, letter: n.props.letter as string, text: n.props.text as string }));
-    const best = tags.find((t) => t.tag.startsWith('Best answer'))!;
-    const mine = tags.find((t) => t.tag.startsWith('Your answer'))!;
-    expect(best.tag).toBe(`Best answer · ${best.letter}`);
-    expect(best.text).toBe(check.options[check.correctIndex]);
-    expect(mine).toEqual({ tag: `Your answer · ${mine.letter}`, letter: mine.letter, text: wrongText });
+    const rows = root()
+      .findAll((n) => typeof n.props.state === 'string' && typeof n.props.letter === 'string' && n.props.text !== undefined && n.props.onPress === undefined)
+      .map((n) => ({ tag: n.props.tag as string, letter: n.props.letter as string, text: n.props.text as string, mark: n.props.mark as string, state: n.props.state as string }));
+    // The other options are hidden, not dimmed.
+    expect(rows.map((x) => x.state)).toEqual(['wrong', 'correct']);
+    const [mine, best] = rows;
+    expect(mine).toMatchObject({ tag: 'Your answer', text: wrongText, mark: 'letter' });
+    expect(best).toMatchObject({ tag: 'Best answer', text: check.options[check.correctIndex], mark: 'letter' });
     const label = root().find((n) => n.type === View && n.props.accessibilityRole === 'header' && /^Not quite\./.test(n.props.accessibilityLabel ?? '')).props.accessibilityLabel;
     expect(label).toBe(`Not quite. The best answer is ${best.letter}.`);
+    // Then "Why B", and the question recapped above as "The question".
+    const text = (n: ReactTestInstance | string): string => (typeof n === 'string' ? n : n.children.map(text).join(' '));
+    expect(text(root())).toContain(`Why ${best.letter}`);
+    expect(root().findAll((n) => typeof n.props.accessibilityLabel === 'string' && n.props.accessibilityLabel.startsWith('The question: ')).length).toBeGreaterThan(0);
+  });
+
+  it('mobile 1.49: a right answer shows the one "Best answer" row', () => {
+    openCheck();
+    press(/^Option [A-D]: The audit committee/);
+    layoutAnswer(500, 300);
+    const states = root()
+      .findAll((n) => typeof n.props.state === 'string' && typeof n.props.letter === 'string' && n.props.text !== undefined && n.props.onPress === undefined)
+      .map((n) => n.props.state);
+    expect(states).toEqual(['correct']);
   });
 
   it('Reduce Motion (the in-app setting): the scroll jumps instead of gliding', () => {

@@ -279,7 +279,7 @@ export const BADGES: BadgeDef[] = [
   },
   { id: 'dress-rehearsal', kind: 'milestone', name: 'Dress Rehearsal', rule: 'Finish a full, timed mock with every question answered.' },
   { id: 'on-pace', kind: 'milestone', name: 'On Pace', rule: `Finish a timed mock with every pace check within ${Math.round(PACE_TOLERANCE * 100)}% of the target.` },
-  { id: 'mindset-shift', kind: 'milestone', name: 'Mindset Shift', rule: 'Pick the tempting runner-up clearly less often than in your first weeks.' },
+  { id: 'mindset-shift', kind: 'milestone', name: 'Mindset Shift', rule: 'Pick the closest wrong choice clearly less often than in your first weeks.' },
   {
     id: 'rooted',
     kind: 'milestone',

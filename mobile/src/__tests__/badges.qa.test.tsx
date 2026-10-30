@@ -254,7 +254,7 @@ describe('1. upgrade from a 1.9 save with earned milestones', () => {
     expect(hasNewBadge('cisa')).toBe(false);
     mount(<You />);
     expect(root().findAll((n) => n.props.testID === 'new-badge-dot')).toHaveLength(0);
-    expect(labels().some((l) => l.startsWith(`Badges and field notes, ${Object.keys(SAVED).length} earned.`))).toBe(true);
+    expect(labels().some((l) => l.startsWith(`Herbarium: badges and field notes, ${Object.keys(SAVED).length} earned.`))).toBe(true);
     unmount();
     mount(<TabsLayout />);
     expect(root().findAll((n) => n.props.testID === 'you-new-dot')).toHaveLength(0);
@@ -442,7 +442,7 @@ describe('2. earning a new badge in a session', () => {
     expect(hasNewBadge('cisa')).toBe(true);
     mount(<You />);
     expect(root().findAll((n) => n.props.testID === 'new-badge-dot').length).toBeGreaterThan(0);
-    expect(labels().some((l) => l.startsWith('Badges and field notes, new badge, 2 earned.'))).toBe(true);
+    expect(labels().some((l) => l.startsWith('Herbarium: badges and field notes, new badge, 2 earned.'))).toBe(true);
     unmount();
     mount(<TabsLayout />);
     expect(root().findAll((n) => n.props.testID === 'you-new-dot').length).toBeGreaterThan(0);
@@ -625,13 +625,13 @@ describe('3. "Next for your exam" at each journey stage', () => {
     expect(root().findAllByType(NextPanel)).toHaveLength(0);
   });
 
-  it('the screen shows slot 1 in the forest panel, with its button spoken with the badge name', () => {
+  it('the screen shows slot 1 first under Still to collect, with its button spoken with the badge name', () => {
     for (const d of ['1', '2', '3', '4', '5']) answerDomain(d, 5, 0);
     checkMilestones('cisa');
     mount(<Badges />);
     const panel = root().findByType(NextPanel);
     expect(panel.props.best.key).toBe('firm-footing:4');
-    expect(textOf(panel)).toContain('Next for your exam');
+    expect(textOf(panel)).toContain('Still to collect · for your exam'); // mobile 1.51: the herbarium's ruled rows
     expect(textOf(panel)).toContain('Firm Footing · IS Operations');
     expect(textOf(panel)).toContain('26% of the exam');
     expect(panel.props.nearest.map((m: CaseMark) => m.badge)).not.toContain('firm-footing');
@@ -653,6 +653,8 @@ describe('3. "Next for your exam" at each journey stage', () => {
       return `session:${s!.title}`;
     }
     if (path === '/mock-start') expect((to as { params: Record<string, string> }).params.questions).toBe(String(cert.exam.questions));
+    // Mobile 1.51: a tab opened at one of its sections (Practice at Drills, where the Play tab's games moved).
+    if (typeof to !== 'string' && to.params?.section) return `${path}?section=${to.params.section}`;
     return path;
   };
 
@@ -687,7 +689,7 @@ describe('3. "Next for your exam" at each journey stage', () => {
     expect(results['dress-rehearsal']).toBe('/mock-start');
     expect(results['rooted:10']).toBe('/home');
     expect(results['snare-wise']).toBe('/game/trap');
-    expect(results['whole-grove']).toBe('/play');
+    expect(results['whole-grove']).toBe('/practice?section=drills');
     expect(results['loop-closed']).toBe('/mistakes');
     expect(results['topic-clear']).toBe('/guided');
     expect(results['long-memory']).toBe('session:Questions to revisit'); // two misses are due
@@ -770,7 +772,7 @@ describe('4. the case', () => {
     press(/^Badges not yet earned$/);
     expect(allText()).toContain('All earned.');
     press(/^Earned badges$/);
-    expect(allText()).toContain('Nothing earned here yet.');
+    expect(allText()).toContain('Nothing pressed on this sheet yet.');
   });
 
   it('detail sheet, not yet: rule, progress, how to earn it, effort, and Study for this', () => {
@@ -802,7 +804,7 @@ describe('4. the case', () => {
   it('detail sheet, earned: the date and what it means, no How to earn, no Study button', () => {
     midLearner();
     mount(<Badges />);
-    press(/^First Foothold\. Earned 22 Sep/);
+    press(/^First Foothold\. Pressed 22 September/);
     const sheet = root().findByType(Modal);
     const t = textOf(sheet);
     expect(t).toContain('Earned 22 Sep');
@@ -954,7 +956,7 @@ describe('5. Settings → Show badges', () => {
     toggle().props.onValueChange(true);
   });
     const lines = allText().match(/Badges are on again\.[^.]*\./g) ?? [];
-    expect(lines).toEqual(['Badges are on again. 2 badges arrived while they were hidden: see You → Badges.']);
+    expect(lines).toEqual(['Badges are on again. 2 badges arrived while they were hidden: see You → Herbarium.']);
     unmount();
     // The next session earns nothing new: its Results show no moment for the two that waited.
     const more = ids('4', 20, 5);
@@ -967,7 +969,7 @@ describe('5. Settings → Show badges', () => {
     // And the row is back, with its dot (two badges arrived since the case was last opened).
     jest.setSystemTime(T0 + 60_000);
     mount(<You />);
-    expect(labels().some((l) => l.startsWith('Badges and field notes, new badge, 2 earned.'))).toBe(true);
+    expect(labels().some((l) => l.startsWith('Herbarium: badges and field notes, new badge, 2 earned.'))).toBe(true);
   });
 
   it('the choice travels in a backup; an older backup (no such field) keeps this phone’s choice', async () => {
@@ -1145,7 +1147,7 @@ describe('7. reset', () => {
     expect(sets.every((s) => s.earned === 0)).toBe(true);
     expect(hasNewBadge('cisa')).toBe(false);
     mount(<You />);
-    expect(labels().some((l) => l.startsWith('Badges and field notes, none yet.'))).toBe(true);
+    expect(labels().some((l) => l.startsWith('Herbarium: badges and field notes, none yet.'))).toBe(true);
     unmount();
     // The phone's own choices (the Sort) stay; a new badge after the reset is new.
     expect(useSeen.getState().badgeSort).toBe('effort');
@@ -1182,7 +1184,7 @@ describe('8. regressions', () => {
     expect(existsSync(join(__dirname, '..', 'app', 'milestones.tsx'))).toBe(true);
     expect(readFileSync(join(__dirname, '..', 'app', '_layout.tsx'), 'utf8')).toMatch(/<Stack\.Screen name="milestones"/);
     mount(<Badges />);
-    expect(allText()).toMatch(/^Badges /);
+    expect(allText()).toMatch(/^Herbarium · Badges /); // mobile 1.51: the badge case is the Herbarium
     expect(allText()).toContain('Earned by what you’ve mastered.');
   });
 

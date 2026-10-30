@@ -26,7 +26,7 @@ import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'rea
 import { setMockReducedMotion } from '../../jest/reanimated-mock';
 import LessonPlayer, { lessonPracticeIds } from '../app/lesson/[id]';
 import Learn from '../app/(tabs)/learn';
-import Play from '../app/(tabs)/play';
+import { Drills } from '../components/drills';
 import NoteSubtopicScreen from '../app/notes/subtopic/[id]';
 import TrapScreen from '../app/game/trap';
 import ForecastScreen from '../app/game/sprint';
@@ -221,7 +221,8 @@ describe('Journey 1: a lesson from cover to Lesson complete', () => {
     const wrong = check.options.find((_, i) => i !== check.correctIndex)!;
     pickText(wrong);
     expect(root().findByType(Verdict).props.correct).toBe(false);
-    const keyCard = root().findAll((n) => n.props.letter && n.props.text === check.options[check.correctIndex] && typeof n.props.onPress === 'function')[0];
+    // Mobile 1.49: the answered check shows the "Best answer" row with its display letter in the badge.
+    const keyCard = root().findAll((n) => n.props.letter && n.props.text === check.options[check.correctIndex] && n.props.state === 'correct')[0];
     expect(allText()).toContain(`The best answer is ${keyCard.props.letter}.`);
     // A miss still lets the learner finish.
     expect(nextDisabled()).toBe(false);
@@ -342,7 +343,7 @@ describe('Journey 2: back navigation mid-lesson', () => {
     const order = () => root().findAll((n) => n.props.letter && typeof n.props.text === 'string' && typeof n.props.onPress === 'function').map((n) => n.props.text);
     const first = order();
     pickText(checkOf(charter).options[checkOf(charter).correctIndex]);
-    press('Back');
+    press('Previous step'); // mobile 1.49: the round Back on a check too
     press('Next');
     expect(root().findAllByType(Verdict)).toHaveLength(0);
     expect(nextDisabled()).toBe(true);
@@ -753,33 +754,29 @@ async function loadSave() {
 }
 
 describe('Journey 7: an old 1.11 save and a backup restore', () => {
-  it('a 1.11 save loads: Forecast keeps its best, level and history; Play shows them under the new name', async () => {
+  it('a 1.11 save loads: Forecast keeps its best, level and history; Drills (the old Play tab) show them under the new name', async () => {
     await loadSave();
     const cp = selectCert(useProgress.getState(), 'cisa');
     expect(cp.gameBest).toEqual({ sprint: 13, trap: 5 });
     expect(cp.gameGrowth?.sprint?.tier).toBe('sapling');
     expect(cp.gameRecent.sprint).toEqual([4, -2, 13]);
     expect(cp.lessonsDone).toEqual(['cisa-l-d1-charter']);
-    mount(<Play />);
+    mount(<Drills />);
     expect(allText()).not.toContain('Sure Footing');
-    // Mobile 1.24: Play leads with three games and folds the rest under "More games": open it.
-    const more = root().findAll((n) => typeof n.props.onPress === 'function' && /^More games/.test(String(n.props.accessibilityLabel)))[0];
+    // Mobile 1.24: three games in sight, the rest folded under "More drills" (1.51): open it.
+    const more = root().findAll((n) => typeof n.props.onPress === 'function' && /^More drills/.test(String(n.props.accessibilityLabel)))[0];
     if (more) {
       act(() => {
         more.props.onPress();
       });
     }
-    const row = root().findAll((n) => typeof n.props.accessibilityLabel === 'string' && n.props.accessibilityLabel.startsWith('Forecast.'));
-    const hero = root().findAll((n) => n.props.title === 'Forecast');
-    // Featured or a row: either way the best and the level show.
-    if (row.length) {
-      expect(row[0].props.accessibilityLabel).toContain('Your level: Sapling');
-      expect(row[0].props.accessibilityLabel).toContain('Best score 13');
-    } else {
-      expect(hero.length).toBeGreaterThan(0);
-      expect(allText()).toContain('Best 13.');
-      expect(allText()).toContain('Sapling');
-    }
+    // Today's drill or a later row: either way one key row, its best and its level shown and said.
+    const row = root().findAll((n) => typeof n.props.accessibilityLabel === 'string' && /^(Today’s drill: )?Forecast\./.test(n.props.accessibilityLabel));
+    expect(row.length).toBeGreaterThan(0);
+    expect(row[0].props.accessibilityLabel).toContain('Your level: Sapling');
+    expect(row[0].props.accessibilityLabel).toContain('Best score 13');
+    expect(allText()).toContain('best 13');
+    expect(allText()).toContain('Sapling');
   });
 
   it('a 1.11 learner who saw the rules goes straight into the round; the old plan label shows the new name', async () => {

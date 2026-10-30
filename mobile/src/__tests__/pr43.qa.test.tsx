@@ -142,7 +142,8 @@ const hidePlantRow = () => {
 const plants = () => root().findAll((n) => typeof n.type !== 'string' && typeof n.props.species === 'string' && typeof n.props.stage === 'number' && typeof n.props.size === 'number');
 /** Is a growth-ring drawing on screen? (GrowthRings takes `preset`.) */
 // Mobile 1.21: Today's condensed readiness row draws the small `row` rings (the exam-ready panel keeps `today`).
-const ringsShown = () => root().findAll((n) => typeof n.type !== 'string' && (n.props.preset === 'today' || n.props.preset === 'row')).length > 0;
+// The readiness picture: the rings, or (mobile 1.51, Field Guide) Today's scale bar.
+const ringsShown = () => root().findAll((n) => (typeof n.type !== 'string' && (n.props.preset === 'today' || n.props.preset === 'row')) || (typeof n.type === 'string' && n.props.testID === 'scale-bar')).length > 0;
 const layoutGrid = () => {
   const grid = root().findAll((n) => n.props.accessibilityRole === 'radiogroup')[0];
   act(() => {
@@ -259,7 +260,7 @@ describe('J1 a new learner and the plant', () => {
 
     mount(<Today />);
     expect(byTestID('today-plant')).toHaveLength(1);
-    expect(byTestID('today-plant')[0].props.accessibilityLabel).toBe('Summit Lee, your pine. Growth: Seed, 1 of 6.');
+    expect(byTestID('today-plant')[0].props.accessibilityLabel).toBe('Summit Lee, your pine. Starburst Pine form. Growth: Seed.');
     expect(byTestID('plant-prompt')).toHaveLength(0);
     expect(byTestID('plant-grew')).toHaveLength(0); // planting is not a "grew" moment
     unmount();
@@ -377,7 +378,8 @@ describe('J2 an existing 1.12 save upgrading', () => {
     expect(byTestID('today-plant')).toHaveLength(1);
     unmount();
     mount(<YourPlant />);
-    expect(allText()).toMatch(/Your study so far grew .+ to Sprout\./);
+    // Mobile 1.50: with its form's name ("…to Sprout: the Kernel Mango.").
+    expect(allText()).toMatch(/Your study so far grew .+ to Sprout: the .+ Mango\./);
   });
 });
 

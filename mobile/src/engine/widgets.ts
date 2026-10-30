@@ -1,9 +1,20 @@
 /**
- * Home-screen widgets (mobile 1.47): the one small snapshot the app writes,
- * and what every widget says when it draws.
+ * Home-screen widgets (mobile 1.47; the "Study card" redesign and three new
+ * jobs in 1.48): the one small snapshot the app writes, and what every widget
+ * says when it draws.
+ *
+ * Mobile 1.48 gave three widgets a new job; their Android names stay (so
+ * widgets already on a home screen keep working):
+ * - QuickQuestion → Recall card: a question the learner answered RIGHT at
+ *   least 14 days ago; "Show the answer" reveals only the correct answer and
+ *   its Exam cue, then Had it / Not yet (kept on the phone, never progress).
+ * - Revisit → Key term: one term a day from the notes' glossary for today's
+ *   topic; "Show the meaning" reveals its one-line meaning.
+ * - ExamCountdown → Road to exam: the weeks as a road (behind, this week,
+ *   ahead) and this week's focus in words. No Start button.
  *
  * Plain English:
- * - The app writes ONE small record, `aurivan.widget.v1` (under 4 KB), after
+ * - The app writes ONE small record, `aurivan.widget.v1` (under 8 KB), after
  *   a session, on app open, after a restore and after a settings change. A
  *   widget never reads the big progress stores: it draws only from this record.
  * - The record holds only what a widget shows. Never the learner's own name,
@@ -34,14 +45,16 @@
 import { addDays, daysToExam } from './examDay';
 import { aboutMin, spokenMin } from './pace';
 import { daysBetween, dayKey } from './streak';
+import { isPlantSpecies } from './plant';
+import { formName, isFinalId } from './plantForms';
 
 // ── Keys, kinds and names ────────────────────────────────────────────────
 /** The snapshot's AsyncStorage key (the app's usual key style; never renamed once shipped). */
 export const WIDGET_KEY = 'aurivan.widget.v1';
 /** Today's rule: reveal marks, self-check answers and local counts (written by the widget itself). */
 export const REVEAL_KEY = 'aurivan.widget.reveal.v1';
-/** The snapshot's size cap, in bytes of JSON. */
-export const SNAPSHOT_MAX_BYTES = 4096;
+/** The snapshot's size cap, in bytes of JSON (8 KB since 1.48: the recall cards and key terms ride along). */
+export const SNAPSHOT_MAX_BYTES = 8192;
 export const SNAPSHOT_VERSION = 1;
 
 /**
@@ -66,16 +79,29 @@ export const WIDGET_NAMES: Record<WidgetKind, string> = {
   readiness: 'Readiness',
 };
 
-/** The name the widget picker shows, and the Add a widget list in Settings. */
+/** Each widget's name in the app (Settings → Add a widget, the tester numbers), since 1.48. */
 export const WIDGET_TITLES: Record<WidgetKind, string> = {
   plan: 'Today’s plan',
   plant: 'Your plant',
   think: 'Today’s rule',
   week: 'This week',
+  question: 'Recall card',
+  revisit: 'Key term',
+  countdown: 'Road to exam',
+  readiness: 'Readiness',
+};
+
+/**
+ * The names Android's widget picker shows in THIS native build (app.json
+ * plugin labels). They are native: changing them needs a new store build, so
+ * the three renamed widgets keep their 1.47 picker names until then
+ * (src/__tests__/widgets-guard.test.ts checks app.json against this).
+ */
+export const PICKER_LABELS: Record<WidgetKind, string> = {
+  ...WIDGET_TITLES,
   question: 'Quick question',
   revisit: 'Questions to revisit',
   countdown: 'Exam countdown',
-  readiness: 'Readiness',
 };
 
 export function kindOfName(name: string): WidgetKind | null {
@@ -122,6 +148,11 @@ export interface PlanSnap {
   nextMin: number;
   /** The final review week's day for today, in plain words (shown only with exam timing). */
   finalDay: string | null;
+  /** 1.48: the current item's question count ("12 questions"); 0 for a lesson, a game or a mock. */
+  count: number;
+  /** 1.48: the plan's items (the step pips) and how many are done. Older snapshots: 0 (no pips). */
+  steps: number;
+  stepsDone: number;
 }
 
 export interface PlantSnap {
@@ -136,6 +167,8 @@ export interface PlantSnap {
   palette?: string;
   ground?: string;
   planter?: string;
+  /** Mobile 1.50: the Form IV final drawn at Elder (engine/plantForms.ts FINAL_IDS); unset = its own. */
+  final?: string;
 }
 
 export interface ThinkSnap {
@@ -151,20 +184,51 @@ export interface ThinkSnap {
   try?: string;
 }
 
-export interface QuizSnap {
+/**
+ * The Recall card (1.48): a question the learner answered RIGHT at least 14
+ * days ago, its correct answer and its Exam cue tip. Never a wrong option,
+ * never a question the learner hasn't met.
+ */
+export interface RecallSnap {
   day: string;
   id: string;
   stem: string;
+  /** The correct option's words only. */
+  answer: string;
+  /** The question's "Exam cue:" tip, without its label. */
+  cue: string;
+  /** Whole weeks since it was answered right (2 or more). */
+  weeks: number;
   /** The topic's short plain name (hidden with details off). */
   topic: string;
-  /** Answered in the app on that day. */
-  done: boolean;
 }
 
-/** Rings only (single colour): the range only when the learner chose to see it. */
+/** The Key term (1.48): one glossary term a day for today's topic, and the note that teaches it. */
+export interface TermSnap {
+  day: string;
+  id: string;
+  term: string;
+  /** Its abbreviation, when it has one ("RPO"). */
+  short?: string;
+  meaning: string;
+  topic: string;
+  /** A study-notes subtopic id ("4B1.2") or a domain id ("4"). */
+  note: string;
+}
+
+/** Road to exam's focus, from the plan engine's stage (engine/journey.ts). */
+export const ROAD_STAGES = ['diagnose', 'learn', 'practice', 'mock', 'ready'] as const;
+export type RoadStage = (typeof ROAD_STAGES)[number];
+/** Road to exam (1.48): the Monday the road starts (the first study week on record) and this week's focus. */
+export interface RoadSnap {
+  from: string;
+  stage: RoadStage;
+}
+
+/** Rings only (single colour): the range only when the learner chose to see it. `grew`: the topic whose ring grew most this week, if any. */
 export type ReadySnap =
-  | { enough: true; low: number; high: number; rings: number[]; weights: number[] }
-  | { enough: false; needed: number; rings: number[]; weights: number[] };
+  | { enough: true; low: number; high: number; rings: number[]; weights: number[]; grew?: string }
+  | { enough: false; needed: number; rings: number[]; weights: number[]; grew?: string };
 
 export interface WidgetSnapshot {
   v: 1;
@@ -184,12 +248,17 @@ export interface WidgetSnapshot {
   /** Null: no plant planted yet. `{ off: true }`: Settings → Show my plant is off. */
   plant: PlantSnap | { off: true } | null;
   think: ThinkSnap[];
-  quiz: QuizSnap[];
+  /** 1.48: Recall cards by day (was the Quick question's `quiz`). */
+  recall: RecallSnap[];
+  /** 1.48: Key terms by day. */
+  terms: TermSnap[];
+  /** 1.48: Road to exam (only the start week and the focus; the weeks come from the exam date). */
+  road: RoadSnap | null;
   /** Only when the readiness widget is on (show or private); otherwise null. */
   ready: ReadySnap | null;
 }
 
-/** Days of Today's rule and Quick question kept ahead, so they rotate without the app opening. */
+/** Days of Today's rule, Recall card and Key term kept ahead, so they rotate without the app opening. */
 export const DAYS_AHEAD = 4;
 /** Study days ever, capped (the widget only needs "fewer than 2"). */
 export const TOTAL_CAP = 99;
@@ -198,7 +267,9 @@ export const LAPSE_DAYS = 3;
 /** The short set: 5 questions, about 6 minutes (engine/dayPlan.ts SHORT_SET_SIZE, at study pace). */
 export const SHORT_SET = { questions: 5, minutes: 6 } as const;
 
-const MAX = { title: 60, short: 16, meta: 90, stem: 220, rule: 160, ask: 110, askShort: 50, topic: 16, next: 40, name: 24 } as const;
+const MAX = { title: 60, short: 16, meta: 90, stem: 220, rule: 160, ask: 110, askShort: 50, topic: 16, next: 40, name: 24, answer: 120, cue: 160, term: 48, abbr: 12, meaning: 200 } as const;
+/** A study-notes subtopic id ("4B1.2") or a domain id ("4"): a plain id that may hold dots. */
+export const NOTE_ID = /^[A-Za-z0-9][A-Za-z0-9._-]{0,31}$/;
 
 /** Text cut to `n` characters on a word boundary, with an ellipsis when cut. */
 export function clip(s: string, n: number): string {
@@ -227,7 +298,9 @@ export interface SnapshotInput {
   answeredAny: boolean;
   plant: PlantSnap | { off: true } | null;
   think: readonly ThinkSnap[];
-  quiz: readonly QuizSnap[];
+  recall?: readonly RecallSnap[];
+  terms?: readonly TermSnap[];
+  road?: RoadSnap | null;
   ready: ReadySnap | null;
 }
 
@@ -256,6 +329,9 @@ function cleanPlan(p: Record<string, unknown>): PlanSnap | null {
     next: typeof p.next === 'string' && p.next ? str(p.next, MAX.next) : null,
     nextMin: num(p.nextMin, 0, 600),
     finalDay: typeof p.finalDay === 'string' && p.finalDay ? str(p.finalDay, MAX.title) : null,
+    count: num(p.count, 0, 999),
+    steps: num(p.steps, 0, 12),
+    stepsDone: Math.min(num(p.steps, 0, 12), num(p.stepsDone, 0, 12)),
   };
 }
 
@@ -266,9 +342,24 @@ function cleanThink(e: Record<string, unknown>): ThinkSnap | null {
   return t;
 }
 
-function cleanQuiz(e: Record<string, unknown>): QuizSnap | null {
+function cleanRecall(e: Record<string, unknown>): RecallSnap | null {
   if (!e || !isDay(e.day) || typeof e.id !== 'string' || !LINK_ID.test(e.id)) return null;
-  return { day: e.day, id: e.id, stem: str(e.stem, MAX.stem), topic: str(e.topic, MAX.topic), done: e.done === true };
+  const r = { day: e.day, id: e.id, stem: str(e.stem, MAX.stem), answer: str(e.answer, MAX.answer), cue: str(e.cue, MAX.cue), weeks: num(e.weeks, 2, 520, 2), topic: str(e.topic, MAX.topic) };
+  return r.stem && r.answer ? r : null;
+}
+
+function cleanTerm(e: Record<string, unknown>): TermSnap | null {
+  if (!e || !isDay(e.day) || typeof e.id !== 'string' || !LINK_ID.test(e.id) || typeof e.note !== 'string' || !NOTE_ID.test(e.note)) return null;
+  const t: TermSnap = { day: e.day, id: e.id, term: str(e.term, MAX.term), meaning: str(e.meaning, MAX.meaning), topic: str(e.topic, MAX.topic), note: e.note };
+  if (typeof e.short === 'string' && e.short) t.short = str(e.short, MAX.abbr);
+  return t.term && t.meaning ? t : null;
+}
+
+function cleanRoad(r: unknown): RoadSnap | null {
+  if (!r || typeof r !== 'object') return null;
+  const o = r as Record<string, unknown>;
+  if (!isDay(o.from)) return null;
+  return { from: o.from, stage: (ROAD_STAGES as readonly unknown[]).includes(o.stage) ? (o.stage as RoadStage) : 'practice' };
 }
 
 function cleanPlant(pt: Record<string, unknown> | null | undefined): WidgetSnapshot['plant'] {
@@ -284,6 +375,7 @@ function cleanPlant(pt: Record<string, unknown> | null | undefined): WidgetSnaps
     ...(typeof pt.palette === 'string' ? { palette: str(pt.palette, MAX.name) } : {}),
     ...(typeof pt.ground === 'string' ? { ground: str(pt.ground, MAX.name) } : {}),
     ...(typeof pt.planter === 'string' ? { planter: str(pt.planter, MAX.name) } : {}),
+    ...(isFinalId(pt.final) ? { final: pt.final } : {}),
   };
 }
 
@@ -310,7 +402,9 @@ function rawSnapshot(i: SnapshotInput): WidgetSnapshot {
     answered: i.answeredAny,
     plant: cleanPlant(i.plant as unknown as Record<string, unknown> | null),
     think: i.think.slice(0, DAYS_AHEAD).map((t) => cleanThink(t as unknown as Record<string, unknown>)).filter((t): t is ThinkSnap => t !== null),
-    quiz: i.quiz.slice(0, DAYS_AHEAD).map((q) => cleanQuiz(q as unknown as Record<string, unknown>)).filter((q): q is QuizSnap => q !== null),
+    recall: (i.recall ?? []).slice(0, DAYS_AHEAD).map((q) => cleanRecall(q as unknown as Record<string, unknown>)).filter((q): q is RecallSnap => q !== null),
+    terms: (i.terms ?? []).slice(0, DAYS_AHEAD).map((t) => cleanTerm(t as unknown as Record<string, unknown>)).filter((t): t is TermSnap => t !== null),
+    road: cleanRoad(i.road),
     ready: prefs.readiness === 'off' ? null : parseReady(i.ready),
   };
 }
@@ -330,8 +424,8 @@ export function snapshotBytes(s: WidgetSnapshot): number {
 export function fitSnapshot(s: WidgetSnapshot): WidgetSnapshot {
   let out = s;
   const steps: ((x: WidgetSnapshot) => WidgetSnapshot)[] = [
-    (x) => ({ ...x, quiz: x.quiz.slice(0, 2), think: x.think.slice(0, 2) }),
-    (x) => ({ ...x, quiz: x.quiz.slice(0, 1), think: x.think.slice(0, 1) }),
+    (x) => ({ ...x, recall: x.recall.slice(0, 2), terms: x.terms.slice(0, 2), think: x.think.slice(0, 2) }),
+    (x) => ({ ...x, recall: x.recall.slice(0, 1), terms: x.terms.slice(0, 1), think: x.think.slice(0, 1) }),
     (x) => ({ ...x, week: { ...x.week, days: x.week.days.slice(-7) } }),
   ];
   for (const step of steps) {
@@ -371,7 +465,10 @@ export function parseSnapshot(raw: unknown): WidgetSnapshot | null {
     answered: o.answered === true,
     plant: cleanPlant(o.plant as Record<string, unknown> | null | undefined),
     think: arr<Record<string, unknown>>(o.think).slice(0, DAYS_AHEAD).map(cleanThink).filter((t): t is ThinkSnap => t !== null),
-    quiz: arr<Record<string, unknown>>(o.quiz).slice(0, DAYS_AHEAD).map(cleanQuiz).filter((q): q is QuizSnap => q !== null),
+    // A 1.47 snapshot has `quiz` instead: it is ignored (the Recall card waits for the app's next write).
+    recall: arr<Record<string, unknown>>(o.recall).slice(0, DAYS_AHEAD).map(cleanRecall).filter((q): q is RecallSnap => q !== null),
+    terms: arr<Record<string, unknown>>(o.terms).slice(0, DAYS_AHEAD).map(cleanTerm).filter((t): t is TermSnap => t !== null),
+    road: cleanRoad(o.road),
     ready: prefs.readiness === 'off' ? null : parseReady(o.ready),
   };
 }
@@ -382,26 +479,30 @@ function parseReady(x: unknown): ReadySnap | null {
   const nums = (a: unknown, hi: number) => arr<unknown>(a).slice(0, 8).map((n) => num(n, 0, hi));
   const rings = nums(r.rings, 100);
   const weights = nums(r.weights, 100);
+  const grew = typeof r.grew === 'string' && r.grew ? { grew: clip(r.grew, MAX.topic) } : {};
   if (r.enough === true) {
     const low = num(r.low, 0, 100);
     const high = num(r.high, 0, 100);
     if (high < low) return null;
-    return { enough: true, low, high, rings, weights };
+    return { enough: true, low, high, rings, weights, ...grew };
   }
-  return { enough: false, needed: num(r.needed, 0, 999), rings, weights };
+  return { enough: false, needed: num(r.needed, 0, 999), rings, weights, ...grew };
 }
 
 // ── Links (every tap opens the app at the matching place) ────────────────
 /** Where a widget tap goes. The app's /widget screen maps each to a real screen (app/widget.tsx). */
-export const WIDGET_GOALS = ['today', 'start', 'short', 'review', 'question', 'principle', 'principles', 'plant', 'plant-pick', 'plant-settings', 'readiness', 'exam-week', 'settings', 'readiness-setting', 'timing-setting', 'exam-date'] as const;
+export const WIDGET_GOALS = ['today', 'start', 'short', 'review', 'question', 'principle', 'principles', 'note', 'notes', 'plant', 'plant-pick', 'plant-settings', 'readiness', 'exam-week', 'settings', 'readiness-setting', 'timing-setting', 'exam-date'] as const;
 export type WidgetGoal = (typeof WIDGET_GOALS)[number];
 
 /** A safe id for a link (question and principle ids): letters, digits, "_" and "-" only. */
 export const LINK_ID = /^[A-Za-z0-9_-]{1,64}$/;
 
-/** `kaisip://widget?kind=plan&go=start&from=widget` (+ `&id=` for a question or principle). */
+/** The id rule for a goal: a study note's id may hold dots ("4B1.2"); every other id may not. */
+const idRule = (go: WidgetGoal) => (go === 'note' ? NOTE_ID : LINK_ID);
+
+/** `kaisip://widget?kind=plan&go=start&from=widget` (+ `&id=` for a question, a principle or a study note). */
 export function widgetLink(kind: WidgetKind, go: WidgetGoal, id?: string): string {
-  const q = [`kind=${kind}`, `go=${go}`, ...(id && LINK_ID.test(id) ? [`id=${id}`] : []), 'from=widget'];
+  const q = [`kind=${kind}`, `go=${go}`, ...(id && idRule(go).test(id) ? [`id=${id}`] : []), 'from=widget'];
   return `kaisip://widget?${q.join('&')}`;
 }
 
@@ -424,13 +525,13 @@ export function parseWidgetTap(params: Record<string, unknown>): WidgetTap {
   const go = one(params.go);
   const id = one(params.id);
   const goal = (WIDGET_GOALS as readonly string[]).includes(go as string) ? (go as WidgetGoal) : 'today';
-  const cleanId = typeof id === 'string' && LINK_ID.test(id) ? id : null;
+  const cleanId = typeof id === 'string' && idRule(goal).test(id) ? id : null;
   // A goal that needs an id falls back to its list when the id is missing.
-  const fixed: WidgetGoal = goal === 'question' && !cleanId ? 'today' : goal === 'principle' && !cleanId ? 'principles' : goal;
+  const fixed: WidgetGoal = goal === 'question' && !cleanId ? 'today' : goal === 'principle' && !cleanId ? 'principles' : goal === 'note' && !cleanId ? 'notes' : goal;
   return {
     kind: (WIDGET_KINDS as readonly string[]).includes(kind as string) ? (kind as WidgetKind) : null,
     go: fixed,
-    id: fixed === 'question' || fixed === 'principle' ? cleanId : null,
+    id: fixed === 'question' || fixed === 'principle' || fixed === 'note' ? cleanId : null,
     fromWidget: one(params.from) === 'widget',
   };
 }
@@ -440,9 +541,10 @@ export function parseWidgetTap(params: Record<string, unknown>): WidgetTap {
  * by app/widget.tsx itself, with the app's live plan). Every value is a real route.
  * The two `*-setting` goals open the exact choice, then return.
  */
-export const GOAL_ROUTES: Record<Exclude<WidgetGoal, 'start' | 'short' | 'review' | 'question' | 'principle'>, string> = {
+export const GOAL_ROUTES: Record<Exclude<WidgetGoal, 'start' | 'short' | 'review' | 'question' | 'principle' | 'note'>, string> = {
   today: '/home',
   principles: '/principles',
+  notes: '/notes',
   plant: '/plant',
   'plant-pick': '/plant-pick',
   'plant-settings': '/settings?section=plant',
@@ -535,14 +637,22 @@ export interface FaceAction {
   label: string;
   /** Empty for an on-widget action (see `widgetAction`). */
   link: string;
-  /** An action handled by the widget itself, no app opens (Today's rule: reveal, self-check). */
+  /** An action handled by the widget itself, no app opens (the reveal cards: reveal, self-check). */
   widgetAction?: 'REVEAL' | 'HAD' | 'NOTYET';
 }
 export type FaceArt =
   | { type: 'mark' }
   | { type: 'leaves'; filled: boolean[]; today: number }
   | { type: 'rings'; rings: number[]; weights: number[]; faint: boolean }
-  | { type: 'plant'; plant: PlantSnap; leaves?: { filled: boolean[]; today: number } };
+  | { type: 'plant'; plant: PlantSnap };
+
+/**
+ * The card each widget is drawn on (1.48 "Study card"): `forest` is Today's
+ * plan only (the "do this now" signal); `card` is the ruled index card of the
+ * two question widgets; `plate` the plant's botanical plate; `ink` the Road
+ * to exam card; `paper` the rest.
+ */
+export type FaceTone = 'paper' | 'forest' | 'plate' | 'card' | 'ink';
 
 /**
  * One widget's face: plain words and at most two actions. The layouts choose
@@ -551,26 +661,39 @@ export type FaceArt =
  */
 export interface WidgetFace {
   kind: WidgetKind;
-  /** Forest panel (today's plan, the exam-phase faces) or paper. */
-  tone: 'paper' | 'forest';
-  /** The small line beside the Kasama mark ("Today", "Your narra"). */
+  tone: FaceTone;
+  /** The small spaced label at the top ("Today · Operations", "Key term"). */
   caption: string;
-  /** The main words. */
+  /** The main words (or, with titleStyle "number", the big figure). */
   title: string;
-  /** How the title is set: serif (Fraunces), italic (a rule), number (a big figure), sans (a question). */
+  /** How the title is set: serif (Fraunces), italic (a rule, an answer, calm words), number (a big figure), sans. */
   titleStyle: 'serif' | 'italic' | 'number' | 'sans';
-  /** A unit after a number ("days this week", "%"). */
+  /** A unit after a number ("questions", "%"). */
   unit?: string;
   /** A shorter TITLE for a small widget or large text (never a detail line). */
   short?: string;
+  /** An italic line right under the title (a key term's full name). */
+  sub?: string;
   line?: string;
   /** A shorter detail LINE for a small widget (never a title). */
   shortLine?: string;
   /** A third, quiet line (medium and up). */
   line2?: string;
+  /** A quiet italic note at the right of the top row, on wide widgets ("step 2 of 3", "6 weeks to go"). */
+  aside?: string;
   /** A quiet chip ("New growth today"). */
   badge?: string;
   art?: FaceArt;
+  /** Today's plan: its items as pips, and how many are done. */
+  steps?: { total: number; done: number };
+  /** Road to exam: weeks studied on the road so far, and weeks to go (the exam's week is the last). */
+  road?: { behind: number; ahead: number };
+  /**
+   * The reveal cards (Today's rule, Recall card, Key term): hidden or shown.
+   * The layouts put the reveal button and the Had it / Not yet pair in
+   * different places, so a quick second tap can't land on the pair.
+   */
+  reveal?: 'hidden' | 'shown';
   /** The main pill. */
   action?: FaceAction;
   /** A second pill or quiet action (medium and up, or the self-check pair). */
@@ -581,7 +704,7 @@ export interface WidgetFace {
   widgetAction?: FaceAction['widgetAction'];
   /** The word that must survive every size and text scale (the topic, the stage, the count). */
   key: string;
-  /** One spoken summary for TalkBack (minutes in full: see spokenMin). */
+  /** One spoken summary for TalkBack, with the widget's state (minutes in full: see spokenMin). */
   label: string;
 }
 
@@ -589,9 +712,9 @@ export interface WidgetFace {
 export interface DrawContext {
   /** The phone's clock when the widget draws (only its calendar day is used). */
   now: number;
-  /** Today's rule: this widget was revealed today. */
+  /** A reveal card (rule, recall card, key term): this widget was revealed today. */
   revealed?: boolean;
-  /** Today's rule: the learner's self-check today ("had" / "notyet"), if any. */
+  /** Today's rule or the Recall card: the learner's self-check today ("had" / "notyet"), if any. */
   judged?: 'had' | 'notyet';
 }
 
@@ -599,6 +722,11 @@ const plural = (n: number, one: string, many = `${one}s`) => `${n} ${n === 1 ? o
 /** "Start · 12 min": the minutes on the pill itself. */
 const startLabel = (mins: number) => `Start · ${Math.max(1, Math.round(mins))} min`;
 const SHORT_LINE = `${SHORT_SET.questions} questions · about ${SHORT_SET.minutes} min`;
+const DAY_NAMES = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'] as const;
+/** "Monday, Tuesday and Wednesday". */
+export function listWords(xs: readonly string[]): string {
+  return xs.length <= 1 ? (xs[0] ?? '') : `${xs.slice(0, -1).join(', ')} and ${xs[xs.length - 1]}`;
+}
 
 /** A face for a widget placed before the app has written anything (or before onboarding). */
 function setupFace(kind: WidgetKind): WidgetFace {
@@ -613,7 +741,7 @@ function setupFace(kind: WidgetKind): WidgetFace {
     art: { type: 'mark' },
     link: widgetLink(kind, 'today'),
     key: 'Open KaiSip',
-    label: 'KaiSip. Open KaiSip to begin.',
+    label: `${WIDGET_TITLES[kind]}. Open KaiSip to begin.`,
   };
 }
 
@@ -631,13 +759,13 @@ export function widgetFace(kind: WidgetKind, s: WidgetSnapshot | null, ctx: Draw
     case 'think':
       return thinkFace(s, today, ctx);
     case 'question':
-      return questionFace(s, today);
+      return recallFace(s, today, ctx);
     case 'revisit':
-      return revisitFace(s, today);
+      return termFace(s, today, ctx);
     case 'plant':
       return plantFace(s, today);
     case 'countdown':
-      return countdownFace(s, today);
+      return roadFace(s, today);
   }
 }
 
@@ -665,7 +793,7 @@ export function weekLeaves(days: readonly string[], today: string): { filled: bo
   return { filled, today: weekdayIndex(today), count: filled.filter(Boolean).length };
 }
 
-// 1. Today's plan ─────────────────────────────────────────────────────────
+// 1. Today's plan (the one forest card, and the only Start) ──────────────
 function planFace(s: WidgetSnapshot, today: string): WidgetFace {
   const kind: WidgetKind = 'plan';
   const phase = examPhase(s.examDay, today);
@@ -675,7 +803,7 @@ function planFace(s: WidgetSnapshot, today: string): WidgetFace {
   // Exam day (with exam timing): the shared words, no Start. After the exam the plan is the plan again.
   if (timing && phase === 'day') {
     const c = EXAM_COPY.day;
-    return { ...base, caption: c.caption, title: c.title, titleStyle: 'italic', line: c.line, key: 'Good', label: `${c.caption}. ${c.title} ${c.line}` };
+    return { ...base, caption: c.caption, title: c.title, titleStyle: 'italic', line: c.line, key: 'Good', label: `Today’s plan. ${c.caption}. ${c.title} ${c.line}` };
   }
   const plan = todaysPlan(s, today);
   const lapsed = (daysSinceStudy(s, today) ?? 0) >= LAPSE_DAYS;
@@ -701,24 +829,27 @@ function planFace(s: WidgetSnapshot, today: string): WidgetFace {
           ? { label: `Short on time? ${SHORT_SET.questions} questions`, link: widgetLink(kind, 'short') }
           : undefined,
       key: title === 'Your plan is ready' ? 'Plan' : title.split(' ')[0],
-      label: spokenMin(`Today. ${title}, about ${mins} min.${shortFirst ? ` Or start with ${SHORT_SET.questions} questions.` : ''}`),
+      label: spokenMin(`Today’s plan, ready: ${title}, about ${mins} min.${shortFirst ? ` Or start with ${SHORT_SET.questions} questions.` : ''}`),
     };
   }
+  const steps = plan.steps > 1 ? { total: plan.steps, done: Math.min(plan.stepsDone, plan.steps) } : undefined;
   if (plan.done) {
     // "Plan done": still true after midnight, and the next line is the next morning's plan.
-    const { filled, today: ti } = weekLeaves(s.week.days, today);
-    const next = !hidden(s) && plan.next ? `Next: ${plan.next}${plan.nextMin ? ` · about ${plan.nextMin} min` : ''}` : 'Rest now. The next plan will be here.';
+    const next = !hidden(s) && plan.next ? `Next: ${plan.next}${plan.nextMin ? `, about ${plan.nextMin} min` : ''}.` : 'Rest now. The next plan will be here.';
     return {
       ...base,
-      caption: 'Your plan',
-      title: 'Plan done',
+      caption: 'Today',
+      title: 'Plan done.',
+      titleStyle: 'italic',
       line: next,
-      art: hidden(s) ? undefined : { type: 'leaves', filled, today: ti },
+      steps,
       key: 'done',
-      label: spokenMin(`Plan done. ${next}`),
+      label: spokenMin(`Today’s plan, done. ${next}`),
     };
   }
   const mins = plan.left || s.minutes;
+  const start = { label: startLabel(mins), link: widgetLink(kind, 'start') };
+  const stepWords = steps ? `step ${Math.min(steps.done + 1, steps.total)} of ${steps.total}` : '';
   if (plan.first) {
     return {
       ...base,
@@ -726,64 +857,85 @@ function planFace(s: WidgetSnapshot, today: string): WidgetFace {
       title: 'Your first 5 questions',
       short: 'First 5',
       line: 'No timer. Just see where you start.',
-      action: { label: startLabel(mins), link: widgetLink(kind, 'start') },
+      action: start,
       key: 'first',
-      label: spokenMin(`Start here. Your first 5 questions, about ${mins} min. No timer.`),
+      label: spokenMin(`Today’s plan, start here: your first 5 questions, about ${mins} min. No timer.`),
     };
   }
-  const start = { label: startLabel(mins), link: widgetLink(kind, 'start') };
   // "5 questions" leads only when the tap can really run it (the plan's own shortSet: never in exam week).
   const shortFirst = lapsed && plan.shortSet;
   if (hidden(s)) {
-    return { ...base, caption: 'Today', title: 'Your study plan', short: 'Study plan', line: aboutMin(mins), action: shortFirst ? shortAction : start, key: 'plan', label: spokenMin(`Today. Your study plan, about ${mins} min.`) };
+    return {
+      ...base,
+      caption: 'Today',
+      title: 'Your study plan',
+      short: 'Study plan',
+      line: aboutMin(mins),
+      steps,
+      aside: stepWords || undefined,
+      action: shortFirst ? shortAction : start,
+      key: 'plan',
+      label: spokenMin(`Today’s plan${stepWords ? `, ${stepWords}` : ''}: your study plan, about ${mins} min.`),
+    };
   }
   // The eve (with exam timing): the shared words; Start is the plan's own light review.
   if (timing && phase === 'eve') {
     const c = EXAM_COPY.eve;
-    return { ...base, caption: c.caption, title: c.title, titleStyle: 'italic', line: c.line, action: start, key: 'rest', label: spokenMin(`${c.caption}. ${c.title} ${c.line} About ${mins} min.`) };
+    return { ...base, caption: c.caption, title: c.title, titleStyle: 'italic', line: c.line, action: start, key: 'rest', label: spokenMin(`Today’s plan. ${c.caption}. ${c.title} ${c.line} About ${mins} min.`) };
   }
-  const back =
-    plan.back > 0
-      ? plan.backMissed
-        ? plan.back === 1
-          ? 'Starts with one you missed before'
-          : `Starts with ${plan.back} you missed before`
-        : `Starts with ${plural(plan.back, 'question')} to revisit`
-      : null;
+  // On a shared screen the plan names what comes back, never what was missed.
+  const back = plan.back > 0 ? `Starts with ${plural(plan.back, 'question')} to revisit.` : null;
   const weekLine = timing && phase === 'week' && plan.finalDay ? plan.finalDay : null;
   const line = weekLine ?? back ?? plan.meta;
   const weeks = timing ? weeksToExam(s.examDay, today) : null;
   const examLine = weeks ? `Exam in ${weeksText(weeks)}` : undefined;
+  const topic = plan.short || plan.title;
+  const counted = plan.count > 0;
+  const task = counted ? `${plural(plan.count, 'question')}` : plan.title || 'Your study plan';
   return {
     ...base,
-    caption: timing && phase === 'week' ? EXAM_COPY.week.caption : 'Today',
-    title: plan.title || 'Your study plan',
-    short: plan.short || undefined,
-    line,
+    caption: timing && phase === 'week' ? EXAM_COPY.week.caption : topic ? `Today · ${topic}` : 'Today',
+    title: counted ? String(plan.count) : task,
+    titleStyle: counted ? 'number' : 'serif',
+    unit: counted ? (plan.count === 1 ? 'question' : 'questions') : undefined,
+    short: counted ? task : plan.short || undefined,
+    line: `About ${mins} min left. ${line}`.trim(),
+    shortLine: aboutMin(mins),
     line2: examLine,
+    steps,
+    aside: stepWords || undefined,
     action: shortFirst ? shortAction : start,
     action2: shortFirst
       ? { label: `Full plan · ${mins} min`, link: widgetLink(kind, 'start') }
       : plan.shortSet && phase !== 'week'
         ? { label: `Short on time? ${SHORT_SET.questions} questions`, link: widgetLink(kind, 'short') }
         : undefined,
-    key: plan.short || plan.title.split(' ')[0] || 'plan',
-    label: spokenMin(`Today's plan, about ${mins} min. ${plan.title}. ${line}.${examLine ? ` ${examLine}.` : ''}`),
+    key: counted ? String(plan.count) : plan.short || plan.title.split(' ')[0] || 'plan',
+    label: spokenMin(`Today’s plan${stepWords ? `, ${stepWords}` : ''}: ${task}${counted && topic ? ` in ${plan.title || topic}` : ''}, about ${mins} min. ${line}${examLine ? ` ${examLine}.` : ''}`),
   };
 }
 
-// 2. This week ────────────────────────────────────────────────────────────
+// 2. This week (the only leaves) ──────────────────────────────────────────
+/** The week's line: it changes as the week fills, and is only ever neutral or kind. */
+export function weekLine(count: number, studiedToday: boolean): string {
+  if (count >= 6 && !studiedToday) return 'Today can be your rest day.';
+  if (count >= 6) return 'A full week of leaves.';
+  if (count >= 4) return 'A steady week.';
+  if (count >= 2) return 'Short days count too.';
+  return 'A first leaf this week.';
+}
+
 function weekFace(s: WidgetSnapshot, today: string): WidgetFace {
   const kind: WidgetKind = 'week';
   const phase = examPhase(s.examDay, today);
+  // No Start here (Today's plan is the one place that starts): a tap opens Today.
   const base = { kind, tone: 'paper' as const, titleStyle: 'serif' as const, caption: 'This week', link: widgetLink(kind, 'today') };
-  const short = { label: 'Start', link: widgetLink(kind, 'short') };
   // From 7 days out to exam day the leaves rest: exam week stays calm. Exam words only with timing.
   // After the exam, the week is a normal week again.
   if (phase === 'week' || phase === 'eve' || phase === 'day') {
     if (showsTiming(s)) {
       const c = EXAM_COPY[phase];
-      return { ...base, caption: c.caption, title: c.title, line: c.line, art: { type: 'mark' }, key: c.title.split(' ')[0], label: `${c.caption}. ${c.title} ${c.line}` };
+      return { ...base, caption: c.caption, title: c.title, titleStyle: 'italic', line: c.line, art: { type: 'mark' }, key: c.title.split(' ')[0], label: `This week. ${c.caption}. ${c.title} ${c.line}` };
     }
     return { ...base, title: 'A calm week', line: 'Short days count too.', art: { type: 'mark' }, key: 'calm', label: 'This week. A calm week. Short days count too.' };
   }
@@ -791,48 +943,51 @@ function weekFace(s: WidgetSnapshot, today: string): WidgetFace {
   if (s.week.total < 2) {
     const first = Boolean(todaysPlan(s, today)?.first) || s.week.total === 0;
     const title = first ? 'Your first 5 questions' : 'Your week starts here';
-    return { ...base, title, short: first ? 'First 5' : 'Start here', line: SHORT_LINE, action: short, art: { type: 'mark' }, key: first ? '5' : 'week', label: `This week. ${title}. ${SHORT_LINE}.` };
+    return { ...base, title, short: first ? 'First 5' : 'Start here', line: SHORT_LINE, art: { type: 'mark' }, key: first ? '5' : 'week', label: `This week. ${title}. ${SHORT_LINE}.` };
   }
   const { filled, today: ti, count } = weekLeaves(s.week.days, today);
-  // Never an empty row: a week with no study yet says so in words, with 5 questions to start.
+  // Never an empty row: a week with no study yet says so in words.
   if (count === 0) {
     const monday = ti === 0;
     const title = monday ? 'A new week' : 'A short start';
-    return { ...base, title, line: SHORT_LINE, action: short, art: { type: 'mark' }, key: monday ? 'new' : 'short', label: `This week. ${title}. ${SHORT_LINE}.` };
+    return { ...base, title, line: SHORT_LINE, art: { type: 'mark' }, key: monday ? 'new' : 'short', label: `This week. ${title}. ${SHORT_LINE}.` };
   }
   const leaves: FaceArt = { type: 'leaves', filled, today: ti };
+  const studied = DAY_NAMES.filter((_, i) => filled[i]);
   if (hidden(s)) {
-    return { ...base, title: 'Your week', short: 'Week', line: 'A leaf for each day you studied.', shortLine: 'Leaf = a study day', art: leaves, key: 'week', label: 'This week. A leaf for each day you studied.' };
+    return { ...base, title: 'Your week', short: 'Week', line: 'A leaf for each day you studied.', shortLine: 'Leaf = a study day', art: leaves, key: 'week', label: `This week: you studied ${listWords(studied)}.` };
   }
-  const studiedToday = filled[ti];
-  // Only a strong week gets a line, and it suggests rest. No constant "rest day" line.
-  const line = count >= 6 && !studiedToday ? 'Today can be your rest day' : undefined;
-  const unit = count === 1 ? 'day this week' : 'days this week';
+  const line = weekLine(count, filled[ti]);
   return {
     ...base,
     title: String(count),
     titleStyle: 'number',
-    unit,
+    unit: count === 1 ? 'study day' : 'study days',
     short: `${count} this week`,
     line,
+    aside: line,
     art: leaves,
     key: String(count),
-    label: `This week, ${plural(count, 'study day')}.${line ? ` ${line}.` : ''}`,
+    label: `This week: ${plural(count, 'study day')}. You studied ${listWords(studied)}. ${line}`,
   };
 }
 
 // 3. Readiness (opt-in on add; rings only by default) ─────────────────────
 /** From this many days before the exam the number rests (rings only), whatever was chosen. */
 export const READINESS_REST_DAYS = 21;
+/** The rings' changing line: what grew this week, or a plain note. Never what shrank. */
+export function ringsLine(grew: string | undefined, topics: boolean): string {
+  if (!grew) return 'Each ring is one area.';
+  return topics ? `${grew} grew this week.` : 'Your rings grew this week.';
+}
 
 function readinessFace(s: WidgetSnapshot, today: string): WidgetFace {
   const kind: WidgetKind = 'readiness';
-  const base = { kind, tone: 'paper' as const, titleStyle: 'serif' as const, caption: 'Readiness estimate', link: widgetLink(kind, 'readiness') };
+  const base = { kind, tone: 'paper' as const, titleStyle: 'serif' as const, caption: 'Readiness', link: widgetLink(kind, 'readiness') };
   const r = s.ready;
   if (s.prefs.readiness === 'off' || !r) {
     return {
       ...base,
-      caption: 'Readiness',
       title: 'Choose how it shows',
       short: 'Choose',
       line: 'Rings only, or with your range. Tap to choose.',
@@ -846,8 +1001,9 @@ function readinessFace(s: WidgetSnapshot, today: string): WidgetFace {
   const rings: FaceArt = { type: 'rings', rings: r.rings, weights: r.weights, faint: !r.enough };
   if (!r.enough) {
     const more = `${plural(r.needed, 'more answer')} to a first estimate`;
-    return { ...base, title: 'Your rings grow as you answer', short: 'Rings grow', line: `${more}. Any topic counts.`, shortLine: more, art: rings, key: 'Rings', label: `Readiness, a study estimate. ${more}.` };
+    return { ...base, title: 'Your rings grow as you answer', short: 'Rings grow', line: `${more}. Any topic counts.`, shortLine: more, art: rings, key: 'Rings', label: `Readiness, a study estimate: ${more}. Any topic counts.` };
   }
+  const grew = ringsLine(r.grew, !hidden(s));
   const left = daysToExam(s.examDay ?? undefined, today);
   const resting = left !== null && left >= 0 && left <= READINESS_REST_DAYS;
   if (s.prefs.readiness === 'private' || hidden(s) || resting) {
@@ -858,7 +1014,9 @@ function readinessFace(s: WidgetSnapshot, today: string): WidgetFace {
       : hidden(s)
         ? 'You chose to hide details.'
         : 'You chose to hide the number.';
-    return { ...base, title: 'Your rings are growing', short: 'Rings growing', line: `${why} Tap to see it.`, shortLine: why, art: rings, key: 'Rings', label: `Readiness, a study estimate. ${why} Tap to see it.` };
+    // The face doesn't repeat the learner's own choice back at every glance; TalkBack still says it.
+    // "Rings growing" only when one really grew this week; otherwise a calm, neutral title (never a false claim).
+    return { ...base, title: r.grew ? 'Rings growing' : 'Your rings', line: resting ? why : grew, line2: resting ? grew : undefined, art: rings, key: 'Rings', label: `Readiness, a study estimate, rings only. ${why} ${grew} Tap to see it.` };
   }
   return {
     ...base,
@@ -866,10 +1024,12 @@ function readinessFace(s: WidgetSnapshot, today: string): WidgetFace {
     titleStyle: 'number',
     unit: '%',
     line: 'A study estimate, not a prediction.',
-    shortLine: 'a study estimate',
+    // The qualifier the range always keeps, at every size and text scale (DESIGN_SYSTEM §20.3).
+    shortLine: 'A study estimate',
+    line2: grew,
     art: rings,
     key: `${r.low}–${r.high}`,
-    label: `Readiness between ${r.low} and ${r.high} percent. A study estimate, not a prediction.`,
+    label: `Readiness between ${r.low} and ${r.high} percent. A study estimate, not a prediction. ${grew}`,
   };
 }
 
@@ -879,6 +1039,9 @@ export function sharedWord(ask: string, short: string): string {
   const words = short.match(/[A-Za-z’']{4,}/g) ?? [];
   return words.find((w) => ask.toLowerCase().includes(w.toLowerCase())) ?? '';
 }
+/** TalkBack: the reveal is its own button on the Recall card and the Key term (the card itself opens the app). */
+export const NEXT_BUTTON = (label: string) => `${label} is the next button.`;
+
 /** The calm line on the exam eve and exam day (no new material then). */
 export const EXAM_CUE_TITLE = 'One question at a time.';
 export const EXAM_CUE_LINE = 'Read the last sentence first: it says what is being asked.';
@@ -886,13 +1049,13 @@ export const EXAM_CUE_LINE = 'Read the last sentence first: it says what is bein
 function thinkFace(s: WidgetSnapshot, today: string, ctx: DrawContext): WidgetFace {
   const kind: WidgetKind = 'think';
   const phase = examPhase(s.examDay, today);
-  const base = { kind, tone: 'paper' as const, caption: 'Today’s rule' };
+  const base = { kind, tone: 'card' as const, caption: 'Today’s rule' };
   if (phase === 'eve' || phase === 'day') {
-    return { ...base, caption: showsTiming(s) ? EXAM_COPY[phase].caption : 'Today’s rule', title: EXAM_CUE_TITLE, titleStyle: 'italic', line: EXAM_CUE_LINE, shortLine: 'Read the last sentence first.', link: widgetLink(kind, 'today'), key: 'One', label: `${EXAM_CUE_TITLE} ${EXAM_CUE_LINE}` };
+    return { ...base, caption: showsTiming(s) ? EXAM_COPY[phase].caption : 'Today’s rule', title: EXAM_CUE_TITLE, titleStyle: 'italic', line: EXAM_CUE_LINE, shortLine: 'Read the last sentence first.', link: widgetLink(kind, 'today'), key: 'One', label: `Today’s rule. ${EXAM_CUE_TITLE} ${EXAM_CUE_LINE}` };
   }
   const e = s.think.find((t) => t.day === today);
   if (!e) {
-    return { ...base, title: 'A new rule each morning', titleStyle: 'italic', line: 'Open KaiSip once to load the next few.', link: widgetLink(kind, 'principles'), key: 'rule', label: 'Today’s rule. Open KaiSip to load the next ones.' };
+    return { ...base, title: 'A new rule each morning', titleStyle: 'italic', line: 'Open KaiSip once to load the next few.', link: widgetLink(kind, 'principles'), key: 'rule', label: 'Today’s rule. A new rule each morning: open KaiSip once to load the next few.' };
   }
   const card = widgetLink(kind, 'principle', e.id);
   if (hidden(s)) {
@@ -904,12 +1067,13 @@ function thinkFace(s: WidgetSnapshot, today: string, ctx: DrawContext): WidgetFa
       ...base,
       title: e.ask,
       short: e.short,
-      titleStyle: 'sans',
+      titleStyle: 'serif',
+      reveal: 'hidden',
       action: { label: 'Show the rule', link: '', widgetAction: 'REVEAL' },
       link: '',
       widgetAction: 'REVEAL',
       key: sharedWord(e.ask, e.short),
-      label: `Today’s rule. ${e.ask} Show the rule.`,
+      label: `Today’s rule, hidden. ${e.ask} Double-tap to show the rule.`,
     };
   }
   const tryOne = e.try ? { label: 'Try one', link: widgetLink(kind, 'question', e.try) } : { label: 'See the card', link: card };
@@ -920,11 +1084,12 @@ function thinkFace(s: WidgetSnapshot, today: string, ctx: DrawContext): WidgetFa
       title: `${e.title}.`,
       titleStyle: 'italic',
       line: e.rule,
+      reveal: 'shown',
       action: { label: 'Had it', link: '', widgetAction: 'HAD' },
       action2: { label: 'Not yet', link: '', widgetAction: 'NOTYET' },
       link: card,
       key: e.title.split(' ')[0],
-      label: `Today’s rule: ${e.title}. ${e.rule} Did you have it?`,
+      label: `Today’s rule, shown: ${e.title}. ${e.rule} Did you have it?`,
     };
   }
   return {
@@ -933,85 +1098,126 @@ function thinkFace(s: WidgetSnapshot, today: string, ctx: DrawContext): WidgetFa
     titleStyle: 'italic',
     line: e.rule,
     line2: ctx.judged === 'notyet' ? 'It comes back in a few days.' : 'A new one each morning.',
+    reveal: 'shown',
     action: tryOne,
     link: card,
     key: e.title.split(' ')[0],
-    label: `Today’s rule: ${e.title}. ${e.rule}`,
+    label: `Today’s rule, checked: ${e.title}. ${e.rule}`,
   };
 }
 
-// 5. Quick question (stem only; answered in the app) ──────────────────────
-function questionFace(s: WidgetSnapshot, today: string): WidgetFace {
+// 5. Recall card (was Quick question): something answered right, 2+ weeks ago ──
+/** The Recall card for today, if the snapshot has one. */
+export function recallFor(s: WidgetSnapshot | null, now: number): RecallSnap | null {
+  const today = dayKey(now);
+  return s?.recall.find((r) => r.day === today) ?? null;
+}
+
+function recallFace(s: WidgetSnapshot, today: string, ctx: DrawContext): WidgetFace {
   const kind: WidgetKind = 'question';
   const phase = examPhase(s.examDay, today);
-  const base = { kind, tone: 'paper' as const, caption: 'Quick question', link: widgetLink(kind, 'today') };
+  const base = { kind, tone: 'card' as const, caption: 'Recall card', titleStyle: 'serif' as const, link: widgetLink(kind, 'today') };
   if (phase === 'eve' || phase === 'day') {
-    return { ...base, title: 'No new questions today', short: 'No new questions', titleStyle: 'serif', line: 'Rest is part of the plan.', key: 'No', label: 'No new questions today. Rest is part of the plan.' };
+    return { ...base, title: 'Nothing to recall today', short: 'Nothing today', line: 'Rest is part of the plan.', key: 'Nothing', label: 'Recall card. Nothing to recall today. Rest is part of the plan.' };
   }
-  const q = s.quiz.find((x) => x.day === today);
-  if (!q) {
-    return { ...base, title: 'A new question each morning', titleStyle: 'serif', line: 'Open KaiSip once to load the next few.', key: 'question', label: 'Quick question. Open KaiSip to load the next questions.' };
+  if (s.recall.length === 0) {
+    // Nothing answered right long enough ago yet: a calm promise, never a gap.
+    return { ...base, title: 'Questions you get right come back here', short: 'Right answers return', line: 'About two weeks later, to recall.', key: 'come back', label: 'Recall card. Questions you get right come back here about two weeks later, to recall.' };
   }
-  if (q.done) {
-    // A calm close: no button; a tap opens Today.
-    return { ...base, title: 'Answered', titleStyle: 'serif', line: 'A new question arrives tomorrow.', key: 'Answered', label: 'Quick question answered. A new question arrives tomorrow.' };
+  const r = s.recall.find((x) => x.day === today);
+  if (!r) {
+    return { ...base, title: 'A new card each morning', short: 'New each morning', line: 'Open KaiSip once to load the next few.', key: 'card', label: 'Recall card. A new card each morning: open KaiSip once to load the next few.' };
   }
-  const open = widgetLink(kind, 'question', q.id);
+  const open = widgetLink(kind, 'question', r.id);
   if (hidden(s)) {
-    return { ...base, title: 'A question is ready', short: 'Question ready', titleStyle: 'serif', line: 'Open it in KaiSip.', action: { label: 'Answer', link: open }, link: open, key: 'question', label: 'A quick question is ready. Answer it in KaiSip.' };
+    return { ...base, title: 'A recall card is ready', short: 'Card ready', line: 'Open it in KaiSip.', link: open, key: 'card', label: 'Recall card. A card is ready: open it in KaiSip.' };
+  }
+  const ago = `${r.weeks} weeks ago`;
+  if (!ctx.revealed) {
+    return {
+      ...base,
+      title: r.stem,
+      aside: ago,
+      reveal: 'hidden',
+      action: { label: 'Show the answer', link: '', widgetAction: 'REVEAL' },
+      link: open,
+      key: r.stem.split(' ')[0],
+      // TalkBack: double-tapping the card opens the app; "Show the answer" is its own button (forNarrowStrip rewrites this where the whole card reveals).
+      label: `Recall card, answer hidden, from ${ago}. ${r.stem} Think of the answer. ${NEXT_BUTTON('Show the answer')} Double-tap the card to open it in KaiSip.`,
+    };
+  }
+  const cue = r.cue ? `Exam cue: ${r.cue}` : undefined;
+  if (!ctx.judged) {
+    return {
+      ...base,
+      title: r.answer,
+      titleStyle: 'italic',
+      line: cue,
+      aside: ago,
+      reveal: 'shown',
+      action: { label: 'Had it', link: '', widgetAction: 'HAD' },
+      action2: { label: 'Not yet', link: '', widgetAction: 'NOTYET' },
+      link: open,
+      key: r.answer.split(' ')[0],
+      label: `Recall card, shown. The answer: ${r.answer}.${cue ? ` ${cue}` : ''} Did you have it?`,
+    };
   }
   return {
     ...base,
-    caption: q.topic ? `Quick question · ${q.topic}` : 'Quick question',
-    title: q.stem,
-    short: 'A quick question for you',
-    titleStyle: 'sans',
-    line: 'Before the options: what would you do?',
-    shortLine: 'Before the options: your answer?',
-    action: { label: 'Answer', link: open },
+    title: r.answer,
+    titleStyle: 'italic',
+    line: cue,
+    line2: ctx.judged === 'notyet' ? 'It comes back in a few days.' : 'A new card tomorrow.',
+    reveal: 'shown',
+    action: { label: 'See why', link: open },
     link: open,
-    key: 'question',
-    label: `Quick question. ${q.stem} Before the options: what would you do? Answer it in KaiSip.`,
+    key: r.answer.split(' ')[0],
+    label: `Recall card, checked. The answer: ${r.answer}.${cue ? ` ${cue}` : ''}`,
   };
 }
 
-// 6. Questions to revisit (was Reviews): the plan's own number only ────────
-function revisitFace(s: WidgetSnapshot, today: string): WidgetFace {
+// 6. Key term (was Questions to revisit): the exam's language, one term a day ──
+function termFace(s: WidgetSnapshot, today: string, ctx: DrawContext): WidgetFace {
   const kind: WidgetKind = 'revisit';
-  const base = { kind, tone: 'paper' as const, titleStyle: 'serif' as const, caption: 'Questions to revisit', link: widgetLink(kind, 'today') };
   const phase = examPhase(s.examDay, today);
+  const base = { kind, tone: 'paper' as const, caption: 'Key term', titleStyle: 'serif' as const, link: widgetLink(kind, 'notes') };
   if (phase === 'eve' || phase === 'day') {
-    const title = showsTiming(s) ? 'Nothing new before the exam' : 'Nothing new today';
-    return { ...base, title, short: 'Nothing new', line: 'Rest is part of the plan.', key: 'Nothing', label: `${title}. Rest is part of the plan.` };
+    return { ...base, title: 'Nothing new today', short: 'Nothing new', line: 'Rest is part of the plan.', link: widgetLink(kind, 'today'), key: 'Nothing', label: 'Key term. Nothing new today. Rest is part of the plan.' };
   }
-  if (!s.answered) {
-    return { ...base, title: 'Missed questions come back here', short: 'Misses come back', line: 'Spaced out, so they stick.', key: 'come back', label: 'Questions to revisit. Missed questions come back here, spaced out so they stick.' };
+  const t = s.terms.find((x) => x.day === today);
+  if (!t) {
+    return { ...base, title: 'A new term each morning', short: 'New each morning', line: 'Open KaiSip once to load the next few.', key: 'term', label: 'Key term. A new term each morning: open KaiSip once to load the next few.' };
   }
-  const plan = todaysPlan(s, today);
-  const review = { label: 'Revisit', link: widgetLink(kind, 'review') };
-  if (!plan) {
-    // Before the app has made today's plan: no number (never a count that grew overnight).
-    return { ...base, title: 'Ready when you are', short: 'Ready', line: 'Today’s plan starts with them.', action: review, key: 'Ready', label: 'Questions to revisit. Ready when you are.' };
-  }
-  if (plan.back === 0) {
-    return { ...base, title: plan.done ? 'Done for today' : 'Nothing to revisit today', short: plan.done ? 'Done' : 'Nothing today', line: 'Missed questions come back here, spaced out.', shortLine: 'Spaced out, so they stick.', key: plan.done ? 'Done' : 'Nothing', label: `Questions to revisit. ${plan.done ? 'Done for today' : 'Nothing to revisit today'}.` };
-  }
-  const mins = aboutMin(Math.max(1, Math.round(plan.back * 1.2)));
+  const note = widgetLink(kind, 'note', t.note);
   if (hidden(s)) {
-    return { ...base, title: 'Some are ready', short: 'Ready', line: mins, action: review, key: 'Ready', label: `Questions to revisit. Some are ready, ${spokenMin(mins).toLowerCase()}.` };
+    // A term names today's topic: with details off it stays in the app.
+    return { ...base, title: 'Today’s key term is ready', short: 'Term ready', line: 'Open it in KaiSip.', link: note, key: 'term', label: 'Key term. Today’s term is ready: open it in KaiSip.' };
   }
-  const unit = plan.backMissed ? 'you missed before' : plan.back === 1 ? 'question to revisit' : 'questions to revisit';
+  const full = t.short ? `${t.term} (${t.short})` : t.term;
+  if (!ctx.revealed) {
+    return {
+      ...base,
+      title: t.short ?? t.term,
+      sub: t.short ? t.term : undefined,
+      aside: t.topic || undefined,
+      reveal: 'hidden',
+      action: { label: 'Show the meaning', link: '', widgetAction: 'REVEAL' },
+      link: note,
+      key: t.short ?? t.term.split(' ')[0],
+      label: `Key term, meaning hidden: ${full}. ${NEXT_BUTTON('Show the meaning')} Double-tap the card to open its note in KaiSip.`,
+    };
+  }
   return {
     ...base,
-    caption: 'Today',
-    title: String(plan.back),
-    titleStyle: 'number',
-    unit,
-    short: `${plan.back} to revisit`,
-    line: mins,
-    action: review,
-    key: String(plan.back),
-    label: `${plan.back} ${unit} today. ${spokenMin(mins)}.`,
+    title: t.term,
+    sub: t.short,
+    line: t.meaning,
+    line2: 'A new term each morning.',
+    aside: t.topic || undefined,
+    reveal: 'shown',
+    link: note,
+    key: t.short ?? t.term.split(' ')[0],
+    label: `Key term, shown: ${full}. ${t.meaning}`,
   };
 }
 
@@ -1022,68 +1228,92 @@ export const PLANT_LINE = 'Grows as answers stick';
 
 function plantFace(s: WidgetSnapshot, today: string): WidgetFace {
   const kind: WidgetKind = 'plant';
-  const base = { kind, tone: 'paper' as const, titleStyle: 'serif' as const, caption: 'Your plant' };
+  const base = { kind, tone: 'plate' as const, titleStyle: 'serif' as const, caption: 'Your plant' };
   const p = s.plant;
   if (!p) {
-    return { ...base, title: 'Choose your plant', short: 'Choose a plant', line: 'It grows only from real progress.', art: { type: 'mark' }, link: widgetLink(kind, 'plant-pick'), key: 'plant', label: 'Your plant. Choose your plant.' };
+    return { ...base, title: 'Choose your plant', short: 'Choose a plant', line: 'It grows only from real progress.', art: { type: 'mark' }, link: widgetLink(kind, 'plant-pick'), key: 'plant', label: 'Your plant. Choose your plant: it grows only from real progress.' };
   }
   if ('off' in p) {
-    return { ...base, title: 'Plant is off', short: 'Plant off', line: 'You can turn it on in Settings.', art: { type: 'mark' }, link: widgetLink(kind, 'plant-settings'), key: 'off', label: 'Your plant is off.' };
+    return { ...base, title: 'Plant is off', short: 'Plant off', line: 'You can turn it on in Settings.', art: { type: 'mark' }, link: widgetLink(kind, 'plant-settings'), key: 'off', label: 'Your plant is off. You can turn it on in Settings.' };
   }
-  const word = GROWTH_WORDS[Math.max(1, Math.min(6, p.growth)) - 1];
+  const growth = Math.max(1, Math.min(6, p.growth));
+  const word = GROWTH_WORDS[growth - 1];
   const grewToday = p.grew === today;
-  const { filled, today: ti } = weekLeaves(s.week.days, today);
+  // The line moves with the plant: the next growth, and the day it grew.
+  const next = growth < 6 ? `${GROWTH_WORDS[growth]} is next` : 'Fully grown';
+  // Mobile 1.50: a botanical plant is in its form; the form is a name in the spoken label, never a second number.
+  const form = p.style === 'botanical' && isPlantSpecies(p.species) ? ` ${formName(p.species, growth, p.final)} form.` : '';
   return {
     ...base,
     caption: `Your ${p.name}`,
     title: word,
-    line: grewToday ? undefined : PLANT_LINE,
+    sub: `Fig. ${growth}`,
+    line: `${next}.`,
     badge: grewToday ? 'New growth today' : undefined,
-    art: { type: 'plant', plant: p, leaves: hidden(s) ? undefined : { filled, today: ti } },
+    art: { type: 'plant', plant: p },
     link: widgetLink(kind, 'plant'),
     key: word,
-    label: `Your ${p.name}, at ${word}.${grewToday ? ' New growth today.' : ` ${PLANT_LINE}.`}`,
+    // Growth, never "stage" (the plant's copy rule), and no "n of 6" on a widget: "Your oak, at growth 4, bough. Standard Oak form."
+    label: `Your ${p.name}, at growth ${growth}, ${word.toLowerCase()}.${form}${grewToday ? ' New growth today.' : ''} ${next}. ${PLANT_LINE}.`,
   };
 }
 
-// 8. Exam countdown (exam timing on; calendar weeks) ──────────────────────
-function countdownFace(s: WidgetSnapshot, today: string): WidgetFace {
+// 8. Road to exam (was Exam countdown; exam timing on; calendar weeks) ─────
+/** This week's focus in words, from the plan engine's stage. Plain, and never a deficit. */
+export const ROAD_FOCUS: Record<RoadStage, { title: string; line: string }> = {
+  diagnose: { title: 'Find your starting point', line: 'A few questions from every area.' },
+  learn: { title: 'Learn the concepts', line: 'Short lessons, then a few questions.' },
+  practice: { title: 'Make it stick', line: 'Mixed practice across every area.' },
+  mock: { title: 'Rehearse the exam', line: 'A timed practice exam this week.' },
+  ready: { title: 'Keep it steady', line: 'Short sets keep it fresh.' },
+};
+/** The road shows at most this many weeks behind (the rest are folded away). */
+export const ROAD_BEHIND_MAX = 12;
+
+function roadFace(s: WidgetSnapshot, today: string): WidgetFace {
   const kind: WidgetKind = 'countdown';
-  const base = { kind, tone: 'paper' as const, titleStyle: 'serif' as const, link: widgetLink(kind, 'today') };
+  const base = { kind, tone: 'ink' as const, titleStyle: 'serif' as const, caption: 'Road to exam', link: widgetLink(kind, 'today') };
   if (!s.prefs.timing) {
     // Exam timing is off (turned off in Settings after adding): no exam word on the screen, one tap to choose.
-    return { ...base, caption: 'KaiSip', title: 'Choose what this shows', short: 'Choose', line: 'Tap to choose in KaiSip.', shortLine: 'Tap to choose.', art: { type: 'mark' }, link: widgetLink(kind, 'timing-setting'), key: 'Choose', label: 'KaiSip widget. Tap to choose what it shows.' };
+    return { ...base, tone: 'paper', caption: 'KaiSip', title: 'Choose what this shows', short: 'Choose', line: 'Tap to choose in KaiSip.', shortLine: 'Tap to choose.', art: { type: 'mark' }, link: widgetLink(kind, 'timing-setting'), key: 'Choose', label: 'KaiSip widget. Tap to choose what it shows.' };
   }
   const plan = todaysPlan(s, today);
   const mins = plan && !plan.done ? plan.left || s.minutes : s.minutes;
-  const start = plan?.done ? undefined : { label: startLabel(mins), link: widgetLink(kind, 'start') };
-  // Details off: no exam on the screen, today's plan only.
+  // Details off: no exam on the screen, today's plan only (no Start: Today's plan has the one Start).
   if (hidden(s)) {
-    return { ...base, caption: 'Your plan', title: plan?.done ? 'Plan done' : `About ${mins} min today`, short: plan?.done ? 'Done' : `${mins} min`, action: start, key: plan?.done ? 'done' : 'min', label: plan?.done ? 'Plan done.' : spokenMin(`About ${mins} min today.`) };
+    return { ...base, caption: 'Your plan', title: plan?.done ? 'Plan done' : `About ${mins} min today`, short: plan?.done ? 'Done' : `${mins} min`, key: plan?.done ? 'done' : 'min', label: plan?.done ? 'Your plan. Plan done.' : spokenMin(`Your plan. About ${mins} min today.`) };
   }
   const phase = examPhase(s.examDay, today);
   if (phase === 'none') {
-    return { ...base, caption: 'Your exam', title: 'No exam date yet', short: 'No date', line: 'Add one in Settings when you know it.', link: widgetLink(kind, 'exam-date'), key: 'date', label: 'No exam date yet.' };
+    return { ...base, caption: 'Your exam', title: 'No exam date yet', short: 'No date', line: 'Add one in Settings when you know it.', link: widgetLink(kind, 'exam-date'), key: 'date', label: 'Road to exam. No exam date yet: add one in Settings when you know it.' };
   }
   if (phase === 'after' || phase === 'day' || phase === 'eve' || phase === 'week') {
     const c = EXAM_COPY[phase];
-    const forest = phase !== 'after';
     return {
       ...base,
-      tone: forest ? 'forest' : 'paper',
       caption: c.caption,
       title: c.title,
-      titleStyle: forest ? 'italic' : 'serif',
+      titleStyle: phase === 'after' ? 'serif' : 'italic',
       line: c.line,
-      action: phase === 'week' ? start : undefined,
       link: widgetLink(kind, phase === 'week' ? 'exam-week' : 'today'),
       key: c.title.split(' ')[0],
-      label: `${c.caption}. ${c.title} ${c.line}`,
+      label: `Road to exam. ${c.caption}. ${c.title} ${c.line}`,
     };
   }
   const weeks = weeksToExam(s.examDay, today) ?? 1;
-  const title = `Exam in ${weeksText(weeks)}`;
-  return { ...base, caption: 'Your exam', title, line: 'Steady pace this week.', action: start, key: weeksText(weeks), label: `${title}. Steady pace this week.` };
+  const behind = s.road ? Math.max(0, Math.min(ROAD_BEHIND_MAX, Math.round(daysBetween(mondayOf(s.road.from), mondayOf(today)) / 7))) : 0;
+  const focus = ROAD_FOCUS[s.road?.stage ?? 'practice'];
+  const togo = `${weeksText(weeks)} to go`;
+  return {
+    ...base,
+    title: focus.title,
+    short: focus.title,
+    line: focus.line,
+    aside: togo,
+    road: { behind, ahead: weeks },
+    key: weeksText(weeks),
+    label: `Road to exam: ${togo}${behind ? `, ${plural(behind, 'week')} on the road so far` : ''}. This week: ${focus.title.toLowerCase()}. ${focus.line}`,
+  };
 }
 
 // 9. Lock-screen accessory (designed; built later for iOS, and Android 16 QPR2+) ──
@@ -1137,11 +1367,13 @@ export function readinessReaskDue(i: { pref: ReadinessPref; shownSince?: string;
   return daysBetween(i.shownSince, i.today) >= READINESS_REASK_DAYS;
 }
 
-// ── Today's rule: reveal marks and the self-check (written by the widget, never a study store) ──
+// ── The reveal cards: reveal marks and the self-check (written by the widget, never a study store) ──
 /**
- * Which rule widgets were revealed TODAY (a new day starts hidden again), the
- * learner's "Had it" / "Not yet" per rule, and a local count of reveals per
- * rule for the beta measurement plan. None of it is progress, and none is shown as a score.
+ * Which reveal widgets (Today's rule, and since 1.48 the Recall card and the
+ * Key term) were revealed TODAY (a new day starts hidden again; widget ids are
+ * unique across all widgets), the learner's "Had it" / "Not yet" per rule and
+ * (1.48) per recall question, and a local count of reveals per rule for the
+ * beta measurement plan. None of it is progress, and none is shown as a score.
  */
 export interface SelfCheck {
   had: number;
@@ -1161,7 +1393,27 @@ export interface RevealState {
    * "Had it" in the same spot. Optional: marks saved by 1.47.0 have none.
    */
   at?: Record<string, number>;
+  /**
+   * The Recall card's "Had it" / "Not yet", per question id (mobile 1.48).
+   * Optional and added beside `self`: marks saved by 1.47 have none.
+   */
+  recall?: Record<string, SelfCheck>;
+  /**
+   * Which card each revealed widget (by id) showed when it was revealed today
+   * (mobile 1.48): a rule id, a recall question id or a term id. A reveal
+   * belongs to its card, so a widget whose card changes starts hidden again.
+   * Optional: marks saved by 1.47 have none (they stay revealed, as before).
+   */
+  cards?: Record<string, string>;
 }
+
+/** Self-checks kept per field (the newest ones); older ones drop off. */
+export const SELF_CHECKS_KEPT = 64;
+/**
+ * A self-check older than this many days is forgotten: well past the longest
+ * rest (60 days for a recall card checked twice), so it no longer changes anything.
+ */
+export const SELF_CHECK_DAYS = 120;
 
 /** "Had it" / "Not yet" this soon after the same widget's reveal is the reveal's double tap, not an answer. */
 export const REVEAL_TAP_GUARD_MS = 2000;
@@ -1183,14 +1435,28 @@ export function readReveal(raw: unknown, today: string): RevealState {
       if (LINK_ID.test(k) && typeof v === 'number' && Number.isFinite(v)) counts[k] = Math.max(0, Math.min(9999, Math.round(v)));
     }
   }
-  const self: Record<string, SelfCheck> = {};
-  if (o.self && typeof o.self === 'object') {
-    for (const [k, v] of Object.entries(o.self as Record<string, unknown>).slice(0, 64)) {
+  // The self-checks: only well-formed ones, none older than SELF_CHECK_DAYS, and the
+  // NEWEST SELF_CHECKS_KEPT (by day). Keeping the oldest instead would lose every new
+  // check once the list was full (fixed in 1.48 QA).
+  const checks = (field: unknown): Record<string, SelfCheck> => {
+    const valid: [string, SelfCheck][] = [];
+    if (!field || typeof field !== 'object' || Array.isArray(field)) return {};
+    for (const [k, v] of Object.entries(field as Record<string, unknown>)) {
       const e = v as Record<string, unknown>;
       if (!LINK_ID.test(k) || !e || typeof e !== 'object' || !isDay(e.on) || (e.last !== 'had' && e.last !== 'notyet')) continue;
-      self[k] = { had: num(e.had, 0, 9999), notYet: num(e.notYet, 0, 9999), last: e.last, on: e.on };
+      if (e.on <= today && daysBetween(e.on, today) > SELF_CHECK_DAYS) continue;
+      valid.push([k, { had: num(e.had, 0, 9999), notYet: num(e.notYet, 0, 9999), last: e.last, on: e.on }]);
     }
-  }
+    // Newest day first; on the same day, the later-saved one first. Then back to oldest-first order.
+    const kept = valid
+      .map((x, i) => ({ x, i }))
+      .sort((a, b) => (a.x[1].on === b.x[1].on ? b.i - a.i : a.x[1].on < b.x[1].on ? 1 : -1))
+      .slice(0, SELF_CHECKS_KEPT)
+      .sort((a, b) => a.i - b.i);
+    return Object.fromEntries(kept.map(({ x }) => x));
+  };
+  const self = checks(o.self);
+  const recall = checks(o.recall);
   const ids = o.day === today ? arr<unknown>(o.ids).filter((n): n is number => Number.isInteger(n)).slice(0, 32) : [];
   // Reveal times are today's only, like the marks; anything odd is dropped.
   const at: Record<string, number> = {};
@@ -1199,18 +1465,48 @@ export function readReveal(raw: unknown, today: string): RevealState {
       if (/^-?\d{1,10}$/.test(k) && typeof v === 'number' && Number.isFinite(v)) at[k] = v;
     }
   }
-  return { day: today, ids, counts, self, at };
+  // Which card each widget revealed: today's only, like the marks (1.48 QA).
+  const cards: Record<string, string> = {};
+  if (o.day === today && o.cards && typeof o.cards === 'object') {
+    for (const [k, v] of Object.entries(o.cards as Record<string, unknown>).slice(0, 32)) {
+      if (/^-?\d{1,10}$/.test(k) && typeof v === 'string' && LINK_ID.test(v)) cards[k] = v;
+    }
+  }
+  return { day: today, ids, counts, self, at, recall, cards };
 }
+
+/** The reveal counts with one more for this rule (unchanged without a valid rule id). */
+const counted = (counts: Record<string, number>, principleId: string | null) =>
+  principleId && LINK_ID.test(principleId) ? { ...counts, [principleId]: (counts[principleId] ?? 0) + 1 } : counts;
 
 /**
  * Mark one widget revealed today, and count the reveal for its rule (once per
  * widget per day). `now`: the reveal's time, kept so a quick second tap is ignored.
+ * `cardId` (1.48 QA): the card it showed, so the reveal belongs to that card only.
  */
-export function withReveal(s: RevealState, widgetId: number, principleId: string | null, now?: number): RevealState {
-  if (s.ids.includes(widgetId)) return s;
-  const counts = principleId && LINK_ID.test(principleId) ? { ...s.counts, [principleId]: (s.counts[principleId] ?? 0) + 1 } : s.counts;
-  const at = now === undefined ? s.at : { ...s.at, [String(widgetId)]: now };
-  return { ...s, ids: [...s.ids, widgetId], counts, at };
+export function withReveal(s: RevealState, widgetId: number, principleId: string | null, now?: number, cardId?: string | null): RevealState {
+  const key = String(widgetId);
+  const card = cardId && LINK_ID.test(cardId) ? cardId : undefined;
+  if (s.ids.includes(widgetId)) {
+    // Already revealed today. Only a NEW card on the same widget is a new reveal (it gets its own card and time).
+    if (!card || s.cards?.[key] === undefined || s.cards[key] === card) return s;
+    return { ...s, counts: counted(s.counts, principleId), cards: { ...s.cards, [key]: card }, at: now === undefined ? s.at : { ...s.at, [key]: now } };
+  }
+  const counts = counted(s.counts, principleId);
+  const at = now === undefined ? s.at : { ...s.at, [key]: now };
+  const cards = card ? { ...s.cards, [key]: card } : s.cards;
+  return { ...s, ids: [...s.ids, widgetId], counts, at, ...(cards ? { cards } : {}) };
+}
+
+/**
+ * Is this widget's CURRENT card revealed? A reveal belongs to the card it
+ * showed (1.48 QA): if the widget's card has changed since, it starts hidden.
+ * Marks saved by 1.47 name no card, and stay revealed as they always did.
+ */
+export function cardRevealed(s: RevealState, widgetId: number, cardId: string | null): boolean {
+  if (!s.ids.includes(widgetId)) return false;
+  const was = s.cards?.[String(widgetId)];
+  return was === undefined || was === cardId;
 }
 
 /** True within REVEAL_TAP_GUARD_MS of this widget's reveal: a "Had it" / "Not yet" tap then is ignored. */
@@ -1219,18 +1515,22 @@ export function tooSoonAfterReveal(s: RevealState, widgetId: number, now: number
   return typeof t === 'number' && now >= t && now - t < REVEAL_TAP_GUARD_MS;
 }
 
-/** The learner's self-check for a rule today (once a day; a second tap the same day changes nothing). */
-export function withSelfCheck(s: RevealState, principleId: string | null, answer: 'had' | 'notyet'): RevealState {
-  if (!principleId || !LINK_ID.test(principleId)) return s;
-  const was = s.self[principleId];
+/** Where a self-check is kept: per rule (`self`, Today's rule) or per question (`recall`, the Recall card). */
+export type CheckField = 'self' | 'recall';
+
+/** The learner's self-check for a rule (or a recall question) today (once a day; a second tap the same day changes nothing). */
+export function withSelfCheck(s: RevealState, id: string | null, answer: 'had' | 'notyet', field: CheckField = 'self'): RevealState {
+  if (!id || !LINK_ID.test(id)) return s;
+  const map = s[field] ?? {};
+  const was = map[id];
   if (was && was.on === s.day) return s;
   const next: SelfCheck = { had: (was?.had ?? 0) + (answer === 'had' ? 1 : 0), notYet: (was?.notYet ?? 0) + (answer === 'notyet' ? 1 : 0), last: answer, on: s.day };
-  return { ...s, self: { ...s.self, [principleId]: next } };
+  return { ...s, [field]: { ...map, [id]: next } };
 }
 
-/** Today's self-check for this rule, if any. */
-export function judgedToday(s: RevealState, principleId: string | null): 'had' | 'notyet' | undefined {
-  const e = principleId ? s.self[principleId] : undefined;
+/** Today's self-check for this rule (or recall question), if any. */
+export function judgedToday(s: RevealState, id: string | null, field: CheckField = 'self'): 'had' | 'notyet' | undefined {
+  const e = id ? s[field]?.[id] : undefined;
   return e && e.on === s.day ? e.last : undefined;
 }
 
@@ -1239,7 +1539,9 @@ export function withoutWidget(s: RevealState, widgetId: number): RevealState {
   if (!s.ids.includes(widgetId)) return s;
   const at = { ...s.at };
   delete at[String(widgetId)];
-  return { ...s, ids: s.ids.filter((i) => i !== widgetId), at };
+  const cards = s.cards ? { ...s.cards } : undefined;
+  if (cards) delete cards[String(widgetId)];
+  return { ...s, ids: s.ids.filter((i) => i !== widgetId), at, ...(cards ? { cards } : {}) };
 }
 
 /**
@@ -1257,6 +1559,39 @@ export function msToNextMidnight(now: number): number {
 export function thinkIdFor(s: WidgetSnapshot | null, now: number): string | null {
   const today = dayKey(now);
   return s?.think.find((t) => t.day === today)?.id ?? null;
+}
+
+/** Today's Recall card question id, if the snapshot has one. */
+export function recallIdFor(s: WidgetSnapshot | null, now: number): string | null {
+  return recallFor(s, now)?.id ?? null;
+}
+
+/** Today's Key term id, if the snapshot has one. */
+export function termIdFor(s: WidgetSnapshot | null, now: number): string | null {
+  const today = dayKey(now);
+  return s?.terms.find((t) => t.day === today)?.id ?? null;
+}
+
+/** The card a reveal widget shows right now (its rule, recall question or term id), if any. */
+export function revealCardFor(kind: WidgetKind, s: WidgetSnapshot | null, now: number): string | null {
+  if (kind === 'think') return thinkIdFor(s, now);
+  if (kind === 'question') return recallIdFor(s, now);
+  if (kind === 'revisit') return termIdFor(s, now);
+  return null;
+}
+
+/** The widget kinds whose card reveals on the widget itself. */
+export const REVEAL_KINDS: readonly WidgetKind[] = ['think', 'question', 'revisit'];
+
+/**
+ * When a recall question may come back, from its self-checks: "Not yet" brings
+ * it back from 3 days later (first in line); "Had it" rests it for 30 days, then
+ * 60 after two or more. Null = no self-check yet.
+ */
+export function recallDueFrom(e: SelfCheck | undefined): { from: string; priority: boolean } | null {
+  if (!e) return null;
+  if (e.last === 'notyet') return { from: addDays(e.on, 3), priority: true };
+  return { from: addDays(e.on, e.had >= 2 ? 60 : 30), priority: false };
 }
 
 /**
@@ -1307,7 +1642,7 @@ export function readinessConfigCopy(prefs: WidgetPrefs): ConfigCopy<'private' | 
 export function countdownConfigCopy(prefs: WidgetPrefs, examDay: string | null): ConfigCopy<'on'> {
   return {
     title: 'Show weeks to your exam?',
-    intro: 'Anyone who sees your phone can see this widget. It shows the weeks to your exam, and calm words in the final week.',
+    intro: 'Anyone who sees your phone can see this widget. It shows the weeks to your exam as a road, this week’s focus, and calm words in the final week.',
     choices: [{ value: 'on', label: 'Show weeks to my exam', hint: 'This also lets Today’s plan mention your exam. Change it any time in Settings.', recommended: true }],
     note:
       prefs.details === 'hide'

@@ -12,7 +12,7 @@ You are a senior mobile product designer and accessibility specialist.
 - Tips reveal is **sequential**: Trap → Mindset → Exam-day, one at a time.
 - Confidence buttons appear **after** an option is selected and **before** submit.
 - Scenario block collapsible on small screens.
-- Bottom tabs: Today, Learn, Practice, Play, You (`mobile/src/app/(tabs)/_layout.tsx`). Settings is reached from the gear on Today and You, not a tab. Tab bar hidden inside a quiz/mock.
+- Bottom tabs: Today, Learn, Practice, You (`mobile/src/app/(tabs)/_layout.tsx`); since 1.51 the brain games live in Practice as "Drills", and old Play links redirect there. Every tab button has role `tab`. Settings is reached from the gear on Today and You, not a tab. Tab bar hidden inside a quiz/mock.
 - Answer options are full-width cards ≥ 56px; primary actions sit in a bottom bar within thumb reach.
 - Mock navigator distinguishes answered / flagged / unanswered by shape or icon, not colour alone.
 

@@ -19,13 +19,13 @@ import { BigNum, CARD_LIFT, ICON_SIZE, T } from './ui';
  * "6-day streak". The numeral rolls +1 on a new day's first study and the
  * sprig pops once (motion.tsx useGrowth; still under Reduce Motion).
  */
-export function StreakPill({ streak, growth }: { streak: number; growth?: Growth }) {
+export function StreakPill({ streak, growth, flat = false }: { streak: number; growth?: Growth; /** Mobile 1.51 (Field Guide): no pill, no lift, on the meta line under Today's title. */ flat?: boolean }) {
   const { c, isDark } = useTheme();
   return (
     <View
       accessible
       accessibilityLabel={`${streak}-day streak`}
-      style={[
+      style={flat ? { flexDirection: 'row', alignItems: 'center', gap: 6, minHeight: 24 } : [
         {
           flexDirection: 'row',
           alignItems: 'center',
@@ -49,7 +49,7 @@ export function StreakPill({ streak, growth }: { streak: number; growth?: Growth
         color={c.clay}
         roll={growth ? { play: growth.play, from: String(growth.from[0] ?? ''), run: growth.run } : undefined}
       />
-      <T v="meta" color={c.ink2}>day streak</T>
+      <T v="meta" color={flat ? c.clay : c.ink2}>day streak</T>
     </View>
   );
 }

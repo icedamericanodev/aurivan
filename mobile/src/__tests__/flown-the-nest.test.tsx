@@ -130,7 +130,7 @@ describe('a 1.17 save with Graduate earned, opened on 1.18', () => {
     act(() => {
       r = create(<Badges />);
     });
-    press(/^Flown the Nest\. Earned/);
+    press(/^Flown the Nest\. Pressed/);
     const sheet = () => root().findByType(Modal);
     expect(textOf(sheet())).toContain('Answer 50 questions right from the last review box, so they leave review.');
     press(/^Share Flown the Nest$/);

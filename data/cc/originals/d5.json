@@ -1,0 +1,731 @@
+{
+ "_meta": {
+  "comment": "Original KaiSip practice questions for CC Domain 5, Security Operations and Incident Response, organized by the CC exam outline effective 1 Sep 2026. Each item is authored from the reviewed notes (data/cc/notes/d5.json) and public sources (NIST, ISO/IEC, CIS, FIRST, MITRE), with no reference to any prior question bank or ISC2 training text. Not affiliated with or endorsed by ISC2®. CC® is a registered trademark of ISC2, Inc. Schema: docs/content/QUESTION_SCHEMA.md; style: docs/content/EXAM_STYLE_V2.md with the CC lens in .claude/agents/isc2-cc-standards-auditor.md.",
+  "schema_version": 1
+ },
+ "domain": 5,
+ "domain_name": "Security Operations and Incident Response",
+ "weight": 17.3,
+ "questions": [
+  {
+   "id": "cc_d5_001",
+   "domain": 5,
+   "subtopic": "5.1 Data security. Encryption types",
+   "difficulty": "foundational",
+   "bloom_level": "Foundational",
+   "question": "A school's IT team must encrypt a large student records database without slowing the system. Which approach BEST fits this need?",
+   "options": {
+    "A": "Symmetric encryption with one shared secret key",
+    "B": "Hashing each record with a one-way hash function",
+    "C": "Asymmetric encryption with a public key and a private key",
+    "D": "Digital signatures on each record using a private key"
+   },
+   "correct": "A",
+   "key_concept": "Symmetric encryption is fast and suits bulk data; asymmetric encryption is slower and suits key exchange and digital signatures.",
+   "pre_read": "Notice what the team must achieve and how much data is involved. Then name what each option actually does.",
+   "correct_explanation": "Symmetric encryption uses one shared secret key and is fast, so it suits bulk data such as a whole database; the Advanced Encryption Standard (AES) is the common example. Asymmetric encryption is the runner-up because a key pair sounds stronger, but it is far slower and is used to exchange keys and sign. Real systems use it to protect the symmetric key.",
+   "wrong_explanations": {
+    "B": "Tempting because hashing is a core security tool. But a hash is one-way, so the records could never be read back; it checks integrity, not confidentiality.",
+    "C": "Closest choice: a key pair sounds stronger. But asymmetric encryption is far slower, so it is used for small jobs such as exchanging keys and signing, not for whole databases.",
+    "D": "Tempting because signatures use keys. But a signature proves who signed and that data is unchanged; anyone could still read the records."
+   },
+   "tips": [
+    "Eliminate: B hashes the records, which is one-way and keeps nothing readable, and D signs them, which proves origin but keeps nothing secret.",
+    "Final two: A beats C because symmetric encryption is fast enough for bulk data; asymmetric is slower and suits key exchange and signatures.",
+    "Exam cue: bulk data at rest or in transit points to symmetric encryption; sharing keys or proving identity points to asymmetric."
+   ],
+   "framework_ref": "ISO/IEC 27002:2022 Control 8.24 (Use of cryptography); NIST SP 800-57 Part 1 Rev. 5 (Recommendation for Key Management: Part 1 – General)",
+   "related_concepts": [
+    "Symmetric encryption",
+    "Asymmetric encryption",
+    "Advanced Encryption Standard (AES)"
+   ],
+   "_provenance": "Authored from concept: 'symmetric encryption for bulk data, asymmetric for key exchange and signatures' (notes 5.1.5 Symmetric and Asymmetric Encryption). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 pilot batch, 29 Oct 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d5_002",
+   "domain": 5,
+   "subtopic": "5.1 Data security. Media sanitization",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "A school will donate retired laptops whose solid-state drives (SSDs) held student records. Which sanitization step is BEST for the IT technician to apply before the laptops leave?",
+   "options": {
+    "A": "Delete the student files and empty the recycle bin",
+    "B": "Overwrite each drive once with standard wiping software",
+    "C": "Degauss each drive with a magnetic media eraser",
+    "D": "Purge each drive with its built-in sanitize command"
+   },
+   "correct": "D",
+   "key_concept": "Sensitive media leaving the organization is purged or destroyed; on SSDs, use the built-in sanitize command or cryptographic erase.",
+   "pre_read": "Notice the type of storage and where the laptops are going next. Then recall which methods suit that storage.",
+   "correct_explanation": "The drives held sensitive records and are leaving the school's control, so they need purging, which defeats even laboratory recovery. On solid-state drives, the built-in sanitize command reaches every storage cell. Overwriting is the runner-up: it is a clear method that suits many hard disks, but SSDs keep spare cells that ordinary writes never reach, so student data could survive.",
+   "wrong_explanations": {
+    "A": "Tempting because the files vanish from view. But deleting removes only the pointers to the data; free recovery tools can still read the records.",
+    "B": "Closest choice: overwriting clears many hard disks. But SSDs keep spare cells that normal writes cannot reach, and media leaving your control needs purging.",
+    "C": "Tempting because degaussing is a recognized purge method. But it works only on magnetic media and does nothing to the flash storage in an SSD."
+   },
+   "tips": [
+    "Eliminate: A only deletes file pointers, and C degausses, which affects magnetic media, not SSD flash storage.",
+    "Final two: D beats B because sensitive media leaving the school needs a purge, and overwriting misses an SSD's spare cells.",
+    "Exam cue: deleting is not sanitizing. Match the method to the media and to where it goes next; leaving your control means purge or destroy."
+   ],
+   "framework_ref": "NIST SP 800-88 Rev. 2 Section 3.1 (Sanitization Methods: clear, purge and destroy); ISO/IEC 27002:2022 Control 7.14 (Secure disposal or re-use of equipment)",
+   "related_concepts": [
+    "Clear, purge and destroy",
+    "Solid-state drives (SSDs)",
+    "Cryptographic erase"
+   ],
+   "_provenance": "Authored from concept: 'media leaving the organization is purged; SSDs need the built-in sanitize command' (notes 5.1.4 Media Sanitization: Clear, Purge and Destroy). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 pilot batch, 29 Oct 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d5_003",
+   "domain": 5,
+   "subtopic": "5.1 Data security. Public AI services",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "A payroll clerk realizes they pasted staff salary details into a free public AI chatbot to tidy a table. What should the clerk do FIRST?",
+   "options": {
+    "A": "Delete the conversation from the chatbot's history",
+    "B": "Report the exposure to the security team at once",
+    "C": "Finish the table in the approved AI tool instead",
+    "D": "Tell the affected staff that their salaries were exposed"
+   },
+   "correct": "B",
+   "key_concept": "Pasting sensitive data into a public AI service discloses it to an outsider; report it at once so the response team can act.",
+   "pre_read": "Notice where the data went and who controls that service now. Then weigh what each option does about the copy already sent.",
+   "correct_explanation": "Typing data into a public AI service hands it to an outside company, so this is a possible incident, and copies may already be stored. Reporting at once lets the security team assess it and involve legal counsel. Telling the staff is the runner-up: honesty matters, but whether and how to notify people is a decision for legal counsel and management once the facts are known.",
+   "wrong_explanations": {
+    "A": "Tempting because the chat disappears from view. But the provider may already have stored or logged copies, and staying quiet delays the response.",
+    "C": "Tempting because it follows the AI policy from now on. But the salary data has already left the company, and that exposure still needs reporting.",
+    "D": "Closest choice: being open with colleagues feels honest. But notification is a legal decision with set rules; the clerk reports the facts and lets the response team decide."
+   },
+   "tips": [
+    "Eliminate: A deletes a chat the provider may already have copied, and C fixes future work while the past exposure goes unreported.",
+    "Final two: B beats D because the clerk's job is to report the facts; deciding whether to notify people belongs to legal counsel and management.",
+    "Exam cue: when sensitive data reaches an outside AI tool by mistake, report it promptly through the proper channel instead of fixing or announcing it yourself."
+   ],
+   "framework_ref": "ISO/IEC 27002:2022 Control 8.12 (Data leakage prevention); ISO/IEC 27002:2022 Control 6.8 (Information security event reporting)",
+   "related_concepts": [
+    "Shadow AI",
+    "Data leakage",
+    "Event reporting"
+   ],
+   "_provenance": "Authored from concept: 'accidental disclosure to a public AI service is reported, not hidden or announced' (notes 5.1.8 Data Leakage into Public AI Services). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 pilot batch, 29 Oct 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d5_004",
+   "domain": 5,
+   "subtopic": "5.1 Data security. Classification roles",
+   "difficulty": "foundational",
+   "bloom_level": "Foundational",
+   "question": "An analyst finds an unlabeled spreadsheet of supplier bank details on a shared drive. Who is MOST appropriate to set its classification?",
+   "options": {
+    "A": "The IT administrator who manages the shared drive",
+    "B": "The analyst who found the spreadsheet",
+    "C": "The finance manager responsible for supplier payments",
+    "D": "The finance clerk who created the supplier spreadsheet"
+   },
+   "correct": "C",
+   "key_concept": "The data owner, the business manager accountable for the data, sets its classification; custodians and security staff apply it.",
+   "pre_read": "List each person's link to the spreadsheet: who made it, who stores it, who found it and who uses it.",
+   "correct_explanation": "A data set's classification is set by its owner, the business manager accountable for the data, who understands the harm if it leaked. Here that is the finance manager over supplier payments. The drive administrator is the runner-up: as custodian they look after the data day to day, but they apply the owner's rules rather than set them.",
+   "wrong_explanations": {
+    "A": "Closest choice: the administrator handles the drive every day. But a custodian follows the owner's rules for backups and access, and does not decide sensitivity.",
+    "B": "Tempting because the analyst knows security. But security staff protect data they do not own; the analyst asks the owner and treats the file as sensitive meanwhile.",
+    "D": "Tempting because the clerk made the file. But creating a file does not make someone accountable for the data; the business manager over it decides."
+   },
+   "tips": [
+    "Eliminate: B gives the decision to security staff, who protect but do not own data, and D gives it to whoever made the file.",
+    "Final two: C beats A because the accountable business manager owns the data and sets its level; the drive administrator is a custodian who applies it.",
+    "Exam cue: owners classify, custodians maintain, and everyone else applies the label. Look for the business person accountable for the data."
+   ],
+   "framework_ref": "ISO/IEC 27002:2022 Control 5.12 (Classification of information); NIST SP 800-12 Rev. 1 Section 3.4 (Information Owner/Steward)",
+   "related_concepts": [
+    "Data owner",
+    "Data custodian",
+    "Classification versus labeling"
+   ],
+   "_provenance": "Authored from concept: 'the data owner sets classification; custodians and security apply it' (notes 5.1.1 Data Classification and Labeling). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 pilot batch, 29 Oct 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d5_005",
+   "domain": 5,
+   "subtopic": "5.2 Security operations. Events and incidents",
+   "difficulty": "foundational",
+   "bloom_level": "Foundational",
+   "question": "A new analyst is studying the response plan's definitions. Which description BEST separates a security incident from an ordinary event?",
+   "options": {
+    "A": "It raises an alert in the security monitoring tool",
+    "B": "It has a negative effect on a system, such as a crash",
+    "C": "It is recorded in the logs of more than one system",
+    "D": "It harms or threatens security, or breaks policy"
+   },
+   "correct": "D",
+   "key_concept": "An incident actually or imminently harms security or breaks policy; events and alerts are not incidents until they meet that test.",
+   "pre_read": "Recall the terms the plan uses for things that happen on systems, and what moves an item from one term to the next.",
+   "correct_explanation": "An incident actually or imminently harms the confidentiality, integrity or availability of information or systems, or breaks security policy; the plan's definitions apply this test. An alert is the runner-up: it only flags an event for a person to review, and many alerts turn out to be normal activity. Declaring an incident is what starts the response plan.",
+   "wrong_explanations": {
+    "A": "Closest choice: alerts are how many incidents are found. But an alert only flags an event for review, and many alerts are false alarms.",
+    "B": "Tempting because incidents are harmful. But a crash from a software bug is an adverse event; it becomes an incident only if security is harmed or policy broken.",
+    "C": "Tempting because correlating logs helps analysts. But how many systems record an event says nothing about whether it harms security."
+   },
+   "tips": [
+    "Eliminate: B describes any adverse event, such as a crash, and C counts log sources, which says nothing about harm to security.",
+    "Final two: D beats A because an incident is defined by harm to security or a policy breach; an alert is only a flag for review.",
+    "Exam cue: event, alert and incident are steps up a ladder. Only the plan's incident test, harm or a policy breach, starts the response."
+   ],
+   "framework_ref": "NIST SP 800-61 Rev. 3 Section 1 (Introduction: events, adverse events and incidents); NIST CSF 2.0 DE.AE-08 (incidents are declared when adverse events meet the defined incident criteria)",
+   "related_concepts": [
+    "Event",
+    "Adverse event",
+    "Declaring an incident"
+   ],
+   "_provenance": "Authored from concept: 'an incident harms or threatens security or breaks policy; alerts and events do not by themselves' (notes 5.2.1 Events, Alerts and Incidents). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 pilot batch, 29 Oct 2026. Review fixes 29 Oct 2026 (standards audit 2 and blind test 2): key shortened so it no longer stands out by length or repeats 'security'.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d5_006",
+   "domain": 5,
+   "subtopic": "5.2 Security operations. Alert triage",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "A security operations center (SOC) analyst confirms that an alert came from the IT team's scheduled vulnerability scan, matching an approved change ticket. What is the analyst's BEST action?",
+   "options": {
+    "A": "Close it as expected activity, citing the change ticket",
+    "B": "Escalate the alert to the incident response lead to decide",
+    "C": "Turn off the detection rule that the scan triggered",
+    "D": "Keep the alert open until the change ticket is closed"
+   },
+   "correct": "A",
+   "key_concept": "Triage is the analyst's own job: close alerts explained by approved activity with a recorded reason, and escalate what needs the response team.",
+   "pre_read": "Notice what the analyst has already confirmed. Then ask what is left to decide about this alert.",
+   "correct_explanation": "Triage is the analyst's own job: decide whether an alert is a threat, and close it with a reason when it is not. Here the scan is confirmed against an approved change, so the analyst closes the alert and records the ticket. Escalating is the runner-up: it feels safe, but sending explained activity to the response team adds noise that can bury real incidents.",
+   "wrong_explanations": {
+    "B": "Closest choice: escalating feels cautious. But the alert is already explained by an approved change; passing it on floods the response team with noise.",
+    "C": "Tempting because it stops repeat alerts. But switching off a rule could hide a real attacker's scan; rules are tuned through the change process, not disabled.",
+    "D": "Tempting because it leaves room for doubt. But the cause is confirmed, and open alerts with known causes clutter the queue and add to alert fatigue."
+   },
+   "tips": [
+    "Eliminate: C disables a detection that real attacks would also trip, and D leaves an explained alert cluttering the queue.",
+    "Final two: A beats B because triage is the analyst's own task; an alert explained by an approved change is closed with a reason, not escalated.",
+    "Exam cue: escalate what meets the incident criteria or needs a decision above your role; close what you can explain, and record why."
+   ],
+   "framework_ref": "NIST CSF 2.0 DE.AE-02 (potentially adverse events are analyzed to better understand associated activities); ISO/IEC 27002:2022 Control 5.25 (Assessment and decision on information security events)",
+   "related_concepts": [
+    "Event triage",
+    "Alert fatigue",
+    "Change ticket"
+   ],
+   "_provenance": "Authored from concept: 'analysts close explained alerts with a reason instead of escalating everything' (notes 5.2.3 Event Triage: Use Cases, Prioritization and Correlation). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 pilot batch, 29 Oct 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d5_007",
+   "domain": 5,
+   "subtopic": "5.2 Security operations. AI-assisted triage",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "An AI triage tool rates a case harmless, yet the account has just had its multifactor authentication (MFA) turned off and a mailbox exported. What should the analyst, who cannot authorize containment, do FIRST?",
+   "options": {
+    "A": "Accept the AI tool's rating and close the case",
+    "B": "Retune the AI tool's settings for this pattern",
+    "C": "Escalate the case now and attach what the account did",
+    "D": "Disable the account at once from the admin console"
+   },
+   "correct": "C",
+   "key_concept": "AI triage ratings are leads to verify; when evidence shows likely compromise, the analyst escalates it to the incident response lead.",
+   "pre_read": "Compare what the AI tool concluded with what the account actually did. Then note what the analyst is allowed to do.",
+   "correct_explanation": "Turning off MFA and exporting a mailbox are strong signs of account takeover, whatever the AI rating says. AI rankings are leads, not verdicts, so the analyst checks the evidence and escalates it. Disabling the account is the runner-up: it would stop the export, but containment here belongs to the incident response lead, who weighs scope, evidence and timing first.",
+   "wrong_explanations": {
+    "A": "Tempting because the tool has cut alert noise well. But AI ratings can be wrong or manipulated; MFA switched off and mail exported outweigh a harmless label.",
+    "B": "Tempting because the tool clearly misjudged the case. But changing the model needs approval and comes later; the live case needs escalating now.",
+    "D": "Closest choice: speed matters in an account takeover. But this analyst cannot authorize containment; acting alone can alert the attacker and disrupt the lead's response."
+   },
+   "tips": [
+    "Eliminate: A trusts an AI label over clear evidence, and B tunes the tool while the live case waits.",
+    "Final two: C beats D because containment belongs to the incident response lead here; the analyst's job is to escalate the evidence fast.",
+    "Exam cue: treat AI triage output as a lead to check, not a verdict. When the evidence and the AI disagree, escalate the evidence."
+   ],
+   "framework_ref": "NIST CSF 2.0 RS.MA-04 (incidents are escalated or elevated as needed); ISO/IEC 27002:2022 Control 5.25 (Assessment and decision on information security events)",
+   "related_concepts": [
+    "AI-driven correlation",
+    "Account takeover",
+    "Escalation"
+   ],
+   "_provenance": "Authored from concept: 'AI triage output is a lead; evidence of compromise is escalated, not overridden or contained alone' (notes 5.2.4 AI-Driven Correlation and Alert Fatigue). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 pilot batch, 29 Oct 2026. Review fixes 29 Oct 2026 (standards audit 2 and blind test 2): key reworded to be the wordiest option by one word while staying within a few characters of the others.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d5_008",
+   "domain": 5,
+   "subtopic": "5.2 Security operations. Threat frameworks",
+   "difficulty": "foundational",
+   "bloom_level": "Foundational",
+   "question": "An analyst maps a phishing attack to MITRE ATT&CK (Adversarial Tactics, Techniques and Common Knowledge). What does a tactic MOST accurately describe?",
+   "options": {
+    "A": "A required control that the organization must put in place",
+    "B": "The attacker's goal at a stage, such as initial access",
+    "C": "The specific method an attacker uses, such as phishing",
+    "D": "One of seven fixed stages that every attack follows in order"
+   },
+   "correct": "B",
+   "key_concept": "In MITRE ATT&CK, tactics are attacker goals and techniques are the methods that reach them; it is a knowledge base, not a checklist.",
+   "pre_read": "Recall how this framework organizes attacker behavior, and which kind of entry the question names.",
+   "correct_explanation": "In ATT&CK, a tactic is the attacker's goal at a point in the attack, the why, such as gaining initial access or keeping persistence. Each tactic holds many techniques, the how. The specific method is the runner-up because the terms are easily swapped: phishing is a technique that serves the initial access tactic. ATT&CK describes real attacker behavior; it is not a control checklist.",
+   "wrong_explanations": {
+    "A": "Tempting because frameworks often list controls. But ATT&CK catalogs observed attacker behavior; it is a knowledge base, not a set of required controls.",
+    "C": "Closest choice: tactics and techniques are often confused. But the specific method, such as phishing, is a technique; the tactic is the goal it serves.",
+    "D": "Tempting because it sounds like an attack model. But seven fixed stages describe the Cyber Kill Chain; ATT&CK is a matrix of goals and methods."
+   },
+   "tips": [
+    "Eliminate: A treats ATT&CK as a required control set, and D describes the seven-stage Cyber Kill Chain, a different model.",
+    "Final two: B beats C because a tactic is the attacker's goal, the why; the method used to reach it, such as phishing, is a technique.",
+    "Exam cue: tactic is the why, technique is the how. Frameworks like ATT&CK are maps for finding detection gaps, not checklists to complete."
+   ],
+   "framework_ref": "MITRE ATT&CK knowledge base (Enterprise matrix: tactics and techniques)",
+   "related_concepts": [
+    "Tactics, techniques and procedures (TTPs)",
+    "Cyber Kill Chain",
+    "Detection gaps"
+   ],
+   "_provenance": "Authored from concept: 'ATT&CK tactics are goals and techniques are methods' (notes 5.2.7 Threat Frameworks: MITRE ATT&CK and the Kill Chain). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 pilot batch, 29 Oct 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d5_009",
+   "domain": 5,
+   "subtopic": "5.3 Incident response. First response to malware",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "A technician finds a ransom note on a school library's networked self-service computer, and the incident response lead says to follow the malware playbook until they arrive. What should the technician do FIRST?",
+   "options": {
+    "A": "Disconnect it from the network but leave it powered on",
+    "B": "Shut the computer down straight away",
+    "C": "Run the antivirus cleanup tool to remove the malware",
+    "D": "Leave it untouched until the incident response lead arrives"
+   },
+   "correct": "A",
+   "key_concept": "During an incident, practitioners act as the incident response lead directs; a malware playbook isolates the device and keeps it running.",
+   "pre_read": "Notice what the incident response lead has already told the technician to do, and what is still happening on the computer.",
+   "correct_explanation": "The lead has directed the technician to the playbook, and its first step for malware is to isolate the device: disconnecting it from the network stops the spread, and leaving it on keeps memory evidence such as running processes. Waiting untouched is the runner-up: it avoids acting alone, but the lead has already authorized the playbook, and every connected minute lets encryption reach more systems.",
+   "wrong_explanations": {
+    "B": "Tempting because it seems to halt the encryption. But powering off erases memory evidence; isolating stops the spread and keeps that evidence.",
+    "C": "Tempting because it sounds like fixing the problem. But cleanup is eradication, which waits until the lead confirms the scope, and it alters evidence.",
+    "D": "Closest choice: not acting alone is usually right. But the lead has said to follow the playbook, and waiting lets the ransomware keep reaching shared drives."
+   },
+   "tips": [
+    "Eliminate: B powers off and loses memory evidence, and C starts cleanup, which is eradication and alters evidence before the scope is known.",
+    "Final two: A beats D because the lead has directed the playbook, whose first step is isolation; waiting lets the infection spread.",
+    "Exam cue: during an incident, do what the incident response lead directs. For malware that usually means isolate, keep it running, preserve and report."
+   ],
+   "framework_ref": "NIST CSF 2.0 RS.MI-01 (incidents are contained); NIST SP 800-83 Rev. 1 (Guide to Malware Incident Prevention and Handling for Desktops and Laptops)",
+   "related_concepts": [
+    "Containment",
+    "Volatile evidence",
+    "Playbook"
+   ],
+   "_provenance": "Authored from concept: 'following the lead's direction, isolate an infected device and keep it running' (notes 5.3.3 Containment, Eradication and Recovery (+5.2.8 Malware Basics)). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 pilot batch, 29 Oct 2026. Audit fix 29 Oct 2026: setting moved away from the notes' reception-computer example; 'unplug its network cable' became 'disconnect it from the network' so the key also fits wireless devices. The audit's three-sentence stem was joined into two sentences to meet the stem rule.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d5_010",
+   "domain": 5,
+   "subtopic": "5.3 Incident response. Lifecycle phases",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "The incident response team has isolated three infected file servers and confirmed no other systems are affected. Which step should the team take FIRST?",
+   "options": {
+    "A": "Hold the lessons learned review while details are fresh",
+    "B": "Reconnect the servers to the office network",
+    "C": "Restore the three servers from their most recent nightly backups",
+    "D": "Remove the malware and attacker accounts from the three servers"
+   },
+   "correct": "D",
+   "key_concept": "Incident response runs containment, eradication, recovery, then lessons learned; restoring from backup waits until the cause is removed.",
+   "pre_read": "Name the phase the team has just finished. Then match each option to the phase it belongs to.",
+   "correct_explanation": "Containment has stopped the spread and the scope is known, so the next phase is eradication: remove the malware, the attacker's accounts and the weakness they used. Only then does recovery begin. Restoring from backups is the runner-up: it looks like a clean fix, but skipping eradication can leave the entry point open, and the latest backups may already hold the malware.",
+   "wrong_explanations": {
+    "A": "Tempting because reviews work best while memories are fresh. But lessons learned comes after recovery, and the servers are still infected.",
+    "B": "Tempting because staff need the files. But reconnecting infected servers undoes containment and lets the malware spread again.",
+    "C": "Closest choice: restoring is part of the plan. But recovery comes after eradication; the newest backups may contain the malware, and the weakness used stays open."
+   },
+   "tips": [
+    "Eliminate: A holds the review before the incident is over, and B reconnects servers that are still infected, undoing containment.",
+    "Final two: D beats C because eradication comes before recovery; restoring first can bring the threat back or leave its entry point open.",
+    "Exam cue: contain, then eradicate, then recover, then learn. When an option jumps a step, it is usually wrong."
+   ],
+   "framework_ref": "NIST SP 800-61 Rev. 3 Table 1 (Previous incident response life cycle model's phases and corresponding CSF 2.0 Functions); NIST CSF 2.0 RS.MI-02 (incidents are eradicated)",
+   "related_concepts": [
+    "Eradication",
+    "Known-good backup",
+    "Incident scope"
+   ],
+   "_provenance": "Authored from concept: 'eradication follows containment and comes before recovery' (notes 5.3.2 The Incident Response Lifecycle and CSF 2.0). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 pilot batch, 29 Oct 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d5_011",
+   "domain": 5,
+   "subtopic": "5.3 Incident response. Evidence handling",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "The incident response lead asks a security technician to carry a seized laptop to the forensic investigator in another building. Which step BEST protects its value as evidence?",
+   "options": {
+    "A": "Back up the laptop's files to a spare drive first",
+    "B": "Hash the laptop's drive before carrying it to the investigator",
+    "C": "Sign and time each handover on the custody form",
+    "D": "Open the user's recent files and note what they show"
+   },
+   "correct": "C",
+   "key_concept": "Chain of custody records every handover of evidence; entry-level staff preserve and log, while trained forensic staff collect and analyze.",
+   "pre_read": "Notice the technician's task and who will examine the laptop next. Then ask what each option does to the original.",
+   "correct_explanation": "Chain of custody is the record of everyone who held the evidence, when and why. Logging each handover with names and times lets the investigator later show the laptop was never unaccounted for. Hashing the drive is the runner-up: matching hashes do prove evidence is unchanged, but taking one needs trained forensic staff and proper tools, and a technician's attempt could alter the original.",
+   "wrong_explanations": {
+    "A": "Tempting because a backup seems to protect the data. But copying files without forensic tools changes the original, and a loose copy is weak evidence.",
+    "B": "Closest choice: matching hashes do show evidence is unchanged. But hashing is a forensic task needing proper tools; the technician's job is to preserve and record.",
+    "D": "Tempting because it seems helpful to the investigator. But opening files changes timestamps and may run malware; analysis belongs to trained staff."
+   },
+   "tips": [
+    "Eliminate: A copies the files and D opens them; both change the original and weaken it as evidence.",
+    "Final two: C beats B because the technician's role is to preserve and record custody; hashing the drive is a task for trained forensic staff.",
+    "Exam cue: entry-level staff preserve the scene and record every handover. Collecting, copying and analyzing evidence belong to trained forensic staff."
+   ],
+   "framework_ref": "ISO/IEC 27002:2022 Control 5.28 (Collection of evidence); NIST CSF 2.0 RS.AN-07 (incident data and metadata are collected, and their integrity and provenance are preserved)",
+   "related_concepts": [
+    "Chain of custody",
+    "Forensic image",
+    "Evidence integrity"
+   ],
+   "_provenance": "Authored from concept: 'entry-level staff preserve evidence and record every handover' (notes 5.3.4 Evidence Handling and Chain of Custody). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 pilot batch, 29 Oct 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d5_012",
+   "domain": 5,
+   "subtopic": "5.3 Incident response. Communications during an incident",
+   "difficulty": "analysis",
+   "bloom_level": "Analysis",
+   "question": "A hotel's booking system has a confirmed breach, and its response plan names a spokesperson for customers. What should a help desk analyst do FIRST when a guest asks if their card was stolen?",
+   "options": {
+    "A": "Answer the guest honestly, then brief the spokesperson",
+    "B": "Pass the query to the spokesperson, logging the call",
+    "C": "Assure the guest that no card data was affected",
+    "D": "Email the guest the incident notes gathered so far"
+   },
+   "correct": "B",
+   "key_concept": "During an incident, only roles named in the plan speak to customers; others pass questions on without denying or disclosing.",
+   "pre_read": "Notice what the plan says about who talks to customers, and how much the help desk analyst actually knows.",
+   "correct_explanation": "During a breach, only the roles the plan names speak to customers, because early details are often incomplete and statements carry legal duties. Passing the question on, with the guest's details logged, is honest and keeps the message accurate. Answering honestly is the runner-up: honesty matters, but the analyst's partial view could be wrong, and customer statements are the spokesperson's job.",
+   "wrong_explanations": {
+    "A": "Closest choice: honesty is a professional duty. But early facts are often incomplete, and the plan gives customer statements to the spokesperson, not the help desk.",
+    "C": "Tempting because it calms the guest. But nobody can yet stand behind that claim, and false reassurance breaks the duty to act honestly.",
+    "D": "Tempting because it seems open and transparent. But incident notes are restricted, need-to-know data; sending them outside creates a new exposure."
+   },
+   "tips": [
+    "Eliminate: C offers reassurance nobody can stand behind, and D sends restricted incident notes outside the hotel.",
+    "Final two: B beats A because the plan gives customer statements to the spokesperson; an analyst's partial view may be wrong and carries legal weight.",
+    "Exam cue: during an incident, refer outside questions to the role the plan names. Being honest means not misleading anyone, not speaking for the organization."
+   ],
+   "framework_ref": "NIST CSF 2.0 RS.CO-03 (information is shared with designated internal and external stakeholders); ISO/IEC 27002:2022 Control 5.26 (Response to information security incidents)",
+   "related_concepts": [
+    "Need to know",
+    "Breach notification",
+    "Designated spokesperson"
+   ],
+   "_provenance": "Authored from concept: 'during an incident, outside questions go to the role the plan names' (notes 5.3.5 Data Handling During an Incident). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 pilot batch, 29 Oct 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d5_013",
+   "domain": 5,
+   "subtopic": "5.4 Asset protection. Configuration management",
+   "difficulty": "foundational",
+   "bloom_level": "Foundational",
+   "question": "A desktop team documents the approved minimum security settings every new laptop must have before use. What is this MOST accurately called?",
+   "options": {
+    "A": "A rollback plan for the laptops",
+    "B": "A configuration drift report",
+    "C": "The vendor's default settings",
+    "D": "A secure configuration baseline"
+   },
+   "correct": "D",
+   "key_concept": "A secure baseline is the approved minimum configuration for a type of system; drift is any unapproved move away from it.",
+   "pre_read": "Notice what the document contains and when the team uses it.",
+   "correct_explanation": "A secure baseline is the approved minimum configuration for one type of system, applied to each new device before use and changed only through change management. A drift report is the runner-up because it works with the same settings: it lists where systems have moved away from the approved configuration, but it is not the standard itself.",
+   "wrong_explanations": {
+    "A": "Tempting because it is a configuration document. But a rollback plan lists the steps to undo a change if it fails.",
+    "B": "Closest choice: drift reports deal with the same settings. But they show where systems have strayed; the baseline is the approved standard they compare against.",
+    "C": "Tempting because vendors supply settings out of the box. But defaults favor easy setup and are publicly known; teams harden them into a baseline."
+   },
+   "tips": [
+    "Eliminate: A describes undoing a change, and C describes out-of-the-box settings, which favor easy setup over security.",
+    "Final two: D beats B because the baseline is the approved standard itself; a drift report shows where systems have moved away from it.",
+    "Exam cue: the baseline is the approved starting point, drift is any move away from it, and only change management may alter it."
+   ],
+   "framework_ref": "NIST SP 800-53 Rev. 5 CM-2 (Baseline Configuration); NIST CSF 2.0 PR.PS-01 (configuration management practices are established and applied)",
+   "related_concepts": [
+    "Hardening",
+    "Configuration drift",
+    "Change management"
+   ],
+   "_provenance": "Authored from concept: 'a secure baseline is the approved minimum configuration' (notes 5.4.4 Configuration Management and Secure Baselines). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 pilot batch, 29 Oct 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d5_014",
+   "domain": 5,
+   "subtopic": "5.4 Asset protection. End-of-life systems",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "A warehouse's networked label printers, needed for every shipment, lost firmware support last month; replacements arrive in six months. What is the network technician's BEST proposal to the warehouse manager, the risk owner?",
+   "options": {
+    "A": "Isolate the printers on their own segment under an exception",
+    "B": "Leave the printers as they are until replacements arrive",
+    "C": "Take the printers off the network until the replacements arrive",
+    "D": "Ask the vendor for one more firmware update"
+   },
+   "correct": "A",
+   "key_concept": "End-of-life systems get no security fixes; until replacement, compensating controls such as isolation run under a documented, time-limited exception.",
+   "pre_read": "Notice how long the gap lasts and what the printers do for the business. Then ask what each option costs and protects.",
+   "correct_explanation": "End-of-life firmware gets no more security fixes, so its flaws stay open. When replacement must wait, the usual answer is a compensating control: isolate the printers so only the systems that send print jobs can reach them, under a documented, time-limited exception. Taking them offline is the runner-up: it removes the exposure, but it halts shipping for six months.",
+   "wrong_explanations": {
+    "B": "Tempting because the printers still work. But working is not secure; every flaw found after support ended stays open for six months.",
+    "C": "Closest choice: it removes the exposure. But the warehouse could not print shipping labels for six months, and isolation reduces the risk without stopping the work.",
+    "D": "Tempting because updates usually fix flaws. But end of support means routine fixes have stopped; paid extended support, where offered, is a separate deal for the owner to weigh."
+   },
+   "tips": [
+    "Eliminate: B assumes working means secure, and D asks for a routine fix the vendor has stopped making.",
+    "Final two: A beats C because a compensating control under an approved exception reduces the risk while shipping continues; going offline stops the business.",
+    "Exam cue: for end-of-life systems, replace when you can; until then, isolate, restrict and monitor under a documented, time-limited exception."
+   ],
+   "framework_ref": "NIST SP 800-53 Rev. 5 SA-22 (Unsupported System Components); NIST CSF 2.0 PR.PS-03 (hardware is maintained, replaced, and removed commensurate with risk)",
+   "related_concepts": [
+    "End-of-life (EOL)",
+    "Compensating control",
+    "Risk exception"
+   ],
+   "_provenance": "Authored from concept: 'unsupported systems get compensating controls under a time-limited exception until replaced' (notes 5.4.3 End-of-Life Software and Devices). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 pilot batch, 29 Oct 2026. Review fixes 29 Oct 2026 (standards audit 2 and blind test 2): stem now states that the printers are networked and needed for every shipment, the fact that decides A over C.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d5_015",
+   "domain": 5,
+   "subtopic": "5.4 Asset protection. Change management",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "A senior database administrator asks a junior colleague to switch off disk encryption on a production server tonight, without a change request, to speed a migration. What should the junior administrator do FIRST?",
+   "options": {
+    "A": "Switch off the encryption on the senior administrator's word",
+    "B": "Get the security team's approval by email and proceed",
+    "C": "Raise a change request with a rollback plan for approval",
+    "D": "Make the change tonight and file the change request tomorrow"
+   },
+   "correct": "C",
+   "key_concept": "Changes with security impact need a request, independent approval, testing and a rollback plan before they are made, however urgent.",
+   "pre_read": "Notice what is being changed, on which system, and what paperwork already exists.",
+   "correct_explanation": "Turning off encryption on a production server is a change with security impact, so it needs a change request, an independent approval and a way back. Urgency changes how fast approval comes, not whether it is needed. Emailing the security team for approval is the runner-up: it involves security staff, but an email is not the change record, and the change process names its own approvers.",
+   "wrong_explanations": {
+    "A": "Tempting because the request comes from a senior colleague. But seniority does not replace review, approval and a rollback plan.",
+    "B": "Closest choice: security staff sound like the right approvers. But an email is not the change record, and the change process names its own approvers.",
+    "D": "Tempting because it still leaves a record. But recording after the fact means nobody approved the risk first, and a planned migration is not an emergency."
+   },
+   "tips": [
+    "Eliminate: A treats seniority as approval, and D makes the change before anyone approves it.",
+    "Final two: C beats B because the change process names its approvers and keeps the record; an email from the security team is neither.",
+    "Exam cue: no change without a request, approval and a rollback plan. Urgency speeds approval up; it never removes it."
+   ],
+   "framework_ref": "NIST SP 800-53 Rev. 5 CM-3 (Configuration Change Control); ISO/IEC 27002:2022 Control 8.32 (Change management)",
+   "related_concepts": [
+    "Change request",
+    "Rollback plan",
+    "Emergency change"
+   ],
+   "_provenance": "Authored from concept: 'no change without a request and approval, however senior the requester' (notes 5.4.6 Change Management). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 pilot batch, 29 Oct 2026. Review fixes 29 Oct 2026 (standards audit 2 and blind test 2): runner-up moved from D to B, the option candidates actually weigh against C.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d5_016",
+   "domain": 5,
+   "subtopic": "5.4 Asset protection. Patch prioritization",
+   "difficulty": "analysis",
+   "bloom_level": "Analysis",
+   "question": "A scan gives a flaw on an internal test server a Common Vulnerability Scoring System (CVSS) base score of 9.8; an actively exploited public web server flaw scores 7.5. Which should the administrator patch FIRST?",
+   "options": {
+    "A": "The test server flaw, because its severity score is higher",
+    "B": "The web server flaw, because attackers are already using it",
+    "C": "The test server flaw, because it is faster to patch safely",
+    "D": "The web server flaw, at the next quarterly patch cycle"
+   },
+   "correct": "B",
+   "key_concept": "Patch priority follows risk: a CVSS base score shows severity, but active exploitation and exposure decide what is patched first.",
+   "pre_read": "Note everything the question says about each flaw and each server, not only the numbers.",
+   "correct_explanation": "A CVSS base score measures a flaw's technical severity, not the organization's risk. The 7.5 flaw is being exploited now on an internet-facing server, so an attack is likely and close; it goes first, through the emergency change route with a quick test. The higher score is the runner-up: 9.8 sounds worse, but an internal test server is far less exposed.",
+   "wrong_explanations": {
+    "A": "Closest choice: a higher score signals a more severe flaw. But the score measures severity, not risk; this server is internal, and nobody is known to be exploiting it.",
+    "C": "Tempting because quick, safe wins feel productive. But ease of patching does not set priority; the exploited, exposed flaw is the urgent one.",
+    "D": "Tempting because it picks the right flaw. But an actively exploited flaw on a public server cannot wait for the quarterly cycle; it needs the emergency change route."
+   },
+   "tips": [
+    "Eliminate: C lets ease of patching decide, and D picks the right flaw but leaves it to the calendar; priority and timing follow risk.",
+    "Final two: B beats A because active exploitation on an internet-facing server outweighs a higher score on an internal test system.",
+    "Exam cue: CVSS measures severity, not risk. Rank patches by severity plus active exploitation, exposure and the asset's value."
+   ],
+   "framework_ref": "FIRST Common Vulnerability Scoring System (CVSS) v4.0 Specification Document Section 1 (Introduction); NIST SP 800-40 Rev. 4 (Guide to Enterprise Patch Management Planning: Preventive Maintenance for Technology)",
+   "related_concepts": [
+    "Common Vulnerability Scoring System (CVSS)",
+    "Active exploitation",
+    "Emergency change"
+   ],
+   "_provenance": "Authored from concept: 'patch by risk: exploitation and exposure can outrank a higher CVSS score' (notes 5.4.5 Patch Management (+5.5.2 CVSS)). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 pilot batch, 29 Oct 2026. Review fixes 29 Oct 2026 (standards audit 2 and blind test 2): C reworded ('faster' for 'quicker') for length balance.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d5_017",
+   "domain": 5,
+   "subtopic": "5.5 Security testing. Test types",
+   "difficulty": "foundational",
+   "bloom_level": "Foundational",
+   "question": "A retailer wants to learn what an attacker could actually achieve by chaining its weaknesses together. Which activity BEST provides this?",
+   "options": {
+    "A": "A vulnerability scan",
+    "B": "A threat modeling session",
+    "C": "A static code analysis",
+    "D": "A penetration test"
+   },
+   "correct": "D",
+   "key_concept": "A vulnerability scan lists known weaknesses; a penetration test exploits and chains them, with authorization, to show real impact.",
+   "pre_read": "Notice exactly what the retailer wants to find out, then recall what each activity produces.",
+   "correct_explanation": "A penetration test is an authorized, mostly manual attempt to exploit weaknesses and chain them, showing what an attacker could really reach. A vulnerability scan is the runner-up because the two are often confused: a scan lists known weaknesses but does not exploit or chain them, so it cannot show real impact. Both need the system owner's approval.",
+   "wrong_explanations": {
+    "A": "Closest choice: scans are the usual way to find weaknesses. But a scanner reports possible flaws without exploiting them, so it cannot show what chaining them achieves.",
+    "B": "Tempting because it asks what could go wrong. But threat modeling studies a design on paper, usually before building; it does not attack live systems.",
+    "C": "Tempting because it finds coding flaws. But static analysis reads source code without running it; it cannot show what an attacker could reach."
+   },
+   "tips": [
+    "Eliminate: B reviews a design on paper, and C reads source code; neither attacks a working system.",
+    "Final two: D beats A because a penetration test exploits and chains weaknesses to show impact; a scan only lists possible weaknesses.",
+    "Exam cue: a scan answers what weaknesses exist; a penetration test answers what an attacker could actually do with them."
+   ],
+   "framework_ref": "NIST SP 800-53 Rev. 5 CA-8 (Penetration Testing); NIST SP 800-53 Rev. 5 RA-5 (Vulnerability Monitoring and Scanning)",
+   "related_concepts": [
+    "Vulnerability scan",
+    "Penetration test",
+    "Rules of engagement"
+   ],
+   "_provenance": "Authored from concept: 'a scan lists weaknesses; a penetration test exploits them to show impact' (notes 5.5.2 Vulnerability Scanning and Penetration Testing). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 pilot batch, 29 Oct 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d5_018",
+   "domain": 5,
+   "subtopic": "5.5 Security testing. Red and blue teams",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "During a month when an authorized red team test may be running, a blue team analyst sees a file server sending large volumes of data to an unknown address. What should the analyst do FIRST?",
+   "options": {
+    "A": "Leave the transfer alone as likely red team activity",
+    "B": "Message the red team to ask whether the transfer is theirs",
+    "C": "Handle the transfer as a real attack and escalate it",
+    "D": "Block the destination address and close the alert"
+   },
+   "correct": "C",
+   "key_concept": "Blue team staff treat suspicious activity as real and escalate it under procedure; the white team, not the testers, confirms test activity.",
+   "pre_read": "Notice what the analyst knows for sure and what is only possible. Then recall who runs each part of an exercise.",
+   "correct_explanation": "Blue team staff treat suspicious activity as real and follow normal procedure, because real attackers count on defenders assuming it is a test. Escalating also tests the response itself, and the white team, which referees the exercise, confirms what is a test. Asking the red team is the runner-up: it seems efficient, but confirming tests is not the red team's role, and asking spoils the exercise.",
+   "wrong_explanations": {
+    "A": "Tempting because a test may be running. But assuming activity is a test is exactly what real attackers rely on; procedure applies either way.",
+    "B": "Closest choice: it would settle the question fast. But the white team, not the red team, confirms tests, and tipping off the testers spoils the exercise.",
+    "D": "Tempting because it stops the transfer. But blocking and closing the alert alone skips escalation and the record the response needs, test or not."
+   },
+   "tips": [
+    "Eliminate: A assumes the transfer is a test, and D blocks it and closes the alert alone, skipping escalation.",
+    "Final two: C beats B because blue team staff follow normal procedure and the white team confirms tests; asking the testers spoils the exercise.",
+    "Exam cue: during any test window, treat suspicious activity as real and follow procedure. Confirming a test is the referee's job, not yours."
+   ],
+   "framework_ref": "NIST SP 800-53 Rev. 5 CA-8(2) (Penetration Testing | Red Team Exercises); ISO/IEC 27002:2022 Control 6.8 (Information security event reporting)",
+   "related_concepts": [
+    "Red team",
+    "Blue team",
+    "White team"
+   ],
+   "_provenance": "Authored from concept: 'blue team treats suspected test activity as real; the white team confirms tests' (notes 5.5.1 Red, Blue and Purple Teams). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 pilot batch, 29 Oct 2026. Audit fix 29 Oct 2026: signal changed from the notes' unusual-login example to an outbound transfer.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d5_019",
+   "domain": 5,
+   "subtopic": "5.5 Security testing. Application testing",
+   "difficulty": "foundational",
+   "bloom_level": "Foundational",
+   "question": "A development team wants to test its web application for weak session handling while it is running. Which testing method BEST fits?",
+   "options": {
+    "A": "Software composition analysis of the third-party libraries",
+    "B": "Dynamic application security testing (DAST) on a deployed copy",
+    "C": "Threat modeling of the application's design",
+    "D": "Static application security testing (SAST) on the code"
+   },
+   "correct": "B",
+   "key_concept": "Static testing (SAST) reads source code without running it; dynamic testing (DAST) probes the running application for runtime flaws.",
+   "pre_read": "Notice what the team wants to find, then recall what each method examines.",
+   "correct_explanation": "Dynamic application security testing (DAST) probes a running copy of the application from outside, as an attacker would, so it finds runtime problems such as weak session handling and server settings. Static testing (SAST) is the runner-up: it is valuable early and points to faulty lines of code, but it reads code without running it and cannot see how sessions behave live.",
+   "wrong_explanations": {
+    "A": "Tempting because third-party code is a common weak spot. But composition analysis checks libraries for known flaws, not how the running application handles sessions.",
+    "C": "Tempting because it looks for what could go wrong. But threat modeling reviews the design on paper; it does not test the running application.",
+    "D": "Closest choice: SAST is a core application test. But it examines code without running it, so runtime behavior such as session handling stays out of view."
+   },
+   "tips": [
+    "Eliminate: A checks third-party libraries for known flaws, and C reviews the design on paper; neither tests live session behavior.",
+    "Final two: B beats D because DAST tests the running application; SAST reads code without running it and misses runtime flaws.",
+    "Exam cue: static means code at rest, tested early; dynamic means the running application, tested later. Ask whether the flaw appears only at runtime."
+   ],
+   "framework_ref": "NIST SP 800-53 Rev. 5 SA-11(8) (Developer Testing and Evaluation | Dynamic Code Analysis); NIST SP 800-53 Rev. 5 SA-11(1) (Developer Testing and Evaluation | Static Code Analysis)",
+   "related_concepts": [
+    "Static application security testing (SAST)",
+    "Dynamic application security testing (DAST)",
+    "Software composition analysis (SCA)"
+   ],
+   "_provenance": "Authored from concept: 'DAST tests the running application; SAST reads code' (notes 5.5.3 Static and Dynamic Application Testing). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 pilot batch, 29 Oct 2026. Review fixes 29 Oct 2026 (standards audit 2 and blind test 2): D shortened so the key is the wordiest option; B trimmed so it leads by only a few characters.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d5_020",
+   "domain": 5,
+   "subtopic": "5.5 Security testing. Testing AI-integrated defenses",
+   "difficulty": "analysis",
+   "bloom_level": "Analysis",
+   "question": "An authorized test last quarter showed a firm's AI email filter caught simulated phishing well, but the vendor has since replaced its model. What should the security team do FIRST?",
+   "options": {
+    "A": "Rerun the same phishing simulations on the new model",
+    "B": "Keep last quarter's passing result as evidence",
+    "C": "Ask the vendor for its new model results",
+    "D": "Let the new model learn phishing patterns itself"
+   },
+   "correct": "A",
+   "key_concept": "AI-based defenses are retested after model or data changes, because earlier test results may no longer hold.",
+   "pre_read": "Notice when the last test ran and what has happened to the filter since then.",
+   "correct_explanation": "A model change can alter what the filter catches, so last quarter's result no longer proves it works. Rerunning the same phishing simulations shows whether the new model still detects them, and other defenses can be checked for anything it now misses. The vendor's results are the runner-up: they are useful input, but the vendor tested its model in its own setting, not this firm's.",
+   "wrong_explanations": {
+    "B": "Tempting because the filter passed recently. But that test measured the old model; after a model change, earlier results may no longer hold.",
+    "C": "Closest choice: vendor results add useful information. But the vendor tested in its own setting; only the firm's own retest shows how the filter performs here.",
+    "D": "Tempting because AI tools seem to improve by themselves. But models can be evaded or poisoned and change with updates; they still need testing."
+   },
+   "tips": [
+    "Eliminate: B relies on a test of the old model, and D assumes an AI tool needs no testing because it learns.",
+    "Final two: A beats C because only the firm's own retest shows how the new model performs here; vendor results describe the vendor's setting.",
+    "Exam cue: an AI component is a control that can be fooled. Retest it after every model or data change, as after any major change."
+   ],
+   "framework_ref": "NIST AI 100-2 E2025 (Adversarial Machine Learning: A Taxonomy and Terminology of Attacks and Mitigations); NIST CSF 2.0 ID.IM-02 (improvements are identified from security tests and exercises, including those done in coordination with suppliers and relevant third parties)",
+   "related_concepts": [
+    "Model update",
+    "AI-integrated defenses",
+    "Retesting after change"
+   ],
+   "_provenance": "Authored from concept: 'AI defenses are retested after a model change' (notes 5.5.6 Testing AI-Integrated Defenses). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 pilot batch, 29 Oct 2026. Review fixes 29 Oct 2026 (standards audit 2 and blind test 2): key now says 'the same' simulations, a precise qualifier; C shortened.",
+   "style_version": 2
+  }
+ ]
+}
