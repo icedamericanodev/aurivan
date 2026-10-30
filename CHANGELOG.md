@@ -4,6 +4,11 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v12.49.1] — Clearer closest-choice explanations
+
+### Improved
+- In IT operations and business resilience, a few explanations of the closest wrong choice now say plainly what that choice is missing.
+
 ## [v12.49] — Practice and mock results, redrawn
 
 ### Improved
