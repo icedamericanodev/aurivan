@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KaiSip Grove · 02-phone-learn</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400&amp;family=Figtree:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;background:#111613}
+a{color:#A9D9BA}a:hover{color:#CBEBD6}
+.gv{font-family:'Figtree',system-ui,sans-serif;color:#ECEFE8}
+.serif{font-family:'Fraunces',Georgia,serif}
+.lbl{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#B4BFB6;font-weight:600}
+.ic{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.tab{display:flex;align-items:center;justify-content:center;gap:8px;height:48px;border-radius:16px;color:#97A39A;text-decoration:none;font-size:14px;font-weight:600;flex:1}
+.card{border-radius:24px;background:#1D2621;box-shadow:0 0 0 1px #29322B}
+.tile{display:flex;flex-direction:column;gap:10px;padding:14px;border-radius:20px;background:#1D2621;box-shadow:0 0 0 1px #29322B;color:#ECEFE8;text-decoration:none}
+.badge{width:36px;height:36px;border-radius:11px;background:#21432F;color:#A9D9BA;display:flex;align-items:center;justify-content:center}
+.dom{display:flex;align-items:center;gap:12px;padding:13px 16px;color:#ECEFE8;text-decoration:none}
+.dot{width:10px;height:10px;border-radius:3px;flex-shrink:0}
+</style>
+</head>
+<body>
+<div class="gv" style="width:390px;height:1260px;box-sizing:border-box;position:relative;background:#111613;overflow:hidden">
+  <div style="padding:54px 18px 120px;display:flex;flex-direction:column;gap:14px">
+
+    <header style="display:flex;flex-direction:column;gap:6px;padding:0 4px 6px">
+      <h1 class="serif" style="margin:0;font-size:34px;font-weight:500;letter-spacing:-.02em">Learn</h1>
+      <p style="margin:0;font-size:14px;color:#B4BFB6">Lessons start each topic. Notes go deeper.</p>
+    </header>
+
+    <a href="#" style="display:flex;flex-direction:column;gap:14px;padding:18px;border-radius:24px;background:linear-gradient(165deg,#24452F 0%,#1A3324 70%);box-shadow:inset 0 1px 0 rgba(255,255,255,.07);color:#EEF2EA;text-decoration:none">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px">
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <span class="lbl" style="color:#BCD2C2"><span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:#B99DCD;margin-right:6px"></span>Up next · IS Operations</span>
+          <h2 class="serif" style="margin:0;font-size:26px;font-weight:500;line-height:1.12">Business impact analysis comes first</h2>
+        </div>
+        <span style="width:64px;height:64px;border-radius:18px;background:#2E5440;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <svg viewBox="0 0 64 64" width="48" height="48" aria-hidden="true">
+            <path d="M32 29 V60" stroke="#A9D9BA" stroke-width="1.3" fill="none"/>
+            <path d="M32 26 L32 6 M32 26 L46 12 M32 26 L52 26 M32 26 L46 40 M32 26 L18 12 M32 26 L12 26 M32 26 L18 40 M32 26 L40 7 M32 26 L24 7" stroke="#A9D9BA" stroke-width=".9" fill="none"/>
+            <circle cx="32" cy="6" r="1.8" fill="#A9D9BA"/><circle cx="46" cy="12" r="1.8" fill="#A9D9BA"/><circle cx="52" cy="26" r="1.8" fill="#A9D9BA"/><circle cx="46" cy="40" r="1.8" fill="#A9D9BA"/><circle cx="18" cy="12" r="1.8" fill="#A9D9BA"/><circle cx="12" cy="26" r="1.8" fill="#A9D9BA"/><circle cx="18" cy="40" r="1.8" fill="#A9D9BA"/><circle cx="32" cy="26" r="3" fill="#E9A07A"/>
+          </svg>
+        </span>
+      </div>
+      <p style="margin:0;font-size:13px;color:#BCD2C2">5 min · picked where you can gain the most</p>
+      <span style="align-self:flex-start;height:48px;padding:0 20px;border-radius:14px;background:#A9D9BA;color:#0F1F16;display:flex;align-items:center;gap:8px;font-size:15px;font-weight:700"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="width:16px;height:16px"><path d="M8 5l11 7-11 7z"/></svg>Start lesson</span>
+    </a>
+
+    <label for="gv-search" style="display:flex;align-items:center;gap:10px;height:50px;padding:0 16px;border-radius:16px;background:#1D2621;box-shadow:0 0 0 1px #29322B;color:#97A39A">
+      <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+      <input id="gv-search" type="search" placeholder="Search notes, like RTO or SoD" style="flex:1;background:transparent;border:0;outline:0;color:#ECEFE8;font:inherit;font-size:16px">
+    </label>
+
+    <section aria-label="Look it up" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px">
+      <a href="#" class="tile"><span class="badge"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5.5C5 4.5 8 4.5 12 6c4-1.5 7-1.5 9-.5V19c-2-1-5-1-9 .5-4-1.5-7-1.5-9-.5z"/><path d="M12 6v13.5"/></svg></span><span style="display:flex;flex-direction:column;gap:2px"><span style="font-size:15px;font-weight:600">Study notes</span><span style="font-size:12px;color:#B4BFB6">1 read · with traps</span></span></a>
+      <a href="#" class="tile"><span class="badge"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z"/><path d="M5 17a3 3 0 0 1 3-3h11"/><path d="M9 8h6"/></svg></span><span style="display:flex;flex-direction:column;gap:2px"><span style="font-size:15px;font-weight:600">Glossary</span><span style="font-size:12px;color:#B4BFB6">Key terms, plain words</span></span></a>
+      <a href="#" class="tile"><span class="badge"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/></svg></span><span style="display:flex;flex-direction:column;gap:2px"><span style="font-size:15px;font-weight:600">Principles</span><span style="font-size:12px;color:#B4BFB6">How the exam thinks</span></span></a>
+      <a href="#" class="tile"><span class="badge"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg></span><span style="display:flex;flex-direction:column;gap:2px"><span style="font-size:15px;font-weight:600">The CISA exam</span><span style="font-size:12px;color:#B4BFB6">Booking to results</span></span></a>
+      <a href="#" class="tile" style="grid-column:1 / -1;flex-direction:row;align-items:center;gap:12px"><span class="badge"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/></svg></span><span style="flex:1;display:flex;flex-direction:column;gap:2px"><span style="font-size:15px;font-weight:600">Final review week</span><span style="font-size:12px;color:#B4BFB6">Your last seven days, day by day</span></span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="color:#97A39A;width:16px;height:16px"><path d="M9 6l6 6-6 6"/></svg></a>
+    </section>
+
+    <section aria-label="Lessons" class="card" style="display:flex;flex-direction:column;padding-top:6px">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;padding:12px 16px 6px">
+        <h2 class="serif" style="margin:0;font-size:19px;font-weight:500">Lessons</h2>
+        <span style="font-size:13px;color:#B4BFB6">0 of 66 · each ends with a check</span>
+      </div>
+      <a href="#" class="dom"><span class="dot" style="background:#72B4CB"></span><span style="flex:1;font-size:15px;font-weight:600">IS Audit</span><span style="font-size:13px;color:#97A39A;font-variant-numeric:tabular-nums">0 of 13</span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="color:#97A39A;width:16px;height:16px"><path d="M9 6l6 6-6 6"/></svg></a>
+      <div style="height:1px;background:#29322B;margin:0 16px"></div>
+      <a href="#" class="dom"><span class="dot" style="background:#8CC474"></span><span style="flex:1;font-size:15px;font-weight:600">IT Governance</span><span style="font-size:13px;color:#97A39A;font-variant-numeric:tabular-nums">0 of 10</span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="color:#97A39A;width:16px;height:16px"><path d="M9 6l6 6-6 6"/></svg></a>
+      <div style="height:1px;background:#29322B;margin:0 16px"></div>
+      <a href="#" class="dom"><span class="dot" style="background:#DDB066"></span><span style="flex:1;font-size:15px;font-weight:600">IS Acquisition</span><span style="font-size:13px;color:#97A39A;font-variant-numeric:tabular-nums">0 of 8</span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="color:#97A39A;width:16px;height:16px"><path d="M9 6l6 6-6 6"/></svg></a>
+      <div style="height:1px;background:#29322B;margin:0 16px"></div>
+      <a href="#" class="dom"><span class="dot" style="background:#B99DCD"></span><span style="flex:1;font-size:15px;font-weight:600">IS Operations</span><span style="font-size:12px;font-weight:600;color:#0F1F16;background:#A9D9BA;border-radius:8px;padding:2px 8px">Next</span><span style="font-size:13px;color:#97A39A;font-variant-numeric:tabular-nums">0 of 17</span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="color:#97A39A;width:16px;height:16px"><path d="M9 6l6 6-6 6"/></svg></a>
+      <div style="height:1px;background:#29322B;margin:0 16px"></div>
+      <a href="#" class="dom"><span class="dot" style="background:#9AAFBB"></span><span style="flex:1;font-size:15px;font-weight:600">Information Protection</span><span style="font-size:13px;color:#97A39A;font-variant-numeric:tabular-nums">0 of 18</span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="color:#97A39A;width:16px;height:16px"><path d="M9 6l6 6-6 6"/></svg></a>
+      <a href="#" style="margin:4px 16px 16px;height:46px;border-radius:14px;box-shadow:inset 0 0 0 1px #39443C;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;text-decoration:none">Prefer a guided path?</a>
+    </section>
+    <p style="margin:0;padding:0 4px;font-size:12px;color:#97A39A;line-height:1.5">Short lessons across every domain of the exam outline. IS means information systems. Original content, reviewed against public frameworks.</p>
+  </div>
+
+  <nav aria-label="Main" style="position:absolute;left:16px;right:16px;bottom:22px;height:64px;padding:0 8px;box-sizing:border-box;border-radius:22px;background:#1A231D;box-shadow:0 0 0 1px #2E3A31,0 14px 34px rgba(0,0,0,.5);display:flex;align-items:center;gap:4px">
+    <a href="#" class="tab" aria-label="Today"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21v-9"/><path d="M12 12c0-4 3-6 7-6 0 4-3 6-7 6z"/><path d="M12 14c0-3-2-5-6-5 0 3 2 5 6 5z"/></svg></a>
+    <a href="#" class="tab" aria-current="page" style="background:#2E5440;color:#CBEBD6;flex:2.2"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5.5C5 4.5 8 4.5 12 6c4-1.5 7-1.5 9-.5V19c-2-1-5-1-9 .5-4-1.5-7-1.5-9-.5z"/><path d="M12 6v13.5"/></svg>Learn</a>
+    <a href="#" class="tab" aria-label="Practice"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7l1.5 1.5L8 6"/><path d="M4 15l1.5 1.5L8 14"/><path d="M11 7.5h9"/><path d="M11 15.5h9"/></svg></a>
+    <a href="#" class="tab" aria-label="You"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg></a>
+  </nav>
+</div>
+</body>
+</html>

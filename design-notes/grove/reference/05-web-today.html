@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KaiSip Grove · 05-web-today</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400&amp;family=Figtree:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;background:#111613}
+a{color:#A9D9BA}a:hover{color:#CBEBD6}
+.gv{font-family:'Figtree',system-ui,sans-serif;color:#ECEFE8}
+.serif{font-family:'Fraunces',Georgia,serif}
+.lbl{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#B4BFB6;font-weight:600}
+.num{font-family:'Fraunces',Georgia,serif;font-variant-numeric:tabular-nums;font-weight:500;letter-spacing:-.02em}
+.ic{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.nav{display:flex;align-items:center;gap:12px;height:44px;padding:0 12px;border-radius:14px;color:#B4BFB6;text-decoration:none;font-size:15px;font-weight:600}
+.sub{display:flex;align-items:center;height:34px;padding-left:44px;color:#97A39A;text-decoration:none;font-size:14px}
+.card{border-radius:24px;background:#1D2621;box-shadow:0 0 0 1px #29322B}
+.step{width:30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'Fraunces',Georgia,serif;font-style:italic;font-size:15px}
+.row{display:flex;align-items:center;gap:12px;padding:12px 18px;color:#ECEFE8;text-decoration:none}
+.badge{width:36px;height:36px;border-radius:11px;background:#21432F;color:#A9D9BA;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.div{height:1px;background:#29322B;margin:0 18px}
+.drow{display:flex;align-items:center;gap:10px;padding:9px 0;font-size:14px}
+.dot{width:9px;height:9px;border-radius:3px;flex-shrink:0}
+.chev{color:#97A39A;width:16px;height:16px}
+</style>
+</head>
+<body>
+<div class="gv" style="min-height:1300px;background:#111613;display:flex;flex-wrap:wrap">
+
+  <aside style="flex:1 1 220px;max-width:256px;box-sizing:border-box;padding:28px 14px;display:flex;flex-direction:column;gap:26px;background:#0E1310;box-shadow:1px 0 0 #1F2822">
+    <a href="#" class="serif" style="display:flex;align-items:center;gap:10px;padding:0 12px;color:#ECEFE8;text-decoration:none;font-size:24px;font-weight:500">
+      <span style="width:32px;height:32px;border-radius:10px;background:#21432F;display:flex;align-items:center;justify-content:center"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="color:#A9D9BA;width:18px;height:18px"><path d="M12 21v-9"/><path d="M12 12c0-4 3-6 7-6 0 4-3 6-7 6z"/><path d="M12 14c0-3-2-5-6-5 0 3 2 5 6 5z"/></svg></span>kaisip</a>
+    <nav aria-label="Main" style="display:flex;flex-direction:column;gap:2px">
+      <a href="#" class="nav" aria-current="page" style="background:#2E5440;color:#CBEBD6"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21v-9"/><path d="M12 12c0-4 3-6 7-6 0 4-3 6-7 6z"/><path d="M12 14c0-3-2-5-6-5 0 3 2 5 6 5z"/></svg>Today</a>
+      <a href="#" class="nav"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5.5C5 4.5 8 4.5 12 6c4-1.5 7-1.5 9-.5V19c-2-1-5-1-9 .5-4-1.5-7-1.5-9-.5z"/><path d="M12 6v13.5"/></svg>Learn</a>
+      <a href="#" class="sub">Study notes</a><a href="#" class="sub">Glossary</a><a href="#" class="sub">Principles</a><a href="#" class="sub">About the CISA exam</a><a href="#" class="sub">Final review week</a>
+      <a href="#" class="nav"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7l1.5 1.5L8 6"/><path d="M4 15l1.5 1.5L8 14"/><path d="M11 7.5h9"/><path d="M11 15.5h9"/></svg>Practice</a>
+      <a href="#" class="sub">Practice</a><a href="#" class="sub">Drills</a><a href="#" class="sub">Mock exam</a><a href="#" class="sub">Saved</a>
+      <a href="#" class="nav"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg>You</a>
+    </nav>
+    <div style="margin-top:auto;display:flex;align-items:center;gap:10px;padding:12px;border-radius:16px;background:#1D2621;box-shadow:0 0 0 1px #29322B">
+      <span style="width:8px;height:8px;border-radius:50%;background:#A9D9BA;flex-shrink:0"></span>
+      <span style="display:flex;flex-direction:column;gap:2px"><span style="font-size:13px;font-weight:600">Synced with your phone</span><span style="font-size:12px;color:#97A39A">Same oak, same plan</span></span>
+    </div>
+  </aside>
+
+  <div style="flex:999 1 560px;min-width:0;box-sizing:border-box;padding:28px max(16px,3vw) 48px;display:flex;flex-direction:column;gap:20px">
+    <div style="display:flex;justify-content:space-between;padding-bottom:12px;box-shadow:0 1px 0 #1F2822">
+      <p class="lbl" style="margin:0">Field guide · Today</p>
+      <p class="lbl" style="margin:0">Fri 30 Oct</p>
+    </div>
+
+    <div style="display:flex;flex-wrap:wrap;gap:24px;align-items:flex-start">
+      <main style="flex:1 1 520px;max-width:720px;min-width:0;display:flex;flex-direction:column;gap:16px">
+        <header style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:12px;padding-bottom:4px">
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <h1 class="serif" style="margin:0;font-size:40px;font-weight:500;letter-spacing:-.02em;line-height:1.05">Good afternoon, Lala</h1>
+            <p style="margin:0;font-size:14px;color:#B4BFB6">1 study day this week</p>
+          </div>
+          <a href="#" style="height:44px;padding:0 16px;border-radius:14px;background:#1D2621;box-shadow:0 0 0 1px #29322B;display:flex;align-items:center;gap:8px;text-decoration:none;font-size:14px;font-weight:600"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/></svg>Set exam date</a>
+        </header>
+
+        <section aria-label="Your oak and today's plan" style="display:flex;flex-wrap:wrap;align-items:center;gap:24px;padding:22px;border-radius:24px;background:linear-gradient(165deg,#24452F 0%,#1A3324 70%);box-shadow:inset 0 1px 0 rgba(255,255,255,.07);color:#EEF2EA">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:8px;flex-shrink:0">
+            <svg viewBox="0 0 200 200" width="190" height="190" role="img" aria-label="10 of 40 answers toward your first readiness range">
+              <circle cx="100" cy="100" r="86" fill="none" stroke="#2E5440" stroke-width="14" stroke-dasharray="2.6 10.909" stroke-dashoffset="1.3" transform="rotate(-90 100 100)"/>
+              <circle cx="100" cy="100" r="86" fill="none" stroke="#A9D9BA" stroke-width="14" stroke-dasharray="2.6 10.909 2.6 10.909 2.6 10.909 2.6 10.909 2.6 10.909 2.6 10.909 2.6 10.909 2.6 10.909 2.6 10.909 2.6 10.909 0 541" stroke-dashoffset="1.3" transform="rotate(-90 100 100)"/>
+              <circle cx="100" cy="100" r="70" fill="#1A3324" stroke="#3C6B51" stroke-width="1"/>
+              <path d="M58 132 Q100 120 142 132" fill="none" stroke="#6B5844" stroke-width="1.5"/>
+              <ellipse cx="100" cy="122" rx="15" ry="11" fill="#8A6A48" stroke="#E9D9C4" stroke-width="1.2"/>
+              <path d="M100 111 L100 86" stroke="#A9D9BA" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+              <path d="M100 94 Q86 90 82 76 Q96 77 100 92Z" fill="#2E5440" stroke="#A9D9BA" stroke-width="1.4"/>
+              <path d="M100 90 Q113 84 118 70 Q104 72 100 88Z" fill="#2E5440" stroke="#A9D9BA" stroke-width="1.4"/>
+            </svg>
+            <p class="serif" style="margin:0;font-style:italic;font-size:14px;color:#BCD2C2">Fig. 1 · Seed, stage 1 of 6</p>
+          </div>
+          <div style="flex:1 1 260px;display:flex;flex-direction:column;gap:12px">
+            <div style="display:flex;justify-content:space-between;align-items:baseline"><span class="lbl" style="color:#BCD2C2">Today’s plan</span><span style="font-size:13px;color:#BCD2C2">About 22 min</span></div>
+            <div style="display:flex;align-items:center;gap:12px"><span class="step" style="background:#A9D9BA;color:#0F1F16">1</span><span style="flex:1;display:flex;flex-direction:column;gap:2px"><span style="font-size:15px;font-weight:600">Questions to revisit</span><span style="font-size:13px;color:#BCD2C2">8 ready to revisit · oldest first</span></span></div>
+            <div style="display:flex;align-items:center;gap:12px"><span class="step" style="background:rgba(17,22,19,.35);color:#BCD2C2">2</span><span style="flex:1;display:flex;flex-direction:column;gap:2px"><span style="font-size:15px;font-weight:600">IS Operations</span><span style="font-size:13px;color:#BCD2C2">10 questions · where you’ll gain most</span></span></div>
+            <div style="display:flex;flex-wrap:wrap;align-items:center;gap:14px;padding-top:4px">
+              <a href="#" style="height:52px;padding:0 26px;border-radius:16px;background:#A9D9BA;color:#0F1F16;display:flex;align-items:center;gap:10px;font-size:16px;font-weight:700;text-decoration:none">Start<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></a>
+              <span style="font-size:13px;color:#BCD2C2">Stop any time; your place is saved.</span>
+            </div>
+          </div>
+          <p class="serif" style="margin:0;flex-basis:100%;font-style:italic;font-size:14px;color:#BCD2C2"><span class="lbl" style="font-style:normal;font-size:10px;color:#BCD2C2;margin-right:8px">Plate</span>Your progress grows from what you practise here.</p>
+        </section>
+
+        <section aria-label="If you have more time" class="card" style="display:flex;flex-direction:column;padding-bottom:4px">
+          <h2 class="serif" style="margin:0;padding:18px 18px 4px;font-size:19px;font-weight:500">If you have more time</h2>
+          <a href="#" class="row"><span class="badge"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5.5C5 4.5 8 4.5 12 6c4-1.5 7-1.5 9-.5V19c-2-1-5-1-9 .5-4-1.5-7-1.5-9-.5z"/><path d="M12 6v13.5"/></svg></span><span style="flex:1;display:flex;flex-direction:column;gap:2px"><span style="font-size:12px;font-weight:600;color:#A9D9BA">Read next</span><span style="font-size:15px;font-weight:600">Network Building Blocks</span><span style="font-size:12px;color:#B4BFB6">IS Operations · about 3 min</span></span><svg class="ic chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>
+          <div class="div"></div>
+          <a href="#" class="row"><span class="badge" style="background:#3A2A22;color:#E9A07A"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 20V12M12 20V8M18 20V4"/></svg></span><span style="flex:1;display:flex;flex-direction:column;gap:2px"><span style="font-size:12px;font-weight:600;color:#E9A07A">Your weakest area</span><span style="font-size:15px;font-weight:600">Practice IS Operations</span><span style="font-size:12px;color:#B4BFB6">Most points to gain · 26% of the exam</span></span><svg class="ic chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>
+        </section>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;align-items:start">
+          <section aria-label="Mindset check" class="card">
+            <a href="#" class="row" style="padding:18px"><span class="badge"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/></svg></span><span style="flex:1;display:flex;flex-direction:column;gap:2px"><span style="font-size:12px;font-weight:600;color:#A9D9BA">Mindset check</span><span style="font-size:15px;font-weight:600">One auditor question</span><span style="font-size:12px;color:#B4BFB6">Under a minute</span></span><svg class="ic chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></a>
+          </section>
+          <section aria-label="Save a backup" class="card" style="display:flex;gap:12px;padding:18px">
+            <span class="badge"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg></span>
+            <div style="flex:1;display:flex;flex-direction:column;gap:6px">
+              <span style="font-size:15px;font-weight:600">Save a backup</span>
+              <span style="font-size:13px;color:#B4BFB6;line-height:1.45">Your progress lives only in this browser. A backup file lets you restore it if the browser clears it.</span>
+              <span style="display:flex;gap:18px"><a href="#" style="font-size:14px;font-weight:600;text-decoration:none;padding:6px 0">Download backup</a><a href="#" style="font-size:14px;font-weight:600;text-decoration:none;padding:6px 0">Not now</a></span>
+            </div>
+          </section>
+        </div>
+        <p style="margin:0;font-size:12px;color:#97A39A">KaiSip is independent and not affiliated with ISACA.</p>
+      </main>
+
+      <aside aria-label="Your standing" style="flex:1 1 280px;max-width:360px;min-width:0;display:flex;flex-direction:column;gap:16px">
+        <section aria-label="Estimated readiness" class="card" style="padding:20px;display:flex;flex-direction:column;gap:10px">
+          <span class="lbl">Estimated readiness</span>
+          <p style="margin:0;font-size:15px;font-weight:600">Not enough data yet</p>
+          <p style="margin:0;font-size:13px;color:#B4BFB6">10 of 40 for your first range. A study estimate, not a prediction.</p>
+          <p style="margin:6px 0 0;font-size:13px;color:#B4BFB6">Where you’ll gain most</p>
+          <p style="margin:0;font-size:15px;font-weight:600">IS Operations &amp; Business Resilience</p>
+          <div style="display:flex;flex-direction:column;padding-top:4px">
+            <div class="drow" style="box-shadow:0 -1px 0 #29322B"><span class="dot" style="background:#72B4CB"></span><span style="flex:1">IS Audit</span><span style="font-size:12px;color:#97A39A">2 of 30</span></div>
+            <div class="drow" style="box-shadow:0 -1px 0 #29322B"><span class="dot" style="background:#8CC474"></span><span style="flex:1">IT Governance</span><span style="font-size:12px;color:#97A39A">1 of 30</span></div>
+            <div class="drow" style="box-shadow:0 -1px 0 #29322B"><span class="dot" style="background:#DDB066"></span><span style="flex:1">IS Acquisition</span><span style="font-size:12px;color:#97A39A">1 of 30</span></div>
+            <div class="drow" style="box-shadow:0 -1px 0 #29322B"><span class="dot" style="background:#B99DCD"></span><span style="flex:1">IS Operations</span><span style="font-size:12px;color:#97A39A">6 of 30</span></div>
+            <div class="drow" style="box-shadow:0 -1px 0 #29322B,0 1px 0 #29322B"><span class="dot" style="background:#9AAFBB"></span><span style="flex:1">Info Protection</span><span style="font-size:12px;color:#97A39A">1 of 30</span></div>
+          </div>
+          <a href="#" style="font-size:14px;font-weight:600;text-decoration:none;color:#ECEFE8;padding-top:6px">How this is worked out</a>
+          <a href="#" style="font-size:14px;font-weight:600;text-decoration:none">See your progress</a>
+        </section>
+        <section aria-label="This week" class="card" style="padding:18px 20px;display:flex;flex-direction:column;gap:6px">
+          <div style="display:flex;justify-content:space-between;align-items:baseline"><h2 class="serif" style="margin:0;font-size:17px;font-weight:500">This week’s twig</h2><span style="font-size:12px;color:#E9A07A;font-weight:600">Streak starts today</span></div>
+          <svg viewBox="0 0 330 60" width="100%" role="img" aria-label="Studied on Friday">
+            <path d="M0 38 Q165 28 330 38" fill="none" stroke="#6B5844" stroke-width="2" stroke-linecap="round"/>
+            <path d="M23.6 36.7 C27 28 37 23 44 25 C41 32 32 36 23.6 36.7Z" fill="none" stroke="#39443C" stroke-width="1.3"/>
+            <path d="M70.7 34.6 C74 43 84 48 91 46 C88 39 79 35 70.7 34.6Z" fill="none" stroke="#39443C" stroke-width="1.3"/>
+            <path d="M117.9 33.4 C121 25 131 20 138 22 C135 29 126 33 117.9 33.4Z" fill="none" stroke="#39443C" stroke-width="1.3"/>
+            <path d="M165 33 C168 41 178 46 185 44 C182 37 173 33 165 33Z" fill="none" stroke="#39443C" stroke-width="1.3"/>
+            <path d="M212 33.4 C215 25 225 20 232 22 C229 29 220 33 212 33.4Z" fill="#7FC39C" stroke="#A9D9BA" stroke-width="1.3"/>
+            <path d="M259 34.6 C262 43 272 48 279 46 C276 39 267 35 259 34.6Z" fill="none" stroke="#39443C" stroke-width="1.3"/>
+            <path d="M306 36.7 C309 28 319 23 326 25 C323 32 314 36 306 36.7Z" fill="none" stroke="#39443C" stroke-width="1.3"/>
+          </svg>
+          <div aria-hidden="true" style="display:grid;grid-template-columns:repeat(7,minmax(0,1fr));font-size:11px;color:#97A39A;text-align:center"><span>M</span><span>T</span><span>W</span><span>T</span><span style="color:#ECEFE8;font-weight:700">F</span><span>S</span><span>S</span></div>
+        </section>
+        <section aria-label="Today's principle" class="card" style="padding:18px 20px;display:flex;flex-direction:column;gap:8px">
+          <p class="lbl" style="margin:0">Today’s principle</p>
+          <p class="serif" style="margin:0;font-style:italic;font-size:18px;line-height:1.35">Judge significance by its effect on decisions, not by arithmetic alone.</p>
+          <a href="#" style="font-size:14px;font-weight:600;text-decoration:none">Read this principle</a>
+        </section>
+      </aside>
+    </div>
+  </div>
+</div>
+</body>
+</html>
