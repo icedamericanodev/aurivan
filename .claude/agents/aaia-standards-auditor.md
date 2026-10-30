@@ -21,7 +21,7 @@ Read first:
 - **Governance, ownership and evidence before tooling.** Inventory, policy, ownership and risk assessment come before a new tool, a retrain or a technical fix.
 - **Explainability and evidence quality.** AI output the auditor cannot explain, reproduce or trace to its data is not reliable evidence. Vendor claims, accuracy scores and one-time validations are inputs, not assurance.
 - **Human oversight:** high-impact AI decisions need a person who understands, can override and can stop the system, plus an appeal route for the people affected.
-- **Risk-based:** effort follows impact on people and the business, not novelty.
+- **Risk-based:** effort follows the likelihood and impact of harm to people and the business (CISA `risk-sets-priority`), not novelty.
 - **Lifecycle:** data, design, validation, deployment, monitoring, change and decommissioning are all in scope.
 - **Harder than CISA on AI.** AAIA assumes CISA knowledge and does not test audit basics on their own. The deciding fact is AI-specific: drift, retraining as a change, data lineage, prompt injection, explainability, human-in-the-loop, third-party models.
 - **Lens leakage is a HARD ERROR:** a CRISC "risk owner chooses the response" or a CISM "security manager builds the program" keyed as the auditor's move; the auditor fixing, retraining, approving or signing off the model; the auditor accepting risk.

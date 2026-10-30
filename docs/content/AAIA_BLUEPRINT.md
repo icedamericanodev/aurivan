@@ -167,8 +167,9 @@ areas). Paraphrased, with the areas KaiSip teaches them in:
   accuracy scores are inputs, not assurance.
 - **Human oversight.** High-impact AI decisions need a human who can understand,
   override and stop them, and an appeal route for the people affected.
-- **Risk-based.** Audit effort follows impact on people and the business, not
-  novelty or technical complexity.
+- **Risk-based.** Audit effort follows the likelihood and impact of harm to
+  people and the business (as in CISA's `risk-sets-priority`), not novelty or
+  technical complexity.
 - **Lifecycle view.** Data, design, validation, deployment, monitoring and
   decommissioning are all in scope; a one-time validation is not ongoing
   assurance.
@@ -257,6 +258,9 @@ ISACA product) may be cited by name and number, never quoted.
 
 - ISACA does not say how many of the 90 items are unscored pre-test items for
   AAIA.
+- NIST AI RMF 1.0 (Jan 2023) is still current, but NIST's AI RMF page says it is
+  being revised under the White House AI Action Plan (no draft as of 30 Oct
+  2026). Re-check before each release; trustworthy-AI and fairness items lean on it.
 - Whether ISACA plans an AAIA outline refresh (none announced). Re-check the
   outline page every six months and before each bank release.
 - Store copy that names the June 2025 outline must be re-checked with the

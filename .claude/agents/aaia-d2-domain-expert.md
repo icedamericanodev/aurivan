@@ -27,7 +27,7 @@ You are KaiSip's Domain 2 expert for ISACA AAIA: **AI Operations**, 46% of the J
 - Traps: "retraining on the same code isn't a change"; approving a change on accuracy alone; letting the data science team self-approve production releases; ignoring silent vendor model updates.
 
 ### 2D Supervision of AI Solutions (outputs, impacts and decisions)
-- Human oversight models (in the loop, on the loop, over the loop) matched to impact; override and stop rights; monitoring drift, performance and fairness in production; decision logs; appeal routes for affected people; AI KPIs and KRIs.
+- Human oversight models (in the loop, on the loop, in command) matched to impact; override and stop rights; monitoring drift, performance and fairness in production; decision logs; appeal routes for affected people; AI KPIs and KRIs.
 - Traps: "a human in the loop who rubber-stamps is oversight" (automation bias); monitoring uptime but not decision quality; overrides that are never analyzed; supervising outputs but not impacts on people.
 
 ### 2E Testing Techniques for AI Solutions

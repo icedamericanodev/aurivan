@@ -18,7 +18,7 @@ AAIA is a paid course: quality comes before count.
 ## Domain 3 scope, by area, with the traps to build distractors from
 
 ### 3A Audit Planning and Design
-- A risk-based AI audit universe built from the AI inventory; ranking by impact on people and the business; scoping a model across its lifecycle and its third parties; criteria (policy, AI RMF, regulation); skills, specialists and their objectivity; independence when the audit function also uses or helped design AI; planning the audit's own use of AI (data handling, approval, validation).
+- A risk-based AI audit universe built from the AI inventory; ranking by the likelihood and impact of harm to people and the business; scoping a model across its lifecycle and its third parties; criteria (policy, AI RMF, regulation); skills, specialists and their objectivity; independence when the audit function also uses or helped design AI; planning the audit's own use of AI (data handling, approval, validation).
 - Traps: auditing the newest or most technical model first; scoping the algorithm but not the data and the decision process; relying on a specialist without evaluating their work; the auditor joining the model's design team.
 
 ### 3B Audit Testing and Sampling Methodologies
@@ -34,7 +34,7 @@ AAIA is a paid course: quality comes before count.
 - Traps: trusting the extract because the system produced it; pasting confidential audit data into a public AI service; treating AI-flagged anomalies as findings without follow-up; tool output that cannot be reproduced next year.
 
 ### 3E AI Audit Outputs and Reports
-- Findings with condition, criteria, cause, effect and recommendation; rating AI findings by impact on people and the business; explaining technical AI findings to the board and audit committee; the auditor recommends and management responds with owners and dates; follow-up; disclosing the audit's own use of AI and the auditor's accountability for conclusions.
+- Findings with condition, criteria, cause, effect and recommendation; rating AI findings by likelihood and impact on people and the business; explaining technical AI findings to the board and audit committee; the auditor recommends and management responds with owners and dates; follow-up; disclosing the audit's own use of AI and the auditor's accountability for conclusions.
 - Traps: reporting the technical symptom ("accuracy fell") without the business effect; recommending a specific model fix the auditor designed; letting the AI tool draft conclusions the auditor doesn't review; closing a finding on management's word without follow-up evidence.
 
 ## How you author

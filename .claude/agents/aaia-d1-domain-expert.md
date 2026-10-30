@@ -28,7 +28,7 @@ Each trap is a real misconception a CISA-level candidate or an AI enthusiast hol
 - Traps: "IT or data science owns AI risk"; "the vendor is accountable for its model's decisions"; "ban all AI" or "a tool fixes governance"; the auditor chairing or approving for the AI committee.
 
 ### 1C AI Risk Management
-- Identify, assess, respond, monitor; impact on people as well as the business; appetite and tolerance set by the board; AI risk in the enterprise risk register; AI KRIs; third-party and supply-chain AI risk.
+- Identify, assess, respond, monitor; impact on people as well as the business; appetite approved by the board, tolerances set by senior management within it (as CISA teaches), use-level criteria set by model owners inside those tolerances; AI risk in the enterprise risk register; AI KRIs; third-party and supply-chain AI risk.
 - Traps: treating AI risk only as a security risk; a one-time pre-launch assessment; the auditor deciding the risk response; scoring likelihood without the decision's impact on people.
 
 ### 1D Privacy and Data Governance Programs

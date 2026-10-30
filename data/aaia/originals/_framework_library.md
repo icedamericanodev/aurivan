@@ -147,7 +147,9 @@ https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.100-2e2025.pdf (table of contents a
 
 ## MITRE ATLAS
 
-All entries: **Verified** 30 Oct 2026 against the ATLAS data file version 5.6.0,
+All entries: **Verified** 30 Oct 2026 against the ATLAS data file version 5.6.0
+(the file now carries a note that this copy is deprecated and no longer updated;
+the IDs are still valid — re-check against atlas.mitre.org when it can be opened),
 https://raw.githubusercontent.com/mitre-atlas/atlas-data/main/dist/ATLAS.yaml
 (technique names are ATLAS's own; atlas.mitre.org itself is blocked here).
 - MITRE ATLAS AML.T0010 (AI Supply Chain Compromise)
@@ -160,6 +162,8 @@ https://raw.githubusercontent.com/mitre-atlas/atlas-data/main/dist/ATLAS.yaml
 - MITRE ATLAS AML.T0029 (Denial of AI Service)
 - MITRE ATLAS AML.T0043 (Craft Adversarial Data)
 - MITRE ATLAS AML.T0051 (LLM Prompt Injection)
+- MITRE ATLAS AML.T0051.001 (LLM Prompt Injection: Indirect)
+  - Sub-technique "Indirect" of AML.T0051; Verified 30 Oct 2026 in ATLAS data v5.6.0.
 - MITRE ATLAS AML.T0053 (AI Agent Tool Invocation)
 - MITRE ATLAS AML.T0054 (LLM Jailbreak)
 - MITRE ATLAS AML.T0056 (Extract LLM System Prompt)
