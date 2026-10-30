@@ -738,7 +738,7 @@
       "wrong_explanations": {
         "A": "Matching current capability lets infrastructure set business targets, reversing the BIA logic in which business impact drives recovery objectives.",
         "C": "Budget alone ignores business impact and regulatory exposure. Target-setting needs impact and cost weighed together, not one executive's constraint.",
-        "D": "A cost's timing is not its justification. Phasing does soften the budget hit, yet spreading a cost never makes its target warranted."
+        "D": "Phasing spreads the $14 million, but it still approves a 1-hour target no impact analysis supports. Business impact must justify a recovery target before spending is committed."
       },
       "tips": [
         "Eliminate: A lets current technology set the target, and C hands an impact-based decision to the budget holder alone.",
@@ -2057,7 +2057,7 @@
       "wrong_explanations": {
         "A": "Strict multi-entity ACID transactions and joins are the core strength of relational databases, not NoSQL.",
         "C": "A small, stable, low-volume workload gains nothing from NoSQL and suits existing relational skills.",
-        "D": "NoSQL does scale across regions well, yet a hard requirement is a filter: options that cannot meet it drop out before strengths count."
+        "D": "NoSQL does spread well across regions, but many NoSQL stores relax consistency to do it, so a hard need for strong consistency counts against them."
       },
       "tips": [
         "Eliminate: A describes classic relational transactions, and C is a small stable workload with no scale need.",
@@ -3331,7 +3331,7 @@
       "pre_read": "Two tasks must run at once. Ask whether one person can lead both without delaying recovery.",
       "correct_explanation": "Parallel workstreams need parallel leadership. A separate trained lead for network and database recovery lets both proceed at once and removes a single-person bottleneck. Running them in sequence under one engineer keeps the plan simple, but parallel work is needed to meet the RTO, so sequencing builds a predictable delay into recovery.",
       "wrong_explanations": {
-        "A": "Recovery staffing follows the critical path. One engineer in sequence does cut hand-off errors, but every named role needs depth behind it.",
+        "A": "One engineer working in sequence does avoid hand-off errors, but the RTO assumes both recoveries run at once; done one after the other, they overrun it.",
         "C": "The CIO's role is coordination and decisions; directing technical workstreams overloads the crisis lead and lacks hands-on skill.",
         "D": "A contractor arriving after declaration lacks system knowledge and adds onboarding delay when time matters most."
       },
@@ -5072,7 +5072,7 @@
       "wrong_explanations": {
         "A": "A full interruption test on an untrained team and untried plan risks a real outage. It belongs late in a maturing test program.",
         "B": "Outsourcing maintenance leaves the organization without internal ownership of its own plan and does nothing to prepare staff.",
-        "C": "An auditor would expect wider publication eventually, but a plan runs on its named roles, and people learn a role by practice, not by reading."
+        "C": "Wider publication builds general awareness, but a plan runs on its named roles. Recovery team members must be trained in their duties before the plan can be executed."
       },
       "tips": [
         "Eliminate: A risks a real outage with an untried plan, and B hands away ownership without preparing anyone.",
@@ -5760,7 +5760,7 @@
       "pre_read": "Notice developers can merge straight into the release branch. Ask which control stops unreviewed code at that point.",
       "correct_explanation": "The risk is unreviewed or unauthorized code reaching the release branch for a payments system. Requiring an approved peer review before merge is a preventive, segregating control that stops a single developer from promoting code alone. Quarterly access recertification confirms who holds repository rights, but anyone legitimately on the list could still merge unreviewed code, so it does not address the stated weakness.",
       "wrong_explanations": {
-        "A": "Recertification and merge review both limit who changes release code, but entitlement checks and transaction checks answer different risks.",
+        "A": "Recertification does confirm who may merge, but every developer on the approved list could still push unreviewed code; only review before each merge stops that.",
         "C": "Backups protect availability of the code base, not the integrity of what is merged into release.",
         "D": "Commit volume is a productivity measure; reporting it to management gives no assurance that changes were reviewed or authorized."
       },
@@ -6799,7 +6799,7 @@
       "correct_explanation": "Two monitoring sources disagree, and the contract decides which measure counts: what is monitored, from where, and which outages are excluded. Reconciling both figures with that definition establishes the facts before any commercial response. A goodwill credit may follow, but offering it first concedes an unproven breach and sets a precedent for other customers with similar terms.",
       "wrong_explanations": {
         "A": "The provider's data is not automatically authoritative. The contract's measurement definition decides, and the customer's data may reveal a real gap.",
-        "B": "Goodwill credits do protect key relationships, but money can settle a dispute about service, not one about measurement.",
+        "B": "A goodwill credit concedes a breach nobody has proven and sets a precedent. The contract's availability definition must first settle which figure is right.",
         "C": "Independent monitoring helps future disputes, but it cannot settle which figure is right for the period already claimed."
       },
       "tips": [
@@ -8025,7 +8025,7 @@
       "pre_read": "Notice that both the cutover and the rollback failed. Ask what must be understood before trying again.",
       "correct_explanation": "A post-incident review finds why the cutover and its rollback both failed, so the next plan, including a tested rollback, is built on those lessons. A new date with the vendor restarts the project, but rescheduling before understanding the failure invites the same outcome, this time with the business already knowing the fallback does not work.",
       "wrong_explanations": {
-        "A": "Rescheduling is the expected next step after a failed cutover. A date is a commitment, though, and commitments follow the plan.",
+        "A": "Agreeing a new date before learning why the rollback failed risks repeating both failures. The root cause must shape a revised plan and tested rollback first.",
         "C": "More staff does not fix a flawed plan or an untested rollback.",
         "D": "Re-approving the failed approach ignores the evidence that it did not work."
       },
@@ -11690,7 +11690,7 @@
       "pre_read": "Ask which layer the missing log covers, and which actions happen only at that layer.",
       "correct_explanation": "A cloud account's activity log records management actions: who created, changed or deleted servers, storage, network rules and access rights, through the console or programming interfaces. Providers keep only a short default history, so without a trail exported to the firm's own store, older changes by an administrator or attacker cannot be traced. Unrecorded operating system events come closest, but those are logged on each server separately, not by the account activity log.",
       "wrong_explanations": {
-        "A": "Server events and account activity both need logging; before rating a missing log, confirm what it ever recorded.",
+        "A": "Server events do need logging, but each server records its own; the account activity log never held them, so its short retention does not lose them.",
         "B": "Application errors go to each application's own log, not the account activity log.",
         "D": "Usage charges come from the provider's billing records, which exist however long the activity log is kept."
       },
