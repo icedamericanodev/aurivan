@@ -34,7 +34,7 @@ import CallItFirst from '../app/game/callit';
 import { GrowthRings } from '../components/glyphs';
 import { PageTurn, Pop, setSystemReducedMotionForTest, StateLayer } from '../components/motion';
 import { MatchTile } from '../components/game';
-import { OptionCard, Verdict } from '../components/quiz';
+import { AnswerPlate, OptionCard, Verdict } from '../components/quiz';
 import { Stem } from '../components/ui';
 import { getCertification } from '../content/certifications';
 import { CISA_LESSONS } from '../content/lessons/cisa';
@@ -251,8 +251,9 @@ describe.each([
       expect(resp.correct).toBe(right);
       // The answer screen marks the key at its SHUFFLED letter.
       const q = findQuestion('cisa', qid)!;
-      const best = cards().find((n) => n.props.state === 'correct');
-      expect(best?.props.letter).toBe(originalToDisplay(q.correct, active().perms[qid]));
+      // Premium round 2: the key is the best answer's row on the Fig. 7 plate.
+      const best = root().findByType(AnswerPlate).props.best;
+      expect(best.letter).toBe(originalToDisplay(q.correct, active().perms[qid]));
       if (!right) {
         // The journal files the ORIGINAL letter picked, not the display one.
         const m = selectCert(useProgress.getState(), 'cisa').mistakes[qid];

@@ -45,6 +45,16 @@
  * - The source line stays, as text only.
  * - The answer opens with the question recapped in two lines ("Show question"
  *   opens it whole); a screen reader hears the whole question there.
+ *
+ * Premium round 2 (REPORT spec 2, the Plate register's Fig. 7), practice and review only:
+ * - A running head ("Practice · IS Audit" / "Question 4 of 10") over the recap.
+ * - The verdict word in ink; the leaf keeps its colour and its ✗ / ✓.
+ * - One plate, "Fig. 7 · Your pick, and the best answer" (a right answer: "Fig. 7 · Your answer",
+ *   one ✓ row). "Your pick" replaces "Your answer" on this screen.
+ * - "KEY IDEA" over the quotation and the Exam cue as a label (no vine rule), on the vine's timing.
+ * - The coach line names the learner's own pick when the tips do ("Your pick, B, is one of the two
+ *   to rule out first." / "You reached the final two: B against D."; engine/pickCoach.ts).
+ * - "Next question" is the plate button over a hairline. A mock is unchanged.
  */
 import * as Router from 'expo-router';
 import { router, useFocusEffect } from 'expo-router';
@@ -70,13 +80,14 @@ import { LeafSmall } from '../components/glyphs';
 import { ArrowRight, BookOpen, Bookmark, BookmarkCheck, ChevronLeft, Compass, Flag, ICON_STROKE, LayoutGrid, Lightbulb, PencilLine, Play, X } from '../components/icons';
 import {
   AnswerMore,
+  AnswerPlate,
   AnswerRecap,
+  KeyIdeaCue,
   MORE_FOCUS_BACK_MS,
   ConfidenceRow,
   FEEDBACK_DELAY,
   OptionCard,
   VINE_ARRIVES,
-  PickNote,
   Rise,
   ScenarioBlock,
   SourceLine,
@@ -110,6 +121,8 @@ import { RETEST_LINE, type Confidence } from '../engine/srs';
 import { shortDate } from '../lib/format';
 import { priorityWord } from '../engine/games/priorityLens';
 import { missCoachLine } from '../engine/slipCoach';
+import { pickCoachLine } from '../engine/pickCoach';
+import { RunningHead } from '../components/fieldguide';
 import { eliminateTip, runnerUp, splitMissTips, tipParts } from '../engine/tips';
 import { finishSession } from '../lib/finishSession';
 import { advancePath } from '../lib/sessions';
@@ -571,11 +584,16 @@ export default function SessionScreen() {
   const pickedOriginal = response ? displayToOriginal(response.display, perm) : undefined;
   const whyWrong = pickedOriginal && pickedOriginal !== q.correct ? q.wrongExplanations[pickedOriginal] : undefined;
   const correctDisplay = originalToDisplay(q.correct, perm);
+  // Premium round 2 (web v12.47 parity): after a miss, first a line about the learner's OWN pick, read
+  // from the tips on ORIGINAL letters and said in DISPLAY letters ("Your pick, B, is one of the two to
+  // rule out first." / "You reached the final two: B against D."). Only when the tips name the pick
+  // exactly; otherwise the usual line (the closest wrong choice, a tagged slip, or the neutral line).
   const coach = !response
     ? ''
     : response.correct
       ? 'Clean read.'
-      : missCoachLine(Boolean(pickedOriginal && pickedOriginal === runnerUp(q.tips, q.correct)), taggedSlip);
+      : (pickCoachLine(q.tips, q.correct, pickedOriginal, perm) ??
+        missCoachLine(Boolean(pickedOriginal && pickedOriginal === runnerUp(q.tips, q.correct)), taggedSlip));
   const flagged = active.flagged.includes(qid);
   const shownFlagged = active.flagged.includes(shownQid);
   // Build E: why this question is here ("Weak spot", "Mixed review"…).
@@ -895,45 +913,39 @@ export default function SessionScreen() {
           ) : (
             response && (
               <>
-                {/* Answer: recap → verdict → your pick → best answer → (after a miss: Key idea + Exam cue → Why, folded →
+                {/* Answer (premium round 2, the Field Guide answer): running head → recap → verdict →
+                    Fig. 7 (your pick against the best answer) → (after a miss: Key idea + Exam cue → Why, folded →
                     Eliminate / Final two; after a right answer: Why → the whole vine) → source */}
+                {/* Where you are: "Practice · IS Audit" and "Question 4 of 10" (the set's own length, never the bank's). */}
+                <RunningHead
+                  section={[active.mode === 'review' ? 'Review' : 'Practice', domain?.short].filter(Boolean).join(' · ')}
+                  aside={`Question ${active.index + 1} of ${total}`}
+                  style={{ marginTop: space.sm }}
+                />
                 {/* Mobile 1.49 (premium pass §2.1): the question in two lines, with "Show question". */}
-                <StemRecap key={qid} stem={q.stem} scenario={q.scenario} />
+                <StemRecap key={qid} stem={q.stem} scenario={q.scenario} field />
                 <View onLayout={(e) => (verdictBottom.current = e.nativeEvent.layout.y + e.nativeEvent.layout.height)}>
-                  <Verdict ref={verdictRef} correct={response.correct} coach={coach} best={response.correct ? undefined : correctDisplay} />
+                  <Verdict ref={verdictRef} correct={response.correct} coach={coach} best={response.correct ? undefined : correctDisplay} field />
                 </View>
                 {/* Lined up with the coach line above it (left 50, under "Correct"). */}
                 {/* Only after a RIGHT hinted answer (UX H1): a wrong one counts nothing, so "half" would be untrue. */}
                 {response.assisted && response.correct && <T v="meta" style={{ marginTop: space.xs, marginLeft: verdictIndent }}>{HINT_AFTER_LINE}</T>}
                 {/* A right retest (under 4 hours after a miss) is not promoted: say when it is back. */}
                 {response.retest && response.correct && <T v="meta" style={{ marginTop: space.xs, marginLeft: verdictIndent }}>{RETEST_LINE}</T>}
-                <Rise delay={FEEDBACK_DELAY.rows}>
-                  {/* Mobile 1.43: the DISPLAY letter sits in each row's badge (no ✓ / ✗ discs: the verdict leaf is
-                      the screen's one mark) and in every spoken label. The pick's own note sits under its red row. */}
-                  <View style={{ marginTop: space.lg }}>
-                    {!response.correct && pickedOriginal && (
-                      <>
-                        <OptionCard
-                          letter={response.display}
-                          text={q.options[pickedOriginal] ?? ''}
-                          state="wrong"
-                          mark="letter"
-                          tag="Your answer"
-                          spoken={`Your answer, ${response.display}, not correct: ${q.options[pickedOriginal] ?? ''}`}
-                        />
-                        {whyWrong && <PickNote letter={response.display} text={renderText(whyWrong, perm)} />}
-                      </>
-                    )}
-                    <OptionCard
-                      letter={correctDisplay}
-                      text={q.options[q.correct] ?? ''}
-                      state="correct"
-                      mark="letter"
-                      tag="Best answer"
-                      spoken={`Best answer, ${correctDisplay}: ${q.options[q.correct] ?? ''}`}
-                    />
-                  </View>
-                </Rise>
+                {/* Premium round 2: Fig. 7, one plate. After a miss: your pick (with "Why not B") and the best answer,
+                    a hairline between; after a right answer: "Your answer", one ✓ row. DISPLAY letters on screen and
+                    in every spoken label; the options are looked up by their ORIGINAL letters. The plate rises in,
+                    then its rows 40 ms apart, from where the rows always started (FEEDBACK_DELAY.rows). */}
+                <AnswerPlate
+                  key={`${qid}:plate`}
+                  delay={FEEDBACK_DELAY.rows}
+                  pick={
+                    !response.correct && pickedOriginal
+                      ? { letter: response.display, text: q.options[pickedOriginal] ?? '', why: whyWrong ? renderText(whyWrong, perm) : undefined }
+                      : undefined
+                  }
+                  best={{ letter: correctDisplay, text: q.options[q.correct] ?? '' }}
+                />
                 {response.correct ? (
                   <>
                     <Rise delay={FEEDBACK_DELAY.why}>
@@ -949,14 +961,15 @@ export default function SessionScreen() {
                 ) : (
                   <>
                     {/* The short, memorable lines first: the Key idea and the Exam cue. They arrive in reading order,
-                        after the rows above them (motion round 2, 3a: they used to show at the tap, before the rows). */}
+                        after the rows above them (motion round 2, 3a: they used to show at the tap, before the rows).
+                        Premium round 2: "KEY IDEA" over the quotation (no vine rule) and the Exam cue as a label.
+                        Its arrival is still the vine's (VINE_ARRIVES): `visible` and its one tick wait for it. */}
                     <Rise delay={FEEDBACK_DELAY.why}>
                       <View ref={vineRef} collapsable={false} onLayout={checkVine} testID="feedback-vine">
-                        <Vine
+                        <KeyIdeaCue
                           key={`${qid}:a`}
                           keyIdea={q.keyConcept}
-                          tips={missTips.first.map((i) => renderText(q.tips[i], perm))}
-                          tipIndex={missTips.first}
+                          cues={missTips.first.map((i) => tipParts(renderText(q.tips[i], perm), i))}
                           visible={vineVisible}
                         />
                       </View>
@@ -1036,7 +1049,8 @@ export default function SessionScreen() {
         </ScrollView>
 
         {/* Sticky bottom action, within thumb reach */}
-        <StickyFooter onHeight={setFooterH}>
+        {/* Practice and review (premium round 2): the plate button over a hairline. A mock keeps its footer. */}
+        <StickyFooter onHeight={setFooterH} rule={!isMock}>
           {isMock ? (
             // Icon AND word on every button (mobile 1.24), each at least 56 tall (Button) and 56 wide.
             // Wraps at large text; Next then takes a full row of its own.
@@ -1082,6 +1096,8 @@ export default function SessionScreen() {
                   (the answer screen): "Next question", and inert. */}
               <Button
                 key="primary"
+                // The Field Guide's plate button (52 tall, 12pt corners), set here so it holds whatever Button's default is.
+                shape="plate"
                 label={turning ? 'Next question' : submitted ? (isLast ? (singleQuestion ? 'Done' : 'See results') : 'Next question') : 'Check answer'}
                 onPress={() => {
                   if (turning) return;

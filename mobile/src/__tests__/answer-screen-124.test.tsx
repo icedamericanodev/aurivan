@@ -21,6 +21,8 @@ import { moveFocus } from '../lib/a11y';
 import { haptic } from '../lib/haptics';
 import { RETEST_LINE } from '../engine/srs';
 import { NEUTRAL_MISS_LINE, RUNNER_UP_LINE } from '../engine/slipCoach';
+import { pickCoachLine } from '../engine/pickCoach';
+import { displayToOriginal } from '../engine/shuffle';
 import { TIMES_UP_DETAIL, TIMES_UP_LINE } from '../engine/resultsCopy';
 import { selectCert, useProgress } from '../store/progress';
 import { useSession } from '../store/session';
@@ -128,14 +130,15 @@ describe('the answer screen after a miss', () => {
     press('Check answer');
   };
 
-  it('order: Not quite, your answer, best answer, Key idea, Exam cue, Why, Eliminate two, Final two', () => {
+  it('order: Not quite, your pick, best answer, Key idea, Exam cue, Why, Eliminate two, Final two', () => {
     missRich();
     // Mobile 1.43: Eliminate two and Final two sit inside the "Read more" fold.
     pressStarting('Read more');
     const t = allText();
     // "Why D" (the heading), not the pick's own "Why not B" note under its row (mobile 1.43).
     const at = (s: string) => (s === 'Why ' ? t.search(/Why [A-D]\b/) : t.indexOf(s));
-    const order = ['Not quite', 'Your answer', 'Best answer', 'Key idea', 'Exam cue', 'Why ', 'Eliminate two', 'Final two'].map(at);
+    // Premium round 2: "Your pick" (not "Your answer") on the Fig. 7 plate.
+    const order = ['Not quite', '✗ Your pick', '✓ Best answer', 'Key idea', 'Exam cue', 'Why ', 'Eliminate two', 'Final two'].map(at);
     expect(order.every((i) => i >= 0)).toBe(true);
     expect([...order].sort((a, b) => a - b)).toEqual(order);
   });
@@ -168,19 +171,25 @@ describe('the answer screen after a miss', () => {
     expect(moreRowLabels(root())).toContain('Report a problem with this question');
   });
 
-  it('the coach line is neutral for an untagged miss', () => {
+  it('an untagged miss never guesses: the pick-aware line from the tips, else the neutral one', () => {
     startFromIds('cisa', [others[0].id, others[1].id], 'T');
     mount(<SessionScreen />);
     pickBy(false);
     press('Check answer');
     const coach = root().findByType(Verdict).props.coach as string;
-    // Neutral unless the runner-up tip applies (that line comes from the question itself).
+    // Premium round 2 (web v12.47 parity): the tips name the pick, so the line says so, in DISPLAY letters.
+    const s = useSession.getState().active!;
+    const q = others[0];
+    const picked = displayToOriginal(s.responses[q.id].display, s.perms[q.id]);
+    const expected = pickCoachLine(q.tips, q.correct, picked, s.perms[q.id]) ?? NEUTRAL_MISS_LINE;
+    expect(coach).toBe(expected);
     expect(coach).not.toContain('Check who you are');
     expect(allText()).not.toContain('Check who you are in the question.');
-    expect([NEUTRAL_MISS_LINE, RUNNER_UP_LINE]).toContain(coach);
+    expect(coach).not.toMatch(/runner/i);
+    expect(coach === RUNNER_UP_LINE).toBe(false);
   });
 
-  it('a tagged "acted as the wrong person" slip gets its own line', () => {
+  it('a tagged "acted as the wrong person" slip: the pick-aware line first, the slip line as the fallback', () => {
     const q = others[0];
     act(() => {
       useProgress.getState().recordMistake('cisa', q.id, 'A');
@@ -190,8 +199,12 @@ describe('the answer screen after a miss', () => {
     mount(<SessionScreen />);
     pickBy(false);
     press('Check answer');
-    // (A runner-up pick would still say so; otherwise the tagged slip's line.)
-    expect(['Check who you are in the question.', RUNNER_UP_LINE]).toContain(root().findByType(Verdict).props.coach);
+    // Premium round 2: a line about this very pick, read from its tips, comes first (never a guess);
+    // the tagged slip's line is the fallback when the tips don't name the pick.
+    const s = useSession.getState().active!;
+    const picked = displayToOriginal(s.responses[q.id].display, s.perms[q.id]);
+    const expected = pickCoachLine(q.tips, q.correct, picked, s.perms[q.id]) ?? 'Check who you are in the question.';
+    expect(root().findByType(Verdict).props.coach).toBe(expected);
   });
 
   it('a miss gets the neutral tap, never the error buzz; a right answer keeps success', () => {

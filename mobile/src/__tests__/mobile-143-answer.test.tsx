@@ -4,8 +4,9 @@
  *    explanation; "Read more" opens all of it, "Show less" closes all of it;
  *    nothing is dropped (Final two stays, even after a runner-up pick);
  *  - the rows carry the DISPLAY letter in their badge and in every spoken label
- *    ("Your answer, B, not correct: …", "Best answer, D: …");
- *  - the pick's own note sits under its red row as "Why not B", never a header,
+ *    (premium round 2, the Fig. 7 plate: "Your pick, B, not the best answer: … Why not B: …",
+ *    "Best answer, D: …");
+ *  - the pick's own note sits in its row as "Why not B: …", never a header,
  *    so "Why D" is the one "Why" heading on the screen;
  *  - at ×1.3 text the coach line starts at the gutter;
  *  - the dark wrongBg is the calmer #2C1A1D.
@@ -19,7 +20,7 @@ import { tipParts } from '../engine/tips';
 import { useProgress } from '../store/progress';
 import { useSession } from '../store/session';
 import SessionScreen from '../app/session';
-import { OptionCard, PickNote, Verdict, VERDICT_INDENT, Vine } from '../components/quiz';
+import { AnswerPlate, Verdict, VERDICT_INDENT, Vine } from '../components/quiz';
 import { dark } from '../theme/tokens';
 
 jest.mock('@react-native-async-storage/async-storage', () =>
@@ -137,34 +138,34 @@ describe('the Read more fold holds Eliminate two and Final two', () => {
   });
 });
 
-describe('the answer rows', () => {
-  it('say the DISPLAY letter in their spoken labels, and show it in the badge', () => {
+describe('the answer rows (the Fig. 7 plate, premium round 2)', () => {
+  it('say the DISPLAY letter in their spoken labels, and show it in the disc', () => {
     const { picked, best } = miss();
-    const rows = root().findAllByType(OptionCard);
-    const mine = rows.find((n) => n.props.state === 'wrong')!;
-    const key = rows.find((n) => n.props.state === 'correct')!;
-    expect(mine.props.letter).toBe(picked);
-    expect(key.props.letter).toBe(best);
-    expect(mine.props.mark).toBe('letter');
-    expect(labelled(new RegExp(`^Your answer, ${picked}, not correct: `)).length).toBeGreaterThan(0);
-    expect(labelled(new RegExp(`^Best answer, ${best}: `)).length).toBeGreaterThan(0);
-    // The tags no longer carry "· B" on screen; the badge does.
-    expect(allText()).not.toMatch(/Your answer ·|Best answer ·/);
+    const plate = root().findByType(AnswerPlate);
+    expect(plate.props.pick.letter).toBe(picked);
+    expect(plate.props.best.letter).toBe(best);
+    expect(labelled(new RegExp(`^Your pick, ${picked}, not the best answer: `)).length).toBe(1);
+    expect(labelled(new RegExp(`^Best answer, ${best}: `)).length).toBe(1);
+    // The keys carry no "· B" on screen; the disc does.
+    expect(allText()).not.toMatch(/Your pick ·|Best answer ·/);
+    // "Your pick" replaces "Your answer" on this screen.
+    expect(allText()).not.toContain('Your answer');
   });
 
-  it('the pick’s note sits under its red row as "Why not B", and "Why D" is the one Why heading', () => {
+  it('the pick’s note sits in its row as "Why not B", and "Why D" is the one Why heading', () => {
     const { picked, best, perm } = miss();
-    const note = root().findByType(PickNote);
-    expect(note.props.letter).toBe(picked);
+    const plate = root().findByType(AnswerPlate);
     // The note of the option the learner picked: found by its ORIGINAL letter, shown with display letters.
-    expect(note.props.text).toBe(renderText(rich.wrongExplanations[displayToOriginal(picked, perm)]!, perm));
-    expect(labelled(new RegExp(`^Why not ${picked}: `)).length).toBe(1);
+    const note = renderText(rich.wrongExplanations[displayToOriginal(picked, perm)]!, perm);
+    expect(plate.props.pick.why).toBe(note);
+    // One stop for the row, its note included.
+    expect(labelled(new RegExp(`^Your pick, ${picked}, not the best answer: .*\\. Why not ${picked}: `)).length).toBe(1);
     const whyHeaders = root().findAll((n) => typeof n.type === 'string' && n.props.accessibilityRole === 'header' && typeof n.props.children === 'string' && /^Why /.test(n.props.children));
     expect(whyHeaders.map((n) => n.props.children)).toEqual([`Why ${best}`]);
-    // Order: your answer, its note, the best answer.
+    // Order: your pick, its note, the best answer.
     const t = allText();
-    expect(t.indexOf('Your answer')).toBeLessThan(t.indexOf(`Why not ${picked}`));
-    expect(t.indexOf(`Why not ${picked}`)).toBeLessThan(t.indexOf('Best answer'));
+    expect(t.indexOf('✗ Your pick')).toBeLessThan(t.indexOf(`Why not ${picked}`));
+    expect(t.indexOf(`Why not ${picked}`)).toBeLessThan(t.indexOf('✓ Best answer'));
   });
 });
 
