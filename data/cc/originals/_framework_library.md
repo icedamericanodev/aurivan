@@ -110,6 +110,18 @@ were removed on 29 Oct 2026, audit pilot 2, S7.)
   - Verified, 30 Oct 2026, against sp800-53r5-catalog.json (NIST OSCAL catalog, release 5.2.0; title and text): design the architecture with a defense-in-depth approach so "adversaries must overcome multiple controls to achieve their objective", with the allocated controls operating "in a coordinated and mutually reinforcing manner". Fits four controls sharing one administrator password failing as one layer. Used in cc_d4_027.
 - NIST SP 800-53 Rev. 5 SC-7(15) (Boundary Protection | Networked Privileged Accesses)
   - Verified, 30 Oct 2026, against sp800-53r5-catalog.json (NIST OSCAL catalog, release 5.2.0; title and text): "Route networked, privileged accesses through a dedicated, managed interface for purposes of access control and auditing." Fits moving switch and firewall admin pages to a management VLAN only network staff can reach. Used in cc_d4_038.
+- NIST SP 800-53 Rev. 5 CP-2 (Contingency Plan)
+  - Verified, 30 Oct 2026, against sp800-53r5-catalog.json (NIST OSCAL catalog, release 5.2.0; title and text): the plan "Addresses eventual, full system restoration without deterioration of the controls originally planned and implemented". Fits restoring AI threat monitoring early, beside the first critical systems. Used in cc_d2_030.
+- NIST SP 800-53 Rev. 5 CP-9 (System Backup)
+  - Verified, 30 Oct 2026, against sp800-53r5-catalog.json (NIST OSCAL catalog, release 5.2.0; title and text): "Conduct backups of system-level information contained in the system", where system-level information "includes system state information, operating system software, middleware, application software". Fits backing up a chatbot's model, prompts and settings, not only its documents. Used in cc_d2_029.
+- NIST SP 800-53 Rev. 5 CM-2(3) (Baseline Configuration | Retention of Previous Configurations)
+  - Verified, 30 Oct 2026, against sp800-53r5-catalog.json (NIST OSCAL catalog, release 5.2.0; title and text): "Retain [...] previous versions of baseline configurations of the system to support rollback", including "configuration files, configuration records". Fits versioned copies of a model and its settings that restore together. Used in cc_d2_029.
+- NIST SP 800-53 Rev. 5 AT-2(1) (Literacy Training and Awareness | Practical Exercises)
+  - Verified, 30 Oct 2026, against sp800-53r5-catalog.json (NIST OSCAL catalog, release 5.2.0; title and text): "Provide practical exercises in literacy training that simulate events and incidents"; the discussion names no-notice social engineering and spear phishing exercises. Fits designing a phishing simulation. Used in cc_d2_040.
+- NIST SP 800-53 Rev. 5 AT-2(6) (Literacy Training and Awareness | Cyber Threat Environment)
+  - Verified, 30 Oct 2026, against sp800-53r5-catalog.json (NIST OSCAL catalog, release 5.2.0; title and text): "Provide literacy training on the cyber threat environment"; the discussion says "threat literacy training by the organization is dynamic" because threats change. Fits updating awareness content for AI-written lures. Used in cc_d2_038.
+- NIST SP 800-53 Rev. 5 PM-6 (Measures of Performance)
+  - Verified, 30 Oct 2026, against sp800-53r5-catalog.json (NIST OSCAL catalog, release 5.2.0; title and text): "Develop, monitor, and report on the results of information security and privacy measures of performance"; organizations "consider aligning measures of performance with the organizational risk tolerance". Fits revising KRI thresholds after the board lowers its tolerance. Used in cc_d2_044.
 
 ### SP 800-34 Rev. 1, Contingency Planning Guide for Federal Information Systems (May 2010, updated Nov 2010)
 - NIST SP 800-34 Rev. 1 Section 2.2 (Types of Plans: Business Continuity Plan and Disaster Recovery Plan)
@@ -117,16 +129,28 @@ were removed on 29 Oct 2026, audit pilot 2, S7.)
 - NIST SP 800-34 Rev. 1 Section 3.4.3 (Alternate Sites)
 - NIST SP 800-34 Rev. 1 Section 3.5 (Plan Testing, Training, and Exercises)
   - Verified 29 Oct 2026 against the PDF table of contents and text (nvlpubs.nist.gov). Still the current revision: no Rev. 2 is published (checked again 28 Oct 2026). 2.2.1 is the BCP and 2.2.6 the DRP; 3.2.1 defines MTD, RTO and RPO; 3.4.3 describes cold, warm and hot sites.
+- NIST SP 800-34 Rev. 1 Section 2.2.8 (Occupant Emergency Plan (OEP))
+  - Verified, 30 Oct 2026, against sp800-34r1.txt (nvlpubs.nist.gov): "The OEP outlines first-response procedures for occupants of a facility in the event of a threat or incident to the health and safety of personnel [...] Such events include a fire"; it "is executed separately and as a first response to the incident". Fits evacuating before saving backup drives. Used in cc_d2_031.
+- NIST SP 800-34 Rev. 1 Section 5.1.2 (Maintenance of Data Security, Integrity, and Backup: full, incremental and differential backups)
+  - Verified, 30 Oct 2026, against sp800-34r1.txt (nvlpubs.nist.gov): "A differential backup stores files that were created or modified since the last full backup [...] only the full backup media and the last differential media would be needed", and for an incremental restore "the media for the full backup and for each day's incremental backups would be needed". Fits Sunday's full plus Wednesday's differential. Used in cc_d2_033.
+- NIST SP 800-34 Rev. 1 Section 5.3.2 (Telecommunications Contingency Solutions: redundant network-connecting devices such as firewalls)
+  - Verified, 30 Oct 2026, against sp800-34r1.txt (nvlpubs.nist.gov): "Duplicate network-connecting devices, such as routers, switches, and firewalls, can create high availability at the LAN interfaces and provide redundancy if one device fails"; the same section warns that redundant links and providers must not share a single point of failure. Fits pairing the one firewall in front of redundant web servers. Used in cc_d2_027.
 
 ### SP 800-50 Rev. 1, Building a Cybersecurity and Privacy Learning Program (Sep 2024)
 - NIST SP 800-50 Rev. 1 (Building a Cybersecurity and Privacy Learning Program)
   - Verified 29 Oct 2026 (local copy of the NIST PDF). Cited by title; it covers awareness, role-based training and learning culture.
+- NIST SP 800-50 Rev. 1 Section 1.6.2 (Senior Leadership: leading by example and participating in their own training)
+  - Verified, 30 Oct 2026, against sp800-50r1.txt (nvlpubs.nist.gov): "senior leaders must champion workforce requirements by: Leading by example and participating in their own CPLP training, as required". Fits fixing senior managers' absence from required awareness sessions first. Used in cc_d2_035.
+- NIST SP 800-50 Rev. 1 Section 2.7.2 (Experiential Learning: phishing exercises designed to avoid negative impacts and never punitive)
+  - Verified, 30 Oct 2026, against sp800-50r1.txt (nvlpubs.nist.gov): phishing exercises should be designed and reviewed "to avoid negative impacts", because "employees may not like being tricked", and "These activities should not be punitive, nor should any employee be called out for their response." Fits replacing a job-cut lure during a restructuring. Used in cc_d2_040.
 
 ### SP 800-55 Vol. 1, Measurement Guide for Information Security: Identifying and Selecting Measures (Dec 2024)
 - NIST SP 800-55v1 Section 2.4 (Metrics: key risk indicators and key performance indicators)
 - NIST SP 800-55v1 Section 3.3 (Types of Measures: implementation, effectiveness, efficiency and impact)
 - NIST SP 800-55v1 Section 4.4 (Evaluating Methods for Supporting Continuous Improvement: leading and lagging indicators)
   - Verified 29 Oct 2026 (local copy of the NIST PDF). 2.4 names KRIs and KPIs as kinds of metric; 3.3.1–3.3.4 are the four measure types; 4.4 defines KPI, KRI, leading and lagging indicators.
+- NIST SP 800-55v1 Section 3.2 (Characteristics of Measures: consistency, time-based reference and replicability)
+  - Verified, 30 Oct 2026, against sp800-55v1.txt (nvlpubs.nist.gov): lists "Consistency", "Time-based reference" and "Replicability: Security measurements that are repeatable under identical conditions [...] supports longitudinal analysis"; Section 2.4 adds "By keeping metrics consistent over time, organizations can evaluate long-term trends". Fits noting a change in how phishing reports are counted. Used in cc_d2_041.
 
 ### AI Risk Management Framework, NIST AI 100-1 (AI RMF 1.0, Jan 2023) and NIST AI 600-1 (Generative AI Profile, Jul 2024)
 - NIST AI 100-1 (AI RMF 1.0) GOVERN 1.6 (mechanisms are in place to inventory AI systems)
@@ -136,6 +160,8 @@ were removed on 29 Oct 2026, audit pilot 2, S7.)
   - Verified 29 Oct 2026 (local copies of the NIST PDFs). Wording paraphrases the subcategory text; MANAGE 4.1 names "appeal and override" explicitly.
 - NIST AI 100-1 (AI RMF 1.0) GOVERN 3.2 (roles and responsibilities for human-AI configurations and oversight of AI systems are defined)
   - Verified, 30 Oct 2026, against ai100-1.txt (nvlpubs.nist.gov): "Policies and procedures are in place to define and differentiate roles and responsibilities for human-AI configurations and oversight of AI systems." Fits keeping staff review of high-impact AI replies. Used in cc_d1_040.
+- NIST AI 600-1 (Generative AI Profile) Section 2.9 (Information Security: generative AI may augment attacks such as hacking, malware and phishing)
+  - Verified, 30 Oct 2026, against ai600-1.txt (nvlpubs.nist.gov): "2.9. Information Security [...] Offensive cyber capabilities advanced by GAI systems may augment cybersecurity attacks such as hacking, malware, and phishing." Fits retiring spelling-based phishing advice now that AI writes fluent lures. Used in cc_d2_038.
 
 ### SP 800-63-4 Digital Identity Guidelines (final, 2025; csrc.nist.gov lists 31 Jul 2025)
 - NIST SP 800-63B-4 (Authentication and Authenticator Management: multi-factor authentication)
@@ -276,6 +302,10 @@ were removed on 29 Oct 2026, audit pilot 2, S7.)
   - Mar 2025. Verified, 30 Oct 2026, against ai100-2e2025.txt (nvlpubs.nist.gov): targeted poisoning changes a model's predictions on a small number of targeted samples; label flipping is effective when the adversary controls labels; mitigations include access controls on training data, data sanitization and validation, and dataset provenance. Section 2.3 says targeted poisoning induces integrity violations. Fits users mass-marking phishing as "not spam". Used in cc_d1_025.
 - NIST AI 100-2 E2025 Section 3.3.2 (Information Extraction: leaking sensitive training data)
   - Verified, 30 Oct 2026, against ai100-2e2025.txt (nvlpubs.nist.gov): GenAI models are exposed to "personally identifying information (PII) in the training data"; training data extraction attacks have drawn "email addresses, phone numbers, and locations" from language models, a "behavior of verbatim memorization of sensitive information". Fits treating a model tuned on customer chats as sensitive. Used in cc_d4_045.
+- NIST SP 800-37 Rev. 2 Task S-2 (Control Tailoring)
+  - Verified, 30 Oct 2026, against sp800-37r2.txt (nvlpubs.nist.gov): "TASK S-2 Tailor the controls selected for the system and the environment of operation"; the discussion covers "applying scoping considerations" and says "Organizations determine the amount of detail to include in justifications or supporting rationale required for tailoring decisions." Fits recording the reason for an exclusion. csrc.nist.gov (checked 30 Oct 2026) lists Rev. 2 as final, Dec 2018, with no supersession note. Used in cc_d2_022.
+- NIST SP 800-39 Section 3.4 (Monitoring Risk)
+  - Verified, 30 Oct 2026, against sp800-39.txt (nvlpubs.nist.gov): "3.4 MONITORING RISK. Risk monitoring provides organizations with the means to: (i) verify compliance; (ii) determine the ongoing effectiveness of risk response measures; and (iii) identify risk-impacting changes". Fits an accepted risk whose review date has passed. Used in cc_d2_023.
 
 ### Cybersecurity Framework (CSF) 2.0, NIST CSWP 29 (Feb 2024)
 - NIST CSF 2.0 Section 1 (CSF Overview)
@@ -306,6 +336,14 @@ were removed on 29 Oct 2026, audit pilot 2, S7.)
   - D5 pilot. Verified 29 Oct 2026 against the CSWP 29 text.
 - NIST CSF 2.0 PR.IR-03 (mechanisms are implemented to achieve resilience requirements in normal and adverse situations)
   - Verified, 30 Oct 2026, against csf2.txt (CSWP 29, nvlpubs.nist.gov): PR.IR-03 reads "Mechanisms are implemented to achieve resilience requirements in normal and adverse situations." Fits a failover server removing a single point of failure. Used in cc_d1_023.
+- NIST CSF 2.0 GV.OC-01 (the organizational mission is understood and informs cybersecurity risk management)
+  - Verified, 30 Oct 2026, against csf2.txt (nvlpubs.nist.gov): "GV.OC-01: The organizational mission is understood and informs cybersecurity risk management". Fits scoping a new GRC program from the mission and its critical services. Used in cc_d2_021.
+- NIST CSF 2.0 ID.AM-05 (assets are prioritized based on classification, criticality, resources and impact on the mission)
+  - Verified, 30 Oct 2026, against csf2.txt (nvlpubs.nist.gov): "ID.AM-05: Assets are prioritized based on classification, criticality, resources, and impact on the mission". Fits starting GRC work with the services and data that carry the most risk. Used in cc_d2_021.
+- NIST CSF 2.0 DE.CM-03 (personnel activity and technology usage are monitored to find potentially adverse events)
+  - Verified, 30 Oct 2026, against csf2.txt (nvlpubs.nist.gov): "DE.CM-03: Personnel activity and technology usage are monitored to find potentially adverse events". Fits a KRI built from visits to unapproved AI services. Used in cc_d2_045.
+- NIST CSF 2.0 Section 3.1 (CSF Profiles: Organizational Profiles are used to understand, tailor, assess, prioritize and communicate outcomes)
+  - Verified, 30 Oct 2026, against csf2.txt (nvlpubs.nist.gov): "3.1. CSF Profiles [...] Organizational Profiles are used to understand, tailor, assess, prioritize, and communicate the Core's outcomes by considering an organization's mission objectives, stakeholder expectations, threat landscape, and requirements." Fits marking an inapplicable outcome as not applicable. Used in cc_d2_022.
 
 ### SP 800-121 Rev. 2, Guide to Bluetooth Security (May 2017, includes updates as of 19 Jan 2022)
 - NIST SP 800-121 Rev. 2 Update 1 Section 4.4 (Bluetooth Security Checklist: undiscoverable except when pairing)
