@@ -4,7 +4,15 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v12.46] — One page frame
+
+### Improved
+- Every page now lines up on one grid, with notes in the margin on wide screens.
+
 ## [v12.45] — Small fixes, calmer screens
+
+### Improved
+- Clearer explanations of why the tempting wrong answer is wrong, across every domain.
 
 ### Fixed
 - Opening a question no longer draws a box around the line above it.

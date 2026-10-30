@@ -219,6 +219,9 @@
      --sp-2xl is Grove xxl (32), the gap between sections. The old 28px
      --sp-section is retired (premium pass T4; mobile space.section too). */
   --sp-xs: 4px; --sp-sm: 8px; --sp-md: 12px; --sp-lg: 16px; --sp-xl: 20px; --sp-xxl: 24px; --sp-2xl: 32px; --sp-xxxl: 48px;
+  /* The page frame (web v12.46): one 640px main column at one left edge and a
+     304px margin column beside it from 1240px (248 nav + 96 padding + 992). */
+  --frame-main: 640px; --frame-margin: 304px; --frame-gap: 48px; --page-top: 40px;
   --r-sm: 8px; --r-md: 16px; --r-lg: 24px;
   /* Type scale (DESIGN_SYSTEM §2). Use as `font: var(--t-body)`. Body 16, floor 14. */
   --t-number: 500 52px/52px var(--f-serif);    --tr-number: -1.4px;
@@ -5063,8 +5066,8 @@ body[data-tab]:not([data-tab="about"]):not([data-tab="faq"]) .legal-disclaimer {
    running head, the countdown as the title ("Maya, 38 days to go"), the exam
    date and streak line, the day's plate (the plant or the frond beside the
    plan's label; forest only on Start), the readiness column (the scale bar,
-   each domain) and one next step. Desktop >=1180px: the column is 320px
-   beside the rest. */
+   each domain) and one next step. Desktop >=1240px: the column is the
+   frame's 304px margin beside the rest. */
 .td { max-width: 720px; margin-bottom: var(--sp-2xl); }
 .td-head { margin: 0 0 var(--sp-xxl); }
 .td-top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--sp-xs) var(--sp-lg); }
@@ -5179,8 +5182,8 @@ body[data-tab]:not([data-tab="about"]):not([data-tab="faq"]) .legal-disclaimer {
 .td-leaf.on .td-leaf-v { stroke: var(--td-paper, var(--bg)); }
 .td-wd.today .td-leaf.off .td-leaf-b { stroke: var(--text); stroke-width: 2; }
 .td-wkline .td-leaf { width: 20px; height: 20px; }
-/* Below 1180px, one visual per visit: the rings or the week, by the day */
-@media (max-width: 1179px) {
+/* Below 1240px (the frame's margin), one visual per visit: the rings or the week, by the day */
+@media (max-width: 1239px) {
   .td-vis-week .td-rings { display: none; }
   .td-vis-rings .td-week { display: none; }
 }
@@ -5238,15 +5241,15 @@ body[data-tab]:not([data-tab="about"]):not([data-tab="faq"]) .legal-disclaimer {
 .td-apps { font: var(--t-meta); color: var(--text2); margin: var(--sp-xl) 0 0; }
 .td-legal { font: var(--t-meta); color: var(--text2); margin: var(--sp-2xl) 0 0; }
 /* Two columns: the plan on the left, a glanceable 320px column on the right */
-@media (min-width: 1180px) {
-  .td { max-width: none; display: grid; grid-template-columns: minmax(0, 1fr) 320px; column-gap: var(--sp-xxxl); align-items: start; }
+@media (min-width: 1240px) {
+  .td { max-width: none; display: grid; grid-template-columns: minmax(0, var(--frame-main)) var(--frame-margin); column-gap: var(--frame-gap); align-items: start; }
   .td-main { grid-column: 1; grid-row: 1; min-width: 0; }
   .td-side { grid-column: 2; grid-row: 1; margin-top: 0; }
   .td-apps { grid-column: 1; }
   .td-legal { grid-column: 1 / -1; }
   .td-side .td-rings { width: 144px; }
 }
-@media (min-width: 1180px) and (min-height: 720px) {
+@media (min-width: 1240px) and (min-height: 720px) {
   .td-side { position: sticky; top: 40px; }
 }
 /* The rings draw in once a day, outer ring first (DESIGN_SYSTEM §10.1); still under reduced motion. */
@@ -5396,15 +5399,15 @@ button.pg-cd:hover { background: var(--surface2); }
   .pg-act { white-space: normal; text-align: left; }
 }
 /* Two columns: the page on the left, the Mindset check in a 320px column on the right */
-@media (min-width: 1180px) {
-  .pg { max-width: none; display: grid; grid-template-columns: minmax(0, 1fr) 320px; column-gap: var(--sp-xxxl); align-items: start; }
+@media (min-width: 1240px) {
+  .pg { max-width: none; display: grid; grid-template-columns: minmax(0, var(--frame-main)) var(--frame-margin); column-gap: var(--frame-gap); align-items: start; }
   .pg-head { grid-column: 1 / -1; grid-row: 1; }
   .pg-main { grid-column: 1; grid-row: 2; }
   .pg-daysw { grid-column: 1; grid-row: 3; }
   .pg-side { grid-column: 2; grid-row: 2 / span 3; margin-top: 0; }
   .pg-foot { grid-column: 1; grid-row: 4; }
 }
-@media (min-width: 1180px) and (min-height: 720px) {
+@media (min-width: 1240px) and (min-height: 720px) {
   .pg-side { position: sticky; top: 40px; }
 }
 
@@ -6312,6 +6315,8 @@ body[data-tab="practice"][data-pview="focus"] #subNav { display: none; }
 .mk-resume-m { font: var(--t-meta); color: var(--on-forest2); margin: 0; }
 .mk-resume-acts { margin-top: var(--sp-xl); }
 .mk-types { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--sp-md); margin-top: var(--sp-md); }
+.mk-intro.fg-sub { font: var(--t-fg-sub); color: var(--text2); margin: var(--sp-xs) 0 var(--sp-xxl); }
+.mk-pick > .ph-h + .fg-plate { margin-top: var(--sp-md); }
 @media (min-width: 640px) { .mk-types { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 .mk-type { display: flex; flex-direction: column; align-items: flex-start; padding: var(--sp-xxl); background: var(--raised); border: 1px solid var(--raised-outline); border-radius: var(--r-md); box-shadow: var(--shadow); }
 .mk-type-t { font: var(--t-hero); letter-spacing: var(--tr-hero); color: var(--text); margin: 0; }
@@ -6456,19 +6461,55 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 .sr-sec[data-sec="look"] .sr-field { margin-top: 0; }
 @keyframes srFade { from { opacity: 0; } to { opacity: 1; } }
 @media (prefers-reduced-motion: no-preference) {
-  .sr-sec.sr-in { animation: srFade 120ms ease-out both; }
+  .sr-sec.sr-in { animation: srFade 160ms cubic-bezier(.33, 1, .68, 1) 40ms both; }
 }
-@media (min-width: 1180px) {
-  body[data-rail] .study-wrap {
-    display: grid; grid-template-columns: minmax(0, 720px) 320px; column-gap: var(--sp-xxxl);
-    justify-content: center; align-items: start; padding: 0 var(--sp-xxxl);
+/* ── THE PAGE FRAME (web v12.46; premium round 2, 5.1) ──
+   Every screen: the running head over a hairline, the page in one 640px
+   column at one left edge, and from 1240px a 304px margin column (the old
+   study rail) beside it. The margin's column is kept even when it is empty,
+   so a page never moves when its notes arrive. Today and Your progress draw
+   their own side column on the same two tracks. Below 1240px it is one
+   column and each margin part has its place in the page; at 200% zoom the
+   frame is one column too (the viewport is under 1240px). */
+.fg-page-rh[hidden] { display: none; }
+.fg-page-rh .fg-rh { margin: 0 0 var(--sp-xxl); }
+@media (max-width: 1023px) {
+  .fg-page-rh { max-width: 1200px; margin: 0 auto; padding: var(--sp-xs) 20px 0; }
+}
+@media (min-width: 1024px) {
+  .study-wrap.fg-frame {
+    display: grid; grid-template-columns: minmax(0, var(--frame-main)); justify-content: center; align-items: start;
+    padding: var(--page-top) var(--sp-xxxl) 0;
   }
-  body[data-rail] main.app { max-width: none; margin: 0; padding-left: 0; padding-right: 0; min-width: 0; }
-  body[data-rail] .study-rail {
+  .fg-frame > .fg-page-rh { grid-column: 1 / -1; grid-row: 1; }
+  .fg-frame > .fg-page-rh .fg-rh { margin-bottom: 28px; }
+  .fg-frame > main.app { grid-column: 1; grid-row: 2; max-width: none; margin: 0; padding-top: 0; padding-left: 0; padding-right: 0; min-width: 0; }
+  .fg-frame > .fg-margin { display: none; }
+}
+@media (min-width: 1240px) {
+  .study-wrap.fg-frame { grid-template-columns: minmax(0, var(--frame-main)) var(--frame-margin); column-gap: var(--frame-gap); }
+  /* Today and Your progress: the page spans the frame, the same two tracks inside. */
+  body[data-tab="home"] .fg-frame > main.app,
+  body[data-tab="progress"] .fg-frame > main.app { grid-column: 1 / -1; }
+  .fg-frame > .fg-margin:not([hidden]) {
+    display: block; grid-column: 2; grid-row: 2;
     position: sticky; top: 32px; z-index: 1; max-height: calc(100vh - 64px); overflow-y: auto; overscroll-behavior: contain;
-    /* 36 + 4 padding = the page's 40px top; --rail-lead is measured (railAlign). */
-    margin: calc(36px + var(--rail-lead, 0px)) -4px 40px; padding: 4px;
+    /* -4 + 4 padding = the page's top; --rail-lead lines it up with the page's first block (railAlign). */
+    margin: calc(var(--rail-lead, 0px) - 4px) -4px 40px; padding: 4px;
   }
+  .fg-margin:empty { visibility: hidden; }
+}
+/* 1240 to 1335px: the full frame (992) plus 96px of padding needs 1336px, so
+   the padding steps down to 32px and the main column gives up the rest. */
+@media (min-width: 1240px) and (max-width: 1335px) {
+  .study-wrap.fg-frame { padding-left: var(--sp-2xl); padding-right: var(--sp-2xl); }
+}
+/* The page fades in with a 4px rise; the margin's notes follow 40ms later.
+   Opacity and transform only; under Reduce Motion it is simply there. */
+@keyframes fgPageIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+.screen.active { animation: fgPageIn 160ms cubic-bezier(.33, 1, .68, 1) both; }
+@media (prefers-reduced-motion: reduce) { .screen.active { animation: none; } }
+@media (min-width: 1240px) {
   body[data-rail="hub"] .ph .mindset-strip { display: none; }
   body[data-rail="notes"] #screen-topics .gt-practice { display: none; }
   body[data-rail="mock"] .mk-past-sec { display: none; }
@@ -6906,9 +6947,12 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 <div class="rail-foot" id="railCountdown" hidden></div>
 </div>
 
-<!-- Main page + the desktop study rail: one centred group when the rail is on
-     (railSync sets body[data-rail]); otherwise the wrapper is a plain block. -->
-<div class="study-wrap" id="studyWrap">
+<!-- THE PAGE FRAME (web v12.46): the running head, the page (one 640px
+     column) and, from 1240px, the margin column beside it. The running head
+     is plain text (each page's h1 is its title); the margin comes after the
+     page, so keyboard and reading order take the page first. -->
+<div class="study-wrap fg-frame" id="studyWrap">
+<div class="fg-page-rh" id="pageRh" hidden></div>
 <main class="app" id="main" tabindex="-1">
 <nav class="sub-nav" id="subNav" aria-label="Section pages" hidden></nav>
 
@@ -7045,13 +7089,14 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 <div id="screen-about" class="screen" role="region" aria-labelledby="aboutScreenTitle">
   <!-- ── BRAND HERO — KaiSip slogan + 4 pillars (v9.2) ── -->
   <!-- ── BRAND HERO — the Grove vision (copy mirrors mobile/src/content/brand.ts) ── -->
-  <section class="vision-panel" data-testid="brand-hero" aria-labelledby="aboutScreenTitle">
+  <h1 class="ph-title" id="aboutScreenTitle" tabindex="-1">About KaiSip</h1>
+  <section class="vision-panel" data-testid="brand-hero" aria-labelledby="aboutVisionT">
     <svg class="brand-mark-svg about-mark" viewBox="35 5 70 130" aria-hidden="true" focusable="false"><g transform="translate(70 70) scale(0.90228) translate(-102.999 -100.123)"><defs><mask id="kaboutm" maskUnits="userSpaceOnUse" x="-100" y="-100" width="400" height="400"><rect x="-100" y="-100" width="400" height="400" fill="white"/><path d="M72 146 V66" stroke="black" stroke-width="4" stroke-linecap="round"/></mask></defs><path d="M72 168 C90 129.92 90 78.24 72 32 C54 78.24 54 129.92 72 168Z" style="fill:var(--on-forest)" mask="url(#kaboutm)"/><path d="M94 100 C120.2 93.85 140.92 69.43 150 34 C113.47 46.14 92.75 70.56 94 100Z" style="fill:var(--sap)"/><path d="M94 100 C93.48 129.7 114.94 154.12 152 166 C141.98 130.36 120.52 105.94 94 100Z" style="fill:var(--sap)"/></g></svg>
     <p class="vision-cap">The KaiSip way</p>
-    <h1 class="vision-title" id="aboutScreenTitle">Think like an IS auditor.</h1>
+    <h2 class="vision-title" id="aboutVisionT">Think like an IS auditor.</h2>
     <p class="vision-line">CISA exam prep, taught the way the exam thinks.</p>
   </section>
-  <p class="about-version">KaiSip web <span class="bank-pill" id="versionPill">v12.45</span></p>
+  <p class="about-version">KaiSip web <span class="bank-pill" id="versionPill">v12.46</span></p>
   <section class="vision-body" aria-label="What KaiSip stands for">
     <!-- The provenance line (owner, 22 Oct 2026): the same words in the hero, the disclaimer and the FAQ. -->
     <p class="vision-desc">Original questions and notes, written with AI assistance and checked against ISACA’s published exam outline and standards.</p>
@@ -7215,9 +7260,10 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
     </p>
   </section>
 </main>
-<!-- STUDY RAIL: after the page, so keyboard order reads the page first. Filled
-     by railSync() on wide screens; empty and hidden otherwise. -->
-<aside class="study-rail" id="studyRail" aria-label="Study tools" hidden></aside>
+<!-- THE MARGIN (was the study rail): after the page, so keyboard order reads
+     the page first. Filled by railSync() from 1240px; empty and hidden
+     otherwise (each part then has its place in the page). -->
+<aside class="study-rail fg-margin" id="studyRail" aria-label="Margin notes" hidden></aside>
 </div>
 
 <div id="flagModal"></div>
@@ -7387,7 +7433,7 @@ const MOCK_TIER_LABEL = { analysis: 'Harder', application: 'Middle', foundationa
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v12.45';
+const APP_VERSION = 'v12.46';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -11186,6 +11232,7 @@ function switchTab(t, opts) {
     pendingDebrief = null;
   }
   try { railNoteFlush(); railSync(); } catch (e) {}
+  try { syncPageRh(); } catch (e) {}
   // The first-run asks (exam date, then cookies), once their moment has come.
   try { maybeShowNextAsk(); } catch (e) {}
   // Land on the newly opened section's own content — scroll the active
@@ -11198,7 +11245,9 @@ function switchTab(t, opts) {
   try {
     if (opts && opts.noScroll) return;
     var sub = document.getElementById('subNav');
-    var sc = (sub && !sub.hidden && sub.offsetParent !== null) ? sub : document.getElementById('screen-' + t);
+    var rh = document.getElementById('pageRh');
+    var sc = (rh && !rh.hidden && rh.offsetParent !== null) ? rh
+      : (sub && !sub.hidden && sub.offsetParent !== null) ? sub : document.getElementById('screen-' + t);
     if (sc && sc.scrollIntoView) sc.scrollIntoView({ block: 'start' });
     else window.scrollTo(0, 0);
   } catch (e) {}
@@ -12452,8 +12501,8 @@ function todaySideHtml(inner) {
   try { qr = appCtaTodayQrHtml(); } catch (e) { qr = ''; }
   return '<div class="td-side">' + inner + qr + '</div>';
 }
-// Today's plate figure: the learner's plant ("Fig. 3 · Shoot", its growth
-// and stage name, like the phone's widgets), or the frond before one is
+// Today's plate figure: the learner's plant ("Fig. 3 · Shoot", its stage
+// name; Fig. 3 is Today's plan in the register), or the frond before one is
 // planted. Decorative: the plant row under the readiness says it in words.
 function todayShoot() {
   var K = plantApi();
@@ -12463,7 +12512,8 @@ function todayShoot() {
       var g = v.plant.growth, names = (K.plant && K.plant.GROWTH_NAMES) || {};
       return {
         plant: true,
-        fig: 'Fig. ' + g + (names[g] ? ' · ' + names[g] : ''),
+        // The Fig. register (premium round 2): 3 is Today's plan plate.
+        fig: 'Fig. 3 · ' + (names[g] || 'Your plant'),
         art: plantSafe(function () { return plantDraw(v, 'today', 150, { fit: true }); }),
         cap: K.plant.plantCallName(v.plant) + ' grows only from real progress.'
       };
@@ -12604,7 +12654,6 @@ function renderHome() {
   area.innerHTML = '<div class="td td-vis-' + vis + (shoot.plant ? ' td-has-shoot' : '') + '" data-next="' + (hideNext ? 'off' : 'on') + '">'
     + '<div class="td-main">'
     + '<div class="td-head">'
-    + fgRunningHead('Field guide · Today', fgDateHtml(now.getTime()))
     + '<h1 class="td-title" id="tdTitle" tabindex="-1">' + escapeHtml(greeting) + '</h1>'
     + '<div class="td-top"><p class="td-when">' + when + '</p>' + dayLine + '</div>'
     + intro
@@ -12652,6 +12701,46 @@ function fgDateHtml(ms) {
 // Running head: section · date over a hairline, on every Field Guide screen.
 function fgRunningHead(left, rightHtml) {
   return '<div class="fg-rh"><span>' + escapeHtml(left) + '</span>' + (rightHtml ? '<span>' + rightHtml + '</span>' : '') + '</div>';
+}
+// The page frame's running head (web v12.46): one per page, drawn over the
+// frame by syncPageRh (#pageRh), never inside a page. Never on a question
+// in a set or a mock: there the strip is the head.
+var PAGE_RH = {
+  home: 'Field guide · Today', practice: 'Field guide · Practice', mock: 'Field guide · Mock exam',
+  bookmarks: 'Field guide · Saved', weakspots: 'Field record · Weak spots', progress: 'Field record · Progress',
+  topics: 'Field guide · Study notes', principles: 'Field guide · Principles', examguide: 'Field guide · About the exam',
+  finalweek: 'Field guide · Final review week', glossary: 'Field guide · Index', faq: 'Field guide · Help',
+  about: 'Field guide · About KaiSip', you: 'Field record · You'
+};
+var pageRhRight = {};   // a page's own right side: { progress: html, mockResults: { kind, total, at, min } }
+function pageRhHtml(t) {
+  if (!PAGE_RH[t]) return '';
+  var mv = document.body.getAttribute('data-mview');
+  if (t === 'practice' && typeof practiceView !== 'undefined' && practiceView === 'focus') return '';
+  if (t === 'mock' && mv === 'q') return '';
+  var now = Date.now(), right = fgDateHtml(now);
+  if (t === 'mock' && mv === 'results' && pageRhRight.mockResults) {
+    // "Mock · Mini · 50 questions" | "29 Oct · 64 min"
+    var m = pageRhRight.mockResults, day = '';
+    try { day = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short' }).format(new Date(m.at)); } catch (e) { day = ''; }
+    return fgRunningHead('Mock · ' + (m.kind === 'full' ? 'Full' : 'Mini') + ' · ' + m.total + ' questions',
+      escapeHtml(day) + (day ? ' &middot; ' : '') + (m.min < 1 ? 'under 1 min' : m.min + ' min'));
+  }
+  if (t === 'progress' && pageRhRight.progress) right = pageRhRight.progress;
+  if (t === 'examguide') {
+    var iso = EXAM_GUIDE && EXAM_GUIDE.data ? String(EXAM_GUIDE.data.last_checked || '') : '';
+    if (PARITY_DAY_RE.test(iso)) {
+      try { right = 'Checked ' + escapeHtml(new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }).format(new Date(iso + 'T12:00:00'))); } catch (e) {}
+    }
+  }
+  return fgRunningHead(PAGE_RH[t], right);
+}
+function syncPageRh() {
+  var el = document.getElementById('pageRh');
+  if (!el || typeof S === 'undefined' || !S) return;
+  var html = pageRhHtml(S.activeTab);
+  if (el.innerHTML !== html) el.innerHTML = html;
+  el.hidden = !html;
 }
 // A plate's caption is a heading (the phone's FigCaption), shown "Fig. 5 ·
 // Five areas, one scale" and said "Figure 5, Five areas, one scale", so a
@@ -13537,7 +13626,10 @@ function renderProgress() {
   var when = fgDateHtml(now.getTime()) + ' &middot; ' + (phase === 'none' ? 'No exam date set'
     : phase === 'done' ? 'After your exam date' : days === 0 ? 'Exam day' : 'Exam in ' + days + (days === 1 ? ' day' : ' days'));
   fgLargeText();
-  var head = '<div class="pg-head">' + fgRunningHead('Field record · Progress', when)
+  // The running head is the frame's (syncPageRh); this page gives its right side.
+  pageRhRight.progress = when;
+  try { syncPageRh(); } catch (e) {}
+  var head = '<div class="pg-head">'
     + '<h1 class="td-title" id="pgTitle" tabindex="-1">Your progress</h1>'
     + '<p class="fg-sub">Plates drawn from your answers in this app.</p>'
     + (phase === 'done' ? '<p class="td-intro">Your exam day has come and gone. Everything here stays as a record; nothing new is suggested.</p>' : '') + '</div>';
@@ -13599,7 +13691,6 @@ function renderFAQ() {
   var raw = (faqState.search || '').trim();
   var words = raw ? raw.toLowerCase().split(/\s+/) : [];
   var hero = '<div class="gloss-hero"><div class="gloss-hero-left">'
-    + '<div class="gloss-eyebrow">Help Center</div>'
     + '<div class="gloss-title">FAQ &amp; Help</div>'
     + '<div class="gloss-sub">Answers about using the app, the CISA exam, and how to study effectively. Search a question or browse by topic.</div>'
     + '</div></div>';
@@ -13971,6 +14062,7 @@ function setPracticeView(v) {
   if (hub) hub.hidden = v !== 'hub';
   if (foc) foc.hidden = v !== 'focus';
   try { railSync(); } catch (e) {}
+  try { syncPageRh(); } catch (e) {}
   if (v === 'hub') { try { maybeShowNextAsk(); } catch (e) {} }
 }
 
@@ -14319,24 +14411,26 @@ function renderResumePrompt() {
 function showSessionStart() { renderPracticeHub(); }
 
 // ── STUDY RAIL (desktop; owner-approved 19 Oct 2026) ──
-// A 320px column beside the page on wide screens: <aside aria-label="Study
-// tools">, after <main> in the page, so keyboard order reads the page first.
+// The frame's 304px margin column beside the page on wide screens: <aside
+// aria-label="Margin notes">, after <main> in the page, so keyboard order reads the page first.
 // It changes with the phase (learning-science rules, rail/behavior.md):
-// - Practice hub (>=1180px): "Focus next" (due review, the weakest topic as
+// - Practice hub (>=1240px): "Focus next" (due review, the weakest topic as
 //   a short MIXED set, recent mistakes to retry) and Today's principle.
-// - A practice question (>=1320px): nothing until the answer is checked; then
+// - A practice question (>=1240px): nothing until the answer is checked; then
 //   the matching study note, the learner's own note (behind "Add a note"),
 //   the glossary terms used in the question and a glossary lookup.
-// - Study notes (>=1180px): "Check yourself" for the note in view, the topic's
+// - Study notes (>=1240px): "Check yourself" for the note in view, the topic's
 //   notes with their read marks (following the scroll), and the lookup.
-// - Mock setup (>=1180px): the last 3 mocks (the main column's list steps
+// - Mock setup (>=1240px): the last 3 mocks (the main column's list steps
 //   aside, so nothing shows twice). Never during a mock question.
 // Below the breakpoints each part falls back into the page (railSync): Focus
 // next as rows under the forest panel, the principle stays the Mindset line,
 // the note link and "Add a note" after the Key idea, "Check yourself" at the
 // end of each note; the topic list and the lookup drop.
 // No streaks, counters, tip of the day or second countdown live here.
-var RAIL_BP = { hub: 1180, notes: 1180, mock: 1180, q: 1320, you: 1180 };
+// v12.46: one breakpoint, the page frame's margin (1240px).
+var FRAME_MARGIN_BP = 1240;
+var RAIL_BP = { hub: FRAME_MARGIN_BP, notes: FRAME_MARGIN_BP, mock: FRAME_MARGIN_BP, q: FRAME_MARGIN_BP, you: FRAME_MARGIN_BP };
 var RAIL_SHOW_MAX = 20;          // the most a retry set holds; a backlog total is never shown
 var RAIL_WEAK_MIN = 8;           // answers in a topic before it can be called weak
 var RAIL_MIX_SIZE = 10;          // the weak spot's mixed set
@@ -17873,6 +17967,7 @@ function mockSetMview(v) {
   else document.body.removeAttribute('data-mview');
   // The study rail: past mocks beside the setup, nothing during a mock.
   try { railSync(); } catch (e) {}
+  try { syncPageRh(); } catch (e) {}
 }
 // "3:52:10" / "52:10" for the strip's clock.
 function mockClock(s) {
@@ -17921,7 +18016,7 @@ function renderMockSetup() {
   if (!area) return;
 
   var head = '<h1 class="ph-title mk-title" id="mkTitle" tabindex="-1">Mock exam</h1>'
-    + '<p class="mk-intro">Timed like the real exam, with ISACA&rsquo;s domain weights. Answers and explanations come at the end.</p>';
+    + '<p class="mk-intro fg-sub">Timed like the real exam, with ISACA&rsquo;s domain weights. Answers and explanations come at the end.</p>';
 
   // If any domain bank is still being fetched, say so instead of a
   // half-made plan. The fetch handler draws this page again.
@@ -17943,12 +18038,16 @@ function renderMockSetup() {
   };
   // One solid action per screen: with a mock unfinished, Resume (the forest
   // panel) is it, and both start buttons are outlined.
-  var types = '<section class="ph-sec" aria-labelledby="mkPickH">'
-    + '<h2 class="ph-h" id="mkPickH">' + (isMockInProgress() ? 'Or start a new mock' : 'Choose a mock') + '</h2>'
-    + '<div class="mk-types">'
-    + card('full', full, 'The real exam&rsquo;s length and pace.', 'mock-start', !isMockInProgress())
-    + card('mini', mini, 'A third of the exam: the same domain weights and pace.', 'mock-start-mini', false)
-    + '</div></section>';
+  // v12.46: the two mocks are this page's plate (Fig. 7 in the register),
+  // with the closed-tab promise as its NOTE caption.
+  var types = '<section class="ph-sec mk-pick" aria-labelledby="mkPickH">'
+    + (isMockInProgress() ? '<h2 class="ph-h" id="mkPickH">Or start a new mock</h2>' : '')
+    + fgPlate(isMockInProgress() ? '' : 'Fig. 7 · Two mocks, one pace', '<div class="mk-types">'
+      + card('full', full, 'The real exam&rsquo;s length and pace.', 'mock-start', !isMockInProgress())
+      + card('mini', mini, 'A third of the exam: the same domain weights and pace.', 'mock-start-mini', false)
+      + '</div>', 'mk-plate', 2).replace('<h2 class="fg-fig">', '<h2 class="fg-fig" id="mkPickH">')
+    + fgCaption('Note', 'Close the tab and your answers stay saved; the exam clock pauses until you come back.')
+    + '</section>';
 
   var aPct = Math.round(MOCK_DIFFICULTY_MIX.analysis * 100);
   var mPct = Math.round(MOCK_DIFFICULTY_MIX.application * 100);
@@ -17976,7 +18075,6 @@ function renderMockSetup() {
   area.innerHTML = '<div class="mk">' + head
     + '<div id="mkResume"></div>'
     + types + weights + past
-    + '<p class="mk-foot">If you close this tab, your answers are saved and you can carry on later. The exam clock pauses while the tab is closed.</p>'
     + '</div>';
   checkMockResume();
 }
@@ -18313,6 +18411,8 @@ function showMockResults() {
   var kind = mockTypeOf(S.mockType);
   var usedSec = Math.max(0, (S.mockTotalSecondsTotal || mockSecondsFor(kind)) - Math.max(0, Number(S.mockTotalSecondsLeft) || 0));
   var flagged = queue.filter(function (q) { return q && S.mockFlags && S.mockFlags[q.id]; }).length;
+  pageRhRight.mockResults = { kind: kind, total: tot, at: Date.now(), min: Math.round(usedSec / 60) };
+  try { syncPageRh(); } catch (e) {}
 
   var acts = missed > 0
     ? '<button type="button" class="rs-btn primary" onclick="reviewMockMistakes()">Review your mistakes</button>'
@@ -19416,6 +19516,7 @@ function renderExamGuide() {
     return;
   }
   area.innerHTML = '<div class="gt eg">' + examGuideHtml(EXAM_GUIDE.data) + '</div>';
+  try { syncPageRh(); } catch (e) {}
   if (egState.pending) {
     var sid = egState.pending;
     egState.pending = null;
@@ -20033,7 +20134,6 @@ function renderGlossary() {
 
   var hero = '<div class="gloss-hero">'
     +   '<div class="gloss-hero-left">'
-    +     '<div class="gloss-eyebrow">Vocabulary Lab</div>'
     +     '<div class="gloss-title">Glossary</div>'
     +     '<div class="gloss-sub">Master the language of information systems audit. Curated terms across audit, governance, development, operations and security &mdash; search a definition, filter by domain, or drill yourself with flashcards.</div>'
     +   '</div>'
@@ -22037,8 +22137,16 @@ function toggleMockDetail(i) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
+    title: 'One page frame',
+    items: [
+      { cat: 'improved', text: 'Every page now lines up on one grid, with notes in the margin on wide screens.' },
+    ],
+  },
+  {
+    version: 'v12.45',
     title: 'Small fixes, calmer screens',
     items: [
+      { cat: 'improved', text: 'Clearer explanations of why the tempting wrong answer is wrong, across every domain.' },
       { cat: 'fixed', text: 'Opening a question no longer draws a box around the line above it.' },
       { cat: 'fixed', text: 'On a computer, Next question now sits after your answer instead of covering part of it.' },
       { cat: 'fixed', text: 'A streak shows only from two days in a row; before that you see your study days this week.' },
