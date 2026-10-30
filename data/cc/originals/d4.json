@@ -1062,7 +1062,7 @@
     "A": "The report moves accountability for any data breach to the provider",
     "B": "The report shows the service will have no outages",
     "C": "The report covers the association too if it keeps default settings",
-    "D": "The report covers the provider's controls, not the association's data"
+    "D": "The report covers the provider's controls, not the association's own"
    },
    "correct": "D",
    "key_concept": "A provider's independent report or certificate covers the provider's own controls in scope, never the customer's users, settings or data.",
@@ -1133,21 +1133,21 @@
    "options": {
     "A": "Give the scanners fixed IP addresses instead of DHCP",
     "B": "Move the scanners and access point to a different radio band",
-    "C": "Change the scanner app to use a different port",
+    "C": "Raise the access point's transmit power",
     "D": "Put the scanners on a VLAN of their own"
    },
    "correct": "B",
    "key_concept": "Name the layer before the fix: radio interference is a physical-layer problem, so changes at higher layers cannot solve it.",
    "pre_read": "Note exactly when the scanners fail, and what else is happening at that moment.",
-   "correct_explanation": "Microwave ovens give off energy in the 2.4 GHz band that many Wi-Fi networks use, so the scanners' radio signal is drowned out. That is a physical-layer problem, so the fix is physical too: a band or channel the oven does not reach. A separate VLAN is the runner-up because it isolates the scanners, but VLANs sort frames at layer 2 and cannot clear radio noise.",
+   "correct_explanation": "Microwave ovens give off energy in the 2.4 GHz band that many Wi-Fi networks use, so the scanners' radio signal is drowned out. That is a physical-layer problem, so the fix is physical too: a band or channel the oven does not reach. Raising transmit power is the runner-up because a stronger signal can push through some noise, but the scanners would still share the oven's band.",
    "wrong_explanations": {
     "A": "Tempting because dropped connections can come from address problems. But the drops follow the oven, not address changes; fixed addresses cannot clear radio noise.",
-    "C": "Tempting because app ports sometimes clash. But ports work at the transport layer, far above the radio signal the oven is disrupting.",
-    "D": "Closest choice: a VLAN does give the scanners their own logical network. But it separates frames at layer 2; the radio noise drowning the signal sits below that."
+    "C": "Closest choice: a stronger signal can outshout some noise. But the oven floods the same band, so drops continue; changing band avoids the clash.",
+    "D": "Tempting because a VLAN gives the scanners their own logical network. But it separates frames at layer 2; the radio noise sits below that."
    },
    "tips": [
-    "Eliminate: A changes addressing at layer 3, and C changes a transport-layer port; the drops follow the oven, not addresses or ports.",
-    "Final two: B beats D because the problem is radio noise at layer 1; a VLAN only separates frames at layer 2.",
+    "Eliminate: A changes addressing at layer 3, and D separates frames at layer 2; neither touches the radio noise the oven makes.",
+    "Final two: B beats C because the oven floods the same band; more power still shares the noise, while another band avoids it.",
     "Exam cue: name the layer before choosing the fix. A control helps only at the layer where the problem lives."
    ],
    "framework_ref": "NIST SP 800-153 Section 3.1.1 (Attack Monitoring: interference from other devices can deny WLAN service); NIST SP 800-77 Rev. 1 Section 2.1 (The Need for Network Layer Security: controls at each layer)",
@@ -1156,7 +1156,7 @@
     "Radio interference",
     "Layered troubleshooting"
    ],
-   "_provenance": "Authored from concept: 'a control protects only its own layer; name the layer before the fix' (notes 4.1.2 The OSI Model). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 2, 30 Oct 2026.",
+   "_provenance": "Authored from concept: 'a control protects only its own layer; name the layer before the fix' (notes 4.1.2 The OSI Model). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 2, 30 Oct 2026. Blind re-test fix (30 Oct 2026): runner-up is now a radio-layer lure (more power).",
    "style_version": 2
   },
   {
@@ -1602,7 +1602,7 @@
     "A": "Publishing is safe once the original emails are deleted",
     "B": "The model holds only numbers, so publishing reveals nothing",
     "C": "The provider protects tuned models, so publishing is its decision",
-    "D": "The model may leak personal details, so protect it like the data"
+    "D": "Treat the tuned model as sensitive, since it can reveal personal details"
    },
    "correct": "D",
    "key_concept": "A model tuned on sensitive data can leak that data, so it needs the same protection as the data it learned from.",

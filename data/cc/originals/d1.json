@@ -806,7 +806,7 @@
    "subtopic": "1.1 Cybersecurity concepts. Availability",
    "difficulty": "application",
    "bloom_level": "Application",
-   "question": "A florist's online shop runs on one server, and a failed disk took it offline for a day, though its backups were intact. Which change should the IT lead propose to BEST prevent a repeat?",
+   "question": "A florist's online shop runs on one server, and a failed disk took it offline for a day, though its backups were intact. What should the IT lead propose to BEST avoid another day offline?",
    "options": {
     "A": "Add a standby server that takes over automatically",
     "B": "Encrypt the server's disks so stolen data stays unreadable",
@@ -1310,7 +1310,7 @@
    "subtopic": "1.3 Governance. Procedures and standards",
    "difficulty": "application",
    "bloom_level": "Application",
-   "question": "A law firm's backup procedure, owned by the IT manager, keeps copies for 7 days, but the firm's backup standard, which every procedure must meet, requires 30. What should the technician running backups do FIRST?",
+   "question": "A law firm's IT manager owns a backup procedure keeping copies 7 days, though the standard every procedure must meet requires 30, and operators may set retention. Which action by the backup technician is BEST?",
    "options": {
     "A": "Follow the 7-day procedure and tell the IT manager",
     "B": "Keep copies for 30 days and tell the IT manager",
@@ -1320,15 +1320,15 @@
    "correct": "B",
    "key_concept": "A procedure carries out its standard and cannot lower it; follow the higher document and report the conflict to the procedure's owner.",
    "pre_read": "Place the two documents in the hierarchy, then ask who may change the lower one.",
-   "correct_explanation": "Standards are mandatory, and a procedure only sets out steps for meeting them, so it cannot lower the 30-day requirement. The technician keeps 30 days of copies and tells the IT manager, who owns the procedure and can correct it. Editing the procedure, the runner-up, gets the number right, but the technician does not own that document, so the change bypasses its owner and review.",
+   "correct_explanation": "Standards are mandatory, and a procedure only sets out steps for meeting them, so it cannot lower the 30-day requirement. Operators may set retention, so the technician keeps 30 days of copies and tells the IT manager, who owns the procedure. Following the 7-day procedure and reporting it, the runner-up, sounds in role, but it breaks the standard, and copies deleted early cannot be brought back.",
    "wrong_explanations": {
-    "A": "Tempting because procedures give the exact steps. But a procedure must agree with the standard above it; following the error keeps too few copies.",
-    "C": "Closest choice: 30 days is the right figure. But the IT manager owns the procedure; the technician should report the conflict, not rewrite it.",
+    "A": "Closest choice: following the procedure and telling its owner sounds in role. But a procedure cannot lower its standard, and copies deleted after 7 days cannot be recovered.",
+    "C": "Tempting because 30 days is the right figure. But the IT manager owns the procedure; the technician should report the conflict, not rewrite it.",
     "D": "Tempting because the procedure is more detailed. But standards are mandatory; only guidelines are advice, and detail does not outrank a standard."
    },
    "tips": [
-    "Eliminate: A lets a lower document cut a mandatory requirement, and D treats a standard as optional advice, which describes a guideline.",
-    "Final two: B beats C because the technician meets the standard and reports the conflict; rewriting a document they do not own bypasses its owner.",
+    "Eliminate: C rewrites a document the technician does not own, and D treats a mandatory standard as optional advice, which describes a guideline.",
+    "Final two: B beats A because a procedure cannot lower the standard above it; operators may set retention, so the technician meets 30 days and reports the gap.",
     "Exam cue: when documents conflict, follow the higher one and report the gap to the owner of the lower one. Policy, then standard, then procedure."
    ],
    "framework_ref": "NIST SP 800-12 Rev. 1 Section 5.1 (Standards, Guidelines, and Procedures)",
@@ -1337,7 +1337,7 @@
     "Standards",
     "Procedures"
    ],
-   "_provenance": "Authored from concept: 'an external standard binds only once adopted or required by law or contract' (notes 1.3.5 Standards, Procedures and Guidelines). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 2, 30 Oct 2026. Standards audit fix (30 Oct 2026): replaced a repeat of 035's lesson with the document hierarchy (procedure versus standard).",
+   "_provenance": "Authored from concept: 'an external standard binds only once adopted or required by law or contract' (notes 1.3.5 Standards, Procedures and Guidelines). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 2, 30 Oct 2026. Standards audit fix (30 Oct 2026): replaced a repeat of 035's lesson with the document hierarchy (procedure versus standard). Blind re-test fix (30 Oct 2026): stem states operators may set retention; A is the runner-up.",
    "style_version": 2
   },
   {
