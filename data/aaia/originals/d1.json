@@ -167,7 +167,7 @@
       "correct": "C",
       "key_concept": "Every model and AI-supported decision needs a named business owner; vendors, builders and committees cannot hold that accountability.",
       "pre_read": "Separate who builds, who approves and who uses the output, then ask which of them answers for each result.",
-      "correct_explanation": "Every AI-supported decision needs a named human owner in the business that uses it. The owner of surgical scheduling answers for the schedules, decides on overrides and accepts the model's risks. The governance committee, option D, is the runner-up: it approves high-impact use and sets standards, but a committee approving a use case does not own each decision the model makes.",
+      "correct_explanation": "Every AI-supported decision needs a named human owner in the business that uses it. The owner of surgical scheduling answers for the schedules, decides on overrides and accepts the model's risks within appetite. The governance committee, option D, is the runner-up: it approves high-impact use and sets standards, but a committee approving a use case does not own each decision the model makes.",
       "wrong_explanations": {
         "A": "Tempting because the vendor knows the model best. But accountability cannot be outsourced; the hospital uses the schedules and answers to patients and regulators.",
         "B": "Tempting because the team understands the model technically. But building and monitoring a model does not make a team the owner of business decisions.",
@@ -184,44 +184,43 @@
         "Accountability",
         "AI governance committee"
       ],
-      "_provenance": "Authored from concept: notes 1B.2 Ownership, Roles and the AI Governance Committee (a named business owner for every model and AI decision; committees approve, owners answer). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA pilot, 30 Oct 2026.",
+      "_provenance": "Authored from concept: notes 1B.2 Ownership, Roles and the AI Governance Committee (a named business owner for every model and AI decision; committees approve, owners answer). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA pilot, 30 Oct 2026. Cross-domain review fixes 30 Oct 2026.",
       "style_version": 2
     },
     {
       "id": "aaia_d1_006",
       "domain": 1,
-      "subtopic": "1B AI governance. AI inventory completeness",
+      "subtopic": "1B AI governance. AI policy risk tiers",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A manufacturer built its AI inventory by surveying project sponsors, and every entry is a model its own data scientists built. Which procedure should the IS auditor use to BEST test completeness?",
+      "question": "A logistics firm's board-approved AI policy sends every AI use through one light approval step, from a meeting-notes summarizer to a model that screens job applicants. What should the IS auditor recommend as BEST?",
       "options": {
-        "A": "Trace AI found in vendor contracts and web traffic to the inventory",
-        "B": "Repeat the survey with a wider group of department heads",
-        "C": "Compare the inventory with the data science team's model registry",
-        "D": "Confirm each listed model with its business owner in writing"
+        "A": "Have the policy owner tier approval steps by each AI use's impact",
+        "B": "Have the AI governance committee approve every AI use",
+        "C": "Have HR suspend applicant screening until the policy is revised",
+        "D": "Have IT review each AI tool's security before approval"
       },
       "correct": "A",
-      "key_concept": "AI inventory completeness is tested from independent sources toward the list, because embedded vendor AI and shadow AI rarely self-report.",
-      "pre_read": "Look at how the list was built and what every entry has in common, then ask what kinds of AI it could be missing.",
-      "correct_explanation": "The inventory holds only in-house models, so the likely gaps are AI embedded in purchased products and AI staff use without approval. Tracing from independent sources, such as contracts and web traffic to AI services, into the inventory tests completeness. The model registry, option C, is the runner-up: it is system evidence, but it lists in-house models only and repeats the same blind spot.",
+      "key_concept": "An AI policy scales approval and oversight to each use's risk tier, set by impact on people and the business.",
+      "pre_read": "Compare what could go wrong with each AI use the policy treats the same way.",
+      "correct_explanation": "An AI policy should scale its controls to each use's impact: a tool summarizing internal notes and a model screening job applicants carry very different risk to people. Risk tiers let low-impact uses move quickly and send high-impact ones to deeper review. Committee approval of every use, option B, is the runner-up: it adds rigor, but treating all uses alike swamps the committee and still ignores impact.",
       "wrong_explanations": {
-        "B": "Tempting because more respondents may recall more tools. But surveys rely on people knowing and reporting their AI use, which misses embedded and shadow AI.",
-        "C": "Tempting because a registry is system-generated evidence. But it records only models the data scientists built, the same population the inventory already holds.",
-        "D": "Tempting because owner confirmation is a familiar step. But confirming listed items tests whether they exist, not whether unlisted AI is missing."
+        "B": "Tempting because committee review adds rigor. But approving every use alike wastes effort on trivial tools and still ignores which uses can harm people.",
+        "C": "Tempting because screening people is high risk. But suspending one use leaves the flat policy in place for every other high-impact use, and suspension is management's call.",
+        "D": "Tempting because security review is familiar. But security is one dimension; the gap is that approval ignores harm to people from AI decisions."
       },
       "tips": [
-        "Eliminate: B relies on self-reporting, which misses AI people do not know about, and D tests listed items, which checks existence rather than completeness.",
-        "Final two: A beats C because completeness needs sources outside the inventory's own population; the registry repeats the in-house blind spot, while contracts and traffic reveal embedded and shadow AI.",
-        "Exam cue: test an AI inventory from independent sources toward the list, and expect vendor-embedded and unapproved AI to be the gaps."
+        "Eliminate: C suspends one use and leaves the flat policy unfixed, and D reduces AI approval to a security check.",
+        "Final two: A beats B because approval effort should follow each use's impact; sending everything to the committee is uniform, not risk-based.",
+        "Exam cue: when an AI policy treats every use alike, recommend risk tiers that scale approval and review to impact on people and the business."
       ],
-      "framework_ref": "NIST AI 100-1 GOVERN 1.6 (Mechanisms to inventory AI systems); NIST SP 800-53 Rev. 5 CM-8 (System Component Inventory)",
+      "framework_ref": "NIST AI 100-1 GOVERN 1.3 (Level of risk management activity set by risk tolerance); NIST AI 100-1 GOVERN 1.4 (Risk management process established through transparent policies and controls)",
       "related_concepts": [
-        "AI inventory",
-        "Shadow AI",
-        "Embedded AI",
-        "Completeness testing"
+        "AI policy",
+        "Risk tiers",
+        "Risk-based approval"
       ],
-      "_provenance": "Authored from concept: notes 1B.1 AI Strategy, Policy and Inventory (test inventory completeness from independent sources; include embedded and shadow AI). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA pilot, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test, standards audit, concept review).",
+      "_provenance": "Authored from concept: notes 1B.1 AI Strategy, Policy and Inventory (the policy sets risk tiers and approval steps). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA pilot, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test, standards audit, concept review). Cross-domain review fixes 30 Oct 2026.",
       "style_version": 2
     },
     {
@@ -593,23 +592,23 @@
       "question": "A board member says US law requires the company to follow the NIST AI Risk Management Framework. How should the IS auditor BEST treat the framework when setting audit criteria?",
       "options": {
         "A": "As binding law, so every gap is reported as noncompliance",
-        "B": "As voluntary guidance, usable as criteria once management agrees",
+        "B": "As voluntary guidance, usable as criteria if it is suitable",
         "C": "As unsuitable for criteria until a law makes it mandatory",
         "D": "As a certification scheme proving the company's AI is trustworthy"
       },
       "correct": "B",
-      "key_concept": "The NIST AI RMF is voluntary guidance, not law; the auditor may still select it as audit criteria if suitable and agreed with management.",
+      "key_concept": "The NIST AI RMF is voluntary guidance, not law; the auditor may still select it as audit criteria when it is suitable.",
       "pre_read": "Ask what kind of document the framework is: law, standard or guidance, and who would make it binding.",
-      "correct_explanation": "NIST publishes the AI RMF as voluntary guidance, so the framework itself imposes no legal duty on the company. The auditor can still select a voluntary framework as audit criteria when it is suitable and management agrees to it. Treating it as unsuitable until mandated, option C, is the runner-up: it avoids overstating duties, but criteria must be suitable and agreed, not legally required.",
+      "correct_explanation": "NIST publishes the AI RMF as voluntary guidance, so the framework itself imposes no legal duty on the company. The auditor selects audit criteria for suitability, and a recognized voluntary framework often qualifies; the auditor then communicates the chosen criteria to management. Treating it as unsuitable until mandated, option C, is the runner-up: it avoids overstating duties, but criteria must be suitable, not legally required.",
       "wrong_explanations": {
         "A": "Tempting because NIST is a US federal agency. But it publishes this framework as voluntary guidance; legal duties come from laws and contracts.",
-        "C": "Tempting because it avoids treating guidance as law. But criteria need to be suitable and agreed, not mandated; recognized voluntary frameworks often serve well.",
+        "C": "Tempting because it avoids treating guidance as law. But criteria need to be suitable, not mandated; recognized voluntary frameworks often serve well.",
         "D": "Tempting because frameworks are often linked with certificates. But the AI RMF has no certification scheme, and no certificate alone proves AI trustworthy."
       },
       "tips": [
         "Eliminate: A treats the framework as law, though NIST publishes it as voluntary, and D invents a certification scheme the framework does not have.",
-        "Final two: B beats C because audit criteria must be suitable and agreed, not legally required; a voluntary framework management accepts is sound criteria.",
-        "Exam cue: separate what a source is (law, voluntary framework, certifiable standard) from whether it can serve as agreed audit criteria."
+        "Final two: B beats C because the auditor selects criteria for suitability, not legal force; a recognized voluntary framework is often suitable.",
+        "Exam cue: separate what a source is (law, voluntary framework, certifiable standard) from whether the auditor can select it as suitable audit criteria."
       ],
       "framework_ref": "NIST AI 100-1 Executive Summary (Framework intended to be voluntary and use-case agnostic); ISACA IT Audit Standard 1008 (Criteria)",
       "related_concepts": [
@@ -617,7 +616,7 @@
         "Audit criteria",
         "Voluntary frameworks"
       ],
-      "_provenance": "Authored from concept: notes 1E.3 Frameworks and Standards for AI (the NIST AI RMF is voluntary; a certificate covers its scope, not each model). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA pilot, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test, standards audit, concept review).",
+      "_provenance": "Authored from concept: notes 1E.3 Frameworks and Standards for AI (the NIST AI RMF is voluntary; a certificate covers its scope, not each model). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA pilot, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test, standards audit, concept review). Cross-domain review fixes 30 Oct 2026.",
       "style_version": 2
     },
     {

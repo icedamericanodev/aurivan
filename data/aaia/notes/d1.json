@@ -69,7 +69,7 @@
             "A rules engine applies if-then logic that people wrote; it can automate decisions, but it does not learn from data.",
             "Many purchased products now embed AI features, so licensed software can contain models the organization never chose directly."
           ],
-          "example": "Ibrahim, an internal auditor at a Kenyan tea exporter, reviews a leaf-grading system that its vendor markets as AI. The documentation shows that staff wrote every grading rule and update the rules each season; nothing is learned from data. Ibrahim records it as rules-based automation for normal change-control testing, and notes that the vendor's next release adds a learned model that would need AI review.",
+          "example": "Ibrahim, an internal auditor at a Kenyan tea exporter, finds that the firm's leaf-grading system has been audited for years as rules-based software, with change-control testing only. Since last season, grades have come from a model the vendor retrained on the exporter's grading history, yet nobody updated the classification. Ibrahim reports that training data, validation and drift monitoring were never reviewed, and recommends reclassifying the system.",
           "audit_focus": {
             "review": [
               "Trace each inventoried AI system to its documented technique and purpose",
@@ -248,12 +248,12 @@
           "why_it_matters": "Nobody can govern AI they do not know about. Embedded features and staff use of public tools often handle sensitive data, yet appear in no register.",
           "how_it_works": [
             "The AI strategy states which business goals AI should serve and which uses the organization will not pursue.",
-            "The AI policy, approved by senior management or the board, sets acceptable use, risk tiers, approval steps and duties.",
+            "The AI policy, approved by senior management or the board, sets acceptable use, duties and risk tiers that scale approval steps to each use's impact.",
             "The inventory records each system's owner, purpose, data, vendor, risk tier and status, from idea to retirement.",
             "AI enters unseen through vendor updates, free online tools and expense-paid subscriptions, so an inventory cannot rely on self-reporting.",
             "Shadow AI is AI used without approval, such as staff pasting work into a public generative tool."
           ],
-          "example": "Mei, an IS auditor at a Singapore engineering firm, compares the AI inventory with procurement records. The firm's document-management and human resources platforms both switched on AI summary features last year, yet neither appears in the inventory or had a risk review. Mei reports the gap and recommends that procurement flag AI features at every contract renewal.",
+          "example": "Mei, an IS auditor at a Singapore engineering firm, compares the AI inventory with web-proxy logs and expense claims. Staff in three departments pay for a public transcription service and upload client meeting recordings to it, yet the service is in no inventory and had no risk review. Mei reports the gap and recommends discovery from proxy and expense data plus an approved alternative.",
           "audit_focus": {
             "review": [
               "Compare the inventory with contracts, release notes and network traffic",
@@ -450,7 +450,7 @@
               "Change log showing which events triggered reassessment"
             ],
             "recommend": "Have risk owners reassess AI risks for harm to affected people and record a response for each.",
-            "decides": "The risk owner selects the response and accepts residual risk"
+            "decides": "The risk owner selects the response and accepts residual risk within board-approved appetite and tolerances"
           },
           "isaca_rule": "AI risk is more than security risk. Rate impact on the people affected, not just on the business, and reassess when anything material changes. The owner chooses the response; the auditor assesses the process.",
           "exam_traps": [
@@ -493,9 +493,9 @@
             "Tolerances are measurable, such as a maximum rate of wrongful denials or a minimum share of outputs reviewed by people.",
             "Key performance indicators (KPIs) show whether AI delivers value; KRIs show whether risk is climbing toward tolerance.",
             "Each KRI needs a reliable source, warning levels and a route that takes breaches to the committee and the board.",
-            "A breach triggers a documented response that the owner decides, not quiet model tuning."
+            "A breach is escalated to senior management, which decides the response with the owner; quiet model tuning is not a response."
           ],
-          "example": "A Ghanaian microfinance lender's senior management caps loan applications its AI credit model wrongly declines at 2%, within the board's appetite. Auditor Kwame finds the indicator breached that limit twice last quarter, and each time the data team quietly retuned the model without telling the owner. Kwame reports that breaches never reached the owner or the board, and recommends a documented escalation route.",
+          "example": "A Ghanaian microfinance lender's senior management caps loan applications its AI credit model wrongly declines at 2%, within the board's appetite. Auditor Kwame finds the indicator breached that limit twice last quarter, and each time the data team quietly retuned the model without telling the owner. Kwame reports that breaches never reached the owner or senior management, and recommends a documented escalation route.",
           "audit_focus": {
             "review": [
               "Trace each AI tolerance to its approval record",
@@ -566,7 +566,7 @@
               "Pre-signing assessment file and the risk rating it produced"
             ],
             "recommend": "Have procurement and the model owner add AI change-notice, testing and data-use terms to vendor contracts.",
-            "decides": "The business owner accepts residual vendor AI risk"
+            "decides": "The model owner accepts residual vendor AI risk within board-approved appetite and tolerances"
           },
           "isaca_rule": "Buying AI does not transfer accountability. Expect due diligence, contract rights over model changes and data use, and the organization's own testing. Vendor claims and general control reports are inputs, not assurance about the model.",
           "exam_traps": [
