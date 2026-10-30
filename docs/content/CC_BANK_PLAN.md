@@ -79,7 +79,45 @@ The pilot set this order. Don't skip a step to go faster.
 
 ## 4. Domain 4 coverage plan
 
-_(Filled in from the Domain 4 pilot.)_
+From `cc-d4-domain-expert` (30 Oct 2026), scaled from its 224 to the
+blueprint's 214. Section targets: **4.1 90 · 4.2 62 · 4.3 62**. The three AI
+sub-topics carry 23 items (about 11%); add a few AI-context items inside
+4.2.5, 4.2.7, 4.3.7 and 4.3.8 too (AI agents as non-person identities,
+training data in cloud storage). Attack types are context only (they sit in
+5.2 now).
+
+| Sub-topic | Target | Beginner traps to build distractors from |
+|---|---|---|
+| 4.1.1 Building blocks | 6 | a switch routes by IP; MAC filtering proves identity; DNS and DHCP need no protection |
+| 4.1.2 OSI model | 8 | a switch at layer 3; a firewall or IDS at the wrong layer; radio as the physical layer's problem only |
+| 4.1.3 TCP/IP, TCP and UDP | 6 | TCP/IP has seven layers; UDP is insecure so block it; TCP ports opened for a UDP service |
+| 4.1.4 IPv4 and IPv6 | 6 | IPv6 is secure by default; private addresses as a control; IPv4 rules that skip IPv6 |
+| 4.1.5 Ports and secure protocols | 10 | Telnet, FTP, HTTP, SNMPv1 over SSH, SFTP, HTTPS, SNMPv3; SFTP and FTPS as one protocol; an odd port as security |
+| 4.1.6 VPN | 7 | a VPN makes the endpoint safe; split tunneling is safer; a VPN replaces MFA |
+| 4.1.7 Firewalls | 10 | rule order (first match wins); stateful means application-aware; allow by default; live edits outside change management |
+| 4.1.8 IDS and IPS | 8 | an IDS blocks; turning the IPS off after a false positive; host versus network sensors |
+| 4.1.9 AI in monitoring (AI) | 9 | AI replaces analysts; letting AI block safety-critical devices; learning a baseline during a compromise; model evasion |
+| 4.1.10 Wi-Fi and Bluetooth | 8 | hidden network names; WEP with a long key; WPA2 where WPA3 works; evil twins; discoverable Bluetooth |
+| 4.1.11 Embedded and ICS | 6 | patching like laptops; an air gap means safe; active scans of controllers; safety over data |
+| 4.1.12 IoT | 6 | too simple to attack; flat networks; default passwords; no inventory |
+| 4.2.1 Segmentation | 7 | subnets alone count as segmentation; segmentation only stops outsiders |
+| 4.2.2 Zones and screened subnet | 7 | the database in the DMZ; the DMZ is unprotected; public servers on the internal network |
+| 4.2.3 VLANs | 7 | VLANs at layer 3; a guest VLAN protects without filtering; an open management VLAN |
+| 4.2.4 Micro-segmentation | 7 | just smaller VLANs; it replaces the perimeter; rules before mapping the traffic |
+| 4.2.5 Defense in depth | 7 | buying many products; a strong perimeter is enough |
+| 4.2.6 Zero Trust principles | 7 | Zero Trust as a product; location-based trust; verify once |
+| 4.2.7 Zero Trust components | 7 | the enforcement point decides; ZTNA as a faster VPN; exceptions around the policy |
+| 4.2.8 NAC | 6 | MAC filtering equals NAC; block instead of remediate |
+| 4.2.9 AI development segments (AI) | 7 | internal means trusted; production data in experiments; open egress |
+| 4.3.1 Five characteristics | 6 | elasticity versus pooling; virtualization as one of the five |
+| 4.3.2 Virtualization and containers | 7 | containers as isolated as VMs; unvetted public images; serverless has nothing to secure |
+| 4.3.3 Service models | 8 | the provider controls SaaS sharing; PaaS customers patch the OS; the provider patches the IaaS guest OS |
+| 4.3.4 Deployment models | 6 | private must be on premises; hybrid equals multi-cloud |
+| 4.3.5 Shared responsibility | 8 | accountability moves to the provider; the split is the same in every model |
+| 4.3.6 Roles and agreements | 6 | a provider's certificate covers the customer; an SLA guarantees no downtime |
+| 4.3.7 Data in the cloud | 7 | provider-held keys stop provider access; deleting a file sanitizes it |
+| 4.3.8 Misconfiguration, CSPM and CASB | 7 | a public bucket is the provider's fault; a CASB is a firewall |
+| 4.3.9 AI workloads (AI) | 7 | the provider secures the training data; a tuned model is just a file |
 
 ## 5. Batch 2 by domain
 
@@ -131,7 +169,18 @@ marked **new** had no pilot item.
   out the model in every option.
 
 ### D4 Networking and Cloud (25: `cc_d4_021`–`045`)
-_(From the Domain 4 coverage plan in section 4.)_
+- 4.1 (10): 4.1.1 Building Blocks **new** 1 · 4.1.3 TCP/IP, TCP and UDP
+  **new** 1 · 4.1.4 IPv4 and IPv6 **new** 1 · 4.1.7 Firewalls **new** 2 · then
+  one each in 4.1.2, 4.1.5, 4.1.8, 4.1.9 (AI), 4.1.10
+- 4.2 (7): 4.2.1 Segmentation **new** 1 · 4.2.5 Defense in Depth **new** 1 ·
+  4.2.7 Zero Trust Components **new** 1 · then one each in 4.2.2, 4.2.3, 4.2.4,
+  4.2.6
+- 4.3 (8): 4.3.2 Virtualization and Containers **new** 1 · 4.3.6 Roles and
+  Agreements **new** 1 · 4.3.7 Data in the Cloud **new** 1 · then one each in
+  4.3.1, 4.3.3, 4.3.5, 4.3.8, 4.3.9 (AI)
+- Watch: the pilot's NIST sources (SP 800-41, 800-77, 800-94, 800-145,
+  800-207, 800-215) are already verified in the library; reuse them before
+  adding new ones.
 
 ### D5 Security Operations and IR (25: `cc_d5_021`–`045`)
 - 5.1 (6): 5.1.2 Handling Across the Lifecycle **new** 1 · 5.1.3 Masking and
