@@ -60,7 +60,14 @@ jest.mock('expo-router', () => {
   };
 });
 const mockWritten: string[] = [];
-jest.mock('expo-sharing', () => ({ isAvailableAsync: async () => true, shareAsync: async () => {} }));
+/** How many files had finished writing each time the share sheet opened (Expo SDK 58: write() is async). */
+const mockWrittenAtShare: number[] = [];
+jest.mock('expo-sharing', () => ({
+  isAvailableAsync: async () => true,
+  shareAsync: async () => {
+    mockWrittenAtShare.push(mockWritten.length);
+  },
+}));
 jest.mock('expo-file-system', () => {
   class File {
     uri: string;
@@ -70,8 +77,11 @@ jest.mock('expo-file-system', () => {
       this.uri = `file:///cache/${name}`;
     }
     create() {}
+    // Expo SDK 58: write() returns a Promise and the file is written later, as here.
     write(t: string) {
-      mockWritten.push(t);
+      return Promise.resolve().then(() => {
+        mockWritten.push(t);
+      });
     }
     delete() {}
   }
@@ -166,6 +176,7 @@ beforeEach(() => {
   mockNav.replace.mockClear();
   mockRedirects.length = 0;
   mockWritten.length = 0;
+  mockWrittenAtShare.length = 0;
   account.setAgreed(false);
   useProgress.getState().resetCert('cisa');
   useSession.getState().clear();
@@ -605,6 +616,7 @@ describe('A5: Download my data, A6: sign out', () => {
     mount(<Account />);
     await press('Download my data, A copy of everything your account holds, as a file.');
     expect(mockWritten).toHaveLength(1);
+    expect(mockWrittenAtShare).toEqual([1]); // the share sheet opened after the write finished
     expect(JSON.parse(mockWritten[0])).toMatchObject({ app: 'kaisip', account: { email: 'maya@example.com' } });
     expect(allText()).toContain('Your data file is ready.');
     await press('Download my data, A copy of everything your account holds, as a file.');

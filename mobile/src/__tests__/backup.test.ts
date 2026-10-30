@@ -64,6 +64,8 @@ jest.mock('expo-notifications', () => ({
 // expo-file-system / expo-sharing / expo-document-picker: tiny fakes.
 const mockFiles = new Map<string, string>();
 const mockShared: string[] = [];
+/** What each shared file held at the moment the share sheet opened. */
+const mockSharedText: (string | undefined)[] = [];
 let mockPick: { canceled: boolean; assets: { uri: string; name: string; size?: number; lastModified: number }[] | null } = { canceled: true, assets: null };
 jest.mock('expo-file-system', () => {
   class MockFile {
@@ -74,8 +76,11 @@ jest.mock('expo-file-system', () => {
     create() {
       mockFiles.set(this.uri, '');
     }
+    // Expo SDK 58: write() returns a Promise and the file is written later, as here.
     write(text: string) {
-      mockFiles.set(this.uri, text);
+      return Promise.resolve().then(() => {
+        mockFiles.set(this.uri, text);
+      });
     }
     get size() {
       return (mockFiles.get(this.uri) ?? '').length;
@@ -92,6 +97,7 @@ jest.mock('expo-sharing', () => ({
   isAvailableAsync: async () => true,
   shareAsync: async (uri: string) => {
     mockShared.push(uri);
+    mockSharedText.push(mockFiles.get(uri));
   },
 }));
 jest.mock('expo-document-picker', () => ({ getDocumentAsync: async () => mockPick }));
@@ -144,6 +150,7 @@ beforeEach(() => {
   mockScheduled.clear();
   mockFiles.clear();
   mockShared.length = 0;
+  mockSharedText.length = 0;
   Object.assign(mockPermission, { granted: true, grantOnAsk: true, asked: 0 });
 });
 afterEach(() => jest.useRealTimers());
@@ -158,6 +165,9 @@ describe('round trip', () => {
     expect(mockShared).toEqual(['file:///cache/kaisip-backup-2026-10-10.json']);
     expect(useBackup.getState().lastBackupAt).toBe(NOW);
     const text = mockFiles.get(mockShared[0])!;
+    // Expo SDK 58: the share sheet opens only after the async write finished (never on an empty file).
+    expect(mockSharedText).toEqual([text]);
+    expect(text.length).toBeGreaterThan(100);
 
     freshInstall();
     // The new phone went through the welcome screen (onboarded is the phone's own, never the file's).

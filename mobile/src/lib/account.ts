@@ -416,7 +416,9 @@ export async function downloadMyData(now = Date.now()): Promise<Result<{ outcome
     if (!(await Sharing.isAvailableAsync())) return { ok: true, outcome: 'unavailable' };
     const file = new File(Paths.cache, name);
     file.create({ overwrite: true });
-    file.write(text);
+    // Expo SDK 58: write() is async now. Wait for it, or the share sheet could
+    // open on a file that is still empty or half-written.
+    await file.write(text);
     await Sharing.shareAsync(file.uri, { mimeType: 'application/json', UTI: 'public.json', dialogTitle: 'Save your KaiSip account data' });
     return { ok: true, outcome: 'shared' };
   } catch {
