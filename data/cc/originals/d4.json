@@ -742,7 +742,7 @@
    },
    "correct": "C",
    "key_concept": "Switches deliver frames by MAC address within one network; routers forward packets by IP address between networks.",
-   "pre_read": "Picture a packet leaving a kiosk, and ask what must happen for it to arrive on a different network.",
+   "pre_read": "Picture a packet leaving a kiosk, and trace each device it would pass on the way to the server.",
    "correct_explanation": "Devices on different IP subnets are on different networks, so something must forward packets between them by IP address. That is a router's job, at layer 3. An unmanaged switch is the runner-up because it connects many devices, but it forwards frames by MAC address within one local network and cannot carry traffic from one subnet to another.",
    "wrong_explanations": {
     "A": "Tempting because access points link many devices. But an access point joins wireless devices to a local network; it does not forward traffic between separate subnets.",
@@ -778,7 +778,7 @@
    },
    "correct": "A",
    "key_concept": "TCP opens each connection with a three-way handshake (SYN, SYN-ACK, ACK); UDP sends datagrams with no handshake or delivery check.",
-   "pre_read": "Recall which transport protocols set up a connection before sending data, and how they do it.",
+   "pre_read": "Read the three messages in order, and think about what each side is doing at each step.",
    "correct_explanation": "TCP opens every connection with a three-way handshake: the client sends SYN, the server answers SYN-ACK, and the client confirms with ACK. Only then does data flow, numbered and acknowledged. Closing the connection is the runner-up because it also uses flags and acknowledgments, but closing uses FIN messages; SYN always marks a new connection starting.",
    "wrong_explanations": {
     "B": "Tempting because ACK sounds like a delivery receipt. But UDP has no handshake and no acknowledgments; it sends each datagram on its own.",
@@ -1066,7 +1066,7 @@
    },
    "correct": "D",
    "key_concept": "A provider's independent report or certificate covers the provider's own controls in scope, never the customer's users, settings or data.",
-   "pre_read": "List the security tasks a cloud customer keeps, then compare each reply against that list.",
+   "pre_read": "Read the project manager's claim closely, then test each reply against it.",
    "correct_explanation": "An independent report shows how well the provider runs its own controls, within the scope it covers. It says nothing about the association's accounts, sharing settings or data, which stay the customer's job in every service model. A recent report is the runner-up because freshness matters for evidence, but even a current report covers only the provider's side.",
    "wrong_explanations": {
     "A": "Tempting because the provider runs the service. But the association stays accountable for its data; contracts and reports share duties, not accountability.",
@@ -1282,7 +1282,7 @@
    },
    "correct": "B",
    "key_concept": "Bluetooth devices should be discoverable only while pairing; staying discoverable invites unwanted pairing attempts.",
-   "pre_read": "Note the specific weakness the technician found before weighing the options.",
+   "pre_read": "Picture the scanners on a busy delivery day, then read each option in turn.",
    "correct_explanation": "A discoverable device announces itself to anyone nearby and invites pairing attempts. Making the scanners discoverable only while pairing closes that exposure without stopping the drivers' work. Regular firmware updates are the runner-up because they fix known Bluetooth flaws and matter too, but they leave the scanners advertising themselves all day, which is the weakness found.",
    "wrong_explanations": {
     "A": "Closest choice: firmware updates do fix Bluetooth flaws. But they leave the scanners advertising themselves all day, the weakness the technician actually found.",
@@ -1314,7 +1314,7 @@
     "A": "Allow the web server to reach every internal system",
     "B": "Allow all screened-subnet traffic into the internal network",
     "C": "Allow the whole screened subnet to reach the database port",
-    "D": "Allow the web server to reach the database on its one port"
+    "D": "Allow the web server alone to reach the database port"
    },
    "correct": "D",
    "key_concept": "Servers in the screened subnet reach inside only on narrow paths: one server, to one system, on the one port needed.",
@@ -1426,7 +1426,7 @@
    },
    "correct": "B",
    "key_concept": "Zero Trust is a set of principles applied step by step across identity, devices, policy and monitoring, not a product bought once.",
-   "pre_read": "Compare each response with what Zero Trust asks an organization to check on every request.",
+   "pre_read": "Read the vendor's promise closely before judging each response.",
    "correct_explanation": "Zero Trust is a set of principles: verify identity, device health and need on every request, grant least privilege and assume breach. An organization adopts it in stages across identity, devices, policy and monitoring, so no single product delivers it in a week. Identity checks are the runner-up because they are central, but identity alone ignores device health, context and ongoing monitoring.",
    "wrong_explanations": {
     "A": "Tempting because outsiders are an obvious threat. But Zero Trust gives no trust to internal traffic either; requests from inside are checked just the same.",
