@@ -94,6 +94,18 @@ were removed on 29 Oct 2026, audit pilot 2, S7.)
   - Verified, 30 Oct 2026, against sp800-53r5-catalog.json (NIST OSCAL catalog, release 5.2.0; title and text) and sp800-53r5.txt (nvlpubs.nist.gov): use cryptography to protect information during transmission. Fits replacing FTP with SFTP. Used in cc_d4_002.
 - NIST SP 800-53 Rev. 5 SI-4(13) (System Monitoring | Analyze Traffic and Event Patterns)
   - Verified, 30 Oct 2026, against sp800-53r5-catalog.json (NIST OSCAL catalog, release 5.2.0; title and text) and sp800-53r5.txt (nvlpubs.nist.gov): develop profiles of common traffic and event patterns and use them to tune monitoring so anomalous traffic stands out. Fits machine-learning traffic monitoring. Used in cc_d4_005.
+- NIST SP 800-53 Rev. 5 AU-9 (Protection of Audit Information)
+  - Verified, 30 Oct 2026, against sp800-53r5-catalog.json (OSCAL 5.2.0) and sp800-53r5.txt (nvlpubs.nist.gov): the control protects audit information and logging tools from unauthorized access, modification and deletion. Fits a log the administrator can delete. Used in cc_d1_027.
+- NIST SP 800-53 Rev. 5 AU-9(2) (Protection of Audit Information | Store on Separate Physical Systems or Components)
+  - Verified, 30 Oct 2026, against sp800-53r5-catalog.json (OSCAL 5.2.0) and sp800-53r5.txt (nvlpubs.nist.gov): store audit records in a repository on a physically different system, so a compromise of the audited system does not also compromise its records. Fits copying log entries to a server the administrator cannot alter. Used in cc_d1_027.
+- NIST SP 800-53 Rev. 5 PT-3 (Personally Identifiable Information Processing Purposes)
+  - Verified, 30 Oct 2026, against sp800-53r5-catalog.json (OSCAL 5.2.0) and sp800-53r5.txt (nvlpubs.nist.gov): identify and document the purposes for processing PII, describe them in privacy notices, and restrict processing to what is compatible with those purposes. Fits reusing booking phone numbers for sales texts. Used in cc_d1_028.
+- NIST SP 800-53 Rev. 5 PL-4 (Rules of Behavior)
+  - Verified, 30 Oct 2026, against sp800-53r5-catalog.json (OSCAL 5.2.0) and sp800-53r5.txt (nvlpubs.nist.gov): provide the rules for system use, and receive a documented acknowledgment that they have been read and agreed to before authorizing access. Fits signed data-use rules before volunteers get access. Used in cc_d1_039.
+- NIST SP 800-53 Rev. 5 CP-10 (System Recovery and Reconstitution)
+  - Verified, 30 Oct 2026, against sp800-53r5-catalog.json (OSCAL 5.2.0) and sp800-53r5.txt (nvlpubs.nist.gov): provide for recovery and reconstitution of the system to a known state after a disruption, compromise or failure. Fits restoring a ransomware-locked server from backup as a recovery control. Used in cc_d1_041.
+- NIST SP 800-53 Rev. 5 Appendix A Glossary (defense in depth)
+  - Verified, 30 Oct 2026, in Appendix A Glossary of sp800-53r5.txt (nvlpubs.nist.gov): a strategy that integrates people, technology and operations capabilities to set variable barriers across multiple layers. Fits adding an administrative, detective layer instead of more locks. Used in cc_d1_042.
 
 ### SP 800-34 Rev. 1, Contingency Planning Guide for Federal Information Systems (May 2010, updated Nov 2010)
 - NIST SP 800-34 Rev. 1 Section 2.2 (Types of Plans: Business Continuity Plan and Disaster Recovery Plan)
@@ -118,6 +130,8 @@ were removed on 29 Oct 2026, audit pilot 2, S7.)
 - NIST AI 100-1 (AI RMF 1.0) MANAGE 4.1 (post-deployment monitoring plans, including capturing user input, appeal and override)
 - NIST AI 600-1 (Generative AI Profile) Section 2.8 (Information Integrity: deepfakes and content that impersonates others)
   - Verified 29 Oct 2026 (local copies of the NIST PDFs). Wording paraphrases the subcategory text; MANAGE 4.1 names "appeal and override" explicitly.
+- NIST AI 100-1 (AI RMF 1.0) GOVERN 3.2 (roles and responsibilities for human-AI configurations and oversight of AI systems are defined)
+  - Verified, 30 Oct 2026, against ai100-1.txt (nvlpubs.nist.gov): "Policies and procedures are in place to define and differentiate roles and responsibilities for human-AI configurations and oversight of AI systems." Fits keeping staff review of high-impact AI replies. Used in cc_d1_040.
 
 ### SP 800-63-4 Digital Identity Guidelines (final, 2025; csrc.nist.gov lists 31 Jul 2025)
 - NIST SP 800-63B-4 (Authentication and Authenticator Management: multi-factor authentication)
@@ -220,6 +234,20 @@ were removed on 29 Oct 2026, audit pilot 2, S7.)
   - Mar 2025, current (csrc.nist.gov checked 29 Oct 2026). Cited by title.
 - NIST AI 100-2 E2025 Section 3.2 (Supply Chain Attacks and Mitigations)
   - Verified, 30 Oct 2026, against ai100-2e2025.txt (nvlpubs.nist.gov): AI development adds dependencies such as third-party models; attackers can offer "maliciously designed models", and models are best treated as untrusted components. Fits limiting a training segment's downloads to approved sources. Used in cc_d4_014.
+- NIST SP 800-12 Rev. 1 Section 9.1.2 (Integrity)
+  - Jun 2017. Verified, 30 Oct 2026, against sp800-12r1.txt (nvlpubs.nist.gov): integrity means data has not been altered in an unauthorized manner; an attacker who modifies a message can also replace its error detection code, while cryptography can detect intentional and unintentional changes. Fits the plain-hash runner-up in cc_d1_022 and wrong-but-unnoticed figures in cc_d1_026. Used in cc_d1_022 and cc_d1_026.
+- NIST SP 800-12 Rev. 1 Section 9.1.3.1 (Secret Key Electronic Signatures)
+  - Jun 2017. Verified, 30 Oct 2026, against sp800-12r1.txt (nvlpubs.nist.gov): with a message authentication code (MAC) verified under a shared secret key, the receiver may assume the other key holder produced the data; a MAC gives data integrity and a form of electronic signature, assuming the parties trust each other. Fits a keyed hash between each sensor and the server. Used in cc_d1_022.
+- NIST SP 800-30 Rev. 1 Appendix B Glossary (criticality and sensitivity)
+  - Sep 2012. Verified, 30 Oct 2026, against sp800-30r1.txt (nvlpubs.nist.gov), Appendix B Glossary: criticality is the degree to which an organization depends on the information or system for a mission or business function; sensitivity is the importance the owner assigns to information to denote its need for protection (both sourced to SP 800-60). Fits rating a public but business-critical price list. Used in cc_d1_021.
+- NIST SP 800-30 Rev. 1 Section 3.4 (Maintaining the Risk Assessment)
+  - Sep 2012. Verified, 30 Oct 2026, against sp800-30r1.txt (nvlpubs.nist.gov): the fourth step keeps risk knowledge current, monitoring risk factors such as threat sources and updating the assessment to reflect changes. Fits reassessing after a new threat (cc_d1_029) and re-rating after a new control (cc_d1_030). Used in cc_d1_029 and cc_d1_030.
+- NIST SP 800-39 Section 2.1 (Components of Risk Management: frame, assess, respond and monitor)
+  - Mar 2011, no revision. Verified, 30 Oct 2026, against sp800-39.txt (nvlpubs.nist.gov): risk management requires organizations to frame risk, assess risk, respond to risk and monitor risk on an ongoing basis with a feedback loop. Fits the risk lifecycle looping back after a new threat. Used in cc_d1_029.
+- NIST SP 800-39 Section 3.3 (Responding to Risk: accept, avoid, mitigate, share or transfer)
+  - Mar 2011, no revision. Verified, 30 Oct 2026, against sp800-39.txt (nvlpubs.nist.gov): the responses are acceptance, avoidance, mitigation, sharing and transfer; avoidance eliminates the activities or technologies that are the basis for the risk. Fits dropping an AI refund plan. Used in cc_d1_032.
+- NIST AI 100-2 E2025 Section 2.3.2 (Targeted Poisoning)
+  - Mar 2025. Verified, 30 Oct 2026, against ai100-2e2025.txt (nvlpubs.nist.gov): targeted poisoning changes a model's predictions on a small number of targeted samples; label flipping is effective when the adversary controls labels; mitigations include access controls on training data, data sanitization and validation, and dataset provenance. Section 2.3 says targeted poisoning induces integrity violations. Fits users mass-marking phishing as "not spam". Used in cc_d1_025.
 
 ### Cybersecurity Framework (CSF) 2.0, NIST CSWP 29 (Feb 2024)
 - NIST CSF 2.0 Section 1 (CSF Overview)
@@ -248,6 +276,8 @@ were removed on 29 Oct 2026, audit pilot 2, S7.)
 - NIST CSF 2.0 RS.MI-01 (incidents are contained)
 - NIST CSF 2.0 RS.MI-02 (incidents are eradicated)
   - D5 pilot. Verified 29 Oct 2026 against the CSWP 29 text.
+- NIST CSF 2.0 PR.IR-03 (mechanisms are implemented to achieve resilience requirements in normal and adverse situations)
+  - Verified, 30 Oct 2026, against csf2.txt (CSWP 29, nvlpubs.nist.gov): PR.IR-03 reads "Mechanisms are implemented to achieve resilience requirements in normal and adverse situations." Fits a failover server removing a single point of failure. Used in cc_d1_023.
 
 ## ISO/IEC
 
@@ -318,3 +348,5 @@ were removed on 29 Oct 2026, audit pilot 2, S7.)
 - ISC2 Code of Ethics, Canons
 - ISC2 Code of Ethics, Canons (service to principals)
   - Verified at isc2.org/ethics, 28 Oct 2026. These go in `framework_ref` only, never in stems, options, explanations or tips. Open question: if the app shows `framework_ref` to learners, add the ® at first mention.
+- ISC2 Ethical Complaint Procedures (standing of complainant and form of complaints)
+  - Verified, 30 Oct 2026, against isc2-ethics.txt (isc2.org/ethics, opened 30 Oct 2026; the procedures sit on the same page as the Code). Complaints are accepted only from those injured; anyone may complain under canons I or II, only principals under canon III, and only certified or licensed professionals who follow an ethics code under canon IV. Complaints must be written sworn affidavits naming the canon breached; the committee is not an investigative body and closes complaints with no prima facie case. Fits a client's complaint about incompetent work. Used in cc_d1_044. Same display note as the Code bullets: framework_ref only.
