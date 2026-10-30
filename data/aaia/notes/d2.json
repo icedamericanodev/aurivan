@@ -96,7 +96,7 @@
               "Third-party data licenses and supplier provenance statements"
             ],
             "recommend": "Have data owners record provenance and rights for every dataset and block unverified data from training pipelines.",
-            "decides": "The data owner approves use; management accepts any residual data risk"
+            "decides": "The data owner approves use; management accepts any residual data risk within the board-approved risk appetite"
           },
           "isaca_rule": "No provenance, no training. Data whose origin, rights or integrity cannot be shown is not fit to feed a model, however clean it looks. Ask for origin and rights evidence before quality tests, and hold third-party data to the same standard as internal data.",
           "exam_traps": [
@@ -321,7 +321,7 @@
               "Vendor due diligence records for each third-party model"
             ],
             "recommend": "Have procurement and the model owner make model documentation a contract condition before buying or tuning a model.",
-            "decides": "The business owner decides to build, buy or tune and accepts the residual risk"
+            "decides": "The model owner decides to build, buy or tune, accepting residual risk within approved tolerances"
           },
           "isaca_rule": "No documentation, no reliance. Whether a model is built, bought or tuned, require records of its purpose, data, testing and limits before relying on it. The organization stays accountable for a vendor's model; vendor scores are inputs, not assurance.",
           "exam_traps": [
@@ -528,7 +528,7 @@
             "Before adopting an update, the model owner reruns regression tests, a fixed set of cases with known expected results.",
             "Monitoring output patterns, such as approval or flag rates, detects silent changes the contract did not prevent."
           ],
-          "example": "A Mexican freight company uses a vendor's hosted language model to read fields from shipping invoices. One morning, dates start arriving in a new format and downstream payments fail. The vendor explains that it moved customers to a newer model. The IS auditor compares the contract with internal change records and reports that vendor updates bypass the company's change process.",
+          "example": "A Mexican freight company's contract gives 30 days' notice and a test window before its vendor moves the hosted language model that reads shipping invoices to a new version. The model owner skips the regression tests because the release notes report better accuracy. After the switch, invoice dates arrive in a new format and downstream payments fail. The IS auditor reports that the notice term worked but the owner never tested the update on the company's own invoices.",
           "audit_focus": {
             "review": [
               "Inspect contracts for version pinning, update notice and testing rights",
@@ -541,7 +541,7 @@
               "Output monitoring trends around vendor release dates"
             ],
             "recommend": "Have procurement and the model owner secure version pinning or notice terms and require owner testing before updates.",
-            "decides": "The business owner decides whether to adopt an update and accepts residual vendor risk"
+            "decides": "The model owner decides on adopting updates and accepts residual vendor risk within approved tolerances"
           },
           "isaca_rule": "A vendor's model update is a change to your system. Control it before it arrives: pin versions or require notice, test before adoption and monitor for silent changes. Accountability for outcomes stays with the organization, not the provider.",
           "exam_traps": [
@@ -602,7 +602,7 @@
               "meaning": "People set policy, limits and shutdown conditions without reviewing individual decisions."
             }
           ],
-          "example": "At an Australian state transport agency, officers confirm an AI model's suggested license suspensions. They have a 90-second target per case and see only the model's score, not its reasons. The IS auditor observes live reviews and reports that the design leaves officers unable to understand or challenge the model.",
+          "example": "At an Australian state transport agency, officers confirm an AI model's suggested license suspensions. Their screen shows only the model's score, not why it was given, and reversing a suggestion needs a manager's written sign-off. The IS auditor observes live reviews and reports that the design leaves officers unable to understand or challenge the model.",
           "audit_focus": {
             "review": [
               "Observe reviewers handling live cases and time their reviews",
@@ -614,8 +614,8 @@
               "Override analysis reports with reasons and follow-up",
               "Reviewer training records and documented override authority"
             ],
-            "recommend": "Have the business owner give reviewers time, reasons and override authority, and analyze overrides regularly.",
-            "decides": "The business owner sets the oversight model within policy the governance committee approves"
+            "recommend": "Have the model owner give reviewers time, reasons and override authority, and analyze overrides regularly.",
+            "decides": "The model owner sets the oversight model within the AI policy and the governance committee's standards"
           },
           "isaca_rule": "Oversight must work, not just exist. For high-impact decisions, a person must understand the output, have time to judge it and be able to override or stop the system. Very high agreement with very little review time is a warning sign, not reassurance.",
           "exam_traps": [
@@ -647,7 +647,7 @@
           "how_it_works": [
             "Data drift is a shift in the inputs a model receives; concept drift is a change in the link between inputs and the right answer.",
             "Key performance indicators (KPIs) track value, such as accuracy; key risk indicators (KRIs) track warning signs, such as drift, group error rates and complaints.",
-            "Each indicator has a tolerance agreed by the owner; a breach triggers review, retraining through change control or disengagement.",
+            "Each indicator has a threshold the owner sets within the tolerance senior management approved; a breach triggers review, retraining through change control or disengagement.",
             "Impacts are monitored too: effects on people, on connected systems that consume outputs, and on energy and resource use.",
             "Reports go to the owner and, for high-impact systems, to the governance committee and board, showing trends rather than single readings."
           ],
@@ -660,11 +660,11 @@
             ],
             "evidence": [
               "Production accuracy and drift metrics trended since deployment",
-              "KPI and KRI reports with agreed tolerances and owners",
+              "KPI and KRI reports showing tolerances, owner thresholds and trends",
               "Tickets showing action taken on each tolerance breach"
             ],
-            "recommend": "Have the model owner add drift, accuracy and impact indicators with tolerances that trigger review and reporting.",
-            "decides": "The model owner sets tolerances within the risk appetite management approves"
+            "recommend": "Have the model owner add drift, accuracy and impact indicators with thresholds that trigger review and reporting.",
+            "decides": "The model owner sets use-level thresholds within tolerances senior management sets under board-approved appetite"
           },
           "isaca_rule": "Monitor decisions, not just servers. Ask what would tell the owner, in time, that the model's decisions had become worse or unfair, and what happens next. A one-time validation is not ongoing assurance.",
           "exam_traps": [
@@ -720,8 +720,8 @@
               "Appeal register with dates, reviewer and outcome",
               "Reports showing appeal trends used in model monitoring"
             ],
-            "recommend": "Have the business owner provide an appeal route to staff who can reverse decisions, and track appeal outcomes.",
-            "decides": "The business owner decides reversals under the appeal policy management sets"
+            "recommend": "Have the model owner provide an appeal route to staff who can reverse decisions, and track appeal outcomes.",
+            "decides": "The model owner decides reversals under the appeal policy management sets"
           },
           "isaca_rule": "Every high-impact AI decision must be explainable from its log and open to appeal before a person who can change it. Appeals are also evidence: patterns in them reveal model errors that metrics miss.",
           "exam_traps": [
@@ -763,7 +763,7 @@
           "definition": "Test, evaluation, verification and validation (TEVV) are the activities that show an AI system meets its requirements, judged against acceptance criteria agreed before testing.",
           "why_it_matters": "Criteria chosen after the results are seen can be bent to pass anything. Tests run only on data unlike production, or only before launch, give a false picture of how the system will behave.",
           "how_it_works": [
-            "Acceptance criteria cover accuracy, fairness, robustness and explainability, and trace back to the business need and the owner's risk tolerance.",
+            "Acceptance criteria cover accuracy, fairness, robustness and explainability, and trace back to the business need and the tolerances senior management set.",
             "Tests use data and conditions similar to deployment, including holdout and out-of-time samples.",
             "Test sets, metrics, tools and results are documented so another team could rerun them.",
             "Testing continues after launch through monitoring and periodic revalidation, not only at release.",
@@ -781,7 +781,7 @@
               "Signed criteria document dated before the first test run",
               "Test plan and results with data description and metrics"
             ],
-            "recommend": "Have the model owner approve acceptance criteria from business need and risk tolerance before testing begins.",
+            "recommend": "Have the model owner approve acceptance criteria from business need, within approved tolerances, before testing begins.",
             "decides": "The model owner decides whether results meet the criteria for release"
           },
           "isaca_rule": "Set the bar before the jump. Acceptance criteria come from need and risk tolerance and are fixed before testing; tests use deployment-like data and continue after launch. A pass against criteria chosen afterward proves little.",
@@ -835,7 +835,7 @@
               "Production fairness monitoring trends since release"
             ],
             "recommend": "Have the model owner test and monitor outcomes and errors by group against documented fairness criteria.",
-            "decides": "The business owner, advised by legal counsel, decides whether disparities are acceptable"
+            "decides": "The model owner, advised by legal counsel, decides whether disparities are acceptable within approved tolerances"
           },
           "isaca_rule": "Ask whose errors an average hides. Expect group-level results, a documented reason for the fairness measures chosen and the same checks in production. Leaving out a protected attribute does not prove a model is fair.",
           "exam_traps": [
@@ -871,7 +871,7 @@
             "Red teaming has testers act as attackers or misusers, for example trying to make a generative model leak data or ignore its rules.",
             "The IS auditor assesses whether validation is independent and adequate; the auditor does not perform or approve it."
           ],
-          "example": "A Korean marine insurer's actuarial team builds a model that predicts hull damage claims, then validates it with the same staff. The head of underwriting wants to deploy next week. The IS auditor reviews the validation report and staffing and reports that the validation lacks independence and includes no testing with unusual voyage data.",
+          "example": "A Korean marine insurer's hull-claims model passed independent validation at launch. A year later, the actuarial team retrained it with a new data source covering Arctic routes and released it after checking only overall accuracy. The IS auditor reviews the release records and reports that validation was not repeated after a material change and that no robustness testing used unusual voyage data.",
           "audit_focus": {
             "review": [
               "Compare validator names with the development team roster",
@@ -971,7 +971,7 @@
               "Hash or signature verification records for third-party model files"
             ],
             "recommend": "Have the security team and model owner keep an AI threat model with controls for poisoning, evasion and extraction.",
-            "decides": "The model owner accepts residual threat risk within management's appetite"
+            "decides": "The model owner accepts residual threat risk within the board-approved risk appetite"
           },
           "isaca_rule": "Threat-model the AI, not just the server. Ask how its data, model and interfaces could be attacked, using a recognized taxonomy, and look for a control at each point. A model inside the network still needs a threat model.",
           "exam_traps": [
@@ -1019,8 +1019,8 @@
               "Architecture diagram showing untrusted inputs and tool permissions",
               "Logs of blocked and flagged prompts with review outcomes"
             ],
-            "recommend": "Have the system owner limit tool permissions, separate untrusted content and require approval for high-risk actions.",
-            "decides": "The system owner accepts residual injection risk within management's appetite"
+            "recommend": "Have the model owner limit tool permissions, separate untrusted content and require approval for high-risk actions.",
+            "decides": "The model owner accepts residual injection risk within the board-approved risk appetite"
           },
           "isaca_rule": "Assume injected instructions will sometimes get through. Rank the risk by what the system reads from outsiders and what it can do, and contain the damage with least privilege and human approval, not with a firewall or a single filter.",
           "exam_traps": [
@@ -1065,7 +1065,7 @@
             "Model files, training data and prompts are access-controlled too, because changing them changes behavior.",
             "Access reviews include agents and service accounts, each with an owner who confirms its permissions are still needed."
           ],
-          "example": "A Moroccan travel agency deploys an AI agent that rebooks flights for customers. It runs under a developer's personal account that can also read the whole customer database and edit staff rosters. The IS auditor reports the excess rights, and that no access review covers non-human accounts.",
+          "example": "A Moroccan furniture retailer deploys an AI agent that reschedules home deliveries for customers. It runs under a developer's personal account that can also read the whole customer database and edit staff rosters. The IS auditor reports the excess rights, and that no access review covers non-human accounts.",
           "audit_focus": {
             "review": [
               "Compare each agent's permissions and tools with its documented tasks",
@@ -1077,8 +1077,8 @@
               "Tool configuration showing scopes granted to each agent",
               "Secrets vault records of key rotation and access"
             ],
-            "recommend": "Have the system owner restrict agent identities to needed tools, require approval for high-impact actions and review access regularly.",
-            "decides": "The system owner approves agent permissions; management accepts residual access risk"
+            "recommend": "Have the model owner restrict agent identities to needed tools, require approval for high-impact actions and review access regularly.",
+            "decides": "The model owner approves agent permissions; management accepts residual access risk within the board-approved risk appetite"
           },
           "isaca_rule": "Judge an agent by what its account can do, not by what its instructions say. Instructions can be overridden; permissions hold. Give every agent its own identity, least privilege, human approval for high-impact actions and regular access review.",
           "exam_traps": [
@@ -1134,7 +1134,7 @@
           "example": "A Philippine mobile operator's AI chatbot starts telling customers that a fee waiver program has ended when it has not. Over two weeks, the complaints team logs 300 calls about it as routine service questions. The IS auditor traces the complaints and finds no route for staff to raise AI output problems as incidents.",
           "audit_focus": {
             "review": [
-              "Trace a sample of AI-related complaints to see whether they became incidents",
+              "Trace sampled AI-related complaints to see whether they became incidents",
               "Inspect the incident policy for an AI incident definition and triage criteria",
               "Compare detection channels in the plan with those actually monitored"
             ],
@@ -1144,7 +1144,7 @@
               "Incident policy with AI definitions, severity criteria and named roles"
             ],
             "recommend": "Have the incident manager define AI incidents, add complaint and monitoring channels, and triage by impact on people.",
-            "decides": "The incident manager sets severity; the model owner decides on disengaging the system"
+            "decides": "The incident manager sets severity; the model owner or a pre-delegated incident commander decides to disengage"
           },
           "isaca_rule": "AI incidents are not only security incidents. Wrong, biased or harmful outputs and drift beyond tolerance count too. Look for a definition, detection channels that include complaints, triage by impact on people and named roles.",
           "exam_traps": [
@@ -1193,7 +1193,7 @@
               "Custody log showing who accessed incident evidence and when"
             ],
             "recommend": "Have the model owner assign disengagement authority, test fallbacks and preserve inputs, outputs and versions before any fix.",
-            "decides": "The model owner decides to disengage; the incident manager directs containment"
+            "decides": "The model owner or a pre-delegated incident commander decides to disengage; the incident manager directs containment"
           },
           "isaca_rule": "Stop the harm and keep the evidence, then fix. Disengage or roll back when people are being harmed, preserve inputs, outputs and versions before anything is changed, and treat rollback as containment or restoration, never as the root-cause fix.",
           "exam_traps": [

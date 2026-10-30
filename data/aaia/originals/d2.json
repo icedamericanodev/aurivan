@@ -193,34 +193,34 @@
       "subtopic": "2B AI lifecycle. Retirement",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A benefits agency retiring its eligibility-scoring model plans to keep the decision logs but delete the trained model files, while appeals remain open. What is the IS auditor's GREATEST concern?",
+      "question": "A benefits agency retiring its eligibility-scoring model will keep the source code and decision logs for seven years but delete the trained model files. What is the IS auditor's BEST-supported conclusion about open appeals?",
       "options": {
-        "A": "Past decisions could no longer be reproduced or explained",
-        "B": "Some downstream system may still call the retired model",
-        "C": "The decision logs may hold more personal data than needed",
-        "D": "The replacement model may not be validated before go-live"
+        "A": "Past scores can be shown but not reproduced or explained",
+        "B": "Code and logs together allow any past score to be regenerated",
+        "C": "Logged outcomes are enough to answer appeals without the model",
+        "D": "The replacement model can rescore old cases to answer appeals"
       },
       "correct": "A",
-      "key_concept": "Decommissioning keeps the exact model version, not just its logs, while past decisions can still be challenged.",
-      "pre_read": "Ask who might still need to understand a decision the retired model made.",
-      "correct_explanation": "Decision logs show what the model decided, but answering an appeal also means showing why, which needs the exact trained model that scored the inputs. Deleting the model files while appeals are open leaves past decisions unexplainable and unreproducible. A forgotten downstream caller is a real retirement risk, but it can be found and fixed later; a deleted model version cannot be recovered.",
+      "key_concept": "Code and decision logs cannot reproduce past AI decisions; keep the exact trained model version while decisions can be challenged.",
+      "pre_read": "List what each retained record can show about a past decision, and what it cannot.",
+      "correct_explanation": "Decision logs record what the model decided and the code records how it was built, but the scores came from the trained model's learned parameters. Without the model files, no one can rerun an input to reproduce a score or explain it for an appeal. Code plus logs, option B, is the runner-up: it sounds complete, but retraining from the code, even on the same data, may not reproduce the model.",
       "wrong_explanations": {
-        "B": "Tempting because forgotten callers break things after retirement. But a missed dependency can be found and fixed later; a deleted model version cannot be recovered for open appeals.",
-        "C": "Tempting because minimization is a real privacy duty. But logs needed for open appeals must be kept, under restricted access, until the legal need ends.",
-        "D": "Tempting because a new model must be validated. But that concerns the replacement, not what retiring this model destroys while its decisions are still challenged."
+        "B": "Tempting because code and inputs seem enough to rerun anything. But a model's behavior comes from training; rebuilt from code, it may be a different model.",
+        "C": "Tempting because logs show each outcome. But appeals ask why a decision was made, which needs the model that made it.",
+        "D": "Tempting because the replacement is validated and available. But it is a different model; its scores do not show how the old model decided."
       },
       "tips": [
-        "Eliminate: C treats data minimization as the issue, though logs needed for open appeals must be kept, and D concerns validating the replacement, not what this retirement destroys.",
-        "Final two: A beats B because a deleted model version cannot be recovered to explain contested decisions, while a forgotten caller can still be found and fixed.",
-        "Exam cue: logs show what a model decided; reproducing or explaining why needs the exact model version, so keep it while decisions can be challenged."
+        "Eliminate: C falls because appeals need the reason for a decision, not just its outcome, and D rescores with a different model that never made the original decisions.",
+        "Final two: A beats B because a model's behavior lives in its trained files; retraining from code, even on the same data, may not reproduce it.",
+        "Exam cue: logs show what an AI decided and code shows how it was built; reproducing or explaining a decision needs the exact trained model version."
       ],
       "framework_ref": "NIST AI 100-1 GOVERN 1.7 (Decommissioning AI systems safely); NIST AI 100-1 MEASURE 3.3 (Feedback and appeal processes for end users and affected communities)",
       "related_concepts": [
         "Decommissioning",
         "Model version",
-        "Legal hold"
+        "Reproducibility"
       ],
-      "_provenance": "Authored from concept: notes 2B.3 Decommissioning AI Systems (retirement ends use, not accountability). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA pilot, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test, standards audit, concept review).",
+      "_provenance": "Authored from concept: notes 2B.3 Decommissioning AI Systems (retirement ends use, not accountability). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA pilot, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test, standards audit, concept review). Cross-domain review fixes 30 Oct 2026.",
       "style_version": 2
     },
     {
@@ -373,34 +373,34 @@
       "subtopic": "2D AI supervision. Production monitoring",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A water utility's board receives monthly reports on its leak-prediction model's uptime and response time, but none on prediction quality since launch 18 months ago. What should the IS auditor recommend as BEST?",
+      "question": "A water utility rechecks its leak-prediction model monthly on the launch test set, and accuracy has held at 92% for 18 months. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Retrain the leak-prediction model monthly regardless of results",
-        "B": "Add drift and accuracy indicators with tolerances that trigger review",
-        "C": "Revalidate the model once a year against its original launch test set",
-        "D": "Add server load and latency measures to the board report"
+        "B": "Track drift and accuracy on recent production outcomes",
+        "C": "Have an independent team revalidate the model on the launch test set",
+        "D": "Report the stable accuracy to the board as evidence of no drift"
       },
       "correct": "B",
-      "key_concept": "AI monitoring must track decision quality and drift against tolerances, not only system availability.",
-      "pre_read": "Ask whether the reported metrics would change if the model's predictions got worse.",
-      "correct_explanation": "Uptime and response time show the service is running, not that its predictions are still right. Key risk indicators for drift and accuracy, with tolerances that trigger review, show the board whether the model still works as intended. Annual revalidation is better than nothing, but a frozen original test set reflects old conditions, and a yearly check can leave a decayed model in use for months.",
+      "key_concept": "Drift shows in recent production data and outcomes; a frozen launch test set cannot reveal it.",
+      "pre_read": "Ask whether the reported accuracy could change at all if the conditions the model serves changed.",
+      "correct_explanation": "A launch test set reflects conditions at launch, so a model scored on it monthly keeps reporting the same accuracy however pipes, weather or sensors change. Drift shows only in recent production data and outcomes, tracked against tolerances. Independent revalidation, option C, is the runner-up: independence adds credibility, but on the same frozen data it repeats the same blind spot.",
       "wrong_explanations": {
-        "A": "Tempting because retraining refreshes the model. But retraining blindly is an uncontrolled change and still leaves the board with no measure of whether predictions are good.",
-        "C": "Tempting because revalidation tests accuracy. But a frozen test set reflects launch-time conditions, and a yearly check leaves long gaps when drift goes unseen.",
-        "D": "Tempting because more metrics seem better. But server load and latency describe infrastructure, like uptime, and still say nothing about prediction quality."
+        "A": "Tempting because retraining refreshes the model. But retraining on a schedule is an uncontrolled change and still gives no measure of whether predictions hold.",
+        "C": "Tempting because independent validation is strong evidence. But validators using the launch test set still measure old conditions and cannot see drift.",
+        "D": "Tempting because the figure is stable and documented. But stability on old data says nothing about current predictions and can hide drift."
       },
       "tips": [
-        "Eliminate: A retrains on a schedule without any measure of quality, and D adds infrastructure metrics that, like uptime, cannot show whether predictions are right.",
-        "Final two: B beats C because ongoing indicators with tolerances catch drift as it happens; a yearly check on old test data can miss months of decay.",
-        "Exam cue: for AI KPIs and KRIs, look for measures of decision quality and drift with thresholds, not just system availability."
+        "Eliminate: A retrains on a schedule without any quality measure, and D treats stable scores on old data as proof there is no drift.",
+        "Final two: B beats C because drift appears only in recent production outcomes; independent validators using the launch test set share the blind spot.",
+        "Exam cue: when accuracy is measured only on the original test set, recommend monitoring recent production outcomes against tolerances."
       ],
       "framework_ref": "NIST AI 100-1 MEASURE 2.4 (Functionality and behavior monitored in production); NIST AI 100-1 MEASURE 4.3 (Performance improvements or declines identified and documented)",
       "related_concepts": [
         "Data drift",
-        "Key risk indicator (KRI)",
+        "Concept drift",
         "Continuous monitoring"
       ],
-      "_provenance": "Authored from concept: notes 2D.2 Monitoring Drift, Performance and Impacts (monitor decisions, not just servers). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA pilot, 30 Oct 2026.",
+      "_provenance": "Authored from concept: notes 2D.2 Monitoring Drift, Performance and Impacts (monitor decisions, not just servers). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA pilot, 30 Oct 2026. Cross-domain review fixes 30 Oct 2026.",
       "style_version": 2
     },
     {
@@ -481,7 +481,7 @@
       "subtopic": "2E AI testing. Validation roles",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A pension fund's data science team built a member-risk model, validated it themselves and reported strong results. What should the IS auditor recommend as BEST before deployment?",
+      "question": "A savings cooperative's data science team built a member-risk model, validated it themselves and reported strong results. What should the IS auditor recommend as BEST before deployment?",
       "options": {
         "A": "Have the IS auditor validate and approve the model for release",
         "B": "Have the team rerun validation on a larger holdout sample",
@@ -508,7 +508,7 @@
         "Self-review",
         "Auditor independence"
       ],
-      "_provenance": "Authored from concept: notes 2E.3 Independent Validation, Robustness and Red Teaming (builders do not grade their own model). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA pilot, 30 Oct 2026.",
+      "_provenance": "Authored from concept: notes 2E.3 Independent Validation, Robustness and Red Teaming (builders do not grade their own model). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA pilot, 30 Oct 2026. Cross-domain review fixes 30 Oct 2026.",
       "style_version": 2
     },
     {
