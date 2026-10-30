@@ -161,7 +161,7 @@ export function caseFromFacts(cert: Certification, facts: MilestoneFacts, earned
   return { marks, sets: caseSets(marks, ctx.exam, ctx.domains.length), mastery: Object.fromEntries(facts.domains.map((d) => [d.id, d.mastery])) };
 }
 
-/** The badge case for a cert's progress now (You → Badges). */
+/** The badge case for a cert's progress now (You → Herbarium). */
 export function badgeCase(certId: string, cp: CertProgress, now = Date.now()): BadgeCase {
   const cert = getCertification(certId);
   const facts = milestoneFacts(certId, cp, { now });

@@ -42,6 +42,11 @@ export interface WhatsNewEntry {
 /** Newest first. The first entry must match app.json (a test checks it). */
 export const WHATS_NEW: readonly WhatsNewEntry[] = [
   {
+    version: '1.51.1',
+    date: '2026-10-30',
+    fixed: ['Badge settings now point to the Herbarium on You, where your badges live.'],
+  },
+  {
     version: '1.51.0',
     date: '2026-10-29',
     improved: [

@@ -300,7 +300,7 @@ describe('Settings → Show badges', () => {
     const n = showBadgesAgain();
     expect(n).toBe(2); // First Foothold and Firm Footing · IS Operations
     expect(cp().milestones!.queue).toEqual([]);
-    expect(shownAgainLine(n)).toBe('Badges are on again. 2 badges arrived while they were hidden: see You → Badges.');
+    expect(shownAgainLine(n)).toBe('Badges are on again. 2 badges arrived while they were hidden: see You → Herbarium.');
     expect(useSettings.getState().badgesHidden).toBe(false);
   });
 });
