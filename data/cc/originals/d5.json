@@ -989,7 +989,7 @@
    "options": {
     "A": "A malicious insider, because staff data left the organization",
     "B": "An outside criminal, because an outsider now holds the data",
-    "C": "An accidental insider, because a staff member's error exposed the data",
+    "C": "An accidental insider, because a staff member's error exposed data",
     "D": "No threat source, because nobody meant to cause any harm"
    },
    "correct": "C",
@@ -1023,10 +1023,10 @@
    "bloom_level": "Application",
    "question": "At a sector meeting, a partner shares a report marked TLP:RED about attacks on similar firms, and a junior analyst who attended wants their IT team to see it. What is the analyst's BEST action?",
    "options": {
-    "A": "Keep it to those present, and ask the source before sharing it",
-    "B": "Forward it to the IT team, since they work for the same firm",
+    "A": "Keep it to those present and ask the source before sharing",
+    "B": "Forward it to the IT team, who share the same employer",
     "C": "Post a summary on the sector forum to warn other members",
-    "D": "Remove the TLP label first, then send it to the IT team"
+    "D": "Remove the TLP label, then email the report to the IT team"
    },
    "correct": "A",
    "key_concept": "TLP labels set how far shared intelligence may travel; TLP:RED stays with the individual recipients unless the source agrees.",
@@ -1062,7 +1062,7 @@
     "A": "A worm, because it reached the laptop across a network",
     "B": "A virus, because it arrived inside a program the user ran",
     "C": "Ransomware, because it hands an attacker control of the laptop",
-    "D": "A Trojan, because it posed as useful software the user installed"
+    "D": "A Trojan, because it posed as a useful tool the user installed"
    },
    "correct": "D",
    "key_concept": "A Trojan poses as useful software the user installs; unlike a virus or worm, it does not copy itself.",
@@ -1131,9 +1131,9 @@
    "bloom_level": "Application",
    "question": "A small security operations center receives about 5,000 alerts a day, and analysts have started missing real attacks among duplicates. Which change should the SOC lead make as BEST?",
    "options": {
-    "A": "Add AI correlation that groups related alerts into cases for analysts",
+    "A": "Add AI correlation that groups related alerts into cases to review",
     "B": "Switch off the half of the detection rules that alert most often",
-    "C": "Let an AI tool decide which alerts to close, with no human review",
+    "C": "Let an AI tool close alerts it judges harmless, with no review",
     "D": "Have analysts work through alerts strictly in the order they arrive"
    },
    "correct": "A",
@@ -1146,7 +1146,7 @@
     "D": "Tempting because it feels fair and thorough. But arrival order ignores impact, and the queue stays just as long, so real attacks still wait behind noise."
    },
    "tips": [
-    "Eliminate: B creates blind spots by disabling detection, and D keeps the same flood while ignoring which alerts matter most.",
+    "Eliminate: B creates blind spots by disabling detection, and D keeps the same flood, ordered by arrival time instead of impact.",
     "Final two: A beats C because AI should shrink the queue while people keep the decisions; unreviewed auto-closing hides the model's mistakes.",
     "Exam cue: in a SOC, AI groups, ranks and summarizes alerts; people stay accountable for closing and escalating them."
    ],
@@ -1218,7 +1218,7 @@
     "D": "Closest choice: training can reduce clicks. But focusing on one person leaves the filtering, reporting and sign-in gaps that let a single click succeed."
    },
    "tips": [
-    "Eliminate: A turns the review into blame, which discourages honest reporting, and B skips a review because the incident was small.",
+    "Eliminate: A pins the cause on one person, which discourages honest reporting, and B skips a review because the incident was small.",
     "Final two: C beats D because a review fixes the system that let one click succeed; retraining one person leaves those gaps open.",
     "Exam cue: lessons learned reviews are blameless and end with owned, dated actions on process, tools and training."
    ],
@@ -1239,7 +1239,7 @@
    "bloom_level": "Foundational",
    "question": "A university's incident response lead wants to confirm that the IT team can really restore its file servers from backup within four hours. Which exercise fits this goal BEST?",
    "options": {
-    "A": "A tabletop exercise where the team discusses a restore scenario",
+    "A": "A tabletop exercise in which the team discusses a restore scenario",
     "B": "A functional exercise restoring backups in an isolated test setup",
     "C": "A drill in which staff phone everyone on the contact list",
     "D": "A read-through of the written restore procedure by the team"
@@ -1278,7 +1278,7 @@
     "A": "Share it now with the detection team through the response lead",
     "B": "Hold it for the lessons learned meeting once recovery ends",
     "C": "Record it as the incident's root cause and close the analysis",
-    "D": "Rewrite the detection rule themselves at once, telling no one"
+    "D": "Rewrite the detection rule themselves at once, without telling anyone"
    },
    "correct": "A",
    "key_concept": "NIST's CSF 2.0-based model treats improvement as continuous: lessons are shared when found, not only after recovery.",
@@ -1312,7 +1312,7 @@
    "question": "A staff email account at a print shop is sending phishing messages to coworkers, and the playbook lets the on-call analyst disable accounts that send malicious mail. What should the analyst do FIRST?",
    "options": {
     "A": "Email all staff, warning them not to open the messages",
-    "B": "Shut down the whole email service until the investigation ends",
+    "B": "Shut down the whole email service until the investigation has ended",
     "C": "Delete the phishing messages from every coworker's mailbox",
     "D": "Disable the sending account and alert the incident response lead"
    },
@@ -1383,7 +1383,7 @@
    "bloom_level": "Application",
    "question": "A hotel group's procurement team will buy 300 smart room thermostats next month and plans to involve IT security after installation. What should the IT security analyst recommend as BEST?",
    "options": {
-    "A": "Set security requirements, such as patch support, before choosing a model",
+    "A": "Set purchase requirements, such as patch support, before choosing a model",
     "B": "Harden each thermostat to the secure baseline once it is installed",
     "C": "Pick the cheapest model and replace any that later prove insecure",
     "D": "Keep each thermostat's default settings, since the vendor is reputable"
@@ -1420,7 +1420,7 @@
    "question": "A drift scan flags that 15 file servers now run a backup agent missing from their secure baseline, and an approved change request installed it last week. What is the systems technician's BEST next step?",
    "options": {
     "A": "Remove the agent from all 15 servers to match the baseline again",
-    "B": "Request a baseline update through change management to add the agent",
+    "B": "Update the baseline through change management to add the agent",
     "C": "Turn off drift scanning on those servers to stop the repeat alerts",
     "D": "Report the agent as an unauthorized change and possible incident"
    },
@@ -1457,7 +1457,7 @@
    "options": {
     "A": "Delete the rule at once to restore the approved configuration",
     "B": "File a change request now so the rule is approved retroactively",
-    "C": "Leave the rule, since a senior engineer probably added it for a reason",
+    "C": "Leave it, since a senior engineer probably added it for a reason",
     "D": "Report it as a possible security incident through the set procedure"
    },
    "correct": "D",
@@ -1528,7 +1528,7 @@
    "question": "During an authorized tailgating test at a garden-supply wholesaler, a staff member grabs the arm of the tester posing as a courier, and others gather angrily. What should the tester do FIRST?",
    "options": {
     "A": "Keep up the courier story to see whether staff follow procedure",
-    "B": "Ask to be walked to reception while still posing as the courier",
+    "B": "Ask to be walked to reception, still posing as the delivery courier",
     "C": "Stop the test, say who they are and show the authorization letter",
     "D": "Pull free and leave by the nearest exit without a word"
    },
