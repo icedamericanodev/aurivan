@@ -935,11 +935,11 @@ export function Section({
   return (
     <View style={[styles.section, head && styles.sectionHead, action && styles.sectionAction, large && styles.sectionStacked, style]}>
       {headRef ? (
-        <View ref={headRef} accessible accessibilityRole="header" accessibilityLabel={title} style={{ flexShrink: 1 }}>
+        <View ref={headRef} accessible accessibilityRole="header" accessibilityLabel={head ? title.replace(/ · /g, ', ') : title} style={{ flexShrink: 1 }}>
           {words ?? <T v="headline">{title}</T>}
         </View>
       ) : head ? (
-        <View accessible accessibilityRole="header" accessibilityLabel={title} style={{ flexShrink: 1 }}>
+        <View accessible accessibilityRole="header" accessibilityLabel={title.replace(/ · /g, ', ')} style={{ flexShrink: 1 }}>
           {words}
         </View>
       ) : (

@@ -201,7 +201,7 @@ export default function Learn() {
         {upNext && upDomain ? (
           <>
             <Plate fig={{ n: 2, title: 'Next lesson' }} testID="learn-plate">
-              <FieldText v="head">{`Up next · ${upDomain.short}`}</FieldText>
+              <FieldText v="head" accessibilityLabel={`Up next, ${upDomain.short}`}>{`Up next · ${upDomain.short}`}</FieldText>
               <T v="hero" accessibilityRole="header" style={{ marginTop: space.xs }}>{upNext.title}</T>
               {/* Why this one (ui.md L3), on the same line as its length. */}
               {hero && <T v="meta" accessibilityLabel={hero.spoken} style={{ marginTop: space.xs }}>{hero.meta}</T>}

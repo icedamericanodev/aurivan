@@ -281,7 +281,7 @@ export default function Practice() {
             plate, Fig. 2 in the guide's register (Learn or Practice, §21.1; 4 is the answer); the forest fill is kept for the plate button under it.
             The mode, domain and length live in the summary row below (O2: said once). */}
         <Plate fig={{ n: 2, title: 'Your next set' }} testID="practice-plate">
-          <FieldText v="head">Your path</FieldText>
+          <FieldText v="head" accessibilityLabel="Your path">Your path</FieldText>
           {/* Mobile 1.21: the title names the path, never a count (the count goes to the meta). */}
           <T v="hero" accessibilityRole="header" style={{ marginTop: space.xs }}>
             {mode === 'guided'
