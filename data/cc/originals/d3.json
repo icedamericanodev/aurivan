@@ -731,12 +731,12 @@
       "id": "cc_d3_021",
       "domain": 3,
       "subtopic": "3.1 Identity life cycle. Identities and accounts",
-      "difficulty": "foundational",
-      "bloom_level": "Foundational",
+      "difficulty": "application",
+      "bloom_level": "Application",
       "question": "A marketing team's new AI agent will post scheduled social media updates, and the team lead wants it to run under the lead's own account. Which setup is BEST for the IT analyst to propose?",
       "options": {
         "A": "One shared team account for the agent and the staff",
-        "B": "Its own account, with an owner and rights to post only",
+        "B": "A separate account, with an owner and rights to post only",
         "C": "The lead's account, with every post the agent makes logged",
         "D": "An administrator account, so permission errors cannot stop posts"
       },
@@ -824,7 +824,7 @@
       "tips": [
         "Eliminate: A treats a matching password as enough despite the risk signal, and B adds a second, often guessable thing you know rather than a stronger factor.",
         "Final two: C beats D because medium risk calls for more proof; blocking and locking is for high risk and locks out a genuine user.",
-        "Exam cue: adaptive authentication steps up proof as risk rises: pass, then ask for more, then block. It adds to MFA; it never replaces it."
+        "Exam cue: adaptive authentication steps up proof as risk rises: pass, then ask for a stronger factor, then block for review."
       ],
       "framework_ref": "NIST SP 800-53 Rev. 5 IA-10 (Adaptive Authentication)",
       "related_concepts": [
@@ -877,7 +877,7 @@
       "subtopic": "3.1 Identity life cycle. Federated and guest access",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A university lets a partner college's researchers sign in to its lab-booking system with their own college accounts. Which statement should the university's IT team treat as MOST accurate?",
+      "question": "A university lets a partner college's researchers sign in to its lab-booking system with their own college accounts. Which statement is MOST accurate for the university's IT team?",
       "options": {
         "A": "The researchers need no access reviews, since the college employs them",
         "B": "The college decides what each researcher may do in the system",
@@ -910,7 +910,7 @@
     {
       "id": "cc_d3_026",
       "domain": 3,
-      "subtopic": "3.1 Identity life cycle. Sessions and reauthentication",
+      "subtopic": "3.1 Identity life cycle. Session security",
       "difficulty": "application",
       "bloom_level": "Application",
       "question": "An attacker stole a session cookie from a payroll portal that keeps staff signed in all day after multifactor sign-in, then changed bank details. Which control should the portal team add as BEST?",
@@ -923,11 +923,11 @@
       "correct": "B",
       "key_concept": "Reauthentication before sensitive actions stops attackers who steal an already signed-in session.",
       "pre_read": "Note what the attacker actually stole, and which checks that theft lets them skip.",
-      "correct_explanation": "Strong sign-in protects only the start of a session; a stolen cookie skips it. Asking for a fresh sign-in before sensitive changes means the attacker, who holds the cookie but not the factors, is stopped at the step that matters. A shorter idle timeout is the runner-up: it helps, but an attacker actively using a stolen session keeps it from going idle.",
+      "correct_explanation": "Strong sign-in protects only the start of a session; a stolen cookie skips it. Asking for a fresh sign-in before sensitive changes means the attacker, who holds the cookie but not the factors, is stopped at the step that matters. A shorter idle timeout is the runner-up: it shrinks the window, but a cookie replayed while the session is live, then kept busy, is never timed out.",
       "wrong_explanations": {
         "A": "Tempting because stronger sign-in feels safer. But the attacker never signed in; they reused a session that was already authenticated.",
         "C": "Tempting because it sounds like signing out. But closing a tab often leaves the session valid until it times out or is revoked.",
-        "D": "Closest choice: shorter sessions shrink the window. But an attacker who is actively using the stolen session keeps it busy, so an idle timeout never fires."
+        "D": "Closest choice: idle timeouts suit unattended screens. But a cookie replayed while the session is live, then kept busy, never goes idle, so the change still goes through."
       },
       "tips": [
         "Eliminate: A strengthens a sign-in the attacker skipped, and C relies on closing a tab, which often leaves the session valid.",
@@ -949,7 +949,7 @@
       "subtopic": "3.1 Identity life cycle. Identity proofing",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A new hire arrives at a bank branch for a laptop and first sign-in details. Which check BEST lets the IT technician confirm they are the person in the human resources record?",
+      "question": "A new hire arrives at a bank branch for a laptop and first sign-in details. Which check BEST lets the IT technician confirm the new hire is the person in the human resources record?",
       "options": {
         "A": "Check the offer letter the person brings against the record",
         "B": "Ask them to state their manager's name and start date",
@@ -988,22 +988,22 @@
       "question": "An ambulance service tightens fingerprint sign-in on its crews' patient-record tablets so impostors are almost never accepted. Which side effect should the IT team MOST expect?",
       "options": {
         "A": "More genuine crew members turned away by the reader",
-        "B": "Fewer recognition errors of every kind for crew members",
+        "B": "Fewer repeat scans needed by genuine crew members",
         "C": "A higher crossover error rate for each reader",
         "D": "Copied fingerprints no longer working for attackers"
       },
       "correct": "A",
       "key_concept": "Tightening a biometric threshold lowers false acceptances but raises false rejections; the two errors trade against each other.",
       "pre_read": "Picture both kinds of people at a tablet: crew members and impostors.",
-      "correct_explanation": "Every biometric reader trades two errors. Lowering false acceptances, where an impostor matches, raises false rejections, where a genuine user fails to match. So crews will be turned away more often, and the service needs a quick fallback so they are not held up during a call. Fewer errors of every kind is the runner-up: a stricter setting moves errors from one kind to the other.",
+      "correct_explanation": "Every biometric reader trades two errors. Lowering false acceptances (false matches), where an impostor matches, raises false rejections (false non-matches), where a genuine crew member fails to match. So crews will be turned away more often and need a quick fallback during a call. Expecting copied fingerprints to fail is the runner-up: the threshold judges ordinary impostors, while stopping fakes needs presentation attack detection.",
       "wrong_explanations": {
-        "B": "Closest choice: stricter sounds better all round. But a threshold only trades errors: fewer impostors accepted means more genuine users rejected.",
+        "B": "Tempting because a stricter reader sounds more accurate. But tightening works the other way: genuine fingers that matched before now fall short, so crews need more repeat scans.",
         "C": "Tempting because it names a real biometric measure. But the crossover rate is where both errors meet for a reader; moving the threshold does not change it.",
-        "D": "Tempting because the readers are now stricter. But a good copy of an enrolled fingerprint still matches, and a copied trait cannot be changed."
+        "D": "Closest choice: a stricter reader sounds harder to fool. But a good copy of an enrolled fingerprint still matches; spotting fakes needs presentation attack detection, such as liveness checks."
       },
       "tips": [
-        "Eliminate: C confuses a reader's fixed crossover point with its setting, and D assumes strictness defeats a good copy of a real fingerprint.",
-        "Final two: A beats B because tightening trades errors; fewer false acceptances bring more false rejections.",
+        "Eliminate: B reverses the trade-off, since a stricter match sends genuine users back to rescan, and C confuses a reader's fixed crossover point with its threshold setting.",
+        "Final two: A beats D because the threshold sets how close a match must be; copied fingerprints are stopped by presentation attack detection, not by tightening.",
         "Exam cue: biometrics balance false acceptance against false rejection. Push one down and the other rises, so plan a fallback for genuine users."
       ],
       "framework_ref": "NIST SP 800-63B-4 Section 3.2.3 (Use of Biometrics: false match and false non-match rates)",
@@ -1012,7 +1012,7 @@
         "False rejection",
         "Something you are"
       ],
-      "_provenance": "Authored from concept: 'biometric thresholds trade false acceptances against false rejections' (notes 3.1.4 Authentication Factors and MFA). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 2, 30 Oct 2026.",
+      "_provenance": "Authored from concept: 'biometric thresholds trade false acceptances against false rejections' (notes 3.1.4 Authentication Factors and MFA). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 2, 30 Oct 2026. Standards audit fix (30 Oct 2026): runner-up is D (copied prints), B no longer falls on an absolute, terms match the cited source.",
       "style_version": 2
     },
     {
@@ -1026,29 +1026,29 @@
         "A": "The passkey's code changes every 30 seconds, so a stolen one expires",
         "B": "The passkey is longer than any password, so it cannot be guessed",
         "C": "The passkey sends its private key encrypted to the genuine site",
-        "D": "The passkey answers only requests from the genuine site's address"
+        "D": "The passkey answers only requests from the genuine site's domain"
       },
       "correct": "D",
-      "key_concept": "Passkeys resist phishing because each sign-in is bound to the genuine site's address, and the private key never leaves the device.",
+      "key_concept": "Passkeys resist phishing because each sign-in is bound to the genuine site's address, and the private key is never sent to any site.",
       "pre_read": "Think about what a look-alike page could capture and pass on to the real site.",
-      "correct_explanation": "A passkey's private key stays on the device and signs a challenge only for the site it was registered with, after the browser checks the site's address. A look-alike domain gets no valid response to relay. Sending the private key encrypted is the runner-up: it sounds secure, but the private key never leaves the device at all.",
+      "correct_explanation": "A passkey's private key is never sent to any website. It signs a challenge only for the site the passkey was registered with, after the browser checks the site's address, so a look-alike domain gets no valid response to relay. Sending the private key encrypted is the runner-up: it sounds secure, but the site only ever receives a signature, never the key.",
       "wrong_explanations": {
         "A": "Tempting because one-time codes do expire. But passkeys use no typed codes, and a relayed code can still be used within its 30 seconds.",
         "B": "Tempting because long secrets resist guessing. But phishing captures secrets rather than guessing them; length alone would not stop a relay.",
-        "C": "Closest choice: it sounds like strong protection. But a passkey's private key never leaves the device; only a signed answer for the real site is sent."
+        "C": "Closest choice: it sounds like strong protection. But a passkey never sends its private key to any site; the real site receives only a signed answer bound to its address."
       },
       "tips": [
         "Eliminate: A describes one-time codes, which a look-alike page can relay in time, and B answers guessing, not phishing.",
-        "Final two: D beats C because the private key never leaves the device; what protects the user is a signature bound to the real site.",
+        "Final two: D beats C because the private key is never sent to a site; what protects the user is a signature bound to the real site's address.",
         "Exam cue: phishing-resistant means bound to the genuine site. If a fake page can pass on what the user types or approves, it is not phishing-resistant."
       ],
-      "framework_ref": "NIST SP 800-63B-4 (Authentication and Authenticator Management: phishing resistance)",
+      "framework_ref": "NIST SP 800-63B-4 (Authentication and Authenticator Management: phishing resistance); NIST SP 800-63B-4 Section 3.2.5.2 (Verifier Name Binding)",
       "related_concepts": [
         "Passkeys",
         "FIDO2",
         "Phishing resistance"
       ],
-      "_provenance": "Authored from concept: 'passkeys bind each sign-in to the genuine site and keep the private key on the device' (notes 3.1.5 Phishing-Resistant MFA and Passkeys). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 2, 30 Oct 2026.",
+      "_provenance": "Authored from concept: 'passkeys bind each sign-in to the genuine site and keep the private key on the device' (notes 3.1.5 Phishing-Resistant MFA and Passkeys). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 2, 30 Oct 2026. Standards audit fix (30 Oct 2026): synced passkeys can leave the device, so the item now rests on the key never being sent to a site.",
       "style_version": 2
     },
     {
@@ -1201,24 +1201,24 @@
       "subtopic": "3.2 Logical access. Role-based access control",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A council's role-based system has grown to 380 custom roles for 400 staff, though staff fall into about 15 job types. Which fix should the access analyst propose as BEST?",
+      "question": "A council's role-based system has 380 roles for 400 staff, mostly one-offs created for single requests, though staff fall into about 15 job types. Which fix should the access analyst propose as BEST?",
       "options": {
         "A": "Rebuild a small set of job roles, with time-limited extras",
-        "B": "Merge every custom role into one role for everyone",
-        "C": "Replace the job roles with attribute-based access control",
+        "B": "Keep the custom roles and review each one yearly",
+        "C": "Replace the roles with attribute-based access control",
         "D": "Let managers edit their own team's roles whenever needed"
       },
       "correct": "A",
       "key_concept": "Role-based access control works when roles mirror jobs; one-off needs are temporary requests, not new custom roles.",
       "pre_read": "Compare the number of roles with the number of job types, and ask what that gap means.",
-      "correct_explanation": "Role-based access control works when roles match jobs; one custom role per person defeats it, making reviews and moves hard. With about 15 job types, rebuilding job roles and handling one-off needs as time-limited requests restores order. Moving to attribute-based control is the runner-up: it suits access that depends on many changing conditions, but here access follows the job, so it adds complexity without need.",
+      "correct_explanation": "Role-based access control works when roles match jobs; hundreds of one-off roles defeat it and make reviews and moves hard. With about 15 job types, rebuilding job roles and handling one-off needs as time-limited requests restores order. Attribute-based control is the runner-up: it answers role explosion caused by many changing conditions, such as location or training, but these roles came from single requests.",
       "wrong_explanations": {
-        "B": "Tempting because one role is simple. But it gives everyone the combined access of all roles, breaking least privilege across the council.",
-        "C": "Closest choice: attribute-based control does avoid role sprawl. But it suits access that depends on many changing conditions; here access simply follows 15 job types.",
+        "B": "Tempting because reviews catch excess access. But reviewing 380 near-duplicate roles each year is the burden sprawl creates; it leaves the sprawl in place.",
+        "C": "Closest choice: attribute-based control is a known remedy for role explosion. But it suits changing conditions; these roles came from single requests, and access follows 15 job types.",
         "D": "Tempting because managers know their teams. But unreviewed edits by each manager are how roles multiplied, and no owner checks them for conflicts."
       },
       "tips": [
-        "Eliminate: D keeps the unchecked edits that caused the sprawl, and B gives every person everyone's access.",
+        "Eliminate: D keeps the unchecked edits that caused the sprawl, and B reviews the 380 roles instead of reducing them.",
         "Final two: A beats C because access here follows job type, which is what roles express; attribute rules add complexity this case does not need.",
         "Exam cue: when roles outnumber jobs, rebuild roles around jobs and handle one-off needs as time-limited requests."
       ],
@@ -1228,7 +1228,7 @@
         "Role-based access control",
         "Attribute-based access control"
       ],
-      "_provenance": "Authored from concept: 'roles should mirror jobs, with one-off needs handled as temporary requests' (notes 3.2.7 Role-Based Access Control (RBAC)). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 2, 30 Oct 2026.",
+      "_provenance": "Authored from concept: 'roles should mirror jobs, with one-off needs handled as temporary requests' (notes 3.2.7 Role-Based Access Control (RBAC)). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 2, 30 Oct 2026. Standards audit fix (30 Oct 2026): stem now says why the roles exist, so attribute-based control is no longer defensible; B is no longer a strawman.",
       "style_version": 2
     },
     {
@@ -1237,7 +1237,7 @@
       "subtopic": "3.2 Logical access. Rule-based access control",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A junior network administrator finds 140 allow rules, many with no recorded purpose, on the firewall guarding the payroll servers, which the network manager owns. What should the administrator do FIRST?",
+      "question": "A junior network administrator finds 140 allow rules, many with no recorded purpose, on the firewall guarding a clinic's lab systems, which the network manager owns. What should the administrator do FIRST?",
       "options": {
         "A": "Add a final rule that allows any traffic the others miss",
         "B": "Replace the rules with role-based access control on the firewall",
@@ -1247,11 +1247,11 @@
       "correct": "C",
       "key_concept": "Access rules pile up over time; each needs an owner, a purpose and periodic review, arranged through the system's owner.",
       "pre_read": "Note what the administrator found and who owns the device.",
-      "correct_explanation": "Rules pile up, and each needs an owner, a purpose and a periodic review. The administrator's part is to document the rules and bring them to the firewall's owner, who can arrange a review with each business area. Disabling unexplained rules is the runner-up: they may look unused, but some may carry live payroll traffic, and changing the firewall is the owner's decision, made through change control.",
+      "correct_explanation": "Rules pile up, and each needs an owner, a purpose and a periodic review. The administrator's part is to document the rules and bring them to the firewall's owner, who can arrange a review with each business area. Disabling unexplained rules is the runner-up: they may look unused, but some may carry live lab traffic, and changing the firewall is the owner's decision, made through change control.",
       "wrong_explanations": {
         "A": "Tempting because it stops wanted traffic being dropped. But a rule set should end by denying whatever no rule allows, not by allowing it.",
         "B": "Tempting because role-based control is common. But firewalls apply rule-based control, the same conditions for all traffic; roles describe people's jobs, not connections.",
-        "D": "Closest choice: unexplained rules are a real risk. But some may carry live payroll traffic, and changes to an owned firewall go through its owner and change control."
+        "D": "Closest choice: unexplained rules are a real risk. But some may carry live lab traffic, and changes to an owned firewall go through its owner and change control."
       },
       "tips": [
         "Eliminate: B confuses role-based with rule-based control, and A ends the rule set by allowing everything instead of denying it.",
@@ -1264,7 +1264,7 @@
         "Rule sprawl",
         "Change control"
       ],
-      "_provenance": "Authored from concept: 'each access rule needs an owner, a purpose and periodic review' (notes 3.2.9 Rule-Based Access Control). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 2, 30 Oct 2026.",
+      "_provenance": "Authored from concept: 'each access rule needs an owner, a purpose and periodic review' (notes 3.2.9 Rule-Based Access Control). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 2, 30 Oct 2026. Standards audit fix (30 Oct 2026): asset moved away from cc_d5_041's payroll firewall.",
       "style_version": 2
     },
     {
@@ -1276,7 +1276,7 @@
       "question": "A 30-person design agency gives staff access by job, and its owner wants to switch to mandatory access control because it is the strictest model. What should the security analyst advise as BEST?",
       "options": {
         "A": "Use mandatory access control, because the strictest model is the safest",
-        "B": "Use role-based access control, because it fits this firm's data and size",
+        "B": "Use role-based access control, because each job maps to one role",
         "C": "Use rule-based access control, because one rule can cover every job",
         "D": "Use discretionary access control, because owners know their own files best"
       },
@@ -1354,7 +1354,7 @@
       },
       "correct": "A",
       "key_concept": "Need to know limits each person to the information their current work requires, preventing curiosity browsing.",
-      "pre_read": "Note what the officer did and what their work actually required.",
+      "pre_read": "Picture the same officer trying the same lookup after each change.",
       "correct_explanation": "Need to know limits each person to the information their current work requires. Tying access to assigned cases stops browsing before it happens. Logging views and checking them against assigned cases is the runner-up: it would catch the officer afterward and deters misuse, but the athlete's privacy is already breached by then.",
       "wrong_explanations": {
         "B": "Tempting because it limits what officers can do. But browsing is reading, so officers without edit rights can still view every file.",
@@ -1378,15 +1378,15 @@
     {
       "id": "cc_d3_039",
       "domain": 3,
-      "subtopic": "3.2 Logical access. Two-person control",
+      "subtopic": "3.2 Logical access. Separation of duties",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A water utility lets one operator change chlorine dosing levels from the control room, and a wrong level could harm the public. Which control should the plant manager add as BEST?",
+      "question": "At a water utility, two operators staff each shift, and either can change chlorine dosing from the control room; a wrong level could harm the public. Which control should the plant manager add as BEST?",
       "options": {
         "A": "Require a longer password for the operator's account",
         "B": "Log each dosing change and alert the supervisor",
         "C": "Require a second operator to confirm each dosing change",
-        "D": "Limit dosing changes to the operator's own shift"
+        "D": "Rotate dosing duties among the operators every week"
       },
       "correct": "C",
       "key_concept": "Two-person control requires a second authorized person to confirm a high-impact action before it takes effect.",
@@ -1395,10 +1395,10 @@
       "wrong_explanations": {
         "A": "Tempting because it strengthens sign-in. But it proves who the operator is; it does not stop that operator acting alone.",
         "B": "Closest choice: alerts bring a fast response. But they fire after the level changes, and harm to the public may already have started.",
-        "D": "Tempting because it narrows when changes happen. But a time rule still lets one operator make a harmful change alone during their shift."
+        "D": "Tempting because job rotation is a real control. But it helps uncover misuse over time; on any given shift, one operator can still make a harmful change alone."
       },
       "tips": [
-        "Eliminate: D limits when one person acts, not whether they act alone, and A strengthens sign-in without adding a second person.",
+        "Eliminate: D changes who acts alone rather than adding a second person, and A strengthens sign-in without stopping a lone change.",
         "Final two: C beats B because confirmation happens before the change takes effect; an alert comes after people may already be at risk.",
         "Exam cue: for high-impact actions, especially where safety is at stake, require a second person before the action, not a log after it."
       ],
@@ -1408,13 +1408,13 @@
         "Dual authorization",
         "Separation of duties"
       ],
-      "_provenance": "Authored from concept: 'two-person control for high-impact actions where safety is at stake' (notes 3.2.3 Separation of Duties and Two-Person Control). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 2, 30 Oct 2026.",
+      "_provenance": "Authored from concept: 'two-person control for high-impact actions where safety is at stake' (notes 3.2.3 Separation of Duties and Two-Person Control). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 2, 30 Oct 2026. Standards audit fix (30 Oct 2026): stem says two operators staff each shift; D is no longer a strawman; neutral subtopic.",
       "style_version": 2
     },
     {
       "id": "cc_d3_040",
       "domain": 3,
-      "subtopic": "3.2 Logical access. Privileged sessions",
+      "subtopic": "3.2 Logical access. Privileged access",
       "difficulty": "application",
       "bloom_level": "Application",
       "question": "A TV broadcaster's vendor engineer will upgrade its playout server remotely and unsupervised, with administrator rights. Which control should the system administrator set up to BEST show the owner exactly what the engineer did?",
@@ -1453,7 +1453,7 @@
       "subtopic": "3.2 Logical access. Discretionary access control",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "At a publishing house, a project lead gives an editor full control of a manuscripts folder, and the editor reshares it with a freelancer. Which change should the project lead make to BEST prevent this?",
+      "question": "A publishing house's project lead gives an editor full control of a manuscripts folder to revise, and the editor reshares it with a freelancer. Which change should the project lead make to BEST prevent this?",
       "options": {
         "A": "Ask the freelancer to confirm they deleted the manuscripts",
         "B": "Give the editor read access in place of full control",
@@ -1528,14 +1528,14 @@
       "question": "A firm's attribute-based policy opens sales files only to staff whose department attribute is Sales, yet a worker who moved to finance weeks ago still opens them. Which cause should the analyst MOST suspect?",
       "options": {
         "A": "The worker still holds a Sales role in the directory",
-        "B": "The worker's human resources record still lists Sales",
-        "C": "The policy reads attributes once, when the account is created",
+        "B": "The department attribute at its source still says Sales",
+        "C": "The policy checked the department attribute once, at account creation",
         "D": "The worker's multifactor sign-in was not re-enrolled after the move"
       },
       "correct": "B",
       "key_concept": "Attribute-based access control is only as accurate as its attributes; a stale value at the source gives a wrong decision.",
       "pre_read": "Note exactly what the policy checks, then ask where that value comes from.",
-      "correct_explanation": "Attribute-based control decides each request from current attribute values, so it is only as accurate as its attributes. If the human resources record still lists Sales, the policy correctly applies to a wrong value and grants access. A leftover Sales role is the runner-up: it would matter under role-based control, but this policy checks the department attribute, not roles.",
+      "correct_explanation": "Attribute-based control decides each request from current attribute values, so it is only as accurate as its attributes. If the attribute's source, such as the human resources record, still lists Sales, the policy correctly applies to a wrong value and grants access. A leftover Sales role is the runner-up: it would matter under role-based control, but this policy checks the department attribute, not roles.",
       "wrong_explanations": {
         "A": "Closest choice: leftover roles often cause privilege creep. But this policy checks the department attribute, not role membership, so a role alone would not open the files.",
         "C": "Tempting because some attributes are set at hiring. But attribute-based control evaluates attributes on every request, so changes should take effect.",
@@ -1558,7 +1558,7 @@
     {
       "id": "cc_d3_044",
       "domain": 3,
-      "subtopic": "3.2 Logical access. AI agents and least privilege",
+      "subtopic": "3.2 Logical access. Automated systems and AI agents",
       "difficulty": "application",
       "bloom_level": "Application",
       "question": "A firm's AI assistant answers staff questions by searching all file shares through its own all-access account, so interns can get answers drawn from payroll files. Which fix should the security analyst propose as BEST?",
@@ -1602,16 +1602,16 @@
         "A": "Share its password with every administrator so anyone can respond",
         "B": "Leave it out of logging so emergencies are not slowed down",
         "C": "Protect it with SSO and multifactor sign-in like other admins",
-        "D": "Seal its credentials in a vault and alert on each use"
+        "D": "Keep its credentials sealed offline and alert on each use"
       },
       "correct": "D",
       "key_concept": "Break-glass accounts must work when normal sign-in fails: sealed credentials, few holders, regular tests and an alert on every use.",
       "pre_read": "Note what the emergency account is for, and what each setup depends on.",
-      "correct_explanation": "A break-glass account must work when normal sign-in fails, so it cannot depend on SSO. Its credentials are sealed in a vault or safe, held by few people and tested regularly, and every use raises an alert and a review. Putting it behind SSO with multifactor sign-in is the runner-up: that suits daily admin accounts, but it would fail in exactly the outage it exists for.",
+      "correct_explanation": "A break-glass account must work when normal sign-in fails, so it cannot depend on SSO. Its credentials are sealed offline, such as in a safe,, held by few people and tested regularly, and every use raises an alert and a review. Putting it behind SSO with multifactor sign-in is the runner-up: that suits daily admin accounts, but it would fail in exactly the outage it exists for.",
       "wrong_explanations": {
         "A": "Tempting because anyone could respond. But a widely shared password cannot show who used it and leaks easily; few people should hold it.",
         "B": "Tempting because emergencies need speed. But a powerful, rarely used account is exactly the one whose every sign-in must be logged and checked.",
-        "C": "Closest choice: strong sign-in suits admin accounts. But if it depends on SSO, the account fails in the very outage it exists for."
+        "C": "Closest choice: strong sign-in suits admin accounts. But if it depends on SSO, it fails in the very outage it exists for; use a strong factor that works without SSO."
       },
       "tips": [
         "Eliminate: B removes oversight from the most powerful account, and A spreads a password that cannot show who used it.",

@@ -205,6 +205,8 @@ were removed on 29 Oct 2026, audit pilot 2, S7.)
 - NIST SP 800-63B-4 (Authentication and Authenticator Management: multi-factor authentication)
 - NIST SP 800-63B-4 (Authentication and Authenticator Management: password requirements)
 - NIST SP 800-63B-4 (Authentication and Authenticator Management: phishing resistance)
+- NIST SP 800-63B-4 Section 3.2.5.2 (Verifier Name Binding)
+  - Verified, 30 Oct 2026, against sp800-63b-4.txt (nvlpubs.nist.gov): WebAuthn binds the authentication to the verifier's domain name, so a look-alike site gets no usable response. Sections 3.1.6.1 and Appendix B.2 allow syncable authenticators whose keys are exported in encrypted form, so items must not claim the key never leaves the device. Used in cc_d3_029.
 - NIST SP 800-63C-4 (Federation and Assertions)
   - Verified, 28 Oct 2026. Cited by topic, not section number; the full text on pages.nist.gov was blocked during authoring. A biometric counts only when paired with a physical authenticator (the cc_d3_001 fix depends on this).
 - NIST SP 800-63A-4 Section 2.5 (Identity Verification: the applicant is the rightful owner of the evidence)
@@ -216,7 +218,7 @@ were removed on 29 Oct 2026, audit pilot 2, S7.)
 - NIST SP 800-63C-4 Section 3.8 (RP Subscriber Accounts: access rights are kept at the relying party)
   - Verified, 30 Oct 2026, against sp800-63c-4.txt (nvlpubs.nist.gov, SP 800-63C-4, July 2025): "The RP subscriber account can contain things like access rights at the RP" and "An RP MAY terminate an RP subscriber account independently from the IdP". Sec. 3.2.3 adds that the RP "does not provide the verifier function" (it never sees the password). Fits a university deciding what federated partner researchers may do in its own system. Used in cc_d3_025.
 - NIST SP 800-63C-4 Section 3.12.3 (Identity APIs: the ID Token is the assertion and an OAuth 2.0 access token reaches the API)
-  - Verified, 30 Oct 2026, against sp800-63c-4.txt (nvlpubs.nist.gov, SP 800-63C-4, July 2025): "This API is protected by an OAuth 2.0 Access Token, which is issued to the RP along with OpenID Connect's assertion, the ID Token." Sec. 2.1 also names "the ID Token in OpenID Connect" as an assertion. Fits checking the OpenID Connect ID token, not an OAuth access token, to learn who signed in. The OpenID Connect Core spec on openid.net could not be opened (proxy 403), so the item rests on the NIST text. Used in cc_d3_031.
+  - Verified, 30 Oct 2026, against sp800-63c-4.txt (nvlpubs.nist.gov, SP 800-63C-4, July 2025): "This API is protected by an OAuth 2.0 Access Token, which is issued to the RP along with OpenID Connect's assertion, the ID Token." Sec. 2.1 also names "the ID Token in OpenID Connect" as an assertion. Fits checking the OpenID Connect ID token, not an OAuth access token, to learn who signed in. The OpenID Connect Core spec on openid.net could not be opened (proxy 403), so the item rests on the NIST text. Used in cc_d3_031. The same section says identity API access "without an associated valid assertion SHALL NOT be sufficient for the establishment of an authenticated session at the RP", which is why an access token alone fails.
 
 ### SP 800-41 Rev. 1, Guidelines on Firewalls and Firewall Policy (Sep 2009)
 - NIST SP 800-41 Rev. 1 Section 2.1.7 (Network Access Control: health checks and limited access for remediation)
