@@ -48,7 +48,7 @@
       "topic_name": "Audit Planning and Design",
       "overview": "This topic covers building a risk-based AI audit universe and plan, scoping an AI engagement across its lifecycle and suppliers, finding the right skills without losing objectivity, and deciding how the audit itself will use AI. Planning decides whether the audit looks at the AI that matters most.",
       "can_do": [
-        "Rank AI uses for audit by impact on people and the business",
+        "Rank AI uses for audit by the likelihood and impact of harm to people and the business",
         "Scope an AI audit around data, decisions, oversight and vendors",
         "Evaluate a specialist's method and data before relying on the result",
         "Plan the audit's own AI use with approved uses and data limits"
@@ -62,11 +62,11 @@
             "aaia_d3_001"
           ],
           "definition": "The audit universe for artificial intelligence (AI) is the full list of AI uses the audit function could audit, ranked by risk to set the audit plan.",
-          "why_it_matters": "A plan built from an incomplete list misses AI hidden in purchased software and business tools. Ranking by novelty instead of impact sends audit effort to interesting models rather than harmful ones.",
+          "why_it_matters": "A plan built from an incomplete list misses AI hidden in purchased software and business tools. Ranking by novelty instead of likelihood and impact sends audit effort to interesting models rather than harmful ones.",
           "how_it_works": [
             "Start from the organization's AI inventory, then add AI found in procurement records, software contracts and expense claims.",
             "Include AI features embedded in purchased software and cloud services, not only models the data science team built.",
-            "Rank each use by its impact on people and the business, how autonomous its decisions are and how strong its controls are.",
+            "Rank each use by the likelihood and impact of harm to people and the business, how autonomous its decisions are and how strong its controls are.",
             "Refresh the universe when new AI uses, incidents or regulations appear, not only once a year."
           ],
           "example": "At a water utility in Chile, IS audit manager Rafael sees that the AI inventory lists six in-house models. Procurement records show the billing platform also has an AI feature that flags households for disconnection. Rafael adds it to the audit universe and rates it high, because it makes decisions about families with little human review.",
@@ -81,10 +81,10 @@
               "AI inventory with owners, purposes and impact ratings",
               "Audit plan showing each AI audit's risk rationale"
             ],
-            "recommend": "Have audit management rebuild the AI audit universe from every source and rank it by impact before the plan is approved.",
+            "recommend": "Have audit management rebuild the AI audit universe from every source and rank it by likelihood and impact before the plan is approved.",
             "decides": "The audit committee approves the risk-based audit plan"
           },
-          "isaca_rule": "Complete the AI audit universe before ranking it, and rank by impact on people and the business, not by novelty or technical complexity. A list built only from the builders' registry is never the whole universe.",
+          "isaca_rule": "Complete the AI audit universe before ranking it, and rank by the likelihood and impact of harm to people and the business, not by novelty or technical complexity. A list built only from the builders' registry is never the whole universe.",
           "exam_traps": [
             {
               "trap": "Audit the newest or most technically complex model first.",
@@ -306,7 +306,7 @@
             "Measure human review with override rates, time spent per case and agreement with the model.",
             "Map risks to controls independently, including some data scientists may not mention, such as training-data access and retraining approval."
           ],
-          "example": "At a food-safety agency in Canada, a model ranks restaurants for inspection, and policy lets inspectors change any ranking with a reason. IS auditor Amara tests a year of logs: inspectors changed no rankings at all, and none could see why a restaurant ranked high. Amara reports that the oversight control is designed but not operating.",
+          "example": "At a food-safety agency in Canada, a model ranks restaurants for inspection, and policy lets inspectors change any ranking with a reason. IS auditor Amara tests a year of logs: inspectors changed no rankings at all, and none could see why a restaurant ranked high. Amara reports that the oversight control is not effective: reviewers cannot see the reasons behind rankings, a design gap, and records show they never challenge them.",
           "audit_focus": {
             "review": [
               "Walk through one model decision end to end, noting each control",
@@ -375,7 +375,7 @@
               "Per-stratum exception counts and outcome comparisons"
             ],
             "recommend": "Have the model owner track outcomes by affected group so small-group errors surface between audits.",
-            "decides": "The business owner accepts any residual risk from differences between groups"
+            "decides": "The business owner decides how to address group differences, within law and board risk appetite"
           },
           "isaca_rule": "Design an AI sample around where errors hide: by group, by confidence and by override. A sample that cannot contain enough of a small group cannot say anything about fairness to that group.",
           "exam_traps": [
@@ -417,7 +417,8 @@
             "A logged decision can be reproduced only if the same model version and the same inputs are still available.",
             "Builders' metrics can hide choices, such as excluded outcomes or a favorable period; recomputing from raw predictions exposes them.",
             "Analytics can test every decision against simple rules, such as limits, missing reviews or out-of-hours approvals.",
-            "AI tools that scan a population miss some items, so unflagged items are not tested items."
+            "AI tools that scan a population miss some items, so unflagged items are not tested items.",
+            "An independent challenger model, built apart from the production model, can show where outputs diverge and point testing at likely errors or bias."
           ],
           "example": "A logistics firm in Poland reports that its route-risk model is 94% accurate. IS auditor Kasia takes the logged predictions and the later delivery outcomes and recomputes accuracy independently, getting 86% for the latest quarter. Kasia traces the gap to outcomes the report left out and records the recomputed figure as evidence.",
           "audit_focus": {
@@ -547,7 +548,7 @@
             "Read vendor attestations for scope: a System and Organization Controls (SOC) 2 report rarely covers model behavior.",
             "Ask owners to preserve versions, configurations and logs before planned changes overwrite them."
           ],
-          "example": "A Japanese insurer's speech model transcribes customer calls for complaint handling. The vendor sends a SOC 2 report and an accuracy certificate. IS auditor Kenji notes the report covers hosting only, so Kenji tests a sample of transcripts against the call recordings and asks the owner to keep the current model version before next month's update.",
+          "example": "A Japanese insurer's speech model transcribes customer calls for complaint handling. The vendor sends a SOC 2 report and an accuracy certificate. IS auditor Kenji notes the report covers hosting only, so Kenji tests a sample of transcripts against the call recordings and asks the owner to keep the transcripts, logs and model version identifier, and to confirm with the vendor that the current version can be retained or rerun, before next month's update.",
           "audit_focus": {
             "review": [
               "Confirm each evidence item matches the model version and period audited",
@@ -785,7 +786,8 @@
           "why_it_matters": "Results nobody can reproduce cannot be reviewed or defended. Audit data pasted into an unapproved AI service may be kept or reused by the provider, exposing the organization and the people in it.",
           "how_it_works": [
             "AI tools are not fixed: vendors update models, and settings that allow randomness can change answers between runs.",
-            "A rerun matches only when the tool version, settings, prompts and input data all match the original.",
+            "A rerun can match only when the tool version, settings, prompts and input data all match the original.",
+            "Hosted models can vary even with fixed settings, and vendors retire versions; keep the output with its recorded conditions, and re-verify against sources if a rerun differs.",
             "Providers of public AI services may keep submitted data or use it to train their models.",
             "Contract terms and data classification decide which audit data an AI service may receive."
           ],
@@ -804,7 +806,7 @@
             "recommend": "Have audit management require recorded run conditions and approved tools for all AI-assisted audit work.",
             "decides": "The chief audit executive approves which AI tools may hold audit data"
           },
-          "isaca_rule": "AI-assisted audit work must be reproducible and confidential. Record the conditions, not just the output, and keep audit data inside approved services under contract terms on retention and training.",
+          "isaca_rule": "AI-assisted audit work must be reproducible and confidential. Record the conditions, not just the output, so a rerun is possible and any difference explainable, and keep audit data inside approved services under contract terms on retention and training.",
           "exam_traps": [
             {
               "trap": "Saving the AI tool's output file makes the work reproducible.",
@@ -838,7 +840,7 @@
       "overview": "This topic covers writing AI findings with a clear business effect, rating and explaining them to leaders, following up with production evidence, and disclosing how AI supported the audit while the auditor keeps accountability for every conclusion.",
       "can_do": [
         "Separate condition, cause and effect in an AI finding",
-        "Rate AI findings by impact on people and the business",
+        "Rate AI findings by the likelihood and impact of harm to people and the business",
         "Choose follow-up evidence that proves an AI fix works",
         "Explain why disclosing AI use never transfers accountability"
       ],
@@ -855,7 +857,7 @@
           "how_it_works": [
             "Condition: what the auditor found, such as approval rates differing by group or accuracy below threshold.",
             "Criteria: the policy, framework, regulation or agreed threshold the condition is measured against.",
-            "Cause: why it happened, such as input drift, unrepresentative data or missing oversight.",
+            "Cause: why it happened, named as the control gap, such as no drift monitoring, unrepresentative data or missing oversight.",
             "Effect: the consequence for people and the business, such as unfair denials, losses or complaints.",
             "Recommendation: the outcome management should achieve and who owns it, not a model fix the auditor designed."
           ],
@@ -878,7 +880,7 @@
           "exam_traps": [
             {
               "trap": "Report the accuracy drop as the finding's effect.",
-              "why": "A metric decline is the condition, and drift behind it is the cause. The effect is what the decline does to customers, staff or the organization."
+              "why": "A metric decline is the condition. Drift is the mechanism; the cause names the control gap that let it go unchecked, such as no monitoring. The effect is what the decline does to customers, staff or the organization."
             },
             {
               "trap": "Recommend the exact retraining approach the auditor would use.",
@@ -908,10 +910,10 @@
             "aaia_d3_018",
             "aaia_d3_020"
           ],
-          "definition": "Rating, reporting and follow-up ranks artificial intelligence (AI) findings by impact, explains them to the board and audit committee, and verifies that agreed actions work.",
+          "definition": "Rating, reporting and follow-up ranks artificial intelligence (AI) findings by likelihood and impact, explains them to the board and audit committee, and verifies that agreed actions work.",
           "why_it_matters": "Leaders act on what is rated high and explained clearly. Closing a finding on management's word can leave a harmful model running unchanged.",
           "how_it_works": [
-            "Rate findings by impact on people and the business, weighing autonomy, scale and whether affected people can appeal.",
+            "Rate findings by the likelihood and impact of harm to people and the business, weighing autonomy, scale and whether affected people can appeal.",
             "Explain technical findings in plain business terms, with one example of real harm where possible.",
             "Record management's response with a named owner, actions and target dates.",
             "Follow up with evidence from production after the fix, such as retested outcomes, not only reports or statements."
@@ -919,7 +921,7 @@
           "example": "A Turkish airline's chatbot gave wrong baggage-fee answers, a high-rated finding. Management reports the knowledge base was corrected. At follow-up, IS auditor Elif asks 50 fee questions drawn from real customer chats, compares the answers with the fee schedule, finds 3 still wrong and keeps the finding open.",
           "audit_focus": {
             "review": [
-              "Evaluate each AI finding's rating against impact on people and business",
+              "Evaluate each AI finding's rating against likelihood and impact on people",
               "Inspect management responses for owners, actions and target dates",
               "Retest outcomes in production before closing a finding"
             ],
@@ -931,7 +933,7 @@
             "recommend": "Have audit management require production evidence before closing AI findings and report overdue actions to the audit committee.",
             "decides": "Senior management accepts residual risk on findings it chooses not to fix"
           },
-          "isaca_rule": "Rate AI findings by who is harmed and how badly, explain them in business terms, and close them only on production evidence that the fix works. Builders' validation reports and management's word are not follow-up evidence.",
+          "isaca_rule": "Rate AI findings by how likely and how severe the harm is to people and the business, explain them in business terms, and close them only on production evidence that the fix works. Builders' validation reports and management's word are not follow-up evidence.",
           "exam_traps": [
             {
               "trap": "Close a finding once management confirms in writing that the model was retrained.",
@@ -939,7 +941,7 @@
             },
             {
               "trap": "Rate AI findings mainly by the technical severity of the model issue.",
-              "why": "Impact on people and the business sets the rating. A small technical flaw in a high-impact decision can outrank a large one in a low-impact tool."
+              "why": "The likelihood and impact of harm to people and the business set the rating. A small technical flaw in a high-impact decision can outrank a large one in a low-impact tool."
             }
           ],
           "key_terms": [
@@ -1057,7 +1059,7 @@
     {
       "title": "NIST AI 100-1, Artificial Intelligence Risk Management Framework (AI RMF 1.0), Jan 2023",
       "url": "https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.100-1.pdf",
-      "checked": "2026-10-30: GOVERN 1.6, 3.2, 6.1; MAP 2.3, 3.5, 5.1; MEASURE 1.3, 2.4, 2.11, 3.3 read in the text"
+      "checked": "2026-10-30: GOVERN 1.6, 3.2, 6.1; MAP 2.3, 3.5, 5.1; MEASURE 1.3, 2.4, 2.5, 2.9, 2.11, 3.3 read in the text"
     },
     {
       "title": "NIST AI 600-1, AI RMF Generative Artificial Intelligence Profile, Jul 2024",
@@ -1067,12 +1069,12 @@
     {
       "title": "NIST SP 800-53 Rev. 5, Security and Privacy Controls for Information Systems and Organizations",
       "url": "https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-53r5.pdf",
-      "checked": "2026-10-30: SR-4 (Provenance) and CM-2 (Baseline Configuration) read"
+      "checked": "2026-10-30: SR-4 (Provenance), CM-2 (Baseline Configuration), AU-2 (Event Logging) and SA-9 (External System Services) read"
     },
     {
       "title": "ISACA IT Audit Framework (ITAF), 4th edition, 2020: standards 1005, 1201, 1203, 1204, 1205, 1206, 1401, 1402 and Guideline 2208",
       "url": "https://www.isaca.org/resources/isaca-journal/issues/2020/volume-6/standards-guidelines-tools-and-techniques",
-      "checked": "2026-10-30: numbers and titles per docs/content/ITAF_4TH_EDITION.md; standard text not quoted"
+      "checked": "2026-10-30: numbers and titles per docs/content/ITAF_4TH_EDITION.md; standard text not quoted. ISACA published ITAF 5th edition in Feb 2026; KaiSip keeps 4th-edition numbering, as the CISA job practice does"
     }
   ]
 }
