@@ -10,7 +10,7 @@ The current six captions live in `docs/mobile/STORE_LISTING.md` section 3. This 
 
 Neither store has a caption field. A caption only shows if it is drawn on the image. Today's six files are plain app screens with no caption on them.
 
-Recommended: **frame every screenshot the same way.** A 1080×1920 image on Grove paper (#F3F1EA), the caption at the top (about 320 px band, dark ink #17231B), the optional sub-line under it in a smaller size, and the app screen below, scaled to fit (never stretched).
+Recommended: **frame every screenshot the same way**, exported as 24-bit PNG with no alpha, or JPEG (Play; verify). A 1080×1920 image on Grove paper (#F3F1EA), the caption at the top (about 320 px band, dark ink #17231B), the optional sub-line under it in a smaller size, and the app screen below, scaled to fit (never stretched).
 
 - This also solves a size problem. The forms harness shots are 786×1704 (a 393×852 phone at 2×). That is taller than Play allows (the long side may be at most twice the short side). On a framed 1080×1920 canvas they fit.
 - Building the framed images (a small render script like `design-notes/brand-kaisip/store/render.mjs`) is a follow-up for `brand-logo-designer` or `mobile-app-engineer`. Not part of this pack.
@@ -30,7 +30,7 @@ Play allows up to 8 phone screenshots; the App Store up to 10. The first three m
 | 4 | `store-04-lesson.png` | A lesson | Short lessons, big ideas | 4 | Cybersecurity and audit ideas, in plain words | Keep caption, new sub-line |
 | 5 | `store-05-readiness.png` | Readiness report after mocks | An honest readiness estimate | 4 | A range, not a promise | Keep |
 | 6 | `store-06-plant.png` (re-shoot) | Your plant | Grows only when you study | 5 | It never wilts while you're away | **Changed** |
-| 7 | `footage/turning-oak-formIV-light-end.png` (see below) | Your plant, the learning fact and the new form's name | Real learning, a new form | 5 | The screen shows what you learned first | **New** |
+| 7 | `footage/turning-oak-formIII-light-end.png` (see below) | Your plant, the learning fact and the new form's name | Real learning, a new form | 5 | The screen shows what you learned first | **New** |
 | 8 | `forms-look-final-choice-light.png` | Look: the final-form choice | Choose its final form | 4 | 13 plants, each with its own final shape | **New** |
 
 Word counts: 1 Know/what/to/study/next. 2 Think/like/an/IS/auditor. 3 Learn/the/why/behind/answers. 4 Short/lessons/big/ideas. 5 An/honest/readiness/estimate. 6 Grows/only/when/you/study. 7 Real/learning/a/new/form. 8 Choose/its/final/form.
@@ -38,10 +38,11 @@ Word counts: 1 Know/what/to/study/next. 2 Think/like/an/IS/auditor. 3 Learn/the/
 ### Which screenshot carries the Turning
 
 **Screenshot 7.**
-- **Available today:** `footage/turning-oak-formIV-light-end.png`, the last frame of the real Form III → IV Turning (made by `tools/capture.sh`). It shows "A new form", the learning fact, "The Broadcrown Oak" and its description. Crop it above "What grows it next", so the domain percentages under the divider stay out of the store image.
+- **Use:** `footage/turning-oak-formIII-light-end.png`, the last frame of the real Form II → III Turning (made by `tools/record_turning.mjs` with growth 4). It shows "A new form", the recall fact ("You got 15 questions right a week or more after you last saw them, and you know 25% of the outline."), "The Standard Oak", its description and "Grows into the Broadcrown Oak at Elder." Crop it above the divider, so the steps below stay out of the store image.
+- **Why Form III and not Form IV:** a store screenshot is permanent and seen by everyone. The Form IV fact line starts "Every domain reached 65%", which reads like a score even without a caption. The Form III line has no score in it. The grand Form IV Turning stays in the video, where it plays as app footage.
 - **Later (for the iPhone set):** the same end frame grabbed from the phone recording (`TURNING_VIDEO_PLAN.md` section 2).
 - **Don't use `forms-reveal-after-light.png`.** It is the settled Whip Oak screen, without the learning fact, and its step list shows "Your study estimate … reaches 55%" right under the plant.
-- The Form IV app line includes "Every domain reached 65%". That's fine as app footage, but the caption and sub-line must never echo it or call it a pass signal.
+- Whatever frame you use, the caption and sub-line never echo a percentage or call the fact a pass signal.
 
 ### What changes and why
 

@@ -92,18 +92,18 @@ The harness stills and frame strips (see `README.md`) are for storyboards, scree
 
 ### 2b. iPhone (later, when the iPhone app exists)
 
-- iPhone simulator or a real iPhone, same name, species and demo files.
+- A real iPhone for the final App Store preview (Apple wants footage captured on the device). The simulator is fine for drafts. Same name, species and demo files.
 - Simulator status bar: `xcrun simctl status_bar booted override --time "9:41" --batteryState charged --batteryLevel 100`
 - Simulator recording: `xcrun simctl io booted recordVideo --codec h264 kai-turning-ios.mp4`
-- App preview sizes for the large iPhones: about **886×1920 portrait** (also listed for some sizes: 1080×1920). **Verify in App Store Connect before export.**
-- Apple limits: **15 to 30 seconds**, 30 fps, up to 3 previews per language. Include a stereo audio track even if it is silent (verify). You pick a poster frame at upload: use the settled Broadcrown Oak.
+- App preview size for the large iPhones: **886×1920 portrait**. Export the App Store cut natively at 886×1920, with supers laid out for that width; never crop it from the 1080×1920 master.
+- Apple limits: **15 to 30 seconds**, 30 fps, up to 3 previews per language. Include a stereo AAC track (256 kbps, 44.1 or 48 kHz), silent if needed. Poster frame (chosen at upload, shown before anyone presses play): the 0:00–0:03 shot (Kai at rest, "It grows only when you study."), never a frame with the Form IV fact.
 
 ### 2c. Which cut goes where
 
 | Cut | Use |
 |---|---|
 | 30 s | App Store preview (iPhone footage, App Store end card). Also Threads, Instagram, LinkedIn. |
-| 60 s | YouTube (link it as the Play promo video), website, social. |
+| 60 s | Social, website, YouTube. For the Play promo, upload a second copy with the Play listing end card (public or unlisted, ads off, not age-restricted, embeddable; verify). |
 | 6–10 s loop | Website hero, silent (section 6). |
 
 ---
@@ -118,7 +118,7 @@ Hook: curiosity about the plant. Total 29 s, so it fits Apple's 30 s limit with 
 | 0:03–0:07 | Recording: Today, the daily plan. Still: `store-01-today.png` | A short plan for today | "KaiSip gives you a short plan each day." | Music | No bank size on screen (demo numbers are the learner's own). |
 | 0:07–0:13 | Recording: open a practice question, pause, tap an option, open the answer. Still: `store-02-question.png` | Think like an IS auditor. | "Every answer explains why." | Music | Questions are original. No "real exam questions" claim. |
 | 0:13–0:17 | Recording: scroll slowly to the three tips. Still: `store-03-answer.png` | Eliminate. Final two. Exam cue. | (none) | Music | Tip names match the app. |
-| 0:17–0:19.5 | Recording: Today's review row, then a missed question back for review | Misses come back before they fade. | "And what you miss comes back." | Music | Spaced review is real. No memory-science promise. |
+| 0:17–0:19.5 | Recording: Today's review row, then a missed question back for review | Misses come back the next day. | "And what you miss comes back." | Music | Spaced review is real. No memory-science promise. |
 | 0:19.5–0:21.5 | Recording: Your plant opens. The Form IV learning fact is already on screen. Hold. | 30 questions right, a week later. | "Thirty questions right, a week later." | Music drops to a single held note | Hero line only. The "65%" in the app line is not echoed, not zoomed. |
 | 0:21.5–0:25.1 | Recording: the full Form III → IV Turning at **1.0x**, untouched. Storyboard: `forms-reveal-grand-light.png` (8 frames) | (keep the super from the row above, or none) | (silence) | Music swells gently, no sound effect hits | Real speed. No cuts inside it. Under 2.5 changes a second. |
 | 0:25.1–0:26 | Recording: "The Broadcrown Oak" settles in. Hold. | (none: the app's own words) | "Kai grows into a new form." | Music resolves | Says "grows into a new form". |
@@ -126,12 +126,20 @@ Hook: curiosity about the plant. Total 29 s, so it fits Apple's 30 s limit with 
 
 ### End cards
 
-**Play, YouTube, social and website:**
+**Social, website and YouTube-only uploads (not the Play listing video):**
 ```
 [KaiSip lockup]
 Practice for the CISA® exam
 Free to use during the beta
 Android beta on Google Play · kaisip.com
+
+(small) Not affiliated with or endorsed by ISACA®. Readiness is an estimate.
+```
+
+**Play listing video only** (the YouTube video linked in Play Console; it outlives the beta, and Play's preview guidance discourages price or "free" claims, store names and time-sensitive text (verify)). Upload it as its own unlisted YouTube video; its last voiceover line is "KaiSip. Practice for the CISA exam.":
+```
+[KaiSip lockup]
+Practice for the CISA® exam
 
 (small) Not affiliated with or endorsed by ISACA®. Readiness is an estimate.
 ```
@@ -168,10 +176,10 @@ Hook: the pain of memorizing without understanding. Adds the species glimpse and
 | 0:04–0:09 | Recording: Today, the daily plan. Still: `store-01-today.png` | A short plan for today | "KaiSip gives you a short plan each day, sized for the gaps between meetings." | Music | Demo numbers only, no bank size. |
 | 0:09–0:16 | Recording: tap an option, open the answer. Still: `store-02-question.png` | Think like an IS auditor. | "Every question is original, and every answer explains why." | Music | True: original questions, every answer explained. |
 | 0:16–0:23 | Recording: slow scroll through Eliminate, Final two, Exam cue. Still: `store-03-answer.png` | Eliminate. Final two. Exam cue. | "Three tips on every question show you how to rule options out, and how to choose between the last two." | Music | Tip names match the app. |
-| 0:23–0:28 | Recording: Today's review row, then a short lesson. Still: `store-04-lesson.png` | Misses come back before they fade. | "What you miss comes back a few days later, before it fades." | Music | No claim about how much you will remember. |
-| 0:28–0:32 | Recording: the readiness report after mocks. Still: `store-05-readiness.png` | An estimate, not a promise | "Full mocks give you a readiness range. It's an estimate, never a promise." | Music | Readiness = "an estimate". No pass rate. |
+| 0:23–0:28 | Recording: Today's review row, then a short lesson. Still: `store-04-lesson.png` | Misses come back the next day. | "What you miss comes back the next day, then again after longer gaps." | Music | True: a miss returns at the start of the next day (Leitner boxes). No memory claim. |
+| 0:28–0:32 | Recording: the readiness report after mocks. Still: `store-05-readiness.png` | An estimate, not a promise | "Mocks and practice build a readiness range. It's an estimate, never a promise." | Music | Readiness = "an estimate". No pass rate. |
 | 0:32–0:36 | Recording: Your plant, Kai as the Standard Oak at rest | It grows only when you study. | "And then there's Kai. It grows only from real study, and it never wilts while you're away." | Music lifts a little | True: no decay, no plant alerts. |
-| 0:36–0:41 | Species glimpse, curated 4 (stills, light theme). Each: Form III still, 0.4 s dissolve, Form IV still. About 1.2 s per species, no hard cuts. Files: `forms13-narra-formIII/IV-light.png`, `forms13-bamboo-…`, `forms13-cherry-blossom-…`, `forms13-lotus-…` | Small name under each: Gold-rain Narra · Moon-gate Bamboo · Cascade Cherry · Open Lotus | (none) | Music | Stills from the app's own renderer. The dissolve is an edit, so never caption it as the in-app animation. |
+| 0:36–0:41 | Species glimpse, curated 4 (stills, light theme). Each: Form III still, 0.4 s dissolve, Form IV still. About 1.2 s per species, no hard cuts. Files: `forms13-narra-formIII/IV-light.png`, `forms13-bamboo-…`, `forms13-cherry-blossom-…`, `forms13-lotus-…` | Small name under each: Gold-rain Narra · Moon-gate Bamboo · Cascade Cherry · Open Lotus | (none) | Music | Stills from the app's own renderer. The dissolve is an edit, so never caption it as the in-app animation. (Web-build stills: fine for YouTube and social; acceptable in the Play promo, verify.) |
 | 0:41–0:44 | Recording: Your plant opens on the Form IV learning fact. Hold so it can be read. | 30 questions right, a week later. | "When the learning is real, the screen says so first." | Music thins to one held note | Hero line only. "65%" not echoed or zoomed. |
 | 0:44–0:47.6 | Recording: the full Form III → IV Turning, oak, **1.0x**, untouched | (none) | (silence) | Gentle swell, no sound-effect hits | Real speed. No cuts. Under 2.5 changes a second. At least 1 s from the glimpse before it. |
 | 0:47.6–0:51 | Recording: "The Broadcrown Oak" settles. Hold. | (none) | "Then Kai grows into a new form." | Music resolves | "Grows into a new form". |
@@ -186,8 +194,8 @@ Memorizing answers only gets you so far. The exam asks for judgment.
 KaiSip gives you a short plan each day, sized for the gaps between meetings.
 Every question is original, and every answer explains why.
 Three tips on every question show you how to rule options out, and how to choose between the last two.
-What you miss comes back a few days later, before it fades.
-Full mocks give you a readiness range. It's an estimate, never a promise.
+What you miss comes back the next day, then again after longer gaps.
+Mocks and practice build a readiness range. It's an estimate, never a promise.
 And then there's Kai. It grows only from real study, and it never wilts while you're away.
 When the learning is real, the screen says so first.
 Then Kai grows into a new form.
@@ -206,7 +214,7 @@ Voice: one calm, warm voice, mid pace. No hype, no "you've got this!" energy.
 - Caption style: the app's sans, white on a 70% Grove forest-green band (#1E4A34), at least 48 px tall on a 1080-wide frame, two lines at most.
 
 ### Crops
-- **9:16 vertical (master, 1080×1920):** Threads, Instagram, YouTube Shorts, App Store. Keep supers out of the top 220 px and bottom 380 px (the apps put buttons there).
+- **9:16 vertical (master, 1080×1920):** Threads, Instagram, YouTube Shorts. (The App Store needs its own 886×1920 render, section 2b.) Keep supers out of the top 220 px and bottom 380 px (the apps put buttons there).
 - **1:1 square (1080×1080):** LinkedIn feed. Put the phone screen centered at about 60% height on Grove paper (#F3F1EA light, #111613 dark). Supers above it.
 - **16:9 (1920×1080):** YouTube and the Play promo link. Phone screen centered on Grove paper; supers in the left third. Check Play Console's current note on video orientation (verify).
 - In every crop, scale the whole screen. Never zoom in tight on the Turning.
@@ -230,12 +238,12 @@ Voice: one calm, warm voice, mid pace. No hype, no "you've got this!" energy.
 | Size | 9:16 or 4:5 crop, about 720 px wide. MP4 (H.264) plus WebM. Aim under 1.5 MB. |
 | Poster | The settled Broadcrown Oak still (`forms-oak-formIV-growth6-light.png`, cropped to the plant and its name). |
 | Reduce Motion | When the visitor's device asks for reduced motion (`prefers-reduced-motion: reduce`), don't autoplay: show the poster still only. |
-| Pause | Add a visible pause button (motion that plays more than 5 s needs one for accessibility). |
+| Pause | A visible, keyboard-focusable pause button labelled "Pause animation", at least 24×24 px, that stays paused for the visit. Listen for changes to `prefers-reduced-motion`. Give the video `aria-label="KaiSip's plant grows into a new form"`. |
 | Safety | The loop seam is a slow cross-fade, never a cut from Form IV to Form III. One Turning per 8 s, never faster. |
 | Dark site theme | Use the dark-theme take and `forms-oak-formIV-growth6-dark.png` as its poster. |
 | Words beside it | "It grows only when you study." No readiness or pass words next to the plant. |
 
-Source clips: `footage/turning-oak-formIV-light-4x5.mp4` and `footage/turning-oak-formIV-dark-4x5.mp4` (web-build capture, cropped above the domain list). Poster: `footage/turning-oak-formIV-light-end.png`.
+Source clips: `footage/turning-oak-formIV-light-4x5.mp4` and `footage/turning-oak-formIV-dark-4x5.mp4` (web-build capture, cropped above the domain list). Poster: as in the table (the settled Broadcrown Oak cropped to the plant and its name), never a frame with the Form IV fact line.
 
 The website already has the plant and its forms, so the loop shows something a visitor can really find there. Before any website copy says the Turning plays on kaisip.com, check it in the browser (the phone app is where it was built first).
 
@@ -259,6 +267,8 @@ Building it into the site is a `web-app-engineer` task (not part of this pack).
 - [ ] All footage is the real app (Apple and Play rules). Stills in the glimpse come from the app's own renderer, and the dissolve between them is never called the in-app animation.
 - [ ] Music license saved. No unlicensed trending audio.
 - [ ] Captions burned in for the silent version.
+- [ ] The final 30 s, 60 s and hero renders (the dark take especially) pass a flash checker (for example PEAT) before publishing.
+- [ ] The Play-listing upload uses the Play listing end card (no beta, no "free", no store names).
 
 ---
 

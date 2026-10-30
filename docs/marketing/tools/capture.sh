@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
 # Marketing footage of The Turning, from the app's own web export at phone size.
 #
-# Makes, in <out_dir> (default: ./kaisip-turning, never inside the repo):
+# Makes, in <out_dir> (default: kaisip-turning NEXT TO the repo folder, never inside it):
 #   forms13/forms13-<species>-form{III,IV}-<theme>.png   all 13 species, botanical look
 #   clips/turning-<species>-formIV-<theme>-9x16.mp4      the Form III -> IV Turning, real speed, 1080x1920
 #   clips/turning-<species>-formIV-<theme>-4x5.mp4       the same, 1080x1350, cropped above "What grows it next"
 #   clips/turning-<species>-formIV-<theme>-end.png       the settled last frame (fact + form name)
+# Use the 4:5 clips for social: the 9:16 clip shows the domain percentages under the plant.
 #
 # Usage (from the repo root):
 #   bash docs/marketing/tools/capture.sh [out_dir] [species...]
@@ -13,7 +14,8 @@
 #
 # Needs: the mobile app's npm packages (cd mobile && npm ci), Playwright with
 # Chromium (preinstalled in Claude cloud sessions), Python 3 with Pillow, ffmpeg.
-# It reads the app and writes only to <out_dir>. It changes no app code or data.
+# It regenerates the git-ignored mobile content pack (mobile/src/content/generated)
+# and writes everything else only to <out_dir>. It changes no app code or data.
 #
 # These clips are real app footage from the app's WEB build: fine for social,
 # the website hero and the edit's animatic. Store preview videos (App Store,
@@ -21,7 +23,8 @@
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/../../.." && pwd)"
 TOOLS="$ROOT/docs/marketing/tools"
-OUT="$(mkdir -p "${1:-kaisip-turning}" && cd "${1:-kaisip-turning}" && pwd)"
+OUT_ARG="${1:-$ROOT/../kaisip-turning}"
+OUT="$(mkdir -p "$OUT_ARG" && cd "$OUT_ARG" && pwd)"
 shift || true
 SPECIES=("${@:-oak bamboo narra cherry-blossom}")
 read -r -a SPECIES <<<"${SPECIES[*]}"
@@ -59,7 +62,7 @@ clip() { # species theme
   local list="$TMP/frames-$sp-$th/concat.txt" name="$OUT/clips/turning-$sp-formIV-$th"
   ffmpeg -v error -y -f concat -safe 0 -i "$list" -vf "fps=30,scale=886:1920,pad=1080:1920:(ow-iw)/2:0:color=$bg" -c:v libx264 -pix_fmt yuv420p -crf 20 -r 30 "$name-9x16.mp4"
   # The 4:5 crop stops above "What grows it next", so no domain percentages show.
-  ffmpeg -v error -y -f concat -safe 0 -i "$list" -vf "fps=30,crop=786:1020:0:100,scale=-2:1350,pad=1080:1350:(ow-iw)/2:0:color=$bg" -c:v libx264 -pix_fmt yuv420p -crf 20 -r 30 "$name-4x5.mp4"
+  ffmpeg -v error -y -f concat -safe 0 -i "$list" -vf "fps=30,crop=786:1076:0:90,scale=-2:1350,pad=1080:1350:(ow-iw)/2:0:color=$bg" -c:v libx264 -pix_fmt yuv420p -crf 20 -r 30 "$name-4x5.mp4"
   cp "$(ls "$TMP/frames-$sp-$th"/f*.png | tail -1)" "$name-end.png"
 }
 for sp in "${SPECIES[@]}"; do clip "$sp" light; done

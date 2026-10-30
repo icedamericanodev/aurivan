@@ -93,14 +93,17 @@ node design-notes/brand-kaisip/store/render.mjs
 One command makes both, from the repo root (it needs `cd mobile && npm ci` once, plus ffmpeg):
 
 ```bash
-bash docs/marketing/tools/capture.sh ../kaisip-turning
+bash docs/marketing/tools/capture.sh            # writes to ../kaisip-turning
+bash docs/marketing/tools/capture.sh ../shots oak lotus   # a folder and species of your choice
 ```
 
 It writes to the folder you give it (keep it outside the repo):
 - `forms13/forms13-<species>-form{III,IV}-<theme>.png`: all 13 species, botanical look, light and dark.
   Species ids: oak, maple, narra, cherry-blossom, pine, coconut-palm, mango, bonsai, sunflower, lotus, sampaguita, cactus, bamboo.
 - `clips/turning-<species>-formIV-<theme>-9x16.mp4` (1080×1920) and `-4x5.mp4` (1080×1350): the real Form III → IV Turning at exactly real speed, with a 1.5 s hold on the name. The 4:5 crop stops above "What grows it next", so no domain percentages show.
-- `clips/turning-<species>-formIV-<theme>-end.png`: the settled last frame (screenshot 7's source).
+- `clips/turning-<species>-formIV-<theme>-end.png`: the settled last frame.
+
+**Use the 4:5 clips for social and the website.** The 9:16 clip is the whole phone screen, so it also shows the domain percentages under the plant: use it only as a reference for the phone shoot.
 
 Add species ids after the folder to choose which Turnings to film (default: oak, bamboo, narra and cherry-blossom in light, and oak in dark).
 
@@ -116,10 +119,11 @@ A small starter set, so the edit can begin today. Re-make it with `capture.sh` a
 
 | File | What it is |
 |---|---|
-| `turning-oak-formIV-light-9x16.mp4`, `-4x5.mp4` | The oak's Form III → IV Turning, light theme |
+| `turning-oak-formIV-light-4x5.mp4` | The oak's Form III → IV Turning, light theme (use this one) |
+| `turning-oak-formIV-light-9x16.mp4` | The same, whole screen: a reference for the phone shoot only (it shows the domain percentages) |
 | `turning-oak-formIV-dark-4x5.mp4` | The same, dark theme |
 | `turning-{bamboo,narra,cherry-blossom}-formIV-light-4x5.mp4` | Three species for the curated highlight |
-| `turning-oak-formIV-light-end.png` | The settled end frame: the fact, "The Broadcrown Oak" and its description |
+| `turning-oak-formIII-light-end.png` | The settled end of the Form II → III Turning: the recall fact (no score in it) and "The Standard Oak". The source for store screenshot 7 |
 | `forms13-formIV-{light,dark}.jpg` | Contact sheet: all 13 species at Form IV, with each form's name |
 
 ## Who to ask
