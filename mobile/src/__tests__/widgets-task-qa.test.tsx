@@ -119,3 +119,26 @@ describe('1.48: the Recall card and the Key term reveal on the widget too', () =
     expect(reveal.recall).toEqual({});
   });
 });
+
+/**
+ * react-native-android-widget 0.26 (Expo SDK 58) measures a widget's real size
+ * from the first tap on it. When that size differs from what the launcher
+ * reported, the library swallows that tap and asks for a redraw with
+ * WIDGET_RESIZED (so the drawing and its tap areas line up again). Our task
+ * must simply redraw at the new size: keep today's reveal, write nothing.
+ */
+describe('0.26 size calibration: WIDGET_RESIZED redraws at the corrected size', () => {
+  it('a revealed card stays revealed, drawn at the new size, and nothing is saved', async () => {
+    await click('REVEAL');
+    const revealBefore = await AsyncStorage.getItem(REVEAL_KEY);
+    const progressBefore = JSON.stringify(useProgress.getState());
+    const render = jest.fn();
+    jest.setSystemTime(NOW + 5000);
+    await widgetTask({ widgetInfo: { ...info, width: 320, height: 160 }, widgetAction: 'WIDGET_RESIZED', renderWidget: render } as never);
+    expect(render).toHaveBeenCalledTimes(1);
+    expect(render.mock.calls[0][0].light.props).toMatchObject({ width: 320, height: 160 });
+    expect(drawn(render)).toContain('Had it');
+    expect(await AsyncStorage.getItem(REVEAL_KEY)).toBe(revealBefore);
+    expect(JSON.stringify(useProgress.getState())).toBe(progressBefore);
+  });
+});

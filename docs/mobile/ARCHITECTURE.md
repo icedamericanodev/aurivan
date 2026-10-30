@@ -1106,8 +1106,16 @@ Freemium with in-app subscriptions (product panel recommendation):
 12. **Home-screen widgets (mobile 1.47, Android).** Eight widget kinds
    (Today's plan, Your plant, Today's rule, This week, Quick question,
    Questions to revisit, Exam countdown, Readiness) through
-   `react-native-android-widget` 0.24 (`docs/mobile/DESIGN_SYSTEM.md` §20;
-   the lock-screen accessory is designed there and built later).
+   `react-native-android-widget` (0.24 at 1.47; 0.26 since the Expo SDK 58
+   upgrade, the only release that builds with React Native 0.88's Android
+   tools) (`docs/mobile/DESIGN_SYSTEM.md` §20; the lock-screen accessory is
+   designed there and built later). **0.26 sizing.** The library now picks
+   the launcher's size for the current orientation (Android 12+: from its
+   exact size list), then corrects it to the real on-screen size from the
+   first tap: if the two differ it swallows that tap and redraws
+   (`WIDGET_RESIZED`; our task just draws again). Our layouts only read the
+   width and height they are given, so no layout code changed; check all 8
+   on a phone after placing and resizing them.
    **Consequences.** (a) **Native build.** The library has native Android
    code; its config plugin adds 8 widget receivers, their provider XML,
    picker previews, 5 font files and (for Readiness and Exam countdown) a
@@ -1148,8 +1156,9 @@ Freemium with in-app subscriptions (product panel recommendation):
    builds expo-updates then checks for an update as it does on any start; no
    widget data is in that request, and store builds have updates off. Android
    Auto Backup and phone-to-phone transfer leave out the library's widget
-   pictures (`files/widget_images/`) and size list
-   (`shared_prefs/com.kaisip.app.WIDGET_SIZES.xml`); everything else is
+   pictures (`files/widget_images/`) and size lists
+   (`shared_prefs/com.kaisip.app.WIDGET_SIZES.xml`, and since 0.26
+   `shared_prefs/rnwidget.measured_sizes.xml`); everything else is
    backed up as before (`allowBackup`, point 7). (e) **Entry file.**
    `index.ts` (package.json `main`) is Expo Router's entry plus the widget
    task and the "choose" screen registration; keep it in step with
@@ -1160,7 +1169,8 @@ Freemium with in-app subscriptions (product panel recommendation):
    (random 64-hex file names since 0.24.0) and the configuration activity
    (Android requires it for `APPWIDGET_CONFIGURE`; it only offers the
    Readiness or exam-timing choice and closes for any other widget).
-   WorkManager 2.8.1 (the library's background runner) merges `WAKE_LOCK`
+   WorkManager (the library's background runner; 2.8.1 in 0.24, 2.12.0 in
+   0.26: re-check the merged manifest of the first SDK 58 build) merges `WAKE_LOCK`
    and an untyped `FOREGROUND_SERVICE`, plus `RECEIVE_BOOT_COMPLETED` and
    `ACCESS_NETWORK_STATE`, which are already present. Check the merged
    manifest of the first EAS build (`aapt dump permissions`); no typed

@@ -7,6 +7,12 @@
  * (they are big, and a background save could clash with the app's own). The
  * import guard test (src/__tests__/widgets-guard.test.ts) keeps it that way.
  *
+ * Since react-native-android-widget 0.26 (Expo SDK 58) the library measures
+ * a widget's real size from a tap on it. If that differs from the size it
+ * drew at, it swallows that tap and asks for a redraw (WIDGET_RESIZED): we
+ * just draw again at the new size, like any refresh. So right after a widget
+ * is placed or resized, a first tap can redraw it instead of acting.
+ *
  * A tap that opens the app is handled by Android itself (OPEN_URI). The only
  * clicks this task handles are the reveal cards' (Today's rule, and since 1.48
  * the Recall card and the Key term): "Show …" marks the widget revealed for
