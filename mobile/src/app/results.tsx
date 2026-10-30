@@ -360,7 +360,8 @@ export default function Results() {
                 <FieldText v="fig">{figure.line}</FieldText>
               </View>
             )}
-            <StemChart stems={stems} line={STEADY_FROM} play={grow} />
+            {/* Premium round 2 (#2): with where the set began, only what grew moves; an older session traces in. */}
+            <StemChart stems={stems} line={STEADY_FROM} play={grow ? (active.before ? 'growth' : 'trace') : false} delay={motion.dur.enter + motion.stagger.group} />
           </Plate>
         )}
         {range.enough && (

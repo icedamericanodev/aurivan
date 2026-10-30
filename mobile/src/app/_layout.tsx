@@ -48,7 +48,7 @@ import { useSettings } from '../store/settings';
 import { hasContent } from '../content/loader';
 import { useActiveCertId } from '../lib/activeCert';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { MotionRoot, ThemeFade, useMotion } from '../components/motion';
+import { MotionRoot, SPLASH_FADE, ThemeFade, useMotion } from '../components/motion';
 import { Grain } from '../components/ui';
 import { motion } from '../theme/tokens';
 import { RecoveryScreen } from '../components/recovery';
@@ -59,6 +59,9 @@ import { useHydration } from '../store/useHydrated';
 import { useTheme } from '../theme/useTheme';
 
 SplashScreen.preventAutoHideAsync().catch(() => {});
+// The splash dissolves into the app instead of cutting (iOS; Android 12+ keeps its own system exit).
+// A dissolve is already the gentle form, so Reduce Motion keeps it (motion round 2, #5).
+SplashScreen.setOptions(SPLASH_FADE);
 
 // Show study reminders even if the app is open (no-op where unsupported).
 initNotifications();

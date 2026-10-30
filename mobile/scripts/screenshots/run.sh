@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Screenshot harness: web-export the app, seed demo data, capture key screens.
-# Usage (from mobile/): [SHOTS=fieldguide|forms|m149|m146|m145|m144|m143|m142|m141|guides|principles|qnote|today|firstdays|notes|data|pace|practice|milestones|support|paths|motion|growth|badges|badgesC|stats|learnplay|plant|fit|proof|settings|cloud|store] bash scripts/screenshots/run.sh [out_dir] [dark|light]
+# Usage (from mobile/): [SHOTS=motion2|fieldguide|forms|m149|m146|m145|m144|m143|m142|m141|guides|principles|qnote|today|firstdays|notes|data|pace|practice|milestones|support|paths|motion|growth|badges|badgesC|stats|learnplay|plant|fit|proof|settings|cloud|store] bash scripts/screenshots/run.sh [out_dir] [dark|light]
 # Needs Playwright (preinstalled in Claude cloud sessions; locally: npx playwright install chromium).
 set -euo pipefail
 cd "$(dirname "$0")/../.."
@@ -103,6 +103,10 @@ elif [ "${SHOTS:-}" = support ]; then
   # note after sending, the no-email-app fallback, Settings → Help and feedback,
   # Help, What's new (top and end), Common questions, Your reports (shoot_support.mjs).
   node scripts/screenshots/shoot_support.mjs "$TMP/seed.json" "$OUT" "$THEME"
+elif [ "${SHOTS:-}" = motion2 ]; then
+  # Premium motion round 2: slow strips of the readiness scale bar (a rise, the day's first view)
+  # and the growth plate (Results' set, You's areas) with their end states (shoot_motion2.mjs).
+  node scripts/screenshots/shoot_motion2.mjs "$TMP/seed.json" "$OUT" "$THEME"
 elif [ "${SHOTS:-}" = motion ]; then
   # Mobile 1.8 motion: end states of the changed screens, and slow-motion
   # frame strips of the press, the page turn, the segment fill, the tab fade,

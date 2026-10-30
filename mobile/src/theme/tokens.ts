@@ -431,6 +431,8 @@ export const motion = {
     skip: 120,
     playGuard: 400,
   },
+  /** A mark that opens from its centre starts at this share of its width, never from nothing (premium round 2: the readiness band). */
+  openFrom: 0.2,
   rise: 8, // pt: content enters this far below its place (y only)
   shift: 16, // pt: a page turn's sideways offset
   pressScale: 0.98,

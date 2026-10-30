@@ -116,7 +116,7 @@ import { HINT_AFTER_LINE, HINT_BEFORE_LINE } from '../engine/readiness';
 import { useAnswerClock } from '../lib/useAnswerClock';
 import { selectCert, useProgress } from '../store/progress';
 import { useSession } from '../store/session';
-import { LARGE_TEXT, radius, space } from '../theme/tokens';
+import { LARGE_TEXT, motion, radius, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 
 // Stable empty array: a new [] on every render would make the store re-render forever.
@@ -928,25 +928,31 @@ export default function SessionScreen() {
                     <Rise delay={FEEDBACK_DELAY.why}>
                       <WhyBlock letter={correctDisplay} text={renderText(q.explanation, perm)} fold={false} />
                     </Rise>
-                    <View ref={vineRef} collapsable={false} onLayout={checkVine}>
-                      <Vine key={qid} keyIdea={q.keyConcept} tips={q.tips.map((t) => renderText(t, perm))} visible={vineVisible} />
-                    </View>
+                    {/* In reading order: the vine's words arrive after the Why above them (motion round 2, 3a). */}
+                    <Rise delay={FEEDBACK_DELAY.why + motion.stagger.group}>
+                      <View ref={vineRef} collapsable={false} onLayout={checkVine} testID="feedback-vine">
+                        <Vine key={qid} keyIdea={q.keyConcept} tips={q.tips.map((t) => renderText(t, perm))} visible={vineVisible} />
+                      </View>
+                    </Rise>
                   </>
                 ) : (
                   <>
-                    {/* The short, memorable lines first: the Key idea and the Exam cue. */}
-                    <View ref={vineRef} collapsable={false} onLayout={checkVine}>
-                      <Vine
-                        key={`${qid}:a`}
-                        keyIdea={q.keyConcept}
-                        tips={missTips.first.map((i) => renderText(q.tips[i], perm))}
-                        tipIndex={missTips.first}
-                        visible={vineVisible}
-                      />
-                    </View>
+                    {/* The short, memorable lines first: the Key idea and the Exam cue. They arrive in reading order,
+                        after the rows above them (motion round 2, 3a: they used to show at the tap, before the rows). */}
+                    <Rise delay={FEEDBACK_DELAY.why}>
+                      <View ref={vineRef} collapsable={false} onLayout={checkVine} testID="feedback-vine">
+                        <Vine
+                          key={`${qid}:a`}
+                          keyIdea={q.keyConcept}
+                          tips={missTips.first.map((i) => renderText(q.tips[i], perm))}
+                          tipIndex={missTips.first}
+                          visible={vineVisible}
+                        />
+                      </View>
+                    </Rise>
                     {/* Then the long "Why", folded to two lines, with Eliminate two / Final two inside the fold
                         (mobile 1.43, owner decision): "Read more" opens all three, "Show less" closes them. */}
-                    <Rise delay={FEEDBACK_DELAY.why}>
+                    <Rise delay={FEEDBACK_DELAY.why + motion.stagger.group}>
                       <WhyBlock
                         key={qid}
                         letter={correctDisplay}

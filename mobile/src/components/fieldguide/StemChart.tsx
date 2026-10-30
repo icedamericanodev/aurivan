@@ -23,8 +23,17 @@
  * its longest name, the chart hands over to StemList: one row per area with
  * a ruler bar (the outline for too few yet), the word and the figure.
  *
- * Motion: stems trace up from the soil (`draw`, 400 ms, 60 ms apart), then
- * the numbers and leaves settle in. Reduce Motion: the finished plate.
+ * Motion:
+ * - `trace` (the day's first view): stems trace up from the soil (`draw`,
+ *   400 ms, 60 ms apart), then the numbers settle in.
+ * - `growth` (premium round 2, #2: Results' set, or what rose since the last
+ *   look on You): only what grew moves. Each stem stands at where it started;
+ *   its clay top grows up out of it (`grow`, 600 ms, ease-out, 60 ms apart,
+ *   once the plate's own entrance is done: `delay`),
+ *   the bud and the number ride the tip while the number rolls up from the
+ *   start, and "↑3" fades in as the tip lands. A stem that didn't move, or
+ *   fell, is simply there (a loss never animates).
+ * Reduce Motion: the finished plate.
  */
 import { useEffect, useState } from 'react';
 import { useWindowDimensions, View } from 'react-native';
@@ -33,7 +42,7 @@ import Svg, { Ellipse, G, Path } from 'react-native-svg';
 import type { Stem } from '../../engine/fieldGuide';
 import { fieldInk, LARGE_TEXT, motion, plate, space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
-import { tween, useMotion } from '../motion';
+import { ease, tween, useMotion } from '../motion';
 import { BigNum, T, useFontScale } from '../ui';
 import { FieldText } from './FieldText';
 
@@ -80,7 +89,38 @@ export function lineLabelSpot({ lastPct, line, gap, fs }: { /** The last column'
 export const MIN_COLUMN = 58;
 
 /** Five stems on one scale, or the list at large text. */
-export function StemChart({ stems, line = 70, play = false, testID }: { stems: readonly Stem[]; line?: number; play?: boolean; testID?: string }) {
+/** How a chart arrives: `true` / `'trace'` from the soil, `'growth'` only what grew, `false` still. */
+export type StemPlay = boolean | 'trace' | 'growth';
+
+/** The stems that grow in `growth` mode (a measured stem with a rise), in drawing order. */
+export function growingStems(stems: readonly Stem[]): string[] {
+  return stems.filter((s) => !s.thin && s.pct !== null && (s.up ?? 0) > 0).map((s) => s.key);
+}
+
+/** Where a growing stem's top starts: the height it grew from, in points below its tip (pure, for tests). */
+export function growthDrop(s: Stem, y: (p: number) => number): number {
+  if (s.thin || s.pct === null) return 0;
+  const up = Math.max(0, Math.min(s.pct, s.up ?? 0));
+  return y(s.pct - up) - y(s.pct);
+}
+
+export function StemChart({
+  stems,
+  line = 70,
+  play = false,
+  run = 1,
+  delay = 0,
+  testID,
+}: {
+  stems: readonly Stem[];
+  line?: number;
+  play?: StemPlay;
+  /** Restart key for a growth (You: each new rise). */
+  run?: number;
+  /** A growth waits this long (ms) for the plate's own entrance (Results' group, You's tab fade), so it is seen. */
+  delay?: number;
+  testID?: string;
+}) {
   const scale = useFontScale();
   const large = scale >= LARGE_TEXT;
   // The chart's own words grow with the text size up to ×1.3 (then the list takes over): its columns and height
@@ -93,16 +133,18 @@ export function StemChart({ stems, line = 70, play = false, testID }: { stems: r
   const list = large || (w > 0 && gap < MIN_COLUMN * fs);
   return (
     <View testID={testID} onLayout={(e) => setW(e.nativeEvent.layout.width)}>
-      {list ? <StemList stems={stems} line={line} /> : w > 0 ? <Chart stems={stems} line={line} play={play} w={w} fs={fs} /> : <View style={{ height: plate.chart }} />}
+      {list ? <StemList stems={stems} line={line} /> : w > 0 ? <Chart stems={stems} line={line} play={play} run={run} delay={delay} w={w} fs={fs} /> : <View style={{ height: plate.chart }} />}
     </View>
   );
 }
 
-function Chart({ stems, line, play, w, fs }: { stems: readonly Stem[]; line: number; play: boolean; w: number; /** The text size, up to ×1.3. */ fs: number }) {
+function Chart({ stems, line, play, run, delay, w, fs }: { stems: readonly Stem[]; line: number; play: StemPlay; run: number; delay: number; w: number; /** The text size, up to ×1.3. */ fs: number }) {
   const { c, isDark } = useTheme();
   const ink = fieldInk[isDark ? 'dark' : 'light'];
   const { reduced } = useMotion();
-  const moving = play && !reduced;
+  // trace: every stem from the soil; growth: only the stems that grew, from where they stood.
+  const moving = (play === true || play === 'trace') && !reduced;
+  const growing = play === 'growth' && !reduced ? growingStems(stems) : [];
   const gap = (w - GUTTER) / stems.length;
   const soil = TOP + PLOT;
   const y = (p: number) => soil - (Math.max(0, Math.min(100, p)) / 100) * PLOT;
@@ -142,7 +184,7 @@ function Chart({ stems, line, play, w, fs }: { stems: readonly Stem[]; line: num
         </Svg>
         {[0, 50, line, 100].filter((p, i, a) => a.indexOf(p) === i).map(scaleLabel)}
         {stems.map((s, i) => (
-          <StemColumn key={s.key} s={s} i={i} left={GUTTER + gap * i} gap={gap} soil={soil} y={y} moving={moving} ink={ink} />
+          <StemColumn key={s.key} s={s} i={i} left={GUTTER + gap * i} gap={gap} soil={soil} y={y} moving={moving} order={growing.indexOf(s.key)} run={run} delay={delay} ink={ink} />
         ))}
         {/* After the stems, so the last column's stem never paints over it (UX review H1); beside the line's
             end instead when the last stem's top would sit under it (lineLabelSpot). */}
@@ -159,6 +201,8 @@ function Chart({ stems, line, play, w, fs }: { stems: readonly Stem[]; line: num
           {stems.map((s, i) => {
             const cx = GUTTER + gap * i + gap / 2;
             const top = s.pct !== null ? y(s.pct) - 34 : s.thin ? soil - 54 : null;
+            // A growing stem's number rides its tip (GrowNumber, below).
+            if (growing.includes(s.key)) return null;
             return top === null ? null : (
               <View key={s.key} style={{ position: 'absolute', left: cx - 40, width: 80, top, alignItems: 'center' }}>
                 {s.pct !== null ? (
@@ -177,6 +221,11 @@ function Chart({ stems, line, play, w, fs }: { stems: readonly Stem[]; line: num
             );
           })}
         </Animated.View>
+        {stems.map((s, i) =>
+          growing.includes(s.key) && s.pct !== null ? (
+            <GrowNumber key={`n${s.key}`} s={s} cx={GUTTER + gap * i + gap / 2} top={y(s.pct) - 34} drop={growthDrop(s, y)} order={growing.indexOf(s.key)} run={run} delay={delay} />
+          ) : null,
+        )}
         {stems.map((s, i) => {
           const lines = stemLines(s, line);
           const red = !s.thin && s.pct !== null && s.below;
@@ -209,6 +258,9 @@ function StemColumn({
   soil,
   y,
   moving,
+  order,
+  run,
+  delay,
   ink,
 }: {
   s: Stem;
@@ -218,9 +270,14 @@ function StemColumn({
   soil: number;
   y: (p: number) => number;
   moving: boolean;
+  /** Its place among the stems that grow (growth mode), or -1: still. */
+  order: number;
+  run: number;
+  delay: number;
   ink: (typeof fieldInk)['light'];
 }) {
   const { c } = useTheme();
+  const tip = useGrowClock(order >= 0, order, run, delay);
   const grow = useSharedValue(moving ? 0 : 1);
   useEffect(() => {
     if (!moving) {
@@ -257,12 +314,41 @@ function StemColumn({
         </G>,
       );
     }
-    art = (
-      <G>
-        <Path d={`M${x} ${soil}V${y(base)}`} stroke={ink.stem} strokeWidth={2} strokeLinecap="round" />
-        {leaves}
+    const top = (
+      <>
         {up > 0 && <Path d={`M${x} ${y(base)}V${y(s.pct)}`} stroke={c.clay} strokeWidth={2.6} strokeLinecap="round" />}
         <Ellipse cx={x} cy={y(s.pct) - 5} rx={3} ry={5.6} fill={ink.leaf} stroke={s.below || up > 0 ? c.clay : c.accent} strokeWidth={0.9} />
+      </>
+    );
+    const stem = (
+      <>
+        <Path d={`M${x} ${soil}V${y(base)}`} stroke={ink.stem} strokeWidth={2} strokeLinecap="round" />
+        {leaves}
+      </>
+    );
+    if (order >= 0 && up > 0) {
+      // Growth: the stem stands where it started; its clay top and bud rise out of it, clipped at the old tip,
+      // so the top is never seen below it (transform only, no opacity on the clipped group).
+      const drop = y(base) - y(s.pct);
+      return (
+        <View style={{ position: 'absolute', left, top: 0, width: gap, height: h }} testID={`area-growth-${s.key}`}>
+          <Svg width={gap} height={h} style={{ position: 'absolute' }}>
+            {stem}
+          </Svg>
+          <View style={{ position: 'absolute', left: 0, top: 0, width: gap, height: y(base), overflow: 'hidden' }}>
+            <GrowTop drop={drop} tip={tip}>
+              <Svg width={gap} height={y(base)}>
+                {top}
+              </Svg>
+            </GrowTop>
+          </View>
+        </View>
+      );
+    }
+    art = (
+      <G>
+        {stem}
+        {top}
       </G>
     );
   }
@@ -271,6 +357,54 @@ function StemColumn({
       <Svg width={gap} height={h}>
         {art}
       </Svg>
+    </Animated.View>
+  );
+}
+
+/**
+ * One growing stem's clock, 0 → 1 over `grow` (ease-out, the odometer's own duration and curve, so the tip
+ * and the rolling number land together), `stagger.stat` apart in drawing order. Still (1) when not growing.
+ */
+function useGrowClock(active: boolean, order: number, run: number, delay: number) {
+  const p = useSharedValue(active ? 0 : 1);
+  useEffect(() => {
+    if (!active) {
+      p.set(1);
+      return;
+    }
+    p.set(0);
+    p.set(withDelay(delay + order * motion.stagger.stat, tween(1, 'grow', ease.out)));
+  }, [active, order, run, delay, p]);
+  return p;
+}
+
+/** The rising top of a growing stem: drawn at its place, it starts `drop` points lower and rises into it. */
+function GrowTop({ drop, tip, children }: { drop: number; tip: ReturnType<typeof useSharedValue<number>>; children: React.ReactNode }) {
+  const style = useAnimatedStyle(() => ({ transform: [{ translateY: drop * (1 - tip.value) }] }));
+  return <Animated.View style={style}>{children}</Animated.View>;
+}
+
+/** A growing stem's number: rides the tip, rolls up from where the set began, and "↑3" arrives as the tip lands. */
+function GrowNumber({ s, cx, top, drop, order, run, delay }: { s: Stem; cx: number; top: number; drop: number; order: number; run: number; delay: number }) {
+  const { c } = useTheme();
+  const tip = useGrowClock(true, order, run, delay);
+  const arrow = useSharedValue(0);
+  useEffect(() => {
+    arrow.set(0);
+    arrow.set(withDelay(delay + order * motion.stagger.stat + motion.dur.grow, tween(1, 'quick')));
+  }, [order, run, delay, arrow]);
+  const rideStyle = useAnimatedStyle(() => ({ transform: [{ translateY: drop * (1 - tip.value) }] }));
+  const arrowStyle = useAnimatedStyle(() => ({ opacity: arrow.value }));
+  const pct = s.pct ?? 0;
+  const up = Math.round(Math.max(0, Math.min(pct, s.up ?? 0)));
+  return (
+    <Animated.View testID={`area-number-${s.key}`} style={[{ position: 'absolute', left: cx - 40, width: 80, top, alignItems: 'center' }, rideStyle]}>
+      <View style={{ flexDirection: 'row', alignItems: 'flex-start', backgroundColor: c.raised2, paddingHorizontal: 3, borderRadius: 3 }}>
+        <BigNum value={String(pct)} pct size={20} roll={{ play: true, from: String(pct - up), run, delay: delay + order * motion.stagger.stat }} />
+        <Animated.View style={arrowStyle}>
+          <T v="caption" color={c.clay} style={{ marginLeft: 2, marginTop: 6 }}>{`↑${up}`}</T>
+        </Animated.View>
+      </View>
     </Animated.View>
   );
 }

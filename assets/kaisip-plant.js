@@ -11034,6 +11034,7 @@ exports.motion = {
         skip: 120,
         playGuard: 400,
     },
+    openFrom: 0.2,
     rise: 8,
     shift: 16,
     pressScale: 0.98,
@@ -11421,6 +11422,6 @@ exports.fieldInk = {
   api["domainBand"] = load("src/engine/domainBand.ts");
   api["pace"] = load("src/engine/pace.ts");
   api["readySigns"] = load("src/engine/readySigns.ts");
-  api.sourceHash = "4538311ec1991737";
+  api.sourceHash = "4274e5b37603ec4d";
   root.KaiSipPlant = Object.freeze(api);
 })(typeof window !== 'undefined' ? window : globalThis);

@@ -13,8 +13,9 @@
  *   `clay` for an area under its line; "↑3" for what went up since the
  *   learner last looked. From ×1.3 text the chart becomes its list.
  *
- * Motion: the bar draws in and the stems trace up on the day's first view
- * (or when they changed); still under Reduce Motion.
+ * Motion: on the day's first view the band opens and the stems trace up; after a
+ * rise since the last look only the estimate and the stems that grew move. Still
+ * under Reduce Motion.
  */
 import { View } from 'react-native';
 import type { Certification } from '../content/types';
@@ -23,8 +24,8 @@ import { READY_LOW } from '../engine/examReady';
 import { areaStems } from '../engine/fieldGuide';
 import type { Readiness } from '../engine/readiness';
 import type { ReadinessRange } from '../engine/readinessRange';
-import { space } from '../theme/tokens';
-import { KeyCaption, Plate, ScaleBar, scaleSpoken, StemChart } from './fieldguide';
+import { motion, space } from '../theme/tokens';
+import { KeyCaption, Plate, ScaleBar, scaleSpoken, StemChart, type StemPlay } from './fieldguide';
 import type { Growth } from './motion';
 
 /** "Estimated readiness 68 to 78 percent, a study estimate…", or the countdown to the first range. */
@@ -49,19 +50,23 @@ export function AreaRows({
   readiness,
   ups,
   play,
+  run,
 }: {
   cert: Certification;
   readiness: Readiness;
   /** Points up since the last real look, blueprint order (drawn as "↑3" and said in each area's label). */
   ups?: readonly number[];
-  /** The stems trace up (the day's first view, or what changed). */
-  play?: boolean;
+  /** The stems trace up (the day's first view), or only what grew moves (a rise since the last look). */
+  play?: StemPlay;
+  /** Restart key for a growth. */
+  run?: number;
 }) {
   const stems = areaStems(cert.domains, readiness.domains, ups);
   return (
     <View>
       <Plate tight fig={{ n: 5, title: areasTitle(cert.domains.length) }} testID="areas-plate">
-        <StemChart stems={stems} line={STEADY_FROM} play={play} />
+        {/* A growth waits for the tab's fade (`enter`), so the rise is seen. */}
+        <StemChart stems={stems} line={STEADY_FROM} play={play} run={run} delay={motion.dur.enter} />
       </Plate>
       <KeyCaption label="KEY" style={{ marginTop: space.sm }}>{AREAS_KEY}</KeyCaption>
     </View>

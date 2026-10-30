@@ -8628,6 +8628,7 @@ exports.motion = {
         skip: 120,
         playGuard: 400,
     },
+    openFrom: 0.2,
     rise: 8,
     shift: 16,
     pressScale: 0.98,
@@ -10480,7 +10481,7 @@ function decodeUtf8(bytes) {
   var api = {};
   api["browser"] = load("src/webcloud/browser.ts");
   api["config"] = load("src/webcloud/config.ts");
-  api.sourceHash = "3cc6037a74d14be4";
+  api.sourceHash = "960639cb63dbb332";
   var cloud = load("src/webcloud/index.ts");
   var liveVersion = "1.48.0";
   var liveStoreVersions = {"progress":2,"settings":1};

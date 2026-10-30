@@ -1517,16 +1517,19 @@ export function Stat({
 
 // ── Tab bar label: "Today", with a 4pt dot under the active tab ───────
 // The dot means the active tab isn't shown by colour alone (spec §6).
+/** The selected-tab dot's starting scale: it pops from .6, never from nothing (the `Pop` convention). */
+export const TAB_DOT_FROM = 0.6;
+
 export function TabLabel({ label, focused }: { label: string; focused: boolean }) {
   const { c } = useTheme();
   const { reduced } = useMotion();
-  // The dot pops in under the new tab (scale 0 → 1, 160 ms) and fades from
-  // the old one; under Reduce Motion it only fades. No icon bounce.
+  // The dot pops in under the new tab (scale .6 → 1 with its fade, 160 ms: never from 0, like Pop)
+  // and fades from the old one; under Reduce Motion it only fades. No icon bounce.
   const d = useSharedValue(focused ? 1 : 0);
   useEffect(() => {
     d.set(tween(focused ? 1 : 0, 'quick'));
   }, [focused, d]);
-  const dotStyle = useAnimatedStyle(() => ({ opacity: d.value, transform: [{ scale: reduced ? 1 : d.value }] }));
+  const dotStyle = useAnimatedStyle(() => ({ opacity: d.value, transform: [{ scale: reduced ? 1 : TAB_DOT_FROM + (1 - TAB_DOT_FROM) * d.value }] }));
   return (
     // The Large Content Viewer props live on the tab BUTTON ((tabs)/_layout.tsx).
     <View style={styles.tabLabel}>

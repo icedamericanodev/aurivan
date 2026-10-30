@@ -264,7 +264,7 @@ export default function You() {
         <ReadinessBlock range={range} growth={rangeGrowth} />
         <T v="meta" style={{ marginTop: space.md }}>{STUDY_BAR_LINE}</T>
         <View style={{ marginTop: space.xl }}>
-          <AreaRows cert={cert} readiness={readiness} ups={sinceLook ? ups : undefined} play={rings.play} />
+          <AreaRows cert={cert} readiness={readiness} ups={sinceLook ? ups : undefined} play={sinceLook ? 'growth' : rings.play} run={rings.run} />
         </View>
         {/* What went up since the last look, said once under the areas (mobile 1.24); the rows' labels hold the figures. */}
         {changeLine && (

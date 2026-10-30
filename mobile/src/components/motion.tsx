@@ -161,6 +161,13 @@ export function tween(to: number, dur: MotionDur, easing: Ease = ease.out) {
   return withTiming(to, { duration: motion.dur[dur], easing, reduceMotion: ReduceMotion.Never });
 }
 
+/**
+ * The launch (motion round 2, #5): the splash dissolves into the first screen over `enter`
+ * (iOS honours `fade`; Android 12+ keeps its own system exit). A dissolve is the gentle form
+ * already, so Reduce Motion keeps it. Passed to `SplashScreen.setOptions` in app/_layout.tsx.
+ */
+export const SPLASH_FADE = { fade: true, duration: motion.dur.enter } as const;
+
 /** Jump to a value at once (the first step of a sequence). */
 const snap = (to: number) => withTiming(to, { duration: 0, reduceMotion: ReduceMotion.Never });
 
