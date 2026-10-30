@@ -40,11 +40,13 @@ MIN_WORD_RATE = 0.10
 def pick_longest_rate(questions, length):
     """Expected share a guesser wins by always picking the longest option."""
     wins = 0.0
+    scored = 0
     longest_keys = []
     for q in questions:
         opts, key = q.get("options") or {}, q.get("correct")
         if key not in opts:
             continue
+        scored += 1
         lens = {k: length(v) for k, v in opts.items()}
         top = max(lens.values())
         tied = [k for k, n in lens.items() if n == top]
@@ -52,7 +54,7 @@ def pick_longest_rate(questions, length):
             wins += 1 / len(tied)
             if len(tied) == 1:
                 longest_keys.append(q["id"])
-    return wins / max(len(questions), 1), longest_keys
+    return wins / max(scored, 1), longest_keys
 
 
 def main(argv):
