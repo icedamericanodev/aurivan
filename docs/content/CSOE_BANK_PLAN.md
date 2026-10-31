@@ -126,6 +126,27 @@ Decided 31 Oct 2026 by `product-manager`:
   held-out mock items, and good enough to sell the course.
 - Don't build the purchase flow here (Phase E, `mobile-app-engineer`).
 
+### Course pack checklist (owner, 31 Oct 2026: "like CISA")
+
+The same pieces as the CISA course, each in `data/csoe/`:
+
+| Piece | File | Status |
+|---|---|---|
+| Study notes | `notes/d{1..5}.json` (notes schema v2) | Done for the pilot; extended with each batch |
+| Glossary (key terms) | the notes' `key_terminologies`; the app builds its key-terms list from them | 104 terms, 19–24 per domain |
+| Principles ("how CSOE questions think") | `mindset/principles.json` (`docs/content/PRINCIPLES_SCHEMA.md`, CRISC-style deviations) | Being written by `csoe-mindset-coach` |
+| About the exam | `exam/csoe_exam_guide.json` (`docs/content/EXAM_GUIDE_SCHEMA.md`) | Being written by `csoe-mindset-coach` |
+| Final review week | `exam/final_review_week.json` | Being written by `csoe-mindset-coach` |
+| Practice | `originals/d{1..5}.json` | 100 reviewed; growing to 400 |
+| Mock exam | the app's mock engine reads the bank; the held-out forms go in `exam/mock_forms.json` (two 35-item forms, never served in practice) | Forms drawn once the bank passes about 300; the forward-only mode is an app task (section 4) |
+| Lessons | `lessons.json` (`docs/content/LESSONS_SCHEMA.md`) | After the bank |
+| Game decks | `mobile/src/content/games/csoe/` | App task, when CSOE is wired in |
+
+Lint the CSOE exam files with `python3 data/csoe/tools/lint_exam_guide_csoe.py`
+(the shared linter with CSOE's domains, weights and sources; CSOE is not in
+`mobile/src/content/certifications.ts` yet) and the principles with
+`python3 scripts/lint_principles.py data/csoe/mindset/principles.json --notes data/csoe/notes --bank data/csoe/originals`.
+
 ## 6. Calibration rules (binding for every batch)
 
 The CC pilot rules (`docs/content/CC_BANK_PLAN.md` section 6) apply in full:
