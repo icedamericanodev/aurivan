@@ -2,10 +2,11 @@
 //
 // Shots: the readiness report (full, with 8 mocks: every section, in several
 // scrolls), not enough data yet, one mock, a mock opened from You, a "down"
-// trend; Today in exam week 6 days out (the optional full mock and the Exam
-// week card) and 3 days out (no mock); Today's readiness words as a button
-// with its focus ring; the exam-week checklist with 2 ticked; You's Mock
-// exams rows with "See report".
+// trend; Today in exam week 6 days out (the optional full mock and the Final
+// review week card) and 3 days out (no mock); Today's readiness scale bar as a
+// button with its focus ring; the Final review week screen (CISA has a plan:
+// the day cards on top, the checklist with 2 ticked under "Before the day");
+// You's Mock exams rows and the Readiness section's "See report".
 // NARROW=1 uses a 360-wide phone; FONT_SCALE=2 approximates 200% text.
 import { createRequire } from 'module';
 import fs from 'fs';
@@ -75,16 +76,17 @@ const edit = (key, fn, arg = null) =>
     new Function('v', 'a', src)(v, a);
     localStorage.setItem(k, JSON.stringify(v));
   }, [key, fn, arg]);
-/** Put a heading or line near the top of the screen. */
-const toTop = async (text, offset = 90) => {
+/** Put a node near the top of the screen. */
+const nodeToTop = async (el, offset = 90) => {
   if (FONT_SCALE) await zoomText();
-  const el = page.getByText(text, { exact: true }).first();
-  await el.evaluate((n) => n.scrollIntoView({ block: 'start' }));
+  await el.first().evaluate((n) => n.scrollIntoView({ block: 'start' }));
   await wait(300);
   await page.mouse.move(W / 2, H / 2);
   await page.mouse.wheel(0, -offset);
   await wait(700);
 };
+/** Put a heading or line near the top of the screen. */
+const toTop = (text, offset = 90) => nodeToTop(page.getByText(text, { exact: true }), offset);
 
 // ── Demo data ──────────────────────────────────────────────────────────
 // Eight mocks over five weeks, oldest first: minis and two full ones, one
@@ -189,7 +191,9 @@ await edit(P, `const c = v.state.byCert.cisa; c.moments = { ...(c.moments || {})
 await examIn(6);
 await go('/home', 2600);
 await shot('p06-today-exam-week-6');
-await toTop('This week', 120);
+// CISA has a final review week, so the card's caption is the plan's title
+// ("Final review week"), not "This week": anchor on the card itself.
+await nodeToTop(page.getByTestId('exam-week-card'), 120);
 await shot('p06b-today-exam-week-card');
 // 3 days out: the taper, no mock.
 await edit(P, `v.state.days = {}; v.state.byCert.cisa.moments.examWeek.for = a;`, dk(now + 3 * DAY));
@@ -197,26 +201,31 @@ await examIn(3);
 await go('/home', 2600);
 await shot('p07-today-exam-week-3');
 
-// ── Today's readiness words as a button, with keyboard focus (p08) ─────
+// ── Today's readiness scale bar as a button, with keyboard focus (p08) ─
 await examIn(38);
 await edit(P, `v.state.days = {};`);
 await go('/home', 2600);
 await page.locator('[data-testid="readiness-tap"]').first().focus();
 await wait(500);
-await toTop('estimated readiness, weighted like the exam', 260);
+// The row is "Estimated readiness" over the scale bar (mobile 1.51): anchor on the button.
+await nodeToTop(page.getByTestId('readiness-tap'), 260);
 await page.locator('[data-testid="readiness-tap"]').first().focus();
 await wait(400);
 await shot('p08-today-readiness-tap');
 
-// ── The exam-week checklist, 2 ticked (p09) ────────────────────────────
+// ── Final review week: the plan, then the checklist with 2 ticked (p09) ─
+// CISA's /exam-week is the Final review week: seven day cards on top, the
+// checklist (ticks kept) lower down under "Before the day".
 await examIn(6);
 await edit(P, `const c = v.state.byCert.cisa; c.moments = { ...(c.moments || {}), examWeek: { for: a, done: ['booking', 'pace'] } };`, dk(now + 6 * DAY));
 await go('/exam-week', 2200);
+await shot('p09a-exam-week-plan');
+await toTop('Before the day', 40);
 await shot('p09-exam-week-checklist');
 await toTop('If you blank', 160);
 await shot('p09b-exam-week-end');
 
-// ── You: Mock exams rows with "See report" (p10) ───────────────────────
+// ── You: Mock exams rows, and the Readiness section's "See report" (p10) ─
 await examIn(38);
 await setMocks(MOCKS);
 await go('/you', 2600);
