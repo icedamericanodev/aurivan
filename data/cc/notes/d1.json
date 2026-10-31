@@ -103,11 +103,11 @@
             "svg": "<svg viewBox='0 0 480 270' xmlns='http://www.w3.org/2000/svg' role='img' aria-label='The CIA triad as a triangle: confidentiality asks who can see it and fails by disclosure; integrity asks whether it is still correct and fails by alteration; availability asks whether it can be used when needed and fails by destruction or denial'><path d='M240,44 L90,200 M240,44 L390,200 M165,217 L315,217' stroke='var(--border2)' stroke-width='1.5' fill='none'/><rect x='165' y='10' width='150' height='34' rx='4' fill='var(--accent-fill)'/><text x='240' y='31' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='700' fill='#ffffff'>Confidentiality</text><text x='325' y='24' text-anchor='start' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='600' fill='var(--text2)'>Who can see it?</text><text x='325' y='37' text-anchor='start' font-family='JetBrains Mono, monospace' font-size='7.5' font-weight='700' fill='var(--accent-fill)' letter-spacing='0.08em'>FAILS BY DISCLOSURE</text><rect x='15' y='200' width='150' height='34' rx='4' fill='var(--accent-fill)'/><text x='90' y='221' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='700' fill='#ffffff'>Integrity</text><text x='90' y='248' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='600' fill='var(--text2)'>Is it still correct?</text><text x='90' y='261' text-anchor='middle' font-family='JetBrains Mono, monospace' font-size='7.5' font-weight='700' fill='var(--accent-fill)' letter-spacing='0.08em'>FAILS BY ALTERATION</text><rect x='315' y='200' width='150' height='34' rx='4' fill='var(--accent-fill)'/><text x='390' y='221' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='700' fill='#ffffff'>Availability</text><text x='390' y='248' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='600' fill='var(--text2)'>Can we use it when needed?</text><text x='390' y='261' text-anchor='middle' font-family='JetBrains Mono, monospace' font-size='7.5' font-weight='700' fill='var(--accent-fill)' letter-spacing='0.08em'>FAILS BY DESTRUCTION OR DENIAL</text><text x='240' y='148' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9.5' font-weight='600' fill='var(--text2)'>Every asset needs all three,</text><text x='240' y='162' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9.5' font-weight='600' fill='var(--text2)'>in its own balance</text></svg>",
             "caption": "Each goal asks its own question and fails in its own way. Name the goal that was harmed before choosing a control."
           },
-          "example": "A school's grading system goes offline in exam week after a power failure, and a teacher notices a student's grade changed overnight. Dana, a junior analyst, records two problems in the incident ticket, an availability failure and an integrity failure, and follows the incident procedure instead of fixing the grade herself.",
+          "example": "A school's grading system goes offline in exam week after a power failure, and a teacher notices a student's grade changed overnight. Dana, a junior analyst, records two problems in the incident ticket, an availability failure and an integrity failure, and follows the incident procedure instead of correcting the grade directly.",
           "audit_focus": {
             "review": [
-              "Identify which goal an alert actually harms",
-              "Compare the asset's stated priorities with its controls"
+              "Name the goal an alert harms before choosing a response",
+              "Ask the asset owner which goal matters most for a system"
             ],
             "evidence": [
               "Asset inventory with each system's owner and priority",
@@ -155,7 +155,7 @@
           "audit_focus": {
             "review": [
               "Compare a document's label with the data inside it",
-              "Inspect shared folders for open access to restricted files"
+              "Look for restricted files in folders open to everyone"
             ],
             "evidence": [
               "Folder permission report listing each user's rights",
@@ -234,7 +234,7 @@
           "audit_focus": {
             "review": [
               "Compare a file's hash with the trusted published value",
-              "Trace record edits to approved change requests"
+              "Report record edits that match no approved change request"
             ],
             "evidence": [
               "Hash or signature check output for the file",
@@ -280,7 +280,7 @@
           "example": "Lee, an IT support technician at a small accounting firm, runs the weekly backup check from the runbook and finds the last three jobs failed. As the runbook directs, Lee reruns the job, confirms a test restore works and opens a ticket recording the gap.",
           "audit_focus": {
             "review": [
-              "Trace one critical service for parts without a fallback",
+              "Note any service you support that depends on one component",
               "Confirm recent backups succeeded and restores were tested"
             ],
             "evidence": [
@@ -337,7 +337,7 @@
           "example": "At a hardware wholesaler, handheld stock scanners accept an employee number with no PIN, so anyone can record stock moves under a colleague's number. Priya, a junior analyst, records this as identification without authentication and raises a change request with the system owner.",
           "audit_focus": {
             "review": [
-              "Inspect systems that accept an identity claim without proof",
+              "Flag sign-ins that accept an ID without any proof",
               "Compare enrolled factors with the authentication standard"
             ],
             "evidence": [
@@ -379,7 +379,8 @@
             "Authentication, authorization and accounting (AAA) run in that order, after the identity claim.",
             "Authorization follows the data or system owner's rules, ideally granting least privilege.",
             "Accounting logs who did what, when and from where.",
-            "Accountability needs unique accounts; with a shared login, nobody knows who acted."
+            "Accountability needs unique accounts; with a shared login, nobody knows who acted.",
+            "Logs must be protected from the people they record, administrators included, or they cannot prove what those people did."
           ],
           "compare": {
             "columns": [
@@ -421,14 +422,14 @@
           "example": "Three operators at a city water utility share one login for the control room dashboard. After a pump setting changes at night, the logs show only the shared account. Mo, a security analyst, notes that accounting worked but accountability failed, and submits an access request for one account per operator.",
           "audit_focus": {
             "review": [
-              "Inspect access lists for shared or generic accounts",
-              "Trace one sensitive logged action to a named person"
+              "Flag shared or generic accounts on systems you support",
+              "Confirm logs name the person behind each sensitive action"
             ],
             "evidence": [
               "Log extract showing user, action, time and source",
               "Access list compared with current job roles"
             ],
-            "recommend": "Report shared accounts and excess access to the system owner for correction.",
+            "recommend": "Report shared accounts, excess access or logs that administrators can edit to the system owner.",
             "decides": "The system owner approves who gets which access"
           },
           "isaca_rule": "Each person needs their own identity, only the access their job needs, and a protected record of what they did. Logs that cannot name the person do not give accountability.",
@@ -464,7 +465,7 @@
           "audit_focus": {
             "review": [
               "Confirm each signing key belongs to one person only",
-              "Inspect the log store for edit and delete protection"
+              "Keep logs where the people they record cannot change them"
             ],
             "evidence": [
               "Certificate record naming the single key holder",
@@ -540,7 +541,7 @@
               }
             ]
           },
-          "example": "A fitness app team plans to share users' running routes with partner brands. At the design review, Ana, a security analyst, asks whether users agreed, whether exact home locations are needed and how long routes are kept. She adds the questions to the project's privacy impact assessment.",
+          "example": "A community radio station is designing a listener app. The draft asks for each listener's full date of birth and shares their location by default. At the design review, Dev, a junior analyst, suggests asking only whether listeners are over 16 and keeping location off until a listener turns it on. Dev records both points in the privacy impact assessment for the data owner.",
           "audit_focus": {
             "review": [
               "Compare personal fields collected with what the feature needs",
@@ -625,7 +626,7 @@
           "example": "An energy company wants to retrain its support chatbot on last year's chat transcripts. Kai, a junior analyst asked to upload them, notices they hold account numbers and home addresses. Before uploading anything, Kai asks the data owner whether the personal data may be used at all.",
           "audit_focus": {
             "review": [
-              "Trace each training dataset to its source and approvals",
+              "Ask where each training dataset came from and who approved it",
               "Confirm each AI agent has its own account and log"
             ],
             "evidence": [
@@ -718,8 +719,8 @@
           "example": "A bakery chain's ordering website runs an outdated plugin with a published flaw, and attackers are scanning for it. Tom, a new analyst, writes a risk register entry naming each part: the flaw as the vulnerability, the attackers as the threat and exposed card data as the impact.",
           "audit_focus": {
             "review": [
-              "Confirm each register entry names asset, threat and vulnerability",
-              "Compare scan results with register entries"
+              "Write each register entry with its asset, weakness and threat source",
+              "Log scan findings that have no register entry yet"
             ],
             "evidence": [
               "Scanner record or vendor advisory confirming the flaw",
@@ -766,8 +767,8 @@
           "example": "A school district finished its risk assessment last spring, then moved student records to a cloud service over the summer. Ravi, a security technician, notices the risk register still describes the old on-site server and flags the outdated entries to the risk manager for reassessment.",
           "audit_focus": {
             "review": [
-              "Compare the risk register with the systems in use today",
-              "Confirm a reassessment followed the last major change"
+              "Flag register entries for systems that have changed or retired",
+              "Request a fresh assessment when a system, threat or law shifts"
             ],
             "evidence": [
               "Dated risk assessment reports showing the cycle",
@@ -805,19 +806,20 @@
             "Likelihood weighs threat activity, how easy the weakness is to use and existing controls.",
             "Impact weighs harm to people, operations and money.",
             "A risk matrix plots likelihood against impact so the high-and-high risks stand out.",
-            "Inherent risk is rated before controls; residual risk is what remains after them."
+            "Inherent risk is rated before controls; residual risk is what remains after them.",
+            "Credit each control only with the factor it changes: a guard makes a break-in less likely; backups leave ransomware as likely but shrink its harm."
           ],
           "example": "A regional transit agency rates two risks. A ticket kiosk fault is likely but causes short delays; tampering with signaling is unlikely but could cause a collision. Lina, an analyst helping with the matrix, makes sure the signaling risk gets the highest impact rating, because people could be hurt.",
           "audit_focus": {
             "review": [
-              "Confirm every risk uses the approved rating scale",
-              "Compare safety-related ratings with their stated impact"
+              "Rate likelihood and impact separately on the approved scale",
+              "Note which factor each existing control actually lowers"
             ],
             "evidence": [
               "Scored register with the reason for each rating",
               "Approved rating scale definitions"
             ],
-            "recommend": "Raise ratings that understate safety or business impact with the risk owner.",
+            "recommend": "Raise ratings that understate harm to people or the business with the risk owner.",
             "decides": "The risk owner signs off the final rating"
           },
           "isaca_rule": "Rate both likelihood and impact, and let harm to people weigh heaviest. A rare event with severe impact can outrank a frequent nuisance.",
@@ -828,7 +830,7 @@
             },
             {
               "trap": "Residual risk should be zero once controls are in place.",
-              "why": "Controls never remove all risk. What remains must be within tolerance and accepted by the risk owner."
+              "why": "Controls never remove all risk. What remains is formally accepted: by the risk owner within tolerance, by senior management beyond it."
             }
           ],
           "key_terms": [
@@ -892,14 +894,14 @@
             ]
           },
           "illustration": {
-            "svg": "<svg viewBox='0 0 480 106' xmlns='http://www.w3.org/2000/svg' role='img' aria-label='Worked example: asset value 80,000 dollars times exposure factor 50 percent gives a single loss expectancy of 40,000 dollars; times an annualized rate of occurrence of 0.1 gives an annualized loss expectancy of 4,000 dollars a year'><text x='48' y='12' text-anchor='middle' font-family='JetBrains Mono, monospace' font-size='7.5' font-weight='700' fill='var(--accent-fill)' letter-spacing='0.08em'>AV</text><rect x='10' y='20' width='76' height='38' rx='4' fill='none' stroke='var(--accent-fill)' stroke-width='1.5'/><text x='48' y='44' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='12' font-weight='700' fill='var(--accent-fill)'>$80,000</text><text x='48' y='74' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='8.5' font-weight='600' fill='var(--text2)'>Asset value</text><text x='96' y='45' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='14' font-weight='700' fill='var(--text2)'>×</text><text x='144' y='12' text-anchor='middle' font-family='JetBrains Mono, monospace' font-size='7.5' font-weight='700' fill='var(--accent-fill)' letter-spacing='0.08em'>EF</text><rect x='106' y='20' width='76' height='38' rx='4' fill='none' stroke='var(--accent-fill)' stroke-width='1.5'/><text x='144' y='44' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='12' font-weight='700' fill='var(--accent-fill)'>50%</text><text x='144' y='74' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='8.5' font-weight='600' fill='var(--text2)'>Share one fire ruins</text><text x='192' y='45' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='14' font-weight='700' fill='var(--text2)'>=</text><text x='240' y='12' text-anchor='middle' font-family='JetBrains Mono, monospace' font-size='7.5' font-weight='700' fill='var(--accent-fill)' letter-spacing='0.08em'>SLE</text><rect x='202' y='20' width='76' height='38' rx='4' fill='var(--accent-fill)'/><text x='240' y='44' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='12' font-weight='700' fill='#ffffff'>$40,000</text><text x='240' y='74' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='8.5' font-weight='600' fill='var(--text2)'>Cost of one fire</text><text x='288' y='45' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='14' font-weight='700' fill='var(--text2)'>×</text><text x='336' y='12' text-anchor='middle' font-family='JetBrains Mono, monospace' font-size='7.5' font-weight='700' fill='var(--accent-fill)' letter-spacing='0.08em'>ARO</text><rect x='298' y='20' width='76' height='38' rx='4' fill='none' stroke='var(--accent-fill)' stroke-width='1.5'/><text x='336' y='44' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='12' font-weight='700' fill='var(--accent-fill)'>0.1</text><text x='336' y='74' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='8.5' font-weight='600' fill='var(--text2)'>Once in 10 years</text><text x='384' y='45' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='14' font-weight='700' fill='var(--text2)'>=</text><text x='432' y='12' text-anchor='middle' font-family='JetBrains Mono, monospace' font-size='7.5' font-weight='700' fill='var(--accent-fill)' letter-spacing='0.08em'>ALE</text><rect x='394' y='20' width='76' height='38' rx='4' fill='var(--accent-fill)'/><text x='432' y='44' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='12' font-weight='700' fill='#ffffff'>$4,000</text><text x='432' y='74' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='8.5' font-weight='600' fill='var(--text2)'>Loss per year</text><text x='240' y='98' text-anchor='middle' font-family='JetBrains Mono, monospace' font-size='10' font-weight='700' fill='var(--text)'>SLE = AV × EF      ALE = SLE × ARO</text></svg>",
+            "svg": "<svg viewBox='0 0 480 106' xmlns='http://www.w3.org/2000/svg' role='img' aria-label='Worked example: asset value 200,000 dollars times exposure factor 50 percent gives a single loss expectancy of 100,000 dollars; times an annualized rate of occurrence of 0.5 gives an annualized loss expectancy of 50,000 dollars a year'><text x='48' y='12' text-anchor='middle' font-family='JetBrains Mono, monospace' font-size='7.5' font-weight='700' fill='var(--accent-fill)' letter-spacing='0.08em'>AV</text><rect x='10' y='20' width='76' height='38' rx='4' fill='none' stroke='var(--accent-fill)' stroke-width='1.5'/><text x='48' y='44' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='12' font-weight='700' fill='var(--accent-fill)'>$200,000</text><text x='48' y='74' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='8.5' font-weight='600' fill='var(--text2)'>Asset value</text><text x='96' y='45' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='14' font-weight='700' fill='var(--text2)'>×</text><text x='144' y='12' text-anchor='middle' font-family='JetBrains Mono, monospace' font-size='7.5' font-weight='700' fill='var(--accent-fill)' letter-spacing='0.08em'>EF</text><rect x='106' y='20' width='76' height='38' rx='4' fill='none' stroke='var(--accent-fill)' stroke-width='1.5'/><text x='144' y='44' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='12' font-weight='700' fill='var(--accent-fill)'>50%</text><text x='144' y='74' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='8.5' font-weight='600' fill='var(--text2)'>Share one surge ruins</text><text x='192' y='45' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='14' font-weight='700' fill='var(--text2)'>=</text><text x='240' y='12' text-anchor='middle' font-family='JetBrains Mono, monospace' font-size='7.5' font-weight='700' fill='var(--accent-fill)' letter-spacing='0.08em'>SLE</text><rect x='202' y='20' width='76' height='38' rx='4' fill='var(--accent-fill)'/><text x='240' y='44' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='12' font-weight='700' fill='#ffffff'>$100,000</text><text x='240' y='74' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='8.5' font-weight='600' fill='var(--text2)'>Cost of one surge</text><text x='288' y='45' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='14' font-weight='700' fill='var(--text2)'>×</text><text x='336' y='12' text-anchor='middle' font-family='JetBrains Mono, monospace' font-size='7.5' font-weight='700' fill='var(--accent-fill)' letter-spacing='0.08em'>ARO</text><rect x='298' y='20' width='76' height='38' rx='4' fill='none' stroke='var(--accent-fill)' stroke-width='1.5'/><text x='336' y='44' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='12' font-weight='700' fill='var(--accent-fill)'>0.5</text><text x='336' y='74' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='8.5' font-weight='600' fill='var(--text2)'>Once in 2 years</text><text x='384' y='45' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='14' font-weight='700' fill='var(--text2)'>=</text><text x='432' y='12' text-anchor='middle' font-family='JetBrains Mono, monospace' font-size='7.5' font-weight='700' fill='var(--accent-fill)' letter-spacing='0.08em'>ALE</text><rect x='394' y='20' width='76' height='38' rx='4' fill='var(--accent-fill)'/><text x='432' y='44' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='12' font-weight='700' fill='#ffffff'>$50,000</text><text x='432' y='74' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='8.5' font-weight='600' fill='var(--text2)'>Loss per year</text><text x='240' y='98' text-anchor='middle' font-family='JetBrains Mono, monospace' font-size='10' font-weight='700' fill='var(--text)'>SLE = AV × EF      ALE = SLE × ARO</text></svg>",
             "caption": "The worked example below, step by step. Inputs are outlined; the two results are filled."
           },
-          "example": "A delivery company values its route-planning server at $80,000. A fire would destroy half its value (EF = 50%), and such fires are expected once every 10 years (ARO = 0.1). SLE = $80,000 × 0.5 = $40,000. ALE = $40,000 × 0.1 = $4,000 a year. Nadia, an analyst, shows the operations manager that a $15,000-a-year protection service costs more than the loss it prevents.",
+          "example": "A hillside winery's bottling equipment is worth $200,000. A lightning-driven power surge would ruin half of it (EF = 50%, so SLE = $100,000), and one is expected every two years (ARO = 0.5), so ALE is $50,000. Surge protection costing $10,000 a year would cut ALE to about $5,000. Ines, an analyst, shows the risk owner that the $45,000 drop in ALE is far above the $10,000 cost.",
           "audit_focus": {
             "review": [
-              "Reperform the SLE and ALE math from the inputs",
-              "Confirm where values and frequency estimates came from"
+              "Redo the SLE and ALE math before presenting it",
+              "Record where each value and frequency estimate came from"
             ],
             "evidence": [
               "Analyst worksheet showing each input and its source",
@@ -963,8 +965,8 @@
           "example": "A small online shop plans to store customers' card numbers to speed up repeat checkout. Ellis, a security analyst, explains the risk and the options to the shop's owner, who decides not to store card numbers at all. That avoids the risk, and Ellis records the decision in the risk register.",
           "audit_focus": {
             "review": [
-              "Confirm each high risk has a chosen treatment and date",
-              "Inspect accepted risks for an approver and review date"
+              "Record each treatment decision with its owner and due date",
+              "Flag accepted risks that lack an approver or review date"
             ],
             "evidence": [
               "Treatment plan listing option, owner and deadline",
@@ -1008,11 +1010,11 @@
             "Residual risk within tolerance can be formally accepted by its owner; anything beyond goes to senior leaders.",
             "Acceptances are documented, time-limited and reviewed. Practitioners never accept risk themselves."
           ],
-          "example": "A contractor's tablet app for a city library cannot support multifactor authentication (MFA), and launch is near. Omar, the project's security analyst, is asked to sign a risk acceptance. He declines, documents the residual risk and routes the form to the library's IT director, the risk owner.",
+          "example": "A grain cooperative's tolerance says critical flaws on internet-facing systems are fixed within 14 days. Its ordering server cannot be patched until a vendor upgrade in three months, and the operations director, who owns the risk, wants to sign off the gap. Bo, a security analyst, documents that the gap is beyond tolerance, so the director cannot accept it alone, and refers it to the executive team, copying the director.",
           "audit_focus": {
             "review": [
-              "Sample acceptance forms and check who signed each one",
-              "Compare accepted risk levels with the written tolerance"
+              "Compare residual risk with the written tolerance before routing it",
+              "Send within-tolerance acceptance requests to the named risk owner"
             ],
             "evidence": [
               "Acceptance record with approver, reason and review date",
@@ -1021,7 +1023,7 @@
             "recommend": "Escalate over-limit risks for a senior management decision, copying the risk owner.",
             "decides": "Risk owners accept within tolerance; senior management decides above it"
           },
-          "isaca_rule": "Only the risk owner accepts risk, and only within tolerance. The practitioner documents the risk and routes it there.",
+          "isaca_rule": "Acceptance belongs to whoever holds the authority: the risk owner inside the limit, senior leaders beyond it. The practitioner documents the risk, routes it and never accepts it.",
           "exam_traps": [
             {
               "trap": "The analyst who found a small risk can accept it to save time.",
@@ -1035,7 +1037,7 @@
           "key_terms": [
             {
               "term": "Residual risk",
-              "definition": "The risk left after controls. It must be within tolerance and formally accepted by the risk owner."
+              "definition": "The risk left after controls. Its owner may accept it within tolerance; only senior management can accept it beyond."
             },
             {
               "term": "Risk owner",
@@ -1098,11 +1100,11 @@
               }
             ]
           },
-          "example": "Six months ago, Rosa, a help desk lead at a property management firm, raised a risk about an unsupported file-sharing tool. The entry still has no owner and no treatment. Following the register's escalation rule for unowned risks, she flags it to the risk manager.",
+          "example": "Six months ago, Rosa, a help desk lead at a property management firm, raised a risk about an unsupported file-sharing tool. The entry still has no owner and no treatment. Following the register's escalation rule for unowned risks, Rosa flags it to the risk manager.",
           "audit_focus": {
             "review": [
-              "Sample open entries for a blank owner or due date",
-              "Inspect overdue treatments for escalation"
+              "Log each risk you find with a proposed owner and due date",
+              "Follow up entries you raised that still have no owner"
             ],
             "evidence": [
               "Register export with owners, statuses and due dates",
@@ -1156,8 +1158,8 @@
           "example": "A hospital network's board approves a security strategy and asks for quarterly risk reports; the IT manager chooses tools and runs daily operations. When a board member emails a new analyst directly, asking them to switch off email filtering for a campaign, the analyst explains that this is an operational change and routes the request to the IT manager through the change process.",
           "audit_focus": {
             "review": [
-              "Confirm the security policy carries senior management's approval",
-              "Sample access grants for the data owner's approval"
+              "Ask the data owner, not the custodian, to approve access",
+              "Route operational requests to management rather than the board"
             ],
             "evidence": [
               "Signed policy approval with date and approver",
@@ -1239,7 +1241,7 @@
           "example": "During a breach exercise at an online retailer with EU customers, Wen, a junior analyst, sees the plan allows seven days to tell regulators. GDPR generally requires notice within 72 hours of becoming aware of a reportable breach. Wen logs the gap in the exercise report.",
           "audit_focus": {
             "review": [
-              "Identify applicable laws from data types and locations",
+              "Note which data types and locations a system handles",
               "Compare plan notification steps with legal deadlines"
             ],
             "evidence": [
@@ -1317,7 +1319,7 @@
               }
             ]
           },
-          "example": "A growing group of dental practices has a tiny IT team and wants a sensible security baseline. Mei, a new security coordinator, suggests starting with the CIS Controls basic set, then using NIST CSF 2.0 to report progress to leaders. She presents both, with costs, to the practice director.",
+          "example": "A growing group of dental practices has a tiny IT team and wants a sensible security baseline. Mei, a new security coordinator, suggests starting with the CIS Controls basic set, then using NIST CSF 2.0 to report progress to leaders. Mei presents both, with costs, to the practice director.",
           "audit_focus": {
             "review": [
               "Compare current practices with the framework's outcomes",
@@ -1363,19 +1365,20 @@
             "A top-level information security policy sets objectives, scope and responsibilities.",
             "Topic policies cover single areas, such as acceptable use or remote work.",
             "The security team drafts and maintains policies; senior management approves them.",
-            "Exceptions go through a formal process: recorded, time-limited and reviewed."
+            "Exceptions go through a formal process: recorded, time-limited and reviewed.",
+            "Policies are reviewed on a schedule and after major changes, such as new technology, laws or ways of working."
           ],
-          "example": "At a regional bank, an engineer asks Kim, a service desk analyst, to switch off automatic screen locks for their team. Kim checks the endpoint security policy, which requires screen locks, and declines. She explains how to request an exception and logs the request for the policy owner.",
+          "example": "A mining company starts letting site workers use their own phones for its shift app. Its mobile device policy, last reviewed four years ago, covers only company phones. Pat, a junior analyst, neither stretches the old rules nor invents new ones. Pat flags the gap to the policy's owner, the IT director, who starts a review of the policy.",
           "audit_focus": {
             "review": [
-              "Confirm each policy has a current approval and named owner",
-              "Inspect exceptions for approval and an end date"
+              "Find the policy behind a rule before enforcing it or routing an exception",
+              "Flag policies that predate a major change or lack an owner"
             ],
             "evidence": [
               "Policy document with version, approver and review date",
               "Exception log with reason and expiry"
             ],
-            "recommend": "Decline informal workarounds and route requests through the exception process to the policy owner.",
+            "recommend": "Route any request to bypass a policy through the exception process to the policy owner, keeping the control in place meanwhile.",
             "decides": "The policy owner approves or rejects exceptions"
           },
           "isaca_rule": "Policy is mandatory and comes from leadership. Follow it, point to it, and send any request to bypass it through the exception process.",
@@ -1411,7 +1414,7 @@
             "External standards, such as those from the International Organization for Standardization (ISO), bind only once adopted or required.",
             "Procedures list the exact steps for a task, such as setting up a new user.",
             "Guidelines suggest good practice and leave room for judgment.",
-            "Each document must agree with the one above it."
+            "Each document must agree with the one above it; if they conflict, follow the higher one where your role allows and report the conflict to the lower document's owner."
           ],
           "compare": {
             "columns": [
@@ -1511,8 +1514,8 @@
           "example": "A recruitment firm plans to let an AI tool rank job applicants for clients in the EU. A security coordinator notes that the EU AI Act treats AI used in hiring as high risk, and that applicant data also falls under the General Data Protection Regulation (GDPR). They raise both points with the compliance officer and legal counsel, who decide what the firm must do before launch.",
           "audit_focus": {
             "review": [
-              "Identify which laws apply to each AI use",
-              "Confirm high-risk AI uses had legal review before launch"
+              "List the data types and decisions each AI tool involves",
+              "Flag AI tools that judge people for legal review before use"
             ],
             "evidence": [
               "AI use inventory with purpose and data types",
@@ -1567,8 +1570,8 @@
           "example": "A chain of veterinary clinics worries that stolen laptops could expose client records. Femi, a security technician, compares options: guards would cost far more than the risk, while full-disk encryption is cheap and protects the data directly. Femi proposes encryption plus cable locks to the operations manager.",
           "audit_focus": {
             "review": [
-              "Trace each control back to the risk it treats",
-              "Confirm each control was tested recently"
+              "Name the risk each control you run is meant to treat",
+              "Test the controls you own on schedule and record results"
             ],
             "evidence": [
               "Control list mapped to risks and owners",
@@ -1607,7 +1610,7 @@
             "Some protect data directly, such as encryption.",
             "All depend on correct configuration; a wrong firewall rule opens the path it should close."
           ],
-          "example": "A shipping company's policy forbids copying customer files to USB drives, yet staff keep doing it. Aisha, a security analyst, proposes an endpoint setting that blocks USB storage. After the IT manager approves, she tests it on a pilot group and submits the wider rollout as a change request.",
+          "example": "A shipping company's policy forbids copying customer files to USB drives, yet staff keep doing it. Aisha, a security analyst, proposes an endpoint setting that blocks USB storage. After the IT manager approves, Aisha tests it on a pilot group and submits the wider rollout as a change request.",
           "audit_focus": {
             "review": [
               "Compare running settings with the configuration standard",
@@ -1658,7 +1661,7 @@
           "audit_focus": {
             "review": [
               "Confirm staff finished training before receiving access",
-              "Sample high-trust jobs for cover during absences"
+              "Note sensitive roles where one person never takes leave"
             ],
             "evidence": [
               "Training completion records with dates",
@@ -1730,11 +1733,11 @@
               }
             ]
           },
-          "example": "A records manager at a city archive asks facilities to fit the archive's fire exit with a lock that stays shut during a power cut, to stop document theft. A security technician explains that a door on an escape route must release so people can get out, and suggests an exit alarm and a camera instead. They pass the request and their advice to facilities management, who decide.",
+          "example": "Crowds queue outside a concert venue's glass entrance beside a busy road, and a delivery van recently mounted the curb there. Ama, a security technician, proposes steel bollards between the road and the queue to keep vehicles away from people and the building. Ama sends the proposal, with the city's permit rules for sidewalks, to facilities management.",
           "audit_focus": {
             "review": [
               "Walk escape routes and confirm exit doors open freely",
-              "Observe busy entrances for propped-open doors"
+              "Report propped-open doors and tailgating at busy entrances"
             ],
             "evidence": [
               "Door list showing fail-safe or fail-secure locks",
@@ -1803,7 +1806,7 @@
             "svg": "<svg viewBox='0 0 480 212' xmlns='http://www.w3.org/2000/svg' role='img' aria-label='A grid of control types by function. Technical: firewall rule or account lockout prevents, an intrusion detection alert detects, restoring from backup corrects as recovery, a sign-in warning banner deters. Administrative: separation of duties prevents, log and access reviews detect, an incident response procedure corrects, published penalties deter. Physical: a door lock or fence prevents, a motion sensor or alarm detects, fire suppression corrects, a warning sign or visible camera deters'><rect x='104' y='8' width='90' height='26' rx='4' fill='var(--accent-fill)'/><text x='149.0' y='25' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='#ffffff'>Preventive</text><rect x='198' y='8' width='90' height='26' rx='4' fill='var(--accent-fill)'/><text x='243.0' y='25' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='#ffffff'>Detective</text><rect x='292' y='8' width='90' height='26' rx='4' fill='var(--accent-fill)'/><text x='337.0' y='25' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='#ffffff'>Corrective</text><rect x='386' y='8' width='90' height='26' rx='4' fill='var(--accent-fill)'/><text x='431.0' y='25' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='#ffffff'>Deterrent</text><rect x='8' y='38' width='92' height='48' rx='4' fill='none' stroke='var(--accent-fill)' stroke-width='1.5'/><text x='54' y='66' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--accent-fill)'>Technical</text><rect x='104' y='38' width='90' height='48' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='149.0' y='59' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='600' fill='var(--text)'>Firewall rule,</text><text x='149.0' y='72' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='600' fill='var(--text)'>account lockout</text><rect x='198' y='38' width='90' height='48' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='243.0' y='59' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='600' fill='var(--text)'>Intrusion</text><text x='243.0' y='72' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='600' fill='var(--text)'>detection alert</text><rect x='292' y='38' width='90' height='48' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='337.0' y='59' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='600' fill='var(--text)'>Restore from</text><text x='337.0' y='72' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='600' fill='var(--text)'>backup (recovery)</text><rect x='386' y='38' width='90' height='48' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='431.0' y='59' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='600' fill='var(--text)'>Sign-in</text><text x='431.0' y='72' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='600' fill='var(--text)'>warning banner</text><rect x='8' y='90' width='92' height='48' rx='4' fill='none' stroke='var(--accent-fill)' stroke-width='1.5'/><text x='54' y='118' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--accent-fill)'>Administrative</text><rect x='104' y='90' width='90' height='48' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='149.0' y='111' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='600' fill='var(--text)'>Separation</text><text x='149.0' y='124' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='600' fill='var(--text)'>of duties</text><rect x='198' y='90' width='90' height='48' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='243.0' y='111' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='600' fill='var(--text)'>Log and</text><text x='243.0' y='124' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='600' fill='var(--text)'>access reviews</text><rect x='292' y='90' width='90' height='48' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='337.0' y='111' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='600' fill='var(--text)'>Incident response</text><text x='337.0' y='124' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='600' fill='var(--text)'>procedure</text><rect x='386' y='90' width='90' height='48' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='431.0' y='111' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='600' fill='var(--text)'>Published</text><text x='431.0' y='124' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='600' fill='var(--text)'>penalties</text><rect x='8' y='142' width='92' height='48' rx='4' fill='none' stroke='var(--accent-fill)' stroke-width='1.5'/><text x='54' y='170' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--accent-fill)'>Physical</text><rect x='104' y='142' width='90' height='48' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='149.0' y='163' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='600' fill='var(--text)'>Door lock,</text><text x='149.0' y='176' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='600' fill='var(--text)'>fence</text><rect x='198' y='142' width='90' height='48' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='243.0' y='163' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='600' fill='var(--text)'>Motion sensor,</text><text x='243.0' y='176' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='600' fill='var(--text)'>alarm</text><rect x='292' y='142' width='90' height='48' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='337.0' y='163' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='600' fill='var(--text)'>Fire</text><text x='337.0' y='176' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='600' fill='var(--text)'>suppression</text><rect x='386' y='142' width='90' height='48' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='431.0' y='163' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='600' fill='var(--text)'>Warning sign,</text><text x='431.0' y='176' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='600' fill='var(--text)'>visible camera</text><text x='8' y='205' text-anchor='start' font-family='JetBrains Mono, monospace' font-size='7.5' font-weight='700' fill='var(--accent-fill)' letter-spacing='0.08em'>ROW = TYPE (HOW)   COLUMN = FUNCTION (WHAT IT DOES)</text></svg>",
             "caption": "Every control has a type (row) and a function (column). Recovery sits inside corrective. A compensating control can come from any cell when the usual control is not possible."
           },
-          "example": "A school finds that a former teacher's account was still active and was used to view grades. Ben, a technician, sorts the fixes by function: disabling the account is corrective, automatic removal when staff leave is preventive, and a monthly inactive-account report is detective. He logs each fix as a ticket.",
+          "example": "A school finds that a former teacher's account was still active and was used to view grades. Ben, a technician, sorts the fixes by function: disabling the account is corrective, automatic removal when staff leave is preventive, and a monthly inactive-account report is detective. Ben logs each fix as a ticket.",
           "audit_focus": {
             "review": [
               "Label each control by both type and function",
@@ -1842,22 +1845,22 @@
           "why_it_matters": "Every control can fail. Mixing types means one mistake does not lead straight to a breach.",
           "how_it_works": [
             "Cover each important risk with several types: a policy, a technical block, a physical lock.",
-            "Mix functions, so failed prevention is still detected and corrected.",
+            "Mix functions, so failed prevention is still detected and corrected; 4.2 covers network defense in depth.",
             "When a required control is impossible, a compensating control reduces the same risk another way.",
-            "It is approved as a recorded, time-limited exception and reviewed. 4.2 covers network defense in depth."
+            "It is approved as a recorded, time-limited exception and reviewed."
           ],
-          "example": "A branch office cannot afford a guard at its back entrance, which the physical security standard requires during opening hours. Zoe, a security analyst, helps plan compensating controls: a door alarm, a camera and a daily badge log review. The security manager, who owns the standard, approves them as a recorded, time-limited exception.",
+          "example": "A food bank's payroll system already requires multifactor authentication (MFA), as its access standard says. After phishing hits nearby charities, Ade, a security analyst, proposes alerts for sign-ins from new countries and a monthly review of bank-detail changes. Nothing required is missing, so no exception is needed; Ade submits the added detective layers as a normal change for the system owner's approval.",
           "audit_focus": {
             "review": [
-              "Test whether each substitute blocks or detects the threat",
-              "Inspect the exception record for approval and review date"
+              "Test each substitute against the threat it stands in for",
+              "Record each exception with its approver and review date"
             ],
             "evidence": [
               "Exception record listing the missing control and substitutes",
               "Alarm tests or log reviews showing substitutes work"
             ],
-            "recommend": "Document missing controls and proposed substitutes for the policy owner's approval.",
-            "decides": "The policy owner approves the exception; the risk owner accepts what remains"
+            "recommend": "Document missing controls and proposed substitutes for the rule owner's approval.",
+            "decides": "The owner of the policy or standard approves the exception; the risk owner accepts what remains"
           },
           "isaca_rule": "Never rely on one control. When the usual one cannot be used, add compensating controls through the exception process.",
           "exam_traps": [
@@ -1888,20 +1891,20 @@
           "definition": "AI tools need the same three control types as any system: technical, administrative and physical safeguards for their data, models and actions.",
           "why_it_matters": "AI systems handle sensitive data and act automatically, so one gap can let a poisoned or tricked model cause harm at scale.",
           "how_it_works": [
-            "Technical: limit who can change models and training data, filter inputs and outputs, and log prompts.",
+            "Technical: limit who can change models and training data, filter inputs and outputs, and log prompts with the model version used.",
             "Administrative: an AI use policy, a risk review before launch and human review of high-impact outputs.",
             "Physical: secure the hardware that holds models and training data.",
             "AI agents get least-privilege accounts, so a manipulated agent can do only limited harm."
           ],
-          "example": "An insurance company's AI assistant drafts claim decisions. Raj, a security analyst, lists its controls: read-only access to claim files (technical), officer approval of every decision (administrative) and locked servers (physical). Finding prompts unlogged, Raj opens a change request to turn logging on.",
+          "example": "A bookshop chain's AI agent reorders stock from publishers. Sana, a security analyst, finds its service account can also change suppliers' bank details. Sana sorts fixes by type: an account limited to placing orders (technical), a spending cap in the purchasing policy (administrative) and a locked server cabinet (physical), and sends the account change to the system owner for approval.",
           "audit_focus": {
             "review": [
               "Confirm the AI agent's permissions cover only its task",
-              "Inspect whether prompts and actions are logged"
+              "Log prompts, outputs and model versions for AI tools you run"
             ],
             "evidence": [
               "Permission list for the AI service account",
-              "Sample of AI decisions with human approvals"
+              "Log entries tying each AI output to its prompt, model version and approver"
             ],
             "recommend": "Report AI tools lacking logging or human review to the system owner.",
             "decides": "The risk owner accepts remaining risk before deployment"
@@ -1954,7 +1957,19 @@
             "When a personal link could sway your judgment, disclose it to your manager before you start, and let them decide whether to reassign the work.",
             "Use access only for assigned work, and raise concerns through proper channels."
           ],
-          "example": "Coworkers at a hospital ask Nia, a database administrator, to look up the diagnosis of a well-known local figure who has just been admitted. Nia refuses, because her access exists only for assigned work, and reports the request to the privacy officer, as the hospital's code of conduct requires.",
+          "example": "Coworkers at a hospital ask Nia, a database administrator, to look up the diagnosis of a well-known local figure who has just been admitted. Nia refuses, because the access exists only for assigned work, and reports the request to the privacy officer, as the hospital's code of conduct requires.",
+          "audit_focus": {
+            "review": [
+              "Check new work for personal ties to vendors, candidates or cases",
+              "Confirm a ticket or task needs a record before you open it"
+            ],
+            "evidence": [
+              "Signed code of conduct and acceptable use acknowledgment",
+              "Conflict-of-interest declarations on file with your manager"
+            ],
+            "recommend": "Report requests to misuse access to your manager, the privacy officer or the ethics hotline.",
+            "decides": "Your manager decides how a declared conflict is handled"
+          },
           "isaca_rule": "Access is a trust, not a perk. Use it only for assigned work, avoid conflicts of interest, keep confidences and raise concerns through proper channels.",
           "exam_traps": [
             {
@@ -1987,7 +2002,7 @@
             "Due diligence investigates: researching a vendor, assessing risks, testing controls.",
             "Due care acts: patching known flaws, enforcing policy, fixing what diligence found.",
             "Both are ongoing: diligence keeps checking, care keeps acting on the results.",
-            "The test is what a reasonable, informed professional would have done."
+            "The test is what a reasonable, informed professional would have done, judged by conduct, not by whether an attack still succeeded."
           ],
           "compare": {
             "columns": [
@@ -2021,8 +2036,8 @@
           "example": "Before a city council signs with a payroll provider, Grace, a security analyst, reviews the provider's independent security report and finds weak backup practices: due diligence. The council makes tested backups a contract condition: due care. Grace schedules yearly re-checks and records each step in the contract file.",
           "audit_focus": {
             "review": [
-              "Confirm vendor reviews happen before contracts and on schedule",
-              "Trace earlier findings to the actions taken"
+              "Review a vendor's security evidence before the contract is signed",
+              "Follow each finding through to a fix or a recorded decision"
             ],
             "evidence": [
               "Dated vendor security review records",
@@ -2080,6 +2095,18 @@
             }
           ],
           "example": "A friend at a rival firm asks a newly certified analyst for their employer's internal incident response playbook. Handing it over would fail their duty to their employer (canon 3) and be dishonest (canon 2). They decline and suggest free guidance from the US National Institute of Standards and Technology (NIST).",
+          "audit_focus": {
+            "review": [
+              "Test a planned action against all four canons, not only the first",
+              "Name the principals you serve on each job, such as employer and client"
+            ],
+            "evidence": [
+              "Your signed agreement to follow the code",
+              "Notes of how you raised and settled an ethics concern"
+            ],
+            "recommend": "Raise any request that would break a canon with your manager, and refuse illegal or dishonest steps.",
+            "decides": "The certifying body's board decides sanctions on its ethics committee's advice"
+          },
           "isaca_rule": "Learn the four canons in their listed order so you can recall them: the public, honest and legal conduct, principals, and the profession. The order helps memory; it is not a ranking, so in a dilemma check all four (see 1.5.4).",
           "exam_traps": [
             {
@@ -2115,9 +2142,21 @@
             "Where people's safety is at stake, protecting them comes first.",
             "The best option usually satisfies several canons, such as reporting a safety issue through official channels.",
             "Report flaws to the owner first; publishing before a fix hands attackers a way in.",
-            "Stay within your authority; never hack back."
+            "Stay within your authority: test only with the system owner's written permission, whoever is paying, and never hack back."
           ],
-          "example": "A security engineer at a medical device maker finds that an infusion pump's wireless link lets anyone change doses. Her manager says to stay quiet until the next release. She documents the flaw and escalates it to the product security lead and the compliance team, pressing for patient warnings, because silence would leave patients at risk.",
+          "example": "A security engineer at a medical device maker finds that an infusion pump's wireless link lets anyone change doses. The engineer's manager says to stay quiet until the next release. The engineer documents the flaw and escalates it to the product security lead and the compliance team, pressing for patient warnings, because silence would leave patients at risk.",
+          "audit_focus": {
+            "review": [
+              "List each option and ask whether it is honest, legal and safe",
+              "Get the system owner's signed scope before any test starts"
+            ],
+            "evidence": [
+              "Authorization letters naming the systems and dates you may test",
+              "Written record of a safety issue you escalated, and to whom"
+            ],
+            "recommend": "Escalate safety flaws through official channels to the system owner, and decline deceptive or illegal tasks.",
+            "decides": "The system owner and management decide fixes and public warnings"
+          },
           "isaca_rule": "Choose the action you could defend to the public, a regulator and your employer at once: honest, legal, protective of people and done through proper channels.",
           "exam_traps": [
             {
@@ -2154,6 +2193,18 @@
             "Members who see another member breach the code are expected to report it; staying silent may breach canon 4."
           ],
           "example": "A project manager believes a certified contractor falsely reported finishing a security test. As the client who hired the contractor, the manager has standing under canon 3 as well as canon 2. They write and swear the complaint, name both canons and attach the test records.",
+          "audit_focus": {
+            "review": [
+              "Identify which canon was broken and whether you may complain",
+              "Gather the evidence yourself before filing, since the committee will not investigate"
+            ],
+            "evidence": [
+              "Signed, sworn statement with the supporting records attached",
+              "Reports, emails or test records that show the breach"
+            ],
+            "recommend": "File a sworn complaint with the certifying body's ethics committee instead of accusing a colleague publicly.",
+            "decides": "The certifying body's board decides sanctions on the committee's advice"
+          },
           "isaca_rule": "Match the concern to the canon and to who has standing: anyone for canons 1 and 2, principals for canon 3, fellow professionals for canon 4.",
           "exam_traps": [
             {
@@ -2188,7 +2239,19 @@
             "Be honest about AI's role where it matters, such as in reports.",
             "Never use AI to deceive or impersonate outside an authorized test."
           ],
-          "example": "Tara, a junior analyst at a consulting firm, uses an approved AI assistant to summarize a client's scan results. The summary says a server is fully patched, but the raw data shows a critical patch is missing. Tara corrects the report before sending it and tells her lead.",
+          "example": "Tara, a junior analyst at a consulting firm, uses an approved AI assistant to summarize a client's scan results. The summary says a server is fully patched, but the raw data shows a critical patch is missing. Tara corrects the report before sending it and tells the team lead.",
+          "audit_focus": {
+            "review": [
+              "Confirm a tool is approved for the data before pasting it in",
+              "Compare AI summaries with the source data before sending them"
+            ],
+            "evidence": [
+              "The approved AI tool list and the data each may take",
+              "Reports noting where AI was used and who checked it"
+            ],
+            "recommend": "Tell your team lead about wrong AI output; report data sent to an unapproved tool to your supervisor and the security team at once.",
+            "decides": "Senior management approves AI tools; data owners decide what data each may take"
+          },
           "isaca_rule": "AI is a tool; the professional stays accountable. Protect principals' data, verify output, be honest about how work was produced and stay within your authorization.",
           "exam_traps": [
             {
@@ -2224,7 +2287,7 @@
     "Vulnerability": "A weakness a threat can exploit, such as unpatched software.",
     "Risk": "The likelihood that a threat exploits a vulnerability, combined with the impact if it does.",
     "Risk treatment": "Responding to a risk by avoiding, mitigating, transferring or accepting it.",
-    "Residual risk": "The risk left after controls are applied; it must be within tolerance and formally accepted by the risk owner.",
+    "Residual risk": "The risk left after controls are applied; its owner may accept it within tolerance, and only senior management can accept it beyond.",
     "Risk appetite": "The broad amount and type of risk the board and senior management will take on to meet goals.",
     "Risk tolerance": "The narrower, measurable limit of risk accepted for a specific objective.",
     "Risk owner": "The person with authority to decide a risk's treatment and accept what remains.",

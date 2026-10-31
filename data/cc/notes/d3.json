@@ -41,7 +41,7 @@
           "why_it_matters": "Access can only be controlled and traced when every account belongs to a known identity with an owner. Orphaned and shared accounts give attackers easy doors.",
           "how_it_works": [
             "Identification is the claim, such as a username; authentication proves it; authorization sets what it may do.",
-            "Each person gets one unique identity, so every logged action traces back to someone.",
+            "Each person or system, AI agents included, gets one unique identity, so every logged action traces back to the right actor.",
             "Joiner, mover and leaver stages create, adjust and remove access, while reviews run alongside.",
             "A trusted record, usually from human resources (HR), triggers each stage."
           ],
@@ -130,7 +130,7 @@
               "Approval records showing who signed off each role change"
             ],
             "recommend": "Raise roles that mix conflicting duties with the role owner before anyone is assigned them.",
-            "decides": "The accountable manager for that job function signs it off"
+            "decides": "The business or data owner signs off each role and later changes to it"
           },
           "isaca_rule": "Roles come from duties, not a coworker's access. The data owner approves; IT builds. An unusual need gets a time-limited exception.",
           "exam_traps": [
@@ -211,6 +211,7 @@
             "Count categories, not steps: a password plus a PIN or security question is still one factor.",
             "Two-step verification is MFA only when the steps use different categories.",
             "Biometric readers can accept an impostor or reject a real user, and a copied trait cannot be changed.",
+            "Tightening a reader's match threshold cuts false acceptances but raises false rejections; loosening it does the reverse.",
             "Authenticators have a life cycle: enroll after proofing, revoke lost ones, enroll replacements."
           ],
           "types": [
@@ -259,6 +260,10 @@
             {
               "term": "False rejection rate (FRR)",
               "definition": "How often a biometric reader turns away the real user; the convenience failure."
+            },
+            {
+              "term": "Crossover error rate (CER)",
+              "definition": "Where false acceptance and false rejection rates are equal; lower means a more accurate reader, and moving the threshold does not change it."
             }
           ],
           "memory_aid": "Know, have, are: pick two different ones."
@@ -270,11 +275,12 @@
           "definition": "Phishing-resistant authentication ties each sign-in to the genuine site, so a fake site cannot capture and reuse it. Passkeys and Fast Identity Online 2 (FIDO2) security keys are examples.",
           "why_it_matters": "Codes from multifactor authentication (MFA) can be relayed through fake login pages, and push prompts repeated until a tired user approves.",
           "how_it_works": [
-            "A passkey's private key is never sent to any site; it signs a challenge only for the real site.",
+            "A passkey's private key is never sent to any site, nor is the PIN or fingerprint that unlocks it; it signs a challenge only for the real site.",
             "The browser checks the site's address, so a look-alike domain gets nothing it can reuse.",
             "Text and app codes can be typed into a fake page and replayed.",
             "Number matching stops blind approvals, but a fake page can show the real number, so it is not phishing-resistant.",
-            "Synced passkeys copy across a user's devices; device-bound security keys never leave one."
+            "Synced passkeys copy across a user's devices; device-bound security keys never leave one.",
+            "Offering a weaker option beside passkeys, such as a texted code, lets a fake page ask for that instead."
           ],
           "compare": {
             "columns": [
@@ -360,7 +366,7 @@
             "Screen new passwords against a blocklist; do not demand character mixes or scheduled changes.",
             "Force a change on evidence of compromise, limit failed attempts and store only salted hashes."
           ],
-          "example": "A school district's password standard still demands eight characters, a symbol and a change every 60 days. Tomas, a junior analyst, compares it with NIST's current guidance and sends the standard's owner a summary: longer passphrases, breach screening and no scheduled changes.",
+          "example": "At a ski resort, Marta, a lift supervisor, resets their password to one they also used on a shopping site that was breached. The new screening check refuses it, and Marta phones IT to ask for an exception. Joel, the IT assistant, explains the blocklist, keeps the check in place and helps Marta create a long passphrase in the password manager.",
           "audit_focus": {
             "review": [
               "Compare live directory settings with each rule in the standard",
@@ -444,7 +450,7 @@
               }
             ]
           },
-          "example": "A charity uses SSO for email, files and its donor database. When Nia, a volunteer coordinator, leaves, Chris, the IT volunteer, disables Nia's account at the identity provider as the leaver checklist directs, then finds Nia still signed in to the donor database from home, ends that session and notes it on the ticket.",
+          "example": "A recycling company signs staff in to email, the route planner and the weighbridge app through SSO. When Owen, a dispatcher, leaves, Lina, the IT technician, disables Owen's account at the identity provider as the leaver checklist directs. Next morning the route planner shows Owen still signed in on a depot tablet, so Lina ends that session and notes it on the ticket.",
           "audit_focus": {
             "review": [
               "Confirm the identity provider enforces MFA for every user",
@@ -538,7 +544,7 @@
             "Check combined old and new rights for conflicts, such as raising and approving one payment.",
             "The new manager approves new access; the old manager confirms what can go."
           ],
-          "example": "Ana moves from accounts payable to purchasing at a hotel group. Purchasing access is added, but the payment approval rights stay, so Ana can now raise a purchase order and pay it. Jun, an access analyst, spots this in the weekly mover report, opens a removal ticket and asks the finance owner whether any handover access should stay.",
+          "example": "At a furniture maker, Bo has moved from sales to design to logistics in four years. The yearly access review shows Bo still holds rights from all three jobs. Kemi, a junior access analyst, asks each system's owner to confirm which old rights can go, then logs a problem ticket because the mover process missed every transfer.",
           "audit_focus": {
             "review": [
               "Review each mover's rights after the job change",
@@ -647,7 +653,7 @@
             "Revoke more than the password: sessions, tokens and remote access.",
             "Have shared secrets changed, collect devices and badges, and reassign the person's data."
           ],
-          "example": "A marketing agency ends Kai's design contract on a Tuesday afternoon. Just before the meeting, Morgan, the IT technician, disables Kai's account and ends active sessions, as the exit checklist requires. Afterward Morgan collects the laptop and badge, changes the shared social media password as the checklist directs and records each step on the ticket.",
+          "example": "Dev, an account manager at a freight broker, retires on Friday. Following the leaver checklist, Ines, the IT technician, disables Dev's account that afternoon, ends its sessions and revokes the access token on Dev's phone app for the shipping portal. Customers still email Dev, so Ines asks the sales director, who owns the customer records, which colleague should receive the mailbox.",
           "audit_focus": {
             "review": [
               "Confirm every exit checklist step is done and recorded",
@@ -660,7 +666,7 @@
             "recommend": "Report any leaver account still active after the end date to the system owner at once.",
             "decides": "HR sets the end date; the data owner decides on the data"
           },
-          "isaca_rule": "Remove access as fast as the risk demands: the same day as a rule, before the conversation for a hostile exit.",
+          "isaca_rule": "Remove access as fast as the risk demands: the same day as a rule, and as the person is told for a hostile exit.",
           "exam_traps": [
             {
               "trap": "Delete the leaver's account immediately to be safe.",
@@ -674,7 +680,7 @@
           "key_terms": [
             {
               "term": "Hostile termination",
-              "definition": "An exit where the person may cause harm, so access is cut first."
+              "definition": "An exit where the person may cause harm, so access is cut as they are told."
             },
             {
               "term": "Session revocation",
@@ -695,7 +701,7 @@
             "Deleting a leaked secret from chat or code does not revoke it; anyone who copied it can use it until it is rotated.",
             "Retire the identity when its owner leaves or the project ends, unless a new owner takes it on."
           ],
-          "example": "Months after a developer leaves a food delivery startup, an API key in an old test script, still in a public code repository, is running someone else's workloads. Elif, a junior cloud engineer, reports it to the security team, revokes the key when the incident response lead directs, then starts an inventory of keys and owners.",
+          "example": "A ferry operator replaced its AI timetable-planning agent with a vendor's tool in March, but in June the old agent's account and access token still work. Elif, a junior cloud engineer, spots them in the monthly identity inventory and asks the owner listed for the agent if anything depends on them. Once the owner confirms nothing does, Elif disables the account, revokes the token and updates the inventory.",
           "audit_focus": {
             "review": [
               "Confirm each service account, key and agent has an owner",
@@ -763,7 +769,7 @@
               "Confirm each access change has a record in the tool"
             ],
             "evidence": [
-              "Sample of recent starts and exits traced to directory changes",
+              "Recent starts and exits matched to changes in the directory",
               "Connector logs showing human resources changes reaching the directory"
             ],
             "recommend": "Present gaps and tool options to your manager; leadership chooses frameworks and spending.",
@@ -803,7 +809,7 @@
             "The person who grants the access is not the person who approved it.",
             "Urgent or unusual requests are verified through a known channel first."
           ],
-          "example": "A chat message that seems to come from a hospital's finance director asks Leo, a service desk analyst, to add a new contractor to payroll before noon. There is no ticket. Leo pauses, calls the director back on the number in the staff directory and learns the director sent nothing. Leo reports the attempt through the security incident form.",
+          "example": "At a seed supplier, a ticket asks for edit rights on the price list for Femi, a field rep. It shows as approved, but the approver is Femi's teammate, not the pricing manager who owns the list. Jules, a help desk analyst, holds the ticket, sends it to the pricing manager for approval and grants the access only once that approval is recorded.",
           "audit_focus": {
             "review": [
               "Match each grant to an approved request",
@@ -1041,7 +1047,7 @@
               }
             ]
           },
-          "example": "A city council's permit app team asks for full administrator rights on its database to avoid delays. Taylor, a junior security analyst, finds the app only reads applications and updates their status, and drafts a request for exactly that, read access plus write access to the status field, for the database owner to approve.",
+          "example": "A fitness club chain's member app shows front-desk staff each member's health notes, which only trainers need. Sasha, the IT coordinator, confirms the desk needs only names and membership status to check members in, then asks the operations manager, who owns member data, to approve hiding the health-notes field from the desk role.",
           "audit_focus": {
             "review": [
               "Compare requested rights with what the task actually does",
@@ -1104,7 +1110,7 @@
               "meaning": "Each person holds only part of a secret, so nobody knows all of it"
             }
           ],
-          "example": "At a nonprofit with three finance staff, the bookkeeper, Pat, can add new suppliers and also release payments, and hiring is not possible. Quinn, the part-time IT and security assistant, proposes a compensating control to the finance director: a weekly report of new suppliers and payments, signed off by someone with no payment rights.",
+          "example": "At a payment processor, the passphrase that unlocks the card system's master key is split between two key holders, each keeping half in a separate safe. Lucia, one holder, is moving to the marketing team, and the operations manager suggests handing Lucia's half to the other holder. Farah, a junior security analyst, points out that one person would then know the whole secret and asks the process owner to appoint a new holder and have the passphrase changed.",
           "audit_focus": {
             "review": [
               "Compare each person's rights against a list of conflicting duties",
@@ -1136,6 +1142,10 @@
             {
               "term": "Compensating control",
               "definition": "An alternative control that reduces the risk when the preferred control is not possible."
+            },
+            {
+              "term": "Job rotation",
+              "definition": "Moving a duty between trained people from time to time, so hidden errors or misuse surface; it does not stop one harmful act."
             }
           ]
         },
@@ -1246,7 +1256,7 @@
             "Access needs enough clearance plus a need to know; users cannot change labels, even on their own files.",
             "MAC is strong but rigid and costly, so it suits high-security settings."
           ],
-          "example": "Lin, an engineer at a defense contractor cleared to Secret, tries to paste part of a Secret design into an unclassified email to a supplier. The system blocks it, and Lin cannot change the label. Instead of looking for a workaround, Lin asks the security officer to review the extract for an authorized release.",
+          "example": "At a navy shipyard, a test manager adds Kofi, a contractor cleared only to Confidential, to the manager's own folder of Secret trial results so Kofi can help write them up. The system still turns Kofi away: under MAC, an owner's sharing cannot outweigh the label. Kofi calls the help desk. Ruth, the agent, leaves labels and rights alone, logs the ticket as working as designed and reports the attempted share to the security officer.",
           "audit_focus": {
             "review": [
               "Confirm new data carries the correct classification label",
@@ -1308,7 +1318,7 @@
               "Direct grants that bypass the role catalog"
             ],
             "recommend": "Report one-off permissions or conflicting roles to the role owner for a decision.",
-            "decides": "The role owner approves what a role contains and who holds it"
+            "decides": "The role owner, usually the business or data owner, approves contents and membership"
           },
           "isaca_rule": "When access follows the job, think RBAC. It is non-discretionary: the organization defines roles, and users cannot hand out rights.",
           "exam_traps": [
@@ -1538,7 +1548,7 @@
             "One automation should not both make a change and approve it.",
             "Log actions under the agent's own identity, keep a stop switch and treat instructions in content as untrusted."
           ],
-          "example": "A property firm pilots an AI agent that reads tenant emails and books repairs; the vendor wants full finance access for future features. Wren, a junior security analyst, maps what the agent does and proposes to the system owner: read the repair calendar, write work orders, and a manager approves any payment.",
+          "example": "A travel booking firm's build bot uses a token that can change every code repository, though it only builds the mobile app. Tobi, a junior developer, lists what the bot actually does and proposes to the system owner a token limited to that app's repository, with a person approving each release to customers.",
           "audit_focus": {
             "review": [
               "Look for agent permissions that no documented task uses",
@@ -1583,6 +1593,7 @@
             "An administrator requests elevation for a named task, and an approver agrees.",
             "The rights switch on for a set time, the session is logged, and the rights expire.",
             "Break-glass credentials are sealed in a vault or safe, held by few people and tested regularly.",
+            "Keep break-glass sign-in independent of the normal path, such as single sign-on (SSO), so it works when that path fails.",
             "Every break-glass use raises an alert and a review, and the credential is changed afterward."
           ],
           "example": "During a storm, a regional airport's sign-in service fails and no administrator can reach the baggage system. Following the emergency runbook, the on-call lead, Tariq, checks out the break-glass credentials, restores service and logs each step. Next morning Rosa, a junior security analyst, matches the session log to Tariq's notes and confirms the emergency password was changed.",
@@ -1681,10 +1692,10 @@
               }
             ]
           },
-          "example": "Imani, a new access analyst at a hospital, is documenting the records system for the security team. Staff see records according to their job, and nobody can open records from outside the hospital after 10 p.m. Imani first writes role-based for both, then splits them: the job part is role-based, the night block for everyone is rule-based. Imani records both.",
+          "example": "Imani, a new access analyst at a defense research lab, documents its two file areas. Classified designs open only to staff cleared to each file's label. In the unclassified area, each scientist decides who may open their own working notes. Imani first writes mandatory for both, since the lab holds classified data, then splits them: labels decide the first, owners the second.",
           "audit_focus": {
             "review": [
-              "Test the recorded model against a sample of real permission grants",
+              "Compare a few real permission grants with the recorded model",
               "Look for systems with no access model recorded"
             ],
             "evidence": [

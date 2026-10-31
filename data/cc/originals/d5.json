@@ -345,18 +345,18 @@
     "D": "Remove the malware and attacker accounts from the three servers"
    },
    "correct": "D",
-   "key_concept": "Incident response runs containment, eradication, recovery, then lessons learned; restoring from backup waits until the cause is removed.",
+   "key_concept": "After containment, eradication removes the cause before recovery restores systems; lessons are captured throughout, with a full review once the incident ends.",
    "pre_read": "Name the phase the team has just finished. Then match each option to the phase it belongs to.",
    "correct_explanation": "Containment has stopped the spread and the scope is known, so the next phase is eradication: remove the malware, the attacker's accounts and the weakness they used. Only then does recovery begin. Restoring from backups is the runner-up: it looks like a clean fix, but skipping eradication can leave the entry point open, and the latest backups may already hold the malware.",
    "wrong_explanations": {
-    "A": "Tempting because reviews work best while memories are fresh. But lessons learned comes after recovery, and the servers are still infected.",
+    "A": "Tempting because reviews work best while memories are fresh. But lessons are noted throughout and reviewed fully once the incident ends; the servers still hold malware now.",
     "B": "Tempting because staff need the files. But reconnecting infected servers undoes containment and lets the malware spread again.",
     "C": "Closest choice: restoring is part of the plan. But recovery comes after eradication; the newest backups may contain the malware, and the weakness used stays open."
    },
    "tips": [
     "Eliminate: A holds the review before the incident is over, and B reconnects servers that are still infected, undoing containment.",
     "Final two: D beats C because eradication comes before recovery; restoring first can bring the threat back or leave its entry point open.",
-    "Exam cue: contain, then eradicate, then recover, then learn. When an option jumps a step, it is usually wrong."
+    "Exam cue: contain, then eradicate, then recover, and capture lessons all the way through. An option that restores before the cause is removed is usually wrong."
    ],
    "framework_ref": "NIST SP 800-61 Rev. 3 Table 1 (Previous incident response life cycle model's phases and corresponding CSF 2.0 Functions); NIST CSF 2.0 RS.MI-02 (incidents are eradicated)",
    "related_concepts": [
@@ -364,7 +364,7 @@
     "Known-good backup",
     "Incident scope"
    ],
-   "_provenance": "Authored from concept: 'eradication follows containment and comes before recovery' (notes 5.3.2 The Incident Response Lifecycle and CSF 2.0). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 pilot batch, 29 Oct 2026.",
+   "_provenance": "Authored from concept: 'eradication follows containment and comes before recovery' (notes 5.3.2 The Incident Response Lifecycle and CSF 2.0). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 pilot batch, 29 Oct 2026. Cross-review fixes (31 Oct 2026): key_concept, wrong_explanations.A and the exam cue now teach SP 800-61r3's timing (lessons captured throughout, full review at the end), agreeing with cc_d5_036; key unchanged.",
    "style_version": 2
   },
   {
@@ -445,9 +445,9 @@
    "subtopic": "5.4 Asset protection. Configuration management",
    "difficulty": "foundational",
    "bloom_level": "Foundational",
-   "question": "A desktop team documents the approved minimum security settings every new laptop must have before use. What is this MOST accurately called?",
+   "question": "A desktop team documents the approved minimum settings every new laptop must have before use. What is this MOST accurately called?",
    "options": {
-    "A": "A rollback plan for the laptops",
+    "A": "An acceptable use policy for the laptops",
     "B": "A configuration drift report",
     "C": "The vendor's default settings",
     "D": "A secure configuration baseline"
@@ -457,12 +457,12 @@
    "pre_read": "Notice what the document contains and when the team uses it.",
    "correct_explanation": "A secure baseline is the approved minimum configuration for one type of system, applied to each new device before use and changed only through change management. A drift report is the runner-up because it works with the same settings: it lists where systems have moved away from the approved configuration, but it is not the standard itself.",
    "wrong_explanations": {
-    "A": "Tempting because it is a configuration document. But a rollback plan lists the steps to undo a change if it fails.",
+    "A": "Tempting because policies also set rules for laptops. But an acceptable use policy tells people how they may use them; it does not list each device's settings.",
     "B": "Closest choice: drift reports deal with the same settings. But they show where systems have strayed; the baseline is the approved standard they compare against.",
     "C": "Tempting because vendors supply settings out of the box. But defaults favor easy setup and are publicly known; teams harden them into a baseline."
    },
    "tips": [
-    "Eliminate: A describes undoing a change, and C describes out-of-the-box settings, which favor easy setup over security.",
+    "Eliminate: A governs how people use the laptops, not their settings, and C describes out-of-the-box settings, which favor easy setup over security.",
     "Final two: D beats B because the baseline is the approved standard itself; a drift report shows where systems have moved away from it.",
     "Exam cue: the baseline is the approved starting point, drift is any move away from it, and only change management may alter it."
    ],
@@ -472,7 +472,7 @@
     "Configuration drift",
     "Change management"
    ],
-   "_provenance": "Authored from concept: 'a secure baseline is the approved minimum configuration' (notes 5.4.4 Configuration Management and Secure Baselines). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 pilot batch, 29 Oct 2026.",
+   "_provenance": "Authored from concept: 'a secure baseline is the approved minimum configuration' (notes 5.4.4 Configuration Management and Secure Baselines). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 pilot batch, 29 Oct 2026. Cross-review fixes (31 Oct 2026): A gains 'new' so the key no longer ties for longest. Fix round 1 (31 Oct 2026): A is now an acceptable use policy, a real misconception, in place of the rollback-plan strawman; the stem drops 'security' so no stem word is echoed only in the key.",
    "style_version": 2
   },
   {
@@ -484,7 +484,7 @@
    "question": "A warehouse's networked label printers, needed for every shipment, lost firmware support last month; replacements arrive in six months. What is the network technician's BEST proposal to the warehouse manager, the risk owner?",
    "options": {
     "A": "Isolate the printers on their own segment under an exception",
-    "B": "Leave the printers as they are until replacements arrive",
+    "B": "Leave the printers as they are, since they still work",
     "C": "Take the printers off the network until the replacements arrive",
     "D": "Ask the vendor for one more firmware update"
    },
@@ -508,7 +508,7 @@
     "Compensating control",
     "Risk exception"
    ],
-   "_provenance": "Authored from concept: 'unsupported systems get compensating controls under a time-limited exception until replaced' (notes 5.4.3 End-of-Life Software and Devices). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 pilot batch, 29 Oct 2026. Review fixes 29 Oct 2026 (standards audit 2 and blind test 2): stem now states that the printers are networked and needed for every shipment, the fact that decides A over C.",
+   "_provenance": "Authored from concept: 'unsupported systems get compensating controls under a time-limited exception until replaced' (notes 5.4.3 End-of-Life Software and Devices). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 pilot batch, 29 Oct 2026. Review fixes 29 Oct 2026 (standards audit 2 and blind test 2): stem now states that the printers are networked and needed for every shipment, the fact that decides A over C. Cross-review fixes (31 Oct 2026): B no longer repeats C's 'until the replacements arrive' wording; its misconception (working means secure) is unchanged.",
    "style_version": 2
   },
   {
@@ -525,18 +525,18 @@
     "D": "Make the change tonight and file the change request tomorrow"
    },
    "correct": "C",
-   "key_concept": "Changes with security impact need a request, independent approval, testing and a rollback plan before they are made, however urgent.",
+   "key_concept": "Changes no procedure pre-approves need independent approval before they are made, normally through a request with a rollback plan; emergencies only get a faster approver.",
    "pre_read": "Notice what is being changed, on which system, and what paperwork already exists.",
    "correct_explanation": "Turning off encryption on a production server is a change with security impact, so it needs a change request, an independent approval and a way back. Urgency changes how fast approval comes, not whether it is needed. Emailing the security team for approval is the runner-up: it involves security staff, but an email is not the change record, and the change process names its own approvers.",
    "wrong_explanations": {
     "A": "Tempting because the request comes from a senior colleague. But seniority does not replace review, approval and a rollback plan.",
     "B": "Closest choice: security staff sound like the right approvers. But an email is not the change record, and the change process names its own approvers.",
-    "D": "Tempting because it still leaves a record. But recording after the fact means nobody approved the risk first, and a planned migration is not an emergency."
+    "D": "Tempting because it still leaves a record. But nobody approves the risk before the change, and a planned migration is not an emergency that could use the fast route."
    },
    "tips": [
     "Eliminate: A treats seniority as approval, and D makes the change before anyone approves it.",
     "Final two: C beats B because the change process names its approvers and keeps the record; an email from the security team is neither.",
-    "Exam cue: no change without a request, approval and a rollback plan. Urgency speeds approval up; it never removes it."
+    "Exam cue: a change no procedure pre-approves needs a request, approval and a rollback plan first. Urgency speeds approval up; it never removes it."
    ],
    "framework_ref": "NIST SP 800-53 Rev. 5 CM-3 (Configuration Change Control); ISO/IEC 27002:2022 Control 8.32 (Change management)",
    "related_concepts": [
@@ -544,7 +544,7 @@
     "Rollback plan",
     "Emergency change"
    ],
-   "_provenance": "Authored from concept: 'no change without a request and approval, however senior the requester' (notes 5.4.6 Change Management). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 pilot batch, 29 Oct 2026. Review fixes 29 Oct 2026 (standards audit 2 and blind test 2): runner-up moved from D to B, the option candidates actually weigh against C.",
+   "_provenance": "Authored from concept: 'no change without a request and approval, however senior the requester' (notes 5.4.6 Change Management). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 pilot batch, 29 Oct 2026. Review fixes 29 Oct 2026 (standards audit 2 and blind test 2): runner-up moved from D to B, the option candidates actually weigh against C. Cross-review fixes (31 Oct 2026): key_concept and exam cue now leave room for pre-approved standard changes, agreeing with cc_d4_044; key unchanged. Fix round 1 (31 Oct 2026): key_concept and the D explanation now allow the emergency route in notes 5.4.6 (approval first, record completed afterward); key unchanged.",
    "style_version": 2
   },
   {
@@ -695,8 +695,8 @@
    "id": "cc_d5_020",
    "domain": 5,
    "subtopic": "5.5 Security testing. Testing AI-integrated defenses",
-   "difficulty": "analysis",
-   "bloom_level": "Analysis",
+   "difficulty": "application",
+   "bloom_level": "Application",
    "question": "An authorized test last quarter showed a firm's AI email filter caught simulated phishing well, but the vendor has since replaced its model. What should the security team do FIRST?",
    "options": {
     "A": "Rerun the same phishing simulations on the new model",
@@ -724,15 +724,15 @@
     "AI-integrated defenses",
     "Retesting after change"
    ],
-   "_provenance": "Authored from concept: 'AI defenses are retested after a model change' (notes 5.5.6 Testing AI-Integrated Defenses). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 pilot batch, 29 Oct 2026. Review fixes 29 Oct 2026 (standards audit 2 and blind test 2): key now says 'the same' simulations, a precise qualifier; C shortened.",
+   "_provenance": "Authored from concept: 'AI defenses are retested after a model change' (notes 5.5.6 Testing AI-Integrated Defenses). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 pilot batch, 29 Oct 2026. Review fixes 29 Oct 2026 (standards audit 2 and blind test 2): key now says 'the same' simulations, a precise qualifier; C shortened. Cross-review fixes (31 Oct 2026): relabeled application: one fact (the model change) decides it.",
    "style_version": 2
   },
   {
    "id": "cc_d5_021",
    "domain": 5,
    "subtopic": "5.1 Data security. Data retention",
-   "difficulty": "application",
-   "bloom_level": "Application",
+   "difficulty": "analysis",
+   "bloom_level": "Analysis",
    "question": "A transit agency's records clerk is running the scheduled destruction of personnel files past their seven-year retention, and legal counsel has put one former employee's files under legal hold. Which action is BEST?",
    "options": {
     "A": "Destroy the expired files on schedule, since the retention period has ended",
@@ -760,7 +760,7 @@
     "Retention schedule",
     "Data lifecycle"
    ],
-   "_provenance": "Authored from concept: 'a legal hold pauses destruction only for the records it names; the rest follow the retention schedule' (notes 5.1.2 Data Handling Across the Lifecycle). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 2, 30 Oct 2026.",
+   "_provenance": "Authored from concept: 'a legal hold pauses destruction only for the records it names; the rest follow the retention schedule' (notes 5.1.2 Data Handling Across the Lifecycle). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 2, 30 Oct 2026. Cross-review fixes (31 Oct 2026): relabeled analysis: two stated facts (retention schedule and legal hold) pull in different directions.",
    "style_version": 2
   },
   {
@@ -1023,24 +1023,24 @@
    "bloom_level": "Application",
    "question": "At a sector meeting, a partner shares a report marked TLP:RED about attacks on similar firms, and a junior analyst who attended wants their IT team to see it. What is the analyst's BEST action?",
    "options": {
-    "A": "Keep it to those present and ask the source before sharing",
+    "A": "Ask the source for permission to share it with the IT team",
     "B": "Forward it to the IT team, who share the same employer",
     "C": "Share only the report's indicators with the IT team",
-    "D": "Remove the TLP label, then email the report to the IT team"
+    "D": "Ask their manager for permission to share it with the IT team"
    },
    "correct": "A",
    "key_concept": "TLP labels set how far shared intelligence may travel; TLP:RED stays with the individual recipients unless the source agrees.",
    "pre_read": "Note the label on the report and where the analyst wants to send it. Then recall how far that label allows.",
-   "correct_explanation": "TLP:RED limits a report to the people who received it; at a meeting, that means those present. Sharing more widely needs the source's explicit permission, so the analyst asks first. Forwarding to the IT team is the runner-up: sharing inside one's own organization on a need-to-know basis is what TLP:AMBER allows, not TLP:RED.",
+   "correct_explanation": "TLP:RED limits a report to the people who received it; at a meeting, that means those present. Only the source, here the partner, can allow wider sharing, so the analyst asks the partner first. Asking a manager is the runner-up: it shows caution, but the label belongs to the source, and no one in the analyst's own firm can widen it.",
    "wrong_explanations": {
-    "B": "Closest choice: the IT team works for the same firm. But sharing within the organization is what TLP:AMBER allows; TLP:RED stays with the people who received it.",
+    "B": "Tempting because the IT team works for the same firm. But sharing within the organization is what TLP:AMBER allows; TLP:RED stays with the people who received it.",
     "C": "Tempting because indicators feel like raw data, not the report. But a TLP label covers the information itself, so indicators taken from a TLP:RED report are RED too.",
-    "D": "Tempting because the label seems to be the barrier. But the label must stay with the information; removing it does not remove the source's restriction."
+    "D": "Closest choice: it asks before sharing anything. But only the source can widen a TLP label; a manager in the analyst's own firm has no say over it."
    },
    "tips": [
-    "Eliminate: C passes on the report's indicators and D strips its label, but a TLP label covers the information itself, however it is cut or copied.",
-    "Final two: A beats B because TLP:RED stays with the individual recipients; sharing inside your own firm is TLP:AMBER's rule.",
-    "Exam cue: RED is recipients only; AMBER is your organization and its clients on a need-to-know basis (AMBER+STRICT: organization only); GREEN is your community; CLEAR is public."
+    "Eliminate: B treats TLP:RED like AMBER, which allows sharing within your organization, and C passes on the report's indicators, but the label covers any part taken from it.",
+    "Final two: A beats D because only the source that set a TLP label can widen it; a manager in your own firm has no say over it.",
+    "Exam cue: only the source can widen a TLP label. RED is recipients only; AMBER, their organization and clients who need to know; GREEN, their community; CLEAR, anyone."
    ],
    "framework_ref": "FIRST Traffic Light Protocol (TLP) v2.0 Section 3a (TLP:RED: for the eyes and ears of individual recipients only); FIRST Traffic Light Protocol (TLP) v2.0 Section 1h (sharing more widely than the label allows needs explicit permission from the source); NIST CSF 2.0 ID.RA-02 (cyber threat intelligence is received from information sharing forums and sources)",
    "related_concepts": [
@@ -1048,7 +1048,7 @@
     "Cyber threat intelligence",
     "Information sharing"
    ],
-   "_provenance": "Authored from concept: 'TLP:RED intelligence stays with its individual recipients; wider sharing needs the source' (notes 5.2.6 Cyber Threat Intelligence). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 2, 30 Oct 2026. Standards audit fix (30 Oct 2026): AMBER now includes clients per TLP v2.0; the key is no longer the only cautious option.",
+   "_provenance": "Authored from concept: 'TLP:RED intelligence stays with its individual recipients; wider sharing needs the source' (notes 5.2.6 Cyber Threat Intelligence). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 2, 30 Oct 2026. Standards audit fix (30 Oct 2026): AMBER now includes clients per TLP v2.0; the key is no longer the only cautious option. Cross-review fixes (31 Oct 2026): D says 'IT staff' so the key no longer ties for longest. Fix round 1 (31 Oct 2026): D is now an in-person briefing with no written copy (the belief that TLP limits only copies) in place of stripping the label, an obvious dishonest act. Fix round 2 (31 Oct 2026): D is now 'ask their manager for permission', a restraint option with the wrong authority, so holding back no longer marks the key; A is reworded in the same form ('ask the source for permission'), so every option names the IT team and the final two turn on who owns the label (TLP v2.0 Sec. 1h). D is the new runner-up; B now falls to the RED/AMBER distinction.",
    "style_version": 2
   },
   {
@@ -1057,26 +1057,26 @@
    "subtopic": "5.2 Security operations. Malware types",
    "difficulty": "foundational",
    "bloom_level": "Foundational",
-   "question": "A sports club volunteer installs a photo-resizing tool that works as promised and copies itself nowhere, but secretly opens a remote connection for an attacker. How should the IT technician MOST accurately classify it?",
+   "question": "On the club laptop, a volunteer installs a photo-resizing tool that works as promised and never spreads to other files or computers, but secretly gives an attacker remote access. Which malware type BEST describes it?",
    "options": {
     "A": "A worm, because it reached the laptop across a network",
     "B": "A virus, because it arrived inside a tool the user installed",
-    "C": "Ransomware, because it hands an attacker control of the laptop",
-    "D": "A Trojan, because it posed as a useful tool the user installed"
+    "C": "Ransomware, because it hands an attacker remote control of the laptop",
+    "D": "A Trojan, because it hid malicious code inside a useful tool"
    },
    "correct": "D",
-   "key_concept": "A Trojan poses as useful software the user installs; unlike a virus or worm, it does not copy itself.",
+   "key_concept": "A Trojan hides a malicious function inside software the user chooses to install; unlike a virus or worm, it does not copy itself.",
    "pre_read": "Note how the tool arrived, whether it spreads to other files or machines, and what it does once inside.",
-   "correct_explanation": "A Trojan poses as useful software, so the user installs it willingly, and it carries a hidden malicious purpose, here a remote connection. A virus is the runner-up, since the user did run a program, but a virus copies itself into other files and spreads. This tool copies itself nowhere, which marks it as a Trojan.",
+   "correct_explanation": "A Trojan hides a malicious function inside a program the user wants, so the user installs it willingly; here the hidden function is remote access. A virus is the runner-up, since the user did run a program, but a virus copies itself into other files and spreads. This tool never spread; the hidden function inside a useful tool marks it as a Trojan.",
    "wrong_explanations": {
     "A": "Tempting because the attacker connects over the network. But a worm spreads by itself with no one installing it; here the volunteer chose to install the tool.",
-    "B": "Closest choice: the user did install a program. But a virus copies itself into other files and spreads; this tool copies itself nowhere.",
+    "B": "Closest choice: the user did install a program. But a virus copies itself into other files and spreads; this tool never spread to any file or computer.",
     "C": "Tempting because ransomware is the best-known malware. But ransomware locks files and demands payment; nothing here was encrypted or demanded."
    },
    "tips": [
     "Eliminate: A needs self-spreading with no user action, and C needs locked files and a ransom demand; neither happened here.",
-    "Final two: D beats B because the tool posed as useful software and never copied itself; a virus replicates into other files.",
-    "Exam cue: a virus rides inside other files and spreads, a worm spreads on its own, and a Trojan is a disguise the user lets in."
+    "Final two: D beats B because the tool hid malicious code and never spread; a virus copies itself into other files.",
+    "Exam cue: a virus rides inside other files and spreads, a worm spreads on its own, and a Trojan hides a malicious function in a program the user lets in."
    ],
    "framework_ref": "NIST SP 800-83 Rev. 1 Section 2.1 (Forms of Malware: viruses, worms and Trojan horses)",
    "related_concepts": [
@@ -1084,7 +1084,7 @@
     "Virus",
     "Remote access"
    ],
-   "_provenance": "Authored from concept: 'a Trojan poses as useful software the user installs and does not replicate' (notes 5.2.8 Malware Basics). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 2, 30 Oct 2026.",
+   "_provenance": "Authored from concept: 'a Trojan poses as useful software the user installs and does not replicate' (notes 5.2.8 Malware Basics). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 2, 30 Oct 2026. Cross-review fixes (31 Oct 2026): C gains 'remote' so the key no longer ties for longest. Fix round 1 (31 Oct 2026): stem says the tool 'never spreads to other files or computers' in place of the awkward 'copies itself nowhere' (with 'club volunteer' and 'gives an attacker remote access' to stay within 35 words); explanations match. Fix round 2 (31 Oct 2026): the stem now names the club laptop that A and C refer to (kept to two sentences and 35 words by moving the laptop to the front and asking which malware type fits); D says the tool hid malicious code inside a useful tool, matching 'works as promised' and SP 800-83r1's 'hidden malicious purpose'.",
    "style_version": 2
   },
   {
@@ -1093,7 +1093,7 @@
    "subtopic": "5.2 Security operations. Events and incidents",
    "difficulty": "foundational",
    "bloom_level": "Foundational",
-   "question": "A SOC analyst finds a staff member's current password posted on a public paste site, though logs show no one has used it yet. How should the analyst MOST accurately classify this?",
+   "question": "A security operations center (SOC) analyst finds a staff member's current password posted on a public paste site, though logs show no one has used it yet. How should the analyst MOST accurately classify this?",
    "options": {
     "A": "A routine event, since no login has used the password yet",
     "B": "An incident, since the leak imminently threatens the account",
@@ -1120,7 +1120,7 @@
     "Imminent threat",
     "Exposed credentials"
    ],
-   "_provenance": "Authored from concept: 'incidents include imminent threats, not only harm that has already occurred' (notes 5.2.1 Events, Alerts and Incidents). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 2, 30 Oct 2026.",
+   "_provenance": "Authored from concept: 'incidents include imminent threats, not only harm that has already occurred' (notes 5.2.1 Events, Alerts and Incidents). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 2, 30 Oct 2026. Cross-review fixes (31 Oct 2026): stem spells out security operations center (SOC).",
    "style_version": 2
   },
   {
@@ -1165,26 +1165,26 @@
    "subtopic": "5.3 Incident response. Response plan and team",
    "difficulty": "application",
    "bloom_level": "Application",
-   "question": "During a suspected compromise of a city library network's email server, the incident response lead must coordinate the team. Which channel should the lead use as BEST?",
+   "question": "During a suspected compromise of a city library network's email server, the incident response lead must coordinate the team. Which channel is BEST for the lead to use?",
    "options": {
-    "A": "The library's email, with every message marked confidential",
+    "A": "Library email, the plan's usual channel, with messages marked confidential",
     "B": "The library's chat tool, which signs in with email accounts",
-    "C": "A group chat channel on staff members' personal messaging apps",
-    "D": "A separate out-of-band channel arranged in advance by the plan"
+    "C": "A group chat channel on the staff members' personal messaging apps",
+    "D": "A conference phone bridge the plan names as its backup channel"
    },
    "correct": "D",
-   "key_concept": "Incident plans set up out-of-band channels in advance, so responders can coordinate if normal systems are compromised.",
+   "key_concept": "Incident plans name out-of-band channels in advance, so responders can coordinate if normal systems are compromised.",
    "pre_read": "Ask which systems the attacker might already control. Then find the channel that is both separate and approved.",
-   "correct_explanation": "If attackers may control email, anything sent through it, or through tools tied to its accounts, could be read. A channel set up in advance, separate from normal systems, keeps coordination private and is already approved. Personal messaging apps are the runner-up: they are separate from the email server, but they are unapproved and put incident details outside the organization's control.",
+   "correct_explanation": "If attackers may control email, anything sent through it, or through tools tied to its accounts, could be read. The phone bridge the plan names as its backup is out-of-band: it runs apart from those systems, keeps coordination private and is already approved. Personal messaging apps are the runner-up: they are separate from the email server, but they are unapproved and put incident details outside the organization's control.",
    "wrong_explanations": {
-    "A": "Tempting because email is the normal channel. But attackers who control the server can read messages whatever label they carry.",
+    "A": "Tempting because the plan makes email the usual channel. But attackers who control the server can read messages whatever label they carry.",
     "B": "Tempting because chat feels separate from email. But it signs in with the same accounts, so a compromise of email identities may reach it too.",
     "C": "Closest choice: these apps are separate from the email server. But they are unapproved, and incident details would sit on personal accounts outside the organization's control."
    },
    "tips": [
     "Eliminate: A relies on the email server under suspicion, and B depends on the same email accounts, so both may be watched.",
-    "Final two: D beats C because the planned channel is separate and approved; personal apps put incident data outside the organization's control.",
-    "Exam cue: when the normal channel may be compromised, use the out-of-band channel the plan set up beforehand."
+    "Final two: D beats C because the plan's phone bridge is out-of-band and approved; personal apps put incident data outside the organization's control.",
+    "Exam cue: when the normal channel may be compromised, use the out-of-band channel the plan names in advance."
    ],
    "framework_ref": "NIST SP 800-53 Rev. 5 SC-37 (Out-of-band Channels); NIST SP 800-53 Rev. 5 IR-8 (Incident Response Plan)",
    "related_concepts": [
@@ -1192,7 +1192,7 @@
     "Incident response plan",
     "Need to know"
    ],
-   "_provenance": "Authored from concept: 'plans set up out-of-band channels in advance for when normal systems may be compromised' (notes 5.3.1 The Incident Response Plan and Team). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 2, 30 Oct 2026.",
+   "_provenance": "Authored from concept: 'plans set up out-of-band channels in advance for when normal systems may be compromised' (notes 5.3.1 The Incident Response Plan and Team). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 2, 30 Oct 2026. Cross-review fixes (31 Oct 2026): C gains 'the' so the key no longer ties for longest. Fix round 1 (31 Oct 2026): stem grammar fixed ('Which channel is BEST for the lead to use?'); D names a planned phone bridge instead of spelling out 'separate out-of-band channel', so the tested term no longer sits only in the key. Fix round 2 (31 Oct 2026): A now cites the plan as well ('the plan's usual channel'), so 'plan' no longer sits only on the key; D says the plan names the bridge as its backup channel (plans name channels, they do not set them up), and at 62 characters it is no longer the clear odd-one-short option.",
    "style_version": 2
   },
   {
@@ -1300,7 +1300,7 @@
     "Lessons learned",
     "Detection gap"
    ],
-   "_provenance": "Authored from concept: 'the CSF 2.0-based model shares lessons as soon as they are found, not only after recovery' (notes 5.3.2 The Incident Response Lifecycle and CSF 2.0). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 2, 30 Oct 2026.",
+   "_provenance": "Authored from concept: 'the CSF 2.0-based model shares lessons as soon as they are found, not only after recovery' (notes 5.3.2 The Incident Response Lifecycle and CSF 2.0 (+5.3.6 Lessons Learned and Continuous Improvement)). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 2, 30 Oct 2026. Cross-review fixes (31 Oct 2026): provenance adds 5.3.6, whose notes now name SP 800-61 Rev. 3.",
    "style_version": 2
   },
   {
@@ -1355,15 +1355,15 @@
    "correct": "C",
    "key_concept": "Asset inventories include outside services and AI tools, each with a named owner; unknown assets are recorded before any removal decision.",
    "pre_read": "Ask what belongs in an asset inventory and who decides what happens to an asset. Then judge each option.",
-   "correct_explanation": "An inventory covers every asset the organization relies on, including outside services and AI tools, and each needs a named owner who decides how it may be used. Recording the service and confirming its owner brings it under management, so the owner can take it through the AI approval route. Blocking it is the runner-up: unknown services are a risk, but removal goes through the owner and procedure, not an analyst acting alone.",
+   "correct_explanation": "An inventory covers every asset the organization relies on, including outside services and AI tools, and each needs a named owner who is accountable for its use. Recording the service and confirming its owner brings it under management, so the owner can take it through the AI approval route. Blocking it is the runner-up: unknown services are a risk, but blocking is decided through the AI approval route, not by an analyst acting alone.",
    "wrong_explanations": {
-    "A": "Closest choice: unapproved services carry risk. But cutting off a service the business uses is a decision for its owner and the procedure, not an analyst's own call.",
+    "A": "Closest choice: unapproved services carry risk. But blocking a service the business relies on is decided through the AI approval route, not by an asset analyst alone.",
     "B": "Tempting because hardware is the classic inventory. But inventories also cover software, outside services and AI tools, or unknown services go unmanaged.",
     "D": "Tempting because the provider runs the service. But the provider does not know what the organization uploads; tracking its own use stays with the organization."
    },
    "tips": [
     "Eliminate: B limits the inventory to hardware, and D hands tracking to the provider; inventories cover the services and AI tools the organization uses.",
-    "Final two: C beats A because unknown assets are recorded and given an owner first; removal goes through the owner, not a lone analyst.",
+    "Final two: C beats A because unknown assets are recorded and given an owner first; blocking is decided through the approval route, not by a lone analyst.",
     "Exam cue: found something unknown? Record it and find its owner, who takes it through approval, before anyone blocks, unplugs or ignores it."
    ],
    "framework_ref": "NIST CSF 2.0 ID.AM-04 (inventories of services provided by suppliers are maintained); NIST AI 100-1 (AI RMF 1.0) GOVERN 1.6 (mechanisms are in place to inventory AI systems)",
@@ -1372,7 +1372,7 @@
     "Shadow IT",
     "Asset ownership"
    ],
-   "_provenance": "Authored from concept: 'inventories cover outside services and AI tools, each with a named owner' (notes 5.4.1 Asset Inventory and Ownership). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 2, 30 Oct 2026.",
+   "_provenance": "Authored from concept: 'inventories cover outside services and AI tools, each with a named owner' (notes 5.4.1 Asset Inventory and Ownership). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 2, 30 Oct 2026. Cross-review fixes (31 Oct 2026): blocking is now decided through the AI approval route (the owner is accountable for the use), agreeing with cc_d2_004 and cc_d4_019; key unchanged.",
    "style_version": 2
   },
   {
@@ -1381,7 +1381,7 @@
    "subtopic": "5.4 Asset protection. Asset lifecycle",
    "difficulty": "application",
    "bloom_level": "Application",
-   "question": "A hotel group's procurement team will buy 300 smart room thermostats next month and plans to involve IT security after installation. What should the IT security analyst recommend as BEST?",
+   "question": "A hotel group's procurement team will buy 300 smart room thermostats next month and plans to involve IT security after installation. What should the IT security analyst propose as BEST?",
    "options": {
     "A": "Set purchase requirements, such as patch support, before buying",
     "B": "Harden each thermostat to the secure baseline once it is installed",
@@ -1408,7 +1408,7 @@
     "Acquisition requirements",
     "IoT devices"
    ],
-   "_provenance": "Authored from concept: 'security requirements belong in acquisition, before a model is chosen' (notes 5.4.2 The Asset Lifecycle). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 2, 30 Oct 2026.",
+   "_provenance": "Authored from concept: 'security requirements belong in acquisition, before a model is chosen' (notes 5.4.2 The Asset Lifecycle). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 2, 30 Oct 2026. Cross-review fixes (31 Oct 2026): stem says 'propose' instead of 'recommend', keeping the practitioner voice.",
    "style_version": 2
   },
   {
@@ -1417,7 +1417,7 @@
    "subtopic": "5.4 Asset protection. Configuration management",
    "difficulty": "analysis",
    "bloom_level": "Analysis",
-   "question": "A drift scan flags that 15 file servers now run a backup agent missing from their secure baseline, and an approved change request installed it last week. What is the systems technician's BEST next step?",
+   "question": "A drift scan flags that 15 file servers now run a backup agent missing from their secure baseline, and an approved change request installed it last week. What is the system administrator's BEST next step?",
    "options": {
     "A": "Remove the agent from all 15 servers to match the baseline again",
     "B": "Update the baseline through change management to add the agent",
@@ -1436,7 +1436,7 @@
    "tips": [
     "Eliminate: C blinds the drift check, and D treats a change with an approved request as unauthorized.",
     "Final two: B beats A because an approved change means the baseline is stale; update the baseline instead of undoing the change.",
-    "Exam cue: for any drift, ask whether it was approved. Unapproved drift goes back to the baseline; approved changes update it."
+    "Exam cue: for any drift, ask first whether it was approved. Approved changes update the baseline; unapproved ones are restored by the system's maintainer, or reported as possible incidents when unexplained and risky."
    ],
    "framework_ref": "NIST SP 800-53 Rev. 5 CM-2 (Baseline Configuration); NIST SP 800-53 Rev. 5 CM-3 (Configuration Change Control)",
    "related_concepts": [
@@ -1444,7 +1444,7 @@
     "Secure baseline",
     "Change management"
    ],
-   "_provenance": "Authored from concept: 'an approved change that adds a component means the baseline is updated through change management' (notes 5.4.4 Configuration Management and Secure Baselines). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 2, 30 Oct 2026.",
+   "_provenance": "Authored from concept: 'an approved change that adds a component means the baseline is updated through change management' (notes 5.4.4 Configuration Management and Secure Baselines). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 2, 30 Oct 2026. Cross-review fixes (31 Oct 2026): exam cue now says who restores unapproved drift and when it is reported instead, agreeing with cc_d5_041 and cc_d2_003; actor renamed to the canonical 'system administrator'; key unchanged.",
    "style_version": 2
   },
   {
@@ -1458,10 +1458,10 @@
     "A": "Delete the rule at once to restore the approved configuration",
     "B": "File a change request now so the rule is approved retroactively",
     "C": "Leave it, since a senior engineer probably added it for a reason",
-    "D": "Report it as a possible security incident for responders to handle"
+    "D": "Report it as a possible incident for responders to handle"
    },
    "correct": "D",
-   "key_concept": "Unapproved changes are treated as possible security incidents until explained, and are reported instead of quietly undone.",
+   "key_concept": "An unexplained change that opens a serious exposure is a possible incident; if you do not run the system, report it instead of undoing it.",
    "pre_read": "Ask what an unexplained change could mean, and who runs the firewall. Then decide what the analyst's role allows.",
    "correct_explanation": "A change with no approval is treated as a possible incident until explained, and a rule opening the payroll database to the internet could be an intruder's work. Reporting it starts the response, and the firewall's owners and responders decide on containment. Deleting the rule is the runner-up: it closes the exposure, but the analyst does not run the firewall, and deleting it alters the evidence responders need to trace who added it.",
    "wrong_explanations": {
@@ -1471,8 +1471,8 @@
    },
    "tips": [
     "Eliminate: B approves an unexplained change after the fact, and C assumes good intent without checking.",
-    "Final two: D beats A because unapproved changes are possible incidents; owners and responders decide containment, and deleting the rule alone alters evidence.",
-    "Exam cue: a change with no approval is a possible incident until someone explains it. Report it; don't quietly undo it."
+    "Final two: D beats A because an unexplained rule exposing payroll data is a possible incident, on a firewall the analyst doesn't run; owners and responders decide containment.",
+    "Exam cue: an unexplained change that opens a path to sensitive data is a possible incident. On a system you don't run, report it; don't quietly undo it."
    ],
    "framework_ref": "NIST SP 800-53 Rev. 5 CM-3 (Configuration Change Control); ISO/IEC 27002:2022 Control 6.8 (Information security event reporting)",
    "related_concepts": [
@@ -1480,7 +1480,7 @@
     "Change management",
     "Incident reporting"
    ],
-   "_provenance": "Authored from concept: 'an unapproved change is a possible incident until explained; report it instead of quietly undoing it' (notes 5.4.6 Change Management). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 2, 30 Oct 2026.",
+   "_provenance": "Authored from concept: 'an unapproved change is a possible incident until explained; report it instead of quietly undoing it' (notes 5.4.6 Change Management). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 2, 30 Oct 2026. Cross-review fixes (31 Oct 2026): key_concept and exam cue now name the two deciding facts (unexplained and risky; a system the analyst does not run), agreeing with cc_d5_040; key unchanged. Fix round 1 (31 Oct 2026): Final two now gives the two deciding facts (unexplained and risky; a firewall the analyst does not run) instead of a blanket rule, agreeing with cc_d5_040. Fix round 2 (31 Oct 2026): D drops 'security', which echoed the stem only in the key; D is no longer the single longest option.",
    "style_version": 2
   },
   {
@@ -1564,8 +1564,8 @@
    "question": "A database owner approved monthly vulnerability scans, and the latest one flags a critical flaw that a junior analyst wants to exploit to prove it is real. What should the analyst do FIRST?",
    "options": {
     "A": "Get the owner's written approval and scope for a penetration test",
-    "B": "Exploit it now, since the owner already approved the scanning",
-    "C": "Exploit it late at night, when fewer users would be affected",
+    "B": "Exploit it now, since the owner already approved the monthly scanning",
+    "C": "Patch the flaw right away, since the scan rated it critical",
     "D": "Treat it as a false positive unless a second scanner agrees"
    },
    "correct": "A",
@@ -1574,11 +1574,11 @@
    "correct_explanation": "A scan identifies known weaknesses; exploiting one is penetration testing, which needs its own written approval and agreed scope from the system owner. Asking first keeps the analyst authorized. Exploiting under the scanning approval is the runner-up: it seems covered, but approval is for a specific type and level of testing, and an exploit can crash a production database.",
    "wrong_explanations": {
     "B": "Closest choice: the owner did approve testing of a kind. But scanning looks for flaws, and exploiting one is a different, riskier activity the approval does not cover.",
-    "C": "Tempting because fewer users would notice an outage. But timing does not create authority, and an unapproved exploit is unauthorized at any hour.",
+    "C": "Tempting because critical flaws need fixing fast. But the database belongs to its owner, and changing it skips change management; report the finding and let the owner decide.",
     "D": "Tempting because scanners do produce false positives. But a critical finding is validated and reported to the owner, not dismissed for lack of a second tool."
    },
    "tips": [
-    "Eliminate: C treats quiet hours as permission, and D dismisses a critical finding instead of validating and reporting it.",
+    "Eliminate: C changes the owner's database without change management, and D dismisses a critical finding instead of validating and reporting it.",
     "Final two: A beats B because approval covers a type and level of testing; scanning approval does not cover exploitation.",
     "Exam cue: a scan finds weaknesses; a penetration test exploits them. Each needs the owner's approval for that specific activity."
    ],
@@ -1588,7 +1588,7 @@
     "Penetration testing",
     "Rules of engagement"
    ],
-   "_provenance": "Authored from concept: 'scanning and exploitation are different activities, each needing its own approval from the owner' (notes 5.5.2 Vulnerability Scanning and Penetration Testing). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 2, 30 Oct 2026.",
+   "_provenance": "Authored from concept: 'scanning and exploitation are different activities, each needing its own approval from the owner' (notes 5.5.2 Vulnerability Scanning and Penetration Testing). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 2, 30 Oct 2026. Cross-review fixes (31 Oct 2026): B gains 'monthly' so the key is no longer the longest option. Fix round 1 (31 Oct 2026): C opens 'Run the exploit' so B and C no longer share an opener that lets them fall as a pair. Fix round 2 (31 Oct 2026): C is now an unapproved patch (the fix-it-yourself reflex) in place of running the exploit at night, which was close to a strawman and fell together with B.",
    "style_version": 2
   },
   {
@@ -1597,7 +1597,7 @@
    "subtopic": "5.5 Security testing. Testing AI-integrated defenses",
    "difficulty": "analysis",
    "bloom_level": "Analysis",
-   "question": "An authorized test shows a crafted message tricks a customer help desk chatbot into revealing internal staff phone numbers that customers never get. Which fix should the security analyst recommend as BEST before retesting?",
+   "question": "An authorized test shows a crafted message tricks a customer help desk chatbot into revealing internal staff phone numbers that customers never get. Which fix should the security analyst propose as BEST before retesting?",
    "options": {
     "A": "Add 'never reveal internal data' to the chatbot's instructions",
     "B": "Retrain the chatbot on a larger set of help desk chats",
@@ -1624,7 +1624,7 @@
     "Least privilege for AI",
     "Guardrails"
    ],
-   "_provenance": "Authored from concept: 'models stay open to prompt injection, so limit what an AI tool can reach instead of relying on instructions' (notes 5.5.6 Testing AI-Integrated Defenses). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 2, 30 Oct 2026.",
+   "_provenance": "Authored from concept: 'models stay open to prompt injection, so limit what an AI tool can reach instead of relying on instructions' (notes 5.5.6 Testing AI-Integrated Defenses). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 2, 30 Oct 2026. Cross-review fixes (31 Oct 2026): stem says 'propose' instead of 'recommend', keeping the practitioner voice.",
    "style_version": 2
   }
  ]

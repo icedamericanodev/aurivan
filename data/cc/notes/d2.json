@@ -95,8 +95,8 @@
           "example": "A logistics firm keeps its privacy checklist in legal, its risk list in IT and its policies in human resources. One backup control is tested three times, while a contract's breach-notice clause has no owner. Leadership creates one GRC program, and Omar, a junior analyst, maps each obligation to a control, exposing the unowned clause as a gap.",
           "audit_focus": {
             "review": [
-              "Confirm each policy, risk and obligation record names an owner",
-              "Compare the risk records with the obligations list"
+              "Record the agreed owner on each policy, risk or obligation entry you add",
+              "Link each new obligation to the risks and controls it affects"
             ],
             "evidence": [
               "Shared control library mapped to risks and obligations",
@@ -142,7 +142,7 @@
           "example": "A small online bookseller starts taking card payments and selling abroad. Before buying tools, the owner has the IT lead list what now applies: card industry rules, privacy law and the payment provider's contract. Ines, a new support technician, inventories the in-scope staff laptops so the plan starts from an accurate list.",
           "audit_focus": {
             "review": [
-              "Compare the asset inventory with the scope for missing items",
+              "Check the systems and data you support against the program scope",
               "Note sensitive data handled outside the scope"
             ],
             "evidence": [
@@ -227,8 +227,8 @@
           "example": "A furniture maker's yearly supplier security review was skipped: procurement thought IT did it, and IT thought procurement did. The GRC lead drafts a RACI chart for the review. Ana, a junior GRC analyst checking the draft, sees two managers marked Accountable and returns it to the GRC lead to settle which one answers for it.",
           "audit_focus": {
             "review": [
-              "Look for tasks with no Accountable name, or several",
-              "Compare the names in the chart with current staff"
+              "Draft the chart with one proposed Accountable name per task",
+              "Update the chart's names when staff join, move or leave"
             ],
             "evidence": [
               "Approved RACI chart with a version date",
@@ -315,7 +315,7 @@
           "example": "A dental practice's booking contract requires suspected data breaches to be reported within 48 hours, and health privacy law adds its own deadlines; both go on the obligations list. When Kai, the IT assistant, later sees an unusual login to the booking system, Kai starts the incident procedure at once, knowing the reporting clock may be running.",
           "audit_focus": {
             "review": [
-              "Confirm each obligation has an owner and a mapped control",
+              "Map each obligation you log to its owner and a control",
               "Report missing or late evidence to the control owner"
             ],
             "evidence": [
@@ -376,8 +376,8 @@
           "example": "A credit union follows ISO/IEC 27001, an international security management standard, and a major customer asks for progress against the NIST (National Institute of Standards and Technology) Cybersecurity Framework (CSF). Instead of a second program, the GRC lead builds a crosswalk in the GRC tool. Kofi, a junior analyst, maps each control to a CSF outcome and flags three outcomes with no control for review.",
           "audit_focus": {
             "review": [
-              "Check each mapping still points to a current framework item",
-              "Flag items marked not applicable with no reason"
+              "Update control mappings when a framework issues a new version",
+              "Record the reason each time you mark an item not applicable"
             ],
             "evidence": [
               "Mapping export showing each control's linked framework items",
@@ -418,12 +418,13 @@
             "Risk and control modules link each risk to its owner and the controls that treat it.",
             "Policy management tracks versions, approvals and staff acknowledgments.",
             "Automated collection pulls settings from systems on a schedule and flags any control that drifts.",
-            "Dashboards turn the stored data into views for each audience."
+            "Dashboards turn the stored data into views for each audience.",
+            "A status is only as current as its data; check when each feed last updated before trusting a green."
           ],
-          "example": "A health clinic moves its policies and risk list into a GRC platform that checks laptop settings each night. One morning it flags a laptop with disk encryption off. Rosa, a junior IT technician, confirms it on the device, raises a change request to turn encryption back on and records the fix in the platform.",
+          "example": "A freight company's GRC platform has shown its server patching control as green for three months. Yuki, a junior GRC analyst, opens the record and sees the patch server's data feed stopped in July, when its service account password expired, so the green rests on an old export. Yuki marks the control's status as unverified, tells the control owner and raises a ticket for the platform owner to repair the feed.",
           "audit_focus": {
             "review": [
-              "Compare the tool's record with the live system setting",
+              "Check the live setting on the system before acting on an alert",
               "Link the corrected setting to its change record"
             ],
             "evidence": [
@@ -506,7 +507,7 @@
           "example": "A ticketing company's GRC platform links the risk \"card data stored where it should not be\" to a KRI: card files found outside the payment system, with a tolerance of zero. A weekly scan finds two on a shared drive. Lena, a junior analyst, confirms they hold real card numbers and logs the finding against the register entry, moving the risk above tolerance.",
           "audit_focus": {
             "review": [
-              "Confirm each entry names a tolerance, an owner and a review date",
+              "Keep each entry's tolerance, owner and review date current",
               "Compare current indicator values with each tolerance"
             ],
             "evidence": [
@@ -549,9 +550,10 @@
             "An approved tools list, kept as a standard under the policy, names vetted services and the data each may handle.",
             "An AI inventory records each use and its owner; a new use is reviewed before it starts.",
             "Pasting confidential data into public AI tools can leak it; 5.1.8 covers that risk.",
-            "The NIST (National Institute of Standards and Technology) AI Risk Management Framework can structure this work."
+            "The NIST (National Institute of Standards and Technology) AI Risk Management Framework can structure this work.",
+            "Approval holds only while the facts behind it hold; a change in vendor terms, data or purpose sends the tool back for review."
           ],
-          "example": "Staff at a housing association start using a free AI note-taker that records video calls with tenants. It is not on the approved list or in the AI inventory. Priya, an IT support analyst, explains the approval route and submits a tool request so the security team and data owner can review it.",
+          "example": "A city library's service owner ends a trial of an AI chatbot that answered borrowers' questions. Tomas, the IT support analyst who keeps the AI inventory, marks the entry retired, removes staff access and files the vendor's written confirmation that stored chats were deleted, as the contract requires.",
           "audit_focus": {
             "review": [
               "Confirm a tool is approved before using it for work",
@@ -641,7 +643,7 @@
           "audit_focus": {
             "review": [
               "Confirm the spare takes over during a scheduled test",
-              "Compare network diagrams with known single points of failure"
+              "Mark known single points of failure on the network diagrams"
             ],
             "evidence": [
               "Failover test log with dates and outcome",
@@ -811,8 +813,8 @@
           "example": "A university's BIA team asks the registrar how long course enrollment can stop in the first week of term: a few hours, while the alumni newsletter can wait a month. Leo, a help desk analyst helping with the survey, adds an outside payment provider to enrollment's dependency list when a staff member mentions it.",
           "audit_focus": {
             "review": [
-              "Confirm each critical function lists its suppliers",
-              "Compare BIA priorities with the recovery plan's order"
+              "Update a function's dependency list when it adds a supplier",
+              "Draft the restore order from the BIA's approved priorities"
             ],
             "evidence": [
               "Owner-confirmed impact ratings at several outage lengths",
@@ -970,7 +972,7 @@
             "svg": "<svg viewBox='0 0 520 168' xmlns='http://www.w3.org/2000/svg' role='img' aria-label='Restoring to Wednesday: with incremental backups you need the Sunday full and every incremental; with differential backups you need the Sunday full and only the Wednesday differential'><text x='488' y='14' text-anchor='end' font-family='JetBrains Mono, monospace' font-size='7.5' font-weight='700' fill='var(--accent-fill)' letter-spacing='0.08em'>RESTORE TO WEDNESDAY</text><text x='20' y='46' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--text)'>Incremental</text><rect x='118' y='26' width='74' height='32' rx='4' fill='var(--surface)' stroke='var(--accent-fill)' stroke-width='2'/><text x='155' y='46' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9.5' font-weight='700' fill='var(--text)'>Sun full</text><rect x='210' y='26' width='74' height='32' rx='4' fill='var(--surface)' stroke='var(--accent-fill)' stroke-width='2'/><text x='247' y='46' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9.5' font-weight='700' fill='var(--text)'>Mon inc</text><rect x='302' y='26' width='74' height='32' rx='4' fill='var(--surface)' stroke='var(--accent-fill)' stroke-width='2'/><text x='339' y='46' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9.5' font-weight='700' fill='var(--text)'>Tue inc</text><rect x='394' y='26' width='74' height='32' rx='4' fill='var(--surface)' stroke='var(--accent-fill)' stroke-width='2'/><text x='431' y='46' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9.5' font-weight='700' fill='var(--text)'>Wed inc</text><text x='118' y='76' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='8.5' font-weight='600' fill='var(--text2)'>Needed: the full plus every incremental, in order</text><text x='20' y='120' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--text)'>Differential</text><rect x='118' y='100' width='74' height='32' rx='4' fill='var(--surface)' stroke='var(--accent-fill)' stroke-width='2'/><text x='155' y='120' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9.5' font-weight='700' fill='var(--text)'>Sun full</text><rect x='210' y='100' width='74' height='32' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='247' y='120' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9.5' font-weight='600' fill='var(--text2)'>Mon diff</text><rect x='302' y='100' width='74' height='32' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='339' y='120' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9.5' font-weight='600' fill='var(--text2)'>Tue diff</text><rect x='394' y='100' width='74' height='32' rx='4' fill='var(--surface)' stroke='var(--accent-fill)' stroke-width='2'/><text x='431' y='120' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9.5' font-weight='700' fill='var(--text)'>Wed diff</text><text x='118' y='150' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='8.5' font-weight='600' fill='var(--text2)'>Needed: the full plus only the latest differential</text></svg>",
             "caption": "Restoring to Wednesday. Each incremental holds only the changes since the backup before it, so every one is needed. Each differential holds all changes since the full, so only the newest is needed."
           },
-          "example": "A law office backs up its file server nightly to a disk in the same closet and has never tested a restore. Ransomware encrypts the server and the backup disk. The office then adds an immutable cloud copy, and Tess, a new IT assistant, restores a sample folder monthly and records how long it takes.",
+          "example": "A broadband provider backs up nightly to a storage unit beside its server and also syncs its files to a cloud folder. Nadia, an IT assistant checking the setup against the 3-2-1 rule, points out that a synced folder is not a backup: it copies every change, so files encrypted by ransomware would sync there too. The system owner approves adding a nightly immutable cloud copy, kept for 30 days.",
           "audit_focus": {
             "review": [
               "Restore a sample of files and time the result",
@@ -1015,7 +1017,8 @@
             "Readier sites recover faster and cost more to keep ready.",
             "Match the site to the RTO from the business impact analysis (BIA), not to habit or budget.",
             "Keep it far enough away that one regional event, such as a flood, cannot hit both sites.",
-            "Cloud recovery means paying mainly for stored copies until a failover, and it still needs testing."
+            "Cloud recovery means paying mainly for stored copies until a failover, and it still needs testing.",
+            "Give the recovery site the same security controls as the main site, including monitoring, from the moment it runs."
           ],
           "compare": {
             "columns": [
@@ -1286,7 +1289,7 @@
             "Reporting is easy and safe, with thanks instead of blame for honest mistakes.",
             "Culture is judged by behavior, such as reporting rates, not course completion."
           ],
-          "example": "A finance director at a manufacturer refuses the multifactor authentication (MFA) the access policy requires, saying it slows them down. Soon others ask for the same exception. Jamal, a new security analyst, neither argues nor quietly grants exceptions. He logs each request in the exception process for the policy owner, who sees the pattern and raises it with senior management.",
+          "example": "At a regional bus operator, the chief executive tells an all-staff meeting about clicking a phishing link last month, reporting it within minutes and being thanked by the security team. Over the next quarter, staff reports of suspicious messages double. Jamal, a new security analyst, adds the report rate to the culture measures shared with leaders each month.",
           "audit_focus": {
             "review": [
               "Follow the same rules you ask others to follow",
@@ -1382,7 +1385,7 @@
               }
             ]
           },
-          "example": "A hospital gives all staff the same yearly video. After an attacker talks a help desk agent into resetting a surgeon's password by phone, the training lead adds a caller-verification module for the help desk and monthly reminders for everyone. Femi, a help desk technician, now calls back on the directory number before any reset.",
+          "example": "An online travel agency gives every employee the same yearly course, yet code scans keep finding the same injection flaw in booking forms its developers write. The awareness lead adds a hands-on secure coding module for the developers, keeps short monthly reminders for everyone and tracks the scan results to see whether the module works.",
           "audit_focus": {
             "review": [
               "Confirm you completed the training your role requires",
@@ -1392,7 +1395,7 @@
               "Training records by role, with dates",
               "Role-to-course mapping showing who needs which module"
             ],
-            "recommend": "Pass patterns of repeated mistakes to the training lead so role-based content can be added.",
+            "recommend": "Pass patterns of repeated mistakes to the awareness lead so role-based content can be added.",
             "decides": "Management sets the training each role requires"
           },
           "isaca_rule": "Match the learning to the role and the risk. Everyone gets awareness; higher-risk roles get role-based training on top. When one group repeats one mistake, train that group.",
@@ -1427,7 +1430,8 @@
             "Attackers research targets through social media, company websites and earlier data leaks.",
             "They build a believable story, such as a new IT contractor or a supplier.",
             "They apply pressure, such as authority, urgency or the wish to help, and ask for one small step.",
-            "The defense: slow down, verify through a separate known channel and follow procedure."
+            "The defense: slow down, verify through a separate known channel and follow procedure.",
+            "At a badge door, never let in anyone who cannot badge in, whatever uniform or ID card they show; send them to reception to sign in."
           ],
           "types": [
             {
@@ -1573,9 +1577,9 @@
             "Generative AI writes fluent, personalized lures in many languages, at scale.",
             "Voice cloning copies a voice from a short recording; deepfake video puts a familiar face on a live call.",
             "Defenses rely on process: call-backs to known numbers, code phrases and dual approval for payments.",
-            "Awareness content uses real AI examples and teaches verifying requests, not judging polish."
+            "Awareness content shows real AI examples to prove polish is no longer a clue, and teaches verifying requests through known channels."
           ],
-          "example": "A charity's finance officer joins a video call where the chief executive, looking and sounding normal, urgently asks for a transfer to a new supplier. Policy requires a call-back for new payees, so the officer rings the chief executive's known mobile number, learns they are on leave and reports the call to the security team.",
+          "example": "A recruitment agency's records coordinator takes a call in what sounds exactly like the managing director's voice, asking for a candidate's file to be emailed to a personal address. Staff agreed a code phrase for unusual requests. The caller cannot give it, so the coordinator sends nothing and reports the call, a likely AI voice clone, to the security team.",
           "audit_focus": {
             "review": [
               "Verify payment requests by calling a known number",
@@ -1838,7 +1842,7 @@
           "audit_focus": {
             "review": [
               "Label each reported measure by its type",
-              "Confirm effectiveness claims rest on outcome data"
+              "Back each effectiveness claim you report with outcome data"
             ],
             "evidence": [
               "Ticket timestamps behind detection and recovery times",
@@ -1927,7 +1931,7 @@
           "example": "A logistics company's quarterly supplier account review, a KPI, has been green all year. Chen, a junior analyst, notices another number climbing: supplier accounts with administrator rights and no sign-in for 90 days. He proposes it as a KRI for misused supplier access and sends the trend to the risk owner.",
           "audit_focus": {
             "review": [
-              "Confirm each KRI links to a named risk in the register",
+              "Tie each KRI you report to a named risk in the register",
               "Compare this period's KRI values with the last"
             ],
             "evidence": [
@@ -1982,27 +1986,27 @@
             },
             {
               "term": "Red",
-              "meaning": "Beyond tolerance; escalate to senior management to treat or formally accept the risk."
+              "meaning": "Beyond tolerance; escalate at once by the set path, so the risk owner can act and senior management can treat or formally accept the risk."
             }
           ],
           "example": "A school district's key risk indicator (KRI) for laptops missing security updates is green under 3%, amber from 3 to 8% and red above 8%. After an update tool fails, it hits 11% the week before exams. Raj, the IT technician who runs the weekly report, follows the red-band rule and alerts the IT director that afternoon.",
           "audit_focus": {
             "review": [
               "Compare each new value with its threshold bands",
-              "Confirm any threshold change has a recorded approver"
+              "Apply a threshold change only after its approval is recorded"
             ],
             "evidence": [
               "Threshold table with bands, owners and actions",
               "Escalation tickets showing when they were sent"
             ],
-            "recommend": "Escalate breaches to the named owner as the rule requires, and never change a threshold yourself.",
-            "decides": "Senior management approves each threshold band and any change to it"
+            "recommend": "Escalate breaches to the named owner as the rule requires, and never change a threshold without its owner's recorded approval.",
+            "decides": "The named threshold owner approves changes, within tolerances senior management set"
           },
           "isaca_rule": "Thresholds turn numbers into action. When a metric crosses one, escalate at once; never sit on bad news, move the threshold or adjust the number.",
           "exam_traps": [
             {
               "trap": "Raise the threshold after a breach so the KRI goes back to green.",
-              "why": "Moving the line hides the risk without reducing it. Only those who own risk appetite change thresholds, with a recorded reason."
+              "why": "Moving the line hides the risk without reducing it. Only the threshold's named owner changes it, with a recorded reason."
             },
             {
               "trap": "Wait for the next scheduled report before escalating a red KRI.",
@@ -2077,7 +2081,7 @@
           "audit_focus": {
             "review": [
               "Confirm the same metric shows the same value in every view",
-              "Compare the level of detail with what the audience needs"
+              "Match the level of detail to what each audience needs"
             ],
             "evidence": [
               "Metric definition sheet used for all three formats",
@@ -2123,14 +2127,14 @@
           "example": "A software company's rate for closing vulnerability tickets within 30 days jumps from 60% to 98% in a month. Mei, a junior analyst, samples ten closed tickets and finds six marked accepted risk without the risk owner's approval. She sends the sample to the security manager, who limits that kind of closure to risk owners.",
           "audit_focus": {
             "review": [
-              "Sample a few records behind any sudden jump or drop",
+              "Check a few source records behind any sudden jump or drop",
               "Compare the next period's figure with the pre-fix value"
             ],
             "evidence": [
-              "Sampled records set against the reported figure",
+              "Source records checked against the reported figure",
               "Action log with owners, due dates and status"
             ],
-            "recommend": "Report suspected metric gaming or poor data quality to the security manager with the sampled evidence.",
+            "recommend": "Report suspected metric gaming or poor data quality to the security manager with the records you checked.",
             "decides": "Management decides improvement priorities and funds the actions"
           },
           "isaca_rule": "Treat a sudden improvement with the same curiosity as a sudden drop. Check the data behind a metric before trusting it; gaming a metric is a governance problem to report.",
@@ -2167,10 +2171,10 @@
             "Use of unapproved AI tools shows policy risk; AI service outages, including at providers, show continuity risk.",
             "Each AI KRI has an owner, thresholds and an escalation path, like any other KRI."
           ],
-          "example": "An insurer's AI tool flags suspicious claims. Claim handlers override its low-risk rating on 4% of claims in spring and 15% by autumn. Zoe, a junior analyst, sees the override rate cross the amber threshold and reports it to the model owner, who finds the model missed a new fraud pattern.",
+          "example": "A theme park plans an AI assistant that answers visitors' questions about tickets and opening hours. Before launch, the model owner asks Ade, a junior analyst, to help set its key risk indicators. Ade proposes tracking the share of a weekly sample of answers that cite a made-up price or park rule, often called hallucinations: amber at 2% alerts the model owner, and red at 5% also goes to the risk owner.",
           "audit_focus": {
             "review": [
-              "Confirm each AI KRI maps to an entry in the AI inventory",
+              "Tie each AI KRI you report to a model in the AI inventory",
               "Report threshold crossings to the model owner with the trend"
             ],
             "evidence": [

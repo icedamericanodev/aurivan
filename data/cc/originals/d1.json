@@ -201,7 +201,7 @@
         "D": "Escalate the acceptance to the school board for sign-off"
       },
       "correct": "C",
-      "key_concept": "Only the risk owner accepts residual risk, and only within tolerance; the practitioner documents it and routes it there.",
+      "key_concept": "Within tolerance, only the risk owner accepts residual risk; the practitioner documents it and routes it there, never accepting it.",
       "pre_read": "Notice who is asking, who is being asked to sign, and who owns the risk.",
       "correct_explanation": "Accepting risk commits the organization, so only someone with that authority may do it: within tolerance, the risk owner, here the IT director. The analyst's role is to document the residual risk clearly and route the acceptance to that owner. Signing and then copying the owner is the tempting runner-up, but the analyst would still be making the owner's decision.",
       "wrong_explanations": {
@@ -220,7 +220,7 @@
         "Risk owner",
         "Risk tolerance"
       ],
-      "_provenance": "Authored from concept: notes 1.2.6 Risk Appetite, Tolerance and Acceptance (practitioners never accept risk; within tolerance the risk owner accepts, above it senior management decides). Original school district parent portal scenario written for KaiSip; no ISC2 training, CBK or prep-bank text used. CC pilot batch, Oct 2026. Review fixes 28 Oct 2026 (blind test and standards audit): calibrated cues, teaching fields and pre_read. Audit fix 29 Oct 2026: distractor wording shortened so the key is not always out-worded.",
+      "_provenance": "Authored from concept: notes 1.2.6 Risk Appetite, Tolerance and Acceptance (practitioners never accept risk; within tolerance the risk owner accepts, above it senior management decides). Original school district parent portal scenario written for KaiSip; no ISC2 training, CBK or prep-bank text used. CC pilot batch, Oct 2026. Review fixes 28 Oct 2026 (blind test and standards audit): calibrated cues, teaching fields and pre_read. Audit fix 29 Oct 2026: distractor wording shortened so the key is not always out-worded. Fix-up round 2 (31 Oct 2026, audit): key_concept now limits the risk owner's acceptance to risk within tolerance, matching notes 1.2.6, where senior management decides beyond it.",
       "style_version": 2
     },
     {
@@ -338,17 +338,17 @@
       "subtopic": "1.3 Governance. Security policies",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A sales director asks a service desk analyst to disable multifactor authentication (MFA) for a two-week trade show, though a policy owned by the IT security manager requires MFA. What should the analyst do FIRST?",
+      "question": "A sales director asks a help desk analyst to disable multifactor authentication (MFA) for a two-week trade show, though a policy owned by the security manager requires MFA. What should the analyst do FIRST?",
       "options": {
         "A": "Switch MFA off for two weeks on the director's approval",
         "B": "Swap MFA for longer passwords and inform the policy owner",
         "C": "Route the request to the policy owner as an exception",
-        "D": "Refuse the request outright, since the policy makes MFA mandatory"
+        "D": "Decline the request, since the policy makes MFA mandatory"
       },
       "correct": "C",
       "key_concept": "Policy exceptions are approved, recorded and time-limited by the policy owner; practitioners route requests instead of deciding them.",
       "pre_read": "Notice who is asking, who owns the policy, and what the analyst's role covers.",
-      "correct_explanation": "Policies are mandatory, but they allow formal exceptions that the policy owner, here the IT security manager, approves, records and time-limits. A director's seniority does not make them the policy owner, and the analyst has no authority to grant or design an exception. Refusing outright sounds safe, yet it skips the process the organization provides; routing the request lets the owner decide, perhaps with compensating controls.",
+      "correct_explanation": "Policies are mandatory, but they allow formal exceptions that the policy owner, here the security manager, approves, records and time-limits. A director's seniority does not make them the policy owner, and the analyst has no authority to grant or design an exception. Simply declining sounds safe, yet it skips the process the organization provides; routing the request lets the owner decide, perhaps with compensating controls.",
       "wrong_explanations": {
         "A": "Tempting because a senior leader has approved. But seniority is not authority over policy; only the policy owner can approve an exception.",
         "B": "Tempting as a compromise that keeps the owner informed. But the analyst cannot design their own exception, and longer passwords are still one factor type, not MFA.",
@@ -365,7 +365,7 @@
         "Policy owner",
         "Compensating control"
       ],
-      "_provenance": "Authored from concept: notes 1.3.4 Security Policies (exceptions go through a formal process: recorded, time-limited and reviewed; the policy owner approves) and 1.1.5 (two items of one factor type are not MFA). Original trade show scenario written for KaiSip; no ISC2 training, CBK or prep-bank text used. CC pilot batch, Oct 2026. Review fixes 28 Oct 2026 (blind test and standards audit): calibrated cues, teaching fields and pre_read.",
+      "_provenance": "Authored from concept: notes 1.3.4 Security Policies (exceptions go through a formal process: recorded, time-limited and reviewed; the policy owner approves) and 1.1.5 (two items of one factor type are not MFA). Original trade show scenario written for KaiSip; no ISC2 training, CBK or prep-bank text used. CC pilot batch, Oct 2026. Review fixes 28 Oct 2026 (blind test and standards audit): calibrated cues, teaching fields and pre_read. Cross-review fix (31 Oct 2026, CD-26): role names aligned with the bank's canonical list (help desk, security manager). Fix-up round 1 (31 Oct 2026, blind test): option D no longer says 'outright', an absolute word that let test-wise candidates drop the runner-up.",
       "style_version": 2
     },
     {
@@ -456,7 +456,7 @@
       "correct": "A",
       "key_concept": "Control type depends on how the control works: written rules and approvals are administrative even when their subject is technical.",
       "pre_read": "Notice what form the rule takes and how it is enforced.",
-      "correct_explanation": "A written rule that directs how people must act is an administrative control, whatever its subject. It concerns firewalls, which makes 'technical' tempting, but the technical control is the rule set running on the firewall itself, not the document requiring approval. The approval step is preventive in function, because it stops unapproved changes before they happen; it does not detect them afterward.",
+      "correct_explanation": "A written rule that directs how people must act is an administrative control, whatever its subject. It concerns firewalls, which makes 'technical' tempting, but the technical control is the rule set running on the firewall itself, not the document requiring approval. As a written rule it is directive, and the approval gate it sets works preventively, stopping unapproved changes before they happen; it does not detect them afterward.",
       "wrong_explanations": {
         "B": "Closest choice: the topic is firewalls. But this is a document directing people; only the rules configured on the firewall are a technical control.",
         "C": "Tempting because the rule protects network equipment. But physical controls are tangible barriers such as locks and fences; a written approval rule is not one.",
@@ -473,7 +473,7 @@
         "Control functions",
         "Change management"
       ],
-      "_provenance": "Authored from concept: notes 1.4.2 Technical Controls (exam trap 'a written firewall policy is a technical control') and 1.4.3 Administrative Controls, with type vs function from 1.4.5. Original change-approval rule written for KaiSip; no ISC2 training, CBK or prep-bank text used. CC pilot batch, Oct 2026. Review fixes 28 Oct 2026 (blind test and standards audit): calibrated cues, teaching fields and pre_read.",
+      "_provenance": "Authored from concept: notes 1.4.2 Technical Controls (exam trap 'a written firewall policy is a technical control') and 1.4.3 Administrative Controls, with type vs function from 1.4.5. Original change-approval rule written for KaiSip; no ISC2 training, CBK or prep-bank text used. CC pilot batch, Oct 2026. Review fixes 28 Oct 2026 (blind test and standards audit): calibrated cues, teaching fields and pre_read. Notes-test fix (31 Oct 2026): the explanation now calls the written rule directive, as notes 1.4.5 does, with the approval gate working preventively.",
       "style_version": 2
     },
     {
@@ -977,7 +977,7 @@
         "Log protection",
         "Accountability"
       ],
-      "_provenance": "Authored from concept: 'accounting records what an identity did; the record must be protected from the people it records' (notes 1.1.6 Authorization and Accounting). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 2, 30 Oct 2026.",
+      "_provenance": "Authored from concept: 'logs must be protected from the people they record, administrators included' (notes 1.1.6 Authorization and Accounting). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 2, 30 Oct 2026. Notes-test fix (31 Oct 2026): concept quote now matches the 1.1.6 bullet added for it.",
       "style_version": 2
     },
     {
@@ -988,22 +988,22 @@
       "bloom_level": "Application",
       "question": "A hotel chain collected guests' mobile numbers to send booking confirmations, and its marketing team now wants to text them sales offers. What should the security analyst raise FIRST?",
       "options": {
-        "A": "Whether the numbers are encrypted in the marketing system",
-        "B": "Whether guests were told of, or agreed to, this new use",
+        "A": "Whether the texting provider has passed a security review",
+        "B": "Whether guests were told of, or agreed to, marketing texts",
         "C": "Whether marketing staff have finished their privacy training",
-        "D": "Whether the numbers will be kept for less than a year"
+        "D": "Whether guests' numbers will be kept for less than a year"
       },
       "correct": "B",
       "key_concept": "Privacy limits personal data to the purposes people were told about; a new use needs a valid basis before safeguards matter.",
       "pre_read": "Compare why the numbers were collected with what marketing now wants. Ask whether that change raises a privacy question first.",
       "correct_explanation": "The numbers were collected for booking confirmations. Sales texts are a new purpose, and privacy depends on whether guests were told of it or agreed to it, often under privacy law. That comes first: if the use is not allowed, no safeguard or time limit makes it right. Retention, the runner-up, is a real privacy question, but how long to keep data only matters once its use is permitted.",
       "wrong_explanations": {
-        "A": "Tempting because personal data should be protected. But encryption keeps outsiders out; it says nothing about whether the hotel may use the numbers this way.",
+        "A": "Tempting because a new provider will hold the numbers. But a security review checks protection, not whether the hotel may text guests for sales at all.",
         "C": "Tempting because trained staff handle data better. But training does not settle whether texting guests for sales is a permitted use.",
         "D": "Closest choice: retention limits are part of privacy. But how long data is kept matters only after the new use itself is allowed."
       },
       "tips": [
-        "Eliminate: A protects the numbers from outsiders and C trains staff; neither asks whether sales texting is a permitted use.",
+        "Eliminate: A reviews the texting provider's security and C trains staff; neither asks whether sales texting is a permitted use.",
         "Final two: B beats D because permission for a new purpose comes first; retention limits only matter once that use is allowed.",
         "Exam cue: when personal data is reused for a new purpose, ask about notice and consent first. Securing or limiting data is not the same as being allowed to use it."
       ],
@@ -1013,7 +1013,7 @@
         "Consent and notice",
         "Personally identifiable information (PII)"
       ],
-      "_provenance": "Authored from concept: 'use personal data only for the stated purpose; privacy is more than secrecy' (notes 1.1.8 Privacy and Personal Data). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 2, 30 Oct 2026. Standards audit fix (30 Oct 2026): distractors no longer copy pilot cc_d1_004's set.",
+      "_provenance": "Authored from concept: 'use personal data only for the stated purpose; privacy is more than secrecy' (notes 1.1.8 Privacy and Personal Data). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 2, 30 Oct 2026. Standards audit fix (30 Oct 2026): distractors no longer copy pilot cc_d1_004's set. Cross-review fix (31 Oct 2026, CD-18): option A is a provider security review instead of encryption, a distractor Domain 1 had overused. Fix-up round 1 (31 Oct 2026, blind test): option B names marketing texts instead of 'this new use', a callback to the stem that only the key carried. Fix-up round 2 (31 Oct 2026, blind test): option D now says 'guests' numbers', so the stem word 'guests' no longer appears only in the key.",
       "style_version": 2
     },
     {
@@ -1308,8 +1308,8 @@
       "id": "cc_d1_037",
       "domain": 1,
       "subtopic": "1.3 Governance. Procedures and standards",
-      "difficulty": "application",
-      "bloom_level": "Application",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
       "question": "A law firm's IT manager owns a backup procedure keeping copies 7 days, though the standard every procedure must meet requires 30, and operators may set retention. Which action by the backup technician is BEST?",
       "options": {
         "A": "Follow the 7-day procedure and tell the IT manager",
@@ -1337,7 +1337,7 @@
         "Standards",
         "Procedures"
       ],
-      "_provenance": "Authored from concept: 'an external standard binds only once adopted or required by law or contract' (notes 1.3.5 Standards, Procedures and Guidelines). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 2, 30 Oct 2026. Standards audit fix (30 Oct 2026): replaced a repeat of 035's lesson with the document hierarchy (procedure versus standard). Blind re-test fix (30 Oct 2026): stem states operators may set retention; A is the runner-up.",
+      "_provenance": "Authored from concept: 'each document must agree with the one above it; if they conflict, follow the higher one where your role allows and report the conflict to the lower document's owner' (notes 1.3.5 Standards, Procedures and Guidelines). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 2, 30 Oct 2026. Standards audit fix (30 Oct 2026): replaced a repeat of 035's lesson with the document hierarchy (procedure versus standard). Blind re-test fix (30 Oct 2026): stem states operators may set retention; A is the runner-up. Cross-review fixes (31 Oct 2026): concept quote corrected to the rule the item tests (notes test); relabeled analysis, since it weighs the standard, the procedure and the operator's latitude (CD-21).",
       "style_version": 2
     },
     {
@@ -1418,34 +1418,34 @@
       "subtopic": "1.4 Security controls. Controls for AI tools",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A university admissions team's AI assistant drafts replies to applicants' appeals for staff to check, and its vendor says 98% test accuracy means checks can stop. What should the security analyst recommend as BEST?",
+      "question": "A parcel carrier's AI assistant drafts damage-claim replies for staff to approve, but nobody can tell how a disputed reply was produced. Which control should the security analyst propose to BEST close this gap?",
       "options": {
-        "A": "Keep a staff check on each reply before it is sent",
-        "B": "Stop the checks, since the tested accuracy is high",
-        "C": "Replace staff checks with a log of every reply sent",
-        "D": "Encrypt each reply before it is sent to applicants"
+        "A": "Log each reply's model version, prompt and approver",
+        "B": "Save each approved reply with its claim number",
+        "C": "Filter each prompt to remove customers' account numbers",
+        "D": "Test each new model version on past claims before use"
       },
       "correct": "A",
-      "key_concept": "High-impact AI outputs keep human review even after good test results; models drift and can be manipulated after testing.",
-      "pre_read": "Weigh what a wrong reply would cost an applicant, then ask which option still catches an error before it reaches them.",
-      "correct_explanation": "Appeal replies affect applicants' futures, so a person stays accountable for each one. Test accuracy describes past data; models drift, meet new cases and can be fooled by crafted input, and 2% of many appeals is still many people. Keeping the check catches errors before harm. A log of replies, the runner-up, helps trace mistakes, but only after a wrong reply has been sent.",
+      "key_concept": "To trace what an AI did, record which model version and prompt produced each output, and who approved it, not just the output.",
+      "pre_read": "Picture a customer disputing one reply months from now. Ask what each option would let staff find out about that reply.",
+      "correct_explanation": "Tracing what an AI did means recording what produced each output, not just the output. Logging the model version, the prompt and the approving staff member for every reply lets the carrier explain a disputed reply and find a faulty version or prompt. Saving each approved reply with its claim number, the runner-up, shows what each customer received, but not which version or prompt wrote it.",
       "wrong_explanations": {
-        "B": "Tempting because 98% sounds safe. But test results do not cover drift or manipulated input, and every wrong reply reaches a real applicant.",
-        "C": "Closest choice: logging supports accountability for AI output. But it is detective; it records a wrong reply after the applicant has it.",
-        "D": "Tempting because encryption protects data in transit. But it keeps replies secret; it does nothing to stop a wrong reply going out."
+        "B": "Closest choice: the saved reply and claim number show what each customer received. But they record the output only, not the model version or prompt that produced it.",
+        "C": "Tempting because filtering prompts is a real AI safeguard. But it keeps personal data out of the model; it records nothing about how a reply was made.",
+        "D": "Tempting because testing each version catches errors before use. But it checks quality in advance; it cannot show which version wrote a reply already sent."
       },
       "tips": [
-        "Eliminate: B trusts a test score although models drift and can be fooled, and D adds secrecy, which cannot catch a wrong reply.",
-        "Final two: A beats C because a check before sending prevents harm; a log only shows a wrong reply after it has gone out.",
-        "Exam cue: for high-impact AI decisions, keep a person accountable before the output takes effect. Logs and tests support that check; they do not replace it."
+        "Eliminate: C filters prompts to protect privacy, and D tests versions before use; neither records how a given reply was produced.",
+        "Final two: A beats B because tracing needs the model version and prompt behind each reply; a saved reply with its claim number keeps the output but not its source.",
+        "Exam cue: to trace what an AI did, record which model, prompt and person produced each output, not just the output itself."
       ],
-      "framework_ref": "NIST AI 100-1 (AI RMF 1.0) GOVERN 3.2 (roles and responsibilities for human-AI configurations and oversight of AI systems are defined); NIST AI 100-1 (AI RMF 1.0) MEASURE 2.4 (the functionality and behavior of the AI system are monitored when in production)",
+      "framework_ref": "NIST AI 100-1 (AI RMF 1.0) Section 3.4 (Accountable and Transparent); NIST SP 800-53 Rev. 5 AU-3 (Content of Audit Records)",
       "related_concepts": [
-        "Human review of AI output",
-        "Model drift",
-        "Administrative controls for AI"
+        "AI traceability",
+        "Audit record content",
+        "Model versioning"
       ],
-      "_provenance": "Authored from concept: 'keep human review of high-impact AI output; models drift, get poisoned or are tricked' (notes 1.4.7 Controls for AI Tools). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 2, 30 Oct 2026.",
+      "_provenance": "Authored from concept: 'log prompts with the model version used' and 'limit and log what AI agents can do' (notes 1.4.7 Controls for AI Tools), with 'make every action traceable' (notes 1.1.9 AI and the Core Security Concepts). Original parcel carrier scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 2, 30 Oct 2026. Cross-review re-angle (31 Oct 2026, CD-09): the earlier human-review lesson duplicated cc_d3_019, so the item now tests tracing what an AI did (a blueprint D1 AI angle with no item); key stays A, the stem says 'propose', and no option uses encryption. Kept under 1.4.7, the notes home of logging AI tools, so that sub-topic keeps an item and section 1.1 does not grow further. Fix-up round 1 (31 Oct 2026): the setting moved from a water utility to a parcel carrier, since Domain 2 notes 2.4.7 now use a water utility's billing assistant (rule 8), and the stem asks what to propose 'to BEST close this gap'. Fix-up round 2 (31 Oct 2026, blind test): option B now keeps each reply with its claim number, so the runner-up also records context and only the key records how a reply was produced; this removes the plain-English shortcut from 'how it was produced'.",
       "style_version": 2
     },
     {
@@ -1524,8 +1524,8 @@
       "id": "cc_d1_043",
       "domain": 1,
       "subtopic": "1.5 Professional conduct. Ethics and authorization",
-      "difficulty": "analysis",
-      "bloom_level": "Analysis",
+      "difficulty": "application",
+      "bloom_level": "Application",
       "question": "A client asks a consulting firm's certified tester to include its payroll provider's web portal in a penetration test, but the provider has not given permission. What is the tester's BEST response?",
       "options": {
         "A": "Test the portal, since the client is paying for the work",
@@ -1553,7 +1553,7 @@
         "Acting legally",
         "Service to principals"
       ],
-      "_provenance": "Authored from concept: 'act legally and serve principals diligently: test only with the system owner's permission' (notes 1.5.3 The ISC2 Code of Ethics and 1.5.4 Applying the Canons to Dilemmas). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 2, 30 Oct 2026.",
+      "_provenance": "Authored from concept: 'stay within your authority: test only with the system owner's written permission, whoever is paying' (notes 1.5.4 Applying the Canons to Dilemmas), with acting legally and serving principals from notes 1.5.3 The ISC2 Code of Ethics. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 2, 30 Oct 2026. Cross-review fixes (31 Oct 2026): 1.5.4 cited first, as it holds the deciding rule (notes test); relabeled application, since one authorization rule decides it (CD-21).",
       "style_version": 2
     },
     {
@@ -1598,34 +1598,34 @@
       "subtopic": "1.5 Professional conduct. Due care and due diligence",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "An architecture firm's risk assessment named untested backups as its top risk, but no action followed, and ransomware then destroyed files that could not be restored. Which statement about the firm is MOST accurate?",
+      "question": "An architecture firm patched known flaws promptly, kept tested offline backups and trained staff, yet ransomware entered through a flaw its software vendor had not yet found. Which statement about the firm is MOST accurate?",
       "options": {
-        "A": "It showed due care but failed due diligence",
-        "B": "It met both duties, since the risk was assessed and recorded",
-        "C": "It showed due diligence but failed due care",
-        "D": "Neither duty applies, since a criminal caused the loss"
+        "A": "It failed due care, since the attack still succeeded",
+        "B": "It failed due diligence, since the flaw went undiscovered",
+        "C": "It met due care, since it took reasonable precautions",
+        "D": "It met due care, since the vendor is responsible for the flaw"
       },
       "correct": "C",
-      "key_concept": "Due diligence finds out about risk; due care acts on what was found. Knowing a risk without acting on it fails due care.",
-      "pre_read": "Split what the firm did into finding out and acting. Then check which of the two was missing.",
-      "correct_explanation": "Assessing risks and naming untested backups as the top one was due diligence: the firm investigated and knew. Due care means acting on that knowledge as a prudent organization would, such as testing restores, and nothing was done. The swapped option, the runner-up, mixes up the terms: diligence is the finding out, care is the doing. Knowledge without action is what negligence claims point to.",
+      "key_concept": "Due care is judged by an organization's own conduct, not by the outcome or by who caused the flaw.",
+      "pre_read": "List what the firm did before the attack, then what happened. Check each option against both lists.",
+      "correct_explanation": "Due care asks whether an organization acted as a prudent one would, judged by its conduct, not the outcome. Prompt patching, offline backups and staff training were due care, and testing the backups was diligence; no one can patch a flaw the vendor has not found. Blaming the vendor, the runner-up, gets the verdict right for the wrong reason: without those precautions the firm would fail due care, whoever wrote the flaw.",
       "wrong_explanations": {
-        "A": "Closest choice: one duty was met and one failed. But the terms are reversed; assessing is diligence, and acting on the result is care.",
-        "B": "Tempting because the assessment was done properly. But recording a risk is only the first half; the firm never acted on what it found.",
-        "D": "Tempting because an attacker caused the loss. But the duties concern the firm's own conduct; a prudent firm prepares for risks it has identified."
+        "A": "Tempting because a successful attack feels like proof that something was missed. But due care is judged by conduct, and prompt patching, offline backups and staff training are prudent conduct.",
+        "B": "Tempting because diligence means finding out about risks. But diligence cannot require finding a flaw the vendor itself had not found, and the firm did test its backups.",
+        "D": "Closest choice: the verdict is right. But due care rests on the firm's own conduct; a firm that skipped patching and backups would fail it, whoever wrote the flaw."
       },
       "tips": [
-        "Eliminate: B counts knowing as acting, and D excuses the firm because a criminal struck, though the duties cover its own preparation.",
-        "Final two: C beats A because assessing is diligence and acting is care; the firm assessed but never acted.",
-        "Exam cue: diligence is finding out; care is doing something about it. Research, assess and verify are diligence; fix, enforce and implement are care."
+        "Eliminate: A judges due care by the outcome instead of the firm's conduct, and B expects diligence to find a flaw even the vendor had not found.",
+        "Final two: C beats D because due care rests on the firm's own precautions; whose flaw it was would not excuse a firm that skipped patching or backups.",
+        "Exam cue: judge due care by the organization's own conduct, not by the outcome or by who caused the flaw. Ask what a prudent organization would have done beforehand."
       ],
-      "framework_ref": "NIST SP 800-53 Rev. 5 RA-7 (Risk Response); NIST CSF 2.0 PR.DS-11 (backups of data are created, protected, maintained and tested)",
+      "framework_ref": "NIST SP 800-53 Rev. 5 SI-2 (Flaw Remediation); NIST CSF 2.0 PR.DS-11 (backups of data are created, protected, maintained and tested)",
       "related_concepts": [
-        "Due diligence",
         "Due care",
-        "Negligence"
+        "Prudent person rule",
+        "Zero-day vulnerability"
       ],
-      "_provenance": "Authored from concept: 'due diligence investigates; due care acts on what is known' (notes 1.5.2 Due Care and Due Diligence). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 2, 30 Oct 2026.",
+      "_provenance": "Authored from concept: 'the test is what a reasonable, informed professional would have done, judged by conduct, not by whether an attack still succeeded' (notes 1.5.2 Due Care and Due Diligence). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 2, 30 Oct 2026. Cross-review re-angle (31 Oct 2026, CD-10): the earlier 'knowing without acting fails due care' lesson repeated cc_d1_017, so the item now tests judging due care by conduct, not outcome (two facts that pull apart: prudent conduct and a successful attack); key stays C. Fix-up round 1 (31 Oct 2026, blind test and audit): option D is now a second 'met due care' option with a wrong reason (the vendor's responsibility), so the key is no longer the odd one out and the final two differ only by the reason; the key no longer uses the definition word 'prudent'; wrong_explanations.B no longer says an unknown flaw cannot be found (the attacker found it); the runner-up is now D. Fix-up round 2 (31 Oct 2026, audit): the explanations no longer count backup testing as due care; testing the backups is diligence, as notes 1.5.2 teach.",
       "style_version": 2
     }
   ]

@@ -586,7 +586,7 @@
               "The migration priority list and the owner's sign-off on it",
               "Vendor roadmaps for post-quantum support in key products"
             ],
-            "recommend": "Raise systems that cannot change algorithms, such as embedded devices, with the system owner and security manager.",
+            "recommend": "Ask about post-quantum support before buying products that use public-key cryptography, and report gaps to the security manager.",
             "decides": "Senior management sets migration priorities and funding"
           },
           "isaca_rule": "Quantum risk is a planning problem today. Start with an inventory, put long-lived secrets first and favor crypto agility. Public-key algorithms need replacing; symmetric encryption mainly needs long keys.",
@@ -625,7 +625,7 @@
             "Data loss prevention (DLP) and web filtering can warn or block when labeled data heads to unapproved AI sites.",
             "Accidental sharing is reported as a possible incident, because copies may already sit outside the organization."
           ],
-          "example": "Taylor, a customer service agent at a utility company, pastes a customer's account and payment history into a free public chatbot to draft a reply, then remembers the AI policy. Instead of deleting the chat and saying nothing, Taylor reports it to the team lead and the security team.",
+          "example": "A food wholesaler approves an enterprise AI assistant for internal data only. Priya, a warehouse planner, wants it to find spoilage trends in a stock spreadsheet that also holds suppliers' contract prices, which are classified confidential. Priya checks the AI policy, removes the price columns from a copy and shares only product, date and spoilage figures, which are internal.",
           "audit_focus": {
             "review": [
               "Compare the task with the AI policy and approved tools list first",
@@ -665,7 +665,7 @@
     {
       "topic_id": "5.2",
       "topic_name": "Understand security operations",
-      "overview": "Security operations is the daily watch over systems: collecting logs, spotting what matters among millions of events and deciding what to do. This topic also covers who attacks and why, common malware (malicious software), threat intelligence and frameworks such as MITRE ATT&CK, and how AI can help or hurt alert triage.",
+      "overview": "Security operations is the daily watch over systems: collecting logs, spotting what matters among millions of events and deciding what to do. This topic also covers who attacks and why, common malware (malicious software), network attacks such as denial of service, threat intelligence and frameworks such as MITRE ATT&CK, and how AI can help or hurt alert triage.",
       "can_do": [
         "Tell an event from an alert and an incident, and say when to escalate",
         "Explain what to log, how to protect logs, and what a security information and event management (SIEM) system adds",
@@ -991,7 +991,7 @@
             "Sources include vendors, government agencies, open sources and sector groups called Information Sharing and Analysis Centers (ISACs).",
             "Indicators of compromise, such as malicious file hashes, domains or Internet Protocol (IP) addresses, feed tools that block or detect known threats.",
             "Indicators go stale quickly as attackers change infrastructure; knowledge of attacker methods stays useful longer.",
-            "Shared intelligence carries a Traffic Light Protocol (TLP) label, such as TLP:RED or TLP:CLEAR, saying how far it may travel."
+            "Shared intelligence carries a Traffic Light Protocol (TLP) label: RED, individual recipients only; AMBER, their organization and clients who need to know; GREEN, their community; CLEAR, anyone."
           ],
           "types": [
             {
@@ -1024,7 +1024,7 @@
             "recommend": "Send intelligence that matches your environment to the security manager or incident response lead promptly.",
             "decides": "The security manager decides what to block and which systems to prioritize"
           },
-          "isaca_rule": "Intelligence helps only when relevant, timely and acted on. Check it against your assets, feed indicators to your tools and respect sharing labels.",
+          "isaca_rule": "Intelligence helps only when relevant, timely and acted on. Check it against your assets, feed indicators to your tools and respect sharing labels: they cover spoken briefings and partial copies, and only the source can widen them.",
           "exam_traps": [
             {
               "trap": "More threat feeds always mean better security.",
@@ -1042,7 +1042,7 @@
             },
             {
               "term": "Traffic Light Protocol (TLP)",
-              "definition": "A labeling scheme from the Forum of Incident Response and Security Teams (FIRST) setting how far shared information may travel."
+              "definition": "A labeling scheme from the Forum of Incident Response and Security Teams (FIRST) setting how far information, and any part copied from it, may travel."
             }
           ]
         },
@@ -1168,7 +1168,7 @@
               "meaning": "Hides deep in the operating system to keep an attacker's access and conceal other malware."
             }
           ],
-          "example": "At a hotel group, the monitoring tool flags a reception computer probing dozens of other machines, a sign of a worm. Imani, the IT technician on duty, follows the malware playbook: unplugs the network cable, leaves the computer running, photographs the screen and calls the incident response lead.",
+          "example": "At a farm cooperative, a bookkeeper tells Ines, the IT support technician, that the laptop's antivirus icon has vanished. Ines finds protection was switched off overnight and an unknown program contacting an outside address every minute, a sign of command and control. Ines tells the bookkeeper to stop using the laptop, notes the program's name and address, and reports it through the incident channel.",
           "audit_focus": {
             "review": [
               "Compare odd device behavior with the playbook's list of malware signs",
@@ -1307,7 +1307,7 @@
           "key_terms": [
             {
               "term": "Replay attack",
-              "definition": "Resending a captured valid message, such as a sign-in, to pose as its sender; multifactor authentication with one-time codes or cryptographic keys resists it."
+              "definition": "Resending a captured sign-in to pose as its sender. One-time codes work once, but a fake page can relay a fresh one; passkeys stop both."
             },
             {
               "term": "Upstream DDoS protection",
@@ -1500,11 +1500,11 @@
             "Eradication removes malware and attacker accounts, closes the exploited weakness and resets exposed credentials on every affected system.",
             "Recovery restores from known-good backups or clean builds, patches them, then watches closely for a return."
           ],
-          "example": "At a dental practice group, an office manager reports pop-ups and locked files on a reception computer. Robin, the IT support technician, follows the ransomware playbook's first steps: unplug the network cable, leave the computer on and call the incident response lead. Robin runs no cleanup tools until the lead confirms the scope.",
+          "example": "After a design studio's cloud storage account is taken over, the incident response lead has it locked and assigns eradication to Lee, a system administrator. Lee removes an access key and a public sharing link the attacker added, resets the password and multifactor authentication, and searches the other accounts for the same key before reporting back.",
           "audit_focus": {
             "review": [
               "Isolate the affected system as the playbook directs, leaving it running",
-              "Reset or disable exposed credentials only as the incident response lead directs"
+              "Reset or disable exposed credentials only as the playbook or incident response lead directs"
             ],
             "evidence": [
               "Other systems showing the same indicators",
@@ -1548,7 +1548,7 @@
             "Every transfer is logged with date, time, names, purpose and storage location, and evidence is locked away.",
             "Entry-level staff preserve the scene and report; trained forensic staff, guided by legal counsel, collect and analyze."
           ],
-          "example": "A warehouse supervisor finds an unfamiliar memory stick in the back of a payroll computer. Pat, a security technician, photographs it in place, opens no files and calls the incident response lead. When the forensic investigator arrives, Pat hands over the photos and notes, and the handover is logged on the custody form.",
+          "example": "While a breach at a regional newspaper is investigated, the incident response lead tells Kai, a system administrator, to block an attacker's address on an affected web server. Kai writes each command, its time and the reason in the incident log, so investigators can later tell Kai's changes from the attacker's.",
           "audit_focus": {
             "review": [
               "Leave the device as found and note its state, time and location",
@@ -1640,7 +1640,7 @@
             "The review happens soon after the incident, while memories are fresh, with everyone who took part.",
             "It is blameless: it looks for gaps in process, tools and training, not someone to punish, so people speak openly.",
             "Findings become actions with owners and deadlines, such as a playbook update or a new detection.",
-            "Current NIST (National Institute of Standards and Technology) guidance treats improvement as continuous: share a lesson as soon as it is found."
+            "Current NIST (National Institute of Standards and Technology) guidance, SP 800-61 Rev. 3, treats improvement as continuous: share a lesson as soon as it is found."
           ],
           "example": "Two weeks after a phishing attack at a nonprofit, the incident response lead holds a review. Drew, the help desk technician, explains that three staff called about the strange email an hour before anyone told security, because the help desk script had no reporting step. The group adds one, owned by Drew's manager.",
           "audit_focus": {
@@ -1864,7 +1864,7 @@
             "If that is not yet possible, reduce exposure: isolate it on its own network segment, limit access, monitor it closely or buy extended support.",
             "Keeping it running needs a documented exception with an expiry date and a review."
           ],
-          "example": "A clinic's ultrasound machine runs an operating system that lost support last year, and its maker will not approve an upgrade for two years. Ari, a junior network administrator, records it as end-of-life, proposes isolating it so only the imaging workstation can reach it, and sends the proposal to the clinic manager, the risk owner.",
+          "example": "A port operator's crane scheduling workstation runs an unsupported operating system, kept online under a time-limited exception. Checking its conditions ahead of renewal, Sol, a junior security analyst, finds the monitoring it required stopped in the spring and the replacement has slipped a year. Sol writes up both gaps for the renewal decision and reports the stopped monitoring to the security manager at once.",
           "audit_focus": {
             "review": [
               "Flag assets whose support ends within the next year",
@@ -1925,7 +1925,7 @@
             "recommend": "Report repeated drift, or a baseline setting that blocks business work, to your team lead for a formal change.",
             "decides": "Security management approves the baseline standard; system owners apply it"
           },
-          "isaca_rule": "Start every system from an approved baseline and treat any difference as a question: approved change or drift? Return drift to the baseline, and change the baseline only through change management.",
+          "isaca_rule": "Start every system from an approved baseline and treat any difference as a question: approved change or drift? Restore drift on systems you maintain; report unexplained, risky changes as possible incidents. Change the baseline only through change management.",
           "exam_traps": [
             {
               "trap": "Default settings from a reputable vendor are secure enough to deploy.",
@@ -2005,20 +2005,21 @@
             "A change request states what will change and why, the risk, the test plan and the rollback plan.",
             "Someone other than the person making the change approves it.",
             "Approved changes are tested, scheduled, made and checked, and configuration records are updated.",
+            "Standard changes, low-risk fixes a procedure pre-approves, such as returning a setting to its baseline, can be made at once but are still recorded.",
             "Emergency changes get fast approval from a designated person, then are recorded and reviewed soon after.",
             "Changes found without approval are treated as possible incidents until explained."
           ],
-          "example": "A finance manager at a construction firm asks Jo, a network technician, to open a firewall port at once so a supplier can upload invoices. There is no approval. Jo raises a change request with the port, the supplier's addresses and a rollback plan, and tells the manager the approver can fast-track urgent requests.",
+          "example": "At 2 a.m., a ferry company's booking website goes down when its certificate expires. Ola, the on-call system administrator, phones the manager on call for emergency changes, who agrees to the fix. Ola installs the renewed certificate, confirms bookings work again, and next morning completes the change record for the usual review.",
           "audit_focus": {
             "review": [
-              "Raise a change request before changing any production system",
-              "Wait for recorded approval before starting, even under pressure"
+              "Raise a change request for any production change no procedure pre-approves",
+              "Wait for approval before starting, even under pressure; emergency approvals are recorded afterward"
             ],
             "evidence": [
               "The change calendar for conflicts before scheduling work",
               "Unapproved changes found in configuration or drift reports"
             ],
-            "recommend": "Report pressure to make an unapproved change, or an unexplained change you find, to your supervisor or the change manager.",
+            "recommend": "Report pressure to make an unapproved change to your supervisor or the change manager, and an unexplained, risky change as a possible incident.",
             "decides": "The change advisory board or designated approver authorizes the change"
           },
           "isaca_rule": "No change without approval, testing and a way back. Urgency changes how fast approval happens, not whether it happens.",
@@ -2380,12 +2381,13 @@
           "id": "5.5.5",
           "name": "Physical and Social Engineering Penetration Tests",
           "legacy_ids": [],
-          "definition": "Physical and social engineering penetration tests check, with written permission, whether people and premises resist tricks such as phishing, tailgating and impersonation.",
+          "definition": "Physical and social engineering penetration tests check, with written permission, whether people and premises resist tricks such as phishing, baiting, tailgating and impersonation.",
           "why_it_matters": "Attackers often find people and doors easier than firewalls. These tests show whether staff challenge strangers and report suspicious messages.",
           "how_it_works": [
             "Phishing simulations send realistic but harmless emails and measure who clicks and, more importantly, who reports.",
             "Tailgating and piggybacking tests check whether a tester can slip in behind staff unnoticed, or be let in without a badge.",
             "Impersonation tests use a pretext, such as a delivery driver or IT contractor, to see whether staff verify identity.",
+            "Baiting tests leave tempting items, such as labeled memory sticks, to see whether staff plug them in or hand them to security (see 2.3.3).",
             "Testers carry a signed authorization letter and stop if anyone's safety is at risk."
           ],
           "types": [
@@ -2406,7 +2408,7 @@
               "meaning": "Pretending to be a trusted person, such as a vendor, coworker or inspector, to gain access or information."
             }
           ],
-          "example": "Jun, a records clerk at a government office, hears someone catch the records room door behind them: a person in a high-visibility vest, there 'to fix the air conditioning'. Jun politely walks them to reception to sign in and reports the tailgating attempt. It was an authorized test, and Jun's report counts as the right response.",
+          "example": "During an authorized baiting test at an airline's maintenance base, testers leave memory sticks labeled 'Bonus list' in the staff canteen. Rosa, a parts clerk, finds one, does not plug it in, and hands it to the security team with a note of where and when it was found.",
           "audit_focus": {
             "review": [
               "Challenge or redirect anyone without a visible badge in secure areas",
@@ -2510,10 +2512,8 @@
     }
   ],
   "key_terminologies": {
-    "Data classification": "Assigning data a sensitivity level, set by its owner, that decides how it must be protected.",
-    "Labeling": "Marking data with its classification so people and tools can apply the right handling rules.",
-    "Data masking": "Hiding real values behind fake or partial ones, for example in test data or on screens.",
-    "Tokenization": "Replacing a sensitive value with a random token that only a protected vault can map back.",
+    "Classification and labeling": "Classification sets data's sensitivity level, decided by its owner; labeling marks the data so people and tools apply the matching handling rules.",
+    "Masking vs tokenization": "Masking hides real values behind fake or partial ones; tokenization swaps them for random tokens that only a protected vault can map back.",
     "Media sanitization": "Making data on media infeasible to recover by the clear, purge or destroy method.",
     "Symmetric encryption": "Encryption with one shared secret key; fast, so it is used for bulk data. Needs n(n−1)/2 keys for n people.",
     "Asymmetric encryption": "Encryption with a public and private key pair; used for key exchange and signatures. Needs 2n keys for n people.",
@@ -2529,6 +2529,8 @@
     "Threat actor": "A person or group that could cause harm, such as criminals, nation-states, hacktivists or insiders.",
     "Cyber threat intelligence (CTI)": "Analyzed information about threats, used to anticipate, detect and respond to attacks.",
     "MITRE ATT&CK": "A free knowledge base of real attacker tactics and techniques, used to map detections and plan tests.",
+    "Denial of service (DoS)": "An attack that overloads a service so real users cannot reach it; a distributed (DDoS) attack comes from many devices at once.",
+    "On-path attack": "An attack in which someone secretly sits between two parties to read or change their traffic; also called man-in-the-middle.",
     "Incident response plan": "The approved document that sets incident definitions, roles, authority, communication and response steps.",
     "Containment": "Stopping an incident from spreading, for example by isolating a host; it comes before eradication.",
     "Chain of custody": "A record of everyone who handled evidence, when and why, showing it was not altered.",
@@ -2600,7 +2602,7 @@
     {
       "title": "FIRST, Traffic Light Protocol (TLP) 2.0",
       "url": "https://www.first.org/tlp/",
-      "checked": "2026-10-28"
+      "checked": "2026-10-31: Secs. 1h and 3a to 3d read: RED, for the eyes and ears of individual recipients only (at a meeting, those present); AMBER, the recipient's organization and its clients on a need-to-know basis (AMBER+STRICT, organization only); GREEN, the community; CLEAR, no limit; sharing more widely than the label allows needs the source's explicit permission (5.2.6)"
     },
     {
       "title": "MITRE ATT&CK and MITRE ATLAS knowledge bases",
@@ -2650,7 +2652,7 @@
     {
       "title": "NIST SP 800-63B-4, Digital Identity Guidelines: Authentication and Authenticator Management (Jul 2025)",
       "url": "https://doi.org/10.6028/NIST.SP.800-63B-4",
-      "checked": "2026-10-31: Sec. 3.2.7 read: one-time password and cryptographic authenticators resist replay; passwords do not"
+      "checked": "2026-10-31: Secs. 3.2.5, 3.2.5.2, 3.2.7 and App. B.5 read: one-time password and cryptographic authenticators resist replay, passwords do not; manually typed codes are not phishing-resistant, because an impostor verifier can relay them; WebAuthn syncable authenticators (the SP's term for synced passkeys) bind the key to the site's domain and use a fresh nonce for each sign-in, so they resist both (5.2.9)"
     }
   ]
 }

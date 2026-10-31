@@ -89,21 +89,21 @@
    "options": {
     "A": "It encrypts traffic in the tunnel but does not secure the laptop",
     "B": "It scans incoming files for malware before they reach the laptop",
-    "C": "It secures the laptop for as long as the tunnel is up",
-    "D": "It encrypts the files stored on the laptop's hard drive"
+    "C": "It makes the laptop a trusted internal device while it is connected",
+    "D": "Its encryption covers the laptop's stored files, not just network traffic"
    },
    "correct": "A",
    "key_concept": "A VPN protects data in transit between a device and the network; it does not make the device itself safe.",
    "pre_read": "Picture the laptop, the tunnel and the clinic's network, then ask what each option claims to protect.",
-   "correct_explanation": "A VPN builds an encrypted tunnel, so traffic between the laptop and the clinic cannot be read or changed on the way. It does nothing about malware or weak settings on the laptop, and an infected laptop can carry that infection through the tunnel. The runner-up claims protection while connected, but even then the tunnel protects the path, not the device.",
+   "correct_explanation": "A VPN builds an encrypted tunnel, so traffic between the laptop and the clinic cannot be read or changed on the way. It does nothing about malware or weak settings on the laptop, and an infected laptop can carry that infection through the tunnel. The runner-up treats a connected laptop as trusted, but reaching the internal network does not make a device safe.",
    "wrong_explanations": {
     "B": "Tempting because some security suites bundle a VPN with antivirus. But the tunnel only encrypts traffic; checking files for malware is an endpoint protection job.",
-    "C": "Closest choice: the tunnel does protect traffic whenever it is up. But even then it guards the path, not the laptop; malware on the device travels through the tunnel.",
+    "C": "Closest choice: while connected, the laptop does reach the internal network. But the tunnel protects only the path, not the laptop; any malware on it travels through.",
     "D": "Tempting because both involve encryption. But a VPN protects data moving across the network; files stored on the laptop need disk encryption."
    },
    "tips": [
     "Eliminate: B gives the VPN an antivirus job, and D confuses encryption in transit with encryption of stored files.",
-    "Final two: A beats C because a VPN guards the path even while connected; an infected laptop sends its malware through the tunnel.",
+    "Final two: A beats C because the tunnel guards the path, not the device; a connected laptop reaches the internal network but is no more trustworthy.",
     "Exam cue: a VPN protects the road, not the car. Device health still needs patching, endpoint protection and access checks."
    ],
    "framework_ref": "NIST SP 800-46 Rev. 2 Section 2.1 (Vulnerabilities, Threats, and Security Controls: infected client devices); NIST SP 800-77 Rev. 1 Section 2.3 (Virtual Private Networking (VPN))",
@@ -112,7 +112,7 @@
     "Endpoint security",
     "Remote access"
    ],
-   "_provenance": "Authored from concept: 'a VPN protects the path, not the device at either end' (notes 4.1.6 Virtual Private Networks (VPNs)). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 pilot batch, 30 Oct 2026.",
+   "_provenance": "Authored from concept: 'a VPN protects the path, not the device at either end' (notes 4.1.6 Virtual Private Networks (VPNs)). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 pilot batch, 30 Oct 2026. Cross-review fix (31 Oct 2026): D now has the same 'X, not Y' form as the key, so the contrast no longer marks the key (CD-16); it states the beginner's overclaim that a VPN also encrypts stored files. Fix-up round 1 (31 Oct 2026): C now states a limitation like the key and D no longer shares the key's opening words, so neither the cautious form nor the shared wording marks A. Fix-up round 2 (31 Oct 2026): C now states the common belief that a connected laptop becomes a trusted internal device (the notes 4.1.6 exam trap), a stronger runner-up than the earlier wording.",
    "style_version": 2
   },
   {
@@ -407,8 +407,8 @@
    "id": "cc_d4_012",
    "domain": 4,
    "subtopic": "4.2 Network security architecture. Zero Trust principles",
-   "difficulty": "analysis",
-   "bloom_level": "Analysis",
+   "difficulty": "application",
+   "bloom_level": "Application",
    "question": "A school is adopting Zero Trust, and a teacher signs in from a staff-room desktop on the internal network. How should the IT team BEST decide access to the grades system?",
    "options": {
     "A": "Verify identity, device health and need for each access session",
@@ -436,7 +436,7 @@
     "Per-session access",
     "Least privilege"
    ],
-   "_provenance": "Authored from concept: 'Zero Trust grants no trust for location and checks identity, device and need per session' (notes 4.2.6 Zero Trust Principles). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 pilot batch, 30 Oct 2026.",
+   "_provenance": "Authored from concept: 'Zero Trust grants no trust for location and checks identity, device and need per session' (notes 4.2.6 Zero Trust Principles). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 pilot batch, 30 Oct 2026. Cross-review fix (31 Oct 2026): relabeled application: it applies one principle (no trust for location), not two facts to weigh (CD-21).",
    "style_version": 2
   },
   {
@@ -445,7 +445,7 @@
    "subtopic": "4.2 Network security architecture. Network access control",
    "difficulty": "application",
    "bloom_level": "Application",
-   "question": "A nurse's laptop fails the NAC posture check for missing updates and lands on the remediation network, where the help-desk procedure says technicians fix devices. What should the technician do FIRST?",
+   "question": "A nurse's laptop fails the network access control (NAC) posture check for missing updates and lands on the remediation network, where the help-desk procedure says technicians fix devices. What should the technician do FIRST?",
    "options": {
     "A": "Add the laptop's MAC address to the NAC allow list",
     "B": "Apply the pending patches and have the laptop rechecked",
@@ -472,7 +472,7 @@
     "Remediation network",
     "Policy exceptions"
    ],
-   "_provenance": "Authored from concept: 'NAC admits devices on identity and health, and failing devices are remediated rather than waved through' (notes 4.2.8 Network Access Control (NAC)). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 pilot batch, 30 Oct 2026.",
+   "_provenance": "Authored from concept: 'NAC admits devices on identity and health, and failing devices are remediated rather than waved through' (notes 4.2.8 Network Access Control (NAC)). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 pilot batch, 30 Oct 2026. Cross-review fix (31 Oct 2026): NAC spelled out at first use in the stem (CD-32).",
    "style_version": 2
   },
   {
@@ -553,7 +553,7 @@
    "subtopic": "4.3 Cloud security. Service models",
    "difficulty": "application",
    "bloom_level": "Application",
-   "question": "A council runs its permit app on a PaaS offering, and a critical flaw is found in an open-source library packaged inside the app. Who is MOST responsible for applying the fix?",
+   "question": "A council runs its permit app on a platform as a service (PaaS), and a critical flaw is found in an open-source library bundled in the app. Who is MOST responsible for applying the fix?",
    "options": {
     "A": "The council's application development team",
     "B": "The library's open-source maintainers",
@@ -580,7 +580,7 @@
     "Customer-deployed code",
     "Patch responsibility"
    ],
-   "_provenance": "Authored from concept: 'in PaaS the provider patches the platform and the customer secures its code, libraries and data' (notes 4.3.3 Cloud Service Models: IaaS, PaaS and SaaS). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 pilot batch, 30 Oct 2026.",
+   "_provenance": "Authored from concept: 'in PaaS the provider patches the platform and the customer secures its code, libraries and data' (notes 4.3.3 Cloud Service Models: IaaS, PaaS and SaaS). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 pilot batch, 30 Oct 2026. Cross-review fix (31 Oct 2026): PaaS spelled out at first use in the stem (CD-32); 'applying' kept, since it is what separates the key from the maintainers in B.",
    "style_version": 2
   },
   {
@@ -589,9 +589,9 @@
    "subtopic": "4.3 Cloud security. Shared responsibility",
    "difficulty": "application",
    "bloom_level": "Application",
-   "question": "A school's SaaS gradebook still has active accounts for teachers who left last term. Under the shared responsibility model, who should MOST appropriately remove them?",
+   "question": "A school's software as a service (SaaS) gradebook still has active accounts for teachers who left last term. Under the shared responsibility model, who should MOST appropriately remove them?",
    "options": {
-    "A": "The school, through its own staff leaver process",
+    "A": "The school, as part of managing its users",
     "B": "The SaaS provider, as part of running the service",
     "C": "The cloud broker that sold the gradebook subscription",
     "D": "The auditor that reviews the provider each year"
@@ -601,7 +601,7 @@
    "pre_read": "List what each party actually does in a SaaS arrangement before choosing.",
    "correct_explanation": "In SaaS the provider runs the application, but the customer decides who has accounts and what they can reach. The school knows when teachers leave, so its leaver process must remove their gradebook access. The provider is the runner-up because it runs the whole service, but it cannot know who has left the school and does not manage the school's users.",
    "wrong_explanations": {
-    "B": "Closest choice: the provider does run everything beneath the application. But accounts and access stay with the customer in every model, and only the school knows who left.",
+    "B": "Closest choice: the provider does run the application and everything beneath it. But accounts and access stay with the customer in every model, and only the school knows who left.",
     "C": "Tempting because the broker arranged the service. But a broker selects or integrates cloud services; it does not manage the school's users.",
     "D": "Tempting because auditors check controls. But an auditor assesses the provider's controls independently; it does not run accounts for customers."
    },
@@ -616,7 +616,7 @@
     "Software as a service",
     "Deprovisioning"
    ],
-   "_provenance": "Authored from concept: 'the customer keeps responsibility for its users, access and data in every cloud model' (notes 4.3.5 The Shared Responsibility Model). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 pilot batch, 30 Oct 2026.",
+   "_provenance": "Authored from concept: 'the customer keeps responsibility for its users, access and data in every cloud model' (notes 4.3.5 The Shared Responsibility Model). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 pilot batch, 30 Oct 2026. Cross-review fix (31 Oct 2026): SaaS spelled out at first use in the stem (CD-32). Fix-up round 1 (31 Oct 2026): A no longer echoes the stem's 'left' with 'leaver' and now mirrors B's form. Fix-up round 2 (31 Oct 2026): the B explanation now says the SaaS provider runs the application too, matching the correct explanation and the notes 4.3.5 compare row.",
    "style_version": 2
   },
   {
@@ -661,7 +661,7 @@
    "subtopic": "4.3 Cloud security. Cloud access security brokers",
    "difficulty": "analysis",
    "bloom_level": "Analysis",
-   "question": "A CASB report shows law-firm staff uploading client files to an unapproved file-sharing app; the security manager owns cloud-use policy and approves any CASB blocking rule. What should the junior analyst do FIRST?",
+   "question": "A cloud access security broker (CASB) report shows law-firm staff uploading client files to an unapproved file-sharing app; the security manager owns cloud-use policy and approves any blocking. What should the junior analyst do FIRST?",
    "options": {
     "A": "Have the network team close port 443 for those staff",
     "B": "Approve the app after confirming that it uses TLS encryption",
@@ -688,7 +688,7 @@
     "Shadow IT",
     "Policy ownership"
    ],
-   "_provenance": "Authored from concept: 'a CASB finds shadow IT and enforces cloud policy that its owner sets' (notes 4.3.8 Cloud Misconfiguration, CSPM and CASB). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 pilot batch, 30 Oct 2026.",
+   "_provenance": "Authored from concept: 'a CASB finds shadow IT and enforces cloud policy that its owner sets' (notes 4.3.8 Cloud Misconfiguration, CSPM and CASB). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 pilot batch, 30 Oct 2026. Cross-review fix (31 Oct 2026): CASB spelled out at first use in the stem (CD-32); 'approves any blocking' now covers the port block in A as well as CASB blocking.",
    "style_version": 2
   },
   {
@@ -951,7 +951,7 @@
    "bloom_level": "Analysis",
    "question": "An art gallery's IT lead says its firewall, email filter, endpoint protection and backups give defense in depth, yet all four share one administrator password. Why should the security analyst MOST doubt the claim?",
    "options": {
-    "A": "Shared passwords stop each action being traced to one person",
+    "A": "Shared passwords could stop actions being traced to one person",
     "B": "Four controls are too few to count as defense in depth",
     "C": "Backups restore data, so they do not count as a layer",
     "D": "One stolen password could switch off every layer together"
@@ -976,7 +976,7 @@
     "Independent layers",
     "Single point of failure"
    ],
-   "_provenance": "Authored from concept: 'layers must fail independently; one shared credential collapses them into one' (notes 4.2.5 Defense in Depth). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 2, 30 Oct 2026.",
+   "_provenance": "Authored from concept: 'layers must fail independently; one shared credential collapses them into one' (notes 4.2.5 Defense in Depth). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 2, 30 Oct 2026. Cross-review fix (31 Oct 2026): the runner-up A is now hedged like the key ('could'), so the hedge no longer marks the key (CD-16).",
    "style_version": 2
   },
   {
@@ -1061,7 +1061,7 @@
    "options": {
     "A": "The report moves accountability for any data breach to the provider",
     "B": "The report proves the provider's controls will stay effective from now on",
-    "C": "The report covers the association too if it keeps default settings",
+    "C": "The report covers the association's default settings, not ones it changes",
     "D": "The report covers the provider's controls, not the association's own"
    },
    "correct": "D",
@@ -1084,7 +1084,7 @@
     "Provider scope",
     "Customer accountability"
    ],
-   "_provenance": "Authored from concept: 'independent proof covers the provider's controls, not the customer's' (notes 4.3.6 Cloud Roles and Agreements). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 2, 30 Oct 2026. Standards audit fix (30 Oct 2026): runner-up no longer agrees with the manager's premise or repeats cc_d2_005.",
+   "_provenance": "Authored from concept: 'independent proof covers the provider's controls, not the customer's' (notes 4.3.6 Cloud Roles and Agreements). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 2, 30 Oct 2026. Standards audit fix (30 Oct 2026): runner-up no longer agrees with the manager's premise or repeats cc_d2_005. Cross-review fix (31 Oct 2026): C now has the key's 'X, not Y' form (CD-16). Fix-up round 1 (31 Oct 2026): C names the association's own default settings, so it cannot be read as the provider's defaults.",
    "style_version": 2
   },
   {
@@ -1156,7 +1156,7 @@
     "Radio interference",
     "Layered troubleshooting"
    ],
-   "_provenance": "Authored from concept: 'a control protects only its own layer; name the layer before the fix' (notes 4.1.2 The OSI Model). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 2, 30 Oct 2026. Blind re-test fix (30 Oct 2026): runner-up is now a radio-layer lure (more power).",
+   "_provenance": "Authored from concept: 'a control protects only its own layer; name the layer before the fix' (notes 4.1.2 The OSI Model (+4.1.10 Wireless Security: Wi-Fi and Bluetooth)). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 2, 30 Oct 2026. Blind re-test fix (30 Oct 2026): runner-up is now a radio-layer lure (more power). Cross-review fix (31 Oct 2026): provenance now also cites notes 4.1.10, which carries the 2.4 GHz interference fact.",
    "style_version": 2
   },
   {
@@ -1525,7 +1525,7 @@
    "subtopic": "4.3 Cloud security. Shared responsibility",
    "difficulty": "foundational",
    "bloom_level": "Foundational",
-   "question": "A food delivery startup runs its order system on IaaS virtual machines, and a critical flaw is found in the hypervisor beneath them. Who is MOST responsible for patching the hypervisor?",
+   "question": "A food delivery startup runs its order system on infrastructure as a service (IaaS) virtual machines, and the hypervisor beneath them has a critical flaw. Who is MOST responsible for applying the hypervisor patch?",
    "options": {
     "A": "The provider, which runs the physical host servers",
     "B": "The startup's server team, which manages the virtual machines",
@@ -1543,7 +1543,7 @@
    },
    "tips": [
     "Eliminate: C confuses application code with infrastructure, and D confuses releasing a fix with applying it.",
-    "Final two: A beats B because the provider runs the hypervisor; the customer's IaaS duties start at the guest operating system.",
+    "Final two: A beats B because the provider runs the host servers and the hypervisor on them; the customer's IaaS duties start at the guest operating system.",
     "Exam cue: the provider always secures the hardware and virtualization layer. In IaaS, the customer's share starts at the guest operating system."
    ],
    "framework_ref": "NIST SP 800-145 Section 2 (The NIST Definition of Cloud Computing: service models); NIST SP 800-144 Section 4.6 (Software Isolation)",
@@ -1552,20 +1552,20 @@
     "Hypervisor",
     "Shared responsibility"
    ],
-   "_provenance": "Authored from concept: 'the provider secures the virtualization layer and the IaaS customer starts at the guest operating system' (notes 4.3.5 The Shared Responsibility Model). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 2, 30 Oct 2026. Standards audit fix (30 Oct 2026): stem no longer names who runs the hypervisor.",
+   "_provenance": "Authored from concept: 'the provider secures the virtualization layer and the IaaS customer starts at the guest operating system' (notes 4.3.5 The Shared Responsibility Model). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 2, 30 Oct 2026. Standards audit fix (30 Oct 2026): stem no longer names who runs the hypervisor. Cross-review fix (31 Oct 2026): IaaS spelled out at first use in the stem (CD-32). Fix-up round 1 (31 Oct 2026): the stem asks who applies the patch, as cc_d4_016 does, so the maker that writes it is not a foothold. Fix-up round 2 (31 Oct 2026): the Final two tip now links the provider's host servers to the hypervisor that runs on them; options unchanged.",
    "style_version": 2
   },
   {
    "id": "cc_d4_044",
    "domain": 4,
    "subtopic": "4.3 Cloud security. Cloud posture management",
-   "difficulty": "analysis",
-   "bloom_level": "Analysis",
-   "question": "A payroll firm's procedure lets its junior cloud engineer fix CSPM findings that break the approved baseline, and CSPM flags a test server with SSH open to the internet. What should the engineer do FIRST?",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "A payroll firm's procedure lets its junior engineer fix baseline failures that cloud security posture management (CSPM) finds; one is a test server with SSH open to the internet. What should the engineer do FIRST?",
    "options": {
     "A": "Open a ticket asking the cloud provider to fix the setting",
     "B": "Restrict SSH to the admin team's addresses and record the change",
-    "C": "Report the finding to the server's owner and await a decision",
+    "C": "Report the SSH exposure to the server's owner and await a decision",
     "D": "Accept the finding as low risk for a test server"
    },
    "correct": "B",
@@ -1588,7 +1588,7 @@
     "Configuration baselines",
     "In-role action"
    ],
-   "_provenance": "Authored from concept: 'CSPM compares settings to a baseline; fix assigned drift promptly because cloud settings are the customer's' (notes 4.3.8 Cloud Misconfiguration, CSPM and CASB). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 2, 30 Oct 2026. Standards audit fix (30 Oct 2026): framed as a pre-approved change so it agrees with the change-control items in D2 and D5.",
+   "_provenance": "Authored from concept: 'CSPM compares settings to a baseline; fix assigned drift promptly because cloud settings are the customer's' (notes 4.3.8 Cloud Misconfiguration, CSPM and CASB). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 2, 30 Oct 2026. Standards audit fix (30 Oct 2026): framed as a pre-approved change so it agrees with the change-control items in D2 and D5. Cross-review fix (31 Oct 2026): CSPM spelled out at first use in the stem (CD-32); runner-up C now names the SSH exposure, so the key is no longer the only option echoing the stem's SSH or the longest option (CD-14); relabeled application, since one stated fact (the procedure assigns the fix) decides it (CD-21).",
    "style_version": 2
   },
   {
