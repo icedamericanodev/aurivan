@@ -1,5 +1,10 @@
 # AAIA kickoff prompt (paste into a new session)
 
+**Status: done (31 Oct 2026, PR #158).** This prompt was run once; its outputs
+are `docs/content/AAIA_BLUEPRINT.md`, `docs/content/AAIA_BANK_PLAN.md`, the
+`aaia-*` agents and `data/aaia/`. Don't run it again: continue from the bank
+plan (batch 2 is next). Kept for history.
+
 Written 30 Oct 2026 from the CRISC kickoff session. Copy everything inside
 the fence below into a new Claude Code session on this repository.
 

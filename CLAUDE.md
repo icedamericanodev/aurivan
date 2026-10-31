@@ -206,7 +206,7 @@ kill %1
   `aaia-cross-domain-reviewer`. Multi-cert content
   agents: `isaca-concept-reviewer`, `isaca-mindset-coach`, `qa-question-tester`,
   `cert-blueprint-researcher`. Product/marketing: `product-manager`, `growth-marketer`, `brand-logo-designer` (logo, icon, splash, lockups), `mobile-ui-designer` (assess and redesign crowded screens, then implement), `mobile-motion-designer` (motion system, micro-interactions, Reduce Motion), `mobile-performance-engineer` (lag, slow tabs and screens: measure with realistic saves, find the regressing release, fix root causes), `mascot-character-designer` (the tree companion's art, stages and customization), `community-support-designer` (report a problem, support email, feedback board and moderation). Learning and motivation: `behavioral-scientist` (habits, nudges, rewards, pacing), `learning-game-designer` (brain games, names, badges).
-  CRISC content: `crisc-standards-auditor` (shared standard), `crisc-d1..d4-domain-expert`, `crisc-cross-domain-reviewer`. AAIA kickoff prompt: `docs/content/AAIA_KICKOFF_PROMPT.md`.
+  CRISC content: `crisc-standards-auditor` (shared standard), `crisc-d1..d4-domain-expert`, `crisc-cross-domain-reviewer`. AAIA kickoff prompt (done; history only): `docs/content/AAIA_KICKOFF_PROMPT.md`; continue AAIA from `docs/content/AAIA_BANK_PLAN.md`.
   Notes and web: `cisa-notes-curator` (notes structure and rewrites), `learner-reader`
   (first-time candidate read-through), `web-app-engineer` (index.html),
   `notes-application-tester` (do the notes let a learner answer the bank?),
