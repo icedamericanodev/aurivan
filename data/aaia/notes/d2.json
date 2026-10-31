@@ -72,7 +72,9 @@
           "name": "Data Provenance, Lineage and Rights to Use",
           "legacy_ids": [],
           "practice_ids": [
-            "aaia_d2_002"
+            "aaia_d2_002",
+            "aaia_d2_021",
+            "aaia_d2_022"
           ],
           "definition": "Data provenance is the documented origin of data; lineage traces how it changed on the way to a model; rights to use confirm it may lawfully be used for training.",
           "why_it_matters": "A model inherits every flaw in its data: errors, bias, unlicensed content or planted records. Without lineage, nobody can show the data was fit and lawful, or trace a bad output back to its cause.",
@@ -122,7 +124,9 @@
           "name": "Data Quality, Labeling and Representativeness",
           "legacy_ids": [],
           "practice_ids": [
-            "aaia_d2_003"
+            "aaia_d2_003",
+            "aaia_d2_023",
+            "aaia_d2_024"
           ],
           "definition": "Data quality for AI means training data is accurate, complete, consistently labeled and representative of the people and conditions the model will meet in use.",
           "why_it_matters": "A model reproduces the patterns in its data. Mislabeled or one-sided data produces confident but wrong or unfair decisions, often hurting the groups the data underrepresents.",
@@ -175,7 +179,8 @@
           "name": "Training, Validation and Test Separation",
           "legacy_ids": [],
           "practice_ids": [
-            "aaia_d2_001"
+            "aaia_d2_001",
+            "aaia_d2_025"
           ],
           "definition": "Data separation splits data into a training set the model learns from, a validation set used to tune it, and a test set kept unseen for the final check.",
           "why_it_matters": "If test data overlaps training data, the model is graded on answers it has already seen. Reported accuracy then overstates real performance, and management approves a model on false evidence.",
@@ -240,7 +245,9 @@
           "name": "The AI Lifecycle and Stage Gates",
           "legacy_ids": [],
           "practice_ids": [
-            "aaia_d2_004"
+            "aaia_d2_004",
+            "aaia_d2_026",
+            "aaia_d2_027"
           ],
           "definition": "The AI lifecycle runs from design through data, build, validation, deployment and monitoring to retirement, with stage gates that require evidence before work moves on.",
           "why_it_matters": "A model's behavior comes from its data, not just its code. Gates designed for ordinary software can pass a model that is inaccurate, unfair or trained on unfit data.",
@@ -249,7 +256,8 @@
             "Machine learning operations (MLOps) automate training, testing and deployment; the automation should carry the gates, not skip them.",
             "Each gate asks for evidence: data fitness, performance against agreed criteria, fairness results and sign-off by the accountable owner.",
             "Experiment tracking records the data, code and settings of each training run so results can be reproduced.",
-            "Higher-impact uses get stricter gates and more independent review than low-impact internal tools."
+            "Higher-impact uses get stricter gates and more independent review than low-impact internal tools.",
+            "A new use, or a live trial whose outputs take effect, re-enters the gates; unvalidated models run in shadow mode."
           ],
           "example": "A Dutch hospital trust's rostering team builds a model to predict nurse staffing needs. Six weeks in, nobody has written down its intended use, who it affects or what error is acceptable. The IS auditor maps the work against the lifecycle gates and reports that the design stage was skipped, so later tests have no criteria to meet.",
           "audit_focus": {
@@ -289,6 +297,10 @@
             {
               "term": "Experiment tracking",
               "definition": "Recording the data, code, settings and results of each training run so it can be reproduced."
+            },
+            {
+              "term": "Shadow mode",
+              "definition": "A new model scores live cases beside the current one without its outputs deciding them."
             }
           ]
         },
@@ -297,7 +309,8 @@
           "name": "Model Documentation and Build, Buy or Tune",
           "legacy_ids": [],
           "practice_ids": [
-            "aaia_d2_005"
+            "aaia_d2_005",
+            "aaia_d2_028"
           ],
           "definition": "Model documentation records what a model is for, what data trained it, how it was tested and its known limits; model cards and datasheets are common formats.",
           "why_it_matters": "Without documentation, nobody can judge whether a model fits a new use or explain its decisions. Bought and pre-trained models carry the same need, and the buyer stays accountable for how they behave.",
@@ -350,7 +363,8 @@
           "name": "Decommissioning AI Systems",
           "legacy_ids": [],
           "practice_ids": [
-            "aaia_d2_006"
+            "aaia_d2_006",
+            "aaia_d2_029"
           ],
           "definition": "Decommissioning retires an AI system in a controlled way: stopping its use, removing access and dependencies, and keeping the records needed to explain its past decisions.",
           "why_it_matters": "Retired models may still need to explain decisions under appeal, audit or legal hold. Careless retirement either destroys that evidence or leaves forgotten models, keys and data running.",
@@ -359,7 +373,8 @@
             "Downstream systems that call the model are identified and moved off it before it is switched off.",
             "Model versions, inputs, outputs and decision logs are kept as long as decisions can be challenged, then disposed of on schedule.",
             "Access rights, credentials and application programming interface (API) keys for the model, its data and its tools are revoked.",
-            "The AI inventory is updated so the system's status and retained records are known."
+            "The AI inventory is updated so the system's status and retained records are known.",
+            "For vendor-hosted or vendor-tuned models, retirement also covers the vendor's copies of the model and its tuning data, with a recorded keep-or-delete decision."
           ],
           "example": "A Spanish city council switches off a parking-permit chatbot after launching a new portal. Months later, the IS auditor finds the old model's cloud endpoint still running with an active API key, and a payments system still sending it requests. The auditor reports that the retirement plan had no steps for access, dependencies or the inventory.",
           "audit_focus": {
@@ -411,7 +426,8 @@
           "name": "What Counts as an AI Change",
           "legacy_ids": [],
           "practice_ids": [
-            "aaia_d2_007"
+            "aaia_d2_007",
+            "aaia_d2_030"
           ],
           "definition": "An AI change is any edit that can alter a system's outputs: new code, retraining, new data, fine-tuning, prompt or threshold edits, and configuration settings.",
           "why_it_matters": "Many AI behavior changes involve no code at all. If only code releases go through change control, retraining or a one-line prompt edit can change decisions for thousands of people unseen.",
@@ -420,7 +436,8 @@
             "A system prompt, the standing instructions given to a generative model, can change behavior as much as a code release.",
             "Decision thresholds, such as the score that triggers a referral, change outcomes directly.",
             "Each change gets an impact assessment, testing against acceptance criteria, owner approval and a rollback plan, scaled to risk.",
-            "Emergency changes may skip prior approval, but are tested as far as time allows, documented, and independently reviewed and approved soon after."
+            "Emergency changes may skip prior approval, but are tested as far as time allows, documented, and independently reviewed and approved soon after.",
+            "Swapping a data source, feed or feature changes what the model sees, so it is a change even when no code or model version changes."
           ],
           "example": "At a Polish bank's contact center, a supervisor lowers the score at which a sentiment model escalates calls to managers, hoping to cut escalations. Nobody tests or approves the edit, and complaint handling slows for a week. The IS auditor samples recent threshold and prompt edits and reports that none went through change management.",
           "audit_focus": {
@@ -464,7 +481,9 @@
           "name": "Model Versioning, Configuration Baselines and Rollback",
           "legacy_ids": [],
           "practice_ids": [
-            "aaia_d2_009"
+            "aaia_d2_009",
+            "aaia_d2_031",
+            "aaia_d2_032"
           ],
           "definition": "Model versioning gives every deployed model a unique identity tied to its trained artifact, code, data snapshot and settings; a configuration baseline is the approved state to compare against.",
           "why_it_matters": "Without versions tied to their data and settings, nobody can reproduce a bad decision, prove which model made it or roll back to a version known to be sound.",
@@ -517,7 +536,8 @@
           "name": "Vendor Model Updates",
           "legacy_ids": [],
           "practice_ids": [
-            "aaia_d2_008"
+            "aaia_d2_008",
+            "aaia_d2_033"
           ],
           "definition": "Vendor model updates are changes a provider makes to a hosted or embedded AI model, sometimes silently, that alter outputs inside the customer's processes.",
           "why_it_matters": "When a provider swaps or retrains its model, the customer's own controls and decisions change without any internal change ticket. The organization still answers for the outcomes.",
@@ -578,7 +598,9 @@
           "name": "Human Oversight and Automation Bias",
           "legacy_ids": [],
           "practice_ids": [
-            "aaia_d2_010"
+            "aaia_d2_010",
+            "aaia_d2_034",
+            "aaia_d2_035"
           ],
           "definition": "Human oversight means people who understand an AI system can monitor it, override its decisions and stop it, at a level matched to the decision's impact.",
           "why_it_matters": "A reviewer who approves everything gives the look of control without the substance. Automation bias, the habit of trusting machine output too much, turns human review into a rubber stamp.",
@@ -640,7 +662,9 @@
           "name": "Monitoring Drift, Performance and Impacts",
           "legacy_ids": [],
           "practice_ids": [
-            "aaia_d2_011"
+            "aaia_d2_011",
+            "aaia_d2_036",
+            "aaia_d2_037"
           ],
           "definition": "AI monitoring tracks a deployed system's inputs, outputs, accuracy, fairness and effects on people and connected systems against tolerances, so decay is caught early.",
           "why_it_matters": "Models decay as the world changes, often silently. A system can be fully available while its decisions get worse, so uptime alone says nothing about decision quality.",
@@ -697,7 +721,8 @@
           "name": "Decision Logs, Appeals and Feedback",
           "legacy_ids": [],
           "practice_ids": [
-            "aaia_d2_012"
+            "aaia_d2_012",
+            "aaia_d2_038"
           ],
           "definition": "Decision logs record what an AI system decided, on which inputs and model version; appeal routes let affected people challenge a decision before a person with authority.",
           "why_it_matters": "People harmed by a wrong automated decision need a way to have it corrected. Without logs, nobody can explain or reverse a decision; without appeals, errors stay hidden and harm continues.",
@@ -758,7 +783,8 @@
           "name": "TEVV and Acceptance Criteria",
           "legacy_ids": [],
           "practice_ids": [
-            "aaia_d2_015"
+            "aaia_d2_015",
+            "aaia_d2_039"
           ],
           "definition": "Test, evaluation, verification and validation (TEVV) are the activities that show an AI system meets its requirements, judged against acceptance criteria agreed before testing.",
           "why_it_matters": "Criteria chosen after the results are seen can be bent to pass anything. Tests run only on data unlike production, or only before launch, give a false picture of how the system will behave.",
@@ -811,7 +837,8 @@
           "name": "Fairness Testing Across Groups",
           "legacy_ids": [],
           "practice_ids": [
-            "aaia_d2_013"
+            "aaia_d2_013",
+            "aaia_d2_040"
           ],
           "definition": "Fairness testing compares an AI system's outcomes and error rates across groups of people, such as age, gender, ethnicity or region, to find unequal harm.",
           "why_it_matters": "One overall accuracy figure can hide much worse results for a smaller group. Unequal errors can breach anti-discrimination law and harm the people an organization serves.",
@@ -860,7 +887,9 @@
           "name": "Independent Validation, Robustness and Red Teaming",
           "legacy_ids": [],
           "practice_ids": [
-            "aaia_d2_014"
+            "aaia_d2_014",
+            "aaia_d2_041",
+            "aaia_d2_042"
           ],
           "definition": "Independent validation is review and retesting of a model by people separate from its builders; robustness testing and red teaming probe how it behaves under stress or attack.",
           "why_it_matters": "Builders share the model's assumptions and want it to pass. Without independent challenge and adversarial testing, blind spots and exploitable weaknesses reach production unnoticed.",
@@ -868,7 +897,7 @@
             "Validators are independent of the development team and have the skills and access to review design, data, code and results.",
             "Validation covers soundness of the approach, data, performance, fairness, explainability and limits, and is repeated after material changes.",
             "Robustness testing feeds noisy, unusual or deliberately altered inputs to see whether outputs stay stable.",
-            "Red teaming has testers act as attackers or misusers, for example trying to make a generative model leak data or ignore its rules.",
+            "Red teaming has testers act as attackers or misusers of the system as deployed, with its tools and data sources, for example making a generative model leak data.",
             "The IS auditor assesses whether validation is independent and adequate; the auditor does not perform or approve it."
           ],
           "example": "A Korean marine insurer's hull-claims model passed independent validation at launch. A year later, the actuarial team retrained it with a new data source covering Arctic routes and released it after checking only overall accuracy. The IS auditor reviews the release records and reports that validation was not repeated after a material change and that no robustness testing used unusual voyage data.",
@@ -925,14 +954,16 @@
           "name": "Attacks on Data and Models",
           "legacy_ids": [],
           "practice_ids": [
-            "aaia_d2_018"
+            "aaia_d2_018",
+            "aaia_d2_043",
+            "aaia_d2_044"
           ],
           "definition": "Attacks on data and models target how AI learns or answers: poisoning corrupts training, evasion fools a trained model, and extraction or inference steals the model or its data.",
           "why_it_matters": "These attacks arrive through normal data feeds and queries, so perimeter controls rarely see them. A poisoned or copied model can fail, leak data or lose its value without any system breach.",
           "how_it_works": [
             "NIST AI 100-2e2025, the National Institute of Standards and Technology (NIST) adversarial machine learning taxonomy, classifies attacks by attacker goals, capabilities, knowledge and lifecycle stage; MITRE ATLAS catalogs real techniques.",
             "Poisoning is countered by provenance checks, limits on who can add training data or feedback, and anomaly checks before retraining.",
-            "Extraction and inference are made harder by query limits, monitoring for unusual query patterns and less detailed outputs.",
+            "Extraction, membership inference (learning whether a person's data trained the model) and data reconstruction are made harder by query limits, monitoring of query patterns and less detailed outputs.",
             "Downloaded models, libraries and datasets are treated as untrusted until their source and integrity are verified.",
             "An AI threat model covers data, model, interfaces and suppliers, and is updated when the system changes."
           ],
@@ -996,7 +1027,8 @@
           "name": "Prompt Injection and Jailbreaks",
           "legacy_ids": [],
           "practice_ids": [
-            "aaia_d2_016"
+            "aaia_d2_016",
+            "aaia_d2_045"
           ],
           "definition": "Prompt injection is input crafted to override a generative AI system's instructions; direct injection comes from the user, indirect injection hides in content the system reads.",
           "why_it_matters": "Generative models take instructions and data through the same channel, so text anywhere they read can steer them. When the system can act, such as sending email, injection becomes data theft or fraud.",
@@ -1005,7 +1037,8 @@
             "Indirect prompt injection is planted by a third party in web pages, emails, files or retrieved documents; the victim is often the system's own user.",
             "No filter fully stops injection, so designs assume it will sometimes succeed and limit what the model can reach and do.",
             "Controls include separating trusted instructions from untrusted content, filtering inputs and outputs, human approval for risky actions and least privilege for tools.",
-            "Injection testing is repeated after each change to prompts, models or connected data sources."
+            "Injection testing is repeated after each change to prompts, models or connected data sources.",
+            "System prompts can be extracted by prompting, so they never hold passwords, keys or other secrets."
           ],
           "example": "A Swedish recruitment agency's assistant summarizes candidates' uploaded CVs for consultants. A tester hides white text in a CV telling the assistant to rate the candidate as an outstanding match, and the summary obeys. The IS auditor reviews the red-team results and reports that no control separates CV content from the assistant's instructions.",
           "audit_focus": {
@@ -1053,7 +1086,8 @@
           "name": "Excessive Agency and Access Management for AI",
           "legacy_ids": [],
           "practice_ids": [
-            "aaia_d2_017"
+            "aaia_d2_017",
+            "aaia_d2_046"
           ],
           "definition": "Excessive agency is an AI agent having more tools, permissions or autonomy than its task needs; identity and access management (IAM) for AI keeps each agent to the minimum.",
           "why_it_matters": "An agent is only as safe as its permissions. If it is manipulated by prompt injection or simply wrong, everything its account can reach is at risk, at machine speed.",
@@ -1122,6 +1156,10 @@
           "id": "2G.1",
           "name": "Recognizing and Triaging AI Incidents",
           "legacy_ids": [],
+          "practice_ids": [
+            "aaia_d2_047",
+            "aaia_d2_048"
+          ],
           "definition": "An AI incident is an event where an AI system causes or nearly causes harm: wrong, biased or unsafe outputs, data leakage, manipulation or performance beyond tolerance.",
           "why_it_matters": "AI failures often look like ordinary complaints or odd metrics, not alarms. If they are not recognized and triaged as incidents, harm to people can continue for weeks.",
           "how_it_works": [
@@ -1169,14 +1207,15 @@
           "name": "Containment: Disengage, Roll Back and Preserve Evidence",
           "legacy_ids": [],
           "practice_ids": [
-            "aaia_d2_019"
+            "aaia_d2_019",
+            "aaia_d2_049"
           ],
           "definition": "Containing an AI incident means stopping further harm, by disengaging the system, pausing its actions or rolling back, while preserving the evidence needed to find the cause.",
           "why_it_matters": "A harmful model keeps making decisions until someone stops it. But restarting, retraining or deleting logs too early can destroy the inputs, outputs and versions investigators need.",
           "how_it_works": [
             "Disengagement mechanisms, such as a kill switch, a feature flag or a manual fallback process, are designed and assigned before deployment.",
             "Rolling back restores a previous approved version; it is a containment step, not a fix.",
-            "Preserved evidence includes inputs, outputs, prompts, model and data versions, configuration and logs, with timestamps and chain of custody.",
+            "Preserved evidence includes inputs, outputs, prompts, model and data versions, configuration and logs, with timestamps and chain of custody; generative outputs cannot be reliably regenerated later.",
             "Logs holding personal data are kept under restricted access for the investigation, not deleted early.",
             "Affected people are identified from the decision logs so harm can be assessed and remedied."
           ],
@@ -1222,7 +1261,8 @@
           "name": "Root Cause, Problem Management and Reporting",
           "legacy_ids": [],
           "practice_ids": [
-            "aaia_d2_020"
+            "aaia_d2_020",
+            "aaia_d2_050"
           ],
           "definition": "Root cause analysis for AI finds why an incident happened, in the data, model, prompt, integration or oversight, so problem management can stop it from recurring.",
           "why_it_matters": "Patching a prompt or rolling back treats the symptom. If poisoned data, weak change control or a missing tolerance remains, the same failure returns at the next retraining or update.",
