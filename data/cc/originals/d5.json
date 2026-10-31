@@ -1759,7 +1759,7 @@
    },
    "tips": [
     "Eliminate: B restarts the agent and closes the alert, and D mutes the alerts; both treat a silent log as noise, not a warning sign.",
-    "Final two: C beats A because the runbook assigns the ticket to the analyst; the owner's maintenance theory is checked within it, not before it.",
+    "Final two: C beats A because the runbook gives the ticket to the analyst and no change record backs the maintenance claim; that theory is checked inside the ticket, not before it.",
     "Exam cue: a log source that goes quiet is itself an alert. Take the runbook's step, and test any harmless explanation inside the ticket."
    ],
    "framework_ref": "NIST SP 800-53 Rev. 5 AU-5 (Response to Audit Logging Process Failures); NIST SP 800-53 Rev. 5 AU-9 (Protection of Audit Information)",
@@ -2104,7 +2104,7 @@
    "question": "A textile mill's inventory lists its defect-spotting AI model but not the labeled photos used to tune it, kept on a shared drive. What should the IT asset analyst propose as BEST?",
    "options": {
     "A": "Inventory the photo set separately, with an owner to classify it",
-    "B": "Restrict the shared drive and note it in the model's inventory entry",
+    "B": "Restrict the shared drive and list the photos under the model's entry",
     "C": "Delete the photo set, since tuning is finished",
     "D": "Move the photo set onto the model's server, already in the inventory"
    },
@@ -2175,7 +2175,7 @@
    "bloom_level": "Application",
    "question": "A school district's patch tool reports that this month's browser fix installed on all 200 staff laptops. Which evidence BEST confirms to the IT technician that the browser flaw is closed?",
    "options": {
-    "A": "A fresh vulnerability scan showing that no laptop is still exposed",
+    "A": "A fresh vulnerability scan showing no laptop is still exposed",
     "B": "The patch tool's report of a successful install on each laptop",
     "C": "The approved change record for this month's patch rollout",
     "D": "Replies from users confirming they restarted their browsers"
@@ -2325,7 +2325,7 @@
     "D": "Send them off site and record the visit in the shift log"
    },
    "correct": "C",
-   "key_concept": "Physical tests are arranged with the security team in advance, so guards confirm a claimed tester with that team, never through the tester's own paperwork.",
+   "key_concept": "Physical tests are pre-arranged with the security team, so guards confirm a claimed tester through its known contact; a letter is a claim, not proof.",
    "pre_read": "Notice what the guard has been handed and what it can prove. Then ask how each option would check it.",
    "correct_explanation": "A letter is only a claim: an intruder could forge one and print an accomplice's number on it. A real test is arranged with the security team in advance, so the guard keeps the person in view and calls that team's known contact. Calling the number printed on the letter is the runner-up: it looks like verification, but the letter came from the visitor, so its number may reach an accomplice.",
    "wrong_explanations": {

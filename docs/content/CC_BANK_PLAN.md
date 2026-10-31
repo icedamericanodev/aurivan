@@ -282,6 +282,7 @@ Learned from two blind tests and two standards audits of the pilot.
 | Pilot (Oct 2026) | 20 | 20 | 20 | 20 | 20 | 100 |
 | Batch 2, D1 and D4 (30 Oct 2026) | +25 | | | +25 | | 150 |
 | Batch 2, D2, D3 and D5 (30 Oct 2026) | | +25 | +25 | | +25 | 225 |
+| Batch 3, all domains (31 Oct 2026) | +30 | +20 | +25 | +25 | +20 | 345 |
 
 Batch 2: the first blind test matched the keys 25/25 in every domain, and
 re-tests of every changed item all matched. The audits found 7 hard errors
@@ -318,6 +319,27 @@ Batch 3 guidance from this round:
   that owner" pattern: owners named, but the procedure assigns the task.
 - Give D1 more weight than D2 and D5 (D1 is under its 24% outline weight),
   and vary D1 settings away from healthcare.
+
+**Batch 3 (31 Oct 2026).** 120 new items; every notes sub-topic now has at
+least one question (1.5.3 and 5.2.9 included). A container restart left two
+runs editing the same files at once, so a final pass re-tested all 120 items
+blind (120/120 matched the keys) and re-audited them; changed items were
+re-tested again. No HARD findings survived. Inside the batch, the key is the
+longest option in 10-16% of items per domain and the shortest in 8-20%.
+
+Batch 4 guidance from this round:
+- Length tells are gated both ways now: `check_cc.py` fails a domain whose
+  "pick the shortest" rate leaves 12-30%, and `--new N` shows a batch alone.
+- Key letter order: authors rotated letters by hand, which left a periodic
+  pattern (every 4th key repeats up to 50%; back-to-back repeats 3-14%, chance
+  is about 25%). Batch 4 authors take their key letters from a pre-generated
+  random, balanced sequence; the existing bank is re-keyed in its own pass.
+- Rival words: give a distractor any oversight or least-privilege word the key
+  uses (record, log, monitor, need), and avoid urgency words ("now") on the key
+  alone.
+- Canonical roles now include "access analyst" (D3); notes say "security
+  manager", not "security management".
+- D1 still needs the most items (240 target, 75 now).
 
 ## 7. Follow-ups outside this plan's scope
 

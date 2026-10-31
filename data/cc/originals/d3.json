@@ -1940,7 +1940,7 @@
       "tips": [
         "Eliminate: D confuses keeping the account with keeping it usable, and A turns a leaver's login into a shared account.",
         "Final two: C beats B because disabling stops access now and keeps the log trail; deleting at once can lose data and evidence.",
-        "Exam cue: when a senior person asks for a step the procedure sets differently, follow the procedure and explain it; the procedure's owner can change it, the requester cannot."
+        "Exam cue: when a senior person asks for a step the procedure sets differently, follow the procedure and explain why; a change to the procedure goes through its owner, not a one-off request."
       ],
       "framework_ref": "NIST SP 800-53 Rev. 5 PS-4 (Personnel Termination); NIST SP 800-53 Rev. 5 AC-2 (Account Management)",
       "related_concepts": [
@@ -1959,7 +1959,7 @@
       "bloom_level": "Application",
       "question": "A crowdfunding platform's AI support agent calls the payments application programming interface (API) with a key written into its source code, which 40 developers can read. Which change should the security analyst propose as BEST?",
       "options": {
-        "A": "Replace the exposed key and store the new one in a vault",
+        "A": "Replace the key and store the new one in a secrets vault",
         "B": "Rotate the key every month but keep it in the source code",
         "C": "Encode the key in the code so readers cannot recognize it",
         "D": "Have the agent use a developer's personal key instead"
@@ -2140,7 +2140,7 @@
       "question": "A food bank's new inventory app lets any signed-in staff member open every screen that has not been specifically restricted. Which change is BEST for the security analyst to request from the vendor?",
       "options": {
         "A": "Add multifactor authentication to every staff member's sign-in",
-        "B": "Default deny, granting each screen only to roles that need it",
+        "B": "Deny by default, granting each screen only to roles that need it",
         "C": "Restrict each screen holding sensitive inventory data to staff who need it",
         "D": "Log every screen each staff member opens, with user and time"
       },
@@ -2322,15 +2322,15 @@
         "A": "Keep the grants, since the 40 staff use them every day",
         "B": "Remove the 40 grants now; owners re-add those still needed",
         "C": "Create a separate role for each of the 40 staff members",
-        "D": "Have role owners fold needed rights into roles or drop them"
+        "D": "Have role owners fold needed grants into roles or drop them"
       },
       "correct": "D",
       "key_concept": "Role-based access control works when rights come through roles; the role owner decides whether a direct grant joins a role or goes.",
       "pre_read": "Ask who can tell which of the direct grants are still needed.",
-      "correct_explanation": "Role-based access control works when rights come through roles; direct grants bypass the catalog and its reviews. The role owner decides whether each needed right belongs in a role, perhaps as a time-limited extra, or should go. Removing all 40 at once is the runner-up: it restores the model fast and lets owners re-add rights, but removal comes before the owner's decision and cuts live work until they act.",
+      "correct_explanation": "Role-based access control works when rights come through roles; direct grants bypass the catalog and its reviews. The role owner decides whether each needed right belongs in a role, perhaps as a time-limited extra, or should go. Removing all 40 at once is the runner-up: it restores the model fast and lets owners re-add rights, but it acts before the owner decides and may cut access that live work still needs.",
       "wrong_explanations": {
         "A": "Tempting because the access is in use. But use is not approval; direct grants escape role reviews and build privilege creep.",
-        "B": "Closest choice: direct grants should end, and owners can re-add rights. But removal comes before the owner's decision and cuts live work; the owner should decide first.",
+        "B": "Closest choice: direct grants should end, and owners can re-add rights. But removal comes before the owner's decision and may cut access live work needs; the owner decides first.",
         "C": "Tempting because it puts every right in a role. But one role per person is role explosion, which nobody can manage or review."
       },
       "tips": [
@@ -2466,7 +2466,7 @@
         "A": "Keep calling the owner to approve the break-glass use",
         "B": "Start the ventilation with the on-call engineer's admin login",
         "C": "Ask the help desk to make the supervisor a permanent administrator",
-        "D": "Use the break-glass account to start the ventilation now"
+        "D": "Use the break-glass account to switch on the ventilation"
       },
       "correct": "D",
       "key_concept": "When lives are at risk and the runbook authorizes break-glass access, use it at once; alerting and review follow.",

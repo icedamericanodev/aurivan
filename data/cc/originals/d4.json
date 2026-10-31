@@ -1823,7 +1823,7 @@
    "correct": "A",
    "key_concept": "Default passwords are among the first things attackers try; when the setup procedure assigns the change, make it before the device connects.",
    "pre_read": "Picture the first hour each camera spends on the network under each option.",
-   "correct_explanation": "A shared default password is published and among the first things attackers try, so each camera needs its own before it connects. Device hardening is the technician's step in the setup procedure, so they set each camera's own password now. Reporting to the facilities manager is the runner-up because the manager owns the cameras, but owning them does not make the manager decide a step the procedure already gives the technician.",
+   "correct_explanation": "A shared default password is published and among the first things attackers try, so each camera needs its own before it connects. Device hardening is the technician's step in the setup procedure, so they set each camera's own password now. Reporting to the facilities manager is the runner-up because the manager owns the cameras, but the procedure gives this step to the technician, so reporting and waiting only leaves the published default in place longer.",
    "wrong_explanations": {
     "B": "Tempting because the edge firewall blocks outside connections. But a compromised device inside can still reach the cameras, and default passwords are tried first.",
     "C": "Closest choice: the facilities manager owns the cameras and decides how they are used. But the procedure gives hardening to the technician, so reporting and waiting only delays the fix.",
@@ -1895,7 +1895,7 @@
    "correct": "D",
    "key_concept": "Defense in depth adds a different kind of control at another point, such as checking replies before release; stricter vendor filters are still one layer.",
    "pre_read": "Imagine someone tricks the vendor's filters with a clever prompt, and follow the reply.",
-   "correct_explanation": "Defense in depth needs layers that fail independently. The carrier's own reply check sits outside the vendor's model, so it can catch a bad reply the vendor's filters miss. NIST warns that checkers can share blind spots with the model, so the logs let staff spot misuse that gets past both. The vendor's stricter plan is the runner-up, but one trick may beat both, and its log shows only what it caught.",
+   "correct_explanation": "Defense in depth needs layers that fail independently. The carrier's own reply check sits outside the vendor's model, so it can catch a bad reply the vendor's filters miss. NIST warns that checkers can share blind spots with the model, so the logs let staff spot misuse that gets past both. Upgrading to the vendor's stricter filters is the runner-up, but one trick may beat both, and their log shows only what they caught.",
    "wrong_explanations": {
     "A": "Tempting because secrecy can slow attackers a little. But anyone can still type tricky prompts into the chatbot, so hiding names cannot catch a harmful reply.",
     "B": "Closest choice: stricter filters do improve that layer. But they are still the vendor's filters, so one trick could defeat both, and logging what they block shows nothing they miss.",
@@ -2006,7 +2006,7 @@
    "correct_explanation": "Whoever can edit training data can quietly change what the model learns, for example teaching it to wave through one kind of fraud. So edits go only to named people who need them, and every change is logged so bad records can be traced and removed. Malware scanning is the runner-up, but poisoned records are ordinary-looking data, not malicious code, and a retraining log does not show who changed a record.",
    "wrong_explanations": {
     "A": "Tempting because segmenting AI work is good practice. But the risk is already inside: every developer account can edit the data, and a tighter wall does not change that.",
-    "B": "Closest choice: checking data before training is wise. But poisoned records look like normal transactions, so a malware scan passes them, and a retraining log hides who changed a record.",
+    "B": "Closest choice: checking data before training is wise. But poisoned records look like normal transactions, so a malware scan passes them, and a retraining log omits who changed a record.",
     "D": "Tempting because encryption protects data. But it stops outsiders reading files; anyone allowed to edit the dataset can still change what the model learns."
    },
    "tips": [
@@ -2137,7 +2137,7 @@
    "subtopic": "4.3 Cloud security. Cloud data protection",
    "difficulty": "analysis",
    "bloom_level": "Analysis",
-   "question": "After moving its case files, a legal-aid charity is leaving a cloud service that stored them encrypted with keys it manages. Which step should its system administrator take to BEST make every remaining copy unreadable?",
+   "question": "After moving its case files, a legal-aid charity is leaving a cloud service that stored them encrypted under keys the charity manages. What should its system administrator do to BEST make every remaining copy unreadable?",
    "options": {
     "A": "Re-encrypt the files under new keys before deleting them",
     "B": "Destroy the encryption keys that protect the files",
@@ -2327,7 +2327,7 @@
    "correct": "B",
    "key_concept": "A new IPS starts in an alert-only (simulation) mode so its rules can be tuned before blocking, which avoids stopping legitimate business traffic.",
    "pre_read": "Picture the busiest shopping day with the new system sitting in the traffic path.",
-   "correct_explanation": "A new IPS raises many false positives until it is tuned, and because it sits inline, every wrong block stops real orders. Alert-only mode, which NIST calls simulation mode, logs what it would block so the team can tune first. The vendor's recommended rules are the runner-up because they are a sensible start, but untuned to the store's traffic they would turn away real shoppers in the busiest season.",
+   "correct_explanation": "A new IPS raises many false positives until it is tuned, and because it sits inline, every wrong block stops real orders. Alert-only mode, which NIST calls simulation mode, logs what it would block so the team can tune first. The vendor's recommended rules are the runner-up because they are a sensible start, but until they are tuned to the store's traffic they could turn away real shoppers in the busiest season.",
    "wrong_explanations": {
     "A": "Tempting because both sit in the traffic path. But a firewall decides which traffic is allowed at all; an IPS only hunts for attacks inside allowed traffic.",
     "C": "Closest choice: the vendor's recommended rules are a sensible start. But they are not tuned to this store's traffic, and an inline device stops whatever it blocks, real orders included.",
@@ -2366,11 +2366,11 @@
    "correct_explanation": "An access point plugged into the wired network extends it to anyone in radio range, and an employee's device is unlikely to have the company's encryption, sign-in or monitoring. NIST notes that a rogue access point can give a backdoor into the wired network that bypasses firewalls. Interference is the runner-up because an extra radio can disrupt the official Wi-Fi, but that slows service rather than exposing internal systems.",
    "wrong_explanations": {
     "B": "Closest choice: an extra radio can crowd the official channels. But that only slows the Wi-Fi; the greater risk is outsiders reaching internal systems through the device.",
-    "C": "Tempting because the device is unmanaged. But it plugs into a company wall jack, so traffic through it still leaves by the company's network and filters.",
+    "C": "Tempting because the device is unmanaged. But on a company wall jack, its traffic usually crosses the company's filters, and a filtering gap matters less than outsiders reaching internal systems.",
     "D": "Tempting because extra radios add exposure. But hidden network names are easy to find anyway; hiding one was never real protection."
    },
    "tips": [
-    "Eliminate: C forgets that traffic through the device still crosses the company's network and filters, and D treats a hidden network name as protection worth losing.",
+    "Eliminate: C overlooks that traffic through the device usually still crosses the company's network and filters, and D treats a hidden network name as protection worth losing.",
     "Final two: A beats B because a backdoor into the wired network exposes internal systems; interference only slows the Wi-Fi.",
     "Exam cue: any unapproved device that bridges radio to the wired network is a door around the perimeter. Rate access above inconvenience."
    ],
@@ -2393,7 +2393,7 @@
    "options": {
     "A": "Software as a service (SaaS)",
     "B": "Platform as a service (PaaS)",
-    "C": "Function as a service (FaaS)",
+    "C": "Function as a service (FaaS, serverless)",
     "D": "Infrastructure as a service (IaaS)"
    },
    "correct": "D",
@@ -2425,7 +2425,7 @@
    "subtopic": "4.3 Cloud security. Shared responsibility",
    "difficulty": "analysis",
    "bloom_level": "Analysis",
-   "question": "A dance school's own booking app runs on platform as a service (PaaS), and its email is software as a service (SaaS). Who MOST accurately fixes a code flaw in each?",
+   "question": "A dance school's own booking app runs on platform as a service (PaaS), and its email is software as a service (SaaS). Which split for fixing a code flaw in each is MOST accurate?",
    "options": {
     "A": "The school fixes the flaws in both applications",
     "B": "Each provider fixes the flaw in the application it hosts",
