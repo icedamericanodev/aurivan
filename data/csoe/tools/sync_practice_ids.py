@@ -23,8 +23,10 @@ CSOE = Path(__file__).resolve().parent.parent
 
 
 def indent_of(raw):
-    second = raw.split("\n")[1]
-    return len(second) - len(second.lstrip())
+    lines = raw.split("\n")
+    if len(lines) < 2:  # single-line JSON: write it back with the house indent
+        return 2
+    return len(lines[1]) - len(lines[1].lstrip())
 
 
 def main(argv):

@@ -92,7 +92,7 @@ def check_item(q, d, n, ids, bullets):
     m = re.match(rf"^{d}\.\d ([^.]+)\. \S", q.get("subtopic", ""))
     if not m:
         errs.append(f"subtopic '{q.get('subtopic')}' is not 'N.x Section. Label'")
-    if sorted(q.get("options", {})) != ["A", "B", "C", "D"] or key not in "ABCD":
+    if sorted(q.get("options", {})) != ["A", "B", "C", "D"] or key not in ("A", "B", "C", "D"):
         errs.append("options must be A-D with a key among them")
         return errs, None
     wrong = sorted(k for k in "ABCD" if k != key)

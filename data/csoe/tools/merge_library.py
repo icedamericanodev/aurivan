@@ -31,7 +31,7 @@ def main(staged):
             i = lib.index(head) + 1
             while i < len(lib) and not re.match(r"#{1,3} |---", lib[i]):
                 i += 1
-            while lib[i - 1].strip() == "":
+            while i > 1 and lib[i - 1].strip() == "":
                 i -= 1
             lib[i:i] = body
             print(f"merged {len(body)} line(s) under {head}")

@@ -136,21 +136,40 @@ name the runner-up testers weigh. CSOE adds:
 
 ## 7. Course description (store copy)
 
-Drafted by `growth-marketer`, 31 Oct 2026; compliance review pending.
+Drafted by `growth-marketer` and fixed after `app-store-compliance-reviewer`
+(31 Oct 2026: five fixes applied, now GO on wording).
 
-- In-app purchase name: "KaiSip SOX Compliance course"
-- Long name: "KaiSip SOX Compliance course, 6-month access (for the CSOE exam)"
-- Description: "Prepare for the CSOE exam in short sessions on your phone.
-  Plain-language notes cover Sections 302, 404 and 906, the roles of the SEC
-  and PCAOB, internal control over financial reporting and COSO, which
-  companies are in scope, and the Dodd-Frank changes. Original practice
-  questions explain every option and give three tips each, so you build
-  recall instead of looking up every answer. Timed, forward-only mocks train
-  your pacing, and a "where to look" sheet points you to the right source.
-  One payment, 6 months of access, never renews."
-- Notice: "KaiSip is an independent study aid. Not affiliated with or endorsed
-  by the Sarbanes Oxley Compliance Professionals Association (SOXCPA), the
-  SEC, the PCAOB or COSO."
+- In-app purchase name (Apple, 30 max): "KaiSip SOX Compliance course"
+- Long name (Play, 55 max): "KaiSip SOX Compliance, 6 months (for the CSOE exam)"
+- Apple in-app purchase description field: "SOX notes and practice questions, 6 months"
+- Store and paywall description: "Prepare for the CSOE exam in short sessions
+  on your phone. Plain-language notes cover Sections 302, 404 and 906, the
+  roles of the SEC and PCAOB, internal control over financial reporting and
+  COSO, which companies are in scope, and the Dodd-Frank changes. Original
+  practice questions explain every option and give three tips each, so you
+  build recall instead of looking up every answer. Timed mocks train your
+  pacing, and a "where to look" sheet points you to the right source. One
+  payment, 6 months of access, never renews."
+- Paywall headline: "Know SOX section by section, before exam day." (A/B:
+  "Stop searching. Start knowing SOX.") Subhead: "Plain-language notes,
+  explained practice questions and timed mocks for the CSOE exam. Start free
+  with sample questions, a diagnostic and a short timed mock. One payment, 6
+  months, never renews."
+- Notice (store listing and in the app; Google Play wants government
+  information sourced and a "does not represent" line): "KaiSip is an
+  independent study aid. Not affiliated with or endorsed by the Sarbanes Oxley
+  Compliance Professionals Association (SOXCPA), the SEC, the PCAOB or COSO,
+  and does not represent any government agency. Sources: the Sarbanes-Oxley
+  Act (congress.gov) and SEC rules (sec.gov). COSO is a trademark of the
+  Committee of Sponsoring Organizations of the Treadway Commission."
+
+Conditions before submission: the notes, timed mocks and "where to look"
+sheet named in the copy must exist; say "forward-only" only once the mock
+engine has that mode (today the mock screen has a Previous button); the
+paywall shows the local price, Restore, Terms, Privacy and the notice; no
+SEC, PCAOB or COSO logos or seals, and no COSO framework text. Re-check the
+Google Play rules once support.google.com is reachable (they came from search
+results), and escalate if SOXCPA objects or the USPTO shows a registration.
 
 ## 8. Owner decisions (open)
 
@@ -164,7 +183,10 @@ Raised after the experts weighed in; each needs the owner.
    2013 and notes 1992 as history. If an exam answer would differ, decide how
    to key it.
 3. **Free sample for small banks.** Keep "at least 100" or cap at 25% of the
-   bank (product-manager's proposal).
+   bank (product-manager's proposal). product-manager also proposed a free
+   full 35-item mock; the shared rule allows one short timed mock, and
+   app-store-compliance-reviewer kept the copy to that until the owner
+   decides.
 4. **Roadmap placement.** product-manager scores CSOE 2.0 (niche market,
    unverified scope, small bank) and suggests building it after Phase E
    payments run for CRISC and AAIA. It is not in `docs/ROADMAP.md` yet.

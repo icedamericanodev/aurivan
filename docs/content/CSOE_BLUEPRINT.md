@@ -100,8 +100,10 @@ PCAOB. Every threshold keyed on is checked at its current primary source.
   "official" about KaiSip content.
 - "CSOX" and "CSOXP" are registered marks of the Sarbanes Oxley Group, a
   different body (S6). Never use them.
-- Notice line: "KaiSip is not affiliated with or endorsed by the Sarbanes
-  Oxley Compliance Professionals Association (SOXCPA)."
+- Notice line: the full text (SOXCPA, the SEC, the PCAOB and COSO; "does not
+  represent any government agency"; .gov sources; the COSO trademark line) is
+  in `docs/content/CSOE_BANK_PLAN.md` section 7, as cleared by
+  `app-store-compliance-reviewer` on 31 Oct 2026.
 
 ## Before any content (open items)
 
