@@ -1,9 +1,11 @@
 // Mobile 1.43, the six concept boards and the tab headers (SHOTS=m143, see run.sh).
 //
 // Shots: the answer screen after a miss (folded, and with "Read more" open), Results for a
-// 10-question set with two misses, You (one readiness ring and the areas), the study note
-// "Recovery Objectives" (acronym plate, "In one line" first), Settings, the lesson's charter idea
-// scene, and the first screen of Today, Learn, Practice and Play.
+// 10-question set with two misses, You (the readiness scale bar, the stats and the areas plate;
+// 1.43's one ring became the scale bar in 1.51), the study note "Recovery Objectives" (acronym
+// plate, "In one line" first), Settings and its Reset button (on the Your data screen since 1.46),
+// the lesson's charter idea scene, and the first screen of Today, Learn, Practice and Practice's
+// Drills (where Play's games live now).
 // FONT_SCALE=2 approximates 200% text; NARROW=1 uses a 360-wide phone.
 import { createRequire } from 'module';
 import fs from 'fs';
@@ -74,6 +76,14 @@ const into = async (text, block = 'start', byLabel = false) => {
     await wait(700);
   } else console.log(`"${text}" did not show`);
 };
+/** The same, for a block the app marks with a testID (no words of its own to find it by). */
+const intoId = async (id, block = 'start') => {
+  const n = page.getByTestId(id).first();
+  if (await n.count()) {
+    await n.evaluate((x, b) => x.scrollIntoView({ block: b }), block);
+    await wait(700);
+  } else console.log(`testID "${id}" did not show`);
+};
 const edit = (key, fn) =>
   page.evaluate(
     ([k, src]) => {
@@ -123,7 +133,9 @@ if (want('results')) {
   );
   await go('/results', 2600);
   await shot('b2-results');
-  await scrollBy(560);
+  // "What you missed" (a Section heading over the missed notes, results.tsx), found by its words: the 1.51
+  // stats rows changed the page's heights, so a fixed scroll no longer lands on it.
+  await into('What you missed', 'center');
   await shot('b2-results-missed');
   await into('Review answers');
   await shot('b2-results-review');
@@ -133,10 +145,13 @@ if (want('results')) {
 if (want('you')) {
   await go('/you', 2600);
   await shot('b3-you');
-  await into('Answered', 'center');
+  // The stats are ruled label rows (Answered, Accuracy, Streak) under testID you-stats (you.tsx);
+  // the word "Answered" alone also matches a thin area's "18 answered" in the plate above.
+  await intoId('you-stats', 'center');
   await shot('b3-you-stats');
-  // The area rows from their caption (the seed's thin Info Protection row is the last one).
-  await into('Right on your latest tries');
+  // The areas, one scale in a plate (testID areas-plate, youReadiness.tsx; 1.43's area rows and
+  // their caption are gone). The seed's thin Info Protection area is the last stem.
+  await intoId('areas-plate');
   await shot('b3-you-areas');
 }
 
@@ -156,9 +171,10 @@ if (want('settings')) {
   await shot('b5-settings-more');
 }
 
-// The danger button at the foot of Settings (UX P3: does its pill read in dark?). M143_ONLY=danger.
+// The danger button (UX P3: does its pill read in dark?). M143_ONLY=danger. Since mobile 1.46 it sits
+// at the foot of the Your data screen, behind Settings' "Your data, …" door, opened here by its link.
 if (want('danger')) {
-  await go('/settings', 2200);
+  await go('/settings-section?category=data', 2200);
   await into('Reset CISA progress', 'center');
   await shot('b5-settings-reset');
 }

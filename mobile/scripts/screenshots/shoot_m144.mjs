@@ -143,9 +143,13 @@ await wait(700);
 await shot('n02b-today-greeting');
 
 // ── 3. "Add your website progress?" with a name (a phone with none) ─────
+// Settings → the "Your data, …" door (the "Data and help" card) → Your data, where Restore from a backup lives.
 await day2();
 await go('/settings', 2200);
-await into('Your data', 'n03');
+await page.getByRole('button', { name: /^Your data, / }).first().click();
+await page.waitForURL(/settings-section/);
+await page.getByRole('button', { name: 'Restore from a backup' }).first().waitFor();
+await wait(800);
 const chooser = page.waitForEvent('filechooser');
 await page.getByRole('button', { name: 'Restore from a backup' }).first().click();
 await (await chooser).setFiles({ name: 'kaisip-web-progress.json', mimeType: 'application/json', buffer: Buffer.from(WEB_NAMED) });
