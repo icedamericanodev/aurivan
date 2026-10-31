@@ -1533,9 +1533,9 @@
     "D": "End the test by pulling free and leaving by the nearest exit"
    },
    "correct": "C",
-   "key_concept": "Physical testers stop when anyone's safety is at risk and use their authorization letter so staff can verify the test.",
+   "key_concept": "Physical testers stop when anyone's safety is at risk and show their authorization letter, so staff can confirm the test through a known contact.",
    "pre_read": "Notice what has just changed in the situation. Then ask what matters more than finishing the test.",
-   "correct_explanation": "People's safety outranks any test result, so once a confrontation turns physical, the tester stops, identifies themselves and shows the signed authorization letter, which names a contact staff can call to verify it. Leaving at once is the runner-up: it ends the pretext, but pulling free can escalate a struggle, and staff are left believing a real intruder escaped.",
+   "correct_explanation": "People's safety outranks any test result, so once a confrontation turns physical, the tester stops, identifies themselves and shows the signed authorization letter, so staff can confirm the test through the security team's known contact rather than the tester's word. Leaving at once is the runner-up: it ends the pretext, but pulling free can escalate a struggle, and staff are left believing a real intruder escaped.",
    "wrong_explanations": {
     "A": "Tempting because the test is meant to be realistic. But realism never outweighs safety; once someone grabs the tester, the test has to stop.",
     "B": "Tempting because reception is a calmer place. But keeping the pretext while staff are angry prolongs the danger; the letter exists for this moment.",
@@ -1546,13 +1546,13 @@
     "Final two: C beats D because revealing the role and letter calms the situation; fleeing can escalate it and leaves staff alarmed.",
     "Exam cue: people come first. In any test or response, stop when someone could be hurt, and use the agreed way to verify."
    ],
-   "framework_ref": "NIST SP 800-115 Section 5.2 (Penetration Testing: guards can verify a physical tester through a point of contact or documentation); NIST SP 800-53 Rev. 5 CA-8 (Penetration Testing)",
+   "framework_ref": "NIST SP 800-115 Section 5.2 (Penetration Testing: security guards should be made aware of how to verify the validity of tester activity); NIST SP 800-53 Rev. 5 CA-8 (Penetration Testing)",
    "related_concepts": [
     "Physical penetration testing",
     "Authorization letter",
     "Safety first"
    ],
-   "_provenance": "Authored from concept: 'physical testers stop when safety is at risk and use their authorization letter so staff can verify' (notes 5.5.5 Physical and Social Engineering Penetration Tests). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 2, 30 Oct 2026.",
+   "_provenance": "Authored from concept: 'physical testers stop when safety is at risk and use their authorization letter so staff can verify' (notes 5.5.5 Physical and Social Engineering Penetration Tests). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 2, 30 Oct 2026. Cross-review fixes (31 Oct 2026): the letter lets staff confirm the test through the security team's known contact, and the SP 800-115 Section 5.2 citation uses the same form as cc_d5_065.",
    "style_version": 2
   },
   {
@@ -1625,6 +1625,726 @@
     "Guardrails"
    ],
    "_provenance": "Authored from concept: 'models stay open to prompt injection, so limit what an AI tool can reach instead of relying on instructions' (notes 5.5.6 Testing AI-Integrated Defenses). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 2, 30 Oct 2026. Cross-review fixes (31 Oct 2026): stem says 'propose' instead of 'recommend', keeping the practitioner voice.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d5_046",
+   "domain": 5,
+   "subtopic": "5.1 Data security. Tokenization components",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "A software firm's order system swaps card numbers for random tokens issued by a token vault. To keep the card numbers safe, which component should the security analyst rate MOST in need of protection?",
+   "options": {
+    "A": "The order database, which now stores a token for every card",
+    "B": "The support screens, which show each order's token",
+    "C": "The vault's access log, which records every token lookup made",
+    "D": "The vault, which holds the mapping behind every token"
+   },
+   "correct": "D",
+   "key_concept": "Tokens are worthless alone, so tokenization moves the risk into the vault, the one place that maps tokens back to real values.",
+   "pre_read": "For each component, ask what an attacker who stole it could actually recover.",
+   "correct_explanation": "Tokens have no mathematical link to the card numbers, so the database, screens and log hold nothing an attacker can use on its own. The vault alone turns tokens back into real numbers, so it needs the strongest protection. The order database is the runner-up: it is the main business system, but after tokenization it holds only tokens.",
+   "wrong_explanations": {
+    "A": "Closest choice: it is the main business system. But after tokenization it stores only tokens, which are useless without the vault that maps them back.",
+    "B": "Tempting because staff see data on screens. But the screens show only tokens, which reveal no card number to anyone who reads them.",
+    "C": "Tempting because logs can leak details. But this log records that lookups happened, not the card numbers; only the vault holds those."
+   },
+   "tips": [
+    "Eliminate: B shows only tokens, and C records lookups, not card numbers; neither holds a value an attacker can use.",
+    "Final two: D beats A because only the vault turns tokens back into card numbers; the order database now holds only tokens.",
+    "Exam cue: tokenization concentrates the risk. Find the one place that maps tokens back to real values, and protect it most."
+   ],
+   "framework_ref": "NIST SP 800-188 Section 4.3.1 (Removing or Transforming of Direct Identifiers: random pseudonyms through a protected lookup table)",
+   "related_concepts": [
+    "Tokenization",
+    "Token vault",
+    "Data minimization"
+   ],
+   "_provenance": "Authored from concept: 'tokenization moves the risk into the vault, the one place that maps tokens back to real values' (notes 5.1.3 Data Masking and Tokenization). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 3, 31 Oct 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d5_047",
+   "domain": 5,
+   "subtopic": "5.1 Data security. Failed media",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "A tea importer's payroll server has a failed solid-state drive that will not power on, and the vendor's warranty swap keeps the faulty drive. Which sanitization step is BEST for the IT technician?",
+   "options": {
+    "A": "Send the drive back, since a dead drive cannot be read",
+    "B": "Degauss the drive, then send it back for the warranty swap",
+    "C": "Return the drive with a written request that the vendor wipe it",
+    "D": "Hold the drive back and have it destroyed instead of returning it"
+   },
+   "correct": "D",
+   "key_concept": "Media that cannot be purged, such as a failed drive, is destroyed before it can leave the organization's control.",
+   "pre_read": "Ask whether a drive that will not power on still holds readable data, and who controls it once it is shipped.",
+   "correct_explanation": "A drive that will not power on cannot run a purge command, yet its memory chips can still be read in a lab, and a warranty swap puts it outside the organization's control for good. Destruction is the method left, recorded by serial number. Asking the vendor to wipe it is the runner-up: it sounds responsible, but unsanitized payroll data leaves your control on a promise you cannot verify.",
+   "wrong_explanations": {
+    "A": "Tempting because the drive seems dead. But laboratory tools can read flash chips directly, so the payroll data stays recoverable once the drive leaves.",
+    "B": "Tempting because degaussing is a recognized purge for magnetic media. But a solid-state drive stores data in flash, which a degausser does not erase.",
+    "C": "Closest choice: the vendor may well wipe returned drives. But the data leaves unsanitized, on a promise you cannot verify, so destruction is the safer method."
+   },
+   "tips": [
+    "Eliminate: A assumes a dead drive cannot be read, and B uses degaussing, which does not erase flash storage.",
+    "Final two: D beats C because destruction sanitizes the drive while it is still in your control; a vendor's promise to wipe it cannot be verified.",
+    "Exam cue: when media cannot be purged, destroy it before it leaves your control, and record it. Deleting, formatting and promises are not sanitization."
+   ],
+   "framework_ref": "NIST SP 800-88 Rev. 2 Section 3.1.3 (Destroy Sanitization Method: destruction may be the only option when the media fails); NIST SP 800-88 Rev. 2 Section 4.3.4 (Control of Media: media exchanged for warranty and not returned is out of organizational control)",
+   "related_concepts": [
+    "Media sanitization",
+    "Destroy method",
+    "Solid-state drives"
+   ],
+   "_provenance": "Authored from concept: 'media that cannot be purged and will leave the organization's control is destroyed and recorded' (notes 5.1.4 Media Sanitization: Clear, Purge and Destroy). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 3, 31 Oct 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d5_048",
+   "domain": 5,
+   "subtopic": "5.1 Data security. Digital certificates",
+   "difficulty": "foundational",
+   "bloom_level": "Foundational",
+   "question": "A help desk analyst at a recycling company is explaining website certificates to new staff. What does a trusted certificate authority's signature on a site's certificate MOST directly assure?",
+   "options": {
+    "A": "The site's code has been checked and is free of known flaws",
+    "B": "The public key in the certificate belongs to the named site",
+    "C": "The site's owner has been vetted as honest and safe to pay",
+    "D": "Traffic to the site is encrypted with the authority's own key"
+   },
+   "correct": "B",
+   "key_concept": "A certificate authority's signature binds a public key to its named owner; it says nothing about the owner's honesty or the site's code.",
+   "pre_read": "Ask what a certificate authority actually checks before it signs, and what it never checks.",
+   "correct_explanation": "A certificate binds a public key to its owner: the certificate authority verifies that the named party controls the key, then signs, so a browser can trust it is talking to the real site. The vetted-owner option is the runner-up: verification checks identity and control of the name, not honesty, so a fraudster can hold a valid certificate for their own look-alike site.",
+   "wrong_explanations": {
+    "A": "Tempting because a valid certificate feels like a safety seal. But certificate authorities check identity, not code; a certified site can still have serious flaws.",
+    "C": "Closest choice: the authority does verify who the owner is. But identity is not honesty, and criminals can obtain valid certificates for their own look-alike sites.",
+    "D": "Tempting because certificates enable encryption. But the session uses keys agreed with the site; the authority's private key only signs certificates."
+   },
+   "tips": [
+    "Eliminate: A expects certificates to test code, and D puts the authority's key into the traffic; certificates do neither.",
+    "Final two: B beats C because a certificate proves who holds the key, not whether they are honest; criminals can get valid certificates too.",
+    "Exam cue: a certificate answers 'is this key really theirs?' It does not answer 'are they trustworthy?' or 'is their software safe?'"
+   ],
+   "framework_ref": "NIST SP 800-57 Part 1 Rev. 5 Section 2.1 (Glossary: a public-key certificate is signed by a trusted party, binding the public key to the entity); NIST SP 800-12 Rev. 1 Section 9.1.3.2 (Public Key Electronic Signatures: anyone can verify with the signer's public key)",
+   "related_concepts": [
+    "Certificate authority (CA)",
+    "Public key infrastructure (PKI)",
+    "Digital signatures"
+   ],
+   "_provenance": "Authored from concept: 'a certificate authority's signature binds a public key to its owner, not to the owner's honesty' (notes 5.1.6 Hashing, Digital Signatures and Certificates). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 3, 31 Oct 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d5_049",
+   "domain": 5,
+   "subtopic": "5.2 Security operations. Log source monitoring",
+   "difficulty": "analysis",
+   "bloom_level": "Analysis",
+   "question": "A runbook has security analysts open an incident ticket when a critical server's logs stop for an hour; the critical payroll server's owner blames its three-hour silence on maintenance. What should the analyst do FIRST?",
+   "options": {
+    "A": "Hold the incident ticket until the owner confirms the maintenance",
+    "B": "Restart the logging agent and close the alert",
+    "C": "Raise the incident ticket with the log source details",
+    "D": "Mute the payroll server's alerts until the maintenance ends"
+   },
+   "correct": "C",
+   "key_concept": "A log source that goes silent may signal compromise; follow the runbook's step even when an owner suggests a harmless cause.",
+   "pre_read": "Ask what the runbook already tells the analyst to do, and whether the owner's guess changes it.",
+   "correct_explanation": "Attackers often stop logging to hide what they do, so the runbook treats an hour of silence from a critical server as an incident to open. An approved change record could explain the gap, but an owner's word is not one, so the theory is checked inside the ticket. Holding the ticket for the owner is the runner-up: owners know their systems, but a guess does not override the runbook.",
+   "wrong_explanations": {
+    "A": "Closest choice: the owner may be right about maintenance. But the runbook already assigns the ticket to the analyst, and holding it on a guess gives any intruder more time.",
+    "B": "Tempting because a stuck agent is a common cause. But restarting it can change evidence, and closing the alert skips the investigation the runbook requires.",
+    "D": "Tempting because maintenance alerts are noise. But muting a silent critical server removes exactly the warning an attacker who stopped the logs would want gone."
+   },
+   "tips": [
+    "Eliminate: B restarts the agent and closes the alert, and D mutes the alerts; both treat a silent log as noise, not a warning sign.",
+    "Final two: C beats A because the runbook assigns the ticket to the analyst; the owner's maintenance theory is checked within it, not before it.",
+    "Exam cue: when a procedure assigns you a step, take it, even if an owner offers a harmless explanation. A silent log is itself a signal."
+   ],
+   "framework_ref": "NIST SP 800-53 Rev. 5 AU-5 (Response to Audit Logging Process Failures); NIST SP 800-53 Rev. 5 AU-9 (Protection of Audit Information)",
+   "related_concepts": [
+    "Log source monitoring",
+    "Security information and event management (SIEM)",
+    "Runbooks"
+   ],
+   "_provenance": "Authored from concept: 'a log source that goes silent is a possible sign of compromise and is handled as the runbook says' (notes 5.2.2 Logging and Monitoring). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 3, 31 Oct 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d5_050",
+   "domain": 5,
+   "subtopic": "5.2 Security operations. Insider threats",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "A startup's security analyst sees an engineer who resigned yesterday downloading the whole design library at midnight; management and human resources decide any action on staff, including their access. What should the analyst do FIRST?",
+   "options": {
+    "A": "Ask the engineer directly why they need the whole library",
+    "B": "Disable the engineer's account to stop the downloads now",
+    "C": "Warn the engineer's teammates to stop sharing files with them",
+    "D": "Report it to the security manager with the download records"
+   },
+   "correct": "D",
+   "key_concept": "Suspected insider activity is reported discreetly, with evidence, to the security manager; management and human resources decide actions on staff.",
+   "pre_read": "Ask who in the stem may act on an employee, and what tipping off the person could cost.",
+   "correct_explanation": "A departing engineer copying the whole design library at midnight is a classic insider warning sign, and the analyst's job is to report it, with the download records, to the security manager without alerting anyone else. Disabling the account is the runner-up: it would stop the copying, but management and human resources decide actions on staff, including their access, so the analyst escalates rather than acting alone.",
+   "wrong_explanations": {
+    "A": "Tempting because asking seems fair and quick. But it tips off the engineer, who can delete traces or hurry the copying, and it oversteps the analyst's role.",
+    "B": "Closest choice: it would stop the downloads. But actions on staff, including their access, are management's and human resources' decision here, so the analyst reports and lets them act.",
+    "C": "Tempting because coworkers could help watch. But spreading a suspicion can harm someone innocent and may alert the engineer before the facts are known."
+   },
+   "tips": [
+    "Eliminate: A questions the engineer directly, and C tells coworkers; both can tip off a possible insider and spread an unproven suspicion.",
+    "Final two: D beats B because management and human resources decide actions on staff, including their access; the analyst reports with evidence instead of acting alone.",
+    "Exam cue: suspect an insider? Report it quietly to the security manager, with evidence. Never confront the person or tell coworkers."
+   ],
+   "framework_ref": "NIST SP 800-53 Rev. 5 AT-2(2) (Literacy Training and Awareness | Insider Threat); NIST CSF 2.0 DE.CM-03 (personnel activity and technology usage are monitored to find potentially adverse events)",
+   "related_concepts": [
+    "Insider threat",
+    "Departing employees",
+    "Escalation"
+   ],
+   "_provenance": "Authored from concept: 'suspected insider activity is reported quietly with evidence, and management decides actions on staff' (notes 5.2.5 Threat Actors and Motives). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 3, 31 Oct 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d5_051",
+   "domain": 5,
+   "subtopic": "5.2 Security operations. Malware types",
+   "difficulty": "foundational",
+   "bloom_level": "Foundational",
+   "question": "Overnight, malicious code spreads across a shipyard's network from computer to computer through an unpatched file-sharing flaw, though no one opened any file. Which malware type should the IT technician report it as MOST accurately?",
+   "options": {
+    "A": "A virus, which spreads across the network inside files people run",
+    "B": "A trojan, which poses as useful software a user installs",
+    "C": "A rootkit, which hides other malware deep in one system",
+    "D": "A worm, which copies itself across the network unaided"
+   },
+   "correct": "D",
+   "key_concept": "A worm spreads by itself across networks, often through unpatched flaws; a virus needs a host file that someone runs.",
+   "pre_read": "Notice how the code moved between computers, and whether any person had to do anything.",
+   "correct_explanation": "Malware that copies itself from computer to computer through a network flaw, with no one opening a file, is a worm; that self-spreading is why worms race through unpatched networks. A virus is the runner-up: it also spreads, but it rides inside a host file or program and usually needs someone to open or run it, and here nobody opened anything.",
+   "wrong_explanations": {
+    "A": "Closest choice: viruses also spread across networks. But a virus rides in a host file that someone opens or runs; this code spread with no user action.",
+    "B": "Tempting because trojans are common. But a trojan relies on a user installing software that looks useful, and it does not copy itself to other computers.",
+    "C": "Tempting because hidden malware sounds serious. But a rootkit conceals activity on one system; it does not spread itself across a network."
+   },
+   "tips": [
+    "Eliminate: B needs a user to install it, and C conceals activity on one system; neither copies itself across a network.",
+    "Final two: D beats A because a worm spreads by itself through a flaw, while a virus needs a host file that someone runs.",
+    "Exam cue: spreads across the network with no user action? Worm. Needs a host file someone opens? Virus. Poses as useful software? Trojan."
+   ],
+   "framework_ref": "NIST SP 800-83 Rev. 1 Section 2.1 (Forms of Malware: viruses, worms and Trojan horses); NIST SP 800-53 Rev. 5 SI-2 (Flaw Remediation)",
+   "related_concepts": [
+    "Worms",
+    "Viruses",
+    "Unpatched vulnerabilities"
+   ],
+   "_provenance": "Authored from concept: 'a worm spreads by itself through network flaws, while a virus needs a host file that someone runs' (notes 5.2.8 Malware Basics). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 3, 31 Oct 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d5_052",
+   "domain": 5,
+   "subtopic": "5.2 Security operations. Denial-of-service response",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "A tram operator's journey-planner website is knocked offline by floods of requests from tens of thousands of hijacked devices whose addresses keep changing. Which control should the network team propose as BEST?",
+   "options": {
+    "A": "Block each flooding address on the website's own firewall",
+    "B": "Require encrypted connections for every planner request",
+    "C": "Have the internet provider filter the flood before it arrives",
+    "D": "Reset the administrator passwords on the website's servers"
+   },
+   "correct": "C",
+   "key_concept": "A distributed denial-of-service attack is best filtered upstream, by the internet or hosting provider, before the flood reaches the organization's link.",
+   "pre_read": "Picture where the flood travels before it reaches the website, and how many senders there are.",
+   "correct_explanation": "Tens of thousands of hijacked devices with changing addresses make a distributed denial-of-service (DDoS) attack, and the flood can fill the site's internet link before its own firewall even sees it. Filtering by the internet provider removes it upstream; NIST's incident guide suggests authorizing providers to contain large DDoS attacks. Blocking addresses is the runner-up: it works against one sender, not thousands that keep changing.",
+   "wrong_explanations": {
+    "A": "Closest choice: blocking a source is a natural first step. But thousands of changing addresses outpace any block list, and the flood can fill the link before the firewall.",
+    "B": "Tempting because encryption is a core control. But it protects confidentiality and integrity; an encrypted flood still overwhelms the site, so availability is not helped.",
+    "D": "Tempting because an outage can look like a break-in. But a flood needs no access to the servers, so new passwords do nothing to stop it."
+   },
+   "tips": [
+    "Eliminate: B adds encryption, which protects confidentiality, not availability, and D resets passwords, though a flood needs no access to the servers.",
+    "Final two: C beats A because upstream filtering stops the flood before it fills the link; blocking one address at a time cannot keep up with thousands.",
+    "Exam cue: many changing sources means a distributed attack. Stop it upstream, at the provider, rather than one address at a time."
+   ],
+   "framework_ref": "NIST SP 800-61 Rev. 3 Table 3 (RS.MI-01: authorize internet and cloud service providers to contain certain incidents, such as large-scale DDoS attacks); NIST SP 800-53 Rev. 5 SC-5 (Denial-of-service Protection)",
+   "related_concepts": [
+    "Distributed denial of service (DDoS)",
+    "Botnets",
+    "Upstream filtering"
+   ],
+   "_provenance": "Authored from concept: 'a DDoS from many changing sources is filtered upstream by the provider, not address by address' (notes 5.2.9 Network Attacks: DoS, On-Path and Spoofing). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 3, 31 Oct 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d5_053",
+   "domain": 5,
+   "subtopic": "5.2 Security operations. Local network attacks",
+   "difficulty": "foundational",
+   "bloom_level": "Foundational",
+   "question": "A network technician at a business incubator sees a member's laptop answering address resolution protocol (ARP) requests for the gateway's IP address with the laptop's own hardware address. Which attack is MOST likely under way?",
+   "options": {
+    "A": "A denial-of-service attack flooding the gateway",
+    "B": "An on-path attack routing other users' traffic through the laptop",
+    "C": "An evil twin attack, with the laptop copying the incubator's Wi-Fi name",
+    "D": "A replay attack resending sign-ins the laptop captured earlier"
+   },
+   "correct": "B",
+   "key_concept": "Forged ARP replies let a device on the local network pose as the gateway, which puts it on the path of other users' traffic.",
+   "pre_read": "Ask what the forged replies make other devices believe, and where their traffic will go next.",
+   "correct_explanation": "By answering ARP requests for the gateway's IP address with its own hardware address, the laptop tells other devices to send their gateway traffic to it, so it can read or change that traffic before passing it on: an on-path attack using ARP spoofing. An evil twin is the runner-up: it also puts the attacker on the path, but it works by broadcasting a fake Wi-Fi network, which nothing here shows.",
+   "wrong_explanations": {
+    "A": "Tempting because the gateway is involved. But forged ARP replies redirect traffic rather than flood it; a denial-of-service attack aims to overload, not to intercept.",
+    "C": "Closest choice: an evil twin also puts the attacker in the path. But it needs a fake access point copying the network name; the evidence here is forged ARP replies.",
+    "D": "Tempting because attackers do resend captured messages. But a replay reuses old sign-ins, while forged ARP replies redirect live traffic through the laptop."
+   },
+   "tips": [
+    "Eliminate: A describes flooding, which aims at availability, and D describes resending old messages; forged ARP replies do neither.",
+    "Final two: B beats C because forged ARP replies redirect traffic on the existing network; an evil twin needs a fake access point.",
+    "Exam cue: a device claiming another's address so traffic flows through it is spoofing used to get on-path. Name the attack by its goal."
+   ],
+   "framework_ref": "NIST SP 800-53 Rev. 5 SC-23 (Session Authenticity); NIST SP 800-53 Rev. 5 SC-8(1) (Transmission Confidentiality and Integrity | Cryptographic Protection)",
+   "related_concepts": [
+    "On-path (man-in-the-middle) attacks",
+    "ARP spoofing",
+    "Evil twin"
+   ],
+   "_provenance": "Authored from concept: 'forged ARP replies put an attacker on the path between users and the gateway' (notes 5.2.9 Network Attacks: DoS, On-Path and Spoofing). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 3, 31 Oct 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d5_054",
+   "domain": 5,
+   "subtopic": "5.2 Security operations. Unexpected source addresses",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "A regional airport's firewall logs show packets arriving from the internet that carry source addresses from the airport's own internal network. Which control should the network technician propose as BEST?",
+   "options": {
+    "A": "Drop inbound packets that bear internal source addresses",
+    "B": "Log the packets and review them at the weekly firewall check",
+    "C": "Block the real addresses the packets were sent from",
+    "D": "Add bandwidth so the packets do not slow the internal network"
+   },
+   "correct": "A",
+   "key_concept": "Source addresses are claims, not proof; an edge filter drops outside traffic that claims an internal source address.",
+   "pre_read": "Compare where these packets came from with the addresses they carry. Then ask what each option does about that mismatch.",
+   "correct_explanation": "Packets from the internet cannot genuinely come from internal addresses, so these addresses are spoofed, often to slip past rules that trust internal traffic. An edge filter that drops inbound packets claiming internal sources stops the trick without knowing who sent them. Blocking the real senders is the runner-up: it sounds precise, but a spoofed header hides the true source, so there is no reliable address to block.",
+   "wrong_explanations": {
+    "B": "Tempting because logs build evidence. But a weekly review lets forged packets keep passing the firewall until then; an edge filter stops them now.",
+    "C": "Closest choice: stopping the real sender would end the attack. But a spoofed header hides the true source, so the firewall has no reliable address to block.",
+    "D": "Tempting because extra packets can slow a network. But capacity answers a flood, not forged addresses; the spoofed packets would still get in."
+   },
+   "tips": [
+    "Eliminate: B only logs the forged packets for a later review, and D treats the problem as a flood; neither stops traffic that claims an internal address.",
+    "Final two: A beats C because a spoofed header hides the true sender; filtering on the impossible claim works without knowing who sent it.",
+    "Exam cue: treat addresses and sender names as claims. When outside traffic claims to be inside, drop it at the edge."
+   ],
+   "framework_ref": "NIST SP 800-53 Rev. 5 SC-7(11) (Boundary Protection | Restrict Incoming Communications Traffic); NIST SP 800-41 Rev. 1 Section 2.1.1 (Packet Filtering: spoofed addresses in packet headers are used to get past firewall controls)",
+   "related_concepts": [
+    "IP address spoofing",
+    "Ingress filtering",
+    "Boundary protection"
+   ],
+   "_provenance": "Authored from concept: 'an edge filter drops outside traffic that claims an internal source address' (notes 5.2.9 Network Attacks: DoS, On-Path and Spoofing). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 3, 31 Oct 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d5_055",
+   "domain": 5,
+   "subtopic": "5.3 Incident response. Incidents affecting facilities",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "During a ransomware outbreak at a convention center, the electronic doors on a crowded hall's exit route fail locked. What should the on-site security technician do FIRST?",
+   "options": {
+    "A": "Disconnect the door controllers from the network to stop the spread",
+    "B": "Open the exit doors with the manual override and keep them open",
+    "C": "Photograph the exit door controllers' screens as evidence of the attack",
+    "D": "Restore the door controllers from last night's backup copy"
+   },
+   "correct": "B",
+   "key_concept": "People's safety comes before containment, evidence and recovery: make people safe first, then the response continues.",
+   "pre_read": "Ask what is at stake for the people in the hall, and which steps can safely wait a few minutes.",
+   "correct_explanation": "People's safety outranks systems and evidence, so the first step is to release the locked exit doors with the manual override and keep the route open for the crowd. Containment and investigation continue once people are safe. Disconnecting the controllers is the runner-up: it is a sound containment step, but it does not free the doors, and containment can wait minutes while a trapped crowd cannot.",
+   "wrong_explanations": {
+    "A": "Closest choice: containing ransomware matters. But disconnecting the controllers leaves the exits locked, and people's safety comes before stopping the spread.",
+    "C": "Tempting because evidence helps the investigation. But a photograph can wait; while the exits stay locked, the crowd's safety comes first.",
+    "D": "Tempting because restoring would bring the doors back. But restoring before the infection is removed invites reinfection, and it is far slower than the manual override."
+   },
+   "tips": [
+    "Eliminate: C puts evidence ahead of a trapped crowd, and D restores devices before the ransomware is removed, inviting reinfection.",
+    "Final two: B beats A because people come first; containment matters, but it does not open the exits and can wait minutes.",
+    "Exam cue: when people are at risk, make them safe first. Containment, evidence and recovery follow."
+   ],
+   "framework_ref": "NIST SP 800-34 Rev. 1 Section 2.2.8 (Occupant Emergency Plan (OEP)); NIST SP 800-53 Rev. 5 IR-4 (Incident Handling)",
+   "related_concepts": [
+    "Life safety",
+    "Occupant emergency plan",
+    "Incident priorities"
+   ],
+   "_provenance": "Authored from concept: 'people's safety comes before containment, evidence and recovery during an incident' (notes 5.3.1 The Incident Response Plan and Team). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 3, 31 Oct 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d5_056",
+   "domain": 5,
+   "subtopic": "5.3 Incident response. AI incident evidence",
+   "difficulty": "analysis",
+   "bloom_level": "Analysis",
+   "question": "A bus company has paused its fare-fraud model over suspected data poisoning, and the incident plan has the security analyst preserve evidence; the model's owner wants it retrained tonight. What should the analyst do FIRST?",
+   "options": {
+    "A": "Let the model owner's retraining go ahead, then collect the evidence",
+    "B": "Save hashed copies of the current model and its training data",
+    "C": "Delete the training records that look poisoned, then retrain",
+    "D": "Search the live training data directly for poisoned records"
+   },
+   "correct": "B",
+   "key_concept": "Before an AI model is retrained or cleaned, preserve verified copies of the model and its training data as incident evidence.",
+   "pre_read": "Ask what retraining would change, and what investigators could no longer examine afterward.",
+   "correct_explanation": "The incident plan gives the analyst evidence preservation, so the first step is verified, hashed copies of the current model and its training data; retraining replaces the model and may overwrite the very records investigators need. Letting the owner retrain first is the runner-up: owners decide how their model is used, but the plan assigns preservation to the analyst, and collecting afterward comes too late.",
+   "wrong_explanations": {
+    "A": "Closest choice: the owner does decide on retraining. But the plan assigns preservation to the analyst first, and evidence collected after retraining may already be overwritten.",
+    "C": "Tempting because removing bad records sounds like a fix. But deleting suspected records destroys the evidence of what happened and how.",
+    "D": "Tempting because finding the poisoned records is the goal. But analysis comes after preservation; investigators examine verified copies, so the originals stay exactly as found."
+   },
+   "tips": [
+    "Eliminate: C deletes the suspected records, and D works on the originals before copies are saved; both put the evidence the investigation needs at risk.",
+    "Final two: B beats A because the plan assigns preservation to the analyst; once the owner retrains, the evidence may be gone.",
+    "Exam cue: before a model is retrained, rolled back or cleaned, save hashed copies of the model and its data. Fixes that overwrite evidence come second."
+   ],
+   "framework_ref": "NIST CSF 2.0 RS.AN-07 (incident data and metadata are collected, and their integrity and provenance are preserved); NIST AI 100-2 E2025 (Adversarial Machine Learning: A Taxonomy and Terminology of Attacks and Mitigations)",
+   "related_concepts": [
+    "Evidence preservation",
+    "Data poisoning",
+    "Forensic copies"
+   ],
+   "_provenance": "Authored from concept: 'preserve hashed copies of a suspect AI model and its training data before anyone retrains it' (notes 5.3.4 Evidence Handling and Chain of Custody). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 3, 31 Oct 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d5_057",
+   "domain": 5,
+   "subtopic": "5.3 Incident response. Classifying incident records",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "A car rental firm classifies customers' driver's license scans as restricted, its highest level, and an analyst's draft incident report includes screenshots of several. Which classification should the report MOST accurately carry?",
+   "options": {
+    "A": "Internal, since only named responders can see the restricted scans",
+    "B": "Confidential, the level the incident report template sets",
+    "C": "Restricted, matching the license scans it includes",
+    "D": "Unclassified, until the incident is closed and reviewed"
+   },
+   "correct": "C",
+   "key_concept": "Incident records take the classification of the most sensitive data they contain, whoever can open them today.",
+   "pre_read": "Ask what decides a document's classification: its contents, its template or who can see it.",
+   "correct_explanation": "A document takes the classification of the most sensitive data inside it, so a report holding restricted license scans is itself restricted and is handled that way wherever it goes. Internal is the runner-up: limiting it to named responders does narrow who sees it today, but access settings do not lower the classification, and the report may later be copied, printed or shared.",
+   "wrong_explanations": {
+    "A": "Closest choice: only named responders can see it today. But who can see a document does not set its level; the restricted scans inside do.",
+    "B": "Tempting because templates save effort. But a default label cannot lower the protection that the restricted scans inside the report require.",
+    "D": "Tempting because the report is still a draft. But drafts hold the same data, and leaving them unclassified invites careless sharing during the response."
+   },
+   "tips": [
+    "Eliminate: B lets a template default set the level, and D leaves a draft unclassified; content, not format or stage, sets classification.",
+    "Final two: C beats A because classification follows the most sensitive content; limiting who sees it does not lower its level.",
+    "Exam cue: a report inherits the highest classification of any data inside it, during an incident as at any other time."
+   ],
+   "framework_ref": "NIST SP 800-61 Rev. 3 Table 3 (RS.AN-06: incident response records can contain sensitive information and are safeguarded, with access for authorized personnel only); ISO/IEC 27002:2022 Control 5.12 (Classification of information)",
+   "related_concepts": [
+    "Data classification",
+    "Incident records",
+    "Need to know"
+   ],
+   "_provenance": "Authored from concept: 'incident records take the classification of the most sensitive data they contain' (notes 5.3.5 Data Handling During an Incident). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 3, 31 Oct 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d5_058",
+   "domain": 5,
+   "subtopic": "5.3 Incident response. Exercise scope",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "An online furniture marketplace's incident plan relies on its cloud provider sending logs within an hour, which has never been tried. What should the incident response lead propose for the next tabletop as BEST?",
+   "options": {
+    "A": "Invite the provider's on-call contact to take part in the exercise",
+    "B": "Ask the provider for a written promise to meet the one-hour target",
+    "C": "Run the exercise on live systems so the provider's response is real",
+    "D": "Leave the provider's part out and test only the internal roles"
+   },
+   "correct": "A",
+   "key_concept": "Exercises should include the third parties a plan depends on, so hand-offs such as log delivery are tested before a real incident.",
+   "pre_read": "Ask which part of the plan is untested, and who has to be in the room to test it.",
+   "correct_explanation": "The untested step is a hand-off to the cloud provider, so the provider's on-call contact should join the tabletop, where both sides walk through who asks, how, and how fast the logs arrive; gaps surface before a real incident. A written promise is the runner-up: it sets an expectation, but a signature does not show that the request route works or that anyone knows it.",
+   "wrong_explanations": {
+    "B": "Closest choice: a clear commitment helps. But a promise on paper does not test whether the request route works, who makes it, or how long it really takes.",
+    "C": "Tempting because live systems feel more realistic. But a tabletop is a discussion, and touching live systems risks real disruption for no extra learning here.",
+    "D": "Tempting because internal roles are easier to arrange. But the provider's step is the untested part, so leaving it out tests everything except the gap."
+   },
+   "tips": [
+    "Eliminate: C runs a discussion exercise on live systems, risking disruption, and D leaves out the one untested step, the provider's hand-off.",
+    "Final two: A beats B because practicing the hand-off with the provider tests it; a written promise only states an expectation.",
+    "Exam cue: if the plan depends on an outside party, bring that party into the exercise. Untested hand-offs fail first in real incidents."
+   ],
+   "framework_ref": "NIST CSF 2.0 ID.IM-02 (improvements are identified from security tests and exercises, including those done in coordination with suppliers and relevant third parties); NIST SP 800-84 Section 4 (Tabletop Exercises: discussion-based events)",
+   "related_concepts": [
+    "Tabletop exercises",
+    "Third-party coordination",
+    "After-action reports"
+   ],
+   "_provenance": "Authored from concept: 'exercises include the third parties a plan depends on, so their hand-offs are tested' (notes 5.3.7 Incident Response Exercises and Tabletops). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 3, 31 Oct 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d5_059",
+   "domain": 5,
+   "subtopic": "5.4 Asset protection. AI asset inventory",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "A textile mill's inventory lists its defect-spotting AI model but not the labeled photos used to tune it, kept on a shared drive. What should the IT asset analyst propose as BEST?",
+   "options": {
+    "A": "Give the photo set its own entry, owner and classification",
+    "B": "Note the photo set's location and owner in the model's inventory entry",
+    "C": "Delete the photo set, since tuning is finished",
+    "D": "Move the photo set onto the model's server, already in the inventory"
+   },
+   "correct": "A",
+   "key_concept": "Training data is an AI asset in its own right, needing its own inventory entry, owner and classification, not just a note under the model.",
+   "pre_read": "Ask what could happen to the photos on the shared drive today, and what each option changes about that.",
+   "correct_explanation": "Anyone who can change or copy training data can poison or leak what the model learns, so the photo set needs its own entry, owner and classification, which then decide who may change it and how it is protected. Noting its location and owner under the model is the runner-up: it helps people find the photos but sets no classification, so nothing decides how they are protected.",
+   "wrong_explanations": {
+    "B": "Closest choice: it records where the photos are and who owns them. But a pointer under the model sets no classification, so nothing decides how the shared-drive copy is protected.",
+    "C": "Tempting because tuning is done. But the photos are needed to retrain or investigate the model, and deleting an asset is the owner's decision, not the analyst's.",
+    "D": "Tempting because one entry seems tidy. But moving files gives the data no owner or classification, and the server's entry describes hardware, not data."
+   },
+   "tips": [
+    "Eliminate: C deletes data the model may need again, and D moves files without giving them an owner; neither brings the photos under management.",
+    "Final two: A beats B because the photos need their own classification; a pointer under the model sets no protection level for the shared-drive copy.",
+    "Exam cue: training data shapes what a model learns, so it is an asset in its own right. Give it its own owner and classification, not a footnote under the model."
+   ],
+   "framework_ref": "NIST CSF 2.0 ID.AM-07 (inventories of data and corresponding metadata for designated data types are maintained); NIST AI 100-1 (AI RMF 1.0) GOVERN 1.6 (mechanisms are in place to inventory AI systems)",
+   "related_concepts": [
+    "AI asset inventory",
+    "Training data",
+    "Data classification"
+   ],
+   "_provenance": "Authored from concept: 'training data is an AI asset of its own and needs its own inventory entry, owner and classification' (notes 5.4.1 Asset Inventory and Ownership). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 3, 31 Oct 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d5_060",
+   "domain": 5,
+   "subtopic": "5.4 Asset protection. Support end dates",
+   "difficulty": "foundational",
+   "bloom_level": "Foundational",
+   "question": "A software vendor publishes four end dates for the ticketing system a planetarium runs. Which date should the IT analyst flag as MOST important for protecting the system?",
+   "options": {
+    "A": "The end of sale, when new licenses can no longer be bought",
+    "B": "The end of feature updates, when new functions stop arriving",
+    "C": "The end of security patches, when fixes for new flaws stop",
+    "D": "The end of the help line, when support calls stop being taken"
+   },
+   "correct": "C",
+   "key_concept": "For security, the end-of-life date that matters is when security patches stop; after it, newly found flaws stay open.",
+   "pre_read": "For each date, ask what stops arriving, and whether that thing protects the system from new flaws.",
+   "correct_explanation": "Once security patches stop, every newly found flaw stays open for good, so that date sets the deadline to replace the system or add compensating controls. The help line's end is the runner-up: vendors often call it the end of support, but losing phone help leaves no new flaw unfixed while security patches continue.",
+   "wrong_explanations": {
+    "A": "Tempting because end of sale signals the product's decline. But installed copies keep getting patches after sales stop, so security is not yet affected.",
+    "B": "Tempting because updates sound protective. But feature updates add functions; security fixes can continue after features stop, so this date matters less.",
+    "D": "Closest choice: vendors often call this the end of support. But losing phone help leaves no new flaw unfixed while security patches continue."
+   },
+   "tips": [
+    "Eliminate: A tracks new sales, and B tracks new functions; neither decides whether new flaws in the installed system get fixed.",
+    "Final two: C beats D because security depends on fixes for new flaws; the help line can end while patches continue.",
+    "Exam cue: for end-of-life questions, find the date security patches stop. That is the deadline to replace, isolate or add controls."
+   ],
+   "framework_ref": "NIST SP 800-53 Rev. 5 SA-22 (Unsupported System Components); NIST CSF 2.0 PR.PS-02 (software is maintained, replaced, and removed commensurate with risk)",
+   "related_concepts": [
+    "End of life (EOL)",
+    "Unsupported software",
+    "Compensating controls"
+   ],
+   "_provenance": "Authored from concept: 'for security, the end-of-life date that matters is when the vendor stops issuing security patches' (notes 5.4.3 End-of-Life Software and Devices). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 3, 31 Oct 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d5_061",
+   "domain": 5,
+   "subtopic": "5.4 Asset protection. Patch verification",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "A school district's patch tool reports that this month's browser fix installed on all 200 staff laptops. Which evidence BEST confirms to the desktop technician that the browser flaw is closed?",
+   "options": {
+    "A": "A fresh vulnerability scan showing no laptop is still exposed",
+    "B": "The patch tool's report of a successful install on each laptop",
+    "C": "The approved change record for this month's patch rollout",
+    "D": "Replies from users confirming they restarted their browsers"
+   },
+   "correct": "A",
+   "key_concept": "A patch is verified when an independent check, such as a rescan, shows the flaw is gone, not just when the installer reports success.",
+   "pre_read": "For each option, ask what it actually measures: the rollout, its approval, the users or the laptops themselves.",
+   "correct_explanation": "Verification means checking that the patch took effect, not just that it ran. A fresh vulnerability scan tests each laptop for the flaw itself, catching machines where the install failed silently or still awaits a restart. The patch tool's report is the runner-up: it shows the installer ran, but a reported install can still leave the flaw open, so it needs independent confirmation.",
+   "wrong_explanations": {
+    "B": "Closest choice: install reports are useful records. But they show the installer ran, not that the flaw is gone; pending restarts or silent failures leave it open.",
+    "C": "Tempting because the change was properly approved. But approval shows the rollout was authorized, not that it worked on every laptop.",
+    "D": "Tempting because a restart often completes a browser patch. But user replies are incomplete and unreliable, and a restart alone does not prove the flaw is closed."
+   },
+   "tips": [
+    "Eliminate: C proves approval, not outcome, and D relies on user replies; neither shows the flaw is gone.",
+    "Final two: A beats B because a rescan tests for the flaw itself; an install report only shows the installer ran.",
+    "Exam cue: verify a fix by testing for the problem again. A rescan beats a success message from the tool that did the work."
+   ],
+   "framework_ref": "NIST SP 800-40 Rev. 4 Section 2.3.3 (Verify Deployment: confirm each patch installed successfully and took effect); NIST SP 800-53 Rev. 5 RA-5 (Vulnerability Monitoring and Scanning)",
+   "related_concepts": [
+    "Patch verification",
+    "Vulnerability scanning",
+    "Change records"
+   ],
+   "_provenance": "Authored from concept: 'a patch is confirmed by an independent rescan that no longer finds the flaw' (notes 5.4.5 Patch Management). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 3, 31 Oct 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d5_062",
+   "domain": 5,
+   "subtopic": "5.5 Security testing. Detection testing approaches",
+   "difficulty": "foundational",
+   "bloom_level": "Foundational",
+   "question": "A security operations team wants testers to run attacker techniques one at a time while its analysts check each for detection and tune rules on the spot. Which approach BEST fits this goal?",
+   "options": {
+    "A": "A red team engagement whose testers brief the analysts at the end",
+    "B": "A purple team exercise pairing testers with analysts",
+    "C": "A monthly vulnerability scan of monitored servers",
+    "D": "A tabletop exercise that talks through a ransomware attack scenario"
+   },
+   "correct": "B",
+   "key_concept": "Purple teaming is red and blue working together in real time, so each attack step is checked for detection and gaps are fixed at once.",
+   "pre_read": "Ask when the defenders learn what each test step was: during the test, or only after it.",
+   "correct_explanation": "In a purple team exercise, testers share each technique as they run it, so analysts can confirm whether it was detected and tune rules immediately; that is the step-by-step loop described. A red team engagement is the runner-up: it uses the same attacker techniques, but defenders usually learn what happened only from the final report, so tuning waits until the end.",
+   "wrong_explanations": {
+    "A": "Closest choice: red teams run realistic attacker techniques. But defenders usually see the results only at the end, not step by step while tuning.",
+    "C": "Tempting because scans test systems regularly. But a scan lists known weaknesses; it runs no attacker techniques and checks no detections.",
+    "D": "Tempting because tabletops are a team exercise. But they are discussions; nothing is run, so no detection can be checked or tuned."
+   },
+   "tips": [
+    "Eliminate: C lists weaknesses without attacking, and D only discusses a scenario; neither runs techniques against the detections.",
+    "Final two: B beats A because purple teaming shares each step in real time; a red team usually reports only at the end.",
+    "Exam cue: red attacks, blue defends, and purple is the two working together, sharing step by step to improve detection."
+   ],
+   "framework_ref": "NIST SP 800-53 Rev. 5 CA-8(2) (Penetration Testing | Red Team Exercises); NIST CSF 2.0 ID.IM-02 (improvements are identified from security tests and exercises, including those done in coordination with suppliers and relevant third parties)",
+   "related_concepts": [
+    "Purple teaming",
+    "Red team",
+    "Detection tuning"
+   ],
+   "_provenance": "Authored from concept: 'purple teaming is red and blue sharing each step in real time to improve detection' (notes 5.5.1 Red, Blue and Purple Teams). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 3, 31 Oct 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d5_063",
+   "domain": 5,
+   "subtopic": "5.5 Security testing. Third-party components",
+   "difficulty": "foundational",
+   "bloom_level": "Foundational",
+   "question": "A web team's app bundles 300 open-source libraries, and the team lead wants to know whether any have publicly known flaws. Which testing approach BEST fits this need?",
+   "options": {
+    "A": "Static analysis of the team's own source code",
+    "B": "Penetration testing of the deployed app by an outside firm",
+    "C": "Fuzz testing of the app's input handling with random data",
+    "D": "Software composition analysis of the app's components"
+   },
+   "correct": "D",
+   "key_concept": "Software composition analysis lists the third-party components an app uses and flags versions with publicly known flaws.",
+   "pre_read": "Ask whose code is in question, the team's own or someone else's, and what kind of flaw is sought.",
+   "correct_explanation": "Software composition analysis inventories the libraries an app bundles and checks each version against databases of publicly known flaws, which is exactly the question asked. Static analysis is the runner-up: it also examines code without running it, but it looks for coding mistakes in the team's own source and does not match library versions to published flaws.",
+   "wrong_explanations": {
+    "A": "Closest choice: static analysis also examines code early. But it hunts coding mistakes in the team's own code; it does not match library versions to published flaws.",
+    "B": "Tempting because penetration tests find real weaknesses. But testers probe the running app from outside; they do not inventory every bundled library and match its version to published flaws.",
+    "C": "Tempting because fuzzing finds crashes and input flaws. But it feeds random data to the app; it does not list the bundled libraries or check them against published flaws."
+   },
+   "tips": [
+    "Eliminate: B probes the deployed app from outside, and C feeds it random input; neither lists the bundled library versions.",
+    "Final two: D beats A because composition analysis matches each library version to known flaws; static analysis looks for mistakes in the team's own code.",
+    "Exam cue: someone else's code with publicly known flaws? Software composition analysis. Your own code, before it runs? SAST."
+   ],
+   "framework_ref": "NIST SP 800-218 (SSDF v1.1) PW.4.4 (verify third-party software components, including automatic detection of known vulnerabilities); NIST SP 800-53 Rev. 5 SA-11(1) (Developer Testing and Evaluation | Static Code Analysis)",
+   "related_concepts": [
+    "Software composition analysis (SCA)",
+    "Open-source libraries",
+    "SAST and DAST"
+   ],
+   "_provenance": "Authored from concept: 'software composition analysis checks bundled third-party components for publicly known flaws' (notes 5.5.3 Static and Dynamic Application Testing). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 3, 31 Oct 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d5_064",
+   "domain": 5,
+   "subtopic": "5.5 Security testing. Threat modeling AI features",
+   "difficulty": "analysis",
+   "bloom_level": "Analysis",
+   "question": "Threat modeling a park service's planned AI chatbot that reads public web pages to answer visitors, a junior analyst examines where those pages enter the model. Which threat is MOST relevant at that point?",
+   "options": {
+    "A": "Instructions hidden in a page that steer what the chatbot says",
+    "B": "Poisoned web pages slipped into the vendor's original training data",
+    "C": "Visitors sharing their sign-in passwords with one another",
+    "D": "Theft of the server that hosts the chatbot's software"
+   },
+   "correct": "A",
+   "key_concept": "Where outside content enters an AI model is a trust boundary: hidden instructions in that content can steer the model, called indirect prompt injection.",
+   "pre_read": "Ask what crosses into the model at that point, who controls it, and what it could make the model do.",
+   "correct_explanation": "Public web pages are untrusted input crossing into the model, and because models mix data and instructions, text hidden in a page can steer the chatbot's answers: indirect prompt injection. That is the threat at this boundary. Poisoned training data is the runner-up: it is a real AI threat, but it enters during the vendor's training, not where live pages reach the model.",
+   "wrong_explanations": {
+    "B": "Closest choice: poisoning is a real AI threat. But it enters during the vendor's training, not at this boundary, where live pages reach the model.",
+    "C": "Tempting because shared passwords are a common weakness. But that threat sits at sign-in, not where web pages enter the model.",
+    "D": "Tempting because physical theft is a real risk. But it belongs to the hosting site, not to the flow where pages reach the model."
+   },
+   "tips": [
+    "Eliminate: C is a sign-in issue, and D a physical one; neither happens where web pages flow into the model.",
+    "Final two: A beats B because pages entering at run time can carry hidden instructions; poisoning happens earlier, during the vendor's training.",
+    "Exam cue: at each trust boundary, ask what untrusted input crosses and what it could make the system do. For AI, that includes hidden instructions."
+   ],
+   "framework_ref": "NIST AI 100-2 E2025 Section 3.4 (Indirect Prompt Injection Attacks and Mitigations: attackers plant instructions in resources the model reads); NIST SP 800-53 Rev. 5 SA-11(2) (Developer Testing and Evaluation | Threat Modeling and Vulnerability Analyses)",
+   "related_concepts": [
+    "Indirect prompt injection",
+    "Trust boundaries",
+    "Threat modeling"
+   ],
+   "_provenance": "Authored from concept: 'where outside content enters an AI model is a trust boundary where hidden instructions can steer it' (notes 5.5.4 Threat Modeling). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 3, 31 Oct 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d5_065",
+   "domain": 5,
+   "subtopic": "5.5 Security testing. Verifying testers",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "At a satellite operator's ground station, a night guard finds someone in the equipment room who shows a signed letter naming them as an authorized penetration tester. What should the guard do FIRST?",
+   "options": {
+    "A": "Let them continue with the test that the letter describes",
+    "B": "Call the mobile number the visitor gives to confirm their test",
+    "C": "Keep them in sight and call the security team's known contact",
+    "D": "Send them off site and record the visit in the shift log"
+   },
+   "correct": "C",
+   "key_concept": "Verify a claimed tester through a contact you already know, such as the security team, never through details the person supplies.",
+   "pre_read": "Notice what the guard has been handed and what it can prove. Then ask how each option would check it.",
+   "correct_explanation": "A letter is only a claim: an intruder could forge one and hand over an accomplice's number. A genuine test letter is confirmed against a contact the guard already knows, such as the security team, which a real test would have briefed, so the guard keeps the person in view and calls it. Calling the number the visitor gives is the runner-up: it looks like verification, but it trusts details the visitor controls.",
+   "wrong_explanations": {
+    "A": "Tempting because the letter is signed and looks official. But signatures can be forged, and letting someone continue unverified is what a real intruder hopes for.",
+    "B": "Closest choice: it does try to verify the claim. But the number came from the visitor, so an accomplice could answer and confirm a fake test.",
+    "D": "Tempting because removing them seems safe. But a real intruder simply walks away unverified, leaving only a log entry, and a genuine test is cut short without a check."
+   },
+   "tips": [
+    "Eliminate: A accepts the letter at face value, and D lets a possible intruder leave unverified; both skip confirming who the person is.",
+    "Final two: C beats B because a known contact cannot be faked by the visitor; a number the visitor supplies can.",
+    "Exam cue: verify identity through a channel you already trust, never through details the person hands you."
+   ],
+   "framework_ref": "NIST SP 800-115 Section 5.2 (Penetration Testing: security guards should be made aware of how to verify the validity of tester activity); NIST SP 800-53 Rev. 5 PE-3 (Physical Access Control)",
+   "related_concepts": [
+    "Physical penetration testing",
+    "Impersonation",
+    "Out-of-band verification"
+   ],
+   "_provenance": "Authored from concept: 'verify a claimed tester through a known contact, never through details the visitor supplies' (notes 5.5.5 Physical and Social Engineering Penetration Tests). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 3, 31 Oct 2026.",
    "style_version": 2
   }
  ]

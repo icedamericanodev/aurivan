@@ -52,7 +52,8 @@
           "name": "GRC Purpose and Importance",
           "legacy_ids": [],
           "practice_ids": [
-            "cc_d2_001"
+            "cc_d2_001",
+            "cc_d2_046"
           ],
           "definition": "Governance, risk and compliance (GRC) is a coordinated way to direct an organization, manage its risks and meet its obligations, using shared owners and records.",
           "why_it_matters": "Run as separate silos, the three duplicate work, miss gaps and give leaders conflicting pictures. GRC gives one shared view of risk that serves business goals.",
@@ -135,7 +136,8 @@
           "name": "Planning a GRC Program",
           "legacy_ids": [],
           "practice_ids": [
-            "cc_d2_021"
+            "cc_d2_021",
+            "cc_d2_047"
           ],
           "definition": "Planning a governance, risk and compliance (GRC) program means setting its scope, owners and obligations first, so effort goes where risk is greatest.",
           "why_it_matters": "Without a plan, a program copies someone else's checklist and protects the wrong things. A plan gives leaders something to approve, fund and measure.",
@@ -366,7 +368,8 @@
           "name": "Choosing and Mapping Frameworks in GRC",
           "legacy_ids": [],
           "practice_ids": [
-            "cc_d2_022"
+            "cc_d2_022",
+            "cc_d2_048"
           ],
           "definition": "Mapping frameworks means linking a governance, risk and compliance (GRC) program's own controls to each framework it must show progress against.",
           "why_it_matters": "Customers, regulators and leaders often ask about different frameworks. Mapping one control set to all of them avoids a second program and shows the real gaps.",
@@ -390,7 +393,7 @@
               "meaning": "Sets requirements an accredited body can audit and certify. Suits customers who want formal proof."
             }
           ],
-          "example": "A credit union follows ISO/IEC 27001, an international security management standard, and a major customer asks for progress against the NIST (National Institute of Standards and Technology) Cybersecurity Framework (CSF). Instead of a second program, the GRC lead builds a crosswalk in the GRC tool. Kofi, a junior analyst, maps each control to a CSF outcome and flags three outcomes with no control for review.",
+          "example": "A credit union mapped its controls to version 1.1 of the NIST (National Institute of Standards and Technology) Cybersecurity Framework (CSF), before CSF 2.0 added a Govern function. The GRC lead asks Kofi, a junior analyst, to move the crosswalk to 2.0. Kofi re-links each control to its 2.0 outcome and lists the controls whose old category no longer exists, so the lead can review each link before the next customer report.",
           "audit_focus": {
             "review": [
               "Update control mappings when a framework issues a new version",
@@ -430,7 +433,8 @@
           "name": "GRC Tools and Automation",
           "legacy_ids": [],
           "practice_ids": [
-            "cc_d2_003"
+            "cc_d2_003",
+            "cc_d2_049"
           ],
           "definition": "Governance, risk and compliance (GRC) tools are platforms that keep risks, controls, policies and evidence in one place and automate routine tasks.",
           "why_it_matters": "Spreadsheets and email chains break as programs grow. A tool gives one current record, but only if owners keep it accurate and act on it.",
@@ -481,7 +485,8 @@
           "name": "Tolerances and the Risk Register in GRC",
           "legacy_ids": [],
           "practice_ids": [
-            "cc_d2_023"
+            "cc_d2_023",
+            "cc_d2_050"
           ],
           "definition": "In a governance, risk and compliance (GRC) program, the risk register links each risk to a tolerance, an owner, its controls and an indicator.",
           "why_it_matters": "Statements such as \"little risk with customer data\" do not say when to act. GRC turns them into numbers, so a risk that leaves its limit is noticed.",
@@ -568,7 +573,8 @@
           "legacy_ids": [],
           "practice_ids": [
             "cc_d2_004",
-            "cc_d2_026"
+            "cc_d2_026",
+            "cc_d2_051"
           ],
           "definition": "Governing artificial intelligence (AI) use means setting rules for which AI tools staff may use, for which tasks and with which data, and tracking every use.",
           "why_it_matters": "Staff adopt AI assistants faster than policies appear, so nobody knows which tools hold company data or who owns each use.",
@@ -633,7 +639,8 @@
           "name": "Redundancy and High Availability",
           "legacy_ids": [],
           "practice_ids": [
-            "cc_d2_027"
+            "cc_d2_027",
+            "cc_d2_052"
           ],
           "definition": "Redundancy means having spare components, paths or copies ready to take over when one fails, so one failure does not stop a service.",
           "why_it_matters": "Hardware breaks, power drops and cables get cut. Removing single points of failure protects availability, the \"A\" in the confidentiality, integrity and availability (CIA) triad.",
@@ -801,7 +808,8 @@
           "name": "Business Impact Analysis (BIA)",
           "legacy_ids": [],
           "practice_ids": [
-            "cc_d2_028"
+            "cc_d2_028",
+            "cc_d2_053"
           ],
           "definition": "A business impact analysis (BIA) identifies an organization's critical functions, what each depends on and how harm grows over time if each one stops.",
           "why_it_matters": "The BIA decides what is recovered first and how fast. Every later choice, from backup schedule to recovery site, rests on it.",
@@ -888,7 +896,8 @@
           "legacy_ids": [],
           "practice_ids": [
             "cc_d2_006",
-            "cc_d2_032"
+            "cc_d2_032",
+            "cc_d2_054"
           ],
           "definition": "Recovery objectives are limits set by the business: how long a function can be down and how much recent data it can afford to lose.",
           "why_it_matters": "These numbers drive cost: a shorter downtime target needs a readier site, and a smaller data-loss target needs more frequent copies.",
@@ -985,7 +994,8 @@
           "legacy_ids": [],
           "practice_ids": [
             "cc_d2_009",
-            "cc_d2_033"
+            "cc_d2_033",
+            "cc_d2_055"
           ],
           "definition": "A backup is a separate copy of data, and often of settings, kept so the original can be restored after loss, corruption or attack.",
           "why_it_matters": "Backups are the last defense against ransomware and mistakes. A backup never restored is a hope, not a control, and one attackers can reach may be encrypted too.",
@@ -1080,7 +1090,7 @@
               {
                 "label": "What is ready",
                 "cells": [
-                  "Equipment, connections and current data",
+                  "Equipment, connections and the latest backed-up data loaded",
                   "Equipment and connections; data must be restored",
                   "Space, power and cooling only",
                   "Stored copies; computing started on demand"
@@ -1155,7 +1165,8 @@
           "name": "Testing and Maintaining BC and DR Plans",
           "legacy_ids": [],
           "practice_ids": [
-            "cc_d2_010"
+            "cc_d2_010",
+            "cc_d2_056"
           ],
           "definition": "Plan testing checks that business continuity (BC) and disaster recovery (DR) plans work and that people know their roles.",
           "why_it_matters": "An untested plan fails at the worst moment, with wrong numbers, missing steps and slow restores. Testing finds this while it is cheap to fix.",
@@ -1187,7 +1198,7 @@
               "meaning": "Production is shut down and the business runs from the recovery site. Most realistic and highest risk."
             }
           ],
-          "example": "A city water department runs a parallel test of its billing system, bringing it up at the recovery site while production keeps running. The restore takes nine hours against a six-hour RTO. Dee, a junior system administrator, records each step's timing in the test report, and the gap becomes a tracked action.",
+          "example": "A city water department runs a simulation for its billing system: the recovery team works through a flooded-server-room scenario step by step against the clock, without touching live systems. The steps add up to nine hours against a six-hour RTO. Dee, a junior system administrator, records each step's timing in the test report, and the gap becomes a tracked action.",
           "audit_focus": {
             "review": [
               "Confirm your role and contact details before each test",
@@ -1227,7 +1238,8 @@
           "name": "Backing Up AI Systems and Model Drift",
           "legacy_ids": [],
           "practice_ids": [
-            "cc_d2_029"
+            "cc_d2_029",
+            "cc_d2_057"
           ],
           "definition": "Resilience for artificial intelligence (AI) services means being able to restore the models, settings and data behind them, and noticing when performance declines.",
           "why_it_matters": "An AI service can fail while its servers are up: the model may be lost, misconfigured or slowly getting worse. If a process depends on it, that is a continuity risk.",
@@ -1248,7 +1260,7 @@
               "Documented fallback procedure for the AI service"
             ],
             "recommend": "Report drift alerts to the model owner with the figures and dates, rather than retraining the model yourself.",
-            "decides": "The model owner decides whether to roll back, retrain or pause"
+            "decides": "The model owner decides rollback, retraining or pausing, or delegates a fallback through an approved runbook"
           },
           "isaca_rule": "Treat an AI service like any critical system: back up everything needed to rebuild it and plan a fallback. A model can fail slowly while every server looks healthy.",
           "exam_traps": [
@@ -1281,7 +1293,8 @@
           "name": "AI-Assisted Detection and Resilience",
           "legacy_ids": [],
           "practice_ids": [
-            "cc_d2_030"
+            "cc_d2_030",
+            "cc_d2_058"
           ],
           "definition": "Artificial intelligence (AI) assisted detection spots trouble early; for resilience, it must catch events before they disrupt the business and keep working through an outage.",
           "why_it_matters": "An attack caught early may never need the recovery plan. But monitoring that sits on the failed systems leaves the organization blind when most exposed.",
@@ -1344,7 +1357,8 @@
           "name": "Security Culture and Leadership",
           "legacy_ids": [],
           "practice_ids": [
-            "cc_d2_035"
+            "cc_d2_035",
+            "cc_d2_059"
           ],
           "definition": "Security culture is the shared attitudes and habits that shape how people treat security day to day, especially when no one is watching.",
           "why_it_matters": "Controls fail when people work around them. A culture where staff value security and feel safe reporting mistakes catches problems early.",
@@ -1394,7 +1408,8 @@
           "name": "Awareness, Training and Education",
           "legacy_ids": [],
           "practice_ids": [
-            "cc_d2_012"
+            "cc_d2_012",
+            "cc_d2_060"
           ],
           "definition": "Awareness keeps security in mind for everyone, training builds job-specific skills for particular roles, and education builds deeper understanding for those whose careers need it.",
           "why_it_matters": "One course for everyone wastes time and misses real risks. A developer, a payroll clerk and a help desk agent face different attacks.",
@@ -1571,7 +1586,8 @@
           "name": "Phishing and Its Variants",
           "legacy_ids": [],
           "practice_ids": [
-            "cc_d2_036"
+            "cc_d2_036",
+            "cc_d2_061"
           ],
           "definition": "Phishing is a message, usually an email, text or call, that pretends to come from a trusted source to trick the reader into clicking, sharing data or paying.",
           "why_it_matters": "Phishing is one of the most common ways attackers steal passwords and trigger fraudulent payments. Fast reporting protects the whole organization.",
@@ -1853,7 +1869,8 @@
           "name": "Measures and Metrics: The Basics",
           "legacy_ids": [],
           "practice_ids": [
-            "cc_d2_041"
+            "cc_d2_041",
+            "cc_d2_062"
           ],
           "definition": "A measure is a raw, quantified result, such as 940 of 1,000 laptops patched; a metric compares measures against a goal to show progress or risk.",
           "why_it_matters": "Without measurement, leaders fund security on instinct. Good metrics show what is improving, what is slipping and where to act.",
@@ -1903,7 +1920,8 @@
           "name": "Types of Security Measures",
           "legacy_ids": [],
           "practice_ids": [
-            "cc_d2_017"
+            "cc_d2_017",
+            "cc_d2_063"
           ],
           "definition": "Security measures fall into types by what they show: whether controls exist, whether they work, how fast they work and what they mean for the business.",
           "why_it_matters": "Knowing the type stops a common mistake: reporting that a control exists as proof that it works.",
@@ -2130,7 +2148,8 @@
           "name": "Dashboards, Scorecards and Reports",
           "legacy_ids": [],
           "practice_ids": [
-            "cc_d2_020"
+            "cc_d2_020",
+            "cc_d2_064"
           ],
           "definition": "Dashboards, scorecards and reports are ways to present metrics: a live visual view, a periodic grade against targets and a written account with context and recommendations.",
           "why_it_matters": "The right numbers in the wrong format still fail. A board needs a short view of risk and trends; an operations team needs live detail.",
@@ -2221,7 +2240,8 @@
           "name": "Using Measurement to Improve",
           "legacy_ids": [],
           "practice_ids": [
-            "cc_d2_042"
+            "cc_d2_042",
+            "cc_d2_065"
           ],
           "definition": "Using measurement to improve means acting on what metrics show: finding causes, fixing them, checking the result and refining the metrics themselves over time.",
           "why_it_matters": "Measuring without acting just documents decline. Metrics earn their cost only when they drive fixes and prove the fixes worked.",
@@ -2336,7 +2356,7 @@
     "Maximum tolerable downtime (MTD)": "The longest a function can be down before harm becomes unacceptable.",
     "Recovery time objective (RTO)": "The target time to restore a function; it must fit within the MTD.",
     "Recovery point objective (RPO)": "The most data, measured in time, the business can afford to lose.",
-    "Hot site": "A recovery site with equipment, connections and current data, ready within minutes to hours.",
+    "Hot site": "A recovery site with equipment, connections and the latest backed-up data loaded, ready within minutes to hours.",
     "Warm site": "A recovery site with equipment in place but data still to restore, ready in hours to days; between a hot and a cold site in cost and speed.",
     "Cold site": "A recovery site with space, power and cooling only; equipping it takes days to weeks.",
     "Full, incremental and differential backups": "A full backup copies everything; an incremental copies changes since the last backup of any kind; a differential copies all changes since the last full.",

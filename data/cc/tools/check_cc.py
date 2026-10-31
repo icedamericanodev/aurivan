@@ -10,8 +10,10 @@ Runs the gates every CC batch must pass before review, in one place:
     two wrong letters, Final two names the key and the runner-up, and the
     runner-up's wrong explanation starts "Closest choice:"
   - length tells: key spread, "pick the longest" win rate (ties shared,
-    target 15-24%, as scripts/check_longest_option.py does for CISA), and the
-    key at most 8 characters longer than the longest distractor
+    target 15-24%, as scripts/check_longest_option.py does for CISA), the
+    reverse "pick the shortest" rate (12-30%), and the key at most 8
+    characters longer than the longest distractor; --new N shows both rates
+    for one batch alone
   - coverage: notes sub-topics with no question
   - lens: CC notes' rule and "In practice" fields never speak as an auditor
     or credit ISACA (the CC lens is the practitioner's)
@@ -25,6 +27,7 @@ Usage:
   python3 data/cc/tools/check_cc.py --list 3   # also list items where the key is longest or tied
   python3 data/cc/tools/check_cc.py 4 --lib staged.md  # accept staged, not yet merged citations
   python3 data/cc/tools/check_cc.py --similarity       # also list item / notes-example overlaps
+  python3 data/cc/tools/check_cc.py 3 --new 46          # also the length tells for items 046+ alone
 Exit 1 on any ERROR. Style rules (stem and option length, echoes, absolutes)
 stay in scripts/lint_exam_style_v2.py --file data/cc/originals/dN.json.
 """
@@ -40,6 +43,7 @@ FIELDS = ["id", "domain", "subtopic", "difficulty", "bloom_level", "question", "
           "framework_ref", "related_concepts", "_provenance", "style_version"]
 BLOOM = {"foundational": "Foundational", "application": "Application", "analysis": "Analysis"}
 MIN_RATE, MAX_RATE = 0.15, 0.24
+SHORT_MIN, SHORT_MAX = 0.12, 0.30  # "pick the shortest" must not become the reverse tell
 LENS = re.compile(r"\b(ISACA|IS auditors?|the auditor|auditors? (?:recommend|assess|report))", re.I)
 STOP = set("the a an and or of to in on for with by is are was be it its this that as at from their they them what which who when should most best first".split())
 
@@ -93,12 +97,13 @@ def lens_errors(d):
     return out
 
 
-def pick_longest_rate(qs, length):
-    """Expected share a guesser wins by always picking the longest option."""
+def pick_longest_rate(qs, length, pick=max):
+    """Expected share a guesser wins by always picking the longest (or, with
+    pick=min, the shortest) option, ties shared."""
     wins = 0.0
     for q in qs:
         lens = {k: length(v) for k, v in q["options"].items()}
-        tied = [k for k, n in lens.items() if n == max(lens.values())]
+        tied = [k for k, n in lens.items() if n == pick(lens.values())]
         if q["correct"] in tied:
             wins += 1 / len(tied)
     return wins / max(len(qs), 1)
@@ -162,9 +167,11 @@ def check_item(q, d, n, ids, bullets):
 
 def main(argv):
     libs = [argv[i + 1] for i, a in enumerate(argv) if a == "--lib"]
-    doms = [int(a) for a in argv if a.isdigit()] or [1, 2, 3, 4, 5]
+    skip = {argv.index("--new") + 1} if "--new" in argv else set()
+    doms = [int(a) for i, a in enumerate(argv) if a.isdigit() and i not in skip] or [1, 2, 3, 4, 5]
     show_cov = "--coverage" in argv
     show_list = "--list" in argv
+    new_from = int(argv[argv.index("--new") + 1]) if "--new" in argv else 0
     bullets = library_bullets(libs)
     errors = 0
     for d in doms:
@@ -194,16 +201,27 @@ def main(argv):
         spread = Counter(q["correct"] for q in qs)
         rate = pick_longest_rate(qs, len)
         wrate = pick_longest_rate(qs, lambda s: len(s.split()))
+        srate = pick_longest_rate(qs, len, min)
         status = "✓"
         if not MIN_RATE <= rate <= MAX_RATE:
             status = f"ERROR pick-longest outside {MIN_RATE:.0%}-{MAX_RATE:.0%}"
             errors += 1
+        if not SHORT_MIN <= srate <= SHORT_MAX:
+            status += f" ERROR pick-shortest {srate:.1%} outside {SHORT_MIN:.0%}-{SHORT_MAX:.0%}"
+            errors += 1
         mix = Counter(q["difficulty"] for q in qs)
         uncovered = [i for i in ids if i not in cited]
         print(f"D{d}: {len(qs)} items · keys " + " ".join(f"{k}{spread[k]}" for k in "ABCD")
-              + f" · pick-longest {rate:.1%} (words {wrate:.1%}) {status}"
+              + f" · pick-longest {rate:.1%} (words {wrate:.1%}) · pick-shortest {srate:.1%} {status}"
               + f" · {mix['foundational']}/{mix['application']}/{mix['analysis']} F/Ap/An"
               + f" · notes covered {len(ids) - len(uncovered)}/{len(ids)}")
+        if new_from:
+            nq = [q for q in qs if int(q["id"][-3:]) >= new_from]
+            if nq:
+                print(f"   new items {new_from:03d}+ ({len(nq)}): pick-longest {pick_longest_rate(nq, len):.0%}"
+                      f" (words {pick_longest_rate(nq, lambda t: len(t.split())):.0%})"
+                      f" · pick-shortest {pick_longest_rate(nq, len, min):.0%}"
+                      " · aim at or below 25% each, so no length tell inside the batch")
         if show_list:
             tops = []
             for q in qs:
