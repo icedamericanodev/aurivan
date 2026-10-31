@@ -382,7 +382,8 @@ export default function Today() {
   // "Also today": an unfinished session first, then the optional mock (mobile 1.24: only those).
   // Mobile 1.54.1: on a cleared day it still shows, with the paused session only, under the clearing and above
   // "Tomorrow" (it used to sit only in the open-plan branch, so a mock paused after the plan was done had no way back).
-  // A paused first set is not listed here: the panel's Start already picks it up where it stopped (mobile 1.24).
+  // A paused first set is not listed here while it is the plan's current item: the panel's Start already picks it up
+  // where it stopped (mobile 1.24). On a cleared day there is no Start, so it is listed like any paused session.
   const firstNow = plan.items[cur]?.kind === 'practice' && plan.items[cur].why === 'first';
   const resume = active && !active.finishedAt && !(active.firstSet && firstNow) ? active : null;
   // Every other open item is already a checklist row on the forest panel, so it is never said twice here.
