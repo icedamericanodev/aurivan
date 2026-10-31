@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "comment": "Original KaiSip CSOE questions for Domain 5 (Internal control frameworks and SOX scope), written from the public law (the Sarbanes-Oxley Act, SEC rules, releases and staff guidance), COSO's and the AICPA's public summaries, and KaiSip's own notes (data/csoe/notes/d5.json). No SOXCPA material, uploads of it, or prep-bank content was used. Not affiliated with or endorsed by SOXCPA. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/csoe-standards-auditor.md. Pilot csoe_d5_001 to csoe_d5_020, 31 Oct 2026; batch 2 csoe_d5_021 to csoe_d5_040, 31 Oct 2026.",
+    "comment": "Original KaiSip CSOE questions for Domain 5 (Internal control frameworks and SOX scope), written from the public law (the Sarbanes-Oxley Act, SEC rules, releases and staff guidance), COSO's and the AICPA's public summaries, and KaiSip's own notes (data/csoe/notes/d5.json). No SOXCPA material, uploads of it, or prep-bank content was used. Not affiliated with or endorsed by SOXCPA. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/csoe-standards-auditor.md. Pilot csoe_d5_001 to csoe_d5_020, 31 Oct 2026; batch 2 csoe_d5_021 to csoe_d5_040, 31 Oct 2026; batch 3 csoe_d5_041 to csoe_d5_060, 31 Oct 2026.",
     "schema_version": 1
   },
   "domain": 5,
@@ -1445,6 +1445,726 @@
         "Auditor independence"
       ],
       "_provenance": "Authored from concept: KaiSip notes 5C2.1 and the SEC staff ICFR FAQ (revised 2007) and the AICPA's SOC suite page (opened 31 Oct 2026). Original KaiSip scenario written from the public law and public summaries; no SOXCPA presentation, upload or prep-bank material used. 31 Oct 2026, CSOE batch 2 csoe_d5_021-040.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d5_041",
+      "domain": 5,
+      "subtopic": "5A1 The original framework (1992). Where the framework came from",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A compliance team's trainer explains why COSO wrote its 1992 internal control framework. According to the SEC's account in Release No. 33-8238, the framework MOST directly answered:",
+      "options": {
+        "A": "the Sarbanes-Oxley Act's call for a framework for Section 404 reports",
+        "B": "the Treadway Commission's call for a common internal control reference point",
+        "C": "the PCAOB's request for criteria to use in audits of internal control",
+        "D": "the internal accounting control duty the FCPA imposed in 1977"
+      },
+      "correct": "B",
+      "key_concept": "COSO's 1992 framework grew out of the Treadway Commission's 1987 recommendation that its sponsors build a common internal control reference point.",
+      "pre_read": "Put the events in date order: which bodies and laws existed before 1992, and which came a decade later?",
+      "correct_explanation": "Release No. 33-8238 recounts that the National Commission on Fraudulent Financial Reporting, known as the Treadway Commission, formed in 1985 and in 1987 urged its sponsoring organizations to integrate internal control concepts into a common reference point. Their committee, COSO, answered with the 1992 framework. The FCPA had required internal accounting controls since 1977, but it set a legal duty rather than asking for a shared framework.",
+      "wrong_explanations": {
+        "A": "Tempting because SOX made COSO central to Section 404 work. But the Act dates from 2002, a decade after COSO published its framework.",
+        "C": "Tempting because auditors use frameworks as criteria. But the PCAOB was created by the 2002 Act; it did not exist when COSO wrote the 1992 framework.",
+        "D": "Closest choice: the FCPA did require internal accounting controls from 1977, but the call for one common framework came from the Treadway Commission's 1987 report."
+      },
+      "tips": [
+        "Eliminate: A and C. Both the Sarbanes-Oxley Act and the PCAOB date from 2002, ten years after COSO published its framework.",
+        "Final two: B beats D because the FCPA imposed a control duty, while the Treadway Commission asked its sponsors for one common reference point, which became COSO 1992.",
+        "Exam cue: COSO is the Committee of Sponsoring Organizations of the Treadway Commission; the name tells you where the framework came from."
+      ],
+      "framework_ref": "SEC Release No. 33-8238 Section II.A (Definition of internal control)",
+      "related_concepts": [
+        "Treadway Commission",
+        "COSO 1992 framework",
+        "Foreign Corrupt Practices Act"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 5A1.3 and SEC Release No. 33-8238 Section II.A and COSO's home page (opened 31 Oct 2026). Original KaiSip scenario written from the public law and public summaries; no SOXCPA presentation, upload or prep-bank material used. 31 Oct 2026, CSOE batch 3 csoe_d5_041-060.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d5_042",
+      "domain": 5,
+      "subtopic": "5B2 ERM (2017): strategy and performance. Directors and management",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A risk officer briefs new directors on COSO's 2017 ERM framework. Under its executive summary, the board's risk oversight role MOST directly includes:",
+      "options": {
+        "A": "holding overall responsibility for managing risk across the entity",
+        "B": "choosing the risk response for each risk the business lines report",
+        "C": "certifying the entity's risk appetite to the SEC in its annual report",
+        "D": "reviewing, challenging and concurring on strategy and risk appetite"
+      },
+      "correct": "D",
+      "key_concept": "Under ERM 2017, management holds overall responsibility for managing risk; the board oversees by reviewing, challenging and concurring on strategy and appetite.",
+      "pre_read": "Separate who runs enterprise risk management day to day from who oversees it.",
+      "correct_explanation": "COSO's 2017 executive summary lists the board's risk oversight role as including reviewing, challenging and concurring with management on proposed strategy and risk appetite, on alignment with mission and values, and on significant decisions such as acquisitions. The same summary gives management overall responsibility for managing risk to the entity. The board oversees and challenges; management runs enterprise risk management and selects responses.",
+      "wrong_explanations": {
+        "A": "Closest choice: someone must own entity-wide risk, but the executive summary gives management overall responsibility for managing risk; the board oversees and challenges it.",
+        "B": "Tempting because directors care about responses. But selecting risk responses is principle 13 in the performance component, carried out by management.",
+        "C": "Tempting because SOX links boards and SEC filings. But COSO's framework is voluntary guidance; nothing in it has the board certify appetite to the SEC."
+      },
+      "tips": [
+        "Eliminate: B and C. Selecting risk responses is management's work in the performance component, and COSO's framework creates no SEC certification.",
+        "Final two: D beats A because the 2017 executive summary gives management overall responsibility for managing risk; the board reviews, challenges and concurs.",
+        "Exam cue: in ERM 2017, management runs risk and the board oversees it; 'review, challenge, concur' are the board's verbs."
+      ],
+      "framework_ref": "COSO Enterprise Risk Management—Integrating with Strategy and Performance (2017) Executive Summary (Management's and the board's guides to ERM); COSO Enterprise Risk Management—Integrating with Strategy and Performance (2017) Executive Summary (Five components and 20 principles)",
+      "related_concepts": [
+        "Board risk oversight",
+        "Management's responsibility for risk",
+        "ERM 2017"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 5B2.4 and the COSO ERM 2017 Executive Summary (opened 31 Oct 2026). Original KaiSip scenario written from the public law and public summaries; no SOXCPA presentation, upload or prep-bank material used. 31 Oct 2026, CSOE batch 3 csoe_d5_041-060.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d5_043",
+      "domain": 5,
+      "subtopic": "5C1 Software and spreadsheets. A late system change",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A manufacturer's finance team moves its general ledger to a new ERP system six weeks before fiscal year-end. Under the SEC staff's 2005 ICFR statement, which treatment in this year's assessment is MOST accurate?",
+      "options": {
+        "A": "Include it; the staff allows no exclusion for late system changes",
+        "B": "Exclude it for up to one year, as for an acquired business",
+        "C": "Exclude it if management discloses the omission as a scope limitation",
+        "D": "Include it if the independent auditor plans to test it this year"
+      },
+      "correct": "A",
+      "key_concept": "The SEC staff gives no scope exclusion for IT systems implemented late in the year; management plans and tests their controls in advance.",
+      "pre_read": "Ask whether the relief for a business acquired during the year also covers a system the company changes itself.",
+      "correct_explanation": "The SEC staff's May 2005 statement refused to let management exclude new IT systems or upgrades from its ICFR assessment, even when put in late in the year, and rejected the analogy to acquired businesses. Management can plan, design and test controls before the system goes live, since not all testing must happen at year-end. The one-year exclusion in the staff's FAQ covers acquired businesses, not system changes.",
+      "wrong_explanations": {
+        "B": "Closest choice: the staff's FAQ does let management exclude a business acquired during the year, but the 2005 statement refused to extend that relief to new IT systems.",
+        "C": "Tempting because disclosure feels like a fair cure. But the staff gave no exclusion for system changes, so disclosure cannot take the new ledger out of scope.",
+        "D": "Tempting because auditors focus on key systems. But scope follows management's own assessment duty; the new ledger is in it whatever the independent auditor plans."
+      },
+      "tips": [
+        "Eliminate: C and D. Disclosure cannot remove a system from the assessment, and management's scope does not depend on the independent auditor's test plan.",
+        "Final two: A beats B because the one-year relief covers acquired businesses; the 2005 staff statement refused the same treatment for new systems.",
+        "Exam cue: a business acquired late in the year may qualify for a one-year exclusion; a system changed late in the year does not."
+      ],
+      "framework_ref": "SEC Staff Statement on Management's Report on ICFR (May 16, 2005) Section F (Information technology issues); SEC Staff FAQ on Management's Report on ICFR (revised Sept. 24, 2007) Question 3 (Excluding a recently acquired business)",
+      "related_concepts": [
+        "Scope of the ICFR assessment",
+        "New IT systems",
+        "Acquired business exclusion"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 5C1.1 and the SEC staff's Statement on Management's Report on ICFR (May 16, 2005) and ICFR FAQ (opened 31 Oct 2026). Original KaiSip scenario written from the public law and public summaries; no SOXCPA presentation, upload or prep-bank material used. 31 Oct 2026, CSOE batch 3 csoe_d5_041-060.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d5_044",
+      "domain": 5,
+      "subtopic": "5A1 The original framework (1992). Audit committee oversight",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A SOX lead maps the audit committee's oversight of financial reporting, such as challenging management's estimates, to COSO's 1992 components. Under Release 33-8238's account of the COSO Report, which component is this?",
+      "options": {
+        "A": "Monitoring, since directors evaluate whether controls keep working",
+        "B": "Information and communication, since filings go to regulators",
+        "C": "Control environment, as a key aspect of governance and oversight",
+        "D": "Risk assessment, since estimates carry a risk of misstatement"
+      },
+      "correct": "C",
+      "key_concept": "COSO treats the board's and audit committee's oversight of financial reporting as a key aspect of the control environment.",
+      "pre_read": "Decide whether the committee is governing and setting tone, or evaluating whether controls operate.",
+      "correct_explanation": "Release No. 33-8238 notes that the COSO Report treats the composition of the board and audit committee, and how directors carry out their financial reporting duties, as key aspects of the control environment, including overseeing the reporting process and assessing management's judgments and estimates. COSO's 2013 summary still places the board's governance oversight in the control environment. Monitoring evaluates whether components work; it is not where governance sits.",
+      "wrong_explanations": {
+        "A": "Closest choice: directors do receive monitoring results, but the COSO Report counts the board's and audit committee's oversight among the key aspects of the control environment.",
+        "B": "Tempting because the committee reviews key filings. But that review is part of its oversight role, which the COSO Report places in the control environment.",
+        "D": "Tempting because estimates carry risk. But analyzing that risk is management's risk assessment; the committee's challenge of estimates is governance oversight."
+      },
+      "tips": [
+        "Eliminate: B and D. Reviewing filings and challenging estimates are part of the committee's oversight, not the information flow itself or management's risk analysis.",
+        "Final two: C beats A because the COSO Report counts board and audit committee oversight as a key aspect of the control environment; monitoring evaluates controls.",
+        "Exam cue: who governs and sets the tone, such as the board, audit committee, ethics and structure, points to the control environment."
+      ],
+      "framework_ref": "SEC Release No. 33-8238 Section II.A.3 footnote 50 (The board and audit committee in the control environment); COSO Internal Control—Integrated Framework (2013) Executive Summary (Components of internal control)",
+      "related_concepts": [
+        "Control environment",
+        "Audit committee oversight",
+        "COSO components"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 5A1.2 and SEC Release No. 33-8238 footnote 50 and the COSO 2013 Executive Summary (opened 31 Oct 2026). Original KaiSip scenario written from the public law and public summaries; no SOXCPA presentation, upload or prep-bank material used. 31 Oct 2026, CSOE batch 3 csoe_d5_041-060.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d5_045",
+      "domain": 5,
+      "subtopic": "5B1 ERM (2004) and how it differs from internal control. The cube's side face",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A risk manager sketches COSO's 2004 ERM cube for the risk committee, with the four objective categories across the top. Which labels BEST belong on the cube's side face?",
+      "options": {
+        "A": "Entity level, division, business unit and subsidiary",
+        "B": "Internal environment, objective setting and event identification",
+        "C": "The response options of accept, reduce, share and avoid",
+        "D": "Governance and culture, performance, and review and revision"
+      },
+      "correct": "A",
+      "key_concept": "The 2004 ERM cube shows four objective categories, eight components and the entity's levels: entity-level, division, business unit and subsidiary.",
+      "pre_read": "Recall what each face of the cube shows: what the entity aims for, what it needs, and where it applies.",
+      "correct_explanation": "COSO's 2004 ERM cube sets the four objective categories (strategic, operations, reporting and compliance) across the top, the eight components down the front, and the entity's levels on the side: entity-level, division, business unit and subsidiary. The side face shows that ERM applies at every level of the organization. Internal environment, objective setting and event identification are components, so they belong on the front face.",
+      "wrong_explanations": {
+        "B": "Closest choice: these are three of the eight 2004 ERM components, which run down the cube's front face, not its side.",
+        "C": "Tempting because ERM 2004 names these four responses. But they are options within the risk response component, not a face of the cube.",
+        "D": "Tempting because these are ERM component names. But they come from COSO's 2017 update, which reorganized ERM into five components and 20 principles."
+      },
+      "tips": [
+        "Eliminate: C and D. Accept, reduce, share and avoid are response options, and governance and culture belongs to the 2017 update, not the 2004 cube.",
+        "Final two: A beats B because the eight components run down the front face; the side face shows the entity's levels, from entity-level to subsidiary.",
+        "Exam cue: on COSO's cubes, the third face is the organization's structure, its levels or units, never components or objectives."
+      ],
+      "framework_ref": "COSO Thought Paper Embracing Enterprise Risk Management (2011) Appendix A (Eight components of the 2004 ERM framework); COSO Thought Paper Understanding and Communicating Risk Appetite (2012) Risk Appetite and Risk Tolerance (Four categories of ERM objectives)",
+      "related_concepts": [
+        "ERM 2004 cube",
+        "Eight ERM components",
+        "Entity levels"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 5B1.1 and COSO's thought papers Embracing Enterprise Risk Management (2011) and Understanding and Communicating Risk Appetite (2012) (opened 31 Oct 2026). Original KaiSip scenario written from the public law and public summaries; no SOXCPA presentation, upload or prep-bank material used. 31 Oct 2026, CSOE batch 3 csoe_d5_041-060.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d5_046",
+      "domain": 5,
+      "subtopic": "5A2 The 2013 update. Reading the updated cube",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A controller explains the cube in COSO's 2013 internal control framework to the new SOX team. In COSO's description, the five components MOST accurately represent:",
+      "options": {
+        "A": "what the entity strives to achieve in its operations",
+        "B": "the steps of a serial process, performed one after another",
+        "C": "what is required for the entity to achieve its objectives",
+        "D": "the operating units and legal entities the system covers"
+      },
+      "correct": "C",
+      "key_concept": "In COSO's 2013 cube, objectives are what an entity strives for, components what it needs to achieve them, and structure where they apply.",
+      "pre_read": "Match each face of the cube to its role: the goal, the means, or the place.",
+      "correct_explanation": "COSO's 2013 executive summary describes a direct relationship in its cube: objectives are what an entity strives to achieve, components are what is required to achieve them, and the organizational structure is the third dimension. The three objective categories form the columns and the five components the rows. COSO also stresses that internal control is a dynamic, integrated process, not a serial one.",
+      "wrong_explanations": {
+        "A": "Closest choice: this describes the objectives, shown as the cube's columns; the components are what is needed to achieve them.",
+        "B": "Tempting because the components are usually listed in order. But COSO calls internal control a dynamic and integrated process, not a serial one.",
+        "D": "Tempting because the cube does show structure. But operating units and legal entities form its third dimension, not the components."
+      },
+      "tips": [
+        "Eliminate: B and D. COSO rejects a step-by-step reading of the components, and units and legal entities are the cube's third dimension.",
+        "Final two: C beats A because objectives are what the entity aims for; components are what it needs to get there.",
+        "Exam cue: objectives are the goal, components the means, structure the place where both apply."
+      ],
+      "framework_ref": "COSO Internal Control—Integrated Framework (2013) Executive Summary (Relationship of objectives and components); COSO Internal Control—Integrated Framework (2013) Executive Summary (Introduction: a dynamic, integrated process for entities of any size)",
+      "related_concepts": [
+        "COSO cube",
+        "Five components",
+        "Objectives and components"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 5A2.2 and the COSO 2013 Executive Summary (opened 31 Oct 2026). Original KaiSip scenario written from the public law and public summaries; no SOXCPA presentation, upload or prep-bank material used. 31 Oct 2026, CSOE batch 3 csoe_d5_041-060.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d5_047",
+      "domain": 5,
+      "subtopic": "5B2 ERM (2017): strategy and performance. Expected conduct",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A consumer lender rewards branch staff for loan volume however they treat risk, so the board asks management to spell out the conduct it expects. Under COSO's 2017 ERM framework, which principle MOST directly applies?",
+      "options": {
+        "A": "Implements risk responses, in the performance component",
+        "B": "Defines desired culture, in the governance and culture component",
+        "C": "Communicates risk information, in information, communication and reporting",
+        "D": "Reviews risk and performance, in review and revision"
+      },
+      "correct": "B",
+      "key_concept": "ERM 2017 principle 3, in governance and culture, defines the desired behaviors that characterize an organization's culture.",
+      "pre_read": "Ask whether the board wants a specific risk treated or the expected conduct of people set out.",
+      "correct_explanation": "COSO's 2017 framework lists Defines Desired Culture as principle 3 in governance and culture: the organization defines the behaviors that characterize the culture it wants. Rewarding volume regardless of risk shows a culture problem, and the board is asking management to set the expected conduct. Implementing risk responses, principle 13, treats specific risks once identified; it does not define how people are expected to behave.",
+      "wrong_explanations": {
+        "A": "Closest choice: a response could curb risky lending, but principle 13 treats identified risks; setting the conduct people are expected to show is principle 3, desired culture.",
+        "C": "Tempting because expectations must be communicated. But principle 19 shares risk information; the expectations themselves are defined under governance and culture.",
+        "D": "Tempting because performance is involved. But principle 16 reviews entity performance and risk; it does not define the behaviors the organization wants."
+      },
+      "tips": [
+        "Eliminate: C and D. Communicating risk information and reviewing performance both come after the expected conduct is set; neither defines it.",
+        "Final two: B beats A because the board wants expected behaviors spelled out, which is principle 3; principle 13 responds to specific identified risks.",
+        "Exam cue: behaviors, ethics and tone in ERM 2017 point to governance and culture, principles 1 to 5."
+      ],
+      "framework_ref": "COSO Enterprise Risk Management—Integrating with Strategy and Performance (2017) Executive Summary (Five components and 20 principles)",
+      "related_concepts": [
+        "Desired culture",
+        "Governance and culture",
+        "ERM 2017 principles"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 5B2.4 and the COSO ERM 2017 Executive Summary (opened 31 Oct 2026). Original KaiSip scenario written from the public law and public summaries; no SOXCPA presentation, upload or prep-bank material used. 31 Oct 2026, CSOE batch 3 csoe_d5_041-060.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d5_048",
+      "domain": 5,
+      "subtopic": "5A1 The original framework (1992). Testing a framework's suitability",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "An issuer's CFO reviews a published control framework so vague that two evaluators testing the same controls routinely reach different conclusions. Under Release 33-8238, which suitability criterion does it MOST clearly fail?",
+      "options": {
+        "A": "Freedom from bias in how the framework judges controls",
+        "B": "Relevance to evaluating internal control over financial reporting",
+        "C": "Completeness, so no factor that alters a conclusion is left out",
+        "D": "Reasonably consistent measurements of a company's internal control"
+      },
+      "correct": "D",
+      "key_concept": "Release 33-8238 requires a suitable framework to be free from bias, allow consistent measurement, be sufficiently complete and be relevant to ICFR.",
+      "pre_read": "Name what goes wrong when two evaluators use the framework: a slant, a gap, irrelevance, or scatter.",
+      "correct_explanation": "Release No. 33-8238 says a suitable framework must be free from bias, permit reasonably consistent qualitative and quantitative measurements of a company's internal control, be sufficiently complete so that relevant factors that would alter a conclusion are not omitted, and be relevant to evaluating ICFR. Criteria so vague that evaluators reach different conclusions on the same controls fail the consistency test.",
+      "wrong_explanations": {
+        "A": "Tempting because inconsistent results look unfair. But bias means criteria slanted toward a result; vague criteria produce scatter, not a slant.",
+        "B": "Tempting because suitability starts with relevance. But a control framework is relevant to evaluating ICFR; its problem is that it cannot be applied consistently.",
+        "C": "Closest choice: completeness asks whether relevant factors are left out; here the factors exist but are too vague to measure the same way twice."
+      },
+      "tips": [
+        "Eliminate: A and B. Nothing suggests the criteria lean toward one result, and a control framework is relevant to ICFR; the trouble is how it measures.",
+        "Final two: D beats C because the criteria are present but vague; completeness concerns factors left out, consistency concerns measuring the same controls the same way.",
+        "Exam cue: a suitable framework under Release 33-8238 is unbiased, consistent, complete and relevant; match the flaw to one of the four."
+      ],
+      "framework_ref": "SEC Release No. 33-8238 Section II.B.3.a (Evaluation of internal control over financial reporting)",
+      "related_concepts": [
+        "Suitable framework",
+        "Release No. 33-8238",
+        "Consistent measurement"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 5A1.3 and SEC Release No. 33-8238 Section II.B.3.a (opened 31 Oct 2026). Original KaiSip scenario written from the public law and public summaries; no SOXCPA presentation, upload or prep-bank material used. 31 Oct 2026, CSOE batch 3 csoe_d5_041-060.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d5_049",
+      "domain": 5,
+      "subtopic": "5C2 Service organizations: from SAS 70 to SSAE 18. A report with another year-end",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A calendar-year retailer's management plans to rely on its payroll provider's SOC 1 Type 2 report covering the twelve months to 30 September. Under the SEC staff's ICFR FAQ, which answer is MOST accurate?",
+      "options": {
+        "A": "No; reliance needs a report ending on the retailer's own year-end",
+        "B": "Yes; a Type 2 report as of a different year-end is acceptable",
+        "C": "Yes, provided one audit firm audits both the provider and the retailer",
+        "D": "No; management needs a Type 1 report dated at its year-end instead"
+      },
+      "correct": "B",
+      "key_concept": "The SEC staff lets management rely on a service provider's Type 2 report even when it is as of a different year-end.",
+      "pre_read": "Check what the SEC staff's FAQ says about report dates that do not match the company's fiscal year.",
+      "correct_explanation": "The SEC staff's ICFR FAQ, Question 8, says management would be able to rely on a Type 2 report on a service provider that is as of a different year-end. The staff wrote 'Type 2 SAS 70 report', which is today's SOC 1 Type 2 report. A report ending on 30 September can therefore support management's assessment of the calendar-year retailer's payroll controls.",
+      "wrong_explanations": {
+        "A": "Closest choice: matching periods is convenient, but the staff's FAQ expressly lets management rely on a Type 2 report as of a different year-end.",
+        "C": "Tempting because the FAQ discusses shared auditors. But it treats a shared firm as acceptable, not as a condition; reliance does not depend on it.",
+        "D": "Tempting because a year-end date seems to match. But the staff's FAQ asks for no such swap; it accepts the Type 2 report as of a different year-end."
+      },
+      "tips": [
+        "Eliminate: C and D. Sharing an audit firm is allowed, not required, and nothing in the FAQ calls for a Type 1 report instead.",
+        "Final two: B beats A because the staff's FAQ, Question 8, expressly accepts a Type 2 report as of a different year-end.",
+        "Exam cue: when an older SEC answer says 'Type 2 SAS 70 report', read it as today's SOC 1 Type 2 report."
+      ],
+      "framework_ref": "SEC Staff FAQ on Management's Report on ICFR (revised Sept. 24, 2007) Question 8 (Reliance on a service provider's Type 2 report); AICPA SOC 1 Topic Page (SOC 1 examinations of controls relevant to user entities' ICFR)",
+      "related_concepts": [
+        "SOC 1 Type 2 report",
+        "Service organization reliance",
+        "Report period"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 5C2.1 and the SEC staff's ICFR FAQ (revised 2007) and the AICPA's SOC 1 page (opened 31 Oct 2026). Original KaiSip scenario written from the public law and public summaries; no SOXCPA presentation, upload or prep-bank material used. 31 Oct 2026, CSOE batch 3 csoe_d5_041-060.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d5_050",
+      "domain": 5,
+      "subtopic": "5B1 ERM (2004) and how it differs from internal control. Rating before responses",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A treasury team rates a currency exposure as if the company had no hedges or other responses in place. Under COSO's 2004 ERM framework, which term MOST accurately describes this rating?",
+      "options": {
+        "A": "Residual risk, the risk that remains after management responds",
+        "B": "Speed of onset, how quickly the exposure could affect the company",
+        "C": "Event identification, finding events that could affect objectives",
+        "D": "Inherent risk, the risk before any action management might take"
+      },
+      "correct": "D",
+      "key_concept": "COSO's 2004 ERM framework defines inherent risk as risk absent management's actions and residual risk as what remains after its response.",
+      "pre_read": "Ask whether the rating counts the company's hedges and other responses or assumes none exist.",
+      "correct_explanation": "COSO's 2004 ERM framework, as its 2012 paper Risk Assessment in Practice explains, defines inherent risk as the risk to an entity in the absence of any actions management might take to alter its likelihood or impact, and residual risk as the risk remaining after management's response. Rating the exposure as if no hedges existed, before choosing a response, measures inherent risk.",
+      "wrong_explanations": {
+        "A": "Closest choice: residual risk is the other half of the pair, but it is measured after management's response; this team rated the exposure as if no response existed.",
+        "B": "Tempting because speed of onset is a common rating dimension. But it measures how fast a risk could arrive, not whether responses are counted.",
+        "C": "Tempting because the team is studying an exposure. But event identification finds events that could affect objectives; rating their size comes later, in risk assessment."
+      },
+      "tips": [
+        "Eliminate: B and C. Speed of onset measures how fast a risk could arrive, and event identification finds risks rather than rating them.",
+        "Final two: D beats A because residual risk counts management's responses; the team assumed none, which is inherent risk.",
+        "Exam cue: before responses, inherent risk; after responses, residual risk."
+      ],
+      "framework_ref": "COSO Thought Paper Risk Assessment in Practice (2012) Inherent and Residual Risk (Definitions from the 2004 ERM framework)",
+      "related_concepts": [
+        "Inherent risk",
+        "Residual risk",
+        "Risk assessment (ERM 2004)"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 5B1.3 and COSO's thought paper Risk Assessment in Practice (2012) (opened 31 Oct 2026). Original KaiSip scenario written from the public law and public summaries; no SOXCPA presentation, upload or prep-bank material used. 31 Oct 2026, CSOE batch 3 csoe_d5_041-060.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d5_051",
+      "domain": 5,
+      "subtopic": "5A1 The original framework (1992). A home-country framework",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A foreign-incorporated issuer that files Form 10-K evaluates ICFR against a recognized home-country framework that calls for no overall effectiveness conclusion. Under Release No. 33-8238, management's annual ICFR report must still:",
+      "options": {
+        "A": "state affirmatively whether ICFR is effective or not effective",
+        "B": "follow the home framework and omit any overall conclusion",
+        "C": "limit its conclusion to controls the home framework addresses",
+        "D": "leave the effectiveness conclusion to the independent auditor's report"
+      },
+      "correct": "A",
+      "key_concept": "A home-country framework may be used, but management must still state affirmatively whether ICFR is effective.",
+      "pre_read": "Separate what the chosen framework asks for from what the SEC's rule requires in management's report.",
+      "correct_explanation": "Release No. 33-8238 notes that some home-country frameworks used for foreign companies do not require a statement on whether internal control is effective. Management relying on such a framework must still state affirmatively whether ICFR is, or is not, effective, as Item 308(a)(3) requires of every management report. The choice of framework cannot remove the SEC's required conclusion.",
+      "wrong_explanations": {
+        "B": "Closest choice: the home framework sets the evaluation criteria, but the SEC's rules still require an affirmative statement on whether ICFR is effective.",
+        "C": "Tempting because the framework sets the evaluation's terms. But the conclusion covers ICFR as a whole, whatever the home framework addresses.",
+        "D": "Tempting because the independent auditor also reports on ICFR. But Item 308(a)(3) asks for management's own statement in management's report."
+      },
+      "tips": [
+        "Eliminate: C and D. The conclusion covers ICFR as a whole, and it belongs in management's own report, not the independent auditor's.",
+        "Final two: A beats B because Release No. 33-8238 says a home framework without an effectiveness statement does not excuse one; management must state it.",
+        "Exam cue: whatever framework is used, management's report says ICFR is effective or not effective."
+      ],
+      "framework_ref": "SEC Release No. 33-8238 Section II.B.3.a footnote 68 (Home-country frameworks and the effectiveness statement); 17 CFR 229.308(a) (Management's annual report on internal control over financial reporting)",
+      "related_concepts": [
+        "Suitable framework",
+        "Effectiveness statement",
+        "Item 308(a)"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 5A1.3 and SEC Release No. 33-8238 Section II.B.3.a and 17 CFR 229.308(a) (opened 31 Oct 2026). Original KaiSip scenario written from the public law and public summaries; no SOXCPA presentation, upload or prep-bank material used. 31 Oct 2026, CSOE batch 3 csoe_d5_041-060.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d5_052",
+      "domain": 5,
+      "subtopic": "5B2 ERM (2017): strategy and performance. Before choosing a strategy",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Before choosing its strategy, a pharmacy chain's management studies how new drug-pricing rules, competitor mergers and changing customer habits could shift its risk profile. Under COSO's 2017 ERM framework, which principle is this MOST directly?",
+      "options": {
+        "A": "Assesses substantial change, in the review and revision component",
+        "B": "Identifies risk, in the performance component",
+        "C": "Analyzes business context, in strategy and objective-setting",
+        "D": "Exercises board risk oversight, in governance and culture"
+      },
+      "correct": "C",
+      "key_concept": "ERM 2017 principle 6, analyzes business context, considers how business context could affect the risk profile, within strategy and objective-setting.",
+      "pre_read": "Note when the study happens: before a strategy is chosen, or after strategy and objectives are in place.",
+      "correct_explanation": "COSO's 2017 framework lists Analyzes Business Context as principle 6, in strategy and objective-setting: the organization considers the potential effects of business context on its risk profile. Studying regulation, competitors and customers before choosing a strategy is that analysis. Assessing substantial change, principle 15, sits in review and revision and looks for changes that could affect strategy and business objectives already set.",
+      "wrong_explanations": {
+        "A": "Closest choice: the facts involve change, but principle 15 reviews changes that could affect strategy and objectives already set; this study comes before strategy is chosen.",
+        "B": "Tempting because risks are being studied. But identifying risk, principle 10, looks at risks to the performance of a chosen strategy and its business objectives.",
+        "D": "Tempting because directors care about strategy. But management is doing the analysis here; board risk oversight, principle 1, is the directors' role."
+      },
+      "tips": [
+        "Eliminate: B and D. Identifying risk works on a strategy already chosen, and board oversight is the directors' role, not management's study.",
+        "Final two: C beats A because the study comes before the strategy is chosen; principle 15 deals with change once strategy and objectives exist.",
+        "Exam cue: in ERM 2017, the outside world studied before choosing strategy is business context, principle 6."
+      ],
+      "framework_ref": "COSO Enterprise Risk Management—Integrating with Strategy and Performance (2017) Executive Summary (Five components and 20 principles)",
+      "related_concepts": [
+        "Business context",
+        "Strategy and objective-setting",
+        "ERM 2017 principles"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 5B2.3 and the COSO ERM 2017 Executive Summary (opened 31 Oct 2026). Original KaiSip scenario written from the public law and public summaries; no SOXCPA presentation, upload or prep-bank material used. 31 Oct 2026, CSOE batch 3 csoe_d5_041-060.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d5_053",
+      "domain": 5,
+      "subtopic": "5A2 The 2013 update. Effect on the 404 reports",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An accelerated filer's SOX team is moving from COSO's 1992 framework to the 2013 update. According to COSO's FAQ, how does the move affect management's Section 404(a) assertion and the independent auditor's 404(b) attestation?",
+      "options": {
+        "A": "Management must add a separate statement on each of the 17 principles",
+        "B": "Both are suspended for one year while the company transitions",
+        "C": "The auditor's 404(b) attestation becomes optional for that year",
+        "D": "Neither should change; management assesses how it applies the 17 principles"
+      },
+      "correct": "D",
+      "key_concept": "COSO expected the 2013 update to leave Section 404(a) and 404(b) assertions unchanged; management assesses how its system applies the 17 principles.",
+      "pre_read": "Separate what the framework changes in management's work from what the SEC's rules ask the report to say.",
+      "correct_explanation": "COSO's 2013 FAQ, Question 5, says management's assertion on ICFR under Section 404(a) and 404(b) is not expected to change. To transition, senior management assesses how the company's system of internal control applies the 17 principles, and the board oversees that work. Item 308(a) asks for one overall conclusion on ICFR; it calls for no statement on each principle.",
+      "wrong_explanations": {
+        "A": "Closest choice: the 17 principles do drive the transition work, but COSO expects no change to the SOX assertions, and Item 308(a) asks for one overall conclusion.",
+        "B": "Tempting because transitions take time. But a framework change does not pause the annual Section 404 reports; COSO expects the assertions to stay the same.",
+        "C": "Tempting because the framework changed. But the COSO edition has no bearing on whether 404(b) applies; COSO expects the assertions to stay as they were."
+      },
+      "tips": [
+        "Eliminate: B and C. Changing the COSO edition neither pauses the Section 404 reports nor alters whether an attestation applies.",
+        "Final two: D beats A because COSO expects no change to the 404 assertions; principle-by-principle work supports one overall ICFR conclusion.",
+        "Exam cue: COSO 2013 changed how management supports its assessment, not what Section 404 asks it to say."
+      ],
+      "framework_ref": "COSO Internal Control—Integrated Framework FAQ (May 2013) Question 5 (Effect on SOX 404 filers); 17 CFR 229.308(a) (Management's annual report on internal control over financial reporting)",
+      "related_concepts": [
+        "Section 404 assertions",
+        "Transition to COSO 2013",
+        "17 principles"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 5A2.1 and COSO's Internal Control—Integrated Framework FAQ (May 2013) and 17 CFR 229.308(a) (opened 31 Oct 2026). Original KaiSip scenario written from the public law and public summaries; no SOXCPA presentation, upload or prep-bank material used. 31 Oct 2026, CSOE batch 3 csoe_d5_041-060.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d5_054",
+      "domain": 5,
+      "subtopic": "5A1 The original framework (1992). Before the principles",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A controller on the SOX team, trained on COSO's 1992 framework, asks how the 2013 update's 17 principles relate to it. According to COSO's 2013 FAQ, which statement is MOST accurate?",
+      "options": {
+        "A": "The 1992 text lacked these ideas; the 17 principles were wholly new",
+        "B": "The principles formalize concepts already in the 1992 framework",
+        "C": "The 1992 framework listed the same 17 principles under other names",
+        "D": "The principles were borrowed from COSO's 2004 ERM framework"
+      },
+      "correct": "B",
+      "key_concept": "The 2013 update formalized as principles fundamental concepts already introduced, but not listed, in the 1992 framework.",
+      "pre_read": "Ask whether the ideas behind the principles existed in 1992, and in what form.",
+      "correct_explanation": "COSO's 2013 FAQ explains that a significant change in the update was formalizing fundamental concepts introduced in the original 1992 framework; in the update, those concepts became principles. So the ideas were already present in 1992, embedded in the text rather than set out as a numbered list. Formalizing them was meant to clarify what effective internal control requires.",
+      "wrong_explanations": {
+        "A": "Tempting because the numbered list first appeared in 2013. But COSO says the principles formalize concepts the original framework had already introduced.",
+        "C": "Closest choice: the ideas were there in 1992, but embedded in the text; the 1992 framework did not list them as 17 named principles.",
+        "D": "Tempting because ERM is also a COSO framework. But COSO says the principles formalize concepts from the original internal control framework itself."
+      },
+      "tips": [
+        "Eliminate: A and D. COSO says the 2013 principles formalize ideas from the original text, so they are neither brand new nor borrowed from ERM.",
+        "Final two: B beats C because the 1992 framework held these ideas inside its text; it did not list 17 named principles.",
+        "Exam cue: 2013 made explicit what 1992 left implicit; same core, principles spelled out."
+      ],
+      "framework_ref": "COSO Internal Control—Integrated Framework FAQ (May 2013) Question 1 (What the update kept and changed)",
+      "related_concepts": [
+        "COSO 1992 framework",
+        "17 principles",
+        "2013 update"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 5A1.2 and COSO's Internal Control—Integrated Framework FAQ (May 2013) (opened 31 Oct 2026). Original KaiSip scenario written from the public law and public summaries; no SOXCPA presentation, upload or prep-bank material used. 31 Oct 2026, CSOE batch 3 csoe_d5_041-060.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d5_055",
+      "domain": 5,
+      "subtopic": "5A2 The 2013 update. Cyber controls without a foundation",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An online broker's IT team runs strong firewalls, but the board sets no cyber priorities and nobody checks that controls keep working. According to COSO in the Cyber Age, which weakness is MOST fundamental?",
+      "options": {
+        "A": "Control environment and monitoring, which the paper calls foundational",
+        "B": "Control activities, since more technical layers would close the gap",
+        "C": "Risk assessment, since fraud risk has not been considered",
+        "D": "Information and communication, since cyber attacks get reported too slowly"
+      },
+      "correct": "A",
+      "key_concept": "COSO in the Cyber Age treats the control environment and monitoring as foundational: without them, cyber control activities are unlikely to work.",
+      "pre_read": "Sort the facts into components: what the board does, what IT runs, and who checks that controls keep working.",
+      "correct_explanation": "COSO in the Cyber Age calls the control environment and monitoring activities foundational to managing cyber risk: unless they are present and functioning, an organization is unlikely to understand its cyber risks, deploy well-designed control activities or respond appropriately. Here the board sets no cyber priorities, a control environment gap, and nobody evaluates the controls, a monitoring gap. More technical layers would fix neither.",
+      "wrong_explanations": {
+        "B": "Closest choice: layered technical controls matter, but the paper says they are unlikely to work without a functioning control environment and monitoring, which are missing here.",
+        "C": "Tempting because fraud is part of risk assessment. But the facts point to absent board priorities and absent evaluations, not to a missed fraud analysis.",
+        "D": "Tempting because cyber events must be communicated. But nothing shows slow reporting; the gaps are the board's priorities and the evaluations of controls."
+      },
+      "tips": [
+        "Eliminate: C and D. The facts show no missed fraud analysis and no reporting delay; they show missing priorities and missing evaluations.",
+        "Final two: A beats B because the paper says cyber controls are unlikely to work unless the control environment and monitoring are present and functioning.",
+        "Exam cue: no tone from the board and no one checking controls means the foundation is missing, whatever the technology."
+      ],
+      "framework_ref": "COSO Thought Paper COSO in the Cyber Age (2015) Control Environment and Monitoring Activities (Foundational components for managing cyber risk)",
+      "related_concepts": [
+        "Cyber risk",
+        "Control environment",
+        "Monitoring activities"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 5A2.4 and COSO's thought paper COSO in the Cyber Age (2015) (opened 31 Oct 2026). Original KaiSip scenario written from the public law and public summaries; no SOXCPA presentation, upload or prep-bank material used. 31 Oct 2026, CSOE batch 3 csoe_d5_041-060.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d5_056",
+      "domain": 5,
+      "subtopic": "5B2 ERM (2017): strategy and performance. Looking back at results",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "After two years of results well below plan, a retailer's management examines whether its risk-taking caused the shortfall and its risk practices need revising. Under COSO's 2017 ERM framework, which component is this MOST directly?",
+      "options": {
+        "A": "Performance, which identifies and assesses risks to objectives",
+        "B": "Strategy and objective-setting, which sets the risk appetite",
+        "C": "Review and revision, which reviews risk and performance",
+        "D": "Information, communication and reporting, which reports on risk"
+      },
+      "correct": "C",
+      "key_concept": "ERM 2017's review and revision component reviews entity performance, considers risk and revises enterprise risk management practices (principles 15 to 17).",
+      "pre_read": "Ask whether management is handling risks going forward or looking back at results to adjust its practices.",
+      "correct_explanation": "COSO's 2017 framework places Reviews Risk and Performance, principle 16, and Pursues Improvement in Enterprise Risk Management, principle 17, in the review and revision component: by reviewing entity performance, the organization considers how well its ERM components work and what revisions are needed. The performance component identifies, assesses and responds to risks; it does not look back at results to revise risk practices.",
+      "wrong_explanations": {
+        "A": "Closest choice: the performance component identifies, assesses and responds to risks; looking back at results to revise risk practices is principle 16, in review and revision.",
+        "B": "Tempting because poor results may change strategy. But this component sets appetite and strategy; reviewing results and practices sits in review and revision.",
+        "D": "Tempting because results get reported. But principle 20 reports on risk, culture and performance; it does not evaluate and revise the practices."
+      },
+      "tips": [
+        "Eliminate: B and D. Setting appetite and reporting results are not the same as looking back to judge and revise risk practices.",
+        "Final two: C beats A because the performance component works risks forward; reviewing entity performance and revising ERM is principle 16, in review and revision.",
+        "Exam cue: in ERM 2017, a component name can mislead; reviewing performance sits in review and revision, not in performance."
+      ],
+      "framework_ref": "COSO Enterprise Risk Management—Integrating with Strategy and Performance (2017) Executive Summary (Five components and 20 principles)",
+      "related_concepts": [
+        "Review and revision",
+        "Performance component",
+        "ERM 2017 principles"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 5B2.4 and the COSO ERM 2017 Executive Summary (opened 31 Oct 2026). Original KaiSip scenario written from the public law and public summaries; no SOXCPA presentation, upload or prep-bank material used. 31 Oct 2026, CSOE batch 3 csoe_d5_041-060.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d5_057",
+      "domain": 5,
+      "subtopic": "5A2 The 2013 update. A smaller company's controls",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A small issuer with 60 employees has few written procedures, but its finance director reviews every payment and each monthly reconciliation. Under COSO 2013, which view of its internal control is MOST accurate?",
+      "options": {
+        "A": "It can be effective if components and principles are present and functioning",
+        "B": "It cannot be effective without written procedures for every principle",
+        "C": "It is effective by default, since COSO exempts smaller companies",
+        "D": "It cannot be effective until the company adopts COSO's separate ERM framework"
+      },
+      "correct": "A",
+      "key_concept": "COSO 2013 allows a smaller entity's internal control to be less formal and structured yet effective, judged by the same present-and-functioning test.",
+      "pre_read": "Separate how formal a control system is from whether its components and principles work.",
+      "correct_explanation": "COSO's 2013 executive summary says the framework applies to entities of every size, and that a smaller entity's system of internal control may be less formal and less structured yet still be effective. Effectiveness turns on each component and relevant principle being present and functioning and the components operating together, not on how much is written down. Size brings no exemption from that test.",
+      "wrong_explanations": {
+        "B": "Closest choice: documentation helps show principles are present, but COSO accepts that a smaller entity's system can be less formal and still be effective.",
+        "C": "Tempting because COSO recognizes smaller entities. But it grants no exemption; the same present-and-functioning test applies to every entity.",
+        "D": "Tempting because ERM sounds more complete. But the internal control framework sets its own test for effectiveness; it does not depend on adopting ERM."
+      },
+      "tips": [
+        "Eliminate: C and D. COSO gives smaller entities no exemption and does not make ERM a condition of effective internal control.",
+        "Final two: A beats B because COSO accepts a less formal, less structured system in a smaller entity if components and principles are present and functioning.",
+        "Exam cue: in COSO, effectiveness depends on components and principles that work, not on the volume of paperwork."
+      ],
+      "framework_ref": "COSO Internal Control—Integrated Framework (2013) Executive Summary (Introduction: a dynamic, integrated process for entities of any size); COSO Internal Control—Integrated Framework (2013) Executive Summary (Effective internal control)",
+      "related_concepts": [
+        "Smaller entities",
+        "Present and functioning",
+        "Effective internal control"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 5A2.3 and the COSO 2013 Executive Summary (opened 31 Oct 2026). Original KaiSip scenario written from the public law and public summaries; no SOXCPA presentation, upload or prep-bank material used. 31 Oct 2026, CSOE batch 3 csoe_d5_041-060.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d5_058",
+      "domain": 5,
+      "subtopic": "5B1 ERM (2004) and how it differs from internal control. Strategy in the 2004 definition",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A consultant tells a bank's risk committee that COSO's 2004 ERM framework dealt only with carrying out a chosen strategy, and that strategy setting first entered ERM in 2017. Which correction is MOST accurate?",
+      "options": {
+        "A": "None needed; the 2004 framework addressed risks to strategy already set",
+        "B": "Strategy setting came into COSO's work with the 2013 internal control update",
+        "C": "Strategy belongs to the board alone, so neither ERM edition addresses it",
+        "D": "The 2004 definition already applied ERM in strategy setting; 2017 expanded it"
+      },
+      "correct": "D",
+      "key_concept": "COSO's 2004 definition already applied ERM in strategy setting; the 2017 update gave strategy more weight rather than introducing it.",
+      "pre_read": "Recall the words of the 2004 definition of ERM before comparing it with the 2017 title.",
+      "correct_explanation": "COSO's 2004 framework defined ERM as a process effected by the board, management and other personnel, applied in strategy setting and across the enterprise, to identify potential events and manage risk within risk appetite. Strategy setting was therefore part of ERM from 2004. The 2017 update, titled Integrating with Strategy and Performance, gave strategy more weight; it did not introduce it.",
+      "wrong_explanations": {
+        "A": "Closest choice: much ERM practice did focus on risks to a strategy already set, but the 2004 definition itself said ERM is applied in strategy setting.",
+        "B": "Tempting because 2013 updated a COSO framework. But that update concerned internal control; strategy setting was already in the 2004 ERM definition.",
+        "C": "Tempting because boards approve strategy. But both ERM editions address strategy; the 2004 definition names strategy setting outright."
+      },
+      "tips": [
+        "Eliminate: B and C. The 2013 update was to internal control, and strategy appears in both ERM editions.",
+        "Final two: D beats A because the 2004 definition itself says ERM is applied in strategy setting; 2017 gave strategy more weight rather than introducing it.",
+        "Exam cue: ERM 2004 is applied in strategy setting and manages risk within appetite; ERM 2017 puts strategy and performance in its title."
+      ],
+      "framework_ref": "COSO Thought Paper Embracing Enterprise Risk Management (2011) Overview (Definition of ERM from the 2004 framework); COSO Enterprise Risk Management—Integrating with Strategy and Performance (2017) Executive Summary (The role of risk in strategy selection)",
+      "related_concepts": [
+        "ERM 2004 definition",
+        "Strategy setting",
+        "ERM 2017 update"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 5B1.2 and COSO's thought paper Embracing Enterprise Risk Management (2011) and the COSO ERM 2017 Executive Summary (opened 31 Oct 2026). Original KaiSip scenario written from the public law and public summaries; no SOXCPA presentation, upload or prep-bank material used. 31 Oct 2026, CSOE batch 3 csoe_d5_041-060.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d5_059",
+      "domain": 5,
+      "subtopic": "5C1 Software and spreadsheets. IT frameworks such as COBIT",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A software maker's SOX lead asks whether Section 404 work must follow an IT framework such as COBIT. Under the SEC staff's 2005 ICFR statement, management's IT assessment:",
+      "options": {
+        "A": "must apply every general IT control listed in COBIT",
+        "B": "must follow COBIT for financial applications and COSO for the rest",
+        "C": "needs no separate IT framework, though parts of one may guide it",
+        "D": "may not draw on any IT framework beyond the COSO framework"
+      },
+      "correct": "C",
+      "key_concept": "The SEC staff does not require a separate IT framework for Section 404, though parts of frameworks such as COBIT may be used as guides.",
+      "pre_read": "Ask whether the staff made an IT framework mandatory, optional, or off limits.",
+      "correct_explanation": "The SEC staff's May 2005 statement says that while a separate, specific IT framework is not required for the Section 404 assessment, some companies find parts of available frameworks, such as COBIT, useful. The staff gave no fixed list of general IT controls to include and asked management to apply reasonable judgment about how its IT systems affect ICFR.",
+      "wrong_explanations": {
+        "A": "Tempting because COBIT is a common IT control set. But the staff said a separate IT framework is not required and gave no fixed list of general IT controls.",
+        "B": "Tempting because financial applications matter most. But the staff required no IT framework for any systems; it left IT scope to management's judgment.",
+        "D": "Closest choice: no IT framework is required, but the staff did not bar one; it noted that parts of available frameworks can be useful."
+      },
+      "tips": [
+        "Eliminate: A and B. Both make COBIT mandatory in some form, yet the staff required no separate IT framework for Section 404.",
+        "Final two: C beats D because the staff allowed parts of IT frameworks as guides while requiring none; D turns optional help into a ban.",
+        "Exam cue: for Section 404, an IT framework such as COBIT is optional help, neither required nor forbidden."
+      ],
+      "framework_ref": "SEC Staff Statement on Management's Report on ICFR (May 16, 2005) Section F (Information technology issues)",
+      "related_concepts": [
+        "IT frameworks",
+        "COBIT",
+        "Section 404 IT scope"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 5C1.1 and the SEC staff's Statement on Management's Report on ICFR (May 16, 2005) (opened 31 Oct 2026). Original KaiSip scenario written from the public law and public summaries; no SOXCPA presentation, upload or prep-bank material used. 31 Oct 2026, CSOE batch 3 csoe_d5_041-060.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d5_060",
+      "domain": 5,
+      "subtopic": "5B2 ERM (2017): strategy and performance. A small nonprofit",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "The treasurer of a 40-person community nonprofit tells its board that COSO's 2017 ERM framework is meant only for large listed companies. Under the framework's executive summary, which response is MOST accurate?",
+      "options": {
+        "A": "Correct; ERM is designed for SEC registrants subject to Section 404",
+        "B": "Not so; it suits any entity with a mission, strategy and objectives",
+        "C": "Correct; small entities are meant to use the internal control framework",
+        "D": "Not so, though for nonprofits it covers financial reporting risks alone"
+      },
+      "correct": "B",
+      "key_concept": "COSO's 2017 ERM framework can be applied by any organization with a mission, strategy and objectives, whatever its size or type.",
+      "pre_read": "Look for the test COSO's summary gives for whether an organization can use ERM.",
+      "correct_explanation": "COSO's 2017 executive summary says ERM can be used by organizations of any size: if an organization has a mission, a strategy and objectives, and needs to make decisions that fully consider risk, ERM can be applied, from small businesses and community-based social enterprises to government agencies and the largest companies. Its principles apply at all levels and across all functions, not only financial reporting.",
+      "wrong_explanations": {
+        "A": "Tempting because SOX applies to SEC registrants. But COSO's 2017 summary names small businesses, social enterprises and government agencies among the organizations that can use ERM.",
+        "C": "Closest choice: the internal control framework also suits entities of any size, but COSO says ERM itself can be applied by small organizations as well.",
+        "D": "Tempting because nonprofits report finances. But COSO says ERM's principles apply at all levels and across all functions, well beyond financial reporting."
+      },
+      "tips": [
+        "Eliminate: A and D. COSO names small businesses, social enterprises and government agencies as users, and ERM reaches beyond financial reporting.",
+        "Final two: B beats C because COSO says any organization with a mission, strategy and objectives can apply ERM; small size points to no other framework.",
+        "Exam cue: ERM 2017 fits any organization that has a mission, a strategy and objectives, whatever its size or sector."
+      ],
+      "framework_ref": "COSO Enterprise Risk Management—Integrating with Strategy and Performance (2017) Executive Summary (Clearing up misconceptions: ERM for organizations of any size)",
+      "related_concepts": [
+        "ERM 2017 scope",
+        "Organizations of any size",
+        "Misconceptions about ERM"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 5B2.1 and the COSO ERM 2017 Executive Summary (opened 31 Oct 2026). Original KaiSip scenario written from the public law and public summaries; no SOXCPA presentation, upload or prep-bank material used. 31 Oct 2026, CSOE batch 3 csoe_d5_041-060.",
       "style_version": 2
     }
   ]
