@@ -24,7 +24,7 @@ are in `docs/content/CSOE_RESEARCH_LOG.md`.
 | Navigation | No moving back to review or change answers; no skipping (answer in the order presented); no stop and resume (closing the browser loses the answers and fails the attempt) | P2 |
 | Scope | "The exam contains only questions that have been clearly answered in the official presentations" | P2 |
 | Official presentations | 1,022 slides, as downloadable PDFs; SOXCPA estimates about 29 hours of study on average and advises studying them at least twice | P1, P3 |
-| Attempts | Up to 3 a year at no extra cost; after a third failure, wait one year from the first exam, then 3 more | P1, P2 |
+| Attempts | Up to 3 a year at no extra cost. After a third failure the pages differ: the program page says wait at least one year before retaking (P1); the steps PDF counts the year from the first exam (P2). Ask SOXCPA | P1, P2 |
 | Sample questions | SOXCPA sends no sample questions or past exams | P2 |
 | Certificate | PDF by email 7 business days after passing, with a QR code to a personal verification page | P1, P2 |
 | Validity | Lifetime; no renewal fees, no retake, no recertification | P3 |

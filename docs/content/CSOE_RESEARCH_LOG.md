@@ -11,7 +11,7 @@ pass (search summaries only) is kept below as history, with corrections.
 | Earlier lead (first pass) | Opened source says | Source |
 |---|---|---|
 | "Cannot go back" was in the owner's brief only | Confirmed: no moving backwards to review or change answers | P2 |
-| Retakes: "a second opportunity" (owner) vs "three a year" (blog) | Up to 3 attempts a year; after a third failure, wait one year from the first exam, then 3 more. The blog was closer | P1, P2 |
+| Retakes: "a second opportunity" (owner) vs "three a year" (blog) | Up to 3 attempts a year. After a third failure the program page says wait at least one year before retaking (P1), while the steps PDF counts the year from the first exam (P2). The blog was closer | P1, P2 |
 | Certificate lifetime validity (secondary) | Confirmed: lifetime, no renewal or recertification | P3 |
 | No list price found | US$147 all-inclusive; full refund within 60 days | P1 |
 | Course parts from search summaries | Confirmed, with far more detail: Part 1 walks the Act title by title; Part 4 adds spreadsheets, SAS 70 / SSAE 16 / SSAE 18 and J-SOX; Part 5 adds FSOC, orderly liquidation, the Federal Insurance Office and the Volcker Rule | P1 |
