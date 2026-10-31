@@ -689,22 +689,22 @@
       "bloom_level": "Analysis",
       "question": "An IS auditor tests 60 of 6,800 privileged-access transactions and finds 6 failures (10%) against a 5% tolerable rate. What is the auditor's MOST appropriate next step?",
       "options": {
-        "A": "Pass the control, since just six items failed",
+        "A": "Pass the control if the six failures share one cause",
         "B": "Conclude the control is not operating effectively",
         "C": "Expand the sample to refine the deviation-rate estimate before concluding",
-        "D": "Ask the audit committee to raise the tolerable rate"
+        "D": "Replace the six failed items with six new selections"
       },
       "correct": "B",
       "key_concept": "When the sample deviation rate clearly exceeds the tolerable rate, the auditor cannot rely on the control and evaluates the deviations' cause.",
       "pre_read": "Compare the sample rate with the tolerable rate. Ask whether more testing could realistically change the conclusion.",
       "correct_explanation": "A 10% sample deviation rate against a 5% tolerable rate means the auditor cannot rely on the control, whatever allowance is made for sampling risk. The auditor concludes it is not operating effectively, evaluates the cause and nature of the deviations, and adjusts substantive work. Extending suits results near the threshold; even a far larger sample would almost certainly leave the upper deviation limit above 5%.",
       "wrong_explanations": {
-        "A": "Six failures in 60 is a 10% rate, double the tolerable rate. Absolute counts are not the test.",
+        "A": "Shared causes make failures look like one problem, which tempts candidates to discount them. Each deviation counts against the tolerable rate; the cause guides remediation, not the conclusion.",
         "C": "Extension helps when results are borderline. With 10% against 5%, more items would only delay an inevitable conclusion.",
-        "D": "Tolerable rates are set before testing from risk. Changing them to fit results undermines the whole test."
+        "D": "Swapping failed items seems to give a cleaner sample, but deviations found must be evaluated, not replaced. Replacing them hides a 10% rate already above the tolerable rate."
       },
       "tips": [
-        "Eliminate: A judges by raw count, not rate, and D moves the threshold to fit the result.",
+        "Eliminate: A and D, because A excuses failures that share a cause, and D swaps failed items for new ones; every deviation found counts against the tolerable rate.",
         "Final two: B beats C because extending a sample helps only near the threshold; 10% against 5% is already conclusive.",
         "Exam cue: if the sample rate already exceeds the tolerable rate by a wide margin, conclude rather than keep sampling."
       ],
@@ -715,7 +715,7 @@
         "Sample size determination",
         "Audit deadline pressure"
       ],
-      "_provenance": "Authored from concept: 'sampling risk — expand sample when apparent failures dramatically exceed threshold from a small base'. Public source: ISACA IT Audit Standard 1205 + AICPA AU-C 530. All scenario specifics (manufacturing, 6,800 transactions, 60-sample, 6-failure, 4-week deadline, 5% threshold) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. v2: key deliberately changed to 'conclude not effective' because the rate is far above tolerable; d1_128 carries the borderline extend case. Oct 2026 fix: sample 25 to 60 and tolerable rate 1% to 5%, because a sample of 25 cannot support a 1% tolerable rate (about 59 items are needed for 5% at 95% confidence).",
+      "_provenance": "Authored from concept: 'sampling risk — expand sample when apparent failures dramatically exceed threshold from a small base'. Public source: ISACA IT Audit Standard 1205 + AICPA AU-C 530. All scenario specifics (manufacturing, 6,800 transactions, 60-sample, 6-failure, 4-week deadline, 5% threshold) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. v2: key deliberately changed to 'conclude not effective' because the rate is far above tolerable; d1_128 carries the borderline extend case. Oct 2026 fix: sample 25 to 60 and tolerable rate 1% to 5%, because a sample of 25 cannot support a 1% tolerable rate (about 59 items are needed for 5% at 95% confidence). Strawman pass (Oct 2026): eliminated option(s) rewritten to a plausible same-type error; blind re-tested.",
       "style_version": 2
     },
     {
@@ -729,7 +729,7 @@
       "options": {
         "A": "Self-assessment is replacing, not supplementing, audit testing",
         "B": "Self-assessors lack sufficient technical expertise in IS controls",
-        "C": "The incidents indicate widespread fraud across the business units",
+        "C": "The incident response process is failing to contain new incidents",
         "D": "Self-assessments should be run by the audit function instead"
       },
       "correct": "A",
@@ -738,11 +738,11 @@
       "correct_explanation": "Control self-assessment complements independent audit work; it cannot replace it. Here self-reported results contradict actual incidents, yet the audit function has stepped back, so no one is providing reliable assurance. That structural over-reliance is the root concern. Weak assessor expertise is a real contributing cause, but even expert self-assessors would not justify replacing independent testing.",
       "wrong_explanations": {
         "B": "Limited expertise contributes to unreliable results, but it is a cause, not the core problem of reduced independent assurance.",
-        "C": "Incidents may stem from errors, misconfiguration or training gaps. Nothing in the stem establishes fraud.",
+        "C": "Recurring incidents point toward incident response, but the stem gives no facts on containment. The auditor's concern is that unvalidated self-ratings replaced independent testing.",
         "D": "In CSA, process owners assess their own controls and audit facilitates or reviews; moving the assessment to audit misreads CSA and leaves testing reduced."
       },
       "tips": [
-        "Eliminate: C asserts fraud the facts do not show, and D moves CSA to audit, though in CSA process owners assess their own controls.",
+        "Eliminate: C and D, because C blames incident handling, which the facts do not implicate, and D moves CSA to audit, though in CSA process owners assess their own controls.",
         "Final two: A beats B because over-reliance on self-assessment is the root cause; assessor skill is only one contributing factor.",
         "Exam cue: control self-assessment supplements independent assurance and never replaces it; look for the option naming that over-reliance."
       ],
@@ -753,7 +753,7 @@
         "Three lines of defense",
         "Reliance and coordination"
       ],
-      "_provenance": "Authored from concept: 'CSA over-reliance — audit function substituting CSA for independent testing'. Public source: IIA International Standards 2050 + IIA CSA Practice Guide. All scenario specifics (university, quarterly cadence, 90%/12-incident divergence, department administrators, 18-month run) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): removed the unexplained CSA acronym from options and tips. D1 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): D ('inherently unsuitable') fell on a lone absolute; it is now the misconception that audit should run CSA. Dismissive tip wording removed.",
+      "_provenance": "Authored from concept: 'CSA over-reliance — audit function substituting CSA for independent testing'. Public source: IIA International Standards 2050 + IIA CSA Practice Guide. All scenario specifics (university, quarterly cadence, 90%/12-incident divergence, department administrators, 18-month run) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): removed the unexplained CSA acronym from options and tips. D1 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): D ('inherently unsuitable') fell on a lone absolute; it is now the misconception that audit should run CSA. Dismissive tip wording removed. Strawman pass (Oct 2026): eliminated option(s) rewritten to a plausible same-type error; blind re-tested.",
       "style_version": 2
     },
     {
@@ -1440,6 +1440,7 @@
       "id": "d1_039",
       "domain": 1,
       "subtopic": "IS Audit Resource Management",
+      "principle_id": "answer-from-the-stem",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
       "question": "An audit head's team lacks cloud skills, most planned audits are cloud-based, and regulators visit in nine months; new hires need a year to become productive. Which approach is BEST?",
@@ -1858,7 +1859,7 @@
       "bloom_level": "Analysis",
       "question": "Before an exit meeting, the auditee's chief of staff asks the IS auditor to downgrade three critical findings to avoid alarming the audit committee. What is the BEST response?",
       "options": {
-        "A": "Downgrade them, given management's local context",
+        "A": "Re-rate them using management's own risk-rating scale",
         "B": "Move the findings into a private memo to management",
         "C": "Escalate to the audit committee and cancel the meeting",
         "D": "Decline, but offer to discuss the facts behind ratings"
@@ -1868,12 +1869,12 @@
       "pre_read": "Separate a request based on preference from one based on facts. Then ask whether escalation is needed yet.",
       "correct_explanation": "Severity ratings reflect the auditor's professional judgment on the facts, not the auditee's preferences. Declining to change ratings on request, while inviting management to present facts that might change them, protects objectivity and keeps the relationship constructive. Escalating and canceling the exit meeting is premature: one request is not proven interference, and the meeting exists to validate findings.",
       "wrong_explanations": {
-        "A": "Changing ratings to manage the committee's reaction lets the auditee shape the conclusions and undermines objectivity.",
+        "A": "Using management's scale may seem a fair compromise, but ratings come from the audit methodology. Letting the auditee's scale reset severity hands the rating to the party being audited.",
         "B": "Keeping critical findings from the committee hides information its oversight depends on and breaches reporting duties.",
         "C": "A single request is not yet interference. Skipping the exit meeting loses the chance to validate facts and record management's response."
       },
       "tips": [
-        "Eliminate: A lets the auditee set ratings, and B moves critical findings into a private memo, keeping them from those charged with oversight.",
+        "Eliminate: A and B, because A lets the auditee's scale set the ratings, and B moves critical findings into a private memo, keeping them from those charged with oversight.",
         "Final two: D beats C because ratings change on facts, and the exit meeting is where facts are tested before any escalation.",
         "Exam cue: answer a request to soften ratings with the facts; escalate through audit leadership only when it becomes pressure to suppress findings."
       ],
@@ -1885,7 +1886,7 @@
         "Communicating audit results",
         "Management interference"
       ],
-      "_provenance": "Authored from concept: 'exit-conference dynamics — holding the line on severity ratings without over-escalating'. Public source: ISACA IT Audit Standard 1401 + Code of Professional Ethics. All scenario specifics (global manufacturing, plant-floor SCADA audit, 12 findings split by severity, GM chief of staff request) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D1 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Dismissive tip wording removed. Cross-domain round: Exam cue now names the deciding fact that separates this item from its sibling rules.",
+      "_provenance": "Authored from concept: 'exit-conference dynamics — holding the line on severity ratings without over-escalating'. Public source: ISACA IT Audit Standard 1401 + Code of Professional Ethics. All scenario specifics (global manufacturing, plant-floor SCADA audit, 12 findings split by severity, GM chief of staff request) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D1 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Dismissive tip wording removed. Cross-domain round: Exam cue now names the deciding fact that separates this item from its sibling rules. Strawman pass (Oct 2026): eliminated option(s) rewritten to a plausible same-type error; blind re-tested.",
       "style_version": 2
     },
     {
@@ -2958,9 +2959,9 @@
       "bloom_level": "Application",
       "question": "An IS auditor's report includes a finding that a senior partner repeatedly accessed deal data beyond assigned scope. Which approach to wording this finding is BEST?",
       "options": {
-        "A": "Soften the wording in view of the partner's seniority",
+        "A": "Let the partner review and reword the finding before issue",
         "B": "State the facts and evidence in the usual neutral tone",
-        "C": "Omit it and raise the matter privately with the partner",
+        "C": "Move it to a confidential memo for the managing partner",
         "D": "Use strong wording to stress the seriousness of the conduct"
       },
       "correct": "B",
@@ -2968,12 +2969,12 @@
       "pre_read": "Ask which option keeps the report objective, then check whether it errs toward either softening or dramatizing.",
       "correct_explanation": "Audit reports must be objective and evidence-based regardless of who the finding concerns. The partner's conduct is described with the same factual precision as any other finding, neither diluted nor dramatized. Strong wording may seem to protect the organization, but emotive language undermines objectivity and invites challenge; the facts and their impact convey seriousness on their own.",
       "wrong_explanations": {
-        "A": "Adjusting language for seniority compromises objectivity and independence. The same standard applies to every finding.",
-        "C": "Suppressing a reportable finding to handle it privately compromises the report's completeness and the auditor's independence.",
+        "A": "Inviting the partner to comment seems fair, but the auditor alone sets a finding's wording. The partner may add a response; editing the finding lets the person cited shape it.",
+        "C": "Discretion seems fitting for a sensitive matter, but a reportable finding goes in the report to its usual audience. A side memo removes it from governance oversight.",
         "D": "An auditor rightly wants the committee to grasp the misconduct, but objectivity runs both ways: a report neither softens nor sharpens for its subject."
       },
       "tips": [
-        "Eliminate: A softens the finding for seniority, though rank never changes how a finding is reported, and C suppresses a reportable finding.",
+        "Eliminate: A and C, because A lets the person cited reword the finding, and C moves a reportable finding out of the report.",
         "Final two: B beats D because objectivity cuts both ways: no softening and no dramatizing, just facts and impact.",
         "Exam cue: on sensitive findings, choose factual, evidence-based reporting applied equally to everyone."
       ],
@@ -2984,7 +2985,7 @@
         "Auditor independence",
         "Sensitive findings"
       ],
-      "_provenance": "Authored from concept: 'tone calibration for sensitive findings - factual rigor preserved regardless of subject seniority'. Public source: ISACA Standard 1401 + Code of Professional Ethics. All scenario specifics (private-equity firm, deal-data-room platform, partner-level employee out-of-scope access) invented for this question. Distinct from d1_050 severity-rating dynamics. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'tone calibration for sensitive findings - factual rigor preserved regardless of subject seniority'. Public source: ISACA Standard 1401 + Code of Professional Ethics. All scenario specifics (private-equity firm, deal-data-room platform, partner-level employee out-of-scope access) invented for this question. Distinct from d1_050 severity-rating dynamics. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Strawman pass (Oct 2026): eliminated option(s) rewritten to a plausible same-type error; blind re-tested.",
       "style_version": 2
     },
     {
@@ -3113,7 +3114,7 @@
         "A": "Embedded audit modules that block suspicious orders in real time",
         "B": "Near-real-time anomaly alerts without degrading production performance",
         "C": "Manual queries run by auditors after each day's close",
-        "D": "Analysis performed once during the annual audit cycle"
+        "D": "Full-population rule checks run over a weekly extract of order data"
       },
       "correct": "B",
       "key_concept": "Continuous online auditing applies automated techniques to live data, alerting auditors promptly without degrading production performance.",
@@ -3122,10 +3123,10 @@
       "wrong_explanations": {
         "A": "Blocking transactions is management's operational control. An auditor doing it loses independence, and inline blocking can slow a high-volume trading system.",
         "C": "Manual queries after close are periodic, labor-intensive testing, not a continuous automated technique.",
-        "D": "Annual analysis is traditional periodic auditing, the opposite of continuous online auditing."
+        "D": "Testing every order looks thorough, but a weekly batch leaves days between an anomaly and an alert. That is periodic analysis, not continuous online auditing."
       },
       "tips": [
-        "Eliminate: C is manual periodic work and D is annual; neither is continuous.",
+        "Eliminate: C and D, because C is manual work after each close and D runs on weekly batches; neither is continuous.",
         "Final two: B beats A because auditors detect and report; blocking orders is management's control and slows production.",
         "Exam cue: continuous auditing means timely automated detection for auditors, never auditors running operational controls."
       ],
@@ -3136,7 +3137,7 @@
         "Real-time anomaly detection",
         "Production-system impact"
       ],
-      "_provenance": "Authored from concept: 'CAATs as continuous online approach - live data + near-real-time + non-degradation, distinct from batch CAATs'. Public source: ITAF Tools and Techniques on CAATs. All scenario specifics (brokerage firm, order-routing, hundreds of thousands of trades/day) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'CAATs as continuous online approach - live data + near-real-time + non-degradation, distinct from batch CAATs'. Public source: ITAF Tools and Techniques on CAATs. All scenario specifics (brokerage firm, order-routing, hundreds of thousands of trades/day) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Strawman pass (Oct 2026): eliminated option(s) rewritten to a plausible same-type error; blind re-tested.",
       "style_version": 2
     },
     {
@@ -3265,7 +3266,7 @@
       "question": "An IS auditor's spouse works in an unrelated department, and the auditor consulted on unrelated firewalls three years ago; the audit committee knows only the first fact. What is the auditor's BEST response?",
       "options": {
         "A": "Proceed without further disclosure because both facts are unrelated",
-        "B": "Restate the spouse's role to the committee and omit the consulting",
+        "B": "Record both facts in the independence file without telling the committee",
         "C": "Request reassignment to avoid any appearance of impaired independence",
         "D": "Disclose the consulting work and document safeguards for both threats"
       },
@@ -3275,7 +3276,7 @@
       "correct_explanation": "Independence is judged with a threat-and-safeguard approach: identify each threat, assess its severity, disclose it to those charged with governance and apply safeguards. Both threats here are low because the roles and work are unrelated and the consulting has lapsed, so disclosure plus documented safeguards is proportionate. Reassignment is reserved for threats that safeguards cannot reduce to an acceptable level.",
       "wrong_explanations": {
         "A": "Withholding a relevant prior relationship denies governance the information it needs to judge independence, even when the threat itself is low.",
-        "B": "Repeating a fact the committee already knows while leaving out the undisclosed consulting fails the transparency the framework requires.",
+        "B": "Documenting both facts seems responsible, but the committee cannot assess a threat it is not told about. The consulting work must be disclosed, not just filed.",
         "C": "Reassignment does remove both threats cleanly, but independence responses are proportionate, and disclosure with safeguards answers low threats."
       },
       "tips": [
@@ -3291,7 +3292,7 @@
         "Self-review threat",
         "Audit-committee acceptance"
       ],
-      "_provenance": "Authored from concept: 'independence threat-and-safeguard - low-severity threats addressable by disclosure plus safeguards, distinct from total-recusal response to severe threats'. Public source: ISACA Code of Professional Ethics + Standard 1002. All scenario specifics (regional public utility, customer-billing audit, spouse role, three-year-old consulting) invented for this question. Distinct from d1_002 self-review angle. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'independence threat-and-safeguard - low-severity threats addressable by disclosure plus safeguards, distinct from total-recusal response to severe threats'. Public source: ISACA Code of Professional Ethics + Standard 1002. All scenario specifics (regional public utility, customer-billing audit, spouse role, three-year-old consulting) invented for this question. Distinct from d1_002 self-review angle. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Strawman pass (Oct 2026): eliminated option(s) rewritten to a plausible same-type error; blind re-tested.",
       "style_version": 2
     },
     {
@@ -4109,7 +4110,7 @@
       "bloom_level": "Analysis",
       "question": "Management blocks an IS auditor's access to systems making up most of the audit scope, and no alternative evidence exists. Which opinion is MOST appropriate?",
       "options": {
-        "A": "Unmodified opinion, relying on management's written assurances",
+        "A": "Unmodified opinion on the systems that could be tested",
         "B": "Disclaimer of opinion, owing to the scope limitation",
         "C": "Adverse opinion, because refusing access shows weak controls",
         "D": "Qualified opinion, except for the systems not tested"
@@ -4119,12 +4120,12 @@
       "pre_read": "Notice how much of the scope is blocked and whether other evidence exists. Then match the opinion type.",
       "correct_explanation": "When a scope limitation covers most of the subject and no alternative evidence exists, the auditor cannot form an opinion, so a disclaimer is appropriate, and the limitation is reported to the audit committee. A qualified opinion fits a contained limitation, but here the untested systems are most of the scope, so an 'except for' would overstate the assurance given.",
       "wrong_explanations": {
-        "A": "Management assurances are not sufficient evidence and cannot replace testing of the systems.",
+        "A": "Reporting only on what was tested looks precise, but a management-imposed limitation over most of the scope requires a disclaimer, not a quietly narrowed scope.",
         "C": "An adverse opinion needs evidence of pervasive weakness; missing evidence is a scope limitation.",
         "D": "An auditor would normally qualify for a material scope limitation, but one covering most in-scope systems is pervasive: breadth, not cause, sets the opinion."
       },
       "tips": [
-        "Eliminate: A relies on management's word, and C treats missing evidence as proof of weakness.",
+        "Eliminate: A and C, because A narrows the scope to fit a management-imposed limitation, and C treats missing evidence as proof of weakness.",
         "Final two: B beats D because the limitation is pervasive; qualified opinions suit contained limitations.",
         "Exam cue: no evidence over most of the scope means disclaimer; evidence of pervasive failure means adverse."
       ],
@@ -4136,7 +4137,7 @@
         "Disclaimer of opinion",
         "Material weakness reporting"
       ],
-      "_provenance": "Authored from concept: 'modified-opinion decision - qualified for material weakness in defined area, adverse for pervasive failure, disclaimer for inability to obtain evidence'. Public source: ISACA Standard 1401 + ITAF + AICPA. All scenario specifics (regional cinema chain, revenue-cut-off weakness, magnitude dispute, management refusal to remediate) invented for this question. Distinct from d1_036 opinion-types-overview application angle. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Cross-domain review (Oct 2026): re-angled or clarified to remove duplication/contradiction. D1 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Gap echo removed: every option now names its opinion type, so 'opinion' no longer marks the key.",
+      "_provenance": "Authored from concept: 'modified-opinion decision - qualified for material weakness in defined area, adverse for pervasive failure, disclaimer for inability to obtain evidence'. Public source: ISACA Standard 1401 + ITAF + AICPA. All scenario specifics (regional cinema chain, revenue-cut-off weakness, magnitude dispute, management refusal to remediate) invented for this question. Distinct from d1_036 opinion-types-overview application angle. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Cross-domain review (Oct 2026): re-angled or clarified to remove duplication/contradiction. D1 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Gap echo removed: every option now names its opinion type, so 'opinion' no longer marks the key. Strawman pass (Oct 2026): eliminated option(s) rewritten to a plausible same-type error; blind re-tested.",
       "style_version": 2
     },
     {
@@ -5488,6 +5489,7 @@
       "id": "d1_145",
       "domain": 1,
       "subtopic": "Continuous Auditing. Implementation Roadmap (Migration from Periodic)",
+      "principle_id": "answer-from-the-stem",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
       "question": "An IS audit director with eight staff and limited automation is moving to continuous auditing; the highest-risk system lacks reliable data feeds. Which rollout sequence is MOST appropriate?",
@@ -5914,6 +5916,7 @@
       "id": "d1_156",
       "domain": 1,
       "subtopic": "Control Relationship to Risk. Multi-Control Defense in Depth",
+      "principle_id": "fit-method-to-objective",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
       "question": "An IS auditor is evaluating five layered controls protecting stored payment data. Which approach BEST assesses whether they provide defense in depth?",
@@ -6111,7 +6114,7 @@
       "question": "A continuous auditing routine shows fees on one trading pair deviating about 6% from schedule, consistently for three weeks, though tiny per trade. What is the IS auditor's MOST appropriate response?",
       "options": {
         "A": "Log it as noise, given the tiny per-trade impact",
-        "B": "Refer it to law enforcement as possible financial crime",
+        "B": "Report it to the audit committee as a confirmed control failure",
         "C": "Investigate likely causes such as misconfiguration with targeted tests",
         "D": "Keep monitoring for another full month to confirm the pattern first"
       },
@@ -6121,7 +6124,7 @@
       "correct_explanation": "A deviation that persists for three weeks points to a systematic cause rather than noise, and small per-trade amounts can be material in aggregate. The auditor should identify plausible causes, such as fee misconfiguration, rounding or manipulation, and test them. Further monitoring seems prudent, but the pattern is already established, and waiting only extends the exposure.",
       "wrong_explanations": {
         "A": "A consistent pattern is not noise; small per-trade differences can add up to a material total.",
-        "B": "No cause has been identified yet; referral before investigation is premature and outside the auditor's authority.",
+        "B": "A steady three-week deviation can look like a confirmed failure, but the cause is still unknown. Targeted tests must establish what happened before the auditor reports a conclusion.",
         "D": "More observation is fine for a one-off spike. Weeks of steady drift mean something is set wrong, and causes are found by testing, not watching."
       },
       "tips": [
@@ -6137,7 +6140,7 @@
         "Systematic cause investigation",
         "Investigation depth calibration"
       ],
-      "_provenance": "Authored from concept: 'CA anomaly investigation depth - pattern consistency plus aggregate impact drives investigation depth, distinct from document-and-move-on / suspend-operations / direct-law-enforcement-referral'. Public source: ITAF Tools and Techniques + ISACA Standard 1207. All scenario specifics (cryptocurrency exchange, trading-fees revenue deviation, 6% over 3 weeks) invented for this question. Distinct from d1_046/083/092/110/130/145/148 prior CA questions. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'CA anomaly investigation depth - pattern consistency plus aggregate impact drives investigation depth, distinct from document-and-move-on / suspend-operations / direct-law-enforcement-referral'. Public source: ITAF Tools and Techniques + ISACA Standard 1207. All scenario specifics (cryptocurrency exchange, trading-fees revenue deviation, 6% over 3 weeks) invented for this question. Distinct from d1_046/083/092/110/130/145/148 prior CA questions. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Strawman pass (Oct 2026): eliminated option(s) rewritten to a plausible same-type error; blind re-tested.",
       "style_version": 2
     },
     {
@@ -6227,7 +6230,7 @@
       "bloom_level": "Analysis",
       "question": "Legal counsel issues a litigation hold, and prior-year IS audit work papers related to the matter are due for routine destruction. What should the audit function do FIRST?",
       "options": {
-        "A": "Destroy them according to the approved retention schedule",
+        "A": "Keep the final reports and destroy the supporting work papers",
         "B": "Suspend destruction and preserve them under access controls",
         "C": "Transfer the related work papers to legal counsel's custody",
         "D": "Decline the hold because audit work papers are privileged"
@@ -6237,7 +6240,7 @@
       "pre_read": "Notice the conflict between the hold and the retention schedule, and the word FIRST. Decide which obligation takes priority.",
       "correct_explanation": "A litigation hold overrides the normal retention schedule. The audit function must immediately suspend destruction of potentially relevant documentation and preserve it under access controls, then coordinate with counsel on hold scope. Destroying covered records risks spoliation sanctions. Handing everything to counsel may seem compliant, but the audit function remains custodian of its records and must still manage them.",
       "wrong_explanations": {
-        "A": "Following the schedule after a hold notice risks spoliation of evidence. The hold supersedes routine retention.",
+        "A": "The final report can seem like the record that matters, but a litigation hold covers all related papers. Destroying supporting work papers risks spoliation.",
         "C": "Counsel directs the hold, but wholesale transfer is not required. The audit function stays responsible for preserving its records.",
         "D": "Audit work papers are generally not privileged, and privilege calls belong to counsel, not the audit function."
       },
@@ -6254,7 +6257,7 @@
         "Legal coordination",
         "Audit documentation under hold"
       ],
-      "_provenance": "Authored from concept: 'litigation hold response - suspend retention + coordinate with counsel + apply prospectively and retrospectively + document, distinct from standard retention / refuse / full delegation'. Public source: ISACA Standard 1205 (Evidence) + FRCP Rule 37. All scenario specifics (food-and-beverage distributor, former-customer litigation, 3-year-old work papers, ongoing audit) invented for this question. Distinct from d1_043/101/122 prior documentation questions. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D1 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Runner-up C lost the word 'all' (lone-absolute warning).",
+      "_provenance": "Authored from concept: 'litigation hold response - suspend retention + coordinate with counsel + apply prospectively and retrospectively + document, distinct from standard retention / refuse / full delegation'. Public source: ISACA Standard 1205 (Evidence) + FRCP Rule 37. All scenario specifics (food-and-beverage distributor, former-customer litigation, 3-year-old work papers, ongoing audit) invented for this question. Distinct from d1_043/101/122 prior documentation questions. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D1 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Runner-up C lost the word 'all' (lone-absolute warning). Strawman pass (Oct 2026): eliminated option(s) rewritten to a plausible same-type error; blind re-tested.",
       "style_version": 2
     },
     {
@@ -6769,7 +6772,7 @@
       "options": {
         "A": "Decline, since sample design cannot change once fieldwork begins",
         "B": "Enlarge the sample and agree the extra cost",
-        "C": "Restate the existing results as 99% confidence without changes",
+        "C": "Switch to discovery sampling at 99% confidence",
         "D": "Add analytical procedures rather than selecting more sample items"
       },
       "correct": "B",
@@ -6778,11 +6781,11 @@
       "correct_explanation": "Confidence level is a sample-design input: raising it from 95% to 99% increases the required sample size for the same tolerable misstatement. The auditor should enlarge the sample, agree the time and cost impact with the committee, and evaluate results at the new level. Analytical procedures add useful evidence, but they do not raise the statistical confidence of the sample conclusion.",
       "wrong_explanations": {
         "A": "Design can be revised mid-engagement when needs change, provided the change is documented and the sample re-planned.",
-        "C": "At 99% the same sample gives a wider precision interval; simply relabeling the results overstates what the evidence supports.",
+        "C": "Discovery sampling reaches 99% confidence with few items, which attracts candidates, but it only shows whether an error exists. It cannot estimate misstatement for this substantive objective.",
         "D": "Analytics complement the sample but do not change its statistical confidence, so the stated 99% would be unsupported."
       },
       "tips": [
-        "Eliminate: A treats the design as frozen, and C relabels unchanged results with a stronger claim.",
+        "Eliminate: A and C, because A treats the design as frozen, and C switches to a method that cannot estimate misstatement.",
         "Final two: B beats D because higher confidence comes from a larger sample; analytics add evidence but do not raise statistical confidence.",
         "Exam cue: higher confidence or lower tolerable error means a larger sample; know which way each parameter pushes size."
       ],
@@ -6794,7 +6797,7 @@
         "Mid-engagement design change",
         "Audit-committee parameter authority"
       ],
-      "_provenance": "Authored from concept: 'sampling confidence-level adjustment - larger sample required, communicate resource implication, document the design change, distinct from refuse / recompute-only / substitute-tolerable-error'. Public source: ITAF Tools and Techniques on Sampling. All scenario specifics (rideshare logistics, driver-payment substantive sample, IPO-driven confidence increase) invented for this question. Distinct from d1_009/019/049/053/064/075/086/107/114/116/128/143/160 prior sampling questions. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'sampling confidence-level adjustment - larger sample required, communicate resource implication, document the design change, distinct from refuse / recompute-only / substitute-tolerable-error'. Public source: ITAF Tools and Techniques on Sampling. All scenario specifics (rideshare logistics, driver-payment substantive sample, IPO-driven confidence increase) invented for this question. Distinct from d1_009/019/049/053/064/075/086/107/114/116/128/143/160 prior sampling questions. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Strawman pass (Oct 2026): eliminated option(s) rewritten to a plausible same-type error; blind re-tested.",
       "style_version": 2
     },
     {
@@ -7643,7 +7646,7 @@
       "options": {
         "A": "Two approvers could collude to release a fraudulent wire",
         "B": "Dual approval could delay urgent wires past daily cutoff times",
-        "C": "Treasury staff would lose practice in reconciliation procedures",
+        "C": "Auditors would lose the main evidence for testing wire controls",
         "D": "Wires sent without dual approval would no longer be detected"
       },
       "correct": "D",
@@ -7653,10 +7656,10 @@
       "wrong_explanations": {
         "A": "Both collusion and a bypassed approval step can release a fraudulent wire, but removing a control is judged by the exposure that control alone was catching.",
         "B": "Processing delay is an efficiency question about dual approval itself and has nothing to do with ending the reconciliation.",
-        "C": "Staff skills can be kept up in other ways; the real loss is detection of unauthorized wires, not staff practice."
+        "C": "Losing an audit evidence source is a real inconvenience, but the greatest risk is to the business: unapproved wires would go undetected once reconciliation ends."
       },
       "tips": [
-        "Eliminate: B is about speed rather than control, and C is about staff skills rather than undetected wires.",
+        "Eliminate: B and C, because B is about speed rather than control, and C is about audit evidence rather than undetected wires.",
         "Final two: D beats A because a configured approval step can still fail, and the reconciliation shows when it has; colluded wires match approved instructions, so it never caught them.",
         "Exam cue: a strong preventive control does not justify removing detection; prevention can fail, and only a detective layer shows when it has."
       ],
@@ -7667,7 +7670,7 @@
         "Reconciliation",
         "Defense in depth"
       ],
-      "_provenance": "Authored from concept: 'Preventive, Detective and Corrective Controls. Ending a Wire Reconciliation'. Original KaiSip item (Oct 2026), written for CISA subtopic 1A4.3 (Wave 3 coverage batch Q9: thin subtopic). Distinct from d1_012 and d1_155 (classifying a control) and d3_070 (designing a preventive duplicate check): tests why a detective control is still needed behind a strong preventive one. All scenario specifics invented for this question. Public sources: COSO 2013, COBIT 2019.",
+      "_provenance": "Authored from concept: 'Preventive, Detective and Corrective Controls. Ending a Wire Reconciliation'. Original KaiSip item (Oct 2026), written for CISA subtopic 1A4.3 (Wave 3 coverage batch Q9: thin subtopic). Distinct from d1_012 and d1_155 (classifying a control) and d3_070 (designing a preventive duplicate check): tests why a detective control is still needed behind a strong preventive one. All scenario specifics invented for this question. Public sources: COSO 2013, COBIT 2019. Strawman pass (Oct 2026): eliminated option(s) rewritten to a plausible same-type error; blind re-tested.",
       "style_version": 2
     },
     {
@@ -7946,7 +7949,7 @@
       "options": {
         "A": "Withhold the papers, since the ethics code requires strict confidentiality",
         "B": "Release what the law requires, coordinated through the bank's legal counsel",
-        "C": "Provide the papers after removing the findings that management disputes",
+        "C": "Give the regulator a findings summary instead of the work papers",
         "D": "Refer the regulator to bank management, which decides on any disclosure"
       },
       "correct": "B",
@@ -7955,11 +7958,11 @@
       "correct_explanation": "The ISACA Code of Professional Ethics protects information gained at work unless disclosure is required by legal authority. A regulator using statutory powers is such an authority, so the IS auditor, through the chief audit executive and the bank's legal counsel, releases only what the law requires. Withholding nearly wins: it sounds protective, but confidentiality never overrides a lawful demand.",
       "wrong_explanations": {
         "A": "The Code does protect client information, yet its exceptions are part of the duty: disclosure the law requires is compliance, not breach.",
-        "C": "Removing disputed findings alters the record and omits significant facts, breaching the Code's disclosure principle and misleading the regulator.",
+        "C": "A summary seems to balance cooperation with confidentiality, but a statutory request covers the papers themselves. Substituting a summary withholds what the law requires.",
         "D": "A lawful demand does not depend on management's consent; leaving the decision to management lets the auditee block what the law requires."
       },
       "tips": [
-        "Eliminate: C removes facts from the record, and D lets management block what the law requires.",
+        "Eliminate: C and D, because C swaps the required papers for a summary, and D lets management block what the law requires.",
         "Final two: B beats A because the Code allows disclosure required by legal authority; confidentiality never overrides a lawful demand.",
         "Exam cue: confidentiality protects information from inappropriate parties, not from a body with legal authority to demand it."
       ],
@@ -7970,7 +7973,7 @@
         "Disclosure required by legal authority",
         "Work papers"
       ],
-      "_provenance": "Authored from concept: 'Code of Professional Ethics. Regulator Request for Work Papers'. Original KaiSip item (Oct 2026), written for CISA subtopic 1A1.2 (Wave 3 coverage batch Q10: thin subtopic). Distinct from d1_031 (omitting a finding after an inducement): tests the confidentiality principle's exception for disclosure required by legal authority. All scenario specifics invented for this question. Public sources: ISACA Code of Professional Ethics.",
+      "_provenance": "Authored from concept: 'Code of Professional Ethics. Regulator Request for Work Papers'. Original KaiSip item (Oct 2026), written for CISA subtopic 1A1.2 (Wave 3 coverage batch Q10: thin subtopic). Distinct from d1_031 (omitting a finding after an inducement): tests the confidentiality principle's exception for disclosure required by legal authority. All scenario specifics invented for this question. Public sources: ISACA Code of Professional Ethics. Strawman pass (Oct 2026): eliminated option(s) rewritten to a plausible same-type error; blind re-tested.",
       "style_version": 2
     },
     {
@@ -7983,7 +7986,7 @@
       "question": "During fieldwork at a software client, an IS auditor who owns shares in the client learns of a large contract loss that has not been announced. What should the IS auditor do FIRST?",
       "options": {
         "A": "Sell the shares at once to remove the conflict of interest",
-        "B": "Ask client management when the loss will be announced publicly",
+        "B": "Continue fieldwork and disclose the holding in the final report",
         "C": "Disclose the holding to the engagement leader and make no trades",
         "D": "Keep the holding private, since personal investments are not audit matters"
       },
@@ -7993,11 +7996,11 @@
       "correct_explanation": "The ISACA Code of Professional Ethics bars using information gained at work for personal benefit, and a personal stake in the client threatens objectivity. Disclosing the holding lets audit leadership decide whether to reassign the work, and making no trades keeps the inside information unused. Selling at once is the most tempting alternative: it looks like removing the conflict, but selling on unannounced bad news uses confidential information for personal gain.",
       "wrong_explanations": {
         "A": "Divesting would be a valid remedy for a holding with no inside knowledge attached. Once inside knowledge exists, conflicts are disclosed, never traded away.",
-        "B": "The announcement date does nothing to address the conflict, and asking for it seeks more inside information the IS auditor has no need for.",
+        "B": "Disclosure at the end looks transparent, but the threat exists now. The engagement leader must assess it before more work is done and before any trade.",
         "D": "A personal stake in the client threatens objectivity; hiding it denies audit leadership the chance to decide whether the IS auditor should continue."
       },
       "tips": [
-        "Eliminate: B seeks more inside information, which deepens the conflict, and D keeps private a stake that threatens objectivity.",
+        "Eliminate: B and D, because B delays disclosure until the work is done, and D keeps private a stake that threatens objectivity.",
         "Final two: C beats A because selling now profits from unannounced news, while disclosure lets leadership manage the conflict without any trade.",
         "Exam cue: removing a conflict by acting on confidential information is still a breach of the Code."
       ],
@@ -8008,7 +8011,7 @@
         "Conflict of interest",
         "Auditor objectivity"
       ],
-      "_provenance": "Authored from concept: 'Code of Professional Ethics. Shares in an Audit Client'. Original KaiSip item (Oct 2026), written for CISA subtopic 1A1.2 (Wave 3 coverage batch Q10: thin subtopic). Distinct from d1_031 (disclosure of significant facts) and the independence items d1_002 and d1_125: tests that information gained at work is never used for personal benefit, even to remove a conflict. All scenario specifics invented for this question. Public sources: ISACA Code of Professional Ethics, ISACA ITAF. D1 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Dismissive tip wording removed.",
+      "_provenance": "Authored from concept: 'Code of Professional Ethics. Shares in an Audit Client'. Original KaiSip item (Oct 2026), written for CISA subtopic 1A1.2 (Wave 3 coverage batch Q10: thin subtopic). Distinct from d1_031 (disclosure of significant facts) and the independence items d1_002 and d1_125: tests that information gained at work is never used for personal benefit, even to remove a conflict. All scenario specifics invented for this question. Public sources: ISACA Code of Professional Ethics, ISACA ITAF. D1 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Dismissive tip wording removed. Strawman pass (Oct 2026): eliminated option(s) rewritten to a plausible same-type error; blind re-tested.",
       "style_version": 2
     },
     {
@@ -8248,7 +8251,7 @@
       "bloom_level": "Analysis",
       "question": "Last year, an insurer's IS audit team validated an artificial intelligence tool that scores journal entries, and the vendor has since retrained the model. What is the GREATEST risk in relying on last year's validation?",
       "options": {
-        "A": "The vendor may raise the tool's license fee during the audit",
+        "A": "Audit staff may need retraining on the updated tool's interface",
         "B": "The vendor may have retrained the model on other clients' entries",
         "C": "The updated tool may now miss improper entries it once caught",
         "D": "Results may not match the model version recorded in the work papers"
@@ -8258,12 +8261,12 @@
       "pre_read": "Ask which failure the IS auditor would never see: a visible extra flag, or a silent miss.",
       "correct_explanation": "Validation holds only for the model that was tested. After retraining, the tool may miss improper entries it used to catch, and misses are invisible: nothing flags them, so the IS auditor could conclude that entries are clean. The tool must be revalidated on data with known outcomes. A version mismatch with the work papers is the closest concern: it weakens reproducibility, but it can be documented.",
       "wrong_explanations": {
-        "A": "A fee increase is a budget matter; it does not affect whether the tool's output is reliable audit evidence.",
+        "A": "Interface changes can slow the team, but training solves that. They do not affect whether the retrained model still catches the improper entries audit relies on it to find.",
         "B": "Use of other clients' data is a contract and confidentiality matter for the vendor; it does not by itself make the tool's output unreliable audit evidence.",
         "D": "A version mismatch weakens reproducibility and should be documented, but it is less serious than the tool silently missing improper entries."
       },
       "tips": [
-        "Eliminate: A is a budget matter, and B is a vendor data-handling issue rather than a threat to the evidence.",
+        "Eliminate: A and B, because A is a usability matter that training solves, and B is a vendor data-handling issue rather than a threat to the evidence.",
         "Final two: C beats D because a version mismatch can be documented, while silent misses let improper entries pass as clean.",
         "Exam cue: when an automated audit tool changes, its earlier validation no longer stands; revalidate before relying on its output."
       ],
@@ -8274,7 +8277,7 @@
         "False negatives",
         "Reproducibility"
       ],
-      "_provenance": "Authored from concept: 'Using AI in the Audit. Vendor Model Retrained'. Original KaiSip item (Oct 2026), written for CISA subtopic 1B4.5 (Wave 3 coverage batch Q10: thin subtopic). Distinct from d1_018 (unexplainable vendor model) and d1_085 and d1_108 (drift in an audited model): tests revalidating the audit team's own AI tool after the vendor retrains it. All scenario specifics invented for this question. Public sources: ISACA ITAF, NIST AI RMF 1.0.",
+      "_provenance": "Authored from concept: 'Using AI in the Audit. Vendor Model Retrained'. Original KaiSip item (Oct 2026), written for CISA subtopic 1B4.5 (Wave 3 coverage batch Q10: thin subtopic). Distinct from d1_018 (unexplainable vendor model) and d1_085 and d1_108 (drift in an audited model): tests revalidating the audit team's own AI tool after the vendor retrains it. All scenario specifics invented for this question. Public sources: ISACA ITAF, NIST AI RMF 1.0. Strawman pass (Oct 2026): eliminated option(s) rewritten to a plausible same-type error; blind re-tested.",
       "style_version": 2
     },
     {

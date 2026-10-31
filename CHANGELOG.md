@@ -4,6 +4,41 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v12.49.8] — A clearer priority-word example
+
+### Improved
+- The "priority word decides" principle has a new example that shows how MOST LIKELY and GREATEST can change the right answer for the same facts.
+
+## [v12.49.7] — Clearer IT policies topic
+
+### Improved
+- The IT policies topic now makes clearer how everyday practice is checked against the written rules.
+
+## [v12.49.6] — Clearer final-two coaching
+
+### Improved
+- The "Choosing between the final two" principle now uses the same plain words as the rest of the app: the closest wrong choice and the best answer.
+
+## [v12.49.5] — More questions linked to exam principles
+
+### Improved
+- More practice questions now show the exam principle they test, so you can see the thinking behind the answer and practice it.
+
+## [v12.49.4] — More realistic wrong answers
+
+### Improved
+- Some wrong answers that were too easy to rule out are now realistic mistakes, so you need to know the topic to set them aside.
+
+## [v12.49.3] — Topic titles match ISACA
+
+### Improved
+- Topic titles now match ISACA’s current CISA outline wording.
+
+## [v12.49.2] — Fairer answer choices
+
+### Improved
+- Answer choices are better balanced in length, so the longest option is no longer a clue to the right answer.
+
 ## [v12.49.1] — Clearer closest-choice explanations
 
 ### Improved

@@ -1,0 +1,2175 @@
+{
+  "domain_number": 3,
+  "domain_name": "Risk Response and Reporting",
+  "exam_weight": "32%",
+  "source": "Original KaiSip study notes, organized by the CRISC exam content outline effective 2025. Not affiliated with or endorsed by ISACA®. CRISC® is a registered trademark of ISACA.",
+  "overview": "Risk Response and Reporting is the largest CRISC domain and most of a risk practitioner's working week after risks are assessed. Part A covers choosing responses with risk owners, assigning ownership, managing vendors, and handling findings and exceptions. Part B covers control types, frameworks, design and testing; Part C covers action plans, risk data, indicators, monitoring, reporting and emerging risk. AI runs through all three: responses to AI risk, AI vendors, controls and indicators for models, and reporting emerging AI risk.",
+  "analogy": "Think of a coastal city managing flood risk. The council decides how much flooding it can live with, then for each district builds a sea wall, buys flood insurance, moves a school off the floodplain or accepts the odd puddle in a car park. Each wall has an engineer who maintains it, and each district a manager who answers for it. Inspectors test the walls rather than just asking about them. River gauges warn before water reaches the top, and the council gets a short map of where the risk is growing and what it must decide next.",
+  "parts": [
+    {
+      "part": "A",
+      "name": "Risk Response",
+      "topic_ids": [
+        "3A1",
+        "3A2",
+        "3A3",
+        "3A4"
+      ]
+    },
+    {
+      "part": "B",
+      "name": "Control Design and Implementation",
+      "topic_ids": [
+        "3B1",
+        "3B2",
+        "3B3"
+      ]
+    },
+    {
+      "part": "C",
+      "name": "Risk Monitoring and Reporting",
+      "topic_ids": [
+        "3C1",
+        "3C2",
+        "3C3",
+        "3C4",
+        "3C5",
+        "3C6"
+      ]
+    }
+  ],
+  "topics": [
+    {
+      "topic_id": "3A1",
+      "topic_name": "Risk Response Options",
+      "overview": "Once a risk is analyzed, someone has to decide what to do about it. This topic covers the four responses (accept, mitigate, transfer or share, avoid), how appetite and cost-benefit point to the right one, and how the risk left over is formally accepted by the person with authority to accept it.",
+      "can_do": [
+        "Match a scenario to accept, mitigate, transfer or avoid, and explain what each leaves behind",
+        "Choose the response that brings risk within appetite at a proportionate cost",
+        "Explain why insurance shifts financial loss but not accountability",
+        "Name who may accept residual risk, and what a valid acceptance record contains"
+      ],
+      "subtopics": [
+        {
+          "id": "3A1.1",
+          "name": "The Four Risk Responses",
+          "legacy_ids": [],
+          "definition": "Risk responses are the four ways an organization deals with an analyzed risk: accept it, mitigate it with controls, transfer or share it, or avoid the activity causing it.",
+          "why_it_matters": "The response decides how much risk is left and what that costs. The wrong choice wastes money on a risk already within appetite, or leaves a risk above appetite untreated.",
+          "how_it_works": [
+            "Every response starts from an analyzed risk compared with appetite and tolerance, not from a favorite control or tool.",
+            "Responses can be combined: reduce the likelihood with controls, then insure part of the financial impact that remains.",
+            "Transfer moves money, not accountability: a breach at an insured or outsourced service still harms the organization's customers and reputation.",
+            "Insurance reduces neither the likelihood of an event nor its harm to operations; it pays back part of the financial loss.",
+            "Avoidance also gives up the benefit, so it fits when the activity is not needed for objectives or nothing else brings the risk within appetite."
+          ],
+          "types": [
+            {
+              "term": "Accept",
+              "meaning": "The risk owner knowingly keeps the risk, usually because it is within appetite or treatment would cost more than it saves."
+            },
+            {
+              "term": "Mitigate",
+              "meaning": "Controls reduce likelihood, impact or both until the residual risk falls within appetite."
+            },
+            {
+              "term": "Transfer or share",
+              "meaning": "Insurance, contracts or outsourcing shift part of the financial consequence to another party."
+            },
+            {
+              "term": "Avoid",
+              "meaning": "The business stops, changes or never starts the activity that creates the risk."
+            }
+          ],
+          "example": "A regional airline's loyalty team wants members to pay for flights with stored points through a new partner app. Amara, the risk analyst, rates the account-takeover fraud risk above appetite. They lay out four options, each with its cost and the target risk it would leave: accept the risk, add step-up authentication, insure fraud losses, or drop the feature. Amara then presents the comparison to the loyalty director.",
+          "audit_focus": {
+            "review": [
+              "Compare each response in the register with the risk rating and appetite",
+              "Trace transferred risks to the insurance policy or contract wording",
+              "Identify avoided activities that are still running in the business"
+            ],
+            "evidence": [
+              "Risk register entries showing rating, appetite and chosen response",
+              "Insurance policy limits, exclusions and deductibles",
+              "Response decisions signed by the risk owner"
+            ],
+            "recommend": "Have each risk owner record the chosen response with its cost and target risk in the register.",
+            "decides": "The risk owner chooses the response within the appetite the board and senior management set"
+          },
+          "isaca_rule": "Compare the analyzed risk with appetite first. Within appetite, accept and monitor; above it, treat it by mitigating, transferring or avoiding. The practitioner lays out the options with cost and target risk; the risk owner chooses.",
+          "exam_traps": [
+            {
+              "trap": "Buying cyber insurance removes the risk.",
+              "why": "Insurance pays back part of the financial loss. The outage, the data exposure and the harm to customers still happen, and the organization still answers for them."
+            },
+            {
+              "trap": "Avoid any risk that is above appetite.",
+              "why": "Avoidance also drops the benefit. If the activity is needed to meet objectives, the better response is usually to mitigate or share the risk until it fits appetite."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Risk response",
+              "definition": "Any combination of acceptance, mitigation, transfer or avoidance chosen so that residual risk, once the response is implemented, falls within appetite."
+            },
+            {
+              "term": "Response option analysis",
+              "definition": "A side-by-side comparison showing each option's cost, its effect on likelihood and impact, and the target risk it would leave."
+            }
+          ],
+          "memory_aid": "Keep it, cut it, share it or skip it: accept, mitigate, transfer, avoid."
+        },
+        {
+          "id": "3A1.2",
+          "name": "Choosing a Response by Appetite and Cost-Benefit",
+          "legacy_ids": [],
+          "definition": "Response selection is choosing the option expected to bring risk within appetite at a cost proportionate to the loss it prevents, while still supporting business objectives.",
+          "why_it_matters": "Spending more on a control than the loss it prevents destroys value, and so does treating a risk already within appetite. Proportion keeps the budget on the risks that matter most.",
+          "how_it_works": [
+            "Start with the current rating against appetite and tolerance; a risk already within appetite usually needs acceptance and monitoring, not new spending.",
+            "Estimate each option's cost over its life: purchase, staff time, training, maintenance and any slowdown to the business.",
+            "Estimate each option's benefit as the reduction in expected loss, plus any legal or contractual requirement it meets.",
+            "Prefer the option that meets appetite at the lowest total cost, unless a law or contract demands a specific control.",
+            "Rank by exposure: the risks furthest above appetite get resources first; lower ones may be scheduled later, not dropped."
+          ],
+          "example": "A university research office plans to store genomic data from a partner hospital. Kenji, a risk analyst, finds the breach risk above tolerance. Encrypting the dataset and limiting access to named researchers costs about a tenth of the expected annual loss; a separate dedicated data center would cost more than the loss itself. Kenji recommends the first option to the research dean, showing both sets of figures.",
+          "audit_focus": {
+            "review": [
+              "Compare each proposed control's cost with its expected loss reduction",
+              "Evaluate whether risks within appetite are carrying unneeded new controls"
+            ],
+            "evidence": [
+              "Cost-benefit worksheet with loss estimates and their sources",
+              "Budget requests linked to register entries and ratings"
+            ],
+            "recommend": "Have the risk owner approve responses with documented cost, benefit and target risk before funding starts.",
+            "decides": "The risk owner selects and funds the response; senior management approves spending above their authority"
+          },
+          "isaca_rule": "A response is justified when it is expected to bring risk within appetite and its cost does not exceed its benefit. The strongest control is not the best answer if a cheaper one meets appetite, and a risk already within appetite needs monitoring, not new controls.",
+          "exam_traps": [
+            {
+              "trap": "Pick the control that reduces the risk the most.",
+              "why": "The most effective control can cost more than the loss it prevents. CRISC items look for the option that meets appetite in proportion to the risk."
+            },
+            {
+              "trap": "Add controls to a risk already within appetite, just to be safe.",
+              "why": "Extra controls on an acceptable risk spend money that higher risks need. Accept, record and monitor it instead."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Cost-benefit analysis",
+              "definition": "Comparing what a response costs over its life with the reduction in expected loss it delivers."
+            },
+            {
+              "term": "Total cost of ownership",
+              "definition": "All costs of a control over its life, including staff time, maintenance and any drag on business speed."
+            }
+          ]
+        },
+        {
+          "id": "3A1.3",
+          "name": "Residual Risk and Risk Acceptance",
+          "legacy_ids": [],
+          "definition": "Residual risk is the risk left after a response is in place; risk acceptance is the risk owner's documented decision to keep that remaining risk.",
+          "why_it_matters": "No response removes all risk. Unless someone with authority formally accepts what is left, the organization carries exposure nobody agreed to, and nobody is watching it.",
+          "how_it_works": [
+            "Re-rate the risk after the response, on the same scale as the inherent rating, to find the residual risk.",
+            "Compare residual risk with appetite; if it is still above, more treatment or escalation follows.",
+            "Record the acceptance with the owner's name, rationale, conditions and a review or expiry date.",
+            "Keep reporting and monitoring accepted risk, because threats and conditions change and the rating can drift above tolerance.",
+            "Elevate any acceptance above the owner's authority to the senior manager or committee that holds that authority."
+          ],
+          "example": "A logistics firm patches its route-planning servers but cannot replace one legacy controller until next year. Sofia, the IT risk lead, re-rates the remaining risk as moderate, within appetite. They draft an acceptance record for the operations director with the rationale, a compensating network restriction and a six-month review date, and set up a key risk indicator that tracks failed connections to the controller.",
+          "audit_focus": {
+            "review": [
+              "Sample accepted risks and confirm each approver had authority for that rating",
+              "Compare residual ratings with the appetite and tolerance thresholds",
+              "Identify untreated risks that have no recorded decision"
+            ],
+            "evidence": [
+              "Signed acceptance records with rationale, conditions and review dates",
+              "Delegation of authority matrix for accepting risk"
+            ],
+            "recommend": "Have senior management set acceptance limits by role and require a review date on every acceptance.",
+            "decides": "The risk owner, or the senior manager holding that authority level, signs the acceptance"
+          },
+          "isaca_rule": "Residual risk must end within appetite and be accepted in writing by the risk owner who has authority for that level of risk. The practitioner documents and monitors the acceptance but never accepts risk on the business's behalf.",
+          "exam_traps": [
+            {
+              "trap": "The risk practitioner can accept a low residual risk to save the owner time.",
+              "why": "Acceptance is a business decision tied to authority and to answering for the loss. The practitioner documents and advises; the risk owner accepts."
+            },
+            {
+              "trap": "Once a risk is accepted, it can leave the register.",
+              "why": "Accepted risks stay in the register and are monitored and reviewed, because threats, assets and appetite all change over time."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Residual risk",
+              "definition": "The risk that remains after management has put a risk response in place."
+            },
+            {
+              "term": "Implicit acceptance",
+              "definition": "Risk kept without a recorded decision, often because treatment was postponed; it hides exposure from decision makers."
+            },
+            {
+              "term": "Risk elevation",
+              "definition": "Moving a response decision to a more senior stakeholder because the risk is too large or sensitive for the current owner."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "topic_id": "3A2",
+      "topic_name": "Risk and Control Ownership",
+      "overview": "Every risk and every control needs a named person who answers for it. This topic covers how risk owners are chosen by accountability and authority, how control owners differ from risk owners, and how the practitioner validates that ownership is real, current and at the right level.",
+      "can_do": [
+        "Pick the right risk owner for a scenario by accountability and budget authority",
+        "Tell a risk owner's duties from a control owner's and a practitioner's",
+        "Spot ownership that is shared, outdated or too junior to act"
+      ],
+      "subtopics": [
+        {
+          "id": "3A2.1",
+          "name": "Assigning Risk Owners",
+          "legacy_ids": [],
+          "definition": "A risk owner is the person given the authority and accountability to make decisions about a risk, and who answers for the loss if it happens.",
+          "why_it_matters": "A risk without a capable owner drifts: nobody decides its response, funds the controls or answers when it happens. Ownership at the wrong level gives the decision to people who cannot act on it.",
+          "how_it_works": [
+            "Assign the owner by business accountability: the manager whose objectives, process or budget the risk affects.",
+            "Match authority to size: the owner must be able to fund treatment and accept residual risk at that rating.",
+            "Name one accountable person, not a committee or a department; others contribute as stakeholders or control owners.",
+            "Revalidate ownership regularly and after reorganizations, departures or process changes.",
+            "IT usually owns technology controls, while the business owns the business risk those controls protect."
+          ],
+          "example": "A city council's payroll risk is listed under 'Finance and IT' with no single name. Lina, the council's risk analyst, maps the payroll process and finds that the payroll manager runs it but can approve only small purchases. Lina proposes the finance director as risk owner and the payroll manager as control owner, and asks the director to confirm the assignment in writing.",
+          "audit_focus": {
+            "review": [
+              "Compare each register owner with the delegation of authority limits",
+              "Identify risks owned by departments, committees or people who left",
+              "Trace ownership changes after the latest reorganization"
+            ],
+            "evidence": [
+              "Risk register owner field with names and job titles",
+              "Delegation of authority matrix with spending and acceptance limits",
+              "Written confirmations of ownership from the named owners"
+            ],
+            "recommend": "Have senior management confirm one named business owner per risk, with authority matching the risk rating.",
+            "decides": "Senior management assigns risk ownership; the named owner accepts the role"
+          },
+          "isaca_rule": "Ownership follows accountability for the affected objective and authority over the budget. Give each risk one named business owner; IT and the practitioner support but do not own business risk. Revalidate ownership whenever people or processes change.",
+          "exam_traps": [
+            {
+              "trap": "IT owns the risk because the affected system is technical.",
+              "why": "IT runs the technology, but the business process owner answers for the business outcome, decides the response and accepts the residual risk."
+            },
+            {
+              "trap": "Joint ownership by several departments spreads the load.",
+              "why": "Shared ownership often means nobody acts. One named owner is accountable; the others contribute as control owners or stakeholders."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Accountability",
+              "definition": "Answering for an outcome and its consequences; tasks can be delegated, but accountability for the outcome stays with the owner."
+            },
+            {
+              "term": "Delegation of authority",
+              "definition": "A record of which roles may approve spending or accept risk, and up to what limit."
+            }
+          ]
+        },
+        {
+          "id": "3A2.2",
+          "name": "Control Owners and Validating Ownership",
+          "legacy_ids": [],
+          "definition": "A control owner is the person accountable for designing, operating and maintaining a control so it works as intended; validation confirms each owner knows and performs the role.",
+          "why_it_matters": "A control that nobody owns decays quietly: reviews stop, settings drift and evidence disappears. Validating ownership finds these gaps before a test or an incident does.",
+          "how_it_works": [
+            "Each key control gets one named owner who runs it, keeps its evidence and reports when it fails.",
+            "One control can protect several risks, so its owner may serve several risk owners.",
+            "Risk owners rely on control owners to keep residual risk at the level they accepted.",
+            "Validate by asking the owner to describe the control and show recent evidence, not just by reading the register.",
+            "When a control owner changes jobs, ownership transfers formally, with a handover of procedures and evidence."
+          ],
+          "compare": {
+            "columns": [
+              "Risk owner",
+              "Control owner",
+              "Risk practitioner"
+            ],
+            "rows": [
+              {
+                "label": "Accountable for",
+                "cells": [
+                  "The risk and its business outcome",
+                  "One control working as designed",
+                  "The risk process and its quality"
+                ]
+              },
+              {
+                "label": "Typical role",
+                "cells": [
+                  "Business or process manager",
+                  "Manager or team running the control",
+                  "Risk practitioner, such as a risk analyst"
+                ]
+              },
+              {
+                "label": "Decides",
+                "cells": [
+                  "Response and acceptance",
+                  "How the control is run day to day",
+                  "Nothing on the owner's behalf; recommends"
+                ]
+              }
+            ]
+          },
+          "example": "A pharmacy chain lists the quarterly review of dispensing-system access under a manager who moved to another region in the spring. Tomás, a risk analyst, asks for the last two reviews and finds none since the move. They report the gap to the pharmacy operations head, who owns the related risk, and propose a new control owner with a dated handover.",
+          "audit_focus": {
+            "review": [
+              "Sample key controls and confirm each named owner still holds the role",
+              "Inspect the last two cycles of execution records for each key control",
+              "Compare the control inventory with the risks each control supports"
+            ],
+            "evidence": [
+              "Control execution records with dates and performer names",
+              "Control inventory mapping controls to named owners and risk entries",
+              "Dated transfer sign-offs between outgoing and incoming owners"
+            ],
+            "recommend": "Have the risk owner confirm a named control owner for each key control and a formal handover on job changes.",
+            "decides": "The risk owner confirms control ownership; the control owner runs the control"
+          },
+          "isaca_rule": "The risk owner is accountable for the risk; the control owner is accountable for the control working. The practitioner validates both by evidence, not by the register alone, and escalates gaps to the risk owner.",
+          "exam_traps": [
+            {
+              "trap": "The control owner also decides whether the risk is acceptable.",
+              "why": "The control owner answers for the control. Whether the residual risk is acceptable is the risk owner's decision, within appetite."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Key control",
+              "definition": "A control whose failure would let a significant risk move outside appetite, so it is tested and owned explicitly."
+            },
+            {
+              "term": "Ownership validation",
+              "definition": "Confirming, with the person and their evidence, that a named owner understands and performs the role."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "topic_id": "3A3",
+      "topic_name": "Vendor/Supply Chain Risk Management",
+      "overview": "Outsourcing a service does not outsource its risk. This topic covers due diligence and contract terms before signing, ongoing monitoring with assurance reports during the relationship, fourth parties and concentration, exit at the end, and the extra checks that AI vendors and model supply chains need.",
+      "can_do": [
+        "Name the due diligence and contract terms a critical vendor needs before signing",
+        "Judge what a SOC report does and does not cover",
+        "Explain why vendor monitoring continues for the whole relationship and through exit",
+        "Apply supply chain checks to a third-party AI model or service"
+      ],
+      "subtopics": [
+        {
+          "id": "3A3.1",
+          "name": "Vendor Due Diligence and Contracts",
+          "legacy_ids": [],
+          "definition": "Vendor due diligence is assessing a supplier's risk before signing, then writing the controls you need into the contract, such as security duties, audit rights and exit terms.",
+          "why_it_matters": "After signing, leverage drops sharply. Terms left out of the contract, such as breach notice or the right to audit, are hard to add later, and the organization still answers for the outcome.",
+          "how_it_works": [
+            "Tier vendors by criticality: the data they hold, the processes they support and how hard they are to replace.",
+            "Scale due diligence to the tier: questionnaires for low tiers; assurance reports, site reviews and financial checks for critical ones.",
+            "Write requirements into the contract: security controls, breach notice times, service level agreements, right to audit and subcontractor approval.",
+            "Plan exit before signing: data return or destruction, transition help and access removal at the end.",
+            "Record the vendor risk in the register under the business owner who uses the service."
+          ],
+          "example": "A school district plans to move student records to a cloud learning platform. Grace, the district's risk analyst, rates the vendor critical because it will hold minors' personal data. Before the contract is signed, they ask for the vendor's assurance report, breach-notice terms and a data-return clause, and flag to the curriculum director that the draft contract has no right to audit.",
+          "audit_focus": {
+            "review": [
+              "Compare due diligence depth with each vendor's criticality tier",
+              "Inspect critical contracts for audit rights, breach notice and exit clauses",
+              "Trace each critical vendor to an owned register entry"
+            ],
+            "evidence": [
+              "Vendor inventory with criticality tiers and business owners",
+              "Signed contracts and schedules with security and exit terms",
+              "Due diligence files dated before contract signature"
+            ],
+            "recommend": "Have procurement and the business owner complete risk-based due diligence and required clauses before any critical contract is signed.",
+            "decides": "The manager who uses the service accepts the vendor risk before contract award"
+          },
+          "isaca_rule": "Assess before you sign, in proportion to criticality, and put what you need into the contract. Accountability for the outcome stays with the organization; the business owner of the service owns the vendor risk.",
+          "exam_traps": [
+            {
+              "trap": "Outsourcing the service also outsources the risk.",
+              "why": "The vendor runs the service, but the organization still answers to its customers and regulators. Only part of the financial consequence can be shifted, through contract terms or insurance."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Right to audit",
+              "definition": "A contract clause letting the customer, or an assessor it appoints, examine the vendor's controls and records."
+            },
+            {
+              "term": "Service level agreement (SLA)",
+              "definition": "An agreement defining minimum performance targets for a service and how they will be measured."
+            },
+            {
+              "term": "Vendor criticality tier",
+              "definition": "A rating of how much a vendor's failure would hurt the business, used to scale due diligence and monitoring."
+            }
+          ]
+        },
+        {
+          "id": "3A3.2",
+          "name": "Ongoing Vendor Monitoring and Assurance Reports",
+          "legacy_ids": [],
+          "definition": "Ongoing vendor monitoring is reviewing a supplier's performance, controls and risk throughout the relationship, using assurance reports, SLA results, incidents and changes in its own suppliers.",
+          "why_it_matters": "A vendor that was sound at onboarding can change owners, cut staff, add subcontractors or suffer a breach. Monitoring catches drift while there is still time to respond.",
+          "how_it_works": [
+            "Read assurance reports for scope and period: which services, locations and controls were tested, and over what dates.",
+            "Act on exceptions in the report and on complementary user entity controls, the duties the customer must perform itself.",
+            "Track fourth parties: the vendor's own subcontractors, especially those that host or process your data.",
+            "Watch concentration: many critical services on one provider or region create a single point of failure.",
+            "Trigger reassessment on events such as a breach, a merger, missed SLAs or a new subcontractor."
+          ],
+          "example": "A mid-size insurer relies on a claims-processing vendor whose new SOC 2 Type 2 report covers its main data center but not the overseas site that now handles the insurer's claims. Chen, a risk analyst, notices the scope gap and two exceptions in access reviews. They update the vendor risk entry and ask the claims director to request coverage of the overseas site.",
+          "audit_focus": {
+            "review": [
+              "Compare each report's scope and period with the services actually used",
+              "Trace each listed exception to a dated customer follow-up action",
+              "Compare the vendor's subcontractor list with the approved list"
+            ],
+            "evidence": [
+              "Latest independent assurance report, including its testing dates",
+              "SLA performance reports and vendor incident notifications",
+              "Vendor subcontractor lists and change notices"
+            ],
+            "recommend": "Have the vendor's business owner review assurance reports and SLA results on a set cycle and act on gaps.",
+            "decides": "The business owner decides whether to accept, remediate or exit the vendor"
+          },
+          "isaca_rule": "Vendor risk is monitored for the life of the relationship, not just at onboarding. An assurance report counts only for the services, locations and period it covers, and its exceptions and user controls need follow-up.",
+          "exam_traps": [
+            {
+              "trap": "A clean SOC 2 report means the vendor is covered.",
+              "why": "A report covers only the scope and period stated. Services, sites or subcontractors outside it, and the customer's own required controls, still need assurance."
+            },
+            {
+              "trap": "Due diligence at onboarding is enough for a long contract.",
+              "why": "Vendors change over time. Monitoring and event triggers keep the risk rating current until exit."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "SOC 2 Type 2 report",
+              "definition": "An independent report on a service organization's controls that includes testing of how they operated over a period."
+            },
+            {
+              "term": "Complementary user entity controls",
+              "definition": "Controls the customer must run itself, such as reviewing its own user access, for the vendor's controls to work."
+            },
+            {
+              "term": "Fourth party",
+              "definition": "A vendor's own supplier or subcontractor, such as the cloud host behind a software provider."
+            },
+            {
+              "term": "Concentration risk",
+              "definition": "Exposure from relying on one provider, location or technology for many critical services at once."
+            }
+          ]
+        },
+        {
+          "id": "3A3.3",
+          "name": "AI Vendors and the Model Supply Chain",
+          "legacy_ids": [],
+          "definition": "AI supply chain risk is the risk from third-party models, training data, AI services and tools, which can change, fail or behave unexpectedly outside the organization's control.",
+          "why_it_matters": "A vendor can retrain or swap the model behind a service without notice, and its training data may be unknown. The business still owns any harm the AI output causes.",
+          "how_it_works": [
+            "Ask what model and data sit behind the service, how the vendor tests them and how it announces changes.",
+            "Put AI terms in the contract: change notice, performance commitments, data use limits and incident reporting.",
+            "Monitor the vendor's model in production as part of your own monitoring, especially after vendor updates.",
+            "Plan contingency for a high-risk AI service failing, including a manual or non-AI fallback.",
+            "Treat downloaded pre-trained models as untrusted components until their source and integrity are checked."
+          ],
+          "example": "A bank's mortgage team uses a vendor's AI tool to pull income figures from scanned payslips. After the vendor's quiet update, extraction errors double. Nadia, a risk analyst, links the spike to the update date, records the issue against the vendor risk entry and recommends to the lending director a contract clause requiring advance notice of model changes, plus a staff check on high-value files.",
+          "audit_focus": {
+            "review": [
+              "Inspect AI vendor agreements for advance warning of retraining",
+              "Compare model error trends before and after vendor updates",
+              "Confirm a tested fallback exists for each high-risk AI service"
+            ],
+            "evidence": [
+              "Production error and accuracy logs for the vendor model",
+              "Vendor model change notices and release notes",
+              "Contingency test results for the AI service"
+            ],
+            "recommend": "Have the business owner require advance disclosure of model changes and keep a tested manual fallback.",
+            "decides": "The business owner using the AI service owns and accepts its risk"
+          },
+          "isaca_rule": "A third-party AI service is a vendor risk with a business owner. Contract for transparency and change notice, monitor the model in production, and keep a fallback; transferring the service does not transfer accountability for its outputs.",
+          "exam_traps": [
+            {
+              "trap": "The AI vendor is responsible for errors, so the business need not monitor the outputs.",
+              "why": "Contracts can share liability, but customers and regulators look to the business that used the output. It must monitor the outputs and keep human checks where impact is high."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Pre-trained model",
+              "definition": "A model trained by someone else and reused or adapted, bringing that party's data and design choices with it."
+            },
+            {
+              "term": "Model change notice",
+              "definition": "A contract duty for an AI vendor to tell customers before it retrains, replaces or materially changes a model."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "topic_id": "3A4",
+      "topic_name": "Issues, Findings, Exceptions and Exemptions Management",
+      "overview": "Audits, assessments and incidents raise issues that must be tracked until they are really fixed, and some policy requirements cannot be met on time. This topic covers tracking findings to validated closure, and managing exceptions and exemptions so every deviation is approved, compensated and reviewed.",
+      "can_do": [
+        "Track a finding from logging to validated closure, with escalation when it is overdue",
+        "Tell an exception from an exemption, and name what each record needs",
+        "Name who approves a deviation, and why the practitioner does not"
+      ],
+      "subtopics": [
+        {
+          "id": "3A4.1",
+          "name": "Tracking Issues and Findings to Closure",
+          "legacy_ids": [],
+          "definition": "Issue management is logging each control weakness, audit finding or incident lesson with an owner, an action and a due date, then tracking it until closure is validated.",
+          "why_it_matters": "Findings that are logged but never really fixed leave the same risk open while reports show progress. Overdue items are often where the next incident comes from.",
+          "how_it_works": [
+            "Log every issue in one tracker, linked to the risk it affects and rated by that risk.",
+            "Give each issue one owner, an agreed action and a realistic due date.",
+            "Escalate overdue or slipping items to the risk owner and, past a set point, to senior management.",
+            "Close an issue only after evidence shows the fix works, not on the owner's statement.",
+            "Re-rate the related risk once the fix is validated, so the register reflects the change."
+          ],
+          "example": "An internal audit at a manufacturer finds that terminated contractors keep plant-system access for weeks. The plant manager marks the finding closed after a new offboarding checklist is issued. Ravi, the risk analyst, samples ten recent departures and finds three accounts still active. They reopen the item, record the evidence and report it to the plant manager with a revised date.",
+          "audit_focus": {
+            "review": [
+              "Sample closed issues and reperform the evidence check behind each closure",
+              "Compare due dates with the tracker to find overdue items",
+              "Trace each open issue to its risk register entry"
+            ],
+            "evidence": [
+              "Closure evidence such as test results or system reports",
+              "Issue tracker with owners, due dates and status history",
+              "Escalation records for overdue items"
+            ],
+            "recommend": "Have issue owners provide closure evidence, and have the risk function validate it before any item is closed.",
+            "decides": "The risk owner agrees the action plan and any extension of the due date"
+          },
+          "isaca_rule": "An issue is closed when evidence shows the risk is treated, not when the owner says so. Track every issue to an owner and date, escalate overdue items, and update the risk rating after validated closure.",
+          "exam_traps": [
+            {
+              "trap": "Close the finding once the owner confirms the fix.",
+              "why": "A statement is the weakest evidence. Validation by sampling, inspection or reperformance shows whether the control now works."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Finding",
+              "definition": "A documented gap between a requirement and the actual state, raised by an audit, assessment or review."
+            },
+            {
+              "term": "Validated closure",
+              "definition": "Closing an issue only after independent evidence confirms the fix is in place and working."
+            }
+          ]
+        },
+        {
+          "id": "3A4.2",
+          "name": "Exceptions and Exemptions",
+          "legacy_ids": [],
+          "definition": "An exception is a temporary, approved deviation from a policy or standard; an exemption is an approved exclusion from a requirement that does not apply or cannot apply.",
+          "why_it_matters": "Business sometimes cannot meet a requirement on time. A managed deviation keeps that risk visible, compensated and time-bound; an unmanaged one becomes a permanent, hidden gap.",
+          "how_it_works": [
+            "The requester states the requirement, the reason it cannot be met and the risk this creates.",
+            "The practitioner assesses the risk and proposes compensating controls to keep it within appetite.",
+            "The risk owner approves, at a level that matches the risk; policy may require senior management for high ratings.",
+            "Exceptions carry an expiry date and a plan to comply; exemptions are reviewed periodically to confirm they still apply.",
+            "All deviations sit in one register, reported in aggregate so their combined risk is visible."
+          ],
+          "compare": {
+            "columns": [
+              "Exception",
+              "Exemption"
+            ],
+            "rows": [
+              {
+                "label": "Nature",
+                "cells": [
+                  "Temporary deviation from a requirement that applies",
+                  "Approved exclusion from a requirement for a defined scope"
+                ]
+              },
+              {
+                "label": "Time limit",
+                "cells": [
+                  "Expiry date and a plan to comply",
+                  "No fixed end; reviewed periodically"
+                ]
+              },
+              {
+                "label": "Typical case",
+                "cells": [
+                  "A legacy system cannot meet the new password standard until it is replaced",
+                  "A sealed lab device with no network link is excluded from patching"
+                ]
+              }
+            ]
+          },
+          "example": "A hotel group's new standard requires multifactor sign-in for all staff, but the night reception software cannot support it until an upgrade in March. Mei, the risk analyst, rates the risk, proposes restricting the software to reception terminals with daily log review, and drafts an exception expiring in March for the hotel operations director to approve.",
+          "audit_focus": {
+            "review": [
+              "Sample exceptions and confirm approval, compensating controls and expiry dates",
+              "Identify expired exceptions still in use",
+              "Evaluate whether exemptions are reviewed and still justified"
+            ],
+            "evidence": [
+              "Exception register with approver, expiry date and compensating controls",
+              "Evidence that compensating controls are operating",
+              "Exemption review records with dates"
+            ],
+            "recommend": "Have the policy owner require expiry dates, compensating controls and risk-owner approval for every exception.",
+            "decides": "The risk owner approves the deviation and accepts its residual risk"
+          },
+          "isaca_rule": "Every deviation is risk-assessed, approved by the risk owner at the right level, compensated and recorded. Exceptions expire with a plan to comply; exemptions are reviewed. The practitioner assesses and advises but does not grant deviations.",
+          "exam_traps": [
+            {
+              "trap": "The risk practitioner can grant a short exception for a low risk.",
+              "why": "Granting a deviation means accepting its risk, which is the risk owner's decision. The practitioner assesses the risk and proposes compensating controls."
+            },
+            {
+              "trap": "An exception can stay open until the business is ready.",
+              "why": "An exception with no end date becomes a permanent, unmonitored gap. It needs an expiry date, a plan to comply and a review."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Compensating control",
+              "definition": "A control that reduces the risk of a missing or weak control, keeping exposure acceptable while the gap remains."
+            },
+            {
+              "term": "Exception register",
+              "definition": "One record of all approved deviations, with owners, expiry dates, controls and risk ratings."
+            }
+          ],
+          "memory_aid": "An exception expires; an exemption is excluded and reviewed."
+        }
+      ]
+    },
+    {
+      "topic_id": "3B1",
+      "topic_name": "Control Frameworks, Types, and Standards",
+      "overview": "Controls are described by what they do to a risk event (prevent, deter, detect, correct, compensate) and how they are delivered (administrative, technical, physical). Frameworks such as COBIT 2019, NIST SP 800-53 Rev. 5 and the NIST Cybersecurity Framework 2.0 supply catalogs to tailor, not checklists to copy.",
+      "can_do": [
+        "Classify a control by function and by category from a short description",
+        "Explain why a mislabeled control overstates protection",
+        "Tailor a framework catalog to assessed risk and record why"
+      ],
+      "subtopics": [
+        {
+          "id": "3B1.1",
+          "name": "Control Types by Function",
+          "legacy_ids": [],
+          "definition": "Control types by function describe what a control does about a risk event: stop it, discourage it, find it, fix it, or stand in for a missing control.",
+          "why_it_matters": "Calling a detective control preventive overstates protection and understates residual risk. Knowing the function shows which part of the risk a control actually reduces.",
+          "how_it_works": [
+            "Preventive and deterrent controls mainly reduce likelihood; corrective controls mainly reduce impact after an event.",
+            "Detective controls reduce impact only if someone acts on what they find, quickly enough to matter.",
+            "A layered set mixes functions, so a failure of one control is caught or contained by another.",
+            "Name the function by what the control does in this process, not by the tool: a log review detects, an enforced approval prevents.",
+            "A compensating control is an alternative or interim measure; the gap it covers stays recorded and reviewed."
+          ],
+          "types": [
+            {
+              "term": "Preventive",
+              "meaning": "Stops the event before it happens, such as an enforced approval or an access restriction."
+            },
+            {
+              "term": "Detective",
+              "meaning": "Finds and reports an event after it occurs, such as a reconciliation or an alert."
+            },
+            {
+              "term": "Corrective",
+              "meaning": "Limits damage and restores normal operation after an event, such as restoring from backup."
+            },
+            {
+              "term": "Deterrent",
+              "meaning": "Discourages a threat actor, such as a warning banner or visible cameras."
+            },
+            {
+              "term": "Compensating",
+              "meaning": "Reduces risk where a required control is missing or weak, such as extra review in place of separation of duties."
+            }
+          ],
+          "example": "A food distributor's finance team relies on a monthly report of vendor bank-detail changes and labels it preventive in its control library. Abebe, a risk analyst, points out that the report finds fraudulent changes only after payments may have gone out. They reclassify it as detective, re-rate the payment-fraud risk higher and suggest a call-back check before any bank-detail change takes effect.",
+          "audit_focus": {
+            "review": [
+              "Compare each control's stated type with what it does in the process",
+              "Identify risks protected only by detective controls with slow follow-up"
+            ],
+            "evidence": [
+              "Control library with type, owner and linked risks",
+              "Alert or exception logs showing response times"
+            ],
+            "recommend": "Have control owners correct mislabeled control types so residual ratings reflect real protection.",
+            "decides": "The risk owner accepts the residual risk once controls are re-rated"
+          },
+          "isaca_rule": "Classify a control by what it does to the risk event, then rate residual risk by that function. Detection without timely response reduces little, and a compensating control covers a gap for now but does not close it.",
+          "exam_traps": [
+            {
+              "trap": "A review of change logs prevents unauthorized changes.",
+              "why": "Reviewing logs finds changes after they happen, so it is detective. Prevention needs something that blocks the change, such as approval enforced in the system."
+            },
+            {
+              "trap": "A compensating control is as good as fixing the gap, so the issue can close.",
+              "why": "Compensating controls usually give partial or interim cover. The original gap stays recorded until the required control is in place or an exemption is approved."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Layered controls",
+              "definition": "Several controls of different types on one risk, so a single failure does not leave it unprotected."
+            },
+            {
+              "term": "Control library",
+              "definition": "An organization's catalog of its own controls, with owners, types and the risks each supports."
+            }
+          ]
+        },
+        {
+          "id": "3B1.2",
+          "name": "Control Categories by Nature",
+          "legacy_ids": [],
+          "definition": "Control categories describe how a control is delivered: administrative (policies, procedures, training), technical (built into systems) or physical (barriers, locks and environmental protection).",
+          "why_it_matters": "Relying on one category leaves gaps: a firewall cannot stop someone carrying paper records out of a building, and a policy cannot block a malicious sign-in. Mixing categories gives depth.",
+          "how_it_works": [
+            "Category and function combine: a badge reader is physical and preventive; a camera is physical and detective.",
+            "Automated controls run the same way every time and suit high volumes, but a wrong setting fails every time.",
+            "Manual controls handle judgment and unusual cases but vary with people, workload and attention.",
+            "Administrative controls direct behavior and set accountability, and most technical controls depend on them for configuration and review."
+          ],
+          "compare": {
+            "columns": [
+              "Administrative",
+              "Technical",
+              "Physical"
+            ],
+            "rows": [
+              {
+                "label": "Examples",
+                "cells": [
+                  "Policy, procedure, training, segregation of duties",
+                  "Access control, encryption, logging, input validation",
+                  "Locks, badge doors, cameras, fire suppression"
+                ]
+              },
+              {
+                "label": "Strength",
+                "cells": [
+                  "Sets rules and accountability",
+                  "Consistent and fast at scale",
+                  "Protects sites and equipment"
+                ]
+              },
+              {
+                "label": "Common weakness",
+                "cells": [
+                  "Depends on people following it",
+                  "Fails silently if misconfigured",
+                  "Bypassed by propped doors or tailgating"
+                ]
+              }
+            ]
+          },
+          "example": "A water utility protects its treatment-plant control network with a strong firewall. Imani, a risk analyst, walks the site and finds the control room door propped open for deliveries and no visitor log. They note that the technical layer is sound but the physical layer is missing, and recommend to the plant manager a badge-controlled door and a visitor sign-in procedure.",
+          "audit_focus": {
+            "review": [
+              "Map each high risk's controls across the three categories",
+              "Observe manual controls being performed during busy periods"
+            ],
+            "evidence": [
+              "Control matrix showing category and function per risk",
+              "Configuration reports for automated controls"
+            ],
+            "recommend": "Have control owners add the missing category where a high risk depends on a single layer.",
+            "decides": "The risk owner decides which added controls to fund"
+          },
+          "isaca_rule": "Look for a mix of administrative, technical and physical controls matched to the risk. Automated controls give consistency at scale and manual ones give judgment. A gap in one category is not filled by strength in another.",
+          "exam_traps": [
+            {
+              "trap": "Technical controls are always stronger than administrative ones.",
+              "why": "Technical controls depend on policies, configuration standards and reviews to stay correct. Without the administrative layer, settings drift and nobody notices."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Automated control",
+              "definition": "A control a system performs the same way each time, such as an input validation rule."
+            },
+            {
+              "term": "Manual control",
+              "definition": "A control a person performs, such as a supervisor's review, which can vary with workload and attention."
+            }
+          ]
+        },
+        {
+          "id": "3B1.3",
+          "name": "Control Frameworks and Tailoring",
+          "legacy_ids": [],
+          "definition": "Control frameworks are published models and catalogs, such as COBIT 2019, NIST SP 800-53 Rev. 5 and NIST CSF 2.0, that organizations tailor into their own control set.",
+          "why_it_matters": "A framework gives a tested starting point and a common language with auditors and regulators. Adopting it whole, without tailoring, spends money on controls that do not fit the risks.",
+          "how_it_works": [
+            "COBIT 2019 sets out governance and management objectives for enterprise IT, such as managed risk and managed vendors.",
+            "NIST SP 800-53 Rev. 5 is a catalog of security and privacy controls; its starting baselines are published separately in SP 800-53B.",
+            "CSF 2.0 lists outcomes under six functions: Govern, Identify, Protect, Detect, Respond and Recover.",
+            "Tailor by scoping out what does not apply, setting parameters and adding controls for risks the baseline misses.",
+            "Map internal controls to every framework and regulation that applies, so one control can meet several requirements."
+          ],
+          "example": "A software-as-a-service provider adopts every control in a large catalog to win a government contract, and its backlog grows to 400 items. Oluwaseun, the risk analyst, maps the catalog to the provider's own risk assessment, marks controls that cannot apply to a cloud-only service and proposes a tailored baseline, with a recorded reason for each change, to the chief technology officer.",
+          "audit_focus": {
+            "review": [
+              "Compare the adopted control set with the current risk assessment",
+              "Sample scoped-out controls and confirm a recorded rationale"
+            ],
+            "evidence": [
+              "Tailoring decisions with reasons and approver",
+              "Control mapping across frameworks and regulations"
+            ],
+            "recommend": "Have the control framework owner tailor the baseline to assessed risk and record each scoping decision.",
+            "decides": "Senior management approves the control framework and its tailoring"
+          },
+          "isaca_rule": "Use frameworks as catalogs to choose from, not checklists to adopt whole. Tailor them to the organization's risks, record why each control was included or scoped out, and map controls so one control can meet several requirements.",
+          "exam_traps": [
+            {
+              "trap": "Adopting a full framework catalog unchanged is the safest choice.",
+              "why": "Untailored adoption spends money on controls that do not fit and spreads effort thin. Tailoring to assessed risk puts resources where the exposure is."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Control baseline",
+              "definition": "A starting set of controls for a system of a given impact level, which is then tailored to its risks."
+            },
+            {
+              "term": "Tailoring",
+              "definition": "Adjusting a baseline by scoping out, modifying or adding controls, with the reasons recorded."
+            },
+            {
+              "term": "Control mapping",
+              "definition": "Linking one internal control to the matching requirements in several frameworks or regulations."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "topic_id": "3B2",
+      "topic_name": "Control Design, Selection, Implementation, and Analysis",
+      "overview": "Good controls start from the risk's root cause and fit its size and cost. This topic covers selecting controls, working with control owners to put them into operation, and analyzing gaps between the current and desired state so the risk owner can fund the most important fixes first.",
+      "can_do": [
+        "Choose a control that addresses the root cause at a proportionate cost",
+        "Agree owner, procedure, evidence and indicators with a control owner before go-live",
+        "Tell a design gap from an operating gap and rank gaps by residual risk"
+      ],
+      "subtopics": [
+        {
+          "id": "3B2.1",
+          "name": "Selecting Controls by Root Cause and Cost-Benefit",
+          "legacy_ids": [],
+          "definition": "Control selection is choosing controls that address the cause of a risk, fit the size of the risk and cost less than the loss they prevent.",
+          "why_it_matters": "Controls aimed at symptoms leave the cause in place, so the risk comes back. Controls out of proportion to the risk use budget that other risks need.",
+          "how_it_works": [
+            "Start from the analyzed risk scenario and its root cause, not from a product or a peer's control list.",
+            "List candidate controls with their effect on likelihood or impact and their full cost.",
+            "Prefer controls that fix the cause; use detective or compensating controls where the cause cannot yet be removed.",
+            "Check fit with the business process, so the control does not stop the work it protects.",
+            "For AI systems, scale input validation, output checks and human review to the impact of a wrong output."
+          ],
+          "example": "A hospital finds that dosing errors keep reaching patients because nurses retype orders from the electronic record into infusion pumps. Farah, the clinical risk analyst, notes that more training targets the symptom. They recommend to the nursing director a direct interface between the record and the pumps, with a pharmacist check on doses above a set limit, and attach the cost-benefit comparison.",
+          "audit_focus": {
+            "review": [
+              "Follow each new control back to the scenario it was chosen for",
+              "Compare control cost with the expected reduction in loss"
+            ],
+            "evidence": [
+              "Incident and error data showing why the risk event recurs",
+              "Option comparison with lifetime costs and expected loss figures"
+            ],
+            "recommend": "Have the control owner fix the underlying process, with spending signed off by the business owner.",
+            "decides": "The risk owner approves the control selection and its budget"
+          },
+          "isaca_rule": "Analyze the root cause first, then select controls that remove or reduce it at a cost proportionate to the risk. The control owner and risk owner agree the design; the practitioner recommends and checks the target risk against appetite.",
+          "exam_traps": [
+            {
+              "trap": "Choose the strongest control available.",
+              "why": "The strongest control may cost more than the risk or block the business process. The best control fits the cause and the size of the risk."
+            },
+            {
+              "trap": "More training will fix repeated process errors.",
+              "why": "Training addresses what people know. If errors come from the process design, such as retyping data, the fix must change the process."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Root cause analysis",
+              "definition": "Finding the underlying reason a risk event happens, so controls address it rather than its symptoms."
+            },
+            {
+              "term": "Human-in-the-loop review",
+              "definition": "A person checks or approves an AI output before it takes effect, used where errors have high impact."
+            }
+          ]
+        },
+        {
+          "id": "3B2.2",
+          "name": "Implementing Controls With Control Owners",
+          "legacy_ids": [],
+          "definition": "Control implementation is putting a selected control into operation with its owner, procedure, evidence and success measures agreed before it goes live.",
+          "why_it_matters": "A well-designed control rolled out without an owner, procedure or evidence trail fails quietly. Agreeing these with the control owner up front makes the control testable and lasting.",
+          "how_it_works": [
+            "Agree with the control owner what the control does, how often it runs and what evidence it leaves.",
+            "Document the procedure so someone else could run it during absence or turnover.",
+            "Implement through change management, with testing before go-live and a rollback plan.",
+            "Define a key control indicator so the owner can see when the control starts to fail.",
+            "After go-live, confirm it works as designed before reporting the risk as reduced."
+          ],
+          "example": "A retailer adds a weekly review of privileged access to its payment system. Diego, the IT risk lead, meets the infrastructure manager who will own it. Together they set the review steps, the sign-off record, an indicator for overdue reviews and a backup reviewer. Diego follows the first two cycles before updating the residual risk rating.",
+          "audit_focus": {
+            "review": [
+              "Inspect the control procedure for frequency, steps and evidence",
+              "Confirm the first cycles ran as designed after go-live"
+            ],
+            "evidence": [
+              "Change records with test results and approvals",
+              "First-cycle control evidence signed by the owner"
+            ],
+            "recommend": "Have the control owner write the procedure, sign-off record and backup arrangements, then share first-cycle results.",
+            "decides": "The control owner runs the control; the risk owner accepts the residual rating"
+          },
+          "isaca_rule": "The practitioner works with control owners on design and rollout but does not run the control. Define the owner, procedure, evidence and indicators before go-live, and count the risk as reduced only after the control is shown to work.",
+          "exam_traps": [
+            {
+              "trap": "Mark the risk reduced on the day the control goes live.",
+              "why": "Going live shows the control exists, not that it works. Residual risk changes once design and operation are confirmed."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Control procedure",
+              "definition": "Step-by-step instructions for performing a control, including frequency, inputs and the evidence it leaves."
+            },
+            {
+              "term": "Go-live criteria",
+              "definition": "Conditions agreed before launch, such as tests passed and the owner trained, that a control must meet first."
+            }
+          ]
+        },
+        {
+          "id": "3B2.3",
+          "name": "Control Gap Analysis",
+          "legacy_ids": [],
+          "definition": "Control gap analysis compares the current controls on a risk with the controls needed to bring it within appetite, judging both how they are designed and how they operate.",
+          "why_it_matters": "Gaps show where residual risk is higher than the register claims. Finding them before an incident lets the risk owner fund the most important fixes first.",
+          "how_it_works": [
+            "Define the desired state from appetite, policy, regulation or a framework profile.",
+            "Describe the current state from control assessment results, not assumptions or old ratings.",
+            "Separate design gaps (the control could not work as built) from operating gaps (built right but not performed).",
+            "Rank gaps by the risk they leave open, not by how easy they are to fix.",
+            "Turn agreed gaps into action plans with owners and dates."
+          ],
+          "example": "A credit union's target profile requires multifactor sign-in for all remote access. Hana, the risk analyst, compares it with the latest assessment and finds two gaps: the contractors' remote tool has no multifactor option, and the quarterly review of exempt accounts was skipped twice. They label one a design gap and one an operating gap, and rank both by exposure for the member services director.",
+          "audit_focus": {
+            "review": [
+              "Compare current controls with the target profile for each high risk",
+              "Evaluate whether each gap needs a redesign or better performance"
+            ],
+            "evidence": [
+              "Recent independent test results for each key control",
+              "Target profile or required control set"
+            ],
+            "recommend": "Have the risk owner rank gaps by residual risk and assign remediation owners and dates.",
+            "decides": "The risk owner decides which gaps to fund and when"
+          },
+          "isaca_rule": "Measure gaps against the desired state the business set, using assessment evidence. Tell design gaps from operating gaps, because they need different fixes, and rank them by the risk they leave so the biggest exposure is funded first.",
+          "exam_traps": [
+            {
+              "trap": "Fix the easiest gaps first to show progress.",
+              "why": "Quick wins may leave the largest exposure untouched. Rank gaps by residual risk against appetite, then plan the work."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Desired state",
+              "definition": "The control position needed to keep risk within appetite, taken from policy, regulation or a framework profile."
+            },
+            {
+              "term": "Design gap",
+              "definition": "A control that could not achieve its objective even if performed perfectly."
+            },
+            {
+              "term": "Operating gap",
+              "definition": "A well-designed control that is not performed as intended or not performed consistently."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "topic_id": "3B3",
+      "topic_name": "Control Testing Methodologies",
+      "overview": "Testing tells the risk owner whether controls can be relied on. This topic covers the techniques (inquiry, observation, inspection, reperformance) and their strength, the difference between design and operating tests, sampling, independence, and rating control maturity so effectiveness lasts.",
+      "can_do": [
+        "Rank testing techniques by the strength of evidence they give",
+        "Tell a design test from an operating test, and size a sample to the control",
+        "Explain why a control owner's self-test is weaker evidence",
+        "Set a target maturity for a control in proportion to its risk"
+      ],
+      "subtopics": [
+        {
+          "id": "3B3.1",
+          "name": "Testing Techniques and Evidence Strength",
+          "legacy_ids": [],
+          "definition": "Control testing techniques are the ways evidence about a control is gathered: asking people, watching it run, inspecting records, or performing it again independently.",
+          "why_it_matters": "Techniques give very different assurance. A control rated effective on interviews alone may never actually run, and the rating then hides real exposure from the risk owner.",
+          "how_it_works": [
+            "Inquiry is weakest on its own; combine it with another technique for any key control.",
+            "Observation shows the control at one moment, and people may act differently while watched.",
+            "Inspection of records shows the control ran over time, if the records are complete and genuine.",
+            "Reperformance gives the strongest evidence, because the tester reaches the result independently.",
+            "NIST SP 800-53A groups methods as examine, interview and test, with depth and coverage set by the assurance needed."
+          ],
+          "types": [
+            {
+              "term": "Inquiry",
+              "meaning": "Asking the control owner or staff how the control works and whether it ran."
+            },
+            {
+              "term": "Observation",
+              "meaning": "Watching the control being performed at a point in time."
+            },
+            {
+              "term": "Inspection",
+              "meaning": "Examining records, settings or documents the control produced."
+            },
+            {
+              "term": "Reperformance",
+              "meaning": "The tester independently performs the control again and compares results."
+            }
+          ],
+          "example": "A telecom company's control owner says every firewall rule change is approved. Wanjiru, the risk analyst, pulls twenty rule changes from the firewall's own log, then matches each to an approval dated before the change. Two have no approval at all. They report the exception rate and the two changes to the network operations manager.",
+          "audit_focus": {
+            "review": [
+              "Evaluate whether key controls were rated on statements alone",
+              "Reperform a sample of tests to confirm reported results"
+            ],
+            "evidence": [
+              "Test workpapers showing technique, sample and results",
+              "System-generated populations used for sampling"
+            ],
+            "recommend": "Have the assessment team test key controls by inspection or reperformance, not by inquiry alone.",
+            "decides": "The risk owner uses the results to confirm or revise the residual rating"
+          },
+          "isaca_rule": "Rate a key control on evidence the tester obtains or reproduces, not on statements. Inquiry opens a test; inspection and reperformance conclude it. Choose the technique that matches the assurance the risk needs.",
+          "exam_traps": [
+            {
+              "trap": "The control owner's confirmation is enough to rate a control effective.",
+              "why": "Inquiry shows what people believe happens, not what does happen. Corroborate it with inspection, observation or reperformance."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Corroboration",
+              "definition": "Supporting one piece of evidence with another from a different source or technique."
+            },
+            {
+              "term": "Population",
+              "definition": "The complete set of items a control applies to, from which a test sample is drawn."
+            }
+          ]
+        },
+        {
+          "id": "3B3.2",
+          "name": "Design and Operating Effectiveness Testing",
+          "legacy_ids": [],
+          "definition": "Design testing asks whether a control could meet its objective as built; operating testing asks whether it actually worked consistently over a period, usually by sampling.",
+          "why_it_matters": "A well-designed control can still be skipped in practice. Reporting a design test as proof of operation overstates assurance and leaves the risk owner relying on a control that may not run.",
+          "how_it_works": [
+            "Test design first, often with a walkthrough of one transaction; a badly designed control needs no operating test.",
+            "Test operation over a defined period, with a sample sized to the control's frequency and risk.",
+            "Draw the sample from the complete population, ideally system-generated, with the tester choosing the items.",
+            "Evaluate each failure: find its cause and decide whether the control can still be relied on.",
+            "Tests by the control owner alone are self-assessment: useful for monitoring, but weaker than independent testing."
+          ],
+          "compare": {
+            "columns": [
+              "Design effectiveness",
+              "Operating effectiveness"
+            ],
+            "rows": [
+              {
+                "label": "Question",
+                "cells": [
+                  "Could the control work as built?",
+                  "Did it work consistently over the period?"
+                ]
+              },
+              {
+                "label": "Typical evidence",
+                "cells": [
+                  "Walkthrough of one transaction; review of the procedure and settings",
+                  "Sample of occurrences across the period, inspected or reperformed"
+                ]
+              },
+              {
+                "label": "Typical failure",
+                "cells": [
+                  "Review has no threshold or misses a data source",
+                  "Reviews skipped in busy months"
+                ]
+              }
+            ]
+          },
+          "example": "A shipping company's quarterly user-access review has a sound written procedure. Kofi, a risk analyst, walks through the March review and confirms the design. For operation, they take the last four quarters of reviews from the system's own records and find the September review was never signed off. Kofi reports the control as well designed but not operating consistently.",
+          "audit_focus": {
+            "review": [
+              "Confirm design was tested before operating effectiveness",
+              "Evaluate sample sizes against how often each control runs",
+              "Trace each sampled item to the complete population"
+            ],
+            "evidence": [
+              "Notes tracing one transaction end to end",
+              "Sample selection and results across the period"
+            ],
+            "recommend": "Have the assessment team report design and operating effectiveness separately, with independent tests for key controls.",
+            "decides": "The risk owner decides whether to rely on the control"
+          },
+          "isaca_rule": "Design effectiveness and operating effectiveness are separate conclusions. Report each on its own evidence, sample from a complete population over a period, and treat the owner's self-test as supporting, not independent, evidence.",
+          "exam_traps": [
+            {
+              "trap": "A successful walkthrough proves the control is operating effectively.",
+              "why": "A walkthrough of one transaction tests design. Operating effectiveness needs evidence across the period, usually from a sample."
+            },
+            {
+              "trap": "The control owner's own test is the best evidence, because they know the control best.",
+              "why": "Owners testing their own controls lack independence. Their results support monitoring, but key controls need independent testing."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Walkthrough",
+              "definition": "Tracing one transaction through a process and its controls to confirm how they are designed."
+            },
+            {
+              "term": "Sampling",
+              "definition": "Testing a selected subset of a population to draw a conclusion about the whole."
+            },
+            {
+              "term": "Exception rate",
+              "definition": "The share of sampled items in which the control failed."
+            }
+          ]
+        },
+        {
+          "id": "3B3.3",
+          "name": "Assessing Control Maturity",
+          "legacy_ids": [],
+          "definition": "Control maturity is how well a control or process is defined, repeated, measured and improved, usually rated on a scale from ad hoc to optimized.",
+          "why_it_matters": "A control can work today only because one skilled person runs it. Maturity shows whether it will keep working through turnover and growth, which an effectiveness test alone may miss.",
+          "how_it_works": [
+            "Use one published scale consistently, such as the COBIT 2019 capability levels from 0 to 5.",
+            "Rate against evidence: documented procedures, consistent records, metrics and improvement actions.",
+            "Agree a target level with the risk owner based on the risk; not every control needs the top level.",
+            "Feed the gap between current and target maturity into the improvement plan.",
+            "Read assessment results for adequacy (the right controls), effectiveness (working) and maturity (sustainable) together."
+          ],
+          "example": "A regional bank's fraud monitoring catches most cases, but only one analyst knows how the detection rules are tuned, and nothing is written down. Elif, the IT risk lead, rates the control effective but low in maturity against a target of 'defined'. They recommend to the head of fraud operations a documented tuning procedure, a trained backup and a monthly detection-rate measure.",
+          "audit_focus": {
+            "review": [
+              "Compare current maturity ratings with the targets agreed for each risk",
+              "Inspect the evidence behind each maturity rating"
+            ],
+            "evidence": [
+              "Documented procedures and their version history",
+              "Metrics showing the control is measured over time"
+            ],
+            "recommend": "Have the process owner close maturity gaps where one person's knowledge holds up a high-risk control.",
+            "decides": "The risk owner agrees how mature each key control must become"
+          },
+          "isaca_rule": "Effectiveness says a control works now; maturity says it will keep working. Rate maturity on evidence, set the target by risk with the owner, and plan improvements for the gap.",
+          "exam_traps": [
+            {
+              "trap": "Every control should reach the highest maturity level.",
+              "why": "Maturity has a cost. The target should match the risk; low-risk controls can stay at a basic, repeatable level."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Capability level",
+              "definition": "A rating of how defined, managed and improved a process is, on a published scale."
+            },
+            {
+              "term": "Key person dependency",
+              "definition": "A control that works only because one person knows how to run it."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "topic_id": "3C1",
+      "topic_name": "Risk Action Plans",
+      "overview": "A chosen response becomes real only through a plan with owners, actions, resources and dates. This topic covers building that plan with the risk owner, then validating with evidence that each action was done and actually reduced the risk before it is reported complete.",
+      "can_do": [
+        "List what a complete risk action plan contains",
+        "Validate that an action reported done actually reduced the risk",
+        "Escalate a slipping plan to the right level"
+      ],
+      "subtopics": [
+        {
+          "id": "3C1.1",
+          "name": "Building a Risk Action Plan",
+          "legacy_ids": [],
+          "definition": "A risk action plan sets out how a chosen response will be carried out: the actions, an owner for each, resources, milestones, target dates and the target risk at completion.",
+          "why_it_matters": "A response without a plan stays an intention. Owners, dates and resources turn it into work that can be tracked, funded and escalated when it slips.",
+          "how_it_works": [
+            "Each action has one owner, a target date and the resources it needs, agreed with the risk owner.",
+            "Milestones break long work into checkpoints, so slippage shows early.",
+            "The plan states the target risk expected at completion, so success can be measured.",
+            "Interim measures reduce the exposure while long actions are under way.",
+            "The plan links to its risk register entry, so progress updates the risk picture."
+          ],
+          "example": "A media company decides to mitigate the risk of an unsupported content system by migrating off it. Zainab, the risk analyst, works with the digital director, who owns the risk, to build the plan: three milestones, a named migration lead, budget for contractors, a June target date and an interim firewall restriction. Zainab links the plan to the register entry.",
+          "audit_focus": {
+            "review": [
+              "Inspect a sample of plans for gaps in who, when and budget",
+              "Compare milestone dates with actual progress"
+            ],
+            "evidence": [
+              "Action plans linked to register entries",
+              "Status updates with dates and owner sign-off"
+            ],
+            "recommend": "Have the risk owner sign each plan and confirm that funding and staff are available for every milestone.",
+            "decides": "The risk owner signs the plan and funds the work"
+          },
+          "isaca_rule": "A risk action plan needs owners, actions, resources, dates and the target risk. The practitioner helps the risk owner build it, the risk owner commits to it, and interim measures cover the exposure until it is done.",
+          "exam_traps": [
+            {
+              "trap": "A plan agreed in a meeting is enough without named owners or dates.",
+              "why": "Without one owner and a date per action, nobody is accountable, and slippage cannot be measured or escalated."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Plan of action and milestones (POA&M)",
+              "definition": "NIST's term for a record of planned fixes for weaknesses, with tasks, resources and scheduled completion dates."
+            },
+            {
+              "term": "Interim measure",
+              "definition": "A temporary control that reduces exposure while a longer fix is under way."
+            },
+            {
+              "term": "Target risk",
+              "definition": "The risk level a planned response is expected to reach; it becomes residual risk only once the response is implemented."
+            }
+          ]
+        },
+        {
+          "id": "3C1.2",
+          "name": "Validating Execution and Tracking to Closure",
+          "legacy_ids": [],
+          "definition": "Validating execution is confirming, with evidence, that the actions in a risk plan were carried out as agreed and reduced the risk as expected.",
+          "why_it_matters": "Status reports often say done when a control is installed but untested. Validation stops the register from showing a lower risk than really exists.",
+          "how_it_works": [
+            "Ask for evidence at each milestone, not only a status color.",
+            "Confirm the control is implemented, then that it operates, before treating the action as complete.",
+            "Re-rate the risk after validation; that residual rating is compared with the target the plan set.",
+            "Escalate slipping or blocked actions to the risk owner, and past agreed limits to senior management.",
+            "Close the plan only when the risk reaches the expected level or a new decision is recorded."
+          ],
+          "example": "A port operator's plan to separate its crane-control network from the office network is reported complete. Arjun, the risk analyst, asks the network team for a connection test from an office laptop, which still reaches two cranes. They mark the action incomplete, record the test result and inform the operations director with a proposed new date.",
+          "audit_focus": {
+            "review": [
+              "Reperform a sample of completion checks behind closed actions",
+              "Compare current ratings of treated risks with the targets set at approval"
+            ],
+            "evidence": [
+              "Test results proving completed controls operate",
+              "Escalation records for slipped milestones"
+            ],
+            "recommend": "Have action owners submit evidence at each milestone, validated by the risk function before closure.",
+            "decides": "The risk owner approves closure or a revised date"
+          },
+          "isaca_rule": "Implementation is not completion. Validate with evidence that the action was done and the control operates, re-rate the risk and escalate slippage. Report an action done only when the risk reaches the level the plan promised.",
+          "exam_traps": [
+            {
+              "trap": "Report the action as complete once the control is installed.",
+              "why": "Installed is not working. Until the control is tested, the expected risk reduction is unproven and the register may understate exposure."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Milestone evidence",
+              "definition": "Proof provided at each checkpoint, such as a test result or configuration report, that the work was done."
+            },
+            {
+              "term": "Escalation threshold",
+              "definition": "A set point, such as days overdue or a risk level, at which an item goes to a more senior decision maker."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "topic_id": "3C2",
+      "topic_name": "Data Collection, Aggregation, Analysis, and Validation",
+      "overview": "Risk reports are only as good as the data behind them. This topic covers collecting risk and control data from defined sources, normalizing and aggregating it into an enterprise view without hiding critical risks, and validating it before it reaches decision makers.",
+      "can_do": [
+        "Trace a reported figure back to its source and owner",
+        "Normalize ratings from different scales before combining them",
+        "Explain how aggregation can hide a critical single risk",
+        "Validate data for completeness, accuracy, currency and consistency"
+      ],
+      "subtopics": [
+        {
+          "id": "3C2.1",
+          "name": "Collecting Risk and Control Data",
+          "legacy_ids": [],
+          "definition": "Risk data collection is gathering the facts behind ratings and reports, such as incidents, losses, test results and metrics, from defined and trusted sources.",
+          "why_it_matters": "Ratings are only as good as their inputs. Data from inconsistent or unknown sources leads owners to fund the wrong risks and miss the right ones.",
+          "how_it_works": [
+            "Define each data element, its source, owner, frequency and format before collecting it.",
+            "Prefer system-generated data over hand-kept spreadsheets where possible, and record where each figure came from.",
+            "Combine internal data, such as incidents and test results, with external data, such as threat reports and industry losses.",
+            "Collect at a frequency that matches how fast the risk changes."
+          ],
+          "example": "A grocery chain's monthly risk report takes store incident counts from emails sent by store managers. Isabela, a risk analyst, finds that some stores report only serious incidents. They propose taking counts directly from the incident ticketing system, with one shared definition of an incident and a named data owner, before the next quarterly report to the operations committee.",
+          "audit_focus": {
+            "review": [
+              "Trace a sample of report figures back to their source systems",
+              "Compare data definitions across business units"
+            ],
+            "evidence": [
+              "Data dictionary listing each figure's origin, steward and refresh cycle",
+              "Extract logs from the source systems"
+            ],
+            "recommend": "Have each data owner define the source and meaning of the risk data they supply.",
+            "decides": "The data owner answers for the quality of the data supplied"
+          },
+          "isaca_rule": "Know where every number comes from. Define data elements and owners, prefer system sources, and record lineage so that reports can be traced and trusted.",
+          "exam_traps": [
+            {
+              "trap": "More data always gives a better risk picture.",
+              "why": "Inconsistent or unchecked data adds noise and false confidence. Fewer, well-defined, trusted sources serve decisions better."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Data lineage",
+              "definition": "A record of where a figure came from and how it was changed before it reached a report."
+            },
+            {
+              "term": "Data dictionary",
+              "definition": "A list of data elements with their meaning, source, format and owner."
+            }
+          ]
+        },
+        {
+          "id": "3C2.2",
+          "name": "Aggregating and Normalizing Risk Data",
+          "legacy_ids": [],
+          "definition": "Risk aggregation combines risks from many units or systems into one enterprise view, after normalizing them to the same rating criteria so they can be compared.",
+          "why_it_matters": "Senior management needs one picture of enterprise risk. Adding ratings from different scales, or averaging away a severe local risk, gives a picture that looks precise but is wrong.",
+          "how_it_works": [
+            "Convert unit ratings to one enterprise scale for likelihood and impact before combining them.",
+            "Merge duplicate or similar risks into a representative risk, keeping a link back to each source entry.",
+            "Look for the same risk treated differently by different units, and find out why.",
+            "Keep severe single risks visible; aggregation must not average them into a moderate total.",
+            "Watch for correlated risks, such as several units relying on one vendor, that add up to a larger exposure."
+          ],
+          "example": "A hospital group asks its five hospitals for their top risks. Two rate on a 1 to 5 scale and three on 1 to 10, and one hospital's critical ransomware risk disappears when the scores are averaged. Malik, the enterprise risk analyst, converts every rating to the group scale, keeps the critical risk as its own line and notes that four hospitals share one imaging vendor.",
+          "audit_focus": {
+            "review": [
+              "Trace aggregated risks back to their source register entries",
+              "Compare unit rating scales with the enterprise scale"
+            ],
+            "evidence": [
+              "Conversion table between unit and enterprise scales",
+              "Enterprise register with source identifiers"
+            ],
+            "recommend": "Have the enterprise risk function apply one rating scale and keep critical unit risks visible in reports.",
+            "decides": "Senior management reviews the enterprise risk profile and sets priorities"
+          },
+          "isaca_rule": "Normalize before you aggregate: one scale, one set of criteria. Keep traceability to the source registers, keep critical single risks visible, and look for shared dependencies that make the combined exposure larger than its parts.",
+          "exam_traps": [
+            {
+              "trap": "Average the units' ratings to get the enterprise rating.",
+              "why": "Averaging hides extremes. One critical risk at one unit can matter more than many moderate ones, and different scales cannot be combined directly."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Risk aggregation",
+              "definition": "Integrating risk assessments at a corporate level to get a complete view of the enterprise's overall risk."
+            },
+            {
+              "term": "Normalization",
+              "definition": "Translating ratings and descriptions from different units onto common criteria so they can be compared."
+            },
+            {
+              "term": "Correlated risk",
+              "definition": "Risks that tend to happen together because they share a cause or a dependency."
+            }
+          ]
+        },
+        {
+          "id": "3C2.3",
+          "name": "Validating Data Before Reporting",
+          "legacy_ids": [],
+          "definition": "Data validation is checking that risk and control data are complete, accurate, current and consistent before they are analyzed or reported to decision makers.",
+          "why_it_matters": "A wrong figure in a board report can drive the wrong decision and damages trust in the whole risk function. Checking before reporting costs far less than correcting afterward.",
+          "how_it_works": [
+            "Completeness: every unit and system expected in the data is present.",
+            "Accuracy: a sample reconciles to the source records.",
+            "Currency: the data dates match the reporting period.",
+            "Consistency: definitions and scales match across sources and over time.",
+            "Known limitations are stated in the report rather than left out."
+          ],
+          "example": "A national rail operator's dashboard shows patch compliance jumping from 70% to 98% in one month. Before the board pack goes out, Ines, the risk analyst, reconciles the figure with the patch tool and finds that 40 live servers stopped reporting and dropped out of the count. They correct the figure and note the reporting gap for the infrastructure director.",
+          "audit_focus": {
+            "review": [
+              "Reconcile a sample of reported metrics to source system records",
+              "Identify sudden metric changes and confirm their cause"
+            ],
+            "evidence": [
+              "Validation checklist signed before each report",
+              "Reconciliation workpapers with differences explained"
+            ],
+            "recommend": "Have the reporting team validate data against sources and state known limits before each report is issued.",
+            "decides": "The report owner signs off the data before it reaches decision makers"
+          },
+          "isaca_rule": "Validate before you report. Check completeness, accuracy, currency and consistency, and state the limits of the data. A sudden jump in a metric is a reason to check the data before celebrating or escalating.",
+          "exam_traps": [
+            {
+              "trap": "Report the latest figures quickly and correct them later if needed.",
+              "why": "Decisions are made on what is reported. Unchecked figures can trigger wrong investment or false comfort, and corrections erode trust."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Reconciliation",
+              "definition": "Comparing figures from two sources to confirm they agree, and explaining any difference."
+            },
+            {
+              "term": "Data quality dimensions",
+              "definition": "Completeness, accuracy, currency and consistency: the tests applied to data before it is used."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "topic_id": "3C3",
+      "topic_name": "Risk and Control Metrics",
+      "overview": "Metrics tell owners when to act. This topic covers the difference between key risk indicators (KRIs), key control indicators (KCIs) and key performance indicators (KPIs), how to choose a few good leading KRIs, and how thresholds tied to tolerance turn them into decisions, including indicators for AI models.",
+      "can_do": [
+        "Tell a KRI from a KCI and a KPI in a scenario",
+        "Pick the best KRI by relevance, measurability, prediction and ownership",
+        "Set thresholds from tolerance and route a breach to the right owner",
+        "Name indicators for AI model drift, errors and complaints"
+      ],
+      "subtopics": [
+        {
+          "id": "3C3.1",
+          "name": "KRIs, KCIs and KPIs",
+          "legacy_ids": [],
+          "definition": "Key risk indicators (KRIs) signal changing risk exposure, key control indicators (KCIs) show how well controls work, and key performance indicators (KPIs) measure progress toward process goals.",
+          "why_it_matters": "Mixing them up sends the wrong signal: a KPI can stay green while risk rises. Each answers a different question for a different owner.",
+          "how_it_works": [
+            "A KRI is tied to a risk scenario and warns that exposure is moving toward tolerance.",
+            "A KCI is tied to a control and shows failure or weakness, such as overdue reviews.",
+            "A KPI is tied to a process goal, such as tickets closed on time, and may say nothing about risk.",
+            "One measure can serve as more than one type, depending on the decision it supports.",
+            "Risk owners use KRIs, control owners use KCIs and process owners use KPIs."
+          ],
+          "compare": {
+            "columns": [
+              "KRI",
+              "KCI",
+              "KPI"
+            ],
+            "rows": [
+              {
+                "label": "Question answered",
+                "cells": [
+                  "Is exposure rising toward tolerance?",
+                  "Is the control working?",
+                  "Is the process meeting its goal?"
+                ]
+              },
+              {
+                "label": "Linked to",
+                "cells": [
+                  "A risk scenario and its thresholds",
+                  "A specific control",
+                  "A process or project target"
+                ]
+              },
+              {
+                "label": "Example",
+                "cells": [
+                  "Share of critical systems past vendor support",
+                  "Share of access reviews completed on time",
+                  "Average time to resolve a help desk ticket"
+                ]
+              },
+              {
+                "label": "Main user",
+                "cells": [
+                  "Risk owner",
+                  "Control owner",
+                  "Process owner"
+                ]
+              }
+            ]
+          },
+          "example": "A university's IT service desk reports that 95% of tickets close within two days and calls its risk dashboard green. Pablo, the risk analyst, notes that this is a performance measure. They propose a KRI for account-takeover risk, the number of staff accounts without multifactor sign-in, and a KCI for the monthly review of privileged accounts, and present both to the chief information officer.",
+          "audit_focus": {
+            "review": [
+              "Classify each dashboard metric by the question it answers",
+              "Identify risk reports built only on performance measures"
+            ],
+            "evidence": [
+              "Metric catalog with type, owner and linked risk or control",
+              "Dashboard history against thresholds"
+            ],
+            "recommend": "Have risk owners replace performance-only measures with KRIs tied to their risk scenarios.",
+            "decides": "The risk owner chooses the KRIs for their risks"
+          },
+          "isaca_rule": "Match the metric to the question: KRIs for exposure, KCIs for control health, KPIs for performance. A good KPI does not show that risk is controlled; report KRIs to risk owners against thresholds.",
+          "exam_traps": [
+            {
+              "trap": "A strong KPI result shows the risk is under control.",
+              "why": "KPIs measure process performance. A help desk can close tickets fast while exposure to a risk scenario grows unseen."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Key goal indicator (KGI)",
+              "definition": "A measure that tells management after the fact whether a process met its business requirements."
+            },
+            {
+              "term": "Indicator owner",
+              "definition": "The person accountable for collecting, reviewing and acting on a metric."
+            }
+          ],
+          "memory_aid": "KRI: is risk growing? KCI: is the control working? KPI: is the process performing?"
+        },
+        {
+          "id": "3C3.2",
+          "name": "Selecting Effective KRIs",
+          "legacy_ids": [],
+          "definition": "An effective KRI is relevant to a specific risk, reliably measurable, predictive of change, set against thresholds and owned by someone who acts on it.",
+          "why_it_matters": "Too many indicators drown the signal, and lagging ones warn only after the loss. A few well-chosen leading KRIs give owners time to act.",
+          "how_it_works": [
+            "Relevant: the KRI tracks a driver of a specific high-priority risk scenario.",
+            "Measurable: the data is available, consistent and cheap enough to collect regularly.",
+            "Predictive: a leading indicator changes before the risk event, not after it.",
+            "Thresholds and owner: each KRI has limits tied to tolerance and a person who acts on a breach.",
+            "Keep the set small and focused on the top risks, and review it as the risks change."
+          ],
+          "types": [
+            {
+              "term": "Leading indicator",
+              "meaning": "Tracks events or behaviors that come before a risk event, such as rising overtime before fatigue accidents."
+            },
+            {
+              "term": "Lagging indicator",
+              "meaning": "Tracks outcomes after the fact, such as the number of incidents or losses last quarter."
+            }
+          ],
+          "example": "A courier company tracks van accidents per month as its key risk indicator for driver-fatigue risk. Yusuf, the risk analyst, points out that accidents are the outcome, not the warning. They propose tracking the share of drivers exceeding shift-hour limits, taken from the vehicle telematics system, with an amber limit at 3% and red at 5%, owned by the fleet manager.",
+          "audit_focus": {
+            "review": [
+              "Evaluate each KRI against relevance, measurability, prediction and ownership",
+              "Identify KRIs that measure outcomes rather than drivers"
+            ],
+            "evidence": [
+              "KRI definitions with data source, owner and thresholds",
+              "History showing KRIs moved before past events"
+            ],
+            "recommend": "Have each risk owner keep a small set of leading KRIs for their top risks and review them yearly.",
+            "decides": "The risk owner approves each KRI and acts on breaches"
+          },
+          "isaca_rule": "Choose a few KRIs, tied to top risk scenarios, that are measurable, leading and owned, with thresholds linked to tolerance. A lagging metric explains a loss; a leading one helps prevent it.",
+          "exam_traps": [
+            {
+              "trap": "Track as many KRIs as possible to be safe.",
+              "why": "A long list hides the important signals and costs effort to maintain. Focus on a small set that predicts the top risks."
+            },
+            {
+              "trap": "Incident counts make the best early warning.",
+              "why": "Incidents are lagging: they show the risk has already happened. Early warning comes from drivers, such as unpatched systems or policy breaches."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Risk driver",
+              "definition": "A condition that pushes likelihood or impact up, such as excess overtime or unpatched systems."
+            },
+            {
+              "term": "KRI selection criteria",
+              "definition": "The tests a good KRI passes: relevant, measurable, predictive, set against thresholds and owned."
+            }
+          ]
+        },
+        {
+          "id": "3C3.3",
+          "name": "Thresholds and AI Model Indicators",
+          "legacy_ids": [],
+          "definition": "KRI thresholds are preset limits, linked to risk appetite and tolerance, that trigger review, escalation or action when an indicator crosses them.",
+          "why_it_matters": "Without thresholds, a climbing KRI is just a number. Limits tied to tolerance tell the owner when to act and who must be told.",
+          "how_it_works": [
+            "Set thresholds from tolerance: green within appetite, amber approaching tolerance, red at or beyond it.",
+            "Define the action and escalation for each level before any breach happens.",
+            "Review thresholds when appetite, the business or the risk changes.",
+            "For AI systems, track drift, error rates, override rates and complaints, with limits set by the model's business owner.",
+            "A breach goes to the risk owner, or to the level that set the threshold."
+          ],
+          "example": "An insurer's claims-triage model flags claims for fast payment. Aisha, the risk analyst, proposes indicators for it: the share of fast-tracked claims later found invalid, the rate of staff overrides and weekly drift in the input data. Each gets amber and red limits agreed with the claims director; red means claims return to manual triage until the model is reviewed.",
+          "audit_focus": {
+            "review": [
+              "Compare each threshold with the documented tolerance for its risk",
+              "Trace recent breaches to the escalation and action taken"
+            ],
+            "evidence": [
+              "Threshold settings with approval dates",
+              "Breach logs with responses and dates"
+            ],
+            "recommend": "Have the business owner sign off each limit and the response it triggers, and review limits yearly.",
+            "decides": "The risk owner agrees thresholds within senior management's tolerance and decides breach responses"
+          },
+          "isaca_rule": "Thresholds turn metrics into decisions. Link them to appetite and tolerance, agree the action for each level in advance and route breaches to the risk owner. AI models need indicators for drift, errors and complaints like any other risk.",
+          "exam_traps": [
+            {
+              "trap": "Set thresholds from industry averages.",
+              "why": "Industry figures are context, not tolerance. Thresholds must reflect this organization's own appetite and tolerance, set with the risk owner."
+            },
+            {
+              "trap": "A model that passed testing needs no production indicators.",
+              "why": "Models drift as data and behavior change. Production indicators show when performance moves outside what the owner accepted."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Model drift",
+              "definition": "A decline in an AI model's accuracy because live data or behavior has moved away from its training data."
+            },
+            {
+              "term": "Override rate",
+              "definition": "How often people reject or change an AI system's output, a sign of errors or mistrust."
+            },
+            {
+              "term": "Escalation path",
+              "definition": "The named roles a threshold breach goes to, in order, with expected response times."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "topic_id": "3C4",
+      "topic_name": "Risk and Control Monitoring Techniques",
+      "overview": "Risk changes between reviews. This topic covers continuous monitoring and automated alerts that someone acts on, control self-assessment and trend analysis, and the events that should trigger a reassessment before the next scheduled review.",
+      "can_do": [
+        "Set monitoring frequency by risk and make sure alerts have owners",
+        "Use self-assessment results without treating them as independent evidence",
+        "Name the events that trigger a risk reassessment"
+      ],
+      "subtopics": [
+        {
+          "id": "3C4.1",
+          "name": "Continuous Monitoring and Automated Alerts",
+          "legacy_ids": [],
+          "definition": "Continuous monitoring is keeping ongoing awareness of security, vulnerabilities and threats to support risk decisions, using automated feeds and assessments at a frequency set by risk.",
+          "why_it_matters": "Yearly reviews miss what changes between them. Ongoing monitoring catches control failures and new exposure while there is still time to respond, provided someone acts on the alerts.",
+          "how_it_works": [
+            "Write a monitoring strategy: what to monitor, how often and who receives the results.",
+            "Automate where it helps, such as configuration checks, vulnerability scans and control health checks.",
+            "Set frequency by risk and by how fast the item changes; continuous does not mean every second.",
+            "Route every alert to an owner with a response time, and track alerts to closure.",
+            "Analyze results against tolerance and feed them into the register and reports."
+          ],
+          "example": "A payments startup turns on automated checks that flag any cloud storage made public. After a month, Ji-ho, the risk analyst, finds 60 alerts sitting in a shared mailbox and none acted on. They propose routing alerts to the platform team lead with a four-hour response target, and a weekly count of open alerts reported to the chief technology officer.",
+          "audit_focus": {
+            "review": [
+              "Sample closed alerts and confirm a named person resolved each in time",
+              "Evaluate whether high-rated risks are checked more often than low ones"
+            ],
+            "evidence": [
+              "Alert queue with ages, owners and closure times",
+              "Monitoring strategy with scope, frequency and recipients"
+            ],
+            "recommend": "Have the operations manager give every alert type an owner, a response time and closure tracking.",
+            "decides": "The risk owner sets monitoring priorities and acts on findings"
+          },
+          "isaca_rule": "Monitoring reduces risk only when someone acts on it. Set frequency by risk, automate where it helps, give every alert an owner and a response time, and analyze results against tolerance.",
+          "exam_traps": [
+            {
+              "trap": "Turning on automated monitoring reduces the risk by itself.",
+              "why": "Alerts nobody reads are detective controls that never lead to correction. The value comes from an owner responding within a set time."
+            },
+            {
+              "trap": "The audit cycle is often enough to monitor key controls.",
+              "why": "Yearly or less frequent audits leave long blind spots. Key controls need monitoring at a frequency matched to their risk."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Information security continuous monitoring (ISCM)",
+              "definition": "NIST's term for ongoing awareness of security, vulnerabilities and threats to support organizational risk decisions."
+            },
+            {
+              "term": "Continuous control monitoring",
+              "definition": "Automated, frequent testing of how controls operate, such as daily checks of access settings against policy."
+            },
+            {
+              "term": "Alert fatigue",
+              "definition": "Too many low-value alerts, which leads people to miss or dismiss the important ones."
+            }
+          ]
+        },
+        {
+          "id": "3C4.2",
+          "name": "Control Self-Assessment and Trend Analysis",
+          "legacy_ids": [],
+          "definition": "Control self-assessment (CSA) has managers and staff evaluate their own risks and controls, often in facilitated workshops; trend analysis reads monitoring results over time.",
+          "why_it_matters": "People who run a process see risks and workarounds that outside reviews miss. Trends show whether exposure is improving or slipping, which a single snapshot cannot.",
+          "how_it_works": [
+            "The risk function designs the questions and facilitates; managers answer for their own areas.",
+            "CSA builds ownership and awareness, but results are self-reported, so key answers are spot-checked independently.",
+            "Trend analysis compares indicator values over several periods to show direction, speed and seasonal patterns.",
+            "A worsening trend can justify action even before a threshold is breached."
+          ],
+          "example": "A city council's twelve departments complete a quarterly self-assessment of their records controls. Fatima, the risk analyst, notes that the housing department's scores rose sharply while its complaint volume also rose. They spot-check three of its answers against records, find two overstated, and raise the difference with the housing director.",
+          "audit_focus": {
+            "review": [
+              "Reperform a sample of self-assessed control ratings",
+              "Compare indicator trends with self-assessed scores"
+            ],
+            "evidence": [
+              "Completed self-assessments with supporting records",
+              "Indicator values for at least four quarters"
+            ],
+            "recommend": "Have department managers attach records to self-assessed ratings, with independent checks on key controls.",
+            "decides": "Department managers answer for their self-assessed controls"
+          },
+          "isaca_rule": "CSA puts ownership where the work happens, but self-reported results need independent spot checks for key controls. Read indicators as trends, not snapshots, and act on a worsening direction before a breach.",
+          "exam_traps": [
+            {
+              "trap": "CSA results can replace independent testing of key controls.",
+              "why": "Self-assessment lacks independence. It is valuable for coverage and ownership, but key controls still need independent evidence."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Facilitated workshop",
+              "definition": "A session led by the risk function in which staff identify and rate their own risks and controls."
+            },
+            {
+              "term": "Trend analysis",
+              "definition": "Comparing a measure over several periods to see the direction and speed of change."
+            }
+          ]
+        },
+        {
+          "id": "3C4.3",
+          "name": "Triggers for Reassessment",
+          "legacy_ids": [],
+          "definition": "Reassessment triggers are events that require a risk to be re-analyzed before its next scheduled review, such as major change, serious incidents, new threats or new regulation.",
+          "why_it_matters": "A risk rating is a snapshot. When the business, its technology or its threats change, an old rating gives owners false comfort.",
+          "how_it_works": [
+            "Define triggers in policy: major system or process change, mergers, new vendors, serious incidents, threshold breaches and new laws.",
+            "Link change management and incident processes to the risk function, so a trigger starts a reassessment.",
+            "Reassess the affected scenarios, update the register and tell the risk owner of any change in rating.",
+            "Keep scheduled reviews as a backstop, since not every change is announced."
+          ],
+          "example": "An online retailer moves its checkout to a new payment provider in a weekend release. Lucas, the risk analyst, learns of it from the change calendar and finds that the card-data risk was last assessed against the old provider. They reassess the scenario with the e-commerce manager and update the register, rather than waiting for the next quarterly review.",
+          "audit_focus": {
+            "review": [
+              "Compare recent major changes with reassessment records",
+              "Inspect policy for defined triggers and response times"
+            ],
+            "evidence": [
+              "Change calendar entries matched to risk reassessments",
+              "Incident reports linked to register updates"
+            ],
+            "recommend": "Have the change advisory board notify the risk function of material changes before release.",
+            "decides": "The risk owner decides the response to a re-rated risk"
+          },
+          "isaca_rule": "Reassess when something material changes, not only on the calendar. Tie change management, incidents and threat intelligence to the risk process so that triggers start a reassessment, and tell the risk owner when the rating moves.",
+          "exam_traps": [
+            {
+              "trap": "Wait for the annual assessment to update ratings after a major change.",
+              "why": "The rating is outdated from the moment of the change. Material change triggers reassessment now, so the owner decides on current information."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Reassessment trigger",
+              "definition": "A defined event that requires re-analyzing a risk before its next scheduled review."
+            },
+            {
+              "term": "Material change",
+              "definition": "A change large enough to alter a risk's likelihood or impact, such as a new provider or architecture."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "topic_id": "3C5",
+      "topic_name": "Risk and Control Reporting Techniques",
+      "overview": "Reporting turns risk information into decisions. This topic covers heat maps, scorecards and dashboards and their limits, and how to shape each report for its audience, so the board sees the profile against appetite and owners see what they must do.",
+      "can_do": [
+        "Choose a reporting format and show trend, not just position",
+        "Explain why ordinal heat-map scores cannot be added or averaged",
+        "Tailor a report to the board, risk owners or control owners",
+        "Route a reported breach to someone with authority to decide"
+      ],
+      "subtopics": [
+        {
+          "id": "3C5.1",
+          "name": "Heat Maps, Scorecards and Dashboards",
+          "legacy_ids": [],
+          "definition": "Risk reporting formats present risk and control information visually: heat maps plot likelihood against impact, scorecards rate results against targets, and dashboards combine indicators.",
+          "why_it_matters": "The format shapes the decision. A good visual shows what needs attention at a glance; a poor one hides trends, ranges and risks sitting just outside the red cells.",
+          "how_it_works": [
+            "Heat maps show relative position but not trend; add arrows or prior-period markers to show movement.",
+            "Heat-map scores are ordinal, so cells cannot be added or averaged meaningfully.",
+            "Scorecards and dashboards show indicators against thresholds and trend, not raw counts alone.",
+            "Every visual needs a date, a data source and a note of known limitations."
+          ],
+          "types": [
+            {
+              "term": "Heat map",
+              "meaning": "A grid ranking risks by likelihood and impact bands, often colored green to red; ISACA calls it a risk map."
+            },
+            {
+              "term": "Scorecard",
+              "meaning": "A table rating areas or objectives against targets, usually with status and trend."
+            },
+            {
+              "term": "Dashboard",
+              "meaning": "A single view combining several indicators, thresholds and trends, often updated automatically."
+            }
+          ],
+          "example": "A manufacturer's quarterly heat map has shown its supplier-failure risk in the same amber cell for a year, so the board treats it as stable. Rosa, the risk analyst, pulls the KRI history, which shows two key suppliers' delivery delays growing every month. They add a trend arrow and a short note to the next report for the board risk committee.",
+          "audit_focus": {
+            "review": [
+              "Compare heat-map positions with indicator trends for the same risks",
+              "Identify reports that total or average risk scores across cells"
+            ],
+            "evidence": [
+              "Report versions across several periods",
+              "Indicator history behind each plotted risk"
+            ],
+            "recommend": "Have the reporting team add trend, thresholds and data dates to each heat map and dashboard.",
+            "decides": "The risk committee or other decision maker acts on the report"
+          },
+          "isaca_rule": "Choose the format that answers the audience's question, and always show trend and thresholds, not just position. Never add or average ordinal heat-map scores, and date and source every visual.",
+          "exam_traps": [
+            {
+              "trap": "A risk that stays in the same heat-map cell is stable.",
+              "why": "Cells are wide bands. A risk can move steadily toward the next band, which only a trend line or indicator history shows."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Ordinal scale",
+              "definition": "Ratings that show order, such as low to high, but not equal distances between the levels."
+            },
+            {
+              "term": "Trend marker",
+              "definition": "A sign, such as an arrow, showing a risk's direction since the last report."
+            }
+          ]
+        },
+        {
+          "id": "3C5.2",
+          "name": "Reporting for the Audience and the Decision",
+          "legacy_ids": [],
+          "definition": "Audience-based reporting gives each stakeholder what they need for their own decisions: the board sees the risk profile against appetite, and owners see their risks and actions.",
+          "why_it_matters": "A report the reader cannot act on is noise. Technical detail swamps the board, and summary colors starve the people who must fix things.",
+          "how_it_works": [
+            "Board and senior management: the enterprise profile, appetite breaches, top risks, trends and the decisions needed.",
+            "Risk owners: their risks, indicator status, overdue actions and acceptances due for review.",
+            "Control owners and operations: control failures, test results and specific remediation tasks.",
+            "Send each report to someone with authority to decide on what it shows, and state the decision requested.",
+            "Escalate outside the cycle when a tolerance breach or a critical risk needs a decision now."
+          ],
+          "example": "A national charity's IT risk report to its board lists 140 vulnerability findings by server name. Samir, the risk analyst, rewrites it for the board as the three risks outside appetite, their trend and the funding decision needed for one of them. They send the server-level detail to the infrastructure manager as an action list.",
+          "audit_focus": {
+            "review": [
+              "Compare each report's content with the decisions its audience makes",
+              "Trace recent breaches to the level that set the threshold"
+            ],
+            "evidence": [
+              "Board and committee minutes recording decisions on risk reports",
+              "Report distribution lists by audience"
+            ],
+            "recommend": "Have the risk function tailor each report to its audience and state the decision requested.",
+            "decides": "The board or committee that set appetite decides on breaches reported to it"
+          },
+          "isaca_rule": "Report to the level that can decide, in the terms that audience uses. The board needs risk against appetite and the decisions asked of it; owners need actions. Escalate a breach to whoever set the limit, without waiting for the next cycle.",
+          "exam_traps": [
+            {
+              "trap": "Give the board the full technical detail so nothing is hidden.",
+              "why": "Detail without context hides the decision. The board needs the profile against appetite and a clear request; the detail goes to the people who act."
+            },
+            {
+              "trap": "Report a tolerance breach to the IT manager because they run the system.",
+              "why": "A breach goes to the risk owner or the level that set the threshold: someone with authority over the response."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Risk profile",
+              "definition": "The overall picture of the risks an organization faces at a point in time."
+            },
+            {
+              "term": "Decision request",
+              "definition": "A clear statement in a report of the decision the reader is asked to make, with the options."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "topic_id": "3C6",
+      "topic_name": "Monitoring and Reporting of Emerging Risks",
+      "overview": "Some risks are new or changing too fast to rate with confidence, such as new uses of AI or coming regulation. This topic covers horizon scanning to find them early, then recording and reporting them with their uncertainty stated and a named owner.",
+      "can_do": [
+        "Name sources for horizon scanning and screen signals for relevance",
+        "Record an emerging risk with its confidence, owner and review date",
+        "Report emerging risk as uncertain, neither ignored nor treated as certain"
+      ],
+      "subtopics": [
+        {
+          "id": "3C6.1",
+          "name": "Horizon Scanning and Emerging Risk Sources",
+          "legacy_ids": [],
+          "definition": "Horizon scanning is the regular search for new or changing risks from technology, regulation, markets, threats and society, before they are well understood or measurable.",
+          "why_it_matters": "Emerging risks give the least warning and the most surprise. Spotting them early leaves time to study them, prepare and take up any opportunity they bring.",
+          "how_it_works": [
+            "Use many sources: threat intelligence, regulators' consultations, industry groups, vendors, research and front-line staff.",
+            "Look for opportunities too, such as a new technology that could cut cost or risk.",
+            "Screen each signal for relevance to the organization's objectives and assets.",
+            "Give each relevant emerging risk an owner to watch it, even while it is uncertain.",
+            "Evaluate new technologies, such as generative AI, for threats, vulnerabilities and opportunities before use spreads."
+          ],
+          "example": "A pension fund's risk team holds a quarterly horizon review. Noor, the risk analyst, brings three signals: a regulator's consultation on AI in financial advice, a rise in voice-cloning fraud reported by peer funds, and staff using public AI chat tools to draft member letters. They screen each for relevance and propose an owner for each to the chief risk officer.",
+          "audit_focus": {
+            "review": [
+              "Inspect horizon-scanning records for range of sources and regularity",
+              "Trace emerging risks to named owners in the register"
+            ],
+            "evidence": [
+              "Horizon review minutes listing sources consulted and outcomes",
+              "Register entries for emerging risks with owners"
+            ],
+            "recommend": "Have the chief risk officer run regular horizon reviews and assign an owner to each relevant signal.",
+            "decides": "Senior management decides which emerging risks to study or prepare for"
+          },
+          "isaca_rule": "Scan widely and regularly, screen signals against objectives, and give each emerging risk an owner before it is fully understood. Assess emerging technology for threats, vulnerabilities and opportunities.",
+          "exam_traps": [
+            {
+              "trap": "Wait until a risk can be measured before recording it.",
+              "why": "By the time an emerging risk is measurable, it may already be causing loss. Record it early with an owner and refine it as understanding grows."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Emerging risk",
+              "definition": "A new or changing risk whose likelihood and impact are not yet well understood."
+            },
+            {
+              "term": "Weak signal",
+              "definition": "An early, uncertain sign of change, such as a regulator's consultation or a peer's incident."
+            }
+          ]
+        },
+        {
+          "id": "3C6.2",
+          "name": "Recording and Reporting Emerging Risk",
+          "legacy_ids": [],
+          "definition": "Recording emerging risk means entering it in the register with its uncertainty stated, an owner and a review date, then reporting it so leaders can prepare without overreacting.",
+          "why_it_matters": "Leaders need early sight of what may change the risk profile. Presenting an uncertain risk as certain wastes money, and leaving it out leaves them unprepared.",
+          "how_it_works": [
+            "Record the risk as a scenario, with a confidence level and the assumptions behind any rating.",
+            "Use ranges or alternative scenarios rather than single scores while uncertainty is high.",
+            "Set short review dates, and refine the rating as evidence arrives.",
+            "Report emerging risks in their own section: what is known, what is not, and what is being done to learn more.",
+            "Move the risk into the main profile once it is understood well enough to rate normally."
+          ],
+          "example": "A logistics firm's operations team begins trials of driverless yard trucks. Mateo, the risk analyst, records a safety and liability risk with low confidence, a range of possible impacts and a two-month review date, with the yard operations director confirmed as owner. In the quarterly report, they list it under emerging risks and state what the trials should reveal.",
+          "audit_focus": {
+            "review": [
+              "Inspect emerging risk entries for stated assumptions and next review dates",
+              "Compare reported emerging risks with horizon review outputs"
+            ],
+            "evidence": [
+              "Register entries showing ranges and stated assumptions",
+              "Quarterly reports separating emerging risks from rated risks"
+            ],
+            "recommend": "Have emerging risk owners review their entries at short intervals and update ratings as evidence arrives.",
+            "decides": "The named business owner decides how to prepare for the emerging risk"
+          },
+          "isaca_rule": "Record emerging risk early, with its uncertainty stated, an owner and a short review date. Report it as uncertain, neither ignored nor treated as certain, and refine the rating as evidence grows.",
+          "exam_traps": [
+            {
+              "trap": "Rate an emerging risk as critical to make sure it gets attention.",
+              "why": "Overstating certainty misdirects resources and damages trust. State the uncertainty, give a range and update it as evidence grows."
+            },
+            {
+              "trap": "An emerging AI risk belongs to IT because AI is technology.",
+              "why": "The business owner of the process using the AI owns its risk. IT may own the technical controls."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Confidence level",
+              "definition": "How sure the assessors are of a rating, given the evidence available to them."
+            },
+            {
+              "term": "Risk velocity",
+              "definition": "How fast a risk's impact would be felt once the event occurs."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "key_terminologies": {
+    "Risk response": "Accepting, mitigating, transferring (sharing) or avoiding a risk so that residual risk falls within appetite.",
+    "Risk acceptance": "A documented decision by the risk owner, within the appetite the board and senior management set, to keep a risk and absorb any loss.",
+    "Residual risk": "The risk that remains after a response is in place; it must end within appetite.",
+    "Risk owner": "The person with authority and accountability for decisions about a risk, who answers for the loss if it happens.",
+    "Control owner": "The person accountable for designing, running and maintaining a control so it works as intended.",
+    "Risk transfer": "Shifting part of a risk's financial consequence to another party, such as an insurer; accountability stays with the organization.",
+    "Right to audit": "A contract clause letting the customer, or an assessor it appoints, examine a vendor's controls and records.",
+    "Fourth party": "A vendor's own supplier or subcontractor, such as the cloud host behind a software provider.",
+    "Exception": "A temporary, approved deviation from a policy or standard, with compensating controls and an expiry date.",
+    "Exemption": "An approved exclusion from a requirement for a defined scope, reviewed periodically.",
+    "Compensating control": "A control that reduces risk where a required control is missing or weak.",
+    "Preventive control": "A control that stops an unwanted event before it happens.",
+    "Detective control": "A control that finds and reports an unwanted event after it occurs.",
+    "Corrective control": "A control that limits damage and restores normal operation after an event.",
+    "Design effectiveness": "Whether a control, as built, could meet its objective.",
+    "Operating effectiveness": "Whether a control actually worked consistently over a period.",
+    "Reperformance": "A test in which the tester independently performs a control again and compares the results.",
+    "Risk action plan": "The actions, owners, resources and dates for carrying out a chosen risk response.",
+    "Risk aggregation": "Integrating risk assessments across units into one enterprise view, after normalizing them to common criteria.",
+    "Key risk indicator (KRI)": "A metric tied to a risk scenario that warns of changing exposure against thresholds.",
+    "Key control indicator (KCI)": "A metric showing whether a control is weakening or failing.",
+    "Key performance indicator (KPI)": "A metric of progress toward a process or project goal.",
+    "Leading indicator": "A predictive metric that changes before a risk event, giving time to act.",
+    "Continuous monitoring": "Ongoing awareness of security, vulnerabilities and threats, at a frequency set by risk, to support risk decisions.",
+    "Control self-assessment (CSA)": "Managers and staff evaluating their own risks and controls, usually facilitated by the risk function.",
+    "Heat map": "A grid that ranks risks by likelihood and impact bands; ISACA's glossary calls it a risk map.",
+    "Emerging risk": "A new or changing risk whose likelihood and impact are not yet well understood.",
+    "Model drift": "A decline in an AI model's accuracy as live data moves away from its training data."
+  },
+  "references": [
+    {
+      "title": "ISACA® CRISC® Exam Content Outline (effective 2025)",
+      "url": "https://www.isaca.org/credentialing/crisc/crisc-exam-content-outline",
+      "checked": "2026-10-30: via docs/content/CRISC_BLUEPRINT.md"
+    },
+    {
+      "title": "ISACA Interactive Glossary (risk owner, risk response, risk transfer, risk acceptance, risk aggregation, residual risk, KRI, KCI, risk map, control types)",
+      "url": "https://www.isaca.org/resources/glossary",
+      "checked": "2026-10-30: entries read this session"
+    },
+    {
+      "title": "ISACA Risk IT Framework, 2nd Edition",
+      "url": "https://www.isaca.org/resources/it-risk",
+      "checked": "2026-10-30: title confirmed on isaca.org; full text is a paid publication and was not opened"
+    },
+    {
+      "title": "ISACA COBIT 2019 Framework: Governance and Management Objectives",
+      "url": "https://www.isaca.org/resources/cobit",
+      "checked": "2026-10-30: title confirmed on isaca.org; objective names and capability levels are named as context only"
+    },
+    {
+      "title": "NIST SP 800-39, Managing Information Security Risk: Organization, Mission, and Information System View (Mar 2011)",
+      "url": "https://csrc.nist.gov/pubs/sp/800/39/final",
+      "checked": "2026-10-30: Section 3.3 read in the PDF"
+    },
+    {
+      "title": "NIST IR 8286B-upd1, Prioritizing Cybersecurity Risk for Enterprise Risk Management (Feb 2025)",
+      "url": "https://csrc.nist.gov/pubs/ir/8286/b/upd1/final",
+      "checked": "2026-10-30: Sections 2.3 and 2.4 read in the PDF"
+    },
+    {
+      "title": "NIST IR 8286C-upd1, Staging Cybersecurity Risks for Enterprise Risk Management and Governance Oversight (Sep 2022, updated Mar 2024)",
+      "url": "https://csrc.nist.gov/pubs/ir/8286/c/upd1/final",
+      "checked": "2026-10-30: Section 2 read in the PDF"
+    },
+    {
+      "title": "NIST SP 800-53 Rev. 5, Security and Privacy Controls for Information Systems and Organizations",
+      "url": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final",
+      "checked": "2026-10-30: CA-2, CA-2(1), CA-5, CA-7, CA-7(4), RA-7 and SR-6 read in the PDF"
+    },
+    {
+      "title": "NIST SP 800-53A Rev. 5, Assessing Security and Privacy Controls in Information Systems and Organizations (Jan 2022)",
+      "url": "https://csrc.nist.gov/pubs/sp/800/53/a/r5/final",
+      "checked": "2026-10-30: Section 2.4.2 read in the PDF"
+    },
+    {
+      "title": "NIST SP 800-53B, Control Baselines for Information Systems and Organizations (Sep 2020)",
+      "url": "https://csrc.nist.gov/pubs/sp/800/53/b/upd1/final",
+      "checked": "2026-10-30: title and date confirmed on csrc.nist.gov"
+    },
+    {
+      "title": "NIST SP 800-137, Information Security Continuous Monitoring (ISCM) for Federal Information Systems and Organizations (Sep 2011)",
+      "url": "https://csrc.nist.gov/pubs/sp/800/137/final",
+      "checked": "2026-10-30: Sections 3.4 and 3.5 read in the PDF"
+    },
+    {
+      "title": "NIST SP 800-161 Rev. 1, Cybersecurity Supply Chain Risk Management Practices for Systems and Organizations (May 2022, updated Nov 2024)",
+      "url": "https://csrc.nist.gov/pubs/sp/800/161/r1/upd1/final",
+      "checked": "2026-10-30: Section 3.1 read in the PDF"
+    },
+    {
+      "title": "NIST SP 800-55 Vol. 1, Measurement Guide for Information Security: Identifying and Selecting Measures (Dec 2024)",
+      "url": "https://csrc.nist.gov/pubs/sp/800/55/v1/final",
+      "checked": "2026-10-30: Sections 2.4 and 4.4 read in the PDF"
+    },
+    {
+      "title": "NIST CSWP 29, The NIST Cybersecurity Framework (CSF) 2.0 (Feb 2024)",
+      "url": "https://csrc.nist.gov/pubs/cswp/29/the-nist-cybersecurity-framework-csf-20/final",
+      "checked": "2026-10-30: GV.OV, GV.RM, GV.RR, GV.SC and ID.RA subcategories read in the PDF"
+    },
+    {
+      "title": "NIST AI 100-1, Artificial Intelligence Risk Management Framework (AI RMF 1.0) (Jan 2023)",
+      "url": "https://www.nist.gov/itl/ai-risk-management-framework",
+      "checked": "2026-10-30: GOVERN 1.1, GOVERN 3.2, MEASURE 2.4, MANAGE 1.3 and MANAGE 4.1 read in the PDF from nvlpubs.nist.gov"
+    },
+    {
+      "title": "AICPA SOC 2 reporting; ISO 31000:2018; ISO/IEC 27005:2022; COSO ERM (2017); IIA Three Lines Model (2020)",
+      "checked": "2026-10-30: named as context only; aicpa, iso.org, coso.org and theiia.org could not be opened from this session, so no URL is given"
+    }
+  ]
+}

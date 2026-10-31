@@ -1,0 +1,731 @@
+{
+  "_meta": {
+    "comment": "Original KaiSip CSOE practice questions for Domain 4 (The SEC, enforcement and Dodd-Frank), written from the public law (the Sarbanes-Oxley Act, the Dodd-Frank Act, the U.S. Code, SEC rules and SEC publications) and KaiSip's own notes (data/csoe/notes/d4.json). No SOXCPA presentations, exam material or prep-bank text used. Not affiliated with or endorsed by the Sarbanes Oxley Compliance Professionals Association (SOXCPA). Schema: docs/content/QUESTION_SCHEMA.md; standard: .claude/agents/csoe-standards-auditor.md. Pilot csoe_d4_001 to csoe_d4_020, 31 Oct 2026.",
+    "schema_version": 1
+  },
+  "domain": 4,
+  "domain_name": "The SEC, enforcement and Dodd-Frank",
+  "weight": "27%",
+  "questions": [
+    {
+      "id": "csoe_d4_001",
+      "domain": 4,
+      "subtopic": "4A1 The Securities Act and the Exchange Act. Statute for a share offering",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A company's finance director is preparing its first public sale of shares to investors. Which law MOST directly requires the shares to be registered before they are offered?",
+      "options": {
+        "A": "The Securities Act of 1933, which covers new issues of securities",
+        "B": "The Securities Exchange Act of 1934, which governs trading and reporting",
+        "C": "The Sarbanes-Oxley Act of 2002, which governs public company listings",
+        "D": "The Dodd-Frank Act of 2010, which governs retail offerings"
+      },
+      "correct": "A",
+      "key_concept": "The Securities Act of 1933 governs offerings: a security offered or sold must be registered unless an exemption applies.",
+      "pre_read": "Ask whether the event is a new offering of securities, or trading and reporting after the shares are already public.",
+      "correct_explanation": "The Securities Act of 1933 governs offers and sales of securities. Its Section 5 makes it unlawful to offer or sell a security through the mails or interstate commerce unless a registration statement has been filed or is in effect. The Exchange Act of 1934 governs what follows: trading, exchanges, brokers and the periodic reports of companies already public, so it is not the law that requires registering this offering.",
+      "wrong_explanations": {
+        "B": "Closest choice: the 1934 Act is a core securities law and requires periodic reports from public companies. But registering a new offering of shares comes from the 1933 Act.",
+        "C": "Tempting because SOX is the course's focus. But SOX added governance, audit and penalty rules; it did not create the registration duty for offerings, which predates it.",
+        "D": "Tempting because Dodd-Frank reshaped financial regulation. But it did not replace the 1933 Act's registration requirement for offers and sales of securities."
+      },
+      "tips": [
+        "Eliminate: C and D are later reform laws that added rules on top of the securities laws; neither created the duty to register an offering.",
+        "Final two: A beats B because registering an offering is the 1933 Act's job; the 1934 Act covers trading and reports once securities are public.",
+        "Exam cue: think 1933 for the offering and prospectus, 1934 for the SEC itself, trading, exchanges and periodic reports."
+      ],
+      "framework_ref": "15 U.S.C. 77e (Prohibitions relating to interstate commerce and the mails)",
+      "related_concepts": [
+        "Securities Act of 1933",
+        "Registration statement",
+        "Securities Exchange Act of 1934"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 4A1.1 and 15 U.S.C. 77e and the SEC Statutes and Regulations page, 31 Oct 2026, CSOE pilot. Original scenario written for KaiSip from the public law; no SOXCPA material or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d4_002",
+      "domain": 4,
+      "subtopic": "4A1 The Securities Act and the Exchange Act. Origin of the enforcing agency",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A new compliance team analyst reads that the agency enforcing the Sarbanes-Oxley Act existed decades before it. Which answer BEST names the statute that created the Securities and Exchange Commission?",
+      "options": {
+        "A": "The Securities Act of 1933, which first required registered offerings",
+        "B": "The Sarbanes-Oxley Act of 2002, which set up public company oversight",
+        "C": "The Securities Exchange Act of 1934, whose Section 4 established it",
+        "D": "The Dodd-Frank Act of 2010, which reorganized financial regulators"
+      },
+      "correct": "C",
+      "key_concept": "Section 4 of the Securities Exchange Act of 1934 created the SEC; later laws gave it new duties.",
+      "pre_read": "Recall which of the two founding securities laws also set up the agency that administers them.",
+      "correct_explanation": "Section 4 of the Securities Exchange Act of 1934 (15 U.S.C. 78d) established the Securities and Exchange Commission, with five commissioners appointed by the President with Senate consent. The 1933 Act came a year earlier and governs offerings, so it did not create the agency. SOX and Dodd-Frank later gave the SEC new duties; neither created it.",
+      "wrong_explanations": {
+        "A": "Closest choice: the 1933 Act is the first federal securities law. But it governs offerings; the Commission was established a year later by Section 4 of the 1934 Act.",
+        "B": "Tempting because the SEC enforces SOX. But SOX created the PCAOB, not the SEC; the Commission already existed and gained new duties under SOX.",
+        "D": "Tempting because Dodd-Frank created new bodies such as the FSOC. But the SEC long predates it; Dodd-Frank changed its duties instead."
+      },
+      "tips": [
+        "Eliminate: B and D are later reform laws that gave new duties to an SEC that already existed.",
+        "Final two: C beats A because Section 4 of the 1934 Act established the Commission; the 1933 Act governs offerings and came first.",
+        "Exam cue: 1934 created the SEC and its oversight of trading and reports; 1933 is about the offering itself."
+      ],
+      "framework_ref": "15 U.S.C. 78d(a) (Establishment of the Securities and Exchange Commission)",
+      "related_concepts": [
+        "Securities and Exchange Commission",
+        "Securities Exchange Act of 1934",
+        "Securities Act of 1933"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 4A1.2 and 15 U.S.C. 78d, 31 Oct 2026, CSOE pilot. Original scenario written for KaiSip from the public law; no SOXCPA material or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d4_003",
+      "domain": 4,
+      "subtopic": "4A2 SEC rulemaking. Steps before a new rule",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A statute that sets no rulemaking procedure directs the SEC to adopt a substantive disclosure rule, and its rulemaking team finds no good cause to skip any step. What must the SEC do FIRST?",
+      "options": {
+        "A": "Adopt the final rule at once, because the statute already requires it",
+        "B": "Publish the proposal in the Federal Register and invite comments",
+        "C": "Send the draft rule to the PCAOB for its approval vote",
+        "D": "Seek public comments after the final rule takes effect"
+      },
+      "correct": "B",
+      "key_concept": "A substantive SEC rule starts with a published notice of proposed rulemaking and a chance for public comment.",
+      "pre_read": "Picture the order of steps in federal rulemaking, and ask whether a statute telling the agency to act changes that order.",
+      "correct_explanation": "Under 5 U.S.C. 553, an agency adopting a substantive rule first publishes a general notice of proposed rulemaking in the Federal Register, then gives interested persons a chance to comment, then adopts the rule with a statement of basis and purpose. A statutory directive tells the SEC to act; it does not by itself remove the notice-and-comment steps.",
+      "wrong_explanations": {
+        "A": "Closest choice: the statute does require a rule. But Section 553 still calls for notice and comment unless the agency finds and states good cause, which the team did not.",
+        "C": "Tempting because the PCAOB writes audit rules. But approval runs the other way: the SEC approves PCAOB rules; the PCAOB has no vote on SEC rules.",
+        "D": "Tempting because comments are part of the process. But Section 553 puts notice and comment before adoption, so the public can shape the final rule."
+      },
+      "tips": [
+        "Eliminate: C reverses the SEC and PCAOB roles, and D puts comment after adoption, when Section 553 places it before.",
+        "Final two: B beats A because a statutory directive says what to adopt, not how; without stated good cause, notice and comment still come first.",
+        "Exam cue: proposal, comment, final rule, effective date. Look for the option that keeps that order."
+      ],
+      "framework_ref": "5 U.S.C. 553 (Rule making)",
+      "related_concepts": [
+        "Notice-and-comment rulemaking",
+        "Federal Register",
+        "SEC oversight of the PCAOB"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 4A2.1 and 5 U.S.C. 553, 31 Oct 2026, CSOE pilot. Original scenario written for KaiSip from the public law; no SOXCPA material or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d4_004",
+      "domain": 4,
+      "subtopic": "4A3 SEC investigations, disclosure and settlements. Staff notice to a person",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A company's CFO receives a Wells notice from the SEC's Division of Enforcement. Which statement BEST describes what the notice means?",
+      "options": {
+        "A": "The Commission has found that the CFO violated the securities laws",
+        "B": "The staff has opened an inquiry and wants documents",
+        "C": "The Department of Justice has filed criminal charges against the CFO",
+        "D": "The staff plans to recommend charges, and the CFO may respond"
+      },
+      "correct": "D",
+      "key_concept": "A Wells notice reports the staff's preliminary decision to recommend charges and invites a response before the Commission decides.",
+      "pre_read": "Place the notice on the timeline of an SEC matter, and ask who has decided what at that point.",
+      "correct_explanation": "Under the SEC's Wells process (Rule 5(c) of its informal procedures and Enforcement Manual Section 2.3), a Wells notice tells a person that the staff has made a preliminary determination to recommend an enforcement action, names the proposed violations, and invites a written or video submission. It is not a finding: only the Commission decides whether to bring an action.",
+      "wrong_explanations": {
+        "A": "Tempting because the staff has reached preliminary conclusions. But no finding exists yet; the Commission has not decided, and the recipient's submission goes to it first.",
+        "B": "Closest choice: inquiries come from the same staff. But a Wells notice comes near the end of an investigation, after the staff has evaluated the evidence and proposed charges.",
+        "C": "Tempting because charges sound serious. But the SEC brings civil cases only; criminal charges come from the Department of Justice, not a Wells notice."
+      },
+      "tips": [
+        "Eliminate: A treats the notice as a finding, which only the Commission can make, and C mixes in criminal charges, which the SEC cannot bring.",
+        "Final two: D beats B because a Wells notice comes near the end of an investigation and reports a plan to recommend charges; an early inquiry only gathers facts.",
+        "Exam cue: Wells means warning plus a chance to answer, not a verdict."
+      ],
+      "framework_ref": "17 CFR 202.5(c) (Wells submissions); SEC Enforcement Manual Section 2.3 (The Wells process)",
+      "related_concepts": [
+        "Wells notice",
+        "Wells submission",
+        "Commission authorization"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 4A3.2 and 17 CFR 202.5(c) and SEC Enforcement Manual Section 2.3, 31 Oct 2026, CSOE pilot. Original scenario written for KaiSip from the public law; no SOXCPA material or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d4_005",
+      "domain": 4,
+      "subtopic": "4A3 SEC investigations, disclosure and settlements. Compelling testimony",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "SEC enforcement staff want to compel a former finance director to testify under oath, but so far they can only make voluntary requests. Which step MOST directly gives them that power?",
+      "options": {
+        "A": "A formal order of investigation issued by the Commission",
+        "B": "A Wells notice sent to the former finance director",
+        "C": "A grand jury subpoena requested by the SEC's own prosecutors",
+        "D": "A referral asking the PCAOB to compel the testimony"
+      },
+      "correct": "A",
+      "key_concept": "Subpoena power in an SEC investigation comes from a formal order of investigation issued by the Commission.",
+      "pre_read": "Ask which document gives named SEC staff the power to require testimony, rather than ask for it.",
+      "correct_explanation": "Subpoena power in SEC investigations comes from a formal order of investigation. The Commission issues it, and it designates named staff as officers who may administer oaths, subpoena witnesses, compel attendance and require documents (Enforcement Manual Section 2.2.3). Before that, the staff can only ask for voluntary interviews and documents (Rule 5(a)). A formal order is an early investigative step, not a finding of violation.",
+      "wrong_explanations": {
+        "B": "Closest choice: a Wells notice is a formal SEC step. But it invites the person to submit their position before charges are recommended; it compels no testimony.",
+        "C": "Tempting because grand juries compel testimony. But the SEC brings civil cases only and has no prosecutors; criminal process belongs to the Department of Justice.",
+        "D": "Tempting because the PCAOB can investigate. But it oversees registered audit firms and does not run or empower the SEC's investigations."
+      },
+      "tips": [
+        "Eliminate: C gives the SEC criminal process it does not have, and D hands an SEC investigation to the audit firm regulator.",
+        "Final two: A beats B because only a formal order designates staff as officers who can subpoena and take sworn testimony; a Wells notice compels nothing.",
+        "Exam cue: to compel documents or testimony, look for the formal order. Voluntary requests come before it."
+      ],
+      "framework_ref": "SEC Enforcement Manual Section 2.2.3 (Formal orders of investigation); 17 CFR 202.5(a) (Preliminary and formal investigations)",
+      "related_concepts": [
+        "Formal order of investigation",
+        "Subpoena",
+        "Matter under inquiry"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 4A3.1 and SEC Enforcement Manual Section 2.2.3 and 17 CFR 202.5(a), 31 Oct 2026, CSOE pilot. Original scenario written for KaiSip from the public law; no SOXCPA material or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d4_006",
+      "domain": 4,
+      "subtopic": "4A3 SEC investigations, disclosure and settlements. Scope of a civil resolution",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A CEO's lawyer offers to settle the SEC's civil fraud case and wants the settlement to end any criminal exposure too. Which response is MOST accurate?",
+      "options": {
+        "A": "The Commission may include criminal charges if it approves the deal",
+        "B": "It cannot cover criminal charges, which the Justice Department brings",
+        "C": "Settling with the SEC bars later criminal charges on the same facts",
+        "D": "Settling counts as a guilty plea, so no separate criminal case follows"
+      },
+      "correct": "B",
+      "key_concept": "An SEC settlement resolves only civil or administrative claims; criminal charges belong to the Department of Justice.",
+      "pre_read": "Ask which authority can bring, settle or drop criminal charges, and whether the SEC has that power at all.",
+      "correct_explanation": "SEC Rule 5(f) says a settlement may not, expressly or impliedly, extend to criminal charges, because neither the Commission nor its staff has authority to bring, settle or dispose of criminal proceedings. That authority rests with the Attorney General and the Department of Justice. A person who consents to an SEC judgment or order resolves only the civil or administrative claims.",
+      "wrong_explanations": {
+        "A": "Closest choice: the Commission does approve settlements. But its approval reaches only civil and administrative claims; Rule 5(f) bars any term that covers criminal charges.",
+        "C": "Tempting because one deal seems to end the matter. But Rule 5(f) says consent resolves only the SEC's claims; criminal charges may still be brought.",
+        "D": "Tempting because settling ends the SEC case. But a civil consent is not a criminal plea, and it leaves the Justice Department free to act."
+      },
+      "tips": [
+        "Eliminate: C and D treat an SEC consent as ending criminal exposure, but SEC settlements resolve only civil and administrative claims.",
+        "Final two: B beats A because the Commission has no criminal authority to give away; criminal charges belong to the Justice Department.",
+        "Exam cue: SEC equals civil. Criminal charges, pleas and prison terms point to the Department of Justice."
+      ],
+      "framework_ref": "17 CFR 202.5(f) (Settlements do not extend to criminal charges); SEC Enforcement Manual Section 5.2 (Cooperation with criminal authorities)",
+      "related_concepts": [
+        "Offer of settlement",
+        "Parallel proceedings",
+        "Criminal referral"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 4A3.3 and 17 CFR 202.5(f) and SEC Enforcement Manual Section 5.2, 31 Oct 2026, CSOE pilot. Original scenario written for KaiSip from the public law; no SOXCPA material or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d4_007",
+      "domain": 4,
+      "subtopic": "4B1 Records and securities fraud penalties. Which audit records are kept",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "An engagement partner plans to keep only an issuer audit's final workpapers and delete emails disputing the team's conclusion on a significant revenue judgment. Under Rule 2-06, which records must the firm keep?",
+      "options": {
+        "A": "Only the final workpapers that support the audit report",
+        "B": "The emails, but only if the PCAOB picks the audit for inspection",
+        "C": "The emails too, including those at odds with the conclusions",
+        "D": "The emails, unless the engagement partner approves deleting them"
+      },
+      "correct": "C",
+      "key_concept": "Rule 2-06 makes an issuer's auditor keep its workpapers, memos and correspondence for seven years, including records inconsistent with its final conclusions.",
+      "pre_read": "Think about whether the retention rule keeps only the answer the auditor reached, or the record of how it got there.",
+      "correct_explanation": "Rule 2-06 of Regulation S-X requires the auditor to keep, for seven years after concluding the audit or review, its workpapers and the memos, correspondence, communications and other records that contain conclusions, opinions, analyses or data about it. Those records must be kept whether they support the final conclusions or hold information on a significant matter that is inconsistent with them. Option A keeps the supporting file but deletes the record of the disagreement.",
+      "wrong_explanations": {
+        "A": "Closest choice: the final workpapers must be kept, but Rule 2-06 also covers correspondence and communications on a significant matter that conflict with the final conclusions.",
+        "B": "Tempting because PCAOB inspectors review audit files. But Rule 2-06 sets the retention duty for every issuer audit, whether or not it is inspected.",
+        "D": "Tempting because partners sign off on the audit file. But Rule 2-06 sets the retention duty itself; no partner can approve deleting records it covers."
+      },
+      "tips": [
+        "Eliminate: B ties retention to a PCAOB inspection and D to a partner's approval; Rule 2-06 sets the duty for every issuer audit.",
+        "Final two: C beats A because Rule 2-06 keeps records on a significant matter that are inconsistent with the final conclusions, not just the supporting workpapers.",
+        "Exam cue: Rule 2-06 keeps the disagreement as well as the answer, for seven years; knowingly and willfully breaking it is a crime under 18 U.S.C. 1520(b)."
+      ],
+      "framework_ref": "17 CFR 210.2-06(a) (Retention of audit and review records)",
+      "related_concepts": [
+        "Rule 2-06",
+        "Audit workpapers",
+        "18 U.S.C. 1520"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 4B1.2 and 17 CFR 210.2-06(a) to (c), 31 Oct 2026, CSOE pilot; re-angled after the cross-domain review (duplicated csoe_d2_008). Original scenario written for KaiSip from the public law; no SOXCPA material or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d4_008",
+      "domain": 4,
+      "subtopic": "4B1 Records and securities fraud penalties. Records altered before an inquiry",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Before any inquiry starts, a division finance manager deletes journal entries so that an SEC investigation they expect will not find a loss. Which provision MOST directly reaches this conduct?",
+      "options": {
+        "A": "18 U.S.C. 1520, which punishes auditors' failures to keep audit workpapers",
+        "B": "Section 906, which punishes false certifications of periodic reports",
+        "C": "Section 806, which protects employees who report suspected fraud",
+        "D": "18 U.S.C. 1519, on destroying or falsifying records to obstruct federal matters"
+      },
+      "correct": "D",
+      "key_concept": "18 U.S.C. 1519 reaches anyone who falsifies or destroys records to obstruct a federal matter, even one only expected.",
+      "pre_read": "Ask who did the act, what the person intended, and whether any investigation had to exist yet.",
+      "correct_explanation": "18 U.S.C. 1519, added by Section 802, punishes anyone who knowingly alters, destroys or falsifies a record with intent to impede or influence a matter within a federal agency's jurisdiction, including in contemplation of such a matter, by up to 20 years. No investigation has to be open yet. Section 1520 is narrower: it covers accountants' duty to keep audit and review workpapers.",
+      "wrong_explanations": {
+        "A": "Closest choice: 1520 also came from Section 802 and deals with records. But it covers accountants who audit issuers and their workpapers, not a manager's journal entries.",
+        "B": "Tempting because false numbers end up in reports. But Section 906 punishes officers who certify a noncompliant report, and no certification is described here.",
+        "C": "Tempting because it is a fraud-era section. But Section 806 protects employees who report fraud from retaliation; it does not punish destroying records."
+      },
+      "tips": [
+        "Eliminate: B needs a false certification, which the facts lack, and C protects whistleblowers rather than punishing record destruction.",
+        "Final two: D beats A because 1519 reaches anyone who falsifies records, even before an inquiry exists; 1520 is limited to auditors' workpapers.",
+        "Exam cue: anyone, plus intent to obstruct a federal matter, even one only expected, points to 1519."
+      ],
+      "framework_ref": "18 U.S.C. 1519 (Destruction, alteration, or falsification of records in Federal investigations and bankruptcy); 18 U.S.C. 1520(a)(1) (Auditors keep audit or review workpapers)",
+      "related_concepts": [
+        "Obstruction of justice",
+        "Section 802",
+        "Audit workpaper retention"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 4B1.1 and 18 U.S.C. 1519 and 1520, 31 Oct 2026, CSOE pilot. Original scenario written for KaiSip from the public law; no SOXCPA material or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d4_009",
+      "domain": 4,
+      "subtopic": "4B1 Records and securities fraud penalties. Fraud debts in bankruptcy",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A former CEO owes money under a settlement agreement resolving a securities fraud claim, then files a Chapter 7 personal bankruptcy. Under Section 803 of the Act, what happens to that debt?",
+      "options": {
+        "A": "It is discharged, like most of the CEO's other unsecured debts",
+        "B": "It survives the bankruptcy and cannot be discharged",
+        "C": "It is discharged unless the CEO admitted wrongdoing in the settlement",
+        "D": "It transfers to the company, which must pay it as indemnity"
+      },
+      "correct": "B",
+      "key_concept": "Debts from securities fraud, including those set by a settlement the debtor signed, survive bankruptcy.",
+      "pre_read": "Ask whether the bankruptcy exception depends on how the debt arose: a judgment, an order or an agreement.",
+      "correct_explanation": "Section 803 added 11 U.S.C. 523(a)(19): a debt for violating federal or state securities laws, or for securities fraud, is not dischargeable when it results from a judgment, an order, an administrative order, or a settlement agreement the debtor entered into. The law does not ask whether the debtor admitted wrongdoing, so a settlement debt survives bankruptcy.",
+      "wrong_explanations": {
+        "A": "Tempting because bankruptcy usually wipes out unsecured debts. But Section 803 makes securities fraud debts an exception that survives discharge.",
+        "C": "Closest choice: admissions matter in many settlements. But the bankruptcy exception covers any settlement agreement the debtor signed, with or without an admission.",
+        "D": "Tempting because companies sometimes indemnify officers. But nothing in Section 803 moves the debt; it stays with the debtor and survives bankruptcy."
+      },
+      "tips": [
+        "Eliminate: A treats the debt like ordinary unsecured debt, and D moves it to the company, while Section 803 keeps it with the debtor.",
+        "Final two: B beats C because the exception covers settlement agreements as well as judgments, whether or not the debtor admitted anything.",
+        "Exam cue: securities fraud debts follow the person through bankruptcy, whether they come from a judgment, an order or a settlement."
+      ],
+      "framework_ref": "Sarbanes-Oxley Act of 2002 Section 803 (Debts nondischargeable if incurred in violation of securities fraud laws); 11 U.S.C. 523(a)(19) (Securities fraud debts excepted from discharge)",
+      "related_concepts": [
+        "Nondischargeable debt",
+        "Section 803",
+        "Settlement agreement"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 4B1.3 and Sarbanes-Oxley Act Section 803 and 11 U.S.C. 523(a)(19), 31 Oct 2026, CSOE pilot. Original scenario written for KaiSip from the public law; no SOXCPA material or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d4_010",
+      "domain": 4,
+      "subtopic": "4B2 Whistleblower protection. Time to file a retaliation complaint",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A listed company fires an accounting manager days after they report suspected shareholder fraud to their supervisor. Under Section 806 as amended, by when and with whom must they file a complaint?",
+      "options": {
+        "A": "Within 180 days, with the Secretary of Labor",
+        "B": "Within 90 days, with the Secretary of Labor",
+        "C": "Within 30 days, with the SEC's whistleblower office",
+        "D": "Within two years, in a state court of their choice"
+      },
+      "correct": "A",
+      "key_concept": "A Section 806 retaliation complaint goes to the Secretary of Labor within 180 days of the violation or of learning of it.",
+      "pre_read": "Two parts decide this: where the complaint goes first, and which version of the deadline is current.",
+      "correct_explanation": "Section 806 created 18 U.S.C. 1514A, which protects employees of public companies who report suspected fraud to a supervisor, a federal agency or Congress. The employee files with the Secretary of Labor. Since Dodd-Frank, the complaint must be filed within 180 days after the violation occurs or after the employee becomes aware of it. The original 2002 text allowed only 90 days.",
+      "wrong_explanations": {
+        "B": "Closest choice: 90 days was the 2002 deadline. Dodd-Frank Section 922 extended it to 180 days and let the clock start when the employee learns of the violation.",
+        "C": "Tempting because the SEC runs a whistleblower program. But Section 806 complaints go to the Secretary of Labor, and no 30-day SEC deadline applies.",
+        "D": "Tempting because some claims allow years. But Section 806 starts with a complaint to the Secretary of Labor within 180 days, not a state court suit."
+      },
+      "tips": [
+        "Eliminate: C sends the complaint to the SEC and D to a state court, while Section 806 complaints go to the Secretary of Labor.",
+        "Final two: A beats B because Dodd-Frank raised the deadline from 90 to 180 days; 90 days is the superseded 2002 rule.",
+        "Exam cue: Section 806 means Labor and 180 days. A 90-day answer is the pre-2010 version."
+      ],
+      "framework_ref": "18 U.S.C. 1514A(b)(2)(D) (Statute of limitations for retaliation complaints); Dodd-Frank Act Section 922(c) (Amendments to the Sarbanes-Oxley whistleblower provision)",
+      "related_concepts": [
+        "Section 806",
+        "Secretary of Labor",
+        "Dodd-Frank amendments"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 4B2.1 and 18 U.S.C. 1514A and Dodd-Frank Act Section 922(c), 31 Oct 2026, CSOE pilot. Original scenario written for KaiSip from the public law; no SOXCPA material or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d4_011",
+      "domain": 4,
+      "subtopic": "4B2 Whistleblower protection. Who pays a tipster",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A finance team member's original tip to the SEC leads to an action with more than $1 million in sanctions. Under the Dodd-Frank program, who pays the award under Section 21F of the Exchange Act?",
+      "options": {
+        "A": "The company that committed the violation, as part of its penalty",
+        "B": "The Department of Labor, after the tipster files a complaint",
+        "C": "The PCAOB, from the accounting support fees it collects",
+        "D": "The SEC Investor Protection Fund, kept in the Treasury"
+      },
+      "correct": "D",
+      "key_concept": "Dodd-Frank whistleblower awards are paid by the SEC from its Investor Protection Fund.",
+      "pre_read": "Separate who pays sanctions to the government from who pays the whistleblower.",
+      "correct_explanation": "Section 21F of the Exchange Act, added by Dodd-Frank Section 922, directs the SEC to pay awards of 10 to 30 percent of the monetary sanctions collected in covered actions over $1 million, to whistleblowers who voluntarily gave original information. The statute says awards are paid from the SEC Investor Protection Fund, held in the Treasury. The wrongdoer pays sanctions to the government; it does not pay the whistleblower.",
+      "wrong_explanations": {
+        "A": "Closest choice: the sanctions come from the wrongdoer. But the statute pays the whistleblower from the SEC Investor Protection Fund, not from the company directly.",
+        "B": "Tempting because Labor handles Section 806 retaliation complaints. But the award program is the SEC's, under Section 21F of the Exchange Act.",
+        "C": "Tempting because the PCAOB is funded by fees. But the PCAOB has no role in paying SEC whistleblower awards."
+      },
+      "tips": [
+        "Eliminate: B mixes in the Labor complaint route for retaliation, and C names the audit firm regulator, which has no award role.",
+        "Final two: D beats A because the statute pays awards from the SEC Investor Protection Fund; the company pays sanctions, not the tipster.",
+        "Exam cue: Dodd-Frank awards mean the SEC, original information, over $1 million, 10 to 30 percent, paid from the Fund."
+      ],
+      "framework_ref": "15 U.S.C. 78u-6(b) (Whistleblower awards: amount and payment from the Fund)",
+      "related_concepts": [
+        "SEC whistleblower award",
+        "Investor Protection Fund",
+        "Original information"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 4B2.2 and 15 U.S.C. 78u-6(b), 31 Oct 2026, CSOE pilot. Original scenario written for KaiSip from the public law; no SOXCPA material or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d4_012",
+      "domain": 4,
+      "subtopic": "4B2 Whistleblower protection. Award eligibility for an audit tip",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An audit senior learns of an issuer's fraud while auditing its financial statements, then tips the SEC in a way contrary to Section 10A's requirements. Which award outcome follows under the statute?",
+      "options": {
+        "A": "Eligible, if the sanctions exceed $1 million and the tip is original",
+        "B": "Eligible, provided the fraud was first reported inside the issuer",
+        "C": "Not eligible, since the statute excludes such audit-derived tips",
+        "D": "Eligible, with the award paid by the audit firm's insurer"
+      },
+      "correct": "C",
+      "key_concept": "No Dodd-Frank award goes to someone whose tip comes from a required audit and is submitted contrary to Section 10A.",
+      "pre_read": "Before testing the usual award conditions, ask whether the statute excludes this kind of tipster.",
+      "correct_explanation": "Section 21F(c)(2)(C) of the Exchange Act denies an award to a whistleblower who gains the information by performing an audit of financial statements required under the securities laws, when the submission would be contrary to Section 10A's requirements. Meeting the $1 million and original-information tests does not override that exclusion. The facts say the tip conflicts with Section 10A, so no award follows.",
+      "wrong_explanations": {
+        "A": "Closest choice: those are the usual award conditions. But the statute adds exclusions, and an auditor's tip made contrary to Section 10A is one of them.",
+        "B": "Tempting because companies encourage internal reports. But the statute does not list internal reporting as a condition, and it would not cure this exclusion.",
+        "D": "Tempting because firms carry insurance. But awards come from the SEC's Investor Protection Fund, and here the exclusion means no award is paid."
+      },
+      "tips": [
+        "Eliminate: B adds an internal-reporting condition the statute lacks, and D names a payer other than the SEC's fund.",
+        "Final two: C beats A because the audit exclusion applies even when the sanction and original-information tests are met.",
+        "Exam cue: check who the tipster is before the dollar test. Regulators' staff, convicted participants and auditors acting contrary to Section 10A are excluded."
+      ],
+      "framework_ref": "15 U.S.C. 78u-6(c)(2)(C) (Denial of award for information gained through a required audit)",
+      "related_concepts": [
+        "Award exclusions",
+        "Section 10A",
+        "Original information"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 4B2.2 and 15 U.S.C. 78u-6(c)(2), 31 Oct 2026, CSOE pilot. Original scenario written for KaiSip from the public law; no SOXCPA material or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d4_013",
+      "domain": 4,
+      "subtopic": "4B3 White-collar penalty enhancements. Mail fraud maximum",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A compliance training lead is summarizing Title IX of the Act. For mail fraud that involves no financial institution or declared disaster, what is the GREATEST prison term today?",
+      "options": {
+        "A": "Up to five years in prison",
+        "B": "Up to 20 years in prison",
+        "C": "Up to 25 years in prison",
+        "D": "Up to 10 years in prison"
+      },
+      "correct": "B",
+      "key_concept": "Section 903 raised the maximum prison term for mail and wire fraud from five to 20 years.",
+      "pre_read": "Several SOX-era maximums sound alike. Match the number to the offense, not to the Act in general.",
+      "correct_explanation": "Section 903 amended the mail fraud and wire fraud statutes, 18 U.S.C. 1341 and 1343, by striking five years and inserting 20 as the maximum prison term. That is still the maximum for basic mail fraud; a higher tier applies only when a financial institution or a declared disaster is involved. Twenty-five years is the maximum for securities fraud under 18 U.S.C. 1348.",
+      "wrong_explanations": {
+        "A": "Tempting because five years was the old maximum. But Section 903 raised it to 20 years in 2002.",
+        "C": "Closest choice: 25 years is a SOX-era maximum. But it belongs to securities fraud under 18 U.S.C. 1348, not basic mail fraud.",
+        "D": "Tempting because 10 years appears often in SOX, such as the knowing tier of Section 906. But mail fraud's maximum is 20 years."
+      },
+      "tips": [
+        "Eliminate: A is the pre-2002 maximum, and D borrows a 10-year figure from other SOX penalties.",
+        "Final two: B beats C because Section 903 set mail and wire fraud at 20 years; 25 years belongs to the separate securities fraud offense.",
+        "Exam cue: Title IX raised mail and wire fraud from 5 to 20 years. Securities fraud under Section 807 is 25."
+      ],
+      "framework_ref": "Sarbanes-Oxley Act of 2002 Section 903 (Criminal penalties for mail and wire fraud); 18 U.S.C. 1341 (Frauds and swindles)",
+      "related_concepts": [
+        "Mail fraud",
+        "Wire fraud",
+        "Title IX penalties"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 4B3.2 and Sarbanes-Oxley Act Section 903 and 18 U.S.C. 1341, 31 Oct 2026, CSOE pilot. Original scenario written for KaiSip from the public law; no SOXCPA material or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d4_014",
+      "domain": 4,
+      "subtopic": "4B3 White-collar penalty enhancements. Penalty for an unfinished scheme",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Two finance managers agree on a scheme to defraud investors in their listed company's shares, but are caught before any trade. Under Section 902 of the Act, what statutory maximum do they face?",
+      "options": {
+        "A": "The same maximum as the completed securities fraud offense",
+        "B": "Half the completed offense's maximum, since the fraud failed",
+        "C": "No criminal exposure, because no investor was harmed",
+        "D": "Civil penalties, sought by the SEC rather than prosecutors"
+      },
+      "correct": "A",
+      "key_concept": "Attempting or conspiring to commit a federal fraud offense carries the same penalties as the completed offense.",
+      "pre_read": "Ask whether the law treats an interrupted plan differently from a finished crime when it sets the maximum.",
+      "correct_explanation": "Section 902 added 18 U.S.C. 1349: anyone who attempts or conspires to commit a fraud offense in chapter 63, which includes securities fraud under section 1348, faces the same penalties as the offense itself. A scheme caught before any trade is still punishable, and the statutory maximum is not reduced because the plan failed.",
+      "wrong_explanations": {
+        "B": "Closest choice: an unfinished scheme can seem less serious. But Section 1349 sets the same statutory penalties as the completed offense, with no built-in reduction.",
+        "C": "Tempting because no one lost money. But attempts and conspiracies are crimes in their own right under Section 1349.",
+        "D": "Tempting because the SEC handles securities cases. But conspiracy to commit securities fraud is a crime, prosecuted by the Department of Justice."
+      },
+      "tips": [
+        "Eliminate: C and D treat an unfinished scheme as outside criminal law, but attempts and conspiracies to commit fraud are themselves crimes.",
+        "Final two: A beats B because Section 902 gives attempts and conspiracies the same penalties as the completed fraud offense.",
+        "Exam cue: attempt or conspiracy under Title IX? Same penalty as the finished offense."
+      ],
+      "framework_ref": "Sarbanes-Oxley Act of 2002 Section 902 (Attempts and conspiracies to commit criminal fraud offenses); 18 U.S.C. 1349 (Attempt and conspiracy)",
+      "related_concepts": [
+        "Conspiracy",
+        "Attempt",
+        "Securities fraud"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 4B3.1 and Sarbanes-Oxley Act Section 902 and 18 U.S.C. 1349, 31 Oct 2026, CSOE pilot. Original scenario written for KaiSip from the public law; no SOXCPA material or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d4_015",
+      "domain": 4,
+      "subtopic": "4C1 Dodd-Frank's aims and new bodies. Systemic risk body",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A bank's risk committee asks which Dodd-Frank body is charged with spotting system-wide threats and responding to emerging risks. Which answer is MOST accurate?",
+      "options": {
+        "A": "The Federal Insurance Office within the Treasury",
+        "B": "The Public Company Accounting Oversight Board",
+        "C": "The Financial Stability Oversight Council",
+        "D": "The SEC's Division of Enforcement"
+      },
+      "correct": "C",
+      "key_concept": "Dodd-Frank Title I created the Financial Stability Oversight Council to identify and respond to risks to U.S. financial stability.",
+      "pre_read": "Two Dodd-Frank bodies sit near the Treasury. Ask which one has a system-wide mission rather than one industry.",
+      "correct_explanation": "Title I of Dodd-Frank established the Financial Stability Oversight Council. Section 112 sets its purposes: identify risks to U.S. financial stability from large, interconnected firms, promote market discipline by ending expectations of government rescue, and respond to emerging threats. The Treasury Secretary chairs it. The Federal Insurance Office monitors insurance and advises the Council as a nonvoting member.",
+      "wrong_explanations": {
+        "A": "Closest choice: the Federal Insurance Office is also a Dodd-Frank body in the Treasury. But it monitors insurance and sits on the Council only as a nonvoting adviser.",
+        "B": "Tempting because it is a post-crisis regulator. But the PCAOB was created by SOX in 2002 to oversee audit firms, not financial stability.",
+        "D": "Tempting because enforcement deters risk. But the Division brings civil securities cases; it is not the body Dodd-Frank created to monitor financial stability."
+      },
+      "tips": [
+        "Eliminate: B was created by SOX for audit firms, and D is an SEC enforcement unit, not a body for financial stability.",
+        "Final two: C beats A because Section 112 gives the Council the financial stability mission; the Insurance Office monitors insurance and only advises the Council.",
+        "Exam cue: systemic risk and financial stability point to the FSOC, chaired by the Treasury Secretary."
+      ],
+      "framework_ref": "Dodd-Frank Act Section 112(a) (Purposes and duties of the Financial Stability Oversight Council); Dodd-Frank Act Section 502 (Federal Insurance Office)",
+      "related_concepts": [
+        "Financial Stability Oversight Council",
+        "Federal Insurance Office",
+        "Systemic risk"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 4C1.1 and Dodd-Frank Act Sections 111 and 112, 31 Oct 2026, CSOE pilot. Original scenario written for KaiSip from the public law; no SOXCPA material or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d4_016",
+      "domain": 4,
+      "subtopic": "4C1 Dodd-Frank's aims and new bodies. Losses in a liquidation",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "The board of a failing nonbank financial company learns it will be placed into orderly liquidation under Dodd-Frank Title II. Who does the title say should MOST directly bear its losses?",
+      "options": {
+        "A": "Taxpayers first, later repaid through assessments on the financial sector",
+        "B": "Current management, which stays in place to run the wind-down",
+        "C": "The Treasury, which funds a rescue so the company keeps operating",
+        "D": "Its creditors and shareholders, with taxpayers bearing no losses"
+      },
+      "correct": "D",
+      "key_concept": "Under orderly liquidation, creditors and shareholders bear the losses and taxpayers bear none.",
+      "pre_read": "Recall what the title promises about bailouts, then ask who is left holding the losses.",
+      "correct_explanation": "Section 204(a) says the orderly liquidation authority exists to liquidate failing financial companies that threaten U.S. financial stability while minimizing moral hazard, so that creditors and shareholders bear the losses and responsible management is not retained. Section 214 adds that every company put into receivership must be liquidated, taxpayers bear no losses, and costs are recovered from the company's assets or industry assessments.",
+      "wrong_explanations": {
+        "A": "Closest choice: Section 214 does recover costs through financial-sector assessments. But Title II puts the losses on creditors and shareholders, and Section 214 says taxpayers bear no losses.",
+        "B": "Tempting because managers know the business. But Section 204(a) says management responsible for the company's condition will not be retained.",
+        "C": "Tempting because governments have rescued large firms before. But Section 214 requires liquidation and bars taxpayer funds that would prevent it."
+      },
+      "tips": [
+        "Eliminate: B keeps the managers Title II removes, and C describes a rescue, which Section 214 bars.",
+        "Final two: D beats A because Title II puts losses on creditors and shareholders; industry assessments recover costs, but taxpayers bear no losses.",
+        "Exam cue: orderly liquidation means liquidate, not rescue. Shareholders and creditors lose; taxpayers do not pay."
+      ],
+      "framework_ref": "Dodd-Frank Act Section 204(a) (Purpose of orderly liquidation authority); Dodd-Frank Act Section 214 (Prohibition on taxpayer funding)",
+      "related_concepts": [
+        "Orderly liquidation authority",
+        "FDIC as receiver",
+        "Moral hazard"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 4C1.2 and Dodd-Frank Act Sections 204 and 214, 31 Oct 2026, CSOE pilot. Original scenario written for KaiSip from the public law; no SOXCPA material or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d4_017",
+      "domain": 4,
+      "subtopic": "4C2 Dodd-Frank, the PCAOB and Basel. Auditors of brokers and dealers",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An accounting firm audits only a registered broker-dealer and no issuers. After Dodd-Frank, which statement about the PCAOB's oversight of the firm is MOST accurate?",
+      "options": {
+        "A": "PCAOB oversight stays limited to firms that audit issuers, as in 2002",
+        "B": "PCAOB oversight extends to the firm, under SEC-approved inspection rules",
+        "C": "Dodd-Frank moved PCAOB inspections to the SEC's own staff",
+        "D": "The broker-dealer itself becomes subject to PCAOB inspection"
+      },
+      "correct": "B",
+      "key_concept": "Dodd-Frank Section 982 extended PCAOB oversight to the auditors of brokers and dealers.",
+      "pre_read": "Ask whose auditors the PCAOB covered in 2002, and what Dodd-Frank added to that list.",
+      "correct_explanation": "Dodd-Frank Section 982 amended Title I of SOX to replace issuers with issuers, brokers and dealers throughout the PCAOB's mandate. Firms that audit brokers or dealers must register with the Board unless it exempts them, and the Board may inspect them under rules that need prior SEC approval. The PCAOB still oversees the audit firm, not the broker-dealer itself.",
+      "wrong_explanations": {
+        "A": "Closest choice: that was the 2002 scope. Section 982 extended PCAOB registration, standards and inspections to the auditors of brokers and dealers.",
+        "C": "Tempting because the SEC oversees the PCAOB. But Dodd-Frank kept the PCAOB and widened its reach; the SEC approves its rules rather than taking over inspections.",
+        "D": "Tempting because the broker-dealer is now in scope. But the PCAOB oversees audit firms; it inspects the broker-dealer's auditor, not the broker-dealer."
+      },
+      "tips": [
+        "Eliminate: C has Dodd-Frank removing PCAOB inspections, which it widened, and D puts the broker-dealer under the PCAOB instead of its auditor.",
+        "Final two: B beats A because Section 982 extended PCAOB oversight from auditors of issuers to auditors of brokers and dealers.",
+        "Exam cue: the PCAOB always oversees auditors. Dodd-Frank added auditors of brokers and dealers to the issuer auditors it already covered."
+      ],
+      "framework_ref": "Dodd-Frank Act Section 982 (Oversight of brokers and dealers)",
+      "related_concepts": [
+        "PCAOB oversight",
+        "Broker-dealer audits",
+        "SEC approval of PCAOB rules"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 4C2.1 and Dodd-Frank Act Section 982, 31 Oct 2026, CSOE pilot. Original scenario written for KaiSip from the public law; no SOXCPA material or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d4_018",
+      "domain": 4,
+      "subtopic": "4C3 The Sarbanes-Oxley amendments. Change to Section 404",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A board member asks what Dodd-Frank Section 989G(a) changed in Section 404 of the Sarbanes-Oxley Act. What did that amendment change?",
+      "options": {
+        "A": "It exempted non-accelerated filers from the auditor's ICFR attestation",
+        "B": "It exempted non-accelerated filers from management's ICFR assessment",
+        "C": "It exempted every issuer under $250 million in market value",
+        "D": "It required auditors to attest to quarterly ICFR changes"
+      },
+      "correct": "A",
+      "key_concept": "Section 404(c), added by Dodd-Frank Section 989G(a), removes only the auditor's 404(b) attestation for non-accelerated filers.",
+      "pre_read": "Section 404 has two duties with two different actors. Ask which one the amendment removed, and for whom.",
+      "correct_explanation": "Section 989G(a) added Section 404(c): Section 404(b), the auditor's attestation on internal control over financial reporting (ICFR), does not apply to an issuer that is neither a large accelerated filer nor an accelerated filer under Rule 12b-2. Management's assessment under Section 404(a) still applies. Section 989G(b) only ordered an SEC study for issuers between $75 million and $250 million in market capitalization.",
+      "wrong_explanations": {
+        "B": "Closest choice: the exemption is real but narrower. It removes only the auditor's attestation under 404(b); management must still assess ICFR under 404(a).",
+        "C": "Tempting because $250 million appears in Section 989G. But that figure comes from 989G(b), which ordered a study, not an exemption.",
+        "D": "Tempting because quarterly ICFR changes are disclosed. But Section 989G(a) removed an attestation duty for smaller filers; it added no quarterly attestation."
+      },
+      "tips": [
+        "Eliminate: C turns the study in Section 989G(b) into an exemption, and D adds an attestation duty the section never created.",
+        "Final two: A beats B because Section 404(c) removes only the auditor's attestation; management's assessment under 404(a) still applies to non-accelerated filers.",
+        "Exam cue: smaller-filer exemptions touch 404(b), the auditor. 404(a), management's assessment, stays."
+      ],
+      "framework_ref": "Dodd-Frank Act Section 989G(a) (Exemption for smaller issuers); Dodd-Frank Act Section 989G(b) (Study for issuers between $75 million and $250 million)",
+      "related_concepts": [
+        "Section 404(c)",
+        "Non-accelerated filer",
+        "Auditor attestation"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 4C3.1 and Dodd-Frank Act Section 989G and 15 U.S.C. 7262, 31 Oct 2026, CSOE pilot. Original scenario written for KaiSip from the public law; no SOXCPA material or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d4_019",
+      "domain": 4,
+      "subtopic": "4C3 The Sarbanes-Oxley amendments. Recovery after an honest error",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "After an honest error, a listed issuer must restate last year's revenue, which set bonuses for its CFO and a vice-president heading a principal business unit. What must its Rule 10D-1 recovery policy do?",
+      "options": {
+        "A": "Recover nothing, since recovery needs misconduct by the executives",
+        "B": "Recover the excess from the CFO alone, as a financial officer",
+        "C": "Recover both executives' full bonuses, including the correct portion",
+        "D": "Recover from both executives the bonus amounts above the corrected figures"
+      },
+      "correct": "D",
+      "key_concept": "A Rule 10D-1 policy recovers, without regard to fault, incentive pay above the restated amount from every executive officer.",
+      "pre_read": "Ask three things: does recovery need fault, which executives are covered, and how much comes back.",
+      "correct_explanation": "Rule 10D-1, adopted under Dodd-Frank Section 954, requires a listed issuer's policy to recover incentive pay received by any executive officer in the three completed fiscal years before a required restatement, to the extent it exceeds what the restated numbers would have paid. Recovery applies regardless of fault. A vice-president in charge of a principal business unit is an executive officer under the rule.",
+      "wrong_explanations": {
+        "A": "Tempting because Section 304 applies only when misconduct causes the restatement. But Rule 10D-1 is no-fault: a required restatement from an honest error still triggers recovery.",
+        "B": "Tempting because Section 304 reaches only the CEO and CFO. But Rule 10D-1 covers every executive officer, including a vice-president heading a principal business unit.",
+        "C": "Closest choice: both executives are covered. But only the erroneously awarded part, the amount above what the restated results would have paid, is recovered."
+      },
+      "tips": [
+        "Eliminate: A and B import Section 304's misconduct and CEO-CFO limits, which Rule 10D-1 does not have.",
+        "Final two: D beats C because the rule recovers only the excess over what the restated figures would have paid, not the whole bonus.",
+        "Exam cue: Rule 10D-1 is no-fault, covers all executive officers, looks back three completed years, and recovers only the excess."
+      ],
+      "framework_ref": "17 CFR 240.10D-1(b)(1) (Recovery of erroneously awarded compensation); SEC Release No. 33-11126 (Listing standards for recovery of erroneously awarded compensation); Dodd-Frank Act Section 954 (Recovery of erroneously awarded compensation)",
+      "related_concepts": [
+        "Rule 10D-1",
+        "Section 304",
+        "Erroneously awarded compensation"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 4C3.3 and 17 CFR 240.10D-1 and SEC Release No. 33-11126, 31 Oct 2026, CSOE pilot. Original scenario written for KaiSip from the public law; no SOXCPA material or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d4_020",
+      "domain": 4,
+      "subtopic": "4C3 The Sarbanes-Oxley amendments. Arbitration clauses and retaliation claims",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "At hiring, a public company's finance team analyst signed an agreement to arbitrate all employment disputes; after being fired for reporting fraud, they bring a Section 806 claim. Under that Section, which statement is accurate?",
+      "options": {
+        "A": "The agreement binds them, because they signed it before any dispute",
+        "B": "The claim must go to the SEC, which hears these cases",
+        "C": "The agreement is unenforceable for this retaliation claim",
+        "D": "The agreement binds them unless they opted out within 30 days"
+      },
+      "correct": "C",
+      "key_concept": "Since Dodd-Frank, a predispute arbitration agreement cannot force arbitration of a Section 806 claim.",
+      "pre_read": "Ask what Dodd-Frank changed about waivers and arbitration for SOX whistleblower claims.",
+      "correct_explanation": "Dodd-Frank Section 922(c) added subsection (e) to 18 U.S.C. 1514A: Section 806 rights cannot be waived by any agreement, policy or condition of employment, and no predispute arbitration agreement is valid or enforceable if it requires arbitration of a Section 806 dispute. So the analyst can pursue the claim through the Secretary of Labor and, if needed, federal court.",
+      "wrong_explanations": {
+        "A": "Closest choice: signed agreements usually bind. But signing before any dispute is exactly what makes it a predispute agreement, which Section 806 makes unenforceable.",
+        "B": "Tempting because the SEC enforces the securities laws. But Section 806 claims start with the Secretary of Labor, not the SEC.",
+        "D": "Tempting because many arbitration programs offer an opt-out window. But Section 806 voids any predispute arbitration agreement for these claims, opt-out or not."
+      },
+      "tips": [
+        "Eliminate: B sends the claim to the SEC instead of Labor, and D makes the bar depend on an opt-out the statute never mentions.",
+        "Final two: C beats A because Dodd-Frank made predispute arbitration agreements unenforceable for Section 806 claims, however they were signed.",
+        "Exam cue: Section 806 after Dodd-Frank means 180 days, a jury in court, no waiver and no forced arbitration."
+      ],
+      "framework_ref": "18 U.S.C. 1514A(e) (Nonenforceability of waivers and predispute arbitration agreements); Dodd-Frank Act Section 922(c) (Amendments to the Sarbanes-Oxley whistleblower provision)",
+      "related_concepts": [
+        "Predispute arbitration agreement",
+        "Section 806",
+        "Dodd-Frank amendments"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 4C3.2 and 18 U.S.C. 1514A(e) and Dodd-Frank Act Section 922(c), 31 Oct 2026, CSOE pilot. Original scenario written for KaiSip from the public law; no SOXCPA material or prep-bank text used.",
+      "style_version": 2
+    }
+  ]
+}

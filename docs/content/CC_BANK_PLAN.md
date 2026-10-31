@@ -246,10 +246,25 @@ Learned from two blind tests and two standards audits of the pilot.
 | Round | D1 | D2 | D3 | D4 | D5 | Total |
 |---|---|---|---|---|---|---|
 | Pilot (Oct 2026) | 20 | 20 | 20 | 20 | 20 | 100 |
-| Batch 2 (30 Oct 2026) | +25 | | | +25 | | 150 |
+| Batch 2, D1 and D4 (30 Oct 2026) | +25 | | | +25 | | 150 |
+| Batch 2, D2, D3 and D5 (30 Oct 2026) | | +25 | +25 | | +25 | 225 |
 
-Batch 2 for D1 and D4: blind test 25/25 in each domain; re-tests of every
-changed item all matched the keys. No hard errors remained.
+Batch 2: the first blind test matched the keys 25/25 in every domain, and
+re-tests of every changed item all matched. The audits found 7 hard errors
+across the round (D1 1, D2 3, D3 2, D5 1); all are fixed.
+
+Lessons from the D2/D3/D5 round, for batch 3:
+- Check every new item against the other four domains as well as the notes.
+  The worst finding was two domains teaching the same AI-tool lesson in the
+  same batch (cc_d2_026 and cc_d5_026).
+- Use the cited source's own term (SP 800-84 calls a timed restore a test;
+  SP 800-63B-4 allows synced passkeys, so "the key never leaves the device"
+  is wrong).
+- Name the guide in the stem when an older model would give another answer
+  (SP 800-61r3 shares lessons during an incident).
+- Notes gap: the D5 notes do not yet cover network attack types (DoS, on-path,
+  spoofing), which moved into 5.2 in the 2026 outline. Add a 5.2 sub-topic
+  before any batch tests them.
 
 ## 7. Follow-ups outside this plan's scope
 
