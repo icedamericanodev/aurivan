@@ -76,3 +76,24 @@ Rule for the form builder: Draw no two items of a pair into the same form. Keep 
 | csoe_d1_039 | csoe_d3_054 | d3_054 explanation: Section 402 bars loans to directors and executive officers (d1_039's basis) |
 | csoe_d1_039 | csoe_d3_012 | same reason (d3_012 explanation) |
 | csoe_d3_008 | csoe_d3_046 | d3_046's stem states Section 304's 12-month window (part of d3_008's key) |
+| csoe_d2_019 | csoe_d2_060 | d2_060 explanation: a former team member in an oversight role in the look-back bars the firm |
+| csoe_d2_019 | csoe_d2_061 | d2_061 explanation: a former team member in an oversight role leaves the firm not independent |
+| csoe_d2_060 | csoe_d2_061 | d2_060 exam cue names the role test that d2_061 keys |
+| csoe_d2_014 | csoe_d2_055 | d2_055 explanation: permitted non-audit services need audit committee preapproval |
+| csoe_d2_015 | csoe_d2_055 | d2_055 wrong explanation A and tips: the de minimis waiver |
+| csoe_d2_011 | csoe_d2_051 | d2_051 explanation: FASB writes U.S. accounting standards |
+| csoe_d2_011 | csoe_d2_050 | d2_050 explanation: the SEC recognizes a qualifying private standard setter |
+| csoe_d2_020 | csoe_d2_062 | d2_062 explanation: Section 207 ordered only a study of firm rotation |
+| csoe_d2_033 | csoe_d2_052 | contrasting angles on who changes Board rules |
+| csoe_d2_004 | csoe_d2_043 | d2_043 explanation: Board sanctions are open to SEC review |
+| csoe_d2_006 | csoe_d2_047 | same Section 106 production duty, contrasting angles |
+| csoe_d2_012 | csoe_d2_054 | contrasting angles on Section 107(b) processing of Board rules |
+| csoe_d2_054 | csoe_d4_045 | both key the Exchange Act Section 19(b) process (PCAOB vs exchange) |
+| csoe_d2_012 | csoe_d4_045 | d2_012 explanation: the SEC publishes notice, takes comment and approves |
+| csoe_d2_049 | csoe_d4_059 | both rest on 929F-amended PCAOB discipline provisions |
+| csoe_d2_047 | csoe_d4_037 | foreign counterpart regulators: production through them vs Board sharing with them |
+| csoe_d2_048 | csoe_d3_015 | 404(b) attestation in the audit vs the Section 103 audit-report content |
+| csoe_d2_007 | csoe_d2_057 | look-alike three-year cycles: firm inspection vs special engagement review |
+| csoe_d2_057 | csoe_d2_063 | d2_057 exam cue contrasts the two small-firm exemptions |
+| csoe_d2_058 | csoe_d2_059 | two angles on the audit-partner definition |
+| csoe_d2_017 | csoe_d2_059 | d2_059 tips: the lead partner and reviewer have the five-year limit |
