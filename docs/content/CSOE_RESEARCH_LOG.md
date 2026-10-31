@@ -46,7 +46,7 @@ These items are correct today. Re-check them at every batch and fix the bank the
 
 | Watch | Status on 31 Oct 2026 | What it would change |
 |---|---|---|
-| SEC Release No. 33-11419 (May 2026 proposal on filer categories) | Proposed, not adopted (fact sheet opened) | Would end the accelerated filer and smaller reporting company categories and change deadlines. Items that would flip: csoe_d1_004, 008, 015, 025, 034. Recheck csoe_d1_051 (written to hold under both tests) and csoe_d5_053 |
+| SEC Release No. 33-11419 (May 2026 proposal on filer categories) | Proposed, not adopted (fact sheet opened) | Would end the accelerated filer and smaller reporting company categories and change deadlines. Items that would flip: csoe_d1_004, 008, 015, 025, 034. Recheck csoe_d1_051 (written to hold under both tests) and csoe_d5_053, and the last sentence of csoe_d4_057's explanation (states the current revenue test). Held-out mock items must never rest on this proposal |
 | SEC Release No. 33-11414 | Proposed, not adopted | Recheck with 33-11419 |
 | Section 16(a) for FPI insiders: Pub. L. 119-60 Section 8103, from 18 Mar 2026; SEC exemptive orders Release Nos. 34-104931 (5 Mar 2026) and 34-105517 (20 May 2026) | In force (orders opened). The orders exempt insiders of FPIs incorporated in listed jurisdictions and subject to a listed insider-reporting rule. Officers outside the local rule still file, and 10% owners of FPIs stay outside Section 16(a) (Rule 16a-2) | Taught in notes 1A3.3 and 3B1.3. New orders could add jurisdictions |
 | SEC v. Jarkesy, No. 22-859 (2024) | Decided (opened on Cornell) | A defendant facing civil penalties for securities fraud has a jury right, so those claims go to federal court unless settled. Taught in notes 4A3.5 |

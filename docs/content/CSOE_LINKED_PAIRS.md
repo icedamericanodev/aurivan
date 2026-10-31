@@ -130,3 +130,15 @@ Rule for the form builder: Draw no two items of a pair into the same form. Keep 
 | csoe_d5_004 | csoe_d5_053 | d5_053 KC and option A: the 2013 update's 17 principles (part of d5_004's key) |
 | csoe_d5_045 | csoe_d5_046 | both test cube faces; d5_046 WD and d5_045's exam cue: the third face is the entity's structure |
 | csoe_d3_057 | csoe_d3_058 | d3_057 WB: Regulation G covers calls as well as releases, which rules out d3_058's option C (partial) |
+| csoe_d1_025 | csoe_d4_057 | d4_057 CE: an SRC under $100 million revenue is not an accelerated filer (decides d1_025) |
+| csoe_d1_028 | csoe_d1_029 | d1_029's stem gives the 30 June test date (d1_028's key) |
+| csoe_d1_052 | csoe_d3_001 | both Rule 10A-3(b)(1) fee test; d1_052 option A states it |
+| csoe_d3_029 | csoe_d3_051 | same Section 307 internal-ladder rule; d3_029 WC and tip 1 eliminate d3_051 B |
+| csoe_d3_039 | csoe_d3_059 | both Item 406 |
+| csoe_d4_015 | csoe_d4_034 | d4_015 CE: the Treasury Secretary chairs the FSOC (d4_034's key) |
+| csoe_d4_015 | csoe_d4_035 | d4_015 CE and WA: the Insurance Office monitors and advises as a nonvoting member |
+| csoe_d5_001 | csoe_d5_002 | d5_001 CE: operations, reporting and compliance (d5_002's key) |
+| csoe_d5_001 | csoe_d5_021 | d5_001 CE: 'process carried out by the board, management and other personnel' (d5_021's key) |
+| csoe_d5_004 | csoe_d5_025 | d5_004 tip 2: points of focus are optional aids (d5_025's key) |
+| csoe_d5_013 | csoe_d5_032 | d5_013 B, WB and tip 2: ERM is more than a risk list (d5_032's final two) |
+| csoe_d5_021 | csoe_d5_058 | shared 'board, management and other personnel' wording |

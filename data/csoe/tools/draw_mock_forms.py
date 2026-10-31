@@ -14,8 +14,14 @@ Rules the draw follows (all checked again by --check):
   away a key.
 - Never draw a hub named in that file, or an item a principle card links to
   (data/csoe/mindset/principles.json practice_ids): those stay in practice.
-- Each form close to the 30/55/15 difficulty mix, keys spread over A-D, no
-  outline code used twice in a form where the domain allows it.
+- Each form within 2 items of the 30/55/15 difficulty mix per level, key
+  letters within 3 of each other, and no outline code used twice in a form
+  where the domain allows it.
+- Items are stored in a fixed interleaved order, so no domain runs as a block.
+
+Not checked by the tool (do it by review, see docs/content/CSOE_BANK_PLAN.md):
+a practice item whose explanation states a held-out key. Record every such
+leak as a linked pair, and a held-out item may not be linked to a hub.
 
 The draw is seeded and repeatable. Re-drawing changes which questions are
 held out, so draw once and keep the file; run --check after every batch.
@@ -141,6 +147,13 @@ def check(data, items, links, banned):
         dom = Counter(items[i]["domain"] for i in f["items"] if i in items)
         if dict(dom) != PER_FORM:
             errors.append(f"{f['id']}: domain counts {dict(sorted(dom.items()))}, want {PER_FORM}")
+        diff = Counter(items[i]["difficulty"] for i in f["items"] if i in items)
+        off = {k: diff.get(k, 0) - v for k, v in MIX.items() if abs(diff.get(k, 0) - v) > 2}
+        if off:
+            errors.append(f"{f['id']}: difficulty mix more than 2 off the 30/55/15 target: {off}")
+        keys = Counter(items[i]["correct"] for i in f["items"] if i in items)
+        if max(keys.values()) - min(keys.get(k, 0) for k in "ABCD") > 3:
+            errors.append(f"{f['id']}: key letters too uneven: {dict(sorted(keys.items()))}")
     if set(data.get("held_out", [])) != set(held):
         errors.append("held_out does not match the union of the forms")
     return errors
