@@ -11,6 +11,27 @@ opened source and recorded in `data/cc/originals/_framework_library.md`.
 CC is not wired into the apps yet (that is Stage 2.7), so bank work needs no
 `APP_VERSION` bump. Never put the bank size in learner copy.
 
+### Stage 2.7 blocker: notes headings
+
+CC notes keep the shared keys `audit_focus` and `isaca_rule` (one schema for
+CISA, CC, CRISC and AAIA; decided 31 Oct 2026 with `product-manager`). The key
+names are internal and learners never see them. What would leak are the CISA
+headings typed into the notes screen (`mobile/src/components/notes.tsx`:
+"Think like the IS auditor", "Auditing it", "The IS auditor's lens", "Typical
+recommendation"). Before CC ships, the notes screen must take its headings from
+the certification. CC uses:
+
+- Section heading: "Think like a security practitioner"
+- `audit_focus`: "In practice", with the parts "What to check", "What shows it
+  works", "What you do" and "Who decides"
+- `isaca_rule`: "The practitioner's rule"
+
+Done when a test opens a CC note and finds no "auditor", "IS auditor", "ISACA"
+or "Auditing it" text, and the CC notes screenshots are checked at Stage 2.8.
+CRISC and AAIA need their own headings through the same setup. If neutral key
+names are ever wanted, rename once for every certification and keep the old
+names readable; never fork a CC-only schema.
+
 ## 1. Targets by outline weight
 
 From the "Question targets" table in `docs/content/CC_BLUEPRINT.md` (bank of
@@ -59,13 +80,18 @@ The pilot set this order. Don't skip a step to go faster.
 1. **Author** with `cc-d{N}-domain-expert`, under `isc2-cc-standards-auditor.md`
    and the pilot calibration rules (section 6).
 2. **Self-check:**
+   - `python3 data/cc/tools/check_cc.py N` must show 0 errors: item shape,
+     IDs, notes and library links, tip structure, key spread, and the "pick
+     the longest" rate (15–24%, ties shared, the same rule
+     `scripts/check_longest_option.py` applies to CISA since #155). Tools are
+     described in `data/cc/tools/README.md`.
    - `python3 scripts/lint_exam_style_v2.py --file data/cc/originals/dN.json`
      must show 0 errors. Its "stem names no actor" warning looks for CISA
      actors, so it is expected on CC items, but every stem must still name
      who acts.
    - Every `framework_ref` part must match a library bullet exactly.
 3. **Blind test** with `qa-question-tester`, on a copy that has only the id,
-   stem and options (no key, explanations or tips). Compare its picks with
+   stem and options (`data/cc/tools/blind_copy.py`; no key, explanations or tips). Compare its picks with
    the keys afterwards.
 4. **Standards audit** with `isc2-cc-standards-auditor`, plus the domain
    expert's accuracy pass.

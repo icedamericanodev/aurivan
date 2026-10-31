@@ -25,7 +25,7 @@
       "pre_read": "Ask what actually went wrong for the people involved: did data leak, change, or become unreachable?",
       "correct_explanation": "Availability means authorized people can use systems and data when they need them. Emergency doctors are authorized, yet the new restriction stops them opening charts, so availability is harmed, and in a hospital that can put patients at risk. Confidentiality is the goal the change was meant to protect; it is strengthened here, not harmed. Good security balances the three goals for each asset.",
       "wrong_explanations": {
-        "A": "Tempting because the change is about who may read records. But tighter access strengthens confidentiality; the harm is that authorized doctors are blocked.",
+        "A": "Closest choice: the change is about who may read records. But tighter access strengthens confidentiality; the harm is that authorized doctors are blocked.",
         "B": "Tempting because records are at stake. But integrity fails when data is altered without authorization; here nothing changes, and staff simply cannot open charts.",
         "D": "Tempting because the change concerns who opens records. But non-repudiation proves who did something; here the problem is that doctors are blocked from charts."
       },
@@ -99,7 +99,7 @@
       "wrong_explanations": {
         "A": "Tempting because a stronger password improves authentication. But all five still sign in as one identity, so their actions stay untraceable.",
         "B": "Tempting because limiting rights is authorization and can reduce damage. But receptionists still need to manage bookings, and the logs would still not show who acted.",
-        "C": "Tempting because logging is the accounting step. But extra detail about one shared account still cannot name which of the five people acted."
+        "C": "Closest choice: logging is the accounting step. But extra detail about one shared account still cannot name which of the five people acted."
       },
       "tips": [
         "Eliminate: A strengthens authentication and B narrows authorization; neither changes the fact that five people act under one identity.",
@@ -133,7 +133,7 @@
       "pre_read": "Notice what the plan collects from residents and what happens to it afterward. Ask what a resident would want to know.",
       "correct_explanation": "Privacy by design starts by asking what personal data a purpose truly needs and how long to keep it. Tax chats hold residents' personal details, and keeping all of them indefinitely breaks data minimization and retention limits. Encryption is worth adding, but it only protects secrecy; it cannot make unneeded collection or endless retention acceptable. The data owner then decides what is kept.",
       "wrong_explanations": {
-        "A": "Tempting because encryption protects stored personal data. But it answers who can read the data, not whether it should be collected and kept at all.",
+        "A": "Closest choice: encryption protects stored personal data. But it answers who can read the data, not whether it should be collected and kept at all.",
         "C": "Tempting because public chatbots can draw heavy traffic. But rate limits protect availability; the concern here is how much personal data is kept.",
         "D": "Tempting because logging each AI action supports accountability. But it does not address keeping more personal data than the purpose needs."
       },
@@ -169,7 +169,7 @@
       "pre_read": "Separate the attackers, the weakness and the harm in the scenario. Ask which of these the patch actually touches.",
       "correct_explanation": "A vulnerability is a weakness a threat can use; a threat is whoever or whatever could cause harm. Patching fixes the server's weakness, so this route of attack closes. The criminal group still exists and may look for another weakness, which is why the patch does not remove the threat. Organizations lower risk mainly by reducing vulnerabilities and impact, because they rarely control threats.",
       "wrong_explanations": {
-        "A": "Tempting because the attack stops working. But the criminal group still exists and can try other weaknesses; patching removes the weakness, not the attacker.",
+        "A": "Closest choice: the attack stops working. But the criminal group still exists and can try other weaknesses; patching removes the weakness, not the attacker.",
         "C": "Tempting because the vendor supplied the fix. But transfer shifts financial impact to another party, such as an insurer; installing a patch is the school's own mitigation.",
         "D": "Tempting because risk does depend on what is at stake. But a patch changes the server's weakness, not what the server is worth to the school."
       },
@@ -277,7 +277,7 @@
       "pre_read": "Notice what the office manager believes changed when the insurance was bought. Test that belief against each option.",
       "correct_explanation": "Buying insurance is risk transfer: the insurer pays some of the financial impact if a breach happens. It does not move the group's duty to protect patient data, and patients and regulators will still hold the group accountable. The manager's view is the common misreading of transfer, so the coordinator corrects it and keeps the existing controls in place.",
       "wrong_explanations": {
-        "A": "Tempting because insurance is called risk transfer. But only financial impact moves; the group stays accountable to patients and regulators for their data.",
+        "A": "Closest choice: insurance is called risk transfer. But only financial impact moves; the group stays accountable to patients and regulators for their data.",
         "B": "Tempting because insurance softens the financial hit. But mitigation means controls that lower likelihood or impact; insurance pays after a loss and makes no breach less likely.",
         "C": "Tempting because the group has chosen to live with some loss. But acceptance is the risk owner's documented decision; insurance is transfer, and it does not replace controls."
       },
@@ -313,7 +313,7 @@
       "pre_read": "Notice how specific the requirement is and who must follow it. Then match it to each document type.",
       "correct_explanation": "Exact, mandatory settings such as a 10-minute screen lock belong in a standard, which turns policy into specifics. The top-level policy stays high level, stating what is required and why, so it is not rewritten each time a setting changes. That makes the policy the closest wrong answer: it is mandatory, but too broad for exact values. A procedure then gives the steps to apply the setting.",
       "wrong_explanations": {
-        "A": "Tempting because policy is mandatory and approved by leaders. But policies stay high level; exact values like timeouts belong in a standard beneath them.",
+        "A": "Closest choice: policy is mandatory and approved by leaders. But policies stay high level; exact values like timeouts belong in a standard beneath them.",
         "B": "Tempting because screen locks are a good habit. But guidelines are optional advice, and a company-wide requirement must be mandatory.",
         "C": "Tempting because the lock is set on each workstation. But procedures give the steps for applying a setting; they are not where the requirement is set."
       },
@@ -422,7 +422,7 @@
       "pre_read": "Notice who made the legal claim and what data the tool will touch. Then check what each option relies on.",
       "correct_explanation": "Privacy law covers personal data in AI prompts, training data and outputs, whatever the vendor claims. Deciding how the law applies is not the security team's job, so the first step is to bring in the privacy officer and legal counsel before any patient data is used. A written vendor statement is tempting, but it repeats the vendor's own view, which is the claim in doubt.",
       "wrong_explanations": {
-        "B": "Tempting as due diligence, but the vendor already misstated the law. Its written promise does not replace the hospital's own legal review.",
+        "B": "Closest choice: getting the promise in writing feels like due diligence. But the vendor already misstated the law; it cannot replace the hospital's own legal review.",
         "C": "Tempting because human review sounds like oversight. But doctors checking summaries guards accuracy, not privacy; the vendor still receives patient notes, so lawfulness must be settled first.",
         "D": "Tempting because encryption protects patient data. But privacy law also governs whether and how personal data may be used; encrypting notes does not remove those duties."
       },
@@ -458,7 +458,7 @@
       "pre_read": "Notice what form the rule takes and how it is enforced.",
       "correct_explanation": "A written rule that directs how people must act is an administrative control, whatever its subject. It concerns firewalls, which makes 'technical' tempting, but the technical control is the rule set running on the firewall itself, not the document requiring approval. The approval step is preventive in function, because it stops unapproved changes before they happen; it does not detect them afterward.",
       "wrong_explanations": {
-        "B": "Tempting because the topic is firewalls. But this is a document directing people; only the rules configured on the firewall are a technical control.",
+        "B": "Closest choice: the topic is firewalls. But this is a document directing people; only the rules configured on the firewall are a technical control.",
         "C": "Tempting because the rule protects network equipment. But physical controls are tangible barriers such as locks and fences; a written approval rule is not one.",
         "D": "Tempting because approvals leave a record of changes. But detective controls find events after they happen; requiring approval before a change works to prevent it."
       },
@@ -638,7 +638,7 @@
       "pre_read": "Test each option against honesty, public safety, duty to the client and staying within authority. Look for one that passes all four.",
       "correct_explanation": "Leaving out a known safety flaw would make the report dishonest and leave the public exposed, so honesty and protecting society point the same way. Serving the client diligently means giving them an accurate report and explaining the risk, not hiding it. This is decided by the facts, not by which canon is listed first: concealment fails the client too, since an unfixed flaw harms them.",
       "wrong_explanations": {
-        "A": "Tempting because diligent service to principals is a canon. But that duty never includes a dishonest report that leaves the public at risk.",
+        "A": "Closest choice: diligent service to principals is a canon. But that duty never includes a dishonest report that leaves the public at risk.",
         "B": "Tempting because public pressure can force a fix. But publishing before the city can fix the flaw hands attackers a way to change signals and endangers people.",
         "C": "Tempting because closing the flaw directly seems helpful. But testers work within the authorized scope; changing live signals goes beyond it and could cause harm on the roads."
       },
