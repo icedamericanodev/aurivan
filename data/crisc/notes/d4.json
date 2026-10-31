@@ -131,7 +131,7 @@
           "key_terms": [
             {
               "term": "Shadow IT",
-              "definition": "Systems, services, hardware or software used for enterprise work without proper vetting and approval from the IT or cybersecurity function."
+              "definition": "Technology that staff or business units buy or use for work outside the enterprise's approval, security review and inventory."
             },
             {
               "term": "End of support",
@@ -936,14 +936,14 @@
             "crisc_d4_011",
             "crisc_d4_033"
           ],
-          "definition": "Recovery strategies are the planned ways to restore systems after a disruption, such as hot, warm or cold sites or cloud failover, chosen to meet recovery objectives.",
-          "why_it_matters": "The strategy decides whether the business can recover within its tolerance for downtime and data loss. Too little capability breaches tolerance; too much spends money on systems that could wait.",
+          "definition": "Recovery strategies are planned ways to restore systems after a disruption, such as hot, warm or cold sites or cloud failover, chosen to meet recovery objectives.",
+          "why_it_matters": "The strategy decides whether the business recovers within its tolerance for downtime and data loss. Too little capability breaches tolerance; too much wastes money.",
           "how_it_works": [
-            "Through the business impact analysis, process owners set each critical process's MTO and an RTO within it, and set the RPO separately, from the data loss they can tolerate.",
+            "Through the business impact analysis, process owners set each critical process's MTO, an RTO within it, and an RPO from the data loss they can tolerate.",
             "The strategy must meet RTO and RPO by design, at a cost the owner accepts.",
-            "An alternate site is placed and built so the same event cannot disable both sites.",
+            "An alternate site is placed so the same event cannot disable both sites.",
             "Shared dependencies, such as one network carrier, identity service or power feed, are single points of failure.",
-            "Cloud recovery follows a shared responsibility model: the contract decides who restores what, often the platform but not data the customer's users delete; the customer stays accountable for its data."
+            "Cloud recovery is a shared responsibility: the contract sets who restores what, often the platform but not data the customer's users delete; the customer stays accountable for its data."
           ],
           "compare": {
             "columns": [
@@ -986,7 +986,7 @@
               }
             ]
           },
-          "example": "A food distributor's recovery site sits in a building across the street from its main data center, on the same power substation and flood plain. Dara, the risk analyst, maps both sites to the regional flood scenario and shows the operations director that one flood would take out both, breaching the four-hour RTO for order processing.",
+          "example": "A food distributor's recovery site is across the street from its data center, on the same substation and flood plain. Dara, the risk analyst, maps both sites to the flood scenario and shows the operations director that one flood would take out both, breaching order processing's four-hour RTO.",
           "audit_focus": {
             "review": [
               "Walk through the recovery timeline for one critical process against its RTO and RPO",
@@ -999,33 +999,29 @@
             "recommend": "Have the business continuity manager remove shared dependencies or present the residual gap to process owners.",
             "decides": "The process owner signs off the chosen strategy and its cost"
           },
-          "isaca_rule": "A recovery strategy is judged by whether it meets the RTO and RPO under the scenarios that matter. The practitioner looks for shared single points of failure and reports the gap; the business owner chooses the strategy and accepts its cost and any residual risk within appetite.",
+          "isaca_rule": "A recovery strategy is judged by whether it meets the RTO and RPO under the scenarios that matter. The practitioner finds shared single points of failure and reports the gap; the business owner chooses the strategy and accepts its cost and residual risk within appetite.",
           "exam_traps": [
             {
-              "trap": "Counting a recovery site as adequate because it exists and has equipment.",
-              "why": "A site exposed to the same hazard, network or supplier as the primary fails with it. Separation and independence matter as much as equipment."
+              "trap": "Counting a recovery site as adequate because it exists and is equipped.",
+              "why": "A site exposed to the same hazard, network or supplier as the primary fails with it; independence matters as much as equipment."
             }
           ],
           "key_terms": [
             {
               "term": "Recovery time objective (RTO)",
-              "definition": "The time allowed to recover a business function or resource after a disruption, set within the MTO."
+              "definition": "The target for how soon a business function, or a resource it depends on, must be working again after a disruption, set within the MTO."
             },
             {
               "term": "Recovery point objective (RPO)",
-              "definition": "The earliest point in time to which data must be recoverable, set from the data loss the business can accept; it quantifies that permissible loss."
-            },
-            {
-              "term": "Single point of failure",
-              "definition": "One component whose failure stops the whole service."
+              "definition": "How far back in time recovered data may be after a disruption, set by the data loss the business accepts; it drives backup frequency."
             },
             {
               "term": "Maximum tolerable outage (MTO)",
-              "definition": "ISACA term for the longest a critical function or IT system can be disrupted before significant harm; many sources call it MTD."
+              "definition": "ISACA term for the longest a critical function or IT system can be down before severe harm; recovery must finish within it. Others say MTD."
             },
             {
               "term": "Acceptable interruption window (AIW)",
-              "definition": "ISACA term for the longest a system can be unavailable before business objectives are compromised."
+              "definition": "ISACA term: how long a system can stay down before the business can no longer meet its objectives."
             }
           ]
         },
@@ -1230,7 +1226,7 @@
           "key_terms": [
             {
               "term": "Opportunity (positive risk)",
-              "definition": "An uncertain event that would benefit objectives if it happened."
+              "definition": "A possible future event or condition that would help the enterprise meet its objectives if it happened."
             },
             {
               "term": "Post-quantum cryptography",
@@ -1358,7 +1354,7 @@
             },
             {
               "term": "Need-to-know",
-              "definition": "ISACA Glossary principle that people can see only the data, systems and spaces their job needs; least privilege extends it to what they can do."
+              "definition": "ISACA Glossary term: giving people sight of only the information, systems and areas their role requires; least privilege limits what they can do once there."
             },
             {
               "term": "Just-in-time access",
@@ -1810,14 +1806,14 @@
     "CI/CD pipeline": "The automated path that builds, tests and deploys code changes to production.",
     "System development life cycle (SDLC)": "The phases of a system from initiation through design, build, test, operation and disposal.",
     "Secure Software Development Framework (SSDF)": "NIST SP 800-218, a set of practices for building security into any software development model.",
-    "Data owner": "The accountable business manager responsible for the integrity, accuracy and use of data, who classifies it and decides access and retention.",
+    "Data owner": "The business manager accountable for a set of data: its quality (integrity and accuracy), proper use and protection. They classify it and decide who may access it and how long it is kept.",
     "Data custodian": "The party, often IT, that stores and protects data according to the owner's rules.",
     "Sanitization": "Making data on storage media unrecoverable, by clearing, purging or destroying it.",
     "Portfolio management": "Selecting and prioritizing programs and projects by value, risk and strategic fit.",
     "Definition of done": "The agreed criteria, including control criteria, an Agile work item must meet to be complete.",
-    "Recovery time objective (RTO)": "The time allowed to recover a business function or resource after a disruption, set by the business within the maximum tolerable outage.",
-    "Recovery point objective (RPO)": "The earliest point in time to which data must be recoverable after a disruption, set from how much data loss the business can accept; it quantifies that permissible loss.",
-    "Maximum tolerable outage (MTO)": "ISACA's term for the longest a critical business function or IT system can be disrupted before significant harm; other sources say maximum tolerable downtime (MTD).",
+    "Recovery time objective (RTO)": "The target for how soon a business function, or a resource it depends on, must be working again after a disruption, set by the business within the maximum tolerable outage.",
+    "Recovery point objective (RPO)": "How far back in time recovered data may be after a disruption, set from how much data loss the business can accept; it drives how often data is backed up or replicated.",
+    "Maximum tolerable outage (MTO)": "ISACA's term for the longest a critical business function or IT system can be disrupted before the harm to the enterprise becomes severe; recovery must be complete within it. Other sources say maximum tolerable downtime (MTD).",
     "Hot site": "An alternate site equipped and configured to take over processing within minutes to hours.",
     "Immutable backup": "A backup copy that cannot be altered or deleted for a set period, even by administrators.",
     "Emerging technology": "A technology new to the organization or the market whose risks and benefits are not yet well understood.",

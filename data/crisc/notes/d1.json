@@ -229,11 +229,11 @@
             "crisc_d1_003",
             "crisc_d1_022"
           ],
-          "definition": "The risk owner is accountable for a risk; the control owner is accountable for a control being implemented and operating effectively; the risk practitioner identifies, analyzes, recommends, monitors and reports.",
+          "definition": "The risk owner is accountable for a risk; the control owner is accountable for a control being in place and working; the risk practitioner identifies, analyzes, recommends, monitors and reports.",
           "why_it_matters": "Clear ownership means someone with authority and budget acts on each risk. When IT or the risk function is treated as owner, decisions are made by people who cannot fund them or live with the loss.",
           "how_it_works": [
             "The risk owner is a business manager with authority over the affected objective who accepts, mitigates, transfers or avoids the risk.",
-            "Control owners are often the managers whose teams run the controls; they report whether each control works.",
+            "Control owners are often the managers whose teams run the controls; when a supplier runs a control, an internal manager stays its owner, often the one managing the contract.",
             "One person can own a risk while several control owners answer for the controls that reduce it.",
             "The risk practitioner validates ownership, facilitates assessments and brings options with cost and benefit to the owner.",
             "Ownership is recorded in the risk register and reviewed when people or structures change."
@@ -287,8 +287,8 @@
           "isaca_rule": "Risk is owned by the business manager accountable for the affected objective, not by IT, the risk function or a committee. On CRISC items, a practitioner who accepts risk or implements a control alone is doing someone else's job.",
           "exam_traps": [
             {
-              "trap": "The control owner and the risk owner are the same person by default.",
-              "why": "They can be, but often are not. A sales director may own fraud risk while finance and IT managers each own controls that reduce it."
+              "trap": "The supplier that runs an outsourced control is its control owner.",
+              "why": "Outsourcing moves the work, not the accountability: an internal manager, often the contract manager, answers for the control working."
             },
             {
               "trap": "The risk practitioner should own risks that no business manager will take.",
@@ -378,7 +378,7 @@
           "id": "1A3.1",
           "name": "Risk Culture and Tone at the Top",
           "legacy_ids": [],
-          "definition": "Risk culture is the shared values and behaviors that shape how openly people discuss, report and take risk; tone at the top is how leaders model them.",
+          "definition": "Risk culture is how people weigh risk in decisions, act with integrity and feel safe raising risks, mistakes and losses; tone at the top is how leaders model it.",
           "why_it_matters": "Policies work only if people follow them when no one is watching. A risk strategy that clashes with culture is hard to carry out, so culture is a root cause behind many control failures.",
           "how_it_works": [
             "Leaders signal priorities through what they reward, question, fund and tolerate, more than through what they write.",
@@ -521,7 +521,7 @@
             },
             {
               "term": "Due professional care",
-              "definition": "Applying the diligence and skill a competent professional would use in the same situation."
+              "definition": "Doing the work as thoroughly and competently as peers would expect of a qualified professional."
             },
             {
               "term": "Algorithmic bias",
@@ -874,7 +874,7 @@
             },
             {
               "term": "Recovery time objective (RTO)",
-              "definition": "The time allowed to recover a business function or resource after a disruption, set by the business through the BIA (see 2B2) within the MTO."
+              "definition": "The target for how soon a business function, or a resource it depends on, must work again after a disruption; set within the MTO."
             },
             {
               "term": "Maximum tolerable outage (MTO)",
@@ -882,7 +882,7 @@
             },
             {
               "term": "Acceptable interruption window (AIW)",
-              "definition": "ISACA's term for the longest a system can be unavailable before business objectives are compromised."
+              "definition": "ISACA term: how long a system can stay down before the business can no longer meet its objectives."
             }
           ]
         }
@@ -1068,7 +1068,7 @@
             "crisc_d1_012",
             "crisc_d1_033"
           ],
-          "definition": "Enterprise risk management (ERM) assesses, controls, exploits, finances and monitors risk from all sources to increase stakeholder value; IT and cybersecurity risk are one part of it.",
+          "definition": "Enterprise risk management (ERM) identifies, assesses, responds to and monitors risk of every type, upside included, so risk-taking supports strategy and adds stakeholder value; IT risk is one part.",
           "why_it_matters": "When IT risk sits in its own register with its own language, leaders cannot weigh it against financial, operational or strategic risk, and it competes poorly for attention and budget.",
           "how_it_works": [
             "Enterprise leaders set the strategy, appetite and methods; each discipline, including IT, applies them.",
@@ -1441,7 +1441,7 @@
           "key_terms": [
             {
               "term": "Exposure",
-              "definition": "The level of risk an enterprise faces from one or more risks, usually from likelihood and impact combined."
+              "definition": "How much the enterprise stands to lose from one or more risks, judged from likelihood and impact together."
             },
             {
               "term": "Heat map",
@@ -1602,7 +1602,7 @@
             },
             {
               "term": "Current risk",
-              "definition": "ISACA Glossary: the risk as it stands now, counting actions already taken but not those proposed; it is what is compared with appetite today."
+              "definition": "Today's exposure, counting only responses already in place and working, not planned or proposed ones; it is what is compared with appetite now."
             },
             {
               "term": "Future residual risk",
@@ -1904,28 +1904,28 @@
     }
   ],
   "key_terminologies": {
-    "Risk": "The effect of uncertainty on objectives, described by its likelihood and its impact.",
+    "Risk": "The combination of how likely an event is and how much it would affect objectives; ISO 31000 frames it as the effect of uncertainty on objectives.",
     "Governance": "Setting direction, making decisions and monitoring performance so the enterprise meets its objectives; led by the board.",
     "Risk appetite": "The broad amount of risk the enterprise is willing to accept in pursuit of its objectives, set by the board and senior management.",
     "Risk tolerance": "The acceptable variation around appetite for a particular risk or objective, usually a measurable limit.",
     "Risk capacity": "The most loss the enterprise can absorb without threatening its survival.",
     "Risk owner": "The person with the authority and accountability to decide a risk's response and accept what remains.",
-    "Control owner": "The person with the authority and accountability for control-related decisions, who ensures a control is implemented and operating effectively; often the manager whose team runs it.",
-    "Risk practitioner": "The professional who identifies, analyzes, recommends, monitors and reports on risk; advises but does not decide for the owner.",
+    "Control owner": "The person accountable for a control: they make the decisions about it and answer for it being in place and working; often the manager whose team runs it, or who manages the supplier that does.",
+    "Risk practitioner": "The professional who identifies, analyzes, recommends, facilitates, monitors and reports on risk; advises but does not decide for the owner.",
     "Goals cascade": "The COBIT 2019 chain from stakeholder needs to enterprise goals to alignment goals for information and technology.",
     "RACI": "A chart naming who is Responsible, Accountable, Consulted and Informed for each activity; one accountable person per activity.",
-    "Risk culture": "The shared values and beliefs that shape attitudes to risk-taking and how openly risks and losses are reported.",
-    "Policy": "A document of management intent stating required and prohibited behavior, approved by senior management.",
+    "Risk culture": "How people actually think and behave about risk: whether they weigh it honestly in decisions and feel safe raising risks, mistakes and losses.",
+    "Policy": "Management's formal statement of what people must and must not do, approved by senior management.",
     "Standard": "A mandatory, measurable requirement that supports a policy.",
     "Guideline": "Advisory good practice that people may depart from for a sound reason.",
     "Policy exception": "An approved, time-limited departure from a policy or standard, with its risk accepted by the owner.",
     "Business continuity plan (BCP)": "A plan for keeping critical business processes running during and after a disruption.",
     "Disaster recovery plan (DRP)": "A plan for restoring the IT systems and facilities that critical processes depend on.",
     "Asset inventory": "A register of the enterprise's assets, including cloud services, data and AI models, each with a business owner.",
-    "Enterprise risk management (ERM)": "The discipline by which an enterprise assesses, controls, exploits, finances and monitors risk from all sources to increase its short- and long-term value to stakeholders; IT risk is one part of it.",
+    "Enterprise risk management (ERM)": "An enterprise-wide approach to identifying, assessing, responding to and monitoring every type of risk, upside included, so risk-taking supports strategy and adds stakeholder value; IT risk is one part of it.",
     "Risk taxonomy": "A common scheme of risk categories that lets risks from every unit be compared and combined.",
     "Risk register": "The record of identified risks with owner, rating, response and status.",
-    "Risk profile": "The current, aggregated view of the risks the enterprise faces, reported to senior management against appetite.",
+    "Risk profile": "The current, aggregated view of the risks the enterprise faces, reported to senior management and the board against appetite.",
     "Risk aggregation": "Combining related risks into an enterprise view, allowing for shared causes rather than simply adding scores.",
     "Lines of defense": "A model separating risk ownership (first line), oversight and challenge (second line) and independent assurance (third line).",
     "Risk management framework": "The enterprise's approved principles, roles, methods and reporting for managing risk.",

@@ -52,7 +52,7 @@
           "how_it_works": [
             "A loss event is one where a threat event actually causes harm, such as money lost or a service stopped.",
             "A near miss would have caused loss but was stopped by a control, by chance or by timing.",
-            "An incident breaks, or nearly breaks, security policy; it may or may not cause loss.",
+            "An incident breaks, or nearly breaks, security policy; it need not cause loss.",
             "Each event is linked to the scenario it supports and used to re-rate that scenario's likelihood or impact.",
             "Fixing the immediate cause closes the incident ticket, not the risk."
           ],
@@ -83,7 +83,7 @@
           "key_terms": [
             {
               "term": "Loss event",
-              "definition": "Any event in which a threat event results in loss (ISACA Glossary, which credits the FAIR taxonomy)."
+              "definition": "A threat event that actually causes loss, such as lost money, data or service; the ISACA Glossary credits the term to the FAIR taxonomy."
             },
             {
               "term": "Near miss",
@@ -91,7 +91,7 @@
             },
             {
               "term": "Incident",
-              "definition": "A violation, or imminent threat of violation, of security policies, acceptable use policies or standard security practices."
+              "definition": "An event causing actual or imminent harm to confidentiality, integrity or availability, or breach of law or security policy."
             }
           ],
           "memory_aid": "Loss hurt, near miss nearly hurt: both re-rate the scenario."
@@ -275,7 +275,7 @@
           "key_terms": [
             {
               "term": "Threat event",
-              "definition": "An event in which a threat source acts against an asset in a way that could directly cause harm."
+              "definition": "A specific occurrence, such as a phishing campaign or a flood, in which a threat source targets an asset and could cause harm."
             },
             {
               "term": "Privileged insider",
@@ -682,7 +682,7 @@
           "key_terms": [
             {
               "term": "Risk scenario",
-              "definition": "ISACA Glossary: a tangible and assessable representation of risk."
+              "definition": "A tangible, assessable account of how a threat could cause an event that harms objectives, naming the cause, asset and business impact."
             },
             {
               "term": "Cause-and-effect statement",
@@ -941,7 +941,7 @@
             },
             {
               "term": "Risk evaluation",
-              "definition": "Comparing estimated risk with risk criteria to decide how significant it is."
+              "definition": "Checking an analyzed risk against the agreed criteria to see how significant it is and whether it needs a response."
             }
           ],
           "memory_aid": "Prepare, conduct, communicate, maintain: scope before threats."
@@ -1109,21 +1109,21 @@
             },
             {
               "trap": "IT should set the RTO because it knows the recovery technology.",
-              "why": "IT knows what is achievable and what it costs, but only business owners know how long the process can be down. IT advises; the business sets the objective."
+              "why": "IT knows what is achievable and its cost; only business owners know how long the process can be down. IT advises; the business decides."
             }
           ],
           "key_terms": [
             {
               "term": "Maximum tolerable outage (MTO)",
-              "definition": "ISACA Glossary term for the longest a critical function or system can be disrupted before significant harm."
+              "definition": "ISACA term: the longest outage a critical function or system can take before harm becomes severe and hard to recover from."
             },
             {
               "term": "Acceptable interruption window (AIW)",
-              "definition": "ISACA Glossary term for the longest a system can be unavailable before business objectives are compromised."
+              "definition": "ISACA term: how long a system can be down before the business can no longer meet its objectives."
             },
             {
               "term": "Service delivery objective (SDO)",
-              "definition": "ISACA Glossary term for the service level needed during alternate processing until normal operation returns."
+              "definition": "ISACA term: the service level needed in alternate processing until normal operation returns."
             }
           ],
           "memory_aid": "RTO looks forward to recovery; RPO looks back to the last good data."
@@ -1133,7 +1133,7 @@
     {
       "topic_id": "2B3",
       "topic_name": "Risk Register",
-      "overview": "This topic covers the risk register: the record of identified, analyzed and prioritized risk scenarios, each with an owner, ratings, controls, response, status and indicators. It must be kept current as events and controls change, and it feeds the enterprise risk profile senior management uses to decide.",
+      "overview": "This topic covers the risk register: the working record of risk scenarios, each with an owner, ratings, controls, response, status and indicators. It must be kept current as events and controls change, and it feeds the enterprise risk profile senior management uses to decide.",
       "can_do": [
         "Name the fields a complete register entry needs",
         "Explain why every entry needs an accountable business owner",
@@ -1145,7 +1145,7 @@
           "id": "2B3.1",
           "name": "Register Fields and Ownership",
           "legacy_ids": [],
-          "definition": "A risk register is the record of risk scenarios that have been identified, analyzed and prioritized, with the owner, ratings, controls and response for each one.",
+          "definition": "A risk register is the working record of risk scenarios, with the owner, ratings, controls, chosen response and status for each one.",
           "why_it_matters": "The register is how risk is tracked and decided on. An entry with no owner has nobody to accept, treat or monitor it, so it drifts.",
           "how_it_works": [
             "Core fields: ID, scenario, category, risk owner, inherent and current ratings (with the target rating for any planned response), existing controls, response, action plan, status, KRIs and review date.",
@@ -1177,11 +1177,11 @@
           "key_terms": [
             {
               "term": "Risk owner",
-              "definition": "ISACA Glossary: the person with authority and accountability for risk-based decisions, who owns the loss of a realized scenario."
+              "definition": "The person with authority and accountability to decide about a risk and answer for its loss; decides the response and accepts what remains."
             },
             {
               "term": "Control owner",
-              "definition": "ISACA Glossary: the person assigned authority and accountability for control-related decisions, who ensures the control is implemented and operating effectively and efficiently."
+              "definition": "The person accountable for a control: decides about it and answers for it being in place and working; often the manager whose team runs it."
             },
             {
               "term": "Action owner",
@@ -1696,11 +1696,11 @@
           "key_terms": [
             {
               "term": "Risk appetite",
-              "definition": "ISACA Glossary: the broad amount of risk an entity is willing to accept in pursuit of its mission."
+              "definition": "The overall level and kinds of risk the enterprise has chosen to take on to achieve its objectives, set by the board and senior management."
             },
             {
               "term": "Risk tolerance",
-              "definition": "The acceptable variation management allows for a particular risk as the enterprise pursues its objectives."
+              "definition": "The acceptable variation management allows for a particular risk around the appetite, usually a measurable limit whose breach is escalated."
             },
             {
               "term": "Risk acceptance",
@@ -1713,31 +1713,31 @@
   ],
   "key_terminologies": {
     "Risk event": "Something that happened, or nearly happened, showing that a risk scenario can occur.",
-    "Loss event": "An event in which a threat event results in loss.",
+    "Loss event": "A threat event that actually causes loss, such as lost money, data, service or reputation.",
     "Near miss": "An event that would have caused loss but was stopped by a control, chance or timing.",
     "Threat source": "Anyone or anything that could cause harm: adversarial, accidental, structural or environmental.",
-    "Threat event": "What a threat source does against an asset that could directly cause harm.",
-    "Vulnerability": "A weakness in design, implementation, operation or internal control that a threat could exploit.",
+    "Threat event": "A specific occurrence, such as a phishing campaign or a flood, in which a threat source targets an asset and could cause harm.",
+    "Vulnerability": "A gap or flaw in how a process, system or control is designed, built, run or governed that a threat could take advantage of.",
     "Threat modeling": "A structured way, such as STRIDE or attack trees, to work out how a system could be harmed.",
     "CVSS": "Common Vulnerability Scoring System: FIRST's 0 to 10 severity score for a software flaw; one input to risk, not the risk rating.",
-    "Risk scenario": "A tangible, assessable description of how a threat could cause an event that harms objectives.",
+    "Risk scenario": "A tangible, assessable account of how a threat could cause an event that harms objectives, naming the cause, the asset and the business impact.",
     "Tabletop exercise": "A facilitated discussion in which a team walks through a scenario to test plans and find gaps.",
     "Risk assessment": "The process of identifying, estimating and prioritizing risk: prepare, conduct, communicate, maintain.",
     "Business impact analysis (BIA)": "Analysis of critical processes, how impact grows over time and what they depend on; it ignores likelihood.",
-    "Maximum tolerable outage (MTO)": "ISACA Glossary term for the longest a critical business function or IT system can be disrupted before significant harm; other sources say maximum tolerable downtime (MTD).",
-    "Acceptable interruption window (AIW)": "ISACA Glossary term for the longest a system can be unavailable before business objectives are compromised.",
-    "Recovery time objective (RTO)": "The time allowed to recover a business function or resource after a disruption; normally shorter than the MTO.",
+    "Maximum tolerable outage (MTO)": "ISACA Glossary term for the longest outage a critical business function or IT system can reach before harm becomes severe and hard to recover from; recovery must finish first. Other sources say maximum tolerable downtime (MTD).",
+    "Acceptable interruption window (AIW)": "ISACA Glossary term for how long a system can stay down before the business can no longer meet its objectives; recovery must finish inside it.",
+    "Recovery time objective (RTO)": "The target for how soon a business function, or a resource it depends on, must be working again after a disruption; normally shorter than the MTO.",
     "Recovery point objective (RPO)": "How much data loss, measured back in time, the business can tolerate.",
-    "Risk register": "A list of risk scenarios that have been identified, analyzed and prioritized, each with an owner.",
+    "Risk register": "The working record of risk scenarios, each with its owner, rating, response and status.",
     "Risk owner": "The accountable person with authority to make risk-based decisions and who bears the loss.",
     "Enterprise risk profile": "The aggregated view of an enterprise's significant risks, compared with appetite.",
     "Qualitative analysis": "Rating likelihood and impact on defined word scales, such as low to very high.",
     "Single loss expectancy (SLE)": "Expected loss from one occurrence: asset value times exposure factor.",
     "Annual rate of occurrence (ARO)": "Expected number of occurrences per year.",
     "Annualized loss expectancy (ALE)": "Expected yearly loss: SLE times ARO.",
-    "Inherent risk": "Risk before management takes any action, such as implementing controls.",
+    "Inherent risk": "The level of a risk if management had done nothing about it: no controls, no transfer and no other response.",
     "Current risk": "Risk as it stands today, counting actions already taken but not those planned; compared with appetite now.",
-    "Residual risk": "Risk remaining after management has implemented a risk response; shows whether the response brought risk within appetite.",
+    "Residual risk": "What is left of a risk once the chosen response is in place and working; it shows whether the response brought the risk within appetite.",
     "Future residual risk": "ISACA Glossary phrase for current risk with a planned response implemented; KaiSip calls it target risk and uses it to judge the plan.",
     "Prompt injection": "Crafted input that makes a language model ignore its instructions or produce harmful output.",
     "Data poisoning": "Corrupting an AI model's training or fine-tuning data so it learns wrong or hidden behavior.",
