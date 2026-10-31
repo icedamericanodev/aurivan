@@ -27,7 +27,6 @@
  * account screens behind it are for an account that no longer exists).
  */
 import { router, useFocusEffect } from 'expo-router';
-import { openTab } from '../../../lib/actions';
 import { useCallback, useRef, useState } from 'react';
 import { BackHandler, TextInput, View } from 'react-native';
 import { AccountNotice, codeProblem } from '../../../components/account';
@@ -90,7 +89,7 @@ export default function DeleteAccount() {
       const sub = BackHandler.addEventListener('hardwareBackPress', () => {
         if (busy === 'delete') return true;
         if (step === 'done') {
-          openTab('/you');
+          router.replace('/you');
           return true;
         }
         return false;
@@ -253,7 +252,7 @@ export default function DeleteAccount() {
         <View style={{ marginTop: space.xxl }}>
           {header('delete.done.title')}
           <T v="body" style={{ marginTop: space.md }}>{copy(alsoLocal ? 'delete.done.body.local' : 'delete.done.body')}</T>
-          <Button label={copy('delete.done.go')} onPress={() => openTab('/you')} style={{ marginTop: space.xl }} />
+          <Button label={copy('delete.done.go')} onPress={() => router.replace('/you')} style={{ marginTop: space.xl }} />
         </View>
       )}
 

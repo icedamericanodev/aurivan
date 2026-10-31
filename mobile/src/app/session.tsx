@@ -62,7 +62,6 @@
  * - "Next question" is the plate button over a hairline. A mock is unchanged.
  */
 import * as Router from 'expo-router';
-import { openTab } from '../lib/actions';
 import { router, useFocusEffect } from 'expo-router';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
@@ -111,6 +110,7 @@ import { aboutMin, dueCheckpoints, formatClock, mockPace, paceMessage, paceShort
 import { PaceStrip, type PaceStripProps } from '../components/pace';
 import { QuestionNote, useHasQuestionNote, type QuestionNoteHandle } from '../components/questionNote';
 import { useReportFlow } from '../components/support';
+import { openTab } from '../lib/actions';
 import { moveFocus, sayLater } from '../lib/a11y';
 import { haptic } from '../lib/haptics';
 import { questionTarget, sessionWhere } from '../lib/support';

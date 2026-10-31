@@ -164,6 +164,15 @@ describe('leaving a finished set keeps one tab navigator', () => {
     expect(names(r)).toEqual(['(tabs)']);
   });
 
+  it('a set started from the Practice tab: "Done" still lands on Today, in the same tab navigator', async () => {
+    const r = await renderRouter(APP, { initialUrl: '/practice' });
+    await finishASet(0);
+    expect(names(r)).toEqual(['(tabs)', 'results']);
+    await go(() => fireEvent.press(screen.getAllByText('Done')[0]));
+    expect(r.getPathname()).toBe('/home');
+    expect(names(r)).toEqual(['(tabs)']);
+  });
+
   it('a game that can\'t be played yet: "Go to Practice" opens the Practice tab already there', async () => {
     const r = await renderRouter(APP, { initialUrl: '/practice' });
     await go(() => router.push('/game/locked'));
