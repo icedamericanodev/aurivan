@@ -132,7 +132,7 @@ The same pieces as the CISA course, each in `data/csoe/`:
 
 | Piece | File | Status |
 |---|---|---|
-| Study notes | `notes/d{1..5}.json` (notes schema v2) | 86 sub-topics after batch 2; extended with each batch |
+| Study notes | `notes/d{1..5}.json` (notes schema v2) | 112 sub-topics after batch 2; extended with each batch |
 | Glossary (key terms) | the notes' `key_terminologies`; the app builds its key-terms list from them | 110 terms, 19–27 per domain |
 | Principles ("how CSOE questions think") | `mindset/principles.json` (`docs/content/PRINCIPLES_SCHEMA.md`, CRISC-style deviations) | Being written by `csoe-mindset-coach` |
 | About the exam | `exam/csoe_exam_guide.json` (`docs/content/EXAM_GUIDE_SCHEMA.md`) | Being written by `csoe-mindset-coach` |
