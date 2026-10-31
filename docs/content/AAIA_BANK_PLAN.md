@@ -223,6 +223,7 @@ the notice is part of the description.
 | Round | D1 | D2 | D3 | Total |
 |---|---|---|---|---|
 | Pilot (30 Oct 2026) | 20 | 20 | 20 | 60 |
+| Batch 2 (31 Oct 2026) | +30 | +30 | +30 | 150 |
 
 Pilot review, 30 Oct 2026:
 - **Blind tests:** 60/60 picks matched the keys on the first pass. After the
@@ -241,6 +242,14 @@ Pilot review, 30 Oct 2026:
 - **Carried to batch 2:** 2G.1 has no item yet; vary settings (travel and
   pension settings are used); a few items stay answerable from general audit
   sense (D2 007, 014, 017; D3 004, 011, 019) and are the first to re-angle.
+
+**Carried to batch 3** (decided by the D1 domain expert under the "experts
+decide first" rule, 31 Oct 2026): `aaia_d1_029` (who signs off pre-launch
+validation) and `aaia_d1_030` (who owns a model) have correct, CISA-consistent
+keys but can be answered from general governance knowledge. Keep them for now;
+in batch 3, re-angle 030 around an AI-specific owner power (pause or override
+the model, approve a retrain) and 029 toward what validation must test, checked
+against `aaia_d2_014` so the two do not duplicate.
 
 ## 10. Follow-ups outside this plan's scope
 
