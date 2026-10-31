@@ -213,6 +213,9 @@ def load_slip_patterns():
     return keys or set(FALLBACK_SLIPS)
 
 
+RUNNER_UP = re.compile(r"runner[- ]?up", re.I)
+
+
 def check_text_hygiene(doc):
     for path, s in walk_strings(doc, ""):
         for rx in BANK_SIZE:
@@ -223,6 +226,11 @@ def check_text_hygiene(doc):
         for m in BRITISH.finditer(s):
             if m.group(0).lower() not in BRITISH_OK:
                 err(path, f"British spelling '{m.group(0)}' (use US English)")
+        # Learner copy says "closest wrong choice", never "runner-up". The
+        # slip_pattern id 'runner-up' stays: saved slip-coach data and the
+        # slip_map key use it.
+        if RUNNER_UP.search(s) and not path.endswith(".slip_pattern"):
+            err(path, "says 'runner-up' (learner copy says 'closest wrong choice')")
 
 
 def check_families(families):
