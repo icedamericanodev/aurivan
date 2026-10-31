@@ -91,7 +91,7 @@
             },
             {
               "term": "Incident",
-              "definition": "An event causing actual or imminent harm to confidentiality, integrity or availability, or breach of law or security policy."
+              "definition": "An event that damages, or threatens at any moment to damage, the confidentiality, integrity or availability of information, or breaks the law or security rules."
             }
           ],
           "memory_aid": "Loss hurt, near miss nearly hurt: both re-rate the scenario."
@@ -682,7 +682,7 @@
           "key_terms": [
             {
               "term": "Risk scenario",
-              "definition": "A tangible, assessable account of how a threat could cause an event that harms objectives, naming the cause, asset and business impact."
+              "definition": "A concrete account of how a threat could cause an event that harms objectives, naming the cause, asset and business impact, specific enough to rate."
             },
             {
               "term": "Cause-and-effect statement",
@@ -941,7 +941,7 @@
             },
             {
               "term": "Risk evaluation",
-              "definition": "Checking an analyzed risk against the agreed criteria to see how significant it is and whether it needs a response."
+              "definition": "The decision step after analysis: setting each rated risk against the agreed criteria and appetite to decide whether it needs a response, and how urgently."
             }
           ],
           "memory_aid": "Prepare, conduct, communicate, maintain: scope before threats."
@@ -1115,7 +1115,7 @@
           "key_terms": [
             {
               "term": "Maximum tolerable outage (MTO)",
-              "definition": "ISACA term: the longest outage a critical function or system can take before harm becomes severe and hard to recover from."
+              "definition": "ISACA term: the outage limit of a critical process or system, past which the damage to the enterprise becomes significant."
             },
             {
               "term": "Acceptable interruption window (AIW)",
@@ -1123,7 +1123,7 @@
             },
             {
               "term": "Service delivery objective (SDO)",
-              "definition": "ISACA term: the service level needed in alternate processing until normal operation returns."
+              "definition": "ISACA term: the minimum service the business needs while running on recovery arrangements, until normal operations are back."
             }
           ],
           "memory_aid": "RTO looks forward to recovery; RPO looks back to the last good data."
@@ -1177,7 +1177,7 @@
           "key_terms": [
             {
               "term": "Risk owner",
-              "definition": "The person with authority and accountability to decide about a risk and answer for its loss; decides the response and accepts what remains."
+              "definition": "The named person who answers for a risk: decides how it is treated, accepts what remains and carries the loss if it occurs."
             },
             {
               "term": "Control owner",
@@ -1509,7 +1509,7 @@
     {
       "topic_id": "2B5",
       "topic_name": "Inherent and Residual Risk",
-      "overview": "This topic covers inherent risk (before any controls), current risk (counting only controls working today) and residual risk (what remains once a chosen response is implemented; from then on it is the current risk). A planned response's projection is the ISACA Glossary's future residual risk (KaiSip: target risk): it judges the plan, not today's position. Owners compare current risk with appetite, and controls earn credit only when tested.",
+      "overview": "This topic covers inherent risk (before any management action, controls included), current risk (counting only controls working today) and residual risk (what remains once a chosen response is implemented; from then on it is the current risk). A planned response's projection is the ISACA Glossary's future residual risk (KaiSip: target risk): it judges the plan, not today's position. Owners compare current risk with appetite, and controls earn credit only when tested.",
       "can_do": [
         "Tell inherent, current and residual risk apart in a scenario",
         "Explain why a control's existence does not prove its effect",
@@ -1579,7 +1579,7 @@
           "exam_traps": [
             {
               "trap": "Compare inherent risk with appetite to decide whether to add controls.",
-              "why": "Inherent risk ignores controls already working. The decision compares the risk that exists now, counting only implemented, working controls, with appetite."
+              "why": "Inherent risk ignores all management action. The decision compares the risk that exists now, counting only implemented, working controls, with appetite."
             },
             {
               "trap": "Residual risk is never the figure to compare with appetite.",
@@ -1648,7 +1648,7 @@
             },
             {
               "term": "Key control indicator (KCI)",
-              "definition": "A measure of control effectiveness that signals failure or weakness before risk rises, such as the share of test restores that miss recovery objectives."
+              "definition": "A metric showing that a control is weakening or failing before the risk it guards against grows, such as test restores missing recovery objectives."
             }
           ]
         },
@@ -1700,7 +1700,7 @@
             },
             {
               "term": "Risk tolerance",
-              "definition": "The acceptable variation management allows for a particular risk around the appetite, usually a measurable limit whose breach is escalated."
+              "definition": "How far a particular risk or result may move from what the appetite intends before it must be escalated, usually set as a measurable limit."
             },
             {
               "term": "Risk acceptance",
@@ -1717,19 +1717,19 @@
     "Near miss": "An event that would have caused loss but was stopped by a control, chance or timing.",
     "Threat source": "Anyone or anything that could cause harm: adversarial, accidental, structural or environmental.",
     "Threat event": "A specific occurrence, such as a phishing campaign or a flood, in which a threat source targets an asset and could cause harm.",
-    "Vulnerability": "A gap or flaw in how a process, system or control is designed, built, run or governed that a threat could take advantage of.",
+    "Vulnerability": "A weakness that a threat could exploit, whether in technology, a process, people's skills or the controls and governance around them.",
     "Threat modeling": "A structured way, such as STRIDE or attack trees, to work out how a system could be harmed.",
     "CVSS": "Common Vulnerability Scoring System: FIRST's 0 to 10 severity score for a software flaw; one input to risk, not the risk rating.",
-    "Risk scenario": "A tangible, assessable account of how a threat could cause an event that harms objectives, naming the cause, the asset and the business impact.",
+    "Risk scenario": "A concrete account of how a threat could cause an event that harms objectives, naming the cause, the asset affected and the business impact, specific enough to be rated.",
     "Tabletop exercise": "A facilitated discussion in which a team walks through a scenario to test plans and find gaps.",
     "Risk assessment": "The process of identifying, estimating and prioritizing risk: prepare, conduct, communicate, maintain.",
     "Business impact analysis (BIA)": "Analysis of critical processes, how impact grows over time and what they depend on; it ignores likelihood.",
-    "Maximum tolerable outage (MTO)": "ISACA Glossary term for the longest outage a critical business function or IT system can reach before harm becomes severe and hard to recover from; recovery must finish first. Other sources say maximum tolerable downtime (MTD).",
+    "Maximum tolerable outage (MTO)": "ISACA Glossary term for the outage limit of a critical process or system: past it, the damage to the enterprise becomes significant, so recovery must finish first. Other sources say maximum tolerable downtime (MTD).",
     "Acceptable interruption window (AIW)": "ISACA Glossary term for how long a system can stay down before the business can no longer meet its objectives; recovery must finish inside it.",
     "Recovery time objective (RTO)": "The target for how soon a business function, or a resource it depends on, must be working again after a disruption; normally shorter than the MTO.",
     "Recovery point objective (RPO)": "How much data loss, measured back in time, the business can tolerate.",
     "Risk register": "The working record of risk scenarios, each with its owner, rating, response and status.",
-    "Risk owner": "The accountable person with authority to make risk-based decisions and who bears the loss.",
+    "Risk owner": "The named person who answers for a risk: decides how it is treated, accepts what remains and carries the loss if it occurs.",
     "Enterprise risk profile": "The aggregated view of an enterprise's significant risks, compared with appetite.",
     "Qualitative analysis": "Rating likelihood and impact on defined word scales, such as low to very high.",
     "Single loss expectancy (SLE)": "Expected loss from one occurrence: asset value times exposure factor.",

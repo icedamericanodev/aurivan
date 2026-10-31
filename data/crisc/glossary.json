@@ -21,7 +21,7 @@
     "id": 3,
     "term": "Accountability",
     "acronym": null,
-    "def": "Being answerable for an outcome, with each activity or decision traceable back to the party responsible for it. Tasks can be delegated, but accountability for the outcome stays with the owner.",
+    "def": "Being answerable for an outcome and its consequences, with a clear record of who decided and who acted. Tasks can be delegated, but accountability for the outcome stays with the owner.",
     "scopeNotes": "Outsourcing and insurance never move accountability: the enterprise still answers to customers, regulators and the board.",
     "domain": 1,
     "category": "Concept"
@@ -76,7 +76,7 @@
     "term": "Annual rate of occurrence (ARO)",
     "acronym": "ARO",
     "def": "The expected number of times an event occurs in a year. Once every ten years is 0.1.",
-    "scopeNotes": "",
+    "scopeNotes": "Also written annualized rate of occurrence; it pairs with annualized loss expectancy (ALE = SLE × ARO).",
     "domain": 2,
     "category": "Metric"
   },
@@ -93,7 +93,7 @@
     "id": 11,
     "term": "Anonymization",
     "acronym": null,
-    "def": "Processing data so that no one, including the organization that holds it, can link it back to the people it describes, and the change cannot be undone.",
+    "def": "Transforming data so the people it describes can no longer be identified by anyone using any reasonably likely means. Done properly it cannot be reversed, and privacy law no longer treats the result as personal data.",
     "scopeNotes": "Pseudonymized data can be re-linked with separately held information; anonymized data cannot.",
     "domain": 4,
     "category": "Control"
@@ -102,7 +102,7 @@
     "id": 12,
     "term": "Asset",
     "acronym": null,
-    "def": "Anything the enterprise values and needs to protect, physical or not, such as staff, data, systems, money, brand and AI models.",
+    "def": "Something the enterprise depends on to meet its objectives and would be harmed by losing or having misused, such as its people, data, systems, funds, reputation or AI models.",
     "scopeNotes": "",
     "domain": 1,
     "category": "Concept"
@@ -238,7 +238,7 @@
     "term": "Change management",
     "acronym": null,
     "def": "In the CRISC outline (4A2, operations management), the controlled process for assessing, approving, testing, implementing and reviewing changes to IT systems. See IT change management.",
-    "scopeNotes": "The ISACA Glossary's own entry uses the organizational sense: leading people through a move from the current to a desired state.",
+    "scopeNotes": "The ISACA Glossary gives two senses: leading people from a current to a desired organizational state, and (from CMMI) a disciplined, planned way of controlling how changes are made. CRISC 4A2 uses the second.",
     "domain": 4,
     "category": "Process"
   },
@@ -264,7 +264,7 @@
     "id": 30,
     "term": "Cloud computing",
     "acronym": null,
-    "def": "On-demand network access to a shared pool of computing resources that can be provisioned and released quickly. Service models include IaaS, PaaS and SaaS.",
+    "def": "Using computing resources, such as servers, storage and applications, as a service over a network: drawn from a provider's shared pool and scaled up or down on demand. Service models include IaaS, PaaS and SaaS.",
     "scopeNotes": "",
     "domain": 4,
     "category": "Technology"
@@ -372,7 +372,7 @@
     "id": 42,
     "term": "Continuous monitoring",
     "acronym": null,
-    "def": "Ongoing awareness of security, vulnerabilities and threats, at a frequency set by risk, to support risk decisions.",
+    "def": "Watching security posture, vulnerabilities and threats on a continuing basis, at a frequency set by risk, so risk decisions rest on current information rather than a yearly snapshot.",
     "scopeNotes": "NIST calls it information security continuous monitoring (ISCM).",
     "domain": 3,
     "category": "Process"
@@ -543,7 +543,7 @@
     "id": 61,
     "term": "Data minimization",
     "acronym": null,
-    "def": "Collecting and keeping only the personal data that is adequate, relevant and needed for the purpose.",
+    "def": "Collecting and keeping only the personal data the purpose needs.",
     "scopeNotes": "",
     "domain": 4,
     "category": "Control"
@@ -615,7 +615,7 @@
     "id": 69,
     "term": "Disaster recovery plan (DRP)",
     "acronym": "DRP",
-    "def": "A plan for bringing IT systems and facilities back after a disaster, within the time and cost the business has agreed, with the people, sites, technology and steps needed.",
+    "def": "The documented plan for restoring IT systems, data and facilities after a disaster, naming the people, alternate sites, technology and steps, so recovery meets the RTO and RPO the business set.",
     "scopeNotes": "",
     "domain": 4,
     "category": "Document"
@@ -939,7 +939,7 @@
     "id": 105,
     "term": "Incident",
     "acronym": null,
-    "def": "An event that actually or imminently harms the confidentiality, integrity or availability of information or systems, or that breaks, or is about to break, the law, security policy or acceptable use rules.",
+    "def": "An event that damages, or threatens at any moment to damage, the confidentiality, integrity or availability of information or systems, or that breaks the law or the enterprise's security or acceptable use rules. Alerts become incidents only once triage confirms them.",
     "scopeNotes": "",
     "domain": 2,
     "category": "Concept"
@@ -948,7 +948,7 @@
     "id": 106,
     "term": "Incident management",
     "acronym": null,
-    "def": "The process that restores normal service as quickly as possible after a disruption and limits its business impact.",
+    "def": "The process for logging, prioritizing and resolving incidents so the affected service is back in use quickly and the disruption to the business stays small.",
     "scopeNotes": "Incident management restores service; problem management removes the cause.",
     "domain": 4,
     "category": "Process"
@@ -1182,7 +1182,7 @@
     "id": 132,
     "term": "Maximum tolerable outage (MTO)",
     "acronym": "MTO",
-    "def": "The outage length a critical business function or IT system can reach before the harm to the enterprise becomes severe and hard to recover from. Recovery must be complete before it.",
+    "def": "The outage limit for a critical process or the IT system behind it: once an outage runs past it, the damage to the enterprise becomes significant. Every recovery target, including the RTO, must fit inside it.",
     "scopeNotes": "MTO and AIW are business limits on how long an outage can last; RTO is the recovery target set inside them; RPO limits data loss, not downtime. Other sources call it maximum tolerable downtime (MTD).",
     "domain": 2,
     "category": "Metric"
@@ -1254,7 +1254,7 @@
     "id": 140,
     "term": "Need-to-know",
     "acronym": null,
-    "def": "Giving people sight of only the information, systems and areas their role actually requires.",
+    "def": "Access to specific information is granted only when a person's current task requires it, even if their role or clearance would otherwise allow it.",
     "scopeNotes": "Need-to-know limits what a person can see or reach; least privilege limits what they can do once there.",
     "domain": 4,
     "category": "Control"
@@ -1371,7 +1371,7 @@
     "id": 153,
     "term": "Personal data",
     "acronym": null,
-    "def": "Any information relating to an identified or identifiable person.",
+    "def": "Any information that tells you about a particular person, or lets someone work out who they are, alone or combined with other data; names, ID numbers, location data and device IDs all count.",
     "scopeNotes": "Close to, but broader than, the US term personally identifiable information (PII): it covers anything that can identify a person directly or indirectly, such as an online identifier.",
     "domain": 4,
     "category": "Concept"
@@ -1479,7 +1479,7 @@
     "id": 165,
     "term": "Procedure",
     "acronym": null,
-    "def": "A document giving the detailed steps for performing a task in line with policies and standards.",
+    "def": "Step-by-step instructions for carrying out a task so the result complies with the policy or standard behind it.",
     "scopeNotes": "",
     "domain": 1,
     "category": "Document"
@@ -1506,7 +1506,7 @@
     "id": 168,
     "term": "Pseudonymization",
     "acronym": null,
-    "def": "Processing personal data so it cannot be linked to a person without extra information that is kept separately and protected.",
+    "def": "Replacing direct identifiers, such as names, with codes or tokens, while the key that links codes back to people is stored apart under its own controls. The result is still personal data, because it can be re-linked.",
     "scopeNotes": "",
     "domain": 4,
     "category": "Control"
@@ -1515,7 +1515,7 @@
     "id": 169,
     "term": "Purpose limitation",
     "acronym": null,
-    "def": "Collecting personal data for specified, explicit and legitimate purposes and not using it later in ways incompatible with them.",
+    "def": "A privacy principle: personal data is gathered only for clearly stated, lawful purposes, and any later use must fit those purposes; an unrelated new use needs its own legal basis.",
     "scopeNotes": "",
     "domain": 4,
     "category": "Control"
@@ -1542,7 +1542,7 @@
     "id": 172,
     "term": "RACI chart",
     "acronym": "RACI",
-    "def": "A matrix showing who is Responsible, Accountable, Consulted and Informed for each activity.",
+    "def": "A responsibility grid that lists activities against roles and marks who does the work (R), who answers for the outcome (A), who gives input (C) and who is kept updated (I).",
     "scopeNotes": "Only one role is Accountable for an activity and holds the authority to decide; several roles can be Responsible for doing the work.",
     "domain": 1,
     "category": "Document"
@@ -1641,8 +1641,8 @@
     "id": 183,
     "term": "Risk acceptance",
     "acronym": null,
-    "def": "A recorded decision by a risk owner with the authority to make it to keep a risk and bear any loss, staying within the appetite and tolerance the board and senior management set.",
-    "scopeNotes": "The practitioner recommends and records; only the owner accepts. Unrecorded acceptance is implicit acceptance.",
+    "def": "The risk owner's recorded decision to keep a risk at its current level without further treatment, because it sits inside the appetite and tolerance the board and senior management set and the owner has authority for that level.",
+    "scopeNotes": "The practitioner recommends and records; only the owner accepts. Unrecorded acceptance is implicit acceptance. Carrying risk above tolerance is not the owner's call: it needs a time-limited temporary acceptance from the level that set the limit.",
     "domain": 3,
     "category": "Process"
   },
@@ -1678,7 +1678,7 @@
     "term": "Risk appetite",
     "acronym": null,
     "def": "The overall level and kinds of risk the enterprise has chosen to take on to achieve its strategy and objectives. The board and senior management set it, and every response decision is measured against it.",
-    "scopeNotes": "Appetite is the broad, enterprise-wide amount set by the board and senior management; tolerance is the acceptable variation for a particular risk, often a measurable limit; capacity is the most loss the enterprise can survive. Appetite sits below capacity.",
+    "scopeNotes": "Appetite is the overall, enterprise-wide level set by the board and senior management; tolerance is how far a particular risk may move from it before escalation, often a measurable limit; capacity is the most loss the enterprise can survive. Appetite sits below capacity.",
     "domain": 1,
     "category": "Concept"
   },
@@ -1714,7 +1714,7 @@
     "term": "Risk capacity",
     "acronym": null,
     "def": "The most loss, in money, capital or operations, the enterprise could take and still survive and meet its obligations. It is a hard limit set by facts, not by preference.",
-    "scopeNotes": "Appetite is the broad, enterprise-wide amount set by the board and senior management; tolerance is the acceptable variation for a particular risk, often a measurable limit; capacity is the most loss the enterprise can survive. Appetite sits below capacity.",
+    "scopeNotes": "Appetite is the overall, enterprise-wide level set by the board and senior management; tolerance is how far a particular risk may move from it before escalation, often a measurable limit; capacity is the most loss the enterprise can survive. Appetite sits below capacity.",
     "domain": 1,
     "category": "Concept"
   },
@@ -1740,7 +1740,7 @@
     "id": 194,
     "term": "Risk culture",
     "acronym": null,
-    "def": "How people across the enterprise actually think and behave about risk: whether they weigh it honestly in decisions, do the right thing when no one is watching, and feel safe raising risks, mistakes and losses.",
+    "def": "The values and beliefs people across the enterprise share about risk, and the behavior they drive: whether people weigh risk honestly in decisions, do the right thing when no one is watching, and feel safe raising risks, mistakes and losses.",
     "scopeNotes": "",
     "domain": 1,
     "category": "Concept"
@@ -1767,7 +1767,7 @@
     "id": 197,
     "term": "Risk evaluation",
     "acronym": null,
-    "def": "Checking an analyzed risk against the agreed criteria to see how significant it is and whether it needs a response.",
+    "def": "The decision step after analysis: setting each rated risk against the agreed criteria and appetite to decide whether it is acceptable, needs a response and how urgently.",
     "scopeNotes": "",
     "domain": 2,
     "category": "Process"
@@ -1785,7 +1785,7 @@
     "id": 199,
     "term": "Risk factor",
     "acronym": null,
-    "def": "A condition, such as staff turnover or system age, that makes a risk scenario more or less frequent, or more or less damaging to the business.",
+    "def": "An internal or external circumstance, such as staff turnover, system age or a new regulation, that raises or lowers how often a scenario could happen or how much it would hurt. A risk driver is a factor that pushes risk up.",
     "scopeNotes": "",
     "domain": 2,
     "category": "Concept"
@@ -1839,7 +1839,7 @@
     "id": 205,
     "term": "Risk owner",
     "acronym": null,
-    "def": "The person with the authority and accountability to make decisions about a risk, who answers for the loss if it occurs. The risk owner decides the response and accepts what remains.",
+    "def": "The named person who answers for a risk: they decide how it is treated, accept what remains, and their part of the business carries the loss if the risk occurs. They need enough authority and budget to act on it.",
     "scopeNotes": "The risk owner decides the response and accepts the risk; the control owner answers for a control being in place and working; the action owner completes a treatment task. Senior management assigns risk owners.",
     "domain": 1,
     "category": "Role"
@@ -1858,7 +1858,7 @@
     "term": "Risk profile",
     "acronym": null,
     "def": "The current, aggregated view of the risks the enterprise faces, reported to senior management and the board against appetite.",
-    "scopeNotes": "The ISACA Glossary entry is IT risk profile: a description of the overall identified IT risk the enterprise is exposed to.",
+    "scopeNotes": "The ISACA Glossary has no plain 'risk profile' entry; its closest is 'IT risk profile', which covers IT risk only.",
     "domain": 1,
     "category": "Concept"
   },
@@ -1903,7 +1903,7 @@
     "term": "Risk tolerance",
     "acronym": null,
     "def": "How far a particular risk or result may move from what the appetite intends before it must be escalated, usually set as a measurable limit.",
-    "scopeNotes": "Appetite is the broad, enterprise-wide amount set by the board and senior management; tolerance is the acceptable variation for a particular risk, often a measurable limit; capacity is the most loss the enterprise can survive. Appetite sits below capacity. A validated tolerance breach goes to the risk owner and the level that set the limit.",
+    "scopeNotes": "Appetite is the overall, enterprise-wide level set by the board and senior management; tolerance is how far a particular risk may move from it before escalation, often a measurable limit; capacity is the most loss the enterprise can survive. Appetite sits below capacity. A validated tolerance breach goes to the risk owner and the level that set the limit.",
     "domain": 1,
     "category": "Concept"
   },
@@ -1911,7 +1911,7 @@
     "id": 213,
     "term": "Risk transfer",
     "acronym": null,
-    "def": "Shifting part of a risk's consequence to another party, usually through insurance or outsourcing.",
+    "def": "Moving some of a risk's financial impact to another party, most often an insurer or a service provider under contract.",
     "scopeNotes": "Also called risk sharing. Transfer moves cost or work; accountability stays with the enterprise.",
     "domain": 3,
     "category": "Process"
@@ -1930,7 +1930,7 @@
     "term": "Risk-aware culture",
     "acronym": null,
     "def": "A culture in which people understand the risks in their own work, speak up about them early and act within appetite.",
-    "scopeNotes": "Risk culture is the shared values that exist today; a risk-aware culture is the state that tone at the top and role-based training aim to build.",
+    "scopeNotes": "Risk culture is the values, beliefs and behavior about risk that exist today; a risk-aware culture is the state that tone at the top and role-based training aim to build.",
     "domain": 4,
     "category": "Concept"
   },
@@ -2190,7 +2190,7 @@
     "id": 244,
     "term": "Threat",
     "acronym": null,
-    "def": "Any person, group, event or condition, such as an attacker, a careless user or a flood, that could act against an asset and cause harm.",
+    "def": "A possible source of harm, such as an attacker, a careless user, a failing supplier or a flood, that could damage an asset or disrupt an objective.",
     "scopeNotes": "",
     "domain": 2,
     "category": "Concept"
@@ -2208,7 +2208,7 @@
     "id": 246,
     "term": "Threat intelligence",
     "acronym": null,
-    "def": "Information about threats that have targeted, are targeting or could target the enterprise, used to prepare for and prevent attacks.",
+    "def": "Analyzed information about adversaries, their methods and current campaigns that matter to the enterprise, used to anticipate attacks, tune defenses and update risk scenarios.",
     "scopeNotes": "New intelligence is a trigger to assess and report, not to jump to controls.",
     "domain": 2,
     "category": "Concept"
@@ -2343,7 +2343,7 @@
     "id": 261,
     "term": "Vulnerability",
     "acronym": null,
-    "def": "A flaw or gap in how a process, system or its controls is designed, built, run or governed, which a threat could take advantage of.",
+    "def": "A weakness that a threat could exploit, whether in technology, a process, people's skills or the controls and governance around them.",
     "scopeNotes": "",
     "domain": 2,
     "category": "Concept"
