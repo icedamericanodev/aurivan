@@ -88,14 +88,14 @@
       "question": "A governance, risk and compliance (GRC) platform flags that the screen lock is off on a front-desk computer that a technician keeps to its approved baseline. What is the technician's BEST response?",
       "options": {
         "A": "Pause the platform's screen lock check on that computer until review",
-        "B": "Turn the screen lock back on through the normal change process",
+        "B": "Turn the screen lock back on and record the change",
         "C": "Close the alert and point to the computer's clean audit last year",
         "D": "Send the alert to the risk committee to decide on a fix"
       },
       "correct": "B",
-      "key_concept": "When monitoring shows a control has drifted from its approved setting, the person who maintains it confirms and restores it through change control.",
+      "key_concept": "When monitoring flags drift from an approved setting, whoever maintains it confirms the drift, restores the setting and records the change with its cause.",
       "pre_read": "Notice who maintains the computer, what the alert says has changed and what was already approved.",
-      "correct_explanation": "The approved baseline already says the screen lock should be on, and maintaining that baseline is the technician's job. After confirming the alert on the computer, the technician restores the setting through the change process, which leaves a record. Sending it to the risk committee is the runner-up: escalation sounds careful, but nothing new needs deciding, and the front-desk computer stays unlocked while the committee meets.",
+      "correct_explanation": "The approved baseline already says the screen lock should be on, and maintaining that baseline is the technician's job. After confirming the alert, the technician restores the setting as a standard change, which needs no new approval because it returns to the baseline, and records it with the likely cause. Sending it to the risk committee is the runner-up: nothing new needs deciding, and the computer stays unlocked while the committee meets.",
       "wrong_explanations": {
         "A": "Tempting because it quiets a noisy alert. But pausing the check removes the gap from view without fixing it; the computer still has no screen lock.",
         "C": "Tempting because the computer passed before. But an audit shows the state at that time only; the setting has drifted since, and the alert reflects today.",
@@ -104,7 +104,7 @@
       "tips": [
         "Eliminate: A stops the check instead of fixing the control it watches, and C treats last year's audit as proof of today's setting.",
         "Final two: B beats D because restoring an approved setting is within the technician's role; escalation suits decisions nobody has made yet.",
-        "Exam cue: when a tool flags drift from an approved setting you maintain, confirm it and fix it through change control. Escalate what is outside your authority."
+        "Exam cue: when a tool flags drift on a setting you maintain and no approved change explains it, restore it as a standard change and record the cause. Escalate what is outside your authority."
       ],
       "framework_ref": "NIST SP 800-53 Rev. 5 CA-7 (Continuous Monitoring); NIST SP 800-53 Rev. 5 CM-3 (Configuration Change Control)",
       "related_concepts": [
@@ -112,7 +112,7 @@
         "Approved baseline",
         "Change control"
       ],
-      "_provenance": "Authored from concept: 'a tool supports governance; confirm a flagged gap, act within procedure and leave a record' (notes 2.1.6 GRC Tools and Automation). A harmless setting drift (screen lock) chosen so the item is not a possible security incident, and to avoid the notes' laptop encryption example. Calibration: in-role key over escalation. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 pilot batch, 29 Oct 2026.",
+      "_provenance": "Authored from concept: 'a tool supports governance; confirm a flagged gap, act within procedure and leave a record' (notes 2.1.6 GRC Tools and Automation). A harmless setting drift (screen lock) chosen so the item is not a possible security incident, and to avoid the notes' laptop encryption example. Calibration: in-role key over escalation. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 pilot batch, 29 Oct 2026. Cross-review fix (31 Oct 2026): key no longer says 'normal change process', since restoring an approved baseline is a pre-approved change (CD-04). Fix-up round 1 (31 Oct 2026): key now says 'record the change', and the explanation and cue call the restore a standard change that needs no new approval because it returns to the baseline, matching notes 5.4.6. Fix-up round 2 (31 Oct 2026): key concept, explanation and cue add recording the cause of the drift, matching notes 5.4.4 and the CD-01 ruling, so the restore is not a quiet revert.",
       "style_version": 2
     },
     {
@@ -124,18 +124,18 @@
       "question": "A sales team asks an IT support analyst to install a free AI extension that rewrites customer emails, but the security team's approved tools list omits it. What should the analyst do FIRST?",
       "options": {
         "A": "Let the team use it on emails with customer names removed",
-        "B": "Block the extension's website for every user on the web filter",
+        "B": "Block the extension's website for every staff member on the web filter",
         "C": "Install it for the team and log it in the AI inventory",
-        "D": "Explain the approval route and request review of the extension"
+        "D": "Explain the request process and submit the extension for review"
       },
       "correct": "D",
       "key_concept": "New AI tools are reviewed and approved before use; practitioners route requests to the approvers rather than installing, banning or improvising.",
       "pre_read": "Notice who keeps the approved tools list and what data the extension would see.",
-      "correct_explanation": "The security team owns the approved tools list, so the analyst's job is to explain the approval route and request a review, which lets the security team and data owner check how the vendor handles customer emails. Installing it and logging it in the AI inventory is the runner-up: the inventory records each use, but a new use is reviewed before it starts, not recorded afterward.",
+      "correct_explanation": "The security team owns the approved tools list, so the analyst's job is to explain the request process and submit the extension for review, which lets the security team and data owner check how the vendor handles customer emails. Installing it and logging it in the AI inventory is the runner-up: the inventory records each use, but a new use is reviewed before it starts, not recorded afterward.",
       "wrong_explanations": {
         "A": "Tempting because removing names feels safer. But the emails' content still reaches an unvetted service, and the tool remains unapproved.",
-        "B": "Tempting because a block removes the risk quickly. But blanket bans push staff toward hidden tools, and blocking decisions belong to the security team.",
-        "C": "Closest choice: recording AI use is part of governance. But the inventory tracks approved uses; installing first lets customer emails reach an unvetted service."
+        "B": "Tempting because a block removes the risk quickly. But blanket bans push staff toward hidden tools, and the security team, which owns the list, decides on blocking.",
+        "C": "Closest choice: recording AI use is part of governance. But a new use is reviewed before it starts; installing first lets customer emails reach an unvetted service."
       },
       "tips": [
         "Eliminate: A still sends customer content to an unvetted service, and B bans the tool outright, which pushes staff to hidden tools and is not the analyst's call.",
@@ -148,7 +148,7 @@
         "Approved tools list",
         "AI inventory"
       ],
-      "_provenance": "Authored from concept: 'use only approved AI tools; report unapproved ones rather than blocking or approving them yourself' (notes 2.1.8 Governing AI Use). Email-rewriting extension chosen to avoid the notes' AI note-taker example and cc_d1_019's public chatbot. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 pilot batch, 29 Oct 2026.",
+      "_provenance": "Authored from concept: 'use only approved AI tools; report unapproved ones rather than blocking or approving them yourself' (notes 2.1.8 Governing AI Use). Email-rewriting extension chosen to avoid the notes' AI note-taker example and cc_d1_019's public chatbot. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 pilot batch, 29 Oct 2026. Cross-review fix (31 Oct 2026): C's explanation no longer says the inventory holds only approved uses (cc_d5_038 records unknown ones); B's explanation names the list owner as the blocking decider; option B lengthened so the key no longer ties for longest (CD-06, CD-07, CD-14). Fix-up round 1 (31 Oct 2026): key reworded so the stem's 'approved' is no longer echoed only in the key ('approval route') (rule 10).",
       "style_version": 2
     },
     {
@@ -337,7 +337,7 @@
       "subtopic": "2.2 Redundancy. Testing BC and DR plans",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A new disaster recovery plan has never been tested, and a systems administrator suggests shutting down the main data center for a day to prove it. What is the business continuity coordinator's BEST response?",
+      "question": "A new disaster recovery plan has never been tested, and a system administrator suggests shutting down the main data center for a day to prove it. What is the continuity coordinator's BEST response?",
       "options": {
         "A": "Run the full shutdown test as the administrator suggests",
         "B": "Begin with a tabletop walkthrough to find basic errors",
@@ -364,7 +364,7 @@
         "Parallel test",
         "Full interruption test"
       ],
-      "_provenance": "Authored from concept: 'test in order of risk; a full interruption needs senior management approval' (notes 2.2.7 Testing and Maintaining BC and DR Plans). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 pilot batch, 29 Oct 2026.",
+      "_provenance": "Authored from concept: 'test in order of risk; a full interruption needs senior management approval' (notes 2.2.7 Testing and Maintaining BC and DR Plans). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 pilot batch, 29 Oct 2026. Cross-review fix (31 Oct 2026): role names follow the canonical list: system administrator, continuity coordinator (CD-26).",
       "style_version": 2
     },
     {
@@ -409,20 +409,20 @@
       "subtopic": "2.3 Security awareness. Awareness and training",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "Impostor callers have twice talked a university's help desk into resetting staff passwords this month. Which change is BEST for the training lead to make?",
+      "question": "Impostor callers have twice talked a university's help desk into resetting staff passwords this month. Which change is BEST for the awareness lead to make?",
       "options": {
         "A": "Repeat the yearly security training for every staff member",
-        "B": "Run a campus poster campaign about phone scams for everyone",
-        "C": "Put the agents who reset the passwords on formal warning",
+        "B": "Run a campus poster campaign about scam callers for everyone",
+        "C": "Put the help desk agents who reset the passwords on formal warning",
         "D": "Add caller-verification practice to help desk training"
       },
       "correct": "D",
       "key_concept": "Match learning to role and risk: everyone gets awareness, and a role that repeats one mistake gets targeted training.",
       "pre_read": "Notice which group made the mistake, and how each option reaches that group.",
-      "correct_explanation": "The resets show one group lacking one skill: checking a caller's identity before acting. Role-based training adds that practice for the help desk, on top of general awareness. A poster campaign is the runner-up because it raises awareness of phone scams, but awareness reminds people to notice; it does not teach agents the verification steps their job needs.",
+      "correct_explanation": "The resets show one group lacking one skill: checking a caller's identity before acting. Role-based training adds that practice for the help desk, on top of general awareness. A poster campaign is the runner-up because it raises awareness of scam callers, but awareness reminds people to notice; it does not teach agents the verification steps their job needs.",
       "wrong_explanations": {
         "A": "Tempting because it repeats familiar training. But one yearly course for everyone does not teach help desk agents how to verify callers.",
-        "B": "Closest choice: phone-scam awareness helps everyone. But posters remind people to notice; the help desk needs practice in the steps that verify a caller.",
+        "B": "Closest choice: awareness of scam callers helps everyone. But posters remind people to notice; the help desk needs practice in the steps that verify a caller.",
         "C": "Tempting because consequences seem to teach. But punishment makes people hide mistakes, and the agents still lack the verification skill."
       },
       "tips": [
@@ -436,7 +436,7 @@
         "Awareness versus training",
         "Caller verification"
       ],
-      "_provenance": "Authored from concept: 'match the learning to the role and the risk' (notes 2.3.2 Awareness, Training and Education). University help desk chosen to avoid the notes' hospital example. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 pilot batch, 29 Oct 2026. Audit fix 29 Oct 2026: option C no longer assumes two agents; the stem says only that impostors succeeded twice.",
+      "_provenance": "Authored from concept: 'match the learning to the role and the risk' (notes 2.3.2 Awareness, Training and Education). University help desk chosen to avoid the notes' hospital example. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 pilot batch, 29 Oct 2026. Audit fix 29 Oct 2026: option C no longer assumes two agents; the stem says only that impostors succeeded twice. Cross-review fix (31 Oct 2026): 'training lead' renamed 'awareness lead' to follow the canonical role list (CD-26); option C names the help desk so 'help desk' is no longer echoed only in the key (rule 10). Fix-up round 1 (31 Oct 2026): option B says 'scam callers', so the stem's 'callers' is no longer echoed only in the key (rule 10).",
       "style_version": 2
     },
     {
@@ -481,17 +481,17 @@
       "subtopic": "2.3 Security awareness. Password protection",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A caller who says they are from the IT service desk asks a nurse for their password to fix a mailbox fault. What is the nurse's BEST response?",
+      "question": "A caller who says they are from the IT help desk asks a nurse for their password to fix a mailbox fault. What is the nurse's BEST response?",
       "options": {
         "A": "Refuse to share it, then report the call to the security team",
-        "B": "Call back on the number the caller gives, then share it",
+        "B": "Call back the number the caller provides, then share the password",
         "C": "Refuse to share it, then change the password as a precaution",
-        "D": "Ring the service desk on the directory number, then share it"
+        "D": "Ring the help desk on the directory number, then share it"
       },
       "correct": "A",
       "key_concept": "Nobody needs a user's password, IT included; IT can reset an account without it, so requests for it are refused and reported.",
       "pre_read": "Notice what the caller asks for, and what each option does after the request.",
-      "correct_explanation": "A real service desk can reset or fix an account without knowing the user's password, so any request for it is a warning sign. The nurse refuses and reports the call, so the security team can warn others. Refusing and changing the password is the runner-up: refusing is right, but a new password protects little when nothing was shared, and unreported, the caller simply tries other staff.",
+      "correct_explanation": "A real help desk can reset or fix an account without knowing the user's password, so any request for it is a warning sign. The nurse refuses and reports the call, so the security team can warn others. Refusing and changing the password is the runner-up: refusing is right, but a new password protects little when nothing was shared, and unreported, the caller simply tries other staff.",
       "wrong_explanations": {
         "B": "Tempting because it looks like verifying. But the caller controls the number they give, and the password should not be shared with anyone anyway.",
         "C": "Closest choice: refusing is right, and a new password feels safer. But nothing was shared, so the change protects little; reporting lets the security team warn other staff.",
@@ -508,7 +508,7 @@
         "Vishing",
         "Reporting suspicious requests"
       ],
-      "_provenance": "Authored from concept: 'never share a password, even with IT; IT can reset an account without it' (notes 2.3.6 Password and Passphrase Habits, with 2.3.3 call-back trap). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 pilot batch, 29 Oct 2026. Audit fix 29 Oct 2026: option C became a refusal that skips the report, so the key is no longer the only option that withholds the password; C is now the runner-up.",
+      "_provenance": "Authored from concept: 'never share a password, even with IT; IT can reset an account without it' (notes 2.3.6 Password and Passphrase Habits, with 2.3.3 call-back trap). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 pilot batch, 29 Oct 2026. Audit fix 29 Oct 2026: option C became a refusal that skips the report, so the key is no longer the only option that withholds the password; C is now the runner-up. Cross-review fix (31 Oct 2026): 'service desk' renamed 'help desk' (canonical role list); option B reworded ('the number the caller provides ... share the password') so the key is not the longest option by characters but stays the wordiest (CD-26, CD-14).",
       "style_version": 2
     },
     {
@@ -638,7 +638,7 @@
       "correct_explanation": "Thresholds exist so bad news reaches the right owner on time. The rule sends red results to the risk owner within a day, so the analyst alerts them today with the data, and the owner directs the identity team. Disabling the accounts is the runner-up: removing leftover access sounds like due care, but account removal belongs to the identity team, and the owner still needs to know why the KRI turned red.",
       "wrong_explanations": {
         "A": "Tempting because regular reports are the normal channel. But a red result must reach the risk owner within a day, not weeks later.",
-        "B": "Tempting because amber feels less alarming. But moving the threshold leaves the risk unchanged; only those who own risk appetite change thresholds.",
+        "B": "Tempting because amber feels less alarming. But moving the threshold leaves the risk unchanged, and only the threshold's named owner may change it.",
         "D": "Closest choice: removing leftover access is the right outcome. But the identity team removes accounts, and acting first bypasses the owner the rule says must decide."
       },
       "tips": [
@@ -652,7 +652,7 @@
         "Escalation",
         "Risk owner"
       ],
-      "_provenance": "Authored from concept: 'thresholds turn numbers into action; escalate at once and never move the line' (notes 2.4.4 Thresholds, Targets and Escalation). Leaver-accounts KRI chosen to avoid the notes' laptop-updates example. Calibration: the stem states the rule and who removes accounts. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 pilot batch, 29 Oct 2026.",
+      "_provenance": "Authored from concept: 'thresholds turn numbers into action; escalate at once and never move the line' (notes 2.4.4 Thresholds, Targets and Escalation). Leaver-accounts KRI chosen to avoid the notes' laptop-updates example. Calibration: the stem states the rule and who removes accounts. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 pilot batch, 29 Oct 2026. Cross-review fix (31 Oct 2026): B's explanation matches notes 2.4.4 on who changes a threshold.",
       "style_version": 2
     },
     {
@@ -699,7 +699,7 @@
       "bloom_level": "Analysis",
       "question": "A council's key performance indicators are all green, but a key risk indicator (KRI) for unsupported servers has risen for three months, still below amber. What is BEST for the security manager's board report?",
       "options": {
-        "A": "Report the green results and leave the KRI out until amber",
+        "A": "Report all green and flag the rising KRI once it reaches amber",
         "B": "Attach the full operations dashboard with every chart included",
         "C": "Lower the KRI's amber threshold for this report",
         "D": "Show the KRI's rising trend and what it means for services"
@@ -711,10 +711,10 @@
       "wrong_explanations": {
         "A": "Closest choice: no threshold has been crossed. But green shows only today's position; a steady rise toward the limit is what leaders need to see early.",
         "B": "Tempting because it holds nothing back. But a full operations dashboard buries the one trend that needs attention; boards need short, business-focused views.",
-        "C": "Tempting because amber would draw attention. But only those who own risk appetite change thresholds, with a recorded reason; the trend can be shown as it is."
+        "C": "Tempting because amber would draw attention. But bending a threshold for one report distorts the measure; only its named owner changes it, with a recorded reason."
       },
       "tips": [
-        "Eliminate: B buries the board in operational detail, and C moves a threshold that only the owners of risk appetite may change.",
+        "Eliminate: B buries the board in operational detail, and C bends a threshold for one report, which only its named owner may change, with a recorded reason.",
         "Final two: D beats A because the board needs to see a risk heading toward its limit; green shows only today's position.",
         "Exam cue: report trends, not snapshots, and fit the format to the audience. A rising KRI is news even while it is still green."
       ],
@@ -724,7 +724,7 @@
         "Trends",
         "Key risk indicator (KRI)"
       ],
-      "_provenance": "Authored from concept: 'fit the format to the audience; an all-green dashboard does not mean nothing to report' (notes 2.4.5 Dashboards, Scorecards and Reports, with 2.4.4 thresholds). Two facts to weigh: green KPIs and a rising KRI. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 pilot batch, 29 Oct 2026.",
+      "_provenance": "Authored from concept: 'fit the format to the audience; an all-green dashboard does not mean nothing to report' (notes 2.4.5 Dashboards, Scorecards and Reports, with 2.4.4 thresholds). Two facts to weigh: green KPIs and a rising KRI. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 pilot batch, 29 Oct 2026. Fix-up round 1 (31 Oct 2026): C's explanation and the Eliminate tip say only the threshold's named owner changes it, with a recorded reason, matching notes 2.4.4 and cc_d2_018 and cc_d2_044; C falls mainly because it bends a threshold for one report. Fix-up round 2 (31 Oct 2026): option A names the rising KRI, so the stem's 'risen' is no longer echoed only in the key (rule 10).",
       "style_version": 2
     },
     {
@@ -772,7 +772,7 @@
       "question": "A small landscape design firm is mapping its controls to the NIST Cybersecurity Framework (CSF), and one outcome covers secure software development, though the firm writes no software. What should the junior analyst do FIRST?",
       "options": {
         "A": "Mark the outcome not applicable and record the reason for review",
-        "B": "Write a secure coding policy so that every outcome has a control",
+        "B": "Write a secure coding policy so every outcome has its own control",
         "C": "Ask the firm's owner to accept the outcome as a risk",
         "D": "Switch to another framework that has no software outcomes"
       },
@@ -796,7 +796,7 @@
         "Statement of applicability",
         "Framework mapping"
       ],
-      "_provenance": "Authored from concept: 'tailoring is expected, but every exclusion needs a recorded reason' (notes 2.1.5 Choosing and Mapping Frameworks in GRC). Angle: tailoring an inapplicable outcome, not the notes example of a crosswalk between two frameworks. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 2, 30 Oct 2026. Standards audit fix (30 Oct 2026): runner-up is no longer a subset of the key.",
+      "_provenance": "Authored from concept: 'tailoring is expected, but every exclusion needs a recorded reason' (notes 2.1.5 Choosing and Mapping Frameworks in GRC). Angle: tailoring an inapplicable outcome, not the notes example of a crosswalk between two frameworks. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 2, 30 Oct 2026. Standards audit fix (30 Oct 2026): runner-up is no longer a subset of the key. Cross-review fix (31 Oct 2026): option B reworded so the key no longer ties for longest (CD-14).",
       "style_version": 2
     },
     {
@@ -940,7 +940,7 @@
         "Approval review",
         "Third-party AI risk"
       ],
-      "_provenance": "Authored from concept: 'an AI tool's approval is reviewed again when the vendor's terms, the data or the purpose change' (notes 2.1.8 Governing AI Use). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 2, 30 Oct 2026. Standards audit fix (30 Oct 2026): replaced an item that duplicated cc_d5_026 (data level on an approved tool).",
+      "_provenance": "Authored from concept: 'approval holds only while the facts behind it hold; a change in vendor terms, data or purpose sends the tool back for review' (notes 2.1.8 Governing AI Use). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 2, 30 Oct 2026. Standards audit fix (30 Oct 2026): replaced an item that duplicated cc_d5_026 (data level on an approved tool). Provenance fix (31 Oct 2026): the concept now quotes the notes 2.1.8 bullet added after the notes test.",
       "style_version": 2
     },
     {
@@ -1057,10 +1057,10 @@
       "subtopic": "2.2 Redundancy. AI monitoring and resilience",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "In an airline's recovery plan, booking and check-in, with the shortest recovery time objectives, return first; the AI threat-monitoring tool returns a week later, leaving them unwatched. What should the continuity coordinator recommend as BEST?",
+      "question": "An airline's recovery plan restores booking and check-in within their recovery time objectives of a few hours, but restores its AI threat-monitoring tool only after a week. What is the continuity coordinator's BEST proposal?",
       "options": {
         "A": "Keep the plan's order and restore monitoring after a week",
-        "B": "Rely on the recovery site's firewall until the monitoring returns",
+        "B": "Tighten the firewall rules at the recovery site to cover the gap",
         "C": "Hold booking and check-in until monitoring is fully restored",
         "D": "Restore monitoring early, together with booking and check-in"
       },
@@ -1084,7 +1084,7 @@
         "Security monitoring",
         "Equivalent controls"
       ],
-      "_provenance": "Authored from concept: 'run monitoring where a main-site failure cannot take it down, and restore it early' (notes 2.2.9 AI-Assisted Detection and Resilience). Angle: restore order for AI monitoring, not the notes example of AI catching ransomware early. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 2, 30 Oct 2026.",
+      "_provenance": "Authored from concept: 'run monitoring where a main-site failure cannot take it down, and restore it early' (notes 2.2.9 AI-Assisted Detection and Resilience). Angle: restore order for AI monitoring, not the notes example of AI catching ransomware early. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 2, 30 Oct 2026. Cross-review fix (31 Oct 2026): stem drops the lowercase 'first' beside BEST (worded 'within hours' rather than 'earliest', which would echo the key's 'early') and says 'propose'; option B no longer a second 'wait until' option (CD-27, CD-28, CD-29). Notes 2.2.6 now state that a recovery site keeps controls equal to the main site. Fix-up round 1 (31 Oct 2026): stem restated with both verbs and no unclear 'them', and the question reads 'BEST proposal'.",
       "style_version": 2
     },
     {
@@ -1129,7 +1129,7 @@
       "subtopic": "2.2 Redundancy. Recovery objectives",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A ticket seller's maximum tolerable downtime (MTD) is 12 hours; recovery takes 6 hours to restore systems and 4 hours to check orders before selling. Which finding should the continuity planner record as MOST accurate?",
+      "question": "A ticket seller's maximum tolerable downtime (MTD) is 12 hours; after an outage, restoring systems takes 6 hours and checking orders before selling takes 4 more. What is the continuity coordinator's MOST accurate conclusion?",
       "options": {
         "A": "The plan meets the MTD, with 2 hours to spare",
         "B": "The plan meets the MTD, with 6 hours to spare",
@@ -1138,7 +1138,7 @@
       },
       "correct": "A",
       "key_concept": "The full time until a function resumes, restoring systems plus checking work, must fit within the maximum tolerable downtime.",
-      "pre_read": "Add up every step between the outage and the first sale, then compare the total with the limit.",
+      "pre_read": "Notice each time figure in the stem and what each recovery term measures.",
       "correct_explanation": "Selling resumes only after the systems are restored and the orders checked: 6 + 4 = 10 hours, inside the 12-hour MTD with 2 hours to spare. The 6-hour figure is the runner-up: it counts only the system restore, but customers cannot buy until the orders are checked, and that work time must also fit inside the MTD.",
       "wrong_explanations": {
         "B": "Closest choice: the systems are back in 6 hours. But selling waits for the 4 hours of checks too, so the function returns at 10 hours.",
@@ -1156,7 +1156,7 @@
         "Recovery time objective",
         "Work recovery time"
       ],
-      "_provenance": "Authored from concept: 'RTO plus work recovery time must fit inside the MTD' (notes 2.2.4 Recovery Objectives: MTD, RTO and RPO). Angle: time arithmetic against the MTD; the notes example tests a backup gap against the RPO. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 2, 30 Oct 2026.",
+      "_provenance": "Authored from concept: 'RTO plus work recovery time must fit inside the MTD' (notes 2.2.4 Recovery Objectives: MTD, RTO and RPO). Angle: time arithmetic against the MTD; the notes example tests a backup gap against the RPO. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 2, 30 Oct 2026. Cross-review fix (31 Oct 2026): 'continuity planner' renamed 'continuity coordinator' (CD-26). Fix-up round 1 (31 Oct 2026): stem says the times run from the outage and asks for the MOST accurate conclusion. Fix-up round 2 (31 Oct 2026): pre_read no longer gives the add-every-step method that defeats the runner-up (rule 7).",
       "style_version": 2
     },
     {
@@ -1201,24 +1201,24 @@
       "subtopic": "2.2 Redundancy. Recovery sites",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "An IT manager at a parts distributor that runs orders at head office must pick the cheapest site meeting a two-day recovery time objective (RTO) from its business impact analysis. Which site is BEST?",
+      "question": "Leaders ask an IT manager at a parts distributor, which runs orders at head office, to propose the cheapest site meeting its two-day recovery time objective (RTO). Which site is BEST?",
       "options": {
         "A": "A hot site with live copies of current data",
-        "B": "A cold site that has space, power and cooling only",
+        "B": "A cold site that has space, power and cooling in place",
         "C": "A warm site with equipment ready and data to restore",
         "D": "A spare room in the head office with spare servers"
       },
       "correct": "C",
       "key_concept": "Choose the least costly recovery site whose readiness still meets the RTO; readier sites cost more to keep.",
-      "pre_read": "Note the target recovery time and the cost limit, then check each site against both.",
+      "pre_read": "Note the target recovery time and what the leaders asked for, then check each site against both.",
       "correct_explanation": "Recovery sites trade readiness for cost. A warm site has equipment and connections in place, so restoring data can bring orders back within a day or two, at medium cost. A hot site is the runner-up: it would meet the target easily, but it costs the most to keep running, and leaders asked for the cheapest site that meets a two-day RTO.",
       "wrong_explanations": {
         "A": "Closest choice: a hot site meets a two-day target with room to spare. But it costs the most to keep ready, and leaders asked for the cheapest fit.",
-        "B": "Tempting because it is the cheapest site. But equipping an empty room takes days to weeks, too slow for a two-day target.",
+        "B": "Tempting because it is the cheapest site. But it must be equipped from scratch, which usually takes a week or more, too slow for a two-day target.",
         "D": "Tempting because it costs little and is close by. But a fire or flood at head office would take out the spare room too."
       },
       "tips": [
-        "Eliminate: B takes days or weeks to equip, missing the target, and D shares the main site, so one disaster hits both.",
+        "Eliminate: B must be equipped from scratch, usually a week or more, missing the target, and D shares the main site, so one disaster hits both.",
         "Final two: C beats A because both meet two days, but the warm site does it at lower cost; match the site to the RTO.",
         "Exam cue: hot sites recover in hours or less, warm in about a day to a few days, cold in weeks. Pick the cheapest that still meets the RTO."
       ],
@@ -1228,7 +1228,7 @@
         "Hot site",
         "Cost against recovery time"
       ],
-      "_provenance": "Authored from concept: 'match the site to the RTO from the BIA, not to habit or budget' (notes 2.2.6 Recovery Sites). Angle: the cheapest site that meets a two-day RTO; the pilot item tests an over-ready hot site for a three-week RTO. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 2, 30 Oct 2026. Standards audit fix (30 Oct 2026): two-day RTO sits inside the warm-site band; stem says orders run at head office.",
+      "_provenance": "Authored from concept: 'match the site to the RTO from the BIA, not to habit or budget' (notes 2.2.6 Recovery Sites). Angle: the cheapest site that meets a two-day RTO; the pilot item tests an over-ready hot site for a three-week RTO. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 2, 30 Oct 2026. Standards audit fix (30 Oct 2026): two-day RTO sits inside the warm-site band; stem says orders run at head office. Cross-review fix (31 Oct 2026): leaders ask the IT manager to propose the site, since senior management chooses it (cc_d2_008), and the stem now holds the 'cheapest' request the explanations use; option B drops 'only' and is no longer shorter than the key (CD-08, CD-14). Fix-up round 1 (31 Oct 2026): pre_read points to what the leaders asked for, since the stem no longer states a cost limit. Fix-up round 2 (31 Oct 2026): B's explanation and the Eliminate tip say a cold site usually takes a week or more, matching the cue and notes 2.2.6 ('weeks means cold'), so 'days' no longer suggests it could meet two days.",
       "style_version": 2
     },
     {
@@ -1372,7 +1372,7 @@
         "Out-of-band verification",
         "Awareness content"
       ],
-      "_provenance": "Authored from concept: 'awareness content teaches verifying requests, not judging polish' (notes 2.3.5 AI-Boosted Phishing and Deepfakes). Angle: updating training content; the pilot item and the notes example test a deepfake video call. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 2, 30 Oct 2026.",
+      "_provenance": "Authored from concept: 'awareness content shows real AI examples to prove polish is no longer a clue, and teaches verifying requests through known channels' (notes 2.3.5 AI-Boosted Phishing and Deepfakes). Angle: updating training content; the pilot item and the notes example test a deepfake video call. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 2, 30 Oct 2026. Provenance fix (31 Oct 2026): quote matches the revised notes 2.3.5 bullet.",
       "style_version": 2
     },
     {
@@ -1494,7 +1494,7 @@
         "A": "Mark the patching gap closed now the window is in place",
         "B": "Raise the target to 40 days to match current results",
         "C": "Track patch times over the coming months against the target",
-        "D": "Add three new patch metrics to the monthly dashboard"
+        "D": "Add three new patch metrics to the server team's monthly dashboard"
       },
       "correct": "C",
       "key_concept": "After a fix, measure again against the target before closing the issue; a process change is not proof of a better outcome.",
@@ -1516,7 +1516,7 @@
         "Verifying fixes",
         "Targets"
       ],
-      "_provenance": "Authored from concept: 'give each fix an owner and a due date, then measure again to confirm it worked' (notes 2.4.6 Using Measurement to Improve). Angle: confirming a fix by measuring again, not the notes example of metric gaming. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 2, 30 Oct 2026.",
+      "_provenance": "Authored from concept: 'give each fix an owner and a due date, then measure again to confirm it worked' (notes 2.4.6 Using Measurement to Improve). Angle: confirming a fix by measuring again, not the notes example of metric gaming. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 2, 30 Oct 2026. Cross-review fix (31 Oct 2026): option D names the server team's dashboard so the key is not the longest option (CD-14).",
       "style_version": 2
     },
     {
@@ -1569,17 +1569,17 @@
         "D": "Add a KRI that tracks news coverage of the competitor's payment breach"
       },
       "correct": "A",
-      "key_concept": "KRI thresholds are set from risk tolerance; when tolerance changes, the thresholds are revised and approved by the risk owner.",
-      "pre_read": "Notice what the board changed and who approves the numbers on the dashboard.",
-      "correct_explanation": "Thresholds are where a tolerance meets the dashboard: when leaders change the tolerance, the thresholds must change with it, or the colors keep judging the old limit. The risk owner approves thresholds, so the analyst proposes new ones for approval. Tightening them directly is the runner-up: the numbers may be right, but changing approved limits alone bypasses the owner's decision.",
+      "key_concept": "KRI thresholds are set from risk tolerance; when tolerance changes, the thresholds are revised and approved by whoever owns them.",
+      "pre_read": "Notice what the leaders changed and who approves the numbers on the dashboard.",
+      "correct_explanation": "Thresholds are where a tolerance meets the dashboard: when leaders change the tolerance, the thresholds must change with it, or the colors keep judging the old limit. Here only the risk owner may approve thresholds, so the analyst proposes new ones for approval. Tightening them directly is the runner-up: the numbers may be right, but changing approved limits alone bypasses the owner's decision.",
       "wrong_explanations": {
         "B": "Tempting because nothing has turned red. But the colors are judged against the old tolerance; under the new one, today's green may already be too much risk.",
-        "C": "Closest choice: the thresholds do need tightening. But the risk owner approves them; an analyst changing limits alone bypasses that decision.",
+        "C": "Closest choice: the thresholds do need tightening. But here only the risk owner may approve them; an analyst changing limits alone bypasses that decision.",
         "D": "Tempting because the breach prompted the change. But news about another firm is not a measure of this retailer's own unpatched systems."
       },
       "tips": [
         "Eliminate: B judges risk against a tolerance leaders have replaced, and D tracks news about another firm instead of the retailer's own exposure.",
-        "Final two: A beats C because the risk owner approves thresholds; the analyst proposes the change rather than making it alone.",
+        "Final two: A beats C because only the risk owner may approve thresholds here; the analyst proposes the change rather than making it alone.",
         "Exam cue: thresholds come from tolerance. When the tolerance, the business or the threats change, revisit the thresholds with whoever owns them."
       ],
       "framework_ref": "NIST CSF 2.0 GV.RM-02 (risk appetite and risk tolerance statements are established, communicated and maintained); NIST SP 800-53 Rev. 5 PM-6 (Measures of Performance)",
@@ -1588,7 +1588,7 @@
         "Risk tolerance",
         "Threshold review"
       ],
-      "_provenance": "Authored from concept: 'thresholds come from the risk appetite and tolerance leaders agreed, and are reviewed when they change' (notes 2.4.4 Thresholds, Targets and Escalation). Angle: a tolerance change; the pilot item tests escalating a red KRI. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 2, 30 Oct 2026. Standards audit fix (30 Oct 2026): stem no longer reads as if the owner already approved new thresholds; leaders, not the board, set tolerance.",
+      "_provenance": "Authored from concept: 'thresholds come from the risk appetite and tolerance leaders agreed, and are reviewed when they change' (notes 2.4.4 Thresholds, Targets and Escalation). Angle: a tolerance change; the pilot item tests escalating a red KRI. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 2, 30 Oct 2026. Standards audit fix (30 Oct 2026): stem no longer reads as if the owner already approved new thresholds; leaders, not the board, set tolerance. Cross-review fix (31 Oct 2026): pre_read says leaders, as the stem does (CD-19); the explanation and tip rest on the stem's own approval rule, matching notes 2.4.4 (named threshold owner).",
       "style_version": 2
     },
     {

@@ -49,7 +49,7 @@
       "subtopic": "3.1 Identity life cycle. Authenticator strength",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A hospital's IT team wants administrators to use a sign-in method that a fake login page cannot capture and replay. Which method BEST fits?",
+      "question": "A hospital's IT team wants administrators to use a sign-in method that a fake login page cannot capture and relay to the real site. Which method BEST fits?",
       "options": {
         "A": "A one-time code sent to the administrator's phone by text",
         "B": "A long passphrase checked against a list of breached passwords",
@@ -88,17 +88,17 @@
       "question": "A help desk technician notes the password standard, owned by the security manager, forces a change every 60 days, against current National Institute of Standards and Technology (NIST) guidance. What is the technician's BEST action?",
       "options": {
         "A": "Turn off password expiry in the directory to match the guidance",
-        "B": "Shorten the change interval to 30 days to compensate",
-        "C": "Propose the change to the owner of the password rules",
+        "B": "Ask the owner to shorten the change interval to 30 days",
+        "C": "Ask the owner to end the scheduled password changes",
         "D": "Add a symbol rule to make each new password stronger"
       },
       "correct": "C",
       "key_concept": "Exact password settings live in a standard that security management approves; practitioners propose changes to its owner.",
       "pre_read": "Note who is acting and who owns the standard. Then read what each option would change, and where.",
-      "correct_explanation": "Current NIST guidance drops scheduled password changes, so the standard is out of date, but the technician does not own it. Proposing the change to the owner puts it in front of the people who approve the standard. Turning off expiry directly has the right goal, but it changes live settings without approval and leaves the written standard and the systems out of step.",
+      "correct_explanation": "Current NIST guidance drops scheduled password changes, so the standard is out of date, but the technician does not own it. Asking the owner to end the scheduled changes puts the fix in front of the people who approve the standard. Turning off expiry directly has the right goal, but it changes live settings without approval and leaves the written standard and the systems out of step.",
       "wrong_explanations": {
         "A": "Closest choice: the goal matches current guidance. But changing live settings is outside a technician's role and bypasses the security manager, who approves the standard.",
-        "B": "Tempting because more frequent changes sound stricter. But they push users toward predictable patterns; NIST advises a change on evidence of compromise, not on a calendar.",
+        "B": "Tempting because it goes to the owner and sounds stricter. But more frequent changes push users toward predictable patterns; NIST advises changes on evidence of compromise.",
         "D": "Tempting because a symbol looks like extra strength. But composition rules lead to predictable patterns; NIST favors length and breach screening over character mixes."
       },
       "tips": [
@@ -112,7 +112,7 @@
         "Breached-password screening",
         "Change management"
       ],
-      "_provenance": "Authored from concept: 'practitioners route changes to a standard through its owner' (notes 3.1.6 Passwords and Modern Password Standards). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 pilot batch, 28 Oct 2026.",
+      "_provenance": "Authored from concept: 'practitioners route changes to a standard through its owner' (notes 3.1.6 Passwords and Modern Password Standards). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 pilot batch, 28 Oct 2026. Fix-up 31 Oct 2026 (blind test): C now says which change it proposes, so it cannot be read as keeping the 60-day rule.",
       "style_version": 2
     },
     {
@@ -125,21 +125,21 @@
       "options": {
         "A": "Create the account now and ask HR to add the record later",
         "B": "Copy the access the project owner gave another consultant",
-        "C": "Create the account with broad access and trim it later",
-        "D": "Refer it to the access team, since accounts follow HR records"
+        "C": "Call the manager back to verify, then create the account",
+        "D": "Refer the manager to HR and the access team to arrange it"
       },
       "correct": "D",
       "key_concept": "Accounts are created from a trusted record, such as an HR start record; urgency or seniority never replaces that trigger.",
       "pre_read": "Look for what normally triggers a new account, and check whether it is present here. Note who is applying the pressure.",
-      "correct_explanation": "Provisioning starts from a trusted record, and here there is none, so the technician refers the request to the access team instead of creating anything. Creating the account first and fixing the record later is the runner-up: it feels helpful, but it hands working credentials to an identity nobody has checked, and urgency from a senior caller is a classic social engineering pressure.",
+      "correct_explanation": "Provisioning starts from a trusted record, and here there is none, so the technician refers the manager to HR, which creates the start record, and to the access team, which provisions from it, instead of creating anything. Calling the manager back is the runner-up: it checks who is asking, but a confirmed caller is still not a start record, so the account would exist before anyone approved what the consultant needs.",
       "wrong_explanations": {
-        "A": "Closest choice: it feels helpful, and the record may follow. But without it nobody has confirmed the consultant exists or what they need, and the caller could be an impostor.",
+        "A": "Tempting because it feels helpful, and the record may follow. But it hands working credentials to an identity nobody has checked, and the caller could be an impostor.",
         "B": "Tempting because the project owner approved that access. But it was approved for someone else and may carry leftover rights; access comes from an approved role once a record exists.",
-        "C": "Tempting because it avoids day-one delays. But broad access is live at once and the trimming rarely happens; start with the smallest fitting role after the record exists."
+        "C": "Closest choice: a callback does check who is asking. But a confirmed caller is not a start record; nobody has yet approved the consultant's role or access."
       },
       "tips": [
-        "Eliminate: B copies another person's rights, which may include leftovers, and C grants broad access first; both break least privilege at provisioning.",
-        "Final two: D beats A because no trusted record means no account yet; the access team, not the caller's urgency, decides how to proceed.",
+        "Eliminate: A creates an account on an unchecked phone call, and B copies another person's rights, which may include leftovers; both skip the joiner process.",
+        "Final two: D beats C because a callback confirms the caller, not the consultant's start; an HR start record triggers the account, and the access team works from it.",
         "Exam cue: no record, no account. Pressure from rank or a deadline is a reason to follow the process, not to skip it."
       ],
       "framework_ref": "NIST SP 800-53 Rev. 5 AC-2 (Account Management); ISO/IEC 27002:2022 Control 5.16 (Identity management)",
@@ -148,7 +148,7 @@
         "Identity proofing",
         "Social engineering"
       ],
-      "_provenance": "Authored from concept: 'no trusted record, no account' (notes 3.1.3 Provisioning and Identity Proofing). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 pilot batch, 28 Oct 2026.",
+      "_provenance": "Authored from concept: 'no trusted record, no account' (notes 3.1.3 Provisioning and Identity Proofing). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 pilot batch, 28 Oct 2026. Fix-up 31 Oct 2026 (blind test and audit): C now verifies the caller before creating, so the key is no longer the only option that holds back, and C is the runner-up; D drops the stem word 'request' and now names HR, which the explanation covers. Fix-up round 2, 31 Oct 2026 (blind test and audit): the Eliminate tip now gives A's own flaw, acting on an unchecked call, so its reason no longer removes the runner-up C.",
       "style_version": 2
     },
     {
@@ -161,7 +161,7 @@
       "options": {
         "A": "Strong multifactor authentication and monitoring at the identity provider",
         "B": "A separate local password on each app for backup",
-        "C": "Strong multifactor authentication on the donor database, the most sensitive app",
+        "C": "Strong multifactor authentication and monitoring on the sensitive donor database",
         "D": "Longer identity provider sessions so staff sign in less often"
       },
       "correct": "A",
@@ -270,10 +270,10 @@
         "A": "Add the intern now on the department head's authority",
         "B": "Reply to the email asking the sender to confirm",
         "C": "Call the department head on the number in the directory",
-        "D": "Give the intern read-only access until a ticket arrives"
+        "D": "Give the intern read-only access until the ticket arrives"
       },
       "correct": "C",
-      "key_concept": "Unusual or urgent access requests are verified through a channel already on file, never the channel the request came in on.",
+      "key_concept": "Unusual access requests are confirmed through a channel already on file, and access still waits for a recorded approval.",
       "pre_read": "Note how the request arrived and what normal paperwork is missing from it.",
       "correct_explanation": "Email is easy to fake, so the analyst first confirms the request through a channel already on file, here the directory number. Even once confirmed, access waits for a ticket. Replying to the email is the runner-up: it looks like verification, but the reply goes to whoever sent the message, so an impostor simply confirms their own request.",
       "wrong_explanations": {
@@ -284,7 +284,7 @@
       "tips": [
         "Eliminate: A treats the sender's rank as an approval, and D grants partial access before any approved request exists.",
         "Final two: C beats B because a callback uses a channel already on file; a reply goes straight back to a possible impostor.",
-        "Exam cue: verify an unusual request through a known channel, never the one the request arrived on."
+        "Exam cue: an unusual access request needs its sender confirmed on a channel on file, then a recorded approval. Urgency or rank replaces neither."
       ],
       "framework_ref": "CIS Controls v8.1 Safeguard 6.1 (Establish an Access Granting Process); ISO/IEC 27002:2022 Control 5.18 (Access rights)",
       "related_concepts": [
@@ -304,22 +304,22 @@
       "question": "A buyer who raises purchase orders moves to accounts payable, which releases supplier payments, and keeps their purchasing rights. What is the access analyst's BEST action?",
       "options": {
         "A": "Leave the old purchasing rights in place until the next access review",
-        "B": "Have the data owner review the buyer's payments each month",
+        "B": "Have the data owner spot-check the buyer's payments",
         "C": "Let the buyer keep the old rights to help their former team",
         "D": "Request removal of the old rights and alert the data owner"
       },
       "correct": "D",
       "key_concept": "A transfer is a leaver plus a joiner: remove old access at the move, especially where old and new rights conflict.",
       "pre_read": "Combine the buyer's old and new rights, and note what one person could now do alone.",
-      "correct_explanation": "Purchasing rights in a payments job let one person raise an order and pay it, a separation of duties conflict. The mover process removes old access at the move, and the data owner decides on any handover need. A monthly owner review of the payments is the runner-up: it is a compensating control for when duties cannot be split, but here they can.",
+      "correct_explanation": "Purchasing rights in a payments job let one person raise an order and pay it, a separation of duties conflict. The mover process removes old access at the move, and the data owner decides on any handover need. Owner spot checks of the payments are the runner-up: they are a compensating control for when duties cannot be split, but here they can.",
       "wrong_explanations": {
         "A": "Tempting because reviews exist to catch leftover access. But they are a backstop, often months apart; the conflict is live today, so old access goes at the move.",
-        "B": "Closest choice: an owner's monthly review is a real compensating control. But it only detects misuse after payment, and it suits teams too small to split duties.",
+        "B": "Closest choice: owner spot checks are a real compensating control. But they only detect misuse after payment, and they suit teams too small to split duties.",
         "C": "Tempting because helping a former team sounds cooperative. But that is a handover need, approved separately with an end date; keeping full rights builds privilege creep."
       },
       "tips": [
         "Eliminate: A waits for a review that may be months away, and C keeps old rights for convenience, which is privilege creep.",
-        "Final two: D beats B because removing the old rights prevents the conflict; a report only detects misuse and suits duties that cannot be split.",
+        "Final two: D beats B because removing the old rights prevents the conflict; spot checks only detect misuse and suit duties that cannot be split.",
         "Exam cue: when a mover's old and new rights let one person start and finish a payment, remove the old access before reaching for monitoring."
       ],
       "framework_ref": "NIST SP 800-53 Rev. 5 PS-5 (Personnel Transfer); NIST SP 800-53 Rev. 5 AC-5 (Separation of Duties)",
@@ -339,24 +339,24 @@
       "bloom_level": "Application",
       "question": "A junior engineer finds the application programming interface (API) key for the company's AI chatbot, which the platform team owns, pasted in a busy team chat channel. What should the engineer do FIRST?",
       "options": {
-        "A": "Report it to the security team, since copies may exist",
+        "A": "Report the key to the platform and security teams at once",
         "B": "Post a reminder in the team channel not to share keys",
         "C": "Delete the chat message so nobody else can copy it",
-        "D": "Revoke the key at once in the cloud console"
+        "D": "Revoke the key at once, then report it to the platform team"
       },
       "correct": "A",
-      "key_concept": "An exposed secret is a security event: report it so the security team and the key's owner can rotate it and check for misuse.",
+      "key_concept": "An exposed secret is a possible incident: report it at once so the security team and the key's owner can rotate it.",
       "pre_read": "Note who owns the key, what depends on it, and who is acting.",
-      "correct_explanation": "An exposed key may already be copied, so the security team needs to know at once: it can bring in the platform team, rotate the key without breaking the chatbot and check logs for misuse. Revoking it alone is the runner-up: speed matters, but the engineer does not own the key, and pulling it unannounced can break a live service and skip the check for misuse.",
+      "correct_explanation": "An exposed key may already be copied, so the engineer tells the platform team, which owns it, and the security team at once: together they can rotate the key without breaking the chatbot and check logs for misuse. Revoking it first is the runner-up: speed matters, but the engineer does not own the key, revoking before a replacement is ready can break a live service, and the security team is left out.",
       "wrong_explanations": {
         "B": "Tempting because it may prevent the next leak. But this key is already exposed and still works.",
         "C": "Tempting because it stops more people from seeing the key. But anyone who copied it can still use it; the key stays valid until it is rotated.",
-        "D": "Closest choice: speed matters with a leaked key. But the platform team owns it; revoking it unannounced can break the live chatbot and skip the check for misuse."
+        "D": "Closest choice: speed matters, and it tells the owner. But revoking first can break the live chatbot, and it leaves out the security team, which checks for misuse."
       },
       "tips": [
         "Eliminate: B addresses future habits, not a secret already exposed, and C removes the message but leaves a copied key valid.",
-        "Final two: A beats D because the platform team, not the engineer, owns the key; the security team coordinates rotation with its owner and checks for misuse.",
-        "Exam cue: when you find a leaked password, key or token you do not own, report it at once rather than fixing it alone."
+        "Final two: A beats D because the engineer does not own the key; revoking it first can break the live chatbot, and D leaves out the security team.",
+        "Exam cue: when you find a leaked password, key or token you do not own, report it at once to its owner and the security team rather than fixing it alone."
       ],
       "framework_ref": "OWASP Non-Human Identities Top 10 (2025) NHI2 (Secret Leakage); NIST SP 800-53 Rev. 5 IA-5 (Authenticator Management)",
       "related_concepts": [
@@ -364,7 +364,7 @@
         "Service accounts",
         "AI agents"
       ],
-      "_provenance": "Authored from concept: 'a leaked machine secret is reported so its owner and security can rotate it' (notes 3.1.12 Non-Human Identities Through the Life Cycle). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 pilot batch, 28 Oct 2026. Review fixes 28 Oct 2026 (blind test and standards audit). Stem now states that the platform team owns the key.",
+      "_provenance": "Authored from concept: 'a leaked machine secret is reported so its owner and security can rotate it' (notes 3.1.12 Non-Human Identities Through the Life Cycle). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 pilot batch, 28 Oct 2026. Review fixes 28 Oct 2026 (blind test and standards audit). Stem now states that the platform team owns the key. Fix-up 31 Oct 2026 (blind test and audit): the reason clause left the key, and the D explanation now matches who coordinates rotation. Fix-up round 2, 31 Oct 2026 (blind test and audit): A now reports to the platform team as well, so A and D both reach the owner and differ only on revoking a key the engineer does not own; the explanations no longer claim that revoking skips the misuse check.",
       "style_version": 2
     },
     {
@@ -375,7 +375,7 @@
       "bloom_level": "Foundational",
       "question": "A temporary worker signs in with multifactor authentication (MFA) and can then open every client folder on the file server. Which part of access control has MOST clearly failed?",
       "options": {
-        "A": "Identification, because the worker's username is not unique",
+        "A": "Identification, because the temporary worker's username is not unique",
         "B": "Authorization, because the worker's rights exceed their job",
         "C": "Authentication, because the sign-in should be stronger",
         "D": "Accounting, because the folder opens were not logged"
@@ -592,8 +592,8 @@
       "question": "A hospital's IT team must let nurses open charts only for patients on their own ward, from hospital devices, during their shift. Which access control model BEST fits?",
       "options": {
         "A": "Role-based access control, with a role for each combination",
-        "B": "Mandatory access control, with a clearance for each nurse",
-        "C": "Discretionary access control, with each ward manager setting rights",
+        "B": "Mandatory access control, with the system checking each nurse's clearance",
+        "C": "Discretionary access control, with each ward's manager setting rights",
         "D": "Attribute-based access control, with a policy checking each request"
       },
       "correct": "D",
@@ -699,9 +699,9 @@
       "bloom_level": "Application",
       "question": "A hospital's server team wants permanent domain administrator rights so they can respond quickly to overnight outages. Which approach BEST balances speed and risk?",
       "options": {
-        "A": "Give every admin permanent rights protected by a long password",
+        "A": "Give every admin permanent rights protected by a longer password",
         "B": "Share one admin login among the night team for emergencies",
-        "C": "Give on-call admins standing rights for their whole shift",
+        "C": "Give on-call admins logged standing rights for their whole shift",
         "D": "Grant rights just in time for each approved task, with logging"
       },
       "correct": "D",
@@ -709,9 +709,9 @@
       "pre_read": "For each option, note who holds admin rights and for how long.",
       "correct_explanation": "Just-in-time access switches admin rights on for an approved task, logs the session and lets the rights expire, so they exist only while needed. Shift-long rights are the runner-up: they cut exposure compared with permanent rights, but they stay live for hours with no task, which is still standing privilege an attacker can use.",
       "wrong_explanations": {
-        "A": "Tempting because a long password sounds protective. But permanent rights are open to attackers around the clock, and a password alone does not protect powerful accounts well enough.",
+        "A": "Tempting because a longer password sounds protective. But permanent rights are open to attackers around the clock, and a password alone does not protect powerful accounts well enough.",
         "B": "Tempting because one login is fast in an emergency. But a shared login hides who acted, and its password spreads to everyone on the team.",
-        "C": "Closest choice: shift-long rights cut exposure compared with permanent ones. But they stay live for hours with no task; rights tied to an approved task expire sooner."
+        "C": "Closest choice: logged, shift-long rights cut exposure compared with permanent ones. But they stay live for hours with no task; rights tied to an approved task expire sooner."
       },
       "tips": [
         "Eliminate: A keeps permanent rights behind a password, the standing exposure to avoid, and B shares one admin login, so no action traces to one person.",
@@ -990,7 +990,7 @@
         "A": "More genuine crew members turned away by the reader",
         "B": "Fewer repeat scans needed by genuine crew members",
         "C": "A higher crossover error rate for each reader",
-        "D": "Copied fingerprints no longer working for attackers"
+        "D": "Copied fingerprints no longer working for the attackers"
       },
       "correct": "A",
       "key_concept": "Tightening a biometric threshold lowers false acceptances but raises false rejections; the two errors trade against each other.",
@@ -1021,34 +1021,34 @@
       "subtopic": "3.1 Identity life cycle. Phishing-resistant authentication",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A staff member who signs in with a passkey clicks an email link to a look-alike sign-in page. What MOST accurately explains why the attacker gets nothing reusable?",
+      "question": "A newspaper moves staff sign-in to passkeys, but keeps a password plus a texted code as an option anyone can pick. Which attack should its IT team MOST expect?",
       "options": {
-        "A": "The passkey's code changes every 30 seconds, so a stolen one expires",
-        "B": "The passkey is longer than any password, so it cannot be guessed",
-        "C": "The passkey sends its private key encrypted to the genuine site",
-        "D": "The passkey answers only requests from the genuine site's domain"
+        "A": "Thieves reading texted codes on staff phones they have stolen",
+        "B": "Attackers guessing the short PIN that unlocks each passkey",
+        "C": "Attackers copying private keys stored on the newspaper's server",
+        "D": "Look-alike pages steering staff to the texted-code fallback"
       },
       "correct": "D",
-      "key_concept": "Passkeys resist phishing because each sign-in is bound to the genuine site's address, and the private key is never sent to any site.",
-      "pre_read": "Think about what a look-alike page could capture and pass on to the real site.",
-      "correct_explanation": "A passkey's private key is never sent to any website. It signs a challenge only for the site the passkey was registered with, after the browser checks the site's address, so a look-alike domain gets no valid response to relay. Sending the private key encrypted is the runner-up: it sounds secure, but the site only ever receives a signature, never the key.",
+      "key_concept": "Phishing resistance holds only if attackers cannot steer users to a weaker method; a texted-code option reopens the relay.",
+      "pre_read": "List each way staff can now sign in, and what an attacker would need for each.",
+      "correct_explanation": "Passkeys stop a fake page from reusing a sign-in, but only when staff must use them. While anyone can pick a texted code, a fake page simply asks for the password and code and relays both to the real site. A stolen phone is the runner-up: texted codes reach whoever holds it, but a thief still needs the password, and theft hits one person at a time.",
       "wrong_explanations": {
-        "A": "Tempting because one-time codes do expire. But passkeys use no typed codes, and a relayed code can still be used within its 30 seconds.",
-        "B": "Tempting because long secrets resist guessing. But phishing captures secrets rather than guessing them; length alone would not stop a relay.",
-        "C": "Closest choice: it sounds like strong protection. But a passkey never sends its private key to any site; the real site receives only a signed answer bound to its address."
+        "A": "Closest choice: texted codes do reach whoever holds the phone. But a thief still needs the password, and theft hits one person; a fake page collects both from many.",
+        "B": "Tempting because PINs are short. But the PIN only unlocks the passkey on the user's own device; it never reaches the site, so remote guessing fails.",
+        "C": "Tempting because servers do get breached. But the site holds only public keys; private keys stay with the user, so a breach yields nothing to sign in with."
       },
       "tips": [
-        "Eliminate: A describes one-time codes, which a look-alike page can relay in time, and B answers guessing, not phishing.",
-        "Final two: D beats C because the private key is never sent to a site; what protects the user is a signature bound to the real site's address.",
-        "Exam cue: phishing-resistant means bound to the genuine site. If a fake page can pass on what the user types or approves, it is not phishing-resistant."
+        "Eliminate: B assumes the unlocking PIN reaches the site, and C assumes the server holds private keys; passkeys keep both with the user.",
+        "Final two: D beats A because a fake page collects the password and code together from many staff; a thief must also know the password.",
+        "Exam cue: sign-in is only as phishing-resistant as the weakest method users may pick. Remove or restrict the fallback, or attackers will steer users to it."
       ],
-      "framework_ref": "NIST SP 800-63B-4 (Authentication and Authenticator Management: phishing resistance); NIST SP 800-63B-4 Section 3.2.5.2 (Verifier Name Binding)",
+      "framework_ref": "NIST SP 800-63B-4 Section 3.2.5 (Phishing Resistance: manually entered codes can be relayed by an impostor verifier); NIST SP 800-63B-4 Section 3.2.5.2 (Verifier Name Binding)",
       "related_concepts": [
         "Passkeys",
-        "FIDO2",
-        "Phishing resistance"
+        "Phishing resistance",
+        "Downgrade to a weaker method"
       ],
-      "_provenance": "Authored from concept: 'passkeys bind each sign-in to the genuine site and keep the private key on the device' (notes 3.1.5 Phishing-Resistant MFA and Passkeys). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 2, 30 Oct 2026. Standards audit fix (30 Oct 2026): synced passkeys can leave the device, so the item now rests on the key never being sent to a site.",
+      "_provenance": "Authored from concept: 'a weaker fallback beside passkeys reopens phishing' (notes 3.1.5 Phishing-Resistant MFA and Passkeys). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 2, 30 Oct 2026. Re-angled 31 Oct 2026 (cross-domain review CD-11): the earlier version asked why passkeys resist a look-alike page, which duplicated cc_d3_002; it now tests the risk of a weaker fallback. Fix-up 31 Oct 2026 (audit): 'staff' now appears in A as well as D, and D no longer repeats the stem word 'sign-in'. Fix-up round 2, 31 Oct 2026 (blind test and audit): the stem now asks which attack to expect, matching the options, and D steers staff to the whole fallback, so the fake page collects the password as well as the code.",
       "style_version": 2
     },
     {
@@ -1057,24 +1057,24 @@
       "subtopic": "3.1 Identity life cycle. Password storage",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "An online bookshop's developer proposes storing customer passwords encrypted, so support staff can read forgotten ones back to customers. Which approach should the security analyst recommend as BEST?",
+      "question": "An online bookshop's developer plans to store customer passwords encrypted, so support staff can read forgotten ones back to customers. Which approach should the security analyst propose as BEST?",
       "options": {
-        "A": "Encrypt the passwords with a key held by the support lead",
+        "A": "Encrypt them and have the support lead approve each lookup",
         "B": "Store salted, slow hashes and offer a verified password reset",
         "C": "Encode the passwords in Base64 so they look unreadable",
-        "D": "Hash the passwords with a fast hash to keep sign-in quick"
+        "D": "Store the passwords as fast SHA-256 hashes to keep sign-in quick"
       },
       "correct": "B",
       "key_concept": "Store passwords as salted, slow hashes and reset forgotten ones; never keep them in a form that can be read back.",
       "pre_read": "Ask what an attacker who steals the stored passwords could do under each option.",
-      "correct_explanation": "Anything that can be decrypted can be stolen and read, so passwords are stored as salted hashes, using a slow hashing scheme that makes each guess costly. A forgotten password is replaced through a verified reset, never read back. Encrypting with a closely held key is the runner-up: it limits who can decrypt, but a stolen key or an insider still exposes every password.",
+      "correct_explanation": "Anything that can be decrypted can be stolen and read, so passwords are stored as salted hashes, using a slow hashing scheme that makes each guess costly. A forgotten password is replaced through a verified reset, never read back. Encrypting with lead-approved lookups is the runner-up: it limits who reads passwords, but a stolen key or an insider still exposes every one.",
       "wrong_explanations": {
-        "A": "Closest choice: a closely held key limits access. But whoever steals the key, or the lead themselves, can still read every password.",
+        "A": "Closest choice: an approval step limits who reads passwords. But anything decryptable can be stolen and read; a stolen key or an insider still exposes every one.",
         "C": "Tempting because the stored text looks scrambled. But Base64 is encoding, not encryption; anyone can reverse it instantly without a key.",
-        "D": "Tempting because hashes cannot be reversed. But fast hashes let attackers test enormous numbers of guesses quickly after stealing the file."
+        "D": "Tempting because SHA-256 is a strong, well-known hash. But it is built to be fast, so attackers who steal the file can test enormous numbers of guesses quickly."
       },
       "tips": [
-        "Eliminate: C uses reversible encoding, not protection, and D picks a fast hash that makes stolen hashes quick to crack.",
+        "Eliminate: C uses reversible encoding, not protection, and D uses SHA-256, a strong but fast hash, so a stolen file is quick to crack.",
         "Final two: B beats A because hashes cannot be turned back into passwords; anything encrypted can be decrypted by whoever gets the key.",
         "Exam cue: passwords are never recovered, only reset. Store them salted and slow-hashed so a stolen file is costly to crack."
       ],
@@ -1084,7 +1084,7 @@
         "Salting",
         "Account recovery"
       ],
-      "_provenance": "Authored from concept: 'store passwords as salted, slow hashes and reset rather than recover them' (notes 3.1.6 Passwords and Modern Password Standards). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 2, 30 Oct 2026.",
+      "_provenance": "Authored from concept: 'store passwords as salted, slow hashes and reset rather than recover them' (notes 3.1.6 Passwords and Modern Password Standards). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 2, 30 Oct 2026. Fix-up 31 Oct 2026 (audit): D now shares the verb 'store' with the key, and the explanation no longer says an approval step limits who can decrypt. Fix-up round 2, 31 Oct 2026 (blind test and audit): D now names SHA-256, testing the belief that a strong, well-known hash is good enough for passwords, and the key is no longer the longest option.",
       "style_version": 2
     },
     {
@@ -1096,7 +1096,7 @@
       "question": "A school's developer is adding 'Sign in with your school account' to a homework app, which must learn who each student is. What should the security analyst advise as BEST?",
       "options": {
         "A": "Use OpenID Connect and verify the ID token it returns",
-        "B": "Use an OAuth 2.0 access token as proof of identity",
+        "B": "Use OAuth 2.0 and verify the access token it returns",
         "C": "Treat each student's school email address as proof of identity",
         "D": "Have students type their school password into the app"
       },
@@ -1168,7 +1168,7 @@
       "question": "A departing developer owns the service account a nightly sales report uses, and knows its password; the report must keep running. What should the IT technician arrange as BEST?",
       "options": {
         "A": "Write the password into the handover notes for the team",
-        "B": "Disable the service account along with the developer's own account",
+        "B": "Disable the service account along with its departing owner's login",
         "C": "Leave the service account alone, since nobody signs in with it",
         "D": "Assign the account a new owner, who then changes its password"
       },
@@ -1192,7 +1192,7 @@
         "Leaver process",
         "Secret rotation"
       ],
-      "_provenance": "Authored from concept: 'a leaver's service accounts are reassigned and rotated, or retired' (notes 3.1.11 Deprovisioning Leavers; 3.1.12 Non-Human Identities Through the Life Cycle). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 2, 30 Oct 2026.",
+      "_provenance": "Authored from concept: 'a leaver's service accounts are reassigned and rotated, or retired' (notes 3.1.12 Non-Human Identities Through the Life Cycle; 3.1.11 Deprovisioning Leavers). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 2, 30 Oct 2026.",
       "style_version": 2
     },
     {
@@ -1601,13 +1601,13 @@
       "options": {
         "A": "Assign it to the IT manager as a second everyday admin account",
         "B": "Give it a strong password that rotates monthly",
-        "C": "Protect it with SSO and multifactor sign-in like other admins",
+        "C": "Protect it with SSO and multifactor authentication, and alert on each use",
         "D": "Keep its credentials sealed offline and alert on each use"
       },
       "correct": "D",
       "key_concept": "Break-glass accounts must work when normal sign-in fails: sealed credentials, few holders, regular tests and an alert on every use.",
       "pre_read": "Note what the emergency account is for, and what each setup depends on.",
-      "correct_explanation": "A break-glass account must work when normal sign-in fails, so it cannot depend on SSO. Its credentials are sealed offline, such as in a safe,, held by few people and tested regularly, and every use raises an alert and a review. Putting it behind SSO with multifactor sign-in is the runner-up: that suits daily admin accounts, but it would fail in exactly the outage it exists for.",
+      "correct_explanation": "A break-glass account must work when normal sign-in fails, so it cannot depend on SSO. Its credentials are sealed offline, such as in a safe, held by few people and tested regularly, and every use raises an alert and a review. Putting it behind SSO with multifactor authentication is the runner-up: that suits daily admin accounts, but it would fail in exactly the outage it exists for.",
       "wrong_explanations": {
         "A": "Tempting because one named person is accountable. But daily use exposes it to the same attacks as normal accounts; an emergency account stays unused until needed.",
         "B": "Tempting because rotation sounds safe. But routine rotation misses its purpose: few should hold it, it stays sealed, and every use raises an alert.",
