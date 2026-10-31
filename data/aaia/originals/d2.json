@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "comment": "Original AAIA practice questions for Domain 2 (AI Operations), written to the ISACA AAIA Examination Content Outline (June 2025). Every item is authored from public concepts and KaiSip's own AAIA study notes (data/aaia/notes/d2.json), with no reference to ISACA's AAIA review manual, QAE database, online course or any prep bank. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/aaia-standards-auditor.md. Not affiliated with or endorsed by ISACA®. AAIA is a trademark of ISACA. Pilot batch aaia_d2_001 to aaia_d2_020, 30 Oct 2026. Batch 2 aaia_d2_021 to aaia_d2_050, 31 Oct 2026.",
+    "comment": "Original AAIA practice questions for Domain 2 (AI Operations), written to the ISACA AAIA Examination Content Outline (June 2025). Every item is authored from public concepts and KaiSip's own AAIA study notes (data/aaia/notes/d2.json), with no reference to ISACA's AAIA review manual, QAE database, online course or any prep bank. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/aaia-standards-auditor.md. Not affiliated with or endorsed by ISACA\u00ae. AAIA is a trademark of ISACA. Pilot batch aaia_d2_001 to aaia_d2_020, 30 Oct 2026. Batch 2 aaia_d2_021 to aaia_d2_050, 31 Oct 2026.",
     "schema_version": 1
   },
   "domain": 2,
@@ -882,7 +882,7 @@
         "A": "Each tuning round went ahead without the model owner's approval",
         "B": "The rounds may have overfitted the model to its training data",
         "C": "The reported score is no longer an unseen test of performance",
-        "D": "The score was not compared with a simpler baseline model"
+        "D": "The reported test score was not compared with a simpler baseline"
       },
       "correct": "C",
       "key_concept": "A test set used to guide tuning stops being an unseen check; its score overstates performance on new data.",
@@ -990,7 +990,7 @@
         "A": "Fine-tune the model on the mill's own Bengali safety reports first",
         "B": "Have the model owner test it on Bengali safety reports before use",
         "C": "Rely on the model's high published accuracy in other languages",
-        "D": "Have the model owner review the open-source code before use"
+        "D": "Have the model owner test the open-source code before use"
       },
       "correct": "B",
       "key_concept": "A model card's stated limits mark where evidence is missing; using a model beyond them needs the organization's own testing first.",
@@ -999,10 +999,10 @@
       "wrong_explanations": {
         "A": "Tempting because tuning adapts a model to local data. But it inherits the base model's unknowns and still needs testing; committing to it first skips the evidence.",
         "C": "Tempting because published scores look strong. But they describe other languages and data; the model card itself says Bengali was never tested.",
-        "D": "Tempting because open code seems transparent. But reading code cannot show how a trained model behaves on Bengali speech; only testing on that use can."
+        "D": "Tempting because open code can be tested like any software. But code tests cannot show how a trained model behaves on Bengali speech; only testing on that use can."
       },
       "tips": [
-        "Eliminate: C relies on scores from other languages, which say nothing about Bengali, and D treats readable code as evidence of behavior, which only testing gives.",
+        "Eliminate: C relies on scores from other languages, which say nothing about Bengali, and D tests the code, which cannot show how the trained model behaves.",
         "Final two: B beats A because testing the intended use comes before investing in a fix; tuning inherits the base model's unknowns and still needs testing.",
         "Exam cue: when a model card lists a limit that matches the planned use, expect testing on that use before any reliance or tuning."
       ],
@@ -1093,25 +1093,25 @@
       "subtopic": "2C AI change management. Rollback scope",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Taiwanese chip fab rolled its wafer-defect model back to the prior version after a bad release, but the new release's alert threshold stayed live. What should the IS auditor recommend as BEST?",
+      "question": "After a bad release, a Taiwanese chip fab rolled back its wafer-defect model, but the new alert threshold stayed live until an engineer reset it days later. What should the IS auditor recommend as BEST?",
       "options": {
-        "A": "Have an engineer reset the alert threshold to the prior value now",
+        "A": "Have an engineer reset the threshold by hand after every rollback",
         "B": "Version each model with its threshold and settings for rollback",
-        "C": "Retrain the restored model so it suits the new threshold",
+        "C": "Require the data science lead to approve each future rollback",
         "D": "Confirm the restored model matches the prior approved version"
       },
       "correct": "B",
       "key_concept": "A rollback must restore a known good state: the model version together with the thresholds and settings approved with it.",
       "pre_read": "Ask what besides the model file decides the system's outputs, and whether rollback restores it too.",
-      "correct_explanation": "The model's alerts depend on both the model and its threshold, so restoring one without the other produced a combination nobody approved or tested. A baseline that versions each model with its threshold and settings lets rollback return a known good state every time. Resetting the threshold by hand fixes this occurrence, but it is a manual change outside change control, and the next rollback would repeat the gap.",
+      "correct_explanation": "The model's alerts depend on both the model and its threshold, so restoring one without the other ran a combination nobody approved or tested for days. A baseline that versions each model with its threshold and settings lets every rollback return a known good state. A manual reset after every rollback helps, but it covers one setting, relies on people remembering and leaves other settings exposed.",
       "wrong_explanations": {
-        "A": "Tempting because it restores the prior pairing quickly. But a manual reset bypasses change control, and the next rollback would leave the same gap.",
-        "C": "Tempting because it makes the pair consistent. But it fits a sound model to a setting nobody approved for it, and retraining is itself a change.",
-        "D": "Tempting because a rollback should restore the approved version. But the model file is not the gap; it now runs with a threshold nobody tested it with."
+        "A": "Tempting because it targets the setting that was missed. But a manual reset covers one setting and relies on people; other settings could still be left behind.",
+        "C": "Tempting because approval is a core change control. But approval decides whether a rollback happens, not what it restores; an approved rollback would leave the same gap.",
+        "D": "Tempting because a rollback should restore the approved version. But the model file was restored correctly; the gap was the threshold approved with it."
       },
       "tips": [
-        "Eliminate: C fits a sound model to a setting nobody approved for it, and D checks the model file, though the untested part is the threshold left behind.",
-        "Final two: B beats A because a baseline that versions settings with the model fixes every future rollback; a manual reset fixes only this one, outside change control.",
+        "Eliminate: C adds approval, which decides whether a rollback happens, not what it restores, and D checks the model file, though the gap was the threshold left behind.",
+        "Final two: B beats A because versioning settings with the model restores all of them on every rollback; a manual reset covers one setting and relies on people.",
         "Exam cue: an AI configuration baseline covers the model version plus its thresholds, prompts and settings; rollback restores them together."
       ],
       "framework_ref": "NIST SP 800-53 Rev. 5 CM-2 (Baseline Configuration); NIST SP 800-53 Rev. 5 CM-6 (Configuration Settings)",
@@ -1201,17 +1201,17 @@
       "subtopic": "2D AI supervision. Oversight design",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A humanitarian agency in Jordan lets a model stop families' food vouchers automatically when it flags them as duplicate registrations; a supervisor reviews weekly totals. What should the IS auditor recommend as BEST?",
+      "question": "An aid agency in Jordan lets a model automatically stop about 30 families' food vouchers a week when it flags duplicate registrations; a supervisor reviews weekly totals. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Have a caseworker approve each stop before it takes effect",
         "B": "Have the supervisor review a sample of stops each week",
-        "C": "Rely on the model's validation results to justify automatic stops",
-        "D": "Restrict automatic stops to flags with very high model confidence"
+        "C": "Rely on validation results to justify the automatic stops",
+        "D": "Restrict automatic stops to very high-confidence flags"
       },
       "correct": "A",
       "key_concept": "The oversight model must match impact: decisions that cut essentials like food need a person to approve each one before it takes effect.",
       "pre_read": "Ask how much harm one wrong automated decision does, and when a person first sees it.",
-      "correct_explanation": "Stopping a family's food vouchers causes serious, immediate harm, so a wrong flag must be caught before it takes effect. Human-in-the-loop review, a caseworker approving each stop, matches oversight to that impact. A weekly sample review by the supervisor adds some human checking, but it comes after the fact: most wrong stops go unseen, and those found have already cut families' food.",
+      "correct_explanation": "Stopping a family's food vouchers causes serious, immediate harm, so a wrong flag must be caught before it takes effect. Human-in-the-loop review, a caseworker approving each stop, matches oversight to that impact and is practical at about 30 stops a week. A weekly sample review by the supervisor adds some human checking, but it comes after the fact: most wrong stops go unseen, and those found have already cut families' food.",
       "wrong_explanations": {
         "B": "Tempting because it adds human review. But sampling after the fact leaves most wrong stops unseen, and any it finds have already cut a family's food.",
         "C": "Tempting because validation shows the model works on average. But a strong validation result does not stop individual wrong flags from cutting essential support.",
@@ -1456,9 +1456,9 @@
       "question": "An Ecuadorian flower exporter's pricing assistant can change list prices through a connected tool; its red team tested only the underlying model, with no tool attached. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Add an output filter that blocks harmful replies to staff",
-        "B": "Rerun the same red-team tests after each vendor model update",
+        "B": "Rerun the same red-team tests after each assistant update",
         "C": "Ask the vendor for its red-team report on the base model",
-        "D": "Extend red teaming to the deployed assistant and what it can do"
+        "D": "Widen the red team's scope to the assistant as it is deployed"
       },
       "correct": "D",
       "key_concept": "Red teaming covers the system as deployed, with its tools and permissions; a model-only test cannot show what a manipulated system could do.",
@@ -1492,29 +1492,29 @@
       "question": "An Icelandic avalanche-warning service validated its risk model on complete sensor records, but storms often freeze or cut sensors. Which test should the IS auditor recommend as MOST important before go-live?",
       "options": {
         "A": "Revalidation by an independent team on the same sensor records",
-        "B": "Robustness testing on degraded and incomplete sensor readings",
-        "C": "A larger validation run on complete records from more seasons",
+        "B": "Robustness testing on degraded and missing sensor readings",
+        "C": "A backtest on past storm seasons with sensor gaps filled in",
         "D": "A load test of the warning website and text alerts during storms"
       },
       "correct": "B",
       "key_concept": "Robustness testing feeds a model the degraded inputs it will meet in use, such as missing or frozen readings, before it is relied on.",
       "pre_read": "Compare the conditions in the validation data with the conditions on the day the model matters most.",
-      "correct_explanation": "Validation used complete records, yet storms, when warnings matter most, bring frozen and missing readings the model never saw. Robustness testing with such inputs shows whether it still warns sensibly or fails safely. Independent revalidation adds credibility, but on the same complete records it shares the blind spot: nobody would learn how the model behaves when sensors fail.",
+      "correct_explanation": "Validation used complete records, yet storms, when warnings matter most, bring frozen and missing readings the model never saw. Robustness testing with such inputs shows whether it still warns sensibly or fails safely. A backtest on past storm seasons looks closer, but with the gaps filled in it again feeds clean inputs, so nobody learns how the model behaves when sensors fail.",
       "wrong_explanations": {
-        "A": "Tempting because independence strengthens validation. But validators using the same complete records never see storm conditions, so the blind spot remains.",
-        "C": "Tempting because more data seems more thorough. But more complete records repeat the same conditions and never show behavior when sensors fail.",
+        "A": "Tempting because independence strengthens validation. But validators using the same complete records never see frozen or missing readings, so the blind spot remains.",
+        "C": "Tempting because it covers storm seasons. But with the gaps filled in, the model again gets clean inputs and never meets the frozen or missing readings it will get live.",
         "D": "Tempting because storms bring traffic spikes. But a load test checks the website and alerts, not whether the model's warnings hold up when readings go missing."
       },
       "tips": [
-        "Eliminate: C adds more complete records, which repeat the same conditions, and D tests website capacity, not the model's behavior on bad inputs.",
-        "Final two: B beats A because only degraded inputs show how the model behaves in storms; independent validators on the same records share the blind spot.",
+        "Eliminate: A has independent validators reuse the same complete records, so the blind spot remains, and D tests website capacity, not the model's behavior on bad inputs.",
+        "Final two: B beats C because a storm backtest with the gaps filled in still feeds clean inputs; only degraded and missing readings show behavior when sensors fail.",
         "Exam cue: when inputs in use will be noisier or patchier than in validation, expect robustness testing on those inputs before go-live."
       ],
       "framework_ref": "NIST AI 100-1 MEASURE 2.6 (Evaluated regularly for safety risks, fails safely); NIST AI 100-1 MEASURE 2.5 (System shown to be valid and reliable, limits documented)",
       "related_concepts": [
         "Robustness",
         "Fail safely",
-        "Independent validation"
+        "Backtesting"
       ],
       "_provenance": "Authored from concept: notes 2E.3 Independent Validation, Robustness and Red Teaming (robustness testing feeds the model the inputs it will meet under stress). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 2, 31 Oct 2026.",
       "style_version": 2
@@ -1607,15 +1607,15 @@
       "correct": "D",
       "key_concept": "System prompts can be extracted by prompting, so they are not a safe place for secrets; anything in them may reach any user.",
       "pre_read": "Ask whether 'cannot see' means 'cannot obtain' when users can talk to the system.",
-      "correct_explanation": "Any rider can chat with the bot, and system prompts can often be extracted by asking cleverly, a known direct prompting attack. A password in the prompt is therefore exposed to every anonymous user, who could turn it against the rental database. Vendor logging of prompts would be an exposure too, but to one known party, not to every anonymous rider.",
+      "correct_explanation": "Any rider can chat with the bot, and system prompts can often be extracted by asking cleverly, a known direct prompting attack. A password in the prompt is therefore exposed to every rider who chats, and any of them could turn it against the rental database. Vendor logging of prompts would be an exposure too, but to one known party, not to every rider.",
       "wrong_explanations": {
         "A": "Tempting because breaches expose stored data. But extraction needs no breach; riders reach the prompt's contents through the normal chat window.",
-        "B": "Tempting because vendors may keep prompt logs. But that exposes the password to one known party; extraction exposes it to every anonymous rider.",
+        "B": "Tempting because vendors may keep prompt logs. But that exposes the password to one known party; extraction exposes it to every rider who chats.",
         "C": "Tempting because rotating credentials can break integrations. But lost lookups are an operational nuisance, not the exposure of a database password to the public."
       },
       "tips": [
         "Eliminate: A assumes a firewall breach, though extraction works through the normal chat, and C is an operational nuisance, not an exposure.",
-        "Final two: D beats B because extraction opens the password to every anonymous rider; vendor logs expose it to one known party.",
+        "Final two: D beats B because extraction opens the password to every rider who chats; vendor logs expose it to one known party.",
         "Exam cue: treat system prompts as readable by users; secrets in a prompt are exposed, whatever staff believe users can see."
       ],
       "framework_ref": "MITRE ATLAS AML.T0056 (Extract LLM System Prompt); NIST AI 100-2e2025 Section 3.3 (Direct Prompting Attacks and Mitigations)",
@@ -1635,10 +1635,10 @@
       "bloom_level": "Application",
       "question": "A Scottish distillery's AI procurement agent reads emailed invoices and pays each one once its chat log shows a manager's approval. What should the IS auditor recommend as BEST?",
       "options": {
-        "A": "Add a prompt rule requiring approval before each payment",
+        "A": "Add a prompt rule requiring manager approval before each payment",
         "B": "Cap each agent payment at a small amount to limit losses",
         "C": "Have finance review the agent's recorded approvals each month",
-        "D": "Enforce approval in the payment system, outside the agent's control"
+        "D": "Enforce manager approval within the payment system itself"
       },
       "correct": "D",
       "key_concept": "Human approval for high-impact agent actions must be enforced outside the model; an approval the agent records itself can be faked or skipped.",

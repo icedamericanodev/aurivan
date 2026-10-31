@@ -183,7 +183,8 @@
             "Compare the skills the engagement needs, such as statistics, machine learning and privacy, with the team's skills.",
             "Fill gaps with training, co-sourcing or an outside specialist whose competence and objectivity the audit function evaluates.",
             "Evaluate a specialist's method and data, such as whether test sets represent the people the model affects, before relying on results.",
-            "Keep auditors off model design teams; they may advise on the evidence a model should keep without making design decisions."
+            "Keep auditors off model design teams; they may advise on the evidence a model should keep without making design decisions.",
+            "Check whose labels trained an audit AI tool: trained on the auditee's ratings of its own work, it reviews with the auditee's judgment."
           ],
           "example": "A ports operator in Malaysia uses a computer-vision model to pick containers for inspection. IS audit lead Hana hires a machine-learning specialist, confirms the specialist never worked for the model's vendor and agrees the test plan in advance. When results arrive, Hana reviews how the specialist chose the test images before relying on the findings.",
           "audit_focus": {
@@ -241,7 +242,8 @@
             "Weigh each proposed use's benefits against its risks to confidentiality, accuracy, independence and reproducibility.",
             "Approve tools and uses in the audit methodology, with data rules saying which audit data each tool may receive.",
             "Plan how each tool will be validated, how its output will be reviewed and how its use will be documented.",
-            "Train auditors on the approved uses, the tools' limits and their duty to review all output."
+            "Train auditors on the approved uses, the tools' limits and their duty to review all output.",
+            "A generative audit tool reading content the auditee writes or supplies can be steered by instructions hidden in it, so weigh prompt injection before approving that use."
           ],
           "example": "The internal audit team of a cooperative bank in Portugal has approved an AI translation tool for foreign-language documents, but only for data rated internal. Before a fraud investigation, chief audit executive Inês checks the methodology, sees the documents are rated confidential and has a qualified human translator used instead.",
           "audit_focus": {
@@ -312,7 +314,9 @@
             "Test design by walking each control through the risk it should address, such as drift, bias or misuse.",
             "Test operation over the period with logs and records, not the control owner's description.",
             "Measure human review with override rates, time spent per case and agreement with the model.",
-            "Map risks to controls independently, including some data scientists may not mention, such as training-data access and retraining approval."
+            "Seed cases with known right answers, agreed with the model owner so no one is affected, to test whether reviewers actually catch wrong outputs.",
+            "Map risks to controls independently, including some data scientists may not mention, such as training-data access and retraining approval.",
+            "Test AI guardrails, such as output filters, by attempting reworded and disguised bypasses in an agreed setting; counts of blocked items show only catches."
           ],
           "example": "At a food-safety agency in Canada, a model ranks restaurants for inspection, and policy lets inspectors change any ranking with a reason. IS auditor Amara tests a year of logs: inspectors changed no rankings at all, and none could see why a restaurant ranked high. Amara reports that the oversight control is not effective: reviewers cannot see the reasons behind rankings, a design gap, and records show they never challenge them.",
           "audit_focus": {
@@ -430,7 +434,8 @@
             "Builders' metrics can hide choices, such as excluded outcomes or a favorable period; recomputing from raw predictions exposes them.",
             "Analytics can test every decision against simple rules, such as limits, missing reviews or out-of-hours approvals.",
             "AI tools that scan a population miss some items, so unflagged items are not tested items.",
-            "An independent challenger model, built apart from the production model, can show where outputs diverge and point testing at likely errors or bias."
+            "An independent challenger model, built apart from the production model, can show where outputs diverge and point testing at likely errors or bias.",
+            "Outcomes are often recorded only for cases a model let through, such as approved loans, so recomputing accuracy cannot show how many rejected cases were wrongly refused."
           ],
           "example": "A logistics firm in Poland reports that its route-risk model is 94% accurate. IS auditor Kasia takes the logged predictions and the later delivery outcomes and recomputes accuracy independently, getting 86% for the latest quarter. Kasia traces the gap to outcomes the report left out and records the recomputed figure as evidence.",
           "audit_focus": {
@@ -691,7 +696,8 @@
             "An extract is a copy; queries, joins and date ranges can drop records without any error message.",
             "Populations can also be shaped upstream by filters, retention settings or a model choosing what to log.",
             "Record counts and control totals compared between copy and source show whether anything is missing.",
-            "AI logs often skip rejected, overridden or failed requests unless logging is set to keep them."
+            "AI logs often skip rejected, overridden or failed requests unless logging is set to keep them.",
+            "Generative AI tools can silently read only part of a large input, so reconcile what the tool processed to the population too."
           ],
           "example": "A Swedish lottery operator uses a model to flag players showing signs of problem gambling. IS auditor Elin receives a decision-log extract from the data warehouse. Before testing, Elin reconciles its record count with the model platform's own totals, finds two days missing during an upgrade and obtains those records from the source.",
           "audit_focus": {
@@ -747,6 +753,7 @@
           "why_it_matters": "These tools can examine whole populations quickly, but they make errors in both directions. Relying on one without validating it moves the tool's blind spots straight into the audit opinion.",
           "how_it_works": [
             "Validate the tool before relying on it by running it on data whose correct answers are already known.",
+            "When no past cases exist, plant realistic synthetic exceptions in a copy of the data and measure how many the tool finds.",
             "Measure both errors: false positives waste effort, while false negatives let real exceptions pass unseen.",
             "Treat each flag as a lead and follow it up with evidence before calling it a finding.",
             "Revalidate when the tool, its model version or the type of data changes."
@@ -806,14 +813,15 @@
             "aaia_d3_043",
             "aaia_d3_044"
           ],
-          "definition": "Reproducibility means another auditor can rerun work done with artificial intelligence (AI) tools and get the same result; confidentiality keeps audit data inside approved tools.",
+          "definition": "Reproducibility means another auditor can rerun work done with artificial intelligence (AI) tools and get the same, or an explainable, result; confidentiality keeps audit data inside approved tools.",
           "why_it_matters": "Results nobody can reproduce cannot be reviewed or defended. Audit data pasted into an unapproved AI service may be kept or reused by the provider, exposing the organization and the people in it.",
           "how_it_works": [
             "AI tools are not fixed: vendors update models, and settings that allow randomness can change answers between runs.",
             "A rerun can match only when the tool version, settings, prompts and input data all match the original.",
             "Hosted models can vary even with fixed settings, and vendors retire versions; keep the output with its recorded conditions, and re-verify against sources if a rerun differs.",
             "Providers of public AI services may keep submitted data or use it to train their models.",
-            "Contract terms and data classification decide which audit data an AI service may receive."
+            "Contract terms and data classification decide which audit data an AI service may receive.",
+            "Platform administrators can read logged prompts and outputs, revealing what auditors asked and found."
           ],
           "example": "A New Zealand audit firm's team uses an AI tool to sort 6,000 supplier invoices into spending categories. IS auditor Aroha saves the tool version, settings, prompt and a hashed copy of the input file. When the client later questions one category total, a reviewer reruns the saved version from those records and reproduces Aroha's figures.",
           "audit_focus": {
@@ -848,7 +856,7 @@
             },
             {
               "term": "Data snapshot",
-              "definition": "A fixed copy of input data, often hashed, kept so an analysis can be rerun exactly."
+              "definition": "A fixed copy of input data, often hashed, kept so an analysis can be rerun on exactly the same data."
             },
             {
               "term": "Training on inputs",
@@ -881,7 +889,7 @@
           "definition": "An audit finding on an artificial intelligence (AI) system reports a control gap through condition, criteria, cause, effect and recommendation, in terms leaders can act on.",
           "why_it_matters": "Technical findings such as falling accuracy mean little to a board. A finding that states the harm to people and the business gets attention, ownership and funding for the fix.",
           "how_it_works": [
-            "Condition: what the auditor found, such as approval rates differing by group or accuracy below threshold.",
+            "Condition: what the auditor found against the criteria, such as accuracy or group approval rates outside an approved limit, or a control that policy requires but is missing.",
             "Criteria: the policy, framework, regulation or approved threshold the condition is measured against.",
             "Cause: why it happened, named as the control gap, such as no drift monitoring, unrepresentative data or missing oversight.",
             "Effect: the consequence for people and the business, such as unfair denials, losses or complaints.",
@@ -944,7 +952,7 @@
             "Rate findings by the likelihood and impact of harm to people and the business, weighing autonomy, scale and whether affected people can appeal.",
             "Explain technical findings in plain business terms, with one example of real harm where possible.",
             "Record management's response with a named owner, actions and target dates.",
-            "Follow up with evidence from production after the fix, such as retested outcomes, not only reports or statements."
+            "Follow up with production evidence, not reports or statements: retested outcomes or, for a missing control, records showing it now operates."
           ],
           "example": "A Turkish airline's chatbot gave wrong baggage-fee answers, a high-rated finding. Management reports the knowledge base was corrected. At follow-up, IS auditor Elif asks 50 fee questions drawn from real customer chats, compares the answers with the fee schedule, finds 3 still wrong and keeps the finding open.",
           "audit_focus": {
