@@ -202,6 +202,41 @@ Raised after the experts weighed in; each needs the owner.
 
 ## Progress
 
-| Round | Notes | Questions |
-|---|---|---|
-| Groundwork (31 Oct 2026) | — | — |
+| Round | D1 | D2 | D3 | D4 | D5 | Total |
+|---|---|---|---|---|---|---|
+| Groundwork (31 Oct 2026) | — | — | — | — | — | 0 |
+| Pilot, notes plus 20 items per domain (31 Oct 2026) | 20 | 20 | 20 | 20 | 20 | 100 |
+
+Pilot reviews (31 Oct 2026):
+- **Blind test:** 100/100 picks matched the keys (testers saw no keys,
+  explanations or tips). Every changed item was re-tested by a fresh
+  tester: D1 17/17, D2 16/16, D3 12/12, D4 12/12, D5 7/7.
+- **Standards audits:** FIX THEN SHIP in every domain. Hard errors found and
+  fixed: D1 3 (the Form 20-F deadline in two items, a defensible distractor
+  on filer thresholds), D3 1 (Section 308 taught as written in 2002, before
+  Dodd-Frank 929B), D5 1 (a key resting on COSO's preference, not on Item
+  308(a)(2)). D2 and D4 had none.
+- **Rules currency:** 217 keyed or noted facts checked at the primary
+  source (D1 48, D2 50, D3 42, D4 47, D5 30); 7 superseded or wrong facts
+  fixed (the Form 20-F deadline; EDGAR access now through Login.gov; the
+  12(g) holder count excluding employee-plan holders; Section 308 fair
+  funds; Section 302's 90-day window versus Rule 13a-15(b); Release 33-8221's
+  date; 18 U.S.C. 1520's start date). 4 facts stayed unverified because
+  pcaobus.org is blocked; nothing is keyed on them. New law found and
+  taught: Section 16(a) now covers foreign private issuers' directors and
+  officers (Pub. L. 119-60).
+- **New gates added:** "pick the shortest" at most 30% (D2 was 50%), and a
+  CSOE style wrapper that lets a stem naming its rule ask directly and
+  accepts SOXCPA's incomplete-statement stems.
+
+Lessons for batch 2:
+- Open the SEC's own form instructions for any form deadline; a CFR copy
+  can be stale (Form 20-F).
+- Teach the Act as amended: Dodd-Frank rewrote Sections 308 and 806, and
+  later laws (the JOBS Act, Pub. L. 119-60) changed who is covered.
+- Check every new item against the other four domains as well as its own
+  (D4-002 repeated D1-002's rule and was reworked).
+- Balance option lengths both ways: the key must not be the shortest
+  option too often either.
+- Write about a quarter of new items as incomplete statements.
+- Never put the owner's email or any personal data in a request.
