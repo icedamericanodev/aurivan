@@ -132,12 +132,12 @@ The same pieces as the CISA course, each in `data/csoe/`:
 
 | Piece | File | Status |
 |---|---|---|
-| Study notes | `notes/d{1..5}.json` (notes schema v2) | Done for the pilot; extended with each batch |
-| Glossary (key terms) | the notes' `key_terminologies`; the app builds its key-terms list from them | 104 terms, 19–24 per domain |
+| Study notes | `notes/d{1..5}.json` (notes schema v2) | 86 sub-topics after batch 2; extended with each batch |
+| Glossary (key terms) | the notes' `key_terminologies`; the app builds its key-terms list from them | 110 terms, 19–27 per domain |
 | Principles ("how CSOE questions think") | `mindset/principles.json` (`docs/content/PRINCIPLES_SCHEMA.md`, CRISC-style deviations) | Being written by `csoe-mindset-coach` |
 | About the exam | `exam/csoe_exam_guide.json` (`docs/content/EXAM_GUIDE_SCHEMA.md`) | Being written by `csoe-mindset-coach` |
 | Final review week | `exam/final_review_week.json` | Being written by `csoe-mindset-coach` |
-| Practice | `originals/d{1..5}.json` | 100 reviewed; growing to 400 |
+| Practice | `originals/d{1..5}.json` | 200 reviewed; growing to 400 |
 | Mock exam | the app's mock engine reads the bank; the held-out forms go in `exam/mock_forms.json` (two 35-item forms, never served in practice) | Forms drawn once the bank passes about 300; the forward-only mode is an app task (section 4) |
 | Lessons | `lessons.json` (`docs/content/LESSONS_SCHEMA.md`) | After the bank |
 | Game decks | `mobile/src/content/games/csoe/` | App task, when CSOE is wired in |
@@ -245,6 +245,7 @@ Still settled by policy, not open:
 |---|---|---|---|---|---|---|
 | Groundwork (31 Oct 2026) | — | — | — | — | — | 0 |
 | Pilot, notes plus 20 items per domain (31 Oct 2026) | 20 | 20 | 20 | 20 | 20 | 100 |
+| Batch 2, 20 items per domain plus notes (31 Oct 2026) | 40 | 40 | 40 | 40 | 40 | 200 |
 
 Pilot reviews (31 Oct 2026):
 - **Blind test:** 100/100 picks matched the keys (testers saw no keys,
@@ -274,6 +275,25 @@ Pilot reviews (31 Oct 2026):
 - **New gates added:** "pick the shortest" at most 30% (D2 was 50%), and a
   CSOE style wrapper that lets a stem naming its rule ask directly and
   accepts SOXCPA's incomplete-statement stems.
+
+Batch 2 reviews (31 Oct 2026):
+- **Blind test:** 100/100 picks matched the keys. Every changed item was
+  re-tested by a fresh tester: D1 5/5, D2 5/5, D3 10/10, D4 9/9, D5 9/9;
+  the small wording cues they saw were then fixed.
+- **Standards audits:** FIX THEN SHIP in every domain, with no wrong key.
+  Hard errors found and fixed: D4 1 (an explanation said Section 404(a)
+  lists no report contents; it names two and Item 308(a) gives the full
+  list), D5 1 (an option allowed by the release when the stem said "may").
+- **Rules currency:** 183 facts checked at the primary source (D1 35, D2 32,
+  D3 34, D4 40, D5 42); none keyed was wrong. Fixed: a library line on Form
+  40-F, the release section for an ICFR documentation point, a wrong
+  Volcker Rule locator, a Section 16(a) orders line, and an enforcement
+  forum line updated for SEC v. Jarkesy (2024). Pending SEC proposals and
+  the FPI Section 16(a) orders are tracked in the research log's rules
+  watch.
+- **Library:** the batch's staged citations merged into
+  `_framework_library.md` with one label per citation.
+- **New gate:** no gendered pronouns in items or notes (they/them).
 
 Lessons for batch 2:
 - Open the SEC's own form instructions for any form deadline; a CFR copy
