@@ -326,3 +326,4 @@ then pick the best of the rest.
      (Section 103), while AU-C 402 covers nonissuers. It needs an AICPA page
      stating that, opened and dated.
    - **Basel II pillars:** bis.org is unreachable.
+8. **Where SEC 404 guidance items go.** 5A1 holds items keyed on Release No. 33-8810 (d5_062-064, 077, 078) where the release ties to COSO concepts. From batch 5, items on how management evaluates ICFR (evidence, risk identification, deficiencies) go to 3B2; 5A1 takes only the framework itself and the SEC's account of it.

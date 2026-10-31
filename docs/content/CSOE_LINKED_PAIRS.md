@@ -152,10 +152,8 @@ Rule for the form builder: Draw no two items of a pair into the same form. Keep 
 | csoe_d5_019 | csoe_d5_082 | proposed by the D5 batch 4 author (SOC report users) |
 | csoe_d5_018 | csoe_d5_083 | proposed by the D5 batch 4 author (outsourced activity in ICFR) |
 | csoe_d4_005 | csoe_d4_065 | d4_065's stem implies subpoenas come with a formal order |
-| csoe_d2_020 | csoe_d4_083 | same "Comptroller General study" pattern |
 | csoe_d4_023 | csoe_d4_064 | related rules on disclosing an investigation (d4_023 is held out) |
 | csoe_d4_027 | csoe_d4_069 | related limitations rules (d4_027 is held out) |
-| csoe_d1_045 | csoe_d4_083 | same Comptroller General study pattern |
 | csoe_d4_057 | csoe_d4_083 | 083's explanation and tips name the SEC's Section 989G(b) study (d4_057 is held out) |
 | csoe_d4_022 | csoe_d4_062 | notice and comment for explanatory guidance (d4_022 is held out) |
 | csoe_d4_012 | csoe_d4_073 | Section 21F(c)(2) award bars |
@@ -183,3 +181,8 @@ Rule for the form builder: Draw no two items of a pair into the same form. Keep 
 | csoe_d5_032 | csoe_d5_073 | the 2017 misconceptions box |
 | csoe_d5_032 | csoe_d5_074 | the 2017 misconceptions box |
 | csoe_d4_061 | csoe_d4_066 | both rest on Section 13(d); d4_066's stem gives away d4_061's answer |
+| csoe_d5_055 | csoe_d5_084 | 084's framework_ref cites the Cyber Age section 'Control Environment and Monitoring Activities', the wording of 055's key; both rest on that section (055 is held out) |
+| csoe_d5_066 | csoe_d5_067 | contrasting angles on the monitoring component; 067's WA and exam cue tie principle 16 to the evaluations 066 keys |
+| csoe_d5_013 | csoe_d5_073 | 073's WC and Final two say ERM is more than a longer risk list, which rules out held-out 013's option B (as 013/032 does) |
+| csoe_d5_007 | csoe_d5_078 | 078's stem and explanation put fraud risk in the risk assessment, d5_007's key |
+| csoe_d5_005 | csoe_d5_065 | contrasting severity yardsticks; 065's added sentence states 005's key (SEC filers grade severity in the SEC's terms) |
