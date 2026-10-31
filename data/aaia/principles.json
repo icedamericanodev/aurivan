@@ -1,0 +1,1022 @@
+{
+  "schema_version": 2,
+  "title": "KaiSip AAIA exam mindset principles",
+  "updated": "2026-10-31",
+  "description": "The reasoning patterns AAIA questions reward, grouped into the same six families as KaiSip's CISA principles, which they extend to auditing AI and using AI in the audit. AAIA course pack, not wired into the apps yet. Schema: docs/content/PRINCIPLES_SCHEMA.md. Lint: python3 scripts/lint_principles.py --cert aaia.",
+  "families": [
+    {
+      "id": "role",
+      "order": 1,
+      "title": "Your role",
+      "question": "Who am I in this question, and who owns the AI decision?"
+    },
+    {
+      "id": "priorities",
+      "order": 2,
+      "title": "What matters most",
+      "question": "What should drive the choice?"
+    },
+    {
+      "id": "assurance",
+      "order": 3,
+      "title": "How you know",
+      "question": "How do I know the AI does what is claimed?"
+    },
+    {
+      "id": "remedies",
+      "order": 4,
+      "title": "What fixes it",
+      "question": "Which fix actually works?"
+    },
+    {
+      "id": "response",
+      "order": 5,
+      "title": "When it breaks",
+      "question": "What comes first when an AI system causes harm?"
+    },
+    {
+      "id": "reading",
+      "order": 6,
+      "title": "Reading the question",
+      "question": "What is the question really asking?"
+    }
+  ],
+  "principles": [
+    {
+      "id": "auditor-assesses-never-owns-ai",
+      "family": "role",
+      "order": 1,
+      "title": "Assess the AI; never own it",
+      "rule": "The IS auditor assesses, recommends and reports on AI; never builds, retrains, tunes, approves, deploys or accepts its risk.",
+      "why": "This extends the CISA principle “Recommend, don't implement” to AI. An IS auditor who signs off a model, sets its limit or picks its fix would later audit their own decision, and management would stop owning the risk. The auditor may say what a control must achieve and test it; validation, approval and risk acceptance stay with management.",
+      "triggers": [
+        "asks internal audit to sign off",
+        "validate and approve the model",
+        "set the fairness limit",
+        "retrain the model",
+        "choose the risk response",
+        "postpone the change until fieldwork ends"
+      ],
+      "trap": {
+        "move": "Signing off the model, setting its limit or retraining it yourself because you understand the problem best.",
+        "why_wrong": "That is doing the builder's job, and choosing the risk response is the risk owner's job. The IS auditor would later judge their own work, and the model owner never takes accountability."
+      },
+      "example": {
+        "scenario": "A retailer's data team asks the IS auditor to choose which of two retrained demand models goes live, since the auditor has reviewed both validation reports.",
+        "answer": "Decline the choice. Report what the validation evidence shows about each model and any gaps; the model owner decides which version is released, through change approval."
+      },
+      "check": {
+        "scenario": "A bank's chatbot launch waits on a risk acceptance. The model owner is on leave, so the project lead asks the IS auditor, who knows the test results well, to sign the acceptance.",
+        "right": "Decline to sign; the acceptance waits for the model owner or goes to the senior manager the risk policy names.",
+        "trap": "Sign the acceptance for now, and record in the file that the model owner will confirm it when back from leave.",
+        "why": "Accepting AI risk belongs to someone with authority over it. An IS auditor who signs takes on a risk they must later assess independently."
+      },
+      "nuance": "Advisory work on AI, such as commenting on a draft policy or control design, is allowed when its scope is agreed in writing and management keeps every decision.",
+      "domains": [
+        1,
+        3
+      ],
+      "subtopics": [
+        "1B.2",
+        "3A.3",
+        "3E.1"
+      ],
+      "practice_ids": [
+        "aaia_d1_029",
+        "aaia_d3_012",
+        "aaia_d3_046"
+      ],
+      "slip_pattern": "role",
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "named-human-owner",
+      "family": "role",
+      "order": 2,
+      "title": "Every model has a named human owner",
+      "rule": "Every model and AI decision needs a named owner with authority; the right body decides, never the model or vendor.",
+      "why": "This extends the CISA principle “Management owns the risk”. A named model owner in the business answers for each AI-supported decision, sets its use criteria and can override or pause it. The board approves AI risk appetite, senior management sets tolerances, the AI governance committee approves high-impact uses and legal counsel judges which laws apply.",
+      "triggers": [
+        "the model decided",
+        "the vendor is responsible",
+        "the data team concluded by itself",
+        "owner because they watch the dashboard",
+        "who should approve",
+        "PRIMARY accountability"
+      ],
+      "trap": {
+        "move": "Leaving the decision with whoever is closest to the model: the data scientists, the vendor or the committee that approved it.",
+        "why_wrong": "Builders and vendors lack business authority, and a committee approves uses without owning each decision. Accountability needs a named person who can accept, override and stop."
+      },
+      "example": {
+        "scenario": "A city's parking-permit model was bought by IT, built by a vendor and is watched by an analyst. When residents complain about refusals, nobody can say who may change its cut-off score.",
+        "answer": "Report the missing owner. Recommend naming the permits business manager as owner, with authority to set the cut-off within tolerance, decide overrides and pause the model."
+      },
+      "check": {
+        "scenario": "A distributor's demand model sets reorder quantities automatically. The supply chain director says the data science team owns it, since they built it and retrain it. Who should the IS auditor expect to own it?",
+        "right": "The supply chain director, who answers for stock levels and can override or pause the model.",
+        "trap": "The data science team, who built the model, retrain it and understand its behavior best.",
+        "why": "Ownership follows business accountability and authority. Builders know the model, but only the business owner can accept its risks and decide when to override or stop it."
+      },
+      "nuance": "Owners may delegate daily monitoring to analysts or the data team; delegation moves tasks, not accountability for the model's decisions.",
+      "domains": [
+        1,
+        2
+      ],
+      "subtopics": [
+        "1B.2",
+        "1C.2",
+        "1D.1",
+        "1E.2",
+        "2D.2"
+      ],
+      "practice_ids": [
+        "aaia_d1_005",
+        "aaia_d1_024",
+        "aaia_d1_030",
+        "aaia_d1_044"
+      ],
+      "slip_pattern": null,
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "ai-in-audit-stays-yours",
+      "family": "role",
+      "order": 3,
+      "title": "AI in the audit stays your call",
+      "rule": "When AI helps the audit, validate it before reliance, keep audit data in approved services and own every conclusion.",
+      "why": "An AI tool changes how evidence is found, not who answers for it. The IS auditor is accountable for every finding, so a tool is validated for its use, its output is checked against sources, and confidential audit data stays in approved AI services.",
+      "triggers": [
+        "the tool drafted the findings",
+        "rely on the tool's output",
+        "a public AI service",
+        "IT approved the tool",
+        "disclose use of AI",
+        "a black box"
+      ],
+      "trap": {
+        "move": "Treating an AI tool's output as the conclusion, or IT's approval of a tool as approval for audit use.",
+        "why_wrong": "IT approval covers security and data terms, not audit risk. If the tool is wrong, the finding is still the IS auditor's, so its use must be planned, validated and reviewed."
+      },
+      "example": {
+        "scenario": "An audit team wants an AI assistant to read a year of vendor invoices and list those missing a purchase order. IT approved the tool, but nobody has checked it on invoices.",
+        "answer": "Before relying on it, test the tool on invoices whose answers are known, record its version and settings, and have auditors check a sample of its results. The findings remain the team's."
+      },
+      "check": {
+        "scenario": "A chief audit executive's AI tool ranks next year's audit areas. Short on time, the executive plans to submit the tool's ranking to the audit committee as the audit plan.",
+        "right": "Review the ranking's inputs and logic, adjust it with audit judgment, and submit the plan as audit's own.",
+        "trap": "Submit the ranking with a note that an AI tool produced it, so the committee can weigh it.",
+        "why": "Disclosure is useful, but it does not transfer accountability. The audit plan is the chief audit executive's judgment, so the tool's ranking is an input to review and own."
+      },
+      "nuance": "Low-risk uses, such as a grammar check on a final report, need lighter controls; validation and disclosure scale with how much the tool shapes evidence and conclusions.",
+      "domains": [
+        3
+      ],
+      "subtopics": [
+        "3A.4",
+        "3C.3",
+        "3D.2",
+        "3D.3",
+        "3E.3"
+      ],
+      "practice_ids": [
+        "aaia_d3_004",
+        "aaia_d3_015",
+        "aaia_d3_019"
+      ],
+      "slip_pattern": null,
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "independence-of-ai-assurance",
+      "family": "role",
+      "order": 4,
+      "title": "Independent of the builders and the auditee",
+      "rule": "Builders' testing is never independent validation; the IS auditor checks auditee-controlled inputs and keeps confidential audit work off auditee-run tools.",
+      "why": "This extends the CISA principle “Independence at every stage” to AI. Builders share their model's assumptions, and an auditee that chose the test data, wrote the labels or runs the platform can shape the result or watch the work. So validation sits with people separate from the builders, and the IS auditor checks auditee-controlled inputs before relying on them.",
+      "triggers": [
+        "validated by the team that built it",
+        "the platform's built-in validation report",
+        "a sample the auditee picked",
+        "labels the data science team wrote",
+        "a platform run by the unit under audit",
+        "the vendor's own fairness rating"
+      ],
+      "trap": {
+        "move": "Relying on the builders' own validation, or on labels, ratings or tools the auditee controls, because the work looks thorough.",
+        "why_wrong": "Whoever controls the inputs controls what the check can find. A more careful rerun by the same people, even on better data, repeats their blind spots, and an auditee-run tool lets the audited unit see or steer the audit."
+      },
+      "example": {
+        "scenario": "A hospital's sepsis-alert vendor supplies a fairness rating computed on patient records it selected, and the informatics team that tuned the alert thresholds signed the validation.",
+        "answer": "Rely on neither as it stands. Recommend that management assign validators separate from the tuning team. Before relying on the vendor's rating, test it on a sample of the hospital's own recent records."
+      },
+      "check": {
+        "scenario": "Testing a publisher's plagiarism-check model, an IS auditor is offered 40 manuscripts the editorial team picked as typical, to compare its flags with confirmed cases.",
+        "right": "Select manuscripts from the full submission log, using audit's own sampling method.",
+        "trap": "Use the editorial team's picks, since the team knows which manuscripts are most typical.",
+        "why": "Manuscripts picked by the auditee show what the auditee chose to show. A sample that audit draws from the whole log can show cases the team would not have chosen."
+      },
+      "nuance": "Independent does not mean the IS auditor: validators may sit in management, such as a second-line team, if separate from the builders. Auditee data and expert work can be used once checked against sources.",
+      "domains": [
+        2,
+        3
+      ],
+      "subtopics": [
+        "2E.3",
+        "3A.3",
+        "3D.3"
+      ],
+      "practice_ids": [
+        "aaia_d2_014",
+        "aaia_d3_024",
+        "aaia_d3_043"
+      ],
+      "slip_pattern": null,
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "ai-governance-before-tooling",
+      "family": "priorities",
+      "order": 1,
+      "title": "Governance before AI tooling",
+      "rule": "Settle purpose, ownership, data rights and inventory before choosing a model, vendor, dataset or technical control.",
+      "why": "This is the CISA principle “Business goals and governance before technology”, applied to AI. A model cannot be judged fit until someone states what it is for and what is out of bounds, and encryption cannot make an unpermitted use of personal data lawful. Tools and architecture reviews then build on direction that already exists.",
+      "triggers": [
+        "the vendor and model are already chosen",
+        "buy a compliance tool",
+        "encrypt the training data",
+        "no stated purpose",
+        "may this data be used",
+        "public data scraped from the web"
+      ],
+      "trap": {
+        "move": "Starting with the technology: picking the model, buying a tool or encrypting data before purpose and permission are settled.",
+        "why_wrong": "A tool chosen first has nothing to be measured against, and security cannot make an unpermitted use of personal data acceptable."
+      },
+      "example": {
+        "scenario": "A council plans to train a chatbot on residents' past complaint letters and asks IT to encrypt the letters first.",
+        "answer": "Recommend that the data owner, with privacy advice, first decide whether the letters may be used for this new purpose. Encryption protects data the council may use; it cannot grant permission."
+      },
+      "check": {
+        "scenario": "A logistics firm wants AI to speed up customs paperwork. The chief information officer proposes buying a leading AI document platform now, so teams can start finding uses for it.",
+        "right": "Have business owners define the target processes, limits and success criteria, then choose a platform.",
+        "trap": "Buy the platform now, then have business owners define processes, limits and success criteria.",
+        "why": "Requirements come before technology. A platform bought first sets the agenda, and nobody can judge whether it fits needs that were never stated."
+      },
+      "nuance": "When a legal deadline or active harm forces a quick technical safeguard, it can go in first; the governance decisions still follow and may replace it.",
+      "domains": [
+        1,
+        2
+      ],
+      "subtopics": [
+        "1A.3",
+        "1B.1",
+        "1D.1",
+        "1D.2",
+        "2A.1",
+        "2B.2"
+      ],
+      "practice_ids": [
+        "aaia_d1_003",
+        "aaia_d1_013",
+        "aaia_d1_025",
+        "aaia_d2_002"
+      ],
+      "slip_pattern": "tech-first",
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "rank-ai-risk-by-harm",
+      "family": "priorities",
+      "order": 2,
+      "title": "Rank AI risk by harm to people and the business",
+      "rule": "Rank and report AI risk by likelihood and impact, including harm to affected people, not by novelty or uptime alone.",
+      "why": "This is the CISA principle “Risk decides where effort goes”, with one AI twist: a model's main harm is often a wrong decision about a person, not an outage. A secure, available system can still wrongly deny a benefit. Likelihood grows when new versions go live without a human release step or when errors stay invisible to those affected.",
+      "triggers": [
+        "rank",
+        "GREATEST concern",
+        "rated low risk",
+        "the audit plan",
+        "one approval step for every AI use",
+        "explain to the audit committee"
+      ],
+      "trap": {
+        "move": "Rating AI risk on security, uptime or how new and complex the model is, or giving every AI use the same treatment.",
+        "why_wrong": "A stable, secure model can still harm many people, and equal treatment wastes effort on low-impact uses."
+      },
+      "example": {
+        "scenario": "An audit plan can cover one AI use: a new image generator for marketing drafts, or a two-year-old model that sets payment plans for customers behind on payments.",
+        "answer": "Cover the payment-plan model. It decides money matters for people in hardship, so impact is high, and age is no proof of control. The image generator is newer but lower impact."
+      },
+      "check": {
+        "scenario": "A bank runs two models that both lack drift monitoring: one drafts internal meeting notes, the other decides which small-business loan applications are declined. Which gap should the IS auditor rate higher?",
+        "right": "The loan model, because its unnoticed errors would refuse credit to real businesses.",
+        "trap": "The notes model, because staff use it every day and its errors spread fastest.",
+        "why": "Frequency raises likelihood, but impact counts too. Wrong declines cost businesses credit, while meeting-note errors are low impact and readers can spot them."
+      },
+      "nuance": "Impact on people and on the business are weighed together; a rare, severe harm can still rank first, but likelihood is weighed, not ignored.",
+      "domains": [
+        1,
+        2,
+        3
+      ],
+      "subtopics": [
+        "1B.1",
+        "1C.1",
+        "2G.1",
+        "3A.1",
+        "3E.2"
+      ],
+      "practice_ids": [
+        "aaia_d1_006",
+        "aaia_d1_012",
+        "aaia_d3_018",
+        "aaia_d3_021"
+      ],
+      "slip_pattern": null,
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "accuracy-is-not-assurance",
+      "family": "assurance",
+      "order": 1,
+      "title": "Accuracy is not assurance",
+      "rule": "One accuracy score is not assurance: test the errors that matter, by group, on unseen recent data, against preset criteria.",
+      "why": "A single score blends error types and groups, so it can stay high while the harm that matters grows. Ask what was tested, on which data, by whom, and against criteria the model owner set before seeing results. A score from builders who tuned on their own test set proves little.",
+      "triggers": [
+        "reports high accuracy",
+        "overall accuracy",
+        "has held at the same score",
+        "threshold chosen after seeing the scores",
+        "the builders' validation report",
+        "equal approval rates"
+      ],
+      "trap": {
+        "move": "Accepting a high headline score, or having the same figure made stricter or recomputed by another team on the same data, as proof the model is fit.",
+        "why_wrong": "A stricter figure, or the same figure checked by someone else on the same data, still hides who bears the errors and how the model does on new data."
+      },
+      "example": {
+        "scenario": "A transit agency's fare-evasion camera model scores 93% on its validation set, so the owner wants it to issue fines automatically.",
+        "answer": "Ask how often it wrongly flags paying riders, by station and rider group, on recent data, against a limit set before testing. A 93% overall score says nothing about who is wrongly fined."
+      },
+      "check": {
+        "scenario": "A lender's income-verification model scored 95% when its builders tested it two years ago. Management wants the IS auditor to cite that figure as evidence the model still works.",
+        "right": "Ask for error rates on recent applications, by applicant group, against the owner's preset limits.",
+        "trap": "Ask an independent team to recompute the 95% score on the builders' original test set.",
+        "why": "Independence does not refresh old data. Recent error rates by group, judged against limits set first, show whether the model still meets its purpose."
+      },
+      "nuance": "Accuracy still matters as one input. The IS auditor selects audit criteria for suitability, and a tolerance approved for this use usually beats a general benchmark.",
+      "domains": [
+        1,
+        2,
+        3
+      ],
+      "subtopics": [
+        "1A.2",
+        "1C.2",
+        "1E.1",
+        "2A.3",
+        "2D.2",
+        "2E.1",
+        "2E.2",
+        "3A.3"
+      ],
+      "practice_ids": [
+        "aaia_d1_002",
+        "aaia_d1_035",
+        "aaia_d2_001",
+        "aaia_d2_011",
+        "aaia_d2_013",
+        "aaia_d2_015",
+        "aaia_d2_025",
+        "aaia_d3_003"
+      ],
+      "slip_pattern": null,
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "test-the-ai-as-used",
+      "family": "assurance",
+      "order": 2,
+      "title": "Assurance covers only what was tested",
+      "rule": "Evidence covers only what was tested: retest the AI as deployed, for each new use, input or version.",
+      "why": "AI behavior depends on the use, the data it receives, its connected tools and the exact version. Validation for one purpose says little about another, and a test report on last year's model says little about today's. A new use, language, base model, tool or upgrade goes back through testing before anyone relies on it.",
+      "triggers": [
+        "now also decides",
+        "the report predates the upgrade",
+        "tested with no tool attached",
+        "never tested on",
+        "the same tuning on a new base model",
+        "validated on complete records"
+      ],
+      "trap": {
+        "move": "Reusing existing validation or test reports because the model code, the tuning data or the testers have not changed.",
+        "why_wrong": "The deployed conditions changed, so the old evidence describes a different system. The testers' independence or reputation does not make it current."
+      },
+      "example": {
+        "scenario": "A port validated its crane-fault model on sensor data from new cranes. It now plans to use the model on older cranes with different sensors.",
+        "answer": "Recommend that the model owner test it on older-crane data against the agreed criteria before relying on it. The first validation covered new-crane sensors only."
+      },
+      "check": {
+        "scenario": "A city's pothole-detection model was validated on summer road photos. The roads team now wants to run it through winter, when snow and slush cover many road surfaces.",
+        "right": "Have the model owner test it on winter photos with known potholes before relying on it.",
+        "trap": "Have the roads team rely on the summer validation, since the same model version keeps running.",
+        "why": "Validation holds for conditions like those tested. Snow changes what the camera sees, so summer results say little about winter performance."
+      },
+      "nuance": "Not every change needs full revalidation: retesting depth follows what changed and its risk, and a small, well-understood change may need only regression checks.",
+      "domains": [
+        1,
+        2,
+        3
+      ],
+      "subtopics": [
+        "1A.3",
+        "1C.1",
+        "2B.1",
+        "2B.2",
+        "2E.3",
+        "3C.2",
+        "3D.2"
+      ],
+      "practice_ids": [
+        "aaia_d1_026",
+        "aaia_d2_026",
+        "aaia_d2_028",
+        "aaia_d2_041",
+        "aaia_d2_042",
+        "aaia_d3_034"
+      ],
+      "slip_pattern": null,
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "reproducible-ai-evidence",
+      "family": "assurance",
+      "order": 3,
+      "title": "Evidence you can trace and rerun",
+      "rule": "Trust AI evidence tied to the exact version, inputs, data and settings; code and vendor claims cannot reproduce a decision.",
+      "why": "A model's behavior lives in its trained files, data and settings, which change with every retraining. Logs without inputs and version, or a rerun on today's model, cannot show why a past decision was made. As in the CISA principle “Evidence quality decides”, system-generated lineage outranks a developer's description.",
+      "triggers": [
+        "retrained monthly",
+        "rerun through the current model",
+        "the log keeps only the outcome",
+        "delete the trained model files",
+        "a datasheet the developers wrote",
+        "the vendor calls it AI",
+        "the provider deletes logs soon"
+      ],
+      "trap": {
+        "move": "Rerunning a past case through today's model, or relying on source code, outcome logs or a developer's description as the record.",
+        "why_wrong": "After retraining, today's model is a different model, and code or outcomes cannot recreate what the deciding version saw and did. That is the CISA-only slip of treating AI like ordinary code."
+      },
+      "example": {
+        "scenario": "A tax office's audit-selection model is retrained each quarter. A taxpayer disputes being selected last year, and the log shows only the selection date.",
+        "answer": "Recommend logging each decision's inputs and model version, and keeping each version's files while decisions can be challenged. Today's model cannot show why last year's selection was made."
+      },
+      "check": {
+        "scenario": "A model owner explains a past loan refusal to the IS auditor by describing what the model usually looks at. Which evidence should the auditor request?",
+        "right": "The logged inputs and model version for that refusal, with the version's archived files.",
+        "trap": "The model's current feature-importance chart, showing what it usually weighs most.",
+        "why": "A general description or today's chart shows typical behavior, not this decision. Logged inputs and the deciding version let the auditor trace or rerun it."
+      },
+      "nuance": "Generative outputs can vary even with recorded settings. Recorded conditions make a rerun explainable; source records, not reruns, settle which result is correct.",
+      "domains": [
+        1,
+        2,
+        3
+      ],
+      "subtopics": [
+        "1C.3",
+        "2A.1",
+        "2B.3",
+        "2C.2",
+        "2D.3",
+        "3B.3",
+        "3C.1",
+        "3C.2",
+        "3D.3"
+      ],
+      "practice_ids": [
+        "aaia_d2_006",
+        "aaia_d2_009",
+        "aaia_d2_022",
+        "aaia_d2_038",
+        "aaia_d3_007",
+        "aaia_d3_035"
+      ],
+      "slip_pattern": null,
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "ai-output-is-a-lead",
+      "family": "assurance",
+      "order": 4,
+      "title": "AI output is a lead, not evidence",
+      "rule": "Treat generated text, citations, confidence scores and an AI's claims about itself as leads; verify them against source records.",
+      "why": "Generative models produce plausible text, not looked-up facts, so quotes, article numbers and reasons can be invented and repeated on every rerun. A confidence score is the model's own estimate, and its answer about its settings is generated too. Consistency is not accuracy; contracts, configuration and source records settle what is true.",
+      "triggers": [
+        "the summary quotes a clause",
+        "a rerun gave the same answer",
+        "the assistant says it deletes",
+        "confidence above 90%",
+        "cites an article number",
+        "staff believe it looks rules up"
+      ],
+      "trap": {
+        "move": "Accepting AI output because it is specific, confident or the same on a second run, or asking the tool to check itself.",
+        "why_wrong": "A tool can repeat the same invented quote, and its self-check is more generated text. Only the source shows whether the output is right."
+      },
+      "example": {
+        "scenario": "An IS auditor asks a generative tool which IT policies lack an approval date. It lists six, quoting each policy's header.",
+        "answer": "Treat the six as leads: open each policy to confirm, and check a sample of the policies the tool cleared. Both the tool's quotes and its silence need checking against the documents."
+      },
+      "check": {
+        "scenario": "A risk team's chatbot, asked for last year's AI incidents, lists four with dates and ticket numbers. An IS auditor plans to use the list to scope testing.",
+        "right": "Match each listed incident to the ticketing system, and search it for any the chatbot missed.",
+        "trap": "Ask the chatbot to confirm that each listed ticket number is correct and the list complete.",
+        "why": "A chatbot can produce plausible ticket numbers, and its self-check is more generated text. The ticketing system shows which incidents are real and which are missing."
+      },
+      "nuance": "Grounded tools that cite retrieved documents are easier to check, not exempt: the IS auditor still samples their citations against the sources.",
+      "domains": [
+        1,
+        2,
+        3
+      ],
+      "subtopics": [
+        "1A.1",
+        "2E.1",
+        "3C.3",
+        "3D.2"
+      ],
+      "practice_ids": [
+        "aaia_d1_021",
+        "aaia_d3_011",
+        "aaia_d3_037"
+      ],
+      "slip_pattern": null,
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "population-includes-misses",
+      "family": "assurance",
+      "order": 5,
+      "title": "Test what the AI never flagged",
+      "rule": "Unflagged is not tested: make the population include what the model, filter or dataset never surfaced, and test it.",
+      "why": "AI shapes what reaches the IS auditor: a filter keeps only what it caught, a model flags only what it learned, and outcomes exist only for approved cases. The errors that matter often sit in what was never shown. As CISA's completeness checks require, the population and sample must cover the unflagged side too.",
+      "triggers": [
+        "flagged a small share of the population",
+        "logs keep only flagged chats",
+        "measured on the approved cases",
+        "no complaints so far",
+        "larger than its context window",
+        "a registry the platform fills"
+      ],
+      "trap": {
+        "move": "Concluding from the flagged items, the complaints or the approved cases alone, as if everything else were clean.",
+        "why_wrong": "Silence is not evidence. Misses never appear in a population built from what the AI surfaced, so the conclusion has no basis for them."
+      },
+      "example": {
+        "scenario": "A bank's AI screens payments and sends a small share to analysts, who clear most of them. The IS auditor plans to conclude on screening effectiveness from the analysts' case files.",
+        "answer": "Also sample the payments the model passed and, with management's agreement, run known-bad test payments through it in a controlled setting, to estimate what it misses. Case files show only what was flagged."
+      },
+      "check": {
+        "scenario": "A forum's moderation model removed many posts last month, and reviewers upheld most removals. The forum cites this as proof harmful posts are caught. What should the IS auditor examine FIRST?",
+        "right": "A sample of posts the model left up, checked for harmful content it missed.",
+        "trap": "A sample of posts the model removed, checked to confirm each removal was justified.",
+        "why": "Upheld removals measure false alarms, not misses. Only the posts left up can show how much harmful content got through."
+      },
+      "nuance": "The unflagged sample is sized by risk; where seeded test cases or reconciliations already measure misses reliably, they can replace a large sample.",
+      "domains": [
+        1,
+        2,
+        3
+      ],
+      "subtopics": [
+        "1C.1",
+        "1D.1",
+        "2A.2",
+        "3A.1",
+        "3B.2",
+        "3B.3",
+        "3D.1"
+      ],
+      "practice_ids": [
+        "aaia_d1_039",
+        "aaia_d3_008",
+        "aaia_d3_013"
+      ],
+      "slip_pattern": null,
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "ai-changes-are-changes",
+      "family": "remedies",
+      "order": 1,
+      "title": "Retraining is a change",
+      "rule": "Retraining, prompts, data feeds, thresholds, libraries and vendor model updates are changes: each is versioned, tested and approved before use.",
+      "why": "An AI system's behavior can shift while its code stays identical, because behavior comes from data, weights, prompts and settings. Change management therefore covers each of these, with a gate on data and performance evidence and the model owner's approval. Vendor updates need notice, version pinning or a right to test.",
+      "triggers": [
+        "retrained nightly",
+        "edits to the system prompt",
+        "logged as a supplier change",
+        "the vendor upgraded the model",
+        "routine server patching",
+        "the code is unchanged"
+      ],
+      "trap": {
+        "move": "Treating the change as routine because no code changed, then relying on monitoring to notice any effect.",
+        "why_wrong": "That is the CISA-only slip. Monitoring finds the effect after people are affected; a change gate tests the new behavior before it reaches anyone."
+      },
+      "example": {
+        "scenario": "A clinic's triage chatbot runs on a vendor model. The vendor announces it will move all customers to a new model version next month.",
+        "answer": "Recommend that the model owner test the chatbot on the new version against its acceptance criteria before the switch, and seek contract terms for notice and version pinning."
+      },
+      "check": {
+        "scenario": "A bank's fraud team wants to raise its model's alert threshold to cut analyst workload, and plans to make the change directly in production as a settings tweak.",
+        "right": "Recommend it go through change control, tested for missed fraud and approved by the model owner.",
+        "trap": "Let the team apply it now as a settings tweak, then compare missed fraud against last month's figures.",
+        "why": "A threshold decides which cases are caught, so changing it changes outcomes. Testing first shows the cost in missed fraud before customers bear it."
+      },
+      "nuance": "Low-risk, well-understood changes can follow a lighter standard path once tested, but only when their effect on outputs is known in advance.",
+      "domains": [
+        1,
+        2
+      ],
+      "subtopics": [
+        "1C.3",
+        "2B.1",
+        "2C.1",
+        "2C.2",
+        "2C.3"
+      ],
+      "practice_ids": [
+        "aaia_d1_011",
+        "aaia_d2_004",
+        "aaia_d2_007",
+        "aaia_d2_008",
+        "aaia_d2_030",
+        "aaia_d2_032"
+      ],
+      "slip_pattern": null,
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "real-human-oversight",
+      "family": "remedies",
+      "order": 2,
+      "title": "Oversight must be real, not a rubber stamp",
+      "rule": "High-impact AI needs people who understand, can override and can stop it, plus appeal routes; rubber-stamping signals automation bias.",
+      "why": "A sign-off on every file proves the step happened, not that anyone judged the case. Oversight works when reviewers are trained, have time and authority, and find disagreeing as easy as agreeing. Override rates, review times and seeded cases show whether it works, and affected people need someone who can reverse a decision.",
+      "triggers": [
+        "confirm nearly every recommendation",
+        "seconds per review",
+        "only a chatbot restates the decision",
+        "a supervisor reviews weekly totals",
+        "cannot explain its rankings",
+        "every file carries an approval"
+      ],
+      "trap": {
+        "move": "Counting approvals, adding a sample review after the fact, or making overrides harder to justify than agreement.",
+        "why_wrong": "Approvals and after-the-fact samples leave harm in place, and friction on overrides pushes reviewers to defer to the model."
+      },
+      "example": {
+        "scenario": "A school district's AI marks essays, and teachers must review each mark. The screen shows the AI's mark first and asks for a written reason only to change it.",
+        "answer": "Recommend that the owner make agreeing and changing equally easy, track override rates and review time, and seed essays with known marks to test whether teachers catch wrong ones."
+      },
+      "check": {
+        "scenario": "An airline's AI proposes crew rest exceptions, and a duty manager approves each one. Managers cannot see which rules the AI weighed, and none has ever rejected a proposal.",
+        "right": "Show managers the reasons behind each proposal, and test whether they catch seeded bad ones.",
+        "trap": "Add a second duty manager's approval to every proposal before the exception applies.",
+        "why": "A second approver who also cannot see the reasons adds another rubber stamp. Oversight works when reviewers understand the output and are tested on catching errors."
+      },
+      "nuance": "Human review of every decision is not always needed: the oversight model follows impact, and low-impact uses can rely on monitoring and sampling.",
+      "domains": [
+        1,
+        2,
+        3
+      ],
+      "subtopics": [
+        "1B.3",
+        "1E.1",
+        "2D.1",
+        "2D.3",
+        "3B.1"
+      ],
+      "practice_ids": [
+        "aaia_d1_020",
+        "aaia_d2_010",
+        "aaia_d2_012",
+        "aaia_d2_034",
+        "aaia_d3_006"
+      ],
+      "slip_pattern": null,
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "limits-outside-the-model",
+      "family": "remedies",
+      "order": 3,
+      "title": "Limits live outside the model",
+      "rule": "Bound what AI can do with least-privilege access and approvals enforced by systems; a prompt instruction is not a control.",
+      "why": "Agents and assistants read untrusted text, which may hide instructions, so anything enforced only by the model can be talked around. Limiting the agent's account, enforcing approval in the payment system and checking each user's access at retrieval hold whatever the model is told. This extends the CISA principle “Least privilege and segregation of duties by design” to AI identities.",
+      "triggers": [
+        "the system prompt forbids it",
+        "can issue refunds",
+        "acts on its own",
+        "one service account",
+        "approval shown in the chat",
+        "payment authority"
+      ],
+      "trap": {
+        "move": "Relying on the system prompt, an output filter or a later review to keep the agent within bounds.",
+        "why_wrong": "Injected text can override a prompt, filters miss reworded requests, and later review finds the money or data already gone."
+      },
+      "example": {
+        "scenario": "A property manager's AI agent schedules repairs and can raise purchase orders of any size through a shared finance login. Its prompt tells it to stay under $500.",
+        "answer": "Recommend giving the agent its own account with a system-enforced order limit, and a person's approval for anything above it. The prompt rule can be talked around."
+      },
+      "check": {
+        "scenario": "A travel firm's booking assistant reads customer emails and can cancel trips. Its prompt says to cancel only after the customer confirms twice. What should the IS auditor recommend as BEST?",
+        "right": "Require confirmation through the booking system itself before any cancellation goes through.",
+        "trap": "Strengthen the prompt wording and test that the assistant follows the two-confirmation rule.",
+        "why": "Customer emails are untrusted text that can imitate a confirmation. A check enforced by the booking system holds whatever the assistant is told."
+      },
+      "nuance": "Prompt rules and filters are still useful layers that reduce mistakes, but they cannot be the only control where the AI can move money, data or records.",
+      "domains": [
+        1,
+        2,
+        3
+      ],
+      "subtopics": [
+        "1A.1",
+        "2A.1",
+        "2F.2",
+        "2F.3",
+        "3A.2"
+      ],
+      "practice_ids": [
+        "aaia_d1_004",
+        "aaia_d2_017",
+        "aaia_d2_046",
+        "aaia_d3_022"
+      ],
+      "slip_pattern": null,
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "fix-the-control-not-the-model",
+      "family": "remedies",
+      "order": 4,
+      "title": "Fix the control gap, not just the model",
+      "rule": "Name the control gap that let the AI fail; retraining or a disclaimer only treats the symptom.",
+      "why": "This is the CISA principle “Root cause beats symptom”, applied to AI: drift and hallucination describe what happened, not why, and the cause is usually a missing trigger, measure or review. A retrained model looks fixed until the next decline; a control that detects it lasts. The IS auditor recommends the outcome, and the model owner chooses the technical fix.",
+      "triggers": [
+        "root cause: model hallucination",
+        "retrained and accurate again",
+        "drift after the launch",
+        "asks to close the finding",
+        "a vendor update added AI",
+        "staff were never taught"
+      ],
+      "trap": {
+        "move": "Recommending a retrain, a bigger model or a warning notice, or naming drift itself as the cause.",
+        "why_wrong": "These fix today's output. The gap that let the failure go unnoticed stays, so the next one arrives the same way."
+      },
+      "example": {
+        "scenario": "An insurer's claims chatbot kept quoting a discontinued policy for weeks after the policy wording changed. The team responded by adding a disclaimer to every answer.",
+        "answer": "Report the cause: no process updates the chatbot's source documents when products change. Recommend that the owner link product changes to content updates; the disclaimer leaves customers misled."
+      },
+      "check": {
+        "scenario": "An HR screening model was found to favor graduates of a few universities. The data team retrained it, and the new version passes fairness tests. What should the IS auditor recommend?",
+        "right": "Fairness criteria and ongoing group monitoring with a named owner, so a recurrence is caught.",
+        "trap": "Retraining the model each quarter on new applicant data, to keep its results fair.",
+        "why": "The retrain fixed this version. Without criteria and monitoring, the next biased version would go unnoticed, as this one did."
+      },
+      "nuance": "When harm is ongoing, a quick fix such as a rollback or a disclaimer can come first to contain it; the finding still reports the control gap.",
+      "domains": [
+        1,
+        2,
+        3
+      ],
+      "subtopics": [
+        "1B.1",
+        "1B.3",
+        "2D.2",
+        "3E.1",
+        "3E.2"
+      ],
+      "practice_ids": [
+        "aaia_d1_027",
+        "aaia_d2_037",
+        "aaia_d3_017",
+        "aaia_d3_048"
+      ],
+      "slip_pattern": "symptom",
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "contain-and-preserve-ai",
+      "family": "response",
+      "order": 1,
+      "title": "Stop the AI harm, keep the evidence",
+      "rule": "When AI causes harm, its owner disengages it first and preserves version, inputs, outputs and logs before root cause work.",
+      "why": "This is the CISA principle “People, containment, evidence, then cause”, applied to AI. While a model keeps acting, people keep being harmed, so pausing the automated action or rolling back comes before diagnosis. Generative outputs cannot be recreated by rerunning, so logs, versions and settings are kept under restricted access before anything changes.",
+      "triggers": [
+        "a sudden jump in flagged cases",
+        "wants every chat log deleted",
+        "offers to wipe the history",
+        "pause the model",
+        "retrain straight away",
+        "find the root cause before acting"
+      ],
+      "trap": {
+        "move": "Diagnosing or retraining while the model keeps acting, or deleting logs at once to limit exposure.",
+        "why_wrong": "Analysis while harm continues adds victims, and deleted or overwritten records leave nothing for root cause, notification or regulators."
+      },
+      "example": {
+        "scenario": "A school system's chatbot starts telling parents the wrong exam dates. Staff want to retrain it on corrected documents straight away.",
+        "answer": "The model owner should first switch the chatbot off or route parents to staff, and preserve its logs, model version, prompt and source documents. Retraining and root cause work follow once the harm stops; the IS auditor recommends this order."
+      },
+      "check": {
+        "scenario": "After a staff chatbot revealed colleagues' salaries, it was switched off. The vendor offers to wipe its conversation history and redeploy a patched model by morning. What should the IS auditor recommend?",
+        "right": "Keep the history and the old model version under restricted access until the investigation ends.",
+        "trap": "Accept the wipe and redeployment, and keep the vendor's written summary of what went wrong.",
+        "why": "The history shows what was exposed and to whom, and the old version helps show how. A vendor summary cannot replace the records the investigation needs."
+      },
+      "nuance": "Where a careful attacker's manipulation is suspected and no one is being harmed, scope quietly before visible action could alert them, as CISA teaches for stealthy attackers. If people are being harmed, disengage anyway.",
+      "domains": [
+        2
+      ],
+      "subtopics": [
+        "2G.2"
+      ],
+      "practice_ids": [
+        "aaia_d2_019",
+        "aaia_d2_049"
+      ],
+      "slip_pattern": null,
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "triage-by-harm-close-on-cause",
+      "family": "response",
+      "order": 2,
+      "title": "Triage by harm; find the real cause",
+      "rule": "Triage AI incidents by impact on people and the business; problem records carry the cause, and suspected manipulation stays open.",
+      "why": "A live model breaching its error tolerance is an incident, not a backlog item, and a quiet breach in a high-impact model can outrank a visible jailbreak. An ordinary incident closes once service is confirmed, while the problem record traces the real cause. Suspected poisoning stays open until the bad data and the gap that let it in are found.",
+      "triggers": [
+        "logged as a backlog item",
+        "several incident reports at once",
+        "rolled back and closed",
+        "root cause: hallucination",
+        "a burst of feedback from one account",
+        "triage FIRST"
+      ],
+      "trap": {
+        "move": "Ranking by visibility or media attention, or closing the matter at rollback with a symptom recorded as the cause.",
+        "why_wrong": "Visibility is not harm, and a symptom-level record leaves the cause, or an attacker's poisoned data, ready to return."
+      },
+      "example": {
+        "scenario": "A city's permit chatbot gave wrong opening hours one afternoon. Staff rolled back its new prompt, service is confirmed, and the problem record says model error.",
+        "answer": "The incident can close because service is confirmed, but the problem record stays open until the cause is found, such as an untested prompt change, and a fix is verified."
+      },
+      "check": {
+        "scenario": "A court service's translation model has produced wrong verb tenses in some documents for two weeks, above its error tolerance. The data team has added it to next quarter's improvement list.",
+        "right": "Raise it as an AI incident now and triage it by the harm to people in court cases.",
+        "trap": "Keep it on the improvement list, and raise its priority within next quarter's model work.",
+        "why": "Errors above tolerance in a live model are harming people now, which makes this an incident. Waiting for planned model work leaves wrong translations in court documents."
+      },
+      "nuance": "Root cause work can wait for containment but is never skipped; the incident record can close while the problem record stays open.",
+      "domains": [
+        2
+      ],
+      "subtopics": [
+        "2G.1",
+        "2G.3"
+      ],
+      "practice_ids": [
+        "aaia_d2_020",
+        "aaia_d2_047",
+        "aaia_d2_048",
+        "aaia_d2_050"
+      ],
+      "slip_pattern": null,
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "ai-priority-word-decides",
+      "family": "reading",
+      "order": 1,
+      "title": "The priority word decides",
+      "rule": "Find the priority word before the options: FIRST asks for sequence, GREATEST for realistic harm, LEAST flips the test.",
+      "why": "In AAIA-style questions the options are often all sensible AI controls, so the priority word sets the test. FIRST asks which step the others need, such as defining the context before testing or confirming a model's integrity before trusting its results. GREATEST ranks realistic harm to people and the business, and MOST LIKELY ranks probability, as in CISA.",
+      "triggers": [
+        "FIRST",
+        "BEST",
+        "MOST important",
+        "GREATEST",
+        "PRIMARY",
+        "MOST LIKELY"
+      ],
+      "trap": {
+        "move": "Choosing a strong control that belongs later in the sequence, such as testing before the criteria or the source are settled.",
+        "why_wrong": "It is a good step at the wrong time; its results cannot be judged until the earlier step exists."
+      },
+      "example": {
+        "scenario": "A team wants to measure a chatbot's fairness, but nobody has written down who uses it or which differences in treatment would be unacceptable. Which comes FIRST: fairness tests, or the context and limits?",
+        "answer": "Define the context and limits. Fairness results cannot be judged until someone says which groups matter and what level is acceptable. Testing comes next, and its results then mean something."
+      },
+      "check": {
+        "scenario": "A clinic's AI drafts discharge letters. Staff reviews find small typos in many letters and, rarely, a wrong dose. Which risk should the IS auditor report as MOST LIKELY to occur?",
+        "right": "Typos in discharge letters, since reviews find them in many letters.",
+        "trap": "A wrong dose in a letter, since it could seriously harm a patient.",
+        "why": "MOST LIKELY asks about probability, not severity. A wrong dose would be the GREATEST harm, but typos occur far more often."
+      },
+      "domains": [
+        1,
+        2
+      ],
+      "subtopics": [],
+      "practice_ids": [
+        "aaia_d1_019",
+        "aaia_d1_050",
+        "aaia_d2_005",
+        "aaia_d2_043"
+      ],
+      "slip_pattern": "priority",
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "ai-deciding-fact",
+      "family": "reading",
+      "order": 2,
+      "title": "Find the AI fact that decides",
+      "rule": "Find the AI-specific fact in the question that decides; a real risk the facts never point to loses.",
+      "why": "AAIA-style questions often carry one fact a CISA-only reader may skip, such as a model that retrains itself or a vendor never contacted. A real AI risk the question never supports, such as drift, loses to the one the facts create. Before you commit, name the stated fact that makes your answer beat the closest wrong choice.",
+      "triggers": [
+        "a new use, version or data source",
+        "was never contacted",
+        "for years",
+        "mostly after",
+        "only since the change",
+        "nothing suggests"
+      ],
+      "trap": {
+        "move": "Choosing a real AI risk from memory, such as drift, bias or fake data, that the question gives no sign of.",
+        "why_wrong": "The exam tests the scenario as written. A risk with no support in the facts loses to the one the stated facts create."
+      },
+      "example": {
+        "scenario": "An assistant summarizes support tickets for weekly reports, and long tickets are cut off before summarizing. Options include drift, prompt injection and lost details from long tickets.",
+        "answer": "Lost details win: the stated cut-off removes content from long tickets. Drift and injection are real AI risks, but nothing in the question points to them."
+      },
+      "check": {
+        "scenario": "A city's chatbot answers tax questions from documents last updated two years ago, and tax rates changed this year. Which risk should the IS auditor rate GREATEST?",
+        "right": "Residents get confident answers based on rates that are no longer in force.",
+        "trap": "Attackers plant hidden instructions that make the chatbot give harmful answers.",
+        "why": "Injection is a real risk, but nothing in the question suggests it. The stated facts, old documents and new rates, create the outdated-answer risk."
+      },
+      "domains": [
+        1,
+        2
+      ],
+      "subtopics": [],
+      "practice_ids": [
+        "aaia_d1_022",
+        "aaia_d1_031",
+        "aaia_d2_024",
+        "aaia_d2_029"
+      ],
+      "slip_pattern": "misread",
+      "legacy_ids": [],
+      "aliases": []
+    }
+  ],
+  "slip_map": {
+    "role": "auditor-assesses-never-owns-ai",
+    "tech-first": "ai-governance-before-tooling",
+    "symptom": "fix-the-control-not-the-model",
+    "priority": "ai-priority-word-decides",
+    "runner-up": "ai-deciding-fact",
+    "misread": "ai-deciding-fact",
+    "overconfident": "ai-deciding-fact",
+    "knowledge": null
+  }
+}

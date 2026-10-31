@@ -130,16 +130,21 @@ section 6, which also apply.
 
 ## 5. The course pack (what learners buy)
 
-A pack carries six kinds of content (`mobile/src/content/packs/types.ts`). This
-PR ships the first two; the rest are planned here so the course launches
-complete.
+A pack carries six kinds of content (`mobile/src/content/packs/types.ts`).
+Questions, notes, glossary, principles, exam guide and final-review week exist
+and are app-ready but not switched on (owner decision, 31 Oct 2026: AAIA stays
+hidden until the paywall). Lessons and game decks are still planned.
+`node scripts/aaia_pack_dry_run.cjs` (run by `verify_repo.sh`) feeds these files
+to the phone app's own pack builders and draws a full and a short mock, so a
+broken file fails the repo check before AAIA is ever switched on.
 
 | Part | Source file (planned path) | Schema | Owner agents | Status |
 |---|---|---|---|---|
-| Questions, one file per domain | `data/aaia/originals/d{1..3}.json` (served copies generated at Stage 2.7) | `QUESTION_SCHEMA.md`, `EXAM_STYLE_V2.md` | `aaia-dN-domain-expert`, `aaia-standards-auditor` | Pilot 60, reviewed |
+| Questions, one file per domain | `data/aaia/originals/d{1..3}.json` (served copies generated at Stage 2.7) | `QUESTION_SCHEMA.md`, `EXAM_STYLE_V2.md` | `aaia-dN-domain-expert`, `aaia-standards-auditor` | Pilot + batch 2, reviewed |
 | Notes | `data/aaia/notes/d{1..3}.json` | `NOTES_SCHEMA_V2.md` | domain experts, `cisa-notes-curator` (structure), `learner-reader` | 52 subtopics, reviewed |
-| Principles | `data/aaia/principles.json` | `PRINCIPLES_SCHEMA.md` | `isaca-mindset-coach` (AAIA section) | Plan: 12–15 principles that extend CISA's families (role, priorities, assurance, remedies, response, reading) with AI cases: named owner, retrain is a change, accuracy is not assurance, real oversight, AI in the audit stays the auditor's call. Tag items with `principle_id` once it exists |
-| Exam guide and final-review week | `data/aaia/exam_guide.json`, `data/aaia/final_review_week.json` | `EXAM_GUIDE_SCHEMA.md` | `isaca-mindset-coach`, `cert-blueprint-researcher` | Plan: 90 items in 150 minutes (100 seconds each), the prerequisite list, scaled 200–800 with 450 to pass, the June 2025 outline; practice scores are not scaled scores |
+| Glossary | `data/aaia/glossary.json` (same fields as the web `glossData`) | checked by `scripts/check_aaia_bank.py` | domain experts, `isaca-concept-reviewer` | Built and reviewed, 31 Oct 2026; definitions agree with the notes |
+| Principles | `data/aaia/principles.json` | `PRINCIPLES_SCHEMA.md`, `PRINCIPLE_TAGGING.md` (AAIA section) · `scripts/lint_principles.py --cert aaia` | `isaca-mindset-coach` (AAIA section) | Built and reviewed, 31 Oct 2026: 19 principles in CISA's six families with AI cases (named owner, AI changes are changes, accuracy is not assurance, independence of AI assurance, AI in the audit stays yours). Questions carry `principle_id` tags |
+| Exam guide and final-review week | `data/aaia/exam_guide.json`, `data/aaia/final_review_week.json` | `EXAM_GUIDE_SCHEMA.md` | `isaca-mindset-coach`, `cert-blueprint-researcher` · `scripts/lint_exam_guide.py --cert aaia` | Built and reviewed, 31 Oct 2026: 90 items in 150 minutes (target pace 90 seconds, keeping 15 minutes to review), who can take it, scaled 200–800 with 450 to pass, the June 2025 outline; practice scores are not scaled scores. Facts re-checked on isaca.org |
 | Lessons | `data/aaia/lessons.json` | `LESSONS_SCHEMA.md` | `learning-game-designer`, domain experts | Plan: one decision lesson per area (17), starting with the five lens lessons: owner, change, evidence, oversight, AI in the audit |
 | Game decks | `mobile/src/content/games/aaia/{roles,sequences,flows}.json` | as the CISA decks | `learning-game-designer` | Plan: roles (who decides: board, owner, committee, validator, auditor), sequences (AI lifecycle, incident steps), flows (finding writing) |
 
@@ -164,7 +169,8 @@ payment, never renews). Notes, lessons, principles and games stay free.
   both halves of Domain 3.
 - **Diagnostic:** 30 items from the sample, 10 per domain weighted 10 / 14 / 6
   inside it… rounded to 10 / 13 / 7, one per area at least.
-- **Short mock:** 30 items, 45 minutes (the exam's 100 seconds per item), drawn
+- **Short mock:** 30 items, 45 minutes (the app's target pace of 90 seconds per
+  item; the exam itself allows 100), drawn
   from the sample, never from the paid bank.
 - The sample is fixed per release (a `free: true` flag on each item at Stage
   2.7), and changes only with a new reviewed release.

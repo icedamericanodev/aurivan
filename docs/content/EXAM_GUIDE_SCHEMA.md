@@ -133,7 +133,8 @@ any day.
   check."), not to read, reread or skim. Short principle-family reads may stay reads.
 - **Timed work:** one full mock on day 7, one timed mini mock on day 4, and no
   timed tests on days 3 to 1. Never a second full mock in the week.
-- **Day 6 is capped** at about 90 minutes and starts with the heaviest domains (4 and 5).
+- **Day 6 is capped** at about 90 minutes and starts with the heaviest-weighted domains (CISA: 4 and 5; AAIA: 2, then 1).
+- **One pace number.** Tasks, the morning checklist and `pace` give the target pace the app's pace checks use (exam minutes minus a 15-minute review reserve, divided by the questions: 90 seconds for CISA and AAIA). The exam pace may appear only beside it.
 - **Missed-day rule:** skip a missed day and carry on; never double up.
 - **Slip names quote the mobile Mistakes tags exactly** (`SLIPS` in
   `mobile/src/app/mistakes.tsx`), including "Didn’t know it". "Runner-up" is

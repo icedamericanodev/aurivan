@@ -15,14 +15,15 @@ work without rediscovering the layout.
 | `data/domain{1..5}.json` | **Generated** from `data/originals/` by `scripts/originals_to_domain.py`. Per-domain question banks the apps load. Don't edit by hand. |
 | `data/cisa_notes.json` | Topics notes (web Topics tab + mobile Study notes). Schema v2: `docs/content/NOTES_SCHEMA_V2.md`; lint with `scripts/lint_notes.py` |
 | `data/glossary.json` | Glossary tab data |
-| `data/aaia/` | ISACA AAIA course (paid pack, not wired into the apps yet): `notes/d{1..3}.json` (notes schema v2) and `originals/d{1..3}.json` + `_framework_library.md`. Outline and lens: `docs/content/AAIA_BLUEPRINT.md`; plan: `docs/content/AAIA_BANK_PLAN.md`. Lint notes with `scripts/lint_notes.py <file> --outline docs/content/AAIA_BLUEPRINT.md --bank data/aaia/originals` |
+| `data/aaia/` | ISACA AAIA course (paid pack, not wired into the apps yet): `notes/d{1..3}.json` (notes schema v2), `originals/d{1..3}.json` + `_framework_library.md`, `glossary.json`, `principles.json`, `exam_guide.json`, `final_review_week.json` (same formats as CISA; app-ready, switched on with the paywall). Lint with `scripts/lint_principles.py --cert aaia` and `scripts/lint_exam_guide.py --cert aaia`. Outline and lens: `docs/content/AAIA_BLUEPRINT.md`; plan: `docs/content/AAIA_BANK_PLAN.md`. Lint notes with `scripts/lint_notes.py <file> --outline docs/content/AAIA_BLUEPRINT.md --bank data/aaia/originals` |
 | `scripts/originals_to_domain.py` | Idempotent converter: `data/originals/d{N}.json` → `data/domain{N}.json` (all domains, or pass a domain number) |
 | `scripts/build_site.sh` | Builds the public website into `_site/` (allowlist only). Deploy steps: `docs/WEBSITE_DEPLOY.md` |
 | `wrangler.jsonc` | Cloudflare settings, used only if the site is connected via the Workers screen: publish `_site/` only |
 | `scripts/verify_repo.sh` | Repo health check (run via the SessionStart hook) |
 | `scripts/lint_exam_style_v2.py` | Harness for exam-style v2 questions (short stems, Eliminate / Final two / Exam cue tips). Rules: `docs/content/EXAM_STYLE_V2.md` |
 | `scripts/check_longest_option.py` | Longest-option tell per domain: how often "always pick the longest" would win (target about 20%, chance 25%; fails outside 15–24%). Run by `verify_repo.sh` |
-| `scripts/check_aaia_bank.py` | AAIA bank checks: every `framework_ref` part in `data/aaia/originals/_framework_library.md`, ids, area coverage, the length tell (enforced from 40 questions per domain), notes links, no "AAIA®". Run by `verify_repo.sh` with the AAIA exam-style and notes lints |
+| `scripts/check_aaia_bank.py` | AAIA bank checks: every `framework_ref` part in `data/aaia/originals/_framework_library.md`, ids, area coverage, the length tell (enforced from 40 questions per domain), notes links, no "AAIA®", and the glossary. Run by `verify_repo.sh` with the AAIA exam-style and notes lints |
+| `scripts/aaia_pack_dry_run.cjs` | Runs the phone app's pack builders on the AAIA files (output to /tmp only) and draws a full 90-item and a short mock; proves the course loads before it is switched on. Run by `verify_repo.sh` |
 | `scripts/print_alignment.py` | Prints v2 options beside their explanations and tips for the alignment read (catches option texts under the wrong letters) |
 | `scripts/lint_inline_js.sh` | Extracts inline `<script>` blocks from `index.html` and runs ESLint `no-undef` |
 | `.claude/settings.json` | Permission allowlist + SessionStart validation hook |

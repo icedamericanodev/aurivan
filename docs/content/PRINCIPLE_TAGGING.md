@@ -378,3 +378,87 @@ python3 scripts/lint_principles.py         # counts per principle, < 10 warning,
 bash scripts/verify_repo.sh
 (cd mobile && npm run content && npx jest src/__tests__/content-pack.test.ts)
 ```
+
+## AAIA (31 October 2026)
+The AAIA course has its own principles in `data/aaia/principles.json` (19
+principles in the same six families, extending the CISA ones) and its own
+bank in `data/aaia/originals/d1-3.json`. The rule, steps and confidence levels
+above apply unchanged. Lint:
+
+```bash
+python3 scripts/lint_principles.py --cert aaia
+node scripts/aaia_pack_dry_run.cjs   # every principle_id must exist in the pack
+```
+
+AAIA is not wired into the apps yet, so moving AAIA seeds or tags needs no web
+version bump today.
+
+### AAIA tie-breaks
+- **Auditor role vs independence.** If the closest wrong choice has the IS
+  auditor performing, signing, approving or accepting something, tag
+  `auditor-assesses-never-owns-ai`. If it relies on validation, data, test
+  results, ratings or tools that the builders or the auditee control, tag
+  `independence-of-ai-assurance`. aaia_d1_029 stays on
+  `auditor-assesses-never-owns-ai`: its trap is audit signing off the
+  builders' tests.
+- **Independence vs `ai-in-audit-stays-yours`.** Whether an audit AI tool is
+  validated, approved for audit use, disclosed or owned as a conclusion →
+  `ai-in-audit-stays-yours`. Who controls the tool, its training labels or its
+  logs (the auditee) decides → `independence-of-ai-assurance`.
+- **Independence vs `accuracy-is-not-assurance`.** What was tested (errors
+  that matter, by group, on unseen recent data, against preset criteria) →
+  `accuracy-is-not-assurance`. Who chose the data or ran the test →
+  `independence-of-ai-assurance`. When the work is already independent and the
+  open question is whether the data fits the people affected now, tag
+  `accuracy-is-not-assurance` (aaia_d3_003).
+- **Reproducible evidence vs contain and preserve.** Evidence that lets the
+  auditor trace or rerun a decision (version, inputs, settings, archived
+  files) → `reproducible-ai-evidence`. Live harm, where the owner disengages
+  the model first and preserves records before root cause →
+  `contain-and-preserve-ai`.
+- **Rank by harm vs accountability.** Which risk is greatest, rated highest or
+  outside the board's appetite → `rank-ai-risk-by-harm`. Who decides or owns
+  the model or decision → `named-human-owner`.
+- **Content before reading.** `ai-deciding-fact` only when a stated fact
+  removes the closest wrong choice and no content principle explains the win.
+- **Knowledge items stay untagged.** Attack techniques, framework and
+  standard status, scoping and sampling mechanics stay untagged unless the
+  Final two weighs harm to people or the business.
+
+### Results
+| Domain | Questions | Tagged | Untagged |
+|---|---|---|---|
+| D1 | 50 | 43 | 7 |
+| D2 | 50 | 48 | 2 |
+| D3 | 50 | 47 | 3 |
+| All | 150 | 138 | 12 |
+
+New principle `independence-of-ai-assurance` (role family): seeds and tags
+aaia_d2_014, aaia_d3_024 and aaia_d3_043, moved from
+`accuracy-is-not-assurance` (aaia_d2_014) and `ai-in-audit-stays-yours`
+(aaia_d3_024, aaia_d3_043). aaia_d3_003 stays on `accuracy-is-not-assurance`
+(and now seeds it): its specialist is already independent, and its Final two
+turns on whether the test data represents current students.
+
+**Medium confidence (tagged, review first):**
+- aaia_d1_028 `rank-ai-risk-by-harm` (close to `real-human-oversight`)
+- aaia_d1_045 `ai-deciding-fact` (the duty to give reasons removes the accuracy check)
+- aaia_d2_018 `rank-ai-risk-by-harm` (attack knowledge carries much of the weight)
+- aaia_d2_044 `rank-ai-risk-by-harm` (attack knowledge carries much of the weight)
+- aaia_d3_043 `independence-of-ai-assurance` (close to `ai-in-audit-stays-yours`)
+
+**Still untagged (low confidence):**
+- aaia_d1_014: turns on knowing fine-tuned models can memorize training text.
+- aaia_d1_017: framework status knowledge (a voluntary framework chosen as criteria for suitability).
+- aaia_d1_038: fourth-party terms knowledge; the closest wrong choice is not a technology move.
+- aaia_d1_041: privacy-by-design knowledge (minimization over pseudonymization).
+- aaia_d1_046: trustworthy-AI characteristic knowledge (transparency vs validity).
+- aaia_d1_047: the lesson (one law is a floor) has no principle; the Final two turns on proxy variables.
+- aaia_d1_049: standards knowledge (a management-system certificate vs model-level risk work).
+- aaia_d2_016: decided by knowing indirect prompt injection lets outsiders in; no harm weighing.
+- aaia_d2_045: decided by knowing system prompts can be extracted; breadth of exposure, not harm.
+- aaia_d3_002: the auditor's own scoping; no AAIA principle covers it.
+- aaia_d3_009: turns on a control operating over the period (CISA `proven-not-configured`), which no AAIA principle covers.
+- aaia_d3_030: sampling mechanics (a stratum just above the cut-off).
+
+Seed moved (31 Oct 2026): aaia_d3_035 now seeds reproducible-ai-evidence; contain-and-preserve-ai has 2 seeds (aaia_d2_019, aaia_d2_049) and needs a new incident item for a third.
