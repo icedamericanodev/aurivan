@@ -622,7 +622,7 @@ describe('a badge earned: the tab dot and the count', () => {
       dot = create(<Dot />);
     });
     expect(dot!.root.findAllByProps({ testID: 'you-new-dot' })).toHaveLength(0);
-    expect(joined('you')).toContain('[Herbarium: badges and field notes, none yet.');
+    expect(joined('you')).toContain('[Badges: your badges and field notes, none yet.');
     // A finished mock of 50 earns a badge live (after the launch back-fill).
     mockExam(40);
     const earned = caseEarnedCount(cp().milestones?.earned);
@@ -630,7 +630,7 @@ describe('a badge earned: the tab dot and the count', () => {
     expect(hasNewBadge('cisa')).toBe(true);
     expect(dot!.root.findAllByProps({ testID: 'you-new-dot' }).length).toBeGreaterThan(0);
     expectTabsFresh(['you']);
-    expect(joined('you')).not.toContain('[Herbarium: badges and field notes, none yet.');
+    expect(joined('you')).not.toContain('[Badges: your badges and field notes, none yet.');
     act(() => dot!.unmount());
   });
 });

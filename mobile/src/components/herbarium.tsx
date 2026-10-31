@@ -1,9 +1,11 @@
 /**
- * The herbarium's way in from You (mobile 1.51, Field Guide §21): one row
- * with the three newest pressed specimens, "Herbarium", "Badges and field
+ * The badges' way in from You (mobile 1.51, Field Guide §21): one row
+ * with the three newest pressed specimens, "Badges", "Your badges and field
  * notes · Last pressed: Know What You Know, 28 Oct", a small "new" dot (shape,
- * and said) and the count earned (never "of N"). One button to the herbarium.
+ * and said) and the count earned (never "of N"). One button to the badges screen.
  * Settings → Show badges off hides it (You keeps a Field notes row instead).
+ * Grove You C2: the row says and shows "Badges", never "Herbarium" (labels decision 8);
+ * the code names (HerbariumEntry, HERBARIUM, herbarium-entry) stay.
  */
 import { memo } from 'react';
 import { View } from 'react-native';
@@ -16,15 +18,16 @@ import { EmblemArt } from './medallion';
 import { AnimatedPressable, usePressScale } from './motion';
 import { Row, T, Trail, useFontScale } from './ui';
 
-export const HERBARIUM = 'Herbarium';
+/** The row's title, shown and said. The code name stays; the words are "Badges" (labels decision 8). */
+export const HERBARIUM = 'Badges';
 
-/** "Badges and field notes · Last pressed: Know What You Know, 28 Oct". */
+/** "Your badges and field notes · Last pressed: Know What You Know, 28 Oct". */
 export function herbariumLine(last?: LastPressed): string {
-  return last ? `Badges and field notes · Last pressed: ${last.name}, ${shortDate(last.at)}` : 'Badges and field notes · none pressed yet';
+  return last ? `Your badges and field notes · Last pressed: ${last.name}, ${shortDate(last.at)}` : 'Your badges and field notes · none pressed yet';
 }
 
 export function herbariumSpoken(count: number, newBadge: boolean, last?: LastPressed): string {
-  return `${HERBARIUM}: badges and field notes${newBadge ? ', new badge' : ''}, ${count ? `${count} earned` : 'none yet'}.${last ? ` Last pressed: ${last.name}, ${spokenShortDate(last.at)}.` : ''}`;
+  return `${HERBARIUM}: your badges and field notes${newBadge ? ', new badge' : ''}, ${count ? `${count} earned` : 'none yet'}.${last ? ` Last pressed: ${last.name}, ${spokenShortDate(last.at)}.` : ''}`;
 }
 
 export const HerbariumEntry = memo(function HerbariumEntry({

@@ -165,7 +165,7 @@ describe('You', () => {
     d4.slice(0, 20).forEach(answer);
     ensureBackfill('cisa', T0);
     mount(<You />);
-    expect(labels().some((l) => /^Herbarium: badges and field notes, 2 earned\. Last pressed: .+, \d+ \w+\.$/.test(l))).toBe(true);
+    expect(labels().some((l) => /^Badges: your badges and field notes, 2 earned\. Last pressed: .+, \d+ \w+\.$/.test(l))).toBe(true);
     expect(labels().some((l) => l.startsWith('Field notes'))).toBe(false); // merged into the row above
     expect(allText()).toContain('You’d already earned 2 badges.');
     // Shown once: You marks it seen, and the line stays for this visit.
@@ -182,7 +182,7 @@ describe('You', () => {
     ensureBackfill('cisa', T0);
     mount(<You />);
     expect(allText()).not.toContain('already earned');
-    expect(labels()).toContain('Herbarium: badges and field notes, none yet.');
+    expect(labels()).toContain('Badges: your badges and field notes, none yet.');
   });
 });
 

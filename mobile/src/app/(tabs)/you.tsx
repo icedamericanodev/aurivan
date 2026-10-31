@@ -55,6 +55,13 @@
  * with the words "a study estimate" built in; the areas as one line of growth each on ONE scale in
  * a plate (Fig. 5, with its key); then the Herbarium row (the badges' way in, with the newest
  * pressed specimens); the stats are ruled label rows (Answered, Accuracy, Streak), not tiles.
+ * Grove You C2 (owner: "C with the improvements", 31 Oct 2026): under the profile, ONE summary
+ * sentence (this week's study days, the readiness range or the answers toward it, "Focus next" from
+ * readiness.focusDomainId, the countdown; engine/groveYou.ts, the website's own rules), a "Practice
+ * {area}" button (the same set as Practice's Weak spots row) and the plant chip (it replaces the plant
+ * row: "Your plant" over its name and growth, or "Pick your plant"). The stats follow, then readiness.
+ * The streak and accuracy rows follow Today (DECISIONS 1 and 3). The badges' way in says "Badges".
+ * Settings stays its own screen: the cog in the head and a "Settings" row near the end both open it.
  */
 import { router, useFocusEffect } from 'expo-router';
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -70,10 +77,13 @@ import { AccountSection } from '../../components/account';
 import { BoardRow } from '../../components/board';
 import { CLOUD } from '../../cloud/flag';
 import { MindsetGrowthCard } from '../../components/moments';
-import { BadgeIcon, ICON_STROKE, Settings, Sprout } from '../../components/icons';
+import { BadgeIcon, ChevronRight, ICON_STROKE, Settings, Sprout } from '../../components/icons';
 import { ShareProgressSheet } from '../../components/shareCard';
 import { LivePlant } from '../../components/plant/LivePlant';
 import { growthShort, plantCallName } from '../../engine/plant';
+import { youStreakRow, youSummary } from '../../engine/groveYou';
+import { accuracyTile, twigWeek } from '../../engine/groveToday';
+import { PlantChip, SETTINGS_ROW_NOTE, YouSummaryLine } from '../../components/youTop';
 import { usePlantView } from '../../lib/plant';
 import { Button, EmptyState, Enter, ICON_SIZE, InviteRow, Lead, ListRow, Screen, Section, T } from '../../components/ui';
 import { pacingStats, pacingStatsLine, spokenMin } from '../../engine/pace';
@@ -82,7 +92,7 @@ import { readinessRange } from '../../engine/readinessRange';
 import { mockPct } from '../../engine/readinessReport';
 import { BAND_MIN_ANSWERS, BANDS_LINE, domainFigure, STUDY_BAR_LINE } from '../../engine/domainBand';
 import { dayKey } from '../../engine/streak';
-import { guardedStart, reviewSubtitle, startReview } from '../../lib/sessions';
+import { FOCUS_SET_SIZE, guardedStart, reviewSubtitle, startFocusPractice, startReview } from '../../lib/sessions';
 import { caseEarnedCount } from '../../engine/badgeCatalog';
 import { useNewBadge } from '../../lib/badges';
 import { backfillLine, seeBackfill } from '../../lib/milestones';
@@ -109,7 +119,7 @@ const openNameEditor = () => {
   router.push({ pathname: '/settings', params: { open: 'name' } });
 };
 
-/** The herbarium (the route keeps its old name, so links and Results still work). */
+/** The badges screen (the route keeps its old name, so links and Results still work). */
 const openHerbarium = () => router.push('/milestones');
 
 /** When You's rings have finished growing (five arcs, outer first 60 ms apart, each over `grow`): the plant breathes after. */
@@ -120,7 +130,7 @@ const dayStart = (key: string) => new Date(`${key}T12:00:00`).getTime();
 
 export default function You() {
   const { c } = useTheme();
-  const { cert, readiness, progress, streak, dueCount } = useActiveCert();
+  const { cert, readiness, progress, streak, dueCount, daysLeft } = useActiveCert();
   // One quiet line on pacing across timed mocks (engine/pace.ts; untimed mocks never count).
   const pacingLine = pacingStatsLine(pacingStats(progress.mocks));
   const range = readinessRange(cert, readiness);
@@ -136,6 +146,8 @@ export default function You() {
   const { dueItems: creditItems } = useReports();
   // Share card: the study days come from the saved streak (last 14 study days).
   const recentDays = useProgress((s) => s.streak.recentDays);
+  // C2: the last study day too, so this week's count matches Today's twig (it reads both).
+  const lastDay = useProgress((s) => s.streak.lastDay);
   // The day the sheet was opened (read in the tap handler, not during render). null = closed.
   const [shareDay, setShareDay] = useState<string | null>(null);
   // Mobile 1.10: every badge the case shows as earned (a kept key it doesn't show never counts), and the "new" dot.
@@ -180,7 +192,6 @@ export default function You() {
   // The same object while the look is unchanged: the memoised plant skips re-rendering (performance, 1.15.x).
   const lookArt = plant.look?.art;
   const rowLook = useMemo(() => (lookArt ? { ...lookArt, keepsakes: [] } : undefined), [lookArt]);
-  const { isDark } = useTheme();
 
   // Mobile 1.44: "Your study profile", from the learner's own choices and study only.
   // Today's day, read again whenever You comes into view (render stays pure), so "Exam 14 Feb" drops off after the day.
@@ -229,6 +240,20 @@ export default function You() {
     [displayName, certName, since, examDate, minutes, familiarity, today],
   );
 
+  // ── Grove You C2: the summary sentence, its Practice button and the stats' words ──
+  // Presentation only: every number is one the app already works out (engine/groveYou.ts).
+  // This week's study days, Monday first: the same count as Today's twig (the streak keeps the last 14 days).
+  const studiedThisWeek = useMemo(
+    () => twigWeek([...(recentDays ?? []), ...(lastDay ? [lastDay] : [])], dayStart(today)).filter((d) => d.on).length,
+    [recentDays, lastDay, today],
+  );
+  // "Focus next": the same area Today and Practice pick, so the three never disagree.
+  const focus = cert.domains.find((d) => d.id === readiness.focusDomainId) ?? null;
+  const topLine = youSummary({ studyDaysThisWeek: studiedThisWeek, range, focusShort: focus?.short ?? null, answered, daysLeft });
+  // The streak row follows Today's twig (DECISIONS 3); accuracy says "Too few yet" under 30 answers (DECISIONS 1).
+  const streakRow = youStreakRow(progress.milestones?.days ?? 0, streak, studiedThisWeek);
+  const accuracyWords = accuracyTile(answered, mastered);
+
   return (
     <Screen>
       <Enter i={0}>
@@ -240,7 +265,7 @@ export default function You() {
             label: 'Settings',
             hint: 'Exam date, reminders and more',
             boxed: true,
-            // Opens the Settings screen. A Settings card on You (that this button would scroll to) waits for the owner (spec C1).
+            // Opens the Settings screen (Settings is its own screen; the row near the end of You opens it too).
             onPress: () => router.push('/settings'),
             icon: (col) => <Settings size={ICON_SIZE.row} color={col} strokeWidth={ICON_STROKE} />,
           }}
@@ -252,8 +277,88 @@ export default function You() {
       </Enter>
 
       <Enter i={1}>
-        {/* Readiness first (mobile 1.21): a tracked kicker, and its action opens the report. */}
-        <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', marginTop: space.lg }}>
+        {/* Grove You C2: a hairline under the profile, then the week in one sentence and the next step. */}
+        <View style={{ borderTopWidth: 1, borderTopColor: c.line, marginTop: space.sm }} />
+        <YouSummaryLine summary={topLine} />
+        {focus && (
+          <Button
+            label={`Practice ${focus.short}`}
+            accessibilityHint={`Starts ${FOCUS_SET_SIZE} questions in ${focus.name}`}
+            icon={(col) => <ChevronRight size={18} color={col} strokeWidth={ICON_STROKE} />}
+            // The same set as Practice's "Weak spots" row (lib/sessions.ts startFocusPractice).
+            onPress={() => guardedStart(() => startFocusPractice(cert.id, focus), () => router.push('/session'))}
+            style={{ alignSelf: 'flex-start', maxWidth: '100%', marginTop: space.md, paddingHorizontal: space.lg }}
+          />
+        )}
+        {/* The plant chip (C2), in place of the plant row: it opens Your plant, or the picker with no plant yet.
+            Settings → Show my plant off hides it. */}
+        {plant.plant ? (
+          <PlantChip
+            title={`${plantCallName(plant.plant)} · ${growthShort(plant.plant.growth)}`}
+            spoken={`Your plant: ${plant.label}`}
+            hint="Opens your plant"
+            onPress={() => router.push('/plant')}
+            art={
+              // Mobile 1.14: one slow breath the first time You comes into view this session, then still.
+              <LivePlant
+                species={plant.plant.species}
+                stage={plant.plant.growth}
+                organs={plant.scales}
+                quietLook={!plant.face}
+                resting={plant.resting}
+                size={36}
+                // The chip is forest in both themes, so the plant takes its dark palette (as in Today's ring).
+                theme="dark"
+                lod="small"
+                fit
+                // At this size keepsakes would shrink the plant to fit them: the chip shows the plant and its colours.
+                look={rowLook}
+                mood={plant.look?.mood}
+                breathe="you"
+                // One thing moves at a time: the breath waits until the areas have grown.
+                breatheDelay={rings.play ? RINGS_SETTLED_MS : 0}
+              />
+            }
+          />
+        ) : plant.shown ? (
+          <PlantChip
+            title="Pick your plant"
+            spoken="Your plant: pick your plant. It grows only with your study."
+            hint="Opens the plant picker"
+            onPress={() => router.push('/plant-pick')}
+            art={<Sprout size={ICON_SIZE.row} color={c.onForest} strokeWidth={ICON_STROKE} />}
+          />
+        ) : null}
+
+        {/* Mobile 1.51 (Field Guide): ruled label rows, a tracked key and a serif value, never tiles. */}
+        <SpecimenLabel testID="you-stats" style={{ marginTop: space.lg }}>
+          <SpecimenRow label="Answered" value={String(answered)} roll={statRoll(0, String(stats.from[0]))} />
+          {accuracyWords.num ? (
+            <SpecimenRow label="Accuracy" value={String(accuracy)} pct roll={statRoll(1, String(stats.from[1]))} />
+          ) : (
+            // Under 30 answers a percentage has not earned its precision (DECISIONS 1): words, and when it shows.
+            <SpecimenRow
+              label="Accuracy"
+              word={accuracyWords.shown}
+              note={accuracyWords.hint ?? undefined}
+              spoken={accuracyWords.spoken.replace(/^Accuracy, /, '')}
+            />
+          )}
+          {streakRow.count ? (
+            <SpecimenRow label={streakRow.label} value={streakRow.value} unit={streakRow.unit} spoken={streakRow.spoken} color={c.clay} roll={statRoll(2, String(stats.from[2]))} />
+          ) : streakRow.word ? (
+            // No streak yet: an invitation, never a "0" that reads as a failure.
+            <SpecimenRow label={streakRow.label} word={streakRow.word} spoken={streakRow.spoken} color={c.clay} />
+          ) : (
+            // From study day 14 (or a streak under 2 after the first days): this week's study days, as on Today.
+            <SpecimenRow label={streakRow.label} value={streakRow.value} unit={streakRow.unit} spoken={streakRow.spoken} />
+          )}
+        </SpecimenLabel>
+      </Enter>
+
+      <Enter i={2}>
+        {/* Readiness (mobile 1.21): a tracked kicker, and its action opens the report. */}
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', marginTop: space.xl }}>
           {/* One kicker word on You and Today (UX review O9). */}
           <FieldText v="head" accessibilityRole="header">Estimated readiness</FieldText>
           <Button
@@ -281,74 +386,10 @@ export default function You() {
         )}
         {/* A number shows from 30 answers in an area: said once while any area is still thin. */}
         {anyThin && <T v="meta" style={{ marginTop: space.sm }}>{BANDS_LINE}</T>}
-        {/* Mobile 1.51: the badges' way in, right under the plate (the herbarium; Settings → Show badges off hides it). */}
+        {/* Mobile 1.51: the badges' way in, right under the plate (Settings → Show badges off hides it). */}
         {!badgesHidden && (
           <View style={{ marginTop: space.lg }}>
             <HerbariumEntry pressed={pressed} count={badgeCount} newBadge={newBadge} onPress={openHerbarium} />
-          </View>
-        )}
-      </Enter>
-
-      <Enter i={2} style={{ marginTop: space.xl }}>
-        {/* Mobile 1.51 (Field Guide): ruled label rows, a tracked key and a serif value, never tiles. */}
-        <SpecimenLabel testID="you-stats">
-          <SpecimenRow label="Answered" value={String(answered)} roll={statRoll(0, String(stats.from[0]))} />
-          {answered ? (
-            <SpecimenRow label="Accuracy" value={String(accuracy)} pct roll={statRoll(1, String(stats.from[1]))} />
-          ) : (
-            <SpecimenRow label="Accuracy" word="Not yet" spoken="not yet, answer a question first" />
-          )}
-          {streak > 0 ? (
-            <SpecimenRow label="Streak" value={String(streak)} unit={streak === 1 ? 'day' : 'days'} color={c.clay} roll={statRoll(2, String(stats.from[2]))} />
-          ) : (
-            // No streak yet (or a new start): an invitation, never a "0" that reads as a failure.
-            <SpecimenRow label="Streak" word="Starts today" spoken="starts today, with your first answer" color={c.clay} />
-          )}
-        </SpecimenLabel>
-        {/* Two "Accuracy" stats in the app count different things (C8): say what this one counts.
-            Mobile 1.39: only when the rings' "Percentages count your latest try…" line is not already
-            on screen two blocks up (that one covers this percentage too); never both. */}
-        {/* Mobile 1.43: the areas' caption ("Right on your latest tries") already says what the percents count. */}
-        {/* Your plant, below the stats (decided 15 Oct 2026): it never leads a study screen. */}
-        {(plant.plant || plant.shown) && (
-          <View style={{ marginTop: space.lg }}>
-            {plant.plant ? (
-              // The plant opens Your plant; its growth reads in words beside it ("growth", never "stage").
-              <ListRow
-                lead={
-                  // Mobile 1.14: one slow breath the first time You comes into view this
-                  // session, once the rings have grown (one thing moves at a time), then still.
-                  <LivePlant
-                    species={plant.plant.species}
-                    stage={plant.plant.growth}
-                    organs={plant.scales}
-                    quietLook={!plant.face}
-                    resting={plant.resting}
-                    size={64}
-                    theme={isDark ? 'dark' : 'light'}
-                    // At 64pt keepsakes would shrink the plant to fit them: the row shows the plant and its colours.
-                    look={rowLook}
-                    mood={plant.look?.mood}
-                    breathe="you"
-                    breatheDelay={rings.play ? RINGS_SETTLED_MS : 0}
-                  />
-                }
-                title={plantCallName(plant.plant)}
-                subtitle={growthShort(plant.plant.growth)}
-                accessibilityLabel={`${plant.label} Your plant.`}
-                accessibilityHint="Opens your plant"
-                onPress={() => router.push('/plant')}
-                last
-              />
-            ) : plant.shown ? (
-              <ListRow
-                icon={<Sprout size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
-                title="Plant yours"
-                subtitle="Grows only with your study"
-                onPress={() => router.push('/plant-pick')}
-                last
-              />
-            ) : null}
           </View>
         )}
         {growth.show && (
@@ -516,6 +557,20 @@ const YouLists = memo(function YouLists({
             },
           ]}
         />
+        {/* Grove You C2 (owner: Settings clearly separate from You): one row near the end that opens the
+            same Settings screen as the cog in the head. Its line says what lives there. */}
+        <View style={{ marginTop: space.xl, borderTopWidth: 1, borderTopColor: c.line }}>
+          <ListRow
+            testID="you-settings-row"
+            icon={icon(Settings)}
+            title="Settings"
+            subtitle={SETTINGS_ROW_NOTE}
+            accessibilityLabel={`Settings, ${SETTINGS_ROW_NOTE}`}
+            accessibilityHint="Opens Settings"
+            onPress={() => router.push('/settings')}
+            last
+          />
+        </View>
         <T v="meta" center style={{ marginTop: space.xl }}>{cert.trademarkNotice}</T>
     </>
   );

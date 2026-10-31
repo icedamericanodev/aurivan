@@ -261,7 +261,7 @@ describe('the "new" dot', () => {
     earn('first-foothold', T0);
     expect(hasNewBadge('cisa')).toBe(true);
     mount(<You />);
-    expect(labels().some((l) => l.startsWith('Herbarium: badges and field notes, new badge, 1 earned.'))).toBe(true);
+    expect(labels().some((l) => l.startsWith('Badges: your badges and field notes, new badge, 1 earned.'))).toBe(true);
     expect(root().findAll((n) => n.props.testID === 'new-badge-dot').length).toBeGreaterThan(0);
     act(() => r!.unmount());
     jest.setSystemTime(T0 + 1000);
@@ -301,7 +301,7 @@ describe('Settings → Show badges', () => {
     const n = showBadgesAgain();
     expect(n).toBe(2); // First Foothold and Firm Footing · IS Operations
     expect(cp().milestones!.queue).toEqual([]);
-    expect(shownAgainLine(n)).toBe('Badges are on again. 2 badges arrived while they were hidden: see You → Herbarium.');
+    expect(shownAgainLine(n)).toBe('Badges are on again. 2 badges arrived while they were hidden: see You → Badges.');
     expect(useSettings.getState().badgesHidden).toBe(false);
   });
 });
@@ -488,7 +488,7 @@ describe('review fixes (PR #40)', () => {
     earn('first-foothold', T0 - DAY);
     earn('long-memory:999', T0 - DAY);
     mount(<You />);
-    expect(labels().some((l) => l.startsWith('Herbarium: badges and field notes, 1 earned.'))).toBe(true);
+    expect(labels().some((l) => l.startsWith('Badges: your badges and field notes, 1 earned.'))).toBe(true);
   });
 
   it('Show badges back on counts the active exam’s waiting moments only', () => {

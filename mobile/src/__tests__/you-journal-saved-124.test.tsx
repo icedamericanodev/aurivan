@@ -161,15 +161,16 @@ describe('You: bands below 30 answers, numbers from 30', () => {
     expect(row.props.accessibilityLabel).not.toContain('90');
   });
 
-  it('Badges and Field notes are one row: the Herbarium (mobile 1.51)', () => {
+  it('Badges and Field notes are one row: Badges (mobile 1.51; Grove You C2 says "Badges", never "Herbarium")', () => {
     mount(<You />);
     const labels = root()
       .findAll((n) => typeof n.props.accessibilityLabel === 'string')
       .map((n) => n.props.accessibilityLabel as string);
-    expect(labels.some((l) => l.startsWith('Herbarium: badges and field notes'))).toBe(true);
+    expect(labels.some((l) => l.startsWith('Badges: your badges and field notes'))).toBe(true);
+    expect(labels.some((l) => l.includes('Herbarium'))).toBe(false);
     expect(labels.some((l) => l.startsWith('Field notes'))).toBe(false);
     expect(labels.some((l) => l.startsWith('Badges,'))).toBe(false);
-    press(/^Herbarium: badges and field notes/);
+    press(/^Badges: your badges and field notes/);
     expect(router.push).toHaveBeenCalledWith('/milestones');
   });
 

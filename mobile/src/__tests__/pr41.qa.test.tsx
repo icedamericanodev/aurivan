@@ -378,18 +378,19 @@ describe('Journey 1 · You stats and the mock summary', () => {
   beforeEach(() => filled());
   const statsOnYou = () => spoken(/^(Answered|Accuracy|Streak): /);
 
-  it('a new learner: "Answered 0", "Accuracy Not yet", "Streak Starts today"', () => {
+  it('a new learner: "Answered 0", "Accuracy Not started", "Streak Starts today"', () => {
     mount(<You />);
     // No streak reads as an invitation, never a "0 days" that looks like a failure (UX observation).
-    expect(statsOnYou()).toEqual(['Answered: 0', 'Accuracy: not yet, answer a question first', 'Streak: starts today, with your first answer']);
+    // Grove You C2: accuracy says what Today says (DECISIONS 1).
+    expect(statsOnYou()).toEqual(['Answered: 0', 'Accuracy: not started', 'Streak: starts today, with your first answer']);
   });
 
-  it('after 10 answers today (7 right): "70 percent" and "1 day"', () => {
+  it('after 10 answers today (7 right): "too few yet" (under 30, DECISIONS 1) and "starts today" (one study day, DECISIONS 3)', () => {
     act(() => {
       ALL.slice(0, 10).forEach((id, i) => useProgress.getState().recordAnswer('cisa', id, i < 7));
     });
     mount(<You />);
-    expect(statsOnYou()).toEqual(['Answered: 10', 'Accuracy: 70 percent', 'Streak: 1 day']);
+    expect(statsOnYou()).toEqual(['Answered: 10', 'Accuracy: too few yet, 10 answered. Shows at 30 answers.', 'Streak: starts today']);
   });
 
   it('the summary under Mock exams has no "median" and reads in words', () => {

@@ -213,9 +213,20 @@ describe('Settings in the headers (Grove: on You only)', () => {
     expect(row.length).toBeGreaterThan(0);
   });
 
-  it('You reaches Settings through the gear only (no duplicate Study tools row)', () => {
+  // Grove You C2 (owner, 31 Oct 2026: Settings clearly separate from You): the gear, plus ONE "Settings" row
+  // near the end, after Help and before the trademark line (never inside Study tools). Both open the same screen.
+  it('You reaches Settings through the gear and one Settings row near the end (not a Study tools row)', () => {
+    (router.push as jest.Mock).mockClear();
     mount(<You />);
-    expect(root().findAll((n) => n.props.title === 'Settings').length).toBe(0);
+    const rows = root().findAll((n) => n.props.title === 'Settings' && typeof n.props.onPress === 'function');
+    expect(rows).toHaveLength(1);
+    expect(rows[0].props.subtitle).toBe('Name, exam date, dark mode, your data, help and about');
+    const tools = root().findAll((n) => n.props.testID === 'study-tools');
+    expect(tools[0].findAll((n) => n.props.title === 'Settings')).toHaveLength(0);
+    act(() => {
+      rows[0].props.onPress();
+    });
+    expect(router.push).toHaveBeenCalledWith('/settings');
   });
 });
 

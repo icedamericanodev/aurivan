@@ -2,6 +2,7 @@
 // 10 answers, past the first range), You (the Settings button), Settings (the Grove cards) and the
 // floating tab bar, in light and dark (THEMES=light,dark by default). FONT_SCALE=2 approximates 200%
 // text (the tab bar's own words stay capped at x1.2, as in the app). GROVE_ONLY=today,you,settings,bar narrows it.
+// Grove You C2: You also as you-mid, you-mid2 (scrolled), you-before40 (34 answers) and you-new (a new learner).
 import { createRequire } from 'module';
 import fs from 'fs';
 const require = createRequire(process.env.PLAYWRIGHT_REQUIRE_FROM || import.meta.url);
@@ -74,6 +75,13 @@ for (const theme of THEMES) {
     });
     await wait(700);
   };
+  // Scroll the screen's own scroller down by `px` (You is about 3.5 phone screens long).
+  const scrollBy = async (px) => {
+    await page.evaluate((d) => {
+      for (const el of document.querySelectorAll('div')) if (el.scrollHeight > el.clientHeight + 40 && getComputedStyle(el).overflowY !== 'visible') el.scrollTop += d;
+    }, px);
+    await wait(700);
+  };
 
   // The demo learner (past the first range): Maya, an oak called Kai at Shoot, an exam date.
   await go('/home', 800);
@@ -101,14 +109,31 @@ for (const theme of THEMES) {
     await shot('tabbar-learn', { clip: { x: 0, y: H - 130, width: W, height: 130 } });
   }
   if (want('you')) {
+    // Grove You C2: the first view (profile, summary, Practice, plant chip, stats), two screens down, and the end.
     await go('/you');
     await shot('you');
+    await scrollBy(H - 160);
+    await shot('you-mid');
+    await scrollBy(H - 160);
+    await shot('you-mid2');
     await scrollEnd();
     await shot('you-end');
   }
   if (want('settings')) {
     await go('/settings');
     await shot('settings');
+  }
+  if (want('you')) {
+    // Grove You C2, before 40 answers: "34 of 40 answers toward your first readiness range" in the summary,
+    // the seed count in the readiness block, and the streak words that follow Today. The plant stays.
+    await edit(
+      P,
+      `const cp = v.state.byCert.cisa; const keep = Object.keys(cp.answers).slice(0, 34); const ans = {}; for (const k of keep) ans[k] = cp.answers[k];
+       cp.answers = ans; cp.review = {}; cp.mistakes = {}; cp.mocks = []; delete cp.mastery; delete cp.moments;`,
+    );
+    await edit('aurivan.session.v1', `v.state.active = null;`);
+    await go('/you');
+    await shot('you-before40');
   }
   if (want('today')) {
     // 10 answers, no plant yet: the seed dots and "Too few yet".
@@ -121,6 +146,8 @@ for (const theme of THEMES) {
     await edit('aurivan.session.v1', `v.state.active = null;`);
     await go('/home');
     await shot('today-ten');
+  }
+  if (want('today') || want('you')) {
     // A brand-new learner: no answers, no plant, no name.
     await edit(
       P,
@@ -129,8 +156,17 @@ for (const theme of THEMES) {
        v.state.streak = { current: 0, best: 0, lastDay: null }; v.state.days = {}; v.state.today = { day: '', answered: 0 };`,
     );
     await edit(S, `delete v.state.displayName;`);
-    await go('/home');
-    await shot('today-new');
+    await edit('aurivan.session.v1', `v.state.active = null;`);
+    if (want('today')) {
+      await go('/home');
+      await shot('today-new');
+    }
+    if (want('you')) {
+      // Grove You C2, a new learner: "You" profile with "Add your name", the summary's first words,
+      // "Practice IS Audit", "Pick your plant", "Not started" and "Starts today".
+      await go('/you');
+      await shot('you-new');
+    }
   }
   await ctx.close();
 }

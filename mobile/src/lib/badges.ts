@@ -167,8 +167,8 @@ export function hideBadges() {
   useSettings.getState().setBadgesHidden(true);
 }
 
-/** "Badges are on again. 2 badges arrived while they were hidden: see You → Herbarium." */
+/** "Badges are on again. 2 badges arrived while they were hidden: see You → Badges." */
 export function shownAgainLine(n: number): string {
   if (n <= 0) return 'Badges are on again.';
-  return `Badges are on again. ${n === 1 ? '1 badge' : `${n} badges`} arrived while they were hidden: see You → Herbarium.`;
+  return `Badges are on again. ${n === 1 ? '1 badge' : `${n} badges`} arrived while they were hidden: see You → Badges.`;
 }

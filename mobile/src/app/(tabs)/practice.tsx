@@ -59,7 +59,7 @@ import { activeMode, MODE_INFO, scopeKey, SESSION_SIZES, sessionSize, suggestedM
 import { currentGuidedTopic } from '../../engine/studyPath';
 import { guidedStatus, scopeTopics } from '../../lib/outline';
 import { shortTopic } from '../../lib/format';
-import { guardedStart, reviewSubtitle, startPractice, startReview, startStudy } from '../../lib/sessions';
+import { guardedStart, reviewSubtitle, startFocusPractice, startPractice, startReview, startStudy } from '../../lib/sessions';
 import { moveFocus } from '../../lib/a11y';
 import { useJourney } from '../../lib/useJourney';
 import { useDailyMinutes, useSettings } from '../../store/settings';
@@ -245,7 +245,8 @@ export default function Practice() {
             kicker: 'Most points to gain',
             title: `Weak spots: ${focus.short}`,
             spoken: `Weak spots: ${focus.short}, Most points to gain`,
-            onPress: () => guardedStart(() => startPractice(cert.id, { count: 10, domainId: focus.id, title: focus.short }), open),
+            // The same set as You's "Practice {area}" button (lib/sessions.ts startFocusPractice).
+            onPress: () => guardedStart(() => startFocusPractice(cert.id, focus), open),
           },
         ]
       : []),

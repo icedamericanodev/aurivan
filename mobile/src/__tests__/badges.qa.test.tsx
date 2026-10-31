@@ -254,7 +254,7 @@ describe('1. upgrade from a 1.9 save with earned milestones', () => {
     expect(hasNewBadge('cisa')).toBe(false);
     mount(<You />);
     expect(root().findAll((n) => n.props.testID === 'new-badge-dot')).toHaveLength(0);
-    expect(labels().some((l) => l.startsWith(`Herbarium: badges and field notes, ${Object.keys(SAVED).length} earned.`))).toBe(true);
+    expect(labels().some((l) => l.startsWith(`Badges: your badges and field notes, ${Object.keys(SAVED).length} earned.`))).toBe(true);
     unmount();
     mount(<TabsLayout />);
     expect(root().findAll((n) => n.props.testID === 'you-new-dot')).toHaveLength(0);
@@ -442,7 +442,7 @@ describe('2. earning a new badge in a session', () => {
     expect(hasNewBadge('cisa')).toBe(true);
     mount(<You />);
     expect(root().findAll((n) => n.props.testID === 'new-badge-dot').length).toBeGreaterThan(0);
-    expect(labels().some((l) => l.startsWith('Herbarium: badges and field notes, new badge, 2 earned.'))).toBe(true);
+    expect(labels().some((l) => l.startsWith('Badges: your badges and field notes, new badge, 2 earned.'))).toBe(true);
     unmount();
     mount(<TabsLayout />);
     expect(root().findAll((n) => n.props.testID === 'you-new-dot').length).toBeGreaterThan(0);
@@ -958,7 +958,7 @@ describe('5. Settings → Show badges', () => {
     toggle().props.onValueChange(true);
   });
     const lines = allText().match(/Badges are on again\.[^.]*\./g) ?? [];
-    expect(lines).toEqual(['Badges are on again. 2 badges arrived while they were hidden: see You → Herbarium.']);
+    expect(lines).toEqual(['Badges are on again. 2 badges arrived while they were hidden: see You → Badges.']);
     unmount();
     // The next session earns nothing new: its Results show no moment for the two that waited.
     const more = ids('4', 20, 5);
@@ -971,7 +971,7 @@ describe('5. Settings → Show badges', () => {
     // And the row is back, with its dot (two badges arrived since the case was last opened).
     jest.setSystemTime(T0 + 60_000);
     mount(<You />);
-    expect(labels().some((l) => l.startsWith('Herbarium: badges and field notes, new badge, 2 earned.'))).toBe(true);
+    expect(labels().some((l) => l.startsWith('Badges: your badges and field notes, new badge, 2 earned.'))).toBe(true);
   });
 
   it('the choice travels in a backup; an older backup (no such field) keeps this phone’s choice', async () => {
@@ -1149,7 +1149,7 @@ describe('7. reset', () => {
     expect(sets.every((s) => s.earned === 0)).toBe(true);
     expect(hasNewBadge('cisa')).toBe(false);
     mount(<You />);
-    expect(labels().some((l) => l.startsWith('Herbarium: badges and field notes, none yet.'))).toBe(true);
+    expect(labels().some((l) => l.startsWith('Badges: your badges and field notes, none yet.'))).toBe(true);
     unmount();
     // The phone's own choices (the Sort) stay; a new badge after the reset is new.
     expect(useSeen.getState().badgeSort).toBe('effort');
@@ -1186,7 +1186,9 @@ describe('8. regressions', () => {
     expect(existsSync(join(__dirname, '..', 'app', 'milestones.tsx'))).toBe(true);
     expect(readFileSync(join(__dirname, '..', 'app', '_layout.tsx'), 'utf8')).toMatch(/<Stack\.Screen name="milestones"/);
     mount(<Badges />);
-    expect(allText()).toMatch(/^Herbarium · Badges /); // mobile 1.51: the badge case is the Herbarium
+    // Grove You C2: the head is the date, then the title "Badges" (never "Herbarium", labels decision 8).
+    expect(allText()).toMatch(/^\w{3} \d{1,2} \w{3} Badges /);
+    expect(allText()).not.toMatch(/Herbarium/);
     expect(allText()).toContain('Earned by what you’ve mastered.');
   });
 

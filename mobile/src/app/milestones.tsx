@@ -25,7 +25,7 @@
  *   no Closest sort (it is a keepsake album).
  * - Large text: two columns at ×1.3, a list at ×1.6.
  * - Mobile 1.51 (Field Guide, DESIGN_SYSTEM.md §21): the case is the HERBARIUM. A running head
- *   ("Herbarium · Badges"), the title and an italic line ("Every sheet counts on its own; there's no
+ *   (Grove You C2: the date only; it was "Herbarium · Badges"), the title and an italic line ("Every sheet counts on its own; there's no
  *   grand total."); "Still to collect · for your exam" as ruled rows; each set a numbered sheet
  *   ("Sheet I · Groundwork · 2 of 3 pressed") whose badges are pressed specimens on a plate (the
  *   real emblem, tape, a label). Every badge, its meaning, tiers and gating are unchanged.
@@ -336,9 +336,9 @@ export default function Badges() {
     <SafeAreaView edges={['top', 'bottom']} style={{ flex: 1, backgroundColor: c.bg }}>
       <ScrollView ref={scroll} contentContainerStyle={{ paddingHorizontal: space.gutter, paddingBottom: space.xxl }}>
         <PushedHeader onBack={() => router.back()} />
-        {/* Mobile 1.51 (Field Guide): the running head, then the herbarium's title and its one promise. */}
-        <RunningHead section="Herbarium · Badges" aside={today.shown} asideLabel={today.spoken} />
-        <T v="display" accessibilityRole="header" style={{ marginTop: space.lg }}>Herbarium</T>
+        {/* Mobile 1.51 (Field Guide): the running head, then the title and its one promise. Grove You C2: the head shows the date only and the title is "Badges", never "Herbarium" (labels decision 8). */}
+        <RunningHead section={today.shown} sectionLabel={today.spoken} />
+        <T v="display" accessibilityRole="header" style={{ marginTop: space.lg }}>Badges</T>
         <FieldText v="sub" style={{ marginTop: 2 }}>Each badge is pressed and labelled the day you earn it. Every sheet counts on its own.</FieldText>
         <T v="meta" style={{ marginTop: space.sm }}>Earned by what you’ve mastered. Once earned, a badge stays.</T>
 

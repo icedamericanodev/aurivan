@@ -258,13 +258,14 @@ describe('You', () => {
     mount(<You />);
     expect(allText()).toMatch(/Pico/);
     expect(allText()).toMatch(/Seed · growth 1 of 6/);
-    press(/^Pico, your cactus/);
+    // Grove You C2: the plant chip, its name said after the visible "Your plant".
+    press(/^Your plant: Pico, your cactus/);
     expect(router.push).toHaveBeenCalledWith('/plant');
   });
 
   it('no plant: "Plant yours"; hidden: nothing', () => {
     mount(<You />);
-    press(/^Plant yours/);
+    press(/^Your plant: pick your plant/); // Grove You C2: the plant chip (was the "Plant yours" row)
     expect(router.push).toHaveBeenCalledWith('/plant-pick');
     act(() => {
       r!.unmount();
@@ -273,7 +274,7 @@ describe('You', () => {
       useProgress.getState().setPlantSettings({ showPlant: false });
     });
     mount(<You />);
-    expect(allText()).not.toMatch(/Plant yours/);
+    expect(allText()).not.toMatch(/Pick your plant/); // Grove You C2: the plant chip
   });
 });
 

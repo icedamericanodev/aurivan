@@ -235,7 +235,7 @@ describe('J1 a new learner and the plant', () => {
     unmount();
 
     mount(<You />);
-    press(/^Plant yours/);
+    press(/^Your plant: pick your plant/); // Grove You C2: the plant chip (was the "Plant yours" row)
     expect(router.push).toHaveBeenCalledWith('/plant-pick');
   });
 
@@ -270,7 +270,7 @@ describe('J1 a new learner and the plant', () => {
     mount(<You />);
     expect(allText()).toMatch(/Summit Lee/);
     expect(allText()).toMatch(/Seed · growth 1 of 6/);
-    expect(allText()).not.toMatch(/Plant yours/);
+    expect(allText()).not.toMatch(/Pick your plant/); // Grove You C2: the plant chip
   });
 
   it('the name starts empty with an idea as its placeholder; "Another idea" fills one in, and it follows the species until the learner types one', () => {
@@ -351,8 +351,8 @@ describe('J2 an existing 1.12 save upgrading', () => {
     expect(byTestID('plant-prompt')).toHaveLength(0);
     unmount();
     mount(<You />);
-    expect(allText()).toMatch(/Plant yours/);
-    expect(allText()).toMatch(/Grows only with your study/);
+    expect(allText()).toMatch(/Pick your plant/); // Grove You C2: the plant chip
+    expect(allText()).toMatch(/Your plant/);
   });
 
   it('"Plant yours" from the prompt: the study so far sets growth quietly (no Today moment), one back-fill line', async () => {
@@ -1037,7 +1037,7 @@ describe('J10 a separate plant per certification', () => {
     useSettings.setState({ activeCertId: 'cism' });
     mount(<You />);
     expect(allText()).not.toMatch(/Kai/);
-    expect(allText()).toMatch(/Plant yours/);
+    expect(allText()).toMatch(/Pick your plant/); // Grove You C2: the plant chip
     unmount();
     setPlant(plantNew('lotus', 'Nila', Date.now()), 'cism');
     mount(<You />);

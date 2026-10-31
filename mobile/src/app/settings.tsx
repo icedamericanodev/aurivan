@@ -549,7 +549,7 @@ export default function Settings() {
     <>
       <ToggleRow
         title="Show badges"
-        subtitle="A short moment when you earn one, and the Herbarium on You. Off: you still earn them, quietly."
+        subtitle="A short moment when you earn one, and your Badges on You. Off: you still earn them, quietly."
         value={!s.badgesHidden}
         onValueChange={(on) => {
           if (on) {

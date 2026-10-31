@@ -99,6 +99,17 @@ export function startPractice(
   return newSession('practice', certId, opts.title ?? 'Practice', ids, opts.timed !== undefined ? { timed: opts.timed } : {});
 }
 
+/** How many questions "Practice {area}" starts: You's summary button and Practice's "Weak spots" row. */
+export const FOCUS_SET_SIZE = 10;
+
+/**
+ * Practice in the focus area (readiness.focusDomainId): You's "Practice Protection" button and
+ * Practice's "Weak spots: Protection" row start the same set, so the two never differ.
+ */
+export function startFocusPractice(certId: string, domain: { id: string; short: string }) {
+  return startPractice(certId, { count: FOCUS_SET_SIZE, domainId: domain.id, title: domain.short });
+}
+
 /** The title of a study-mode session: "Smart · All domains", "In order · Governance". */
 function pathTitle(certId: string, mode: StudyMode, domainId?: string): string {
   const d = domainId ? getCertification(certId)?.domains.find((x) => x.id === domainId) : undefined;

@@ -123,7 +123,8 @@ describe('the You screen (Field Guide since mobile 1.51)', () => {
     // The rest of You is still here.
     expect(t).toContain('Study tools');
     expect(t).toMatch(/Plant yours|Your plant|Kai/);
-    expect(t).toContain('Herbarium');
+    expect(t).toContain('Badges'); // Grove You C2: never "Herbarium" on screen
+    expect(t).not.toContain('Herbarium');
   });
 
   it('thin data: "too few yet · N answered", an outline, and no number', () => {

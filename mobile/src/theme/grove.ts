@@ -14,7 +14,7 @@
  * Every colour here is the kit's value, matched to the web's CSS (index.html, the "Grove
  * uplift tokens" blocks). Contrast notes are in docs/mobile/DESIGN_SYSTEM.md section 21.9.
  */
-import { dark, light, radius } from './tokens';
+import { dark, font, light, radius } from './tokens';
 
 /** Grove colours, per theme (`g` from useTheme()). Hex only, like the Palette. */
 export interface GroveInk {
@@ -104,3 +104,9 @@ export const heroInk: { light: HeroInk; dark: HeroInk } = {
   light: { tickOn: light.sap, tickOff: light.forestTrack, dotEdge: '#8FBFA0', tickRange: '#E9C46A', mark: '#E9A07A', disc: '#1A402D', soil: '#6B5844', seedEdge: '#E9D9C4', seedLine: '#4E3A26' },
   dark: { tickOn: dark.sap, tickOff: dark.forestTrack, dotEdge: '#8FBFA0', tickRange: '#E9C46A', mark: '#E9A07A', disc: '#1A3324', soil: '#6B5844', seedEdge: '#E9D9C4', seedLine: '#4E3A26' },
 };
+
+/**
+ * A word inside a reading-serif sentence, a weight heavier (Grove You C2: the focus area in You's
+ * summary, the web's bold). The size and line height come from the sentence's own variant.
+ */
+export const groveEmphasis = { fontFamily: font.serif500 } as const;
