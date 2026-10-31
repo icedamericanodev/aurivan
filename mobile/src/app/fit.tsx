@@ -9,7 +9,7 @@
  * before the learner saves). Cancel changes nothing, and the card stays
  * until it is answered or dismissed.
  */
-import { router } from 'expo-router';
+import { backOr } from '../lib/actions';
 import { useState } from 'react';
 import { ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -41,13 +41,13 @@ export default function Fit() {
     // A Save with no change still answers the card.
     if (useSettings.getState().fitPrompt !== 'answered') useSettings.setState({ fitPrompt: 'answered' });
     sayLater(r.keptToday ? 'Saved. Tomorrow’s plan will fit.' : 'Saved. Today’s plan now fits.');
-    router.back();
+    backOr('/home');
   };
 
   return (
     <SafeAreaView edges={['top', 'bottom']} style={{ flex: 1, backgroundColor: c.bg }}>
       <ScrollView contentContainerStyle={{ paddingHorizontal: space.gutter, paddingBottom: footerH + space.xl }}>
-        <PushedHeader title="Your study" onBack={() => router.back()} />
+        <PushedHeader title="Your study" onBack={() => backOr('/home')} />
         <T v="meta" style={{ marginTop: space.sm }}>Tell us how long you have and where you’re starting from, so Today’s plan fits your time. You can change these any time in Settings.</T>
         <YourStudy
           minutes={minutes}
@@ -61,7 +61,7 @@ export default function Fit() {
       </ScrollView>
       <StickyFooter onHeight={setFooterH}>
         <Button label="Save" onPress={save} />
-        <Button kind="ghost" label="Cancel" onPress={() => router.back()} />
+        <Button kind="ghost" label="Cancel" onPress={() => backOr('/home')} />
       </StickyFooter>
     </SafeAreaView>
   );

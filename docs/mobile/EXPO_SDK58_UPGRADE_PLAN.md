@@ -67,17 +67,33 @@ Fixed after review (code, QA and security reviewers, same PR):
   kept as `src/__tests__/router58-journeys.test.tsx`.
 
 Follow-ups found in review, already on main before SDK 58 (separate PRs):
-- **Stacked tab bars:** Results "Done" and Session "Back to Today" / "Pause"
-  call `router.replace('/home')` (`results.tsx` ~248, `session.tsx` ~442/550/563)
-  from the root stack, which adds a second `(tabs)` each time; Android Back then
-  goes to an old Today. Use `openTab('/home')` (`lib/actions.ts`, `dismissTo`).
-- **Back with nothing to go back to:** Settings, settings-section, Mistakes,
-  Milestones, Field notes, Fit, lesson, the games and mock-start call plain
-  `router.back()`, so Back does nothing when a direct link opened them. Add the
-  `canGoBack() ? back() : replace(<tab>)` fallback.
-- **Screenshot tool:** `scripts/screenshots/shoot_data.mjs` still looks for the
-  backup buttons on Settings; they moved to Settings → Your data, so
-  `SHOTS=data` times out.
+- **Stacked tab bars (fixed in mobile 1.54.1, #180):** Results "Done" and
+  Session "Back to Today" / "Pause" now use `openTab` instead of
+  `router.replace('/home')`.
+- **Back with nothing to go back to (fixed in mobile 1.54.2):** Settings,
+  settings-section, Mistakes, Milestones, Field notes, Saved, Fit, lesson, the
+  games and mock-start called plain `router.back()`, so Back did nothing when a
+  direct link opened them. They now call `backOr(<tab>)` (`lib/actions.ts`), as
+  does `EmptyScreen`, whose fallback can now be any tab. Test:
+  `src/__tests__/back-cold-start-router58.test.tsx`.
+- **Screenshot tool (fixed, #162):** `SHOTS=data` opens Settings → Your data.
+- **Cloud off, account link while the app is open:** `(cloud)/_layout.tsx`
+  returns `<Redirect href="/" />` when the cloud is off; with Today already
+  underneath, that adds a second `(tabs)` (found by QA, older than SDK 58).
+  Fix in the cloud phase: when something is underneath, `dismissTo('/home')`;
+  keep the Redirect for a cold start.
+- **Resume after the plan is done:** Today hides "Also today", the only place
+  a paused session offers Resume, once the day's plan is complete
+  (`app/(tabs)/home.tsx`). Older than SDK 58; separate PR.
+
+Emulator test, 31 Oct 2026 (Pixel 8 emulator, mobile 1.54.1 + this fix on
+SDK 58): a development build and a local release build. All nine checks pass:
+progress kept, all 8 widgets, widget taps with the app open and closed, the
+`play` / `whats-next` / `help?open=support` links, one tab bar after
+Readiness → Lessons, backup and restore, reminders and the share card, Back
+from Today after three sets, cold-start `settings` / `mistakes` / `fit` →
+Back to their tab (release build), and a paused mock. A development build
+cannot test cold-start links: its launcher screen catches them first.
 
 ---
 

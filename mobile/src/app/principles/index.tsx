@@ -52,6 +52,7 @@ export default function PrinciplesHome() {
     return (
       <EmptyScreen
         header="Principles"
+        fallback="/learn"
         title="Principles are on the way"
         body="The exam-mindset principles for this exam aren't in the app yet. Lessons and practice are ready now."
         primary={{ label: 'Back to Learn', onPress: () => openTab('/learn') }}

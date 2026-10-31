@@ -25,7 +25,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { router } from 'expo-router';
+import { backOr, DRILLS_HREF } from '../../lib/actions';
 import { GameFrame, LevelNote, PlayableGate, QuestionHead, RevealCard, RoundEnd, useRound } from '../../components/game';
 import { GameGlyph, TierLeafMorph } from '../../components/glyphs';
 import { ICON_STROKE, Pause, Play } from '../../components/icons';
@@ -190,7 +190,7 @@ function Daylight() {
     return (
       <SafeAreaView edges={['top', 'bottom']} style={{ flex: 1, backgroundColor: c.bg }}>
         <View style={{ paddingHorizontal: space.gutter }}>
-          <PushedHeader icon="close" onBack={() => router.back()} title={GAMES.daylight.name} />
+          <PushedHeader icon="close" onBack={() => backOr(DRILLS_HREF)} title={GAMES.daylight.name} />
         </View>
         <ScrollView contentContainerStyle={{ padding: space.gutter, paddingBottom: space.xxl }}>
           {/* The sun rises once as the intro opens (motion.md M5; still under Reduce Motion). */}

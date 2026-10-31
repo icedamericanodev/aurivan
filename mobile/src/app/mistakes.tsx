@@ -37,6 +37,7 @@
  * group, each spoken as "Tag: ...") open only on tap.
  */
 import { router } from 'expo-router';
+import { backOr } from '../lib/actions';
 import { useMemo, useState } from 'react';
 import { Modal, ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -147,6 +148,7 @@ export default function Mistakes() {
     return (
       <EmptyScreen
         header="Mistake journal"
+        fallback="/you"
         art="pressed"
         title="Nothing open right now"
         body="Every question you miss lands here, tagged by the trap that caught you."
@@ -162,7 +164,7 @@ export default function Mistakes() {
   return (
     <SafeAreaView edges={['top', 'bottom']} style={{ flex: 1, backgroundColor: c.bg }}>
       <ScrollView contentContainerStyle={{ paddingHorizontal: space.gutter, paddingBottom: footerH + space.xl }}>
-        <PushedHeader title="Mistake journal" onBack={() => router.back()} />
+        <PushedHeader title="Mistake journal" onBack={() => backOr('/you')} />
         <T v="meta" style={{ marginTop: space.sm }}>Tag why you slipped. Find your pattern.</T>
 
         {pattern.ready ? (
