@@ -152,7 +152,23 @@ Rule for the form builder: Draw no two items of a pair into the same form. Keep 
 | csoe_d5_019 | csoe_d5_082 | proposed by the D5 batch 4 author (SOC report users) |
 | csoe_d5_018 | csoe_d5_083 | proposed by the D5 batch 4 author (outsourced activity in ICFR) |
 | csoe_d4_005 | csoe_d4_065 | d4_065's stem implies subpoenas come with a formal order |
-| csoe_d4_005 | csoe_d4_066 | d4_066's stem implies subpoenas come with a formal order |
 | csoe_d2_020 | csoe_d4_083 | same "Comptroller General study" pattern |
 | csoe_d4_023 | csoe_d4_064 | related rules on disclosing an investigation (d4_023 is held out) |
 | csoe_d4_027 | csoe_d4_069 | related limitations rules (d4_027 is held out) |
+| csoe_d1_045 | csoe_d4_083 | same Comptroller General study pattern |
+| csoe_d4_057 | csoe_d4_083 | 083's explanation and tips name the SEC's Section 989G(b) study (d4_057 is held out) |
+| csoe_d4_022 | csoe_d4_062 | notice and comment for explanatory guidance (d4_022 is held out) |
+| csoe_d4_012 | csoe_d4_073 | Section 21F(c)(2) award bars |
+| csoe_d4_039 | csoe_d4_073 | award bars (d4_039 is held out) |
+| csoe_d4_010 | csoe_d4_072 | 072 wrong explanation D: Section 806 complaints go to Labor |
+| csoe_d4_010 | csoe_d4_074 | 074 wrong explanation D and tip 1: the same fact |
+| csoe_d4_008 | csoe_d4_070 | 070 wrong explanation D: Section 1519 turns on obstructing a federal matter |
+| csoe_d1_019 | csoe_d4_070 | the same Section 1519 statement |
+| csoe_d2_008 | csoe_d4_070 | 070's stem: Rule 2-06 runs longer than five years |
+| csoe_d4_028 | csoe_d4_068 | both on 18 U.S.C. 1348 |
+| csoe_d4_017 | csoe_d4_080 | 080's exam cue: the auditor is registered with the PCAOB |
+| csoe_d4_017 | csoe_d4_081 | 081's stem: the PCAOB investigates broker-dealer audits |
+| csoe_d4_035 | csoe_d4_075 | 075 wrong explanation B: the insurance office's role |
+| csoe_d4_035 | csoe_d4_079 | both on the insurance office's powers |
+| csoe_d4_047 | csoe_d4_065 | the SEC acts through a federal court |
+| csoe_d4_053 | csoe_d4_077 | Title II; 077 names the FDIC's recommending role (d4_053 is held out) |
