@@ -348,7 +348,7 @@
               "Authenticator report showing each user's methods and backups"
             ],
             "recommend": "Report unexpected MFA prompts to the security team at once; the password is probably known.",
-            "decides": "Security management sets, in the authentication standard, which MFA methods each group uses"
+            "decides": "The security manager sets, in the authentication standard, which MFA methods each group uses"
           },
           "isaca_rule": "Not all MFA is equal. For administrators and other high-risk users, prefer site-bound methods such as passkeys, which a fake page cannot reuse.",
           "exam_traps": [
@@ -403,7 +403,7 @@
               "Breached-password screening results for newly set passwords"
             ],
             "recommend": "Send suggested changes to the owner of the password standard; do not change live password settings yourself.",
-            "decides": "Security management approves the password standard, within policy senior management approved"
+            "decides": "The security manager approves the password standard, within policy senior management approved"
           },
           "isaca_rule": "Length beats complexity, and screening beats expiry: change a password because of a breach, not the calendar.",
           "exam_traps": [
@@ -484,7 +484,7 @@
               }
             ]
           },
-          "example": "A recycling company signs staff in to email, the route planner and the weighbridge app through SSO. When Owen, a dispatcher, leaves, Lina, the IT technician, disables Owen's account at the identity provider as the leaver checklist directs. Next morning the route planner shows Owen still signed in on a depot tablet, so Lina ends that session and notes it on the ticket.",
+          "example": "A recycling company signs staff in to email, the route planner and the weighbridge app through SSO. When Owen, a dispatcher, leaves, Lina, the help desk technician, disables Owen's account at the identity provider as the leaver checklist directs. Next morning the route planner shows Owen still signed in on a depot tablet, so Lina ends that session and notes it on the ticket.",
           "audit_focus": {
             "review": [
               "Confirm the identity provider enforces MFA for every user",
@@ -546,7 +546,7 @@
               "History of alerts marked true or false positive"
             ],
             "recommend": "Escalate a confirmed account takeover to the incident response lead, not just a password reset.",
-            "decides": "Security management approves risk thresholds and what each level triggers"
+            "decides": "The security manager approves risk thresholds and what each level triggers"
           },
           "isaca_rule": "AI scoring adds a layer; it never replaces strong factors or human judgment.",
           "exam_traps": [
@@ -706,7 +706,7 @@
             "Revoke more than the password: sessions, tokens and remote access.",
             "Have shared secrets changed, collect devices and badges, and reassign the person's data."
           ],
-          "example": "Dev, an account manager at a freight broker, retires on Friday. Following the leaver checklist, Ines, the IT technician, disables Dev's account that afternoon, ends its sessions and revokes the access token on Dev's phone app for the shipping portal. Customers still email Dev, so Ines asks the sales director, who owns the customer records, which colleague should receive the mailbox.",
+          "example": "Dev, an account manager at a freight broker, retires on Friday. Following the leaver checklist, Ines, the help desk technician, disables Dev's account that afternoon, ends its sessions and revokes the access token on Dev's phone app for the shipping portal. Customers still email Dev, so Ines asks the sales director, who owns the customer records, which colleague should receive the mailbox.",
           "audit_focus": {
             "review": [
               "Confirm every exit checklist step is done and recorded",
@@ -988,7 +988,7 @@
               "Logs of sessions that stayed open far beyond the limit"
             ],
             "recommend": "Ask the system owner to fix any timeout weaker than the standard, through change control.",
-            "decides": "Security management sets timeout values; system owners apply them"
+            "decides": "The security manager sets timeout values; system owners apply them"
           },
           "isaca_rule": "Proving identity once is not enough forever: match session limits to the risk and check again before risky actions.",
           "exam_traps": [

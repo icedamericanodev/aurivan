@@ -1635,10 +1635,10 @@
    "bloom_level": "Foundational",
    "question": "Guests' phones on an aquarium's visitor Wi-Fi have working IP addresses and can open the ticket site by its IP address, but not by its name. What should the network technician check FIRST?",
    "options": {
-    "A": "The switch, which delivers frames by hardware address",
-    "B": "DNS, which looks up the address for each domain",
-    "C": "DHCP, which assigns each device its address and settings",
-    "D": "The router, which forwards packets between networks"
+    "A": "The switch and its MAC address table",
+    "B": "The DNS server and its records",
+    "C": "The DHCP server and its leases",
+    "D": "The router and its routing table"
    },
    "correct": "B",
    "key_concept": "DHCP gives each device its address and settings; DNS turns the names people type into the IP addresses networks use.",
@@ -1660,7 +1660,7 @@
     "DHCP",
     "Name resolution"
    ],
-   "_provenance": "Authored from concept: 'DHCP hands out IP addresses; DNS turns names into IP addresses' (notes 4.1.1 Network Building Blocks). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 3, 31 Oct 2026.",
+   "_provenance": "Authored from concept: 'DHCP hands out IP addresses; DNS turns names into IP addresses' (notes 4.1.1 Network Building Blocks). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 3, 31 Oct 2026. Audit fix-up (31 Oct 2026): options are now short labels without definitions, so the item tests what each service does rather than matching the stem to a definition.",
    "style_version": 2
   },
   {
@@ -1672,9 +1672,9 @@
    "question": "A taxi dispatch firm's network technician wants all UDP ports blocked at the office firewall because UDP lacks delivery checks. Which approach should the security analyst propose as BEST?",
    "options": {
     "A": "Block every UDP port at the firewall",
-    "B": "Allow only the UDP ports that needed services use",
-    "C": "Allow all UDP traffic through the firewall",
-    "D": "Carry the office's services over TCP's encrypted sessions"
+    "B": "Allow only the UDP ports that services need",
+    "C": "Allow outgoing UDP traffic but block incoming UDP",
+    "D": "Carry the services staff need over TCP's encrypted sessions"
    },
    "correct": "B",
    "key_concept": "UDP skips delivery checks for speed; that is not a security flaw. Allow the UDP ports needed services use, and deny the rest.",
@@ -1682,11 +1682,11 @@
    "correct_explanation": "UDP trades delivery checks for speed, which suits name lookups, clock sync and live voice; it is not a security flaw. The right control is the usual one: allow the UDP ports the firm's services need and deny everything else. Blocking all UDP is the runner-up because it looks cautious, but services such as DNS name lookups and clock sync normally run over UDP, so the office would break without removing a real risk.",
    "wrong_explanations": {
     "A": "Closest choice: denying by default is sound. But everyday services such as DNS name lookups and clock sync normally use UDP, so blocking every UDP port breaks them.",
-    "C": "Tempting because UDP opens no connections that could be hijacked. But attackers still send harmful UDP traffic, so ports no service needs should stay closed.",
+    "C": "Tempting because most attacks seem to arrive from outside. But malware inside can send data out over any open UDP port, so ports no service needs stay closed both ways.",
     "D": "Tempting because TCP sounds more reliable. But TCP adds delivery checks, not encryption, so moving services to it does not secure them."
    },
    "tips": [
-    "Eliminate: C assumes connectionless UDP traffic cannot be harmful, and D mistakes TCP's delivery checks for encryption.",
+    "Eliminate: C leaves every outgoing UDP port open for malware to send data out, and D mistakes TCP's delivery checks for encryption.",
     "Final two: B beats A because UDP's missing delivery checks are a design choice, not a weakness; close only the ports no service needs.",
     "Exam cue: filter by service, not by protocol. Open exactly the ports a needed service uses, whether TCP or UDP."
    ],
@@ -1696,7 +1696,7 @@
     "Deny by default",
     "Port filtering"
    ],
-   "_provenance": "Authored from concept: 'UDP skips delivery checks and is not insecure in itself; firewalls filter on protocol and port' (notes 4.1.3 The TCP/IP Model, TCP and UDP). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 3, 31 Oct 2026.",
+   "_provenance": "Authored from concept: 'UDP skips delivery checks and is not insecure in itself; firewalls filter on protocol and port' (notes 4.1.3 The TCP/IP Model, TCP and UDP). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 3, 31 Oct 2026. Final pass (31 Oct 2026): C is now a partial outbound-only rule instead of the opposite extreme of A, so the key no longer sits between two absolutes. Cross-domain gate (31 Oct 2026): D now also names the services staff need, so 'need' no longer sits on the key alone.",
    "style_version": 2
   },
   {
@@ -1813,26 +1813,26 @@
    "subtopic": "4.1 Network security. IoT devices",
    "difficulty": "application",
    "bloom_level": "Application",
-   "question": "A gym chain's facilities manager owns its new door cameras, which all ship with the same default password, and the setup procedure assigns device hardening to the network technician. What should the technician do FIRST?",
+   "question": "A gym chain's facilities manager owns its new door cameras, which all ship with the same default password; device hardening is the network technician's step in the setup procedure. What should the technician do FIRST?",
    "options": {
     "A": "Give each camera its own unique password, then connect it",
     "B": "Connect them as shipped, relying on the edge firewall",
-    "C": "Ask the facilities manager to approve unique passwords",
+    "C": "Report the default passwords to the facilities manager",
     "D": "Keep the default but disable remote access on each camera"
    },
    "correct": "A",
    "key_concept": "Default passwords are among the first things attackers try; when the setup procedure assigns the change, make it before the device connects.",
    "pre_read": "Picture the first hour each camera spends on the network under each option.",
-   "correct_explanation": "A shared default password is published and among the first things attackers try, so each camera needs its own before it connects. The setup procedure assigns device hardening to the technician, so they set each camera's own password now. Asking the facilities manager is the runner-up because the manager owns the cameras, but owning them does not make the manager approve a step the procedure already assigns.",
+   "correct_explanation": "A shared default password is published and among the first things attackers try, so each camera needs its own before it connects. Device hardening is the technician's step in the setup procedure, so they set each camera's own password now. Reporting to the facilities manager is the runner-up because the manager owns the cameras, but owning them does not make the manager decide a step the procedure already gives the technician.",
    "wrong_explanations": {
     "B": "Tempting because the edge firewall blocks outside connections. But a compromised device inside can still reach the cameras, and default passwords are tried first.",
-    "C": "Closest choice: the facilities manager owns the cameras and decides how they are used. But the procedure already assigns hardening to the technician, so asking only delays it.",
+    "C": "Closest choice: the facilities manager owns the cameras and decides how they are used. But the procedure gives hardening to the technician, so reporting and waiting only delays the fix.",
     "D": "Tempting because closing remote access shuts one path in. But anyone on the inside network can still log in with the published default, so it must still be replaced."
    },
    "tips": [
     "Eliminate: B trusts the edge firewall to protect devices inside, and D leaves the published default in place for anyone already inside.",
-    "Final two: A beats C because the procedure assigns this step to the technician; owners decide what falls outside the procedure, not assigned tasks.",
-    "Exam cue: a named owner does not mean every task goes to them. If the procedure assigns the step to you, do it."
+    "Final two: A beats C because the procedure gives this step to the technician; owners decide what falls outside the procedure, not the steps it assigns.",
+    "Exam cue: check the procedure before the org chart. A step it gives you is yours to do; the owner decides what it does not cover."
    ],
    "framework_ref": "NIST SP 800-53 Rev. 5 IA-5 (Authenticator Management); NIST SP 800-213 Section 2.3 (How IoT Devices May Create Security Challenges)",
    "related_concepts": [
@@ -1840,7 +1840,7 @@
     "IoT devices",
     "In-role action"
    ],
-   "_provenance": "Authored from concept: 'change default passwords at installation' (notes 4.1.12 Internet of Things (IoT) Security). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 3, 31 Oct 2026.",
+   "_provenance": "Authored from concept: 'change default passwords at installation' (notes 4.1.12 Internet of Things (IoT) Security). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 3, 31 Oct 2026. Final pass (31 Oct 2026): stem wording varied from the fixed 'the procedure assigns' clause, C reworded from Ask to Report (bank-wide Report/Ask tell), new exam cue.",
    "style_version": 2
   },
   {
@@ -1849,26 +1849,26 @@
    "subtopic": "4.2 Network security architecture. Segmentation",
    "difficulty": "foundational",
    "bloom_level": "Foundational",
-   "question": "A home builder is splitting its flat office network into segments. Which basis for grouping its systems should the network technician propose as BEST?",
+   "question": "A home builder's sales office runs staff computers, guest Wi-Fi and a payment terminal for deposits on one flat network. Which basis for dividing them into segments should the network technician propose as BEST?",
    "options": {
     "A": "By IP address order, filling each subnet in turn",
     "B": "By office floor, so each floor's devices share one segment",
     "C": "By trust level and purpose, so rules fit each group",
-    "D": "By device maker, so updates reach one group at a time"
+    "D": "By device type, so like devices share the same rules"
    },
    "correct": "C",
    "key_concept": "Segments group systems that share a trust level and purpose, so rules between them can allow only the traffic each group needs.",
-   "pre_read": "Think about what the rules between segments will need to know about each group.",
-   "correct_explanation": "Segmentation works by putting systems with the same trust level and job together, then allowing only needed traffic between groups. Guests, staff computers and payment systems need very different protection, so they belong apart. Grouping by floor is the runner-up because it is tidy and common, but a payment terminal and a guest laptop on the same floor would share a segment and reach each other freely.",
+   "pre_read": "Picture which devices would end up sharing a segment under each option.",
+   "correct_explanation": "Segmentation works by putting systems with the same trust level and job together, then allowing only needed traffic between groups. Guests, staff computers and payment systems need very different protection, so they belong apart. Grouping by device type is the runner-up because similar devices often get similar settings, but a guest's laptop and a staff laptop are the same type with very different trust, so they would share a segment.",
    "wrong_explanations": {
     "A": "Tempting because subnets are often filled this way. But address order says nothing about risk, and subnets without rules between them are not real segments.",
-    "B": "Closest choice: floors give a neat physical layout. But one floor mixes guests, staff and payment systems, so its segment would join devices needing very different protection.",
-    "D": "Tempting because it eases patching. But one maker's devices can serve guests and payments alike, so brand is no guide to the protection each needs."
+    "B": "Tempting because floors give a neat physical layout. But one floor mixes guests, staff and payment systems, so its segment would join devices needing very different protection.",
+    "D": "Closest choice: similar devices often need similar settings. But a guest's laptop and a staff laptop are the same type with very different trust, so they would share a segment."
    },
    "tips": [
-    "Eliminate: A groups by address order, which says nothing about risk, and D groups by brand for patching convenience.",
-    "Final two: C beats B because segment rules depend on trust and purpose; a floor puts guest and payment devices side by side.",
-    "Exam cue: group by trust and purpose, then filter between the groups. Location and convenience are not security boundaries."
+    "Eliminate: A groups by address order, which says nothing about risk, and B groups by floor, which puts guest and payment devices side by side.",
+    "Final two: C beats D because segment rules depend on trust and purpose; grouping by type would put a guest's laptop beside a staff laptop.",
+    "Exam cue: group by trust and purpose, then filter between the groups. Floor, address range or device type help only where they match trust."
    ],
    "framework_ref": "NIST SP 800-53 Rev. 5 SC-7(21) (Boundary Protection | Isolation of System Components)",
    "related_concepts": [
@@ -1876,7 +1876,7 @@
     "Trust levels",
     "East-west traffic"
    ],
-   "_provenance": "Authored from concept: 'systems are grouped by trust level and purpose, with controls on the traffic between them' (notes 4.2.1 Network Segmentation). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 3, 31 Oct 2026. Fix-up round 2 (31 Oct 2026): C no longer echoes the stem's 'systems' and now carries a reason clause like the other options.",
+   "_provenance": "Authored from concept: 'systems are grouped by trust level and purpose, with controls on the traffic between them' (notes 4.2.1 Network Segmentation). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 3, 31 Oct 2026. Fix-up round 2 (31 Oct 2026): C no longer echoes the stem's 'systems' and now carries a reason clause like the other options. Final pass (31 Oct 2026): the stem now names the staff, guest and payment devices the explanations argue from, and the pre-read no longer echoes the key. Audit fix-up (31 Oct 2026): D (device maker) was a strawman; it is now grouping by device type, a plausible rival with its own rules clause, and the tips and explanations name D as the runner-up.",
    "style_version": 2
   },
   {
@@ -1887,24 +1887,24 @@
    "bloom_level": "Application",
    "question": "A phone carrier's chatbot runs on a vendor's AI model with built-in content filters, and the product lead calls that enough. Which addition should the security analyst propose to BEST apply defense in depth?",
    "options": {
-    "A": "Keep the model's name secret so attackers cannot target it",
-    "B": "Upgrade to the vendor's plan with stricter built-in filters",
-    "C": "Rely on the edge firewall to block harmful chatbot replies",
+    "A": "Keep the vendor and model names out of public view",
+    "B": "Upgrade to the vendor's stricter filters and log what they block",
+    "C": "Add an edge firewall rule to block harmful chatbot replies",
     "D": "Check and log each chatbot reply before customers see it"
    },
    "correct": "D",
-   "key_concept": "Defense in depth adds independent layers; a stronger version of the same control may fail the same way as the original.",
+   "key_concept": "Defense in depth adds a different kind of control at another point, such as checking replies before release; stricter vendor filters are still one layer.",
    "pre_read": "Imagine someone tricks the vendor's filters with a clever prompt, and follow the reply.",
-   "correct_explanation": "Defense in depth needs layers that fail independently. A reply check in the carrier's own app can still catch a bad reply if the vendor's model is tricked, and its logs reveal misuse. The vendor's stricter plan is the runner-up because it strengthens filtering, but it is the same vendor's layer, so one trick may defeat both. NIST warns that such checks may fail along with the model they watch, so review the logs.",
+   "correct_explanation": "Defense in depth needs layers that fail independently. The carrier's own reply check sits outside the vendor's model, so it can catch a bad reply the vendor's filters miss. NIST warns that checkers can share blind spots with the model, so the logs let staff spot misuse that gets past both. The vendor's stricter plan is the runner-up, but one trick may beat both, and its log shows only what it caught.",
    "wrong_explanations": {
-    "A": "Tempting because secrecy feels protective. But attackers probe the chatbot directly, and hiding a model's name adds no real control.",
-    "B": "Closest choice: stricter filters do improve that layer. But they are still the vendor's own filters, so one trick could defeat both; depth needs a separate control.",
+    "A": "Tempting because secrecy can slow attackers a little. But anyone can still type tricky prompts into the chatbot, so hiding names cannot catch a harmful reply.",
+    "B": "Closest choice: stricter filters do improve that layer. But they are still the vendor's filters, so one trick could defeat both, and logging what they block shows nothing they miss.",
     "C": "Tempting because firewalls are a classic layer. But an edge firewall filters network traffic, not what a chatbot says inside allowed web sessions."
    },
    "tips": [
-    "Eliminate: C expects a network firewall to judge chatbot content, and A relies on keeping a name secret.",
-    "Final two: D beats B because the carrier's own check and logs are a separate layer it controls; a stronger copy of the vendor's filters can be fooled the same way.",
-    "Exam cue: depth means independent layers. Ask whether the extra control would still work if the first one were fooled."
+    "Eliminate: C expects a network firewall rule to judge chatbot content, and A relies on secrecy, which cannot catch a harmful reply.",
+    "Final two: D beats B because the carrier's own check is a separate layer it controls; stricter vendor filters can be fooled the same way, and their log shows only what they caught.",
+    "Exam cue: a stronger version of the same control adds no depth; add a control of another kind at another point."
    ],
    "framework_ref": "NIST SP 800-53 Rev. 5 PL-8(1) (Security and Privacy Architectures | Defense in Depth); NIST AI 100-2 E2025 Section 3.3.3 (Mitigations: output detection and activity monitoring add defense in depth, but detectors may fail together with the model they check)",
    "related_concepts": [
@@ -1912,7 +1912,7 @@
     "AI output filtering",
     "Independent layers"
    ],
-   "_provenance": "Authored from concept: 'each layer should fail independently, and AI systems get layers too, including filtering and monitoring of outputs' (notes 4.2.5 Defense in Depth). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 3, 31 Oct 2026.",
+   "_provenance": "Authored from concept: 'each layer should fail independently, and AI systems get layers too, including filtering and monitoring of outputs' (notes 4.2.5 Defense in Depth). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 3, 31 Oct 2026. Final pass (31 Oct 2026): A loses its reason clause and C is now a real (wrong-layer) addition; the explanation ties the NIST correlated-failure point to the logs and separates an added layer from limiting access. Audit fix-up (31 Oct 2026): correct explanation rewritten in plain steps; the absolute closing line about limiting access is removed. Cross-domain gate (31 Oct 2026): B gains a same-form log clause so oversight wording is not on the key alone; key_concept and exam cue re-angled away from cc_d4_027's 'fail independently' wording.",
    "style_version": 2
   },
   {
@@ -1921,7 +1921,7 @@
    "subtopic": "4.2 Network security architecture. Zero Trust components",
    "difficulty": "foundational",
    "bloom_level": "Foundational",
-   "question": "A record label is replacing its VPN with Zero Trust Network Access (ZTNA) for remote staff. Which difference should the IT analyst explain as MOST important?",
+   "question": "A record label is replacing its VPN with Zero Trust Network Access (ZTNA) for remote staff. Which difference should the network technician explain as MOST important?",
    "options": {
     "A": "Each verified user reaches only the specific apps they need",
     "B": "All traffic between staff and company systems becomes encrypted",
@@ -1948,7 +1948,7 @@
     "VPN",
     "Per-session access"
    ],
-   "_provenance": "Authored from concept: 'Zero Trust Network Access connects a verified user to one application and keeps checking; a VPN places the user on the network' (notes 4.2.7 Zero Trust Architecture Components). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 3, 31 Oct 2026.",
+   "_provenance": "Authored from concept: 'Zero Trust Network Access connects a verified user to one application and keeps checking; a VPN places the user on the network' (notes 4.2.7 Zero Trust Architecture Components). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 3, 31 Oct 2026. Final pass (31 Oct 2026): role changed to the canonical network technician (rule 11).",
    "style_version": 2
   },
   {
@@ -1993,26 +1993,26 @@
    "subtopic": "4.2 Network security architecture. AI development environments",
    "difficulty": "application",
    "bloom_level": "Application",
-   "question": "A credit card issuer's fraud model retrains nightly from a dataset on its AI development segment, and every developer account can edit that dataset. Which control should the security analyst propose as BEST?",
+   "question": "A card issuer's fraud model retrains nightly on a dataset that every developer account can edit, because its AI development segment is treated as trusted. Which control should the security analyst propose as BEST?",
    "options": {
-    "A": "Trust the edits, since every developer works inside the segment",
-    "B": "Scan the dataset for malware before each nightly retraining",
+    "A": "Isolate the segment further from the office network",
+    "B": "Scan the dataset for malware and log each nightly retraining",
     "C": "Limit edits to named data engineers and log every change",
     "D": "Encrypt the dataset so that edits cannot alter the model"
    },
    "correct": "C",
    "key_concept": "Training data shapes what a model learns, so only named people should change it, and every change should be logged.",
    "pre_read": "Picture one careless or hostile edit to the dataset, and follow it into tomorrow's model.",
-   "correct_explanation": "Whoever can edit training data can quietly change what the model learns, for example teaching it to wave through one kind of fraud. So edits go only to named people who need them, and every change is logged so bad records can be traced and removed. Malware scanning is the runner-up because it checks the data before training, but poisoned records are ordinary-looking data, not malicious code.",
+   "correct_explanation": "Whoever can edit training data can quietly change what the model learns, for example teaching it to wave through one kind of fraud. So edits go only to named people who need them, and every change is logged so bad records can be traced and removed. Malware scanning is the runner-up, but poisoned records are ordinary-looking data, not malicious code, and a retraining log does not show who changed a record.",
    "wrong_explanations": {
-    "A": "Tempting because the segment is already isolated. But internal does not mean trusted, and broad edit rights let any one account poison the model.",
-    "B": "Closest choice: checking data before training is wise. But poisoned records look like normal transactions, not malware, so a malware scan would pass them.",
+    "A": "Tempting because segmenting AI work is good practice. But the risk is already inside: every developer account can edit the data, and a tighter wall does not change that.",
+    "B": "Closest choice: checking data before training is wise. But poisoned records look like normal transactions, so a malware scan passes them, and a retraining log hides who changed a record.",
     "D": "Tempting because encryption protects data. But it stops outsiders reading files; anyone allowed to edit the dataset can still change what the model learns."
    },
    "tips": [
-    "Eliminate: D expects encryption to stop people who are allowed to edit, and A trusts every account inside the segment.",
-    "Final two: C beats B because poisoned records are ordinary data that malware scans pass; limiting and logging edits prevents and traces them.",
-    "Exam cue: protect training data like production code, with named editors, least privilege and a log of every change."
+    "Eliminate: D expects encryption to stop people who are allowed to edit, and A adds a wall around a segment whose risk is already inside it.",
+    "Final two: C beats B because poisoned records are ordinary data that malware scans pass; limiting and logging each edit prevents and traces them, which a retraining log cannot.",
+    "Exam cue: being inside an AI development segment grants no trust. Under Zero Trust, each change to training data needs a named, least-privilege identity and a log."
    ],
    "framework_ref": "NIST AI 100-2 E2025 Section 2.3.2 (Targeted Poisoning); NIST SP 800-53 Rev. 5 AC-6 (Least Privilege)",
    "related_concepts": [
@@ -2020,7 +2020,7 @@
     "Data poisoning",
     "Least privilege"
    ],
-   "_provenance": "Authored from concept: 'training data gets Zero Trust treatment, named users with least privilege and a log of every change, because tampering can poison the model' (notes 4.2.9 Segmenting AI Development Environments). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 3, 31 Oct 2026.",
+   "_provenance": "Authored from concept: 'training data gets Zero Trust treatment, named users with least privilege and a log of every change, because tampering can poison the model' (notes 4.2.9 Segmenting AI Development Environments). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 3, 31 Oct 2026. Final pass (31 Oct 2026): re-angled to Zero Trust inside the AI segment (4.2.9): the stem says the segment is treated as trusted, A is a plain network-isolation distractor without a reason clause, new exam cue. Cross-domain gate (31 Oct 2026): B gains a same-form log clause so oversight wording is not on the key alone.",
    "style_version": 2
   },
   {
@@ -2106,7 +2106,7 @@
     "A": "That target still allows about four hours of outage a year",
     "B": "Service credits in the contract will make up for any outage",
     "C": "The provider's ISO/IEC 27001 certificate covers outage planning",
-    "D": "That target allows only a few seconds of outage a year"
+    "D": "The provider's backups stop outages from affecting the league"
    },
    "correct": "A",
    "key_concept": "A service level agreement sets an availability target and a remedy such as service credits; outages still happen, so continuity plans must cover them.",
@@ -2115,10 +2115,10 @@
    "wrong_explanations": {
     "B": "Closest choice: service level agreements do offer credits when targets are missed. But credits usually refund part of the fee; they do not restore lost matches or income.",
     "C": "Tempting because a certificate shows strong provider controls. But it covers the provider's own scope, not the league's plans for when a service is down.",
-    "D": "Tempting because 99.95% sounds close to perfect. But 0.05% of a year is about 4.4 hours of downtime, before any scheduled maintenance."
+    "D": "Tempting because backups protect the league's data. But backups restore data after a loss; they do not keep the service running while the provider is down."
    },
    "tips": [
-    "Eliminate: D misjudges how much downtime 99.95% allows, and C stretches a provider's certificate over the customer's own planning.",
+    "Eliminate: D confuses backups, which restore data, with keeping the service running, and C stretches a provider's certificate over the customer's own planning.",
     "Final two: A beats B because an agreement's remedy is usually a partial refund; the outage still happens, so the league must plan for it.",
     "Exam cue: a service level agreement sets a target and a remedy, not a guarantee. Keep continuity plans for the hours it still allows."
    ],
@@ -2128,7 +2128,7 @@
     "Availability",
     "Continuity planning"
    ],
-   "_provenance": "Authored from concept: 'the service level agreement sets a target, such as 99.9% availability, and a remedy; outages still happen' (notes 4.3.6 Cloud Roles and Agreements). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 3, 31 Oct 2026.",
+   "_provenance": "Authored from concept: 'the service level agreement sets a target, such as 99.9% availability, and a remedy; outages still happen' (notes 4.3.6 Cloud Roles and Agreements). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 3, 31 Oct 2026. Audit fix-up (31 Oct 2026): D was the mirror of the key ('a few seconds' against 'about four hours'); it is now the backups-equal-availability misconception, so no opposite pair points to the key.",
    "style_version": 2
   },
   {
@@ -2137,10 +2137,10 @@
    "subtopic": "4.3 Cloud security. Cloud data protection",
    "difficulty": "analysis",
    "bloom_level": "Analysis",
-   "question": "A legal-aid charity is leaving a cloud storage service, where its case files are encrypted with keys it manages. Which step should its IT administrator take to BEST make every remaining copy unreadable, including backups?",
+   "question": "After moving its case files, a legal-aid charity is leaving a cloud service that stored them encrypted with keys it manages. Which step should its system administrator take to BEST make every remaining copy unreadable?",
    "options": {
     "A": "Re-encrypt the files under new keys before deleting them",
-    "B": "Destroy the encryption keys for the stored files",
+    "B": "Destroy the encryption keys that protect the files",
     "C": "Delete every case file and its old encrypted versions",
     "D": "Cancel the subscription so the provider erases the disks"
    },
@@ -2164,7 +2164,7 @@
     "Leaving a cloud service",
     "Key control"
    ],
-   "_provenance": "Authored from concept: 'at exit, customers cannot wipe the provider's disks, so they delete data and destroy its keys' (notes 4.3.7 Protecting Data in the Cloud). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 3, 31 Oct 2026.",
+   "_provenance": "Authored from concept: 'at exit, customers cannot wipe the provider's disks, so they delete data and destroy its keys' (notes 4.3.7 Protecting Data in the Cloud). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 3, 31 Oct 2026. Audit fix-up (31 Oct 2026): the stem now says the files were moved first, so destroying the keys loses nothing the charity must keep, and uses the canonical role 'system administrator'; B no longer echoes the stem's 'stored'.",
    "style_version": 2
   },
   {
@@ -2177,13 +2177,13 @@
    "options": {
     "A": "Move SNMP to an unusual port so scanners miss it",
     "B": "Change the community string from 'public' to 'private'",
-    "C": "Report the setting to the network lead and recommend SNMPv3",
+    "C": "Ask the network lead to approve moving the switches to SNMPv3",
     "D": "Move every switch to SNMPv3 tonight, then tell the network lead"
    },
    "correct": "C",
    "key_concept": "SNMP versions 1 and 2c send community strings in cleartext; SNMPv3 adds authentication and encryption. Device changes go through whoever approves them.",
    "pre_read": "Picture what an eavesdropper on the network sees during each monitoring query.",
-   "correct_explanation": "SNMPv2c sends its community string, in effect a password, in cleartext, and 'public' is a well-known default, so SNMPv3 with authentication and encryption is the right fix. The network lead approves switch changes, so the technician reports the finding with that recommendation. Changing every switch tonight is the runner-up because it applies the right fix, but doing it without approval bypasses change control and risks breaking monitoring.",
+   "correct_explanation": "SNMPv2c sends its community string, in effect a password, in cleartext, and 'public' is a well-known default, so SNMPv3 with authentication and encryption is the right fix. The network lead approves switch changes, so the technician asks the lead to approve the move to SNMPv3. Changing every switch tonight is the runner-up because it applies the right fix, but doing it without approval bypasses change control and risks breaking monitoring.",
    "wrong_explanations": {
     "A": "Tempting because an odd port looks hidden. But scanners find services on any port, and the community string still crosses the network in cleartext.",
     "B": "Tempting because it removes the default value. But 'private' is another well-known default, and SNMPv2c still sends it in cleartext.",
@@ -2200,7 +2200,7 @@
     "Cleartext protocols",
     "Change control"
    ],
-   "_provenance": "Authored from concept: 'choose the encrypted protocol for the same job, and report cleartext protocols to the owner' (notes 4.1.5 Ports, Protocols and Secure Alternatives). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 3, 31 Oct 2026.",
+   "_provenance": "Authored from concept: 'choose the encrypted protocol for the same job, and report cleartext protocols to the owner' (notes 4.1.5 Ports, Protocols and Secure Alternatives). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 3, 31 Oct 2026. Final pass (31 Oct 2026): key C reworded from Report to Ask (bank-wide Report/Ask tell); meaning unchanged.",
    "style_version": 2
   },
   {
@@ -2211,9 +2211,9 @@
    "bloom_level": "Application",
    "question": "A coworking space's firewall applies the first matching rule: rule 1 allows internet use, and rule 2 blocks a banned file-sharing site, yet members reach it. Which change should the network technician propose as BEST?",
    "options": {
-    "A": "Move the block rule so it sits above rule 1",
+    "A": "Move the block rule to the top, above the allow rule",
     "B": "Repeat the block rule at the bottom of the list",
-    "C": "Delete rule 1 so the block rule can take effect",
+    "C": "Delete the allow rule so the block can take effect",
     "D": "Block the site in each member's browser settings"
    },
    "correct": "A",
@@ -2236,7 +2236,7 @@
     "First match",
     "Policy enforcement"
    ],
-   "_provenance": "Authored from concept: 'rules are read from the top and the first match wins, so specific rules go first' (notes 4.1.7 Firewalls: Ports and Applications). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 3, 31 Oct 2026.",
+   "_provenance": "Authored from concept: 'rules are read from the top and the first match wins, so specific rules go first' (notes 4.1.7 Firewalls: Ports and Applications). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 3, 31 Oct 2026. Audit fix-up (31 Oct 2026): A and C reworded (same actions; 'allow rule' now appears in both) so the domain's longest-key rate stays inside the 15-30% band.",
    "style_version": 2
   },
   {
@@ -2245,12 +2245,12 @@
    "subtopic": "4.1 Network security. AI in traffic monitoring",
    "difficulty": "application",
    "bloom_level": "Application",
-   "question": "A sailing school's AI monitor flags the finance director's laptop calling a new domain every minute over encrypted traffic, like a malware check-in; the runbook assigns verification to the analyst. What should they do FIRST?",
+   "question": "A sailing school's AI monitor flags the finance director's laptop calling a new domain each minute over encrypted traffic, like malware checking in; verification is the analyst's runbook task. What should the analyst do FIRST?",
    "options": {
-    "A": "Ask the finance director whether the connections are expected",
+    "A": "Ask the finance director if the laptop's connections are expected",
     "B": "Close the alert, as the monitor cannot read encrypted traffic",
     "C": "Let the monitor block the laptop, then close the alert",
-    "D": "Check the connections against the laptop's logs and flow records"
+    "D": "Review the connections in the laptop's logs and flow records"
    },
    "correct": "D",
    "key_concept": "AI monitors read timing, volume and destination even in encrypted traffic; when the runbook assigns you an alert, verify it yourself first.",
@@ -2272,7 +2272,7 @@
     "Encrypted traffic",
     "In-role action"
    ],
-   "_provenance": "Authored from concept: 'AI models still analyze timing, volume and destinations when traffic is encrypted; treat AI detection as an assistant whose alerts are verified' (notes 4.1.9 AI in Traffic Monitoring, IDS and Firewalls). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 3, 31 Oct 2026. Fix-up round 2 (31 Oct 2026): the stem now says the pattern looks like a malware check-in, so asking the laptop's user first is clearly weaker.",
+   "_provenance": "Authored from concept: 'AI models still analyze timing, volume and destinations when traffic is encrypted; treat AI detection as an assistant whose alerts are verified' (notes 4.1.9 AI in Traffic Monitoring, IDS and Firewalls). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 3, 31 Oct 2026. Fix-up round 2 (31 Oct 2026): the stem now says the pattern looks like a malware check-in, so asking the laptop's user first is clearly weaker. Final pass (31 Oct 2026): A now names the laptop too, so the stem's 'laptop' is not echoed only in the key. Audit fix-up (31 Oct 2026): the stem names the analyst instead of 'they', and D is shortened (and no longer echoes the stem's 'checking') so the key is no longer the longest option.",
    "style_version": 2
   },
   {
@@ -2320,31 +2320,31 @@
    "question": "An online toy store's security team is installing its first inline intrusion prevention system (IPS) before the holiday rush. Which starting setup should the junior analyst propose as BEST?",
    "options": {
     "A": "Install it in place of the store's firewall",
-    "B": "Run it in simulation mode, logging what it would block",
-    "C": "Turn on blocking for every rule the vendor ships",
-    "D": "Let it run unwatched, since it blocks threats itself"
+    "B": "Run it alert-only, logging what it would block",
+    "C": "Turn on blocking for the vendor's recommended rule set",
+    "D": "Rely on its automatic blocking, with no alert review"
    },
    "correct": "B",
-   "key_concept": "A new IPS starts in a simulation or alert mode so its rules can be tuned before blocking, which avoids stopping legitimate business traffic.",
+   "key_concept": "A new IPS starts in an alert-only (simulation) mode so its rules can be tuned before blocking, which avoids stopping legitimate business traffic.",
    "pre_read": "Picture the busiest shopping day with the new system sitting in the traffic path.",
-   "correct_explanation": "A new IPS raises many false positives until it is tuned, and because it sits inline, every wrong block stops real orders. NIST notes that some sensors offer a learning or simulation mode that logs what would have been blocked, so the team can tune first. Blocking on every vendor rule is the runner-up because it seems most protective, but untuned rules would turn away real shoppers in the busiest season.",
+   "correct_explanation": "A new IPS raises many false positives until it is tuned, and because it sits inline, every wrong block stops real orders. Alert-only mode, which NIST calls simulation mode, logs what it would block so the team can tune first. The vendor's recommended rules are the runner-up because they are a sensible start, but untuned to the store's traffic they would turn away real shoppers in the busiest season.",
    "wrong_explanations": {
     "A": "Tempting because both sit in the traffic path. But a firewall decides which traffic is allowed at all; an IPS only hunts for attacks inside allowed traffic.",
-    "C": "Closest choice: the IPS is there to block attacks. But untuned rules block legitimate orders too, and an inline device stops whatever it blocks.",
+    "C": "Closest choice: the vendor's recommended rules are a sensible start. But they are not tuned to this store's traffic, and an inline device stops whatever it blocks, real orders included.",
     "D": "Tempting because prevention is automatic. But alerts still need triage, and an unwatched IPS lets wrong blocks and missed attacks go unnoticed."
    },
    "tips": [
     "Eliminate: A removes the firewall, whose allow-and-deny job an IPS does not take over, and D assumes automatic prevention needs no one watching.",
-    "Final two: B beats C because a new IPS needs tuning first; blocking on untuned rules stops real business traffic.",
+    "Final two: B beats C because even recommended rules need tuning to the store's own traffic; blocking before tuning stops real business traffic.",
     "Exam cue: new blocking controls start in watch mode. Tune them on real traffic, then switch on blocking."
    ],
    "framework_ref": "NIST SP 800-94 Section 3.2.4 (Prevention Capabilities: a simulation mode logs would-be prevention actions so they can be tuned first); NIST SP 800-94 Section 4.2.2 (Network Architectures and Sensor Locations: inline versus passive sensors)",
    "related_concepts": [
     "IPS tuning",
-    "Simulation mode",
+    "Alert-only mode",
     "False positives"
    ],
-   "_provenance": "Authored from concept: 'teams run new rules in alert mode first, because untuned blocking stops real business traffic' (notes 4.1.8 Intrusion Detection and Prevention Systems). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 3, 31 Oct 2026.",
+   "_provenance": "Authored from concept: 'teams run new rules in alert mode first, because untuned blocking stops real business traffic' (notes 4.1.8 Intrusion Detection and Prevention Systems). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 3, 31 Oct 2026. Final pass (31 Oct 2026): B uses the notes' alert-mode term, C is a non-absolute untuned-blocking option, and D loses its reason clause.",
    "style_version": 2
   },
   {
@@ -2357,7 +2357,7 @@
    "options": {
     "A": "Outsiders could use it to reach the wired network directly",
     "B": "Its radio could interfere with the official Wi-Fi channels",
-    "C": "It could let nearby phones pair with staff headsets over Bluetooth",
+    "C": "Staff using it could bypass the company's web filtering",
     "D": "It could reveal the hidden name of the official Wi-Fi network"
    },
    "correct": "A",
@@ -2366,11 +2366,11 @@
    "correct_explanation": "An access point plugged into the wired network extends it to anyone in radio range, and an employee's device is unlikely to have the company's encryption, sign-in or monitoring. NIST notes that a rogue access point can give a backdoor into the wired network that bypasses firewalls. Interference is the runner-up because an extra radio can disrupt the official Wi-Fi, but that slows service rather than exposing internal systems.",
    "wrong_explanations": {
     "B": "Closest choice: an extra radio can crowd the official channels. But that only slows the Wi-Fi; the greater risk is outsiders reaching internal systems through the device.",
-    "C": "Tempting because both are wireless. But a Wi-Fi access point plays no part in Bluetooth pairing between phones and headsets.",
+    "C": "Tempting because the device is unmanaged. But it plugs into a company wall jack, so traffic through it still leaves by the company's network and filters.",
     "D": "Tempting because extra radios add exposure. But hidden network names are easy to find anyway; hiding one was never real protection."
    },
    "tips": [
-    "Eliminate: C mixes up Wi-Fi with Bluetooth pairing, and D treats a hidden network name as protection worth losing.",
+    "Eliminate: C forgets that traffic through the device still crosses the company's network and filters, and D treats a hidden network name as protection worth losing.",
     "Final two: A beats B because a backdoor into the wired network exposes internal systems; interference only slows the Wi-Fi.",
     "Exam cue: any unapproved device that bridges radio to the wired network is a door around the perimeter. Rate access above inconvenience."
    ],
@@ -2380,7 +2380,7 @@
     "Wireless security",
     "Perimeter bypass"
    ],
-   "_provenance": "Authored from concept: 'check wireless scans for unknown networks; rogue access points open the network to anyone in range' (notes 4.1.10 Wireless Security: Wi-Fi and Bluetooth). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 3, 31 Oct 2026.",
+   "_provenance": "Authored from concept: 'check wireless scans for unknown networks; rogue access points open the network to anyone in range' (notes 4.1.10 Wireless Security: Wi-Fi and Bluetooth). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 3, 31 Oct 2026. Audit fix-up (31 Oct 2026): C (Bluetooth pairing) was a strawman; it is now the real misconception that an unmanaged access point bypasses web filtering.",
    "style_version": 2
   },
   {
@@ -2393,7 +2393,7 @@
    "options": {
     "A": "Software as a service (SaaS)",
     "B": "Platform as a service (PaaS)",
-    "C": "Function as a service (serverless)",
+    "C": "Function as a service (FaaS)",
     "D": "Infrastructure as a service (IaaS)"
    },
    "correct": "D",
@@ -2403,7 +2403,7 @@
    "wrong_explanations": {
     "A": "Tempting because it needs the least work. But in SaaS the provider runs the whole application stack, and customers never reach its servers.",
     "B": "Closest choice: the league still deploys and secures its own app in PaaS. But the provider runs the operating system underneath, so the league cannot install an agent on it.",
-    "C": "Tempting because it also runs the league's own code. But serverless hides the servers entirely; there is no operating system the customer can reach."
+    "C": "Tempting because it also runs the league's own code. But function as a service (serverless) hides the servers entirely; there is no operating system the customer can reach."
    },
    "tips": [
     "Eliminate: A and C give the customer no operating system to manage; the provider runs every server in both.",
@@ -2416,7 +2416,7 @@
     "Service models",
     "Customer control"
    ],
-   "_provenance": "Authored from concept: 'in IaaS the customer manages the operating system and everything above it; PaaS and SaaS hand those layers to the provider' (notes 4.3.3 Cloud Service Models: IaaS, PaaS and SaaS). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 3, 31 Oct 2026. Fix-up round 2 (31 Oct 2026): stem, key concept and exam cue re-angled to installing software on the guest operating system, so the item no longer mirrors cc_d4_042's stack-position cue.",
+   "_provenance": "Authored from concept: 'in IaaS the customer manages the operating system and everything above it; PaaS and SaaS hand those layers to the provider' (notes 4.3.3 Cloud Service Models: IaaS, PaaS and SaaS). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 3, 31 Oct 2026. Fix-up round 2 (31 Oct 2026): stem, key concept and exam cue re-angled to installing software on the guest operating system, so the item no longer mirrors cc_d4_042's stack-position cue. Final pass (31 Oct 2026): C now uses its acronym like the other options.",
    "style_version": 2
   },
   {
@@ -2425,34 +2425,34 @@
    "subtopic": "4.3 Cloud security. Shared responsibility",
    "difficulty": "analysis",
    "bloom_level": "Analysis",
-   "question": "A dance school's booking site runs on infrastructure as a service (IaaS), its email on software as a service (SaaS). Both need operating system patches; which split should its IT coordinator record as MOST accurate?",
+   "question": "A dance school's own booking app runs on platform as a service (PaaS), and its email is software as a service (SaaS). Who MOST accurately fixes a code flaw in each?",
    "options": {
-    "A": "The school patches both systems, since it owns the data in each",
-    "B": "The two providers patch both systems, since each runs in a cloud",
-    "C": "The school patches the IaaS servers; the SaaS provider patches email",
-    "D": "The school patches the SaaS email; the IaaS provider patches the servers"
+    "A": "The school fixes the flaws in both applications",
+    "B": "Each provider fixes the flaw in the application it hosts",
+    "C": "The school fixes the booking app; the email provider fixes email",
+    "D": "The school fixes the email; the platform provider fixes the booking app"
    },
    "correct": "C",
-   "key_concept": "The split depends on the service model: in IaaS the customer patches the guest operating system; in SaaS the provider patches the whole application stack.",
+   "key_concept": "In SaaS the provider runs and fixes the application itself; in PaaS the provider runs only the platform, so the customer fixes its own application.",
    "pre_read": "Take each service on its own, and ask what the school controls in it.",
-   "correct_explanation": "Shared responsibility is not the same in every model. With IaaS, the school rents virtual servers and patches their guest operating systems itself; with SaaS, the provider runs and patches everything beneath the school's data and settings. Patching both is the runner-up because the school does own its data everywhere, but owning data gives it no access to the SaaS provider's servers.",
+   "correct_explanation": "Shared responsibility is not the same in every model. In PaaS the provider runs the operating system and runtime, but the booking app is the school's own code, so the school fixes it. In SaaS the provider runs the whole application, so it fixes the email flaw. The school fixing both is the runner-up because it does fix its own app and set its email options, but it cannot reach the SaaS provider's code.",
    "wrong_explanations": {
-    "A": "Closest choice: the school owns its data and accounts in every model. But owning data gives it no control over the SaaS provider's servers or their patching.",
-    "B": "Tempting because both services run in a provider's cloud. But in IaaS the customer manages the guest operating system; the provider stops at the hypervisor.",
-    "D": "Tempting because it splits the work. But it reverses the split: IaaS providers do not patch guest systems, and SaaS customers cannot reach the provider's servers."
+    "A": "Closest choice: the school does fix its own booking app and sets its email settings. But in SaaS the provider runs the application, so only it can fix the code.",
+    "B": "Tempting because a PaaS provider patches a lot. But it patches the operating system and runtime beneath the app; the booking app is the school's own code to fix.",
+    "D": "Tempting because it splits the work. But it reverses the split: a platform provider does not fix customers' code, and the school cannot reach the email provider's code."
    },
    "tips": [
-    "Eliminate: B assumes every cloud provider patches guest systems, and D reverses which party patches in each model.",
-    "Final two: C beats A because data stays the customer's in every model, but patching follows who controls each layer.",
-    "Exam cue: never apply one split to every cloud service. Check the model first, then who controls the layer that needs the fix."
+    "Eliminate: B has the platform provider fixing the school's own code, and D reverses which party fixes each application.",
+    "Final two: C beats A because in SaaS the provider runs the application and its code; the school sets the email options but cannot fix its code.",
+    "Exam cue: never apply one split to every cloud service. Check the model first, then ask who controls the layer with the flaw."
    ],
    "framework_ref": "NIST SP 800-145 Section 2 (The NIST Definition of Cloud Computing: service models)",
    "related_concepts": [
     "Shared responsibility",
-    "IaaS",
-    "SaaS"
+    "Platform as a service",
+    "Software as a service"
    ],
-   "_provenance": "Authored from concept: 'the split differs by model: in IaaS the customer patches the guest operating system, while in SaaS the provider patches more layers' (notes 4.3.5 The Shared Responsibility Model). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 3, 31 Oct 2026.",
+   "_provenance": "Authored from concept: 'in PaaS and SaaS the provider patches more layers; the application row differs: the customer runs its own app in PaaS, the provider runs it in SaaS' (notes 4.3.5 The Shared Responsibility Model). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 3, 31 Oct 2026. Final pass (31 Oct 2026): re-angled from guest operating system patching (taught by cc_d4_043 and cc_d4_067) to the application layer under PaaS versus SaaS; key letter unchanged. Audit (31 Oct 2026): runner-up moved from B to A so the deciding fact is the SaaS application row, not the PaaS lesson cc_d4_016 already tests. Cross-domain gate (31 Oct 2026): key_concept now leads with the SaaS half so it does not echo cc_d4_016.",
    "style_version": 2
   },
   {
@@ -2502,7 +2502,7 @@
     "A": "It is rechecked and limited until the laptop is healthy again",
     "B": "It stays open, since the laptop is on the office network",
     "C": "It is cut off, and the engineer's account is disabled",
-    "D": "It is rechecked, and the morning's multifactor sign-in covers it"
+    "D": "It is rechecked, and the morning's sign-in still covers it"
    },
    "correct": "A",
    "key_concept": "Zero Trust keeps checking: access is granted per session and evaluated again when identity, device health or context change.",
@@ -2524,7 +2524,7 @@
     "Continuous verification",
     "Device health"
    ],
-   "_provenance": "Authored from concept: 'access is granted per session with least privilege, and checked again as conditions change' (notes 4.2.6 Zero Trust Principles). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 3, 31 Oct 2026.",
+   "_provenance": "Authored from concept: 'access is granted per session with least privilege, and checked again as conditions change' (notes 4.2.6 Zero Trust Principles). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 3, 31 Oct 2026. Audit fix-up (31 Oct 2026): D shortened (same misconception) so the key is not always shorter than its look-alike rival.",
    "style_version": 2
   }
  ]

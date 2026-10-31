@@ -244,7 +244,7 @@
             ],
             "evidence": [
               "Approved RACI chart with a version date",
-              "Organization chart showing the security leader's reporting line"
+              "Organization chart showing the security manager's reporting line"
             ],
             "recommend": "Raise any task with no Accountable person, or several, with the GRC lead before approval.",
             "decides": "Senior management assigns accountability and approves reporting lines"
@@ -965,7 +965,7 @@
             "recommend": "Report missed targets to the system owner with the numbers, without changing the schedule or target.",
             "decides": "Business owners set the targets; senior management funds any gap"
           },
-          "isaca_rule": "RPO is about data, looking back; RTO is about time, looking forward; the RTO must fit inside the MTD. A hot site shortens downtime but does nothing for data loss.",
+          "isaca_rule": "RPO is about data, looking back; RTO is about time, looking forward; the RTO must fit inside the MTD. A hot site shortens downtime, but data loss still depends on how recent the copies it loads are.",
           "exam_traps": [
             {
               "trap": "A faster recovery site will reduce how much data we lose.",
@@ -1198,7 +1198,7 @@
               "meaning": "Production is shut down and the business runs from the recovery site. Most realistic and highest risk."
             }
           ],
-          "example": "A city water department runs a simulation for its billing system: the recovery team works through a flooded-server-room scenario step by step against the clock, without touching live systems. The steps add up to nine hours against a six-hour RTO. Dee, a junior system administrator, records each step's timing in the test report, and the gap becomes a tracked action.",
+          "example": "A city water department runs a simulation for its billing system: the recovery team acts out a flooded-server-room scenario in real time, each person doing their own role on test servers while live systems keep running. The steps take nine hours against a six-hour RTO. Dee, a junior system administrator, records each step's timing in the test report, and the gap becomes a tracked action.",
           "audit_focus": {
             "review": [
               "Confirm your role and contact details before each test",
@@ -1772,7 +1772,7 @@
               "Breach alert notices for your work accounts"
             ],
             "recommend": "Report suspected password exposure to the security team at once and change the password as they direct.",
-            "decides": "Security management sets the password and MFA standard, within approved policy"
+            "decides": "The security manager sets the password and MFA standard, within approved policy"
           },
           "isaca_rule": "Long, unique, kept in a password manager and never shared. IT never needs your password, and any sign of exposure is reported at once.",
           "exam_traps": [
@@ -1880,7 +1880,7 @@
             "Compare each result with a baseline and a target.",
             "If a metric drives no decision, drop it; a few meaningful metrics beat many."
           ],
-          "example": "A city council's IT team reports \"12,000 threats blocked this month\", and councilors cannot tell whether that is good. The security lead switches to \"critical patches applied within 14 days: 78%, target 95%\". Yusuf, the junior analyst who pulls the data, uses the same query and cutoff date every month, so the trend stays comparable.",
+          "example": "A city council's security manager reports \"supplier contracts with security clauses: 64%, target 90%, last quarter 52%\". The target and the earlier figure show councilors the work is moving but short, so they fund another quarter of contract reviews. Yusuf, the junior analyst who pulls the data, uses the same query and cutoff date every quarter, so the trend stays comparable.",
           "audit_focus": {
             "review": [
               "Confirm each metric you report has a goal and a target",
@@ -2211,7 +2211,7 @@
               "Board feedback on past reports"
             ],
             "recommend": "Flag numbers that differ between the dashboard and the report to the reporting owner before release.",
-            "decides": "The security leader decides what is reported to the board"
+            "decides": "The security manager decides which measures the board sees"
           },
           "isaca_rule": "Fit the format to the audience and the decision. Boards get short, business-focused scorecards and reports; operations teams get live dashboards.",
           "exam_traps": [

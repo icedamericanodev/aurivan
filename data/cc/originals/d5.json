@@ -506,7 +506,7 @@
    "related_concepts": [
     "End-of-life (EOL)",
     "Compensating control",
-    "Risk exception"
+    "Policy exception"
    ],
    "_provenance": "Authored from concept: 'unsupported systems get compensating controls under a time-limited exception until replaced' (notes 5.4.3 End-of-Life Software and Devices). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 pilot batch, 29 Oct 2026. Review fixes 29 Oct 2026 (standards audit 2 and blind test 2): stem now states that the printers are networked and needed for every shipment, the fact that decides A over C. Cross-review fixes (31 Oct 2026): B no longer repeats C's 'until the replacements arrive' wording; its misconception (working means secure) is unchanged.",
    "style_version": 2
@@ -1643,14 +1643,14 @@
    "correct": "D",
    "key_concept": "Tokens are worthless alone, so tokenization moves the risk into the vault, the one place that maps tokens back to real values.",
    "pre_read": "For each component, ask what an attacker who stole it could actually recover.",
-   "correct_explanation": "Tokens have no mathematical link to the card numbers, so the database, screens and log hold nothing an attacker can use on its own. The vault alone turns tokens back into real numbers, so it needs the strongest protection. The order database is the runner-up: it is the main business system, but after tokenization it holds only tokens.",
+   "correct_explanation": "Tokens have no mathematical link to the card numbers, so the database, screens and log hold no card number an attacker could recover. The vault alone turns tokens back into real numbers, so it needs the strongest protection. The order database is the runner-up: it is the main business system, but after tokenization it holds only tokens.",
    "wrong_explanations": {
     "A": "Closest choice: it is the main business system. But after tokenization it stores only tokens, which are useless without the vault that maps them back.",
     "B": "Tempting because staff see data on screens. But the screens show only tokens, which reveal no card number to anyone who reads them.",
     "C": "Tempting because logs can leak details. But this log records that lookups happened, not the card numbers; only the vault holds those."
    },
    "tips": [
-    "Eliminate: B shows only tokens, and C records lookups, not card numbers; neither holds a value an attacker can use.",
+    "Eliminate: B shows only tokens, and C records that lookups happened, not card numbers; neither holds a card number an attacker could steal.",
     "Final two: D beats A because only the vault turns tokens back into card numbers; the order database now holds only tokens.",
     "Exam cue: tokenization concentrates the risk. Find the one place that maps tokens back to real values, and protect it most."
    ],
@@ -1672,7 +1672,7 @@
    "question": "A tea importer's payroll server has a failed solid-state drive that will not power on, and the vendor's warranty swap keeps the faulty drive. Which sanitization step is BEST for the IT technician?",
    "options": {
     "A": "Send the drive back, since a dead drive cannot be read",
-    "B": "Degauss the drive, then send it back for the warranty swap",
+    "B": "Keep the drive and purge it with its built-in sanitize command",
     "C": "Return the drive with a written request that the vendor wipe it",
     "D": "Hold the drive back and have it destroyed instead of returning it"
    },
@@ -1682,11 +1682,11 @@
    "correct_explanation": "A drive that will not power on cannot run a purge command, yet its memory chips can still be read in a lab, and a warranty swap puts it outside the organization's control for good. Destruction is the method left, recorded by serial number. Asking the vendor to wipe it is the runner-up: it sounds responsible, but unsanitized payroll data leaves your control on a promise you cannot verify.",
    "wrong_explanations": {
     "A": "Tempting because the drive seems dead. But laboratory tools can read flash chips directly, so the payroll data stays recoverable once the drive leaves.",
-    "B": "Tempting because degaussing is a recognized purge for magnetic media. But a solid-state drive stores data in flash, which a degausser does not erase.",
+    "B": "Tempting because a built-in sanitize command is the usual purge for solid-state drives. But the drive's own controller must run it, and a drive that will not power on cannot.",
     "C": "Closest choice: the vendor may well wipe returned drives. But the data leaves unsanitized, on a promise you cannot verify, so destruction is the safer method."
    },
    "tips": [
-    "Eliminate: A assumes a dead drive cannot be read, and B uses degaussing, which does not erase flash storage.",
+    "Eliminate: A assumes a dead drive cannot be read, and B relies on a sanitize command that a drive which will not power on cannot run.",
     "Final two: D beats C because destruction sanitizes the drive while it is still in your control; a vendor's promise to wipe it cannot be verified.",
     "Exam cue: when media cannot be purged, destroy it before it leaves your control, and record it. Deleting, formatting and promises are not sanitization."
    ],
@@ -1705,12 +1705,12 @@
    "subtopic": "5.1 Data security. Digital certificates",
    "difficulty": "foundational",
    "bloom_level": "Foundational",
-   "question": "A help desk analyst at a recycling company is explaining website certificates to new staff. What does a trusted certificate authority's signature on a site's certificate MOST directly assure?",
+   "question": "A help desk analyst at a shipping company is explaining website certificates to new staff. What does a trusted certificate authority's signature on a site's certificate MOST directly assure?",
    "options": {
     "A": "The site's code has been checked and is free of known flaws",
     "B": "The public key in the certificate belongs to the named site",
     "C": "The site's owner has been vetted as honest and safe to pay",
-    "D": "Traffic to the site is encrypted with the authority's own key"
+    "D": "Traffic to the site is encrypted with the certificate authority's key"
    },
    "correct": "B",
    "key_concept": "A certificate authority's signature binds a public key to its named owner; it says nothing about the owner's honesty or the site's code.",
@@ -1741,7 +1741,7 @@
    "subtopic": "5.2 Security operations. Log source monitoring",
    "difficulty": "analysis",
    "bloom_level": "Analysis",
-   "question": "A runbook has security analysts open an incident ticket when a critical server's logs stop for an hour; the critical payroll server's owner blames its three-hour silence on maintenance. What should the analyst do FIRST?",
+   "question": "A runbook has analysts open an incident ticket when logs stop for an hour; the payroll server's three-hour silence has no change record, and its system owner blames maintenance. What should the analyst do FIRST?",
    "options": {
     "A": "Hold the incident ticket until the owner confirms the maintenance",
     "B": "Restart the logging agent and close the alert",
@@ -1750,17 +1750,17 @@
    },
    "correct": "C",
    "key_concept": "A log source that goes silent may signal compromise; follow the runbook's step even when an owner suggests a harmless cause.",
-   "pre_read": "Ask what the runbook already tells the analyst to do, and whether the owner's guess changes it.",
-   "correct_explanation": "Attackers often stop logging to hide what they do, so the runbook treats an hour of silence from a critical server as an incident to open. An approved change record could explain the gap, but an owner's word is not one, so the theory is checked inside the ticket. Holding the ticket for the owner is the runner-up: owners know their systems, but a guess does not override the runbook.",
+   "pre_read": "Ask who the runbook gives this step to, and what would have to exist to explain the silence.",
+   "correct_explanation": "Attackers often stop logging to hide what they do, so the runbook treats an hour of silence from a log source as an incident to open. No change record covers the gap, and an owner's word is not one, so the maintenance theory is checked inside the ticket. Holding the ticket for the owner is the runner-up: owners know their systems, but an unrecorded explanation does not override the runbook.",
    "wrong_explanations": {
-    "A": "Closest choice: the owner may be right about maintenance. But the runbook already assigns the ticket to the analyst, and holding it on a guess gives any intruder more time.",
+    "A": "Closest choice: the owner may be right. But no change record backs the claim, and the runbook already gives the ticket to the analyst; waiting gives any intruder more time.",
     "B": "Tempting because a stuck agent is a common cause. But restarting it can change evidence, and closing the alert skips the investigation the runbook requires.",
-    "D": "Tempting because maintenance alerts are noise. But muting a silent critical server removes exactly the warning an attacker who stopped the logs would want gone."
+    "D": "Tempting because maintenance alerts are noise. But muting a silent payroll server removes exactly the warning an attacker who stopped the logs would want gone."
    },
    "tips": [
     "Eliminate: B restarts the agent and closes the alert, and D mutes the alerts; both treat a silent log as noise, not a warning sign.",
     "Final two: C beats A because the runbook assigns the ticket to the analyst; the owner's maintenance theory is checked within it, not before it.",
-    "Exam cue: when a procedure assigns you a step, take it, even if an owner offers a harmless explanation. A silent log is itself a signal."
+    "Exam cue: a log source that goes quiet is itself an alert. Take the runbook's step, and test any harmless explanation inside the ticket."
    ],
    "framework_ref": "NIST SP 800-53 Rev. 5 AU-5 (Response to Audit Logging Process Failures); NIST SP 800-53 Rev. 5 AU-9 (Protection of Audit Information)",
    "related_concepts": [
@@ -1815,10 +1815,10 @@
    "bloom_level": "Foundational",
    "question": "Overnight, malicious code spreads across a shipyard's network from computer to computer through an unpatched file-sharing flaw, though no one opened any file. Which malware type should the IT technician report it as MOST accurately?",
    "options": {
-    "A": "A virus, which spreads across the network inside files people run",
-    "B": "A trojan, which poses as useful software a user installs",
-    "C": "A rootkit, which hides other malware deep in one system",
-    "D": "A worm, which copies itself across the network unaided"
+    "A": "A computer virus",
+    "B": "A Trojan horse",
+    "C": "A rootkit",
+    "D": "A computer worm"
    },
    "correct": "D",
    "key_concept": "A worm spreads by itself across networks, often through unpatched flaws; a virus needs a host file that someone runs.",
@@ -1826,13 +1826,13 @@
    "correct_explanation": "Malware that copies itself from computer to computer through a network flaw, with no one opening a file, is a worm; that self-spreading is why worms race through unpatched networks. A virus is the runner-up: it also spreads, but it rides inside a host file or program and usually needs someone to open or run it, and here nobody opened anything.",
    "wrong_explanations": {
     "A": "Closest choice: viruses also spread across networks. But a virus rides in a host file that someone opens or runs; this code spread with no user action.",
-    "B": "Tempting because trojans are common. But a trojan relies on a user installing software that looks useful, and it does not copy itself to other computers.",
+    "B": "Tempting because Trojans are common. But a Trojan relies on a user installing software that looks useful, and it does not copy itself to other computers.",
     "C": "Tempting because hidden malware sounds serious. But a rootkit conceals activity on one system; it does not spread itself across a network."
    },
    "tips": [
     "Eliminate: B needs a user to install it, and C conceals activity on one system; neither copies itself across a network.",
     "Final two: D beats A because a worm spreads by itself through a flaw, while a virus needs a host file that someone runs.",
-    "Exam cue: spreads across the network with no user action? Worm. Needs a host file someone opens? Virus. Poses as useful software? Trojan."
+    "Exam cue: spreads across the network with no user action? Worm. Needs a host file someone opens? Virus. Poses as useful software? Trojan horse."
    ],
    "framework_ref": "NIST SP 800-83 Rev. 1 Section 2.1 (Forms of Malware: viruses, worms and Trojan horses); NIST SP 800-53 Rev. 5 SI-2 (Flaw Remediation)",
    "related_concepts": [
@@ -1923,15 +1923,15 @@
    "bloom_level": "Application",
    "question": "A regional airport's firewall logs show packets arriving from the internet that carry source addresses from the airport's own internal network. Which control should the network technician propose as BEST?",
    "options": {
-    "A": "Drop inbound packets that bear internal source addresses",
+    "A": "Block inbound packets that bear internal source addresses",
     "B": "Log the packets and review them at the weekly firewall check",
-    "C": "Block the real addresses the packets were sent from",
+    "C": "Block the real source addresses the packets were sent from",
     "D": "Add bandwidth so the packets do not slow the internal network"
    },
    "correct": "A",
    "key_concept": "Source addresses are claims, not proof; an edge filter drops outside traffic that claims an internal source address.",
    "pre_read": "Compare where these packets came from with the addresses they carry. Then ask what each option does about that mismatch.",
-   "correct_explanation": "Packets from the internet cannot genuinely come from internal addresses, so these addresses are spoofed, often to slip past rules that trust internal traffic. An edge filter that drops inbound packets claiming internal sources stops the trick without knowing who sent them. Blocking the real senders is the runner-up: it sounds precise, but a spoofed header hides the true source, so there is no reliable address to block.",
+   "correct_explanation": "Packets from the internet cannot genuinely come from internal addresses, so these addresses are spoofed, often to slip past rules that trust internal traffic. An edge filter that blocks inbound packets claiming internal sources stops the trick without knowing who sent them. Blocking the real senders is the runner-up: it sounds precise, but a spoofed header hides the true source, so there is no reliable address to block.",
    "wrong_explanations": {
     "B": "Tempting because logs build evidence. But a weekly review lets forged packets keep passing the firewall until then; an edge filter stops them now.",
     "C": "Closest choice: stopping the real sender would end the attack. But a spoofed header hides the true source, so the firewall has no reliable address to block.",
@@ -1967,7 +1967,7 @@
    "correct": "B",
    "key_concept": "People's safety comes before containment, evidence and recovery: make people safe first, then the response continues.",
    "pre_read": "Ask what is at stake for the people in the hall, and which steps can safely wait a few minutes.",
-   "correct_explanation": "People's safety outranks systems and evidence, so the first step is to release the locked exit doors with the manual override and keep the route open for the crowd. Containment and investigation continue once people are safe. Disconnecting the controllers is the runner-up: it is a sound containment step, but it does not free the doors, and containment can wait minutes while a trapped crowd cannot.",
+   "correct_explanation": "People's safety outranks systems and evidence, so the first step is to release the locked exit doors with the manual override and keep the route open. Escape-route locks should fail safe with a manual release for exactly this case. Disconnecting the controllers is the runner-up: it is sound containment, but it does not free the doors, and containment can wait minutes while a trapped crowd cannot.",
    "wrong_explanations": {
     "A": "Closest choice: containing ransomware matters. But disconnecting the controllers leaves the exits locked, and people's safety comes before stopping the spread.",
     "C": "Tempting because evidence helps the investigation. But a photograph can wait; while the exits stay locked, the crowd's safety comes first.",
@@ -1993,7 +1993,7 @@
    "subtopic": "5.3 Incident response. AI incident evidence",
    "difficulty": "analysis",
    "bloom_level": "Analysis",
-   "question": "A bus company has paused its fare-fraud model over suspected data poisoning, and the incident plan has the security analyst preserve evidence; the model's owner wants it retrained tonight. What should the analyst do FIRST?",
+   "question": "A bus company paused its fare-fraud model over suspected data poisoning, and its incident plan names the security analyst as evidence collector; the model's owner wants it retrained tonight. What should the analyst do FIRST?",
    "options": {
     "A": "Let the model owner's retraining go ahead, then collect the evidence",
     "B": "Save hashed copies of the current model and its training data",
@@ -2002,16 +2002,16 @@
    },
    "correct": "B",
    "key_concept": "Before an AI model is retrained or cleaned, preserve verified copies of the model and its training data as incident evidence.",
-   "pre_read": "Ask what retraining would change, and what investigators could no longer examine afterward.",
-   "correct_explanation": "The incident plan gives the analyst evidence preservation, so the first step is verified, hashed copies of the current model and its training data; retraining replaces the model and may overwrite the very records investigators need. Letting the owner retrain first is the runner-up: owners decide how their model is used, but the plan assigns preservation to the analyst, and collecting afterward comes too late.",
+   "pre_read": "Ask what the incident plan gives the analyst, and how each option affects the model as it stands now.",
+   "correct_explanation": "The incident plan makes the analyst its evidence collector, so the first step is verified, hashed copies of the current model and its training data; retraining replaces the model and may overwrite the very records investigators need. Letting the owner retrain first is the runner-up: owners decide how their model is used, but the plan gives evidence collection to the analyst, and collecting afterward comes too late.",
    "wrong_explanations": {
-    "A": "Closest choice: the owner does decide on retraining. But the plan assigns preservation to the analyst first, and evidence collected after retraining may already be overwritten.",
+    "A": "Closest choice: the owner does decide on retraining. But the plan makes the analyst its evidence collector, and evidence collected after retraining may already be overwritten.",
     "C": "Tempting because removing bad records sounds like a fix. But deleting suspected records destroys the evidence of what happened and how.",
     "D": "Tempting because finding the poisoned records is the goal. But analysis comes after preservation; investigators examine verified copies, so the originals stay exactly as found."
    },
    "tips": [
     "Eliminate: C deletes the suspected records, and D works on the originals before copies are saved; both put the evidence the investigation needs at risk.",
-    "Final two: B beats A because the plan assigns preservation to the analyst; once the owner retrains, the evidence may be gone.",
+    "Final two: B beats A because the plan makes the analyst its evidence collector; once the owner retrains, the evidence may be gone.",
     "Exam cue: before a model is retrained, rolled back or cleaned, save hashed copies of the model and its data. Fixes that overwrite evidence come second."
    ],
    "framework_ref": "NIST CSF 2.0 RS.AN-07 (incident data and metadata are collected, and their integrity and provenance are preserved); NIST AI 100-2 E2025 (Adversarial Machine Learning: A Taxonomy and Terminology of Attacks and Mitigations)",
@@ -2020,7 +2020,7 @@
     "Data poisoning",
     "Forensic copies"
    ],
-   "_provenance": "Authored from concept: 'preserve hashed copies of a suspect AI model and its training data before anyone retrains it' (notes 5.3.4 Evidence Handling and Chain of Custody). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 3, 31 Oct 2026.",
+   "_provenance": "Authored from concept: 'preserve first, analyze later, and only within your role; investigators work on verified copies' (notes 5.3.4 Evidence Handling and Chain of Custody). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 3, 31 Oct 2026.",
    "style_version": 2
   },
   {
@@ -2029,11 +2029,11 @@
    "subtopic": "5.3 Incident response. Classifying incident records",
    "difficulty": "application",
    "bloom_level": "Application",
-   "question": "A car rental firm classifies customers' driver's license scans as restricted, its highest level, and an analyst's draft incident report includes screenshots of several. Which classification should the report MOST accurately carry?",
+   "question": "A car rental firm classifies customers' driver's license scans as restricted, its highest level, and an analyst's draft incident report includes screenshots of several. Which classification is MOST appropriate for the report?",
    "options": {
     "A": "Internal, since only named responders can see the restricted scans",
     "B": "Confidential, the level the incident report template sets",
-    "C": "Restricted, matching the license scans it includes",
+    "C": "Restricted, the level of the most sensitive data inside it",
     "D": "Unclassified, until the incident is closed and reviewed"
    },
    "correct": "C",
@@ -2103,23 +2103,23 @@
    "bloom_level": "Application",
    "question": "A textile mill's inventory lists its defect-spotting AI model but not the labeled photos used to tune it, kept on a shared drive. What should the IT asset analyst propose as BEST?",
    "options": {
-    "A": "Give the photo set its own entry, owner and classification",
-    "B": "Note the photo set's location and owner in the model's inventory entry",
+    "A": "Inventory the photo set separately, with an owner to classify it",
+    "B": "Restrict the shared drive and note it in the model's inventory entry",
     "C": "Delete the photo set, since tuning is finished",
     "D": "Move the photo set onto the model's server, already in the inventory"
    },
    "correct": "A",
    "key_concept": "Training data is an AI asset in its own right, needing its own inventory entry, owner and classification, not just a note under the model.",
    "pre_read": "Ask what could happen to the photos on the shared drive today, and what each option changes about that.",
-   "correct_explanation": "Anyone who can change or copy training data can poison or leak what the model learns, so the photo set needs its own entry, owner and classification, which then decide who may change it and how it is protected. Noting its location and owner under the model is the runner-up: it helps people find the photos but sets no classification, so nothing decides how they are protected.",
+   "correct_explanation": "Anyone who can change or copy training data can poison or leak what the model learns, so the photo set needs its own inventory entry and an owner, who sets its classification; that level then decides who may change the photos and how they are protected. Restricting the drive is the runner-up: it is a useful control, but without an owner and classification nobody has decided what protection the photos need.",
    "wrong_explanations": {
-    "B": "Closest choice: it records where the photos are and who owns them. But a pointer under the model sets no classification, so nothing decides how the shared-drive copy is protected.",
+    "B": "Closest choice: locking the drive cuts exposure now. But without its own entry, owner and classification, nobody has decided what protection the photos need, so the lock is a guess.",
     "C": "Tempting because tuning is done. But the photos are needed to retrain or investigate the model, and deleting an asset is the owner's decision, not the analyst's.",
     "D": "Tempting because one entry seems tidy. But moving files gives the data no owner or classification, and the server's entry describes hardware, not data."
    },
    "tips": [
     "Eliminate: C deletes data the model may need again, and D moves files without giving them an owner; neither brings the photos under management.",
-    "Final two: A beats B because the photos need their own classification; a pointer under the model sets no protection level for the shared-drive copy.",
+    "Final two: A beats B because ownership and classification decide what protection the photos need; locking the drive first only guesses at it.",
     "Exam cue: training data shapes what a model learns, so it is an asset in its own right. Give it its own owner and classification, not a footnote under the model."
    ],
    "framework_ref": "NIST CSF 2.0 ID.AM-07 (inventories of data and corresponding metadata for designated data types are maintained); NIST AI 100-1 (AI RMF 1.0) GOVERN 1.6 (mechanisms are in place to inventory AI systems)",
@@ -2137,10 +2137,10 @@
    "subtopic": "5.4 Asset protection. Support end dates",
    "difficulty": "foundational",
    "bloom_level": "Foundational",
-   "question": "A software vendor publishes four end dates for the ticketing system a planetarium runs. Which date should the IT analyst flag as MOST important for protecting the system?",
+   "question": "A software vendor publishes four end dates for the ticketing system a planetarium runs. Which date should the system administrator flag as MOST important for protecting the system?",
    "options": {
     "A": "The end of sale, when new licenses can no longer be bought",
-    "B": "The end of feature updates, when new functions stop arriving",
+    "B": "The end of feature updates, when new functions and security features stop",
     "C": "The end of security patches, when fixes for new flaws stop",
     "D": "The end of the help line, when support calls stop being taken"
    },
@@ -2150,11 +2150,11 @@
    "correct_explanation": "Once security patches stop, every newly found flaw stays open for good, so that date sets the deadline to replace the system or add compensating controls. The help line's end is the runner-up: vendors often call it the end of support, but losing phone help leaves no new flaw unfixed while security patches continue.",
    "wrong_explanations": {
     "A": "Tempting because end of sale signals the product's decline. But installed copies keep getting patches after sales stop, so security is not yet affected.",
-    "B": "Tempting because updates sound protective. But feature updates add functions; security fixes can continue after features stop, so this date matters less.",
+    "B": "Tempting because it mentions security features. But new security features are added functions; fixes for newly found flaws can continue after features stop, so this date matters less.",
     "D": "Closest choice: vendors often call this the end of support. But losing phone help leaves no new flaw unfixed while security patches continue."
    },
    "tips": [
-    "Eliminate: A tracks new sales, and B tracks new functions; neither decides whether new flaws in the installed system get fixed.",
+    "Eliminate: A tracks new sales, and B tracks new functions, security features included; neither decides whether newly found flaws in the installed system get fixed.",
     "Final two: C beats D because security depends on fixes for new flaws; the help line can end while patches continue.",
     "Exam cue: for end-of-life questions, find the date security patches stop. That is the deadline to replace, isolate or add controls."
    ],
@@ -2173,9 +2173,9 @@
    "subtopic": "5.4 Asset protection. Patch verification",
    "difficulty": "application",
    "bloom_level": "Application",
-   "question": "A school district's patch tool reports that this month's browser fix installed on all 200 staff laptops. Which evidence BEST confirms to the desktop technician that the browser flaw is closed?",
+   "question": "A school district's patch tool reports that this month's browser fix installed on all 200 staff laptops. Which evidence BEST confirms to the IT technician that the browser flaw is closed?",
    "options": {
-    "A": "A fresh vulnerability scan showing no laptop is still exposed",
+    "A": "A fresh vulnerability scan showing that no laptop is still exposed",
     "B": "The patch tool's report of a successful install on each laptop",
     "C": "The approved change record for this month's patch rollout",
     "D": "Replies from users confirming they restarted their browsers"
@@ -2183,7 +2183,7 @@
    "correct": "A",
    "key_concept": "A patch is verified when an independent check, such as a rescan, shows the flaw is gone, not just when the installer reports success.",
    "pre_read": "For each option, ask what it actually measures: the rollout, its approval, the users or the laptops themselves.",
-   "correct_explanation": "Verification means checking that the patch took effect, not just that it ran. A fresh vulnerability scan tests each laptop for the flaw itself, catching machines where the install failed silently or still awaits a restart. The patch tool's report is the runner-up: it shows the installer ran, but a reported install can still leave the flaw open, so it needs independent confirmation.",
+   "correct_explanation": "Verification means checking that the patch took effect, not just that it ran. A fresh vulnerability scan tests each laptop for the flaw itself, catching machines where the install failed silently or never arrived. The patch tool's report is the runner-up: it shows the installer ran, but a reported install can still leave the flaw open, so it needs independent confirmation.",
    "wrong_explanations": {
     "B": "Closest choice: install reports are useful records. But they show the installer ran, not that the flaw is gone; pending restarts or silent failures leave it open.",
     "C": "Tempting because the change was properly approved. But approval shows the rollout was authorized, not that it worked on every laptop.",
@@ -2211,14 +2211,14 @@
    "bloom_level": "Foundational",
    "question": "A security operations team wants testers to run attacker techniques one at a time while its analysts check each for detection and tune rules on the spot. Which approach BEST fits this goal?",
    "options": {
-    "A": "A red team engagement whose testers brief the analysts at the end",
-    "B": "A purple team exercise pairing testers with analysts",
-    "C": "A monthly vulnerability scan of monitored servers",
-    "D": "A tabletop exercise that talks through a ransomware attack scenario"
+    "A": "A red team engagement against the monitored network",
+    "B": "A purple team exercise against the monitored network",
+    "C": "A monthly vulnerability scan of the monitored servers",
+    "D": "A tabletop exercise on a ransomware attack scenario"
    },
    "correct": "B",
    "key_concept": "Purple teaming is red and blue working together in real time, so each attack step is checked for detection and gaps are fixed at once.",
-   "pre_read": "Ask when the defenders learn what each test step was: during the test, or only after it.",
+   "pre_read": "Ask which approach lets defenders check each attacker technique for detection while the test is still running.",
    "correct_explanation": "In a purple team exercise, testers share each technique as they run it, so analysts can confirm whether it was detected and tune rules immediately; that is the step-by-step loop described. A red team engagement is the runner-up: it uses the same attacker techniques, but defenders usually learn what happened only from the final report, so tuning waits until the end.",
    "wrong_explanations": {
     "A": "Closest choice: red teams run realistic attacker techniques. But defenders usually see the results only at the end, not step by step while tuning.",
@@ -2283,7 +2283,7 @@
    "bloom_level": "Analysis",
    "question": "Threat modeling a park service's planned AI chatbot that reads public web pages to answer visitors, a junior analyst examines where those pages enter the model. Which threat is MOST relevant at that point?",
    "options": {
-    "A": "Instructions hidden in a page that steer what the chatbot says",
+    "A": "Hidden page instructions that steer what the chatbot tells visitors",
     "B": "Poisoned web pages slipped into the vendor's original training data",
     "C": "Visitors sharing their sign-in passwords with one another",
     "D": "Theft of the server that hosts the chatbot's software"
@@ -2320,23 +2320,23 @@
    "question": "At a satellite operator's ground station, a night guard finds someone in the equipment room who shows a signed letter naming them as an authorized penetration tester. What should the guard do FIRST?",
    "options": {
     "A": "Let them continue with the test that the letter describes",
-    "B": "Call the mobile number the visitor gives to confirm their test",
+    "B": "Phone the letter's signer on the number printed on that letter",
     "C": "Keep them in sight and call the security team's known contact",
     "D": "Send them off site and record the visit in the shift log"
    },
    "correct": "C",
-   "key_concept": "Verify a claimed tester through a contact you already know, such as the security team, never through details the person supplies.",
+   "key_concept": "Physical tests are arranged with the security team in advance, so guards confirm a claimed tester with that team, never through the tester's own paperwork.",
    "pre_read": "Notice what the guard has been handed and what it can prove. Then ask how each option would check it.",
-   "correct_explanation": "A letter is only a claim: an intruder could forge one and hand over an accomplice's number. A genuine test letter is confirmed against a contact the guard already knows, such as the security team, which a real test would have briefed, so the guard keeps the person in view and calls it. Calling the number the visitor gives is the runner-up: it looks like verification, but it trusts details the visitor controls.",
+   "correct_explanation": "A letter is only a claim: an intruder could forge one and print an accomplice's number on it. A real test is arranged with the security team in advance, so the guard keeps the person in view and calls that team's known contact. Calling the number printed on the letter is the runner-up: it looks like verification, but the letter came from the visitor, so its number may reach an accomplice.",
    "wrong_explanations": {
     "A": "Tempting because the letter is signed and looks official. But signatures can be forged, and letting someone continue unverified is what a real intruder hopes for.",
-    "B": "Closest choice: it does try to verify the claim. But the number came from the visitor, so an accomplice could answer and confirm a fake test.",
+    "B": "Closest choice: it does try to verify the claim. But a forged letter can print an accomplice's number, so the check runs through details the visitor controls.",
     "D": "Tempting because removing them seems safe. But a real intruder simply walks away unverified, leaving only a log entry, and a genuine test is cut short without a check."
    },
    "tips": [
     "Eliminate: A accepts the letter at face value, and D lets a possible intruder leave unverified; both skip confirming who the person is.",
-    "Final two: C beats B because a known contact cannot be faked by the visitor; a number the visitor supplies can.",
-    "Exam cue: verify identity through a channel you already trust, never through details the person hands you."
+    "Final two: C beats B because the guard already knows the security team's contact; a number printed on the visitor's own letter could reach an accomplice.",
+    "Exam cue: a claimed tester counts as an intruder until the team that arranged the test confirms them. Letters and numbers the visitor brings prove nothing on their own."
    ],
    "framework_ref": "NIST SP 800-115 Section 5.2 (Penetration Testing: security guards should be made aware of how to verify the validity of tester activity); NIST SP 800-53 Rev. 5 PE-3 (Physical Access Control)",
    "related_concepts": [

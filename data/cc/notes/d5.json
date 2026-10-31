@@ -440,7 +440,7 @@
               "Key and certificate expiry dates in the key management service"
             ],
             "recommend": "Report a lost, exposed or shared private key to the key's owner and the security team immediately.",
-            "decides": "Security management sets approved algorithms and key lengths in the cryptography standard"
+            "decides": "The security manager sets approved algorithms and key lengths in the cryptography standard"
           },
           "isaca_rule": "Use symmetric encryption for bulk data and asymmetric to exchange keys and prove identity. Encrypt to someone with their public key, and keep keys apart from the data.",
           "exam_traps": [
@@ -535,7 +535,7 @@
               "Certificate details: issuer, owner name and expiry date"
             ],
             "recommend": "Report a failed signature, a hash mismatch or an untrusted certificate to the security team before going further.",
-            "decides": "Security management sets approved algorithms and trusted certificate authorities in the cryptography standard"
+            "decides": "The security manager sets approved algorithms and trusted certificate authorities in the cryptography standard"
           },
           "isaca_rule": "A hash shows whether data changed only when the expected value comes from a trusted source, and it hides nothing. A signature proves who sent something and that it is unchanged, but does not keep it secret. When data must also be confidential, encrypt it as well.",
           "exam_traps": [
@@ -1018,7 +1018,7 @@
               "Which assets attackers with each motive would most want",
               "Signs of insider misuse, such as unusual downloads before someone leaves"
             ],
-            "recommend": "Report suspected insider activity quietly to your supervisor or the security lead, not to the person or coworkers.",
+            "recommend": "Report suspected insider activity quietly to your supervisor or the security manager, not to the person or coworkers.",
             "decides": "Management, with human resources and legal counsel, decides actions on suspected insiders"
           },
           "isaca_rule": "Ask who would want this and why. Motive points to the likely target and method. Never assume the organization is too small to target: criminals and automated attacks hit everyone.",
@@ -1166,7 +1166,7 @@
               }
             ]
           },
-          "example": "After a phishing incident, a museum's security lead asks Quinn, a junior analyst, to map it to ATT&CK. Quinn lists each step against its tactic: the email (initial access), a malicious macro (execution), a scheduled task (persistence) and a large upload (exfiltration), then marks which steps raised no alert.",
+          "example": "After a phishing incident, a museum's security manager asks Quinn, a junior analyst, to map it to ATT&CK. Quinn lists each step against its tactic: the email (initial access), a malicious macro (execution), a scheduled task (persistence) and a large upload (exfiltration), then marks which steps raised no alert.",
           "audit_focus": {
             "review": [
               "Tag alerts and incident notes with the matching ATT&CK technique",
@@ -1334,7 +1334,7 @@
                 "cells": [
                   "Rate limiting (capping requests per source), edge filtering, spare capacity and upstream DDoS protection",
                   "Transport Layer Security (TLS) with certificate checks (see 5.1.6); DNS Security Extensions (DNSSEC); switch checks on ARP replies (dynamic ARP inspection)",
-                  "Edge filters that drop outside traffic claiming internal addresses; network access control (see 4.2.8), which checks credentials, not just a MAC address; email sender checks"
+                  "Edge filters that drop outside traffic claiming internal addresses (ingress filtering); network access control (see 4.2.8), which checks credentials, not just a MAC address; email sender checks"
                 ]
               },
               {
@@ -1664,7 +1664,7 @@
             "recommend": "Call the incident response lead before touching suspected evidence, and let trained forensic staff collect it.",
             "decides": "Legal counsel and the incident response lead decide how evidence is collected and kept"
           },
-          "isaca_rule": "Preserve first, analyze later, and only within your role. Do not browse, copy or clean a suspect device. Write down what you saw and did, and record every handoff.",
+          "isaca_rule": "Preserve first, analyze later, and only within your role. Unless the plan makes you an evidence collector, do not browse, copy or clean a suspect device. Write down what you saw and did, and record every handoff.",
           "exam_traps": [
             {
               "trap": "The analyst should open the suspicious files right away to see what they contain.",
@@ -2056,7 +2056,7 @@
               "Hardening checklist results for each new build"
             ],
             "recommend": "Report repeated drift, or a baseline setting that blocks business work, to your team lead for a formal change.",
-            "decides": "Security management approves the baseline standard; system owners apply it"
+            "decides": "The security manager approves the baseline standard; system owners apply it"
           },
           "isaca_rule": "Start every system from an approved baseline and treat any difference as a question: approved change or drift? Restore drift on systems you maintain; report unexplained, risky changes as possible incidents. Change the baseline only through change management.",
           "exam_traps": [
@@ -2438,7 +2438,7 @@
               "Critical findings still open before each release",
               "Library versions flagged as vulnerable in the dependency report"
             ],
-            "recommend": "Raise releases planned with unresolved critical findings to the system owner and security lead.",
+            "recommend": "Raise releases planned with unresolved critical findings to the system owner and security manager.",
             "decides": "The system owner decides release; the risk owner accepts within tolerance, senior management beyond"
           },
           "isaca_rule": "Use both: SAST early on the code, DAST later on the running application, plus checks on third-party components. A clean result from one does not cover the other's blind spots.",
@@ -2515,7 +2515,7 @@
               "A data flow diagram that matches the design being built",
               "Threats left open without an owner-approved response"
             ],
-            "recommend": "Raise high-risk design threats that have no agreed response with the system owner and security lead.",
+            "recommend": "Raise high-risk design threats that have no agreed response with the system owner and security manager.",
             "decides": "The system owner decides how each threat is treated"
           },
           "isaca_rule": "Find design threats before building, when fixes are cheapest. Draw the system, look hardest at trust boundaries, use a prompt list such as STRIDE, and give every threat an approved response.",
@@ -2555,7 +2555,8 @@
             "Tailgating and piggybacking tests check whether a tester can slip in behind staff unnoticed, or be let in without a badge.",
             "Impersonation tests use a pretext, such as a delivery driver or IT contractor, to see whether staff verify identity.",
             "Baiting tests leave tempting items, such as labeled memory sticks, to see whether staff plug them in or hand them to security (see 2.3.3).",
-            "Testers carry a signed authorization letter and stop if anyone's safety is at risk."
+            "Testers carry a signed authorization letter and stop if anyone's safety is at risk.",
+            "A letter can be forged, so staff confirm a claimed tester with the team that arranged the test, not through a number printed on the letter."
           ],
           "types": [
             {
@@ -2654,7 +2655,7 @@
               "The AI tool's permissions and which actions need human approval",
               "Detection results for known attacks after each model update"
             ],
-            "recommend": "Report any AI weakness that exposes data or takes unapproved actions to the system owner and security lead.",
+            "recommend": "Report any AI weakness that exposes data or takes unapproved actions to the system owner and security manager.",
             "decides": "The system owner decides fixes; the risk owner accepts within tolerance, senior management beyond"
           },
           "isaca_rule": "Treat an AI component as a control that can be fooled. Test it with authorization, limit what it can do, keep a person able to override it, and retest after model or data changes.",

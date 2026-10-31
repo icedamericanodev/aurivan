@@ -302,7 +302,7 @@
               }
             ]
           },
-          "example": "A logistics firm blocks remote desktop in its IPv4 firewall rules. Weeks later, Amara, a junior analyst, sees remote desktop sessions reaching a warehouse server over IPv6, which has no rules. Amara escalates the log entries to the network security lead rather than switching IPv6 off.",
+          "example": "A logistics firm blocks remote desktop in its IPv4 firewall rules. Weeks later, Amara, a junior analyst, sees remote desktop sessions reaching a warehouse server over IPv6, which has no rules. Amara escalates the log entries to the network lead rather than switching IPv6 off.",
           "audit_focus": {
             "review": [
               "Check IPv6 rules match the IPv4 ones, even where nobody turned IPv6 on",
@@ -312,7 +312,7 @@
               "Exported firewall rules for each address version",
               "Monitoring settings showing IPv6 sources are collected"
             ],
-            "recommend": "Escalate uncovered address paths to the network security lead, attaching the sessions you found.",
+            "recommend": "Escalate uncovered address paths to the network lead, attaching the sessions you found.",
             "decides": "The network's system owner decides whether IPv6 is filtered or turned off"
           },
           "isaca_rule": "Treat IPv4 and IPv6 as two doors into the same room: every rule, log and alert should cover both. Newer is not safer; configuration decides.",
@@ -530,7 +530,7 @@
               "Gateway settings showing MFA enforcement",
               "VPN connection logs with user, device and time"
             ],
-            "recommend": "Report unpatched gateways, accounts without MFA or suspect devices to the security lead promptly.",
+            "recommend": "Report unpatched gateways, accounts without MFA or suspect devices to the security manager promptly.",
             "decides": "The network's system owner decides between full and split tunneling"
           },
           "isaca_rule": "A VPN protects the path, not the device at either end. Treat each connection as a door into the internal network: require MFA, patch the gateway and check device health.",
@@ -1039,7 +1039,7 @@
             "Buy devices with secure updates, unique passwords and a stated support period, as the National Institute of Standards and Technology (NIST) urges makers.",
             "Change default passwords at installation, and replace devices the maker no longer supports."
           ],
-          "example": "A hotel adds smart televisions to every room. Olu, a junior IT technician, finds them already in service on the same network as the front-desk payment terminals, all with the installer's default admin password. Because the televisions are live, Olu adds each one to the device inventory and raises a change request for a separate segment and new passwords.",
+          "example": "A hotel adds smart televisions to every room. Olu, a junior IT technician, finds them already in service on the same network as the front-desk payment terminals, all with the installer's default admin password. Olu adds each one to the device inventory and, because the televisions are already live, raises a change request for a separate segment and new passwords.",
           "audit_focus": {
             "review": [
               "Match devices found by a discovery tool to registered owners",
@@ -1379,7 +1379,7 @@
             "svg": "<svg viewBox='0 0 480 270' xmlns='http://www.w3.org/2000/svg' role='img' aria-label='Nested layers from the outside in: policies, procedures and training; physical security; network perimeter; internal segmentation; endpoints and hosts; applications; and data at the center'><rect x='10' y='10' width='460' height='250' rx='6' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='240' y='25' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--text)'>Policies, procedures and training</text><rect x='36' y='32' width='408' height='220' rx='6' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='240' y='47' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--text)'>Physical security</text><rect x='62' y='54' width='356' height='190' rx='6' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='240' y='69' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--text)'>Network perimeter</text><rect x='88' y='76' width='304' height='160' rx='6' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='240' y='91' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--text)'>Internal segmentation</text><rect x='114' y='98' width='252' height='130' rx='6' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='240' y='113' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--text)'>Endpoints and hosts</text><rect x='140' y='120' width='200' height='100' rx='6' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='240' y='135' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--text)'>Applications</text><rect x='166' y='142' width='148' height='70' rx='4' fill='var(--accent-fill)'/><text x='240' y='181.32' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='12' font-weight='700' fill='#ffffff'>Data</text></svg>",
             "caption": "Layers from the outside in. An attacker who gets past one layer still meets the next, and the data sits at the center."
           },
-          "example": "Ana, a bank teller, clicks a convincing phishing link. Email filtering missed it, but endpoint protection blocks the download, and multifactor authentication (MFA) stops the stolen password from working. Luca, a junior security analyst, reviews the alerts, records the near miss in the incident log and suggests the security lead review the email filter.",
+          "example": "Ana, a bank teller, clicks a convincing phishing link. Email filtering missed it, but endpoint protection blocks the download, and multifactor authentication (MFA) stops the stolen password from working. Luca, a junior security analyst, reviews the alerts, records the near miss in the incident log and suggests the security manager review the email filter.",
           "audit_focus": {
             "review": [
               "Map the layers protecting a key asset from outside in",
@@ -1389,7 +1389,7 @@
               "Alert and incident records showing which layer caught what",
               "Backup restore test results"
             ],
-            "recommend": "Report any asset relying on one control, or layers sharing one weakness, to the security lead.",
+            "recommend": "Report any asset relying on one control, or layers sharing one weakness, to the security manager.",
             "decides": "Management decides which added layers to fund"
           },
           "isaca_rule": "Never rely on a single control. When one layer fails, add or strengthen an independent layer, or add detection and recovery, rather than trusting the failed control harder.",
@@ -1479,7 +1479,7 @@
               "Access policies on sensitive resources, with the checks each one makes",
               "Access reviews signed by resource owners"
             ],
-            "recommend": "Report location-based trust and broad access to the security lead as Zero Trust gaps.",
+            "recommend": "Report location-based trust and broad access to the security manager as Zero Trust gaps.",
             "decides": "Resource owners and the policy owner approve access rules"
           },
           "isaca_rule": "Verify explicitly, grant least privilege, assume breach. Replace any access granted for being internal with a check of identity, device and need on every request.",
@@ -1552,7 +1552,7 @@
               "Decision logs from the policy engine with reasons",
               "Exception register with approver and expiry date"
             ],
-            "recommend": "Send exception requests to the policy owner and report unguarded resources to the security lead.",
+            "recommend": "Send exception requests to the policy owner and report unguarded resources to the security manager.",
             "decides": "The policy owner approves, records and time-limits any exception"
           },
           "isaca_rule": "Deciding and enforcing are separate jobs, and every protected resource needs an enforcement point. Exceptions go to the policy owner, recorded and time-limited, never around the policy.",
@@ -1657,7 +1657,7 @@
               "Signed approvals for each dataset in use",
               "Outbound traffic logs from AI servers"
             ],
-            "recommend": "Escalate real sensitive data or open internet access in AI environments to the data owner and security lead.",
+            "recommend": "Escalate real sensitive data or open internet access in AI environments to the data owner and security manager.",
             "decides": "The data owner decides which data AI teams may use"
           },
           "isaca_rule": "AI experiments belong in their own segment, using the least sensitive data that will do the job, with outbound traffic restricted.",
@@ -2128,7 +2128,7 @@
               "Published duty split for each subscribed cloud product",
               "Patch reports for customer-managed operating systems"
             ],
-            "recommend": "Report any security task with no clear owner to the cloud platform owner for assignment.",
+            "recommend": "Report any security task with no clear owner to the system owner for assignment.",
             "decides": "Management assigns owners; the data owner stays accountable for the data"
           },
           "isaca_rule": "The provider owns security of the cloud; the customer owns security in the cloud. Data, identities, access and configuration stay with the customer in every model.",
@@ -2367,7 +2367,7 @@
               }
             ]
           },
-          "example": "A research group makes a cloud storage bucket public to share survey files with a partner, and the university's CSPM tool flags it within an hour. Wen, a junior cloud security analyst, confirms it holds student names, notifies the bucket owner and security lead under the incident procedure, and records when exposure began.",
+          "example": "A research group makes a cloud storage bucket public to share survey files with a partner, and the university's CSPM tool flags it within an hour. Wen, a junior cloud security analyst, confirms it holds student names, notifies the bucket owner and security manager under the incident procedure, and records when exposure began.",
           "audit_focus": {
             "review": [
               "Check whether your procedure assigns you a finding before acting on it",
@@ -2468,7 +2468,7 @@
               "Role assignments on AI buckets, exported from the console",
               "Contract clauses on prompt retention for each AI vendor"
             ],
-            "recommend": "Report open access to training data or models to the platform owner, and unapproved AI services to the security lead.",
+            "recommend": "Report open access to training data or models to the platform owner, and unapproved AI services to the security manager.",
             "decides": "Senior management approves the AI policy and tools; data owners decide what data may be used"
           },
           "isaca_rule": "An AI service is still a cloud service: the provider secures the platform, and the customer owns its data, models, access and settings.",
