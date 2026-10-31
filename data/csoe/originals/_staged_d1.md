@@ -30,9 +30,11 @@ New citations only (each opened at its primary source on 31 Oct 2026). Merge wit
   - Verified (opened 31 Oct 2026): https://www.law.cornell.edu/cfr/text/17/232.201; checked (a) unanticipated technical difficulties allow a paper filing under cover of Form TH no later than one business day after the due date, deemed filed on time for Section 13(a) and 15(d) reports; Note 2: do not use Form 12b-25 for electronic difficulties; (b) electronic confirming copy within six business days.
 - 17 CFR 205.2(a) (Appearing and practicing before the Commission)
   - Verified (opened 31 Oct 2026): https://www.law.cornell.edu/cfr/text/17/205.2; checked (a)(1)(iv) advising an issuer whether information must be filed with the Commission; (a)(2)(ii) non-appearing foreign attorneys excluded; (g) representation of an issuer regardless of whether the attorney is employed or retained by the issuer.
+- 17 CFR 205.2(g) (In the representation of an issuer)
+  - Verified (opened 31 Oct 2026): https://www.law.cornell.edu/cfr/text/17/205.2; checked (g): "in the representation of an issuer" means providing legal services as an attorney for an issuer, regardless of whether the attorney is employed or retained by the issuer.
 
 ## SEC forms
 - Form 10-Q General Instruction A.1 (Quarterly report due dates)
   - Verified (opened 31 Oct 2026): https://www.sec.gov/files/form10-q.pdf; checked 40 days after quarter-end for large accelerated and accelerated filers, 45 days for all other registrants, and no report for the fourth quarter.
 - Form 40-F General Instruction A.(2) (Eligibility to use Form 40-F)
-  - Verified (opened 31 Oct 2026): https://www.sec.gov/files/form40-f.pdf; checked (i) incorporated or organized in Canada, (ii) a foreign private issuer or crown corporation, (iii) at least 12 calendar months of Canadian periodic reporting, (iv) public float of $75 million or more, or a Form F-9 filed on or before 30 Dec 2012. Same conditions in 17 CFR 249.240f(b).
+  - Verified (opened 31 Oct 2026): https://www.sec.gov/files/form40-f.pdf; checked (i) incorporated or organized in Canada, (ii) a foreign private issuer or crown corporation, (iii) at least 12 calendar months of Canadian periodic reporting, (iv) public float of $75 million or more, or a Form F-9 filed on or before 30 Dec 2012. The codified text at 17 CFR 249.240f(b) lists the same first three conditions and the $75 million float but omits the Form F-9 alternative; key on the form's instruction.
