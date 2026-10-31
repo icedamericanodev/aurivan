@@ -109,3 +109,12 @@ Rule for the form builder: Draw no two items of a pair into the same form. Keep 
 | csoe_d4_018 | csoe_d4_057 | d4_057: the 989G(b) study touched only 404(b); 404(a) stays |
 | csoe_d3_043 | csoe_d4_046 | d3_043's exam cue: audit committee rules are listing conditions |
 | csoe_d1_008 | csoe_d4_057 | d4_057 explanation states the 2020 Rule 12b-2 revenue test (d1_008's key) |
+| csoe_d1_054 | csoe_d4_047 | same rule (Section 1103): who orders the freeze vs whose payments it covers |
+| csoe_d1_048 | csoe_d1_053 | parallel signer lists; d1_048 states d1_053's key |
+| csoe_d1_047 | csoe_d1_048 | d1_048 wrong explanation B: Form F-6 holds no company financials |
+| csoe_d1_010 | csoe_d1_047 | d1_010 wrong explanation C: Form F-6 covers only the deposit terms |
+| csoe_d1_017 | csoe_d1_047 | d1_017 wrong explanation C: Form F-6 registers only the deposit terms |
+| csoe_d1_012 | csoe_d1_052 | d1_052 option B describes the 10A-3(c)(3) board-of-auditors exemption |
+| csoe_d1_044 | csoe_d1_045 | d1_044 tip 2: Title VII only ordered a study |
+| csoe_d1_022 | csoe_d1_045 | d1_022 exam cue: Title VII ordered studies |
+| csoe_d1_018 | csoe_d1_051 | d1_051 exam cue: the ADR level decides whether the company reports at all |
