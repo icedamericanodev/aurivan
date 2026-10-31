@@ -985,13 +985,13 @@
           "id": "2B2.2",
           "name": "MTO, RTO and RPO",
           "legacy_ids": [],
-          "definition": "MTO is a critical function's longest tolerable disruption; RTO, the time allowed to recover a business function or resource; RPO, the earliest restore point that tolerable data loss allows.",
-          "why_it_matters": "These numbers drive recovery design and cost. If IT sets them alone, they reflect what the technology can do, not what the business can survive.",
+          "definition": "MTO is a critical function's longest tolerable disruption; RTO, the time allowed to recover a function or resource; RPO, the earliest restore point that tolerable data loss allows.",
+          "why_it_matters": "These numbers drive recovery design and cost. Set by IT alone, they reflect what the technology can do, not what the business can survive.",
           "how_it_works": [
-            "Process owners and leadership set the maximum tolerable outage (MTO; other sources say MTD) from the impact-over-time results.",
+            "Process owners and leadership set the maximum tolerable outage (MTO; other sources say MTD) from impact-over-time results.",
             "The recovery time objective (RTO) for each supporting function or resource must normally be shorter than the MTO, leaving time to reprocess work.",
-            "The recovery point objective (RPO) is the earliest point in time to which data must be recoverable; a four-hour RPO allows up to four hours of lost data.",
-            "RTO is about time to recover and RPO is about data that may be lost, so they are set separately.",
+            "The recovery point objective (RPO) is the earliest point to which data must be recoverable; a four-hour RPO allows up to four hours of lost data.",
+            "The service delivery objective (SDO) sets the service level, such as share of normal volume, needed in alternate mode.",
             "Shorter objectives cost more; when tested recovery misses the MTO, the process owner weighs that cost against the BIA impact."
           ],
           "compare": {
@@ -1027,7 +1027,7 @@
               }
             ]
           },
-          "example": "A veterinary clinic chain moves its records system to the cloud. The IT manager proposes a 72-hour RTO because the standard cloud backup restores in that time. Grace Liu, the risk analyst, asks the clinical operations lead what happens without records; they say emergency surgery becomes unsafe after 12 hours. Grace records the gap between the proposed RTO and the business tolerance.",
+          "example": "A veterinary chain moves its records system to the cloud, and IT proposes a 72-hour RTO because the cloud backup restores in that time. Grace Liu, the risk analyst, asks the clinical operations lead, who says emergency surgery becomes unsafe after 12 hours without records. Grace records the gap against the business tolerance.",
           "audit_focus": {
             "review": [
               "Trace each approved objective to the BIA result and owner sign-off",
@@ -1040,7 +1040,7 @@
             "recommend": "Have business owners set recovery objectives from the BIA and have IT design recovery to meet them.",
             "decides": "Process owners set MTO, RTO and RPO; senior management funds the recovery"
           },
-          "isaca_rule": "Recovery objectives come from the business, through the BIA, not from what IT can deliver today. RTO must fit inside the MTO, and RPO is set separately by how much data loss is tolerable.",
+          "isaca_rule": "Recovery objectives come from the business, through the BIA, not from what IT can deliver today. RTO must fit inside the MTO; RPO is set separately by tolerable data loss.",
           "exam_traps": [
             {
               "trap": "RTO and RPO are two names for how fast a system comes back.",
@@ -1059,6 +1059,10 @@
             {
               "term": "Acceptable interruption window (AIW)",
               "definition": "ISACA Glossary term for the longest a system can be unavailable before business objectives are compromised."
+            },
+            {
+              "term": "Service delivery objective (SDO)",
+              "definition": "ISACA Glossary term for the service level needed during alternate processing until normal operation returns."
             }
           ],
           "memory_aid": "RTO looks forward to recovery; RPO looks back to the last good data."
@@ -1375,7 +1379,7 @@
             "Ask what the decision needs: ranking many risks, a funding case for one control, or capital and insurance planning.",
             "Check the data: loss history, industry benchmarks and expert estimates, and how reliable each one is.",
             "FAIR, an Open Group standard, breaks risk into loss event frequency and loss magnitude for quantitative analysis.",
-            "Monte Carlo simulation runs thousands of trials from estimated ranges to produce a spread of possible losses, not one figure.",
+            "Monte Carlo simulation runs thousands of trials from estimated ranges to give a spread of losses; a limit on large losses is tested on its tail, not the mean.",
             "Ranges with stated confidence beat single-point numbers when data is uncertain.",
             "Methods can be combined: qualitative screening first, then quantitative analysis of the top risks."
           ],
@@ -1436,13 +1440,13 @@
           "name": "Inherent, Current and Residual Risk",
           "legacy_ids": [],
           "definition": "Inherent risk is risk before any management action; current risk reflects controls already in place; residual risk is what remains after the chosen risk response is implemented.",
-          "why_it_matters": "Mixing these up leads to wrong decisions. Comparing inherent risk with appetite overstates the need for new controls; counting planned controls as working understates real exposure.",
+          "why_it_matters": "Comparing inherent risk with appetite overstates the need for new controls; counting planned controls as working understates real exposure.",
           "how_it_works": [
             "Inherent risk shows how much a scenario depends on controls; a high inherent rating marks controls that must not fail.",
             "Current risk counts only actions already taken, not those proposed or planned.",
             "Residual risk is rated with the same scales and method as inherent risk, so the two are comparable.",
             "Current risk, counting only implemented, working responses, is compared with appetite now; a planned response's future residual risk shows whether the plan is enough.",
-            "Residual risk is never zero; some uncertainty always remains after any response."
+            "Residual risk is never zero; some uncertainty remains after any response."
           ],
           "compare": {
             "columns": [
@@ -1485,7 +1489,7 @@
             "recommend": "Have the risk function record inherent, current and target ratings separately, crediting only implemented, working controls in current risk, for owners to confirm.",
             "decides": "The risk owner compares current risk with appetite and decides further treatment"
           },
-          "isaca_rule": "Inherent risk shows reliance on controls; current risk is today's exposure; residual risk is what an implemented response leaves. Compare current risk with appetite to decide on treatment, and check that a plan's expected residual risk falls within appetite. Never compare inherent risk, or count planned controls as working.",
+          "isaca_rule": "Inherent risk shows reliance on controls; current risk is today's exposure; residual risk is what an implemented response leaves. Compare current risk with appetite to decide on treatment, and check that a plan's target (future residual) risk falls within appetite. Never compare inherent risk, or count planned controls as working.",
           "exam_traps": [
             {
               "trap": "Compare inherent risk with appetite to decide whether to add controls.",
@@ -1555,7 +1559,7 @@
             },
             {
               "term": "Key control indicator (KCI)",
-              "definition": "A measure of control effectiveness that signals failure or weakness that could raise a risk's likelihood or impact, such as the count of failed backups."
+              "definition": "A measure of control effectiveness that signals failure or weakness before risk rises, such as the share of test restores that miss recovery objectives."
             }
           ]
         },
@@ -1568,7 +1572,7 @@
           "how_it_works": [
             "Within appetite: the risk owner may accept the risk, document the acceptance and monitor it with KRIs.",
             "Above appetite: the practitioner presents treatment options, such as mitigate, transfer or avoid, with costs, for the risk owner to choose.",
-            "Beyond tolerance: escalate promptly to the risk owner and to the level that set the threshold, often senior management.",
+            "Beyond tolerance: escalate promptly to the risk owner and the level that set the threshold, showing current risk against the tolerance it breaches.",
             "Acceptance is documented with the owner's name, the rationale and a review date.",
             "Residual risk is reviewed again when KRIs move, controls change or the business changes."
           ],

@@ -355,7 +355,7 @@
         "D": "Have the product owner hold the release until it is fixed"
       },
       "correct": "C",
-      "key_concept": "Project risks that outlive the project go to the enterprise register and the business risk owner for a decision.",
+      "key_concept": "A delivery team cannot accept a risk it does not own; a weakness lasting past go-live goes to the accountable business risk owner to decide.",
       "pre_read": "Notice who marked the entry accepted and how long the weakness will last.",
       "correct_explanation": "A risk that will outlive the project becomes an operational risk, so a scrum team cannot accept it on the enterprise's behalf. Taking the decision to the accountable business risk owner, with the risk raised in the enterprise register, puts it with someone who can accept it within appetite or require treatment. Asking the team to fix it may be the eventual answer, but choosing the response first skips the owner's decision.",
       "wrong_explanations": {
@@ -366,7 +366,7 @@
       "tips": [
         "Eliminate: B lets a delivery team accept an operational risk, and D has the product owner hold the release, a response chosen before the risk owner decides.",
         "Final two: C beats A because the owner decides the response first; asking the team to fix it picks a treatment before the right person has weighed the risk.",
-        "Exam cue: project risks that remain after go-live move to the enterprise register and the business owner; delivery teams do not accept them."
+        "Exam cue: when a project team marks a lasting risk as accepted, take the decision to the accountable risk owner; teams record risks, they do not accept them."
       ],
       "framework_ref": "NIST CSF 2.0 GV.RM-03 (cybersecurity risk management activities and outcomes are included in enterprise risk management processes); NIST CSF 2.0 GV.RR-02 (roles, responsibilities and authorities related to cybersecurity risk management are established, communicated, understood and enforced)",
       "related_concepts": [
@@ -374,7 +374,7 @@
         "Risk acceptance",
         "Enterprise risk register"
       ],
-      "_provenance": "Authored from concept: notes 4A5.2 Project Risk and Agile Delivery (exam trap: project risk log kept apart from the enterprise register). Original pension fund Agile scenario written for KaiSip; no ISACA Review Manual, QAE or prep-bank text used. CRISC D4 pilot batch, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): C reworded (raise with the owner); 'register' added to B and 'owner' to D as lens-word de-cues; why-D and tip 1 updated; neutral subtopic; pre_read non-revealing; A and B lengths evened. Cross-domain fix 30 Oct 2026: 'business' added to distractor D so the lens word is not key-only. Quality pass 31 Oct 2026 (ISACA authenticity audit and concept review): stem now says the team rated the weakness (the risk is already analyzed), so FIRST keys a single non-assess action: take the acceptance decision to the accountable risk owner; 'business' removed from the key and D, so no lens word is key-only; B and D explanations credit what is partly right.",
+      "_provenance": "Authored from concept: notes 4A5.2 Project Risk and Agile Delivery (exam trap: project risk log kept apart from the enterprise register). Original pension fund Agile scenario written for KaiSip; no ISACA Review Manual, QAE or prep-bank text used. CRISC D4 pilot batch, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): C reworded (raise with the owner); 'register' added to B and 'owner' to D as lens-word de-cues; why-D and tip 1 updated; neutral subtopic; pre_read non-revealing; A and B lengths evened. Cross-domain fix 30 Oct 2026: 'business' added to distractor D so the lens word is not key-only. Quality pass 31 Oct 2026 (ISACA authenticity audit and concept review): stem now says the team rated the weakness (the risk is already analyzed), so FIRST keys a single non-assess action: take the acceptance decision to the accountable risk owner; 'business' removed from the key and D, so no lens word is key-only; B and D explanations credit what is partly right. Round 2 gate 31 Oct 2026: key concept and exam cue now teach who may accept a lasting project risk, split from crisc_d4_032 (risks do not close with the project).",
       "style_version": 2
     },
     {
@@ -754,24 +754,24 @@
       "principle_id": "advise-dont-decide",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A law firm's partners want an AI contract-review service that stores client files in the vendor's cloud, but the target architecture keeps client files in approved repositories. What is the risk practitioner's BEST action?",
+      "question": "A law firm's partners want an AI contract-review tool that keeps client files in the vendor's cloud, against the target architecture; an architecture review board handles exceptions. What is the risk practitioner's BEST action?",
       "options": {
         "A": "Approve the service once the vendor encrypts stored files",
         "B": "Ask IT to block the service until the vendor changes design",
         "C": "Bring the deviation's risk to the architecture review board",
-        "D": "Add the vendor's cloud to the architecture once it goes live"
+        "D": "Ask the review board to add the vendor's cloud after go-live"
       },
       "correct": "C",
-      "key_concept": "A deviation from the target architecture, such as an AI service, goes with its risk to the architecture review board; the business owner accepts exceptions.",
-      "pre_read": "Notice what the target architecture says about client files and who decides on deviations from it.",
+      "key_concept": "A target architecture deviation goes with its risk to the architecture review board; the business owner accepts the risk of any deviation the board allows.",
+      "pre_read": "Notice what the target architecture says about client files and what the partners' request would change.",
       "correct_explanation": "Enterprise architecture is a risk tool: the target architecture says where client files may live, so a service that stores them elsewhere is a deviation to judge, not to wave through or refuse alone. The practitioner sets out its risk, such as confidentiality and data location, for the architecture review board, with the partners as business owners accepting any approved exception. Blocking first decides the outcome before that review.",
       "wrong_explanations": {
         "A": "Encryption reduces one exposure; however, it leaves the file-location deviation unreviewed, and approving an exception is for the review board and business owner, not the practitioner.",
         "B": "Refusal may be the final outcome; however, blocking now decides the deviation before its risk is reviewed and takes a decision that belongs to the review board and partners.",
-        "D": "Keeping architecture records current matters; however, updating them after go-live treats the architecture as a diagram, not a check made before client files move."
+        "D": "Keeping the architecture current matters; however, asking the board to add the cloud after go-live treats the review as a record update, not a check made before client files move."
       },
       "tips": [
-        "Eliminate: A approves an exception on one control and outside the practitioner's role, and D updates the architecture records only after go-live.",
+        "Eliminate: A approves an exception on one control and outside the practitioner's role, and D asks the board to update the architecture only after go-live.",
         "Final two: C beats B because a deviation from the target architecture goes to the review board with its risk; blocking first takes that decision before anyone weighs it.",
         "Exam cue: when a proposal breaks the target architecture, bring the deviation and its risk to the review board and business owner; the practitioner neither approves nor blocks alone."
       ],
@@ -781,27 +781,27 @@
         "Architecture exception",
         "AI in enterprise architecture"
       ],
-      "_provenance": "Authored from concept: notes 4A1.1 Enterprise Architecture and Architecture Review. Round 2, 31 Oct 2026: authored from notes 4A1.1 (an AI service that breaks the target architecture is a deviation taken with its risk to the architecture review board); original law firm AI contract-review scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios.",
+      "_provenance": "Authored from concept: notes 4A1.1 Enterprise Architecture and Architecture Review. Round 2, 31 Oct 2026: authored from notes 4A1.1 (an AI service that breaks the target architecture is a deviation taken with its risk to the architecture review board); original law firm AI contract-review scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios. Review fixes 31 Oct 2026 (repair round 1, standards audit and verifiers): stem now names the architecture review board, the deciding fact, and option D also names the board so the key is not the only option that does. Review fixes 31 Oct 2026 (repair round 2, verifiers): pre_read no longer names who decides on deviations, so stem and pre_read together do not point to the key. Round 2 gate 31 Oct 2026: key concept separates the review board's decision on the deviation from the business owner's acceptance of its risk, matching notes 4A1.1.",
       "style_version": 2
     },
     {
       "id": "crisc_d4_022",
       "domain": 4,
       "subtopic": "4A1 Technology roadmaps and enterprise architecture (EA). Delayed retirement of a legacy system",
-      "principle_id": "emerging-and-ai-risk-owned",
+      "principle_id": "residual-counts-working-controls",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A port operator's roadmap set last year to retire its unsupported cargo-tracking database, but the replacement project has slipped 18 months. What is the risk practitioner's BEST action?",
+      "question": "Which of the following is a risk practitioner's BEST response when a port operator's risk rating for an unsupported database assumed its retirement this year, and the retirement slips 18 months?",
       "options": {
-        "A": "Update the legacy risk rating for the longer exposure period",
-        "B": "Ask the project sponsor to restore the original retirement date",
-        "C": "Keep the current rating while the replacement stays funded",
-        "D": "Log the delay as a risk in the replacement project's own log"
+        "A": "Re-rating the legacy risk for the longer exposure",
+        "B": "Asking the sponsor to restore the original date",
+        "C": "Keeping the rating while the replacement is funded",
+        "D": "Logging the delay in the replacement project's log"
       },
       "correct": "A",
       "key_concept": "Roadmap slippage that delays retiring weak technology extends the exposure, so the legacy risk is re-rated in the register for its owner.",
       "pre_read": "Notice what the delay does to how long the unsupported system stays in use.",
-      "correct_explanation": "The slip keeps an unsupported database running 18 months longer, so the legacy risk in the enterprise register is now understated: likelihood grows as patches and skills fall away, and the exposure lasts longer. Updating the rating gives the system's business owner a current basis to add compensating controls or accept the risk within appetite. Logging the slip in the project's log records a schedule problem but leaves the operational exposure unchanged.",
+      "correct_explanation": "The slip keeps an unsupported database running 18 months longer, so a rating built on this year's retirement now understates the risk: likelihood grows as patches and skills fall away, and the exposure lasts longer. Re-rating gives the system's business owner a current basis to add compensating controls or accept the risk within appetite. Logging the delay in the project's log records a schedule problem but leaves the operational exposure unrated.",
       "wrong_explanations": {
         "B": "Pressing for the old date may help; however, schedules are for the sponsor and steering committee to set, and the extra exposure needs rating whatever date is agreed.",
         "C": "Funding shows intent; however, a funded replacement removes no exposure until it is live, so the rating must reflect the unsupported database still in use.",
@@ -818,7 +818,7 @@
         "Technical debt",
         "Legacy system"
       ],
-      "_provenance": "Authored from concept: notes 4A1.3 Technical Debt and Legacy Systems. Round 2, 31 Oct 2026: authored from notes 4A1.3 (roadmap slippage extends legacy exposure, so the register rating is updated for the owner); original port operator cargo-tracking database scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios.",
+      "_provenance": "Authored from concept: notes 4A1.3 Technical Debt and Legacy Systems. Round 2, 31 Oct 2026: authored from notes 4A1.3 (roadmap slippage extends legacy exposure, so the register rating is updated for the owner); original port operator cargo-tracking database scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios. Review fixes 31 Oct 2026 (repair round 1, standards audit and verifiers): stem now says the rating rests on the original retirement date, the fact behind 'understated'; principle changed to residual-counts-working-controls (a plan is not a working control). Review fixes 31 Oct 2026 (repair round 2, verifiers): converted to a short 'Which of the following' stem (rule 13) with the deciding fact kept in the stem; key letter unchanged. Options are now noun phrases.",
       "style_version": 2
     },
     {
@@ -865,10 +865,10 @@
       "principle_id": "root-cause-over-symptom",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "Over six months, emergency changes at an online retailer rose from 5% to 30% of all changes, each approved by the on-call manager and reviewed afterward. What should the risk practitioner recommend as BEST?",
+      "question": "Which of the following should a risk practitioner recommend as BEST when an online retailer's emergency changes rise from 5% to 30% of all changes, each approved by the on-call manager and reviewed afterward?",
       "options": {
-        "A": "A second approver for each emergency change",
-        "B": "Analysis of why normal changes are being routed as emergencies",
+        "A": "A second approver for each emergency change request",
+        "B": "Analysis of why changes are routed as emergencies",
         "C": "More frequent change board meetings for normal changes",
         "D": "Monthly reporting of emergency change volume to IT leaders"
       },
@@ -892,44 +892,44 @@
         "Change advisory board (CAB)",
         "Root cause analysis"
       ],
-      "_provenance": "Authored from concept: notes 4A2.1 Change and Configuration Management. Round 2, 31 Oct 2026: authored from notes 4A2.1 (a growing share of emergency changes is analyzed for its cause before approvals are added); original online retailer emergency change trend scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios.",
+      "_provenance": "Authored from concept: notes 4A2.1 Change and Configuration Management. Round 2, 31 Oct 2026: authored from notes 4A2.1 (a growing share of emergency changes is analyzed for its cause before approvals are added); original online retailer emergency change trend scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios. Review fixes 31 Oct 2026 (repair round 1, standards audit and verifiers): options A and B re-worded so the key is no longer the single longest (lengths now 51/49/54/58); notes 4A2.1 recommend line aligned so it no longer points to the monthly-reporting distractor. Review fixes 31 Oct 2026 (repair round 2, verifiers): converted to a short 'Which of the following' stem (rule 13) with the deciding fact kept in the stem; key letter unchanged.",
       "style_version": 2
     },
     {
       "id": "crisc_d4_025",
       "domain": 4,
-      "subtopic": "4A2 Operations management. Asset counts that disagree",
-      "principle_id": "evidence-before-credit",
+      "subtopic": "4A2 Operations management. Servers missing from the inventory",
+      "principle_id": "match-decision-to-role",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "While preparing a board report on laptop encryption, a risk analyst finds the CMDB lists 4,000 laptops but the encryption tool reports 3,400. What should the analyst do FIRST?",
+      "question": "A logistics firm's endpoint detection console reports 1,240 servers, but its CMDB lists 1,020, and no team claims the other 220. Which of the following should concern the risk analyst MOST?",
       "options": {
-        "A": "Report encryption coverage as 85%, using the CMDB as the base",
-        "B": "Reconcile the two sources to confirm the true laptop count",
-        "C": "Have IT install the encryption agent on the 600 missing laptops",
-        "D": "Report both figures and let the board decide which to rely on"
+        "A": "Detection licenses paid for servers the CMDB omits",
+        "B": "Servers no owner patches, changes or backs up",
+        "C": "Duplicate server entries in the detection console",
+        "D": "Coverage reports that use the CMDB as their base"
       },
       "correct": "B",
-      "key_concept": "Risk and control data is validated before reporting; when inventories disagree, reconcile them to find the true exposure.",
-      "pre_read": "Notice what the gap between the two numbers could mean before deciding what to report.",
-      "correct_explanation": "Before risk data goes to the board, the analyst validates it. The 600-laptop gap could be unencrypted devices, retired or duplicate CMDB records, or laptops whose agent is not reporting, and each means a different exposure. Reconciling the sources gives a figure the board can rely on. Reporting 85% on the CMDB base looks cautious, but it may misstate the exposure the board will act on.",
+      "key_concept": "An asset missing from the inventory has no owner and sits outside patching, change and backup, so unknown assets are an operations risk.",
+      "pre_read": "Notice which source sees more servers and what it means that nobody claims them.",
+      "correct_explanation": "Operations processes such as patching, change control and backup work from the inventory. Servers the CMDB does not list, and that no team claims, are likely outside all of them, with no owner to fix or accept their risk. Duplicate console entries are the runner-up: they could explain part of the gap, but no team claiming the servers points to real, unmanaged machines, and reconciling them is how that is confirmed.",
       "wrong_explanations": {
-        "A": "Using the larger base looks conservative; however, if the CMDB holds retired or duplicate laptops, 85% misstates the exposure the board will act on.",
-        "C": "Installing agents may be the eventual fix; however, until the sources are reconciled nobody knows which 600 laptops, if any, lack encryption.",
-        "D": "Showing both figures is transparent; however, it hands the board a data-quality question the analyst should resolve before reporting."
+        "A": "License cost is a budget issue; it says nothing about the exposure of servers no one manages.",
+        "C": "Duplicates may explain part of the count; however, unclaimed servers are more likely real and unmanaged, and that exposure matters more than a counting error.",
+        "D": "The reporting base matters for accuracy; however, the larger concern is the servers the base leaves out of every operations process."
       },
       "tips": [
-        "Eliminate: C acts on a gap that may be a data error, and D asks the board to resolve conflicting data the analyst should validate.",
-        "Final two: B beats A because data is validated before it is reported; a conservative base is still a guess at the true exposure.",
-        "Exam cue: when two sources disagree before a report, validate and reconcile the data FIRST; reporting or acting on unverified figures comes later."
+        "Eliminate: A worries about license cost, and D about how coverage is reported, not about the unmanaged servers.",
+        "Final two: B beats C because unclaimed servers point to real assets outside patching and change; a counting error is the less likely and less harmful reading.",
+        "Exam cue: an asset missing from the inventory is unowned and unmanaged; look for the exposure, not the bookkeeping."
       ],
       "framework_ref": "NIST SP 800-53 Rev. 5 CM-8 (System Component Inventory); NIST CSF 2.0 ID.AM-01 (inventories of hardware managed by the organization are maintained)",
       "related_concepts": [
+        "Asset inventory",
         "Configuration management database (CMDB)",
-        "Data validation",
-        "Asset inventory"
+        "Unmanaged assets"
       ],
-      "_provenance": "Authored from concept: notes 4A2.1 Change and Configuration Management. Round 2, 31 Oct 2026: authored from notes 4A2.1 (inventories that disagree are reconciled before coverage figures are reported); original laptop encryption board report scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios.",
+      "_provenance": "Authored from concept: notes 4A2.1 Change and Configuration Management. Round 2, 31 Oct 2026: authored from notes 4A2.1 (inventories that disagree are reconciled before coverage figures are reported); original server endpoint detection board report scenario (laptop encryption until repair round 1) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios. Review fixes 31 Oct 2026 (repair round 1, standards audit and verifiers): asset and control changed from laptop encryption to server endpoint detection to break the near-duplicate with crisc_d3_040. Round 2 gate 31 Oct 2026: re-angled from validating data before a board report (still crisc_d3_040's lesson, 3C2, and at odds with crisc_d3_041) to servers missing from the inventory sitting outside patching, change and backup (notes 4A2.1); new stem in 'Which of the following' form, options, subtopic label, key concept, pre_read, explanations and tips; key B, ID, level and framework_ref unchanged; principle moved to match-decision-to-role.",
       "style_version": 2
     },
     {
@@ -939,17 +939,17 @@
       "principle_id": "root-cause-over-symptom",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A retailer's marketing team edits its customer chatbot's instructions directly in production, and one edit led the chatbot to offer refunds that policy does not allow. What is the risk practitioner's BEST recommendation?",
+      "question": "A retailer's change policy covers code and AI model releases, but marketing edits the chatbot's instructions in production; one edit made it offer refunds the returns policy forbids. What is the risk practitioner's BEST recommendation?",
       "options": {
-        "A": "Put instruction edits through change control with testing",
+        "A": "Treat instruction edits as changes that need testing",
         "B": "Have the vendor filter refund offers out of chatbot replies",
         "C": "Limit instruction edits to the IT operations team",
         "D": "Review a weekly sample of chatbot conversations for errors"
       },
       "correct": "A",
       "key_concept": "Edits to an AI system's instructions are production changes and need testing, approval and rollback like code or model updates.",
-      "pre_read": "Notice where the edits are made and when anyone checks them.",
-      "correct_explanation": "The chatbot's instructions shape what it tells customers, so an edit to them is a change to a production system, like code or a model update. Routing edits through change control means each one is tested against policy before customers see it, and can be rolled back. A weekly review of conversations is the runner-up: it finds bad answers, but only after customers have received them.",
+      "pre_read": "Notice what the change policy covers and what it leaves out.",
+      "correct_explanation": "The change policy covers code and model releases but not instruction edits, yet the instructions shape what the chatbot tells customers just as code does. Treating each edit as a change means it is tested against the returns policy before customers see it and can be rolled back. A weekly review of conversations is the runner-up: it finds bad answers, but only after customers have received them.",
       "wrong_explanations": {
         "B": "A refund filter blocks this one error; however, the next untested edit could cause a different wrong answer the filter was never built to catch.",
         "C": "Restricting who edits narrows access; however, IT operations does not own the chatbot's content, and edits would still reach customers untested.",
@@ -966,7 +966,7 @@
         "Change control",
         "Preventive control"
       ],
-      "_provenance": "Authored from concept: notes 4A3.3 AI Models in the SDLC. Round 2, 31 Oct 2026: authored from notes 4A3.3 (edits to an AI system's instructions are production changes that need testing before release); original retailer customer chatbot instructions scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios.",
+      "_provenance": "Authored from concept: notes 4A3.3 AI Models in the SDLC. Round 2, 31 Oct 2026: authored from notes 4A3.3 (edits to an AI system's instructions are production changes that need testing before release); original retailer customer chatbot instructions scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios. Review fixes 31 Oct 2026 (repair round 1, standards audit and verifiers): re-angled to the change policy's scope to break the mirror with CISA d4_197.",
       "style_version": 2
     },
     {
@@ -976,12 +976,12 @@
       "principle_id": "final-two",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A freight railway is choosing a vendor maintenance-scheduling system, and the project plan defines security requirements after the vendor is selected. What should the risk practitioner recommend as BEST?",
+      "question": "Which of the following should a risk practitioner recommend as BEST when a freight railway's plan sets security requirements for a vendor maintenance system only after the vendor is chosen?",
       "options": {
         "A": "A penetration test of the chosen system before go-live",
         "B": "The vendor's security certificate as a selection criterion",
         "C": "A risk assessment of the system once it is configured",
-        "D": "Security requirements written into the vendor selection criteria"
+        "D": "Security requirements in the vendor selection criteria"
       },
       "correct": "D",
       "key_concept": "For a purchased system, security requirements go into the selection criteria and contract before the vendor is chosen.",
@@ -1003,7 +1003,7 @@
         "Acquisition",
         "SDLC phases"
       ],
-      "_provenance": "Authored from concept: notes 4A3.1 Risk Across the SDLC Phases. Round 2, 31 Oct 2026: authored from notes 4A3.1 (for a purchased system, security requirements go into the selection criteria and contract); original freight railway maintenance-scheduling purchase scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios.",
+      "_provenance": "Authored from concept: notes 4A3.1 Risk Across the SDLC Phases. Round 2, 31 Oct 2026: authored from notes 4A3.1 (for a purchased system, security requirements go into the selection criteria and contract); original freight railway maintenance-scheduling purchase scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios. Review fixes 31 Oct 2026 (repair round 1, standards audit and verifiers): key shortened so it is no longer the longest option or the fullest stem echo. Review fixes 31 Oct 2026 (repair round 2, verifiers): converted to a short 'Which of the following' stem (rule 13) with the deciding fact kept in the stem; key letter unchanged.",
       "style_version": 2
     },
     {
@@ -1048,12 +1048,12 @@
       "domain": 4,
       "subtopic": "4A4 Data lifecycle management. Retrained model with unknown training data",
       "principle_id": "answer-from-the-stem",
-      "difficulty": "analysis",
-      "bloom_level": "Analysis",
+      "difficulty": "application",
+      "bloom_level": "Application",
       "question": "Monitoring showed a water utility's leak-prediction model got worse after retraining, and the data team cannot tell which data set trained it. Which of the following gaps does this MOST directly reveal?",
       "options": {
         "A": "No record linking model versions to training data",
-        "B": "No drift monitoring on the model in production",
+        "B": "No fixed schedule for retraining the model",
         "C": "Weak access control over the training data store",
         "D": "No human review of the model's leak predictions"
       },
@@ -1062,12 +1062,12 @@
       "pre_read": "Separate what the stem states as fact from what might have caused the problem.",
       "correct_explanation": "The stem gives one hard fact: nobody can say which data set trained the live model. That is a missing lineage record, which links each model version to the exact data used, so the team cannot trace the fault, compare versions or roll back with confidence. Weak access control is the runner-up: tampering could explain a worse model, but the stem gives no sign of it, while the missing record is certain.",
       "wrong_explanations": {
-        "B": "Drift monitoring matters for production models; however, monitoring is what spotted the decline here, so it is working rather than missing.",
+        "B": "A retraining schedule controls when models are refreshed; however, the problem here is not timing but that nobody can trace which data produced the live version.",
         "C": "Tampering with training data can degrade a model; however, nothing in the stem points to it, and any investigation first needs to know which data was used.",
         "D": "Human review can catch bad predictions; however, it oversees outputs and would not tell the team which data produced the worse model."
       },
       "tips": [
-        "Eliminate: B is contradicted by the stem, since monitoring caught the decline, and D reviews outputs without showing which data trained the model.",
+        "Eliminate: B concerns when retraining happens, not what it used, and D reviews outputs without showing which data trained the model.",
         "Final two: A beats C because the stem states the lineage gap as fact; tampering is a possible cause the stem gives no sign of.",
         "Exam cue: for MOST directly, pick the gap the stem's facts prove, not one that might explain the event; training data needs lineage to each model version."
       ],
@@ -1077,7 +1077,7 @@
         "Model versioning",
         "AI training data"
       ],
-      "_provenance": "Authored from concept: notes 4A4.3 AI Training Data Through the Lifecycle. Round 2, 31 Oct 2026: authored from notes 4A4.3 (training data lineage links each model version to the data that trained it); original water utility leak-prediction model scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios.",
+      "_provenance": "Authored from concept: notes 4A4.3 AI Training Data Through the Lifecycle. Round 2, 31 Oct 2026: authored from notes 4A4.3 (training data lineage links each model version to the data that trained it); original water utility leak-prediction model scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios. Review fixes 31 Oct 2026 (repair round 1, standards audit and verifiers): option B was ruled out by the stem's own words, so it now offers a retraining-schedule gap; difficulty set to application.",
       "style_version": 2
     },
     {
@@ -1161,34 +1161,34 @@
       "principle_id": "match-decision-to-role",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A ferry operator's online booking project is closing, and its project risk log holds three open security risks that will continue once the system is in operation. What should the risk practitioner do FIRST?",
+      "question": "A ferry operator's online booking project is closing, and its project risk register holds three open security risks that will continue once the system is in operation. What should the risk practitioner do FIRST?",
       "options": {
         "A": "Close the three risks in the project register at sign-off",
-        "B": "Have the project owner accept the three risks at closure",
-        "C": "Move the risks to the enterprise register with an owner",
-        "D": "Ask the project manager to track the risks for one more year"
+        "B": "Record the three risks in the lessons-learned report",
+        "C": "Hand the risks to a business owner in the enterprise register",
+        "D": "Ask the project owner to track the risks for another year"
       },
       "correct": "C",
       "key_concept": "Project risks that continue into operation move to the enterprise risk register with an operational business owner when the project closes.",
       "pre_read": "Notice whether the risks end with the project or continue once the system runs.",
-      "correct_explanation": "Risks that outlast a project become operational risks, so they move into the enterprise register with an owner from the business that will run the booking system. There they are rated against appetite and monitored after the project team disbands. Having the project owner accept them at closure is the runner-up: acceptance belongs to the operational risk owner, once the risk is in the register and judged against appetite.",
+      "correct_explanation": "Risks that outlast a project become operational risks, so they move into the enterprise register with an owner from the business that will run the booking system, where they are rated against appetite and monitored after the project team disbands. Having the project owner track them for another year is the runner-up: it keeps them visible for a while, but outside the enterprise register and only until the extra year ends.",
       "wrong_explanations": {
         "A": "Closing project risks is routine at closure; however, these risks continue in operation, and closing them leaves them with no owner or monitoring.",
-        "B": "Closure needs decisions; however, the project owner's role ends with the project, and acceptance belongs to the operational owner once the risk is judged against appetite.",
-        "D": "Extra tracking keeps the risks visible for a while; however, the project manager has no authority over the running system, and a side list is not the register."
+        "B": "Lessons learned record what the project would do differently; however, they are not a risk record, so risks that continue in operation would have no owner or monitoring.",
+        "D": "Extra tracking keeps the risks visible for a while; however, a project-side list sits outside the enterprise register, and the risks last beyond the extra year."
       },
       "tips": [
-        "Eliminate: A closes risks that continue in operation, and D leaves them with a project manager who has no authority once the project ends.",
-        "Final two: C beats B because surviving risks move to the enterprise register under an operational owner; the project owner cannot accept risk on the running service.",
+        "Eliminate: A closes risks that continue in operation, and B files them as lessons learned, which no one owns or monitors.",
+        "Final two: C beats D because risks that continue in operation belong in the enterprise register with a business owner; a project-side list for a year sits outside the enterprise view.",
         "Exam cue: at project closure, open risks that continue go to the enterprise register with a business owner; they do not close with the project."
       ],
       "framework_ref": "NIST CSF 2.0 GV.RM-03 (cybersecurity risk management activities and outcomes are included in enterprise risk management processes); NIST IR 8286 Rev. 1 Section 3.8 (Creating and Maintaining an Enterprise-Level Cybersecurity Risk Register)",
       "related_concepts": [
-        "Project risk log",
+        "Project risk register",
         "Enterprise risk register",
         "Risk owner"
       ],
-      "_provenance": "Authored from concept: notes 4A5.2 Project Risk and Agile Delivery. Round 2, 31 Oct 2026: authored from notes 4A5.2 (open project risks that continue into operation move to the enterprise register with an owner); original ferry operator booking project closure scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios.",
+      "_provenance": "Authored from concept: notes 4A5.2 Project Risk and Agile Delivery. Round 2, 31 Oct 2026: authored from notes 4A5.2 (open project risks that continue into operation move to the enterprise register with an owner); original ferry operator booking project closure scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios. Review fixes 31 Oct 2026 (repair round 1, standards audit and verifiers): stem says project risk register to match option A; key re-worded so the practitioner hands the risks to the business owner rather than picking one; option B names the project manager, who has no authority to accept risk, so its rejection holds even when the sponsor is the business owner; option D carries 'owner' so the lens word is not key-only. Review fixes 31 Oct 2026 (repair round 2, verifiers): key now names the enterprise register, so it cannot be read as leaving the risks in the project register. Round 2 gate 31 Oct 2026: option B no longer repeats crisc_d4_010's lesson (a project manager cannot accept risk); it now files the risks as lessons learned, and D is the runner-up; the key names a business owner, matching notes 4A5.2, in place of a service owner; explanation, wrong explanation B and tips 1 and 2 updated; key C unchanged.",
       "style_version": 2
     },
     {
@@ -1235,25 +1235,25 @@
       "principle_id": "priority-word-decides",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A bank's yearly recovery test fails over its core system on a planned weekend; its top-rated scenario is ransomware that also encrypts online backups. Which of the following is the risk practitioner's GREATEST concern?",
+      "question": "Which of the following is a risk practitioner's GREATEST concern about a bank's planned yearly failover test of its core system, when its top-rated scenario is ransomware that also encrypts online backups?",
       "options": {
-        "A": "Staff are told the test date weeks in advance",
-        "B": "The test runs yearly rather than twice a year",
-        "C": "The test scope stops at the core banking system",
-        "D": "No test restores without the online backups"
+        "A": "Advance notice of the test date to staff",
+        "B": "A yearly test cycle rather than twice a year",
+        "C": "A test scope limited to the core banking system",
+        "D": "No test assuming the online backups are lost"
       },
       "correct": "D",
       "key_concept": "Recovery tests are tied to the register's top scenarios; a test that never exercises the highest-rated scenario leaves recovery from it unproven.",
       "pre_read": "Compare what the test assumes with what the top-rated scenario assumes.",
-      "correct_explanation": "Tests should prove recovery under the scenarios that matter most. The top-rated scenario assumes ransomware has encrypted the online backups, yet the test fails over with every copy intact, so the bank does not know whether it can recover from the event it rates highest. A narrow scope is the runner-up: covering more systems helps, but testing them the same way would still leave that scenario unproven.",
+      "correct_explanation": "Tests should prove recovery under the scenarios that matter most. The top-rated scenario assumes ransomware has encrypted the online backups, yet no test assumes they are lost, so the bank does not know whether it can recover from the event it rates highest. A narrow scope is the runner-up: covering more systems helps, but testing them the same way would still leave that scenario unproven.",
       "wrong_explanations": {
-        "A": "Unannounced tests add realism; however, planned windows are normal for failover tests, and knowing the date does not leave the top-rated scenario untested.",
+        "A": "Unannounced tests add realism; however, planned windows are normal for failover tests, and advance notice does not leave the top-rated scenario untested.",
         "B": "Test frequency follows risk and change; however, running the same test twice a year would still never prove recovery without the online backups.",
         "C": "A wider scope would help; however, adding systems tested the same way would still leave the bank's top-rated scenario unproven."
       },
       "tips": [
-        "Eliminate: A and B change when the test runs, not what it proves, so neither closes the gap against the top-rated scenario.",
-        "Final two: D beats C because the test never exercises the condition behind the bank's highest risk; a wider scope without that condition proves no more.",
+        "Eliminate: A and B concern notice and frequency, not what the test proves, so neither closes the gap against the top-rated scenario.",
+        "Final two: D beats C because no test assumes the online backups are lost, the condition behind the bank's highest risk; a wider scope without that condition proves no more.",
         "Exam cue: judge a recovery test by the risk scenarios it exercises; the GREATEST concern is usually a top-rated scenario left untested."
       ],
       "framework_ref": "NIST SP 800-34 Rev. 1 Section 3.5 (Plan Testing, Training, and Exercises); NIST SP 800-53 Rev. 5 CP-4 (Contingency Plan Testing)",
@@ -1262,7 +1262,7 @@
         "Exercise scenario",
         "Ransomware recovery"
       ],
-      "_provenance": "Authored from concept: notes 4A6.3 Testing Recovery Capability. Round 2, 31 Oct 2026: authored from notes 4A6.3 (recovery tests are tied to the top-rated scenarios in the register); original bank yearly failover test scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios.",
+      "_provenance": "Authored from concept: notes 4A6.3 Testing Recovery Capability. Round 2, 31 Oct 2026: authored from notes 4A6.3 (recovery tests are tied to the top-rated scenarios in the register); original bank yearly failover test scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios. Review fixes 31 Oct 2026 (repair round 1, standards audit and verifiers): key re-worded to remove a double reading of 'No test restores'. Review fixes 31 Oct 2026 (repair round 2, verifiers): converted to a short 'Which of the following' stem (rule 13) with the deciding fact kept in the stem; key letter unchanged. Options are now noun phrases; explanation and Eliminate tip follow the new wording.",
       "style_version": 2
     },
     {
@@ -1309,145 +1309,145 @@
       "principle_id": "emerging-and-ai-risk-owned",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A parts distributor's leaders approved a six-month pilot of augmented-reality headsets for warehouse picking, and little data exists on how they fail. How should the risk practitioner BEST record the pilot's risk?",
+      "question": "A distributor's leaders approved a six-month pilot of augmented-reality headsets for warehouse picking, though little data exists on how they fail. What is MOST important for the risk practitioner to have agreed before it starts?",
       "options": {
-        "A": "As a high risk until the headsets have built a loss history",
-        "B": "As no entry until the pilot has produced incident data",
-        "C": "As an emerging risk with its uncertainty and a review date",
-        "D": "As an entry kept in the pilot team's own project risk log"
+        "A": "Loss data from other firms that use the headsets",
+        "B": "Pilot controls matching those on live picking systems",
+        "C": "Conditions under which the pilot would be paused",
+        "D": "Vendor certification of the headsets' security"
       },
       "correct": "C",
-      "key_concept": "Emerging technology risk is recorded early as an emerging risk with stated uncertainty, a proposed owner and a review date.",
-      "pre_read": "Notice how much is known about the headsets and where they will be used.",
-      "correct_explanation": "Little data does not mean little risk, nor high risk. Recording the pilot as an emerging risk, with the uncertainty stated, a proposed owner in warehouse operations and a review date, makes it visible early and lets the rating firm up as pilot data arrives. The project log is the runner-up: it keeps the risk with the pilot team, outside the enterprise view, though the headsets are used in live warehouse work.",
+      "key_concept": "With little data on an emerging technology, run the pilot under pause conditions agreed from appetite with the business owner, limiting loss as evidence builds.",
+      "pre_read": "Notice how much is known about the headsets and what that means for planning their controls.",
+      "correct_explanation": "Little data means nobody yet knows how the headsets will fail in live picking, so controls cannot be sized with confidence. Agreeing in advance what would pause the pilot, such as error rates, injuries or data issues set from appetite with the warehouse owner, limits loss whatever happens while the pilot builds evidence to rate the risk. Copying the live systems' controls is the runner-up: it covers only failures someone has foreseen.",
       "wrong_explanations": {
-        "A": "Caution is understandable; however, rating it high by default overstates what is known and can distort priorities; uncertainty belongs in the entry, not in an inflated rating.",
-        "B": "Waiting for incident data feels evidence-based; however, the register exists to show risk before losses occur, and a pilot may end before data builds up.",
-        "D": "A pilot log helps the team; however, the headsets run in live warehouse work, so their risk belongs in the enterprise register, where owners and leaders see it."
+        "A": "Other firms' losses add context; however, their sites and uses differ, and for a new technology that data is thin, so it cannot bound this pilot's risk.",
+        "B": "Some controls will be needed; however, copying the live systems' controls assumes failure modes nobody yet knows and does not limit loss if the headsets fail in a new way.",
+        "D": "Certification is useful evidence; however, it covers the product's security within a scope, not how the headsets fail in this warehouse's picking work."
       },
       "tips": [
-        "Eliminate: A rates the unknown as high by default, and B waits for incidents before recording a risk that already exists.",
-        "Final two: C beats D because emerging technology in live use goes in the enterprise register with its uncertainty stated; a pilot team's log keeps it out of view.",
-        "Exam cue: record emerging technology risk early, state the uncertainty, propose an owner and set a review date; do not wait for losses or inflate the rating."
+        "Eliminate: A borrows thin data from other sites, and D covers the product's security, not how the headsets fail in this warehouse.",
+        "Final two: C beats B because, with failure modes unknown, agreed pause conditions limit loss whatever happens; copied controls cover only failures someone has foreseen.",
+        "Exam cue: when an emerging technology has little data, pilot it under agreed limits and stop conditions set from appetite, and let the evidence firm up the rating."
       ],
-      "framework_ref": "ISACA Glossary (risk register); NIST IR 8286 Rev. 1 Section 3.8 (Creating and Maintaining an Enterprise-Level Cybersecurity Risk Register)",
+      "framework_ref": "NIST CSF 2.0 GV.RM-02 (risk appetite and risk tolerance statements are established, communicated and maintained); ISACA Glossary (risk tolerance)",
       "related_concepts": [
-        "Emerging risk",
-        "Risk register",
-        "Uncertainty"
+        "Emerging technology",
+        "Pilot stop conditions",
+        "Risk tolerance"
       ],
-      "_provenance": "Authored from concept: notes 4A7.1 Evaluating Emerging Technologies. Round 2, 31 Oct 2026: authored from notes 4A7.1 (emerging technology risk is recorded early with stated uncertainty, a proposed owner and a review date); original parts distributor augmented-reality headset pilot scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios.",
+      "_provenance": "Authored from concept: notes 4A7.1 Evaluating Emerging Technologies. Round 2, 31 Oct 2026: authored from notes 4A7.1 (emerging technology risk is recorded early with stated uncertainty, a proposed owner and a review date); original parts distributor augmented-reality headset pilot scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios. Review fixes 31 Oct 2026 (repair round 1, standards audit and verifiers): re-angled from recording the risk to agreeing pause conditions for the pilot (notes 4A7.1: propose conditions such as a limited pilot, extra controls or exit terms), to break the near-duplicate with crisc_d3_049 and crisc_d3_020 and the third enterprise-register lesson in the batch; option B carries 'pilot' so the key is not the only stem echo.",
       "style_version": 2
     },
     {
       "id": "crisc_d4_037",
       "domain": 4,
-      "subtopic": "4A7 Emerging technologies. Evaluation that lists only threats",
-      "principle_id": "objectives-first",
-      "difficulty": "analysis",
-      "bloom_level": "Analysis",
-      "question": "A risk practitioner's evaluation of drone-based stock counting for a warehouse chain lists the new threats the drones bring and nothing else. Which of the following is the GREATEST weakness of the evaluation?",
+      "subtopic": "4A7 Emerging technologies. Exit terms for a young vendor",
+      "principle_id": "transfer-keeps-accountability",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A logistics firm's evaluation of a start-up's drone delivery platform weighs benefits and threats; the platform would hold all route data in the start-up's own format. Which of the following is the evaluation's GREATEST gap?",
       "options": {
-        "A": "No view of the gains the drones could deliver",
+        "A": "No exit terms if the start-up vendor fails",
         "B": "No dollar value for each threat it lists",
-        "C": "No check of the vendor's drone certifications",
-        "D": "No pilot of the drones before the evaluation"
+        "C": "No check of the vendor's certifications",
+        "D": "No pilot of the platform before the evaluation"
       },
       "correct": "A",
-      "key_concept": "Evaluating emerging technology covers opportunities as well as threats, so leaders can weigh value against risk before adopting.",
-      "pre_read": "Notice what the evaluation covers and what an adoption decision would also need.",
-      "correct_explanation": "Risk is the effect of uncertainty on objectives, and that effect can be positive. An evaluation of new technology should weigh opportunities, here faster and more accurate stock counts, against new threats, so leaders can decide whether the value justifies the risk. A threats-only view biases the decision toward rejection. Missing pilot results is the runner-up: evaluations are expected before a pilot, which is how its conditions get set.",
+      "key_concept": "Emerging technology from a young vendor needs exit terms, such as data return in a usable format; lock-in makes the vendor's failure the enterprise's outage.",
+      "pre_read": "Notice what the evaluation already covers and what it leaves out.",
+      "correct_explanation": "The evaluation weighs benefits and threats, but the deciding facts are a start-up vendor and route data held in its own format. If the vendor fails or is sold, the firm could lose the data and the service, so exit terms such as data return in a usable format and a transition period are the largest gap. Missing certifications are the runner-up: they matter for security, but they say nothing about surviving the vendor's failure.",
       "wrong_explanations": {
-        "B": "Dollar values can help; however, a qualitative evaluation is acceptable at this stage, and pricing the threats alone keeps the same one-sided view.",
-        "C": "Vendor evidence is worth checking; however, certifications describe the product, and their absence is a smaller gap than leaving out the drones' benefits.",
-        "D": "Pilot data would sharpen the evaluation; however, evaluating before a pilot is normal and helps set the pilot's conditions."
+        "B": "Dollar values can sharpen the evaluation; however, a qualitative view is acceptable at this stage, and pricing threats does not address the lock-in.",
+        "C": "Certifications describe the vendor's controls today; however, they do not protect the firm if the start-up fails or the data cannot leave its format.",
+        "D": "Evaluating before a pilot is normal and helps set the pilot's conditions; it is not a gap in the evaluation."
       },
       "tips": [
-        "Eliminate: B asks for numbers on a list that stays one-sided either way, and C adds vendor evidence without supplying the missing half.",
-        "Final two: A beats D because an emerging technology evaluation weighs opportunity against threat; evaluating before a pilot is expected, not a flaw.",
-        "Exam cue: for emerging technology, look for threats and opportunities; an evaluation that sees only downside cannot support an adoption decision."
+        "Eliminate: B prices threats without touching the lock-in, and D treats evaluating before a pilot as a flaw.",
+        "Final two: A beats C because the stem's risk is dependence on a young vendor's format; certifications show controls today, not a way out.",
+        "Exam cue: when a new technology locks data into one vendor, look for exit terms and data return before adoption."
       ],
-      "framework_ref": "NIST CSF 2.0 GV.RM-07 (strategic opportunities or positive risks are characterized and are included in organizational cybersecurity risk discussions); ISACA Glossary (enterprise risk management)",
+      "framework_ref": "NIST CSF 2.0 GV.SC-05 (requirements to address cybersecurity risks in supply chains are established, prioritized and integrated into contracts and other types of agreements with suppliers and other relevant third parties); NIST CSF 2.0 GV.SC-07 (the risks posed by a supplier, their products and services and other third parties are understood, recorded, prioritized, assessed, responded to and monitored)",
       "related_concepts": [
-        "Opportunity (positive risk)",
-        "Emerging technology",
-        "Risk evaluation"
+        "Vendor lock-in",
+        "Exit terms",
+        "Emerging technology"
       ],
-      "_provenance": "Authored from concept: notes 4A7.1 Evaluating Emerging Technologies. Round 2, 31 Oct 2026: authored from notes 4A7.1 (evaluating emerging technology weighs opportunities as well as threats); original warehouse chain drone stock counting scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios.",
+      "_provenance": "Authored from concept: notes 4A7.1 Evaluating Emerging Technologies. Round 2, 31 Oct 2026: authored from notes 4A7.1 (evaluating emerging technology weighs opportunities as well as threats); original warehouse chain drone stock counting scenario (short stem since repair round 1) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios. Review fixes 31 Oct 2026 (repair round 1, standards audit and verifiers): moved to a short stem (rule 13) with a flat key; the explanation now leads with the ISACA Glossary's opportunity term instead of the ISO 31000 risk definition. Round 2 gate 31 Oct 2026: re-angled from weighing opportunities as well as threats (a near-duplicate of crisc_d4_013 and crisc_d3_050) to exit terms and vendor lock-in (notes 4A7.1: exit terms as an adoption condition); back to a short scenario; options A and D, subtopic label, key concept, pre_read, explanations, tips and framework_ref (GV.RM-07 and the Glossary opportunity and ERM entries replaced by GV.SC-05 and GV.SC-07) updated; key A, ID and level unchanged; principle moved to transfer-keeps-accountability.",
       "style_version": 2
     },
     {
       "id": "crisc_d4_038",
       "domain": 4,
-      "subtopic": "4B1 Security concepts, frameworks and standards. Target tiers across units",
-      "principle_id": "proportionate-response",
-      "difficulty": "application",
-      "bloom_level": "Application",
-      "question": "A retailer's CISO proposes NIST CSF Tier 4 (Adaptive) as the target for every business unit, including a small gift-card unit. What is the risk practitioner's BEST recommendation?",
+      "subtopic": "4B1 Security concepts, frameworks and standards. Value of a framework mapping",
+      "principle_id": "final-two",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Which of the following is the PRIMARY value to a risk practitioner of mapping an organization's security practices to NIST CSF 2.0?",
       "options": {
-        "A": "Adopt Tier 2 across the units to keep the program's cost down",
-        "B": "Adopt Tier 4 across the units for one consistent standard",
-        "C": "Let each unit head choose the tier the unit can afford",
-        "D": "Set each unit's target tier from its own risk and cost-benefit"
+        "A": "Certification that the controls meet the framework",
+        "B": "Proof that residual risk sits within appetite",
+        "C": "A full list of the controls the firm must adopt",
+        "D": "A common way to compare current and target outcomes"
       },
       "correct": "D",
-      "key_concept": "Target maturity, such as a CSF Tier, is set by each area's risk and cost-benefit, not at the highest level everywhere.",
-      "pre_read": "Notice whether the proposed target reflects what each unit's risk needs.",
-      "correct_explanation": "CSF Tiers describe how rigorous risk management practices are, and NIST encourages higher Tiers where risks or mandates are greater or cost-benefit supports them. Setting each unit's target by its risk and cost-benefit puts the most rigor where exposure is highest, with owners approving the targets. Tier 4 everywhere is the runner-up: it looks consistent, but spends Adaptive-level effort on a small gift-card unit whose risk may not justify it.",
+      "key_concept": "A framework mapping gives a common language for current and target outcomes; risk and cost-benefit, not the framework, decide what to close.",
+      "pre_read": "Ask what a framework is designed to give an organization, and what it is not.",
+      "correct_explanation": "CSF 2.0 describes outcomes, not a control checklist, and its Profiles describe the outcomes an organization achieves now and those it selects as targets. Mapping practices to those outcomes gives the practitioner a common way to show the gap between current and target, which owners can then prioritize by risk. A full list of controls is the runner-up: the framework is tailored, so the mapping informs choices rather than dictating them.",
       "wrong_explanations": {
-        "A": "Keeping cost down matters; however, one low Tier for all units would leave the higher-risk ones with less rigor than their exposure needs.",
-        "B": "Consistency is attractive; however, Tier 4 everywhere spends the most effort on units whose risk may not need it, which cost-benefit does not support.",
-        "C": "Affordability counts; however, a target set by what a unit can afford, not by its risk, can leave material exposure untreated."
+        "A": "Alignment can be shown to others; however, CSF 2.0 is a voluntary outcomes framework, and a mapping shows alignment, not a certified status.",
+        "B": "A mapping shows which outcomes are achieved; however, whether residual risk is within appetite needs the scenarios themselves rated on evidence.",
+        "C": "The mapping does show outcomes with no practice behind them; however, CSF outcomes are tailored to the organization's risks and do not form a mandatory control list."
       },
       "tips": [
-        "Eliminate: A sets one low Tier regardless of each unit's risk, and C lets affordability rather than risk set the target.",
-        "Final two: D beats B because target rigor follows risk and cost-benefit; the highest Tier everywhere over-invests where risk is low.",
-        "Exam cue: a target maturity or Tier is set by risk and cost-benefit, not maxed out by default; different units can rightly have different targets."
+        "Eliminate: A treats a voluntary framework as something that certifies, and B treats alignment with outcomes as proof that risk is within appetite.",
+        "Final two: D beats C because CSF outcomes are tailored to risk; the mapping shows current against target, not a list of controls the firm must adopt.",
+        "Exam cue: a framework gives a common language and a gap view; risk and cost-benefit decide what to close, and a framework result is never a risk rating."
       ],
-      "framework_ref": "NIST CSF 2.0 Section 3.2 (CSF Tiers: progression to higher Tiers is encouraged when risks or mandates are greater or when cost-benefit supports it); NIST CSF 2.0 Section 3.1 (CSF Profiles: a Current Profile describes outcomes being achieved and a Target Profile the outcomes selected for risk management objectives)",
+      "framework_ref": "NIST CSF 2.0 Section 3.1 (CSF Profiles: a Current Profile describes outcomes being achieved and a Target Profile the outcomes selected for risk management objectives)",
       "related_concepts": [
-        "CSF Tiers",
-        "Control maturity",
-        "Cost-benefit"
+        "CSF Profiles",
+        "Framework mapping",
+        "Gap analysis"
       ],
-      "_provenance": "Authored from concept: notes 4B1.3 Security Frameworks and Standards. Round 2, 31 Oct 2026: authored from notes 4B1.3 (target CSF Tiers are set by risk and cost-benefit, not at the top level everywhere); original retailer CSF Tier targets scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios.",
+      "_provenance": "Authored from concept: notes 4B1.3 Security Frameworks and Standards. Round 2, 31 Oct 2026; replaced in repair round 1 (31 Oct 2026, standards audit): the earlier CSF Tier-target item was a near-duplicate of crisc_d3_035, and two options carried their own reasons. Now a short stem on the value of mapping practices to CSF 2.0 outcomes (Profiles give a current and target view; risk decides what to close); key kept at D by option order; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios.",
       "style_version": 2
     },
     {
       "id": "crisc_d4_039",
       "domain": 4,
-      "subtopic": "4B1 Security concepts, frameworks and standards. Standing administrator access",
+      "subtopic": "4B1 Security concepts, frameworks and standards. Length of elevated access",
       "principle_id": "proportionate-response",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "At a payroll software provider, 30 developers keep permanent administrator access to production for emergencies, which arise on about six days a year. What is the risk practitioner's BEST recommendation?",
+      "question": "A payroll software provider grants developers production administrator access on request for 30 days at a time, though each emergency fix takes about four hours. What is the risk practitioner's BEST recommendation?",
       "options": {
-        "A": "Remove production access from the 30 developers",
-        "B": "Grant time-limited administrator access per task",
-        "C": "Review the developers' administrator rights each year",
+        "A": "Remove developers' administrator access to production",
+        "B": "Limit each grant to the task and a few hours",
+        "C": "Review each developer's administrator grants yearly",
         "D": "Record each developer's acceptance of the access risk"
       },
       "correct": "B",
-      "key_concept": "Least privilege applies to time as well as scope: grant elevated access per task and for a limited time, not as standing rights.",
-      "pre_read": "Compare how often the access is needed with how long it is held.",
-      "correct_explanation": "Least privilege means access only for as long as it is needed. Rights used on about six days a year but held all year leave 30 standing paths into production for an attacker or a mistake. Time-limited access granted per task, with each grant logged, keeps emergency fixes possible while removing most of that exposure. Removing access outright is the runner-up: it cuts the risk but leaves no fast route for real emergencies.",
+      "key_concept": "Least privilege applies to time as well as scope: size each grant of elevated access to the task, not to a convenient period.",
+      "pre_read": "Notice what each grant allows and how the work it serves is done.",
+      "correct_explanation": "Least privilege covers time as well as scope. A 30-day grant for a fix that takes four hours leaves production administrator rights open far longer than the work needs, for an attacker or a mistake to use. Limiting each grant to the task and a few hours keeps emergency fixes possible while removing most of that exposure. Removing access is the runner-up: it cuts the risk but leaves no fast route for real emergencies.",
       "wrong_explanations": {
-        "A": "Removal cuts exposure most; however, it leaves no fast way to fix production in a real emergency, trading one risk for another.",
-        "C": "Periodic review is useful; however, a yearly check still leaves 30 standing administrator accounts in place between reviews.",
-        "D": "Signed acknowledgments raise awareness; however, individual developers cannot accept organizational risk, and the standing access stays in place."
+        "A": "Removal cuts exposure most and fits separation of duties; however, it leaves no fast way to fix production in a real emergency, trading one risk for another.",
+        "C": "Periodic review is useful; however, a yearly check does nothing about 30-day grants that outlast each task.",
+        "D": "Signed acknowledgments raise awareness; however, individual developers cannot accept organizational risk, and the long grants stay in place."
       },
       "tips": [
-        "Eliminate: C keeps the standing rights in place between yearly reviews, and D asks individuals to accept a risk that belongs to the risk owner.",
-        "Final two: B beats A because time-limited access meets the real emergency need with least privilege; removal cuts exposure but disables emergency response.",
-        "Exam cue: when access is needed rarely, the proportionate fix grants it for the task and time needed, rather than standing rights or blanket removal."
+        "Eliminate: C reviews grants yearly without shortening any of them, and D asks individuals to accept a risk that belongs to the risk owner.",
+        "Final two: B beats A because a grant sized to the task meets the emergency need with least privilege; removal cuts exposure but disables emergency response.",
+        "Exam cue: least privilege applies to time as well as scope; size each grant of elevated access to the task, not to a convenient period."
       ],
-      "framework_ref": "NIST SP 800-53 Rev. 5 AC-6 (Least Privilege); NIST SP 800-53 Rev. 5 AC-5 (Separation of Duties)",
+      "framework_ref": "NIST SP 800-53 Rev. 5 AC-6 (Least Privilege)",
       "related_concepts": [
         "Least privilege",
         "Just-in-time access",
         "Privileged access"
       ],
-      "_provenance": "Authored from concept: notes 4B1.1 Core Security Principles. Round 2, 31 Oct 2026: authored from notes 4B1.1 (least privilege covers time as well as scope, so rare admin needs get time-limited access); original payroll software provider standing admin rights scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios.",
+      "_provenance": "Authored from concept: notes 4B1.1 Core Security Principles. Round 2, 31 Oct 2026: authored from notes 4B1.1 (least privilege covers time as well as scope, so rare admin needs get time-limited access); original payroll software provider 30-day admin grant scenario (standing rights until repair round 1) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios. Review fixes 31 Oct 2026 (repair round 1, standards audit and verifiers): re-angled from standing rights to the length of each grant to break the mirror with CISA d5_030; pre_read no longer points at the key; 'grant' now also in option C so the key is not the only stem echo. Review fixes 31 Oct 2026 (repair round 2, verifiers): AC-5 (Separation of Duties) citation removed because it argues for removal, not the key; the note for A now admits that pull.",
       "style_version": 2
     },
     {
@@ -1457,25 +1457,25 @@
       "principle_id": "residual-counts-working-controls",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A shipping line's register rates remote-access risk as low because it bought a Zero Trust access product, though only 20% of remote users have moved to it. What is the risk practitioner's BEST recommendation?",
+      "question": "Which of the following is the BEST basis for a risk practitioner's rating of remote-access risk after a shipping line buys a Zero Trust product and moves 20% of remote users to it?",
       "options": {
-        "A": "Keep the low rating while the rollout remains on schedule",
-        "B": "Rate the risk at its inherent level until users finish moving",
-        "C": "Rate current risk, crediting the 20% of users now covered",
-        "D": "Ask the owner to accept the gap until the rollout ends"
+        "A": "Target risk once the rollout is complete",
+        "B": "Inherent risk until the users finish moving",
+        "C": "Current risk, crediting the 20% now covered",
+        "D": "Risk the owner accepts until the rollout ends"
       },
       "correct": "C",
       "key_concept": "Current risk credits only controls in place and working; a partly deployed Zero Trust product reduces risk only where it is live.",
-      "pre_read": "Notice how much of the purchased control is actually in use.",
-      "correct_explanation": "A register rating records current risk, which counts controls already in place and working, not ones bought or planned. With 80% of remote users still on the old path, most remote access has no Zero Trust protection yet, so the rating should credit only the coverage that is live. Keeping the low rating while the rollout is on schedule is the runner-up: it treats the finished rollout's target risk as today's position.",
+      "pre_read": "Notice what has been bought and what is actually in use today.",
+      "correct_explanation": "A register rating records current risk, which counts controls already in place and working, not ones bought or planned. With 80% of remote users still on the old path, most remote access has no Zero Trust protection yet, so the rating should credit only the coverage that is live. Target risk once the rollout is complete is the runner-up: it judges whether the plan is enough, not today's position.",
       "wrong_explanations": {
-        "A": "A rollout on schedule is good news; however, it reduces risk only as users move, so the low rating credits protection 80% of remote users do not yet have.",
-        "B": "Raising the rating corrects the overstatement; however, inherent risk ignores the controls that do work, including the 20% of users already moved.",
-        "D": "Owners may accept residual risk within appetite; however, acceptance needs an accurate rating first, and this one credits controls not yet in place."
+        "A": "Target risk shows where the plan should lead; however, it credits protection 80% of remote users do not yet have, so it overstates today's exposure.",
+        "B": "Inherent risk avoids overstating the protection; however, it ignores the controls that do work, including the 20% of users already moved.",
+        "D": "Owners may accept residual risk within appetite; however, acceptance is a response made on an accurate rating, not a basis for the rating itself."
       },
       "tips": [
-        "Eliminate: B sets aside the coverage already live, and D asks for acceptance on a rating that credits protection not yet in place.",
-        "Final two: C beats A because current risk counts only controls in place and working; a rollout on schedule is target risk, not today's position.",
+        "Eliminate: B sets aside the coverage already live, and D treats the owner's acceptance as the basis for a rating that acceptance should follow.",
+        "Final two: C beats A because current risk counts only controls in place and working; target risk judges whether the rollout plan is enough, not today's position.",
         "Exam cue: a purchase or a plan is not a working control; rate current risk on what is live, and treat the plan's outcome as target risk."
       ],
       "framework_ref": "ISACA Glossary (current risk); NIST SP 800-207 Section 7 (Migrating to a Zero Trust Architecture: an incremental journey rather than a wholesale replacement)",
@@ -1484,35 +1484,35 @@
         "Zero Trust",
         "Target risk"
       ],
-      "_provenance": "Authored from concept: notes 4B1.2 Zero Trust Architecture. Round 2, 31 Oct 2026: authored from notes 4B1.2 (a partly deployed Zero Trust product reduces current risk only where it is live); original shipping line Zero Trust rollout scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios.",
+      "_provenance": "Authored from concept: notes 4B1.2 Zero Trust Architecture. Round 2, 31 Oct 2026: authored from notes 4B1.2 (a partly deployed Zero Trust product reduces current risk only where it is live); original shipping line Zero Trust rollout scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios. Review fixes 31 Oct 2026 (repair round 1, standards audit and verifiers): pre_read no longer points to the key. Review fixes 31 Oct 2026 (repair round 2, verifiers): converted to a short 'Which of the following' stem (rule 13) with the deciding fact kept in the stem; key letter unchanged. Options now name current, target and inherent risk directly; explanations and tips follow.",
       "style_version": 2
     },
     {
       "id": "crisc_d4_041",
       "domain": 4,
-      "subtopic": "4B2 Security/risk awareness and training. Ownership of the risk culture program",
+      "subtopic": "4B2 Security/risk awareness and training. Accountability for risk culture",
       "principle_id": "match-decision-to-role",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A software firm's CEO asks the risk practitioner to own the firm's new risk culture program. What is the practitioner's BEST response?",
+      "question": "A software firm's CEO wants the risk practitioner to be accountable for improving the firm's risk culture. What is the practitioner's BEST response?",
       "options": {
-        "A": "Accept ownership and report the results to the board",
-        "B": "Propose that HR own the program within staff training",
-        "C": "Propose that internal audit own the program",
-        "D": "Propose that the executive team own the risk culture program"
+        "A": "Accept the accountability and report progress to the board",
+        "B": "Propose that HR take the accountability within training",
+        "C": "Propose that internal audit take the accountability",
+        "D": "Propose that the executive team keep the accountability"
       },
       "correct": "D",
-      "key_concept": "Executive leadership owns risk culture; the risk practitioner promotes, measures and reports on it, and internal audit assures it independently.",
+      "key_concept": "Executive leadership is accountable for risk culture; the risk practitioner promotes, measures and reports on it, and internal audit assures it independently.",
       "pre_read": "Ask who shapes culture through tone, rewards and priorities, and who supports them.",
-      "correct_explanation": "Risk culture follows what leaders say, reward and do, so accountability for it sits with executive leadership, as NIST CSF 2.0 says of a risk-aware culture. The practitioner supports them by designing measures, running surveys and reporting results. Accepting ownership is the runner-up: it is helpful in spirit, but it places culture with a support function that cannot set the firm's tone, incentives or priorities.",
+      "correct_explanation": "Risk culture follows what leaders say, reward and do, so accountability for it sits with executive leadership; NIST CSF 2.0 GV.RR-01 makes leadership accountable for fostering a risk-aware culture. The practitioner still promotes that culture by designing measures, running surveys and reporting results. Accepting the accountability is the runner-up: it is helpful in spirit, but places culture with a support function that cannot set the firm's tone, incentives or priorities.",
       "wrong_explanations": {
-        "A": "The practitioner can run parts of the program; however, culture is shaped by leaders' tone and incentives, which a risk function cannot own.",
-        "B": "HR can deliver training and incentives; however, culture goes beyond training, and accountability for it belongs to the executive team that sets the tone.",
-        "C": "Internal audit can assess culture independently; however, owning the program would compromise the independence it needs to give assurance on it."
+        "A": "The practitioner can run culture surveys and reporting; however, accountability for culture stays with the leaders whose tone and incentives shape it, which a risk function cannot set.",
+        "B": "HR can deliver training and adjust incentives; however, culture goes beyond training, and accountability for it belongs to the executive team that sets the tone.",
+        "C": "Internal audit can assess culture independently; however, taking accountability for it would compromise the independence it needs to give assurance."
       },
       "tips": [
-        "Eliminate: B narrows culture to a training program, and C gives the program to internal audit, whose role is independent assurance.",
-        "Final two: D beats A because leaders own the culture they shape; the practitioner measures and supports it instead of owning it.",
+        "Eliminate: B narrows culture to training, and C gives accountability to internal audit, whose role is independent assurance.",
+        "Final two: D beats A because leaders are accountable for the culture they shape; the practitioner measures and supports it without holding that accountability.",
         "Exam cue: tone at the top means leadership owns risk culture; the risk function promotes, measures and reports, and internal audit gives assurance."
       ],
       "framework_ref": "NIST CSF 2.0 GV.RR-01 (organizational leadership is responsible and accountable for cybersecurity risk and fosters a culture that is risk-aware, ethical and continually improving); ISACA Glossary (risk culture)",
@@ -1521,7 +1521,7 @@
         "Tone at the top",
         "Three lines model"
       ],
-      "_provenance": "Authored from concept: notes 4B2.1 Risk-Aware Culture and Role-Based Training. Round 2, 31 Oct 2026: authored from notes 4B2.1 (leadership owns risk culture while the practitioner promotes and measures it); original software firm risk culture program scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios.",
+      "_provenance": "Authored from concept: notes 4B2.1 Risk-Aware Culture and Role-Based Training. Round 2, 31 Oct 2026: authored from notes 4B2.1 (leadership owns risk culture while the practitioner promotes and measures it); original software firm risk culture accountability scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios. Review fixes 31 Oct 2026 (repair round 1, standards audit and verifiers): stem asks for accountability for the culture, not ownership of a program, so the risk function's legitimate program role no longer makes option A defensible; the key no longer repeats the stem's words and is not the longest option.",
       "style_version": 2
     },
     {
@@ -1531,12 +1531,12 @@
       "principle_id": "root-cause-over-symptom",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A builders' merchant's accounts clerk paid a fake invoice by following the documented process, which has no supplier callback, and the finance director wants the clerk dismissed. What is the risk practitioner's BEST recommendation?",
+      "question": "Which of the following should a risk practitioner recommend as BEST after a builders' merchant's accounts clerk pays a fake invoice while following every step of the documented payment process?",
       "options": {
-        "A": "Add a verification step to the supplier payment process",
-        "B": "Dismiss the clerk who released the fraudulent payment",
-        "C": "Retrain the finance team on spotting fake supplier invoices",
-        "D": "Enroll the clerk in monthly supplier-fraud awareness tests"
+        "A": "A verification step in the payment process",
+        "B": "Dismissal of the clerk who released the payment",
+        "C": "Retraining for the finance team on fake invoices",
+        "D": "Monthly fraud awareness tests for the clerk"
       },
       "correct": "A",
       "key_concept": "When an error follows the documented process, the process is the root cause; fix it before blaming or retraining the person.",
@@ -1558,7 +1558,7 @@
         "Root cause",
         "Process control"
       ],
-      "_provenance": "Authored from concept: notes 4B2.1 Risk-Aware Culture and Role-Based Training. Round 2, 31 Oct 2026: authored from notes 4B2.1 (an error made by following a weak process is fixed in the process, not by blaming the person); original builders' merchant fake invoice scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios.",
+      "_provenance": "Authored from concept: notes 4B2.1 Risk-Aware Culture and Role-Based Training. Round 2, 31 Oct 2026: authored from notes 4B2.1 (an error made by following a weak process is fixed in the process, not by blaming the person); original builders' merchant fake invoice scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios. Review fixes 31 Oct 2026 (repair round 1, standards audit and verifiers): stem no longer names the missing supplier callback, which planted the key. Review fixes 31 Oct 2026 (repair round 2, verifiers): converted to a short 'Which of the following' stem (rule 13) with the deciding fact kept in the stem; key letter unchanged. Options are now noun phrases; the finance director's demand was dropped as it only set up option B.",
       "style_version": 2
     },
     {
@@ -1605,9 +1605,9 @@
       "principle_id": "answer-from-the-stem",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A city transport authority will publish trip records with names removed and card numbers replaced by random codes, but exact times and stops kept. What GREATEST privacy risk should the risk practitioner raise?",
+      "question": "Which of the following should a risk practitioner raise as the GREATEST privacy risk in a transit authority's trip records, published with one fixed random code per card and exact times and stops?",
       "options": {
-        "A": "Codes that attackers could decrypt back to card numbers",
+        "A": "Decrypting the codes back into the card numbers",
         "B": "Errors in the trip data that mislead outside researchers",
         "C": "Linking each code's travel pattern to a known person",
         "D": "Authority staff misusing the records once published"
@@ -1615,7 +1615,7 @@
       "correct": "C",
       "key_concept": "De-identified records can be re-identified by linking what remains, such as exact times and places, to known people.",
       "pre_read": "Look at what the authority keeps in the records, not only what it removes.",
-      "correct_explanation": "Removing names does not make data anonymous when each code follows one person and exact times and stops remain. A few known trips, such as a home stop at a regular hour, can tie a code to a person and expose all their travel. Decrypting the codes is the runner-up: random replacement values have no key to break, so the real exposure is linkage, not decryption.",
+      "correct_explanation": "Replacing card numbers does not make data anonymous when each code follows one person and exact times and stops remain. A few known trips, such as a home stop at a regular hour, can tie a code to a person and expose all their travel. Decrypting the codes is the runner-up: random replacement values have no key to break, so the real exposure is linkage, not decryption.",
       "wrong_explanations": {
         "A": "Weak pseudonyms can sometimes be reversed; however, these codes are random replacements, not encrypted card numbers, so there is nothing to decrypt.",
         "B": "Data quality matters for research; however, errors mislead users of the data, while the privacy question is whether people can be identified.",
@@ -1626,20 +1626,20 @@
         "Final two: C beats A because random codes cannot be decrypted, but a stable code with exact times and stops can be linked to a person.",
         "Exam cue: de-identified data can still be re-identified; look at what remains, such as exact times, places or rare details, not just what was removed."
       ],
-      "framework_ref": "NIST SP 800-188 Section 2.2 (Terminology: de-identified data can be re-identified by joining it with other datasets, and pseudonyms can raise that risk)",
+      "framework_ref": "NIST SP 800-188 Section 2.2 (Terminology: de-identified data can be re-identified by joining it with other datasets, and pseudonyms can raise that risk); ISACA Glossary (anonymization)",
       "related_concepts": [
         "De-identification",
         "Re-identification",
         "Pseudonymization"
       ],
-      "_provenance": "Authored from concept: notes 4B3.3 Personal Data in AI and Cross-Border Transfers. Round 2, 31 Oct 2026: authored from notes 4B3.3 (removing names is not enough when exact times and places remain, because records can be re-identified); original city transport authority trip records scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios.",
+      "_provenance": "Authored from concept: notes 4B3.3 Personal Data in AI and Cross-Border Transfers. Round 2, 31 Oct 2026: authored from notes 4B3.3 (removing names is not enough when exact times and places remain, because records can be re-identified); original city transport authority trip records scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios. Review fixes 31 Oct 2026 (repair round 1, standards audit and verifiers): stem now states each card keeps the same code on every trip, the fact the linkage key depends on; option A no longer hedged; ISACA Glossary (anonymization) added to show the records are pseudonymized, not anonymized. Review fixes 31 Oct 2026 (repair round 2, verifiers): converted to a short 'Which of the following' stem (rule 13) with the deciding fact kept in the stem; key letter unchanged.",
       "style_version": 2
     },
     {
       "id": "crisc_d4_045",
       "domain": 4,
       "subtopic": "4B3 Data privacy and data protection principles. Moving records to another country",
-      "principle_id": "objectives-first",
+      "principle_id": "analyze-before-acting",
       "difficulty": "application",
       "bloom_level": "Application",
       "question": "An engineering firm's HR director wants to move employee records to a cloud provider's data center in another country next month. What should the risk practitioner do FIRST?",

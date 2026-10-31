@@ -206,7 +206,7 @@
           "how_it_works": [
             "Each change has a request, an impact assessment, an approval suited to its risk, a test result and a back-out plan.",
             "Emergency changes may bypass the normal approval path, usually through an emergency approver, but are documented and reviewed after the fact as soon as practical.",
-            "A configuration management database (CMDB) records configuration items, their settings and dependencies; when its counts differ from other tools, the sources are reconciled before figures are reported.",
+            "A configuration management database (CMDB) records configuration items and dependencies; assets missing from it sit outside patching, change and backup, so differing counts from other tools are reconciled.",
             "Comparing live settings with the baseline finds unauthorized changes, which are investigated, not quietly reversed.",
             "Low-risk, repeatable changes can be pre-approved, so review effort follows risk.",
             "A growing share of emergency changes is analyzed for its cause, such as slow normal approvals or poor planning, before more approval steps are added."
@@ -235,7 +235,7 @@
               "Change tickets with approver names, test evidence and rollback steps",
               "Configuration drift reports from monitoring tools"
             ],
-            "recommend": "Have the change manager set emergency-change criteria and report emergency volume and overdue reviews monthly.",
+            "recommend": "Have the change manager analyze why emergency changes are rising, then set emergency-change criteria and report volume and overdue reviews monthly.",
             "decides": "The change authority approves changes; the risk owner accepts any remaining change risk"
           },
           "isaca_rule": "The risk view of change asks: was the impact assessed, approved by the right authority and reversible? Emergency changes are allowed, but each gets a timely retrospective review. Growing emergency volume is a risk signal: report it and find out why the normal path is being avoided.",
@@ -1161,8 +1161,8 @@
               "why": "Uncertainty calls for assessment, not prohibition. A ban can forgo value and push staff toward unmanaged workarounds."
             },
             {
-              "trap": "Approving adoption on the strength of vendor claims and certifications.",
-              "why": "Vendor claims describe the product, not how it fits the organization's data, processes and appetite. Evidence and a fit-specific assessment are needed."
+              "trap": "Judging a new platform on vendor claims, certifications and features alone.",
+              "why": "Claims and certifications describe the product, not its fit with the organization's data and appetite, or a way out if a young vendor fails. That needs evidence and exit terms."
             }
           ],
           "key_terms": [

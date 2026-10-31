@@ -1874,7 +1874,7 @@
           "definition": "Risk reporting formats present risk and control information visually: heat maps plot likelihood against impact, scorecards rate results against targets, and dashboards combine indicators.",
           "why_it_matters": "The format shapes the decision. A good visual shows what needs attention at a glance; a poor one hides trends, ranges and risks sitting just outside the red cells.",
           "how_it_works": [
-            "Heat maps show relative position but not trend; add arrows or prior-period markers to show movement.",
+            "Heat maps show relative position but not trend; add trend arrows fed by each risk's KRI history, because a risk can hold its cell while its drivers worsen.",
             "Heat-map scores are ordinal, so cells cannot be added or averaged meaningfully.",
             "Scorecards and dashboards show indicators against thresholds and trend, not raw counts alone.",
             "Every visual needs a date, a data source and a note of known limitations."
@@ -1920,7 +1920,7 @@
             },
             {
               "term": "Trend marker",
-              "definition": "A sign, such as an arrow, showing a risk's direction since the last report."
+              "definition": "A sign, such as an arrow fed by indicator history, showing a risk's direction since the last report."
             }
           ]
         },
@@ -1948,7 +1948,7 @@
               "Report distribution lists by audience"
             ],
             "recommend": "Have the risk function tailor each report to its audience and state the decision requested.",
-            "decides": "The board or committee that set appetite decides on breaches reported to it"
+            "decides": "The risk owner and the body that approved the breached threshold decide the response"
           },
           "isaca_rule": "Report to the level that can decide, in the terms that audience uses. The board needs risk against appetite and the decisions asked of it; owners need actions. Escalate a breach to the risk owner and whoever set the limit, without waiting for the next cycle.",
           "exam_traps": [

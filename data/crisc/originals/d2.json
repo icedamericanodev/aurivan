@@ -651,7 +651,7 @@
         "D": "Current risk reported by peer utilities in a sector benchmark"
       },
       "correct": "A",
-      "key_concept": "Today's exposure is current risk, crediting only implemented, working controls; the residual risk projected after planned responses judges the plan, not today's position.",
+      "key_concept": "Today's exposure is current risk, crediting only implemented, working controls; future residual (target) risk, projected for planned responses, judges the plan, not today's position.",
       "pre_read": "Notice what decision the advice supports and the point in time it refers to.",
       "correct_explanation": "Whether the utility is within appetite today depends on current risk, which the ISACA Glossary defines as counting actions already taken but not those proposed. A projection counting next year's planned controls is what the Glossary's risk response entry calls future residual risk: it shows whether the plan will be enough, not today's exposure. If current risk is above appetite, the practitioner takes treatment options to the risk owner.",
       "wrong_explanations": {
@@ -670,7 +670,7 @@
         "Future residual risk",
         "Inherent risk"
       ],
-      "_provenance": "Authored from concept: notes 2B5.1 Inherent, Current and Residual Risk (compare residual, not inherent, risk with appetite; count only controls in place and working). Original water utility control system scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D2 pilot batch, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): HARD ERROR fix paired with notes 2B5.1: explanation now bridges ISACA residual and current risk and calls a projection a target; ID.RA-05 replaced by IR 8286 Rev. 1 Section 3.5.2; stem no longer has the practitioner deciding; reason tail removed from D; re-lettered (key B to A); neutral pre_read. Quality pass 31 Oct 2026 (ISACA authenticity audit and concept review): HARD ERROR fix (concept review D2-1): the planned-controls projection is what the ISACA Glossary's risk response entry calls future residual risk, so the stem now asks about appetite today and the key is current risk; options, key_concept, explanation, wrong explanation B and tips per the concept review; 'any of' removed from distractor C; stem in 'Which of the following' form; ISACA Glossary (risk response) cited (new Verified library bullet); notes 2B5.1 rule aligned. pre_read matched to the new stem. Repair round 1, 31 Oct 2026 (independent verification): D ('whichever is higher') always equalled C, so it is replaced by a peer-benchmark distractor; wrong explanation D and tip 1 updated; the exam cue now bridges current and residual risk (once a response is implemented its residual risk is today's current risk), paired with notes 2B5 overview, 2B5.1 and 2B5.3.",
+      "_provenance": "Authored from concept: notes 2B5.1 Inherent, Current and Residual Risk (compare residual, not inherent, risk with appetite; count only controls in place and working). Original water utility control system scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D2 pilot batch, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): HARD ERROR fix paired with notes 2B5.1: explanation now bridges ISACA residual and current risk and calls a projection a target; ID.RA-05 replaced by IR 8286 Rev. 1 Section 3.5.2; stem no longer has the practitioner deciding; reason tail removed from D; re-lettered (key B to A); neutral pre_read. Quality pass 31 Oct 2026 (ISACA authenticity audit and concept review): HARD ERROR fix (concept review D2-1): the planned-controls projection is what the ISACA Glossary's risk response entry calls future residual risk, so the stem now asks about appetite today and the key is current risk; options, key_concept, explanation, wrong explanation B and tips per the concept review; 'any of' removed from distractor C; stem in 'Which of the following' form; ISACA Glossary (risk response) cited (new Verified library bullet); notes 2B5.1 rule aligned. pre_read matched to the new stem. Repair round 1, 31 Oct 2026 (independent verification): D ('whichever is higher') always equalled C, so it is replaced by a peer-benchmark distractor; wrong explanation D and tip 1 updated; the exam cue now bridges current and residual risk (once a response is implemented its residual risk is today's current risk), paired with notes 2B5 overview, 2B5.1 and 2B5.3. Round 2 gate 31 Oct 2026: key concept now names the planned level future residual (target) risk, matching its own explanation, calibration rule 11, the glossary and notes 2B5.1.",
       "style_version": 2
     },
     {
@@ -756,7 +756,7 @@
       "bloom_level": "Application",
       "question": "A risk analyst learns that three peer airlines lost a day of flights when a crew-scheduling platform that the analyst's airline also uses failed. How should the analyst BEST use these peer events?",
       "options": {
-        "A": "As grounds to raise the rating to the peers' level",
+        "A": "As a direct measure of the airline's own exposure",
         "B": "As rating input, adjusted for local exposure",
         "C": "As a trigger to replace the scheduling platform",
         "D": "As background until the airline has its own loss"
@@ -764,7 +764,7 @@
       "correct": "B",
       "key_concept": "External loss events inform a scenario's rating, adjusted for the enterprise's own exposure and controls before the rating changes.",
       "pre_read": "Notice whose losses these were and what the airline shares with them.",
-      "correct_explanation": "Peer events show the platform can fail and how much harm follows, so they are real evidence for the airline's vendor outage scenario. The analyst feeds them into the rating after adjusting for local exposure, such as the airline's contract terms, fallback procedures and size. Copying the peers' level is the runner-up: it uses the evidence but skips the differences that could make the airline's likelihood or impact higher or lower.",
+      "correct_explanation": "Peer events show the platform can fail and how much harm follows, so they are real evidence for the airline's vendor outage scenario. The analyst feeds them into the rating after adjusting for local exposure, such as the airline's contract terms, fallback procedures and size. Taking the peers' losses as a direct measure is the runner-up: it uses the evidence but skips the differences that could make the airline's likelihood or impact higher or lower.",
       "wrong_explanations": {
         "A": "It treats the events as evidence, which is right; however, peer losses reflect the peers' own fallbacks and contracts, so the rating needs adjusting for the airline's exposure first.",
         "C": "Replacing the platform is a response decision for the risk owner, made after the scenario is rated; choosing it from peer news skips the analysis.",
@@ -772,7 +772,7 @@
       },
       "tips": [
         "Eliminate: C picks a response before the scenario is rated, and D sets aside external evidence because the airline has not suffered the loss itself.",
-        "Final two: B beats A because external events inform the rating only after adjusting for the airline's own exposure; copying the peers' level imports their circumstances.",
+        "Final two: B beats A because external events inform the rating only after adjusting for the airline's own exposure; using peer losses unadjusted imports their circumstances.",
         "Exam cue: external loss data is evidence, not a verdict. Use it in the rating, scaled to the enterprise's own exposure and controls."
       ],
       "framework_ref": "COBIT 2019 APO12.01 (Collect Data); NIST SP 800-30 Rev. 1 Section 2.3.1 (Risk Models: threats, vulnerabilities, likelihood and impact)",
@@ -781,35 +781,35 @@
         "Information sharing",
         "Likelihood evidence"
       ],
-      "_provenance": "Authored from concept: notes 2A1.2 Internal and External Event Sources. Round 2, 31 Oct 2026: authored from notes 2A1.2 (external events are adjusted for local exposure before they change a rating); original airline crew-scheduling platform scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios.",
+      "_provenance": "Authored from concept: notes 2A1.2 Internal and External Event Sources. Round 2, 31 Oct 2026: authored from notes 2A1.2 (external events are adjusted for local exposure before they change a rating); original airline crew-scheduling platform scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios. Review fixes 31 Oct 2026: the runner-up is now the plain misconception of using peer losses unadjusted.",
       "style_version": 2
     },
     {
       "id": "crisc_d2_022",
       "domain": 2,
       "subtopic": "2A1 Risk events. Repeated small AI errors",
-      "principle_id": "emerging-and-ai-risk-owned",
+      "principle_id": "analyze-before-acting",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "An insurer's AI claims-triage tool misrouted 300 claims last quarter, and the service desk closed each as a separate ticket after rerouting the claim. What should the risk analyst do FIRST?",
+      "question": "A broadband provider's AI billing assistant applied the wrong tariff to 300 customer bills last quarter; the service desk closed each as a separate ticket after correcting it. What should the risk analyst do FIRST?",
       "options": {
-        "A": "Set a KRI for the AI scenario on monthly misroutes",
-        "B": "Ask the vendor to retrain the model on misrouted claims",
+        "A": "Escalate the AI scenario to the board as an incident",
+        "B": "Confirm each customer received a corrected bill",
         "C": "Assess whether each ticket met its service target",
-        "D": "Assess the misroutes' combined impact on the AI scenario"
+        "D": "Assess the errors' combined impact on the AI scenario"
       },
       "correct": "D",
       "key_concept": "Many small AI errors closed one by one can add up to a significant risk event; aggregate them and assess their combined impact.",
-      "pre_read": "Notice how the errors were handled, one ticket at a time.",
-      "correct_explanation": "Each ticket was closed as a service issue, so nobody has measured what 300 misroutes mean together: delayed claims, customer harm and regulatory exposure. Aggregating them and assessing the combined impact on the AI claims-triage scenario comes first, so the business owner can decide on a response. A KRI is the runner-up: it helps monitor the scenario later, but its thresholds can only be set once the impact is understood.",
+      "pre_read": "Notice how the errors were handled.",
+      "correct_explanation": "Each ticket was closed as a service issue, so nobody has measured what 300 billing errors mean together: overcharged customers, complaints and regulatory exposure. Aggregating them and assessing the combined impact on the AI billing scenario comes first, so the business owner can decide on a response. Escalating to the board is the runner-up: the errors may prove significant, but escalation before analysis gives the board a count, not an impact.",
       "wrong_explanations": {
-        "A": "A KRI is useful for ongoing monitoring; however, it cannot be given a meaningful threshold until the combined impact of the misroutes has been assessed.",
-        "B": "Retraining is a treatment the AI system's business owner chooses after the risk is analyzed; ordering it now acts before anyone knows how serious the errors are.",
-        "C": "Ticket service times measure service desk performance; they say nothing about the business harm that 300 misrouted claims caused."
+        "A": "The board may need to hear of it; however, escalating 300 closed tickets before their combined impact is assessed reports a number, not a risk.",
+        "B": "Confirming corrected bills checks the customer fix one account at a time; it does not measure what the pattern means for the business.",
+        "C": "Ticket service times measure service desk performance; they say nothing about the business harm that 300 wrong bills caused."
       },
       "tips": [
-        "Eliminate: B chooses a treatment before the risk is analyzed, and C measures how fast tickets closed, not what the errors did to the business.",
-        "Final two: D beats A because a KRI threshold needs the analyzed impact first; aggregating the misroutes into the scenario is the step that makes monitoring meaningful.",
+        "Eliminate: B and C look at bills and tickets one by one, which is how the risk was missed.",
+        "Final two: D beats A because the combined impact must be analyzed before it is escalated; the board needs an impact, not a ticket count.",
         "Exam cue: repeated small AI errors can be one significant risk event in aggregate. Closing each ticket is not closing the risk."
       ],
       "framework_ref": "NIST AI 100-1 (AI RMF 1.0) MEASURE 2.4 (the functionality and behavior of the AI system are monitored when in production); COBIT 2019 APO12.01 (Collect Data)",
@@ -818,7 +818,7 @@
         "AI risk events",
         "Incident versus risk"
       ],
-      "_provenance": "Authored from concept: notes 2A1.3 AI Risk Events: Bias and Model Drift. Round 2, 31 Oct 2026: authored from notes 2A1.3 (repeated small AI errors are aggregated and assessed against the AI scenario); original insurer AI claims-triage scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios.",
+      "_provenance": "Authored from concept: notes 2A1.3 AI Risk Events: Bias and Model Drift. Round 2, 31 Oct 2026: authored from notes 2A1.3 (repeated small AI errors are aggregated and assessed against the AI scenario); original insurer AI claims-triage scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios. Review fixes 31 Oct 2026 (standards audit): replaced the KRI and retraining distractors that mirrored crisc_d2_002, removing the vendor the stem never named; neutral pre_read. Round 2 gate 31 Oct 2026: setting moved from an insurer's AI claims-triage tool to a broadband provider's AI billing assistant, so it no longer repeats crisc_d2_002's triage-and-misrouting picture in the same sub-area; options B and D, explanations and tip 1 updated; lesson, key D and level unchanged.",
       "style_version": 2
     },
     {
@@ -939,7 +939,7 @@
       "principle_id": "priority-word-decides",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A retailer's IT director tells the risk committee that vulnerability exposure is low because monthly scans of all its systems find no critical issues. Which of the following is the GREATEST weakness in this conclusion?",
+      "question": "A retailer's IT director tells the risk committee that the company's overall vulnerability exposure is low because monthly scans of all systems find no critical issues. What is the GREATEST weakness in this conclusion?",
       "options": {
         "A": "Flaws disclosed between monthly scans go unseen",
         "B": "Scans cannot find people or process weaknesses",
@@ -966,7 +966,7 @@
         "Scan coverage",
         "Control deficiency"
       ],
-      "_provenance": "Authored from concept: notes 2A3.1 Vulnerabilities in People, Process and Technology. Round 2, 31 Oct 2026: authored from notes 2A3.1 (a clean scan does not cover people and process weaknesses); original retailer clean-scan claim scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios.",
+      "_provenance": "Authored from concept: notes 2A3.1 Vulnerabilities in People, Process and Technology. Round 2, 31 Oct 2026: authored from notes 2A3.1 (a clean scan does not cover people and process weaknesses); original retailer clean-scan claim scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios. Review fixes 31 Oct 2026 (blind test): the director's claim now covers the company's overall exposure, so the GREATEST weakness is clearly the missing people and process categories.",
       "style_version": 2
     },
     {
@@ -976,25 +976,25 @@
       "principle_id": "rate-on-common-terms",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "Which of the following findings should a cinema chain's risk practitioner recommend fixing FIRST?",
+      "question": "Which of the following findings, shown with their CVSS Base scores, should a cinema chain's risk practitioner recommend fixing FIRST?",
       "options": {
         "A": "A 6.8 flaw under active attack on the booking site",
-        "B": "A 7.5 flaw with no known exploit on a print server",
+        "B": "A 7.5 flaw under active attack on an office printer",
         "C": "An 8.2 flaw with no known exploit in the HR system",
-        "D": "A 9.1 flaw on a test server with no network links"
+        "D": "A 9.1 flaw with no known exploit on the intranet"
       },
       "correct": "A",
       "key_concept": "Fix order follows business risk: active exploitation, reachability and the asset's business value can outweigh a higher severity score.",
       "pre_read": "Read each finding's details, not just its score.",
-      "correct_explanation": "The booking site is internet-facing, earns the cinema chain's revenue and is already under attack, so its likelihood and impact are both high despite the lowest score. The HR flaw is the runner-up: the system holds sensitive data and the score is higher, but with no known exploit and less exposure, its risk today is lower. CVSS rates a flaw's severity; the practitioner ranks fixes by risk.",
+      "correct_explanation": "Two flaws are already under attack, so their likelihood is highest, and the choice between them turns on business impact. The booking site earns the cinema chain's revenue and serves customers online, so it ranks first despite the lowest score. The printer flaw is the runner-up: it is under attack too, but an office printer supports little of the business. CVSS rates a flaw's severity; the practitioner ranks fixes by risk.",
       "wrong_explanations": {
-        "B": "A print server flaw with no known exploit has modest severity, little business value and no sign of attack, so it ranks low.",
-        "C": "The HR system's data is sensitive and the score higher; however, without a known exploit or internet exposure, it is less likely to be hit soon.",
-        "D": "The highest score tempts, but a test server with no network links is hard to reach and supports no business process, so its risk is low."
+        "B": "Active attack makes this flaw urgent too; however, an office printer supports little of the business, so the same exploitation threatens far less than on the booking site.",
+        "C": "The HR system's data is sensitive and the score higher; however, with no known exploit it is less likely to be hit soon than a flaw already under active attack.",
+        "D": "The highest score tempts, but with no known exploit on an internal intranet, its likelihood today is lower than that of the flaws under attack."
       },
       "tips": [
-        "Eliminate: B has low severity, value and threat activity, and D ranks a flaw by score although the server cannot be reached.",
-        "Final two: A beats C because active attacks on a revenue-earning public site make its risk highest today, while the HR flaw has no known exploit.",
+        "Eliminate: C and D rank by score alone; neither flaw has a known exploit, so both are less likely to be hit soon than the two under attack.",
+        "Final two: A beats B because both are under attack, and the booking site carries the chain's revenue and customers; the printer supports little of the business.",
         "Exam cue: CVSS is one input. Rank fixes by business risk: exploitation in the wild, reachability and the asset's value to the business."
       ],
       "framework_ref": "FIRST Common Vulnerability Scoring System (CVSS) v4.0 Specification Document Section 1 (Introduction); NIST SP 800-30 Rev. 1 Section 2.3.1 (Risk Models: threats, vulnerabilities, likelihood and impact)",
@@ -1003,7 +1003,7 @@
         "Exploitability",
         "Asset criticality"
       ],
-      "_provenance": "Authored from concept: notes 2A3.3 Risk-Based Remediation Priority. Round 2, 31 Oct 2026: authored from notes 2A3.3 (rank fixes by exploitation, reachability and asset value, not score alone); original cinema chain remediation order scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios.",
+      "_provenance": "Authored from concept: notes 2A3.3 Risk-Based Remediation Priority. Round 2, 31 Oct 2026: authored from notes 2A3.3 (rank fixes by exploitation, reachability and asset value, not score alone); original cinema chain remediation order scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios. Review fixes 31 Oct 2026: removed the test-server option, which mirrored cc_d5_016; two options now share the active-attack cue, and the stem names the scores as CVSS Base scores.",
       "style_version": 2
     },
     {
@@ -1017,7 +1017,7 @@
       "options": {
         "A": "As the environmental threat source in the scenario",
         "B": "As a factor raising the cost of each outage",
-        "C": "As a condition raising the outage scenario's likelihood",
+        "C": "As a condition raising the scenario's likelihood",
         "D": "As no factor until the site has had a flood"
       },
       "correct": "C",
@@ -1040,7 +1040,7 @@
         "Environmental threat",
         "Likelihood"
       ],
-      "_provenance": "Authored from concept: notes 2A3.1 Vulnerabilities in People, Process and Technology. Round 2, 31 Oct 2026: authored from notes 2A3.1 (a predisposing condition raises likelihood without anything being broken); original logistics data center in a flood zone scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios.",
+      "_provenance": "Authored from concept: notes 2A3.1 Vulnerabilities in People, Process and Technology. Round 2, 31 Oct 2026: authored from notes 2A3.1 (a predisposing condition raises likelihood without anything being broken); original logistics data center in a flood zone scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios. Review fixes 31 Oct 2026: shortened the key so it is no longer the single longest option.",
       "style_version": 2
     },
     {
@@ -1133,7 +1133,7 @@
       },
       "correct": "B",
       "key_concept": "A scenario set must be small enough for owners to manage; merge overlapping scenarios under the business objectives they threaten.",
-      "pre_read": "Notice why the owners cannot cope, and which option keeps the retailer's own risks visible.",
+      "pre_read": "Notice why the owners cannot cope with the set as it stands.",
       "correct_explanation": "Two hundred scenarios cannot be reviewed meaningfully, and many will overlap. Anchoring the set on business objectives and merging technical scenarios beneath them keeps every real exposure visible in a number owners can rate. Swapping in a vendor library is the runner-up: it shrinks the list quickly, but generic scenarios are not tailored to the retailer's own processes and would drop risks the team has already identified.",
       "wrong_explanations": {
         "A": "Letting IT pick the scenarios ranks risk by technical judgment alone; the business owners who bear the impact would never see the rest.",
@@ -1151,7 +1151,7 @@
         "Top-down scenarios",
         "Scenario library"
       ],
-      "_provenance": "Authored from concept: notes 2A4.2 Top-Down and Bottom-Up Scenario Development. Round 2, 31 Oct 2026: authored from notes 2A4.2 (merge overlapping scenarios under objectives so the set stays manageable); original energy retailer scenario overload scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios.",
+      "_provenance": "Authored from concept: notes 2A4.2 Top-Down and Bottom-Up Scenario Development. Round 2, 31 Oct 2026: authored from notes 2A4.2 (merge overlapping scenarios under objectives so the set stays manageable); original energy retailer scenario overload scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios. Review fixes 31 Oct 2026: pre_read no longer names the final-two discriminator.",
       "style_version": 2
     },
     {
@@ -1161,9 +1161,9 @@
       "principle_id": "rate-on-common-terms",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "Two analysts at a telecom rate the same outage scenario's likelihood as possible and likely; one had the next year in mind, the other the next five. What should the risk practitioner do FIRST?",
+      "question": "Two analysts at a telecom rate the same outage scenario's likelihood as possible and likely; the first had the next year in mind, the second the next five. What should the risk practitioner do FIRST?",
       "options": {
-        "A": "Average the two ratings into one agreed level",
+        "A": "Average the two likelihood ratings into one level",
         "B": "Use the higher rating as the prudent choice",
         "C": "Set one time frame for all likelihood ratings",
         "D": "Ask the risk owner to choose between the ratings"
@@ -1188,14 +1188,14 @@
         "Time frame",
         "Rating consistency"
       ],
-      "_provenance": "Authored from concept: notes 2B1.1 Likelihood, Impact and Risk. Round 2, 31 Oct 2026: authored from notes 2B1.1 (likelihood is rated over a stated time frame); original telecom outage rating disagreement scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios.",
+      "_provenance": "Authored from concept: notes 2B1.1 Likelihood, Impact and Risk. Round 2, 31 Oct 2026: authored from notes 2B1.1 (likelihood is rated over a stated time frame); original telecom outage rating disagreement scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios. Review fixes 31 Oct 2026: the stem now says which analyst used the five-year horizon; 'likelihood' is no longer only in the key.",
       "style_version": 2
     },
     {
       "id": "crisc_d2_033",
       "domain": 2,
       "subtopic": "2B1 Risk assessment concepts and standards. Results before a launch",
-      "principle_id": "report-for-the-decision",
+      "principle_id": "advise-dont-decide",
       "difficulty": "application",
       "bloom_level": "Application",
       "question": "A week before a retailer launches a mobile app, the risk practitioner completes its risk assessment, which rates two scenarios above appetite. What should the practitioner do FIRST?",
@@ -1235,34 +1235,34 @@
       "principle_id": "objectives-first",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "The sales director of an events ticketing firm tells the risk practitioner that losing more than one hour of ticket sales records would be unacceptable. Which of the following BEST meets this requirement?",
+      "question": "The sales director of an events ticketing firm tells the risk practitioner that losing more than one hour of ticket sales records would be unacceptable. How should the practitioner BEST record this in the BIA?",
       "options": {
-        "A": "Copying new sales records to backup storage at least hourly",
-        "B": "Restoring the ticketing system within one hour of failure",
-        "C": "Keeping nightly backups of sales records for one year",
-        "D": "Testing a restore of the nightly backup each quarter"
+        "A": "A one-hour recovery point objective for ticket sales",
+        "B": "A one-hour recovery time objective for ticket sales",
+        "C": "A one-year retention period for sales backups",
+        "D": "A one-hour maximum tolerable outage for ticket sales"
       },
       "correct": "A",
-      "key_concept": "Tolerable data loss sets the RPO, which drives how often data is copied; recovery speed is the RTO, a separate objective.",
+      "key_concept": "A limit on tolerable data loss is recorded as the RPO; time to recover is the RTO, and the longest tolerable disruption is the MTO.",
       "pre_read": "Notice exactly what the director says would be unacceptable.",
-      "correct_explanation": "The director has stated a recovery point objective: at most one hour of sales records may be lost, so data must be copied at least hourly, for example by frequent backups or replication. Restoring within an hour is the runner-up: it sounds like the same requirement, but it sets the recovery time objective, and a fast restore from last night's backup would still lose a day of sales.",
+      "correct_explanation": "The director has limited lost data, not downtime: no more than one hour of sales records may be lost. That is a recovery point objective, so the BIA records a one-hour RPO for sales records, and IT designs backup or replication to meet it. A one-hour RTO is the runner-up: it limits how long recovery takes, yet a fast restore can still bring back data that is a day old.",
       "wrong_explanations": {
-        "B": "Restoring within an hour meets a recovery time objective; however, if the latest copy is from last night, a fast restore still loses a day of sales.",
-        "C": "Long retention helps find older copies but does nothing for the hours of sales made since the last nightly backup.",
-        "D": "Restore testing proves the nightly backup works, yet a working nightly backup can still lose up to a day of sales records."
+        "B": "An RTO limits how long recovery may take; however, the director limited lost data, and a fast restore can still bring back data that is a day old.",
+        "C": "A retention period sets how long backup copies are kept; it does not limit how many hours of recent sales records can be lost.",
+        "D": "The MTO is the longest disruption the business can tolerate; the director limited lost records, not how long ticket sales can stop."
       },
       "tips": [
-        "Eliminate: C lengthens retention, and D tests a backup that still copies data only once a night.",
-        "Final two: A beats B because the director's limit is on lost data, which sets the RPO; a one-hour restore is the RTO and can still bring back day-old data.",
+        "Eliminate: C confuses how long backups are kept with how much data can be lost, and D turns a data-loss limit into an outage limit.",
+        "Final two: A beats B because the director's limit is on lost data, which is the RPO; an RTO limits recovery time and can still bring back day-old data.",
         "Exam cue: RPO is how much data you can lose, which sets copy frequency; RTO is how long you can wait. Set and check each separately."
       ],
-      "framework_ref": "NIST SP 800-34 Rev. 1 Section 3.2.1 (Determine Business Processes and Recovery Criticality: MTD, RTO and RPO)",
+      "framework_ref": "ISACA Glossary (recovery point objective); NIST SP 800-34 Rev. 1 Section 3.2.1 (Determine Business Processes and Recovery Criticality: MTD, RTO and RPO)",
       "related_concepts": [
         "Recovery point objective (RPO)",
         "Recovery time objective (RTO)",
-        "Backup frequency"
+        "Maximum tolerable outage (MTO)"
       ],
-      "_provenance": "Authored from concept: notes 2B2.2 MTO, RTO and RPO. Round 2, 31 Oct 2026: authored from notes 2B2.2 (tolerable data loss sets the RPO, separate from the RTO); original events ticketing sales records scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios.",
+      "_provenance": "Authored from concept: notes 2B2.2 MTO, RTO and RPO. Round 2, 31 Oct 2026: authored from notes 2B2.2 (tolerable data loss sets the RPO, separate from the RTO); original events ticketing sales records scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios. Review fixes 31 Oct 2026 (standards audit): re-angled from choosing a backup design (control owner's work) to recording the business tolerance as the right BIA objective. Review fixes 31 Oct 2026 (repair round 2): key reworded to the parallel 'for ticket sales' tail so it is no longer the single longest option; explanations no longer assume nightly backups the stem does not state.",
       "style_version": 2
     },
     {
@@ -1305,75 +1305,75 @@
     {
       "id": "crisc_d2_036",
       "domain": 2,
-      "subtopic": "2B2 Business impact analysis (BIA). AI service dependency",
+      "subtopic": "2B2 Business impact analysis (BIA). Missing AI service dependency",
       "principle_id": "emerging-and-ai-risk-owned",
-      "difficulty": "application",
-      "bloom_level": "Application",
-      "question": "A city's permit office now relies on a vendor's AI document-reading service to process applications, but its BIA lists only the permit database as a dependency. What should the risk practitioner recommend as BEST?",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A city's permit office relies on a vendor's AI service to read applications, but its BIA still lists only the permit database as a dependency. What is the GREATEST risk of leaving the BIA unchanged?",
       "options": {
-        "A": "Estimate the AI service's yearly chance of failure",
-        "B": "Rely on the vendor's own continuity plan for the AI service",
-        "C": "Have the permit manager rate the impact of a service outage",
-        "D": "Get the vendor's recovery time for permit processing"
+        "A": "The vendor's own continuity plan would go unreviewed",
+        "B": "The AI service's failure rate would go unmeasured",
+        "C": "Recovery plans would omit a resource the process needs",
+        "D": "Drift in the AI model's accuracy would go unnoticed"
       },
       "correct": "C",
-      "key_concept": "A BIA traces every dependency, including AI and cloud services, and gets the impact of losing each from the business process owner.",
+      "key_concept": "A BIA that omits a dependency leaves that resource out of recovery planning.",
       "pre_read": "Notice what the BIA is missing.",
-      "correct_explanation": "The BIA is out of date: the AI service is now a dependency of permit processing. A BIA measures impact over time, which only the process owner can describe, such as how long applications can wait before legal deadlines are missed. That impact sets the recovery need. The vendor's recovery time is the runner-up: the city needs it, but only to compare against a requirement the permit manager has not yet stated.",
+      "correct_explanation": "A BIA tells recovery planning which resources each critical process needs and how soon. With the AI service missing, no one sets a recovery requirement for it, so continuity plans and the vendor contract may not restore it before applications back up. An unreviewed vendor plan is the runner-up: it matters, but the city can only judge that plan against a requirement the BIA has not yet set.",
       "wrong_explanations": {
-        "A": "A failure estimate is a likelihood question for the risk assessment; a BIA assumes the disruption happens and measures its impact over time.",
-        "B": "The vendor's plan protects the vendor's service, not the city's permit deadlines; the city still owns the impact and must know what it is.",
-        "D": "The vendor's recovery time matters; however, it means little until the permit manager has stated how long the office can work without the service."
+        "A": "Reviewing the vendor's plan matters; however, it can only be judged against a recovery requirement that the BIA has not yet set for the service.",
+        "B": "A failure rate is a likelihood input for the risk assessment; a BIA assumes the disruption happens and measures its impact over time.",
+        "D": "Watching model accuracy is AI performance monitoring; a BIA records dependencies and the impact of losing them, not model drift."
       },
       "tips": [
-        "Eliminate: A brings likelihood into a BIA, and B assumes the vendor's plan covers the city's own impact.",
-        "Final two: C beats D because the business requirement comes first; the vendor's recovery time is only judged against it.",
-        "Exam cue: when a process gains a new dependency, especially an AI or cloud service, update the BIA with the process owner's view of impact over time."
+        "Eliminate: B asks a BIA for likelihood, and D expects it to monitor model accuracy; neither is what a BIA does.",
+        "Final two: C beats A because the BIA sets the recovery requirement first; a vendor's plan is only judged against it.",
+        "Exam cue: when a process gains a new dependency, especially an AI or cloud service, the BIA must list it, or recovery planning will miss it."
       ],
       "framework_ref": "ISACA Glossary (business impact analysis)",
       "related_concepts": [
         "BIA dependencies",
         "AI service dependency",
-        "Impact over time"
+        "Recovery planning"
       ],
-      "_provenance": "Authored from concept: notes 2B2.1 BIA Purpose, Dependencies and AI Systems. Round 2, 31 Oct 2026: authored from notes 2B2.1 (the BIA traces AI dependencies and takes impact from the process owner); original city permit office AI document reading scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios.",
+      "_provenance": "Authored from concept: notes 2B2.1 BIA Purpose, Dependencies and AI Systems. Round 2, 31 Oct 2026: authored from notes 2B2.1 (the BIA traces AI dependencies and takes impact from the process owner); original city permit office AI document reading scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios. Review fixes 31 Oct 2026 (standards audit): re-angled to the consequence of a missing dependency; the first version duplicated crisc_d2_012 and repeated the key of CC cc_d2_028. Key letter kept at C. Review fixes 31 Oct 2026 (repair round 2): stem states that the service reads permit applications, the fact the explanation relies on (trimmed to 35 words).",
       "style_version": 2
     },
     {
       "id": "crisc_d2_037",
       "domain": 2,
-      "subtopic": "2B2 Business impact analysis (BIA). Order of recovery decisions",
+      "subtopic": "2B2 Business impact analysis (BIA). Objective for the alternate site",
       "principle_id": "objectives-first",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "Which of the following should a risk practitioner help establish FIRST when recovery planning begins for a critical business process?",
+      "question": "When the risk practitioner records a bank's BIA results, which objective is MOST appropriate for stating how much of normal payment volume branch payments must handle at the alternate site?",
       "options": {
-        "A": "The recovery time objective for each supporting system",
-        "B": "The alternate processing site and its contract",
-        "C": "The backup schedule for the process's critical data",
-        "D": "The maximum tolerable outage for the process"
+        "A": "The recovery time objective",
+        "B": "The recovery point objective",
+        "C": "The acceptable interruption window",
+        "D": "The service delivery objective"
       },
       "correct": "D",
-      "key_concept": "Recovery planning starts from the business limit: the maximum tolerable outage from the BIA, which every RTO must then fit inside.",
-      "pre_read": "Ask which of these the others depend on.",
-      "correct_explanation": "The maximum tolerable outage, set by the process owner through the BIA, is the business limit everything else must respect: each supporting system's RTO has to fit inside it, and sites and backup schedules are then chosen to meet those objectives. The system RTOs are the runner-up: they are needed early, but setting them before the MTO lets IT capability define the requirement instead of the business.",
+      "key_concept": "The service delivery objective sets the level of service needed during alternate processing; RTO and AIW are time limits, and RPO limits data loss.",
+      "pre_read": "Notice exactly what the objective must state.",
+      "correct_explanation": "The service delivery objective (SDO) is the level of service the business needs while it runs in alternate mode, until normal operation is restored. Stating the share of payment volume the alternate site must handle sets that level and drives the site's capacity. The RTO is the runner-up: it sets how soon payments must be running again, not how much service they must deliver once they are.",
       "wrong_explanations": {
-        "A": "System RTOs are set early in planning; however, each one must fit inside the MTO, so setting them first lets IT decide what the business can tolerate.",
-        "B": "An alternate site is a recovery strategy chosen to meet the objectives; contracting for one before they exist risks paying for the wrong capability.",
-        "C": "Backup frequency follows the recovery point objective, which is set once the business states its limits; scheduling it first fixes a solution before the need."
+        "A": "The RTO sets how soon payments must be running again after a disruption; however, it says nothing about how much volume the alternate site must then handle.",
+        "B": "The RPO sets how much data loss is tolerable, which drives backup frequency; it does not set a level of service during alternate processing.",
+        "C": "The AIW is the longest a system can be unavailable before objectives suffer; it is a time limit, not the service level required at the alternate site."
       },
       "tips": [
-        "Eliminate: B contracts a recovery site and C schedules backups before the objectives they must meet exist.",
-        "Final two: D beats A because every RTO has to fit inside the MTO; setting system RTOs first lets IT capability define the business requirement.",
-        "Exam cue: business limits come before recovery targets, and targets come before solutions: MTO first, then RTO and RPO, then sites and backups."
+        "Eliminate: B limits data loss, and C limits how long a system can be down; neither sets a service level.",
+        "Final two: D beats A because the bank must state how much service runs in alternate mode; the RTO only sets how soon recovery happens.",
+        "Exam cue: RTO, MTO and AIW say how soon; RPO says how much data; SDO says how much service while running in alternate mode."
       ],
-      "framework_ref": "ISACA Glossary (maximum tolerable outage); NIST SP 800-34 Rev. 1 Section 3.2.1 (Determine Business Processes and Recovery Criticality: MTD, RTO and RPO)",
+      "framework_ref": "ISACA Glossary (service delivery objective)",
       "related_concepts": [
-        "Maximum tolerable outage (MTO)",
+        "Service delivery objective (SDO)",
         "Recovery time objective (RTO)",
-        "Recovery planning order"
+        "Alternate processing"
       ],
-      "_provenance": "Authored from concept: notes 2B2.2 MTO, RTO and RPO. Round 2, 31 Oct 2026: authored from notes 2B2.2 (the MTO comes from the business first; every RTO fits inside it); original recovery planning order (short stem) scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios. Re-angled before review: the first draft (impact over time from process owners) mirrored CC cc_d2_028's key.",
+      "_provenance": "Authored from concept: notes 2B2.2 MTO, RTO and RPO. Round 2, 31 Oct 2026: authored from notes 2B2.2 (the MTO comes from the business first; every RTO fits inside it); original recovery planning order (short stem) scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios. Re-angled before review: the first draft (impact over time from process owners) mirrored CC cc_d2_028's key. Review fixes 31 Oct 2026 (standards audit): re-angled from the MTO-first rule, already keyed by crisc_d2_012 and crisc_d2_035, to the ISACA Glossary's service delivery objective; key letter kept at D. Review fixes 31 Oct 2026 (repair round 2): subtopic label no longer paraphrases the key's definition.",
       "style_version": 2
     },
     {
@@ -1386,8 +1386,8 @@
       "question": "A bus operator has retired its old mobile ticketing app, and the IT manager asks the risk analyst to delete the app's four entries from the risk register. What is the analyst's BEST response?",
       "options": {
         "A": "Delete the entries once the IT owner confirms retirement",
-        "B": "Close the four entries with the risk owners' approval",
-        "C": "Keep the entries open until the next annual register review",
+        "B": "Close the entries with the risk owners' approval",
+        "C": "Keep the entries open until the annual register review",
         "D": "Move the entries to the IT team's operational issue log"
       },
       "correct": "B",
@@ -1410,7 +1410,7 @@
         "Entry closure",
         "Register history"
       ],
-      "_provenance": "Authored from concept: notes 2B3.2 Keeping the Register Current. Round 2, 31 Oct 2026: authored from notes 2B3.2 (entries close with a reason and owner approval and stay as history); original bus operator retired ticketing app scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios.",
+      "_provenance": "Authored from concept: notes 2B3.2 Keeping the Register Current. Round 2, 31 Oct 2026: authored from notes 2B3.2 (entries close with a reason and owner approval and stay as history); original bus operator retired ticketing app scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios. Review fixes 31 Oct 2026: the stem's 'four' is no longer echoed only in the key; option C shortened to keep the option spread within 10 characters.",
       "style_version": 2
     },
     {
@@ -1461,7 +1461,7 @@
       "options": {
         "A": "Convert the 70 ratings to costs using scale midpoints",
         "B": "Explain that the top five ratings cannot show cost",
-        "C": "Quantify the top five where loss data supports it",
+        "C": "Estimate loss ranges for the top five scenarios",
         "D": "Redo the 70 scenarios with quantitative loss models"
       },
       "correct": "C",
@@ -1475,7 +1475,7 @@
       },
       "tips": [
         "Eliminate: A turns ordinal levels into invented costs, and B declines a question that analysis can answer.",
-        "Final two: C beats D because quantitative analysis is spent where the decision and the data justify it; redoing all 70 adds effort and false precision.",
+        "Final two: C beats D because quantitative effort goes only where the board's decision needs it; redoing all 70 adds effort and false precision.",
         "Exam cue: methods combine. Screen many risks qualitatively, then quantify the top few where data supports a credible figure."
       ],
       "framework_ref": "NIST IR 8286A Rev. 1 Section 2.3.1 (Selecting Risk Analysis Methodologies); NIST SP 800-30 Rev. 1 Section 2.3.2 (Assessment Approaches: subjective inputs or high uncertainty lessen quantitative rigor)",
@@ -1484,44 +1484,44 @@
         "Quantitative analysis",
         "False precision"
       ],
-      "_provenance": "Authored from concept: notes 2B4.3 Choosing a Method: Data, Decisions, FAIR and Monte Carlo. Round 2, 31 Oct 2026: authored from notes 2B4.3 (combine methods: qualitative screening, then quantify the top risks with data); original manufacturer board cost question scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios. Re-angled before review: the first draft (method for a first ranking with little data) was close to CISA d2_062.",
+      "_provenance": "Authored from concept: notes 2B4.3 Choosing a Method: Data, Decisions, FAIR and Monte Carlo. Round 2, 31 Oct 2026: authored from notes 2B4.3 (combine methods: qualitative screening, then quantify the top risks with data); original manufacturer board cost question scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios. Re-angled before review: the first draft (method for a first ranking with little data) was close to CISA d2_062. Review fixes 31 Oct 2026: removed the careful-sounding qualifier only the key carried.",
       "style_version": 2
     },
     {
       "id": "crisc_d2_041",
       "domain": 2,
-      "subtopic": "2B4 Risk analysis methodologies. Funding decision with good data",
-      "principle_id": "proportionate-response",
+      "subtopic": "2B4 Risk analysis methodologies. Simulated loss against tolerance",
+      "principle_id": "appetite-drives-response",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "An online marketplace's trust director must decide whether to fund a $400,000-a-year fraud screening tool, and the firm has ten years of fraud loss data. Which analysis should the risk practitioner provide as MOST useful?",
+      "question": "A marketplace's Monte Carlo fraud run gives yearly losses averaging $300,000, with a 5% chance of exceeding $1,200,000. The board's limit is a 5% chance of exceeding $1,000,000; what is the risk analyst's BEST conclusion?",
       "options": {
-        "A": "A high, medium or low rating before and after the tool",
-        "B": "A count of fraud incidents over the past ten years",
-        "C": "A comparison of the tool with rival fraud products",
-        "D": "Expected yearly fraud loss with and without the new tool"
+        "A": "Not comparable until rated high, medium or low",
+        "B": "Within tolerance, judged on the $300,000 mean",
+        "C": "Undecidable until the model gives one figure",
+        "D": "Beyond tolerance, judged on the $1,200,000 figure"
       },
       "correct": "D",
-      "key_concept": "When a decision is about money and good loss data exists, quantitative analysis lets the owner compare the loss a control avoids with its cost.",
-      "pre_read": "Notice what the director must weigh and what data the firm has.",
-      "correct_explanation": "The director is weighing $400,000 a year against fraud the tool would prevent, and ten years of loss data make a quantitative estimate credible. Expected yearly loss with and without the tool shows the reduction in money, which can be set directly against the cost. A before-and-after qualitative rating is the runner-up: it shows the risk falls, but a move from high to medium cannot tell the director whether that is worth $400,000.",
+      "key_concept": "Compare a simulated loss distribution with tolerance as written; a limit on the chance of a large loss is tested on the tail.",
+      "pre_read": "Notice what each figure from the simulation measures.",
+      "correct_explanation": "The board's tolerance is a probability: at most a 5% chance of losing over $1,000,000 in a year. The simulation gives a 5% chance of losing more than $1,200,000, so the chance of exceeding $1,000,000 is above 5%: the scenario is beyond tolerance. Judging on the $300,000 mean is the runner-up: it is the expected loss, but a limit on rare large losses is tested against the distribution's tail, not its average.",
       "wrong_explanations": {
-        "A": "A qualitative change shows the direction of the benefit; however, it cannot be compared with a $400,000 cost, which is the decision the director faces.",
-        "B": "An incident count is raw history; it neither prices the losses nor shows how much the tool would reduce them.",
-        "C": "Comparing products helps choose a vendor later; it does not show whether reducing fraud loss is worth $400,000 a year."
+        "A": "Rating the result high, medium or low throws away the probabilities the board's tolerance is written in; the simulation can be compared with it directly.",
+        "B": "The mean is the expected yearly loss; however, the board set its tolerance on the chance of a large loss, which the mean does not show.",
+        "C": "A Monte Carlo result is a distribution by design; asking for a single figure discards the tail information the tolerance needs."
       },
       "tips": [
-        "Eliminate: B gives raw incident history without loss values, and C compares vendors before the funding case is made.",
-        "Final two: D beats A because a cost decision needs the yearly loss reduction in money; a qualitative shift cannot be weighed against $400,000.",
-        "Exam cue: match the method to the decision. Funding a control with good loss data calls for quantitative loss estimates with and without it."
+        "Eliminate: A and C refuse to compare, yet the simulation's probabilities match the way the tolerance is written.",
+        "Final two: D beats B because the tolerance limits the chance of a large loss; the mean says nothing about the tail.",
+        "Exam cue: compare a simulated loss distribution with a limit in the form the limit is written; a probability limit is tested on the tail, not the average."
       ],
-      "framework_ref": "NIST SP 800-30 Rev. 1 Section 2.3.2 (Assessment Approaches: quantitative assessments support cost-benefit analysis of risk responses)",
+      "framework_ref": "NIST IR 8286A Rev. 1 Section 2.3.1 (Selecting Risk Analysis Methodologies); NIST IR 8286 Rev. 1 Section 2.1 (Overview of ERM: risk appetite and risk tolerance)",
       "related_concepts": [
-        "Quantitative analysis",
-        "Cost-benefit",
-        "Annualized loss expectancy (ALE)"
+        "Monte Carlo simulation",
+        "Loss distribution",
+        "Risk tolerance"
       ],
-      "_provenance": "Authored from concept: notes 2B4.3 Choosing a Method: Data, Decisions, FAIR and Monte Carlo. Round 2, 31 Oct 2026: authored from notes 2B4.3 (a funding decision with good data calls for quantitative analysis); original online marketplace fraud tool funding scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios.",
+      "_provenance": "Authored from concept: notes 2B4.3 Choosing a Method: Data, Decisions, FAIR and Monte Carlo. Round 2, 31 Oct 2026: authored from notes 2B4.3 (a funding decision with good data calls for quantitative analysis); original online marketplace fraud tool funding scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios. Review fixes 31 Oct 2026 (standards audit): re-angled to reading a simulated loss distribution against a probability tolerance; the first version duplicated crisc_d2_016. Review fixes 31 Oct 2026 (repair round 2): stem restores the marketplace context, the yearly period on the mean, the probability wording of the board's limit and the risk analyst role, kept within 35 words and two sentences.",
       "style_version": 2
     },
     {
@@ -1531,24 +1531,24 @@
       "principle_id": "report-for-the-decision",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "On a bank's five-by-five risk matrix, frequent low-cost card skimming and a rare week-long core banking outage both score 10. How should the risk analyst BEST present them to the risk committee?",
+      "question": "On a bank's risk matrix, card skimming (40 small losses a year) and a week-long banking outage (once in 20 years) both score 10. How should the risk analyst BEST present them to the committee?",
       "options": {
         "A": "With likelihood and impact shown for each scenario",
         "B": "As equal-priority scenarios with the same score",
         "C": "With the outage ranked higher for its larger impact",
-        "D": "With each converted to an ALE from assumed figures"
+        "D": "With each score converted to an annual loss figure"
       },
       "correct": "A",
       "key_concept": "A combined matrix score shows order, not the shape of a risk; equal scores can hide very different likelihood and impact that need different responses.",
       "pre_read": "Notice how each scenario reaches its score of 10.",
-      "correct_explanation": "A score of 10 from five times two and from two times five hides two different risks: frequent small losses usually call for mitigating controls, while a rare severe outage may call for continuity planning or transfer. Showing likelihood and impact separately lets the committee see that difference. Treating them as equal priorities is the runner-up: the matrix does rank them equally, but the score is ordinal and the decision needs the shape behind it.",
+      "correct_explanation": "The equal scores hide two different risks: about 40 small skimming losses a year call for mitigating controls, while a severe outage expected once in 20 years may call for continuity planning or transfer. Showing likelihood and impact separately lets the committee see that difference. Treating them as equal priorities is the runner-up: the matrix does rank them equally, but the score is ordinal and the decision needs the shape behind it.",
       "wrong_explanations": {
         "B": "The shared score is a fair ranking signal; however, it hides whether the risk comes from frequency or severity, which the committee needs to choose responses.",
         "C": "Ranking on impact alone drops likelihood, so the frequent skimming losses would be undervalued however often they occur.",
-        "D": "Converting to ALE with assumed figures produces precise-looking numbers the data does not support, adding false precision instead of clarity."
+        "D": "Converting ordinal matrix scores into money produces precise-looking numbers the data does not support, adding false precision instead of clarity."
       },
       "tips": [
-        "Eliminate: C ranks on one dimension only, and D builds precision from assumed figures.",
+        "Eliminate: C ranks on one dimension only, and D turns ordinal scores into invented money figures.",
         "Final two: A beats B because equal scores can hide opposite risk profiles; showing both dimensions gives the committee what it needs to choose different responses.",
         "Exam cue: matrix scores are ordinal. When the decision depends on how a risk arises, report likelihood and impact, not just the combined score."
       ],
@@ -1558,7 +1558,7 @@
         "Heat map",
         "Likelihood and impact"
       ],
-      "_provenance": "Authored from concept: notes 2B4.1 Qualitative and Semi-Quantitative Analysis. Round 2, 31 Oct 2026: authored from notes 2B4.1 (equal matrix scores can hide different shapes; report both dimensions); original bank risk matrix equal scores scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios.",
+      "_provenance": "Authored from concept: notes 2B4.1 Qualitative and Semi-Quantitative Analysis. Round 2, 31 Oct 2026: authored from notes 2B4.1 (equal matrix scores can hide different shapes; report both dimensions); original bank risk matrix equal scores scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios. Review fixes 31 Oct 2026: measurable frequencies replace 'frequent' and 'rare' in the stem; option D no longer states its own flaw.",
       "style_version": 2
     },
     {
@@ -1577,7 +1577,7 @@
       },
       "correct": "C",
       "key_concept": "ALE equals single loss expectancy times annual rate of occurrence; three events in six years is an ARO of 0.5.",
-      "pre_read": "Turn the outage history into a yearly rate before multiplying.",
+      "pre_read": "Identify each part of the ALE formula from the stem before choosing a figure.",
       "correct_explanation": "The SLE is $120,000, the cost of one outage. Three outages in six years is an ARO of 0.5, half an outage a year, so the ALE is $120,000 times 0.5, about $60,000 a year. The $20,000 figure is the runner-up: it treats the six-year window as one outage every six years, missing that three occurred. An ALE is only as good as this history, so its source is stated.",
       "wrong_explanations": {
         "A": "This treats the rate as one outage every six years; three outages in six years is an ARO of 0.5, not about 0.17.",
@@ -1595,7 +1595,7 @@
         "Single loss expectancy (SLE)",
         "Annualized loss expectancy (ALE)"
       ],
-      "_provenance": "Authored from concept: notes 2B4.2 Quantitative Analysis: SLE, ARO and ALE. Round 2, 31 Oct 2026: authored from notes 2B4.2 (ARO comes from events per year; ALE equals SLE times ARO); original parcel sorting system outage scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios.",
+      "_provenance": "Authored from concept: notes 2B4.2 Quantitative Analysis: SLE, ARO and ALE. Round 2, 31 Oct 2026: authored from notes 2B4.2 (ARO comes from events per year; ALE equals SLE times ARO); original parcel sorting system outage scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios. Review fixes 31 Oct 2026: pre_read no longer gives the method the item tests.",
       "style_version": 2
     },
     {
@@ -1610,7 +1610,7 @@
         "A": "Lowering the inherent rating to match current risk",
         "B": "Regular testing of the bot-detection control",
         "C": "A KRI on the volume of account takeover attempts",
-        "D": "Removing the scenario from the board's risk report"
+        "D": "Raising current risk to reflect the reliance"
       },
       "correct": "B",
       "key_concept": "A wide gap between inherent and current risk marks reliance on a key control, so that control's continued effectiveness needs regular evidence.",
@@ -1619,10 +1619,10 @@
       "wrong_explanations": {
         "A": "Inherent risk is rated before controls, so it does not fall because a control works; changing it would hide how much the scenario depends on that control.",
         "C": "Attempt volume is a useful threat signal; however, it cannot show whether the single control holding the risk down is still working.",
-        "D": "A large inherent-to-current gap is a reason to keep the risk visible; dropping it from reporting hides a key dependency from oversight."
+        "D": "Reliance on one control is a concentration to watch, not a reason to re-rate; current risk reflects how well the control works today, which only testing shows."
       },
       "tips": [
-        "Eliminate: A lowers inherent risk because of a control, which inherent risk does not count, and D takes a risk that depends on one control out of board oversight.",
+        "Eliminate: A lowers inherent risk because of a control, which inherent risk does not count, and D re-rates the risk for reliance instead of checking whether the control still works.",
         "Final two: B beats C because the current rating is only as good as the control behind it; attempt volume tracks the threat, not the control.",
         "Exam cue: high inherent and low current risk means a key control. Make sure there is regular evidence that it keeps working."
       ],
@@ -1632,44 +1632,44 @@
         "Inherent risk",
         "Current risk"
       ],
-      "_provenance": "Authored from concept: notes 2B5.1 Inherent, Current and Residual Risk. Round 2, 31 Oct 2026: authored from notes 2B5.1 (a wide inherent-to-current gap marks a key control that needs regular evidence); original online game publisher account takeover scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios.",
+      "_provenance": "Authored from concept: notes 2B5.1 Inherent, Current and Residual Risk. Round 2, 31 Oct 2026: authored from notes 2B5.1 (a wide inherent-to-current gap marks a key control that needs regular evidence); original online game publisher account takeover scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios. Review fixes 31 Oct 2026: replaced the strawman removal option with a real re-rating misconception.",
       "style_version": 2
     },
     {
       "id": "crisc_d2_045",
       "domain": 2,
-      "subtopic": "2B5 Inherent and residual risk. Acceptance beyond tolerance",
-      "principle_id": "escalate-to-the-limit-setter",
+      "subtopic": "2B5 Inherent and residual risk. Paper for a tolerance breach",
+      "principle_id": "report-for-the-decision",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "Failed access reviews push a pension fund's member-data exposure scenario beyond the tolerance its executive committee set, and the risk owner wants to accept it. What is the risk practitioner's BEST response?",
+      "question": "Failed access reviews push a pension fund's member-data scenario beyond the executive committee's tolerance; the risk owner asks the committee to accept it for a quarter. What MOST belongs in the risk practitioner's committee paper?",
       "options": {
-        "A": "Record the owner's acceptance with a review date",
-        "B": "Accept the risk for one quarter while reviews are fixed",
-        "C": "Ask the owner to fund an automated access review tool",
-        "D": "Escalate the acceptance to the executive committee"
+        "A": "The owner's case for exceeding the tolerance",
+        "B": "The cost of an automated access review tool",
+        "C": "The count of access reviews failed this year",
+        "D": "Current risk set against the breached tolerance"
       },
       "correct": "D",
-      "key_concept": "A risk owner can accept risk only within the tolerance set above them; acceptance beyond it goes to the level that set the limit.",
-      "pre_read": "Notice who set the tolerance and who now wants to accept the risk.",
-      "correct_explanation": "Owners accept risk within the appetite and tolerance senior management set. This risk now sits beyond the tolerance the executive committee approved, so accepting it exceeds the owner's authority; the practitioner escalates it, with the analysis, to the committee and keeps the owner informed. Recording the owner's acceptance is the runner-up: it is the normal route for risk within tolerance, but here it would let one manager override a limit set above them.",
+      "key_concept": "A request to accept a tolerance breach goes to the limit-setter with the current risk measured against that limit.",
+      "pre_read": "Notice what the committee is being asked to decide.",
+      "correct_explanation": "The committee is asked to accept a risk above a limit it set, so the paper must show how far current risk now sits beyond that tolerance and what that means for the fund. The committee can then weigh the owner's request on the facts. The owner's case is the runner-up: the committee should hear it, but without current risk set against the tolerance it cannot judge what it is being asked to accept.",
       "wrong_explanations": {
-        "A": "Recording an owner's acceptance is the usual route within tolerance; however, this risk is beyond the limit the executive committee set, so the owner cannot accept it.",
-        "B": "The practitioner does not accept risk; a temporary acceptance is still an acceptance, and this one exceeds the tolerance set by the committee.",
-        "C": "Funding a tool is one treatment the owner may choose; it does not resolve that acceptance beyond tolerance needs the committee's decision."
+        "A": "The owner's reasons belong in the paper; however, they cannot show the committee how far beyond its own limit the risk now sits.",
+        "B": "A tool's cost informs treatment options; it does not tell the committee how much risk it is being asked to accept for the quarter.",
+        "C": "The failed reviews are the cause; a count of them does not translate into exposure measured against the tolerance."
       },
       "tips": [
-        "Eliminate: B has the practitioner accept risk, and C proposes a treatment without settling who may accept a tolerance breach.",
-        "Final two: D beats A because acceptance beyond tolerance exceeds the owner's authority; it goes to the level that set the limit.",
-        "Exam cue: owners accept within the limits set above them. A breach of tolerance goes to the level that set the tolerance."
+        "Eliminate: B prices one treatment and C counts the cause; neither shows the exposure the committee is asked to accept.",
+        "Final two: D beats A because acceptance beyond tolerance turns on how far the risk exceeds the limit; the owner's case cannot show that.",
+        "Exam cue: when a limit-setter is asked to accept a breach, lead with the current risk measured against the limit it set."
       ],
-      "framework_ref": "NIST IR 8286 Rev. 1 Section 3.5.2 (Responding to Residual Risk)",
+      "framework_ref": "NIST IR 8286 Rev. 1 Section 3.5.2 (Responding to Residual Risk); ISACA Glossary (risk acceptance); ISACA Glossary (current risk)",
       "related_concepts": [
         "Risk tolerance",
-        "Risk acceptance authority",
-        "Escalation"
+        "Current risk",
+        "Reporting for acceptance decisions"
       ],
-      "_provenance": "Authored from concept: notes 2B5.3 Residual Risk Against Appetite and Tolerance. Round 2, 31 Oct 2026: authored from notes 2B5.3 (owners accept within tolerance; acceptance beyond it goes to the limit-setter); original pension fund member-data exposure scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios.",
+      "_provenance": "Authored from concept: notes 2B5.3 Residual Risk Against Appetite and Tolerance. Round 2, 31 Oct 2026: authored from notes 2B5.3 (owners accept within tolerance; acceptance beyond it goes to the limit-setter); original pension fund member-data exposure scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios. Review fixes 31 Oct 2026 (standards audit): re-angled from escalation to the committee paper; the first version duplicated crisc_d1_042.",
       "style_version": 2
     }
   ]

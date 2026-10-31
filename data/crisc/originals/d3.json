@@ -824,11 +824,11 @@
     {
       "id": "crisc_d3_023",
       "domain": 3,
-      "subtopic": "3A2 Risk and control ownership. Owner without budget authority",
+      "subtopic": "3A2 Risk and control ownership. Owner of a double-booking risk",
       "principle_id": "match-decision-to-role",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A hotel group's register names the reservations IT lead as owner of the peak-season double-booking risk, but the agreed treatment needs funds only the distribution director controls. What is the risk practitioner's BEST recommendation?",
+      "question": "A hotel group's register names its reservations IT lead as owner of the peak-season double-booking risk, but the distribution director runs bookings and controls the treatment's funds. What is the risk practitioner's BEST recommendation?",
       "options": {
         "A": "Keep the IT lead as owner, copying the distribution director",
         "B": "Name the IT lead and the director as joint owners",
@@ -837,8 +837,8 @@
       },
       "correct": "D",
       "key_concept": "A risk is owned by one business manager with authority over the affected objective and the budget for its treatment.",
-      "pre_read": "Notice who controls the money the treatment needs, and who is named as owner.",
-      "correct_explanation": "A risk owner needs authority over the objective and the budget the response depends on. The distribution director controls the funds and the bookings the risk affects, so the director should own it, with the IT lead supporting as a control owner. Joint ownership is the closest alternative: it looks inclusive, but it splits accountability so that each owner can wait for the other to act.",
+      "pre_read": "Compare the role the register names with the roles the risk's outcome and treatment depend on.",
+      "correct_explanation": "A risk owner needs authority over the objective and the budget the response depends on. The distribution director runs the bookings the risk affects and controls the funds, so the director should own it, with the IT lead supporting as a control owner. Joint ownership is the closest alternative: it looks inclusive, but it splits accountability so that each owner can wait for the other to act.",
       "wrong_explanations": {
         "A": "Copying the director keeps them informed, but the owner of record still cannot fund the treatment, so the response stalls.",
         "B": "Two owners blur accountability. When funding or acceptance is needed, each can defer to the other and nobody decides.",
@@ -846,7 +846,7 @@
       },
       "tips": [
         "Eliminate: A leaves ownership with someone who cannot fund the response, and C has that person accept a risk beyond their authority.",
-        "Final two: D beats B because one named owner with authority over the budget is accountable; joint owners can each defer to the other.",
+        "Final two: D beats B because one named owner, accountable for bookings and holding the budget, can decide; joint owners can each defer to the other.",
         "Exam cue: the risk owner is the manager whose objective and budget the risk affects; IT supports as control owner."
       ],
       "framework_ref": "ISACA Glossary (risk owner); NIST CSF 2.0 GV.RR-02 (roles, responsibilities and authorities related to cybersecurity risk management are established, communicated, understood and enforced)",
@@ -855,7 +855,7 @@
         "Accountability",
         "Control owner"
       ],
-      "_provenance": "Authored from concept: Round 2, 31 Oct 2026: authored from notes 3A2.1 (Assigning Risk Owners: ownership follows accountability for the objective and authority over the budget; trap, joint ownership spreads the load); original hotel group double-booking risk owned by an IT lead who cannot fund the treatment scenario written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 2 (crisc_d3_021 to 050).",
+      "_provenance": "Authored from concept: Round 2, 31 Oct 2026: authored from notes 3A2.1 (Assigning Risk Owners: ownership follows accountability for the objective and authority over the budget; trap, joint ownership spreads the load); original hotel group double-booking risk owned by an IT lead who cannot fund the treatment scenario written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 2 (crisc_d3_021 to 050). Review fixes 31 Oct 2026 (blind test and standards audit): stem now states that the director runs bookings, so ownership rests on accountability for the objective as well as the budget; neutral subtopic. Review fixes round 2, 31 Oct 2026 (independent verifiers): Final two tip and pre_read now rest ownership on accountability for bookings as well as the budget.",
       "style_version": 2
     },
     {
@@ -902,20 +902,20 @@
       "principle_id": "evidence-before-credit",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "During contract renewal, the cloud provider hosting a bank's mobile banking app refuses to keep a right-to-audit clause. What should the risk practitioner recommend as BEST?",
+      "question": "At renewal, the cloud provider hosting a university's student-records system, rated critical in its vendor inventory, says it no longer grants any customer a right to audit. What is the risk practitioner's BEST recommendation?",
       "options": {
         "A": "Require yearly independent assurance reports on the service",
         "B": "Accept the renewal as offered and note the refusal on the file",
         "C": "Rely on the provider's yearly security questionnaire",
-        "D": "End the relationship and move the app to a new provider"
+        "D": "End the relationship and move the system to a new provider"
       },
       "correct": "A",
       "key_concept": "When a critical vendor refuses a right to audit, independent assurance reports written into the contract give the evidence the business still needs.",
       "pre_read": "Think about how much assurance a critical service needs, and who provides it.",
-      "correct_explanation": "The bank still answers for the app, so it needs reliable assurance about the provider's controls. When an audit right is refused, independent assurance reports covering the hosting service, written into the contract, are the usual substitute. The provider's own questionnaire is the closest alternative: it is easy to obtain, but self-reported answers give weak assurance for a critical service.",
+      "correct_explanation": "The university still answers for its student records, so it needs reliable assurance about the provider's controls. When a provider grants no customer audits, independent assurance reports covering the hosting service, written into the contract, are the usual substitute. The provider's own questionnaire is the closest alternative: it is easy to obtain, but self-reported answers give weak assurance for a critical service.",
       "wrong_explanations": {
-        "B": "Noting the refusal records the gap but leaves the bank with no assurance about a critical service it still answers for.",
-        "C": "A questionnaire is the provider describing itself. It suits low-risk vendors, not a critical service holding customers' banking data.",
+        "B": "Noting the refusal records the gap but leaves the university with no assurance about a critical service it still answers for.",
+        "C": "A questionnaire is the provider describing itself. It suits low-risk vendors, not a critical service holding students' personal records.",
         "D": "Leaving is an avoidance response chosen before other assurance routes are tried, and it carries its own migration risk."
       },
       "tips": [
@@ -929,7 +929,7 @@
         "Assurance reports",
         "Vendor risk"
       ],
-      "_provenance": "Authored from concept: Round 2, 31 Oct 2026: authored from notes 3A3.1 (Vendor Due Diligence and Contracts: write audit rights into critical contracts; trap, a vendor's own questionnaire answers can stand in for a refused right to audit); original cloud provider hosting a bank's mobile banking app refuses a right-to-audit clause at renewal scenario written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 2 (crisc_d3_021 to 050).",
+      "_provenance": "Authored from concept: Round 2, 31 Oct 2026: authored from notes 3A3.1 (Vendor Due Diligence and Contracts: write audit rights into critical contracts; trap, a vendor's own questionnaire answers can stand in for a refused right to audit); original cloud provider hosting a university's student-records system that no longer grants any customer a right to audit scenario written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 2 (crisc_d3_021 to 050). Review fixes 31 Oct 2026 (blind test and standards audit): moved out of banking, where regulators expect audit rights for critical outsourcing, and away from CISA d2_215, which teaches keeping the clause when it is still negotiable. Review fixes round 2, 31 Oct 2026 (independent verifiers): stem now states the service is rated critical, the fact the explanations use to rule out a questionnaire.",
       "style_version": 2
     },
     {
@@ -976,12 +976,12 @@
       "principle_id": "transfer-keeps-accountability",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "An insurer's vendor AI tool sets claim payouts from damage photos, with service credits if accuracy falls below 97%, and the claims director wants to stop sampling payouts. What is the risk practitioner's BEST response?",
+      "question": "An insurer's vendor AI tool sets payouts from damage photos, with service credits if accuracy falls below 97%, and the claims director wants to stop the insurer's sampling. What is the risk practitioner's BEST recommendation?",
       "options": {
-        "A": "Rely on the service credits to cover accuracy shortfalls",
-        "B": "Keep sampling payouts to check outputs the insurer relies on",
-        "C": "Switch to the vendor's own monthly accuracy report on payouts",
-        "D": "Stop using the AI tool until its accuracy is proven"
+        "A": "Rely on the vendor's service credits for accuracy shortfalls",
+        "B": "Keep the insurer's own sampling of the tool's payouts",
+        "C": "Replace the sampling with the vendor's monthly accuracy report",
+        "D": "Suspend the AI tool until its accuracy is independently proven"
       },
       "correct": "B",
       "key_concept": "An AI vendor's service credits shift some financial loss, not accountability; the business keeps monitoring the outputs it relies on.",
@@ -990,7 +990,7 @@
       "wrong_explanations": {
         "A": "Credits compensate the insurer financially. They do not find wrong payouts or reduce the harm to customers and regulators, which stays with the insurer.",
         "C": "A vendor's report is useful input, but it is self-measured and may not reflect the insurer's own claims and customers.",
-        "D": "Stopping the tool is avoidance with no sign of failure. Sampling already manages the risk while the tool delivers its benefit."
+        "D": "Suspending the tool is avoidance with no sign of failure. Sampling already manages the risk while the tool delivers its benefit."
       },
       "tips": [
         "Eliminate: A treats a financial remedy as a control, and D drops the tool's benefit with no sign that it is failing.",
@@ -1003,7 +1003,7 @@
         "Service credits",
         "Output monitoring"
       ],
-      "_provenance": "Authored from concept: Round 2, 31 Oct 2026: authored from notes 3A3.3 (AI Vendors and the Model Supply Chain: service credits refund fees but neither detect wrong outputs nor repair harm; trap, the AI vendor is responsible for errors, so the business need not monitor outputs); original insurer's vendor AI tool setting claim payouts from damage photos, with accuracy service credits scenario written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 2 (crisc_d3_021 to 050).",
+      "_provenance": "Authored from concept: Round 2, 31 Oct 2026: authored from notes 3A3.3 (AI Vendors and the Model Supply Chain: service credits refund fees but neither detect wrong outputs nor repair harm; trap, the AI vendor is responsible for errors, so the business need not monitor outputs); original insurer's vendor AI tool setting claim payouts from damage photos, with accuracy service credits scenario written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 2 (crisc_d3_021 to 050). Review fixes 31 Oct 2026 (blind test and standards audit): 'sampling' now appears in a distractor as well as the key, the key's purpose tail is removed, and the stem asks for a recommendation, since the claims director decides. Review fixes round 2, 31 Oct 2026 (independent verifiers): stem grammar fixed (credits apply if accuracy falls below 97%) and 'own' removed so the key no longer echoes the stem word for word.",
       "style_version": 2
     },
     {
@@ -1017,22 +1017,22 @@
       "options": {
         "A": "An exception the risk owner approves for 90 days",
         "B": "An exemption the risk owner approves and reviews",
-        "C": "A compensating control until passwords are added",
+        "C": "An exception the IT manager approves for 90 days",
         "D": "An exemption the risk practitioner approves and files"
       },
       "correct": "B",
       "key_concept": "An exemption covers a requirement that cannot apply and is reviewed periodically; an exception is temporary. The risk owner approves both.",
-      "pre_read": "Ask whether the requirement could ever apply to these devices.",
-      "correct_explanation": "An exemption fits a requirement that does not or cannot apply, as with kiosks that have no accounts. The risk owner approves it after the practitioner assesses the risk, and it is reviewed periodically in case the kiosks change. A 90-day exception is the closest alternative: exceptions are temporary deviations with a plan to comply, but here there is nothing to comply toward.",
+      "pre_read": "Read why the standard is not met before choosing how the deviation is handled.",
+      "correct_explanation": "An exemption fits a requirement that does not or cannot apply, as with kiosks that have no accounts. The risk owner approves it after the practitioner assesses the risk, and it is reviewed periodically in case the kiosks change. A 90-day exception approved by the risk owner is the closest alternative: exceptions are temporary deviations with a plan to comply, but here there is nothing to comply toward.",
       "wrong_explanations": {
         "A": "An exception assumes the kiosks will later meet the standard. With no accounts there is no plan to comply, so an expiry date only forces repeated renewals.",
-        "C": "Compensating controls cover a gap until it is fixed. Adding passwords to kiosks with no accounts is not the goal, so there is no gap to bridge.",
+        "C": "The IT manager runs the kiosks' technology but does not own the library's risk, and an exception assumes the kiosks will later meet the standard, which they cannot.",
         "D": "The practitioner assesses the risk and records the deviation but does not approve it; approval belongs to the risk owner."
       },
       "tips": [
-        "Eliminate: C plans to add passwords the kiosks cannot use, and D has the practitioner approve a deviation the risk owner must approve.",
+        "Eliminate: C has the IT manager, not the risk owner, approve a temporary deviation, and D has the practitioner approve a deviation the risk owner must approve.",
         "Final two: B beats A because the standard cannot apply to these kiosks; an exemption is reviewed periodically, while an exception expires pending compliance.",
-        "Exam cue: an exception is temporary and ends in compliance; an exemption covers what cannot apply and is reviewed. The risk owner approves either."
+        "Exam cue: on CRISC items, a requirement that can never apply is usually handled as a reviewed exemption, and a temporary shortfall as an exception with a date to comply; the risk owner approves either."
       ],
       "framework_ref": "NIST CSF 2.0 ID.RA-07 (changes and exceptions are managed, assessed for risk impact, recorded and tracked); ISACA Glossary (risk owner)",
       "related_concepts": [
@@ -1040,7 +1040,7 @@
         "Exception",
         "Risk owner"
       ],
-      "_provenance": "Authored from concept: Round 2, 31 Oct 2026: authored from notes 3A4.2 (Exceptions and Exemptions: an exemption is an approved exclusion from a requirement that cannot apply and is reviewed periodically; an exception is temporary; the practitioner does not grant deviations); original city library self-service kiosks with no user accounts and a password standard scenario written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 2 (crisc_d3_021 to 050).",
+      "_provenance": "Authored from concept: Round 2, 31 Oct 2026: authored from notes 3A4.2 (Exceptions and Exemptions: an exemption is an approved exclusion from a requirement that cannot apply and is reviewed periodically; an exception is temporary; the practitioner does not grant deviations); original city library self-service kiosks with no user accounts and a password standard scenario written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 2 (crisc_d3_021 to 050). Review fixes 31 Oct 2026 (blind test and standards audit): pre_read no longer points at the key; the exemption and exception split is framed as an exam pattern, since neither the ISACA Glossary nor CSF ID.RA-07 defines it. Review fixes round 2, 31 Oct 2026 (independent verifiers): options now form a grid of deviation type and approver (the compensating-control distractor became an IT manager's 90-day exception), so the key is no longer the only option sharing a feature with two others.",
       "style_version": 2
     },
     {
@@ -1084,7 +1084,7 @@
       "id": "crisc_d3_030",
       "domain": 3,
       "subtopic": "3A4 Issues, findings, exceptions and exemptions management. Many exceptions on one asset",
-      "principle_id": "appetite-drives-response",
+      "principle_id": "rate-on-common-terms",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
       "question": "At a manufacturer, 20 department heads have each approved a low-rated exception letting their contractors use the same legacy VPN gateway without multifactor sign-in. What should the risk practitioner do FIRST?",
@@ -1120,7 +1120,7 @@
     {
       "id": "crisc_d3_031",
       "domain": 3,
-      "subtopic": "3B1 Control frameworks, types and standards. Closing a gap with a compensating control",
+      "subtopic": "3B1 Control frameworks, types and standards. Supervisor check on a logging gap",
       "principle_id": "residual-counts-working-controls",
       "difficulty": "application",
       "bloom_level": "Application",
@@ -1151,7 +1151,7 @@
         "Control gap",
         "Residual risk"
       ],
-      "_provenance": "Authored from concept: Round 2, 31 Oct 2026: authored from notes 3B1.1 (Control Types by Function: a compensating control is an alternative or interim measure; the gap it covers stays recorded and reviewed; trap, a compensating control is as good as fixing the gap); original port crane-scheduling system that cannot record who changes a schedule, with a daily supervisor check scenario written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 2 (crisc_d3_021 to 050).",
+      "_provenance": "Authored from concept: Round 2, 31 Oct 2026: authored from notes 3B1.1 (Control Types by Function: a compensating control is an alternative or interim measure; the gap it covers stays recorded and reviewed; trap, a compensating control is as good as fixing the gap); original port crane-scheduling system that cannot record who changes a schedule, with a daily supervisor check scenario written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 2 (crisc_d3_021 to 050). Review fixes 31 Oct 2026 (blind test and standards audit): neutral subtopic that no longer names the key's term.",
       "style_version": 2
     },
     {
@@ -1207,7 +1207,7 @@
       },
       "correct": "C",
       "key_concept": "The desired state in a control gap analysis is the control level needed to bring risk within appetite and meet obligations.",
-      "pre_read": "Ask whose decision should define what good looks like.",
+      "pre_read": "Ask what each option would measure the gaps against.",
       "correct_explanation": "The desired state should come from what the business has decided it will tolerate: the controls needed to bring each risk within appetite, along with any legal or contractual requirement. Peer practice is the closest alternative: it is useful context, but peers have different risks, objectives and appetites, so copying them can over- or under-protect this organization.",
       "wrong_explanations": {
         "A": "Peer controls show what others do, but they reflect those organizations' own risks and appetite, which may differ from this one's.",
@@ -1225,7 +1225,7 @@
         "Desired state",
         "Risk appetite"
       ],
-      "_provenance": "Authored from concept: Round 2, 31 Oct 2026: authored from notes 3B2.3 (Control Gap Analysis: define the desired state from appetite, policy, regulation or a framework profile); original basis for the desired state in a control gap analysis scenario written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 2 (crisc_d3_021 to 050).",
+      "_provenance": "Authored from concept: Round 2, 31 Oct 2026: authored from notes 3B2.3 (Control Gap Analysis: define the desired state from appetite, policy, regulation or a framework profile); original basis for the desired state in a control gap analysis scenario written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 2 (crisc_d3_021 to 050). Review fixes 31 Oct 2026 (blind test and standards audit): pre_read no longer points at the appetite decision in the key.",
       "style_version": 2
     },
     {
@@ -1244,7 +1244,7 @@
       },
       "correct": "D",
       "key_concept": "Control gaps are ranked by the risk each leaves open, so the largest exposure is funded and fixed first.",
-      "pre_read": "Ask what the board most needs to see reduced.",
+      "pre_read": "Notice what the CIO's ordering is designed to show.",
       "correct_explanation": "Gaps should be closed in the order of the exposure they leave, so the largest risks to the railway's objectives get resources first; quick fixes can still be scheduled where they fit. Closing the quick gaps first is the closest alternative: it shows progress, but the board would hear that things are improving while the gaps that matter most stay open.",
       "wrong_explanations": {
         "A": "Quick wins show activity, but they may leave the largest exposures untouched while progress looks good.",
@@ -1262,7 +1262,7 @@
         "Prioritization",
         "Remediation"
       ],
-      "_provenance": "Authored from concept: Round 2, 31 Oct 2026: authored from notes 3B2.3 (Control Gap Analysis: rank gaps by the risk they leave open, not by how easy they are to fix; trap, fix the easiest gaps first to show progress); original freight railway gap analysis with 14 gaps and a CIO who wants quick wins first scenario written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 2 (crisc_d3_021 to 050).",
+      "_provenance": "Authored from concept: Round 2, 31 Oct 2026: authored from notes 3B2.3 (Control Gap Analysis: rank gaps by the risk they leave open, not by how easy they are to fix; trap, fix the easiest gaps first to show progress); original freight railway gap analysis with 14 gaps and a CIO who wants quick wins first scenario written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 2 (crisc_d3_021 to 050). Review fixes 31 Oct 2026 (blind test and standards audit): pre_read no longer gives the answer.",
       "style_version": 2
     },
     {
@@ -1272,7 +1272,7 @@
       "principle_id": "proportionate-response",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "To cut costs, a payments processor's IT director proposes a single maturity target, level 2, for all IT controls, including those protecting card settlement. What is the risk practitioner's BEST recommendation?",
+      "question": "To cut costs, a payments processor's IT director proposes one maturity target, level 2 on a 0 to 5 scale, for all IT controls, including card settlement controls. What is the risk practitioner's BEST recommendation?",
       "options": {
         "A": "Adopt level 2 as the common target for IT controls",
         "B": "Raise the targets for IT controls to the top level",
@@ -1299,7 +1299,7 @@
         "Target maturity",
         "Cost-benefit"
       ],
-      "_provenance": "Authored from concept: Round 2, 31 Oct 2026: authored from notes 3B3.3 (Assessing Control Maturity: agree a target level with the risk owner based on the risk; trap, one low maturity target for every control keeps costs down); original payments processor IT director proposing one level-2 maturity target for all IT controls scenario written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 2 (crisc_d3_021 to 050).",
+      "_provenance": "Authored from concept: Round 2, 31 Oct 2026: authored from notes 3B3.3 (Assessing Control Maturity: agree a target level with the risk owner based on the risk; trap, one low maturity target for every control keeps costs down); original payments processor IT director proposing one level-2 maturity target for all IT controls scenario written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 2 (crisc_d3_021 to 050). Review fixes 31 Oct 2026 (blind test and standards audit): stem now gives the maturity scale, so 'one low target' in the explanations rests on a stated fact.",
       "style_version": 2
     },
     {
@@ -1317,7 +1317,7 @@
         "D": "Find out why the check was missed on those two days"
       },
       "correct": "D",
-      "key_concept": "Exceptions found in a control test are investigated for their cause before the tester concludes whether the control can be relied on.",
+      "key_concept": "Failures found in a control test sample are investigated for their cause before the tester concludes whether the control can be relied on.",
       "pre_read": "Ask what you would need to know before calling the control effective or not.",
       "correct_explanation": "A failure in a sample must be understood before the control is judged. The cause shows whether these were one-off lapses with the backups still checked another way, or a breakdown that undermines reliance on the control. Rating it ineffective now is the closest alternative: it may prove right, but concluding before knowing the cause can misstate the control and the risk.",
       "wrong_explanations": {
@@ -1328,7 +1328,7 @@
       "tips": [
         "Eliminate: B removes failures from the sample, and C turns two misses into a pass rate without knowing their cause.",
         "Final two: D beats A because the cause decides whether the control can still be relied on; a rating made before knowing it may be wrong.",
-        "Exam cue: in control testing, evaluate each exception's cause before concluding on the control."
+        "Exam cue: in control testing, evaluate each failed sample item's cause before concluding on the control."
       ],
       "framework_ref": "NIST SP 800-53 Rev. 5 CA-2 (Control Assessments); NIST SP 800-53A Rev. 5 Section 2.4.2 (Assessment Methods: examine, interview and test, with depth and coverage)",
       "related_concepts": [
@@ -1336,13 +1336,13 @@
         "Sampling",
         "Operating effectiveness"
       ],
-      "_provenance": "Authored from concept: Round 2, 31 Oct 2026: authored from notes 3B3.2 (Design and Operating Effectiveness Testing: evaluate each failure: find its cause and decide whether the control can still be relied on); original water utility daily backup check with no record for 2 of 25 sampled days scenario written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 2 (crisc_d3_021 to 050).",
+      "_provenance": "Authored from concept: Round 2, 31 Oct 2026: authored from notes 3B3.2 (Design and Operating Effectiveness Testing: evaluate each failure: find its cause and decide whether the control can still be relied on); original water utility daily backup check with no record for 2 of 25 sampled days scenario written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 2 (crisc_d3_021 to 050). Review fixes 31 Oct 2026 (blind test and standards audit): 'exception' in its audit-testing sense replaced by 'failed sample item', so it no longer clashes with the 3A4 policy-deviation meaning.",
       "style_version": 2
     },
     {
       "id": "crisc_d3_037",
       "domain": 3,
-      "subtopic": "3B3 Control testing methodologies. Working control that depends on one person",
+      "subtopic": "3B3 Control testing methodologies. Reconciliation run by one clerk",
       "principle_id": "answer-from-the-stem",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
@@ -1367,13 +1367,13 @@
         "Final two: A beats B because the evidence shows the control works now; dependence on one person threatens how long it will keep working.",
         "Exam cue: effectiveness asks whether a control works now; maturity asks whether it will keep working. Read results for both."
       ],
-      "framework_ref": "NIST SP 800-53 Rev. 5 CA-2 (Control Assessments); NIST CSF 2.0 Section 3.2 (CSF Tiers: progression to higher Tiers is encouraged when risks or mandates are greater or when cost-benefit analysis supports it)",
+      "framework_ref": "NIST SP 800-53 Rev. 5 CA-2 (Control Assessments)",
       "related_concepts": [
         "Control maturity",
         "Control effectiveness",
         "Key person dependency"
       ],
-      "_provenance": "Authored from concept: Round 2, 31 Oct 2026: authored from notes 3B3.3 (Assessing Control Maturity: effectiveness says a control works now; maturity says it will keep working; a control can pass every test yet sit at low maturity); original distributor's supplier-file reconciliation that only one clerk can run, with nothing written down scenario written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 2 (crisc_d3_021 to 050).",
+      "_provenance": "Authored from concept: Round 2, 31 Oct 2026: authored from notes 3B3.3 (Assessing Control Maturity: effectiveness says a control works now; maturity says it will keep working; a control can pass every test yet sit at low maturity); original distributor's supplier-file reconciliation that only one clerk can run, with nothing written down scenario written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 2 (crisc_d3_021 to 050). Review fixes 31 Oct 2026 (blind test and standards audit): dropped the CSF Tiers citation, which describes organization-level rigor, not a single control's maturity; neutral subtopic.",
       "style_version": 2
     },
     {
@@ -1385,9 +1385,9 @@
       "bloom_level": "Application",
       "question": "A risk owner at an insurance broker has agreed a draft action plan that lists each action's owner, budget and due date. Which of the following is MOST important to add to the plan?",
       "options": {
-        "A": "The inherent rating from the original risk assessment",
+        "A": "The inherent rating from the first assessment",
         "B": "The risk level the plan is expected to reach",
-        "C": "A weekly status color for each action",
+        "C": "A weekly status color for each listed action",
         "D": "The risk practitioner's approval of the plan"
       },
       "correct": "B",
@@ -1410,22 +1410,22 @@
         "Target risk",
         "Future residual risk"
       ],
-      "_provenance": "Authored from concept: Round 2, 31 Oct 2026: authored from notes 3C1.1 (Building a Risk Action Plan: a risk action plan needs owners, actions, resources, dates and the target risk at completion); original insurance broker draft action plan with owners, budgets and dates but no target level scenario written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 2 (crisc_d3_021 to 050).",
+      "_provenance": "Authored from concept: Round 2, 31 Oct 2026: authored from notes 3C1.1 (Building a Risk Action Plan: a risk action plan needs owners, actions, resources, dates and the target risk at completion); original insurance broker draft action plan with owners, budgets and dates but no target level scenario written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 2 (crisc_d3_021 to 050). Review fixes 31 Oct 2026 (blind test and standards audit): option lengths evened.",
       "style_version": 2
     },
     {
       "id": "crisc_d3_039",
       "domain": 3,
       "subtopic": "3C1 Risk action plans. Long plan above appetite",
-      "principle_id": "priority-word-decides",
+      "principle_id": "appetite-drives-response",
       "difficulty": "application",
       "bloom_level": "Application",
       "question": "A manufacturer's 14-month plan to replace unsupported plant-floor servers leaves the risk above appetite until the work ends. What should the risk practitioner recommend the plan include as MOST important?",
       "options": {
-        "A": "Monthly milestones that show slippage early",
-        "B": "The plant manager's acceptance of the risk until it is done",
+        "A": "Monthly milestones that reveal schedule slippage early",
+        "B": "The plant manager's acceptance of the risk meanwhile",
         "C": "Interim controls that reduce exposure during the work",
-        "D": "A shorter schedule that skips user acceptance testing"
+        "D": "Quarterly progress reports to the IT steering group"
       },
       "correct": "C",
       "key_concept": "When a treatment takes months and risk stays above appetite, the plan includes interim measures that reduce exposure meanwhile.",
@@ -1434,10 +1434,10 @@
       "wrong_explanations": {
         "A": "Milestones belong in the plan and show slippage, but they leave the risk above appetite for the whole 14 months.",
         "B": "A risk above appetite is not the plant manager's to accept alone; it is treated or elevated to whoever set the appetite.",
-        "D": "Skipping testing trades one risk for another: an untested replacement could fail and halt production."
+        "D": "Progress reports keep IT steering informed, but like milestones they track the work; the exposure stays above appetite for all 14 months."
       },
       "tips": [
-        "Eliminate: B has a manager accept a risk above appetite, and D shortens the work by adding a new risk.",
+        "Eliminate: B has a manager accept a risk above appetite, and D reports progress without lowering the exposure.",
         "Final two: C beats A because interim controls lower the exposure while the work runs; milestones track the work but leave the risk where it is.",
         "Exam cue: a long remediation above appetite needs interim measures, not only a schedule."
       ],
@@ -1447,7 +1447,7 @@
         "Interim controls",
         "Risk appetite"
       ],
-      "_provenance": "Authored from concept: Round 2, 31 Oct 2026: authored from notes 3C1.1 (Building a Risk Action Plan: interim measures reduce the exposure while long actions are under way); original manufacturer's 14-month replacement of unsupported plant-floor servers with the risk above appetite meanwhile scenario written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 2 (crisc_d3_021 to 050).",
+      "_provenance": "Authored from concept: Round 2, 31 Oct 2026: authored from notes 3C1.1 (Building a Risk Action Plan: interim measures reduce the exposure while long actions are under way); original manufacturer's 14-month replacement of unsupported plant-floor servers with the risk above appetite meanwhile scenario written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 2 (crisc_d3_021 to 050). Review fixes 31 Oct 2026 (blind test and standards audit): replaced the strawman option that skipped acceptance testing with board progress reporting; option lengths evened. Review fixes round 2, 31 Oct 2026 (independent verifiers): progress reports now go to the IT steering group, so no explanation supports the runner-up by sending the plan to the body that set the appetite.",
       "style_version": 2
     },
     {
@@ -1564,15 +1564,15 @@
     {
       "id": "crisc_d3_043",
       "domain": 3,
-      "subtopic": "3C3 Risk and control metrics. Performance measure offered as risk evidence",
+      "subtopic": "3C3 Risk and control metrics. Reset speed offered as risk evidence",
       "principle_id": "kris-that-predict",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
       "question": "A university's IT director tells the risk committee that account-takeover risk is low because 98% of password resets are completed within ten minutes. What is the risk practitioner's BEST response?",
       "options": {
-        "A": "Propose a KRI that tracks a driver of account takeover",
-        "B": "Ask the service desk to raise its ten-minute reset target to 99%",
-        "C": "Have internal audit verify the 98% figure first",
+        "A": "Propose a KRI tracking a driver of account takeover",
+        "B": "Ask the service desk to raise its reset target to 99%",
+        "C": "Ask internal audit to verify the 98% reset figure",
         "D": "Record the reset measure as the takeover risk's KRI"
       },
       "correct": "A",
@@ -1595,7 +1595,7 @@
         "Key risk indicator",
         "Risk drivers"
       ],
-      "_provenance": "Authored from concept: Round 2, 31 Oct 2026: authored from notes 3C3.1 (KRIs, KCIs and KPIs: match the metric to the question; trap, a strong KPI result shows the risk is under control); original university IT director citing password-reset speed as proof of low account-takeover risk scenario written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 2 (crisc_d3_021 to 050).",
+      "_provenance": "Authored from concept: Round 2, 31 Oct 2026: authored from notes 3C3.1 (KRIs, KCIs and KPIs: match the metric to the question; trap, a strong KPI result shows the risk is under control); original university IT director citing password-reset speed as proof of low account-takeover risk scenario written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 2 (crisc_d3_021 to 050). Review fixes 31 Oct 2026 (blind test and standards audit): option lengths evened, removed the stray 'first' from a distractor, and the subtopic no longer names the KPI and KRI distinction.",
       "style_version": 2
     },
     {
@@ -1605,25 +1605,25 @@
       "principle_id": "kris-that-predict",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A lender requires a credit officer to review each decline letter its AI tool drafts before it is sent. Which of the following BEST indicates that this review control is weakening?",
+      "question": "A hospital requires a doctor to review each discharge summary its AI tool drafts before it goes to the patient. Which of the following BEST indicates that this review control is weakening?",
       "options": {
-        "A": "Letters the AI tool drafts each working day",
+        "A": "Summaries the AI tool drafts each working day",
         "B": "The model's accuracy at its last validation",
         "C": "Share of drafts approved in under ten seconds",
-        "D": "Customer complaints about decline letters each quarter"
+        "D": "Patient complaints about discharge summaries"
       },
       "correct": "C",
-      "key_concept": "A KCI for human review of AI output should show reviewers rubber-stamping, such as very fast approvals, before harm reaches customers.",
+      "key_concept": "A KCI for human review of AI output should show reviewers rubber-stamping, such as very fast approvals, before harm reaches the people affected.",
       "pre_read": "Ask how you would know a reviewer had stopped really reviewing.",
-      "correct_explanation": "A human review reduces risk only if reviewers actually read the drafts. A rising share approved in seconds is an early sign of rubber-stamping, a known risk when people come to trust automated output, so it works as a KCI for the review. Complaints are the closest alternative: they matter, but they arrive after wrong letters have reached customers, so they warn late.",
+      "correct_explanation": "A human review reduces risk only if reviewers actually read the drafts. A rising share approved in seconds is an early sign of rubber-stamping, a known risk when people come to trust automated output, so it works as a KCI for the review. Complaints are the closest alternative: they matter, but they arrive after wrong summaries have reached patients, so they warn late.",
       "wrong_explanations": {
         "A": "Volume shows workload, which may explain rushed reviews, but it does not show whether reviews are being done properly.",
         "B": "A past validation result describes the model at that time, not the human control now, and it cannot change between validations.",
-        "D": "Complaints are lagging: they appear after wrong letters reach customers, and many affected applicants never complain."
+        "D": "Complaints are lagging: they appear after wrong summaries reach patients, and many affected patients never complain."
       },
       "tips": [
         "Eliminate: A measures workload rather than review quality, and B describes the model at a past point, not the human control.",
-        "Final two: C beats D because fast approvals warn before harm spreads; complaints arrive after wrong letters have reached applicants.",
+        "Final two: C beats D because fast approvals warn before harm spreads; complaints arrive after wrong summaries have reached patients.",
         "Exam cue: for human review of AI output, watch for signs of rubber-stamping, such as approval time or override rates."
       ],
       "framework_ref": "NIST AI 100-1 (AI RMF 1.0) GOVERN 3.2 (roles and responsibilities for human-AI configurations and oversight of AI systems are defined); NIST AI 100-1 (AI RMF 1.0) MANAGE 4.1 (post-deployment monitoring plans, including capturing user input, appeal and override)",
@@ -1632,31 +1632,31 @@
         "Human oversight of AI",
         "Automation bias"
       ],
-      "_provenance": "Authored from concept: Round 2, 31 Oct 2026: authored from notes 3C3.3 (Thresholds and AI Model Indicators: for human review of AI outputs, KCIs such as override rates and time per review warn when reviewers approve by habit); original lender's credit officers reviewing AI-drafted decline letters scenario written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 2 (crisc_d3_021 to 050).",
+      "_provenance": "Authored from concept: Round 2, 31 Oct 2026: authored from notes 3C3.3 (Thresholds and AI Model Indicators: for human review of AI outputs, KCIs such as override rates and time per review warn when reviewers approve by habit); original hospital doctors reviewing AI-drafted discharge summaries scenario written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 2 (crisc_d3_021 to 050). Review fixes 31 Oct 2026 (blind test and standards audit): moved from a lender's decline letters to a hospital's discharge summaries, so it no longer reads as a sequel to crisc_d3_004.",
       "style_version": 2
     },
     {
       "id": "crisc_d3_045",
       "domain": 3,
       "subtopic": "3C4 Risk and control monitoring techniques. Worsening indicator below red",
-      "principle_id": "lines-of-defense",
+      "principle_id": "kris-that-predict",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "Over four months, an insurer's KCI for overdue privileged-access reviews rose from 2% to 9%, still below its 10% red threshold. What should the risk practitioner recommend as BEST?",
+      "question": "Over four months, an insurer's KCI for production changes deployed without an approved ticket rose from 2% to 9%, still below its 10% red threshold. What is the risk practitioner's BEST recommendation?",
       "options": {
         "A": "Wait until the KCI crosses its red threshold",
         "B": "Ask the control owner to raise the threshold to 15%",
         "C": "Review the rising trend with the control owner",
-        "D": "Have the risk team run the overdue reviews itself"
+        "D": "Have the risk team approve production changes itself"
       },
       "correct": "C",
       "key_concept": "A worsening KCI trend is raised with the control owner before a threshold breach; the risk function challenges but does not run the control.",
       "pre_read": "Look at the direction of the indicator, not only its distance from red.",
-      "correct_explanation": "A steady rise toward the threshold is a warning in its own right. The practitioner takes the trend to the control owner, who is accountable for the reviews, to find the cause and fix it before the limit is breached. Waiting for the red threshold is the closest alternative: thresholds trigger escalation, but trend analysis exists so action can start before a breach.",
+      "correct_explanation": "A steady rise toward the threshold is a warning in its own right. The practitioner takes the trend to the control owner, who is accountable for change approval, to find the cause and fix it before the limit is breached. Waiting for the red threshold is the closest alternative: thresholds trigger escalation, but trend analysis exists so action can start before a breach.",
       "wrong_explanations": {
-        "A": "Thresholds trigger escalation, but by the time this KCI turns red, more privileged accounts will have gone unreviewed for longer.",
+        "A": "Thresholds trigger escalation, but by the time this KCI turns red, more unapproved changes will have reached production.",
         "B": "Raising the threshold to fit current performance hides the decline and breaks the link between the threshold and tolerance.",
-        "D": "The risk team oversees and challenges controls; running them would make it judge its own work and leave the owner's process unfixed."
+        "D": "The risk team oversees and challenges controls; approving changes itself would make it judge its own work and leave the owner's process unfixed."
       },
       "tips": [
         "Eliminate: B moves the limit to fit the decline, and D has the second line run a first-line control.",
@@ -1669,7 +1669,7 @@
         "Key control indicator",
         "Lines of defense"
       ],
-      "_provenance": "Authored from concept: Round 2, 31 Oct 2026: authored from notes 3C4.2 (Control Self-Assessment and Trend Analysis: a worsening trend can justify action before a threshold is breached; a worsening KCI goes to the control owner and the risk function does not take over running the control); original insurer KCI for overdue privileged-access reviews rising from 2% to 9% against a 10% red threshold scenario written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 2 (crisc_d3_021 to 050).",
+      "_provenance": "Authored from concept: Round 2, 31 Oct 2026: authored from notes 3C4.2 (Control Self-Assessment and Trend Analysis: a worsening trend can justify action before a threshold is breached; a worsening KCI goes to the control owner and the risk function does not take over running the control); original insurer KCI for production changes deployed without an approved ticket rising from 2% to 9% against a 10% red threshold scenario written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 2 (crisc_d3_021 to 050). Review fixes 31 Oct 2026 (blind test and standards audit): moved from overdue privileged-access reviews, which restated crisc_d3_042's key and mirrored CISA d2_051, to unapproved production changes.",
       "style_version": 2
     },
     {
@@ -1718,15 +1718,15 @@
       "bloom_level": "Application",
       "question": "A city council's heat map has shown a supplier-outage risk in the same amber cell for three quarters while its KRI worsened monthly. Which improvement should the risk practitioner recommend as MOST important?",
       "options": {
-        "A": "Markers showing each risk's movement over time",
+        "A": "Trend arrows fed by each risk's indicators",
         "B": "More cells to give the heat map finer detail",
         "C": "An average score for the risks in each cell",
         "D": "A view limited to the risks in red cells"
       },
       "correct": "A",
-      "key_concept": "Heat maps show position, not trend; reports add movement markers so a worsening risk is not read as stable.",
+      "key_concept": "Heat maps show position, not trend; reports add KRI-based trend arrows so a worsening risk is not read as stable.",
       "pre_read": "Compare what the heat map shows with what the KRI shows.",
-      "correct_explanation": "A heat map shows where a risk sits, not where it is heading, so a risk can look stable while its drivers worsen. Trend markers or prior-period positions let the council's leaders see movement and act before the risk changes cell. Finer cells are the closest alternative: they show position more precisely, but they still hide direction, which is what was missed here.",
+      "correct_explanation": "A heat map shows where a risk sits, not where it is heading, so a risk can look stable while its drivers worsen. Trend arrows fed by the KRIs let the council's leaders see direction and act before the risk changes cell. Finer cells are the closest alternative: they show position more precisely, but they still hide direction, which is what was missed here.",
       "wrong_explanations": {
         "B": "Finer cells sharpen position but still give a snapshot; the worsening trend would stay invisible.",
         "C": "Heat-map scores are ordinal, so averaging them is not meaningful, and it would blur this risk further.",
@@ -1734,7 +1734,7 @@
       },
       "tips": [
         "Eliminate: C does arithmetic on ordinal scores, and D removes the worsening risk from view.",
-        "Final two: A beats B because the reader needs direction, not finer position; trend markers show the movement the KRI already signals.",
+        "Final two: A beats B because the reader needs direction, not finer position; KRI-fed trend arrows show the movement the cell hides.",
         "Exam cue: a heat map is a snapshot; pair it with trend so a stable position is not read as a stable risk."
       ],
       "framework_ref": "NIST IR 8286B-upd1 Section 2.2.5 (Visualizing Risk Priority: heat maps are a quick-reference guide with limited ability to convey risk information); NIST IR 8286C Rev. 1 Section 5.2 (Monitoring Risks: KRIs are observed for trends such as rising likelihood or failing controls)",
@@ -1743,35 +1743,35 @@
         "Trend reporting",
         "Key risk indicator"
       ],
-      "_provenance": "Authored from concept: Round 2, 31 Oct 2026: authored from notes 3C5.1 (Heat Maps, Scorecards and Dashboards: heat maps show relative position but not trend; add arrows or prior-period markers; trap, a risk that stays in the same cell is stable); original city council heat map with a supplier-outage risk in the same amber cell while its KRI worsens scenario written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 2 (crisc_d3_021 to 050).",
+      "_provenance": "Authored from concept: Round 2, 31 Oct 2026: authored from notes 3C5.1 (Heat Maps, Scorecards and Dashboards: heat maps show relative position but not trend; add arrows or prior-period markers; trap, a risk that stays in the same cell is stable); original city council heat map with a supplier-outage risk in the same amber cell while its KRI worsens scenario written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 2 (crisc_d3_021 to 050). Review fixes 31 Oct 2026 (blind test and standards audit): the key now draws trend from the KRIs, since a risk that never changed cell would show no movement on position markers.",
       "style_version": 2
     },
     {
       "id": "crisc_d3_048",
       "domain": 3,
-      "subtopic": "3C5 Risk and control reporting techniques. Report sent to the wrong level",
+      "subtopic": "3C5 Risk and control reporting techniques. Audience for a patching report",
       "principle_id": "report-for-the-decision",
       "difficulty": "application",
       "bloom_level": "Application",
       "question": "A risk analyst's monthly report on unpatched checkout terminals at a supermarket chain goes to IT operations, but funding the fix needs the retail director's approval. What is the analyst's BEST change to the reporting?",
       "options": {
-        "A": "Add the full vulnerability scan results for IT operations",
-        "B": "Copy internal audit on each monthly report",
-        "C": "Send the report to IT operations weekly",
+        "A": "Send the full scan results to the retail director",
+        "B": "Copy internal audit on each monthly patching report",
+        "C": "Move the IT operations report to a weekly cycle",
         "D": "Send it to the retail director with the decision needed"
       },
       "correct": "D",
       "key_concept": "Risk reports go to someone with authority to decide on what they show, stating the decision requested.",
       "pre_read": "Ask who can approve what the report is asking for.",
-      "correct_explanation": "A report helps only if it reaches someone who can act on it. Funding the fix is the retail director's decision, so the report should go to the director, in business terms, stating the decision requested. More scan detail is the closest alternative: it helps IT do the work, but IT cannot approve the money, so the risk would stay open however detailed the report.",
+      "correct_explanation": "A report helps only if it reaches someone who can act on it. Funding the fix is the retail director's decision, so the report should go to the director, in business terms, stating the decision requested. Sending the full scan results to the director is the closest alternative: it reaches the right person, but raw technical detail without the business impact and the decision requested leaves the director unable to act.",
       "wrong_explanations": {
-        "A": "More detail helps IT plan the work, but IT cannot fund it, so the decision still never reaches anyone with authority.",
+        "A": "Raw scan results reach the right person in IT's terms, with no decision stated, so the director cannot see what is being asked or why it matters to the stores.",
         "B": "Internal audit gives independent assurance; copying it does not get the funding decision made by the person who owns it.",
         "C": "More frequent reports to the same team repeat the problem faster; the team still cannot approve the funding."
       },
       "tips": [
         "Eliminate: B sends the report to assurance rather than to a decision maker, and C repeats it more often to a team that cannot fund the fix.",
-        "Final two: D beats A because the report must reach the person with authority to decide; more detail for IT does not unlock the funding.",
+        "Final two: D beats A because the director needs the business impact and the decision requested; raw scan results reach the right person in the wrong terms.",
         "Exam cue: report to the level that can decide, in its terms, with the decision requested."
       ],
       "framework_ref": "NIST SP 800-137 Section 3.4 (Analyze Data and Report Findings: recipients, content, format and frequency of reports); NIST CSF 2.0 ID.RA-06 (risk responses are chosen, prioritized, planned, tracked and communicated)",
@@ -1780,7 +1780,7 @@
         "Audience",
         "Risk-based decision making"
       ],
-      "_provenance": "Authored from concept: Round 2, 31 Oct 2026: authored from notes 3C5.2 (Reporting for the Audience and the Decision: send each report to someone with authority to decide on what it shows, and state the decision requested); original supermarket chain report on unpatched checkout terminals sent to IT operations, though the retail director funds the fix scenario written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 2 (crisc_d3_021 to 050).",
+      "_provenance": "Authored from concept: Round 2, 31 Oct 2026: authored from notes 3C5.2 (Reporting for the Audience and the Decision: send each report to someone with authority to decide on what it shows, and state the decision requested); original supermarket chain report on unpatched checkout terminals sent to IT operations, though the retail director funds the fix scenario written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 2 (crisc_d3_021 to 050). Review fixes 31 Oct 2026 (blind test and standards audit): the runner-up now reaches the right audience in the wrong terms, so 'retail director' is no longer key-only; option lengths evened; neutral subtopic.",
       "style_version": 2
     },
     {
@@ -1790,7 +1790,7 @@
       "principle_id": "emerging-and-ai-risk-owned",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "An energy retailer's risk analyst reads research suggesting future quantum computers could break the encryption on its long-term customer contracts. Which is the MOST appropriate way to rate this risk in the register?",
+      "question": "A risk analyst at an energy retailer reads research suggesting quantum computers could one day break the encryption on billing data kept confidential for 15 years. Which rating approach is MOST appropriate for the register?",
       "options": {
         "A": "A critical rating until the threat is ruled out",
         "B": "A range of ratings with stated confidence",
@@ -1800,11 +1800,11 @@
       "correct": "B",
       "key_concept": "Emerging risk is rated with ranges and a stated confidence level, then refined as evidence grows, neither ignored nor overstated.",
       "pre_read": "Ask how certain anyone can be about this threat today.",
-      "correct_explanation": "An emerging risk is real enough to record but too uncertain for a single confident score. A range, with the confidence level and assumptions stated and a short review date, tells leaders what is known and lets the rating firm up as evidence grows. A low rating until an attack is shown is the closest alternative: it looks cautious about evidence, but long-lived contracts may already be exposed by then.",
+      "correct_explanation": "An emerging risk is real enough to record but too uncertain for a single confident score. A range, with the confidence level and assumptions stated and a short review date, tells leaders what is known and lets the rating firm up as evidence grows. A low rating until an attack is shown is the closest alternative: it looks cautious about evidence, but data that must stay confidential for 15 years may be exposed by then.",
       "wrong_explanations": {
         "A": "Rating it critical without evidence overstates the risk and can pull resources from better-understood risks; emerging risk is reported as uncertain, not certain.",
         "C": "Waiting for a working attack treats uncertainty as no risk, yet data encrypted now could be copied today and read later.",
-        "D": "A peer's rating reflects its own contracts and exposure, and borrows its assumptions without stating them."
+        "D": "A peer's rating reflects its own data and exposure, and borrows its assumptions without stating them."
       },
       "tips": [
         "Eliminate: A treats an uncertain risk as certain, and D borrows a rating built on another firm's exposure.",
@@ -1817,7 +1817,7 @@
         "Uncertainty",
         "Post-quantum cryptography"
       ],
-      "_provenance": "Authored from concept: Round 2, 31 Oct 2026: authored from notes 3C6.2 (Recording and Reporting Emerging Risk: use ranges or alternative scenarios rather than single scores while uncertainty is high; traps, rate an emerging risk as critical, or wait until it can be measured); original energy retailer and research on future quantum computers breaking contract encryption scenario written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 2 (crisc_d3_021 to 050).",
+      "_provenance": "Authored from concept: Round 2, 31 Oct 2026: authored from notes 3C6.2 (Recording and Reporting Emerging Risk: use ranges or alternative scenarios rather than single scores while uncertainty is high; traps, rate an emerging risk as critical, or wait until it can be measured); original energy retailer and research on future quantum computers breaking the encryption on billing data kept confidential for 15 years scenario written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 2 (crisc_d3_021 to 050). Review fixes 31 Oct 2026 (blind test and standards audit): encryption now protects billing data with a stated confidentiality period, since contracts are signed rather than encrypted, and the setting no longer copies CISA d5_339.",
       "style_version": 2
     },
     {
