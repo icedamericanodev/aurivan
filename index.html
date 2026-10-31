@@ -7247,7 +7247,7 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
     <h2 class="vision-title" id="aboutVisionT">Think like an IS auditor.</h2>
     <p class="vision-line">CISA exam prep, taught the way the exam thinks.</p>
   </section>
-  <p class="about-version">KaiSip web <span class="bank-pill" id="versionPill">v12.49.5</span></p>
+  <p class="about-version">KaiSip web <span class="bank-pill" id="versionPill">v12.49.6</span></p>
   <section class="vision-body" aria-label="What KaiSip stands for">
     <!-- The provenance line (owner, 22 Oct 2026): the same words in the hero, the disclaimer and the FAQ. -->
     <p class="vision-desc">Original questions and notes, written with AI assistance and checked against ISACA’s published exam outline and standards.</p>
@@ -7584,7 +7584,7 @@ const MOCK_TIER_LABEL = { analysis: 'Harder', application: 'Middle', foundationa
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v12.49.5';
+const APP_VERSION = 'v12.49.6';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -22693,6 +22693,13 @@ function toggleMockDetail(i) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
+    title: 'Clearer final-two coaching',
+    items: [
+      { cat: 'improved', text: 'The "Choosing between the final two" principle now uses the same plain words as the rest of the app: the closest wrong choice and the best answer.' },
+    ],
+  },
+  {
+    version: 'v12.49.5',
     title: 'More questions linked to exam principles',
     items: [
       { cat: 'improved', text: 'More practice questions now show the exam principle they test, so you can see the thinking behind the answer and practice it.' },

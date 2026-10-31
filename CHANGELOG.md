@@ -4,6 +4,11 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v12.49.6] — Clearer final-two coaching
+
+### Improved
+- The "Choosing between the final two" principle now uses the same plain words as the rest of the app: the closest wrong choice and the best answer.
+
 ## [v12.49.5] — More questions linked to exam principles
 
 ### Improved
