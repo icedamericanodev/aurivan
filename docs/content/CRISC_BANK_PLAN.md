@@ -129,6 +129,13 @@ standard (`.claude/agents/crisc-standards-auditor.md`, "Calibration rules").
 10. **Don't mirror our other courses.** Check new items against the CISA and
     CC banks for the same scenario and key (the pilot's crisc_d3_006 had
     mirrored CISA d1_187).
+11. **ISACA Glossary terms win** (control owner, MTO/AIW, RTO, ERM, current /
+    residual / future residual risk). From the ISACA concept review, 31 Oct 2026.
+12. **Read like ISACA, not a prep bank** (authenticity audit, 31 Oct 2026):
+    about 25–30% short "Which of the following is MOST …" stems; FIRST keys
+    not always "assess" (at most ~60%); one action per key; no absolute,
+    urgency or subjective-frequency words as tells; no planted facts; numeric
+    options ascending.
 
 ## 7. Course description (draft for growth-marketer)
 
@@ -148,6 +155,13 @@ on the paywall.
 | Blind re-test of all 80 after fixes | 80/80, no letter-mapping errors after re-lettering |
 | Cross-domain gate | 0 HARD ERRORS; 13 PRECISION (4 near-duplicates re-angled, 8 notes contradictions fixed, 1 item stem), 15 observations |
 | Citations | 130+ library bullets; every `framework_ref` part matches one; all Verified or Verified (title); no ISO, COSO, IIA or EU source keyed |
+
+**Supporting tasks that need items in round 2** (ISACA concept review, 31 Oct
+2026): task 12 (current vs desired state gaps), 13 (what a treatment plan must
+contain), 17 and 18 (KPIs and KCIs with control owners), 19 (control maturity
+set by risk), 20 (validate data before reporting) and 23 (contractual and SLA
+obligations). Areas with only one item: 1A5, 1A6, 1B3, 1B5, 3A2, 3A3, 3A4,
+3B1, 3B3, 3C1, 3C2, 3C4, 3C5, 3C6.
 
 **Next round (round 2):** weight it toward D3, which is 6 items short of its
 32% share, and keep healthcare to about 1 in 8 stems. Then principles, the exam
