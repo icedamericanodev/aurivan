@@ -156,6 +156,18 @@ on the paywall.
 | Cross-domain gate | 0 HARD ERRORS; 13 PRECISION (4 near-duplicates re-angled, 8 notes contradictions fixed, 1 item stem), 15 observations |
 | Citations | 130+ library bullets; every `framework_ref` part matches one; all Verified or Verified (title); no ISO, COSO, IIA or EU source keyed |
 
+### ISACA quality pass (31 Oct 2026)
+
+| Stage | Result |
+|---|---|
+| Mindset content | 19 risk-practitioner principles (`data/crisc/mindset/principles.json`) and a 13-section exam guide (`data/crisc/exam/crisc_exam_guide.json`), every exam fact checked against the candidate guide v1.26; all 80 items tagged |
+| ISACA authenticity audit | 71/80 passed an item-committee bar before fixes (average 3.40 of 4); 9 rewritten; no originality issues against ISACA's public CRISC quiz |
+| ISACA concept review | 2 HARD ERRORS fixed (d2_018 second answer under the Glossary's "future residual risk"; a withdrawn NIST IR 8286C citation); glossary drift fixed (control owner, MTO/AIW, RTO, ERM) |
+| Fix pass, per domain | Blind tests 20/20 in every domain; standards re-audit and concept check, then up to two repair rounds |
+| Mindset review | 1 HARD ERROR fixed (a principle let the practitioner approve exceptions) and 18 wording fixes |
+| Cross-domain gates 2 and 3 | 1 HARD ERROR and 17 PRECISION fixes, mostly role consistency across notes, principles and items; changed items re-blind-tested 8/8 and 7/7 |
+| Form now | 22 of 80 items (28%) are ISACA-style "Which of the following" stems; FIRST keys that are assess/record at 33–50% per domain; keys 5/5/5/5; key longest in 2–3 of 20 |
+
 **Supporting tasks that need items in round 2** (ISACA concept review, 31 Oct
 2026): task 12 (current vs desired state gaps), 13 (what a treatment plan must
 contain), 17 and 18 (KPIs and KCIs with control owners), 19 (control maturity
