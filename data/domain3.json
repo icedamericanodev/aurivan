@@ -664,7 +664,7 @@
       "bloom_level": "Analysis",
       "question": "Four weeks before an ERP go-live, only 47% of user acceptance testing (UAT) cases have passed against agreed exit criteria. What is the IS auditor's MOST appropriate recommendation to the steering committee?",
       "options": {
-        "A": "Re-scope UAT to remove failing cases so the criteria are met",
+        "A": "Ask the project manager to set revised exit criteria for go-live",
         "B": "Have the audit team re-execute the failed cases independently",
         "C": "Defer go-live until a further UAT cycle meets the exit criteria",
         "D": "Go live on schedule, moving failed cases to Phase 2"
@@ -674,12 +674,12 @@
       "pre_read": "Compare the pass rate with the agreed criteria. Ask which option keeps the criteria meaningful and the auditor independent.",
       "correct_explanation": "Agreed exit criteria are the control that decides readiness. With fewer than half the cases passed, the auditor should recommend deferring go-live until a further cycle meets them. Moving failed cases to Phase 2 is the tempting option: it meets the date, but it accepts large untested risk without meeting the agreed criteria.",
       "wrong_explanations": {
-        "A": "Removing failing cases hides the problem and makes the exit criteria meaningless. It defeats the control.",
+        "A": "Revising criteria can be legitimate, but the project manager owns the schedule, not acceptance; criteria reset by the delivery side mid-test no longer measure the business's agreed standard.",
         "B": "Executing tests is management's job. Audit performing them would impair independence and not fix the defects.",
         "D": "Carrying a few defects forward is normal with formal sign-off, but here the date is deciding; a deadline is a constraint, not evidence."
       },
       "tips": [
-        "Eliminate: A re-scopes UAT so failing cases no longer count, which defeats the agreed exit criteria, and B has the auditor perform testing that belongs to management.",
+        "Eliminate: A and B, because A lets the project manager reset criteria the business agreed, which defeats them, and B has the auditor perform testing that belongs to management.",
         "Final two: C beats D because agreed exit criteria should decide readiness; going live on schedule accepts major untested risk.",
         "Exam cue: when testing fails its exit criteria, the auditor recommends holding to the criteria, not shifting failures to a later phase."
       ],
@@ -691,7 +691,7 @@
         "Go-live decision",
         "Project governance"
       ],
-      "_provenance": "Authored from concept: 'Auditor recommendation on partial UAT pass rate per ISACA Project Audit and UAT Audit guidance'. Public sources: ISACA guidance, COBIT 2019. Scenario specifics (manufacturer, 14 countries, $3B, 22-week cutover, 47/31/22 split) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Content review (Oct 2026): spelled out UAT; removed a leftover 'documented deviation' clause that confused the deferral advice. Round 2 (Oct 2026, quality-gate fixes from the standards audit, pedagogy check and strong and weak blind tests): tip only: the Eliminate tip names the knowledge, not a dismissive word (the v12.35 fixes are kept).",
+      "_provenance": "Authored from concept: 'Auditor recommendation on partial UAT pass rate per ISACA Project Audit and UAT Audit guidance'. Public sources: ISACA guidance, COBIT 2019. Scenario specifics (manufacturer, 14 countries, $3B, 22-week cutover, 47/31/22 split) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Content review (Oct 2026): spelled out UAT; removed a leftover 'documented deviation' clause that confused the deferral advice. Round 2 (Oct 2026, quality-gate fixes from the standards audit, pedagogy check and strong and weak blind tests): tip only: the Eliminate tip names the knowledge, not a dismissive word (the v12.35 fixes are kept). Strawman pass (Oct 2026): eliminated option(s) rewritten to a plausible same-type error; blind re-tested.",
       "style_version": 2
     },
     {
@@ -1306,22 +1306,22 @@
       "bloom_level": "Application",
       "question": "Halfway through the quarter, a customer-facing service with an agreed error-budget policy has used its entire error budget. Which release response should the IS auditor expect management to take FIRST?",
       "options": {
-        "A": "Lower the SLO target so the budget becomes available again",
+        "A": "Re-measure the SLO over a longer window before changing releases",
         "B": "Freeze non-essential releases and prioritize reliability work",
         "C": "Keep releasing, using canary rollouts and extra production monitoring",
-        "D": "Continue normal releases, since features outweigh the SLO"
+        "D": "Add on-call engineers and continue the planned release schedule"
       },
       "correct": "B",
       "key_concept": "When an error budget is exhausted, non-essential releases stop and reliability work takes priority until the budget recovers.",
       "pre_read": "Recall what an error budget is for: it decides when the team may keep shipping features and when it must stop.",
       "correct_explanation": "An exhausted error budget means users have already absorbed the agreed amount of unreliability. The agreed policy response is to freeze non-essential changes and spend engineering effort on reliability until the budget recovers. Canary rollouts with extra monitoring reduce the risk of each release, but they still spend reliability the service no longer has and sidestep the agreed policy.",
       "wrong_explanations": {
-        "A": "Loosening the target after missing it removes accountability and hides the reliability problem users are already experiencing.",
+        "A": "A longer window can look like better analysis, but changing how the SLO is measured after the budget runs out delays the agreed response and hides the reliability problem.",
         "C": "Safer rollout methods reduce per-release risk but still add change to a service that has used up its tolerance for failure.",
-        "D": "Ignoring the exhausted budget defeats the purpose of setting an SLO and an agreed error-budget policy."
+        "D": "Extra on-call staff speed recovery from failures, but the agreed policy pauses non-essential change once the budget is spent; releasing on schedule keeps spending reliability already used up."
       },
       "tips": [
-        "Eliminate: A lowers the SLO after missing it, which defeats the error-budget policy, and D sets aside a policy management agreed to follow.",
+        "Eliminate: A and D, because A changes how the SLO is measured after the budget runs out, and D keeps the release schedule that the agreed policy pauses.",
         "Final two: B beats C because the policy for an exhausted budget is to stop non-essential change, not to release more carefully.",
         "Exam cue: once the error budget is spent, feature releases pause and reliability work takes priority until it recovers."
       ],
@@ -1333,7 +1333,7 @@
         "SLI",
         "Site reliability"
       ],
-      "_provenance": "Authored from concept: 'SRE error-budget response per Google SRE Book and Workbook'. Public sources: Google SRE Book, SRE Workbook. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): stem now states the agreed error-budget policy. Round 2 (Oct 2026, quality-gate fixes from the standards audit, pedagogy check and strong and weak blind tests): tip only: the Eliminate tip names the knowledge, not a dismissive word. Cross-domain review (Oct 2026): MINOR drift with : re-anchored the stem to its Domain 3 decision (question).",
+      "_provenance": "Authored from concept: 'SRE error-budget response per Google SRE Book and Workbook'. Public sources: Google SRE Book, SRE Workbook. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): stem now states the agreed error-budget policy. Round 2 (Oct 2026, quality-gate fixes from the standards audit, pedagogy check and strong and weak blind tests): tip only: the Eliminate tip names the knowledge, not a dismissive word. Cross-domain review (Oct 2026): MINOR drift with : re-anchored the stem to its Domain 3 decision (question). Strawman pass (Oct 2026): eliminated option(s) rewritten to a plausible same-type error; blind re-tested.",
       "style_version": 2
     },
     {
@@ -4396,7 +4396,7 @@
       "question": "Two weeks before quarter close, three critical finance reports depend on rebuilt ETL jobs on a new data warehouse that are not yet validated. Which recommendation by the IS auditor is BEST?",
       "options": {
         "A": "Cut over the finance reports to the new warehouse on schedule",
-        "B": "Delay the quarterly filing until the migration is complete",
+        "B": "Seek a filing extension while the new ETL jobs are validated",
         "C": "Run quarter close on the old warehouse and halt the migration",
         "D": "Parallel-run and reconcile the three reports to the old warehouse"
       },
@@ -4406,11 +4406,11 @@
       "correct_explanation": "Parallel running the three affected reports and reconciling them to the old warehouse produces evidence on whether the rebuilt jobs are accurate, while the old platform stays available as a fallback. Management can then decide with facts. Running close on the old warehouse and halting the migration is safe for this quarter, but it stops the whole program over three reports that may reconcile cleanly.",
       "wrong_explanations": {
         "A": "Relying on unvalidated ETL jobs for public financial reporting risks misstatement and certification exposure.",
-        "B": "Public-company filing deadlines are fixed; delaying them creates regulatory breaches rather than reducing risk.",
+        "B": "Extensions exist for genuine emergencies, but seeking one to finish a migration signals reporting weakness to regulators and markets when validation can be completed before the fixed deadline.",
         "C": "Closing on the old warehouse does protect this quarter, but a fallback is a safety net under a decision, not a substitute for one."
       },
       "tips": [
-        "Eliminate: A relies on unvalidated jobs, and B treats a fixed filing deadline as optional.",
+        "Eliminate: A and B, because A relies on unvalidated jobs, and B moves a fixed filing deadline to suit the migration.",
         "Final two: D beats C because reconciliation produces evidence for the decision, while halting stops the program without it.",
         "Exam cue: before cutover of financial data, look for parallel run and reconciliation as the deciding evidence."
       ],
@@ -4421,7 +4421,7 @@
         "SOX Section 302",
         "Parallel run"
       ],
-      "_provenance": "Authored from concept: 'DWH migration timing vs financial close per ISACA Data Warehouse Migration guidance and SOX Section 302'. Public sources: ISACA, SOX. Scenario specifics (public company, week 4 of 10-week DWH migration, quarter close in 2 weeks, 3 critical reports not validated, CFO/CIO/program-lead disagreement) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'DWH migration timing vs financial close per ISACA Data Warehouse Migration guidance and SOX Section 302'. Public sources: ISACA, SOX. Scenario specifics (public company, week 4 of 10-week DWH migration, quarter close in 2 weeks, 3 critical reports not validated, CFO/CIO/program-lead disagreement) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Strawman pass (Oct 2026): eliminated option(s) rewritten to a plausible same-type error; blind re-tested.",
       "style_version": 2
     },
     {
@@ -5334,7 +5334,7 @@
       "question": "A pension fund must test benefit rules for rare cases, such as members with three overlapping claims, that appear in no production record. Which test data should the IS auditor consider MOST appropriate?",
       "options": {
         "A": "A masked extract of the full production member history",
-        "B": "Live member records edited in production to create the cases",
+        "B": "Test member records created in production and flagged as test",
         "C": "Unmasked production records copied to test, then edited into the cases",
         "D": "Synthetic records generated to cover each specified scenario"
       },
@@ -5344,11 +5344,11 @@
       "correct_explanation": "Synthetic data suits cases that real data does not contain: records generated to the specified scenarios exercise the rare rules and hold no personal data. A masked production extract nearly wins because masking is the right way to use real data in test, but no extract, however large, contains cases that appear in no production record.",
       "wrong_explanations": {
         "A": "Masking protects real data, but these cases appear in no production record, so no extract can supply them.",
-        "B": "Editing live records to stage tests corrupts real member data and mixes test activity with production.",
+        "B": "Flagged test accounts in production are a common shortcut, but they mix test activity with live member data and risk test runs reaching real payments or reports.",
         "C": "Copying unmasked records into test exposes real personal data in a less controlled environment before any edit is made."
       },
       "tips": [
-        "Eliminate: B alters live member data in production, and C puts unmasked personal data into test.",
+        "Eliminate: B and C, because B stages test cases inside the live production system, and C puts unmasked personal data into test.",
         "Final two: D beats A because a masked extract still holds only real cases, and these rare cases exist in no production record.",
         "Exam cue: mask real data when realistic patterns matter; generate synthetic data for early tests and cases production lacks."
       ],
@@ -5358,7 +5358,7 @@
         "Data masking",
         "Test data management"
       ],
-      "_provenance": "Authored from concept: 'Test Environments and Test Data. Cases Missing from Production'. Original KaiSip item (Oct 2026), written for CISA subtopic 3B1.4 (Wave 3 coverage batch Q14: thin subtopic). Distinct from d3_010 (masking personal data before extraction): tests when synthetic data is the better source, because the cases to be tested do not exist in production at all. All scenario specifics invented for this question. Public sources: ISO/IEC 27002:2022 Control 8.33; NIST SP 800-188.",
+      "_provenance": "Authored from concept: 'Test Environments and Test Data. Cases Missing from Production'. Original KaiSip item (Oct 2026), written for CISA subtopic 3B1.4 (Wave 3 coverage batch Q14: thin subtopic). Distinct from d3_010 (masking personal data before extraction): tests when synthetic data is the better source, because the cases to be tested do not exist in production at all. All scenario specifics invented for this question. Public sources: ISO/IEC 27002:2022 Control 8.33; NIST SP 800-188. Strawman pass (Oct 2026): eliminated option(s) rewritten to a plausible same-type error; blind re-tested.",
       "style_version": 2
     },
     {
@@ -5590,7 +5590,7 @@
         "A": "Proposals cannot be scored against what the county needs",
         "B": "The chosen vendor may charge heavily for later change requests",
         "C": "Fewer vendors may respond within a shortened bidding period",
-        "D": "The county may lose the funding if the deadline passes"
+        "D": "Vendors may send the county many clarification questions"
       },
       "correct": "A",
       "key_concept": "Document requirements before issuing a request for proposal, because they are the basis for evaluating every proposal.",
@@ -5599,10 +5599,10 @@
       "wrong_explanations": {
         "B": "Change-request costs are likely, but they are a symptom of the root problem: selecting a system without defined needs to judge it by.",
         "C": "A shorter bidding window may reduce responses, but more proposals would not help with no requirements to judge them against.",
-        "D": "Losing the funding is the risk that issuing now tries to avoid; the question asks for the risk that issuing the request now creates."
+        "D": "A vague request does draw more questions, but answering them is routine bidding work; it gives the county no yardstick for judging which proposal fits its needs."
       },
       "tips": [
-        "Eliminate: C is a minor competition concern, and D is the risk that issuing now avoids, not one it creates.",
+        "Eliminate: C and D, because both are bidding-process concerns the procurement team can manage, not the business risk of buying without defined needs.",
         "Final two: A beats B because change-request costs follow from the root flaw: no defined needs to judge proposals against.",
         "Exam cue: in acquisition, requirements come before the request for proposal; without them, no proposal can be scored fairly."
       ],
@@ -5612,7 +5612,7 @@
         "Requirements definition",
         "Vendor selection"
       ],
-      "_provenance": "Authored from concept: 'Acquiring Software from Vendors. Proposal Request Before Requirements'. Original KaiSip item (Oct 2026), written for CISA subtopic 3A2.4 (Wave 3 coverage batch Q14: thin subtopic). Distinct from d3_150 (scoring on published weights) and d3_057 (build versus buy comparison): tests that issuing a request for proposal before requirements leaves no basis for evaluating proposals. All scenario specifics invented for this question. Public sources: COBIT 2019 BAI02; COBIT 2019 APO10.02.",
+      "_provenance": "Authored from concept: 'Acquiring Software from Vendors. Proposal Request Before Requirements'. Original KaiSip item (Oct 2026), written for CISA subtopic 3A2.4 (Wave 3 coverage batch Q14: thin subtopic). Distinct from d3_150 (scoring on published weights) and d3_057 (build versus buy comparison): tests that issuing a request for proposal before requirements leaves no basis for evaluating proposals. All scenario specifics invented for this question. Public sources: COBIT 2019 BAI02; COBIT 2019 APO10.02. Strawman pass (Oct 2026): eliminated option(s) rewritten to a plausible same-type error; blind re-tested.",
       "style_version": 2
     },
     {
