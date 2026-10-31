@@ -2,7 +2,7 @@
 
 Two items are linked when one item's explanation or key gives away the other's answer, or both test the same rule from contrasting angles. A held-out mock form must never contain both items of a pair. Source: the batch 2 cross-domain review (31 Oct 2026); extend it at every cross-domain gate.
 
-Rule for the form builder: Draw no two items of a pair into the same form. Keep the hubs csoe_d3_038, csoe_d4_029 and csoe_d4_001 in practice, not in the held-out set: their facts recur too often to test cleanly.
+Rule for the form builder: Draw no two items of a pair into the same form. Keep the hubs csoe_d3_038, csoe_d4_029, csoe_d4_001, csoe_d2_012, csoe_d2_014, csoe_d5_045 and csoe_d5_056 in practice, not in the held-out set: their facts recur too often to test cleanly.
 
 | Item A | Item B | Why linked |
 |---|---|---|
@@ -103,13 +103,11 @@ Rule for the form builder: Draw no two items of a pair into the same form. Keep 
 | csoe_d4_019 | csoe_d4_058 | d4_058's wrong explanation D and its tips: recovery does not turn on the officer's role (no-fault) |
 | csoe_d4_051 | csoe_d4_052 | both Exchange Act Section 32(a) as raised by Section 1106 |
 | csoe_d4_032 | csoe_d4_052 | mirror individual-versus-entity penalty items |
-| csoe_d4_045 | csoe_d2_054 | both the Section 19(b) self-regulatory route |
 | csoe_d1_054 | csoe_d4_047 | both Section 1103; each explanation states the other's key |
 | csoe_d2_003 | csoe_d4_060 | Section 109 fee allocation, contrasting measures |
 | csoe_d4_018 | csoe_d4_057 | d4_057: the 989G(b) study touched only 404(b); 404(a) stays |
 | csoe_d3_043 | csoe_d4_046 | d3_043's exam cue: audit committee rules are listing conditions |
 | csoe_d1_008 | csoe_d4_057 | d4_057 explanation states the 2020 Rule 12b-2 revenue test (d1_008's key) |
-| csoe_d1_054 | csoe_d4_047 | same rule (Section 1103): who orders the freeze vs whose payments it covers |
 | csoe_d1_048 | csoe_d1_053 | parallel signer lists; d1_048 states d1_053's key |
 | csoe_d1_047 | csoe_d1_048 | d1_048 wrong explanation B: Form F-6 holds no company financials |
 | csoe_d1_010 | csoe_d1_047 | d1_010 wrong explanation C: Form F-6 covers only the deposit terms |
@@ -118,3 +116,17 @@ Rule for the form builder: Draw no two items of a pair into the same form. Keep 
 | csoe_d1_044 | csoe_d1_045 | d1_044 tip 2: Title VII only ordered a study |
 | csoe_d1_022 | csoe_d1_045 | d1_022 exam cue: Title VII ordered studies |
 | csoe_d1_018 | csoe_d1_051 | d1_051 exam cue: the ADR level decides whether the company reports at all |
+
+| csoe_d2_037 | csoe_d2_056 | d2_037 CE: Section 204 sends 'other material written communications' to the audit committee (d2_056's key) |
+| csoe_d2_018 | csoe_d2_056 | d2_018 CE: the report covers critical policies, alternatives 'and other material written communications' (d2_056's key) |
+| csoe_d2_026 | csoe_d2_047 | d2_026 CE, WA and tip 2: Section 106(f) lets staff accept production through foreign counterparts (d2_047's key) |
+| csoe_d5_012 | csoe_d5_045 | d5_045 WD: the 2017 update has five components and 20 principles (d5_012's key); drop if the WD edit is applied |
+| csoe_d5_031 | csoe_d5_052 | d5_031 CE places analyzing business context in strategy and objective-setting (d5_052's key) |
+| csoe_d5_020 | csoe_d5_051 | d5_020 CE and exam cue: management's report must always state whether ICFR is effective (d5_051's key) |
+| csoe_d1_041 | csoe_d4_021 | d1_041 WB and tip 1: Item 308(a) carries out Section 404(a)'s rules (d4_021's key); d4_021's exam cue teaches d1_041's statute-versus-rule test |
+| csoe_d1_042 | csoe_d2_043 | d1_042 CE and WB: the SEC reviews Board sanctions under Section 107(c), half of d2_043's key |
+| csoe_d2_017 | csoe_d2_058 | d2_058 WB: the five-year limit binds the partners who lead or review the audit (d2_017's key) |
+| csoe_d4_045 | csoe_d4_046 | d4_046 CE: exchange listing rules went to the SEC under Exchange Act Section 19(b) (d4_045's process) |
+| csoe_d5_004 | csoe_d5_053 | d5_053 KC and option A: the 2013 update's 17 principles (part of d5_004's key) |
+| csoe_d5_045 | csoe_d5_046 | both test cube faces; d5_046 WD and d5_045's exam cue: the third face is the entity's structure |
+| csoe_d3_057 | csoe_d3_058 | d3_057 WB: Regulation G covers calls as well as releases, which rules out d3_058's option C (partial) |
