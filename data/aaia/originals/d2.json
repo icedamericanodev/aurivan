@@ -304,7 +304,7 @@
       "question": "A grocery chain retrains its demand-forecast model nightly; after a costly bad forecast, the team cannot reproduce the deployed version or say what it learned from. What should the IS auditor recommend as MOST important?",
       "options": {
         "A": "Retrain weekly instead of nightly so fewer versions need tracking",
-        "B": "Keep the previous model and its settings ready to restore quickly",
+        "B": "Keep the previous model version and its settings ready to restore quickly",
         "C": "Register each model artifact with its data snapshot, code and settings",
         "D": "Use the source code repository history as the version record"
       },
@@ -702,7 +702,7 @@
         "A": "Retrain at once on the recent corrections to restore accuracy",
         "B": "Treat the event as normal drift and tighten monitoring",
         "C": "Disable the contractor account and keep the rolled-back model in place",
-        "D": "Reopen the incident to investigate possible poisoning before retraining"
+        "D": "Reopen the incident and probe suspected poisoning before retraining"
       },
       "correct": "D",
       "key_concept": "A suspected poisoning incident stays open until the poisoned data and the gap that let it in are removed; rollback only contains it.",

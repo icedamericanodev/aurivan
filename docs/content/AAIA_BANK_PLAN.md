@@ -42,8 +42,11 @@ the traps to build distractors from, per area.
 Mix inside every domain and batch:
 - Difficulty about 25% foundational, 50% application, 25% analysis.
 - Keys balanced across A–D (no letter above 35% in a batch).
-- The key is the single longest option by characters in 15–30% of items, and the
-  single wordiest in 15–30%.
+- Length tell, per domain: always picking the longest option (by characters,
+  ties shared) must win 15–24% of the time, about 20% (the rule
+  `scripts/check_longest_option.py` applies to CISA since v12.49.2; run its
+  `pick_longest_rate` on `data/aaia/originals/dN.json` until it has an AAIA
+  mode). Pilot after the fix: D1 22.5% · D2 22.5% · D3 20.0%.
 - **Domain 3 has two halves:** at least a third of its items are on using AI
   inside the audit (supporting tasks 1 and 2), the rest on auditing AI.
 - Vary the affected group and setting across batches (age, language,
