@@ -50,3 +50,19 @@ Rule for the form builder: Draw no two items of a pair into the same form. Keep 
 | csoe_d5_016 | csoe_d5_035 | parallel keys, both A ('...and the [IT/general] controls behind them') |
 | csoe_d5_018 | csoe_d5_039 | d5_039 CE: management keeps the responsibility and may rely on a Type 2 report |
 | csoe_d1_024 | csoe_d1_038 | only if XD-01 is not applied |
+| csoe_d5_020 | csoe_d5_043 | d5_020's exam cue gives the acquired-business-only exception; 043's wrong explanation C and tip 1 give d5_020's runner-up |
+| csoe_d5_040 | csoe_d5_049 | both rest on SEC staff ICFR FAQ Question 8 |
+| csoe_d5_003 | csoe_d5_051 | 051's stem and explanation say a home-country framework may be used |
+| csoe_d5_004 | csoe_d5_054 | d5_004's explanation says the 17 principles were drawn from the components |
+| csoe_d5_002 | csoe_d5_046 | d5_002's explanation names the cube's other faces |
+| csoe_d5_002 | csoe_d5_045 | d5_002 wrong explanation D: entity levels are the cube's third dimension (045's key) |
+| csoe_d5_028 | csoe_d5_045 | 045 wrong explanation C: accept, reduce, share and avoid are options in risk response (028's key) |
+| csoe_d5_009 | csoe_d5_045 | d5_009 lists the eight 2004 components; 045 option B is three of them |
+| csoe_d5_007 | csoe_d5_044 | d5_007 exam cue: oversight is control environment (044's key) |
+| csoe_d5_030 | csoe_d5_044 | d5_030: board oversight is principle 2 in control environment |
+| csoe_d5_031 | csoe_d5_056 | 056 wrong explanation B: strategy and objective-setting sets risk appetite (031's key) |
+| csoe_d5_047 | csoe_d5_056 | 047 wrong explanation D: principle 16 sits in review and revision (056's key) |
+| csoe_d5_052 | csoe_d5_056 | 052 wrong explanation A: review and revision handles change once strategy is set |
+| csoe_d5_033 | csoe_d5_052 | shared option wording; d5_033 wrong explanation A explains principle 15 |
+| csoe_d5_057 | csoe_d5_060 | 060 wrong explanation C: the internal control framework suits entities of any size |
+| csoe_d5_003 | csoe_d5_048 | 048 tests a non-COSO framework's suitability, implying COSO is not mandated |
