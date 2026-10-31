@@ -137,7 +137,7 @@
       "question": "Entry to a network wiring closet must be restricted to the network team. Which control should the IS auditor recommend as BEST?",
       "options": {
         "A": "Hourly guard patrols that check the closet door",
-        "B": "A camera recording everyone who opens the closet door",
+        "B": "A camera recording everyone who opens the wiring closet door",
         "C": "A badge-controlled lock limited to named network staff",
         "D": "A keyed lock with keys held by the network team"
       },
@@ -329,7 +329,7 @@
       "options": {
         "A": "Identify critical equipment and the hazards facing each area",
         "B": "Buy additional leak and smoke sensors for every room",
-        "C": "Test the existing controls against last year's incident log",
+        "C": "Test the existing controls against last year's facility incident log",
         "D": "Adopt the hazard list from a peer firm's assessment"
       },
       "correct": "A",
@@ -1275,7 +1275,7 @@
       "framework_ref": "NIST SP 800-53 Rev 5 AC-2 (Account Management); ISO/IEC 27002:2022 Control 5.18 (Access Rights); ISACA Identity and Access Management Audit/Assurance Program",
       "question": "An IS auditor finds that every user's access, including database administrator rights, is recertified once a year by line managers. Which recommendation BEST improves the program?",
       "options": {
-        "A": "Have IT security recertify every account instead of line managers",
+        "A": "Have IT security recertify every account instead of the line managers",
         "B": "Move every account onto a single quarterly review cycle",
         "C": "Replace the reviews with automated leaver feeds from HR",
         "D": "Recertify privileged rights quarterly and standard access annually"
@@ -1466,7 +1466,7 @@
         "A": "Rotate the exposed root password through the vault right away",
         "B": "Delete the commit and purge it from the public history",
         "C": "Review database logins since the commit to check for misuse",
-        "D": "Limit the database to logins from internal addresses for now"
+        "D": "Limit the database to logins from internal network addresses for now"
       },
       "correct": "A",
       "key_concept": "A publicly exposed credential is presumed compromised; immediate rotation is the containment step every later action depends on.",
@@ -2062,7 +2062,7 @@
       "question": "An IS auditor reviews identity governance for 350 applications, where access is requested through an approval workflow and single sign-on with multi-factor authentication is fully deployed. Which gap should concern the auditor MOST?",
       "options": {
         "A": "New starters wait up to three days for their application accounts",
-        "B": "Role owners defined roles without analyzing existing entitlement data",
+        "B": "Role owners defined the roles without analyzing existing entitlement data",
         "C": "Accumulated application access is never recertified by business owners",
         "D": "Approvers cannot yet approve access requests from a mobile device"
       },
@@ -2401,7 +2401,7 @@
       "options": {
         "A": "The certificate practice statement was last updated three years ago",
         "B": "Revocation requests take up to one business day to approve",
-        "C": "The root certificate authority is kept offline in a locked safe",
+        "C": "The root certificate authority is stored offline inside a locked safe",
         "D": "Internal applications trust certificates without checking revocation"
       },
       "correct": "D",
@@ -2849,7 +2849,7 @@
       "question": "An IS auditor finds disk-encryption recovery keys are escrowed centrally, and any help-desk agent releases one to whoever calls quoting a user name. Which recommendation is BEST?",
       "options": {
         "A": "Log each recovery key release for monthly security review",
-        "B": "Change every recovery key automatically at the end of each month",
+        "B": "Change every recovery key automatically at the end of each calendar month",
         "C": "Limit recovery key access to two senior help-desk agents",
         "D": "Confirm the caller's identity before any recovery key is released"
       },
@@ -3076,7 +3076,7 @@
       "question": "An IS auditor reviews the security of a private cloud running about 900 virtual machines. Which finding should concern the auditor MOST?",
       "options": {
         "A": "Virtual machine templates are reviewed annually rather than quarterly",
-        "B": "Virtual machine snapshots are kept on the production storage array",
+        "B": "Virtual machine snapshots are retained on the production storage arrays",
         "C": "Hosts run workloads from different business units side by side",
         "D": "The hypervisor management console is reachable from the office network"
       },
@@ -3832,7 +3832,7 @@
       "question": "Which approach should the IS auditor recommend as BEST to confirm that detection rules cover the techniques attackers actually use against the organization?",
       "options": {
         "A": "Group past incidents by attacker motive, such as profit or espionage",
-        "B": "Rank detection gaps using the vulnerability scanner's severity scores",
+        "B": "Rank detection gaps using the vulnerability scanner's own severity scores",
         "C": "Map current detections to a public catalog of real attacker techniques",
         "D": "Count how many alerts each detection rule raised last year"
       },
@@ -4211,7 +4211,7 @@
       "options": {
         "A": "Report the drop to the board with a note on easier lures",
         "B": "Compare the 4% figure with published industry click rates",
-        "C": "Discipline the staff who clicked on this year's simulations",
+        "C": "Discipline the staff who clicked links in this year's simulations",
         "D": "Rate each test's difficulty so yearly results compare fairly"
       },
       "correct": "D",
@@ -6052,7 +6052,7 @@
       "options": {
         "A": "No list of the tools responders are approved to use",
         "B": "No step feeds lessons back into controls, playbooks and training",
-        "C": "No requirement to file a final report when each incident closes",
+        "C": "No requirement to file a final written report when each incident closes",
         "D": "No current contact details for the outside forensic retainer"
       },
       "correct": "B",
@@ -6239,7 +6239,7 @@
       "question": "An IS auditor notes that the annual incident tabletop exercise has reused the same generic ransomware scenario and participants for four years. What should the auditor recommend MOST strongly?",
       "options": {
         "A": "Add more business departments to the existing exercise",
-        "B": "Have participants score their own performance after each exercise",
+        "B": "Have participants score their own performance after each annual exercise",
         "C": "Keep the script fixed so that yearly scores can be compared",
         "D": "Draw scenarios from current threats and rotate participants yearly"
       },
@@ -8737,7 +8737,7 @@
       "question": "Attackers stole one of a cloud provider's token-signing keys and are still forging valid access tokens to customer mailboxes. What should the IS auditor recommend the provider do FIRST?",
       "options": {
         "A": "Revoke the stolen signing key so forged tokens stop working",
-        "B": "Take forensic images of the cloud tenant before any change",
+        "B": "Take forensic images of the affected cloud tenant before any change",
         "C": "Block sign-ins from the attackers' known IP addresses",
         "D": "Reset the passwords on the affected customer mailboxes"
       },
@@ -10831,7 +10831,7 @@
         "A": "Delete the spreadsheets from the file share immediately",
         "B": "Restrict share access now, pending the data owner's decision",
         "C": "Encrypt the whole file server with full-disk encryption",
-        "D": "Report the exposure to the server owner and await direction"
+        "D": "Report the exposure to the file share owner and await direction"
       },
       "correct": "B",
       "key_concept": "When discovery finds sensitive data in the wrong place, restrict access first; the data owner then decides how to remediate.",
@@ -10840,10 +10840,10 @@
       "wrong_explanations": {
         "A": "Deletion would end the exposure permanently. Containment comes before disposal: limit access now, and settle the records' fate later.",
         "C": "Full-disk encryption protects against stolen disks, but staff browsing the open share still see the card numbers.",
-        "D": "Reporting may follow, but waiting for the server owner's direction leaves 12,000 card numbers open to every employee; restricting access is immediate and reversible."
+        "D": "Reporting may follow, but waiting for the share owner's direction leaves 12,000 card numbers open to every employee; restricting access is immediate and reversible."
       },
       "tips": [
-        "Eliminate: C protects against disk theft rather than open access, and D waits on the server owner while the share stays open.",
+        "Eliminate: C protects against disk theft rather than open access, and D waits on the share owner while the share stays open.",
         "Final two: B beats A because limiting access stops the exposure without destroying records whose fate the owner must decide.",
         "Exam cue: security may contain an exposure at once, but whether the data is kept, moved or deleted is the data owner's decision."
       ],
@@ -13107,7 +13107,7 @@
       "options": {
         "A": "It fires from inside approved code with the program's own authority",
         "B": "The developer could still sign in through a shared service account",
-        "C": "Disabled accounts are restored automatically after thirty days",
+        "C": "Disabled accounts are restored automatically by the system after thirty days",
         "D": "Antivirus tools cannot scan code held on production servers"
       },
       "correct": "A",

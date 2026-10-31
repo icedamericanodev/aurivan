@@ -1,0 +1,731 @@
+{
+  "_meta": {
+    "comment": "Original CRISC practice questions for Domain 3 (Risk Response and Reporting), written to the CRISC exam content outline effective 2025. Every item is authored from public concepts and KaiSip's own CRISC study notes (data/crisc/notes/d3.json), with no reference to the CRISC Review Manual, ISACA's QAE database, ISACA's practice quiz or any prior question bank. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/crisc-standards-auditor.md. Not affiliated with or endorsed by ISACA®. CRISC® is a registered trademark of ISACA. Pilot batch crisc_d3_001 to crisc_d3_020, 30 Oct 2026.",
+    "schema_version": 1
+  },
+  "domain": 3,
+  "domain_name": "Risk Response and Reporting",
+  "weight": 32,
+  "questions": [
+    {
+      "id": "crisc_d3_001",
+      "domain": 3,
+      "subtopic": "3A1 Risk response options. Insurance and the risk",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A retailer's risk owner buys a cyber insurance policy that covers breach response costs for its online store. Which statement BEST describes how this changes the breach risk?",
+      "options": {
+        "A": "Part of the financial loss shifts, but likelihood and harm remain",
+        "B": "The breach risk can now be removed from the risk register",
+        "C": "A breach becomes less likely under the insurer's control requirements",
+        "D": "Accountability for harm to customers passes to the insurance company"
+      },
+      "correct": "A",
+      "key_concept": "Risk transfer, such as insurance, shifts part of the financial impact; it does not reduce likelihood, harm or accountability.",
+      "pre_read": "Picture a breach happening after the policy is bought, then check each option against what would actually differ.",
+      "correct_explanation": "Insurance is a transfer response: it shifts part of the financial consequence to the insurer. It reduces neither the likelihood of a breach nor the harm to customers and operations, and the retailer still answers to customers and regulators. That is why D loses: accountability for the harm cannot be bought. The breach risk stays in the register with its residual rating, and the risk owner keeps monitoring it.",
+      "wrong_explanations": {
+        "B": "Tempting because the risk now feels covered. Transferred risk stays in the register with its residual rating, because the breach can still happen and still harm customers.",
+        "C": "Tempting because insurers sometimes ask for controls. The policy itself does nothing to make a breach less likely; only controls the retailer runs can do that.",
+        "D": "Tempting because the insurer pays the bills. Customers and regulators still hold the retailer accountable for protecting their data, whoever pays the costs."
+      },
+      "tips": [
+        "Eliminate: B and C credit insurance with removing the risk or lowering its likelihood; transfer shifts money only, so the risk stays recorded and just as likely.",
+        "Final two: A beats D because transfer moves part of the financial loss, while accountability for the harm stays with the retailer.",
+        "Exam cue: when an option says transfer removes the risk or the accountability, treat it as a trap; transfer shifts money, not ownership."
+      ],
+      "framework_ref": "NIST SP 800-39 Section 3.3 (Responding to Risk: accept, avoid, mitigate, share or transfer); ISACA Glossary (risk transfer)",
+      "related_concepts": [
+        "Risk transfer",
+        "Residual risk",
+        "Accountability"
+      ],
+      "_provenance": "Authored from concept: notes 3A1.1 The Four Risk Responses (transfer moves money, not accountability; exam trap 'buying cyber insurance removes the risk'). Public source: NIST SP 800-39 Section 3.3 (risk transfer reduces neither likelihood nor consequences). Original scenario written for KaiSip in our own words; no ISACA Review Manual, QAE, practice-quiz or prep-bank text used. CRISC D3 pilot batch (crisc_d3_001 to 020), 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): option C reason tail removed; pre_read made non-revealing; key re-lettered B to A.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_002",
+      "domain": 3,
+      "subtopic": "3A1 Risk response options. Risk within appetite",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A logistics firm's shipment-tracking risk, owned by the operations director, is now within appetite, but the IT manager proposes an extra monitoring tool. What is the risk analyst's BEST recommendation?",
+      "options": {
+        "A": "Approve purchase of the extra monitoring tool now",
+        "B": "Ask the IT manager to accept the residual risk formally",
+        "C": "Run a cost-benefit analysis of the proposed monitoring tool",
+        "D": "Have the director accept the residual risk, then monitor it"
+      },
+      "correct": "D",
+      "key_concept": "A risk already within appetite is accepted by its owner and monitored; it does not need further treatment.",
+      "pre_read": "Find where the risk sits against appetite, and who owns it, before judging the new tool.",
+      "correct_explanation": "A risk already within appetite needs acceptance and monitoring, not more treatment. The operations director owns the risk, so they accept the residual risk on record and the analyst keeps it under watch. A cost-benefit study weighs treatments that are still needed; here no further treatment is needed, so analyzing the tool spends effort on a question the appetite has already answered.",
+      "wrong_explanations": {
+        "A": "Tempting because more monitoring feels safer. Spending on a risk already within appetite takes budget from risks that are still above it.",
+        "B": "Tempting because the IT manager proposed the tool. The operations director owns this business risk, so acceptance is theirs, not IT's.",
+        "C": "Tempting because cost-benefit is sound practice. It weighs treatments that are needed; a risk already within appetite needs acceptance and monitoring, not new options."
+      },
+      "tips": [
+        "Eliminate: A adds control to a risk already within appetite, and B gives acceptance to IT instead of the director who owns the risk.",
+        "Final two: D beats C because, once risk is within appetite, the response is acceptance and monitoring; cost-benefit work is for treatments that are still needed.",
+        "Exam cue: within appetite means accept and monitor; above appetite means treat. Check where the risk sits before weighing any new control."
+      ],
+      "framework_ref": "NIST IR 8286B-upd1 Section 2.3.1 (Risk Acceptance: exposure within risk tolerance is still reported, monitored and managed); NIST SP 800-53 Rev. 5 RA-7 (Risk Response)",
+      "related_concepts": [
+        "Risk acceptance",
+        "Risk appetite",
+        "Monitoring"
+      ],
+      "_provenance": "Authored from concept: notes 3A1.2 Choosing a Response by Appetite and Cost-Benefit (a risk within appetite needs monitoring, not new spending) and 3A1.3 Residual Risk and Risk Acceptance (the owner accepts). Public source: NIST IR 8286B-upd1 Section 2.3.1. Original scenario written for KaiSip in our own words; no ISACA Review Manual, QAE, practice-quiz or prep-bank text used. CRISC D3 pilot batch (crisc_d3_001 to 020), 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): option A reason tail removed; key D trimmed so it is no longer the longest option.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_003",
+      "domain": 3,
+      "subtopic": "3A1 Risk response options. Privacy risk above appetite",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A hospital's telehealth service is central to its growth strategy, but its privacy risk exceeds appetite; safeguards could reduce it, yet the compliance lead wants it closed. What is the risk practitioner's BEST recommendation?",
+      "options": {
+        "A": "Avoid the risk by closing the service until it is secure",
+        "B": "Mitigate the risk until it falls within appetite",
+        "C": "Accept the above-appetite risk and record the decision",
+        "D": "Transfer the risk to the platform vendor through the contract"
+      },
+      "correct": "B",
+      "key_concept": "Avoidance fits only when an activity is not needed for objectives or no treatment can bring its risk within appetite.",
+      "pre_read": "Note the service's role in the strategy and where its risk sits, then test each response against both.",
+      "correct_explanation": "Avoidance gives up the activity and its benefit, so it fits when the activity is not needed or no response can bring the risk within appetite. Telehealth is central to strategy, and the stem says safeguards could reduce the risk, so the practitioner recommends mitigation down to appetite. Closing the service, even for a time, sacrifices an objective the response is meant to protect. The risk owner then decides.",
+      "wrong_explanations": {
+        "A": "Tempting because it removes the exposure at once. It also stops a service central to strategy when controls could bring the risk within appetite.",
+        "C": "Tempting because the service drives growth. Strategic value does not make a risk above appetite acceptable; it argues for treating the risk, not keeping it as it is.",
+        "D": "Tempting because the vendor runs the platform. Contracts can share costs, but the hospital still answers to patients and regulators for their privacy."
+      },
+      "tips": [
+        "Eliminate: C keeps a risk that exceeds appetite, and D treats a contract as moving the hospital's privacy accountability to the vendor.",
+        "Final two: B beats A because avoidance sacrifices an objective the business needs; when controls can bring risk within appetite, mitigation keeps both the service and the limit.",
+        "Exam cue: before choosing avoid, ask whether the activity serves a business objective; if it does, look for the response that treats the risk instead."
+      ],
+      "framework_ref": "NIST IR 8286B-upd1 Section 2.3.2 (Risk Avoidance: not conducting the activity when exposure exceeds tolerance); NIST IR 8286B-upd1 Section 2.3.4 (Risk Mitigation: preventive, deterrent, detective, corrective and compensating controls)",
+      "related_concepts": [
+        "Risk avoidance",
+        "Risk mitigation",
+        "Business objectives"
+      ],
+      "_provenance": "Authored from concept: notes 3A1.1 The Four Risk Responses (avoidance gives up the benefit; exam trap 'avoid any risk that is above appetite'). Public sources: NIST IR 8286B-upd1 Section 2.3.2; NIST SP 800-39 Section 3.3. Original scenario written for KaiSip in our own words; no ISACA Review Manual, QAE, practice-quiz or prep-bank text used. CRISC D3 pilot batch (crisc_d3_001 to 020), 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): stem now states safeguards could reduce the risk (deciding fact); A and C reworded so 'appetite' is not key-only and C has no reason tail; neutral subtopic; framework_ref swapped to 8286B 2.3.2 and 2.3.4; pre_read reworded; key re-lettered A to B.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_004",
+      "domain": 3,
+      "subtopic": "3A1 Risk response options. Generative AI replies",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A bank plans to let a generative AI tool draft replies to customers' loan disputes, and the analyzed risk of wrong advice exceeds appetite. Which response should the risk practitioner recommend as BEST?",
+      "options": {
+        "A": "Rely on the vendor's contract clause covering losses from wrong replies",
+        "B": "Ban generative AI tools across the whole bank for now",
+        "C": "Require a trained staff member to review each draft before sending",
+        "D": "Accept the risk and let staff correct replies after complaints"
+      },
+      "correct": "C",
+      "key_concept": "AI risk above appetite is treated with controls such as human review; a vendor clause shifts cost, not accountability.",
+      "pre_read": "Note where the risk sits against appetite, and trace what happens to one wrong draft under each option.",
+      "correct_explanation": "The risk exceeds appetite, so it needs treatment. Human review of each draft is a mitigating control placed before the harm occurs: it stops wrong advice from reaching customers and keeps the benefit of the tool. A vendor liability clause is a transfer: it may pay back some losses, but customers still receive wrong advice and the bank still answers for it. The risk owner then accepts what remains.",
+      "wrong_explanations": {
+        "A": "Tempting because the vendor built the tool. Contract terms share costs; customers still get wrong advice, and regulators hold the bank accountable.",
+        "B": "Tempting because it removes AI risk at once. A bank-wide ban gives up benefits far beyond this one use, when a control aimed at this use may be enough.",
+        "D": "Tempting because errors can be fixed later. The risk is above appetite, and fixing replies after customers act on them does not prevent the harm."
+      },
+      "tips": [
+        "Eliminate: B avoids far more activity than this risk requires, and D keeps a risk above appetite and relies on repairing harm after it happens.",
+        "Final two: C beats A because human review stops wrong advice before it reaches customers; a vendor clause shifts part of the cost and none of the accountability.",
+        "Exam cue: for AI risk above appetite, look for a control that checks outputs before they take effect, not a contract that pays afterward."
+      ],
+      "framework_ref": "NIST AI 100-1 (AI RMF 1.0) MANAGE 1.3 (responses to high-priority AI risks are developed, planned and documented, including mitigating, transferring, avoiding or accepting); NIST AI 100-1 (AI RMF 1.0) GOVERN 3.2 (roles and responsibilities for human-AI configurations and oversight of AI systems are defined)",
+      "related_concepts": [
+        "AI risk response",
+        "Human review",
+        "Risk transfer limits"
+      ],
+      "_provenance": "Authored from concept: notes 3A1.1 The Four Risk Responses (transfer moves money, not accountability), 3B2.1 Selecting Controls by Root Cause and Cost-Benefit (human-in-the-loop review for high-impact AI output) and 3A3.3 AI Vendors and the Model Supply Chain. Public source: NIST AI RMF 1.0 MANAGE 1.3 and GOVERN 3.2. Original scenario written for KaiSip in our own words; no ISACA Review Manual, QAE, practice-quiz or prep-bank text used. CRISC D3 pilot batch (crisc_d3_001 to 020), 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): option B drops 'until rules exist'; option D reason tail removed; correct_explanation per audit; pre_read reworded.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_005",
+      "domain": 3,
+      "subtopic": "3A2 Risk and control ownership. Owner for a recovery control",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A manufacturer's register names the production director as owner of both the scheduling-outage risk and the nightly backup of the scheduling servers. Who should the risk practitioner propose as the backup's MOST appropriate owner?",
+      "options": {
+        "A": "The production director, who already owns the outage risk",
+        "B": "The risk committee, acting jointly for the plants",
+        "C": "The risk practitioner, who maintains the register and its ratings",
+        "D": "The IT infrastructure manager, who runs the scheduling servers"
+      },
+      "correct": "D",
+      "key_concept": "The control owner is the person who runs and maintains the control; the risk owner stays accountable for the risk the control reduces.",
+      "pre_read": "Note which role the register already gives the director, and what the backup control needs from its owner.",
+      "correct_explanation": "A control owner runs and maintains the control and answers for whether it works; the risk owner stays accountable for the risk the control reduces. The production director remains risk owner and relies on the infrastructure manager, who runs the servers, to keep the backup working at the level the director accepted. Naming the director for both merges two roles, so no one with the skills answers for whether restores work.",
+      "wrong_explanations": {
+        "A": "Tempting because one owner seems simpler. The director lacks the skills and access to run backups, so nobody able to fix them would answer for whether restores work.",
+        "B": "Tempting because several plants depend on the servers. A committee cannot run a nightly backup; one named person must operate and maintain the control.",
+        "C": "Tempting because the practitioner tracks the control. The practitioner validates ownership and reports gaps but does not own or run controls."
+      },
+      "tips": [
+        "Eliminate: B gives a nightly technical task to a committee, and C makes the practitioner a control owner, when the practitioner validates and reports instead.",
+        "Final two: D beats A because the control owner must run and maintain the backup; the director stays risk owner and relies on that control.",
+        "Exam cue: risk owner and control owner are different roles; the person who runs the control owns it, while the business manager owns the risk it reduces."
+      ],
+      "framework_ref": "ISACA Glossary (control owner); ISACA Glossary (risk owner); NIST CSF 2.0 GV.RR-02 (roles, responsibilities and authorities related to cybersecurity risk management are established, communicated, understood and enforced)",
+      "related_concepts": [
+        "Control owner",
+        "Risk owner",
+        "Role separation"
+      ],
+      "_provenance": "Authored from concept: notes 3A2.2 Control Owners and Validating Ownership (compare table risk owner, control owner and practitioner; risk owners rely on control owners to keep residual risk at the level they accepted) and 3A2.1 Assigning Risk Owners. Public sources: ISACA Glossary (control owner, risk owner); NIST CSF 2.0 GV.RR-02. Original scenario written for KaiSip in our own words; no ISACA Review Manual, QAE, practice-quiz or prep-bank text used. CRISC D3 pilot batch (crisc_d3_001 to 020), 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): pre_read made non-revealing; key re-lettered C to D. Cross-domain fix 30 Oct 2026: re-angled from risk owner (duplicate of crisc_d1_004) to control owner, notes 3A2.2.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_006",
+      "domain": 3,
+      "subtopic": "3A3 Vendor/supply chain risk management. Report scope",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A university relies on its payroll provider's independent controls report, tested over a full year, which excludes the subcontractor that calculates employees' tax deductions. What is the risk analyst's BEST next step?",
+      "options": {
+        "A": "Record the gap and advise the service owner to seek assurance",
+        "B": "Rely on the provider's contractual liability for any payroll errors",
+        "C": "Accept the report's full-year testing as enough assurance",
+        "D": "Advise the owner to end the contract and bring payroll in-house"
+      },
+      "correct": "A",
+      "key_concept": "An assurance report covers only its stated scope; an excluded fourth party is a gap the business owner closes with assurance of its own.",
+      "pre_read": "Check what the report covers, and which part of the service it leaves out.",
+      "correct_explanation": "An assurance report covers only the services and parties in its scope. Tax calculation sits with an excluded subcontractor, a fourth party, so the report says nothing about those controls. The analyst records the gap against the vendor risk and advises the service owner to seek assurance, such as the subcontractor's own report. A liability clause may recover some costs, but it gives no evidence the deductions are right.",
+      "wrong_explanations": {
+        "B": "Tempting because the provider has signed up to cover errors. Liability shares cost after the fact; it gives no evidence that deductions are being calculated correctly.",
+        "C": "Tempting because the testing ran for a full year. Period testing covers only what is in scope, and the subcontractor was excluded from it.",
+        "D": "Tempting because it would remove the gap. Exit is a large step to advise before anyone has assessed the gap or sought the missing assurance."
+      },
+      "tips": [
+        "Eliminate: C trusts a report for a scope it excludes, and D moves to exit the contract before the gap has been assessed.",
+        "Final two: A beats B because the service owner needs evidence the excluded controls work; a liability clause shifts cost but proves nothing about them.",
+        "Exam cue: with any assurance report, check its scope and period first; an excluded subcontractor is a gap to record and close with assurance of its own."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 SR-6 (Supplier Assessments and Reviews); NIST CSF 2.0 GV.SC-07 (the risks posed by a supplier, their products and services and other third parties are understood, recorded, prioritized, assessed, responded to and monitored)",
+      "related_concepts": [
+        "Assurance report scope",
+        "Fourth party",
+        "Vendor assurance"
+      ],
+      "_provenance": "Authored from concept: notes 3A3.2 Ongoing Vendor Monitoring and Assurance Reports (report counts only for its scope; exam trap 'a clean SOC 2 report means the vendor is covered'; fourth parties). Public sources: NIST SP 800-53 Rev. 5 SR-6; NIST CSF 2.0 GV.SC-07. Original scenario written for KaiSip in our own words; no ISACA Review Manual, QAE, practice-quiz or prep-bank text used. CRISC D3 pilot batch (crisc_d3_001 to 020), 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): reworked to avoid near-duplicating CISA d1_187 and the SOC 2 report-type issue: generic 'independent controls report' stem, key is the practitioner's move (record the gap, advise the owner), options B to D reworded without reason tails, 'owner' also in D, explanation, tips and key_concept per audit.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_007",
+      "domain": 3,
+      "subtopic": "3A4 Issues, findings, exceptions and exemptions management. Deviation request",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A clinic's imaging system cannot meet the new encryption standard until next year's upgrade; the imaging manager, who owns its risk, asks the risk analyst to approve an exception. What should the analyst do FIRST?",
+      "options": {
+        "A": "Approve a one-year exception, then assess the risk",
+        "B": "Have the risk owner record an exemption from the standard",
+        "C": "Assess the risk and propose compensating controls to the risk owner",
+        "D": "Require the clinic to stop using the imaging system until it complies"
+      },
+      "correct": "C",
+      "key_concept": "An exception is a temporary deviation the risk owner approves, with compensating controls and an expiry; the practitioner assesses and advises.",
+      "pre_read": "Ask whether the standard applies to this system, and who may accept the risk of not meeting it.",
+      "correct_explanation": "The requirement applies but cannot be met for a time, so this is an exception, and granting it accepts risk, which is the risk owner's decision. The policy owner records the approved exception in the exception register. The analyst first assesses the risk and proposes compensating controls, such as restricting image access, for a time-bound approval. An exemption would drop the expiry that forces the upgrade.",
+      "wrong_explanations": {
+        "A": "Tempting because the fix date is known. Approving a deviation accepts its risk, a decision for the risk owner, and the risk must be assessed before, not after.",
+        "B": "Tempting because the system cannot comply now. An exemption is a standing exclusion with no end date; this gap ends at next year's upgrade, so a time-bound exception fits.",
+        "D": "Tempting because it closes the gap. Stopping a clinical system before assessing the risk may harm patient care more than the encryption gap does."
+      },
+      "tips": [
+        "Eliminate: A has the analyst accepting risk by approving the deviation, and D halts a clinical system before its risk has been assessed.",
+        "Final two: C beats B because the requirement still applies, so the deviation is a time-bound exception the risk owner approves; an exemption would remove the deadline to comply.",
+        "Exam cue: a temporary gap against a requirement that applies is an exception, with compensating controls, an expiry date and risk-owner approval."
+      ],
+      "framework_ref": "NIST CSF 2.0 ID.RA-07 (changes and exceptions are managed, assessed for risk impact, recorded and tracked); ISACA Glossary (compensating control)",
+      "related_concepts": [
+        "Exception",
+        "Exemption",
+        "Compensating control"
+      ],
+      "_provenance": "Authored from concept: notes 3A4.2 Exceptions and Exemptions (compare table; exam trap 'the risk practitioner can grant a short exception'). Public sources: NIST CSF 2.0 ID.RA-07; ISACA Glossary (compensating control). Original scenario written for KaiSip in our own words; no ISACA Review Manual, QAE, practice-quiz or prep-bank text used. CRISC D3 pilot batch (crisc_d3_001 to 020), 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): options A and B reworded so 'assess' and 'owner' are not key-only and A has no reason tail; key trimmed; wrong_explanations A and B per audit; key re-lettered D to C. Cross-domain fix 30 Oct 2026: stem names the imaging manager as risk owner; B and C say 'risk owner'; explanation adds that the policy owner records the approved exception; heading label completed.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_008",
+      "domain": 3,
+      "subtopic": "3B1 Control frameworks, types and standards. Weekly change comparison",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Each Monday, a port operator's IT team compares last week's firewall changes with approved change tickets and raises an incident for any mismatch. How should the risk practitioner classify this control MOST accurately?",
+      "options": {
+        "A": "A preventive control that stops unapproved changes taking effect",
+        "B": "A detective control that finds unapproved changes once made",
+        "C": "A corrective control that restores approved firewall settings",
+        "D": "A deterrent control that discourages unapproved changes by staff"
+      },
+      "correct": "B",
+      "key_concept": "A control that reviews events after they happen is detective, even when it targets unauthorized activity.",
+      "pre_read": "Notice when the comparison happens relative to the change, and what the team does with a mismatch.",
+      "correct_explanation": "The comparison happens after changes are already live, so the control finds unapproved changes rather than stopping them: it is detective. Calling it preventive overstates protection, because an unapproved rule could be in place for up to a week. Prevention would need approval enforced before a change can be made. Classifying it correctly lets the residual risk rating reflect that week-long exposure.",
+      "wrong_explanations": {
+        "A": "Tempting because it targets unapproved changes. It reviews them after they are live, so it cannot stop them from taking effect.",
+        "C": "Tempting because a mismatch leads to action. The control raises an incident; restoring the settings is a separate corrective step.",
+        "D": "Tempting because reviews can discourage misconduct. That is a side effect; the control's main function is finding changes that already happened."
+      },
+      "tips": [
+        "Eliminate: C credits the review with restoring settings, which a separate step does, and D names a side effect rather than the control's main function.",
+        "Final two: B beats A because the review happens after changes are live; prevention must block a change before it takes effect.",
+        "Exam cue: ask when the control acts. Before the event is preventive, after it is detective, and repairing the damage is corrective."
+      ],
+      "framework_ref": "ISACA Glossary (detective control); NIST IR 8286B-upd1 Section 2.3.4 (Risk Mitigation: preventive, deterrent, detective, corrective and compensating controls)",
+      "related_concepts": [
+        "Detective control",
+        "Preventive control",
+        "Control classification"
+      ],
+      "_provenance": "Authored from concept: notes 3B1.1 Control Types by Function (types list; exam trap 'a review of change logs prevents unauthorized changes'). Public sources: ISACA Glossary (detective control); NIST IR 8286B-upd1 Section 2.3.4. Original scenario written for KaiSip in our own words; no ISACA Review Manual, QAE, practice-quiz or prep-bank text used. CRISC D3 pilot batch (crisc_d3_001 to 020), 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): options rewritten as parallel noun phrases without 'because' reason tails. Cross-domain fix 30 Oct 2026: setting moved from a hospital to a port operator.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_009",
+      "domain": 3,
+      "subtopic": "3B2 Control design, selection, implementation and analysis. Recurring billing errors",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "At a water utility, billing errors keep recurring because staff retype meter readings from handheld devices into the billing system. Which control should the risk practitioner recommend as MOST effective?",
+      "options": {
+        "A": "Expand the team that fixes bills after complaints",
+        "B": "Have a supervisor review a sample of typed readings daily",
+        "C": "Retrain billing staff on careful data entry every quarter",
+        "D": "Send meter readings from the devices into billing automatically"
+      },
+      "correct": "D",
+      "key_concept": "The most effective control addresses the root cause of a risk rather than detecting or correcting its symptoms.",
+      "pre_read": "Find the step in the process that creates the errors before comparing the controls.",
+      "correct_explanation": "The root cause is the manual retyping step, so the most effective control removes it: an automated transfer from the devices to billing prevents transcription errors at the source. A supervisor's sample review would catch some errors, but only after they are made and only in the sample, so errors still reach customers. The control owner and risk owner then confirm the cost is proportionate.",
+      "wrong_explanations": {
+        "A": "Tempting because customers get fixes faster. Correcting bills after complaints limits damage but lets every error reach customers first.",
+        "B": "Tempting because review catches mistakes. It detects some errors after entry, and only in its sample; the retyping that causes them continues.",
+        "C": "Tempting because people make the errors. Retyping invites mistakes however careful staff are; the process step itself is the cause."
+      },
+      "tips": [
+        "Eliminate: C trains people to work around a flawed step, and A repairs bills only after the error has reached customers.",
+        "Final two: D beats B because removing the retyping step fixes the cause; a sample review detects some errors after they are made.",
+        "Exam cue: when errors recur from a process step, the BEST control changes or removes that step rather than checking its output."
+      ],
+      "framework_ref": "NIST SP 800-39 Section 3.3 Task 3-2 (Evaluation of Alternatives: effectiveness, feasibility and cost); NIST IR 8286B-upd1 Section 2.3.4 (Risk Mitigation: preventive, deterrent, detective, corrective and compensating controls)",
+      "related_concepts": [
+        "Root cause",
+        "Preventive control",
+        "Control selection"
+      ],
+      "_provenance": "Authored from concept: notes 3B2.1 Selecting Controls by Root Cause and Cost-Benefit (exam traps 'choose the strongest control' and 'more training will fix repeated process errors'). Public sources: NIST SP 800-39 Task 3-2; NIST IR 8286B-upd1 Section 2.3.4. Original scenario written for KaiSip in our own words; no ISACA Review Manual, QAE, practice-quiz or prep-bank text used. CRISC D3 pilot batch (crisc_d3_001 to 020), 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): key re-lettered A to D; option lengths rebalanced. Cross-domain fix 30 Oct 2026: subtopic heading completed.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_010",
+      "domain": 3,
+      "subtopic": "3B2 Control design, selection, implementation and analysis. Two control options",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A retailer's card-fraud risk exceeds appetite: control X costs $60,000 a year and brings it within appetite, while control Y costs $250,000 a year and leaves almost none. Which is the risk practitioner's BEST recommendation?",
+      "options": {
+        "A": "Implement control Y alone",
+        "B": "Implement both X and Y together",
+        "C": "Implement control X alone",
+        "D": "Implement neither and accept the risk"
+      },
+      "correct": "C",
+      "key_concept": "Choose the response expected to bring risk within appetite at a proportionate cost, not the one that removes the most risk.",
+      "pre_read": "Work out what each option costs and where it leaves the risk relative to appetite.",
+      "correct_explanation": "The goal is a target risk within appetite at a cost proportionate to the benefit. Control X reaches appetite for $60,000; control Y spends $190,000 more each year to push the risk below a level the business has already said it can live with. That money is better spent on risks still above appetite. The risk owner makes the final choice, informed by this comparison.",
+      "wrong_explanations": {
+        "A": "Tempting because less risk sounds better. Below appetite, the extra $190,000 a year buys reduction the business does not need, at the expense of other risks.",
+        "B": "Tempting because layering feels thorough. Combining both costs even more for reduction beyond appetite, so the cost far exceeds the benefit.",
+        "D": "Tempting because both options cost money. The risk is above appetite, so keeping it unchanged is not an acceptable response."
+      },
+      "tips": [
+        "Eliminate: B stacks controls past what appetite requires, and D keeps a risk that the stem says exceeds appetite.",
+        "Final two: C beats A because, once risk is within appetite, extra spending buys reduction the business has not asked for; proportion decides, not maximum reduction.",
+        "Exam cue: when two controls both work, prefer the one that meets appetite at the lower total cost, unless a law or contract requires more."
+      ],
+      "framework_ref": "NIST SP 800-39 Section 3.3 Task 3-2 (Evaluation of Alternatives: effectiveness, feasibility and cost); ISACA Glossary (risk response)",
+      "related_concepts": [
+        "Cost-benefit analysis",
+        "Risk appetite",
+        "Control selection"
+      ],
+      "_provenance": "Authored from concept: notes 3A1.2 Choosing a Response by Appetite and Cost-Benefit and 3B2.1 Selecting Controls by Root Cause and Cost-Benefit (exam trap 'pick the control that reduces the risk the most'). Public sources: NIST SP 800-39 Task 3-2; ISACA Glossary (risk response). Original scenario written for KaiSip in our own words; no ISACA Review Manual, QAE, practice-quiz or prep-bank text used. CRISC D3 pilot batch (crisc_d3_001 to 020), 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): options rewritten as bare choices without reason tails, which also removes the key-only 'appetite' echo; pre_read made non-revealing; key_concept and explanation call the planned outcome a target, not residual risk (calibration rule 11). Cross-domain fix 30 Oct 2026: subtopic heading completed.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_011",
+      "domain": 3,
+      "subtopic": "3B2 Control design, selection, implementation and analysis. New review before go-live",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A risk analyst at a software company is helping the support manager set up a weekly review of bulk customer-data exports. What is MOST important to agree before the review goes live?",
+      "options": {
+        "A": "The review's owner, its steps and the evidence it leaves",
+        "B": "Internal audit's approval of the review design in advance",
+        "C": "The risk owner's acceptance of a lower rating from the first review",
+        "D": "The analyst running the first few reviews personally"
+      },
+      "correct": "A",
+      "key_concept": "A new control needs an owner, a documented procedure and an evidence trail, agreed with the control owner before go-live.",
+      "pre_read": "Separate what the control needs in order to work from what the register will say once it does.",
+      "correct_explanation": "Before a control goes live, the analyst works with the control owner to agree who runs it, how it is performed and what evidence it leaves. Without these, the review cannot be tested and fails quietly when people change jobs. Recording a lower residual rating is premature: risk counts as reduced only after the review is shown to operate. The risk owner then accepts the new rating.",
+      "wrong_explanations": {
+        "B": "Tempting because audit gives assurance. Internal audit assesses controls independently afterward; approving management's design in advance would weaken that independence.",
+        "C": "Tempting because the owner should accept the new rating. One review shows the control exists, not that it works; the rating changes once operation is shown.",
+        "D": "Tempting because the analyst knows the risk. Running the control would make the analyst its operator and leave the support team without ownership."
+      },
+      "tips": [
+        "Eliminate: D puts the analyst in the control owner's seat, and B asks internal audit to approve a management control it must later assess independently.",
+        "Final two: A beats C because a control needs an owner, a procedure and evidence before it can work; the residual rating changes only after it is shown to operate.",
+        "Exam cue: before go-live, look for owner, procedure and evidence; after go-live, look for proof it operates before lowering the risk."
+      ],
+      "framework_ref": "NIST CSF 2.0 GV.RR-02 (roles, responsibilities and authorities related to cybersecurity risk management are established, communicated, understood and enforced); NIST SP 800-53 Rev. 5 CA-2 (Control Assessments)",
+      "related_concepts": [
+        "Control owner",
+        "Control procedure",
+        "Residual risk"
+      ],
+      "_provenance": "Authored from concept: notes 3B2.2 Implementing Controls With Control Owners (agree owner, procedure, evidence and indicators before go-live; exam trap 'mark the risk reduced on the day the control goes live'). Public sources: NIST CSF 2.0 GV.RR-02; NIST SP 800-53 Rev. 5 CA-2. Original scenario written for KaiSip in our own words; no ISACA Review Manual, QAE, practice-quiz or prep-bank text used. CRISC D3 pilot batch (crisc_d3_001 to 020), 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): options made parallel noun phrases per audit; C now names the risk owner so 'owner' is not key-only, and the key is no longer longest; wrong_explanation C rewritten; key re-lettered D to A. Cross-domain fix 30 Oct 2026: subtopic heading completed.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_012",
+      "domain": 3,
+      "subtopic": "3B3 Control testing methodologies. Evidence for a daily control",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A bank's control owner says the daily reconciliation of outgoing payment files never misses a day. Before crediting it in the residual rating, which evidence should the risk analyst rely on MOST?",
+      "options": {
+        "A": "A signed statement from the owner confirming daily completion",
+        "B": "Reconciliation records for a sample of days the analyst selects",
+        "C": "Observation of the owner performing today's reconciliation",
+        "D": "The written procedure that describes each reconciliation step"
+      },
+      "correct": "B",
+      "key_concept": "For operating effectiveness, evidence across the period that the tester selects beats inquiry and one-time observation.",
+      "pre_read": "Ask what each piece of evidence would show if the control had been skipped on some days.",
+      "correct_explanation": "Operating effectiveness needs evidence that the control ran over the period, not just once. Inspecting reconciliation records for days the analyst chooses tests that directly and keeps the selection out of the owner's hands. Watching today's reconciliation shows the control can be done and was done once, while the owner knew they were being observed, so it says little about the other days.",
+      "wrong_explanations": {
+        "A": "Tempting because it is formal and signed. It is still inquiry: it records what the owner believes, not evidence that the work was done.",
+        "C": "Tempting because the analyst sees the control first-hand. It covers one day, with the owner aware of being watched, not the whole period.",
+        "D": "Tempting because it shows how the control should work. A procedure supports the design, not whether reconciliations were actually performed."
+      },
+      "tips": [
+        "Eliminate: A is inquiry in written form, and D documents the design rather than showing the control ran.",
+        "Final two: B beats C because records for analyst-chosen days cover the period; observation shows one day, while the owner knows they are watched.",
+        "Exam cue: for operating effectiveness, prefer evidence across the period that the tester selects, inspects or reperforms over statements or one-time observation."
+      ],
+      "framework_ref": "NIST SP 800-53A Rev. 5 Section 2.4.2 (Assessment Methods: examine, interview and test, with depth and coverage)",
+      "related_concepts": [
+        "Inspection",
+        "Operating effectiveness",
+        "Sampling"
+      ],
+      "_provenance": "Authored from concept: notes 3B3.1 Testing Techniques and Evidence Strength (inquiry weakest alone; observation is one moment; exam trap 'the control owner's confirmation is enough') and 3B3.2 Design and Operating Effectiveness Testing. Public source: NIST SP 800-53A Rev. 5 Section 2.4.2. Original scenario written for KaiSip in our own words; no ISACA Review Manual, QAE, practice-quiz or prep-bank text used. CRISC D3 pilot batch (crisc_d3_001 to 020), 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): pre_read made non-revealing. Cross-domain fix 30 Oct 2026: stem ties the test to the residual rating.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_013",
+      "domain": 3,
+      "subtopic": "3C1 Risk action plans. Plan reported complete",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A telecom's network manager reports that the action plan to require multifactor sign-in for remote access is complete. What should the risk practitioner do FIRST?",
+      "options": {
+        "A": "Lower the residual risk rating and close the action plan",
+        "B": "Obtain evidence that the control is enforced for remote users",
+        "C": "Report the completed plan to the risk owner and the risk committee",
+        "D": "Accept the manager's signed statement as completion evidence"
+      },
+      "correct": "B",
+      "key_concept": "The practitioner validates with evidence that an action plan was carried out before re-rating the risk or reporting it complete.",
+      "pre_read": "Notice who says the plan is complete, and what evidence exists so far.",
+      "correct_explanation": "A plan reported complete is not yet proven complete. The practitioner first obtains evidence, such as sign-in configuration reports or test results, that multifactor sign-in is enforced for remote users. Only then can the residual risk be re-rated and progress reported. Reporting completion to the owner and committee first would pass on an unverified claim that could lead them to stop watching the risk.",
+      "wrong_explanations": {
+        "A": "Tempting because the plan says done. Lowering the rating on the manager's word could understate a risk whose control may not be enforced.",
+        "C": "Tempting because reporting progress is part of the job. Reporting before validation passes an unverified claim to the people who decide.",
+        "D": "Tempting because a signed statement looks formal. It is still the manager's own claim; completion needs evidence such as configuration reports or test results."
+      },
+      "tips": [
+        "Eliminate: A re-rates the risk on a status report, and D treats the manager's own claim as proof of completion.",
+        "Final two: B beats C because the practitioner validates completion before reporting it; otherwise the owner and committee decide on an unverified claim.",
+        "Exam cue: done is a claim until evidence shows the control is in place and working; validate before you re-rate or report."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 CA-5 (Plan of Action and Milestones); NIST CSF 2.0 ID.RA-06 (risk responses are chosen, prioritized, planned, tracked and communicated)",
+      "related_concepts": [
+        "Risk action plan",
+        "Validation",
+        "Residual risk"
+      ],
+      "_provenance": "Authored from concept: notes 3C1.2 Validating Execution and Tracking to Closure (implementation is not completion; exam trap 'report the action as complete once the control is installed'). Public sources: NIST SP 800-53 Rev. 5 CA-5; NIST CSF 2.0 ID.RA-06. Original scenario written for KaiSip in our own words; no ISACA Review Manual, QAE, practice-quiz or prep-bank text used. CRISC D3 pilot batch (crisc_d3_001 to 020), 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): key no longer echoes 'multifactor sign-in'; D replaced (internal-audit pattern varied, 'evidence' no longer key-only), with its explanation and the Eliminate tip; key re-lettered A to B.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_014",
+      "domain": 3,
+      "subtopic": "3C2 Data collection, aggregation, analysis and validation. Mixed rating scales",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An enterprise risk analyst at a retail group is combining unit risk registers: two units score risks from 1 to 5, and one uses high, medium and low. What should the analyst do FIRST?",
+      "options": {
+        "A": "Add each unit's scores together to rank the group's risks",
+        "B": "Average the scores to weight each unit equally",
+        "C": "Map every rating onto one common scale and set of criteria",
+        "D": "List each unit's top risks unchanged in one combined table"
+      },
+      "correct": "C",
+      "key_concept": "Risk ratings from different scales must be normalized to common criteria before they are aggregated or compared.",
+      "pre_read": "Look at how each unit rates its risks before deciding how to combine them.",
+      "correct_explanation": "Ratings on different scales cannot be compared, added or averaged, so the first step is normalizing them onto the group's common scale and criteria. Only then can duplicates be merged and risks ranked across units. Listing each unit's top risks unchanged keeps them visible, but leaves senior management comparing a 4 with a high and unable to tell which risk matters most.",
+      "wrong_explanations": {
+        "A": "Tempting because totals look decisive. Adding scores from different scales gives numbers with no shared meaning and can bury a severe single risk.",
+        "B": "Tempting because it seems fair to every unit. Averaging still mixes scales and pulls a critical risk toward the middle.",
+        "D": "Tempting because nothing is lost. Without a common scale, readers cannot compare risks across units or rank them."
+      },
+      "tips": [
+        "Eliminate: A and B do arithmetic on ratings from different scales, which buries severe risks and gives totals with no common meaning.",
+        "Final two: C beats D because comparison needs common criteria first; an unchanged list keeps every risk visible but impossible to rank.",
+        "Exam cue: before aggregating risk data, normalize it; one scale and one set of criteria come before any ranking, totaling or reporting."
+      ],
+      "framework_ref": "NIST IR 8286C-upd1 Section 2.2 (Normalization of CSRR Information: the same rating criteria enable comparison and tracking); ISACA Glossary (risk aggregation)",
+      "related_concepts": [
+        "Risk aggregation",
+        "Normalization",
+        "Rating scales"
+      ],
+      "_provenance": "Authored from concept: notes 3C2.2 Aggregating and Normalizing Risk Data (normalize before you aggregate; exam trap 'average the units' ratings'). Public sources: NIST IR 8286C-upd1 Section 2.2; ISACA Glossary (risk aggregation). Original scenario written for KaiSip in our own words; no ISACA Review Manual, QAE, practice-quiz or prep-bank text used. CRISC D3 pilot batch (crisc_d3_001 to 020), 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): retagged application (single-rule item); option B reason tail removed.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_015",
+      "domain": 3,
+      "subtopic": "3C3 Risk and control metrics. Indicator for a ransomware risk",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A food manufacturer's risk analyst is choosing a key risk indicator for the risk of ransomware halting its production lines. Which metric is the BEST choice?",
+      "options": {
+        "A": "Number of ransomware incidents recorded in the past year",
+        "B": "Number of awareness sessions delivered each quarter",
+        "C": "Average time the help desk takes to reset a password",
+        "D": "Share of servers missing critical patches past their deadline"
+      },
+      "correct": "D",
+      "key_concept": "The best key risk indicator is relevant to the scenario and leading: it tracks a driver of the risk, not past incidents.",
+      "pre_read": "For each metric, ask what it would tell the owner about this particular risk, and when.",
+      "correct_explanation": "A good KRI is relevant to the risk scenario, measurable and leading: it moves before the event. Unpatched critical servers are a known driver of ransomware, so a growing share warns that exposure is building while there is still time to act. A count of past incidents is relevant but lagging; it tells the owner the risk has already happened rather than that it is growing.",
+      "wrong_explanations": {
+        "A": "Tempting because it measures ransomware directly. Incidents are a lagging outcome; by the time the count goes up, the harm has occurred.",
+        "B": "Tempting because awareness reduces some attacks. It counts activity delivered, a performance measure, not exposure to this risk.",
+        "C": "Tempting because help desk metrics are easy to collect. Reset time measures service performance and says nothing about ransomware exposure."
+      },
+      "tips": [
+        "Eliminate: B and C are performance measures of activity and service speed; neither tracks exposure to the ransomware scenario.",
+        "Final two: D beats A because a KRI should warn before the event; unpatched servers are a leading driver, while incidents are a lagging outcome.",
+        "Exam cue: the BEST KRI is relevant, measurable and leading; prefer a driver of the risk over a count of past losses or incidents."
+      ],
+      "framework_ref": "NIST SP 800-55v1 Section 4.4 (Evaluating Methods for Supporting Continuous Improvement: leading and lagging indicators); ISACA Glossary (key risk indicator)",
+      "related_concepts": [
+        "Key risk indicator",
+        "Leading indicator",
+        "Key performance indicator"
+      ],
+      "_provenance": "Authored from concept: notes 3C3.1 KRIs, KCIs and KPIs (compare table) and 3C3.2 Selecting Effective KRIs (relevant, measurable, predictive; exam trap 'incident counts make the best early warning'). Public sources: NIST SP 800-55v1 Section 4.4; ISACA Glossary (KRI). Original scenario written for KaiSip in our own words; no ISACA Review Manual, QAE, practice-quiz or prep-bank text used. CRISC D3 pilot batch (crisc_d3_001 to 020), 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): option B shortened to balance length; pre_read made less revealing. Cross-domain fix 30 Oct 2026: setting moved from a hospital to a food manufacturer.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_016",
+      "domain": 3,
+      "subtopic": "3C3 Risk and control metrics. Setting a red threshold",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An airline's IT team proposes an 8% red threshold, copied from an industry survey, for the KRI on unpatched booking servers; the commercial director owns the outage risk. What should the risk practitioner recommend FIRST?",
+      "options": {
+        "A": "Derive the red threshold from the director's tolerance for outages",
+        "B": "Keep the 8% survey figure as an accepted industry benchmark",
+        "C": "Have IT set the tolerance at the patch level staff can sustain",
+        "D": "Track the director's monthly outage count instead of the KRI"
+      },
+      "correct": "A",
+      "key_concept": "KRI thresholds come from the organization's own tolerance, agreed with the risk owner; industry figures are context, not limits.",
+      "pre_read": "Before judging the 8% figure, ask what a red threshold is meant to signal, and to whom.",
+      "correct_explanation": "A red threshold should mark the point where the risk passes what the risk owner and senior management will tolerate, so it is derived from the organization's own tolerance and agreed with the commercial director. A survey figure reflects other airlines' appetite, exposure and patch practices; it is useful context but says nothing about this business's limit. The practitioner proposes the derivation, and the owner agrees the threshold.",
+      "wrong_explanations": {
+        "B": "Tempting because benchmarks feel objective. Other firms' figures reflect their own appetite and exposure, not this airline's tolerance for booking outages.",
+        "C": "Tempting because IT knows what is achievable. Letting the control team set its own limit measures workload, not the level of risk the business will tolerate.",
+        "D": "Tempting because outages are what the director cares about. An outage count is lagging; unpatched servers are the leading driver the KRI is meant to watch."
+      },
+      "tips": [
+        "Eliminate: C lets the team running the control set its own limit, and D swaps a leading driver for a lagging count of outages.",
+        "Final two: A beats B because a threshold must reflect this organization's tolerance, agreed with the risk owner; a survey figure is context, not a limit.",
+        "Exam cue: when a threshold comes from a benchmark, a vendor default or team capacity, look for the option that ties it to the organization's own tolerance."
+      ],
+      "framework_ref": "NIST CSF 2.0 GV.RM-02 (risk appetite and risk tolerance statements are established, communicated and maintained); NIST SP 800-53 Rev. 5 CA-7(4) (Continuous Monitoring | Risk Monitoring)",
+      "related_concepts": [
+        "KRI threshold",
+        "Risk tolerance",
+        "Benchmarking"
+      ],
+      "_provenance": "Authored from concept: notes 3C3.3 Thresholds and AI Model Indicators (set thresholds from tolerance; exam trap 'set thresholds from industry averages') and 3C3.2 Selecting Effective KRIs (leading versus lagging). Public sources: NIST CSF 2.0 GV.RM-02; NIST SP 800-53 Rev. 5 CA-7(4) (risk monitoring is informed by organizational risk tolerance). Original scenario written for KaiSip in our own words; no ISACA Review Manual, QAE, practice-quiz or prep-bank text used. CRISC D3 pilot batch (crisc_d3_001 to 020), 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): option and explanation edits; key re-lettered B to A. Cross-domain fix 30 Oct 2026: re-angled from breach escalation (duplicate of crisc_d1_018) to threshold setting, notes 3C3.3. Final blind re-test 31 Oct 2026: D also names the director, so only the key no longer echoes the risk owner.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_017",
+      "domain": 3,
+      "subtopic": "3C3 Risk and control metrics. Pricing model indicator",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "An insurer's underwriting team prices home policies with a machine-learning model. Which indicator should the risk practitioner propose as the BEST early warning that the model's risk is growing?",
+      "options": {
+        "A": "Model accuracy measured once at its last validation",
+        "B": "Number of customer complaints about prices each quarter",
+        "C": "Weekly shift in input data away from the training baseline",
+        "D": "Percentage of underwriters trained to use the model"
+      },
+      "correct": "C",
+      "key_concept": "AI model risk needs leading production indicators, such as input drift, not only lagging signals such as complaints.",
+      "pre_read": "Ask which indicator would move first if the model began to go wrong.",
+      "correct_explanation": "Drift in the input data is an early sign that pricing errors may follow, so tracking it weekly gives the owner time to retrain or review the model. Complaints are relevant but lagging: they arrive after mispriced policies reach customers, and many affected customers never complain. A single accuracy figure from the last validation cannot show any change in production.",
+      "wrong_explanations": {
+        "A": "Tempting because accuracy is the core quality measure. Measured once, it cannot show whether performance has changed since deployment.",
+        "B": "Tempting because complaints reflect real harm. They lag behind the errors, arrive quarterly and miss customers who never complain.",
+        "D": "Tempting because training reduces misuse. It measures an activity, a performance measure, not whether the model itself is degrading."
+      },
+      "tips": [
+        "Eliminate: A is a one-time snapshot that cannot show change in production, and D measures training activity rather than the model's behavior.",
+        "Final two: C beats B because input drift is an early sign of pricing errors; complaints arrive after customers are harmed.",
+        "Exam cue: for AI models, early warning comes from production monitoring of drift and error trends; complaints and incidents confirm harm after it happens."
+      ],
+      "framework_ref": "NIST AI 100-1 (AI RMF 1.0) MEASURE 2.4 (the functionality and behavior of the AI system are monitored when in production); NIST AI 100-1 (AI RMF 1.0) MANAGE 4.1 (post-deployment monitoring plans, including capturing user input, appeal and override)",
+      "related_concepts": [
+        "Model drift",
+        "Leading indicator",
+        "AI monitoring"
+      ],
+      "_provenance": "Authored from concept: notes 3C3.3 Thresholds and AI Model Indicators (drift, error rates, override rates and complaints; exam trap 'a model that passed testing needs no production indicators') and 3C3.2 Selecting Effective KRIs (leading versus lagging). Public sources: NIST AI RMF 1.0 MEASURE 2.4 and MANAGE 4.1. Original scenario written for KaiSip in our own words; no ISACA Review Manual, QAE, practice-quiz or prep-bank text used. CRISC D3 pilot batch (crisc_d3_001 to 020), 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): correct_explanation and Final two tip no longer overclaim that drift always comes first; key re-lettered A to C.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_018",
+      "domain": 3,
+      "subtopic": "3C4 Risk and control monitoring techniques. Unread alerts",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A law firm's tool emails a shared inbox a few alerts a week when laptop antivirus is disabled, and the risk analyst finds the majority unread. What should the analyst recommend as MOST important?",
+      "options": {
+        "A": "Add a second monitoring tool to widen coverage of every laptop",
+        "B": "Name an owner to check the shared inbox once a month",
+        "C": "Tune the tool so it sends fewer, higher-priority alerts",
+        "D": "Assign each alert type an owner with a required response time"
+      },
+      "correct": "D",
+      "key_concept": "Automated monitoring reduces risk only when each alert has an owner who responds within a set time.",
+      "pre_read": "Ask what happens after an alert is sent, and who is expected to act on it.",
+      "correct_explanation": "Monitoring reduces risk only when someone acts on what it finds. Alerts sent to a shared inbox have no owner, so disabled antivirus goes unanswered. Giving each alert type a named owner and a response time, with tracking to closure, turns detection into response. The stem says volume is low, so tuning would not help: fewer alerts in an unowned inbox would still go unread.",
+      "wrong_explanations": {
+        "A": "Tempting because broader coverage sounds safer. More alerts into an unowned inbox add volume without adding any response.",
+        "B": "Tempting because it names an owner. A monthly check leaves disabled antivirus unanswered for weeks; these alerts need a same-day response.",
+        "C": "Tempting because alert fatigue is real. Volume here is already low; tuning cannot help when no one owns the alerts that arrive."
+      },
+      "tips": [
+        "Eliminate: A adds more alerts to a queue nobody works, and B checks monthly a risk that needs a same-day response.",
+        "Final two: D beats C because tuning reduces noise, but without an owner and a response time even important alerts go unanswered.",
+        "Exam cue: when monitoring exists but nothing happens, the fix is ownership and response, not more or different monitoring."
+      ],
+      "framework_ref": "NIST SP 800-137 Section 3.5 (Respond to Findings); NIST SP 800-53 Rev. 5 CA-7 (Continuous Monitoring)",
+      "related_concepts": [
+        "Continuous monitoring",
+        "Alert ownership",
+        "Alert fatigue"
+      ],
+      "_provenance": "Authored from concept: notes 3C4.1 Continuous Monitoring and Automated Alerts (route every alert to an owner with a response time; exam traps 'turning on automated monitoring reduces the risk by itself' and 'the audit cycle is often enough'). Public sources: NIST SP 800-137 Section 3.5; NIST SP 800-53 Rev. 5 CA-7. Original scenario written for KaiSip in our own words; no ISACA Review Manual, QAE, practice-quiz or prep-bank text used. CRISC D3 pilot batch (crisc_d3_001 to 020), 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): stem states low alert volume (blind test), so tuning falls; B changed from the internal-audit pattern to a monthly owner check, so 'owner' is not key-only; A lengthened; explanation, wrong_explanations B and C and the Eliminate tip updated. Cross-domain fix 30 Oct 2026: lowercase 'most' removed from the stem.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_019",
+      "domain": 3,
+      "subtopic": "3C5 Risk and control reporting techniques. Board committee report",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A regional bank's risk analyst is preparing the quarterly IT risk report for the board risk committee. Which content is MOST appropriate for this audience?",
+      "options": {
+        "A": "Risks beyond appetite, their trend and decisions needed",
+        "B": "A heat map of every registered risk against appetite",
+        "C": "Every open vulnerability, listed by system and severity",
+        "D": "Results of each control test performed during the quarter"
+      },
+      "correct": "A",
+      "key_concept": "Board risk reporting shows the profile against appetite, trends and the decisions needed, not operational detail.",
+      "pre_read": "Think about which decisions the board makes, then pick the content that supports them.",
+      "correct_explanation": "The board sets appetite and makes the major risk decisions, so its report should show where the profile sits against appetite, which way key risks are moving and what it is being asked to decide. A heat map of every risk shows position but not trend or the request, and buries the few risks that need board attention among many that do not.",
+      "wrong_explanations": {
+        "B": "Tempting because heat maps are a familiar board format. Even plotted against appetite, it shows where risks sit, not their trend or what the board must decide.",
+        "C": "Tempting because full detail looks transparent. Vulnerability lists suit the teams who fix them; the board cannot act on them directly.",
+        "D": "Tempting because control results show assurance. Test-by-test detail suits risk and control owners; the board needs the overall effect against appetite."
+      },
+      "tips": [
+        "Eliminate: C and D give the board operational detail that suits the teams and owners who act on it, not the body that sets appetite.",
+        "Final two: A beats B because the board needs risks against appetite, their trend and the decision asked of it; a full heat map shows position only.",
+        "Exam cue: match the report to its reader's decisions; the board gets the profile against appetite and clear asks, owners get their risks and actions."
+      ],
+      "framework_ref": "NIST SP 800-137 Section 3.4 (Analyze Data and Report Findings: recipients, content, format and frequency of reports); NIST CSF 2.0 GV.RM-02 (risk appetite and risk tolerance statements are established, communicated and maintained)",
+      "related_concepts": [
+        "Risk reporting",
+        "Risk appetite",
+        "Heat map"
+      ],
+      "_provenance": "Authored from concept: notes 3C5.2 Reporting for the Audience and the Decision (exam trap 'give the board the full technical detail') and 3C5.1 Heat Maps, Scorecards and Dashboards (heat maps show position, not trend). Public sources: NIST SP 800-137 Section 3.4; NIST CSF 2.0 GV.OV-01. Original scenario written for KaiSip in our own words; no ISACA Review Manual, QAE, practice-quiz or prep-bank text used. CRISC D3 pilot batch (crisc_d3_001 to 020), 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): B now mentions appetite so it is not key-only, with its explanation; framework_ref GV.OV-01 swapped for GV.RM-02; key re-lettered C to A; stem actor changed from risk manager to risk analyst (calibration rule 8).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_020",
+      "domain": 3,
+      "subtopic": "3C6 Monitoring and reporting of emerging risks. Rules under consultation",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A pharmacy chain is piloting an AI tool for patient reminder messages when the risk analyst learns that regulators are consulting on rules for AI in patient communications. What should the analyst do FIRST?",
+      "options": {
+        "A": "Ask the owner to pause the AI pilot until rules are final",
+        "B": "Record an emerging risk with its uncertainty and an owner",
+        "C": "Wait for the final rules before assessing any possible impact",
+        "D": "Rate the regulatory risk as critical in the register now"
+      },
+      "correct": "B",
+      "key_concept": "Emerging risks are recorded early with stated uncertainty, an owner and a review date, then refined as evidence grows.",
+      "pre_read": "Notice how certain the new rules are, and what each option does with that uncertainty.",
+      "correct_explanation": "A consultation is an early signal: the rules may change the pilot's obligations, but their content and timing are uncertain. The analyst records it as an emerging risk, with its uncertainty stated, a business owner and a short review date, then refines it as the rules take shape. Pausing the pilot now gives up its benefit on a guess about rules that do not yet exist.",
+      "wrong_explanations": {
+        "A": "Tempting because it avoids breaking future rules. Pausing gives up the pilot's benefit before anyone knows what the rules will require.",
+        "C": "Tempting because the rules are not final. Waiting leaves no time to prepare; emerging risks are recorded early and refined as they develop.",
+        "D": "Tempting because it gets attention. Overstating certainty misdirects budget and damages trust; the rating should reflect what is actually known."
+      },
+      "tips": [
+        "Eliminate: C waits until the rules are final, leaving no time to prepare, and D overstates a risk whose details are still unknown.",
+        "Final two: B beats A because the rules are still uncertain; recording and owning the risk keeps the pilot's benefit while preparing for whatever the rules require.",
+        "Exam cue: for an emerging risk, record it early with its uncertainty, an owner and a review date; neither dismiss it nor treat it as certain."
+      ],
+      "framework_ref": "NIST AI 100-1 (AI RMF 1.0) GOVERN 1.1 (legal and regulatory requirements involving AI are understood, managed and documented); NIST SP 800-39 Section 3.4 (Monitoring Risk: compliance, response effectiveness and risk-impacting changes)",
+      "related_concepts": [
+        "Emerging risk",
+        "Regulatory change",
+        "AI governance"
+      ],
+      "_provenance": "Authored from concept: notes 3C6.2 Recording and Reporting Emerging Risk (record early with uncertainty, owner and review date; exam trap 'rate an emerging risk as critical') and 3C6.1 Horizon Scanning and Emerging Risk Sources. Public sources: NIST AI RMF 1.0 GOVERN 1.1; NIST SP 800-39 Section 3.4. Original scenario written for KaiSip in our own words; no ISACA Review Manual, QAE, practice-quiz or prep-bank text used. CRISC D3 pilot batch (crisc_d3_001 to 020), 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): retagged analysis; A and D reworded so 'owner' is not key-only and D has no purpose tail.",
+      "style_version": 2
+    }
+  ]
+}

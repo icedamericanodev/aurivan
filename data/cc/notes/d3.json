@@ -270,7 +270,7 @@
           "definition": "Phishing-resistant authentication ties each sign-in to the genuine site, so a fake site cannot capture and reuse it. Passkeys and Fast Identity Online 2 (FIDO2) security keys are examples.",
           "why_it_matters": "Codes from multifactor authentication (MFA) can be relayed through fake login pages, and push prompts repeated until a tired user approves.",
           "how_it_works": [
-            "A passkey's private key stays on the device and signs a challenge from the real site.",
+            "A passkey's private key is never sent to any site; it signs a challenge only for the real site.",
             "The browser checks the site's address, so a look-alike domain gets nothing it can reuse.",
             "Text and app codes can be typed into a fake page and replayed.",
             "Number matching stops blind approvals, but a fake page can show the real number, so it is not phishing-resistant.",

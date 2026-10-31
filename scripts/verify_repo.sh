@@ -201,6 +201,14 @@ else
   printf "  ${OK} reported (errors=%s warnings=%s; new batches should use --batch --strict)\n" "$errors_count" "$warnings_count"
 fi
 
+# 6a. Longest-option tell ----------------------------------------------------
+# Per domain, how often "always pick the longest option" (ties shared) would
+# win. Chance is 25%; the target is about 20%. Outside 15–24% fails.
+printf "\n"
+if ! python3 scripts/check_longest_option.py; then
+  status=1
+fi
+
 # 6b. Mindset principles (data/mindset/principles.json) ----------------------
 # Schema, ids, practice-question and subtopic cross-references, word limits,
 # family/domain coverage, legacy id mapping. Errors fail the check; warnings
