@@ -182,3 +182,4 @@ Rule for the form builder: Draw no two items of a pair into the same form. Keep 
 | csoe_d5_010 | csoe_d5_073 | ERM is broader than internal control |
 | csoe_d5_032 | csoe_d5_073 | the 2017 misconceptions box |
 | csoe_d5_032 | csoe_d5_074 | the 2017 misconceptions box |
+| csoe_d4_061 | csoe_d4_066 | both rest on Section 13(d); d4_066's stem gives away d4_061's answer |
