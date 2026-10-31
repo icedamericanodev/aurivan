@@ -54,6 +54,7 @@ These items are correct today. Re-check them at every batch and fix the bank the
 | Volcker Rule | Checked 31 Oct 2026 (batch 3): the statute and Regulation VV 248.12 agree on the 3 percent limits; the 2019-2020 amendments left them unchanged; no Volcker proposal in the Federal Register since 2020. Banks with $10 billion or less in assets and 5 percent or less in trading assets are outside Section 619 since 2018 | Volcker items must name a bank above that size (csoe_d4_036, 054) |
 | SEC proxy proposals S7-2026-33 (Proxy Solicitation Modernization) and S7-2026-32; semiannual reporting S7-2026-17 | Proposed, not adopted | Recheck notes 4A1.3 and csoe_d4_041 if adopted |
 | COSO ERM update | COSO has announced plans to update the 2017 ERM framework; no new edition yet | Recheck D5 ERM items and notes 5B2 when a new edition is published |
+| PCAOB rules and Exchange Act Section 19(b)(3)(A) | Open question from the batch 3 cross-domain review: can a PCAOB fee rule take effect on filing, as an exchange fee change can? Section 107(b)(2) requires SEC approval before a Board rule takes effect; no key depends on the point | Check the PCAOB's own rule filings when pcaobus.org opens, before writing any item on it |
 | Basel III in U.S. rules | Keyed on the 2013 U.S. capital rule (78 FR 62018) and 12 CFR 217 (bis.org and federalreserve.gov blocked). The March 2026 capital proposals are pending | Never state Basel's own text; recheck 12 CFR 217.11 when the proposals are final |
 
 ## Network (31 Oct 2026, second pass)
