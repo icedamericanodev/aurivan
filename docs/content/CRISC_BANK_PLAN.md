@@ -115,6 +115,17 @@ committed (ISACA's text stays out of the repo). Run it on every glossary or
 notes change; reviewers then check meaning only, so originality reviews can't
 loop on sentence shape.
 
+## 5c. App-ready, not switched on
+
+`node scripts/crisc_pack_dry_run.cjs` (run by `verify_repo.sh`) feeds every
+CRISC file through the phone app's own pack builders, writing only to a temp
+folder: questions, notes (the four domain files plus `_course.json`),
+principles, principle tags, the exam guide and final review week, then draws
+a full 150-item mock and a 50-item short mock without repeats. CRISC stays off
+in the apps until the paid phase: switching it on means a `PACKS` entry in
+`mobile/scripts/build-content.mjs` (with the same notes merge) and the web and
+paywall wiring.
+
 ## 6. Pilot calibration rules
 
 From the pilot's four blind tests and four standards audits (30 Oct 2026).
