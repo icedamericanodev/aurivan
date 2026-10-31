@@ -1,0 +1,731 @@
+{
+  "_meta": {
+    "comment": "Original KaiSip CSOE practice questions for Domain 1 (Scope and reach of the Act), written from the public law and KaiSip's own notes (data/csoe/notes/d1.json), with no SOXCPA presentation, exam or prep-bank material. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/csoe-standards-auditor.md. Not affiliated with or endorsed by SOXCPA. Pilot batch csoe_d1_001 to csoe_d1_020, 31 Oct 2026.",
+    "schema_version": 1
+  },
+  "domain": 1,
+  "domain_name": "Scope and reach of the Act",
+  "weight": "14%",
+  "questions": [
+    {
+      "id": "csoe_d1_001",
+      "domain": 1,
+      "subtopic": "1A1 Why the Act was needed. Stated purpose",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A compliance trainer at a newly listed retailer quotes the long title of the Sarbanes-Oxley Act of 2002. Which purpose does that title MOST directly state?",
+      "options": {
+        "A": "To create the SEC to oversee securities markets and exchanges",
+        "B": "To protect investors through more accurate and reliable corporate disclosures",
+        "C": "To have Congress set the accounting standards issuers must follow",
+        "D": "To protect investors by requiring audited statements from every U.S. company"
+      },
+      "correct": "B",
+      "key_concept": "The Act's long title states its purpose: to protect investors by improving the accuracy and reliability of corporate disclosures.",
+      "pre_read": "Think about what the Act set out to fix, and which companies the securities laws actually reach.",
+      "correct_explanation": "The long title of Public Law 107-204 says the Act exists to protect investors by improving the accuracy and reliability of corporate disclosures made under the securities laws. Option D shares the investor-protection aim but misstates the reach: the Act's duties fall on issuers in the SEC reporting system, not on every U.S. company. Private companies outside that system file no SEC reports.",
+      "wrong_explanations": {
+        "A": "The SEC was established by Section 4 of the Securities Exchange Act of 1934, decades before SOX. The Act gives the SEC new rulemaking and enforcement work instead.",
+        "C": "Tempting because the Act deals with accounting. But Section 108 lets the SEC recognize a private standard setter's principles; the SEC recognized the FASB in 2003.",
+        "D": "Closest choice: it shares the investor-protection aim, but the Act reaches issuers in the SEC reporting system, not every U.S. company, so private companies have no SOX filings."
+      },
+      "tips": [
+        "Eliminate: A, because the SEC dates from the 1934 Exchange Act, and C, because accounting standards come from a standard setter the SEC recognizes.",
+        "Final two: B beats D because the Act's duties fall on issuers, not on every U.S. company; its stated aim is reliable disclosure by companies in the reporting system.",
+        "Exam cue: on scope items, ask whether the company is an issuer before applying any SOX duty; private companies outside the reporting system have none."
+      ],
+      "framework_ref": "Sarbanes-Oxley Act of 2002 Long title (Purpose of the Act); 15 U.S.C. 78d(a) (Establishment of the Securities and Exchange Commission)",
+      "related_concepts": [
+        "Purpose of the Act",
+        "Issuer",
+        "Securities Exchange Act of 1934"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 1A1.2 and the Sarbanes-Oxley Act of 2002 long title (govinfo.gov), 31 Oct 2026, CSOE pilot. Original scenario; no SOXCPA material or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d1_002",
+      "domain": 1,
+      "subtopic": "1A1 Why the Act was needed. Enforcement",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "The SEC finds that an issuer's officers broke an SEC rule adopted under the Sarbanes-Oxley Act. Under Section 3(b) of the Act, how is that violation MOST accurately treated?",
+      "options": {
+        "A": "A matter for the PCAOB to investigate and discipline",
+        "B": "A breach of state corporate law, pursued by the company's home state",
+        "C": "A Securities Act of 1933 violation, with that Act's penalties",
+        "D": "An Exchange Act of 1934 violation, with that Act's penalties"
+      },
+      "correct": "D",
+      "key_concept": "Section 3(b) treats a violation of the Act, its SEC rules or PCAOB rules as a violation of the Securities Exchange Act of 1934.",
+      "pre_read": "Recall which federal securities statute the Act borrows its enforcement framework from.",
+      "correct_explanation": "Section 3(b)(1) says a violation of the Act, of SEC rules issued under it or of PCAOB rules is treated for all purposes as a violation of the Securities Exchange Act of 1934, with the same penalties. Option C names the wrong statute: the Securities Act of 1933 governs offerings, while the Exchange Act is the enforcement framework the Act borrows.",
+      "wrong_explanations": {
+        "A": "The PCAOB registers, inspects and disciplines audit firms of issuers. It does not enforce SEC rules against an issuer's officers; the SEC does.",
+        "B": "SOX is federal securities law. Section 3(b) routes its violations into the Exchange Act's federal enforcement scheme, not into state corporate law.",
+        "C": "Closest choice: it names a federal securities statute, but Section 3(b) borrows the Exchange Act of 1934, not the Securities Act of 1933, which governs offerings."
+      },
+      "tips": [
+        "Eliminate: A, because the PCAOB oversees audit firms rather than issuers, and B, because SOX is federal law enforced by the SEC.",
+        "Final two: D beats C because Section 3(b) ties SOX violations to the Exchange Act of 1934, the statute that governs reporting companies.",
+        "Exam cue: when an item asks how a SOX breach is enforced, think SEC and Exchange Act penalties, not a new agency or a separate code."
+      ],
+      "framework_ref": "Sarbanes-Oxley Act of 2002 Section 3(b) (Commission rules and enforcement)",
+      "related_concepts": [
+        "SEC enforcement",
+        "Securities Exchange Act of 1934",
+        "Role of the PCAOB"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 1A1.2 and Sarbanes-Oxley Act Section 3 (govinfo.gov), 31 Oct 2026, CSOE pilot. Original scenario; no SOXCPA material or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d1_003",
+      "domain": 1,
+      "subtopic": "1A2 Companies affected and which provisions apply. Pre-offering status",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Halvern Labs, a private company, has filed a Securities Act registration statement for its first offering; it is not yet effective or withdrawn. Under Section 2(a)(7), what is Halvern's status MOST accurately?",
+      "options": {
+        "A": "It is already an issuer while the statement is pending",
+        "B": "It becomes an issuer once its shares list on an exchange",
+        "C": "It becomes an issuer when the statement becomes effective",
+        "D": "It becomes an issuer once its revenue passes $100 million"
+      },
+      "correct": "A",
+      "key_concept": "Under Section 2(a)(7), a company with a filed, pending and unwithdrawn Securities Act registration statement is already an issuer.",
+      "pre_read": "List the routes by which a company becomes an issuer, then ask whether this company has already taken one.",
+      "correct_explanation": "Section 2(a)(7) defines an issuer to include a company that files or has filed a Securities Act registration statement that has not yet become effective and has not been withdrawn. Halvern is therefore an issuer now, before any sale. Option C is the near miss: effectiveness starts the Section 15(d) reporting duty, but issuer status under the Act begins with the filing itself.",
+      "wrong_explanations": {
+        "B": "Exchange listing is one route (Section 12), but a pending registration statement, Section 12(g) or a Section 15(d) duty also makes a company an issuer.",
+        "C": "Closest choice: effectiveness triggers Section 15(d) reporting, yet the Act's definition already covers a filed statement that is pending and not withdrawn.",
+        "D": "The Act's definition of issuer has no revenue or size test. Revenue thresholds appear in the filer categories, not in whether a company is an issuer."
+      },
+      "tips": [
+        "Eliminate: B, because listing is only one of the routes into issuer status, and D, because the issuer definition has no size test.",
+        "Final two: A beats C because Section 2(a)(7) covers a registration statement that is filed but not yet effective, as long as it is not withdrawn.",
+        "Exam cue: issuer status has three routes: Section 12 registration, a Section 15(d) duty, or a pending registration statement. Check each before deciding."
+      ],
+      "framework_ref": "Sarbanes-Oxley Act of 2002 Section 2(a)(7) (Definition of issuer)",
+      "related_concepts": [
+        "Issuer",
+        "Registration statement",
+        "Section 15(d) reporting"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 1A2.1 and Sarbanes-Oxley Act Section 2(a)(7) (govinfo.gov), 31 Oct 2026, CSOE pilot. Original scenario; no SOXCPA material or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d1_004",
+      "domain": 1,
+      "subtopic": "1A2 Companies affected and which provisions apply. Filer category thresholds",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A controller at a manufacturer with two years of annual reports applies Rule 12b-2. Which public float range MOST accurately marks an accelerated filer, all other conditions being met?",
+      "options": {
+        "A": "From $60 million up to under $560 million",
+        "B": "Any public float under $250 million",
+        "C": "From $75 million up to under $700 million",
+        "D": "Any public float of $700 million or more"
+      },
+      "correct": "C",
+      "key_concept": "Under Rule 12b-2, an accelerated filer has a public float of $75 million or more but under $700 million, with the other conditions met.",
+      "pre_read": "Rule 12b-2 uses more than one pair of float numbers. Ask which pair applies to a company entering a category.",
+      "correct_explanation": "Rule 12b-2 defines an accelerated filer by a public float of $75 million or more but less than $700 million, measured on the last business day of the second fiscal quarter, plus a reporting history and failing the revenue test. Option A gives the exit thresholds: an accelerated filer stays one until its float falls below $60 million, and a large accelerated filer drops back below $560 million.",
+      "wrong_explanations": {
+        "A": "Closest choice: $60 million and $560 million are the Rule 12b-2 exit thresholds for issuers already in a category, not the entry range.",
+        "B": "A float under $250 million is the smaller reporting company test, which sets scaled disclosure, not the accelerated filer range.",
+        "D": "A float of $700 million or more marks a large accelerated filer, the category above accelerated filers."
+      },
+      "tips": [
+        "Eliminate: B, the smaller reporting company float test, and D, the large accelerated filer threshold.",
+        "Final two: C beats A because $75 million and $700 million are the entry thresholds; $60 million and $560 million govern leaving a category.",
+        "Exam cue: entry and exit thresholds differ on purpose, so a company does not flip categories each year. Read whether the item asks about entering or leaving."
+      ],
+      "framework_ref": "17 CFR 240.12b-2 (Definition of accelerated filer and large accelerated filer)",
+      "related_concepts": [
+        "Accelerated filer",
+        "Public float",
+        "Large accelerated filer"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 1A2.2 and 17 CFR 240.12b-2 (law.cornell.edu), 31 Oct 2026, CSOE pilot. Original scenario; no SOXCPA material or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d1_005",
+      "domain": 1,
+      "subtopic": "1A2 Companies affected and which provisions apply. Internal control report content",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Brightwell Tools is a non-accelerated filer, not an emerging growth company, filing its third Form 10-K. Under Section 404, what must that annual report MOST accurately contain?",
+      "options": {
+        "A": "Management's assessment and the auditor's attestation on it",
+        "B": "No internal control report until it becomes an accelerated filer",
+        "C": "The auditor's attestation in place of management's own assessment",
+        "D": "Management's internal control assessment, with no auditor attestation"
+      },
+      "correct": "D",
+      "key_concept": "A non-accelerated filer includes management's 404(a) assessment but is exempt from the auditor's 404(b) attestation under Section 404(c).",
+      "pre_read": "Separate management's duty from the auditor's duty, then ask which of the two depends on filer status.",
+      "correct_explanation": "Section 404(a) requires management's internal control report in each annual report filed under Section 13(a) or 15(d), once past the first annual report. Section 404(c), added by Dodd-Frank Section 989G(a), removes the auditor's 404(b) attestation for issuers that are neither accelerated nor large accelerated filers. Option A would be right for an accelerated filer that is not an emerging growth company.",
+      "wrong_explanations": {
+        "A": "Closest choice: this is the full requirement for accelerated and large accelerated filers. Section 404(c) removes the auditor attestation for a non-accelerated filer.",
+        "B": "Section 404(c) exempts non-accelerated filers only from 404(b). Management's 404(a) assessment applies from the second annual report onward.",
+        "C": "The auditor attests to management's assessment; it never replaces it. And a non-accelerated filer needs no auditor attestation in the first place."
+      },
+      "tips": [
+        "Eliminate: B, because the exemption covers only the auditor's part, and C, because an attestation reports on management's assessment rather than replacing it.",
+        "Final two: D beats A because Section 404(c) removes the 404(b) attestation for issuers that are neither accelerated nor large accelerated filers.",
+        "Exam cue: 404(a) follows the annual report; 404(b) follows filer status. Settle the filer category before deciding whether the auditor attests."
+      ],
+      "framework_ref": "15 U.S.C. 7262(a) (Management's internal control report); Dodd-Frank Act Section 989G(a) (Exemption for smaller issuers)",
+      "related_concepts": [
+        "Section 404(a)",
+        "Section 404(c)",
+        "Non-accelerated filer"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 1A2.3 and 15 U.S.C. 7262 and Dodd-Frank Act Section 989G(a) (law.cornell.edu, govinfo.gov), 31 Oct 2026, CSOE pilot. Original scenario; no SOXCPA material or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d1_006",
+      "domain": 1,
+      "subtopic": "1A2 Companies affected and which provisions apply. Overlapping statuses",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Corvane Bio listed three years ago, still qualifies as an emerging growth company, and is now an accelerated filer by float. Must its auditor attest under Section 404(b), and what is the MAIN reason?",
+      "options": {
+        "A": "No; emerging growth companies are excluded from the attestation",
+        "B": "Yes; its accelerated filer status brings the auditor's attestation",
+        "C": "Yes; that exemption ends after its second annual report",
+        "D": "No; the newly public company transition period still applies"
+      },
+      "correct": "A",
+      "key_concept": "An emerging growth company is excluded from the 404(b) auditor attestation even when its float makes it an accelerated filer.",
+      "pre_read": "Two statuses apply to this company at once. Check how each one affects the auditor's role.",
+      "correct_explanation": "Section 404(b), as amended by the JOBS Act, requires the auditor's attestation for each issuer other than an emerging growth company. Corvane keeps that status until a Rule 12b-2 end event, such as high revenue or becoming a large accelerated filer, so no attestation is required. Option B states the general rule for accelerated filers, but the statute's EGC carve-out overrides it.",
+      "wrong_explanations": {
+        "B": "Closest choice: accelerated filers normally need the attestation, but Section 404(b) excludes emerging growth companies, so the EGC status controls here.",
+        "C": "EGC status does not lapse after two annual reports. Rule 12b-2 ends it on events such as high revenue, large debt issues or large accelerated filer status.",
+        "D": "Item 308's transition covers only a company's first annual report. Corvane listed three years ago, so that relief has passed."
+      },
+      "tips": [
+        "Eliminate: C, because EGC status ends only on the Rule 12b-2 events, and D, because the newly public relief covers only the first annual report.",
+        "Final two: A beats B because the EGC carve-out in Section 404(b) applies even when the company's float makes it an accelerated filer.",
+        "Exam cue: when two statuses overlap, check each exemption separately; an EGC that is an accelerated filer still skips the auditor attestation."
+      ],
+      "framework_ref": "15 U.S.C. 7262(b) (Internal control evaluation and reporting); 17 CFR 240.12b-2 (Definition of emerging growth company)",
+      "related_concepts": [
+        "Emerging growth company",
+        "Section 404(b)",
+        "Accelerated filer"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 1A2.3 and 15 U.S.C. 7262(b) and 17 CFR 240.12b-2 (law.cornell.edu), 31 Oct 2026, CSOE pilot. Original scenario; no SOXCPA material or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d1_007",
+      "domain": 1,
+      "subtopic": "1A2 Companies affected and which provisions apply. Registered funds",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "The compliance officer of a mutual fund registered under Section 8 of the Investment Company Act is scoping Section 404. Which conclusion is MOST accurate for the fund?",
+      "options": {
+        "A": "Management reports on internal control, but the auditor does not attest",
+        "B": "The auditor attests, but management files no internal control report",
+        "C": "Neither management's report nor the auditor's attestation applies",
+        "D": "Both apply once the fund's net assets exceed $75 million"
+      },
+      "correct": "C",
+      "key_concept": "Section 405 exempts registered investment companies from Sections 401, 402 and 404, including both parts of the internal control report.",
+      "pre_read": "Find the section that speaks to registered funds, then read how far its exemption reaches.",
+      "correct_explanation": "Section 405 says nothing in Sections 401, 402 or 404, or the SEC rules under them, applies to an investment company registered under Section 8 of the Investment Company Act of 1940. So neither the 404(a) management report nor the 404(b) attestation applies. Option A treats the fund like a non-accelerated filer, but the fund's exemption comes from Section 405 and covers all of Section 404.",
+      "wrong_explanations": {
+        "A": "Closest choice: this is the pattern for a non-accelerated filer under Section 404(c). A registered fund falls under Section 405, which removes all of Section 404.",
+        "B": "An auditor's attestation reports on management's assessment, so it cannot stand alone. And Section 405 removes both parts for a registered fund.",
+        "D": "Section 405 has no asset threshold. The $75 million figure is the Rule 12b-2 float entry point for accelerated filers, which does not apply here."
+      },
+      "tips": [
+        "Eliminate: B, because an attestation needs management's assessment to report on, and D, because Section 405 has no size threshold.",
+        "Final two: C beats A because Section 405 removes all of Section 404 for registered investment companies, not just the auditor's attestation.",
+        "Exam cue: Section 405 names exactly three sections for registered funds: 401, 402 and 404. Other provisions are untouched by it."
+      ],
+      "framework_ref": "Sarbanes-Oxley Act of 2002 Section 405 (Exemption)",
+      "related_concepts": [
+        "Registered investment company",
+        "Section 404",
+        "Section 405"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 1A2.4 and Sarbanes-Oxley Act Section 405 (govinfo.gov), 31 Oct 2026, CSOE pilot. Original scenario; no SOXCPA material or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d1_008",
+      "domain": 1,
+      "subtopic": "1A2 Companies affected and which provisions apply. Filer status in practice",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Pellora Foods has reported for three years and has a $300 million public float and $60 million in annual revenues. Must its auditor attest to internal control, and what is the MAIN reason?",
+      "options": {
+        "A": "Yes; its $300 million float makes it an accelerated filer",
+        "B": "No; the revenue test makes it a non-accelerated filer",
+        "C": "Yes; any issuer with three years of reports needs it",
+        "D": "No; issuers under $100 million revenue are exempt from Section 404"
+      },
+      "correct": "B",
+      "key_concept": "An issuer with revenues under $100 million and a float under $700 million is not an accelerated filer, so 404(b) does not apply.",
+      "pre_read": "Work through every condition of the accelerated filer definition, not only the float.",
+      "correct_explanation": "Since the SEC's 2020 amendments, Rule 12b-2 excludes from the accelerated filer category any issuer eligible for smaller reporting company status under the revenue test: annual revenues under $100 million and a float under $700 million. Pellora meets that test, so it is a non-accelerated filer and Section 404(c) removes the auditor attestation. Option A applies the float range alone and misses the revenue test.",
+      "wrong_explanations": {
+        "A": "Closest choice: the float is in the $75 million to $700 million range, but Rule 12b-2 also requires failing the revenue test, which Pellora passes.",
+        "C": "Reporting history is one condition for accelerated filer status, not a trigger on its own. Attestation depends on filer category and EGC status.",
+        "D": "The revenue test removes only the auditor's 404(b) attestation. Management's 404(a) assessment still belongs in each annual report after the first."
+      },
+      "tips": [
+        "Eliminate: C, because reporting history alone does not set filer status, and D, because management's own 404(a) report still applies.",
+        "Final two: B beats A because Rule 12b-2 keeps issuers that pass the revenue test out of the accelerated filer category, whatever their float.",
+        "Exam cue: for filer status, check float, then reporting history, then the revenue test; low revenue can override a mid-sized float."
+      ],
+      "framework_ref": "17 CFR 240.12b-2 (Definition of accelerated filer and large accelerated filer); Dodd-Frank Act Section 989G(a) (Exemption for smaller issuers)",
+      "related_concepts": [
+        "Smaller reporting company",
+        "Accelerated filer",
+        "Section 404(c)"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 1A2.2 and 17 CFR 240.12b-2 (law.cornell.edu) and Dodd-Frank Act Section 989G(a) (govinfo.gov), 31 Oct 2026, CSOE pilot. Original scenario; no SOXCPA material or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d1_009",
+      "domain": 1,
+      "subtopic": "1A3 Foreign private issuers. Status test",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Kestrel Mining, an Australian-incorporated company run from Perth, has 60% of its voting shares held by U.S. residents and mostly U.S.-citizen directors. Is Kestrel MOST accurately a foreign private issuer?",
+      "options": {
+        "A": "No; it meets the U.S. ownership test and one contact test",
+        "B": "Yes; incorporation outside the U.S. settles the question",
+        "C": "No; any U.S. shareholding removes foreign private status",
+        "D": "Yes; its business is run from Australia, which keeps the status"
+      },
+      "correct": "A",
+      "key_concept": "A foreign issuer loses FPI status when U.S. residents hold over 50% of its voting securities and any one contact test is met.",
+      "pre_read": "Separate the ownership condition from the business-contact conditions before deciding.",
+      "correct_explanation": "Under Rule 3b-4(c), a foreign issuer is not a foreign private issuer if more than 50% of its voting securities are held of record by U.S. residents and any one contact test is met. Kestrel meets the ownership condition, and a majority of its directors are U.S. citizens, which is one contact test. Option D wrongly treats the contact tests as cumulative; meeting one is enough.",
+      "wrong_explanations": {
+        "B": "Incorporation abroad makes Kestrel a foreign issuer, the first step. Rule 3b-4(c) then removes private-issuer status when the ownership and contact conditions are met.",
+        "C": "U.S. shareholding matters only above 50% of voting securities, and then only together with a contact test. Small U.S. holdings change nothing.",
+        "D": "Closest choice: its administration is outside the U.S., but Rule 3b-4(c) needs only one contact test, and director citizenship already meets it."
+      },
+      "tips": [
+        "Eliminate: B, because incorporation abroad is only the first step of the test, and C, because U.S. ownership counts only above 50% of voting securities.",
+        "Final two: A beats D because Rule 3b-4(c) is met by majority U.S. ownership plus any one contact test, not all three.",
+        "Exam cue: for FPI status, check U.S. ownership above 50%, then look for any one U.S. contact: officers or directors, assets, or administration."
+      ],
+      "framework_ref": "17 CFR 240.3b-4(c) (Definition of foreign private issuer)",
+      "related_concepts": [
+        "Foreign private issuer",
+        "Foreign issuer",
+        "U.S. contact tests"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 1A3.1 and 17 CFR 240.3b-4 (law.cornell.edu), 31 Oct 2026, CSOE pilot. Original scenario; no SOXCPA material or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d1_010",
+      "domain": 1,
+      "subtopic": "1A3 Foreign private issuers. Annual report form",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Solvane AG, a German foreign private issuer with shares registered under Exchange Act Section 12(b), prepares its annual report. Which SEC form is MOST appropriate for that report?",
+      "options": {
+        "A": "Form 6-K, which carries news the company publishes at home",
+        "B": "Form 10-Q, the quarterly report that domestic issuers file",
+        "C": "Form F-6, which registers depositary receipts on the company's shares",
+        "D": "Form 20-F, filed within six months after the fiscal year-end"
+      },
+      "correct": "D",
+      "key_concept": "A foreign private issuer files its annual report on Form 20-F within six months of fiscal year-end; Form 6-K carries home-country news.",
+      "pre_read": "Think about which reports a foreign company sends the SEC during the year and which one covers the full year.",
+      "correct_explanation": "Form 20-F is the form foreign private issuers use for Exchange Act registration and for annual reports under Section 13(a) or 15(d), and the annual report is due within six months after fiscal year-end (17 CFR 249.220f). Option A is also a foreign private issuer form, but Form 6-K carries information published at home between annual reports; it is furnished, not an annual report.",
+      "wrong_explanations": {
+        "A": "Closest choice: Form 6-K is the foreign private issuer's form for home-country news between annual reports. It is furnished, not the annual report.",
+        "B": "Form 10-Q is the domestic quarterly report. It is not a foreign private issuer's default form, and it is never an annual report.",
+        "C": "Form F-6 registers depositary receipts under the Securities Act and covers only the deposit terms, with no information about the company."
+      },
+      "tips": [
+        "Eliminate: B, the domestic quarterly report, and C, the registration form for depositary receipts.",
+        "Final two: D beats A because Form 20-F is the foreign private issuer's annual report, while Form 6-K furnishes home-country news between annual reports.",
+        "Exam cue: FPI forms pair up with domestic ones: Form 20-F for the 10-K and Form 6-K for current news. Match the form to the report's purpose."
+      ],
+      "framework_ref": "17 CFR 249.220f (Form 20-F); 17 CFR 240.13a-16 (Reports of foreign private issuers on Form 6-K)",
+      "related_concepts": [
+        "Form 20-F",
+        "Form 6-K",
+        "Foreign private issuer"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 1A3.2 and 17 CFR 249.220f and 240.13a-16 (law.cornell.edu), 31 Oct 2026, CSOE pilot. Original scenario; no SOXCPA material or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d1_011",
+      "domain": 1,
+      "subtopic": "1A3 Foreign private issuers. Certification scope",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Tavira SA, a foreign private issuer, furnishes half-year results on Form 6-K and later files its annual Form 20-F. Under Rule 13a-14(a), which report MOST accurately needs the officer certifications?",
+      "options": {
+        "A": "Both reports, since each contains the company's financial results",
+        "B": "Neither report, since foreign private issuers are outside Section 302",
+        "C": "The Form 20-F alone, as the annual report filed under Section 13(a)",
+        "D": "The Form 20-F, starting when Tavira becomes an accelerated filer"
+      },
+      "correct": "C",
+      "key_concept": "Officer certifications under Rule 13a-14(a) go with Forms 10-Q, 10-K, 20-F and 40-F, not with a furnished Form 6-K.",
+      "pre_read": "Check whether the certification rule follows the content of a report or the form it is filed on.",
+      "correct_explanation": "Rule 13a-14(a) requires the principal executive and financial officers' certifications in each report filed on Form 10-Q, 10-K, 20-F or 40-F. Form 6-K is not on that list: it is furnished to carry home-country information, not filed as a periodic report. Option A is tempting because the 6-K holds financial results, but the rule attaches certifications to the listed forms, not to content.",
+      "wrong_explanations": {
+        "A": "Closest choice: the 6-K holds financial results, but Rule 13a-14(a) lists Forms 10-Q, 10-K, 20-F and 40-F. A furnished 6-K is not among them.",
+        "B": "Foreign private issuers with registered securities are issuers. Rule 13a-14(a) expressly includes Form 20-F among the reports that carry the certifications.",
+        "D": "Filer status decides the auditor's 404(b) attestation, not the officer certifications. The certifications apply to every Form 20-F annual report."
+      },
+      "tips": [
+        "Eliminate: B, because Rule 13a-14(a) names Form 20-F, and D, because filer status affects the auditor attestation rather than the certifications.",
+        "Final two: C beats A because the certification rule lists the forms that need it, and Form 6-K is not one of them.",
+        "Exam cue: officer certifications attach to filed periodic reports on listed forms; a furnished Form 6-K carries none, even with financial data."
+      ],
+      "framework_ref": "17 CFR 240.13a-14(a) (Certification of disclosure in annual and quarterly reports); 17 CFR 240.13a-16 (Reports of foreign private issuers on Form 6-K)",
+      "related_concepts": [
+        "Section 302 certification",
+        "Form 6-K",
+        "Form 20-F"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 1A3.3 and 17 CFR 240.13a-14 and 240.13a-16 (law.cornell.edu), 31 Oct 2026, CSOE pilot. Original scenario; no SOXCPA material or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d1_012",
+      "domain": 1,
+      "subtopic": "1A3 Foreign private issuers. Audit committee rules",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An exchange-listed foreign private issuer has a board of auditors, set up under home-country law, that meets every condition in Rule 10A-3(c)(3). What does the rule MOST accurately allow?",
+      "options": {
+        "A": "It must still form a separate audit committee of independent directors",
+        "B": "The board of auditors may serve instead of an audit committee",
+        "C": "It is freed from every audit committee duty, including complaint procedures",
+        "D": "Management may appoint and oversee the auditor directly instead"
+      },
+      "correct": "B",
+      "key_concept": "Under Rule 10A-3(c)(3), a qualifying home-country board of auditors may stand in for a foreign private issuer's audit committee for listing purposes.",
+      "pre_read": "Ask what a home-country body must look like for the U.S. listing standards to accept it.",
+      "correct_explanation": "Rule 10A-3(c)(3) exempts a foreign private issuer's listing from the audit committee requirements in paragraphs (b)(1) to (b)(5) when a home-country board of auditors meets the rule's conditions, such as independence from management and responsibility for the auditor. That board then acts in place of an audit committee. Option A overlooks this accommodation, which spares issuers from duplicating a body home law already requires.",
+      "wrong_explanations": {
+        "A": "Closest choice: domestic listed issuers need an independent audit committee, but Rule 10A-3(c)(3) lets a qualifying home-country board of auditors fill that role.",
+        "C": "The exemption is not a release from duties. Rule 10A-3(c)(3)(vi) applies the complaint, adviser and funding requirements to the board of auditors itself.",
+        "D": "A qualifying board must be independent of management and responsible for appointing and overseeing the auditor. Handing that to management breaks the conditions."
+      },
+      "tips": [
+        "Eliminate: C, because the complaint, adviser and funding duties pass to the board of auditors, and D, because auditor oversight must stay independent of management.",
+        "Final two: B beats A because Rule 10A-3(c)(3) lets a qualifying board of auditors meet the listing standard in place of an audit committee.",
+        "Exam cue: FPI accommodations change who performs a duty or when, but the duty stays. Look for the body that takes the duty over."
+      ],
+      "framework_ref": "17 CFR 240.10A-3(c)(3) (Exemption for foreign private issuers with a board of auditors)",
+      "related_concepts": [
+        "Audit committee",
+        "Foreign private issuer",
+        "Board of auditors"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 1A3.3 and 17 CFR 240.10A-3 (law.cornell.edu), 31 Oct 2026, CSOE pilot. Original scenario; no SOXCPA material or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d1_013",
+      "domain": 1,
+      "subtopic": "1A4 Registration and EDGAR. Route into reporting",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Orrin Software sold shares to the public under an effective Securities Act registration statement but never listed them. Which provision MOST directly requires Orrin to file periodic reports?",
+      "options": {
+        "A": "Exchange Act Section 12(b), which covers securities on national exchanges",
+        "B": "Securities Act Section 5, which governs every sale of securities",
+        "C": "Exchange Act Section 12(g), which covers widely held securities",
+        "D": "Exchange Act Section 15(d), which follows an effective registration"
+      },
+      "correct": "D",
+      "key_concept": "A company whose Securities Act registration statement became effective must file periodic reports under Exchange Act Section 15(d).",
+      "pre_read": "Ask which fact in the stem started the company's reporting duty, and which provision ties to that fact.",
+      "correct_explanation": "Exchange Act Section 15(d) makes an issuer whose Securities Act registration statement has become effective file the periodic reports Section 13 requires, even without Section 12 registration. That is Orrin's route. Option C could also apply if Orrin had over $10 million in assets and enough holders of record, but the stem gives no such facts; the effective registration alone triggers 15(d).",
+      "wrong_explanations": {
+        "A": "Section 12(b) applies to securities registered for trading on a national securities exchange. Orrin never listed its shares, so 12(b) is not its route.",
+        "B": "Securities Act Section 5 requires a registration statement before an offering. It governs the sale, not the periodic reports that follow it.",
+        "C": "Closest choice: Section 12(g) reaches widely held companies by asset and holder thresholds, but nothing here meets them; the effective registration triggers 15(d)."
+      },
+      "tips": [
+        "Eliminate: A, because Section 12(b) covers exchange listings, and B, because Securities Act Section 5 governs the offering rather than later reports.",
+        "Final two: D beats C because Section 15(d) attaches directly to an effective registration statement, while 12(g) needs asset and holder thresholds the stem never states.",
+        "Exam cue: trace the route into reporting: listing points to 12(b), size and holders to 12(g), a completed registered offering to 15(d)."
+      ],
+      "framework_ref": "15 U.S.C. 78o(d) (Supplementary and periodic information); 15 U.S.C. 78l(g) (Registration of securities by issuer)",
+      "related_concepts": [
+        "Section 15(d) reporting",
+        "Section 12 registration",
+        "Securities Act Section 5"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 1A4.1 and 15 U.S.C. 78o(d), 78l and 77e (law.cornell.edu), 31 Oct 2026, CSOE pilot. Original scenario; no SOXCPA material or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d1_014",
+      "domain": 1,
+      "subtopic": "1A4 Registration and EDGAR. EDGAR basics",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A new analyst on a listed utility's reporting team is told that the quarterly report goes on EDGAR. Which description of EDGAR is MOST accurate?",
+      "options": {
+        "A": "The SEC's electronic system for submitting filings and reading them",
+        "B": "The SEC regulation that sets what an annual report must contain",
+        "C": "The PCAOB's database of inspection reports on audit firms",
+        "D": "A stock exchange rule for listing foreign companies' shares"
+      },
+      "correct": "A",
+      "key_concept": "EDGAR is the SEC's electronic filing and public access system; Regulation S-T requires periodic reports to be filed through it.",
+      "pre_read": "Think about what happens to a report after the reporting team finishes it.",
+      "correct_explanation": "EDGAR, the Electronic Data Gathering, Analysis, and Retrieval system, is the SEC's primary system for submitting documents under the Securities Act and the Exchange Act, and the public can search it free. Regulation S-T Rule 101 requires periodic reports to be filed through it. Option B confuses the system with a rule: content comes from the forms and Regulation S-K.",
+      "wrong_explanations": {
+        "B": "Closest choice: EDGAR is tied to SEC rules, but it is a system. Regulation S-T requires electronic filing; the forms and Regulation S-K set content.",
+        "C": "The PCAOB publishes its own inspection reports. EDGAR belongs to the SEC and holds filings by companies and others under the securities laws.",
+        "D": "Listing standards come from the exchanges. EDGAR is the SEC's filing system for filers, domestic and foreign alike."
+      },
+      "tips": [
+        "Eliminate: C, because EDGAR belongs to the SEC rather than the PCAOB, and D, because exchanges set listing standards outside EDGAR.",
+        "Final two: A beats B because EDGAR is the filing system itself; Regulation S-T is the rule that requires filers to use it.",
+        "Exam cue: separate systems from rules. EDGAR is where filings go, Regulation S-T says they must go there, and the forms say what they contain."
+      ],
+      "framework_ref": "17 CFR 232.101 (Mandated electronic submissions and exceptions)",
+      "related_concepts": [
+        "EDGAR",
+        "Regulation S-T",
+        "Periodic report"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 1A4.3 and 17 CFR 232.101 (law.cornell.edu) and the SEC's About EDGAR page (sec.gov), 31 Oct 2026, CSOE pilot. Original scenario; no SOXCPA material or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d1_015",
+      "domain": 1,
+      "subtopic": "1A4 Registration and EDGAR. Annual report deadline",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Graystone Retail is an accelerated filer, not a large accelerated filer, with a December 31 year-end. Under the Form 10-K rules, what is its annual report deadline MOST accurately?",
+      "options": {
+        "A": "40 days after fiscal year-end",
+        "B": "75 days after fiscal year-end",
+        "C": "90 days after fiscal year-end",
+        "D": "Six months after fiscal year-end"
+      },
+      "correct": "B",
+      "key_concept": "An accelerated filer must file its Form 10-K within 75 days after fiscal year-end.",
+      "pre_read": "Settle the filer category first, then recall how the annual deadline changes with size.",
+      "correct_explanation": "17 CFR 249.310(b) sets Form 10-K deadlines by filer category: 60 days after fiscal year-end for large accelerated filers, 75 days for accelerated filers and 90 days for all other registrants. Graystone is an accelerated filer, so 75 days applies. Option C is the deadline for non-accelerated filers, the category below, and would leave Graystone filing late.",
+      "wrong_explanations": {
+        "A": "Forty days is the Form 10-Q deadline for accelerated and large accelerated filers, for each of the first three quarters, not the annual report.",
+        "C": "Closest choice: 90 days applies to registrants that are neither accelerated nor large accelerated filers. Graystone's accelerated status shortens it to 75.",
+        "D": "Six months is the Form 20-F deadline for foreign private issuers' annual reports. Graystone files Form 10-K."
+      },
+      "tips": [
+        "Eliminate: A, the quarterly report deadline, and D, the foreign private issuer's Form 20-F deadline.",
+        "Final two: B beats C because accelerated filers have 75 days; 90 days is for non-accelerated filers.",
+        "Exam cue: Form 10-K deadlines step down with size: 90, 75, then 60 days. Fix the filer category before you pick the deadline."
+      ],
+      "framework_ref": "17 CFR 249.310(b) (Form 10-K filing deadlines)",
+      "related_concepts": [
+        "Form 10-K",
+        "Accelerated filer",
+        "Form 10-Q"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 1A4.2 and 17 CFR 249.310 and 249.308a (law.cornell.edu), 31 Oct 2026, CSOE pilot. Original scenario; no SOXCPA material or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d1_016",
+      "domain": 1,
+      "subtopic": "1A5 American Depositary Receipts. Sponsorship",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A U.S. broker-dealer wants to start an ADR program for a Chilean company's shares without that company's cooperation. Which program is MOST accurately available to the broker-dealer?",
+      "options": {
+        "A": "An unsponsored Level 2 program listed on a U.S. exchange",
+        "B": "A Level 3 program that raises new capital for the company",
+        "C": "An unsponsored Level 1 program traded over the counter",
+        "D": "No program, since every ADR program needs the company's agreement"
+      },
+      "correct": "C",
+      "key_concept": "Only a Level 1 ADR program may be unsponsored, so a broker-dealer can start one without the foreign company, for over-the-counter trading.",
+      "pre_read": "Ask which ADR levels need the foreign company itself to file anything with the SEC.",
+      "correct_explanation": "The SEC's investor bulletin explains that Level 1 is the only type of ADR facility that may be unsponsored, and an unsponsored program may be set up by a broker-dealer without the foreign company's cooperation. Such a program trades over the counter. Option A fails because an exchange listing at Level 2 requires the foreign company itself to register and file annual reports on Form 20-F.",
+      "wrong_explanations": {
+        "A": "Closest choice: Level 2 means an exchange listing, which requires the company itself to register and file Form 20-F reports, so it cannot be unsponsored.",
+        "B": "A Level 3 program raises capital for the company through its own registration statement on Form F-1, F-3 or F-4, which needs the company.",
+        "D": "Sponsored programs need the company's agreement, but unsponsored Level 1 programs can be set up by a broker-dealer without it."
+      },
+      "tips": [
+        "Eliminate: B, because raising capital needs the company's own registration statement, and D, because unsponsored programs exist without the company's agreement.",
+        "Final two: C beats A because only Level 1 may be unsponsored; an exchange listing needs the company to register and file Form 20-F.",
+        "Exam cue: if the company is not involved, think unsponsored Level 1 and over-the-counter trading; listing or raising capital needs the company."
+      ],
+      "framework_ref": "SEC Investor Bulletin: American Depositary Receipts, August 2012 (ADR program levels)",
+      "related_concepts": [
+        "Unsponsored ADR",
+        "ADR levels",
+        "Depositary bank"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 1A5.1 and the SEC investor bulletin on ADRs, August 2012 (sec.gov), 31 Oct 2026, CSOE pilot. Original scenario; no SOXCPA material or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d1_017",
+      "domain": 1,
+      "subtopic": "1A5 American Depositary Receipts. Program levels",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Velmora plc wants its ADRs listed on a U.S. national securities exchange and to raise new capital from U.S. investors in the same program. Which ADR level is MOST appropriate?",
+      "options": {
+        "A": "Level 2, filing Form 20-F annual reports with the SEC",
+        "B": "Level 1, registering the ADRs on Form F-6 alone",
+        "C": "Any level, since Form F-6 lets each program raise capital",
+        "D": "Level 3, with a Form F-1, F-3 or F-4 offering"
+      },
+      "correct": "D",
+      "key_concept": "Only a Level 3 ADR program combines an exchange listing with raising new capital through a Form F-1, F-3 or F-4 offering.",
+      "pre_read": "Match each of the company's two goals to what each ADR level permits.",
+      "correct_explanation": "The SEC's ADR bulletin describes Level 3 as the program that both establishes a trading presence and raises capital: the company files a registration statement on Form F-1, F-3 or F-4 for the offering and annual reports on Form 20-F. Option A brings the exchange listing and Form 20-F reporting, but a Level 2 program may not be used to raise capital.",
+      "wrong_explanations": {
+        "A": "Closest choice: Level 2 gives the exchange listing and Form 20-F reporting Velmora wants, but a Level 2 program may not be used to raise capital.",
+        "B": "Level 1 trades over the counter, files just Form F-6, and cannot raise capital, so it fails both of Velmora's goals.",
+        "C": "Form F-6 covers only the terms of the deposit agreement. Raising capital needs a separate registration statement on Form F-1, F-3 or F-4."
+      },
+      "tips": [
+        "Eliminate: B, because Level 1 is over-the-counter with no capital raising, and C, because Form F-6 registers only the deposit terms.",
+        "Final two: D beats A because only Level 3 adds a registered offering on Form F-1, F-3 or F-4 to the exchange listing.",
+        "Exam cue: ADR levels climb by market access: Level 1 over the counter, Level 2 exchange listing, Level 3 listing plus new capital."
+      ],
+      "framework_ref": "SEC Investor Bulletin: American Depositary Receipts, August 2012 (ADR program levels)",
+      "related_concepts": [
+        "ADR levels",
+        "Form F-6",
+        "Form 20-F"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 1A5.2 and the SEC investor bulletin on ADRs, August 2012 (sec.gov), 31 Oct 2026, CSOE pilot. Original scenario; no SOXCPA material or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d1_018",
+      "domain": 1,
+      "subtopic": "1A5 American Depositary Receipts. Reporting consequences",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Lunaris SA has a sponsored Level 1 ADR program traded over the counter; only Form F-6 has been filed. What is MOST accurate about Section 302 certifications for its CEO and CFO?",
+      "options": {
+        "A": "None are due; Lunaris files no periodic reports",
+        "B": "They are due because its ADRs are registered on Form F-6",
+        "C": "They are due because U.S. investors can buy its ADRs",
+        "D": "They are due once the ADRs pass a $75 million public float"
+      },
+      "correct": "A",
+      "key_concept": "A Level 1 ADR program files only Form F-6, so the company has no periodic report carrying Section 302 certifications.",
+      "pre_read": "Trace which SEC filings this program produces and which duties ride on each.",
+      "correct_explanation": "Section 302 certifications attach to each annual or quarterly report filed under Exchange Act Section 13(a) or 15(d), and Rule 13a-14(a) lists the forms, such as Form 20-F. A Level 1 program files only Form F-6, so Lunaris has no annual report for its officers to certify. Option B fails because Form F-6 registers the deposit terms only and creates no periodic reporting.",
+      "wrong_explanations": {
+        "B": "Closest choice: the ADRs are registered with the SEC, but Form F-6 covers only the deposit agreement and brings no periodic reports to certify.",
+        "C": "U.S. trading alone does not create SEC reporting. Certifications attach to periodic reports, and a Level 1 program files none.",
+        "D": "Public float thresholds sort reporting issuers into filer categories. They do not create a certification duty for a company that files no reports."
+      },
+      "tips": [
+        "Eliminate: C, because U.S. trading alone creates no periodic reports, and D, because float thresholds sort reporting issuers rather than creating duties.",
+        "Final two: A beats B because Form F-6 registers only the deposit terms; certifications need a Form 20-F or other periodic report.",
+        "Exam cue: follow the report. No periodic report on a listed form means no Section 302 certification to sign."
+      ],
+      "framework_ref": "15 U.S.C. 7241(a) (Corporate responsibility for financial reports); SEC Investor Bulletin: American Depositary Receipts, August 2012 (ADR program levels)",
+      "related_concepts": [
+        "Level 1 program",
+        "Section 302 certification",
+        "Form F-6"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 1A5.3 and 15 U.S.C. 7241 (law.cornell.edu) and the SEC investor bulletin on ADRs, August 2012 (sec.gov), 31 Oct 2026, CSOE pilot. Original scenario; no SOXCPA material or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d1_019",
+      "domain": 1,
+      "subtopic": "1A6 Employees affected. Who a provision reaches",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A warehouse manager at a privately owned logistics firm shreds shipping logs to impede a federal agency's investigation. Which provision added by the Sarbanes-Oxley Act MOST directly reaches this manager?",
+      "options": {
+        "A": "Section 302, the civil certification of each periodic report",
+        "B": "Section 404(a), management's internal control report",
+        "C": "18 U.S.C. 1519, on altering or destroying records to obstruct",
+        "D": "Section 906, the criminal certification of each periodic report"
+      },
+      "correct": "C",
+      "key_concept": "18 U.S.C. 1519, added by Section 802, applies to any person who destroys or falsifies records to obstruct a federal matter.",
+      "pre_read": "Look at who each provision names as the person who can break it.",
+      "correct_explanation": "Section 802 of the Act added 18 U.S.C. 1519, which applies to whoever knowingly alters, destroys or falsifies records with intent to impede a federal investigation or matter, with up to 20 years in prison. It is not limited to issuers or their staff. Option D is also criminal, but Section 906 binds the CEO and CFO of an issuer filing periodic reports.",
+      "wrong_explanations": {
+        "A": "Section 302 requires the principal executive and financial officers of reporting companies to certify reports. A private firm's warehouse manager signs nothing under it.",
+        "B": "Section 404(a) requires an internal control report in an issuer's annual report. It places no duty on staff of a private company.",
+        "D": "Closest choice: Section 906 carries criminal penalties, but it binds the CEO and CFO of an issuer filing periodic reports, not a private firm's staff."
+      },
+      "tips": [
+        "Eliminate: A and B, because both set reporting duties for issuers and their officers, which a private firm's manager does not have.",
+        "Final two: C beats D because 18 U.S.C. 1519 applies to whoever destroys records to obstruct a federal matter; Section 906 reaches issuers' certifying officers.",
+        "Exam cue: a provision that opens with 'whoever' reaches anyone; a provision that names officers or issuers reaches only them."
+      ],
+      "framework_ref": "18 U.S.C. 1519 (Destruction, alteration, or falsification of records in federal investigations); 18 U.S.C. 1350 (Failure of corporate officers to certify financial reports)",
+      "related_concepts": [
+        "Section 802",
+        "Section 906",
+        "Record destruction"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 1A6.2 and 18 U.S.C. 1519 and 1350 (law.cornell.edu), 31 Oct 2026, CSOE pilot. Original scenario; no SOXCPA material or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d1_020",
+      "domain": 1,
+      "subtopic": "1A6 Employees affected. Whistleblower coverage",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A shift supervisor at a subsidiary consolidated into a listed parent's financial statements reports suspected shareholder fraud to their manager and is then demoted. Does Section 806 MOST likely protect the supervisor?",
+      "options": {
+        "A": "No; internal reports to a manager fall outside its protection",
+        "B": "Yes; it covers subsidiary employees who report to a supervisor",
+        "C": "No; it protects officers and finance staff, not operations staff",
+        "D": "No; it protects the listed parent's staff, not a subsidiary's staff"
+      },
+      "correct": "B",
+      "key_concept": "Section 806 protects any employee of a public company or its consolidated subsidiary who reports suspected fraud, including to a supervisor.",
+      "pre_read": "Check who employs the supervisor and whom the report went to, then compare both with the statute's text.",
+      "correct_explanation": "18 U.S.C. 1514A, added by Section 806, bars a public company, including a subsidiary whose financial information is in its consolidated statements, from demoting an employee for reporting suspected shareholder fraud to a person with supervisory authority. The supervisor is covered and the internal report is protected. Option D reflects the 2002 wording; Dodd-Frank Section 929A added consolidated subsidiaries.",
+      "wrong_explanations": {
+        "A": "Section 806 expressly protects reports to a person with supervisory authority over the employee, as well as reports to federal agencies and Congress.",
+        "C": "Section 806 protects any employee of a covered company who makes a protected report. Job function and seniority do not limit it.",
+        "D": "Closest choice: the protection starts with the listed company, but the current text expressly includes subsidiaries whose financial information is consolidated."
+      },
+      "tips": [
+        "Eliminate: A, because reports to a supervisor are protected, and C, because the protection covers any employee, whatever their role.",
+        "Final two: B beats D because 18 U.S.C. 1514A now names subsidiaries whose financial information is included in the parent's consolidated statements.",
+        "Exam cue: for whistleblower scope, check three things: a covered company or consolidated subsidiary, an employee, and a protected report channel."
+      ],
+      "framework_ref": "18 U.S.C. 1514A(a) (Whistleblower protection for employees of publicly traded companies); Dodd-Frank Act Section 929A (Protection for employees of subsidiaries and affiliates)",
+      "related_concepts": [
+        "Whistleblower protection",
+        "Section 806",
+        "Consolidated subsidiary"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 1A6.2 and 18 U.S.C. 1514A (law.cornell.edu) and Dodd-Frank Act Section 929A (govinfo.gov), 31 Oct 2026, CSOE pilot. Original scenario; no SOXCPA material or prep-bank text used.",
+      "style_version": 2
+    }
+  ]
+}

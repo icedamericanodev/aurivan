@@ -1,0 +1,731 @@
+{
+ "_meta": {
+  "comment": "Original KaiSip CSOE practice questions for Domain 2 (The PCAOB and auditor independence), written from the public law (the Sarbanes-Oxley Act of 2002, the U.S. Code as amended, and SEC rules and releases) and KaiSip's own CSOE notes (data/csoe/notes/d2.json), with no SOXCPA material, prep bank or vendor text. Not affiliated with or endorsed by the Sarbanes Oxley Compliance Professionals Association (SOXCPA), the SEC or the PCAOB. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/csoe-standards-auditor.md. Pilot csoe_d2_001 to csoe_d2_020, 31 Oct 2026.",
+  "schema_version": 1
+ },
+ "domain": 2,
+ "domain_name": "The PCAOB and auditor independence",
+ "weight": "16%",
+ "questions": [
+  {
+   "id": "csoe_d2_001",
+   "domain": 2,
+   "subtopic": "2A1 Establishment, funding and SEC oversight. Legal status of the Board",
+   "difficulty": "foundational",
+   "bloom_level": "Foundational",
+   "question": "A new compliance analyst at a listed retailer describes the PCAOB as an office inside the SEC. Which statement BEST describes the Board's legal status under Section 101?",
+   "options": {
+    "A": "A federal agency whose members and staff are U.S. government employees",
+    "B": "A nonprofit corporation that is not an agency of the U.S. government",
+    "C": "A self-regulatory body owned and funded by the registered audit firms",
+    "D": "A division of the SEC that reports to the SEC's Chief Accountant"
+   },
+   "correct": "B",
+   "key_concept": "The PCAOB is a nonprofit corporation outside the federal government, overseen by the SEC and funded by issuers.",
+   "pre_read": "Ask what kind of legal body the Act created, and who sits above it.",
+   "correct_explanation": "Section 101 creates the PCAOB as a nonprofit corporation and says it is not an agency or establishment of the U.S. government; its members and staff are not federal employees. The SEC oversees it from outside under Section 107. Option C is close because the Board is overseen much like a self-regulatory body, but audit firms do not own it, and issuers fund it through accounting support fees.",
+   "wrong_explanations": {
+    "A": "Tempting because the Board has public powers. But Section 101(b) says it is not a government agency, and its members and staff are not federal officers or employees.",
+    "C": "Closest choice: the SEC oversees the Board much as it oversees self-regulatory bodies, but no audit firm owns it, and issuers fund it through accounting support fees.",
+    "D": "Tempting because the SEC approves Board rules and reviews its sanctions. But that is oversight from outside; the Board is a separate nonprofit corporation, not an SEC office."
+   },
+   "tips": [
+    "Eliminate: A and D both place the Board inside the federal government, but Section 101(b) says it is not a government agency or establishment.",
+    "Final two: B beats C because the Board is a nonprofit corporation funded by issuers' accounting support fees, not a body owned or funded by audit firms.",
+    "Exam cue: on CSOE items, the PCAOB is a nonprofit corporation that oversees audit firms, and the SEC oversees the PCAOB."
+   ],
+   "framework_ref": "Sarbanes-Oxley Act of 2002 Section 101(b) (Status of the Board); Sarbanes-Oxley Act of 2002 Section 109(c) (Sources and uses of funds)",
+   "related_concepts": [
+    "PCAOB status",
+    "SEC oversight of the Board",
+    "Accounting support fee"
+   ],
+   "_provenance": "Authored from concept: KaiSip notes 2A1.1 and Sarbanes-Oxley Act Sections 101 and 109 (govinfo.gov), 31 Oct 2026, CSOE pilot. Original scenario written from the public law; no SOXCPA material, prep bank or vendor text used.",
+   "style_version": 2
+  },
+  {
+   "id": "csoe_d2_002",
+   "domain": 2,
+   "subtopic": "2A1 Establishment, funding and SEC oversight. Board composition",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "Two current PCAOB members are former CPAs, and the SEC's leading candidate for a vacancy also once held a CPA license. Which course BEST complies with Section 101(e)?",
+   "options": {
+    "A": "Appoint the candidate once the Treasury Secretary gives consent",
+    "B": "Appoint the candidate once their CPA license has been surrendered",
+    "C": "Appoint the candidate part-time so they can keep a small practice",
+    "D": "Choose another candidate who has never been a CPA"
+   },
+   "correct": "D",
+   "key_concept": "Only two of the five PCAOB members may be or have been CPAs, and every member serves full time.",
+   "pre_read": "Count the seats already held by people with a CPA background, and read the exact wording of the limit.",
+   "correct_explanation": "Section 101(e)(2) allows two, and only two, members who are or have been CPAs. With two former CPAs already seated, a third person who once held a license would break the limit, so the SEC must choose someone who has never been a CPA. Option B fails because the limit counts past licensing, so surrendering the license changes nothing.",
+   "wrong_explanations": {
+    "A": "Tempting because the SEC consults the Treasury Secretary on appointments. But consultation is not consent, and no one can waive the two-CPA limit.",
+    "B": "Closest choice: giving up a license seems to remove the conflict, but Section 101(e)(2) counts members who are or have been CPAs, so the candidate still counts.",
+    "C": "Tempting as a compromise. But members serve full time and may not engage in any other professional or business activity (Section 101(e)(3))."
+   },
+   "tips": [
+    "Eliminate: A treats Treasury consultation as a veto, and C conflicts with the full-time, no-other-business rule in Section 101(e)(3).",
+    "Final two: D beats B because the limit counts members who are or have been CPAs, so surrendering a license does not reset the count.",
+    "Exam cue: two, and only two, CPAs sit on the five-member PCAOB; read 'are or have been' literally."
+   ],
+   "framework_ref": "Sarbanes-Oxley Act of 2002 Section 101(e) (Board membership)",
+   "related_concepts": [
+    "Board composition",
+    "Two-CPA limit",
+    "Full-time service"
+   ],
+   "_provenance": "Authored from concept: KaiSip notes 2A1.2 and Sarbanes-Oxley Act Section 101(e) (govinfo.gov), 31 Oct 2026, CSOE pilot. Original scenario written from the public law; no SOXCPA material, prep bank or vendor text used.",
+   "style_version": 2
+  },
+  {
+   "id": "csoe_d2_003",
+   "domain": 2,
+   "subtopic": "2A1 Establishment, funding and SEC oversight. Who bears the Board's costs",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "During a cost review, an issuer's CFO proposes asking its audit firm to absorb the PCAOB accounting support fee. Which statement BEST describes who bears that fee under Section 109?",
+   "options": {
+    "A": "Each issuer, in proportion to its average equity market capitalization",
+    "B": "Each audit firm, in proportion to its issuer audit fees",
+    "C": "Taxpayers, through an annual appropriation that Congress approves",
+    "D": "Each issuer equally, as a flat charge the SEC sets"
+   },
+   "correct": "A",
+   "key_concept": "Issuers fund the PCAOB through an accounting support fee allocated by equity market capitalization.",
+   "pre_read": "Separate the fees audit firms pay the Board from the fee that funds the Board's budget.",
+   "correct_explanation": "Section 109 recovers the Board's SEC-approved budget through an annual accounting support fee allocated among issuers. Each issuer's share is its average monthly equity market capitalization over the prior 12 months, divided by the total for all issuers. Option B is close because audit firms do pay the Board, but only registration and annual fees that cover processing costs, so the issuer bears its own share.",
+   "wrong_explanations": {
+    "B": "Closest choice: registered firms pay the Board registration and annual fees, but those only recover processing costs; the accounting support fee is allocated to issuers.",
+    "C": "Tempting because the Board serves a public purpose. But Section 109 says the fees are not public money and the Board is not funded by appropriations.",
+    "D": "Tempting because a flat fee sounds simple. But Section 109(g) allocates the fee by each issuer's share of total equity market capitalization."
+   },
+   "tips": [
+    "Eliminate: C contradicts Section 109's statement that the fees are not public money, and D conflicts with the market capitalization formula in Section 109(g).",
+    "Final two: A beats B because audit firms pay only cost-recovery registration and annual fees; the accounting support fee falls on issuers by market capitalization.",
+    "Exam cue: issuers pay for the PCAOB by market capitalization (and, since Dodd-Frank, brokers and dealers too), not taxpayers or audit firms."
+   ],
+   "framework_ref": "Sarbanes-Oxley Act of 2002 Section 109(g) (Allocation of accounting support fees among issuers); Sarbanes-Oxley Act of 2002 Section 102(f) (Registration and annual fees)",
+   "related_concepts": [
+    "Accounting support fee",
+    "Equity market capitalization",
+    "PCAOB budget"
+   ],
+   "_provenance": "Authored from concept: KaiSip notes 2A1.3 and Sarbanes-Oxley Act Sections 102(f) and 109 (govinfo.gov) and 15 U.S.C. 7219 (law.cornell.edu), 31 Oct 2026, CSOE pilot. Original scenario written from the public law; no SOXCPA material, prep bank or vendor text used.",
+   "style_version": 2
+  },
+  {
+   "id": "csoe_d2_004",
+   "domain": 2,
+   "subtopic": "2A1 Establishment, funding and SEC oversight. Review of a Board sanction",
+   "difficulty": "analysis",
+   "bloom_level": "Analysis",
+   "question": "The PCAOB suspends an audit firm's registration, and the firm promptly applies to the SEC for review. Which outcome BEST reflects the Act while that review is pending?",
+   "options": {
+    "A": "The suspension stands until a federal court rules on the appeal",
+    "B": "The suspension is final, since the SEC cannot review Board sanctions",
+    "C": "The suspension is stayed unless the SEC orders that it apply",
+    "D": "The suspension applies now, though the SEC may later reduce it"
+   },
+   "correct": "C",
+   "key_concept": "The SEC reviews PCAOB sanctions, and an application for review stays the sanction unless the SEC orders otherwise.",
+   "pre_read": "Note who reviews a Board sanction first, and what happens to the sanction while that review is pending.",
+   "correct_explanation": "Under Section 105(e), applying to the SEC for review of a Board disciplinary action operates as a stay of that action, unless and until the SEC orders that the stay end. The SEC then reviews the sanction and may enhance, modify, cancel or reduce it under Section 107(c). Option D is close because the SEC can reduce the sanction, but the sanction does not apply during review unless the SEC lifts the stay.",
+   "wrong_explanations": {
+    "A": "Tempting because sanctions can reach the courts eventually. But the SEC reviews Board sanctions first, and the application to the SEC itself stays the suspension.",
+    "B": "Tempting if the Board is seen as the final word. But Section 107(c) lets the SEC review, enhance, modify, cancel or reduce Board sanctions.",
+    "D": "Closest choice: the SEC may reduce the sanction, but under Section 105(e) the application for review stays it, so it does not apply now unless the SEC orders otherwise."
+   },
+   "tips": [
+    "Eliminate: B overlooks the SEC's Section 107(c) review of Board sanctions, and A skips the SEC, which reviews Board sanctions before any court.",
+    "Final two: C beats D because an application for SEC review stays the Board's sanction under Section 105(e); the SEC must order otherwise for it to apply.",
+    "Exam cue: a Board sanction goes to the SEC for review, and asking for review pauses it unless the SEC lifts the stay."
+   ],
+   "framework_ref": "Sarbanes-Oxley Act of 2002 Section 105(e) (Stay of sanctions); Sarbanes-Oxley Act of 2002 Section 107(c) (Commission review of disciplinary action taken by the Board)",
+   "related_concepts": [
+    "SEC review of Board sanctions",
+    "Stay of sanctions",
+    "SEC oversight of the Board"
+   ],
+   "_provenance": "Authored from concept: KaiSip notes 2A1.4 and Sarbanes-Oxley Act Sections 105(e) and 107(c) (govinfo.gov), 31 Oct 2026, CSOE pilot. Original scenario written from the public law; no SOXCPA material, prep bank or vendor text used.",
+   "style_version": 2
+  },
+  {
+   "id": "csoe_d2_005",
+   "domain": 2,
+   "subtopic": "2A2 Registration and foreign audit firms. Starting an issuer audit",
+   "difficulty": "foundational",
+   "bloom_level": "Foundational",
+   "question": "A regional CPA firm that audits only private companies is asked to audit a newly listed issuer. Under Section 102, what must happen FIRST?",
+   "options": {
+    "A": "The firm completes an AICPA peer review before accepting",
+    "B": "The firm starts the audit and registers within a year",
+    "C": "The issuer's audit committee waives registration for this audit",
+    "D": "The firm registers with the PCAOB before working on the audit"
+   },
+   "correct": "D",
+   "key_concept": "Only PCAOB-registered firms may prepare, issue or participate in an issuer's audit report.",
+   "pre_read": "Look at the firm's current client base and what it still lacks before it can work on an issuer audit.",
+   "correct_explanation": "Section 102(a) makes it unlawful for any firm that is not registered with the PCAOB to prepare or issue, or even participate in preparing, an audit report for an issuer. So the firm must register first; the Board acts on a completed application within 45 days. Option B is close because registration can be quick, but starting the audit before registering means participating while unregistered.",
+   "wrong_explanations": {
+    "A": "Tempting because peer review was the profession's own quality check. But for issuer audits the Act requires PCAOB registration, and the Board inspects registered firms itself.",
+    "B": "Closest choice: the firm may plan to register soon, but Section 102(a) bars an unregistered firm from even participating in preparing an issuer's audit report.",
+    "C": "Tempting because the audit committee oversees the auditor. But no one can waive Section 102; the committee must hire a registered firm."
+   },
+   "tips": [
+    "Eliminate: A swaps PCAOB registration for profession-run peer review, and C gives the audit committee a waiver power the Act does not grant.",
+    "Final two: D beats B because Section 102(a) bars an unregistered firm from participating in an issuer's audit report at all, not just from signing it.",
+    "Exam cue: no PCAOB registration means no part in an issuer's audit report."
+   ],
+   "framework_ref": "Sarbanes-Oxley Act of 2002 Section 102(a) (Mandatory registration); Sarbanes-Oxley Act of 2002 Section 102(c) (Action on applications)",
+   "related_concepts": [
+    "Mandatory registration",
+    "Registered public accounting firm",
+    "Issuer audit report"
+   ],
+   "_provenance": "Authored from concept: KaiSip notes 2A2.1 and Sarbanes-Oxley Act Section 102 (govinfo.gov) and 15 U.S.C. 7212 (law.cornell.edu), 31 Oct 2026, CSOE pilot. Original scenario written from the public law; no SOXCPA material, prep bank or vendor text used.",
+   "style_version": 2
+  },
+  {
+   "id": "csoe_d2_006",
+   "domain": 2,
+   "subtopic": "2A2 Registration and foreign audit firms. Relying on a foreign firm",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "A registered U.S. firm relied on a Brazilian firm's audit of an issuer's subsidiary, and the PCAOB now requests those work papers. Which duty BEST describes the U.S. firm's position?",
+   "options": {
+    "A": "It must produce the papers, having secured the Brazilian firm's agreement",
+    "B": "It may refer the PCAOB to the Brazilian firm to respond",
+    "C": "It need not respond, since foreign audit work is outside PCAOB reach",
+    "D": "It may release the papers only if the audit committee approves"
+   },
+   "correct": "A",
+   "key_concept": "A registered firm that relies on a foreign firm's audit work must produce that firm's work papers on request.",
+   "pre_read": "Identify which firm relied on whose work, then ask whose duty the request triggers.",
+   "correct_explanation": "Under 15 U.S.C. 7216(b)(2), as amended by Dodd-Frank, a registered firm that relies on a foreign firm's work must produce that firm's work papers when the SEC or the Board asks, and must secure the foreign firm's agreement to production as a condition of relying on it. Option B is close because the foreign firm must also produce, but that does not remove the U.S. firm's own duty.",
+   "wrong_explanations": {
+    "B": "Closest choice: the Brazilian firm must also produce its papers under 7216(b)(1), but the relying U.S. firm has its own duty to produce them.",
+    "C": "Tempting because home-country regulators supervise the Brazilian firm. But Section 106 subjects foreign firms involved in issuer audits to the Act and Board rules.",
+    "D": "Tempting because the audit committee oversees the auditor. But the production duty runs to the SEC and the Board, and no committee approval is needed."
+   },
+   "tips": [
+    "Eliminate: C conflicts with Section 106, which brings foreign firms in issuer audits under the Act, and D adds an audit committee approval the Act does not require.",
+    "Final two: A beats B because the relying U.S. firm must itself produce the foreign work papers; the foreign firm's own duty does not replace it.",
+    "Exam cue: rely on a foreign firm's work, and you must be able to hand its work papers to the SEC or the PCAOB."
+   ],
+   "framework_ref": "15 U.S.C. 7216(b) (Production of documents by foreign public accounting firms); Sarbanes-Oxley Act of 2002 Section 106(a) (Applicability to certain foreign firms)",
+   "related_concepts": [
+    "Foreign public accounting firms",
+    "Production of work papers",
+    "Reliance on other auditors"
+   ],
+   "_provenance": "Authored from concept: KaiSip notes 2A2.2 and Sarbanes-Oxley Act Section 106 (govinfo.gov) and 15 U.S.C. 7216 as amended (law.cornell.edu), 31 Oct 2026, CSOE pilot. Original scenario written from the public law; no SOXCPA material, prep bank or vendor text used.",
+   "style_version": 2
+  },
+  {
+   "id": "csoe_d2_007",
+   "domain": 2,
+   "subtopic": "2A3 Standards, inspections and discipline. Inspection schedule",
+   "difficulty": "foundational",
+   "bloom_level": "Foundational",
+   "question": "A registered audit firm regularly issues audit reports for 85 issuers. Under Section 104, how often at LEAST must the PCAOB inspect the firm?",
+   "options": {
+    "A": "Every year, since it audits more than 50 issuers",
+    "B": "Only when the SEC requests a special inspection",
+    "C": "Not less than once every three years",
+    "D": "Once every five years, in step with partner rotation"
+   },
+   "correct": "C",
+   "key_concept": "PCAOB inspection frequency depends on how many issuers a firm audits: above 100 yearly, otherwise at least every three years.",
+   "pre_read": "Find the client count in the stem and compare it with the threshold in Section 104.",
+   "correct_explanation": "Section 104(b)(1) sets two schedules: firms that regularly provide audit reports for more than 100 issuers are inspected every year, and firms with 100 or fewer are inspected not less than once every three years. At 85 issuers, this firm falls in the second group. Option A is close because large firms are inspected yearly, but the threshold is more than 100 issuers, not 50.",
+   "wrong_explanations": {
+    "A": "Closest choice: yearly inspection is real, but Section 104(b)(1)(A) applies it to firms with more than 100 issuer clients; at 85, the three-year schedule applies.",
+    "B": "Tempting because the SEC can request special inspections. But those add to the regular program; they do not replace it.",
+    "D": "Tempting because partner rotation uses five-year periods. But inspection frequency depends on the number of issuer clients, not on rotation."
+   },
+   "tips": [
+    "Eliminate: B treats special inspections as the only inspections, and D borrows the five-year partner rotation period, which does not set inspection frequency.",
+    "Final two: C beats A because yearly inspections apply only above 100 issuer clients; a firm with 85 is inspected at least every three years.",
+    "Exam cue: more than 100 issuer clients means yearly inspection; 100 or fewer means at least every three years."
+   ],
+   "framework_ref": "Sarbanes-Oxley Act of 2002 Section 104(b) (Inspection frequency)",
+   "related_concepts": [
+    "PCAOB inspections",
+    "Inspection frequency",
+    "Special inspections"
+   ],
+   "_provenance": "Authored from concept: KaiSip notes 2A3.2 and Sarbanes-Oxley Act Section 104(b) (govinfo.gov) and 15 U.S.C. 7214 (law.cornell.edu), 31 Oct 2026, CSOE pilot. Original scenario written from the public law; no SOXCPA material, prep bank or vendor text used.",
+   "style_version": 2
+  },
+  {
+   "id": "csoe_d2_008",
+   "domain": 2,
+   "subtopic": "2A3 Standards, inspections and discipline. Work paper retention",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "The records manager at a registered audit firm is setting how long to keep issuer audit work papers. Which period BEST meets Section 103 and the SEC's retention rule?",
+   "options": {
+    "A": "Five years from the end of the fiscal period audited",
+    "B": "Seven years after the firm concludes the audit",
+    "C": "Until the issuer files its next annual report",
+    "D": "Three years, matching the PCAOB inspection cycle"
+   },
+   "correct": "B",
+   "key_concept": "Registered firms keep issuer audit work papers for seven years under Section 103 and SEC Rule 2-06.",
+   "pre_read": "Two retention periods appear in SOX; check which one the PCAOB standards and the SEC rule set.",
+   "correct_explanation": "Section 103(a)(2)(A)(i) requires PCAOB auditing standards to make firms prepare and keep audit work papers for at least seven years, and SEC Rule 2-06 requires records to be kept for seven years after the auditor concludes the audit. Option A is close because Section 802 (18 U.S.C. 1520) sets a five-year period backed by criminal penalties, but the seven-year rule is the longer one firms must meet.",
+   "wrong_explanations": {
+    "A": "Closest choice: 18 U.S.C. 1520 does set five years, but Section 103 and SEC Rule 2-06 require seven, so a five-year policy falls short.",
+    "C": "Tempting because each annual report starts a new cycle. But the Act and SEC rules set fixed multi-year periods, not one tied to the next filing.",
+    "D": "Tempting because smaller firms are inspected at least every three years. But inspection frequency does not set record retention; the rules require seven years."
+   },
+   "tips": [
+    "Eliminate: C ties retention to the next filing rather than a fixed period, and D borrows the three-year inspection cycle, which does not govern retention.",
+    "Final two: B beats A because Section 103 and SEC Rule 2-06 require seven years; Section 802's five-year criminal provision is a floor, not the standard.",
+    "Exam cue: issuer audit work papers are kept seven years; five years is the Section 802 trap."
+   ],
+   "framework_ref": "Sarbanes-Oxley Act of 2002 Section 103(a)(2)(A) (Required content of auditing standards); 17 CFR 210.2-06 (Retention of audit and review records)",
+   "related_concepts": [
+    "Audit work papers",
+    "Record retention",
+    "Section 802"
+   ],
+   "_provenance": "Authored from concept: KaiSip notes 2A3.1 and Sarbanes-Oxley Act Section 103 (govinfo.gov), 17 CFR 210.2-06 and 18 U.S.C. 1520 (law.cornell.edu), 31 Oct 2026, CSOE pilot. Original scenario written from the public law; no SOXCPA material, prep bank or vendor text used.",
+   "style_version": 2
+  },
+  {
+   "id": "csoe_d2_009",
+   "domain": 2,
+   "subtopic": "2A3 Standards, inspections and discipline. Approving the audit report",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "To save time, the engagement partner at a small registered firm plans to approve and release an issuer's audit report alone. Which Section 103 requirement does this plan MOST directly breach?",
+   "options": {
+    "A": "Review of the audit report by the issuer's audit committee first",
+    "B": "Rotation of the lead partner after five consecutive years",
+    "C": "Clearance of each audit report by the PCAOB before release",
+    "D": "Second-partner review and approval by someone not in charge"
+   },
+   "correct": "D",
+   "key_concept": "Section 103 requires a concurring or second-partner review and approval of each issuer audit report.",
+   "pre_read": "Ask who, besides the partner in charge, must sign off before an issuer audit report goes out.",
+   "correct_explanation": "Section 103(a)(2)(A)(ii) requires PCAOB auditing standards to include a concurring or second-partner review and approval of each audit report, and concurring approval of its issuance, by a qualified person other than the person in charge, or by an independent reviewer. A partner approving alone skips that step. Option A is close because the audit committee hears from the auditor, but it does not approve the report.",
+   "wrong_explanations": {
+    "A": "Closest choice: the audit committee oversees the auditor and receives Section 204 reports, but approving the audit report is the firm's second-partner review, not the committee's job.",
+    "B": "Tempting because it is another partner rule. But rotation, under Section 203, limits tenure; it says nothing about who approves a report.",
+    "C": "Tempting because the PCAOB oversees audits. But the Board inspects after the fact; it does not clear reports before release."
+   },
+   "tips": [
+    "Eliminate: B is the Section 203 tenure rule, not an approval step, and C has the PCAOB clearing reports before release, though it inspects afterwards.",
+    "Final two: D beats A because Section 103 requires a second qualified person to review and approve the report; the audit committee oversees but does not approve it.",
+    "Exam cue: under Section 103, every issuer audit report needs a second qualified reviewer's approval before release."
+   ],
+   "framework_ref": "Sarbanes-Oxley Act of 2002 Section 103(a)(2)(A) (Required content of auditing standards)",
+   "related_concepts": [
+    "Concurring partner review",
+    "Auditing standards",
+    "Engagement quality review"
+   ],
+   "_provenance": "Authored from concept: KaiSip notes 2A3.1 and Sarbanes-Oxley Act Section 103(a)(2)(A)(ii) (govinfo.gov), 31 Oct 2026, CSOE pilot. Original scenario written from the public law; no SOXCPA material, prep bank or vendor text used.",
+   "style_version": 2
+  },
+  {
+   "id": "csoe_d2_010",
+   "domain": 2,
+   "subtopic": "2A3 Standards, inspections and discipline. Sanctions and level of fault",
+   "difficulty": "analysis",
+   "bloom_level": "Analysis",
+   "question": "A PCAOB hearing finds that an audit partner was negligent once, on a single audit, with no intent, knowledge or recklessness. Which sanction does Section 105 MOST clearly prevent the Board from imposing?",
+   "options": {
+    "A": "A censure of the partner for the violation",
+    "B": "Required additional professional education or training",
+    "C": "A permanent bar from association with any registered firm",
+    "D": "A civil money penalty for the negligent violation"
+   },
+   "correct": "C",
+   "key_concept": "The PCAOB's heaviest sanctions require intentional, knowing or reckless conduct, or repeated negligence.",
+   "pre_read": "Note the level of fault the hearing found, and check which sanctions need more than that.",
+   "correct_explanation": "Section 105(c)(5) limits the heaviest sanctions, including suspension or revocation of registration, bars, activity limits and the higher money penalties, to intentional or knowing conduct, including recklessness, or repeated negligence. A single negligent act allows only the lesser sanctions, such as censure, training or a penalty within the lower tier. Option D is close because money penalties sound severe, but the lower tier remains available.",
+   "wrong_explanations": {
+    "A": "Tempting because censure sounds serious. But censure is among the lesser sanctions in Section 105(c)(4), available for a single negligent violation.",
+    "B": "Tempting as a remedial step. But required education or training is a lesser sanction the Board may impose without intent or repeated negligence.",
+    "D": "Closest choice: Section 105(c)(5) restricts only the higher penalty tier; a money penalty within the lower tier remains available for one negligent act."
+   },
+   "tips": [
+    "Eliminate: A and B are lesser sanctions in Section 105(c)(4) that need no intent, knowledge or repeated negligence.",
+    "Final two: C beats D because a bar needs intentional, knowing or reckless conduct, or repeated negligence; a lower-tier money penalty does not.",
+    "Exam cue: one negligent act allows the lighter sanctions; revocation, bars and top penalties need intent, recklessness or repeated negligence."
+   ],
+   "framework_ref": "Sarbanes-Oxley Act of 2002 Section 105(c) (Disciplinary procedures)",
+   "related_concepts": [
+    "PCAOB sanctions",
+    "Intentional or knowing conduct",
+    "Repeated negligence"
+   ],
+   "_provenance": "Authored from concept: KaiSip notes 2A3.3 and Sarbanes-Oxley Act Section 105(c) (govinfo.gov) and 15 U.S.C. 7215 (law.cornell.edu), 31 Oct 2026, CSOE pilot. Original scenario written from the public law; no SOXCPA material, prep bank or vendor text used.",
+   "style_version": 2
+  },
+  {
+   "id": "csoe_d2_011",
+   "domain": 2,
+   "subtopic": "2A4 Accounting standards and PCAOB rulemaking. Source of accounting principles",
+   "difficulty": "foundational",
+   "bloom_level": "Foundational",
+   "question": "An issuer's new audit committee member assumes the PCAOB writes the accounting principles used in the company's financial statements. Which statement BEST corrects this under Section 108?",
+   "options": {
+    "A": "The SEC recognizes FASB's standards as generally accepted principles",
+    "B": "The PCAOB sets accounting principles alongside its auditing standards",
+    "C": "Each issuer's auditor chooses the principles that apply to the audit",
+    "D": "The SEC writes all accounting principles itself, by formal rule"
+   },
+   "correct": "A",
+   "key_concept": "Under Section 108 the SEC recognizes FASB's accounting standards; the PCAOB sets auditing standards.",
+   "pre_read": "Separate the rules for preparing financial statements from the rules for auditing them.",
+   "correct_explanation": "Section 108 lets the SEC recognize, as generally accepted for the securities laws, the accounting principles of a private standard setter that meets set criteria. In its 2003 policy statement, Release No. 33-8221, the SEC recognized FASB's standards. The PCAOB sets auditing standards. Option D is close because the SEC keeps its own power over accounting principles, but it relies on FASB's standards.",
+   "wrong_explanations": {
+    "B": "Tempting because the PCAOB sets standards. But its standards are auditing, quality control, ethics and independence standards for audit firms, not accounting principles.",
+    "C": "Tempting because auditors judge whether principles were applied. But management prepares the statements under recognized principles; the auditor does not choose them.",
+    "D": "Closest choice: Section 108(c) keeps the SEC's own authority, but under Section 108 the SEC recognizes FASB's standards rather than writing all principles itself."
+   },
+   "tips": [
+    "Eliminate: B confuses the PCAOB's auditing standards with accounting principles, and C gives the auditor a choice that belongs to the recognized standards management applies.",
+    "Final two: A beats D because the SEC keeps authority over accounting principles but, under Section 108, recognizes FASB's standards as generally accepted.",
+    "Exam cue: FASB writes the accounting rules, the PCAOB writes the auditing rules, and the SEC stands over both."
+   ],
+   "framework_ref": "Sarbanes-Oxley Act of 2002 Section 108 (Accounting standards); SEC Release No. 33-8221 (Policy statement reaffirming FASB as a designated private-sector standard setter)",
+   "related_concepts": [
+    "FASB",
+    "Generally accepted accounting principles",
+    "Auditing versus accounting standards"
+   ],
+   "_provenance": "Authored from concept: KaiSip notes 2A4.1 and Sarbanes-Oxley Act Section 108 (govinfo.gov) and SEC Release No. 33-8221 (sec.gov), 31 Oct 2026, CSOE pilot. Original scenario written from the public law; no SOXCPA material, prep bank or vendor text used.",
+   "style_version": 2
+  },
+  {
+   "id": "csoe_d2_012",
+   "domain": 2,
+   "subtopic": "2A4 Accounting standards and PCAOB rulemaking. When a Board standard binds",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "The PCAOB has just adopted a new auditing standard, and a registered firm's methodology team asks when it will bind the firm's issuer audits. Which answer BEST reflects Section 107?",
+   "options": {
+    "A": "On the effective date the Board sets when it adopts the standard",
+    "B": "Only after the SEC approves it and it becomes effective",
+    "C": "Once Congress reviews it under the Congressional Review Act",
+    "D": "When each issuer's audit committee votes to accept the standard"
+   },
+   "correct": "B",
+   "key_concept": "No PCAOB rule or standard takes effect until the SEC approves it.",
+   "pre_read": "Ask which body must act after the Board adopts a standard before it binds anyone.",
+   "correct_explanation": "Section 107(b)(2) says no PCAOB rule, including an auditing standard, takes effect without the SEC's prior approval. The SEC publishes notice, takes public comment and approves the rule if it meets the Act's criteria. Option A is close because the Board does adopt the standard, but adoption alone binds no one until the SEC approves it.",
+   "wrong_explanations": {
+    "A": "Closest choice: adoption by the Board is a real step, but under Section 107(b)(2) no Board rule takes effect without prior SEC approval.",
+    "C": "Tempting because some federal rules go to Congress. But the Act sends PCAOB rules to the SEC for approval.",
+    "D": "Tempting because the audit committee oversees the auditor. But PCAOB standards bind registered firms once SEC-approved and effective; audit committees do not vote on them."
+   },
+   "tips": [
+    "Eliminate: C sends Board rules to Congress instead of the SEC, and D gives audit committees a veto over auditing standards that the Act does not give them.",
+    "Final two: B beats A because Section 107(b)(2) makes SEC approval a condition of any Board rule taking effect; Board adoption alone is not enough.",
+    "Exam cue: the PCAOB adopts, the SEC approves, and only then does the rule take effect."
+   ],
+   "framework_ref": "Sarbanes-Oxley Act of 2002 Section 107(b) (Rules of the Board)",
+   "related_concepts": [
+    "PCAOB rulemaking",
+    "SEC approval of Board rules",
+    "Effective date"
+   ],
+   "_provenance": "Authored from concept: KaiSip notes 2A4.2 and Sarbanes-Oxley Act Section 107(b) (govinfo.gov) and 15 U.S.C. 78s(b) (law.cornell.edu), 31 Oct 2026, CSOE pilot. Original scenario written from the public law; no SOXCPA material, prep bank or vendor text used.",
+   "style_version": 2
+  },
+  {
+   "id": "csoe_d2_013",
+   "domain": 2,
+   "subtopic": "2B1 Prohibited services and preapproval. Internal audit work by the auditor",
+   "difficulty": "foundational",
+   "bloom_level": "Foundational",
+   "question": "An issuer's CFO wants its audit firm to take over the outsourced internal audit of financial reporting controls this year. Which statement BEST reflects Section 201?",
+   "options": {
+    "A": "The firm may not provide it while it audits the issuer",
+    "B": "The firm may provide it if the audit committee preapproves it",
+    "C": "The firm may provide it if the fees stay under five percent",
+    "D": "The firm may provide it if the CFO approves it in writing"
+   },
+   "correct": "A",
+   "key_concept": "An issuer's auditor may not provide internal audit outsourcing during the audit, even with audit committee approval.",
+   "pre_read": "Check whether the service is on the prohibited list before asking who approves it.",
+   "correct_explanation": "Section 201 adds Exchange Act Section 10A(g), which makes it unlawful for an issuer's registered auditor to provide internal audit outsourcing services at the same time as the audit. SEC Rule 2-01(c)(4)(v) applies the ban to internal audit work on internal accounting controls, financial systems or financial statements. Option B is close because preapproval governs permitted services, but it cannot make a prohibited service allowable.",
+   "wrong_explanations": {
+    "B": "Closest choice: audit committee preapproval is required for permitted non-audit services, such as tax work, but it cannot cure a service on the prohibited list.",
+    "C": "Tempting because of the 5% de minimis exception. But that exception only waives preapproval for permitted services; it does not lift a prohibition.",
+    "D": "Tempting because the CFO runs finance. But management has no approval role for auditor services, and for prohibited services no approval helps."
+   },
+   "tips": [
+    "Eliminate: C applies the de minimis waiver, which only excuses missing preapproval, and D gives management an approval role the Act gives the audit committee.",
+    "Final two: A beats B because internal audit outsourcing is on the Section 201 prohibited list; preapproval only covers non-audit services that are not prohibited.",
+    "Exam cue: no approval cures a prohibited service; a permitted service needs audit committee preapproval."
+   ],
+   "framework_ref": "Sarbanes-Oxley Act of 2002 Section 201 (Services outside the scope of practice of auditors); 17 CFR 210.2-01(c)(4) (Non-audit services)",
+   "related_concepts": [
+    "Prohibited non-audit services",
+    "Internal audit outsourcing",
+    "Auditor independence"
+   ],
+   "_provenance": "Authored from concept: KaiSip notes 2B1.1 and Sarbanes-Oxley Act Section 201 (govinfo.gov) and 17 CFR 210.2-01(c)(4) (law.cornell.edu), 31 Oct 2026, CSOE pilot. Original scenario written from the public law; no SOXCPA material, prep bank or vendor text used.",
+   "style_version": 2
+  },
+  {
+   "id": "csoe_d2_014",
+   "domain": 2,
+   "subtopic": "2B1 Prohibited services and preapproval. Tax work by the auditor",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "A manufacturer's controller wants to hire the company's external auditor for corporate tax compliance work. Under Sections 201 and 202, what is MOST clearly required before the work starts?",
+   "options": {
+    "A": "No step can help, since tax work is a prohibited service",
+    "B": "Written approval from the CFO, who manages the auditor relationship",
+    "C": "Advance approval from the issuer's audit committee",
+    "D": "A case-by-case exemption granted by the PCAOB"
+   },
+   "correct": "C",
+   "key_concept": "Tax services by the issuer's auditor are permitted only with the audit committee's advance approval.",
+   "pre_read": "Decide first whether tax work is banned or permitted, then who must approve it.",
+   "correct_explanation": "Tax services are not on the Section 201 prohibited list. Section 201 names them as non-audit services the auditor may provide if the audit committee approves them in advance, and Section 202 requires that preapproval. Option D is close because the PCAOB can grant case-by-case exemptions, but those apply to prohibited services; permitted tax work needs the audit committee's approval, not the Board's.",
+   "wrong_explanations": {
+    "A": "Tempting because many non-audit services are banned. But Section 201 expressly names tax services as permitted with audit committee preapproval.",
+    "B": "Tempting because the CFO manages the relationship day to day. But preapproval belongs to the audit committee, and SEC rules bar delegating it to management.",
+    "D": "Closest choice: Section 201(b) lets the PCAOB exempt services from the prohibitions case by case, but tax work is not prohibited and needs audit committee preapproval."
+   },
+   "tips": [
+    "Eliminate: A wrongly puts tax work on the prohibited list, and B gives management a preapproval role that belongs to the audit committee.",
+    "Final two: C beats D because the PCAOB's exemption power covers prohibited services; permitted tax work needs the audit committee's advance approval.",
+    "Exam cue: tax work by the auditor is allowed, but only with audit committee preapproval."
+   ],
+   "framework_ref": "Sarbanes-Oxley Act of 2002 Section 201 (Services outside the scope of practice of auditors); Sarbanes-Oxley Act of 2002 Section 202 (Preapproval requirements)",
+   "related_concepts": [
+    "Tax services",
+    "Audit committee preapproval",
+    "Permitted non-audit services"
+   ],
+   "_provenance": "Authored from concept: KaiSip notes 2B1.2 and Sarbanes-Oxley Act Sections 201 and 202 (govinfo.gov), 31 Oct 2026, CSOE pilot. Original scenario written from the public law; no SOXCPA material, prep bank or vendor text used.",
+   "style_version": 2
+  },
+  {
+   "id": "csoe_d2_015",
+   "domain": 2,
+   "subtopic": "2B1 Prohibited services and preapproval. An overlooked small service",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "Mid-audit, an issuer finds its auditor did a small advisory job nobody recognized as non-audit when engaged, with fees of 3% of the year's total auditor fees. What BEST keeps the de minimis exception available?",
+   "options": {
+    "A": "Report it to the PCAOB, which may grant the waiver",
+    "B": "Get prompt audit committee approval before the audit ends",
+    "C": "Have the CFO approve it in writing before year-end",
+    "D": "Take no action, because fees under 5% need no approval"
+   },
+   "correct": "B",
+   "key_concept": "The de minimis exception needs low fees, an unrecognized service and audit committee approval before the audit is completed.",
+   "pre_read": "List the conditions of the exception and check which one the stem has not yet met.",
+   "correct_explanation": "The de minimis exception in Section 10A(i)(1)(B) needs three conditions: the services total no more than 5% of the revenues the issuer paid its auditor that year, they were not recognized as non-audit services at engagement, and they are promptly brought to the audit committee and approved before the audit is completed. Option D is close because the 5% test is met, but it is only one condition.",
+   "wrong_explanations": {
+    "A": "Tempting because the PCAOB can exempt prohibited services. But the de minimis waiver is set by statute and turns on audit committee approval, not the Board.",
+    "C": "Tempting because the CFO oversees finance. But only the audit committee, or a member it delegates to, can approve the service under Section 202.",
+    "D": "Closest choice: the 3% fee meets the 5% test, but the exception also needs prompt audit committee approval before the audit is completed."
+   },
+   "tips": [
+    "Eliminate: A sends the matter to the PCAOB, which has no role in this waiver, and C relies on management approval, which Section 202 does not allow.",
+    "Final two: B beats D because the 5% test is only one of three conditions; the audit committee must still approve before the audit is completed.",
+    "Exam cue: de minimis needs all three: 5% or less, unrecognized at engagement, and committee approval before the audit ends."
+   ],
+   "framework_ref": "Sarbanes-Oxley Act of 2002 Section 202 (Preapproval requirements); 17 CFR 210.2-01(c)(7) (Audit committee administration of the engagement)",
+   "related_concepts": [
+    "De minimis exception",
+    "Audit committee preapproval",
+    "Non-audit fees"
+   ],
+   "_provenance": "Authored from concept: KaiSip notes 2B1.3 and Sarbanes-Oxley Act Section 202 (govinfo.gov) and 17 CFR 210.2-01(c)(7) (law.cornell.edu), 31 Oct 2026, CSOE pilot. Original scenario written from the public law; no SOXCPA material, prep bank or vendor text used.",
+   "style_version": 2
+  },
+  {
+   "id": "csoe_d2_016",
+   "domain": 2,
+   "subtopic": "2B1 Prohibited services and preapproval. Delegating approval of auditor services",
+   "difficulty": "analysis",
+   "bloom_level": "Analysis",
+   "question": "An audit committee's policy lets the CFO approve any non-audit engagement with the auditor under $50,000 and report to the committee quarterly. Which change BEST brings the policy within Section 202 and SEC rules?",
+   "options": {
+    "A": "Lower the limit to $10,000 so each approval counts as de minimis",
+    "B": "Have the full board ratify the CFO's approvals each year",
+    "C": "Have the CFO's approvals reported at every committee meeting",
+    "D": "Delegate approval to an independent director on the committee"
+   },
+   "correct": "D",
+   "key_concept": "Audit committees may delegate preapproval to their independent members, never to management.",
+   "pre_read": "Find who actually approves the engagements under the policy, and who the Act allows to approve them.",
+   "correct_explanation": "Section 202 lets the audit committee delegate preapproval only to one or more of its members who are independent directors, whose decisions go to the full committee at each scheduled meeting. SEC Rule 2-01(c)(7) also bars preapproval policies that delegate the committee's duties to management. Option C is close because it adds timely reporting, but the CFO, a member of management, would still be approving.",
+   "wrong_explanations": {
+    "A": "Tempting because the de minimis exception involves small amounts. But it is a 5% test on unrecognized services, not a dollar limit a committee can set.",
+    "B": "Tempting because the board outranks the committee. But yearly ratification comes after the work; preapproval must come before the engagement.",
+    "C": "Closest choice: reporting at each meeting matches the rule for delegated approvals, but the delegate must be an independent director on the committee, not the CFO."
+   },
+   "tips": [
+    "Eliminate: A misreads the de minimis exception as a dollar limit, and B approves engagements after the fact, which is not preapproval.",
+    "Final two: D beats C because only independent directors on the audit committee may receive delegated preapproval; reporting cannot fix approval by management.",
+    "Exam cue: preapproval can be delegated within the audit committee, never to management."
+   ],
+   "framework_ref": "Sarbanes-Oxley Act of 2002 Section 202 (Preapproval requirements); 17 CFR 210.2-01(c)(7) (Audit committee administration of the engagement)",
+   "related_concepts": [
+    "Delegation of preapproval",
+    "Independent directors",
+    "Preapproval policies"
+   ],
+   "_provenance": "Authored from concept: KaiSip notes 2B1.2 and Sarbanes-Oxley Act Section 202 (govinfo.gov) and 17 CFR 210.2-01(c)(7) (law.cornell.edu), 31 Oct 2026, CSOE pilot. Original scenario written from the public law; no SOXCPA material, prep bank or vendor text used.",
+   "style_version": 2
+  },
+  {
+   "id": "csoe_d2_017",
+   "domain": 2,
+   "subtopic": "2B2 Partner rotation and auditor reports to the audit committee. Who must rotate",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "At an issuer, the engagement quality reviewer has reviewed the audit in each of the last five fiscal years, and the lead partner has already rotated off. Which statement BEST applies under Section 203?",
+   "options": {
+    "A": "The reviewer must also rotate off for the next audit",
+    "B": "The audit firm must be replaced for the next audit",
+    "C": "Only lead partners rotate, so the reviewer may continue",
+    "D": "The reviewer may continue if the audit committee agrees"
+   },
+   "correct": "A",
+   "key_concept": "Both the lead partner and the reviewing partner must rotate after five consecutive years on an issuer audit.",
+   "pre_read": "Count the reviewer's years, then check which partner roles the rotation rule names.",
+   "correct_explanation": "Section 203 makes it unlawful for a registered firm to audit an issuer if the lead partner or the partner responsible for reviewing the audit has performed audit services for that issuer in each of the five previous fiscal years. SEC Rule 2-01(c)(6) applies the same five-year limit to the engagement quality reviewer, followed by a five-year time-out. Option C is close but leaves out the reviewing partner.",
+   "wrong_explanations": {
+    "B": "Tempting because rotation is often discussed for firms. But the Act rotates partners; firm rotation was only studied under Section 207.",
+    "C": "Closest choice: the lead partner must rotate, but Section 203 also names the partner responsible for reviewing the audit, so the reviewer rotates too.",
+    "D": "Tempting because the audit committee oversees the auditor. But Section 203 has no audit committee waiver; continuing would make the audit unlawful."
+   },
+   "tips": [
+    "Eliminate: B turns partner rotation into firm rotation, which the Act only studied, and D adds an audit committee waiver that Section 203 does not contain.",
+    "Final two: A beats C because Section 203 covers both the lead partner and the reviewing partner after five consecutive years.",
+    "Exam cue: two partners rotate after five years, the lead and the reviewer; the firm does not."
+   ],
+   "framework_ref": "Sarbanes-Oxley Act of 2002 Section 203 (Audit partner rotation); 17 CFR 210.2-01(c)(6) (Partner rotation)",
+   "related_concepts": [
+    "Partner rotation",
+    "Engagement quality reviewer",
+    "Time-out period"
+   ],
+   "_provenance": "Authored from concept: KaiSip notes 2B2.1 and Sarbanes-Oxley Act Section 203 (govinfo.gov) and 17 CFR 210.2-01(c)(6) (law.cornell.edu), 31 Oct 2026, CSOE pilot. Original scenario written from the public law; no SOXCPA material, prep bank or vendor text used.",
+   "style_version": 2
+  },
+  {
+   "id": "csoe_d2_018",
+   "domain": 2,
+   "subtopic": "2B2 Partner rotation and auditor reports to the audit committee. Reporting accounting alternatives",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "Before an issuer files its annual report, its auditor and management discussed two acceptable GAAP treatments for a lease portfolio. Under Section 204, what must the auditor report to the audit committee MOST specifically?",
+   "options": {
+    "A": "Only the treatment management chose and its financial effect",
+    "B": "Nothing, because both treatments are acceptable under GAAP",
+    "C": "Both treatments, their effects and the firm's preference",
+    "D": "A summary sent to the CFO for forwarding to the committee"
+   },
+   "correct": "C",
+   "key_concept": "Auditors must report alternative GAAP treatments, their ramifications and the firm's preference directly to the audit committee.",
+   "pre_read": "Ask what the audit committee needs to judge management's accounting choice for itself.",
+   "correct_explanation": "Section 204 requires the registered firm to report to the audit committee all alternative GAAP treatments discussed with management, the ramifications of using them, and the treatment the firm prefers, along with critical accounting policies and other material written communications. SEC Rule 2-07 requires this before the audit report is filed. Option A is close but leaves out the alternative and the firm's own preference.",
+   "wrong_explanations": {
+    "A": "Closest choice: management's chosen treatment is part of the story, but Section 204 requires all alternatives discussed, their ramifications and the firm's preference.",
+    "B": "Tempting because both treatments are acceptable. But Section 204 targets exactly that case: alternatives within GAAP discussed with management.",
+    "D": "Tempting because the CFO works with the auditor daily. But the report goes directly to the audit committee, not through management."
+   },
+   "tips": [
+    "Eliminate: B misses that Section 204 covers alternatives within GAAP, and D routes the report through the CFO instead of directly to the audit committee.",
+    "Final two: C beats A because Section 204 requires every alternative discussed, its ramifications and the firm's preferred treatment, not just management's choice.",
+    "Exam cue: the auditor tells the audit committee what it discussed with management and what it would prefer."
+   ],
+   "framework_ref": "Sarbanes-Oxley Act of 2002 Section 204 (Auditor reports to audit committees); 17 CFR 210.2-07 (Communication with audit committees)",
+   "related_concepts": [
+    "Auditor reports to the audit committee",
+    "Alternative GAAP treatments",
+    "Critical accounting policies"
+   ],
+   "_provenance": "Authored from concept: KaiSip notes 2B2.2 and Sarbanes-Oxley Act Section 204 (govinfo.gov) and 17 CFR 210.2-07 (law.cornell.edu), 31 Oct 2026, CSOE pilot. Original scenario written from the public law; no SOXCPA material, prep bank or vendor text used.",
+   "style_version": 2
+  },
+  {
+   "id": "csoe_d2_019",
+   "domain": 2,
+   "subtopic": "2B3 Conflicts of interest, studies and state regulators. Hiring from the audit team",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "Priya was a senior manager on the audit of Rivera, an issuer, at Alder LLP in the year before the current audit began, and joins Rivera as CFO. Which statement BEST applies under Section 206?",
+   "options": {
+    "A": "Alder may continue if a different partner leads the audit",
+    "B": "Alder may continue, since the rule covers only former partners",
+    "C": "Alder may continue if Rivera's audit committee approves the hire",
+    "D": "Alder may not perform the current audit of Rivera"
+   },
+   "correct": "D",
+   "key_concept": "A firm cannot audit an issuer whose top finance officer worked on its audit at the firm in the year before the audit began.",
+   "pre_read": "Note Priya's new role and when Priya last worked on the audit.",
+   "correct_explanation": "Section 206 makes it unlawful for a registered firm to audit an issuer whose CEO, controller, CFO, chief accounting officer or equivalent was employed by the firm and took part in any capacity in the issuer's audit during the one-year period before the audit began. Priya did, so Alder cannot perform this audit. Option C is close, but Section 206 has no audit committee approval route for an ordinary hire.",
+   "wrong_explanations": {
+    "A": "Tempting because rotation addresses other familiarity risks. But the bar turns on Priya's role at Rivera, not on who leads Alder's team.",
+    "B": "Tempting because partners have the most influence. But Section 206 covers anyone employed by the firm who took part in the audit in any capacity.",
+    "C": "Closest choice: the SEC rule lets an audit committee act only in emergencies or unusual situations; for an ordinary CFO hire, Section 206 bars the audit regardless of approval."
+   },
+   "tips": [
+    "Eliminate: A treats partner rotation as a cure, and B narrows the rule to partners, though it covers participation in any capacity.",
+    "Final two: D beats C because Section 206 bars the audit outright for an ordinary hire; audit committee approval does not lift the cooling-off period.",
+    "Exam cue: worked on the audit within the past year and now a top finance officer at the client? The firm cannot do that audit."
+   ],
+   "framework_ref": "Sarbanes-Oxley Act of 2002 Section 206 (Conflicts of interest); 17 CFR 210.2-01(c)(2) (Employment relationships)",
+   "related_concepts": [
+    "Cooling-off period",
+    "Financial reporting oversight role",
+    "Conflicts of interest"
+   ],
+   "_provenance": "Authored from concept: KaiSip notes 2B3.1 and Sarbanes-Oxley Act Section 206 (govinfo.gov) and 17 CFR 210.2-01(c)(2) (law.cornell.edu), 31 Oct 2026, CSOE pilot. Original scenario written from the public law; no SOXCPA material, prep bank or vendor text used.",
+   "style_version": 2
+  },
+  {
+   "id": "csoe_d2_020",
+   "domain": 2,
+   "subtopic": "2B3 Conflicts of interest, studies and state regulators. Audit firm rotation",
+   "difficulty": "foundational",
+   "bloom_level": "Foundational",
+   "question": "A director asks how Title II dealt with making issuers change audit firms periodically. Which body did Section 207 MOST directly task with studying mandatory firm rotation?",
+   "options": {
+    "A": "The PCAOB, through a rulemaking on audit firm tenure",
+    "B": "The Comptroller General of the United States",
+    "C": "The SEC, through final rules due within 180 days",
+    "D": "Each issuer's audit committee, through an annual review"
+   },
+   "correct": "B",
+   "key_concept": "Section 207 ordered a Comptroller General study of mandatory firm rotation instead of requiring it.",
+   "pre_read": "Separate what Title II required from what it only asked someone to study.",
+   "correct_explanation": "Section 207 directed the Comptroller General, who heads the Government Accountability Office, to study the potential effects of requiring mandatory rotation of registered audit firms and to report to Congress within one year. The Act itself rotates partners, not firms. Option A is close because the PCAOB writes standards for audit firms, but Section 207 gave the study to the Comptroller General.",
+   "wrong_explanations": {
+    "A": "Closest choice: the PCAOB sets rules for registered firms, but Section 207 assigned the firm rotation study to the Comptroller General, not the Board.",
+    "C": "Tempting because Section 208 required SEC rules within 180 days. But those rules carried out Section 10A(g) to (l); they were not a rotation study.",
+    "D": "Tempting because audit committees appoint and oversee the auditor. But Section 207 called for a national study, not a company-level review."
+   },
+   "tips": [
+    "Eliminate: C mixes in Section 208's 180-day SEC rules, and D confuses a national study with an audit committee's own oversight.",
+    "Final two: B beats A because Section 207 named the Comptroller General to study firm rotation; the PCAOB was not given that study.",
+    "Exam cue: Title II rotates partners; firm rotation was only studied, by the Comptroller General."
+   ],
+   "framework_ref": "Sarbanes-Oxley Act of 2002 Section 207 (Study of mandatory rotation of registered public accounting firms)",
+   "related_concepts": [
+    "Mandatory firm rotation",
+    "Comptroller General study",
+    "Partner versus firm rotation"
+   ],
+   "_provenance": "Authored from concept: KaiSip notes 2B3.2 and Sarbanes-Oxley Act Sections 207 and 208 (govinfo.gov), 31 Oct 2026, CSOE pilot. Original scenario written from the public law; no SOXCPA material, prep bank or vendor text used.",
+   "style_version": 2
+  }
+ ]
+}
