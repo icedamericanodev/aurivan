@@ -17,7 +17,7 @@ Outline headings below are ISACA's (S2). Everything else is paraphrased.
 | Format | 150 multiple-choice questions, one best answer each; 4 hours (240 minutes) | S2 |
 | Scoring | Scaled 200–800; **450** passes. Scored items plus unscored pre-test items. Domain results are informational; the score is on total items correct | S2 |
 | Delivery | Computer-based, at PSI test centers or remotely proctored; continuous registration; six-month eligibility window | S1, S2 |
-| Languages | English, Spanish, Chinese Simplified, Japanese (S2 table) | S2 |
+| Languages | English, Spanish and Japanese (summary table, section 1.2). The Chinese Simplified, Korean and Spanish links on the outline page are translations of the CRISC terminology list, not exam languages | S1 |
 | Fees | US$575 member, US$760 non-member | S1, S2 |
 | Certification | Pass the exam, then apply (US$50) within five years of passing, with at least three years of CRISC work experience across at least two of the four domains, gained in the 10 years before applying and verified by a supervisor. Then follow the ISACA Code of Professional Ethics and the CPE policy (120 hours per three years, at least 20 a year). Anyone may sit the exam before having the experience | S6 |
 | Next update | None announced on isaca.org as of 30 Oct 2026 (the 2026 update is CISM, effective 3 Nov 2026) | S3, S5 |

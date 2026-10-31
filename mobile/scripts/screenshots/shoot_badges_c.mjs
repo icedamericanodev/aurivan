@@ -1,7 +1,7 @@
 // Mobile 1.11 badge tiers, Took Root and the share card (SHOTS=badgesC, see
 // run.sh): the tier ladders (Rooted, Long Memory, Dress Rehearsal, Firm
-// Footing's 80% Stretch tier), Took Root, the five domain medallions side by
-// side with their Stretch row, a set that grew ("New in Evergreen"), the
+// Footing's 80% Stretch tier), Took Root, the five domain specimens side by
+// side (pressed on herbarium sheets since mobile 1.51) with their Stretch row, a set that grew ("New in Evergreen"), the
 // one-time catalogue line, the share entry on a badge's sheet, and the share
 // card (and, since 1.18, Flown the Nest's sheet and card). REDUCED=1 runs with Reduce Motion on (files end "-reduced").
 // FONT_SCALE=2: approximate 200% text for the badge sheet, its tier ladder and
@@ -59,6 +59,9 @@ const toTop = async (text, offset = 70) => {
   await page.mouse.wheel(0, -offset);
   await wait(700);
 };
+/** Open a badge's sheet by its specimen's spoken label. Since mobile 1.51 an
+ *  earned one reads "<name>[, <metal>][. Stretch, beyond exam need]. Pressed
+ *  [by] <date>. …" (cellSpoken in src/components/badges.tsx), never "Earned". */
 const open = async (name) => {
   await page.getByRole('button', { name }).first().click();
   await wait(1400);
@@ -96,13 +99,13 @@ if (FONT_SCALE) {
   // 200% text: a badge's sheet, its tier ladder, and the share panel.
   await go('/milestones', 2600);
   await toTop('Evergreen');
-  await open(/^Long Memory · 75 recalls, Lichen\. Earned/);
+  await open(/^Long Memory · 75 recalls, Lichen\. Pressed/);
   await shot('c30-sheet');
   await sheetTo('Tiers');
   await shot('c31-ladder');
   await close();
   await toTop('Evergreen');
-  await open(/^Took Root\. Earned/);
+  await open(/^Took Root\. Pressed/);
   await page.getByRole('button', { name: /^Share Took Root$/ }).click();
   await wait(1400);
   await shot('c32-share-panel');
@@ -124,20 +127,20 @@ await shot('c02-evergreen-took-root');
 await toTop('Exam Day');
 await shot('c04-examday-rooted');
 
-// The tier ladders, each opened from its own medallion.
+// The tier ladders, each opened from its own specimen.
 await toTop('Rooted');
-await open(/^Rooted · 30 days, Lichen\. Earned/);
+await open(/^Rooted · 30 days, Lichen\. Pressed/);
 await sheetTo('Tiers');
 await shot('c10-ladder-rooted');
 await close();
 await toTop('Evergreen');
-await open(/^Long Memory · 75 recalls, Lichen\. Earned/);
+await open(/^Long Memory · 75 recalls, Lichen\. Pressed/);
 await shot('c11-ladder-long-memory');
 await sheetTo('Tiers');
 await shot('c11b-ladder-long-memory-tiers');
 await close();
 await toTop('Exam Day');
-await open(/^Dress Rehearsal · 2 mocks, Lichen\. Earned/);
+await open(/^Dress Rehearsal · 2 mocks, Lichen\. Pressed/);
 await sheetTo('Tiers');
 await shot('c12-ladder-dress-rehearsal');
 await close();
@@ -148,9 +151,9 @@ await sheetTo('Tiers');
 await shot('c13b-ladder-firm-footing-stretch-tiers');
 await close();
 
-// Took Root, earned: its sheet (it arrived with the catalogue fill: "by" that date).
+// Took Root, earned: its sheet (it arrived with the catalogue fill: "Pressed by" that date).
 await toTop('Evergreen');
-await open(/^Took Root\. Earned/);
+await open(/^Took Root\. Pressed/);
 await shot('c14-sheet-took-root');
 
 // The share entry, then the card.
@@ -161,14 +164,14 @@ await wait(1400);
 await shot('c21-share-card');
 await close();
 await toTop('The Five Domains');
-await open(/^Firm Footing · IS Operations, Clay\. Earned/);
+await open(/^Firm Footing · IS Operations, Clay\. Pressed/);
 await page.getByRole('button', { name: /^Share Firm Footing · IS Operations$/ }).click();
 await wait(1400);
 await shot('c22-share-card-domain');
 await close();
 // Mobile 1.18: Flown the Nest (saved id `graduate`), its sheet and its share card.
 await toTop('Evergreen');
-await open(/^Flown the Nest\. Earned/);
+await open(/^Flown the Nest\. Pressed/);
 await shot('c23-sheet-flown-the-nest');
 await sheetTo('Share');
 await page.getByRole('button', { name: /^Share Flown the Nest$/ }).click();

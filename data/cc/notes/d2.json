@@ -51,6 +51,9 @@
           "id": "2.1.1",
           "name": "GRC Purpose and Importance",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d2_001"
+          ],
           "definition": "Governance, risk and compliance (GRC) is a coordinated way to direct an organization, manage its risks and meet its obligations, using shared owners and records.",
           "why_it_matters": "Run as separate silos, the three duplicate work, miss gaps and give leaders conflicting pictures. GRC gives one shared view of risk that serves business goals.",
           "how_it_works": [
@@ -95,8 +98,8 @@
           "example": "A logistics firm keeps its privacy checklist in legal, its risk list in IT and its policies in human resources. One backup control is tested three times, while a contract's breach-notice clause has no owner. Leadership creates one GRC program, and Omar, a junior analyst, maps each obligation to a control, exposing the unowned clause as a gap.",
           "audit_focus": {
             "review": [
-              "Confirm each policy, risk and obligation record names an owner",
-              "Compare the risk records with the obligations list"
+              "Record the agreed owner on each policy, risk or obligation entry you add",
+              "Link each new obligation to the risks and controls it affects"
             ],
             "evidence": [
               "Shared control library mapped to risks and obligations",
@@ -131,6 +134,9 @@
           "id": "2.1.2",
           "name": "Planning a GRC Program",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d2_021"
+          ],
           "definition": "Planning a governance, risk and compliance (GRC) program means setting its scope, owners and obligations first, so effort goes where risk is greatest.",
           "why_it_matters": "Without a plan, a program copies someone else's checklist and protects the wrong things. A plan gives leaders something to approve, fund and measure.",
           "how_it_works": [
@@ -142,7 +148,7 @@
           "example": "A small online bookseller starts taking card payments and selling abroad. Before buying tools, the owner has the IT lead list what now applies: card industry rules, privacy law and the payment provider's contract. Ines, a new support technician, inventories the in-scope staff laptops so the plan starts from an accurate list.",
           "audit_focus": {
             "review": [
-              "Compare the asset inventory with the scope for missing items",
+              "Check the systems and data you support against the program scope",
               "Note sensitive data handled outside the scope"
             ],
             "evidence": [
@@ -178,6 +184,10 @@
           "id": "2.1.3",
           "name": "GRC Accountability: RACI and Reporting Lines",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d2_002",
+            "cc_d2_024"
+          ],
           "definition": "Accountability in governance, risk and compliance (GRC) means every task, risk and control has one named person who answers for it.",
           "why_it_matters": "When everyone is involved but no one is accountable, decisions stall and gaps go unowned.",
           "how_it_works": [
@@ -227,8 +237,8 @@
           "example": "A furniture maker's yearly supplier security review was skipped: procurement thought IT did it, and IT thought procurement did. The GRC lead drafts a RACI chart for the review. Ana, a junior GRC analyst checking the draft, sees two managers marked Accountable and returns it to the GRC lead to settle which one answers for it.",
           "audit_focus": {
             "review": [
-              "Look for tasks with no Accountable name, or several",
-              "Compare the names in the chart with current staff"
+              "Draft the chart with one proposed Accountable name per task",
+              "Update the chart's names when staff join, move or leave"
             ],
             "evidence": [
               "Approved RACI chart with a version date",
@@ -263,6 +273,10 @@
           "id": "2.1.4",
           "name": "Compliance Obligations and Evidence",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d2_005",
+            "cc_d2_025"
+          ],
           "definition": "Compliance means meeting the requirements that apply to the organization, from laws and contracts to its own policies, and being able to prove it.",
           "why_it_matters": "Missing an obligation can bring fines, lost contracts and lost trust. Regulators and customers want records, not promises, so evidence matters as much as the control.",
           "how_it_works": [
@@ -315,7 +329,7 @@
           "example": "A dental practice's booking contract requires suspected data breaches to be reported within 48 hours, and health privacy law adds its own deadlines; both go on the obligations list. When Kai, the IT assistant, later sees an unusual login to the booking system, Kai starts the incident procedure at once, knowing the reporting clock may be running.",
           "audit_focus": {
             "review": [
-              "Confirm each obligation has an owner and a mapped control",
+              "Map each obligation you log to its owner and a control",
               "Report missing or late evidence to the control owner"
             ],
             "evidence": [
@@ -351,6 +365,9 @@
           "id": "2.1.5",
           "name": "Choosing and Mapping Frameworks in GRC",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d2_022"
+          ],
           "definition": "Mapping frameworks means linking a governance, risk and compliance (GRC) program's own controls to each framework it must show progress against.",
           "why_it_matters": "Customers, regulators and leaders often ask about different frameworks. Mapping one control set to all of them avoids a second program and shows the real gaps.",
           "how_it_works": [
@@ -376,8 +393,8 @@
           "example": "A credit union follows ISO/IEC 27001, an international security management standard, and a major customer asks for progress against the NIST (National Institute of Standards and Technology) Cybersecurity Framework (CSF). Instead of a second program, the GRC lead builds a crosswalk in the GRC tool. Kofi, a junior analyst, maps each control to a CSF outcome and flags three outcomes with no control for review.",
           "audit_focus": {
             "review": [
-              "Check each mapping still points to a current framework item",
-              "Flag items marked not applicable with no reason"
+              "Update control mappings when a framework issues a new version",
+              "Record the reason each time you mark an item not applicable"
             ],
             "evidence": [
               "Mapping export showing each control's linked framework items",
@@ -412,18 +429,22 @@
           "id": "2.1.6",
           "name": "GRC Tools and Automation",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d2_003"
+          ],
           "definition": "Governance, risk and compliance (GRC) tools are platforms that keep risks, controls, policies and evidence in one place and automate routine tasks.",
           "why_it_matters": "Spreadsheets and email chains break as programs grow. A tool gives one current record, but only if owners keep it accurate and act on it.",
           "how_it_works": [
             "Risk and control modules link each risk to its owner and the controls that treat it.",
             "Policy management tracks versions, approvals and staff acknowledgments.",
             "Automated collection pulls settings from systems on a schedule and flags any control that drifts.",
-            "Dashboards turn the stored data into views for each audience."
+            "Dashboards turn the stored data into views for each audience.",
+            "A status is only as current as its data; check when each feed last updated before trusting a green."
           ],
-          "example": "A health clinic moves its policies and risk list into a GRC platform that checks laptop settings each night. One morning it flags a laptop with disk encryption off. Rosa, a junior IT technician, confirms it on the device, raises a change request to turn encryption back on and records the fix in the platform.",
+          "example": "A freight company's GRC platform has shown its server patching control as green for three months. Yuki, a junior GRC analyst, opens the record and sees the patch server's data feed stopped in July, when its service account password expired, so the green rests on an old export. Yuki marks the control's status as unverified, tells the control owner and raises a ticket for the platform owner to repair the feed.",
           "audit_focus": {
             "review": [
-              "Compare the tool's record with the live system setting",
+              "Check the live setting on the system before acting on an alert",
               "Link the corrected setting to its change record"
             ],
             "evidence": [
@@ -459,6 +480,9 @@
           "id": "2.1.7",
           "name": "Tolerances and the Risk Register in GRC",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d2_023"
+          ],
           "definition": "In a governance, risk and compliance (GRC) program, the risk register links each risk to a tolerance, an owner, its controls and an indicator.",
           "why_it_matters": "Statements such as \"little risk with customer data\" do not say when to act. GRC turns them into numbers, so a risk that leaves its limit is noticed.",
           "how_it_works": [
@@ -506,7 +530,7 @@
           "example": "A ticketing company's GRC platform links the risk \"card data stored where it should not be\" to a KRI: card files found outside the payment system, with a tolerance of zero. A weekly scan finds two on a shared drive. Lena, a junior analyst, confirms they hold real card numbers and logs the finding against the register entry, moving the risk above tolerance.",
           "audit_focus": {
             "review": [
-              "Confirm each entry names a tolerance, an owner and a review date",
+              "Keep each entry's tolerance, owner and review date current",
               "Compare current indicator values with each tolerance"
             ],
             "evidence": [
@@ -542,6 +566,10 @@
           "id": "2.1.8",
           "name": "Governing AI Use",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d2_004",
+            "cc_d2_026"
+          ],
           "definition": "Governing artificial intelligence (AI) use means setting rules for which AI tools staff may use, for which tasks and with which data, and tracking every use.",
           "why_it_matters": "Staff adopt AI assistants faster than policies appear, so nobody knows which tools hold company data or who owns each use.",
           "how_it_works": [
@@ -549,9 +577,10 @@
             "An approved tools list, kept as a standard under the policy, names vetted services and the data each may handle.",
             "An AI inventory records each use and its owner; a new use is reviewed before it starts.",
             "Pasting confidential data into public AI tools can leak it; 5.1.8 covers that risk.",
-            "The NIST (National Institute of Standards and Technology) AI Risk Management Framework can structure this work."
+            "The NIST (National Institute of Standards and Technology) AI Risk Management Framework can structure this work.",
+            "Approval holds only while the facts behind it hold; a change in vendor terms, data or purpose sends the tool back for review."
           ],
-          "example": "Staff at a housing association start using a free AI note-taker that records video calls with tenants. It is not on the approved list or in the AI inventory. Priya, an IT support analyst, explains the approval route and submits a tool request so the security team and data owner can review it.",
+          "example": "A city library's service owner ends a trial of an AI chatbot that answered borrowers' questions. Tomas, the IT support analyst who keeps the AI inventory, marks the entry retired, removes staff access and files the vendor's written confirmation that stored chats were deleted, as the contract requires.",
           "audit_focus": {
             "review": [
               "Confirm a tool is approved before using it for work",
@@ -603,6 +632,9 @@
           "id": "2.2.1",
           "name": "Redundancy and High Availability",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d2_027"
+          ],
           "definition": "Redundancy means having spare components, paths or copies ready to take over when one fails, so one failure does not stop a service.",
           "why_it_matters": "Hardware breaks, power drops and cables get cut. Removing single points of failure protects availability, the \"A\" in the confidentiality, integrity and availability (CIA) triad.",
           "how_it_works": [
@@ -641,7 +673,7 @@
           "audit_focus": {
             "review": [
               "Confirm the spare takes over during a scheduled test",
-              "Compare network diagrams with known single points of failure"
+              "Mark known single points of failure on the network diagrams"
             ],
             "evidence": [
               "Failover test log with dates and outcome",
@@ -676,6 +708,10 @@
           "id": "2.2.2",
           "name": "Business Continuity vs Disaster Recovery",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d2_007",
+            "cc_d2_031"
+          ],
           "definition": "Business continuity (BC) keeps critical business functions running during a disruption; disaster recovery (DR) restores the technology and data those functions depend on.",
           "why_it_matters": "Restored servers are useless if staff have nowhere to work. Treating DR as the whole of BC leaves people, places and processes unplanned.",
           "how_it_works": [
@@ -764,6 +800,9 @@
           "id": "2.2.3",
           "name": "Business Impact Analysis (BIA)",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d2_028"
+          ],
           "definition": "A business impact analysis (BIA) identifies an organization's critical functions, what each depends on and how harm grows over time if each one stops.",
           "why_it_matters": "The BIA decides what is recovered first and how fast. Every later choice, from backup schedule to recovery site, rests on it.",
           "how_it_works": [
@@ -811,8 +850,8 @@
           "example": "A university's BIA team asks the registrar how long course enrollment can stop in the first week of term: a few hours, while the alumni newsletter can wait a month. Leo, a help desk analyst helping with the survey, adds an outside payment provider to enrollment's dependency list when a staff member mentions it.",
           "audit_focus": {
             "review": [
-              "Confirm each critical function lists its suppliers",
-              "Compare BIA priorities with the recovery plan's order"
+              "Update a function's dependency list when it adds a supplier",
+              "Draft the restore order from the BIA's approved priorities"
             ],
             "evidence": [
               "Owner-confirmed impact ratings at several outage lengths",
@@ -847,6 +886,10 @@
           "id": "2.2.4",
           "name": "Recovery Objectives: MTD, RTO and RPO",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d2_006",
+            "cc_d2_032"
+          ],
           "definition": "Recovery objectives are limits set by the business: how long a function can be down and how much recent data it can afford to lose.",
           "why_it_matters": "These numbers drive cost: a shorter downtime target needs a readier site, and a smaller data-loss target needs more frequent copies.",
           "how_it_works": [
@@ -940,6 +983,10 @@
           "id": "2.2.5",
           "name": "Backups: Types, the 3-2-1 Rule and Restore Testing",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d2_009",
+            "cc_d2_033"
+          ],
           "definition": "A backup is a separate copy of data, and often of settings, kept so the original can be restored after loss, corruption or attack.",
           "why_it_matters": "Backups are the last defense against ransomware and mistakes. A backup never restored is a hope, not a control, and one attackers can reach may be encrypted too.",
           "how_it_works": [
@@ -970,7 +1017,7 @@
             "svg": "<svg viewBox='0 0 520 168' xmlns='http://www.w3.org/2000/svg' role='img' aria-label='Restoring to Wednesday: with incremental backups you need the Sunday full and every incremental; with differential backups you need the Sunday full and only the Wednesday differential'><text x='488' y='14' text-anchor='end' font-family='JetBrains Mono, monospace' font-size='7.5' font-weight='700' fill='var(--accent-fill)' letter-spacing='0.08em'>RESTORE TO WEDNESDAY</text><text x='20' y='46' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--text)'>Incremental</text><rect x='118' y='26' width='74' height='32' rx='4' fill='var(--surface)' stroke='var(--accent-fill)' stroke-width='2'/><text x='155' y='46' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9.5' font-weight='700' fill='var(--text)'>Sun full</text><rect x='210' y='26' width='74' height='32' rx='4' fill='var(--surface)' stroke='var(--accent-fill)' stroke-width='2'/><text x='247' y='46' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9.5' font-weight='700' fill='var(--text)'>Mon inc</text><rect x='302' y='26' width='74' height='32' rx='4' fill='var(--surface)' stroke='var(--accent-fill)' stroke-width='2'/><text x='339' y='46' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9.5' font-weight='700' fill='var(--text)'>Tue inc</text><rect x='394' y='26' width='74' height='32' rx='4' fill='var(--surface)' stroke='var(--accent-fill)' stroke-width='2'/><text x='431' y='46' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9.5' font-weight='700' fill='var(--text)'>Wed inc</text><text x='118' y='76' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='8.5' font-weight='600' fill='var(--text2)'>Needed: the full plus every incremental, in order</text><text x='20' y='120' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--text)'>Differential</text><rect x='118' y='100' width='74' height='32' rx='4' fill='var(--surface)' stroke='var(--accent-fill)' stroke-width='2'/><text x='155' y='120' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9.5' font-weight='700' fill='var(--text)'>Sun full</text><rect x='210' y='100' width='74' height='32' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='247' y='120' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9.5' font-weight='600' fill='var(--text2)'>Mon diff</text><rect x='302' y='100' width='74' height='32' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='339' y='120' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9.5' font-weight='600' fill='var(--text2)'>Tue diff</text><rect x='394' y='100' width='74' height='32' rx='4' fill='var(--surface)' stroke='var(--accent-fill)' stroke-width='2'/><text x='431' y='120' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9.5' font-weight='700' fill='var(--text)'>Wed diff</text><text x='118' y='150' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='8.5' font-weight='600' fill='var(--text2)'>Needed: the full plus only the latest differential</text></svg>",
             "caption": "Restoring to Wednesday. Each incremental holds only the changes since the backup before it, so every one is needed. Each differential holds all changes since the full, so only the newest is needed."
           },
-          "example": "A law office backs up its file server nightly to a disk in the same closet and has never tested a restore. Ransomware encrypts the server and the backup disk. The office then adds an immutable cloud copy, and Tess, a new IT assistant, restores a sample folder monthly and records how long it takes.",
+          "example": "A broadband provider backs up nightly to a storage unit beside its server and also syncs its files to a cloud folder. Nadia, an IT assistant checking the setup against the 3-2-1 rule, points out that a synced folder is not a backup: it copies every change, so files encrypted by ransomware would sync there too. The system owner approves adding a nightly immutable cloud copy, kept for 30 days.",
           "audit_focus": {
             "review": [
               "Restore a sample of files and time the result",
@@ -1009,13 +1056,18 @@
           "id": "2.2.6",
           "name": "Recovery Sites",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d2_008",
+            "cc_d2_034"
+          ],
           "definition": "A recovery site is an alternate place to run critical systems or work when the main site is unusable, from an empty room to a running copy.",
           "why_it_matters": "The site must match the recovery time objective (RTO). Too slow misses the target; too ready wastes money on standby equipment.",
           "how_it_works": [
             "Readier sites recover faster and cost more to keep ready.",
             "Match the site to the RTO from the business impact analysis (BIA), not to habit or budget.",
             "Keep it far enough away that one regional event, such as a flood, cannot hit both sites.",
-            "Cloud recovery means paying mainly for stored copies until a failover, and it still needs testing."
+            "Cloud recovery means paying mainly for stored copies until a failover, and it still needs testing.",
+            "Give the recovery site the same security controls as the main site, including monitoring, from the moment it runs."
           ],
           "compare": {
             "columns": [
@@ -1102,6 +1154,9 @@
           "id": "2.2.7",
           "name": "Testing and Maintaining BC and DR Plans",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d2_010"
+          ],
           "definition": "Plan testing checks that business continuity (BC) and disaster recovery (DR) plans work and that people know their roles.",
           "why_it_matters": "An untested plan fails at the worst moment, with wrong numbers, missing steps and slow restores. Testing finds this while it is cheap to fix.",
           "how_it_works": [
@@ -1132,7 +1187,7 @@
               "meaning": "Production is shut down and the business runs from the recovery site. Most realistic and highest risk."
             }
           ],
-          "example": "A city water department runs a parallel test of its billing system, bringing it up at the recovery site while production keeps running. The restore takes nine hours against a six-hour RTO. Dee, a junior systems administrator, records each step's timing in the test report, and the gap becomes a tracked action.",
+          "example": "A city water department runs a parallel test of its billing system, bringing it up at the recovery site while production keeps running. The restore takes nine hours against a six-hour RTO. Dee, a junior system administrator, records each step's timing in the test report, and the gap becomes a tracked action.",
           "audit_focus": {
             "review": [
               "Confirm your role and contact details before each test",
@@ -1171,6 +1226,9 @@
           "id": "2.2.8",
           "name": "Backing Up AI Systems and Model Drift",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d2_029"
+          ],
           "definition": "Resilience for artificial intelligence (AI) services means being able to restore the models, settings and data behind them, and noticing when performance declines.",
           "why_it_matters": "An AI service can fail while its servers are up: the model may be lost, misconfigured or slowly getting worse. If a process depends on it, that is a continuity risk.",
           "how_it_works": [
@@ -1218,6 +1276,9 @@
           "id": "2.2.9",
           "name": "AI-Assisted Detection and Resilience",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d2_030"
+          ],
           "definition": "Artificial intelligence (AI) assisted detection spots trouble early; for resilience, it must catch events before they disrupt the business and keep working through an outage.",
           "why_it_matters": "An attack caught early may never need the recovery plan. But monitoring that sits on the failed systems leaves the organization blind when most exposed.",
           "how_it_works": [
@@ -1278,6 +1339,9 @@
           "id": "2.3.1",
           "name": "Security Culture and Leadership",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d2_035"
+          ],
           "definition": "Security culture is the shared attitudes and habits that shape how people treat security day to day, especially when no one is watching.",
           "why_it_matters": "Controls fail when people work around them. A culture where staff value security and feel safe reporting mistakes catches problems early.",
           "how_it_works": [
@@ -1286,7 +1350,7 @@
             "Reporting is easy and safe, with thanks instead of blame for honest mistakes.",
             "Culture is judged by behavior, such as reporting rates, not course completion."
           ],
-          "example": "A finance director at a manufacturer refuses the multifactor authentication (MFA) the access policy requires, saying it slows them down. Soon others ask for the same exception. Jamal, a new security analyst, neither argues nor quietly grants exceptions. He logs each request in the exception process for the policy owner, who sees the pattern and raises it with senior management.",
+          "example": "At a regional bus operator, the chief executive tells an all-staff meeting about clicking a phishing link last month, reporting it within minutes and being thanked by the security team. Over the next quarter, staff reports of suspicious messages double. Jamal, a new security analyst, adds the report rate to the culture measures shared with leaders each month.",
           "audit_focus": {
             "review": [
               "Follow the same rules you ask others to follow",
@@ -1325,6 +1389,9 @@
           "id": "2.3.2",
           "name": "Awareness, Training and Education",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d2_012"
+          ],
           "definition": "Awareness keeps security in mind for everyone, training builds job-specific skills for particular roles, and education builds deeper understanding for those whose careers need it.",
           "why_it_matters": "One course for everyone wastes time and misses real risks. A developer, a payroll clerk and a help desk agent face different attacks.",
           "how_it_works": [
@@ -1382,7 +1449,7 @@
               }
             ]
           },
-          "example": "A hospital gives all staff the same yearly video. After an attacker talks a help desk agent into resetting a surgeon's password by phone, the training lead adds a caller-verification module for the help desk and monthly reminders for everyone. Femi, a help desk technician, now calls back on the directory number before any reset.",
+          "example": "An online travel agency gives every employee the same yearly course, yet code scans keep finding the same injection flaw in booking forms its developers write. The awareness lead adds a hands-on secure coding module for the developers, keeps short monthly reminders for everyone and tracks the scan results to see whether the module works.",
           "audit_focus": {
             "review": [
               "Confirm you completed the training your role requires",
@@ -1392,7 +1459,7 @@
               "Training records by role, with dates",
               "Role-to-course mapping showing who needs which module"
             ],
-            "recommend": "Pass patterns of repeated mistakes to the training lead so role-based content can be added.",
+            "recommend": "Pass patterns of repeated mistakes to the awareness lead so role-based content can be added.",
             "decides": "Management sets the training each role requires"
           },
           "isaca_rule": "Match the learning to the role and the risk. Everyone gets awareness; higher-risk roles get role-based training on top. When one group repeats one mistake, train that group.",
@@ -1421,13 +1488,18 @@
           "id": "2.3.3",
           "name": "Social Engineering Tactics",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d2_011",
+            "cc_d2_037"
+          ],
           "definition": "Social engineering is manipulating people into giving up information, access or money by exploiting trust, fear, helpfulness or urgency instead of technical flaws.",
           "why_it_matters": "It is often easier to trick a person than to break a system. One convinced employee can hand over what firewalls and access controls protect.",
           "how_it_works": [
             "Attackers research targets through social media, company websites and earlier data leaks.",
             "They build a believable story, such as a new IT contractor or a supplier.",
             "They apply pressure, such as authority, urgency or the wish to help, and ask for one small step.",
-            "The defense: slow down, verify through a separate known channel and follow procedure."
+            "The defense: slow down, verify through a separate known channel and follow procedure.",
+            "At a badge door, never let in anyone who cannot badge in, whatever uniform or ID card they show; send them to reception to sign in."
           ],
           "types": [
             {
@@ -1494,6 +1566,9 @@
           "id": "2.3.4",
           "name": "Phishing and Its Variants",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d2_036"
+          ],
           "definition": "Phishing is a message, usually an email, text or call, that pretends to come from a trusted source to trick the reader into clicking, sharing data or paying.",
           "why_it_matters": "Phishing is one of the most common ways attackers steal passwords and trigger fraudulent payments. Fast reporting protects the whole organization.",
           "how_it_works": [
@@ -1567,15 +1642,19 @@
           "id": "2.3.5",
           "name": "AI-Boosted Phishing and Deepfakes",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d2_013",
+            "cc_d2_038"
+          ],
           "definition": "Artificial intelligence (AI) boosted social engineering uses AI tools to write convincing messages, clone voices or fake video, making scams more personal and more plentiful.",
           "why_it_matters": "Old warning signs such as poor grammar are fading. Attackers can copy an executive's writing or voice, so people must rely on verification, not on how genuine something seems.",
           "how_it_works": [
             "Generative AI writes fluent, personalized lures in many languages, at scale.",
             "Voice cloning copies a voice from a short recording; deepfake video puts a familiar face on a live call.",
             "Defenses rely on process: call-backs to known numbers, code phrases and dual approval for payments.",
-            "Awareness content uses real AI examples and teaches verifying requests, not judging polish."
+            "Awareness content shows real AI examples to prove polish is no longer a clue, and teaches verifying requests through known channels."
           ],
-          "example": "A charity's finance officer joins a video call where the chief executive, looking and sounding normal, urgently asks for a transfer to a new supplier. Policy requires a call-back for new payees, so the officer rings the chief executive's known mobile number, learns they are on leave and reports the call to the security team.",
+          "example": "A recruitment agency's records coordinator takes a call in what sounds exactly like the managing director's voice, asking for a candidate's file to be emailed to a personal address. Staff agreed a code phrase for unusual requests. The caller cannot give it, so the coordinator sends nothing and reports the call, a likely AI voice clone, to the security team.",
           "audit_focus": {
             "review": [
               "Verify payment requests by calling a known number",
@@ -1614,6 +1693,10 @@
           "id": "2.3.6",
           "name": "Password and Passphrase Habits",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d2_014",
+            "cc_d2_039"
+          ],
           "definition": "Password protection, for users, means choosing long, unique passphrases, keeping them in a password manager, never sharing them and reporting any exposure.",
           "why_it_matters": "Reused passwords are a leading cause of account takeover. After one site is breached, attackers try the stolen passwords on many others.",
           "how_it_works": [
@@ -1701,6 +1784,10 @@
           "id": "2.3.7",
           "name": "Reporting Culture and Phishing Simulations",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d2_015",
+            "cc_d2_040"
+          ],
           "definition": "A reporting culture makes it quick and safe to report suspicious messages, mistakes or incidents; phishing simulations let staff practice spotting lures.",
           "why_it_matters": "Security teams can act only on what they know. A fast report, even of one's own mistake, can stop an attack before it spreads.",
           "how_it_works": [
@@ -1761,6 +1848,9 @@
           "id": "2.4.1",
           "name": "Measures and Metrics: The Basics",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d2_041"
+          ],
           "definition": "A measure is a raw, quantified result, such as 940 of 1,000 laptops patched; a metric compares measures against a goal to show progress or risk.",
           "why_it_matters": "Without measurement, leaders fund security on instinct. Good metrics show what is improving, what is slipping and where to act.",
           "how_it_works": [
@@ -1808,6 +1898,9 @@
           "id": "2.4.2",
           "name": "Types of Security Measures",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d2_017"
+          ],
           "definition": "Security measures fall into types by what they show: whether controls exist, whether they work, how fast they work and what they mean for the business.",
           "why_it_matters": "Knowing the type stops a common mistake: reporting that a control exists as proof that it works.",
           "how_it_works": [
@@ -1838,7 +1931,7 @@
           "audit_focus": {
             "review": [
               "Label each reported measure by its type",
-              "Confirm effectiveness claims rest on outcome data"
+              "Back each effectiveness claim you report with outcome data"
             ],
             "evidence": [
               "Ticket timestamps behind detection and recovery times",
@@ -1873,6 +1966,10 @@
           "id": "2.4.3",
           "name": "Key Performance and Key Risk Indicators",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d2_016",
+            "cc_d2_043"
+          ],
           "definition": "A key performance indicator (KPI) shows how well a process meets its goal; a key risk indicator (KRI) gives early warning that a risk is growing toward its limit.",
           "why_it_matters": "KPIs show whether security work is on track; KRIs show whether exposure is growing before it becomes an incident. Mixing them up hides warnings.",
           "how_it_works": [
@@ -1927,7 +2024,7 @@
           "example": "A logistics company's quarterly supplier account review, a KPI, has been green all year. Chen, a junior analyst, notices another number climbing: supplier accounts with administrator rights and no sign-in for 90 days. He proposes it as a KRI for misused supplier access and sends the trend to the risk owner.",
           "audit_focus": {
             "review": [
-              "Confirm each KRI links to a named risk in the register",
+              "Tie each KRI you report to a named risk in the register",
               "Compare this period's KRI values with the last"
             ],
             "evidence": [
@@ -1963,6 +2060,10 @@
           "id": "2.4.4",
           "name": "Thresholds, Targets and Escalation",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d2_018",
+            "cc_d2_044"
+          ],
           "definition": "Thresholds are preset values on a metric that trigger set actions, such as review or escalation, when crossed; targets are the values the organization aims for.",
           "why_it_matters": "A metric without a threshold relies on someone noticing a problem. Agreed thresholds make escalation automatic, so bad news reaches the right person on time.",
           "how_it_works": [
@@ -1978,31 +2079,31 @@
             },
             {
               "term": "Amber",
-              "meaning": "Approaching the limit; the risk owner reviews it and plans action."
+              "meaning": "Approaching the limit; the owner named for that band reviews it and plans action."
             },
             {
               "term": "Red",
-              "meaning": "Beyond tolerance; escalate to senior management to treat or formally accept the risk."
+              "meaning": "Beyond tolerance; escalate at once by the set path, so the risk owner can act and senior management can treat or formally accept the risk."
             }
           ],
           "example": "A school district's key risk indicator (KRI) for laptops missing security updates is green under 3%, amber from 3 to 8% and red above 8%. After an update tool fails, it hits 11% the week before exams. Raj, the IT technician who runs the weekly report, follows the red-band rule and alerts the IT director that afternoon.",
           "audit_focus": {
             "review": [
               "Compare each new value with its threshold bands",
-              "Confirm any threshold change has a recorded approver"
+              "Apply a threshold change only after its approval is recorded"
             ],
             "evidence": [
               "Threshold table with bands, owners and actions",
               "Escalation tickets showing when they were sent"
             ],
-            "recommend": "Escalate breaches to the named owner as the rule requires, and never change a threshold yourself.",
-            "decides": "Senior management approves each threshold band and any change to it"
+            "recommend": "Escalate breaches to the named owner as the rule requires, and never change a threshold without its owner's recorded approval.",
+            "decides": "The named threshold owner approves changes, within tolerances senior management set"
           },
           "isaca_rule": "Thresholds turn numbers into action. When a metric crosses one, escalate at once; never sit on bad news, move the threshold or adjust the number.",
           "exam_traps": [
             {
               "trap": "Raise the threshold after a breach so the KRI goes back to green.",
-              "why": "Moving the line hides the risk without reducing it. Only those who own risk appetite change thresholds, with a recorded reason."
+              "why": "Moving the line hides the risk without reducing it. Only the threshold's named owner changes it, with a recorded reason."
             },
             {
               "trap": "Wait for the next scheduled report before escalating a red KRI.",
@@ -2024,6 +2125,9 @@
           "id": "2.4.5",
           "name": "Dashboards, Scorecards and Reports",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d2_020"
+          ],
           "definition": "Dashboards, scorecards and reports are ways to present metrics: a live visual view, a periodic grade against targets and a written account with context and recommendations.",
           "why_it_matters": "The right numbers in the wrong format still fail. A board needs a short view of risk and trends; an operations team needs live detail.",
           "how_it_works": [
@@ -2077,7 +2181,7 @@
           "audit_focus": {
             "review": [
               "Confirm the same metric shows the same value in every view",
-              "Compare the level of detail with what the audience needs"
+              "Match the level of detail to what each audience needs"
             ],
             "evidence": [
               "Metric definition sheet used for all three formats",
@@ -2112,6 +2216,9 @@
           "id": "2.4.6",
           "name": "Using Measurement to Improve",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d2_042"
+          ],
           "definition": "Using measurement to improve means acting on what metrics show: finding causes, fixing them, checking the result and refining the metrics themselves over time.",
           "why_it_matters": "Measuring without acting just documents decline. Metrics earn their cost only when they drive fixes and prove the fixes worked.",
           "how_it_works": [
@@ -2123,14 +2230,14 @@
           "example": "A software company's rate for closing vulnerability tickets within 30 days jumps from 60% to 98% in a month. Mei, a junior analyst, samples ten closed tickets and finds six marked accepted risk without the risk owner's approval. She sends the sample to the security manager, who limits that kind of closure to risk owners.",
           "audit_focus": {
             "review": [
-              "Sample a few records behind any sudden jump or drop",
+              "Check a few source records behind any sudden jump or drop",
               "Compare the next period's figure with the pre-fix value"
             ],
             "evidence": [
-              "Sampled records set against the reported figure",
+              "Source records checked against the reported figure",
               "Action log with owners, due dates and status"
             ],
-            "recommend": "Report suspected metric gaming or poor data quality to the security manager with the sampled evidence.",
+            "recommend": "Report suspected metric gaming or poor data quality to the security manager with the records you checked.",
             "decides": "Management decides improvement priorities and funds the actions"
           },
           "isaca_rule": "Treat a sudden improvement with the same curiosity as a sudden drop. Check the data behind a metric before trusting it; gaming a metric is a governance problem to report.",
@@ -2159,6 +2266,10 @@
           "id": "2.4.7",
           "name": "AI Risk Indicators",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d2_019",
+            "cc_d2_045"
+          ],
           "definition": "Artificial intelligence (AI) risk indicators are metrics that warn when an AI system's accuracy, data, use or availability is moving toward unacceptable risk.",
           "why_it_matters": "AI systems can fail quietly: accuracy slips or staff turn to unapproved tools. AI key risk indicators (KRIs) give owners time to act before a service is disrupted.",
           "how_it_works": [
@@ -2167,10 +2278,10 @@
             "Use of unapproved AI tools shows policy risk; AI service outages, including at providers, show continuity risk.",
             "Each AI KRI has an owner, thresholds and an escalation path, like any other KRI."
           ],
-          "example": "An insurer's AI tool flags suspicious claims. Claim handlers override its low-risk rating on 4% of claims in spring and 15% by autumn. Zoe, a junior analyst, sees the override rate cross the amber threshold and reports it to the model owner, who finds the model missed a new fraud pattern.",
+          "example": "A theme park plans an AI assistant that answers visitors' questions about tickets and opening hours. Before launch, the model owner asks Ade, a junior analyst, to help set its key risk indicators. Ade proposes tracking the share of a weekly sample of answers that cite a made-up price or park rule, often called hallucinations: amber at 2% alerts the model owner, and red at 5% also goes to the risk owner.",
           "audit_focus": {
             "review": [
-              "Confirm each AI KRI maps to an entry in the AI inventory",
+              "Tie each AI KRI you report to a model in the AI inventory",
               "Report threshold crossings to the model owner with the trend"
             ],
             "evidence": [

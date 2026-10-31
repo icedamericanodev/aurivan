@@ -1,10 +1,11 @@
 // Help and feedback screenshots (mobile 1.7, Uplift Phase 1 "Ask and fix"):
-// the report sheet on a question and on a note, the calm note after the
-// email app opens, the no-email-app fallback, Settings → Help and feedback,
-// the Help screen (two groups), "Copy or share instead", Today's credit line
-// (with Dismiss), What's new (with "Updated after your report", and its end
-// with the feedback line), Common questions and Your reports. (What's next
-// was removed in 1.17.1.)
+// the report sheet on a question (opened from the answer's ⋯ "More on this
+// question" sheet since mobile 1.49) and on a note, the calm note after the
+// email app opens, the no-email-app fallback, Settings → the "Help and about"
+// door (mobile 1.46) and its screen, the Help screen (two groups), "Copy or
+// share instead", Today's credit line (with Dismiss), What's new (with
+// "Updated after your report", and its end with the feedback line), Common
+// questions and Your reports. (What's next was removed in 1.17.1.)
 // Usage: node shoot_support.mjs <seed.json> <out> <suffix>
 // Run via: SHOTS=support bash scripts/screenshots/run.sh <out> <dark|light>
 // (run.sh swaps in a one-entry demo fixes list for this export only.)
@@ -57,14 +58,20 @@ const scrollTo = async (text, top = 110) => {
 };
 
 // 1. A question: answer it (the seed's first sample picks the runner-up), then report.
+// Mobile 1.49: the answer ends in a text-only source line; "Report a problem with this
+// question" is the last row of the header's ⋯ "More on this question" sheet.
 const keys = (seed.__shotKeys || 'A').split(',');
 await open('/session');
 await page.getByLabel(new RegExp(`^Option ${keys[0]}:`)).first().click();
 await page.getByText('Check answer', { exact: true }).click();
 await page.waitForTimeout(900);
-await scrollTo('Report a problem', 520);
-await snap('s01-question-trust-line');
-await page.getByText('Report a problem', { exact: true }).click();
+await scrollTo(/^Original · Reviewed /, 520);
+await snap('s01-question-source-line');
+await page.getByRole('button', { name: 'More on this question', exact: true }).click();
+await page.waitForTimeout(700);
+await snap('s01b-question-more-sheet');
+// A regex: with SHOT_QUESTIONS=d1_008 first (it has a seeded report) the label ends "… Report started <date>".
+await page.getByRole('button', { name: /^Report a problem with this question/ }).click();
 await page.waitForTimeout(900);
 await snap('s02-question-sheet-top');
 await page.getByText('The marked answer looks wrong', { exact: true }).click();
@@ -113,10 +120,14 @@ await page.waitForTimeout(900);
 await scrollTo('Send it your own way', 120);
 await snap('s28-own-way-panel');
 
-// 3. Settings → Help and feedback; the Help screen; the sheets from there.
+// 3. Settings → the "Help and about" door (mobile 1.46) → its screen, whose first row is
+// "Get help or send feedback"; the Help screen; the sheets from there.
 await open('/settings');
-await scrollTo('Help and about', 110); // mobile 1.17 group name
+await scrollTo('Help and about', 110); // the door's title, in the last card ("Data and help")
 await snap('s11-settings-help');
+await page.getByRole('button', { name: /^Help and about, / }).click(); // → /settings-section?category=help
+await page.waitForTimeout(1500);
+await snap('s11b-settings-help-and-about');
 await open('/help');
 await snap('s12-help-screen');
 await page.mouse.wheel(0, 30000); await page.waitForTimeout(800);
@@ -158,14 +169,14 @@ await snap('s21-faq');
 await open('/reports');
 await snap('s22-your-reports');
 
-// 6. A lesson step's quiet link, and the mock navigator's line.
+// 6. A lesson step's report entry: the flag in the lesson header (mobile 1.22; no row in the body).
 await open('/lesson/cisa-l-d1-charter');
 await page.getByRole('button', { name: 'Next', exact: true }).click(); await page.waitForTimeout(500);
 await snap('s23-lesson-step-link');
 
 // 7. Approximate 200% text (the web build always reports a font scale of 1, so
 // CSS zooms every text run instead; check the ×1.3 reflow rules on a device or
-// in the screen tests): the trust line row, the report sheet, the Help rows.
+// in the screen tests): a note's report row, the report sheet, the Help rows.
 const large = async () => { await page.addStyleTag({ content: 'div[dir="auto"] { zoom: 2; }' }); await page.waitForTimeout(600); };
 await page.evaluate(() => localStorage.removeItem('aurivan.session.v1'));
 await open('/notes/subtopic/1A2.4');

@@ -66,7 +66,11 @@ reasons: `docs/content/CRISC_BANK_PLAN.md` section 6.
 - No option carries its own reason ("since", "because", "so that"); pre_read never reveals the key; the stem holds every fact the explanation uses against the runner-up.
 - Keys balanced and in mixed file order; options parallel in length and form.
 - The candidate is "the risk practitioner" or "the risk analyst"; money as `$600,000`; subtopic heading in sentence case.
-- Residual risk is after a response is implemented; a projection for planned controls is a target.
+- Current risk is today's exposure (actions already taken), compared with appetite now; residual risk is what an implemented response leaves; the level a planned response should reach is the Glossary's "future residual risk", which KaiSip calls target risk.
+- ISACA Glossary terms win: control owner = accountable for the control working (often the manager whose team runs it); MTO and AIW are ISACA's terms (MTD only as "other sources say"); RTO covers a business function or resource.
+- Vary stem form: about 25–30% short "Which of the following is MOST/BEST …" stems with noun-phrase options.
+- FIRST is not always "assess": at most about 60% of a domain's FIRST keys are assess/record/reassess.
+- Keys are one action; no absolute or urgency words ("every", "immediately", "at once") that mark only wrong options; no subjective frequency words ("often", "seldom"); no hedged distractors against a flat key; no planted facts whose only job is to rule out one option; numeric options ascending; no option letters inside explanations.
 - Check new items against `data/originals/` (CISA) and `data/cc/originals/` (CC) for mirrored scenarios.
 
 ## Notes (data/crisc/notes/d{N}.json)

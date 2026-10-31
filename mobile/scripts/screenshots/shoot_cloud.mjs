@@ -16,7 +16,9 @@
 //   acct-email-err   email entry with the "bad address" problem
 //   acct-code        the code step with the resend timer
 //   acct-home        the Account screen, signed in
-//   acct-settings    Settings → Account, signed in
+//   acct-settings-door  Settings → the "Account, Sign in and sync" door in the last card ("Data and help")
+//   acct-settings    Settings → Account, signed in (its own screen since mobile 1.46,
+//                    settings-section?category=account)
 //   acct-del-1/2/3   delete: step 1, confirm it's you, typing DELETE (with the line
 //                    restating the progress choice)
 //   acct-del-done    "Your account is deleted"
@@ -29,7 +31,8 @@
 //   sync-status-just / -offline / -newer / -unreadable   Account → Sync in each status
 //   sync-first-phone / -account / -both                  the first-sync preview, each case
 //   sync-switch      a different account on this phone (Start fresh is the default)
-//   sync-undo        Settings → Your data with "Undo sync" (after a real first sync)
+//   sync-undo        Settings → Your data with "Undo sync" (after a real first sync; Your data is its
+//                    own screen since mobile 1.46, settings-section?category=data)
 //   sync-signout     the sign-out sheet with "Remove my progress from this phone"
 //   sync-what        What syncs
 //   sync-delete      the Delete synced progress confirmation
@@ -39,7 +42,7 @@
 //   sync-status-retry      a server problem that isn't the connection: "We'll try again soon" (UX P1)
 //   sync-signout-remove    the sign-out sheet ticked: the red "Remove and sign out" (UX H1)
 //   sync-signout-unsynced  …tapped with sync off: the "isn't in your account yet" warning (UX H1)
-//   sync-reset             Settings → Reset while syncing, with an Undo sync copy waiting (UX H2, O2)
+//   sync-reset             Your data → Reset while syncing, with an Undo sync copy waiting (UX H2, O2)
 //   sync-restore           the restore preview while syncing (UX H2)
 //   sync-switch            now also shows Start fresh's new wording (UX P3, P4)
 // The web build can't show system alerts, so cloud/memory/shotsAlert.ts draws them (shots only).
@@ -166,8 +169,12 @@ const tap = async (page, name) => {
   await go(page, ON, '/account');
   await shot(page, 'acct-home');
 
+  // Settings → Account is a door in the last card ("Data and help", mobile 1.46); its rows have their own screen.
   await go(page, ON, '/settings');
-  await scrollTo(page, 'Account', 200);
+  await page.getByRole('button', { name: /^Account, / }).scrollIntoViewIfNeeded();
+  await page.waitForTimeout(700);
+  await shot(page, 'acct-settings-door');
+  await go(page, ON, '/settings-section?category=account');
   await shot(page, 'acct-settings');
 
   // Delete with a recent sign-in: step 1, then type DELETE, then done.
@@ -266,11 +273,11 @@ const syncSwitch = async (page) => {
   await go(page, ON, '/account');
   await syncSwitch(page);
   await shot(page, 'sync-first-both');
-  // Combine, then Settings → Your data offers Undo sync.
+  // Combine, then Settings → Your data offers Undo sync (Your data is its own screen since mobile 1.46:
+  // the door in Settings' last card opens settings-section?category=data).
   await tap(page, 'Combine');
   await page.waitForTimeout(1200);
-  await go(page, ON, '/settings');
-  await scrollTo(page, 'Your data', 120);
+  await go(page, ON, '/settings-section?category=data');
   await shot(page, 'sync-undo');
   // Reset while syncing (an Undo sync copy is waiting): the alert says what that means.
   await scrollTo(page, 'Reset CISA progress', 420);
@@ -288,7 +295,10 @@ const syncSwitch = async (page) => {
       appVersion: '1.17.0',
       stores: { settings: JSON.parse(seed['aurivan.settings.v1']), progress: JSON.parse(seed[PROGRESS]) },
     });
-    await scrollTo(page, 'Your data', 120);
+    // Back to the top of Your data, where "Restore from a backup" is.
+    await page.mouse.move(196, 500);
+    await page.mouse.wheel(0, -3000);
+    await page.waitForTimeout(700);
     const chooser = page.waitForEvent('filechooser');
     await page.getByRole('button', { name: 'Restore from a backup' }).first().click();
     await (await chooser).setFiles({ name: 'kaisip-backup.json', mimeType: 'application/json', buffer: Buffer.from(file) });

@@ -4,6 +4,11 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v12.49.9] — Priority-word explanations line up
+
+### Improved
+- Questions about priority words like MOST LIKELY, GREATEST and PRIMARY now explain what each word asks for in the same plain way.
+
 ## [v12.49.8] — A clearer priority-word example
 
 ### Improved

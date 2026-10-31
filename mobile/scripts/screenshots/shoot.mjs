@@ -231,8 +231,13 @@ await page.screenshot({ path: `${out}/27b-exam-eve-scrolled.png` });
 await edit('aurivan.settings.v1', `v.state.examDates.cisa = ${keyIn(0)};`);
 await edit('aurivan.progress.v1', 'if (v.state.days) delete v.state.days.cisa;');
 await shot('28-exam-day', '/home');
-// Settings: the exam-date control (presets + day/week steps), date set.
+// Settings: the exam-date control, date set (exam day, from above).
+// Mobile 1.43+: the Exam card's "Exam date" row (spoken "Exam date, <date>, <until>")
+// opens the calendar sheet: quick picks, the month grid and the chosen line.
 await shot('30-settings-exam-date', '/settings');
+await page.getByRole('button', { name: /^Exam date/ }).first().click();
+await page.waitForTimeout(900);
+await page.screenshot({ path: `${out}/30-settings-exam-date.png` });
 await edit('aurivan.settings.v1', `v.state.examDates.cisa = ${keyIn(38)};`);
 await edit('aurivan.progress.v1', 'if (v.state.days) delete v.state.days.cisa;');
 // Mindset growth (You): first-try answers from make_seed.py (__growth); the
@@ -328,11 +333,14 @@ await page.screenshot({ path: `${out}/33b-game-recap-misses.png` });
 console.log('shot game recap');
 // Settings: reminders on, weekdays at 07:30 (seeded: no permission prompt on web).
 await edit('aurivan.settings.v1', 'v.state.reminder = { enabled: true, hour: 7, minute: 30, days: [1, 2, 3, 4, 5] };');
+// Mobile 1.46: Settings is one page of cards (Appearance, Exam, Your study, Reminders,
+// Practice…); the Reminders card starts below the first screen. Put its header near
+// the top so the "Study reminder" switch and "Time and days" row both show.
 await shot('35-settings-reminders', '/settings');
-await page.getByText('Study reminder', { exact: true }).scrollIntoViewIfNeeded();
+await page.getByRole('heading', { name: 'Reminders', exact: true }).first().evaluate((n) => n.scrollIntoView({ block: 'start' }));
 await page.mouse.move(196, 500);
-await page.mouse.wheel(0, 420);
-await page.waitForTimeout(600);
+await page.mouse.wheel(0, -24);
+await page.waitForTimeout(700);
 await page.screenshot({ path: `${out}/35-settings-reminders.png` });
 console.log('shot settings reminders');
 // Onboarding (last: it marks the learner as new).
