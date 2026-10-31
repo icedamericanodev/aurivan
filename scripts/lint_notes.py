@@ -6,6 +6,8 @@ Usage:
     python3 scripts/lint_notes.py path/to/domain4.json # one domain object (writer drafts)
     python3 scripts/lint_notes.py --domain 4           # one domain of the main file
     python3 scripts/lint_notes.py --audit-focus        # also list each subtopic without audit_focus
+    python3 scripts/lint_notes.py data/crisc/notes/d1.json --outline docs/content/CRISC_BLUEPRINT.md --bank data/crisc/originals
+                                                       # another cert: its outline lines ("- 1A1 ...") and its bank
 
 Errors break the schema or a hard limit; warnings are style targets.
 Exit code 1 if there are errors.
@@ -85,8 +87,10 @@ EXAMPLE_OVERLAP_MAX = 0.25  # an example this close to a bank question gives the
 def content_words(s):
     return {w for w in re.findall(r"[a-z0-9]+", (s or "").lower()) if w not in EX_STOP and len(w) > 2}
 
+BANK = ROOT / "data" / "originals"
+
 def bank_items(n):
-    path = ROOT / "data" / "originals" / f"d{n}.json"
+    path = BANK / f"d{n}.json"
     if not path.exists():
         return []
     data = json.loads(path.read_text())
@@ -96,7 +100,7 @@ def bank_items(n):
 def eco_codes():
     codes = []
     for line in ECO.read_text().splitlines():
-        m = re.match(r"- (\d[AB]\d+) ", line)
+        m = re.match(r"- (\d[A-G]\d*) ", line)
         if m and m.group(1) not in codes:
             codes.append(m.group(1))
     return codes
@@ -380,7 +384,16 @@ def lint_domain(r, dom, codes):
     return len(ids)
 
 def main(argv):
+    global ECO, BANK
     args = [a for a in argv if not a.startswith("--")]
+    for flag in ("--outline", "--bank"):  # a non-CISA cert: its blueprint and its own bank
+        if flag in argv:
+            val = argv[argv.index(flag) + 1]
+            args = [a for a in args if a != val]
+            if flag == "--outline":
+                ECO = Path(val)
+            else:
+                BANK = Path(val)
     only = None
     if "--domain" in argv:
         only = int(argv[argv.index("--domain") + 1])

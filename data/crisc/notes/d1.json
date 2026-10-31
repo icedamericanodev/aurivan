@@ -1,0 +1,1860 @@
+{
+  "domain_number": 1,
+  "domain_name": "Governance",
+  "exam_weight": "26%",
+  "source": "Original KaiSip study notes, organized by the CRISC exam content outline effective 2025. Not affiliated with or endorsed by ISACA®. CRISC® is a registered trademark of ISACA.",
+  "overview": "Governance is where CRISC starts: the business strategy and objectives that risk is measured against, the people who own and decide on risk, and the culture, policies, processes and assets that shape it. The second part turns this into risk governance: enterprise risk management, the lines of defense, the risk profile, risk appetite and tolerance, and the frameworks and obligations an enterprise must meet. AI runs through both parts.",
+  "analogy": "Think of a city transport authority. The council sets the goals, safe and on-time travel, and how much disruption it will accept (appetite). Each route manager owns their routes and their delays (risk owners), while engineers run the signals and brakes (control owners). A safety office watches the whole network, challenges managers and reports to the council (the risk practitioner in the second line), and inspectors check everything independently (internal audit). Rulebooks say what must happen (policies), every depot and train is tracked and owned (assets), and each new route, including a driverless one, is assessed before it opens.",
+  "parts": [
+    {
+      "part": "A",
+      "name": "Organizational Governance",
+      "topic_ids": [
+        "1A1",
+        "1A2",
+        "1A3",
+        "1A4",
+        "1A5",
+        "1A6"
+      ]
+    },
+    {
+      "part": "B",
+      "name": "Risk Governance",
+      "topic_ids": [
+        "1B1",
+        "1B2",
+        "1B3",
+        "1B4",
+        "1B5"
+      ]
+    }
+  ],
+  "topics": [
+    {
+      "topic_id": "1A1",
+      "topic_name": "Strategy, Goals, and Objectives",
+      "overview": "Risk management exists to help the enterprise meet its objectives. This topic shows how to tie every risk to a business objective, how COBIT 2019 cascades enterprise goals down to technology goals, and why a change in strategy, such as adopting AI, means reassessing risk.",
+      "can_do": [
+        "Restate a technical finding as a risk to a named business objective",
+        "Trace an IT goal up the goals cascade to the enterprise goal it serves",
+        "Recognize when a strategic change calls for a fresh risk assessment"
+      ],
+      "subtopics": [
+        {
+          "id": "1A1.1",
+          "name": "Risk in Service of Business Objectives",
+          "legacy_ids": [],
+          "definition": "Business-aligned risk management treats risk as the effect of uncertainty on business objectives, so each risk is described, rated and treated by what it does to them.",
+          "why_it_matters": "A program built from technical findings alone ranks issues by severity score, not business harm. Linking each risk to an objective shows leaders which risks threaten what they promised stakeholders.",
+          "how_it_works": [
+            "Start from the enterprise strategy and objectives, then ask which uncertainties could help or hinder each one.",
+            "Express each risk in business terms: the objective affected, the impact on it and how likely that is.",
+            "Treat technical weaknesses as causes inside a risk scenario, not as the risk itself.",
+            "Include upside risk: a missed opportunity is also an effect on objectives.",
+            "Choose controls only after the objective and the risk to it are clear, so spending follows business value."
+          ],
+          "example": "An electronics distributor promises 98% on-time delivery. A scan lists 400 server weaknesses, and the IT manager wants them ranked by severity score. Amara, the risk analyst, instead traces which weaknesses could stop the route-planning system behind deliveries, writes them up as risk scenarios against the on-time goal, and takes them to the operations director, who owns that goal.",
+          "audit_focus": {
+            "review": [
+              "Trace each top register risk to a named business objective",
+              "Compare register ratings with impact estimates from objective owners"
+            ],
+            "evidence": [
+              "Risk register entries showing the objective each risk affects",
+              "Strategy or business plan listing measurable objectives"
+            ],
+            "recommend": "Have risk owners restate technical findings as risk scenarios tied to the objectives they own.",
+            "decides": "The executive accountable for the affected goal chooses the treatment"
+          },
+          "isaca_rule": "On CRISC items, start from the business objective. A risk matters by its effect on what the enterprise is trying to achieve; a technical defect becomes a risk only once it is tied to an objective, an impact and an owner.",
+          "exam_traps": [
+            {
+              "trap": "Build the risk program from the vulnerability scan, since it is the most complete list of problems.",
+              "why": "A scan lists causes, not risks. Without objectives there is no way to rank them by business impact or to know who should decide."
+            },
+            {
+              "trap": "Pick the strongest control first, then work out which objective it protects.",
+              "why": "A control chosen before its objective may protect the wrong thing or cost more than the risk is worth."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Business objective",
+              "definition": "A measurable result the enterprise has committed to, such as revenue, a service level or regulatory standing."
+            },
+            {
+              "term": "Risk scenario",
+              "definition": "A description of an event that could affect objectives, naming the cause, what it hits and the business impact."
+            },
+            {
+              "term": "Upside risk",
+              "definition": "Uncertainty that could help an objective if the enterprise acts on it; also called an opportunity."
+            }
+          ],
+          "memory_aid": "Objective first, risk second, control third."
+        },
+        {
+          "id": "1A1.2",
+          "name": "The Goals Cascade and Strategic Change",
+          "legacy_ids": [],
+          "definition": "The COBIT 2019 goals cascade links stakeholder needs to enterprise goals, then to alignment goals for information and technology, so every technology goal serves a business goal.",
+          "why_it_matters": "IT goals set on their own let technology spend drift from business needs. Strategic change, such as a new AI initiative, also changes the risk profile and must be assessed early.",
+          "how_it_works": [
+            "Stakeholder needs and drivers shape enterprise goals, such as customer trust or compliance with laws.",
+            "Enterprise goals cascade to alignment goals for information and technology (I&T), which point to the governance and management objectives that deliver them.",
+            "Risk to an alignment goal is reported by its effect on the enterprise goal above it.",
+            "A new strategy, merger, market or technology triggers a fresh look at the risks to each affected goal.",
+            "AI initiatives start from a business purpose, with a risk owner and appetite fit agreed before they scale."
+          ],
+          "example": "A university plans to grow online enrollment by 20%. The IT director proposes moving every system to the cloud by year end. Kenji, the risk practitioner, maps the cloud goal to the enrollment goal, shows that only the student portal and learning platform support it, and asks the provost's office to confirm priorities before assessing the risks of a full migration.",
+          "audit_focus": {
+            "review": [
+              "Map each major IT goal to the enterprise goal it supports",
+              "Compare new initiatives with the risk assessments done before launch"
+            ],
+            "evidence": [
+              "Goals cascade or strategy map approved by senior management",
+              "Initiative business cases with risk sections and named owners"
+            ],
+            "recommend": "Have senior management confirm which enterprise goal each IT goal and new initiative supports.",
+            "decides": "Senior management sets enterprise goals and approves new strategic initiatives"
+          },
+          "isaca_rule": "IT goals are means, not ends. When a technology goal or initiative appears, ask which enterprise goal it serves, assess and report its risk through that goal, and reassess risk whenever strategy changes, including when AI is adopted.",
+          "exam_traps": [
+            {
+              "trap": "IT goals such as 99.99% uptime are worth pursuing for their own sake.",
+              "why": "Uptime matters only as far as a business goal needs it. Unneeded targets add cost and crowd out risks that matter more."
+            },
+            {
+              "trap": "A new AI tool is only a technology project, so the IT team owns its risk.",
+              "why": "AI changes how the business meets objectives. Its risk belongs to the business owner of the process it supports, and it enters the risk profile."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Enterprise goal",
+              "definition": "A business-level goal in the COBIT 2019 cascade, such as customer-oriented service or compliance with external laws."
+            },
+            {
+              "term": "Alignment goal",
+              "definition": "A COBIT 2019 goal for information and technology that supports one or more enterprise goals."
+            },
+            {
+              "term": "Strategic change",
+              "definition": "A shift in direction, market, structure or technology that changes the objectives behind risk ratings."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "topic_id": "1A2",
+      "topic_name": "Organizational Structure, Roles, and Responsibilities",
+      "overview": "Every CRISC decision has an owner. This topic covers who sets direction (the board and senior management), who oversees (committees and the chief risk officer), who owns and decides on each risk, who runs controls, and what the risk practitioner does, including for AI systems.",
+      "can_do": [
+        "Name the body that approves risk appetite and the risk management framework",
+        "Tell the risk owner, control owner and risk practitioner apart in a scenario",
+        "Assign one accountable owner when several teams share an activity, including an AI use case"
+      ],
+      "subtopics": [
+        {
+          "id": "1A2.1",
+          "name": "Board, Senior Management and the Risk Committee",
+          "legacy_ids": [],
+          "definition": "Governance bodies are the board, its committees and senior management, who set direction, approve risk appetite and the risk framework, and oversee how risk is managed.",
+          "why_it_matters": "Many exam items turn on who has authority. The board and senior management set direction and answer for outcomes; specialists advise them. Sending a decision to the wrong level is a common wrong answer.",
+          "how_it_works": [
+            "The board sets direction, approves risk appetite and oversees how senior management handles major risk.",
+            "Senior management turns direction into strategy, approves the risk management framework and policies, and assigns risk owners.",
+            "A risk committee, at board or management level, reviews the risk profile, challenges ratings and escalates breaches.",
+            "The chief risk officer (CRO) runs the risk function, keeps the framework working and reports on the risk profile.",
+            "Committees advise and oversee; accountability for a given risk still rests with one named person."
+          ],
+          "example": "At a regional bank, the IT steering group wants to approve a new appetite statement for technology risk. Sofia, a senior risk analyst, explains that appetite is set by the board on senior management's proposal, drafts the statement with the CRO's team, and routes it through the board risk committee for review before it goes to the board.",
+          "audit_focus": {
+            "review": [
+              "Compare committee charters with the decisions each body actually takes",
+              "Trace the approval path of the latest risk appetite statement"
+            ],
+            "evidence": [
+              "Board and risk committee minutes showing approvals and challenges",
+              "Charters naming each body's risk authority"
+            ],
+            "recommend": "Have the board secretary and the CRO align charters so each risk decision has one approving body.",
+            "decides": "The board signs off appetite; executives sign off the framework"
+          },
+          "isaca_rule": "Match the decision to the level with authority. The board, with senior management, sets appetite; senior management approves the framework under the board's oversight; risk owners decide responses; the practitioner informs, facilitates and reports, but never decides in their place.",
+          "exam_traps": [
+            {
+              "trap": "The risk committee is accountable for every risk it reviews.",
+              "why": "A committee oversees and challenges. Accountability for a specific risk sits with one named risk owner, so decisions do not get lost in a group."
+            },
+            {
+              "trap": "The CRO approves the enterprise risk appetite.",
+              "why": "The CRO proposes, explains and monitors appetite. The board, with senior management, sets and approves it."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Board of directors",
+              "definition": "The governing body accountable to owners or stakeholders; it sets direction and oversees senior management."
+            },
+            {
+              "term": "Risk committee",
+              "definition": "A board or management committee that reviews the risk profile, challenges ratings and escalates issues."
+            },
+            {
+              "term": "Chief risk officer (CRO)",
+              "definition": "The executive who leads the risk function and reports on enterprise risk to senior management and the board."
+            }
+          ]
+        },
+        {
+          "id": "1A2.2",
+          "name": "Risk Owner, Control Owner and Risk Practitioner",
+          "legacy_ids": [],
+          "definition": "The risk owner is accountable for a risk and decides its response; the control owner runs a control; the risk practitioner identifies, analyzes, recommends, monitors and reports.",
+          "why_it_matters": "Clear ownership means someone with authority and budget acts on each risk. When IT or the risk function is treated as owner, decisions are made by people who cannot fund them or live with the loss.",
+          "how_it_works": [
+            "The risk owner is a business manager with authority over the affected objective who accepts, mitigates, transfers or avoids the risk.",
+            "The control owner designs, operates and maintains a control and reports on whether it works.",
+            "One person can own a risk while several control owners run the controls that reduce it.",
+            "The risk practitioner validates ownership, facilitates assessments and brings options with cost and benefit to the owner.",
+            "Ownership is recorded in the risk register and reviewed when people or structures change."
+          ],
+          "compare": {
+            "columns": [
+              "Risk owner",
+              "Control owner",
+              "Risk practitioner"
+            ],
+            "rows": [
+              {
+                "label": "Main job",
+                "cells": [
+                  "Decides the response and accepts what remains",
+                  "Runs and maintains a control",
+                  "Analyzes, recommends, monitors and reports"
+                ]
+              },
+              {
+                "label": "Typical role",
+                "cells": [
+                  "Business unit head or process owner",
+                  "IT, operations or finance manager",
+                  "Risk practitioner, such as a risk analyst"
+                ]
+              },
+              {
+                "label": "Signs off on",
+                "cells": [
+                  "Risk acceptance and the treatment plan",
+                  "Control design and test results",
+                  "Nothing on the owner's behalf"
+                ]
+              }
+            ]
+          },
+          "example": "A hospital's patient billing risk shows more errors after a system change, and the IT manager offers to own it because IT made the change. Ravi, the risk analyst, proposes the head of revenue cycle as risk owner, since billing outcomes are theirs, and the IT manager as owner of the change control; once senior management confirms, Ravi records both and sets up a meeting for the owner to choose a response.",
+          "audit_focus": {
+            "review": [
+              "Sample register entries and confirm each names a business risk owner",
+              "Compare named control owners with who actually operates each control"
+            ],
+            "evidence": [
+              "Risk register owner fields with sign-off dates",
+              "Signed risk acceptance forms from risk owners"
+            ],
+            "recommend": "Have senior management assign each unowned risk to the business manager accountable for the objective.",
+            "decides": "The risk owner decides the response and accepts residual risk"
+          },
+          "isaca_rule": "Risk is owned by the business manager accountable for the affected objective, not by IT, the risk function or a committee. On CRISC items, a practitioner who accepts risk or implements a control alone is doing someone else's job.",
+          "exam_traps": [
+            {
+              "trap": "The control owner and the risk owner are the same person by default.",
+              "why": "They can be, but often are not. A sales director may own fraud risk while finance and IT managers each own controls that reduce it."
+            },
+            {
+              "trap": "The risk practitioner should own risks that no business manager will take.",
+              "why": "That hides the gap. The practitioner escalates to senior management, who assign an owner with authority over the objective."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Risk acceptance",
+              "definition": "The risk owner's documented decision to bear a risk at its current level, within appetite."
+            },
+            {
+              "term": "Residual risk",
+              "definition": "The risk that remains after a response has been implemented; the risk owner must accept it."
+            }
+          ]
+        },
+        {
+          "id": "1A2.3",
+          "name": "RACI and Accountability, Including AI",
+          "legacy_ids": [],
+          "definition": "A RACI chart shows, for each activity, who is Responsible for doing it, Accountable for the outcome, Consulted before and Informed after; only one person is accountable.",
+          "why_it_matters": "RACI turns roles into checkable assignments. New areas such as AI often involve many teams and no single accountable owner, which leaves risk decisions unmade.",
+          "how_it_works": [
+            "Many people can be responsible for work; exactly one is accountable for each activity's outcome.",
+            "Accountability sits with someone who has authority and resources, usually a business manager.",
+            "Consulted parties give input before a decision; informed parties hear the result after it.",
+            "For AI systems, the business owner of the use case is accountable; data science, IT and legal are responsible or consulted.",
+            "RACI charts are reviewed after reorganizations, new technology or staff turnover."
+          ],
+          "example": "A city council launches a chatbot that answers housing benefit questions. Data science built it, IT hosts it and legal reviewed it, but no one has signed off its risk. Lena, the risk analyst, drafts a RACI with the housing services director as accountable and the three teams as responsible or consulted, then asks the director to confirm the AI risk entry in the register.",
+          "audit_focus": {
+            "review": [
+              "Inspect RACI charts for activities with no accountable party or several",
+              "Compare AI use cases in production with named risk owners"
+            ],
+            "evidence": [
+              "RACI chart approved by the accountable executives",
+              "AI use case register with risk owner and approval date"
+            ],
+            "recommend": "Have senior management name one accountable business owner for each AI use case and shared activity.",
+            "decides": "Senior management assigns accountability; the named owner then decides"
+          },
+          "isaca_rule": "One activity, one accountable person. When several teams are involved and nobody decides, the BEST move is to establish ownership with the business manager who benefits from the activity, then record it in the risk register.",
+          "exam_traps": [
+            {
+              "trap": "Make the AI steering committee accountable for the chatbot's risk.",
+              "why": "A committee cannot be one accountable person. It can oversee and advise, but a named business manager must own the risk and its decisions."
+            },
+            {
+              "trap": "The data science team owns AI model risk because it built the model.",
+              "why": "Builders are responsible for model work. The business owner of the use case answers for the outcome and decides how much AI risk is acceptable."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Accountable",
+              "definition": "In RACI, the one person who answers for an outcome and has authority to decide."
+            },
+            {
+              "term": "Responsible",
+              "definition": "In RACI, those who carry out the work; many people can share this."
+            },
+            {
+              "term": "AI use case",
+              "definition": "A specific business purpose for which an AI system is used, such as triaging claims or answering residents."
+            }
+          ],
+          "memory_aid": "Many hands can be responsible; only one neck is accountable."
+        }
+      ]
+    },
+    {
+      "topic_id": "1A3",
+      "topic_name": "Organizational Culture and Ethics",
+      "overview": "Controls and policies only work when people follow them. This topic covers risk culture and tone at the top, incentives and speaking up, and the professional ethics a risk practitioner keeps, including fair and honest treatment of AI risk.",
+      "can_do": [
+        "Spot a culture or incentive root cause behind repeated control failures",
+        "Choose leadership and incentive actions over training alone when culture is the cause",
+        "Apply the ISACA Code of Professional Ethics when pressed to change a risk rating"
+      ],
+      "subtopics": [
+        {
+          "id": "1A3.1",
+          "name": "Risk Culture and Tone at the Top",
+          "legacy_ids": [],
+          "definition": "Risk culture is the shared values and behaviors that shape how openly people discuss, report and take risk; tone at the top is how leaders model them.",
+          "why_it_matters": "Policies work only if people follow them when no one is watching. A risk strategy that clashes with culture is hard to carry out, so culture is a root cause behind many control failures.",
+          "how_it_works": [
+            "Leaders signal priorities through what they reward, question, fund and tolerate, more than through what they write.",
+            "A healthy risk culture shows in early reporting of near misses and honest discussion of losses.",
+            "A weak culture shows in hidden issues, repeated exceptions and blame after incidents.",
+            "Culture is assessed with surveys, interviews, incident reporting rates and the way exceptions are handled.",
+            "Changing culture takes leadership action, aligned incentives and consequences, supported by training and communication."
+          ],
+          "example": "At a manufacturer, findings on unsafe changes to plant safety systems keep recurring after two rounds of training. Omar, the risk practitioner, reviews exception logs and finds plant managers routinely approve skipped checks to meet output targets, with no follow-up from executives. They report the pattern to the operations executive as a culture issue tied to targets and propose leadership actions, not another course.",
+          "audit_focus": {
+            "review": [
+              "Compare incident and near-miss reporting rates across business units",
+              "Trace repeated exceptions to the managers who approved them"
+            ],
+            "evidence": [
+              "Risk culture survey results by unit",
+              "Exception and incident logs with approver names"
+            ],
+            "recommend": "Have senior management address culture gaps through leadership behavior, incentives and consequences, backed by training.",
+            "decides": "Senior management owns culture change and its incentives"
+          },
+          "isaca_rule": "When the same control failures repeat despite training, suspect culture and incentives. The BEST fix starts with leadership behavior and accountability; awareness training supports it but cannot carry it alone.",
+          "exam_traps": [
+            {
+              "trap": "A strict new policy will fix a weak risk culture.",
+              "why": "A policy states intent. If leaders keep rewarding the old behavior, people work around the policy, so leadership action and incentives must change too."
+            },
+            {
+              "trap": "More awareness training is the main lever for culture.",
+              "why": "Training builds knowledge. Culture follows what leaders do and reward, so training without leadership change rarely shifts behavior."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Tone at the top",
+              "definition": "The attitude toward risk and integrity that senior leaders show through their words, decisions and behavior."
+            },
+            {
+              "term": "Near miss",
+              "definition": "An event that could have caused loss but did not; reporting it is a sign of a healthy culture."
+            },
+            {
+              "term": "Culture assessment",
+              "definition": "A structured review of attitudes and behaviors using surveys, interviews and data such as reporting rates."
+            }
+          ]
+        },
+        {
+          "id": "1A3.2",
+          "name": "Incentives, Speaking Up and Escalation",
+          "legacy_ids": [],
+          "definition": "Incentives are the rewards and pressures that shape risk-taking; speaking up means staff raise concerns without fear, through open channels and protected whistleblowing routes.",
+          "why_it_matters": "Pay and targets that reward volume or speed alone push people to take risks outside appetite. If reporting brings blame, issues stay hidden until they become losses.",
+          "how_it_works": [
+            "Balanced scorecards pair performance targets with risk and control measures.",
+            "Rewards for risk-taking roles can be deferred, and reduced if losses emerge later.",
+            "Several reporting channels exist, including an anonymous route that bypasses line managers.",
+            "People who raise issues in good faith are protected from retaliation, and leaders thank them visibly.",
+            "Reported concerns are logged, assessed like any risk event and closed with feedback to the reporter."
+          ],
+          "example": "A retailer pays store managers a bonus for keeping stock losses below 1%. Mei, a risk analyst, notices write-offs have dropped while customer complaints about missing orders have climbed. They suspect write-offs are being delayed to protect bonuses, document the pattern and its possible impact, and raise it with the retail operations director, who owns the bonus scheme.",
+          "audit_focus": {
+            "review": [
+              "Compare incentive targets with risk and control measures for the same roles",
+              "Sample reported concerns from receipt to closure and feedback"
+            ],
+            "evidence": [
+              "Incentive plan documents showing performance and risk measures",
+              "Speak-up case log with dates, outcomes and feedback"
+            ],
+            "recommend": "Have the human resources director and scheme owners add risk measures and deferral to incentive plans.",
+            "decides": "The remuneration committee or senior management approves incentive design"
+          },
+          "isaca_rule": "Look for the incentive behind the behavior. Recommend that the owner of the incentive scheme rebalance it, and protect those who report; never punish the messenger.",
+          "exam_traps": [
+            {
+              "trap": "Discipline the employee who reported the issue for not raising it sooner.",
+              "why": "Punishing reporters teaches everyone to stay quiet. The goal is earlier reporting, so thank the reporter and fix whatever delayed them."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Whistleblowing",
+              "definition": "Reporting suspected wrongdoing through a protected channel, often anonymously."
+            },
+            {
+              "term": "Retaliation",
+              "definition": "Harmful treatment of someone for raising a concern in good faith."
+            },
+            {
+              "term": "Deferred reward",
+              "definition": "Part of a bonus paid later, so it can be reduced if the risk taken to earn it causes loss."
+            }
+          ]
+        },
+        {
+          "id": "1A3.3",
+          "name": "Professional Ethics and Ethical AI Use",
+          "legacy_ids": [],
+          "definition": "Professional ethics are the conduct standards a practitioner follows, such as the ISACA Code of Professional Ethics: objectivity, due care, confidentiality, competence and disclosure of significant facts.",
+          "why_it_matters": "Risk reports drive decisions. A practitioner who softens a rating under pressure, or leaves out a significant fact, misleads the people who must decide. AI adds new questions about fairness and transparency.",
+          "how_it_works": [
+            "Members and certification holders act with objectivity, due diligence and professional care, in line with professional standards.",
+            "They keep information confidential unless the law requires disclosure, and never use it for personal benefit.",
+            "They take on only work they are competent to do, and keep their skills current.",
+            "They inform the right parties of all significant facts that would distort the results if left out.",
+            "For AI, ethical use means fairness, transparency, human oversight and accountability, set in enterprise policy."
+          ],
+          "example": "An insurer's claims director asks Diego, a risk analyst, to rate a new AI claims-triage model as low risk before a board meeting, although testing showed higher rejection rates for older claimants. Diego keeps the rating their analysis supports, includes the test result in the report and offers to brief the director on response options.",
+          "audit_focus": {
+            "review": [
+              "Compare draft and final risk ratings for unexplained changes",
+              "Inspect AI risk reports for test results left out"
+            ],
+            "evidence": [
+              "Version history of risk reports with reasons for changes",
+              "AI testing results, including fairness checks"
+            ],
+            "recommend": "Have the chief risk officer require a documented reason for any rating change made after stakeholder review.",
+            "decides": "The risk owner decides the response based on the full facts"
+          },
+          "isaca_rule": "Report what the analysis shows, including unwelcome facts. The practitioner can add context and present options, but never changes a rating or omits a significant fact to suit a stakeholder.",
+          "exam_traps": [
+            {
+              "trap": "Lower the rating, since the director owns the risk and can decide what the board sees.",
+              "why": "The owner decides the response, not the facts. Altering a rating misleads the board and breaches the duty to disclose significant facts."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Objectivity",
+              "definition": "Basing judgments on evidence, free from bias, pressure or conflicts of interest."
+            },
+            {
+              "term": "Due professional care",
+              "definition": "Applying the diligence and skill a competent professional would use in the same situation."
+            },
+            {
+              "term": "Algorithmic bias",
+              "definition": "Systematically unfair outcomes for a group, caused by the data, design or use of an AI system."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "topic_id": "1A4",
+      "topic_name": "Policies and Standards",
+      "overview": "Policies turn management intent into rules people can follow. This topic covers the hierarchy from policy to guideline and who approves each layer, how to handle exceptions so they stay owned and time-limited, and how policies are kept current, including a policy for AI use.",
+      "can_do": [
+        "Tell a policy, standard, procedure and guideline apart, with the approver of each",
+        "Handle a policy exception with an owner, a compensating control and an expiry",
+        "Decide when a policy needs review, for example when staff adopt AI tools"
+      ],
+      "subtopics": [
+        {
+          "id": "1A4.1",
+          "name": "The Policy Hierarchy",
+          "legacy_ids": [],
+          "definition": "The policy hierarchy runs from policies (management intent) to standards (mandatory specifics), procedures (step-by-step tasks) and guidelines (advisory good practice).",
+          "why_it_matters": "Each layer has a different approver and force. Confusing them leads to treating advice as a rule, or to IT approving what only senior management can.",
+          "how_it_works": [
+            "Policies state management's intent and direction, are approved by senior management and change rarely.",
+            "Standards make a policy measurable, such as a minimum encryption strength, and are mandatory.",
+            "Procedures give the steps to meet a standard and are owned by the teams that perform them.",
+            "Guidelines recommend good practice; people may depart from them for a sound reason.",
+            "Every layer should trace back to risk appetite, so rules are as strict as the risk requires."
+          ],
+          "compare": {
+            "columns": [
+              "Policy",
+              "Standard",
+              "Procedure",
+              "Guideline"
+            ],
+            "rows": [
+              {
+                "label": "Says",
+                "cells": [
+                  "What and why",
+                  "Measurable requirement",
+                  "Step-by-step how",
+                  "Recommended approach"
+                ]
+              },
+              {
+                "label": "Mandatory?",
+                "cells": [
+                  "Yes",
+                  "Yes",
+                  "Yes, for the task",
+                  "No"
+                ]
+              },
+              {
+                "label": "Usual approver",
+                "cells": [
+                  "Senior management or the board",
+                  "Policy owner or function head",
+                  "Process or team manager",
+                  "Subject expert or team"
+                ]
+              }
+            ]
+          },
+          "example": "A software company's security team publishes a guideline recommending password managers, and an internal review flags a team that does not use one as non-compliant. Noor, the risk practitioner, points out that a guideline is advisory, checks that the mandatory password standard was met, and suggests the policy owner decide whether the practice should become a standard.",
+          "audit_focus": {
+            "review": [
+              "Trace each standard and procedure back to a parent policy",
+              "Inspect approval records for each enterprise policy"
+            ],
+            "evidence": [
+              "Board or executive minutes recording each policy sign-off",
+              "Policy library with owners, versions and review dates"
+            ],
+            "recommend": "Have policy owners map each standard to its policy and move mandatory practices out of guidelines.",
+            "decides": "Senior management approves policies; policy owners approve standards"
+          },
+          "isaca_rule": "A policy is management's intent and needs senior management approval; standards and procedures make it mandatory in practice; guidelines advise. Judge compliance against the mandatory layers, and align each layer with risk appetite.",
+          "exam_traps": [
+            {
+              "trap": "The IT department approves the enterprise information security policy.",
+              "why": "IT may draft it, but an enterprise policy states management intent and is approved by senior management or the board."
+            },
+            {
+              "trap": "Guidelines are mandatory because the security team published them.",
+              "why": "Guidelines advise. If a practice must be followed, it belongs in a standard or procedure."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Policy owner",
+              "definition": "The manager accountable for a policy's content and review, and for running its exception process; the risk owner approves each exception and accepts its risk."
+            },
+            {
+              "term": "Policy framework",
+              "definition": "The full set of policies, standards, procedures and guidelines, and how they link to each other."
+            }
+          ],
+          "memory_aid": "Policy says why, standard says what, procedure says how, guideline says consider."
+        },
+        {
+          "id": "1A4.2",
+          "name": "Policy Exceptions",
+          "legacy_ids": [],
+          "definition": "A policy exception is a documented, approved and time-limited permission to depart from a policy or standard, with the resulting risk assessed and accepted by its owner.",
+          "why_it_matters": "Exceptions are risk acceptances under another name. Without an owner, an expiry and a review, they pile up and quietly push risk beyond appetite.",
+          "how_it_works": [
+            "The requester states what they cannot meet, why, and for how long.",
+            "The risk practitioner analyzes the risk of the gap and any compensating control.",
+            "The risk owner, at the authority level the risk requires, approves or rejects the exception.",
+            "Each exception has an expiry date and is logged in an exception register linked to the risk register.",
+            "Exception volumes are monitored; many exceptions to one rule suggest the rule or the process needs review."
+          ],
+          "example": "A university research group asks to keep an unsupported lab server for 18 months until grant funding arrives. Hana, the risk analyst, assesses the exposure, notes that the server can be isolated on its own network segment, and prepares an exception request with an expiry date, the compensating control and the dean of research as the approving risk owner.",
+          "audit_focus": {
+            "review": [
+              "Sample exceptions and confirm owner approval and an expiry date",
+              "Compare expired exceptions with systems still out of compliance"
+            ],
+            "evidence": [
+              "Exception register with owners, expiry dates and reviews",
+              "Signed approvals at the authority level required"
+            ],
+            "recommend": "Have policy owners enforce expiry dates and review rules that attract repeated exceptions.",
+            "decides": "The accountable business manager signs off the exception and bears its risk"
+          },
+          "isaca_rule": "Every exception needs a named owner who accepts the risk, an expiry and a review. The practitioner analyzes and records; the owner at the right authority approves. Repeated exceptions signal that the policy or the process needs another look.",
+          "exam_traps": [
+            {
+              "trap": "Approve the exception with no end date, since the compensating control reduces the risk.",
+              "why": "Conditions change and controls drift. An expiry forces a fresh decision; open-ended exceptions become permanent, unreviewed risk."
+            },
+            {
+              "trap": "The risk practitioner approves exceptions because they assessed the risk.",
+              "why": "Assessing is the practitioner's job. Approval is a risk acceptance and belongs to the risk owner with the right authority."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Exception register",
+              "definition": "A log of approved exceptions with owner, reason, compensating control and expiry date."
+            },
+            {
+              "term": "Compensating control",
+              "definition": "An alternative control that reduces risk when the required control cannot be applied."
+            }
+          ]
+        },
+        {
+          "id": "1A4.3",
+          "name": "Policy Review and AI Acceptable Use",
+          "legacy_ids": [],
+          "definition": "Policy life cycle management keeps policies current through scheduled and event-driven reviews; an AI acceptable use policy sets how staff may use AI tools and data.",
+          "why_it_matters": "Outdated policies leave new risks uncovered. Generative AI tools spread quickly, and without a clear use policy staff may paste confidential data into public services.",
+          "how_it_works": [
+            "Each policy has an owner and a review cycle, often yearly, plus a review after major changes in threats, law or strategy.",
+            "Reviews check that the policy still matches risk appetite, regulation and how work is actually done.",
+            "An AI use policy defines approved tools, data that must not be entered, human review of outputs and who approves new uses.",
+            "Policies are communicated, acknowledged and enforced; monitoring shows whether they are followed.",
+            "Gaps found in review go to the policy owner, who proposes changes for senior management approval."
+          ],
+          "example": "A law firm finds associates using a free chatbot to summarize client files. The firm has no AI rules, only an internet use policy from 2019. Elif, the risk practitioner, assesses the confidentiality risk, gathers how staff use the tool, and recommends that the managing partner sponsor an AI acceptable use policy naming approved tools and banned data types.",
+          "audit_focus": {
+            "review": [
+              "Compare policy review dates with the required review cycle",
+              "Inspect web or tool logs for unapproved AI services in use"
+            ],
+            "evidence": [
+              "Policy register showing owners and last review dates",
+              "Signed staff acknowledgments of the current use policy"
+            ],
+            "recommend": "Have the policy owner draft AI use rules and submit them to the executive committee for sign-off.",
+            "decides": "Senior management approves the policy and the permitted AI uses"
+          },
+          "isaca_rule": "When new technology outpaces policy, analyze the risk and recommend an update through the policy owner; do not ban or approve the tool alone. Policies are reviewed on schedule and after significant change.",
+          "exam_traps": [
+            {
+              "trap": "Block every AI tool at the firewall until a policy exists.",
+              "why": "Blocking is one possible response, but the business decides it after the risk is analyzed. A blanket block can also push use onto personal devices."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Acceptable use policy (AUP)",
+              "definition": "A policy setting the permitted and forbidden uses of the enterprise's technology and data."
+            },
+            {
+              "term": "Shadow AI",
+              "definition": "AI tools that staff use without the enterprise's approval or oversight."
+            },
+            {
+              "term": "Policy review cycle",
+              "definition": "The scheduled interval at which a policy owner confirms a policy is still fit for purpose."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "topic_id": "1A5",
+      "topic_name": "Business Processes and Resilience",
+      "overview": "Risk lands on business processes. This topic covers process ownership and how critical processes are identified, and how business continuity and disaster recovery plans act as risk responses that must be owned by the business and tested. The business impact analysis itself is covered in 2B2.",
+      "can_do": [
+        "Name the process owner as the person who sets recovery needs",
+        "Tell a BCP from a DRP and say who owns each",
+        "Choose a test that shows whether a critical process, not just a system, can continue"
+      ],
+      "subtopics": [
+        {
+          "id": "1A5.1",
+          "name": "Process Ownership and Critical Processes",
+          "legacy_ids": [],
+          "definition": "A business process is a set of activities that produces a business outcome; its process owner is accountable for its performance, risks and controls from end to end.",
+          "why_it_matters": "Risk lands on processes, not on servers. Knowing which processes are critical, and who owns them, shows where disruption hurts most and who decides on resilience spending.",
+          "how_it_works": [
+            "Each critical process has one owner who answers for its outcome across departments.",
+            "Critical processes are those whose failure most harms objectives, customers, safety or compliance; the business impact analysis (BIA, see 2B2) ranks them.",
+            "Processes depend on people, suppliers, data and systems; mapping those dependencies shows single points of failure.",
+            "Process owners set recovery needs; IT and suppliers design the capability to meet them."
+          ],
+          "example": "A water utility's billing runs across customer service, finance and IT, and each team says another owns outages. Kofi, the risk analyst, maps the billing process and its dependencies, finds no one accountable from end to end, and asks the chief operating officer to name a process owner who can set recovery needs for billing.",
+          "audit_focus": {
+            "review": [
+              "Compare the critical process list with named process owners",
+              "Trace each critical process to its mapped dependencies"
+            ],
+            "evidence": [
+              "Process inventory with owners and criticality ratings",
+              "Dependency maps reviewed in the past year"
+            ],
+            "recommend": "Have executive management name an accountable owner for each critical process.",
+            "decides": "Each process owner sets how fast their process must return"
+          },
+          "isaca_rule": "Resilience starts from critical business processes and their owners. The process owner sets recovery requirements; IT and suppliers deliver capability against them.",
+          "exam_traps": [
+            {
+              "trap": "IT owns process resilience because it runs the systems.",
+              "why": "IT owns the technology recovery. The business process owner decides how quickly the process must return and how much disruption is acceptable."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Process owner",
+              "definition": "The person accountable for a business process's design, performance, risks and controls from start to finish."
+            },
+            {
+              "term": "Single point of failure",
+              "definition": "A component whose loss alone stops a process."
+            },
+            {
+              "term": "Dependency map",
+              "definition": "A diagram of the people, data, systems and suppliers a process relies on."
+            }
+          ]
+        },
+        {
+          "id": "1A5.2",
+          "name": "Continuity and Recovery Plans as Risk Responses",
+          "legacy_ids": [],
+          "definition": "A business continuity plan (BCP) keeps critical business processes running during disruption; a disaster recovery plan (DRP) restores the IT systems those processes depend on.",
+          "why_it_matters": "Both plans reduce the impact of disruptive risk scenarios. A DRP without a BCP restores servers but not the business, and untested plans give false comfort to the leaders relying on them.",
+          "how_it_works": [
+            "The BCP is scoped by business processes and owned by the business; the DRP is a supporting, system-focused plan.",
+            "Recovery targets in both plans come from business needs agreed by process owners.",
+            "Plans are tested regularly and after major change, as close to real conditions as practical, from tabletop exercises to full failover.",
+            "Test results feed the risk register: gaps become risks with owners and action plans.",
+            "Plans are maintained as people, suppliers and systems change."
+          ],
+          "compare": {
+            "columns": [
+              "BCP",
+              "DRP"
+            ],
+            "rows": [
+              {
+                "label": "Focus",
+                "cells": [
+                  "Business processes and people",
+                  "IT systems and infrastructure"
+                ]
+              },
+              {
+                "label": "Owner",
+                "cells": [
+                  "Business leadership and process owners",
+                  "IT, against business recovery needs"
+                ]
+              },
+              {
+                "label": "Answers",
+                "cells": [
+                  "How do we keep serving customers?",
+                  "How do we bring systems back?"
+                ]
+              }
+            ]
+          },
+          "example": "A hospital's DRP restores its electronic health record in four hours, and IT reports the test as a success. Ines, the risk practitioner, asks how wards worked during those hours and finds no manual procedures or paper forms. They record the gap as a continuity risk owned by the chief nursing officer and recommend a joint business and IT exercise.",
+          "audit_focus": {
+            "review": [
+              "Compare BCP scope with the list of critical processes",
+              "Inspect the last test reports for open actions"
+            ],
+            "evidence": [
+              "After-action reports listing failures found and who will fix them",
+              "BCP and DRP versions with review dates"
+            ],
+            "recommend": "Have process owners and IT run joint, increasingly realistic tests and track gaps to closure.",
+            "decides": "Senior management and process owners accept continuity gaps or fund fixes"
+          },
+          "isaca_rule": "Judge resilience by whether critical processes continue, not whether systems restart. The business owns the BCP and its recovery needs, and the DRP serves it. An untested plan is an unverified control, so recommend testing before anyone relies on it.",
+          "exam_traps": [
+            {
+              "trap": "A successful DRP test proves the enterprise is resilient.",
+              "why": "It proves systems can be restored. Without process workarounds, trained staff and supplier support, the business may still stop."
+            },
+            {
+              "trap": "A walkthrough of the plan document is enough testing.",
+              "why": "Paper reviews find documentation gaps, not real-world failures. More realistic tests are needed as criticality rises."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Tabletop exercise",
+              "definition": "A discussion-based walk through a scenario that tests roles, decisions and plans without live systems."
+            },
+            {
+              "term": "Recovery time objective (RTO)",
+              "definition": "The target time to restore a process or system after disruption, set by the business through the BIA (see 2B2) within maximum tolerable downtime."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "topic_id": "1A6",
+      "topic_name": "Organizational Asset Management",
+      "overview": "Risk analysis needs to know what the enterprise has and what it is worth. This topic covers the asset inventory and its owners, classification and valuation as inputs to risk ratings, and the cloud, SaaS and AI assets that inventories often miss.",
+      "can_do": [
+        "Name a business owner, not a custodian, for an asset",
+        "Value an asset by business impact rather than purchase cost",
+        "Bring cloud services, AI models and training data into the inventory"
+      ],
+      "subtopics": [
+        {
+          "id": "1A6.1",
+          "name": "Asset Inventory and Ownership",
+          "legacy_ids": [],
+          "definition": "An asset inventory is a register of the enterprise's valuable assets, such as hardware, software, data, services and people, each with a named business owner.",
+          "why_it_matters": "An enterprise cannot assess or protect what it does not know it has. Assets without owners have nobody to classify them, decide their protection or accept their risk.",
+          "how_it_works": [
+            "The inventory records each asset, its owner, location or provider, classification and the processes it supports.",
+            "Owners are business roles that answer for the asset's use and protection; custodians such as IT look after it day to day.",
+            "Discovery tools, purchasing records and cloud billing help find assets the inventory misses.",
+            "The inventory is updated through change, purchasing and offboarding processes, not by a yearly clean-up alone."
+          ],
+          "example": "A freight company's inventory lists 2,000 devices, but half show IT as owner and no business process. Yusuf, the risk analyst, explains that without business owners the asset values and risk ratings cannot be set, and works with process owners to assign the warehouse and fleet systems to the operations managers who rely on them.",
+          "audit_focus": {
+            "review": [
+              "Sample inventory entries for named business owners",
+              "Compare discovery scan results with inventory records"
+            ],
+            "evidence": [
+              "Inventory export with owner and classification fields filled",
+              "Discovery or cloud billing reports showing unlisted assets"
+            ],
+            "recommend": "Have business managers take ownership of the assets their processes rely on.",
+            "decides": "The business owner sets the asset's class and signs off risk to it"
+          },
+          "isaca_rule": "Every asset needs a business owner, not just a custodian. Ownership comes first, because classification, valuation and risk acceptance all depend on it.",
+          "exam_traps": [
+            {
+              "trap": "IT owns all the hardware and software it manages.",
+              "why": "IT is usually the custodian. The business owner decides how important the asset is and accepts risk to it."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Asset owner",
+              "definition": "The business role accountable for an asset's classification, protection and acceptable use."
+            },
+            {
+              "term": "Custodian",
+              "definition": "The person or team who stores, operates and protects an asset on behalf of its owner."
+            },
+            {
+              "term": "Asset discovery",
+              "definition": "Automated scanning or record matching that finds assets missing from the inventory."
+            }
+          ]
+        },
+        {
+          "id": "1A6.2",
+          "name": "Classification and Valuation as Risk Input",
+          "legacy_ids": [],
+          "definition": "Asset classification labels assets by sensitivity and criticality; valuation estimates what an asset is worth to the business. Both are inputs to rating risk.",
+          "why_it_matters": "Impact cannot be rated without knowing an asset's value. Purchase cost understates assets such as customer data, whose loss can cost far more in fines, lost trust and downtime.",
+          "how_it_works": [
+            "The owner classifies the asset with the enterprise scheme, such as public, internal, confidential and restricted.",
+            "Valuation considers replacement cost, revenue dependence, legal exposure, reputation and the processes the asset supports.",
+            "Higher classification and value drive stronger protection and higher impact ratings in risk analysis.",
+            "Values and classes are reviewed when an asset's use, data or regulation changes."
+          ],
+          "example": "A clinic group values its patient scheduling database at its $20,000 license cost, so it ranks low in the risk register. Marco, the risk practitioner, shows that a week without scheduling would cancel thousands of visits and expose patient records, and asks the database's business owner to revalue and reclassify it.",
+          "audit_focus": {
+            "review": [
+              "Compare asset values in the register with business impact estimates",
+              "Sample classified assets for handling that matches their label"
+            ],
+            "evidence": [
+              "Classification records signed by asset owners",
+              "Risk ratings showing the asset value used"
+            ],
+            "recommend": "Have asset owners revalue key assets by business impact and review classifications each year.",
+            "decides": "The asset owner sets the classification and value"
+          },
+          "isaca_rule": "Value assets by business impact, not purchase price. The owner classifies; the practitioner checks that the values feed risk ratings, so protection is proportionate to what a loss would cost the business.",
+          "exam_traps": [
+            {
+              "trap": "Use the book value from the fixed asset register as the asset's value for risk analysis.",
+              "why": "Book value reflects accounting, not business impact. Data and services can be worth far more than their recorded cost."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Classification scheme",
+              "definition": "The enterprise's set of labels, such as confidential or public, with handling rules for each."
+            },
+            {
+              "term": "Criticality",
+              "definition": "How essential an asset is to keeping key processes running."
+            },
+            {
+              "term": "Sensitivity",
+              "definition": "How much harm would follow if an asset's information were disclosed or altered."
+            }
+          ]
+        },
+        {
+          "id": "1A6.3",
+          "name": "Cloud, SaaS and AI Assets in the Inventory",
+          "legacy_ids": [],
+          "definition": "Modern inventories include assets the enterprise does not host: cloud services, software as a service (SaaS) subscriptions, data held by suppliers, and AI models and datasets.",
+          "why_it_matters": "These assets carry real business risk but are easy to miss because no server sits on site. An AI model in use but missing from the inventory has no owner, no risk assessment and no monitoring.",
+          "how_it_works": [
+            "Record cloud and SaaS services with the business owner, the provider, the data held and the contract.",
+            "Record AI models with their purpose, owner, training data sources, version and whether they were built or bought.",
+            "Datasets used to train or prompt AI are assets too, each with a classification and an owner.",
+            "Find hidden services through expense reports, single sign-on logs and network data, then bring them into the inventory."
+          ],
+          "example": "A credit union's marketing team subscribes to an AI tool that scores customer leads using account data. The tool is paid by card, so it is missing from the inventory. Sana, the risk analyst, adds the tool, the model version and the data feed to the inventory, names the marketing director as owner and schedules a risk assessment.",
+          "audit_focus": {
+            "review": [
+              "Compare SaaS spend and sign-on logs with the inventory",
+              "Inspect AI model records for owner, version and data sources"
+            ],
+            "evidence": [
+              "Inventory entries for cloud services and AI models",
+              "Card spend and identity provider reports listing services in use"
+            ],
+            "recommend": "Have the asset management team and business owners add cloud, SaaS and AI assets with named owners.",
+            "decides": "The business owner of each service or model accepts its risk"
+          },
+          "isaca_rule": "If the enterprise relies on it, it belongs in the inventory, wherever it runs. AI models and their training data are assets with business owners, and getting them into the inventory comes before assessing their risk.",
+          "exam_traps": [
+            {
+              "trap": "SaaS tools are the provider's assets, so they stay off the enterprise inventory.",
+              "why": "The service and the enterprise data in it support enterprise processes. The enterprise still owns that risk and must list them."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Software as a service (SaaS)",
+              "definition": "Software the enterprise uses over the internet while the provider runs and maintains it."
+            },
+            {
+              "term": "AI model",
+              "definition": "Software trained on data to make predictions, classifications or content; it is versioned and owned like other assets."
+            },
+            {
+              "term": "Training data",
+              "definition": "The dataset used to build an AI model; its quality and usage rights shape the model's risk."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "topic_id": "1B1",
+      "topic_name": "Enterprise Risk Management (ERM)",
+      "overview": "IT risk is one part of the enterprise's risk portfolio. This topic covers how IT risk feeds enterprise risk management, why every unit needs a common taxonomy and rating scale, and who approves the risk management framework that ties it together.",
+      "can_do": [
+        "Feed IT risks into the enterprise risk register in business terms",
+        "Spot ratings that cannot be compared and normalize them to one scale",
+        "Name senior management as the approver of the risk management framework"
+      ],
+      "subtopics": [
+        {
+          "id": "1B1.1",
+          "name": "IT Risk Within Enterprise Risk",
+          "legacy_ids": [],
+          "definition": "Enterprise risk management (ERM) manages every type of risk across the enterprise against its objectives; IT and cybersecurity risk are one part of that portfolio, not a separate world.",
+          "why_it_matters": "When IT risk sits in its own register with its own language, leaders cannot weigh it against financial, operational or strategic risk, and it competes poorly for attention and budget.",
+          "how_it_works": [
+            "Enterprise leaders set the strategy, appetite and methods; each discipline, including IT, applies them.",
+            "System and business unit risk registers roll up into enterprise-level registers through aggregation and normalization.",
+            "IT risk is expressed by its effect on enterprise objectives: strategic, operations, reporting and compliance.",
+            "Decisions on IT risk flow back down as guidance, so local teams act within enterprise appetite."
+          ],
+          "example": "A grocery chain's IT team keeps a detailed risk spreadsheet that never reaches the enterprise risk committee, which tracks only financial and supplier risks. Tomas, the IT risk lead, maps the top IT risks to the chain's enterprise categories, restates their impact in revenue and service terms, and submits them through the enterprise risk officer for the next committee review.",
+          "audit_focus": {
+            "review": [
+              "Sample enterprise register entries for IT-sourced risks and their owners",
+              "Inspect whether IT ratings use enterprise impact bands"
+            ],
+            "evidence": [
+              "Minutes where executives discussed technology risk exposure",
+              "Approved mapping of IT risk types to enterprise types"
+            ],
+            "recommend": "Have the enterprise risk officer bring IT risk registers into the enterprise register using enterprise categories.",
+            "decides": "Senior management prioritizes IT risk alongside other enterprise risks"
+          },
+          "isaca_rule": "IT risk is business risk. Feed it into the enterprise register in the enterprise's terms, so it is compared, prioritized and owned alongside every other risk; a separate IT-only register is a gap to close.",
+          "exam_traps": [
+            {
+              "trap": "Keep IT risk in a separate register because it is too technical for enterprise leaders.",
+              "why": "Leaders need IT risk in business terms to weigh it against other risks. Keeping it apart hides it from the people who set priorities and budgets."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Enterprise risk register",
+              "definition": "The enterprise-level record that combines the risk registers of every discipline and business unit."
+            },
+            {
+              "term": "Portfolio view",
+              "definition": "Seeing risks together, across units and types, so leaders can compare and balance them."
+            }
+          ]
+        },
+        {
+          "id": "1B1.2",
+          "name": "Common Taxonomy and Rating Scales",
+          "legacy_ids": [],
+          "definition": "A risk taxonomy is a shared set of risk categories, and common rating scales define likelihood and impact the same way in every unit, so risks can be compared.",
+          "why_it_matters": "If IT rates impact on a 1 to 5 technical scale and finance uses money bands, their high risks cannot be ranked against each other or combined into one profile.",
+          "how_it_works": [
+            "The enterprise defines categories, such as strategic, operational, financial, compliance and technology, with subcategories.",
+            "Impact scales use business measures, such as money, customers affected, safety and regulatory standing, defined once for everyone.",
+            "Likelihood scales use the same time frame and ranges in every unit.",
+            "Local scales are mapped to the enterprise scale before risks are rolled up.",
+            "Senior management approves the taxonomy and scales as part of the risk framework."
+          ],
+          "example": "A pharmaceutical distributor's three regional IT teams each rate risk on their own 1 to 10 scale. When the CRO asks for a combined view, an 8 in one region means a far smaller loss than a 6 in another. Zara, a risk analyst, builds a mapping from each regional scale to the enterprise impact bands and has the regions re-rate their top risks.",
+          "audit_focus": {
+            "review": [
+              "Compare the rating scales each unit uses with the enterprise scale",
+              "Sample rolled-up risks for correct mapping of local ratings"
+            ],
+            "evidence": [
+              "Signed-off category list and scoring bands",
+              "Conversion tables used by each unit before roll-up"
+            ],
+            "recommend": "Have the chief risk officer publish one approved taxonomy and scale and require every unit to map to it.",
+            "decides": "The executive committee signs off categories and scoring bands"
+          },
+          "isaca_rule": "Comparison needs a common language. Before risks are combined or ranked across units, align them to one taxonomy and one set of business-based scales approved by senior management.",
+          "exam_traps": [
+            {
+              "trap": "Let each unit keep its own scale and average the scores at enterprise level.",
+              "why": "Averaging scores from different scales produces a number with no meaning. Normalize every rating to the enterprise scale first."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Normalization",
+              "definition": "Converting risk data from different units or scales into one consistent form before combining it."
+            },
+            {
+              "term": "Impact scale",
+              "definition": "Defined bands describing how severe an effect on objectives is, in business terms such as money or customers."
+            },
+            {
+              "term": "Likelihood scale",
+              "definition": "Defined bands for how probable an event is within a stated time frame."
+            }
+          ]
+        },
+        {
+          "id": "1B1.3",
+          "name": "The Risk Management Framework and Its Approval",
+          "legacy_ids": [],
+          "definition": "A risk management framework sets the enterprise's risk principles, roles, process, methods and reporting; senior management approves it and the board oversees it.",
+          "why_it_matters": "The framework makes risk work consistent and authoritative. Without senior approval, units can ignore it, and a framework signed off only by the team that wrote it carries no weight with the business.",
+          "how_it_works": [
+            "The framework covers scope, roles, use of risk appetite, assessment methods, response options, monitoring and reporting.",
+            "The risk function drafts and maintains it; senior management approves it; the board oversees that it works.",
+            "It is built into strategy, planning and investment decisions, not run as a side process.",
+            "It is reviewed periodically and after major change, and its effectiveness is assessed, including by internal audit."
+          ],
+          "example": "A telecom operator's new head of risk drafts a risk management framework and plans to publish it on the intranet straight away. Aiko, a senior risk analyst, suggests first walking the draft through business unit leaders for input, then taking it to the chief executive's leadership team for sign-off, so that every unit is bound to follow it.",
+          "audit_focus": {
+            "review": [
+              "Inspect approval records for the current framework version",
+              "Compare framework requirements with how units actually assess risk"
+            ],
+            "evidence": [
+              "Signed minutes recording adoption of the current version",
+              "Unit assessments showing the prescribed method in use"
+            ],
+            "recommend": "Have the executive committee formally adopt the framework and require every unit to use its methods.",
+            "decides": "Executives adopt the framework; directors oversee its effectiveness"
+          },
+          "isaca_rule": "The risk practitioner can draft, maintain and promote the framework, but senior management approves it and the board oversees it. Approval gives it authority across the business.",
+          "exam_traps": [
+            {
+              "trap": "The risk practitioner approves the framework because they wrote it.",
+              "why": "Authorship is not authority. Approval by senior management binds every unit and shows leadership commitment."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Executive sponsor",
+              "definition": "The senior leader who champions the framework and secures commitment and resources for it."
+            },
+            {
+              "term": "Framework review",
+              "definition": "A periodic check that the framework is used, effective and fit for the enterprise's current risks."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "topic_id": "1B2",
+      "topic_name": "Lines of Defense",
+      "overview": "The lines of defense separate owning risk, overseeing it and assuring it independently. This topic covers what each line does, where the risk practitioner usually sits, and how much independence each line needs. ISACA's outline uses the term lines of defense; the IIA renamed its model the Three Lines Model in 2020.",
+      "can_do": [
+        "Place a function in the first, second or third line from its duties",
+        "Spot a line doing another line's job, such as audit designing controls",
+        "Explain why the second line needs objectivity but not audit-level independence"
+      ],
+      "subtopics": [
+        {
+          "id": "1B2.1",
+          "name": "The Three Lines and Their Jobs",
+          "legacy_ids": [],
+          "definition": "The lines of defense model separates who owns and manages risk (first line), who oversees and challenges it (second line) and who gives independent assurance (third line).",
+          "why_it_matters": "Clear lines prevent gaps and overlaps. When audit designs controls or the risk function owns business risk, independence and accountability are both lost.",
+          "how_it_works": [
+            "First line: business and operational management own risks and run controls day to day.",
+            "Second line: risk management, compliance and similar functions set methods, monitor, challenge and report.",
+            "Third line: internal audit gives independent, objective assurance to the board or audit committee.",
+            "The board oversees all three; senior management is accountable for the first and second lines.",
+            "The IIA's 2020 update renamed the model and stresses cooperation; owning, overseeing and independently assuring risk stay distinct, though first- and second-line roles may combine within management."
+          ],
+          "compare": {
+            "columns": [
+              "First line",
+              "Second line",
+              "Third line"
+            ],
+            "rows": [
+              {
+                "label": "Who",
+                "cells": [
+                  "Business and operational management",
+                  "Risk management and compliance",
+                  "Internal audit"
+                ]
+              },
+              {
+                "label": "Job",
+                "cells": [
+                  "Own risk and run controls",
+                  "Oversee, challenge and advise",
+                  "Give independent assurance"
+                ]
+              },
+              {
+                "label": "Reports to",
+                "cells": [
+                  "Senior management",
+                  "Senior management, with access to the board",
+                  "The board or audit committee"
+                ]
+              }
+            ]
+          },
+          "example": "At an airline, the risk team has started writing access procedures for the maintenance systems, and the maintenance manager now calls access risk the risk team's job. Chen, the second-line risk analyst, hands the procedures back to the maintenance manager as owner, keeps the role of setting the method and reviewing results, and asks senior management to confirm the maintenance manager as risk owner in the register.",
+          "audit_focus": {
+            "review": [
+              "Compare role descriptions with the line each function actually works in",
+              "Inspect control design records for second- or third-line authorship"
+            ],
+            "evidence": [
+              "Function charters stating each line's role",
+              "Control design documents with author and owner fields"
+            ],
+            "recommend": "Have senior management return control ownership to the first line and keep the second line in oversight.",
+            "decides": "Senior management assigns roles; the audit committee protects audit's independence"
+          },
+          "isaca_rule": "The first line owns, the second line oversees and challenges, and the third line assures independently. On CRISC items, the risk practitioner usually sits in the second line: they advise and challenge but never take ownership away from the first line.",
+          "exam_traps": [
+            {
+              "trap": "Internal audit should design the controls, since it knows what will pass review.",
+              "why": "Designing controls would impair audit's independence when it later reviews them. Audit can advise; the first line designs and runs controls."
+            },
+            {
+              "trap": "The second line owns the risks it monitors.",
+              "why": "Monitoring is not owning. The first line owns and manages risk; the second line challenges and reports."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Three Lines Model",
+              "definition": "The IIA's 2020 update of the lines of defense model, which stresses roles and cooperation over strict separation."
+            },
+            {
+              "term": "Challenge",
+              "definition": "The second line's role of questioning first-line risk ratings and controls with evidence."
+            }
+          ],
+          "memory_aid": "First owns, second oversees, third assures."
+        },
+        {
+          "id": "1B2.2",
+          "name": "Independence, Challenge and Coordination Across Lines",
+          "legacy_ids": [],
+          "definition": "Internal audit needs full independence from management; the second line sits within management, independent of the first-line work it oversees, with enough objectivity to challenge it credibly.",
+          "why_it_matters": "Holding the second line to audit-level independence cuts it off from the business it must advise, while too little objectivity turns challenge into rubber-stamping. Coordination avoids duplicate testing and gaps.",
+          "how_it_works": [
+            "Internal audit reports functionally to the board or audit committee and does not perform management duties.",
+            "The second line sits within management but has its own reporting line to the CRO and access to the board.",
+            "The second line works closely with the first line, advising on design while leaving decisions with owners.",
+            "Combined assurance maps who tests what, so lines rely on each other's work instead of repeating it."
+          ],
+          "example": "A pension fund's audit committee asks why the risk team helps business units draft risk assessments, saying this breaks independence. Nadia, the risk analyst, explains that the second line is meant to advise and challenge from inside management, shows its separate reporting line to the CRO, and proposes a combined assurance map so audit can see where it may rely on second-line testing.",
+          "audit_focus": {
+            "review": [
+              "Map assurance activities by line to find gaps and duplicates",
+              "Inspect second-line reporting lines for a route to the board"
+            ],
+            "evidence": [
+              "Assurance coverage matrix signed off by audit committee members",
+              "Organization chart showing CRO and audit reporting lines"
+            ],
+            "recommend": "Have the CRO and the chief audit executive agree on a combined assurance map for key risks.",
+            "decides": "The audit committee approves reliance and protects audit independence"
+          },
+          "isaca_rule": "Independence is the third line's defining need. The second line needs objectivity and a path to escalate, not separation from the business. Coordinating the lines through combined assurance covers risk without duplicating effort.",
+          "exam_traps": [
+            {
+              "trap": "The second line must be as independent as internal audit, so it should not advise the business.",
+              "why": "Advising and challenging the first line is the second line's job. It needs objectivity and escalation rights, not audit-style separation."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Combined assurance",
+              "definition": "Coordinating the assurance work of all lines so coverage is complete and duplication is avoided."
+            },
+            {
+              "term": "Functional reporting",
+              "definition": "The reporting line that governs a function's work and independence, such as internal audit to the audit committee."
+            },
+            {
+              "term": "Escalation right",
+              "definition": "The authority to take an unresolved concern directly to senior management or the board."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "topic_id": "1B3",
+      "topic_name": "Risk Profile",
+      "overview": "The risk profile is the enterprise's current, aggregated picture of risk. This topic covers how it differs from the risk register, how risks are aggregated without simply adding scores, and why the profile must change whenever the business or the threats change.",
+      "can_do": [
+        "Tell the risk register from the risk profile and say who uses each",
+        "Aggregate risks that share a cause instead of summing scores",
+        "Name events that should trigger a profile update between cycles"
+      ],
+      "subtopics": [
+        {
+          "id": "1B3.1",
+          "name": "Risk Register Versus Risk Profile",
+          "legacy_ids": [],
+          "definition": "The risk register records individual risks with owners, ratings and responses; the risk profile is the aggregated, current picture of enterprise risk built from it for leaders.",
+          "why_it_matters": "Leaders need a portfolio view to decide where to act, not hundreds of register lines. Treating the register as the profile buries the few risks that matter most.",
+          "how_it_works": [
+            "The register is detailed and operational: one entry per risk scenario, with owner, rating, response and status.",
+            "The profile selects, combines and prioritizes register risks into a view of overall exposure by objective or category.",
+            "The profile is compared with appetite, so leaders see where exposure is too high or too low.",
+            "In NIST terms, the enterprise risk profile is a prioritized subset of the enterprise risk register."
+          ],
+          "compare": {
+            "columns": [
+              "Risk register",
+              "Risk profile"
+            ],
+            "rows": [
+              {
+                "label": "Level",
+                "cells": [
+                  "Individual risks",
+                  "Aggregated enterprise view"
+                ]
+              },
+              {
+                "label": "Main users",
+                "cells": [
+                  "Risk owners and practitioners",
+                  "Senior management and the board"
+                ]
+              },
+              {
+                "label": "Answers",
+                "cells": [
+                  "What is each risk and who owns it?",
+                  "Where does total exposure stand against appetite?"
+                ]
+              }
+            ]
+          },
+          "example": "A city transit agency sends its board the full 600-line risk register each quarter, and board members say they cannot see what matters. Farah, the risk analyst, groups related risks by objective, shows the ten highest exposures against appetite with trend arrows, and keeps the full register available for risk owners.",
+          "audit_focus": {
+            "review": [
+              "Trace profile items back to their register entries",
+              "Compare the profile with appetite statements for each category"
+            ],
+            "evidence": [
+              "Quarterly risk profile report to senior management",
+              "Register extract showing the entries behind each profile item"
+            ],
+            "recommend": "Have the chief risk officer report an aggregated risk profile against appetite that traces back to the register.",
+            "decides": "Senior management and the board set priorities from the profile"
+          },
+          "isaca_rule": "The register is the practitioner's working record; the profile is the leaders' decision view. Report the profile against appetite, and keep it traceable to the register entries behind it.",
+          "exam_traps": [
+            {
+              "trap": "Send the board the full risk register so nothing is left out.",
+              "why": "Volume hides priority. The board needs the aggregated profile against appetite, with the register available behind it."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Exposure",
+              "definition": "The level of risk an enterprise faces from one or more risks, usually from likelihood and impact combined."
+            },
+            {
+              "term": "Heat map",
+              "definition": "A chart plotting risks by likelihood and impact so the highest exposures stand out."
+            }
+          ]
+        },
+        {
+          "id": "1B3.2",
+          "name": "Aggregation and Keeping the Profile Current",
+          "legacy_ids": [],
+          "definition": "Risk aggregation combines related risks into an enterprise view, allowing for shared causes and dependencies; the profile is refreshed whenever the business or threat landscape changes.",
+          "why_it_matters": "Several moderate risks with a common cause can add up to a severe exposure that no single entry shows. A profile updated once a year misses acquisitions, new products and new threats.",
+          "how_it_works": [
+            "Group risks that share a cause, asset, supplier or process, and assess their combined impact.",
+            "Do not just add scores: some risks overlap, and correlated risks can occur together and compound.",
+            "Refresh the profile on a schedule and on triggers such as an acquisition, a new market, a major incident or new regulation.",
+            "Report changes and trends, not just the current position, so leaders see the direction of travel."
+          ],
+          "example": "An online retailer rates three separate risks as medium: payment outage, warehouse system failure and website downtime. Gabriel, the risk analyst, notices that all three depend on the same cloud region and assesses the combined scenario of losing that region, which would stop sales entirely. They report the aggregated exposure to the chief operating officer.",
+          "audit_focus": {
+            "review": [
+              "Inspect the profile for risks that share one dependency",
+              "Compare profile update dates with major business changes"
+            ],
+            "evidence": [
+              "Aggregation method approved in the risk framework",
+              "Profile version history with reasons for each update"
+            ],
+            "recommend": "Have the chief risk officer define aggregation rules and the triggers that require a profile update.",
+            "decides": "Senior management decides on responses to aggregated exposures"
+          },
+          "isaca_rule": "Aggregate by shared cause and dependency, not by simple sums, and refresh the profile when the business or threats change. A static annual profile is a governance gap.",
+          "exam_traps": [
+            {
+              "trap": "Total the risk scores of all units to get the enterprise risk level.",
+              "why": "Scores on ranked scales do not add meaningfully, and sums ignore overlap and correlation. Assess combined scenarios instead."
+            },
+            {
+              "trap": "The risk profile is reviewed once a year with the strategy cycle.",
+              "why": "The profile must reflect the current state. Major business changes and new threats trigger an update between cycles."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Correlated risks",
+              "definition": "Risks likely to occur together because they share a cause or dependency."
+            },
+            {
+              "term": "Concentration risk",
+              "definition": "Exposure that builds up when many processes depend on one supplier, site or system."
+            },
+            {
+              "term": "Trigger event",
+              "definition": "A change, such as an acquisition or new law, that prompts an update to risk assessments and the profile."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "topic_id": "1B4",
+      "topic_name": "Risk Appetite and Risk Tolerance",
+      "overview": "Appetite and tolerance turn risk analysis into decisions. This topic covers how appetite, tolerance and capacity relate, who sets them and how the practitioner helps express them in measurable terms, and what to do when a tolerance is breached.",
+      "can_do": [
+        "Tell appetite, tolerance and capacity apart and check that no tolerance reaches capacity",
+        "Help leaders turn a vague appetite into measurable limits",
+        "Escalate a tolerance breach to the risk owner instead of treating it as a ticket"
+      ],
+      "subtopics": [
+        {
+          "id": "1B4.1",
+          "name": "Appetite, Tolerance and Capacity",
+          "legacy_ids": [],
+          "definition": "Risk appetite is the broad amount of risk an enterprise will accept in pursuit of its objectives; tolerance is the acceptable deviation; capacity is the most loss it can absorb.",
+          "why_it_matters": "These thresholds turn analysis into decisions. A risk inside appetite can be accepted; one outside needs a response. Limits set beyond capacity put the enterprise's survival at stake.",
+          "how_it_works": [
+            "Capacity is the outer limit: the loss the enterprise could survive, bounded by finances, regulation and reputation.",
+            "Appetite sits inside capacity and reflects strategy and culture, such as a low appetite for safety risk.",
+            "Tolerance sets measurable limits per objective or metric, such as no more than four hours of outage a month.",
+            "Tolerance must never extend past capacity.",
+            "Appetite can differ by risk type: an enterprise may welcome product innovation risk but avoid compliance risk."
+          ],
+          "compare": {
+            "columns": [
+              "Risk capacity",
+              "Risk appetite",
+              "Risk tolerance"
+            ],
+            "rows": [
+              {
+                "label": "Question",
+                "cells": [
+                  "How much loss could we survive?",
+                  "How much risk do we want to take?",
+                  "How far from target may we drift?"
+                ]
+              },
+              {
+                "label": "Form",
+                "cells": [
+                  "Financial or operational limit",
+                  "Broad statement by risk type",
+                  "Measurable limit per objective or metric"
+                ]
+              },
+              {
+                "label": "Set by",
+                "cells": [
+                  "The enterprise's resources and obligations",
+                  "The board and senior management",
+                  "Senior management, cascaded to owners"
+                ]
+              }
+            ]
+          },
+          "example": "A regional insurer could absorb a claims system outage of about three days before regulators intervene. Its appetite for service disruption is low, and its tolerance for the claims system is eight hours a month. When a business unit proposes a new tolerance of five days, Wei, the risk practitioner, flags to the chief operating officer that it exceeds capacity.",
+          "audit_focus": {
+            "review": [
+              "Compare each tolerance with the enterprise's documented capacity",
+              "Trace tolerances to the appetite statement they support"
+            ],
+            "evidence": [
+              "Board-approved appetite statement by risk type",
+              "Tolerance table with metrics, limits and owners"
+            ],
+            "recommend": "Have senior management align each tolerance with appetite and confirm none exceeds capacity.",
+            "decides": "Directors fix the overall limit; executives fix the metric limits"
+          },
+          "isaca_rule": "Capacity is the outer bound. The board and senior management set appetite, the broad level of risk they choose; tolerance is the acceptable variation around it for a specific risk or metric, set as measurable limits. Flag any tolerance that would reach or exceed capacity.",
+          "exam_traps": [
+            {
+              "trap": "Risk appetite and risk tolerance mean the same thing.",
+              "why": "Appetite is the broad amount of risk the enterprise accepts; tolerance is the acceptable variation, often a measurable limit for one objective or metric."
+            },
+            {
+              "trap": "Set tolerance above capacity to give the business flexibility.",
+              "why": "Capacity is what the enterprise can survive. A tolerance beyond it accepts losses that could threaten the enterprise itself."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Threshold",
+              "definition": "A defined value that, when crossed, triggers review, escalation or action."
+            },
+            {
+              "term": "Risk-averse",
+              "definition": "Describes an enterprise or risk type with low appetite, preferring certainty over potential gain."
+            }
+          ],
+          "memory_aid": "Capacity is the cliff edge, appetite is the path, tolerance is the guardrail."
+        },
+        {
+          "id": "1B4.2",
+          "name": "Setting and Expressing Risk Appetite",
+          "legacy_ids": [],
+          "definition": "Setting appetite means the board and senior management, supported by the risk function, agree how much of each risk type to accept and express it in statements and measurable limits.",
+          "why_it_matters": "A vague appetite such as 'we are cautious' cannot guide decisions. Practitioners help leaders turn appetite into metrics and thresholds that owners can act on and indicators can monitor.",
+          "how_it_works": [
+            "The risk practitioner gathers data on objectives, past losses, capacity and stakeholder expectations to inform leaders.",
+            "Leaders set appetite by risk type, in qualitative statements backed by quantitative limits.",
+            "Statements are communicated to risk owners and built into policies, project approvals and key risk indicator (KRI) thresholds.",
+            "Appetite is reviewed at least yearly and when strategy, capacity or the environment changes.",
+            "For AI, appetite states which uses are acceptable, which need extra review and which are out of bounds."
+          ],
+          "example": "A healthcare software company's executives tell Rosa, the risk analyst, that they have a low appetite for data breaches but have never defined it. Rosa runs workshops with them, presents loss history and regulatory exposure, and drafts measurable limits, such as no unencrypted patient data outside approved systems, for the executive team to propose and the board to approve.",
+          "audit_focus": {
+            "review": [
+              "Compare appetite statements with the metrics that monitor them",
+              "Inspect project approvals for checks against appetite"
+            ],
+            "evidence": [
+              "Signed statement listing each risk type with numeric limits",
+              "KRI dashboard showing thresholds tied to appetite"
+            ],
+            "recommend": "Have the executive team back each qualitative statement with numeric limits and brief risk owners on them.",
+            "decides": "Directors and executives agree and sign off the statement"
+          },
+          "isaca_rule": "The practitioner informs and facilitates appetite; the board and senior management set it. A good appetite is specific by risk type, measurable through metrics and thresholds, and communicated to the owners who must apply it.",
+          "exam_traps": [
+            {
+              "trap": "The risk practitioner sets the appetite because they understand the risks best.",
+              "why": "Appetite reflects strategy and stakeholder expectations, which leaders own. The practitioner supplies analysis and options; leaders decide."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Risk appetite statement",
+              "definition": "A written, board-approved expression of how much risk the enterprise accepts for each risk type."
+            },
+            {
+              "term": "Key risk indicator (KRI)",
+              "definition": "A metric that signals rising risk early, compared against thresholds derived from appetite and tolerance."
+            }
+          ]
+        },
+        {
+          "id": "1B4.3",
+          "name": "Tolerance Breaches and Escalation",
+          "legacy_ids": [],
+          "definition": "A tolerance breach is when a risk or its indicator moves past the agreed limit; escalation takes it to the risk owner and the level that set the limit.",
+          "why_it_matters": "A breach means the enterprise is carrying more risk than its leaders agreed to. Handling it as a routine IT ticket hides the decision from the people with authority to make it.",
+          "how_it_works": [
+            "KRIs and assessments are monitored against tolerance and appetite thresholds.",
+            "On a breach, the practitioner confirms the data, analyzes the cause and likely impact, and informs the risk owner promptly.",
+            "The owner decides: bring risk back within limits, accept it temporarily with approval from the right level, or ask leaders to revisit the limit.",
+            "Escalation paths and timeframes are defined in the framework, so breaches reach the right level quickly.",
+            "Repeated breaches suggest that the controls or the limit itself need review."
+          ],
+          "example": "A payments processor's tolerance for failed card authorizations is 0.5% a day. For three days it has run at 0.9% while operations works the issue as a support ticket. Liam, the risk analyst, confirms the data, estimates the revenue impact and escalates to the head of payments as risk owner, copying the risk committee as the escalation path requires.",
+          "audit_focus": {
+            "review": [
+              "Sample KRI breaches and trace them to escalation records",
+              "Measure days from each breach to the owner's recorded decision"
+            ],
+            "evidence": [
+              "KRI history showing breaches and dates",
+              "Escalation emails or minutes with owner decisions"
+            ],
+            "recommend": "Have the chief risk officer define escalation paths for each tolerance and track every breach decision.",
+            "decides": "The accountable owner, or whoever set the limit, chooses what happens next"
+          },
+          "isaca_rule": "A breach is a governance event, not a technical ticket. Validate it, analyze the impact and escalate to the risk owner and the level that set the threshold; the practitioner never quietly accepts it or raises the limit.",
+          "exam_traps": [
+            {
+              "trap": "Raise the tolerance so the current level is no longer a breach.",
+              "why": "Only the level that set the tolerance can change it, and moving the line to fit the result hides risk instead of managing it."
+            },
+            {
+              "trap": "Let the team fix it first and report the breach once it is resolved.",
+              "why": "The owner must know while risk is above limits, so they can decide on interim measures or accept it formally."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Escalation path",
+              "definition": "The predefined route and timeframe for taking an issue to higher authority."
+            },
+            {
+              "term": "Temporary acceptance",
+              "definition": "A time-limited decision, approved by the level that set the limit, to carry risk above tolerance while a fix is delivered."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "topic_id": "1B5",
+      "topic_name": "Risk Frameworks, Legal, Regulatory, and Contractual Requirements",
+      "overview": "Frameworks give risk work a tested structure, and laws, regulations and contracts set obligations that create risk of their own. This topic covers choosing and tailoring frameworks, treating compliance obligations, including AI laws, as risk sources, and managing contracts and SLAs.",
+      "can_do": [
+        "Tailor a framework to an enterprise's risks, size and obligations",
+        "Treat an obligation as a source of risk without assuming compliance means low risk",
+        "Compare a supplier's SLA with the business need it must support"
+      ],
+      "subtopics": [
+        {
+          "id": "1B5.1",
+          "name": "Choosing and Tailoring a Framework",
+          "legacy_ids": [],
+          "definition": "A risk framework is a published structure for managing risk, such as Risk IT, COBIT 2019, NIST CSF 2.0 or ISO 31000, that an enterprise adapts to fit.",
+          "why_it_matters": "Frameworks give a tested structure and a common language. Adopted wholesale, they create paperwork that does not fit the enterprise's size, sector, appetite or obligations, and people stop using them.",
+          "how_it_works": [
+            "Choose a framework that fits the enterprise's objectives, sector, regulators and maturity.",
+            "Tailor it: keep what addresses the enterprise's risks, scale the processes to its size and map it to existing ERM.",
+            "Frameworks can be combined, such as COBIT 2019 for governance with NIST CSF 2.0 for cybersecurity outcomes.",
+            "ISO 31000:2018 and COSO ERM (2017) are common enterprise-level references that IT frameworks align with.",
+            "Senior management approves the tailored framework as part of the enterprise's risk governance."
+          ],
+          "types": [
+            {
+              "term": "Risk IT Framework (ISACA)",
+              "meaning": "Governance, evaluation and response for IT risk, tied to enterprise risk management."
+            },
+            {
+              "term": "COBIT 2019 (ISACA)",
+              "meaning": "Governance and management of enterprise information and technology through 40 objectives."
+            },
+            {
+              "term": "NIST CSF 2.0",
+              "meaning": "Cybersecurity outcomes in six functions: Govern, Identify, Protect, Detect, Respond and Recover."
+            },
+            {
+              "term": "NIST RMF (SP 800-37 Rev. 2)",
+              "meaning": "Steps to manage security and privacy risk for systems, from preparation to continuous monitoring."
+            },
+            {
+              "term": "ISO 31000:2018",
+              "meaning": "General risk management principles, framework and process for any organization."
+            }
+          ],
+          "example": "A small card payment processor's new compliance lead proposes adopting every control in a large framework at once. Joon, the risk practitioner, maps the framework's areas to the processor's top risks and its card industry obligations, shows that a third of the controls cover systems it does not run, and drafts a tailored scope for the executive team to approve.",
+          "audit_focus": {
+            "review": [
+              "Inspect which framework areas were excluded and why",
+              "Compare the adopted scope with the top register risks"
+            ],
+            "evidence": [
+              "Tailoring record approved by senior management",
+              "Crosswalk from the framework to ERM and regulations"
+            ],
+            "recommend": "Have the CRO document tailoring decisions and seek senior management approval of the adapted framework.",
+            "decides": "The executive team signs off the adapted scope"
+          },
+          "isaca_rule": "Frameworks are starting points, not checklists. Tailor the chosen framework to objectives, risks, size and obligations, integrate it with ERM, and have senior management approve the result.",
+          "exam_traps": [
+            {
+              "trap": "Adopt the full framework unchanged so nothing is missed.",
+              "why": "Unchanged adoption wastes effort on areas that do not apply and can still miss enterprise-specific risks. Tailoring keeps it proportionate and used."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Tailoring",
+              "definition": "Adjusting a framework's scope, processes and controls to fit an enterprise's risks, size and obligations."
+            },
+            {
+              "term": "Crosswalk",
+              "definition": "A table showing how parts of one framework correspond to another, used when combining frameworks."
+            }
+          ]
+        },
+        {
+          "id": "1B5.2",
+          "name": "Compliance Obligations as a Source of Risk",
+          "legacy_ids": [],
+          "definition": "Legal and regulatory requirements are obligations from laws and regulators; failing them creates compliance risk, and meeting them does not by itself mean other risks are low.",
+          "why_it_matters": "Obligations change often and carry fines, sanctions and lost licenses. Treating compliance as the goal can leave risks that no regulation covers, such as AI errors in a new use, unmanaged.",
+          "how_it_works": [
+            "Legal and compliance teams keep a register of obligations, each with an owner and the controls that meet it.",
+            "Each obligation is a source of risk scenarios: what happens if the enterprise fails to meet it.",
+            "Regulatory change is monitored, and new rules trigger an impact assessment before their effective date.",
+            "AI laws, such as the EU AI Act, add duties for certain uses, so the enterprise maps its AI use cases against them.",
+            "Compliance is a floor: risk analysis still covers threats that no rule addresses."
+          ],
+          "example": "A recruitment platform plans to use AI to rank job applicants in several countries. Tanvi, the risk analyst, asks legal to confirm which jurisdictions treat hiring AI as high-risk, adds those obligations to the compliance register with owners, and assesses bias and transparency risks that apply whatever the law says, for the product director to review.",
+          "audit_focus": {
+            "review": [
+              "Compare the obligations register with the laws that apply in each market",
+              "Sample obligations and confirm a named owner and a working control"
+            ],
+            "evidence": [
+              "Obligations log showing owner, source law and last review",
+              "Legal impact assessments for new or changed rules"
+            ],
+            "recommend": "Have the compliance officer assign owners to every obligation and assess new rules before their effective dates.",
+            "decides": "Obligation owners and senior management decide how to meet each requirement"
+          },
+          "isaca_rule": "Treat obligations as risk sources with owners, monitor changes, and remember that compliance is a minimum. On CRISC items, the BEST answer applies the principle behind a rule, not a quoted clause, and still analyzes risks no rule covers.",
+          "exam_traps": [
+            {
+              "trap": "If the enterprise is fully compliant, its IT risk is low.",
+              "why": "Rules set minimum duties for specific harms. Many risks, such as outages or new kinds of AI failure, fall outside any regulation."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Compliance register",
+              "definition": "A list of legal, regulatory and contractual obligations with owners and the controls that meet them."
+            },
+            {
+              "term": "Regulatory change management",
+              "definition": "Tracking new or changed rules and assessing their impact before they take effect."
+            },
+            {
+              "term": "EU AI Act",
+              "definition": "The European Union's risk-based law on AI (Regulation (EU) 2024/1689), with stricter duties for high-risk uses."
+            }
+          ]
+        },
+        {
+          "id": "1B5.3",
+          "name": "Contractual Requirements and Service Level Agreements",
+          "legacy_ids": [],
+          "definition": "Contractual requirements are obligations the enterprise accepts in agreements with customers and suppliers, such as security clauses, audit rights and service level agreements (SLAs).",
+          "why_it_matters": "Contracts both create risk and help manage it. A broken customer commitment brings penalties and lost trust, while weak supplier terms leave the enterprise without remedies when a provider fails.",
+          "how_it_works": [
+            "Customer contracts can require specific controls, breach notice times or data locations, which become obligations with owners.",
+            "Supplier contracts set SLAs, security requirements, right-to-audit clauses, incident notice and exit terms.",
+            "SLA targets should reflect business recovery needs and appetite, not just the provider's standard offer.",
+            "Handing a task to a supplier does not hand over accountability; the enterprise still owns the risk to its objectives.",
+            "The business owner, legal and risk review contract terms before signing and at renewal."
+          ],
+          "example": "A city council's parking app runs on a supplier platform whose contract promises 99% monthly uptime, which allows about seven hours of outage. The parking services manager can accept no more than one hour of outage at peak times. Kwame, the risk practitioner, documents the gap between the SLA and the business need and recommends the manager raise it at renewal.",
+          "audit_focus": {
+            "review": [
+              "Compare supplier SLA targets with business recovery requirements",
+              "Sample customer contracts for obligations missing from the register"
+            ],
+            "evidence": [
+              "Signed agreements with security, notice and uptime terms",
+              "SLA performance reports from suppliers"
+            ],
+            "recommend": "Have contract owners align SLA targets with business needs and log contract obligations with owners.",
+            "decides": "The business owner of the contract accepts any remaining gap"
+          },
+          "isaca_rule": "Contracts are both obligations and risk responses. Check that commitments made to customers are met and that supplier terms match business needs; outsourcing moves the work, never the accountability.",
+          "exam_traps": [
+            {
+              "trap": "Once a supplier signs an SLA, the risk of its outages is transferred to it.",
+              "why": "The SLA may give service credits, but the enterprise still bears the business impact and stays accountable to its own customers and regulators."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Service level agreement (SLA)",
+              "definition": "A contract term defining measurable service targets, such as uptime, and remedies when they are missed."
+            },
+            {
+              "term": "Right-to-audit clause",
+              "definition": "A contract term allowing the customer, or its auditors, to review the supplier's controls."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "key_terminologies": {
+    "Risk": "The effect of uncertainty on objectives, described by its likelihood and its impact.",
+    "Governance": "Setting direction, making decisions and monitoring performance so the enterprise meets its objectives; led by the board.",
+    "Risk appetite": "The broad amount of risk the enterprise is willing to accept in pursuit of its objectives, set by the board and senior management.",
+    "Risk tolerance": "The acceptable variation around appetite for a particular risk or objective, usually a measurable limit.",
+    "Risk capacity": "The most loss the enterprise can absorb without threatening its survival.",
+    "Risk owner": "The person with the authority and accountability to decide a risk's response and accept what remains.",
+    "Control owner": "The person accountable for designing, running and maintaining a control so it works as intended.",
+    "Risk practitioner": "The professional who identifies, analyzes, recommends, monitors and reports on risk; advises but does not decide for the owner.",
+    "Goals cascade": "The COBIT 2019 chain from stakeholder needs to enterprise goals to alignment goals for information and technology.",
+    "RACI": "A chart naming who is Responsible, Accountable, Consulted and Informed for each activity; one accountable person per activity.",
+    "Risk culture": "The shared values and beliefs that shape attitudes to risk-taking and how openly risks and losses are reported.",
+    "Policy": "A document of management intent stating required and prohibited behavior, approved by senior management.",
+    "Standard": "A mandatory, measurable requirement that supports a policy.",
+    "Guideline": "Advisory good practice that people may depart from for a sound reason.",
+    "Policy exception": "An approved, time-limited departure from a policy or standard, with its risk accepted by the owner.",
+    "Business continuity plan (BCP)": "A plan for keeping critical business processes running during and after a disruption.",
+    "Disaster recovery plan (DRP)": "A plan for restoring the IT systems and facilities that critical processes depend on.",
+    "Asset inventory": "A register of the enterprise's assets, including cloud services, data and AI models, each with a business owner.",
+    "Enterprise risk management (ERM)": "The enterprise-wide discipline for managing every type of risk, including IT risk, against objectives.",
+    "Risk taxonomy": "A common scheme of risk categories that lets risks from every unit be compared and combined.",
+    "Risk register": "The record of identified risks with owner, rating, response and status.",
+    "Risk profile": "The current, aggregated view of the risks the enterprise faces, reported to senior management against appetite.",
+    "Risk aggregation": "Combining related risks into an enterprise view, allowing for shared causes rather than simply adding scores.",
+    "Lines of defense": "A model separating risk ownership (first line), oversight and challenge (second line) and independent assurance (third line).",
+    "Risk management framework": "The enterprise's approved principles, roles, methods and reporting for managing risk.",
+    "Compliance risk": "The risk of penalties, sanctions or lost licenses from failing legal, regulatory or contractual obligations."
+  },
+  "references": [
+    {
+      "title": "ISACA® CRISC® Exam Content Outline (effective 2025)",
+      "url": "https://www.isaca.org/credentialing/crisc/crisc-exam-content-outline",
+      "checked": "2026-10-30: via docs/content/CRISC_BLUEPRINT.md"
+    },
+    {
+      "title": "ISACA Glossary (risk appetite, risk tolerance, risk capacity, risk owner, control owner, risk culture, IT risk profile, risk aggregation, policy, guideline, business continuity plan, asset inventory, enterprise risk management)",
+      "url": "https://www.isaca.org/resources/glossary",
+      "checked": "2026-10-30: page opened and each entry read"
+    },
+    {
+      "title": "ISACA Code of Professional Ethics",
+      "url": "https://www.isaca.org/code-of-professional-ethics",
+      "checked": "2026-10-30: page opened, seven standards read"
+    },
+    {
+      "title": "ISACA, Leveraging COBIT for Effective AI System Governance (white paper, 2025), Figure 2 COBIT Core Model",
+      "url": "https://www.isaca.org/resources/white-papers/2025/leveraging-cobit-for-effective-ai-system-governance",
+      "checked": "2026-10-30: PDF opened; COBIT 2019 objective codes and titles read"
+    },
+    {
+      "title": "ISACA, Risk IT Framework, 2nd Edition (2020)",
+      "url": "https://www.isaca.org/about-us/newsroom/press-releases/2020/isacas-risk-it-framework-offers-a-structured-methodology",
+      "checked": "2026-10-30: title and edition confirmed from ISACA press release; paid text not opened"
+    },
+    {
+      "title": "ISACA Journal 2018 Volume 4, Roles of Three Lines of Defense for Information Security and Governance",
+      "url": "https://www.isaca.org/resources/isaca-journal/issues/2018/volume-4/roles-of-three-lines-of-defense-for-information-security-and-governance",
+      "checked": "2026-10-30: article opened"
+    },
+    {
+      "title": "NIST CSWP 29, The NIST Cybersecurity Framework (CSF) 2.0 (Feb 2024)",
+      "url": "https://csrc.nist.gov/pubs/cswp/29/the-nist-cybersecurity-framework-csf-20/final",
+      "checked": "2026-10-30: PDF opened, GOVERN and ID.AM read"
+    },
+    {
+      "title": "NIST IR 8286 Rev. 1, Integrating Cybersecurity and Enterprise Risk Management (ERM) (Dec 2025; supersedes IR 8286, withdrawn 18 Dec 2025)",
+      "url": "https://csrc.nist.gov/pubs/ir/8286/r1/final",
+      "checked": "2026-10-30: PDF opened, sections 2.1, 2.2, 3.8 and 4.1 read"
+    },
+    {
+      "title": "NIST SP 800-39, Managing Information Security Risk: Organization, Mission, and Information System View (Mar 2011)",
+      "url": "https://csrc.nist.gov/pubs/sp/800/39/final",
+      "checked": "2026-10-30: PDF opened, section 2.7 read"
+    },
+    {
+      "title": "NIST SP 800-34 Rev. 1, Contingency Planning Guide for Federal Information Systems",
+      "url": "https://csrc.nist.gov/pubs/sp/800/34/r1/upd1/final",
+      "checked": "2026-10-30: PDF opened, sections 2.2 and 3.5 read"
+    },
+    {
+      "title": "NIST AI 100-1, Artificial Intelligence Risk Management Framework (AI RMF 1.0) (Jan 2023)",
+      "url": "https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.100-1.pdf",
+      "checked": "2026-10-30: PDF opened, GOVERN table read"
+    },
+    {
+      "title": "ISO 31000:2018, COSO Enterprise Risk Management (2017), IIA Three Lines Model (2020), Regulation (EU) 2024/1689 (EU AI Act)",
+      "checked": "2026-10-30: named as context only; iso.org, coso.org, theiia.org and eur-lex.europa.eu were unreachable from this session, so no URL is given"
+    }
+  ]
+}
