@@ -66,3 +66,12 @@ Rule for the form builder: Draw no two items of a pair into the same form. Keep 
 | csoe_d5_033 | csoe_d5_052 | shared option wording; d5_033 wrong explanation A explains principle 15 |
 | csoe_d5_057 | csoe_d5_060 | 060 wrong explanation C: the internal control framework suits entities of any size |
 | csoe_d5_003 | csoe_d5_048 | 048 tests a non-COSO framework's suitability, implying COSO is not mandated |
+| csoe_d3_042 | csoe_d3_043 | d3_042 explanation and exam cue state notice to the exchange (d3_043's key) |
+| csoe_d3_011 | csoe_d3_053 | d3_053 says fair-fund money goes to victims; d3_011 calls fair funds an exception to the Treasury rule |
+| csoe_d3_046 | csoe_d4_019 | d4_019 wrong explanations: Section 304 turns on misconduct and reaches only the CEO and CFO |
+| csoe_d3_032 | csoe_d3_058 | same rule (Regulation G Rule 100); each names the other's key |
+| csoe_d3_007 | csoe_d3_045 | d3_045 explanation: Rule 13b2-2(b) carries out Section 303 (d3_007's key) |
+| csoe_d3_051 | csoe_d3_052 | the Section 307 duty runs inside the client; each settles the other's final two |
+| csoe_d3_019 | csoe_d3_060 | d3_019 explanation: the website route works when the annual report announced it |
+| csoe_d1_039 | csoe_d3_054 | d3_054 explanation: Section 402 bars loans to directors and executive officers (d1_039's basis) |
+| csoe_d1_039 | csoe_d3_012 | same reason (d3_012 explanation) |
