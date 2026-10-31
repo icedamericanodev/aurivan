@@ -316,6 +316,16 @@
   /* The left rail (sidebar) from 768px; a step off the page, as in dark. */
   --rail-w: 248px;
   --rail-bg: #EFECE5;
+  /* Phase 2 (Today): marks drawn on the forest hero, the same in both themes
+     (the hero is forest in both): the ring's ticks, its disc, the seed. */
+  --hero-tick-on: var(--sap);
+  --hero-tick-off: var(--forest-track);
+  --hero-tick-rng: #E9C46A;
+  --hero-tick-mark: #E9A07A;
+  --hero-disc: #1A402D;
+  --hero-soil: #6B5844;
+  --hero-seed-edge: #E9D9C4;
+  --badge-clay: #F6E7DC;    /* the weakest area's badge (clay on clay) */
 }
 
 /* ── DARK MODE (Grove night) ── */
@@ -379,6 +389,8 @@
   --leaf-empty: #39443C;
   --card-shadow: 0 0 0 1px var(--border);
   --rail-bg: #0E1310;
+  --hero-disc: #1A3324;
+  --badge-clay: #3A2A22;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -5217,11 +5229,6 @@ body[data-tab]:not([data-tab="about"]):not([data-tab="faq"]) .legal-disclaimer {
 .td-leaf.on .td-leaf-v { stroke: var(--td-paper, var(--bg)); }
 .td-wd.today .td-leaf.off .td-leaf-b { stroke: var(--text); stroke-width: 2; }
 .td-wkline .td-leaf { width: 20px; height: 20px; }
-/* Below 1240px (the frame's margin), one visual per visit: the rings or the week, by the day */
-@media (max-width: 1239px) {
-  .td-vis-week .td-rings { display: none; }
-  .td-vis-rings .td-week { display: none; }
-}
 /* The Mindset check: one compact row that opens one question in place */
 .td-mind-slot:empty { display: none; }
 .td-mind { margin-top: var(--sp-2xl); }
@@ -7202,6 +7209,273 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 .you-set-btn:hover { color: var(--text); }
 .you-set-btn:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
 #youSettingsH { scroll-margin-top: var(--sp-xxl); }
+/* ── GROVE UPLIFT, PHASE 2: Today ──────────────────────────────────────────
+   GROVE_HANDOFF.md §6.3, §6.4, §6.6 and §7 Today; screens 01 (phone) and 05
+   (web). Phones: the hero (the ring with the plant, Accuracy and Exam date),
+   then the plan as its own card, the twig, If you have more time, the
+   Mindset check and the backup, each a card. From 768px the hero and the
+   plan are one forest card (side by side when the page column has room),
+   and from 1240px estimated readiness, the twig and today's principle are
+   the side column. Presentation only. */
+.td { max-width: 720px; display: flex; flex-direction: column; gap: 16px; margin-bottom: var(--sp-2xl); }
+.td-main, .td-side { display: flex; flex-direction: column; gap: 16px; min-width: 0; margin: 0; }
+.td-main > *, .td-side > *, .td-pair .td-mind, .td-pair .td-backup { margin: 0; }
+.td-legal, .td-apps { margin: 0; padding: 0 4px; font: 400 12px/16px var(--f-sans); color: var(--muted); }
+.td-prin-slot:empty, .td-plant:empty { display: none; }
+
+/* Cards (§6.3) */
+.td-card, .td-name, .td-fw, .td-backup, .td-mind, .td-plant, .td-app, .td-qr {
+  --td-paper: var(--surface);
+  background: var(--surface); box-shadow: var(--card-shadow); border: 0; border-radius: var(--r-card); padding: var(--card-pad);
+}
+.td-plant { border-top: 0; padding-top: var(--sp-xs); padding-bottom: var(--sp-xs); }
+.td-plant .plnt-invite { padding: var(--sp-md) 0; }
+.td-plant-art, .td-has-shoot .td-plant-art { display: none; }
+.td-card-h { margin: 0; font: 500 18px/24px var(--f-serif); letter-spacing: -.2px; color: var(--text); }
+.td-card-k { margin: 0; font: 600 11px/14px var(--f-sans); letter-spacing: .12em; text-transform: uppercase; color: var(--text2); }
+.td-fw .ph-h, .td-mind.td-idea .ph-h { margin: 0; font: 500 18px/24px var(--f-serif); color: var(--text); }
+@media (min-width: 768px) { .td-card-h { font-size: 19px; } }
+
+/* The head: the greeting, the line under it, Set exam date (from 768px) or the avatar (phones) */
+.td-head { padding: 0 4px; }
+.td-head-row { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; }
+.td-head-t { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.td-title { margin: 0; font: 500 34px/1.05 var(--f-serif); letter-spacing: -.02em; }
+.td-sub { margin: 0; font: 400 14px/20px var(--f-sans); color: var(--text2); }
+.td-intro { margin: var(--sp-sm) 0 0; }
+.td-datebtn {
+  flex: none; display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 16px;
+  border: 0; border-radius: var(--r-14); background: var(--surface); box-shadow: var(--card-shadow);
+  color: var(--accent-text); font: 600 14px/20px var(--f-sans); cursor: pointer;
+}
+.td-datebtn:hover { color: var(--text); }
+.td-avatar {
+  flex: none; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px;
+  border-radius: var(--r-14); background: var(--forest); color: var(--on-forest); font: 400 19px/1 var(--f-serif); text-decoration: none;
+}
+.td-avatar:hover { box-shadow: inset 0 0 0 1px var(--forest-line); }
+.td-datebtn:focus-visible, .td-avatar:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+@media (max-width: 767px) { .td-datebtn, .td-sub { display: none; } }
+@media (min-width: 768px) { .td-title { font-size: 40px; } .td-avatar { display: none; } }
+
+/* The hero (phones: the figure is the forest card, the plan its own card) */
+.td-hero { display: flex; flex-direction: column; gap: 16px; }
+.td-fig {
+  --focus-ring: var(--on-forest);
+  display: flex; flex-direction: column; align-items: stretch; gap: 14px; padding: 18px; border-radius: var(--r-card);
+  background: var(--hero-panel); box-shadow: var(--sh-hero); color: var(--on-forest); text-align: left;
+}
+.td-fig-top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+.td-fig .fg-fig { margin: 0; font: italic 400 15px/20px var(--f-serif); color: var(--on-forest2); }
+.td-fig-stage { margin: 0; font: 400 12px/16px var(--f-sans); color: var(--on-forest2); }
+.td-fig-cap { display: none; }
+
+/* The readiness ring (§6.4): ticks on a circle of radius 86, the plant in a disc of radius 70 */
+.td-ring { position: relative; flex: none; align-self: center; width: 200px; height: 200px; }
+.td-ring-svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.td-tk { stroke: var(--hero-tick-off); stroke-width: 2.6; }
+.td-tks-fine .td-tk { stroke-width: 2.4; }
+.td-tk.on { stroke: var(--hero-tick-on); }
+.td-tk.rng { stroke: var(--hero-tick-rng); }
+.td-tk-mark { stroke: var(--hero-tick-mark); stroke-width: 3; stroke-linecap: round; }
+.td-ring-disc { fill: var(--hero-disc); stroke: var(--forest-line); stroke-width: 1; }
+.td-ring-in {
+  position: absolute; inset: 15%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+  border-radius: 50%; overflow: hidden; text-align: center; pointer-events: none;
+}
+.td-ring-art { display: flex; align-items: flex-end; justify-content: center; }
+.td-ring-art .td-seed { display: block; width: 100px; height: auto; }
+.td-ring-art .plnt-svg { display: block; width: 108px; height: auto; max-height: 100px; }
+.td-ring-range .td-ring-art .td-seed { width: 58px; }
+.td-ring-range .td-ring-art .plnt-svg { width: 72px; max-height: 60px; }
+.td-ring-n { margin: 2px 0 0; font: 500 30px/1 var(--f-serif); letter-spacing: -.02em; color: var(--on-forest); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.td-ring-to { font-size: 16px; color: var(--on-forest2); }
+.td-ring-l { margin: 0; font: 400 11px/14px var(--f-sans); color: var(--on-forest2); }
+.td-seed-soil { fill: none; stroke: var(--hero-soil); stroke-width: 1.5; }
+.td-seed-soil2 { fill: none; stroke: var(--hero-soil); stroke-width: 1; opacity: .7; }
+.td-seed-body { fill: var(--seed); stroke: var(--hero-seed-edge); stroke-width: 1.2; }
+.td-seed-line { fill: none; stroke: #4E3A26; stroke-width: 1.2; }
+.td-seed-stem { fill: none; stroke: var(--sap); stroke-width: 1.8; stroke-linecap: round; }
+.td-seed-leaf { fill: var(--forest-track); stroke: var(--sap); stroke-width: 1.4; }
+.td-ring-cap { margin: 0; text-align: center; font: 400 14px/1.4 var(--f-sans); color: var(--on-forest2); }
+.td-ring-big { font: 500 24px/1 var(--f-serif); letter-spacing: -.02em; color: var(--on-forest); font-variant-numeric: tabular-nums; }
+/* The ticks light up once per visit (lit from the unlit colour); none under reduced motion. Under 600ms. */
+@keyframes tdTickOn { from { stroke: var(--hero-tick-off); } }
+@keyframes tdLeafIn { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: no-preference) {
+  .td-ring.grow .td-tk.on, .td-ring.grow .td-tk.rng { animation: tdTickOn .24s ease-out both; animation-delay: calc(var(--i, 0) * 6ms); }
+  .td-twig.grow .td-tw-leaf.on { animation: tdLeafIn .3s ease-out both; animation-delay: calc(var(--i, 0) * 40ms); }
+}
+
+/* Accuracy and Exam date: inset tiles on the hero (phones) */
+.td-tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.td-tile {
+  display: flex; flex-direction: column; gap: 4px; min-width: 0; min-height: 44px; padding: 12px 14px;
+  border: 0; border-radius: var(--r-tile); background: var(--hero-inset); color: var(--on-forest); font: inherit; text-align: left;
+}
+.td-tile-btn { cursor: pointer; }
+.td-tile-btn:hover { box-shadow: inset 0 0 0 1px var(--forest-line); }
+.td-tile-btn:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+.td-tile-k { font: 600 11px/14px var(--f-sans); letter-spacing: .12em; text-transform: uppercase; color: var(--on-forest2); }
+.td-tile-v { padding-top: 4px; font: 600 15px/22px var(--f-sans); color: var(--on-forest); }
+.td-tile-num { padding-top: 0; font: 500 24px/28px var(--f-serif); letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+.td-tile-a { padding-top: 4px; font: 600 15px/22px var(--f-sans); color: var(--sap); }
+/* PLATE: one caption per hero (in the figure on phones, at the hero's foot from 768px) */
+.td-platecap { margin: 0; max-width: none; font: italic 400 14px/20px var(--f-serif); color: var(--on-forest2); }
+.td-platecap b { margin-right: 8px; font: 600 10px/14px var(--f-sans); letter-spacing: .12em; text-transform: uppercase; color: var(--on-forest2); }
+.td-platecap-out { display: none; }
+
+/* Today's plan (phones: its own card) */
+.td-planc {
+  display: flex; flex-direction: column; gap: 14px; padding: 18px; min-width: 0;
+  border-radius: var(--r-card); background: var(--surface); box-shadow: var(--card-shadow);
+}
+.td-planc-h { margin: 0; display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+.td-planc-t { font: 500 22px/28px var(--f-serif); letter-spacing: -.2px; color: var(--text); }
+.td-planc-min { flex: none; font: 400 13px/18px var(--f-sans); color: var(--text2); white-space: nowrap; }
+.td-planc-k { margin: 0; font: 600 12px/16px var(--f-sans); color: var(--accent-text); }
+.td-planc-h.td-resume-h { display: block; margin-top: -10px; font: 500 20px/26px var(--f-serif); color: var(--text); overflow-wrap: anywhere; }
+.td-resume-m { margin: -8px 0 0; font: 400 13px/18px var(--f-sans); color: var(--text2); }
+.td-steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 14px; }
+.td-steps li { display: flex; align-items: center; gap: 12px; }
+.td-step {
+  flex: none; display: flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: var(--r-step);
+  background: var(--surface2); color: var(--muted); box-shadow: inset 0 0 0 1px var(--border2); font: italic 400 15px/1 var(--f-serif);
+}
+.td-steps li:first-child .td-step { background: var(--forest-track); color: var(--sap); box-shadow: none; }
+.td-step-t { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.td-step-h { font: 600 15px/20px var(--f-sans); color: var(--text); overflow-wrap: anywhere; }
+.td-step-m { font: 400 13px/18px var(--f-sans); color: var(--text2); }
+.td-step-min { flex: none; font: 400 12px/16px var(--f-sans); color: var(--muted); white-space: nowrap; }
+.td-hero-acts { display: flex; flex-direction: column; align-items: stretch; gap: 10px; margin: 2px 0 0; }
+.td-go { width: 100%; min-height: 54px; gap: 10px; border-radius: var(--r-tile); font: 700 16px/20px var(--f-sans); }
+.td-hero-q { margin: 0; text-align: center; font: 400 13px/18px var(--f-sans); color: var(--text2); }
+.td-short {
+  align-self: center; min-height: 44px; padding: 4px 8px; border: 0; border-radius: var(--r-12); background: none;
+  color: var(--accent-text); font: 600 14px/20px var(--f-sans); cursor: pointer;
+}
+.td-short:hover { text-decoration: underline; text-underline-offset: 3px; }
+.td-short:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+
+/* From 768px: the figure and the plan are one forest hero card */
+@media (min-width: 768px) {
+  .td-main { container: tdmain / inline-size; }
+  .td-hero {
+    --focus-ring: var(--on-forest);
+    display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px 24px; padding: 22px;
+    border-radius: var(--r-card); background: var(--hero-panel); box-shadow: var(--sh-hero); color: var(--on-forest);
+  }
+  .td-fig, .td-planc { padding: 0; border-radius: 0; background: none; box-shadow: none; }
+  .td-fig { align-items: center; gap: 8px; }
+  .td-fig-top, .td-tiles, .td-platecap-in, .td-ring-cap, .td-step-min { display: none; }
+  .td-fig-cap { display: block; }
+  .td-fig-cap .fg-fig { font-size: 14px; text-align: center; }
+  .td-ring { width: 190px; height: 190px; }
+  .td-platecap-out { display: block; grid-column: 1 / -1; }
+  .td-planc { gap: 12px; align-self: center; }
+  .td-planc-t { font: 600 11px/14px var(--f-sans); letter-spacing: .12em; text-transform: uppercase; color: var(--on-forest2); }
+  .td-planc-min { color: var(--on-forest2); }
+  .td-planc-k { font: 600 11px/14px var(--f-sans); letter-spacing: .12em; text-transform: uppercase; color: var(--on-forest2); }
+  .td-planc-h.td-resume-h { margin-top: -4px; color: var(--on-forest); }
+  .td-resume-m { margin-top: -4px; color: var(--on-forest2); }
+  .td-steps { gap: 12px; }
+  .td-step { background: var(--hero-inset); color: var(--on-forest2); box-shadow: none; }
+  .td-steps li:first-child .td-step { background: var(--sap); color: var(--on-sap); }
+  .td-step-h { color: var(--on-forest); }
+  .td-step-m { color: var(--on-forest2); }
+  .td-hero-acts { flex-direction: row; flex-wrap: wrap; align-items: center; gap: 14px; padding-top: 4px; }
+  .td-go { width: auto; min-height: 52px; padding: 0 26px; background: var(--sap); color: var(--on-sap); }
+  .td-go:hover, [data-theme="dark"] .td-go:hover { background: var(--sap); filter: brightness(1.06); }
+  .td-hero-q { text-align: left; color: var(--on-forest2); }
+  .td-short { align-self: flex-start; margin: -6px 0 0 -8px; color: var(--sap); }
+  .td-twig-n { display: none; }
+}
+@container tdmain (min-width: 560px) {
+  .td-hero { grid-template-columns: auto minmax(0, 1fr); align-items: center; }
+}
+
+/* This week's twig (§6.6) */
+.td-twig { display: flex; flex-direction: column; gap: 6px; padding: 16px 18px; }
+.td-twig-top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+.td-twig-streak { margin: 0; font: 600 13px/18px var(--f-sans); color: var(--clay); text-align: right; }
+.td-twig-svg { display: block; width: 100%; height: auto; overflow: visible; }
+.td-tw-branch { fill: none; stroke: var(--soil); stroke-width: 2; stroke-linecap: round; }
+.td-tw-leaf { fill: none; stroke: var(--leaf-empty); stroke-width: 1.3; }
+.td-tw-leaf.on { fill: var(--accent); stroke: var(--btn); }
+.td-twig-days { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); font: 400 11px/14px var(--f-sans); color: var(--muted); text-align: center; }
+.td-twig-days .today { color: var(--text); font-weight: 700; }
+.td-twig-n { margin: 4px 0 0; font: 400 12px/16px var(--f-sans); color: var(--muted); }
+.td-twig-s { display: none; }
+
+/* Rows inside a card (If you have more time, Mindset check): 36px badges, dividers inset 16px */
+.td .you-ico { width: 36px; height: 36px; border-radius: var(--r-badge); }
+[data-theme="dark"] .td .you-ico { background: var(--forest); color: var(--sap); }
+.td .td-row-weak .you-ico { background: var(--badge-clay); color: var(--clay); }
+.td .td-row-weak .td-kicker { color: var(--clay); }
+.td-kicker { font: 600 12px/16px var(--f-sans); }
+.td-next, .td-mind:not(.td-idea) { padding: 0; }
+.td-next .td-card-h { padding: 16px 16px 6px; }
+.td-next .you-list { margin: 0; }
+.td-next .you-row, .td-mind-open { min-height: 44px; padding: 12px 16px; border-bottom: 0; }
+.td-next li:last-child .you-row { padding-bottom: 16px; }
+.td-next li + li { position: relative; }
+.td-next li + li::before { content: ""; position: absolute; top: 0; left: 16px; right: 16px; height: 1px; background: var(--border); }
+.td-next .you-t, .td-mind-open .you-t { font: 600 15px/20px var(--f-sans); }
+.td-next .you-m, .td-mind-open .you-m { font: 400 12px/16px var(--f-sans); }
+.td-next .you-row:focus-visible, .td-mind-open:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: -2px; border-radius: var(--r-card); }
+.td-mind-open { margin: 0; padding: 16px; }
+.td-mind-m { white-space: normal; }
+.td-mind-body { padding: 0 16px 16px; }
+.td-mind.td-idea .td-idea-b { margin-top: var(--sp-sm); }
+.td-backup { padding: 16px; }
+.td-backup .plnt-invite-h { font: 600 15px/20px var(--f-sans); }
+.td-backup .plnt-invite-m { font: 400 13px/1.45 var(--f-sans); }
+.td-fw-hide { margin-top: var(--sp-xs); }
+.td-pair { display: flex; flex-direction: column; gap: 16px; }
+.td-pair:has(> .td-mind-slot:empty):not(:has(> .td-backup)) { display: none; }
+@container tdmain (min-width: 576px) {
+  .td-pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; }
+  .td-pair:has(> .td-mind-slot:empty), .td-pair:not(:has(> .td-backup)), .td-pair:has(.td-mind-open[aria-expanded="true"]) { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* Estimated readiness */
+.td-ready { display: flex; flex-direction: column; gap: 10px; padding: 20px; }
+.td-ready-s { margin: 0; font: 600 15px/20px var(--f-sans); color: var(--text); }
+.td-ready-range { font: 500 32px/1 var(--f-serif); letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+.td-ready-to { font-size: 17px; color: var(--text2); }
+.td-ready-x { margin: 0; font: 400 13px/18px var(--f-sans); color: var(--text2); }
+.td-ready .td-gain { margin: 6px 0 0; font: 400 13px/18px var(--f-sans); color: var(--text2); }
+.td-ready .td-gain-d { margin: 0; font: 600 15px/20px var(--f-sans); color: var(--text); }
+.td-doms { list-style: none; margin: 4px 0 0; padding: 0; }
+.td-doms li { display: flex; align-items: center; gap: 10px; min-height: 40px; padding: 8px 0; border-top: 1px solid var(--border); }
+.td-doms li:last-child { border-bottom: 1px solid var(--border); }
+.td-doms .dom-dot { margin: 0; border-radius: 3px; }
+.td-doms .td-dname { flex: 1; min-width: 0; font: 400 15px/20px var(--f-sans); color: var(--text); }
+.td-doms .td-dval { flex: none; font: 400 12px/16px var(--f-sans); color: var(--muted); font-variant-numeric: tabular-nums; }
+.td-doms .td-dval.td-dnum { font: 500 16px/20px var(--f-serif); color: var(--text); }
+.td-ready .td-how { margin: 0; }
+.td-ready .td-link { min-height: 44px; }
+.td-key { list-style: none; margin: var(--sp-md) 0 0; padding: 0; display: flex; flex-direction: column; gap: 6px; font: 400 13px/18px var(--f-sans); color: var(--text2); }
+.td-key li { display: flex; align-items: center; gap: 8px; }
+.td-key-sw { flex: none; width: 10px; height: 10px; border-radius: 3px; box-shadow: 0 0 0 2px var(--forest); }
+.td-key-low { background: var(--hero-tick-on); }
+.td-key-rng { background: var(--hero-tick-rng); }
+.td-key-bar { height: 3px; border-radius: 2px; background: var(--hero-tick-mark); }
+
+/* Today's principle */
+.td-prin { display: flex; flex-direction: column; gap: 8px; padding: 18px 20px; }
+.td-prin-q { margin: 0; font: italic 400 18px/1.35 var(--f-serif); color: var(--text); }
+.td-prin .td-link { min-height: 44px; }
+
+/* From 1240px: the side column (readiness, the twig, today's principle) */
+@media (min-width: 1240px) {
+  .td { display: grid; max-width: none; grid-template-columns: minmax(0, 1fr) minmax(280px, 320px); column-gap: 24px; row-gap: 16px; align-items: start; }
+  .td-main { grid-column: 1; grid-row: 1; }
+  .td-side { grid-column: 2; grid-row: 1 / span 3; }
+  .td-apps, .td-legal { grid-column: 1; }
+  .td-twig-m { display: none; }
+  .td-twig-s { display: flex; }
+}
 /* GROVE-LAYER-END */
 </style>
 </head>
@@ -12367,22 +12641,39 @@ function todayStepGo(btn) {
 function todaySetExamDate() {
   openExamDateSheet(false);
 }
-function todayNextHtml(step) {
-  if (!step) return '';
-  var data = Object.keys(step.go).map(function (k) { return ' data-' + k + '="' + escapeHtml(String(step.go[k])) + '"'; }).join('');
+// Grove's "If you have more time" card: the next step, and under it the
+// weakest area once the first range is in (the same domain the readiness
+// card names, todayNextStep's own weak row), unless the step already is it.
+function todayNextSteps(r, range) {
+  var out = [];
+  var step = todayNextStep(r, range);
+  if (step) out.push(step);
+  var weak = range.enough && !(step && step.icon === 'weak')
+    ? r.domains.filter(function (x) { return x.id === r.focusId; })[0] : null;
+  if (weak && DI[weak.id] && weak.answered > 0) {
+    out.push({ icon: 'weak', kicker: 'Your weakest area', title: 'Practice ' + escapeHtml(DI[weak.id].short),
+      meta: 'Most points to gain &middot; ' + DI[weak.id].weight + '% of the exam', go: { step: 'domain', d: weak.id } });
+  }
+  return out;
+}
+function todayNextHtml(steps) {
+  if (!steps || !steps.length) return '';
   // Optional, after the plan (web Today redesign): never a second task.
-  return '<section class="td-next" aria-labelledby="tdNextH">'
-    + '<h2 class="ph-h" id="tdNextH">If you have more time</h2>'
-    + '<ul class="you-list"><li><button type="button" class="you-row td-row"' + data + ' onclick="todayStepGo(this)">'
-    + '<span class="you-ico" aria-hidden="true">' + ico(step.icon, 20) + '</span>'
-    + '<span class="you-text"><span class="td-kicker">' + step.kicker + '</span>'
-    + '<span class="you-t">' + step.title + '</span>'
-    + '<span class="you-m">' + step.meta + '</span></span>'
-    + '<span class="you-chev" aria-hidden="true">' + ico('chevron', 18) + '</span>'
-    + '</button></li></ul></section>';
+  return '<section class="td-card td-next" aria-labelledby="tdNextH">'
+    + '<h2 class="td-card-h" id="tdNextH">If you have more time</h2>'
+    + '<ul class="you-list">' + steps.map(function (step) {
+      var data = Object.keys(step.go).map(function (k) { return ' data-' + k + '="' + escapeHtml(String(step.go[k])) + '"'; }).join('');
+      return '<li><button type="button" class="you-row td-row td-row-' + step.icon + '"' + data + ' onclick="todayStepGo(this)">'
+        + '<span class="you-ico" aria-hidden="true">' + ico(step.icon, 20) + '</span>'
+        + '<span class="you-text"><span class="td-kicker">' + step.kicker + '</span>'
+        + '<span class="you-t">' + step.title + '</span>'
+        + '<span class="you-m">' + step.meta + '</span></span>'
+        + '<span class="you-chev" aria-hidden="true">' + ico('chevron', 18) + '</span>'
+        + '</button></li>';
+    }).join('') + '</ul></section>';
 }
 // The notes arrive after the first paint: only the next step is drawn again
-// (the rest of Today, and the rings' daily draw-in, stay as they are).
+// (the rest of Today stays as it is).
 function refreshTodayNext() {
   if (S.activeTab !== 'home') return;
   var td = document.querySelector('#homeArea .td');
@@ -12390,12 +12681,12 @@ function refreshTodayNext() {
   // Welcome back and exam week leave the next step out.
   if (td.getAttribute('data-next') === 'off') return;
   var r = computeTodayReadiness();
-  var html = todayNextHtml(todayNextStep(r, todayReadinessRange(r)));
+  var html = todayNextHtml(todayNextSteps(r, todayReadinessRange(r)));
   var old = td.querySelector('.td-next');
   var focused = !!(old && old.contains(document.activeElement));
   if (old) old.outerHTML = html;
   else if (html) {
-    var before = td.querySelector('#tdMindSlot') || td.querySelector('.td-backup');
+    var before = td.querySelector('.td-pair');
     if (before) before.insertAdjacentHTML('beforebegin', html);
     else { var main = td.querySelector('.td-main'); if (main) main.insertAdjacentHTML('beforeend', html); }
   }
@@ -12583,12 +12874,12 @@ function backupNudgeLater() {
 // ── TODAY: STATES, THE WEEK AND THE MINDSET CHECK (web Today redesign) ──
 // Calm two columns: the plan and what to do on the left, a glanceable
 // column on the right. Owner decisions (2026-10-26, today-retention):
-// - from study day 14 the day line says "N days this week" (the streak
-//   number stays on You);
 // - Welcome back after 3+ days away: a short plan, no backlog total, no
-//   count of days away, and no next step, Mindset check or week strip;
-// - exam week: a shorter plan, readiness in words only, no rings, no strip;
-// - one visual per visit below 1180px: the rings or the week, by the day.
+//   count of days away, and no next step, Mindset check or week twig;
+// - exam week: a shorter plan, readiness in words only, no ring ticks, no twig.
+// Grove (GROVE_HANDOFF.md §7, owner kit 30 Oct 2026): the line under the
+// title says the week's study days, and the streak (from 2) is on the week's
+// twig; the ring and the twig both show, on every width.
 // The readiness link opens this page, and its words follow it (v12.41:
 // the Progress page, You → Your progress).
 var TODAY_REPORT_TAB = 'progress';
@@ -12598,7 +12889,6 @@ var TODAY_BACK_AFTER_DAYS = 3;
 var TODAY_EXAM_WEEK_DAYS = 7;
 var TODAY_EST_LINE = 'A study estimate, not a prediction.';
 var TODAY_WEEKDAYS_MON = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-var TODAY_WEEKDAYS_SHORT = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
 
 // Study days up to today (a clock set ahead never counts), oldest first.
 function todayStudyDayList(todayKey) {
@@ -12661,69 +12951,130 @@ function todayLeafSvg(state) {
     + '<path class="td-leaf-b" d="M3.9 22.1C3.9 11.7 11.7 3.9 22.1 3.9C22.1 14.3 14.3 22.1 3.9 22.1Z"/>'
     + '<path class="td-leaf-v" d="M5.8 20.1L16.3 9.8"/></svg>';
 }
-function todayWeekHtml(week) {
-  var studied = week.filter(function (d) { return d.on; }).map(function (d) { return TODAY_WEEKDAYS_MON[d.i]; });
-  var now = week.filter(function (d) { return d.today; })[0];
-  var said = (studied.length ? 'Studied ' + todayListWords(studied) + '.' : 'No study days yet this week.')
-    + ' Today is ' + TODAY_WEEKDAYS_MON[now ? now.i : 0] + '.';
-  return '<section class="td-week" aria-labelledby="tdWeekH">'
-    + '<h2 class="td-week-h" id="tdWeekH">This week</h2>'
-    + '<p class="sr-only">' + said + '</p>'
-    + '<div class="td-week-row" aria-hidden="true">' + week.map(function (d) {
-      return '<span class="td-wd' + (d.on ? ' on' : '') + (d.today ? ' today' : '') + '">'
-        + todayLeafSvg(d.on ? 'on' : 'off') + '<span class="td-wd-n">' + TODAY_WEEKDAYS_SHORT[d.i] + '</span></span>';
-    }).join('') + '</div></section>';
+// ── This week's twig (Grove, GROVE_HANDOFF.md §6.6) ──
+// One curved branch with seven leaves, Monday to Sunday, alternating above
+// and below. A leaf is filled on a day studied on this device, an empty
+// outline otherwise (missed and future days look the same). The streak sits
+// on the right in clay, never below 2 (STREAK_SHOW_MIN): before that,
+// "Streak starts today". sfx keeps the ids apart: the twig is drawn in the
+// page (below 1240px) and in the side column (from 1240px), one at a time.
+var TODAY_TWIG_LEAVES = [
+  'M23.6 36.7C27 28 37 23 44 25C41 32 32 36 23.6 36.7Z',
+  'M70.7 34.6C74 43 84 48 91 46C88 39 79 35 70.7 34.6Z',
+  'M117.9 33.4C121 25 131 20 138 22C135 29 126 33 117.9 33.4Z',
+  'M165 33C168 41 178 46 185 44C182 37 173 33 165 33Z',
+  'M212 33.4C215 25 225 20 232 22C229 29 220 33 212 33.4Z',
+  'M259 34.6C262 43 272 48 279 46C276 39 267 35 259 34.6Z',
+  'M306 36.7C309 28 319 23 326 25C323 32 314 36 306 36.7Z'
+];
+var TODAY_TWIG_LETTERS = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
+var todayTwigGrown = false;   // the leaves fade in once per visit
+function todayTwigHtml(now, st, sfx, grow) {
+  var week = todayWeek(now, st.studyDays);
+  var studied = week.filter(function (d) { return d.on; });
+  var names = studied.map(function (d) { return TODAY_WEEKDAYS_MON[d.i]; });
+  var today = week.filter(function (d) { return d.today; })[0];
+  var streak = studyDayStreak(now.getTime());
+  var right = streak >= STREAK_SHOW_MIN ? streak + ' day streak' : 'Streak starts today';
+  var said = (names.length ? 'Studied on ' + todayListWords(names) + '. One leaf per day studied.' : 'No study days yet this week.')
+    + ' Today is ' + TODAY_WEEKDAYS_MON[today ? today.i : 0] + '.';
+  var k = 0;
+  var leaves = week.map(function (d) {
+    return '<path class="td-tw-leaf' + (d.on ? ' on' : '') + '"' + (d.on ? ' style="--i:' + (k++) + '"' : '') + ' d="' + TODAY_TWIG_LEAVES[d.i] + '"/>';
+  }).join('');
+  var hid = 'tdTwigH' + sfx;
+  return '<section class="td-card td-twig td-twig-' + sfx + (grow ? ' grow' : '') + '" aria-labelledby="' + hid + '">'
+    + '<div class="td-twig-top"><h2 class="td-card-h" id="' + hid + '">This week&rsquo;s twig</h2>'
+    + '<p class="td-twig-streak">' + right + '</p></div>'
+    + '<svg class="td-twig-svg" viewBox="0 0 330 60" role="img" aria-label="' + escapeHtml(said) + '" focusable="false">'
+    + '<path class="td-tw-branch" d="M0 38Q165 28 330 38"/>' + leaves + '</svg>'
+    + '<div class="td-twig-days" aria-hidden="true">' + week.map(function (d) {
+      return '<span' + (d.today ? ' class="today"' : '') + '>' + TODAY_TWIG_LETTERS[d.i] + '</span>';
+    }).join('') + '</div>'
+    + (studied.length ? '<p class="td-twig-n">' + studyDaysWeekWords(studied.length) + '</p>' : '')
+    + '</section>';
 }
 
-// ── Readiness, glanceable: the range, one line on what it means, where
-// you'll gain most, and the explainers behind one disclosure. Exam week and
-// exam day say it in words only (no rings, no legend). ──
+// ── Estimated readiness (Grove: a card in the side column from 1240px,
+// after the page below that): the status, what it means, where you'll gain
+// most, each domain ("N of 30" until DOMAIN_READ_MIN answers, then its
+// score), the explainers behind one disclosure and the report link. The
+// range itself is drawn by the ring in the hero (todayRingHtml). Exam week
+// and exam day say it in words only (no ring ticks, no list). ──
+function todayReportLinkHtml() {
+  return '<a class="td-link" href="#' + NAV_HASH[TODAY_REPORT_TAB] + '" onclick="return navTo(event,\'' + TODAY_REPORT_TAB + '\')">' + TODAY_REPORT_LABEL + ico('chevron', 18) + '</a>';
+}
 function todayReadyHtml(r, range, st) {
-  var head = '<h2 class="sr-only" id="tdReadyH">Readiness</h2>';
-  if (!range.enough) {
-    // v12.30: no empty rings before the first range, one quiet line. One
-    // count toward one goal, in the same units as You's "Answered".
-    return '<section class="td-ready td-ready-quiet" aria-labelledby="tdReadyH">' + head
-      + '<p class="td-wait">' + (r.answered > 0
-        ? (RD_RANGE_MIN_ANSWERS - range.needed) + ' of ' + RD_RANGE_MIN_ANSWERS + ' questions for your first readiness range. Each question counts once.'
-        : 'Answer ' + RD_RANGE_MIN_ANSWERS + ' questions to see your first readiness range.') + '</p>'
-      + '<p class="td-note td-est">Your range will be a study estimate, not a prediction.</p>'
-      + (r.answered > 0 ? '<a class="td-link" href="#' + NAV_HASH[TODAY_REPORT_TAB] + '" onclick="return navTo(event,\'' + TODAY_REPORT_TAB + '\')">' + TODAY_REPORT_LABEL + ico('chevron', 18) + '</a>' : '')
-      + '</section>';
-  }
-  if (st.exam) {
-    return '<section class="td-ready td-ready-words" aria-labelledby="tdReadyH">' + head
+  var head = '<h2 class="td-card-k" id="tdReadyH">Estimated readiness</h2>';
+  if (st.exam && range.enough) {
+    return '<section class="td-card td-ready td-ready-words" aria-labelledby="tdReadyH">' + head
       + '<p class="td-words">Your estimated readiness is ' + range.low + ' to ' + range.high + '%.</p>'
       + '<p class="td-note td-est">' + TODAY_EST_LINE + '</p>'
       + '<p class="td-note">Progress charts are hidden ' + (st.exam === 'day' ? 'today' : 'this week') + ' so you can focus.</p></section>';
   }
-  // Field Guide (v12.44): the range on a scale bar, its words built in (no rings).
-  var html = '<section class="td-ready" aria-labelledby="tdReadyH">' + head
-    + '<p class="fg-kick" aria-hidden="true">Estimated readiness</p>'
-    + fgScaleBar(range)
-    + '<div class="td-ready-more">';
+  var html = '<section class="td-card td-ready" aria-labelledby="tdReadyH">' + head;
+  if (!range.enough) {
+    // One count toward one goal, in the same units as You's "Answered".
+    html += '<p class="td-ready-s">Not enough data yet</p>'
+      + '<p class="td-ready-x">' + (r.answered > 0
+        ? (RD_RANGE_MIN_ANSWERS - range.needed) + ' of ' + RD_RANGE_MIN_ANSWERS + ' answers for your first range. Each question counts once. ' + TODAY_EST_LINE
+        : 'Answer ' + RD_RANGE_MIN_ANSWERS + ' questions to see your first readiness range. Your range will be a study estimate, not a prediction.') + '</p>';
+  } else {
+    html += '<p class="td-ready-s td-ready-range">' + range.low + '<span class="td-ready-to"> to </span>' + range.high
+      + '<span class="sr-only"> out of 100</span></p>'
+      + '<p class="td-ready-x">Your estimated range. ' + TODAY_EST_LINE + '</p>';
+  }
+  if (r.answered <= 0) return html + '</section>';
   // One name for the weak area, its full name once (from DI). Not on a
   // Welcome back day (owner default).
   if (!st.back && r.focusId && DI[r.focusId]) {
-    html += '<p class="td-gain">Where you&rsquo;ll gain most: <span class="td-gain-d">' + escapeHtml(DI[r.focusId].name) + '</span></p>';
+    html += '<p class="td-gain">Where you&rsquo;ll gain most</p><p class="td-gain-d">' + escapeHtml(DI[r.focusId].name) + '</p>';
   }
-  var figures = r.domains.map(function (x) { return domainFigure(x.answered, Math.round(x.mastery * 100)); });
-  if (r.answered > 0) {
-    html += '<ul class="td-legend">' + r.domains.map(function (x, i) {
-      var f = figures[i];
-      var val = f.banded || x.answered <= 0 ? '<span class="td-word">' + f.text + '</span>' : '<span class="td-num">' + f.text.replace('%', '') + '<sup>%</sup></span>';
+  var banded = false;
+  if (!st.exam) {
+    html += '<ul class="td-doms">' + r.domains.map(function (x) {
+      var pct = Math.round(x.mastery * 100);
+      var few = x.answered < DOMAIN_READ_MIN;
+      if (few && x.answered > 0) banded = true;
+      var shown = few ? x.answered + ' of ' + DOMAIN_READ_MIN : pct + '%';
+      var spoken = few ? x.answered + ' of ' + DOMAIN_READ_MIN + ' answers, too few yet for a score' : domainFigure(x.answered, pct).spoken;
       return '<li><span class="dom-dot" style="background:' + DI[x.id].color + '" aria-hidden="true"></span>'
         + '<span class="td-dname">' + escapeHtml(DI[x.id].short) + '</span>'
-        + '<span class="sr-only">: ' + f.spoken + '</span><span class="td-dval" aria-hidden="true">' + val + '</span></li>';
+        + '<span class="sr-only">: ' + spoken + '</span><span class="td-dval' + (few ? '' : ' td-dnum') + '" aria-hidden="true">' + shown + '</span></li>';
     }).join('') + '</ul>';
   }
   var how = '<p class="td-note">The range is about how much of the exam you would get right today, weighted like the exam. It narrows as you answer more.</p>'
-    + '<p class="td-note">The bar runs from 0 to 100. The bracket is your range; the tick marks ' + FG_STUDY_BAR + '%, this app&rsquo;s own study bar for your low end.</p>';
-  if (figures.some(function (f) { return f.banded; })) how += '<p class="td-note">' + bandsLine() + '</p>';
-  else if (r.domains.some(function (x) { return x.answered > 0; })) how += '<p class="td-note">Percentages count your latest try at each question.</p>';
+    + '<p class="td-note">The ring starts at the top and runs clockwise from 0 to 100. Before your first range, each tick is one answer, up to ' + RD_RANGE_MIN_ANSWERS + '. After it, each tick is 2 points.</p>'
+    + '<ul class="td-key" aria-label="Ring key">'
+    + '<li><span class="td-key-sw td-key-low" aria-hidden="true"></span>Up to your low end</li>'
+    + '<li><span class="td-key-sw td-key-rng" aria-hidden="true"></span>Your range</li>'
+    + '<li><span class="td-key-sw td-key-bar" aria-hidden="true"></span>' + FG_STUDY_BAR + ', this app&rsquo;s own study bar for your low end</li></ul>';
+  if (banded) how += '<p class="td-note">' + bandsLine() + '</p>';
+  else if (r.domains.some(function (x) { return x.answered >= DOMAIN_READ_MIN; })) how += '<p class="td-note">Percentages count your latest try at each question.</p>';
   html += '<details class="td-how"><summary class="td-how-s"><span>How this is worked out</span>' + ico('chevron-down', 18) + '</summary>' + how + '</details>';
-  html += '<a class="td-link" href="#' + NAV_HASH[TODAY_REPORT_TAB] + '" onclick="return navTo(event,\'' + TODAY_REPORT_TAB + '\')">' + TODAY_REPORT_LABEL + ico('chevron', 18) + '</a>';
-  return html + '</div></section>';
+  html += todayReportLinkHtml();
+  return html + '</section>';
+}
+
+// ── Today's principle (Grove: the side column from 1240px, after the page
+// below that): one principle a day, the Practice hub's own pick. ──
+function todayPrinHtml(st) {
+  // Welcome back keeps one action; exam week and exam day have their one idea.
+  if (st.back || st.exam) return '';
+  var p = null;
+  try { p = railPrinciple(); } catch (e) { p = null; }
+  if (!p) return '';
+  return '<section class="td-card td-prin" aria-labelledby="tdPrinH">'
+    + '<h2 class="td-card-k" id="tdPrinH">Today&rsquo;s principle</h2>'
+    + '<p class="td-prin-q">' + escapeHtml(p.rule || p.title || '') + '</p>'
+    + '<a class="td-link" href="' + todayRouteHref('principles/' + p.id) + '" data-pid="' + escapeHtml(p.id) + '" onclick="return todayOpenPrinciple(event,this.dataset.pid)">'
+    + 'Read this principle<span class="sr-only">: ' + escapeHtml(p.title) + '</span>' + ico('chevron', 18) + '</a></section>';
+}
+function refreshTodayPrin() {
+  if (S.activeTab !== 'home') return;
+  var slot = document.getElementById('tdPrinSlot');
+  if (!slot || slot.contains(document.activeElement)) return;
+  slot.innerHTML = todayPrinHtml(todayState(new Date(), computeTodayReadiness()));
 }
 
 // ── Mindset check: one principle a day (data/mindset/principles.json) ──
@@ -12810,10 +13161,10 @@ function todayMindHtml(st) {
   var c = todayMindChoice && todayMindChoice.key === t.key ? todayMindChoice.idx : -1;
   var answered = c >= 0;
   return '<section class="td-mind" data-key="' + escapeHtml(t.key) + '" aria-labelledby="tdMindH">'
-    + '<h2 class="ph-h" id="tdMindH">Mindset check</h2>'
+    + '<h2 class="sr-only" id="tdMindH">Mindset check</h2>'
     + '<button type="button" class="you-row td-mind-open" id="tdMindBtn" aria-expanded="' + (todayMindOpen ? 'true' : 'false') + '" aria-controls="tdMindBody" onclick="todayMindToggle()">'
     + '<span class="you-ico" aria-hidden="true">' + ico('principles', 20) + '</span>'
-    + '<span class="you-text"><span class="you-t">One auditor question <span class="td-mind-m">&middot; under a minute</span></span></span>'
+    + '<span class="you-text"><span class="td-kicker" aria-hidden="true">Mindset check</span><span class="you-t">One auditor question</span><span class="you-m td-mind-m">Under a minute</span></span>'
     + '<span class="you-chev td-mind-chev" aria-hidden="true">' + ico('chevron-down', 18) + '</span></button>'
     + '<div class="td-mind-body" id="tdMindBody"' + (todayMindOpen ? '' : ' hidden') + '>'
     + '<p class="td-mind-q" id="tdMindQ">' + escapeHtml(t.pair.scenario) + '</p>'
@@ -12833,6 +13184,7 @@ function todayMindSlotHtml(st) {
 }
 function refreshTodayMind() {
   if (S.activeTab !== 'home') return;
+  refreshTodayPrin();
   var slot = document.getElementById('tdMindSlot');
   if (!slot || slot.contains(document.activeElement)) return;
   slot.innerHTML = todayMindHtml(todayState(new Date(), computeTodayReadiness()));
@@ -12867,46 +13219,160 @@ function todayMindAnswer(btn) {
   }
 }
 
-// Today's right-hand column (from 1180px): the plate (readiness, the week,
-// the plant), and under it the app's QR card when it applies (computers,
-// live mode; see appCtaTodayQrHtml).
+// Today's side column (from 1240px; after the page below that): estimated
+// readiness, the week's twig, today's principle, the plant row (or its
+// invitation), and the app's QR card when it applies (computers, live mode;
+// see appCtaTodayQrHtml).
 function todaySideHtml(inner) {
   var qr = '';
   try { qr = appCtaTodayQrHtml(); } catch (e) { qr = ''; }
   return '<div class="td-side">' + inner + qr + '</div>';
 }
-// Today's plate figure: the learner's plant ("Fig. 3 · Shoot", its stage
-// name; Fig. 3 is Today's plan in the register), or the frond before one is
-// planted. Decorative: the plant row under the readiness says it in words.
+// Today's figure (Grove, Fig. 1): the learner's plant at its growth, drawn
+// inside the readiness ring, or the kit's seed before one is planted. The
+// growth names are the plant engine's own (Seed to Elder).
+var TODAY_STAGES = 6;
 function todayShoot() {
   var K = plantApi();
+  var names = (K && K.plant && K.plant.GROWTH_NAMES) || { 1: 'Seed' };
   if (K && S.plant) {
     var v = plantSafe(function () { return plantView(Date.now()); });
     if (v) {
-      var g = v.plant.growth, names = (K.plant && K.plant.GROWTH_NAMES) || {};
-      // The Fig. register (DESIGN_SYSTEM §21.1): Today's plate is always
-      // Fig. 3; the growth stage is said in the PLATE caption, not the number.
+      var g = v.plant.growth;
       return {
-        plant: true,
-        fig: 'Fig. 3 · Today’s plan',
-        art: plantSafe(function () { return plantDraw(v, 'today', 150, { fit: true }); }),
+        plant: true, v: v, stage: g, name: names[g] || '',
         cap: (names[g] ? names[g] + ': ' : '') + K.plant.plantCallName(v.plant) + ' grows only from real progress.'
       };
     }
   }
-  // Fig. 1 is a new learner's day one (fewer than two study days, Today's own rule).
-  var fresh = todayStudyDayList(parityDayKey(Date.now())).length < 2;
-  return { plant: false, fig: fresh ? 'Fig. 1 · A frond for today' : 'Fig. 3 · Today’s plan', art: gtFrondSvg(), cap: 'Your progress grows from what you practise here.' };
+  return { plant: false, stage: 1, name: names[1] || 'Seed', cap: 'Your progress grows from what you practise here.' };
 }
+// The kit's seed with its first shoot (01-phone-today.html), on the ring's 200 grid.
+function todaySeedSvg() {
+  return '<svg class="td-seed" viewBox="52 60 96 84" aria-hidden="true" focusable="false">'
+    + '<path class="td-seed-soil" d="M58 132Q100 120 142 132"/>'
+    + '<path class="td-seed-soil2" d="M66 137Q100 128 134 137"/>'
+    + '<ellipse class="td-seed-body" cx="100" cy="122" rx="15" ry="11"/>'
+    + '<path class="td-seed-line" d="M94 116Q100 112 106 116"/>'
+    + '<path class="td-seed-stem" d="M100 111L100 86"/>'
+    + '<path class="td-seed-leaf" d="M100 94Q86 90 82 76Q96 77 100 92Z"/>'
+    + '<path class="td-seed-leaf" d="M100 90Q113 84 118 70Q104 72 100 88Z"/>'
+    + '</svg>';
+}
+// ── The readiness ring (Grove §6.4) ──
+// Before the first range: RD_RANGE_MIN_ANSWERS ticks, one per answer, lit up
+// to the answers so far, from 12 o'clock clockwise. After it: 50 ticks of 2
+// points each, lit to the range's low end, gold inside the range, and a clay
+// mark at the study bar (FG_STUDY_BAR). The centre says the range, never one
+// number. The numbers are todayReadinessRange's; nothing is worked out here.
+// Exam week and exam day: the plant only, no ticks (readiness in words).
+var TODAY_RING_TICKS = 50;      // after the first range: 2 points each
+var todayRingGrown = false;     // the ticks light up once per visit
+function todayRingSoFar(range) {
+  return Math.max(0, Math.min(RD_RANGE_MIN_ANSWERS, RD_RANGE_MIN_ANSWERS - range.needed));
+}
+function todayTick(i, n, cls, k) {
+  return '<line class="td-tk ' + cls + '" x1="100" y1="7" x2="100" y2="21" transform="rotate(' + +(i * 360 / n).toFixed(2) + ' 100 100)"'
+    + (cls !== 'off' ? ' style="--i:' + k + '"' : '') + '/>';
+}
+function todayRingHtml(range, st, shoot, grow) {
+  var ticks = '', mark = '', label = '', centre = '', i;
+  if (!st.exam && !range.enough) {
+    var n = RD_RANGE_MIN_ANSWERS, so = todayRingSoFar(range);
+    for (i = 0; i < n; i++) ticks += todayTick(i, n, i < so ? 'on' : 'off', i);
+    label = so + ' of ' + n + ' answers toward your first readiness range.';
+  } else if (!st.exam) {
+    for (i = 0; i < TODAY_RING_TICKS; i++) {
+      var top = (i + 1) * 100 / TODAY_RING_TICKS, bottom = i * 100 / TODAY_RING_TICKS;
+      ticks += todayTick(i, TODAY_RING_TICKS, top <= range.low ? 'on' : bottom < range.high ? 'rng' : 'off', i);
+    }
+    mark = '<line class="td-tk-mark" x1="100" y1="3" x2="100" y2="27" transform="rotate(' + (FG_STUDY_BAR * 3.6) + ' 100 100)"/>';
+    label = 'Estimated readiness range ' + range.low + ' to ' + range.high + ' out of 100. The study bar is ' + FG_STUDY_BAR + '. ' + TODAY_EST_LINE;
+    centre = '<p class="td-ring-n" aria-hidden="true">' + range.low + '<span class="td-ring-to"> to </span>' + range.high + '</p>'
+      + '<p class="td-ring-l" aria-hidden="true">estimated range</p>';
+  }
+  // The disc is forest in both themes, so the plant takes its dark palette.
+  var art = shoot.plant ? plantSafe(function () { return plantDraw(shoot.v, 'today', centre ? 72 : 108, { fit: true, theme: 'dark' }); }) : '';
+  if (!art) art = todaySeedSvg();
+  return '<div class="td-ring' + (centre ? ' td-ring-range' : '') + (st.exam ? ' td-ring-bare' : '') + (grow ? ' grow' : '') + '">'
+    + '<svg class="td-ring-svg" viewBox="0 0 200 200" focusable="false"' + (label ? ' role="img" aria-label="' + escapeHtml(label) + '"' : ' aria-hidden="true"') + '>'
+    + '<g class="td-tks' + (centre ? ' td-tks-fine' : '') + '">' + ticks + '</g>' + mark
+    + '<circle class="td-ring-disc" cx="100" cy="100" r="70"/></svg>'
+    + '<div class="td-ring-in"><div class="td-ring-art' + (shoot.plant ? '' : ' is-seed') + '" aria-hidden="true">' + art + '</div>' + centre + '</div></div>';
+}
+// The hero's figure: the caption (two layouts: a row on phones, one line
+// under the ring from 768px; only one shows), the ring, the line under it,
+// and on phones the Accuracy and Exam date tiles and the PLATE caption.
+function todayFigHtml(r, range, st, shoot, grow) {
+  var name = shoot.name || 'Seed';
+  var stage = 'Stage ' + shoot.stage + ' of ' + TODAY_STAGES;
+  var under = '';
+  if (!st.exam && !range.enough) {
+    under = r.answered > 0
+      ? '<span class="td-ring-big">' + todayRingSoFar(range) + '</span> of ' + RD_RANGE_MIN_ANSWERS + ' answers<br>until your first readiness range'
+      : 'Answer ' + RD_RANGE_MIN_ANSWERS + ' questions<br>to see your first readiness range';
+  } else if (!st.exam) {
+    under = TODAY_EST_LINE;
+  }
+  // Accuracy: You's own rule ("Too few yet" until DOMAIN_READ_MIN answers).
+  var c = Math.round(r.domains.reduce(function (s, x) { return s + x.mastered; }, 0));
+  var acc = r.answered > 0 ? domainReadLabel(domainRead({ t: r.answered, c: c })) : 'Not started';
+  var accNum = /%$/.test(acc);
+  var examTile;
+  if (st.days === null) {
+    examTile = '<button type="button" class="td-tile td-tile-btn" onclick="todaySetExamDate()"><span class="td-tile-k">Exam date</span><span class="td-tile-a">Set a date</span></button>';
+  } else {
+    var examDay = savedExamDate();
+    examTile = '<div class="td-tile"><span class="td-tile-k">Exam date</span><span class="td-tile-v td-tile-num">'
+      + (PARITY_DAY_RE.test(examDay) ? escapeHtml(pgShort(examDay)) : escapeHtml(ACTIVE.name)) + '</span></div>';
+  }
+  return '<div class="td-fig-top">' + fgFigHtml('Fig. 1 · ' + name, 2) + '<p class="td-fig-stage">' + stage + '</p></div>'
+    + todayRingHtml(range, st, shoot, grow)
+    + '<div class="td-fig-cap">' + fgFigHtml('Fig. 1 · ' + name + ', stage ' + shoot.stage + ' of ' + TODAY_STAGES, 2) + '</div>'
+    + (under ? '<p class="td-ring-cap" aria-hidden="true">' + under + '</p>' : '')
+    + '<div class="td-tiles"><div class="td-tile"><span class="td-tile-k">Accuracy</span><span class="td-tile-v' + (accNum ? ' td-tile-num' : '') + '">' + escapeHtml(acc) + '</span></div>'
+    + examTile + '</div>'
+    + '<p class="fg-cap td-platecap td-platecap-in"><b>Plate</b>' + escapeHtml(shoot.cap) + '</p>';
+}
+// The plant script or a plant choice arrived: draw the figure again, only
+// when it changed (so the ticks' first light-up is not cut short).
+var todayFigKey = '';
 function todayShootRefresh() {
-  var art = document.getElementById('tdShoot'), fig = document.getElementById('tdShootFig'), cap = document.getElementById('tdShootCap');
-  if (!art || !fig || !cap) return;
+  var fig = document.getElementById('tdFig');
+  if (!fig || S.activeTab !== 'home' || fig.contains(document.activeElement)) return;
+  var r = computeTodayReadiness();
+  var range = todayReadinessRange(r), st = todayState(new Date(), r);
   var shoot = todayShoot();
-  art.innerHTML = shoot.art;
-  fig.outerHTML = fgFigHtml(shoot.fig, 2, 'tdShootFig');
-  cap.innerHTML = '<b>Plate</b>' + escapeHtml(shoot.cap);
-  var td = art.closest('.td');
-  if (td) td.classList.toggle('td-has-shoot', shoot.plant);
+  var key = todayFigHtml(r, range, st, shoot, false);
+  if (key === todayFigKey) return;
+  todayFigKey = key;
+  fig.innerHTML = todayFigHtml(r, range, st, shoot, !!fig.querySelector('.td-ring.grow'));
+  var out = document.getElementById('tdPlateOut');
+  if (out) out.innerHTML = '<b>Plate</b>' + escapeHtml(shoot.cap);
+}
+// "Short on time? 5 questions" (the app's short path, mobile 1.41): a quiet
+// second way into today's plan, never a second Start. The first item of the
+// plan, cut to five: the questions to revisit, else the plan's set. Only on a
+// normal day once there are answers, and not when the plan is that short.
+var TODAY_SHORT_SET = 5;
+function todayShortOk(st, r, plan) {
+  if (!plan || st.plan !== 'normal' || r.answered <= 0) return false;
+  return !(plan.items.length === 1 && plan.review + plan.n <= TODAY_SHORT_SET);
+}
+function todayShortStart() {
+  var r = computeTodayReadiness();
+  var plan = todayPlan(r, undefined, todayState(new Date(), r).plan);
+  if (plan.review > 0) { startReviewQueue(TODAY_SHORT_SET); return; }
+  var d = plan.d && DI[plan.d] ? plan.d : 'all';
+  switchTab('practice', { noScroll: true });
+  selectDomain(d);
+  startSession(TODAY_SHORT_SET, d);
+}
+// The phone header's avatar tile: the learner's initial (or the You icon), to You.
+function todayAvatarHtml(name) {
+  var first = name ? Array.from(name)[0].toUpperCase() : '';
+  return '<a class="td-avatar" href="#you" onclick="return navTo(event,\'you\')" aria-label="You">'
+    + (first ? '<span aria-hidden="true">' + escapeHtml(first) + '</span>' : ico('user', 20)) + '</a>';
 }
 function renderHome() {
   var area = document.getElementById('homeArea');
@@ -12915,31 +13381,19 @@ function renderHome() {
   var r = computeTodayReadiness();
   var range = todayReadinessRange(r);
   var st = todayState(now, r);
-  // The day, the exam countdown (when a date is set) and the week.
   var days = st.days;
-  // Field Guide (v12.44): the countdown is the title when an exam date is
-  // set ("Maya, 38 days to go"); the line under it says the exam's date.
-  var when;
-  if (days === null) {
-    when = '<button type="button" class="td-setdate" onclick="todaySetExamDate()">Set exam date</button>';
-  } else {
+  // The line under the title: the exam's date when one is set (the
+  // countdown is the title), then this week's study days. The study days
+  // are hidden on a Welcome back day and in exam week; the streak is on the
+  // week's twig.
+  var sub = [];
+  if (days !== null) {
     var examDay = savedExamDate();
-    when = 'Exam ' + (PARITY_DAY_RE.test(examDay) ? escapeHtml(pgShort(examDay)) : escapeHtml(ACTIVE.name));
+    sub.push('Exam ' + (PARITY_DAY_RE.test(examDay) ? escapeHtml(pgShort(examDay)) : escapeHtml(ACTIVE.name)));
   }
-  // The day line's right side: the streak until study day 14, then "N days
-  // this week". Hidden on a Welcome back day and in exam week.
-  var dayLine = '';
   if (!st.exam && !st.back) {
-    if (st.studyDays.length >= TODAY_WEEK_LINE_FROM) {
-      var wk = todayWeek(now, st.studyDays).filter(function (d) { return d.on; }).length;
-      if (wk > 0) dayLine = '<p class="td-streak td-wkline">' + todayLeafSvg('on') + '<span>' + wk + (wk === 1 ? ' day' : ' days') + ' this week</span></p>';
-    } else {
-      // Never a streak below 2: the week's study days instead.
-      var streak = studyDayStreak(now.getTime());
-      var wkd = streak >= STREAK_SHOW_MIN ? 0 : studyDaysThisWeek(now);
-      if (streak >= STREAK_SHOW_MIN) dayLine = '<p class="td-streak">' + ico('sprig', 20) + '<span>' + streak + '-day study streak</span></p>';
-      else if (wkd > 0) dayLine = '<p class="td-streak td-wkline">' + todayLeafSvg('on') + '<span>' + studyDaysWeekWords(wkd) + '</span></p>';
-    }
+    var wkd = studyDaysThisWeek(now);
+    if (wkd > 0) sub.push(studyDaysWeekWords(wkd));
   }
   var name = getDisplayName();
   var greeting = (st.back ? 'Welcome back' : greetingForHour(now.getHours())) + (name ? ', ' + name : '');
@@ -12951,36 +13405,39 @@ function renderHome() {
     greeting = name ? name + ', ' + togo : togo.charAt(0).toUpperCase() + togo.slice(1);
   }
 
-  // Today's plan (v12.33): one forest panel, one plan with its time, one
-  // Start. A set or question left open comes first ("Where you left off").
+  // Today's plan (v12.33): one plan with its time, one Start. A set or
+  // question left open comes first ("Where you left off"), in the same card.
   var p = practicePrimary();
-  var hero, plan = null, label, act;
+  var plan = null, planHtml, act, short = '';
   if (p.resume) {
-    label = '<p class="fg-kick" aria-hidden="true">' + p.cap + '</p>'
-      + '<h2 class="td-hero-t" id="tdHeroT"><span class="sr-only">' + p.cap + ': </span>' + p.title + '</h2>'
-      + '<p class="td-hero-m">' + p.meta + '</p>';
+    planHtml = '<p class="td-planc-k" aria-hidden="true">' + p.cap + '</p>'
+      + '<h2 class="td-planc-h td-resume-h" id="tdHeroT"><span class="sr-only">' + p.cap + ': </span>' + p.title + '</h2>'
+      + '<p class="td-resume-m">' + p.meta + '</p>';
     act = '<button type="button" class="fg-btn td-go" id="tdGo" aria-describedby="tdHeroT" onclick="todayPractice()">' + p.label + ico('arrow-right', 18) + '</button>';
   } else {
     plan = todayPlan(r, undefined, st.plan);
     var cap = st.plan === 'examday' ? 'Exam day &middot; today&rsquo;s plan' : st.plan === 'examweek' ? 'Exam week &middot; today&rsquo;s plan' : 'Today&rsquo;s plan';
+    // Each step's minutes, at the plan's own pace (todayPlanMinutes).
+    var mins = plan.items.length === 2 ? [todayPlanMinutes(plan.review), todayPlanMinutes(plan.n)] : [plan.minutes];
     var steps = plan.items.map(function (it, i) {
-      return '<li><span class="td-plan-n" aria-hidden="true">' + (i + 1) + '</span><span class="td-plan-t">' + it.title + '<span class="td-plan-m">' + it.meta + '</span></span></li>';
+      return '<li><span class="td-step" aria-hidden="true">' + (i + 1) + '</span>'
+        + '<span class="td-step-t"><span class="td-step-h">' + it.title + '</span><span class="td-step-m">' + it.meta + '</span></span>'
+        + (mins[i] ? '<span class="td-step-min">' + mins[i] + ' min</span>' : '') + '</li>';
     }).join('');
-    label = '<p class="fg-kick" aria-hidden="true">' + cap + '</p>'
-      + '<h2 class="td-hero-t" id="tdHeroT"><span class="sr-only">' + cap + ': </span>About ' + plan.minutes + ' min</h2>'
-      + '<ol class="td-plan" aria-label="Today&rsquo;s plan, in order">' + steps + '</ol>';
+    planHtml = '<h2 class="td-planc-h" id="tdHeroT"><span class="td-planc-t">' + cap + '</span><span class="sr-only">: </span>'
+      + '<span class="td-planc-min">About ' + plan.minutes + ' min</span></h2>'
+      + '<ol class="td-steps" aria-label="Today&rsquo;s plan, in order">' + steps + '</ol>';
     act = '<button type="button" class="fg-btn td-go" id="tdGo" aria-describedby="tdHeroT" onclick="todayPlanStart()">Start' + ico('arrow-right', 18) + '</button>'
       + '<p class="td-hero-q">Stop any time; your place is saved.</p>';
+    if (todayShortOk(st, r, plan)) {
+      short = '<button type="button" class="td-short" onclick="todayShortStart()">Short on time? ' + TODAY_SHORT_SET + ' questions, '
+        + todayPlanMinutes(TODAY_SHORT_SET) + ' min</button>';
+    }
   }
   var intro = '';
   if (r.answered === 0) intro = '<p class="td-intro">CISA exam practice, free during the beta. Start with a short set below.</p>';
   else if (st.back) intro = '<p class="td-intro">A short start today.' + (plan && plan.due > plan.review ? ' The rest of your reviews will spread out over the next days.' : '') + '</p>';
 
-  // The right column. Below 1180px it shows ONE visual per visit: the rings
-  // or the week, by the day (td-vis-*); from 1180px both, the week small.
-  var showWeek = !st.exam && !st.back && !st.newLearner;
-  var showRange = !st.exam && range.enough;
-  var vis = showRange && showWeek ? (todayDayNumber(now) % 2 ? 'week' : 'rings') : showRange ? 'rings' : showWeek ? 'week' : 'none';
   // One invitation per visit: when the backup reminder and the plant
   // invitation are both due, the first study day gets the plant and a later
   // visit the backup (todayInvitePick, kept for this visit).
@@ -13002,44 +13459,60 @@ function renderHome() {
   // would ask on every visit.
   if (askName && nameAskRead() !== 'shown:' + todayKey) askName = false;
   var nameCard = todayNameHtml(askName);
-  var plate = '<div class="td-plate' + (range.enough ? '' : ' td-plate-quiet') + '">'
-    + todayReadyHtml(r, range, st)
-    + (showWeek ? todayWeekHtml(todayWeek(now, st.studyDays)) : '')
-    // The plant companion (mobile Today's plant slot).
-    + '<div class="td-plant" id="tdPlant">' + plantSafe(plantTodayHtml) + '</div>'
-    + '</div>';
-  // Today's plate (Field Guide): the plant, or the frond before one is
-  // planted, beside the plan's label; forest only on the Start button.
+
+  // The plant row first: it brings the plant up to date (plantSync), so the
+  // figure below draws today's growth.
+  var plantRow = plantSafe(plantTodayHtml);
   var shoot = todayShoot();
-  hero = '<section class="td-hero" aria-labelledby="tdHeroT">'
-    + fgPlate('', fgFigHtml(shoot.fig, 2, 'tdShootFig')
-      + '<div class="td-shoot" id="tdShoot" aria-hidden="true">' + shoot.art + '</div>'
-      + '<div class="fg-label td-plan-label">' + label + '</div>', 'td-shoot-plate')
-    + '<p class="fg-cap" id="tdShootCap"><b>Plate</b>' + escapeHtml(shoot.cap) + '</p>'
-    + '<div class="td-hero-acts">' + act + '</div>'
+  var grow = !todayRingGrown;
+  todayRingGrown = true;
+  todayFigKey = todayFigHtml(r, range, st, shoot, false);
+  // Grove's hero: the figure (the ring with the plant) and the plan. On
+  // phones they are two cards; from 768px one forest card, the plan beside
+  // the ring (or under it in a narrow column), the PLATE caption at its foot.
+  var hero = '<section class="td-hero" aria-labelledby="tdHeroT">'
+    + '<div class="td-fig" id="tdFig">' + todayFigHtml(r, range, st, shoot, grow) + '</div>'
+    + '<div class="td-planc' + (p.resume ? ' td-planc-resume' : '') + '">' + planHtml
+    + '<div class="td-hero-acts">' + act + '</div>' + short + '</div>'
+    + '<p class="fg-cap td-platecap td-platecap-out" id="tdPlateOut"><b>Plate</b>' + escapeHtml(shoot.cap) + '</p>'
     + '</section>';
 
-  // "If you have more time": one optional next step (not on a Welcome back
-  // day or in exam week), then the Mindset check and (now and then) the backup.
+  // The week's twig: not on a Welcome back day or in exam week. Drawn in the
+  // page below 1240px and in the side column from 1240px (one shows).
+  var showTwig = !st.exam && !st.back;
+  var twigGrow = !todayTwigGrown;
+  todayTwigGrown = true;
+  // "If you have more time": optional next steps (not on a Welcome back day
+  // or in exam week), then the Mindset check and (now and then) the backup.
   var hideNext = st.back || !!st.exam;
-  var next = hideNext ? '' : todayNextHtml(todayNextStep(r, range));
+  var next = hideNext ? '' : todayNextHtml(todayNextSteps(r, range));
   var apps = [];
   if (STORE_LINKS.ios) apps.push('<a href="' + escapeHtml(STORE_LINKS.ios) + '" target="_blank" rel="noopener noreferrer">iPhone</a>');
   if (STORE_LINKS.android) apps.push('<a href="' + escapeHtml(STORE_LINKS.android) + '" target="_blank" rel="noopener noreferrer">Android</a>');
+  var dateBtn = days === null
+    ? '<button type="button" class="td-datebtn" onclick="todaySetExamDate()">' + ico('calendar', 20) + 'Set exam date</button>' : '';
 
   fgLargeText();
-  area.innerHTML = '<div class="td td-vis-' + vis + (shoot.plant ? ' td-has-shoot' : '') + '" data-next="' + (hideNext ? 'off' : 'on') + '">'
+  area.innerHTML = '<div class="td" data-next="' + (hideNext ? 'off' : 'on') + '">'
     + '<div class="td-main">'
-    + '<div class="td-head">'
+    + '<div class="td-head"><div class="td-head-row"><div class="td-head-t">'
     + '<h1 class="td-title" id="tdTitle" tabindex="-1">' + escapeHtml(greeting) + '</h1>'
-    + '<div class="td-top"><p class="td-when">' + when + '</p>' + dayLine + '</div>'
+    + (sub.length ? '<p class="td-sub">' + sub.join(' &middot; ') + '</p>' : '')
+    + '</div>' + dateBtn + todayAvatarHtml(name) + '</div>'
     + intro
     + '</div>'
-    // Phones read it top to bottom: the plan, what else, then the column.
+    // Phones read it top to bottom: the hero, the plan, the week, what else, then the column.
     + appCard
-    + hero + nameCard + finalWeek + next + todayMindSlotHtml(st) + backup
+    + hero + nameCard + finalWeek
+    + (showTwig ? todayTwigHtml(now, st, 'm', twigGrow) : '')
+    + next
+    + '<div class="td-pair">' + todayMindSlotHtml(st) + backup + '</div>'
     + '</div>'
-    + todaySideHtml(plate)
+    + todaySideHtml(todayReadyHtml(r, range, st)
+      + (showTwig ? todayTwigHtml(now, st, 's', twigGrow) : '')
+      + '<div class="td-prin-slot" id="tdPrinSlot">' + todayPrinHtml(st) + '</div>'
+      // The plant companion: its row (opens You), or one quiet invitation.
+      + '<div class="td-plant" id="tdPlant">' + plantRow + '</div>')
     + (apps.length ? '<p class="td-apps">Get the app: ' + apps.join(' &middot; ') + '</p>' : '')
     // The full disclaimer lives on About (and Help); Today keeps one line.
     + '<p class="td-legal">KaiSip is independent and not affiliated with ISACA.</p>'
@@ -16109,11 +16582,13 @@ function plantNodeSvg(n) {
   if (n.t === 'ellipse') return '<ellipse cx="' + n.cx + '" cy="' + n.cy + '" rx="' + n.rx + '" ry="' + n.ry + '"' + a + '/>';
   return '';
 }
-// o: { species, stage, scales, look, mood, resting, quiet, size, fit, lod, label, breathe }
+// o: { species, stage, scales, look, mood, resting, quiet, size, fit, lod, label, breathe, theme }
+// theme: the palette, when the plant sits on a surface that is not the
+// page's (Today's ring disc is forest in both themes: 'dark').
 function plantSvg(o) {
   var K = plantApi();
   var organs = o.scales ? o.scales.map(function (v) { return Math.round(v * 40) / 40; }) : undefined;
-  var built = K.art.buildPlant({ species: o.species, stage: o.stage, organs: organs, quietLook: !!o.quiet, lod: o.lod || K.art.lodFor(o.size), theme: plantTheme(), resting: !!o.resting, mood: o.mood, look: o.look, px: o.size, fit: !!o.fit });
+  var built = K.art.buildPlant({ species: o.species, stage: o.stage, organs: organs, quietLook: !!o.quiet, lod: o.lod || K.art.lodFor(o.size), theme: o.theme || plantTheme(), resting: !!o.resting, mood: o.mood, look: o.look, px: o.size, fit: !!o.fit });
   var layers = K.art.plantLayers(built.root);
   var base = built.anchors && built.anchors.base ? built.anchors.base.y : 170;
   // The breath: about 2px deep at any size (the app's breathDepth).
