@@ -260,8 +260,16 @@ then pick the best of the rest.
    and www.fsa.go.jp or www.japaneselawtranslation.go.jp.
 3. **Trademark re-check** before store submission (the unrelated "CSOE"
    application may register).
-4. **Not seen:** the official presentations themselves (paid). The exam asks
+4. **Pending SEC proposals to watch** (checked 31 Oct 2026; not adopted):
+   Release No. 33-11419 (File S7-2026-18, May 2026) would remove the
+   accelerated filer and smaller reporting company categories and raise the
+   large accelerated filer threshold to $2 billion; Release No. 33-11414
+   would allow an optional semiannual Form 10-S. If either is adopted, the
+   filer-category items and notes (1A2, 1A4, 3B2, 4C3 and their 404(b)
+   items) must be re-keyed. `csoe-rules-currency-checker` checks the SEC's
+   rulemaking list on every batch.
+5. **Not seen:** the official presentations themselves (paid). The exam asks
    only what they answer, so a few KaiSip items may test public law the
    presentations skip, or miss a detail they stress. Owner decision whether
    to enrol (CSOE_BANK_PLAN.md section 8).
-5. **Domain experts** for each domain: `.claude/agents/csoe-d{1..5}-domain-expert.md`.
+6. **Domain experts** for each domain: `.claude/agents/csoe-d{1..5}-domain-expert.md`.

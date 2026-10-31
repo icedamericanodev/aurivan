@@ -28,6 +28,8 @@ Primary sources: `www.govinfo.gov`, `www.congress.gov` (the Act, Dodd-Frank, JOB
 - **PCAOB scope.** Dodd-Frank extended PCAOB oversight to auditors of SEC-registered brokers and dealers. Check the section number before keying it.
 - **Foreign private issuers.** Annual report form (20-F, or 40-F for eligible Canadian issuers), the FPI definition test (Rule 3b-4), and which SOX provisions apply to them (for example the audit committee rule's FPI accommodations in Rule 10A-3). Check each against the CFR.
 - **EU rules ("E-SOX").** The 8th Company Law Directive (2006/43/EC) was amended by Directive 2014/56/EU and joined by Regulation (EU) No 537/2014. eur-lex.europa.eu is not on the allowed list: keep EU content at concept level and UNVERIFIED until it opens.
+- **Form instructions beat stale CFR copies.** On 31 Oct 2026 Cornell's text of 17 CFR 249.220f(b) still said Form 20-F was due in six months; the SEC's current Form 20-F General Instruction A.(b) (sec.gov/files/form20-f.pdf) says four months. For any form deadline or content rule, open the form's own current instructions on sec.gov.
+- **Pending SEC proposals.** Check the SEC's rulemaking list on every batch. On 31 Oct 2026 Release No. 33-11419 (S7-2026-18) proposed removing the accelerated filer and smaller reporting company categories and raising the large accelerated filer threshold to $2 billion; Release No. 33-11414 proposed an optional semiannual Form 10-S. Neither was adopted. If one is, flag every filer-category item and note.
 - **Agency changes.** Proposals to fold PCAOB functions into the SEC have been made in Congress. Check the PCAOB's current legal status and leadership on the day you review any item that depends on it.
 
 ## Output
