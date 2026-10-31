@@ -151,3 +151,8 @@ Rule for the form builder: Draw no two items of a pair into the same form. Keep 
 | csoe_d5_053 | csoe_d5_068 | proposed by the D5 batch 4 author |
 | csoe_d5_019 | csoe_d5_082 | proposed by the D5 batch 4 author (SOC report users) |
 | csoe_d5_018 | csoe_d5_083 | proposed by the D5 batch 4 author (outsourced activity in ICFR) |
+| csoe_d4_005 | csoe_d4_065 | d4_065's stem implies subpoenas come with a formal order |
+| csoe_d4_005 | csoe_d4_066 | d4_066's stem implies subpoenas come with a formal order |
+| csoe_d2_020 | csoe_d4_083 | same "Comptroller General study" pattern |
+| csoe_d4_023 | csoe_d4_064 | related rules on disclosing an investigation (d4_023 is held out) |
+| csoe_d4_027 | csoe_d4_069 | related limitations rules (d4_027 is held out) |
