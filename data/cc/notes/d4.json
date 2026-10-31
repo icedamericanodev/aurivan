@@ -66,7 +66,7 @@
               "Switch port list showing which device sits on each port"
             ],
             "recommend": "Report unknown devices or changed DHCP and DNS settings to the network team lead.",
-            "decides": "The network owner decides how core services are configured"
+            "decides": "The network's system owner decides how core services are configured"
           },
           "isaca_rule": "Switches read MAC addresses inside a local network; routers read IP addresses between networks. If DHCP or DNS looks tampered with, record the facts and escalate; never quietly reconfigure it.",
           "exam_traps": [
@@ -214,7 +214,7 @@
               "Firewall logs showing dropped TCP or UDP traffic"
             ],
             "recommend": "Submit port needs to the network team through a change request instead of editing rules yourself.",
-            "decides": "The network owner approves which ports and protocols are allowed"
+            "decides": "The network's system owner approves which ports and protocols are allowed"
           },
           "isaca_rule": "Use TCP/IP terms for real traffic and OSI terms for layers. Before a port is opened, confirm whether the service uses TCP, UDP or both.",
           "exam_traps": [
@@ -309,7 +309,7 @@
               "Monitoring settings showing IPv6 sources are collected"
             ],
             "recommend": "Escalate uncovered address paths to the network security lead, attaching the sessions you found.",
-            "decides": "The network owner decides whether IPv6 is filtered or turned off"
+            "decides": "The network's system owner decides whether IPv6 is filtered or turned off"
           },
           "isaca_rule": "Treat IPv4 and IPv6 as two doors into the same room: every rule, log and alert should cover both. Newer is not safer; configuration decides.",
           "exam_traps": [
@@ -446,11 +446,15 @@
           "key_terms": [
             {
               "term": "Transport Layer Security (TLS)",
-              "definition": "Encrypts and authenticates connections such as HTTPS; use version 1.2 or 1.3, never the retired Secure Sockets Layer (SSL)."
+              "definition": "Encrypts and authenticates connections, such as HTTPS (secure web browsing); use version 1.2 or 1.3, never the retired Secure Sockets Layer (SSL)."
             },
             {
               "term": "Simple Network Management Protocol (SNMP)",
               "definition": "Manages network devices on port 161; versions 1 and 2c are cleartext, and version 3 encrypts."
+            },
+            {
+              "term": "Cleartext",
+              "definition": "Data sent or stored unencrypted, so anyone who intercepts it can read it."
             }
           ],
           "memory_aid": "SSH 22 replaces Telnet 23; HTTPS 443 replaces HTTP 80."
@@ -521,7 +525,7 @@
               "VPN connection logs with user, device and time"
             ],
             "recommend": "Report unpatched gateways, accounts without MFA or suspect devices to the security lead promptly.",
-            "decides": "The network owner decides between full and split tunneling"
+            "decides": "The network's system owner decides between full and split tunneling"
           },
           "isaca_rule": "A VPN protects the path, not the device at either end. Treat each connection as a door into the internal network: require MFA, patch the gateway and check device health.",
           "exam_traps": [
@@ -743,7 +747,7 @@
             },
             {
               "term": "Network tap",
-              "definition": "Copies traffic from a link to a monitoring tool without sitting in the path."
+              "definition": "A device placed on a link that passes traffic through unchanged and sends a copy to a monitoring tool; it cannot block anything."
             }
           ],
           "memory_aid": "IDS is a smoke alarm; IPS is a sprinkler."
@@ -797,7 +801,7 @@
             },
             {
               "term": "Model drift",
-              "definition": "A drop in a model's accuracy as real conditions move away from the data it learned from."
+              "definition": "A gradual decline in an AI model's accuracy as real-world conditions change."
             }
           ],
           "memory_aid": "AI spots the odd one out; a person decides what happens next."
@@ -877,7 +881,7 @@
               "Wireless scan results showing nearby and rogue networks"
             ],
             "recommend": "Escalate weak encryption, rogue access points or open guest access to the network lead.",
-            "decides": "The network owner decides wireless standards and guest access"
+            "decides": "The network's system owner decides wireless standards and guest access"
           },
           "isaca_rule": "Pick the strongest protection the devices support: WPA3 first, WPA2 with AES only where needed, never WEP or WPA. Keep guests on their own segment.",
           "exam_traps": [
@@ -1050,7 +1054,7 @@
           "key_terms": [
             {
               "term": "Botnet",
-              "definition": "A network of hijacked devices controlled remotely, often used to flood targets with traffic."
+              "definition": "Hijacked devices, called bots, that an attacker controls remotely, often to flood targets with traffic or send spam."
             },
             {
               "term": "Firmware",
@@ -1098,7 +1102,7 @@
               "Results of approved connection tests across segments"
             ],
             "recommend": "Report segments with open traffic between them to the network lead, naming the systems exposed.",
-            "decides": "The network owner and system owners agree segment rules"
+            "decides": "The network's system owner and each system's owner agree segment rules"
           },
           "isaca_rule": "Assume something inside will be compromised, then limit how far it can reach. Where sensitive systems share a network with general devices, segment and filter.",
           "exam_traps": [
@@ -1172,7 +1176,7 @@
               "External scan showing which services answer from the internet"
             ],
             "recommend": "Escalate any public-facing server outside the screened subnet, or sensitive data inside it, to the network lead.",
-            "decides": "The network owner decides zone placement with the system owner"
+            "decides": "The network's system owner decides zone placement with each server's system owner"
           },
           "isaca_rule": "Place each system by who must reach it: anything the public touches goes in the screened subnet, and sensitive data stays deeper inside.",
           "exam_traps": [
@@ -1224,7 +1228,7 @@
               "Rules on the device that routes between VLANs"
             ],
             "recommend": "Send unfiltered VLAN paths or active unused ports to the network team as a change request.",
-            "decides": "The network owner approves VLAN design and changes"
+            "decides": "The network's system owner approves VLAN design and changes"
           },
           "isaca_rule": "A VLAN separates; a filter between VLANs protects. Group devices by trust, lock down management access and allow only needed traffic between VLANs.",
           "exam_traps": [
@@ -1387,8 +1391,8 @@
           ],
           "key_terms": [
             {
-              "term": "Single point of failure",
-              "definition": "One component whose failure defeats the whole protection or service."
+              "term": "Single point of failure (SPOF)",
+              "definition": "One component whose failure stops the whole service or protection, such as a lone server."
             },
             {
               "term": "Layered security",
@@ -2119,7 +2123,7 @@
           "key_terms": [
             {
               "term": "Accountability",
-              "definition": "Remaining answerable for an outcome even when someone else does the work."
+              "definition": "Answering for actions and outcomes, traced by unique IDs and logs; it stays with the owner even when work is delegated or outsourced."
             },
             {
               "term": "Responsibility matrix",
@@ -2176,7 +2180,7 @@
               "Exit plan for retrieving and deleting records"
             ],
             "recommend": "Pass contract gaps and outdated assurance reports to the business owner before signing or renewal.",
-            "decides": "The business owner who signs decides whether to accept gaps"
+            "decides": "The risk owner accepts contract gaps within tolerance; senior management decides beyond it"
           },
           "isaca_rule": "Get it in writing and get evidence: the agreement says who does what, and independent reports show the provider does its part.",
           "exam_traps": [
@@ -2196,7 +2200,7 @@
             },
             {
               "term": "SOC 2 report",
-              "definition": "An independent auditor's report on a service organization's controls, such as security and availability."
+              "definition": "System and Organization Controls (SOC) 2: an independent auditor's report on a provider's security controls, plus chosen extras such as availability."
             }
           ],
           "memory_aid": "Write it down, then prove it."
@@ -2284,8 +2288,8 @@
           ],
           "key_terms": [
             {
-              "term": "Crypto-shredding",
-              "definition": "Making data unreadable by securely destroying the keys that encrypt it; the National Institute of Standards and Technology (NIST) calls this cryptographic erase."
+              "term": "Cryptographic erase (crypto-shredding)",
+              "definition": "Destroying the keys to encrypted data so only unreadable ciphertext remains; often the only purge option in the cloud."
             },
             {
               "term": "Key management service (KMS)",
@@ -2350,7 +2354,7 @@
               "Cloud activity logs showing who changed a setting"
             ],
             "recommend": "Fix baseline failures your procedure assigns you, recording the change; send others to the resource owner, and escalate exposed sensitive data as an incident.",
-            "decides": "The procedure or resource owner sets who fixes it; only the risk owner accepts the risk"
+            "decides": "The resource owner assigns the fix; the risk owner accepts within tolerance, senior management beyond"
           },
           "isaca_rule": "In the cloud, the likeliest breach is the customer's own setting. Use baselines and continuous checks, fix the drift your procedure assigns you, and report exposed sensitive data fast, because exposure time matters.",
           "exam_traps": [
@@ -2366,11 +2370,11 @@
           "key_terms": [
             {
               "term": "Shadow IT",
-              "definition": "Technology, such as cloud apps, that staff use without IT's knowledge or approval."
+              "definition": "Technology, such as cloud apps, that staff use for work without IT or security approval."
             },
             {
               "term": "Configuration drift",
-              "definition": "Gradual change of settings away from the approved configuration baseline."
+              "definition": "Gradual, often unapproved changes that move a system's settings away from its approved baseline."
             },
             {
               "term": "Infrastructure as code (IaC)",
@@ -2536,35 +2540,35 @@
     }
   ],
   "key_terminologies": {
-    "OSI model": "A seven-layer reference model that splits network communication into separate jobs, from physical signals to applications.",
-    "TCP/IP model": "The four-layer model the internet runs on: Link, Internet, Transport and Application.",
-    "MAC address": "Media access control address: a hardware ID used to deliver frames within one local network; not the same as mandatory access control (MAC) in Domain 3.",
-    "IP address": "A logical address that routers use to move packets between networks; IPv4 is 32-bit and IPv6 is 128-bit.",
+    "Open Systems Interconnection (OSI) model": "A seven-layer reference model that splits network communication into separate jobs, from physical signals to applications.",
+    "TCP/IP model": "The Transmission Control Protocol/Internet Protocol model the internet runs on, in four layers: Link, Internet, Transport and Application.",
+    "Media access control (MAC) address": "A hardware ID used to deliver frames within one local network; not the same as mandatory access control (MAC) in Domain 3.",
+    "Internet Protocol (IP) address": "A logical address that routers use to move packets between networks; IPv4 is 32-bit and IPv6 is 128-bit.",
     "Port": "A number from 0 to 65535 that tells a host which service should receive traffic.",
-    "TCP": "A connection-based transport protocol that delivers data reliably and in order.",
-    "UDP": "A connectionless transport protocol that is fast but does not guarantee delivery.",
-    "TLS": "Transport Layer Security: encrypts and authenticates connections such as HTTPS.",
-    "SSH": "Secure Shell: an encrypted protocol for remote command-line access and file transfer, replacing Telnet.",
-    "VPN": "Virtual private network: an encrypted tunnel across an untrusted network.",
+    "Transmission Control Protocol (TCP)": "A connection-based transport protocol that delivers data reliably and in order.",
+    "User Datagram Protocol (UDP)": "A connectionless transport protocol that is fast but does not guarantee delivery.",
+    "Transport Layer Security (TLS)": "Encrypts and authenticates connections, such as HTTPS (secure web browsing); use version 1.2 or 1.3, never the retired Secure Sockets Layer (SSL).",
+    "Secure Shell (SSH)": "An encrypted protocol for remote command-line access and file transfer, replacing Telnet.",
+    "Virtual private network (VPN)": "An encrypted tunnel across an untrusted network.",
     "Firewall": "A device or software that allows or blocks traffic between networks or hosts by rules.",
-    "IDS": "Intrusion detection system: watches traffic or hosts and alerts on suspicious activity.",
-    "IPS": "Intrusion prevention system: sits in the traffic path and can block suspicious activity.",
-    "WPA3": "The current Wi-Fi security standard; its sign-in, Simultaneous Authentication of Equals (SAE), resists offline password guessing.",
+    "Intrusion detection system (IDS)": "A tool that watches network traffic or hosts and alerts on signs of attack, without blocking it.",
+    "Intrusion prevention system (IPS)": "Sits in the traffic path and can block suspicious activity.",
+    "Wi-Fi Protected Access 3 (WPA3)": "The current Wi-Fi security standard; its Simultaneous Authentication of Equals (SAE) sign-in resists offline password guessing.",
     "Industrial control system (ICS)": "Embedded and networked computers that run physical processes such as power, water and manufacturing.",
     "Internet of Things (IoT)": "Everyday network-connected devices, such as cameras and sensors, that collect data or act with little human input.",
     "Network segmentation": "Dividing a network into parts with controlled traffic between them.",
-    "Screened subnet (DMZ)": "A zone for public-facing servers between the internet and internal networks.",
-    "VLAN": "Virtual local area network: a logical network carved out of a shared physical switch network.",
+    "Screened subnet (DMZ)": "A zone for public-facing servers between the internet and internal networks; also called a demilitarized zone (DMZ).",
+    "Virtual local area network (VLAN)": "A logical network carved out of a shared physical switch network.",
     "Micro-segmentation": "Security policy applied to individual workloads, limiting each to the connections it needs.",
     "Defense in depth": "Layering independent physical, technical and administrative controls so one failure does not expose the asset.",
     "Zero Trust": "An approach that grants no trust based on network location and checks every request to every resource.",
     "Network access control (NAC)": "Checking a connecting user and device, and the device's health, before granting network access.",
     "Cloud computing": "Using computing resources from a shared pool over a network, taking more or less as needed.",
-    "IaaS, PaaS, SaaS": "Cloud service models: rented infrastructure, a managed platform for code, or a finished application.",
+    "Cloud characteristics": "The five essential traits of cloud computing: on-demand self-service, broad network access, resource pooling, rapid elasticity and measured service.",
+    "IaaS, PaaS, SaaS": "Cloud service models: infrastructure as a service (rented servers), platform as a service (a managed platform for code) and software as a service (a ready app).",
     "Public, private, community, hybrid cloud": "Cloud deployment models, defined by who the infrastructure is built for and shared with.",
-    "Shared responsibility model": "The split of cloud security duties: the provider secures the cloud, the customer secures what it puts in it.",
-    "CASB": "Cloud access security broker: sits between users and cloud services to show use and enforce policy.",
-    "CSPM": "Cloud security posture management: continuously checks cloud settings against a secure baseline.",
-    "Cleartext": "Data sent or stored unencrypted, so anyone who intercepts it can read it."
+    "Shared responsibility model": "Provider secures the cloud itself, the customer what it puts there; the split shifts by service model, but data, identities and access stay the customer's.",
+    "Cloud access security broker (CASB)": "Sits between users and cloud services to show use and enforce policy.",
+    "Cloud security posture management (CSPM)": "Continuously checks cloud settings against a secure baseline."
   }
 }

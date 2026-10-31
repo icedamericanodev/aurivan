@@ -386,7 +386,7 @@
             "At least 15 characters when a password is the only factor, and 8 alongside another factor.",
             "Allow at least 64 characters and pasting, so password managers work (habits: see 2.3.6).",
             "Screen new passwords against a blocklist; do not demand character mixes or scheduled changes.",
-            "Force a change on evidence of compromise, limit failed attempts and store only salted hashes."
+            "Force a change on evidence of compromise, limit failed attempts and store only salted hashes from a slow, password-specific algorithm; a fast hash such as SHA-256 is cracked quickly."
           ],
           "example": "At a ski resort, Marta, a lift supervisor, resets their password to one they also used on a shopping site that was breached. The new screening check refuses it, and Marta phones IT to ask for an exception. Joel, the IT assistant, explains the blocklist, keeps the check in place and helps Marta create a long passphrase in the password manager.",
           "audit_focus": {
@@ -415,15 +415,19 @@
           "key_terms": [
             {
               "term": "Salted hash",
-              "definition": "A one-way hash mixed with a random value, so identical passwords are stored differently."
+              "definition": "A password hash made with a random value added first, so identical passwords give different results; use a slow hashing algorithm."
             },
             {
               "term": "Throttling",
               "definition": "Slowing or locking sign-in after failed attempts, so guessing takes too long."
             },
             {
-              "term": "Blocklist",
+              "term": "Password blocklist",
               "definition": "Common, expected and breached passwords that new passwords are checked against."
+            },
+            {
+              "term": "Encoding",
+              "definition": "Converting data into another format, such as Base64, so systems can handle it; anyone can reverse it without a key, so it is not encryption."
             }
           ]
         },
@@ -486,8 +490,8 @@
               "Identity provider sign-in logs for failed and unusual sign-ins",
               "Applications that still allow a local password beside SSO"
             ],
-            "recommend": "Report applications with local logins that bypass SSO to the application owner.",
-            "decides": "Application owners and the security team decide which apps use SSO"
+            "recommend": "Report applications with local logins that bypass SSO to the system owner.",
+            "decides": "System owners and the security team decide which apps use SSO"
           },
           "isaca_rule": "Guard the identity provider hardest, with strong MFA and monitoring. Disabling the account starts removal; ending sessions finishes it.",
           "exam_traps": [
@@ -604,7 +608,7 @@
           "key_terms": [
             {
               "term": "Privilege creep",
-              "definition": "The buildup of access as people change jobs and keep rights they no longer need."
+              "definition": "The buildup of unneeded access as people change jobs and keep old rights."
             },
             {
               "term": "Handover access",
@@ -839,7 +843,7 @@
             },
             {
               "term": "Framework",
-              "definition": "A published, structured set of practices an organization can follow and measure itself against."
+              "definition": "A published, usually voluntary set of practices for organizing security work, such as the National Institute of Standards and Technology (NIST) CSF 2.0."
             }
           ]
         },
@@ -888,8 +892,8 @@
               "definition": "Carrying out an approved request in the systems, done by someone other than the approver."
             },
             {
-              "term": "Callback verification",
-              "definition": "Confirming a request through a number or channel already on file, not one in the request."
+              "term": "Out-of-band verification",
+              "definition": "Confirming a request through a separate, trusted channel already on file, such as a known phone number (a callback), never one given in the request."
             }
           ]
         },
@@ -938,8 +942,8 @@
               "definition": "The internal person who requests an outside user's access and confirms it is still needed."
             },
             {
-              "term": "Federation trust",
-              "definition": "An agreement, backed by exchanged keys, letting one organization accept sign-ins proved by another."
+              "term": "Federation",
+              "definition": "Trust between organizations, set by agreement and exchanged keys, that lets one accept the other's sign-ins."
             }
           ]
         },
@@ -1177,7 +1181,7 @@
               "meaning": "Each person holds only part of a secret, so nobody knows all of it"
             }
           ],
-          "example": "At a payment processor, the passphrase that unlocks the card system's master key is split between two key holders, each keeping half in a separate safe. Lucia, one holder, is moving to the marketing team, and the operations manager suggests handing Lucia's half to the other holder. Farah, a junior security analyst, points out that one person would then know the whole secret and asks the process owner to appoint a new holder and have the passphrase changed.",
+          "example": "At a payment processor, the passphrase that unlocks the card system's master key is split between two key holders, each keeping half in a separate safe. Lucia, one holder, is moving to the marketing team, and the operations manager suggests handing Lucia's half to the other holder. Farah, a junior security analyst, points out that one person would then know the whole secret and asks the system owner to appoint a new holder and have the passphrase changed.",
           "audit_focus": {
             "review": [
               "Compare each person's rights against a list of conflicting duties",
@@ -1187,8 +1191,8 @@
               "SoD conflict report from the access or finance system",
               "Sign-off records for independent reviews of high-risk transactions"
             ],
-            "recommend": "Report SoD conflicts to the process owner; never quietly give one person both duties.",
-            "decides": "The process owner splits the duties or accepts a compensating control"
+            "recommend": "Report SoD conflicts to the system owner; never quietly give one person both duties.",
+            "decides": "The policy owner approves a compensating control as an exception; the risk owner accepts what remains"
           },
           "isaca_rule": "No one person should be able to start, approve and hide a sensitive action. Split duties, or add independent review.",
           "exam_traps": [
@@ -1208,7 +1212,7 @@
             },
             {
               "term": "Compensating control",
-              "definition": "An alternative control that reduces the risk when the preferred control is not possible."
+              "definition": "An alternative control that lowers the same risk when the usual one, such as patching, is not possible; approved as a recorded exception."
             },
             {
               "term": "Job rotation",
@@ -1675,7 +1679,7 @@
             },
             {
               "term": "Prompt injection",
-              "definition": "Crafted or hidden instructions in input that make an AI model ignore its original instructions."
+              "definition": "Crafted or hidden instructions in input or content that try to make an AI tool ignore its original instructions or rules."
             }
           ]
         },
@@ -1723,7 +1727,7 @@
           "key_terms": [
             {
               "term": "Just-in-time (JIT) access",
-              "definition": "Privileges granted only when needed, for a set task and time, then removed automatically."
+              "definition": "Privileged rights granted only for an approved task and period, then removed automatically."
             },
             {
               "term": "Break-glass account",
@@ -1742,7 +1746,7 @@
           "why_it_matters": "Short scenarios describe the decision instead of naming the model. Reading for the decider, not for words like secure or flexible, settles most choices.",
           "how_it_works": [
             "Find the decider: an owner, a central label, a job role, attributes or one rule for all.",
-            "If users cannot change access themselves, the model is non-discretionary.",
+            "If users cannot change access themselves, such as when access is set centrally or sharing is blocked, the model is non-discretionary.",
             "Groups do not always mean role-based: if a file owner picks the group, it is discretionary.",
             "A time limit applied to everyone is rule-based, even where roles also exist."
           ],
@@ -1821,12 +1825,12 @@
           ],
           "key_terms": [
             {
-              "term": "Decider",
-              "definition": "The person, system or policy that actually sets whether a subject may access an object."
+              "term": "Account group",
+              "definition": "A named set of accounts given the same permissions; whether the resource owner or central policy picks its members points to the access control model."
             },
             {
-              "term": "Non-discretionary clue",
-              "definition": "A sign that users cannot change access themselves, such as access set centrally or sharing blocked."
+              "term": "Time-of-day restriction",
+              "definition": "A limit that blocks access outside set hours. One hours rule for everyone points to rule-based; hours weighed with other attributes point to ABAC."
             }
           ]
         }
@@ -1835,28 +1839,29 @@
   ],
   "key_terminologies": {
     "Identity": "The record that represents one person or system across the organization.",
-    "Identification": "Claiming an identity, such as by entering a username; it proves nothing on its own.",
+    "Identification": "Claiming an identity, such as by entering a username; it proves nothing until authentication verifies it.",
     "Authentication": "Proving a claimed identity with one or more factors.",
     "Authorization": "Deciding what an authenticated identity may do.",
-    "Identity life cycle": "The joiner, mover and leaver stages an identity passes through, with reviews alongside.",
+    "Identity life cycle": "The joiner, mover and leaver stages an identity passes through, with reviews alongside (also written lifecycle).",
     "Provisioning": "Creating an account and granting its approved access.",
     "Deprovisioning": "Removing an identity's access, credentials and sessions when they are no longer needed.",
     "Access review": "A regular check by a manager or owner that each account and right is still needed.",
     "Privilege creep": "The buildup of unneeded access as people change jobs and keep old rights.",
     "Access request": "A recorded ask for specific access, approved by the resource owner and fulfilled by someone else.",
-    "Multifactor authentication (MFA)": "Sign-in that combines at least two different factor categories: know, have or are.",
-    "Phishing-resistant authentication": "Sign-in tied to the genuine site, such as passkeys and FIDO2 keys, that a fake page cannot reuse.",
+    "Multifactor authentication (MFA)": "Sign-in that combines at least two different factor categories: something you know, something you have or something you are.",
+    "Phishing-resistant authentication": "Sign-in tied to the genuine site, such as passkeys and Fast Identity Online 2 (FIDO2) keys, that a fake page cannot capture and reuse.",
     "Single sign-on (SSO)": "One sign-in at an identity provider that gives access to many applications.",
-    "Federation": "Trust between organizations or systems that lets one accept the other's sign-ins.",
+    "Federation": "Trust between organizations, set by agreement and exchanged keys, that lets one accept the other's sign-ins.",
     "Adaptive authentication": "Sign-in checks that rise or fall with the risk score of each attempt.",
     "Session": "The period after sign-in when a user can act without proving identity again; timeouts limit it.",
     "Least privilege": "Giving each identity only the access its task needs, for only as long as needed.",
-    "Need to know": "Limiting information to people whose current duties require it.",
+    "Need to know": "Limiting information to people whose current duties require it, even if their clearance would allow more.",
     "Separation of duties (SoD)": "Splitting a sensitive process so no single person can complete it alone.",
-    "Privileged account": "An account that can change systems, security settings or other users' access.",
+    "Privileged account": "An account that can change systems, security settings or other users' access, so misuse can do serious harm.",
+    "Privileged access management (PAM)": "Tools and practices that vault admin credentials, grant them just in time and record privileged sessions.",
     "Just-in-time (JIT) access": "Privileged rights granted only for an approved task and period, then removed automatically.",
-    "Service account": "An account used by an application or process rather than a person.",
-    "Non-human identity": "Any identity used by software, such as a service account, bot, API key or AI agent.",
+    "Service account": "A non-human account used by an application, process or AI agent rather than a person.",
+    "Non-human identity": "Any identity used by software, such as a service account, bot, application programming interface (API) key or AI agent.",
     "Discretionary access control (DAC)": "The resource owner decides who may access it.",
     "Mandatory access control (MAC)": "The system decides access by comparing clearances with classification labels; not the same as a network MAC address.",
     "Role-based access control (RBAC)": "Permissions attach to job roles, and people are assigned roles.",
