@@ -5898,7 +5898,9 @@ body[data-app-cta-card="shown"][data-section="today"] .app-cta-line { display: n
 
 @media (max-width: 767px) {
   #bottomNav { display: flex; }
-  .app { padding-bottom: calc(112px + var(--consent-h, 0px) + env(safe-area-inset-bottom)); }
+  /* Room for the floating bar (16px off the edge, 64px tall) and its labels
+     at larger text sizes, so the bar never covers the end of a page. */
+  .app { padding-bottom: calc(128px + var(--consent-h, 0px) + env(safe-area-inset-bottom)); }
   .toast { bottom: calc(96px + var(--consent-h, 0px) + env(safe-area-inset-bottom)); }
 }
 @media (min-width: 768px) {
@@ -7121,35 +7123,44 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 }
 
 /* Floating tab bar (§6.1), phones below 768px. 16px from the edges plus the
-   safe area, 64px tall, a 22px corner. The current section is a pill with
-   its icon and label; the others show the icon only (the label stays for
-   screen readers, and each link has an aria-label). */
+   safe area, at least 64px tall, a 22px corner. Owner decision (31 Oct 2026):
+   all four tabs show their word under the icon and share the width equally;
+   the current one keeps a 52 by 30 --forest-track pill behind its icon. The
+   bar and the tabs use min-height, so larger text makes them taller instead
+   of cutting a word off; a word wider than its share widens its own tab. */
 #bottomNav {
   left: calc(16px + env(safe-area-inset-left)); right: calc(16px + env(safe-area-inset-right));
   bottom: calc(16px + env(safe-area-inset-bottom));
-  height: 64px; padding: 0 8px; gap: 4px; align-items: center; justify-content: stretch;
+  height: auto; min-height: 64px; padding: 8px; gap: 4px; align-items: stretch; justify-content: stretch;
   background: var(--nav-float); border: 0; border-radius: var(--r-22);
   box-shadow: 0 0 0 1px var(--border), var(--sh-nav-float);
+  overflow: hidden;
 }
+/* The fallback (bnavFit): when the words do not fit side by side, the bar
+   docks full width at the bottom and the words drop to 11px. */
+#bottomNav.bnav-dock {
+  left: 0; right: 0; bottom: 0; gap: 0; border-radius: var(--r-22) var(--r-22) 0 0;
+  padding: 6px calc(6px + env(safe-area-inset-right)) calc(6px + env(safe-area-inset-bottom)) calc(6px + env(safe-area-inset-left));
+}
+#bottomNav.bnav-dock .bnav-label { font-size: 11px; line-height: 14px; }
 #bottomNav .bnav-item {
-  flex: 1 1 0; max-width: none; min-width: 44px; height: 48px; min-height: 48px; padding: 0 12px;
-  flex-direction: row; gap: 8px; border-radius: var(--r-tile); color: var(--muted); transition: none;
+  flex: 1 1 0; max-width: none; min-width: auto; height: auto; min-height: 48px; padding: 0 4px;
+  flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+  border-radius: var(--r-tile); background: none; color: var(--muted); transition: none;
 }
-#bottomNav .bnav-icon { display: flex; height: 22px; }
+#bottomNav .bnav-icon { display: flex; align-items: center; justify-content: center; flex: none; width: 52px; height: 30px; border-radius: 15px; }
 #bottomNav .bnav-icon .ico { width: 22px; height: 22px; }
-#bottomNav .bnav-item:not([aria-current]) .bnav-label {
-  position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden;
-  clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
-}
-#bottomNav .bnav-item:hover:not([aria-current]) { color: var(--text); }
-#bottomNav .bnav-item[aria-current] { flex-grow: 2.2; background: var(--forest-track); color: var(--on-forest); }
-#bottomNav .bnav-item[aria-current] .bnav-icon { color: var(--sap); }
-#bottomNav .bnav-item[aria-current] .bnav-label { font: 600 14px/18px var(--f-sans); white-space: nowrap; }
+#bottomNav .bnav-label { font: 600 12px/16px var(--f-sans); letter-spacing: 0; white-space: nowrap; color: var(--muted); }
+#bottomNav .bnav-item:hover:not([aria-current]), #bottomNav .bnav-item:hover:not([aria-current]) .bnav-label { color: var(--text); }
+#bottomNav .bnav-item[aria-current] { color: var(--text); }
+#bottomNav .bnav-item[aria-current] .bnav-icon { background: var(--forest-track); color: var(--sap); }
+#bottomNav .bnav-item[aria-current] .bnav-label { color: var(--text); }
 #bottomNav .bnav-item[aria-current]::after, #bottomNav .bnav-item.active::after { display: none; }
-/* Focus sits outside the item, on the bar, so it shows on the pill too. */
+/* Focus sits outside the item, on the bar, so it shows around the whole tab. */
 #bottomNav .bnav-item:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; border-radius: var(--r-tile); }
+/* Only the pill fades (150ms) when the section changes; nothing moves. */
 @media (prefers-reduced-motion: no-preference) {
-  #bottomNav .bnav-item { transition: flex-grow .2s ease, background-color .2s ease, color .2s ease; }
+  #bottomNav .bnav-icon { transition: background-color .15s ease; }
 }
 
 /* Sidebar (§6.2), 768px and up. Same links as before; the current page is a
@@ -7320,7 +7331,9 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 .td-tile-v { padding-top: 4px; font: 600 15px/22px var(--f-sans); color: var(--on-forest); }
 .td-tile-num { padding-top: 0; font: 500 24px/28px var(--f-serif); letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
 .td-tile-a { padding-top: 4px; font: 600 15px/22px var(--f-sans); color: var(--sap); }
-/* PLATE: one caption per hero (in the figure on phones, at the hero's foot from 768px) */
+.td-tile-hint { font: 400 12px/16px var(--f-sans); color: var(--on-forest2); }
+/* PLATE: one caption per hero, at the hero's foot under the plan (phones too, since
+   31 Oct 2026; the copy inside the figure stays hidden and keys its redraw) */
 .td-platecap { margin: 0; max-width: none; font: italic 400 14px/20px var(--f-serif); color: var(--on-forest2); }
 .td-platecap b { margin-right: 8px; font: 600 10px/14px var(--f-sans); letter-spacing: .12em; text-transform: uppercase; color: var(--on-forest2); }
 .td-platecap-out { display: none; }
@@ -7330,7 +7343,7 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
   display: flex; flex-direction: column; gap: 14px; padding: 18px; min-width: 0;
   border-radius: var(--r-card); background: var(--surface); box-shadow: var(--card-shadow);
 }
-.td-planc-h { margin: 0; display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+.td-planc-h { margin: 0; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 2px 12px; }
 .td-planc-t { font: 500 22px/28px var(--f-serif); letter-spacing: -.2px; color: var(--text); }
 .td-planc-min { flex: none; font: 400 13px/18px var(--f-sans); color: var(--text2); white-space: nowrap; }
 .td-planc-k { margin: 0; font: 600 12px/16px var(--f-sans); color: var(--accent-text); }
@@ -7356,6 +7369,39 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 }
 .td-short:hover { text-decoration: underline; text-underline-offset: 3px; }
 .td-short:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+
+/* Phones (owner decision, 31 Oct 2026): the plan's Start sits fully above the
+   floating tab bar on the first screen (375 by 812 and 390 by 844) for every
+   learner. The ring is 150px and the hero and the plan are tighter; the plant,
+   the range, its caption and the tiles stay in the figure, and the PLATE line
+   sits at the hero's foot under the plan, as it does from 768px. */
+@media (max-width: 767px) {
+  .td-platecap-in { display: none; }
+  .td-platecap-out { display: block; padding: 0 4px; color: var(--text2); }
+  .td-platecap-out b { color: var(--text2); }
+  .td-main { gap: 12px; }
+  .td-hero { gap: 12px; }
+  .td-intro { margin-top: 4px; font: 400 14px/20px var(--f-sans); }
+  .td-fig { gap: 10px; padding: 14px 16px 16px; }
+  .td-ring { width: 150px; height: 150px; }
+  .td-ring-art .td-seed { width: 76px; }
+  .td-ring-art .plnt-svg { width: 82px; max-height: 76px; }
+  /* The range state: the plant, "58 to 66" and "estimated range" fit the
+     105px disc, so the stack is smaller and sits a little above centre. */
+  .td-ring-range .td-ring-in { gap: 0; padding-bottom: 10px; }
+  .td-ring-range .td-ring-art .td-seed { width: 40px; }
+  .td-ring-range .td-ring-art .plnt-svg { width: 44px; max-height: 36px; }
+  .td-ring-n { margin-top: 0; font-size: 22px; line-height: .95; }
+  .td-ring-to { font-size: 12px; }
+  .td-ring-l { line-height: 13px; }
+  .td-ring-cap { line-height: 19px; }
+  .td-ring-big { font-size: 22px; }
+  .td-tile { gap: 2px; padding: 8px 12px; }
+  .td-tile-v, .td-tile-a { padding-top: 0; }
+  .td-platecap { line-height: 18px; }
+  .td-planc { gap: 12px; padding: 16px; }
+  .td-hero-acts { margin-top: 0; }
+}
 
 /* From 768px: the figure and the plan are one forest hero card */
 @media (min-width: 768px) {
@@ -7876,9 +7922,9 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 <div id="globalToast" class="toast" role="status" aria-live="polite"></div>
 <div id="feedbackModal"></div>
 
-<!-- PHONE TAB BAR (<768px, Grove): the four sections in a floating bar. The
-     current one is a pill with its icon and label; the others show the icon
-     only, named by aria-label. Play stays hidden on web. -->
+<!-- PHONE TAB BAR (<768px, Grove): the four sections in a floating bar. Every
+     tab shows its icon and its word (the same word as its aria-label); the
+     current one has a pill behind its icon. Play stays hidden on web. -->
 <nav id="bottomNav" aria-label="Main">
   <a class="bnav-item" data-sec="today" aria-label="Today" href="#today" onclick="return navTo(event,'home')"><span class="bnav-icon"><svg class="ico" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 21v-9"/><path d="M12 12c0-4 3-6 7-6 0 4-3 6-7 6z"/><path d="M12 14c0-3-2-5-6-5 0 3 2 5 6 5z"/></svg></span><span class="bnav-label">Today</span></a>
   <a class="bnav-item" data-sec="learn" aria-label="Learn" href="#learn" onclick="return navTo(event,'sec:learn')"><span class="bnav-icon"><svg class="ico" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M2 5h7a3 3 0 0 1 3 3v12a2 2 0 0 0-2-2H2z"/><path d="M22 5h-7a3 3 0 0 0-3 3v12a2 2 0 0 1 2-2h8z"/></svg></span><span class="bnav-label">Learn</span></a>
@@ -12055,6 +12101,31 @@ function syncNav(t) {
     }
   } catch (e) {}
 }
+// The phone tab bar's fallback (owner decision, 31 Oct 2026): the four words
+// sit side by side under their icons, floating, at every phone width at
+// normal text sizes. When they do not fit (a very narrow screen with very
+// large text), the bar docks full width at the bottom with 11px words
+// (bnav-dock), so no word is cut off and the page never scrolls sideways.
+// Checked whenever the bar changes size (it appears, or the text grows).
+function bnavFit() {
+  var nav = document.getElementById('bottomNav');
+  if (!nav) return;
+  nav.classList.remove('bnav-dock');
+  if (nav.offsetWidth > 0 && nav.scrollWidth > nav.clientWidth) nav.classList.add('bnav-dock');
+}
+(function () {
+  var queued = false;
+  function soon() {
+    if (queued) return;
+    queued = true;
+    requestAnimationFrame(function () { queued = false; bnavFit(); });
+  }
+  var nav = document.getElementById('bottomNav');
+  if (nav && typeof ResizeObserver === 'function') new ResizeObserver(soon).observe(nav);
+  window.addEventListener('resize', soon);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(soon, function () {});
+  soon();
+})();
 // Fades the page bar's edge where more links are hidden (it scrolls sideways).
 function subNavFade(sub) {
   var max = sub.scrollWidth - sub.clientWidth;
@@ -12879,7 +12950,10 @@ function backupNudgeLater() {
 // - exam week: a shorter plan, readiness in words only, no ring ticks, no twig.
 // Grove (GROVE_HANDOFF.md §7, owner kit 30 Oct 2026): the line under the
 // title says the week's study days, and the streak (from 2) is on the week's
-// twig; the ring and the twig both show, on every width.
+// twig; the ring and the twig both show, on every width (owner decision,
+// 31 Oct 2026: never one or the other by the day).
+// - from study day 14 (TODAY_WEEK_LINE_FROM) the twig shows no streak; its
+//   leaves and "N study days this week" carry the week (todayTwigRight).
 // The readiness link opens this page, and its words follow it (v12.41:
 // the Progress page, You → Your progress).
 var TODAY_REPORT_TAB = 'progress';
@@ -12915,7 +12989,7 @@ function todayState(now, r) {
     plan: back ? 'back' : exam === 'week' ? 'examweek' : exam === 'day' ? 'examday' : 'normal'
   };
 }
-// A whole-day number for daily rotations (the visual, the principle).
+// A whole-day number for daily rotations (the principle, the Mindset check).
 function todayDayNumber(now) {
   return Math.floor(sdNoon(parityDayKey(now.getTime())) / 86400000);
 }
@@ -12954,9 +13028,8 @@ function todayLeafSvg(state) {
 // ── This week's twig (Grove, GROVE_HANDOFF.md §6.6) ──
 // One curved branch with seven leaves, Monday to Sunday, alternating above
 // and below. A leaf is filled on a day studied on this device, an empty
-// outline otherwise (missed and future days look the same). The streak sits
-// on the right in clay, never below 2 (STREAK_SHOW_MIN): before that,
-// "Streak starts today". sfx keeps the ids apart: the twig is drawn in the
+// outline otherwise (missed and future days look the same). The right side
+// is todayTwigRight's. sfx keeps the ids apart: the twig is drawn in the
 // page (below 1240px) and in the side column (from 1240px), one at a time.
 var TODAY_TWIG_LEAVES = [
   'M23.6 36.7C27 28 37 23 44 25C41 32 32 36 23.6 36.7Z',
@@ -12969,13 +13042,23 @@ var TODAY_TWIG_LEAVES = [
 ];
 var TODAY_TWIG_LETTERS = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
 var todayTwigGrown = false;   // the leaves fade in once per visit
+// The twig's right side, in clay (owner decision, 31 Oct 2026). Before the
+// 14th study day: "Streak starts today" while there are fewer than 2 study
+// days in all, then "N day streak" from a streak of 2 (STREAK_SHOW_MIN); a
+// streak under 2 after that shows nothing (no 0, no 1, no reset line). From
+// the 14th study day: nothing. The streak itself is studyDayStreak's.
+function todayTwigRight(now, st) {
+  if (st.studyDays.length >= TODAY_WEEK_LINE_FROM) return '';
+  var streak = studyDayStreak(now.getTime());
+  if (streak >= STREAK_SHOW_MIN) return streak + ' day streak';
+  return st.newLearner ? 'Streak starts today' : '';
+}
 function todayTwigHtml(now, st, sfx, grow) {
   var week = todayWeek(now, st.studyDays);
   var studied = week.filter(function (d) { return d.on; });
   var names = studied.map(function (d) { return TODAY_WEEKDAYS_MON[d.i]; });
   var today = week.filter(function (d) { return d.today; })[0];
-  var streak = studyDayStreak(now.getTime());
-  var right = streak >= STREAK_SHOW_MIN ? streak + ' day streak' : 'Streak starts today';
+  var right = todayTwigRight(now, st);
   var said = (names.length ? 'Studied on ' + todayListWords(names) + '. One leaf per day studied.' : 'No study days yet this week.')
     + ' Today is ' + TODAY_WEEKDAYS_MON[today ? today.i : 0] + '.';
   var k = 0;
@@ -12985,7 +13068,7 @@ function todayTwigHtml(now, st, sfx, grow) {
   var hid = 'tdTwigH' + sfx;
   return '<section class="td-card td-twig td-twig-' + sfx + (grow ? ' grow' : '') + '" aria-labelledby="' + hid + '">'
     + '<div class="td-twig-top"><h2 class="td-card-h" id="' + hid + '">This week&rsquo;s twig</h2>'
-    + '<p class="td-twig-streak">' + right + '</p></div>'
+    + (right ? '<p class="td-twig-streak">' + right + '</p>' : '') + '</div>'
     + '<svg class="td-twig-svg" viewBox="0 0 330 60" role="img" aria-label="' + escapeHtml(said) + '" focusable="false">'
     + '<path class="td-tw-branch" d="M0 38Q165 28 330 38"/>' + leaves + '</svg>'
     + '<div class="td-twig-days" aria-hidden="true">' + week.map(function (d) {
@@ -13302,7 +13385,8 @@ function todayRingHtml(range, st, shoot, grow) {
 }
 // The hero's figure: the caption (two layouts: a row on phones, one line
 // under the ring from 768px; only one shows), the ring, the line under it,
-// and on phones the Accuracy and Exam date tiles and the PLATE caption.
+// and on phones the Accuracy and Exam date tiles. Its PLATE caption is hidden
+// (the hero shows it at its foot, tdPlateOut) but keys todayShootRefresh.
 function todayFigHtml(r, range, st, shoot, grow) {
   var name = shoot.name || 'Seed';
   var stage = 'Stage ' + shoot.stage + ' of ' + TODAY_STAGES;
@@ -13314,10 +13398,16 @@ function todayFigHtml(r, range, st, shoot, grow) {
   } else if (!st.exam) {
     under = TODAY_EST_LINE;
   }
-  // Accuracy: You's own rule ("Too few yet" until DOMAIN_READ_MIN answers).
+  // Accuracy: You's own rule ("Too few yet" until DOMAIN_READ_MIN answers,
+  // then the whole percentage of latest tries). Screen readers hear it as one
+  // phrase ("Accuracy, too few yet, 12 answered"); under 30 a small hint says
+  // when the number shows.
   var c = Math.round(r.domains.reduce(function (s, x) { return s + x.mastered; }, 0));
-  var acc = r.answered > 0 ? domainReadLabel(domainRead({ t: r.answered, c: c })) : 'Not started';
+  var accRead = domainRead({ t: r.answered, c: c });
+  var acc = r.answered > 0 ? domainReadLabel(accRead) : 'Not started';
   var accNum = /%$/.test(acc);
+  var accHint = r.answered > 0 && !accRead.enough ? 'Shows at ' + DOMAIN_READ_MIN + ' answers' : '';
+  var accSaid = 'Accuracy, ' + domainFigure(r.answered, accRead.pct).spoken + (accHint ? '. ' + accHint + '.' : '');
   var examTile;
   if (st.days === null) {
     examTile = '<button type="button" class="td-tile td-tile-btn" onclick="todaySetExamDate()"><span class="td-tile-k">Exam date</span><span class="td-tile-a">Set a date</span></button>';
@@ -13330,7 +13420,9 @@ function todayFigHtml(r, range, st, shoot, grow) {
     + todayRingHtml(range, st, shoot, grow)
     + '<div class="td-fig-cap">' + fgFigHtml('Fig. 1 · ' + name + ', stage ' + shoot.stage + ' of ' + TODAY_STAGES, 2) + '</div>'
     + (under ? '<p class="td-ring-cap" aria-hidden="true">' + under + '</p>' : '')
-    + '<div class="td-tiles"><div class="td-tile"><span class="td-tile-k">Accuracy</span><span class="td-tile-v' + (accNum ? ' td-tile-num' : '') + '">' + escapeHtml(acc) + '</span></div>'
+    + '<div class="td-tiles"><div class="td-tile"><span class="sr-only">' + escapeHtml(accSaid) + '</span>'
+    + '<span class="td-tile-k" aria-hidden="true">Accuracy</span><span class="td-tile-v' + (accNum ? ' td-tile-num' : '') + '" aria-hidden="true">' + escapeHtml(acc) + '</span>'
+    + (accHint ? '<span class="td-tile-hint" aria-hidden="true">' + accHint + '</span>' : '') + '</div>'
     + examTile + '</div>'
     + '<p class="fg-cap td-platecap td-platecap-in"><b>Plate</b>' + escapeHtml(shoot.cap) + '</p>';
 }
