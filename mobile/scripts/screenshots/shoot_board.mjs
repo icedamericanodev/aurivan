@@ -244,7 +244,8 @@ const SIGNED_IN = { signedIn: true, authAgeMin: 30 };
   await shot(page, 'board-gate');
   await scrollTo(page, 'Choose how you appear', 120);
   await tap(page, 'A name you choose');
-  await fill(page, 'Your name on the board', 'KaiSip Helper');
+  // Not a reserved name: names with the product's name are kept for the team (engine/moderation.ts).
+  await fill(page, 'Your name on the board', 'Maya Studies');
   await tap(page, 'I agree to the community guidelines');
   await shot(page, 'board-handle');
   await ctx.close();
