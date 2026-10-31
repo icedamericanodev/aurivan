@@ -1143,7 +1143,7 @@
         "A": "Keep each related incident open until the permanent fix is deployed",
         "B": "Record a known error with its workaround for the service desk",
         "C": "Send every recurrence to the problem team for fresh analysis",
-        "D": "Apply the permanent fix in production without change approval"
+        "D": "Let senior agents hot-fix the fault in production when it recurs"
       },
       "correct": "B",
       "key_concept": "When a root cause is known but unfixed, problem management records a known error and workaround so incidents are resolved quickly.",
@@ -1152,10 +1152,10 @@
       "wrong_explanations": {
         "A": "Holding incidents open until the fix lands leaves users without service for months, although a working workaround already exists.",
         "C": "Fresh analysis and a known-error entry both draw on problem work, but a solved problem pays off when its answer reaches the front line.",
-        "D": "Even urgent fixes go through change control, using the emergency route if needed; bypassing approval risks a production failure."
+        "D": "A quick hot-fix seems to end the repeats, but changing production code outside change control risks a new failure; the known workaround should be recorded and reused."
       },
       "tips": [
-        "Eliminate: A leaves users down despite a workaround, and D bypasses change control.",
+        "Eliminate: A and D, because A keeps incidents open instead of recording the reusable workaround, and D bypasses change control.",
         "Final two: B beats C because the cause is already known; a known error record reuses that knowledge instead of repeating analysis.",
         "Exam cue: known cause plus workaround means a known error record; restore service first, fix permanently through change control."
       ],
@@ -1166,7 +1166,7 @@
         "ITIL 4",
         "Root cause"
       ],
-      "_provenance": "Authored from concept: 'Problem vs incident management distinction per ITIL 4'. Public sources: ITIL 4. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Problem vs incident management distinction per ITIL 4'. Public sources: ITIL 4. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Strawman pass (Oct 2026): eliminated option(s) rewritten to a plausible same-type error; blind re-tested.",
       "style_version": 2
     },
     {
@@ -1784,7 +1784,7 @@
         "A": "Tamper-resistant logging of all DBA activity",
         "B": "Monthly restore tests of the full database backups",
         "C": "Quarterly password changes for each named DBA account",
-        "D": "Response times of the most frequent user queries"
+        "D": "Encryption of the database files at rest"
       },
       "correct": "A",
       "key_concept": "Accepted full DBA rights must be compensated by independent, tamper-resistant logging and review of DBA activity.",
@@ -1793,10 +1793,10 @@
       "wrong_explanations": {
         "B": "Restore tests confirm availability, an important but separate objective from the accepted privileged-access risk.",
         "C": "Password rotation would answer stolen credentials; once broad privilege is granted, though, the risk moves to its holders, and rotation does not watch them.",
-        "D": "Query response times concern performance, not control over privileged activity."
+        "D": "Encryption at rest feels like a strong safeguard, but DBAs work inside the database and see clear data, so it does nothing about misuse of their accepted rights."
       },
       "tips": [
-        "Eliminate: B tests availability, and D measures performance; neither addresses the accepted privilege risk.",
+        "Eliminate: B and D, because restore tests check availability and encryption at rest stops outsiders reading files; neither watches what the DBAs do.",
         "Final two: A beats C because tamper-resistant logging detects misuse by the DBAs themselves, while password changes only counter stolen credentials.",
         "Exam cue: when excessive privilege is accepted, look for independent monitoring the privileged users cannot alter."
       ],
@@ -1807,7 +1807,7 @@
         "Schema change",
         "DBA SoD"
       ],
-      "_provenance": "Authored from concept: 'Database review scope per ISACA Database Audit guidance'. Public sources: ISACA. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Database review scope per ISACA Database Audit guidance'. Public sources: ISACA. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Strawman pass (Oct 2026): eliminated option(s) rewritten to a plausible same-type error; blind re-tested.",
       "style_version": 2
     },
     {
@@ -4410,22 +4410,22 @@
       "bloom_level": "Analysis",
       "question": "During a regulatory examination, the CISO learns IT shortened log retention below the legally required period without consulting compliance. What should the IS auditor recommend as the BEST next step?",
       "options": {
-        "A": "Have compliance approve the shortened retention retroactively",
+        "A": "Have compliance assess the legal exposure before changing settings",
         "B": "Recover the purged logs from backups before anything else",
         "C": "Restore required retention and report the gap to management",
-        "D": "Amend the written policy to match the shortened retention"
+        "D": "Remind IT that retention changes need compliance sign-off"
       },
       "correct": "C",
       "key_concept": "Stop a compliance gap growing first, then escalate it so management and counsel decide any disclosure; the auditor does not make that call.",
       "pre_read": "Each day under the short setting purges more logs. Ask what stops the loss and who decides disclosure.",
       "correct_explanation": "Every day the shortened setting stays, more required logs are purged, so retention must be restored at once and the gap reported to management, who decide with counsel how to inform examiners. Recovering purged logs from backups matters, but doing it first lets the loss continue, and backups may not hold everything, so stopping further loss comes first.",
       "wrong_explanations": {
-        "A": "Compliance cannot waive a legal requirement; approval after the fact leaves the breach in place.",
+        "A": "Involving compliance sounds prudent, but each day spent assessing lets the short setting purge more required logs; stop the loss first, then assess the exposure.",
         "B": "Restoring purged logs from backup does recover some history. An open leak is closed before old damage is repaired, though, or the repair falls behind.",
-        "D": "Rewriting policy to match a non-compliant practice does not change the legal requirement and compounds the breach."
+        "D": "A reminder addresses how the change slipped through, yet the non-compliant setting keeps deleting required logs until someone restores the legal retention period."
       },
       "tips": [
-        "Eliminate: A has compliance approve what the law does not allow, and D rewrites the policy to fit a breach.",
+        "Eliminate: A and D, because an exposure assessment and a staff reminder both leave the short setting purging required logs in the meantime.",
         "Final two: C beats B because stopping further loss comes before recovering past data, and management must know now.",
         "Exam cue: contain first, then remediate; disclosure to regulators is management's decision, informed by the auditor."
       ],
@@ -4437,7 +4437,7 @@
         "Seaboard Report mitigation",
         "Records destruction enhancement"
       ],
-      "_provenance": "Authored from concept: 'Log retention gap discovered during SEC exam — proactive disclosure governance'. Public sources: SEC, FINRA, NIST. Scenario specifics (broker-dealer $4.2B AUM, 12-month SIEM retention, 2022 cost-optimization policy change, $100K-$1M fine range) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D4 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): A (wait to be caught) was a strawman; it is now retroactive compliance approval, the wrong authority.",
+      "_provenance": "Authored from concept: 'Log retention gap discovered during SEC exam — proactive disclosure governance'. Public sources: SEC, FINRA, NIST. Scenario specifics (broker-dealer $4.2B AUM, 12-month SIEM retention, 2022 cost-optimization policy change, $100K-$1M fine range) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D4 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): A (wait to be caught) was a strawman; it is now retroactive compliance approval, the wrong authority. Strawman pass (Oct 2026): eliminated option(s) rewritten to a plausible same-type error; blind re-tested.",
       "style_version": 2
     },
     {
@@ -6135,7 +6135,7 @@
         "A": "Dashboards refresh every five minutes rather than in real time",
         "B": "Alert thresholds in the tools have not been tuned since deployment",
         "C": "Several critical network segments send no data to the tools",
-        "D": "The tool vendor's SOC 2 report notes one unrelated exception"
+        "D": "Flow records are kept for 30 days rather than one year"
       },
       "correct": "C",
       "key_concept": "Coverage comes first in monitoring: a segment sending no data is a total blind spot, worse than poorly tuned or displayed data.",
@@ -6144,10 +6144,10 @@
       "wrong_explanations": {
         "A": "A five-minute refresh is a minor latency issue; data is still collected and alerts can still fire.",
         "B": "Untuned thresholds do blur the alerts, yet weaknesses rank by what they hide, and a silent segment hides everything on it.",
-        "D": "An exception unrelated to the monitoring service has little bearing on the firm's detection coverage."
+        "D": "Short retention limits trend and forensic look-back, but current traffic is still collected and alerts still fire; a silent segment gives no detection whatsoever."
       },
       "tips": [
-        "Eliminate: A is a small latency issue, and D concerns an exception outside the relevant service.",
+        "Eliminate: A and D, because a five-minute refresh and 30-day retention both leave every segment's data collected and alerting.",
         "Final two: C beats B because a segment with no data is a total blind spot, while poor tuning still sees the traffic.",
         "Exam cue: in monitoring audits, a coverage gap outranks problems with how collected data is analyzed."
       ],
@@ -6159,7 +6159,7 @@
         "Alert tuning",
         "Coverage gap analysis"
       ],
-      "_provenance": "Authored from concept: 'Network management tools audit per NIST SP 800-92 and COBIT DSS01'. Public sources: NIST, ISACA, CIS. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Network management tools audit per NIST SP 800-92 and COBIT DSS01'. Public sources: NIST, ISACA, CIS. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Strawman pass (Oct 2026): eliminated option(s) rewritten to a plausible same-type error; blind re-tested.",
       "style_version": 2
     },
     {
@@ -6327,7 +6327,7 @@
       "options": {
         "A": "A data-editing utility changed records with no change ticket",
         "B": "A disk utility was run outside the scheduled maintenance window",
-        "C": "Utility sessions were logged under named administrator accounts",
+        "C": "Installed utilities were older than the vendor's current versions",
         "D": "Utility logs are reviewed after incidents rather than on a schedule"
       },
       "correct": "A",
@@ -6336,11 +6336,11 @@
       "correct_explanation": "Data-editing utilities bypass application controls and audit trails, so an unticketed change to production records could be an unauthorized or fraudulent alteration that no application log captured. A disk utility run outside the window is irregular and needs explaining, but disk utilities work on storage rather than on the records themselves, so it is a weaker sign of harm.",
       "wrong_explanations": {
         "B": "An off-window utility run deserves follow-up under change control, yet rank findings by evidence of effect over evidence of irregularity.",
-        "C": "Logging under named accounts is a good control that supports accountability.",
+        "C": "Outdated utilities carry patch risk worth noting, but version lag shows no misuse; an unticketed change to production records is evidence of actual harm.",
         "D": "Scheduled log review is an expected detective control, so reviewing only after incidents is a real gap; still, a monitoring weakness ranks below an actual unauthorized change."
       },
       "tips": [
-        "Eliminate: C is named-account logging, which supports accountability, and D delays detection but leaves every session logged and reviewable.",
+        "Eliminate: C and D, because outdated utility versions and after-incident log review are real gaps, but neither shows that records were actually changed.",
         "Final two: A beats B because an untracked change to production data bypasses every application control, while an off-window disk utility run alters no records.",
         "Exam cue: utilities matter most when they change production data outside change control and application audit trails."
       ],
@@ -6352,7 +6352,7 @@
         "Diagnostic vs change utilities",
         "Session recording"
       ],
-      "_provenance": "Authored from concept: 'Utility program governance per NIST SP 800-53 CM-7 and AC-6'. Public sources: NIST, ISACA, CIS. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Cross-domain review (Oct 2026): re-angled or clarified to remove duplication/contradiction. Final cross-domain polish (Oct 2026). CISA quality pass (Oct 2026): options B and D rewritten as real but lesser findings (were benign practice: a scheduled-window run, a repeated diagnostic), with the explanations and tips to match. Revised after review: B no longer carries a mitigating emergency ticket, and D no longer implies a retention standard the stem does not give.",
+      "_provenance": "Authored from concept: 'Utility program governance per NIST SP 800-53 CM-7 and AC-6'. Public sources: NIST, ISACA, CIS. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Cross-domain review (Oct 2026): re-angled or clarified to remove duplication/contradiction. Final cross-domain polish (Oct 2026). CISA quality pass (Oct 2026): options B and D rewritten as real but lesser findings (were benign practice: a scheduled-window run, a repeated diagnostic), with the explanations and tips to match. Revised after review: B no longer carries a mitigating emergency ticket, and D no longer implies a retention standard the stem does not give. Strawman pass (Oct 2026): eliminated option(s) rewritten to a plausible same-type error; blind re-tested.",
       "style_version": 2
     },
     {
@@ -6944,7 +6944,7 @@
       "options": {
         "A": "Replication between the two sites runs synchronously at this distance",
         "B": "DNS failover records use a long time-to-live setting",
-        "C": "Each data center runs its own uninterruptible power supply",
+        "C": "Generators at each site are load-tested once a year",
         "D": "One fibre cut or regional event could disable both sites"
       },
       "correct": "D",
@@ -6954,10 +6954,10 @@
       "wrong_explanations": {
         "A": "Synchronous replication is normal and practical at 20 km. It protects data rather than creating a resilience weakness.",
         "B": "A long time-to-live and a shared fiber route both weaken failover, but settings change in a day, while two sites on one route are one site.",
-        "C": "Separate power protection at each site is good practice and supports their independence."
+        "C": "Yearly generator testing is thin and worth reporting, but it weakens each site separately; a shared fibre route can take both sites down at once."
       },
       "tips": [
-        "Eliminate: A is normal at 20 km, where synchronous latency stays low, and C is good practice that removes a shared power dependency.",
+        "Eliminate: A and C, because synchronous replication is normal at 20 km, and yearly generator tests are a site-level gap, not a failure point both sites share.",
         "Final two: D beats B because a shared failure point can defeat both sites at once, while a long time-to-live only slows failover.",
         "Exam cue: redundancy is only as good as its independence; look for the dependency both copies share."
       ],
@@ -6969,7 +6969,7 @@
         "Cross-region replication",
         "Dependency-graph analysis"
       ],
-      "_provenance": "Authored from concept: 'Geographic network resiliency design per AWS Well-Architected and NIST SP 800-34'. Public sources: AWS, NIST, ISACA, ISO. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Geographic network resiliency design per AWS Well-Architected and NIST SP 800-34'. Public sources: AWS, NIST, ISACA, ISO. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Strawman pass (Oct 2026): eliminated option(s) rewritten to a plausible same-type error; blind re-tested.",
       "style_version": 2
     },
     {
@@ -7520,7 +7520,7 @@
         "A": "Restore SCADA from backup to regain automatic control",
         "B": "Isolate the SCADA network to preserve forensic evidence",
         "C": "Begin a controlled shutdown of the reactor",
-        "D": "Wait for the cyber insurer's team to arrive before deciding"
+        "D": "Engage the SCADA vendor to diagnose the infection"
       },
       "correct": "C",
       "key_concept": "In an OT incident, protecting people and the plant comes first; a controlled shutdown outranks production, forensics and waiting.",
@@ -7529,7 +7529,7 @@
       "wrong_explanations": {
         "A": "Restoring during a suspected live infection risks reinfection and takes time the reactor does not have.",
         "B": "An auditor would expect network isolation in any SCADA ransomware playbook, but the most irreversible harm in play sets the first move.",
-        "D": "A physical hazard cannot wait for outside responders. Plant leadership must act on safety now."
+        "D": "Vendor expertise matters for recovery, but a diagnosis takes time the reactor does not have; the physical hazard must be made safe before the cause is investigated."
       },
       "tips": [
         "Eliminate: A restores into a live infection while the reactor nears its limit, and D delays a decision the hazard will not wait for.",
@@ -7544,7 +7544,7 @@
         "EPA reportable quantity",
         "Manual vs automated emergency shutdown"
       ],
-      "_provenance": "Authored from concept: 'OT incident at regulated manufacturer — safety-first multi-track response'. Public sources: NIST, OSHA, EPA, FDA, IEC. Scenario specifics (specialty chemicals manufacturer $890M, SCADA outage, 30% production rate, critical reactor approaching cutoff, suspected ransomware on HMI, pharmaceutical clean-room area) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. Second wording pass (Oct 2026): wording fixes from the blind re-test; key and options unchanged. Third pass (ISACA reviewer, Oct 2026): live-incident and legal/forensic stems reframed; options revised. Fourth pass (polish, Oct 2026): wording and metadata fixes from the last blind test; key unchanged. D4 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): A (keep producing for customers) was a strawman; it is now restoring SCADA from backup mid-infection. Round-3 cross-domain fix (contradiction): d5_252, d5_185",
+      "_provenance": "Authored from concept: 'OT incident at regulated manufacturer — safety-first multi-track response'. Public sources: NIST, OSHA, EPA, FDA, IEC. Scenario specifics (specialty chemicals manufacturer $890M, SCADA outage, 30% production rate, critical reactor approaching cutoff, suspected ransomware on HMI, pharmaceutical clean-room area) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. Second wording pass (Oct 2026): wording fixes from the blind re-test; key and options unchanged. Third pass (ISACA reviewer, Oct 2026): live-incident and legal/forensic stems reframed; options revised. Fourth pass (polish, Oct 2026): wording and metadata fixes from the last blind test; key unchanged. D4 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): A (keep producing for customers) was a strawman; it is now restoring SCADA from backup mid-infection. Round-3 cross-domain fix (contradiction): d5_252, d5_185 Strawman pass (Oct 2026): eliminated option(s) rewritten to a plausible same-type error; blind re-tested.",
       "style_version": 2
     },
     {
@@ -7826,7 +7826,7 @@
       "question": "Cloud spend ran at seven times normal for six days because cost-anomaly alerts went only to one engineer on leave. Which recommendation should the IS auditor make to BEST prevent recurrence?",
       "options": {
         "A": "Lower the anomaly thresholds so overruns are flagged sooner",
-        "B": "Seek a service credit from the provider for the overrun",
+        "B": "Have finance review the cloud bill each week for spikes",
         "C": "Route anomaly alerts to a monitored team queue with backup",
         "D": "Revoke developers' rights to provision new cloud resources"
       },
@@ -7836,11 +7836,11 @@
       "correct_explanation": "The alerts worked; they reached a single person who was absent, so nobody acted. Routing them to a monitored team queue with a named backup removes that single point of failure in the response. Lowering thresholds is tempting, but it makes alerts fire earlier into the same unattended inbox, so the overrun would still go unnoticed.",
       "wrong_explanations": {
         "A": "Threshold tuning is a routine way to sharpen detection, but a tuning fix answers the question of when to alert, and this alert fired on time.",
-        "B": "A credit may recover some cost, but it changes no control and the same gap remains for the next overrun.",
+        "B": "A bill review adds a second look, but a weekly check lags a six-day overrun and the alert still reaches one absent engineer; fix delivery where it failed.",
         "D": "Blocking provisioning halts development work and is disproportionate. It ignores the real failure in alert ownership."
       },
       "tips": [
-        "Eliminate: B recovers money without fixing any control, and D blocks legitimate work instead of fixing alert ownership.",
+        "Eliminate: B and D, because a weekly bill review adds a slower check beside the failed alert, and revoking provisioning blocks legitimate work.",
         "Final two: C beats A because the alert fired but reached nobody, so delivery, not sensitivity, must be fixed.",
         "Exam cue: when a control fails, recommend the fix at the exact point it broke."
       ],
@@ -7852,7 +7852,7 @@
         "Provisioning guardrails",
         "Series-C investor reporting"
       ],
-      "_provenance": "Authored from concept: 'Cloud cost runaway with alert-governance gap'. Public sources: FinOps Foundation, AWS, ISACA. Scenario specifics (FinTech startup $120M, Series-C, $1.6M projected vs $230K typical, parental-leave alert gap, GPU/RDS/egress overrun) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Cloud cost runaway with alert-governance gap'. Public sources: FinOps Foundation, AWS, ISACA. Scenario specifics (FinTech startup $120M, Series-C, $1.6M projected vs $230K typical, parental-leave alert gap, GPU/RDS/egress overrun) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Strawman pass (Oct 2026): eliminated option(s) rewritten to a plausible same-type error; blind re-tested.",
       "style_version": 2
     },
     {
@@ -8092,7 +8092,7 @@
       "question": "At hour 18 of a 24-hour DR exercise, only 30% of recovery objectives are met, and the FDIC will receive the report. What is the IS auditor's BEST recommendation to the business continuity head?",
       "options": {
         "A": "Stop the test now to limit staff overtime costs",
-        "B": "Restart from hour zero and report the rerun results instead",
+        "B": "Extend the exercise past 24 hours until every objective is met",
         "C": "Finish the test and brief the examiner on ranked failures",
         "D": "Close the exercise record with an internal lessons-learned memo"
       },
@@ -8102,11 +8102,11 @@
       "correct_explanation": "An exercise exists to find weaknesses, and this one has found several. Finishing it within the planned window gathers evidence on the remaining steps, ranking failures by cause drives remediation, and briefing the examiner early preserves regulatory trust. An internal lessons-learned memo records the failures, but it neither drives prioritized remediation nor prepares the regulator, who will read the report anyway.",
       "wrong_explanations": {
         "A": "Stopping early saves hours but loses evidence on the remaining recovery steps the regulator expects.",
-        "B": "Reporting a clean rerun instead of the actual result misleads the regulator and hides the failures the exercise exposed.",
+        "B": "Running on until objectives are met feels thorough, but recoveries after the planned window are RTO failures; extending the test makes them look like passes in the report.",
         "D": "Lessons-learned reviews are a normal post-test step, but regulators judge a failed test by management's response to it, not by its write-up."
       },
       "tips": [
-        "Eliminate: A gives up the remaining evidence to save cost, and B replaces the actual result with a rerun.",
+        "Eliminate: A and B, because A gives up the remaining evidence to save cost, and B stretches the window so late recoveries read as passes.",
         "Final two: C beats D because analyzed failures and proactive regulator contact drive remediation, while a memo only records.",
         "Exam cue: when a regulator will read a failed test, finish it, rank the failures and brief the examiner early; never swap in a rerun."
       ],
@@ -8118,7 +8118,7 @@
         "Targeted re-exercise",
         "Exercise data quality vs completion"
       ],
-      "_provenance": "Authored from concept: 'DR test cascade failure structured response'. Public sources: FFIEC, ISO, NIST, ISACA. Scenario specifics (federally-chartered bank $23B, 24-hour DR exercise, multiple distinct failures, 30% objective achievement, FDIC examiner report) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): key now finishes the exercise, consistent with d4_095. D4 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): A (extend to raise the score) duplicated B; it is now stopping to save overtime. Cue balance: the key is no longer a three-part list. Round-3 cross-domain fix (duplicate): d4_095, d4_114, d4_226",
+      "_provenance": "Authored from concept: 'DR test cascade failure structured response'. Public sources: FFIEC, ISO, NIST, ISACA. Scenario specifics (federally-chartered bank $23B, 24-hour DR exercise, multiple distinct failures, 30% objective achievement, FDIC examiner report) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): key now finishes the exercise, consistent with d4_095. D4 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): A (extend to raise the score) duplicated B; it is now stopping to save overtime. Cue balance: the key is no longer a three-part list. Round-3 cross-domain fix (duplicate): d4_095, d4_114, d4_226 Strawman pass (Oct 2026): eliminated option(s) rewritten to a plausible same-type error; blind re-tested.",
       "style_version": 2
     },
     {
@@ -8170,7 +8170,7 @@
         "A": "Reassign administrative staff to answer help-desk phone queues",
         "B": "Broadcast an outage notice with scheduled status updates",
         "C": "Contract a commercial call center for surge capacity",
-        "D": "Redirect the help-desk line to the email vendor's support"
+        "D": "Link incoming duplicate tickets to one major incident record"
       },
       "correct": "B",
       "key_concept": "When demand is driven by duplicate reports of a known incident, communication cuts demand faster than adding service desk capacity.",
@@ -8179,10 +8179,10 @@
       "wrong_explanations": {
         "A": "Extra staff and a broadcast both shorten the queue, but a call that never happens needs no agent, trained or not.",
         "C": "Onboarding a call center takes time and its agents lack local context. It also treats volume rather than its cause.",
-        "D": "The institution keeps ownership of its users' incidents. Sending them to a vendor line abandons them and confuses the response."
+        "D": "Linking duplicates keeps records tidy and is good practice, but users keep calling because they do not know the outage is already known, so demand stays high."
       },
       "tips": [
-        "Eliminate: C is slow to onboard and lacks context, and D sends the institution's own users to a vendor that does not own the incident.",
+        "Eliminate: C and D, because a call center is slow to onboard and lacks context, and linking tickets tidies records while the calls keep arriving.",
         "Final two: B beats A because clear communication removes avoidable contacts, while extra staff only absorbs them.",
         "Exam cue: when volume comes from duplicate reports, reduce demand with communication before adding capacity."
       ],
@@ -8194,7 +8194,7 @@
         "Cadence updates",
         "Pre-positioned surge agreements"
       ],
-      "_provenance": "Authored from concept: 'Help desk surge during major event'. Public sources: AXELOS, ISACA, FEMA. Scenario specifics (regional university 32K students 4.2K staff, email outage hour 4, 1,400+ tickets in 4 hours, 90+ minute waits) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): stem names the decision-maker directly. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. D4 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Eliminate tip no longer uses dismissive wording. Round-3 cross-domain fix (convention): d4_157, d4_080, d5_057 Round-4 auditor fix.",
+      "_provenance": "Authored from concept: 'Help desk surge during major event'. Public sources: AXELOS, ISACA, FEMA. Scenario specifics (regional university 32K students 4.2K staff, email outage hour 4, 1,400+ tickets in 4 hours, 90+ minute waits) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): stem names the decision-maker directly. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. D4 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Eliminate tip no longer uses dismissive wording. Round-3 cross-domain fix (convention): d4_157, d4_080, d5_057 Round-4 auditor fix. Strawman pass (Oct 2026): eliminated option(s) rewritten to a plausible same-type error; blind re-tested.",
       "style_version": 2,
       "principle_id": "root-cause-over-symptom"
     },
@@ -9728,8 +9728,8 @@
       "bloom_level": "Analysis",
       "question": "During a Sev-1 outage, each decision waits 30 minutes for a satellite call to executives, though the incident plan names an incident commander. What is the BEST recommendation the IS auditor should give the COO?",
       "options": {
-        "A": "Keep routing each decision to executives by satellite call",
-        "B": "Pause major recovery actions until the executive committee reconvenes",
+        "A": "Upgrade the satellite link so executive calls connect faster",
+        "B": "Batch pending decisions into one executive call every two hours",
         "C": "Let a senior manager decide alone and brief executives after closure",
         "D": "Let the incident commander decide, with hourly executive updates"
       },
@@ -9738,12 +9738,12 @@
       "pre_read": "Notice the plan already names someone. Ask how to restore speed without losing oversight of the decisions being made.",
       "correct_explanation": "The plan already pre-delegates authority to an incident commander, so invoking it removes the 30-minute delay while hourly updates keep executives informed and able to intervene. That is how ITIL incident practice and incident command are meant to work. Letting a senior manager decide alone also restores speed, but it bypasses the defined role and leaves executives blind until the incident closes.",
       "wrong_explanations": {
-        "A": "Per-decision approval by satellite is the cause of the delay. Continuing it extends the outage and the revenue loss.",
-        "B": "Pausing recovery for a committee during a customer-facing outage maximizes business impact. Restoration should continue under delegated authority.",
+        "A": "A faster link trims connection time, but every decision still waits on executives, although the plan already delegates these decisions to the incident commander.",
+        "B": "Batching cuts the number of calls, yet decisions then wait up to two hours, lengthening an outage the delegated incident commander could shorten now.",
         "C": "A single empowered decider does end the delay, yet delegating a decision is not the same as hiding it, and executives keep oversight through regular updates."
       },
       "tips": [
-        "Eliminate: A keeps the bottleneck causing the delay, and B halts recovery while customers are down.",
+        "Eliminate: A and B, because a faster link and batched calls both keep executives approving decisions the plan delegates to the incident commander.",
         "Final two: D beats C because pre-delegated authority keeps both speed and oversight; ad hoc autonomy loses oversight.",
         "Exam cue: in an incident, use the decision rights the plan already defines rather than inventing new ones."
       ],
@@ -9755,7 +9755,7 @@
         "Executive offsite continuity",
         "Post-incident delegation review"
       ],
-      "_provenance": "Authored from concept: 'Severity-1 incident during executive offsite'. Public sources: FEMA, NIST, AXELOS, ISO. Scenario specifics (SaaS $820M ARR, hour 3 of customer-facing API outage, 4,200 customers, $180K/hour loss, C-suite at remote offsite) invented. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): option C no longer names a person absent from the stem.",
+      "_provenance": "Authored from concept: 'Severity-1 incident during executive offsite'. Public sources: FEMA, NIST, AXELOS, ISO. Scenario specifics (SaaS $820M ARR, hour 3 of customer-facing API outage, 4,200 customers, $180K/hour loss, C-suite at remote offsite) invented. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): option C no longer names a person absent from the stem. Strawman pass (Oct 2026): eliminated option(s) rewritten to a plausible same-type error; blind re-tested.",
       "style_version": 2
     },
     {
@@ -10007,8 +10007,8 @@
       "bloom_level": "Foundational",
       "question": "A service desk closes incidents as soon as a fix is applied, and 18% are later reopened. What should the IS auditor recommend as BEST?",
       "options": {
-        "A": "Measure agents on the number of incidents closed each day",
-        "B": "Reopen every closed incident automatically after 24 hours",
+        "A": "Lengthen resolution targets so agents have more time per fix",
+        "B": "Have team leads review a sample of closed incidents weekly",
         "C": "Confirm restoration with the user before closing incidents",
         "D": "Track the reopen rate monthly without changing closure steps"
       },
@@ -10017,17 +10017,17 @@
       "pre_read": "Notice when the service desk closes incidents. Ask what the 18% reopen rate says about that moment.",
       "correct_explanation": "Under ITIL 4, an incident is resolved when service is restored, and confirming that with the user before closure stops fixes that did not work from being recorded as successes. Tracking the reopen rate gives management visibility, but it measures the failure without changing the closure step that causes it.",
       "wrong_explanations": {
-        "A": "Rewarding closure counts encourages even faster, less verified closures.",
-        "B": "Automatic reopening creates noise and still records unverified fixes as resolved.",
+        "A": "More time per ticket sounds helpful, but nothing confirms service is back before closure, so fixes that did not work still get closed.",
+        "B": "Sampling closed tickets gives leads a quality view, but it checks a few after closure; unverified fixes still close and reopen as before.",
         "D": "Reopen tracking is fine for watching a fix take hold; a metric informs a fix rather than being one, and 18 percent already informs enough."
       },
       "tips": [
-        "Eliminate: A rewards the behavior causing reopens, and B adds noise without verification.",
+        "Eliminate: A and B, because longer targets add time without checking the fix, and sampled reviews catch failed fixes only after closure.",
         "Final two: C beats D because confirming restoration fixes the cause; tracking only measures it.",
         "Exam cue: incidents close when service is confirmed restored, not when a fix is merely applied."
       ],
       "framework_ref": "ITIL 4 Foundation, Incident Management practice",
-      "_provenance": "Authored from concept: 'ITIL 4 Incident Management goal and definition'. Foundational recall tier. Public sources: ITIL 4 Foundation publication. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Cross-domain review (Oct 2026): re-angled or clarified to remove duplication/contradiction.",
+      "_provenance": "Authored from concept: 'ITIL 4 Incident Management goal and definition'. Foundational recall tier. Public sources: ITIL 4 Foundation publication. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Cross-domain review (Oct 2026): re-angled or clarified to remove duplication/contradiction. Strawman pass (Oct 2026): eliminated option(s) rewritten to a plausible same-type error; blind re-tested.",
       "style_version": 2
     },
     {
@@ -11608,7 +11608,7 @@
         "A": "Hold critical spare parts on site with tested repair steps",
         "B": "Build a redundant second site that fails over automatically",
         "C": "Replace components more often under a planned preventive maintenance program",
-        "D": "Report availability without the time spent waiting for parts"
+        "D": "Negotiate next-day parts delivery in the support contract"
       },
       "correct": "A",
       "key_concept": "Availability rises by failing less often or recovering faster; fix the factor that actually drives downtime, at a cost matched to business need.",
@@ -11617,10 +11617,10 @@
       "wrong_explanations": {
         "B": "A failover site does remove repair time from the picture, yet spending on resilience stops once the stated need is met, and quicker repair meets it.",
         "C": "Preventive maintenance cuts how often failures happen; failures are already rare, and each one would still take two days to fix.",
-        "D": "Leaving parts delays out of the figure hides downtime instead of reducing it; the business would still face two-day outages."
+        "D": "Faster delivery shortens the wait, but a next-day part still means an outage of a day or more against a four-hour tolerance."
       },
       "tips": [
-        "Eliminate: C and D, because preventive maintenance targets failures that are already rare, and changing the report removes downtime from the figure, not from the business.",
+        "Eliminate: C and D, because preventive maintenance targets failures that are already rare, and next-day parts still leave each outage far beyond four hours.",
         "Final two: A beats B because faster repair alone meets the four-hour tolerance; a failover site buys resilience the business does not need.",
         "Exam cue: split downtime into how often and how long; recommend the cheapest fix for the factor that breaks the business tolerance."
       ],
@@ -11631,7 +11631,7 @@
         "Availability",
         "Cost-effective resilience"
       ],
-      "_provenance": "Authored from concept: 'Availability Improvement. Long Repair Times'. Original KaiSip item (Oct 2026), written for CISA subtopic 4A6.1 (Wave 3 coverage batch Q15: thin subtopic). Distinct from d4_154 (interpreting MTTR and MTBF trends) and d4_041 (setting targets from business impact): tests choosing the improvement by the factor that drives downtime, at a cost matched to tolerance. Public sources: COBIT 2019. D4 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Eliminate tip no longer uses dismissive wording.",
+      "_provenance": "Authored from concept: 'Availability Improvement. Long Repair Times'. Original KaiSip item (Oct 2026), written for CISA subtopic 4A6.1 (Wave 3 coverage batch Q15: thin subtopic). Distinct from d4_154 (interpreting MTTR and MTBF trends) and d4_041 (setting targets from business impact): tests choosing the improvement by the factor that drives downtime, at a cost matched to tolerance. Public sources: COBIT 2019. D4 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Eliminate tip no longer uses dismissive wording. Strawman pass (Oct 2026): eliminated option(s) rewritten to a plausible same-type error; blind re-tested.",
       "style_version": 2
     },
     {
