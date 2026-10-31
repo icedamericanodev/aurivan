@@ -336,6 +336,20 @@ and d2_076 the skeptics preferred a different principle (`risk-sets-priority`,
 technique, standard or rule. The `practice_ids` seeds in `principles.json` are
 unchanged.
 
+### Round 4: the 30 disagreements (31 October 2026)
+The 30 questions where the two round-1 taggers disagreed were re-read by two
+fresh blind taggers (`isaca-mindset-coach`, `cisa-isaca-standards-auditor`) who
+did not see the earlier picks. A tag went forward only when both fresh taggers
+chose the same principle at high or medium confidence and it matched one of the
+round-1 picks (3 of 4 readers agree); the same three skeptics then tried to
+refute it, and a tag was kept when at most one refuted it.
+
+**Tagged (11):** d2_020 `answer-from-the-stem`; d2_157 `final-two`; d4_089 `answer-from-the-stem`; d4_134 `recover-by-business-priority`; d5_056 `risk-sets-priority`; d5_114 `final-two`; d5_145 `answer-from-the-stem`; d5_150 `answer-from-the-stem`; d5_163 `root-cause-over-symptom`; d5_194 `governance-before-technology`; d5_226 `answer-from-the-stem`.
+d4_134 and d5_194 each drew one refutation (the knowledge-item lens) and are
+medium confidence.
+
+**Still untagged (19):** d1_178 d2_045 d2_070 d3_025 d3_037 d3_121 d4_097 d4_101 d4_102 d4_104 d4_105 d4_131 d4_245 d4_286 d4_292 d5_162 d5_169 d5_205 d5_304.
+
 ## Rollout plan
 1. **D1 pilot and panel review.** Done (above).
 2. **D2-D5 tagging.** Done (above). Next: a second reader checks each
