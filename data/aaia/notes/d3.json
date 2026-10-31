@@ -70,7 +70,7 @@
             "Rank each use by the likelihood and impact of harm to people and the business, how autonomous its decisions are and how strong its controls are.",
             "Refresh the universe when new AI uses, incidents or regulations appear, not only once a year."
           ],
-          "example": "At a water utility in Chile, IS audit manager Rafael reviews the AI audit universe of nine AI uses. A colleague proposes auditing the newest first, a deep-learning leak detector. Rafael ranks a simpler billing feature that flags households for disconnection higher, because it decides about families with little human review.",
+          "example": "At a wine group in Chile, IS audit manager Rafael reviews the AI audit universe of nine AI uses. A colleague proposes auditing the newest first, a deep-learning vine-disease detector. Rafael ranks a simpler payroll feature that flags seasonal pickers for pay deductions higher, because it decides about workers with little human review.",
           "audit_focus": {
             "review": [
               "Compare the AI inventory with procurement and contract records for missing uses",
@@ -125,6 +125,7 @@
           "how_it_works": [
             "Cover the lifecycle stages in play: data sourcing, design, validation, deployment, monitoring, change and retirement.",
             "Include the decision process around the model: who acts on outputs, how they override and how affected people appeal.",
+            "For an AI agent that acts, such as changing records, scope its permissions, limits and human approval points, not only its logs.",
             "For a vendor model, scope what the organization controls: its data, prompts, configuration, oversight and vendor management.",
             "Set criteria before fieldwork, such as internal AI policy, the AI Risk Management Framework (AI RMF) from the US National Institute of Standards and Technology (NIST), and regulation."
           ],
@@ -243,7 +244,8 @@
             "Approve tools and uses in the audit methodology, with data rules saying which audit data each tool may receive.",
             "Plan how each tool will be validated, how its output will be reviewed and how its use will be documented.",
             "Train auditors on the approved uses, the tools' limits and their duty to review all output.",
-            "A generative audit tool reading content the auditee writes or supplies can be steered by instructions hidden in it, so weigh prompt injection before approving that use."
+            "A generative audit tool reading content the auditee writes or supplies can be steered by instructions hidden in it, so weigh prompt injection before approving that use.",
+            "Weigh what training data from past audits leaves out: a model learns where audits looked, so areas never audited can rank as low risk."
           ],
           "example": "The internal audit team of a cooperative bank in Portugal has approved an AI translation tool for foreign-language documents, but only for data rated internal. Before a fraud investigation, chief audit executive Inês checks the methodology, sees the documents are rated confidential and has a qualified human translator used instead.",
           "audit_focus": {
@@ -959,21 +961,21 @@
             "review": [
               "Evaluate each AI finding's rating against likelihood and impact on people",
               "Inspect management responses for owners, actions and target dates",
-              "Retest outcomes in production before closing a finding"
+              "Retest outcomes, or test a missing control's operation, before closing a finding"
             ],
             "evidence": [
-              "Retest results on live decisions made since remediation",
+              "Retest results on live decisions, or operating records for a missing control",
               "Management action plan with owners and dates",
               "Rating criteria applied to each finding"
             ],
             "recommend": "Have audit management require production evidence before closing AI findings and report overdue actions to the audit committee.",
             "decides": "Senior management accepts residual risk on findings it chooses not to fix"
           },
-          "isaca_rule": "Rate AI findings by how likely and how severe the harm is to people and the business, explain them in business terms, and close them only on production evidence that the fix works. Builders' validation reports and management's word are not follow-up evidence.",
+          "isaca_rule": "Rate AI findings by likelihood and impact of harm to people and the business, explain them in business terms, and close them only on production evidence that the fix resolved what was reported: harmful outcomes, or a missing control. Builders' validation reports and management's word are not follow-up evidence.",
           "exam_traps": [
             {
               "trap": "Close a finding once management confirms in writing that the model was retrained.",
-              "why": "Confirmation is an assertion. Follow-up needs evidence, such as retested outcomes on decisions made since the fix."
+              "why": "Confirmation is an assertion. Follow-up needs evidence: retested outcomes for an outcome finding, or records showing a missing control now operates."
             },
             {
               "trap": "Rate AI findings mainly by the technical severity of the model issue.",

@@ -718,7 +718,7 @@
       "tips": [
         "Eliminate: A closes on management's word without evidence, and C has the auditor designing the model fix instead of verifying it.",
         "Final two: D beats B because production results show whether the fix worked; a pre-release report is the builders' test before go-live.",
-        "Exam cue: close an AI finding on evidence from production after the fix, not on validation reports or management statements."
+        "Exam cue: follow-up tests what the finding reported. When it reported a harmful outcome, close it on production outcomes after the fix, not on validation reports or management statements."
       ],
       "framework_ref": "ISACA IT Audit Standard 1402 (Follow-up Activities); NIST AI 100-1 MEASURE 2.11 (Fairness and bias evaluated and documented)",
       "related_concepts": [
@@ -726,7 +726,7 @@
         "Fairness retesting",
         "Production evidence"
       ],
-      "_provenance": "Authored from concept: notes 3E.2 Rating, Reporting and Follow-Up of AI Findings (close on production evidence after the fix). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA pilot, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test, standards audit, concept review).",
+      "_provenance": "Authored from concept: notes 3E.2 Rating, Reporting and Follow-Up of AI Findings (close on production evidence after the fix). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA pilot, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test, standards audit, concept review). Cross-domain gate, 31 Oct 2026: exam cue now says follow-up tests what the finding reported, to agree with aaia_d3_048.",
       "style_version": 2
     },
     {
@@ -773,23 +773,23 @@
       "bloom_level": "Application",
       "question": "An IS auditor's draft scope for a Slovenian city's AI agent, which reviews drivers' pothole-damage photos and pays small claims, covers photo-assessment accuracy and hosting. Which addition is MOST important?",
       "options": {
-        "A": "The agent's payment permissions, limits and points of human approval",
+        "A": "The agent's payment authority and when a person must approve",
         "B": "A larger accuracy test of photo assessment across claim types",
         "C": "Claim handling times and driver satisfaction since the agent launched",
-        "D": "Notices telling drivers that an AI agent assesses their claims"
+        "D": "Logs of each payment the agent makes, kept for later review"
       },
       "correct": "A",
       "key_concept": "Scoping an AI agent covers what it can do: its tool permissions, transaction limits and human approval points, not only model accuracy.",
       "pre_read": "Notice whether the system only advises or also acts, and what the draft scope already covers.",
-      "correct_explanation": "An agent differs from a model that only advises: it acts. This one pays claims, so its payment permissions, limits and human approval points set how much harm any error, edited photo or manipulated input can cause. Notices to drivers support transparency, but they do not limit what the agent can do with the city's money.",
+      "correct_explanation": "An agent differs from a model that only advises: it acts. This one pays claims, so its payment authority (permissions and limits) and the points where a person must approve set how much harm any error, edited photo or manipulated input can cause. Payment logs, option D, are the runner-up: they support detection and later review, but they record wrong payments after the money has gone rather than bounding them.",
       "wrong_explanations": {
         "B": "Tempting because accuracy drives every payout. But accuracy is already in scope; a bigger test still leaves out what the agent may pay without a person.",
         "C": "Tempting because service measures are easy to report. But speed and satisfaction say nothing about wrong or manipulated payments.",
-        "D": "Tempting because drivers should know AI assesses their claims. But a notice does not limit what the agent can pay or when a person must approve."
+        "D": "Tempting because logs let auditors trace each payment. But logs record wrong or manipulated payments after the money has gone; the scope must first cover what bounds them."
       },
       "tips": [
         "Eliminate: B deepens accuracy testing the scope already covers, and C measures service rather than payment risk.",
-        "Final two: A beats D because the agent acts with money; its permissions and approval points bound every failure, while a notice limits nothing.",
+        "Final two: A beats D because the agent acts with money; its payment authority and approval points bound each failure before it happens, while payment logs only record it afterward.",
         "Exam cue: when an AI agent can act, scope its tools, permissions and human checkpoints, not only the accuracy of its model."
       ],
       "framework_ref": "ISACA IT Audit Standard 1203 (Engagement Planning); NIST AI 100-2e2025 Section 3.5 (Security of Agents)",
@@ -798,7 +798,7 @@
         "Excessive agency",
         "Engagement scope"
       ],
-      "_provenance": "Authored from concept: notes 3A.2 Scoping an AI Audit Engagement (scope where risk sits; an agent's permissions and human checkpoints are in scope; trap 'scope the algorithm only'). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 2, 31 Oct 2026.",
+      "_provenance": "Authored from concept: notes 3A.2 Scoping an AI Audit Engagement (scope where risk sits; an agent's permissions and human checkpoints are in scope; trap 'scope the algorithm only'). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 2, 31 Oct 2026. Cross-domain gate, 31 Oct 2026: runner-up changed from a disclosure notice, which repeated aaia_d1_004's key and runner-up. Round 2 fix, 31 Oct 2026: key option reworded from a three-part list to one idea.",
       "style_version": 2
     },
     {
@@ -927,7 +927,7 @@
       "pre_read": "Ask what the training data records and what it could never contain.",
       "correct_explanation": "A model learns only from the data it is given. Outlets never audited have no findings, so the model can read that silence as low risk and keep steering audits back to outlets already visited, a feedback loop that leaves about half the network unexamined. Explainability matters for presenting the plan, but a clear explanation of this ranking would still carry the same blind spot.",
       "wrong_explanations": {
-        "B": "Tempting because retraining adds work. But refreshing a model with new results is routine maintenance and does not distort the ranking.",
+        "B": "Tempting because retraining adds work. But regular retraining is routine upkeep, and new findings come only from outlets that audits reach, so it cannot fill the gap.",
         "C": "Tempting because data scientists know modeling. But audit building its own analytics supports independence; who built it does not create the blind spot.",
         "D": "Tempting because the audit committee must understand the plan. But explanation tools can help; even a clearly explained ranking inherits the blind spot in its data."
       },
@@ -1023,7 +1023,7 @@
       "subtopic": "3B Testing and sampling. Sampling over an audit period",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "An Argentine health insurer retrained its referral-priority model three times during the year under audit; one version ran three weeks. Which change to a random sample of 60 decisions BEST supports the IS auditor's conclusion?",
+      "question": "An Argentine labor court retrained its case-priority model three times during the year under audit; one version ran three weeks. Which change to a random sample of 60 decisions BEST supports the IS auditor's conclusion?",
       "options": {
         "A": "Stratify the sample by the model version that made each decision",
         "B": "Rely on each version's validation report instead of sampling",
@@ -1035,7 +1035,7 @@
       "pre_read": "Count how many models actually made the year's decisions and how many cases each would get.",
       "correct_explanation": "Each retraining produces a different model, so a conclusion on the year needs evidence on every version that decided. A random sample of 60 would hold only about three decisions from the three-week version, too few to say anything about it; stratifying by version guarantees enough from each. Stratifying by priority looks rigorous, but its strata ignore the retrainings, so the short-lived version can still get almost no cases.",
       "wrong_explanations": {
-        "B": "Tempting because validation reports describe each version. But they are builders' pre-release tests, not evidence of how each version decided for patients.",
+        "B": "Tempting because validation reports describe each version. But they are builders' pre-release tests, not evidence of how each version decided real cases.",
         "C": "Tempting because the current version is the one still deciding. But the conclusion covers the year, and earlier versions made most of its decisions.",
         "D": "Tempting because stratifying by outcome is common. But priority strata ignore the retrainings, so the three-week version can still get almost no cases."
       },
@@ -1050,7 +1050,7 @@
         "Model versions",
         "Retraining"
       ],
-      "_provenance": "Authored from concept: notes 3B.2 Sampling AI Decisions (add strata where errors gather, including recent model versions; trap 'a larger random sample solves it'). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 2, 31 Oct 2026.",
+      "_provenance": "Authored from concept: notes 3B.2 Sampling AI Decisions (add strata where errors gather, including recent model versions; trap 'a larger random sample solves it'). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 2, 31 Oct 2026. Cross-domain gate, 31 Oct 2026: setting moved from a health insurer, which repeated CISA d2_163.",
       "style_version": 2
     },
     {
@@ -1176,16 +1176,16 @@
       },
       "correct": "B",
       "key_concept": "A chatbot's system prompt is configuration that shapes its answers; evidence about a past answer needs the prompt version then in force.",
-      "pre_read": "Ask what shapes a chatbot's answer besides its model, and which version was live that day.",
+      "pre_read": "Note the date of the answer and what has changed since. Ask which records show the setup live that day.",
       "correct_explanation": "A chatbot's answers depend on its system prompt, the insurer's instructions on what to say, not just on the base model, and the chatbot has changed since March 3. The chat log shows what was said, and the prompt version in force that day, from the change history, shows what governed it. The model version for that day is relevant, but it cannot show the insurer's instructions.",
       "wrong_explanations": {
         "A": "Tempting because it is the system's own configuration. But it reflects later edits; the prompt that shaped the March 3 answer may no longer be live.",
-        "C": "Tempting because it matches the date. But a model version shows which general model ran, not the insurer's instructions that shaped the answer about cover.",
+        "C": "Tempting because it matches the date. But a model version shows which model ran, not the insurer's instructions that shaped the answer about coverage.",
         "D": "Tempting because the team knows the chatbot. But an account is inquiry and cannot show which instructions were live on March 3."
       },
       "tips": [
         "Eliminate: A shows today's prompt after later edits, and D relies on the team's account instead of records.",
-        "Final two: B beats C because the insurer's prompt shapes what the chatbot says about cover; a model version log cannot show the instructions live on March 3.",
+        "Final two: B beats C because the insurer's prompt shapes what the chatbot says about coverage; a model version log cannot show the instructions live on March 3.",
         "Exam cue: for generative AI, prompts and settings are configuration. Match the evidence to the prompt version live when the output was produced, not only the model."
       ],
       "framework_ref": "ISACA IT Audit Standard 1205 (Evidence); NIST SP 800-53 Rev. 5 CM-3 (Configuration Change Control)",
@@ -1251,12 +1251,12 @@
       "pre_read": "Compare the audit period with how long the records exist.",
       "correct_explanation": "Logs are the evidence of what the assistant told patients, and the vendor's 30-day deletion keeps destroying them. Having the model owner preserve them now, under the hospital's privacy rules, stops further loss, and earlier records that remain, such as exports or complaint files, show what the earlier months can still support. Asking the same questions again produces new answers from today's version and settings, not the answers patients received.",
       "wrong_explanations": {
-        "A": "Tempting because it stops unlogged answers. But the auditor does not halt operations; securing the evidence meets the audit's need.",
+        "A": "Tempting because it stops unlogged answers. But suspending a patient service to suit the audit puts audit convenience ahead of patients; preserving the evidence meets the audit's need.",
         "B": "Tempting because it seems to rebuild the record. But generative answers vary between runs and versions; new answers do not show what patients were told.",
         "D": "Tempting because recent logs are available. But 30 days cannot stand for six months, and narrowing the period without saying so misstates the scope."
       },
       "tips": [
-        "Eliminate: D presents 30 days as the six-month population, and A has the auditor halting a service when preserving evidence is enough.",
+        "Eliminate: D presents 30 days as the six-month population, and A suspends a patient service for the audit's convenience when preserving evidence is enough.",
         "Final two: C beats B because asking again produces fresh answers from today's model; only preserved records show what patients were told.",
         "Exam cue: for hosted AI, check the provider's log retention early. Preserve evidence before it expires; never recreate past outputs by rerunning."
       ],
@@ -1266,7 +1266,7 @@
         "Log retention",
         "Variable AI output"
       ],
-      "_provenance": "Authored from concept: notes 3C.2 Sufficiency, Reliability and Preservation of AI Evidence (ask owners to preserve logs before they are overwritten rather than asking management to stop the system). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 2, 31 Oct 2026.",
+      "_provenance": "Authored from concept: notes 3C.2 Sufficiency, Reliability and Preservation of AI Evidence (ask owners to preserve logs before they are overwritten rather than asking management to stop the system). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 2, 31 Oct 2026. Cross-domain gate, 31 Oct 2026: reason A loses reworded to audit convenience, to agree with aaia_d2_019 and aaia_d3_012.",
       "style_version": 2
     },
     {
@@ -1401,8 +1401,8 @@
       },
       "tips": [
         "Eliminate: B documents the work without testing it, and A reopens data terms the approval already covered.",
-        "Final two: C beats D because confirming the 12 tests only what was found; if lines went unread, the test must be redone before any result counts.",
-        "Exam cue: before trusting an AI tool's answer about a population, confirm it processed every record by counting its output. Its own claim of coverage is not a record."
+        "Final two: C beats D because confirming the 12 tests only what was found; if lines went unread, the result cannot support a conclusion on the whole population.",
+        "Exam cue: before trusting an AI tool's answer about a population, reconcile what it actually processed to the source record count. Its own claim of full coverage is not evidence."
       ],
       "framework_ref": "ISACA IT Audit Standard 1205 (Evidence); NIST AI 100-1 MAP 2.2 (Knowledge limits and human oversight of outputs documented)",
       "related_concepts": [
@@ -1437,7 +1437,7 @@
       },
       "tips": [
         "Eliminate: C creates prices borrowers never received, and A accepts a known population gap without testing whether it matters.",
-        "Final two: B beats D because the objective is how borrowers were priced; rule-priced loans came through the same automated process.",
+        "Final two: B beats D because the objective is how borrowers were priced, and the fixed rule priced those borrowers; dropping them could hide a regional pattern.",
         "Exam cue: an AI system's population includes its fallback path. Define it by the objective, not by which component decided."
       ],
       "framework_ref": "ISACA IT Audit Standard 1205 (Evidence); NIST AI 100-1 MEASURE 2.11 (Fairness and bias evaluated and documented)",
@@ -1452,28 +1452,28 @@
     {
       "id": "aaia_d3_041",
       "domain": 3,
-      "subtopic": "3D Data quality and analytics. Contract-review tool",
+      "subtopic": "3D Data quality and analytics. Minutes-review tool",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "An Omani group's audit team validated an AI tool that finds change-of-control clauses in English contracts and now wants to use it on Arabic contracts. What should the chief audit executive require FIRST?",
+      "question": "An Omani group's audit team checked an AI tool that finds related-party dealings in English board minutes and now wants to use it on Arabic minutes. What should the chief audit executive require FIRST?",
       "options": {
-        "A": "Reliance on the English validation and the vendor's Arabic support",
-        "B": "Follow-up of every clause the tool flags in Arabic contracts",
-        "C": "Machine translation of the contracts into English before using the tool",
-        "D": "Validation on Arabic contracts whose clauses are already known"
+        "A": "Rerunning the English test cases to show the tool is unchanged",
+        "B": "Follow-up of every dealing the tool flags in Arabic minutes",
+        "C": "Machine translation of the minutes into English before using the tool",
+        "D": "Testing on Arabic minutes whose dealings are already known"
       },
       "correct": "D",
       "key_concept": "An audit AI tool's validation applies only to data like that tested; a new language or data type needs revalidation before reliance.",
       "pre_read": "Compare the data the tool was validated on with the data it will now read.",
-      "correct_explanation": "A validation holds only for data like the data tested. Arabic contracts differ in language, drafting and layout, so the tool's error rates on them are unknown until it is tested on Arabic contracts with known answers. Translating into English seems to reuse the validation, but translation adds its own errors, and the tool was never validated on translated text either.",
+      "correct_explanation": "A validation holds only for data like the data tested. Unlike a fixed audit program, an AI tool's accuracy shifts with the data it reads, and Arabic minutes differ in language, wording and layout, so error rates on them are unknown until it is tested on Arabic minutes with known answers. Translating into English seems to reuse the validation, but translation adds its own errors, and the tool was never validated on translated text either.",
       "wrong_explanations": {
-        "A": "Tempting because the vendor lists Arabic support. But support is a claim, and the English validation says nothing about Arabic contracts until they are tested.",
-        "B": "Tempting because flags get checked. But follow-up finds false flags only; clauses the tool misses in Arabic are never seen.",
-        "C": "Tempting because it routes contracts to the validated setting. But translation adds errors, and the tool was never validated on translated text."
+        "A": "Tempting because an unchanged audit program keeps its earlier testing. But an AI tool's accuracy depends on the data it reads; English results say nothing about Arabic minutes.",
+        "B": "Tempting because flags get checked. But follow-up finds false flags only; dealings the tool misses in Arabic are never seen.",
+        "C": "Tempting because it routes minutes to the validated setting. But translation adds errors, and the tool was never validated on translated text."
       },
       "tips": [
-        "Eliminate: A stretches the English validation on the vendor's word, and B checks flags while misses go unseen.",
-        "Final two: D beats C because translation adds its own errors; only known-answer testing on Arabic contracts shows how the tool performs.",
+        "Eliminate: A retests the unchanged tool on English, which says nothing about Arabic, and B checks flags while misses go unseen.",
+        "Final two: D beats C because translation adds its own errors; only known-answer testing on Arabic minutes shows how the tool performs.",
         "Exam cue: an AI audit tool's validation covers the data it was tested on. New languages, formats or sources need revalidation."
       ],
       "framework_ref": "NIST AI 100-1 MEASURE 2.3 (Performance measured in conditions similar to deployment); ISACA IT Audit Standard 1205 (Evidence)",
@@ -1482,7 +1482,7 @@
         "Change in data",
         "Known-outcome testing"
       ],
-      "_provenance": "Authored from concept: notes 3D.2 AI-Assisted Audit Analytics and Tool Validation (revalidate when the type of data changes; vendor accuracy figures are inputs, not validation). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 2, 31 Oct 2026.",
+      "_provenance": "Authored from concept: notes 3D.2 AI-Assisted Audit Analytics and Tool Validation (revalidate when the type of data changes; vendor accuracy figures are inputs, not validation). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 2, 31 Oct 2026. Cross-domain gate, 31 Oct 2026: documents changed from contracts, which repeated aaia_d3_011 and CISA d1_080. Round 2 fix, 31 Oct 2026: option A changed from vendor reliance to a rerun of the English tests, so the deciding fact is that AI accuracy depends on input data. Round 3 fix, 31 Oct 2026: stem says 'checked' and D says 'Testing' so the key no longer echoes the stem.",
       "style_version": 2
     },
     {
@@ -1726,7 +1726,7 @@
       "tips": [
         "Eliminate: A closes on a restored metric while the cause remains, and C offers a plan and a pre-release report, which show only design.",
         "Final two: D beats B because the finding was missing monitoring; a production retest shows today's accuracy, not that the next decline will be caught.",
-        "Exam cue: retraining fixes a model's symptom, not a missing control. Close AI findings when the control that failed now works."
+        "Exam cue: follow-up tests what the finding reported. When it reported a missing control, retraining fixes only the symptom; close it when that control operates."
       ],
       "framework_ref": "ISACA IT Audit Standard 1402 (Follow-up Activities); NIST AI 100-1 MEASURE 2.4 (Functionality and behavior monitored in production)",
       "related_concepts": [
@@ -1734,7 +1734,7 @@
         "Drift monitoring",
         "Root cause"
       ],
-      "_provenance": "Authored from concept: notes 3E.2 Rating, Reporting and Follow-Up of AI Findings (close findings only on production evidence that the fix works; trap 'close on management's confirmation of retraining'). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 2, 31 Oct 2026.",
+      "_provenance": "Authored from concept: notes 3E.2 Rating, Reporting and Follow-Up of AI Findings (close findings only on production evidence that the fix works; trap 'close on management's confirmation of retraining'). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 2, 31 Oct 2026. Cross-domain gate, 31 Oct 2026: exam cue now says follow-up tests what the finding reported, to agree with aaia_d3_020.",
       "style_version": 2
     },
     {

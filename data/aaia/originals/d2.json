@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "comment": "Original AAIA practice questions for Domain 2 (AI Operations), written to the ISACA AAIA Examination Content Outline (June 2025). Every item is authored from public concepts and KaiSip's own AAIA study notes (data/aaia/notes/d2.json), with no reference to ISACA's AAIA review manual, QAE database, online course or any prep bank. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/aaia-standards-auditor.md. Not affiliated with or endorsed by ISACA\u00ae. AAIA is a trademark of ISACA. Pilot batch aaia_d2_001 to aaia_d2_020, 30 Oct 2026. Batch 2 aaia_d2_021 to aaia_d2_050, 31 Oct 2026.",
+    "comment": "Original AAIA practice questions for Domain 2 (AI Operations), written to the ISACA AAIA Examination Content Outline (June 2025). Every item is authored from public concepts and KaiSip's own AAIA study notes (data/aaia/notes/d2.json), with no reference to ISACA's AAIA review manual, QAE database, online course or any prep bank. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/aaia-standards-auditor.md. Not affiliated with or endorsed by ISACA®. AAIA is a trademark of ISACA. Pilot batch aaia_d2_001 to aaia_d2_020, 30 Oct 2026. Batch 2 aaia_d2_021 to aaia_d2_050, 31 Oct 2026.",
     "schema_version": 1
   },
   "domain": 2,
@@ -334,15 +334,15 @@
     {
       "id": "aaia_d2_010",
       "domain": 2,
-      "subtopic": "2D AI supervision. Admissions review",
+      "subtopic": "2D AI supervision. Registration review",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A university's admissions staff confirm 99.7% of an AI model's rejection recommendations, spending under a minute per file. Which conclusion does this evidence BEST support?",
+      "question": "A nursing council's registration staff confirm 99.7% of an AI model's rejection recommendations, spending under a minute per file. Which conclusion does this evidence BEST support?",
       "options": {
         "A": "Human review may be a rubber stamp rather than real oversight",
         "B": "The model may have drifted since it was last validated",
         "C": "High agreement confirms that the model makes sound decisions",
-        "D": "The review step adds cost and could safely be removed"
+        "D": "The review control is operating effectively on every file"
       },
       "correct": "A",
       "key_concept": "Human oversight is effective only if reviewers can and do challenge the model; rubber-stamping is automation bias.",
@@ -351,10 +351,10 @@
       "wrong_explanations": {
         "B": "Tempting because drift is a common AI risk. But nothing here measures changing data or outcomes, and reviewers who rubber-stamp would not reveal drift anyway.",
         "C": "Tempting because agreement looks like validation. But agreement from reviewers who barely look at files is not independent evidence that the decisions are sound.",
-        "D": "Tempting because the step seems to add little. But rejections affect applicants' futures, so a person able to understand, override and stop the model must remain."
+        "D": "Tempting because every file gets a human sign-off, which control tests often check. But sign-off shows the step is performed; under a minute per file puts its effectiveness in doubt."
       },
       "tips": [
-        "Eliminate: B suggests drift, though nothing here measures changing data or outcomes, and D removes oversight from a decision that seriously affects applicants.",
+        "Eliminate: B suggests drift, though nothing here measures changing data or outcomes, and D reads sign-off on every file as effective, though under a minute per file casts doubt on whether it works.",
         "Final two: A beats C because agreement is evidence only when reviewers judge independently; fast, near-total agreement shows deference, not proof the model is sound.",
         "Exam cue: very high agreement plus very little review time signals automation bias; oversight must be effective, not just present."
       ],
@@ -364,7 +364,7 @@
         "Human-in-the-loop",
         "Override rate"
       ],
-      "_provenance": "Authored from concept: notes 2D.1 Human Oversight and Automation Bias (oversight must work, not just exist). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA pilot, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test, standards audit, concept review).",
+      "_provenance": "Authored from concept: notes 2D.1 Human Oversight and Automation Bias (oversight must work, not just exist). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA pilot, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test, standards audit, concept review). Cross-domain gate, 31 Oct 2026: setting moved from university admissions, which CRISC crisc_d1_004 also uses. Review round 2, 31 Oct 2026: option D now tests the CISA-style reading that a signed-off control is effective. Review round 3, 31 Oct 2026: D explanation and Eliminate tip now say sign-off shows performance and review time casts doubt on effectiveness.",
       "style_version": 2
     },
     {
@@ -1273,25 +1273,25 @@
       "subtopic": "2D AI supervision. Drift indicators",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A Pakistani mobile-banking app's input drift metrics stay within tolerance, yet confirmed fraud its model missed has tripled since scammers changed tactics. What should the IS auditor recommend as BEST?",
+      "question": "A Pakistani online game publisher's account-takeover model shows input drift within tolerance, yet confirmed takeovers it missed have tripled since attackers changed tactics. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Tighten the input drift thresholds so alerts fire sooner",
-        "B": "Lower the fraud alert threshold so the model flags more payments",
-        "C": "Monitor detection rates against confirmed fraud outcomes",
-        "D": "Keep uptime and response time as the fraud model's main indicators"
+        "B": "Lower the takeover alert threshold so the model flags more logins",
+        "C": "Monitor detection rates against verified takeover outcomes",
+        "D": "Keep uptime and response time as the takeover model's main indicators"
       },
       "correct": "C",
-      "key_concept": "Concept drift changes the link between inputs and outcomes, which input metrics can miss; monitoring against real outcomes, such as confirmed missed fraud, reveals it.",
+      "key_concept": "Concept drift changes the link between inputs and outcomes, which input metrics can miss; monitoring against real outcomes, such as confirmed missed takeovers, reveals it.",
       "pre_read": "Ask whether the indicator in place could change at all if the meaning of the inputs changed.",
-      "correct_explanation": "Scammers changed tactics, so the link between inputs and fraud shifted while the inputs themselves look much the same: concept drift. Input drift metrics cannot see that, which is why they stay green while missed fraud triples. Tracking detection against confirmed fraud outcomes, with thresholds that trigger review, shows decay directly. Tighter input thresholds only make the same blind measure more sensitive; they would still miss a change in meaning.",
+      "correct_explanation": "Attackers changed tactics, so the link between inputs and takeovers shifted while the inputs themselves look much the same: concept drift. Input drift metrics cannot see that, which is why they stay green while missed takeovers triple. Tracking detection against verified takeover outcomes, with thresholds that trigger review, shows decay directly. Tighter input thresholds only make the same blind measure more sensitive; they would still miss a change in meaning.",
       "wrong_explanations": {
         "A": "Tempting because sensitive alerts catch drift sooner. But the inputs have not shifted much; the change is in what they mean, which input metrics cannot measure.",
-        "B": "Tempting because flagging more seems to catch more fraud. But it is a change made without measuring decay, and new tactics may never score high enough.",
-        "D": "Tempting because availability is easy to measure. But a model can run perfectly while missing fraud; uptime says nothing about decision quality."
+        "B": "Tempting because flagging more seems to catch more takeovers. But a model that never learned the new tactics may still score them low, while false alerts rise.",
+        "D": "Tempting because availability is easy to measure. But a model can run perfectly while missing takeovers; uptime says nothing about decision quality."
       },
       "tips": [
-        "Eliminate: B lowers the threshold, a change made without any measure of decay, and D tracks availability, which says nothing about decision quality.",
-        "Final two: C beats A because concept drift shows only in outcomes; tighter input thresholds sharpen a measure that cannot see changes in meaning.",
+        "Eliminate: B lowers the alert threshold, but a model that never learned the new tactics may still score them low, and D tracks availability, which says nothing about decision quality.",
+        "Final two: C beats A because concept drift shows most directly in outcomes; tighter input thresholds sharpen a measure that cannot see changes in meaning.",
         "Exam cue: inputs steady but results worse points to concept drift; recommend monitoring against real outcomes, not just input distributions."
       ],
       "framework_ref": "NIST AI 100-1 MEASURE 2.4 (Functionality and behavior monitored in production); NIST SP 800-53 Rev. 5 CA-7 (Continuous Monitoring)",
@@ -1300,7 +1300,7 @@
         "Data drift",
         "Key risk indicator"
       ],
-      "_provenance": "Authored from concept: notes 2D.2 Monitoring Drift, Performance and Impacts (monitor decisions and outcomes, not just inputs or servers). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 2, 31 Oct 2026.",
+      "_provenance": "Authored from concept: notes 2D.2 Monitoring Drift, Performance and Impacts (monitor decisions and outcomes, not just inputs or servers). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 2, 31 Oct 2026. Cross-domain gate, 31 Oct 2026: setting moved from a mobile-banking fraud model, which repeated aaia_d2_012. Review round 2, 31 Oct 2026: stem-echo cue removed from the key; reason B loses aligned with the stem. Review round 3, 31 Oct 2026: Final two tip hedged to match the key concept.",
       "style_version": 2
     },
     {
@@ -1582,7 +1582,7 @@
         "Final two: B beats C because revealing who was in a fertility dataset discloses treatment and cannot be undone; misuse can be narrowed by terms and documentation.",
         "Exam cue: before releasing a model trained on sensitive personal data, weigh membership inference and data reconstruction; the model itself can leak who was in it."
       ],
-      "framework_ref": "NIST AI 100-2e2025 Section 2.4 (Privacy Attacks and Mitigations); NIST AI 100-1 MEASURE 2.10 (Privacy risk examined and documented)",
+      "framework_ref": "NIST AI 100-2e2025 Section 2.4.2 (Membership Inference); NIST AI 100-1 MEASURE 2.10 (Privacy risk examined and documented)",
       "related_concepts": [
         "Membership inference",
         "Model inversion",
@@ -1618,7 +1618,7 @@
         "Final two: D beats B because extraction opens the password to every rider who chats; vendor logs expose it to one known party.",
         "Exam cue: treat system prompts as readable by users; secrets in a prompt are exposed, whatever staff believe users can see."
       ],
-      "framework_ref": "MITRE ATLAS AML.T0056 (Extract LLM System Prompt); NIST AI 100-2e2025 Section 3.3 (Direct Prompting Attacks and Mitigations)",
+      "framework_ref": "MITRE ATLAS AML.T0056 (Extract LLM System Prompt); NIST AI 100-2e2025 Section 3.3.2 (Information Extraction)",
       "related_concepts": [
         "System prompt extraction",
         "Direct prompt injection",
@@ -1633,26 +1633,26 @@
       "subtopic": "2F AI threats. Agent payments",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Scottish distillery's AI procurement agent reads emailed invoices and pays each one once its chat log shows a manager's approval. What should the IS auditor recommend as BEST?",
+      "question": "A Scottish distillery's AI procurement agent reads emailed invoices into its chat and pays each one once any message in that chat shows a manager's approval. What should the IS auditor recommend as BEST?",
       "options": {
-        "A": "Add a prompt rule requiring manager approval before each payment",
+        "A": "Have the agent match each invoice to its purchase order first",
         "B": "Cap each agent payment at a small amount to limit losses",
-        "C": "Have finance review the agent's recorded approvals each month",
+        "C": "Have a finance manager review the agent's recorded approvals monthly",
         "D": "Enforce manager approval within the payment system itself"
       },
       "correct": "D",
-      "key_concept": "Human approval for high-impact agent actions must be enforced outside the model; an approval the agent records itself can be faked or skipped.",
+      "key_concept": "Human approval for high-impact agent actions must be enforced outside the model; an approval that exists only in the agent's chat can be faked.",
       "pre_read": "Ask who, or what, could produce the record that says a manager approved.",
-      "correct_explanation": "Approval exists only in the agent's own chat log, and the agent reads untrusted invoices, so injected text can fake an approval. Enforcing approval in the payment system, where a manager must act and the agent cannot, makes the control hold whatever the agent is told. Capping each payment reduces the cost of each error, but a manipulated agent could still pay many invoices with no real approval.",
+      "correct_explanation": "Approval exists only in the agent's chat, and the agent reads untrusted invoices into that same chat, so injected invoice text can fake an approval. Enforcing approval in the payment system, where a manager must act and the agent cannot, makes the control hold whatever the agent is told. Capping each payment reduces the cost of each error, but a manipulated agent could still pay many invoices with no real approval.",
       "wrong_explanations": {
-        "A": "Tempting because instructions shape agent behavior. But a prompt rule is enforced by the model itself, and injection or error can talk it past the rule.",
-        "B": "Tempting because a cap limits each loss. But a manipulated agent could still pay many capped invoices, each with an approval it recorded itself.",
-        "C": "Tempting because review catches problems. But monthly review comes after payment, and it checks records the agent itself wrote, which may be false."
+        "A": "Tempting because matching invoices to orders is a sound payment control. But the agent runs the match itself, so injected invoice text can still steer it, and no manager approves.",
+        "B": "Tempting because a cap limits each loss. But a manipulated agent could still pay many capped invoices, each on an approval faked by injected text in its chat.",
+        "C": "Tempting because review catches problems. But monthly review comes after payment, and the chat approvals it checks may have been faked by invoice text."
       },
       "tips": [
-        "Eliminate: A relies on a prompt rule the model enforces on itself, and C reviews, after payment, records the agent itself wrote.",
-        "Final two: D beats B because approval enforced outside the agent stops unapproved payments; a cap only limits each one while self-recorded approvals continue.",
-        "Exam cue: for high-impact agent actions, look for human approval the model cannot grant or record itself."
+        "Eliminate: A has the agent check its own work, which injected invoice text can steer, and C reviews chat approvals, which invoice text may have faked, only after payment.",
+        "Final two: D beats B because approval enforced outside the agent stops unapproved payments; a cap only limits each one while faked chat approvals continue.",
+        "Exam cue: when an agent needs a high-impact power, put the approval where the agent can neither grant nor record it; when it never needs the power, remove it."
       ],
       "framework_ref": "NIST AI 100-2e2025 Section 3.5 (Security of Agents); NIST SP 800-53 Rev. 5 AC-3 (Access Enforcement)",
       "related_concepts": [
@@ -1660,7 +1660,7 @@
         "Human approval",
         "Segregation of duties"
       ],
-      "_provenance": "Authored from concept: notes 2F.3 Excessive Agency and Access Management for AI (high-impact actions need human approval the model cannot grant itself). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 2, 31 Oct 2026.",
+      "_provenance": "Authored from concept: notes 2F.3 Excessive Agency and Access Management for AI (high-impact actions need human approval the model cannot grant itself). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 2, 31 Oct 2026. Cross-domain gate, 31 Oct 2026: option A and the cue changed so the item no longer mirrors aaia_d2_017. Review round 2, 31 Oct 2026: stem states that invoices and approvals share the agent's chat; option C reworded to remove a stem-echo cue. Review round 3, 31 Oct 2026: stem states that any chat message, invoice text included, can count as approval.",
       "style_version": 2
     },
     {

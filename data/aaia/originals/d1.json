@@ -805,26 +805,26 @@
       "subtopic": "1A AI models and requirements. Ranking reader comments",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A news publisher wants its comment-ranking model to show the most useful comments first, but trained it to predict which comments draw the most replies. What should the IS auditor be MOST concerned about?",
+      "question": "A news publisher's model ranks comments so the most useful appear first; trained on reply counts, it predicts them with 91% accuracy on held-out comments. What should the IS auditor be MOST concerned about?",
       "options": {
         "A": "Readers may not know that a model ranks the comments they see",
-        "B": "The model's accuracy may have been tested on training-period comments",
+        "B": "The 91% accuracy may fall as news topics shift over time",
         "C": "The training set may hold too few months of past comments",
-        "D": "The ranking may favor heated comments over the most helpful ones"
+        "D": "The training label may not match the ranking's business goal"
       },
       "correct": "D",
       "key_concept": "A model learns the label it is trained on; a proxy label can make it accurate at the wrong thing.",
       "pre_read": "Compare what the business wants the model to do with what it was actually trained to predict.",
-      "correct_explanation": "A model optimizes the objective people give it. Replies are only a proxy for usefulness, and heated comments often draw the most replies, so the model can be accurate at the wrong thing. Testing on the same months, option B, is the runner-up: a cleaner test would sharpen the accuracy figure, but it would still measure reply prediction, not usefulness.",
+      "correct_explanation": "A model optimizes the label people give it. Reply counts are only a proxy for usefulness, and heated comments often draw the most replies, so 91% accuracy shows the model is good at the wrong thing. Drift, option B, is the runner-up: topics do shift and accuracy needs monitoring, but monitoring would only keep the model good at predicting replies, not usefulness.",
       "wrong_explanations": {
         "A": "Tempting because transparency matters. But telling readers a model ranks comments does not fix a model trained toward the wrong goal.",
-        "B": "Tempting because testing on training-period data can flatter a model. But even a clean test would only confirm it predicts replies, not usefulness.",
+        "B": "Tempting because models drift as topics change. But monitoring drift would only keep the model good at predicting replies, not at finding useful comments.",
         "C": "Tempting because models learn from data. But more months of reply counts would only teach the model the wrong goal more firmly."
       },
       "tips": [
         "Eliminate: A is a disclosure point that leaves the wrong objective in place, and C worries about data volume, though more reply data only teaches the wrong goal more firmly.",
-        "Final two: D beats B because a better test still measures the wrong target; the label the model learned is the root problem.",
-        "Exam cue: check the label a model was trained on against the business goal; a proxy label makes a model accurate at the wrong thing."
+        "Final two: D beats B because drift monitoring keeps a model good at its learned target; the reply-count label itself is the root problem.",
+        "Exam cue: a high accuracy score shows a model predicts its label well; check that label against the business goal before trusting the score."
       ],
       "framework_ref": "NIST AI 100-1 MAP 1.4 (Business value or context of use defined or re-evaluated); NIST AI 100-1 MEASURE 2.5 (System shown to be valid and reliable, limits documented)",
       "related_concepts": [
@@ -832,7 +832,7 @@
         "Proxy labels",
         "Validity"
       ],
-      "_provenance": "Authored from concept: notes 1A.2 How Models Learn and Where They Fail (the objective tells the model what to optimize; a poorly chosen objective yields a model accurate at the wrong thing). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 2, 31 Oct 2026. Off-topic hosting distractor replaced in review with a data-volume misconception, 31 Oct 2026.",
+      "_provenance": "Authored from concept: notes 1A.2 How Models Learn and Where They Fail (the objective tells the model what to optimize; a poorly chosen objective yields a model accurate at the wrong thing). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 2, 31 Oct 2026. Off-topic hosting distractor replaced in review with a data-volume misconception, 31 Oct 2026. Stem and options re-angled in round 2 so a high accuracy score, not a stated goal contrast, carries the item, 31 Oct 2026.",
       "style_version": 2
     },
     {
@@ -949,34 +949,34 @@
       "subtopic": "1B AI governance. AI features in purchased tools",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Malaysian palm-oil producer's AI policy covers only models its own data team builds, and the IS auditor finds two purchased tools with AI features never reviewed. What should the IS auditor recommend as BEST?",
+      "question": "A Malaysian palm-oil producer's AI policy checks tools only at purchase; HR switched off an AI assistant that a vendor update added to its approved HR tool. What should the IS auditor recommend as BEST?",
       "options": {
-        "A": "Have the AI program owner review both purchased tools now",
-        "B": "Have IT put both tools through the security policy's review",
-        "C": "Have the data team retrain both tools' models on company data",
-        "D": "Have the policy owner extend the policy to cover embedded AI"
+        "A": "Have the policy owner arrange a risk review of the AI assistant",
+        "B": "Have IT put the HR tool's update through security review",
+        "C": "Have the data team retrain the assistant on company HR data",
+        "D": "Have the policy owner trigger review whenever a tool gains AI"
       },
       "correct": "D",
-      "key_concept": "AI policy scope must cover AI the organization buys or receives through vendor updates, not only models it builds.",
-      "pre_read": "Find why the two tools were never reviewed, and ask whether fixing them alone would stop it happening again.",
-      "correct_explanation": "The tools escaped review because the policy defines AI as what the data team builds, yet much AI arrives inside purchased software and vendor updates. Widening the policy's scope fixes the cause, so future purchases are caught too. Reviewing both tools now, option A, is the runner-up: it is needed, but it fixes two instances while the narrow policy keeps missing the next.",
+      "key_concept": "AI policy must catch AI that arrives through vendor updates to approved software, not only AI reviewed at purchase or built in-house.",
+      "pre_read": "Find why the assistant was never reviewed, and ask whether fixing it alone would stop the next one.",
+      "correct_explanation": "The policy checks AI only at purchase, yet vendors now add AI features to approved software through routine updates, so this assistant arrived unreviewed. HR has already switched it off, so the open risk is the next one. A review trigger whenever a tool gains AI fixes the cause. Reviewing this assistant, option A, is the runner-up: it is needed before reuse, but it fixes one instance while the purchase-only trigger keeps missing the next.",
       "wrong_explanations": {
-        "A": "Tempting because both tools need review. But reviewing two tools treats the symptom; the policy's narrow scope will let the next purchased AI through.",
-        "B": "Tempting because purchased software gets security review. But security review skips AI risks such as wrong outputs, and the AI policy's narrow scope would still miss the next tool.",
-        "C": "Tempting because local data can improve fit. But retraining purchased models is a technical fix before any review, and the narrow policy would still miss the next tool."
+        "A": "Tempting because the assistant needs review before HR turns it back on. But that fixes one instance; the purchase-only trigger will miss the next AI feature an update brings.",
+        "B": "Tempting because updates often get security review. But security review skips AI risks such as wrong outputs, and the purchase-only trigger would still miss the next AI feature.",
+        "C": "Tempting because company data can improve fit. But retraining a vendor's assistant is a technical fix before any review, and the purchase-only trigger would still miss the next feature."
       },
       "tips": [
-        "Eliminate: C retrains purchased models before anyone has reviewed them, a technical fix ahead of governance, and B uses a security review that skips AI risks such as wrong outputs.",
-        "Final two: D beats A because reviewing two tools treats the symptom; extending the policy to purchased and embedded AI catches the next purchase too.",
-        "Exam cue: when unreviewed AI keeps appearing, look for the governance gap that let it in, such as policy scope, before fixing each instance."
+        "Eliminate: C retrains the vendor's assistant before anyone has reviewed it, a technical fix ahead of governance, and B uses a security review that skips AI risks such as wrong outputs.",
+        "Final two: D beats A because the assistant is already off and reviewing it treats the symptom; a trigger whenever a tool gains AI catches the next one too.",
+        "Exam cue: AI now arrives through updates to software already approved. Once the slipped-through instance is contained, the BEST recommendation fixes the policy trigger that let it bypass review."
       ],
       "framework_ref": "NIST AI 100-1 GOVERN 1.4 (Risk management process established through transparent policies and controls); NIST AI 100-1 GOVERN 6.1 (Policies address third-party AI risks including intellectual property)",
       "related_concepts": [
         "AI policy scope",
-        "Embedded AI",
+        "Vendor updates",
         "Root cause"
       ],
-      "_provenance": "Authored from concept: notes 1B.1 AI Strategy, Policy and Inventory (AI enters unseen through vendor updates and purchased products; the policy and inventory must include embedded AI). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 2, 31 Oct 2026. Distractors re-angled in review so they no longer mirror CISA d2_220, 31 Oct 2026. Key shortened in review to remove a length and echo cue, 31 Oct 2026.",
+      "_provenance": "Authored from concept: notes 1B.1 AI Strategy, Policy and Inventory (AI enters unseen through vendor updates and purchased products; the policy and inventory must include embedded AI). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 2, 31 Oct 2026. Distractors re-angled in review so they no longer mirror CISA d2_220, 31 Oct 2026. Key shortened in review to remove a length and echo cue, 31 Oct 2026. Option A reworded in round 2 so the key is not the only option naming the policy, 31 Oct 2026. Cross-domain gate, 31 Oct 2026: re-angled from a builders-only policy scope (the fact aaia_d3_001 and CISA d2_220 test) to AI added by vendor updates to approved tools. Re-audit, 31 Oct 2026: option A given the policy-owner actor so 'Have the policy owner' no longer marks the key across 1B.1 items; stem adds that HR switched the assistant off, and the key no longer echoes 'vendor update'.",
       "style_version": 2
     },
     {
@@ -1420,9 +1420,9 @@
       "question": "A Portuguese toll-road operator's data scientists are training a model predicting each commuter's daily route from plate-camera records collected for billing, saying the model keeps no plate numbers. What should the IS auditor recommend FIRST?",
       "options": {
         "A": "Have the team pseudonymize plate numbers before training continues",
-        "B": "Have the data owner decide whether billing data may serve this purpose",
-        "C": "Have the data owner catalog the training set's lineage",
-        "D": "Have IT restrict the training set to the data science team"
+        "B": "Have the data owner decide whether billing data may train this model",
+        "C": "Have the data owner catalog the billing records' lineage",
+        "D": "Have IT restrict the model's training set to data scientists"
       },
       "correct": "B",
       "key_concept": "Data collected for one purpose cannot be reused to train a model until its owner approves the new purpose under the collection terms.",
@@ -1444,7 +1444,7 @@
         "Data owner",
         "Secondary use"
       ],
-      "_provenance": "Authored from concept: notes 1D.1 Data Governance for AI (data collected for one purpose may not be permitted for another; the data owner signs off each new purpose, such as training). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 2, 31 Oct 2026. Re-angled in review: setting moved to Portugal, since Japan's law lets pseudonymized data take new internal purposes, and the builders' claim about what the model keeps added as an AI-specific fact, 31 Oct 2026.",
+      "_provenance": "Authored from concept: notes 1D.1 Data Governance for AI (data collected for one purpose may not be permitted for another; the data owner signs off each new purpose, such as training). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 2, 31 Oct 2026. Re-angled in review: setting moved to Portugal, since Japan's law lets pseudonymized data take new internal purposes, and the builders' claim about what the model keeps added as an AI-specific fact, 31 Oct 2026. Option C reworded in round 2 so the key is not the only option echoing billing, 31 Oct 2026. Option B shortened in round 3 so it no longer stands out by length, 31 Oct 2026.",
       "style_version": 2
     },
     {
@@ -1546,7 +1546,7 @@
         "Final two: C beats B because extraction tests show what the model actually reveals; filter settings show intent and miss details that fit no pattern.",
         "Exam cue: to judge whether a generative model leaks training data, prefer tests that try to extract it over settings, deletions or vendor claims."
       ],
-      "framework_ref": "NIST AI 100-2e2025 Section 3.3 (Direct Prompting Attacks and Mitigations); NIST AI 600-1 Section 2.4 (Data Privacy)",
+      "framework_ref": "NIST AI 100-2e2025 Section 3.3.2 (Information Extraction); NIST AI 600-1 Section 2.4 (Data Privacy)",
       "related_concepts": [
         "Memorization",
         "Training data extraction",
@@ -1741,17 +1741,17 @@
       "subtopic": "1E Ethics, regulations and standards. A certified AI management system",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A dental-supplies distributor certified its AI management system last year, and its board asks whether the NIST AI RMF adds anything for its model setting clinics' credit limits. What is the IS auditor's BEST answer?",
+      "question": "A dental-supplies distributor holds ISO/IEC 42001 certification for its AI management system, and its board asks whether the NIST AI RMF adds anything for its clinic credit-limit model. What is the IS auditor's BEST answer?",
       "options": {
         "A": "It repeats what the certificate already shows about model risk",
         "B": "It is a US legal duty the certificate does not yet meet",
         "C": "It is written for generative AI rather than credit-limit models",
-        "D": "It guides model-level testing that certification does not perform"
+        "D": "It guides mapping and measuring this model's own risks"
       },
       "correct": "D",
       "key_concept": "A management-system certificate covers the process within its scope; the voluntary, use-case-agnostic NIST AI RMF can still guide model-level risk work.",
       "pre_read": "Ask what the certificate's auditors actually examined, then compare that with what each option claims about the NIST framework.",
-      "correct_explanation": "Certification shows the distributor's AI management system meets a standard within its scope; it does not test how this model behaves. The NIST AI RMF, voluntary and use-case agnostic, adds Map and Measure work at model level: context, affected clinics, tolerances and testing. That the certificate already covers model risk, option A, is the runner-up: it is a common reading, but certification covers the process, not the model.",
+      "correct_explanation": "Certification shows the distributor's AI management system meets ISO/IEC 42001 within its scope; it does not test how this model behaves. The NIST AI RMF, voluntary and use-case agnostic, adds detailed Map and Measure guidance at model level: context, affected clinics, tolerances and testing. That the certificate already covers model risk, option A, is the runner-up: it is a common reading, but certification covers the management system, not the model.",
       "wrong_explanations": {
         "A": "Tempting because certification involves independent auditors. But they assess the management system within its scope, not how this credit-limit model treats clinics.",
         "B": "Tempting because NIST is a US government body. But NIST describes the AI RMF as voluntary; it guides risk work and creates no legal duty.",
@@ -1759,7 +1759,7 @@
       },
       "tips": [
         "Eliminate: B treats the voluntary NIST framework as a legal duty, and C limits it to generative AI, though the framework is use-case agnostic.",
-        "Final two: D beats A because a management-system certificate covers the process within its scope; model-level context, measurement and testing still need doing.",
+        "Final two: D beats A because a management-system certificate shows how AI is governed within its scope, not how well this model's risks were mapped and measured.",
         "Exam cue: frameworks and certificates combine; a certified management system still needs model-level risk work, which the NIST functions can guide."
       ],
       "framework_ref": "NIST AI 100-1 Executive Summary (Framework intended to be voluntary and use-case agnostic); NIST AI 100-1 MAP 1.1 (Intended purposes, context and laws documented)",
@@ -1768,7 +1768,7 @@
         "NIST AI RMF",
         "Model-level risk work"
       ],
-      "_provenance": "Authored from concept: notes 1E.3 Frameworks and Standards for AI (sources combine: a certified management system can still use the NIST functions; certification covers that system within its scope). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 2, 31 Oct 2026. Re-angled in review so it no longer shares the notes 1E.3 example's plot (calibration rule 7), 31 Oct 2026.",
+      "_provenance": "Authored from concept: notes 1E.3 Frameworks and Standards for AI (sources combine: a certified management system can still use the NIST functions; certification covers that system within its scope). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 2, 31 Oct 2026. Re-angled in review so it no longer shares the notes 1E.3 example's plot (calibration rule 7), 31 Oct 2026. Stem names the standard and option D reworded in round 2 to state the Map and Measure role precisely, 31 Oct 2026. Explanation and Final two tip reworded in round 3 so they no longer imply a certified organization has done no model-level risk work, 31 Oct 2026.",
       "style_version": 2
     },
     {
@@ -1798,7 +1798,7 @@
         "Final two: A beats B because responses need tolerances to aim at; Map outcomes are the basis for both Measure and Manage.",
         "Exam cue: in the NIST AI RMF, expect context (intended use, affected people, tolerances) to be set before test results or responses are judged."
       ],
-      "framework_ref": "NIST AI 100-1 MAP 1.1 (Intended purposes, context and laws documented); NIST AI 100-1 MEASURE 1.1 (Methods and metrics selected starting with the most significant risks)",
+      "framework_ref": "NIST AI 100-1 Section 5.2 (Map outcomes are the basis for Measure and Manage); NIST AI 100-1 MAP 1.1 (Intended purposes, context and laws documented); NIST AI 100-1 MEASURE 1.1 (Methods and metrics selected starting with the most significant risks)",
       "related_concepts": [
         "NIST AI RMF functions",
         "Context of use",

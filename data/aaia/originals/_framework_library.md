@@ -118,6 +118,8 @@ The bracket is a short paraphrase of the subcategory statement.
 - NIST AI 100-1 Section 3.5 (Explainable and Interpretable)
 - NIST AI 100-1 Section 3.7 (Fair with Harmful Bias Managed)
   - Section numbers 3.4, 3.5 and 3.7 Verified 30 Oct 2026 against the table of contents.
+- NIST AI 100-1 Section 5.2 (Map outcomes are the basis for Measure and Manage)
+  - Verified 31 Oct 2026: Section 5.2 is "Map" in the table of contents; its text says "Outcomes in the MAP function are the basis for the MEASURE and MANAGE functions", and Section 5 says most users start with MAP and continue to MEASURE or MANAGE.
 
 ## NIST AI 600-1, AI RMF Generative Artificial Intelligence Profile, Jul 2024
 
@@ -139,9 +141,13 @@ https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.100-2e2025.pdf (table of contents a
 - NIST AI 100-2e2025 Section 2.2 (Evasion Attacks and Mitigations)
 - NIST AI 100-2e2025 Section 2.3 (Poisoning Attacks and Mitigations)
 - NIST AI 100-2e2025 Section 2.4 (Privacy Attacks and Mitigations)
+- NIST AI 100-2e2025 Section 2.4.2 (Membership Inference)
+  - Verified 31 Oct 2026: "2.4.2. Membership Inference" in the table of contents and as the section heading [NISTAML.033]; the attacker's goal is to determine whether a particular record was part of the training dataset.
 - NIST AI 100-2e2025 Section 2.4.4 (Model Extraction)
 - NIST AI 100-2e2025 Section 3.2 (Supply Chain Attacks and Mitigations)
 - NIST AI 100-2e2025 Section 3.3 (Direct Prompting Attacks and Mitigations)
+- NIST AI 100-2e2025 Section 3.3.2 (Information Extraction)
+  - Verified 31 Oct 2026: "3.3.2. Information Extraction" in the table of contents and as the section heading [NISTAML.038]; it names training-data PII and the system prompt as extraction targets, covers training data extraction and memorization, and says fine-tuning interfaces amplify the risk of data extraction.
 - NIST AI 100-2e2025 Section 3.4 (Indirect Prompt Injection Attacks and Mitigations)
 - NIST AI 100-2e2025 Section 3.5 (Security of Agents)
 
