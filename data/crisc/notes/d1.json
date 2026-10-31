@@ -4,7 +4,7 @@
   "exam_weight": "26%",
   "source": "Original KaiSip study notes, organized by the CRISC exam content outline effective 2025. Not affiliated with or endorsed by ISACA®. CRISC® is a registered trademark of ISACA.",
   "overview": "Governance is where CRISC starts: the business strategy and objectives that risk is measured against, the people who own and decide on risk, and the culture, policies, processes and assets that shape it. The second part turns this into risk governance: enterprise risk management, the lines of defense, the risk profile, risk appetite and tolerance, and the frameworks and obligations an enterprise must meet. AI runs through both parts.",
-  "analogy": "Think of a city transport authority. The council sets the goals, safe and on-time travel, and how much disruption it will accept (appetite). Each route manager owns their routes and their delays (risk owners), while engineers run the signals and brakes (control owners). A safety office watches the whole network, challenges managers and reports to the council (the risk practitioner in the second line), and inspectors check everything independently (internal audit). Rulebooks say what must happen (policies), every depot and train is tracked and owned (assets), and each new route, including a driverless one, is assessed before it opens.",
+  "analogy": "Think of a city transport authority. The council sets the goals, safe and on-time travel, and how much disruption it will accept (appetite). Each route manager owns their routes and their delays (risk owners), while engineering managers answer for the signals and brakes working (control owners). A safety office watches the whole network, challenges managers and reports to the council (the risk practitioner in the second line), and inspectors check everything independently (internal audit). Rulebooks say what must happen (policies), every depot and train is tracked and owned (assets), and each new route, including a driverless one, is assessed before it opens.",
   "parts": [
     {
       "part": "A",
@@ -151,7 +151,7 @@
     {
       "topic_id": "1A2",
       "topic_name": "Organizational Structure, Roles, and Responsibilities",
-      "overview": "Every CRISC decision has an owner. This topic covers who sets direction (the board and senior management), who oversees (committees and the chief risk officer), who owns and decides on each risk, who runs controls, and what the risk practitioner does, including for AI systems.",
+      "overview": "Every CRISC decision has an owner. This topic covers who sets direction (the board and senior management), who oversees (committees and the chief risk officer), who owns and decides on each risk, who answers for controls, and what the risk practitioner does, including for AI systems.",
       "can_do": [
         "Name the body that approves risk appetite and the risk management framework",
         "Tell the risk owner, control owner and risk practitioner apart in a scenario",
@@ -214,12 +214,12 @@
           "id": "1A2.2",
           "name": "Risk Owner, Control Owner and Risk Practitioner",
           "legacy_ids": [],
-          "definition": "The risk owner is accountable for a risk and decides its response; the control owner runs a control; the risk practitioner identifies, analyzes, recommends, monitors and reports.",
+          "definition": "The risk owner is accountable for a risk; the control owner is accountable for a control being implemented and operating effectively; the risk practitioner identifies, analyzes, recommends, monitors and reports.",
           "why_it_matters": "Clear ownership means someone with authority and budget acts on each risk. When IT or the risk function is treated as owner, decisions are made by people who cannot fund them or live with the loss.",
           "how_it_works": [
             "The risk owner is a business manager with authority over the affected objective who accepts, mitigates, transfers or avoids the risk.",
-            "The control owner designs, operates and maintains a control and reports on whether it works.",
-            "One person can own a risk while several control owners run the controls that reduce it.",
+            "Control owners are often the managers whose teams run the controls; they report whether each control works.",
+            "One person can own a risk while several control owners answer for the controls that reduce it.",
             "The risk practitioner validates ownership, facilitates assessments and brings options with cost and benefit to the owner.",
             "Ownership is recorded in the risk register and reviewed when people or structures change."
           ],
@@ -234,7 +234,7 @@
                 "label": "Main job",
                 "cells": [
                   "Decides the response and accepts what remains",
-                  "Runs and maintains a control",
+                  "Ensures a control is implemented and operates effectively",
                   "Analyzes, recommends, monitors and reports"
                 ]
               },
@@ -260,7 +260,7 @@
           "audit_focus": {
             "review": [
               "Sample register entries and confirm each names a business risk owner",
-              "Compare named control owners with who actually operates each control"
+              "Confirm each key control names an owner accountable for it working"
             ],
             "evidence": [
               "Risk register owner fields with sign-off dates",
@@ -287,7 +287,7 @@
             },
             {
               "term": "Residual risk",
-              "definition": "The risk that remains after a response has been implemented; the risk owner must accept it."
+              "definition": "The risk that remains after a response has been implemented; the risk owner accepts it if it is within appetite, or chooses further treatment."
             }
           ]
         },
@@ -304,7 +304,7 @@
             "For AI systems, the business owner of the use case is accountable; data science, IT and legal are responsible or consulted.",
             "RACI charts are reviewed after reorganizations, new technology or staff turnover."
           ],
-          "example": "A city council launches a chatbot that answers housing benefit questions. Data science built it, IT hosts it and legal reviewed it, but no one has signed off its risk. Lena, the risk analyst, drafts a RACI with the housing services director as accountable and the three teams as responsible or consulted, then asks the director to confirm the AI risk entry in the register.",
+          "example": "A city council launches a chatbot that answers housing benefit questions. Data science built it, IT hosts it and legal reviewed it, but no one has signed off its risk. Lena, the risk analyst, drafts a RACI proposing the housing services director as accountable and the three teams as responsible or consulted, then asks senior management to confirm it before the director takes on the AI risk entry in the register.",
           "audit_focus": {
             "review": [
               "Inspect RACI charts for activities with no accountable party or several",
@@ -830,7 +830,15 @@
             },
             {
               "term": "Recovery time objective (RTO)",
-              "definition": "The target time to restore a process or system after disruption, set by the business through the BIA (see 2B2) within maximum tolerable downtime."
+              "definition": "The time allowed to recover a business function or resource after a disruption, set by the business through the BIA (see 2B2) within the MTO."
+            },
+            {
+              "term": "Maximum tolerable outage (MTO)",
+              "definition": "ISACA's term for the longest a critical business function or IT system can be disrupted before significant harm; other sources say maximum tolerable downtime (MTD)."
+            },
+            {
+              "term": "Acceptable interruption window (AIW)",
+              "definition": "ISACA's term for the longest a system can be unavailable before business objectives are compromised."
             }
           ]
         }
@@ -952,7 +960,7 @@
             "Datasets used to train or prompt AI are assets too, each with a classification and an owner.",
             "Find hidden services through expense reports, single sign-on logs and network data, then bring them into the inventory."
           ],
-          "example": "A credit union's marketing team subscribes to an AI tool that scores customer leads using account data. The tool is paid by card, so it is missing from the inventory. Sana, the risk analyst, adds the tool, the model version and the data feed to the inventory, names the marketing director as owner and schedules a risk assessment.",
+          "example": "A credit union's marketing team subscribes to an AI tool that scores customer leads using account data. The tool is paid by card, so it is missing from the inventory. Sana, the risk analyst, adds the tool, the model version and the data feed to the inventory, proposes the marketing director as owner for senior management to confirm, and schedules a risk assessment.",
           "audit_focus": {
             "review": [
               "Compare SaaS spend and sign-on logs with the inventory",
@@ -1003,13 +1011,14 @@
           "id": "1B1.1",
           "name": "IT Risk Within Enterprise Risk",
           "legacy_ids": [],
-          "definition": "Enterprise risk management (ERM) manages every type of risk across the enterprise against its objectives; IT and cybersecurity risk are one part of that portfolio, not a separate world.",
+          "definition": "Enterprise risk management (ERM) assesses, controls, exploits, finances and monitors risk from all sources to increase stakeholder value; IT and cybersecurity risk are one part of it.",
           "why_it_matters": "When IT risk sits in its own register with its own language, leaders cannot weigh it against financial, operational or strategic risk, and it competes poorly for attention and budget.",
           "how_it_works": [
             "Enterprise leaders set the strategy, appetite and methods; each discipline, including IT, applies them.",
             "System and business unit risk registers roll up into enterprise-level registers through aggregation and normalization.",
             "IT risk is expressed by its effect on enterprise objectives: strategic, operations, reporting and compliance.",
-            "Decisions on IT risk flow back down as guidance, so local teams act within enterprise appetite."
+            "Decisions on IT risk flow back down as guidance, so local teams act within enterprise appetite.",
+            "ERM covers upside as well as loss: exploiting a well-judged risk to pursue an opportunity is part of increasing value."
           ],
           "example": "A grocery chain's IT team keeps a detailed risk spreadsheet that never reaches the enterprise risk committee, which tracks only financial and supplier risks. Tomas, the IT risk lead, maps the top IT risks to the chain's enterprise categories, restates their impact in revenue and service terms, and submits them through the enterprise risk officer for the next committee review.",
           "audit_focus": {
@@ -1295,7 +1304,7 @@
           "how_it_works": [
             "The register is detailed and operational: one entry per risk scenario, with owner, rating, response and status.",
             "The profile selects, combines and prioritizes register risks into a view of overall exposure by objective or category.",
-            "The profile is compared with appetite, so leaders see where exposure is too high or too low.",
+            "The profile shows current risk, counting only responses already in place, against appetite, so leaders see where exposure is too high or too low.",
             "In NIST terms, the enterprise risk profile is a prioritized subset of the enterprise risk register."
           ],
           "compare": {
@@ -1499,6 +1508,14 @@
             {
               "term": "Risk-averse",
               "definition": "Describes an enterprise or risk type with low appetite, preferring certainty over potential gain."
+            },
+            {
+              "term": "Current risk",
+              "definition": "ISACA Glossary: the risk as it stands now, counting actions already taken but not those proposed; it is what is compared with appetite today."
+            },
+            {
+              "term": "Future residual risk",
+              "definition": "The ISACA Glossary's phrase for current risk with a planned response implemented; KaiSip calls it target risk and uses it to judge the plan."
             }
           ],
           "memory_aid": "Capacity is the cliff edge, appetite is the path, tolerance is the guardrail."
@@ -1543,7 +1560,7 @@
             },
             {
               "term": "Key risk indicator (KRI)",
-              "definition": "A metric that signals rising risk early, compared against thresholds derived from appetite and tolerance."
+              "definition": "A highly relevant risk indicator that predicts or signals an important risk, compared against thresholds derived from appetite and tolerance."
             }
           ]
         },
@@ -1571,7 +1588,7 @@
               "Escalation emails or minutes with owner decisions"
             ],
             "recommend": "Have the chief risk officer define escalation paths for each tolerance and track every breach decision.",
-            "decides": "The accountable owner, or whoever set the limit, chooses what happens next"
+            "decides": "The risk owner decides; carrying risk above tolerance needs approval from the level that set it"
           },
           "isaca_rule": "A breach is a governance event, not a technical ticket. Validate it, analyze the impact and escalate to the risk owner and the level that set the threshold; the practitioner never quietly accepts it or raises the limit.",
           "exam_traps": [
@@ -1581,7 +1598,7 @@
             },
             {
               "trap": "Let the team fix it first and report the breach once it is resolved.",
-              "why": "The owner must know while risk is above limits, so they can decide on interim measures or accept it formally."
+              "why": "The owner must know while risk is above limits, so they can decide on interim measures or seek time-limited acceptance from the level that set the limit."
             }
           ],
           "key_terms": [
@@ -1775,7 +1792,7 @@
     "Risk tolerance": "The acceptable variation around appetite for a particular risk or objective, usually a measurable limit.",
     "Risk capacity": "The most loss the enterprise can absorb without threatening its survival.",
     "Risk owner": "The person with the authority and accountability to decide a risk's response and accept what remains.",
-    "Control owner": "The person accountable for designing, running and maintaining a control so it works as intended.",
+    "Control owner": "The person with the authority and accountability for control-related decisions, who ensures a control is implemented and operating effectively; often the manager whose team runs it.",
     "Risk practitioner": "The professional who identifies, analyzes, recommends, monitors and reports on risk; advises but does not decide for the owner.",
     "Goals cascade": "The COBIT 2019 chain from stakeholder needs to enterprise goals to alignment goals for information and technology.",
     "RACI": "A chart naming who is Responsible, Accountable, Consulted and Informed for each activity; one accountable person per activity.",
@@ -1787,7 +1804,7 @@
     "Business continuity plan (BCP)": "A plan for keeping critical business processes running during and after a disruption.",
     "Disaster recovery plan (DRP)": "A plan for restoring the IT systems and facilities that critical processes depend on.",
     "Asset inventory": "A register of the enterprise's assets, including cloud services, data and AI models, each with a business owner.",
-    "Enterprise risk management (ERM)": "The enterprise-wide discipline for managing every type of risk, including IT risk, against objectives.",
+    "Enterprise risk management (ERM)": "The discipline by which an enterprise assesses, controls, exploits, finances and monitors risk from all sources to increase its short- and long-term value to stakeholders; IT risk is one part of it.",
     "Risk taxonomy": "A common scheme of risk categories that lets risks from every unit be compared and combined.",
     "Risk register": "The record of identified risks with owner, rating, response and status.",
     "Risk profile": "The current, aggregated view of the risks the enterprise faces, reported to senior management against appetite.",
@@ -1803,9 +1820,9 @@
       "checked": "2026-10-30: via docs/content/CRISC_BLUEPRINT.md"
     },
     {
-      "title": "ISACA Glossary (risk appetite, risk tolerance, risk capacity, risk owner, control owner, risk culture, IT risk profile, risk aggregation, policy, guideline, business continuity plan, asset inventory, enterprise risk management)",
+      "title": "ISACA Glossary (risk appetite, risk tolerance, risk capacity, risk owner, control owner, risk culture, IT risk profile, risk aggregation, policy, guideline, business continuity plan, asset inventory, enterprise risk management, current risk, residual risk, risk response, maximum tolerable outage, acceptable interruption window, recovery time objective)",
       "url": "https://www.isaca.org/resources/glossary",
-      "checked": "2026-10-30: page opened and each entry read"
+      "checked": "2026-10-31: page reopened; control owner, enterprise risk management, current risk, residual risk, risk response, MTO, AIW and RTO entries read (no MTD entry); other entries read 2026-10-30"
     },
     {
       "title": "ISACA Code of Professional Ethics",
