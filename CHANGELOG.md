@@ -4,6 +4,11 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v12.49.4] — Clearer topic introductions
+
+### Improved
+- The IT policies and information security frameworks topics now introduce their updated titles more clearly, including how everyday practice is checked against the written rules.
+
 ## [v12.49.3] — Topic titles match ISACA
 
 ### Improved
