@@ -4,8 +4,8 @@ Small scripts for the CSOE question-bank pipeline
 (`docs/content/CSOE_BANK_PLAN.md` section 3). They read and write only
 `data/csoe/`. Adapted from the CC tools (`data/cc/tools/` on the
 `claude/cc-bank-cross-review` branch, 31 Oct 2026), so both banks pass the same
-gates. The number of CSOE domains is not fixed yet, so every script works on
-whichever `originals/dN.json` files exist.
+gates. Every script works on whichever `originals/dN.json` files exist (five
+domains since 31 Oct 2026).
 
 | Script | Use |
 |---|---|
@@ -23,5 +23,5 @@ items, but every stem must still name who acts.
 
 Notes are checked by the shared notes linter given the CSOE outline and bank:
 `python3 scripts/lint_notes.py data/csoe/notes/dN.json --outline docs/content/CSOE_BLUEPRINT.md --bank data/csoe/originals`
-(the blueprint's outline lines are added once SOXCPA's course parts are
-verified; until then the linter has no CSOE outline to check against).
+(the blueprint's outline lines come from SOXCPA's opened course synopsis;
+1B1 and 1B2 join them once their sources open).
