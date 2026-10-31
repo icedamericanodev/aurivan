@@ -184,7 +184,7 @@ for (const [view, scheme] of [['phone', 'light'], ['desktop', 'dark']]) {
       const exp = norm(await page.locator('#vrExp').innerText().catch(() => ''));
       c.check(exp.length > 40, `Q${k + 1}: the explanation is missing or very short`);
       // The three moves sit under the answer below 1240px and in the margin plate
-      // ("Fig. 4 · Three moves", .vm-plate) from 1240px (web v12.47): check whichever shows.
+      // ("Three moves for this question", .vm-plate) from 1240px (web v12.47): check whichever shows.
       const tips = await ev(page, () => {
         const shown = (e) => e && e.offsetParent !== null;
         const inline = [...document.querySelectorAll('#rPanel .vine-elim, #rPanel .vine-final, #rPanel .vine-cue')]
@@ -341,13 +341,16 @@ for (const [view, scheme] of [['phone', 'light'], ['desktop', 'dark']]) {
       const a = document.getElementById('pgArea');
       return { text: a.innerText, svgs: a.querySelectorAll('svg').length, loading: !!a.querySelector('.gt-loading'),
         head: (document.getElementById('pageRh')?.innerText || '') + ' ' + (a.querySelector('.pg-head')?.innerText || ''),
-        figs: [...a.querySelectorAll('.fg-fig [aria-hidden="true"]')].map((e) => e.textContent.trim()) };
+        rh: document.getElementById('pageRh')?.innerText || '',
+        figs: [...a.querySelectorAll('.fg-fig')].map((e) => e.textContent.trim()) };
     });
     c.check(!pg.loading, 'Progress is stuck on "Loading your progress"');
     c.check(/Your progress/.test(pg.text), 'Progress heading missing');
-    c.check(/Field record/i.test(pg.head), 'Field Guide running head ("Field record · Progress") missing');
+    // No book labels on screen (expert decision, 31 Oct 2026): the running head is the date only.
+    c.check(/\b\d{1,2} [A-Z]{3}\b/i.test(pg.rh), `running head shows no date (got "${pg.rh.trim()}")`);
+    c.check(!/\bField (guide|record)\b|\bPlates?\b|\bFig\.\s?\d|\bFigure \d|\bHerbarium\b/i.test(pg.head + ' ' + pg.text), 'a book label ("Field record", "Plate", "Fig. N", "Herbarium") is on the Progress page');
     c.check(pg.svgs > 0, 'no chart (svg) on the Progress page');
-    c.check(pg.figs.length > 0, 'no Field Guide plate captions ("Fig. N · …") on the Progress page');
+    c.check(pg.figs.length > 0, 'no plate captions ("Five areas, one scale") on the Progress page');
     c.note(`Progress page: ${pg.svgs} svg drawings; plates: ${pg.figs.join(' | ')}`);
     await c.shot(`w5-progress-${tag}`);
     await c.shot(`w5-progress-full-${tag}`, page, true);

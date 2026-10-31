@@ -32,16 +32,40 @@ The current tab's pill carries an outline: transparent in light (where the pill 
 
 Why: WCAG 1.4.11 and the Grove rule that the current tab is never shown by colour alone. Not an owner choice; recorded here because it amends the tab bar in the kit.
 
-## 6. The first screen on phones, and how it is measured (expert vote, 31 Oct 2026; for the owner's sign-off)
+## 6. The first screen on phones, and how it is measured (expert vote, 31 Oct 2026; replaced by 7 for the order)
+
+**Replaced on 31 Oct 2026:** the owner chose ring first on phones (decision 7). The measuring method below still stands; the plan-first order and the "Start above the bar in every state" target do not.
 
 On Today, Start sits fully above the floating tab bar on the first screen, with at least 8px to spare, for every learner state, name length, greeting and exam date, in light and dark.
 
 It is measured in the browser's visible area with its toolbars showing: 390 by 664 and 375 by 635 are the main sizes; 390 by 844 and 375 by 812 (the full CSS viewport, which no browser shows at load) are secondary. Load, do not scroll, and compare Start's bottom edge with the bar's top edge.
 
-To meet it, the product manager, the premium web designer, the behavioural scientist and the mobile UX reviewer all voted for "plan first on phones": below 768px the plan comes first in the page's own order, then Fig. 1 (ring, plant, range, "A study estimate, not a prediction.", the answers caption and the tiles), then its PLATE caption, then the twig. Nothing is hidden or shrunk. From 768px the kit's order (figure first, plan beside it) is unchanged. The native app, with no browser toolbars, keeps hero-first.
+To meet it, the product manager, the premium web designer, the behavioural scientist and the mobile UX reviewer all voted for "plan first on phones": below 768px the plan comes first in the page's own order, then the figure (ring, plant, range, "A study estimate, not a prediction.", the answers caption and the tiles), then the plant line, then the twig. Nothing is hidden or shrunk. From 768px the kit's order (figure first, plan beside it) is unchanged. The native app, with no browser toolbars, keeps hero-first.
 
 The phone title keeps to two lines: a name longer than 12 characters greets with its first word there (the full name shows from 768px and on You), and one very long word steps the title down a size.
 
 Why: on real phone browsers Start was under the bar in every state; an anxious learner should see one small, safe step first (time, Start, "Stop any time; your place is saved"), with the plant and the estimate as the reward just below.
 
 **Owner sign-off:** this changes the kit's order on phones, a design-direction item. Before and after screenshots at 390 by 664 and 375 by 635, light and dark, go to the owner at handoff.
+
+## 7. Ring first on phones (owner, 31 Oct 2026; replaces plan first)
+
+Below 768px Today goes back to the kit's order (`screens/01-phone-today.png`): the hero figure first (the stage line, the readiness ring with the plant, its caption, the Accuracy and Exam date tiles), then Today's plan with Start, then the plant line, then the twig, then the rest. The order is the page's own (the markup), never CSS `order`, so keyboard focus and screen readers follow what is seen. The phone ring is 132px (was 150px; the owner asked for a smaller ring) and the figure is tighter, so Start sits as high as it can.
+
+On short browser screens (390 by 664, 375 by 635) a learner may scroll a little to reach Start; that is accepted. Not accepted: clipping the plant, the range or its caption, or text smaller than the type scale. From 768px nothing changes (the figure beside or above the plan in one forest card). Start's position is still measured as in decision 6 and reported at each handoff.
+
+Why: the owner prefers the kit's design, where the plant and the honest range greet the learner first and the plan follows.
+
+## 8. No book labels on screen (expert decision, unanimous, 31 Oct 2026)
+
+The website no longer shows or says "Field guide", "Field record", "Plate", "Plates" or "Fig. N". The plant drawings and the short italic serif captions stay. In detail:
+
+- The running head over each page shows the date only ("Sat 31 Oct"); Your progress keeps "Exam in N days" beside it. A set's or a mock's results still name the set there. No empty divider is left behind.
+- Today: the stage line reads "Seed" with "Stage 1 of 6" beside it (phones) or "Seed · stage 1 of 6" (from 768px, said "Seed, stage 1 of 6"); the plant line is the sentence alone; the figure is announced as "Your plant and study estimate".
+- Your progress: "Five areas, one scale"; "Built from your answers in this app."; the badges sheet is headed "Badges" (was "Herbarium") and its empty mount says "Nothing here yet".
+- Practice: "Picked for you", "Where you left off", "A place to start"; the domain note is the sentence alone; "Three moves for this question".
+- Results and mocks: "Your domains after this set", "IS Operations, new growth", "Your five areas after this mock", "Two mocks, one pace".
+
+"Field Guide" stays the team's name for the look, never words on screen. Code names such as `fgPlate` stay. The phone app follows in its own round (the decision asks both apps to ship together; the version bump and What's New line wait for the end of the uplift).
+
+Why: the labels come from old printed nature books. A nervous learner, or someone reading English as a second language, has to stop and work out what they mean, and the numbers did not add up (Fig. 1 on Today, Fig. 5 on You, nothing between).

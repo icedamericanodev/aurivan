@@ -5321,7 +5321,7 @@ body[data-tab]:not([data-tab="about"]):not([data-tab="faq"]) .legal-disclaimer {
    Today's grid: one column to 1179px (max 720), then the main column and a
    320px side column (the Mindset check). Field Guide since v12.44: a running
    head, Where you stand as a specimen label with the scale bar, the domains
-   as the page's plate (Fig. 5, a stem chart), the herbarium's sheet; the
+   as the page's plate ("Five areas, one scale", a stem chart), the Badges sheet; the
    signs stay a tonal panel. Grove tokens only; charts are static inline SVG
    (nothing animates). */
 .pg { max-width: 720px; margin-bottom: var(--sp-2xl); display: flex; flex-direction: column; }
@@ -5369,7 +5369,7 @@ body[data-tab]:not([data-tab="about"]):not([data-tab="faq"]) .legal-disclaimer {
 .pg-rt { flex: 1 1 200px; min-width: 0; }
 .pg-signs-all { font: var(--t-body); color: var(--text); margin: var(--sp-md) 0 0; }
 
-/* By domain: the stem chart on a plate (Fig. 5); the herbarium's empty sheet */
+/* By domain: the stem chart on a plate; the Badges empty sheet */
 .pg-rows, .pg-accs { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--border); }
 .pg-herb .td-link { margin-top: var(--sp-xs); }
 .pg-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-sm) var(--sp-md); min-height: 64px; padding: var(--sp-md) 0; border-bottom: 1px solid var(--border); }
@@ -5462,12 +5462,15 @@ button.pg-cd:hover { background: var(--surface2); }
    something you observe, not something that judges you. Grove colours and
    fonts are unchanged; only the framing changes. The same kit as the phone's
    (render helpers fg* in the script):
-   running head · plate (a double-hairline mount, no shadow) · "Fig. n ·" and
-   KEY captions · specimen label rows (key · value, never tiles) · scale bar
+   running head (the date only) · plate (a double-hairline mount, no shadow) ·
+   plain italic captions and KEY captions · specimen label rows (key · value, never tiles) · scale bar
    (the readiness range, its words built in) · stem chart (five areas on one
    scale, a list at large text or in a narrow column) · specimen · herbarium
    sheet · key list (numbered, dotted leaders) · empty plate · the 52px button.
-   Keep tape and leaves this sparse: the one risk is twee. */
+   Keep tape and leaves this sparse: the one risk is twee. "Field Guide" is
+   the team's name for this look, never words on screen: no "Field guide",
+   "Field record", "Plate", "Plates" or "Fig. n" in what learners see or hear
+   (expert decision, 31 Oct 2026). */
 .fg-rh {
   display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 2px var(--sp-lg);
   margin: 0 0 var(--sp-lg); padding: 0 0 var(--sp-sm); border-bottom: 1px solid var(--border);
@@ -6114,7 +6117,7 @@ body[data-app-cta-card="shown"][data-section="today"] .app-cta-line { display: n
   .vr-next { min-height: 52px; border-radius: var(--r-12); }
 }
 
-/* Fig. 4 · Three moves for this question: the margin's plate (from 1240px). */
+/* "Three moves for this question": the margin's plate (from 1240px). */
 .vm-plate .fg-fig { margin-bottom: var(--sp-xs); }
 .vm-plate .fg-key { align-items: flex-start; }
 .vm-plate .fg-key-n { padding-top: 0; }
@@ -6194,7 +6197,7 @@ body[data-qmoves] .vr-skip-moves { display: block; }
 @media (prefers-reduced-motion: no-preference) { .ph-lead { transition: opacity .4s ease; } }
 .ph #sessionBoundaryArea .session-debrief { margin-bottom: var(--sp-xl); }
 
-/* Fig. 2 · Picked for you: the set as a plate (left: the pick and its two
+/* "Picked for you": the set as a plate (left: the pick and its two
    actions; right: the set as a 248px specimen label, under it below 700px). */
 .ph-pick { margin-bottom: var(--sp-sm); }
 .ph-pick-g { display: grid; grid-template-columns: minmax(0, 1fr) 248px; gap: var(--sp-lg) var(--sp-xl); align-items: start; margin-top: var(--sp-sm); }
@@ -6407,7 +6410,7 @@ body[data-tab="practice"][data-pview="focus"] #subNav { display: none; }
 .rs-missed { margin-top: var(--sp-2xl); }
 .rs-missed .fg-kick { margin-bottom: var(--sp-xs); }
 .rs-missed .fg-keys { border-bottom: 1px solid var(--border); }
-/* Mock results in the Field Guide (v12.49; premium round 2, 5.4): Fig. 6,
+/* Mock results in the Field Guide (v12.49; premium round 2, 5.4): the areas plate,
    one specimen label, where to look next as a key list, and the review as
    key-list rows opening on the mistakes, five at a time. */
 .rs-mock .mr-honest { margin-top: var(--sp-xs); }
@@ -6512,7 +6515,7 @@ body[data-tab="practice"][data-pview="focus"] #subNav { display: none; }
 .mk-types { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--sp-md); margin-top: var(--sp-md); }
 .mk-intro.fg-sub { font: var(--t-fg-sub); color: var(--text2); margin: var(--sp-xs) 0 var(--sp-xxl); }
 .mk-pick > .ph-h + .fg-plate { margin-top: var(--sp-md); }
-/* Inside the Fig. 7 plate the cards are mounted flat: no shadow, a hairline, 3px corners. */
+/* Inside the "Two mocks, one pace" plate the cards are mounted flat: no shadow, a hairline, 3px corners. */
 .mk-pick .mk-type { box-shadow: none; border-radius: var(--r-3); border: 1px solid var(--border); }
 @media (min-width: 640px) { .mk-types { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 .mk-type { display: flex; flex-direction: column; align-items: flex-start; padding: var(--sp-xxl); background: var(--raised); border: 1px solid var(--raised-outline); border-radius: var(--r-md); box-shadow: var(--shadow); }
@@ -7350,10 +7353,10 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 .td-tile-num { padding-top: 0; font: 500 24px/28px var(--f-serif); letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
 .td-tile-a { padding-top: 4px; font: 600 15px/22px var(--f-sans); color: var(--sap); }
 .td-tile-hint { font: 400 12px/16px var(--f-sans); color: var(--on-forest2); }
-/* PLATE: one caption per hero, at the hero's foot under the plan (phones too, since
-   31 Oct 2026; the copy inside the figure stays hidden and keys its redraw) */
+/* The plant line: one italic caption per hero, at the hero's foot under the
+   plan (phones too; the copy inside the figure stays hidden and keys its
+   redraw). Plain words, no label in front (expert decision, 31 Oct 2026). */
 .td-platecap { margin: 0; max-width: none; font: italic 400 14px/20px var(--f-serif); color: var(--on-forest2); }
-.td-platecap b { margin-right: 8px; font: 600 10px/14px var(--f-sans); letter-spacing: .12em; text-transform: uppercase; color: var(--on-forest2); }
 .td-platecap-out { display: none; }
 
 /* Today's plan (phones: its own card) */
@@ -7388,38 +7391,41 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 .td-short:hover { text-decoration: underline; text-underline-offset: 3px; }
 .td-short:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
 
-/* Phones (owner decisions, 31 Oct 2026): the plan comes first, then the
-   figure, then its PLATE caption (the page's own order, so focus and screen
-   readers follow it), and Start sits fully above the floating tab bar on the
-   first screen for every learner. The first screen is measured in the
-   browser's visible area with its toolbars showing (390 by 664 and 375 by
-   635), not only the full CSS viewport (390 by 844, 375 by 812); see
-   DESIGN_SYSTEM.md, "First screen". From 768px the figure comes first again
-   (grid areas below). The ring is 150px; the plant, the range, its caption
-   and the tiles stay in the figure. The title is the hero size (28px) and balanced; a long
-   name greets with its first word here (todayTitleName), so it keeps to two
-   lines, and a very long first word steps it down to the value size. */
+/* Phones (owner decision, 31 Oct 2026: ring first, replacing plan first):
+   the kit's order (design-notes/grove/screens/01-phone-today.png). The
+   figure (the stage line, the ring with the plant, its caption, the Accuracy
+   and Exam date tiles), then the plan with Start, then the plant line, then
+   the twig. The markup is in this order, so focus and screen readers follow
+   what is seen (no CSS order). The ring is 132px and the figure is tight so
+   Start sits as high as it can; on a short browser screen (390 by 664, 375
+   by 635) a little scrolling is fine, but the plant, the range and its
+   caption are never clipped and no text goes under the type scale. See
+   DESIGN_SYSTEM.md, "First screen". The title is the hero size (28px) and
+   balanced; a long name greets with its first word here (todayTitleName),
+   so it keeps to two lines, and a very long first word steps it down to the
+   value size. */
 @media (max-width: 767px) {
-  body[data-tab="home"] .fg-page-rh .fg-rh { margin-bottom: var(--sp-md); }
+  body[data-tab="home"] .fg-page-rh .fg-rh { margin-bottom: var(--sp-sm); }
   .td-head .td-title { font: var(--t-hero); letter-spacing: var(--tr-hero); text-wrap: balance; }
   .td-head .td-title.td-title-long { font: var(--t-fg-value); letter-spacing: var(--tr-fg-value); }
   .td-title .td-name-wide { display: none; }
   .td-title .td-name-phone { display: inline; }
   .td-platecap-in { display: none; }
   .td-platecap-out { display: block; padding: 0 4px; color: var(--text2); }
-  .td-platecap-out b { color: var(--text2); }
   .td-main { gap: 12px; }
   .td-hero { gap: 12px; }
   .td-intro { margin-top: 4px; font: 400 14px/20px var(--f-sans); }
-  .td-fig { gap: 10px; padding: 14px 16px 16px; }
-  .td-ring { width: 150px; height: 150px; }
-  .td-ring-art .td-seed { width: 76px; }
-  .td-ring-art .plnt-svg { width: 82px; max-height: 76px; }
+  .td-fig { gap: 8px; padding: 12px 16px 14px; }
+  .td-ring { width: 132px; height: 132px; }
+  .td-ring-art .td-seed { width: 64px; }
+  .td-ring-art .plnt-svg { width: 70px; max-height: 64px; }
   /* The range state: the plant, "58 to 66" and "estimated range" fit the
-     105px disc, so the stack is smaller and sits a little above centre. */
-  .td-ring-range .td-ring-in { gap: 0; padding-bottom: 10px; }
-  .td-ring-range .td-ring-art .td-seed { width: 40px; }
-  .td-ring-range .td-ring-art .plnt-svg { width: 44px; max-height: 36px; }
+     92px disc, so the stack is smaller and sits above centre: the plant's
+     narrow leaves go where the disc narrows, and the wide words stay where
+     it is widest, clear of its edge. */
+  .td-ring-range .td-ring-in { gap: 0; padding-bottom: 22px; }
+  .td-ring-range .td-ring-art .td-seed { width: 32px; }
+  .td-ring-range .td-ring-art .plnt-svg { width: 36px; max-height: 28px; }
   .td-ring-n { margin-top: 0; font-size: 22px; line-height: .95; }
   .td-ring-to { font-size: 12px; }
   .td-ring-l { line-height: 13px; }
@@ -7665,7 +7671,7 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
     <p class="ph-lead" id="msText">You are an auditor: you assess, recommend, and report. You don't fix.</p>
     <!-- Decision 9 — a finished set's debrief, when you leave from it -->
     <div id="sessionBoundaryArea"></div>
-    <!-- Fig. 2 · Picked for you (v12.49): the set as a plate; "Change the set" opens the options below it. -->
+    <!-- "Picked for you" (v12.49): the set as a plate; "Change the set" opens the options below it. -->
     <div id="phHero"></div>
     <div class="ph-setup">
       <div class="ph-panel" id="phPanel" role="region" aria-label="Set options" hidden>
@@ -13379,7 +13385,7 @@ function todaySideHtml(inner) {
   try { qr = appCtaTodayQrHtml(); } catch (e) { qr = ''; }
   return '<div class="td-side">' + inner + qr + '</div>';
 }
-// Today's figure (Grove, Fig. 1): the learner's plant at its growth, drawn
+// Today's figure (Grove): the learner's plant at its growth, drawn
 // inside the readiness ring, or the kit's seed before one is planted. The
 // growth names are the plant engine's own (Seed to Elder).
 var TODAY_STAGES = 6;
@@ -13420,8 +13426,8 @@ function todaySeedSvg() {
 var TODAY_RING_TICKS = 50;      // after the first range: 2 points each
 var todayRingGrown = false;     // the ticks light up once per visit
 // The light-up waits (td-wait holds it at its start) until a third of the
-// ring is on screen above the tab bar's zone: on phones the plan comes first,
-// so the ring can start below the fold. It plays once. Reduced motion has no
+// ring is on screen above the tab bar's zone (the page can open scrolled, or
+// on a very short screen). It plays once. Reduced motion has no
 // light-up: the ticks show lit.
 var todayRingIo = null;
 function todayRingWatch() {
@@ -13470,10 +13476,11 @@ function todayRingHtml(range, st, shoot, grow) {
     + '<circle class="td-ring-disc" cx="100" cy="100" r="70"/></svg>'
     + '<div class="td-ring-in"><div class="td-ring-art' + (shoot.plant ? '' : ' is-seed') + '" aria-hidden="true">' + art + '</div>' + centre + '</div></div>';
 }
-// The hero's figure: the caption (two layouts: a row on phones, one line
-// under the ring from 768px; only one shows), the ring, the line under it,
-// and on phones the Accuracy and Exam date tiles. Its PLATE caption is hidden
-// (the hero shows it at its foot, tdPlateOut) but keys todayShootRefresh.
+// The hero's figure: the stage line (two layouts: "Seed" with "Stage 1 of 6"
+// beside it on phones, "Seed · stage 1 of 6" under the ring from 768px; only
+// one shows), the ring, the line under it, and on phones the Accuracy and
+// Exam date tiles. Its plant line is hidden (the hero shows it at its foot,
+// tdPlateOut) but keys todayShootRefresh.
 function todayFigHtml(r, range, st, shoot, grow) {
   var name = shoot.name || 'Seed';
   var stage = 'Stage ' + shoot.stage + ' of ' + TODAY_STAGES;
@@ -13503,15 +13510,15 @@ function todayFigHtml(r, range, st, shoot, grow) {
     examTile = '<div class="td-tile"><span class="td-tile-k">Exam date</span><span class="td-tile-v td-tile-num">'
       + (PARITY_DAY_RE.test(examDay) ? escapeHtml(pgShort(examDay)) : escapeHtml(ACTIVE.name)) + '</span></div>';
   }
-  return '<div class="td-fig-top">' + fgFigHtml('Fig. 1 · ' + name, 2) + '<p class="td-fig-stage">' + stage + '</p></div>'
+  return '<div class="td-fig-top">' + fgFigHtml(name, 2) + '<p class="td-fig-stage">' + stage + '</p></div>'
     + todayRingHtml(range, st, shoot, grow)
-    + '<div class="td-fig-cap">' + fgFigHtml('Fig. 1 · ' + name + ', stage ' + shoot.stage + ' of ' + TODAY_STAGES, 2) + '</div>'
+    + '<div class="td-fig-cap">' + fgFigHtml(name + ' · stage ' + shoot.stage + ' of ' + TODAY_STAGES, 2, '', name + ', stage ' + shoot.stage + ' of ' + TODAY_STAGES) + '</div>'
     + (under ? '<p class="td-ring-cap" aria-hidden="true">' + under + '</p>' : '')
     + '<div class="td-tiles"><div class="td-tile"><span class="sr-only">' + escapeHtml(accSaid) + '</span>'
     + '<span class="td-tile-k" aria-hidden="true">Accuracy</span><span class="td-tile-v' + (accNum ? ' td-tile-num' : '') + '" aria-hidden="true">' + escapeHtml(acc) + '</span>'
     + (accHint ? '<span class="td-tile-hint" aria-hidden="true">' + accHint + '</span>' : '') + '</div>'
     + examTile + '</div>'
-    + '<p class="fg-cap td-platecap td-platecap-in"><b>Plate</b>' + escapeHtml(shoot.cap) + '</p>';
+    + '<p class="fg-cap td-platecap td-platecap-in">' + escapeHtml(shoot.cap) + '</p>';
 }
 // The plant script or a plant choice arrived: draw the figure again, only
 // when it changed (so the ticks' first light-up is not cut short).
@@ -13528,7 +13535,7 @@ function todayShootRefresh() {
   fig.innerHTML = todayFigHtml(r, range, st, shoot, !!fig.querySelector('.td-ring.grow'));
   todayRingWatch();
   var out = document.getElementById('tdPlateOut');
-  if (out) out.innerHTML = '<b>Plate</b>' + escapeHtml(shoot.cap);
+  if (out) out.textContent = shoot.cap;
 }
 // "Short on time? 5 questions" (the app's short path, mobile 1.41): a quiet
 // second way into today's plan, never a second Start. The first item of the
@@ -13649,17 +13656,18 @@ function renderHome() {
   var grow = !todayRingGrown;
   todayRingGrown = true;
   todayFigKey = todayFigHtml(r, range, st, shoot, false);
-  // Grove's hero: the plan, then the figure (the ring with the plant), then
-  // its PLATE caption. Phones (below 768px, first-screen decision of 31 Oct
-  // 2026) read it in this order, so Start is on the first screen and focus
-  // and screen readers follow what is seen. From 768px it is one forest card
-  // with the figure first (grid areas: beside the plan, or above it in a
-  // narrow column); nothing in the figure takes focus there.
+  // Grove's hero, in the kit's order (owner decision, 31 Oct 2026: ring
+  // first on phones, replacing plan first): the figure (the stage line, the
+  // ring with the plant, its caption and on phones the Accuracy and Exam date
+  // tiles), then the plan with Start, then the plant line. The markup is in
+  // this order, so focus and screen readers follow what is seen. From 768px
+  // it is one forest card (grid areas: the figure beside the plan, or above
+  // it in a narrow column); nothing in the figure takes focus there.
   var hero = '<section class="td-hero" aria-labelledby="tdHeroT">'
+    + '<div class="td-fig" id="tdFig" role="group" aria-label="Your plant and study estimate">' + todayFigHtml(r, range, st, shoot, grow) + '</div>'
     + '<div class="td-planc' + (p.resume ? ' td-planc-resume' : '') + '">' + planHtml
     + '<div class="td-hero-acts">' + act + '</div>' + short + '</div>'
-    + '<div class="td-fig" id="tdFig" role="group" aria-label="Fig. 1, your plant and study estimate">' + todayFigHtml(r, range, st, shoot, grow) + '</div>'
-    + '<p class="fg-cap td-platecap td-platecap-out" id="tdPlateOut"><b>Plate</b>' + escapeHtml(shoot.cap) + '</p>'
+    + '<p class="fg-cap td-platecap td-platecap-out" id="tdPlateOut">' + escapeHtml(shoot.cap) + '</p>'
     + '</section>';
 
   // The week's twig: not on a Welcome back day or in exam week. Drawn in the
@@ -13713,7 +13721,9 @@ function renderHome() {
 
 // ── FIELD GUIDE KIT (web v12.44; the owner's signature pick, 29 Oct 2026) ──
 // The phone's kit, for the web: every screen is a plate in a guide to the
-// learner's own study. Each helper returns HTML. Plain-text arguments are
+// learner's own study. "Field Guide" is the team's name for the look, never
+// on screen: no "Field guide", "Field record", "Plate" or "Fig. n" labels
+// (expert decision, 31 Oct 2026). Each helper returns HTML. Plain-text arguments are
 // escaped here; an argument whose name ends in Html must already be safe.
 // The styles are the fg-* rules (FIELD GUIDE KIT in the stylesheet).
 var FG_LARGE_PX = 20.8;   // 16px × 1.3: the phone's LARGE_TEXT font scale
@@ -13734,19 +13744,18 @@ function fgDate(ms, long) {
 function fgDateHtml(ms) {
   return '<span aria-hidden="true">' + escapeHtml(fgDate(ms)) + '</span><span class="sr-only">' + escapeHtml(fgDate(ms, true)) + '</span>';
 }
-// Running head: section · date over a hairline, on every Field Guide screen.
+// Running head: a short line over a hairline. A page's own head is the date
+// only (expert decision, 31 Oct 2026: no "Field guide" or "Field record"
+// label); a set's or a mock's results name the set on the left.
 function fgRunningHead(left, rightHtml) {
-  return '<div class="fg-rh"><span>' + escapeHtml(left) + '</span>' + (rightHtml ? '<span>' + rightHtml + '</span>' : '') + '</div>';
+  return '<div class="fg-rh">' + (left ? '<span>' + escapeHtml(left) + '</span>' : '') + (rightHtml ? '<span>' + rightHtml + '</span>' : '') + '</div>';
 }
 // The page frame's running head (web v12.46): one per page, drawn over the
 // frame by syncPageRh (#pageRh), never inside a page. Never on a question
-// in a set or a mock: there the strip is the head.
+// in a set or a mock: there the strip is the head. The pages that show it:
 var PAGE_RH = {
-  home: 'Field guide · Today', practice: 'Field guide · Practice', mock: 'Field guide · Mock exam',
-  bookmarks: 'Field guide · Saved', weakspots: 'Field record · Weak spots', progress: 'Field record · Progress',
-  topics: 'Field guide · Study notes', principles: 'Field guide · Principles', examguide: 'Field guide · About the exam',
-  finalweek: 'Field guide · Final review week', glossary: 'Field guide · Index', faq: 'Field guide · Help',
-  about: 'Field guide · About KaiSip', you: 'Field record · You'
+  home: 1, practice: 1, mock: 1, bookmarks: 1, weakspots: 1, progress: 1, topics: 1, principles: 1,
+  examguide: 1, finalweek: 1, glossary: 1, faq: 1, about: 1, you: 1
 };
 var pageRhRight = {};   // a page's own right side: { progress: html, mockResults: { kind, total, at, min } }
 function pageRhHtml(t) {
@@ -13779,7 +13788,7 @@ function pageRhHtml(t) {
       } catch (e) {}
     }
   }
-  return fgRunningHead(PAGE_RH[t], right);
+  return fgRunningHead('', right);
 }
 function syncPageRh() {
   var el = document.getElementById('pageRh');
@@ -13788,23 +13797,26 @@ function syncPageRh() {
   if (el.innerHTML !== html) el.innerHTML = html;
   el.hidden = !html;
 }
-// A plate's caption is a heading (the phone's FigCaption), shown "Fig. 5 ·
-// Five areas, one scale" and said "Figure 5, Five areas, one scale", so a
-// screen reader can move between plates. level: one under the section's own.
-function fgFigHtml(fig, level, id) {
-  var lv = level === 2 ? 2 : 3, m = /^Fig\. (\d+) · (.*)$/.exec(String(fig));
-  var said = m ? 'Figure ' + m[1] + ', ' + m[2] : String(fig);
-  return '<h' + lv + ' class="fg-fig"' + (id ? ' id="' + escapeHtml(id) + '"' : '') + '><span aria-hidden="true">' + escapeHtml(fig) + '</span>'
-    + '<span class="sr-only">' + escapeHtml(said) + '</span></h' + lv + '>';
+// A card's caption is a heading (the phone's FigCaption) in the short italic
+// serif, plain words only ("Five areas, one scale"), so a screen reader can
+// move between them. No book labels on screen or in what is heard (expert
+// decision, 31 Oct 2026): never "Fig. n", "Plate" or "Field guide".
+// level: one under the section's own. said: what a screen reader hears when
+// it differs from what is shown ("Seed, stage 1 of 6" for "Seed · stage 1 of 6").
+function fgFigHtml(fig, level, id, said) {
+  var lv = level === 2 ? 2 : 3;
+  var inner = said ? '<span aria-hidden="true">' + escapeHtml(fig) + '</span><span class="sr-only">' + escapeHtml(said) + '</span>' : escapeHtml(fig);
+  return '<h' + lv + ' class="fg-fig"' + (id ? ' id="' + escapeHtml(id) + '"' : '') + '>' + inner + '</h' + lv + '>';
 }
 // Plate: the double-hairline mount around the screen's one focal point.
 function fgPlate(fig, innerHtml, cls, level) {
   return '<div class="fg-plate' + (cls ? ' ' + cls : '') + '"><div class="fg-plate-in">'
     + (fig ? fgFigHtml(fig, level) : '') + innerHtml + '</div></div>';
 }
-// The caption under a plate: "KEY One stem per area…", "PLATE …", "NOTE …".
+// The caption under a card: "KEY One line of growth per area…", "NOTE …",
+// or the sentence alone (key ''; never a "Plate" label).
 function fgCaption(key, text) {
-  return '<p class="fg-cap"><b>' + escapeHtml(key) + '</b>' + escapeHtml(text) + '</p>';
+  return '<p class="fg-cap">' + (key ? '<b>' + escapeHtml(key) + '</b>' : '') + escapeHtml(text) + '</p>';
 }
 // Specimen label: ruled key · value rows. rows: [{ k, vHtml, xHtml }] (xHtml: a full-width line under the row).
 function fgLabel(rows, cls) {
@@ -14001,9 +14013,9 @@ function fgSheet(o) {
     + (o.countHtml ? '<span class="fg-sheet-ct">' + o.countHtml + '</span>' : '') + '</h' + lv + '>'
     + (o.purpose ? '<p class="fg-sheet-p">' + escapeHtml(o.purpose) + '</p>' : '') + (o.innerHtml || '') + '</div>';
 }
-// Empty plate: the mount with nothing drawn yet.
+// Empty plate: the mount with nothing drawn yet ("Nothing here yet").
 function fgEmptyPlate(textHtml, title) {
-  return fgPlate('', '<p class="fg-empty-t">' + escapeHtml(title || 'Plate not yet drawn') + '</p>'
+  return fgPlate('', '<p class="fg-empty-t">' + escapeHtml(title || 'Nothing here yet') + '</p>'
     + (textHtml ? '<p class="fg-empty-m">' + textHtml + '</p>' : ''), 'fg-empty');
 }
 
@@ -14197,7 +14209,7 @@ function pgHowHtml() {
     + (K && K.domainBand ? '<p class="td-note">' + escapeHtml(K.domainBand.YARDSTICK_LINE) + '</p>' : '')
     + '<p class="td-note">' + escapeHtml(PG_HOW_LINE) + '</p></details>';
 }
-// The five domains as stems on one scale (Fig. 5), exam order. Under 30
+// The five domains as stems on one scale ("Five areas, one scale"), exam order. Under 30
 // answers a domain is a seed with no number (the honest domain read).
 function pgDomainsHtml(r) {
   var keys = Object.keys(DI), total = keys.reduce(function (s, d) { return s + DI[d].weight; }, 0) || 1;
@@ -14209,18 +14221,19 @@ function pgDomainsHtml(r) {
   var key = 'One line of growth per domain, on one scale. Dashed: the ' + DOMAIN_TARGET_PCT + ' line. Clay and “below ' + DOMAIN_TARGET_PCT + '”: under it, still building.'
     + (few ? ' A seed: fewer than ' + DOMAIN_READ_MIN + ' answers, not measured yet.' : '');
   return '<section class="pg-sec" aria-labelledby="pgDomH"><h2 class="pg-h2" id="pgDomH">By domain</h2>'
-    + fgPlate('Fig. 5 · Five areas, one scale', fgStemChart(areas, { label: 'Each domain, in exam order' }))
+    + fgPlate('Five areas, one scale', fgStemChart(areas, { label: 'Each domain, in exam order' }))
     + fgCaption('Key', key)
     + (numbered ? '<p class="pg-note">Percentages count your latest try at each question.</p>' : '') + '</section>';
 }
-// The herbarium (badges). The website does not collect badges yet, so its
-// sheet is an empty plate that says where they are; never a count.
+// Badges (the phone's herbarium; headed "Badges" on the website). The website
+// does not collect badges yet, so its sheet is an empty mount that says where
+// they are; never a count.
 function pgHerbariumHtml() {
   var href = '';
   try { href = appCtaHref(); } catch (e) { href = ''; }
   var link = href ? '<a class="td-link" href="' + escapeHtml(href) + '" target="_blank" rel="noopener">Get the KaiSip app<span class="sr-only"> (opens in a new tab)</span>' + ico('chevron', 18) + '</a>' : '';
   return '<section class="pg-sec pg-herb">' + fgSheet({
-    level: 2, id: 'pgHerbH', name: 'Herbarium',
+    level: 2, id: 'pgHerbH', name: 'Badges',
     purpose: 'Badges, pressed and labelled the day you earn them.',
     innerHtml: fgEmptyPlate('Badges are collected in the KaiSip phone app for now, so this sheet stays empty on the website.') + link
   }) + '</section>';
@@ -14700,7 +14713,7 @@ function renderProgress() {
   try { syncPageRh(); } catch (e) {}
   var head = '<div class="pg-head">'
     + '<h1 class="td-title" id="pgTitle" tabindex="-1">Your progress</h1>'
-    + '<p class="fg-sub">Plates drawn from your answers in this app.</p>'
+    + '<p class="fg-sub">Built from your answers in this app.</p>'
     + (phase === 'done' ? '<p class="td-intro">Your exam day has come and gone. Everything here stays as a record; nothing new is suggested.</p>' : '') + '</div>';
   var K = plantApi();
   if (!K || !K.readySigns) {
@@ -15363,11 +15376,11 @@ function runPracticePrimary() {
   else startPracticeSet();
 }
 
-// Fig. 2 · Picked for you (web v12.49; premium round 2, 5.3): the set as a
+// "Picked for you" (web v12.49; premium round 2, 5.3): the set as a
 // plate. Left: what Start opens (the domain, its length and time, and "where
 // you'll gain most" only when it is the domain with the most to gain), Start
 // and "Change the set" (which opens the set's options in place). Right: the
-// set as a specimen label. The PLATE caption only when it is true: a measured
+// set as a specimen label. The line under it only when it is true: a measured
 // domain just under the 70 line.
 var PH_JUST_UNDER = 5;   // "just under the 70 line": within 5 points of it
 function renderPracticeHub() {
@@ -15391,9 +15404,9 @@ function renderPracticeHub() {
   rows.push({ k: 'Timed', vHtml: '<span class="ph-words">' + (S.timerEnabled ? 'On' : 'Off') + '</span>' });
   var pct = dx ? Math.round(dx.mastery * 100) : null;
   var cap = !p.resume && dx && dx.answered >= DOMAIN_READ_MIN && pct < DOMAIN_TARGET_PCT && pct >= DOMAIN_TARGET_PCT - PH_JUST_UNDER
-    ? fgCaption('Plate', DI[d].short + ' is ' + DI[d].weight + '% of the exam and sits just under the ' + DOMAIN_TARGET_PCT + ' line.') : '';
+    ? fgCaption('', DI[d].short + ' is ' + DI[d].weight + '% of the exam and sits just under the ' + DOMAIN_TARGET_PCT + ' line.') : '';
   hero.innerHTML = '<section class="ph-pick" aria-labelledby="phHeroF">'
-    + fgPlate('', fgFigHtml(p.resume ? 'Fig. 2 · Where you left off' : rd && rd.answered === 0 ? 'Fig. 2 · A place to start' : 'Fig. 2 · Picked for you', 2, 'phHeroF')
+    + fgPlate('', fgFigHtml(p.resume ? 'Where you left off' : rd && rd.answered === 0 ? 'A place to start' : 'Picked for you', 2, 'phHeroF')
       + '<div class="ph-pick-g"><div class="ph-pick-a">'
       + '<p class="ph-hero-t" id="phHeroT">' + p.title + '</p>'
       + '<p class="ph-hero-m">' + meta + '</p>'
@@ -16148,7 +16161,7 @@ function railHubSections(pre) {
 function railQAnswered() {
   return !!(S.current && document.querySelector('#qArea .q-card.is-answered') && document.getElementById('rPanel'));
 }
-// Fig. 4 · Three moves for this question (web v12.47; premium round 2, 5.2):
+// "Three moves for this question" (web v12.47; premium round 2, 5.2):
 // Eliminate two, Final two and Exam cue as a captioned plate in the margin,
 // in DISPLAY letters. After a miss, the row(s) naming the pick carry a
 // "Your pick, A" tag (real text). None in exam-day rehearsal.
@@ -16171,7 +16184,7 @@ function vrMovesHtml(q) {
   });
   if (items.length < 2) return '';
   // The caption is a script focus target for the page's skip link.
-  return '<div class="fg-plate vm-plate"><div class="fg-plate-in">' + fgFigHtml('Fig. 4 · Three moves for this question', 2, 'srhMoves').replace(' id="srhMoves"', ' id="srhMoves" tabindex="-1"')
+  return '<div class="fg-plate vm-plate"><div class="fg-plate-in">' + fgFigHtml('Three moves for this question', 2, 'srhMoves').replace(' id="srhMoves"', ' id="srhMoves" tabindex="-1"')
     + fgKeyList(items) + '</div></div>'
     + fgCaption('Key', 'Move 3, the Exam cue, works on questions you haven’t seen yet.');
 }
@@ -16232,7 +16245,7 @@ function railMockSections() {
 }
 
 // The fallbacks inside the page (below the breakpoints).
-// v12.49: below 1240px Ready today sits right under the Fig. 2 plate and
+// v12.49: below 1240px Ready today sits right under the "Picked for you" plate and
 // Today's principle closes the page, after Review and saved.
 function railHubInline(show) {
   var secs = show ? railHubSections('phm') : [];
@@ -17928,7 +17941,7 @@ function rsGrowthPlate(byDomain, before) {
   });
   var key = 'Dashed: the ' + DOMAIN_TARGET_PCT + ' line. Clay: growth from this set (with ↑), or a domain below it (with “below ' + DOMAIN_TARGET_PCT + '”).';
   if (areas.length > 1) {
-    return fgPlate('Fig. 6 · Your domains after this set', fgStemChart(areas, { ink: true, label: 'Each domain in this set' }))
+    return fgPlate('Your domains after this set', fgStemChart(areas, { ink: true, label: 'Each domain in this set' }))
       + fgCaption('Key', key + ' A seed: fewer than ' + DOMAIN_READ_MIN + ' answers, not measured yet.');
   }
   var a = areas[0], f = fgStemFacts(a), nm = escapeHtml(a.short), big, line;
@@ -17943,7 +17956,7 @@ function rsGrowthPlate(byDomain, before) {
     line = f.delta > 0 ? nm + ' grew ' + f.delta + (f.delta === 1 ? ' point' : ' points') + ' in this set.'
       : nm + ' is ' + (-f.delta) + (f.delta === -1 ? ' point' : ' points') + ' lower after this set.';
   }
-  var fig = 'Fig. 6 · ' + a.short + (f.delta > 0 ? ', new growth' : ', after this set');
+  var fig = a.short + (f.delta > 0 ? ', new growth' : ', after this set');
   return fgPlate(fig, '<div class="rs-g">' + fgStemChart(areas, { ink: true, narrowOnly: true, w: 150, label: a.name })
       + '<p class="rs-g-t">' + big + '<span class="rs-g-l">' + line + '</span></p></div>')
     + fgCaption('Key', key);
@@ -19233,11 +19246,11 @@ function renderMockSetup() {
   };
   // One solid action per screen: with a mock unfinished, Resume (the forest
   // panel) is it, and both start buttons are outlined.
-  // v12.46: the two mocks are this page's plate (Fig. 7 in the register),
+  // v12.46: the two mocks are this page's plate ("Two mocks, one pace"),
   // with the closed-tab promise as its NOTE caption.
   var types = '<section class="ph-sec mk-pick" aria-labelledby="mkPickH">'
     + (isMockInProgress() ? '<h2 class="ph-h" id="mkPickH">Or start a new mock</h2>' : '')
-    + fgPlate(isMockInProgress() ? '' : 'Fig. 7 · Two mocks, one pace', '<div class="mk-types">'
+    + fgPlate(isMockInProgress() ? '' : 'Two mocks, one pace', '<div class="mk-types">'
       + card('full', full, 'The real exam&rsquo;s length and pace.', 'mock-start', !isMockInProgress())
       + card('mini', mini, 'A third of the exam: the same domain weights and pace.', 'mock-start-mini', false)
       + '</div>', 'mk-plate', 2).replace('<h2 class="fg-fig">', '<h2 class="fg-fig" id="mkPickH">')
@@ -19578,7 +19591,7 @@ function selectMockAnswer(chosen, _ignoredCorrect) {
 
 // ── MOCK RESULTS (web v12.49; premium round 2, 5.4) ──
 // The running head ("Mock · Mini · 50 questions" | "29 Oct · 64 min"), the
-// count and the honesty sentence; Fig. 6, each area now on one scale with
+// count and the honesty sentence; the areas plate, each area now on one scale with
 // how this mock went under it and, when both ends have 30+ answers, how far
 // it moved since the mock began (↑ clay, ↓ ink, never red); one label (right,
 // time, pace, unanswered); where to look next; the review, opening on the
@@ -19665,7 +19678,7 @@ function showMockResults() {
   }
 }
 
-// Fig. 6 · Your five areas after this mock: each area now (Today's figure,
+// "Your five areas after this mock": each area now (Today's figure,
 // its latest tries), "6 of 9 this mock" under it, and the change since the
 // mock began only when both ends have 30+ answers (a save from before the
 // mock's starting standings were kept shows none).
@@ -19691,7 +19704,7 @@ function mockAreasPlate(db) {
   var key = 'Each line is where an area stands now, on your latest tries; under it, how this mock went (right of asked). Dashed: the ' + DOMAIN_TARGET_PCT + ' line.'
     + (anyMove ? ' ↑ and ↓: the change in points since the mock began.' : '')
     + (anyFew ? ' A seed: fewer than ' + DOMAIN_READ_MIN + ' answers, not measured yet.' : '');
-  return fgPlate('Fig. 6 · Your five areas after this mock', fgStemChart(areas, { ink: true, lineInKey: true, label: 'Each area, in exam order' }), 'mr-plate', 2)
+  return fgPlate('Your five areas after this mock', fgStemChart(areas, { ink: true, lineInKey: true, label: 'Each area, in exam order' }), 'mr-plate', 2)
     + fgCaption('Key', key);
 }
 // One specimen label for the mock: right, time, pace, unanswered.
