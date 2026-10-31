@@ -4,6 +4,11 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v12.49.8] — A clearer priority-word example
+
+### Improved
+- The "priority word decides" principle has a new example that shows how MOST LIKELY and GREATEST can change the right answer for the same facts.
+
 ## [v12.49.7] — Clearer IT policies topic
 
 ### Improved
