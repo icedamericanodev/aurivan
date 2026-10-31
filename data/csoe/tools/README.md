@@ -10,7 +10,7 @@ whichever `originals/dN.json` files exist.
 | Script | Use |
 |---|---|
 | `check_csoe.py` | Structural gate for every batch: item shape, IDs (`csoe_dN_NNN`), notes and library links, tip structure, key spread, the "pick the longest" rate (15–24%, ties shared), the "pick the shortest" rate (at most 30%), difficulty mix, notes coverage. `--list` names the items where the key is longest or tied; `--lib STAGED.md` accepts staged citations. |
-| `style_csoe.py` | Runs the shared exam-style linter (`scripts/lint_exam_style_v2.py`, unchanged) on a CSOE domain, with one exception: a stem may skip the priority word when it names the rule it asks about (Section, Rule, Item, Form, Regulation or Act). The CSOE standard says to ask pure rule questions directly. |
+| `style_csoe.py` | Runs the shared exam-style linter (`scripts/lint_exam_style_v2.py`, unchanged) on a CSOE domain, with one exception: a stem may skip the priority word when it names the specific rule it asks about (Section, Rule, Item, Release or Regulation followed by its number, such as "Section 403" or "Rule 12b-2"; a form name alone does not count). The CSOE standard says to ask pure rule questions directly. |
 | `blind_copy.py` | Answer-free copy of chosen items for `qa-question-tester`. |
 | `merge_library.py` | Merge a staged citation file into `originals/_framework_library.md` when several authors work in parallel. |
 | `sync_practice_ids.py` | Fill each notes sub-topic's `practice_ids` (the "Practice this concept" links) from the questions' `_provenance`. Run after every batch; `--check` reports drift. |
