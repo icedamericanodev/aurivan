@@ -7377,8 +7377,13 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
    floating tab bar on the first screen (375 by 812 and 390 by 844) for every
    learner. The ring is 150px and the hero and the plan are tighter; the plant,
    the range, its caption and the tiles stay in the figure, and the PLATE line
-   sits at the hero's foot under the plan, as it does from 768px. */
+   sits at the hero's foot under the plan, as it does from 768px. Measured
+   with reviews due, a name and an exam date too: the title is 28px, so
+   "Welcome back, Maya" keeps one line and a longer name wraps to two short
+   ones, and the running head sits closer to it. */
 @media (max-width: 767px) {
+  body[data-tab="home"] .fg-page-rh .fg-rh { margin-bottom: var(--sp-md); }
+  .td-head .td-title { font-size: 28px; }
   .td-platecap-in { display: none; }
   .td-platecap-out { display: block; padding: 0 4px; color: var(--text2); }
   .td-platecap-out b { color: var(--text2); }
@@ -7398,11 +7403,13 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
   .td-ring-to { font-size: 12px; }
   .td-ring-l { line-height: 13px; }
   .td-ring-cap { line-height: 19px; }
-  .td-ring-big { font-size: 22px; }
+  /* The big number keeps the caption's 19px lines (it no longer opens the first one up). */
+  .td-ring-big { font-size: 22px; line-height: 0; }
   .td-tile { gap: 2px; padding: 8px 12px; }
   .td-tile-v, .td-tile-a { padding-top: 0; }
   .td-platecap { line-height: 18px; }
-  .td-planc { gap: 12px; padding: 16px; }
+  .td-planc { gap: 10px; padding: 16px; }
+  .td-steps { gap: 10px; }
   .td-hero-acts { margin-top: 0; }
 }
 
@@ -12836,7 +12843,7 @@ function todayPlan(r, last, mode) {
     if (nb > 0) {
       items.push(warm
         ? { title: 'Optional warm-up', meta: nb + (nb === 1 ? ' question' : ' questions') + ' to revisit' }
-        : { title: 'Questions to revisit', meta: nb + ' from before &middot; the ones you missed, oldest first' });
+        : { title: 'Questions to revisit', meta: nb + ' you missed before &middot; oldest first' });
       return { mode: mode, review: nb, due: due, d: null, n: 0, items: items, minutes: todayPlanMinutes(nb) };
     }
     items.push(warm
