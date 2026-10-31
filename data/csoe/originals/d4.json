@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "comment": "Original KaiSip CSOE practice questions for Domain 4 (The SEC, enforcement and Dodd-Frank), written from the public law (the Sarbanes-Oxley Act, the Dodd-Frank Act, the U.S. Code, SEC rules and SEC publications) and KaiSip's own notes (data/csoe/notes/d4.json). No SOXCPA presentations, exam material or prep-bank text used. Not affiliated with or endorsed by the Sarbanes Oxley Compliance Professionals Association (SOXCPA). Schema: docs/content/QUESTION_SCHEMA.md; standard: .claude/agents/csoe-standards-auditor.md. Pilot csoe_d4_001 to csoe_d4_020, 31 Oct 2026; batch 2 csoe_d4_021 to csoe_d4_040, 31 Oct 2026.",
+    "comment": "Original KaiSip CSOE practice questions for Domain 4 (The SEC, enforcement and Dodd-Frank), written from the public law (the Sarbanes-Oxley Act, the Dodd-Frank Act, the U.S. Code, SEC rules and SEC publications) and KaiSip's own notes (data/csoe/notes/d4.json). No SOXCPA presentations, exam material or prep-bank text used. Not affiliated with or endorsed by the Sarbanes Oxley Compliance Professionals Association (SOXCPA). Schema: docs/content/QUESTION_SCHEMA.md; standard: .claude/agents/csoe-standards-auditor.md. Pilot csoe_d4_001 to csoe_d4_020, 31 Oct 2026; batch 2 csoe_d4_021 to csoe_d4_040, 31 Oct 2026; batch 3 csoe_d4_041 to csoe_d4_060, 31 Oct 2026.",
     "schema_version": 1
   },
   "domain": 4,
@@ -1445,6 +1445,726 @@
         "Disclosure versus merit review"
       ],
       "_provenance": "Authored from concept: KaiSip notes 4A1.1 and the SEC Statutes and Regulations page (Securities Act of 1933) and 15 U.S.C. 77w, 31 Oct 2026, CSOE batch 2. Original scenario written for KaiSip from the public law; no SOXCPA material or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d4_041",
+      "domain": 4,
+      "subtopic": "4A1 The Securities Act and the Exchange Act. Who a proxy rule reaches",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A shareholder group asks fellow holders of a listed company's registered shares for proxies to elect the group's own director nominees. The group's solicitation is governed by:",
+      "options": {
+        "A": "the Securities Act of 1933, which governs disclosure to investors",
+        "B": "the Securities Exchange Act of 1934, which reaches any person who solicits",
+        "C": "state corporate law, since federal proxy rules cover the issuer's own solicitations",
+        "D": "the Sarbanes-Oxley Act, which governs listed companies' boards"
+      },
+      "correct": "B",
+      "key_concept": "The 1934 Act governs proxy solicitations for registered securities, whether management or a shareholder group is soliciting.",
+      "pre_read": "Ask which securities law governs what happens after shares are issued, and whether it matters who is soliciting.",
+      "correct_explanation": "Exchange Act Section 14(a) makes it unlawful for any person to solicit proxies for a registered security in breach of the SEC's proxy rules, and the SEC says solicitations by management or by shareholder groups must disclose the important facts. So the group solicits under the 1934 Act. Option C is close because state law governs the meeting and the election, but the federal proxy rules govern the solicitation itself.",
+      "wrong_explanations": {
+        "A": "Tempting because it concerns disclosure to investors. But the 1933 Act governs offers and sales of securities; proxy solicitations fall under the 1934 Act.",
+        "C": "Closest choice: state law governs the meeting and the vote itself. But Section 14(a) reaches any person soliciting proxies for registered shares, not just the issuer.",
+        "D": "Tempting because SOX shapes listed companies' governance. But it did not create the proxy rules; they come from the 1934 Act."
+      },
+      "tips": [
+        "Eliminate: A, because the 1933 Act governs offerings rather than shareholder votes, and D, because the proxy rules predate SOX and sit in the 1934 Act.",
+        "Final two: B beats C because Section 14(a) reaches any person who solicits proxies for registered shares, dissident holders included.",
+        "Exam cue: offerings point to the 1933 Act; votes, trading and periodic reports after issue point to the 1934 Act."
+      ],
+      "framework_ref": "15 U.S.C. 78n(a) (Solicitation of proxies in violation of rules and regulations); SEC Statutes and Regulations Page (Securities Exchange Act of 1934: proxy solicitations)",
+      "related_concepts": [
+        "Proxy solicitation",
+        "Exchange Act Section 14(a)",
+        "Shareholder groups"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 4A1.3 and 15 U.S.C. 78n(a) and the SEC Statutes and Regulations page (proxy solicitations), 31 Oct 2026, CSOE batch 3. Original scenario written for KaiSip from the public law; no SOXCPA material or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d4_042",
+      "domain": 4,
+      "subtopic": "4A1 The Securities Act and the Exchange Act. Fraud in an exempt sale",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A company sells new shares to a few institutional investors in a private placement that qualifies under Securities Act Section 4(a)(2), and its CFO's sales deck overstates revenue. Which statement is MOST accurate?",
+      "options": {
+        "A": "The exemption covers the whole Act, so no federal fraud claim arises",
+        "B": "The sale breached Section 5, since every securities sale needs registration",
+        "C": "The SEC had to approve the placement's terms before closing",
+        "D": "Registration was not needed, but the antifraud ban still applies"
+      },
+      "correct": "D",
+      "key_concept": "A private placement exemption lifts only Securities Act registration; the antifraud provisions still apply to the sale.",
+      "pre_read": "Separate the duty to register from the duty not to mislead, and ask which one the exemption removes.",
+      "correct_explanation": "Section 4(a)(2) lifts only Section 5, the registration requirement, for an issuer's transactions not involving a public offering. Section 17(a) still makes it unlawful for any person to defraud or mislead in the offer or sale of any securities, and the SEC says the securities laws broadly prohibit fraud in any offer, purchase or sale. Option A is close but stretches a registration exemption into an exemption from fraud liability.",
+      "wrong_explanations": {
+        "A": "Closest choice: the placement is exempt from registration. But Section 4 lifts only Section 5; the Section 17(a) antifraud ban reaches any offer or sale of securities.",
+        "B": "Tempting because many sales must be registered. But Section 4(a)(2) exempts an issuer's transactions not involving a public offering, so Section 5 did not apply.",
+        "C": "Tempting because the SEC oversees offerings. But it does not approve an exempt private placement in advance; the issuer relies on the exemption itself."
+      },
+      "tips": [
+        "Eliminate: B, because Section 4(a)(2) exempts nonpublic issuer sales from Section 5, and C, because exempt placements need no SEC approval.",
+        "Final two: D beats A because an exemption lifts registration only; the Section 17(a) antifraud ban still covers any offer or sale.",
+        "Exam cue: exempt from registration never means exempt from the fraud rules; check which section the exemption actually lifts."
+      ],
+      "framework_ref": "15 U.S.C. 77d(a) (Exempted transactions); 15 U.S.C. 77q(a) (Use of interstate commerce for purpose of fraud or deceit)",
+      "related_concepts": [
+        "Private placement",
+        "Securities Act Section 4(a)(2)",
+        "Antifraud provisions"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 4A1.1 and 15 U.S.C. 77d(a)(2) and 77q(a) and the SEC Statutes and Regulations page, 31 Oct 2026, CSOE batch 3. Original scenario written for KaiSip from the public law; no SOXCPA material or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d4_043",
+      "domain": 4,
+      "subtopic": "4A1 The Securities Act and the Exchange Act. Registering a trading business",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A fintech firm's app will execute customers' stock orders nationwide for a commission per trade, and the firm will give no investment advice. Under which law MOST directly must it register with the SEC?",
+      "options": {
+        "A": "The Securities Exchange Act of 1934, which requires brokers to register",
+        "B": "The Investment Advisers Act of 1940, which registers paid advisers",
+        "C": "The Securities Act of 1933, which registers securities offered to the public",
+        "D": "The Sarbanes-Oxley Act, which registers audit firms with the PCAOB"
+      },
+      "correct": "A",
+      "key_concept": "Brokers and dealers register with the SEC under the 1934 Act; paid investment advisers fall under the Advisers Act instead.",
+      "pre_read": "Look at what the firm does for customers, then match that activity to the law that registers it.",
+      "correct_explanation": "Exchange Act Section 15(a) makes it unlawful for a broker or dealer to use interstate commerce to effect securities transactions unless it is registered with the SEC, so an app that executes customers' trades for commissions is acting as a broker. Option B is close, but the Advisers Act covers firms paid to advise others on securities, and this firm gives no advice.",
+      "wrong_explanations": {
+        "B": "Closest choice: the Advisers Act also has a registration duty, but for firms paid to advise others on securities. Executing customers' trades for commissions is broker activity.",
+        "C": "Tempting because the 1933 Act involves registration. But it registers securities offered for sale, not the firms that execute customers' trades.",
+        "D": "Tempting because SOX created a registration regime. But PCAOB registration is for public accounting firms, not for trading businesses."
+      },
+      "tips": [
+        "Eliminate: C, because the 1933 Act registers securities rather than market firms, and D, because the PCAOB registers audit firms, not trading businesses.",
+        "Final two: A beats B because executing trades for customers is broker activity under Exchange Act Section 15(a); the Advisers Act covers paid advice.",
+        "Exam cue: a firm that executes trades registers as a broker under the 1934 Act; a firm paid for advice falls under the Advisers Act."
+      ],
+      "framework_ref": "15 U.S.C. 78o(a) (Registration of brokers and dealers); SEC Statutes and Regulations Page (Investment Advisers Act of 1940: adviser registration)",
+      "related_concepts": [
+        "Broker registration",
+        "Exchange Act Section 15(a)",
+        "Investment advisers"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 4A1.3 and 15 U.S.C. 78o(a) and the SEC Statutes and Regulations page (brokers, dealers and advisers), 31 Oct 2026, CSOE batch 3. Original scenario written for KaiSip from the public law; no SOXCPA material or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d4_044",
+      "domain": 4,
+      "subtopic": "4A2 SEC rulemaking. Asking for a rule change",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "The policy director of an investor group that files nothing with the SEC wants a disclosure rule amended. Under Rule 192 of the SEC's Rules of Practice, what may the group do?",
+      "options": {
+        "A": "Ask the PCAOB to amend the Commission's rule for it",
+        "B": "Wait for a proposal, since petitions are limited to SEC filers",
+        "C": "File a petition with the Secretary asking for the amendment",
+        "D": "Ask Congress, since a statute is needed to change SEC rules"
+      },
+      "correct": "C",
+      "key_concept": "Any person may petition the SEC to issue, amend or repeal a rule (Rule 192; 5 U.S.C. 553(e)).",
+      "pre_read": "Ask who may start a rule change at the SEC, and whether filer status matters.",
+      "correct_explanation": "Rule 192(a) lets any person who wants a rule issued, amended or repealed file a petition with the Secretary, stating the change sought, their interest and their reasons; the Secretary acknowledges it in writing and refers it for consideration. The Administrative Procedure Act gives every interested person the same right (5 U.S.C. 553(e)). Option B is close, but nothing limits petitions to SEC filers or to rules already proposed.",
+      "wrong_explanations": {
+        "A": "Tempting because the PCAOB writes rules. But it sets standards for audit firms, and it cannot amend the SEC's own disclosure rules.",
+        "B": "Closest choice: a published proposal does invite comments, but a petition needs neither a proposal nor filer status. Rule 192 is open to any person.",
+        "D": "Tempting because statutes rank above rules. But the SEC can amend its own rules, and anyone may petition it to do so."
+      },
+      "tips": [
+        "Eliminate: A, because the PCAOB cannot amend SEC rules, and D, because the SEC amends its own rules without new legislation.",
+        "Final two: C beats B because Rule 192 lets any person petition, with no proposal or filer status needed.",
+        "Exam cue: to ask for a new or changed SEC rule, anyone may petition; to react to a proposed rule, anyone may comment."
+      ],
+      "framework_ref": "17 CFR 201.192(a) (Petitions for rulemaking); 5 U.S.C. 553 (Rule making)",
+      "related_concepts": [
+        "Petition for rulemaking",
+        "Rule 192",
+        "Administrative Procedure Act"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 4A2.3 and 17 CFR 201.192(a) and 5 U.S.C. 553(e), 31 Oct 2026, CSOE batch 3. Original scenario written for KaiSip from the public law; no SOXCPA material or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d4_045",
+      "domain": 4,
+      "subtopic": "4A2 SEC rulemaking. An exchange's new listing rule",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A national securities exchange's board approves a new listing standard on director independence. Under Exchange Act Section 19(b), what must happen before the new standard can take effect?",
+      "options": {
+        "A": "It takes effect on the board's vote, as the exchange's own rule",
+        "B": "It takes effect once filed with the SEC, as every change does",
+        "C": "It needs the PCAOB's approval, as it affects listed issuers",
+        "D": "It is filed with the SEC, published for comment and approved"
+      },
+      "correct": "D",
+      "key_concept": "Exchanges file proposed rule changes with the SEC, which publishes them for comment; most take effect only once approved.",
+      "pre_read": "Ask who supervises an exchange's own rulemaking, and which kinds of change skip approval.",
+      "correct_explanation": "Section 19(b)(1) requires every self-regulatory organization, exchanges included, to file proposed rule changes with the SEC, which publishes notice and invites written comments; no change takes effect unless the SEC approves it or the subsection otherwise permits. Option B is close because some changes, such as fees or interpretations of an existing rule, take effect on filing, but a substantive new listing standard is not one of them.",
+      "wrong_explanations": {
+        "A": "Tempting because the exchange writes its own rules. But as a self-regulatory organization it must file proposed changes with the SEC under Section 19(b).",
+        "B": "Closest choice: some changes, such as fees, take effect on filing. A substantive new listing standard needs SEC approval after notice and comment.",
+        "C": "Tempting because the PCAOB oversees auditors of listed issuers. But exchange rule changes go to the SEC; the PCAOB has no role in them."
+      },
+      "tips": [
+        "Eliminate: A, because exchanges are self-regulatory organizations that file rule changes with the SEC, and C, because the PCAOB oversees audit firms, not exchanges.",
+        "Final two: D beats B because only set kinds of change, such as fees, take effect on filing; a new listing standard waits for SEC approval.",
+        "Exam cue: an exchange or FINRA rule change runs through the SEC under Section 19(b): file, publish, comment, approve."
+      ],
+      "framework_ref": "15 U.S.C. 78s(b) (Proposed rule changes of self-regulatory organizations)",
+      "related_concepts": [
+        "Self-regulatory organization",
+        "Listing standards",
+        "Exchange Act Section 19(b)"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 4A2.3 and 15 U.S.C. 78s(b)(1)-(3) and the SEC Statutes and Regulations page (SRO rules), 31 Oct 2026, CSOE batch 3. Original scenario written for KaiSip from the public law; no SOXCPA material or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d4_046",
+      "domain": 4,
+      "subtopic": "4A2 SEC rulemaking. A topic on the regulatory agenda",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A compliance lead finds a rule topic listed in the SEC's latest regulatory flexibility agenda. Under Section 602 of title 5, United States Code, what does that listing mean?",
+      "options": {
+        "A": "The SEC must propose that rule by the date the agenda lists",
+        "B": "The SEC expects to act, but the agenda does not bind it",
+        "C": "A proposal on that topic is open for public comment now",
+        "D": "A final rule on that topic binds companies from the listing date"
+      },
+      "correct": "B",
+      "key_concept": "The SEC's regulatory flexibility agenda previews rules it expects to propose or adopt; it binds neither the SEC nor companies.",
+      "pre_read": "Place the agenda on the rulemaking timeline before any proposal, and ask what it obliges anyone to do.",
+      "correct_explanation": "Section 602 requires each agency to publish, every October and April, a regulatory flexibility agenda describing rules it expects to propose or adopt that may significantly affect small entities, with an approximate schedule. Section 602(d) adds that the agenda neither requires the agency to act on a listed matter nor stops it acting on an unlisted one. Option A is close but turns an estimated schedule into a deadline.",
+      "wrong_explanations": {
+        "A": "Closest choice: the agenda gives an approximate schedule. But Section 602(d) says listing a matter does not require the SEC to consider or act on it.",
+        "C": "Tempting because agendas preview rulemaking. But comment opens only when a proposal is published in the Federal Register, which a listing is not.",
+        "D": "Tempting because the agenda is published officially. But only an adopted final rule binds companies, and only from its effective date."
+      },
+      "tips": [
+        "Eliminate: C, because a listing is not a published proposal, and D, because nothing binds companies until a final rule takes effect.",
+        "Final two: B beats A because Section 602(d) says the agenda creates no duty to act; its schedule is an estimate.",
+        "Exam cue: sort SEC rulemaking by stage: an agenda listing and a proposal bind no one; a final rule binds from its effective date."
+      ],
+      "framework_ref": "5 U.S.C. 602 (Regulatory agenda)",
+      "related_concepts": [
+        "Regulatory flexibility agenda",
+        "Rulemaking stages",
+        "Effective date"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 4A2.3 and 5 U.S.C. 602 and the SEC Rulemaking Activity page, 31 Oct 2026, CSOE batch 3. Original scenario written for KaiSip from the public law; no SOXCPA material or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d4_047",
+      "domain": 4,
+      "subtopic": "4A3 SEC investigations, disclosure and settlements. Exit pay during an investigation",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "During an SEC investigation of possible securities fraud at a listed company, the board plans a $12 million exit payment to its departing CEO. Under Section 1103, what may the SEC do?",
+      "options": {
+        "A": "Ask a federal court to order the payment held in escrow",
+        "B": "Recover the payment later under the CEO's Section 304 forfeiture",
+        "C": "Order the company itself to freeze the payment, without a court",
+        "D": "Ask the PCAOB to block the payment as an audit matter"
+      },
+      "correct": "A",
+      "key_concept": "Section 1103 lets the SEC ask a federal court to escrow an issuer's extraordinary payments to insiders during an investigation.",
+      "pre_read": "Note the timing, an open investigation, and ask who must order the freeze.",
+      "correct_explanation": "Section 1103 added Exchange Act Section 21C(c)(3): if, during a lawful investigation of possible securities law violations by an issuer or its officers, extraordinary payments to them look likely, the SEC may petition a federal district court for a temporary order requiring the issuer to escrow them, under court supervision, for 45 days. Option C is close, but the freeze comes from a court order, not from the SEC alone.",
+      "wrong_explanations": {
+        "B": "Tempting because Section 304 recovers executive pay. But it needs a misconduct restatement and recovers pay after the fact; it does not freeze a planned payment.",
+        "C": "Closest choice: the SEC can seek a freeze. But Section 1103 has it petition a federal district court, which issues the escrow order.",
+        "D": "Tempting because the PCAOB is an enforcement body. But it oversees audit firms; it has no power over an issuer's payments to executives."
+      },
+      "tips": [
+        "Eliminate: B, because Section 304 recovers pay after a misconduct restatement, and D, because the PCAOB oversees audit firms, not issuer payments.",
+        "Final two: A beats C because Section 1103 has the SEC petition a federal district court; the court orders the escrow.",
+        "Exam cue: an extraordinary insider payment during an SEC investigation points to Section 1103: a court-ordered escrow for 45 days, extendable to 90."
+      ],
+      "framework_ref": "Sarbanes-Oxley Act of 2002 Section 1103 (Temporary freeze authority for the Securities and Exchange Commission); 15 U.S.C. 78u-3(c)(3) (Temporary freeze)",
+      "related_concepts": [
+        "Temporary freeze",
+        "Extraordinary payments",
+        "Escrow order"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 4A3.6 and Sarbanes-Oxley Act Section 1103 and 15 U.S.C. 78u-3(c)(3), 31 Oct 2026, CSOE batch 3. Original scenario written for KaiSip from the public law; no SOXCPA material or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d4_048",
+      "domain": 4,
+      "subtopic": "4A3 SEC investigations, disclosure and settlements. What a Wells submission may hold",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A CFO's counsel ends a Wells submission with an offer to settle, to save the Commission time. Under Section 2.3 of the SEC Enforcement Manual, what will the staff do?",
+      "options": {
+        "A": "Pass the submission and the offer to the Commission together",
+        "B": "Treat the offer as an admission that the CFO broke the law",
+        "C": "Reject it, since offers to settle must be made separately",
+        "D": "Suspend the investigation until the Commission rules on the offer"
+      },
+      "correct": "C",
+      "key_concept": "SEC staff reject a Wells submission that contains a settlement offer; offers must be made in a separate document.",
+      "pre_read": "Recall what a Wells submission is for, and what the staff screens out before anything reaches the Commission.",
+      "correct_explanation": "The Enforcement Manual says the staff will reject a Wells submission that contains or discusses a settlement offer; offers of settlement must be made in a separate document. Accepted submissions go to the Commission with the staff's recommendation, and the Commission may use them in any action. Option A is close because accepted submissions do reach the Commission, but one carrying an offer is rejected instead.",
+      "wrong_explanations": {
+        "A": "Closest choice: accepted Wells submissions go to the Commission with the staff's recommendation. A submission that contains a settlement offer is rejected and generally not passed on.",
+        "B": "Tempting because a Wells submission may be used in later proceedings. But the Manual's rule here is about form: an offer to settle cannot ride inside the submission.",
+        "D": "Tempting because settling could end the matter. But a Wells submission argues against charges; it does not pause the case, and offers belong in a separate document."
+      },
+      "tips": [
+        "Eliminate: B, because the issue is where the offer sits, not what it admits, and D, because a Wells submission does not suspend the matter.",
+        "Final two: C beats A because the Manual has the staff reject a Wells submission that contains a settlement offer; only accepted ones reach the Commission.",
+        "Exam cue: a Wells submission argues the case; a settlement offer travels in its own document."
+      ],
+      "framework_ref": "SEC Enforcement Manual Section 2.3 (The Wells process)",
+      "related_concepts": [
+        "Wells submission",
+        "Offer of settlement",
+        "Enforcement Manual"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 4A3.2 and SEC Enforcement Manual Section 2.3 (Acceptance of a Wells submission), 31 Oct 2026, CSOE batch 3. Original scenario written for KaiSip from the public law; no SOXCPA material or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d4_049",
+      "domain": 4,
+      "subtopic": "4B3 White-collar penalty enhancements. Charging a fraud plot",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Two purchasing managers plot by email to bill their employer for fake services but are caught before any payment. How does charging them under Section 902's provision, not the general conspiracy statute, matter?",
+      "options": {
+        "A": "Section 902 needs a completed fraud, so the general statute must apply",
+        "B": "Their maximum stays five years, the cap for any federal conspiracy",
+        "C": "Section 902 halves wire fraud's maximum because the plot failed",
+        "D": "Their maximum matches wire fraud's, not the five-year conspiracy cap"
+      },
+      "correct": "D",
+      "key_concept": "Section 902's 18 U.S.C. 1349 ties a fraud conspiracy's maximum to the object offense, unlike the five-year general conspiracy statute.",
+      "pre_read": "Compare the penalty each statute sets for an agreement that never succeeded.",
+      "correct_explanation": "Section 902 added 18 U.S.C. 1349: anyone who attempts or conspires to commit a fraud offense in chapter 63, such as wire fraud, is subject to the penalties set for that offense. The general conspiracy statute, 18 U.S.C. 371, caps prison at five years. So charging under 1349 ties the managers' maximum to wire fraud's. Option B is close but treats 1349 as one more five-year conspiracy statute.",
+      "wrong_explanations": {
+        "A": "Tempting because fraud usually needs a scheme carried out. But 1349 reaches attempts and conspiracies; no completed fraud or payment is needed.",
+        "B": "Closest choice: five years is the cap under 18 U.S.C. 371. But Section 1349 borrows the object offense's penalty, so that cap does not apply.",
+        "C": "Tempting because the plot failed. But 1349 sets no discount for failure; it points to the penalties for the offense the managers aimed at."
+      },
+      "tips": [
+        "Eliminate: A, because 1349 covers conspiracies that never succeed, and C, because it sets no reduced penalty for a failed plot.",
+        "Final two: D beats B because 1349 borrows the object offense's penalty; the five-year cap belongs to the general conspiracy statute.",
+        "Exam cue: a fraud plot under 18 U.S.C. 1349 is measured by its target offense; 18 U.S.C. 371 is the five-year general statute."
+      ],
+      "framework_ref": "Sarbanes-Oxley Act of 2002 Section 902 (Attempts and conspiracies to commit criminal fraud offenses); 18 U.S.C. 1349 (Attempt and conspiracy); 18 U.S.C. 371 (Conspiracy to commit offense or to defraud United States)",
+      "related_concepts": [
+        "Conspiracy",
+        "18 U.S.C. 1349",
+        "General conspiracy statute"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 4B3.1 and Sarbanes-Oxley Act Section 902, 18 U.S.C. 1349 and 18 U.S.C. 371, 31 Oct 2026, CSOE batch 3. Original scenario written for KaiSip from the public law; no SOXCPA material or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d4_050",
+      "domain": 4,
+      "subtopic": "4B3 White-collar penalty enhancements. A private company's pension plan",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A family-owned trucking company's finance director, acting as its pension plan's administrator, willfully withholds a required plan report. Does the criminal penalty raised by Section 904 apply to them?",
+      "options": {
+        "A": "No; Title IX's penalties reach issuers and their officers alone",
+        "B": "Yes; Section 904 amended ERISA, which covers private plans too",
+        "C": "No; ERISA reporting breaches by private plans carry civil fines alone",
+        "D": "Yes, provided the plan holds shares of a listed company"
+      },
+      "correct": "B",
+      "key_concept": "Section 904 raised ERISA's criminal penalties, which reach willful reporting violations in private employers' plans as well as listed companies' plans.",
+      "pre_read": "Ask which statute Section 904 changed, and whom that statute covers.",
+      "correct_explanation": "Section 904 amended ERISA Section 501 (29 U.S.C. 1131(a)), which punishes any person who willfully violates ERISA's reporting and disclosure rules. ERISA covers benefit plans set up by any employer engaged in commerce, whether or not its shares trade publicly, so the director is exposed. Option A is close because most SOX duties fall on issuers, but Section 904 works through ERISA, not the securities laws.",
+      "wrong_explanations": {
+        "A": "Closest choice: most SOX duties bind issuers. But Section 904 amended ERISA, whose criminal penalty reaches any person who willfully breaks its reporting rules.",
+        "C": "Tempting because ERISA also has civil remedies. But Section 501 makes a willful reporting violation a crime for any plan ERISA covers.",
+        "D": "Tempting because company stock links plans to securities law. But ERISA coverage turns on the employer and the plan, not on listed shares."
+      },
+      "tips": [
+        "Eliminate: C, because ERISA Section 501 makes willful reporting violations a crime, and D, because ERISA coverage does not depend on listed shares.",
+        "Final two: B beats A because Section 904 amended ERISA, which reaches private employers' plans; it is not limited to issuers.",
+        "Exam cue: before applying a SOX section, check which law it amends; ERISA, title 18 and the Exchange Act each have their own reach."
+      ],
+      "framework_ref": "Sarbanes-Oxley Act of 2002 Section 904 (Criminal penalties for violations of the Employee Retirement Income Security Act of 1974); 29 U.S.C. 1131(a) (Criminal penalties for willful reporting violations); 29 U.S.C. 1003(a) (Coverage of employee benefit plans)",
+      "related_concepts": [
+        "ERISA",
+        "Section 904",
+        "Private company plans"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 4B3.2 and Sarbanes-Oxley Act Section 904, 29 U.S.C. 1131(a) and 29 U.S.C. 1003(a), 31 Oct 2026, CSOE batch 3. Original scenario written for KaiSip from the public law; no SOXCPA material or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d4_051",
+      "domain": 4,
+      "subtopic": "4B3 White-collar penalty enhancements. A false figure from a non-signer",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A listed company's financial reporting manager, who signs no certification, willfully and knowingly puts a materially false revenue figure into the Form 10-K filed with the SEC. Which provision MOST directly makes this a crime?",
+      "options": {
+        "A": "18 U.S.C. 1520, which punishes failures to keep audit workpapers",
+        "B": "Section 906, which punishes willfully false certifications of periodic reports",
+        "C": "Exchange Act Section 32(a), which punishes willfully false statements in filings",
+        "D": "Section 806, which protects employees who report securities fraud"
+      },
+      "correct": "C",
+      "key_concept": "Exchange Act Section 32(a), whose penalties Section 1106 raised, punishes anyone who willfully files materially false statements in required reports.",
+      "pre_read": "Note who made the false statement and whether that person signed anything, then match the provision.",
+      "correct_explanation": "Exchange Act Section 32(a) makes it a crime to willfully and knowingly make a statement that is false or misleading as to a material fact in any report required to be filed under the Act, and Section 1106 raised its maximum penalties. The manager's false 10-K figure fits. Option B is close, but Section 906 punishes false certifications by the officers who sign them, and this manager signs none.",
+      "wrong_explanations": {
+        "A": "Tempting because 1520 also came from SOX's record provisions. But it covers auditors who fail to keep workpapers, not false figures in a company's filing.",
+        "B": "Closest choice: Section 906 punishes willfully false certifications. But it binds the certifying officers, and this manager signs no certification.",
+        "D": "Tempting because fraud is involved. But Section 806 protects employees who report fraud; it does not punish those who commit it."
+      },
+      "tips": [
+        "Eliminate: A, because 1520 binds auditors keeping workpapers, and D, because Section 806 protects whistleblowers rather than punishing false filings.",
+        "Final two: C beats B because Section 32(a) reaches anyone who willfully files a false statement; Section 906 reaches only certifying officers.",
+        "Exam cue: a false statement in a filed report by someone who signs no certification points to Exchange Act Section 32(a), raised by Section 1106."
+      ],
+      "framework_ref": "15 U.S.C. 78ff(a) (Willful violations; false and misleading statements); Sarbanes-Oxley Act of 2002 Section 1106 (Increased criminal penalties under the Securities Exchange Act of 1934)",
+      "related_concepts": [
+        "Exchange Act Section 32(a)",
+        "False statements in filings",
+        "Section 1106"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 4B3.3 and 15 U.S.C. 78ff(a) and Sarbanes-Oxley Act Section 1106, 31 Oct 2026, CSOE batch 3. Original scenario written for KaiSip from the public law; no SOXCPA material or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d4_052",
+      "domain": 4,
+      "subtopic": "4B3 White-collar penalty enhancements. Fine for a firm",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A broker-dealer firm is convicted of willfully violating the Securities Exchange Act of 1934. Since Section 1106 raised the Act's criminal penalties, what is the GREATEST fine the firm faces?",
+      "options": {
+        "A": "Up to $25 million",
+        "B": "Up to $5 million",
+        "C": "Up to $2.5 million",
+        "D": "Up to $500,000"
+      },
+      "correct": "A",
+      "key_concept": "Since Section 1106, a willful Exchange Act violation can bring an entity a fine of up to $25 million.",
+      "pre_read": "Check whether the defendant is an individual or a firm before choosing a fine cap.",
+      "correct_explanation": "Section 1106 amended Exchange Act Section 32(a). An individual's willful violation now carries a fine of up to $5 million, and when the violator is a person other than a natural person, such as a broker-dealer firm, the fine can reach $25 million, up from $2.5 million before 2002. Option B is close, but $5 million is the cap for individuals, not for entities.",
+      "wrong_explanations": {
+        "B": "Closest choice: $5 million is the Section 32(a) fine cap for an individual. A firm, as a person other than a natural person, faces up to $25 million.",
+        "C": "Tempting because $2.5 million was the entity maximum before 2002. Section 1106 raised it to $25 million.",
+        "D": "Tempting because $500,000 is ERISA's entity fine under Section 904. Exchange Act violations by entities carry far more."
+      },
+      "tips": [
+        "Eliminate: C, the pre-2002 entity cap that Section 1106 replaced, and D, the ERISA entity fine from Section 904.",
+        "Final two: A beats B because Section 32(a) sets $25 million for entities; $5 million is the individual maximum.",
+        "Exam cue: in Exchange Act criminal cases, check whether the defendant is a person or an entity; the fine caps differ."
+      ],
+      "framework_ref": "Sarbanes-Oxley Act of 2002 Section 1106 (Increased criminal penalties under the Securities Exchange Act of 1934); 15 U.S.C. 78ff(a) (Willful violations; false and misleading statements)",
+      "related_concepts": [
+        "Section 1106",
+        "Exchange Act Section 32(a)",
+        "Entity fines"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 4B3.3 and Sarbanes-Oxley Act Section 1106 and 15 U.S.C. 78ff(a), 31 Oct 2026, CSOE batch 3. Original scenario written for KaiSip from the public law; no SOXCPA material or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d4_053",
+      "domain": 4,
+      "subtopic": "4C1 Dodd-Frank's aims and new bodies. Who runs a liquidation",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A bank holding company's general counsel briefs directors on orderly liquidation under Dodd-Frank Title II. If the company were placed into it, Section 204(b) would make its receiver:",
+      "options": {
+        "A": "the Federal Reserve Board, which already supervises the holding company",
+        "B": "a bankruptcy trustee, appointed under the Bankruptcy Code",
+        "C": "the SEC, which oversees the company's listed securities",
+        "D": "the Federal Deposit Insurance Corporation, with full receiver powers"
+      },
+      "correct": "D",
+      "key_concept": "Under Dodd-Frank Title II, the FDIC acts as receiver for a covered financial company placed into orderly liquidation.",
+      "pre_read": "Separate the body that supervises a company from the body that runs its liquidation.",
+      "correct_explanation": "Section 204(b) of the Dodd-Frank Act says that once appointed under Title II, the Federal Deposit Insurance Corporation acts as receiver for the covered financial company, with all the rights and obligations the title sets. Option A is close because the Federal Reserve supervises bank holding companies, but supervising a company is not running its liquidation, and Title II gives that job to the FDIC.",
+      "wrong_explanations": {
+        "A": "Closest choice: the Federal Reserve supervises bank holding companies. But Section 204(b) gives the receivership to the FDIC, not to the supervisor.",
+        "B": "Tempting because failing companies usually go through bankruptcy. Title II replaces that path with an FDIC receivership for covered companies.",
+        "C": "Tempting because the SEC oversees listed securities. But it is not the receiver in an orderly liquidation; the FDIC is."
+      },
+      "tips": [
+        "Eliminate: B, because Title II replaces a bankruptcy trustee with a federal receiver, and C, because the SEC regulates securities rather than running liquidations.",
+        "Final two: D beats A because Section 204(b) makes the FDIC the receiver; the Federal Reserve's supervisory role does not include it.",
+        "Exam cue: a Title II orderly liquidation is an FDIC receivership, not a bankruptcy case and not a supervisor's job."
+      ],
+      "framework_ref": "Dodd-Frank Act Section 204(b) (Corporation as receiver)",
+      "related_concepts": [
+        "Orderly liquidation authority",
+        "FDIC as receiver",
+        "Dodd-Frank Title II"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 4C1.2 and Dodd-Frank Act Section 204(b) and 12 U.S.C. 5384(b), 31 Oct 2026, CSOE batch 3. Original scenario written for KaiSip from the public law; no SOXCPA material or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d4_054",
+      "domain": 4,
+      "subtopic": "4C1 Dodd-Frank's aims and new bodies. A bank's seed stake in a fund",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A bank holding company's asset management team organizes a hedge fund for trust clients and seeds it with 40 percent of its initial equity. Under Section 619, what must the company do?",
+      "options": {
+        "A": "Sell the whole stake at once, as fund stakes are barred",
+        "B": "Cut its stake to 3 percent of the fund within one year",
+        "C": "Keep it while its fund stakes total under 3 percent of capital",
+        "D": "Nothing, as funds for trust clients fall outside Section 619"
+      },
+      "correct": "B",
+      "key_concept": "Under Section 619, a bank's seed stake in a fund it organizes must fall to 3 percent of the fund within one year.",
+      "pre_read": "Find the two separate size limits on a bank's own stake in a fund it organizes.",
+      "correct_explanation": "Section 619 lets a banking entity organize and offer a fund for its trust or advisory clients and seed it, but within one year of the fund's establishment its stake must fall to no more than 3 percent of the fund's ownership interests, a deadline the Federal Reserve may extend. Separately, all its fund stakes together may not exceed 3 percent of its Tier 1 capital. Option C applies only that second test.",
+      "wrong_explanations": {
+        "A": "Tempting because Section 619 restricts fund stakes. But it lets a bank seed a fund it organizes for clients and keep a small stake.",
+        "C": "Closest choice: the aggregate limit of 3 percent of Tier 1 capital does apply. But each seeded stake must also fall to 3 percent of the fund within a year.",
+        "D": "Tempting because the fund serves trust clients. That is a condition for organizing it; the limits on the bank's own stake still apply."
+      },
+      "tips": [
+        "Eliminate: A, because Section 619 allows a small stake in a fund the bank organizes, and D, because client funds still face the stake limits.",
+        "Final two: B beats C because each seeded stake must drop to 3 percent of the fund within a year; the Tier 1 test is an extra limit.",
+        "Exam cue: a Volcker fund stake must pass two 3 percent tests: per fund after a year, and in total against Tier 1 capital."
+      ],
+      "framework_ref": "Dodd-Frank Act Section 619 (Prohibitions on proprietary trading and certain relationships with hedge funds and private equity funds); 12 U.S.C. 1851(d)(4) (De minimis investment)",
+      "related_concepts": [
+        "Volcker Rule",
+        "De minimis investment",
+        "Tier 1 capital"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 4C1.3 and Dodd-Frank Act Section 619 and 12 U.S.C. 1851(d)(1)(G) and (d)(4), 31 Oct 2026, CSOE batch 3. Original scenario written for KaiSip from the public law; no SOXCPA material or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d4_055",
+      "domain": 4,
+      "subtopic": "4C2 Dodd-Frank, the PCAOB and Basel. How Basel III reaches a U.S. bank",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A bank's audit committee chair asks how Basel III applies to the bank. Going by the U.S. banking agencies' 2013 final capital rule, Basel III is BEST described as:",
+      "options": {
+        "A": "a federal statute that Dodd-Frank enacted as one of its titles",
+        "B": "a binding treaty that the Basel Committee enforces on U.S. banks",
+        "C": "a Basel Committee standard set into U.S. rules by the agencies",
+        "D": "a PCAOB auditing standard for the audits of bank capital"
+      },
+      "correct": "C",
+      "key_concept": "Basel III is a Basel Committee capital framework that U.S. banking agencies put into effect through their own rules.",
+      "pre_read": "Ask who wrote Basel III and what had to happen before it bound a U.S. bank.",
+      "correct_explanation": "The agencies' 2013 final rule says their proposals reflected agreements of the Basel Committee on Banking Supervision in Basel III, a 2010 framework to raise the quality and quantity of bank capital. The agencies then adopted those standards, with changes, as their own capital rules after notice and comment, such as the Federal Reserve's Regulation Q (12 CFR part 217). Option B is close but skips that step.",
+      "wrong_explanations": {
+        "A": "Tempting because the 2013 rule also carried out parts of Dodd-Frank. But Basel III itself is an international framework, not an Act of Congress.",
+        "B": "Closest choice: Basel III is an international agreement. But it bound U.S. banks only once the agencies adopted it, with changes, in their own capital rules.",
+        "D": "Tempting because auditors review bank financial statements. But Basel III sets bank capital standards; it is not an auditing standard."
+      },
+      "tips": [
+        "Eliminate: A, because Basel III comes from an international committee, not Congress, and D, because it sets bank capital, not audit procedures.",
+        "Final two: C beats B because Basel III reaches U.S. banks through the agencies' own capital rules, adopted after notice and comment.",
+        "Exam cue: Basel is an international standard; U.S. banks follow it through U.S. rules such as Regulation Q."
+      ],
+      "framework_ref": "78 FR 62018 Section I (Banking agencies' 2013 capital rule: implementation of Basel III); 12 CFR 217.10(a) (Minimum capital requirements)",
+      "related_concepts": [
+        "Basel III",
+        "Basel Committee on Banking Supervision",
+        "Regulation Q"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 4C2.3 and the agencies' final rule at 78 FR 62018 (govinfo) and 12 CFR 217.10, 31 Oct 2026, CSOE batch 3. Original scenario written for KaiSip from the public law; no SOXCPA material or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d4_056",
+      "domain": 4,
+      "subtopic": "4C2 Dodd-Frank, the PCAOB and Basel. A thin capital buffer",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A state member bank's CFO sees it meets every 12 CFR 217.10 minimum ratio, but its capital conservation buffer is below 2.5 percent. What does 12 CFR 217.11 MOST directly require?",
+      "options": {
+        "A": "Limit its distributions and discretionary bonuses to a payout cap",
+        "B": "Nothing, because it still meets every minimum capital ratio",
+        "C": "Hand the bank to a receiver until the buffer is rebuilt",
+        "D": "Stop making new loans until the buffer is back above 2.5 percent"
+      },
+      "correct": "A",
+      "key_concept": "Under the Basel III-based U.S. rule, a bank inside its capital conservation buffer faces limits on distributions and discretionary bonuses.",
+      "pre_read": "Separate the minimum ratios from the buffer above them, and recall what each one triggers.",
+      "correct_explanation": "Under 12 CFR 217.11, a bank whose capital conservation buffer is not above 2.5 percent may not make distributions, such as dividends, or discretionary bonus payments beyond its maximum payout amount, a share of recent retained income that shrinks as the buffer shrinks. The 2013 rule took the buffer from Basel III. Option B is close because no minimum is breached, but the buffer sits above the minimums and has its own consequence.",
+      "wrong_explanations": {
+        "B": "Closest choice: the bank meets the 217.10 minimums. But the buffer sits above them, and a buffer at or below 2.5 percent caps payouts under 217.11.",
+        "C": "Tempting because capital shortfalls sound grave. But a thin buffer limits payouts; it does not hand the bank to a receiver.",
+        "D": "Tempting because capital supports lending. But Section 217.11 restricts distributions and discretionary bonuses, not new loans."
+      },
+      "tips": [
+        "Eliminate: C, because a thin buffer triggers payout limits rather than receivership, and D, because the rule restricts distributions, not lending.",
+        "Final two: A beats B because the buffer sits above the minimums; falling into it limits dividends and discretionary bonuses.",
+        "Exam cue: Basel III capital comes in layers: breach a minimum and the bank fails the rule; dip into the buffer and payouts are capped."
+      ],
+      "framework_ref": "12 CFR 217.11(a) (Capital conservation buffer); 12 CFR 217.10(a) (Minimum capital requirements)",
+      "related_concepts": [
+        "Capital conservation buffer",
+        "Regulation Q",
+        "Basel III"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 4C2.3 and 12 CFR 217.10 and 217.11 and the agencies' final rule at 78 FR 62018, 31 Oct 2026, CSOE batch 3. Original scenario written for KaiSip from the public law; no SOXCPA material or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d4_057",
+      "domain": 4,
+      "subtopic": "4C3 The Sarbanes-Oxley amendments. What the smaller-issuer study found",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "In its April 2011 study required by Dodd-Frank Section 989G(b), the SEC's staff recommended that accelerated filers with $75 million to $250 million of public float:",
+      "options": {
+        "A": "be allowed to opt out of 404(b) by telling investors",
+        "B": "stop including management's 404(a) report as well",
+        "C": "replace the auditor attestation with a review by the SEC's staff",
+        "D": "keep the 404(b) auditor attestation, with no new exemption"
+      },
+      "correct": "D",
+      "key_concept": "The SEC staff's 2011 study under Section 989G(b) recommended keeping 404(b) for accelerated filers, with no new exemption.",
+      "pre_read": "Remember that a study section orders a report, then recall what that report concluded.",
+      "correct_explanation": "Section 989G(b) told the SEC to study how to ease 404(b) for companies with $75 million to $250 million in market capitalization while keeping investor protections. The staff's April 2011 study recommended keeping 404(b) for accelerated filers, with no new exemptions, noting that auditor involvement makes internal control disclosure more reliable. It also rejected an opt-out, which it saw as too close to a full exemption.",
+      "wrong_explanations": {
+        "A": "Closest choice: the staff did weigh an opt-out with disclosure to investors. It rejected it as too close to a full exemption, given the value of auditor involvement.",
+        "B": "Tempting because the study concerned smaller companies. But it addressed only the auditor attestation in 404(b); management's 404(a) report was never in question.",
+        "C": "Tempting because the SEC reviews filings. But the SEC does not attest to internal control; the study kept the independent auditor's role."
+      },
+      "tips": [
+        "Eliminate: B, because the study concerned 404(b) only, and C, because the SEC reviews filings but never attests to a company's controls.",
+        "Final two: D beats A because the staff recommended no new exemptions and rejected an opt-out as too close to one.",
+        "Exam cue: a study section changes no duty by itself; check what the study recommended and whether any later rule changed the law."
+      ],
+      "framework_ref": "Dodd-Frank Act Section 989G(b) (Study for issuers between $75 million and $250 million); SEC Staff Study on Section 404(b) (April 2011) Executive Summary (Conclusion and recommendations)",
+      "related_concepts": [
+        "Section 989G(b) study",
+        "Section 404(b)",
+        "Accelerated filers"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 4C3.1 and Dodd-Frank Act Section 989G(b) and the SEC staff's April 2011 Section 404(b) study, 31 Oct 2026, CSOE batch 3. Original scenario written for KaiSip from the public law; no SOXCPA material or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d4_058",
+      "domain": 4,
+      "subtopic": "4C3 The Sarbanes-Oxley amendments. When recovery costs too much",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A listed issuer's compensation committee, all independent directors, finds that recovering $8,000 of erroneously awarded pay from a former officer would cost $40,000 in outside legal fees. Under Rule 10D-1, may it forgo recovery?",
+      "options": {
+        "A": "No; once a restatement occurs, Rule 10D-1 allows no exception",
+        "B": "Yes, after a reasonable attempt, documented for the exchange",
+        "C": "Yes, at once, because the costs exceed the amount to be recovered",
+        "D": "Yes, if the former officer had no part in the accounting error"
+      },
+      "correct": "B",
+      "key_concept": "A Rule 10D-1 recovery may be dropped as too costly only after a reasonable, documented attempt, with the record given to the exchange.",
+      "pre_read": "List the conditions in the cost exception, then check which option meets all of them.",
+      "correct_explanation": "Rule 10D-1(b)(1)(iv)(A) lets the independent compensation committee find recovery impracticable when the direct cost of paying a third party to enforce it would exceed the amount to be recovered. But first the issuer must make a reasonable attempt to recover, document that attempt and give the documentation to the exchange. Option C is close but skips that attempt.",
+      "wrong_explanations": {
+        "A": "Tempting because recovery is otherwise mandatory. But the rule lists narrow impracticability exceptions, including enforcement costs above the amount.",
+        "C": "Closest choice: costs above the amount can justify stopping. But the issuer must first make a reasonable attempt to recover and give the exchange its documentation.",
+        "D": "Tempting because the officer may be blameless. But the impracticability exceptions turn on cost, home-country law or retirement plan rules, not on the officer's role."
+      },
+      "tips": [
+        "Eliminate: A, because the rule lists impracticability exceptions, and D, because those exceptions turn on cost, foreign law or plan rules, not on the officer's role.",
+        "Final two: B beats C because the cost exception needs a reasonable, documented recovery attempt first, with the record given to the exchange.",
+        "Exam cue: under Rule 10D-1, 'too costly to recover' works only after the issuer has tried, documented it and told the exchange."
+      ],
+      "framework_ref": "17 CFR 240.10D-1(b)(1) (Recovery of erroneously awarded compensation)",
+      "related_concepts": [
+        "Rule 10D-1",
+        "Impracticability exception",
+        "Compensation committee"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 4C3.3 and 17 CFR 240.10D-1(b)(1)(iv), 31 Oct 2026, CSOE batch 3. Original scenario written for KaiSip from the public law; no SOXCPA material or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d4_059",
+      "domain": 4,
+      "subtopic": "4C3 The Sarbanes-Oxley amendments. After leaving the audit firm",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An audit manager who left a registered firm two years ago for an industry job is found to have broken PCAOB standards on an issuer audit before leaving. Under Section 2(a)(9)(C), the Board:",
+      "options": {
+        "A": "has lost authority, as they no longer work at a registered firm",
+        "B": "may discipline them for conduct in their new industry job too",
+        "C": "may discipline them for conduct while they were associated",
+        "D": "must refer the matter to the SEC, which handles former auditors"
+      },
+      "correct": "C",
+      "key_concept": "Since Dodd-Frank Section 929F, the PCAOB may investigate and discipline formerly associated persons for conduct while associated.",
+      "pre_read": "Ask when the conduct happened, not where the person works now.",
+      "correct_explanation": "Dodd-Frank Section 929F added Section 2(a)(9)(C): for the Board's investigation and discipline powers, associated persons include those formerly associated with a public accounting firm. The Board may sanction a former associate only for conduct while associated, or for refusing to cooperate in an investigation of that period. So leaving the firm does not end the Board's reach, but that reach stops at the industry job.",
+      "wrong_explanations": {
+        "A": "Closest choice: the manager has left. But Section 2(a)(9)(C), added by Dodd-Frank, keeps former associates within the Board's reach for conduct while associated.",
+        "B": "Tempting because the Board can reach former associates. But only for conduct while associated, or non-cooperation about that period, not for an industry job.",
+        "D": "Tempting because the SEC oversees the Board. But the Board itself may investigate and discipline former associates; no referral is required."
+      },
+      "tips": [
+        "Eliminate: B, because the Board's reach covers only conduct while associated, and D, because the Board disciplines former associates itself.",
+        "Final two: C beats A because Section 2(a)(9)(C) brings former associates within the Board's powers for conduct while associated.",
+        "Exam cue: leaving an audit firm does not end PCAOB exposure for past audit work, but new conduct outside the profession is beyond the Board."
+      ],
+      "framework_ref": "Dodd-Frank Act Section 929F(g) (Person associated with a public accounting firm); 15 U.S.C. 7201(a)(9)(C) (Investigative and enforcement authority over formerly associated persons)",
+      "related_concepts": [
+        "Formerly associated persons",
+        "PCAOB discipline",
+        "Dodd-Frank Section 929F"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 4C3.4 and Dodd-Frank Act Section 929F(g) and 15 U.S.C. 7201(a)(9)(C), 31 Oct 2026, CSOE batch 3. Original scenario written for KaiSip from the public law; no SOXCPA material or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d4_060",
+      "domain": 4,
+      "subtopic": "4C3 The Sarbanes-Oxley amendments. A broker-dealer's PCAOB fee",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A small broker-dealer's CFO asks how the firm's share of the PCAOB's annual accounting support fee is set. Under Section 109(h), added by Dodd-Frank, how is it allocated?",
+      "options": {
+        "A": "In proportion to the firm's net capital, under Board rules",
+        "B": "As a flat fee charged equally to every broker-dealer",
+        "C": "In proportion to the customer assets the firm holds in custody",
+        "D": "In proportion to the audit fees it pays its own auditor"
+      },
+      "correct": "A",
+      "key_concept": "Since Dodd-Frank, brokers and dealers pay a share of the PCAOB's support fee in proportion to their net capital.",
+      "pre_read": "Recall which measure of a broker-dealer's size the statute picked for its PCAOB fee.",
+      "correct_explanation": "Dodd-Frank Section 982 added Section 109(h): each broker or dealer pays the accounting support fee allocated to it, and its share is in proportion to its net capital compared with the total net capital of all brokers and dealers, under rules the Board issues. Option C is close because customer assets also reflect a broker's size, but the statute uses net capital.",
+      "wrong_explanations": {
+        "B": "Tempting because a flat fee is simple. But Section 109(h) makes each share proportional, so firms with more net capital pay more.",
+        "C": "Closest choice: customer assets also reflect a broker's size. But Section 109(h) allocates the fee by net capital, compared with all brokers and dealers.",
+        "D": "Tempting because brokers pay their own auditors. But the support fee is the broker-dealer's own charge, measured by its net capital, not by audit fees."
+      },
+      "tips": [
+        "Eliminate: B, because Section 109(h) allocates shares proportionally, and D, because the fee follows the broker-dealer's own finances, not its audit bill.",
+        "Final two: A beats C because Section 109(h) names net capital as the measure; customer assets play no part.",
+        "Exam cue: since Dodd-Frank, brokers and dealers help fund the PCAOB, and their shares follow net capital."
+      ],
+      "framework_ref": "Dodd-Frank Act Section 982 (Oversight of brokers and dealers); 15 U.S.C. 7219(h) (Allocation of accounting support fees among brokers and dealers)",
+      "related_concepts": [
+        "Accounting support fee",
+        "Net capital",
+        "Dodd-Frank Section 982"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 4C3.4 and Dodd-Frank Act Section 982(h) and 15 U.S.C. 7219(h), 31 Oct 2026, CSOE batch 3. Original scenario written for KaiSip from the public law; no SOXCPA material or prep-bank text used.",
       "style_version": 2
     }
   ]
