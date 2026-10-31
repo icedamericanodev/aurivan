@@ -191,6 +191,55 @@
       "aliases": []
     },
     {
+      "id": "independence-of-ai-assurance",
+      "family": "role",
+      "order": 4,
+      "title": "Independent of the builders and the auditee",
+      "rule": "Builders never validate their own model; the IS auditor independently checks any tool, data, test or rating the auditee controls.",
+      "why": "This extends the CISA principle “Independence at every stage” to AI. Builders share their model's assumptions, and an auditee that chose the test data, wrote the labels or runs the platform can shape the result or watch the work. So validation sits with people separate from the builders, and the IS auditor checks auditee-controlled inputs before relying on them.",
+      "triggers": [
+        "validated by the team that built it",
+        "the platform's built-in validation report",
+        "a test set the developers chose",
+        "labels the data science team wrote",
+        "a platform run by the unit under audit",
+        "the vendor's own fairness rating"
+      ],
+      "trap": {
+        "move": "Relying on the builders' own validation, or on a test set, rating or tool the auditee controls, because it looks thorough or an outside expert used it.",
+        "why_wrong": "Whoever controls the inputs controls what the check can find. A more careful rerun by the same people or on the same data repeats their blind spots, and an auditee-run tool lets the audited unit see or steer the audit."
+      },
+      "example": {
+        "scenario": "A hospital's sepsis-alert vendor supplies a fairness rating computed on patient records it selected, and the informatics team that tuned the alert thresholds signed the validation.",
+        "answer": "Rely on neither as it stands. Recommend that management assign validators separate from the tuning team, and test the vendor's rating against a sample of the hospital's own recent patient records."
+      },
+      "check": {
+        "scenario": "Planning next year's AI audits, an IS auditor is offered the risk ratings that model owners gave their own models, to choose which models to test.",
+        "right": "Check a sample of the ratings against audit's own risk criteria before using them to choose.",
+        "trap": "Use the owners' ratings to choose the models, since owners know their own models best.",
+        "why": "Ratings set by the people being audited reflect their own view of their models. Checked against audit's criteria they become a useful input; taken as given, they let the auditee steer the audit."
+      },
+      "nuance": "Independent does not mean the IS auditor: validators may sit in management, such as a second-line team, if separate from the builders. Auditee data and expert work can be used once checked against sources.",
+      "domains": [
+        2,
+        3
+      ],
+      "subtopics": [
+        "2E.3",
+        "3A.3",
+        "3D.3"
+      ],
+      "practice_ids": [
+        "aaia_d2_014",
+        "aaia_d3_003",
+        "aaia_d3_024",
+        "aaia_d3_043"
+      ],
+      "slip_pattern": null,
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
       "id": "ai-governance-before-tooling",
       "family": "priorities",
       "order": 1,
@@ -594,8 +643,8 @@
       },
       "check": {
         "scenario": "A bank's fraud team wants to raise its model's alert threshold to cut analyst workload, and plans to make the change directly in production as a settings tweak.",
-        "right": "Recommend it go through change control, tested for missed fraud and approved by the model owner first.",
-        "trap": "Let the team apply it now as a settings tweak, then compare missed fraud with last month's.",
+        "right": "Recommend it go through change control: tested for its effect on missed fraud, then approved by the owner before use.",
+        "trap": "Let the team apply it now as a settings tweak, then compare missed fraud against last month's figures.",
         "why": "A threshold decides which cases are caught, so changing it changes outcomes. Testing first shows the cost in missed fraud before customers bear it."
       },
       "nuance": "Low-risk, well-understood changes can follow a lighter standard path once tested, but only when their effect on outputs is known in advance.",
