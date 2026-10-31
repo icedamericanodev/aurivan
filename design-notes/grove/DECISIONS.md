@@ -50,7 +50,7 @@ Why: on real phone browsers Start was under the bar in every state; an anxious l
 
 ## 7. Ring first on phones (owner, 31 Oct 2026; replaces plan first)
 
-Below 768px Today goes back to the kit's order (`screens/01-phone-today.png`): the hero figure first (the stage line, the readiness ring with the plant, its caption, the Accuracy and Exam date tiles), then Today's plan with Start, then the plant line, then the twig, then the rest. The order is the page's own (the markup), never CSS `order`, so keyboard focus and screen readers follow what is seen. The phone ring is 132px (was 150px; the owner asked for a smaller ring) and the figure is tighter, so Start sits as high as it can.
+Below 768px Today goes back to the kit's order (`screens/01-phone-today.png`): the hero figure first (the stage line, the readiness ring with the plant, its caption, the Accuracy and Exam date tiles), then Today's plan with Start, then the plant line, then the twig, then the rest. The order is the page's own (the markup), never CSS `order`, so keyboard focus and screen readers follow what is seen. The phone ring is 132px at 100% text (was 150px; the owner asked for a smaller ring) and the figure is tighter, so Start sits as high as it can. The ring is sized from its own text size, so with larger text it grows (about 172px at 130%, capped by the card's width) and nothing inside it is clipped; checked at text scales 1, 1.15, 1.3 and 2 at 320, 375 and 390px.
 
 On short browser screens (390 by 664, 375 by 635) a learner may scroll a little to reach Start; that is accepted. Not accepted: clipping the plant, the range or its caption, or text smaller than the type scale. From 768px nothing changes (the figure beside or above the plan in one forest card). Start's position is still measured as in decision 6 and reported at each handoff.
 
@@ -65,6 +65,8 @@ The website no longer shows or says "Field guide", "Field record", "Plate", "Pla
 - Your progress: "Five areas, one scale"; "Built from your answers in this app."; the badges sheet is headed "Badges" (was "Herbarium") and its empty mount says "Nothing here yet".
 - Practice: "Picked for you", "Where you left off", "A place to start"; the domain note is the sentence alone; "Three moves for this question".
 - Results and mocks: "Your domains after this set", "IS Operations, new growth", "Your five areas after this mock", "Two mocks, one pace".
+
+The Grove kit (`reference/*.html`, `screens/01`, `04`, `05`, `06`, `GROVE_HANDOFF.md` and `START_HERE.md`) was updated the same day so a later build does not bring the labels back.
 
 "Field Guide" stays the team's name for the look, never words on screen. Code names such as `fgPlate` stay. The phone app follows in its own round (the decision asks both apps to ship together; the version bump and What's New line wait for the end of the uplift).
 

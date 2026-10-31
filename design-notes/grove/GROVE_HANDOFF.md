@@ -2,6 +2,8 @@
 
 Read this whole file before you change anything. It is the single source of truth for this uplift.
 
+> **No book labels on screen (31 Oct 2026).** Never show or say "Field guide", "Field record", "Plate", "Plates", "Herbarium" or "Fig. N". Captions are plain words. See `DECISIONS.md` 8 and `docs/mobile/DESIGN_SYSTEM.md` §21.9. The kit below follows this.
+
 ## 1. What this is
 
 A visual uplift of the KaiSip app (kaisip.com and the Android app, which share one codebase). The look is called **Grove**: the existing plant theme, with cleaner rounded cards, a floating tab bar, and every progress number drawn as a plant.
@@ -77,7 +79,7 @@ The dark values below are kaisip.com's current dark theme, so most already exist
 | `--soil` | `#6B5844` | `#A89B83` | Ground lines, twig branch, chart baseline |
 | `--leaf-empty` | `#39443C` | `#CDC9BC` | Empty leaf outlines, locked stages |
 
-Type: keep **Fraunces** (headings, big numbers, italic plate captions) and **Figtree** (everything else). Big numbers use `font-variant-numeric: tabular-nums`.
+Type: keep **Fraunces** (headings, big numbers, italic captions) and **Figtree** (everything else). Big numbers use `font-variant-numeric: tabular-nums`.
 
 ## 5. Shared rules for phone and web
 
@@ -113,7 +115,7 @@ See `01-phone-today.png` and the right card in `06-data-kit.png`.
 - **After the first estimate:** 50 ticks, each worth 2 points. Ticks up to the low end of the range are `--btn`. Ticks inside the range are `--tip`. A clay marker sits at the 80 study bar (288 degrees). Centre text: "58 to 66", then "estimated range". Never show a single number.
 - Use the readiness values the app already calculates. Simplest build: draw each tick as a `<line>` rotated `i * 360 / N` degrees in a loop.
 
-### 6.5 Domain stems chart, "Fig. 5 · Five areas, one scale" (You)
+### 6.5 Domain stems chart, "Five areas, one scale" (You)
 This replaces the current chart and keeps its idea. See `04-phone-you.png` (seed state) and `06-data-kit.png` (grown state).
 - Y axis labels 0, 50, 70, 100. Dashed 70 line labelled "70 line" in italic Fraunces. Baseline in `--soil`.
 - **Seed state** (fewer than 30 answers in that domain): a seed at the baseline inside a germination ring (radius 13, stroke 2.5). The ring fills `answered / 30` in `--btn`. At 6 or more answers, draw a tiny shoot. Under the label: "6 of 30".
@@ -132,7 +134,7 @@ This replaces the current chart and keeps its idea. See `04-phone-you.png` (seed
 - Six square tiles: Seed, Sprout, Sapling, Young oak, Oak, Old oak. The current stage tile is `--forest-track` with a `--btn` edge. Locked stages are quiet outlines, never hidden.
 - If the app already has its own stage names, keep those.
 
-### 6.8 Herbarium tiles (You)
+### 6.8 Badge tiles (You)
 - Four square tiles in a row. Earned badge: a light paper tile with the pressed leaf and a tape strip at the top. Not earned: a dashed `--leaf-empty` outline with a faint silhouette.
 - Under the tiles: "1 pressed · Fresh Start, 26 Oct" from real badge data.
 
@@ -145,7 +147,7 @@ The screenshots show the layout for each screen. Section 10 lists every item tha
 
 ### Today (`01`, web `05`)
 1. Date label, "Good afternoon, {name}", avatar tile, and "1 study day this week".
-2. Hero card: "Fig. 1 · {stage}", "Stage 1 of 6", readiness ring, ring caption, then two inset tiles: Accuracy and Exam date ("Set a date" when none is saved).
+2. Hero card: the stage name ("Seed"), "Stage 1 of 6", readiness ring, ring caption, then two inset tiles: Accuracy and Exam date ("Set a date" when none is saved).
 3. Today's plan card: numbered step squares, title and detail, minutes, full-width Start, "Short on time? 5 questions, 6 min", and "Stop any time; your place is saved." When there is an unanswered question, this card switches to the existing "Where you left off · Your open question · Continue" state, in the same card style.
 4. This week's twig card.
 5. "If you have more time" card: Read next, and Your weakest area.
@@ -156,7 +158,7 @@ The screenshots show the layout for each screen. Section 10 lists every item tha
 
 ### Learn (`02`)
 1. Title and one line of intro.
-2. Up next hero card: domain dot and name, lesson title, dandelion plate tile, time line, Start lesson.
+2. Up next hero card: domain dot and name, lesson title, dandelion tile, time line, Start lesson.
 3. Search field.
 4. Tiles: Study notes, Glossary, Principles, The CISA exam, then Final review week as a full-width tile.
 5. Lessons card: one row per domain with its `--domN` dot and "0 of 13". The recommended domain gets a small "Next" chip. "Prefer a guided path?" button at the bottom.
@@ -175,13 +177,13 @@ The screenshots show the layout for each screen. Section 10 lists every item tha
 9. Mock exams card: Mini mock (50) and Full mock (150) tiles, and the ISACA scaled score note.
 
 ### You (`04`)
-1. "Field record · You" label and the settings button.
+1. The date label and the settings button.
 2. Profile row: name, studying since, daily minutes, starting level.
 3. Your plant card: plant name, stage, growth. Keep the existing pick-a-plant and naming flow when nothing is planted yet.
 4. Progress tiles, 2 by 2: Answered, Correct, Accuracy, Streak (with study days this week). Note under them: "Each question counts once, at your latest try."
 5. Estimated readiness summary row with a small ring and a Report link.
 6. Domain stems chart card.
-7. Herbarium card.
+7. Badges card.
 8. Study tools card: Questions to revisit, Mistake journal, Saved questions, Share progress.
 9. Your progress card: Your progress, Weak spots, Session summary.
 10. Mock exams card, including the "No mocks yet" empty state.
@@ -198,7 +200,7 @@ Do these in order. Commit after each one.
 
 1. **Tokens, shapes and navigation.** Add the new tokens in both themes. Apply card and tile radii. Build the floating tab bar and restyle the sidebar. Remove the floating gear and add the settings button to You.
 2. **Today.** Hero card with the readiness ring (both states), plan card, week twig.
-3. **You.** Stat tiles, domain stems chart (seed and stem states), Herbarium tiles, study tools card.
+3. **You.** Stat tiles, domain stems chart (seed and stem states), badge tiles, study tools card.
 4. **Practice and Learn.** Section tabs, Picked for you hero, Focus next, By domain, Review and saved, Drills, Mock exams. Learn up next hero, tiles (with Glossary), lessons card, then restyle the inside pages.
 5. **Web layout.** Two-column Today, same components, responsive breakpoints.
 6. **QA.** Check at 375, 390, 768 and 1280 px, in dark and light. Contrast at least 4.5:1 for text. 44 px targets. No horizontal scroll. Quiz, scoring and progress still behave exactly as before. Then do the version bump and What's New entry the repo's `CLAUDE.md` requires, push the branch and open the PR.
@@ -223,10 +225,10 @@ This list comes from kaisip.com and the current phone app on 30 Oct 2026. Treat 
 
 **Navigation:** Today; Learn (Study notes, Glossary, Principles, About the CISA exam, Final review week); Practice (Practice, Drills, Mock exam, Saved); You.
 
-**Today:** greeting with name; set exam date; study days this week; the plant figure and stage; today's plan with steps and Start; short on time option; "Stop any time; your place is saved."; the "Where you left off · Your open question · Continue" state; the PLATE caption "Your progress grows from what you practise here."; If you have more time (Read next, Your weakest area); Mindset check; Save a backup (Download backup, Not now); estimated readiness with the five domains, "How this is worked out" and "See your progress"; today's principle; the ISACA independence line.
+**Today:** greeting with name; set exam date; study days this week; the plant figure and stage; today's plan with steps and Start; short on time option; "Stop any time; your place is saved."; the "Where you left off · Your open question · Continue" state; the caption "Your progress grows from what you practise here."; If you have more time (Read next, Your weakest area); Mindset check; Save a backup (Download backup, Not now); estimated readiness with the five domains, "How this is worked out" and "See your progress"; today's principle; the ISACA independence line.
 
 **Learn:** up next lesson; search the notes; Study notes (domain tabs D1 to D5, domain overview, "Think of it this way", topics by part, read progress, filters All / To review / Read, Expand all, key terms, exam strategy); Glossary; Principles; About the CISA exam; Final review week; lessons by domain with counts; guided path; the footer note.
 
 **Practice:** rotating Mindset tip; picked for you set with Change and Timed; timer and seconds per question notes; Questions to revisit; Weak spots; By domain with exam weight, seen counts and status; All missed questions; Weak spots drill; All saved questions; Question bank; Build a set; Drills (Snare Spotter, Signpost, Call It First, unlock note); Mock exams (Mini, Full, scaled score note).
 
-**You:** profile (name, since, minutes, starting level, Add your name); Your plant (pick, name, stages, never wilts); Answered, Correct, Accuracy, Study days this week, Streak; estimated readiness and full report; domain chart and key; Herbarium badges; Questions to revisit; Mistake journal; Saved questions; Share progress; Your progress; Weak spots; Session summary; Mock exams and its empty state; Settings (Your name, Exam date, Dark mode, Exam-day rehearsal); Your data (back up, restore, start fresh); Help and about (What's New, FAQ and help, How KaiSip works, The welcome screen again, Send feedback, Support KaiSip, About KaiSip); ISACA trademark footer.
+**You:** profile (name, since, minutes, starting level, Add your name); Your plant (pick, name, stages, never wilts); Answered, Correct, Accuracy, Study days this week, Streak; estimated readiness and full report; domain chart and key; badges; Questions to revisit; Mistake journal; Saved questions; Share progress; Your progress; Weak spots; Session summary; Mock exams and its empty state; Settings (Your name, Exam date, Dark mode, Exam-day rehearsal); Your data (back up, restore, start fresh); Help and about (What's New, FAQ and help, How KaiSip works, The welcome screen again, Send feedback, Support KaiSip, About KaiSip); ISACA trademark footer.

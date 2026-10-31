@@ -7416,14 +7416,16 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
   .td-hero { gap: 12px; }
   .td-intro { margin-top: 4px; font: 400 14px/20px var(--f-sans); }
   .td-fig { gap: 8px; padding: 12px 16px 14px; }
-  .td-ring { width: 132px; height: 132px; }
+  /* Sized from its own font size so it grows when text grows (132px at 100%,
+     about 172px at 130%), capped by the card's width. */
+  .td-ring { font-size: 16px; width: min(8.25em, 100%); height: auto; aspect-ratio: 1; }
   .td-ring-art .td-seed { width: 64px; }
   .td-ring-art .plnt-svg { width: 70px; max-height: 64px; }
   /* The range state: the plant, "58 to 66" and "estimated range" fit the
      92px disc, so the stack is smaller and sits above centre: the plant's
      narrow leaves go where the disc narrows, and the wide words stay where
      it is widest, clear of its edge. */
-  .td-ring-range .td-ring-in { gap: 0; padding-bottom: 22px; }
+  .td-ring-range .td-ring-in { gap: 0; padding-bottom: 16.667%; } /* 22px of the 132px ring, and in step when it grows */
   .td-ring-range .td-ring-art .td-seed { width: 32px; }
   .td-ring-range .td-ring-art .plnt-svg { width: 36px; max-height: 28px; }
   .td-ring-n { margin-top: 0; font-size: 22px; line-height: .95; }
