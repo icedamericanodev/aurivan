@@ -43,7 +43,7 @@ Every number, section and deadline below is a lead: open the primary source and 
 4. **Citations.** Add each new citation, Verified with the URL and date opened, to a staged file `data/csoe/originals/_staged_d1.md` under the library's headings (merged with `python3 data/csoe/tools/merge_library.py`), or straight to the library when you work alone.
 5. **Self-check every batch before handing it on** (0 errors each):
    - `python3 data/csoe/tools/check_csoe.py 1 --lib data/csoe/originals/_staged_d1.md` (drop `--lib` once merged)
-   - `python3 scripts/lint_exam_style_v2.py --file data/csoe/originals/d1.json` (its "stem names no actor" warning looks for CISA actors; every stem must still name who acts)
+   - `python3 data/csoe/tools/style_csoe.py 1` (the shared style linter; a stem that names the rule it asks about may skip the priority word; every stem must still name who acts)
    - `python3 scripts/lint_notes.py data/csoe/notes/d1.json --outline docs/content/CSOE_BLUEPRINT.md --bank data/csoe/originals`
    - `python3 data/csoe/tools/sync_practice_ids.py`
    - Re-read each item as a candidate: exactly one best answer, and the stem holds the fact (actor, filer status, date) that makes it best.

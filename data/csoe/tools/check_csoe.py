@@ -15,6 +15,9 @@ Runs the gates every CSOE batch must pass before review, in one place:
     runner-up's wrong explanation starts "Closest choice:"
   - length tells: key spread, "pick the longest" win rate (ties shared,
     target 15-24%, as scripts/check_longest_option.py does for CISA)
+  - the reverse tell: "pick the shortest" must win at most 30% (ties
+    shared; chance is 25%). Added 31 Oct 2026 after a CSOE blind tester won
+    half of a domain's items by always picking the shortest option
   - mix: the foundational / application / analysis split (target about
     30/55/15 for CSOE, docs/content/CSOE_BANK_PLAN.md), reported, not gated, and the
     key at most 8 characters longer than the longest distractor
@@ -41,6 +44,7 @@ FIELDS = ["id", "domain", "subtopic", "difficulty", "bloom_level", "question", "
           "framework_ref", "related_concepts", "_provenance", "style_version"]
 BLOOM = {"foundational": "Foundational", "application": "Application", "analysis": "Analysis"}
 MIN_RATE, MAX_RATE = 0.15, 0.24
+MAX_SHORT_RATE = 0.30
 
 
 def library_bullets(extra=()):
@@ -64,12 +68,12 @@ def notes_ids(d):
     return [s["id"] for t in notes["topics"] for s in t["subtopics"]]
 
 
-def pick_longest_rate(qs, length):
-    """Expected share a guesser wins by always picking the longest option."""
+def pick_longest_rate(qs, length, pick=max):
+    """Expected share a guesser wins by always picking the longest (or, with pick=min, shortest) option."""
     wins = 0.0
     for q in qs:
         lens = {k: length(v) for k, v in q["options"].items()}
-        tied = [k for k, n in lens.items() if n == max(lens.values())]
+        tied = [k for k, n in lens.items() if n == pick(lens.values())]
         if q["correct"] in tied:
             wins += 1 / len(tied)
     return wins / max(len(qs), 1)
@@ -169,10 +173,14 @@ def main(argv):
         if not MIN_RATE <= rate <= MAX_RATE:
             status = f"ERROR pick-longest outside {MIN_RATE:.0%}-{MAX_RATE:.0%}"
             errors += 1
+        short = pick_longest_rate(qs, len, min)
+        if short > MAX_SHORT_RATE:
+            status = ("" if status == "✓" else status + " · ") + f"ERROR pick-shortest {short:.0%} (max {MAX_SHORT_RATE:.0%})"
+            errors += 1
         mix = Counter(q["difficulty"] for q in qs)
         uncovered = [i for i in ids if i not in cited]
         print(f"D{d}: {len(qs)} items · keys " + " ".join(f"{k}{spread[k]}" for k in "ABCD")
-              + f" · pick-longest {rate:.1%} (words {wrate:.1%}) {status}"
+              + f" · pick-longest {rate:.1%} (words {wrate:.1%}) · pick-shortest {short:.1%} {status}"
               + f" · {mix['foundational']}/{mix['application']}/{mix['analysis']} F/Ap/An"
               + f" · notes covered {len(ids) - len(uncovered)}/{len(ids)}")
         if show_list:

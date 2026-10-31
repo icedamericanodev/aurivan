@@ -54,9 +54,12 @@ a step.
    - `python3 data/csoe/tools/check_csoe.py N` (shape, IDs, notes and library
      links, tips, key spread, pick-the-longest 15–24%, mix). Tools:
      `data/csoe/tools/README.md`.
-   - `python3 scripts/lint_exam_style_v2.py --file data/csoe/originals/dN.json`
-     (its "stem names no actor" warning looks for CISA actors; every stem must
-     still name who acts).
+   - `python3 data/csoe/tools/style_csoe.py N`: the shared style linter with
+     one CSOE exception (a stem that names the rule it asks about may skip the
+     priority word). Its "stem names no actor" warning looks for CISA actors;
+     every stem must still name who acts.
+   - The "pick the shortest" rate must stay at or under 30% (checked by
+     `check_csoe.py`; added after the pilot blind tests).
    - Notes: `python3 scripts/lint_notes.py data/csoe/notes/dN.json --outline
      docs/content/CSOE_BLUEPRINT.md --bank data/csoe/originals`, then
      `python3 data/csoe/tools/sync_practice_ids.py`.
