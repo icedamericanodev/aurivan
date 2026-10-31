@@ -110,6 +110,20 @@ a step.
 
 Linked pairs: never draw both items of a pair listed in `docs/content/CSOE_LINKED_PAIRS.md` into the same form, and keep the hub items it names in practice.
 
+Forms drawn 31 Oct 2026 at 304 items: `data/csoe/exam/mock_forms.json`, two
+35-item forms (D1 5, D2 6, D3 6, D4 9, D5 9 each), 70 items held out.
+- Drawn by `data/csoe/tools/draw_mock_forms.py --draw` (seeded). Check them
+  after every batch with `--check`.
+- No linked pair sits anywhere in the held-out set. No hub, and no item a
+  principle card links to, is held out.
+- Each form is at the 30/55/15 mix, with keys spread across A–D and 31–32
+  outline codes.
+- `sync_practice_ids.py` leaves held-out items out of the notes' "Practice this
+  concept" lists.
+- When CSOE is wired into the apps, the content build must also leave them out
+  of practice and the free sample, and serve them only as these forms
+  (`mobile-app-engineer`).
+
 ## 5. Pack: paid, lowest price tier
 
 Decided 31 Oct 2026 by `product-manager`:
@@ -141,7 +155,7 @@ The same pieces as the CISA course, each in `data/csoe/`:
 | About the exam | `exam/csoe_exam_guide.json` (`docs/content/EXAM_GUIDE_SCHEMA.md`) | Written, audited and fixed (31 Oct 2026) |
 | Final review week | `exam/final_review_week.json` | Written, audited and fixed (31 Oct 2026) |
 | Practice | `originals/d{1..5}.json` | 304 reviewed; growing to 400 |
-| Mock exam | the app's mock engine reads the bank; the held-out forms go in `exam/mock_forms.json` (two 35-item forms, never served in practice) | Forms drawn once the bank passes about 300; the forward-only mode is an app task (section 4). Release gate: the final review week asks for a 35-question, 90-minute mock, so it must exist before the course ships |
+| Mock exam | the app's mock engine reads the bank; the held-out forms go in `exam/mock_forms.json` (two 35-item forms, never served in practice) | Two held-out forms drawn 31 Oct 2026 (`exam/mock_forms.json`, 70 items); the forward-only mode and excluding held-out items from practice are app tasks (section 4). Release gate: the final review week asks for a 35-question, 90-minute mock, so it must exist before the course ships |
 | Lessons | `lessons.json` (`docs/content/LESSONS_SCHEMA.md`) | After the bank |
 | Game decks | `mobile/src/content/games/csoe/` | App task, when CSOE is wired in |
 
