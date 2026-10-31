@@ -71,3 +71,42 @@ The Grove kit (`reference/*.html`, `screens/01`, `04`, `05`, `06`, `GROVE_HANDOF
 "Field Guide" stays the team's name for the look, never words on screen. Code names such as `fgPlate` stay. The phone app follows in its own round (the decision asks both apps to ship together; the version bump and What's New line wait for the end of the uplift).
 
 Why: the labels come from old printed nature books. A nervous learner, or someone reading English as a second language, has to stop and work out what they mean, and the numbers did not add up (Fig. 1 on Today, Fig. 5 on You, nothing between).
+
+## 9. The plant first in the ring (expert decision, unanimous, 31 Oct 2026: "ring-plant-first" option B)
+
+The plant is drawn at the same full size at every stage, Seed to Elder, in light and dark; it no longer shrinks when the first range arrives. The range moved out of the ring to the caption under it, in the same spot in both states. Each measure has its own mark:
+
+- **Before the first range:** 40 seed dots, one per answer that counts (an assisted first answer counts half, as the engine already does). An answered dot is solid sap; a dot not answered yet is an outline in `--leaf-line` (on the forest hero, `--hero-leaf-line` #8FAE98: 3.3:1 at the panel's lightest top, 4.8:1 around the ring). Both are the same outer size, so they differ by shape, not colour alone: 6px across in the 132px phone ring (also at 320px wide) and about 7px in the 190px web ring. The dots match the caption's count and never go backwards.
+- **Once a range exists:** the 50 ticks of 2 points, lit to the low end, gold across the range, with the clay mark at the 80 study bar (only when the ticks show).
+- **Caption:** before the range, "12 of 40 answers until your first readiness range", and from 30 answers a countdown ("8 more answers to your first range", "1 more answer to your first range"). After it, phones read "63 to 73 estimated range" and "A study estimate, not a prediction." word for word; from 768px the range is in the serif (32px, under the 40px greeting) with "estimated range" under it. For the first range (40 to 59 answers that count) it adds "Your first range is in. It usually narrows as you answer more." Never one number, never a dash, never "pass" or "ready". This is the only big range on Today: the Estimated readiness card now shows it as its plain first line (Figtree 15 semibold), like "Not enough data yet".
+- **Screen readers:** the ring keeps `role="img"` with its label in words ("N of 40 answers toward your first readiness range.", or the range sentence with "A study estimate, not a prediction."); the caption is hidden from them, so it is said once.
+- **The 40th answer (G19):** when the range arrives during a visit, the dots fade, the ticks light, then the range fades in, in 560ms, opacity only, and a status line says "Your first readiness range is in: 44 to 62. A study estimate, not a prediction." once. With Reduce Motion, and for a learner who comes back later, the final state shows straight away. No confetti, arrows or needles.
+- **Not changed:** the readiness maths, the 40-answer threshold, the 50-tick scale, the 80 study bar and every storage key.
+- **Not built yet:** the small ring on You (G31: 20 dots worth 2 answers each at 64px, then ticks) waits for Phase 3 You, where that ring is first drawn; the phone port waits for its Grove round (`mobile/` is mid-upgrade).
+
+`GROVE_HANDOFF.md` §6.4 and the kit images stay as delivered; this entry and `docs/mobile/DESIGN_SYSTEM.md` §21.10 record the change from the kit.
+
+Why: in the kit as built the plant shrank to a speck at the moment it grew, and at 39 answers the ring looked nearly full, then dropped to about two thirds at 40, so the first milestone looked like a loss.
+
+## 10. Today's finish line (expert decision, unanimous, 31 Oct 2026: "today-finish-line" option B)
+
+Today's plan is saved once a day in one new field of the progress record, `todayPlanV1`, beside the old fields (nothing renamed or replaced): the local day and the time it was made, the plan's mode, the ids of the questions to revisit it holds, and its set (domain, size). It is made on the first visit after local midnight from the live plan and stays fixed all day: answering, exam week or Welcome back do not change it. A missing, broken or older one is rebuilt quietly. It travels in export and backup; a file without it still imports, and older versions ignore it.
+
+- **Done** only when every step is finished: each question to revisit answered after the plan was made, and the set's size answered today in its domain (less those questions). More answers never undo it; Start runs what is left of the saved plan.
+- **If it cannot be saved** (private browsing, full storage), it lasts the visit with no message, and a rebuilt plan still waits for the due questions to revisit, so "done" never comes early.
+- **The finish card**, in the plan's place: "Today's clearing", "One of one, done." (or "Two of two, done."), plain tiles for Questions, Correct ("8 of 10") and Time, a Tomorrow line ("About 12 min"), "Do a little more" as an outline button (no filled button), "Stop any time; your place is saved." and "Short on time?". "Do a little more" starts the live plan and never resets or grows the saved one. No "pass", "ready", guilt, streak warnings, confetti or total question count.
+- **Not changed:** readiness maths, scoring, review timing, the due queue and the order of questions.
+
+The version bump and What's New line wait for the end of the uplift, as agreed.
+
+## 11. Today premium round (31 Oct 2026)
+
+Built from the premium plan (section 1 items 1, 2, 3, 4, 6, 7, 8, 11 and G26), with no book labels anywhere:
+
+- **One "not yet" outline:** `--leaf-line` (light #86806F, dark #6A776D), for empty marks that carry meaning only (the twig's empty leaves now; locked stages and empty badge tiles later). Never text.
+- **One mint button on forest panels:** `--btn-hero` #A9D9BA with `--on-btn-hero` #17231B, the same in both themes, for Today's Start from 768px, Study notes' "Practice Domain N" and the mock's "Resume exam". Hover keeps the mint.
+- **Mint means go:** the row labels ("Read next", "Mindset check", "Your weakest area") are grey, in sentence case; the weakest area keeps its clay badge; "Not now" and "No thanks" are neutral; "Short on time?" is a plain underlined text link; "Set exam date" is ink.
+- **No lonely words:** headings are balanced and notes never end with one word alone; "Today's plan" uses the card title size on phones; the phone avatar sits on the title's first line.
+- **The plant's story:** the hero line says "Fern grows only from real progress. Next, Bough: grows when topics stick across days." ("Fully grown. It keeps all of its growth." at Elder). On the visit after it grows: "Fern grew to Shoot." and one true fact about what earned it, with the art fading over from the old stage in under half a second (none with Reduce Motion) and one announcement. The plant row lower on the page no longer repeats it ("Its look and growth, on You").
+- **Settings:** the You header shows the phone's cog, never a sun: a 44px icon button on phones, the cog and "Settings" as a quiet text button from 768px.
+- **Accuracy:** a small "Latest tries" line under the hero's Accuracy number (not in exam week or on a Welcome back day, which stay as they are).

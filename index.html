@@ -314,6 +314,16 @@
   --seed-edge: #5B4B3C;
   --soil: #A89B83;
   --leaf-empty: #CDC9BC;
+  /* Premium round (31 Oct 2026, G01): the visible "not yet" outline, only
+     for empty marks that carry meaning (a missed day's leaf, an answer not
+     given yet). Never text: labels stay in the grey text colours. 3.9:1 on
+     white, 3.5:1 on the page. Faint fills keep --leaf-empty. */
+  --leaf-line: #86806F;
+  /* One mint button on every forest panel (G03): the panel's one main
+     action, the same in both themes (the panel is forest in both). 5.1 to
+     8.6:1 on the panel, its label 10.3:1. */
+  --btn-hero: #A9D9BA;
+  --on-btn-hero: #17231B;
   /* The card edge: a 1px ring, plus a soft lift on paper (light only). */
   --card-shadow: 0 0 0 1px var(--border), 0 1px 2px rgba(23,35,27,.05), 0 8px 20px -6px rgba(23,35,27,.08);
   --card-pad: 18px;
@@ -329,6 +339,10 @@
   --hero-disc: #1A402D;
   --hero-soil: #6B5844;
   --hero-seed-edge: #E9D9C4;
+  /* --leaf-line on the forest hero: the panel is forest in both themes, so
+     the "not yet" outline there is one lighter sage (3.3:1 at the panel's
+     lightest top, 4.8:1 on the ring's ground). */
+  --hero-leaf-line: #8FAE98;
   --badge-clay: #F6E7DC;    /* the weakest area's badge (clay on clay) */
 }
 
@@ -391,6 +405,7 @@
   --seed-edge: #E9D9C4;
   --soil: #6B5844;
   --leaf-empty: #39443C;
+  --leaf-line: #6A776D;   /* 3.3:1 on cards, 3.9:1 on the page */
   --card-shadow: 0 0 0 1px var(--border);
   --rail-bg: #0E1310;
   --hero-disc: #1A3324;
@@ -4762,9 +4777,10 @@ header {
 .gt-ring-arc { fill: none; stroke: var(--sap); stroke-width: 6; stroke-linecap: round; transition: stroke-dashoffset .6s cubic-bezier(.2,.7,.3,1); }
 .gt-pill {
   display: inline-flex; align-items: center; gap: 8px; min-height: 48px; padding: 0 22px; border-radius: var(--r-pill);
-  background: var(--pill); color: var(--on-pill); border: 0; cursor: pointer; font: 600 16px/22px var(--f-sans);
+  background: var(--btn-hero); color: var(--on-btn-hero); border: 0; cursor: pointer; font: 600 16px/22px var(--f-sans);
 }
-.gt-pill:hover { opacity: .92; }
+/* The forest panel's one mint button (premium round, G03): hover keeps the mint. */
+.gt-pill:hover { background: var(--btn-hero); color: var(--on-btn-hero); filter: brightness(1.06); }
 @media (max-width: 600px) { .gt-panel-title { padding-right: 40px; } }
 
 /* Intro: overview + analogy, collapsed to two lines until opened (state remembered) */
@@ -6787,6 +6803,8 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
   cursor: pointer; font: var(--t-label); color: var(--accent-text);
 }
 .plnt-ghost:hover { text-decoration: underline; text-underline-offset: 3px; }
+/* The quiet way out ("Not now", "No thanks") is neutral: mint is for the one way in (premium round, G04). */
+.plnt-ghost.plnt-ghost-quiet { color: var(--text2); }
 /* You: the plant section (rail and inline share it) */
 .you-plant { margin-top: var(--sp-xl); }
 .you-plant[hidden] { display: none; }
@@ -7237,6 +7255,13 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 }
 .you-set-btn:hover { color: var(--text); }
 .you-set-btn:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+.you-set-t { display: none; }
+@media (min-width: 768px) {
+  /* A quiet text button: the cog and its word, no card. */
+  .you-set-btn { width: auto; min-height: 44px; height: auto; gap: 8px; padding: 0 12px; background: none; box-shadow: none; font: 600 15px/20px var(--f-sans); }
+  .you-set-btn:hover { box-shadow: inset 0 0 0 1px var(--border2); }
+  .you-set-t { display: inline; }
+}
 #youSettingsH { scroll-margin-top: var(--sp-xxl); }
 /* ── GROVE UPLIFT, PHASE 2: Today ──────────────────────────────────────────
    GROVE_HANDOFF.md §6.3, §6.4, §6.6 and §7 Today; screens 01 (phone) and 05
@@ -7269,16 +7294,20 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 .td-head { padding: 0 4px; }
 .td-head-row { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; }
 .td-head-t { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
-.td-title { margin: 0; font: 500 34px/1.05 var(--f-serif); letter-spacing: -.02em; }
+.td-title { margin: 0; font: 500 34px/1.05 var(--f-serif); letter-spacing: -.02em; text-wrap: balance; }
+/* No lonely words (premium round, G06): headings are balanced, and notes
+   never end with one word alone on their last line. */
+.td-card-h, .td-planc-h, .td-planc-t { text-wrap: balance; }
+.td-ready-x, .td-note, .td-hero-q, .td-platecap, .td-intro, .td-step-m, .td-ring-cap { text-wrap: pretty; }
 .td-name-phone { display: none; }
 .td-sub { margin: 0; font: 400 14px/20px var(--f-sans); color: var(--text2); }
 .td-intro { margin: var(--sp-sm) 0 0; }
 .td-datebtn {
   flex: none; display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 16px;
   border: 0; border-radius: var(--r-14); background: var(--surface); box-shadow: var(--card-shadow);
-  color: var(--accent-text); font: 600 14px/20px var(--f-sans); cursor: pointer;
+  color: var(--text); font: 600 14px/20px var(--f-sans); cursor: pointer;
 }
-.td-datebtn:hover { color: var(--text); }
+.td-datebtn:hover { box-shadow: var(--card-shadow), inset 0 0 0 1px var(--border2); }
 .td-avatar {
   flex: none; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px;
   border-radius: var(--r-14); background: var(--forest); color: var(--on-forest); font: 400 19px/1 var(--f-serif); text-decoration: none;
@@ -7303,8 +7332,14 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 /* The readiness ring (§6.4): ticks on a circle of radius 86, the plant in a disc of radius 70 */
 .td-ring { position: relative; flex: none; align-self: center; width: 200px; height: 200px; }
 .td-ring-svg { display: block; width: 100%; height: 100%; overflow: visible; }
-.td-tk { stroke: var(--hero-tick-off); stroke-width: 2.6; }
-.td-tks-fine .td-tk { stroke-width: 2.4; }
+.td-tk { stroke: var(--hero-tick-off); stroke-width: 2.4; }
+/* Seed dots before the first range (premium round, ring-plant-first B): an
+   answer given is a solid dot, one not given yet an outline in --leaf-line
+   (here the hero's own, 3:1 or more on the forest panel), the same outer
+   size, so they differ by shape. */
+.td-hero, .td-fig { --leaf-line: var(--hero-leaf-line); }
+.td-dot.on { fill: var(--hero-tick-on); }
+.td-dot.off { fill: none; stroke: var(--leaf-line); stroke-width: 1.5; }
 .td-tk.on { stroke: var(--hero-tick-on); }
 .td-tk.rng { stroke: var(--hero-tick-rng); }
 .td-tk-mark { stroke: var(--hero-tick-mark); stroke-width: 3; stroke-linecap: round; }
@@ -7316,11 +7351,11 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 .td-ring-art { display: flex; align-items: flex-end; justify-content: center; }
 .td-ring-art .td-seed { display: block; width: 100px; height: auto; }
 .td-ring-art .plnt-svg { display: block; width: 108px; height: auto; max-height: 100px; }
-.td-ring-range .td-ring-art .td-seed { width: 58px; }
-.td-ring-range .td-ring-art .plnt-svg { width: 72px; max-height: 60px; }
-.td-ring-n { margin: 2px 0 0; font: 500 30px/1 var(--f-serif); letter-spacing: -.02em; color: var(--on-forest); font-variant-numeric: tabular-nums; white-space: nowrap; }
-.td-ring-to { font-size: 16px; color: var(--on-forest2); }
-.td-ring-l { margin: 0; font: 400 11px/14px var(--f-sans); color: var(--on-forest2); }
+/* The visit after the plant grew: the old stage fades into the new (under
+   half a second, opacity only); with reduced motion the new one shows at once. */
+.td-ring-art { position: relative; }
+.td-art-old { display: none; }
+.td-art-new { display: contents; }
 .td-seed-soil { fill: none; stroke: var(--hero-soil); stroke-width: 1.5; }
 .td-seed-soil2 { fill: none; stroke: var(--hero-soil); stroke-width: 1; opacity: .7; }
 .td-seed-body { fill: var(--seed); stroke: var(--hero-seed-edge); stroke-width: 1.2; }
@@ -7328,14 +7363,37 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 .td-seed-stem { fill: none; stroke: var(--sap); stroke-width: 1.8; stroke-linecap: round; }
 .td-seed-leaf { fill: var(--forest-track); stroke: var(--sap); stroke-width: 1.4; }
 .td-ring-cap { margin: 0; text-align: center; font: 400 14px/1.4 var(--f-sans); color: var(--on-forest2); }
+.td-ring-cap p { margin: 0; }
 .td-ring-big { font: 500 24px/1 var(--f-serif); letter-spacing: -.02em; color: var(--on-forest); font-variant-numeric: tabular-nums; }
+/* The range, under the ring (Today's one big range, G18): "63 to 73
+   estimated range" on one line on phones, then "A study estimate, not a
+   prediction." word for word. */
+.td-ring-cap-r { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.td-rcap-r { color: var(--on-forest2); }
+.td-rcap-n { font: 500 22px/28px var(--f-serif); letter-spacing: -.02em; color: var(--on-forest); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.td-rcap-to { font-size: 15px; color: var(--on-forest2); }
+.td-rcap-l { font: 400 14px/20px var(--f-sans); }
+.td-rcap-x { font: 400 13px/18px var(--f-sans); text-wrap: pretty; }
 /* The ticks light up once per visit (lit from the unlit colour); none under reduced motion. Under 600ms. */
 @keyframes tdTickOn { from { stroke: var(--hero-tick-off); } }
 @keyframes tdLeafIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes tdFadeOut { from { opacity: 1; } to { opacity: 0; } }
+/* The hand-off at answer 40 (G19): the dots fade, the ticks light, then the
+   range fades in, in 560ms, opacity only. Its final state is the resting one,
+   so reduced motion (and a later visit) shows it straight away. */
+.td-dots-out { opacity: 0; }
 @media (prefers-reduced-motion: no-preference) {
   .td-ring.grow .td-tk.on, .td-ring.grow .td-tk.rng { animation: tdTickOn .24s ease-out both; animation-delay: calc(var(--i, 0) * 6ms); }
+  .td-ring.grow .td-dot.on { animation: tdLeafIn .24s ease-out both; animation-delay: calc(var(--i, 0) * 6ms); }
+  .td-ring.td-ho .td-dots-out { animation: tdFadeOut .2s ease-out both; }
+  .td-ring.td-ho .td-tks, .td-ring.td-ho .td-tk-mark { animation: tdLeafIn .22s ease-out .16s both; }
+  .td-fig .td-cap-in { animation: tdLeafIn .2s ease-out .36s both; }
+  .td-ring.td-grew .td-art-old { display: block; position: absolute; left: 50%; bottom: 0; transform: translateX(-50%); animation: tdFadeOut .45s ease-out both; }
+  .td-ring.td-grew .td-art-new > svg { animation: tdLeafIn .45s ease-out both; }
   /* Held at its start until the ring is on screen (todayRingWatch). */
-  .td-ring.grow.td-wait .td-tk { animation-play-state: paused; }
+  .td-ring.td-wait .td-tk, .td-ring.td-wait .td-dot, .td-ring.td-wait .td-dots-out, .td-ring.td-wait .td-tks,
+  .td-ring.td-wait .td-tk-mark, .td-ring.td-wait .td-art-old, .td-ring.td-wait .td-art-new > svg,
+  .td-fig:has(.td-ring.td-wait) .td-cap-in { animation-play-state: paused; }
   .td-twig.grow .td-tw-leaf.on { animation: tdLeafIn .3s ease-out both; animation-delay: calc(var(--i, 0) * 40ms); }
 }
 
@@ -7353,6 +7411,8 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 .td-tile-num { padding-top: 0; font: 500 24px/28px var(--f-serif); letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
 .td-tile-a { padding-top: 4px; font: 600 15px/22px var(--f-sans); color: var(--sap); }
 .td-tile-hint { font: 400 12px/16px var(--f-sans); color: var(--on-forest2); }
+/* The number and its hint share a line when they fit ("68%  Latest tries"), and wrap when not. */
+.td-tile-row { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 8px; min-width: 0; }
 /* The plant line: one italic caption per hero, at the hero's foot under the
    plan (phones too; the copy inside the figure stays hidden and keys its
    redraw). Plain words, no label in front (expert decision, 31 Oct 2026). */
@@ -7365,9 +7425,9 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
   border-radius: var(--r-card); background: var(--surface); box-shadow: var(--card-shadow);
 }
 .td-planc-h { margin: 0; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 2px 12px; }
-.td-planc-t { font: 500 22px/28px var(--f-serif); letter-spacing: -.2px; color: var(--text); }
+.td-planc-t { font: 500 18px/24px var(--f-serif); letter-spacing: -.2px; color: var(--text); } /* the card title size (G06) */
 .td-planc-min { flex: none; font: 400 13px/18px var(--f-sans); color: var(--text2); white-space: nowrap; }
-.td-planc-k { margin: 0; font: 600 12px/16px var(--f-sans); color: var(--accent-text); }
+.td-planc-k { margin: 0; font: 600 12px/16px var(--f-sans); color: var(--text2); }
 .td-planc-h.td-resume-h { display: block; margin-top: -10px; font: 500 20px/26px var(--f-serif); color: var(--text); overflow-wrap: anywhere; }
 .td-resume-m { margin: -8px 0 0; font: 400 13px/18px var(--f-sans); color: var(--text2); }
 .td-steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 14px; }
@@ -7376,7 +7436,8 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
   flex: none; display: flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: var(--r-step);
   background: var(--surface2); color: var(--muted); box-shadow: inset 0 0 0 1px var(--border2); font: italic 400 15px/1 var(--f-serif);
 }
-.td-steps li:first-child .td-step { background: var(--forest-track); color: var(--sap); box-shadow: none; }
+.td-steps li:first-child:not(.is-done) .td-step, .td-steps li.is-done + li:not(.is-done) .td-step { background: var(--forest-track); color: var(--sap); box-shadow: none; }
+.td-steps li.is-done .td-step { color: var(--text2); }
 .td-step-t { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
 .td-step-h { font: 600 15px/20px var(--f-sans); color: var(--text); overflow-wrap: anywhere; }
 .td-step-m { font: 400 13px/18px var(--f-sans); color: var(--text2); }
@@ -7386,10 +7447,30 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 .td-hero-q { margin: 0; text-align: center; font: 400 13px/18px var(--f-sans); color: var(--text2); }
 .td-short {
   align-self: center; min-height: 44px; padding: 4px 8px; border: 0; border-radius: var(--r-12); background: none;
-  color: var(--accent-text); font: 600 14px/20px var(--f-sans); cursor: pointer;
+  color: var(--text2); font: 500 14px/20px var(--f-sans); cursor: pointer;
+  text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px;
 }
-.td-short:hover { text-decoration: underline; text-underline-offset: 3px; }
+.td-short:hover { color: var(--text); }
 .td-short:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+/* Today's clearing (premium round, "today-finish-line" B): the plan's card
+   when the whole plan is done. Plain counts, tomorrow's time, and "Do a
+   little more" as an outline: no filled button in this state. */
+.td-planc-h.td-clear-h { flex-direction: column; align-items: flex-start; flex-wrap: nowrap; gap: 2px; }
+.td-clear-s { font: 600 15px/20px var(--f-sans); color: var(--text); }
+.td-clear-ts { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.td-clear-t { display: flex; flex-direction: column; gap: 2px; min-width: 0; padding: 10px; border-radius: var(--r-tile); background: var(--surface2); }
+.td-clear-k { font: 600 11px/14px var(--f-sans); letter-spacing: .12em; text-transform: uppercase; color: var(--text2); }
+.td-clear-v { font: 500 24px/28px var(--f-serif); letter-spacing: -.02em; color: var(--text); font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.td-clear-of { font: 400 13px/18px var(--f-sans); letter-spacing: 0; color: var(--text2); }
+.td-clear-next { margin: 0; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 12px; padding-top: 10px; border-top: 1px solid var(--border); font: 400 14px/20px var(--f-sans); color: var(--text2); }
+.td-clear-nv { font-weight: 600; color: var(--text); }
+.td-more {
+  display: inline-flex; align-items: center; justify-content: center; width: 100%; min-height: 54px; padding: 0 22px;
+  border: 0; border-radius: var(--r-tile); background: none; box-shadow: inset 0 0 0 1.5px var(--text2);
+  color: var(--text); font: 700 16px/20px var(--f-sans); cursor: pointer;
+}
+.td-more:hover { box-shadow: inset 0 0 0 2px var(--text); }
+.td-more:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
 
 /* Phones (owner decision, 31 Oct 2026: ring first, replacing plan first):
    the kit's order (design-notes/grove/screens/01-phone-today.png). The
@@ -7408,6 +7489,11 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
   body[data-tab="home"] .fg-page-rh .fg-rh { margin-bottom: var(--sp-sm); }
   .td-head .td-title { font: var(--t-hero); letter-spacing: var(--tr-hero); text-wrap: balance; }
   .td-head .td-title.td-title-long { font: var(--t-fg-value); letter-spacing: var(--tr-fg-value); }
+  /* The avatar sits on the title's first line (G06): centred on its 34px line
+     (26px for the value size). */
+  .td-head-row { align-items: flex-start; }
+  .td-avatar { margin-top: -5px; }
+  .td-head-row:has(.td-title-long) .td-avatar { margin-top: -9px; }
   .td-title .td-name-wide { display: none; }
   .td-title .td-name-phone { display: inline; }
   .td-platecap-in { display: none; }
@@ -7419,18 +7505,10 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
   /* Sized from its own font size so it grows when text grows (132px at 100%,
      about 172px at 130%), capped by the card's width. */
   .td-ring { font-size: 16px; width: min(8.25em, 100%); height: auto; aspect-ratio: 1; }
+  /* The plant is the same full size in every state (premium round: the
+     range is the caption under the ring, never inside it). */
   .td-ring-art .td-seed { width: 64px; }
   .td-ring-art .plnt-svg { width: 70px; max-height: 64px; }
-  /* The range state: the plant, "58 to 66" and "estimated range" fit the
-     92px disc, so the stack is smaller and sits above centre: the plant's
-     narrow leaves go where the disc narrows, and the wide words stay where
-     it is widest, clear of its edge. */
-  .td-ring-range .td-ring-in { gap: 0; padding-bottom: 16.667%; } /* 22px of the 132px ring, and in step when it grows */
-  .td-ring-range .td-ring-art .td-seed { width: 32px; }
-  .td-ring-range .td-ring-art .plnt-svg { width: 36px; max-height: 28px; }
-  .td-ring-n { margin-top: 0; font-size: 22px; line-height: .95; }
-  .td-ring-to { font-size: 12px; }
-  .td-ring-l { line-height: 13px; }
   .td-ring-cap { line-height: 19px; }
   /* The big number keeps the caption's 19px lines (it no longer opens the first one up). */
   .td-ring-big { font-size: 22px; line-height: 0; }
@@ -7445,6 +7523,17 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
    size, so it keeps to two lines there too. */
 @media (max-width: 359px) {
   .td-head .td-title { font: var(--t-fg-value); letter-spacing: var(--tr-fg-value); }
+  .td-avatar { margin-top: -9px; }
+  /* The range caption under the ring takes lines the ring used to hold, so
+     the narrowest phones set the figure a little tighter (premium round). */
+  .td-main, .td-hero { gap: 10px; }
+  .td-fig { gap: 4px; padding: 10px 14px 12px; }
+  .td-tile { padding: 6px 10px; }
+  .td-tile-num { font-size: 22px; line-height: 26px; }
+  .td-ring-cap-r { gap: 0; }
+  .td-ring-cap, .td-rcap-x { line-height: 17px; }
+  .td-rcap-n { font-size: 20px; line-height: 24px; }
+  .td-planc { padding: 14px; }
 }
 
 /* From 768px: the figure and the plan are one forest hero card */
@@ -7460,10 +7549,22 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
   .td-planc { grid-area: plan; }
   .td-fig, .td-planc { padding: 0; border-radius: 0; background: none; box-shadow: none; }
   .td-fig { align-items: center; gap: 8px; }
-  .td-fig-top, .td-tiles, .td-platecap-in, .td-ring-cap, .td-step-min { display: none; }
+  .td-fig-top, .td-tiles, .td-platecap-in, .td-step-min { display: none; }
   .td-fig-cap { display: block; }
   .td-fig-cap .fg-fig { font-size: 14px; text-align: center; }
   .td-ring { width: 190px; height: 190px; }
+  /* Seed dots about 7px across in the 190px ring (r is set per dot for the
+     phone ring, 6px there). */
+  .td-dot.on { r: 3.7px; }
+  .td-dot.off { r: 3px; stroke-width: 1.4; }
+  /* The range under the ring: in the serif, with "estimated range" under it,
+     no bigger than the page's greeting (40px here). */
+  .td-ring-cap { max-width: 220px; }
+  .td-rcap-r { display: flex; flex-direction: column; align-items: center; }
+  .td-rcap-n { font: 500 32px/36px var(--f-serif); letter-spacing: -.02em; }
+  .td-rcap-to { font-size: 18px; }
+  .td-rcap-l { font: 400 13px/18px var(--f-sans); }
+  .td-rcap-x { max-width: 34ch; margin-top: 4px; }
   .td-platecap-out { display: block; grid-area: cap; }
   .td-planc { gap: 12px; align-self: center; }
   .td-planc-t { font: 600 11px/14px var(--f-sans); letter-spacing: .12em; text-transform: uppercase; color: var(--on-forest2); }
@@ -7477,10 +7578,21 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
   .td-step-h { color: var(--on-forest); }
   .td-step-m { color: var(--on-forest2); }
   .td-hero-acts { flex-direction: row; flex-wrap: wrap; align-items: center; gap: 14px; padding-top: 4px; }
-  .td-go { width: auto; min-height: 52px; padding: 0 26px; background: var(--sap); color: var(--on-sap); }
-  .td-go:hover, [data-theme="dark"] .td-go:hover { background: var(--sap); filter: brightness(1.06); }
+  .td-go { width: auto; min-height: 52px; padding: 0 26px; background: var(--btn-hero); color: var(--on-btn-hero); }
+  .td-go:hover, [data-theme="dark"] .td-go:hover { background: var(--btn-hero); color: var(--on-btn-hero); filter: brightness(1.06); }
   .td-hero-q { text-align: left; color: var(--on-forest2); }
-  .td-short { align-self: flex-start; margin: -6px 0 0 -8px; color: var(--sap); }
+  .td-steps li.is-done .td-step { background: var(--hero-inset); color: var(--sap); }
+  .td-steps li.is-done + li:not(.is-done) .td-step { background: var(--sap); color: var(--on-sap); }
+  .td-clear-s { font: 500 26px/32px var(--f-serif); letter-spacing: -.02em; color: var(--on-forest); }
+  .td-clear-t { background: var(--hero-inset); }
+  .td-clear-k, .td-clear-of { color: var(--on-forest2); }
+  .td-clear-v { color: var(--on-forest); }
+  .td-clear-next { border-top-color: var(--forest-line); color: var(--on-forest2); }
+  .td-clear-nv { color: var(--on-forest); }
+  .td-more { width: auto; min-height: 52px; padding: 0 26px; box-shadow: inset 0 0 0 1.5px var(--on-forest2); color: var(--on-forest); }
+  .td-more:hover { box-shadow: inset 0 0 0 2px var(--on-forest); }
+  .td-short { align-self: flex-start; margin: -6px 0 0 -8px; color: var(--on-forest2); }
+  .td-short:hover { color: var(--on-forest); }
   .td-twig-n { display: none; }
 }
 @container tdmain (min-width: 560px) {
@@ -7493,7 +7605,7 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 .td-twig-streak { margin: 0; font: 600 13px/18px var(--f-sans); color: var(--clay); text-align: right; }
 .td-twig-svg { display: block; width: 100%; height: auto; overflow: visible; }
 .td-tw-branch { fill: none; stroke: var(--soil); stroke-width: 2; stroke-linecap: round; }
-.td-tw-leaf { fill: none; stroke: var(--leaf-empty); stroke-width: 1.3; }
+.td-tw-leaf { fill: none; stroke: var(--leaf-line); stroke-width: 1.3; }
 .td-tw-leaf.on { fill: var(--accent); stroke: var(--btn); }
 .td-twig-days { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); font: 400 11px/14px var(--f-sans); color: var(--muted); text-align: center; }
 .td-twig-days .today { color: var(--text); font-weight: 700; }
@@ -7504,8 +7616,9 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 .td .you-ico { width: 36px; height: 36px; border-radius: var(--r-badge); }
 [data-theme="dark"] .td .you-ico { background: var(--forest); color: var(--sap); }
 .td .td-row-weak .you-ico { background: var(--badge-clay); color: var(--clay); }
-.td .td-row-weak .td-kicker { color: var(--clay); }
-.td-kicker { font: 600 12px/16px var(--f-sans); }
+/* Mint means "go" (premium round, G04): row labels are quiet grey, in
+   sentence case; the weakest area keeps its clay badge as its one mark. */
+.td-kicker { font: 600 12px/16px var(--f-sans); color: var(--text2); }
 .td-next, .td-mind:not(.td-idea) { padding: 0; }
 .td-next .td-card-h { padding: 16px 16px 6px; }
 .td-next .you-list { margin: 0; }
@@ -7853,10 +7966,12 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 <!-- YOU: progress, settings, your data, help and about (replaces the More sheet and header menu) -->
 <div id="screen-you" class="screen" role="region" aria-labelledby="youTitle">
   <div class="you">
-    <!-- Grove: the header row. The 44px settings button scrolls to Settings below. -->
+    <!-- Grove: the header row. The settings button (the phone's cog, never a
+         sun: premium round, G13) scrolls to Settings below: a 44px icon
+         button on phones, the cog and the word "Settings" from 768px. -->
     <div class="you-top">
       <h1 class="you-title" id="youTitle">You</h1>
-      <button type="button" class="you-set-btn" aria-label="Settings" onclick="youGoSettings()"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1"/></svg></button>
+      <button type="button" class="you-set-btn" aria-label="Settings" onclick="youGoSettings()"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/><circle cx="12" cy="12" r="3"/></svg><span class="you-set-t" aria-hidden="true">Settings</span></button>
     </div>
     <!-- Your study profile (v12.37): the name (or "Add your name"), the first
          study day and the exam date, read back from what the learner chose and
@@ -8624,6 +8739,9 @@ var S_DEFAULTS = {
   dayTally: {},
   lowEndLog: [],
   stuckAt: {},
+  // Today's plan, saved once a day (premium round, 31 Oct 2026; see
+  // "TODAY'S FINISH LINE"). A new field beside the old ones.
+  todayPlanV1: null,
   activeTab: "home",
 };
 
@@ -9536,7 +9654,7 @@ function normalizeImportedState(state) {
                 "current","qn","activeTab","review","topicTicksSchema",
                 "answerLog","mistakeLog","studyDays","mockHistory","qNotes",
                 "plant","plantSettings","cleanLog","readinessLog","finalWeekDone","lastOpenedSubtopic",
-                "dayTally","lowEndLog","stuckAt"];
+                "dayTally","lowEndLog","stuckAt","todayPlanV1"];
   fields.forEach(function(k) {
     if (state[k] !== undefined) clean[k] = state[k];
   });
@@ -9568,6 +9686,9 @@ function normalizeImportedState(state) {
   clean.dayTally = clean.dayTally === undefined ? progTallyBackfill(clean.answerLog) : sanitizeDayTally(clean.dayTally);
   clean.lowEndLog = sanitizeLowEndLog(clean.lowEndLog, clean.readinessLog);
   clean.stuckAt = sanitizeStuckAt(clean.stuckAt);
+  // Today's plan (premium round): a file without it, or with a broken one,
+  // loads as none, and Today makes the day's plan again.
+  clean.todayPlanV1 = sanitizeTodayPlan(clean.todayPlanV1);
   // Final review week: saves from before it have none and load as empty.
   clean.finalWeekDone = sanitizeFinalWeekDone(clean.finalWeekDone);
   clean.bookmarks = rehydrateSavedQuestions(clean.bookmarks);
@@ -9754,7 +9875,9 @@ window.addEventListener('storage', function(e) {
   if (e.key === PROFILES_KEY || e.key === ACTIVE_KEY) cancelSaveSoon();
 });
 
-function saveState() {
+// opts.quiet: a failed save shows no message (Today's plan, saved on the
+// first visit of the day, falls back to the live plan without one).
+function saveState(opts) {
   cancelSaveSoon();
   ensureAnsweredBuckets();
   var id = getActiveProfileId();
@@ -9789,6 +9912,8 @@ function saveState() {
     finalWeekDone: S.finalWeekDone || {},
     // The Progress page's history (v12.41): new fields beside the old ones.
     dayTally: S.dayTally || {}, lowEndLog: S.lowEndLog || [], stuckAt: S.stuckAt || {},
+    // Premium round (31 Oct 2026): today's plan, saved once a day. A new field beside the old ones.
+    todayPlanV1: S.todayPlanV1 || null,
     selectedDomain: S.selectedDomain, diff: S.diff,
     timerEnabled: S.timerEnabled, timerSeconds: S.timerSeconds,
     qIdx: S.qIdx, mindsetIdx: S.mindsetIdx,
@@ -9816,7 +9941,7 @@ function saveState() {
   try {
     localStorage.setItem(PROFILES_KEY, JSON.stringify(profiles));
   } catch(e) {
-    showSaveError();
+    if (!(opts && opts.quiet === true)) showSaveError();
   }
 }
 
@@ -9834,7 +9959,7 @@ function loadState() {
                 "current","qn","activeTab",
                 "answerLog","mistakeLog","studyDays","mockHistory","qNotes",
                 "plant","plantSettings","cleanLog","readinessLog","finalWeekDone","lastOpenedSubtopic",
-                "dayTally","lowEndLog","stuckAt"];
+                "dayTally","lowEndLog","stuckAt","todayPlanV1"];
   fields.forEach(function(k) {
     if (saved[k] !== undefined) S[k] = saved[k];
   });
@@ -12514,7 +12639,7 @@ function todayNameHtml(show) {
     + '<p class="td-name-err" id="tdNameErr" aria-live="polite"></p>'
     + '<div class="plnt-invite-acts td-name-acts">'
     + '<button type="button" class="plnt-ghost" onclick="todayNameSave()">Save</button>'
-    + '<button type="button" class="plnt-ghost" onclick="todayNameNotNow()">Not now</button></div></div>'
+    + '<button type="button" class="plnt-ghost plnt-ghost-quiet" onclick="todayNameNotNow()">Not now</button></div></div>'
     + '<p class="td-name-app">Using the app too? Your name travels with your progress file.</p>'
     + '</div></div>'
     + '<p class="sr-only" role="status" id="tdNameSay"></p></section>';
@@ -12900,38 +13025,51 @@ function todayPlan(r, last, mode) {
   r = r || computeTodayReadiness();
   var due = 0;
   try { due = getDueReview().length; } catch (e) {}
-  var items = [];
   if (mode === 'back' || mode === 'examday') {
     // One item only: questions to revisit, else a short mixed set.
-    var warm = mode === 'examday';
-    var cap = warm ? TODAY_WARM_UP : TODAY_BACK_QUESTIONS;
+    var cap = mode === 'examday' ? TODAY_WARM_UP : TODAY_BACK_QUESTIONS;
     var nb = Math.min(due, cap);
-    if (nb > 0) {
-      items.push(warm
-        ? { title: 'Optional warm-up', meta: nb + (nb === 1 ? ' question' : ' questions') + ' to revisit' }
-        : { title: 'Questions to revisit', meta: nb + ' you missed before &middot; oldest first' });
-      return { mode: mode, review: nb, due: due, d: null, n: 0, items: items, minutes: todayPlanMinutes(nb) };
-    }
-    items.push(warm
-      ? { title: 'Optional warm-up', meta: cap + ' mixed questions' }
-      : { title: 'A short mixed set', meta: cap + ' questions &middot; across the domains' });
-    return { mode: mode, review: 0, due: due, d: 'all', n: cap, items: items, minutes: todayPlanMinutes(cap) };
+    return nb > 0 ? todayPlanBuild(mode, nb, null, 0, null, due) : todayPlanBuild(mode, 0, 'all', cap, null, due);
   }
   var week = mode === 'examweek';
   var review = Math.min(due, week ? TODAY_EXAM_WEEK_REVIEW : REVIEW_DAILY_PLAN);
   var set = todayPlanDomain(r, last);
   var n = week ? TODAY_EXAM_WEEK_QUESTIONS - review : todayPlanSetLength();
+  return todayPlanBuild(mode || 'normal', review, set.d, n, set.why, due);
+}
+// The plan's items and minutes from its counts (todayPlan, and the plan
+// saved for the day: todayPlanFromSnap). review: questions to revisit; d and
+// n: the set ('all' for a mixed one); why: 'new' (not started) or 'gain'.
+function todayPlanBuild(mode, review, d, n, why, due) {
+  var items = [];
+  if (mode === 'back' || mode === 'examday') {
+    var warm = mode === 'examday';
+    if (review > 0) {
+      items.push(warm
+        ? { title: 'Optional warm-up', meta: review + (review === 1 ? ' question' : ' questions') + ' to revisit' }
+        : { title: 'Questions to revisit', meta: review + ' you missed before &middot; oldest first' });
+      return { mode: mode, review: review, due: due, d: null, n: 0, items: items, minutes: todayPlanMinutes(review) };
+    }
+    items.push(warm
+      ? { title: 'Optional warm-up', meta: n + ' mixed questions' }
+      : { title: 'A short mixed set', meta: n + ' questions &middot; across the domains' });
+    return { mode: mode, review: 0, due: due, d: 'all', n: n, items: items, minutes: todayPlanMinutes(n) };
+  }
+  var week = mode === 'examweek';
   if (review > 0) {
     // What today's plan holds, never "8 of 53 due": the rest wait for later plans.
     items.push({ title: 'Questions to revisit', meta: review + ' ready to revisit &middot; oldest first' });
   }
   // One name for the weak area across Today: "where you'll gain most".
-  items.push({ title: escapeHtml(DI[set.d].short), meta: n + ' questions &middot; ' + (set.why === 'new' ? 'not started' : week ? 'one short set' : 'where you&rsquo;ll gain most') });
-  return { mode: mode || 'normal', review: review, due: due, d: set.d, n: n, items: items, minutes: todayPlanMinutes(review + n) };
+  if (d && DI[d] && n > 0) {
+    items.push({ title: escapeHtml(DI[d].short), meta: n + ' questions &middot; ' + (why === 'new' ? 'not started' : week ? 'one short set' : 'where you&rsquo;ll gain most') });
+  } else { d = null; n = 0; }
+  return { mode: mode, review: review, due: due, d: d, n: n, why: why, items: items, minutes: todayPlanMinutes(review + n) };
 }
-function todayPlanStart() {
-  var r = computeTodayReadiness();
-  var plan = todayPlan(r, undefined, todayState(new Date(), r).plan);
+// The live plan's first step (and "Do a little more" once the day's plan is
+// done): today's plan as worked out now, without touching the saved one.
+function todayLivePlanStart(r, st) {
+  var plan = todayPlan(r, undefined, st.plan);
   if (plan.mode === 'back' || plan.mode === 'examday') {
     if (plan.review > 0) { startReviewQueue(plan.review); return; }
     switchTab('practice', { noScroll: true });
@@ -12943,6 +13081,166 @@ function todayPlanStart() {
   switchTab('practice', { noScroll: true });
   selectDomain(plan.d);
   startSession(plan.n, plan.d);
+}
+// Start: the saved plan's first step not finished yet, with what is left of it.
+function todayPlanStart() {
+  var now = new Date(), r = computeTodayReadiness(), st = todayState(now, r);
+  var s = todayPlanSnap(now, r, st);
+  var pr = s ? todayPlanProgress(s) : null;
+  if (!s || pr.done) { todayLivePlanStart(r, st); return; }
+  var k = 0;
+  var setStep = s.d && s.n > 0 ? pr.steps[pr.steps.length - 1] : null;
+  var setLeft = setStep ? Math.max(1, s.n - setStep.have) : 0;
+  if (s.ids.length) {
+    if (!pr.steps[0].done) {
+      startReviewQueue(s.ids.length - pr.steps[0].have, setStep && !setStep.done ? { d: s.d, n: setLeft } : undefined);
+      return;
+    }
+    k = 1;
+  }
+  if (!pr.steps[k]) { todayLivePlanStart(r, st); return; }
+  switchTab('practice', { noScroll: true });
+  selectDomain(s.d);
+  startSession(setLeft, s.d);
+}
+function todayMoreStart() {
+  var r = computeTodayReadiness();
+  todayLivePlanStart(r, todayState(new Date(), r));
+}
+
+// ── TODAY'S FINISH LINE (premium round, "today-finish-line" B, 31 Oct 2026) ──
+// Today's plan is saved once a day in S.todayPlanV1: one per record, a new
+// field beside the old ones (nothing renamed). It travels in export and
+// backup; a file without it still imports, and older versions ignore it.
+// It is made on the first visit after local midnight from the live plan
+// (todayPlan) and stays fixed all day: answering, exam week or Welcome back
+// do not change it. It holds the day, when it was made, the plan's counts,
+// and the ids of the questions to revisit it holds. The day is done only when every step is
+// finished, the questions to revisit included; more answers never undo it,
+// and "Do a little more" never resets or grows it. A missing, broken or
+// older one is rebuilt quietly from the live plan; if it cannot be saved
+// (private browsing, full storage) it lasts this visit only, with no message.
+// Readiness, scoring, review timing and the due queue are unchanged.
+var TODAY_PLAN_V = 1;
+var TODAY_PLAN_MODES = ['normal', 'back', 'examweek', 'examday'];
+var TODAY_PLAN_MAX_IDS = 50;
+var TODAY_PLAN_MAX_SET = 200;
+function sanitizeTodayPlan(x) {
+  if (!isPlainObj(x) || x.v !== TODAY_PLAN_V || typeof x.day !== 'string' || !PARITY_DAY_RE.test(x.day)) return null;
+  if (TODAY_PLAN_MODES.indexOf(x.mode) < 0) return null;
+  var ids = Array.isArray(x.ids) ? x.ids.filter(function (id) { return typeof id === 'string' && PARITY_ID_RE.test(id); }) : [];
+  ids = ids.filter(function (id, i) { return ids.indexOf(id) === i; }).slice(0, TODAY_PLAN_MAX_IDS);
+  var n = Math.min(importCount(x.n), TODAY_PLAN_MAX_SET);
+  var d = (x.d === 'all' || (typeof x.d === 'string' && Object.prototype.hasOwnProperty.call(DI, x.d))) && n > 0 ? x.d : null;
+  if (!ids.length && !d) return null;
+  var at = typeof x.at === 'number' && isFinite(x.at) && x.at > 0 ? Math.floor(x.at) : 0;
+  return { v: TODAY_PLAN_V, day: x.day, at: at, mode: x.mode, ids: ids, d: d, n: d ? n : 0, why: x.why === 'new' ? 'new' : 'gain' };
+}
+// Today's saved plan, made (and saved, quietly) on the first visit of the day.
+function todayPlanSnap(now, r, st) {
+  var day = parityDayKey(now.getTime());
+  var s = sanitizeTodayPlan(S.todayPlanV1);
+  if (s && s.day === day) return s;
+  r = r || computeTodayReadiness();
+  st = st || todayState(now, r);
+  var plan = todayPlan(r, undefined, st.plan);
+  var ids = [];
+  if (plan.review > 0) { try { ids = getDueReview().slice(0, plan.review); } catch (e) { ids = []; } }
+  var made = sanitizeTodayPlan({ v: TODAY_PLAN_V, day: day, at: now.getTime(), mode: plan.mode, ids: ids, d: plan.d, n: plan.n, why: plan.why });
+  S.todayPlanV1 = made;
+  if (made) saveState({ quiet: true });
+  return made;
+}
+// The saved plan as todayPlan's shape (its items in the same words).
+function todayPlanFromSnap(s) {
+  var due = 0;
+  try { due = getDueReview().length; } catch (e) {}
+  return todayPlanBuild(s.mode, s.ids.length, s.d, s.n, s.why, due);
+}
+// How far today's real answers are through the saved plan, step by step:
+// the questions to revisit by their own answers since the plan was made (a
+// question gone from the bank counts as done), the set by today's answers in
+// its domain (all domains for a mixed set), less those questions to revisit.
+function todayPlanProgress(s) {
+  var log = isPlainObj(S.answerLog) ? S.answerLog : {};
+  var tally = isPlainObj(S.dayTally) && isPlainObj(S.dayTally[s.day]) ? S.dayTally[s.day] : {};
+  var steps = [], revHave = 0, revIn = {};
+  s.ids.forEach(function (id) {
+    var rec = log[id];
+    var last = rec ? Number(rec.lastAt) || 0 : 0;
+    var today = last > s.at && parityDayKey(last) === s.day;
+    var gone = false;
+    try { gone = !reviewIdOpenable(id); } catch (e) { gone = false; }
+    if (today || gone) revHave += 1;
+    if (today) { var dd = rdDomainOf(id); revIn[dd] = (revIn[dd] || 0) + 1; }
+  });
+  if (s.ids.length) steps.push({ have: revHave, need: s.ids.length });
+  if (s.d && s.n > 0) {
+    var have = 0;
+    (s.d === 'all' ? Object.keys(DI) : [s.d]).forEach(function (d) {
+      var x = tally[d];
+      have += Math.max(0, (Array.isArray(x) ? parityCount(x[0]) : 0) - (revIn[d] || 0));
+    });
+    steps.push({ have: Math.min(have, s.n), need: s.n });
+  }
+  steps.forEach(function (x) { x.done = x.have >= x.need; });
+  return { steps: steps, done: steps.length > 0 && steps.every(function (x) { return x.done; }) };
+}
+// The day's own numbers for the clearing: every graded answer today
+// (practice and mocks, dayTally), how many were right, and the time spent
+// on today's latest tries (answerLog).
+function todayDayTotals(day) {
+  var e = isPlainObj(S.dayTally) && isPlainObj(S.dayTally[day]) ? S.dayTally[day] : {};
+  var q = 0, c = 0, ms = 0;
+  Object.keys(DI).forEach(function (d) {
+    var x = e[d];
+    if (Array.isArray(x)) { q += parityCount(x[0]); c += Math.min(parityCount(x[0]), parityCount(x[1])); }
+  });
+  var log = isPlainObj(S.answerLog) ? S.answerLog : {};
+  Object.keys(log).forEach(function (id) {
+    var rec = log[id];
+    if (rec && Number(rec.lastAt) > 0 && parityDayKey(Number(rec.lastAt)) === day && typeof rec.ms === 'number' && isFinite(rec.ms)) ms += Math.max(0, rec.ms);
+  });
+  return { q: q, c: c, ms: ms };
+}
+// Tomorrow's plan, in minutes: the questions to revisit due by the end of
+// tomorrow (at most a plan's worth) and a set, in tomorrow's mode.
+function todayTomorrowMinutes(now, st) {
+  var end = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 2).getTime();
+  var due = 0;
+  try {
+    due = Object.keys(S.review || {}).filter(function (id) {
+      var e = S.review[id];
+      return e && Number(e.dueAt) < end && reviewIdOpenable(id);
+    }).length;
+  } catch (e) { due = 0; }
+  var left = st.days === null ? null : st.days - 1;
+  if (left === 0) return todayPlanMinutes(Math.min(due, TODAY_WARM_UP) || TODAY_WARM_UP);
+  if (left !== null && left > 0 && left <= TODAY_EXAM_WEEK_DAYS) return todayPlanMinutes(TODAY_EXAM_WEEK_QUESTIONS);
+  return todayPlanMinutes(Math.min(due, REVIEW_DAILY_PLAN) + todayPlanSetLength());
+}
+var TODAY_NUM_WORDS = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten'];
+// "Today's clearing": the finish card in the plan's place. One of one, done;
+// plain counts; tomorrow's time; "Do a little more" as an outline (no filled
+// button), with "Stop any time" and "Short on time?" still there.
+function todayClearingHtml(s, prog, now, st) {
+  var k = prog.steps.length, w = TODAY_NUM_WORDS[k] || String(k);
+  var t = todayDayTotals(s.day);
+  var mins = Math.round(t.ms / 60000);
+  var time = t.ms <= 0 || mins < 1 ? '<span class="td-clear-of">under </span>1<span class="td-clear-of"> min</span>' : mins + '<span class="td-clear-of"> min</span>';
+  var timeSaid = t.ms <= 0 || mins < 1 ? 'under a minute' : mins + (mins === 1 ? ' minute' : ' minutes');
+  var tile = function (key, shown, said) {
+    return '<li class="td-clear-t"><span class="td-clear-k" aria-hidden="true">' + key + '</span>'
+      + '<span class="td-clear-v" aria-hidden="true">' + shown + '</span><span class="sr-only">' + key + ', ' + said + '</span></li>';
+  };
+  return '<h2 class="td-planc-h td-clear-h" id="tdHeroT"><span class="td-planc-t">Today&rsquo;s clearing</span><span class="sr-only">: </span>'
+    + '<span class="td-clear-s">' + w.charAt(0).toUpperCase() + w.slice(1) + ' of ' + w + ', done.</span></h2>'
+    + '<ul class="td-clear-ts" aria-label="Today&rsquo;s numbers">'
+    + tile('Questions', String(t.q), String(t.q))
+    + tile('Correct', t.c + '<span class="td-clear-of"> of ' + t.q + '</span>', t.c + ' of ' + t.q)
+    + tile('Time', time, timeSaid)
+    + '</ul>'
+    + '<p class="td-clear-next"><span class="td-clear-nk">Tomorrow</span><span class="td-clear-nv">About ' + todayTomorrowMinutes(now, st) + ' min</span></p>';
 }
 
 // ── KEEP YOUR PROGRESS (v12.33) ──
@@ -12999,7 +13297,7 @@ function backupNudgeHtml(answered) {
     + '<p class="plnt-invite-m" id="tdBkM">Your progress lives only in this browser. A backup file lets you restore it if the browser clears it.'
     + (ios ? ' On iPhone, adding KaiSip to your Home Screen also helps Safari keep it.' : '') + '</p>'
     + '<div class="plnt-invite-acts"><button type="button" class="plnt-ghost" id="tdBkGo" aria-describedby="tdBkM" onclick="backupNudgeSave()">Download backup</button>'
-    + '<button type="button" class="plnt-ghost" onclick="backupNudgeLater()">Not now</button></div></div></div></section>';
+    + '<button type="button" class="plnt-ghost plnt-ghost-quiet" onclick="backupNudgeLater()">Not now</button></div></div></div></section>';
 }
 function backupNudgeClose() {
   var el = document.getElementById('tdBackup');
@@ -13179,7 +13477,9 @@ function todayReadyHtml(r, range, st) {
         ? (RD_RANGE_MIN_ANSWERS - range.needed) + ' of ' + RD_RANGE_MIN_ANSWERS + ' answers for your first range. Each question counts once. ' + TODAY_EST_LINE
         : 'Answer ' + RD_RANGE_MIN_ANSWERS + ' questions to see your first readiness range. Your range will be a study estimate, not a prediction.') + '</p>';
   } else {
-    html += '<p class="td-ready-s td-ready-range">' + range.low + '<span class="td-ready-to"> to </span>' + range.high
+    // Premium round (G18): the ring's caption is Today's one big range; here
+    // it is the card's plain first line, like "Not enough data yet".
+    html += '<p class="td-ready-s">' + range.low + ' to ' + range.high
       + '<span class="sr-only"> out of 100</span></p>'
       + '<p class="td-ready-x">Your estimated range. ' + TODAY_EST_LINE + '</p>';
   }
@@ -13203,7 +13503,7 @@ function todayReadyHtml(r, range, st) {
     }).join('') + '</ul>';
   }
   var how = '<p class="td-note">The range is about how much of the exam you would get right today, weighted like the exam. It narrows as you answer more.</p>'
-    + '<p class="td-note">The ring starts at the top and runs clockwise from 0 to 100. Before your first range, each tick is one answer, up to ' + RD_RANGE_MIN_ANSWERS + '. After it, each tick is 2 points.</p>'
+    + '<p class="td-note">The ring starts at the top and runs clockwise from 0 to 100. Before your first range, each dot is one answer, up to ' + RD_RANGE_MIN_ANSWERS + '. After it, each tick is 2 points.</p>'
     + '<ul class="td-key" aria-label="Ring key">'
     + '<li><span class="td-key-sw td-key-low" aria-hidden="true"></span>Up to your low end</li>'
     + '<li><span class="td-key-sw td-key-rng" aria-hidden="true"></span>Your range</li>'
@@ -13391,17 +13691,38 @@ function todaySideHtml(inner) {
 // inside the readiness ring, or the kit's seed before one is planted. The
 // growth names are the plant engine's own (Seed to Elder).
 var TODAY_STAGES = 6;
+// The hero's plant line tells the plant's story (premium round, G22): what
+// grows it, then the next stage and what grows that (plantGrowsLine, the
+// engine's own gates). On the visit after it grows: "Fern grew to Shoot."
+// and one true fact about what earned it (each is a gate of that stage).
+// Nothing new is saved.
+function todayGrewFact(K, g) {
+  var P = K.plant;
+  if (g === 2) return 'It grew from your first ' + P.SPROUT_ANSWERS + ' answers.';
+  if (g === 3) return 'You answered ' + P.SHOOT_PER_DOMAIN + ' or more questions in every domain.';
+  if (g === 4) return 'Topics you got right held across different days.';
+  if (g === 5) return 'You finished a mock of ' + P.CROWN_MOCK + ' questions or more.';
+  if (g === 6) return 'You sat a full, timed mock with every question answered.';
+  return '';
+}
 function todayShoot() {
   var K = plantApi();
   var names = (K && K.plant && K.plant.GROWTH_NAMES) || { 1: 'Seed' };
   if (K && S.plant) {
     var v = plantSafe(function () { return plantView(Date.now()); });
     if (v) {
-      var g = v.plant.growth;
-      return {
-        plant: true, v: v, stage: g, name: names[g] || '',
-        cap: (names[g] ? names[g] + ': ' : '') + K.plant.plantCallName(v.plant) + ' grows only from real progress.'
-      };
+      var g = v.plant.growth, who = K.plant.plantCallName(v.plant), cap, grew = null;
+      if (plantGrewShown && plantGrewTo === g) {
+        cap = (plantGrewShown + ' ' + todayGrewFact(K, g)).trim();
+        grew = { from: plantGrewFrom };
+      } else if (g >= K.plant.MAX_GROWTH) {
+        cap = 'Fully grown. It keeps all of its growth.';
+      } else {
+        var nextLine = plantGrowsLine(K, g);
+        cap = who + ' grows only from real progress. Next, ' + (names[g + 1] || '') + ': '
+          + nextLine.charAt(0).toLowerCase() + nextLine.slice(1) + '.';
+      }
+      return { plant: true, v: v, stage: g, name: names[g] || '', cap: cap, grew: grew };
     }
   }
   return { plant: false, stage: 1, name: names[1] || 'Seed', cap: 'Your progress grows from what you practise here.' };
@@ -13418,19 +13739,28 @@ function todaySeedSvg() {
     + '<path class="td-seed-leaf" d="M100 90Q113 84 118 70Q104 72 100 88Z"/>'
     + '</svg>';
 }
-// ── The readiness ring (Grove §6.4) ──
-// Before the first range: RD_RANGE_MIN_ANSWERS ticks, one per answer, lit up
-// to the answers so far, from 12 o'clock clockwise. After it: 50 ticks of 2
-// points each, lit to the range's low end, gold inside the range, and a clay
-// mark at the study bar (FG_STUDY_BAR). The centre says the range, never one
-// number. The numbers are todayReadinessRange's; nothing is worked out here.
-// Exam week and exam day: the plant only, no ticks (readiness in words).
+// ── The readiness ring (Grove §6.4; premium round, "ring-plant-first" B) ──
+// The plant is drawn full size at every stage, and the range is the caption
+// under the ring, never in it. Each measure has its own mark:
+// - before the first range, RD_RANGE_MIN_ANSWERS seed dots count the answers
+//   that count (todayRingSoFar: whole answers, an assisted first answer counts
+//   half, as the engine does). An answered dot is solid; a dot not answered
+//   yet is an outline in --leaf-line, so they differ by shape, not colour.
+// - once a range exists, 50 ticks of 2 points each, lit to the range's low
+//   end, gold inside the range, and a clay mark at the study bar (FG_STUDY_BAR).
+// The numbers are todayReadinessRange's; nothing is worked out here. Exam
+// week and exam day: the plant only, no marks (readiness in words).
 var TODAY_RING_TICKS = 50;      // after the first range: 2 points each
-var todayRingGrown = false;     // the ticks light up once per visit
+var TODAY_COUNTDOWN_FROM = 30;  // the caption counts down from here (G19)
+var TODAY_FIRST_RANGE_UNTIL = 60; // "Your first range is in" below this many answers
+var todayRingGrown = false;     // the marks light up once per visit
+var todayRingWasEnough = null;  // the range state last drawn this visit (the hand-off at answer 40)
+var todayGrewFaded = false;     // the plant's grow-up fade plays once per visit
+var todaySaidOnce = '';         // what the hero last announced this visit
 // The light-up waits (td-wait holds it at its start) until a third of the
 // ring is on screen above the tab bar's zone (the page can open scrolled, or
 // on a very short screen). It plays once. Reduced motion has no
-// light-up: the ticks show lit.
+// light-up: the marks show lit.
 var todayRingIo = null;
 function todayRingWatch() {
   if (todayRingIo) { todayRingIo.disconnect(); todayRingIo = null; }
@@ -13448,62 +13778,113 @@ function todayRingWatch() {
 function todayRingSoFar(range) {
   return Math.max(0, Math.min(RD_RANGE_MIN_ANSWERS, RD_RANGE_MIN_ANSWERS - range.needed));
 }
+// The answers that count toward the range (whole and half), as the engine counts them.
+function todayUnlocked(r) {
+  return r.domains.reduce(function (s, x) { return s + (Number(x.unlock) || 0); }, 0);
+}
 function todayTick(i, n, cls, k) {
   return '<line class="td-tk ' + cls + '" x1="100" y1="7" x2="100" y2="21" transform="rotate(' + +(i * 360 / n).toFixed(2) + ' 100 100)"'
     + (cls !== 'off' ? ' style="--i:' + k + '"' : '') + '/>';
 }
-function todayRingHtml(range, st, shoot, grow) {
-  var ticks = '', mark = '', label = '', centre = '', i;
+// One seed dot: the same outer size solid or outlined (r 4.6, or 3.85 with a
+// 1.5 stroke): 6px across in the 132px phone ring, about 7px in the web ring
+// (CSS r from 768px).
+function todayDot(i, n, on) {
+  return '<circle class="td-dot ' + (on ? 'on' : 'off') + '" cx="100" cy="14" r="' + (on ? '4.6' : '3.85') + '" transform="rotate(' + +(i * 360 / n).toFixed(2) + ' 100 100)"'
+    + (on ? ' style="--i:' + i + '"' : '') + '/>';
+}
+// o: { grow (the first light-up this visit), handoff (the range arrived this
+// visit), first (the first range: under TODAY_FIRST_RANGE_UNTIL answers) }
+function todayRingHtml(range, st, shoot, o) {
+  o = o || {};
+  var ticks = '', dots = '', mark = '', label = '', i, n = RD_RANGE_MIN_ANSWERS;
   if (!st.exam && !range.enough) {
-    var n = RD_RANGE_MIN_ANSWERS, so = todayRingSoFar(range);
-    for (i = 0; i < n; i++) ticks += todayTick(i, n, i < so ? 'on' : 'off', i);
+    var so = todayRingSoFar(range);
+    for (i = 0; i < n; i++) dots += todayDot(i, n, i < so);
+    dots = '<g class="td-dots">' + dots + '</g>';
     label = so + ' of ' + n + ' answers toward your first readiness range.';
   } else if (!st.exam) {
     for (i = 0; i < TODAY_RING_TICKS; i++) {
       var top = (i + 1) * 100 / TODAY_RING_TICKS, bottom = i * 100 / TODAY_RING_TICKS;
       ticks += todayTick(i, TODAY_RING_TICKS, top <= range.low ? 'on' : bottom < range.high ? 'rng' : 'off', i);
     }
+    ticks = '<g class="td-tks">' + ticks + '</g>';
     mark = '<line class="td-tk-mark" x1="100" y1="3" x2="100" y2="27" transform="rotate(' + (FG_STUDY_BAR * 3.6) + ' 100 100)"/>';
-    label = 'Estimated readiness range ' + range.low + ' to ' + range.high + ' out of 100. The study bar is ' + FG_STUDY_BAR + '. ' + TODAY_EST_LINE;
-    centre = '<p class="td-ring-n" aria-hidden="true">' + range.low + '<span class="td-ring-to"> to </span>' + range.high + '</p>'
-      + '<p class="td-ring-l" aria-hidden="true">estimated range</p>';
+    label = 'Estimated readiness range ' + range.low + ' to ' + range.high + ' out of 100. The study bar is ' + FG_STUDY_BAR + '. '
+      + (o.first ? 'Your first range is in. It usually narrows as you answer more. ' : '') + TODAY_EST_LINE;
+    // The hand-off (G19): the full count of dots fades as the ticks light.
+    if (o.handoff) {
+      for (i = 0; i < n; i++) dots += todayDot(i, n, true);
+      dots = '<g class="td-dots td-dots-out">' + dots + '</g>';
+    }
   }
   // The disc is forest in both themes, so the plant takes its dark palette.
-  var art = shoot.plant ? plantSafe(function () { return plantDraw(shoot.v, 'today', centre ? 72 : 108, { fit: true, theme: 'dark' }); }) : '';
+  // Full size at every stage (it never shrinks as it grows).
+  var art = shoot.plant ? plantSafe(function () { return plantDraw(shoot.v, 'today', 108, { fit: true, theme: 'dark' }); }) : '';
+  if (art && o.fade && shoot.grew && shoot.grew.from) {
+    // The visit after it grew: the art fades over from the old stage.
+    var was = plantSafe(function () {
+      var vOld = Object.assign({}, shoot.v, { plant: Object.assign({}, shoot.v.plant, { growth: shoot.grew.from }) });
+      return plantDraw(vOld, 'today', 108, { fit: true, theme: 'dark' });
+    });
+    if (was) art = '<span class="td-art-old">' + was + '</span><span class="td-art-new">' + art + '</span>';
+  }
   if (!art) art = todaySeedSvg();
-  return '<div class="td-ring' + (centre ? ' td-ring-range' : '') + (st.exam ? ' td-ring-bare' : '')
-    + (grow ? ' grow' + (typeof IntersectionObserver === 'function' ? ' td-wait' : '') : '') + '">'
+  var wait = (o.grow || o.handoff || o.fade) && typeof IntersectionObserver === 'function';
+  return '<div class="td-ring' + (st.exam ? ' td-ring-bare' : '') + (o.grow ? ' grow' : '') + (o.handoff ? ' td-ho' : '')
+    + (o.fade ? ' td-grew' : '') + (wait ? ' td-wait' : '') + '">'
     + '<svg class="td-ring-svg" viewBox="0 0 200 200" focusable="false"' + (label ? ' role="img" aria-label="' + escapeHtml(label) + '"' : ' aria-hidden="true"') + '>'
-    + '<g class="td-tks' + (centre ? ' td-tks-fine' : '') + '">' + ticks + '</g>' + mark
+    + dots + ticks + mark
     + '<circle class="td-ring-disc" cx="100" cy="100" r="70"/></svg>'
-    + '<div class="td-ring-in"><div class="td-ring-art' + (shoot.plant ? '' : ' is-seed') + '" aria-hidden="true">' + art + '</div>' + centre + '</div></div>';
+    + '<div class="td-ring-in"><div class="td-ring-art' + (shoot.plant ? '' : ' is-seed') + '" aria-hidden="true">' + art + '</div></div></div>';
+}
+// The caption under the ring, in the same spot in both states (screen
+// readers hear the ring's label instead, so it is said once):
+// - before the first range: the count ("12 of 40 answers until your first
+//   readiness range"), then from TODAY_COUNTDOWN_FROM a countdown ("8 more
+//   answers to your first range");
+// - after it: "63 to 73 estimated range" and "A study estimate, not a
+//   prediction." (from 768px the range in the serif with "estimated range"
+//   under it). Never one number, never a dash. The first range adds that it
+//   usually narrows.
+function todayRingCapHtml(r, range, st, o) {
+  if (st.exam) return '';
+  var inner;
+  if (!range.enough) {
+    var so = todayRingSoFar(range), left = RD_RANGE_MIN_ANSWERS - so;
+    if (r.answered <= 0) inner = 'Answer ' + RD_RANGE_MIN_ANSWERS + ' questions<br>to see your first readiness range';
+    else if (so >= TODAY_COUNTDOWN_FROM) inner = '<span class="td-ring-big">' + left + '</span> more ' + (left === 1 ? 'answer' : 'answers') + '<br>to your first range';
+    else inner = '<span class="td-ring-big">' + so + '</span> of ' + RD_RANGE_MIN_ANSWERS + ' answers<br>until your first readiness range';
+    return '<div class="td-ring-cap" aria-hidden="true"><p class="td-rcap-w">' + inner + '</p></div>';
+  }
+  return '<div class="td-ring-cap td-ring-cap-r' + (o.handoff ? ' td-cap-in' : '') + '" aria-hidden="true">'
+    + '<p class="td-rcap-r"><span class="td-rcap-n">' + range.low + '<span class="td-rcap-to"> to </span>' + range.high + '</span> '
+    + '<span class="td-rcap-l">estimated range</span></p>'
+    + '<p class="td-rcap-x">' + (o.first ? 'Your first range is in. It usually narrows as you answer more. ' : '') + TODAY_EST_LINE + '</p></div>';
 }
 // The hero's figure: the stage line (two layouts: "Seed" with "Stage 1 of 6"
-// beside it on phones, "Seed · stage 1 of 6" under the ring from 768px; only
-// one shows), the ring, the line under it, and on phones the Accuracy and
+// beside it on phones, "Seed · stage 1 of 6" under the caption from 768px;
+// only one shows), the ring, its caption, and on phones the Accuracy and
 // Exam date tiles. Its plant line is hidden (the hero shows it at its foot,
-// tdPlateOut) but keys todayShootRefresh.
-function todayFigHtml(r, range, st, shoot, grow) {
+// tdPlateOut) but keys todayShootRefresh. o: as todayRingHtml.
+function todayFigHtml(r, range, st, shoot, o) {
+  o = Object.assign({}, o || {});
   var name = shoot.name || 'Seed';
   var stage = 'Stage ' + shoot.stage + ' of ' + TODAY_STAGES;
-  var under = '';
-  if (!st.exam && !range.enough) {
-    under = r.answered > 0
-      ? '<span class="td-ring-big">' + todayRingSoFar(range) + '</span> of ' + RD_RANGE_MIN_ANSWERS + ' answers<br>until your first readiness range'
-      : 'Answer ' + RD_RANGE_MIN_ANSWERS + ' questions<br>to see your first readiness range';
-  } else if (!st.exam) {
-    under = TODAY_EST_LINE;
-  }
+  o.first = range.enough && todayUnlocked(r) < TODAY_FIRST_RANGE_UNTIL;
   // Accuracy: You's own rule ("Too few yet" until DOMAIN_READ_MIN answers,
   // then the whole percentage of latest tries). Screen readers hear it as one
   // phrase ("Accuracy, too few yet, 12 answered"); under 30 a small hint says
-  // when the number shows.
+  // when the number shows, and from 30 "Latest tries" says what the number
+  // counts (G26; not in exam week or on a Welcome back day, which stay as
+  // they are).
   var c = Math.round(r.domains.reduce(function (s, x) { return s + x.mastered; }, 0));
   var accRead = domainRead({ t: r.answered, c: c });
   var acc = r.answered > 0 ? domainReadLabel(accRead) : 'Not started';
   var accNum = /%$/.test(acc);
-  var accHint = r.answered > 0 && !accRead.enough ? 'Shows at ' + DOMAIN_READ_MIN + ' answers' : '';
-  var accSaid = 'Accuracy, ' + domainFigure(r.answered, accRead.pct).spoken + (accHint ? '. ' + accHint + '.' : '');
+  var accHint = r.answered > 0 && !accRead.enough ? 'Shows at ' + DOMAIN_READ_MIN + ' answers'
+    : accNum && !st.exam && !st.back ? 'Latest tries' : '';
+  var accSaid = 'Accuracy, ' + domainFigure(r.answered, accRead.pct).spoken + (accHint && !accNum ? '. ' + accHint + '.' : '');
   var examTile;
   if (st.days === null) {
     examTile = '<button type="button" class="td-tile td-tile-btn" onclick="todaySetExamDate()"><span class="td-tile-k">Exam date</span><span class="td-tile-a">Set a date</span></button>';
@@ -13513,17 +13894,28 @@ function todayFigHtml(r, range, st, shoot, grow) {
       + (PARITY_DAY_RE.test(examDay) ? escapeHtml(pgShort(examDay)) : escapeHtml(ACTIVE.name)) + '</span></div>';
   }
   return '<div class="td-fig-top">' + fgFigHtml(name, 2) + '<p class="td-fig-stage">' + stage + '</p></div>'
-    + todayRingHtml(range, st, shoot, grow)
+    + todayRingHtml(range, st, shoot, o)
+    + todayRingCapHtml(r, range, st, o)
     + '<div class="td-fig-cap">' + fgFigHtml(name + ' · stage ' + shoot.stage + ' of ' + TODAY_STAGES, 2, '', name + ', stage ' + shoot.stage + ' of ' + TODAY_STAGES) + '</div>'
-    + (under ? '<p class="td-ring-cap" aria-hidden="true">' + under + '</p>' : '')
     + '<div class="td-tiles"><div class="td-tile"><span class="sr-only">' + escapeHtml(accSaid) + '</span>'
-    + '<span class="td-tile-k" aria-hidden="true">Accuracy</span><span class="td-tile-v' + (accNum ? ' td-tile-num' : '') + '" aria-hidden="true">' + escapeHtml(acc) + '</span>'
-    + (accHint ? '<span class="td-tile-hint" aria-hidden="true">' + accHint + '</span>' : '') + '</div>'
+    + '<span class="td-tile-k" aria-hidden="true">Accuracy</span><span class="td-tile-row" aria-hidden="true"><span class="td-tile-v' + (accNum ? ' td-tile-num' : '') + '">' + escapeHtml(acc) + '</span>'
+    + (accHint ? '<span class="td-tile-hint">' + accHint + '</span>' : '') + '</span></div>'
     + examTile + '</div>'
     + '<p class="fg-cap td-platecap td-platecap-in">' + escapeHtml(shoot.cap) + '</p>';
 }
+// One short announcement from the hero, once per visit for each news: the
+// plant grew, or the first range arrived (the live region is in the page
+// before it is filled, so it is heard).
+function todaySay(text) {
+  if (!text || text === todaySaidOnce) return;
+  todaySaidOnce = text;
+  setTimeout(function () {
+    var el = document.getElementById('tdSay');
+    if (el) el.textContent = text;
+  }, 450);
+}
 // The plant script or a plant choice arrived: draw the figure again, only
-// when it changed (so the ticks' first light-up is not cut short).
+// when it changed (so the marks' first light-up is not cut short).
 var todayFigKey = '';
 function todayShootRefresh() {
   var fig = document.getElementById('tdFig');
@@ -13531,13 +13923,18 @@ function todayShootRefresh() {
   var r = computeTodayReadiness();
   var range = todayReadinessRange(r), st = todayState(new Date(), r);
   var shoot = todayShoot();
-  var key = todayFigHtml(r, range, st, shoot, false);
+  var key = todayFigHtml(r, range, st, shoot);
   if (key === todayFigKey) return;
   todayFigKey = key;
-  fig.innerHTML = todayFigHtml(r, range, st, shoot, !!fig.querySelector('.td-ring.grow'));
+  var fade = !!(shoot.grew && !todayGrewFaded);
+  if (fade) todayGrewFaded = true;
+  fig.innerHTML = todayFigHtml(r, range, st, shoot, {
+    grow: !!fig.querySelector('.td-ring.grow'), handoff: !!fig.querySelector('.td-ring.td-ho'), fade: fade
+  });
   todayRingWatch();
   var out = document.getElementById('tdPlateOut');
   if (out) out.textContent = shoot.cap;
+  if (shoot.grew) todaySay(shoot.cap);
 }
 // "Short on time? 5 questions" (the app's short path, mobile 1.41): a quiet
 // second way into today's plan, never a second Start. The first item of the
@@ -13549,9 +13946,12 @@ function todayShortOk(st, r, plan) {
   return !(plan.items.length === 1 && plan.review + plan.n <= TODAY_SHORT_SET);
 }
 function todayShortStart() {
-  var r = computeTodayReadiness();
-  var plan = todayPlan(r, undefined, todayState(new Date(), r).plan);
-  if (plan.review > 0) { startReviewQueue(TODAY_SHORT_SET); return; }
+  var now = new Date(), r = computeTodayReadiness(), st = todayState(now, r);
+  // The saved plan's step not finished yet; once the day is done, the live plan.
+  var s = todayPlanSnap(now, r, st), pr = s ? todayPlanProgress(s) : null;
+  var plan = s && !pr.done ? todayPlanFromSnap(s) : todayPlan(r, undefined, st.plan);
+  var reviewFirst = s && !pr.done ? s.ids.length > 0 && !pr.steps[0].done : plan.review > 0;
+  if (reviewFirst) { startReviewQueue(TODAY_SHORT_SET); return; }
   var d = plan.d && DI[plan.d] ? plan.d : 'all';
   switchTab('practice', { noScroll: true });
   selectDomain(d);
@@ -13606,23 +14006,38 @@ function renderHome() {
       + '<p class="td-resume-m">' + p.meta + '</p>';
     act = '<button type="button" class="fg-btn td-go" id="tdGo" aria-describedby="tdHeroT" onclick="todayPractice()">' + p.label + ico('arrow-right', 18) + '</button>';
   } else {
-    plan = todayPlan(r, undefined, st.plan);
-    var cap = st.plan === 'examday' ? 'Exam day &middot; today&rsquo;s plan' : st.plan === 'examweek' ? 'Exam week &middot; today&rsquo;s plan' : 'Today&rsquo;s plan';
-    // Each step's minutes, at the plan's own pace (todayPlanMinutes).
-    var mins = plan.items.length === 2 ? [todayPlanMinutes(plan.review), todayPlanMinutes(plan.n)] : [plan.minutes];
-    var steps = plan.items.map(function (it, i) {
-      return '<li><span class="td-step" aria-hidden="true">' + (i + 1) + '</span>'
-        + '<span class="td-step-t"><span class="td-step-h">' + it.title + '</span><span class="td-step-m">' + it.meta + '</span></span>'
-        + (mins[i] ? '<span class="td-step-min">' + mins[i] + ' min</span>' : '') + '</li>';
-    }).join('');
-    planHtml = '<h2 class="td-planc-h" id="tdHeroT"><span class="td-planc-t">' + cap + '</span><span class="sr-only">: </span>'
-      + '<span class="td-planc-min">About ' + plan.minutes + ' min</span></h2>'
-      + '<ol class="td-steps" aria-label="Today&rsquo;s plan, in order">' + steps + '</ol>';
-    act = '<button type="button" class="fg-btn td-go" id="tdGo" aria-describedby="tdHeroT" onclick="todayPlanStart()">Start' + ico('arrow-right', 18) + '</button>'
-      + '<p class="td-hero-q">Stop any time; your place is saved.</p>';
-    if (todayShortOk(st, r, plan)) {
-      short = '<button type="button" class="td-short" onclick="todayShortStart()">Short on time? ' + TODAY_SHORT_SET + ' questions, '
-        + todayPlanMinutes(TODAY_SHORT_SET) + ' min</button>';
+    // The plan saved for the day (premium round: today's finish line), or
+    // the live plan when it cannot be made.
+    var snap = todayPlanSnap(now, r, st);
+    plan = snap ? todayPlanFromSnap(snap) : todayPlan(r, undefined, st.plan);
+    var prog = snap ? todayPlanProgress(snap) : null;
+    var shortBtn = '<button type="button" class="td-short" onclick="todayShortStart()">Short on time? ' + TODAY_SHORT_SET + ' questions, '
+      + todayPlanMinutes(TODAY_SHORT_SET) + ' min</button>';
+    if (prog && prog.done) {
+      // Today's clearing: the plan is done. No filled button in this state.
+      planHtml = todayClearingHtml(snap, prog, now, st);
+      act = '<button type="button" class="td-more" id="tdGo" aria-describedby="tdHeroT" onclick="todayMoreStart()">Do a little more</button>'
+        + '<p class="td-hero-q">Stop any time; your place is saved.</p>';
+      short = shortBtn;
+    } else {
+      var cap = plan.mode === 'examday' ? 'Exam day &middot; today&rsquo;s plan' : plan.mode === 'examweek' ? 'Exam week &middot; today&rsquo;s plan' : 'Today&rsquo;s plan';
+      // Each step's minutes, at the plan's own pace (todayPlanMinutes).
+      var mins = plan.items.length === 2 ? [todayPlanMinutes(plan.review), todayPlanMinutes(plan.n)] : [plan.minutes];
+      var steps = plan.items.map(function (it, i) {
+        var pr = prog && prog.steps[i];
+        var done = !!(pr && pr.done);
+        var part = pr && !done && pr.have > 0 ? ' &middot; ' + pr.have + ' of ' + pr.need + ' answered' : '';
+        return '<li' + (done ? ' class="is-done"' : '') + '><span class="td-step" aria-hidden="true">' + (done ? ico('check', 16) : (i + 1)) + '</span>'
+          + '<span class="td-step-t"><span class="td-step-h">' + it.title + '</span>'
+          + '<span class="td-step-m">' + it.meta + (done ? ' &middot; done' : part) + '</span></span>'
+          + (mins[i] && !done ? '<span class="td-step-min">' + mins[i] + ' min</span>' : '') + '</li>';
+      }).join('');
+      planHtml = '<h2 class="td-planc-h" id="tdHeroT"><span class="td-planc-t">' + cap + '</span><span class="sr-only">: </span>'
+        + '<span class="td-planc-min">About ' + plan.minutes + ' min</span></h2>'
+        + '<ol class="td-steps" aria-label="Today&rsquo;s plan, in order">' + steps + '</ol>';
+      act = '<button type="button" class="fg-btn td-go" id="tdGo" aria-describedby="tdHeroT" onclick="todayPlanStart()">Start' + ico('arrow-right', 18) + '</button>'
+        + '<p class="td-hero-q">Stop any time; your place is saved.</p>';
+      if (todayShortOk(st, r, plan)) short = shortBtn;
     }
   }
   var intro = '';
@@ -13657,7 +14072,14 @@ function renderHome() {
   var shoot = todayShoot();
   var grow = !todayRingGrown;
   todayRingGrown = true;
-  todayFigKey = todayFigHtml(r, range, st, shoot, false);
+  // The hand-off (G19): the range arrived during this visit (it was drawn
+  // without one), so the dots give way to the ticks once. A learner who comes
+  // back later sees the final state.
+  var handoff = !st.exam && range.enough && todayRingWasEnough === false;
+  todayRingWasEnough = st.exam ? todayRingWasEnough : range.enough;
+  var fade = !!(shoot.grew && !todayGrewFaded);
+  if (fade) todayGrewFaded = true;
+  todayFigKey = todayFigHtml(r, range, st, shoot);
   // Grove's hero, in the kit's order (owner decision, 31 Oct 2026: ring
   // first on phones, replacing plan first): the figure (the stage line, the
   // ring with the plant, its caption and on phones the Accuracy and Exam date
@@ -13666,10 +14088,11 @@ function renderHome() {
   // it is one forest card (grid areas: the figure beside the plan, or above
   // it in a narrow column); nothing in the figure takes focus there.
   var hero = '<section class="td-hero" aria-labelledby="tdHeroT">'
-    + '<div class="td-fig" id="tdFig" role="group" aria-label="Your plant and study estimate">' + todayFigHtml(r, range, st, shoot, grow) + '</div>'
+    + '<div class="td-fig" id="tdFig" role="group" aria-label="Your plant and study estimate">' + todayFigHtml(r, range, st, shoot, { grow: grow && !handoff, handoff: handoff, fade: fade }) + '</div>'
     + '<div class="td-planc' + (p.resume ? ' td-planc-resume' : '') + '">' + planHtml
     + '<div class="td-hero-acts">' + act + '</div>' + short + '</div>'
     + '<p class="fg-cap td-platecap td-platecap-out" id="tdPlateOut">' + escapeHtml(shoot.cap) + '</p>'
+    + '<p class="sr-only" id="tdSay" role="status"></p>'
     + '</section>';
 
   // The week's twig: not on a Welcome back day or in exam week. Drawn in the
@@ -13714,6 +14137,9 @@ function renderHome() {
     + '</div>';
   appCtaTodayWire();
   todayRingWatch();
+  // One short announcement for the news on the hero (the live region above).
+  if (handoff) todaySay('Your first readiness range is in: ' + range.low + ' to ' + range.high + '. ' + TODAY_EST_LINE);
+  else if (shoot.grew) todaySay(shoot.cap);
 
   // The notes arrive after the first paint: draw the next step again then.
   if (!hideNext && !CISA_NOTES_RAW && !conceptsLoadFailed) {
@@ -16458,6 +16884,8 @@ var plantNotesAsked = false;
 var plantBreathed = {};         // surfaces that took their one breath this visit
 var plantBackfillShown = null;  // { at, line }: the back-fill line, kept for this visit
 var plantGrewShown = null;      // Today's grow-up line, kept for this visit
+var plantGrewTo = null;         // the growth it reached (Today's hero line, premium round G22)
+var plantGrewFrom = null;       // the growth before it, for the hero's one fade
 var plantDlg = null;            // the open plant dialog
 var plantMoreOpen = false;      // You (inline): "What grows it next" opened
 
@@ -16841,11 +17269,13 @@ function plantTodayHtml() {
       + '<div class="plnt-invite-t"><p class="plnt-invite-h" id="tdPlantInvH">Plant a companion</p>'
       + '<p class="plnt-invite-m" id="tdPlantInvM">It grows only from real progress across the exam outline. It asks for nothing and never wilts.</p>'
       + '<div class="plnt-invite-acts"><button type="button" class="plnt-ghost" id="tdPlantGo" onclick="plantOpen(\'new\',\'today\')" aria-describedby="tdPlantInvM">Plant yours</button>'
-      + '<button type="button" class="plnt-ghost" onclick="plantHidePrompt()">No thanks</button></div></div></div>';
+      + '<button type="button" class="plnt-ghost plnt-ghost-quiet" onclick="plantHidePrompt()">No thanks</button></div></div></div>';
   }
   // A grow-up: one calm line on Today, once (kept for this visit), then it is seen.
   if (p.pending) {
     plantGrewShown = K.plant.grewLabel(p, p.pending);
+    plantGrewTo = p.pending;
+    plantGrewFrom = K.plant.growthBefore(p, p.pending);
     S.plant = K.plant.clearPending(p);
     p = S.plant;
     saveState();
@@ -16854,14 +17284,15 @@ function plantTodayHtml() {
   return '<button type="button" class="td-plant-btn" onclick="plantOpenYou()" aria-label="' + escapeHtml(v.label + ' Opens your plant on You.') + '">'
     + '<span class="td-plant-art">' + plantDraw(v, 'today', 72, { fit: true, lod: 'small' }) + '</span>'
     + '<span class="you-text"><span class="you-t td-plant-name">' + escapeHtml(K.plant.plantCallName(p)) + '</span>'
-    + '<span class="you-m">' + escapeHtml(plantGrowsLine(K, p.growth)) + '</span></span>'
-    + '<span class="you-chev" aria-hidden="true">' + ico('chevron', 18) + '</span></button>'
-    + (plantGrewShown ? '<p class="td-plant-note" role="status">' + escapeHtml(plantGrewShown) + '</p>' : '');
+    // The hero's plant line says what grows it next, and the grow-up news
+    // (premium round, G22), so this row no longer repeats either.
+    + '<span class="you-m">Its look and growth, on You</span></span>'
+    + '<span class="you-chev" aria-hidden="true">' + ico('chevron', 18) + '</span></button>';
 }
-// Today's plant row says what grows it next, from the plant engine's own
-// gates (GROWTH_RULES): the first answers, then every domain, then (Bough,
-// Crown and Elder all need it) subtopics answered right on two different
-// days. The stage name and number stay on You.
+// What grows the plant next, from the plant engine's own gates
+// (GROWTH_RULES): the first answers, then every domain, then (Bough, Crown
+// and Elder all need it) subtopics answered right on two different days.
+// Today's hero line says it after the next stage's name (todayShoot).
 function plantGrowsLine(K, growth) {
   if (growth >= K.plant.MAX_GROWTH) return 'Fully grown. It keeps all of its growth.';
   if (growth + 1 === 2) return 'Grows with your first ' + K.plant.SPROUT_ANSWERS + ' answers';
@@ -20159,7 +20590,10 @@ function doResetProgress() {
   S.dayTally = {};
   S.lowEndLog = [];
   S.stuckAt = {};
+  S.todayPlanV1 = null;
   plantGrewShown = null;
+  plantGrewTo = null;
+  plantGrewFrom = null;
   plantBackfillShown = null;
   S.mockId = null;
   S.mockType = 'full';
