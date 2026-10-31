@@ -315,3 +315,14 @@ then pick the best of the rest.
    enrol for now (CSOE_BANK_PLAN.md section 8); public exam-taker feedback
    was searched and holds nothing about the questions.
 6. **Domain experts** for each domain: `.claude/agents/csoe-d{1..5}-domain-expert.md`.
+
+7. **Sources running out (31 Oct 2026, batch 4).**
+   - **5B1 (COSO ERM 2004):** the 2004 framework itself is not public. The COSO
+     papers that report its content are used up for items, and items may not
+     key on a commissioned paper's own advice. Add no more 5B1 items unless the
+     owner supplies the 2004 framework.
+   - **5C2 (service organizations):** every opened angle is used. One in-scope
+     angle remains: an issuer's user auditor works under PCAOB standards
+     (Section 103), while AU-C 402 covers nonissuers. It needs an AICPA page
+     stating that, opened and dated.
+   - **Basel II pillars:** bis.org is unreachable.
