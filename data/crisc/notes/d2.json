@@ -1168,12 +1168,12 @@
           "why_it_matters": "Leaders cannot read hundreds of entries. Consistent registers that roll up show which risks threaten enterprise objectives and where appetite is exceeded.",
           "how_it_works": [
             "Units use common categories, scales and time frames, so entries can be compared and combined.",
-            "Similar risks across units are aggregated, which can reveal a risk that is small locally but large in total.",
             "Normalization corrects for units rating the same kind of risk differently.",
+            "Similar risks across units are aggregated, which can reveal a risk that is small locally but large in total.",
             "The IT risk register feeds the enterprise risk register and risk profile, as NIST IR 8286 Rev. 1 describes.",
             "The profile is compared with the appetite set by senior management and the board."
           ],
-          "example": "Five plants of a car-parts maker each rate unsupported controller software as low. When Hana Sato, the enterprise risk analyst, rolls up the registers, they find all five share the same controller vendor and patch gap. Hana aggregates them into one enterprise scenario, normalizes the plants' scales, and reports the combined exposure in the quarterly risk profile.",
+          "example": "Five plants of a car-parts maker each rate unsupported controller software as low. When Hana Sato, the enterprise risk analyst, rolls up the registers, they find all five share the same controller vendor and patch gap. Hana normalizes the plants' scales, aggregates the five entries into one enterprise scenario, and reports the combined exposure in the quarterly risk profile.",
           "audit_focus": {
             "review": [
               "Compare rating scales and categories used across unit registers",
@@ -1478,8 +1478,8 @@
           ],
           "key_terms": [
             {
-              "term": "Target residual risk",
-              "definition": "The level of risk the enterprise prefers to hold after its responses, set within appetite."
+              "term": "Target risk",
+              "definition": "The risk level a planned response is expected to reach, set within appetite; it becomes residual risk only once the response is implemented."
             },
             {
               "term": "Key control",
@@ -1544,7 +1544,7 @@
           "how_it_works": [
             "Within appetite: the risk owner may accept the risk, document the acceptance and monitor it with KRIs.",
             "Above appetite: the practitioner presents treatment options, such as mitigate, transfer or avoid, with costs, for the risk owner to choose.",
-            "Beyond tolerance: escalate to the level that set the threshold, usually senior management.",
+            "Beyond tolerance: escalate promptly to the risk owner and to the level that set the threshold, often senior management.",
             "Acceptance is documented with the owner's name, the rationale and a review date.",
             "Residual risk is reviewed again when KRIs move, controls change or the business changes."
           ],
@@ -1559,7 +1559,7 @@
               "Board-approved appetite and tolerance statements"
             ],
             "recommend": "Have risk owners document acceptance within appetite and choose treatment options for risks above it.",
-            "decides": "The risk owner decides within appetite; senior management decides beyond tolerance"
+            "decides": "The risk owner decides within appetite; breaches go to the owner and the limit-setting level"
           },
           "isaca_rule": "Residual risk within appetite can be accepted by the risk owner and monitored. Above appetite, the practitioner presents options and the owner chooses. The practitioner never accepts risk on the owner's behalf.",
           "exam_traps": [
