@@ -169,7 +169,8 @@ payment, never renews). Notes, lessons, principles and games stay free.
   both halves of Domain 3.
 - **Diagnostic:** 30 items from the sample, 10 per domain weighted 10 / 14 / 6
   inside it… rounded to 10 / 13 / 7, one per area at least.
-- **Short mock:** 30 items, 45 minutes (the exam's 100 seconds per item), drawn
+- **Short mock:** 30 items, 45 minutes (the app's target pace of 90 seconds per
+  item; the exam itself allows 100), drawn
   from the sample, never from the paid bank.
 - The sample is fixed per release (a `free: true` flag on each item at Stage
   2.7), and changes only with a new reviewed release.

@@ -394,7 +394,9 @@ version bump today.
 - **Independence vs `accuracy-is-not-assurance`.** What was tested (errors
   that matter, by group, on unseen recent data, against preset criteria) →
   `accuracy-is-not-assurance`. Who chose the data or ran the test →
-  `independence-of-ai-assurance`.
+  `independence-of-ai-assurance`. When the work is already independent and the
+  open question is whether the data fits the people affected now, tag
+  `accuracy-is-not-assurance` (aaia_d3_003).
 - **Reproducible evidence vs contain and preserve.** Evidence that lets the
   auditor trace or rerun a decision (version, inputs, settings, archived
   files) → `reproducible-ai-evidence`. Live harm, where the owner disengages
@@ -418,16 +420,17 @@ version bump today.
 | All | 150 | 138 | 12 |
 
 New principle `independence-of-ai-assurance` (role family): seeds and tags
-aaia_d2_014, aaia_d3_003, aaia_d3_024 and aaia_d3_043, moved from
-`accuracy-is-not-assurance` (aaia_d2_014, aaia_d3_003) and
-`ai-in-audit-stays-yours` (aaia_d3_024, aaia_d3_043).
+aaia_d2_014, aaia_d3_024 and aaia_d3_043, moved from
+`accuracy-is-not-assurance` (aaia_d2_014) and `ai-in-audit-stays-yours`
+(aaia_d3_024, aaia_d3_043). aaia_d3_003 stays on `accuracy-is-not-assurance`
+(and now seeds it): its specialist is already independent, and its Final two
+turns on whether the test data represents current students.
 
 **Medium confidence (tagged, review first):**
 - aaia_d1_028 `rank-ai-risk-by-harm` (close to `real-human-oversight`)
 - aaia_d1_045 `ai-deciding-fact` (the duty to give reasons removes the accuracy check)
 - aaia_d2_018 `rank-ai-risk-by-harm` (attack knowledge carries much of the weight)
 - aaia_d2_044 `rank-ai-risk-by-harm` (attack knowledge carries much of the weight)
-- aaia_d3_003 `independence-of-ai-assurance` (close to `accuracy-is-not-assurance`)
 - aaia_d3_043 `independence-of-ai-assurance` (close to `ai-in-audit-stays-yours`)
 
 **Still untagged (low confidence):**
