@@ -282,6 +282,26 @@ Fix-and-push is automatic; only major issues are escalated.
      their recommendation and the options in one short question, never an open
      question.
 
+### Session wrap-up (maintainer rule, added 2026-10-31)
+
+The maintainer asked that finished sessions archive themselves instead of
+sitting idle. When a session's work is done:
+
+1. **Check nothing is left.** Every PR it opened is merged or closed (none
+   waiting on CI, reviews or the maintainer); no scheduled task or `send_later`
+   reminder it created is still pending (`list_triggers`, matched by its own
+   session id); no background job is running; its branch is clean and pushed,
+   with the post-merge hygiene below done.
+2. **Anything waiting on the maintainer** (a PR left for them to merge, an open
+   question, a manual step): do NOT archive. Say in one line what is waiting.
+3. **Otherwise** tell the maintainer in one short line that the session is done,
+   then archive it with `archive_session` (its own id from `get_session`) as the
+   very last action. `unarchive_session` undoes it.
+4. **When asked to tidy up other sessions** (`list_sessions` with `mine: true`),
+   apply the same check to each, reading its last messages and its PRs. Archive
+   only sessions that are idle with nothing waiting; never one that is running,
+   blocked on the maintainer, or has a pending scheduled task.
+
 ### Post-merge branch hygiene (CRITICAL — avoids recurring squash-merge conflicts)
 
 PRs are merged via **squash-merge**, which collapses N feature-branch commits
