@@ -4,6 +4,11 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v12.49.3] — Topic titles match ISACA
+
+### Improved
+- Topic titles now match ISACA’s current CISA outline wording.
+
 ## [v12.49.2] — Fairer answer choices
 
 ### Improved
