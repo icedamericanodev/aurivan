@@ -142,3 +142,8 @@ Rule for the form builder: Draw no two items of a pair into the same form. Keep 
 | csoe_d5_004 | csoe_d5_025 | d5_004 tip 2: points of focus are optional aids (d5_025's key) |
 | csoe_d5_013 | csoe_d5_032 | d5_013 B, WB and tip 2: ERM is more than a risk list (d5_032's final two) |
 | csoe_d5_021 | csoe_d5_058 | shared 'board, management and other personnel' wording |
+| csoe_d3_017 | csoe_d3_065 | same deficiency definitions; d3_065 wrong explanation D states d3_017's key |
+| csoe_d3_005 | csoe_d3_068 | the same 18 U.S.C. 1350(c) tiers from opposite sides |
+| csoe_d3_025 | csoe_d3_067 | d3_067 says the disclosure committee only advises |
+| csoe_d3_006 | csoe_d3_066 | d3_066 says the 404(a) report is annual (d3_006's key) |
+| csoe_d3_006 | csoe_d3_067 | d3_067 says the 404(a) report is annual (d3_006's key) |
