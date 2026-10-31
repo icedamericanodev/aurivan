@@ -27,7 +27,8 @@
       "can_do": [
         "State the Act's purpose in the words of its own title",
         "Explain how a violation of the Act or of SEC rules under it is enforced",
-        "Tell what the Act created from what already existed before 2002"
+        "Tell what the Act created from what already existed before 2002",
+        "Match the Section 704 report's findings and the Title V and VII provisions to the problems they address"
       ],
       "subtopics": [
         {
@@ -48,6 +49,18 @@
             "The Act protects investors by making corporate disclosures more accurate and reliable, not by guaranteeing returns."
           ],
           "example": "At an onboarding session for a payments company that has just listed its shares, the finance director, Ines, explains why the quarterly close now has extra sign-offs. Each sign-off traces back to a failure the Act was written to stop, such as results that hid debt. Ines asks the new accountants to read the Act's table of contents before the first close.",
+          "audit_focus": {
+            "review": [
+              "Trace each control in the SOX program to the section requiring it",
+              "Compare SOX training slides with the Act's text for overstated claims"
+            ],
+            "evidence": [
+              "Control matrix linking key controls to SOX sections",
+              "Training deck with a section citation for each topic"
+            ],
+            "recommend": "Have the compliance team tie each SOX training topic to the section of the Act that requires it.",
+            "decides": "Management owns the SOX program; the audit committee oversees it"
+          },
           "isaca_rule": "Read every SOX duty as a fix for a known failure: unreliable disclosure, unchecked auditors or executives who could deny responsibility. The fix tells you who must act.",
           "exam_traps": [
             {
@@ -73,16 +86,19 @@
           "practice_ids": [
             "csoe_d1_001",
             "csoe_d1_002",
-            "csoe_d1_027"
+            "csoe_d1_027",
+            "csoe_d1_041",
+            "csoe_d1_043"
           ],
           "definition": "The Act's long title states its purpose: to protect investors by improving the accuracy and reliability of corporate disclosures made under the securities laws.",
           "why_it_matters": "The purpose explains how each provision is read, and the enforcement section explains why the SEC can pursue a SOX breach with its usual securities-law tools.",
           "how_it_works": [
             "The Act has eleven titles, from Title I (the PCAOB) to Title XI (corporate fraud accountability), per its table of contents (opened 31 Oct 2026).",
             "Section 302 sits in Title III, Corporate Responsibility; Section 404 sits in Title IV, Enhanced Financial Disclosures (table of contents, opened 31 Oct 2026).",
-            "Section 3(a) directs the SEC to issue the rules needed to carry out the Act.",
+            "Section 3(a) directs the SEC to issue the rules needed to carry out the Act; sections such as 302(a) and 404(a) call for rules, while Section 906 applies directly.",
             "Section 3(b) treats a violation of the Act, of SEC rules under it or of PCAOB rules as a violation of the Exchange Act.",
-            "So the same penalties and enforcement powers that apply to Exchange Act violations apply to SOX violations."
+            "So the same penalties and enforcement powers that apply to Exchange Act violations apply to SOX violations.",
+            "Section 3(b)(4) amended Exchange Act Section 12(i): for an insured bank's own securities, the OCC, Federal Reserve or FDIC enforces Sections 302, 404 and others (opened 31 Oct 2026)."
           ],
           "example": "A compliance analyst at an insurer, Rafael, builds a SOX training map for new managers. Rafael sorts the Act's eleven titles by who they mainly affect: audit firms (Titles I and II), the company and its officers (Titles III and IV), and criminal penalties (Titles VIII, IX and XI). The training team uses the map to assign modules by role.",
           "audit_focus": {
@@ -112,6 +128,10 @@
             {
               "term": "Section 3(b)",
               "definition": "The Act's enforcement clause: a violation is treated as a Securities Exchange Act of 1934 violation."
+            },
+            {
+              "term": "Section 12(i)",
+              "definition": "The Exchange Act clause giving banking agencies the SEC's role for insured banks' securities: the OCC for national banks, the Fed for member banks, the FDIC otherwise."
             }
           ]
         },
@@ -120,7 +140,8 @@
           "name": "What the Act Did Not Create",
           "legacy_ids": [],
           "practice_ids": [
-            "csoe_d1_023"
+            "csoe_d1_023",
+            "csoe_d1_042"
           ],
           "definition": "The Act built on existing institutions: it did not create the SEC, and it lets the SEC recognize a private body's accounting standards rather than writing them itself.",
           "why_it_matters": "Exam options often credit SOX with things that came earlier or come from elsewhere. Knowing the starting point stops those traps.",
@@ -128,7 +149,8 @@
             "The Securities Exchange Act of 1934, Section 4, established the SEC (15 U.S.C. 78d, opened 31 Oct 2026).",
             "Section 108 lets the SEC recognize as generally accepted the principles of a qualifying private standard setter.",
             "The SEC recognized the FASB's standards under Section 108 in 2003; it had treated them as authoritative since the FASB formed in 1973 (Release No. 33-8221, opened 31 Oct 2026).",
-            "What SOX did create includes the PCAOB, to oversee the auditors of public companies."
+            "What SOX did create includes the PCAOB, to oversee the auditors of public companies.",
+            "Section 3(c) keeps the SEC's own authority over accounting firms and their associated persons, including action on its own initiative, beside the PCAOB (opened 31 Oct 2026)."
           ],
           "compare": {
             "columns": [
@@ -160,6 +182,18 @@
             ]
           },
           "example": "During a board education day at a regional bank holding company, a new director says the Act created the SEC and wrote GAAP. The corporate secretary, Mei, corrects the record: the SEC dates from 1934, and accounting standards come from the FASB. Mei adds a one-page timeline to the board's reading pack.",
+          "audit_focus": {
+            "review": [
+              "Inspect policy manuals for claims that SOX created the SEC or GAAP",
+              "Compare the PCAOB's role in training material with Title I"
+            ],
+            "evidence": [
+              "Accounting policy manual citing FASB standards as its source",
+              "Corrected training timeline approved by the general counsel"
+            ],
+            "recommend": "Have the chief accounting officer cite FASB standards, not the Act, as the source of accounting rules.",
+            "decides": "The SEC recognizes the standard setter; management applies its standards"
+          },
           "isaca_rule": "Credit SOX only with what it created, such as the PCAOB and the officer certifications. The SEC came from the 1934 Act; accounting standards come from a recognized standard setter.",
           "exam_traps": [
             {
@@ -175,6 +209,59 @@
             {
               "term": "Standard setter",
               "definition": "A body that writes accounting principles; Section 108 lists the criteria for SEC recognition."
+            }
+          ]
+        },
+        {
+          "id": "1A1.4",
+          "name": "Case Studies and the Act's Studies",
+          "legacy_ids": [],
+          "practice_ids": [
+            "csoe_d1_044",
+            "csoe_d1_045",
+            "csoe_d1_046"
+          ],
+          "definition": "The SEC's Section 704 report and Titles V and VII show where pre-2002 failures clustered and which gatekeepers the Act regulated or only studied.",
+          "why_it_matters": "Case-study items ask what the evidence showed and which part of the Act answers it. Knowing the findings stops you crediting the Act with fixes it only studied.",
+          "how_it_works": [
+            "The SEC's Section 704 report reviewed 227 enforcement matters filed from 31 July 1997 to 30 July 2002 (sec.gov, opened 31 Oct 2026).",
+            "Improper revenue recognition appeared in 126 matters, the most of any area; improper expense recognition, such as capitalizing costs, in 101 (Section 704 report).",
+            "Senior managers were charged in 157 of the 227 matters, and auditor failures were not limited to any size of firm (Section 704 report).",
+            "Title V added Exchange Act Section 15D, requiring rules on securities analysts' conflicts, such as limits on investment bankers clearing research reports (govinfo.gov, opened 31 Oct 2026).",
+            "Title VII ordered studies, not duties: Section 701 (Comptroller General) on accounting firm consolidation since 1989, 702 (SEC) on rating agencies, 703 (SEC) on violators."
+          ],
+          "example": "At a regional insurer, the training lead, Marisol, prepares a session on why the Act was passed. Marisol sorts the SEC's findings by account, matches each to the Act's response, and marks which issues the Act regulated and which it only studied. Internal audit then uses the list to check that the fraud risk assessment covers each account.",
+          "audit_focus": {
+            "review": [
+              "Compare the company's fraud risk ranking with the report's leading problem areas",
+              "Walk through the controls over sales cutoff and cost capitalization"
+            ],
+            "evidence": [
+              "Fraud risk assessment ranking revenue and expense accounts",
+              "Walkthrough records for revenue and capitalization controls"
+            ],
+            "recommend": "Have the controller rank revenue recognition and cost capitalization among the top fraud risks each year.",
+            "decides": "Management sets fraud risk rankings; the audit committee oversees them"
+          },
+          "isaca_rule": "Separate evidence from response: the Section 704 report shows where fraud clustered, Title V regulates analysts, and Title VII only orders studies. Credit the Act with a duty only where a section imposes one.",
+          "exam_traps": [
+            {
+              "trap": "Off-balance-sheet deals were the most common problem in pre-2002 SEC enforcement.",
+              "why": "The Section 704 report found improper revenue recognition in the most matters, 126 of 227, and called off-balance-sheet cases a relatively new area."
+            },
+            {
+              "trap": "The Act set rules for credit rating agencies and audit firm consolidation.",
+              "why": "Title VII only ordered studies of those topics: Section 702 by the SEC and Section 701 by the Comptroller General."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Section 704 report",
+              "definition": "The SEC's study, required by the Act, of five years of enforcement matters to find the reporting areas most prone to fraud."
+            },
+            {
+              "term": "Research analyst conflict",
+              "definition": "Pressure on an analyst's recommendation from the investment banking side of the same broker-dealer, addressed under Exchange Act Section 15D."
             }
           ]
         }
@@ -209,6 +296,18 @@
             "A company whose only public securities are registered bonds is still an issuer through Section 15(d), so its CEO and CFO certify each periodic report."
           ],
           "example": "A family-owned furniture maker with 400 employees and no public securities asks its auditor whether it must produce a Section 404 report. The controller, Dev, checks the three routes in Section 2(a)(7) and finds none applies. Dev records the conclusion and sets a reminder to recheck it if the owners plan a public offering.",
+          "audit_focus": {
+            "review": [
+              "Compare the company's registrations and filings with each issuer test",
+              "Inspect any filed registration statement for effectiveness or withdrawal"
+            ],
+            "evidence": [
+              "EDGAR filing history of registration statements and periodic reports",
+              "Counsel's dated memo on issuer status"
+            ],
+            "recommend": "Have the general counsel recheck issuer status before any offering, listing or debt registration.",
+            "decides": "Counsel advises; the board decides on offerings that change status"
+          },
           "isaca_rule": "Test issuer status by the three routes in Section 2(a)(7): Section 12 registration, a Section 15(d) reporting duty, or a pending Securities Act registration statement. Size never decides it.",
           "exam_traps": [
             {
@@ -330,6 +429,18 @@
             "None of these exemptions removes management's own 404(a) report once it is due."
           ],
           "example": "A drone maker lists in March. Its CFO, Bea, reads Instruction 1 to Item 308: neither internal control report is due in the first annual report, which must say so. Bea starts documenting key controls for the second year's assessment.",
+          "audit_focus": {
+            "review": [
+              "Reperform the filer status test from float, revenue and filing history",
+              "Compare the annual report's internal control contents with that status"
+            ],
+            "evidence": [
+              "Filer status worksheet with float, revenue and measurement dates",
+              "Cover page check boxes from the latest annual report"
+            ],
+            "recommend": "Have the CFO reconfirm filer and emerging growth company status each year before planning the attestation.",
+            "decides": "Management determines filer status; the audit committee oversees the auditor's scope"
+          },
           "isaca_rule": "Separate the duties: management's 404(a) report applies to every reporting issuer after its first annual report; the 404(b) attestation only to accelerated and large accelerated filers that are not emerging growth companies.",
           "exam_traps": [
             {
@@ -372,6 +483,18 @@
             "Section 1107 added 18 U.S.C. 1513(e), which applies to whoever retaliates against a person for giving truthful information to law enforcement."
           ],
           "example": "The owner of a privately held freight broker fires a dispatcher who gave federal agents truthful information about a customs fraud. The broker's outside counsel, Gus, explains that 18 U.S.C. 1513(e) applies to whoever retaliates, so being a private company is no defense. Gus advises reinstating the dispatcher and preserving every related record.",
+          "audit_focus": {
+            "review": [
+              "Inspect the fund's Investment Company Act registration before applying Section 405",
+              "Trace legal hold notices to every records custodian, not only officers"
+            ],
+            "evidence": [
+              "Investment Company Act registration record for the fund",
+              "Signed legal hold acknowledgments from records custodians"
+            ],
+            "recommend": "Have counsel limit the Section 405 exemption to the three named sections and issue company-wide legal holds.",
+            "decides": "Counsel advises on scope; the board approves the compliance program"
+          },
           "isaca_rule": "Read Section 405 narrowly: registered investment companies escape Sections 401, 402 and 404 only. Criminal provisions written for 'whoever' reach any person, issuer or not.",
           "exam_traps": [
             {
@@ -421,6 +544,18 @@
             "A failed test moves the issuer to domestic forms from the first day of its next fiscal year (Rule 3b-4(e), opened 31 Oct 2026)."
           ],
           "example": "A Dutch packaging company plans a New York listing. Its company secretary, Femke, finds U.S. residents hold 35% of its voting shares, so the ownership condition fails. Femke records the status and schedules the mid-year recheck.",
+          "audit_focus": {
+            "review": [
+              "Reperform the foreign private issuer test from share register data",
+              "Trace director and officer residency to signed questionnaires"
+            ],
+            "evidence": [
+              "Analysis of U.S. holders of record at the test date",
+              "Board questionnaires showing citizenship and residence"
+            ],
+            "recommend": "Have the company secretary rerun the foreign private issuer test each year and record the result.",
+            "decides": "Management determines status; counsel advises on the forms that follow"
+          },
           "isaca_rule": "Apply Rule 3b-4(c) in two steps: over 50% U.S.-held voting securities, then any one U.S. contact. Losing the status needs both.",
           "exam_traps": [
             {
@@ -483,6 +618,18 @@
             ]
           },
           "example": "A Canadian mining company eligible for the multijurisdictional disclosure system lists its shares in New York. Its controller, Aiyana, prepares the annual report on Form 40-F rather than Form 20-F, as the SEC rules allow eligible Canadian issuers. Aiyana also maps which home-country releases must be furnished to the SEC during the year.",
+          "audit_focus": {
+            "review": [
+              "Compare each Form 20-F filing date with its due date",
+              "Trace home-country announcements to Form 6-K submissions"
+            ],
+            "evidence": [
+              "EDGAR acceptance records for annual and 6-K submissions",
+              "Disclosure calendar mapping home releases to Form 6-K"
+            ],
+            "recommend": "Have the controller keep a filing calendar for the annual report and every home release that needs a 6-K.",
+            "decides": "Management decides what is material at home; counsel confirms 6-K needs"
+          },
           "isaca_rule": "Match the form to the filer: FPIs file Form 20-F for the year and furnish Form 6-K for home-country news. A furnished 6-K is not a filed periodic report.",
           "exam_traps": [
             {
@@ -587,6 +734,18 @@
             "A 15(d) duty is suspended for a later year that starts with under 300 holders of record (78o(d), opened 31 Oct 2026); Form 15 gives notice."
           ],
           "example": "A biotech plans its first public share sale and a listing on a national securities exchange. Its general counsel, Ama, tells the board that two filings are needed: one registering the offering under the Securities Act, and one registering the class under Section 12(b) for the listing. Ama then maps the periodic reports that follow.",
+          "audit_focus": {
+            "review": [
+              "Trace each class of securities to its registration route and reporting duty",
+              "Compare the year-end holder-of-record count with the 12(g) and 15(d) thresholds"
+            ],
+            "evidence": [
+              "Transfer agent's holder-of-record report at fiscal year-end",
+              "EDGAR record of Securities Act and Exchange Act registrations"
+            ],
+            "recommend": "Have counsel confirm the registration route for every new class of securities before it is issued.",
+            "decides": "The board approves listings and offerings; counsel advises on registration"
+          },
           "isaca_rule": "Ask how the company entered the reporting system: exchange listing (12(b)), size and holders (12(g)) or an effective registered offering (15(d)). Each route brings periodic reports and so SOX duties.",
           "exam_traps": [
             {
@@ -672,6 +831,18 @@
             "The SEC's EDGAR Business Office administers the system and supports filers."
           ],
           "example": "A newly registered biotech's paralegal, Sven, asks whether the company could mail its first quarterly report on paper. The corporate secretary points to Regulation S-T's list of mandated electronic filings. Sven submits a Form ID to apply for EDGAR access and sets up Login.gov credentials for the people who will file.",
+          "audit_focus": {
+            "review": [
+              "Compare EDGAR acceptance times with each report's due date",
+              "Inspect access records for each person who files for the company"
+            ],
+            "evidence": [
+              "EDGAR acceptance messages showing date and time",
+              "Hardship filing records and confirming copies, if any"
+            ],
+            "recommend": "Have the reporting team test EDGAR access well before each filing deadline.",
+            "decides": "Management owns timely filing; the SEC administers the system"
+          },
           "isaca_rule": "EDGAR is the SEC's filing system; Regulation S-T is the rule that requires using it. Periodic reports and registration statements go in electronically.",
           "exam_traps": [
             {
@@ -699,7 +870,8 @@
       "can_do": [
         "Explain how a depositary bank creates ADRs and what Form F-6 registers",
         "Tell the three ADR levels apart by trading venue and capital raising",
-        "Decide whether an ADR program brings periodic reports and so SOX certifications"
+        "Decide whether an ADR program brings periodic reports and so SOX certifications",
+        "Apply Form F-6's conditions and signers and the Rule 12g3-2(b) market test"
       ],
       "subtopics": [
         {
@@ -721,6 +893,18 @@
             "A Level 1 company exempt under Rule 12g3-2(b) keeps a foreign listing as its primary market and publishes home disclosures in English online (opened 31 Oct 2026)."
           ],
           "example": "A U.S. pension fund's analyst, Kofi, wants exposure to a Korean electronics maker. The custodian explains that a depositary bank holds the underlying shares and issues ADRs in dollars. Kofi checks whether the program is sponsored and whether the company files annual reports with the SEC before recommending the purchase.",
+          "audit_focus": {
+            "review": [
+              "Inspect the deposit agreement for sponsorship and the depositary's duties",
+              "Compare the company's reporting status with Form F-6 eligibility"
+            ],
+            "evidence": [
+              "Form F-6 and deposit agreement retrieved from EDGAR",
+              "Website archive of English home-country disclosures"
+            ],
+            "recommend": "Have the CFO confirm sponsorship and reporting status before any change to the ADR program.",
+            "decides": "The foreign company decides whether to sponsor; the depositary files Form F-6"
+          },
           "isaca_rule": "An ADR registration on Form F-6 covers the deposit agreement, not the company. The company's SOX duties depend on its own Exchange Act reporting, which Levels 2 and 3 require.",
           "exam_traps": [
             {
@@ -773,6 +957,18 @@
             }
           ],
           "example": "A Spanish wind-turbine maker's CFO, Lucia, wants U.S. investors to trade its shares but has no plan to raise money there yet. The company's advisers compare an over-the-counter program with an exchange listing that would bring Form 20-F reporting. Lucia takes both options, with their reporting costs, to the board.",
+          "audit_focus": {
+            "review": [
+              "Compare the program's trading venue with the level claimed",
+              "Trace any U.S. capital raised to a registered offering"
+            ],
+            "evidence": [
+              "Exchange listing approval or over-the-counter quotation record",
+              "Registration statement for any U.S. offering"
+            ],
+            "recommend": "Have the treasurer confirm the program level before any U.S. listing or capital raise.",
+            "decides": "The board decides how far to enter U.S. markets"
+          },
           "isaca_rule": "Level 1 trades over the counter; Level 2 adds an exchange listing and Form 20-F; only Level 3 raises new capital in the U.S.",
           "exam_traps": [
             {
@@ -796,7 +992,8 @@
           "name": "What Each Level Means for SOX",
           "legacy_ids": [],
           "practice_ids": [
-            "csoe_d1_018"
+            "csoe_d1_018",
+            "csoe_d1_051"
           ],
           "definition": "SOX duties follow the company's own Exchange Act reporting: a Level 1 company relying on Rule 12g3-2(b) files no annual report; Levels 2 and 3 require Form 20-F.",
           "why_it_matters": "The officer certifications and the internal control report attach to annual reports. A company with no SEC annual report has nothing for those duties to attach to.",
@@ -805,7 +1002,7 @@
             "A company already reporting under Section 13(a) or 15(d) may also run a Level 1 program; its SOX duties come from that reporting (17 CFR 239.36(c)).",
             "At Levels 2 and 3 the company files Form 20-F, which carries the Section 302 and 906 certifications (Rule 13a-14).",
             "Management's internal control report starts with the second annual report; Form 20-F Item 15 Instruction 1 has the first report state the transition instead (opened 31 Oct 2026).",
-            "Whether the auditor must also attest depends on filer status and emerging growth company status, as for any issuer."
+            "Whether the auditor must also attest depends on filer status and emerging growth company status, as for any issuer (Form 20-F Item 15(c), opened 31 Oct 2026)."
           ],
           "example": "A Swiss chemicals company moves its ADRs from over-the-counter trading to an exchange listing. Its head of financial reporting, Urs, briefs the CEO and CFO that each Form 20-F will now need their signed certifications. Urs also plans the internal control documentation management will need for its later assessment.",
           "audit_focus": {
@@ -837,6 +1034,59 @@
               "definition": "The Securities Act registration statement a foreign private issuer uses to offer securities, for example in a Level 3 program."
             }
           ]
+        },
+        {
+          "id": "1A5.4",
+          "name": "Form F-6 and the Level 1 Exemption",
+          "legacy_ids": [],
+          "practice_ids": [
+            "csoe_d1_047",
+            "csoe_d1_048",
+            "csoe_d1_049",
+            "csoe_d1_050"
+          ],
+          "definition": "Form F-6 registers the depositary shares behind an ADR program; it has its own conditions and signers, and Level 1 programs also rest on Rule 12g3-2(b).",
+          "why_it_matters": "Items test what the depositary's filing covers and when it is available. Its conditions protect holders, and its signers show when the foreign company itself takes on Securities Act responsibility.",
+          "how_it_works": [
+            "Form F-6 describes the ADRs and deposit terms and says where company information is found; exhibits include the deposit agreement and a legal opinion (sec.gov, opened 31 Oct 2026).",
+            "Holders must be able to withdraw the deposited shares at any time, subject only to temporary delays, fees and taxes, and legal limits (17 CFR 239.36(a), opened 31 Oct 2026).",
+            "The entity created by the deposit agreement signs as registrant, through the depositary; a sponsoring issuer, its principal officers and a board majority also sign (Form F-6).",
+            "Rule 12g3-2(b) needs a foreign listing that is the primary trading market: at least 55% of worldwide trading in one or two foreign jurisdictions last fiscal year (opened 31 Oct 2026)."
+          ],
+          "example": "A Brazilian retailer's treasurer, Joana, reviews the depositary's draft filing for an over-the-counter program. Joana checks the withdrawal clause, lists which company officers and directors must sign because the program is sponsored, and asks investor relations for last year's trading volume in each market. Counsel signs off on all three points before the filing goes in.",
+          "audit_focus": {
+            "review": [
+              "Inspect the deposit agreement's withdrawal clause against the form's conditions",
+              "Recalculate last year's share of worldwide trading on the home exchange"
+            ],
+            "evidence": [
+              "Average daily trading volume report by market for the fiscal year",
+              "Signature page listing each signer's capacity"
+            ],
+            "recommend": "Have the treasurer test trading volumes and the withdrawal clause before the depositary files.",
+            "decides": "The foreign company and depositary agree the terms; counsel confirms eligibility"
+          },
+          "isaca_rule": "Form F-6 is the depositary's registration of the receipts, not the company's disclosure. Check three things: holders can withdraw, the right people sign, and, for Level 1, the home market carries most trading.",
+          "exam_traps": [
+            {
+              "trap": "Disclosing a limit on withdrawing deposited shares keeps Form F-6 available.",
+              "why": "The right to withdraw at any time, with narrow exceptions, is a condition of using the form; disclosure does not replace it."
+            },
+            {
+              "trap": "Any foreign company with a home-country listing can run a Level 1 program under Rule 12g3-2(b).",
+              "why": "The listing must be the primary trading market, with at least 55% of worldwide trading in one or two foreign jurisdictions."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Deposit agreement",
+              "definition": "The contract among the depositary, ADR holders and, if sponsored, the foreign company that sets the terms of the ADRs."
+            },
+            {
+              "term": "Primary trading market",
+              "definition": "Under Rule 12g3-2(b), foreign markets in one or two jurisdictions carrying at least 55% of worldwide trading in the class."
+            }
+          ]
         }
       ]
     },
@@ -847,7 +1097,8 @@
       "can_do": [
         "Name the officers who sign the certifications and repay incentive pay after a misconduct restatement",
         "Tell which employees the whistleblower protection covers, including at consolidated subsidiaries",
-        "Identify provisions that apply to any person, not only to an issuer's officers"
+        "Identify provisions that apply to any person, and the SEC tools that reach individuals",
+        "Tell who certifies, who signs and who may serve on the audit committee"
       ],
       "subtopics": [
         {
@@ -867,6 +1118,18 @@
             "Section 402 bars personal loans to any director or executive officer, even through a subsidiary; other employees fall outside it (opened 31 Oct 2026)."
           ],
           "example": "A newly appointed controller at a listed retailer, Nadia, asks which SOX sections name the controller's role. The general counsel walks Nadia through the code of ethics for senior financial officers and the sub-certifications the controller gives the CFO each quarter. Nadia signs the code and files a copy with human resources.",
+          "audit_focus": {
+            "review": [
+              "Compare the certifying officers with those in office at filing",
+              "Inspect credit extended to directors and executive officers"
+            ],
+            "evidence": [
+              "Signed certification exhibits for each periodic report",
+              "Related-party register of credit to insiders"
+            ],
+            "recommend": "Have the general counsel map each SOX duty to a named officer or committee and review the map yearly.",
+            "decides": "The board assigns officer roles; the audit committee oversees the auditor"
+          },
           "isaca_rule": "Find the actor, then the section: CEO and CFO for 302, 906 and 304; senior financial officers for 406; the audit committee for 301 and 407.",
           "exam_traps": [
             {
@@ -904,6 +1167,18 @@
             "Section 802's 18 U.S.C. 1519 and Section 1107's 18 U.S.C. 1513(e) apply to whoever commits the act, not only to issuer staff."
           ],
           "example": "An in-house lawyer at a listed food company, Tariq, finds evidence that sales staff booked fake orders to meet quarterly targets. Under the SEC's attorney conduct rules from Section 307, Tariq reports the evidence to the chief legal officer. When nothing is done, Tariq takes it to the audit committee and records each step.",
+          "audit_focus": {
+            "review": [
+              "Inspect hotline and retaliation complaint logs for follow-up",
+              "Compare attorney reporting records with the up-the-ladder steps"
+            ],
+            "evidence": [
+              "Hotline case log with dates and outcomes",
+              "Legal hold notices sent to all record custodians"
+            ],
+            "recommend": "Have the general counsel train every employee on protected reporting and record preservation.",
+            "decides": "The audit committee oversees complaints; the Secretary of Labor hears retaliation claims"
+          },
           "isaca_rule": "Look at the act and the protected person, not the job title. Section 806 covers any employee of a covered company, and the 'whoever' crimes reach anyone.",
           "exam_traps": [
             {
@@ -923,6 +1198,111 @@
             {
               "term": "Up-the-ladder reporting",
               "definition": "Section 307's duty for attorneys to report evidence of violations to senior officers, then to the board if needed."
+            }
+          ]
+        },
+        {
+          "id": "1A6.3",
+          "name": "Signers, Employee Directors and the Tax Return",
+          "legacy_ids": [],
+          "practice_ids": [
+            "csoe_d1_052",
+            "csoe_d1_053",
+            "csoe_d1_055"
+          ],
+          "definition": "Beyond the certifications, a board majority and the accounting officer sign Form 10-K, some foreign employees may sit on audit committees, and Title X only urges CEOs to sign tax returns.",
+          "why_it_matters": "Items often ask who signs or who may serve. Certifying a report, signing it and sitting on its audit committee are separate roles with separate rules.",
+          "how_it_works": [
+            "Form 10-K is signed by the principal executive, financial and accounting officers (or controller) and at least a board majority (General Instruction D(2)(a), opened 31 Oct 2026).",
+            "The Section 302 and 906 certifications are separate exhibits; signing the report does not replace them, and certifying does not replace signing.",
+            "Rule 10A-3(b)(1)(iv)(C) exempts a foreign private issuer's non-executive employee named to the board under home-country law from the fee and affiliate tests (opened 31 Oct 2026).",
+            "For a two-tier board, Rule 10A-3 treats the supervisory board as the board of directors (paragraph (e)(2)); reliance on the employee exemption must be disclosed (paragraph (d)).",
+            "Title X's only section, Section 1001, states the sense of the Senate that the CEO should sign the corporate federal income tax return; it imposes no duty."
+          ],
+          "example": "At a listed toy maker, the assistant corporate secretary, Kwame, builds the checklist for the annual report's signature page. Kwame lists the officers who must sign, counts the directors to confirm a majority will sign, and keeps the certifications as a separate step. The disclosure committee reviews the checklist before filing.",
+          "audit_focus": {
+            "review": [
+              "Compare the signature page with the current officer and director roster",
+              "Inspect board minutes naming audit committee members and any exemption used"
+            ],
+            "evidence": [
+              "Signed signature page showing each signer's capacity",
+              "Independence questionnaires for each audit committee member"
+            ],
+            "recommend": "Have the corporate secretary confirm signers and audit committee eligibility before each annual report is filed.",
+            "decides": "The board appoints the audit committee and approves the annual report"
+          },
+          "isaca_rule": "Ask which act the rule demands: certify, sign or serve. The CEO and CFO certify; officers and a board majority sign Form 10-K; Rule 10A-3 sets who may serve on the audit committee, with home-country accommodations.",
+          "exam_traps": [
+            {
+              "trap": "Only the CEO and CFO sign Form 10-K, because they certify it.",
+              "why": "General Instruction D(2)(a) also requires the controller or principal accounting officer and at least a majority of the board."
+            },
+            {
+              "trap": "The Act requires the CEO to sign the corporate tax return.",
+              "why": "Section 1001 only states the Senate's view that the CEO should; a sense-of-the-Senate provision binds no one."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Sense of the Senate",
+              "definition": "A provision stating the Senate's opinion; it creates no legal duty."
+            },
+            {
+              "term": "Supervisory board",
+              "definition": "The non-management board in a two-tier system; Rule 10A-3 treats it as the board of directors."
+            }
+          ]
+        },
+        {
+          "id": "1A6.4",
+          "name": "SEC Tools Aimed at Individuals",
+          "legacy_ids": [],
+          "practice_ids": [
+            "csoe_d1_054",
+            "csoe_d1_056"
+          ],
+          "definition": "Title XI gave the SEC tools aimed at people: a court-ordered freeze of extraordinary payments during an investigation, and its own power to bar officers and directors.",
+          "why_it_matters": "These tools reach individuals inside the issuer before any trial on the merits, so items test whose payments a freeze covers and who may impose a bar.",
+          "how_it_works": [
+            "In June 2002 the SEC asked a court to bar WorldCom's extraordinary payments, such as severance, to officers, directors and employees (Litigation Release No. 17588, opened 31 Oct 2026).",
+            "Section 1103 lets the SEC, during a lawful investigation, petition a federal court to escrow an issuer's likely extraordinary payments for 45 days (78u-3(c)(3), opened 31 Oct 2026).",
+            "The freeze covers payments to directors, officers, partners, controlling persons, agents or employees; a court may extend it once, to 90 days in all.",
+            "If charges follow before it expires, the escrow can last until the proceedings end; if not, the payments return with interest.",
+            "Section 1105 lets the SEC itself, in a cease-and-desist proceeding, bar a Section 10(b) violator from serving as an officer or director of a reporting issuer (78u-3(f))."
+          ],
+          "example": "At a listed software company under SEC investigation, the general counsel, Leilani, learns the board plans a large retention bonus for the head of sales. Leilani warns the board that the SEC could seek a court-ordered escrow and asks the compensation committee to document the business reason. The committee pauses the bonus until counsel reviews it.",
+          "audit_focus": {
+            "review": [
+              "Inspect special payments approved during an open investigation for unusual terms",
+              "Compare officer and director appointments with SEC bar orders"
+            ],
+            "evidence": [
+              "Compensation committee minutes approving each special payment",
+              "Background checks against SEC administrative proceedings"
+            ],
+            "recommend": "Have the general counsel route every unusual payment during an investigation through legal review first.",
+            "decides": "The board approves payments; a court orders any freeze"
+          },
+          "isaca_rule": "When an investigation is open, think of Title XI: the SEC can ask a court to park unusual payments to anyone inside the issuer, and can bar officers and directors in its own proceedings.",
+          "exam_traps": [
+            {
+              "trap": "The Section 1103 freeze reaches only directors and executive officers.",
+              "why": "It covers extraordinary payments to directors, officers, partners, controlling persons, agents or employees."
+            },
+            {
+              "trap": "Only a court can bar someone from serving as a public company officer or director.",
+              "why": "Section 1105 lets the SEC impose the bar itself in a cease-and-desist proceeding, alongside the court route."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Extraordinary payment",
+              "definition": "An unusual payment by an issuer, such as severance or a special bonus, that the SEC may ask a court to escrow."
+            },
+            {
+              "term": "Officer and director bar",
+              "definition": "An order barring a person from serving as an officer or director of a reporting issuer, from a court or, under Section 1105, the SEC."
             }
           ]
         }
