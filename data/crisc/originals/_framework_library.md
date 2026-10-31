@@ -380,7 +380,7 @@ summaries of the official text. Bullets also present in the CC library
 - NIST SP 800-53 Rev. 5 SA-22 (Unsupported System Components)
   - Verified, 30 Oct 2026 (re-listed from CC): replace components when support ends or provide alternative support; the discussion notes missing patches give adversaries an opportunity. Used in crisc_d4_002.
 - NIST SP 800-53 Rev. 5 SI-12 (Information Management and Retention)
-  - Verified, 31 Oct 2026 (re-listed from CC; text first read 30 Oct 2026 for the D4 notes and re-read in the SP 800-53 Rev. 5 PDF): "Manage and retain information within the system and information output from the system in accordance with applicable laws, executive orders, directives, regulations, policies, standards, guidelines and operational requirements"; the discussion says retention requirements cover the full information life cycle. Used in crisc_d4_008 (call recordings with no retention period).
+  - Verified, 31 Oct 2026 (re-listed from CC; text first read 30 Oct 2026 for the D4 notes and re-read in the SP 800-53 Rev. 5 PDF): "Manage and retain information within the system and information output from the system in accordance with applicable laws, executive orders, directives, regulations, policies, standards, guidelines and operational requirements"; the discussion says retention requirements cover the full information life cycle. Used in crisc_d4_008 (call recordings kept past the approved retention period because deletion was never set up).
 
 ### NIST CSWP 29, The NIST Cybersecurity Framework (CSF) 2.0 (Feb 2024)
 - NIST CSF 2.0 Section 3.1 (CSF Profiles: a Current Profile describes outcomes being achieved and a Target Profile the outcomes selected for risk management objectives)

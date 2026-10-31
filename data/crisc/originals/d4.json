@@ -269,38 +269,38 @@
     {
       "id": "crisc_d4_008",
       "domain": 4,
-      "subtopic": "4A4 Data lifecycle management. Records with no retention period",
-      "principle_id": "match-decision-to-role",
+      "subtopic": "4A4 Data lifecycle management. Recordings kept past the schedule",
+      "principle_id": "root-cause-over-symptom",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A bank's contact center has kept all customer call recordings since 2017, and no retention period has ever been set for them. What is the risk practitioner's BEST recommendation?",
+      "question": "A bank's approved retention schedule says call recordings are deleted after three years, but the contact center holds every recording since 2017 because deletion was never set up. What is the risk practitioner's BEST recommendation?",
       "options": {
-        "A": "Have legal counsel set the recordings' retention period",
-        "B": "Ask the data owner to set retention with legal advice",
-        "C": "Restrict replay of older recordings to named supervisors",
-        "D": "Have IT archive older recordings to lower-cost storage"
+        "A": "Ask the data owner to extend retention to cover older recordings",
+        "B": "Have IT set up the scheduled deletions, logging each run",
+        "C": "Limit replay of recordings past three years to supervisors",
+        "D": "Archive recordings past three years on lower-cost storage"
       },
       "correct": "B",
-      "key_concept": "The data owner sets how long data is kept, with legal advice; data with no retention period adds exposure no one has decided to accept.",
-      "pre_read": "Notice what has never been decided about the recordings, then ask who each option puts in charge of that decision.",
-      "correct_explanation": "Recordings kept with no retention period add breach and legal-discovery exposure without anyone deciding the business still needs them. How long data is kept is a business decision: the data owner knows what the recordings are used for and sets the period, with legal counsel advising on what the law requires or limits. Counsel's advice is essential, but a period set by counsel alone can miss the business need and leaves no accountable decision-maker.",
+      "key_concept": "Data kept past its approved retention period is exposure no one has accepted; the fix is disposal that actually runs and leaves evidence.",
+      "pre_read": "Notice what the data owner has already decided and why the recordings are still held.",
+      "correct_explanation": "The data owner has already set the period: three years. Every recording kept beyond it adds breach and legal-discovery exposure nobody accepted, and the cause is a deletion step never built. Having IT, as custodian, set up the scheduled deletions, excluding legal holds and logging each run, removes the excess and stops it returning. Limiting replay is the runner-up: it lowers misuse, but the recordings still exist to be breached or disclosed.",
       "wrong_explanations": {
-        "A": "Closest choice: counsel knows what the law requires. But the law sets limits, not the business need; the data owner sets the period with that advice and answers for it.",
-        "C": "Tempting because tighter access lowers the chance old recordings are misused. But it protects data that may serve no purpose; no one has yet decided how long recordings should exist.",
-        "D": "Tempting because archiving cuts storage cost. But archived recordings are still held and still exposed in a breach or legal discovery, and the custodian does not set the period."
+        "A": "Tempting because practice would then match the schedule. But it bends the owner's decision to fit a failed process; the period reflects business and legal needs, not what is stored.",
+        "C": "Closest choice, since fewer people can replay old calls. But the recordings still exist, so a breach or discovery request still reaches them; the schedule says they should be gone.",
+        "D": "Tempting because archiving cuts storage cost. But archived recordings are still held and still exposed; moving them changes the bill, not the risk."
       },
       "tips": [
-        "Eliminate: C limits who can replay recordings that may not need keeping, and D moves them to cheaper storage; neither decides how long they should exist.",
-        "Final two: B beats A because retention is a business decision the data owner makes with legal advice; counsel sets the legal limits but does not own the data.",
-        "Exam cue: who decides how long data is kept? The data owner, with legal advice; IT carries out the schedule, and the practitioner shows the risk of keeping data with no purpose."
+        "Eliminate: A rewrites the owner's schedule to fit a failed process, and D only moves data that should no longer exist.",
+        "Final two: B beats C because data past its retention period should not exist at all; limiting replay reduces misuse but leaves the exposure in place.",
+        "Exam cue: when data outlives its approved retention, the BEST answer makes disposal happen, with evidence, rather than guarding or moving the excess."
       ],
-      "framework_ref": "ISACA Glossary (data owner); NIST SP 800-53 Rev. 5 SI-12 (Information Management and Retention)",
+      "framework_ref": "NIST SP 800-53 Rev. 5 SI-12 (Information Management and Retention); ISACA Glossary (data owner)",
       "related_concepts": [
         "Data retention",
-        "Data owner",
+        "Retention schedule",
         "Data custodian"
       ],
-      "_provenance": "Authored from concept: notes 4A4.2 Retention and Sanitization (the data owner sets retention with legal advice; keeping everything just in case raises risk). Original bank contact-center scenario written for KaiSip; no ISACA Review Manual, QAE or prep-bank text used. Re-audit 31 Oct 2026: replaces the school-laptop SSD sanitization item, which mirrored CC cc_d5_002 (scenario, key, runner-up, citation and exam cue) and reused CISA d4_121's stem wording; checked against data/originals and data/cc/originals (no call-recording retention scenario).",
+      "_provenance": "Authored from concept: notes 4A4.2 Retention and Sanitization (at the end of the period data is disposed of unless a legal hold applies; keeping everything just in case raises risk). Original bank contact-center scenario written for KaiSip; no ISACA Review Manual, QAE or prep-bank text used. Re-audit 31 Oct 2026: replaces the school-laptop SSD sanitization item, which mirrored CC cc_d5_002 (scenario, key, runner-up, citation and exam cue) and reused CISA d4_121's stem wording; checked against data/originals and data/cc/originals (no call-recording retention scenario). Repair round 3, 31 Oct 2026 (independent verification, gate 2): re-angled from 'who sets retention' (a twin of crisc_d4_007's data-owner lesson and exam cue) to a retention schedule the owner already set but that never runs; key B has IT, as custodian, set up logged scheduled deletions; principle moved from match-decision-to-role to root-cause-over-symptom; ID, key letter and difficulty kept.",
       "style_version": 2
     },
     {
@@ -573,7 +573,7 @@
       "options": {
         "A": "Lower the ratings as the CIO proposes, citing the assessment",
         "B": "Lower only the ratings of scenarios the improved practices address",
-        "C": "Keep the ratings until an auditor certifies the assessment",
+        "C": "Use the profile's outcome scores as evidence for new ratings",
         "D": "Reassess each scenario on evidence before changing its rating"
       },
       "correct": "D",
@@ -583,10 +583,10 @@
       "wrong_explanations": {
         "A": "Tempting because the assessment is recent and favorable. But profiles describe outcomes achieved, not exposure; a bank can meet its target profile and still face scenarios rated high.",
         "B": "Closest choice: it targets the scenarios the practices touch. But it still lowers ratings on alignment alone; without evidence of the effect on likelihood or impact, no rating should move.",
-        "C": "Tempting because it refuses the blanket cut. But certifying the assessment only confirms alignment again; ratings move when each scenario is reassessed."
+        "C": "Tempting because the scores are recent and structured. But they show which practices the bank achieves, not any scenario's likelihood or impact; they inform a reassessment rather than replace it."
       },
       "tips": [
-        "Eliminate: A treats framework alignment as proof of lower risk, and C waits for a certification that confirms alignment but reassesses nothing.",
+        "Eliminate: A treats framework alignment as proof of lower risk, and C uses outcome scores, which measure practices achieved, as if they were likelihood and impact.",
         "Final two: D beats B because a rating reflects a scenario's likelihood and impact; matching practices to scenarios is not evidence that either has changed.",
         "Exam cue: framework alignment and certification are evidence about controls; a risk rating changes only when its scenario is reassessed."
       ],
@@ -596,7 +596,7 @@
         "Risk rating",
         "Framework alignment"
       ],
-      "_provenance": "Authored from concept: notes 4B1.3 Security Frameworks and Standards (frameworks organize and benchmark; risk assessment decides). Original bank CSF profile scenario written for KaiSip; no ISACA Review Manual, QAE or prep-bank text used. CRISC D4 pilot batch, 30 Oct 2026. Cross-domain fix 30 Oct 2026: re-angled from certificate scope (duplicate lesson of crisc_d3_006, drift to 3A3) to framework alignment, notes 4B1.3. Final blind re-test 31 Oct 2026: stem asks for a recommendation and A is phrased as an action, so all four options share one form. Quality pass 31 Oct 2026 (ISACA authenticity audit and concept review): stem and options rewritten from the authenticity audit (no CSF profile terms in the stem; the two accept-the-proposal distractors, with 'every' and 'at once', replaced by a partial cut that is now the runner-up); priority word BEST, since the options are alternatives, not steps; explanations and tips rewritten for the new runner-up; the explanation names a register rating as current risk (ISACA Glossary cited).",
+      "_provenance": "Authored from concept: notes 4B1.3 Security Frameworks and Standards (frameworks organize and benchmark; risk assessment decides). Original bank CSF profile scenario written for KaiSip; no ISACA Review Manual, QAE or prep-bank text used. CRISC D4 pilot batch, 30 Oct 2026. Cross-domain fix 30 Oct 2026: re-angled from certificate scope (duplicate lesson of crisc_d3_006, drift to 3A3) to framework alignment, notes 4B1.3. Final blind re-test 31 Oct 2026: stem asks for a recommendation and A is phrased as an action, so all four options share one form. Quality pass 31 Oct 2026 (ISACA authenticity audit and concept review): stem and options rewritten from the authenticity audit (no CSF profile terms in the stem; the two accept-the-proposal distractors, with 'every' and 'at once', replaced by a partial cut that is now the runner-up); priority word BEST, since the options are alternatives, not steps; explanations and tips rewritten for the new runner-up; the explanation names a register rating as current risk (ISACA Glossary cited). Repair round 3, 31 Oct 2026 (independent verification, gate 2): option C no longer waits for an auditor to certify the assessment, which mirrored crisc_d1_020 (a second examiner confirming a clean result); it now uses the profile's outcome scores as evidence for new ratings, so 'evidence' also sits in a distractor; wrong explanation C and the Eliminate tip updated.",
       "style_version": 2
     },
     {

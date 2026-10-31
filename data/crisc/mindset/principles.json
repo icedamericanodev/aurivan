@@ -71,7 +71,7 @@
         "trap": "Approve the treatment that looks most sensible, then brief the director when they return.",
         "why": "The analyst can recommend, but the owner who bears the loss decides. Approving on the owner's behalf leaves a decision with no accountable owner."
       },
-      "nuance": "A practitioner may hold authority delegated in writing, for example to approve low-rated exceptions within a set limit. Outside that delegation, the decision goes back to the owner.",
+      "nuance": "A risk owner can delegate a decision in writing to another manager, such as approving low-rated exceptions within a set limit. The practitioner still only assesses and advises; anything outside the delegation returns to the owner.",
       "domains": [
         1,
         2,
@@ -147,8 +147,7 @@
         "crisc_d1_013",
         "crisc_d3_005",
         "crisc_d4_005",
-        "crisc_d4_007",
-        "crisc_d4_008"
+        "crisc_d4_007"
       ],
       "slip_pattern": null,
       "legacy_ids": [],
@@ -334,7 +333,7 @@
         "trap": "Ban personal phones at the front desk and tell staff the new rule starts today.",
         "why": "The size of the exposure is unknown, so a ban may be wrong or unworkable. Assessment first gives the owner a basis for choosing the response."
       },
-      "nuance": "When harm is happening now, such as an active attack or a live data leak, containment comes first under the incident plan and assessment follows at once. Analyze first applies to risk decisions, not live incidents.",
+      "nuance": "During a live incident, such as an active attack or data being stolen, the incident plan's containment comes first. An unapproved tool in use, even with personal data, is a risk to assess with its owner before anyone blocks it.",
       "domains": [
         1,
         2,
@@ -500,7 +499,7 @@
       },
       "example": {
         "scenario": "A recruitment agency's marketing team starts using an AI image generator for job ads. Nobody has checked its license terms or what candidate data goes into prompts.",
-        "answer": "Record an AI risk scenario with the marketing director as owner, note what is still unknown, and assess it against appetite with a short review date. Controls such as approved tools or prompt rules follow from that assessment."
+        "answer": "Record an AI risk scenario with the marketing director proposed as owner, note what is still unknown, and assess it against appetite with a short review date. Controls such as approved tools or prompt rules follow from that assessment."
       },
       "check": {
         "scenario": "A grocery chain will soon have to report product carbon data under a draft law whose final text is a year away. The risk analyst hears about it at a conference.",
@@ -625,12 +624,14 @@
         "3B2.1",
         "4A2.2",
         "4A3.2",
+        "4A4.2",
         "4B2.1"
       ],
       "practice_ids": [
         "crisc_d1_006",
         "crisc_d3_009",
         "crisc_d4_004",
+        "crisc_d4_008",
         "crisc_d4_017"
       ],
       "slip_pattern": "symptom",
@@ -709,7 +710,7 @@
       },
       "example": {
         "scenario": "A water company wants a KRI for the risk of a chemical dosing system failing because it runs unsupported software.",
-        "answer": "Track the share of dosing controllers on unsupported versions, with amber and red thresholds agreed with the operations director from their tolerance and an agreed action for each. A count of past dosing failures would arrive too late."
+        "answer": "Track the share of dosing controllers on unsupported versions, with amber and red thresholds derived from the approved tolerance and agreed with the operations director as risk owner, and an agreed action for each. A count of past dosing failures would arrive too late."
       },
       "check": {
         "scenario": "An online pharmacy wants an indicator for the risk of staff sending prescriptions to the wrong address. The risk analyst is comparing candidate metrics.",
@@ -925,7 +926,7 @@
         "trap": "Ask procurement to identify other suppliers that could replace this one if needed.",
         "why": "Both may happen, but FIRST asks for sequence. Assessing the change comes before choosing a response such as finding other suppliers."
       },
-      "nuance": "MOST LIKELY ranks probability, not severity. ISACA's item-writing guide for CRISC says negative questions using NOT, EXCEPT or LEAST are not accepted; if a practice question has one, invert the test.",
+      "nuance": "MOST LIKELY ranks probability, not severity. Negative stems (NOT, EXCEPT, LEAST) are rare on CRISC-style items; if a practice question has one, invert the test and look for the option that fits least.",
       "domains": [
         1,
         2,

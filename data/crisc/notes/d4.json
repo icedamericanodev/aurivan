@@ -146,7 +146,7 @@
             "Options include upgrade, replace, isolate with compensating controls, or accept for a defined period.",
             "A dated retirement plan turns open-ended debt into managed risk; until it is done, the register keeps the current rating, not the planned one."
           ],
-          "example": "A hospital's pharmacy system runs on an operating system that lost vendor support two years ago. Staff say it is reliable, so no one has raised it. Nour, the IT risk analyst, records the risk with the pharmacy director as owner, rates it against the hospital's appetite and sets out options: segment the system, buy extended support or fund replacement.",
+          "example": "A hospital's pharmacy system runs on an operating system that lost vendor support two years ago. Staff say it is reliable, so no one has raised it. Nour, the IT risk analyst, records the risk with the pharmacy director proposed as owner, rates it against the hospital's appetite and sets out options: segment the system, buy extended support or fund replacement.",
           "audit_focus": {
             "review": [
               "Compare the system inventory with vendor end-of-support dates",
@@ -235,7 +235,7 @@
               "Configuration drift reports from monitoring tools"
             ],
             "recommend": "Have the change manager set emergency-change criteria and report emergency volume and overdue reviews monthly.",
-            "decides": "The change authority approves changes; the system owner accepts change risk"
+            "decides": "The change authority approves changes; the risk owner accepts any remaining change risk"
           },
           "isaca_rule": "The risk view of change asks: was the impact assessed, approved by the right authority and reversible? Emergency changes are allowed, but each gets a timely retrospective review. Growing emergency volume is a risk signal to report, not a paperwork issue.",
           "exam_traps": [
@@ -367,7 +367,7 @@
               "Pipeline logs linking each deployment to its reviewer"
             ],
             "recommend": "Have the engineering lead enforce independent review before merge and move pipeline secrets into a managed vault.",
-            "decides": "The application owner accepts residual pipeline risk; the engineering lead is accountable for its controls"
+            "decides": "The risk owner accepts residual pipeline risk; the engineering lead is accountable for its controls"
           },
           "isaca_rule": "Speed does not remove the need for separation of duties; it moves the control into the pipeline. The practitioner checks that no single person can write, approve and deploy a change, and that the pipeline itself is protected as a critical asset.",
           "exam_traps": [
@@ -428,9 +428,9 @@
               "Signed acceptance test results and go-live risk acceptance"
             ],
             "recommend": "Have the project sponsor make risk and security sign-off a condition of every phase gate.",
-            "decides": "The system owner signs the go-live risk acceptance"
+            "decides": "The risk owner, the business manager accountable for the system, signs the go-live risk acceptance"
           },
-          "isaca_rule": "Risk is assessed at every SDLC phase, starting at initiation. The best time to set a control requirement is the earliest phase, and before launch the system owner accepts residual risk within appetite or requires more treatment; developers and the practitioner never accept it.",
+          "isaca_rule": "Risk is assessed at every SDLC phase, starting at initiation. The best time to set a control requirement is the earliest phase, and before launch the risk owner accepts residual risk within appetite or requires more treatment; developers and the practitioner never accept it.",
           "exam_traps": [
             {
               "trap": "Treating a small change as too minor to need a risk assessment.",
@@ -480,7 +480,7 @@
               "Secure coding standard and developer training records"
             ],
             "recommend": "Have the development manager add automated security checks to the build and track repeat findings to root cause.",
-            "decides": "The application owner accepts residual software risk at release"
+            "decides": "The risk owner accepts residual software risk at release"
           },
           "isaca_rule": "Testing finds flaws; a secure development process prevents them. The practitioner looks for root causes behind repeat findings and favors controls built into the process over late testing; the control owner is accountable for choosing those controls and keeping them working.",
           "exam_traps": [
@@ -998,7 +998,7 @@
               "Backup configuration showing retention, immutability and access rights"
             ],
             "recommend": "Have the infrastructure manager schedule regular restore tests and keep one immutable or offline copy of critical data.",
-            "decides": "The system owner accepts residual recovery risk based on test results"
+            "decides": "The risk owner accepts residual recovery risk based on test results"
           },
           "isaca_rule": "A backup counts only when it is protected from the threat and has been restored successfully. In ransomware recovery the order is contain, verify the backup is clean, then restore; the practitioner advises on that order and the risk of skipping it, while the incident lead and business owner decide.",
           "exam_traps": [
@@ -1258,7 +1258,7 @@
               "Conflict reports generated by the identity management system"
             ],
             "recommend": "Have system owners remove excess access and add compensating review where duties cannot be split.",
-            "decides": "The system owner accepts residual access risk"
+            "decides": "The risk owner signs off any access risk left after review"
           },
           "isaca_rule": "No single control is enough for a critical asset. Look for layered, independent controls, least privilege and separated duties; where a principle cannot be met, the risk is recorded and compensated, and the owner accepts what remains within appetite.",
           "exam_traps": [
@@ -1612,7 +1612,7 @@
               "Project gate records showing PIA approval"
             ],
             "recommend": "Have project sponsors complete a PIA at design and update it whenever purpose or data changes.",
-            "decides": "The system owner accepts residual privacy risk with the privacy officer's advice"
+            "decides": "The risk owner accepts residual privacy risk with the privacy officer's advice"
           },
           "isaca_rule": "Assess privacy before the design is fixed. The best time for a PIA is early, before build or purchase, and its results go to the owner as options. Privacy by design favors the option that meets the goal with less personal data.",
           "exam_traps": [
