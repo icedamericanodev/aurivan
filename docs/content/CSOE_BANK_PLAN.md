@@ -107,6 +107,9 @@ a step.
 - Readiness never maps to "pass". On a 35-item exam one sitting swings by
   about 7 points, so advise aiming for 80–85% on held-out mocks.
 
+
+Linked pairs: never draw both items of a pair listed in `docs/content/CSOE_LINKED_PAIRS.md` into the same form, and keep the hub items it names in practice.
+
 ## 5. Pack: paid, lowest price tier
 
 Decided 31 Oct 2026 by `product-manager`:
