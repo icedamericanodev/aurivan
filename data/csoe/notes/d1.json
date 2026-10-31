@@ -1,0 +1,934 @@
+{
+  "domain_number": 1,
+  "domain_name": "Scope and reach of the Act",
+  "exam_weight": "14%",
+  "source": "Original KaiSip notes written from the public law: the Sarbanes-Oxley Act of 2002, the U.S. Code, SEC rules in 17 CFR and SEC publications, each opened on 31 Oct 2026. Not affiliated with or endorsed by the Sarbanes Oxley Compliance Professionals Association (SOXCPA), the SEC or the PCAOB.",
+  "overview": "Domain 1 asks who the Sarbanes-Oxley Act reaches and why it exists. It covers the crisis behind the Act, which companies count as issuers, how filer status changes the internal control duties, how foreign companies and depositary receipt programs are treated, how securities are registered and reports filed on EDGAR, and which people inside and outside a company the Act touches.",
+  "analogy": "Think of a city that tightens its building code after several towers collapse. The code covers buildings open to the public, not private garden sheds. Big towers get an outside engineer's sign-off every year; small buildings still need the owner's own safety check but no outside sign-off. A foreign owner who opens a building in the city follows the same code, with a few local equivalents accepted. And one rule reaches everyone: nobody may destroy the evidence after an accident.",
+  "parts": [
+    {
+      "part": "A",
+      "name": "Companies, registration and listing",
+      "topic_ids": [
+        "1A1",
+        "1A2",
+        "1A3",
+        "1A4",
+        "1A5",
+        "1A6"
+      ]
+    }
+  ],
+  "topics": [
+    {
+      "topic_id": "1A1",
+      "topic_name": "Why the Act was needed",
+      "overview": "The Sarbanes-Oxley Act was Congress's answer to the corporate accounting failures of 2001 and 2002. This topic covers the crisis, the purpose the Act states for itself, how it is organized and enforced, and the common myths about what it created.",
+      "can_do": [
+        "State the Act's purpose in the words of its own title",
+        "Explain how a violation of the Act or of SEC rules under it is enforced",
+        "Tell what the Act created from what already existed before 2002"
+      ],
+      "subtopics": [
+        {
+          "id": "1A1.1",
+          "name": "The Crisis Behind the Act",
+          "legacy_ids": [],
+          "definition": "The Act followed the collapse of large public companies whose reported results hid their true financial condition, which shook investors' trust in corporate disclosures.",
+          "why_it_matters": "Each major rule in the Act targets a failure seen in the crisis: unreliable reports, weak auditor oversight, conflicted auditors, and executives who could deny knowing what their reports said.",
+          "how_it_works": [
+            "Congress passed the Act as Public Law 107-204, signed on 30 July 2002 (govinfo.gov, opened 31 Oct 2026).",
+            "Section 705 ordered a study of how investment banks helped companies obscure their finances, naming Enron and Global Crossing.",
+            "The Act answers each failure with a duty: officer certifications, internal control reports, auditor independence and an audit oversight board.",
+            "The Act protects investors by making corporate disclosures more accurate and reliable, not by guaranteeing returns."
+          ],
+          "example": "At an onboarding session for a payments company that has just listed its shares, the finance director, Ines, explains why the quarterly close now has extra sign-offs. Each sign-off traces back to a failure the Act was written to stop, such as results that hid debt. Ines asks the new accountants to read the Act's table of contents before the first close.",
+          "isaca_rule": "Read every SOX duty as a fix for a known failure: unreliable disclosure, unchecked auditors or executives who could deny responsibility. The fix tells you who must act.",
+          "exam_traps": [
+            {
+              "trap": "SOX was passed to punish particular executives from the 2001 and 2002 scandals.",
+              "why": "The Act sets forward-looking rules for issuers, auditors and officers. Individual cases were pursued under existing laws; the Act names Enron only in a study mandate."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Public Law 107-204",
+              "definition": "The official law number of the Sarbanes-Oxley Act of 2002, signed on 30 July 2002."
+            },
+            {
+              "term": "Corporate disclosure",
+              "definition": "Information a company makes public under the securities laws, such as annual and quarterly reports."
+            }
+          ]
+        },
+        {
+          "id": "1A1.2",
+          "name": "Purpose, Structure and Enforcement",
+          "legacy_ids": [],
+          "definition": "The Act's long title states its purpose: to protect investors by improving the accuracy and reliability of corporate disclosures made under the securities laws.",
+          "why_it_matters": "The purpose explains how each provision is read, and the enforcement section explains why the SEC can pursue a SOX breach with its usual securities-law tools.",
+          "how_it_works": [
+            "The Act has eleven titles, from Title I (the PCAOB) to Title XI (corporate fraud accountability), per its table of contents.",
+            "Section 3(a) directs the SEC to issue the rules needed to carry out the Act.",
+            "Section 3(b) treats a violation of the Act, of SEC rules under it or of PCAOB rules as a violation of the Exchange Act.",
+            "So the same penalties and enforcement powers that apply to Exchange Act violations apply to SOX violations."
+          ],
+          "example": "A newly public software company asks its outside counsel, Rafael, what happens if it misses an SEC rule adopted under the Act. Rafael explains that the SEC enforces such a breach through the same powers it uses for any Exchange Act violation. He adds the rule to the company's compliance calendar and assigns an owner.",
+          "audit_focus": {
+            "review": [
+              "Map each SEC rule the company follows back to its SOX section",
+              "Trace each compliance calendar item to a named owner and deadline"
+            ],
+            "evidence": [
+              "Compliance calendar listing SOX-based SEC rules and owners",
+              "Legal counsel memo mapping rules to the Act's sections"
+            ],
+            "recommend": "Have the general counsel keep a current map of SOX-based SEC rules with an owner for each.",
+            "decides": "The SEC staff and Commission bring enforcement actions for violations"
+          },
+          "isaca_rule": "SOX duties are securities-law duties: Section 3(b) treats a breach of the Act, its SEC rules or PCAOB rules like an Exchange Act violation, with the same penalties.",
+          "exam_traps": [
+            {
+              "trap": "SOX has its own separate enforcement agency.",
+              "why": "The SEC writes the rules and enforces them (Section 3). The PCAOB oversees audit firms, not issuers."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Long title",
+              "definition": "The sentence at the head of a public law that states its purpose."
+            },
+            {
+              "term": "Section 3(b)",
+              "definition": "The Act's enforcement clause: a violation is treated as a Securities Exchange Act of 1934 violation."
+            }
+          ]
+        },
+        {
+          "id": "1A1.3",
+          "name": "What the Act Did Not Create",
+          "legacy_ids": [],
+          "definition": "The Act built on existing institutions: it did not create the SEC, and it lets the SEC recognize a private body's accounting standards rather than writing them itself.",
+          "why_it_matters": "Exam options often credit SOX with things that came earlier or come from elsewhere. Knowing the starting point stops those traps.",
+          "how_it_works": [
+            "The Securities Exchange Act of 1934, Section 4, established the SEC (15 U.S.C. 78d, opened 31 Oct 2026).",
+            "Section 108 lets the SEC recognize as generally accepted the principles of a qualifying private standard setter.",
+            "In 2003 the SEC recognized the FASB's standards under Section 108 (Release No. 33-8221, opened 31 Oct 2026).",
+            "What SOX did create includes the PCAOB, to oversee the auditors of public companies."
+          ],
+          "compare": {
+            "columns": [
+              "Created by",
+              "Main job"
+            ],
+            "rows": [
+              {
+                "label": "SEC",
+                "cells": [
+                  "Securities Exchange Act of 1934",
+                  "Oversees issuers, markets and the PCAOB"
+                ]
+              },
+              {
+                "label": "PCAOB",
+                "cells": [
+                  "Sarbanes-Oxley Act, Title I",
+                  "Oversees audit firms of issuers"
+                ]
+              },
+              {
+                "label": "FASB",
+                "cells": [
+                  "Private sector (recognized by the SEC)",
+                  "Sets accounting standards"
+                ]
+              }
+            ]
+          },
+          "example": "During a board education day at a regional bank holding company, a new director says the Act created the SEC and wrote GAAP. The corporate secretary, Mei, corrects the record: the SEC dates from 1934, and accounting standards come from the FASB. Mei adds a one-page timeline to the board's reading pack.",
+          "isaca_rule": "Credit SOX only with what it created, such as the PCAOB and the officer certifications. The SEC came from the 1934 Act; accounting standards come from a recognized standard setter.",
+          "exam_traps": [
+            {
+              "trap": "The Sarbanes-Oxley Act writes the accounting standards companies must follow.",
+              "why": "Section 108 sets criteria for the SEC to recognize a private standard setter's principles; it does not write standards. The SEC recognized the FASB in 2003."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Generally accepted accounting principles (GAAP)",
+              "definition": "The accounting standards public companies follow in their financial statements, set in the U.S. by the FASB."
+            },
+            {
+              "term": "Standard setter",
+              "definition": "A body that writes accounting principles; Section 108 lists the criteria for SEC recognition."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "topic_id": "1A2",
+      "topic_name": "Companies affected and which provisions apply",
+      "overview": "SOX applies to issuers, and not every provision applies to every issuer. This topic covers the Act's definition of an issuer, the SEC's filer categories, who is exempt from the auditor's internal control attestation, and the provisions that exempt some entities or reach everyone.",
+      "can_do": [
+        "Decide whether a company is an issuer under the Act's definition",
+        "Place a company in its filer category from its public float, revenue and reporting history",
+        "Tell whether the auditor's attestation under Section 404(b) applies to a given filer",
+        "Name the sections Section 405 exempts registered investment companies from"
+      ],
+      "subtopics": [
+        {
+          "id": "1A2.1",
+          "name": "Who Is an Issuer",
+          "legacy_ids": [],
+          "definition": "An issuer, under Section 2(a)(7), is a company with Exchange Act registered securities, one required to file Section 15(d) reports, or one with a pending registration statement.",
+          "why_it_matters": "Most of the Act applies to issuers, so the definition decides whether a company has SOX duties at all. It also catches companies before their shares ever trade.",
+          "how_it_works": [
+            "A company is an issuer if a class of its securities is registered under Exchange Act Section 12.",
+            "It is also an issuer if it must file reports under Exchange Act Section 15(d).",
+            "A company that has filed a Securities Act registration statement that is not yet effective, and not withdrawn, is an issuer too.",
+            "Size and revenue play no part in the definition; private companies outside these three routes are not issuers."
+          ],
+          "example": "A family-owned furniture maker with 400 employees and no public securities asks its auditor whether it must produce a Section 404 report. The controller, Dev, checks the three routes in Section 2(a)(7) and finds none applies. Dev records the conclusion and sets a reminder to recheck it if the owners plan a public offering.",
+          "isaca_rule": "Test issuer status by the three routes in Section 2(a)(7): Section 12 registration, a Section 15(d) reporting duty, or a pending Securities Act registration statement. Size never decides it.",
+          "exam_traps": [
+            {
+              "trap": "A company becomes an issuer only once its shares trade on an exchange.",
+              "why": "Filing a registration statement that is not yet effective already makes it an issuer, and Section 12(g) or 15(d) can apply without any exchange listing."
+            },
+            {
+              "trap": "Large private companies must comply with Section 404.",
+              "why": "Section 404 reports belong in annual reports filed under Section 13(a) or 15(d). A private company that files none has no 404 duty."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Issuer",
+              "definition": "Under Section 2(a)(7), a company with Section 12 registered securities, a Section 15(d) duty or a pending registration statement."
+            },
+            {
+              "term": "Registration statement",
+              "definition": "The disclosure document a company files under the Securities Act of 1933 before offering securities to the public."
+            }
+          ]
+        },
+        {
+          "id": "1A2.2",
+          "name": "Filer Categories",
+          "legacy_ids": [],
+          "definition": "Filer categories are the SEC's size classes in Rule 12b-2, based mainly on public float, that set report deadlines and whether the auditor attests to internal control.",
+          "why_it_matters": "Filer status decides whether the auditor's Section 404(b) attestation applies and how fast reports are due. A wrong category means a missing attestation or a late filing.",
+          "how_it_works": [
+            "An accelerated filer has a public float of $75 million or more but under $700 million (Rule 12b-2, opened 31 Oct 2026).",
+            "A large accelerated filer has a public float of $700 million or more (Rule 12b-2).",
+            "Both also need 12 months of reporting and one annual report filed, and must not qualify as a smaller reporting company under the revenue test.",
+            "Since the SEC's 2020 amendments, a company with annual revenues under $100 million and a float under $700 million is not an accelerated filer (Rule 12b-2).",
+            "Float is measured on the last business day of the second fiscal quarter; status is decided at fiscal year-end."
+          ],
+          "compare": {
+            "columns": [
+              "Large accelerated filer",
+              "Accelerated filer",
+              "Non-accelerated filer"
+            ],
+            "rows": [
+              {
+                "label": "Public float (Rule 12b-2)",
+                "cells": [
+                  "$700 million or more",
+                  "$75 million to under $700 million",
+                  "Under $75 million, or revenue test met"
+                ]
+              },
+              {
+                "label": "Auditor attests under 404(b)",
+                "cells": [
+                  "Yes, unless an emerging growth company",
+                  "Yes, unless an emerging growth company",
+                  "No (Section 404(c))"
+                ]
+              }
+            ]
+          },
+          "example": "At a medical device maker, the assistant controller, Tomas, calculates the public float as of the last business day of the second quarter and finds $410 million. Annual revenues are $260 million and the company has reported for four years. Tomas documents the accelerated filer conclusion and tells the CFO which deadlines and attestation duties follow.",
+          "audit_focus": {
+            "review": [
+              "Recompute the float from share registers and the quarter-end price",
+              "Trace the revenue figure used to audited financial statements"
+            ],
+            "evidence": [
+              "Float workings with non-affiliate share counts and price source",
+              "Filer status memo signed off by the CFO"
+            ],
+            "recommend": "Have the CFO document the filer status conclusion each fiscal year-end with the float and revenue workings.",
+            "decides": "Management determines filer status under Rule 12b-2"
+          },
+          "isaca_rule": "Find filer status in Rule 12b-2: public float first, then the reporting history, then the revenue test. A low-revenue company can be a non-accelerated filer even with a sizable float.",
+          "exam_traps": [
+            {
+              "trap": "Any company with a public float above $75 million is an accelerated filer.",
+              "why": "It also needs 12 months of reporting and one annual report, and must fail the smaller reporting company revenue test (Rule 12b-2)."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Public float",
+              "definition": "The market value of common equity held by non-affiliates, measured as Rule 12b-2 directs."
+            },
+            {
+              "term": "Smaller reporting company",
+              "definition": "Under Rule 12b-2, an issuer with a float under $250 million, or revenues under $100 million and a float under $700 million."
+            }
+          ]
+        },
+        {
+          "id": "1A2.3",
+          "name": "Who Is Exempt from the Auditor Attestation",
+          "legacy_ids": [],
+          "definition": "Some issuers file management's internal control report without the auditor's attestation: non-accelerated filers, emerging growth companies, and newly public companies in their first annual report.",
+          "why_it_matters": "Section 404(a) and 404(b) apply to different sets of companies. Mixing them up leads to either an unneeded attestation or a missing one.",
+          "how_it_works": [
+            "Section 404(c), added by Dodd-Frank Section 989G(a), exempts issuers that are neither accelerated nor large accelerated filers from 404(b).",
+            "Section 404(b) itself, as amended by the JOBS Act, excludes emerging growth companies from the auditor attestation.",
+            "An emerging growth company has total annual gross revenues under $1.235 billion (Rule 12b-2, opened 31 Oct 2026).",
+            "Instruction 1 to Item 308 lets a newly public company skip both reports in its first annual report.",
+            "None of these exemptions removes management's own 404(a) report once it is due."
+          ],
+          "example": "A biotech company that listed three years ago has grown into an accelerated filer by float but still qualifies as an emerging growth company. Its audit committee chair, Priya, asks whether next year's audit fee must cover an internal control attestation. The CFO confirms the exemption and the date it would end.",
+          "isaca_rule": "Separate the two duties: management's 404(a) report applies to every reporting issuer after its first annual report; the auditor's 404(b) attestation applies only to accelerated and large accelerated filers that are not emerging growth companies.",
+          "exam_traps": [
+            {
+              "trap": "Non-accelerated filers are exempt from Section 404.",
+              "why": "They are exempt only from 404(b), the auditor's attestation. Management must still assess and report on internal control under 404(a)."
+            },
+            {
+              "trap": "Accelerated filer status always brings the auditor attestation.",
+              "why": "An emerging growth company is excluded from 404(b) while it keeps that status, even if its float makes it an accelerated filer."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Emerging growth company (EGC)",
+              "definition": "An issuer with revenues under $1.235 billion that keeps scaled duties for up to five years after its IPO (Rule 12b-2)."
+            },
+            {
+              "term": "Section 404(c)",
+              "definition": "The Dodd-Frank exemption from the auditor attestation for issuers that are not accelerated or large accelerated filers."
+            },
+            {
+              "term": "Newly public company transition",
+              "definition": "Item 308's rule that a company's first annual report need not include either internal control report."
+            }
+          ]
+        },
+        {
+          "id": "1A2.4",
+          "name": "Provisions That Exempt Some or Reach Everyone",
+          "legacy_ids": [],
+          "definition": "A few provisions change the Act's reach: Section 405 exempts registered investment companies from three sections, and some criminal provisions apply to anyone.",
+          "why_it_matters": "Scope questions turn on these edges. A fund adviser needs to know which sections do not apply, and anyone handling records needs to know which crimes apply to them.",
+          "how_it_works": [
+            "Section 405 says Sections 401, 402 and 404 do not apply to an investment company registered under Section 8 of the Investment Company Act of 1940.",
+            "Section 405 names only those three sections, so other provisions can still apply to registered funds.",
+            "Section 802 added 18 U.S.C. 1519, which applies to whoever destroys or falsifies records to obstruct a federal matter.",
+            "Section 1107 added 18 U.S.C. 1513(e), which applies to whoever retaliates against a person for giving truthful information to law enforcement."
+          ],
+          "example": "A mutual fund family registered under the Investment Company Act sets up its SOX compliance plan. The fund's chief compliance officer, Odile, marks Sections 401, 402 and 404 as not applicable under Section 405 and keeps the other provisions on the plan. Odile records the legal basis next to each line.",
+          "isaca_rule": "Read Section 405 narrowly: registered investment companies escape Sections 401, 402 and 404 only. Criminal provisions written for 'whoever' reach any person, issuer or not.",
+          "exam_traps": [
+            {
+              "trap": "Registered investment companies are outside the Act entirely.",
+              "why": "Section 405 lists only Sections 401, 402 and 404. Other provisions are not exempted by it."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Registered investment company",
+              "definition": "A fund registered with the SEC under Section 8 of the Investment Company Act of 1940, such as a mutual fund."
+            },
+            {
+              "term": "Section 405",
+              "definition": "The Act's exemption of registered investment companies from Sections 401, 402 and 404."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "topic_id": "1A3",
+      "topic_name": "Foreign private issuers",
+      "overview": "A company organized outside the United States can still be an issuer under the Act. This topic covers the SEC's test for a foreign private issuer, the forms such issuers use, and how the Act's duties apply to them, with the accommodations the SEC rules allow.",
+      "can_do": [
+        "Apply the Rule 3b-4 test to decide whether a foreign company is a foreign private issuer",
+        "Name the annual and current report forms a foreign private issuer uses",
+        "Tell which SOX duties apply to a foreign private issuer and which accommodations the rules give"
+      ],
+      "subtopics": [
+        {
+          "id": "1A3.1",
+          "name": "The Foreign Private Issuer Test",
+          "legacy_ids": [],
+          "definition": "A foreign private issuer, under Rule 3b-4(c), is a non-government foreign issuer that does not fail the test of majority U.S. ownership plus U.S. business contacts.",
+          "why_it_matters": "Status decides which forms and accommodations a foreign company may use. Incorporation abroad is only the starting point; U.S. ownership and U.S. contacts can take the status away.",
+          "how_it_works": [
+            "Start with a foreign issuer: a company incorporated or organized under the laws of a foreign country (Rule 3b-4(b)).",
+            "It fails the test only if more than 50% of its voting securities are held of record by U.S. residents (Rule 3b-4(c)(1), opened 31 Oct 2026).",
+            "Plus one contact test: most executive officers or directors are U.S. citizens or residents, most assets are in the U.S., or business is run mainly there.",
+            "The test is applied as of the last business day of the second fiscal quarter; a new registrant tests within 30 days before its first filing (Rule 3b-4(d))."
+          ],
+          "example": "A Dutch packaging company plans to list shares in New York. Its company secretary, Femke, finds that U.S. residents hold 35% of its voting shares, so the ownership condition fails wherever its directors live. Femke records the company's foreign private issuer status and diarizes the mid-year recheck.",
+          "isaca_rule": "Apply Rule 3b-4(c) in two steps: over 50% U.S.-held voting securities, then any one U.S. contact. Both must be met to lose foreign private issuer status; one alone is not enough.",
+          "exam_traps": [
+            {
+              "trap": "A company incorporated outside the U.S. is always a foreign private issuer.",
+              "why": "If over 50% of its voting securities are U.S.-held and any one U.S. contact test is met, it is not a foreign private issuer."
+            },
+            {
+              "trap": "A foreign company loses the status as soon as most of its shareholders are American.",
+              "why": "Majority U.S. ownership is only the first condition; one of the three business-contact tests must also be met."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Foreign private issuer (FPI)",
+              "definition": "A foreign issuer, other than a foreign government, that does not meet both U.S. ownership and U.S. contact conditions in Rule 3b-4(c)."
+            },
+            {
+              "term": "Foreign issuer",
+              "definition": "A foreign government, foreign national or company organized under a foreign country's laws (Rule 3b-4(b))."
+            }
+          ]
+        },
+        {
+          "id": "1A3.2",
+          "name": "How Foreign Private Issuers Report",
+          "legacy_ids": [],
+          "definition": "Foreign private issuers file an annual report on Form 20-F, or Form 40-F if an eligible Canadian issuer, and furnish home-country news on Form 6-K.",
+          "why_it_matters": "The forms differ from the domestic 10-K, 10-Q and 8-K, and some SOX duties attach only to filed annual reports. The form tells you which duties apply.",
+          "how_it_works": [
+            "Form 20-F serves as an FPI's Exchange Act registration and annual report, filed within six months after fiscal year-end (17 CFR 249.220f, opened 31 Oct 2026).",
+            "Form 40-F is for eligible Canadian issuers under the multijurisdictional rules (17 CFR 249.240f).",
+            "Form 6-K carries information the issuer makes public at home or files with a foreign exchange (Rule 13a-16).",
+            "Reports on Form 6-K are furnished, not filed, for Exchange Act Section 18 liability (Rule 13a-16(c))."
+          ],
+          "compare": {
+            "columns": [
+              "Domestic issuer",
+              "FPI"
+            ],
+            "rows": [
+              {
+                "label": "Annual report",
+                "cells": [
+                  "Form 10-K",
+                  "Form 20-F (Form 40-F for eligible Canadian issuers)"
+                ]
+              },
+              {
+                "label": "Interim and current news",
+                "cells": [
+                  "Form 10-Q and Form 8-K",
+                  "Form 6-K, furnished as home-country news is released"
+                ]
+              }
+            ]
+          },
+          "example": "A Brazilian airline with shares registered in the U.S. publishes its half-year results at home. Its investor relations lead, Lucas, furnishes the results to the SEC on Form 6-K the same week. Lucas then sets the timetable for the annual report on Form 20-F, which is due within six months of year-end.",
+          "isaca_rule": "Match the form to the filer: FPIs file Form 20-F for the year and furnish Form 6-K for home-country news. A furnished 6-K is not a filed periodic report.",
+          "exam_traps": [
+            {
+              "trap": "Foreign private issuers file Form 10-K and Form 10-Q like domestic companies.",
+              "why": "The forms designated for FPIs are Form 20-F (or 40-F) and Form 6-K. An FPI may choose domestic forms, but they are not its default."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Form 20-F",
+              "definition": "The registration statement and annual report form for foreign private issuers under the Exchange Act."
+            },
+            {
+              "term": "Form 6-K",
+              "definition": "The form on which a foreign private issuer furnishes information it publishes at home."
+            },
+            {
+              "term": "Furnished report",
+              "definition": "A report given to the SEC that is not deemed filed for Exchange Act Section 18 liability."
+            }
+          ]
+        },
+        {
+          "id": "1A3.3",
+          "name": "SOX Duties and Accommodations for FPIs",
+          "legacy_ids": [],
+          "definition": "Foreign private issuers with registered securities carry the core SOX duties, with SEC rule accommodations for annual-only evaluation and home-country boards of auditors.",
+          "why_it_matters": "FPIs are not exempt from SOX. The accommodations are narrow, so a team that assumes a broad exemption will miss certifications or internal control reports.",
+          "how_it_works": [
+            "Rule 13a-14(a) requires the officer certifications in each report on Form 10-Q, 10-K, 20-F or 40-F; Form 6-K is not on that list.",
+            "Management of an FPI evaluates disclosure controls as of each fiscal year-end, not each quarter (Rule 13a-15(b)(1)).",
+            "Management's internal control assessment still applies to the FPI's annual report under Rule 13a-15(c).",
+            "Rule 10A-3(c)(3) lets an FPI's qualifying home-country board of auditors stand in for an audit committee for listing purposes."
+          ],
+          "example": "An Italian engineering group with a U.S. listing has a board of statutory auditors elected by shareholders under Italian law. Its general counsel, Chiara, checks each condition of Rule 10A-3(c)(3) and confirms the board qualifies. Chiara records which audit committee duties the board must still perform and adds the disclosure the rule requires.",
+          "audit_focus": {
+            "review": [
+              "Inspect each Form 20-F for the officer certification exhibits",
+              "Compare the home-country auditor board against each Rule 10A-3(c)(3) condition"
+            ],
+            "evidence": [
+              "Signed certification exhibits filed with the Form 20-F",
+              "Home-country law extract establishing the board of auditors"
+            ],
+            "recommend": "Have the general counsel map each SOX duty to the FPI's forms and record every accommodation relied on.",
+            "decides": "The CEO and CFO sign the certifications on each annual report"
+          },
+          "isaca_rule": "An FPI with registered securities carries the core SOX duties on its annual report. The accommodations change timing or who performs a duty; they never remove the duty itself.",
+          "exam_traps": [
+            {
+              "trap": "Foreign private issuers are exempt from the Sarbanes-Oxley Act.",
+              "why": "FPIs with registered securities are issuers. Their annual reports carry the certifications and the internal control report, with narrow accommodations."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Board of auditors",
+              "definition": "A home-country body, separate from management, that oversees the external auditor in some countries."
+            },
+            {
+              "term": "Rule 10A-3(c)(3)",
+              "definition": "The exemption letting a qualifying FPI board of auditors meet the audit committee listing standards."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "topic_id": "1A4",
+      "topic_name": "Registration and EDGAR",
+      "overview": "Reporting duties start with registration. This topic separates registering an offering under the Securities Act from registering a class of securities under the Exchange Act, lists the periodic and current reports that follow, and explains EDGAR, the SEC's electronic filing system.",
+      "can_do": [
+        "Tell Securities Act registration of an offering from Exchange Act registration of a class",
+        "Name the provision that makes a company file periodic reports in a given scenario",
+        "Give the Form 10-K deadline for each filer category",
+        "Explain what EDGAR is and which filings must go through it"
+      ],
+      "subtopics": [
+        {
+          "id": "1A4.1",
+          "name": "Two Kinds of Registration",
+          "legacy_ids": [],
+          "definition": "Securities Act registration covers an offering of securities for sale; Exchange Act registration covers a class of securities and brings periodic reporting.",
+          "why_it_matters": "The route into reporting decides when SOX duties start and when they can stop. People often treat the two registrations as one step.",
+          "how_it_works": [
+            "Securities Act Section 5 makes it unlawful to sell a security unless a registration statement is in effect, absent an exemption.",
+            "Exchange Act Section 12(b) requires registration for a security to trade on a national securities exchange.",
+            "Section 12(g) requires registration once total assets exceed $10 million and a class is held of record by 2,000 persons or 500 non-accredited investors.",
+            "Section 15(d) makes a company that completed a registered offering file periodic reports, even without Section 12 registration."
+          ],
+          "example": "A bakery chain sold notes to the public in a registered offering but never listed any securities. Its treasurer, Hana, assumed no annual report was due because nothing trades on an exchange. Outside counsel points to the effective registration statement, and Hana adds the annual and quarterly reports to the reporting calendar.",
+          "isaca_rule": "Ask how the company entered the reporting system: exchange listing (12(b)), size and holders (12(g)) or an effective registered offering (15(d)). Each route brings periodic reports and so SOX duties.",
+          "exam_traps": [
+            {
+              "trap": "Only exchange-listed companies must file periodic reports.",
+              "why": "Section 12(g) registrants and companies with a Section 15(d) duty after a registered offering must also report."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Section 12 registration",
+              "definition": "Registration of a class of securities under the Exchange Act, by exchange listing or by the 12(g) size test."
+            },
+            {
+              "term": "Section 15(d) reporting",
+              "definition": "The duty to file periodic reports that follows an effective Securities Act registration statement."
+            }
+          ]
+        },
+        {
+          "id": "1A4.2",
+          "name": "Periodic and Current Reports",
+          "legacy_ids": [],
+          "definition": "Domestic reporting companies file annual reports on Form 10-K, quarterly reports on Form 10-Q and current reports on Form 8-K, on deadlines set by filer category.",
+          "why_it_matters": "SOX certifications and the internal control report ride on these reports. A filer must know which report is due, when, and which duties attach to it.",
+          "how_it_works": [
+            "Form 10-K is due 60 days after fiscal year-end for large accelerated filers, 75 for accelerated filers and 90 for all others (17 CFR 249.310).",
+            "Form 10-Q is due 40 days after quarter-end for large accelerated and accelerated filers and 45 for others (17 CFR 249.308a).",
+            "No Form 10-Q is filed for the fourth quarter; the annual report covers it.",
+            "Form 8-K carries current reports of specified events between periodic reports (17 CFR 249.308)."
+          ],
+          "example": "An industrial supplier becomes a large accelerated filer at year-end. Its reporting manager, Abebe, sees that the next annual report is due 15 days sooner than before. Abebe moves the audit committee review and the officer certification sign-offs earlier in the closing calendar.",
+          "audit_focus": {
+            "review": [
+              "Compare each periodic report's filing date with its category deadline",
+              "Trace sub-certification sign-offs to the date the report was filed"
+            ],
+            "evidence": [
+              "EDGAR filing receipts showing acceptance dates",
+              "Reporting calendar listing each report's due date and owner"
+            ],
+            "recommend": "Have the controller and reporting team reset the closing calendar whenever filer status changes.",
+            "decides": "The CEO and CFO certify each annual and quarterly report"
+          },
+          "isaca_rule": "Deadlines follow filer status: 60, 75 or 90 days for the 10-K and 40 or 45 days for the 10-Q, set at fiscal year-end under Rule 12b-2.",
+          "exam_traps": [
+            {
+              "trap": "Every public company has 90 days to file its annual report.",
+              "why": "Ninety days applies only to filers that are neither large accelerated nor accelerated; the others have 60 or 75 days."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Form 10-K",
+              "definition": "The annual report a domestic issuer files under Exchange Act Section 13(a) or 15(d)."
+            },
+            {
+              "term": "Form 8-K",
+              "definition": "The current report a domestic issuer files when specified events occur between periodic reports."
+            }
+          ]
+        },
+        {
+          "id": "1A4.3",
+          "name": "EDGAR",
+          "legacy_ids": [],
+          "definition": "EDGAR, the Electronic Data Gathering, Analysis, and Retrieval system, is the SEC's system for submitting filings and for the public to read them.",
+          "why_it_matters": "Required SOX documents, such as annual reports with their certifications, reach the SEC and investors through EDGAR. It is a system, not a rule.",
+          "how_it_works": [
+            "EDGAR is the primary system for filings under the Securities Act, the Exchange Act and other federal securities laws (SEC, About EDGAR, opened 31 Oct 2026).",
+            "Regulation S-T Rule 101 requires registration statements and Exchange Act Section 13 and 15(d) reports to be filed electronically.",
+            "Public access to EDGAR is free, so investors can read a company's filings.",
+            "The SEC's EDGAR Business Office administers the system and supports filers."
+          ],
+          "example": "A newly registered biotech's paralegal, Sven, asks whether the company could mail its first quarterly report on paper. The corporate secretary shows him Regulation S-T's list of mandated electronic filings. Sven applies for EDGAR access codes and schedules a test submission a week before the deadline.",
+          "isaca_rule": "EDGAR is the SEC's filing system; Regulation S-T is the rule that requires using it. Periodic reports and registration statements go in electronically.",
+          "exam_traps": [
+            {
+              "trap": "EDGAR is an SEC rule that sets what an annual report must contain.",
+              "why": "EDGAR is the filing system. Content rules come from the forms and Regulation S-K; Regulation S-T requires electronic filing."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "EDGAR",
+              "definition": "The SEC's Electronic Data Gathering, Analysis, and Retrieval system for submitting and reading filings."
+            },
+            {
+              "term": "Regulation S-T",
+              "definition": "The SEC rules for electronic filing; Rule 101 lists the filings that must go through EDGAR."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "topic_id": "1A5",
+      "topic_name": "American Depositary Receipts",
+      "overview": "American Depositary Receipts let U.S. investors hold shares of foreign companies. This topic explains what an ADR is, the three program levels and what each level means for the foreign company's SEC reporting and so for its SOX duties.",
+      "can_do": [
+        "Explain how a depositary bank creates ADRs and what Form F-6 registers",
+        "Tell the three ADR levels apart by trading venue and capital raising",
+        "Decide whether an ADR program brings periodic reports and so SOX certifications"
+      ],
+      "subtopics": [
+        {
+          "id": "1A5.1",
+          "name": "What an ADR Is",
+          "legacy_ids": [],
+          "definition": "An American Depositary Receipt is a negotiable certificate showing ownership of depositary shares that represent a foreign company's shares held by a U.S. bank.",
+          "why_it_matters": "ADRs are a common way for foreign companies to reach U.S. investors. Whether the program brings SEC reporting depends on its structure, not on the ADR itself.",
+          "how_it_works": [
+            "A U.S. depositary bank issues ADRs after the foreign shares are deposited with it or its custodian (SEC investor bulletin, 2012, opened 31 Oct 2026).",
+            "A sponsored program has an agreement between the foreign company and the depositary bank; an unsponsored one is set up without the company's cooperation.",
+            "ADRs are always registered with the SEC on Form F-6, which covers only the deposit terms.",
+            "Form F-6 contains no information about the foreign company itself."
+          ],
+          "example": "A U.S. pension fund's analyst, Kofi, wants exposure to a Korean electronics maker. The custodian explains that a depositary bank holds the underlying shares and issues ADRs in dollars. Kofi checks whether the program is sponsored and whether the company files annual reports with the SEC before recommending the purchase.",
+          "isaca_rule": "An ADR registration on Form F-6 covers the deposit agreement, not the company. The company's own SEC reporting, and so its SOX duties, depends on the program level.",
+          "exam_traps": [
+            {
+              "trap": "Registering ADRs on Form F-6 makes the foreign company file annual reports.",
+              "why": "Form F-6 covers only the deposit terms. Annual reports on Form 20-F come from listing or offering at Level 2 or 3."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "American Depositary Receipt (ADR)",
+              "definition": "A negotiable certificate showing ownership of depositary shares that represent a foreign company's deposited shares."
+            },
+            {
+              "term": "Depositary bank",
+              "definition": "The U.S. bank that holds the foreign shares and issues ADRs against them."
+            },
+            {
+              "term": "Form F-6",
+              "definition": "The Securities Act form that registers ADRs; it covers the deposit agreement only."
+            }
+          ]
+        },
+        {
+          "id": "1A5.2",
+          "name": "The Three ADR Levels",
+          "legacy_ids": [],
+          "definition": "ADR programs fall into three levels by how far the foreign company enters U.S. markets: over-the-counter trading, exchange listing, or raising capital.",
+          "why_it_matters": "The level decides what the foreign company files with the SEC. Exam items test which level allows listing and which allows raising new capital.",
+          "how_it_works": [
+            "Level 1 trades over the counter, cannot raise capital, files only Form F-6, and is the only level that may be unsponsored.",
+            "Level 2 lists on a national securities exchange but cannot raise capital; the company registers and files annual reports on Form 20-F.",
+            "Level 3 lists and raises capital through a registration statement on Form F-1, F-3 or F-4, plus annual reports on Form 20-F.",
+            "Source: SEC investor bulletin on ADRs, August 2012, opened 31 Oct 2026."
+          ],
+          "types": [
+            {
+              "term": "Level 1",
+              "meaning": "Over-the-counter trading only; Form F-6; no capital raising."
+            },
+            {
+              "term": "Level 2",
+              "meaning": "Exchange listing; Form 20-F reporting; no capital raising."
+            },
+            {
+              "term": "Level 3",
+              "meaning": "Exchange listing and a public offering; Form F-1, F-3 or F-4 plus Form 20-F."
+            }
+          ],
+          "example": "A Spanish wind-turbine maker's CFO, Lucia, wants U.S. investors to trade its shares but has no plan to raise money there yet. Her advisers compare an over-the-counter program with an exchange listing that would bring Form 20-F reporting. Lucia takes both options, with their reporting costs, to the board.",
+          "isaca_rule": "Level 1 trades over the counter; Level 2 adds an exchange listing and Form 20-F; only Level 3 raises new capital in the U.S.",
+          "exam_traps": [
+            {
+              "trap": "A Level 2 program can raise new capital because it is exchange-listed.",
+              "why": "Level 2 establishes trading on an exchange but may not be used to raise capital; that needs a Level 3 offering."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Sponsored ADR",
+              "definition": "An ADR program set up under an agreement between the foreign company and the depositary bank."
+            },
+            {
+              "term": "Unsponsored ADR",
+              "definition": "An ADR program set up without the foreign company's cooperation, often by a broker-dealer; Level 1 only."
+            }
+          ]
+        },
+        {
+          "id": "1A5.3",
+          "name": "What Each Level Means for SOX",
+          "legacy_ids": [],
+          "definition": "An ADR program brings SOX duties only when the foreign company files Exchange Act annual reports, which happens at Levels 2 and 3, not Level 1.",
+          "why_it_matters": "The officer certifications and the internal control report attach to annual reports. A company with no SEC annual report has nothing for those duties to attach to.",
+          "how_it_works": [
+            "At Level 1 only Form F-6 is filed, so no Form 20-F annual report carries officer certifications or an internal control report.",
+            "At Levels 2 and 3 the company files Form 20-F, which carries the Section 302 and 906 certifications (Rule 13a-14).",
+            "Management's internal control report applies to that annual report after the first one, under Rule 13a-15(c) and Item 308.",
+            "Whether the auditor must also attest depends on filer status and emerging growth company status, as for any issuer."
+          ],
+          "example": "A Swiss chemicals company moves its ADRs from over-the-counter trading to an exchange listing. Its head of financial reporting, Urs, briefs the CEO and CFO that each Form 20-F will now need their signed certifications. Urs also plans the internal control documentation management will need for its later assessment.",
+          "audit_focus": {
+            "review": [
+              "Confirm the ADR program level from the deposit agreement and filings",
+              "Inspect the latest annual report's exhibit index for signed certifications"
+            ],
+            "evidence": [
+              "EDGAR filing index showing Form F-6 and any Form 20-F filings",
+              "Deposit agreement naming the program as sponsored or unsponsored"
+            ],
+            "recommend": "Have the CFO reassess SOX duties whenever the company changes its ADR program level.",
+            "decides": "The CEO and CFO sign certifications once annual reports are filed"
+          },
+          "isaca_rule": "Follow the annual report: no Form 20-F, no SOX certification or internal control report. Levels 2 and 3 file Form 20-F and so carry the duties.",
+          "exam_traps": [
+            {
+              "trap": "Every ADR program brings full SOX duties for the foreign company.",
+              "why": "A Level 1 program files only Form F-6 and no annual report, so the certifications and internal control report do not arise."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Level 1 program",
+              "definition": "An over-the-counter ADR program that files only Form F-6 and no annual reports with the SEC."
+            },
+            {
+              "term": "Form F-1",
+              "definition": "The Securities Act registration statement a foreign private issuer uses to offer securities, for example at Level 3."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "topic_id": "1A6",
+      "topic_name": "Employees affected",
+      "overview": "The Act places duties and protections on people, not only on companies. This topic covers the officers, directors and committees it names, and the employees, attorneys and other persons its provisions protect or can punish.",
+      "can_do": [
+        "Name the officers who sign the certifications and repay incentive pay after a misconduct restatement",
+        "Tell which employees the whistleblower protection covers, including at consolidated subsidiaries",
+        "Identify provisions that apply to any person, not only to an issuer's officers"
+      ],
+      "subtopics": [
+        {
+          "id": "1A6.1",
+          "name": "Officers, Directors and the Audit Committee",
+          "legacy_ids": [],
+          "definition": "The Act gives named duties to the CEO and CFO, senior financial officers, directors and the audit committee, each set out in a specific section.",
+          "why_it_matters": "Exam items often hinge on who must act. Each section names its actor, so knowing the actor finds the section.",
+          "how_it_works": [
+            "The principal executive and financial officers sign the Section 302 and 906 certifications for periodic reports.",
+            "Under Section 304 the CEO and CFO repay incentive pay and stock-sale profits from the 12 months after a report later restated for misconduct.",
+            "Section 406 requires disclosure of whether a code of ethics covers the principal financial officer and the controller or principal accounting officer.",
+            "Section 301 makes the audit committee directly responsible for the auditor; Section 407 requires disclosure of whether it has a financial expert."
+          ],
+          "example": "A newly appointed controller at a listed retailer, Nadia, asks which SOX sections name her role. The general counsel walks her through the code of ethics for senior financial officers and the certification sub-certifications she will give the CFO. Nadia signs the code and files a copy with human resources.",
+          "isaca_rule": "Find the actor, then the section: CEO and CFO for 302, 906 and 304; senior financial officers for 406; the audit committee for 301 and 407.",
+          "exam_traps": [
+            {
+              "trap": "Only the CFO and the finance team have duties under the Act.",
+              "why": "The CEO certifies too, directors and the audit committee have duties, and some provisions reach every employee or any person."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Principal executive officer",
+              "definition": "The CEO or person performing similar functions, who signs the officer certifications."
+            },
+            {
+              "term": "Senior financial officers",
+              "definition": "Under Section 406, the principal financial officer and the controller or principal accounting officer."
+            }
+          ]
+        },
+        {
+          "id": "1A6.2",
+          "name": "Employees, Attorneys and Anyone Else",
+          "legacy_ids": [],
+          "definition": "Beyond officers, the Act protects employees who report fraud, sets reporting duties for attorneys, and punishes any person who destroys records or retaliates against informants.",
+          "why_it_matters": "These provisions reach people outside finance and outside the issuer. A warehouse worker, an outside lawyer or a contractor can be protected or liable.",
+          "how_it_works": [
+            "Section 806 (18 U.S.C. 1514A) protects employees of public companies, including consolidated subsidiaries, who report suspected securities or shareholder fraud.",
+            "Protected reports include those to a federal agency, Congress or a supervisor; the employee may complain to the Secretary of Labor within 180 days.",
+            "Section 307 requires attorneys practicing before the SEC to report evidence of material violations up the ladder.",
+            "Section 802's 18 U.S.C. 1519 and Section 1107's 18 U.S.C. 1513(e) apply to whoever commits the act, not only to issuer staff."
+          ],
+          "example": "A software tester at a subsidiary of a listed media group reports doctored revenue figures to the group's ethics hotline. The parent's HR director, Joon, pauses a planned transfer of the tester while the report is reviewed. Joon briefs managers that the retaliation ban covers the subsidiary's staff too.",
+          "isaca_rule": "Look at the act and the protected person, not the job title. Section 806 covers any employee of a covered company, and the 'whoever' crimes reach anyone.",
+          "exam_traps": [
+            {
+              "trap": "Whistleblower protection under SOX covers only reports made to the SEC.",
+              "why": "18 U.S.C. 1514A also protects reports to Congress, a federal agency or a person with supervisory authority over the employee."
+            },
+            {
+              "trap": "Only officers of issuers can commit the Act's record-destruction crime.",
+              "why": "18 U.S.C. 1519 applies to whoever knowingly destroys or falsifies records to obstruct a federal matter."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Whistleblower protection",
+              "definition": "Section 806's ban on firing, demoting or harassing an employee for lawfully reporting suspected fraud."
+            },
+            {
+              "term": "Up-the-ladder reporting",
+              "definition": "Section 307's duty for attorneys to report evidence of violations to senior officers, then to the board if needed."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "key_terminologies": {
+    "Sarbanes-Oxley Act": "Public Law 107-204, signed on 30 July 2002, to improve the accuracy and reliability of corporate disclosures.",
+    "Issuer": "A company with Section 12 registered securities, a Section 15(d) reporting duty or a pending registration statement.",
+    "Registration statement": "The Securities Act disclosure document filed before a public offering of securities.",
+    "Exchange Act registration": "Registration of a class of securities under Section 12 of the Securities Exchange Act of 1934.",
+    "Periodic report": "An annual or quarterly report filed under Exchange Act Section 13(a) or 15(d).",
+    "Public float": "The market value of common equity held by non-affiliates.",
+    "Accelerated filer": "An issuer with a public float of $75 million to under $700 million that meets Rule 12b-2's other conditions.",
+    "Large accelerated filer": "An issuer with a public float of $700 million or more that meets Rule 12b-2's other conditions.",
+    "Non-accelerated filer": "An issuer that is neither an accelerated nor a large accelerated filer; exempt from Section 404(b).",
+    "Smaller reporting company": "An issuer below Rule 12b-2's float or revenue tests, eligible for scaled disclosure.",
+    "Emerging growth company": "A newer issuer with revenues under $1.235 billion, excluded from the auditor's internal control attestation.",
+    "Foreign private issuer": "A foreign issuer that does not meet both the U.S. ownership and U.S. contact conditions of Rule 3b-4(c).",
+    "Form 20-F": "The annual report and registration form for foreign private issuers.",
+    "Form 6-K": "The form a foreign private issuer uses to furnish information it publishes at home.",
+    "EDGAR": "The SEC's electronic system for submitting filings and for public access to them.",
+    "American Depositary Receipt": "A certificate showing ownership of depositary shares that represent a foreign company's shares held by a U.S. bank.",
+    "ADR levels": "Level 1 over the counter, Level 2 exchange listing, Level 3 listing plus capital raising.",
+    "Registered investment company": "A fund registered under the Investment Company Act of 1940; exempt from Sections 401, 402 and 404.",
+    "Whistleblower": "An employee who reports suspected fraud and is protected from retaliation under Section 806."
+  },
+  "references": [
+    {
+      "title": "Sarbanes-Oxley Act of 2002, Pub. L. 107-204 (as enacted)",
+      "url": "https://www.govinfo.gov/content/pkg/PLAW-107publ204/html/PLAW-107publ204.htm",
+      "checked": "2026-10-31: long title, Sections 1, 2(a)(7), 3, 108, 404, 405, 705 read"
+    },
+    {
+      "title": "15 U.S.C. 7262, Management assessment of internal controls (as amended by Dodd-Frank and the JOBS Act)",
+      "url": "https://www.law.cornell.edu/uscode/text/15/7262",
+      "checked": "2026-10-31"
+    },
+    {
+      "title": "Dodd-Frank Act, Pub. L. 111-203, Section 989G",
+      "url": "https://www.govinfo.gov/content/pkg/PLAW-111publ203/html/PLAW-111publ203.htm",
+      "checked": "2026-10-31"
+    },
+    {
+      "title": "17 CFR 240.12b-2, Definitions (filer categories, smaller reporting company, emerging growth company)",
+      "url": "https://www.law.cornell.edu/cfr/text/17/240.12b-2",
+      "checked": "2026-10-31"
+    },
+    {
+      "title": "17 CFR 240.3b-4, Definition of foreign private issuer",
+      "url": "https://www.law.cornell.edu/cfr/text/17/240.3b-4",
+      "checked": "2026-10-31"
+    },
+    {
+      "title": "17 CFR 240.13a-14, 240.13a-15 and 240.13a-16 (certifications, controls and procedures, Form 6-K)",
+      "url": "https://www.law.cornell.edu/cfr/text/17/240.13a-14",
+      "checked": "2026-10-31"
+    },
+    {
+      "title": "17 CFR 240.10A-3, Listing standards relating to audit committees",
+      "url": "https://www.law.cornell.edu/cfr/text/17/240.10A-3",
+      "checked": "2026-10-31"
+    },
+    {
+      "title": "17 CFR 229.308, Item 308 Internal control over financial reporting",
+      "url": "https://www.law.cornell.edu/cfr/text/17/229.308",
+      "checked": "2026-10-31"
+    },
+    {
+      "title": "17 CFR 249.220f, 249.240f, 249.306, 249.308, 249.308a and 249.310 (Forms 20-F, 40-F, 6-K, 8-K, 10-Q and 10-K)",
+      "url": "https://www.law.cornell.edu/cfr/text/17/249.310",
+      "checked": "2026-10-31"
+    },
+    {
+      "title": "17 CFR 232.101, Regulation S-T mandated electronic submissions",
+      "url": "https://www.law.cornell.edu/cfr/text/17/232.101",
+      "checked": "2026-10-31"
+    },
+    {
+      "title": "15 U.S.C. 77e, 78d, 78l and 78o (Securities Act Section 5; Exchange Act Sections 4, 12 and 15(d))",
+      "url": "https://www.law.cornell.edu/uscode/text/15/78l",
+      "checked": "2026-10-31"
+    },
+    {
+      "title": "SEC Investor Bulletin: American Depositary Receipts (August 2012)",
+      "url": "https://www.sec.gov/files/adr-bulletin.pdf",
+      "checked": "2026-10-31"
+    },
+    {
+      "title": "SEC, About EDGAR",
+      "url": "https://www.sec.gov/submit-filings/about-edgar",
+      "checked": "2026-10-31"
+    },
+    {
+      "title": "SEC Release No. 33-8221, Policy statement reaffirming the status of the FASB (2003)",
+      "url": "https://www.sec.gov/rules/policy/33-8221.htm",
+      "checked": "2026-10-31"
+    },
+    {
+      "title": "18 U.S.C. 1514A, 1519 and 1513(e); 15 U.S.C. 7243, 7245 and 7264",
+      "url": "https://www.law.cornell.edu/uscode/text/18/1514A",
+      "checked": "2026-10-31"
+    }
+  ]
+}
