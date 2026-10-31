@@ -297,6 +297,29 @@ Batch 2 reviews (31 Oct 2026):
 - **Library:** the batch's staged citations merged into
   `_framework_library.md` with one label per citation.
 - **New gate:** no gendered pronouns in items or notes (they/them).
+- **Cross-domain review (200 items):** FIX THEN SHIP, no wrong keys, every
+  number stated twice matches. Fixed: one near-duplicate re-angled (D1-038
+  now tests Form F-6 eligibility), one mirror pair split (D4-013/028), five
+  explanations that gave away another item's key, one exam cue that
+  contradicted Section 205(a), and one name per term ("Exchange Act Section
+  21F(h)", "emerging growth company", "independent auditor"). 44 linked
+  pairs recorded in `CSOE_LINKED_PAIRS.md` for the mock forms.
+- **Principles, exam guide and final week:** audited FIX THEN SHIP; 4 hard
+  errors fixed (the mock described as forward-only when the app allows going
+  back, in three places; only one of SOXCPA's two retake-wait versions).
+
+Lessons for batch 3:
+- D1 writes 6 of 20 as incomplete statements (batch 2 had 4).
+- D4: write a 4C2 notes sub-topic on Basel II/III, with its Dodd-Frank
+  link, only from a primary source opened and dated (BIS or the U.S.
+  banking agencies' capital rule); then 2 or 3 items. If no source opens,
+  record it under the blueprint's open items.
+- No new angles on Section 806 or the Release 33-8810 IT guidance: both
+  are at the three-angle limit. D4 and D5 go to uncovered outline lines.
+- D4 pick-longest is 23.1%, close to the 24% ceiling: never lengthen a D4
+  key without re-running the check.
+- Check every new explanation for sentences that state another item's key.
+
 
 Lessons for batch 2:
 - Open the SEC's own form instructions for any form deadline; a CFR copy
