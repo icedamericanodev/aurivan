@@ -60,7 +60,9 @@
           "practice_ids": [
             "aaia_d1_001",
             "aaia_d1_021",
-            "aaia_d1_022"
+            "aaia_d1_022",
+            "aaia_d1_051",
+            "aaia_d1_052"
           ],
           "definition": "Artificial intelligence (AI) systems produce predictions, content or actions from data. The main kinds are predictive, generative and agentic; rules engines are not machine learning.",
           "why_it_matters": "The kind of AI decides the risks and the evidence the auditor needs. A rules engine is tested like ordinary code; a learned model also needs its training data, validation and monitoring examined.",
@@ -118,12 +120,15 @@
           "practice_ids": [
             "aaia_d1_002",
             "aaia_d1_023",
-            "aaia_d1_024"
+            "aaia_d1_024",
+            "aaia_d1_053",
+            "aaia_d1_054"
           ],
           "definition": "A machine learning (ML) model learns patterns from data toward an objective people set, so its outputs are statistical estimates, not certainties, and only as good as that data.",
           "why_it_matters": "Auditors are often shown one accuracy score. Without knowing the data, the objective and which errors matter, the auditor cannot judge whether the model serves the business purpose.",
           "how_it_works": [
-            "Training data supplies examples; features are the inputs a model uses, and labels are the known answers it learns to predict.",
+            "Training data supplies examples, features are inputs and labels the answers; a feature recorded after the outcome leaks the answer, inflating validation.",
+            "Models trained without labels only group similar records; any name given to a group is a hypothesis to test.",
             "The objective tells the model what to optimize; a poorly chosen objective yields a model that is accurate at the wrong thing.",
             "Models generalize from past data, so they weaken when real conditions drift away from the training data.",
             "With rare events, a model that always predicts the common outcome still scores high accuracy while missing every case that matters.",
@@ -179,7 +184,9 @@
             "aaia_d1_003",
             "aaia_d1_004",
             "aaia_d1_025",
-            "aaia_d1_026"
+            "aaia_d1_026",
+            "aaia_d1_055",
+            "aaia_d1_056"
           ],
           "definition": "Artificial intelligence (AI) requirements state the purpose, acceptable errors, limits, users and oversight a system needs, and how it fits the enterprise architecture, before a model or vendor is chosen.",
           "why_it_matters": "Projects that start from a model or vendor pick a solution before the problem is clear. Without stated requirements, nobody can test whether AI serves business objectives, policies and procedures.",
@@ -250,7 +257,9 @@
           "practice_ids": [
             "aaia_d1_006",
             "aaia_d1_027",
-            "aaia_d1_028"
+            "aaia_d1_028",
+            "aaia_d1_057",
+            "aaia_d1_058"
           ],
           "definition": "An artificial intelligence (AI) program ties AI use to strategy through an approved policy and a complete inventory, including vendor-embedded AI and unapproved shadow AI.",
           "why_it_matters": "Nobody can govern AI they do not know about. Embedded features and staff use of public tools often handle sensitive data, yet appear in no register.",
@@ -309,7 +318,9 @@
           "practice_ids": [
             "aaia_d1_005",
             "aaia_d1_029",
-            "aaia_d1_030"
+            "aaia_d1_030",
+            "aaia_d1_059",
+            "aaia_d1_060"
           ],
           "definition": "Accountability for artificial intelligence (AI) means every model and every AI-supported decision has a named human owner, with roles and committee duties written down.",
           "why_it_matters": "When an AI decision harms someone, a person must answer for it, fix it and decide whether the model keeps running. Shared, vague or vendor ownership means nobody does.",
@@ -318,7 +329,8 @@
             "Data scientists build and maintain models and IT runs platforms; neither becomes owner of business decisions by default.",
             "An AI governance committee sets standards, approves high-impact use cases and escalates to senior management.",
             "Contracts can require vendor transparency and support, but accountability for decisions stays with the organization using the model.",
-            "Internal audit gives independent assurance and may advise the committee, but does not vote, approve use cases or own AI risk."
+            "Internal audit gives independent assurance and may advise the committee, but does not vote, approve use cases or own AI risk.",
+            "Internal audit may advise on evidence a decision needs, such as results on each new population alone at the deployed threshold; pooled figures can hide weak groups."
           ],
           "example": "At a Chilean copper mine, a model predicts conveyor failures and schedules shutdowns automatically. Maintenance says the data team owns it; the data team says operations does. Auditor Valentina finds no owner in the responsibility chart and nobody authorized to approve overrides. Valentina reports that the model's decisions have no accountable owner and recommends that one be named.",
           "audit_focus": {
@@ -369,7 +381,9 @@
             "aaia_d1_007",
             "aaia_d1_008",
             "aaia_d1_031",
-            "aaia_d1_032"
+            "aaia_d1_032",
+            "aaia_d1_061",
+            "aaia_d1_062"
           ],
           "definition": "An artificial intelligence (AI) program measures whether governance works, trains people for the duties AI policies give them, and plans for how AI changes jobs.",
           "why_it_matters": "A policy that staff do not understand is not a control. AI also shifts work: people who once did tasks now oversee AI output and handle the hard cases.",
@@ -380,7 +394,7 @@
             "AI shifts work: people move from doing tasks to reviewing AI output and handling exceptions, which needs new skills.",
             "Training records and spot tests show whether people can apply the policy, not just that they attended."
           ],
-          "example": "At an Indian tax-preparation firm, the AI program's quarterly report counts licenses issued, drafts produced and hours saved. Auditor Priya finds no measure of how many AI drafts reviewers corrected, how many policy breaches occurred or whether staff finished the required training. Priya reports that the metrics show adoption, not whether the program works as intended, and recommends outcome metrics.",
+          "example": "At an Indian tax-preparation firm, the AI program's quarterly report counts licenses issued, drafts produced and hours saved. Auditor Priya finds no measure of how often sampled AI drafts contained errors, how many policy breaches occurred or whether staff passed knowledge checks on the policy. Priya reports that the metrics show adoption, not whether the program works as intended, and recommends outcome metrics.",
           "audit_focus": {
             "review": [
               "Compare awareness content, topic by topic, with current AI policy duties",
@@ -440,7 +454,9 @@
           "practice_ids": [
             "aaia_d1_012",
             "aaia_d1_033",
-            "aaia_d1_034"
+            "aaia_d1_034",
+            "aaia_d1_063",
+            "aaia_d1_064"
           ],
           "definition": "Artificial intelligence (AI) risk assessment identifies what could go wrong with an AI system, including harm to people, and rates likelihood and impact so owners can respond.",
           "why_it_matters": "AI can harm people who never see the system, through wrong denials, unfair treatment or unsafe actions. A register that rates only security and uptime misses the risks that matter most.",
@@ -500,7 +516,9 @@
             "aaia_d1_009",
             "aaia_d1_010",
             "aaia_d1_035",
-            "aaia_d1_036"
+            "aaia_d1_036",
+            "aaia_d1_065",
+            "aaia_d1_066"
           ],
           "definition": "Risk appetite is how much AI risk the board accepts to pursue its goals; tolerances set measurable limits, and key risk indicators (KRIs) show when limits near breach.",
           "why_it_matters": "Without board-set limits, every artificial intelligence (AI) risk decision is made case by case, often by whoever is keen to launch. KRIs turn the limits into numbers management can watch and escalate.",
@@ -560,7 +578,9 @@
           "practice_ids": [
             "aaia_d1_011",
             "aaia_d1_037",
-            "aaia_d1_038"
+            "aaia_d1_038",
+            "aaia_d1_067",
+            "aaia_d1_068"
           ],
           "definition": "Third-party artificial intelligence (AI) risk arises from models, data, tools and services that vendors supply, including AI embedded in products and pre-trained models built by others.",
           "why_it_matters": "Most organizations buy AI rather than build it. The vendor can change the model, its data or terms without notice, yet the organization still answers for every decision made with it.",
@@ -632,7 +652,9 @@
             "aaia_d1_013",
             "aaia_d1_015",
             "aaia_d1_039",
-            "aaia_d1_040"
+            "aaia_d1_040",
+            "aaia_d1_069",
+            "aaia_d1_070"
           ],
           "definition": "Data governance for artificial intelligence (AI) assigns owners to the data models use and controls its quality, lineage, permitted uses and right to use it for training.",
           "why_it_matters": "A model inherits every flaw in its data. If no one owns a data feed or can trace its origin, no one can vouch for its quality, its consent terms or its fitness for training.",
@@ -691,7 +713,9 @@
           "practice_ids": [
             "aaia_d1_016",
             "aaia_d1_041",
-            "aaia_d1_042"
+            "aaia_d1_042",
+            "aaia_d1_071",
+            "aaia_d1_072"
           ],
           "definition": "Personal data can enter artificial intelligence (AI) through training sets, prompts and retrieved documents, and leave through outputs and inferences, so privacy controls must cover each point.",
           "why_it_matters": "Privacy duties such as purpose limits, consent, transparency and minimization apply to AI too. Generative AI can also infer sensitive facts about people that nobody ever gave it.",
@@ -750,12 +774,15 @@
           "practice_ids": [
             "aaia_d1_014",
             "aaia_d1_043",
-            "aaia_d1_044"
+            "aaia_d1_044",
+            "aaia_d1_073",
+            "aaia_d1_074"
           ],
           "definition": "Retention and deletion for artificial intelligence (AI) govern how long training data, prompts, outputs and models are kept, and must address what a trained model may memorize.",
           "why_it_matters": "Deleting a record from a database does not remove what a model learned from it. A model that memorized personal data can reveal it long after the source is gone.",
           "how_it_works": [
             "Retention schedules cover training sets, prompt and output logs, model versions and the records needed to explain past decisions.",
+            "Copies of source text in retrieval indexes, embeddings and caches fall under the same retention and deletion rules as the original records.",
             "Models can memorize rare or repeated training examples and reproduce them in outputs, a known privacy risk for generative AI.",
             "When personal data must be erased, the owner assesses affected models: retrain, filter outputs or document low risk, with the privacy officer confirming the choice meets the legal duty.",
             "Prompt and output logs often hold personal data and need their own retention limits and access controls.",
@@ -819,7 +846,9 @@
             "aaia_d1_018",
             "aaia_d1_020",
             "aaia_d1_045",
-            "aaia_d1_046"
+            "aaia_d1_046",
+            "aaia_d1_075",
+            "aaia_d1_076"
           ],
           "definition": "Trustworthy artificial intelligence (AI) characteristics are qualities a system should show, such as valid, safe, fair and explainable, stated as measurable criteria an auditor can test.",
           "why_it_matters": "An ethics statement saying AI must be fair cannot be audited until someone defines fair for that use, sets a threshold and names an owner. Untestable principles give false comfort.",
@@ -878,7 +907,9 @@
           "practice_ids": [
             "aaia_d1_019",
             "aaia_d1_047",
-            "aaia_d1_048"
+            "aaia_d1_048",
+            "aaia_d1_077",
+            "aaia_d1_078"
           ],
           "definition": "Risk-based artificial intelligence (AI) regulation sets duties by the harm a use could cause; mapping turns each applicable obligation into an owned control with evidence.",
           "why_it_matters": "AI laws differ by country and sector and change quickly. Without a mapped obligations register, the organization cannot show which duties apply to which systems, or prove that it meets them.",
@@ -933,12 +964,14 @@
           "practice_ids": [
             "aaia_d1_017",
             "aaia_d1_049",
-            "aaia_d1_050"
+            "aaia_d1_050",
+            "aaia_d1_079",
+            "aaia_d1_080"
           ],
           "definition": "Artificial intelligence (AI) frameworks and standards structure AI risk management, such as the voluntary NIST framework and management-system standards such as ISO/IEC 42001.",
           "why_it_matters": "Auditors use them as criteria and benchmarks. Misreading them, such as treating a voluntary framework as law or a certificate as proof that a model is fair, leads to wrong conclusions.",
           "how_it_works": [
-            "The National Institute of Standards and Technology (NIST) AI Risk Management Framework is voluntary and organizes work into four functions: Govern, Map, Measure and Manage.",
+            "The National Institute of Standards and Technology (NIST) AI Risk Management Framework is voluntary, with no NIST certification, and organizes work into four functions: Govern, Map, Measure and Manage.",
             "A companion NIST profile applies the framework to generative AI and describes risks such as confabulation and data privacy.",
             "Management-system standards, such as ISO/IEC 42001, describe how an organization runs AI governance; certification covers that system within its scope, not each model's outputs.",
             "Sources combine: an organization may certify its management system and still use the NIST functions to run its risk work.",
