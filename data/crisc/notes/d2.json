@@ -44,6 +44,9 @@
           "id": "2A1.1",
           "name": "Loss Events, Incidents and Near Misses",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d2_001"
+          ],
           "definition": "A risk event is something that happened, or nearly happened, that shows a risk scenario can occur. Loss events cause harm; near misses stop just short of it.",
           "why_it_matters": "Events are the best evidence a practitioner has about real likelihood and impact. Counting only losses hides how often controls were nearly beaten, so the register understates risk.",
           "how_it_works": [
@@ -97,6 +100,9 @@
           "id": "2A1.2",
           "name": "Internal and External Event Sources",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d2_021"
+          ],
           "definition": "Event sources are where risk event data comes from: inside the enterprise, such as incident logs and audit findings, and outside it, such as peers, regulators and insurers.",
           "why_it_matters": "Internal data shows the enterprise's own controls and history; external data covers events too rare to have happened here yet. Relying on one source alone distorts likelihood.",
           "how_it_works": [
@@ -145,6 +151,10 @@
           "id": "2A1.3",
           "name": "AI Risk Events: Bias and Model Drift",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d2_002",
+            "crisc_d2_022"
+          ],
           "definition": "AI risk events are occurrences in which an AI system harms objectives, such as a biased decision, a harmful output, or accuracy that falls as live data drifts.",
           "why_it_matters": "AI failures often look like normal outputs, so nobody files an incident. Without event capture, a biased or drifting model keeps making decisions the business is accountable for.",
           "how_it_works": [
@@ -207,6 +217,10 @@
           "id": "2A2.1",
           "name": "Threat Sources and Threat Events",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d2_003",
+            "crisc_d2_023"
+          ],
           "definition": "A threat source is anyone or anything that could cause harm; a threat event is what that source does, such as phishing staff or flooding a data center.",
           "why_it_matters": "Scenarios built only around outside hackers miss insiders, errors, equipment failures and disasters. A full taxonomy keeps identification complete and keeps threats separate from weaknesses.",
           "how_it_works": [
@@ -273,6 +287,9 @@
           "id": "2A2.2",
           "name": "Threat Intelligence and Threat Modeling",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d2_024"
+          ],
           "definition": "Threat intelligence is analyzed information about threat actors and their methods; threat modeling is a structured way to work out how a system could be attacked or fail.",
           "why_it_matters": "Intelligence shows what is happening outside; modeling shows whether it matters to this enterprise's assets. A feed nobody analyzes creates noise, not risk insight.",
           "how_it_works": [
@@ -351,6 +368,10 @@
           "id": "2A2.3",
           "name": "AI-Specific Threats",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d2_004",
+            "crisc_d2_025"
+          ],
           "definition": "AI-specific threats attack the parts unique to AI systems: the prompts they accept, the data they learn from and the trained model itself.",
           "why_it_matters": "Firewalls and malware tools do not see a malicious instruction hidden in a document an AI assistant reads. Missing these threats leaves AI scenarios out of the register.",
           "how_it_works": [
@@ -427,6 +448,11 @@
           "id": "2A3.1",
           "name": "Vulnerabilities in People, Process and Technology",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d2_006",
+            "crisc_d2_026",
+            "crisc_d2_028"
+          ],
           "definition": "A vulnerability is a weakness in the design, implementation, operation or internal control of a process or system that a threat could exploit.",
           "why_it_matters": "Most serious losses combine a technical flaw with a process gap or a human error. Looking only at scanner output leaves the process and people weaknesses unmanaged.",
           "how_it_works": [
@@ -504,6 +530,9 @@
           "id": "2A3.2",
           "name": "CVSS as a Severity Input",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d2_005"
+          ],
           "definition": "CVSS (Common Vulnerability Scoring System) v4.0 is FIRST's open standard for scoring the technical severity of a software vulnerability from 0 to 10.",
           "why_it_matters": "A CVSS score describes the flaw, not the enterprise's exposure. Used as the risk rating, it can rank an isolated test server above a payment system just because its flaw scored higher.",
           "how_it_works": [
@@ -553,6 +582,9 @@
           "id": "2A3.3",
           "name": "Risk-Based Remediation Priority",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d2_027"
+          ],
           "definition": "Risk-based remediation ranks vulnerability fixes by business impact and likelihood of exploitation, not by severity score or discovery date alone.",
           "why_it_matters": "No enterprise can fix everything at once. Ranking by business risk spends limited patching effort where a successful exploit would hurt objectives most.",
           "how_it_works": [
@@ -614,6 +646,9 @@
           "id": "2A4.1",
           "name": "Anatomy of a Risk Scenario",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d2_007"
+          ],
           "definition": "A risk scenario is a specific, assessable description of how a threat could cause an event that affects an asset and harms business objectives.",
           "why_it_matters": "A vague entry such as 'cyberattack' cannot be rated, owned or treated. A specific scenario shows which controls matter and lets the owner compare it with appetite.",
           "how_it_works": [
@@ -660,6 +695,9 @@
           "id": "2A4.2",
           "name": "Top-Down and Bottom-Up Scenario Development",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d2_031"
+          ],
           "definition": "Top-down development starts from business objectives and asks what could stop them; bottom-up development starts from assets, threats and vulnerabilities and asks where they could lead.",
           "why_it_matters": "Each approach misses what the other catches. Using both keeps the scenario set tied to objectives without missing technical threats, and keeps it small enough to manage.",
           "how_it_works": [
@@ -733,6 +771,11 @@
           "id": "2A4.3",
           "name": "Validating Scenarios and Tabletop Exercises",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d2_008",
+            "crisc_d2_029",
+            "crisc_d2_030"
+          ],
           "definition": "Validation confirms with business owners that a scenario is realistic and its impact is right; a tabletop exercise walks a team through a scenario to test plans and find gaps.",
           "why_it_matters": "Scenarios written by the risk team alone often misjudge business impact. Tabletop exercises reveal missing scenarios, unclear roles and weak responses before a real event does.",
           "how_it_works": [
@@ -794,6 +837,9 @@
           "id": "2B1.1",
           "name": "Likelihood, Impact and Risk",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d2_032"
+          ],
           "definition": "Risk is the combination of how likely an event is and how much it would affect objectives. The ISACA Glossary calls it an event's likelihood combined with its impact.",
           "why_it_matters": "Rating only impact makes every disaster look urgent; rating only likelihood ignores rare but severe events. Both together let owners compare risks fairly against appetite.",
           "how_it_works": [
@@ -846,6 +892,11 @@
           "id": "2B1.2",
           "name": "The Risk Assessment Process and Scope",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d2_009",
+            "crisc_d2_010",
+            "crisc_d2_033"
+          ],
           "definition": "A risk assessment identifies, estimates and prioritizes risk. NIST SP 800-30 runs it in four steps: prepare, conduct, communicate the results and maintain the assessment.",
           "why_it_matters": "Skipping preparation means assessing the wrong things against the wrong criteria. Skipping communication or maintenance means decisions rest on results nobody saw or that are out of date.",
           "how_it_works": [
@@ -912,6 +963,10 @@
           "id": "2B2.1",
           "name": "BIA Purpose, Dependencies and AI Systems",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d2_011",
+            "crisc_d2_036"
+          ],
           "definition": "A business impact analysis (BIA) finds the critical business processes, how their impact grows over time when disrupted, and the resources and dependencies they need to recover.",
           "why_it_matters": "Recovery money and effort are limited. The BIA tells the enterprise what to restore first, and it gives risk assessments the impact data they need.",
           "how_it_works": [
@@ -985,6 +1040,12 @@
           "id": "2B2.2",
           "name": "MTO, RTO and RPO",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d2_012",
+            "crisc_d2_034",
+            "crisc_d2_035",
+            "crisc_d2_037"
+          ],
           "definition": "MTO is a critical function's longest tolerable disruption; RTO, the time allowed to recover a function or resource; RPO, the earliest restore point that tolerable data loss allows.",
           "why_it_matters": "These numbers drive recovery design and cost. Set by IT alone, they reflect what the technology can do, not what the business can survive.",
           "how_it_works": [
@@ -1136,6 +1197,11 @@
           "id": "2B3.2",
           "name": "Keeping the Register Current",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d2_013",
+            "crisc_d2_038",
+            "crisc_d2_039"
+          ],
           "definition": "Keeping the register current means updating ratings, controls, responses and status whenever events, assessments, control tests or business changes alter a risk.",
           "why_it_matters": "Decisions are only as good as the register behind them. A stale register reports risks as treated that are not, and hides risks that have grown.",
           "how_it_works": [
@@ -1180,6 +1246,9 @@
           "id": "2B3.3",
           "name": "From Register to Enterprise Risk Profile",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d2_014"
+          ],
           "definition": "The enterprise risk profile is the combined view of an enterprise's significant risks, built by normalizing and aggregating unit and IT risk registers for senior management and the board.",
           "why_it_matters": "Leaders cannot read hundreds of entries. Consistent registers that roll up show which risks threaten enterprise objectives and where appetite is exceeded.",
           "how_it_works": [
@@ -1241,6 +1310,9 @@
           "id": "2B4.1",
           "name": "Qualitative and Semi-Quantitative Analysis",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d2_042"
+          ],
           "definition": "Qualitative analysis rates likelihood and impact on defined word scales, such as low to very high; semi-quantitative analysis maps those levels to numbered bins or scores.",
           "why_it_matters": "Most enterprises lack reliable loss data for many risks. Well-defined scales give fast, comparable ratings decision makers understand, as long as everyone uses them the same way.",
           "how_it_works": [
@@ -1319,6 +1391,11 @@
           "id": "2B4.2",
           "name": "Quantitative Analysis: SLE, ARO and ALE",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d2_015",
+            "crisc_d2_016",
+            "crisc_d2_043"
+          ],
           "definition": "Quantitative analysis expresses risk in money and probability. The classic method multiplies single loss expectancy (SLE) by annual rate of occurrence (ARO) to get annualized loss expectancy (ALE).",
           "why_it_matters": "Money values let owners weigh a control's cost against the loss it avoids, which supports cost-benefit decisions that word scales cannot.",
           "how_it_works": [
@@ -1373,6 +1450,11 @@
           "id": "2B4.3",
           "name": "Choosing a Method: Data, Decisions, FAIR and Monte Carlo",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d2_017",
+            "crisc_d2_040",
+            "crisc_d2_041"
+          ],
           "definition": "Choosing a method means matching the analysis to the decision it must support and the quality of the data available, from simple scales to FAIR models and Monte Carlo simulation.",
           "why_it_matters": "A precise-looking number built on guesses misleads decision makers more than an honest qualitative rating. The method must fit both the data and the decision.",
           "how_it_works": [
@@ -1439,6 +1521,10 @@
           "id": "2B5.1",
           "name": "Inherent, Current and Residual Risk",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d2_018",
+            "crisc_d2_044"
+          ],
           "definition": "Inherent risk is risk before any management action; current risk reflects controls already in place; residual risk is what remains after the chosen risk response is implemented.",
           "why_it_matters": "Comparing inherent risk with appetite overstates the need for new controls; counting planned controls as working understates real exposure.",
           "how_it_works": [
@@ -1519,6 +1605,9 @@
           "id": "2B5.2",
           "name": "Control Effectiveness and the Residual Gap",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d2_019"
+          ],
           "definition": "Control effectiveness is how well a control actually reduces a risk's likelihood or impact; it sets the gap between inherent and residual risk.",
           "why_it_matters": "A residual rating that assumes controls work, without evidence, can hide a risk far above appetite. Effectiveness must be shown, not assumed.",
           "how_it_works": [
@@ -1567,6 +1656,10 @@
           "id": "2B5.3",
           "name": "Residual Risk Against Appetite and Tolerance",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d2_020",
+            "crisc_d2_045"
+          ],
           "definition": "Comparing residual risk, the current risk once a response is in place, with appetite and tolerance decides the next step: accept and monitor, treat further, or escalate a tolerance breach.",
           "why_it_matters": "This comparison is where analysis becomes a decision. It must reach the person with authority to decide, together with the options and their costs.",
           "how_it_works": [
