@@ -2,7 +2,7 @@
   "schema_version": 2,
   "title": "KaiSip CSOE exam mindset principles",
   "updated": "2026-10-31",
-  "description": "How CSOE questions think: the text of the Sarbanes-Oxley Act and the SEC and PCAOB rules decides the answer, read carefully and quickly, with no role lens. Grouped into six families. Same shape as the CISA file data/mindset/principles.json (schema v2, docs/content/PRINCIPLES_SCHEMA.md), with these CSOE deviations: domains 1 to 5 are the five CSOE domains in docs/content/CSOE_BLUEPRINT.md, not the CISA domains; subtopics are CSOE note codes from data/csoe/notes (for example 3B2.3); practice_ids refer to data/csoe/originals (ids such as csoe_d3_017) and, for now, list only reviewed pilot items 001 to 020, one principle per item, with no principle_id tags on questions yet; legacy_ids are empty because the old web PRINCIPLES_LIB was CISA only; families are rule, actor, scope, consequence, severity and reading instead of the CISA families; in the slip map, the role slip means answering as the wrong actor, the tech-first slip means choosing good practice over the rule, the symptom slip means judging a deficiency by the error found, and knowledge stays null. Lint: python3 scripts/lint_principles.py data/csoe/mindset/principles.json --notes data/csoe/notes --bank data/csoe/originals. KaiSip is independent and not affiliated with or endorsed by the Sarbanes Oxley Compliance Professionals Association (SOXCPA), which runs the CSOE exam.",
+  "description": "How CSOE questions think: the text of the Sarbanes-Oxley Act and the SEC and PCAOB rules decides the answer, read carefully and quickly, with no role lens. Grouped into six families. Same shape as the CISA file data/mindset/principles.json (schema v2, docs/content/PRINCIPLES_SCHEMA.md), with these CSOE deviations: domains 1 to 5 are the five CSOE domains in docs/content/CSOE_BLUEPRINT.md, not the CISA domains; subtopics are CSOE note codes from data/csoe/notes (for example 3B2.3); practice_ids refer to data/csoe/originals (ids such as csoe_d3_017) and list only reviewed items (the pilot, 001 to 020, and batch 2, 021 to 040), one principle per item, with no principle_id tags on questions yet; legacy_ids are empty because the old web PRINCIPLES_LIB was CISA only; families are rule, actor, scope, consequence, severity and reading instead of the CISA families; in the slip map, the role slip means answering as the wrong actor, the tech-first slip means choosing good practice over the rule, the symptom slip means judging a deficiency by the error found, and knowledge stays null. Lint: python3 scripts/lint_principles.py data/csoe/mindset/principles.json --notes data/csoe/notes --bank data/csoe/originals. KaiSip is independent and not affiliated with or endorsed by the Sarbanes Oxley Compliance Professionals Association (SOXCPA), which runs the CSOE exam.",
   "families": [
     {
       "id": "rule",
@@ -74,7 +74,7 @@
       "nuance": "Where the rule itself leaves a choice, as with picking a suitable, recognized control framework, the key is the option the rule allows, not one named framework or vendor.",
       "domains": [2, 3, 4, 5],
       "subtopics": ["2B1.1", "2B1.2", "2B3.1", "3A1.3", "3B1.2", "4B1.2", "5A1.3"],
-      "practice_ids": ["csoe_d2_013", "csoe_d2_016", "csoe_d2_019", "csoe_d3_003", "csoe_d4_007", "csoe_d5_003"],
+      "practice_ids": ["csoe_d2_013", "csoe_d2_016", "csoe_d2_019", "csoe_d2_035", "csoe_d3_003", "csoe_d3_025", "csoe_d4_007", "csoe_d5_003"],
       "slip_pattern": "tech-first",
       "legacy_ids": [],
       "aliases": []
@@ -111,7 +111,7 @@
       "nuance": "When a question names its section, it is asking about that section's text. When it does not, the facts decide: who acted, what record, which report and what penalty.",
       "domains": [1, 2, 3, 4],
       "subtopics": ["1A2.4", "1A4.1", "2A3.1", "3A2.3", "3A3.1", "4B1.1", "4B1.2"],
-      "practice_ids": ["csoe_d1_013", "csoe_d1_019", "csoe_d2_008", "csoe_d3_007", "csoe_d4_008"],
+      "practice_ids": ["csoe_d1_002", "csoe_d1_013", "csoe_d1_019", "csoe_d2_008", "csoe_d3_007", "csoe_d4_008", "csoe_d4_031"],
       "slip_pattern": null,
       "legacy_ids": [],
       "aliases": []
@@ -140,15 +140,15 @@
         "answer": "Update it. The 2013 edition replaced 1992 and widened the reporting objective to internal and nonfinancial reporting; the five components remain, now with 17 principles."
       },
       "check": {
-        "scenario": "A listed company's counsel tells a fired analyst that a Section 806 retaliation case brought in federal court is always decided by a judge alone, as under the 2002 text.",
+        "scenario": "A listed company's counsel tells a fired analyst that a Section 806 retaliation case brought in federal court is always decided by a judge alone, because the 2002 text never mentioned a jury.",
         "right": "Correct them: since Dodd-Frank, either party may ask for a jury in a Section 806 court action.",
-        "trap": "Agree: Section 806 sends retaliation cases to a judge alone, so no jury is available.",
-        "why": "Dodd-Frank added a jury right for Section 806 actions in federal court. Answer from the law as amended, not from the 2002 text."
+        "trap": "Agree: Section 806 gives no jury right, so a judge alone decides every such case.",
+        "why": "Dodd-Frank added an express jury right for Section 806 actions in federal court (18 U.S.C. 1514A(b)(2)(E)). Answer from the law as amended, not from the 2002 text."
       },
-      "nuance": "A pending SEC proposal is not law. Until a change is adopted and in effect, key on the rule in force, and treat the proposal only as something to watch.",
+      "nuance": "If a question names an older version, such as COSO 1992, ERM 2004 or Section 806 as enacted, answer from it. A pending SEC proposal is not law; key on the rule in force.",
       "domains": [1, 3, 4, 5],
-      "subtopics": ["1A6.2", "3A4.2", "4B2.1", "4C3.1", "4C3.2", "5A2.1", "5B1.2"],
-      "practice_ids": ["csoe_d1_020", "csoe_d3_011", "csoe_d4_010", "csoe_d4_018", "csoe_d4_020", "csoe_d5_004", "csoe_d5_011"],
+      "subtopics": ["1A6.2", "3A4.2", "4B2.1", "4C3.1", "4C3.2", "5A2.1", "5B1.2", "5C2.2"],
+      "practice_ids": ["csoe_d1_020", "csoe_d3_011", "csoe_d4_010", "csoe_d4_018", "csoe_d4_020", "csoe_d5_004", "csoe_d5_011", "csoe_d5_024", "csoe_d5_038"],
       "slip_pattern": null,
       "legacy_ids": [],
       "aliases": []
@@ -159,7 +159,7 @@
       "order": 1,
       "title": "Find who must act",
       "rule": "Find whom the rule binds first: officers, management, the auditor, the audit committee, the PCAOB or the SEC.",
-      "why": "SOX spreads its duties across named actors, and most distractors give a real duty to the wrong one. The audit committee hires and oversees the auditor, a lawyer reports first to the chief legal officer, and issuers pay the PCAOB's support fee. Get the actor right and two options usually fall.",
+      "why": "SOX spreads its duties across named actors, and most distractors give a real duty to the wrong one. The audit committee hires and oversees the auditor, a lawyer reports first to the chief legal officer, alone or with the CEO, and issuers pay the PCAOB's support fee. Get the actor right and two options usually fall.",
       "triggers": [
         "who is responsible",
         "who must",
@@ -184,8 +184,8 @@
       },
       "nuance": "Some duties are shared or shift: the CEO and CFO both certify, and the whole board acts as the audit committee when there is none. Use the actor the rule names, not the job title in the question.",
       "domains": [1, 2, 3, 4],
-      "subtopics": ["1A6.1", "2A1.3", "2A3.1", "2B3.2", "3A1.2", "3A4.1", "4B2.2"],
-      "practice_ids": ["csoe_d1_012", "csoe_d2_003", "csoe_d2_009", "csoe_d2_020", "csoe_d3_002", "csoe_d3_010", "csoe_d4_011"],
+      "subtopics": ["1A6.1", "2A1.3", "2A3.1", "2B2.2", "2B3.2", "2B3.4", "3A1.2", "3A4.1", "4B2.2"],
+      "practice_ids": ["csoe_d2_003", "csoe_d2_009", "csoe_d2_018", "csoe_d2_020", "csoe_d2_039", "csoe_d3_002", "csoe_d3_010", "csoe_d3_022", "csoe_d4_011"],
       "slip_pattern": "role",
       "legacy_ids": [],
       "aliases": []
@@ -220,9 +220,9 @@
         "why": "Section 404(a) puts the assessment on management. The audit committee oversees reporting and the auditor; it does not take over management's job."
       },
       "nuance": "An emerging growth company or non-accelerated filer still files management's report; only the auditor's attestation drops away. A newly public company omits both in its first annual report.",
-      "domains": [2, 3, 5],
-      "subtopics": ["2B2.2", "3A2.3", "3B2.1", "3B2.2", "5B1.2", "5C2.1"],
-      "practice_ids": ["csoe_d2_018", "csoe_d3_015", "csoe_d5_010", "csoe_d5_018"],
+      "domains": [3, 5],
+      "subtopics": ["3A2.3", "3B2.1", "3B2.2", "5B1.2", "5C2.1"],
+      "practice_ids": ["csoe_d3_015", "csoe_d3_034", "csoe_d5_010", "csoe_d5_018"],
       "slip_pattern": null,
       "legacy_ids": [],
       "aliases": []
@@ -259,7 +259,7 @@
       "nuance": "The SEC recognizes FASB's accounting standards under Section 108, while the PCAOB sets auditing standards for issuer audits. Neither body writes the other's standards.",
       "domains": [2, 4],
       "subtopics": ["2A1.1", "2A1.2", "2A1.4", "2A4.1", "2A4.2", "4C2.1"],
-      "practice_ids": ["csoe_d2_001", "csoe_d2_004", "csoe_d2_011", "csoe_d2_012", "csoe_d4_017"],
+      "practice_ids": ["csoe_d2_001", "csoe_d2_004", "csoe_d2_011", "csoe_d2_012", "csoe_d2_028", "csoe_d2_031", "csoe_d4_017"],
       "slip_pattern": null,
       "legacy_ids": [],
       "aliases": []
@@ -296,7 +296,7 @@
       "nuance": "Filer status is decided at fiscal year-end, using the public float measured at the end of the second fiscal quarter. A pending SEC proposal to change the categories is not law until adopted.",
       "domains": [1, 3],
       "subtopics": ["1A2.2", "1A2.3", "1A3.2", "1A4.2", "3B2.2"],
-      "practice_ids": ["csoe_d1_004", "csoe_d1_005", "csoe_d1_006", "csoe_d1_008", "csoe_d1_010", "csoe_d1_011", "csoe_d3_006"],
+      "practice_ids": ["csoe_d1_004", "csoe_d1_005", "csoe_d1_006", "csoe_d1_008", "csoe_d1_010", "csoe_d1_011", "csoe_d1_026", "csoe_d1_034", "csoe_d3_006", "csoe_d3_036"],
       "slip_pattern": null,
       "legacy_ids": [],
       "aliases": []
@@ -332,8 +332,8 @@
       },
       "nuance": "Coverage can change by amendment: Dodd-Frank extended Section 806 to employees of subsidiaries whose financial information is consolidated into the issuer's statements.",
       "domains": [1, 4],
-      "subtopics": ["1A2.1", "1A2.4", "1A3.1", "1A5.3", "1A6.2", "4B2.2"],
-      "practice_ids": ["csoe_d1_003", "csoe_d1_007", "csoe_d1_009", "csoe_d1_018", "csoe_d4_012"],
+      "subtopics": ["1A2.1", "1A2.4", "1A3.1", "1A3.3", "1A5.3", "1A6.2", "4B2.2"],
+      "practice_ids": ["csoe_d1_003", "csoe_d1_007", "csoe_d1_009", "csoe_d1_012", "csoe_d1_018", "csoe_d1_024", "csoe_d1_039", "csoe_d1_040", "csoe_d4_012"],
       "slip_pattern": null,
       "legacy_ids": [],
       "aliases": []
@@ -370,7 +370,7 @@
       "nuance": "General controls alone rarely address a reporting risk; automated controls that do also need evaluating. A service organization's report supports management's assessment but never replaces it.",
       "domains": [5],
       "subtopics": ["5C1.1", "5C1.2", "5C1.3", "5C2.2", "5C2.3"],
-      "practice_ids": ["csoe_d5_014", "csoe_d5_015", "csoe_d5_016", "csoe_d5_017", "csoe_d5_019"],
+      "practice_ids": ["csoe_d5_014", "csoe_d5_015", "csoe_d5_016", "csoe_d5_017", "csoe_d5_019", "csoe_d5_034", "csoe_d5_037", "csoe_d5_039"],
       "slip_pattern": null,
       "legacy_ids": [],
       "aliases": []
@@ -405,9 +405,9 @@
         "why": "Section 906 is a criminal statute. Filing with the SEC does not make it civil; prosecutors bring the case."
       },
       "nuance": "One set of facts can lead to both an SEC civil action and a separate criminal case. Questions usually ask which forum or which statute, so read the consequence they name.",
-      "domains": [1, 4],
-      "subtopics": ["1A1.2", "4A1.2", "4A3.1", "4A3.2", "4A3.3"],
-      "practice_ids": ["csoe_d1_002", "csoe_d4_004", "csoe_d4_005", "csoe_d4_006"],
+      "domains": [3, 4],
+      "subtopics": ["3A3.1", "4A1.2", "4A3.1", "4A3.2", "4A3.3"],
+      "practice_ids": ["csoe_d3_026", "csoe_d4_004", "csoe_d4_005", "csoe_d4_006", "csoe_d4_025"],
       "slip_pattern": null,
       "legacy_ids": [],
       "aliases": []
@@ -418,7 +418,7 @@
       "order": 2,
       "title": "Penalty tiers and paybacks",
       "rule": "Match the exact tier: knowing or willful, attempt or completed, and which payback rule applies to whom.",
-      "why": "Section 906 has two tiers: up to $1 million and 10 years for knowing certification, $5 million and 20 years for willful. Section 304 recovers CEO and CFO pay after misconduct, while Rule 10D-1 recovers excess pay from executive officers with no fault needed. Each number attaches to one exact rule.",
+      "why": "Section 906 has two tiers: up to $1 million and 10 years for knowing certification, $5 million and 20 years for willful. Section 304 recovers CEO and CFO pay after misconduct, while Rule 10D-1 recovers excess incentive-based pay from current and former executive officers with no fault needed. Each number attaches to one exact rule.",
       "triggers": [
         "willfully",
         "GREATEST penalty",
@@ -444,7 +444,7 @@
       "nuance": "Statutory maximums are ceilings, not the sentence a court will impose. CSOE-style items ask for the maximum or the tier the text sets, so key on the text, not on likely outcomes.",
       "domains": [2, 3, 4],
       "subtopics": ["2A3.3", "3A2.2", "3A3.2", "3A3.4", "4B1.3", "4B3.1", "4B3.2", "4C3.3"],
-      "practice_ids": ["csoe_d2_010", "csoe_d3_005", "csoe_d3_008", "csoe_d3_009", "csoe_d4_013", "csoe_d4_014", "csoe_d4_019"],
+      "practice_ids": ["csoe_d2_010", "csoe_d3_005", "csoe_d3_008", "csoe_d3_009", "csoe_d4_013", "csoe_d4_014", "csoe_d4_019", "csoe_d4_028", "csoe_d4_038"],
       "slip_pattern": null,
       "legacy_ids": [],
       "aliases": []
@@ -454,8 +454,8 @@
       "family": "consequence",
       "order": 3,
       "title": "Disclose, or explain why not",
-      "rule": "Some rules let a company choose: disclose that it complies or explain why not; waivers must be disclosed promptly.",
-      "why": "Sections 406 and 407 do not force a code of ethics or a financial expert; they require disclosure of whether the company has one and, if not, why. A waiver of the code for a senior financial officer must be disclosed promptly. A missing disclosure, not the missing item, is the breach.",
+      "rule": "Some rules let a company choose: disclose that it complies or explain why not; code waivers must be disclosed immediately.",
+      "why": "Sections 406 and 407 do not force a code of ethics or a financial expert; they require disclosure of whether the company has one and, if not, why. A waiver of the code for a senior financial officer must be disclosed immediately, on Form 8-K or online within four business days. The missing disclosure is the breach.",
       "triggers": [
         "no financial expert",
         "waiver",
@@ -466,7 +466,7 @@
       ],
       "trap": {
         "move": "Choosing an option that forces the company to appoint an expert or adopt a code, or one that lets a waiver wait for the next annual report.",
-        "why_wrong": "The rule's demand is disclosure: say whether you have it and, if not, why. Waivers cannot wait for the annual report; they are disclosed promptly."
+        "why_wrong": "The rule's demand is disclosure: say whether you have it and, if not, why. Waivers cannot wait for the annual report; they are disclosed immediately."
       },
       "example": {
         "scenario": "A small listed company has no code of ethics for its senior financial officers. Its counsel says this breaks Section 406 and a code must be adopted before the next Form 10-K.",
@@ -481,7 +481,7 @@
       "nuance": "Not every duty is a choice. Management's internal control report must name its framework, and fraud involving key control staff must be disclosed to the auditor and audit committee under Section 302.",
       "domains": [3, 5],
       "subtopics": ["3A2.1", "3B3.1", "3B3.2", "5A1.3"],
-      "practice_ids": ["csoe_d3_004", "csoe_d3_018", "csoe_d3_019", "csoe_d5_006"],
+      "practice_ids": ["csoe_d3_004", "csoe_d3_018", "csoe_d3_019", "csoe_d3_040", "csoe_d5_006"],
       "slip_pattern": null,
       "legacy_ids": [],
       "aliases": []
@@ -491,7 +491,7 @@
       "family": "severity",
       "order": 1,
       "title": "Severity is about possibility",
-      "rule": "Rate a deficiency by the reasonable possibility of a material misstatement going undetected, not by errors actually found.",
+      "rule": "Rate a deficiency by the reasonable possibility a material misstatement is not prevented or detected on time, not errors found.",
       "why": "The SEC defines a material weakness as a deficiency, or a combination of them, with a reasonable possibility that a material misstatement will not be prevented or detected on a timely basis. A control that failed without causing an error can still be a material weakness. No loss so far is luck, not proof the control works.",
       "triggers": [
         "no misstatement resulted",
@@ -511,8 +511,8 @@
       },
       "check": {
         "scenario": "Testing finds a $2,000 error in an account where a material misstatement would be several million dollars. The controller says any error found makes the deficiency a material weakness.",
-        "right": "Disagree: severity turns on how large a misstatement could go undetected, not on the error found.",
-        "trap": "Agree: an actual error proves the control failed, so it must be a material weakness.",
+        "right": "Disagree: it turns on the reasonable possibility of a material misstatement not being prevented or detected on time.",
+        "trap": "Agree: an actual error proves the control failed, so the deficiency must be a material weakness.",
         "why": "An error found is evidence, but the definition turns on the reasonable possibility of a material misstatement. A small error does not by itself make a material weakness."
       },
       "nuance": "SEC filers use the SEC's terms, control deficiency, significant deficiency and material weakness, even when the framework is COSO. A significant deficiency is less severe than a material weakness yet merits oversight's attention.",
@@ -552,10 +552,10 @@
         "trap": "Internal control is effective except for the revenue weakness, which is disclosed.",
         "why": "With a material weakness open at year-end, management may not conclude effective, and except-for wording is not allowed. The weakness is disclosed."
       },
-      "nuance": "Quarterly reports carry no Section 404(a) assessment, but officers still disclose material changes in internal control each quarter under the Section 302 rules.",
+      "nuance": "Quarterly reports carry no Section 404(a) assessment, but each one still discloses any material change in internal control (Item 308(c)), and the CEO and CFO's Section 302 certification covers it.",
       "domains": [3, 5],
       "subtopics": ["3B2.1", "3B2.4", "5C2.3"],
-      "practice_ids": ["csoe_d3_014", "csoe_d3_016", "csoe_d5_020"],
+      "practice_ids": ["csoe_d3_014", "csoe_d3_016", "csoe_d3_037", "csoe_d5_020"],
       "slip_pattern": null,
       "legacy_ids": [],
       "aliases": []
@@ -591,7 +591,7 @@
       },
       "domains": [1, 4, 5],
       "subtopics": [],
-      "practice_ids": ["csoe_d1_014", "csoe_d4_001", "csoe_d4_002", "csoe_d4_015", "csoe_d5_007", "csoe_d5_009"],
+      "practice_ids": ["csoe_d1_014", "csoe_d1_023", "csoe_d4_001", "csoe_d4_002", "csoe_d4_015", "csoe_d4_040", "csoe_d5_007", "csoe_d5_009"],
       "slip_pattern": "runner-up",
       "legacy_ids": [],
       "aliases": []
@@ -662,9 +662,9 @@
         "why": "With about 2.5 minutes for each item and no return, one quick lookup protects time. Rereading a chapter spends minutes later questions need."
       },
       "nuance": "Open book helps most with exact numbers and dates. Who acts and which rule applies need to be known before the exam starts.",
-      "domains": [1, 2, 3, 5],
+      "domains": [1, 2, 3, 4, 5],
       "subtopics": [],
-      "practice_ids": ["csoe_d1_015", "csoe_d2_007", "csoe_d3_013", "csoe_d5_012"],
+      "practice_ids": ["csoe_d1_015", "csoe_d2_007", "csoe_d3_013", "csoe_d3_028", "csoe_d4_032", "csoe_d5_012"],
       "slip_pattern": null,
       "legacy_ids": [],
       "aliases": []

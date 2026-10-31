@@ -134,9 +134,9 @@ The same pieces as the CISA course, each in `data/csoe/`:
 |---|---|---|
 | Study notes | `notes/d{1..5}.json` (notes schema v2) | 112 sub-topics after batch 2; extended with each batch |
 | Glossary (key terms) | the notes' `key_terminologies`; the app builds its key-terms list from them | 110 terms, 19–27 per domain |
-| Principles ("how CSOE questions think") | `mindset/principles.json` (`docs/content/PRINCIPLES_SCHEMA.md`, CRISC-style deviations) | Written; standards audit FIX THEN SHIP, fixes being applied |
-| About the exam | `exam/csoe_exam_guide.json` (`docs/content/EXAM_GUIDE_SCHEMA.md`) | Written; standards audit FIX THEN SHIP, fixes being applied |
-| Final review week | `exam/final_review_week.json` | Written; standards audit FIX THEN SHIP, fixes being applied |
+| Principles ("how CSOE questions think") | `mindset/principles.json` (`docs/content/PRINCIPLES_SCHEMA.md`, CRISC-style deviations) | Written, audited and fixed (31 Oct 2026) |
+| About the exam | `exam/csoe_exam_guide.json` (`docs/content/EXAM_GUIDE_SCHEMA.md`) | Written, audited and fixed (31 Oct 2026) |
+| Final review week | `exam/final_review_week.json` | Written, audited and fixed (31 Oct 2026) |
 | Practice | `originals/d{1..5}.json` | 200 reviewed; growing to 400 |
 | Mock exam | the app's mock engine reads the bank; the held-out forms go in `exam/mock_forms.json` (two 35-item forms, never served in practice) | Forms drawn once the bank passes about 300; the forward-only mode is an app task (section 4). Release gate: the final review week asks for a 35-question, 90-minute mock, so it must exist before the course ships |
 | Lessons | `lessons.json` (`docs/content/LESSONS_SCHEMA.md`) | After the bank |

@@ -17,9 +17,9 @@
       "id": "day-7",
       "days_before": 7,
       "title": "Full timed rehearsal",
-      "goal": "Sit one full timed mock under the real exam's rules, to test your pace, your lookups and your focus.",
+      "goal": "Sit one full timed mock and hold yourself to the real exam's rules, to test your pace, your lookups and your focus.",
       "tasks": [
-        {"text": "Take a full timed KaiSip mock in one sitting: 35 questions in 90 minutes, answered in order, forward only, with no going back. It is practice.", "action": {"kind": "mock_full"}},
+        {"text": "Take a full timed KaiSip mock in one sitting: 35 questions in 90 minutes. Answer in order and never go back, even if the screen allows it.", "action": {"kind": "mock_full"}},
         {"text": "Keep the open-book habit: answer from memory first, and look up only one exact number or date when you must."},
         {"text": "A KaiSip mock score is not a SOXCPA score. Your misses go to your mistake journal; rest tonight and review them tomorrow."}
       ],
@@ -33,9 +33,9 @@
       "tasks": [
         {"text": "In your mistake journal, review yesterday's mock misses, starting with Domains 4 and 5, the heaviest in KaiSip's estimate.", "action": {"kind": "mistakes"}},
         {"text": "Tag why you missed each one: “Acted as the wrong person”, “Missed FIRST or BEST”, “Tool before policy”, “Fixed the symptom, not the cause”, “Misread” or “Didn’t know it”."},
-        {"text": "Read the principles behind the slip you tagged most. On CSOE items, the wrong person means the wrong actor under the rule.", "action": {"kind": "principles", "target": "top_slip"}},
-        {"text": "From memory, list three Domain 4 and three Domain 5 points. Then open the lists and check.", "sheet": ["4", "5"]},
-        {"text": "Read the principles on consequences: civil or criminal, penalty tiers, and disclose or explain. They pair with Domain 4.", "action": {"kind": "principles", "target": "consequence"}}
+        {"text": "On CSOE items, read the tags this way: wrong person means wrong actor; tool before policy means good practice over the rule; symptom means judging by the error found."},
+        {"text": "Read the principles behind the slip you tagged most.", "action": {"kind": "principles", "target": "top_slip"}},
+        {"text": "From memory, list three Domain 4 and three Domain 5 points. Then open the lists and check.", "sheet": ["4", "5"]}
       ],
       "remember": "A miss you understand is worth more than a right answer you guessed."
     },
@@ -48,7 +48,8 @@
         {"text": "Before opening your focus domain's list, write down what you remember. Then check for gaps.", "sheet": ["focus"]},
         {"text": "Answer a short set in that domain from memory, without opening your materials, and read every explanation.", "action": {"kind": "practice_domain", "target": "focus"}},
         {"text": "For a rule you missed more than once, read its note, then close it and say the section, who acts, what, by when and the consequence.", "action": {"kind": "note"}},
-        {"text": "Read the principles on who must act: management owns, the auditor attests, and the SEC oversees the PCAOB.", "action": {"kind": "principles", "target": "actor"}}
+        {"text": "Read the principles on who must act: management owns, the auditor attests, and the SEC oversees the PCAOB.", "action": {"kind": "principles", "target": "actor"}},
+        {"text": "Read the principles on consequences: civil or criminal, penalty tiers, and disclose or explain.", "action": {"kind": "principles", "target": "consequence"}}
       ],
       "remember": "On CSOE items, the actor and the section usually decide the answer before any detail does."
     },
@@ -135,8 +136,8 @@
         "name": "Scope and reach of the Act",
         "points": [
           {"text": "An issuer has securities registered under Exchange Act Section 12, must report under Section 15(d), or has a Securities Act registration statement filed and not yet effective or withdrawn.", "note": "1A2.1"},
-          {"text": "Rule 12b-2 sorts filers by public float, reporting history and a revenue test: accelerated from $75 million of float, large accelerated from $700 million. Issuers that pass the revenue test stay non-accelerated.", "note": "1A2.2"},
-          {"text": "Management's Section 404(a) report applies to every reporting issuer after its first annual report. The auditor's 404(b) attestation skips non-accelerated filers and emerging growth companies.", "note": "1A2.3"},
+          {"text": "Rule 12b-2 sorts filers by public float, reporting history and a revenue test: accelerated from $75 million of float, large accelerated from $700 million. Revenues under $100 million with float under $700 million keep an issuer non-accelerated.", "note": "1A2.2"},
+          {"text": "Management's Section 404(a) report applies to every reporting issuer (registered funds aside) after its first annual report. The auditor's 404(b) attestation skips non-accelerated filers and emerging growth companies.", "note": "1A2.3"},
           {"text": "Registered investment companies are outside Sections 401, 402 and 404 (Section 405). Crimes written for anyone, such as Section 1519, reach private companies' staff too.", "note": "1A2.4"},
           {"text": "Annual report deadlines: 60 days for large accelerated, 75 for accelerated and 90 for non-accelerated filers. Quarterly reports: 40 or 45 days.", "note": "1A4.2"},
           {"text": "Foreign private issuers file Form 20-F within 4 months of year-end and furnish Form 6-K in between. The officers certify the 20-F, not a 6-K.", "note": "1A3.2"},
@@ -150,7 +151,7 @@
           {"text": "The PCAOB is a nonprofit corporation, not a federal agency: five full-time members, two and only two of them current or former CPAs, appointed by the SEC.", "note": "2A1.2"},
           {"text": "Board rules and standards take effect only after SEC approval, and the SEC can review Board sanctions. Issuers, and since 2010 brokers and dealers, fund the Board through accounting support fees.", "note": "2A1.4"},
           {"text": "No registration, no issuer audit (Section 102). A firm with more than 100 issuer clients is inspected every year; others at least every three years.", "note": "2A3.2"},
-          {"text": "Nine non-audit services are banned for the issuer's auditor, and preapproval cannot cure them. Permitted services need the audit committee's advance approval, delegable only to its independent members.", "note": "2B1.1"},
+          {"text": "Nine non-audit services are banned for the issuer's auditor, and preapproval cannot cure them. Permitted services need the audit committee's advance approval, delegable only to its independent members, with a narrow de minimis exception.", "note": "2B1.1"},
           {"text": "Lead and reviewing partners rotate after five consecutive years. Title II rotates partners, not firms; Section 207 only ordered a study of firm rotation.", "note": "2B2.1"},
           {"text": "The auditor reports critical accounting policies, alternative treatments discussed with management and its own preference to the audit committee, not to the CFO (Section 204).", "note": "2B2.2"},
           {"text": "Cooling off: a firm cannot audit an issuer whose CEO, CFO, controller or chief accounting officer worked on that issuer's audit at the firm in the year before the audit began.", "note": "2B3.1"}
@@ -165,8 +166,8 @@
           {"text": "Section 906: criminal certification of compliance and fair presentation. Knowing: up to $1 million and 10 years. Willful: up to $5 million and 20 years.", "note": "3A2.2"},
           {"text": "Section 404(a): management's annual report on internal control, as of fiscal year-end, naming its framework. A material weakness open at year-end means not effective, with no except-for wording.", "note": "3B2.4"},
           {"text": "A material weakness is a reasonable possibility that a material misstatement is not prevented or detected on time, whether or not an error occurred.", "note": "3B2.3"},
-          {"text": "Section 304: after a restatement caused by misconduct, the CEO and CFO repay bonuses and stock-sale profits from the 12 months after the misstated filing.", "note": "3A3.2"},
-          {"text": "Sections 406 and 407 are disclose-or-explain, and code waivers for senior financial officers are disclosed promptly. Section 403: insider trades are reported by the end of the second business day.", "note": "3B3.1"}
+          {"text": "Section 304: after a restatement caused by misconduct, the CEO and CFO repay bonuses, other incentive- or equity-based pay and stock-sale profits from the 12 months after the misstated filing.", "note": "3A3.2"},
+          {"text": "Sections 406 and 407 are disclose-or-explain, and code waivers for senior financial officers are disclosed immediately (Form 8-K or online, within four business days). Section 403: insider trades are reported by the end of the second business day.", "note": "3B3.1"}
         ]
       },
       {
@@ -224,7 +225,7 @@
       {"word": "MOST", "meaning": "A ranking on one named quality, such as MOST accurate or MOST directly. On rule questions, MOST directly usually points to the specific section, not a general one.", "cue": "Ask: most what, and under which section?"},
       {"word": "PRIMARY", "meaning": "The main responsibility or purpose the rule assigns, not a side role. Management has the primary duty for internal control; others support or oversee it.", "cue": "Ask: whom does the rule hold responsible?"},
       {"word": "GREATEST", "meaning": "The largest amount the text allows, such as a statutory maximum penalty or the longest interval permitted. Find the exact tier before picking the biggest number.", "cue": "Ask: greatest under which tier or section?"},
-      {"word": "MOST LIKELY", "meaning": "Probability, not severity. Pick the outcome that best fits all the facts given, even if another would be worse.", "cue": "Ask: what usually follows from these facts?"},
+      {"word": "MOST LIKELY", "meaning": "Probability, not severity. Pick the outcome that best fits all the facts given, even if another would be worse.", "cue": "Ask: which outcome do the rule and these facts point to?"},
       {"word": "LEAST", "meaning": "Flip the logic. Three options fit the rule; find the one that fits least or not at all.", "cue": "Ask: which one does the rule not support?"}
     ],
     "answering_routine": [
