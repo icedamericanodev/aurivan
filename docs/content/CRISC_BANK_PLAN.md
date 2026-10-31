@@ -19,8 +19,8 @@ it can be sold:
 | Part | File(s) | Owner agents | Status |
 |---|---|---|---|
 | Blueprint | `docs/content/CRISC_BLUEPRINT.md` | cert-blueprint-researcher | Done, 30 Oct 2026 |
-| Study notes | `data/crisc/notes/d{1..4}.json` | crisc-d{N}-domain-expert | First full draft in the kickoff PR |
-| Questions | `data/crisc/originals/d{1..4}.json` | crisc-d{N}-domain-expert | Pilot, 20 per domain |
+| Study notes | `data/crisc/notes/d{1..4}.json` | crisc-d{N}-domain-expert | All 43 outline sub-areas, 115 subtopics; audited and fixed in the kickoff PR |
+| Questions | `data/crisc/originals/d{1..4}.json` | crisc-d{N}-domain-expert | Pilot, 20 per domain, fully reviewed |
 | Citation library | `data/crisc/originals/_framework_library.md` | domain experts | Started with the pilot |
 | Principles (mindset cards) | `data/crisc/mindset/principles.json` (schema `docs/content/PRINCIPLES_SCHEMA.md`) | isaca-mindset-coach | Not started |
 | Exam guide and final-review week | `data/crisc/exam/` (schema `docs/content/EXAM_GUIDE_SCHEMA.md`) | isaca-mindset-coach | Not started |
@@ -138,6 +138,27 @@ KaiSip or a generic course name and puts the exam after "for", for example
 never a pass promise, never implied ISACA endorsement, the not-affiliated line
 on the paywall.
 
-## 8. Pilot results
+## 8. Pilot results (30 Oct 2026)
 
-Filled in after the pilot reviews.
+| Stage | Result |
+|---|---|
+| Authoring | 80 items (20 per domain) and 115 notes subtopics covering all 43 outline sub-areas; each domain 3 foundational / 11 application / 6 analysis, 3 AI items, keys 5/5/5/5 |
+| Blind test, first round | 80/80 picks matched the keys (20/20 per domain) |
+| Standards audit | 3 HARD ERRORS, all fixed: crisc_d1_012 (a second defensible answer), crisc_d2_006 (a second defensible answer when patient safety is at stake), notes 2B5 and crisc_d2_018 (residual risk described as the state after planned, not implemented, controls). About 120 PRECISION fixes, mostly the cue patterns in section 6 |
+| Blind re-test of all 80 after fixes | 80/80, no letter-mapping errors after re-lettering |
+| Cross-domain gate | 0 HARD ERRORS; 13 PRECISION (4 near-duplicates re-angled, 8 notes contradictions fixed, 1 item stem), 15 observations |
+| Citations | 130+ library bullets; every `framework_ref` part matches one; all Verified or Verified (title); no ISO, COSO, IIA or EU source keyed |
+
+**Next round (round 2):** weight it toward D3, which is 6 items short of its
+32% share, and keep healthcare to about 1 in 8 stems. Then principles, the exam
+guide and lessons once round 2 is merged.
+
+**Open items:**
+- The `TO VERIFY` comment on the CRISC entry in `mobile/src/content/certifications.ts`
+  can now be removed (weights and titles are verified in the blueprint). That file
+  is bundled into `assets/kaisip-cloud.js`, so change it together with
+  `npm run web-plant` in a session with the mobile packages installed.
+- `scripts/lint_exam_style_v2.py` warns "stem names no actor" on CRISC stems
+  that name the risk practitioner or analyst; teach it the CRISC actors.
+- `notes-application-tester` and `isaca-concept-reviewer` passes on the notes
+  after round 2.
