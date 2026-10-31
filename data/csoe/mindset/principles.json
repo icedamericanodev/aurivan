@@ -1,0 +1,683 @@
+{
+  "schema_version": 2,
+  "title": "KaiSip CSOE exam mindset principles",
+  "updated": "2026-10-31",
+  "description": "How CSOE questions think: the text of the Sarbanes-Oxley Act and the SEC and PCAOB rules decides the answer, read carefully and quickly, with no role lens. Grouped into six families. Same shape as the CISA file data/mindset/principles.json (schema v2, docs/content/PRINCIPLES_SCHEMA.md), with these CSOE deviations: domains 1 to 5 are the five CSOE domains in docs/content/CSOE_BLUEPRINT.md, not the CISA domains; subtopics are CSOE note codes from data/csoe/notes (for example 3B2.3); practice_ids refer to data/csoe/originals (ids such as csoe_d3_017) and, for now, list only reviewed pilot items 001 to 020, one principle per item, with no principle_id tags on questions yet; legacy_ids are empty because the old web PRINCIPLES_LIB was CISA only; families are rule, actor, scope, consequence, severity and reading instead of the CISA families; in the slip map, the role slip means answering as the wrong actor, the tech-first slip means choosing good practice over the rule, the symptom slip means judging a deficiency by the error found, and knowledge stays null. Lint: python3 scripts/lint_principles.py data/csoe/mindset/principles.json --notes data/csoe/notes --bank data/csoe/originals. KaiSip is independent and not affiliated with or endorsed by the Sarbanes Oxley Compliance Professionals Association (SOXCPA), which runs the CSOE exam.",
+  "families": [
+    {
+      "id": "rule",
+      "order": 1,
+      "title": "The rule",
+      "question": "What does the section or rule actually require?"
+    },
+    {
+      "id": "actor",
+      "order": 2,
+      "title": "The actor",
+      "question": "Who must act, sign, decide or oversee under this rule?"
+    },
+    {
+      "id": "scope",
+      "order": 3,
+      "title": "Scope",
+      "question": "Is this company, person, report or system covered, and as of when?"
+    },
+    {
+      "id": "consequence",
+      "order": 4,
+      "title": "Consequences",
+      "question": "What follows from the rule, and in which forum?"
+    },
+    {
+      "id": "severity",
+      "order": 5,
+      "title": "Control severity",
+      "question": "How serious is this control gap, and as of which date?"
+    },
+    {
+      "id": "reading",
+      "order": 6,
+      "title": "Reading the question",
+      "question": "What is the question really asking, and how fast can I answer it?"
+    }
+  ],
+  "principles": [
+    {
+      "id": "the-rule-decides",
+      "family": "rule",
+      "order": 1,
+      "title": "The rule decides, not good practice",
+      "rule": "Choose what the section or rule actually requires, not what a well-run company might also choose to do.",
+      "why": "CSOE items test the Sarbanes-Oxley Act and the SEC and PCAOB rules, so the key is the one option the text requires. Several options can sound sensible, but only one matches the rule's actor, timing and scope. Good practice that the rule does not demand is a distractor, however wise it looks.",
+      "triggers": [
+        "under Section",
+        "what does the rule require",
+        "which statement BEST reflects",
+        "the audit committee's policy lets",
+        "to save time",
+        "with full disclosure"
+      ],
+      "trap": {
+        "move": "Picking the option that sounds most prudent or thorough, such as an extra review, a report to the committee or a new policy, because it is good practice.",
+        "why_wrong": "Prudence is not the test. If the rule names a different actor, a specific step or an outright ban, the prudent-sounding option still breaks the rule."
+      },
+      "example": {
+        "scenario": "A listed insurer's audit committee wants its auditor to design the company's new financial reporting system, with a full committee vote and quarterly updates on the work.",
+        "answer": "The vote does not help. Designing financial information systems is a prohibited non-audit service under Section 201; committee preapproval covers only services the Act permits."
+      },
+      "check": {
+        "scenario": "A listed manufacturer's board wants to lend its CEO money for a home purchase at a market interest rate, approved by every independent director and disclosed in the proxy statement.",
+        "right": "Refuse the loan: Section 402 bars personal loans to executive officers, whatever the rate or approval.",
+        "trap": "Approve the loan: market terms, independent approval and full disclosure make it fair to shareholders.",
+        "why": "Section 402 is a ban with narrow consumer-credit exceptions. Fair terms, board approval and disclosure are good practice, but the rule decides, and it forbids this loan."
+      },
+      "nuance": "Where the rule itself leaves a choice, as with picking a suitable, recognized control framework, the key is the option the rule allows, not one named framework or vendor.",
+      "domains": [2, 3, 4, 5],
+      "subtopics": ["2B1.1", "2B1.2", "2B3.1", "3A1.3", "3B1.2", "4B1.2", "5A1.3"],
+      "practice_ids": ["csoe_d2_013", "csoe_d2_016", "csoe_d2_019", "csoe_d3_003", "csoe_d4_007", "csoe_d5_003"],
+      "slip_pattern": "tech-first",
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "find-the-section",
+      "family": "rule",
+      "order": 2,
+      "title": "Find the section, then its look-alike",
+      "rule": "Name the section or rule first; look-alikes such as 302, 404 and 906 differ on one exact point.",
+      "why": "Many CSOE distractors are real provisions that answer a nearby question. Sections 1519 and 1520, Section 304 and Rule 10D-1, and Section 802's five years against Rule 2-06's seven all look alike. Naming the section that fits the facts removes the neighbor that does not.",
+      "triggers": [
+        "which provision MOST directly",
+        "which section requires",
+        "under which rule",
+        "destroys records",
+        "keep the workpapers",
+        "repay bonuses"
+      ],
+      "trap": {
+        "move": "Choosing a famous section, such as 404 or 906, because the topic sounds like it, without checking whom it binds and what it covers.",
+        "why_wrong": "Look-alike sections differ on the actor, the record, the report or the penalty. The famous one is often the distractor for a narrower rule that fits the facts."
+      },
+      "example": {
+        "scenario": "A controller at a listed company asks which provision requires the CEO and CFO to state, in each periodic report, their conclusions about the disclosure controls they evaluated.",
+        "answer": "Section 302, the civil certification. Section 906 is the criminal statement that the report complies and fairly presents; Section 404(a) is management's annual report on internal control."
+      },
+      "check": {
+        "scenario": "A finance director at a large accelerated filer asks which provision requires the company's auditor, rather than management, to report on internal control over financial reporting.",
+        "right": "Section 404(b), the auditor's attestation on internal control.",
+        "trap": "Section 404(a), management's annual assessment of internal control.",
+        "why": "Section 404(a) puts the annual assessment on management; Section 404(b) has the registered public accounting firm attest to it. Same section, different actor."
+      },
+      "nuance": "When a question names its section, it is asking about that section's text. When it does not, the facts decide: who acted, what record, which report and what penalty.",
+      "domains": [1, 2, 3, 4],
+      "subtopics": ["1A2.4", "1A4.1", "2A3.1", "3A2.3", "3A3.1", "4B1.1", "4B1.2"],
+      "practice_ids": ["csoe_d1_013", "csoe_d1_019", "csoe_d2_008", "csoe_d3_007", "csoe_d4_008"],
+      "slip_pattern": null,
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "law-as-amended",
+      "family": "rule",
+      "order": 3,
+      "title": "The law as amended, the current edition",
+      "rule": "Answer from the current text: the Act as amended by Dodd-Frank and later laws, COSO 2013 and ERM 2017.",
+      "why": "Sections 404, 806 and 308 read differently today than in 2002, and the 1992 COSO framework was superseded after 15 December 2014. An option that was right once can be wrong now. KaiSip keys on the rule in force when it was checked and treats older versions as history.",
+      "triggers": [
+        "as amended",
+        "under the current rule",
+        "the original 2002 text",
+        "the 1992 framework",
+        "Dodd-Frank changed",
+        "90 days to file"
+      ],
+      "trap": {
+        "move": "Choosing the original 2002 deadline, coverage or framework edition because it is the version most often quoted.",
+        "why_wrong": "Amendments changed deadlines, coverage and exemptions. The Section 806 filing window grew from 90 to 180 days, and Section 404(c) now spares non-accelerated filers the auditor's attestation."
+      },
+      "example": {
+        "scenario": "A training slide for a listed company's controllers calls the 1992 COSO internal control framework current and limits its reporting objective to external financial reporting.",
+        "answer": "Update it. The 2013 edition replaced 1992 and widened the reporting objective to internal and nonfinancial reporting; the five components remain, now with 17 principles."
+      },
+      "check": {
+        "scenario": "A listed company's counsel tells a fired analyst that a Section 806 retaliation case brought in federal court is always decided by a judge alone, as under the 2002 text.",
+        "right": "Correct them: since Dodd-Frank, either party may ask for a jury in a Section 806 court action.",
+        "trap": "Agree: Section 806 sends retaliation cases to a judge alone, so no jury is available.",
+        "why": "Dodd-Frank added a jury right for Section 806 actions in federal court. Answer from the law as amended, not from the 2002 text."
+      },
+      "nuance": "A pending SEC proposal is not law. Until a change is adopted and in effect, key on the rule in force, and treat the proposal only as something to watch.",
+      "domains": [1, 3, 4, 5],
+      "subtopics": ["1A6.2", "3A4.2", "4B2.1", "4C3.1", "4C3.2", "5A2.1", "5B1.2"],
+      "practice_ids": ["csoe_d1_020", "csoe_d3_011", "csoe_d4_010", "csoe_d4_018", "csoe_d4_020", "csoe_d5_004", "csoe_d5_011"],
+      "slip_pattern": null,
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "find-the-actor",
+      "family": "actor",
+      "order": 1,
+      "title": "Find who must act",
+      "rule": "Find whom the rule binds first: officers, management, the auditor, the audit committee, the PCAOB or the SEC.",
+      "why": "SOX spreads its duties across named actors, and most distractors give a real duty to the wrong one. The audit committee hires and oversees the auditor, a lawyer reports first to the chief legal officer, and issuers pay the PCAOB's support fee. Get the actor right and two options usually fall.",
+      "triggers": [
+        "who is responsible",
+        "who must",
+        "who resolves",
+        "who pays",
+        "where must the lawyer report",
+        "which body"
+      ],
+      "trap": {
+        "move": "Giving the duty to whoever seems most senior or most expert, such as the CFO, the full board or the audit firm.",
+        "why_wrong": "The Act names its actor on purpose. A CFO cannot approve the auditor's services, and an audit firm does not pay the issuer's support fee, however convenient that would be."
+      },
+      "example": {
+        "scenario": "At a listed company, the CEO wants to choose next year's audit firm and agree its fee directly, then inform the audit committee afterward.",
+        "answer": "Not allowed. Section 301 makes the audit committee directly responsible for appointing, compensating and overseeing the auditor; management may give input but does not decide."
+      },
+      "check": {
+        "scenario": "An in-house lawyer at a listed company reports credible evidence that a division misstated revenue to the chief legal officer, who does not respond appropriately. What must the lawyer do next?",
+        "right": "Report up the ladder to the audit committee, another independent committee or the full board.",
+        "trap": "Report out to the SEC at once, since the chief legal officer failed to respond.",
+        "why": "Section 307 and the SEC's attorney rules send the report up the ladder inside the company. Going to the SEC is not the required next step."
+      },
+      "nuance": "Some duties are shared or shift: the CEO and CFO both certify, and the whole board acts as the audit committee when there is none. Use the actor the rule names, not the job title in the question.",
+      "domains": [1, 2, 3, 4],
+      "subtopics": ["1A6.1", "2A1.3", "2A3.1", "2B3.2", "3A1.2", "3A4.1", "4B2.2"],
+      "practice_ids": ["csoe_d1_012", "csoe_d2_003", "csoe_d2_009", "csoe_d2_020", "csoe_d3_002", "csoe_d3_010", "csoe_d4_011"],
+      "slip_pattern": "role",
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "management-owns-auditor-attests",
+      "family": "actor",
+      "order": 2,
+      "title": "Management owns; the auditor attests",
+      "rule": "Management establishes, maintains and assesses internal control over financial reporting; the auditor attests within its audit; the audit committee oversees.",
+      "why": "Section 404(a) and Item 308(a) put the internal control report on management, and Section 404(b) has the auditor attest to it as part of the audit. Outsourcing, consultants and frameworks never move management's responsibility. The audit committee watches both but does neither job.",
+      "triggers": [
+        "who assesses",
+        "service organization",
+        "the auditor's part",
+        "management's report",
+        "outsourced process",
+        "the auditor will test"
+      ],
+      "trap": {
+        "move": "Handing the assessment to the auditor, a consultant or a service organization because they did the testing or run the process.",
+        "why_wrong": "Others can supply evidence, but the assessment and the conclusion stay with management. The auditor gives an independent attestation; it does not assess on management's behalf."
+      },
+      "example": {
+        "scenario": "An accelerated filer's CFO plans to skip management's own control testing this year, because the external auditor will test the same controls for its attestation.",
+        "answer": "Management still needs its own evaluation and evidence for the Section 404(a) report. The auditor's testing supports the attestation; it cannot be management's assessment."
+      },
+      "check": {
+        "scenario": "A board member suggests that the audit committee should perform the annual internal control assessment itself, since it oversees financial reporting.",
+        "right": "No: management performs the assessment; the audit committee oversees it and the auditor.",
+        "trap": "Yes: as overseer of financial reporting, the audit committee should perform it.",
+        "why": "Section 404(a) puts the assessment on management. The audit committee oversees reporting and the auditor; it does not take over management's job."
+      },
+      "nuance": "An emerging growth company or non-accelerated filer still files management's report; only the auditor's attestation drops away. A newly public company omits both in its first annual report.",
+      "domains": [2, 3, 5],
+      "subtopics": ["2B2.2", "3A2.3", "3B2.1", "3B2.2", "5B1.2", "5C2.1"],
+      "practice_ids": ["csoe_d2_018", "csoe_d3_015", "csoe_d5_010", "csoe_d5_018"],
+      "slip_pattern": null,
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "oversight-chain",
+      "family": "actor",
+      "order": 3,
+      "title": "The oversight chain",
+      "rule": "The SEC oversees issuers and the PCAOB; the PCAOB oversees registered audit firms; neither oversight runs the other way.",
+      "why": "The PCAOB is a nonprofit corporation, not a government agency, and its rules and standards bind only after SEC approval. The SEC can review its sanctions, and the PCAOB has no oversight of issuers themselves. Since Dodd-Frank it also oversees auditors of brokers and dealers.",
+      "triggers": [
+        "the Board adopts a standard",
+        "PCAOB oversight",
+        "review of a sanction",
+        "who approves",
+        "accounting principles",
+        "brokers and dealers"
+      ],
+      "trap": {
+        "move": "Treating the PCAOB as a government regulator of public companies, or assuming a Board rule binds as soon as the Board adopts it.",
+        "why_wrong": "The PCAOB regulates audit firms under SEC oversight. Its rules take effect only once the SEC approves them, and the SEC, not the PCAOB, oversees issuers."
+      },
+      "example": {
+        "scenario": "An issuer's audit committee member reads a PCAOB inspection report criticizing the company's audit firm and asks whether the PCAOB will now discipline the company.",
+        "answer": "No. The PCAOB inspects and disciplines registered audit firms and their associated persons, not issuers. Action against the company itself would come from the SEC."
+      },
+      "check": {
+        "scenario": "A trade group writing a briefing for its members asks who appoints the members of the PCAOB's board.",
+        "right": "The SEC, after consulting the Federal Reserve chair and the Treasury Secretary.",
+        "trap": "The registered audit firms, by a vote among the firms the Board oversees.",
+        "why": "Section 101(e) gives the SEC the appointments, after consultation. Audit firms are overseen by the Board; they do not choose it."
+      },
+      "nuance": "The SEC recognizes FASB's accounting standards under Section 108, while the PCAOB sets auditing standards for issuer audits. Neither body writes the other's standards.",
+      "domains": [2, 4],
+      "subtopics": ["2A1.1", "2A1.2", "2A1.4", "2A4.1", "2A4.2", "4C2.1"],
+      "practice_ids": ["csoe_d2_001", "csoe_d2_004", "csoe_d2_011", "csoe_d2_012", "csoe_d4_017"],
+      "slip_pattern": null,
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "check-status-and-dates",
+      "family": "scope",
+      "order": 1,
+      "title": "Check filer status and dates",
+      "rule": "Before applying a duty, fix the company's status and the date: filer category, emerging growth, foreign private issuer, fiscal year-end.",
+      "why": "Who files what, and by when, turns on Rule 12b-2's categories, emerging growth status and foreign private issuer status. An accelerated filer can still skip the auditor's attestation while it is an emerging growth company. Deadlines follow the category: 60, 75 or 90 days for the annual report.",
+      "triggers": [
+        "non-accelerated filer",
+        "emerging growth company",
+        "public float",
+        "Form 20-F",
+        "fiscal year-end",
+        "annual revenues"
+      ],
+      "trap": {
+        "move": "Applying the large-company rule to every issuer, or reading filer status from company size alone.",
+        "why_wrong": "Rule 12b-2 uses public float, reporting history and a revenue test, and emerging growth status removes the attestation even for an accelerated filer."
+      },
+      "example": {
+        "scenario": "A controller at a large accelerated filer with a June 30 year-end plans to file the Form 10-K in late September, the deadline a smaller filer would have.",
+        "answer": "Too late. A large accelerated filer has 60 days after year-end, so the report is due near the end of August; 90 days applies only to non-accelerated filers."
+      },
+      "check": {
+        "scenario": "A company in its second year of SEC reporting, not an emerging growth company, has a $400 million public float and $150 million in annual revenues. Must its auditor attest to internal control?",
+        "right": "Yes: float and revenues make it an accelerated filer, so Section 404(b) applies.",
+        "trap": "No: only large accelerated filers need the auditor's attestation under 404(b).",
+        "why": "Accelerated filers that are not emerging growth companies need the attestation. The revenue test helps only issuers with annual revenues under $100 million."
+      },
+      "nuance": "Filer status is decided at fiscal year-end, using the public float measured at the end of the second fiscal quarter. A pending SEC proposal to change the categories is not law until adopted.",
+      "domains": [1, 3],
+      "subtopics": ["1A2.2", "1A2.3", "1A3.2", "1A4.2", "3B2.2"],
+      "practice_ids": ["csoe_d1_004", "csoe_d1_005", "csoe_d1_006", "csoe_d1_008", "csoe_d1_010", "csoe_d1_011", "csoe_d3_006"],
+      "slip_pattern": null,
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "who-is-covered",
+      "family": "scope",
+      "order": 2,
+      "title": "Check who is covered",
+      "rule": "Check that the company, person or report is within the provision: issuer status, exemptions and 'whoever' crimes differ.",
+      "why": "Most SOX duties fall on issuers, but some crimes reach anyone and some provisions exempt whole groups. Registered funds escape Section 404, a company with only a Level 1 ADR program files no periodic report to certify, and Section 1519 reaches a private company's staff. Coverage decides before content does.",
+      "triggers": [
+        "privately owned",
+        "foreign private issuer",
+        "registered investment company",
+        "Level 1 ADR",
+        "consolidated subsidiary",
+        "is the company an issuer"
+      ],
+      "trap": {
+        "move": "Assuming every SOX provision reaches every company and employee, or that private companies sit wholly outside the Act.",
+        "why_wrong": "Both are wrong. Exemptions remove some duties from some issuers, while the criminal provisions written for anyone reach private companies too."
+      },
+      "example": {
+        "scenario": "A Brazilian company has a Level 2 ADR listing on a U.S. exchange and files Form 20-F. Its CFO assumes SOX officer certifications apply only to U.S. companies.",
+        "answer": "They apply. A Level 2 listing makes it an Exchange Act reporting company, so its CEO and CFO certify the Form 20-F under Sections 302 and 906."
+      },
+      "check": {
+        "scenario": "A director of a listed company asks whether Section 306(a)'s ban on trading during a pension plan blackout also binds the company's rank-and-file employees.",
+        "right": "No: it binds directors and executive officers, not every employee.",
+        "trap": "Yes: it binds every employee whose plan account is frozen.",
+        "why": "Section 306(a) is aimed at insiders who could trade while plan participants cannot. Check whom the provision names before applying it."
+      },
+      "nuance": "Coverage can change by amendment: Dodd-Frank extended Section 806 to employees of subsidiaries whose financial information is consolidated into the issuer's statements.",
+      "domains": [1, 4],
+      "subtopics": ["1A2.1", "1A2.4", "1A3.1", "1A5.3", "1A6.2", "4B2.2"],
+      "practice_ids": ["csoe_d1_003", "csoe_d1_007", "csoe_d1_009", "csoe_d1_018", "csoe_d4_012"],
+      "slip_pattern": null,
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "scope-follows-the-risk",
+      "family": "scope",
+      "order": 3,
+      "title": "Scope follows the reporting risk",
+      "rule": "A system, spreadsheet or service organization is in Section 404 scope when a key reporting control depends on it.",
+      "why": "The SEC's guidance is top-down and risk-based: start from the financial reporting risks, then the controls that address them, then what those controls rely on. A tool is not out of scope because IT never called it a system of record. Only the general controls that key controls depend on need evaluating.",
+      "triggers": [
+        "spreadsheet",
+        "packaged software",
+        "IT general controls",
+        "service organization",
+        "SOC 1",
+        "posted to the general ledger"
+      ],
+      "trap": {
+        "move": "Scoping by label or by inventory: testing every IT control, or leaving out a spreadsheet because it is not an official system.",
+        "why_wrong": "Scope comes from the risk. Unrelated IT controls add work without assurance, while a spreadsheet behind a key control can hide a material misstatement."
+      },
+      "example": {
+        "scenario": "A company moves its fixed-asset register to a cloud application run by a service organization, and depreciation flows from it into the general ledger.",
+        "answer": "It is in scope. Management needs evidence that the provider's relevant controls worked, such as a SOC 1 Type 2 report, and must test its own complementary user controls."
+      },
+      "check": {
+        "scenario": "A company bought a business in November and could not assess its controls before year-end. May management leave it out of this year's internal control assessment?",
+        "right": "Yes, under the SEC staff's allowance, for up to one year, disclosing the exclusion.",
+        "trap": "No: management must assess every business it owns at year-end, however recent.",
+        "why": "SEC staff guidance lets management exclude a newly acquired business for up to one year from acquisition, if the report says so. It is the narrow exception to no scope limits."
+      },
+      "nuance": "General controls alone rarely address a reporting risk; automated controls that do also need evaluating. A service organization's report supports management's assessment but never replaces it.",
+      "domains": [5],
+      "subtopics": ["5C1.1", "5C1.2", "5C1.3", "5C2.2", "5C2.3"],
+      "practice_ids": ["csoe_d5_014", "csoe_d5_015", "csoe_d5_016", "csoe_d5_017", "csoe_d5_019"],
+      "slip_pattern": null,
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "civil-versus-criminal",
+      "family": "consequence",
+      "order": 1,
+      "title": "Civil or criminal",
+      "rule": "Match the consequence to the forum: the SEC brings civil actions; criminal charges belong to the Justice Department.",
+      "why": "Section 302 is a civil certification, while Section 906 and the records crimes carry prison terms that only prosecutors can seek. SEC inquiries, formal orders, Wells notices and settlements are all civil steps. A civil settlement cannot promise anything about criminal exposure.",
+      "triggers": [
+        "prison",
+        "Wells notice",
+        "settle the case",
+        "formal order",
+        "knowingly",
+        "Justice Department"
+      ],
+      "trap": {
+        "move": "Treating the SEC as a body that can imprison, or a civil settlement as the end of all exposure.",
+        "why_wrong": "The SEC's remedies are civil, such as penalties, disgorgement and officer bars. Criminal cases are brought separately by the Justice Department and are not bound by an SEC settlement."
+      },
+      "example": {
+        "scenario": "A CFO receives an SEC subpoena issued under a formal order and asks whether the SEC could send them to prison if the investigation finds fraud.",
+        "answer": "No. The SEC can seek civil remedies such as penalties, disgorgement and officer bars. Prison needs a criminal prosecution by the Justice Department, to which the SEC may refer the matter."
+      },
+      "check": {
+        "scenario": "A company's CEO signed a Section 906 statement knowing the annual report misstated revenue. Which consequence can follow from that signature?",
+        "right": "Criminal fines and prison, through a prosecution under 18 U.S.C. 1350.",
+        "trap": "Only an SEC civil penalty, since certifications are filed with the SEC.",
+        "why": "Section 906 is a criminal statute. Filing with the SEC does not make it civil; prosecutors bring the case."
+      },
+      "nuance": "One set of facts can lead to both an SEC civil action and a separate criminal case. Questions usually ask which forum or which statute, so read the consequence they name.",
+      "domains": [1, 4],
+      "subtopics": ["1A1.2", "4A1.2", "4A3.1", "4A3.2", "4A3.3"],
+      "practice_ids": ["csoe_d1_002", "csoe_d4_004", "csoe_d4_005", "csoe_d4_006"],
+      "slip_pattern": null,
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "penalty-tiers",
+      "family": "consequence",
+      "order": 2,
+      "title": "Penalty tiers and paybacks",
+      "rule": "Match the exact tier: knowing or willful, attempt or completed, and which payback rule applies to whom.",
+      "why": "Section 906 has two tiers: up to $1 million and 10 years for knowing certification, $5 million and 20 years for willful. Section 304 recovers CEO and CFO pay after misconduct, while Rule 10D-1 recovers excess pay from executive officers with no fault needed. Each number attaches to one exact rule.",
+      "triggers": [
+        "willfully",
+        "GREATEST penalty",
+        "restatement",
+        "repay the bonus",
+        "attempt",
+        "conspiracy"
+      ],
+      "trap": {
+        "move": "Picking the highest penalty or the broadest recovery because the conduct sounds serious.",
+        "why_wrong": "Each tier has its own trigger. Knowing certification is the lower Section 906 tier, and Section 304 needs misconduct and reaches only the CEO and CFO."
+      },
+      "example": {
+        "scenario": "A plan administrator willfully fails to file an employee benefit plan's required reports. A trainer says Title IX of the Act left that penalty at its old level.",
+        "answer": "It did not. Section 904 raised willful benefit plan reporting violations to up to $100,000 and 10 years for individuals, and up to $500,000 for organizations."
+      },
+      "check": {
+        "scenario": "An audit partner knowingly and willfully destroys an issuer's audit workpapers before the required retention period ends. What prison maximum does 18 U.S.C. 1520 allow?",
+        "right": "Up to 10 years in prison.",
+        "trap": "Up to 20 years in prison.",
+        "why": "Section 1520 caps workpaper violations at 10 years. The 20-year maximum belongs to Section 1519, the broader crime of destroying records to obstruct a federal matter."
+      },
+      "nuance": "Statutory maximums are ceilings, not the sentence a court will impose. CSOE-style items ask for the maximum or the tier the text sets, so key on the text, not on likely outcomes.",
+      "domains": [2, 3, 4],
+      "subtopics": ["2A3.3", "3A2.2", "3A3.2", "3A3.4", "4B1.3", "4B3.1", "4B3.2", "4C3.3"],
+      "practice_ids": ["csoe_d2_010", "csoe_d3_005", "csoe_d3_008", "csoe_d3_009", "csoe_d4_013", "csoe_d4_014", "csoe_d4_019"],
+      "slip_pattern": null,
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "disclose-or-explain",
+      "family": "consequence",
+      "order": 3,
+      "title": "Disclose, or explain why not",
+      "rule": "Some rules let a company choose: disclose that it complies or explain why not; waivers must be disclosed promptly.",
+      "why": "Sections 406 and 407 do not force a code of ethics or a financial expert; they require disclosure of whether the company has one and, if not, why. A waiver of the code for a senior financial officer must be disclosed promptly. A missing disclosure, not the missing item, is the breach.",
+      "triggers": [
+        "no financial expert",
+        "waiver",
+        "code of ethics",
+        "must the company disclose",
+        "explain why not",
+        "which framework"
+      ],
+      "trap": {
+        "move": "Choosing an option that forces the company to appoint an expert or adopt a code, or one that lets a waiver wait for the next annual report.",
+        "why_wrong": "The rule's demand is disclosure: say whether you have it and, if not, why. Waivers cannot wait for the annual report; they are disclosed promptly."
+      },
+      "example": {
+        "scenario": "A small listed company has no code of ethics for its senior financial officers. Its counsel says this breaks Section 406 and a code must be adopted before the next Form 10-K.",
+        "answer": "Not required. Section 406 asks the company to disclose whether it has adopted such a code and, if not, why not. Adopting one is the company's choice."
+      },
+      "check": {
+        "scenario": "A listed company's board finds that one audit committee member meets the SEC's audit committee financial expert definition. Beyond saying it has an expert, what must the annual report disclose?",
+        "right": "The expert's name and whether they are independent of management.",
+        "trap": "That the expert personally reviewed and approved the financial statements.",
+        "why": "The rule asks for the expert's name and independence. Being named adds no duty to approve the statements, which remain management's responsibility."
+      },
+      "nuance": "Not every duty is a choice. Management's internal control report must name its framework, and fraud involving key control staff must be disclosed to the auditor and audit committee under Section 302.",
+      "domains": [3, 5],
+      "subtopics": ["3A2.1", "3B3.1", "3B3.2", "5A1.3"],
+      "practice_ids": ["csoe_d3_004", "csoe_d3_018", "csoe_d3_019", "csoe_d5_006"],
+      "slip_pattern": null,
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "severity-is-possibility",
+      "family": "severity",
+      "order": 1,
+      "title": "Severity is about possibility",
+      "rule": "Rate a deficiency by the reasonable possibility of a material misstatement going undetected, not by errors actually found.",
+      "why": "The SEC defines a material weakness as a deficiency, or a combination of them, with a reasonable possibility that a material misstatement will not be prevented or detected on a timely basis. A control that failed without causing an error can still be a material weakness. No loss so far is luck, not proof the control works.",
+      "triggers": [
+        "no misstatement resulted",
+        "did not operate",
+        "how severe",
+        "material weakness",
+        "significant deficiency",
+        "rate the deficiency"
+      ],
+      "trap": {
+        "move": "Downgrading a deficiency because no error was found, or upgrading one because an error, however small, occurred.",
+        "why_wrong": "Severity looks forward at what could be missed and how large it could be. An actual error is evidence to weigh, not the definition."
+      },
+      "example": {
+        "scenario": "A company finds three separate deficiencies over inventory counts, costing and reconciliations. None alone could lead to a material misstatement, so the controller rates each as minor.",
+        "answer": "Evaluate them together as well. Deficiencies affecting the same account can combine into a significant deficiency or material weakness, judged on the reasonable possibility of a material misstatement."
+      },
+      "check": {
+        "scenario": "Testing finds a $2,000 error in an account where a material misstatement would be several million dollars. The controller says any error found makes the deficiency a material weakness.",
+        "right": "Disagree: severity turns on how large a misstatement could go undetected, not on the error found.",
+        "trap": "Agree: an actual error proves the control failed, so it must be a material weakness.",
+        "why": "An error found is evidence, but the definition turns on the reasonable possibility of a material misstatement. A small error does not by itself make a material weakness."
+      },
+      "nuance": "SEC filers use the SEC's terms, control deficiency, significant deficiency and material weakness, even when the framework is COSO. A significant deficiency is less severe than a material weakness yet merits oversight's attention.",
+      "domains": [3, 5],
+      "subtopics": ["3B2.3", "5A2.3"],
+      "practice_ids": ["csoe_d3_017", "csoe_d5_005", "csoe_d5_008"],
+      "slip_pattern": "symptom",
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "effective-at-year-end",
+      "family": "severity",
+      "order": 2,
+      "title": "Effective as of year-end",
+      "rule": "Conclude on internal control as of fiscal year-end: any material weakness open then means not effective.",
+      "why": "Management's Section 404(a) assessment speaks as of the end of the fiscal year. A material weakness fixed and tested before then does not block an effective conclusion, but one still open does, with no qualified wording allowed. Management cannot limit its scope to avoid that conclusion.",
+      "triggers": [
+        "as of which date",
+        "remediated",
+        "at year-end",
+        "scope limitation",
+        "not effective",
+        "fixed in December"
+      ],
+      "trap": {
+        "move": "Calling controls effective except for an open weakness, or ineffective because of one fixed and tested earlier in the year.",
+        "why_wrong": "The conclusion is a single yes or no at year-end. An open weakness rules out effective; a remediated and tested one no longer counts against it."
+      },
+      "example": {
+        "scenario": "A company finds a material weakness over its tax provision in November and adds a new review in December, but the review has not run long enough to test by year-end.",
+        "answer": "The weakness is still open at year-end, so management must conclude internal control is not effective. Remediation counts only once the new control has operated and been tested."
+      },
+      "check": {
+        "scenario": "At year-end, one material weakness over revenue remains open and every other control works. Management is drafting its Section 404(a) conclusion.",
+        "right": "Internal control over financial reporting is not effective, and the weakness is disclosed.",
+        "trap": "Internal control is effective except for the revenue weakness, which is disclosed.",
+        "why": "With a material weakness open at year-end, management may not conclude effective, and except-for wording is not allowed. The weakness is disclosed."
+      },
+      "nuance": "Quarterly reports carry no Section 404(a) assessment, but officers still disclose material changes in internal control each quarter under the Section 302 rules.",
+      "domains": [3, 5],
+      "subtopics": ["3B2.1", "3B2.4", "5C2.3"],
+      "practice_ids": ["csoe_d3_014", "csoe_d3_016", "csoe_d5_020"],
+      "slip_pattern": null,
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "eliminate-then-final-two",
+      "family": "reading",
+      "order": 1,
+      "title": "Eliminate two, then decide",
+      "rule": "Cross out the two options the rule plainly excludes, then split the last two on one exact point.",
+      "why": "SOXCPA's exam instructions advise looking for the best answer and crossing out the ones you know are wrong first. On CSOE-style items, the closest wrong choice is usually a real rule that misses on the actor, the date, the number or the scope. Naming that one point makes the choice.",
+      "triggers": [
+        "two options look right",
+        "BEST",
+        "MOST accurate",
+        "which statement",
+        "both sound correct",
+        "closest choice"
+      ],
+      "trap": {
+        "move": "Picking the first option that is true somewhere in the law, without testing it against the exact facts in the question.",
+        "why_wrong": "A true statement about a nearby rule is still wrong if it misses the question's actor, report, number or date. The best answer fits every fact given."
+      },
+      "example": {
+        "scenario": "Two options remain for a large accelerated filer's Form 10-Q deadline: 40 days or 45 days after the quarter ends.",
+        "answer": "Split them on filer status: large accelerated and accelerated filers have 40 days, and 45 days is for non-accelerated filers. One point decides it."
+      },
+      "check": {
+        "scenario": "Two options remain on how soon a listed company must file a Form 8-K after most triggering events: within four business days, or within 15 calendar days.",
+        "right": "Within four business days, under the current Form 8-K rules.",
+        "trap": "Within 15 calendar days, to give the board time to review it.",
+        "why": "Both look like deadlines, and one number decides. Form 8-K's general rule is four business days, in line with Section 409's call for rapid disclosure."
+      },
+      "domains": [1, 4, 5],
+      "subtopics": [],
+      "practice_ids": ["csoe_d1_014", "csoe_d4_001", "csoe_d4_002", "csoe_d4_015", "csoe_d5_007", "csoe_d5_009"],
+      "slip_pattern": "runner-up",
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "read-the-ask",
+      "family": "reading",
+      "order": 2,
+      "title": "Read exactly what is asked",
+      "rule": "Read the last line first: an incomplete statement, a priority word or a named section sets exactly what to choose.",
+      "why": "SOXCPA describes its questions as either a question or an incomplete statement to complete, each with four responses. Words such as FIRST, GREATEST or initial narrow the answer to one. Most misreads come from answering the topic instead of the exact ask.",
+      "triggers": [
+        "FIRST",
+        "GREATEST",
+        "ends with a colon",
+        "initial statement",
+        "what keeps",
+        "before the work starts"
+      ],
+      "trap": {
+        "move": "Answering the topic you recognize instead of the exact question, such as giving a true duty when the question asks what comes first.",
+        "why_wrong": "A true statement that does not complete the sentence or answer the ask is wrong. The last line decides what counts."
+      },
+      "example": {
+        "scenario": "A question ends: Under Section 302, each annual and quarterly report must be certified by: Two options name the audit committee chair and the external auditor.",
+        "answer": "Complete the sentence with the principal executive and principal financial officers, usually the CEO and CFO. The other options describe roles with different duties."
+      },
+      "check": {
+        "scenario": "A question asks by when a newly appointed officer of a listed company must file the initial statement of their holdings in the company.",
+        "right": "Within 10 days, since the question asks about the initial statement.",
+        "trap": "Within two business days, since Section 403 sped up insider reports.",
+        "why": "Two business days applies to changes in holdings. The question asks about the initial statement, so its own deadline decides."
+      },
+      "domains": [2, 3, 4],
+      "subtopics": [],
+      "practice_ids": ["csoe_d2_005", "csoe_d2_015", "csoe_d3_020", "csoe_d4_003"],
+      "slip_pattern": "misread",
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "open-book-but-fast",
+      "family": "reading",
+      "order": 3,
+      "title": "Open book, but fast",
+      "rule": "Treat open book as a backup: recall the rule first, look up only one exact fact, and keep moving.",
+      "why": "SOXCPA's exam is open book, yet it gives 90 minutes for 35 items, about 2.5 minutes each, with no going back. Searching the material for every answer runs out the clock. Know where each number lives, and look up only what you cannot recall.",
+      "triggers": [
+        "how many days",
+        "what retention period",
+        "statutory maximum",
+        "deadline",
+        "threshold",
+        "how often"
+      ],
+      "trap": {
+        "move": "Opening the material for every question, including ones you already know, to be sure.",
+        "why_wrong": "Lookups cost minutes you cannot win back on a forward-only exam. Recall first, and save lookups for a single number or date you truly need."
+      },
+      "example": {
+        "scenario": "A candidate plans to search their notes for every item on the real exam, since it is open book.",
+        "answer": "Plan the reverse. Answer from memory where you can, keep a one-page list of deadlines, thresholds and penalties, and look up only a single fact when you need it."
+      },
+      "check": {
+        "scenario": "Twelve minutes into an open-book exam with no going back, a candidate meets a question on the retention period for audit workpapers and half remembers the answer.",
+        "right": "Recall the rule, check the one number quickly, answer and move on.",
+        "trap": "Reread the whole records chapter to be sure, then answer it.",
+        "why": "With about 2.5 minutes for each item and no return, one quick lookup protects time. Rereading a chapter spends minutes later questions need."
+      },
+      "nuance": "Open book helps most with exact numbers and dates. Who acts and which rule applies need to be known before the exam starts.",
+      "domains": [1, 2, 3, 5],
+      "subtopics": [],
+      "practice_ids": ["csoe_d1_015", "csoe_d2_007", "csoe_d3_013", "csoe_d5_012"],
+      "slip_pattern": null,
+      "legacy_ids": [],
+      "aliases": []
+    }
+  ],
+  "slip_map": {
+    "runner-up": "eliminate-then-final-two",
+    "priority": "read-the-ask",
+    "overconfident": "read-the-ask",
+    "role": "find-the-actor",
+    "tech-first": "the-rule-decides",
+    "symptom": "severity-is-possibility",
+    "misread": "read-the-ask",
+    "knowledge": null
+  }
+}
