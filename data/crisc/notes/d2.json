@@ -479,6 +479,10 @@
             {
               "trap": "The vulnerability scanner report is the complete list of the enterprise's vulnerabilities.",
               "why": "Scanners find technical flaws only. Process gaps, weak segregation of duties and people weaknesses come from walkthroughs, control tests and audits."
+            },
+            {
+              "trap": "A data center in a flood zone is the threat source in its outage scenario.",
+              "why": "The flood is the environmental threat. The site's location is a predisposing condition: it acts on nothing, but it raises the likelihood that a flood causes harm (NIST SP 800-30 Rev. 1 Section 2.3.1)."
             }
           ],
           "key_terms": [
@@ -734,7 +738,7 @@
           "how_it_works": [
             "Process and asset owners review each scenario's events, impacts and existing controls and sign off the description.",
             "A tabletop exercise is a facilitated, discussion-based walkthrough; no systems are touched.",
-            "Participants include business owners, control owners, IT, communications and, where relevant, key suppliers.",
+            "Participants include business owners, control owners, IT, communications and key suppliers; the exercise tests decisions, so the owners who would make them must take part.",
             "Injects, new facts added during play, test decisions such as escalation, customer notice and recovery order.",
             "Findings become actions: new or revised scenarios, register updates and control changes, each with an owner and a date."
           ],
@@ -817,6 +821,10 @@
             {
               "trap": "A high-impact event is always a high risk.",
               "why": "If likelihood is very low and controls are strong, the combined risk may be moderate. Both factors set the rating."
+            },
+            {
+              "trap": "When two analysts rate the same scenario differently, average the ratings or keep the higher one.",
+              "why": "Check the basis first. Ratings made over different time frames, scales or level definitions cannot be compared; fix the basis, then re-rate."
             }
           ],
           "key_terms": [
@@ -984,7 +992,7 @@
             "The recovery time objective (RTO) for each supporting function or resource must normally be shorter than the MTO, leaving time to reprocess work.",
             "The recovery point objective (RPO) is the earliest point in time to which data must be recoverable; a four-hour RPO allows up to four hours of lost data.",
             "RTO is about time to recover and RPO is about data that may be lost, so they are set separately.",
-            "Shorter objectives cost more, so the business weighs recovery cost against the impact the BIA found."
+            "Shorter objectives cost more; when tested recovery misses the MTO, the process owner weighs that cost against the BIA impact."
           ],
           "compare": {
             "columns": [
@@ -1131,7 +1139,7 @@
             "Status follows evidence: an entry moves to treated only when the response is implemented and working, not when it is planned.",
             "Current and residual ratings credit a control only after it is implemented and tested, not on the day it is approved.",
             "Each owner reviews their entries on a set cycle, and KRIs flag when an earlier review is needed.",
-            "Closing an entry needs a reason, such as the asset being retired or the risk avoided, and the owner's approval."
+            "Closing an entry needs a reason, such as the asset being retired or the risk avoided, and the owner's approval; closed entries stay in the register as history."
           ],
           "example": "A pension fund's register shows member portal account takeover as treated because multifactor sign-in was approved in March. In September, Elif Yilmaz, the risk analyst, finds the rollout covers only 20% of members. Elif moves the status back to in treatment, re-scores the current risk on the control as it stands, and flags the gap to the member services director.",
           "audit_focus": {
@@ -1236,6 +1244,7 @@
             "Without defined levels, different experts produce very different ratings for the same risk.",
             "Semi-quantitative scales, such as 1 to 5 or bins of 0 to 100, allow finer ranking than words alone.",
             "Scores on these scales show order, not true size: a 4 is not exactly twice as bad as a 2.",
+            "Equal scores can hide different shapes: frequent small losses and rare severe ones may need different responses, so report likelihood and impact, not only the combined score.",
             "One enterprise scale is used by every unit, so ratings can be compared and aggregated."
           ],
           "compare": {
@@ -1581,6 +1590,10 @@
             {
               "trap": "After controls are added, the risk practitioner can sign off the residual risk as acceptable.",
               "why": "Acceptance belongs to the risk owner, who has the authority. The practitioner analyzes, recommends and documents, but never accepts the risk."
+            },
+            {
+              "trap": "A risk owner can accept any risk in their own area.",
+              "why": "Owners accept risk within the appetite and tolerance set above them. Acceptance of a risk beyond tolerance goes to the level that set the limit."
             }
           ],
           "key_terms": [

@@ -167,7 +167,7 @@
           "how_it_works": [
             "The board sets direction, approves risk appetite and oversees how senior management handles major risk.",
             "Senior management turns direction into strategy, approves the risk management framework and policies, and assigns risk owners.",
-            "A risk committee, at board or management level, reviews the risk profile, challenges ratings and escalates breaches.",
+            "A risk committee, at board or management level, reviews the risk profile, challenges ratings, approves decisions within the authority it was given and escalates breaches.",
             "The chief risk officer (CRO) runs the risk function, keeps the framework working and reports on the risk profile.",
             "Committees advise and oversee; accountability for a given risk still rests with one named person."
           ],
@@ -202,7 +202,7 @@
             },
             {
               "term": "Risk committee",
-              "definition": "A board or management committee that reviews the risk profile, challenges ratings and escalates issues."
+              "definition": "A board or management committee that reviews the risk profile, challenges ratings, approves high-risk decisions within its authority and escalates issues."
             },
             {
               "term": "Chief risk officer (CRO)",
@@ -613,7 +613,8 @@
             "The risk practitioner analyzes the risk of the gap and any compensating control.",
             "The risk owner, at the authority level the risk requires, approves or rejects the exception.",
             "Each exception has an expiry date and is logged in an exception register linked to the risk register.",
-            "Exception volumes are monitored; many exceptions to one rule suggest the rule or the process needs review."
+            "Exception volumes are monitored; many exceptions to one rule suggest the rule or the process needs review.",
+            "When an exception expires, it does not roll over: the risk owner decides again, renewing it on a fresh analysis or ending it and restoring compliance."
           ],
           "example": "A university research group asks to keep an unsupported lab server for 18 months until grant funding arrives. Hana, the risk analyst, assesses the exposure, notes that the server can be isolated on its own network segment, and prepares an exception request with an expiry date, the compensating control and the dean of research as the approving risk owner.",
           "audit_focus": {
@@ -958,7 +959,8 @@
             "Record cloud and SaaS services with the business owner, the provider, the data held and the contract.",
             "Record AI models with their purpose, owner, training data sources, version and whether they were built or bought.",
             "Datasets used to train or prompt AI are assets too, each with a classification and an owner.",
-            "Find hidden services through expense reports, single sign-on logs and network data, then bring them into the inventory."
+            "Find hidden services through expense reports, single sign-on logs and network data, then bring them into the inventory.",
+            "A new model version is a change to the asset, even one a vendor ships silently inside a service; update the record and revisit the risk rating."
           ],
           "example": "A credit union's marketing team subscribes to an AI tool that scores customer leads using account data. The tool is paid by card, so it is missing from the inventory. Sana, the risk analyst, adds the tool, the model version and the data feed to the inventory, proposes the marketing director as owner for senior management to confirm, and schedules a risk assessment.",
           "audit_focus": {
@@ -1266,6 +1268,10 @@
             {
               "trap": "The second line must be as independent as internal audit, so it should not advise the business.",
               "why": "Advising and challenging the first line is the second line's job. It needs objectivity and escalation rights, not audit-style separation."
+            },
+            {
+              "trap": "Let the risk team run a first-line control for as long as the business is short-staffed.",
+              "why": "A second line that runs a control cannot challenge it objectively, and the first line stops owning it. Any cover needs an end date and a hand-back plan."
             }
           ],
           "key_terms": [
@@ -1305,7 +1311,8 @@
             "The register is detailed and operational: one entry per risk scenario, with owner, rating, response and status.",
             "The profile selects, combines and prioritizes register risks into a view of overall exposure by objective or category.",
             "The profile shows current risk, counting only responses already in place, against appetite, so leaders see where exposure is too high or too low.",
-            "In NIST terms, the enterprise risk profile is a prioritized subset of the enterprise risk register."
+            "In NIST terms, the enterprise risk profile is a prioritized subset of the enterprise risk register.",
+            "AI use enters the profile through register entries mapped to the objectives and risk categories it affects, not as a count of tools or models."
           ],
           "compare": {
             "columns": [
@@ -1354,6 +1361,10 @@
             {
               "trap": "Send the board the full risk register so nothing is left out.",
               "why": "Volume hides priority. The board needs the aggregated profile against appetite, with the register available behind it."
+            },
+            {
+              "trap": "Exposure far below appetite in every category is good news that needs no report.",
+              "why": "Leaders need to see it: controls may cost more than the risk warrants, or the enterprise may be passing up opportunities its appetite allows."
             }
           ],
           "key_terms": [
@@ -1377,7 +1388,8 @@
             "Group risks that share a cause, asset, supplier or process, and assess their combined impact.",
             "Do not just add scores: some risks overlap, and correlated risks can occur together and compound.",
             "Refresh the profile on a schedule and on triggers such as an acquisition, a new market, a major incident or new regulation.",
-            "Report changes and trends, not just the current position, so leaders see the direction of travel."
+            "Report changes and trends, not just the current position, so leaders see the direction of travel.",
+            "When a control credited in a profile rating stops working, re-rate the affected risks without it and report any change against appetite."
           ],
           "example": "An online retailer rates three separate risks as medium: payment outage, warehouse system failure and website downtime. Gabriel, the risk analyst, notices that all three depend on the same cloud region and assesses the combined scenario of losing that region, which would stop sales entirely. They report the aggregated exposure to the chief operating officer.",
           "audit_focus": {
@@ -1551,6 +1563,10 @@
             {
               "trap": "The risk practitioner sets the appetite because they understand the risks best.",
               "why": "Appetite reflects strategy and stakeholder expectations, which leaders own. The practitioner supplies analysis and options; leaders decide."
+            },
+            {
+              "trap": "Set the downtime tolerance at the uptime the system already achieves.",
+              "why": "That records capability, not need. A tolerance reflects how much variation the objective can bear, drawn from impact data such as the business impact analysis."
             }
           ],
           "key_terms": [
@@ -1635,7 +1651,8 @@
             "Tailor it: keep what addresses the enterprise's risks, scale the processes to its size and map it to existing ERM.",
             "Frameworks can be combined, such as COBIT 2019 for governance with NIST CSF 2.0 for cybersecurity outcomes.",
             "ISO 31000:2018 and COSO ERM (2017) are common enterprise-level references that IT frameworks align with.",
-            "Senior management approves the tailored framework as part of the enterprise's risk governance."
+            "Senior management approves the tailored framework as part of the enterprise's risk governance.",
+            "In NIST CSF 2.0, tailoring runs through Organizational Profiles: a Current and a Target Profile shaped by the mission, risks and requirements."
           ],
           "types": [
             {
@@ -1721,6 +1738,10 @@
             {
               "trap": "If the enterprise is fully compliant, its IT risk is low.",
               "why": "Rules set minimum duties for specific harms. Many risks, such as outages or new kinds of AI failure, fall outside any regulation."
+            },
+            {
+              "trap": "Rely on the AI vendor's statement that its model complies with the new law.",
+              "why": "Duties under AI laws often fall on the organization that uses the system. Vendor assurance is evidence for the enterprise's own assessment, not a substitute for it."
             }
           ],
           "key_terms": [

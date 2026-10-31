@@ -206,9 +206,10 @@
           "how_it_works": [
             "Each change has a request, an impact assessment, an approval suited to its risk, a test result and a back-out plan.",
             "Emergency changes may bypass the normal approval path, usually through an emergency approver, but are documented and reviewed after the fact as soon as practical.",
-            "A configuration management database (CMDB) records configuration items, their approved settings and how they depend on each other.",
+            "A configuration management database (CMDB) records configuration items, their settings and dependencies; when its counts differ from other tools, the sources are reconciled before figures are reported.",
             "Comparing live settings with the baseline finds unauthorized changes, which are investigated, not quietly reversed.",
-            "Low-risk, repeatable changes can be pre-approved, so review effort follows risk."
+            "Low-risk, repeatable changes can be pre-approved, so review effort follows risk.",
+            "A growing share of emergency changes is analyzed for its cause, such as slow normal approvals or poor planning, before more approval steps are added."
           ],
           "types": [
             {
@@ -237,7 +238,7 @@
             "recommend": "Have the change manager set emergency-change criteria and report emergency volume and overdue reviews monthly.",
             "decides": "The change authority approves changes; the risk owner accepts any remaining change risk"
           },
-          "isaca_rule": "The risk view of change asks: was the impact assessed, approved by the right authority and reversible? Emergency changes are allowed, but each gets a timely retrospective review. Growing emergency volume is a risk signal to report, not a paperwork issue.",
+          "isaca_rule": "The risk view of change asks: was the impact assessed, approved by the right authority and reversible? Emergency changes are allowed, but each gets a timely retrospective review. Growing emergency volume is a risk signal: report it and find out why the normal path is being avoided.",
           "exam_traps": [
             {
               "trap": "Accepting an emergency change as complete once service is restored.",
@@ -270,7 +271,8 @@
             "A problem is opened when incidents repeat, a major incident occurs or a trend appears.",
             "Root cause analysis finds why it happened; a known error records the cause and any workaround.",
             "A permanent fix usually goes through change management, so problem and change processes connect.",
-            "Incident and problem trends feed the risk register and key risk indicators."
+            "Incident and problem trends feed the risk register and key risk indicators.",
+            "When a permanent fix is costly or unfunded, the risk and options go to the owner of the affected business process; IT does not accept it by default."
           ],
           "compare": {
             "columns": [
@@ -410,8 +412,8 @@
           "definition": "The system development life cycle (SDLC) is the sequence of phases from initiation through design, build, testing, implementation, operation and disposal, each with its own risk activities.",
           "why_it_matters": "A flaw found in design costs little to fix; the same flaw found after go-live costs far more and may already have caused harm. Risk activities in every phase keep the project within appetite.",
           "how_it_works": [
-            "Initiation: confirm the business case, owner, data sensitivity and an initial risk assessment.",
-            "Requirements and design: define security, privacy and control requirements alongside functional ones.",
+            "Initiation: confirm the business case, owner, data sensitivity and an initial risk assessment, and update that assessment whenever the scope or data changes.",
+            "Requirements and design: define security, privacy and control requirements alongside functional ones; for a purchased system, put them in the selection criteria and contract.",
             "Build and test: verify requirements are met; business users, not developers, sign off acceptance testing.",
             "Implementation: confirm the owner accepts residual risk within appetite, or orders more treatment, before go-live.",
             "Post-implementation review: check whether benefits arrived and risks stayed within appetite.",
@@ -515,7 +517,8 @@
             "Retraining or replacing a model goes through change management, with validation against agreed performance and fairness criteria.",
             "The model's business owner approves deployment; data scientists build and test it.",
             "Production monitoring watches for drift, the gradual loss of accuracy as real-world data changes.",
-            "A rollback plan lets the team return to the previous version if the new one misbehaves."
+            "A rollback plan lets the team return to the previous version if the new one misbehaves.",
+            "Edits to an AI system's instructions, prompts or settings change its behavior too, so they are tested and approved like code before reaching users."
           ],
           "example": "An insurer's claims team retrains its fraud-scoring model every month with new data, and data scientists push each version live themselves. Elif, the risk analyst, finds that one release doubled false fraud flags for a single region. Elif records the risk and proposes a release gate: validation results reviewed and approved by the claims director before deployment.",
           "audit_focus": {
@@ -576,7 +579,8 @@
             "The data custodian, often IT, applies the owner's rules through storage, backup and access controls.",
             "Classification levels set handling rules, such as encryption, sharing limits and retention.",
             "A data inventory shows where each class of data lives, including copies in test and analytics systems.",
-            "Each stage has controls: input checks at creation, access control in use, agreements when shared."
+            "Each stage has controls: input checks at creation, access control in use, agreements when shared.",
+            "Data that no business unit claims is reported so senior management can assign an owner; IT protects it as custodian in the meantime."
           ],
           "compare": {
             "columns": [
@@ -823,7 +827,8 @@
             "In Agile, risk items and security tasks sit in the backlog and are prioritized alongside features.",
             "The definition of done includes security, privacy and control criteria, so work is not finished without them.",
             "Sprint reviews and retrospectives are natural points to update risk status.",
-            "Agile reduces heavy documents, not risk records: decisions and accepted risks are still recorded."
+            "Agile reduces heavy documents, not risk records: decisions and accepted risks are still recorded.",
+            "At project closure, open risks that continue into operation move to the enterprise register with an operational owner; they do not close with the project."
           ],
           "example": "A bank's mobile team works in two-week sprints and has postponed its fraud-control stories for four sprints to hit a launch date. Zara, the IT risk analyst, raises the deferred stories as a project risk that will become an operational fraud risk at launch, and asks the product owner to review it with the business sponsor.",
           "audit_focus": {
@@ -888,7 +893,7 @@
             "The strategy must meet RTO and RPO by design, at a cost the owner accepts.",
             "An alternate site is placed and built so the same event cannot disable both sites.",
             "Shared dependencies, such as one network carrier, identity service or power feed, are single points of failure.",
-            "Cloud recovery follows a shared responsibility model: the service model and contract decide who runs backups and failover; the customer stays accountable for its data and confirms recovery is tested."
+            "Cloud recovery follows a shared responsibility model: the contract decides who restores what, often the platform but not data the customer's users delete; the customer stays accountable for its data."
           ],
           "compare": {
             "columns": [
@@ -985,7 +990,8 @@
             "Immutable or offline copies cannot be changed or deleted by an attacker who gains administrator access.",
             "Backup frequency is set by the RPO; restore speed must support the RTO.",
             "In ransomware recovery, contain the attack first, then verify backups are clean before restoring.",
-            "Restores are tested regularly, because a backup that was never restored is an untested assumption."
+            "Restores are tested regularly, because a backup that was never restored is an untested assumption.",
+            "A useful key control indicator for backups is the share of test restores that meet the RTO and RPO, not the share of backup jobs completed."
           ],
           "example": "A logistics firm's backups run nightly and the console shows green every day. Sam, the IT risk analyst, asks when a full restore was last tested; the answer is never. Sam records the risk that the RTO for the dispatch system is unproven and proposes a scheduled restore test to the infrastructure manager.",
           "audit_focus": {
@@ -1114,7 +1120,8 @@
             "Identify new threats and vulnerabilities, including those inherited from vendors and integrations.",
             "Check vendor claims through evidence, pilots and independent assessments, not marketing material.",
             "Compare the risk with appetite and propose conditions, such as a limited pilot, extra controls or exit terms.",
-            "Track the technology as an emerging risk and revisit the assessment as it matures."
+            "Track the technology as an emerging risk and revisit the assessment as it matures.",
+            "With little data, record the risk early as an emerging risk with stated uncertainty, a proposed owner and a review date, rather than waiting for losses."
           ],
           "types": [
             {
@@ -1283,6 +1290,10 @@
             {
               "term": "Need-to-know",
               "definition": "ISACA Glossary principle that people can see only the data, systems and spaces their job needs; least privilege extends it to what they can do."
+            },
+            {
+              "term": "Just-in-time access",
+              "definition": "Elevated access granted for a specific task and a limited time, then removed, instead of standing administrator rights."
             }
           ]
         },
@@ -1297,7 +1308,8 @@
             "Decisions use identity, device health, behavior and data sensitivity, and are re-checked over time.",
             "Least privilege and micro-segmentation keep each user or workload to what it needs.",
             "Monitoring of assets and access feeds back into policy decisions.",
-            "Adoption is a multi-year journey, usually starting with the most critical data and identities."
+            "Adoption is incremental: NIST SP 800-207 describes moving one business process at a time, often piloting on a lower-risk process, to protect the highest-value data.",
+            "Until a rollout covers a scenario's users and assets, the register credits only the coverage that is live and working; the finished rollout is target risk."
           ],
           "example": "A manufacturer's engineers connect to plant systems through a remote access link that, once joined, reaches the whole network. Yusuf, the risk analyst, maps this to a ransomware scenario rated above appetite and proposes a phased Zero Trust plan, starting with per-application access to plant control systems, for the CIO and plant director to prioritize.",
           "audit_focus": {
@@ -1344,7 +1356,7 @@
             "NIST CSF 2.0 has six functions: Govern, Identify, Protect, Detect, Respond and Recover.",
             "Profiles compare the current state with a target state chosen by risk and business needs.",
             "ISO/IEC 27001 sets requirements for an information security management system that can be certified.",
-            "A framework is tailored: controls are chosen by risk assessment, not adopted wholesale.",
+            "A framework is tailored: controls and target Tiers are chosen by risk and cost-benefit, so different units can rightly have different targets.",
             "Certification shows a management system met a standard within a scope on a date; it does not prove risk is low.",
             "A register rating records current risk; it moves when a scenario is reassessed on evidence, not because a profile or certificate changed."
           ],
@@ -1380,6 +1392,10 @@
             {
               "term": "Tailoring",
               "definition": "Adjusting a framework's controls to the organization's risks, systems and obligations."
+            },
+            {
+              "term": "CSF Tier",
+              "definition": "NIST CSF 2.0 rating of how rigorous risk governance and management practices are: Partial, Risk Informed, Repeatable or Adaptive."
             }
           ]
         }
@@ -1647,7 +1663,8 @@
             "Minimize or de-identify data where the purpose allows, knowing de-identified data can sometimes be re-identified.",
             "Assess AI outputs for privacy harm, such as inferences about health or exposure of training data.",
             "Before transferring data abroad, confirm the legal mechanism and the protections at the destination.",
-            "Contracts with AI and cloud providers set where data is stored, whether it trains their models and how it is deleted."
+            "Contracts with AI and cloud providers set where data is stored, whether it trains their models and how it is deleted.",
+            "Removing names is not enough when exact times, places or rare details remain, because those records can be linked back to the people involved."
           ],
           "example": "A hospital group wants to send patient notes to an overseas AI transcription service. Chidi, the privacy risk analyst, checks where the data will be processed, whether the vendor trains its models on customer data and what transfer rules apply. Chidi asks legal counsel to confirm the transfer basis and reports the findings to the clinical director.",
           "audit_focus": {

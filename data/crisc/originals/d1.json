@@ -746,6 +746,931 @@
       ],
       "_provenance": "Authored from concept: notes 1B5.2 Compliance Obligations as a Source of Risk (exam trap: if the enterprise is fully compliant, its IT risk is low). Original fintech examination scenario written for KaiSip; no ISACA Review Manual, QAE or prep-bank text used. CRISC D1 pilot batch, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): self-justifying option A reworded; option D now uses assess; tips and explanations updated; pre_read made neutral. Quality pass 31 Oct 2026 (ISACA authenticity audit and concept review): key made a single action (authenticity audit wording); explanations and tips still fit. Repair round 1, 31 Oct 2026 (independent verification): stem no longer asks what to 'advise', so the key does not echo it; key no longer negates the CFO's words.",
       "style_version": 2
+    },
+    {
+      "id": "crisc_d1_021",
+      "domain": 1,
+      "subtopic": "1A1 Strategy, goals and objectives. New strategic direction",
+      "principle_id": "objectives-first",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A regional credit union's board approves a strategy to move most branch members to a mobile-only service within two years. What should the risk practitioner do FIRST?",
+      "options": {
+        "A": "Inventory the systems the mobile service will rely on",
+        "B": "Set a new risk appetite for the digital channels",
+        "C": "Identify the risks to the new strategy's objectives",
+        "D": "Raise the mobile platform's availability objective"
+      },
+      "correct": "C",
+      "key_concept": "A change in strategy starts with identifying the risks to its new objectives, before targets, limits or controls are changed.",
+      "pre_read": "Notice what the board has changed. Ask what each option assumes is already known.",
+      "correct_explanation": "A new strategy brings new objectives, such as mobile adoption and member retention, and new uncertainty around them. The practitioner's first move is to identify and analyze the risks to those objectives so owners and leaders can decide responses. Setting a new appetite is the runner-up: appetite may need review, but the board and senior management set it, informed by that risk analysis, not by the practitioner.",
+      "wrong_explanations": {
+        "A": "An inventory of supporting systems is useful later, but it describes technology before anyone knows which objectives and risks matter to the strategy.",
+        "B": "Appetite may need review after a strategy change, but the board and senior management set it. The practitioner first supplies the risk analysis that informs it.",
+        "D": "Raising an availability target is a technical answer chosen before anyone knows what the strategy needs. Targets follow from business objectives and their risks."
+      },
+      "tips": [
+        "Eliminate: A lists systems before the strategy's risks are known, and D raises a technology target before the business need is known.",
+        "Final two: C beats B because the board and senior management set appetite, and the practitioner's risk analysis comes first to inform it.",
+        "Exam cue: when strategy changes, start with the risks to the new objectives; targets, limits and controls follow from them."
+      ],
+      "framework_ref": "COBIT 2019 APO02 (Managed Strategy); NIST CSF 2.0 GV.OC-01 (the organizational mission is understood and informs cybersecurity risk management)",
+      "related_concepts": [
+        "Strategic change",
+        "Goals cascade",
+        "Risk identification"
+      ],
+      "_provenance": "Authored from concept: Round 2, 31 Oct 2026: authored from notes 1A1.2 (The Goals Cascade and Strategic Change: a new strategy triggers a fresh look at the risks to each affected goal); original credit union mobile-only strategy scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D1 round 2. Review fixes 31 Oct 2026 (repair round 1, standards audit): pre_read no longer names the distractor classes; penetration-test distractor replaced to avoid echoing crisc_d1_001.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_022",
+      "domain": 1,
+      "subtopic": "1A2 Organizational structure, roles and responsibilities. Owner of a monitoring control",
+      "principle_id": "match-decision-to-role",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "At a drug distributor, the warehouse director owns spoilage risk for cold-chain stock, and the facilities manager's team runs the cold-room alarms. Which of the following is the MOST appropriate control owner for the alarms?",
+      "options": {
+        "A": "The warehouse director who owns the stock spoilage risk",
+        "B": "The facilities manager whose team runs the alarms",
+        "C": "The alarm vendor that services the room sensors",
+        "D": "The risk analyst who tracks the spoilage KRI"
+      },
+      "correct": "B",
+      "key_concept": "The control owner answers for a control being implemented and working, often the manager whose team runs it, and may differ from the risk owner.",
+      "pre_read": "Separate the two roles in the stem. Ask who answers for the risk and who answers for the alarms working.",
+      "correct_explanation": "The ISACA Glossary makes the control owner accountable for a control being implemented and operating effectively. The facilities manager's team runs the alarms, so that manager is best placed to answer for them working. The warehouse director is the runner-up: as risk owner they rely on the alarms and decide the risk response, but owning a risk and owning each control that reduces it are separate roles.",
+      "wrong_explanations": {
+        "A": "The director owns the spoilage risk and depends on the alarms, but the risk owner and the control owner are often different people with different accountabilities.",
+        "C": "The vendor services the sensors under contract, but accountability for the control working stays inside the enterprise with a named manager.",
+        "D": "The analyst monitors and reports the KRI from the second line. Owning a first-line control would undermine that oversight."
+      },
+      "tips": [
+        "Eliminate: C hands enterprise accountability to a supplier, and D puts a second-line monitor in charge of a first-line control.",
+        "Final two: B beats A because the control owner answers for the control working; the risk owner relies on it and decides the response.",
+        "Exam cue: one risk owner can rely on several control owners; the control owner is usually the manager whose team runs the control."
+      ],
+      "framework_ref": "ISACA Glossary (control owner); ISACA Glossary (risk owner)",
+      "related_concepts": [
+        "Control owner",
+        "Risk owner",
+        "Accountability"
+      ],
+      "_provenance": "Authored from concept: Round 2, 31 Oct 2026: authored from notes 1A2.2 (Risk Owner, Control Owner and Risk Practitioner: one risk owner, several control owners); original drug distributor cold-chain scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D1 round 2.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_023",
+      "domain": 1,
+      "subtopic": "1A2 Organizational structure, roles and responsibilities. Role of an IT risk committee",
+      "principle_id": "match-decision-to-role",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A city transit agency is chartering an IT risk committee of senior managers. Which of the following is the MOST appropriate role for the committee?",
+      "options": {
+        "A": "Accepting IT risks above appetite on owners' behalf",
+        "B": "Owning the IT risks that no business manager has taken",
+        "C": "Approving the agency's overall risk appetite",
+        "D": "Challenging the IT risk ratings that owners report"
+      },
+      "correct": "D",
+      "key_concept": "A risk committee oversees, challenges, escalates and approves only within its authority; it does not own risk, accept it for an owner or set appetite.",
+      "pre_read": "Think about what a committee can and cannot be accountable for. Compare each option with who decides, who oversees and who sets limits.",
+      "correct_explanation": "A risk committee oversees: it reviews the IT risk profile, challenges the ratings owners report and escalates what needs a higher decision. Accepting risk above appetite is the runner-up, because committees do discuss such risks, but acceptance belongs to the risk owner, approved at the level that set the limit; a committee vote on the owner's behalf blurs that accountability.",
+      "wrong_explanations": {
+        "A": "Committees discuss risks above appetite but do not accept risk in place of the named owner, who accepts with approval from the level that set the limit.",
+        "B": "A committee cannot be the single accountable owner. When no manager takes a risk, senior management assigns one with authority over the objective.",
+        "C": "The board, with senior management, sets appetite. A management-level IT committee works within that appetite rather than approving it."
+      },
+      "tips": [
+        "Eliminate: B makes a group the accountable owner, and C gives a management committee the board's role of setting appetite.",
+        "Final two: D beats A because a committee oversees and challenges; accepting risk stays with a named owner at the right authority.",
+        "Exam cue: committees oversee, challenge and escalate, and approve only within the authority they were given; a named owner still owns and accepts each risk."
+      ],
+      "framework_ref": "COBIT 2019 EDM03 (Ensured Risk Optimization); NIST CSF 2.0 GV.RR-02 (roles, responsibilities and authorities related to cybersecurity risk management are established, communicated, understood and enforced)",
+      "related_concepts": [
+        "Risk committee",
+        "Risk acceptance",
+        "Oversight"
+      ],
+      "_provenance": "Authored from concept: Round 2, 31 Oct 2026: authored from notes 1A2.1 (Board, Senior Management and the Risk Committee: committees advise and oversee; one named person is accountable); original transit agency IT risk committee charter scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D1 round 2. Review fixes 31 Oct 2026 (repair round 1, standards audit): option A now says the committee accepts on the owners' behalf, and the cue allows approval within delegated authority, consistent with crisc_d1_042 and the glossary.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_024",
+      "domain": 1,
+      "subtopic": "1A3 Organizational culture and ethics. Falling security near-miss reports",
+      "principle_id": "root-cause-over-symptom",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Security near-miss reports at a rail control center, such as blocked phishing clicks, fell from 30 to 4 a quarter once each counted against the reporter's performance rating. What is the risk practitioner's BEST recommendation?",
+      "options": {
+        "A": "Stop using near-miss reports to rate individual staff",
+        "B": "Make near-miss reporting mandatory under a new policy",
+        "C": "Retrain control center staff on near-miss reporting",
+        "D": "Set a near-miss reporting target in performance ratings"
+      },
+      "correct": "A",
+      "key_concept": "When reporting drops after reports start counting against staff, the cause is a disincentive; protecting reporters works where rules and training cannot.",
+      "pre_read": "Notice what changed just before the reports fell. Ask what that timing says about the cause.",
+      "correct_explanation": "The drop followed a change in how reports were used, so the cause is fear of consequences, not lack of knowledge. Leaders, as owners of the rating scheme, should end the reports' use in staff ratings, protecting people who speak up and restoring the reason to report. Retraining is the runner-up: staff who filed 30 reports a quarter already knew how, and training cannot outweigh a reason to stay quiet.",
+      "wrong_explanations": {
+        "B": "A mandate adds a rule but leaves the penalty in place, so staff still have a reason to hide near misses or report only harmless ones.",
+        "C": "Training builds knowledge, and these staff reported freely before. While reports still count against them in ratings, training will not bring the numbers back.",
+        "D": "A reporting target adds a count to the same ratings that penalize each report, inviting trivial reports while serious near misses stay hidden."
+      },
+      "tips": [
+        "Eliminate: B adds a rule while the penalty stays, and D sets a count in the same ratings that punish reporting.",
+        "Final two: A beats C because the cause is a disincentive, not a knowledge gap; protect reporters before teaching them again.",
+        "Exam cue: when reporting falls after a change in how reports are used, fix the incentive; culture follows what is rewarded or punished."
+      ],
+      "framework_ref": "ISACA Glossary (risk culture); NIST CSF 2.0 GV.RR-01 (organizational leadership is responsible and accountable for cybersecurity risk and fosters a culture that is risk-aware, ethical and continually improving)",
+      "related_concepts": [
+        "Risk culture",
+        "Speaking up",
+        "Near miss"
+      ],
+      "_provenance": "Authored from concept: Round 2, 31 Oct 2026: authored from notes 1A3.2 (Incentives, Speaking Up and Escalation: protect those who report and never punish the messenger); original rail control center near-miss reporting scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D1 round 2. Review fixes 31 Oct 2026 (repair round 1, standards audit): scenario framed as security near misses (IS risk); stem now states reports count against the reporter; key no longer echoes the stem; the KRI distractor replaced by a reporting-target misconception; explanation names leaders as owners of the review scheme.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_025",
+      "domain": 1,
+      "subtopic": "1A4 Policies and standards. Expired exceptions",
+      "principle_id": "advise-dont-decide",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A telecom's exception register shows 30 exceptions to the patching standard that expired up to a year ago, and the systems are still unpatched. What should the risk practitioner recommend as the BEST action?",
+      "options": {
+        "A": "Extend the 30 exceptions by a year on the owners' behalf",
+        "B": "Report the 30 systems to internal audit as noncompliant",
+        "C": "Ask each risk owner to renew or close the exception",
+        "D": "Have IT patch the 30 systems before the next quarter"
+      },
+      "correct": "C",
+      "key_concept": "An expired exception leaves risk carried with no current acceptance; the risk owner must decide again whether to renew it or restore compliance.",
+      "pre_read": "Notice what an expiry date is for. Ask what should happen to the risk when that date passes.",
+      "correct_explanation": "An expired exception means risk is being carried that nobody has currently accepted. Each risk owner must decide again: renew the exception on a fresh analysis, with approval at the right level, or close it and restore compliance. Having IT patch everything is the runner-up: patching may well be the result, but ordering it skips the owner's decision and may break systems that needed the exceptions.",
+      "wrong_explanations": {
+        "A": "Extending exceptions for the owners is a risk acceptance made by the practitioner, who analyzes and recommends but does not accept risk.",
+        "B": "Internal audit gives independent assurance; it is not the route for management to resolve its own lapsed exceptions. The owners need to decide now.",
+        "D": "Patching may be the right result, but ordering it skips the owners' decision and the reasons the exceptions were granted, such as systems that break when patched."
+      },
+      "tips": [
+        "Eliminate: A has the practitioner accept risk for the owners, and B sends a management issue to the third line.",
+        "Final two: C beats D because an expired exception needs a fresh owner decision; patching may follow, but the owner chooses the response.",
+        "Exam cue: exceptions expire into a new decision by the risk owner, never into silent renewal or an order issued around the owner."
+      ],
+      "framework_ref": "NIST CSF 2.0 ID.RA-07 (changes and exceptions are managed, assessed for risk impact, recorded and tracked); ISACA Glossary (risk owner)",
+      "related_concepts": [
+        "Policy exception",
+        "Exception register",
+        "Risk acceptance"
+      ],
+      "_provenance": "Authored from concept: Round 2, 31 Oct 2026: authored from notes 1A4.2 (Policy Exceptions: every exception has an owner, an expiry and a review; at expiry the owner decides again); original telecom expired patching exceptions scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D1 round 2.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_026",
+      "domain": 1,
+      "subtopic": "1A4 Policies and standards. Staff delays under a new standard",
+      "principle_id": "proportionate-response",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A university's new standard requires hardware security keys on all 300 systems, including dozens of low-risk sites such as the public course catalog, and staff report long delays. What is the risk practitioner's BEST recommendation?",
+      "options": {
+        "A": "Have system owners grant exceptions for the low-risk systems",
+        "B": "Reissue the standard as an optional guideline for staff",
+        "C": "Keep the standard and train staff to use the keys faster",
+        "D": "Ask the standard's owner to scale the rule to system risk"
+      },
+      "correct": "D",
+      "key_concept": "Standards should be as strict as the risk requires; when a whole class of systems needs exceptions, the rule itself should be revised.",
+      "pre_read": "Notice which systems the standard covers and what staff report. Ask where the mismatch between control and risk comes from.",
+      "correct_explanation": "Standards should be as strict as the risk requires. A public catalog does not need the sign-in strength of research or finance systems, so the standard's owner should tier the requirement by system risk and seek approval through the policy process. Granting exceptions is the runner-up: it relieves the delays, but routine exceptions for a whole class of systems show that the rule itself needs fixing.",
+      "wrong_explanations": {
+        "A": "Exceptions suit one-off gaps. Granting them routinely for a whole class of systems leaves a flawed rule in place and builds a backlog of exceptions to renew.",
+        "B": "Guidelines are advisory, so high-risk systems would also lose a mandatory requirement. The problem is the rule's scope, not whether it binds.",
+        "C": "Training keeps a control that costs more than the risk it reduces on low-risk systems. Using the keys faster does not make the rule proportionate."
+      },
+      "tips": [
+        "Eliminate: B makes the requirement optional even where risk is high, and C keeps a control out of proportion to the risk.",
+        "Final two: D beats A because a rule that needs routine exceptions for a whole class of systems should be fixed at the source.",
+        "Exam cue: match control strength to risk; when exceptions become routine, revise the rule instead of excusing it again and again."
+      ],
+      "framework_ref": "NIST CSF 2.0 GV.PO-01 (policy for managing cybersecurity risks is established based on organizational context, cybersecurity strategy and priorities and is communicated and enforced); COBIT 2019 APO12 (Managed Risk)",
+      "related_concepts": [
+        "Standard",
+        "Proportionate control",
+        "Policy exception"
+      ],
+      "_provenance": "Authored from concept: Round 2, 31 Oct 2026: authored from notes 1A4.1 (The Policy Hierarchy: every layer traces back to risk appetite, so rules are as strict as the risk requires; repeated exceptions in 1A4.2); original university hardware security key standard scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D1 round 2. Review fixes 31 Oct 2026 (repair round 1, standards audit): neutral subtopic label; stem now shows that dozens of low-risk sites are affected, the fact that rules out exceptions.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_027",
+      "domain": 1,
+      "subtopic": "1A5 Business processes and resilience. Improving a continuity plan",
+      "principle_id": "objectives-first",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A city council's continuity plan is a restore sequence for its 40 IT systems, written by the IT department. Which of the following should the risk practitioner recommend as the MOST important improvement?",
+      "options": {
+        "A": "Add a recovery time for each of the 40 systems",
+        "B": "Organize the plan around critical council services",
+        "C": "Test failover for the ten most used systems each year",
+        "D": "Have IT managers sign off the plan each year"
+      },
+      "correct": "B",
+      "key_concept": "A business continuity plan is scoped by critical business processes and owned by the business; restoring systems is the supporting disaster recovery plan's job.",
+      "pre_read": "Notice how the plan is organized and who wrote it. Ask what a continuity plan exists to keep running.",
+      "correct_explanation": "A business continuity plan keeps critical business processes running; restoring systems is the job of the disaster recovery plan that supports it. A restore list cannot show whether services such as waste collection or benefit payments continue. Testing failover is the runner-up, but testing a system-only plan proves that systems restart, not that council services carry on, so the scope has to be fixed first.",
+      "wrong_explanations": {
+        "A": "Recovery times per system refine the IT view. Without the services they support and the owners who set the targets, there is no basis for the times.",
+        "C": "Failover tests check that systems restart. They cannot show whether council services continue, so testing comes after the plan covers services.",
+        "D": "Yearly sign-off by IT managers keeps the plan owned by IT. Continuity needs the owners of council services to set needs and accept gaps."
+      },
+      "tips": [
+        "Eliminate: A refines a system-by-system list, and D keeps the plan owned by IT rather than by the services.",
+        "Final two: B beats C because a plan scoped to systems proves restarts, not continuity; fix the scope before testing it.",
+        "Exam cue: a BCP is scoped by business processes and owned by the business; the DRP restores the systems those processes need."
+      ],
+      "framework_ref": "NIST SP 800-34 Rev. 1 Section 2.2 (Types of Plans: Business Continuity Plan and Disaster Recovery Plan); ISACA Glossary (business continuity plan)",
+      "related_concepts": [
+        "Business continuity plan",
+        "Disaster recovery plan",
+        "Critical business process"
+      ],
+      "_provenance": "Authored from concept: Round 2, 31 Oct 2026: authored from notes 1A5.2 (Continuity and Recovery Plans as Risk Responses: the BCP is scoped by business processes and the DRP serves it); original city council system-restore continuity plan scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D1 round 2. Review fixes 31 Oct 2026 (repair round 1, standards audit): neutral subtopic label that no longer names the flaw.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_028",
+      "domain": 1,
+      "subtopic": "1A5 Business processes and resilience. Setting a recovery target",
+      "principle_id": "match-decision-to-role",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A manufacturer's IT manager sets a 48-hour recovery target for the order-to-ship process, matching what the current backup setup can deliver. What should the risk practitioner recommend as the BEST approach?",
+      "options": {
+        "A": "Have the process owner set the target from business impact",
+        "B": "Keep 48 hours until the backup setup is next upgraded",
+        "C": "Have the system owner benchmark the target against peers",
+        "D": "Have the business continuity team approve the target"
+      },
+      "correct": "A",
+      "key_concept": "Recovery targets come from the business impact the process owner judges; IT and suppliers then build capability to meet them.",
+      "pre_read": "Notice where the 48-hour figure came from. Ask what a recovery target is supposed to reflect.",
+      "correct_explanation": "Recovery targets come from business need: how long the order-to-ship process can be down before the harm becomes unacceptable, as the process owner judges through impact analysis. IT then designs capability to meet that target. Approval by the continuity team is the runner-up because it adds a business check, but it still endorses a number taken from today's backups rather than from the process's need.",
+      "wrong_explanations": {
+        "B": "Keeping 48 hours lets current backup capability define the business need. If orders can wait only 12 hours, the gap stays hidden until an outage.",
+        "C": "Peer targets reflect other firms' customers and contracts. This manufacturer's own impact on its orders decides how fast the process must return.",
+        "D": "The continuity team coordinates plans, but approving the IT figure still starts from capability. The process owner sets the target from impact."
+      },
+      "tips": [
+        "Eliminate: B lets the current backup setup define the need, and C borrows other firms' targets instead of this process's impact.",
+        "Final two: A beats D because the target must start from the process's business impact; approving IT's figure still starts from capability.",
+        "Exam cue: the business sets how fast a process must return; IT and suppliers build the capability to meet it."
+      ],
+      "framework_ref": "ISACA Glossary (recovery time objective); COBIT 2019 DSS04 (Managed Continuity)",
+      "related_concepts": [
+        "Recovery time objective",
+        "Process owner",
+        "Business impact"
+      ],
+      "_provenance": "Authored from concept: Round 2, 31 Oct 2026: authored from notes 1A5.1 (Process Ownership and Critical Processes: the process owner sets recovery requirements; IT and suppliers deliver capability); original manufacturer order-to-ship recovery target scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D1 round 2.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_029",
+      "domain": 1,
+      "subtopic": "1A5 Business processes and resilience. Recovery test result",
+      "principle_id": "evidence-before-credit",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A mortgage lender's recovery test restored its loan system within the 4-hour RTO, but with no process for applications taken offline, underwriters approved no loans for two days. What should the risk practitioner do FIRST?",
+      "options": {
+        "A": "Report the recovery test as passed for the loan system",
+        "B": "Schedule a full retest of the lending process next quarter",
+        "C": "Raise the continuity gap with the lending process owner",
+        "D": "Ask the system owner to shorten the loan system's RTO"
+      },
+      "correct": "C",
+      "key_concept": "A recovery test passes only if the business process continues; a process gap goes to its owner before the plan is credited or retested.",
+      "pre_read": "Notice what the test proved and what it did not. Ask who has to act on the part that failed.",
+      "correct_explanation": "The test proved the system can be restored, but lending still stopped for two days, so the plan failed where it matters. The gap belongs to the lending process owner, who decides how to close it, such as a workable procedure for applications taken during an outage, and it enters the risk register. Repeating the test is the runner-up, but retesting before the gap is closed would only show the same failure.",
+      "wrong_explanations": {
+        "A": "The system met its RTO, yet no loans were approved for two days. Reporting a pass credits the plan with a resilience the test disproved.",
+        "B": "A retest is needed later, but running it before the process gap is owned and closed would repeat the same failure and delay the fix.",
+        "D": "The two-day stoppage came from the missing process for offline applications, which a faster restore would not fix, and the business, not the system owner, sets recovery targets."
+      },
+      "tips": [
+        "Eliminate: A credits a plan whose process failed, and D speeds up a system that was back within its 4-hour target.",
+        "Final two: C beats B because the owner must close the process gap before a retest can show anything new.",
+        "Exam cue: a recovery test passes only if the business process carried on; any gap goes to the process owner first."
+      ],
+      "framework_ref": "NIST SP 800-34 Rev. 1 Section 3.5 (Plan Testing, Training, and Exercises); ISACA Glossary (business continuity plan)",
+      "related_concepts": [
+        "Recovery testing",
+        "Process owner",
+        "Business continuity plan"
+      ],
+      "_provenance": "Authored from concept: Round 2, 31 Oct 2026: authored from notes 1A5.2 (Continuity and Recovery Plans as Risk Responses: test results feed the register and a DRP test does not prove resilience); original mortgage lender recovery test scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D1 round 2. Review fixes 31 Oct 2026 (repair round 1, standards audit): stem now gives the 4-hour RTO and the missing re-entry process, so the two-day stoppage is clearly a process failure; D's explanation adds that the business sets recovery targets.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_030",
+      "domain": 1,
+      "subtopic": "1A6 Organizational asset management. Valuing an asset for risk analysis",
+      "principle_id": "objectives-first",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Which of the following is the BEST basis for the value a risk practitioner assigns to a customer database when rating risk to it?",
+      "options": {
+        "A": "The license cost the business paid for the software",
+        "B": "The book value in the fixed asset register",
+        "C": "The cost of rebuilding the records from source documents",
+        "D": "The business impact of losing or exposing the data"
+      },
+      "correct": "D",
+      "key_concept": "For risk analysis, an asset is valued by the business impact of its loss or exposure, not by its price or book value.",
+      "pre_read": "Picture what the enterprise would actually lose. Compare each option with that loss.",
+      "correct_explanation": "Risk analysis needs to know what a loss would cost the business, so the asset's value rests on the impact of losing or exposing it: lost revenue, legal penalties, customer harm and damage to reputation. The cost of rebuilding the records is the runner-up, because replacement cost is one part of value, but it misses the larger harms that follow a disclosure or a long outage.",
+      "wrong_explanations": {
+        "A": "The software license is a cost of the tool, not the value of the customer data held in it, which can be worth far more.",
+        "B": "Book value follows accounting rules and depreciation. Data often has little or no book value while its loss could be severe.",
+        "C": "Rebuild cost is one part of an asset's value, but it leaves out harms such as regulatory penalties and lost customers after a breach."
+      },
+      "tips": [
+        "Eliminate: A values the software rather than the data, and B uses an accounting figure that says nothing about business harm.",
+        "Final two: D beats C because replacement cost is only one part of value; business impact also covers disclosure and lost revenue.",
+        "Exam cue: value assets by business impact, not by the price paid or the book value."
+      ],
+      "framework_ref": "ISACA Glossary (asset value); NIST CSF 2.0 ID.AM-05 (assets are prioritized based on classification, criticality, resources and impact on the mission)",
+      "related_concepts": [
+        "Asset valuation",
+        "Business impact",
+        "Classification"
+      ],
+      "_provenance": "Authored from concept: Round 2, 31 Oct 2026: authored from notes 1A6.2 (Classification and Valuation as Risk Input: value assets by business impact, not purchase price); original customer database valuation scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D1 round 2.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_031",
+      "domain": 1,
+      "subtopic": "1A6 Organizational asset management. Change in the data an asset holds",
+      "principle_id": "match-decision-to-role",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A logistics firm's shipment-tracking portal, classified internal, now stores customers' passport scans for cross-border deliveries. What should the risk practitioner do FIRST?",
+      "options": {
+        "A": "Ask the portal's business owner to review its classification",
+        "B": "Reassess the portal's risk using its current classification",
+        "C": "Have IT encrypt the passport scans stored in the portal",
+        "D": "Have the IT team reclassify the portal and its data as confidential"
+      },
+      "correct": "A",
+      "key_concept": "When an asset's data or use changes, its business owner revisits the classification first; risk ratings and controls follow from it.",
+      "pre_read": "Notice what changed in the portal's data. Ask which decision about the asset has to come before any rating or control.",
+      "correct_explanation": "Storing passport scans changes the portal's sensitivity, and classification drives impact ratings and handling rules. The business owner of the portal sets its classification, so the first step is to have them review it; the risk rating then follows. Reclassification by IT is the runner-up: confidential is probably the right label, but IT acts as custodian, and the owner must decide the class and accept the resulting risk.",
+      "wrong_explanations": {
+        "B": "Assessing risk on the old classification would understate the impact of exposing passport data. The classification must be updated before the risk is rated.",
+        "C": "Encryption may well be needed, but choosing it before the classification and risk are settled puts a control ahead of the analysis it should follow.",
+        "D": "IT may suggest the label, but as custodian it does not classify. The business owner decides the classification and accepts the risk to the asset."
+      },
+      "tips": [
+        "Eliminate: B rates risk on a classification the new data has outdated, and C picks a control before the risk is understood.",
+        "Final two: A beats D because the business owner classifies the asset; IT, as custodian, protects it to that class.",
+        "Exam cue: when an asset's data or use changes, the owner revisits its class and value first; ratings and controls follow."
+      ],
+      "framework_ref": "COBIT 2019 BAI09 (Managed Assets); NIST CSF 2.0 ID.AM-05 (assets are prioritized based on classification, criticality, resources and impact on the mission)",
+      "related_concepts": [
+        "Asset classification",
+        "Asset owner",
+        "Custodian"
+      ],
+      "_provenance": "Authored from concept: Round 2, 31 Oct 2026: authored from notes 1A6.2 (Classification and Valuation as Risk Input: the owner classifies, and classes are reviewed when an asset's data changes; owner versus custodian in 1A6.1); original logistics tracking portal holding passport scans scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D1 round 2.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_032",
+      "domain": 1,
+      "subtopic": "1A6 Organizational asset management. AI model version change",
+      "principle_id": "emerging-and-ai-risk-owned",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A city council's inventory lists version 2 of a vendor's benefit-fraud AI model, which the vendor replaced with version 3 two months ago without notice. Which of the following is the risk practitioner's GREATEST concern?",
+      "options": {
+        "A": "The inventory record for the model is out of date",
+        "B": "The model's risk rating rests on a version no longer used",
+        "C": "The vendor changed the model without telling the council",
+        "D": "The new version's license terms have not been reviewed"
+      },
+      "correct": "B",
+      "key_concept": "An AI model version is part of the asset; a risk rating holds only for the version that was assessed.",
+      "pre_read": "Notice which version was assessed and which one is running. Ask what decisions now rest on the difference.",
+      "correct_explanation": "A new model version can behave differently, with changed accuracy, bias or failure modes, so the council's risk assessment and any acceptance now describe a model that no longer runs. Benefit decisions rest on risk nobody has analyzed. The vendor's silence is the runner-up: it is a real vendor-management failure to pursue, but it matters because of the unassessed risk it created, which is the greater concern.",
+      "wrong_explanations": {
+        "A": "The stale record is how the problem shows up, not the harm. The concern is what decisions now rely on an unassessed model.",
+        "C": "The missing notice is a vendor-management gap worth raising under the contract, but its result, an unassessed model flagging benefit claims, is the greater concern.",
+        "D": "License terms matter commercially, but they do not affect whether fraud flags on benefit claims are accurate and fair under the new version."
+      },
+      "tips": [
+        "Eliminate: A is the record-keeping symptom, and D is a commercial matter that does not touch benefit decisions.",
+        "Final two: B beats C because the unassessed model now flagging claims is the harm; the missing notice is how it arose.",
+        "Exam cue: an AI model version is a change to the asset; its risk rating holds only for the version that was assessed."
+      ],
+      "framework_ref": "NIST AI 100-1 (AI RMF 1.0) GOVERN 1.6 (mechanisms are in place to inventory AI systems); NIST AI 100-1 (AI RMF 1.0) MANAGE 3.1 (AI risks and benefits from third-party resources are regularly monitored and risk controls are applied and documented)",
+      "related_concepts": [
+        "AI model inventory",
+        "Third-party AI",
+        "Change in risk"
+      ],
+      "_provenance": "Authored from concept: Round 2, 31 Oct 2026: authored from notes 1A6.3 (Cloud, SaaS and AI Assets in the Inventory: a new model version, including a silent vendor update, is a change to the asset and its rating); original city council benefit-fraud model version change scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D1 round 2. Review fixes 31 Oct 2026 (repair round 1, standards audit): setting changed to avoid mirroring CISA d1_218 and crisc_d1_011.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_033",
+      "domain": 1,
+      "subtopic": "1B1 Enterprise risk management (ERM). IT register kept apart",
+      "principle_id": "rate-on-common-terms",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A hotel group's IT department keeps its own register of 60 risks, none of which appear in the enterprise register the executive committee reviews. What should the risk practitioner recommend as the BEST approach?",
+      "options": {
+        "A": "Send the full IT register to the executive committee each quarter",
+        "B": "Have the CIO accept the IT risks on the enterprise's behalf",
+        "C": "Bring IT risks into the enterprise register in its categories",
+        "D": "Map each IT risk to the security standard it relates to"
+      },
+      "correct": "C",
+      "key_concept": "IT risk is business risk: it belongs in the enterprise register, in enterprise categories and scales, so leaders can compare and prioritize it.",
+      "pre_read": "Notice who reviews which register. Ask what executives need to compare IT risk with everything else.",
+      "correct_explanation": "IT risk is business risk, so leaders must see it beside every other enterprise risk, rated on the same categories and scales. Bringing the 60 risks into the enterprise register lets the executive committee compare, prioritize and fund them alongside other exposures. Sending the full IT register is the runner-up: it adds visibility, but it keeps IT risk in IT's own terms and leaves the comparison undone.",
+      "wrong_explanations": {
+        "A": "A separate IT register shows the risks in IT's own terms and volume, so executives still cannot weigh them against other enterprise risks.",
+        "B": "The CIO can own risks to IT objectives, but accepting risks to business objectives for the enterprise takes the decision from the business owners.",
+        "D": "Mapping risks to security standards helps control design, but it keeps them in technical terms instead of linking them to enterprise objectives."
+      },
+      "tips": [
+        "Eliminate: B lets the CIO accept risk for business owners, and D keeps the risks in technical rather than business terms.",
+        "Final two: C beats A because leaders need IT risk in the enterprise's terms beside other risks, not a second register in IT's terms.",
+        "Exam cue: one enterprise view, one taxonomy, one set of scales; IT risk feeds ERM rather than running beside it."
+      ],
+      "framework_ref": "NIST CSF 2.0 GV.RM-03 (cybersecurity risk management activities and outcomes are included in enterprise risk management processes); NIST IR 8286 Rev. 1 Section 3.8 (Creating and Maintaining an Enterprise-Level Cybersecurity Risk Register)",
+      "related_concepts": [
+        "Enterprise risk register",
+        "Risk taxonomy",
+        "IT risk"
+      ],
+      "_provenance": "Authored from concept: Round 2, 31 Oct 2026: authored from notes 1B1.1 (IT Risk Within Enterprise Risk: a separate IT-only register is a gap to close); original hotel group separate IT register scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D1 round 2.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_034",
+      "domain": 1,
+      "subtopic": "1B1 Enterprise risk management (ERM). Framework in practice",
+      "principle_id": "evidence-before-credit",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A year after an engineering firm's executive committee approved a new risk management framework, which of the following would give the risk practitioner the BEST evidence that it is embedded?",
+      "options": {
+        "A": "The executive committee's minutes approving the framework",
+        "B": "Unit managers' self-assessments of framework compliance",
+        "C": "A crosswalk from the framework to COBIT 2019 and NIST CSF",
+        "D": "Unit risk assessments that use the framework's methods"
+      },
+      "correct": "D",
+      "key_concept": "A framework is embedded when business units use its methods in their own risk work; approval gives authority but does not show use.",
+      "pre_read": "Separate evidence that leaders adopted the framework from evidence that business units now work by it.",
+      "correct_explanation": "A framework is embedded when units actually use it, so the strongest evidence is their own risk assessments applying its methods, scales and taxonomy. The approval minutes are the runner-up: approval by senior management gives the framework authority across units, which matters, but it shows that leaders adopted it a year ago, not that the units now work by it.",
+      "wrong_explanations": {
+        "A": "Approval gives the framework its authority, but it records a decision made a year ago, not how units assess risk today.",
+        "B": "Self-assessments are managers' own claims of compliance. They are weaker than the assessments themselves, which show the methods in use.",
+        "C": "A crosswalk shows how the framework's design relates to other frameworks. It says nothing about whether business units apply it."
+      },
+      "tips": [
+        "Eliminate: C maps the framework's design to others, and B relies on managers' own claims of compliance.",
+        "Final two: D beats A because approval gives authority, while the units' assessments show the framework in actual use.",
+        "Exam cue: evidence of use beats evidence of intent; look for the framework in work products, not in sign-offs."
+      ],
+      "framework_ref": "COBIT 2019 EDM01 (Ensured Governance Framework Setting and Maintenance); NIST CSF 2.0 GV.RM-06 (a standardized method for calculating, documenting, categorizing and prioritizing cybersecurity risks is established and communicated)",
+      "related_concepts": [
+        "Risk management framework",
+        "Framework adoption",
+        "Evidence of operation"
+      ],
+      "_provenance": "Authored from concept: Round 2, 31 Oct 2026: authored from notes 1B1.3 (The Risk Management Framework and Its Approval: compare framework requirements with how units actually assess risk); original engineering firm framework one year on scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D1 round 2.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_035",
+      "domain": 1,
+      "subtopic": "1B2 Lines of defense. Overlapping assurance",
+      "principle_id": "lines-of-defense",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A bank's internal audit and second-line risk team both test the same 40 key controls yearly, while neither tests its cloud controls. What should the risk practitioner recommend as the BEST approach?",
+      "options": {
+        "A": "Agree a combined assurance map with internal audit",
+        "B": "Have internal audit take over testing of the 40 controls",
+        "C": "Stop the second line's testing of the 40 key controls",
+        "D": "Ask the cloud team to self-assess its cloud controls"
+      },
+      "correct": "A",
+      "key_concept": "Combined assurance coordinates what each line tests, removing duplication and closing gaps while each line keeps its role.",
+      "pre_read": "Notice both problems in the stem. Check which option leaves each line in its proper role.",
+      "correct_explanation": "Combined assurance maps which line tests which risks, so the lines can rely on each other's work, remove duplicate testing and close gaps such as the untested cloud controls. Agreeing the map with internal audit fixes both problems while each line keeps its role. A cloud self-assessment is the runner-up: first-line checking is useful, but it closes only part of the cloud gap and leaves the duplication.",
+      "wrong_explanations": {
+        "B": "Internal audit gives independent assurance; taking over routine testing would replace second-line oversight and still leave the cloud controls uncovered.",
+        "C": "Stopping second-line testing removes the duplication by dropping oversight, and the cloud controls remain untested by anyone.",
+        "D": "First-line self-assessment adds some cloud coverage, but it is not independent challenge, and the duplicated testing of the 40 controls stays."
+      },
+      "tips": [
+        "Eliminate: B turns the third line into routine testers, and C removes second-line oversight while the cloud gap stays open.",
+        "Final two: A beats D because a combined assurance map fixes the duplication and the gap; self-assessment covers part of one.",
+        "Exam cue: when lines overlap in one place and leave gaps in another, coordinate coverage across the lines instead of moving work to one line."
+      ],
+      "framework_ref": "ISACA Journal 2018 Volume 4 (Roles of Three Lines of Defense for Information Security and Governance); COBIT 2019 APO12 (Managed Risk)",
+      "related_concepts": [
+        "Combined assurance",
+        "Lines of defense",
+        "Assurance coverage"
+      ],
+      "_provenance": "Authored from concept: Round 2, 31 Oct 2026: authored from notes 1B2.2 (Independence, Challenge and Coordination Across Lines: combined assurance maps who tests what); original bank duplicated control testing with a cloud gap scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D1 round 2.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_036",
+      "domain": 1,
+      "subtopic": "1B2 Lines of defense. Second line running a control",
+      "principle_id": "lines-of-defense",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "For the past year, a logistics firm's second-line risk team has run the monthly firewall rule reviews because the network team is short-staffed. Which of the following should concern the risk practitioner MOST?",
+      "options": {
+        "A": "The risk team lacks the network team's firewall expertise",
+        "B": "Internal audit will need to widen its review testing",
+        "C": "The risk team cannot objectively challenge a control it runs",
+        "D": "Rule changes made between monthly reviews go unchecked"
+      },
+      "correct": "C",
+      "key_concept": "A second line that runs a first-line control loses its ability to challenge it, and the first line stops owning it.",
+      "pre_read": "Think about what each line of defense is for. Ask what changes when the overseer performs the control.",
+      "correct_explanation": "The second line oversees and challenges first-line controls. After a year of running the firewall reviews itself, the risk team is checking its own work, and the network team no longer owns the control, so a key control has lost both its owner and its challenger. Lack of firewall expertise is the runner-up: it matters, but skills can be added, while the conflict in roles remains.",
+      "wrong_explanations": {
+        "A": "Expertise matters for good reviews, but it can be supplied or trained. The lasting problem is that the team meant to challenge the control now runs it.",
+        "B": "Audit may adjust its plan, but wider audit testing is a consequence. It does not restore first-line ownership or second-line challenge.",
+        "D": "Monthly reviews can suit the firm's risk, and nothing in the scenario shows the interval is wrong. The problem is who performs them."
+      },
+      "tips": [
+        "Eliminate: B describes a knock-on effect on audit planning, and D questions an interval the scenario gives no reason to doubt.",
+        "Final two: C beats A because skills can be added, but a team that runs a control cannot also challenge it objectively.",
+        "Exam cue: if the second line performs a first-line control, flag the lost challenge and ownership, and plan a hand-back."
+      ],
+      "framework_ref": "ISACA Journal 2018 Volume 4 (Roles of Three Lines of Defense for Information Security and Governance); NIST CSF 2.0 GV.RR-02 (roles, responsibilities and authorities related to cybersecurity risk management are established, communicated, understood and enforced)",
+      "related_concepts": [
+        "Second line",
+        "Control ownership",
+        "Objectivity"
+      ],
+      "_provenance": "Authored from concept: Round 2, 31 Oct 2026: authored from notes 1B2.2 (Independence, Challenge and Coordination Across Lines: trap, the risk team runs a first-line control while the business is short-staffed; roles in 1B2.1); original logistics second-line team running firewall reviews scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D1 round 2.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_037",
+      "domain": 1,
+      "subtopic": "1B3 Risk profile. Control credited in the profile has failed",
+      "principle_id": "residual-counts-working-controls",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Internal audit reports that an airline's access recertification control, credited in three risks the profile shows within appetite, has not operated for six months. What should the risk practitioner do FIRST?",
+      "options": {
+        "A": "Ask the control owner to restart the recertifications",
+        "B": "Reassess the three risks without credit for the control",
+        "C": "Keep the profile as reported until the next quarterly update",
+        "D": "Ask internal audit to assess the control again next quarter"
+      },
+      "correct": "B",
+      "key_concept": "Current risk credits only controls that are in place and working; when a credited control fails, the affected risks are re-rated without it.",
+      "pre_read": "Notice what the profile credits and what audit found. Ask what the three ratings now claim that is no longer true.",
+      "correct_explanation": "Current risk counts only controls that are in place and working. With recertification stopped for six months, the three ratings overstate protection, and the risks may now sit above appetite. Reassessing them without the control shows the true position to the owners and leaders. Asking the control owner to restart is the runner-up: it is needed, but it does not show how exposed the airline is now.",
+      "wrong_explanations": {
+        "A": "Restarting the control is the owner's job and will be needed, but it does not tell the risk owners or leaders how exposed the three risks are today.",
+        "C": "Holding the profile leaves leaders relying on ratings that credit a control that has not worked for six months.",
+        "D": "The audit finding already shows the control has not operated. Waiting a quarter to retest leaves the profile overstated in the meantime."
+      },
+      "tips": [
+        "Eliminate: C leaves a known-wrong rating in the profile, and D waits to retest a failure that is already established.",
+        "Final two: B beats A because the practitioner first needs the true exposure; restarting the control is the owner's fix, not a rating.",
+        "Exam cue: a control earns credit in a rating only while it works; when it fails, re-rate the risk before anything else."
+      ],
+      "framework_ref": "ISACA Glossary (current risk); NIST IR 8286 Rev. 1 Section 4.1 (Applying the Enterprise Risk Register and Developing the Enterprise Risk Profile)",
+      "related_concepts": [
+        "Current risk",
+        "Risk profile",
+        "Control failure"
+      ],
+      "_provenance": "Authored from concept: Round 2, 31 Oct 2026: authored from notes 1B3.2 (Aggregation and Keeping the Profile Current: a failed control behind a profile rating is re-rated without it; current risk in 1B3.1); original airline failed recertification control scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D1 round 2.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_038",
+      "domain": 1,
+      "subtopic": "1B3 Risk profile. AI exposure in the profile",
+      "principle_id": "report-for-the-decision",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Several business units at a retailer adopted generative AI tools this year. Which of the following would BEST show senior management how this changes the enterprise risk profile?",
+      "options": {
+        "A": "AI risks mapped to the objectives and categories they affect",
+        "B": "A count of AI tools in use for each business objective",
+        "C": "The AI acceptable use policy and its approval date",
+        "D": "Vendor assurance reports for each AI service in use"
+      },
+      "correct": "A",
+      "key_concept": "AI enters the risk profile as risks mapped to the objectives and categories they affect, so leaders can weigh AI exposure against appetite.",
+      "pre_read": "Ask what senior management uses a risk profile for. Compare each option with that purpose.",
+      "correct_explanation": "A risk profile shows exposure in terms leaders can weigh against appetite. Mapping the AI risks in the register to the objectives and risk categories they affect shows senior management where AI has raised exposure and how it sits against appetite. A count of tools per objective is the runner-up: it shows where AI is used, but the volume of use says little about the size of the risk.",
+      "wrong_explanations": {
+        "B": "Counting tools shows how far AI has spread, but ten low-risk tools can matter less than one model making credit or pricing decisions.",
+        "C": "A policy states how AI may be used. It shows intent and approval, not how much risk the business units now carry.",
+        "D": "Vendor reports describe suppliers' controls. They are inputs to analysis, not a view of the enterprise's own exposure."
+      },
+      "tips": [
+        "Eliminate: C shows intent rather than exposure, and D covers suppliers' controls rather than the enterprise's own risk.",
+        "Final two: A beats B because the profile reports exposure by objective; counting tools measures adoption, not risk.",
+        "Exam cue: report changes to the profile as risks to objectives against appetite, never as inventories or counts."
+      ],
+      "framework_ref": "ISACA Glossary (IT risk profile); NIST AI 100-1 (AI RMF 1.0) GOVERN 2.3 (executive leadership takes responsibility for decisions about risks of AI system development and deployment)",
+      "related_concepts": [
+        "Risk profile",
+        "Generative AI",
+        "Risk reporting"
+      ],
+      "_provenance": "Authored from concept: Round 2, 31 Oct 2026: authored from notes 1B3.1 (Risk Register Versus Risk Profile: AI use enters the profile through register entries mapped to objectives and categories); original retailer generative AI adoption scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D1 round 2.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_039",
+      "domain": 1,
+      "subtopic": "1B3 Risk profile. Exposure well below appetite",
+      "principle_id": "appetite-drives-response",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "For two years, a SaaS provider's risk profile has shown technology risk well below appetite in every category, while rivals release features faster. What should the risk practitioner recommend as the BEST action?",
+      "options": {
+        "A": "Lower the risk appetite to match the current profile",
+        "B": "Add controls to keep risk well below appetite",
+        "C": "Remove controls from the lowest-rated risk categories",
+        "D": "Report the gap below appetite to senior management"
+      },
+      "correct": "D",
+      "key_concept": "Exposure far below appetite is a finding too: it may mean excess control cost or missed opportunity, and leaders decide whether to rebalance.",
+      "pre_read": "Notice which way the gap runs. Ask who decides how much risk the provider should take.",
+      "correct_explanation": "Exposure far below appetite can mean the provider spends more on control than its risk warrants and passes up opportunities its appetite allows, a real cost when rivals move faster. Senior management should see that gap and decide whether to rebalance. Removing controls is the runner-up: it may be part of the answer, but which controls to relax is for leaders and risk owners to decide, not the practitioner.",
+      "wrong_explanations": {
+        "A": "Appetite reflects strategy and is set by the board and senior management. Lowering it to fit today's profile moves the limit to match the result.",
+        "B": "More controls would push risk further below appetite and add cost, widening a gap that may already be slowing the business.",
+        "C": "Relaxing controls could be right, but which ones and how far is a decision for senior management and risk owners, based on the practitioner's analysis."
+      },
+      "tips": [
+        "Eliminate: A moves the appetite to fit the profile, and B adds cost where risk is already low.",
+        "Final two: D beats C because leaders decide whether to use unused appetite; the practitioner reports the gap rather than cutting controls.",
+        "Exam cue: being well below appetite is also a finding; report it so leaders can weigh control cost and missed opportunity."
+      ],
+      "framework_ref": "ISACA Glossary (enterprise risk management); ISACA Glossary (risk appetite)",
+      "related_concepts": [
+        "Risk appetite",
+        "Risk profile",
+        "Opportunity"
+      ],
+      "_provenance": "Authored from concept: Round 2, 31 Oct 2026: authored from notes 1B3.1 (Risk Register Versus Risk Profile: the profile shows where exposure is too high or too low against appetite; ERM includes exploiting risk in 1B1.1); original SaaS provider profile far below appetite scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D1 round 2.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_040",
+      "domain": 1,
+      "subtopic": "1B4 Risk appetite and risk tolerance. Input for a downtime tolerance",
+      "principle_id": "objectives-first",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Senior management asks the risk practitioner to help set a tolerance for order-system downtime at a food distributor. Which of the following inputs is MOST important?",
+      "options": {
+        "A": "The order system's uptime over the past year",
+        "B": "The IT team's estimate of acceptable downtime",
+        "C": "The business impact of outages of different lengths",
+        "D": "The cost of moving to a high-availability platform"
+      },
+      "correct": "C",
+      "key_concept": "A tolerance reflects how much variation an objective can bear, so it rests on business impact data, not on what the system already achieves.",
+      "pre_read": "Ask what a tolerance is meant to express. Then compare each input with that purpose.",
+      "correct_explanation": "A tolerance sets how much variation the business will accept around its objectives, so it rests on what downtime of different lengths would do to orders, customers and contracts. Past uptime is the runner-up: it shows what the system achieves, which helps later to judge whether it meets the tolerance, but setting the limit from it records capability rather than need.",
+      "wrong_explanations": {
+        "A": "Past uptime shows capability. Setting the tolerance from it would accept whatever the system already does, whether or not the business can bear it.",
+        "B": "IT can say what the system can deliver, but how much downtime is acceptable depends on harm to orders, customers and contracts, which the business judges.",
+        "D": "Upgrade cost matters when choosing a response to a gap. It comes after the tolerance is set, not as the basis for it."
+      },
+      "tips": [
+        "Eliminate: B lets IT judge what the business can bear, and D prices a response before the limit it must meet is known.",
+        "Final two: C beats A because a tolerance reflects what the business can bear; past uptime only shows what the system delivers.",
+        "Exam cue: limits come from impact on objectives; capability is then compared with the limit, never used to set it."
+      ],
+      "framework_ref": "ISACA Glossary (risk tolerance); NIST CSF 2.0 GV.RM-02 (risk appetite and risk tolerance statements are established, communicated and maintained)",
+      "related_concepts": [
+        "Risk tolerance",
+        "Business impact",
+        "Setting limits"
+      ],
+      "_provenance": "Authored from concept: Round 2, 31 Oct 2026: authored from notes 1B4.2 (Setting and Expressing Risk Appetite: the practitioner supplies impact data; trap, setting the tolerance at current uptime); original food distributor order-system downtime tolerance scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D1 round 2. Review fixes 31 Oct 2026 (repair round 1, standards audit): peer-benchmark distractor replaced by a role misconception to avoid near-duplicating crisc_d1_028.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_041",
+      "domain": 1,
+      "subtopic": "1B4 Risk appetite and risk tolerance. Tolerance beyond capacity",
+      "principle_id": "appetite-drives-response",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "While helping draft tolerances for an online broker, the risk analyst finds the proposed loss limit for trading-platform failures exceeds the firm's risk capacity. What should the analyst recommend as the BEST approach?",
+      "options": {
+        "A": "Keep the proposed limit and monitor trading losses against it",
+        "B": "Propose a limit within capacity for senior management approval",
+        "C": "Have the trading risk owner accept the excess over capacity",
+        "D": "Raise the firm's stated risk capacity to match the proposed limit"
+      },
+      "correct": "B",
+      "key_concept": "Risk capacity is the outer bound; any tolerance that crosses it must be brought inside it before senior management approves it.",
+      "pre_read": "Place capacity, appetite and tolerance in order. Ask what a limit beyond capacity would mean for the firm.",
+      "correct_explanation": "Capacity is the most loss the broker can absorb, so a tolerance above it would accept failures that could threaten the firm itself. The analyst helps by proposing a limit inside capacity, consistent with appetite, for senior management to approve. Owner acceptance is the runner-up, because owners do accept residual risk, but no owner can accept losses beyond what the enterprise can survive.",
+      "wrong_explanations": {
+        "A": "Monitoring against the limit would track losses the firm could not survive. The flaw is in the limit itself, and it must be fixed before approval.",
+        "C": "Risk owners accept residual risk within appetite. Losses beyond capacity threaten the whole firm, which no single owner has the authority to accept.",
+        "D": "Capacity reflects the firm's finances, capital and regulatory limits. It is a fact to respect, not a setting to raise so that a limit fits."
+      },
+      "tips": [
+        "Eliminate: D treats capacity as adjustable, and A monitors against a limit the firm could not survive.",
+        "Final two: B beats C because no owner can accept losses beyond capacity; the limit itself has to move inside it.",
+        "Exam cue: capacity is the outer bound; appetite and every tolerance must sit inside it, so flag any limit that crosses it."
+      ],
+      "framework_ref": "ISACA Glossary (risk capacity); NIST IR 8286 Rev. 1 Section 2.1 (Overview of ERM: risk appetite and risk tolerance)",
+      "related_concepts": [
+        "Risk capacity",
+        "Risk tolerance",
+        "Risk appetite"
+      ],
+      "_provenance": "Authored from concept: Round 2, 31 Oct 2026: authored from notes 1B4.1 (Appetite, Tolerance and Capacity: tolerance must never extend past capacity; the practitioner helps set limits in 1B4.2); original online broker draft loss tolerance scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D1 round 2.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_042",
+      "domain": 1,
+      "subtopic": "1B4 Risk appetite and risk tolerance. Running above tolerance for a time",
+      "principle_id": "escalate-to-the-limit-setter",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A water utility's operations director owns telemetry outage risk and wants to run above the tolerance set by the board's risk committee for 90 days while radios are replaced. Who is the MOST appropriate approver?",
+      "options": {
+        "A": "The operations director who owns the outage risk",
+        "B": "The chief engineer who leads the radio replacement",
+        "C": "The risk analyst who reports against the tolerance",
+        "D": "The board risk committee that approved the limit"
+      },
+      "correct": "D",
+      "key_concept": "The risk owner decides within set limits; carrying risk above a tolerance, even temporarily, needs approval from the level that set it.",
+      "pre_read": "Notice the roles the stem names. Ask what kind of decision the director is asking for.",
+      "correct_explanation": "Risk owners decide responses within the limits leadership sets. Running above a tolerance for 90 days is a temporary acceptance beyond that limit, so it needs approval from the body that set it, the board's risk committee, with the director's plan and interim measures. The director is the runner-up: they own the risk and should request the acceptance, but they cannot approve going beyond a limit set above them.",
+      "wrong_explanations": {
+        "A": "The director owns the risk and should make the case, with interim measures, but approving operation above a board-set limit is beyond their authority.",
+        "B": "The chief engineer delivers the fix and can confirm its timing, but has no authority over the board's limits or over the risk itself.",
+        "C": "The analyst monitors the risk against tolerance and reports breaches. Approving a breach would turn the second line into the decision-maker."
+      },
+      "tips": [
+        "Eliminate: B leads the fix without authority over limits, and C monitors the tolerance rather than deciding on breaches of it.",
+        "Final two: D beats A because only the level that set a tolerance can approve exceeding it; the owner requests the exception.",
+        "Exam cue: within limits, the owner decides; beyond them, take the decision to whoever set the limit."
+      ],
+      "framework_ref": "NIST IR 8286B-upd1 Section 2.4.3 (Risk Owner: risk escalation and elevation); ISACA Glossary (risk tolerance)",
+      "related_concepts": [
+        "Temporary acceptance",
+        "Escalation",
+        "Risk tolerance"
+      ],
+      "_provenance": "Authored from concept: Round 2, 31 Oct 2026: authored from notes 1B4.3 (Tolerance Breaches and Escalation: carrying risk above tolerance needs approval from the level that set it); original water utility telemetry above tolerance during radio replacement scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D1 round 2. Review fixes 31 Oct 2026 (repair round 1, standards audit): pre_read no longer points to the key.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_043",
+      "domain": 1,
+      "subtopic": "1B5 Risk frameworks, legal, regulatory and contractual requirements. Supplier SLA short of the RTO",
+      "principle_id": "transfer-keeps-accountability",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "During renewal of an online grocer's warehouse software contract, the risk analyst finds its restoration SLA is 24 hours, against an 8-hour business RTO for dispatch. What is the BEST recommendation?",
+      "options": {
+        "A": "Have the contract owner negotiate an SLA that meets the RTO",
+        "B": "Accept the SLA and rely on service credits for missed targets",
+        "C": "Change the dispatch RTO to 24 hours to match the contract",
+        "D": "Have the contract owner add a right-to-audit clause"
+      },
+      "correct": "A",
+      "key_concept": "Supplier SLAs must meet business recovery needs; service credits shift part of the cost, while the impact and accountability stay with the enterprise.",
+      "pre_read": "Compare the two numbers and ask which one should give way. Then ask what each option does to the gap.",
+      "correct_explanation": "Supplier terms should meet the business's recovery need, and renewal is when the grocer has leverage to fix them. The contract owner should negotiate restoration within the 8-hour RTO; if the provider cannot meet it, the business owner decides on a workaround or accepts the gap. Relying on service credits is the runner-up: credits repay part of the fee, but dispatch still stops and the grocer keeps the impact.",
+      "wrong_explanations": {
+        "B": "Service credits repay part of the fee after a miss. They do not restore dispatch within 8 hours, and the grocer still bears the lost orders.",
+        "C": "The RTO reflects how long dispatch can be down before harm becomes unacceptable. Moving it to fit the contract hides the gap instead of closing it.",
+        "D": "Audit rights help verify the provider's controls, but they leave the 24-hour restoration target unchanged and the gap open."
+      },
+      "tips": [
+        "Eliminate: C bends the business need to fit the contract, and D adds oversight without changing the restoration target.",
+        "Final two: A beats B because credits shift part of the cost, not the impact; the contract must meet the business's recovery need.",
+        "Exam cue: supplier SLAs serve business recovery targets; outsourcing moves the work, never the accountability for the outcome."
+      ],
+      "framework_ref": "NIST CSF 2.0 GV.SC-05 (requirements to address cybersecurity risks in supply chains are established, prioritized and integrated into contracts and other types of agreements with suppliers and other relevant third parties); ISACA Glossary (recovery time objective)",
+      "related_concepts": [
+        "Service level agreement",
+        "Recovery time objective",
+        "Supplier contract"
+      ],
+      "_provenance": "Authored from concept: Round 2, 31 Oct 2026: authored from notes 1B5.3 (Contractual Requirements and Service Level Agreements: SLA targets reflect business recovery needs, and an SLA does not transfer outage risk); original online grocer warehouse software SLA at renewal scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D1 round 2.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_044",
+      "domain": 1,
+      "subtopic": "1B5 Risk frameworks, legal, regulatory and contractual requirements. Adopting a framework",
+      "principle_id": "proportionate-response",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A 60-person marketing analytics firm asks its risk practitioner how to adopt NIST CSF 2.0. Which of the following is the BEST advice?",
+      "options": {
+        "A": "Implement the framework's outcomes as written",
+        "B": "Copy the profile and objectives of its largest customer",
+        "C": "Tailor the outcomes to its own risks and objectives",
+        "D": "Address first the outcomes that auditors test most"
+      },
+      "correct": "C",
+      "key_concept": "Frameworks are starting points: NIST CSF 2.0 is tailored through Organizational Profiles built from the firm's own mission, risks and requirements.",
+      "pre_read": "Ask what a framework is for in a small firm. Compare each option with the firm's own risks.",
+      "correct_explanation": "Frameworks are starting points. NIST CSF 2.0 expects an organization to build Organizational Profiles from its own mission, risks and requirements, with a Target Profile setting the outcomes it prioritizes. Adopting every outcome as written is the runner-up, because it looks thorough, but a small firm would spend effort on outcomes that matter little to it and still not focus on its own top risks.",
+      "wrong_explanations": {
+        "A": "Applying every outcome unchanged looks complete, but it spreads a small team across low-value work and sets no priorities from the firm's own risks.",
+        "B": "A customer's profile reflects the customer's mission and threats. It may inform requirements, but the firm's priorities must come from its own risks.",
+        "D": "Audit attention is one input, but priorities set by what auditors test drift toward compliance rather than toward the firm's largest risks."
+      },
+      "tips": [
+        "Eliminate: B adopts another organization's priorities, and D lets audit attention set them in place of risk.",
+        "Final two: C beats A because frameworks are starting points to tailor; adopting every outcome unchanged spreads effort without priorities.",
+        "Exam cue: choose a framework, then tailor it to objectives, risks, size and obligations, and have senior management approve the result."
+      ],
+      "framework_ref": "NIST CSF 2.0 Section 3.1 (CSF Profiles: a Current Profile describes outcomes being achieved and a Target Profile the outcomes selected for risk management objectives); COBIT 2019 EDM01 (Ensured Governance Framework Setting and Maintenance)",
+      "related_concepts": [
+        "Framework tailoring",
+        "CSF Organizational Profile",
+        "Proportionality"
+      ],
+      "_provenance": "Authored from concept: Round 2, 31 Oct 2026: authored from notes 1B5.1 (Choosing and Tailoring a Framework: frameworks are starting points; CSF 2.0 tailoring through Current and Target Profiles); original small analytics firm adopting CSF 2.0 scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D1 round 2. Review fixes 31 Oct 2026 (repair round 1, standards audit): key reworded to the framework-neutral tailoring principle; it no longer echoes 'CSF' or is the longest option.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_045",
+      "domain": 1,
+      "subtopic": "1B5 Risk frameworks, legal, regulatory and contractual requirements. New AI law",
+      "principle_id": "analyze-before-acting",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A staffing agency plans to screen job applicants with an AI model, and a new law taking effect in nine months will class that use as high-risk. What should the risk practitioner do FIRST?",
+      "options": {
+        "A": "Ask the vendor to certify that the model meets the law",
+        "B": "Assess the law's impact on the planned screening use",
+        "C": "Wait for the regulator's guidance before assessing it",
+        "D": "Recommend that the agency cancel the screening project"
+      },
+      "correct": "B",
+      "key_concept": "A new legal obligation is a source of risk: assess its impact on the planned use before its effective date, before relying on vendor assurance.",
+      "pre_read": "Notice how much time remains before the law applies. Ask what the agency must know before choosing any response.",
+      "correct_explanation": "A new obligation is a source of risk, and nine months is the time to understand it. Assessing the law's impact on the planned screening use shows which duties fall on the agency, such as oversight, testing or records, and who should own them. A vendor certificate is the runner-up: it can be useful evidence, but many duties fall on the system's user, and the agency cannot judge a certificate until it knows them.",
+      "wrong_explanations": {
+        "A": "A vendor's certificate covers the model, not how the agency will use it. The agency first needs to know its own duties as the user of a high-risk system.",
+        "C": "Guidance may refine details, but waiting shortens the time left to meet duties that are already known. The impact assessment can start now.",
+        "D": "Cancelling is an avoidance response chosen before the risk is analyzed. The business decides once the impact and options are clear."
+      },
+      "tips": [
+        "Eliminate: C delays analysis the effective date makes pressing, and D chooses avoidance before the risk is known.",
+        "Final two: B beats A because the agency must know its own duties as the user before a vendor's certificate can show they are met.",
+        "Exam cue: a new law or rule triggers an impact assessment before its effective date; apply the principle, not a quoted clause."
+      ],
+      "framework_ref": "NIST AI 100-1 (AI RMF 1.0) GOVERN 1.1 (legal and regulatory requirements involving AI are understood, managed and documented); NIST CSF 2.0 GV.OC-03 (legal, regulatory and contractual requirements, including privacy obligations, are understood and managed)",
+      "related_concepts": [
+        "Regulatory change",
+        "AI regulation",
+        "Compliance risk"
+      ],
+      "_provenance": "Authored from concept: Round 2, 31 Oct 2026: authored from notes 1B5.2 (Compliance Obligations as a Source of Risk: new rules trigger an impact assessment before their effective date; trap, relying on the AI vendor's statement); original staffing agency AI applicant screening under a new law scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D1 round 2.",
+      "style_version": 2
     }
   ]
 }

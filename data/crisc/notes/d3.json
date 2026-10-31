@@ -247,7 +247,8 @@
             "Match authority to size: the owner must be able to fund treatment and accept residual risk at that rating.",
             "Name one accountable person, not a committee or a department; others contribute as stakeholders or control owners.",
             "Revalidate ownership regularly and after reorganizations, departures or process changes.",
-            "IT usually owns technology controls, while the business owns the business risk those controls protect."
+            "IT usually owns technology controls, while the business owns the business risk those controls protect.",
+            "Validate an owner by what they have done, such as response choices, acceptances and plan approvals they signed, not by their name in the register."
           ],
           "example": "A city council's payroll risk is listed under 'Finance and IT' with no single name. Lina, the council's risk analyst, maps the payroll process and finds that the payroll manager runs it but can approve only small purchases. Lina proposes the finance director as risk owner and the payroll manager as control owner, and asks senior management to confirm the assignment, with the director accepting the role in writing.",
           "audit_focus": {
@@ -411,6 +412,10 @@
             {
               "trap": "Outsourcing the service also outsources the risk.",
               "why": "The ISACA Glossary lists outsourcing as a way to transfer risk, but what moves is part of the operational and financial consequence. The organization still answers to its customers and regulators, so accountability and the business impact stay."
+            },
+            {
+              "trap": "A vendor's own questionnaire answers can stand in for a refused right to audit.",
+              "why": "Self-reported answers are weak assurance. Contract for independent assurance reports instead."
             }
           ],
           "key_terms": [
@@ -497,7 +502,8 @@
             "Put AI terms in the contract: change notice, performance commitments, data use limits and incident reporting.",
             "Monitor the vendor's model in production as part of your own monitoring, especially after vendor updates.",
             "Plan contingency for a high-risk AI service failing, including a manual or non-AI fallback.",
-            "Treat downloaded pre-trained models as untrusted components until their source and integrity are checked."
+            "Treat downloaded pre-trained models as untrusted components until their source and integrity are checked.",
+            "Service credits for missed accuracy targets refund fees; they neither detect wrong outputs nor repair the harm, so the business keeps checking outputs it relies on."
           ],
           "example": "A bank's mortgage team uses a vendor's AI tool to pull income figures from scanned payslips. After the vendor's quiet update, extraction errors double. Nadia, a risk analyst, links the spike to the update date, records the issue against the vendor risk entry and recommends to the lending director a contract clause requiring advance notice of model changes, plus a staff check on high-value files.",
           "audit_focus": {
@@ -1196,7 +1202,8 @@
             "Rate against evidence: documented procedures, consistent records, metrics and improvement actions.",
             "Agree a target level with the risk owner based on the risk; not every control needs the top level.",
             "Feed the gap between current and target maturity into the improvement plan.",
-            "Read assessment results for adequacy (the right controls), effectiveness (working) and maturity (sustainable) together."
+            "Read assessment results for adequacy (the right controls), effectiveness (working) and maturity (sustainable) together.",
+            "A control can pass every test yet sit at low maturity, for example when it depends on one person and nothing is written down."
           ],
           "example": "A regional bank's fraud monitoring catches most cases, but only one analyst knows how the detection rules are tuned, and nothing is written down. Elif, the IT risk lead, rates the control effective but low in maturity against a target of 'defined'. They recommend to the head of fraud operations a documented tuning procedure, a trained backup and a monthly detection-rate measure.",
           "audit_focus": {
@@ -1216,6 +1223,10 @@
             {
               "trap": "Every control should reach the highest maturity level.",
               "why": "Maturity has a cost. The target should match the risk; low-risk controls can stay at a basic, repeatable level."
+            },
+            {
+              "trap": "One low maturity target for every control keeps costs down.",
+              "why": "A single target under-protects the controls behind high risks and overspends on minor ones. Each target is set with the risk owner by the risk the control addresses."
             }
           ],
           "key_terms": [
@@ -1448,7 +1459,8 @@
             "Accuracy: a sample reconciles to the source records.",
             "Currency: the data dates match the reporting period.",
             "Consistency: definitions and scales match across sources and over time.",
-            "Known limitations are stated in the report rather than left out."
+            "Known limitations are stated in the report rather than left out.",
+            "When a metric's data source or tool changes, confirm the new source covers the same population and definitions before comparing periods."
           ],
           "example": "A national rail operator's dashboard shows patch compliance jumping from 70% to 98% in one month. Before the board pack goes out, Ines, the risk analyst, reconciles the figure with the patch tool and finds that 40 live servers stopped reporting and dropped out of the count. They correct the figure and note the reporting gap for the infrastructure director.",
           "audit_focus": {
@@ -1649,7 +1661,8 @@
             "Define the action and escalation for each level before any breach happens.",
             "Review thresholds when appetite, the business or the risk changes.",
             "For AI systems, track drift, error rates, override rates and complaints, with limits set by the model's business owner.",
-            "A breach goes to the risk owner and, through the agreed escalation path, to the level that set the threshold."
+            "A breach goes to the risk owner and, through the agreed escalation path, to the level that set the threshold.",
+            "For human review of AI outputs, KCIs such as override rates and time spent per review warn when reviewers start approving by habit."
           ],
           "example": "An insurer's claims-triage model flags claims for fast payment. Aisha, the risk analyst, proposes indicators for it: the share of fast-tracked claims later found invalid, the rate of staff overrides and weekly drift in the input data. Each gets amber and red limits agreed with the claims director; red means claims return to manual triage until the model is reviewed.",
           "audit_focus": {
@@ -1764,7 +1777,8 @@
             "The risk function designs the questions and facilitates; managers answer for their own areas.",
             "CSA builds ownership and awareness, but results are self-reported, so key answers are spot-checked independently.",
             "Trend analysis compares indicator values over several periods to show direction, speed and seasonal patterns.",
-            "A worsening trend can justify action even before a threshold is breached."
+            "A worsening trend can justify action even before a threshold is breached.",
+            "A worsening KCI goes to the control owner, who fixes the control; the risk function challenges and tracks it but does not take over running it."
           ],
           "example": "A city council's twelve departments complete a quarterly self-assessment of their records controls. Fatima, the risk analyst, notes that the housing department's scores rose sharply while its complaint volume also rose. They spot-check three of its answers against records, find two overstated, and raise the difference with the housing director.",
           "audit_focus": {
@@ -2106,7 +2120,7 @@
     {
       "title": "ISACA Interactive Glossary (risk owner, control owner, risk response, risk transfer, risk acceptance, risk aggregation, current risk, residual risk, risk tolerance, KRI, KCI, risk map, control types)",
       "url": "https://www.isaca.org/resources/glossary",
-      "checked": "2026-10-30: entries read this session; 2026-10-31: control owner, current risk, residual risk, risk response and risk tolerance re-read for the quality pass"
+      "checked": "2026-10-30: entries read this session; 2026-10-31: control owner, current risk, residual risk, risk response and risk tolerance re-read for the quality pass; 2026-10-31: key control indicator, preventive control, risk acceptance and residual risk re-read for round 2"
     },
     {
       "title": "ISACA Risk IT Framework, 2nd Edition",
@@ -2126,12 +2140,12 @@
     {
       "title": "NIST IR 8286B-upd1, Prioritizing Cybersecurity Risk for Enterprise Risk Management (Feb 2025)",
       "url": "https://csrc.nist.gov/pubs/ir/8286/b/upd1/final",
-      "checked": "2026-10-30: Sections 2.3 and 2.4 read in the PDF"
+      "checked": "2026-10-30: Sections 2.3 and 2.4 read in the PDF; 2026-10-31: Sections 2.2.4 and 2.2.5 read for round 2"
     },
     {
       "title": "NIST IR 8286C Rev. 1, Staging Cybersecurity Risks for Enterprise Risk Management and Governance Oversight (Dec 2025; supersedes IR 8286C-upd1, withdrawn 18 Dec 2025)",
       "url": "https://csrc.nist.gov/pubs/ir/8286/c/r1/final",
-      "checked": "2026-10-31: Section 2.2 (Normalization of Cybersecurity Risk Registers) read in the PDF, nvlpubs.nist.gov/nistpubs/ir/2025/NIST.IR.8286Cr1.pdf"
+      "checked": "2026-10-31: Section 2.2 (Normalization of Cybersecurity Risk Registers) read in the PDF, nvlpubs.nist.gov/nistpubs/ir/2025/NIST.IR.8286Cr1.pdf; 2026-10-31: Sections 5.1 and 5.2 (KPIs, KRIs and monitoring trends) read for round 2"
     },
     {
       "title": "NIST SP 800-53 Rev. 5, Security and Privacy Controls for Information Systems and Organizations",
@@ -2151,7 +2165,7 @@
     {
       "title": "NIST SP 800-137, Information Security Continuous Monitoring (ISCM) for Federal Information Systems and Organizations (Sep 2011)",
       "url": "https://csrc.nist.gov/pubs/sp/800/137/final",
-      "checked": "2026-10-30: Sections 3.4 and 3.5 read in the PDF"
+      "checked": "2026-10-30: Sections 3.4 and 3.5 read in the PDF; 2026-10-31: Section 3.2.2 (monitoring and assessment frequencies) read in the PDF for round 2"
     },
     {
       "title": "NIST SP 800-161 Rev. 1, Cybersecurity Supply Chain Risk Management Practices for Systems and Organizations (May 2022, updated Nov 2024)",
@@ -2161,17 +2175,17 @@
     {
       "title": "NIST SP 800-55 Vol. 1, Measurement Guide for Information Security: Identifying and Selecting Measures (Dec 2024)",
       "url": "https://csrc.nist.gov/pubs/sp/800/55/v1/final",
-      "checked": "2026-10-30: Sections 2.4 and 4.4 read in the PDF"
+      "checked": "2026-10-30: Sections 2.4 and 4.4 read in the PDF; 2026-10-31: Section 3.1.4 (Data Quality) read in the PDF for round 2"
     },
     {
       "title": "NIST CSWP 29, The NIST Cybersecurity Framework (CSF) 2.0 (Feb 2024)",
       "url": "https://csrc.nist.gov/pubs/cswp/29/the-nist-cybersecurity-framework-csf-20/final",
-      "checked": "2026-10-30: GV.OV, GV.RM, GV.RR, GV.SC and ID.RA subcategories read in the PDF"
+      "checked": "2026-10-30: GV.OV, GV.RM, GV.RR, GV.SC and ID.RA subcategories read in the PDF; 2026-10-31: Sections 3.1 and 3.2 (Profiles and Tiers) and GV.SC-05 to GV.SC-10 read for round 2"
     },
     {
       "title": "NIST AI 100-1, Artificial Intelligence Risk Management Framework (AI RMF 1.0) (Jan 2023)",
       "url": "https://www.nist.gov/itl/ai-risk-management-framework",
-      "checked": "2026-10-30: GOVERN 1.1, GOVERN 3.2, MEASURE 2.4, MANAGE 1.3 and MANAGE 4.1 read in the PDF from nvlpubs.nist.gov"
+      "checked": "2026-10-30: GOVERN 1.1, GOVERN 3.2, MEASURE 2.4, MANAGE 1.3 and MANAGE 4.1 read in the PDF from nvlpubs.nist.gov; 2026-10-31: MANAGE 3.1 and GOVERN 6.1 to 6.2 read for round 2"
     },
     {
       "title": "AICPA SOC 2 reporting; ISO 31000:2018; ISO/IEC 27005:2022; COSO ERM (2017); IIA Three Lines Model (2020)",
