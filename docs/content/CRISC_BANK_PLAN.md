@@ -103,6 +103,17 @@ Same order as CC. Don't skip a step to go faster.
    round 2: can a learner answer the reviewed items from the notes alone?
 8. **PR** per round, reviewed and merged under the CLAUDE.md PR rules.
 
+## 5b. Originality gate for definitions
+
+`data/crisc/tools/check_originality.py --ref <isaca.json>` compares every
+glossary definition and notes key term with the ISACA Glossary entry for the
+same term and fails on a 6-word run in the same order, a 30% share of shared
+3-word phrases, or 0.6 sequence similarity. The reference file is fetched from
+https://www.isaca.org/resources/glossary into the scratchpad and is never
+committed (ISACA's text stays out of the repo). Run it on every glossary or
+notes change; reviewers then check meaning only, so originality reviews can't
+loop on sentence shape.
+
 ## 6. Pilot calibration rules
 
 From the pilot's four blind tests and four standards audits (30 Oct 2026).
