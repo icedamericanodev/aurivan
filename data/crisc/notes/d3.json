@@ -57,7 +57,7 @@
           "definition": "Risk responses are the four ways an organization deals with an analyzed risk: accept it, mitigate it with controls, transfer or share it, or avoid the activity causing it.",
           "why_it_matters": "The response decides how much risk is left and what that costs. The wrong choice wastes money on a risk already within appetite, or leaves a risk above appetite untreated.",
           "how_it_works": [
-            "Every response starts from an analyzed risk compared with appetite and tolerance, not from a favorite control or tool.",
+            "Every response starts from an analyzed risk compared with appetite and tolerance, not from a favorite tool.",
             "Responses can be combined: reduce the likelihood with controls, then insure part of the financial impact that remains.",
             "Transfer moves money, not accountability: a breach at an insured or outsourced service still harms the organization's customers and reputation.",
             "Insurance reduces neither the likelihood of an event nor its harm to operations; it pays back part of the financial loss.",
@@ -110,11 +110,11 @@
           "key_terms": [
             {
               "term": "Risk response",
-              "definition": "Any combination of acceptance, mitigation, transfer or avoidance chosen so that residual risk, once the response is implemented, falls within appetite."
+              "definition": "Any combination of acceptance, mitigation, transfer (sharing) or avoidance chosen so the risk expected after implementation, the Glossary's future residual risk, falls within appetite."
             },
             {
               "term": "Response option analysis",
-              "definition": "A side-by-side comparison showing each option's cost, its effect on likelihood and impact, and the target risk it would leave."
+              "definition": "A side-by-side comparison of each option's cost, effect on likelihood and impact, and the target risk it would leave."
             }
           ],
           "memory_aid": "Keep it, cut it, share it or skip it: accept, mitigate, transfer, avoid."
@@ -177,7 +177,7 @@
             "Re-rate the risk after the response, on the same scale as the inherent rating, to find the residual risk.",
             "Compare residual risk with appetite; if it is still above, more treatment or escalation follows.",
             "Record the acceptance with the owner's name, rationale, conditions and a review or expiry date.",
-            "Keep reporting and monitoring accepted risk, because threats and conditions change and the rating can drift above tolerance.",
+            "Keep monitoring and reporting accepted risk, because conditions change and the rating can drift above tolerance.",
             "Elevate any acceptance above the owner's authority to the senior manager or committee that holds that authority."
           ],
           "example": "A logistics firm patches its route-planning servers but cannot replace one legacy controller until next year. Sofia, the IT risk lead, re-rates the remaining risk as moderate, within appetite. They draft an acceptance record for the operations director with the rationale, a compensating network restriction and a six-month review date, and set up a key risk indicator that tracks failed connections to the controller.",
@@ -207,8 +207,12 @@
           ],
           "key_terms": [
             {
+              "term": "Current risk",
+              "definition": "Today's exposure, counting responses already implemented, not proposed ones; compare it with appetite now."
+            },
+            {
               "term": "Residual risk",
-              "definition": "The risk that remains after management has put a risk response in place."
+              "definition": "The risk left after management implements a response; the owner accepts it if within appetite, or treats it further."
             },
             {
               "term": "Implicit acceptance",
@@ -216,7 +220,7 @@
             },
             {
               "term": "Risk elevation",
-              "definition": "Moving a response decision to a more senior stakeholder because the risk is too large or sensitive for the current owner."
+              "definition": "Moving a response decision to a more senior stakeholder when the risk is too large for the current owner's authority."
             }
           ]
         }
@@ -286,10 +290,10 @@
           "id": "3A2.2",
           "name": "Control Owners and Validating Ownership",
           "legacy_ids": [],
-          "definition": "A control owner is the person accountable for designing, operating and maintaining a control so it works as intended; validation confirms each owner knows and performs the role.",
+          "definition": "A control owner is accountable for a control being implemented and operating effectively, often as the manager whose team runs it; validation confirms owners perform the role.",
           "why_it_matters": "A control that nobody owns decays quietly: reviews stop, settings drift and evidence disappears. Validating ownership finds these gaps before a test or an incident does.",
           "how_it_works": [
-            "Each key control gets one named owner who runs it, keeps its evidence and reports when it fails.",
+            "Each key control gets one named owner who answers for it working, keeps its evidence and reports when it fails; day-to-day operation may sit with their team.",
             "One control can protect several risks, so its owner may serve several risk owners.",
             "Risk owners rely on control owners to keep residual risk at the level they accepted.",
             "Validate by asking the owner to describe the control and show recent evidence, not just by reading the register.",
@@ -306,7 +310,7 @@
                 "label": "Accountable for",
                 "cells": [
                   "The risk and its business outcome",
-                  "One control working as designed",
+                  "One control implemented and operating effectively",
                   "The risk process and its quality"
                 ]
               },
@@ -314,7 +318,7 @@
                 "label": "Typical role",
                 "cells": [
                   "Business or process manager",
-                  "Manager or team running the control",
+                  "Manager whose team runs the control",
                   "Risk practitioner, such as a risk analyst"
                 ]
               },
@@ -322,7 +326,7 @@
                 "label": "Decides",
                 "cells": [
                   "Response and acceptance",
-                  "How the control is run day to day",
+                  "Control-related decisions, such as how it runs",
                   "Nothing on the owner's behalf; recommends"
                 ]
               }
@@ -341,7 +345,7 @@
               "Dated transfer sign-offs between outgoing and incoming owners"
             ],
             "recommend": "Have the risk owner confirm a named control owner for each key control and a formal handover on job changes.",
-            "decides": "The risk owner confirms control ownership; the control owner runs the control"
+            "decides": "The risk owner confirms control ownership; the control owner answers for the control working"
           },
           "isaca_rule": "The risk owner is accountable for the risk; the control owner is accountable for the control working. The practitioner validates both by evidence, not by the register alone, and escalates gaps to the risk owner.",
           "exam_traps": [
@@ -406,7 +410,7 @@
           "exam_traps": [
             {
               "trap": "Outsourcing the service also outsources the risk.",
-              "why": "The vendor runs the service, but the organization still answers to its customers and regulators. Only part of the financial consequence can be shifted, through contract terms or insurance."
+              "why": "The ISACA Glossary lists outsourcing as a way to transfer risk, but what moves is part of the operational and financial consequence. The organization still answers to its customers and regulators, so accountability and the business impact stay."
             }
           ],
           "key_terms": [
@@ -956,7 +960,7 @@
               "First-cycle control evidence signed by the owner"
             ],
             "recommend": "Have the control owner write the procedure, sign-off record and backup arrangements, then share first-cycle results.",
-            "decides": "The control owner runs the control; the risk owner accepts the residual rating"
+            "decides": "The control owner answers for the control operating; the risk owner accepts the residual rating"
           },
           "isaca_rule": "The practitioner works with control owners on design and rollout but does not run the control. Define the owner, procedure, evidence and indicators before go-live, and count the risk as reduced only after the control is shown to work.",
           "exam_traps": [
@@ -1281,7 +1285,7 @@
             },
             {
               "term": "Target risk",
-              "definition": "The risk level a planned response is expected to reach; it becomes residual risk only once the response is implemented."
+              "definition": "The level a planned response is expected to reach, which the Glossary's risk response entry calls future residual risk; it becomes residual risk once implemented."
             }
           ]
         },
@@ -2062,11 +2066,13 @@
     }
   ],
   "key_terminologies": {
-    "Risk response": "Accepting, mitigating, transferring (sharing) or avoiding a risk so that residual risk falls within appetite.",
+    "Risk response": "Accepting, mitigating, transferring (sharing) or avoiding a risk so that the risk expected once the response is implemented (the Glossary's future residual risk) falls within appetite.",
     "Risk acceptance": "A documented decision by the risk owner, within the appetite the board and senior management set, to keep a risk and absorb any loss.",
-    "Residual risk": "The risk that remains after a response is in place; it must end within appetite.",
+    "Current risk": "Today's exposure, counting only responses already implemented, not those proposed; it is compared with appetite to decide whether treatment is needed.",
+    "Residual risk": "The risk that remains after a response has been implemented; the risk owner accepts it if it is within appetite, or chooses further treatment.",
+    "Target risk": "The level a planned response is expected to reach (the Glossary's future residual risk); it judges whether a plan is enough, never today's position.",
     "Risk owner": "The person with authority and accountability for decisions about a risk, who answers for the loss if it happens.",
-    "Control owner": "The person accountable for designing, running and maintaining a control so it works as intended.",
+    "Control owner": "The person with the authority and accountability for control-related decisions, who ensures a control is implemented and operating effectively; often the manager whose team runs it.",
     "Risk transfer": "Shifting part of a risk's financial consequence to another party, such as an insurer; accountability stays with the organization.",
     "Right to audit": "A contract clause letting the customer, or an assessor it appoints, examine a vendor's controls and records.",
     "Fourth party": "A vendor's own supplier or subcontractor, such as the cloud host behind a software provider.",
@@ -2098,9 +2104,9 @@
       "checked": "2026-10-30: via docs/content/CRISC_BLUEPRINT.md"
     },
     {
-      "title": "ISACA Interactive Glossary (risk owner, risk response, risk transfer, risk acceptance, risk aggregation, residual risk, KRI, KCI, risk map, control types)",
+      "title": "ISACA Interactive Glossary (risk owner, control owner, risk response, risk transfer, risk acceptance, risk aggregation, current risk, residual risk, risk tolerance, KRI, KCI, risk map, control types)",
       "url": "https://www.isaca.org/resources/glossary",
-      "checked": "2026-10-30: entries read this session"
+      "checked": "2026-10-30: entries read this session; 2026-10-31: control owner, current risk, residual risk, risk response and risk tolerance re-read for the quality pass"
     },
     {
       "title": "ISACA Risk IT Framework, 2nd Edition",
@@ -2123,9 +2129,9 @@
       "checked": "2026-10-30: Sections 2.3 and 2.4 read in the PDF"
     },
     {
-      "title": "NIST IR 8286C-upd1, Staging Cybersecurity Risks for Enterprise Risk Management and Governance Oversight (Sep 2022, updated Mar 2024)",
-      "url": "https://csrc.nist.gov/pubs/ir/8286/c/upd1/final",
-      "checked": "2026-10-30: Section 2 read in the PDF"
+      "title": "NIST IR 8286C Rev. 1, Staging Cybersecurity Risks for Enterprise Risk Management and Governance Oversight (Dec 2025; supersedes IR 8286C-upd1, withdrawn 18 Dec 2025)",
+      "url": "https://csrc.nist.gov/pubs/ir/8286/c/r1/final",
+      "checked": "2026-10-31: Section 2.2 (Normalization of Cybersecurity Risk Registers) read in the PDF, nvlpubs.nist.gov/nistpubs/ir/2025/NIST.IR.8286Cr1.pdf"
     },
     {
       "title": "NIST SP 800-53 Rev. 5, Security and Privacy Controls for Information Systems and Organizations",

@@ -3,7 +3,7 @@
   "domain_name": "Risk Assessment",
   "exam_weight": "22%",
   "source": "Original KaiSip study notes, organized by the CRISC exam content outline effective 2025. Not affiliated with or endorsed by ISACA®. CRISC® is a registered trademark of ISACA.",
-  "overview": "Risk Assessment is where a risk practitioner finds risk and sizes it. Risk Identification gathers risk events, threats and vulnerabilities and turns them into specific risk scenarios the business recognizes. Risk Analysis rates those scenarios for likelihood and impact, measures how business impact grows over time, records each one in the risk register with an owner, and separates inherent from residual risk so owners can compare it with appetite. AI runs through both parts: prompt injection, poisoned data, biased or drifting models, and AI services the business now depends on.",
+  "overview": "Risk Assessment is where a risk practitioner finds risk and sizes it. Risk Identification gathers risk events, threats and vulnerabilities and turns them into specific risk scenarios the business recognizes. Risk Analysis rates those scenarios for likelihood and impact, measures how business impact grows over time, records each one in the risk register with an owner, and separates inherent, current and residual risk so owners can compare today's risk with appetite. AI runs through both parts: prompt injection, poisoned data, biased or drifting models, and AI services the business now depends on.",
   "analogy": "Think of a public health team preparing for flu season. It studies last winter's cases and the near misses that almost became outbreaks (risk events), tracks which strains are circulating (threats) and finds which groups are unvaccinated (vulnerabilities). It writes concrete scenarios, such as a care-home outbreak in January, and asks the care homes to check them. It then estimates how likely and how harmful each is, notes how long hospitals could cope with a surge, logs each scenario with a named owner, and compares the risk left after vaccination with what the health board will tolerate.",
   "parts": [
     {
@@ -171,7 +171,7 @@
           "exam_traps": [
             {
               "trap": "Model drift is a data science issue, so the risk function does not need to track it.",
-              "why": "Drift harms business outcomes the enterprise is accountable for. It belongs in the register under a business owner, with the data science team as control owner."
+              "why": "Drift harms business outcomes the enterprise is accountable for. It belongs in the register under a business owner, with the data science lead as control owner."
             }
           ],
           "key_terms": [
@@ -471,7 +471,7 @@
               "Control test results linked to the scenarios they weaken",
               "Vulnerability records tagged as people, process or technology"
             ],
-            "recommend": "Have control owners log every confirmed control deficiency as a vulnerability against the affected risk scenarios.",
+            "recommend": "Have control owners report every confirmed control deficiency to the risk function, which records it as a vulnerability against the affected scenarios.",
             "decides": "The risk owner decides how the weakness changes the scenario's response"
           },
           "isaca_rule": "Vulnerabilities are not only technical. A missing approval, an untrained team or a failed control test weakens protection as much as a missing patch; record each one against the scenarios it affects.",
@@ -892,10 +892,10 @@
     {
       "topic_id": "2B2",
       "topic_name": "Business Impact Analysis (BIA)",
-      "overview": "This topic covers the business impact analysis (BIA): which processes matter most, how harm grows the longer they are down, and what they depend on. The BIA sets MTD, RTO and RPO with the business. It measures impact only and ignores likelihood, so it complements a risk assessment rather than replacing it.",
+      "overview": "This topic covers the business impact analysis (BIA): which processes matter most, how harm grows the longer they are down, and what they depend on. The BIA sets the maximum tolerable outage (MTO), RTO and RPO with the business. It measures impact only and ignores likelihood, so it complements a risk assessment rather than replacing it.",
       "can_do": [
         "Tell a BIA from a risk assessment by what each measures",
-        "Tell MTD, RTO and RPO apart and put RTO and MTD in order",
+        "Tell MTO, RTO and RPO apart and put RTO and MTO in order",
         "Name who sets recovery objectives and why",
         "Include dependencies, suppliers and AI systems in a BIA"
       ],
@@ -936,7 +936,7 @@
               {
                 "label": "Main output",
                 "cells": [
-                  "Critical processes, MTD, RTO and RPO",
+                  "Critical processes, MTO, RTO and RPO",
                   "Risk ratings for scenarios"
                 ]
               }
@@ -975,20 +975,20 @@
         },
         {
           "id": "2B2.2",
-          "name": "MTD, RTO and RPO",
+          "name": "MTO, RTO and RPO",
           "legacy_ids": [],
-          "definition": "MTD is the longest a process can be down before harm is unacceptable; RTO is the time allowed to restore a system; RPO is how much data loss is tolerable.",
+          "definition": "MTO is the longest a critical function can be disrupted before significant harm; RTO is the time allowed to recover a business function or resource; RPO sets tolerable data loss.",
           "why_it_matters": "These numbers drive recovery design and cost. If IT sets them alone, they reflect what the technology can do, not what the business can survive.",
           "how_it_works": [
-            "Process owners and leadership set the maximum tolerable downtime (MTD) from the impact-over-time results.",
-            "The recovery time objective (RTO) for each supporting system must normally be shorter than the MTD, leaving time to reprocess work.",
-            "The recovery point objective (RPO) sets backup or replication frequency; a four-hour RPO allows up to four hours of lost data.",
+            "Process owners and leadership set the maximum tolerable outage (MTO; other sources say MTD) from the impact-over-time results.",
+            "The recovery time objective (RTO) for each supporting function or resource must normally be shorter than the MTO, leaving time to reprocess work.",
+            "The recovery point objective (RPO) is the earliest point in time to which data must be recoverable; a four-hour RPO allows up to four hours of lost data.",
             "RTO is about time to recover and RPO is about data that may be lost, so they are set separately.",
             "Shorter objectives cost more, so the business weighs recovery cost against the impact the BIA found."
           ],
           "compare": {
             "columns": [
-              "MTD",
+              "MTO",
               "RTO",
               "RPO"
             ],
@@ -996,8 +996,8 @@
               {
                 "label": "Measures",
                 "cells": [
-                  "Total tolerable outage of the process",
-                  "Time allowed to restore a system",
+                  "Longest tolerable disruption of the function",
+                  "Time allowed to recover a function or system",
                   "Tolerable data loss, counted back in time"
                 ]
               },
@@ -1030,9 +1030,9 @@
               "Recovery test results showing actual restore time and data point"
             ],
             "recommend": "Have business owners set recovery objectives from the BIA and have IT design recovery to meet them.",
-            "decides": "Process owners set MTD, RTO and RPO; senior management funds the recovery"
+            "decides": "Process owners set MTO, RTO and RPO; senior management funds the recovery"
           },
-          "isaca_rule": "Recovery objectives come from the business, through the BIA, not from what IT can deliver today. RTO must fit inside MTD, and RPO is set separately by how much data loss is tolerable.",
+          "isaca_rule": "Recovery objectives come from the business, through the BIA, not from what IT can deliver today. RTO must fit inside the MTO, and RPO is set separately by how much data loss is tolerable.",
           "exam_traps": [
             {
               "trap": "RTO and RPO are two names for how fast a system comes back.",
@@ -1045,12 +1045,12 @@
           ],
           "key_terms": [
             {
-              "term": "Recovery strategy",
-              "definition": "The chosen approach, such as a hot site or cloud failover, for meeting the recovery objectives."
+              "term": "Maximum tolerable outage (MTO)",
+              "definition": "ISACA Glossary term for the longest a critical function or system can be disrupted before significant harm."
             },
             {
-              "term": "Replication",
-              "definition": "Copying data to a second location continuously or at short intervals to support a short RPO."
+              "term": "Acceptable interruption window (AIW)",
+              "definition": "ISACA Glossary term for the longest a system can be unavailable before business objectives are compromised."
             }
           ],
           "memory_aid": "RTO looks forward to recovery; RPO looks back to the last good data."
@@ -1077,11 +1077,11 @@
           "how_it_works": [
             "Core fields: ID, scenario, category, risk owner, inherent and residual ratings, existing controls, response, action plan, status, KRIs and review date.",
             "The risk owner is an accountable business manager with authority to decide the response, not the person who found the risk.",
-            "Control owners and action owners are recorded separately, because running a control differs from owning the risk.",
+            "Control owners and action owners are recorded separately, because answering for a control differs from owning the risk.",
             "Ratings use the enterprise's common scales so entries can be compared and combined.",
             "IT or the risk function may maintain the register, but business owners own the entries in it."
           ],
-          "example": "A shipping line's register has 30 entries owned by IT Security. Noor Al-Amin, the risk practitioner, maps each scenario to the business process it harms, proposes the accountable manager as owner, such as the head of vessel operations for navigation system outages, and keeps IT Security as control owner where it runs the controls. Noor then sends the proposed owners to the risk committee.",
+          "example": "A shipping line's register has 30 entries owned by IT Security. Noor Al-Amin, the risk practitioner, maps each scenario to the business process it harms, proposes the accountable manager as owner, such as the head of vessel operations for navigation system outages, and records the IT security manager as control owner where that manager answers for the controls. Noor then asks the executive committee to confirm the proposed owners.",
           "audit_focus": {
             "review": [
               "Sample entries for a named owner with authority over the harmed process",
@@ -1091,7 +1091,7 @@
               "Register extract with risk owner, control owner and status fields",
               "Owner acknowledgments of their assigned entries"
             ],
-            "recommend": "Have the risk committee name an accountable business manager for every entry that has none.",
+            "recommend": "Ask senior management to assign an accountable business manager to every entry without one, through the risk committee where that is the agreed route.",
             "decides": "Senior management assigns risk owners; each owner decides the response"
           },
           "isaca_rule": "Every register entry needs an accountable business owner with authority to decide the response. The risk function maintains the register and facilitates; IT may own controls, but the business owns the risk.",
@@ -1105,6 +1105,10 @@
             {
               "term": "Risk owner",
               "definition": "ISACA Glossary: the person with authority and accountability for risk-based decisions, who owns the loss of a realized scenario."
+            },
+            {
+              "term": "Control owner",
+              "definition": "ISACA Glossary: the person accountable for control decisions and for a control being implemented and operating effectively, often the manager whose team runs it."
             },
             {
               "term": "Action owner",
@@ -1142,7 +1146,7 @@
             "recommend": "Have risk owners mark entries treated only after control testing confirms the response works.",
             "decides": "The risk owner approves status changes and closure of their entries"
           },
-          "isaca_rule": "Status must follow evidence. A planned or approved control does not reduce residual risk until it is implemented and shown to work; update the register whenever events, tests or changes alter a risk.",
+          "isaca_rule": "Status must follow evidence. A planned or approved control does not reduce current or residual risk until it is implemented and shown to work; update the register whenever events, tests or changes alter a risk.",
           "exam_traps": [
             {
               "trap": "Close the register entry once the treatment plan is approved.",
@@ -1410,11 +1414,11 @@
     {
       "topic_id": "2B5",
       "topic_name": "Inherent and Residual Risk",
-      "overview": "This topic covers risk before controls (inherent), with the controls working today (current), and after a response is implemented (residual). Once a response is in place, residual and current risk describe the same state; a projection for planned controls is a target, not a rating. Owners compare today's risk with appetite and tolerance. Control effectiveness sets the gap between inherent and residual risk, so controls are tested, not assumed.",
+      "overview": "This topic covers risk before controls (inherent), with the controls working today (current), and after a response is implemented (residual), when residual and current risk match. A planned response's projection is the ISACA Glossary's future residual risk (KaiSip: target risk): it judges the plan, not today's position. Owners compare current risk with appetite, and controls earn credit only when tested.",
       "can_do": [
         "Tell inherent, current and residual risk apart in a scenario",
         "Explain why a control's existence does not prove its effect",
-        "Compare residual risk with appetite to recommend a next step",
+        "Compare current risk with appetite to recommend a next step",
         "Explain why residual risk is never zero"
       ],
       "subtopics": [
@@ -1428,14 +1432,15 @@
             "Inherent risk shows how much a scenario depends on controls; a high inherent rating marks controls that must not fail.",
             "Current risk counts only actions already taken, not those proposed or planned.",
             "Residual risk is rated with the same scales and method as inherent risk, so the two are comparable.",
-            "Residual risk, counting only responses implemented and working, is compared with appetite and tolerance; a projected figure for planned controls only shows whether the plan would be enough.",
+            "Current risk, counting only responses implemented and working, is compared with appetite now; the future residual risk of a planned response shows whether the plan would be enough.",
             "Residual risk is never zero; some uncertainty always remains after any response."
           ],
           "compare": {
             "columns": [
               "Inherent",
               "Current",
-              "Residual"
+              "Residual",
+              "Future residual (target)"
             ],
             "rows": [
               {
@@ -1443,7 +1448,8 @@
                 "cells": [
                   "None",
                   "Those in place and working today",
-                  "Those of a response already implemented"
+                  "Those of a response already implemented",
+                  "Those of a planned response, as if implemented"
                 ]
               },
               {
@@ -1451,7 +1457,8 @@
                 "cells": [
                   "Shows reliance on controls",
                   "Today's exposure, compared with appetite now",
-                  "Shows whether an implemented response brought risk within appetite"
+                  "Shows whether an implemented response brought risk within appetite",
+                  "Judges whether a plan is enough, never today's position"
                 ]
               }
             ]
@@ -1467,16 +1474,24 @@
               "Control status records for each control credited in a rating"
             ],
             "recommend": "Have the risk function record the three ratings separately, crediting only implemented controls in current risk, for owners to confirm.",
-            "decides": "The risk owner compares residual risk with appetite and decides further treatment"
+            "decides": "The risk owner compares current risk with appetite and decides further treatment"
           },
-          "isaca_rule": "Inherent risk shows reliance on controls; residual risk drives decisions. Compare residual, not inherent, risk with appetite, and count only controls that are in place and working.",
+          "isaca_rule": "Inherent risk shows reliance on controls; current risk is today's exposure; residual risk is what an implemented response leaves. Compare current risk with appetite to decide on treatment, and check that a plan's expected residual risk falls within appetite. Never compare inherent risk, or count planned controls as working.",
           "exam_traps": [
             {
               "trap": "Compare inherent risk with appetite to decide whether to add controls.",
               "why": "Inherent risk ignores controls already working. The decision compares the risk that exists now, counting only implemented, working controls, with appetite."
+            },
+            {
+              "trap": "Count next year's planned controls when comparing a scenario with appetite today.",
+              "why": "Planned controls reduce nothing yet; that projection is future residual risk, which judges the plan, not today's exposure."
             }
           ],
           "key_terms": [
+            {
+              "term": "Future residual risk",
+              "definition": "ISACA Glossary phrase (risk response entry) for current risk with the planned response implemented; KaiSip calls it target risk."
+            },
             {
               "term": "Target risk",
               "definition": "The risk level a planned response is expected to reach, set within appetite; it becomes residual risk only once the response is implemented."
@@ -1599,8 +1614,9 @@
     "Tabletop exercise": "A facilitated discussion in which a team walks through a scenario to test plans and find gaps.",
     "Risk assessment": "The process of identifying, estimating and prioritizing risk: prepare, conduct, communicate, maintain.",
     "Business impact analysis (BIA)": "Analysis of critical processes, how impact grows over time and what they depend on; it ignores likelihood.",
-    "Maximum tolerable downtime (MTD)": "The longest a business process can be disrupted before harm becomes unacceptable.",
-    "Recovery time objective (RTO)": "The time allowed to restore a system; normally shorter than the MTD.",
+    "Maximum tolerable outage (MTO)": "ISACA Glossary term for the longest a critical business function or IT system can be disrupted before significant harm; other sources say maximum tolerable downtime (MTD).",
+    "Acceptable interruption window (AIW)": "ISACA Glossary term for the longest a system can be unavailable before business objectives are compromised.",
+    "Recovery time objective (RTO)": "The time allowed to recover a business function or resource after a disruption; normally shorter than the MTO.",
     "Recovery point objective (RPO)": "How much data loss, measured back in time, the business can tolerate.",
     "Risk register": "A list of risk scenarios that have been identified, analyzed and prioritized, each with an owner.",
     "Risk owner": "The accountable person with authority to make risk-based decisions and who bears the loss.",
@@ -1610,8 +1626,9 @@
     "Annual rate of occurrence (ARO)": "Expected number of occurrences per year.",
     "Annualized loss expectancy (ALE)": "Expected yearly loss: SLE times ARO.",
     "Inherent risk": "Risk before management takes any action, such as implementing controls.",
-    "Current risk": "Risk as it stands today, counting actions already taken but not those planned.",
-    "Residual risk": "Risk remaining after the chosen risk response is implemented; compared with appetite.",
+    "Current risk": "Risk as it stands today, counting actions already taken but not those planned; compared with appetite now.",
+    "Residual risk": "Risk remaining after management has implemented a risk response; shows whether the response brought risk within appetite.",
+    "Future residual risk": "ISACA Glossary phrase for current risk with a planned response implemented; KaiSip calls it target risk and uses it to judge the plan.",
     "Prompt injection": "Crafted input that makes a language model ignore its instructions or produce harmful output.",
     "Data poisoning": "Corrupting an AI model's training or fine-tuning data so it learns wrong or hidden behavior.",
     "Model drift": "Loss of an AI model's accuracy over time as live data or real-world patterns change."
@@ -1623,9 +1640,9 @@
       "checked": "2026-10-30: via docs/content/CRISC_BLUEPRINT.md"
     },
     {
-      "title": "ISACA Interactive Glossary (risk, risk scenario, loss event, threat event, vulnerability, BIA, risk register, risk owner, inherent, current and residual risk, RPO, RTO, prompt injection)",
+      "title": "ISACA Interactive Glossary (risk, risk scenario, loss event, threat event, vulnerability, BIA, risk register, risk owner, control owner, inherent, current and residual risk, risk response, MTO, AIW, RPO, RTO, prompt injection)",
       "url": "https://www.isaca.org/resources/glossary",
-      "checked": "2026-10-30: page read this session"
+      "checked": "2026-10-31: page read again; risk response (future residual risk), MTO, AIW, RTO, control owner and current risk entries checked"
     },
     {
       "title": "ISACA press release: Risk IT Framework, 2nd Edition and Risk IT Practitioner Guide, 2nd Edition (25 Jun 2020)",

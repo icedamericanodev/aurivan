@@ -51,12 +51,12 @@
       "principle_id": "objectives-first",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A hospital's IT director proposes a target of 99.99% availability for every system. What should the risk practitioner consider MOST important when evaluating the proposal?",
+      "question": "A hospital's IT director proposes 99.99% availability for every system. Which of the following should the risk practitioner consider MOST important when evaluating the proposal?",
       "options": {
-        "A": "Which business goals require that level of availability",
-        "B": "Whether monitoring tools can measure availability that precisely",
-        "C": "The business cost of reaching that availability for each system",
-        "D": "Whether peer hospitals have adopted similar availability targets"
+        "A": "The business goals that require that availability",
+        "B": "The precision of the tools that monitor availability",
+        "C": "The business cost of that availability for each system",
+        "D": "The availability targets set by peer hospitals"
       },
       "correct": "A",
       "key_concept": "In the COBIT 2019 goals cascade, IT goals are justified by the enterprise goals they support, not pursued for their own sake.",
@@ -78,7 +78,7 @@
         "Alignment goals",
         "Cost-benefit"
       ],
-      "_provenance": "Authored from concept: notes 1A1.2 The Goals Cascade and Strategic Change (exam trap: IT goals such as 99.99% uptime pursued for their own sake). Original hospital availability scenario written for KaiSip; no ISACA Review Manual, QAE or prep-bank text used. CRISC D1 pilot batch, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): option wording tightened and lengths evened; pre_read made neutral; re-lettered (key D to A). Cross-domain fix 30 Oct 2026: runner-up C now says business cost so the lens word is not key-only.",
+      "_provenance": "Authored from concept: notes 1A1.2 The Goals Cascade and Strategic Change (exam trap: IT goals such as 99.99% uptime pursued for their own sake). Original hospital availability scenario written for KaiSip; no ISACA Review Manual, QAE or prep-bank text used. CRISC D1 pilot batch, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): option wording tightened and lengths evened; pre_read made neutral; re-lettered (key D to A). Cross-domain fix 30 Oct 2026: runner-up C now says business cost so the lens word is not key-only. Quality pass 31 Oct 2026 (ISACA authenticity audit and concept review): converted to a short 'Which of the following' stem with noun-phrase options; key, lesson and explanations unchanged.",
       "style_version": 2
     },
     {
@@ -96,26 +96,26 @@
         "D": "The platform manager who runs the loyalty application"
       },
       "correct": "A",
-      "key_concept": "Residual risk is accepted by the risk owner, the business manager accountable for the affected objective, not by control designers or analysts.",
+      "key_concept": "Residual risk is accepted by the risk owner, the business manager accountable for the affected objective, not by control owners, operators or analysts.",
       "pre_read": "Note each role's link to the loyalty program: design, operation, analysis or leadership.",
-      "correct_explanation": "The risk owner is the business manager accountable for the objective the risk affects. The loyalty program's results belong to the marketing director, so they accept the residual risk. The CISO is the runner-up because they know the controls best, but designing controls makes them a control owner; accepting the business consequence of the remaining exposure is the program owner's decision.",
+      "correct_explanation": "The risk owner is the business manager accountable for the objective the risk affects. The loyalty program's results belong to the marketing director, so they accept the residual risk. The CISO is the runner-up because they know the controls best, but designing or answering for controls is control ownership; accepting the business consequence of the remaining exposure is the program leader's decision.",
       "wrong_explanations": {
-        "B": "Tempting because the CISO is senior and understands the controls. But control design makes them a control owner, not the owner of the loyalty program's business risk.",
+        "B": "Tempting because the CISO is senior and understands the controls. But designing controls, or answering for them as control owner, gives no ownership of the loyalty program's business risk.",
         "C": "Tempting because the analyst knows the residual rating best. But the practitioner analyzes and recommends; accepting risk is a business decision for the owner.",
-        "D": "Tempting because this manager runs the application daily. But operating the platform makes them a custodian or control owner, without authority over the program's objectives."
+        "D": "Tempting because this manager runs the application daily. But running the platform gives custody of the system, not authority over the program's objectives or its losses."
       },
       "tips": [
         "Eliminate: C is the practitioner, who analyzes but never accepts, and D operates the platform as a custodian rather than owning the program's outcomes.",
-        "Final two: A beats B because risk is owned by the business manager accountable for the objective; designing controls makes the CISO a control owner.",
+        "Final two: A beats B because risk is owned by the business manager accountable for the objective; the CISO answers for controls, not for the program's business risk.",
         "Exam cue: for 'who accepts the risk', find the business manager whose objective or program bears the loss."
       ],
-      "framework_ref": "ISACA Glossary (risk owner); NIST CSF 2.0 GV.RR-02 (roles, responsibilities and authorities related to cybersecurity risk management are established, communicated, understood and enforced)",
+      "framework_ref": "ISACA Glossary (risk owner); ISACA Glossary (control owner); NIST CSF 2.0 GV.RR-02 (roles, responsibilities and authorities related to cybersecurity risk management are established, communicated, understood and enforced)",
       "related_concepts": [
         "Risk owner",
         "Control owner",
         "Residual risk acceptance"
       ],
-      "_provenance": "Authored from concept: notes 1A2.2 Risk Owner, Control Owner and Risk Practitioner (compare table and isaca_rule). Original retail loyalty program scenario written for KaiSip; no ISACA Review Manual, QAE or prep-bank text used. CRISC D1 pilot batch, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): key reworded (leads, not owns); CISO option lengthened; pre_read made neutral; stem says the controls are implemented (residual risk is measured after implementation).",
+      "_provenance": "Authored from concept: notes 1A2.2 Risk Owner, Control Owner and Risk Practitioner (compare table and isaca_rule). Original retail loyalty program scenario written for KaiSip; no ISACA Review Manual, QAE or prep-bank text used. CRISC D1 pilot batch, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): key reworded (leads, not owns); CISO option lengthened; pre_read made neutral; stem says the controls are implemented (residual risk is measured after implementation). Quality pass 31 Oct 2026 (ISACA authenticity audit and concept review): control owner wording aligned with the ISACA Glossary (accountable for a control working, not whoever designs or runs it) in the explanations and tip 2; ISACA Glossary (control owner) cited.",
       "style_version": 2
     },
     {
@@ -125,11 +125,11 @@
       "principle_id": "match-decision-to-role",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A university's admissions office uses a vendor's AI model to rank applicants, and IT manages the vendor contract. Who should the risk practitioner propose as the MOST appropriate owner of the model's risk?",
+      "question": "A university's admissions office ranks applicants with a vendor's AI model, and IT manages the vendor contract. Which of the following should the risk practitioner propose as the MOST appropriate owner of the model's risk?",
       "options": {
         "A": "The IT manager who administers the vendor contract",
         "B": "The vendor that developed and maintains the model",
-        "C": "The AI governance committee that reviews every AI use case",
+        "C": "The AI governance committee that reviews each AI use case",
         "D": "The admissions director whose decisions rely on the model"
       },
       "correct": "D",
@@ -139,7 +139,7 @@
       "wrong_explanations": {
         "A": "Tempting because IT manages the vendor relationship. But administering a contract gives no authority over admissions decisions or over the loss if the model ranks unfairly.",
         "B": "Tempting because the vendor built and maintains the model. But outsourcing moves the work, not the accountability; the university still owns the risk to its admissions.",
-        "C": "Tempting because the committee oversees every AI use. But oversight is not ownership; one named business manager must be accountable for this use case's risk."
+        "C": "Tempting because the committee oversees AI use across the university. But oversight is not ownership; one named business manager must be accountable for this use case's risk."
       },
       "tips": [
         "Eliminate: A administers a contract without authority over admissions, and B is a supplier; outsourcing never transfers accountability for the university's risk.",
@@ -152,7 +152,7 @@
         "Accountability",
         "Outsourced AI"
       ],
-      "_provenance": "Authored from concept: notes 1A2.3 RACI and Accountability, Including AI (exam traps: committee as accountable owner; builder as owner) and 1B5.3 (outsourcing moves the work, not the accountability). Original university admissions scenario written for KaiSip; no ISACA Review Manual, QAE or prep-bank text used. CRISC D1 pilot batch, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): pre_read made neutral; framework_ref order changed (risk owner first); re-lettered (key C to D).",
+      "_provenance": "Authored from concept: notes 1A2.3 RACI and Accountability, Including AI (exam traps: committee as accountable owner; builder as owner) and 1B5.3 (outsourcing moves the work, not the accountability). Original university admissions scenario written for KaiSip; no ISACA Review Manual, QAE or prep-bank text used. CRISC D1 pilot batch, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): pre_read made neutral; framework_ref order changed (risk owner first); re-lettered (key C to D). Quality pass 31 Oct 2026 (ISACA authenticity audit and concept review): converted to a 'Which of the following' stem; 'every' removed from the committee option and its explanation.",
       "style_version": 2
     },
     {
@@ -199,7 +199,7 @@
       "principle_id": "root-cause-over-symptom",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A bank pays call center agents a bonus for calls closed per hour, and a risk analyst finds that recently trained agents often skip caller identity checks. What should the analyst recommend as MOST effective?",
+      "question": "A bank pays call center agents a bonus for calls closed per hour, and agents trained last month skip identity checks on one call in five. What should the risk analyst recommend as MOST effective?",
       "options": {
         "A": "Retrain the agents on the caller identity verification procedure",
         "B": "Discipline agents who are found skipping identity checks",
@@ -209,9 +209,9 @@
       "correct": "D",
       "key_concept": "When incentives reward behavior that bypasses controls, rebalancing the incentive addresses the root cause; training and monitoring only support it.",
       "pre_read": "Before choosing a fix, ask why people skip a step they have been trained to perform.",
-      "correct_explanation": "The bonus rewards speed alone, so agents skip checks to earn it: the incentive is the root cause. Changing it, for example by counting completed checks, removes the pressure that drives the behavior, and the call center's owner can make that change. Retraining is the runner-up, but these agents were recently trained; while pay rewards skipping it, training alone rarely changes what people do.",
+      "correct_explanation": "The bonus rewards speed alone, so agents skip checks to earn it: the incentive is the root cause. Changing it, for example by counting completed checks, removes the pressure that drives the behavior, and the call center's owner can make that change. Retraining is the runner-up, but these agents were trained last month; while pay rewards skipping the check, more training will not outweigh it.",
       "wrong_explanations": {
-        "A": "Tempting because training is the usual fix for skipped steps. But these agents were recently trained; the problem is motivation, and the bonus still rewards skipping.",
+        "A": "Tempting because training is the usual fix for skipped steps. But these agents were trained last month; the problem is motivation, and the bonus still rewards skipping.",
         "B": "Tempting because it shows the rule is serious. But punishing individuals leaves the incentive in place and teaches staff to hide skipped checks.",
         "C": "Tempting because visibility helps oversight. But a report detects the problem after the fact; it does not remove the incentive that causes it."
       },
@@ -226,7 +226,7 @@
         "Root cause",
         "Risk culture"
       ],
-      "_provenance": "Authored from concept: notes 1A3.2 Incentives, Speaking Up and Escalation (isaca_rule: look for the incentive behind the behavior) and 1A3.1 (exam trap: training as the main lever). Original bank call center scenario written for KaiSip; no ISACA Review Manual, QAE or prep-bank text used. CRISC D1 pilot batch, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): stem now says agents were recently trained; key reworded; pre_read and runner-up explanation updated.",
+      "_provenance": "Authored from concept: notes 1A3.2 Incentives, Speaking Up and Escalation (isaca_rule: look for the incentive behind the behavior) and 1A3.1 (exam trap: training as the main lever). Original bank call center scenario written for KaiSip; no ISACA Review Manual, QAE or prep-bank text used. CRISC D1 pilot batch, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): stem now says agents were recently trained; key reworded; pre_read and runner-up explanation updated. Quality pass 31 Oct 2026 (ISACA authenticity audit and concept review): subjective frequency word 'often' replaced by a measured rate (one call in five); 'recently trained' made 'trained last month' in stem and explanations (authenticity audit rewrite).",
       "style_version": 2
     },
     {
@@ -239,9 +239,9 @@
       "question": "Before a board meeting, a product director asks the risk analyst to remove an unfavorable penetration test result from the risk report, saying a fix is underway. What is the risk analyst's BEST response?",
       "options": {
         "A": "Remove the result and brief the board chair about it privately",
-        "B": "Keep the result in the report and note the planned fix",
+        "B": "Keep the result in the report alongside the planned fix",
         "C": "Delay the report until the fix is complete and verified",
-        "D": "Agree to the change requested by the product's risk owner"
+        "D": "Make the change that the product director has requested"
       },
       "correct": "B",
       "key_concept": "Practitioners disclose all significant facts objectively; context such as a planned fix is added, never used to omit or delay a finding.",
@@ -250,10 +250,10 @@
       "wrong_explanations": {
         "A": "Tempting because the chair still hears about it. But the whole board relies on the report; a private briefing to one person leaves the record misleading.",
         "C": "Tempting because the result may soon be out of date. But the board meets now, and holding back a significant fact distorts what it decides on.",
-        "D": "Tempting because the director is the risk owner. But owners decide responses, not which facts the board sees; altering the report breaches the duty to disclose."
+        "D": "Tempting because the director is senior and answers for the product. But no manager decides which facts the board sees; altering the report breaches the duty to disclose."
       },
       "tips": [
-        "Eliminate: A informs one person while the record misleads the rest, and D confuses owning the response with controlling the facts.",
+        "Eliminate: A informs one person while the record misleads the rest, and D lets the person asking decide which facts the board sees.",
         "Final two: B beats C because significant facts are disclosed when decisions are made; the planned fix is context, not a reason to wait.",
         "Exam cue: under pressure to soften a report, keep the facts and add context; never omit or delay a significant finding."
       ],
@@ -263,7 +263,7 @@
         "Objectivity",
         "Risk reporting"
       ],
-      "_provenance": "Authored from concept: notes 1A3.3 Professional Ethics and Ethical AI Use (isaca_rule: report what the analysis shows; exam trap: lowering the rating because the owner asks). Original product director scenario written for KaiSip; no ISACA Review Manual, QAE or prep-bank text used. CRISC D1 pilot batch, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): self-justifying option D reworded; explanation reworded; pre_read made neutral; re-lettered (key A to B).",
+      "_provenance": "Authored from concept: notes 1A3.3 Professional Ethics and Ethical AI Use (isaca_rule: report what the analysis shows; exam trap: lowering the rating because the owner asks). Original product director scenario written for KaiSip; no ISACA Review Manual, QAE or prep-bank text used. CRISC D1 pilot batch, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): self-justifying option D reworded; explanation reworded; pre_read made neutral; re-lettered (key A to B). Quality pass 31 Oct 2026 (ISACA authenticity audit and concept review): option D no longer adds a 'risk owner' fact absent from the stem; key made a single action; explanation D and tip 1 updated.",
       "style_version": 2
     },
     {
@@ -273,12 +273,12 @@
       "principle_id": "final-two",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A risk practitioner at a telecom company is helping update governance documents. Which document is the MOST appropriate place to state management's intent that customer data is protected according to its classification?",
+      "question": "A risk practitioner at a telecom company is updating governance documents. Which of the following is the MOST appropriate place to state management's intent that customer data is protected by classification?",
       "options": {
-        "A": "A standard setting minimum encryption for each class",
-        "B": "A procedure for labeling customer records step by step",
-        "C": "A policy that gives direction on protecting data",
-        "D": "A guideline that suggests good handling practices"
+        "A": "A data protection standard",
+        "B": "A data labeling procedure",
+        "C": "A data protection policy",
+        "D": "A data handling guideline"
       },
       "correct": "C",
       "key_concept": "Policies state management's intent and are approved by senior management; standards, procedures and guidelines support them at lower levels.",
@@ -300,7 +300,7 @@
         "Standards",
         "Data classification"
       ],
-      "_provenance": "Authored from concept: notes 1A4.1 The Policy Hierarchy (compare table: policy, standard, procedure, guideline). Original hospital governance scenario written for KaiSip; no ISACA Review Manual, QAE or prep-bank text used. CRISC D1 pilot batch, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): options rebalanced to parallel length; key no longer the only option echoing the stem. Cross-domain fix 30 Oct 2026: setting moved from a hospital to a telecom company (customer data); lesson and key unchanged.",
+      "_provenance": "Authored from concept: notes 1A4.1 The Policy Hierarchy (compare table: policy, standard, procedure, guideline). Original hospital governance scenario written for KaiSip; no ISACA Review Manual, QAE or prep-bank text used. CRISC D1 pilot batch, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): options rebalanced to parallel length; key no longer the only option echoing the stem. Cross-domain fix 30 Oct 2026: setting moved from a hospital to a telecom company (customer data); lesson and key unchanged. Quality pass 31 Oct 2026 (ISACA authenticity audit and concept review): options reduced to short noun phrases without definitional glosses ('direction' no longer echoes 'intent'); stem converted to 'Which of the following'.",
       "style_version": 2
     },
     {
@@ -310,9 +310,9 @@
       "principle_id": "analyze-before-acting",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A risk practitioner at an engineering consultancy without an AI policy learns some designers upload client drawings to a public generative AI service, but not how often. What should the practitioner do FIRST?",
+      "question": "A risk practitioner at an engineering consultancy without an AI policy learns some designers upload client drawings to a public generative AI service. What should the practitioner do FIRST?",
       "options": {
-        "A": "Block the AI service at the network perimeter immediately",
+        "A": "Block the AI service at the network perimeter",
         "B": "Assess whether designers know their confidentiality duties",
         "C": "Draft an AI acceptable use policy for senior management approval",
         "D": "Assess the exposure of client data through the AI service"
@@ -320,9 +320,9 @@
       "correct": "D",
       "key_concept": "When staff adopt an AI tool before any policy exists, the practitioner first assesses the exposure; policy and controls follow from it.",
       "pre_read": "Notice what the practitioner knows and does not yet know about the uploads.",
-      "correct_explanation": "On CRISC items, a new risk is analyzed before a response is chosen. Assessing how much client data reaches the service, and what that could cost the firm, tells the owner how urgent the issue is and what a policy must cover. Drafting the policy is the runner-up and will likely follow, but writing rules before understanding the exposure risks a policy that misses the real problem.",
+      "correct_explanation": "A new risk is analyzed before a response is chosen. Assessing how much client data reaches the service, and what that could cost the firm, tells the owner how urgent the issue is and what a policy must cover. Drafting the policy is the runner-up and will likely follow, but writing rules before understanding the exposure risks a policy that misses the real problem.",
       "wrong_explanations": {
-        "A": "Tempting because it stops uploads at once. But blocking is a response the business chooses after the risk is understood, and it may push use onto personal devices.",
+        "A": "Tempting because it stops the uploads. But blocking is a response the business chooses after the risk is understood, and it may push use onto personal devices.",
         "B": "Tempting because confidentiality duties apply. But checking what designers know neither measures the data exposure nor gives staff rules for AI tools.",
         "C": "Tempting because the policy gap is real. But the policy should follow from the assessed exposure, so it addresses what designers actually upload and why."
       },
@@ -337,7 +337,7 @@
         "Acceptable use policy",
         "Analyze before acting"
       ],
-      "_provenance": "Authored from concept: notes 1A4.3 Policy Review and AI Acceptable Use (isaca_rule: when new technology outpaces policy, analyze the risk and recommend an update; exam trap: block every AI tool). Original engineering consultancy scenario written for KaiSip; no ISACA Review Manual, QAE or prep-bank text used. CRISC D1 pilot batch, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): stem now says the extent of uploads is unknown; a distractor now uses assess; pre_read made neutral; re-lettered (key B to D).",
+      "_provenance": "Authored from concept: notes 1A4.3 Policy Review and AI Acceptable Use (isaca_rule: when new technology outpaces policy, analyze the risk and recommend an update; exam trap: block every AI tool). Original engineering consultancy scenario written for KaiSip; no ISACA Review Manual, QAE or prep-bank text used. CRISC D1 pilot batch, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): stem now says the extent of uploads is unknown; a distractor now uses assess; pre_read made neutral; re-lettered (key B to D). Quality pass 31 Oct 2026 (ISACA authenticity audit and concept review): ', but not how often' cut from the stem; 'immediately' removed from option A; 'On CRISC items' removed from the explanation.",
       "style_version": 2
     },
     {
@@ -384,12 +384,12 @@
       "principle_id": "match-decision-to-role",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "An insurer's risk practitioner is inventorying the AI models used in claims, pricing and marketing. Which attribute is MOST important to record for each model so its risk can be managed?",
+      "question": "An insurer's risk practitioner is inventorying the AI models used in claims, pricing and marketing. Which of the following is MOST important to record for each model to manage its risk?",
       "options": {
-        "A": "The named business owner who answers for the model's use",
-        "B": "The model version and the sources of its training data",
-        "C": "The cloud platform owner and hardware the model runs on",
-        "D": "The business units and staff who query the model each month"
+        "A": "The named business owner of the model",
+        "B": "The model version and its training data sources",
+        "C": "The platform owner and the hardware the model runs on",
+        "D": "The business units that query the model"
       },
       "correct": "A",
       "key_concept": "Every inventoried asset, including an AI model, needs an accountable business owner; classification and risk decisions depend on that owner.",
@@ -411,7 +411,7 @@
         "Asset ownership",
         "Training data"
       ],
-      "_provenance": "Authored from concept: notes 1A6.3 Cloud, SaaS and AI Assets in the Inventory and 1A6.1 Asset Inventory and Ownership (isaca_rule: ownership comes first). Original insurer AI inventory scenario written for KaiSip; no ISACA Review Manual, QAE or prep-bank text used. CRISC D1 pilot batch, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): stem states the inventory's purpose; key reworded; platform-owner distractor added; pre_read made neutral. Cross-domain fix 30 Oct 2026: distractor D now names business units so the lens word is not key-only.",
+      "_provenance": "Authored from concept: notes 1A6.3 Cloud, SaaS and AI Assets in the Inventory and 1A6.1 Asset Inventory and Ownership (isaca_rule: ownership comes first). Original insurer AI inventory scenario written for KaiSip; no ISACA Review Manual, QAE or prep-bank text used. CRISC D1 pilot batch, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): stem states the inventory's purpose; key reworded; platform-owner distractor added; pre_read made neutral. Cross-domain fix 30 Oct 2026: distractor D now names business units so the lens word is not key-only. Quality pass 31 Oct 2026 (ISACA authenticity audit and concept review): converted to a short 'Which of the following' stem with noun-phrase options; key, lesson and explanations unchanged.",
       "style_version": 2
     },
     {
@@ -421,12 +421,12 @@
       "principle_id": "priority-word-decides",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A port authority's IT risk register rates three scenarios, including ransomware, as critical, yet its enterprise register shows no technology risk above moderate. What should the risk practitioner conclude is the MOST likely cause?",
+      "question": "A port authority's risk practitioner finds three IT scenarios, including ransomware, rated critical in the IT register but none above moderate in the enterprise register. Which of the following is the MOST likely cause?",
       "options": {
-        "A": "The risk committee has formally accepted the ransomware risk",
-        "B": "IT ratings are not normalized to the enterprise rating scale",
-        "C": "IT has overstated the likelihood of a ransomware attack",
-        "D": "Cyber insurance has transferred the ransomware risk to the insurer"
+        "A": "Formal acceptance of the ransomware risk at enterprise level",
+        "B": "IT ratings not normalized to the enterprise rating scale",
+        "C": "An overstated likelihood for the ransomware scenario",
+        "D": "Transfer of the ransomware risk through cyber insurance"
       },
       "correct": "B",
       "key_concept": "IT risk must be normalized to enterprise scales and rolled into the enterprise register; otherwise serious IT risks vanish from the enterprise view.",
@@ -434,7 +434,7 @@
       "correct_explanation": "When three critical IT risks all appear no higher than moderate at enterprise level, the likeliest cause is integration: IT ratings are not normalized to the enterprise scale when they are rolled into the enterprise register. That is a systemic gap. IT overstating ransomware likelihood is the runner-up, but it would explain only that one scenario, not why every critical IT risk drops out of the enterprise view.",
       "wrong_explanations": {
         "A": "Tempting because accepted risks receive less attention. But acceptance does not change a risk's rating; an accepted critical risk stays critical in the register.",
-        "C": "Tempting because IT teams sometimes rate technical threats high. But one overstated scenario cannot explain why three critical IT risks all appear no higher than moderate.",
+        "C": "Tempting because IT teams can rate technical threats high. But one overstated scenario cannot explain why three critical IT risks all appear no higher than moderate.",
         "D": "Tempting because insurance is a common ransomware response. But insurance shares part of the financial loss; disruption to cargo handling and reputation stays with the port authority."
       },
       "tips": [
@@ -448,7 +448,7 @@
         "Normalization",
         "Risk taxonomy"
       ],
-      "_provenance": "Authored from concept: notes 1B1.1 IT Risk Within Enterprise Risk and 1B1.2 Common Taxonomy and Rating Scales (exam trap: separate scales that cannot be compared). Original hospital network scenario written for KaiSip; no ISACA Review Manual, QAE or prep-bank text used. CRISC D1 pilot batch, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): hard error fixed: stem now shows three critical IT risks, key reworded to normalization; explanation, tip and pre_read updated; re-lettered (key C to B). Cross-domain fix 30 Oct 2026: setting moved from a hospital network to a port authority; option A names the risk committee; option lengths evened.",
+      "_provenance": "Authored from concept: notes 1B1.1 IT Risk Within Enterprise Risk and 1B1.2 Common Taxonomy and Rating Scales (exam trap: separate scales that cannot be compared). Original hospital network scenario written for KaiSip; no ISACA Review Manual, QAE or prep-bank text used. CRISC D1 pilot batch, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): hard error fixed: stem now shows three critical IT risks, key reworded to normalization; explanation, tip and pre_read updated; re-lettered (key C to B). Cross-domain fix 30 Oct 2026: setting moved from a hospital network to a port authority; option A names the risk committee; option lengths evened. Quality pass 31 Oct 2026 (ISACA authenticity audit and concept review): converted to a 'Which of the following' stem with noun-phrase options; subjective 'sometimes' removed from explanation C.",
       "style_version": 2
     },
     {
@@ -458,12 +458,12 @@
       "principle_id": "match-decision-to-role",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A risk practitioner has drafted an updated IT risk management framework for a logistics company. Whose approval is MOST important to give it authority over every business unit?",
+      "question": "A risk practitioner has drafted an updated IT risk management framework for a logistics company. Which of the following is the MOST appropriate approver to give it authority over every business unit?",
       "options": {
         "A": "The risk practitioner who drafted the framework",
         "B": "The IT steering committee that oversees technology projects",
         "C": "The internal audit function that will later review it",
-        "D": "Senior management, through the executive committee"
+        "D": "The executive committee acting for senior management"
       },
       "correct": "D",
       "key_concept": "Senior management approves the risk management framework, giving it authority across the enterprise; the practitioner drafts and maintains it.",
@@ -485,7 +485,7 @@
         "Senior management",
         "Governance approval"
       ],
-      "_provenance": "Authored from concept: notes 1B1.3 The Risk Management Framework and Its Approval (exam trap: the practitioner approves the framework because they wrote it). Original logistics company scenario written for KaiSip; no ISACA Review Manual, QAE or prep-bank text used. CRISC D1 pilot batch, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): key names the executive committee; stem and explanation reworded; pre_read made neutral.",
+      "_provenance": "Authored from concept: notes 1B1.3 The Risk Management Framework and Its Approval (exam trap: the practitioner approves the framework because they wrote it). Original logistics company scenario written for KaiSip; no ISACA Review Manual, QAE or prep-bank text used. CRISC D1 pilot batch, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): key names the executive committee; stem and explanation reworded; pre_read made neutral. Quality pass 31 Oct 2026 (ISACA authenticity audit and concept review): key put in the same parallel form as the other options (authenticity audit); stem converted to 'Which of the following'.",
       "style_version": 2
     },
     {
@@ -499,7 +499,7 @@
       "options": {
         "A": "Accept audit's offer to design the payroll access controls",
         "B": "Have the second-line risk team design them as control owner",
-        "C": "Have the payroll system owner design them, with audit advising",
+        "C": "Have the payroll system owner design the access controls",
         "D": "Let audit design them if a different audit team reviews them"
       },
       "correct": "C",
@@ -522,7 +522,7 @@
         "Audit independence",
         "Control ownership"
       ],
-      "_provenance": "Authored from concept: notes 1B2.1 The Three Lines and Their Jobs (exam trap: internal audit should design the controls). Original bank payroll scenario written for KaiSip; no ISACA Review Manual, QAE or prep-bank text used. CRISC D1 pilot batch, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): self-justifying option reworded; tips and explanation now set B against the second-line option; distractor uses owner; re-lettered (key B to C). Cross-domain fix 30 Oct 2026: explanation says audit advises on request but neither designs nor approves.",
+      "_provenance": "Authored from concept: notes 1B2.1 The Three Lines and Their Jobs (exam trap: internal audit should design the controls). Original bank payroll scenario written for KaiSip; no ISACA Review Manual, QAE or prep-bank text used. CRISC D1 pilot batch, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): self-justifying option reworded; tips and explanation now set B against the second-line option; distractor uses owner; re-lettered (key B to C). Cross-domain fix 30 Oct 2026: explanation says audit advises on request but neither designs nor approves. Quality pass 31 Oct 2026 (ISACA authenticity audit and concept review): key made a single action (audit's advisory role stays in the explanation and tips).",
       "style_version": 2
     },
     {
@@ -534,17 +534,17 @@
       "bloom_level": "Analysis",
       "question": "A new chief risk officer proposes that the second-line risk team stop advising business units on control design, to be as independent as internal audit. What is the risk practitioner's BEST advice?",
       "options": {
-        "A": "Keep advising on design while challenging owners' risk ratings",
-        "B": "Stop advising and review owners' controls after they are built",
-        "C": "Refer business units to internal audit for design advice instead",
+        "A": "Keep advising business units on control design",
+        "B": "Limit the team to reviewing controls after they are built",
+        "C": "Refer business units to internal audit for design advice",
         "D": "Move the risk team's reporting line to the audit committee"
       },
       "correct": "A",
       "key_concept": "The second line advises and challenges from within management and needs objectivity; full independence is the third line's requirement.",
       "pre_read": "Ask which line the risk team belongs to and what that line needs in order to do its job well.",
-      "correct_explanation": "The second line sits within management on purpose: it advises the first line and challenges its ratings and controls. It needs independence from the first-line work it challenges, plus a route to escalate, but not internal audit's independence from management. Moving its reporting line to the audit committee is the runner-up because it looks stronger, but it would cast the second line as a second audit function and weaken its role inside management.",
+      "correct_explanation": "The second line sits within management on purpose: it advises the first line on control design and challenges its ratings and controls. It needs independence from the first-line work it challenges, plus a route to escalate, but not internal audit's independence from management. Moving its reporting line to the audit committee is the runner-up because it looks stronger, but it would cast the second line as a second audit function.",
       "wrong_explanations": {
-        "B": "Tempting because reviewing after the fact feels more independent. But advising on design is a core second-line job; late review denies owners risk input when changes are cheapest.",
+        "B": "Tempting because reviewing after the fact feels more independent. But advising on design is a core second-line job; late review denies the business risk input when changes are cheapest.",
         "C": "Tempting because audit may give advice. But making audit the business's routine source of design advice moves second-line work to the third line and strains its independence.",
         "D": "Tempting because it looks like stronger independence. But the second line belongs to management; it needs access to the board, not an audit-style reporting line."
       },
@@ -559,7 +559,7 @@
         "Objectivity",
         "Independence"
       ],
-      "_provenance": "Authored from concept: notes 1B2.2 Independence, Challenge and Coordination Across Lines (exam trap: the second line must be as independent as internal audit). Original new chief risk officer scenario written for KaiSip; no ISACA Review Manual, QAE or prep-bank text used. CRISC D1 pilot batch, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): key and explanation reworded for second-line independence from first-line work; exam cue updated; distractor uses owners.",
+      "_provenance": "Authored from concept: notes 1B2.2 Independence, Challenge and Coordination Across Lines (exam trap: the second line must be as independent as internal audit). Original new chief risk officer scenario written for KaiSip; no ISACA Review Manual, QAE or prep-bank text used. CRISC D1 pilot batch, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): key and explanation reworded for second-line independence from first-line work; exam cue updated; distractor uses owners. Quality pass 31 Oct 2026 (ISACA authenticity audit and concept review): key made a single action (no 'while' clause); option B made a single action; 'instead' tail removed from option C; explanation and wrong explanation B updated.",
       "style_version": 2
     },
     {
@@ -572,14 +572,14 @@
       "question": "A software company completes the acquisition of a smaller competitor with its own IT systems, and the enterprise risk profile was refreshed two months ago. What should the risk practitioner do FIRST?",
       "options": {
         "A": "Wait for the next scheduled annual update of the risk profile",
-        "B": "Identify and assess the acquired company's risks for the profile",
-        "C": "Assess how existing controls could extend to the acquired systems",
+        "B": "Assess the acquired company's risks for the enterprise profile",
+        "C": "Assess whether existing controls extend to the acquired systems",
         "D": "Ask the acquired company to maintain its own separate risk profile"
       },
       "correct": "B",
-      "key_concept": "Major business changes such as acquisitions trigger an immediate update of the risk profile, starting with identifying and assessing new risks.",
+      "key_concept": "Major business changes such as acquisitions trigger a prompt update of the risk profile, starting with an assessment of the new risks.",
       "pre_read": "Notice what changed since the profile was last refreshed and what each option does first.",
-      "correct_explanation": "An acquisition is a trigger event: it changes the business, the assets and the threats, so the profile no longer reflects reality even though it is only two months old. Identifying and assessing the acquired company's risks, then aggregating them into the profile, comes first. Extending existing controls is the runner-up, but choosing controls before the new risks are analyzed may miss what the acquired systems need.",
+      "correct_explanation": "An acquisition is a trigger event: it changes the business, the assets and the threats, so the profile no longer reflects reality even though it is only two months old. Assessing the acquired company's risks, then aggregating them into the profile, comes first. Extending existing controls is the runner-up, but choosing controls before the new risks are analyzed may miss what the acquired systems need.",
       "wrong_explanations": {
         "A": "Tempting because the profile is recent. But the acquisition changes the risk landscape now; waiting a year leaves leaders deciding on an outdated picture.",
         "C": "Tempting because consistent controls are likely. But reviewing controls before identifying the new risks gets the order wrong; the acquired systems may face risks those controls never addressed.",
@@ -596,7 +596,7 @@
         "Trigger events",
         "Mergers and acquisitions"
       ],
-      "_provenance": "Authored from concept: notes 1B3.2 Aggregation and Keeping the Profile Current (exam trap: the profile is reviewed once a year). Original software company acquisition scenario written for KaiSip; no ISACA Review Manual, QAE or prep-bank text used. CRISC D1 pilot batch, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): controls distractor now uses assess; pre_read made neutral; re-lettered (key C to B).",
+      "_provenance": "Authored from concept: notes 1B3.2 Aggregation and Keeping the Profile Current (exam trap: the profile is reviewed once a year). Original software company acquisition scenario written for KaiSip; no ISACA Review Manual, QAE or prep-bank text used. CRISC D1 pilot batch, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): controls distractor now uses assess; pre_read made neutral; re-lettered (key C to B). Quality pass 31 Oct 2026 (ISACA authenticity audit and concept review): key made a single action ('Identify and assess' became 'Assess'); hedge 'could' removed from option C; explanation and key_concept updated.",
       "style_version": 2
     },
     {
@@ -609,8 +609,8 @@
       "question": "A bank's board states a low appetite for disruption to customer services. Which statement should the risk practitioner propose as the BEST risk tolerance supporting this appetite?",
       "options": {
         "A": "The bank will avoid disruption to customer-facing services",
-        "B": "The bank could survive a five-day outage without failing",
-        "C": "Online banking may be unavailable no more than two hours a month",
+        "B": "The bank can survive a five-day outage without failing",
+        "C": "Online banking downtime will not exceed two hours a month",
         "D": "Customer service outages will be reported to the board quarterly"
       },
       "correct": "C",
@@ -633,7 +633,7 @@
         "Risk appetite",
         "Risk capacity"
       ],
-      "_provenance": "Authored from concept: notes 1B4.1 Appetite, Tolerance and Capacity (compare table; exam trap: appetite and tolerance mean the same thing). Original bank service disruption scenario written for KaiSip; no ISACA Review Manual, QAE or prep-bank text used. CRISC D1 pilot batch, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): pre_read made neutral.",
+      "_provenance": "Authored from concept: notes 1B4.1 Appetite, Tolerance and Capacity (compare table; exam trap: appetite and tolerance mean the same thing). Original bank service disruption scenario written for KaiSip; no ISACA Review Manual, QAE or prep-bank text used. CRISC D1 pilot batch, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): pre_read made neutral. Quality pass 31 Oct 2026 (ISACA authenticity audit and concept review): key reworded without 'may' (no longer the longest option); hedge 'could' removed from option B.",
       "style_version": 2
     },
     {
@@ -643,7 +643,7 @@
       "principle_id": "escalate-to-the-limit-setter",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A logistics firm's confirmed KRI for failed nightly backups has exceeded tolerance for two weeks while IT handles it as a routine ticket. What is the risk practitioner's BEST action?",
+      "question": "A logistics firm's validated KRI for failed nightly backups has exceeded tolerance for two weeks, and IT is handling it as a routine ticket. What should the risk practitioner do FIRST?",
       "options": {
         "A": "Raise the KRI threshold to match current backup performance",
         "B": "Hold the breach for the risk owner's next quarterly review",
@@ -651,9 +651,9 @@
         "D": "Escalate the breach to the risk owner with an impact estimate"
       },
       "correct": "D",
-      "key_concept": "A confirmed tolerance breach is escalated promptly to the risk owner with its impact; it is a governance decision, not a technical ticket.",
+      "key_concept": "A validated tolerance breach is escalated promptly to the risk owner with its impact; it is a governance decision, not a technical ticket.",
       "pre_read": "Notice how long the indicator has been over its limit and who currently knows about it.",
-      "correct_explanation": "A tolerance breach means the firm is carrying more risk than its leaders agreed to, so it is a governance event, not just a ticket. With the data confirmed, the practitioner escalates to the risk owner with the likely business impact, so the owner can decide on interim measures or formal acceptance. Letting IT close the ticket is the runner-up, but the owner stays unaware while backups keep failing.",
+      "correct_explanation": "A tolerance breach means the firm is carrying more risk than its leaders agreed to, so it is a governance event, not just a ticket. The KRI is already validated, so the first step is to escalate to the risk owner with the likely business impact, letting the owner decide on interim measures or formal acceptance. Letting IT close the ticket first is the runner-up, but the owner stays unaware while backups keep failing.",
       "wrong_explanations": {
         "A": "Tempting because the threshold no longer matches reality. But only the level that set a tolerance can change it, and moving the line to fit results hides risk.",
         "B": "Tempting because it does involve the owner. But two weeks of failed backups above tolerance needs a decision now, not at a routine quarterly review.",
@@ -662,7 +662,7 @@
       "tips": [
         "Eliminate: A moves the threshold to fit the result, and B holds a live breach for routine reporting instead of escalating it promptly.",
         "Final two: D beats C because a tolerance breach needs the risk owner's decision; IT fixing the ticket leaves the owner unaware of risk above limits.",
-        "Exam cue: a confirmed KRI breach goes to the risk owner, with its impact, promptly; it is not left in a technical ticket queue."
+        "Exam cue: once a KRI breach is validated, the FIRST step is to escalate it, with its impact, to the risk owner; it is not left in a technical ticket queue."
       ],
       "framework_ref": "NIST CSF 2.0 GV.RM-02 (risk appetite and risk tolerance statements are established, communicated and maintained); NIST IR 8286 Rev. 1 Section 2.1 (Overview of ERM: risk appetite and risk tolerance)",
       "related_concepts": [
@@ -670,7 +670,7 @@
         "Escalation",
         "Key risk indicators"
       ],
-      "_provenance": "Authored from concept: notes 1B4.3 Tolerance Breaches and Escalation (isaca_rule: a breach is a governance event, not a technical ticket; exam traps: raise the tolerance, report once resolved). Original logistics backup scenario written for KaiSip; no ISACA Review Manual, QAE or prep-bank text used. CRISC D1 pilot batch, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): quarterly distractor now names the risk owner; tip and explanation updated; pre_read made neutral. Cross-domain fix 30 Oct 2026: option C trimmed to keep option lengths balanced across the domain.",
+      "_provenance": "Authored from concept: notes 1B4.3 Tolerance Breaches and Escalation (isaca_rule: a breach is a governance event, not a technical ticket; exam traps: raise the tolerance, report once resolved). Original logistics backup scenario written for KaiSip; no ISACA Review Manual, QAE or prep-bank text used. CRISC D1 pilot batch, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): quarterly distractor now names the risk owner; tip and explanation updated; pre_read made neutral. Cross-domain fix 30 Oct 2026: option C trimmed to keep option lengths balanced across the domain. Quality pass 31 Oct 2026 (ISACA authenticity audit and concept review): stem rewritten per the audit ('validated' replaces the planted 'confirmed'); priority word changed from BEST to FIRST so a FIRST item keys consulting the owner on an already analyzed risk; explanation, key_concept and exam cue updated.",
       "style_version": 2
     },
     {
@@ -720,7 +720,7 @@
       "question": "A fintech passes its regulatory examination with no findings, and the CFO proposes cutting the IT risk budget because compliance shows risk is low. What should the risk practitioner advise as MOST appropriate?",
       "options": {
         "A": "Support the budget cut in line with the examination result",
-        "B": "Explain that compliance is a minimum and other risks need assessment",
+        "B": "Advise that compliance does not show overall IT risk is low",
         "C": "Keep the full budget until a second examination confirms the result",
         "D": "Move the IT risk budget to assessing upcoming compliance rules"
       },
@@ -744,7 +744,7 @@
         "Regulatory obligations",
         "Risk-based budgeting"
       ],
-      "_provenance": "Authored from concept: notes 1B5.2 Compliance Obligations as a Source of Risk (exam trap: if the enterprise is fully compliant, its IT risk is low). Original fintech examination scenario written for KaiSip; no ISACA Review Manual, QAE or prep-bank text used. CRISC D1 pilot batch, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): self-justifying option A reworded; option D now uses assess; tips and explanations updated; pre_read made neutral.",
+      "_provenance": "Authored from concept: notes 1B5.2 Compliance Obligations as a Source of Risk (exam trap: if the enterprise is fully compliant, its IT risk is low). Original fintech examination scenario written for KaiSip; no ISACA Review Manual, QAE or prep-bank text used. CRISC D1 pilot batch, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): self-justifying option A reworded; option D now uses assess; tips and explanations updated; pre_read made neutral. Quality pass 31 Oct 2026 (ISACA authenticity audit and concept review): key made a single action (authenticity audit wording); explanations and tips still fit.",
       "style_version": 2
     }
   ]

@@ -43,6 +43,8 @@ Each bullet was opened on 30 Oct 2026 unless marked Likely.
 - ISACA Glossary (risk culture)
 - ISACA Glossary (IT risk profile)
 - ISACA Glossary (policy)
+- ISACA Glossary (control owner)
+  - Verified, 31 Oct 2026 (control owner, used by crisc_d1_003 from the D1 quality pass): glossary page re-opened with curl. The entry defines the control owner as the person assigned the authority and accountability for control-related decisions, responsible for ensuring the control is implemented and operating effectively and efficiently. KaiSip teaches that the control owner answers for the control working (often the manager whose team runs it), not "whoever runs it".
   - All Verified, 30 Oct 2026: glossary page opened with curl and each entry read. Wording used in items is our own paraphrase. Note the glossary has no plain "risk profile" entry; the entry is "IT risk profile" (a description of the overall identified IT risk to which the enterprise is exposed). Fit note for crisc_d1_008: the Glossary's "policy" entry defines a policy as a document that communicates required and prohibited activities and behaviors; it does not itself mention management intent or senior management approval, so that part of the item rests on NIST CSF 2.0 GV.PO-01, which is cited alongside it.
 
 ### ISACA Code of Professional Ethics (https://www.isaca.org/code-of-professional-ethics)
@@ -102,8 +104,8 @@ ISO 31000:2018, COSO ERM (2017), the IIA Three Lines Model (2020) and the EU AI 
 
 ### Opened and checked, not yet used by an item (add as bullets when a later D1 batch cites them)
   - `ISACA Glossary (risk capacity)`
-  - `ISACA Glossary (control owner)`
   - `ISACA Glossary (risk aggregation)`
+  - `ISACA Glossary (current risk)`, `ISACA Glossary (residual risk)`, `ISACA Glossary (risk response)`, `ISACA Glossary (maximum tolerable outage)`, `ISACA Glossary (acceptable interruption window)`, `ISACA Glossary (recovery time objective)`: opened 31 Oct 2026 for the D1 notes (current risk counts actions already taken, not proposed ones; residual risk remains after a response is implemented; the risk response entry calls the planned level "future residual risk"; MTO is the longest a critical business function or IT system can be disrupted before significant harm; AIW is the longest a system can be unavailable before business objectives are compromised; RTO is the time allowed to recover a business function or resource). The Glossary has no MTD entry.
   - `ISACA Glossary (guideline)`
   - `ISACA Glossary (business continuity plan)`
   - `ISACA Glossary (asset inventory)`
@@ -161,6 +163,14 @@ published 18 Dec 2025). Cite the Rev. 1 forms below in every CRISC domain.
   - Verified, 30 Oct 2026: "Any event during which a threat event results in loss" (scope note credits the FAIR taxonomy). Quoted in notes 2A1.1; not keyed in the pilot.
 - ISACA Glossary (risk register)
   - Verified, 30 Oct 2026: "A list of risk scenarios that have been identified, analyzed and prioritized". Used in notes 2B3.1; not keyed in the pilot.
+- ISACA Glossary (risk response)
+  - Verified, 31 Oct 2026, isaca.org/resources/glossary opened and the entry read: "Any combination of risk avoidance, risk acceptance, risk sharing or transfer, or risk mitigation that leads to a situation in which as much future residual risk (i.e., current risk with the risk response defined and implemented) as possible (usually depending on budgets available) falls within risk appetite limits". Used in crisc_d2_018 (quality pass 31 Oct 2026: a projection for planned controls is future residual risk, which judges the plan; current risk is compared with appetite today) and notes 2B5.1.
+- ISACA Glossary (maximum tolerable outage)
+  - Verified, 31 Oct 2026, same page: "The maximum amount of time that an organization can tolerate the disruption of a critical business function or IT system before it causes significant harm to the business". The Glossary has no MTD entry. Defined in notes 2B2.2 (MTO, with MTD as other sources' term); not keyed.
+- ISACA Glossary (acceptable interruption window)
+  - Verified, 31 Oct 2026, same page: "The maximum period of time that a system can be unavailable before compromising the achievement of the enterprise's business objectives". Defined in notes 2B2.2; not keyed.
+- ISACA Glossary (control owner)
+  - Verified, 31 Oct 2026, same page: the person assigned "the authority and accountability for making control-related decisions" and "responsible for ensuring that the control is implemented and is operating effectively and efficiently". Defined in notes 2B3.1; used in the explanations of crisc_d2_002, crisc_d2_019 and crisc_d2_020; not keyed in Domain 2.
 
 ### COBIT 2019
 - COBIT 2019 APO12.01 (Collect Data)
@@ -196,7 +206,7 @@ published 18 Dec 2025). Cite the Rev. 1 forms below in every CRISC domain.
 
 ### SP 800-34 Rev. 1, Contingency Planning Guide for Federal Information Systems (May 2010, updated Nov 2010)
 - NIST SP 800-34 Rev. 1 Section 3.2.1 (Determine Business Processes and Recovery Criticality: MTD, RTO and RPO)
-  - Same form as the CC library. Verified again 30 Oct 2026, nvlpubs PDF: process owners, leadership and business managers determine acceptable downtime; MTD is what the system owner or authorizing official is willing to accept; the RTO must normally be shorter than the MTD; RPO reflects how much data loss the process can tolerate. Used in crisc_d2_012.
+  - Same form as the CC library. Verified again 30 Oct 2026, nvlpubs PDF: process owners, leadership and business managers determine acceptable downtime; MTD is what the system owner or authorizing official is willing to accept; the RTO must normally be shorter than the MTD; RPO reflects how much data loss the process can tolerate. Used in crisc_d2_012. NIST's MTD is the ISACA Glossary's maximum tolerable outage (MTO); since 31 Oct 2026 the D2 notes and crisc_d2_012's explanation use MTO, keeping MTD only in this NIST citation.
 
 ### IR 8286 Rev. 1, Integrating Cybersecurity and Enterprise Risk Management (ERM) (Dec 2025)
 - NIST IR 8286 Rev. 1 Section 3 Table 1 (Descriptions of notional cybersecurity risk register template elements)
@@ -267,9 +277,9 @@ published 18 Dec 2025). Cite the Rev. 1 forms below in every CRISC domain.
 - NIST IR 8286B-upd1 Section 2.4.3 (Risk Owner: risk escalation and elevation)
   - All Verified, 30 Oct 2026, against NIST.IR.8286B-upd1.pdf (nvlpubs.nist.gov; csrc.nist.gov lists Feb 2025, superseding the Feb 2022 original). 2.3.1: acceptance is first considered when exposure is already acceptable under risk tolerance, and the risk "must be reported, monitored, and managed" (crisc_d3_002). 2.3.2: if exposure exceeds tolerance, the risk owner may decide not to conduct the activity; the text notes it is rare that no mix of transfer and mitigation would work (crisc_d3_003). 2.3.4: mitigation applies controls listed as preventative, deterrent, detective, corrective and compensating, with a definition and example for each (crisc_d3_003, crisc_d3_008, crisc_d3_009). 2.4.3: the risk owner column names who ensures the response is implemented; escalation happens when a threshold or time frame is reached, and elevation moves the decision to a more senior stakeholder (cited by crisc_d3_005 and crisc_d3_016 until 31 Oct 2026; both items were re-angled in the cross-domain fix, so this bullet is currently unused by D3).
 
-### NIST IR 8286C-upd1, Staging Cybersecurity Risks for Enterprise Risk Management and Governance Oversight (Sep 2022, updates as of 6 Mar 2024)
-- NIST IR 8286C-upd1 Section 2.2 (Normalization of CSRR Information: the same rating criteria enable comparison and tracking)
-  - Verified, 30 Oct 2026, against NIST.IR.8286C-upd1.pdf (nvlpubs.nist.gov): normalization at the higher level "should use the same rating criteria to enable comparison and tracking"; Section 2.1 requires a source ID so each aggregated risk can be traced to its original register, and the section warns that aggregated summaries must not stop managers reviewing specific risk decisions. Used in crisc_d3_014.
+### NIST IR 8286C Rev. 1, Staging Cybersecurity Risks for Enterprise Risk Management and Governance Oversight (Dec 2025; supersedes IR 8286C-upd1, withdrawn 18 Dec 2025)
+- NIST IR 8286C Rev. 1 Section 2.2 (Normalization of Cybersecurity Risk Registers: the same rating criteria enable comparison and tracking)
+  - Verified, 31 Oct 2026, against NIST.IR.8286Cr1.pdf (nvlpubs.nist.gov/nistpubs/ir/2025/NIST.IR.8286Cr1.pdf; the CSRC page https://csrc.nist.gov/pubs/ir/8286/c/r1/final lists it final on 18 Dec 2025, superseding IR 8286C-upd1 of Sep 2022, updated 6 Mar 2024). Section 2.2, now titled "Normalization of Cybersecurity Risk Registers", says normalization at the higher level "should use the same rating criteria (ordinal, categorical, etc.) to enable comparison and tracking", and its value-mapping example maps a high, medium and low scale onto 1, 2 and 3; Section 2.1 requires a source ID so each aggregated risk can be traced back to its original register. Used in crisc_d3_014. Replaces the withdrawn IR 8286C-upd1 Section 2.2 bullet (concept review D3-1, quality pass 31 Oct 2026).
 
 ### NIST SP 800-53 Rev. 5, Security and Privacy Controls (Sep 2020; minor release 5.2.0, Aug 2025)
 - NIST SP 800-53 Rev. 5 RA-7 (Risk Response)
