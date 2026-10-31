@@ -7411,8 +7411,7 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 .td-tile-num { padding-top: 0; font: 500 24px/28px var(--f-serif); letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
 .td-tile-a { padding-top: 4px; font: 600 15px/22px var(--f-sans); color: var(--sap); }
 .td-tile-hint { font: 400 12px/16px var(--f-sans); color: var(--on-forest2); }
-/* The number and its hint share a line when they fit ("68%  Latest tries"), and wrap when not. */
-.td-tile-row { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 8px; min-width: 0; }
+/* The hint is its own line under the number ("Latest tries" from 30 answers, G26). */
 /* The plant line: one italic caption per hero, at the hero's foot under the
    plan (phones too; the copy inside the figure stays hidden and keys its
    redraw). Plain words, no label in front (expert decision, 31 Oct 2026). */
@@ -7457,10 +7456,15 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
    little more" as an outline: no filled button in this state. */
 .td-planc-h.td-clear-h { flex-direction: column; align-items: flex-start; flex-wrap: nowrap; gap: 2px; }
 .td-clear-s { font: 600 15px/20px var(--f-sans); color: var(--text); }
-.td-clear-ts { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+/* Tiles reflow with text size: three across at normal text, two at 320px,
+   one at 200% text, so no label is cut off (WCAG 1.4.4). The list is a size
+   container: when it is too narrow for two tiles (under 12em), each tile is
+   full width and lays its label and value side by side. */
+.td-clear-ts { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 6em), 1fr)); gap: 8px; container-type: inline-size; }
 .td-clear-t { display: flex; flex-direction: column; gap: 2px; min-width: 0; padding: 10px; border-radius: var(--r-tile); background: var(--surface2); }
-.td-clear-k { font: 600 11px/14px var(--f-sans); letter-spacing: .12em; text-transform: uppercase; color: var(--text2); }
+.td-clear-k { font: 600 11px/14px var(--f-sans); letter-spacing: .12em; text-transform: uppercase; color: var(--text2); overflow-wrap: anywhere; }
 .td-clear-v { font: 500 24px/28px var(--f-serif); letter-spacing: -.02em; color: var(--text); font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+@container (max-width: 12em) { .td-clear-t { flex-direction: row; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 2px 12px; } }
 .td-clear-of { font: 400 13px/18px var(--f-sans); letter-spacing: 0; color: var(--text2); }
 .td-clear-next { margin: 0; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 12px; padding-top: 10px; border-top: 1px solid var(--border); font: 400 14px/20px var(--f-sans); color: var(--text2); }
 .td-clear-nv { font-weight: 600; color: var(--text); }
@@ -13898,8 +13902,8 @@ function todayFigHtml(r, range, st, shoot, o) {
     + todayRingCapHtml(r, range, st, o)
     + '<div class="td-fig-cap">' + fgFigHtml(name + ' · stage ' + shoot.stage + ' of ' + TODAY_STAGES, 2, '', name + ', stage ' + shoot.stage + ' of ' + TODAY_STAGES) + '</div>'
     + '<div class="td-tiles"><div class="td-tile"><span class="sr-only">' + escapeHtml(accSaid) + '</span>'
-    + '<span class="td-tile-k" aria-hidden="true">Accuracy</span><span class="td-tile-row" aria-hidden="true"><span class="td-tile-v' + (accNum ? ' td-tile-num' : '') + '">' + escapeHtml(acc) + '</span>'
-    + (accHint ? '<span class="td-tile-hint">' + accHint + '</span>' : '') + '</span></div>'
+    + '<span class="td-tile-k" aria-hidden="true">Accuracy</span><span class="td-tile-v' + (accNum ? ' td-tile-num' : '') + '" aria-hidden="true">' + escapeHtml(acc) + '</span>'
+    + (accHint ? '<span class="td-tile-hint" aria-hidden="true">' + accHint + '</span>' : '') + '</div>'
     + examTile + '</div>'
     + '<p class="fg-cap td-platecap td-platecap-in">' + escapeHtml(shoot.cap) + '</p>';
 }

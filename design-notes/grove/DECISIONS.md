@@ -1,6 +1,6 @@
 # Grove: decisions so far
 
-A record of the owner-facing decisions made while building Grove on the website (branch `feature/grove-ui`). `GROVE_HANDOFF.md` stays as delivered; where a decision below differs from it, this file and `docs/mobile/DESIGN_SYSTEM.md` (§21.8) describe what was built. Each entry says what was decided, who decided it and why.
+A record of the owner-facing decisions made while building Grove on the website (branch `feature/grove-ui`). `GROVE_HANDOFF.md` stays as delivered apart from dated "Changed from the kit" notes; where a decision below differs from it, this file and `docs/mobile/DESIGN_SYSTEM.md` (§21.8) describe what was built. Each entry says what was decided, who decided it and why.
 
 ## 1. Accuracy before 30 answers (owner, 31 Oct 2026)
 
@@ -84,7 +84,7 @@ The plant is drawn at the same full size at every stage, Seed to Elder, in light
 - **Not changed:** the readiness maths, the 40-answer threshold, the 50-tick scale, the 80 study bar and every storage key.
 - **Not built yet:** the small ring on You (G31: 20 dots worth 2 answers each at 64px, then ticks) waits for Phase 3 You, where that ring is first drawn; the phone port waits for its Grove round (`mobile/` is mid-upgrade).
 
-`GROVE_HANDOFF.md` §6.4 and the kit images stay as delivered; this entry and `docs/mobile/DESIGN_SYSTEM.md` §21.10 record the change from the kit.
+The kit images stay as delivered. `GROVE_HANDOFF.md` §6.4 carries a dated note of the change from the kit (and §6.6 the twig's `--leaf-line` outline); this entry and `docs/mobile/DESIGN_SYSTEM.md` §21.10 hold the detail.
 
 Why: in the kit as built the plant shrank to a speck at the moment it grew, and at 39 answers the ring looked nearly full, then dropped to about two thirds at 40, so the first milestone looked like a loss.
 

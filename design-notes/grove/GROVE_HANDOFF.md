@@ -87,6 +87,7 @@ Type: keep **Fraunces** (headings, big numbers, italic captions) and **Figtree**
 2. Same components with the same names on both. Where phone and web show different items today, keep both. The web only adds width and a right column.
 3. One main button per screen, in `--btn`.
 4. Remove the floating gear button on every screen. Settings stay on You (as a Settings card) and the You header gets a 44 px rounded-square settings button that scrolls to it.
+   *Changed 31 Oct 2026:* the settings button shows the phone's cog, never a sun: a 44 px icon button on phones, and the cog with the word "Settings" as a quiet text button from 768 px. See `DECISIONS.md` 11.
 5. Every tap target is at least 44 by 44 px.
 6. Charts are SVG with `role="img"` and an `aria-label` that states the numbers in words.
 7. Respect `prefers-reduced-motion`. If you animate a stem growing or ticks lighting, keep it under 600 ms and skip it when reduced motion is on.
@@ -115,6 +116,14 @@ See `01-phone-today.png` and the right card in `06-data-kit.png`.
 - **After the first estimate:** 50 ticks, each worth 2 points. Ticks up to the low end of the range are `--btn`. Ticks inside the range are `--tip`. A clay marker sits at the 80 study bar (288 degrees). Centre text: "58 to 66", then "estimated range". Never show a single number.
 - Use the readiness values the app already calculates. Simplest build: draw each tick as a `<line>` rotated `i * 360 / N` degrees in a loop.
 
+> **Changed from the kit (31 Oct 2026).** The web build differs from the two bullets above, by unanimous expert decision ("ring-plant-first" option B):
+> - **The plant is full size at every stage,** Seed to Elder, in light and dark. It no longer shrinks when the first range arrives.
+> - **The range is the caption under the ring,** not centre text, in the same spot before and after the first range ("63 to 73 estimated range" and "A study estimate, not a prediction."). Never one number.
+> - **Before the first range: 40 seed dots, not ticks,** one per answer that counts. An answered dot is solid sap; one not answered yet is an outline in `--leaf-line` (`--hero-leaf-line` on the forest hero). Both have the same outer size, so they differ by shape, not colour alone: 6px across in the phone ring (also at 320px wide) and about 7px in the web ring. The caption counts the same answers and the dots never go backwards.
+> - **After the first range:** the 50 ticks above, unchanged, with the clay mark at the 80 study bar.
+>
+> The readiness maths, the 40-answer threshold and the 50-tick scale are unchanged. The kit images are left as delivered. See `DECISIONS.md` 9 to 11 and `docs/mobile/DESIGN_SYSTEM.md` §21.10.
+
 ### 6.5 Domain stems chart, "Five areas, one scale" (You)
 This replaces the current chart and keeps its idea. See `04-phone-you.png` (seed state) and `06-data-kit.png` (grown state).
 - Y axis labels 0, 50, 70, 100. Dashed 70 line labelled "70 line" in italic Fraunces. Baseline in `--soil`.
@@ -129,6 +138,8 @@ This replaces the current chart and keeps its idea. See `04-phone-you.png` (seed
 - A leaf is filled `--accent` when the learner studied that day on any device, and is an empty outline in `--leaf-empty` otherwise. Today's letter is bold.
 - Title "This week's twig". The right side shows the streak in `--clay` ("Streak starts today", or "4 day streak").
 - Use the existing streak and activity data.
+
+> **Changed from the kit (31 Oct 2026).** Empty leaves are an outline in `--leaf-line` (light #86806F, dark #6A776D), not `--leaf-empty`. `--leaf-line` is the one "not yet" outline for empty marks that carry meaning (the twig now; locked stages and empty badge tiles later), never for text. See `DECISIONS.md` 11.
 
 ### 6.7 Oak stages strip (data kit, optional on You)
 - Six square tiles: Seed, Sprout, Sapling, Young oak, Oak, Old oak. The current stage tile is `--forest-track` with a `--btn` edge. Locked stages are quiet outlines, never hidden.
@@ -177,7 +188,7 @@ The screenshots show the layout for each screen. Section 10 lists every item tha
 9. Mock exams card: Mini mock (50) and Full mock (150) tiles, and the ISACA scaled score note.
 
 ### You (`04`)
-1. The date label and the settings button.
+1. The date label and the settings button (the cog, never a sun; with the word "Settings" from 768 px, see §5 rule 4).
 2. Profile row: name, studying since, daily minutes, starting level.
 3. Your plant card: plant name, stage, growth. Keep the existing pick-a-plant and naming flow when nothing is planted yet.
 4. Progress tiles, 2 by 2: Answered, Correct, Accuracy, Streak (with study days this week). Note under them: "Each question counts once, at your latest try."
