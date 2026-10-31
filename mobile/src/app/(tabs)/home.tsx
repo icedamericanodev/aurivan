@@ -380,12 +380,17 @@ export default function Today() {
   };
 
   // "Also today": an unfinished session first, then the optional mock (mobile 1.24: only those).
-  // A paused first set is not listed here: the panel's Start already picks it up where it stopped (mobile 1.24).
+  // Mobile 1.54.3: on a cleared day it still shows, with the paused session only, under the clearing and above
+  // "Tomorrow" (it used to sit only in the open-plan branch, so a mock paused after the plan was done had no way back).
+  // A paused first set is not listed here while it is the plan's current item: the panel's Start already picks it up
+  // where it stopped (mobile 1.24). On a cleared day there is no Start, so it is listed like any paused session.
   const firstNow = plan.items[cur]?.kind === 'practice' && plan.items[cur].why === 'first';
   const resume = active && !active.finishedAt && !(active.firstSet && firstNow) ? active : null;
   // Every other open item is already a checklist row on the forest panel, so it is never said twice here.
   // While the ready panel shows there is no checklist, so the open items (the current one too) are listed here.
-  const rest = plan.items.map((item, i) => ({ item, i })).filter(({ i }) => !plan.done[i] && (showReady || isOptional(plan.items, i)));
+  // On a cleared day the list holds only the paused session (mobile 1.54.3): an optional mock left for another day is
+  // not listed under the clearing, as before.
+  const rest = allDone ? [] : plan.items.map((item, i) => ({ item, i })).filter(({ i }) => !plan.done[i] && (showReady || isOptional(plan.items, i)));
   // A first set already begun (paused, or ended early with some still unanswered) says "Continue", not "Start".
   const firstBegun =
     firstNow &&
@@ -860,11 +865,44 @@ export default function Today() {
             />
           </View>
         )}
-        {allDone ? (
+        {/* "Also today": a paused session first, then the optional mock. On a cleared day (mobile 1.54.3) only
+            the paused session, under the clearing and above "Tomorrow", so it can always be resumed from Today. */}
+        {alsoCount > 0 && (
+          <>
+            <Section variant="head" title="Also today" meta={sectionMinutes(alsoMinutes)} metaLabel={alsoMinutes > 0 ? spokenMin(aboutMin(alsoMinutes)) : undefined} headRef={nextHeadRef} />
+            {/* Premium round 2 (Field Guide foundation): an index list, the old subtitle ("Lesson · 5 min")
+                as each row's kicker over its title; spoken as the rows were. */}
+            <KeyList
+              testID="also-today"
+              items={[
+                ...(resume
+                  ? [
+                      {
+                        key: 'resume',
+                        // legacyTitle: a set paused in 1.23 was titled "Starting check…"; it reads "Mixed practice" now.
+                        kicker: `Question ${resume.index + 1} of ${resume.questionIds.length}`,
+                        title: `Resume: ${legacyTitle(resume.title)}`,
+                        spoken: `Resume: ${legacyTitle(resume.title)}, Question ${resume.index + 1} of ${resume.questionIds.length}`,
+                        onPress: () => router.push('/session'),
+                      },
+                    ]
+                  : []),
+                ...rest.map(({ item, i }) => ({
+                  key: String(i),
+                  kicker: rowShort(item, plan.items, i, j.dueCount),
+                  title: planText(item, j.dueCount).title,
+                  spoken: `${planText(item, j.dueCount).title}, ${spokenMin(rowShort(item, plan.items, i, j.dueCount))}`,
+                  onPress: () => runPlanItem(item, j.cert.id),
+                })),
+              ]}
+            />
+          </>
+        )}
+        {allDone && (
           <>
             {tomorrow.length > 0 && (
               <>
-                <Section variant="head" title="Tomorrow" meta={tomorrowMinutes} metaLabel={tomorrowMinutes && spokenMin(tomorrowMinutes)} headRef={nextHeadRef} />
+                <Section variant="head" title="Tomorrow" meta={tomorrowMinutes} metaLabel={tomorrowMinutes && spokenMin(tomorrowMinutes)} headRef={alsoCount > 0 ? undefined : nextHeadRef} />
                 {/* Premium round 2 (Field Guide foundation): an index list, the old subtitle as the kicker. */}
                 <KeyList
                   testID="tomorrow-list"
@@ -885,38 +923,6 @@ export default function Today() {
               />
             </View>
           </>
-        ) : (
-          alsoCount > 0 && (
-            <>
-              <Section variant="head" title="Also today" meta={sectionMinutes(alsoMinutes)} metaLabel={alsoMinutes > 0 ? spokenMin(aboutMin(alsoMinutes)) : undefined} headRef={nextHeadRef} />
-              {/* Premium round 2 (Field Guide foundation): an index list, the old subtitle ("Lesson · 5 min")
-                  as each row's kicker over its title; spoken as the rows were. */}
-              <KeyList
-                testID="also-today"
-                items={[
-                  ...(resume
-                    ? [
-                        {
-                          key: 'resume',
-                          // legacyTitle: a set paused in 1.23 was titled "Starting check…"; it reads "Mixed practice" now.
-                          kicker: `Question ${resume.index + 1} of ${resume.questionIds.length}`,
-                          title: `Resume: ${legacyTitle(resume.title)}`,
-                          spoken: `Resume: ${legacyTitle(resume.title)}, Question ${resume.index + 1} of ${resume.questionIds.length}`,
-                          onPress: () => router.push('/session'),
-                        },
-                      ]
-                    : []),
-                  ...rest.map(({ item, i }) => ({
-                    key: String(i),
-                    kicker: rowShort(item, plan.items, i, j.dueCount),
-                    title: planText(item, j.dueCount).title,
-                    spoken: `${planText(item, j.dueCount).title}, ${spokenMin(rowShort(item, plan.items, i, j.dueCount))}`,
-                    onPress: () => runPlanItem(item, j.cert.id),
-                  })),
-                ]}
-              />
-            </>
-          )
         )}
         {/* Mobile 1.24: the reminder ask's one second chance (the day the 3rd study day is done). */}
         {secondVisit && (
