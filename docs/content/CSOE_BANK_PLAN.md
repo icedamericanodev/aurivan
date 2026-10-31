@@ -225,6 +225,13 @@ Pilot reviews (31 Oct 2026):
   pcaobus.org is blocked; nothing is keyed on them. New law found and
   taught: Section 16(a) now covers foreign private issuers' directors and
   officers (Pub. L. 119-60).
+- **Cross-domain review:** FIX THEN SHIP, no wrong keys, every number
+  stated twice matches. Fixed: 1 hard error in a note (newly public
+  companies omit both ICFR reports in their first annual report), 2
+  near-duplicate pairs re-angled (D3-015, D4-007), a misleading exam cue,
+  and one name for the auditor ("independent auditor"). The 16 changed
+  items re-tested blind 16/16; four length or wording cues the tester saw
+  were then fixed.
 - **New gates added:** "pick the shortest" at most 30% (D2 was 50%), and a
   CSOE style wrapper that lets a stem naming its rule ask directly and
   accepts SOXCPA's incomplete-statement stems.
