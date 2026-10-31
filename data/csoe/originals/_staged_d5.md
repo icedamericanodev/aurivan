@@ -29,6 +29,8 @@ New `framework_ref` bullets for the Domain 5 pilot (csoe_d5_001 to csoe_d5_020),
 
 ## SEC staff guidance
 
+- SEC Staff FAQ on Management's Report on ICFR (revised Sept. 24, 2007) Question 3 (Excluding a recently acquired business)
+  - Verified (opened 31 Oct 2026): https://www.sec.gov/info/accountants/controlfaq.htm; checked Question 3: when an assessment of a business acquired during the year is not possible, the staff does not object to management excluding it, with the business identified and its significance disclosed; the exclusion may not extend beyond one year from the acquisition date or more than one annual report.
 - SEC Staff FAQ on Management's Report on ICFR (revised Sept. 24, 2007) Question 8 (Reliance on a service provider's Type 2 report)
   - Verified (opened 31 Oct 2026): https://www.sec.gov/info/accountants/controlfaq.htm; checked Question 8 and footnote 3: management keeps the responsibility to assess controls over outsourced operations; may rely on a Type 2 SAS 70 report, including one as of a different year-end or by the same audit firm, but not one management engaged its own audit firm to prepare; remains responsible for controls over information flowing to and from the service organization; footnote 3 defines a Type 2 report (controls placed in operation as of a date and tested for operating effectiveness during a period).
 

@@ -333,7 +333,7 @@
             "Present: the component or principle exists in the design and implementation of the system (COSO 2013 Executive Summary).",
             "Functioning: it continues to exist in the operation and conduct of the system.",
             "If a relevant principle is not present and functioning, its component cannot be present and functioning (COSO 2013 FAQ, Question 3).",
-            "Operating together: deficiencies added up across components must not amount to a major deficiency.",
+            "Operating together: the five components work as one integrated system that, taken together, keeps the risk of missing an objective acceptably low (COSO 2013 Executive Summary).",
             "SEC filers classify severity only with SEC terms: control deficiency, significant deficiency, material weakness (FAQ, Question 3).",
             "A material weakness at year-end means management cannot conclude ICFR is effective (Item 308(a)(3))."
           ],
@@ -767,7 +767,7 @@
           "definition": "Spreadsheet controls protect calculations that feed the financial statements: who can open and edit the file, how formula changes are approved, and how inputs and results are checked.",
           "why_it_matters": "Spreadsheets often carry estimates and allocations into the ledger with little IT oversight. A changed formula or a wrong input can misstate results while the file still looks fine.",
           "how_it_works": [
-            "A spreadsheet that applies a formula for a key control is IT functionality the control depends on (SEC Release 33-8810, footnote 35).",
+            "Release 33-8810 (footnote 35) gives consistent application of a formula as IT functionality a control can depend on; a key spreadsheet formula fits that, and the ICFR definition.",
             "Access: limit who can open and edit the file and its inputs.",
             "Change and version control: approve and record each formula change, and keep the approved version.",
             "Input and formula checks: agree inputs to source records and test formulas against the intended logic.",
@@ -873,11 +873,11 @@
           "id": "5C2.2",
           "name": "Type 1 and Type 2 Reports",
           "legacy_ids": [],
-          "definition": "A Type 2 service auditor's report covers the description, design and tested operating effectiveness of controls over a period; a Type 1 report stops at description and design.",
+          "definition": "A Type 2 service auditor's report adds tests of whether controls operated effectively over a period; a Type 1 report speaks as of a date, without those tests.",
           "why_it_matters": "Management needs evidence that outsourced controls worked during the year. Only a Type 2 report tests operating effectiveness, and SOC 1 is the report aimed at user entities' financial reporting.",
           "how_it_works": [
             "Type 2: controls described, suitably designed, placed in operation, and tested for operating effectiveness during a period (SEC staff ICFR FAQ, footnote 3; Release 33-8810, footnote 54).",
-            "Type 1: description and design of controls placed in operation, with no tests of operating effectiveness.",
+            "Type 1: speaks as of a date, without the tests of operating effectiveness over a period that define a Type 2 report.",
             "SOC 1 examines a service organization's controls likely to be relevant to user entities' ICFR (AICPA SOC 1 page).",
             "SOC 1 reports were formerly known as SAS 70 reports; service auditors now examine under SSAE No. 18, and user auditors follow AU-C section 402 (AICPA).",
             "SOC 2 reports address trust services criteria such as security and availability, not ICFR (AICPA SOC suite page)."
@@ -891,8 +891,8 @@
               {
                 "label": "Covers",
                 "cells": [
-                  "Description and design of controls",
-                  "Description, design and operating effectiveness"
+                  "Controls as of a date, without operating-effectiveness tests",
+                  "Controls plus tests of operating effectiveness"
                 ]
               },
               {
@@ -911,7 +911,7 @@
               }
             ]
           },
-          "example": "A medical device maker stores finished goods at an outside warehouse that records inventory movements. The controller receives a Type 1 report and notes it shows design only. She asks for the warehouse's Type 2 report covering most of the fiscal year and plans her own testing of receiving controls for the months it does not cover.",
+          "example": "A medical device maker stores finished goods at an outside warehouse. The controller receives a Type 1 report and notes it has no tests of operating effectiveness. She asks for the warehouse's Type 2 report covering most of the fiscal year and plans her own testing of receiving controls for the months it does not cover.",
           "audit_focus": {
             "review": [
               "Compare the report's period with the company's fiscal year",
@@ -924,11 +924,11 @@
             "recommend": "Have management obtain a SOC 1 Type 2 report and test any months it does not cover.",
             "decides": "User-company management decides whether the evidence is enough"
           },
-          "isaca_rule": "Need proof that outsourced controls worked? A SOC 1 Type 2 report over a period. A Type 1 shows design only; SOC 2 addresses trust services criteria, not ICFR.",
+          "isaca_rule": "Need proof that outsourced controls worked? A SOC 1 Type 2 report over a period. A Type 1 speaks as of a date without operating tests; SOC 2 addresses trust services criteria, not ICFR.",
           "exam_traps": [
             {
               "trap": "A Type 1 report shows that controls operated effectively.",
-              "why": "A Type 1 report covers the description and design of controls; only a Type 2 report includes tests of operating effectiveness over a period."
+              "why": "Only a Type 2 report includes tests of operating effectiveness over a period (SEC staff ICFR FAQ, footnote 3); a Type 1 report has no such tests."
             },
             {
               "trap": "A SOC 2 report is the right evidence for a SOX 404 assessment.",
@@ -949,7 +949,7 @@
               "definition": "The AICPA attestation standard under which service auditors now examine and report on service organization controls."
             }
           ],
-          "memory_aid": "Type 1 is the blueprint; Type 2 is the blueprint plus a year of proof."
+          "memory_aid": "Type 1 is a snapshot; Type 2 adds a period of tested proof."
         },
         {
           "id": "5C2.3",
@@ -961,7 +961,8 @@
             "Item 308(a)(3): management's report states whether ICFR is effective, and any material weakness rules out an effective conclusion.",
             "The rules do not allow a management ICFR report with a scope limitation (SEC Release 33-8810, Section II.B.5).",
             "First look for alternatives: a Type 2 report, direct access to test, or compensating controls in-house.",
-            "Without them, management judges whether the inability to assess is significant enough to conclude ICFR is not effective."
+            "Without them, management judges whether the inability to assess is significant enough to conclude ICFR is not effective.",
+            "One staff allowance: a newly acquired business may be excluded, with disclosure, for up to one year from acquisition (SEC staff ICFR FAQ, Question 3)."
           ],
           "example": "A specialty insurer's reinsurance accounting runs through a broker that refuses any report or testing access. The chief accounting officer adds detailed in-house recalculations of the broker's statements as a compensating control, tests them through year-end, and documents why that evidence supports the conclusion in management's report.",
           "audit_focus": {
@@ -976,11 +977,11 @@
             "recommend": "Have management build and test compensating controls, or judge whether the gap makes ICFR ineffective.",
             "decides": "Management concludes on effectiveness without a scope limitation"
           },
-          "isaca_rule": "No scope limitations in management's ICFR report. If evidence about an outsourced process is out of reach and nothing compensates, management judges whether ICFR is not effective; the auditor's attestation does not fill the gap.",
+          "isaca_rule": "No scope limitations in management's ICFR report, beyond the staff's one-year allowance for a newly acquired business. If outsourced evidence is out of reach and nothing compensates, management judges whether ICFR is not effective.",
           "exam_traps": [
             {
               "trap": "Management may leave out an outsourced process it cannot assess and call it a scope limitation.",
-              "why": "The SEC says its rules do not permit management to issue an ICFR report with a scope limitation."
+              "why": "The SEC says its rules do not permit a scope limitation; the staff allows only a newly acquired business to be excluded, for up to one year."
             },
             {
               "trap": "The external auditor's 404(b) attestation covers what management could not assess.",
@@ -1020,7 +1021,7 @@
     "End-user computing": "Spreadsheets and similar tools built and run by business users outside formal IT development.",
     "Service organization": "An outside provider whose services affect a user entity's financial reporting.",
     "SOC 1 report": "A service auditor's report on controls likely to be relevant to user entities' ICFR; formerly a SAS 70 report.",
-    "Type 1 report": "A service auditor's report on the description and design of controls, without tests of operating effectiveness.",
+    "Type 1 report": "A service auditor's report as of a date, without the tests of operating effectiveness that a Type 2 report adds.",
     "Type 2 report": "A service auditor's report that adds tests of operating effectiveness over a specified period.",
     "Scope limitation": "Leaving part of ICFR out of the conclusion; not allowed in management's annual ICFR report."
   },
