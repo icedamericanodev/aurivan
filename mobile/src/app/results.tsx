@@ -110,7 +110,7 @@ import { trapTip } from '../engine/games/trapSpotter';
 import { badgeNextLine } from '../lib/badges';
 import { momentFor } from '../lib/milestones';
 import { startFromIds } from '../lib/sessions';
-import { runPlanItem } from '../lib/actions';
+import { openTab, runPlanItem } from '../lib/actions';
 import { currentIndex, planComplete } from '../engine/dayPlan';
 import { dayKey } from '../engine/streak';
 import { selectCert, useProgress } from '../store/progress';
@@ -186,7 +186,7 @@ export default function Results() {
   // Android Back: leave Results like "Done" does (a mock asks first, since its answer review is
   // not reachable again). Set below, once the session is known (a ref, so the one handler
   // registered here always calls the newest version).
-  const backRef = useRef<() => void>(() => router.replace('/home'));
+  const backRef = useRef<() => void>(() => openTab('/home'));
   // Mobile 1.24: a finished first set shows the Day-1 closing screen, which has its own Back
   // ("Done for today", components/firstSet.tsx). Results registers none then: Android calls the
   // newest handler first, so a second one here would run instead and leave the set uncleared.
@@ -215,7 +215,7 @@ export default function Results() {
       <Screen>
         <T v="hero">No results to show.</T>
         <Gap />
-        <Button label="Back to Today" onPress={() => router.replace('/home')} />
+        <Button label="Back to Today" onPress={() => openTab('/home')} />
       </Screen>
     );
   }
@@ -245,7 +245,7 @@ export default function Results() {
   });
   const done = () => {
     clear();
-    router.replace('/home');
+    openTab('/home');
   };
   // Android Back (see backRef above): "Done" for practice; a mock asks first.
   // It is set during render and only read in the back-button event, never during render.
@@ -296,7 +296,7 @@ export default function Results() {
   const continuePlan = () => {
     const plan = todayPlan;
     clear();
-    router.replace('/home');
+    openTab('/home');
     if (plan) runPlanItem(plan.items[currentIndex(plan)], cert.id);
   };
 
@@ -304,7 +304,7 @@ export default function Results() {
     const ids = [...missed];
     clear();
     if (startFromIds(cert.id, ids, 'Missed questions')) router.replace('/session');
-    else router.replace('/home');
+    else openTab('/home');
   };
 
   // The areas this session asked about (the growth plate draws only these, ui.md R1).
