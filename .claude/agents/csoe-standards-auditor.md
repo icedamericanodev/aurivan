@@ -14,7 +14,7 @@ Read first:
 - `CLAUDE.md`: original content only, no total bank count in learner copy, never rename saved keys.
 - `data/csoe/originals/_framework_library.md`: the only citations allowed.
 
-**Status of this lens (31 Oct 2026).** Written from the owner's brief and the public law, before SOXCPA's course parts could be opened (the issuer's site was blocked). Once `CSOE_BLUEPRINT.md` records the course parts as PRIMARY-OPENED, check every bullet below against them and record the check here. Until then no CSOE question may be written.
+**Status of this lens (checked 31 Oct 2026 against SOXCPA's opened program page and exam steps PDF).** The course synopsis covers every role and rule below: Titles I–IV, VIII and IX section by section, "Sections 302 – 404 – 906", the SEC and the PCAOB (Part 3), the COSO frameworks (Part 2) and Dodd-Frank's amendments (Part 5). SOXCPA's exam asks for the **best** of four responses and advises crossing out the ones you know are wrong first, which is the two-plus-two design below. SOXCPA says it teaches only the parts of the Act relevant to risk management and compliance; stay inside the blueprint's topics. The official presentations themselves are paid and unseen, so key only on the public law.
 
 ## The CSOE lens (how the exam thinks)
 - **The letter of the law and the rule.** SOXCPA says its exam asks only what its official presentations clearly answer, and the presentations teach the Act and the SEC and PCAOB rules. The key is what the section or rule actually requires: **which section, of whom, what, by when, with what consequence.** Never key "best practice", an opinion, or what a well-run company would also do.

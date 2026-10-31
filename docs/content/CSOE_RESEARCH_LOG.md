@@ -1,9 +1,41 @@
 # CSOE research log (Certified Sarbanes-Oxley Expert)
 
-**Status:** 31 Oct 2026. Groundwork only. The issuer's site and every primary
-law source were blocked from the cloud environment on this date, so **nothing
-below is verified yet**. `docs/content/CSOE_BLUEPRINT.md` lists what must be
-re-checked before any outline, note or question is written.
+**Status:** 31 Oct 2026, second pass. After the owner allowed the hosts, the
+issuer's program page (P1), exam steps PDF (P2) and FAQ PDF (P3) were opened
+in full, and the primary law sources were downloaded. Every exam fact in
+`docs/content/CSOE_BLUEPRINT.md` now rests on an opened issuer page. The first
+pass (search summaries only) is kept below as history, with corrections.
+
+## Second pass: what the opened pages changed
+
+| Earlier lead (first pass) | Opened source says | Source |
+|---|---|---|
+| "Cannot go back" was in the owner's brief only | Confirmed: no moving backwards to review or change answers | P2 |
+| Retakes: "a second opportunity" (owner) vs "three a year" (blog) | Up to 3 attempts a year; after a third failure, wait one year from the first exam, then 3 more. The blog was closer | P1, P2 |
+| Certificate lifetime validity (secondary) | Confirmed: lifetime, no renewal or recertification | P3 |
+| No list price found | US$147 all-inclusive; full refund within 60 days | P1 |
+| Course parts from search summaries | Confirmed, with far more detail: Part 1 walks the Act title by title; Part 4 adds spreadsheets, SAS 70 / SSAE 16 / SSAE 18 and J-SOX; Part 5 adds FSOC, orderly liquidation, the Federal Insurance Office and the Volcker Rule | P1 |
+| Course teaches the 1992 COSO framework | It teaches 1992 and the 2013 update, and ERM 2004 and the 2017 update | P1 |
+| — | Official presentations: 1,022 slides; about 29 hours of study; SOXCPA sends no sample questions | P1, P2, P3 |
+| — | Exam advice: look for the best answer; cross out the options you know are wrong first | P2 |
+| — | SOXCPA is wholly owned by Compliance LLC | P3 |
+| No USPTO record found through aggregators | USPTO search opened: no record for "Certified Sarbanes-Oxley Expert", "SOXCPA" or the association's name; "CSOE" has one unrelated live application (serial 99526032, class 42 software, not registered) | tmsearch.uspto.gov |
+
+The owner also attached a copy of P2; its SHA-256 matches the file on the
+issuer's site.
+
+## Network (31 Oct 2026, second pass)
+
+| Host | Result |
+|---|---|
+| www.sarbanes-oxley-association.com, www.sec.gov, www.govinfo.gov, www.law.cornell.edu, www.coso.org, www.aicpa-cima.com, tmsearch.uspto.gov, tsdr.uspto.gov | Open |
+| pcaobus.org, www.congress.gov | The site answers with a Cloudflare challenge (not our network). Not worked around |
+| www.ecfr.gov, www.federalregister.gov | Redirect automated requests; 17 CFR read from law.cornell.edu instead |
+| eur-lex.europa.eu | Bot challenge (202) |
+| www.fsa.go.jp, www.japaneselawtranslation.go.jp, op.europa.eu, finance.ec.europa.eu, investor.gov | Still blocked by the network policy |
+
+The web fetcher keeps the allowlist it had when the session started; plain
+downloads (curl) see the new allowlist.
 
 ## How to read the source labels
 
@@ -13,9 +45,9 @@ re-checked before any outline, note or question is written.
 | **PRIMARY-SNIPPET** | The issuer's own page appeared in web-search results, but we only saw the search engine's summary of it. It is a lead, not a source: summaries can merge pages or misquote. |
 | **SECONDARY** | A third party (vendor blog, reseller, aggregator). Context only, never a source for the outline. |
 
-No source on this page is PRIMARY-OPENED yet.
+P1–P3 are PRIMARY-OPENED as of the second pass. The tables under "First pass" keep their first-pass labels as history.
 
-## Network check (31 Oct 2026)
+## First pass: network check (31 Oct 2026)
 
 Every host below refused the connection from the cloud environment (proxy
 `403` on CONNECT for the shell; "host not allowed" for the web fetcher). Only
@@ -33,7 +65,7 @@ Every host below refused the connection from the cloud environment (proxy
 | `www.aicpa-cima.com` | Context on AU-C and the private-company side | Blocked |
 | `tmsearch.uspto.gov`, `tsdr.uspto.gov` | Trademark check for "CSOE" and the full name | Blocked |
 
-## What the sources say (all unverified)
+## First pass: what the sources said (superseded by the table above)
 
 ### Issuer and program
 
@@ -111,7 +143,7 @@ use SOXCPA's logo, and never use "CSOX" (a registered mark of another body).
 
 ## Sources
 
-Primary (the issuer's own pages; seen only as search summaries on 31 Oct 2026, not opened):
+Primary (the issuer's own pages; P1–P3 opened in full on 31 Oct 2026, second pass; P4–P6 seen only as search summaries):
 - P1: Certified Sarbanes-Oxley Expert (CSOE), program page, https://www.sarbanes-oxley-association.com/Distance_Learning_and_Certification.htm
 - P2: CSOE Exam (certification steps PDF), https://www.sarbanes-oxley-association.com/CSOE_Certification_Steps_1.pdf
 - P3: Questions about the certification and the exams (FAQ PDF), https://www.sarbanes-oxley-association.com/Questions_About_The_Certification_And_The_Exams_1.pdf

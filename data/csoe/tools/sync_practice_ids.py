@@ -3,7 +3,7 @@
 
 `practice_ids` drives the "Practice this concept" button
 (docs/content/NOTES_SCHEMA_V2.md). Every CSOE question names the notes
-sub-topic it was authored from in `_provenance` ("notes 4.1.2 ..."); the
+sub-topic it was authored from in `_provenance` ("notes 3A2.1 ..."); the
 first one named is its home, so each question sits under exactly one
 sub-topic, in the same domain. Sub-topics with no question get no field.
 
@@ -40,7 +40,7 @@ def main(argv):
         qs = json.loads((CSOE / "originals" / f"d{d}.json").read_text(encoding="utf-8"))["questions"]
         home = defaultdict(list)
         for q in qs:
-            m = re.search(r"\bnotes (\d+\.\d+\.\d+)", q["_provenance"])
+            m = re.search(r"\bnotes (\d[A-G]\d\.\d+)", q["_provenance"])
             if m:
                 home[m.group(1)].append(q["id"])
         path = CSOE / "notes" / f"d{d}.json"

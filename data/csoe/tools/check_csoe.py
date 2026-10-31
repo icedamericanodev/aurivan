@@ -7,7 +7,7 @@ checker reads every dN.json present.
 
 Runs the gates every CSOE batch must pass before review, in one place:
   - item shape: field set and order, ID sequence, difficulty/bloom pairing,
-    subtopic format "N.x Section. Label" with one section label per code
+    subtopic format "1A1 Topic. Label" (the blueprint code, CRISC style) with one topic label per code
   - links: every `_provenance` names a notes sub-topic that exists, and every
     `framework_ref` part matches a bullet in _framework_library.md
   - teaching parts: 3 tips (Eliminate / Final two / Exam cue), Eliminate names
@@ -89,9 +89,9 @@ def check_item(q, d, n, ids, bullets):
         errs.append("domain number is wrong")
     if BLOOM.get(q.get("difficulty")) != q.get("bloom_level"):
         errs.append("difficulty and bloom_level do not match")
-    m = re.match(rf"^{d}\.\d ([^.]+)\. \S", q.get("subtopic", ""))
+    m = re.match(rf"^{d}[A-G]\d ([^.]+)\. \S", q.get("subtopic", ""))
     if not m:
-        errs.append(f"subtopic '{q.get('subtopic')}' is not 'N.x Section. Label'")
+        errs.append(f"subtopic '{q.get('subtopic')}' is not '1A1 Topic. Label'")
     if sorted(q.get("options", {})) != ["A", "B", "C", "D"] or key not in ("A", "B", "C", "D"):
         errs.append("options must be A-D with a key among them")
         return errs, None
@@ -119,9 +119,9 @@ def check_item(q, d, n, ids, bullets):
     for part in [p.strip() for p in q.get("framework_ref", "").split(";") if p.strip()]:
         if part not in bullets:
             errs.append(f"framework_ref part not in the library: {part}")
-    pm = re.search(r"\bnotes (\d+\.\d+\.\d+)", q.get("_provenance", ""))
+    pm = re.search(r"\bnotes (\d[A-G]\d\.\d+)", q.get("_provenance", ""))
     if not pm:
-        errs.append("_provenance does not name a notes sub-topic ('notes N.x.y')")
+        errs.append("_provenance does not name a notes sub-topic ('notes 1A1.1')")
     elif pm.group(1) not in ids:
         errs.append(f"_provenance cites notes {pm.group(1)}, which does not exist")
     lens = {k: len(v) for k, v in q["options"].items()}
@@ -152,7 +152,7 @@ def main(argv):
             errs, nid = check_item(q, d, n, ids, bullets)
             if nid:
                 cited[nid] += 1
-            m = re.match(r"^(\d\.\d) ([^.]+)\.", q.get("subtopic", ""))
+            m = re.match(r"^(\d[A-G]\d) ([^.]+)\.", q.get("subtopic", ""))
             if m:
                 labels.setdefault(m.group(1), Counter())[m.group(2)] += 1
             for e in errs:
@@ -160,7 +160,7 @@ def main(argv):
             errors += len(errs)
         for code, c in sorted(labels.items()):
             if len(c) > 1:
-                print(f"ERROR D{d}: section {code} uses more than one label: {dict(c)}")
+                print(f"ERROR D{d}: topic {code} uses more than one label: {dict(c)}")
                 errors += 1
         spread = Counter(q["correct"] for q in qs)
         rate = pick_longest_rate(qs, len)

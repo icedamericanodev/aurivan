@@ -1,8 +1,9 @@
 # CSOE question bank plan
 
-**Status:** plan, 31 Oct 2026. Groundwork only: the issuer's site and the
-primary law sources were blocked, so the outline, notes and pilot wait for
-the items in `docs/content/CSOE_BLUEPRINT.md` "Before any content".
+**Status:** plan, 31 Oct 2026. The issuer's pages and the primary law were
+opened on the second pass; the outline in `docs/content/CSOE_BLUEPRINT.md` is
+built from SOXCPA's own course synopsis. The pilot (20 per domain) follows
+this plan.
 
 CSOE is not wired into the apps, so bank work needs no `APP_VERSION` bump.
 Never put the bank size in learner copy.
@@ -20,10 +21,10 @@ separately; both reached about 300.
 | Mix per domain | about 30% foundational (recall), 55% application, 15% analysis |
 | Angles per rule | two or three (actor, timing, consequence, the look-alike rule); never more rewordings of one fact |
 
-Per-domain targets come from the domain weights, which come from each
-domain's share of SOXCPA's official course once its parts can be opened
-(KaiSip's reading, recorded as such in the blueprint). If the bank grows,
-scale every domain by its weight.
+Per-domain targets (blueprint "Question targets"): D1 42 · D2 48 · D3 48 ·
+D4 81 · D5 81, from each domain's share of the topic lines in SOXCPA's course
+synopsis (KaiSip's reading, not SOXCPA's). If the bank grows, scale every
+domain by its weight.
 
 Why not 1,000 like CISA, CC, CRISC and AAIA: the exam is 35 items, open book,
 and tests about 120–160 distinct rules. A 1,000-item fact bank would be the
@@ -79,8 +80,8 @@ a step.
 
 ## 4. Mocks
 
-- The real exam (as reported, to verify) moves forward only: no pause, no
-  skip, no going back. KaiSip's CSOE mocks copy that: an answer is final once
+- The real exam moves forward only: no pause, no skip, no going back
+  (SOXCPA's exam steps PDF, opened 31 Oct 2026). KaiSip's CSOE mocks copy that: an answer is final once
   given. The mock engine needs a forward-only mode before CSOE ships
   (`mobile-app-engineer`, outside this session's scope).
 - Two fixed 35-item mock forms from the held-out items; more forms only when
@@ -176,12 +177,14 @@ results), and escalate if SOXCPA objects or the USPTO shows a registration.
 Raised after the experts weighed in; each needs the owner.
 
 1. **Enrol in the SOXCPA course?** The exam tests only what the official
-   presentations answer. Seeing them is the surest way to map scope. It costs
-   money and creates an account with the issuer (CLAUDE.md "major": new paid
-   services or accounts). We would still never copy from them.
-2. **COSO edition.** If the course keys on the 1992 framework, KaiSip teaches
-   2013 and notes 1992 as history. If an exam answer would differ, decide how
-   to key it.
+   presentations (1,022 slides) answer. The synopsis is now opened, so scope
+   is mapped by topic, but not by detail. Enrolling costs US$147 (refundable
+   within 60 days) and creates an account with the issuer (CLAUDE.md "major":
+   new paid services or accounts). We would still never copy from them.
+2. **COSO edition.** The course teaches both 1992 and 2013 (and ERM 2004 and
+   2017). KaiSip teaches 2013 and 2017 as current and the older editions as
+   history, keying only where the editions agree or the item names the
+   edition. Owner call only if that is not acceptable.
 3. **Free sample for small banks.** Keep "at least 100" or cap at 25% of the
    bank (product-manager's proposal). product-manager also proposed a free
    full 35-item mock; the shared rule allows one short timed mock, and
