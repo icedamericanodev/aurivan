@@ -4,6 +4,11 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v12.49.5] — More questions linked to exam principles
+
+### Improved
+- More practice questions now show the exam principle they test, so you can see the thinking behind the answer and practice it.
+
 ## [v12.49.4] — More realistic wrong answers
 
 ### Improved
