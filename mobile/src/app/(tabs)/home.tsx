@@ -72,15 +72,22 @@
  * In the same slot, one per visit: the readiness widget's one re-ask (30 days after choosing to show the
  * range) and, for beta testers only, the widget check-in cards (engine/widgetTester.ts).
  *
- * Mobile 1.51 (Field Guide, the owner's signature pick; DESIGN_SYSTEM.md §21): Today is a plate.
- *   head       the running head "Field guide · Today" with the date (said in full) and the Settings gear
+ * Grove (Phase 1 and the Today phase; design-notes/grove, the kit's 01-phone-today, ring first by the
+ * owner's decision). Top to bottom:
+ *   head       the date only (said in full). No book label, no gear: Settings is on You's header.
  *   title      the countdown is the news: "Maya, 38 days to go" (engine/fieldGuide.ts todayTitle; with
- *              no date, the greeting), then "Exam 6 Dec" and the streak on one quiet line
- *   plate      Fig. n · <growth>: your plant beside the plan's specimen label (caption with the day's
- *              minutes, the current item, its meta, the checklist in paper inks), captioned PLATE
- *   button     the ONE forest fill on the screen: Start / Continue, 52pt with 12pt corners
- *   readiness  "Estimated readiness" over the scale bar ("a study estimate, not a prediction"), still
- *              the report's button. The clearing and "Your readiness is holding" stay forest moments.
+ *              no date, the greeting), then "CISA exam 6 Dec · 2 study days this week" on one quiet line
+ *   hero       ONE forest card: the plant's stage in words ("Seed", "Stage 1 of 6"; the button to Your
+ *              plant), the readiness ring with the plant full size inside (40 seed dots before the first
+ *              range, then 50 ticks with the range in gold and the clay 80 mark), the caption under it
+ *              ("63 to 73 estimated range", "A study estimate, not a prediction."), and the Accuracy and
+ *              Exam date tiles. The ring and caption are the readiness report's button.
+ *   plan       "Today's plan" card: the minutes, numbered steps, the ONE Start (54pt, 16pt corners),
+ *              "Stop any time; your place is saved." and "Short on time? 5 questions".
+ *   twig       "This week's twig": seven leaves, the streak in clay from 2 days, none from study day 14.
+ *              Not in exam week or on a welcome-back day.
+ *   below      everything Today had before, in the same order (components/groveToday.tsx draws the new parts).
+ * The clearing and "Your readiness is holding" stay forest moments and take the hero's place on their days.
  *
  * Signature moments (Phase 5b, components/moments.tsx):
  *   - the day before the exam / exam day: a calm card above the panel;
@@ -89,13 +96,29 @@
  */
 import { router, useFocusEffect } from 'expo-router';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { View } from 'react-native';
+import { Pressable, useWindowDimensions, View } from 'react-native';
 import { ExamEveCard, ExamReadyPanel } from '../../components/moments';
-import { ClearingBody, clearingLine, clearingTitle, PlanChecklist, PlanLeaves, planHero, planText, ReadinessRow, todayMinutes } from '../../components/journey';
-import { StreakPill } from '../../components/today';
-import { FieldText, headDate, KeyCaption, KeyList, Plate, RunningHead } from '../../components/fieldguide';
+import { ClearingBody, clearingLine, clearingTitle, PlanLeaves, planHero, planText, ReadinessRow, todayMinutes } from '../../components/journey';
+import { FieldText, headDate, KeyList, Plate, RunningHead } from '../../components/fieldguide';
+import {
+  AccuracyHeroTile,
+  ExamDateHeroTile,
+  HeroCard,
+  HeroTiles,
+  PlanCard,
+  PlanSteps,
+  plantInRing,
+  ReadinessRing,
+  RingCaptionText,
+  RingSeed,
+  RingTap,
+  ringSize,
+  WeekTwig,
+  type PlanStep,
+} from '../../components/groveToday';
+import { accuracyTile, HERO_STAGES, ringCaption, ringMode, seedDotsOn, studyDaysWords, twigSpoken, twigStreak, twigWeek } from '../../engine/groveToday';
 import { todayTitle } from '../../engine/fieldGuide';
-import { GROWTH_NAMES, MAX_GROWTH } from '../../engine/plant';
+import { GROWTH_NAMES } from '../../engine/plant';
 import { shortDate, spokenShortDate } from '../../lib/format';
 import { FirstRangePanel, SecondAskCard } from '../../components/firstSet';
 import { FitCard } from '../../components/fit';
@@ -114,10 +137,10 @@ import { dayForToday } from '../../engine/finalWeek';
 import { Celebrate, useCelebration, useGrowth, useScreenFocus } from '../../components/motion';
 import { ArrowRight, ICON_STROKE, Inbox, Play, Settings, Sprout } from '../../components/icons';
 import { PlantButton, PlantNote } from '../../components/plant/PlantUI';
-import { Button, Enter, HeroPanel, ICON_SIZE, InviteRow, ListRow, Row, Screen, Section, T, useFontScale } from '../../components/ui';
+import { Button, Enter, groveTile, HeroPanel, ICON_SIZE, InviteRow, ListRow, Row, Screen, Section, T } from '../../components/ui';
 import { countedDone, currentIndex, isOptional, itemMinutes, MINUTES_PER_QUESTION, planComplete, SHORT_SET_SIZE, shortSetItem } from '../../engine/dayPlan';
 import { shouldAskFit } from '../../engine/fit';
-import { firstRangePanelDue, nameAskDue, nameNudgeDue, secondAskDue, studyDaysAway } from '../../engine/firstRun';
+import { firstRangePanelDue, NAME_ASK_AWAY_DAYS, nameAskDue, nameNudgeDue, secondAskDue, studyDaysAway } from '../../engine/firstRun';
 import { STAGE_ORDER } from '../../engine/journey';
 import { aboutMin, keepUnits, spokenMin } from '../../engine/pace';
 import { DAY_MS } from '../../engine/srs';
@@ -133,7 +156,7 @@ import { haptic } from '../../lib/haptics';
 import { useTodayMoments } from '../../lib/moments';
 import { useJourney } from '../../lib/useJourney';
 import { checkPlant, growQuietly, seeGrowth, usePlantView } from '../../lib/plant';
-import { markReacted } from '../../components/plant/LivePlant';
+import { LivePlant, markReacted } from '../../components/plant/LivePlant';
 import { grewLabel, growthBefore, plantCallName, type GrowthLevel } from '../../engine/plant';
 import { baselineForms, formMoment, SEE_NEW_FORM } from '../../engine/plantForms';
 import { dayKey } from '../../engine/streak';
@@ -142,7 +165,7 @@ import { useProgress } from '../../store/progress';
 import { useSeen } from '../../store/seen';
 import { useSession, type ActiveSession } from '../../store/session';
 import { legacyTitle, type PlanItem } from '../../engine/planner';
-import { LARGE_TEXT, plate, space } from '../../theme/tokens';
+import { space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
 
 /** "Something you reported was updated." (by different things, not reports). */
@@ -266,8 +289,6 @@ export default function Today() {
   const cert = j.cert.id;
   const ringsGrowth = useGrowth(`today:rings:${cert}`, j.readiness.domains.map((d) => Math.round(d.mastery * 100)), { active: focused, firstOfDay: true });
   const rangeGrowth = useGrowth(`today:range:${cert}`, j.range.enough ? [j.range.low, j.range.high] : [], { active: focused, firstOfDay: true });
-  // The streak rolls +1 on a new day's first study; a reset is just shown.
-  const streakGrowth = useGrowth(`today:streak`, [j.streak], { active: focused });
 
   // The clearing (T2): once a day, when you come back to it. It plays in full
   // (≤ 1.2 s, a tap skips it) the first few times, then shortened; static
@@ -403,11 +424,10 @@ export default function Today() {
   // is sized to the minutes, so this never previews more than the day has.
   const tomorrow = j.plan.slice(0, 2);
   const tomorrowMinutes = sectionMinutes(tomorrow.reduce((n, t) => n + (t.kind === 'mock' ? 0 : itemMinutes(t)), 0));
-  // The day's minutes, in the caption: "Today’s plan · about 19 min" (mobile 1.23, mockup A; was "Start here ·").
-  // The open items only, so it shrinks as the day goes. Only for plans sized in minutes (1.15+). A mock is left
-  // out: its own line says it is optional and how long it is.
+  // The day's minutes, beside "Today’s plan" on its card: "About 19 min" (Grove; "Today’s plan · about 19 min" from
+  // mobile 1.23). The open items only, so it shrinks as the day goes. Only for plans sized in minutes (1.15+). A mock
+  // is left out: its own line says it is optional and how long it is.
   const dayMinutes = plan.budget ? todayMinutes(plan.items, plan.done) : 0;
-  const todayCaption = dayMinutes > 0 ? `Today’s plan · ${aboutMin(dayMinutes, true)}` : 'Today’s plan';
   const curItem = plan.items[cur];
   // The hero's words: the title names the activity (no count) and the meta line under it carries the detail
   // ("16 ready to revisit · oldest first", "8 questions", a mock's length). Mobile 1.24: the meta always shows,
@@ -416,7 +436,6 @@ export default function Today() {
   const openTimed = plan.items.filter((it, i) => !plan.done[i] && it.kind !== 'mock');
   const minutesSaid = dayMinutes > 0 && openTimed.length === 1 && openTimed[0] === curItem;
   const hero = curItem ? planHero(curItem, j.dueCount, { minutesSaid }) : null;
-  const heroNote = curItem && hero ? hero.meta : undefined;
   // Mobile 1.24: no stat tiles. After the range exists, one quiet line names the weakest area.
   const answeredTotal = j.readiness.domains.reduce((n, d) => n + d.answered, 0);
   const weakest = j.range.enough && j.focus ? j.focus : null;
@@ -626,36 +645,105 @@ export default function Today() {
   // Said in full: "CISA exam on 6 December".
   const examSpoken =
     j.daysLeft !== null && j.daysLeft > 0 && j.examDate ? `${j.cert.name} exam on ${spokenShortDate(new Date(`${j.examDate}T12:00:00`).getTime())}` : (examLine ?? undefined);
-  const large = useFontScale() >= LARGE_TEXT;
+  // ── Grove Today (the kit's order, ring first): the hero, the plan, the week's twig. ──
+  // Presentation only: every number below is one the app already works out (engine/groveToday.ts).
+  const { width } = useWindowDimensions();
+  // The hero is Today's one forest card. The clearing (a finished day) and the exam-ready panel are
+  // forest moments of their own, so on those days they take its place, as before.
+  const heroShown = !allDone && !showReady;
+  const ring = ringSize(width);
+  const mode = ringMode(j.range, examWeekNow);
+  const caption = ringCaption(j.range, examWeekNow);
+  const mastered = j.readiness.domains.reduce((n, d) => n + d.mastered, 0);
+  const accuracy = accuracyTile(answeredTotal, mastered);
+  // The plant's stage in words ("Seed", "Stage 1 of 6"); with no plant shown, the kit's seed.
+  const growth = plantView.plant?.growth ?? 1;
+  const stageName = GROWTH_NAMES[growth];
+  const examShown = j.examDate && j.daysLeft !== null ? shortDate(new Date(`${j.examDate}T12:00:00`).getTime()) : null;
+  const examSaid = j.examDate && j.daysLeft !== null ? spokenShortDate(new Date(`${j.examDate}T12:00:00`).getTime()) : undefined;
+  // The plant, full size inside the ring's disc (the disc is forest in both themes, so the plant takes
+  // its dark palette). It keeps its growth moment and its one reaction; it is part of the ring's picture,
+  // and the stage line above it is the button that opens Your plant.
+  const ringPlant = plantView.plant ? (
+    <LivePlant
+      testID="today-ring-plant"
+      species={plantView.plant.species}
+      stage={plantView.plant.growth}
+      organs={plantView.scales}
+      quietLook={!plantView.face}
+      resting={plantView.resting}
+      size={plantInRing(ring)}
+      theme="dark"
+      lod="small"
+      fit
+      look={todayLook}
+      mood={plantView.look?.mood}
+      reaction={reaction}
+      growth={grown && growFrom ? { from: growFrom, celebration: growthMoment } : null}
+    />
+  ) : (
+    <RingSeed width={Math.round(ring * 0.5)} />
+  );
+  // The plan's numbered steps: every item but the optional weekly mock (it waits under "Also today").
+  const steps: PlanStep[] = plan.items
+    .map((item, i) => ({ item, i }))
+    .filter(({ i }) => !isOptional(plan.items, i))
+    .map(({ item, i }, k) => {
+      const words = planHero(item, j.dueCount, { minutesSaid: true });
+      // A mock's own words already say how long it is ("50 questions · about 80 min"): no second minutes.
+      const mins = item.kind === 'mock' ? null : `${Math.max(1, Math.round(itemMinutes(item)))} min`;
+      const state = plan.done[i] ? 'done' : i === cur ? 'now' : 'later';
+      return {
+        key: String(i),
+        n: k + 1,
+        title: words.title,
+        meta: words.meta,
+        minutes: mins ? keepUnits(mins) : undefined,
+        state,
+        spoken: spokenMin(`Step ${k + 1}, ${words.title}, ${words.meta}${mins ? `, ${mins}` : ''}, ${state === 'now' ? 'up next' : state}`),
+      };
+    });
+  const doneCount = countedDone(plan).filter(Boolean).length;
+  // This week's twig: the study days the streak keeps (the last 14, so the whole week), Monday first.
+  // Not in exam week, and not on a welcome-back day (3 or more days away): those days keep one calm focus.
+  const studyDays = [...(studyStreak.recentDays ?? []), ...(studyStreak.lastDay ? [studyStreak.lastDay] : [])];
+  const week = twigWeek(studyDays, now);
+  const studiedThisWeek = week.filter((d) => d.on).length;
+  const awayNow = studyDaysAway(studyDays, plan.day);
+  const twigShown = !examWeekNow && awayNow < NAME_ASK_AWAY_DAYS;
+  const twigRight = twigStreak(j.progress.milestones?.days ?? 0, j.streak);
+  // The quiet line under the title: the exam's date, then this week's study days (the streak is on the twig).
+  const subLine = [examLine, twigShown && studiedThisWeek > 0 ? studyDaysWords(studiedThisWeek) : null].filter(Boolean).join(' · ');
+  const subSpoken = [examSpoken, twigShown && studiedThisWeek > 0 ? studyDaysWords(studiedThisWeek) : null].filter(Boolean).join(', ');
+  // The line under the hero, in the guide's italic: what grows the plant (no book label).
+  // With a plant, its name ("Kai grows with your study."), as the web's line does.
+  const plantName = plantView.plant ? plantCallName(plantView.plant) : '';
+  const grows = plantName ? `${plantName.charAt(0).toUpperCase()}${plantName.slice(1)} grows with your study.` : '';
+  const plantLine = plantView.plant
+    ? plantView.look?.visiting
+      ? `A ${plantView.look.resolved.visitor} came by. ${grows}`
+      : grows
+    : 'Your progress grows from what you practice here.';
 
   return (
     // Mobile 1.44 (UX review H1): the name card has a text field, so the keyboard never covers it or Save.
     <Screen keyboard={nameVisit}>
       <View onTouchStart={live ? skipAll : undefined}>
       <Enter i={0}>
-        {/* Mobile 1.51 (Field Guide): the running head says where you are and the day (said in full); the gear is Settings. */}
-        <RunningHead
-          section="Field guide · Today"
-          aside={headDay.shown}
-          asideLabel={headDay.spoken}
-          action={{
-            label: 'Settings',
-            hint: 'Exam date, reminders and more',
-            compact: true,
-            onPress: () => router.push('/settings'),
-            icon: (col) => <Settings size={ICON_SIZE.bar} color={col} strokeWidth={ICON_STROKE} />,
-          }}
-        />
+        {/* Grove Phase 1: the head shows the day only (said in full). No book label, and no gear: Settings
+            is on You (its header button), and the exam date is one tap away in the hero's Exam date tile. */}
+        <RunningHead section={headDay.shown} sectionLabel={headDay.spoken} />
         {/* One header stop that reads the whole title. A long name wraps (24 characters at most) and, at the
             largest text sizes, stops at three lines with an ellipsis instead of pushing the plan off the screen. */}
         <T v="display" accessibilityRole="header" accessibilityLabel={titleText} numberOfLines={4} style={{ marginTop: space.lg }}>
           {titleText}
         </T>
-        {/* The exam's day and the streak on one quiet line (the weekday and the countdown are in the head and the title). */}
-        <Row gap={space.sm} style={{ flexWrap: 'wrap', rowGap: space.xs, marginTop: space.xs }}>
-          {examLine ? <T v="meta" num accessibilityLabel={examSpoken}>{examLine}</T> : null}
-          {j.streak > 0 && <StreakPill flat streak={j.streak} growth={streakGrowth} />}
-        </Row>
+        {/* The exam's day and this week's study days on one quiet line (the streak itself is on the twig). */}
+        {subLine ? (
+          <T v="meta" num accessibilityLabel={subSpoken} style={{ marginTop: space.xs }}>
+            {subLine}
+          </T>
+        ) : null}
       </Enter>
 
       {moments.moment && (
@@ -673,25 +761,6 @@ export default function Today() {
       <Enter i={1} style={{ marginTop: space.lg }}>
         {showReady ? (
           <ExamReadyPanel cert={j.cert} readiness={j.readiness} onDismiss={moments.dismissReady} celebration={ready} />
-        ) : plan.items.length === 0 ? (
-          // Mobile 1.51: a plate with its label, and the one forest button under it.
-          <View>
-            <Plate fig={{ title: j.daysLeft !== null && j.daysLeft < 0 ? 'Exam done' : 'Plan' }} testID="today-plate">
-              <View style={{ backgroundColor: c.raised, borderWidth: 1, borderColor: c.line, borderRadius: plate.labelRadius, padding: space.md }}>
-                <FieldText v="value" maxScale={2} accessibilityRole="header">How did it go?</FieldText>
-                <T v="meta" style={{ marginTop: space.xs }}>Set a new date to plan what’s next.</T>
-              </View>
-            </Plate>
-            <Button
-              shape="plate"
-              label="Set exam date"
-              // Settings opens with "Exam date" near the top, right under Certification.
-              onPress={() => router.push({ pathname: '/settings', params: { open: 'exam-date' } })}
-              icon={(col) => <Settings size={ICON_SIZE.inline} color={col} strokeWidth={ICON_STROKE} />}
-              iconLeading
-              style={{ marginTop: space.md }}
-            />
-          </View>
         ) : allDone ? (
           <Celebrate celebration={clearing}>
             <HeroPanel
@@ -706,93 +775,144 @@ export default function Today() {
             </HeroPanel>
           </Celebrate>
         ) : (
-          // Mobile 1.51 (Field Guide): the day as a plate. Your plant (when there is one) beside the plan's
-          // specimen label; the caption under it; then the ONE forest fill on the screen, the Start button.
+          // Grove (the kit's 01-phone-today, ring first): the stage in words, the readiness ring with the plant
+          // full size inside, the caption under it, then the Accuracy and Exam date tiles. One forest card.
           <View>
-            <Plate
-              fig={
-                plantView.plant
-                  ? { n: plantView.plant.growth, title: GROWTH_NAMES[plantView.plant.growth], spoken: `Figure ${plantView.plant.growth}, ${GROWTH_NAMES[plantView.plant.growth]}, growth ${plantView.plant.growth} of ${MAX_GROWTH}` }
-                  : { title: 'Today’s study' }
-              }
-              testID="today-plate"
-            >
-              <View style={{ flexDirection: large || !plantView.plant ? 'column' : 'row', alignItems: large ? 'flex-start' : 'flex-end', gap: space.md }}>
-                {plantView.plant ? <View style={{ alignSelf: large ? 'center' : 'flex-end' }}>{todayPlant(large ? 120 : 112, 'today-plant')}</View> : null}
-                <View
-                  testID="today-plan-label"
-                  style={{ flex: large || !plantView.plant ? undefined : 1, alignSelf: large || !plantView.plant ? 'stretch' : undefined, minWidth: 0, backgroundColor: c.raised, borderWidth: 1, borderColor: c.line, borderRadius: plate.labelRadius, padding: space.md }}
-                >
-                  {/* "Today's plan, about 17 minutes, 1 of 3 done": the checklist's progress, said once for a screen reader. */}
-                  <View accessible accessibilityLabel={`${spokenMin(todayCaption)}, ${countedDone(plan).filter(Boolean).length} of ${countedDone(plan).length} done`}>
-                    {/* "19 min" never splits across lines (a no-break space before the unit; UX review P5). */}
-                    <FieldText v="head">{keepUnits(todayCaption)}</FieldText>
-                  </View>
-                  <FieldText v="value" maxScale={2} accessibilityRole="header" style={{ marginTop: space.xs }}>{hero!.title}</FieldText>
-                  {heroNote ? (
-                    <T v="meta" accessibilityLabel={spokenMin(heroNote)} style={{ marginTop: 2 }}>{heroNote}</T>
-                  ) : null}
-                  <PlanChecklist paper items={plan.items} done={plan.done} current={cur} due={j.dueCount} focused={focused} seenKey={`${cert}:${plan.day}`} />
-                </View>
-              </View>
-            </Plate>
-            {plantView.plant && (
-              <KeyCaption label="PLATE">
-                {plantView.look?.visiting ? `A ${plantView.look.resolved.visitor} came by. Your plant grows with your study.` : 'Your plant grows with your study.'}
-              </KeyCaption>
-            )}
-            <Button
-              shape="plate"
-              label={plan.done.some(Boolean) || firstBegun ? 'Continue' : 'Start'}
-              onPress={() => runPlanItem(curItem, j.cert.id)}
-              icon={startIcon(curItem?.kind)}
-              // Play only for a lesson (leading); everything else goes forward with an arrow after the label.
-              iconLeading={curItem?.kind === 'lesson'}
-              accessibilityHint={hero!.title}
-              style={{ marginTop: space.md }}
-            />
+            <HeroCard testID="today-hero">
+              {/* The plant's stage in words; with a plant, the button to Your plant. */}
+              <Pressable
+                // With a plant, this is the plant's button (it keeps the plant's old test id); without one, plain words.
+                testID={plantView.plant ? 'today-plant' : 'today-stage'}
+                disabled={!plantView.plant}
+                accessibilityRole={plantView.plant ? 'button' : 'text'}
+                // The plant's own words (its name, form, growth and mood), then the stage in words.
+                accessibilityLabel={plantView.plant ? `${plantView.label} Stage ${growth} of ${HERO_STAGES}.` : `${stageName}, stage ${growth} of ${HERO_STAGES}`}
+                accessibilityHint={plantView.plant ? 'Opens your plant' : undefined}
+                onPress={() => router.push('/plant')}
+                style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', columnGap: space.md, minHeight: plantView.plant ? 48 : 32, marginVertical: plantView.plant ? -space.sm : 0 }}
+              >
+                <FieldText v="sub" color={c.onForest}>{stageName}</FieldText>
+                <T v="meta" color={c.onForest2}>{`Stage ${growth} of ${HERO_STAGES}`}</T>
+              </Pressable>
+              {/* The ring and its caption are one button to the readiness report, said in words. */}
+              <RingTap label={caption.spoken} onPress={() => router.push('/readiness')}>
+                <ReadinessRing mode={mode} on={seedDotsOn(j.range)} low={j.range.enough ? j.range.low : 0} high={j.range.enough ? j.range.high : 0} size={ring} growth={rangeGrowth}>
+                  {ringPlant}
+                </ReadinessRing>
+                <RingCaptionText caption={caption} />
+              </RingTap>
+              <HeroTiles>
+                <AccuracyHeroTile tile={accuracy} />
+                <ExamDateHeroTile
+                  shown={examShown}
+                  spoken={examSaid}
+                  // Settings opens with "Exam date" near the top, right under Certification.
+                  onSet={() => router.push({ pathname: '/settings', params: { open: 'exam-date' } })}
+                />
+              </HeroTiles>
+            </HeroCard>
+            {/* What grows the plant, in the guide's italic (no book label). */}
+            <FieldText v="fig" style={{ marginTop: space.sm }}>{plantLine}</FieldText>
           </View>
         )}
       </Enter>
 
-      {shortIdx >= 0 && (
-        // The short path (mobile 1.41): a quiet ghost button under the hero, never a second Start.
-        <View testID="short-set" style={{ alignSelf: 'flex-start', marginTop: space.xs, marginLeft: -space.sm }}>
-          <Button
-            kind="ghost"
-            label={`Short on time? ${SHORT_SET_SIZE} questions`}
-            accessibilityHint={spokenMin(shortLine)}
-            onPress={() => runShortSet(plan.items[shortIdx], j.cert.id)}
-            // Hugs its label, so the words line up with the plain line under it.
-            style={{ alignSelf: 'flex-start' }}
-          />
-          {/* Said by the button's hint already, so hidden from screen readers here. */}
-          <View accessibilityElementsHidden importantForAccessibility="no-hide-descendants" style={{ paddingHorizontal: space.sm }}>
-            <T v="meta">{shortLine}</T>
-          </View>
-        </View>
+      {heroShown && (
+        <Enter i={2} style={{ marginTop: space.lg }}>
+          {plan.items.length === 0 ? (
+            // After the exam (or with no plan): the plate asks how it went, and the button sets a new date.
+            <View>
+              <Plate fig={{ title: j.daysLeft !== null && j.daysLeft < 0 ? 'Exam done' : 'Plan' }} testID="today-plate">
+                <View style={[groveTile(c, true), { padding: space.md }]}>
+                  <FieldText v="value" maxScale={2} accessibilityRole="header">How did it go?</FieldText>
+                  <T v="meta" style={{ marginTop: space.xs }}>Set a new date to plan what’s next.</T>
+                </View>
+              </Plate>
+              <Button
+                shape="plate"
+                label="Set exam date"
+                // Settings opens with "Exam date" near the top, right under Certification.
+                onPress={() => router.push({ pathname: '/settings', params: { open: 'exam-date' } })}
+                icon={(col) => <Settings size={ICON_SIZE.inline} color={col} strokeWidth={ICON_STROKE} />}
+                iconLeading
+                style={{ marginTop: space.md }}
+              />
+            </View>
+          ) : (
+            // Today's plan (the kit's card): its minutes, the numbered steps, the ONE Start, "Stop any time".
+            <PlanCard
+              testID="today-plate"
+              title="Today’s plan"
+              minutes={dayMinutes > 0 ? keepUnits(aboutMin(dayMinutes)) : undefined}
+              spoken={`Today’s plan, ${dayMinutes > 0 ? `${spokenMin(aboutMin(dayMinutes, true))}, ` : ''}${doneCount} of ${countedDone(plan).length} done`}
+            >
+              <PlanSteps steps={steps} />
+              <Button
+                shape="plate"
+                label={plan.done.some(Boolean) || firstBegun ? 'Continue' : 'Start'}
+                onPress={() => runPlanItem(curItem, j.cert.id)}
+                icon={startIcon(curItem?.kind)}
+                // Play only for a lesson (leading); everything else goes forward with an arrow after the label.
+                iconLeading={curItem?.kind === 'lesson'}
+                accessibilityHint={hero!.title}
+                style={{ marginTop: space.xs }}
+              />
+              <T v="meta" center>Stop any time; your place is saved.</T>
+              {shortIdx >= 0 && (
+                // The short path (mobile 1.41): a quiet ghost button in the plan, never a second Start.
+                <View testID="short-set" style={{ alignItems: 'center' }}>
+                  <Button
+                    kind="ghost"
+                    label={`Short on time? ${SHORT_SET_SIZE} questions`}
+                    accessibilityHint={spokenMin(shortLine)}
+                    onPress={() => runShortSet(plan.items[shortIdx], j.cert.id)}
+                  />
+                  {/* Said by the button's hint already, so hidden from screen readers here. */}
+                  <View accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
+                    <T v="meta" center>{shortLine}</T>
+                  </View>
+                </View>
+              )}
+            </PlanCard>
+          )}
+        </Enter>
+      )}
+
+      {twigShown && (
+        // This week's twig (owner decision: with the ring on every day, never one or the other).
+        <Enter i={2} style={{ marginTop: space.lg }}>
+          <WeekTwig week={week} streak={twigRight} spoken={twigSpoken(week)} studied={studiedThisWeek > 0 ? studyDaysWords(studiedThisWeek) : null} />
+        </Enter>
       )}
 
       {!allDone && (
-        <Enter i={2}>
-          {/* The Exam-ready panel draws the rings itself: once per screen (spec §10). Day 0 has nothing to show yet. */}
-          {answeredTotal > 0 && (
+        <Enter i={3}>
+          {/* The Exam-ready panel draws the rings itself: once per screen (spec §10). The scale bar under it
+              stays for that day only; every other day the ring above is the one range on Today. */}
+          {showReady && answeredTotal > 0 && (
             <ReadinessRow
               cert={j.cert}
               readiness={j.readiness}
               range={j.range}
               stage={showStage ? `Stage ${stageIdx + 1} · ${j.stageLine}` : undefined}
-              rings={!showReady}
+              rings={false}
               ringsGrowth={ringsGrowth}
               rangeGrowth={rangeGrowth}
               onPress={() => router.push('/readiness')}
-              // Mobile 1.51 (Field Guide): the range on the scale bar, its words built in.
               scale
             />
           )}
+          {/* The journey's coach line, for a few days after its stage changes (it was in the readiness row).
+              Its number is left out here: the hero already says the plant's "Stage 1 of 6", and two numbered
+              ladders never sit on one screen (PR #43). */}
+          {!showReady && showStage && answeredTotal > 0 && (
+            <View testID="today-stage-line" style={{ marginTop: space.lg }}>
+              <T v="meta">{j.stageLine}</T>
+            </View>
+          )}
           {/* Day 0 (mobile 1.39): the first five are still to finish, so say what comes after them. */}
           {firstNow && !plan.done[cur] && (
-            <View testID="today-day0-next" style={{ marginTop: answeredTotal > 0 ? space.md : space.lg }}>
+            <View testID="today-day0-next" style={{ marginTop: space.lg }}>
               <T v="meta">{firstSetNextLine(j.daysLeft !== null)}</T>
             </View>
           )}
@@ -802,8 +922,8 @@ export default function Today() {
             // The domain's short name ("IS Operations"), not the tile abbreviation ("IS Ops", spoken "I S ops"): UX review S6.
             <T v="meta" style={{ marginTop: space.md }}>{`${answeredTotal} answered · weakest area: ${weakest.short}`}</T>
           )}
-          {plantView.plant && (showReady || plan.items.length === 0) && (
-            // Mobile 1.51: on a plan day the plant is the plate's figure; with no plate it sits here, as before.
+          {plantView.plant && showReady && (
+            // The exam-ready day has no ring: the plant sits here, as before.
             <Row gap={space.lg} style={{ alignItems: 'center', marginTop: space.xl }}>
               {todayPlant(72, 'today-plant')}
               <T v="meta" style={{ flex: 1 }}>

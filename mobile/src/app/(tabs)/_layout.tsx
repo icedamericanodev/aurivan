@@ -1,95 +1,66 @@
 /**
  * Bottom tabs: Today · Learn · Practice · You.
- * (docs/mobile/PRODUCT_VISION.md §3, Grove v2 tab bar in DESIGN_SYSTEM.md §6).
+ * (docs/mobile/PRODUCT_VISION.md §3, DESIGN_SYSTEM.md §6 "Tab bar").
  * Mobile 1.51 (the owner's menu pick A): four tabs. The Play tab is gone; its
  * games are Drills, a section of Practice (components/drills.tsx), and every
  * old Play link lands there (app/play.tsx, lib/legacyLinks.ts).
  * Lessons, sessions and games open full-screen on top, which hides the tab
  * bar so learners stay focused.
  *
- * Active tab = green icon + ink label + a small dot under the label, so the
- * state isn't shown by colour alone. Switching tabs is a short fade-through
- * (240 ms, mobile 1.8): the old tab fades out in the first half and the new
- * one fades in during the second, so two screens never show at once. Tabs
- * are peers, so nothing slides; under Reduce Motion the switch is instant.
- * The dot pops in under the new tab. Today and You use custom glyphs
- * (sprout, growth rings); the others stay Lucide. Practice is a checklist,
- * not a target: a target's concentric circles looked like the You rings.
- * Mobile 1.10: a small "new" mark on the You icon while a newly earned badge
- * waits to be seen (spoken "You, new badge"). Never a number. It is a RING
- * (an accent outline around paper), so it never reads as the selected-tab
- * dot under the label, which is a filled dot.
+ * Grove Phase 1: the bar is the kit's floating bar (components/tabBar.tsx), drawn
+ * through the navigator's `tabBar` prop. Every tab shows its word under its icon
+ * (owner decision, 31 Oct 2026); the current one has a pill behind its icon, with an
+ * outline in dark mode and with the phone's high contrast setting. Each tab screen pads
+ * its end by the bar's footprint (TabSpaceContext), so nothing hides behind the bar.
+ *
+ * Switching tabs is a short fade-through (240 ms, mobile 1.8): the old tab fades out in
+ * the first half and the new one fades in during the second, so two screens never show
+ * at once. Tabs are peers, so nothing slides; under Reduce Motion the switch is instant.
+ * Today and You use custom glyphs (sprout, specimen tag); the others stay Lucide.
+ * Practice is a checklist, not a target: a target's concentric circles looked like rings.
+ * Mobile 1.10: a small "new" mark on the You icon while a newly earned badge waits to be
+ * seen (spoken "You, new badge"). Never a number. It is a RING (an accent outline), so it
+ * never reads as the current tab's pill.
  */
+import { useState } from 'react';
 import { Tabs } from 'expo-router';
-import { PlatformPressable } from 'expo-router/react-navigation';
 import { Easing, View, type Animated, type ColorValue } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BookOpen, ICON_STROKE, ListChecks, SpecimenTag, Sprout } from '../../components/icons';
 import { useMotion } from '../../components/motion';
-import { ICON_SIZE, TAB_BAR_HEIGHT, TabLabel } from '../../components/ui';
+import { FloatingTabBar, TAB_BAR, TabHeightContext, TabSpaceContext, tabBarSpace } from '../../components/tabBar';
+import { ICON_SIZE } from '../../components/ui';
 import { useNewBadge } from '../../lib/badges';
 import { motion } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
 
-type IconProps = { color: ColorValue; size: number };
+type IconProps = { color: ColorValue; size: number; focused?: boolean };
 type Glyph = (p: { size?: number; color: string; strokeWidth?: number }) => React.ReactNode;
 const icon = (G: Glyph) =>
-  function TabIcon({ color }: IconProps) {
-    return <G size={ICON_SIZE.bar} color={color as string} strokeWidth={ICON_STROKE} />;
+  function TabIcon({ color, size }: IconProps) {
+    return <G size={size || ICON_SIZE.bar} color={color as string} strokeWidth={ICON_STROKE} />;
   };
 /**
  * The You icon, with the "new badge" mark at its top right: a 10pt ring
- * (2pt accent outline, the bar's paper inside), a shape distinct from the
- * filled selected-tab dot. A component (its parent passes `dot`), so the tab
- * bar can draw it twice (active and inactive layers) without running hooks
- * inside a render function.
+ * (2pt accent outline, the bar's own colour inside, or the pill's when You is
+ * the current tab), a shape distinct from the current tab's pill. A component
+ * (its parent passes `dot`), so it never runs hooks inside a render function.
  */
-export function YouIcon({ color, dot }: IconProps & { dot: boolean }) {
-  const { c } = useTheme();
+export function YouIcon({ color, size, dot, focused }: IconProps & { dot: boolean }) {
+  const { c, g } = useTheme();
   return (
     <View>
-      {/* Premium round 2 (expert ruling B): a plain specimen tag, the Field Guide's label (was the growth rings). */}
-      <SpecimenTag size={ICON_SIZE.bar} color={color as string} strokeWidth={ICON_STROKE} />
+      {/* Premium round 2 (expert ruling B): a plain specimen tag (was the growth rings). */}
+      <SpecimenTag size={size || ICON_SIZE.bar} color={color as string} strokeWidth={ICON_STROKE} />
       {dot && (
         <View
           testID="you-new-dot"
-          style={{ position: 'absolute', top: -3, right: -4, width: 10, height: 10, borderRadius: 5, backgroundColor: c.bg, borderWidth: 2, borderColor: c.accent }}
+          style={{ position: 'absolute', top: -3, right: -4, width: 10, height: 10, borderRadius: 5, backgroundColor: focused ? c.forestTrack : g.navFloat, borderWidth: 2, borderColor: c.accent }}
         />
       )}
     </View>
   );
 }
-const label = (text: string) =>
-  function Label({ focused }: { focused: boolean }) {
-    return <TabLabel label={text} focused={focused} />;
-  };
-
-/**
- * The tab button itself carries the iOS Large Content Viewer: with very
- * large text, long-pressing a tab shows its name enlarged. It has to be on
- * the pressable (the element that gets the touch), not the inner label.
- */
-type TabButtonProps = React.ComponentProps<typeof PlatformPressable>;
-/**
- * Mobile 1.51 (UX review H2): a TAB to screen readers on every platform. The navigator's item asks for
- * role "button" on iOS (VoiceOver said "Practice, button"); here it is "tab", with its selected state kept
- * (the item's aria-selected, also as accessibilityState). The position ("2 of 4") is the navigator's own
- * label; it is not written here (check it on a device: the You tab sets its own label for the badge dot).
- */
-export const tabButton = (text: string) =>
-  function TabButton(props: TabButtonProps) {
-    const selected = Boolean((props as { 'aria-selected'?: boolean })['aria-selected']);
-    return (
-      <PlatformPressable
-        {...props}
-        role="tab"
-        accessibilityRole="tab"
-        accessibilityState={{ ...props.accessibilityState, selected }}
-        accessibilityShowsLargeContentViewer
-        accessibilityLargeContentTitle={text}
-      />
-    );
-  };
 
 /** The tab fade's curve: Material's standard easing, in React Native's Animated (the tab navigator's engine). */
 const TAB_EASE = Easing.bezier(motion.curve.standard[0], motion.curve.standard[1], motion.curve.standard[2], motion.curve.standard[3]);
@@ -106,44 +77,37 @@ const fadeThrough = ({ current }: { current: { progress: Animated.AnimatedInterp
 });
 
 export default function TabsLayout() {
-  const { c } = useTheme();
   const { reduced } = useMotion();
   const insets = useSafeAreaInsets();
   const newBadge = useNewBadge();
+  // The bar's measured height (64, taller with larger text): every tab screen pads its end by it.
+  const [barH, setBarH] = useState<number>(TAB_BAR.height);
   return (
-    <Tabs
-      screenOptions={{
-        headerShown: false,
-        animation: reduced ? 'none' : 'fade',
-        sceneStyleInterpolator: reduced ? undefined : fadeThrough,
-        transitionSpec: { animation: 'timing', config: { duration: motion.dur.enter, easing: TAB_EASE } },
-        // The tint colours the ICON; TabLabel colours its own text (ink / muted).
-        tabBarActiveTintColor: c.accentText,
-        tabBarInactiveTintColor: c.muted,
-        tabBarStyle: {
-          backgroundColor: c.bg,
-          borderTopColor: c.line,
-          borderTopWidth: 1,
-          height: TAB_BAR_HEIGHT + insets.bottom,
-        },
-        // Icon (28) + label (14) + dot (5) fit the 56pt bar with 3pt padding.
-        tabBarItemStyle: { paddingVertical: 3 },
-      }}
-    >
-      {/* Route stays "home" so existing links keep working; the tab reads "Today". */}
-      <Tabs.Screen name="home" options={{ title: 'Today', tabBarLabel: label('Today'), tabBarButton: tabButton('Today'), tabBarIcon: icon(Sprout) }} />
-      <Tabs.Screen name="learn" options={{ title: 'Learn', tabBarLabel: label('Learn'), tabBarButton: tabButton('Learn'), tabBarIcon: icon(BookOpen as Glyph) }} />
-      <Tabs.Screen name="practice" options={{ title: 'Practice', tabBarLabel: label('Practice'), tabBarButton: tabButton('Practice'), tabBarIcon: icon(ListChecks as Glyph) }} />
-      <Tabs.Screen
-        name="you"
-        options={{
-          title: 'You',
-          tabBarLabel: label('You'),
-          tabBarButton: tabButton('You'),
-          tabBarIcon: ({ color, size }) => <YouIcon color={color} size={size} dot={newBadge} />,
-          tabBarAccessibilityLabel: newBadge ? 'You, new badge' : 'You',
-        }}
-      />
-    </Tabs>
+    <TabHeightContext.Provider value={setBarH}>
+      <TabSpaceContext.Provider value={tabBarSpace(insets.bottom, barH)}>
+        <Tabs
+          tabBar={(props) => <FloatingTabBar {...props} />}
+          screenOptions={{
+            headerShown: false,
+            animation: reduced ? 'none' : 'fade',
+            sceneStyleInterpolator: reduced ? undefined : fadeThrough,
+            transitionSpec: { animation: 'timing', config: { duration: motion.dur.enter, easing: TAB_EASE } },
+          }}
+        >
+          {/* Route stays "home" so existing links keep working; the tab reads "Today". */}
+          <Tabs.Screen name="home" options={{ title: 'Today', tabBarIcon: icon(Sprout) }} />
+          <Tabs.Screen name="learn" options={{ title: 'Learn', tabBarIcon: icon(BookOpen as Glyph) }} />
+          <Tabs.Screen name="practice" options={{ title: 'Practice', tabBarIcon: icon(ListChecks as Glyph) }} />
+          <Tabs.Screen
+            name="you"
+            options={{
+              title: 'You',
+              tabBarIcon: ({ color, size, focused }) => <YouIcon color={color} size={size} focused={focused} dot={newBadge} />,
+              tabBarAccessibilityLabel: newBadge ? 'You, new badge' : 'You',
+            }}
+          />
+        </Tabs>
+      </TabSpaceContext.Provider>
+    </TabHeightContext.Provider>
   );
 }

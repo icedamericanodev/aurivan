@@ -110,11 +110,12 @@ describe('Today', () => {
     expect(root().findAll((n) => typeof n.props.accessibilityLabel === 'string' && n.props.accessibilityLabel.startsWith('Estimated readiness'))).not.toHaveLength(0);
   });
 
-  it('T3: without the panel, the readiness row is the scale bar (mobile 1.51, Field Guide; it was the small rings)', () => {
+  it('T3: without the panel, readiness is the Grove ring with the plant inside (no rings, no scale bar)', () => {
     answeredEnough();
     mount(<Today />);
     expect(root().findAllByType(GrowthRings)).toHaveLength(0);
-    expect(root().findAll((n) => typeof n.type === 'string' && n.props.testID === 'scale-bar')).toHaveLength(1);
+    expect(root().findAll((n) => typeof n.type === 'string' && n.props.testID === 'scale-bar')).toHaveLength(0);
+    expect(root().findAll((n) => typeof n.type === 'string' && n.props.testID === 'today-ring')).toHaveLength(1);
   });
 
   it('T4: "Also today" says how long the rest takes, not a count of a list that shows every item', () => {

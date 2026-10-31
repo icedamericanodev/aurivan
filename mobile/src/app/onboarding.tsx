@@ -62,7 +62,8 @@ import { dayKey } from '../engine/streak';
 import { selectCert, useProgress } from '../store/progress';
 import { useSeen } from '../store/seen';
 import { examDateOf, useSettings } from '../store/settings';
-import { plate, space } from '../theme/tokens';
+import { grovePlate } from '../theme/grove';
+import { space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 
 // Exam date presets (shared with Settings and the calendar). The calendar is
@@ -150,7 +151,7 @@ export default function Onboarding() {
         <View testID="welcome-plate" accessibilityElementsHidden importantForAccessibility="no-hide-descendants" style={{ marginTop: space.xl }}>
           <Plate fig={{ title: 'Seed, before Day 1' }}>
             <View style={{ alignItems: 'center' }}>
-              <SeedSketch width={Math.min(240, width - 2 * space.gutter - 2 * (plate.mount + space.md + 2))} />
+              <SeedSketch width={Math.min(240, width - 2 * space.gutter - 2 * (grovePlate.edge + grovePlate.pad))} />
             </View>
           </Plate>
         </View>

@@ -115,7 +115,7 @@ describe('the tab hero renders its content (Android blank-hero regression)', () 
     const text = textOf(content);
     // The figure caption and the path's title are the plate's two headers.
     const header = content.findAll((n) => n.props.accessibilityRole === 'header' && typeof n.type === 'string');
-    expect(header.map((h) => h.props.accessibilityLabel ?? textOf(h))).toContain('Figure 2, Your next set');
+    expect(header.map((h) => h.props.accessibilityLabel ?? textOf(h))).toContain('Your next set');
     expect(header.length).toBe(2);
     expect(text).toMatch(/min/); // the meta carries the honest length
     // The plate is never a button: the Start button sits under it.
@@ -176,27 +176,31 @@ describe('the tab hero renders its content (Android blank-hero regression)', () 
     expect(textOf(content)).toContain('10 questions · ');
   });
 
-  it('the plate has no shadow and square corners (the white shadowed card is retired)', () => {
+  it('the plate has no shadow; Grove: one rounded card with a 1pt edge (the white shadowed card is retired)', () => {
     mount(<Practice />);
     const [plateEl] = byTestId('practice-plate');
     expect(flat(plateEl).boxShadow).toBeUndefined();
-    expect(flat(plateEl).borderRadius).toBeUndefined();
+    expect(flat(plateEl).borderRadius).toBe(24);
+    expect(flat(plateEl).borderWidth).toBe(1);
   });
 });
 
-describe('Settings gear in the Today and You headers', () => {
-  it.each([
-    ['Today', Today],
-    ['You', You],
-  ] as const)('%s: a 48pt button spoken as "Settings" opens Settings', (_name, Screen) => {
+describe('Settings in the headers (Grove: on You only)', () => {
+  it('Today has no Settings gear (Settings is on You; the exam date is the hero tile)', () => {
+    mount(<Today />);
+    expect(root().findAll((n) => n.props.accessibilityLabel === 'Settings' && typeof n.props.onPress === 'function')).toHaveLength(0);
+  });
+
+  it('You: one 44pt rounded-square button spoken "Settings", 48pt to the finger, opens Settings', () => {
     (router.push as jest.Mock).mockClear();
-    mount(<Screen />);
-    const gear = root().findAll((n) => n.props.accessibilityLabel === 'Settings' && n.props.accessibilityRole === 'button' && typeof n.props.onPress === 'function');
-    expect(gear.length).toBe(1);
-    const style = StyleSheet.flatten(typeof gear[0].props.style === 'function' ? gear[0].props.style({ pressed: false }) : gear[0].props.style);
-    // Mobile 1.51: You's gear is the running head's action (at least 48pt, grown by its "Settings" word).
-    expect(style.width ?? style.minWidth).toBeGreaterThanOrEqual(44);
-    expect(style.height ?? style.minHeight).toBeGreaterThanOrEqual(44);
+    mount(<You />);
+    const host = root().findAll((n) => typeof n.type === 'string' && n.props.accessibilityLabel === 'Settings' && n.props.accessibilityRole === 'button');
+    expect(host).toHaveLength(1);
+    const style = flat(host[0]);
+    expect(style).toMatchObject({ width: 44, height: 44, borderRadius: 14, borderWidth: 1 });
+    expect(host[0].props.accessibilityHint).toBe('Exam date, reminders and more');
+    const gear = root().findAll((n) => n.props.accessibilityLabel === 'Settings' && typeof n.props.onPress === 'function');
+    expect(gear[0].props.hitSlop).toBe(2);
     act(() => {
       gear[0].props.onPress();
     });

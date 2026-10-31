@@ -155,16 +155,17 @@ afterEach(() => {
 });
 
 describe('Day 0: the first five is the whole plan', () => {
-  it('a title, one plain line, one pill; no checklist, no tiles, no readiness row, nothing that says "Not yet"', () => {
+  it('one step, one pill; the ring counts toward the first range (no range yet); nothing that says "Not yet"', () => {
     storePlan([FIRST], [false]);
     mount(<Today />);
     const t = allText();
-    expect(t).toContain('Today’s plan · about\u00A06\u00A0min');
+    expect(t).toContain('Today’s plan About\u00A06\u00A0min');
     expect(t).toContain('Your first five 5 questions, no timer');
-    expect(byTestID('plan-checklist')).toHaveLength(0);
+    expect(byTestID('plan-steps')[0].findAll((n) => typeof n.type === 'string' && n.props.accessible === true)).toHaveLength(1);
     expect(byTestID('today-tiles')).toHaveLength(0);
-    expect(byTestID('readiness-tap')).toHaveLength(0);
-    expect(t).not.toMatch(/Not yet|Not enough data|Also today|Stage \d|accuracy/i);
+    // Grove: the hero is there from Day 0 (the seed, "Answer 40 questions"), never a range or a percentage.
+    expect(t).toContain('Answer 40 questions');
+    expect(t).not.toMatch(/Not yet|Not enough data|Also today|Stage \d ·|\d+%|\d+ to \d+/i);
     expect(t).not.toMatch(/\bcheck\b|diagnos/i);
     expect(pill().props.accessibilityLabel).toBe('Start');
     // Mobile 1.39: one quiet line under the panel says what comes after the first five.
@@ -218,34 +219,37 @@ describe('Day 0: the first five is the whole plan', () => {
 });
 
 describe('the Start button (mobile 1.51, Field Guide)', () => {
-  it.each(['light', 'dark'] as const)('the plate button under the plate: 52pt, 12pt corners, the forest fill (%s)', (theme) => {
+  it.each(['light', 'dark'] as const)('the plate button in the plan card: 54pt, 16pt corners (Grove) (%s)', (theme) => {
     useSettings.setState({ theme });
     storePlan([WARM, REVIEW], [false, false]);
     mount(<Today />);
     const style = StyleSheet.flatten(pill().props.style);
-    expect(style.minHeight).toBeGreaterThanOrEqual(52);
-    expect(style.borderRadius).toBe(12);
+    expect(style.minHeight).toBeGreaterThanOrEqual(54);
+    expect(style.borderRadius).toBe(16);
   });
 });
 
 describe('the title is said once, and the optional mock is not a checklist row', () => {
-  it('the item you are on is the title; the checklist lists only what follows', () => {
+  it('every step is listed once, numbered, the one you are on first and said "up next"', () => {
     storePlan([REVIEW, LESSON, WARM], [false, false, false]);
     mount(<Today />);
-    const lines = byTestID('plan-checklist')[0]
+    const lines = byTestID('plan-steps')[0]
       .findAll((n) => typeof n.type === 'string' && n.props.accessible === true)
       .map((n) => n.props.accessibilityLabel as string);
-    expect(lines).toEqual(['Lesson · Business impact analysis, later', 'Warm-up · 5 questions, later']);
-    // "Questions to revisit" is the panel's title once; it is not a first row too.
-    expect(lines.some((l) => /^Questions to revisit/.test(l))).toBe(false);
-    expect(root().findAll((n) => n.props.accessibilityRole === 'header' && textOf(n) === 'Questions to revisit').length).toBeGreaterThan(0);
+    expect(lines).toEqual([
+      expect.stringMatching(/^Step 1, Questions to revisit, .*, up next$/),
+      expect.stringMatching(/^Step 2, Business impact analysis, .*, later$/),
+      expect.stringMatching(/^Step 3, Warm-up, .*, later$/),
+    ]);
+    // "Questions to revisit" is said once.
+    expect(allText().split('Questions to revisit')).toHaveLength(2);
   });
 
   it('the weekly mini mock is an "Also today" row, with its length, and not part of "N of N done"', () => {
     storePlan([WARM, MOCK], [false, false]);
     mount(<Today />);
-    // With one required item there is no checklist at all.
-    expect(byTestID('plan-checklist')).toHaveLength(0);
+    // One required step; the mock is not a step.
+    expect(byTestID('plan-steps')[0].findAll((n) => typeof n.type === 'string' && n.props.accessible === true)).toHaveLength(1);
     expect(allText()).toContain('Also today');
     expect(allText()).toContain('Optional this week · about 80 min Mini mock');
     const caption = root().findAll((n) => typeof n.props.accessibilityLabel === 'string' && /^Today’s plan/.test(n.props.accessibilityLabel))[0];
@@ -258,7 +262,7 @@ describe('the readiness row', () => {
     seed(1, 1); // five answers
     storePlan([WARM], [false]);
     mount(<Today />);
-    expect(allText()).toContain('5 of 40 for your first range');
+    expect(allText()).toContain('5 of 40 answers until your first readiness range');
     // Before the range there is nothing to estimate, so no estimate words either.
     expect(allText()).not.toMatch(/range not a promise|not a prediction/);
   });
@@ -272,7 +276,7 @@ describe('the readiness row', () => {
     });
     storePlan([WARM], [false]);
     mount(<Today />);
-    expect(allText()).toMatch(/\b[1-3] of 40 for your first range/);
+    expect(allText()).toMatch(/\b[1-3] of 40 answers until your first readiness range/);
   });
 });
 
@@ -284,17 +288,17 @@ describe('the stage line rests unless it is new', () => {
     seed(40, 30); // 200 answers: a stage past the first
     storePlan([WARM, REVIEW], [false, false]);
     mount(<Today />);
-    expect(allText()).toMatch(/Stage \d · /);
+    expect(byTestID('today-stage-line')).toHaveLength(1);
     unmount();
     // Seen on the same stage 2 days ago: still shown. 3 days ago: rests.
     const idx = Number(allTextStageIndex());
     useSeen.setState({ values: { [stageKey]: [idx, dayNum() - 2] } });
     mount(<Today />);
-    expect(allText()).toMatch(/Stage \d · /);
+    expect(byTestID('today-stage-line')).toHaveLength(1);
     unmount();
     useSeen.setState({ values: { [stageKey]: [idx, dayNum() - 3] } });
     mount(<Today />);
-    expect(allText()).not.toMatch(/Stage \d · /);
+    expect(byTestID('today-stage-line')).toHaveLength(0);
   });
 
   /** The stage number the first mount showed (read from the saved note), as a zero-based index. */
@@ -307,7 +311,7 @@ describe('the stage line rests unless it is new', () => {
     storePlan([WARM, REVIEW], [false, false]);
     useSeen.setState({ values: { [stageKey]: [0, dayNum() - 30] } }); // seen on the first stage a month ago
     mount(<Today />);
-    expect(allText()).toMatch(/Stage \d · /);
+    expect(byTestID('today-stage-line')).toHaveLength(1);
     expect(useSeen.getState().values[stageKey]?.[1]).toBe(dayNum());
   });
 });
@@ -336,9 +340,10 @@ describe('"Your first readiness range"', () => {
     // The short names, as the rings and Today's lines call each domain.
     expect(t).toContain('Strongest so far: IS Audit');
     expect(t).toContain('Needs the most work: IT Governance');
-    // The range itself is the readiness row just above the card, shown once (never repeated in the card).
-    expect(t.match(/\d+–\d+/g)).toHaveLength(1);
-    expect(t.indexOf('Estimated readiness')).toBeLessThan(t.indexOf('Your first readiness range'));
+    // The range itself is the ring's caption above the card, shown once (never repeated in the card).
+    expect(t.match(/\d+ to \d+ estimated range/g)).toHaveLength(1);
+    expect(t).not.toMatch(/\d+\u2013\d+/);
+    expect(t.indexOf('estimated range')).toBeLessThan(t.indexOf('Your first readiness range'));
     expect(byTestID('readiness-tap')).toHaveLength(1);
   });
 
@@ -350,9 +355,9 @@ describe('"Your first readiness range"', () => {
     await press(/^Got it/);
     expect(allText()).not.toContain('Your first readiness range');
     expect(byTestID('readiness-tap')).toHaveLength(1);
-    // The first-range card's longer disclaimer is gone; the scale bar's own words stay (mobile 1.51, Field Guide).
+    // The first-range card's longer disclaimer is gone; the ring's own line stays, word for word (Grove).
     expect(allText()).not.toMatch(/range not a promise/);
-    expect(allText()).toContain('a study estimate, not a prediction');
+    expect(allText()).toContain('A study estimate, not a prediction.');
     unmount();
     mount(<Today />);
     expect(allText()).not.toContain('Your first readiness range');

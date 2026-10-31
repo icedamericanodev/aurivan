@@ -125,7 +125,7 @@ describe('You: bands below 30 answers, numbers from 30', () => {
     // (The chart sets it on two lines, like the names: "too few" / "yet".)
     expect(t.replace(/\n/g, ' ')).toContain('too few yet');
     expect(t).toContain('10 answered');
-    expect(t.slice(t.indexOf('Fig. 5'), t.indexOf('KEY'))).not.toMatch(/\b90\b/);
+    expect(t.slice(t.indexOf('Five areas, one scale'), t.indexOf('KEY'))).not.toMatch(/\b90\b/);
     expect(t).toMatch(/Building is under 70, Steady 70 to 79, Strong 80 and up/);
   });
 

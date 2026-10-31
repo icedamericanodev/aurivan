@@ -1,8 +1,8 @@
 /**
  * Premium round 2, "1 · Foundation" (DESIGN_SYSTEM.md §21.7): one button, one list, one surface.
- *  - Button: the plate shape is the default (52 tall, 12pt corners) in every kind but ghost.
+ *  - Button: the plate shape is the default (54 tall, 16pt corners since Grove) in every kind but ghost.
  *  - Section variant="head": tracked caps drawn, the sentence-case words spoken, still a header.
- *  - IconButton outline (the lesson's "Previous step"): a 52×52 square with 12pt corners.
+ *  - IconButton outline (the lesson's "Previous step"): a 54×54 square with 16pt corners (Grove).
  *  - KeyList without numbers, and with a testID per row.
  *  - Learn's reference rows: an index list, spoken as before.
  *  - The clearing's growth line: "IS Audit ↑3", said "up 3 points"; no ring wording.
@@ -17,7 +17,8 @@ import { Button, IconButton, Section } from '../components/ui';
 import { lookUpItems } from '../app/(tabs)/learn';
 import { getCertification } from '../content/certifications';
 import { WELCOME_HEADLINE, WELCOME_LINE } from '../content/brand';
-import { fieldType, plate } from '../theme/tokens';
+import { fieldType } from '../theme/tokens';
+import { grovePlate as plate } from '../theme/grove';
 
 jest.mock('@react-native-async-storage/async-storage', () =>
   jest.requireActual('@react-native-async-storage/async-storage/jest/async-storage-mock'),
@@ -44,7 +45,7 @@ afterEach(() => {
 });
 
 describe('Button: the plate is the default shape', () => {
-  it.each(['primary', 'secondary', 'danger', 'forest'] as const)('%s: 52 tall with 12pt corners, with no shape asked for', (kind) => {
+  it.each(['primary', 'secondary', 'danger', 'forest'] as const)('%s: 54 tall with 16pt corners (Grove), with no shape asked for', (kind) => {
     mount(<Button kind={kind} label="Continue" onPress={() => {}} />);
     const btn = host((n) => n.props.accessibilityRole === 'button')[0];
     const st = StyleSheet.flatten(btn.props.style);
@@ -87,7 +88,7 @@ describe('Section variant="head"', () => {
 });
 
 describe('the lesson footer’s back button', () => {
-  it('is a 52×52 square outline with 12pt corners (was a 56pt circle)', () => {
+  it('is a 54×54 square outline with 16pt corners (Grove; a 56pt circle before)', () => {
     mount(<IconButton outline label="Previous step" onPress={() => {}} icon={() => null} />);
     const st = StyleSheet.flatten(host((n) => n.props.accessibilityRole === 'button')[0].props.style);
     expect(st.width).toBe(plate.button);

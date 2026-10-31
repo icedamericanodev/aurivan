@@ -128,7 +128,10 @@ describe('copy consistency: the old words stay gone', () => {
     // The plant no longer sits beside it (its row is under the tiles and shows no number), so the two
     // numbered ladders of PR #43 are never side by side. Everywhere else the old rule holds.
     expect(hits(/^Stage …|\bStage \d/, { in: (f) => f !== join('app', '(tabs)', 'home.tsx') })).toEqual([]);
-    expect(hits(/^Stage …|\bStage \d/, { in: (f) => f === join('app', '(tabs)', 'home.tsx') })).toEqual(['app/(tabs)/home.tsx: Stage … · …']);
+    // Grove (owner's labels decision, 31 Oct 2026): Today's hero says the plant's stage in words, "Stage 1 of 6"
+    // (as the website does). The journey's "Stage 4 · Rehearse the exam" stays only on the exam-ready day, when
+    // the hero is not shown, so the two numbered ladders are still never side by side.
+    expect(hits(/^Stage …|\bStage \d/, { in: (f) => f === join('app', '(tabs)', 'home.tsx') }).sort()).toEqual(['app/(tabs)/home.tsx: Stage … of …', 'app/(tabs)/home.tsx: Stage … · …']);
     expect(hits(/Follow my stage/i)).toEqual([]);
     expect(hits(/counts? half toward readiness/i)).toEqual([]);
   });

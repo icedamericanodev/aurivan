@@ -3,7 +3,7 @@
  *  - 3a: after an answer, the vine's words arrive in reading order (after the rows above them),
  *    never at the tap before them;
  *  - #5: the splash dissolves into the app (tokens, never a raw duration);
- *  - the tab dot pops from .6, never from nothing;
+ *  - (the tab dot retired with the old tab bar in Grove Phase 1);
  *  - #1: the readiness ruler never moves; the estimate slides from the range last seen, opens from
  *    its centre on the day's first view, and never moves on a fall;
  *  - #2: in a growth, only the stems that grew move, from where they stood; spoken labels are the
@@ -21,7 +21,6 @@ import { SPLASH_FADE, type Growth } from '../components/motion';
 import { FEEDBACK_DELAY, Vine, VINE_ARRIVES } from '../components/quiz';
 import * as Reanimated from 'react-native-reanimated';
 import { haptic } from '../lib/haptics';
-import { TAB_DOT_FROM, TabLabel } from '../components/ui';
 import { getAllQuestions } from '../content/loader';
 import { startFromIds } from '../lib/sessions';
 import { useProgress } from '../store/progress';
@@ -231,18 +230,7 @@ describe('StemChart growth (#2)', () => {
   }));
 });
 
-// ── the tab dot ────────────────────────────────────────────────────────
-describe('tab dot', () => {
-  it('pops from .6, never from nothing', () => {
-    setMockReducedMotion(false);
-    act(() => {
-      r = create(<TabLabel label="Learn" focused={false} />);
-    });
-    const dot = root().findAll((n) => typeof n.type === 'string' && transformOf(n).some((t) => 'scale' in t))[0];
-    expect(TAB_DOT_FROM).toBe(0.6);
-    expect(transformOf(dot).find((t) => 'scale' in t)!.scale).toBeCloseTo(TAB_DOT_FROM);
-  });
-});
+// The tab dot retired with the old tab bar (Grove Phase 1); the floating bar's pill is tested in grove-p1.test.tsx.
 
 // ── #5 the launch ──────────────────────────────────────────────────────
 describe('launch dissolve (#5)', () => {

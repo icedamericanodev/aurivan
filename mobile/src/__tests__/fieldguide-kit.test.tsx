@@ -11,7 +11,7 @@ import { Dimensions, StyleSheet } from 'react-native';
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
 import { EmptyPlate, EMPTY_PLATE_TITLE, ESTIMATE_WORDS, KeyCaption, KeyList, lineLabelSpot, Plate, RunningHead, ScaleBar, scaleSpoken, Specimen, SpecimenLabel, SpecimenRow, StemChart, type Stem } from '../components/fieldguide';
 import { Button } from '../components/ui';
-import { plate } from '../theme/tokens';
+import { grovePlate } from '../theme/grove';
 
 jest.mock('@react-native-async-storage/async-storage', () =>
   jest.requireActual('@react-native-async-storage/async-storage/jest/async-storage-mock'),
@@ -260,7 +260,7 @@ describe('the small pieces', () => {
     act(() => {
       r = create(
         <>
-          <RunningHead section="Field guide · Today" aside="Thu 29 Oct" asideLabel="Thursday 29 October" />
+          <RunningHead section="Thu 29 Oct" sectionLabel="Thursday 29 October" />
           <Plate fig={{ n: 5, title: 'Five areas, one scale' }} />
           <KeyCaption label="KEY">One line of growth per area.</KeyCaption>
           <EmptyPlate body="IS Acquisition needs a few more answers before it is measured." />
@@ -278,19 +278,21 @@ describe('the small pieces', () => {
     expect(l).toContain('Days to exam: 38');
     expect(l).toContain('Study days in a row: Starts today');
     expect(l).toContain('Question 3, missed: Change management');
-    const fig = root().findAll((n) => n.props?.accessibilityRole === 'header' && n.props.accessibilityLabel === 'Figure 5, Five areas, one scale');
+    // No book labels (Grove, 31 Oct 2026): the caption is its words, shown and said; the head is the date.
+    const fig = root().findAll((n) => n.props?.accessibilityRole === 'header' && n.props.accessibilityLabel === 'Five areas, one scale');
     expect(fig.length).toBeGreaterThan(0);
-    expect(allText()).toContain('Fig. 5 · Five areas, one scale');
-    expect(root().findAll((n) => n.props?.accessibilityLabel === 'Field guide, Today').length).toBeGreaterThan(0);
+    expect(allText()).toContain('Five areas, one scale');
+    expect(`${allText()} ${l.join(' ')}`).not.toMatch(/Fig\.|Figure|Field guide|Plate/);
+    expect(root().findAll((n) => n.props?.accessibilityLabel === 'Thursday 29 October').length).toBeGreaterThan(0);
   });
 
-  it('the plate button: 52 tall with 12pt corners', () => {
+  it('the plate button: 54 tall with 16pt corners (Grove)', () => {
     act(() => {
       r = create(<Button label="Continue" shape="plate" onPress={() => {}} />);
     });
     const btn = root().find((n) => typeof n.type === 'string' && n.props.accessibilityRole === 'button');
     const st = StyleSheet.flatten(btn.props.style);
-    expect(st.minHeight).toBe(plate.button);
-    expect(st.borderRadius).toBe(plate.buttonRadius);
+    expect(st.minHeight).toBe(grovePlate.button);
+    expect(st.borderRadius).toBe(grovePlate.buttonRadius);
   });
 });

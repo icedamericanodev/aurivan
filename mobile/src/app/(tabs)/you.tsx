@@ -50,7 +50,8 @@
  * of Help and feedback is "Sync across devices" (components/account.tsx).
  * With the flag off (every build today) nothing here changes.
  * Mobile 1.51 (Field Guide, the owner's signature pick; DESIGN_SYSTEM.md §21): a running head
- * ("Field record · You", Settings on its right) over the study profile; readiness as a scale bar
+ * over the study profile. Grove Phase 1: the head shows the date only (no book labels) and the kit's
+ * 44pt Settings button (a cog in a rounded square) on its right, which opens the Settings screen; readiness as a scale bar
  * with the words "a study estimate" built in; the areas as one line of growth each on ONE scale in
  * a plate (Fig. 5, with its key); then the Herbarium row (the badges' way in, with the newest
  * pressed specimens); the stats are ruled label rows (Answered, Accuracy, Streak), not tiles.
@@ -60,7 +61,7 @@ import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { View } from 'react-native';
 import { ringsChangeLine } from '../../components/journey';
 import { AreaRows, ReadinessBlock } from '../../components/youReadiness';
-import { FieldText, KeyList, RunningHead, SpecimenLabel, SpecimenRow } from '../../components/fieldguide';
+import { FieldText, headDate, KeyList, RunningHead, SpecimenLabel, SpecimenRow } from '../../components/fieldguide';
 import { HerbariumEntry } from '../../components/herbarium';
 import { lastPressed } from '../../engine/fieldGuide';
 import { FadeIn, useGrowth, useScreenFocus } from '../../components/motion';
@@ -113,6 +114,9 @@ const openHerbarium = () => router.push('/milestones');
 
 /** When You's rings have finished growing (five arcs, outer first 60 ms apart, each over `grow`): the plant breathes after. */
 const RINGS_SETTLED_MS = motion.dur.grow + 4 * motion.stagger.stat;
+
+/** A day key ("2026-10-31") at local noon, for its date words in the head (the key follows the day). */
+const dayStart = (key: string) => new Date(`${key}T12:00:00`).getTime();
 
 export default function You() {
   const { c } = useTheme();
@@ -228,12 +232,15 @@ export default function You() {
   return (
     <Screen>
       <Enter i={0}>
-        {/* Mobile 1.51 (Field Guide): the running head says where you are; Settings is its one action. */}
+        {/* Grove Phase 1: the date (said in full) and the kit's 44pt Settings button, the head's one action. */}
         <RunningHead
-          section="Field record · You"
+          section={headDate(dayStart(today)).shown}
+          sectionLabel={headDate(dayStart(today)).spoken}
           action={{
             label: 'Settings',
             hint: 'Exam date, reminders and more',
+            boxed: true,
+            // Opens the Settings screen. A Settings card on You (that this button would scroll to) waits for the owner (spec C1).
             onPress: () => router.push('/settings'),
             icon: (col) => <Settings size={ICON_SIZE.row} color={col} strokeWidth={ICON_STROKE} />,
           }}

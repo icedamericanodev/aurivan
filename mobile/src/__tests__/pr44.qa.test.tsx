@@ -766,7 +766,7 @@ describe('J9 the celebration budget', () => {
     grewToday();
     mount(<Today />);
     expect(growthMode()).toBe('full');
-    expect(movingLayers('today-plant')).toHaveLength(2); // the old growth + the plant layer
+    expect(movingLayers('today-ring-plant')).toHaveLength(2); // the old growth + the plant layer
     expect(haptic.success).toHaveBeenCalledTimes(1);
     expect(cp().plant!.pending).toBeUndefined(); // seen: it never plays twice
   });
@@ -777,7 +777,7 @@ describe('J9 the celebration budget', () => {
     grewToday();
     mount(<Today />);
     expect(growthMode()).toBe('short');
-    expect(movingLayers('today-plant')).toHaveLength(1); // no old growth drawn: nothing swells or fades
+    expect(movingLayers('today-ring-plant')).toHaveLength(1); // no old growth drawn: nothing swells or fades
     expect(allText()).toMatch(/Your plant grew/);
   });
 
@@ -850,7 +850,7 @@ describe('J10 Reduce Motion', () => {
     setPlant({ ...p, growth: 4, reached: { ...p.reached, bough: Date.now() }, pending: 4 });
     mount(<Today />);
     expect(plants().find((x) => x.props.growth)!.props.growth.celebration.mode).toBe('static');
-    expect(movingLayers('today-plant')).toHaveLength(1);
+    expect(movingLayers('today-ring-plant')).toHaveLength(1);
     expect(allText()).toMatch(/Your plant grew/);
     expect(haptic.success).toHaveBeenCalledTimes(1);
     expect(plants().find((x) => x.props.growth)!.props.stage).toBe(4); // the end state

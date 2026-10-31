@@ -310,7 +310,8 @@ describe('the ways in', () => {
     const tap = root().findAll((n) => n.props.testID === 'readiness-tap' && typeof n.props.onPress === 'function' && n.props.accessibilityRole === 'button')[0];
     expect(tap.props.accessibilityRole).toBe('button');
     expect(tap.props.accessibilityHint).toBe('Opens your readiness report');
-    expect(tap.props.accessibilityLabel).toMatch(/^Estimated readiness between \d+ and \d+ percent, a study estimate, not a prediction\./);
+    // Grove: the ring and its caption are the button, said in words with the estimate line word for word.
+    expect(tap.props.accessibilityLabel).toMatch(/^Estimated readiness range \d+ to \d+ out of 100\. The study bar is 80\. A study estimate, not a prediction\.$/);
     act(() => {
       tap.props.onPress();
     });

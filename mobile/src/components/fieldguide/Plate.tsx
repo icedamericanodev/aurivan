@@ -1,32 +1,36 @@
 /**
- * Plate, FigCaption and KeyCaption (Field Guide §21.2).
+ * Plate, FigCaption and KeyCaption (Field Guide §21.2, Grove Phase 1).
  *
- * - Plate: the one focal figure of a screen, a double-hairline mount: an
- *   outer `line` edge, 6pt of `raised2`, an inner `line` edge. No shadow and
- *   no radius (the guide's pages are cut square). Never a button itself.
- * - FigCaption: the italic "Fig. 5 · Five areas, one scale" inside the
- *   plate's top-left. Spoken "Figure 5, Five areas, one scale", and a header,
- *   so screen-reader users can move from plate to plate.
- * - KeyCaption: the line under a plate, a tracked key ("KEY", "PLATE",
- *   "NOTE") before an italic sentence: what the marks mean, in words.
+ * - Plate: the one focal figure of a screen, drawn as a Grove card: `raised`,
+ *   24 corners, one hairline edge, no shadow (it was a square double-hairline
+ *   mount before Grove). Never a button itself.
+ * - FigCaption: the italic caption inside the card's top-left, "Five areas,
+ *   one scale". A header, so screen-reader users can move from card to card.
+ *   No book labels (labels decision, 31 Oct 2026): it never says "Fig. 5" or
+ *   "Figure 5"; a figure's number is kept in the data only, never shown or said.
+ * - KeyCaption: the line under a plate, a tracked key ("KEY", "NOTE") before
+ *   an italic sentence: what the marks mean, in words.
  */
 import type { ReactNode } from 'react';
 import { Text, View, type StyleProp, type ViewStyle } from 'react-native';
-import { fieldMaxScale, fieldType, plate, space } from '../../theme/tokens';
+import { grovePlate } from '../../theme/grove';
+import { fieldMaxScale, fieldType, space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
+import { groveCard } from '../ui';
 import { FieldText } from './FieldText';
 
 export interface Fig {
-  /** The figure's number in the guide ("5"); left out, the caption is the title alone. */
+  /** The figure's old number in the guide ("5"). Kept for the callers' data; never shown or said since Grove. */
   n?: number | string;
   title: string;
-  /** How it is said, when the numbers need words (Today: "Figure 3, Shoot, growth 3 of 6"). */
+  /** How it is said, when the words need more than the title (Today: "Shoot, stage 3 of 6"). */
   spoken?: string;
 }
 
-/** "Fig. 5 · Five areas, one scale", and its spoken form. */
-export const figLine = (f: Fig) => (f.n !== undefined && f.n !== '' ? `Fig. ${f.n} · ${f.title}` : f.title);
-export const figSpoken = (f: Fig) => f.spoken ?? (f.n !== undefined && f.n !== '' ? `Figure ${f.n}, ${f.title}` : f.title);
+/** The caption as shown: the title alone ("Five areas, one scale"). */
+export const figLine = (f: Fig) => f.title;
+/** The caption as said: its spoken form, else the title. */
+export const figSpoken = (f: Fig) => f.spoken ?? f.title;
 
 export function FigCaption({ fig, style }: { fig: Fig; style?: StyleProp<ViewStyle> }) {
   return (
@@ -49,9 +53,9 @@ export function Plate({
 }: {
   fig?: Fig;
   children?: ReactNode;
-  /** The empty mount: the inner edge is dashed ("Plate not yet drawn"). */
+  /** The empty card: its edge is dashed ("Nothing here yet"). */
   dashed?: boolean;
-  /** A chart that wants the whole width: 4pt inside the inner edge instead of 12. */
+  /** A chart that wants the whole width: 4pt inside the edge instead of 16. */
   tight?: boolean;
   style?: StyleProp<ViewStyle>;
   innerStyle?: StyleProp<ViewStyle>;
@@ -59,11 +63,20 @@ export function Plate({
 }) {
   const { c } = useTheme();
   return (
-    <View testID={testID} style={[{ backgroundColor: c.raised2, borderWidth: 1, borderColor: c.line, padding: plate.mount }, style]}>
-      <View style={[{ borderWidth: 1, borderColor: dashed ? c.control : c.line, borderStyle: dashed ? 'dashed' : 'solid', padding: space.md, paddingHorizontal: tight ? space.xs : space.md }, innerStyle]}>
-        {fig && <FigCaption fig={fig} style={{ marginBottom: space.sm, marginLeft: tight ? space.sm : 0 }} />}
-        {children}
-      </View>
+    <View
+      testID={testID}
+      style={[
+        groveCard(c),
+        { padding: grovePlate.pad, paddingHorizontal: tight ? grovePlate.padTight : grovePlate.pad },
+        // The empty card keeps `control` (3:1) for its dashed edge: an empty plate is a real state, not decoration.
+        dashed && { borderColor: c.control, borderStyle: 'dashed', borderWidth: 1.5 },
+        style,
+        innerStyle,
+      ]}
+    >
+      {/* `tight` keeps the caption in line with the other cards' text (4 + 12 = 16). */}
+      {fig && <FigCaption fig={fig} style={{ marginBottom: space.sm, marginLeft: tight ? space.md : 0 }} />}
+      {children}
     </View>
   );
 }

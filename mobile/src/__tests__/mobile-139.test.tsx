@@ -291,7 +291,9 @@ describe('Results: the growth plate, not rings', () => {
     finish();
     mount(<Results />);
     expect(root().findAllByType(DomainRings)).toHaveLength(0);
-    expect(allText()).toMatch(/Fig\. 6 · /);
+    // Grove: no "Fig. 6" label; the plate (or its empty card) is there.
+    expect(root().findAll((n) => typeof n.type === 'string' && /^(results|empty)-plate$/.test(String(n.props.testID)))).not.toHaveLength(0);
+    expect(allText()).not.toMatch(/Fig\./);
   });
 
   it('a one-domain practice set does not', () => {

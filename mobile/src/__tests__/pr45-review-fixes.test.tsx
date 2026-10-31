@@ -390,7 +390,7 @@ describe('Today: the weekly mock beside the day', () => {
     // The caption meta and the hero meta are spoken with "minutes" (O9, M7a).
     const labels = root().findAll((n) => typeof n.props.accessibilityLabel === 'string').map((n) => n.props.accessibilityLabel as string);
     // The optional mock is not one of the day's items (mobile 1.24): "0 of 1 done".
-    expect(labels).toContain('Today’s plan · about 19 minutes, 0 of 1 done');
+    expect(labels).toContain('Today’s plan, about 19 minutes, 0 of 1 done');
     // Mobile 1.21: the minutes are said once. The hero is the day's only timed item, so the
     // caption's total carries them. Mobile 1.24: the count and the why are the line under the title; the pill's hint is the title.
     const hints = root().findAll((n) => typeof n.props.accessibilityHint === 'string').map((n) => n.props.accessibilityHint as string);
@@ -420,7 +420,7 @@ describe('Today: the weekly mock beside the day', () => {
     });
     mount(<Today />);
     // Mobile 1.21: no day minutes in the caption (a mock is longer than any day); the mock is the hero and says its own length.
-    expect(allText()).toMatch(/Today’s plan Mini mock 50 questions · about 80 min/);
+    expect(allText()).toMatch(/Today’s plan 1 Mini mock 50 questions · about 80 min/);
   });
 });
 

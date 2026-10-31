@@ -22,7 +22,6 @@ import { resetCelebrationsForTest, resetOncePerDayForTest, setSystemReducedMotio
 import { planCheckLabel } from '../components/journey';
 import { getAllQuestions } from '../content/loader';
 import { getCertification } from '../content/certifications';
-import { STAGE_LABEL, STAGE_ORDER } from '../engine/journey';
 import { dayKey } from '../engine/streak';
 import { kaisip } from '../theme/tokens';
 import { useProgress } from '../store/progress';
@@ -207,21 +206,18 @@ describe('planCheckLabel: the plan as checklist lines, in the plan’s own words
 describe('Today, top to bottom', () => {
   beforeEach(() => seedAnswers(200, 146));
 
-  it('header (mobile 1.51, Field Guide): the running head with the day said in full, the gear, and the streak under the title', () => {
+  it('header (Grove): the head is the day said in full, no gear on Today, and the streak is on the twig', () => {
     storePlan([WARM, REVIEW, LESSON], [false, false, false]);
     mount(<Today />);
     const s = stops();
-    expect(s[0]).toBe('Field guide, Today');
-    expect(s).toContain('Thursday 15 October');
-    expect(s).toContain('6-day streak');
-    expect(allText()).toContain('day streak');
-    const gear = root().findAll((n) => n.props.accessibilityLabel === 'Settings' && typeof n.props.onPress === 'function')[0];
-    act(() => {
-      gear.props.onPress();
-    });
-    expect(router.push).toHaveBeenCalledWith('/settings');
+    expect(s[0]).toBe('Thursday 15 October');
+    expect(s.join(' ')).not.toMatch(/Field guide|Field record/);
+    // Settings lives on You now (its header button); the exam date is the hero's Exam date tile.
+    expect(root().findAll((n) => n.props.accessibilityLabel === 'Settings' && typeof n.props.onPress === 'function')).toHaveLength(0);
+    expect(byTestID('week-twig')).toHaveLength(1);
+    expect(allText()).toContain('6 day streak');
+    expect(allText()).toContain('1 study day this week');
   });
-
   it('a learner with no streak has no pill', () => {
     act(() => {
       useProgress.setState({ streak: { current: 0, best: 0, lastDay: null } });
@@ -258,37 +254,36 @@ describe('Today, top to bottom', () => {
     expect(allText()).toContain('1 day to go');
   });
 
-  it('the plan panel: caption with the day’s minutes, the title, and a checklist of the REST of the plan', () => {
+  it('the plan card: "Today’s plan" with the day’s minutes, then every step numbered, the one you are on first', () => {
     storePlan([WARM, REVIEW, LESSON], [false, false, false]);
     mount(<Today />);
-    expect(allText()).toMatch(/Today’s plan · about\u00A0\d+\u00A0min/);
-    const list = byTestID('plan-checklist')[0];
-    const lines = list.findAll((n) => typeof n.type === 'string' && n.props.accessible === true).map((n) => n.props.accessibilityLabel as string);
-    // Mobile 1.24: the item you are on is the title (with its detail under it), not also the first row.
-    expect(lines).toEqual(['Questions to revisit · 20 ready, later', 'Lesson · Business impact analysis, later']);
-    expect(allText()).toContain('5 questions');
-    // The title is the current item's own, with no count in it.
-    expect(root().findAll((n) => n.props.accessibilityRole === 'header' && textOf(n) === 'Warm-up').length + root().findAll((n) => n.props.accessibilityRole === 'header' && /^(Warm-up|Optional warm-up)/.test(textOf(n))).length).toBeGreaterThan(0);
+    expect(allText()).toContain('Today’s plan');
+    expect(allText()).toMatch(/About \d+ min/);
+    expect(stops().some((l) => /^Today’s plan, about \d+ minutes, 0 of 3 done$/.test(l))).toBe(true);
+    const steps = byTestID('plan-steps')[0];
+    const lines = steps.findAll((n) => typeof n.type === 'string' && n.props.accessible === true).map((n) => n.props.accessibilityLabel as string);
+    expect(lines).toHaveLength(3);
+    expect(lines[0]).toMatch(/^Step 1, Warm-up, 5 questions, \d+ minutes?, up next$/);
+    expect(lines[1]).toMatch(/^Step 2, Questions to revisit, .*, later$/);
+    expect(lines[2]).toMatch(/^Step 3, Business impact analysis, Lesson, 5 minutes, later$/);
   });
-
-  it('done lines are struck through and say "done"; later lines are quiet; the item you are on is the title, not a row', () => {
+  it('done steps are struck through with a check and say "done"; the step you are on says "up next"', () => {
     storePlan([WARM, REVIEW, LESSON], [true, false, false]);
     mount(<Today />);
-    const list = byTestID('plan-checklist')[0];
+    const list = byTestID('plan-steps')[0];
     const lines = list.findAll((n) => typeof n.type === 'string' && n.props.accessible === true);
-    expect(lines.map((n) => n.props.accessibilityLabel)).toEqual(['Warm-up · 5 questions, done', 'Lesson · Business impact analysis, later']);
-    const style = (line: ReactTestInstance) => StyleSheet.flatten(line.findAll((n) => typeof n.type === 'string' && typeof n.props.children === 'string' && n.props.children.includes('·'))[0].props.style);
-    expect(style(lines[0]).textDecorationLine).toBe('line-through');
-    expect(style(lines[1]).textDecorationLine).toBeUndefined();
-    expect(style(lines[1]).fontFamily).toBe('Figtree_400Regular');
-    // A check mark on the done line: never colour alone.
+    expect(lines.map((n) => n.props.accessibilityLabel)).toEqual([
+      expect.stringMatching(/^Step 1, Warm-up, .*, done$/),
+      expect.stringMatching(/^Step 2, Questions to revisit, .*, up next$/),
+      expect.stringMatching(/^Step 3, Business impact analysis, .*, later$/),
+    ]);
+    const title = (line: ReactTestInstance, t: string) => StyleSheet.flatten(line.findAll((n) => typeof n.type === 'string' && n.props.children === t)[0].props.style);
+    expect(title(lines[0], 'Warm-up').textDecorationLine).toBe('line-through');
+    expect(title(lines[1], 'Questions to revisit').textDecorationLine).toBeUndefined();
+    // A check mark on the done step: never colour alone.
     expect(iconNames(lines[0])).toContain('Check');
     expect(iconNames(lines[1])).not.toContain('Check');
-    // The current item (the review) is the panel's title, said once.
-    const heading = root().findAll((n) => n.props.accessibilityRole === 'header' && textOf(n) === 'Questions to revisit');
-    expect(heading.length).toBeGreaterThan(0);
   });
-
   it('one pill: "Start" until something is done today, then "Continue"', () => {
     storePlan([WARM, REVIEW, LESSON], [false, false, false]);
     mount(<Today />);
@@ -317,38 +312,39 @@ describe('Today, top to bottom', () => {
     expect(allText()).not.toMatch(/Today’s plan · about/);
   });
 
-  it('the readiness row: the range, "Estimated readiness", the stage by number and name; it opens the report', () => {
+  it('the ring: the range under it in words, the estimate line word for word, the 80 study bar; it opens the report', () => {
     storePlan([WARM, REVIEW, LESSON], [false, false, false]);
     mount(<Today />);
-    expect(allText()).toMatch(/\d+–\d+/);
-    expect(allText()).toContain('Estimated readiness');
-    // The longer disclaimer is on the report and on the first-range card, not on every day's Today.
+    expect(allText()).toMatch(/\d+ to \d+ estimated range/);
+    expect(allText()).toContain('A study estimate, not a prediction.');
+    expect(allText()).not.toMatch(/\d+\u2013\d+/);
     expect(allText()).not.toContain('a range not a promise');
-    const j = root().findAll((n) => n.props.testID === 'readiness-tap')[0];
-    const stageText = allText().match(/Stage (\d) · ([A-Za-z ]+?)(?= \d| Also| answered|$)/);
-    expect(stageText).not.toBeNull();
-    const stage = STAGE_ORDER[Number(stageText![1]) - 1];
-    expect(stageText![2].startsWith(STAGE_LABEL[stage])).toBe(true);
+    expect(byTestID('ring-ticks')).toHaveLength(1);
+    expect(byTestID('ring-study-bar')).toHaveLength(1);
+    expect(byTestID('ring-dots')).toHaveLength(0);
+    // The journey's stage keeps its words, without a second numbered ladder beside the plant's "Stage 1 of 6".
+    expect(allText()).not.toMatch(/Stage \d ·/);
+    expect(allText()).toContain('Stage 1 of 6');
+    const j = root().findAll((n) => n.props.testID === 'readiness-tap' && typeof n.props.onPress === 'function')[0];
+    expect(j.props.accessibilityLabel).toMatch(/^Estimated readiness range \d+ to \d+ out of 100\. The study bar is 80\. A study estimate, not a prediction\.$/);
     act(() => {
       j.props.onPress();
     });
     expect(router.push).toHaveBeenCalledWith('/readiness');
-    // Mobile 1.51: the scale bar (its words built in), never a single readiness percent.
-    expect(byTestID('scale-bar').length).toBeGreaterThan(0);
-    expect(allText()).toContain('a study estimate, not a prediction');
+    expect(byTestID('scale-bar')).toHaveLength(0);
   });
-
-  it('no stat tiles any more: one quiet line names the weakest area once there is a range, and no accuracy sits beside the range', () => {
+  it('the hero’s two tiles: Accuracy (latest tries, as on You) and the exam date; the weakest-area line stays', () => {
     storePlan([WARM, REVIEW, LESSON], [false, false, false]);
     mount(<Today />);
     expect(byTestID('today-tiles')).toHaveLength(0);
-    expect(allText()).not.toMatch(/accuracy|Not yet/i);
+    expect(stops()).toContain('Accuracy, 73 percent, latest tries');
+    expect(stops()).toContain('Exam date, 22 November');
+    expect(allText()).not.toMatch(/Not yet/);
     const line = allText().match(/200 answered · weakest area: ([^A]+?)(?= Also|$)/);
     expect(line).not.toBeNull();
     // The domain's short name ("IS Operations"), never the tile abbreviation ("IS Ops"): UX review S6.
     expect(cisa.domains.some((d) => d.short === line![1].trim())).toBe(true);
   });
-
   it('never hours studied, and no single readiness percent', () => {
     storePlan([WARM, REVIEW, LESSON], [false, false, false]);
     mount(<Today />);
@@ -356,49 +352,53 @@ describe('Today, top to bottom', () => {
     expect(allText()).not.toMatch(/studied/i);
   });
 
-  it('the screen-reader order: running head, title, meta line, plan, readiness', () => {
+  it('the screen-reader order follows the kit: head, title, meta line, the hero, the plan, the twig', () => {
     storePlan([WARM, REVIEW, LESSON], [false, false, false]);
     mount(<Today />);
     const t = allText();
-    const at = (s: string) => t.indexOf(s);
-    const order = ['Field guide · Today', '38 days to go', 'CISA exam 22 Nov', 'Today’s plan · about', 'Estimated readiness', 'weakest area'];
+    const at = (x: string) => t.indexOf(x);
+    const order = ['Thu 15 Oct', '38 days to go', 'CISA exam 22 Nov', 'Stage 1 of 6', 'estimated range', 'Accuracy', 'Today’s plan', 'This week’s twig', 'weakest area'];
     const idx = order.map(at);
     expect(idx.every((i) => i >= 0)).toBe(true);
     expect([...idx].sort((a, b) => a - b)).toEqual(idx);
     const s = stops();
     const first = (re: RegExp) => s.findIndex((l) => re.test(l));
-    const seq = [first(/^Field guide, Today$/), first(/^Today’s plan/), first(/^Estimated readiness/)];
+    const seq = [first(/^Thursday 15 October$/), first(/^Estimated readiness range/), first(/^Today’s plan/), first(/^Studied on /)];
     expect(seq.every((i) => i >= 0)).toBe(true);
     expect([...seq].sort((a, b) => a - b)).toEqual(seq);
   });
 });
 
 describe('Today: states with little data', () => {
-  it('a brand-new learner (nothing answered): no readiness row, no tiles, nothing that says "Not yet"', () => {
+  it('a brand-new learner (nothing answered): the seed, "Answer 40 questions", Accuracy not started, no range', () => {
     storePlan([LESSON, { kind: 'practice', count: 5, label: '5 questions · IS Audit', why: 'learn' }], [false, false]);
     mount(<Today />);
     expect(byTestID('today-tiles')).toHaveLength(0);
-    expect(byTestID('readiness-tap')).toHaveLength(0);
-    expect(allText()).not.toMatch(/Not yet|Not enough data yet|\d+–\d+/);
+    expect(allText()).toContain('Answer 40 questions');
+    expect(allText()).toContain('to see your first readiness range');
+    expect(stops()).toContain('Accuracy, not started');
+    expect(byTestID('ring-dots')).toHaveLength(1);
+    expect(allText()).not.toMatch(/Not yet|Not enough data yet|\d+\u2013\d+|\d+ to \d+/);
   });
-
-  it('with a few answers the row is the goal, "5 of 40 for your first range", with no stage line for the first stage', () => {
+  it('with a few answers the ring counts them: "5 of 40 answers", seed dots, Accuracy "Too few yet"', () => {
     seedAnswers(5, 3);
     storePlan([WARM], [false]);
     mount(<Today />);
-    expect(allText()).toContain('Not enough data yet');
-    expect(allText()).toContain('5 of 40 for your first range');
-    expect(allText()).not.toMatch(/Stage \d/);
-    expect(stops().some((l) => /^Not enough data yet\. 5 of 40 for your first range/.test(l))).toBe(true);
+    expect(allText()).toContain('5 of 40 answers');
+    expect(allText()).toContain('until your first readiness range');
+    expect(allText()).toContain('Too few yet');
+    expect(allText()).toContain('Shows at 30 answers');
+    expect(allText()).not.toMatch(/Stage \d ·/);
+    expect(stops()).toContain('5 of 40 answers toward your first readiness range.');
+    expect(byTestID('ring-dots')).toHaveLength(1);
   });
-
   it('a cleared day shows the clearing, not the checklist', () => {
     seedAnswers(200, 146);
     storePlan([WARM, REVIEW], [true, true]);
     mount(<Today />);
     expect(allText()).toContain('Today’s clearing');
-    expect(byTestID('plan-checklist')).toHaveLength(0);
-    expect(byTestID('today-tiles')).toHaveLength(0);
+    expect(byTestID('plan-steps')).toHaveLength(0);
+    expect(byTestID('today-hero')).toHaveLength(0);
   });
 
   it('a past exam with no plan asks how it went, and still offers the rest', () => {
@@ -413,16 +413,16 @@ describe('Today: states with little data', () => {
 });
 
 describe('Today at large text (200%)', () => {
-  it('keeps every line: the readiness row stacks and the checklist wraps', () => {
+  it('keeps every line: the tiles stack and the steps wrap', () => {
     seedAnswers(200, 146);
     storePlan([WARM, REVIEW, LESSON], [true, false, false]);
     setScale(2);
     mount(<Today />);
-    expect(allText()).toContain('Estimated readiness');
+    expect(allText()).toContain('estimated range');
     expect(allText()).toContain('200 answered · weakest area');
-    // The checklist lines still wrap rather than clip: no fixed heights or line caps.
-    const lines = byTestID('plan-checklist')[0].findAll((n) => typeof n.type === 'string' && n.props.accessible === true);
-    expect(lines).toHaveLength(2);
+    // The steps still wrap rather than clip: no fixed heights or line caps.
+    const lines = byTestID('plan-steps')[0].findAll((n) => typeof n.type === 'string' && n.props.accessible === true);
+    expect(lines).toHaveLength(3);
     for (const l of lines) {
       for (const t of l.findAll((n) => typeof n.type === 'string' && n.props.numberOfLines !== undefined)) expect(t.props.numberOfLines).toBeUndefined();
     }

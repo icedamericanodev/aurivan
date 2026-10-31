@@ -11,6 +11,7 @@
  * - the unlock moment: after the review actions on Results; at most three
  *   moments in any 7 days, then a quiet line; a higher tier plays short.
  */
+import { groveLight } from '../theme/grove';
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
 import { Dimensions, Modal, ScrollView } from 'react-native';
 import { router } from 'expo-router';
@@ -470,10 +471,14 @@ describe('review fixes (PR #40)', () => {
     expect(cell().props.press).toBeUndefined();
   });
 
-  it('the You tab’s new mark is a ring (paper inside an accent outline), never the filled selected dot', () => {
+  it('the You tab’s new mark is a ring (the bar inside an accent outline), never a filled dot', () => {
     mount(<YouIcon color="#000" size={24} dot />);
     const ring = root().findAll((n) => n.props.testID === 'you-new-dot')[0];
-    expect(ring.props.style).toEqual(expect.objectContaining({ backgroundColor: light.bg, borderColor: light.accent, borderWidth: 2 }));
+    // Grove: the floating bar's own colour inside (the pill's when You is the current tab).
+    expect(ring.props.style).toEqual(expect.objectContaining({ backgroundColor: groveLight.navFloat, borderColor: light.accent, borderWidth: 2 }));
+    act(() => r!.unmount());
+    mount(<YouIcon color="#000" size={24} dot focused />);
+    expect(root().findAll((n) => n.props.testID === 'you-new-dot')[0].props.style).toEqual(expect.objectContaining({ backgroundColor: light.forestTrack }));
     act(() => r!.unmount());
     mount(<YouIcon color="#000" size={24} dot={false} />);
     expect(root().findAll((n) => n.props.testID === 'you-new-dot')).toHaveLength(0);

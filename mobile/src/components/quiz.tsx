@@ -43,7 +43,7 @@ import { moveFocus } from '../lib/a11y';
 import { afterSheet } from '../lib/sheetWait';
 import { haptic } from '../lib/haptics';
 import { shortReference } from '../lib/format';
-import { badgeLetter, LARGE_TEXT, motion, optionText, plate, radius, space } from '../theme/tokens';
+import { badgeLetter, LARGE_TEXT, motion, optionText, radius, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { LeafBig, LeafSmall, VerdictLeaf } from './glyphs';
 import { FieldText, Plate } from './fieldguide';
@@ -51,7 +51,7 @@ import { Check, ChevronDown, Ellipsis, ICON_STROKE, X } from './icons';
 import { AnimatedPressable, Collapse, ease, FadeIn, Pop, StateLayer, tween, useMotion, usePressScale } from './motion';
 import { ReportRow } from './support';
 import { Sheet } from './settings';
-import { cardLift, Chip, Gap, IconButton, ListRow, Row, T, useFontScale } from './ui';
+import { cardLift, Chip, Gap, groveTile, IconButton, ListRow, Row, T, useFontScale } from './ui';
 
 /** The Field Guide verdict leaf: 34pt (with a 16 gap, the lines under it still start at VERDICT_INDENT). */
 const FIELD_LEAF = 34;
@@ -479,7 +479,7 @@ export function KeyIdeaCue({ keyIdea, cues, visible }: { keyIdea?: string; /** T
         accessible
         accessibilityLabel={`${key.replace(' · ', ', ')}: ${cue.body}`}
         testID="exam-cue-label"
-        style={{ backgroundColor: c.raised, borderWidth: 1, borderColor: c.line, borderRadius: plate.labelRadius, paddingVertical: space.md, paddingHorizontal: space.lg, marginTop: wide ? 0 : space.lg }}
+        style={[groveTile(c), { paddingVertical: space.md, paddingHorizontal: space.lg, marginTop: wide ? 0 : space.lg }]}
       >
         <FieldText v="head" color={c.clay}>{key}</FieldText>
         <T v="body" color={c.ink} style={{ marginTop: space.xs }}>{cue.body}</T>

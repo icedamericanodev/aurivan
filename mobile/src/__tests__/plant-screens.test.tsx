@@ -498,14 +498,15 @@ describe('PR #43 review fixes', () => {
     expect(allText()).toMatch(/Left empty, it is “Your oak”/);
   });
 
-  it('Today: the plant’s name sits under it, inside the same tap target; the prompt sits below the day’s study', () => {
+  it('Today: the plant’s name is in its button’s words and in the line under the hero; the prompt sits below the day’s study', () => {
     setPlant(plantNew('oak', 'Kai', Date.now()));
     mount(<Today />);
     const button = byTestID('today-plant')[0];
+    expect(String(button.props.accessibilityLabel)).toContain('Kai');
     const words: string[] = [];
     const walk = (n: ReactTestInstance | string) => (typeof n === 'string' ? words.push(n) : n.children.forEach(walk));
-    walk(button);
-    expect(words).toContain('Kai');
+    walk(root());
+    expect(words).toContain('Kai grows with your study.');
     act(() => {
       r?.unmount();
     });

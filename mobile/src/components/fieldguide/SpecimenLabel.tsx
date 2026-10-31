@@ -1,22 +1,22 @@
 /**
  * SpecimenLabel (Field Guide §21.2): ruled label rows, a tracked key on the
  * left and a serif value on the right ("DAYS TO EXAM ··· 38"), pasted onto
- * the paper: `raised`, a 1pt `line` edge, 3pt corners, no shadow. It
+ * the paper: `raised`, a 1pt `line` edge, the Grove tile's 16pt corners, no shadow. It
  * replaces the 3-up stat tiles. Each row is one screen-reader stop, "Days to
  * exam: 38", as Stat was. At 200% text the value drops under its key.
  */
 import { Children, type ReactNode } from 'react';
 import { View, type StyleProp, type ViewStyle } from 'react-native';
-import { LARGE_TEXT, plate, space } from '../../theme/tokens';
+import { LARGE_TEXT, space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
-import { BigNum, useFontScale, type Roll } from '../ui';
+import { BigNum, groveTile, useFontScale, type Roll } from '../ui';
 import { FieldText } from './FieldText';
 
 export function SpecimenLabel({ children, style, testID }: { children: ReactNode; style?: StyleProp<ViewStyle>; testID?: string }) {
   const { c } = useTheme();
   const rows = Children.toArray(children).filter(Boolean);
   return (
-    <View testID={testID} style={[{ backgroundColor: c.raised, borderWidth: 1, borderColor: c.line, borderRadius: plate.labelRadius }, style]}>
+    <View testID={testID} style={[groveTile(c), style]}>
       {rows.map((row, i) => (
         <View key={i} style={i > 0 ? { borderTopWidth: 1, borderTopColor: c.line } : undefined}>
           {row}

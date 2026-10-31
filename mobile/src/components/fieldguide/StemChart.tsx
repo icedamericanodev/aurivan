@@ -40,6 +40,7 @@ import { useWindowDimensions, View } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withDelay } from 'react-native-reanimated';
 import Svg, { Ellipse, G, Path } from 'react-native-svg';
 import type { Stem } from '../../engine/fieldGuide';
+import { grovePlate } from '../../theme/grove';
 import { fieldInk, LARGE_TEXT, motion, plate, space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
 import { ease, tween, useMotion } from '../motion';
@@ -104,6 +105,12 @@ export function growthDrop(s: Stem, y: (p: number) => number): number {
   return y(s.pct - up) - y(s.pct);
 }
 
+/**
+ * The chart's width before its first layout: the window (capped at 560) less the gutters and a
+ * tight plate's edge and padding (Grove Phase 1: one 1pt edge and 4pt across, was the double mount).
+ */
+export const chartFirstWidth = (screen: number) => Math.max(0, Math.min(screen, 560) - 2 * space.gutter - 2 * (grovePlate.edge + grovePlate.padTight));
+
 export function StemChart({
   stems,
   line = 70,
@@ -126,9 +133,9 @@ export function StemChart({
   // The chart's own words grow with the text size up to ×1.3 (then the list takes over): its columns and height
   // grow (or shrink) with them, so a name never truncates between ×1.15 and ×1.29 (UX review H2).
   const fs = Math.min(scale, LARGE_TEXT);
-  // A first guess before layout (the phone's width less the gutters and a plate's mount), so the first frame is drawn.
+  // A first guess before layout (the phone's width less the gutters and a tight plate's edge and padding), so the first frame is drawn.
   const { width: screen } = useWindowDimensions();
-  const [w, setW] = useState(() => Math.max(0, Math.min(screen, 560) - 2 * space.gutter - 2 * (2 + plate.mount + space.xs)));
+  const [w, setW] = useState(() => chartFirstWidth(screen));
   const gap = stems.length ? (w - GUTTER) / stems.length : 0;
   const list = large || (w > 0 && gap < MIN_COLUMN * fs);
   return (

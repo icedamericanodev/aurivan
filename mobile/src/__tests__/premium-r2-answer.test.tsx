@@ -135,10 +135,10 @@ describe('after a miss', () => {
     expect(StyleSheet.flatten(word.props.style).color).toBe(light.ink);
   });
 
-  it('Fig. 4 · Your pick, and the best answer: a header caption and two rows, one stop each', () => {
+  it('the caption "Your pick, and the best answer" (no book label): a header and two rows, one stop each', () => {
     const { picked, best } = answer(false);
-    expect(allText()).toContain('Fig. 4 · Your pick, and the best answer');
-    const caption = labelled(/^Figure 4, Your pick, and the best answer$/);
+    expect(allText()).toContain('Your pick, and the best answer');
+    const caption = labelled(/^Your pick, and the best answer$/);
     expect(caption).toHaveLength(1);
     expect(caption[0].props.accessibilityRole).toBe('header');
     const pick = byTestId('answer-row-pick');
@@ -180,9 +180,9 @@ describe('after a miss', () => {
 });
 
 describe('after a right answer', () => {
-  it('Fig. 4 · Your answer, with one ✓ row', () => {
+  it('"Your answer" (no book label), with one ✓ row', () => {
     const { best } = answer(true);
-    expect(allText()).toContain('Fig. 4 · Your answer');
+    expect(allText()).toContain('Your answer');
     expect(byTestId('answer-row-pick')).toHaveLength(0);
     const key = byTestId('answer-row-best');
     expect(key).toHaveLength(1);

@@ -135,7 +135,7 @@ describe('Today: the day in minutes', () => {
   it('Day 1 is the first five, about 6 min whatever the minutes chosen: the title, then "5 questions, no timer"', () => {
     useSettings.setState({ fitPrompt: 'answered', dailyMinutes: 20 });
     mount(<Today />);
-    expect(allText()).toContain('Today’s plan · about\u00A06\u00A0min');
+    expect(allText()).toContain('Today’s plan About\u00A06\u00A0min');
     expect(allText()).toContain('Your first five 5 questions, no timer');
     expect(allText()).not.toMatch(/\bcheck\b|Starting/);
     expect(storedPlan().budget).toBe(20);
@@ -146,7 +146,7 @@ describe('Today: the day in minutes', () => {
     fiveAnswers();
     mount(<Today />);
     // Mobile 1.21: the day's minutes are in the caption, said once.
-    expect(allText()).toContain('Today’s plan · about\u00A018\u00A0min');
+    expect(allText()).toContain('Today’s plan About\u00A018\u00A0min');
     // The title never holds a count, and the minutes are said once (the caption's, this item's alone),
     // so the meta is the count and the why. Mobile 1.24: plain words, no "Starting check", and no
     // "no score yet" on the day after the learner saw "3 of 5" (UX review S5).
@@ -170,15 +170,17 @@ describe('Today: the day in minutes', () => {
       { kind: 'lesson', lessonId: first.id, title: first.title, minutes: first.minutes },
       { kind: 'practice', count: 10, label: '10 questions · IS Audit', domainId: '1', why: 'learn' },
     ]);
-    // The lesson leads: its title is the panel's title; the questions are the one row after it.
+    // The lesson leads: step 1 is the lesson, step 2 the questions on its domain (Grove's numbered steps).
     expect(allText()).toContain(first.title);
-    // Mobile 1.39: the one item after the lesson is a "Then:" line (no hollow circle).
-    expect(allText()).toContain('Then: IS Audit practice · 10\u00A0questions');
+    const steps = root().findAll((n) => typeof n.type === 'string' && n.props.testID === 'plan-steps')[0].findAll((n) => typeof n.type === 'string' && n.props.accessible === true).map((n) => n.props.accessibilityLabel as string);
+    expect(steps).toHaveLength(2);
+    expect(steps[0].startsWith(`Step 1, ${first.title}, Lesson`)).toBe(true);
+    expect(steps[1]).toMatch(/^Step 2, Practice: IS Audit, 10 questions, on what you just learned/);
     expect(root().findAll((n) => typeof n.props.accessibilityHint === 'string').map((n) => n.props.accessibilityHint as string)).toContain(first.title);
-    expect(allText()).toContain(`Today’s plan · about\u00A0${first.minutes + 12}\u00A0min`);
+    expect(allText()).toContain(`Today’s plan About\u00A0${first.minutes + 12}\u00A0min`);
     expect(allText()).not.toMatch(/Starting check/);
     // Still no range on day 2: the goal is the countdown.
-    expect(allText()).toContain('5 of 40 for your first range');
+    expect(allText()).toContain('5 of 40 answers until your first readiness range');
   });
 
   it('a plan saved before 1.15 (no budget) shows no "today" total, and is kept for the day', () => {
@@ -190,7 +192,7 @@ describe('Today: the day in minutes', () => {
       });
     });
     mount(<Today />);
-    expect(allText()).not.toMatch(/Today’s plan · about/);
+    expect(allText()).not.toMatch(/Today’s plan About/);
     expect(storedPlan().items[0]).toMatchObject({ label: 'Diagnostic: 20 mixed questions' });
   });
 
@@ -210,10 +212,10 @@ describe('Today: the day in minutes', () => {
     mount(<Today />);
     // UX review P2: a mock never leads the hero (even in a plan saved with it first).
     // The mock's own row says it is optional and how long it is (no "+ mock" in the caption since 1.21).
-    expect(allText()).toContain('Today’s plan · about\u00A019\u00A0min Weak spots: IS Operations');
+    expect(allText()).toContain('Today’s plan About\u00A019\u00A0min 1 Weak spots: IS Operations');
     // Mobile 1.24: the count and the why are the line under the title; the optional mock is not a checklist row.
     expect(allText()).toContain('Weak spots: IS Operations 16 questions, most points to gain');
-    expect(root().findAll((n) => n.props.testID === 'plan-checklist')).toHaveLength(0);
+    expect(root().findAll((n) => typeof n.type === 'string' && n.props.testID === 'plan-steps')[0].findAll((n) => typeof n.type === 'string' && n.props.accessible === true)).toHaveLength(1);
     expect(root().findAll((n) => typeof n.props.accessibilityHint === 'string').map((n) => n.props.accessibilityHint as string)).toContain('Weak spots: IS Operations');
     // Its row says it is optional this week, and how long it is.
     expect(allText()).toContain('Optional this week · about 80 min Mini mock');

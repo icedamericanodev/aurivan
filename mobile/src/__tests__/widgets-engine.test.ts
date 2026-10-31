@@ -809,7 +809,7 @@ describe('Your plant', () => {
     expect(f.tone).toBe('plate');
     expect(f.caption).toBe('Your narra');
     expect(f.title).toBe('Shoot');
-    expect(f.sub).toBe('Fig. 3');
+    expect(f.sub).toBe('Growth 3');
     expect(f.line).toBe('Bough is next.');
     expect(face('plant', snap({ plant: { species: 'narra', name: 'narra', growth: 6, grew: null } })).line).toBe('Fully grown.');
     expect(shown(f).split(PLANT_LINE).length - 1).toBeLessThanOrEqual(1);

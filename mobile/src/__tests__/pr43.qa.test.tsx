@@ -143,7 +143,8 @@ const plants = () => root().findAll((n) => typeof n.type !== 'string' && typeof 
 /** Is a growth-ring drawing on screen? (GrowthRings takes `preset`.) */
 // Mobile 1.21: Today's condensed readiness row draws the small `row` rings (the exam-ready panel keeps `today`).
 // The readiness picture: the rings, or (mobile 1.51, Field Guide) Today's scale bar.
-const ringsShown = () => root().findAll((n) => (typeof n.type !== 'string' && (n.props.preset === 'today' || n.props.preset === 'row')) || (typeof n.type === 'string' && n.props.testID === 'scale-bar')).length > 0;
+// Grove: Today's readiness is the hero's ring (the kit's seed inside it when the plant is off).
+const ringsShown = () => root().findAll((n) => (typeof n.type !== 'string' && (n.props.preset === 'today' || n.props.preset === 'row')) || (typeof n.type === 'string' && (n.props.testID === 'scale-bar' || n.props.testID === 'today-ring'))).length > 0;
 const layoutGrid = () => {
   const grid = root().findAll((n) => n.props.accessibilityRole === 'radiogroup')[0];
   act(() => {
@@ -260,7 +261,8 @@ describe('J1 a new learner and the plant', () => {
 
     mount(<Today />);
     expect(byTestID('today-plant')).toHaveLength(1);
-    expect(byTestID('today-plant')[0].props.accessibilityLabel).toBe('Summit Lee, your pine. Starburst Pine form. Growth: Seed.');
+    // The plant's own words, then the stage in words (Grove: the hero's stage line is the plant's button).
+    expect(byTestID('today-plant')[0].props.accessibilityLabel).toBe('Summit Lee, your pine. Starburst Pine form. Growth: Seed. Stage 1 of 6.');
     expect(byTestID('plant-prompt')).toHaveLength(0);
     expect(byTestID('plant-grew')).toHaveLength(0); // planting is not a "grew" moment
     unmount();
@@ -725,7 +727,9 @@ describe('J7 resting', () => {
       expect(plants().length).toBeGreaterThan(0);
       expect(plants().every((x) => x.props.resting === true && x.props.stage === 3)).toBe(true);
       // Today keeps its own countdown ("N days to exam") and journey stage line: only the plant's words are checked.
-      expect(plantWords()).not.toMatch(BANNED);
+      // Grove (owner's labels decision, 31 Oct 2026): Today's hero says the plant's stage in words, "Stage 3 of 6",
+      // shown and said, as the website does. That one phrase is allowed; every other banned word still is not.
+      expect(plantWords().replace(/ Stage \d of 6\./g, '')).not.toMatch(BANNED);
       unmount();
     }
     mount(<YourPlant />);

@@ -37,8 +37,9 @@ import Results from '../app/results';
 import Saved from '../app/saved';
 import { EmptyArt, GrowthRings } from '../components/glyphs';
 import { AreaRows, ReadinessBlock } from '../components/youReadiness';
-import { ScaleBar, SpecimenRow } from '../components/fieldguide';
-import { ClearingBody, ReadinessRow } from '../components/journey';
+import { SpecimenRow } from '../components/fieldguide';
+import { ClearingBody } from '../components/journey';
+import { ReadinessRing } from '../components/groveToday';
 import { BadgeCell, BadgeListRow } from '../components/badges';
 import { MilestoneMomentView, resetBadgeMomentsForTest } from '../components/milestones';
 import { resetCelebrationsForTest, resetOncePerDayForTest, RollingText, setSystemReducedMotionForTest, ThemeFade } from '../components/motion';
@@ -263,60 +264,48 @@ afterEach(() => {
 
 // ── J1 ───────────────────────────────────────────────────────────────────
 describe('J1 first open of the day (Today)', () => {
-  // Mobile 1.51 (Field Guide): Today's readiness is the scale bar. Its growth still follows the day's
-  // rings record (`today:rings`), and the bar draws in when the range does.
-  const todayRings = () => r!.root.findAllByType(ReadinessRow)[0].props.ringsGrowth as { play: boolean; from?: number[] };
-  const growingArcs = () => (r!.root.findAllByType(ScaleBar)[0]?.props.growth?.play ? 1 : 0);
-  const rangeRoll = () => r!.root.findAllByType(RollingText).find((n) => /\d–\d/.test(n.props.value))!.props;
+  // Grove: Today's readiness is the hero's ring. Its marks light up once with the day's range record
+  // (`today:range`): on the day's first view, or after a rise since the last look; never on a fall.
+  const ringGrowth = () => r!.root.findAllByType(ReadinessRing)[0].props.growth as { play: boolean; from: number[] };
+  const lighting = () => (ringGrowth().play ? 1 : 0);
 
   it('grows once on the first view, shows still on a revisit and a remount, grows again the next day, never after a fall', () => {
     jest.useFakeTimers({ now: new Date(2026, 9, 12, 9, 0, 0), doNotFake: ['nextTick', 'setImmediate', 'queueMicrotask'] });
     setMockReducedMotion(false);
     seed(60);
-    // Day 1, first view: the rings grow from 0 and the range rolls.
+    // Day 1, first view: the ring's marks light up from 0.
     mount(<Today />);
-    expect(todayRings().play).toBe(true);
-    expect(todayRings().from!.every((v) => v === 0)).toBe(true);
-    expect(growingArcs()).toBeGreaterThan(0);
-    expect(rangeRoll().play).toBe(true);
-    expect(movingDigits()).toBeGreaterThan(0);
+    expect(ringGrowth().play).toBe(true);
+    expect(ringGrowth().from.every((v) => v === 0)).toBe(true);
     // Leave the tab and come back with nothing new: everything just shows.
     setFocus(false);
     setFocus(true);
-    expect(todayRings().play).toBe(false);
-    expect(rangeRoll().play).toBe(false);
-    expect(growingArcs()).toBe(0);
-    expect(movingDigits()).toBe(0);
+    expect(lighting()).toBe(0);
     // A remount the same day (the app kept running): still.
     unmount();
     mount(<Today />);
-    expect(todayRings().play).toBe(false);
-    expect(movingDigits()).toBe(0);
+    expect(lighting()).toBe(0);
     unmount();
 
-    // Day 2: the first view grows again (from 0).
+    // Day 2: the first view lights up again (from 0).
     act(() => jest.setSystemTime(new Date(2026, 9, 13, 9, 0, 0)));
     mount(<Today />);
-    expect(todayRings().play).toBe(true);
-    expect(todayRings().from!.every((v) => v === 0)).toBe(true);
-    expect(movingDigits()).toBeGreaterThan(0);
+    expect(ringGrowth().play).toBe(true);
+    expect(ringGrowth().from.every((v) => v === 0)).toBe(true);
     setFocus(false);
 
     // Away from Today, IS Audit falls (a run of wrong answers).
-    const before = useSeen.getState().values['today:rings:cisa'];
+    const before = useSeen.getState().values['today:range:cisa'];
     answerIn('1', 40, 40, false);
     // Day 3: a fall never animates, not even as the day's count-up.
     act(() => jest.setSystemTime(new Date(2026, 9, 14, 9, 0, 0)));
     unmount();
     mount(<Today />);
-    const now = useSeen.getState().values['today:rings:cisa'];
+    const now = useSeen.getState().values['today:range:cisa'];
     expect(now[0]).toBeLessThan(before[0]);
-    expect(todayRings().play).toBe(false);
-    expect(growingArcs()).toBe(0);
-    expect(rangeRoll().play).toBe(false);
-    // The one thing that may move: the streak, which really went up (day 2 was a study day).
-    const moving = r!.root.findAllByType(RollingText).filter((n) => n.findAll((c) => typeof c.type === 'function' && (c.type as { name?: string }).name === 'DigitColumn' && c.props.play && c.props.from !== c.props.to).length > 0);
-    expect(moving.map((n) => n.props.value)).toEqual([String(useProgress.getState().streak?.current ?? 2)]);
+    expect(lighting()).toBe(0);
+    // Nothing rolls on Today any more (the streak is words on the twig).
+    expect(movingDigits()).toBe(0);
   });
 
   it('a rise while Today is in the background grows from what was seen (the risen domain only), on return', () => {
@@ -324,17 +313,16 @@ describe('J1 first open of the day (Today)', () => {
     seed(60);
     mount(<Today />);
     setFocus(false);
-    const seen = useSeen.getState().values['today:rings:cisa'];
+    const seen = useSeen.getState().values['today:range:cisa'];
     answerIn('3', 40, 30, true);
     setFocus(true);
-    const g = todayRings();
+    const g = ringGrowth();
+    // The range rose while Today was away: the ring lights up once, from what was seen.
     expect(g.play).toBe(true);
-    // Only Operations (index 2) starts below its value; the rest start where they are.
-    const now = useSeen.getState().values['today:rings:cisa'];
-    expect(now[2]).toBeGreaterThan(seen[2]);
-    expect(g.from).toEqual(seen); // the growth record in whole percent (the rings took it / 100)
-    // The range rose with it, so the scale bar draws in once.
-    expect(growingArcs()).toBe(1);
+    const now = useSeen.getState().values['today:range:cisa'];
+    expect(now[0]).toBeGreaterThan(seen[0]);
+    expect(g.from).toEqual(seen);
+    expect(lighting()).toBe(1);
   });
 });
 
@@ -752,8 +740,9 @@ describe('J5 Reduce Motion (system and in-app)', () => {
         for (const num of String(n.props.value).match(/\d+/g) ?? []) expect(String(up!.props.accessibilityLabel)).toContain(num);
       }
     };
+    // Grove: Today has no rolling numbers on a plan day (the range is the ring's caption, the streak words on the twig).
     mount(<Today />);
-    check();
+    expect(r!.root.findAllByType(RollingText).filter((n) => byNameIn(n, 'DigitColumn').length > 0)).toHaveLength(0);
     unmount();
     mount(<You />);
     check();
@@ -1089,8 +1078,8 @@ describe('Review fixes on the real screens', () => {
     jest.useFakeTimers({ now: new Date(2026, 9, 12, 9, 0, 0), doNotFake: ['nextTick', 'setImmediate', 'queueMicrotask'] });
     setMockReducedMotion(false);
     seed(60);
-    // Mobile 1.51: Today's scale bar draws in on the day's first view only.
-    const scaleDraws = () => (r!.root.findAllByType(ScaleBar)[0]?.props.growth?.play ? 1 : 0);
+    // Grove: Today's ring lights up on the day's first view only.
+    const scaleDraws = () => (r!.root.findAllByType(ReadinessRing)[0]?.props.growth?.play ? 1 : 0);
     mount(<Today />);
     expect(scaleDraws()).toBeGreaterThan(0);
     unmount();

@@ -61,7 +61,8 @@ import { selectCert, useProgress } from '../store/progress';
 import { useSeen } from '../store/seen';
 import { useSession, type ActiveSession } from '../store/session';
 import { useSettings } from '../store/settings';
-import { LARGE_TEXT, plate, space } from '../theme/tokens';
+import { grovePlate } from '../theme/grove';
+import { LARGE_TEXT, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { Seedling } from './glyphs';
 import { ChevronDown, ICON_STROKE } from './icons';
@@ -229,12 +230,12 @@ export function ReminderAsk({
 
 /**
  * The reminder ask's time chip: an outlined chip with the time and a down chevron (it opens the
- * time sheet). Premium round 2 (Field Guide foundation): the plate button's shape, 52pt tall with 12pt
- * corners, the same as the button beside it (and over the 48pt touch target).
+ * time sheet). Premium round 2 (Field Guide foundation): the plate button's shape, 54pt tall with 16pt
+ * corners (Grove Phase 1), the same as the button beside it (and over the 48pt touch target).
  */
 function TimeChip({ time, onPress, disabled, ref }: { time: string; onPress: () => void; disabled?: boolean; ref?: Ref<View> }) {
   const { c } = useTheme();
-  const press = usePressScale({ tint: c.soft, tintRadius: plate.buttonRadius });
+  const press = usePressScale({ tint: c.soft, tintRadius: grovePlate.buttonRadius });
   return (
     <AnimatedPressable
       ref={ref}
@@ -248,9 +249,9 @@ function TimeChip({ time, onPress, disabled, ref }: { time: string; onPress: () 
       onPressOut={press.onPressOut}
       style={[
         {
-          minHeight: plate.button,
+          minHeight: grovePlate.button,
           maxWidth: '100%',
-          borderRadius: plate.buttonRadius,
+          borderRadius: grovePlate.buttonRadius,
           borderWidth: 1.5,
           borderColor: c.control,
           paddingHorizontal: space.md,

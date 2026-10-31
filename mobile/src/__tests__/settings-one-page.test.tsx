@@ -93,7 +93,7 @@ describe('Settings, mobile 1.46: one page, clear groups', () => {
     }
   });
 
-  it('dark: each card has a 1.5 line edge, so it stands off the night background', () => {
+  it('dark: each card has the Grove 1pt line edge, so it stands off the night background (1.5 before Grove)', () => {
     useSettings.setState({ theme: 'dark' });
     render();
     const cards = hosts((n) => StyleSheet.flatten(n.props.style ?? {}).borderRadius === 24);
@@ -102,7 +102,7 @@ describe('Settings, mobile 1.46: one page, clear groups', () => {
       const st = StyleSheet.flatten(card.props.style);
       expect(st.backgroundColor).toBe(dark.raised);
       expect(st.borderColor).toBe(dark.line);
-      expect(st.borderWidth).toBe(1.5);
+      expect(st.borderWidth).toBe(1);
     }
   });
 

@@ -72,7 +72,7 @@ it('a set keeps where each area stood as it began, and Results says the set’s 
   });
   const t = textOf(r!.root);
   // 34 of 50 now: 68%, up 8 from 60.
-  expect(t).toContain('Fig. 6 · IS Operations, new growth');
+  expect(t).toContain('IS Operations, new growth');
   expect(t).toContain('IS Operations grew 8 points in this set');
   expect(t).toContain('10 of 10 this set');
   expect(labels().some((l) => l.startsWith('IS Operations: Building, 68 percent on latest tries, below the 70 line, up 8 points in this set.'))).toBe(true);

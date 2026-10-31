@@ -112,7 +112,7 @@ describe('the You screen (Field Guide since mobile 1.51)', () => {
     const t = allText();
     expect(t).toContain(STUDY_BAR_LINE);
     expect(t).toContain(AREAS_CAPTION);
-    expect(t).toContain('Fig. 5 · Five areas, one scale');
+    expect(t).toContain('Five areas, one scale');
     expect(t).not.toMatch(/inner ring|Thicker rings|notch/);
     expect(t).not.toMatch(/\bpass\b/i);
     // Below the line: IS Operations at 65% says "below 70" in words, and its word is clay (never colour alone).

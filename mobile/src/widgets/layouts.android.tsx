@@ -15,7 +15,7 @@
  * - Today's plan: the forest card (the only one), "12 questions", the day's
  *   step pips and the one Start button on the home screen.
  * - This week: paper, a big "3" and the week's leaves (the only leaves).
- * - Your plant: the botanical plate, "Fig. 3 · Shoot".
+ * - Your plant: the botanical plate, "Growth 3 · Shoot" (no book label since Grove).
  * - Today's rule and the Recall card: ruled index cards with a clay margin.
  * - Key term and Readiness: paper. Road to exam: the ink card.
  *

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Screenshot harness: web-export the app, seed demo data, capture key screens.
-# Usage (from mobile/): [SHOTS=motion2|fieldguide|forms|m149|m146|m145|m144|m143|m142|m141|guides|principles|qnote|today|firstdays|notes|data|pace|practice|milestones|support|paths|motion|growth|badges|badgesC|stats|learnplay|plant|fit|proof|settings|cloud|store] bash scripts/screenshots/run.sh [out_dir] [dark|light]
+# Usage (from mobile/): [SHOTS=grove|motion2|fieldguide|forms|m149|m146|m145|m144|m143|m142|m141|guides|principles|qnote|today|firstdays|notes|data|pace|practice|milestones|support|paths|motion|growth|badges|badgesC|stats|learnplay|plant|fit|proof|settings|cloud|store] bash scripts/screenshots/run.sh [out_dir] [dark|light]
 # Needs Playwright (preinstalled in Claude cloud sessions; locally: npx playwright install chromium).
 set -euo pipefail
 cd "$(dirname "$0")/../.."
@@ -158,6 +158,11 @@ elif [ "${SHOTS:-}" = plant ]; then
   if [ "${PLANT:-}" != 4b ] && [ "${PLANT:-}" != 140 ]; then node scripts/screenshots/shoot_plant.mjs "$TMP/seed.json" "$OUT" "$THEME"; fi
   if [ "${PLANT:-}" != 140 ]; then node scripts/screenshots/shoot_plant4b.mjs "$TMP/seed.json" "$OUT" "$THEME"; fi
   if [ "${PLANT:-}" != 4b ]; then node scripts/screenshots/shoot_plant140.mjs "$TMP/seed.json" "$OUT" "$THEME"; fi
+elif [ "${SHOTS:-}" = grove ]; then
+  # Grove Phase 1 and Today on the phone: Today (a new learner, 10 answers, past the first range), You,
+  # Settings and the floating tab bar, light and dark in one run (shoot_grove.mjs; THEMES=dark for one;
+  # FONT_SCALE=2 for about 200% text; GROVE_ONLY=today,you,settings,bar narrows it).
+  node scripts/screenshots/shoot_grove.mjs "$TMP/seed.json" "$OUT"
 elif [ "${SHOTS:-}" = fieldguide ]; then
   # Mobile 1.51 Field Guide: You, the Herbarium, Today and Results as plates (shoot_fieldguide.mjs;
   # FONT_SCALE=2 for about 200% text; FG_ONLY=you,herbarium,today,results narrows it).
