@@ -8,7 +8,7 @@
 //   05-no-exam-date    no exam date: the meta line says so
 //   06-mock-only       a day whose only open item is the optional mini mock
 //   07-cleared         every item done (the clearing card; no tiles, no checklist)
-//   07b-cleared-paused the same cleared day with a Mini mock paused at question 2: its Resume row above Tomorrow (1.54.2)
+//   07b-cleared-paused the same cleared day with a Mini mock paused at question 2: its Resume row above Tomorrow (1.54.3)
 //   08-exam-eve        the day before the exam
 //   09-plant           a learner with a plant: its row under the tiles
 //   10-exam-week       three days out: the quiet exam-week card
@@ -142,7 +142,7 @@ await edit(P, 'v.state.days.cisa.celebrated = true;');
 await go('/home');
 await shot('07-cleared');
 
-// Mobile 1.54.2: a paused Mini mock on a cleared day is still offered (Also today, above Tomorrow).
+// Mobile 1.54.3: a paused Mini mock on a cleared day is still offered (Also today, above Tomorrow).
 const mockIds = await page.evaluate((k) => Object.keys(JSON.parse(localStorage.getItem(k)).state.byCert.cisa.answers).slice(0, 50), P);
 await edit(
   'aurivan.session.v1',

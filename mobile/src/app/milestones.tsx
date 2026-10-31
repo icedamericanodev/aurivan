@@ -31,6 +31,7 @@
  *   real emblem, tape, a label). Every badge, its meaning, tiers and gating are unchanged.
  */
 import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
+import { backOr } from '../lib/actions';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Platform, ScrollView, useWindowDimensions, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -335,7 +336,7 @@ export default function Badges() {
   return (
     <SafeAreaView edges={['top', 'bottom']} style={{ flex: 1, backgroundColor: c.bg }}>
       <ScrollView ref={scroll} contentContainerStyle={{ paddingHorizontal: space.gutter, paddingBottom: space.xxl }}>
-        <PushedHeader onBack={() => router.back()} />
+        <PushedHeader onBack={() => backOr('/you')} />
         {/* Mobile 1.51 (Field Guide): the running head, then the herbarium's title and its one promise. */}
         <RunningHead section="Herbarium · Badges" aside={today.shown} asideLabel={today.spoken} />
         <T v="display" accessibilityRole="header" style={{ marginTop: space.lg }}>Herbarium</T>

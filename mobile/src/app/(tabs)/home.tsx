@@ -380,7 +380,7 @@ export default function Today() {
   };
 
   // "Also today": an unfinished session first, then the optional mock (mobile 1.24: only those).
-  // Mobile 1.54.2: on a cleared day it still shows, with the paused session only, under the clearing and above
+  // Mobile 1.54.3: on a cleared day it still shows, with the paused session only, under the clearing and above
   // "Tomorrow" (it used to sit only in the open-plan branch, so a mock paused after the plan was done had no way back).
   // A paused first set is not listed here while it is the plan's current item: the panel's Start already picks it up
   // where it stopped (mobile 1.24). On a cleared day there is no Start, so it is listed like any paused session.
@@ -388,7 +388,7 @@ export default function Today() {
   const resume = active && !active.finishedAt && !(active.firstSet && firstNow) ? active : null;
   // Every other open item is already a checklist row on the forest panel, so it is never said twice here.
   // While the ready panel shows there is no checklist, so the open items (the current one too) are listed here.
-  // On a cleared day the list holds only the paused session (mobile 1.54.2): an optional mock left for another day is
+  // On a cleared day the list holds only the paused session (mobile 1.54.3): an optional mock left for another day is
   // not listed under the clearing, as before.
   const rest = allDone ? [] : plan.items.map((item, i) => ({ item, i })).filter(({ i }) => !plan.done[i] && (showReady || isOptional(plan.items, i)));
   // A first set already begun (paused, or ended early with some still unanswered) says "Continue", not "Start".
@@ -865,7 +865,7 @@ export default function Today() {
             />
           </View>
         )}
-        {/* "Also today": a paused session first, then the optional mock. On a cleared day (mobile 1.54.2) only
+        {/* "Also today": a paused session first, then the optional mock. On a cleared day (mobile 1.54.3) only
             the paused session, under the clearing and above "Tomorrow", so it can always be resumed from Today. */}
         {alsoCount > 0 && (
           <>

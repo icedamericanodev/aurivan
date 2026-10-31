@@ -87,6 +87,7 @@ export default function GuidedStep() {
     return (
       <EmptyScreen
         header="Guided"
+        fallback="/practice"
         title="Guided is on the way"
         body="It follows the study notes, which this exam doesn't have yet. Smart and Random are ready in the meantime."
         primary={{ label: 'Back to Practice', onPress: goBack }}

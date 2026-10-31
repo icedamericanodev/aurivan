@@ -30,7 +30,17 @@ export function openTab(href: TabHref) {
   if (router.canDismiss()) router.dismissTo(href);
   else router.replace(href);
 }
-type TabHref =
+
+/**
+ * Back from a screen in the root stack (mobile 1.54.2). A screen opened by a
+ * system link (kaisip://settings) on a cold start is the first screen: a plain
+ * router.back() then does nothing. Open the screen's home tab instead.
+ */
+export function backOr(tab: TabHref) {
+  if (router.canGoBack()) router.back();
+  else router.replace(tab);
+}
+export type TabHref =
   | '/home'
   | '/learn'
   | '/practice'
