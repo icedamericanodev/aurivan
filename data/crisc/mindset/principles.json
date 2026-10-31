@@ -1,0 +1,1042 @@
+{
+  "schema_version": 2,
+  "title": "KaiSip CRISC exam mindset principles",
+  "updated": "2026-10-31",
+  "description": "The reasoning patterns CRISC questions reward, written for the risk practitioner lens: the business owns risk, appetite drives the response and analysis comes before action. Grouped into six families. Same shape as the CISA file data/mindset/principles.json (schema v2, docs/content/PRINCIPLES_SCHEMA.md), with these CRISC deviations: domains are 1 to 4; subtopics are CRISC notes codes from data/crisc/notes (parts A to C, for example 3C3.2); practice_ids and question principle_id tags refer to data/crisc/originals (ids such as crisc_d3_015), and practice_ids list every item tagged with the principle; legacy_ids are empty because the old web PRINCIPLES_LIB was CISA only; families are renamed for the risk practitioner; the role slip maps to the practitioner advising rather than deciding, and the tech-first slip maps to acting before analysis. Lint: python3 scripts/lint_principles.py data/crisc/mindset/principles.json --notes data/crisc/notes --bank data/crisc/originals. CRISC is a registered trademark of ISACA; KaiSip is not affiliated with or endorsed by ISACA.",
+  "families": [
+    {
+      "id": "role",
+      "order": 1,
+      "title": "Your role",
+      "question": "Who am I in this question, and who owns the decision?"
+    },
+    {
+      "id": "priorities",
+      "order": 2,
+      "title": "What matters most",
+      "question": "What should drive the choice of response?"
+    },
+    {
+      "id": "analysis",
+      "order": 3,
+      "title": "Know the risk",
+      "question": "Do I understand this risk well enough to act on it?"
+    },
+    {
+      "id": "response",
+      "order": 4,
+      "title": "Choosing the response",
+      "question": "Which response actually fits the risk?"
+    },
+    {
+      "id": "monitoring",
+      "order": 5,
+      "title": "Watching and reporting",
+      "question": "Is it working, and who needs to know?"
+    },
+    {
+      "id": "reading",
+      "order": 6,
+      "title": "Reading the question",
+      "question": "What is the question really asking?"
+    }
+  ],
+  "principles": [
+    {
+      "id": "advise-dont-decide",
+      "family": "role",
+      "order": 1,
+      "title": "Advise; the risk owner decides",
+      "rule": "The risk practitioner identifies, analyzes, recommends and reports; the risk owner decides the response and accepts the risk.",
+      "why": "Accountability for a risk sits with the business manager whose objective it affects, because they hold the budget and bear the loss. A practitioner who accepts, approves or picks the treatment takes a decision they cannot be held to. On CRISC items the practitioner usually prepares options, costs and impact so the owner can choose.",
+      "triggers": [
+        "asks the risk practitioner to approve",
+        "asks the analyst to set appetite",
+        "sign off the residual risk",
+        "decide which control to fund",
+        "residual risk above appetite",
+        "approve an exception"
+      ],
+      "trap": {
+        "move": "Approving, accepting or choosing the treatment yourself because you understand the risk best.",
+        "why_wrong": "Knowing the risk is not the same as owning it. The owner who bears the loss and holds the budget must make and sign the decision, or no one is truly accountable."
+      },
+      "example": {
+        "scenario": "A risk analyst at a freight company rates a warehouse camera outage risk above appetite. The operations director, who owns it, says: just pick whatever control you think is best.",
+        "answer": "Present two or three costed options with the residual risk each would leave, recommend one, and have the director choose and sign. The analyst advises; the owner decides."
+      },
+      "check": {
+        "scenario": "A risk analyst finishes assessing a payroll outsourcing risk that sits just above appetite. The HR director, who owns it, is traveling and asks the analyst to approve whatever treatment looks sensible.",
+        "right": "Send the director costed treatment options with a recommendation, and wait for their decision.",
+        "trap": "Approve the treatment that looks most sensible, then brief the director when they return.",
+        "why": "The analyst can recommend, but the owner who bears the loss decides. Approving on the owner's behalf leaves a decision with no accountable owner."
+      },
+      "nuance": "A practitioner may hold authority delegated in writing, for example to approve low-rated exceptions within a set limit. Outside that delegation, the decision goes back to the owner.",
+      "domains": [
+        1,
+        2,
+        3
+      ],
+      "subtopics": [
+        "1A2.2",
+        "1B4.2",
+        "2B5.3",
+        "3A1.1",
+        "3A4.2",
+        "3C1.1"
+      ],
+      "practice_ids": [
+        "crisc_d1_019",
+        "crisc_d2_020",
+        "crisc_d3_007"
+      ],
+      "slip_pattern": "role",
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "match-decision-to-role",
+      "family": "role",
+      "order": 2,
+      "title": "Give each decision to the right owner",
+      "rule": "Boards set appetite, senior management approves and assigns, one business manager owns each risk, control owners run controls.",
+      "why": "Each role answers for something different, so the BEST owner is the one accountable for that thing. A risk owner is the business manager whose objective bears the loss, not whoever builds, hosts or reviews the system. Committees oversee and advise; they cannot be one named, accountable owner.",
+      "triggers": [
+        "who should own",
+        "MOST appropriate owner",
+        "whose approval",
+        "the risk has no owner",
+        "the committee proposes to own it",
+        "the vendor built the model"
+      ],
+      "trap": {
+        "move": "Naming the person or group closest to the technology, such as IT, the vendor, the CISO or a committee, as the risk owner.",
+        "why_wrong": "They build, run or oversee the system, but they do not answer for the business objective. Ownership by a builder, host or group leaves no one with both authority and accountability."
+      },
+      "example": {
+        "scenario": "A city council's parking app is built by a contractor, hosted by IT and reviewed by a digital committee. Its fine-collection risk has no owner.",
+        "answer": "Propose the head of parking services, whose revenue and service targets bear the loss, and have senior management confirm the assignment. IT stays the owner of the hosting controls."
+      },
+      "check": {
+        "scenario": "A museum's online ticketing risk needs an owner. A web agency built the site, IT hosts it, and the visitor services director answers for ticket revenue.",
+        "right": "Propose the visitor services director as risk owner, with IT owning the hosting controls.",
+        "trap": "Propose the IT manager as risk owner, since IT hosts the site and can act fastest.",
+        "why": "The risk owner is the manager whose objective bears the loss. Hosting or building the system makes someone a control owner, not the risk owner."
+      },
+      "nuance": "For a risk shared across units, senior management can name one lead owner and record the others as contributors. It is still one named person, never a group.",
+      "domains": [
+        1,
+        3,
+        4
+      ],
+      "subtopics": [
+        "1A2.1",
+        "1A2.2",
+        "1A2.3",
+        "1A6.1",
+        "1B1.3",
+        "3A2.1",
+        "3A2.2",
+        "4A4.1"
+      ],
+      "practice_ids": [
+        "crisc_d1_003",
+        "crisc_d1_004",
+        "crisc_d1_005",
+        "crisc_d1_011",
+        "crisc_d1_013",
+        "crisc_d3_005",
+        "crisc_d4_005",
+        "crisc_d4_007"
+      ],
+      "slip_pattern": null,
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "lines-of-defense",
+      "family": "role",
+      "order": 3,
+      "title": "Know your line of defense",
+      "rule": "The first line owns and runs controls, the second line oversees and challenges, the third line gives independent assurance.",
+      "why": "Each line adds value only while it keeps its own job. If the second or third line designs or runs controls, the business stops owning them and no one can challenge them objectively. The risk function needs objectivity and a path to escalate, not the full independence internal audit needs.",
+      "triggers": [
+        "internal audit offers to design",
+        "second-line risk team",
+        "first line",
+        "as independent as internal audit",
+        "control self-assessment",
+        "who should design the control"
+      ],
+      "trap": {
+        "move": "Letting the risk team or internal audit design and run controls for the business, or making the second line as independent as audit.",
+        "why_wrong": "Either the business stops owning its controls, or the second line loses the closeness it needs to advise and challenge. Each line does its own job."
+      },
+      "example": {
+        "scenario": "A hospital's new risk function offers to run the monthly access reviews for clinical systems because ward managers keep missing them.",
+        "answer": "Keep the reviews with the ward managers as control owners. The risk function sets the standard, monitors completion, challenges misses and escalates repeat failures; internal audit later tests the whole arrangement."
+      },
+      "check": {
+        "scenario": "Business units at an insurer keep submitting late control self-assessments. The head of internal audit proposes that audit staff complete the assessments for them until the units catch up.",
+        "right": "Keep the assessments with the units, with the risk team tracking delays and escalating repeat misses.",
+        "trap": "Let audit staff complete the assessments for now, with each unit signing them off every quarter.",
+        "why": "Audit would then assure work it did itself, and the units would stop owning their controls. The second line chases and escalates; the first line does the work."
+      },
+      "nuance": "Lines are roles, not departments: a team inside IT can act as second line for a specific risk. Judge the activity, not where the team sits.",
+      "domains": [
+        1,
+        3
+      ],
+      "subtopics": [
+        "1B2.1",
+        "1B2.2",
+        "3C4.2"
+      ],
+      "practice_ids": [
+        "crisc_d1_014",
+        "crisc_d1_015"
+      ],
+      "slip_pattern": null,
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "objectives-first",
+      "family": "priorities",
+      "order": 1,
+      "title": "Business objectives first",
+      "rule": "Judge a risk by its effect on business objectives, not by the technical defect or the rulebook alone.",
+      "why": "Risk is the effect of uncertainty on what the enterprise is trying to achieve. A critical flaw on an unused system may matter less than a moderate one on a revenue process, and a clean compliance result says nothing about risks no rule covers. Starting from objectives lets owners compare IT risk with every other business risk.",
+      "triggers": [
+        "penetration test findings",
+        "technical severity score",
+        "an IT goal for every system",
+        "passed the regulatory examination",
+        "matches the vendor's restore time",
+        "wants the service closed"
+      ],
+      "trap": {
+        "move": "Ranking, fixing or budgeting by technical severity, a compliance result or what IT can deliver, before asking which objective is at stake.",
+        "why_wrong": "Technical scores and compliance results are inputs, not business impact. Without the objective, the business cannot tell which risks matter or how much protection is worth paying for."
+      },
+      "example": {
+        "scenario": "A university's IT team wants to spend its whole security budget patching every lab computer to the same standard as the finance system.",
+        "answer": "First map which objectives each system supports, such as research grants, teaching and payments, and rate the risk by business impact. Spending then follows the risks that threaten the objectives that matter most."
+      },
+      "check": {
+        "scenario": "A logistics firm's IT director proposes encrypting every internal file share within a month, citing a vendor's list of top threats. The risk practitioner is asked to support the plan.",
+        "right": "Find which business processes depend on each share and what exposure would mean for them.",
+        "trap": "Check which shares the vendor's top-threat list rates as most exposed to attack today.",
+        "why": "A vendor's threat list is an input, not business impact. Linking each share to the process and objective it serves shows where encryption is worth its cost."
+      },
+      "nuance": "Legal and regulatory duties are objectives too, so a breach of law is a business impact. Compliance is a minimum the enterprise must meet, not proof that risk is low.",
+      "domains": [
+        1,
+        2,
+        3
+      ],
+      "subtopics": [
+        "1A1.1",
+        "1A1.2",
+        "1B1.1",
+        "1B5.2",
+        "2B2.2",
+        "3A1.1"
+      ],
+      "practice_ids": [
+        "crisc_d1_001",
+        "crisc_d1_002",
+        "crisc_d1_020",
+        "crisc_d2_012",
+        "crisc_d3_003"
+      ],
+      "slip_pattern": null,
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "appetite-drives-response",
+      "family": "priorities",
+      "order": 2,
+      "title": "Appetite and tolerance set the line",
+      "rule": "Compare analyzed risk with appetite and tolerance first: within, accept and monitor; above, treat it with the owner.",
+      "why": "Leaders set appetite, the broad level of risk they choose, and tolerance, the measurable limit on a specific metric. Those thresholds turn a rating into a decision. Without them every response is a guess: extra controls on accepted risk waste money, and missing treatment above appetite leaves the board exposed.",
+      "triggers": [
+        "within appetite",
+        "exceeds appetite",
+        "propose a risk tolerance",
+        "a low appetite for",
+        "an extra monitoring tool",
+        "the threshold"
+      ],
+      "trap": {
+        "move": "Choosing or adding a control before checking where the risk sits against appetite and tolerance.",
+        "why_wrong": "A risk already within appetite needs acceptance and monitoring, not more spending; one above it needs treatment. The thresholds decide which, not the appeal of the control."
+      },
+      "example": {
+        "scenario": "A media company's subscriber-data risk is rated within appetite after last year's controls. The security team now proposes a costly data-masking project for the same data.",
+        "answer": "Point out that the risk is within appetite, so the owner can accept it and monitor its indicators. The project goes ahead only if the owner wants a lower appetite or the rating goes up."
+      },
+      "check": {
+        "scenario": "A clinic network's tolerance allows at most four hours of scheduling downtime a month. A new assessment rates the risk at about one hour, and IT proposes a second hosting site.",
+        "right": "Report the risk as within tolerance and recommend the owner accept and monitor it.",
+        "trap": "Support the second hosting site so downtime falls well below the monthly limit.",
+        "why": "The risk sits within tolerance, so the response is acceptance and monitoring. Spending more buys a reduction the owner did not ask for."
+      },
+      "nuance": "A law, contract or regulator can require a control even for risk within appetite. Capacity, the most the enterprise can bear, sits above appetite and is never the target.",
+      "domains": [
+        1,
+        2,
+        3
+      ],
+      "subtopics": [
+        "1B4.1",
+        "1B4.2",
+        "2B5.3",
+        "3A1.1",
+        "3A1.3"
+      ],
+      "practice_ids": [
+        "crisc_d1_017",
+        "crisc_d3_002"
+      ],
+      "slip_pattern": null,
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "analyze-before-acting",
+      "family": "analysis",
+      "order": 1,
+      "title": "Analyze before you act",
+      "rule": "Record and assess a new threat, finding, event or change, and tell its owner, before anyone chooses controls.",
+      "why": "A response chosen before the risk is understood may be too weak, too costly or aimed at the wrong cause. Assessment gives the owner likelihood, impact and options to decide on. That is why blocking or buying straight away usually loses to assessing and reporting on CRISC items.",
+      "triggers": [
+        "new threat intelligence",
+        "learns that staff are using",
+        "after an acquisition",
+        "the provider moves processing",
+        "a tabletop exercise reveals",
+        "What should the practitioner do FIRST"
+      ],
+      "trap": {
+        "move": "Blocking, buying, fixing or redesigning straight away because the problem looks obvious.",
+        "why_wrong": "Acting first skips the owner's decision and may treat the wrong risk at the wrong cost. Unless the question says the risk is already analyzed and a response approved, assessment comes first."
+      },
+      "example": {
+        "scenario": "A charity learns that its donation platform's payment provider has been bought by a company in another country, with processing to move next quarter.",
+        "answer": "Update the risk assessment for the change, covering data location, contract terms and service continuity, and brief the risk owner. New contract terms or a new provider are responses the owner may choose afterward."
+      },
+      "check": {
+        "scenario": "A risk analyst at a hotel group hears that front-desk staff photograph guest passports on personal phones to speed up check-in. No one knows how widely it happens.",
+        "right": "Assess how widely it happens and what guest data is exposed, then brief the risk owner.",
+        "trap": "Ban personal phones at the front desk and tell staff the new rule starts today.",
+        "why": "The size of the exposure is unknown, so a ban may be wrong or unworkable. Assessment first gives the owner a basis for choosing the response."
+      },
+      "nuance": "When harm is happening now, such as an active attack or a live data leak, containment comes first under the incident plan and assessment follows at once. Analyze first applies to risk decisions, not live incidents.",
+      "domains": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "subtopics": [
+        "1A4.3",
+        "1B3.2",
+        "2A1.1",
+        "2A3.1",
+        "2A4.3",
+        "2B1.2",
+        "3C4.3",
+        "4A1.2",
+        "4A6.1",
+        "4B3.2"
+      ],
+      "practice_ids": [
+        "crisc_d1_009",
+        "crisc_d1_016",
+        "crisc_d2_001",
+        "crisc_d2_006",
+        "crisc_d2_008",
+        "crisc_d2_010",
+        "crisc_d4_001",
+        "crisc_d4_011",
+        "crisc_d4_020"
+      ],
+      "slip_pattern": "tech-first",
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "rate-on-common-terms",
+      "family": "analysis",
+      "order": 2,
+      "title": "Rate risk in common business terms",
+      "rule": "Rate specific scenarios on likelihood and impact, on one shared scale, before ranking, combining or reporting them.",
+      "why": "A rating means something only if it combines how likely an event is with what it would cost the business, and if everyone uses the same scale. Severity scores, BIA results and unit ratings are inputs, not finished risk. Normalize and aggregate first, and state the uncertainty when data is thin.",
+      "triggers": [
+        "copy the CVSS score into the register",
+        "rated on different scales",
+        "one exact figure",
+        "the BIA already ranks the risks",
+        "each region rates it low",
+        "one scenario called cyberattack"
+      ],
+      "trap": {
+        "move": "Copying a severity score or a BIA ranking straight in as the risk rating, or adding and averaging ratings from different scales.",
+        "why_wrong": "Each gives only one dimension, or numbers that cannot be compared. The enterprise view needs likelihood and impact on one scale, with shared causes combined rather than hidden."
+      },
+      "example": {
+        "scenario": "Three hospital sites each rate the shared lab-results interface as low risk, because each would lose only a few hours of local work if it failed.",
+        "answer": "Merge the entries into one group scenario and rate the combined impact on all three sites on the enterprise scale. A shared dependency can turn several small local risks into one significant enterprise risk."
+      },
+      "check": {
+        "scenario": "A bank's fraud unit scores risks from one to ten and its IT unit uses low, medium and high. The chief risk officer wants one ranked list of the top enterprise risks by Friday.",
+        "right": "Map both units' ratings onto the enterprise scale and criteria, then rank the combined list.",
+        "trap": "Rank each unit's list on its own scale, then merge them with the top-rated risks first.",
+        "why": "Ratings on different scales cannot be compared directly. Mapping them onto one set of criteria first makes the combined ranking mean something."
+      },
+      "nuance": "A business impact analysis (BIA) measures impact over time on purpose and feeds the risk assessment; it does not replace it. With thin data, a range or a qualitative rating is more honest than an exact-looking figure.",
+      "domains": [
+        1,
+        2,
+        3
+      ],
+      "subtopics": [
+        "1B1.2",
+        "2A3.2",
+        "2A4.1",
+        "2B1.1",
+        "2B2.1",
+        "2B3.3",
+        "2B4.1",
+        "2B4.2",
+        "2B4.3",
+        "3C2.2"
+      ],
+      "practice_ids": [
+        "crisc_d2_005",
+        "crisc_d2_007",
+        "crisc_d2_011",
+        "crisc_d2_014",
+        "crisc_d2_015",
+        "crisc_d2_017",
+        "crisc_d3_014"
+      ],
+      "slip_pattern": null,
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "residual-counts-working-controls",
+      "family": "analysis",
+      "order": 3,
+      "title": "Inherent, residual and target risk",
+      "rule": "Compare residual risk, counting only controls implemented and working, with appetite; planned controls give target risk, not residual.",
+      "why": "Inherent risk shows how much the enterprise relies on its controls; it does not decide treatment. Residual risk is today's exposure, so it is what owners compare with appetite and accept. A control that is approved, planned or untested has not reduced anything yet, so it shapes the target, not the current rating.",
+      "triggers": [
+        "closed because the tool was approved",
+        "projected once the controls go live",
+        "installed but never tested",
+        "which rating should be compared with appetite",
+        "inherent risk",
+        "target risk"
+      ],
+      "trap": {
+        "move": "Lowering the rating or closing the entry once a control is approved, bought or installed.",
+        "why_wrong": "Until the control is in place and shown to work, the exposure has not changed. Decision makers would accept risk on the strength of a projection."
+      },
+      "example": {
+        "scenario": "A retailer's register rates card-skimming risk as moderate by counting a new endpoint control whose rollout starts next month. Today only the old controls run.",
+        "answer": "Rate residual risk on the controls running today and record moderate as the target once the rollout is verified. The owner compares today's residual risk with appetite and decides whether interim measures are needed."
+      },
+      "check": {
+        "scenario": "A transport authority bought a new backup system last month, but installation starts in the spring. The risk owner asks to lower the data-loss rating now, since the money is spent.",
+        "right": "Keep today's rating, record the lower one as the target, and re-rate once it works.",
+        "trap": "Lower the rating now, and raise it again if the spring installation slips.",
+        "why": "Buying a control does not reduce exposure. Residual risk counts only controls in place and working; the planned result is the target."
+      },
+      "nuance": "Some frameworks call today's level current risk and keep residual for what remains once a response is complete. Either way, a projection that counts planned controls is target risk.",
+      "domains": [
+        2,
+        3
+      ],
+      "subtopics": [
+        "2B3.2",
+        "2B5.1",
+        "2B5.2",
+        "3A1.3"
+      ],
+      "practice_ids": [
+        "crisc_d2_013",
+        "crisc_d2_018",
+        "crisc_d2_019"
+      ],
+      "slip_pattern": null,
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "emerging-and-ai-risk-owned",
+      "family": "analysis",
+      "order": 4,
+      "title": "Emerging and AI risk gets an owner",
+      "rule": "Record emerging, AI and legacy-technology risk early in the register, with a business owner, stated uncertainty and review date.",
+      "why": "New technology, model drift and draft regulation are uncertain, which tempts teams either to wait or to ban. Neither lets the business weigh the risk against the opportunity. A register entry with an owner makes the risk visible early, so it is assessed against appetite like any other and revisited as facts arrive.",
+      "triggers": [
+        "AI model",
+        "regulators are consulting",
+        "has not failed in years",
+        "the vendor claims it is tamper-proof",
+        "drift",
+        "prompt injection"
+      ],
+      "trap": {
+        "move": "Waiting for certainty, banning the technology outright, or trusting the vendor's claims until something goes wrong.",
+        "why_wrong": "Waiting leaves the risk invisible, a ban gives up the business benefit unassessed, and vendor claims are not an assessment of this enterprise's own use."
+      },
+      "example": {
+        "scenario": "A recruitment agency's marketing team starts using an AI image generator for job ads. Nobody has checked its license terms or what candidate data goes into prompts.",
+        "answer": "Record an AI risk scenario with the marketing director as owner, note what is still unknown, and assess it against appetite with a short review date. Controls such as approved tools or prompt rules follow from that assessment."
+      },
+      "check": {
+        "scenario": "A grocery chain will soon have to report product carbon data under a draft law whose final text is a year away. The risk analyst hears about it at a conference.",
+        "right": "Record an emerging risk with an owner, its uncertainty and a review date, and track the draft.",
+        "trap": "Note the draft law in the horizon-scanning file and assess it once the final text is out.",
+        "why": "Waiting for certainty leaves the business unprepared. An owned, dated entry keeps the risk visible and reviewed as the law takes shape."
+      },
+      "nuance": "Recording early is not rating high: state the uncertainty and avoid treating a possible risk as certain. Where AI makes high-impact decisions about people, test bias and accuracy on the enterprise's own data before go-live.",
+      "domains": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "subtopics": [
+        "1A6.3",
+        "2A1.3",
+        "2A2.3",
+        "3C6.1",
+        "3C6.2",
+        "4A1.3",
+        "4A7.1",
+        "4A7.2"
+      ],
+      "practice_ids": [
+        "crisc_d2_002",
+        "crisc_d2_004",
+        "crisc_d3_020",
+        "crisc_d4_002",
+        "crisc_d4_013",
+        "crisc_d4_014"
+      ],
+      "slip_pattern": null,
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "proportionate-response",
+      "family": "response",
+      "order": 1,
+      "title": "Cost-benefit and proportion",
+      "rule": "Choose the response that brings risk within appetite at a cost no greater than the loss it avoids.",
+      "why": "The strongest control is rarely the best answer, because spending beyond appetite buys reduction the business has not asked for. Value is the yearly loss avoided compared with the yearly cost, not a percentage cut. The owner then decides with the numbers in front of them.",
+      "triggers": [
+        "two control options",
+        "annualized loss expectancy (ALE)",
+        "leaves almost no residual risk",
+        "is it worth funding",
+        "the most secure option",
+        "costs more than"
+      ],
+      "trap": {
+        "move": "Recommending the control that removes the most risk, or judging a control by its percentage reduction alone.",
+        "why_wrong": "Maximum reduction can cost more than the loss it prevents, and a percentage hides the money. Proportion to appetite and to the loss avoided decides."
+      },
+      "example": {
+        "scenario": "A ferry operator's booking outage has an expected loss of $40,000 a year. A standby system costing $55,000 a year would cut that to $5,000.",
+        "answer": "Advise that the standby costs more than the $35,000 a year it saves, so cost alone does not justify it. Present cheaper options and let the owner decide, noting any safety or legal duty that changes the case."
+      },
+      "check": {
+        "scenario": "A college's student-records risk is above appetite. Option one costs $20,000 a year and brings it just within appetite; option two costs $90,000 a year and cuts it to almost nothing.",
+        "right": "Recommend option one, which brings the risk within appetite at the lower yearly cost.",
+        "trap": "Recommend option two, which leaves almost no residual risk for the college to monitor.",
+        "why": "Both options meet appetite, so the extra $70,000 buys reduction the college did not ask for. Proportion to appetite decides, not maximum reduction."
+      },
+      "nuance": "Cost-benefit cannot override a legal, regulatory or safety duty, and some benefits, such as trust or safety, are hard to price. State those factors beside the numbers.",
+      "domains": [
+        2,
+        3
+      ],
+      "subtopics": [
+        "2B4.2",
+        "3A1.2",
+        "3B2.1"
+      ],
+      "practice_ids": [
+        "crisc_d2_016",
+        "crisc_d3_010"
+      ],
+      "slip_pattern": null,
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "root-cause-over-symptom",
+      "family": "response",
+      "order": 2,
+      "title": "Fix the cause, not the symptom",
+      "rule": "Prefer the response that removes why the risk event keeps happening over one that cleans up after it.",
+      "why": "Repeated incidents, errors or skipped steps point to a cause: a process step, an incentive, a design gap or a missing role-based skill. Faster fixes, extra reviews and general retraining handle the effects, so likelihood stays the same. Controls aimed at the cause lower likelihood and usually cost less over time.",
+      "triggers": [
+        "keeps recurring",
+        "several times a month",
+        "despite training",
+        "a bonus for",
+        "staff retype",
+        "restores each one within minutes"
+      ],
+      "trap": {
+        "move": "Speeding up the fix, adding a review of the output, or retraining everyone, while the cause stays in place.",
+        "why_wrong": "Each feels responsive, but the event keeps happening. Only a change to the cause lowers likelihood."
+      },
+      "example": {
+        "scenario": "A council's benefits team keeps paying some claims twice, because two systems both accept the same claim with no shared reference number.",
+        "answer": "Recommend that the process owner add a shared reference and a duplicate check where claims enter both systems. Recovering overpayments faster treats the effect; the duplicate entry point is the cause."
+      },
+      "check": {
+        "scenario": "A courier's drivers often skip the photo-on-delivery step, and lost-parcel claims keep rising. The app lets drivers mark a parcel delivered before taking the photo.",
+        "right": "Recommend the app require the photo before a parcel can be marked as delivered.",
+        "trap": "Recommend a monthly report of deliveries without photos for each driver's supervisor.",
+        "why": "The app design lets the step be skipped, which is the cause. A report finds the skipped photos afterward and leaves the cause in place."
+      },
+      "nuance": "In a live outage, restore service and contain harm first, then use problem management to find the cause. Root cause wins for the lasting fix, not for the first minutes.",
+      "domains": [
+        1,
+        3,
+        4
+      ],
+      "subtopics": [
+        "1A3.1",
+        "1A3.2",
+        "3B2.1",
+        "4A2.2",
+        "4A3.2",
+        "4B2.1"
+      ],
+      "practice_ids": [
+        "crisc_d1_006",
+        "crisc_d3_009",
+        "crisc_d4_004",
+        "crisc_d4_017"
+      ],
+      "slip_pattern": "symptom",
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "transfer-keeps-accountability",
+      "family": "response",
+      "order": 3,
+      "title": "Transfer moves cost, not accountability",
+      "rule": "Insurance, contracts and vendors can shift cost or work, but accountability for the risk stays with the enterprise.",
+      "why": "Customers, regulators and the board still hold the enterprise responsible when a supplier or insurer is involved. Transfer pays part of the loss; it does not lower likelihood or undo the harm. So the enterprise keeps assessing vendors, checks the scope of their assurance and validates their changes before relying on them.",
+      "triggers": [
+        "cyber insurance",
+        "the vendor's contract clause",
+        "liable for errors",
+        "independent controls report",
+        "the vendor will replace the model",
+        "transfer the risk"
+      ],
+      "trap": {
+        "move": "Treating an insurance policy, a liability clause or a vendor's assurance as if it removed the risk or the duty to monitor it.",
+        "why_wrong": "Money after the event is not prevention, and a vendor's word is not evidence. The enterprise still answers for the harm, so it still assesses and monitors."
+      },
+      "example": {
+        "scenario": "A dental group outsources appointment reminders to a messaging vendor whose contract covers fines for data leaks. The practice manager says the risk is now the vendor's problem.",
+        "answer": "Explain that the clause shifts part of the cost, but patients and regulators will still hold the dental group responsible. Keep the risk in the register with its owner, review the vendor's assurance and monitor the service."
+      },
+      "check": {
+        "scenario": "A gallery buys a cyber insurance policy covering ransomware recovery costs. The finance director proposes cutting the backup-testing budget, since the losses are now covered.",
+        "right": "Keep backup testing, since the policy pays part of the cost but does not prevent an outage.",
+        "trap": "Cut backup testing in line with the cover, and review the budget when the policy renews.",
+        "why": "Insurance shifts part of the financial loss after an event. It does not lower likelihood or the harm of an outage, so the controls stay."
+      },
+      "nuance": "Transfer is a sound response when it brings the financial part within appetite. Pair it with controls for what money cannot fix, such as safety, trust or service continuity.",
+      "domains": [
+        3,
+        4
+      ],
+      "subtopics": [
+        "3A1.1",
+        "3A3.1",
+        "3A3.2",
+        "3A3.3",
+        "4A3.3"
+      ],
+      "practice_ids": [
+        "crisc_d3_001",
+        "crisc_d3_004",
+        "crisc_d3_006",
+        "crisc_d4_006"
+      ],
+      "slip_pattern": null,
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "kris-that-predict",
+      "family": "monitoring",
+      "order": 1,
+      "title": "Indicators that warn in time",
+      "rule": "Pick leading indicators tied to a risk scenario, with thresholds from tolerance and an owner who acts on them.",
+      "why": "A key risk indicator (KRI) is useful only if it warns before the loss, while there is still time to act. Incident counts and complaints confirm harm afterward; a KPI shows process performance and a KCI shows control health. A threshold copied from a survey, or an alert nobody owns, changes nothing.",
+      "triggers": [
+        "key risk indicator",
+        "BEST early warning",
+        "red threshold",
+        "alerts go to a shared inbox",
+        "training completion rate",
+        "number of incidents last year"
+      ],
+      "trap": {
+        "move": "Choosing a lagging count of past incidents, an activity measure such as course completion, or a benchmark threshold nobody owns.",
+        "why_wrong": "They describe what already happened or what was done, not whether exposure is rising. Without an owner and a tolerance-based threshold, no one acts in time."
+      },
+      "example": {
+        "scenario": "A water company wants a KRI for the risk of a chemical dosing system failing because it runs unsupported software.",
+        "answer": "Track the share of dosing controllers on unsupported versions, with amber and red thresholds agreed with the operations director from their tolerance and an agreed action for each. A count of past dosing failures would arrive too late."
+      },
+      "check": {
+        "scenario": "An online pharmacy wants an indicator for the risk of staff sending prescriptions to the wrong address. The risk analyst is comparing candidate metrics.",
+        "right": "The weekly rate of address mismatches caught before dispatch, against an agreed threshold.",
+        "trap": "The quarterly count of customer complaints about prescriptions sent to wrong addresses.",
+        "why": "Complaints arrive after customers are harmed. Mismatches caught before dispatch rise as the risk grows, so the owner can act in time."
+      },
+      "nuance": "Lagging indicators still matter: they confirm whether the leading ones work and feed the risk rating. A good set pairs a few leading KRIs with KCIs on the key controls.",
+      "domains": [
+        3,
+        4
+      ],
+      "subtopics": [
+        "3C3.1",
+        "3C3.2",
+        "3C3.3",
+        "3C4.1",
+        "4B2.2"
+      ],
+      "practice_ids": [
+        "crisc_d3_015",
+        "crisc_d3_016",
+        "crisc_d3_017",
+        "crisc_d3_018",
+        "crisc_d4_018"
+      ],
+      "slip_pattern": null,
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "evidence-before-credit",
+      "family": "monitoring",
+      "order": 2,
+      "title": "Validate before you credit or report",
+      "rule": "A control, plan or completed action counts only when evidence shows it works; validate before re-rating or reporting.",
+      "why": "Owners and boards decide on what the practitioner reports, so an unverified claim becomes their mistake. A signed statement, a written procedure or one observation shows intent, not operation over time. Evidence the practitioner selects, inspects or reperforms, from a complete population, is what earns a lower rating.",
+      "triggers": [
+        "reports that the action plan is complete",
+        "says it never misses a day",
+        "a signed statement",
+        "last tested two years ago",
+        "the Current Profile matches the Target Profile",
+        "before crediting it"
+      ],
+      "trap": {
+        "move": "Taking the owner's word, a document or a certificate as proof, then lowering the rating or reporting the action closed.",
+        "why_wrong": "Statements and documents show what should happen. Until evidence shows the control operates, the rating and the report would mislead the people deciding."
+      },
+      "example": {
+        "scenario": "An airport's IT manager reports that every baggage-system server now runs the new logging agent and asks for the related risk to be closed.",
+        "answer": "Obtain coverage reports for the full server list and sample alerts showing the agent works, then re-rate and report. Until then, report the action as claimed complete and pending validation."
+      },
+      "check": {
+        "scenario": "A university's facilities manager confirms by email that the data center's fire suppression system was serviced this year, and asks the risk analyst to lower the related rating.",
+        "right": "Ask for the service report and recent test results, then re-rate if they support it.",
+        "trap": "Lower the rating on the manager's written confirmation, and file the email as evidence.",
+        "why": "An email is a statement, not evidence that the system works. The service report and test results show it, so they come before any change in rating."
+      },
+      "nuance": "Validation is proportionate: key controls on high risks need strong, direct evidence, while low risks may rest on control self-assessment with independent spot checks.",
+      "domains": [
+        1,
+        3,
+        4
+      ],
+      "subtopics": [
+        "1A5.2",
+        "3B2.2",
+        "3B3.1",
+        "3B3.2",
+        "3C1.2",
+        "3C2.3",
+        "4A6.3",
+        "4B1.3"
+      ],
+      "practice_ids": [
+        "crisc_d1_010",
+        "crisc_d3_011",
+        "crisc_d3_012",
+        "crisc_d3_013",
+        "crisc_d4_016"
+      ],
+      "slip_pattern": null,
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "escalate-to-the-limit-setter",
+      "family": "monitoring",
+      "order": 3,
+      "title": "Escalate to whoever set the limit",
+      "rule": "Escalate a validated tolerance breach, or acceptance beyond someone's authority, promptly to the owner and the level that set it.",
+      "why": "A breach of tolerance is a governance event, not a technical ticket: the people who set the limit decide whether to treat, accept or change it. Waiting for the next scheduled review, or letting a delivery team accept risk, keeps the decision away from those accountable.",
+      "triggers": [
+        "has exceeded tolerance",
+        "handled as a routine ticket",
+        "the next quarterly review",
+        "the project team marked it as accepted",
+        "above the approved limit",
+        "beyond delegated authority"
+      ],
+      "trap": {
+        "move": "Fixing it quietly at a technical level, raising the threshold to fit, or holding it for the next scheduled report.",
+        "why_wrong": "Each keeps the decision below the people who set the limit. Changing a threshold to fit the data is a decision only they can make."
+      },
+      "example": {
+        "scenario": "A payment processor's tolerance allows at most 0.5% of card authorizations to fail in a day. A validated KRI has shown 1.2% for three days while engineers tune servers.",
+        "answer": "Escalate now to the payments director, who owns the risk, with the impact and options, and follow the agreed route to the committee that set the tolerance. Tuning can continue; the decision is theirs."
+      },
+      "check": {
+        "scenario": "A bank's appetite statement lets only the executive committee accept a high cyber risk. A department head has signed an acceptance for one, and the risk analyst notices in a register review.",
+        "right": "Raise the acceptance with the risk owner and the executive committee, which holds the authority.",
+        "trap": "Record the department head's acceptance in the register and flag it for the year-end review.",
+        "why": "The department head accepted beyond their authority. Only the committee that holds it can accept, so it must see the risk now."
+      },
+      "nuance": "Validate the data first, because a sudden breach can be a data error. Once it is confirmed, escalate promptly rather than waiting for the reporting cycle.",
+      "domains": [
+        1,
+        3,
+        4
+      ],
+      "subtopics": [
+        "1B4.3",
+        "3A4.1",
+        "3C3.3",
+        "4A5.2"
+      ],
+      "practice_ids": [
+        "crisc_d1_018",
+        "crisc_d4_010"
+      ],
+      "slip_pattern": null,
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "report-for-the-decision",
+      "family": "monitoring",
+      "order": 4,
+      "title": "Report what the decision needs",
+      "rule": "Report to the level that can decide, in its terms, with the facts intact, including the unwelcome ones.",
+      "why": "A board needs the risk profile against appetite, the trend and the decision asked of it; an owner needs their own risks and actions. Lists of every vulnerability or control test bury the message. Removing or delaying a significant finding to spare someone misleads the people who must decide.",
+      "triggers": [
+        "report for the board",
+        "MOST useful input",
+        "remove the result from the report",
+        "a heat map of every risk",
+        "the investment committee",
+        "before the board meeting"
+      ],
+      "trap": {
+        "move": "Sending decision makers every detail, or softening and delaying bad news until a fix is ready.",
+        "why_wrong": "Detail without the decision hides what matters, and softened reports lead to decisions on a false picture. Report the facts, with context, at the level that can act."
+      },
+      "example": {
+        "scenario": "A regional airline's executive committee asks the risk practitioner for a one-page risk summary before it approves next year's IT plan.",
+        "answer": "Show the top risks against appetite, their trend, the risks the plan would reduce or add, and the decisions needed. Detailed control results go to the risk and control owners, not the committee."
+      },
+      "check": {
+        "scenario": "The IT security team sends the payroll director, who owns the payroll fraud risk, a long monthly export of raw vulnerability scan results.",
+        "right": "Send the director their payroll risks against tolerance, the trends and the actions due from them.",
+        "trap": "Send the director the full scan export with a one-page summary of the critical findings on top.",
+        "why": "An owner decides on their own risks and actions. Scan detail suits the control owners; the director needs risk in business terms against tolerance."
+      },
+      "nuance": "Context is welcome: a planned fix, its date and interim measures can sit beside a finding. Removing, softening or delaying the finding is not.",
+      "domains": [
+        1,
+        3,
+        4
+      ],
+      "subtopics": [
+        "1A3.3",
+        "1B3.1",
+        "3C5.1",
+        "3C5.2",
+        "4A5.1"
+      ],
+      "practice_ids": [
+        "crisc_d1_007",
+        "crisc_d3_019",
+        "crisc_d4_009"
+      ],
+      "slip_pattern": null,
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "priority-word-decides",
+      "family": "reading",
+      "order": 1,
+      "title": "The priority word decides",
+      "rule": "Find FIRST, BEST, MOST, PRIMARY, GREATEST, MOST LIKELY or LEAST before the options; it picks which true answer wins.",
+      "why": "Most options on a CRISC item are sensible things a practitioner might do. The priority word turns the question into a ranking: what comes first, what fits best, what is most likely. Read it first, then test each option against that word, not against whether it is true.",
+      "triggers": [
+        "FIRST",
+        "MOST LIKELY cause",
+        "MOST directly",
+        "PRIMARY concern",
+        "BEST next step",
+        "LEAST"
+      ],
+      "trap": {
+        "move": "Picking the first option that is true, or the most serious-sounding risk, without asking what the priority word ranks.",
+        "why_wrong": "Several options are true. FIRST asks for sequence, MOST LIKELY for probability rather than severity, and MOST directly for the closest fit."
+      },
+      "example": {
+        "scenario": "A question asks which event is MOST LIKELY to disrupt a call center on one internet line. Roadworks cut the line twice last year; the town floods about once a decade.",
+        "answer": "Pick the line cut. MOST LIKELY ranks probability, and the facts given show cuts happen far more often. A flood would do more damage, which would matter if the question asked for the GREATEST impact."
+      },
+      "check": {
+        "scenario": "A question asks what the risk practitioner should do FIRST after hearing that a key supplier may be sold to a competitor. Two options survive elimination.",
+        "right": "Assess what the sale could mean for supply and data, and brief the risk owner.",
+        "trap": "Ask procurement to identify other suppliers that could replace this one if needed.",
+        "why": "Both may happen, but FIRST asks for sequence. Assessing the change comes before choosing a response such as finding other suppliers."
+      },
+      "nuance": "MOST LIKELY ranks probability, not severity, and LEAST inverts the test: look for the option that helps or matters least.",
+      "domains": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "subtopics": [],
+      "practice_ids": [
+        "crisc_d1_012",
+        "crisc_d4_015",
+        "crisc_d4_019"
+      ],
+      "slip_pattern": "priority",
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "final-two",
+      "family": "reading",
+      "order": 2,
+      "title": "Choosing between the final two",
+      "rule": "When two survive, prefer the one that comes first, enables the other, fits the practitioner's role and serves objectives.",
+      "why": "CRISC runner-ups are usually right actions taken too early, by the wrong person, or narrower than the best answer. Ask which one the other depends on, who should act, and which ties back to business objectives. Say in one sentence why the winner beats the runner-up before you commit.",
+      "triggers": [
+        "two options both look right",
+        "one option is a step inside the other",
+        "a response versus an assessment",
+        "which must happen first"
+      ],
+      "trap": {
+        "move": "Choosing the runner-up because it is more specific, more technical or more decisive.",
+        "why_wrong": "On CRISC items the specific, decisive option is often the treatment that should follow the assessment, or a step someone else owns."
+      },
+      "example": {
+        "scenario": "A question about a new cloud data platform leaves two options: assess the platform's risks against appetite with the data owner, or require encryption of all data at rest.",
+        "answer": "The assessment wins. It comes first and decides whether encryption, or something else, is the right response. Encryption is a plausible treatment chosen too early."
+      },
+      "check": {
+        "scenario": "A question asks for the BEST recommendation when a payments firm's fraud KRI keeps breaching its threshold, and two options survive elimination.",
+        "right": "Find the cause of the breaches with the risk owner before agreeing on a response.",
+        "trap": "Recommend that the risk owner fund an upgrade of the fraud detection software.",
+        "why": "Both are reasonable, but the analysis comes first and shows whether an upgrade is the right response. The specific option is the later step."
+      },
+      "domains": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "subtopics": [],
+      "practice_ids": [
+        "crisc_d1_008",
+        "crisc_d2_009",
+        "crisc_d4_012"
+      ],
+      "slip_pattern": "runner-up",
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "answer-from-the-stem",
+      "family": "reading",
+      "order": 3,
+      "title": "Answer from the facts given",
+      "rule": "Use only the facts in the question; words like already, confirmed, within appetite and planned change the answer.",
+      "why": "A CRISC question holds the fact that makes the best answer best: whether the risk is already analyzed, the breach confirmed, the control only planned or the error honest. Adding assumptions, such as malice or a worst case the question never mentions, leads to a different question's answer. Distrust options that say always, never or guarantees.",
+      "triggers": [
+        "already",
+        "confirmed",
+        "seldom reviewed",
+        "solid-state drives",
+        "instead of test",
+        "after the change is live"
+      ],
+      "trap": {
+        "move": "Answering the question you expected, adding a detail the question does not give, or skimming past a qualifier.",
+        "why_wrong": "The deciding fact is often a single word. Reading past it, or inventing one, swaps the question for a different one."
+      },
+      "example": {
+        "scenario": "A question says a confirmed KRI breach has already been analyzed and the owner has approved a treatment plan. It asks what the practitioner should do next.",
+        "answer": "Analysis is done, so the answer moves on: help the owner carry out the plan and track it, with dates and validation. The word already shifts the sequence."
+      },
+      "check": {
+        "scenario": "A question says a risk owner has already accepted a residual risk that is confirmed to be within appetite, and asks for the practitioner's BEST next step.",
+        "right": "Record the acceptance and monitor the risk through its indicators and review dates.",
+        "trap": "Assess the risk again against appetite before recording the owner's acceptance.",
+        "why": "The question already gives the assessment and the acceptance. Repeating them ignores the facts given; the next step is to record and monitor."
+      },
+      "domains": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "subtopics": [],
+      "practice_ids": [
+        "crisc_d2_003",
+        "crisc_d3_008",
+        "crisc_d4_003",
+        "crisc_d4_008"
+      ],
+      "slip_pattern": "misread",
+      "legacy_ids": [],
+      "aliases": []
+    }
+  ],
+  "slip_map": {
+    "runner-up": "final-two",
+    "priority": "priority-word-decides",
+    "overconfident": "answer-from-the-stem",
+    "role": "advise-dont-decide",
+    "tech-first": "analyze-before-acting",
+    "symptom": "root-cause-over-symptom",
+    "misread": "answer-from-the-stem",
+    "knowledge": null
+  }
+}
