@@ -99,7 +99,7 @@
       "family": "role",
       "order": 2,
       "title": "Give each decision to the right owner",
-      "rule": "Boards set appetite, senior management approves and assigns, one business manager owns each risk, control owners run controls.",
+      "rule": "Leadership sets appetite and assigns owners; one business manager owns each risk; control owners answer for their controls working.",
       "why": "Each role answers for something different, so the BEST owner is the one accountable for that thing. A risk owner is the business manager whose objective bears the loss, not whoever builds, hosts or reviews the system. Committees oversee and advise; they cannot be one named, accountable owner.",
       "triggers": [
         "who should own",
@@ -121,7 +121,7 @@
         "scenario": "A museum's online ticketing risk needs an owner. A web agency built the site, IT hosts it, and the visitor services director answers for ticket revenue.",
         "right": "Propose the visitor services director as risk owner, with IT owning the hosting controls.",
         "trap": "Propose the IT manager as risk owner, since IT hosts the site and can act fastest.",
-        "why": "The risk owner is the manager whose objective bears the loss. Hosting or building the system makes someone a control owner, not the risk owner."
+        "why": "The risk owner is the manager whose objective bears the loss. IT can be assigned the hosting controls as their control owner; building or hosting the site never makes anyone the risk owner."
       },
       "nuance": "For a risk shared across units, senior management can name one lead owner and record the others as contributors. It is still one named person, never a group.",
       "domains": [
@@ -147,7 +147,8 @@
         "crisc_d1_013",
         "crisc_d3_005",
         "crisc_d4_005",
-        "crisc_d4_007"
+        "crisc_d4_007",
+        "crisc_d4_008"
       ],
       "slip_pattern": null,
       "legacy_ids": [],
@@ -159,7 +160,7 @@
       "order": 3,
       "title": "Know your line of defense",
       "rule": "The first line owns and runs controls, the second line oversees and challenges, the third line gives independent assurance.",
-      "why": "Each line adds value only while it keeps its own job. If the second or third line designs or runs controls, the business stops owning them and no one can challenge them objectively. The risk function needs objectivity and a path to escalate, not the full independence internal audit needs.",
+      "why": "Each line adds value only while it keeps its own job. If the second or third line takes over a control, the business stops owning it and no one can challenge it objectively. The risk function advises control owners on design and needs objectivity, not audit's full independence.",
       "triggers": [
         "internal audit offers to design",
         "second-line risk team",
@@ -169,7 +170,7 @@
         "who should design the control"
       ],
       "trap": {
-        "move": "Letting the risk team or internal audit design and run controls for the business, or making the second line as independent as audit.",
+        "move": "Letting the risk team or internal audit take over designing and running controls for the business, or making the second line as independent as audit.",
         "why_wrong": "Either the business stops owning its controls, or the second line loses the closeness it needs to advise and challenge. Each line does its own job."
       },
       "example": {
@@ -206,14 +207,14 @@
       "order": 1,
       "title": "Business objectives first",
       "rule": "Judge a risk by its effect on business objectives, not by the technical defect or the rulebook alone.",
-      "why": "Risk is the effect of uncertainty on what the enterprise is trying to achieve. A critical flaw on an unused system may matter less than a moderate one on a revenue process, and a clean compliance result says nothing about risks no rule covers. Starting from objectives lets owners compare IT risk with every other business risk.",
+      "why": "Risk is likelihood combined with impact, and impact is measured on business objectives. A critical flaw on an unused system may matter less than a moderate one on a revenue process, and a clean compliance result says nothing about risks no rule covers. Starting from objectives lets owners compare IT risk with every other business risk.",
       "triggers": [
         "penetration test findings",
         "technical severity score",
         "an IT goal for every system",
         "passed the regulatory examination",
-        "matches the vendor's restore time",
-        "wants the service closed"
+        "what IT can deliver",
+        "highest technical severity"
       ],
       "trap": {
         "move": "Ranking, fixing or budgeting by technical severity, a compliance result or what IT can deliver, before asking which objective is at stake.",
@@ -259,8 +260,8 @@
       "family": "priorities",
       "order": 2,
       "title": "Appetite and tolerance set the line",
-      "rule": "Compare analyzed risk with appetite and tolerance first: within, accept and monitor; above, treat it with the owner.",
-      "why": "Leaders set appetite, the broad level of risk they choose, and tolerance, the measurable limit on a specific metric. Those thresholds turn a rating into a decision. Without them every response is a guess: extra controls on accepted risk waste money, and missing treatment above appetite leaves the board exposed.",
+      "rule": "Compare analyzed risk with appetite and tolerance first: within, the owner can accept and monitor; above, the owner treats it.",
+      "why": "Leaders set appetite, the broad amount of risk they will accept, and tolerance, the acceptable variation for a particular risk, often a measurable limit. Those thresholds turn a rating into a decision. Without them every response is a guess: extra controls on accepted risk waste money, and missing treatment above appetite leaves the board exposed.",
       "triggers": [
         "within appetite",
         "exceeds appetite",
@@ -275,7 +276,7 @@
       },
       "example": {
         "scenario": "A media company's subscriber-data risk is rated within appetite after last year's controls. The security team now proposes a costly data-masking project for the same data.",
-        "answer": "Point out that the risk is within appetite, so the owner can accept it and monitor its indicators. The project goes ahead only if the owner wants a lower appetite or the rating goes up."
+        "answer": "Point out that the risk is within appetite, so the owner can accept it and monitor its indicators. The project goes ahead only if the owner chooses further reduction, leadership lowers the appetite, or the rating goes up."
       },
       "check": {
         "scenario": "A clinic network's tolerance allows at most four hours of scheduling downtime a month. A new assessment rates the risk at about one hour, and IT proposes a second hosting site.",
@@ -321,15 +322,15 @@
       ],
       "trap": {
         "move": "Blocking, buying, fixing or redesigning straight away because the problem looks obvious.",
-        "why_wrong": "Acting first skips the owner's decision and may treat the wrong risk at the wrong cost. Unless the question says the risk is already analyzed and a response approved, assessment comes first."
+        "why_wrong": "Acting first skips the owner's decision and may treat the wrong risk at the wrong cost. Unless the risk is already analyzed, assessment usually comes before any treatment."
       },
       "example": {
         "scenario": "A charity learns that its donation platform's payment provider has been bought by a company in another country, with processing to move next quarter.",
         "answer": "Update the risk assessment for the change, covering data location, contract terms and service continuity, and brief the risk owner. New contract terms or a new provider are responses the owner may choose afterward."
       },
       "check": {
-        "scenario": "A risk analyst at a hotel group hears that front-desk staff photograph guest passports on personal phones to speed up check-in. No one knows how widely it happens.",
-        "right": "Assess how widely it happens and what guest data is exposed, then brief the risk owner.",
+        "scenario": "A risk analyst at a hotel group hears that front-desk staff use a free messaging app on personal phones to pass room requests to housekeeping. No one knows how widely it happens.",
+        "right": "Assess how widely it happens and what guest data is shared, then brief the risk owner.",
         "trap": "Ban personal phones at the front desk and tell staff the new rule starts today.",
         "why": "The size of the exposure is unknown, so a ban may be wrong or unworkable. Assessment first gives the owner a basis for choosing the response."
       },
@@ -396,7 +397,7 @@
         "trap": "Rank each unit's list on its own scale, then merge them with the top-rated risks first.",
         "why": "Ratings on different scales cannot be compared directly. Mapping them onto one set of criteria first makes the combined ranking mean something."
       },
-      "nuance": "A business impact analysis (BIA) measures impact over time on purpose and feeds the risk assessment; it does not replace it. With thin data, a range or a qualitative rating is more honest than an exact-looking figure.",
+      "nuance": "A business impact analysis (BIA) deliberately measures only impact and how it grows over time, which sets recovery limits; it does not rate likelihood, so it feeds the risk assessment but cannot replace it.",
       "domains": [
         1,
         2,
@@ -415,6 +416,7 @@
         "3C2.2"
       ],
       "practice_ids": [
+        "crisc_d1_012",
         "crisc_d2_005",
         "crisc_d2_007",
         "crisc_d2_011",
@@ -431,16 +433,17 @@
       "id": "residual-counts-working-controls",
       "family": "analysis",
       "order": 3,
-      "title": "Inherent, residual and target risk",
-      "rule": "Compare residual risk, counting only controls implemented and working, with appetite; planned controls give target risk, not residual.",
-      "why": "Inherent risk shows how much the enterprise relies on its controls; it does not decide treatment. Residual risk is today's exposure, so it is what owners compare with appetite and accept. A control that is approved, planned or untested has not reduced anything yet, so it shapes the target, not the current rating.",
+      "title": "Inherent, current, residual and target risk",
+      "rule": "Compare current risk, counting only controls in place and working, with appetite; planned controls give future residual (target) risk.",
+      "why": "Inherent risk ignores every action management has taken or might take. Current risk is today's exposure, counting only actions already taken; once a response is implemented, the residual risk it leaves becomes today's current risk. A control that is approved, planned or untested has not reduced anything yet, so it shapes future residual (target) risk, not today's rating.",
       "triggers": [
         "closed because the tool was approved",
         "projected once the controls go live",
         "installed but never tested",
         "which rating should be compared with appetite",
         "inherent risk",
-        "target risk"
+        "current risk",
+        "future residual risk"
       ],
       "trap": {
         "move": "Lowering the rating or closing the entry once a control is approved, bought or installed.",
@@ -448,15 +451,15 @@
       },
       "example": {
         "scenario": "A retailer's register rates card-skimming risk as moderate by counting a new endpoint control whose rollout starts next month. Today only the old controls run.",
-        "answer": "Rate residual risk on the controls running today and record moderate as the target once the rollout is verified. The owner compares today's residual risk with appetite and decides whether interim measures are needed."
+        "answer": "Rate current risk on the controls running today, and record moderate as the target (future residual) risk until the rollout is verified. The owner compares today's risk with appetite and decides whether interim measures are needed."
       },
       "check": {
         "scenario": "A transport authority bought a new backup system last month, but installation starts in the spring. The risk owner asks to lower the data-loss rating now, since the money is spent.",
         "right": "Keep today's rating, record the lower one as the target, and re-rate once it works.",
         "trap": "Lower the rating now, and raise it again if the spring installation slips.",
-        "why": "Buying a control does not reduce exposure. Residual risk counts only controls in place and working; the planned result is the target."
+        "why": "Buying a control does not reduce exposure. Today's current risk counts only controls in place and working; the planned result is future residual (target) risk."
       },
-      "nuance": "Some frameworks call today's level current risk and keep residual for what remains once a response is complete. Either way, a projection that counts planned controls is target risk.",
+      "nuance": "ISACA's Glossary calls the level a planned response should reach future residual risk; KaiSip calls it target risk. Questions may use current, residual or future residual risk: match each to what has actually been implemented.",
       "domains": [
         2,
         3
@@ -486,7 +489,7 @@
       "triggers": [
         "AI model",
         "regulators are consulting",
-        "has not failed in years",
+        "unsupported legacy system",
         "the vendor claims it is tamper-proof",
         "drift",
         "prompt injection"
@@ -539,7 +542,7 @@
       "family": "response",
       "order": 1,
       "title": "Cost-benefit and proportion",
-      "rule": "Choose the response that brings risk within appetite at a cost no greater than the loss it avoids.",
+      "rule": "Recommend the response that brings risk within appetite at a cost no greater than the loss it avoids.",
       "why": "The strongest control is rarely the best answer, because spending beyond appetite buys reduction the business has not asked for. Value is the yearly loss avoided compared with the yearly cost, not a percentage cut. The owner then decides with the numbers in front of them.",
       "triggers": [
         "two control options",
@@ -592,8 +595,8 @@
         "keeps recurring",
         "several times a month",
         "despite training",
-        "a bonus for",
-        "staff retype",
+        "an incentive that rewards speed",
+        "manual re-entry",
         "restores each one within minutes"
       ],
       "trap": {
@@ -640,7 +643,7 @@
       "order": 3,
       "title": "Transfer moves cost, not accountability",
       "rule": "Insurance, contracts and vendors can shift cost or work, but accountability for the risk stays with the enterprise.",
-      "why": "Customers, regulators and the board still hold the enterprise responsible when a supplier or insurer is involved. Transfer pays part of the loss; it does not lower likelihood or undo the harm. So the enterprise keeps assessing vendors, checks the scope of their assurance and validates their changes before relying on them.",
+      "why": "Customers, regulators and the board still hold the enterprise responsible when a supplier or insurer is involved. Insurance pays part of the loss and outsourcing moves the work, but neither moves accountability or undoes the harm. So the enterprise keeps assessing vendors, checks the scope of their assurance and validates their changes before relying on them.",
       "triggers": [
         "cyber insurance",
         "the vendor's contract clause",
@@ -663,7 +666,7 @@
         "trap": "Cut backup testing in line with the cover, and review the budget when the policy renews.",
         "why": "Insurance shifts part of the financial loss after an event. It does not lower likelihood or the harm of an outage, so the controls stay."
       },
-      "nuance": "Transfer is a sound response when it brings the financial part within appetite. Pair it with controls for what money cannot fix, such as safety, trust or service continuity.",
+      "nuance": "Transfer is a sound response when it brings the financial part within appetite. Pair it with controls for what money cannot fix, such as safety, trust or service continuity. ISACA's Glossary also calls transfer risk sharing.",
       "domains": [
         3,
         4
@@ -691,7 +694,7 @@
       "order": 1,
       "title": "Indicators that warn in time",
       "rule": "Pick leading indicators tied to a risk scenario, with thresholds from tolerance and an owner who acts on them.",
-      "why": "A key risk indicator (KRI) is useful only if it warns before the loss, while there is still time to act. Incident counts and complaints confirm harm afterward; a KPI shows process performance and a KCI shows control health. A threshold copied from a survey, or an alert nobody owns, changes nothing.",
+      "why": "A key risk indicator (KRI) is most useful when it warns before the loss, while there is still time to act. Incident counts and complaints confirm harm afterward; a KPI shows process performance and a KCI shows control health. A threshold copied from a survey, or an alert nobody owns, changes nothing.",
       "triggers": [
         "key risk indicator",
         "BEST early warning",
@@ -742,8 +745,8 @@
       "family": "monitoring",
       "order": 2,
       "title": "Validate before you credit or report",
-      "rule": "A control, plan or completed action counts only when evidence shows it works; validate before re-rating or reporting.",
-      "why": "Owners and boards decide on what the practitioner reports, so an unverified claim becomes their mistake. A signed statement, a written procedure or one observation shows intent, not operation over time. Evidence the practitioner selects, inspects or reperforms, from a complete population, is what earns a lower rating.",
+      "rule": "A control, plan or action counts only when evidence shows it works; validate before re-rating or reporting it closed.",
+      "why": "Owners and boards decide on what the practitioner reports, so an unverified claim becomes their mistake. A signed statement, a written procedure or one observation shows intent, not operation over time. Test results, system reports or control assessments showing the control working over time are what earn a lower rating.",
       "triggers": [
         "reports that the action plan is complete",
         "says it never misses a day",
@@ -898,7 +901,7 @@
       "family": "reading",
       "order": 1,
       "title": "The priority word decides",
-      "rule": "Find FIRST, BEST, MOST, PRIMARY, GREATEST, MOST LIKELY or LEAST before the options; it picks which true answer wins.",
+      "rule": "Find FIRST, BEST, MOST, PRIMARY, GREATEST or MOST LIKELY before the options; it picks which true answer wins.",
       "why": "Most options on a CRISC item are sensible things a practitioner might do. The priority word turns the question into a ranking: what comes first, what fits best, what is most likely. Read it first, then test each option against that word, not against whether it is true.",
       "triggers": [
         "FIRST",
@@ -906,7 +909,7 @@
         "MOST directly",
         "PRIMARY concern",
         "BEST next step",
-        "LEAST"
+        "GREATEST concern"
       ],
       "trap": {
         "move": "Picking the first option that is true, or the most serious-sounding risk, without asking what the priority word ranks.",
@@ -922,7 +925,7 @@
         "trap": "Ask procurement to identify other suppliers that could replace this one if needed.",
         "why": "Both may happen, but FIRST asks for sequence. Assessing the change comes before choosing a response such as finding other suppliers."
       },
-      "nuance": "MOST LIKELY ranks probability, not severity, and LEAST inverts the test: look for the option that helps or matters least.",
+      "nuance": "MOST LIKELY ranks probability, not severity. ISACA's item-writing guide for CRISC says negative questions using NOT, EXCEPT or LEAST are not accepted; if a practice question has one, invert the test.",
       "domains": [
         1,
         2,
@@ -931,7 +934,6 @@
       ],
       "subtopics": [],
       "practice_ids": [
-        "crisc_d1_012",
         "crisc_d4_015",
         "crisc_d4_019"
       ],
@@ -992,10 +994,10 @@
       "triggers": [
         "already",
         "confirmed",
-        "seldom reviewed",
-        "solid-state drives",
-        "instead of test",
-        "after the change is live"
+        "only planned",
+        "within appetite",
+        "after the change is live",
+        "has approved"
       ],
       "trap": {
         "move": "Answering the question you expected, adding a detail the question does not give, or skimming past a qualifier.",
@@ -1021,8 +1023,7 @@
       "practice_ids": [
         "crisc_d2_003",
         "crisc_d3_008",
-        "crisc_d4_003",
-        "crisc_d4_008"
+        "crisc_d4_003"
       ],
       "slip_pattern": "misread",
       "legacy_ids": [],

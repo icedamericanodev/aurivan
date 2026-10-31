@@ -210,7 +210,7 @@
           "definition": "A threat source is anyone or anything that could cause harm; a threat event is what that source does, such as phishing staff or flooding a data center.",
           "why_it_matters": "Scenarios built only around outside hackers miss insiders, errors, equipment failures and disasters. A full taxonomy keeps identification complete and keeps threats separate from weaknesses.",
           "how_it_works": [
-            "NIST SP 800-30 Rev. 1 groups threat sources into four types in its Table D-2.",
+            "NIST SP 800-30 Rev. 1 Table D-2 sorts threat sources by cause: intent (adversarial), human error (accidental), failing equipment or software (structural), and disasters or outside outages (environmental).",
             "For adversaries, likelihood weighs capability, intent and targeting; for other sources, it uses history and empirical data.",
             "One threat source can cause many threat events, and one event can come from several sources.",
             "A threat acts on a vulnerability: the threat is the actor or force, the vulnerability is the weakness it uses.",
@@ -265,7 +265,7 @@
             },
             {
               "term": "Privileged insider",
-              "definition": "A trusted person with elevated system rights, such as an administrator, whose actions or errors can cause wide harm."
+              "definition": "In NIST SP 800-30, an insider with elevated rights who intends harm, an adversarial source; an administrator's honest error is an accidental source."
             }
           ]
         },
@@ -977,7 +977,7 @@
           "id": "2B2.2",
           "name": "MTO, RTO and RPO",
           "legacy_ids": [],
-          "definition": "MTO is the longest a critical function can be disrupted before significant harm; RTO is the time allowed to recover a business function or resource; RPO sets tolerable data loss.",
+          "definition": "MTO is a critical function's longest tolerable disruption; RTO, the time allowed to recover a business function or resource; RPO, the earliest restore point that tolerable data loss allows.",
           "why_it_matters": "These numbers drive recovery design and cost. If IT sets them alone, they reflect what the technology can do, not what the business can survive.",
           "how_it_works": [
             "Process owners and leadership set the maximum tolerable outage (MTO; other sources say MTD) from the impact-over-time results.",
@@ -1075,9 +1075,9 @@
           "definition": "A risk register is the record of risk scenarios that have been identified, analyzed and prioritized, with the owner, ratings, controls and response for each one.",
           "why_it_matters": "The register is how risk is tracked and decided on. An entry with no owner has nobody to accept, treat or monitor it, so it drifts.",
           "how_it_works": [
-            "Core fields: ID, scenario, category, risk owner, inherent and residual ratings, existing controls, response, action plan, status, KRIs and review date.",
+            "Core fields: ID, scenario, category, risk owner, inherent and current ratings (with the target rating for any planned response), existing controls, response, action plan, status, KRIs and review date.",
             "The risk owner is an accountable business manager with authority to decide the response, not the person who found the risk.",
-            "Control owners and action owners are recorded separately, because answering for a control differs from owning the risk.",
+            "Control owners (often the manager whose team runs the control) and action owners are recorded separately; answering for a control differs from owning the risk.",
             "Ratings use the enterprise's common scales so entries can be compared and combined.",
             "IT or the risk function may maintain the register, but business owners own the entries in it."
           ],
@@ -1108,7 +1108,7 @@
             },
             {
               "term": "Control owner",
-              "definition": "ISACA Glossary: the person accountable for control decisions and for a control being implemented and operating effectively, often the manager whose team runs it."
+              "definition": "ISACA Glossary: the person assigned authority and accountability for control-related decisions, who ensures the control is implemented and operating effectively and efficiently."
             },
             {
               "term": "Action owner",
@@ -1129,11 +1129,11 @@
           "how_it_works": [
             "Update triggers include incidents, near misses, control test results, audit findings, new threats, projects and reorganizations.",
             "Status follows evidence: an entry moves to treated only when the response is implemented and working, not when it is planned.",
-            "Residual ratings are re-scored after controls are tested, not on the day they are approved.",
+            "Current and residual ratings credit a control only after it is implemented and tested, not on the day it is approved.",
             "Each owner reviews their entries on a set cycle, and KRIs flag when an earlier review is needed.",
             "Closing an entry needs a reason, such as the asset being retired or the risk avoided, and the owner's approval."
           ],
-          "example": "A pension fund's register shows member portal account takeover as treated because multifactor sign-in was approved in March. In September, Elif Yilmaz, the risk analyst, finds the rollout covers only 20% of members. Elif moves the status back to in treatment, re-scores the residual risk on the control as it stands, and flags the gap to the member services director.",
+          "example": "A pension fund's register shows member portal account takeover as treated because multifactor sign-in was approved in March. In September, Elif Yilmaz, the risk analyst, finds the rollout covers only 20% of members. Elif moves the status back to in treatment, re-scores the current risk on the control as it stands, and flags the gap to the member services director.",
           "audit_focus": {
             "review": [
               "Sample entries marked treated and confirm the control is implemented and tested",
@@ -1414,7 +1414,7 @@
     {
       "topic_id": "2B5",
       "topic_name": "Inherent and Residual Risk",
-      "overview": "This topic covers risk before controls (inherent), with the controls working today (current), and after a response is implemented (residual), when residual and current risk match. A planned response's projection is the ISACA Glossary's future residual risk (KaiSip: target risk): it judges the plan, not today's position. Owners compare current risk with appetite, and controls earn credit only when tested.",
+      "overview": "This topic covers inherent risk (before any controls), current risk (counting only controls working today) and residual risk (what remains once a chosen response is implemented; from then on it is the current risk). A planned response's projection is the ISACA Glossary's future residual risk (KaiSip: target risk): it judges the plan, not today's position. Owners compare current risk with appetite, and controls earn credit only when tested.",
       "can_do": [
         "Tell inherent, current and residual risk apart in a scenario",
         "Explain why a control's existence does not prove its effect",
@@ -1432,7 +1432,7 @@
             "Inherent risk shows how much a scenario depends on controls; a high inherent rating marks controls that must not fail.",
             "Current risk counts only actions already taken, not those proposed or planned.",
             "Residual risk is rated with the same scales and method as inherent risk, so the two are comparable.",
-            "Current risk, counting only responses implemented and working, is compared with appetite now; the future residual risk of a planned response shows whether the plan would be enough.",
+            "Current risk, counting only implemented, working responses, is compared with appetite now; a planned response's future residual risk shows whether the plan is enough.",
             "Residual risk is never zero; some uncertainty always remains after any response."
           ],
           "compare": {
@@ -1463,17 +1463,17 @@
               }
             ]
           },
-          "example": "A hospital's infusion pump tampering scenario has very high inherent risk. Network isolation exists today, and firmware signing for the pumps is planned for next year. Siobhan Kelly, the risk analyst, records current risk as high, counting only isolation, and shows the target risk after signing on a separate, labeled line, so the patient safety director compares today's exposure, not the target, with appetite.",
+          "example": "A hospital's infusion pump tampering scenario has very high inherent risk. Network isolation exists today, and firmware signing is planned for next year. Siobhan Kelly, the risk analyst, records current risk as high, counting only isolation, and shows the target risk after signing on a separate line, so the patient safety director compares today's exposure with appetite.",
           "audit_focus": {
             "review": [
-              "Compare inherent, current and residual ratings for use of the same scales",
+              "Compare inherent, current and target ratings for use of the same scales",
               "Confirm planned controls are excluded from current risk ratings"
             ],
             "evidence": [
-              "Register fields showing inherent, current and residual ratings separately",
+              "Register fields showing inherent, current and target ratings separately",
               "Control status records for each control credited in a rating"
             ],
-            "recommend": "Have the risk function record the three ratings separately, crediting only implemented controls in current risk, for owners to confirm.",
+            "recommend": "Have the risk function record inherent, current and target ratings separately, crediting only implemented, working controls in current risk, for owners to confirm.",
             "decides": "The risk owner compares current risk with appetite and decides further treatment"
           },
           "isaca_rule": "Inherent risk shows reliance on controls; current risk is today's exposure; residual risk is what an implemented response leaves. Compare current risk with appetite to decide on treatment, and check that a plan's expected residual risk falls within appetite. Never compare inherent risk, or count planned controls as working.",
@@ -1483,8 +1483,8 @@
               "why": "Inherent risk ignores controls already working. The decision compares the risk that exists now, counting only implemented, working controls, with appetite."
             },
             {
-              "trap": "Count next year's planned controls when comparing a scenario with appetite today.",
-              "why": "Planned controls reduce nothing yet; that projection is future residual risk, which judges the plan, not today's exposure."
+              "trap": "Residual risk is never the figure to compare with appetite.",
+              "why": "Once a response is implemented, the risk it leaves is today's current risk; exam items may call it residual risk. Reject a residual figure only if it credits planned, approved or untested controls."
             }
           ],
           "key_terms": [
@@ -1523,7 +1523,7 @@
             ],
             "evidence": [
               "Dated test results for every credited control",
-              "KCI reports showing control performance over time"
+              "KCI reports showing control failures or weakening over time"
             ],
             "recommend": "Have control owners provide test evidence before a control earns credit in the residual rating.",
             "decides": "The risk owner accepts the re-rated residual risk or requests more treatment"
@@ -1546,7 +1546,7 @@
             },
             {
               "term": "Key control indicator (KCI)",
-              "definition": "A metric showing how well a control is performing, such as the backup success rate."
+              "definition": "A measure of control effectiveness that signals failure or weakness that could raise a risk's likelihood or impact, such as the count of failed backups."
             }
           ]
         },
@@ -1554,7 +1554,7 @@
           "id": "2B5.3",
           "name": "Residual Risk Against Appetite and Tolerance",
           "legacy_ids": [],
-          "definition": "Comparing residual risk with appetite and tolerance decides what happens next: accept and monitor, treat further, or escalate to the level that set the threshold.",
+          "definition": "Comparing residual risk, the current risk once a response is in place, with appetite and tolerance decides the next step: accept and monitor, treat further, or escalate a tolerance breach.",
           "why_it_matters": "This comparison is where analysis becomes a decision. It must reach the person with authority to decide, together with the options and their costs.",
           "how_it_works": [
             "Within appetite: the risk owner may accept the risk, document the acceptance and monitor it with KRIs.",
@@ -1640,9 +1640,9 @@
       "checked": "2026-10-30: via docs/content/CRISC_BLUEPRINT.md"
     },
     {
-      "title": "ISACA Interactive Glossary (risk, risk scenario, loss event, threat event, vulnerability, BIA, risk register, risk owner, control owner, inherent, current and residual risk, risk response, MTO, AIW, RPO, RTO, prompt injection)",
+      "title": "ISACA Interactive Glossary (risk, risk scenario, loss event, threat event, vulnerability, BIA, risk register, risk owner, control owner, key control indicator, impact analysis, inherent, current and residual risk, risk response, MTO, AIW, RPO, RTO, prompt injection)",
       "url": "https://www.isaca.org/resources/glossary",
-      "checked": "2026-10-31: page read again; risk response (future residual risk), MTO, AIW, RTO, control owner and current risk entries checked"
+      "checked": "2026-10-31: page read again; risk response (future residual risk), MTO, AIW, RTO, control owner, current risk, key control indicator and impact analysis entries checked"
     },
     {
       "title": "ISACA press release: Risk IT Framework, 2nd Edition and Risk IT Practitioner Guide, 2nd Edition (25 Jun 2020)",

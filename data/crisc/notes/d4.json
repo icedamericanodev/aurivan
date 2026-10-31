@@ -125,7 +125,7 @@
           "key_terms": [
             {
               "term": "Shadow IT",
-              "definition": "Technology used for business work without the knowledge or approval of the IT or risk functions."
+              "definition": "Systems, services, hardware or software used for enterprise work without proper vetting and approval from the IT or cybersecurity function."
             },
             {
               "term": "End of support",
@@ -144,7 +144,7 @@
             "Risk grows over time: fewer patches, fewer people who understand the system and harder integrations.",
             "Each legacy system needs a risk entry naming its business process, owner, weaknesses and compensating controls.",
             "Options include upgrade, replace, isolate with compensating controls, or accept for a defined period.",
-            "A dated retirement plan on the roadmap turns open-ended debt into a managed risk."
+            "A dated retirement plan turns open-ended debt into managed risk; until it is done, the register keeps the current rating, not the planned one."
           ],
           "example": "A hospital's pharmacy system runs on an operating system that lost vendor support two years ago. Staff say it is reliable, so no one has raised it. Nour, the IT risk analyst, records the risk with the pharmacy director as owner, rates it against the hospital's appetite and sets out options: segment the system, buy extended support or fund replacement.",
           "audit_focus": {
@@ -159,7 +159,7 @@
             "recommend": "Have each legacy system's business owner approve a dated plan to upgrade, isolate or replace it.",
             "decides": "The business owner signs any time-limited acceptance of legacy risk"
           },
-          "isaca_rule": "'It still works' is not a risk assessment. The practitioner records legacy and technical-debt risk in the register with a business owner, analyzes it against appetite and presents options; the owner chooses and accepts any residual risk for a defined period.",
+          "isaca_rule": "'It still works' is not a risk assessment. The practitioner records legacy and technical-debt risk in the register with a business owner, analyzes it against appetite and presents options; the owner chooses and may accept residual risk within appetite for a defined period, escalating anything beyond appetite to senior management.",
           "exam_traps": [
             {
               "trap": "Leaving a legacy system off the risk register because it has run without failure for years.",
@@ -178,6 +178,10 @@
             {
               "term": "Extended support",
               "definition": "A paid vendor arrangement that continues patches for a product past its normal end of support."
+            },
+            {
+              "term": "Future residual risk",
+              "definition": "ISACA Glossary phrase for current risk once a planned response is implemented; KaiSip calls it target risk and uses it to judge the plan."
             }
           ]
         }
@@ -363,7 +367,7 @@
               "Pipeline logs linking each deployment to its reviewer"
             ],
             "recommend": "Have the engineering lead enforce independent review before merge and move pipeline secrets into a managed vault.",
-            "decides": "The application owner accepts residual pipeline risk; the engineering lead owns controls"
+            "decides": "The application owner accepts residual pipeline risk; the engineering lead is accountable for its controls"
           },
           "isaca_rule": "Speed does not remove the need for separation of duties; it moves the control into the pipeline. The practitioner checks that no single person can write, approve and deploy a change, and that the pipeline itself is protected as a critical asset.",
           "exam_traps": [
@@ -409,7 +413,7 @@
             "Initiation: confirm the business case, owner, data sensitivity and an initial risk assessment.",
             "Requirements and design: define security, privacy and control requirements alongside functional ones.",
             "Build and test: verify requirements are met; business users, not developers, sign off acceptance testing.",
-            "Implementation: confirm the owner accepts residual risk before go-live.",
+            "Implementation: confirm the owner accepts residual risk within appetite, or orders more treatment, before go-live.",
             "Post-implementation review: check whether benefits arrived and risks stayed within appetite.",
             "Disposal: retire data and components securely."
           ],
@@ -426,7 +430,7 @@
             "recommend": "Have the project sponsor make risk and security sign-off a condition of every phase gate.",
             "decides": "The system owner signs the go-live risk acceptance"
           },
-          "isaca_rule": "Risk is assessed at every SDLC phase, starting at initiation. The best time to set a control requirement is the earliest phase, and the system owner accepts residual risk before go-live, never the developers or the practitioner.",
+          "isaca_rule": "Risk is assessed at every SDLC phase, starting at initiation. The best time to set a control requirement is the earliest phase, and before launch the system owner accepts residual risk within appetite or requires more treatment; developers and the practitioner never accept it.",
           "exam_traps": [
             {
               "trap": "Treating a small change as too minor to need a risk assessment.",
@@ -478,7 +482,7 @@
             "recommend": "Have the development manager add automated security checks to the build and track repeat findings to root cause.",
             "decides": "The application owner accepts residual software risk at release"
           },
-          "isaca_rule": "Testing finds flaws; a secure development process prevents them. The practitioner looks for root causes behind repeat findings and favors controls built into the process over late testing, with the control owner choosing and running them.",
+          "isaca_rule": "Testing finds flaws; a secure development process prevents them. The practitioner looks for root causes behind repeat findings and favors controls built into the process over late testing; the control owner is accountable for choosing those controls and keeping them working.",
           "exam_traps": [
             {
               "trap": "Relying on a penetration test just before release as the main security control.",
@@ -880,11 +884,11 @@
           "definition": "Recovery strategies are the planned ways to restore systems after a disruption, such as hot, warm or cold sites or cloud failover, chosen to meet recovery objectives.",
           "why_it_matters": "The strategy decides whether the business can recover within its tolerance for downtime and data loss. Too little capability breaches tolerance; too much spends money on systems that could wait.",
           "how_it_works": [
-            "The business impact analysis sets the recovery time objective (RTO) and recovery point objective (RPO) for each process.",
+            "Through the business impact analysis, process owners set each critical process's MTO and an RTO within it, and set the RPO separately, from the data loss they can tolerate.",
             "The strategy must meet RTO and RPO by design, at a cost the owner accepts.",
             "An alternate site is placed and built so the same event cannot disable both sites.",
             "Shared dependencies, such as one network carrier, identity service or power feed, are single points of failure.",
-            "Cloud recovery still needs tested configurations, capacity and access when the primary site is lost."
+            "Cloud recovery follows a shared responsibility model: the service model and contract decide who runs backups and failover; the customer stays accountable for its data and confirms recovery is tested."
           ],
           "compare": {
             "columns": [
@@ -940,7 +944,7 @@
             "recommend": "Have the business continuity manager remove shared dependencies or present the residual gap to process owners.",
             "decides": "The process owner signs off the chosen strategy and its cost"
           },
-          "isaca_rule": "A recovery strategy is judged by whether it meets the RTO and RPO under the scenarios that matter. The practitioner looks for shared single points of failure and reports the gap; the business owner chooses the strategy and accepts its cost and residual risk.",
+          "isaca_rule": "A recovery strategy is judged by whether it meets the RTO and RPO under the scenarios that matter. The practitioner looks for shared single points of failure and reports the gap; the business owner chooses the strategy and accepts its cost and any residual risk within appetite.",
           "exam_traps": [
             {
               "trap": "Counting a recovery site as adequate because it exists and has equipment.",
@@ -950,15 +954,23 @@
           "key_terms": [
             {
               "term": "Recovery time objective (RTO)",
-              "definition": "The target time to restore a process or system after a disruption."
+              "definition": "The time allowed to recover a business function or resource after a disruption, set within the MTO."
             },
             {
               "term": "Recovery point objective (RPO)",
-              "definition": "The maximum acceptable data loss, measured as time before the disruption."
+              "definition": "The earliest point in time to which data must be recoverable, set from the data loss the business can accept; it quantifies that permissible loss."
             },
             {
               "term": "Single point of failure",
               "definition": "One component whose failure stops the whole service."
+            },
+            {
+              "term": "Maximum tolerable outage (MTO)",
+              "definition": "ISACA term for the longest a critical function or IT system can be disrupted before significant harm; many sources call it MTD."
+            },
+            {
+              "term": "Acceptable interruption window (AIW)",
+              "definition": "ISACA term for the longest a system can be unavailable before business objectives are compromised."
             }
           ]
         },
@@ -988,7 +1000,7 @@
             "recommend": "Have the infrastructure manager schedule regular restore tests and keep one immutable or offline copy of critical data.",
             "decides": "The system owner accepts residual recovery risk based on test results"
           },
-          "isaca_rule": "A backup counts only when it is protected from the threat and has been restored successfully. During ransomware recovery the order is contain, verify the backup is clean, then restore; restoring first can reinfect systems.",
+          "isaca_rule": "A backup counts only when it is protected from the threat and has been restored successfully. In ransomware recovery the order is contain, verify the backup is clean, then restore; the practitioner advises on that order and the risk of skipping it, while the incident lead and business owner decide.",
           "exam_traps": [
             {
               "trap": "Restoring from backup immediately after ransomware is discovered.",
@@ -1096,7 +1108,7 @@
           "name": "Evaluating Emerging Technologies",
           "legacy_ids": [],
           "definition": "Evaluating emerging technology means assessing a new technology's threats, vulnerabilities and opportunities for the business before and during adoption.",
-          "why_it_matters": "New technology can create advantage, new exposure or both. Weighing both lets leaders take opportunities within appetite instead of banning by reflex or adopting blind.",
+          "why_it_matters": "New technology can create advantage, new exposure or both. The ISACA Glossary's enterprise risk management exploits risk as well as controlling it, to increase stakeholder value, so leaders weigh both instead of banning by reflex or adopting blind.",
           "how_it_works": [
             "Start from the business objective the technology would serve and the value it could add.",
             "Identify new threats and vulnerabilities, including those inherited from vendors and integrations.",
@@ -1248,7 +1260,7 @@
             "recommend": "Have system owners remove excess access and add compensating review where duties cannot be split.",
             "decides": "The system owner accepts residual access risk"
           },
-          "isaca_rule": "No single control is enough for a critical asset. Look for layered, independent controls, least privilege and separated duties; where a principle cannot be met, the risk is recorded and compensated, and the owner accepts what remains.",
+          "isaca_rule": "No single control is enough for a critical asset. Look for layered, independent controls, least privilege and separated duties; where a principle cannot be met, the risk is recorded and compensated, and the owner accepts what remains within appetite.",
           "exam_traps": [
             {
               "trap": "Relying on one strong perimeter control to protect everything inside.",
@@ -1265,8 +1277,12 @@
               "definition": "Giving users and systems only the access needed for their tasks."
             },
             {
-              "term": "Separation of duties",
-              "definition": "Splitting a critical task among people so no one can complete and conceal misuse alone."
+              "term": "Separation of duties (SoD)",
+              "definition": "Splitting conflicting steps, such as initiating, recording and holding assets, among people so no one can complete and conceal misuse alone."
+            },
+            {
+              "term": "Need-to-know",
+              "definition": "ISACA Glossary principle that people can see only the data, systems and spaces their job needs; least privilege extends it to what they can do."
             }
           ]
         },
@@ -1329,7 +1345,8 @@
             "Profiles compare the current state with a target state chosen by risk and business needs.",
             "ISO/IEC 27001 sets requirements for an information security management system that can be certified.",
             "A framework is tailored: controls are chosen by risk assessment, not adopted wholesale.",
-            "Certification shows a management system met a standard within a scope on a date; it does not prove risk is low."
+            "Certification shows a management system met a standard within a scope on a date; it does not prove risk is low.",
+            "A register rating records current risk; it moves when a scenario is reassessed on evidence, not because a profile or certificate changed."
           ],
           "example": "A software firm wins a contract partly on its ISO/IEC 27001 certificate. Noor, the risk lead, notices the certificate's scope covers only the head office, not the cloud platform that will host the client's data. Noor reports the gap to the chief operating officer and proposes a risk assessment of the platform against the contract's requirements.",
           "audit_focus": {
@@ -1497,7 +1514,7 @@
           "definition": "Privacy principles are rules for fair handling of personal data, including purpose limitation, data minimization, a lawful basis such as consent, transparency and individual rights.",
           "why_it_matters": "Privacy harm affects people and brings regulatory, legal and trust consequences. A secure system can still breach privacy if it collects too much or uses data for an undisclosed purpose.",
           "how_it_works": [
-            "The purpose is decided and stated before collection, and data is not reused for unrelated purposes.",
+            "The purpose is decided and stated before collection, and data is not used later in ways incompatible with it.",
             "Only the data the purpose needs is collected and kept.",
             "People are told what happens to their data, and the organization has a valid basis, such as consent.",
             "People can access, correct or delete their data, depending on the law that applies.",
@@ -1559,7 +1576,7 @@
           "key_terms": [
             {
               "term": "Purpose limitation",
-              "definition": "Using personal data only for the purposes stated when it was collected."
+              "definition": "Collecting personal data for specified, explicit and legitimate purposes and not using it later in ways incompatible with them."
             },
             {
               "term": "Data minimization",
@@ -1681,13 +1698,14 @@
     "CI/CD pipeline": "The automated path that builds, tests and deploys code changes to production.",
     "System development life cycle (SDLC)": "The phases of a system from initiation through design, build, test, operation and disposal.",
     "Secure Software Development Framework (SSDF)": "NIST SP 800-218, a set of practices for building security into any software development model.",
-    "Data owner": "The accountable business manager who classifies data and decides access and retention.",
+    "Data owner": "The accountable business manager responsible for the integrity, accuracy and use of data, who classifies it and decides access and retention.",
     "Data custodian": "The party, often IT, that stores and protects data according to the owner's rules.",
     "Sanitization": "Making data on storage media unrecoverable, by clearing, purging or destroying it.",
     "Portfolio management": "Selecting and prioritizing programs and projects by value, risk and strategic fit.",
     "Definition of done": "The agreed criteria, including control criteria, an Agile work item must meet to be complete.",
-    "Recovery time objective (RTO)": "The target time to restore a process or system after a disruption.",
-    "Recovery point objective (RPO)": "The maximum acceptable data loss, measured as time before the disruption.",
+    "Recovery time objective (RTO)": "The time allowed to recover a business function or resource after a disruption, set by the business within the maximum tolerable outage.",
+    "Recovery point objective (RPO)": "The earliest point in time to which data must be recoverable after a disruption, set from how much data loss the business can accept; it quantifies that permissible loss.",
+    "Maximum tolerable outage (MTO)": "ISACA's term for the longest a critical business function or IT system can be disrupted before significant harm; other sources say maximum tolerable downtime (MTD).",
     "Hot site": "An alternate site equipped and configured to take over processing within minutes to hours.",
     "Immutable backup": "A backup copy that cannot be altered or deleted for a set period, even by administrators.",
     "Emerging technology": "A technology new to the organization or the market whose risks and benefits are not yet well understood.",
@@ -1697,7 +1715,7 @@
     "NIST Cybersecurity Framework (CSF) 2.0": "A NIST framework of cybersecurity outcomes in six functions: Govern, Identify, Protect, Detect, Respond and Recover.",
     "Risk-aware culture": "A culture where people understand the risks in their work, speak up and act within appetite.",
     "Shadow AI": "Use of AI tools for work without the organization's approval or controls.",
-    "Purpose limitation": "Using personal data only for the purposes stated when it was collected.",
+    "Purpose limitation": "Collecting personal data for specified, explicit and legitimate purposes and not using it later in ways incompatible with them.",
     "Privacy impact assessment (PIA)": "An analysis of how a system or activity handles personal data, its privacy risks and mitigations."
   },
   "references": [
@@ -1707,14 +1725,19 @@
       "checked": "2026-10-30: via docs/content/CRISC_BLUEPRINT.md"
     },
     {
+      "title": "ISACA Glossary (MTO, AIW, RTO, RPO, shadow IT, data owner, purpose limitation, need-to-know, current risk, ERM)",
+      "url": "https://www.isaca.org/resources/glossary",
+      "checked": "2026-10-31: opened this session"
+    },
+    {
       "title": "NIST SP 800-53 Rev. 5, Security and Privacy Controls for Information Systems and Organizations (Sep 2020)",
       "url": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final",
       "checked": "2026-10-30: opened this session"
     },
     {
-      "title": "NIST SP 800-218, Secure Software Development Framework (SSDF) Version 1.1 (Feb 2022)",
+      "title": "NIST SP 800-218, Secure Software Development Framework (SSDF) Version 1.1 (Feb 2022); SP 800-218 Rev. 1 (SSDF Version 1.2) was an initial public draft (Dec 2025) when checked",
       "url": "https://csrc.nist.gov/pubs/sp/800/218/final",
-      "checked": "2026-10-30: opened this session"
+      "checked": "2026-10-31: final page and the Rev. 1 initial public draft page (17 Dec 2025) opened"
     },
     {
       "title": "NIST SP 800-218A, Secure Software Development Practices for Generative AI and Dual-Use Foundation Models: An SSDF Community Profile (Jul 2024)",

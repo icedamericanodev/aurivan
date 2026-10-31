@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "comment": "Original CRISC practice questions for Domain 2 (Risk Assessment), written to the CRISC exam content outline effective 2025. Every item is authored from public concepts and KaiSip's own CRISC study notes (data/crisc/notes/d2.json), with no reference to the CRISC Review Manual, ISACA's QAE database, ISACA's practice quiz or any prior question bank. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/crisc-standards-auditor.md. Not affiliated with or endorsed by ISACA®. CRISC® is a registered trademark of ISACA. Pilot batch crisc_d2_001 to crisc_d2_020, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit). Quality pass 31 Oct 2026 (ISACA authenticity audit and concept review).",
+    "comment": "Original CRISC practice questions for Domain 2 (Risk Assessment), written to the CRISC exam content outline effective 2025. Every item is authored from public concepts and KaiSip's own CRISC study notes (data/crisc/notes/d2.json), with no reference to the CRISC Review Manual, ISACA's QAE database, ISACA's practice quiz or any prior question bank. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/crisc-standards-auditor.md. Not affiliated with or endorsed by ISACA®. CRISC® is a registered trademark of ISACA. Pilot batch crisc_d2_001 to crisc_d2_020, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit). Quality pass 31 Oct 2026 (ISACA authenticity audit and concept review). Repair round 1, 31 Oct 2026 (independent verification).",
     "schema_version": 1
   },
   "domain": 2,
@@ -60,16 +60,16 @@
       },
       "correct": "D",
       "key_concept": "Model drift is a risk event; record it against the AI risk scenario and reassess before anyone chooses a fix.",
-      "pre_read": "Notice what has changed, over what period, and what records exist so far.",
-      "correct_explanation": "Drift is a risk event even when nothing fails: rising manual review is a real cost that builds gradually. The risk practitioner first records it against the AI triage scenario, so likelihood and impact are reassessed and the business owner can decide on a response. Retraining may well be the answer, but it is a treatment the owner chooses after analysis, with the data science lead as control owner.",
+      "pre_read": "Notice what has changed, over what period, and what it has cost so far.",
+      "correct_explanation": "Drift is a risk event even when nothing fails: rising manual review is a real cost that builds gradually. The risk practitioner first records it against the AI triage scenario, so likelihood and impact are reassessed and the business owner can decide on a response, such as retraining with the data science lead as control owner. A KRI on the review rate is useful, but it comes after that reassessment, which sets its threshold.",
       "wrong_explanations": {
-        "A": "Tempting because a KRI tracks the trend. But six months of drift is already evidence; it is recorded against the scenario first, and KRI thresholds come from that reassessment.",
-        "B": "Closest choice, because retraining is a common fix for drift. But it acts before the risk is assessed, and the business owner, not the risk practitioner, chooses the treatment.",
+        "A": "Closest choice, since a KRI tracks the trend. But six months of drift is already evidence; record it against the scenario and reassess, then set KRI thresholds.",
+        "B": "Tempting because retraining is a common fix for drift. But it acts before the risk is assessed, and the business owner, not the risk practitioner, chooses the treatment.",
         "C": "Tempting because data scientists tune models. But filing drift as tuning work keeps a business risk away from its owner and out of the register."
       },
       "tips": [
-        "Eliminate: A sets up monitoring for a trend that already needs recording, and C files drift as tuning work, keeping a business risk out of the register.",
-        "Final two: D beats B because the drift must be recorded and assessed first; retraining is a treatment the business owner chooses after that analysis.",
+        "Eliminate: B retrains the model before the risk is assessed, a treatment the business owner chooses, and C files drift as tuning work, keeping a business risk out of the register.",
+        "Final two: D beats A because six months of drift is already a risk event to record and reassess; a KRI on the review rate comes after, with its threshold set by that reassessment.",
         "Exam cue: AI bias and drift are risk events with a business owner. Record and assess them like any other event before anyone fixes the model."
       ],
       "framework_ref": "NIST AI 100-1 (AI RMF 1.0) MEASURE 2.4 (the functionality and behavior of the AI system are monitored when in production); COBIT 2019 APO12.01 (Collect Data)",
@@ -78,7 +78,7 @@
         "AI risk events",
         "Business ownership of AI risk"
       ],
-      "_provenance": "Authored from concept: notes 2A1.3 AI Risk Events: Bias and Model Drift (drift builds gradually, is logged against an AI scenario with a business owner, and is assessed before retraining). Original bank loan-triage scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D2 pilot batch, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): strawman 'wait for a loss' replaced by a KRI distractor; lens words 'scenario' and 'assess' added to distractors; re-lettered (key B to D); candidate renamed risk practitioner; neutral pre_read. Cross-domain gate 31 Oct 2026: setting moved from an insurer to a bank so it no longer mirrors crisc_d3_017's insurer drift item. Quality pass 31 Oct 2026 (ISACA authenticity audit and concept review): key made a single action ('Record the drift as a risk event against the AI scenario'; reassessment now in the explanation); C reworded in parallel form; control owner named as the data science lead (ISACA Glossary: accountable for the control, finding X1); 'often' removed from explanation B; tips updated.",
+      "_provenance": "Authored from concept: notes 2A1.3 AI Risk Events: Bias and Model Drift (drift builds gradually, is logged against an AI scenario with a business owner, and is assessed before retraining). Original bank loan-triage scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D2 pilot batch, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): strawman 'wait for a loss' replaced by a KRI distractor; lens words 'scenario' and 'assess' added to distractors; re-lettered (key B to D); candidate renamed risk practitioner; neutral pre_read. Cross-domain gate 31 Oct 2026: setting moved from an insurer to a bank so it no longer mirrors crisc_d3_017's insurer drift item. Quality pass 31 Oct 2026 (ISACA authenticity audit and concept review): key made a single action ('Record the drift as a risk event against the AI scenario'; reassessment now in the explanation); C reworded in parallel form; control owner named as the data science lead (ISACA Glossary: accountable for the control, finding X1); 'often' removed from explanation B; tips updated. Repair round 1, 31 Oct 2026 (independent verification): runner-up moved from B (retrain) to A (new KRI), as all three blind rounds read it; tips 1 and 2, the explanation and wrong explanations A and B rewritten to match; pre_read no longer points at the recording options. Repair round 2, 31 Oct 2026 (independent verification): wrong explanation A now names the reassessment itself before the KRI thresholds, so it no longer points back to an earlier mention that the learner has not read.",
       "style_version": 2
     },
     {
@@ -130,7 +130,7 @@
         "A": "Suspend resume uploads until the security team tests the assistant",
         "B": "Assess the prompt injection risk to the screening assistant",
         "C": "Rely on existing email and web filters to block the instructions",
-        "D": "Assess the alert as low likelihood for a firm not yet attacked"
+        "D": "Assess the threat as low likelihood based on internal history"
       },
       "correct": "B",
       "key_concept": "New AI threats such as indirect prompt injection are first recorded and assessed as scenarios with the business owner, before treatment.",
@@ -139,10 +139,10 @@
       "wrong_explanations": {
         "A": "Closest choice, since suspension closes the attack path. But it chooses a treatment before the risk is assessed, and that decision belongs to the service owner.",
         "C": "Tempting because filters screen content. But hidden instructions are ordinary text in approved documents; email and web filters cannot tell them from normal resume content.",
-        "D": "Tempting because no attack has happened here. But credible intelligence about the same kind of tool raises likelihood; a quiet internal history does not mean low risk."
+        "D": "Tempting because the firm's own history is direct evidence. But a new technique has little history; credible sector intelligence about the same kind of tool raises likelihood."
       },
       "tips": [
-        "Eliminate: C expects perimeter filters to spot instructions that arrive as ordinary text, and D rates likelihood low despite credible sector intelligence.",
+        "Eliminate: C expects perimeter filters to spot instructions that arrive as ordinary text, and D judges likelihood from internal history when credible sector intelligence covers the same kind of tool.",
         "Final two: B beats A because a new threat is first assessed with its owner; suspending uploads is a treatment the owner chooses afterward.",
         "Exam cue: when intelligence reports a new AI threat, record and assess the risk with its business owner before anyone switches features off."
       ],
@@ -152,7 +152,7 @@
         "Threat intelligence",
         "AI risk scenarios"
       ],
-      "_provenance": "Authored from concept: notes 2A2.3 AI-Specific Threats and 2A2.2 Threat Intelligence and Threat Modeling (intelligence is an input to scenario analysis; indirect injection arrives through content the model reads). Original recruitment-screening scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D2 pilot batch, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): key no longer the only option with 'owner' or 'scenario'; distractor C now 'assesses' the wrong thing; reason tails removed; re-lettered (key D to B); candidate renamed risk practitioner; neutral pre_read. Quality pass 31 Oct 2026 (ISACA authenticity audit and concept review): key made a single action ('Assess the prompt injection risk to the screening assistant'; recording with the owner stays in the explanation).",
+      "_provenance": "Authored from concept: notes 2A2.3 AI-Specific Threats and 2A2.2 Threat Intelligence and Threat Modeling (intelligence is an input to scenario analysis; indirect injection arrives through content the model reads). Original recruitment-screening scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D2 pilot batch, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): key no longer the only option with 'owner' or 'scenario'; distractor C now 'assesses' the wrong thing; reason tails removed; re-lettered (key D to B); candidate renamed risk practitioner; neutral pre_read. Quality pass 31 Oct 2026 (ISACA authenticity audit and concept review): key made a single action ('Assess the prompt injection risk to the screening assistant'; recording with the owner stays in the explanation). Repair round 1, 31 Oct 2026 (independent verification): option D no longer brings in a fact the stem never gives ('a firm not yet attacked'); it now rests likelihood on internal history; wrong explanation D and tip 1 updated.",
       "style_version": 2
     },
     {
@@ -172,7 +172,7 @@
       "correct": "A",
       "key_concept": "A CVSS score is a severity input; a risk rating also needs the asset's business impact, its exposure and the likelihood of exploitation.",
       "pre_read": "Ask what a CVSS score measures and what a register rating is used to decide.",
-      "correct_explanation": "A CVSS score, even fully adjusted, measures the technical severity of a flaw, and FIRST describes it as one input to risk assessment. Risk also depends on what the asset supports, how reachable it is and the business impact of exploitation, so the risk practitioner uses the score as one input to the scenario rating. An environment-adjusted score is a better input, but still a severity score, not a business risk rating.",
+      "correct_explanation": "A CVSS score, even fully adjusted, measures the technical severity of a flaw, and the CVSS specification calls it an input to risk assessment. Risk also depends on what the asset supports, how reachable it is and the business impact of exploitation, so the risk practitioner uses the score as one input to the scenario rating. An environment-adjusted score is a better input, but still a severity score, not a business risk rating.",
       "wrong_explanations": {
         "B": "Tempting because CVSS is widely used and consistent. But a standard severity score still describes the flaw, not the business harm if the asset is exploited.",
         "C": "Closest choice, since environmental and threat metrics add context. But an adjusted score is still a severity score; the rating also needs the business impact of exploitation.",
@@ -189,7 +189,7 @@
         "Severity versus risk",
         "Asset criticality"
       ],
-      "_provenance": "Authored from concept: notes 2A3.2 CVSS as a Severity Input (CVSS is severity, one input to risk; CVSS-BTE refines but does not replace business impact). Original bank vulnerability-team scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D2 pilot batch, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): reason tails removed and option lengths evened; candidate renamed risk practitioner; neutral pre_read. Quality pass 31 Oct 2026 (ISACA authenticity audit and concept review): option C uses 'environment-adjusted CVSS score' instead of the version-specific 'CVSS-BTE' (audit wording); explanation, wrong explanation C and tip 2 updated to match.",
+      "_provenance": "Authored from concept: notes 2A3.2 CVSS as a Severity Input (CVSS is severity, one input to risk; CVSS-BTE refines but does not replace business impact). Original bank vulnerability-team scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D2 pilot batch, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): reason tails removed and option lengths evened; candidate renamed risk practitioner; neutral pre_read. Quality pass 31 Oct 2026 (ISACA authenticity audit and concept review): option C uses 'environment-adjusted CVSS score' instead of the version-specific 'CVSS-BTE' (audit wording); explanation, wrong explanation C and tip 2 updated to match. Repair round 1, 31 Oct 2026 (independent verification): explanation names the CVSS specification instead of 'FIRST', which read as the priority word.",
       "style_version": 2
     },
     {
@@ -238,7 +238,7 @@
       "bloom_level": "Application",
       "question": "A university's risk register lists 'cyberattack' as one high-rated scenario with no further detail, and owners cannot agree on controls. What should the risk practitioner do FIRST?",
       "options": {
-        "A": "Raise the scenario's rating to very high in the register",
+        "A": "Re-rate the scenario using the latest threat intelligence",
         "B": "Ask IT to list the controls that reduce cyberattack risk",
         "C": "Split it into scenarios naming actor, asset and impact",
         "D": "Run a tabletop exercise on the scenario with business owners"
@@ -248,7 +248,7 @@
       "pre_read": "Notice what the register entry actually says and why the owners are stuck.",
       "correct_explanation": "A scenario as broad as 'cyberattack' cannot be rated or tied to controls, which is why owners disagree. The risk practitioner first splits it into specific scenarios, each naming the actor, the asset affected and the business impact, so each one can be rated and owned. A tabletop exercise is valuable later, but exercising a vague scenario produces a vague discussion; specificity comes first.",
       "wrong_explanations": {
-        "A": "Tempting because a higher rating gets attention. But re-rating a vague entry adds no information; it still cannot be tied to controls or owners.",
+        "A": "Tempting because fresh intelligence improves ratings. But a scenario as vague as 'cyberattack' cannot be rated meaningfully, whatever the data; it must first name an actor, asset and impact.",
         "B": "Tempting because controls are what owners argue about. But a control list for a vague threat cannot show which controls matter for which assets.",
         "D": "Closest choice, since exercises test scenarios with the business. But a scenario this vague gives the exercise nothing concrete to test; define specific scenarios first."
       },
@@ -263,7 +263,7 @@
         "Cause-and-effect risk description",
         "Scenario ownership"
       ],
-      "_provenance": "Authored from concept: notes 2A4.1 Anatomy of a Risk Scenario (actor, event, asset, time, consequence; generic scenarios cannot be rated or owned). Original university register scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D2 pilot batch, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): purpose tail removed from A; lens word 'scenario' now in distractors; candidate renamed risk practitioner; neutral pre_read. Quality pass 31 Oct 2026 (ISACA authenticity audit and concept review): absolute 'every' removed from distractor B; key trimmed so it is no longer the longest option.",
+      "_provenance": "Authored from concept: notes 2A4.1 Anatomy of a Risk Scenario (actor, event, asset, time, consequence; generic scenarios cannot be rated or owned). Original university register scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D2 pilot batch, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): purpose tail removed from A; lens word 'scenario' now in distractors; candidate renamed risk practitioner; neutral pre_read. Quality pass 31 Oct 2026 (ISACA authenticity audit and concept review): absolute 'every' removed from distractor B; key trimmed so it is no longer the longest option. Repair round 1, 31 Oct 2026 (independent verification): strawman A (raise an already high rating) replaced by a real misconception (re-rate the vague scenario with fresh threat intelligence); wrong explanation A updated.",
       "style_version": 2
     },
     {
@@ -394,15 +394,15 @@
       "correct": "D",
       "key_concept": "A BIA measures impact over time and ignores likelihood, so it complements a risk assessment but cannot replace it.",
       "pre_read": "Ask what a BIA produces and what a ranking of risks requires.",
-      "correct_explanation": "A BIA measures how harm grows over time if a process stops, assuming the disruption happens. It never estimates how likely each disruption is, so it cannot rank risks on its own; a risk assessment combines likelihood with impact, using the BIA's impact data. The idea that a BIA studies threats is the runner-up, but a BIA examines neither threats nor vulnerabilities; it starts from the outage.",
+      "correct_explanation": "A BIA measures how harm grows over time if a process stops, assuming the disruption happens. It never estimates how likely each disruption is, so it cannot rank risks on its own; a risk assessment combines likelihood with impact, using the BIA's impact data. Missing vulnerability analysis is the runner-up, but vulnerabilities only feed likelihood: a BIA starts from the outage and, whatever threats it notes, never estimates how likely each disruption is.",
       "wrong_explanations": {
         "A": "Tempting because criticality sounds like risk. But identifying critical processes is the BIA's main output; the missing piece is how likely each disruption is.",
-        "B": "Closest choice, since threats and vulnerabilities drive risk. But a BIA examines neither; it starts from the outage and measures impact, leaving likelihood unassessed.",
+        "B": "Closest choice, since threats and vulnerabilities drive risk. But a BIA starts from the outage and measures impact; whatever threats it notes, it never rates likelihood, which ranking risks needs.",
         "C": "Tempting because recovery objectives sound technical. But a BIA gathers them from business owners; the gap in this view is likelihood, not who sets objectives."
       },
       "tips": [
         "Eliminate: A denies the BIA's core output, critical processes, and C misplaces who sets recovery objectives, which a BIA gathers from business owners.",
-        "Final two: D beats B because a BIA does not study threats at all; it starts from the disruption, so the missing dimension for ranking risk is likelihood.",
+        "Final two: D beats B because a BIA starts from the disruption and measures impact over time; whatever threats it notes, it never rates likelihood, which ranking risks requires.",
         "Exam cue: a BIA is impact over time, assuming the event happens. A risk assessment is likelihood and impact together. Neither replaces the other."
       ],
       "framework_ref": "ISACA Glossary (business impact analysis); ISACA Glossary (risk)",
@@ -411,7 +411,7 @@
         "Likelihood and impact",
         "Continuity planning"
       ],
-      "_provenance": "Authored from concept: notes 2B2.1 BIA Purpose, Dependencies and AI Systems (a BIA assumes the disruption and ignores likelihood; it is not a risk assessment). Original city council continuity scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D2 pilot batch, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): MAIN changed to PRIMARY; re-lettered (key C to D); neutral pre_read. Cross-domain gate 31 Oct 2026: subtopic heading now keeps '(BIA)' (rule 10). Quality pass 31 Oct 2026 (ISACA authenticity audit and concept review): absolute 'alone' removed from distractor C. Option lengths evened (rule 5).",
+      "_provenance": "Authored from concept: notes 2B2.1 BIA Purpose, Dependencies and AI Systems (a BIA assumes the disruption and ignores likelihood; it is not a risk assessment). Original city council continuity scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D2 pilot batch, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): MAIN changed to PRIMARY; re-lettered (key C to D); neutral pre_read. Cross-domain gate 31 Oct 2026: subtopic heading now keeps '(BIA)' (rule 10). Quality pass 31 Oct 2026 (ISACA authenticity audit and concept review): absolute 'alone' removed from distractor C. Option lengths evened (rule 5). Repair round 1, 31 Oct 2026 (independent verification): the explanation, wrong explanation B and tip 2 no longer say a BIA never looks at threats (the ISACA Glossary's impact analysis entry says threats to assets are identified); the key now rests only on likelihood, which a BIA never estimates.",
       "style_version": 2
     },
     {
@@ -458,7 +458,7 @@
       "principle_id": "residual-counts-working-controls",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A risk practitioner finds a retailer's register shows payment page skimming as closed because a script-integrity tool was approved for deployment next quarter. Which of the following is the MOST appropriate status?",
+      "question": "A risk practitioner finds that a retailer's register shows payment page skimming as closed because a script-integrity tool was approved for deployment next quarter. Which of the following is the MOST appropriate register entry?",
       "options": {
         "A": "Closed, with the approved response noted",
         "B": "Closed, with a reminder to confirm deployment",
@@ -485,7 +485,7 @@
         "Current risk",
         "Register maintenance"
       ],
-      "_provenance": "Authored from concept: notes 2B3.2 Keeping the Register Current (status follows evidence; planned controls do not close entries). Original retail payment-page scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D2 pilot batch, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): reason tails removed from distractors; re-lettered (key A to C); candidate renamed risk practitioner; neutral pre_read. Quality pass 31 Oct 2026 (ISACA authenticity audit and concept review): converted to a short 'Which of the following' stem with parallel status options; the remove-the-entry strawman replaced by the audit's real misconception (rating lowered for the approved tool), now the runner-up; explanations and tips rewritten to match.",
+      "_provenance": "Authored from concept: notes 2B3.2 Keeping the Register Current (status follows evidence; planned controls do not close entries). Original retail payment-page scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D2 pilot batch, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): reason tails removed from distractors; re-lettered (key A to C); candidate renamed risk practitioner; neutral pre_read. Quality pass 31 Oct 2026 (ISACA authenticity audit and concept review): converted to a short 'Which of the following' stem with parallel status options; the remove-the-entry strawman replaced by the audit's real misconception (rating lowered for the approved tool), now the runner-up; explanations and tips rewritten to match. Repair round 1, 31 Oct 2026 (independent verification): stem asks for the MOST appropriate register entry (status and rating), since the two 'In treatment' options differ only in the rating; 'finds that' added.",
       "style_version": 2
     },
     {
@@ -571,7 +571,7 @@
       "bloom_level": "Analysis",
       "question": "A clinic chain's records outage has an $80,000 ALE, and a $30,000-a-year failover would cut it to $20,000. Which of the following is the BEST basis for the risk practitioner's advice to the records owner?",
       "options": {
-        "A": "The $30,000 cost against the $20,000 residual ALE",
+        "A": "The $30,000 cost against the remaining $20,000 ALE",
         "B": "Five years of cost against the $80,000 ALE",
         "C": "The 75% cut in yearly expected loss from outages",
         "D": "The $60,000 ALE reduction against the $30,000 cost"
@@ -581,12 +581,12 @@
       "pre_read": "Line up each figure with the period it covers before comparing them.",
       "correct_explanation": "Cost-benefit compares the yearly cut in ALE with the control's yearly cost: $80,000 minus $20,000 is a $60,000 reduction against a $30,000 cost, a net benefit of $30,000 a year. On that basis the risk practitioner recommends the failover, and the records owner decides. A 75% cut sounds persuasive, but a percentage alone cannot show whether the saving exceeds the cost.",
       "wrong_explanations": {
-        "A": "Tempting because $30,000 is more than $20,000. But the residual ALE is what remains; the benefit is the $60,000 reduction, double the cost.",
+        "A": "Tempting because $30,000 is more than $20,000. But $20,000 is the loss that would remain; the benefit is the $60,000 reduction, double the cost.",
         "B": "Tempting because a multi-year view looks prudent. But it sets five years of spending against one year of expected loss; compare both on a yearly basis.",
         "C": "Closest choice, since the cut is real. But a percentage ignores cost; a 75% cut could still cost more than the loss it removes."
       },
       "tips": [
-        "Eliminate: A compares cost with the residual ALE instead of the reduction, and B sets five years of cost against one year of expected loss.",
+        "Eliminate: A compares cost with the loss that would remain instead of the reduction, and B sets five years of cost against one year of expected loss.",
         "Final two: D beats C because cost-benefit weighs the yearly loss reduction against the yearly cost; a percentage cut alone cannot show the control is worth buying.",
         "Exam cue: control value is ALE before minus ALE after, compared with yearly cost. Then check who decides: the risk owner, not the practitioner."
       ],
@@ -596,7 +596,7 @@
         "Annualized loss expectancy",
         "Risk owner decisions"
       ],
-      "_provenance": "Authored from concept: notes 2B4.2 Quantitative Analysis: SLE, ARO and ALE (compare the yearly ALE reduction with yearly control cost; the owner decides). Original clinic failover figures written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D2 pilot batch, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): weak distractors B and C replaced (five-year cost, percentage cut) so the final two turn on the yearly comparison; parallel 'Advise against it' and 'Recommend it' forms; money as $; neutral subtopic label; candidate renamed risk practitioner. Quality pass 31 Oct 2026 (ISACA authenticity audit and concept review): converted to a short 'Which of the following' stem with noun-phrase comparisons, removing the 'Label: reason' option form (rule 17); explanations and tips unchanged in substance. Option lengths evened (rule 5).",
+      "_provenance": "Authored from concept: notes 2B4.2 Quantitative Analysis: SLE, ARO and ALE (compare the yearly ALE reduction with yearly control cost; the owner decides). Original clinic failover figures written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D2 pilot batch, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): weak distractors B and C replaced (five-year cost, percentage cut) so the final two turn on the yearly comparison; parallel 'Advise against it' and 'Recommend it' forms; money as $; neutral subtopic label; candidate renamed risk practitioner. Quality pass 31 Oct 2026 (ISACA authenticity audit and concept review): converted to a short 'Which of the following' stem with noun-phrase comparisons, removing the 'Label: reason' option form (rule 17); explanations and tips unchanged in substance. Option lengths evened (rule 5). Repair round 1, 31 Oct 2026 (independent verification): 'residual ALE' for a failover not yet bought replaced by 'remaining ALE' (residual is what an implemented response leaves, rule 11); wrong explanation A and tip 1 updated.",
       "style_version": 2
     },
     {
@@ -608,23 +608,23 @@
       "bloom_level": "Analysis",
       "question": "A payments start-up's board asks the risk practitioner for one exact ALE for fraud on a new product with no loss history. Which of the following is the BEST response?",
       "options": {
-        "A": "A single ALE based on an expert's estimate",
-        "B": "A loss range from calibrated expert estimates",
-        "C": "A deferral until three years of loss data exist",
+        "A": "A single exact ALE from expert estimates",
+        "B": "An annual loss range from expert estimates",
+        "C": "A deferral until three years of loss data exists",
         "D": "A high qualitative rating until loss data exists"
       },
       "correct": "B",
       "key_concept": "Quantitative results must match input quality; with thin data, give ranges and stated uncertainty rather than a falsely precise figure.",
       "pre_read": "Notice how much data stands behind the number the board wants.",
-      "correct_explanation": "With no loss history, a single exact ALE would carry false precision and could mislead the board. The risk practitioner gives a loss range built from several calibrated expert estimates, states the uncertainty and assumptions, and shows how better data would narrow it. A single figure meets the request literally, but NIST SP 800-30 warns that buried subjective inputs strip a quantitative result of its rigor.",
+      "correct_explanation": "With no loss history, a single exact ALE would carry false precision and could mislead the board. The risk practitioner gives a loss range built from several calibrated expert estimates, states the uncertainty and assumptions, and shows how better data would narrow it. A single figure meets the request literally, but NIST SP 800-30 warns that subjective inputs buried in a quantitative result significantly lessen its rigor.",
       "wrong_explanations": {
-        "A": "Closest choice, since it gives the board what it asked for. But one figure from one estimate looks precise without being reliable, so the board would decide with false confidence.",
+        "A": "Closest choice, since it gives the board what it asked for. But one exact figure from thin data looks precise without being reliable, which would mislead the board.",
         "C": "Tempting because the data is thin. But decisions cannot wait years; ranges from calibrated estimates give usable analysis now, with the uncertainty made clear.",
         "D": "Tempting because missing data feels risky. But a rating must reflect estimated likelihood and impact; defaulting to high because data is thin distorts priorities."
       },
       "tips": [
         "Eliminate: C withholds analysis the board needs now, and D rates the risk by its data gaps instead of by estimated likelihood and impact.",
-        "Final two: B beats A because a range with stated uncertainty is honest about thin data, while a single figure from one estimate gives the board false precision.",
+        "Final two: B beats A because a range with stated uncertainty is honest about thin data, while one exact figure from the same estimates gives the board false precision.",
         "Exam cue: when data is poor, prefer ranges with stated assumptions, or honest qualitative estimates, over exact-looking numbers. Precision must match the inputs."
       ],
       "framework_ref": "NIST IR 8286A Rev. 1 Section 2.3.1 (Selecting Risk Analysis Methodologies); NIST SP 800-30 Rev. 1 Section 2.3.2 (Assessment Approaches: subjective inputs or high uncertainty lessen quantitative rigor)",
@@ -633,7 +633,7 @@
         "Calibrated estimates",
         "Choosing an analysis method"
       ],
-      "_provenance": "Authored from concept: notes 2B4.3 Choosing a Method: Data, Decisions, FAIR and Monte Carlo (precision must match data; ranges with stated uncertainty beat single figures). Original payments start-up board scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D2 pilot batch, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): reason tail removed from the runner-up; re-lettered (key A to B); candidate renamed risk practitioner; neutral pre_read. Quality pass 31 Oct 2026 (ISACA authenticity audit and concept review): converted to a short 'Which of the following' stem with noun-phrase options; planted fact 'only one expert's guess' removed from the stem; A and D carry the audit's word-level fixes (a single ALE from an expert's estimate; a high qualitative rating until loss data exists); key made a single item (the stated uncertainty is taught in the explanation); exam cue no longer endorses the qualitative-default distractor.",
+      "_provenance": "Authored from concept: notes 2B4.3 Choosing a Method: Data, Decisions, FAIR and Monte Carlo (precision must match data; ranges with stated uncertainty beat single figures). Original payments start-up board scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D2 pilot batch, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): reason tail removed from the runner-up; re-lettered (key A to B); candidate renamed risk practitioner; neutral pre_read. Quality pass 31 Oct 2026 (ISACA authenticity audit and concept review): converted to a short 'Which of the following' stem with noun-phrase options; planted fact 'only one expert's guess' removed from the stem; A and D carry the audit's word-level fixes (a single ALE from an expert's estimate; a high qualitative rating until loss data exists); key made a single item (the stated uncertainty is taught in the explanation); exam cue no longer endorses the qualitative-default distractor. Repair round 1, 31 Oct 2026 (independent verification): the key no longer carries the only quality adjective ('calibrated') or the only plural source; A and B now share 'from expert estimates', so the item turns on range against exact figure; C and D agree in number; wrong explanation A and tip 2 updated. The explanation keeps 'calibrated expert estimates' as the method. Repair round 2, 31 Oct 2026 (independent verification): the explanation's last sentence now matches the verified SP 800-30 wording ('significantly lessened') in place of 'strip'.",
       "style_version": 2
     },
     {
@@ -648,7 +648,7 @@
         "A": "Current risk, crediting only controls implemented and working",
         "B": "Residual risk projected once next year's planned controls go live",
         "C": "Inherent risk, before the utility's controls are counted",
-        "D": "Whichever of the inherent and current ratings is higher"
+        "D": "Current risk reported by peer utilities in a sector benchmark"
       },
       "correct": "A",
       "key_concept": "Today's exposure is current risk, crediting only implemented, working controls; the residual risk projected after planned responses judges the plan, not today's position.",
@@ -657,12 +657,12 @@
       "wrong_explanations": {
         "B": "Closest choice, since the plan matters. But planned controls reduce nothing yet; projected residual risk shows whether the plan is enough, not whether the utility is within appetite today.",
         "C": "Tempting because inherent risk shows the full threat. But it leaves out controls already working, so comparing it with appetite overstates the need for treatment.",
-        "D": "Tempting because it feels cautious. But the higher rating is always the inherent one, so this leaves out working controls and pushes treatment the evidence does not support."
+        "D": "Tempting because peers face similar threats. But appetite is compared with this utility's own exposure; a peer figure reflects other controls and assets, not the utility's current risk."
       },
       "tips": [
-        "Eliminate: C leaves out controls that already work, overstating the need for treatment, and D in effect always picks the inherent rating.",
+        "Eliminate: C leaves out controls that already work, overstating the need for treatment, and D swaps the utility's own exposure for a peer benchmark.",
         "Final two: A beats B because only implemented, working controls count today; a projection with planned controls is future residual risk, used to judge the plan.",
-        "Exam cue: today's position against appetite uses current risk; a response plan is judged by the residual risk it is expected to leave; inherent risk only shows reliance on controls."
+        "Exam cue: compare today's risk, counting only implemented, working controls, with appetite; ISACA may call it current or residual risk. A projection with planned controls judges the plan; inherent risk only shows reliance on controls."
       ],
       "framework_ref": "ISACA Glossary (current risk); ISACA Glossary (risk response); ISACA Glossary (residual risk); ISACA Glossary (inherent risk); NIST IR 8286 Rev. 1 Section 3.5.2 (Responding to Residual Risk)",
       "related_concepts": [
@@ -670,7 +670,7 @@
         "Future residual risk",
         "Inherent risk"
       ],
-      "_provenance": "Authored from concept: notes 2B5.1 Inherent, Current and Residual Risk (compare residual, not inherent, risk with appetite; count only controls in place and working). Original water utility control system scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D2 pilot batch, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): HARD ERROR fix paired with notes 2B5.1: explanation now bridges ISACA residual and current risk and calls a projection a target; ID.RA-05 replaced by IR 8286 Rev. 1 Section 3.5.2; stem no longer has the practitioner deciding; reason tail removed from D; re-lettered (key B to A); neutral pre_read. Quality pass 31 Oct 2026 (ISACA authenticity audit and concept review): HARD ERROR fix (concept review D2-1): the planned-controls projection is what the ISACA Glossary's risk response entry calls future residual risk, so the stem now asks about appetite today and the key is current risk; options, key_concept, explanation, wrong explanation B and tips per the concept review; 'any of' removed from distractor C; stem in 'Which of the following' form; ISACA Glossary (risk response) cited (new Verified library bullet); notes 2B5.1 rule aligned. pre_read matched to the new stem.",
+      "_provenance": "Authored from concept: notes 2B5.1 Inherent, Current and Residual Risk (compare residual, not inherent, risk with appetite; count only controls in place and working). Original water utility control system scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D2 pilot batch, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): HARD ERROR fix paired with notes 2B5.1: explanation now bridges ISACA residual and current risk and calls a projection a target; ID.RA-05 replaced by IR 8286 Rev. 1 Section 3.5.2; stem no longer has the practitioner deciding; reason tail removed from D; re-lettered (key B to A); neutral pre_read. Quality pass 31 Oct 2026 (ISACA authenticity audit and concept review): HARD ERROR fix (concept review D2-1): the planned-controls projection is what the ISACA Glossary's risk response entry calls future residual risk, so the stem now asks about appetite today and the key is current risk; options, key_concept, explanation, wrong explanation B and tips per the concept review; 'any of' removed from distractor C; stem in 'Which of the following' form; ISACA Glossary (risk response) cited (new Verified library bullet); notes 2B5.1 rule aligned. pre_read matched to the new stem. Repair round 1, 31 Oct 2026 (independent verification): D ('whichever is higher') always equalled C, so it is replaced by a peer-benchmark distractor; wrong explanation D and tip 1 updated; the exam cue now bridges current and residual risk (once a response is implemented its residual risk is today's current risk), paired with notes 2B5 overview, 2B5.1 and 2B5.3.",
       "style_version": 2
     },
     {
@@ -690,15 +690,15 @@
       "correct": "C",
       "key_concept": "Residual ratings credit controls only for demonstrated effectiveness; obtain evidence before keeping or changing the rating.",
       "pre_read": "Notice what the low rating relies on and when that control was last checked.",
-      "correct_explanation": "A control earns credit in residual risk only for what evidence shows it does, and existence is not effectiveness. The risk practitioner first gets evidence from IT, which answers for the encryption as control owner, such as device coverage reports and recovery-key checks. Re-rating to inherent is the runner-up, but it discards the encryption without evidence and every other control too; inherent counts no controls at all. Facts first, then the rating.",
+      "correct_explanation": "A control earns credit in residual risk only for what evidence shows it does, and existence is not effectiveness. The risk practitioner first asks IT, which answers for the encryption as control owner, for evidence such as device coverage reports and recovery-key checks. Re-rating to inherent is the runner-up: the low rating is unsupported, but inherent strips credit from every control, and a quick evidence check should come before any re-rating.",
       "wrong_explanations": {
         "A": "Tempting because the owner vouches for it. But installed is not effective: encryption may be disabled or missing from devices, and only evidence earns a low rating.",
-        "B": "Closest choice, since the current rating is unsupported. But inherent ignores every other control as well, and dropping credit without evidence is as unfounded as keeping it.",
+        "B": "Closest choice, since the low rating is unsupported. But inherent counts no controls at all; ask for the evidence first, then re-rate on what the encryption actually does.",
         "D": "Tempting because newer tools sound stronger. But nobody yet knows whether the current tool is failing; replacing it before getting evidence treats an unanalyzed gap."
       },
       "tips": [
         "Eliminate: A accepts the owner's word as proof the tool works, and D replaces a control before anyone knows whether it is failing.",
-        "Final two: C beats B because the rating should follow evidence; dropping to inherent also discards every other control and is as unsupported as keeping the low rating.",
+        "Final two: C beats B because evidence comes before any re-rating; dropping to inherent strips credit from every control, while coverage reports show what the encryption really does.",
         "Exam cue: when a rating relies on an untested control, the first step is evidence of design and operating effectiveness, then re-rating."
       ],
       "framework_ref": "ISACA Glossary (residual risk); COBIT 2019 APO12.02 (Analyze Risk)",
@@ -707,7 +707,7 @@
         "Operating effectiveness",
         "Residual risk rating"
       ],
-      "_provenance": "Authored from concept: notes 2B5.2 Control Effectiveness and the Residual Gap (existence is not effectiveness; credit follows tested design and operation). Original university laptop-encryption scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D2 pilot batch, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): key reworded (coverage reports from IT) so 'owner' is not key-only; B no longer implies testing is scheduled; A without a reason tail; explanation now teaches that inherent discards every control; candidate renamed risk practitioner; neutral pre_read. Quality pass 31 Oct 2026 (ISACA authenticity audit and concept review): stem 'has never been tested' made 'has not been tested since installation' and option A 'Keep the low rating based on the owner's confirmation' (audit wording); control owner described as accountable for the encryption (finding X1); tip 1 updated.",
+      "_provenance": "Authored from concept: notes 2B5.2 Control Effectiveness and the Residual Gap (existence is not effectiveness; credit follows tested design and operation). Original university laptop-encryption scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D2 pilot batch, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): key reworded (coverage reports from IT) so 'owner' is not key-only; B no longer implies testing is scheduled; A without a reason tail; explanation now teaches that inherent discards every control; candidate renamed risk practitioner; neutral pre_read. Quality pass 31 Oct 2026 (ISACA authenticity audit and concept review): stem 'has never been tested' made 'has not been tested since installation' and option A 'Keep the low rating based on the owner's confirmation' (audit wording); control owner described as accountable for the encryption (finding X1); tip 1 updated. Repair round 1, 31 Oct 2026 (independent verification): removed the false symmetry that withholding credit without evidence is as unfounded as keeping it (notes 2B5.2: an untested control earns little or no reduction); B now loses because inherent strips credit from every control and evidence comes before any re-rating; explanation, wrong explanation B and tip 2 updated.",
       "style_version": 2
     },
     {
@@ -717,11 +717,11 @@
       "principle_id": "advise-dont-decide",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "After two new controls, a city council's ransomware scenario still has residual risk above the appetite its elected council approved. What is the risk practitioner's BEST next step?",
+      "question": "After two new controls went live, a city council's ransomware scenario still has residual risk above the appetite its elected council approved. What is the risk practitioner's BEST next step?",
       "options": {
         "A": "Sign off the residual risk as reduced as far as practical",
         "B": "Report the large drop from inherent risk as an acceptable result",
-        "C": "Ask IT, as control owner, to deploy a third ransomware control",
+        "C": "Ask the IT control owner to deploy a third ransomware control",
         "D": "Present further treatment options and costs to the risk owner"
       },
       "correct": "D",
@@ -744,7 +744,7 @@
         "Risk appetite",
         "Risk owner decisions"
       ],
-      "_provenance": "Authored from concept: notes 2B5.3 Residual Risk Against Appetite and Tolerance (above appetite, the practitioner presents options and the owner chooses; the practitioner never accepts risk). Original city council ransomware scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D2 pilot batch, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): moved from a hospital to a city council; reason tails removed from A and B; runner-up names IT as control owner so 'owner' is not key-only; candidate renamed risk practitioner; neutral pre_read. Review fixes 30 Oct 2026 (blind test and standards audit): moved from a hospital to a city council; reason tails removed from A and B; runner-up names IT as control owner so 'owner' is not key-only; candidate renamed risk practitioner; neutral pre_read. Quality pass 31 Oct 2026 (ISACA authenticity audit and concept review): urgency word 'now' removed from option C; option A no longer contradicts the stem (the controls are already live); explanation C says IT is accountable for the controls rather than that it runs them (finding X1). Option lengths evened (rule 5).",
+      "_provenance": "Authored from concept: notes 2B5.3 Residual Risk Against Appetite and Tolerance (above appetite, the practitioner presents options and the owner chooses; the practitioner never accepts risk). Original city council ransomware scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D2 pilot batch, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): moved from a hospital to a city council; reason tails removed from A and B; runner-up names IT as control owner so 'owner' is not key-only; candidate renamed risk practitioner; neutral pre_read. Quality pass 31 Oct 2026 (ISACA authenticity audit and concept review): urgency word 'now' removed from option C; option A no longer contradicts the stem (the controls are already live); explanation C says IT is accountable for the controls rather than that it runs them (finding X1). Option lengths evened (rule 5). Repair round 1, 31 Oct 2026 (independent verification): stem says the controls went live (implemented versus planned decides residual risk); option C no longer carries the appositive 'as control owner'; duplicated provenance sentence removed.",
       "style_version": 2
     }
   ]
